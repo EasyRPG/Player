@@ -39,56 +39,51 @@
 #include "battle_animation.h"
 #include "scene_gameover.h"
 
-Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
-	battle_action_wait(30),
-	battle_action_state(BattleActionState_Start)
-{
-}
+Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3()
+    : Scene_Battle(), battle_action_wait(30), battle_action_state(BattleActionState_Start) {}
 
-Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
-}
+Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {}
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
-		case State_SelectActor: {
-			if (battle_actions.empty()) {
-				Game_Battle::UpdateEvents();
-				Game_Battle::UpdateGauges();
-			}
+	case State_SelectActor: {
+		if (battle_actions.empty()) {
+			Game_Battle::UpdateEvents();
+			Game_Battle::UpdateGauges();
+		}
 
-			SelectNextActor();
+		SelectNextActor();
 
-			std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
+		std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
 
-			for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
-				it != enemies.end(); ++it) {
-				if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-					const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
-					if (action) {
-						CreateEnemyAction(*it, action);
-					}
+		for (std::vector<Game_Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+			if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
+				const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+				if (action) {
+					CreateEnemyAction(*it, action);
 				}
 			}
-
-			break;
 		}
-		default:;
+
+		break;
+	}
+	default:
+		;
 	}
 
 	for (std::vector<FloatText>::iterator it = floating_texts.begin();
-		it != floating_texts.end();) {
+	     it != floating_texts.end();) {
 		(*it).second -= 1;
 		if ((*it).second <= 0) {
 			it = floating_texts.erase(it);
-		}
-		else {
+		} else {
 			++it;
 		}
 	}
 
 	Scene_Battle::Update();
 
-	//enemy_status_window->Update();
+	// enemy_status_window->Update();
 }
 
 void Scene_Battle_Rpg2k3::CreateCursors() {
@@ -107,36 +102,37 @@ void Scene_Battle_Rpg2k3::CreateCursors() {
 	enemy_cursor->SetVisible(false);
 }
 
-
 void Scene_Battle_Rpg2k3::UpdateCursors() {
 	/*if (Game_Battle::HaveActiveAlly()) {
-		const Battle::Ally& ally = state == State_SelectAllyTarget && Game_Battle::HaveTargetAlly()
-			? Game_Battle::GetTargetAlly()
-			: Game_Battle::GetActiveAlly();
-		ally_cursor->SetVisible(true);
-		ally_cursor->SetX(ally.rpg_actor->battle_x - ally_cursor->GetWidth() / 2);
-		ally_cursor->SetY(ally.rpg_actor->battle_y - ally.sprite->GetHeight() / 2 - ally_cursor->GetHeight() - 2);
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[(cycle / 15) % 4];
-		ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
+	    const Battle::Ally& ally = state == State_SelectAllyTarget && Game_Battle::HaveTargetAlly()
+	        ? Game_Battle::GetTargetAlly()
+	        : Game_Battle::GetActiveAlly();
+	    ally_cursor->SetVisible(true);
+	    ally_cursor->SetX(ally.rpg_actor->battle_x - ally_cursor->GetWidth() / 2);
+	    ally_cursor->SetY(ally.rpg_actor->battle_y - ally.sprite->GetHeight() / 2 -
+	ally_cursor->GetHeight() - 2);
+	    static const int frames[] = {0,1,2,1};
+	    int frame = frames[(cycle / 15) % 4];
+	    ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
 	}
 	else
-		ally_cursor->SetVisible(false);
+	    ally_cursor->SetVisible(false);
 
 	if (state == State_SelectEnemyTarget && Game_Battle::HaveTargetEnemy()) {
-		const Battle::Enemy& enemy = Game_Battle::GetTargetEnemy();
-		enemy_cursor->SetVisible(true);
-		enemy_cursor->SetX(enemy.member->x + enemy.sprite->GetWidth() / 2 + 2);
-		enemy_cursor->SetY(enemy.member->y - enemy_cursor->GetHeight() / 2);
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[(cycle / 15) % 4];
-		enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
+	    const Battle::Enemy& enemy = Game_Battle::GetTargetEnemy();
+	    enemy_cursor->SetVisible(true);
+	    enemy_cursor->SetX(enemy.member->x + enemy.sprite->GetWidth() / 2 + 2);
+	    enemy_cursor->SetY(enemy.member->y - enemy_cursor->GetHeight() / 2);
+	    static const int frames[] = {0,1,2,1};
+	    int frame = frames[(cycle / 15) % 4];
+	    enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
 	}
 	else
-		enemy_cursor->SetVisible(false);*/
+	    enemy_cursor->SetVisible(false);*/
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text, int _duration) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text,
+                                        int _duration) {
 	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
@@ -164,7 +160,7 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 
 	options_window.reset(new Window_Command(commands, 76));
 	options_window->SetHeight(80);
-	options_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 	// TODO: Auto Battle not implemented
 	options_window->DisableItem(1);
 
@@ -179,14 +175,13 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	std::vector<std::string> commands;
 	std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
 
-	for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
-		it != enemies.end(); ++it) {
-			commands.push_back((*it)->GetName());
+	for (std::vector<Game_Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+		commands.push_back((*it)->GetName());
 	}
 
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
-	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	target_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 	target_window->SetZ(3001);
 }
 
@@ -198,8 +193,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 	if (!active_actor && Main_Data::game_party->GetBattlerCount() > 0) {
 		actor = &(*Main_Data::game_party)[0];
-	}
-	else {
+	} else {
 		actor = active_actor;
 	}
 
@@ -209,12 +203,12 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		int i = 0;
 		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
 			uint32_t bcmd = *it;
-			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
-				break;
+			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size()) break;
 			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
 			commands.push_back(command.name);
 
-			if (!Game_Battle::IsEscapeAllowed() && command.type == RPG::BattleCommand::Type_escape) {
+			if (!Game_Battle::IsEscapeAllowed() &&
+			    command.type == RPG::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);
 			}
 			++i;
@@ -229,11 +223,12 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
-	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleMessageWindow() {
-	message_window.reset(new Window_Message(0,(SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
+	message_window.reset(
+	    new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 	message_window->SetZ(3002);
 }
 
@@ -245,8 +240,7 @@ void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
 void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	previous_state = state;
 	state = new_state;
-	if (state == State_SelectActor && auto_battle)
-		state = State_AutoBattle;
+	if (state == State_SelectActor && auto_battle) state = State_AutoBattle;
 
 	options_window->SetActive(false);
 	status_window->SetActive(false);
@@ -280,7 +274,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectItem:
 		item_window->SetActive(true);
-		//item_window->SetActor(Game_Battle::GetActiveActor());
+		// item_window->SetActor(Game_Battle::GetActiveActor());
 		item_window->Refresh();
 		break;
 	case State_SelectSkill:
@@ -321,7 +315,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_SelectActor:
 		command_window->SetIndex(-1);
 		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
-		// fall-through
+	// fall-through
 	case State_SelectCommand:
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
@@ -377,8 +371,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		if (battle_actions.front()->IsDead()) {
 			// No zombies allowed ;)
 			RemoveCurrentAction();
-		}
-		else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+		} else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 			NextTurn();
 			RemoveCurrentAction();
 			if (CheckResultConditions()) {
@@ -389,42 +382,42 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 
 	if (help_window->GetVisible() && message_timer > 0) {
 		message_timer--;
-		if (message_timer <= 0)
-			help_window->SetVisible(false);
+		if (message_timer <= 0) help_window->SetVisible(false);
 	}
 
 	switch (state) {
-		case State_Start:
-			SetState(State_SelectOption);
-			break;
-		case State_SelectActor:
-		case State_AutoBattle:
-		case State_Battle:
-			// no-op
-			break;
-		case State_SelectEnemyTarget: {
-			static int flash_count = 0;
+	case State_Start:
+		SetState(State_SelectOption);
+		break;
+	case State_SelectActor:
+	case State_AutoBattle:
+	case State_Battle:
+		// no-op
+		break;
+	case State_SelectEnemyTarget: {
+		static int flash_count = 0;
 
-			Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
-			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
-			if (sprite) {
-				++flash_count;
+		Game_Enemy* target = static_cast<Game_Enemy*>(
+		    Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		if (sprite) {
+			++flash_count;
 
-				if (flash_count == 60) {
-					sprite->Flash(Color(255, 255, 255, 100), 15);
-					flash_count = 0;
-				}
+			if (flash_count == 60) {
+				sprite->Flash(Color(255, 255, 255, 100), 15);
+				flash_count = 0;
 			}
-			break;
 		}
-		case State_AllyAction:
-		case State_EnemyAction:
-			break;
-		case State_Escape:
-			Escape();
-			break;
-		default:
-			break;
+		break;
+	}
+	case State_AllyAction:
+	case State_EnemyAction:
+		break;
+	case State_Escape:
+		Escape();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -447,26 +440,24 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
-			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
+			action->SetTarget(
+			    action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
 
-		//printf("Action: %s\n", action->GetSource()->GetName().c_str());
+		// printf("Action: %s\n", action->GetSource()->GetName().c_str());
 
 		action->Execute();
 
 		if (action->GetTarget() && action->GetAnimation()) {
-			Main_Data::game_screen->ShowBattleAnimation(
-				action->GetAnimation()->ID,
-				action->GetTarget()->GetBattleX(),
-				action->GetTarget()->GetBattleY(),
-				false);
+			Main_Data::game_screen->ShowBattleAnimation(action->GetAnimation()->ID,
+			                                            action->GetTarget()->GetBattleX(),
+			                                            action->GetTarget()->GetBattleY(), false);
 		}
 
 		if (source_sprite) {
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
-			source_sprite->SetAnimationState(
-				action->GetSourceAnimationState(),
-				Sprite_Battler::LoopState_IdleAnimationAfterFinish);
+			source_sprite->SetAnimationState(action->GetSourceAnimationState(),
+			                                 Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 		}
 
 		if (action->GetStartSe()) {
@@ -483,20 +474,22 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				action->Execute();
 			}
 
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+			Sprite_Battler* target_sprite =
+			    Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_IdleAnimationAfterFinish);
+				target_sprite->SetAnimationState(
+				    Sprite_Battler::AnimationState_Damage,
+				    Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 			}
 
 			action->Apply();
 
 			if (action->GetTarget()) {
-				DrawFloatText(
-					action->GetTarget()->GetBattleX(),
-					action->GetTarget()->GetBattleY(),
-					0,
-					action->GetSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
-					30);
+				DrawFloatText(action->GetTarget()->GetBattleX(), action->GetTarget()->GetBattleY(),
+				              0, action->GetSuccess() && action->GetAffectedHp() != -1
+				                     ? boost::lexical_cast<std::string>(action->GetAffectedHp())
+				                     : Data::terms.miss,
+				              30);
 			}
 
 			status_window->Refresh();
@@ -518,7 +511,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		battle_action_wait = 30;
 
 		if (action->GetTarget()) {
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+			Sprite_Battler* target_sprite =
+			    Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 
 			if (action->GetTarget()->IsDead()) {
 				if (action->GetDeathSe()) {
@@ -528,8 +522,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				if (target_sprite) {
 					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
 				}
-			}
-			else {
+			} else {
 				if (target_sprite) {
 					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle);
 				}
@@ -639,28 +632,29 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 
 void Scene_Battle_Rpg2k3::OptionSelected() {
 	switch (options_window->GetIndex()) {
-		case 0: // Battle
-			Game_System::SePlay(Data::system.decision_se);
-			auto_battle = false;
-			SetState(State_SelectActor);
-			break;
-		case 1: // Auto Battle
-			//auto_battle = true;
-			Output::Post("Auto Battle not implemented yet. Sorry :)");
-			//SetState(State_SelectActor);
-			Game_System::SePlay(Data::system.buzzer_se);
-			break;
-		case 2: // Escape
-			// FIXME : Only enabled when party has initiative.
-			Game_System::SePlay(Data::system.buzzer_se);
-			//SetState(State_Escape);
-			break;
+	case 0: // Battle
+		Game_System::SePlay(Data::system.decision_se);
+		auto_battle = false;
+		SetState(State_SelectActor);
+		break;
+	case 1: // Auto Battle
+		// auto_battle = true;
+		Output::Post("Auto Battle not implemented yet. Sorry :)");
+		// SetState(State_SelectActor);
+		Game_System::SePlay(Data::system.buzzer_se);
+		break;
+	case 2: // Escape
+		// FIXME : Only enabled when party has initiative.
+		Game_System::SePlay(Data::system.buzzer_se);
+		// SetState(State_Escape);
+		break;
 	}
 }
 
 void Scene_Battle_Rpg2k3::CommandSelected() {
-	const RPG::BattleCommand& command = 
-		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
+	const RPG::BattleCommand& command =
+	    Data::battlecommands.commands
+	        [active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
 
 	switch (command.type) {
 	case RPG::BattleCommand::Type_attack:
@@ -674,8 +668,7 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 	case RPG::BattleCommand::Type_escape:
 		if (!Game_Battle::IsEscapeAllowed()) {
 			Game_System::SePlay(Data::system.buzzer_se);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Data::system.decision_se);
 			SetState(State_Escape);
 		}
@@ -692,7 +685,7 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 	case RPG::BattleCommand::Type_special:
 		Game_System::SePlay(Data::system.decision_se);
 		Output::Warning("Battle: Event calling unsupported");
-		//SpecialSelected()
+		// SpecialSelected()
 		break;
 	case RPG::BattleCommand::Type_subskill:
 		Game_System::SePlay(Data::system.decision_se);
@@ -718,7 +711,8 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// Loop through all battle commands smaller then that ID and count subsets
 	std::vector<RPG::BattleCommand>::const_iterator it;
 	int i = 0;
-	for (it = Data::battlecommands.commands.begin(); it != Data::battlecommands.commands.end() && i < command_id; ++it) {
+	for (it = Data::battlecommands.commands.begin();
+	     it != Data::battlecommands.commands.end() && i < command_id; ++it) {
 		if ((*it).type == RPG::BattleCommand::Type_subskill) {
 			++subskill;
 		}
@@ -742,8 +736,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 		escape_alg.GetResultMessages(battle_result_messages);
 		SetState(State_SelectActor);
 		ShowNotification(battle_result_messages[0]);
-	}
-	else {
+	} else {
 		Game_Temp::battle_result = Game_Temp::BattleEscape;
 
 		// ToDo: Run away animation
@@ -758,7 +751,8 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		std::vector<Game_Battler*> battlers;
 		Main_Data::game_party->GetAliveBattlers(battlers);
-		for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end(); ++it) {
+		for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end();
+		     ++it) {
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 			if (sprite) {
 				sprite->SetAnimationState(Sprite_Battler::AnimationState_Victory);
@@ -775,7 +769,8 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		Game_Message::texts.push_back(ss.str());
 
 		ss.str("");
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold
+		   << Data::terms.gold_recieved_b << "\f";
 		Game_Message::texts.push_back(ss.str());
 
 		message_window->SetHeight(32);
@@ -790,9 +785,9 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		Main_Data::game_party->GetAliveBattlers(ally_battlers);
 
 		for (std::vector<Game_Battler*>::iterator it = ally_battlers.begin();
-			it != ally_battlers.end(); ++it) {
-				Game_Actor* actor = static_cast<Game_Actor*>(*it);
-				actor->ChangeExp(actor->GetExp() + exp, true);
+		     it != ally_battlers.end(); ++it) {
+			Game_Actor* actor = static_cast<Game_Actor*>(*it);
+			actor->ChangeExp(actor->GetExp() + exp, true);
 		}
 		Main_Data::game_party->GainGold(money);
 
@@ -824,7 +819,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 
 bool Scene_Battle_Rpg2k3::CheckAbort() {
 	/*if (!Game_Battle::terminate)
-		return;
+	    return;
 	Game_Temp::battle_result = Game_Temp::BattleAbort;
 	Scene::Pop();*/
 
@@ -833,7 +828,7 @@ bool Scene_Battle_Rpg2k3::CheckAbort() {
 
 bool Scene_Battle_Rpg2k3::CheckFlee() {
 	/*if (!Game_Battle::allies_flee)
-		return;
+	    return;
 	Game_Battle::allies_flee = false;
 	Game_Temp::battle_result = Game_Temp::BattleEscape;
 	Scene::Pop();*/
@@ -850,8 +845,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 	Main_Data::game_party->GetAliveBattlers(battler);
 
 	int i = 0;
-	for (std::vector<Game_Battler*>::iterator it = battler.begin();
-		it != battler.end(); ++it) {
+	for (std::vector<Game_Battler*>::iterator it = battler.begin(); it != battler.end(); ++it) {
 		if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
 			actor_index = i;
 			active_actor = static_cast<Game_Actor*>(*it);

@@ -28,8 +28,7 @@
  */
 class Game_Switches_Class {
 public:
-	Game_Switches_Class(std::vector<bool>& switches) :
-		switches(switches) {}
+	Game_Switches_Class(std::vector<bool>& switches) : switches(switches) {}
 
 	std::vector<bool>::reference operator[](int switch_id) {
 		if (!isValidSwitch(switch_id)) {
@@ -40,30 +39,24 @@ public:
 
 		return switches[switch_id - 1];
 	}
-	
+
 	std::string GetName(int _id) {
 		if (!isValidSwitch(_id)) {
-			Output::Warning("Switch index %d is invalid.\n",
-				_id);
+			Output::Warning("Switch index %d is invalid.\n", _id);
 			return "";
-		}
-		else {
+		} else {
 			std::string result = Data::switches.at(_id - 1).name;
 			return result;
 		}
 	}
 
 	bool isValidSwitch(int switch_id) {
-		return (switch_id > 0 && switch_id <= (int) switches.size());
+		return (switch_id > 0 && switch_id <= (int)switches.size());
 	}
 
-	int size () {
-		return (int)switches.size();
-	}
+	int size() { return (int)switches.size(); }
 
-	void Reset() {
-		std::fill(switches.begin(), switches.end(), false);
-	}
+	void Reset() { std::fill(switches.begin(), switches.end(), false); }
 
 private:
 	std::vector<bool>& switches;

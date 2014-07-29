@@ -40,10 +40,7 @@
 #include "input.h"
 #include "screen.h"
 
-Scene_Map::Scene_Map(bool from_save) :
-	from_save(from_save) {
-	type = Scene::Map;
-}
+Scene_Map::Scene_Map(bool from_save) : from_save(from_save) { type = Scene::Map; }
 
 void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
@@ -60,38 +57,35 @@ void Scene_Map::Start() {
 	Graphics::FrameReset();
 }
 
-Scene_Map::~Scene_Map() {
-	Main_Data::game_screen->Reset();
-}
+Scene_Map::~Scene_Map() { Main_Data::game_screen->Reset(); }
 
 void Scene_Map::Continue() {
 	if (Game_Temp::battle_calling) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
-	}
-	else {
+	} else {
 		Game_Map::PlayBgm();
 	}
 }
 
-void Scene_Map::Resume() {
-	Game_Temp::battle_calling = false;
-}
+void Scene_Map::Resume() { Game_Temp::battle_calling = false; }
 
 void Scene_Map::TransitionIn() {
 	if (Game_Temp::battle_calling) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
-	}
-	else {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(
+		                         Game_System::Transition_EndBattleShow),
+		                     32);
+	} else {
 		Graphics::Transition(Graphics::TransitionFadeIn, 32);
 	}
 }
 
 void Scene_Map::TransitionOut() {
 	if (Game_Temp::battle_calling) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), 32, true);
-	}
-	else {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(
+		                         Game_System::Transition_BeginBattleErase),
+		                     32, true);
+	} else {
 		Scene::TransitionOut();
 	}
 }
@@ -124,8 +118,7 @@ void Scene_Map::Update() {
 		Scene::PopUntil(Scene::Title);
 	}
 
-	if (Game_Message::visible)
-		return;
+	if (Game_Message::visible) return;
 
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL)) {
@@ -136,8 +129,7 @@ void Scene_Map::Update() {
 	if (Player::debug_flag) {
 		if (Input::IsTriggered(Input::DEBUG_MENU)) {
 			CallDebug();
-		}
-		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+		} else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
 			CallSave();
 		}
 	}
@@ -177,12 +169,13 @@ void Scene_Map::Update() {
 }
 
 void Scene_Map::UpdateTeleportPlayer() {
-	if (!Main_Data::game_player->IsTeleporting())
-		return;
+	if (!Main_Data::game_player->IsTeleporting()) return;
 	bool const autotransition = !Game_Temp::transition_erase;
 
 	if (autotransition)
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(
+		                         Game_System::Transition_TeleportErase),
+		                     32, true);
 
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
@@ -192,7 +185,9 @@ void Scene_Map::UpdateTeleportPlayer() {
 	Game_Map::Update();
 
 	if (autotransition)
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(
+		                         Game_System::Transition_TeleportShow),
+		                     32, false);
 
 	Input::Update();
 }
@@ -235,7 +230,7 @@ void Scene_Map::CallMenu() {
 	The intention was that you can still exit the game with ESC when the menu
 	is disabled. But this conflicts with parallel events listening for ESC.
 	else {
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+	    Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
 	}*/
 }
 

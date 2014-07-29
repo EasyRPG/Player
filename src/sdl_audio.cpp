@@ -18,5 +18,5 @@
 #include "system.h"
 
 #ifdef HAVE_SDL_MIXER
-#  include "platform/sdl_audio.cpp"
+#include "platform/sdl_audio.cpp"
 #endif

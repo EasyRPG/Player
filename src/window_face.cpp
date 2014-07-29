@@ -20,8 +20,8 @@
 #include "game_actors.h"
 #include "window_face.h"
 
-Window_Face::Window_Face(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), actor_id(1) {
+Window_Face::Window_Face(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight), actor_id(1) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());

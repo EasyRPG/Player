@@ -25,12 +25,12 @@
 #include "game_temp.h"
 #include "window_battleoption.h"
 
-Window_BattleOption::Window_BattleOption(int x, int y, int width, int height) :
-	Window_Base(x, y, width, height) {
+Window_BattleOption::Window_BattleOption(int x, int y, int width, int height)
+    : Window_Base(x, y, width, height) {
 
-	//commands.push_back(Data::terms.battle_fight);
-	//commands.push_back(Data::terms.battle_auto);
-	//commands.push_back(Data::terms.battle_escape);
+	// commands.push_back(Data::terms.battle_fight);
+	// commands.push_back(Data::terms.battle_auto);
+	// commands.push_back(Data::terms.battle_escape);
 
 	commands.push_back("Victory");
 	commands.push_back("Defeat");
@@ -73,10 +73,8 @@ void Window_BattleOption::Update() {
 		index += num_commands;
 		index %= num_commands;
 
-		if (index < top_row)
-			top_row = index;
-		if (index > top_row + num_rows - 1)
-			top_row = index - num_rows + 1;
+		if (index < top_row) top_row = index;
+		if (index > top_row + num_rows - 1) top_row = index - num_rows + 1;
 	}
 
 	UpdateCursorRect();
@@ -100,25 +98,20 @@ void Window_BattleOption::Refresh() {
 	color = Game_Temp::battle_escape_mode == 0 ? Font::ColorDisabled : Font::ColorDefault;
 	DrawItem(2, color);
 	/*for (int i = 0; i < (int) commands.size(); i++) {
-		Font::SystemColor color = (i == 2 && Game_Temp::battle_escape_mode == 0)
-			? Font::ColorDisabled
-			: Font::ColorDefault;
-		DrawItem(i, color);
+	    Font::SystemColor color = (i == 2 && Game_Temp::battle_escape_mode == 0)
+	        ? Font::ColorDisabled
+	        : Font::ColorDefault;
+	    DrawItem(i, color);
 	}*/
 }
 
 void Window_BattleOption::DrawItem(int index, Font::SystemColor color) {
 	int y = 16 * (index - top_row);
-	if (y < 0 || y + 16 > contents->GetHeight())
-		return;
+	if (y < 0 || y + 16 > contents->GetHeight()) return;
 	contents->ClearRect(Rect(0, y, contents->GetWidth(), 16));
 	contents->TextDraw(2, y + 2, color, commands[index]);
 }
 
-int Window_BattleOption::GetIndex() {
-	return index;
-}
+int Window_BattleOption::GetIndex() { return index; }
 
-void Window_BattleOption::SetIndex(int _index) {
-	index = _index;
-}
+void Window_BattleOption::SetIndex(int _index) { index = _index; }

@@ -29,7 +29,7 @@
  */
 class Game_Vehicle : public Game_Character {
 public:
-	static const int MAX_ALTITUDE = 32;	// the airship flies at
+	static const int MAX_ALTITUDE = 32; // the airship flies at
 
 	enum Type {
 		Boat,

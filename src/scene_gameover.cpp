@@ -23,9 +23,7 @@
 #include "input.h"
 #include "main_data.h"
 
-Scene_Gameover::Scene_Gameover() {
-	type = Scene::Gameover;
-}
+Scene_Gameover::Scene_Gameover() { type = Scene::Gameover; }
 
 void Scene_Gameover::Start() {
 	if (!Data::system.gameover_name.empty()) {

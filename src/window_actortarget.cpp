@@ -23,8 +23,8 @@
 #include "game_party.h"
 #include "bitmap.h"
 
-Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -64,8 +64,7 @@ Game_Actor* Window_ActorTarget::GetActor() {
 	int ind = GetIndex();
 	if (ind >= -10 && ind < 0) {
 		ind = -ind;
-	}
-	else if (ind == -100) {
+	} else if (ind == -100) {
 		return NULL;
 	}
 

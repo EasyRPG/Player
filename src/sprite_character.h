@@ -48,11 +48,11 @@ public:
 	 */
 	Game_Character* GetCharacter();
 
-	 /**
-	  * Sets game character.
-	  *
-	  * @param character new game character.
-	  */
+	/**
+	 * Sets game character.
+	 *
+	 * @param character new game character.
+	 */
 	void SetCharacter(Game_Character* character);
 
 private:

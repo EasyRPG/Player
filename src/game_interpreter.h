@@ -34,14 +34,14 @@ class Game_CommonEvent;
 /**
  * Game_Interpreter class
  */
-class Game_Interpreter
-{
+class Game_Interpreter {
 public:
 	Game_Interpreter(int _depth = 0, bool _main_flag = false);
 	virtual ~Game_Interpreter();
 
 	void Clear();
-	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
+	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1,
+	           int dbg_y = -1);
 
 	bool IsRunning() const;
 	void Update();
@@ -66,7 +66,7 @@ protected:
 	bool main_flag;
 
 	int loop_count;
-	
+
 	bool move_route_waiting;
 
 	int button_input_variable_id;
@@ -161,7 +161,6 @@ protected:
 
 	int debug_x;
 	int debug_y;
-
 };
 
 #endif

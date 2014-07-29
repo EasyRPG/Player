@@ -47,8 +47,7 @@ public:
 	void ShakeBegin(int power, int speed);
 	void ShakeEnd();
 	void SetWeatherEffect(int type, int strength);
-	void PlayMovie(const std::string& filename,
-				   int pos_x, int pos_y, int res_x, int res_y);
+	void PlayMovie(const std::string& filename, int pos_x, int pos_y, int res_x, int res_y);
 	void ShowBattleAnimation(int animation_id, int target_id, bool global);
 	void ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global);
 	bool IsBattleAnimationWaiting() const;
@@ -57,14 +56,14 @@ public:
 	/**
 	 * Returns the current screen tone.
 	 *
-	 * @return Tone 
+	 * @return Tone
 	 */
 	Tone GetTone();
 
 	/**
 	 * Returns the current flash color.
 	 *
-	 * @param current_level Current strength adjusted to 0-255 
+	 * @param current_level Current strength adjusted to 0-255
 	 * @param time_left how many frames of flashing are left
 	 * @return Flash color
 	 */
@@ -73,7 +72,7 @@ public:
 	/**
 	 * Returns the weather type
 	 *
-	 * @return Weather type 
+	 * @return Weather type
 	 */
 	int GetWeatherType();
 
@@ -106,8 +105,8 @@ private:
 	std::map<int, RPG::AnimationTiming> animation_timings;
 
 	RPG::SaveScreen& data;
-	int flash_sat;		// RPGMaker bug: this isn't saved
-	int flash_period;	// RPGMaker bug: this isn't saved
+	int flash_sat;    // RPGMaker bug: this isn't saved
+	int flash_period; // RPGMaker bug: this isn't saved
 	int shake_direction;
 
 	std::string movie_filename;

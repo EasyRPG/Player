@@ -34,13 +34,13 @@ public:
 	 */
 	Game_EnemyParty();
 
-	Game_Enemy& operator[] (const int index);
+	Game_Enemy& operator[](const int index);
 
 	int GetBattlerCount() const;
 
 	/**
 	 * Setups initial enemy party.
-	 * 
+	 *
 	 * @param battle_troop_id ID of the enemy party
 	 */
 	void Setup(int battle_troop_id);

@@ -41,14 +41,12 @@ namespace Game_Battle {
 
 	void NextTurn();
 
-
 	/**
 	 * Updates the gauge of all battlers based on the highest agi of all.
 	 */
 	void UpdateGauges();
 
 	void ChangeBackground(const std::string& name);
-
 
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);

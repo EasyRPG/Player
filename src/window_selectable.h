@@ -25,7 +25,7 @@
 /**
  * Window Selectable class.
  */
-class Window_Selectable: public Window_Base {
+class Window_Selectable : public Window_Base {
 public:
 	Window_Selectable(int ix, int iy, int iwidth, int iheight);
 

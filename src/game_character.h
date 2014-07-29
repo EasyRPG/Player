@@ -143,7 +143,7 @@ public:
 	/**
 	 * Gets character movement speed.
 	 *
-	 * @return character movement speed 
+	 * @return character movement speed
 	 */
 	virtual int GetMoveSpeed() const = 0;
 
@@ -184,7 +184,7 @@ public:
 
 	/**
 	 * Returns current index of a "Movement Type Custom" move route.
-	 * 
+	 *
 	 * @return current original move route index
 	 */
 	virtual int GetOriginalMoveRouteIndex() const = 0;
@@ -734,11 +734,11 @@ public:
 	void SetGraphic(const std::string& name, int index);
 
 	enum CharsID {
-		CharPlayer		= 10001,
-		CharBoat		= 10002,
-		CharShip		= 10003,
-		CharAirship		= 10004,
-		CharThisEvent	= 10005
+		CharPlayer = 10001,
+		CharBoat = 10002,
+		CharShip = 10003,
+		CharAirship = 10004,
+		CharThisEvent = 10005
 	};
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
@@ -758,7 +758,7 @@ protected:
 	bool through;
 	int animation_id;
 	int animation_type;
-	
+
 	RPG::MoveRoute original_move_route;
 	Game_Interpreter* move_route_owner;
 	int original_move_frequency;

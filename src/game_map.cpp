@@ -86,8 +86,7 @@ void Game_Map::Init() {
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
-	for (int i = 0; i < 3; i++)
-		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
+	for (int i = 0; i < 3; i++) vehicles[i] = new Game_Vehicle((Game_Vehicle::Type)i);
 
 	pan_locked = false;
 	pan_wait = false;
@@ -119,11 +118,14 @@ void Game_Map::Setup(int _id) {
 	SetupCommon(_id);
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
+		events.insert(std::make_pair(
+		    map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
+		common_events.insert(
+		    std::make_pair(Data::commonevents[i].ID,
+		                   EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
 	location.pan_finish_x = 0;
@@ -139,9 +141,9 @@ void Game_Map::SetupFromSave() {
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		EASYRPG_SHARED_PTR<Game_Event> evnt;
 		if (i < map_info.events.size()) {
-			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i]);
-		}
-		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i],
+			                                       map_info.events[i]);
+		} else {
 			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i]);
 		}
 
@@ -151,16 +153,17 @@ void Game_Map::SetupFromSave() {
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		EASYRPG_SHARED_PTR<Game_CommonEvent> evnt;
 		if (i < Main_Data::game_data.common_events.size()) {
-			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
-		}
-		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false,
+			                                             Main_Data::game_data.common_events[i]);
+		} else {
 			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false);
 		}
 
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, evnt));
 	}
 
-	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
+	static_cast<Game_Interpreter_Map*>(interpreter.get())
+	    ->SetupFromSave(Main_Data::game_data.events.events, 0);
 
 	map_info.Fixup(*map.get());
 
@@ -202,11 +205,9 @@ void Game_Map::SetupCommon(int _id) {
 
 	if (map->parallax_flag) {
 		SetParallaxName(map->parallax_name);
-		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
-			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
-			map->parallax_sx, map->parallax_sy);
-	}
-	else {
+		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y, map->parallax_auto_loop_x,
+		                  map->parallax_auto_loop_y, map->parallax_sx, map->parallax_sy);
+	} else {
 		SetParallaxName("");
 	}
 
@@ -220,13 +221,13 @@ void Game_Map::SetupCommon(int _id) {
 	int current_index = GetMapIndex(location.map_id);
 	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
 
-	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+	while (Data::treemap.maps[current_index].save == 0 &&
+	       GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
 
-	for (int i = 0; i < 3; i++)
-		vehicles[i]->Refresh();
+	for (int i = 0; i < 3; i++) vehicles[i]->Refresh();
 
 	pan_locked = false;
 	pan_wait = false;
@@ -241,8 +242,7 @@ void Game_Map::SetupCommon(int _id) {
 
 void Game_Map::PrepareSave() {
 	Main_Data::game_data.events.events =
-		static_cast<Game_Interpreter_Map*>(interpreter.get())
-			->GetSaveData();
+	    static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	Main_Data::game_data.events.events_size = Main_Data::game_data.events.events.size();
 
 	map_info.events.clear();
@@ -265,7 +265,8 @@ void Game_Map::PrepareSave() {
 void Game_Map::PlayBgm() {
 	int current_index = GetMapIndex(location.map_id);
 
-	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+	while (Data::treemap.maps[current_index].music_type == 0 &&
+	       GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 
@@ -305,7 +306,8 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 }
 
 void Game_Map::ScrollDown(int distance) {
-	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	map_info.position_y =
+	    min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollLeft(int distance) {
@@ -313,7 +315,8 @@ void Game_Map::ScrollLeft(int distance) {
 }
 
 void Game_Map::ScrollRight(int distance) {
-	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	map_info.position_x =
+	    min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollUp(int distance) {
@@ -328,26 +331,25 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	if (!Game_Map::IsValid(x, y)) return false;
 
 	uint8_t bit = 0;
-	switch (d)
-	{
-		case RPG::EventPage::Direction_down:
-			bit = Passable::Down;
-			break;
+	switch (d) {
+	case RPG::EventPage::Direction_down:
+		bit = Passable::Down;
+		break;
 
-		case RPG::EventPage::Direction_up:
-			bit = Passable::Up;
-			break;
+	case RPG::EventPage::Direction_up:
+		bit = Passable::Up;
+		break;
 
-		case RPG::EventPage::Direction_left:
-			bit = Passable::Left;
-			break;
+	case RPG::EventPage::Direction_left:
+		bit = Passable::Left;
+		break;
 
-		case RPG::EventPage::Direction_right:
-			bit = Passable::Right;
-			break;
+	case RPG::EventPage::Direction_right:
+		bit = Passable::Right;
+		break;
 
-		default:
-			assert(false);
+	default:
+		assert(false);
 	}
 
 	int tile_id;
@@ -361,19 +363,17 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		for (it = events.begin(); it != events.end(); ++it) {
 			if (*it == self_event || (*it)->GetThrough()) {
 				continue;
-			}
-			else if ((*it)->GetLayer() == self_event->GetLayer()) {
+			} else if ((*it)->GetLayer() == self_event->GetLayer()) {
 				if (self_event->GetX() == x && self_event->GetY() == y)
 					pass = true;
 				else
 					return false;
-			}
-			else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
+			} else if ((*it)->GetTileId() > 0 &&
+			           (*it)->GetLayer() == RPG::EventPage::Layers_below) {
 				// Event layer Chipset Tile
 				tile_id = (*it)->GetTileId();
 				if ((passages_up[tile_id] & Passable::Above) != 0)
-					if ((passages_down[tile_id] & bit) == 0)
-						return false;
+					if ((passages_down[tile_id] & bit) == 0) return false;
 				if ((passages_up[tile_id] & bit) != 0)
 					pass = true;
 				else
@@ -393,15 +393,89 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		return false;
 	}
 
-	if ((passages_up[tile_id] & Passable::Above) == 0)
-		return true;
+	if ((passages_up[tile_id] & Passable::Above) == 0) return true;
 
 	if (map->lower_layer[tile_index] >= BLOCK_E) {
 		tile_id = map->lower_layer[tile_index] - BLOCK_E;
 		tile_id = map_info.lower_tiles[tile_id];
 		tile_id += 18;
 
-		if ((passages_down[tile_id] & bit) == 0)
+		if ((passages_down[tile_id] & bit) == 0) return false;
+
+	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
+		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
+		int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+
+		tile_id += 6;
+
+		if (((passages_down[tile_id] & Passable::Wall) != 0) &&
+		    ((autotile_id >= 20 && autotile_id <= 23) || (autotile_id >= 33 && autotile_id <= 37) ||
+		     autotile_id == 42 || autotile_id == 43 || autotile_id == 45))
+			return true;
+
+		if ((passages_down[tile_id] & bit) == 0) return false;
+
+	} else if (map->lower_layer[tile_index] >= BLOCK_C) {
+		tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
+
+		if ((passages_down[tile_id] & bit) == 0) return false;
+
+	} else if (map->lower_layer[tile_index] < BLOCK_C) {
+		tile_id = map->lower_layer[tile_index] / 1000;
+
+		if ((passages_down[tile_id] & bit) == 0) return false;
+	}
+
+	return true;
+}
+
+bool Game_Map::IsLandable(int x, int y, const Game_Character* self_event) {
+	int tile_id;
+
+	if (self_event) {
+		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
+			Game_Event* evnt = i->second.get();
+			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
+				if (!evnt->GetThrough()) {
+					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+						return false;
+					} else if (evnt->GetTileId() >= 0 &&
+					           evnt->GetLayer() == RPG::EventPage::Layers_below) {
+						// Event layer Chipset Tile
+						tile_id = i->second->GetTileId();
+						return (passages_up[tile_id] & Passable::Down ||
+						        passages_up[tile_id] & Passable::Right ||
+						        passages_up[tile_id] & Passable::Left ||
+						        passages_up[tile_id] & Passable::Up);
+					}
+				}
+			}
+		}
+	}
+
+	int const tile_index = x + y * GetWidth();
+
+	tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
+
+	if ((passages_up[tile_id] & Passable::Down) == 0 &&
+	    (passages_up[tile_id] & Passable::Right) == 0 &&
+	    (passages_up[tile_id] & Passable::Left) == 0 &&
+	    (passages_up[tile_id] & Passable::Up) == 0) {
+		return false;
+	}
+
+	if ((passages_up[tile_id] & Passable::Above) == 0) return true;
+
+	if (map->lower_layer[tile_index] >= BLOCK_E) {
+		tile_id = map->lower_layer[tile_index] - BLOCK_E;
+		tile_id = map_info.lower_tiles[tile_id];
+		tile_id += 18;
+
+		if ((passages_down[tile_id] & Passable::Down) == 0 &&
+		    (passages_down[tile_id] & Passable::Right) == 0 &&
+		    (passages_down[tile_id] & Passable::Left) == 0 &&
+		    (passages_down[tile_id] & Passable::Up) == 0)
 			return false;
 
 	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
@@ -410,126 +484,37 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 		tile_id += 6;
 
-		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
-				(autotile_id >= 20 && autotile_id <= 23) ||
-				(autotile_id >= 33 && autotile_id <= 37) ||
-				autotile_id == 42 ||
-				autotile_id == 43 ||
-				autotile_id == 45
-			))
+		if (((passages_down[tile_id] & Passable::Wall) != 0) &&
+		    ((autotile_id >= 20 && autotile_id <= 23) || (autotile_id >= 33 && autotile_id <= 37) ||
+		     autotile_id == 42 || autotile_id == 43 || autotile_id == 45))
 			return true;
 
-		if ((passages_down[tile_id] & bit) == 0)
+		if ((passages_down[tile_id] & Passable::Down) == 0 &&
+		    (passages_down[tile_id] & Passable::Right) == 0 &&
+		    (passages_down[tile_id] & Passable::Left) == 0 &&
+		    (passages_down[tile_id] & Passable::Up) == 0)
 			return false;
 
 	} else if (map->lower_layer[tile_index] >= BLOCK_C) {
 		tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
 
-		if ((passages_down[tile_id] & bit) == 0)
+		if ((passages_down[tile_id] & Passable::Down) == 0 &&
+		    (passages_down[tile_id] & Passable::Right) == 0 &&
+		    (passages_down[tile_id] & Passable::Left) == 0 &&
+		    (passages_down[tile_id] & Passable::Up) == 0)
 			return false;
 
 	} else if (map->lower_layer[tile_index] < BLOCK_C) {
 		tile_id = map->lower_layer[tile_index] / 1000;
 
-		if ((passages_down[tile_id] & bit) == 0)
+		if ((passages_down[tile_id] & Passable::Down) == 0 &&
+		    (passages_down[tile_id] & Passable::Right) == 0 &&
+		    (passages_down[tile_id] & Passable::Left) == 0 &&
+		    (passages_down[tile_id] & Passable::Up) == 0)
 			return false;
 	}
 
 	return true;
-}
-
-bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
-{
-    int tile_id;
-
-    if (self_event) {
-        for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-            Game_Event* evnt = i->second.get();
-            if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
-                if (!evnt->GetThrough()) {
-                    if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
-                        return false;
-                    }
-                    else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
-                        // Event layer Chipset Tile
-                        tile_id = i->second->GetTileId();
-                        return (passages_up[tile_id] & Passable::Down ||
-                                passages_up[tile_id] & Passable::Right ||
-                                passages_up[tile_id] & Passable::Left ||
-                                passages_up[tile_id] & Passable::Up);
-                    }
-                }
-            }
-        }
-    }
-
-    int const tile_index = x + y * GetWidth();
-
-    tile_id = map->upper_layer[tile_index] - BLOCK_F;
-    tile_id = map_info.upper_tiles[tile_id];
-
-    if ((passages_up[tile_id] & Passable::Down) == 0 &&
-        (passages_up[tile_id] & Passable::Right) == 0 &&
-        (passages_up[tile_id] & Passable::Left) == 0 &&
-        (passages_up[tile_id] & Passable::Up) == 0) {
-        return false;
-    }
-
-    if ((passages_up[tile_id] & Passable::Above) == 0)
-        return true;
-
-    if (map->lower_layer[tile_index] >= BLOCK_E) {
-        tile_id = map->lower_layer[tile_index] - BLOCK_E;
-        tile_id = map_info.lower_tiles[tile_id];
-        tile_id += 18;
-
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
-            return false;
-
-    } else if (map->lower_layer[tile_index] >= BLOCK_D) {
-        tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-        int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
-
-        tile_id += 6;
-
-        if (((passages_down[tile_id] & Passable::Wall) != 0) && (
-                (autotile_id >= 20 && autotile_id <= 23) ||
-                (autotile_id >= 33 && autotile_id <= 37) ||
-                autotile_id == 42 ||
-                autotile_id == 43 ||
-                autotile_id == 45
-            ))
-            return true;
-
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
-            return false;
-
-    } else if (map->lower_layer[tile_index] >= BLOCK_C) {
-        tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
-
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
-            return false;
-
-    } else if (map->lower_layer[tile_index] < BLOCK_C) {
-        tile_id = map->lower_layer[tile_index] / 1000;
-
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
-            return false;
-    }
-
-    return true;
 }
 
 bool Game_Map::IsBush(int /* x */, int /* y */) {
@@ -548,11 +533,11 @@ bool Game_Map::IsCounter(int x, int y) {
 int Game_Map::GetTerrainTag(int const x, int const y) {
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned const chip_index =
-		(chipID <  3050)?  0 + chipID/1000 :
-		(chipID <  4000)?  4 + (chipID-3050)/50 :
-		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + (chipID-5000) :
-		0;
+	    (chipID < 3050)
+	        ? 0 + chipID / 1000
+	        : (chipID < 4000) ? 4 + (chipID - 3050) / 50
+	                          : (chipID < 5000) ? 6 + (chipID - 4000) / 50
+	                                            : (chipID < 5144) ? 18 + (chipID - 5000) : 0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
 
 	assert(chipset_index < Data::data.chipsets.size());
@@ -562,7 +547,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 }
 
 bool Game_Map::AirshipLandOk(int const x, int const y) {
-	return Data::data.terrains[GetTerrainTag(x, y) -1].airship_land;
+	return Data::data.terrains[GetTerrainTag(x, y) - 1].airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
@@ -578,16 +563,12 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	events.swap(result);
 }
 
-bool Game_Map::LoopHorizontal() {
-	return map->scroll_type == 2 || map->scroll_type == 3;
-}
+bool Game_Map::LoopHorizontal() { return map->scroll_type == 2 || map->scroll_type == 3; }
 
-bool Game_Map::LoopVertical() {
-	return map->scroll_type == 1 || map->scroll_type == 3;
-}
+bool Game_Map::LoopVertical() { return map->scroll_type == 1 || map->scroll_type == 3; }
 
 int Game_Map::RoundX(int x) {
-	if ( LoopHorizontal() ) {
+	if (LoopHorizontal()) {
 		return (x + GetWidth()) % GetWidth();
 	} else {
 		return x;
@@ -595,7 +576,7 @@ int Game_Map::RoundX(int x) {
 }
 
 int Game_Map::RoundY(int y) {
-	if ( LoopVertical() ) {
+	if (LoopVertical()) {
 		return (y + GetHeight()) % GetHeight();
 	} else {
 		return y;
@@ -603,11 +584,15 @@ int Game_Map::RoundY(int y) {
 }
 
 int Game_Map::XwithDirection(int x, int direction) {
-	return RoundX(x + (direction == RPG::EventPage::Direction_right ? 1 : direction == RPG::EventPage::Direction_left ? -1 : 0));
+	return RoundX(x + (direction == RPG::EventPage::Direction_right
+	                       ? 1
+	                       : direction == RPG::EventPage::Direction_left ? -1 : 0));
 }
 
 int Game_Map::YwithDirection(int y, int direction) {
-	return RoundY(y + (direction == RPG::EventPage::Direction_down ? 1 : direction == RPG::EventPage::Direction_up ? -1 : 0));
+	return RoundY(y + (direction == RPG::EventPage::Direction_down
+	                       ? 1
+	                       : direction == RPG::EventPage::Direction_up ? -1 : 0));
 }
 
 int Game_Map::CheckEvent(int x, int y) {
@@ -627,26 +612,24 @@ void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_speed = speed;
 }
 
-bool Game_Map::IsScrolling() {
-	return scroll_rest > 0;
-}
+bool Game_Map::IsScrolling() { return scroll_rest > 0; }
 
 void Game_Map::UpdateScroll() {
 	if (scroll_rest > 0) {
 		int distance = (1 << scroll_speed) / 2;
 		switch (scroll_direction) {
-			case 2:
-				ScrollDown(distance);
-				break;
-			case 4:
-				ScrollLeft(distance);
-				break;
-			case 6:
-				ScrollRight(distance);
-				break;
-			case 8:
-				ScrollUp(distance);
-				break;
+		case 2:
+			ScrollDown(distance);
+			break;
+		case 4:
+			ScrollLeft(distance);
+			break;
+		case 6:
+			ScrollRight(distance);
+			break;
+		case 8:
+			ScrollUp(distance);
+			break;
 		}
 		scroll_rest -= distance;
 	}
@@ -658,57 +641,38 @@ void Game_Map::Update() {
 	UpdatePan();
 	UpdateParallax();
 
-	for (tEventHash::iterator i = events.begin();
-		i != events.end(); ++i) {
+	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 		i->second->Update();
 	}
 
-	for (tCommonEventHash::iterator i = common_events.begin();
-		i != common_events.end(); ++i) {
+	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
 		i->second->Update();
 	}
 
-	for (int i = 0; i < 3; ++i)
-		vehicles[i]->Update();
+	for (int i = 0; i < 3; ++i) vehicles[i]->Update();
 }
 
-RPG::Map const& Game_Map::GetMap() {
-	return *map;
-}
+RPG::Map const& Game_Map::GetMap() { return *map; }
 
+int Game_Map::GetMapId() { return location.map_id; }
 
-int Game_Map::GetMapId() {
-	return location.map_id;
-}
+int Game_Map::GetWidth() { return map->width; }
 
-int Game_Map::GetWidth() {
-	return map->width;
-}
-
-int Game_Map::GetHeight() {
-	return map->height;
-}
+int Game_Map::GetHeight() { return map->height; }
 
 std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
 	return Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
 }
 
-int Game_Map::GetEncounterRate() {
-	return map_info.encounter_rate;
-}
+int Game_Map::GetEncounterRate() { return map_info.encounter_rate; }
 
-void Game_Map::SetEncounterRate(int step) {
-	map_info.encounter_rate = step;
-}
+void Game_Map::SetEncounterRate(int step) { map_info.encounter_rate = step; }
 
-int Game_Map::GetEncounterSteps() {
-	return location.encounter_steps;
-}
+int Game_Map::GetEncounterSteps() { return location.encounter_steps; }
 
 void Game_Map::UpdateEncounterSteps() {
-	if (Player::debug_flag &&
-		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return;
+	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) {
+		return;
 	}
 
 	int x = Main_Data::game_player->GetX();
@@ -742,19 +706,20 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 		if (map.ID == location.map_id) {
 			std::vector<RPG::Encounter>& encounters = map.encounters;
 			for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
-				it != encounters.end(); ++it) {
-					out.push_back((*it).troop_id);
+			     it != encounters.end(); ++it) {
+				out.push_back((*it).troop_id);
 			}
 		} else if (map.parent_map == location.map_id && map.type == 2) {
 			// Area
-			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
+			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l,
+			               map.area_rect.b - map.area_rect.t);
 			Rect player_rect(x, y, 1, 1);
 
 			if (!player_rect.IsOutOfBounds(area_rect)) {
 				std::vector<RPG::Encounter>& encounters = map.encounters;
 				for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
-					it != encounters.end(); ++it) {
-						out.push_back((*it).troop_id);
+				     it != encounters.end(); ++it) {
+					out.push_back((*it).troop_id);
 				}
 			}
 		}
@@ -777,18 +742,21 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_terrain_id =
+	    Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
 	int current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+	while (Data::treemap.maps[current_index].background_type == 0 &&
+	       GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
 	} else {
-		Game_Temp::battle_background = Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
+		Game_Temp::battle_background =
+		    Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
 	}
 
 	Game_Temp::battle_calling = true;
@@ -796,88 +764,49 @@ bool Game_Map::PrepareEncounter() {
 	return true;
 }
 
-std::vector<short>& Game_Map::GetMapDataDown() {
-	return map->lower_layer;
-}
+std::vector<short>& Game_Map::GetMapDataDown() { return map->lower_layer; }
 
-std::vector<short>& Game_Map::GetMapDataUp() {
-	return map->upper_layer;
-}
+std::vector<short>& Game_Map::GetMapDataUp() { return map->upper_layer; }
 
-std::string& Game_Map::GetChipsetName() {
-	return chipset_name;
-}
-void Game_Map::SetChipsetName(std::string new_chipset_name) {
-	chipset_name = new_chipset_name;
-}
+std::string& Game_Map::GetChipsetName() { return chipset_name; }
+void Game_Map::SetChipsetName(std::string new_chipset_name) { chipset_name = new_chipset_name; }
 
-std::string& Game_Map::GetBattlebackName() {
-	return battleback_name;
-}
+std::string& Game_Map::GetBattlebackName() { return battleback_name; }
 void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 	battleback_name = new_battleback_name;
 }
 
-int Game_Map::GetDisplayX() {
-	return map_info.position_x;
-}
-void Game_Map::SetDisplayX(int new_display_x) {
-	map_info.position_x = new_display_x;
-}
+int Game_Map::GetDisplayX() { return map_info.position_x; }
+void Game_Map::SetDisplayX(int new_display_x) { map_info.position_x = new_display_x; }
 
-int Game_Map::GetDisplayY() {
-	return map_info.position_y;
-}
-void Game_Map::SetDisplayY(int new_display_y) {
-	map_info.position_y = new_display_y;
-}
+int Game_Map::GetDisplayY() { return map_info.position_y; }
+void Game_Map::SetDisplayY(int new_display_y) { map_info.position_y = new_display_y; }
 
-bool Game_Map::GetNeedRefresh() {
-	return need_refresh;
-}
-void Game_Map::SetNeedRefresh(bool new_need_refresh) {
-	need_refresh = new_need_refresh;
-}
+bool Game_Map::GetNeedRefresh() { return need_refresh; }
+void Game_Map::SetNeedRefresh(bool new_need_refresh) { need_refresh = new_need_refresh; }
 
-bool Game_Map::GetReady() {
-	return ready;
-}
+bool Game_Map::GetReady() { return ready; }
 
-std::vector<unsigned char>& Game_Map::GetPassagesDown() {
-	return passages_down;
-}
+std::vector<unsigned char>& Game_Map::GetPassagesDown() { return passages_down; }
 
-std::vector<unsigned char>& Game_Map::GetPassagesUp() {
-	return passages_up;
-}
+std::vector<unsigned char>& Game_Map::GetPassagesUp() { return passages_up; }
 
-int Game_Map::GetAnimationType() {
-	return animation_type;
-}
+int Game_Map::GetAnimationType() { return animation_type; }
 
-int Game_Map::GetAnimationSpeed() {
-	return (animation_fast ? 12 : 24);
-}
+int Game_Map::GetAnimationSpeed() { return (animation_fast ? 12 : 24); }
 
 std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
 }
 
-tEventHash& Game_Map::GetEvents() {
-	return events;
-}
+tEventHash& Game_Map::GetEvents() { return events; }
 
-tCommonEventHash& Game_Map::GetCommonEvents() {
-	return common_events;
-}
+tCommonEventHash& Game_Map::GetCommonEvents() { return common_events; }
 
-void Game_Map::SetParallaxName(const std::string& name) {
-	map_info.parallax_name = name;
-}
+void Game_Map::SetParallaxName(const std::string& name) { map_info.parallax_name = name; }
 
-void Game_Map::SetParallaxScroll(bool horz, bool vert,
-								 bool horz_auto, bool vert_auto,
-								 int horz_speed, int vert_speed) {
+void Game_Map::SetParallaxScroll(bool horz, bool vert, bool horz_auto, bool vert_auto,
+                                 int horz_speed, int vert_speed) {
 	map_info.parallax_horz = horz;
 	map_info.parallax_vert = vert;
 	map_info.parallax_horz_auto = horz_auto;
@@ -896,36 +825,32 @@ int Game_Map::GetMapIndex(int id) {
 			return i;
 		}
 	}
-	//nothing found
+	// nothing found
 	return -1;
 }
 
 void Game_Map::SetChipset(int id) {
 	map_info.chipset_id = id;
-	RPG::Chipset &chipset = Data::chipsets[map_info.chipset_id - 1];
+	RPG::Chipset& chipset = Data::chipsets[map_info.chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
 	animation_type = chipset.animation_type;
 	animation_fast = chipset.animation_speed;
-	if (passages_down.size() < 162)
-		passages_down.resize(162, (unsigned char) 0x0F);
-	if (passages_up.size() < 144)
-		passages_up.resize(144, (unsigned char) 0x0F);
+	if (passages_down.size() < 162) passages_down.resize(162, (unsigned char)0x0F);
+	if (passages_up.size() < 144) passages_up.resize(144, (unsigned char)0x0F);
 	for (uint8_t i = 0; i < 144; i++) {
 		map_info.lower_tiles[i] = i;
 		map_info.upper_tiles[i] = i;
 	}
 }
 
-Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
-	return vehicles[which];
-}
+Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) { return vehicles[which]; }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {
 	for (size_t i = 0; i < map_info.lower_tiles.size(); ++i) {
 		if (map_info.lower_tiles[i] == old_id) {
-			map_info.lower_tiles[i] = (uint8_t) new_id;
+			map_info.lower_tiles[i] = (uint8_t)new_id;
 		}
 	}
 }
@@ -933,26 +858,30 @@ void Game_Map::SubstituteDown(int old_id, int new_id) {
 void Game_Map::SubstituteUp(int old_id, int new_id) {
 	for (size_t i = 0; i < map_info.upper_tiles.size(); ++i) {
 		if (map_info.upper_tiles[i] == old_id) {
-			map_info.upper_tiles[i] = (uint8_t) new_id;
+			map_info.upper_tiles[i] = (uint8_t)new_id;
 		}
 	}
 }
 
-void Game_Map::LockPan() {
-	pan_locked = true;
-}
+void Game_Map::LockPan() { pan_locked = true; }
 
-void Game_Map::UnlockPan() {
-	pan_locked = false;
-}
+void Game_Map::UnlockPan() { pan_locked = false; }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	distance *= SCREEN_TILE_WIDTH;
 	switch (direction) {
-		case PanUp:		location.pan_finish_y -= distance;		break;
-		case PanRight:	location.pan_finish_x += distance;		break;
-		case PanDown:	location.pan_finish_y += distance;		break;
-		case PanLeft:	location.pan_finish_x -= distance;		break;
+	case PanUp:
+		location.pan_finish_y -= distance;
+		break;
+	case PanRight:
+		location.pan_finish_x += distance;
+		break;
+	case PanDown:
+		location.pan_finish_y += distance;
+		break;
+	case PanLeft:
+		location.pan_finish_x -= distance;
+		break;
 	}
 	pan_speed = speed;
 	pan_wait = wait;
@@ -966,8 +895,7 @@ void Game_Map::ResetPan(int speed, bool wait) {
 }
 
 void Game_Map::UpdatePan() {
-	if (!IsPanActive())
-		return;
+	if (!IsPanActive()) return;
 
 	int step = 2 << (pan_speed - 1);
 	int dx = location.pan_finish_x - location.pan_current_x;
@@ -985,35 +913,27 @@ void Game_Map::UpdatePan() {
 }
 
 bool Game_Map::IsPanActive() {
-	return location.pan_current_x != location.pan_finish_x || location.pan_current_y != location.pan_finish_y;
+	return location.pan_current_x != location.pan_finish_x ||
+	       location.pan_current_y != location.pan_finish_y;
 }
 
-bool Game_Map::IsPanWaiting() {
-	return IsPanActive() && pan_wait;
-}
+bool Game_Map::IsPanWaiting() { return IsPanActive() && pan_wait; }
 
-bool Game_Map::IsPanLocked() {
-	return pan_locked;
-}
+bool Game_Map::IsPanLocked() { return pan_locked; }
 
-int Game_Map::GetPanX() {
-	return location.pan_current_x;
-}
+int Game_Map::GetPanX() { return location.pan_current_x; }
 
-int Game_Map::GetPanY() {
-	return location.pan_current_y;
-}
+int Game_Map::GetPanY() { return location.pan_current_y; }
 
 void Game_Map::UpdateParallax() {
-	if (map_info.parallax_name.empty())
-		return;
+	if (map_info.parallax_name.empty()) return;
 
 	if (map_info.parallax_horz) {
 		if (map_info.parallax_horz_auto) {
 			int step =
-				(map_info.parallax_horz_speed > 0) ? 1 << map_info.parallax_horz_speed :
-				(map_info.parallax_horz_speed < 0) ? 1 << -map_info.parallax_horz_speed :
-				0;
+			    (map_info.parallax_horz_speed > 0)
+			        ? 1 << map_info.parallax_horz_speed
+			        : (map_info.parallax_horz_speed < 0) ? 1 << -map_info.parallax_horz_speed : 0;
 			parallax_auto_x += step;
 		}
 		parallax_x = map_info.position_x * 2 + parallax_auto_x;
@@ -1023,9 +943,9 @@ void Game_Map::UpdateParallax() {
 	if (map_info.parallax_vert) {
 		if (map_info.parallax_vert_auto) {
 			int step =
-				(map_info.parallax_vert_speed > 0) ? 1 << map_info.parallax_vert_speed :
-				(map_info.parallax_vert_speed < 0) ? 1 << -map_info.parallax_vert_speed :
-				0;
+			    (map_info.parallax_vert_speed > 0)
+			        ? 1 << map_info.parallax_vert_speed
+			        : (map_info.parallax_vert_speed < 0) ? 1 << -map_info.parallax_vert_speed : 0;
 			parallax_auto_y += step;
 		}
 		parallax_y = map_info.position_y * 2 + parallax_auto_y;
@@ -1043,6 +963,4 @@ int Game_Map::GetParallaxY() {
 	return (py < 0) ? -(-py / 64) : (py / 64);
 }
 
-const std::string& Game_Map::GetParallaxName() {
-	return map_info.parallax_name;
-}
+const std::string& Game_Map::GetParallaxName() { return map_info.parallax_name; }

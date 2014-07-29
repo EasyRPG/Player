@@ -20,16 +20,15 @@
 #include "game_actors.h"
 #include "game_party.h"
 
-Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
-	Window_Item(0, 128, SCREEN_TARGET_WIDTH, (SCREEN_TARGET_HEIGHT-128)),
-	actor_id(actor_id) {
+Window_EquipItem::Window_EquipItem(int actor_id, int equip_type)
+    : Window_Item(0, 128, SCREEN_TARGET_WIDTH, (SCREEN_TARGET_HEIGHT - 128)), actor_id(actor_id) {
 	this->equip_type = equip_type;
 	if (equip_type > 4 || equip_type < 0) {
 		this->equip_type = Window_EquipItem::other;
 	}
 
 	if (this->equip_type == Window_EquipItem::shield &&
-		Game_Actors::GetActor(actor_id)->GetTwoSwordsStyle()) {
+	    Game_Actors::GetActor(actor_id)->GetTwoSwordsStyle()) {
 
 		this->equip_type = Window_EquipItem::weapon;
 	}

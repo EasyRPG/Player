@@ -43,7 +43,8 @@ public:
 	 * @param b (out) blue.
 	 * @param a (out) alpha.
 	 */
-	virtual void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) = 0;
+	virtual void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b,
+	                      uint8_t& a) = 0;
 
 	/**
 	 * Checks the opacity of a pixel row.
@@ -64,7 +65,8 @@ public:
 	 * @param b blue.
 	 * @param a alpha.
 	 */
-	virtual void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) = 0;
+	virtual void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b,
+	                      const uint8_t& a) = 0;
 
 	/**
 	 * Sets multiple pixels to a given value.
@@ -93,7 +95,8 @@ public:
 	 * @param n number of pixels.
 	 * @param opacity opacity scale (255 == unity).
 	 */
-	virtual void OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) = 0;
+	virtual void OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
+	                         int opacity) = 0;
 
 	/**
 	 * Blits source bitmap over destination (transparency allows source through).
@@ -132,7 +135,8 @@ public:
 	 * @param step fixed point source x step (inverse scale factor).
 	 * @param opacity opacity scale (255 == unity).
 	 */
-	virtual void ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity);
+	virtual void ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step,
+	                       int opacity);
 
 	/**
 	 * Blits source bitmap to destination with scaling and opacity scaling.
@@ -144,7 +148,8 @@ public:
 	 * @param step fixed point source x step (inverse scale factor).
 	 * @param opacity opacity scale (255 == unity).
 	 */
-	virtual void OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) = 0;
+	virtual void OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x,
+	                              int step, int opacity) = 0;
 
 	/**
 	 * Blits source bitmap over destination with scaling
@@ -156,7 +161,8 @@ public:
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
 	 */
-	virtual void OverlayScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) = 0;
+	virtual void OverlayScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x,
+	                              int step) = 0;
 
 	/**
 	 * Blits source bitmap into destination with scaling
@@ -168,7 +174,8 @@ public:
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
 	 */
-	virtual void CopyScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) = 0;
+	virtual void CopyScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x,
+	                           int step) = 0;
 
 	/**
 	 * Blits source bitmap over destination with transformation and opacity scaling.
@@ -184,8 +191,8 @@ public:
 	 * @param opacity opacity scale (255 == unity).
 	 */
 	virtual void TransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-							   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
-							   int opacity);
+	                           int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+	                           int opacity);
 
 	/**
 	 * Blits source bitmap over destination with transformation and opacity scaling.
@@ -201,8 +208,8 @@ public:
 	 * @param opacity opacity scale (255 == unity).
 	 */
 	virtual void OpacityTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
-									  int opacity) = 0;
+	                                  int x0, int x1, int y, const Rect& src_rect,
+	                                  const Matrix& inv, int opacity) = 0;
 
 	/**
 	 * Blits source bitmap over destination with transformation
@@ -218,7 +225,8 @@ public:
 	 * @param inv inverse (dst->src) transformation matrix.
 	 */
 	virtual void OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
+	                                  int x0, int x1, int y, const Rect& src_rect,
+	                                  const Matrix& inv) = 0;
 
 	/**
 	 * Blits source bitmap over destination with transformation
@@ -234,7 +242,8 @@ public:
 	 * @param inv inverse (dst->src) transformation matrix.
 	 */
 	virtual void CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-								   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
+	                               int x0, int x1, int y, const Rect& src_rect,
+	                               const Matrix& inv) = 0;
 
 	/**
 	 * Replaces destination alpha with source alpha.
@@ -256,8 +265,8 @@ public:
 	 * @param lum luminance scale.
 	 * @param loff luminance offset.
 	 */
-	virtual void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
-						 int hue, int sat, int lum, int loff) = 0;
+	virtual void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int hue, int sat,
+	                     int lum, int loff) = 0;
 
 	/**
 	 * Adjust bitmap tone, without saturation change
@@ -266,7 +275,8 @@ public:
 	 * @param n : number of pixels
 	 * @param tone : tone to apply (gray is ignored)
 	 */
-	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone) = 0;
+	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
+	                      const Tone& tone) = 0;
 
 	/**
 	 * Adjusts bitmap tone, with saturation change.
@@ -277,7 +287,8 @@ public:
 	 * @param tone tone to apply.
 	 * @param factor must be (255 - tone.gray) / 255.
 	 */
-	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone, double factor) = 0;
+	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone,
+	                      double factor) = 0;
 
 	/**
 	 * Blends bitmap with color.
@@ -287,7 +298,8 @@ public:
 	 * @param n number of pixels.
 	 * @param color color to apply.
 	 */
-	virtual void BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Color& color) = 0;
+	virtual void BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
+	                       const Color& color) = 0;
 
 	/**
 	 * Adjusts bitmap opacity.
@@ -297,7 +309,8 @@ public:
 	 * @param n number of pixels.
 	 * @param opacity opacity scale (255 = unity).
 	 */
-	virtual void OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) = 0;
+	virtual void OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
+	                               int opacity) = 0;
 
 	/**
 	 * Flips the bitmap pixels horizontally and vertically.
@@ -325,7 +338,8 @@ public:
 	 * @param n number of pixels.
 	 * @param tmp_buffer temporary buffer (size: n pixels).
 	 */
-	virtual void FlipV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n, uint8_t* tmp_buffer) = 0;
+	virtual void FlipV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n,
+	                   uint8_t* tmp_buffer) = 0;
 
 	/**
 	 * Blits source bitmap into destination scaled 2:1
@@ -387,9 +401,8 @@ public:
 	 * @param need_source true if needs source pixel format.
 	 * @return a BitmapUtils instance for the specified pixel format.
 	 */
-	static BitmapUtils* Create(const DynamicFormat& dst_format,
-							   const DynamicFormat& src_format,
-							   bool need_source);
+	static BitmapUtils* Create(const DynamicFormat& dst_format, const DynamicFormat& src_format,
+	                           bool need_source);
 
 	/** Number of fraction bits for fixed point values (*ScaleBlit). */
 	static const int FRAC_BITS = 16;

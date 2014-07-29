@@ -25,9 +25,8 @@
 #include "game_temp.h"
 #include "game_interpreter_battle.h"
 
-Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
-}
+Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag)
+    : Game_Interpreter(depth, main_flag) {}
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
@@ -38,42 +37,41 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
-		case Cmd::CallCommonEvent:
-			return CommandCallCommonEvent(com);
-		case Cmd::ForceFlee:
-			return CommandForceFlee(com);
-		case Cmd::EnableCombo:
-			return CommandEnableCombo(com);
-		case Cmd::ChangeMonsterHP:
-			return CommandChangeMonsterHP(com);
-		case Cmd::ChangeMonsterMP:
-			return CommandChangeMonsterMP(com);
-		case Cmd::ChangeMonsterCondition:
-			return CommandChangeMonsterCondition(com);
-		case Cmd::ShowHiddenMonster:
-			return CommandShowHiddenMonster(com);
-		case Cmd::ChangeBattleBG:
-			return CommandChangeBattleBG(com);
-		case Cmd::ShowBattleAnimation_B:
-			return CommandShowBattleAnimation(com);
-		case Cmd::TerminateBattle:
-			return CommandTerminateBattle(com);
-		case Cmd::ConditionalBranch_B:
-			return CommandConditionalBranch(com);
-		case Cmd::ElseBranch_B:
-			return SkipTo(Cmd::EndBranch_B);
-		case Cmd::EndBranch_B:
-			return true;
-		default:
-			return Game_Interpreter::ExecuteCommand();
+	case Cmd::CallCommonEvent:
+		return CommandCallCommonEvent(com);
+	case Cmd::ForceFlee:
+		return CommandForceFlee(com);
+	case Cmd::EnableCombo:
+		return CommandEnableCombo(com);
+	case Cmd::ChangeMonsterHP:
+		return CommandChangeMonsterHP(com);
+	case Cmd::ChangeMonsterMP:
+		return CommandChangeMonsterMP(com);
+	case Cmd::ChangeMonsterCondition:
+		return CommandChangeMonsterCondition(com);
+	case Cmd::ShowHiddenMonster:
+		return CommandShowHiddenMonster(com);
+	case Cmd::ChangeBattleBG:
+		return CommandChangeBattleBG(com);
+	case Cmd::ShowBattleAnimation_B:
+		return CommandShowBattleAnimation(com);
+	case Cmd::TerminateBattle:
+		return CommandTerminateBattle(com);
+	case Cmd::ConditionalBranch_B:
+		return CommandConditionalBranch(com);
+	case Cmd::ElseBranch_B:
+		return SkipTo(Cmd::EndBranch_B);
+	case Cmd::EndBranch_B:
+		return true;
+	default:
+		return Game_Interpreter::ExecuteCommand();
 	}
 }
 
 // Commands
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
-	if (child_interpreter)
-		return false;
+	if (child_interpreter) return false;
 
 	int event_id = com.parameters[0];
 
@@ -91,16 +89,16 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattlePincer)
-		//Game_Battle::allies_flee = true;
-	    break;
+			// Game_Battle::allies_flee = true;
+			break;
 	case 1:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
-			//Game_Battle::MonstersFlee();
-	    break;
+			// Game_Battle::MonstersFlee();
+			break;
 	case 2:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
-			//Game_Battle::MonsterFlee(com.parameters[1]);
-	    break;
+			// Game_Battle::MonsterFlee(com.parameters[1]);
+			break;
 	}
 
 	return true;
@@ -132,17 +130,16 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
-	    break;
+		break;
 	case 1:
 		change = Game_Variables[com.parameters[3]];
-	    break;
+		break;
 	case 2:
 		change = com.parameters[3] * hp / 100;
-	    break;
+		break;
 	}
 
-	if (lose)
-		change = -change;
+	if (lose) change = -change;
 
 	enemy.ChangeHp(change);
 
@@ -159,14 +156,13 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& co
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
-	    break;
+		break;
 	case 1:
 		change = Game_Variables[com.parameters[3]];
-	    break;
+		break;
 	}
 
-	if (lose)
-		change = -change;
+	if (lose) change = -change;
 
 	sp += change;
 
@@ -204,13 +200,12 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	bool allies = com.parameters[3] != 0;
 
 	// TODO
-	//Battle::Ally* ally = (allies && target >= 0) ? Game_Battle::FindAlly(target) : NULL;
-	//Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
+	// Battle::Ally* ally = (allies && target >= 0) ? Game_Battle::FindAlly(target) : NULL;
+	// Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
 
-	if (active)
-		return Main_Data::game_screen->IsBattleAnimationWaiting();
+	if (active) return Main_Data::game_screen->IsBattleAnimationWaiting();
 
-	//Main_Data::game_screen->ShowBattleAnimation(animation_id);
+	// Main_Data::game_screen->ShowBattleAnimation(animation_id);
 
 	return !wait;
 }
@@ -226,69 +221,68 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 	int value1, value2;
 
 	switch (com.parameters[0]) {
+	case 0:
+		// Switch
+		result = Game_Switches[com.parameters[1]] == (com.parameters[2] == 0);
+		break;
+	case 1:
+		// Variable
+		value1 = Game_Variables[com.parameters[1]];
+		if (com.parameters[2] == 0) {
+			value2 = com.parameters[3];
+		} else {
+			value2 = Game_Variables[com.parameters[3]];
+		}
+		switch (com.parameters[4]) {
 		case 0:
-			// Switch
-			result = Game_Switches[com.parameters[1]] == (com.parameters[2] == 0);
+			// Equal to
+			result = (value1 == value2);
 			break;
 		case 1:
-			// Variable
-			value1 = Game_Variables[com.parameters[1]];
-			if (com.parameters[2] == 0) {
-				value2 = com.parameters[3];
-			} else {
-				value2 = Game_Variables[com.parameters[3]];
-			}
-			switch (com.parameters[4]) {
-				case 0:
-					// Equal to
-					result = (value1 == value2);
-					break;
-				case 1:
-					// Greater than or equal
-					result = (value1 >= value2);
-					break;
-				case 2:
-					// Less than or equal
-					result = (value1 <= value2);
-					break;
-				case 3:
-					// Greater than
-					result = (value1 > value2);
-					break;
-				case 4:
-					// Less than
-					result = (value1 < value2);
-					break;
-				case 5:
-					// Different
-					result = (value1 != value2);
-					break;
-			}
+			// Greater than or equal
+			result = (value1 >= value2);
 			break;
-		// TODO
 		case 2:
-			// Hero can act
-			/*ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->CanAct());*/
+			// Less than or equal
+			result = (value1 <= value2);
 			break;
 		case 3:
-			// Monster can act
-			//result = Game_Battle::GetEnemy(com.parameters[1]).CanAct();
+			// Greater than
+			result = (value1 > value2);
 			break;
 		case 4:
-			// Monster is the current target
-			/*result = Game_Battle::HaveTargetEnemy() &&
-				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
+			// Less than
+			result = (value1 < value2);
 			break;
 		case 5:
-			// Hero uses the ... command
-			/*ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->last_command == com.parameters[2]);*/
+			// Different
+			result = (value1 != value2);
 			break;
+		}
+		break;
+	// TODO
+	case 2:
+		// Hero can act
+		/*ally = Game_Battle::FindAlly(com.parameters[1]);
+		result = (ally != NULL && ally->CanAct());*/
+		break;
+	case 3:
+		// Monster can act
+		// result = Game_Battle::GetEnemy(com.parameters[1]).CanAct();
+		break;
+	case 4:
+		// Monster is the current target
+		/*result = Game_Battle::HaveTargetEnemy() &&
+		    Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
+		break;
+	case 5:
+		// Hero uses the ... command
+		/*ally = Game_Battle::FindAlly(com.parameters[1]);
+		result = (ally != NULL && ally->last_command == com.parameters[2]);*/
+		break;
 	}
 
-	if (result)
-		return true;
+	if (result) return true;
 
 	return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
 }

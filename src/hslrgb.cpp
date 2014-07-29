@@ -71,7 +71,7 @@ double Hue_2_RGB(double v1, double v2, double vH) {
 	if (vH > 1) vH -= 1;
 	if ((6 * vH) < 1) return (v1 + (v2 - v1) * 6 * vH);
 	if ((2 * vH) < 1) return (v2);
-	if ((3 * vH) < 2) return (v1 + (v2 - v1) * ((2.0 / 3) - vH ) * 6);
+	if ((3 * vH) < 2) return (v1 + (v2 - v1) * ((2.0 / 3) - vH) * 6);
 	return v1;
 }
 

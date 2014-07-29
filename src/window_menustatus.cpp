@@ -24,8 +24,8 @@
 #include "player.h"
 #include "bitmap.h"
 
-Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -40,30 +40,28 @@ void Window_MenuStatus::Refresh() {
 	item_max = Main_Data::game_party->GetActors().size();
 
 	int y = 0;
-	for (int i = 0; i < item_max; ++i)
-	{
+	for (int i = 0; i < item_max; ++i) {
 		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
 
 		int face_x = 0;
 		if (Player::engine == Player::EngineRpg2k3) {
 			face_x = actor->GetBattleRow() == 1 ? 5 : 0;
 		}
-		DrawActorFace(actor, face_x, i*48 + y);
+		DrawActorFace(actor, face_x, i * 48 + y);
 
-		DrawActorName(actor, 48 + 8, i*48 + 2 + y);
-		DrawActorTitle(actor, 48 + 8 + 88, i*48 + 2 + y);
-		DrawActorLevel(actor, 48 + 8, i*48 + 2 + 16 + y);
-		DrawActorState(actor, 48 + 8 + 42, i*48 + 2 + 16 + y);
-		DrawActorExp(actor, 48 + 8, i*48 + 2 + 16 + 16 + y);
-		DrawActorHp(actor, 48 + 8 + 106, i*48 + 2 + 16 + y);
-		DrawActorSp(actor, 48 + 8 + 106, i*48 + 2 + 16 + 16 + y);
+		DrawActorName(actor, 48 + 8, i * 48 + 2 + y);
+		DrawActorTitle(actor, 48 + 8 + 88, i * 48 + 2 + y);
+		DrawActorLevel(actor, 48 + 8, i * 48 + 2 + 16 + y);
+		DrawActorState(actor, 48 + 8 + 42, i * 48 + 2 + 16 + y);
+		DrawActorExp(actor, 48 + 8, i * 48 + 2 + 16 + 16 + y);
+		DrawActorHp(actor, 48 + 8 + 106, i * 48 + 2 + 16 + y);
+		DrawActorSp(actor, 48 + 8 + 106, i * 48 + 2 + 16 + 16 + y);
 
 		y += 10;
 	}
 }
 
-void Window_MenuStatus::UpdateCursorRect()
-{
+void Window_MenuStatus::UpdateCursorRect() {
 	if (index < 0) {
 		cursor_rect.Set(0, 0, 0, 0);
 	} else {

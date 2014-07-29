@@ -25,28 +25,28 @@ void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
 
 #if defined(USE_CAANOO)
-	buttons[DEBUG_MENU].push_back(Keys::JOY_4); // L
+	buttons[DEBUG_MENU].push_back(Keys::JOY_4);    // L
 	buttons[DEBUG_THROUGH].push_back(Keys::JOY_5); // R
-	buttons[N1].push_back(Keys::JOY_3); // Y
-	buttons[CANCEL].push_back(Keys::JOY_2); // B
-	buttons[N2].push_back(Keys::JOY_1); // X
-	buttons[DECISION].push_back(Keys::JOY_0); // A
-	buttons[CANCEL].push_back(Keys::JOY_9); // HELP1
-	buttons[DECISION].push_back(Keys::JOY_8); // HELP2
+	buttons[N1].push_back(Keys::JOY_3);            // Y
+	buttons[CANCEL].push_back(Keys::JOY_2);        // B
+	buttons[N2].push_back(Keys::JOY_1);            // X
+	buttons[DECISION].push_back(Keys::JOY_0);      // A
+	buttons[CANCEL].push_back(Keys::JOY_9);        // HELP1
+	buttons[DECISION].push_back(Keys::JOY_8);      // HELP2
 #elif defined(USE_GP2XWIZ)
-	buttons[DEBUG_MENU].push_back(Keys::JOY_10); // L
+	buttons[DEBUG_MENU].push_back(Keys::JOY_10);    // L
 	buttons[DEBUG_THROUGH].push_back(Keys::JOY_11); // R
-	buttons[N1].push_back(Keys::JOY_15); // Y
-	buttons[CANCEL].push_back(Keys::JOY_13); // B
-	buttons[N2].push_back(Keys::JOY_14); // X
-	buttons[DECISION].push_back(Keys::JOY_12); // A
-	buttons[CANCEL].push_back(Keys::JOY_8); // SELECT
-	buttons[DECISION].push_back(Keys::JOY_9); // MENU
+	buttons[N1].push_back(Keys::JOY_15);            // Y
+	buttons[CANCEL].push_back(Keys::JOY_13);        // B
+	buttons[N2].push_back(Keys::JOY_14);            // X
+	buttons[DECISION].push_back(Keys::JOY_12);      // A
+	buttons[CANCEL].push_back(Keys::JOY_8);         // SELECT
+	buttons[DECISION].push_back(Keys::JOY_9);       // MENU
 #endif
 
 	buttons[LEFT].push_back(Keys::JOY_AXIS_X_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
-	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);	
+	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);
 	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
 
 	dir_buttons.resize(10);

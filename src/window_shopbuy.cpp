@@ -26,8 +26,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight) {
 	index = 0;
 }
 
@@ -65,17 +65,15 @@ void Window_ShopBuy::DrawItem(int index) {
 
 	std::stringstream ss;
 	ss << Data::items[item_id - 1].price;
-	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, ss.str(), Text::AlignRight);
+	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled,
+	                   ss.str(), Text::AlignRight);
 }
 
 void Window_ShopBuy::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" :
-		Data::items[GetItemId() - 1].description);
+	help_window->SetText(GetItemId() == 0 ? "" : Data::items[GetItemId() - 1].description);
 }
 
 bool Window_ShopBuy::CheckEnable(int item_id) {
-	return (
-		item_id > 0 &&
-		Data::items[item_id - 1].price <= Main_Data::game_party->GetGold() &&
-		Main_Data::game_party->GetItemCount(item_id) < 99);
+	return (item_id > 0 && Data::items[item_id - 1].price <= Main_Data::game_party->GetGold() &&
+	        Main_Data::game_party->GetItemCount(item_id) < 99);
 }

@@ -30,8 +30,8 @@
 #include "rpg_save.h"
 #include "scene_file.h"
 
-Scene_File::Scene_File(std::string message) :
-	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
+Scene_File::Scene_File(std::string message)
+    : help_window(NULL), message(message), latest_time(0), latest_slot(0) {
 	top_index = 0;
 	index = 0;
 }
@@ -47,50 +47,52 @@ void Scene_File::Start() {
 	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
 
 	for (int i = 0; i < 15; i++) {
-		EASYRPG_SHARED_PTR<Window_SaveFile>
-			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
+		EASYRPG_SHARED_PTR<Window_SaveFile> w(
+		    new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
 
 		// Try to access file
 		std::stringstream ss;
-		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
+		ss << "Save" << (i <= 8 ? "0" : "") << (i + 1) << ".lsd";
 		std::string file = FileFinder::FindDefault(*tree, ss.str());
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(file, Player::encoding);
+			std::auto_ptr<RPG::Save> savegame = LSD_Reader::Load(file, Player::encoding);
 
-			if (savegame.get())	{
+			if (savegame.get()) {
 				std::vector<std::pair<int, std::string> > party;
 
 				// When a face_name is empty the party list ends
-				int party_size =
-					savegame->title.face1_name.empty() ? 0 :
-					savegame->title.face2_name.empty() ? 1 :
-					savegame->title.face3_name.empty() ? 2 :
-					savegame->title.face4_name.empty() ? 3 : 4;
+				int party_size = savegame->title.face1_name.empty()
+				                     ? 0
+				                     : savegame->title.face2_name.empty()
+				                           ? 1
+				                           : savegame->title.face3_name.empty()
+				                                 ? 2
+				                                 : savegame->title.face4_name.empty() ? 3 : 4;
 
 				party.resize(party_size);
 
 				switch (party_size) {
-					case 4:
-						party[3].first = savegame->title.face4_id;
-						party[3].second = savegame->title.face4_name;
-					case 3:
-						party[2].first = savegame->title.face3_id;
-						party[2].second = savegame->title.face3_name;
-					case 2:
-						party[1].first = savegame->title.face2_id;
-						party[1].second = savegame->title.face2_name;
-					case 1:
-						party[0].first = savegame->title.face1_id;
-						party[0].second = savegame->title.face1_name;
-						break;
-					default:;
+				case 4:
+					party[3].first = savegame->title.face4_id;
+					party[3].second = savegame->title.face4_name;
+				case 3:
+					party[2].first = savegame->title.face3_id;
+					party[2].second = savegame->title.face3_name;
+				case 2:
+					party[1].first = savegame->title.face2_id;
+					party[1].second = savegame->title.face2_name;
+				case 1:
+					party[0].first = savegame->title.face1_id;
+					party[0].second = savegame->title.face1_name;
+					break;
+				default:
+					;
 				}
 
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
-					savegame->title.hero_level);
+				            savegame->title.hero_level);
 				w->SetHasSave(true);
 
 				if (savegame->title.timestamp > latest_time) {
@@ -113,7 +115,7 @@ void Scene_File::Start() {
 }
 
 void Scene_File::Refresh() {
-	for (unsigned int i = 0; (size_t) i < file_windows.size(); i++) {
+	for (unsigned int i = 0; (size_t)i < file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
@@ -129,8 +131,7 @@ void Scene_File::Update() {
 		if (IsSlotValid(index)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			Action(index);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
@@ -144,7 +145,7 @@ void Scene_File::Update() {
 			index = (index + 1) % file_windows.size();
 		}
 
-		//top_index = std::max(top_index, index - 3 + 1);
+		// top_index = std::max(top_index, index - 3 + 1);
 	}
 	if (Input::IsRepeated(Input::UP)) {
 		if (Input::IsTriggered(Input::UP) || index >= 1) {
@@ -152,21 +153,18 @@ void Scene_File::Update() {
 			index = (index + file_windows.size() - 1) % file_windows.size();
 		}
 
-		//top_index = std::min(top_index, index);
+		// top_index = std::min(top_index, index);
 	}
 
 	if (index > top_index + 2) {
 		top_index = std::max(top_index, index - 3 + 1);
-	}
-	else if (index < top_index) {
+	} else if (index < top_index) {
 		top_index = std::min(top_index, index);
 	}
 
-	//top_index = std::min(top_index, std::max(top_index, index - 3 + 1));
+	// top_index = std::min(top_index, std::max(top_index, index - 3 + 1));
 
-	if (top_index != old_top_index || index != old_index)
-		Refresh();
+	if (top_index != old_top_index || index != old_index) Refresh();
 
-	for (int i = 0; (size_t)i < file_windows.size(); i++)
-		file_windows[i]->Update();
+	for (int i = 0; (size_t)i < file_windows.size(); i++) file_windows[i]->Update();
 }

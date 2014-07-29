@@ -29,7 +29,8 @@
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
 
-void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
+void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text,
+                Text::Alignment align) {
 	if (text.length() == 0) return;
 
 	FontRef font = dest.GetFont();
@@ -37,16 +38,21 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 
 	switch (align) {
 	case Text::AlignCenter:
-		dst_rect.x = x - dst_rect.width / 2; break;
+		dst_rect.x = x - dst_rect.width / 2;
+		break;
 	case Text::AlignRight:
-		dst_rect.x = x - dst_rect.width; break;
+		dst_rect.x = x - dst_rect.width;
+		break;
 	case Text::AlignLeft:
-		dst_rect.x = x; break;
-	default: assert(false);
+		dst_rect.x = x;
+		break;
+	default:
+		assert(false);
 	}
 
 	dst_rect.y = y;
-	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
+	dst_rect.width += 1;
+	dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(dest.GetWidth(), dest.GetHeight())) return;
 
 	BitmapRef text_surface; // Complete text will be on this surface
@@ -68,9 +74,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	Color shadow_color(Cache::system_info.sh_color);
 	// If shadow is pure black, increase blue channel
 	// so it doesn't become transparent
-	if ((shadow_color.red == 0) &&
-		(shadow_color.green == 0) &&
-		(shadow_color.blue == 0) ) {
+	if ((shadow_color.red == 0) && (shadow_color.green == 0) && (shadow_color.blue == 0)) {
 
 		if (text_surface->bytes() >= 3) {
 			shadow_color.blue++;
@@ -88,12 +92,12 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
 	for (boost::u8_to_u32_iterator<std::string::const_iterator>
-			 c(text.begin(), text.begin(), text.end()),
-			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
+	         c(text.begin(), text.begin(), text.end()), end(text.end(), text.begin(), text.end());
+	     c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
 		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
-		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
+		uint32_t const next_c = std::distance(c, end) > 1 ? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (*c == '$' && std::isalpha(next_c)) {
@@ -103,7 +107,9 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 				exfont_value = 26 + next_c - 'a';
 			} else if (isupper(next_c)) {
 				exfont_value = next_c - 'A';
-			} else { assert(false); }
+			} else {
+				assert(false);
+			}
 			is_exfont = true;
 
 			BitmapRef mask = Bitmap::Create(12, 12, true);
@@ -116,7 +122,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			mask->Blit(0, 0, *exfont, rect_exfont, 255);
 
 			// Get color region from system graphic
-			Rect clip_system(2+16*(color%10), 4+48+16*(color/10), 12, 12);
+			Rect clip_system(2 + 16 * (color % 10), 4 + 48 + 16 * (color / 10), 12, 12);
 
 			BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
 			char_surface->SetTransparentColor(dest.GetTransparentColor());
@@ -138,8 +144,10 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			char_shadow->MaskBlit(0, 0, *mask, mask->GetRect());
 
 			// Blit first shadow and then text
-			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow, char_shadow->GetRect(), 255);
-			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface, char_surface->GetRect(), 255);
+			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow,
+			                   char_shadow->GetRect(), 255);
+			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface,
+			                   char_surface->GetRect(), 255);
 		} else { // Not ExFont, draw normal text
 			font->Render(*text_surface, next_glyph_rect.x, next_glyph_rect.y, *system, color, *c);
 		}
@@ -176,8 +184,8 @@ void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text
 	int next_glyph_pos = 0;
 
 	for (boost::u8_to_u32_iterator<std::string::const_iterator>
-			 c(text.begin(), text.begin(), text.end()),
-			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
+	         c(text.begin(), text.begin(), text.end()), end(text.end(), text.begin(), text.end());
+	     c != end; ++c) {
 		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
 
 		std::string const glyph(c.base(), next_c_it.base());
@@ -189,7 +197,7 @@ void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text
 		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
 
 		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, *c);
-		
+
 		next_glyph_pos += font->GetSize(glyph).width;
 	}
 }

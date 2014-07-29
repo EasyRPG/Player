@@ -82,7 +82,7 @@
 
 /** Name of the file for output. */
 #ifndef OUTPUT_FILENAME
-#  define OUTPUT_FILENAME "easyrpg_log.txt"
+#define OUTPUT_FILENAME "easyrpg_log.txt"
 #endif
 
 #define USE_KEYBOARD
@@ -95,7 +95,7 @@
 
 /** Version of player. Should be redefined by build system. */
 #ifndef PLAYER_VERSION
-#  define PLAYER_VERSION "0.2.1"
+#define PLAYER_VERSION "0.2.1"
 #endif
 
 #endif

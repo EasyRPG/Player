@@ -21,9 +21,7 @@
 #include "window_shopsell.h"
 #include "game_party.h"
 
-Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
-	Window_Item(ix, iy, iwidth, iheight) {}
+Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight)
+    : Window_Item(ix, iy, iwidth, iheight) {}
 
-bool Window_ShopSell::CheckEnable(int item_id) {
-	return Data::items[item_id - 1].price > 0;
-}
+bool Window_ShopSell::CheckEnable(int item_id) { return Data::items[item_id - 1].price > 0; }

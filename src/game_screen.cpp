@@ -25,11 +25,7 @@
 #include "game_system.h"
 #include "bitmap.h"
 
-Game_Screen::Game_Screen() :
-	data(Main_Data::game_data.screen)
-{
-	Reset();
-}
+Game_Screen::Game_Screen() : data(Main_Data::game_data.screen) { Reset(); }
 
 void Game_Screen::CreatePicturesFromSave() {
 	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
@@ -46,8 +42,7 @@ void Game_Screen::CreatePicturesFromSave() {
 	}
 }
 
-void Game_Screen::Reset()
-{
+void Game_Screen::Reset() {
 	pictures.clear();
 	pictures.resize(50);
 
@@ -59,10 +54,8 @@ void Game_Screen::Reset()
 	data.flash_current_level = 0;
 	flash_period = 0;
 
-	if (data.tint_current_red < 0 ||
-		data.tint_current_green < 0 ||
-		data.tint_current_blue < 0 ||
-		data.tint_current_sat < 0) {
+	if (data.tint_current_red < 0 || data.tint_current_green < 0 || data.tint_current_blue < 0 ||
+	    data.tint_current_sat < 0) {
 		data.tint_current_red = 100;
 		data.tint_current_green = 100;
 		data.tint_current_blue = 100;
@@ -95,8 +88,7 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 		pictures.resize(id);
 	}
 	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
-	if (!p)
-		p.reset(new Game_Picture(id));
+	if (!p) p.reset(new Game_Picture(id));
 	return p.get();
 }
 
@@ -167,16 +159,15 @@ void Game_Screen::ShakeEnd() {
 void Game_Screen::SetWeatherEffect(int type, int strength) {
 	// Some games call weather effects in a parallel process
 	// This causes issues in the rendering (weather rendered too fast)
-	if (data.weather != type ||
-		data.weather_strength != strength) {
+	if (data.weather != type || data.weather_strength != strength) {
 		StopWeather();
 		data.weather = type;
 		data.weather_strength = strength;
 	}
 }
 
-void Game_Screen::PlayMovie(const std::string& filename,
-							int pos_x, int pos_y, int res_x, int res_y) {
+void Game_Screen::PlayMovie(const std::string& filename, int pos_x, int pos_y, int res_x,
+                            int res_y) {
 	movie_filename = filename;
 	movie_pos_x = pos_x;
 	movie_pos_y = pos_y;
@@ -193,30 +184,24 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool glob
 
 void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global) {
 	data.battleanim_id = animation_id;
-	
+
 	data.battleanim_global = global;
 
 	RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimation(target_x, target_y,
-		&anim));
+	animation.reset(new BattleAnimation(target_x, target_y, &anim));
 	// FIXME: target
 	// FIXME: global
 
 	animation_timings.clear();
 	for (std::vector<RPG::AnimationTiming>::const_iterator it = anim.timings.begin();
-		it != anim.timings.end(); ++it) {
-			animation_timings[it->frame] = *it;
+	     it != anim.timings.end(); ++it) {
+		animation_timings[it->frame] = *it;
 	}
 }
 
-bool Game_Screen::IsBattleAnimationWaiting() const {
-	return bool(animation);
-}
+bool Game_Screen::IsBattleAnimationWaiting() const { return bool(animation); }
 
-static double interpolate(double d, double x0, double x1)
-{
-	return (x0 * (d - 1) + x1) / d;
-}
+static double interpolate(double d, double x0, double x1) { return (x0 * (d - 1) + x1) / d; }
 
 void Game_Screen::StopWeather() {
 	data.weather = Weather_None;
@@ -224,16 +209,15 @@ void Game_Screen::StopWeather() {
 }
 
 void Game_Screen::InitSnowRain() {
-	if (!snowflakes.empty())
-		return;
+	if (!snowflakes.empty()) return;
 
 	static const int num_snowflakes[3] = {100, 200, 300};
 
 	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
 		Snowflake f;
-		f.x = (short) (rand() * 440.0 / RAND_MAX);
-		f.y = (uint8_t) rand();
-		f.life = (uint8_t) rand();
+		f.x = (short)(rand() * 440.0 / RAND_MAX);
+		f.y = (uint8_t)rand();
+		f.life = (uint8_t)rand();
 		snowflakes.push_back(f);
 	}
 }
@@ -247,17 +231,20 @@ void Game_Screen::UpdateSnowRain(int speed) {
 		Snowflake& f = *it;
 		f.y += (uint8_t)speed;
 		f.life++;
-		if (f.life > snowflake_life)
-			f.life = 0;
+		if (f.life > snowflake_life) f.life = 0;
 	}
 }
 
 void Game_Screen::Update() {
 	if (data.tint_time_left > 0) {
-		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
-		data.tint_current_green = interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);
-		data.tint_current_blue = interpolate(data.tint_time_left, data.tint_current_blue, data.tint_finish_blue);
-		data.tint_current_sat = interpolate(data.tint_time_left, data.tint_current_sat, data.tint_finish_sat);
+		data.tint_current_red =
+		    interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
+		data.tint_current_green =
+		    interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);
+		data.tint_current_blue =
+		    interpolate(data.tint_time_left, data.tint_current_blue, data.tint_finish_blue);
+		data.tint_current_sat =
+		    interpolate(data.tint_time_left, data.tint_current_sat, data.tint_finish_sat);
 		data.tint_time_left--;
 	}
 
@@ -274,13 +261,10 @@ void Game_Screen::Update() {
 			data.shake_position = 0;
 		else
 			data.shake_position += (int)delta;
-		if (data.shake_position > data.shake_strength * 2)
-			shake_direction = -1;
-		if (data.shake_position < -data.shake_strength * 2)
-			shake_direction = 1;
+		if (data.shake_position > data.shake_strength * 2) shake_direction = -1;
+		if (data.shake_position < -data.shake_strength * 2) shake_direction = 1;
 
-		if (data.shake_time_left > 0)
-			data.shake_time_left--;
+		if (data.shake_time_left > 0) data.shake_time_left--;
 	}
 
 	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
@@ -295,20 +279,20 @@ void Game_Screen::Update() {
 	}
 
 	switch (data.weather) {
-		case Weather_None:
-			break;
-		case Weather_Rain:
-			InitSnowRain();
-			UpdateSnowRain(4);
-			break;
-		case Weather_Snow:
-			InitSnowRain();
-			UpdateSnowRain(2);
-			break;
-		case Weather_Fog:
-			break;
-		case Weather_Sandstorm:
-			break;
+	case Weather_None:
+		break;
+	case Weather_Rain:
+		InitSnowRain();
+		UpdateSnowRain(4);
+		break;
+	case Weather_Snow:
+		InitSnowRain();
+		UpdateSnowRain(2);
+		break;
+	case Weather_Fog:
+		break;
+	case Weather_Sandstorm:
+		break;
 	}
 
 	if (animation) {
@@ -332,26 +316,20 @@ void Game_Screen::PlayBattleAnimationSound() {
 }
 
 Tone Game_Screen::GetTone() {
-	return Tone((int) ((data.tint_current_red) * 128 / 100),
-		(int) ((data.tint_current_green) * 128 / 100),
-		(int) ((data.tint_current_blue) * 128 / 100),
-		(int) ((data.tint_current_sat) * 128 / 100));
+	return Tone(
+	    (int)((data.tint_current_red) * 128 / 100), (int)((data.tint_current_green) * 128 / 100),
+	    (int)((data.tint_current_blue) * 128 / 100), (int)((data.tint_current_sat) * 128 / 100));
 }
 
 Color Game_Screen::GetFlash(int& current_level, int& time_left) {
 	time_left = data.flash_time_left;
 	current_level = data.flash_time_left * 255 / 31;
-	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255);
+	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31,
+	             255);
 }
 
-int Game_Screen::GetWeatherType() {
-	return data.weather;
-}
+int Game_Screen::GetWeatherType() { return data.weather; }
 
-int Game_Screen::GetWeatherStrength() {
-	return data.weather_strength;
-}
+int Game_Screen::GetWeatherStrength() { return data.weather_strength; }
 
-const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
-	return snowflakes;
-}
+const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() { return snowflakes; }

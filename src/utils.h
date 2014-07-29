@@ -95,7 +95,6 @@ namespace Utils {
 	 */
 	std::string FromWideString(const wstring& str);
 
-
 	bool IsBigEndian();
 
 } // namespace Utils

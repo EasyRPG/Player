@@ -27,10 +27,7 @@
 #include "scene_save.h"
 #include "scene_file.h"
 
-Scene_Save::Scene_Save() :
-	Scene_File(Data::terms.save_game_message) {
-	Scene::type = Scene::Save;
-}
+Scene_Save::Scene_Save() : Scene_File(Data::terms.save_game_message) { Scene::type = Scene::Save; }
 
 void Scene_Save::Start() {
 	Scene_File::Start();
@@ -56,27 +53,28 @@ void Scene_Save::Action(int index) {
 	Game_Actor* actor;
 
 	switch (size) {
-		case 4:
-			actor = Main_Data::game_party->GetActors()[3];
-			title.face4_id = actor->GetFaceIndex();
-			title.face4_name = actor->GetFaceName();
-		case 3:
-			actor = Main_Data::game_party->GetActors()[2];
-			title.face3_id = actor->GetFaceIndex();
-			title.face3_name = actor->GetFaceName();
-		case 2:
-			actor = Main_Data::game_party->GetActors()[1];
-			title.face2_id = actor->GetFaceIndex();
-			title.face2_name = actor->GetFaceName();
-		case 1:
-			actor = Main_Data::game_party->GetActors()[0];
-			title.face1_id = actor->GetFaceIndex();
-			title.face1_name = actor->GetFaceName();
-			title.hero_hp = actor->GetHp();
-			title.hero_level = actor->GetLevel();
-			title.hero_name = actor->GetName();
-			break;
-		default:;
+	case 4:
+		actor = Main_Data::game_party->GetActors()[3];
+		title.face4_id = actor->GetFaceIndex();
+		title.face4_name = actor->GetFaceName();
+	case 3:
+		actor = Main_Data::game_party->GetActors()[2];
+		title.face3_id = actor->GetFaceIndex();
+		title.face3_name = actor->GetFaceName();
+	case 2:
+		actor = Main_Data::game_party->GetActors()[1];
+		title.face2_id = actor->GetFaceIndex();
+		title.face2_name = actor->GetFaceName();
+	case 1:
+		actor = Main_Data::game_party->GetActors()[0];
+		title.face1_id = actor->GetFaceIndex();
+		title.face1_name = actor->GetFaceName();
+		title.hero_hp = actor->GetHp();
+		title.hero_level = actor->GetLevel();
+		title.hero_name = actor->GetName();
+		break;
+	default:
+		;
 	}
 
 	Main_Data::game_data.title = title;
@@ -97,6 +95,4 @@ void Scene_Save::Action(int index) {
 	Scene::Pop();
 }
 
-bool Scene_Save::IsSlotValid(int) {
-	return true;
-}
+bool Scene_Save::IsSlotValid(int) { return true; }

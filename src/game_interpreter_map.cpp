@@ -49,16 +49,14 @@
 
 std::vector<Game_Character*> Game_Interpreter_Map::pending;
 
-Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
-}
+Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag)
+    : Game_Interpreter(depth, main_flag) {}
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
 	std::vector<Game_Character*>::iterator it;
 	std::vector<Game_Character*> toerase;
 	for (it = pending.begin(); it != pending.end(); ++it) {
-		if ((*it)->DetachMoveRouteOwner(this))
-			toerase.push_back(*it);
+		if ((*it)->DetachMoveRouteOwner(this)) toerase.push_back(*it);
 	}
 	for (it = toerase.begin(); it != toerase.end(); ++it) {
 		EndMoveRoute(*it);
@@ -67,12 +65,14 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 	list.clear();
 }
 
-bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save,
+                                         int _event_id, int index) {
 	if (index < (int)save.size()) {
 		Setup(save[index].commands, _event_id);
 		this->index = save[index].current_command;
 		child_interpreter.reset(new Game_Interpreter_Map());
-		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, index + 1);
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())
+		                  ->SetupFromSave(save, _event_id, index + 1);
 		if (!result) {
 			child_interpreter.reset();
 		}
@@ -94,8 +94,7 @@ static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
 
 		int count = it->parameters.size();
 		result += LcfReader::IntSize(count);
-		for (int i = 0; i < count; i++)
-			result += LcfReader::IntSize(it->parameters[i]);
+		for (int i = 0; i < count; i++) result += LcfReader::IntSize(it->parameters[i]);
 	}
 	result += 4; // No idea why but then it fits
 
@@ -120,7 +119,8 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
 		save.push_back(save_commands);
-		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
+		save_interpreter =
+		    static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
 
 	save.back().ID = event_id;
@@ -137,41 +137,37 @@ int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
 		int x = *it++;
 		value <<= 7;
 		value |= x & 0x7F;
-		if (!(x & 0x80))
-			break;
+		if (!(x & 0x80)) break;
 	}
 
 	return value;
 }
 
-const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_iterator& it)
-{
+const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_iterator& it) {
 	std::ostringstream out;
 	int len = DecodeInt(it);
 
-	for (int i = 0; i < len; i++)
-		out << (char) *it++;
+	for (int i = 0; i < len; i++) out << (char)*it++;
 
 	std::string result = ReaderUtil::Recode(out.str(), Player::encoding);
 
 	return result;
 }
 
-RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterator& it)
-{
+RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterator& it) {
 	RPG::MoveCommand cmd;
 	cmd.command_id = *it++;
 
 	switch (cmd.command_id) {
-	case 32:	// Switch ON
-	case 33:	// Switch OFF
+	case 32: // Switch ON
+	case 33: // Switch OFF
 		cmd.parameter_a = DecodeInt(it);
 		break;
-	case 34:	// Change Graphic
+	case 34: // Change Graphic
 		cmd.parameter_string = DecodeString(it);
 		cmd.parameter_a = DecodeInt(it);
 		break;
-	case 35:	// Play Sound Effect
+	case 35: // Play Sound Effect
 		cmd.parameter_string = DecodeString(it);
 		cmd.parameter_a = DecodeInt(it);
 		cmd.parameter_b = DecodeInt(it);
@@ -206,169 +202,169 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
-		case Cmd::MessageOptions:
-			return CommandMessageOptions(com);
-		case Cmd::ChangeExp:
-			return CommandChangeExp(com);
-		case Cmd::ChangeParameters:
-			return CommandChangeParameters(com);
-		case Cmd::ChangeHeroName:
-			return CommandChangeHeroName(com);
-		case Cmd::ChangeHeroTitle:
-			return CommandChangeHeroTitle(com);
-		case Cmd::ChangeSpriteAssociation:
-			return CommandChangeSpriteAssociation(com);
-		case Cmd::MemorizeLocation:
-			return CommandMemorizeLocation(com);
-		case Cmd::RecallToLocation:
-			return CommandRecallToLocation(com);
-		case Cmd::StoreTerrainID:
-			return CommandStoreTerrainID(com);
-		case Cmd::StoreEventID:
-			return CommandStoreEventID(com);
-		case Cmd::MemorizeBGM:
-			return CommandMemorizeBGM(com);
-		case Cmd::PlayMemorizedBGM:
-			return CommandPlayMemorizedBGM(com);
-		case Cmd::ChangeSystemBGM:
-			return CommandChangeSystemBGM(com);
-		case Cmd::ChangeSystemSFX:
-			return CommandChangeSystemSFX(com);
-		case Cmd::ChangeSaveAccess:
-			return CommandChangeSaveAccess(com);
-		case Cmd::ChangeTeleportAccess:
-			return CommandChangeTeleportAccess(com);
-		case Cmd::ChangeEscapeAccess:
-			return CommandChangeEscapeAccess(com);
-		case Cmd::ChangeMainMenuAccess:
-			return CommandChangeMainMenuAccess(com);
-		case Cmd::ChangeActorFace:
-			return CommandChangeActorFace(com);
-		case Cmd::Teleport:
-			return CommandTeleport(com);
-		case Cmd::EraseScreen:
-			return CommandEraseScreen(com);
-		case Cmd::ShowScreen:
-			return CommandShowScreen(com);
-		case Cmd::ShowPicture:
-			return CommandShowPicture(com);
-		case Cmd::MovePicture:
-			return CommandMovePicture(com);
-		case Cmd::ErasePicture:
-			return CommandErasePicture(com);
-		case Cmd::WeatherEffects:
-			return CommandWeatherEffects(com);
-		case Cmd::ChangeSystemGraphics:
-			return CommandChangeSystemGraphics(com);
-		case Cmd::ChangeScreenTransitions:
-			return CommandChangeScreenTransitions(com);
-		case Cmd::ChangeEventLocation:
-			return CommandChangeEventLocation(com);
-		case Cmd::TradeEventLocations:
-			return CommandTradeEventLocations(com);
-		case Cmd::TimerOperation:
-			return CommandTimerOperation(com);
-		case Cmd::ChangePBG:
-			return CommandChangePBG(com);
-		case Cmd::Label:
-			return true;
-		case Cmd::JumpToLabel:
-			return CommandJumpToLabel(com);
-		case Cmd::Loop:
-			return true;
-		case Cmd::BreakLoop:
-			return CommandBreakLoop(com);
-		case Cmd::EndLoop:
-			return CommandEndLoop(com);
-		case Cmd::MoveEvent:
-			return CommandMoveEvent(com);
-		case Cmd::OpenShop:
-			return CommandOpenShop(com);
-		case Cmd::Transaction:
-		case Cmd::NoTransaction:
-			return SkipTo(Cmd::EndShop);
-		case Cmd::EndShop:
-			return true;
-		case Cmd::ShowInn:
-			return CommandShowInn(com);
-		case Cmd::Stay:
-		case Cmd::NoStay:
-			return SkipTo(Cmd::EndInn);
-		case Cmd::EndInn:
-			return true;
-		case Cmd::EnterHeroName:
-			return CommandEnterHeroName(com);
-		case Cmd::ReturntoTitleScreen:
-			return CommandReturnToTitleScreen(com);
-		case Cmd::OpenSaveMenu:
-			return CommandOpenSaveMenu(com);
-		case Cmd::OpenMainMenu:
-			return CommandOpenMainMenu(com);
-		case Cmd::EnemyEncounter:
-			return CommandEnemyEncounter(com);
-		case Cmd::VictoryHandler:
-		case Cmd::EscapeHandler:
-		case Cmd::DefeatHandler:
-			return SkipTo(Cmd::EndBattle);
-		case Cmd::EndBattle:
-			return true;
-		case Cmd::TeleportTargets:
-			return CommandTeleportTargets(com);
-		case Cmd::EscapeTarget:
-			return CommandEscapeTarget(com);
-		case Cmd::SpriteTransparency:
-			return CommandSpriteTransparency(com);
-		case Cmd::FlashSprite:
-			return CommandFlashSprite(com);
-		case Cmd::EraseEvent:
-			return CommandEraseEvent(com);
-		case Cmd::ChangeMapTileset:
-			return CommandChangeMapTileset(com);
-		case Cmd::CallEvent:
-			return CommandCallEvent(com);
-		case Cmd::ChangeEncounterRate:
-			return CommandChangeEncounterRate(com);
-		case Cmd::ProceedWithMovement:
-			return CommandProceedWithMovement(com);
-		case Cmd::PlayMovie:
-			return CommandPlayMovie(com);
-		case Cmd::ChangeBattleCommands:
-			return CommandChangeBattleCommands(com);
-		case Cmd::KeyInputProc:
-			return CommandKeyInputProc(com);
-		case Cmd::ChangeVehicleGraphic:
-			return CommandChangeVehicleGraphic(com);
-		case Cmd::EnterExitVehicle:
-			return CommandEnterExitVehicle(com);
-		case Cmd::SetVehicleLocation:
-			return CommandSetVehicleLocation(com);
-		case Cmd::TileSubstitution:
-			return CommandTileSubstitution(com);
-		case Cmd::PanScreen:
-			return CommandPanScreen(com);
-		case Cmd::SimulatedAttack:
-			return CommandSimulatedAttack(com);
-		case Cmd::ShowBattleAnimation:
-			return CommandShowBattleAnimation(com);
-		case Cmd::ChangeClass:
-			return CommandChangeClass(com);
-		case Cmd::HaltAllMovement:
-			return CommandHaltAllMovement(com);
-		case Cmd::ConditionalBranch:
-			return CommandConditionalBranch(com);
-		case Cmd::ElseBranch:
-			return SkipTo(Cmd::EndBranch);
-		case Cmd::EndBranch:
-			return true;
-		default:
-			return Game_Interpreter::ExecuteCommand();
+	case Cmd::MessageOptions:
+		return CommandMessageOptions(com);
+	case Cmd::ChangeExp:
+		return CommandChangeExp(com);
+	case Cmd::ChangeParameters:
+		return CommandChangeParameters(com);
+	case Cmd::ChangeHeroName:
+		return CommandChangeHeroName(com);
+	case Cmd::ChangeHeroTitle:
+		return CommandChangeHeroTitle(com);
+	case Cmd::ChangeSpriteAssociation:
+		return CommandChangeSpriteAssociation(com);
+	case Cmd::MemorizeLocation:
+		return CommandMemorizeLocation(com);
+	case Cmd::RecallToLocation:
+		return CommandRecallToLocation(com);
+	case Cmd::StoreTerrainID:
+		return CommandStoreTerrainID(com);
+	case Cmd::StoreEventID:
+		return CommandStoreEventID(com);
+	case Cmd::MemorizeBGM:
+		return CommandMemorizeBGM(com);
+	case Cmd::PlayMemorizedBGM:
+		return CommandPlayMemorizedBGM(com);
+	case Cmd::ChangeSystemBGM:
+		return CommandChangeSystemBGM(com);
+	case Cmd::ChangeSystemSFX:
+		return CommandChangeSystemSFX(com);
+	case Cmd::ChangeSaveAccess:
+		return CommandChangeSaveAccess(com);
+	case Cmd::ChangeTeleportAccess:
+		return CommandChangeTeleportAccess(com);
+	case Cmd::ChangeEscapeAccess:
+		return CommandChangeEscapeAccess(com);
+	case Cmd::ChangeMainMenuAccess:
+		return CommandChangeMainMenuAccess(com);
+	case Cmd::ChangeActorFace:
+		return CommandChangeActorFace(com);
+	case Cmd::Teleport:
+		return CommandTeleport(com);
+	case Cmd::EraseScreen:
+		return CommandEraseScreen(com);
+	case Cmd::ShowScreen:
+		return CommandShowScreen(com);
+	case Cmd::ShowPicture:
+		return CommandShowPicture(com);
+	case Cmd::MovePicture:
+		return CommandMovePicture(com);
+	case Cmd::ErasePicture:
+		return CommandErasePicture(com);
+	case Cmd::WeatherEffects:
+		return CommandWeatherEffects(com);
+	case Cmd::ChangeSystemGraphics:
+		return CommandChangeSystemGraphics(com);
+	case Cmd::ChangeScreenTransitions:
+		return CommandChangeScreenTransitions(com);
+	case Cmd::ChangeEventLocation:
+		return CommandChangeEventLocation(com);
+	case Cmd::TradeEventLocations:
+		return CommandTradeEventLocations(com);
+	case Cmd::TimerOperation:
+		return CommandTimerOperation(com);
+	case Cmd::ChangePBG:
+		return CommandChangePBG(com);
+	case Cmd::Label:
+		return true;
+	case Cmd::JumpToLabel:
+		return CommandJumpToLabel(com);
+	case Cmd::Loop:
+		return true;
+	case Cmd::BreakLoop:
+		return CommandBreakLoop(com);
+	case Cmd::EndLoop:
+		return CommandEndLoop(com);
+	case Cmd::MoveEvent:
+		return CommandMoveEvent(com);
+	case Cmd::OpenShop:
+		return CommandOpenShop(com);
+	case Cmd::Transaction:
+	case Cmd::NoTransaction:
+		return SkipTo(Cmd::EndShop);
+	case Cmd::EndShop:
+		return true;
+	case Cmd::ShowInn:
+		return CommandShowInn(com);
+	case Cmd::Stay:
+	case Cmd::NoStay:
+		return SkipTo(Cmd::EndInn);
+	case Cmd::EndInn:
+		return true;
+	case Cmd::EnterHeroName:
+		return CommandEnterHeroName(com);
+	case Cmd::ReturntoTitleScreen:
+		return CommandReturnToTitleScreen(com);
+	case Cmd::OpenSaveMenu:
+		return CommandOpenSaveMenu(com);
+	case Cmd::OpenMainMenu:
+		return CommandOpenMainMenu(com);
+	case Cmd::EnemyEncounter:
+		return CommandEnemyEncounter(com);
+	case Cmd::VictoryHandler:
+	case Cmd::EscapeHandler:
+	case Cmd::DefeatHandler:
+		return SkipTo(Cmd::EndBattle);
+	case Cmd::EndBattle:
+		return true;
+	case Cmd::TeleportTargets:
+		return CommandTeleportTargets(com);
+	case Cmd::EscapeTarget:
+		return CommandEscapeTarget(com);
+	case Cmd::SpriteTransparency:
+		return CommandSpriteTransparency(com);
+	case Cmd::FlashSprite:
+		return CommandFlashSprite(com);
+	case Cmd::EraseEvent:
+		return CommandEraseEvent(com);
+	case Cmd::ChangeMapTileset:
+		return CommandChangeMapTileset(com);
+	case Cmd::CallEvent:
+		return CommandCallEvent(com);
+	case Cmd::ChangeEncounterRate:
+		return CommandChangeEncounterRate(com);
+	case Cmd::ProceedWithMovement:
+		return CommandProceedWithMovement(com);
+	case Cmd::PlayMovie:
+		return CommandPlayMovie(com);
+	case Cmd::ChangeBattleCommands:
+		return CommandChangeBattleCommands(com);
+	case Cmd::KeyInputProc:
+		return CommandKeyInputProc(com);
+	case Cmd::ChangeVehicleGraphic:
+		return CommandChangeVehicleGraphic(com);
+	case Cmd::EnterExitVehicle:
+		return CommandEnterExitVehicle(com);
+	case Cmd::SetVehicleLocation:
+		return CommandSetVehicleLocation(com);
+	case Cmd::TileSubstitution:
+		return CommandTileSubstitution(com);
+	case Cmd::PanScreen:
+		return CommandPanScreen(com);
+	case Cmd::SimulatedAttack:
+		return CommandSimulatedAttack(com);
+	case Cmd::ShowBattleAnimation:
+		return CommandShowBattleAnimation(com);
+	case Cmd::ChangeClass:
+		return CommandChangeClass(com);
+	case Cmd::HaltAllMovement:
+		return CommandHaltAllMovement(com);
+	case Cmd::ConditionalBranch:
+		return CommandConditionalBranch(com);
+	case Cmd::ElseBranch:
+		return SkipTo(Cmd::EndBranch);
+	case Cmd::EndBranch:
+		return true;
+	default:
+		return Game_Interpreter::ExecuteCommand();
 	}
 }
 
 /**
  * Commands
  */
-bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
+bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { // code 10120
 	Game_Message::SetTransparent(com.parameters[0] != 0);
 	Game_Message::SetPosition(com.parameters[1]);
 	Game_Message::SetPositionFixed(com.parameters[2] == 0);
@@ -376,19 +372,11 @@ bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) {
 	return true;
 }
 
-
 bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
-	int value = OperateValue(
-		com.parameters[2],
-		com.parameters[3],
-		com.parameters[4]
-	);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
+	int value = OperateValue(com.parameters[2], com.parameters[3], com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
@@ -397,43 +385,36 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 }
 
 bool Game_Interpreter_Map::CommandChangeParameters(RPG::EventCommand const& com) { // Code 10430
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
-	int value = OperateValue(
-		com.parameters[2],
-		com.parameters[4],
-		com.parameters[5]
-		);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
+	int value = OperateValue(com.parameters[2], com.parameters[4], com.parameters[5]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		switch (com.parameters[3]) {
-			case 0:
-				// Max HP
-				actor->SetBaseMaxHp(actor->GetBaseMaxHp() + value);
-				break;
-			case 1:
-				// Max MP
-				actor->SetBaseMaxSp(actor->GetBaseMaxSp() + value);
-				break;
-			case 2:
-				// Attack
-				actor->SetBaseAtk(actor->GetBaseAtk() + value);
-				break;
-			case 3:
-				// Defense
-				actor->SetBaseDef(actor->GetBaseDef() + value);
-				break;
-			case 4:
-				// Spirit
-				actor->SetBaseSpi(actor->GetBaseSpi() + value);
-				break;
-			case 5:
-				// Agility
-				actor->SetBaseAgi(actor->GetBaseAgi() + value);
-				break;
+		case 0:
+			// Max HP
+			actor->SetBaseMaxHp(actor->GetBaseMaxHp() + value);
+			break;
+		case 1:
+			// Max MP
+			actor->SetBaseMaxSp(actor->GetBaseMaxSp() + value);
+			break;
+		case 2:
+			// Attack
+			actor->SetBaseAtk(actor->GetBaseAtk() + value);
+			break;
+		case 3:
+			// Defense
+			actor->SetBaseDef(actor->GetBaseDef() + value);
+			break;
+		case 4:
+			// Spirit
+			actor->SetBaseSpi(actor->GetBaseSpi() + value);
+			break;
+		case 5:
+			// Agility
+			actor->SetBaseAgi(actor->GetBaseAgi() + value);
+			break;
 		}
 	}
 	return true;
@@ -451,9 +432,10 @@ bool Game_Interpreter_Map::CommandChangeHeroTitle(RPG::EventCommand const& com) 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand const& com) { // code 10630
+bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand const& com) { // code
+                                                                                          // 10630
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
-	const std::string &file = com.string;
+	const std::string& file = com.string;
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
@@ -462,7 +444,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand cons
 }
 
 bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com) { // code 10820
-	Game_Character *player = Main_Data::game_player.get();
+	Game_Character* player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
@@ -473,7 +455,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
-	Game_Character *player = Main_Data::game_player.get();
+	Game_Character* player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
@@ -486,9 +468,8 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 		return true;
 	};
 
-	if (Main_Data::game_player->IsTeleporting() ||
-		Game_Message::visible) {
-			return false;
+	if (Main_Data::game_player->IsTeleporting() || Game_Message::visible) {
+		return false;
 	}
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
@@ -522,12 +503,13 @@ bool Game_Interpreter_Map::CommandMemorizeBGM(RPG::EventCommand const& /* com */
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com */) { // code 11540
+bool Game_Interpreter_Map::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com */) { // code
+                                                                                         // 11540
 	Game_System::PlayMemorizedBGM();
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeSystemBGM(RPG::EventCommand const& com) { //code 10660
+bool Game_Interpreter_Map::CommandChangeSystemBGM(RPG::EventCommand const& com) { // code 10660
 	RPG::Music music;
 	int context = com.parameters[0];
 	music.name = com.string;
@@ -539,7 +521,7 @@ bool Game_Interpreter_Map::CommandChangeSystemBGM(RPG::EventCommand const& com) 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeSystemSFX(RPG::EventCommand const& com) { //code 10670
+bool Game_Interpreter_Map::CommandChangeSystemSFX(RPG::EventCommand const& com) { // code 10670
 	RPG::Sound sound;
 	int context = com.parameters[0];
 	sound.name = com.string;
@@ -582,8 +564,8 @@ bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 	// TODO: if in battle return true
 	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing ||
-		Game_Message::visible) {
-			return false;
+	    Game_Message::visible) {
+		return false;
 	}
 
 	int map_id = com.parameters[0];
@@ -600,158 +582,156 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing || Game_Message::visible)
-		return false;
+	if (Game_Temp::transition_processing || Game_Message::visible) return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
 
-	switch(com.parameters[0]) {
-		case -1:
-			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
-				Game_System::Transition_TeleportErase);
-			return true;
-		case 0:
-			Game_Temp::transition_type = Graphics::TransitionFadeOut;
-			return true;
-		case 1:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
-			return true;
-		case 2:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
-			return true;
-		case 3:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
-			return true;
-		case 4:
-			Game_Temp::transition_type = Graphics::TransitionBlindClose;
-			return true;
-		case 5:
-			Game_Temp::transition_type = Graphics::TransitionVerticalStripesOut;
-			return true;
-		case 6:
-			Game_Temp::transition_type = Graphics::TransitionHorizontalStripesOut;
-			return true;
-		case 7:
-			Game_Temp::transition_type = Graphics::TransitionBorderToCenterOut;
-			return true;
-		case 8:
-			Game_Temp::transition_type = Graphics::TransitionCenterToBorderOut;
-			return true;
-		case 9:
-			Game_Temp::transition_type = Graphics::TransitionScrollUpOut;
-			return true;
-		case 10:
-			Game_Temp::transition_type = Graphics::TransitionScrollDownOut;
-			return true;
-		case 11:
-			Game_Temp::transition_type = Graphics::TransitionScrollLeftOut;
-			return true;
-		case 12:
-			Game_Temp::transition_type = Graphics::TransitionScrollRightOut;
-			return true;
-		case 13:
-			Game_Temp::transition_type = Graphics::TransitionVerticalDivision;
-			return true;
-		case 14:
-			Game_Temp::transition_type = Graphics::TransitionHorizontalDivision;
-			return true;
-		case 15:
-			Game_Temp::transition_type = Graphics::TransitionCrossDivision;
-			return true;
-		case 16:
-			Game_Temp::transition_type = Graphics::TransitionZoomIn;
-			return true;
-		case 17:
-			Game_Temp::transition_type = Graphics::TransitionMosaicOut;
-			return true;
-		case 18:
-			Game_Temp::transition_type = Graphics::TransitionWaveOut;
-			return true;
-		case 19:
-			Game_Temp::transition_type = Graphics::TransitionErase;
-			return true;
-		default:
-			Game_Temp::transition_type = Graphics::TransitionNone;
-			return true;
+	switch (com.parameters[0]) {
+	case -1:
+		Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+		    Game_System::Transition_TeleportErase);
+		return true;
+	case 0:
+		Game_Temp::transition_type = Graphics::TransitionFadeOut;
+		return true;
+	case 1:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
+		return true;
+	case 2:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
+		return true;
+	case 3:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
+		return true;
+	case 4:
+		Game_Temp::transition_type = Graphics::TransitionBlindClose;
+		return true;
+	case 5:
+		Game_Temp::transition_type = Graphics::TransitionVerticalStripesOut;
+		return true;
+	case 6:
+		Game_Temp::transition_type = Graphics::TransitionHorizontalStripesOut;
+		return true;
+	case 7:
+		Game_Temp::transition_type = Graphics::TransitionBorderToCenterOut;
+		return true;
+	case 8:
+		Game_Temp::transition_type = Graphics::TransitionCenterToBorderOut;
+		return true;
+	case 9:
+		Game_Temp::transition_type = Graphics::TransitionScrollUpOut;
+		return true;
+	case 10:
+		Game_Temp::transition_type = Graphics::TransitionScrollDownOut;
+		return true;
+	case 11:
+		Game_Temp::transition_type = Graphics::TransitionScrollLeftOut;
+		return true;
+	case 12:
+		Game_Temp::transition_type = Graphics::TransitionScrollRightOut;
+		return true;
+	case 13:
+		Game_Temp::transition_type = Graphics::TransitionVerticalDivision;
+		return true;
+	case 14:
+		Game_Temp::transition_type = Graphics::TransitionHorizontalDivision;
+		return true;
+	case 15:
+		Game_Temp::transition_type = Graphics::TransitionCrossDivision;
+		return true;
+	case 16:
+		Game_Temp::transition_type = Graphics::TransitionZoomIn;
+		return true;
+	case 17:
+		Game_Temp::transition_type = Graphics::TransitionMosaicOut;
+		return true;
+	case 18:
+		Game_Temp::transition_type = Graphics::TransitionWaveOut;
+		return true;
+	case 19:
+		Game_Temp::transition_type = Graphics::TransitionErase;
+		return true;
+	default:
+		Game_Temp::transition_type = Graphics::TransitionNone;
+		return true;
 	}
 }
 
 bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing || Game_Message::visible)
-		return false;
+	if (Game_Temp::transition_processing || Game_Message::visible) return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
 
-	switch(com.parameters[0]) {
-		case -1:
-			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
-				Game_System::Transition_TeleportShow);
-			return true;
-		case 0:
-			Game_Temp::transition_type = Graphics::TransitionFadeIn;
-			return true;
-		case 1:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
-			return true;
-		case 2:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
-			return true;
-		case 3:
-			Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
-			return true;
-		case 4:
-			Game_Temp::transition_type = Graphics::TransitionBlindOpen;
-			return true;
-		case 5:
-			Game_Temp::transition_type = Graphics::TransitionVerticalStripesIn;
-			return true;
-		case 6:
-			Game_Temp::transition_type = Graphics::TransitionHorizontalStripesIn;
-			return true;
-		case 7:
-			Game_Temp::transition_type = Graphics::TransitionBorderToCenterIn;
-			return true;
-		case 8:
-			Game_Temp::transition_type = Graphics::TransitionCenterToBorderIn;
-			return true;
-		case 9:
-			Game_Temp::transition_type = Graphics::TransitionScrollUpIn;
-			return true;
-		case 10:
-			Game_Temp::transition_type = Graphics::TransitionScrollDownIn;
-			return true;
-		case 11:
-			Game_Temp::transition_type = Graphics::TransitionScrollLeftIn;
-			return true;
-		case 12:
-			Game_Temp::transition_type = Graphics::TransitionScrollRightIn;
-			return true;
-		case 13:
-			Game_Temp::transition_type = Graphics::TransitionVerticalCombine;
-			return true;
-		case 14:
-			Game_Temp::transition_type = Graphics::TransitionHorizontalCombine;
-			return true;
-		case 15:
-			Game_Temp::transition_type = Graphics::TransitionCrossCombine;
-			return true;
-		case 16:
-			Game_Temp::transition_type = Graphics::TransitionZoomOut;
-			return true;
-		case 17:
-			Game_Temp::transition_type = Graphics::TransitionMosaicIn;
-			return true;
-		case 18:
-			Game_Temp::transition_type = Graphics::TransitionWaveIn;
-			return true;
-		case 19:
-			Game_Temp::transition_type = Graphics::TransitionErase;
-			return true;
-		default:
-			Game_Temp::transition_type = Graphics::TransitionNone;
-			return true;
+	switch (com.parameters[0]) {
+	case -1:
+		Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+		    Game_System::Transition_TeleportShow);
+		return true;
+	case 0:
+		Game_Temp::transition_type = Graphics::TransitionFadeIn;
+		return true;
+	case 1:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
+		return true;
+	case 2:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
+		return true;
+	case 3:
+		Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
+		return true;
+	case 4:
+		Game_Temp::transition_type = Graphics::TransitionBlindOpen;
+		return true;
+	case 5:
+		Game_Temp::transition_type = Graphics::TransitionVerticalStripesIn;
+		return true;
+	case 6:
+		Game_Temp::transition_type = Graphics::TransitionHorizontalStripesIn;
+		return true;
+	case 7:
+		Game_Temp::transition_type = Graphics::TransitionBorderToCenterIn;
+		return true;
+	case 8:
+		Game_Temp::transition_type = Graphics::TransitionCenterToBorderIn;
+		return true;
+	case 9:
+		Game_Temp::transition_type = Graphics::TransitionScrollUpIn;
+		return true;
+	case 10:
+		Game_Temp::transition_type = Graphics::TransitionScrollDownIn;
+		return true;
+	case 11:
+		Game_Temp::transition_type = Graphics::TransitionScrollLeftIn;
+		return true;
+	case 12:
+		Game_Temp::transition_type = Graphics::TransitionScrollRightIn;
+		return true;
+	case 13:
+		Game_Temp::transition_type = Graphics::TransitionVerticalCombine;
+		return true;
+	case 14:
+		Game_Temp::transition_type = Graphics::TransitionHorizontalCombine;
+		return true;
+	case 15:
+		Game_Temp::transition_type = Graphics::TransitionCrossCombine;
+		return true;
+	case 16:
+		Game_Temp::transition_type = Graphics::TransitionZoomOut;
+		return true;
+	case 17:
+		Game_Temp::transition_type = Graphics::TransitionMosaicIn;
+		return true;
+	case 18:
+		Game_Temp::transition_type = Graphics::TransitionWaveIn;
+		return true;
+	case 19:
+		Game_Temp::transition_type = Graphics::TransitionErase;
+		return true;
+	default:
+		Game_Temp::transition_type = Graphics::TransitionNone;
+		return true;
 	}
 }
 
@@ -796,15 +776,15 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	picture->SetTransition(0);
 
 	switch (effect) {
-		case 0:
-			picture->StopEffects();
-			break;
-		case 1:
-			picture->SetRotationEffect(speed);
-			break;
-		case 2:
-			picture->SetWaverEffect(speed);
-			break;
+	case 0:
+		picture->StopEffects();
+		break;
+	case 1:
+		picture->SetRotationEffect(speed);
+		break;
+	case 2:
+		picture->SetWaverEffect(speed);
+		break;
 	}
 
 	return true;
@@ -847,19 +827,18 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	picture->SetTransition(tenths);
 
 	switch (effect) {
-		case 0:
-			picture->StopEffects();
-			break;
-		case 1:
-			picture->SetRotationEffect(speed);
-			break;
-		case 2:
-			picture->SetWaverEffect(speed);
-			break;
+	case 0:
+		picture->StopEffects();
+		break;
+	case 1:
+		picture->SetRotationEffect(speed);
+		break;
+	case 2:
+		picture->SetWaverEffect(speed);
+		break;
 	}
 
-	if (wait)
-		SetupWait(tenths);
+	if (wait) SetupWait(tenths);
 
 	return true;
 }
@@ -885,14 +864,15 @@ bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeScreenTransitions(RPG::EventCommand const& com) { // code 10690
+bool Game_Interpreter_Map::CommandChangeScreenTransitions(RPG::EventCommand const& com) { // code
+                                                                                          // 10690
 	Game_System::SetTransition(com.parameters[0], com.parameters[1]);
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandChangeEventLocation(RPG::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
-	Game_Character *event = GetCharacter(event_id);
+	Game_Character* event = GetCharacter(event_id);
 	if (event != NULL) {
 		int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 		int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -905,8 +885,8 @@ bool Game_Interpreter_Map::CommandTradeEventLocations(RPG::EventCommand const& c
 	int event1_id = com.parameters[0];
 	int event2_id = com.parameters[1];
 
-	Game_Character *event1 = GetCharacter(event1_id);
-	Game_Character *event2 = GetCharacter(event2_id);
+	Game_Character* event1 = GetCharacter(event1_id);
+	Game_Character* event2 = GetCharacter(event2_id);
 
 	if (event1 != NULL && event2 != NULL) {
 		int x1 = event1->GetX();
@@ -928,21 +908,20 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 	bool visible, battle;
 
 	switch (com.parameters[0]) {
-		case 0:
-			seconds = ValueOrVariable(com.parameters[1],
-									  com.parameters[2]);
-			Main_Data::game_party->SetTimer(timer_id, seconds);
-			break;
-		case 1:
-			visible = com.parameters[3] != 0;
-			battle = com.parameters[4] != 0;
-			Main_Data::game_party->StartTimer(timer_id, visible, battle);
-			break;
-		case 2:
-			Main_Data::game_party->StopTimer(timer_id);
-			break;
-		default:
-			return false;
+	case 0:
+		seconds = ValueOrVariable(com.parameters[1], com.parameters[2]);
+		Main_Data::game_party->SetTimer(timer_id, seconds);
+		break;
+	case 1:
+		visible = com.parameters[3] != 0;
+		battle = com.parameters[4] != 0;
+		Main_Data::game_party->StartTimer(timer_id, visible, battle);
+		break;
+	case 2:
+		Main_Data::game_party->StopTimer(timer_id);
+		break;
+	default:
+		return false;
 	}
 	return true;
 }
@@ -957,20 +936,16 @@ bool Game_Interpreter_Map::CommandChangePBG(RPG::EventCommand const& com) { // c
 	int horz_speed = com.parameters[3];
 	bool vert_auto = com.parameters[4] != 0;
 	int vert_speed = com.parameters[5];
-	Game_Map::SetParallaxScroll(horz, vert,
-								horz_auto, vert_auto,
-								horz_speed, vert_speed);
+	Game_Map::SetParallaxScroll(horz, vert, horz_auto, vert_auto, horz_speed, vert_speed);
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
 	int label_id = com.parameters[0];
 
-	for (int idx = 0; (size_t) idx < list.size(); idx++) {
-		if (list[idx].code != Cmd::Label)
-			continue;
-		if (list[idx].parameters[0] != label_id)
-			continue;
+	for (int idx = 0; (size_t)idx < list.size(); idx++) {
+		if (list[idx].code != Cmd::Label) continue;
+		if (list[idx].parameters[0] != label_id) continue;
 		index = idx;
 		break;
 	}
@@ -986,12 +961,9 @@ bool Game_Interpreter_Map::CommandEndLoop(RPG::EventCommand const& com) { // cod
 	int indent = com.indent;
 
 	for (int idx = index; idx >= 0; idx--) {
-		if (list[idx].indent > indent)
-			continue;
-		if (list[idx].indent < indent)
-			return false;
-		if (list[idx].code != Cmd::Loop)
-			continue;
+		if (list[idx].indent > indent) continue;
+		if (list[idx].indent < indent) return false;
+		if (list[idx].code != Cmd::Loop) continue;
 		index = idx;
 		break;
 	}
@@ -1009,7 +981,7 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 		route->skippable = com.parameters[3] != 0;
 
 		std::vector<int>::const_iterator it;
-		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
+		for (it = com.parameters.begin() + 4; it < com.parameters.end();)
 			route->move_commands.push_back(DecodeMove(it));
 
 		event->ForceMoveRoute(route, move_freq, this);
@@ -1021,20 +993,20 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
 
 	switch (com.parameters[0]) {
-		case 0:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = true;
-			break;
-		case 1:
-			Game_Temp::shop_buys = true;
-			Game_Temp::shop_sells = false;
-			break;
-		case 2:
-			Game_Temp::shop_buys = false;
-			Game_Temp::shop_sells = true;
-			break;
-		default:
-			return false;
+	case 0:
+		Game_Temp::shop_buys = true;
+		Game_Temp::shop_sells = true;
+		break;
+	case 1:
+		Game_Temp::shop_buys = true;
+		Game_Temp::shop_sells = false;
+		break;
+	case 2:
+		Game_Temp::shop_buys = false;
+		Game_Temp::shop_sells = true;
+		break;
+	default:
+		return false;
 	}
 
 	Game_Temp::shop_type = com.parameters[1];
@@ -1059,10 +1031,8 @@ bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com 
 		return true;
 	}
 
-	if (!SkipTo(Game_Temp::shop_transaction
-				? Cmd::Transaction
-				: Cmd::NoTransaction,
-				Cmd::EndShop)) {
+	if (!SkipTo(Game_Temp::shop_transaction ? Cmd::Transaction : Cmd::NoTransaction,
+	            Cmd::EndShop)) {
 		return false;
 	}
 
@@ -1088,39 +1058,35 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	std::ostringstream out;
 
 	switch (inn_type) {
-		case 0:
-			out << Data::terms.inn_a_greeting_1
-				<< " " << Game_Temp::inn_price
-				<< " " << Data::terms.gold
-				<< Data::terms.inn_a_greeting_2;
-			Game_Message::texts.push_back(out.str());
-			Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
-			break;
-		case 1:
-			out << Data::terms.inn_b_greeting_1
-				<< " " << Game_Temp::inn_price
-				<< " " << Data::terms.gold
-				<< Data::terms.inn_b_greeting_2;
-			Game_Message::texts.push_back(out.str());
-			Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
-			break;
-		default:
-			return false;
+	case 0:
+		out << Data::terms.inn_a_greeting_1 << " " << Game_Temp::inn_price << " "
+		    << Data::terms.gold << Data::terms.inn_a_greeting_2;
+		Game_Message::texts.push_back(out.str());
+		Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
+		break;
+	case 1:
+		out << Data::terms.inn_b_greeting_1 << " " << Game_Temp::inn_price << " "
+		    << Data::terms.gold << Data::terms.inn_b_greeting_2;
+		Game_Message::texts.push_back(out.str());
+		Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
+		break;
+	default:
+		return false;
 	}
 
 	Game_Message::choice_start = Game_Message::texts.size();
 
 	switch (inn_type) {
-		case 0:
-			Game_Message::texts.push_back(Data::terms.inn_a_accept);
-			Game_Message::texts.push_back(Data::terms.inn_a_cancel);
-			break;
-		case 1:
-			Game_Message::texts.push_back(Data::terms.inn_b_accept);
-			Game_Message::texts.push_back(Data::terms.inn_b_cancel);
-			break;
-		default:
-			return false;
+	case 0:
+		Game_Message::texts.push_back(Data::terms.inn_a_accept);
+		Game_Message::texts.push_back(Data::terms.inn_a_cancel);
+		break;
+	case 1:
+		Game_Message::texts.push_back(Data::terms.inn_b_accept);
+		Game_Message::texts.push_back(Data::terms.inn_b_cancel);
+		break;
+	default:
+		return false;
 	}
 
 	Game_Message::choice_max = 2;
@@ -1146,16 +1112,14 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 
 	Game_Temp::inn_calling = false;
 
-	if (inn_stay)
-		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
+	if (inn_stay) Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
 			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
-				 i != actors.end();
-				 ++i) {
+			for (std::vector<Game_Actor*>::const_iterator i = actors.begin(); i != actors.end();
+			     ++i) {
 				Game_Actor* actor = *i;
 				actor->ChangeHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
@@ -1168,8 +1132,7 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 		return true;
 	}
 
-	if (!SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
-		return false;
+	if (!SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn)) return false;
 	index++;
 	return true;
 }
@@ -1188,7 +1151,8 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
+bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code
+                                                                                            // 12510
 	CloseMessageWindow();
 	Game_Temp::to_title = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
@@ -1210,34 +1174,35 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
-	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
-												 com.parameters[1]);
-	Game_Character *player;
+	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0], com.parameters[1]);
+	Game_Character* player;
 	switch (com.parameters[2]) {
-		case 0:
-			player = Main_Data::game_player.get();
-			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
-			break;
-		case 1:
-			Game_Temp::battle_terrain_id = 0;
-			Game_Temp::battle_background = com.string;
-			if (Player::engine == Player::EngineRpg2k3) {
-				Game_Temp::battle_formation = com.parameters[7];
-			}
-			break;
-		case 2:
-			Game_Temp::battle_terrain_id = com.parameters[8];
-			Game_Temp::battle_background = Data::terrains[com.parameters[8] - 1].background_name;
-			break;
-		default:
-			return false;
+	case 0:
+		player = Main_Data::game_player.get();
+		Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
+		break;
+	case 1:
+		Game_Temp::battle_terrain_id = 0;
+		Game_Temp::battle_background = com.string;
+		if (Player::engine == Player::EngineRpg2k3) {
+			Game_Temp::battle_formation = com.parameters[7];
+		}
+		break;
+	case 2:
+		Game_Temp::battle_terrain_id = com.parameters[8];
+		Game_Temp::battle_background = Data::terrains[com.parameters[8] - 1].background_name;
+		break;
+	default:
+		return false;
 	}
-	Game_Temp::battle_escape_mode = com.parameters[3]; // disallow, end event processing, custom handler
+	Game_Temp::battle_escape_mode =
+	    com.parameters[3]; // disallow, end event processing, custom handler
 	Game_Temp::battle_defeat_mode = com.parameters[4]; // game over, custom handler
 	Game_Temp::battle_first_strike = com.parameters[5] != 0;
 
 	if (Player::engine == Player::EngineRpg2k3)
-		Game_Temp::battle_mode = com.parameters[6]; // normal, initiative, surround, back attack, pincer
+		Game_Temp::battle_mode =
+		    com.parameters[6]; // normal, initiative, surround, back attack, pincer
 	else
 		Game_Temp::battle_mode = 0;
 
@@ -1246,7 +1211,8 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	CloseMessageWindow();
 	Game_Temp::battle_calling = true;
 
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
+	SetContinuation(
+	    static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
 	return false;
 }
 
@@ -1254,47 +1220,44 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 	continuation = NULL;
 
 	switch (Game_Temp::battle_result) {
-		case Game_Temp::BattleVictory:
-			if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
-				// Was an event battle with no handlers
-				index++;
-				return false;
-			}
+	case Game_Temp::BattleVictory:
+		if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
+			// Was an event battle with no handlers
 			index++;
+			return false;
+		}
+		index++;
+		return true;
+	case Game_Temp::BattleEscape:
+		switch (Game_Temp::battle_escape_mode) {
+		case 0: // disallowed - shouldn't happen
 			return true;
-		case Game_Temp::BattleEscape:
-			switch (Game_Temp::battle_escape_mode) {
-				case 0:	// disallowed - shouldn't happen
-					return true;
-				case 1:
-					return CommandEndEventProcessing(com);
-				case 2:
-					if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle))
-						return false;
-					index++;
-					return true;
-				default:
-					return false;
-			}
-		case Game_Temp::BattleDefeat:
-			switch (Game_Temp::battle_defeat_mode) {
-				case 0:
-					return CommandGameOver(com);
-				case 1:
-					if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle))
-						return false;
-					index++;
-					return true;
-				default:
-					return false;
-			}
-		case Game_Temp::BattleAbort:
-			if (!SkipTo(Cmd::EndBattle))
-				return false;
+		case 1:
+			return CommandEndEventProcessing(com);
+		case 2:
+			if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle)) return false;
 			index++;
 			return true;
 		default:
 			return false;
+		}
+	case Game_Temp::BattleDefeat:
+		switch (Game_Temp::battle_defeat_mode) {
+		case 0:
+			return CommandGameOver(com);
+		case 1:
+			if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle)) return false;
+			index++;
+			return true;
+		default:
+			return false;
+		}
+	case Game_Temp::BattleAbort:
+		if (!SkipTo(Cmd::EndBattle)) return false;
+		index++;
+		return true;
+	default:
+		return false;
 	}
 }
 
@@ -1308,9 +1271,7 @@ bool Game_Interpreter_Map::CommandTeleportTargets(RPG::EventCommand const& com) 
 
 	int x = com.parameters[2];
 	int y = com.parameters[3];
-	int switch_id = (com.parameters[4] != 0)
-		? com.parameters[5]
-		: -1;
+	int switch_id = (com.parameters[4] != 0) ? com.parameters[5] : -1;
 	Game_Targets::AddTeleportTarget(map_id, x, y, switch_id);
 	return true;
 }
@@ -1319,9 +1280,7 @@ bool Game_Interpreter_Map::CommandEscapeTarget(RPG::EventCommand const& com) { /
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
-	int switch_id = (com.parameters[3] != 0)
-		? com.parameters[4]
-		: -1;
+	int switch_id = (com.parameters[3] != 0) ? com.parameters[4] : -1;
 	Game_Targets::SetEscapeTarget(map_id, x, y, switch_id);
 	return true;
 }
@@ -1336,10 +1295,8 @@ bool Game_Interpreter_Map::CommandSpriteTransparency(RPG::EventCommand const& co
 
 bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { // code 11320
 	int event_id = com.parameters[0];
-	Color color(com.parameters[1] << 3,
-				com.parameters[2] << 3,
-				com.parameters[3] << 3,
-				com.parameters[4] << 3);
+	Color color(com.parameters[1] << 3, com.parameters[2] << 3, com.parameters[3] << 3,
+	            com.parameters[4] << 3);
 	int tenths = com.parameters[5];
 	bool wait = com.parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);
@@ -1348,16 +1305,14 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 		event->SetFlashColor(color);
 		event->SetFlashTimeLeft(tenths * DEFAULT_FPS / 10);
 
-		if (wait)
-			SetupWait(tenths);
+		if (wait) SetupWait(tenths);
 	}
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandEraseEvent(RPG::EventCommand const& /* com */) { // code 12320
-	if (event_id == 0)
-		return true;
+	if (event_id == 0) return true;
 
 	tEventHash& events = Game_Map::GetEvents();
 	events[event_id]->SetActive(false);
@@ -1369,10 +1324,9 @@ bool Game_Interpreter_Map::CommandChangeMapTileset(RPG::EventCommand const& com)
 	int chipset_id = com.parameters[0];
 	Game_Map::SetChipset(chipset_id);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 
-	if (!scene)
-		return true;
+	if (!scene) return true;
 
 	scene->spriteset->ChipsetUpdated();
 
@@ -1383,26 +1337,26 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	int evt_id;
 	int event_page;
 
-	if (child_interpreter)
-		return false;
+	if (child_interpreter) return false;
 
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
 
 	switch (com.parameters[0]) {
-		case 0: // Common Event
-			evt_id = com.parameters[1];
-			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
-			return true;
-		case 1: // Map Event
-			evt_id = com.parameters[1];
-			event_page = com.parameters[2];
-			break;
-		case 2: // Indirect
-			evt_id = Game_Variables[com.parameters[1]];
-			event_page = Game_Variables[com.parameters[2]];
-			break;
-		default:
-			return false;
+	case 0: // Common Event
+		evt_id = com.parameters[1];
+		child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0,
+		                         Data::commonevents[evt_id - 1].ID, -2);
+		return true;
+	case 1: // Map Event
+		evt_id = com.parameters[1];
+		event_page = com.parameters[2];
+		break;
+	case 2: // Indirect
+		evt_id = Game_Variables[com.parameters[1]];
+		event_page = Game_Variables[com.parameters[2]];
+		break;
+	default:
+		return false;
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
@@ -1422,7 +1376,8 @@ bool Game_Interpreter_Map::CommandChangeEncounterRate(RPG::EventCommand const& c
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code 11340
+bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code
+                                                                                            // 11340
 	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); ++it) {
 		if (!(*it)->IsMoveRouteRepeated()) {
@@ -1463,14 +1418,14 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	int time_id = 0;
 
 	bool check_decision = com.parameters[3] != 0;
-	bool check_cancel   = com.parameters[4] != 0;
-	bool check_numbers  = false;
-	bool check_arith    = false;
-	bool check_shift    = false;
-	bool check_down     = false;
-	bool check_left     = false;
-	bool check_right    = false;
-	bool check_up       = false;
+	bool check_cancel = com.parameters[4] != 0;
+	bool check_numbers = false;
+	bool check_arith = false;
+	bool check_shift = false;
+	bool check_down = false;
+	bool check_left = false;
+	bool check_right = false;
+	bool check_up = false;
 	int result = 0;
 
 	if (Player::engine == Player::EngineRpg2k) {
@@ -1483,13 +1438,13 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		size_t param_size = com.parameters.size();
 
 		// Optimization: If missing -> default value
-		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
-		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
-		check_shift    = param_size > 9 ? com.parameters[9] != 0 : true;
-		check_down     = param_size > 10 ? com.parameters[10] != 0 : true;
-		check_left     = param_size > 11 ? com.parameters[11] != 0 : true;
-		check_right    = param_size > 12 ? com.parameters[12] != 0 : true;
-		check_up       = param_size > 13 ? com.parameters[13] != 0 : true;
+		check_numbers = param_size > 5 ? com.parameters[5] != 0 : false;
+		check_arith = param_size > 6 ? com.parameters[6] != 0 : false;
+		check_shift = param_size > 9 ? com.parameters[9] != 0 : true;
+		check_down = param_size > 10 ? com.parameters[10] != 0 : true;
+		check_left = param_size > 11 ? com.parameters[11] != 0 : true;
+		check_right = param_size > 12 ? com.parameters[12] != 0 : true;
+		check_up = param_size > 13 ? com.parameters[13] != 0 : true;
 
 		if (param_size > 8) {
 			time_id = com.parameters[7];
@@ -1537,16 +1492,13 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	Game_Variables[var_id] = result;
 
-	if (!wait)
-		return true;
+	if (!wait) return true;
 
 	button_timer++;
 
-	if (result == 0)
-		return false;
+	if (result == 0) return false;
 
-	if (time)
-		Game_Variables[time_id] = button_timer;
+	if (time) Game_Variables[time_id] = button_timer;
 
 	button_timer = 0;
 
@@ -1555,7 +1507,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type)com.parameters[0];
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	const std::string& name = com.string;
 	int vehicle_index = com.parameters[1];
@@ -1565,14 +1517,15 @@ bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandEnterExitVehicle(RPG::EventCommand const& /* com */) { // code 10840
+bool Game_Interpreter_Map::CommandEnterExitVehicle(RPG::EventCommand const& /* com */) { // code
+                                                                                         // 10840
 	Main_Data::game_player->GetOnOffVehicle();
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type)com.parameters[0];
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	int map_id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -1587,9 +1540,8 @@ bool Game_Interpreter_Map::CommandTileSubstitution(RPG::EventCommand const& com)
 	bool upper = com.parameters[0] != 0;
 	int old_id = com.parameters[1];
 	int new_id = com.parameters[2];
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+	if (!scene) return true;
 
 	if (upper)
 		scene->spriteset->SubstituteUp(old_id, new_id);
@@ -1605,8 +1557,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	int speed;
 	bool wait = false;
 
-	if (active)
-		return !Game_Map::IsPanWaiting();
+	if (active) return !Game_Map::IsPanWaiting();
 
 	switch (com.parameters[0]) {
 	case 0: // Lock
@@ -1633,16 +1584,13 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) { // code 10500
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	int atk = com.parameters[2];
 	int def = com.parameters[3];
 	int spi = com.parameters[4];
 	int var = com.parameters[5];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
@@ -1656,24 +1604,21 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		result = std::max(0, result);
 		actor->ChangeHp(-result);
 
-		if (com.parameters[6] != 0)
-			Game_Variables[com.parameters[7]] = result;
+		if (com.parameters[6] != 0) Game_Variables[com.parameters[7]] = result;
 	}
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
-	if (active)
-		return !Main_Data::game_screen->IsBattleAnimationWaiting();
+	if (active) return !Main_Data::game_screen->IsBattleAnimationWaiting();
 
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
 	bool wait = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
-	if (evt_id == Game_Character::CharThisEvent)
-		evt_id = event_id;
+	if (evt_id == Game_Character::CharThisEvent) evt_id = event_id;
 
 	Main_Data::game_screen->ShowBattleAnimation(animation_id, evt_id, global);
 
@@ -1694,14 +1639,14 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 	int cur_exp = actor->GetExp();
 
 	switch (stats_mode) {
-		case 2:
-			actor->SetClass(class_id);
-			actor->SetLevel(1);
-			actor->SetExp(0);
-			break;
-		case 3:
-			actor->SetClass(class_id);
-			break;
+	case 2:
+		actor->SetClass(class_id);
+		actor->SetLevel(1);
+		actor->SetExp(0);
+		break;
+	case 3:
+		actor->SetClass(class_id);
+		break;
 	}
 
 	int cur_hp = actor->GetBaseMaxHp();
@@ -1712,22 +1657,21 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 	int cur_agi = actor->GetBaseAgi();
 
 	switch (stats_mode) {
-		case 1:
-			cur_hp /= 2;
-			cur_sp /= 2;
-			cur_atk /= 2;
-			cur_def /= 2;
-			cur_spi /= 2;
-			cur_agi /= 2;
-			break;
+	case 1:
+		cur_hp /= 2;
+		cur_sp /= 2;
+		cur_atk /= 2;
+		cur_def /= 2;
+		cur_spi /= 2;
+		cur_agi /= 2;
+		break;
 	}
 
 	actor->SetClass(class_id);
 	if (level1) {
 		actor->SetLevel(1);
 		actor->SetExp(0);
-	}
-	else {
+	} else {
 		actor->SetExp(cur_exp);
 		actor->SetLevel(cur_lvl);
 	}
@@ -1742,25 +1686,21 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 	int level = actor->GetLevel();
 
 	switch (skill_mode) {
-		case 0:
-			break;
-		case 1:
-			while (!actor->GetSkills().empty())
-				actor->UnlearnSkill(actor->GetSkills()[0]);
-			break;
-		case 2:
-		{
-			const RPG::Class& klass = Data::classes[class_id - 1];
-			while (!actor->GetSkills().empty())
-				actor->UnlearnSkill(actor->GetSkills()[0]);
-			std::vector<RPG::Learning>::const_iterator it;
-			for (it = klass.skills.begin(); it != klass.skills.end(); ++it) {
-				const RPG::Learning& learn = *it;
-				if (level >= learn.level)
-					actor->LearnSkill(learn.skill_id);
-			}
-			break;
+	case 0:
+		break;
+	case 1:
+		while (!actor->GetSkills().empty()) actor->UnlearnSkill(actor->GetSkills()[0]);
+		break;
+	case 2: {
+		const RPG::Class& klass = Data::classes[class_id - 1];
+		while (!actor->GetSkills().empty()) actor->UnlearnSkill(actor->GetSkills()[0]);
+		std::vector<RPG::Learning>::const_iterator it;
+		for (it = klass.skills.begin(); it != klass.skills.end(); ++it) {
+			const RPG::Learning& learn = *it;
+			if (level >= learn.level) actor->LearnSkill(learn.skill_id);
 		}
+		break;
+	}
 	}
 
 	if (show && level > cur_lvl) {
@@ -1771,10 +1711,10 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
+bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code
+                                                                                        // 11350
 	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		(*it)->CancelMoveRoute(this);
+	for (it = pending.begin(); it != pending.end(); ++it) (*it)->CancelMoveRoute(this);
 	pending.clear();
 	return true;
 }
@@ -1790,152 +1730,149 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 	Game_Character* character;
 
 	switch (com.parameters[0]) {
+	case 0:
+		// Switch
+		result = Game_Switches[com.parameters[1]] == (com.parameters[2] == 0);
+		break;
+	case 1:
+		// Variable
+		value1 = Game_Variables[com.parameters[1]];
+		if (com.parameters[2] == 0) {
+			value2 = com.parameters[3];
+		} else {
+			value2 = Game_Variables[com.parameters[3]];
+		}
+		switch (com.parameters[4]) {
 		case 0:
-			// Switch
-			result = Game_Switches[com.parameters[1]] == (com.parameters[2] == 0);
+			// Equal to
+			result = (value1 == value2);
 			break;
 		case 1:
-			// Variable
-			value1 = Game_Variables[com.parameters[1]];
-			if (com.parameters[2] == 0) {
-				value2 = com.parameters[3];
-			} else {
-				value2 = Game_Variables[com.parameters[3]];
-			}
-			switch (com.parameters[4]) {
-				case 0:
-					// Equal to
-					result = (value1 == value2);
-					break;
-				case 1:
-					// Greater than or equal
-					result = (value1 >= value2);
-					break;
-				case 2:
-					// Less than or equal
-					result = (value1 <= value2);
-					break;
-				case 3:
-					// Greater than
-					result = (value1 > value2);
-					break;
-				case 4:
-					// Less than
-					result = (value1 < value2);
-					break;
-				case 5:
-					// Different
-					result = (value1 != value2);
-					break;
-			}
+			// Greater than or equal
+			result = (value1 >= value2);
 			break;
 		case 2:
-			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
-			value2 = com.parameters[1] * DEFAULT_FPS;
-			switch (com.parameters[2]) {
-				case 0:
-					result = (value1 >= value2);
-					break;
-				case 1:
-					result = (value1 <= value2);
-					break;
-			}
+			// Less than or equal
+			result = (value1 <= value2);
 			break;
 		case 3:
-			// Gold
-			if (com.parameters[2] == 0) {
-				// Greater than or equal
-				result = (Main_Data::game_party->GetGold() >= com.parameters[1]);
-			} else {
-				// Less than or equal
-				result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
-			}
+			// Greater than
+			result = (value1 > value2);
 			break;
 		case 4:
-			// Item
-			if (com.parameters[2] == 0) {
-				// Having
-				result = Main_Data::game_party->GetItemCount(com.parameters[1]) > 0;
-			} else {
-				// Not having
-				result = Main_Data::game_party->GetItemCount(com.parameters[1]) == 0;
-			}
+			// Less than
+			result = (value1 < value2);
 			break;
 		case 5:
-			// Hero
-			actor_id = com.parameters[1];
-			actor = Game_Actors::GetActor(actor_id);
-			switch (com.parameters[2]) {
-				case 0:
-					// Is actor in party
-					result = Main_Data::game_party->IsActorInParty(actor_id);
-					break;
-				case 1:
-					// Name
-					result = (actor->GetName() == com.string);
-					break;
-				case 2:
-					// Higher or equal level
-					result = (actor->GetLevel() >= com.parameters[3]);
-					break;
-				case 3:
-					// Higher or equal HP
-					result = (actor->GetHp() >= com.parameters[3]);
-					break;
-				case 4:
-					// Is skill learned
-					result = (actor->IsSkillLearned(com.parameters[3]));
-					break;
-				case 5:
-					// Equipped object
-					result = (
-						(actor->GetShieldId() == com.parameters[3]) ||
-						(actor->GetArmorId() == com.parameters[3]) ||
-						(actor->GetHelmetId() == com.parameters[3]) ||
-						(actor->GetAccessoryId() == com.parameters[3]) ||
-						(actor->GetWeaponId() == com.parameters[3])
-					);
-					break;
-				case 6:
-					// Has state
-					result = (actor->HasState(com.parameters[3]));
-					break;
-				default:
-					;
-			}
+			// Different
+			result = (value1 != value2);
+			break;
+		}
+		break;
+	case 2:
+		value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
+		value2 = com.parameters[1] * DEFAULT_FPS;
+		switch (com.parameters[2]) {
+		case 0:
+			result = (value1 >= value2);
+			break;
+		case 1:
+			result = (value1 <= value2);
+			break;
+		}
+		break;
+	case 3:
+		// Gold
+		if (com.parameters[2] == 0) {
+			// Greater than or equal
+			result = (Main_Data::game_party->GetGold() >= com.parameters[1]);
+		} else {
+			// Less than or equal
+			result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
+		}
+		break;
+	case 4:
+		// Item
+		if (com.parameters[2] == 0) {
+			// Having
+			result = Main_Data::game_party->GetItemCount(com.parameters[1]) > 0;
+		} else {
+			// Not having
+			result = Main_Data::game_party->GetItemCount(com.parameters[1]) == 0;
+		}
+		break;
+	case 5:
+		// Hero
+		actor_id = com.parameters[1];
+		actor = Game_Actors::GetActor(actor_id);
+		switch (com.parameters[2]) {
+		case 0:
+			// Is actor in party
+			result = Main_Data::game_party->IsActorInParty(actor_id);
+			break;
+		case 1:
+			// Name
+			result = (actor->GetName() == com.string);
+			break;
+		case 2:
+			// Higher or equal level
+			result = (actor->GetLevel() >= com.parameters[3]);
+			break;
+		case 3:
+			// Higher or equal HP
+			result = (actor->GetHp() >= com.parameters[3]);
+			break;
+		case 4:
+			// Is skill learned
+			result = (actor->IsSkillLearned(com.parameters[3]));
+			break;
+		case 5:
+			// Equipped object
+			result = ((actor->GetShieldId() == com.parameters[3]) ||
+			          (actor->GetArmorId() == com.parameters[3]) ||
+			          (actor->GetHelmetId() == com.parameters[3]) ||
+			          (actor->GetAccessoryId() == com.parameters[3]) ||
+			          (actor->GetWeaponId() == com.parameters[3]));
 			break;
 		case 6:
-			// Orientation of char
-			character = GetCharacter(com.parameters[1]);
-			if (character != NULL) {
-				result = character->GetDirection() == com.parameters[2];
-			}
+			// Has state
+			result = (actor->HasState(com.parameters[3]));
 			break;
-		case 7:
-			// TODO On vehicle
+		default:
+			;
+		}
+		break;
+	case 6:
+		// Orientation of char
+		character = GetCharacter(com.parameters[1]);
+		if (character != NULL) {
+			result = character->GetDirection() == com.parameters[2];
+		}
+		break;
+	case 7:
+		// TODO On vehicle
+		break;
+	case 8:
+		// TODO Key decision initiated this event
+		break;
+	case 9:
+		// TODO BGM Playing
+		break;
+	case 10:
+		value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
+		value2 = com.parameters[1] * DEFAULT_FPS;
+		switch (com.parameters[2]) {
+		case 0:
+			result = (value1 >= value2);
 			break;
-		case 8:
-			// TODO Key decision initiated this event
+		case 1:
+			result = (value1 <= value2);
 			break;
-		case 9:
-			// TODO BGM Playing
-			break;
-		case 10:
-			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
-			value2 = com.parameters[1] * DEFAULT_FPS;
-			switch (com.parameters[2]) {
-				case 0:
-					result = (value1 >= value2);
-					break;
-				case 1:
-					result = (value1 <= value2);
-					break;
-			}
-			break;
+		}
+		break;
 	}
 
-	if (result)
-		return true;
+	if (result) return true;
 
 	return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
 }

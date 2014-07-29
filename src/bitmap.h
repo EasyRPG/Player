@@ -57,7 +57,8 @@ public:
 	 * @param transparent allow transparency on bitmap.
 	 * @param flags bitmap flags.
 	 */
-	static BitmapRef Create(const std::string& filename, bool transparent = true, uint32_t flags = 0);
+	static BitmapRef Create(const std::string& filename, bool transparent = true,
+	                        uint32_t flags = 0);
 
 	/*
 	 * Loads a bitmap from memory.
@@ -67,7 +68,8 @@ public:
 	 * @param transparent allow transparency on bitmap.
 	 * @param flags bitmap flags.
 	 */
-	static BitmapRef Create(const uint8_t* data, unsigned bytes, bool transparent = true, uint32_t flags = 0);
+	static BitmapRef Create(const uint8_t* data, unsigned bytes, bool transparent = true,
+	                        uint32_t flags = 0);
 
 	/**
 	 * Creates a bitmap from another.
@@ -144,7 +146,7 @@ public:
 	 */
 	void SetTransparentColor(Color color);
 
-	static const uint32_t System  = 0x80000000;
+	static const uint32_t System = 0x80000000;
 	static const uint32_t Chipset = 0x40000000;
 
 	/**
@@ -187,9 +189,9 @@ protected:
 	uint8_t* pointer(int x, int y);
 
 	Color GetColor(uint32_t color) const;
-	uint32_t GetUint32Color(const Color &color) const;
-	uint32_t GetUint32Color(uint8_t r, uint8_t  g, uint8_t b, uint8_t a) const;
-	void GetColorComponents(uint32_t color, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &a) const;
+	uint32_t GetUint32Color(const Color& color) const;
+	uint32_t GetUint32Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) const;
+	void GetColorComponents(uint32_t color, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const;
 
 	void AttachBitmapScreen(BitmapScreen* bitmap);
 	void DetachBitmapScreen(BitmapScreen* bitmap);
@@ -210,7 +212,6 @@ protected:
 	void InitBitmap();
 
 public:
-
 	/**
 	 * Creates a surface wrapper around existing pixel data.
 	 *
@@ -220,7 +221,8 @@ public:
 	 * @param pitch surface pitch.
 	 * @param format pixel format.
 	*/
-	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+	static BitmapRef Create(void* pixels, int width, int height, int pitch,
+	                        const DynamicFormat& format);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -253,7 +255,8 @@ public:
 	 * @param dst_rect destination rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity);
+	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect,
+	               int opacity);
 
 	/**
 	 * Blits source bitmap stretched to this one.
@@ -284,7 +287,8 @@ public:
 	 * @param horizontal flip horizontally.
 	 * @param vertical flip vertically.
 	 */
-	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical);
+	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal,
+	              bool vertical);
 
 	/**
 	 * Blits source bitmap scaled, rotated and translated.
@@ -296,7 +300,8 @@ public:
 	 *            to source coordinates.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, int opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect,
+	                   const Matrix& inv, int opacity);
 
 	/**
 	 * Blits source bitmap scaled, rotated and translated.
@@ -313,13 +318,9 @@ public:
 	 * @param dst_pos_y destination origin y.
 	 * @param opacity opacity.
 	 */
-	void TransformBlit(Rect const& dst_rect,
-							   Bitmap const& src, Rect const& src_rect,
-							   double angle,
-							   double scale_x, double scale_y,
-							   int src_pos_x, int src_pos_y,
-							   int dst_pos_x, int dst_pos_y,
-							   int opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, double angle,
+	                   double scale_x, double scale_y, int src_pos_x, int src_pos_y, int dst_pos_x,
+	                   int dst_pos_y, int opacity);
 
 	/**
 	 * Blits source bitmap transparency to this one.
@@ -342,14 +343,15 @@ public:
 	 * @param phase wave phase.
 	 * @param opacity opacity.
 	 */
-	void WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
+	void WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase,
+	               int opacity);
 
 	/**
 	 * Fills entire bitmap with color.
 	 *
 	 * @param color color for filling.
 	 */
-	void Fill(const Color &color);
+	void Fill(const Color& color);
 
 	/**
 	 * Fills bitmap rect with color.
@@ -357,7 +359,7 @@ public:
 	 * @param dst_rect destination rect.
 	 * @param color color for filling.
 	 */
-	void FillRect(Rect const& dst_rect, const Color &color);
+	void FillRect(Rect const& dst_rect, const Color& color);
 
 	/**
 	 * Clears the bitmap with transparent pixels.
@@ -394,7 +396,8 @@ public:
 	 * @param l luminance scale.
 	 * @param lo luminance offset.
 	 */
-	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s, double l, double lo);
+	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s,
+	             double l, double lo);
 
 	/**
 	 * Adjusts bitmap tone.
@@ -405,7 +408,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param tone tone to apply.
 	 */
-	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone);
+	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone& tone);
 
 	/**
 	 * Blends bitmap with color.
@@ -416,7 +419,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param color color to apply.
 	 */
-	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
+	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color);
 
 	/**
 	 * Changes the opacity of a bitmap.
@@ -480,11 +483,9 @@ public:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
-							 const Tone& tone,
-							 double zoom_x, double zoom_y, double angle,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int top_opacity,
+	                 int bottom_opacity, int opacity_split, const Tone& tone, double zoom_x,
+	                 double zoom_y, double angle, int waver_depth, double waver_phase);
 
 	/**
 	 * Blits source bitmap with transformation and opacity scaling.
@@ -494,8 +495,7 @@ public:
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
 	 */
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 int opacity);
+	void EffectsBlit(const Matrix& fwd, Bitmap const& src, Rect const& src_rect, int opacity);
 
 	/**
 	 * Blits source bitmap with transformation and (split) opacity scaling.
@@ -508,8 +508,8 @@ public:
 	 * @param opacity_split boundary between sections,
 	 *                      (zero is bottom edge)
 	 */
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split);
+	void EffectsBlit(const Matrix& fwd, Bitmap const& src, Rect const& src_rect, int top_opacity,
+	                 int bottom_opacity, int opacity_split);
 
 	/**
 	 * Blits source bitmap with scaling, waver and (split) opacity scaling.
@@ -527,10 +527,9 @@ public:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
-							 double zoom_x, double zoom_y,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int top_opacity,
+	                 int bottom_opacity, int opacity_split, double zoom_x, double zoom_y,
+	                 int waver_depth, double waver_phase);
 
 	/**
 	 * Blits source bitmap with waver and (split) opacity scaling.
@@ -546,9 +545,8 @@ public:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int top_opacity,
+	                 int bottom_opacity, int opacity_split, int waver_depth, double waver_phase);
 
 	/**
 	 * Blits source bitmap with waver and opacity scaling.
@@ -561,9 +559,8 @@ public:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int opacity,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity,
+	                 int waver_depth, double waver_phase);
 
 	/**
 	 * Draws text to bitmap.
@@ -574,7 +571,8 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment.
 	 */
-	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(int x, int y, int color, std::string const& text,
+	              Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
@@ -587,7 +585,8 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(int x, int y, int width, int height, int color, std::string const& text,
+	              Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
@@ -597,7 +596,8 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, int color, std::string const& text,
+	              Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
@@ -620,7 +620,8 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text,
+	              Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
@@ -630,7 +631,8 @@ public:
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, Color color, std::string const& text,
+	              Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Gets text drawing font.
@@ -662,11 +664,13 @@ public:
 	 * @param y pixel y.
 	 * @param color pixel color.
 	 */
-	void SetPixel(int x, int y, const Color &color);
+	void SetPixel(int x, int y, const Color& color);
 
 protected:
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	template <class T1, class T2> friend class BitmapUtilsT;
+	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text,
+	                       Text::Alignment align);
+	template <class T1, class T2>
+	friend class BitmapUtilsT;
 	friend class BitmapScreen;
 	friend class BitmapUtils;
 
@@ -677,17 +681,18 @@ protected:
 	/** Font for text drawing. */
 	FontRef font;
 
-    BitmapUtils* Begin(Bitmap const& src) const;
+	BitmapUtils* Begin(Bitmap const& src) const;
 	void End(Bitmap const& src);
 	void RefreshCallback();
 
 	bool editing;
+
 public:
 	Bitmap(int width, int height, bool transparent);
 	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
-	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+	Bitmap(void* pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	static DynamicFormat ChooseFormat(const DynamicFormat& format);
 	static void SetFormat(const DynamicFormat& format);
@@ -706,23 +711,23 @@ public:
 
 protected:
 	/** Bitmap data. */
-	pixman_image_t *bitmap;
+	pixman_image_t* bitmap;
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 
-	void ReadPNG(FILE* stream, const void *data);
-	void ReadXYZ(const uint8_t *data, unsigned len);
-	void ReadXYZ(FILE *stream);
+	void ReadPNG(FILE* stream, const void* data);
+	void ReadXYZ(const uint8_t* data, unsigned len);
+	void ReadXYZ(FILE* stream);
 	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
 	static pixman_image_t* GetSubimage(Bitmap const& src, const Rect& src_rect);
-	static inline void MultiplyAlpha(uint8_t &r, uint8_t &g, uint8_t &b, const uint8_t &a) {
+	static inline void MultiplyAlpha(uint8_t& r, uint8_t& g, uint8_t& b, const uint8_t& a) {
 		r = (uint8_t)((int)r * a / 0xFF);
 		g = (uint8_t)((int)g * a / 0xFF);
 		b = (uint8_t)((int)b * a / 0xFF);
 	}
-	static inline void DivideAlpha(uint8_t &r, uint8_t &g, uint8_t &b, const uint8_t &a) {
+	static inline void DivideAlpha(uint8_t& r, uint8_t& g, uint8_t& b, const uint8_t& a) {
 		if (a == 0)
 			r = g = b = 0;
 		else {

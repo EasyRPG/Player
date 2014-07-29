@@ -18,26 +18,16 @@
 // Headers
 #include "rect.h"
 
-Rect::Rect() :
-	x(0),
-	y(0),
-	width(0),
-	height(0) {
+Rect::Rect() : x(0), y(0), width(0), height(0) {}
+
+Rect::Rect(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
+
+bool Rect::operator==(const Rect& other) const {
+	return x == other.x && y == other.y && width == other.width && height == other.height;
 }
 
-Rect::Rect(int x, int y, int width, int height) :
-	x(x),
-	y(y),
-	width(width),
-	height(height) {
-}
-
-bool Rect::operator==(const Rect &other) const {
-	return	x == other.x && y == other.y && width == other.width && height == other.height;
-}
-
-bool Rect::operator!=(const Rect &other) const {
-	return	x != other.x || y != other.y || width != other.width || height != other.height;
+bool Rect::operator!=(const Rect& other) const {
+	return x != other.x || y != other.y || width != other.width || height != other.height;
 }
 
 void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
@@ -73,16 +63,12 @@ void Rect::Adjust(const Rect& rect) {
 		y = rect.y;
 	}
 
-	if (rect.x + rect.width < x + width)
-		width = rect.x + rect.width - x;
+	if (rect.x + rect.width < x + width) width = rect.x + rect.width - x;
 
-	if (rect.y + rect.height < y + height)
-		height = rect.y + rect.height - y;
+	if (rect.y + rect.height < y + height) height = rect.y + rect.height - y;
 }
 
-bool Rect::IsEmpty() const {
-	return width <= 0 || height <= 0;
-}
+bool Rect::IsEmpty() const { return width <= 0 || height <= 0; }
 
 bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (width <= 0 || height <= 0) return true;
@@ -91,14 +77,14 @@ bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	return false;
 }
 
-bool Rect::IsOutOfBounds(const Rect &src_rect) const {
+bool Rect::IsOutOfBounds(const Rect& src_rect) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= src_rect.x + src_rect.width || y >= src_rect.y + src_rect.height) return true;
 	if (x + width <= src_rect.x || y + height <= src_rect.y) return true;
 	return false;
 }
 
-Rect Rect::GetSubRect(const Rect &src_rect) {
+Rect Rect::GetSubRect(const Rect& src_rect) {
 	Rect rect = src_rect;
 
 	rect.x += x;
@@ -169,4 +155,3 @@ void Rect::Halve() {
 	width /= 2;
 	height /= 2;
 }
-

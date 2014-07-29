@@ -37,7 +37,7 @@ public:
 	 * @param iheight window height.
 	 */
 	Window_ShopNumber(int ix, int iy, int iwidth, int iheight);
-	
+
 	/**
 	 * Updates the Windows contents.
 	 */
@@ -47,7 +47,7 @@ public:
 	 * Updates number value according to user input.
 	 */
 	void Update();
-	
+
 	/**
 	 * Returns the number value.
 	 *

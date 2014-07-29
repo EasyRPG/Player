@@ -29,12 +29,8 @@
 #include "main_data.h"
 #include "player.h"
 
-Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	starting(false),
-	trigger(-1),
-	event(event),
-	page(NULL),
-	from_save(false) {
+Game_Event::Game_Event(int map_id, const RPG::Event& event)
+    : starting(false), trigger(-1), event(event), page(NULL), from_save(false) {
 
 	ID = event.ID;
 	through = true;
@@ -44,52 +40,36 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data) :
-	starting(false),
-	event(event),
-	page(NULL),
-	from_save(true) {
+Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data)
+    : starting(false), event(event), page(NULL), from_save(true) {
 
 	ID = data.ID;
 
 	this->data = data;
 	MoveTo(data.position_x, data.position_y);
-	
+
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, event.ID);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())
+		    ->SetupFromSave(data.event_data.commands, event.ID);
 	}
 
 	Refresh();
 }
 
-int Game_Event::GetX() const {
-	return data.position_x;
-}
+int Game_Event::GetX() const { return data.position_x; }
 
-void Game_Event::SetX(int new_x) {
-	data.position_x = new_x;
-}
+void Game_Event::SetX(int new_x) { data.position_x = new_x; }
 
-int Game_Event::GetY() const {
-	return data.position_y;
-}
+int Game_Event::GetY() const { return data.position_y; }
 
-void Game_Event::SetY(int new_y) {
-	data.position_y = new_y;
-}
+void Game_Event::SetY(int new_y) { data.position_y = new_y; }
 
-int Game_Event::GetMapId() const {
-	return data.map_id;
-}
+int Game_Event::GetMapId() const { return data.map_id; }
 
-void Game_Event::SetMapId(int new_map_id) {
-	data.map_id = new_map_id;
-}
+void Game_Event::SetMapId(int new_map_id) { data.map_id = new_map_id; }
 
-int Game_Event::GetDirection() const {
-	return data.direction;
-}
+int Game_Event::GetDirection() const { return data.direction; }
 
 void Game_Event::SetDirection(int new_direction) {
 	if (new_direction != -1) {
@@ -100,41 +80,23 @@ void Game_Event::SetDirection(int new_direction) {
 	}
 }
 
-int Game_Event::GetPrelockDirection() const {
-	return data.prelock_direction;
-}
+int Game_Event::GetPrelockDirection() const { return data.prelock_direction; }
 
-void Game_Event::SetPrelockDirection(int new_direction) {
-	data.prelock_direction = new_direction;
-}
+void Game_Event::SetPrelockDirection(int new_direction) { data.prelock_direction = new_direction; }
 
-bool Game_Event::IsFacingLocked() const {
-	return data.lock_facing;
-}
+bool Game_Event::IsFacingLocked() const { return data.lock_facing; }
 
-void Game_Event::SetFacingLocked(bool locked) {
-	data.lock_facing = locked;
-}
+void Game_Event::SetFacingLocked(bool locked) { data.lock_facing = locked; }
 
-int Game_Event::GetLayer() const {
-	return data.layer;
-}
+int Game_Event::GetLayer() const { return data.layer; }
 
-void Game_Event::SetLayer(int new_layer) {
-	data.layer = new_layer;
-}
+void Game_Event::SetLayer(int new_layer) { data.layer = new_layer; }
 
-int Game_Event::GetMoveSpeed() const {
-	return data.move_speed;
-}
+int Game_Event::GetMoveSpeed() const { return data.move_speed; }
 
-void Game_Event::SetMoveSpeed(int speed) {
-	data.move_speed = speed;
-}
+void Game_Event::SetMoveSpeed(int speed) { data.move_speed = speed; }
 
-int Game_Event::GetMoveFrequency() const {
-	return data.move_frequency;
-}
+int Game_Event::GetMoveFrequency() const { return data.move_frequency; }
 
 void Game_Event::SetMoveFrequency(int frequency) {
 	data.move_frequency = frequency;
@@ -143,61 +105,35 @@ void Game_Event::SetMoveFrequency(int frequency) {
 	}
 }
 
-const RPG::MoveRoute& Game_Event::GetMoveRoute() const {
-	return data.move_route;
-}
+const RPG::MoveRoute& Game_Event::GetMoveRoute() const { return data.move_route; }
 
-void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data.move_route = move_route;
-}
+void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) { data.move_route = move_route; }
 
-int Game_Event::GetOriginalMoveRouteIndex() const {
-	return data.original_move_route_index;
-}
+int Game_Event::GetOriginalMoveRouteIndex() const { return data.original_move_route_index; }
 
 void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
 	data.original_move_route_index = new_index;
 }
 
-int Game_Event::GetMoveRouteIndex() const {
-	return data.move_route_index;
-}
+int Game_Event::GetMoveRouteIndex() const { return data.move_route_index; }
 
-void Game_Event::SetMoveRouteIndex(int new_index) {
-	data.move_route_index = new_index;
-}
+void Game_Event::SetMoveRouteIndex(int new_index) { data.move_route_index = new_index; }
 
-bool Game_Event::IsMoveRouteOverwritten() const {
-	return data.move_route_overwrite;
-}
+bool Game_Event::IsMoveRouteOverwritten() const { return data.move_route_overwrite; }
 
-void Game_Event::SetMoveRouteOverwritten(bool force) {
-	data.move_route_overwrite = force;
-}
+void Game_Event::SetMoveRouteOverwritten(bool force) { data.move_route_overwrite = force; }
 
-bool Game_Event::IsMoveRouteRepeated() const {
-	return data.move_route_repeated;
-}
+bool Game_Event::IsMoveRouteRepeated() const { return data.move_route_repeated; }
 
-void Game_Event::SetMoveRouteRepeated(bool force) {
-	data.move_route_repeated = force;
-}
+void Game_Event::SetMoveRouteRepeated(bool force) { data.move_route_repeated = force; }
 
-const std::string& Game_Event::GetSpriteName() const {
-	return data.sprite_name;
-}
+const std::string& Game_Event::GetSpriteName() const { return data.sprite_name; }
 
-void Game_Event::SetSpriteName(const std::string& sprite_name) {
-	data.sprite_name = sprite_name;
-}
+void Game_Event::SetSpriteName(const std::string& sprite_name) { data.sprite_name = sprite_name; }
 
-int Game_Event::GetSpriteIndex() const {
-	return data.sprite_id;
-}
+int Game_Event::GetSpriteIndex() const { return data.sprite_id; }
 
-void Game_Event::SetSpriteIndex(int index) {
-	data.sprite_id = index;
-}
+void Game_Event::SetSpriteIndex(int index) { data.sprite_id = index; }
 
 Color Game_Event::GetFlashColor() const {
 	return Color(data.flash_red, data.flash_green, data.flash_blue, 128);
@@ -209,25 +145,15 @@ void Game_Event::SetFlashColor(const Color& flash_color) {
 	data.flash_green = flash_color.green;
 }
 
-int Game_Event::GetFlashLevel() const {
-	return data.flash_current_level;
-}
+int Game_Event::GetFlashLevel() const { return data.flash_current_level; }
 
-void Game_Event::SetFlashLevel(int flash_level) {
-	data.flash_current_level = flash_level;
-}
+void Game_Event::SetFlashLevel(int flash_level) { data.flash_current_level = flash_level; }
 
-int Game_Event::GetFlashTimeLeft() const {
-	return data.flash_time_left;
-}
+int Game_Event::GetFlashTimeLeft() const { return data.flash_time_left; }
 
-void Game_Event::SetFlashTimeLeft(int time_left) {
-	data.flash_time_left = time_left;
-}
+void Game_Event::SetFlashTimeLeft(int time_left) { data.flash_time_left = time_left; }
 
-void Game_Event::ClearStarting() {
-	starting = false;
-}
+void Game_Event::ClearStarting() { starting = false; }
 
 void Game_Event::Setup(RPG::EventPage* new_page) {
 	page = new_page;
@@ -237,7 +163,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
-		//move_type = 0;
+		// move_type = 0;
 		through = true;
 		trigger = -1;
 		list.clear();
@@ -258,9 +184,9 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
 	}
-	//opacity = page.opacity;
-	//opacity = page.translucent ? 192 : 255;
-	//blend_type = page.blend_type;
+	// opacity = page.opacity;
+	// opacity = page.translucent ? 192 : 255;
+	// blend_type = page.blend_type;
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
@@ -335,8 +261,7 @@ void Game_Event::Refresh() {
 	if (from_save) {
 		SetupFromSave(new_page);
 		from_save = false;
-	}
-	else if (new_page != this->page) {
+	} else if (new_page != this->page) {
 		ClearStarting();
 		Setup(new_page);
 	}
@@ -355,7 +280,8 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 
 	// Variable
 	if (Player::engine == Player::EngineRpg2k) {
-		if (page.condition.flags.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
+		if (page.condition.flags.variable &&
+		    !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
 			return false;
 		}
 	} else {
@@ -404,46 +330,35 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	// Timer
 	if (page.condition.flags.timer) {
 		int frames = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
-		if (frames > page.condition.timer_sec * DEFAULT_FPS)
-			return false;
+		if (frames > page.condition.timer_sec * DEFAULT_FPS) return false;
 	}
 
 	// Timer2
 	if (page.condition.flags.timer2) {
 		int frames = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
-		if (frames > page.condition.timer2_sec * DEFAULT_FPS)
-			return false;
+		if (frames > page.condition.timer2_sec * DEFAULT_FPS) return false;
 	}
 
 	// All conditions met :D
 	return true;
 }
 
-int Game_Event::GetId() const {
-	return ID;
-}
+int Game_Event::GetId() const { return ID; }
 
-bool Game_Event::GetStarting() const {
-	return starting;
-}
+bool Game_Event::GetStarting() const { return starting; }
 
-int Game_Event::GetTrigger() const {
-	return trigger;
-}
+int Game_Event::GetTrigger() const { return trigger; }
 
 void Game_Event::SetActive(bool active) {
 	data.active = active;
 	SetVisible(active);
 }
 
-bool Game_Event::GetActive() const {
-	return data.active;
-}
+bool Game_Event::GetActive() const { return data.active; }
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data.active)
-		return;
+	if (list.empty() || !data.active) return;
 
 	starting = true;
 
@@ -458,15 +373,13 @@ void Game_Event::CheckEventTriggerAuto() {
 	}
 }
 
-std::vector<RPG::EventCommand>& Game_Event::GetList() {
-	return list;
-}
+std::vector<RPG::EventCommand>& Game_Event::GetList() { return list; }
 
 bool Game_Event::CheckEventTriggerTouch(int x, int y) {
-	if (Game_Map::GetInterpreter().IsRunning())
-		return false;
+	if (Game_Map::GetInterpreter().IsRunning()) return false;
 
-	if ((trigger == RPG::EventPage::Trigger_collision) && (Main_Data::game_player->IsInPosition(x, y))) {
+	if ((trigger == RPG::EventPage::Trigger_collision) &&
+	    (Main_Data::game_player->IsInPosition(x, y))) {
 
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {
@@ -476,8 +389,6 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 
 	return true;
 }
-
-
 
 void Game_Event::Update() {
 	if (!data.active) {
@@ -494,16 +405,14 @@ void Game_Event::Update() {
 			interpreter->Update();
 		}
 	}
-
 }
 
-RPG::Event& Game_Event::GetEvent() {
-	return event;
-}
+RPG::Event& Game_Event::GetEvent() { return event; }
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
-		data.event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+		data.event_data.commands =
+		    static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	}
 	data.ID = ID;
 

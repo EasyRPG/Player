@@ -29,7 +29,7 @@
 /**
  * Scene Map class.
  */
-class Scene_Map: public Scene {
+class Scene_Map : public Scene {
 public:
 	/**
 	 * Constructor.

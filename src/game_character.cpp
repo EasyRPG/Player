@@ -31,36 +31,35 @@
 #include <cassert>
 #include <cstdlib>
 
-Game_Character::Game_Character() :
-	tile_id(0),
-	real_x(0),
-	real_y(0),
-	pattern(RPG::EventPage::Frame_middle),
-	original_pattern(RPG::EventPage::Frame_middle),
-	last_pattern(0),
-	through(false),
-	animation_id(0),
-	animation_type(RPG::EventPage::AnimType_non_continuous),
-	move_route_owner(NULL),
-	original_move_frequency(-1),
-	move_type(RPG::EventPage::MoveType_stationary),
-	move_failed(false),
-	move_count(0),
-	wait_count(0),
-	jumping(false),
-	jump_peak(0),
-	jump_index(0),
-	jump_x(0),
-	jump_y(0),
-	jump_plus_x(0),
-	jump_plus_y(0),
-	anime_count(0),
-	stop_count(0),
-	walk_animation(true),
-	cycle_stat(false),
-	opacity(255),
-	visible(true) {
-}
+Game_Character::Game_Character()
+    : tile_id(0)
+    , real_x(0)
+    , real_y(0)
+    , pattern(RPG::EventPage::Frame_middle)
+    , original_pattern(RPG::EventPage::Frame_middle)
+    , last_pattern(0)
+    , through(false)
+    , animation_id(0)
+    , animation_type(RPG::EventPage::AnimType_non_continuous)
+    , move_route_owner(NULL)
+    , original_move_frequency(-1)
+    , move_type(RPG::EventPage::MoveType_stationary)
+    , move_failed(false)
+    , move_count(0)
+    , wait_count(0)
+    , jumping(false)
+    , jump_peak(0)
+    , jump_index(0)
+    , jump_x(0)
+    , jump_y(0)
+    , jump_plus_x(0)
+    , jump_plus_y(0)
+    , anime_count(0)
+    , stop_count(0)
+    , walk_animation(true)
+    , cycle_stat(false)
+    , opacity(255)
+    , visible(true) {}
 
 Game_Character::~Game_Character() {
 	if (move_route_owner != NULL) {
@@ -69,60 +68,54 @@ Game_Character::~Game_Character() {
 }
 
 bool Game_Character::IsMoving() const {
-	if (move_count > 0) return false; //Jumping
+	if (move_count > 0) return false; // Jumping
 
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
-	}
-
-bool Game_Character::IsJumping() const {
-	return move_count > 0;
 }
 
-bool Game_Character::IsStopping() const {
-	return !(IsMoving() || IsJumping());
-}
+bool Game_Character::IsJumping() const { return move_count > 0; }
+
+bool Game_Character::IsStopping() const { return !(IsMoving() || IsJumping()); }
 
 bool Game_Character::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
-	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
+	int new_x =
+	    x +
+	    (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
+	int new_y =
+	    y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
-	if (Player::debug_flag && (this == Main_Data::game_player.get())
-		&& Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return true;
+	if (Player::debug_flag && (this == Main_Data::game_player.get()) &&
+	    Input::IsPressed(Input::DEBUG_THROUGH)) {
+		return true;
 	}
 
-	if (!Game_Map::IsValid(new_x, new_y))
-		return false;
+	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
 	if (through) return true;
 
-	if (!Game_Map::IsPassable(x, y, d, this))
-		return false;
+	if (!Game_Map::IsPassable(x, y, d, this)) return false;
 
-	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
-		return false;
+	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this)) return false;
 
-	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y
-		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty() 
-		&& GetLayer() != RPG::EventPage::Layers_above) {
-			return false;
+	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y &&
+	    !Main_Data::game_player->GetThrough() && !GetSpriteName().empty() &&
+	    GetLayer() != RPG::EventPage::Layers_above) {
+		return false;
 	}
 
 	return true;
 }
 
-bool Game_Character::IsLandable(int x, int y) const
-{
-	if (!Game_Map::IsValid(x, y))
-		return false;
+bool Game_Character::IsLandable(int x, int y) const {
+	if (!Game_Map::IsValid(x, y)) return false;
 
 	if (through) return true;
 
-	if (!Game_Map::IsLandable(x, y, this))
-		return false;
+	if (!Game_Map::IsLandable(x, y, this)) return false;
 
 	if (Main_Data::game_player->GetX() == x && Main_Data::game_player->GetY() == y) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
+		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() &&
+		    (this != Main_Data::game_player.get())) {
 			return false;
 		}
 	}
@@ -138,7 +131,8 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
+	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) +
+	       (TILE_SIZE / 2);
 }
 
 int Game_Character::GetScreenY() const {
@@ -153,15 +147,13 @@ int Game_Character::GetScreenY() const {
 	return y - (jump_peak * jump_peak - n * n) / 2;
 }
 
-int Game_Character::GetScreenZ() const {
-	return GetScreenZ(0);
-}
+int Game_Character::GetScreenZ() const { return GetScreenZ(0); }
 
 int Game_Character::GetScreenZ(int /* height */) const {
 	if (GetLayer() == RPG::EventPage::Layers_above) return 999;
 
 	if (GetLayer() == RPG::EventPage::Layers_below) return 0;
-	
+
 	int z = (real_y - Game_Map::GetDisplayY() + 3) / TILE_SIZE + (SCREEN_TILE_WIDTH / TILE_SIZE);
 
 	return z;
@@ -182,12 +174,13 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 36.0/(GetMoveSpeed()+1)) {
+	if (anime_count > 36.0 / (GetMoveSpeed() + 1)) {
 		if (IsSpinning()) {
 			SetPrelockDirection((GetPrelockDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
 			pattern = original_pattern;
-			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
+			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right
+			                                                          : RPG::EventPage::Frame_left;
 		} else {
 			if (last_pattern == RPG::EventPage::Frame_left) {
 				if (pattern == RPG::EventPage::Frame_right) {
@@ -237,19 +230,20 @@ void Game_Character::UpdateMove() {
 	if (GetY() * SCREEN_TILE_WIDTH < real_y)
 		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
 
-	anime_count += 
-		(IsSpinning() ? 1.0 :
-		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1.5 :
-		0);
+	anime_count +=
+	    (IsSpinning()
+	         ? 1.0
+	         : (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1.5
+	                                                                                        : 0);
 }
 
 void Game_Character::UpdateJump() {
 	static double x_step;
 	static double y_step;
 
-	if (move_count == jump_peak*2) {//First frame?
-		x_step = (GetX()*SCREEN_TILE_WIDTH-real_x) / (jump_peak*2);
-		y_step = (GetY()*SCREEN_TILE_WIDTH-real_y) / (jump_peak*2);
+	if (move_count == jump_peak * 2) { // First frame?
+		x_step = (GetX() * SCREEN_TILE_WIDTH - real_x) / (jump_peak * 2);
+		y_step = (GetY() * SCREEN_TILE_WIDTH - real_y) / (jump_peak * 2);
 	}
 	move_count--;
 
@@ -281,11 +275,10 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::UpdateStop() {
-	if (pattern != original_pattern && !IsContinuous())
-		anime_count += 1.5;
+	if (pattern != original_pattern && !IsContinuous()) anime_count += 1.5;
 
-	//if (!starting || !IsLock())
-		stop_count += 1;
+	// if (!starting || !IsLock())
+	stop_count += 1;
 }
 
 void Game_Character::MoveTypeRandom() {
@@ -294,7 +287,8 @@ void Game_Character::MoveTypeRandom() {
 		case 0:
 			stop_count = 0;
 			break;
-		case 1: case 2:
+		case 1:
+		case 2:
 			MoveRandom();
 			break;
 		default:
@@ -334,7 +328,7 @@ void Game_Character::MoveTypeTowardsPlayer() {
 		int sx = GetX() - Main_Data::game_player->GetX();
 		int sy = GetY() - Main_Data::game_player->GetY();
 
-		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		if (std::abs(sx) + std::abs(sy) >= 20) {
 			MoveRandom();
 		} else {
 			switch (rand() % 6) {
@@ -356,7 +350,7 @@ void Game_Character::MoveTypeAwayFromPlayer() {
 		int sx = GetX() - Main_Data::game_player->GetX();
 		int sy = GetY() - Main_Data::game_player->GetY();
 
-		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		if (std::abs(sx) + std::abs(sy) >= 20) {
 			MoveRandom();
 		} else {
 			switch (rand() % 6) {
@@ -381,8 +375,7 @@ void Game_Character::MoveTypeCustom() {
 	if (IsMoveRouteOverwritten()) {
 		active_route = &GetMoveRoute();
 		active_route_index = GetMoveRouteIndex();
-	}
-	else {
+	} else {
 		active_route = &original_move_route;
 		active_route_index = GetOriginalMoveRouteIndex();
 	}
@@ -401,7 +394,8 @@ void Game_Character::MoveTypeCustom() {
 			}
 		} else {
 			do {
-				const RPG::MoveCommand& move_command = active_route->move_commands[active_route_index];
+				const RPG::MoveCommand& move_command =
+				    active_route->move_commands[active_route_index];
 
 				int command_id = move_command.command_id;
 				if (!jumping && command_id == RPG::MoveCommand::Code::begin_jump) {
@@ -516,10 +510,11 @@ void Game_Character::MoveTypeCustom() {
 				case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
 					SetGraphic(move_command.parameter_string, move_command.parameter_a);
 					break;
-				case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
+				case RPG::MoveCommand::Code::play_sound_effect
+				    : // String: File, Parameters: Volume, Tempo, Balance
 					if (move_command.parameter_string != "(OFF)") {
-						Audio().SE_Play(move_command.parameter_string,
-							move_command.parameter_a, move_command.parameter_b);
+						Audio().SE_Play(move_command.parameter_string, move_command.parameter_a,
+						                move_command.parameter_b);
 					}
 					break;
 				case RPG::MoveCommand::Code::walk_everywhere_on:
@@ -558,16 +553,13 @@ void Game_Character::MoveTypeCustom() {
 	if (overwrite_changed != IsMoveRouteOverwritten()) {
 		if (IsMoveRouteOverwritten()) {
 			SetOriginalMoveRouteIndex(active_route_index);
-		}
-		else {
+		} else {
 			SetMoveRouteIndex(active_route_index);
 		}
-	}
-	else {
+	} else {
 		if (IsMoveRouteOverwritten()) {
 			SetMoveRouteIndex(active_route_index);
-		}
-		else {
+		} else {
 			SetOriginalMoveRouteIndex(active_route_index);
 		}
 	}
@@ -660,18 +652,18 @@ void Game_Character::MoveUp() {
 
 void Game_Character::MoveForward() {
 	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			MoveDown();
-			break;
-		case RPG::EventPage::Direction_left:
-			MoveLeft();
-			break;
-		case RPG::EventPage::Direction_right:
-			MoveRight();
-			break;
-		case RPG::EventPage::Direction_up:
-			MoveUp();
-			break;
+	case RPG::EventPage::Direction_down:
+		MoveDown();
+		break;
+	case RPG::EventPage::Direction_left:
+		MoveLeft();
+		break;
+	case RPG::EventPage::Direction_right:
+		MoveRight();
+		break;
+	case RPG::EventPage::Direction_up:
+		MoveUp();
+		break;
 	}
 }
 
@@ -690,15 +682,15 @@ void Game_Character::MoveDownLeft() {
 		return;
 	}
 
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
-		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_down))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
-		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_left))) {
-			SetX(GetX() - 1);
-			SetY(GetY() + 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left) &&
+	     IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_down)) ||
+	    (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down) &&
+	     IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_left))) {
+		SetX(GetX() - 1);
+		SetY(GetY() + 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
 	}
 }
 
@@ -717,18 +709,17 @@ void Game_Character::MoveDownRight() {
 		return;
 	}
 
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
-		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_down))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
-		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_right))) {
-			SetX(GetX() + 1);
-			SetY(GetY() + 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right) &&
+	     IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_down)) ||
+	    (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down) &&
+	     IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_right))) {
+		SetX(GetX() + 1);
+		SetY(GetY() + 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
 	}
 }
-
 
 void Game_Character::MoveUpLeft() {
 	if (!IsDirectionFixed()) {
@@ -745,18 +736,17 @@ void Game_Character::MoveUpLeft() {
 		return;
 	}
 
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
-		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_up))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
-		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_left))) {
-			SetX(GetX() - 1);
-			SetY(GetY() - 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left) &&
+	     IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_up)) ||
+	    (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up) &&
+	     IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_left))) {
+		SetX(GetX() - 1);
+		SetY(GetY() - 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
 	}
 }
-
 
 void Game_Character::MoveUpRight() {
 	if (!IsDirectionFixed()) {
@@ -773,15 +763,15 @@ void Game_Character::MoveUpRight() {
 		return;
 	}
 
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
-		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_up))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
-		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_right))) {
-			SetX(GetX() + 1);
-			SetY(GetY() - 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right) &&
+	     IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_up)) ||
+	    (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up) &&
+	     IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_right))) {
+		SetX(GetX() + 1);
+		SetY(GetY() - 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
 	}
 }
 
@@ -807,7 +797,7 @@ void Game_Character::MoveTowardsPlayer() {
 	int sy = DistanceYfromPlayer();
 
 	if (sx != 0 || sy != 0) {
-		if ( std::abs(sx) > std::abs(sy) ) {
+		if (std::abs(sx) > std::abs(sy)) {
 			(sx > 0) ? MoveLeft() : MoveRight();
 			if (move_failed && sy != 0) {
 				(sy > 0) ? MoveUp() : MoveDown();
@@ -826,7 +816,7 @@ void Game_Character::MoveAwayFromPlayer() {
 	int sy = DistanceYfromPlayer();
 
 	if (sx != 0 || sy != 0) {
-		if ( std::abs(sx) > std::abs(sy) ) {
+		if (std::abs(sx) > std::abs(sy)) {
 			(sx > 0) ? MoveRight() : MoveLeft();
 			if (move_failed && sy != 0) {
 				(sy > 0) ? MoveDown() : MoveUp();
@@ -874,52 +864,52 @@ void Game_Character::TurnUp() {
 
 void Game_Character::Turn90DegreeLeft() {
 	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnRight();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnDown();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnLeft();
-			break;
+	case RPG::EventPage::Direction_down:
+		TurnRight();
+		break;
+	case RPG::EventPage::Direction_left:
+		TurnDown();
+		break;
+	case RPG::EventPage::Direction_right:
+		TurnUp();
+		break;
+	case RPG::EventPage::Direction_up:
+		TurnLeft();
+		break;
 	}
 }
 
 void Game_Character::Turn90DegreeRight() {
 	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnLeft();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnDown();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnRight();
-			break;
+	case RPG::EventPage::Direction_down:
+		TurnLeft();
+		break;
+	case RPG::EventPage::Direction_left:
+		TurnUp();
+		break;
+	case RPG::EventPage::Direction_right:
+		TurnDown();
+		break;
+	case RPG::EventPage::Direction_up:
+		TurnRight();
+		break;
 	}
 }
 
 void Game_Character::Turn180Degree() {
 	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnRight();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnLeft();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnDown();
-			break;
+	case RPG::EventPage::Direction_down:
+		TurnUp();
+		break;
+	case RPG::EventPage::Direction_left:
+		TurnRight();
+		break;
+	case RPG::EventPage::Direction_right:
+		TurnLeft();
+		break;
+	case RPG::EventPage::Direction_up:
+		TurnDown();
+		break;
 	}
 }
 
@@ -933,7 +923,6 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	}
 }
 
-
 void Game_Character::BeginMove() {
 	// no-op
 }
@@ -942,10 +931,9 @@ void Game_Character::TurnTowardHero() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
 
-	if ( std::abs(sx) > std::abs(sy) ) {
+	if (std::abs(sx) > std::abs(sy)) {
 		(sx > 0) ? TurnLeft() : TurnRight();
-	}
-	else if ( std::abs(sx) < std::abs(sy) ) {
+	} else if (std::abs(sx) < std::abs(sy)) {
 		(sy > 0) ? TurnUp() : TurnDown();
 	}
 }
@@ -954,10 +942,9 @@ void Game_Character::TurnAwayFromHero() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
 
-	if ( std::abs(sx) > std::abs(sy) ) {
+	if (std::abs(sx) > std::abs(sy)) {
 		(sx > 0) ? TurnRight() : TurnLeft();
-	}
-	else if ( std::abs(sx) < std::abs(sy) ) {
+	} else if (std::abs(sx) < std::abs(sy)) {
 		(sy > 0) ? TurnDown() : TurnUp();
 	}
 }
@@ -1028,10 +1015,12 @@ int Game_Character::EndJump(const RPG::MoveRoute* current_route, int current_ind
 	SetX(jump_x + jump_plus_x);
 	SetY(jump_y + jump_plus_y);
 
-	//TODO: C++11 got round() function defined in math.h
+	// TODO: C++11 got round() function defined in math.h
 	float distance = sqrt((float)(jump_plus_x * jump_plus_x + jump_plus_y * jump_plus_y));
-	if (distance >= floor(distance) + 0.5) distance = ceil(distance);
-	else distance = floor(distance);
+	if (distance >= floor(distance) + 0.5)
+		distance = ceil(distance);
+	else
+		distance = floor(distance);
 
 	jump_peak = 10 + (int)distance - GetMoveSpeed();
 	move_count = jump_peak * 2;
@@ -1076,9 +1065,8 @@ void Game_Character::Unlock() {
 	}
 }
 
-void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
-									int frequency,
-									Game_Interpreter* owner) {
+void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route, int frequency,
+                                    Game_Interpreter* owner) {
 	EndMoveRoute();
 
 	original_move_frequency = GetMoveFrequency();
@@ -1106,74 +1094,43 @@ bool Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	return false;
 }
 
-int Game_Character::GetTileId() const {
-	return tile_id;
-}
+int Game_Character::GetTileId() const { return tile_id; }
 
-int Game_Character::GetRealX() const {
-	return real_x;
-}
+int Game_Character::GetRealX() const { return real_x; }
 
-int Game_Character::GetRealY() const {
-	return real_y;
-}
+int Game_Character::GetRealY() const { return real_y; }
 
-int Game_Character::GetPattern() const {
-	return pattern;
-}
+int Game_Character::GetPattern() const { return pattern; }
 
-bool Game_Character::GetThrough() const {
-	return through;
-}
+bool Game_Character::GetThrough() const { return through; }
 
-int Game_Character::GetAnimationId() const {
-	return animation_id;
-}
-void Game_Character::SetAnimationId(int new_animation_id) {
-	animation_id = new_animation_id;
-}
+int Game_Character::GetAnimationId() const { return animation_id; }
+void Game_Character::SetAnimationId(int new_animation_id) { animation_id = new_animation_id; }
 
-bool Game_Character::IsInPosition(int x, int y) const {
-	return ((GetX() == x) && (GetY() == y));
-}
+bool Game_Character::IsInPosition(int x, int y) const { return ((GetX() == x) && (GetY() == y)); }
 
-void Game_Character::SetOpacity(int opacity) {
-	this->opacity = min(max(0, opacity), 255);
-}
+void Game_Character::SetOpacity(int opacity) { this->opacity = min(max(0, opacity), 255); }
 
-int Game_Character::GetOpacity() const {
-	return opacity;
-}
+int Game_Character::GetOpacity() const { return opacity; }
 
-bool Game_Character::GetVisible() const {
-	return visible;
-}
+bool Game_Character::GetVisible() const { return visible; }
 
-void Game_Character::SetVisible(bool visible) {
-	this->visible = visible;
-}
+void Game_Character::SetVisible(bool visible) { this->visible = visible; }
 
-bool Game_Character::IsFlashPending() const {
-	return GetFlashTimeLeft() > 0;
-}
+bool Game_Character::IsFlashPending() const { return GetFlashTimeLeft() > 0; }
 
 bool Game_Character::IsDirectionFixed() {
-	return
-		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
-		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked();
+	return animation_type == RPG::EventPage::AnimType_fixed_continuous ||
+	       animation_type == RPG::EventPage::AnimType_fixed_graphic ||
+	       animation_type == RPG::EventPage::AnimType_fixed_non_continuous || IsFacingLocked();
 }
 
 bool Game_Character::IsContinuous() {
-	return
-		animation_type == RPG::EventPage::AnimType_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_continuous;
+	return animation_type == RPG::EventPage::AnimType_continuous ||
+	       animation_type == RPG::EventPage::AnimType_fixed_continuous;
 }
 
-bool Game_Character::IsSpinning() {
-	return animation_type == RPG::EventPage::AnimType_spin;
-}
+bool Game_Character::IsSpinning() { return animation_type == RPG::EventPage::AnimType_spin; }
 
 void Game_Character::UpdateBushDepth() {
 	// TODO
@@ -1188,20 +1145,23 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
-		case CharPlayer:
-			// Player/Hero
-			return Main_Data::game_player.get();
-		case CharBoat:
-			return Game_Map::GetVehicle(Game_Vehicle::Boat);
-		case CharShip:
-			return Game_Map::GetVehicle(Game_Vehicle::Ship);
-		case CharAirship:
-			return Game_Map::GetVehicle(Game_Vehicle::Airship);
-		case CharThisEvent:
-			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second.get();
-		default:
-			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second.get();
+	case CharPlayer:
+		// Player/Hero
+		return Main_Data::game_player.get();
+	case CharBoat:
+		return Game_Map::GetVehicle(Game_Vehicle::Boat);
+	case CharShip:
+		return Game_Map::GetVehicle(Game_Vehicle::Ship);
+	case CharAirship:
+		return Game_Map::GetVehicle(Game_Vehicle::Airship);
+	case CharThisEvent:
+		// This event
+		return (Game_Map::GetEvents().empty()) ? NULL
+		                                       : Game_Map::GetEvents().find(event_id)->second.get();
+	default:
+		// Other events
+		return (Game_Map::GetEvents().empty())
+		           ? NULL
+		           : Game_Map::GetEvents().find(character_id)->second.get();
 	}
 }

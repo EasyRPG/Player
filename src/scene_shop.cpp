@@ -23,12 +23,10 @@
 #include "scene_shop.h"
 #include "output.h"
 
-Scene_Shop::Scene_Shop() {
-	Scene::type = Scene::Shop;
-}
+Scene_Shop::Scene_Shop() { Scene::type = Scene::Shop; }
 
 void Scene_Shop::Start() {
-	shop_window.reset(new Window_Shop(0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
+	shop_window.reset(new Window_Shop(0, (SCREEN_TARGET_WIDTH / 2), SCREEN_TARGET_WIDTH, 80));
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	gold_window.reset(new Window_Gold(184, 128, 136, 32));
 	empty_window.reset(new Window_Base(0, 32, SCREEN_TARGET_WIDTH, 128));
@@ -80,78 +78,78 @@ void Scene_Shop::SetMode(int nmode) {
 
 	// Central panel
 	switch (mode) {
-		case BuySellLeave:
-		case BuySellLeave2:
-			empty_window->SetVisible(true);
-			Enable(sell_window.get(), false);
-			break;
-		case Sell:
-			empty_window->SetVisible(false);
-			Enable(sell_window.get(), true);
-			break;
-		case Buy:
-		case BuyHowMany:
-		case SellHowMany:
-		case Bought:
-		case Sold:
-			empty_window->SetVisible(false);
-			Enable(sell_window.get(), false);
-			break;
+	case BuySellLeave:
+	case BuySellLeave2:
+		empty_window->SetVisible(true);
+		Enable(sell_window.get(), false);
+		break;
+	case Sell:
+		empty_window->SetVisible(false);
+		Enable(sell_window.get(), true);
+		break;
+	case Buy:
+	case BuyHowMany:
+	case SellHowMany:
+	case Bought:
+	case Sold:
+		empty_window->SetVisible(false);
+		Enable(sell_window.get(), false);
+		break;
 	}
 
 	// Right-hand panels
 	switch (mode) {
-		case BuySellLeave:
-		case BuySellLeave2:
-		case Sell:
-			party_window->SetVisible(false);
-			status_window->SetVisible(false);
-			gold_window->SetVisible(false);
-			break;
-		case Buy:
-		case BuyHowMany:
-		case SellHowMany:
-		case Bought:
-		case Sold:
-			party_window->SetVisible(true);
-			status_window->SetVisible(true);
-			gold_window->SetVisible(true);
-			break;
+	case BuySellLeave:
+	case BuySellLeave2:
+	case Sell:
+		party_window->SetVisible(false);
+		status_window->SetVisible(false);
+		gold_window->SetVisible(false);
+		break;
+	case Buy:
+	case BuyHowMany:
+	case SellHowMany:
+	case Bought:
+	case Sold:
+		party_window->SetVisible(true);
+		status_window->SetVisible(true);
+		gold_window->SetVisible(true);
+		break;
 	}
 
 	// Left-hand panels
 	switch (mode) {
-		case BuySellLeave:
-		case BuySellLeave2:
-			Enable(buy_window.get(), false);
-			Enable(number_window.get(), false);
-			empty_window2->SetVisible(false);
-			break;
-		case Sell:
-			sell_window->Refresh();
-			Enable(number_window.get(), false);
-			empty_window2->SetVisible(false);
-			break;
-		case Buy:
-			buy_window->Refresh();
-			Enable(buy_window.get(), true);
-			Enable(number_window.get(), false);
-			empty_window2->SetVisible(false);
-			break;
-		case BuyHowMany:
-		case SellHowMany:
-			number_window.get()->Refresh();
-			Enable(buy_window.get(), false);
-			Enable(number_window.get(), true);
-			break;
-		case Bought:
-		case Sold:
-			Enable(buy_window.get(), false);
-			Enable(number_window.get(), false);
-			empty_window2->SetVisible(true);
+	case BuySellLeave:
+	case BuySellLeave2:
+		Enable(buy_window.get(), false);
+		Enable(number_window.get(), false);
+		empty_window2->SetVisible(false);
+		break;
+	case Sell:
+		sell_window->Refresh();
+		Enable(number_window.get(), false);
+		empty_window2->SetVisible(false);
+		break;
+	case Buy:
+		buy_window->Refresh();
+		Enable(buy_window.get(), true);
+		Enable(number_window.get(), false);
+		empty_window2->SetVisible(false);
+		break;
+	case BuyHowMany:
+	case SellHowMany:
+		number_window.get()->Refresh();
+		Enable(buy_window.get(), false);
+		Enable(number_window.get(), true);
+		break;
+	case Bought:
+	case Sold:
+		Enable(buy_window.get(), false);
+		Enable(number_window.get(), false);
+		empty_window2->SetVisible(true);
 
-			timer = DEFAULT_FPS;
-			break;
+		timer = DEFAULT_FPS;
+		break;
 	}
 
 	shop_window->SetMode(mode);
@@ -165,32 +163,30 @@ void Scene_Shop::Update() {
 	party_window->Update();
 
 	switch (mode) {
-		case BuySellLeave:
-		case BuySellLeave2:
-			UpdateCommandSelection();
-			break;
-		case Buy:
-			UpdateBuySelection();
-			break;
-		case Sell:
-			UpdateSellSelection();
-			break;
-		case BuyHowMany:
-		case SellHowMany:
-			UpdateNumberInput();
-			break;
-		case Bought:
-			timer--;
-			if (timer == 0)
-				SetMode(Buy);
-			break;
-		case Sold:
-			timer--;
-			if (timer == 0)
-				SetMode(Sell);
-			break;
-		default:
-			break;
+	case BuySellLeave:
+	case BuySellLeave2:
+		UpdateCommandSelection();
+		break;
+	case Buy:
+		UpdateBuySelection();
+		break;
+	case Sell:
+		UpdateSellSelection();
+		break;
+	case BuyHowMany:
+	case SellHowMany:
+		UpdateNumberInput();
+		break;
+	case Bought:
+		timer--;
+		if (timer == 0) SetMode(Buy);
+		break;
+	case Sold:
+		timer--;
+		if (timer == 0) SetMode(Sell);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -200,13 +196,13 @@ void Scene_Shop::UpdateCommandSelection() {
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (shop_window->GetChoice()) {
-			case Buy:
-			case Sell:
-				SetMode(shop_window->GetChoice());
-				break;
-			case Leave:
-				Scene::Pop();
-				break;
+		case Buy:
+		case Sell:
+			SetMode(shop_window->GetChoice());
+			break;
+		case Leave:
+			Scene::Pop();
+			break;
 		}
 	}
 }
@@ -225,7 +221,7 @@ void Scene_Shop::UpdateBuySelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = buy_window->GetItemId();
 
-		//checks the money and number of items possessed before buy
+		// checks the money and number of items possessed before buy
 		if (buy_window->CheckEnable(item_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
@@ -240,8 +236,7 @@ void Scene_Shop::UpdateBuySelection() {
 			number_window->SetData(item_id, max, item.price);
 
 			SetMode(BuyHowMany);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
@@ -263,10 +258,10 @@ void Scene_Shop::UpdateSellSelection() {
 		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
 			RPG::Item& item = Data::items[item_id - 1];
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
-			number_window->SetData(item_id, Main_Data::game_party->GetItemCount(item_id), item.price);
+			number_window->SetData(item_id, Main_Data::game_party->GetItemCount(item_id),
+			                       item.price);
 			SetMode(SellHowMany);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
@@ -277,9 +272,11 @@ void Scene_Shop::UpdateNumberInput() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		switch (shop_window->GetChoice()) {
 		case Buy:
-			SetMode(Buy); break;
+			SetMode(Buy);
+			break;
 		case Sell:
-			SetMode(Sell); break;
+			SetMode(Sell);
+			break;
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id;
@@ -291,7 +288,8 @@ void Scene_Shop::UpdateNumberInput() {
 			gold_window->Refresh();
 			buy_window->Refresh();
 			status_window->Refresh();
-			SetMode(Bought); break;
+			SetMode(Bought);
+			break;
 		case Sell:
 			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 			Main_Data::game_party->GainGold(number_window->GetTotal());
@@ -299,7 +297,8 @@ void Scene_Shop::UpdateNumberInput() {
 			gold_window->Refresh();
 			sell_window->Refresh();
 			status_window->Refresh();
-			SetMode(Sold); break;
+			SetMode(Sold);
+			break;
 		}
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 

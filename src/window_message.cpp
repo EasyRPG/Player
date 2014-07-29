@@ -40,26 +40,30 @@
 
 #include <boost/next_prior.hpp>
 
-const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
-											7, 7, 8, 8, 9, 9, 10, 10, 11};
+const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4,  5,  5, 6,
+                                             6, 7, 7, 8, 8, 9, 9, 10, 10, 11};
 
-Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight),
-	contents_x(0), contents_y(0), line_count(0), text(""),
-	kill_message(false), speed_modifier(0),
-	speed_frame_counter(0), new_page_after_pause(false),
-	number_input_window(new Window_NumberInput(0, 0)),
-	gold_window(new Window_Gold(232, 0, 88, 32))
-{
+Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight)
+    , contents_x(0)
+    , contents_y(0)
+    , line_count(0)
+    , text("")
+    , kill_message(false)
+    , speed_modifier(0)
+    , speed_frame_counter(0)
+    , new_page_after_pause(false)
+    , number_input_window(new Window_NumberInput(0, 0))
+    , gold_window(new Window_Gold(232, 0, 88, 32)) {
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
 	SetZ(10000);
 
-	escape_char = (Player::escape_symbol == "\u00A5" ? L'¥' :
-		      (Player::escape_symbol == "\u20A9" ? L'₩' :
-		      '\\'));
+	escape_char =
+	    (Player::escape_symbol == "\u00A5" ? L'¥'
+	                                       : (Player::escape_symbol == "\u20A9" ? L'₩' : '\\'));
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
@@ -85,8 +89,10 @@ void Window_Message::StartMessageProcessing() {
 	}
 	item_max = min(4, Game_Message::choice_max);
 
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(),
+	                                                                    text.end());
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(),
+	                                                             text.end());
 
 	InsertNewPage();
 }
@@ -104,8 +110,10 @@ void Window_Message::FinishMessageProcessing() {
 	}
 
 	text.clear();
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(),
+	                                                                    text.end());
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(),
+	                                                             text.end());
 }
 
 void Window_Message::StartChoiceProcessing() {
@@ -163,7 +171,6 @@ void Window_Message::InsertNewPage() {
 		};
 	}
 
-
 	if (Game_Message::IsTransparent()) {
 		opacity = 0;
 	} else {
@@ -173,10 +180,12 @@ void Window_Message::InsertNewPage() {
 	if (!Game_Message::GetFaceName().empty()) {
 		if (!Game_Message::IsFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin, TopMargin, Game_Message::IsFaceFlipped());
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin,
+			         TopMargin, Game_Message::IsFaceFlipped());
 		} else {
 			contents_x = 0;
-			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), 248, TopMargin, Game_Message::IsFaceFlipped());
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), 248, TopMargin,
+			         Game_Message::IsFaceFlipped());
 		}
 	} else {
 		contents_x = 0;
@@ -251,9 +260,7 @@ bool Window_Message::IsNextMessagePossible() {
 	return true;
 }
 
-void Window_Message::ResetWindow() {
-
-}
+void Window_Message::ResetWindow() {}
 
 void Window_Message::Update() {
 	Window_Selectable::Update();
@@ -275,8 +282,7 @@ void Window_Message::Update() {
 			Game_Message::closing = false;
 			return;
 		}
-	}
-	else if (pause) {
+	} else if (pause) {
 		WaitForInput();
 	} else if (active) {
 		InputChoice();
@@ -285,14 +291,13 @@ void Window_Message::Update() {
 	} else if (!text.empty()) {
 		// Output the remaining text for the current page
 		UpdateMessage();
-	}
-	else if (IsNextMessagePossible()) {
+	} else if (IsNextMessagePossible()) {
 		// Output a new page
 		if (Game_Temp::inn_calling) {
 			ShowGoldWindow();
 		}
 		StartMessageProcessing();
-		//printf("Text: %s\n", text.c_str());
+		// printf("Text: %s\n", text.c_str());
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
 			// Open and Close Animations are skipped in battle
@@ -336,8 +341,8 @@ void Window_Message::UpdateMessage() {
 		++speed_frame_counter;
 
 		if (speed_table[speed_modifier] != 0 &&
-			speed_table[speed_modifier] != speed_frame_counter) {
-				break;
+		    speed_table[speed_modifier] != speed_frame_counter) {
+			break;
 		}
 
 		speed_frame_counter = 0;
@@ -430,12 +435,11 @@ void Window_Message::UpdateMessage() {
 					contents_x += contents->GetFont()->GetSize(escape_symbol).width;
 				}
 			}
-		} else if (*text_index == '$'
-				   && std::distance(text_index, end) > 1
-				   && std::isalpha(*boost::next(text_index))) {
+		} else if (*text_index == '$' && std::distance(text_index, end) > 1 &&
+		           std::isalpha(*boost::next(text_index))) {
 			// ExFont
 			contents->TextDraw(contents_x, contents_y, text_color,
-							   std::string(text_index.base(), boost::next(text_index, 2).base()));
+			                   std::string(text_index.base(), boost::next(text_index, 2).base()));
 			contents_x += 12;
 			++text_index;
 		} else {
@@ -453,8 +457,7 @@ void Window_Message::UpdateMessage() {
 int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
-	if (text_index == end ||
-		*text_index != '[') {
+	if (text_index == end || *text_index != '[') {
 		--text_index;
 		is_valid = false;
 		return 0;
@@ -470,17 +473,14 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		} else if (*text_index == '\n') {
 			--text_index;
 			break;
-		}
-		else if (*text_index == '0') {
+		} else if (*text_index == '0') {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
 				ss << '0';
 			} else {
 				null_at_start = true;
 			}
-		}
-		else if (*text_index >= '1' &&
-			*text_index <= '9') {
+		} else if (*text_index >= '1' && *text_index <= '9') {
 			ss << std::string(text_index.base(), boost::next(text_index).base());
 		} else if (*text_index == ']') {
 			--call_depth;
@@ -491,16 +491,16 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 			// End of number
 			// Search for ] or line break
 			while (text_index != end) {
-					if (*text_index == '\n') {
-						--text_index;
+				if (*text_index == '\n') {
+					--text_index;
+					break;
+				} else if (*text_index == ']') {
+					--call_depth;
+					if (call_depth == 0) {
 						break;
-					} else if (*text_index == ']') {
-						--call_depth;
-						if (call_depth == 0) {
-							break;
-						}
 					}
-					++text_index;
+				}
+				++text_index;
 			}
 			break;
 		}
@@ -529,9 +529,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	// In that case sub_code contains the result from \v[1]
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
-	if (std::distance(text_index, end) > 3 &&
-		*boost::next(text_index, 2) == escape_char &&
-		tolower(*boost::next(text_index, 3)) == 'v') {
+	if (std::distance(text_index, end) > 3 && *boost::next(text_index, 2) == escape_char &&
+	    tolower(*boost::next(text_index, 3)) == 'v') {
 		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case
 		std::stringstream ss;
@@ -601,7 +600,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			ss << "0";
 			return ss.str();
 		}
-	default:;
+	default:
+		;
 		// When this happens text_index was not on a \ during calling
 	}
 	return "";
@@ -628,8 +628,7 @@ void Window_Message::UpdateCursorRect() {
 
 void Window_Message::WaitForInput() {
 	active = true; // Enables the Pause arrow
-	if (Input::IsTriggered(Input::DECISION) ||
-		Input::IsTriggered(Input::CANCEL)) {
+	if (Input::IsTriggered(Input::DECISION) || Input::IsTriggered(Input::CANCEL)) {
 		active = false;
 		pause = false;
 

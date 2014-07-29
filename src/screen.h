@@ -32,7 +32,7 @@ namespace RPG {
  * A special drawable for handling screen effects.
  * This basically works by taking the screen surface and drawing on itself.
  * Sounds a bit dirty, but works.
- * 
+ *
  * The z index is chosen in a way that battle animations and message boxes
  * are not colorized.
  */

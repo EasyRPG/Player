@@ -29,7 +29,7 @@
 /**
  * Window_BattleCommand class.
  */
-class Window_BattleCommand: public Window_Base {
+class Window_BattleCommand : public Window_Base {
 public:
 	/**
 	 * Constructor.

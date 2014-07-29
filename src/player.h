@@ -82,7 +82,7 @@ namespace Player {
 	 *
 	 * @param save_file Savegame file to load
 	 */
-	void LoadSavegame(const std::string& save_file);
+	void LoadSavegame(const std::string &save_file);
 
 	/**
 	 * Moves the player to the start map.

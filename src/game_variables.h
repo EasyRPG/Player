@@ -28,41 +28,33 @@
  */
 class Game_Variables_Class {
 public:
-	Game_Variables_Class(std::vector<uint32_t>& variables) :
-		variables(variables) {}
+	Game_Variables_Class(std::vector<uint32_t>& variables) : variables(variables) {}
 
-	int& operator[] (int variable_id) {
+	int& operator[](int variable_id) {
 		if (!isValidVar(variable_id)) {
-			Output::Warning("Variable index %d is invalid.",
-							variable_id);
+			Output::Warning("Variable index %d is invalid.", variable_id);
 			dummy = 0;
 			return dummy;
 		}
 
-		return (int&) variables[variable_id - 1];
+		return (int&)variables[variable_id - 1];
 	}
 
 	std::string GetName(int _id) {
 		if (!isValidVar(_id)) {
-			Output::Warning("Variable index %d is invalid.\n",
-				_id);
+			Output::Warning("Variable index %d is invalid.\n", _id);
 			return "";
-		}
-		else
+		} else
 			return Data::variables.at(_id - 1).name;
 	}
 
 	bool isValidVar(int variable_id) {
-		return (variable_id > 0 && variable_id <= (int) variables.size());
+		return (variable_id > 0 && variable_id <= (int)variables.size());
 	}
 
-	int size () {
-		return (int)variables.size();
-	}
+	int size() { return (int)variables.size(); }
 
-	void Reset() {
-		std::fill(variables.begin(), variables.end(), 0);
-	}
+	void Reset() { std::fill(variables.begin(), variables.end(), 0); }
 
 private:
 	std::vector<uint32_t>& variables;

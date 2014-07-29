@@ -23,20 +23,20 @@
 
 void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
-	
+
 	buttons[UP].push_back(Keys::UP);
 	buttons[DOWN].push_back(Keys::DOWN);
 	buttons[LEFT].push_back(Keys::LEFT);
 	buttons[RIGHT].push_back(Keys::RIGHT);
-	buttons[DECISION].push_back(Keys::RETURN); //START
-	buttons[DECISION].push_back(Keys::LCTRL); //A
-	buttons[CANCEL].push_back(Keys::ESCAPE); //SELECT
-	buttons[CANCEL].push_back(Keys::LALT); //B
-	buttons[N1].push_back(Keys::LSHIFT);//Y
-	buttons[N2].push_back(Keys::SPACE);//X
+	buttons[DECISION].push_back(Keys::RETURN); // START
+	buttons[DECISION].push_back(Keys::LCTRL); // A
+	buttons[CANCEL].push_back(Keys::ESCAPE); // SELECT
+	buttons[CANCEL].push_back(Keys::LALT); // B
+	buttons[N1].push_back(Keys::LSHIFT); // Y
+	buttons[N2].push_back(Keys::SPACE); // X
 
-	buttons[DEBUG_MENU].push_back(Keys::TAB);//L
-	buttons[DEBUG_THROUGH].push_back(Keys::BACKSPACE);//R
+	buttons[DEBUG_MENU].push_back(Keys::TAB); // L
+	buttons[DEBUG_THROUGH].push_back(Keys::BACKSPACE); // R
 
 	dir_buttons.resize(10);
 	dir_buttons[2].push_back(DOWN);

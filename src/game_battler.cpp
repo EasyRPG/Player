@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // Headers
 #include <algorithm>
 #include "player.h"
@@ -39,24 +38,19 @@ bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
-bool Game_Battler::IsDead() const {
-	return HasState(1);
-}
+bool Game_Battler::IsDead() const { return HasState(1); }
 
-bool Game_Battler::Exists() const {
-	return !IsHidden() && !IsDead();
-}
+bool Game_Battler::Exists() const { return !IsHidden() && !IsDead(); }
 
 const RPG::State* Game_Battler::GetSignificantState() {
 	int priority = 0;
 	const RPG::State* the_state = NULL;
 
 	const std::vector<int16_t>& states = GetStates();
-	for (int i = 0; i < (int) states.size(); i++) {
+	for (int i = 0; i < (int)states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i] - 1];
 		// Death has highest priority
-		if (state->ID == 1)
-			return state;
+		if (state->ID == 1) return state;
 
 		if (state->priority > priority) {
 			the_state = state;
@@ -77,31 +71,25 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 
 	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
 	// SetEscapePlace first. Not sure if any game uses this...
-	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
+	// if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
 	//	return is_there_a_teleport_set;
 	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
 	//	return is_there_an_escape_set;
 	//} else
-	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_subskill) {
+	if (skill.type == RPG::Skill::Type_normal || skill.type >= RPG::Skill::Type_subskill) {
 		int scope = skill.scope;
 
 		if (Game_Temp::battle_running) {
 			return true;
-		}
-		else if (scope == RPG::Skill::Scope_self ||
-			scope == RPG::Skill::Scope_ally ||
-			scope == RPG::Skill::Scope_party) {
+		} else if (scope == RPG::Skill::Scope_self || scope == RPG::Skill::Scope_ally ||
+		           scope == RPG::Skill::Scope_party) {
 
-			return (skill.affect_hp ||
-					skill.affect_sp ||
-					skill.state_effect);
+			return (skill.affect_hp || skill.affect_sp || skill.state_effect);
 		}
 	} else if (skill.type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {
 			return skill.occasion_battle;
-		}
-		else {
+		} else {
 			return skill.occasion_field;
 		}
 	}
@@ -135,7 +123,7 @@ bool Game_Battler::UseItem(int item_id) {
 		SetSp(GetSp() + sp_change);
 
 		for (std::vector<bool>::const_iterator it = item.state_set.begin();
-			it != item.state_set.end(); ++it) {
+		     it != item.state_set.end(); ++it) {
 			if (*it) {
 				RemoveState(*it);
 			}
@@ -155,33 +143,33 @@ bool Game_Battler::UseSkill(int skill_id) {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	switch (skill.type) {
-		case RPG::Skill::Type_normal: {
-			int effect = skill.power;
+	case RPG::Skill::Type_normal: {
+		int effect = skill.power;
 
-			if (skill.variance > 0) {
-				int var_perc = skill.variance * 5;
-				int act_perc = rand() % (var_perc * 2) - var_perc;
-				int change = effect * act_perc / 100;
-				effect += change;
-			}
-
-			if (skill.affect_hp) {
-				ChangeHp(effect);
-			}
-			if (skill.affect_sp) {
-				SetSp(GetSp() + effect);
-			}
-
-			// ToDo
-			return true;
+		if (skill.variance > 0) {
+			int var_perc = skill.variance * 5;
+			int act_perc = rand() % (var_perc * 2) - var_perc;
+			int change = effect * act_perc / 100;
+			effect += change;
 		}
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-			// ToDo: Show Teleport/Escape target menu
-			break;
-		case RPG::Skill::Type_switch:
-			Game_Switches[skill.switch_id] = true;
-			break;
+
+		if (skill.affect_hp) {
+			ChangeHp(effect);
+		}
+		if (skill.affect_sp) {
+			SetSp(GetSp() + effect);
+		}
+
+		// ToDo
+		return true;
+	}
+	case RPG::Skill::Type_teleport:
+	case RPG::Skill::Type_escape:
+		// ToDo: Show Teleport/Escape target menu
+		break;
+	case RPG::Skill::Type_switch:
+		Game_Switches[skill.switch_id] = true;
+		break;
 	}
 
 	return false;
@@ -189,10 +177,9 @@ bool Game_Battler::UseSkill(int skill_id) {
 
 int Game_Battler::CalculateSkillCost(int skill_id) const {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
-	return (Player::engine == Player::EngineRpg2k3 &&
-			skill.sp_type == RPG::Skill::SpType_percent)
-		? GetMaxSp() * skill.sp_percent / 100
-		: skill.sp_cost;
+	return (Player::engine == Player::EngineRpg2k3 && skill.sp_type == RPG::Skill::SpType_percent)
+	           ? GetMaxSp() * skill.sp_percent / 100
+	           : skill.sp_cost;
 }
 
 void Game_Battler::AddState(int state_id) {
@@ -206,13 +193,10 @@ void Game_Battler::AddState(int state_id) {
 void Game_Battler::RemoveState(int state_id) {
 	std::vector<int16_t>& states = GetStates();
 	std::vector<int16_t>::iterator it = std::find(states.begin(), states.end(), state_id);
-	if (it != states.end())
-		states.erase(it);
+	if (it != states.end()) states.erase(it);
 }
 
-static bool NonPermanent(int state_id) {
-	return Data::states[state_id - 1].type == 0;
-}
+static bool NonPermanent(int state_id) { return Data::states[state_id - 1].type == 0; }
 
 void Game_Battler::RemoveStates() {
 	std::vector<int16_t>& states = GetStates();
@@ -225,28 +209,16 @@ void Game_Battler::RemoveAllStates() {
 	states.clear();
 }
 
-bool Game_Battler::IsHidden() const {
-	return false;
-}
+bool Game_Battler::IsHidden() const { return false; }
 
-bool Game_Battler::IsImmortal() const {
-	return false;
-}
+bool Game_Battler::IsImmortal() const { return false; }
 
-int Game_Battler::GetMaxHp() const {
-	return GetBaseMaxHp();
-}
+int Game_Battler::GetMaxHp() const { return GetBaseMaxHp(); }
 
-int Game_Battler::GetMaxSp() const {
-	return GetBaseMaxSp();
-}
+int Game_Battler::GetMaxSp() const { return GetBaseMaxSp(); }
 
 static int AffectParameter(int const type, int const val) {
-	return
-		type == 0? val / 2 :
-		type == 1? val * 2 :
-		type == 2? val :
-		val;
+	return type == 0 ? val / 2 : type == 1 ? val * 2 : type == 2 ? val : val;
 }
 
 int Game_Battler::GetAtk() const {
@@ -255,7 +227,7 @@ int Game_Battler::GetAtk() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_attack) {
+		if (Data::states[(*i)].affect_attack) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_atk);
 			break;
 		}
@@ -272,7 +244,7 @@ int Game_Battler::GetDef() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_defense) {
+		if (Data::states[(*i)].affect_defense) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_def);
 			break;
 		}
@@ -289,7 +261,7 @@ int Game_Battler::GetSpi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_spirit) {
+		if (Data::states[(*i)].affect_spirit) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_spi);
 			break;
 		}
@@ -306,7 +278,7 @@ int Game_Battler::GetAgi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_agility) {
+		if (Data::states[(*i)].affect_agility) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_agi);
 			break;
 		}
@@ -317,9 +289,7 @@ int Game_Battler::GetAgi() const {
 	return n;
 }
 
-int Game_Battler::GetHue() const {
-	return 0;
-}
+int Game_Battler::GetHue() const { return 0; }
 
 Game_Party_Base& Game_Battler::GetParty() const {
 	if (GetType() == Type_Ally) {
@@ -329,9 +299,7 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
-int Game_Battler::GetGauge() const {
-	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
-}
+int Game_Battler::GetGauge() const { return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100); }
 
 void Game_Battler::SetGauge(int new_gauge) {
 	new_gauge = min(max(new_gauge, 0), 100);
@@ -339,9 +307,7 @@ void Game_Battler::SetGauge(int new_gauge) {
 	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
 }
 
-bool Game_Battler::IsGaugeFull() const {
-	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
-}
+bool Game_Battler::IsGaugeFull() const { return gauge >= EASYRPG_GAUGE_MAX_VALUE; }
 
 void Game_Battler::UpdateGauge(int multiplier) {
 	if (IsDead()) {
@@ -353,12 +319,10 @@ void Game_Battler::UpdateGauge(int multiplier) {
 	}
 	gauge += GetAgi() * multiplier;
 
-	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+	// printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
 }
 
-const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
-	return battle_algorithm;
-}
+const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const { return battle_algorithm; }
 
 void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;

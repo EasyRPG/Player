@@ -44,8 +44,7 @@ private:
 	/** Contains number of rearranged actors. */
 	int actor_counter;
 
-	boost::scoped_ptr<Window_Command>
-		window_left, window_right, window_confirm;
+	boost::scoped_ptr<Window_Command> window_left, window_right, window_confirm;
 
 	void CreateCommandWindow();
 

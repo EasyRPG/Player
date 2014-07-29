@@ -58,29 +58,27 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	Clear();
 }
 
-Game_Interpreter::~Game_Interpreter() {
-}
+Game_Interpreter::~Game_Interpreter() {}
 
 // Clear.
 void Game_Interpreter::Clear() {
-	map_id = 0;						// map ID when starting up
-	event_id = 0;					// event ID
-	//Game_Message::message_waiting = false;	// waiting for message to end
-	move_route_waiting = false;		// waiting for move completion
-	button_input_variable_id = 0;	// button input variable ID
-	wait_count = 0;					// wait count
-	child_interpreter.reset();		// child interpreter for common events, etc
-	continuation = NULL;			// function to execute to resume command
+	map_id = 0;   // map ID when starting up
+	event_id = 0; // event ID
+	// Game_Message::message_waiting = false;	// waiting for message to end
+	move_route_waiting = false;   // waiting for move completion
+	button_input_variable_id = 0; // button input variable ID
+	wait_count = 0;               // wait count
+	child_interpreter.reset();    // child interpreter for common events, etc
+	continuation = NULL;          // function to execute to resume command
 	button_timer = 0;
 }
 
 // Is interpreter running.
-bool Game_Interpreter::IsRunning() const {
-	return !list.empty();
-}
+bool Game_Interpreter::IsRunning() const { return !list.empty(); }
 
 // Setup.
-void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
+void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x,
+                             int dbg_y) {
 
 	Clear();
 
@@ -183,14 +181,10 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
-		if (Game_Temp::battle_calling ||
-			Game_Temp::shop_calling ||
-//			Game_Temp::inn_calling ||
-			Game_Temp::name_calling ||
-			Game_Temp::menu_calling ||
-			Game_Temp::save_calling ||
-			Game_Temp::to_title ||
-			Game_Temp::gameover) {
+		if (Game_Temp::battle_calling || Game_Temp::shop_calling ||
+		    //			Game_Temp::inn_calling ||
+		    Game_Temp::name_calling || Game_Temp::menu_calling || Game_Temp::save_calling ||
+		    Game_Temp::to_title || Game_Temp::gameover) {
 
 			return;
 		}
@@ -247,21 +241,14 @@ void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
 
 // Skip to command.
 bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent) {
-	if (code2 < 0)
-		code2 = code;
-	if (min_indent < 0)
-		min_indent = list[index].indent;
-	if (max_indent < 0)
-		max_indent = list[index].indent;
+	if (code2 < 0) code2 = code;
+	if (min_indent < 0) min_indent = list[index].indent;
+	if (max_indent < 0) max_indent = list[index].indent;
 
-	for (int idx = index; (size_t) idx < list.size(); idx++) {
-		if (list[idx].indent < min_indent)
-			return false;
-		if (list[idx].indent > max_indent)
-			continue;
-		if (list[idx].code != code &&
-			list[idx].code != code2)
-			continue;
+	for (int idx = index; (size_t)idx < list.size(); idx++) {
+		if (list[idx].indent < min_indent) return false;
+		if (list[idx].indent > max_indent) continue;
+		if (list[idx].code != code && list[idx].code != code2) continue;
 		index = idx;
 		return true;
 	}
@@ -274,71 +261,70 @@ bool Game_Interpreter::ExecuteCommand() {
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
-		case Cmd::ShowMessage:
-			return CommandShowMessage(com);
-		case Cmd::ChangeFaceGraphic:
-			return CommandChangeFaceGraphic(com);
-		case Cmd::ShowChoice:
-			return CommandShowChoices(com);
-		case Cmd::ShowChoiceOption:
-			return SkipTo(Cmd::ShowChoiceEnd);
-		case Cmd::ShowChoiceEnd:
-			return true;
-		case Cmd::InputNumber:
-			return CommandInputNumber(com);
-		case Cmd::ControlSwitches:
-			return CommandControlSwitches(com);
-		case Cmd::ControlVars:
-			return CommandControlVariables(com);
-		case Cmd::ChangeGold:
-			return CommandChangeGold(com);
-		case Cmd::ChangeItems:
-			return CommandChangeItems(com);
-		case Cmd::ChangePartyMembers:
-			return CommandChangePartyMember(com);
-		case Cmd::ChangeLevel:
-			return CommandChangeLevel(com);
-		case Cmd::ChangeSkills:
-			return CommandChangeSkills(com);
-		case Cmd::ChangeEquipment:
-			return CommandChangeEquipment(com);
-		case Cmd::ChangeHP:
-			return CommandChangeHP(com);
-		case Cmd::ChangeSP:
-			return CommandChangeSP(com);
-		case Cmd::ChangeCondition:
-			return CommandChangeCondition(com);
-		case Cmd::FullHeal:
-			return CommandFullHeal(com);
-		case Cmd::TintScreen:
-			return CommandTintScreen(com);
-		case Cmd::FlashScreen:
-			return CommandFlashScreen(com);
-		case Cmd::ShakeScreen:
-			return CommandShakeScreen(com);
-		case Cmd::Wait:
-			return CommandWait(com);
-		case Cmd::PlayBGM:
-			return CommandPlayBGM(com);
-		case Cmd::FadeOutBGM:
-			return CommandFadeOutBGM(com);
-		case Cmd::PlaySound:
-			return CommandPlaySound(com);
-		case Cmd::EndEventProcessing:
-			return CommandEndEventProcessing(com);
-		case Cmd::Comment:
-		case Cmd::Comment_2:
-			return true;
-		case Cmd::GameOver:
-			return CommandGameOver(com);
-		default:
-			return true;
+	case Cmd::ShowMessage:
+		return CommandShowMessage(com);
+	case Cmd::ChangeFaceGraphic:
+		return CommandChangeFaceGraphic(com);
+	case Cmd::ShowChoice:
+		return CommandShowChoices(com);
+	case Cmd::ShowChoiceOption:
+		return SkipTo(Cmd::ShowChoiceEnd);
+	case Cmd::ShowChoiceEnd:
+		return true;
+	case Cmd::InputNumber:
+		return CommandInputNumber(com);
+	case Cmd::ControlSwitches:
+		return CommandControlSwitches(com);
+	case Cmd::ControlVars:
+		return CommandControlVariables(com);
+	case Cmd::ChangeGold:
+		return CommandChangeGold(com);
+	case Cmd::ChangeItems:
+		return CommandChangeItems(com);
+	case Cmd::ChangePartyMembers:
+		return CommandChangePartyMember(com);
+	case Cmd::ChangeLevel:
+		return CommandChangeLevel(com);
+	case Cmd::ChangeSkills:
+		return CommandChangeSkills(com);
+	case Cmd::ChangeEquipment:
+		return CommandChangeEquipment(com);
+	case Cmd::ChangeHP:
+		return CommandChangeHP(com);
+	case Cmd::ChangeSP:
+		return CommandChangeSP(com);
+	case Cmd::ChangeCondition:
+		return CommandChangeCondition(com);
+	case Cmd::FullHeal:
+		return CommandFullHeal(com);
+	case Cmd::TintScreen:
+		return CommandTintScreen(com);
+	case Cmd::FlashScreen:
+		return CommandFlashScreen(com);
+	case Cmd::ShakeScreen:
+		return CommandShakeScreen(com);
+	case Cmd::Wait:
+		return CommandWait(com);
+	case Cmd::PlayBGM:
+		return CommandPlayBGM(com);
+	case Cmd::FadeOutBGM:
+		return CommandFadeOutBGM(com);
+	case Cmd::PlaySound:
+		return CommandPlaySound(com);
+	case Cmd::EndEventProcessing:
+		return CommandEndEventProcessing(com);
+	case Cmd::Comment:
+	case Cmd::Comment_2:
+		return true;
+	case Cmd::GameOver:
+		return CommandGameOver(com);
+	default:
+		return true;
 	}
 }
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
-	if (com.parameters.size() <= 1 ||
-		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
+	if (com.parameters.size() <= 1 || (com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
 		return true;
 	} else {
@@ -349,7 +335,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 void Game_Interpreter::InputButton() {
 	int n;
 	for (n = Input::UP; n != Input::N0; ++n) {
-		if (Input::IsTriggered((Input::InputButton) n)) {
+		if (Input::IsTriggered((Input::InputButton)n)) {
 			break;
 		}
 	}
@@ -382,16 +368,18 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	int current_indent = list[index + 1].indent;
 	unsigned int index_temp = index + 1;
 	std::vector<std::string> s_choices;
-	while ( index_temp < list.size() ) {
-		if ( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
+	while (index_temp < list.size()) {
+		if ((list[index_temp].code == Cmd::ShowChoiceOption) &&
+		    (list[index_temp].indent == current_indent)) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 		// If found end of show choice command
-		if ( ( (list[index_temp].code == Cmd::ShowChoiceEnd) && (list[index_temp].indent == current_indent) ) ||
-			// Or found Cancel branch
-			( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
-			(list[index_temp].string == "") ) ) {
+		if (((list[index_temp].code == Cmd::ShowChoiceEnd) &&
+		     (list[index_temp].indent == current_indent)) ||
+		    // Or found Cancel branch
+		    ((list[index_temp].code == Cmd::ShowChoiceOption) &&
+		     (list[index_temp].indent == current_indent) && (list[index_temp].string == ""))) {
 
 			break;
 		}
@@ -424,14 +412,14 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( index < list.size() - 1 && list[index+1].code == Cmd::ShowMessage_2 ) {
+		if (index < list.size() - 1 && list[index + 1].code == Cmd::ShowMessage_2) {
 			// Add second (another) line
 			line_count++;
-			Game_Message::texts.push_back(list[index+1].string);
+			Game_Message::texts.push_back(list[index + 1].string);
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
-			if ( (index < list.size() - 1) && (list[index+1].code == Cmd::ShowChoice) ) {
+			if ((index < list.size() - 1) && (list[index + 1].code == Cmd::ShowChoice)) {
 				GetStrings(s_choices);
 				// If choices fit on screen
 				if (s_choices.size() <= (4 - line_count)) {
@@ -440,7 +428,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
-			} else if ((index < list.size() - 1) && (list[index+1].code == Cmd::InputNumber) ) {
+			} else if ((index < list.size() - 1) && (list[index + 1].code == Cmd::InputNumber)) {
 				// If next event command is input number
 				// If input number fits on screen
 				if (line_count < 4) {
@@ -476,14 +464,11 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	continuation = NULL;
 	int indent = com.indent;
 	for (;;) {
-		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
-			return false;
+		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent)) return false;
 		int which = list[index].parameters[0];
 		index++;
-		if (which > Game_Message::choice_result)
-			return false;
-		if (which < Game_Message::choice_result)
-			continue;
+		if (which > Game_Message::choice_result) return false;
+		if (which < Game_Message::choice_result) continue;
 		break;
 	}
 
@@ -508,30 +493,32 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Cod
 }
 
 // Command control switches
-bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // Code ControlSwitches
+bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // Code
+                                                                              // ControlSwitches
 	int i;
 	switch (com.parameters[0]) {
-		case 0:
-		case 1:
-			// Single and switch range
-			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
-				if (com.parameters[3] != 2) {
-					Game_Switches[i] = com.parameters[3] == 0;
-				} else {
-					Game_Switches[i] = !Game_Switches[i];
-				}
-			}
-			break;
-		case 2:
-			// Switch from variable
+	case 0:
+	case 1:
+		// Single and switch range
+		for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
 			if (com.parameters[3] != 2) {
-				Game_Switches[Game_Variables[com.parameters[1]]] = com.parameters[3] == 0;
+				Game_Switches[i] = com.parameters[3] == 0;
 			} else {
-				Game_Switches[Game_Variables[com.parameters[1]]] = !Game_Switches[Game_Variables[com.parameters[1]]];
+				Game_Switches[i] = !Game_Switches[i];
 			}
-			break;
-		default:
-			return false;
+		}
+		break;
+	case 2:
+		// Switch from variable
+		if (com.parameters[3] != 2) {
+			Game_Switches[Game_Variables[com.parameters[1]]] = com.parameters[3] == 0;
+		} else {
+			Game_Switches[Game_Variables[com.parameters[1]]] =
+			    !Game_Switches[Game_Variables[com.parameters[1]]];
+		}
+		break;
+	default:
+		return false;
 	}
 	Game_Map::SetNeedRefresh(true);
 	return true;
@@ -544,267 +531,267 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 	Game_Character* character;
 
 	switch (com.parameters[4]) {
+	case 0:
+		// Constant
+		value = com.parameters[5];
+		break;
+	case 1:
+		// Var A ops B
+		value = Game_Variables[com.parameters[5]];
+		break;
+	case 2:
+		// Number of var A ops B
+		value = Game_Variables[Game_Variables[com.parameters[5]]];
+		break;
+	case 3:
+		// Random between range
+		int a, b;
+		a = max(com.parameters[5], com.parameters[6]);
+		b = min(com.parameters[5], com.parameters[6]);
+		value = rand() % (a - b + 1) + b;
+		break;
+	case 4:
+		// Items
+		switch (com.parameters[6]) {
 		case 0:
-			// Constant
-			value = com.parameters[5];
+			// Number of items posessed
+			value = Main_Data::game_party->GetItemCount(com.parameters[5]);
 			break;
 		case 1:
-			// Var A ops B
-			value = Game_Variables[com.parameters[5]];
+			// How often the item is equipped
+			value = Main_Data::game_party->GetItemCount(com.parameters[5], true);
+			break;
+		}
+		break;
+	case 5:
+		// Hero
+		actor = Game_Actors::GetActor(com.parameters[5]);
+		if (actor != NULL) {
+			switch (com.parameters[6]) {
+			case 0:
+				// Level
+				value = actor->GetLevel();
+				break;
+			case 1:
+				// Experience
+				value = actor->GetExp();
+				break;
+			case 2:
+				// Current HP
+				value = actor->GetHp();
+				break;
+			case 3:
+				// Current MP
+				value = actor->GetSp();
+				break;
+			case 4:
+				// Max HP
+				value = actor->GetMaxHp();
+				break;
+			case 5:
+				// Max MP
+				value = actor->GetMaxSp();
+				break;
+			case 6:
+				// Attack
+				value = actor->GetAtk();
+				break;
+			case 7:
+				// Defense
+				value = actor->GetDef();
+				break;
+			case 8:
+				// Intelligence
+				value = actor->GetSpi();
+				break;
+			case 9:
+				// Agility
+				value = actor->GetAgi();
+				break;
+			case 10:
+				// Weapon ID
+				value = actor->GetWeaponId();
+				break;
+			case 11:
+				// Shield ID
+				value = actor->GetShieldId();
+				break;
+			case 12:
+				// Armor ID
+				value = actor->GetArmorId();
+				break;
+			case 13:
+				// Helmet ID
+				value = actor->GetHelmetId();
+				break;
+			case 14:
+				// Accesory ID
+				value = actor->GetAccessoryId();
+				break;
+			}
+		}
+		break;
+	case 6:
+		// Characters
+		if (com.parameters[6] != 0) {
+			character = GetCharacter(com.parameters[5]);
+		} else {
+			// Special case for Player Map ID
+			character = NULL;
+			value = Game_Map::GetMapId();
+		}
+		// Other cases
+		if (character != NULL) {
+			switch (com.parameters[6]) {
+			case 1:
+				// X Coordinate
+				value = character->GetX();
+				break;
+			case 2:
+				// Y Coordinate
+				value = character->GetY();
+				break;
+			case 3:
+				// Orientation
+				value = character->GetDirection();
+				break;
+			case 4:
+				// Screen X
+				value = character->GetScreenX();
+				break;
+			case 5:
+				// Screen Y
+				value = character->GetScreenY();
+			}
+		}
+		break;
+	case 7:
+		// More
+		switch (com.parameters[5]) {
+		case 0:
+			// Gold
+			value = Main_Data::game_party->GetGold();
+			break;
+		case 1:
+			value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
 			break;
 		case 2:
-			// Number of var A ops B
-			value = Game_Variables[Game_Variables[com.parameters[5]]];
+			// Number of heroes in party
+			value = Main_Data::game_party->GetActors().size();
 			break;
 		case 3:
-			// Random between range
-			int a, b;
-			a = max(com.parameters[5], com.parameters[6]);
-			b = min(com.parameters[5], com.parameters[6]);
-			value = rand() % (a-b+1)+b;
+			// Number of saves
+			value = Game_System::GetSaveCount();
 			break;
 		case 4:
-			// Items
-			switch (com.parameters[6]) {
-				case 0:
-					// Number of items posessed
-					value = Main_Data::game_party->GetItemCount(com.parameters[5]);
-					break;
-				case 1:
-					// How often the item is equipped
-					value = Main_Data::game_party->GetItemCount(com.parameters[5], true);
-					break;
-			}
+			// Number of battles
+			value = Main_Data::game_party->GetBattleCount();
 			break;
 		case 5:
-			// Hero
-			actor = Game_Actors::GetActor(com.parameters[5]);
-			if (actor != NULL) {
-				switch (com.parameters[6]) {
-					case 0:
-						// Level
-						value = actor->GetLevel();
-						break;
-					case 1:
-						// Experience
-						value = actor->GetExp();
-						break;
-					case 2:
-						// Current HP
-						value = actor->GetHp();
-						break;
-					case 3:
-						// Current MP
-						value = actor->GetSp();
-						break;
-					case 4:
-						// Max HP
-						value = actor->GetMaxHp();
-						break;
-					case 5:
-						// Max MP
-						value = actor->GetMaxSp();
-						break;
-					case 6:
-						// Attack
-						value = actor->GetAtk();
-						break;
-					case 7:
-						// Defense
-						value = actor->GetDef();
-						break;
-					case 8:
-						// Intelligence
-						value = actor->GetSpi();
-						break;
-					case 9:
-						// Agility
-						value = actor->GetAgi();
-						break;
-					case 10:
-						// Weapon ID
-						value = actor->GetWeaponId();
-						break;
-					case 11:
-						// Shield ID
-						value = actor->GetShieldId();
-						break;
-					case 12:
-						// Armor ID
-						value = actor->GetArmorId();
-						break;
-					case 13:
-						// Helmet ID
-						value = actor->GetHelmetId();
-						break;
-					case 14:
-						// Accesory ID
-						value = actor->GetAccessoryId();
-						break;
-				}
-			}
+			// Number of wins
+			value = Main_Data::game_party->GetWinCount();
 			break;
 		case 6:
-			// Characters
-			if (com.parameters[6] != 0){
-				character = GetCharacter(com.parameters[5]);
-			} else {
-				// Special case for Player Map ID
-				character = NULL;
-				value = Game_Map::GetMapId();
-			}
-			// Other cases
-			if (character != NULL) {
-				switch (com.parameters[6]) {
-					case 1:
-						// X Coordinate
-						value = character->GetX();
-						break;
-					case 2:
-						// Y Coordinate
-						value = character->GetY();
-						break;
-					case 3:
-						// Orientation
-						value = character->GetDirection();
-						break;
-					case 4:
-						// Screen X
-						value = character->GetScreenX();
-						break;
-					case 5:
-						// Screen Y
-						value = character->GetScreenY();
-				}
-			}
+			// Number of defeats
+			value = Main_Data::game_party->GetDefeatCount();
 			break;
 		case 7:
-			// More
-			switch (com.parameters[5]) {
-				case 0:
-					// Gold
-					value = Main_Data::game_party->GetGold();
-					break;
-				case 1:
-					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
-					break;
-				case 2:
-					// Number of heroes in party
-					value = Main_Data::game_party->GetActors().size();
-					break;
-				case 3:
-					// Number of saves
-					value = Game_System::GetSaveCount();
-					break;
-				case 4:
-					// Number of battles
-					value = Main_Data::game_party->GetBattleCount();
-					break;
-				case 5:
-					// Number of wins
-					value = Main_Data::game_party->GetWinCount();
-					break;
-				case 6:
-					// Number of defeats
-					value = Main_Data::game_party->GetDefeatCount();
-					break;
-				case 7:
-					// Number of escapes (aka run away)
-					value = Main_Data::game_party->GetRunCount();
-					break;
-				case 8:
-					// TODO: MIDI play position
-					break;
-				case 9:
-					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
-					break;
-			}
+			// Number of escapes (aka run away)
+			value = Main_Data::game_party->GetRunCount();
 			break;
-		default:
-			;
+		case 8:
+			// TODO: MIDI play position
+			break;
+		case 9:
+			value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
+			break;
+		}
+		break;
+	default:
+		;
 	}
 
 	switch (com.parameters[0]) {
+	case 0:
+	case 1:
+		// Single and Var range
+		for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
+			switch (com.parameters[3]) {
+			case 0:
+				// Assignement
+				Game_Variables[i] = value;
+				break;
+			case 1:
+				// Addition
+				Game_Variables[i] += value;
+				break;
+			case 2:
+				// Subtraction
+				Game_Variables[i] -= value;
+				break;
+			case 3:
+				// Multiplication
+				Game_Variables[i] *= value;
+				break;
+			case 4:
+				// Division
+				if (value != 0) {
+					Game_Variables[i] /= value;
+				}
+				break;
+			case 5:
+				// Module
+				if (value != 0) {
+					Game_Variables[i] %= value;
+				} else {
+					Game_Variables[i] = 0;
+				}
+			}
+			if (Game_Variables[i] > MaxSize) {
+				Game_Variables[i] = MaxSize;
+			}
+			if (Game_Variables[i] < MinSize) {
+				Game_Variables[i] = MinSize;
+			}
+		}
+		break;
+
+	case 2:
+		switch (com.parameters[3]) {
 		case 0:
+			// Assignement
+			Game_Variables[com.parameters[1]] = value;
+			break;
 		case 1:
-			// Single and Var range
-			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
-				switch (com.parameters[3]) {
-					case 0:
-						// Assignement
-						Game_Variables[i] = value;
-						break;
-					case 1:
-						// Addition
-						Game_Variables[i] += value;
-						break;
-					case 2:
-						// Subtraction
-						Game_Variables[i] -= value;
-						break;
-					case 3:
-						// Multiplication
-						Game_Variables[i] *= value;
-						break;
-					case 4:
-						// Division
-						if (value != 0) {
-							Game_Variables[i] /= value;
-						}
-						break;
-					case 5:
-						// Module
-						if (value != 0) {
-							Game_Variables[i] %= value;
-						} else {
-							Game_Variables[i] = 0;
-						}
-				}
-				if (Game_Variables[i] > MaxSize) {
-					Game_Variables[i] = MaxSize;
-				}
-				if (Game_Variables[i] < MinSize) {
-					Game_Variables[i] = MinSize;
-				}
+			// Addition
+			Game_Variables[com.parameters[1]] += value;
+			break;
+		case 2:
+			// Subtraction
+			Game_Variables[com.parameters[1]] -= value;
+			break;
+		case 3:
+			// Multiplication
+			Game_Variables[com.parameters[1]] *= value;
+			break;
+		case 4:
+			// Division
+			if (value != 0) {
+				Game_Variables[com.parameters[1]] /= value;
 			}
 			break;
-
-		case 2:
-			switch (com.parameters[3]) {
-				case 0:
-					// Assignement
-					Game_Variables[com.parameters[1]] = value;
-					break;
-				case 1:
-					// Addition
-					Game_Variables[com.parameters[1]] += value;
-					break;
-				case 2:
-					// Subtraction
-					Game_Variables[com.parameters[1]] -= value;
-					break;
-				case 3:
-					// Multiplication
-					Game_Variables[com.parameters[1]] *= value;
-					break;
-				case 4:
-					// Division
-					if (value != 0) {
-						Game_Variables[com.parameters[1]] /= value;
-					}
-					break;
-				case 5:
-					// Module
-					if (value != 0) {
-						Game_Variables[com.parameters[1]] %= value;
-					}
+		case 5:
+			// Module
+			if (value != 0) {
+				Game_Variables[com.parameters[1]] %= value;
 			}
-			if (Game_Variables[com.parameters[1]] > MaxSize) {
-				Game_Variables[com.parameters[1]] = MaxSize;
-			}
-			if (Game_Variables[com.parameters[1]] < MinSize) {
-				Game_Variables[com.parameters[1]] = MinSize;
-			}
+		}
+		if (Game_Variables[com.parameters[1]] > MaxSize) {
+			Game_Variables[com.parameters[1]] = MaxSize;
+		}
+		if (Game_Variables[com.parameters[1]] < MinSize) {
+			Game_Variables[com.parameters[1]] = MinSize;
+		}
 	}
 
 	Game_Map::SetNeedRefresh(true);
@@ -861,11 +848,7 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 // Change Gold.
 bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code 10310
 	int value;
-	value = OperateValue(
-		com.parameters[0],
-		com.parameters[1],
-		com.parameters[2]
-	);
+	value = OperateValue(com.parameters[0], com.parameters[1], com.parameters[2]);
 
 	Main_Data::game_party->GainGold(value);
 
@@ -876,11 +859,7 @@ bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code
 // Change Items.
 bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Code 10320
 	int value;
-	value = OperateValue(
-		com.parameters[0],
-		com.parameters[3],
-		com.parameters[4]
-	);
+	value = OperateValue(com.parameters[0], com.parameters[3], com.parameters[4]);
 
 	// Add item can't be used to remove an item and
 	// remove item can't be used to add one
@@ -901,10 +880,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 		Main_Data::game_party->AddItem(com.parameters[2], value);
 	} else {
 		// Item by variable
-		Main_Data::game_party->AddItem(
-			Game_Variables[com.parameters[2]],
-			value
-		);
+		Main_Data::game_party->AddItem(Game_Variables[com.parameters[2]], value);
 	}
 	Game_Map::SetNeedRefresh(true);
 	// Continue
@@ -970,17 +946,10 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 // Change Experience.
 bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
-	int value = OperateValue(
-		com.parameters[2],
-		com.parameters[3],
-		com.parameters[4]
-	);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
+	int value = OperateValue(com.parameters[2], com.parameters[3], com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
@@ -990,25 +959,21 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 
 int Game_Interpreter::ValueOrVariable(int mode, int val) {
 	switch (mode) {
-		case 0:
-			return val;
-		case 1:
-			return Game_Variables[val];
-		default:
-			return -1;
+	case 0:
+		return val;
+	case 1:
+		return Game_Variables[val];
+	default:
+		return -1;
 	}
 }
 
 bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Code 10440
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int skill_id = ValueOrVariable(com.parameters[3],
-								   com.parameters[4]);
+	int skill_id = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		if (remove)
 			actor->UnlearnSkill(skill_id);
@@ -1020,39 +985,35 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	int item_id;
 	int type;
 	int slot;
 
 	switch (com.parameters[2]) {
-		case 0:
-			item_id = ValueOrVariable(com.parameters[3],
-									  com.parameters[4]);
-			type = Data::items[item_id - 1].type;
-			switch (type) {
-				case RPG::Item::Type_weapon:
-				case RPG::Item::Type_shield:
-				case RPG::Item::Type_armor:
-				case RPG::Item::Type_helmet:
-				case RPG::Item::Type_accessory:
-					slot = type - 1;
-				default:
-					return true;
-			}
-			break;
-		case 1:
-			item_id = 0;
-			slot = com.parameters[3];
-			break;
+	case 0:
+		item_id = ValueOrVariable(com.parameters[3], com.parameters[4]);
+		type = Data::items[item_id - 1].type;
+		switch (type) {
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+			slot = type - 1;
 		default:
-			return false;
+			return true;
+		}
+		break;
+	case 1:
+		item_id = 0;
+		slot = com.parameters[3];
+		break;
+	default:
+		return false;
 	}
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeEquipment(slot, item_id);
 	}
@@ -1061,19 +1022,14 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 10460
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int amount = ValueOrVariable(com.parameters[3],
-								 com.parameters[4]);
+	int amount = ValueOrVariable(com.parameters[3], com.parameters[4]);
 	bool lethal = com.parameters[5] != 0;
 
-	if (remove)
-		amount = -amount;
+	if (remove) amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		int hp = actor->GetHp() + amount;
 		if (!lethal && hp <= 0) {
@@ -1086,22 +1042,16 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 10470
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int amount = ValueOrVariable(com.parameters[3],
-								 com.parameters[4]);
+	int amount = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	if (remove)
-		amount = -amount;
+	if (remove) amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		int sp = actor->GetSp() + amount;
-		if (sp < 0)
-			sp = 0;
+		if (sp < 0) sp = 0;
 		actor->SetSp(sp);
 	}
 
@@ -1109,14 +1059,11 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { // Code 10480
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
 	int state_id = com.parameters[3];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		if (remove)
 			actor->RemoveState(state_id);
@@ -1128,12 +1075,9 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0], com.parameters[1]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
@@ -1181,8 +1125,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 
 	screen->TintScreen(r, g, b, s, tenths);
 
-	if (wait)
-		SetupWait(tenths);
+	if (wait) SetupWait(tenths);
 
 	return true;
 }
@@ -1198,22 +1141,20 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		switch (com.parameters[6]) {
-			case 0:
-				screen->FlashOnce(r, g, b, s, tenths);
-				if (wait)
-					SetupWait(tenths);
-				break;
-			case 1:
-				screen->FlashBegin(r, g, b, s, tenths);
-				break;
-			case 2:
-				screen->FlashEnd();
-				break;
+		case 0:
+			screen->FlashOnce(r, g, b, s, tenths);
+			if (wait) SetupWait(tenths);
+			break;
+		case 1:
+			screen->FlashBegin(r, g, b, s, tenths);
+			break;
+		case 2:
+			screen->FlashEnd();
+			break;
 		}
 	} else {
 		screen->FlashOnce(r, g, b, s, tenths);
-		if (wait)
-			SetupWait(tenths);
+		if (wait) SetupWait(tenths);
 	}
 
 	return true;
@@ -1233,18 +1174,18 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 		}
 	} else {
 		switch (com.parameters[4]) {
-			case 0:
-				screen->ShakeOnce(strength, speed, tenths);
-				if (wait) {
-					SetupWait(tenths);
-				}
-				break;
-			case 1:
-				screen->ShakeBegin(strength, speed);
-				break;
-			case 2:
-				screen->ShakeEnd();
-				break;
+		case 0:
+			screen->ShakeOnce(strength, speed, tenths);
+			if (wait) {
+				SetupWait(tenths);
+			}
+			break;
+		case 1:
+			screen->ShakeBegin(strength, speed);
+			break;
+		case 2:
+			screen->ShakeEnd();
+			break;
 		}
 	}
 
@@ -1273,4 +1214,6 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 
 bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationShowInn(RPG::EventCommand const& /* com */) { return true; }
-bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
+bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) {
+	return true;
+}

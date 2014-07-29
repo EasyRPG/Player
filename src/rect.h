@@ -120,7 +120,6 @@ public:
 	/** Height. */
 	int height;
 
-
 	/**
 	 * Adjusts a source/destination pair of rectangles.
 	 * src is adjusted to fit within ref.

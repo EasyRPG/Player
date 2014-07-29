@@ -41,8 +41,8 @@
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
-class Action;
-class SpriteAction;
+	class Action;
+	class SpriteAction;
 }
 
 /**

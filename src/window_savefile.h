@@ -25,7 +25,7 @@
 /**
  * Window Save File Class.
  */
-class Window_SaveFile :	public Window_Base {
+class Window_SaveFile : public Window_Base {
 public:
 	/**
 	 * Constructor.
@@ -52,8 +52,8 @@ public:
 	 * @param hp HP of the first party member.
 	 * @param level level of the First party member.
 	 */
-	void SetParty(const std::vector<std::pair<int, std::string> >& actors,
-		std::string name, int hp, int level);
+	void SetParty(const std::vector<std::pair<int, std::string> >& actors, std::string name, int hp,
+	              int level);
 
 	/**
 	 * Gets if the slot holds a valid save.

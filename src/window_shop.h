@@ -25,7 +25,7 @@
 /**
  * Window Shop Class.
  */
-class Window_Shop :	public Window_Base {
+class Window_Shop : public Window_Base {
 public:
 	/**
 	 * Constructor.

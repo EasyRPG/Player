@@ -25,16 +25,13 @@
 #include "scene_item.h"
 #include "scene_skill.h"
 
-Scene_ActorTarget::Scene_ActorTarget(int item_id, int item_index) :
-	id(item_id), index(item_index), 
-	actor_index(0), use_item(true) {
+Scene_ActorTarget::Scene_ActorTarget(int item_id, int item_index)
+    : id(item_id), index(item_index), actor_index(0), use_item(true) {
 	Scene::type = Scene::ActorTarget;
 }
 
-Scene_ActorTarget::Scene_ActorTarget(
-	int skill_id, int actor_index, int skill_index) :
-	id(skill_id), index(skill_index),
-	actor_index(actor_index), use_item(false) {
+Scene_ActorTarget::Scene_ActorTarget(int skill_id, int actor_index, int skill_index)
+    : id(skill_id), index(skill_index), actor_index(actor_index), use_item(false) {
 	Scene::type = Scene::ActorTarget;
 }
 
@@ -90,11 +87,9 @@ void Scene_ActorTarget::UpdateItem() {
 		}
 		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
 			Game_System::SePlay(Main_Data::game_data.system.item_se);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
-
 
 		status_window->Refresh();
 		target_window->Refresh();
@@ -111,8 +106,7 @@ void Scene_ActorTarget::UpdateSkill() {
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
 			Game_System::SePlay(Main_Data::game_data.system.item_se);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 

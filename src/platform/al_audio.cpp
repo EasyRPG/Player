@@ -129,20 +129,19 @@ namespace {
 	set_context const c_##__LINE__(ctx); \
 	(void) c_##__LINE__;
 
-	enum { BUFFER_NUMBER = 3 };
+	enum {
+		BUFFER_NUMBER = 3
+	};
 
 	double const SECOND_PER_BUFFER = 0.5;
 }
 
 struct ALAudio::buffer_loader {
-	virtual ~buffer_loader() {
-	}
+	virtual ~buffer_loader() {}
 
 	virtual size_t load_buffer(ALuint buffer) = 0;
 	virtual bool is_end() const = 0;
-	virtual unsigned midi_ticks() const {
-		return 0;
-	}
+	virtual unsigned midi_ticks() const { return 0; }
 };
 
 struct ALAudio::source {
@@ -190,9 +189,7 @@ struct ALAudio::source {
 		alDeleteSources(1, &src_);
 	}
 
-	ALuint get() {
-		return src_;
-	}
+	ALuint get() { return src_; }
 
 	EASYRPG_SHARED_PTR<fluid_settings_t> settings;
 	EASYRPG_SHARED_PTR<fluid_synth_t> synth;
@@ -211,12 +208,8 @@ private:
 	EASYRPG_SHARED_PTR<buffer_loader> loader_;
 	boost::circular_buffer<unsigned> ticks_, buf_sizes_;
 
-	unsigned progress_milli() const {
-		return (1000 * loop_count_ / 60);
-	}
-	bool fade_ended() const {
-		return (fade_milli_ < progress_milli());
-	}
+	unsigned progress_milli() const { return (1000 * loop_count_ / 60); }
+	bool fade_ended() const { return (fade_milli_ < progress_milli()); }
 	float current_volume() const {
 		return (fade_milli_ == 0)
 		           ? 1.0f
@@ -366,9 +359,7 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 		return read_size;
 	}
 
-	bool is_end() const {
-		return seek_pos_ >= info_.frames;
-	}
+	bool is_end() const { return seek_pos_ >= info_.frames; }
 
 private:
 	std::string const filename_;
@@ -412,9 +403,7 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 		return data_.size() / 2;
 	}
 
-	unsigned midi_ticks() const {
-		return fluid_sequencer_get_tick(source_.seq.get());
-	}
+	unsigned midi_ticks() const { return fluid_sequencer_get_tick(source_.seq.get()); }
 
 private:
 	source &source_;
@@ -423,8 +412,8 @@ private:
 	std::vector<int16_t> data_;
 };
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
-ALAudio::create_loader(source &src, std::string const &filename) const {
+EASYRPG_SHARED_PTR<ALAudio::buffer_loader> ALAudio::create_loader(
+    source &src, std::string const &filename) const {
 	SET_CONTEXT(ctx_);
 
 	if (filename.empty()) {
@@ -435,13 +424,13 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 	return snd ? snd : EASYRPG_MAKE_SHARED<midi_loader>(boost::ref(src), filename);
 }
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
-ALAudio::getMusic(source &src, std::string const &file) const {
+EASYRPG_SHARED_PTR<ALAudio::buffer_loader> ALAudio::getMusic(source &src,
+                                                             std::string const &file) const {
 	return create_loader(src, FileFinder::FindMusic(file));
 }
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
-ALAudio::getSound(source &src, std::string const &file) const {
+EASYRPG_SHARED_PTR<ALAudio::buffer_loader> ALAudio::getSound(source &src,
+                                                             std::string const &file) const {
 	return create_loader(src, FileFinder::FindSound(file));
 }
 
@@ -476,9 +465,9 @@ ALAudio::ALAudio(char const *const dev_name) {
 	bgs_src_ = create_source(true);
 	me_src_ = create_source(false);
 
-        if (not getenv("DEFAULT_SOUNDFONT")) {
-          Output::Error("Default sound font not found.");
-        }
+	if (not getenv("DEFAULT_SOUNDFONT")) {
+		Output::Error("Default sound font not found.");
+	}
 }
 
 EASYRPG_SHARED_PTR<ALAudio::source> ALAudio::create_source(bool loop) const {

@@ -23,10 +23,7 @@
 #include "game_system.h"
 #include "input.h"
 
-Scene_Status::Scene_Status(int actor_index) :
-	actor_index(actor_index) {
-	type = Scene::Status;
-}
+Scene_Status::Scene_Status(int actor_index) : actor_index(actor_index) { type = Scene::Status; }
 
 void Scene_Status::Start() {
 	int actor = Main_Data::game_party->GetActors()[actor_index]->GetId();
@@ -57,7 +54,8 @@ void Scene_Status::Update() {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
+		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) %
+		              Main_Data::game_party->GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
 	}
 }

@@ -33,8 +33,7 @@ class Game_CommonEvent;
 /**
  * Game_Interpreter_Map class
  */
-class Game_Interpreter_Map : public Game_Interpreter
-{
+class Game_Interpreter_Map : public Game_Interpreter {
 public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
 	~Game_Interpreter_Map();
@@ -47,7 +46,8 @@ public:
 	*
 	* @return If the setup was successful (fails when index out of range)
 	*/
-	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index = 0);
+	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id,
+	                   int index = 0);
 
 	/**
 	 * Generates a SaveEventCommands vector needed for the savefile.
@@ -132,7 +132,6 @@ private:
 	bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 private:
-
 	int DecodeInt(std::vector<int>::const_iterator& it);
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);

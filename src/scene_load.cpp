@@ -23,10 +23,7 @@
 #include "scene_file.h"
 #include "scene_map.h"
 
-Scene_Load::Scene_Load() :
-	Scene_File(Data::terms.load_game_message) {
-	Scene::type = Scene::Load;
-}
+Scene_Load::Scene_Load() : Scene_File(Data::terms.load_game_message) { Scene::type = Scene::Load; }
 
 void Scene_Load::Action(int index) {
 	std::stringstream ss;
@@ -34,13 +31,11 @@ void Scene_Load::Action(int index) {
 
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 
-	Player::CreateGameObjects();	
+	Player::CreateGameObjects();
 
 	Player::LoadSavegame(save_name);
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
 }
 
-bool Scene_Load::IsSlotValid(int index) {
-	return file_windows[index]->IsValid();
-}
+bool Scene_Load::IsSlotValid(int index) { return file_windows[index]->IsValid(); }

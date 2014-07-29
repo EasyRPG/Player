@@ -29,10 +29,8 @@ namespace Game_Targets {
 std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
 	std::vector<RPG::SaveTarget>::iterator it;
 	for (it = data.begin(); it != data.end(); ++it)
-		if (it->ID == id)
-			return it;
-	if (!create)
-		return data.end();
+		if (it->ID == id) return it;
+	if (!create) return data.end();
 	data.resize(data.size() + 1);
 	data.back().ID = id;
 	return data.end() - 1;
@@ -50,8 +48,7 @@ void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
 
 void Game_Targets::RemoveTeleportTarget(int map_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
-	if (target == data.end())
-		return;
+	if (target == data.end()) return;
 	data.erase(target);
 }
 
@@ -74,4 +71,3 @@ RPG::SaveTarget* Game_Targets::GetEscapeTarget() {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, false);
 	return target == data.end() ? NULL : &*target;
 }
-

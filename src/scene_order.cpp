@@ -26,10 +26,7 @@
 #include "input.h"
 #include "scene_map.h"
 
-Scene_Order::Scene_Order() :
-	actor_counter(0) {
-	type = Scene::Order;
-}
+Scene_Order::Scene_Order() : actor_counter(0) { type = Scene::Order; }
 
 void Scene_Order::Start() {
 	actors.resize(Main_Data::game_party->GetActors().size());
@@ -59,7 +56,9 @@ void Scene_Order::UpdateOrder() {
 		} else {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			window_left->SetItemText(window_left->GetIndex(), "");
-			window_right->SetItemText(actor_counter, Main_Data::game_party->GetActors()[window_left->GetIndex()]->GetName());
+			window_right->SetItemText(
+			    actor_counter,
+			    Main_Data::game_party->GetActors()[window_left->GetIndex()]->GetName());
 
 			actors[actor_counter] = window_left->GetIndex() + 1;
 
@@ -96,8 +95,7 @@ void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_confirm;
 
 	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
-		it != actors.end(); ++it) {
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin(); it != actors.end(); ++it) {
 		options_left.push_back((*it)->GetName());
 		options_right.push_back("");
 	}
@@ -127,8 +125,7 @@ void Scene_Order::Redo() {
 	Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 
 	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
-		it != actors.end(); ++it) {
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin(); it != actors.end(); ++it) {
 		int index = it - actors.begin();
 		window_left->SetItemText(index, (*it)->GetName());
 		window_right->SetItemText(index, "");

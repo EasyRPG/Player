@@ -82,7 +82,7 @@ protected:
 	/**
 	 * Tests whether actor is selectable in current ChoiceMode.
 	 *
-	 * @return true: selection possible 
+	 * @return true: selection possible
 	 */
 	bool IsChoiceValid(const Game_Battler& battler) const;
 

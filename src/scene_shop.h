@@ -18,7 +18,6 @@
 #ifndef _SCENE_SHOP_H_
 #define _SCENE_SHOP_H_
 
-
 // Headers
 #include "scene.h"
 #include "window_base.h"

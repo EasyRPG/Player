@@ -27,9 +27,9 @@
 
 #include <cstdio>
 
-Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight),
-	digits_max(Player::engine == Player::EngineRpg2k ? 6 : 7) {
+Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight)
+    , digits_max(Player::engine == Player::EngineRpg2k ? 6 : 7) {
 	number = 0;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
@@ -66,9 +66,7 @@ void Window_NumberInput::Refresh() {
 	}
 }
 
-int Window_NumberInput::GetNumber() {
-	return number * (plus ? 1 : -1);
-}
+int Window_NumberInput::GetNumber() { return number * (plus ? 1 : -1); }
 
 void Window_NumberInput::SetNumber(int inumber) {
 	int num = 1;
@@ -84,28 +82,19 @@ void Window_NumberInput::SetNumber(int inumber) {
 	Refresh();
 }
 
-int Window_NumberInput::GetMaxDigits() {
-	return digits_max;
-}
+int Window_NumberInput::GetMaxDigits() { return digits_max; }
 
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	// Only accepts values between 1 and 6 (or 7) as RPG2K (or RPG2k3)
 	int top = Player::engine == Player::EngineRpg2k ? 6 : 7;
-	digits_max = 
-		(idigits_max > top) ? top :
-		(idigits_max <= 0) ? 1 :
-		idigits_max;
+	digits_max = (idigits_max > top) ? top : (idigits_max <= 0) ? 1 : idigits_max;
 	index = 0;
 	Refresh();
 }
 
-bool Window_NumberInput::GetShowOperator() {
-	return show_operator;
-}
+bool Window_NumberInput::GetShowOperator() { return show_operator; }
 
-void Window_NumberInput::SetShowOperator(bool show) {
-	show_operator = show;
-}
+void Window_NumberInput::SetShowOperator(bool show) { show_operator = show; }
 
 void Window_NumberInput::UpdateCursorRect() {
 	cursor_rect.Set(index * (cursor_width - 2) + (show_operator ? -2 : 8), 0, cursor_width, 16);
@@ -146,7 +135,8 @@ void Window_NumberInput::Update() {
 
 		if (Input::IsRepeated(Input::LEFT)) {
 			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			index = (index + digits_max - 1 + (int)show_operator) % (digits_max + (int)show_operator);
+			index =
+			    (index + digits_max - 1 + (int)show_operator) % (digits_max + (int)show_operator);
 		}
 
 		UpdateCursorRect();

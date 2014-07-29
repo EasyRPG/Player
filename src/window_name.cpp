@@ -25,8 +25,8 @@
 
 #include <boost/regex/pending/unicode_iterator.hpp>
 
-Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -47,7 +47,7 @@ void Window_Name::Set(const std::string& text) {
 }
 
 void Window_Name::Append(const std::string& text) {
-	if(contents->GetFont()->GetSize(name + text).width <= (12 * 6)) {
+	if (contents->GetFont()->GetSize(name + text).width <= (12 * 6)) {
 		name += text;
 		Refresh();
 	} else {
@@ -61,19 +61,18 @@ void Window_Name::Update() {
 }
 
 void Window_Name::Erase() {
-	if (name.size() < 1)
-		return;
+	if (name.size() < 1) return;
 
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_begin =
-		boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(), name.begin());
+	    boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(),
+	                                                           name.begin());
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_end =
-		boost::u8_to_u32_iterator<std::string::const_iterator>(name.end(), name.begin(), name.end());
+	    boost::u8_to_u32_iterator<std::string::const_iterator>(name.end(), name.begin(),
+	                                                           name.end());
 	--name_end;
 
 	name = std::string(name_begin.base(), name_end.base());
 	Refresh();
 }
 
-const std::string& Window_Name::Get() {
-	return name;
-}
+const std::string& Window_Name::Get() { return name; }

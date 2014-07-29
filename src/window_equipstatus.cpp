@@ -23,12 +23,13 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname) :
-	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id),
-	draw_params(false),
-	draw_actorname(draw_actorname),
-	dirty(true) {
+Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id,
+                                       bool draw_actorname)
+    : Window_Base(ix, iy, iwidth, iheight)
+    , actor_id(actor_id)
+    , draw_params(false)
+    , draw_actorname(draw_actorname)
+    , dirty(true) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -57,8 +58,7 @@ void Window_EquipStatus::Refresh() {
 	}
 }
 
-void Window_EquipStatus::SetNewParameters(
-	int new_atk, int new_def, int new_spi, int new_agi) {
+void Window_EquipStatus::SetNewParameters(int new_atk, int new_def, int new_spi, int new_agi) {
 	draw_params = true;
 
 	dirty = atk != new_atk || def != new_def || spi != new_spi || agi != new_agi;

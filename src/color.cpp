@@ -18,26 +18,13 @@
 // Headers
 #include "color.h"
 
-Color::Color() :
-	red(0),
-	green(0),
-	blue(0),
-	alpha(0) {
-}
+Color::Color() : red(0), green(0), blue(0), alpha(0) {}
 
-Color::Color(unsigned red, unsigned green, unsigned blue, unsigned alpha) :
-	red((uint8_t)red),
-	green((uint8_t)green),
-	blue((uint8_t)blue),
-	alpha((uint8_t)alpha) {
-}
+Color::Color(unsigned red, unsigned green, unsigned blue, unsigned alpha)
+    : red((uint8_t)red), green((uint8_t)green), blue((uint8_t)blue), alpha((uint8_t)alpha) {}
 
-Color::Color(int red, int green, int blue, int alpha) :
-	red((uint8_t)red),
-	green((uint8_t)green),
-	blue((uint8_t)blue),
-	alpha((uint8_t)alpha) {
-}
+Color::Color(int red, int green, int blue, int alpha)
+    : red((uint8_t)red), green((uint8_t)green), blue((uint8_t)blue), alpha((uint8_t)alpha) {}
 
 bool Color::operator==(const Color &other) const {
 	return red == other.red && green == other.green && blue == other.blue && alpha == other.alpha;

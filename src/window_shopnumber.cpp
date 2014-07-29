@@ -24,9 +24,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	item_max(1), price(0), number(1), item_id(0) {
+Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight), item_max(1), price(0), number(1), item_id(0) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -56,9 +55,7 @@ void Window_ShopNumber::Refresh() {
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
 }
 
-int Window_ShopNumber::GetNumber() const {
-	return number;
-}
+int Window_ShopNumber::GetNumber() const { return number; }
 
 void Window_ShopNumber::Update() {
 	Window_Base::Update();
@@ -82,6 +79,4 @@ void Window_ShopNumber::Update() {
 	}
 }
 
-int Window_ShopNumber::GetTotal() const {
-	return Data::items[item_id - 1].price * number;
-}
+int Window_ShopNumber::GetTotal() const { return Data::items[item_id - 1].price * number; }

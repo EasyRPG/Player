@@ -50,15 +50,12 @@ void Window_Base::Update() {
 }
 
 void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
-	if (face_name.empty()) { return; }
+	if (face_name.empty()) {
+		return;
+	}
 	BitmapRef faceset = Cache::Faceset(face_name);
 
-	Rect src_rect(
-		(face_index % 4) * 48,
-		face_index / 4 * 48,
-		48,
-		48
-	);
+	Rect src_rect((face_index % 4) * 48, face_index / 4 * 48, 48, 48);
 
 	if (flip) {
 		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false);
@@ -139,8 +136,7 @@ void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max
 	ss << actor->GetHp();
 	contents->TextDraw(cx + 18, cy, color, ss.str(), Text::AlignRight);
 
-	if (!draw_max)
-		return;
+	if (!draw_max) return;
 
 	// Draw the /
 	cx += 3 * 6;
@@ -168,8 +164,7 @@ void Window_Base::DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max
 	ss << actor->GetSp();
 	contents->TextDraw(cx + 18, cy, color, ss.str(), Text::AlignRight);
 
-	if (!draw_max)
-		return;
+	if (!draw_max) return;
 
 	// Draw the /
 	cx += 3 * 6;
@@ -265,7 +260,8 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 	Rect gold_text_size = contents->GetFont()->GetSize(Data::terms.gold);
 	contents->TextDraw(cx, cy, 1, Data::terms.gold, Text::AlignRight);
 
-	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
+	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(),
+	                   Text::AlignRight);
 }
 
 void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {

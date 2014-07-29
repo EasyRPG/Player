@@ -28,23 +28,16 @@
 /**
  * Picture class.
 */
-Game_Picture::Game_Picture(int ID) :
-	data(Main_Data::game_data.pictures[ID - 1]),
-	old_map_x(0),
-	old_map_y(0)
-{
+Game_Picture::Game_Picture(int ID)
+    : data(Main_Data::game_data.pictures[ID - 1]), old_map_x(0), old_map_y(0) {
 	SetTransition(0);
 }
 
-Game_Picture::~Game_Picture() {
-	data.name = "";
-}
+Game_Picture::~Game_Picture() { data.name = ""; }
 
 void Game_Picture::UpdateSprite() {
-	if (!sprite)
-		return;
-	if (data.name.empty())
-		return;
+	if (!sprite) return;
+	if (data.name.empty()) return;
 
 	sprite->SetX((int)data.current_x);
 	sprite->SetY((int)data.current_y);
@@ -57,15 +50,13 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect2_speed : 0);
-	sprite->SetOpacity(
-		(int)(255 * (100 - data.current_top_trans) / 100),
-		(int)(255 * (100 - data.current_bot_trans) / 100));
+	sprite->SetOpacity((int)(255 * (100 - data.current_top_trans) / 100),
+	                   (int)(255 * (100 - data.current_bot_trans) / 100));
 	if (data.current_bot_trans != data.current_top_trans)
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
-	sprite->SetTone(Tone((int) (data.current_red * 128 / 100),
-						 (int) (data.current_green * 128 / 100),
-						 (int) (data.current_blue * 128 / 100),
-						 (int) (data.current_sat * 128 / 100)));
+	sprite->SetTone(Tone((int)(data.current_red * 128 / 100), (int)(data.current_green * 128 / 100),
+	                     (int)(data.current_blue * 128 / 100),
+	                     (int)(data.current_sat * 128 / 100)));
 }
 
 void Game_Picture::Show(const std::string& _name, bool _transparency) {
@@ -89,9 +80,7 @@ void Game_Picture::Erase() {
 	sprite.reset();
 }
 
-void Game_Picture::SetFixedToMap(bool flag) {
-	data.fixed_to_map = flag;
-}
+void Game_Picture::SetFixedToMap(bool flag) { data.fixed_to_map = flag; }
 
 void Game_Picture::SetMovementEffect(int x, int y) {
 	data.finish_x = x;
@@ -105,9 +94,7 @@ void Game_Picture::SetColorEffect(int r, int g, int b, int s) {
 	data.finish_sat = s;
 }
 
-void Game_Picture::SetZoomEffect(int scale) {
-	data.finish_magnify = scale;
-}
+void Game_Picture::SetZoomEffect(int scale) { data.finish_magnify = scale; }
 
 void Game_Picture::SetTransparencyEffect(int top, int bottom) {
 	data.finish_top_trans = top;
@@ -126,34 +113,29 @@ void Game_Picture::SetWaverEffect(int depth) {
 	data.current_waver = 0;
 }
 
-void Game_Picture::StopEffects() {
-	data.effect_mode = 0;
-}
+void Game_Picture::StopEffects() { data.effect_mode = 0; }
 
 void Game_Picture::SetTransition(int tenths) {
 	data.time_left = tenths * DEFAULT_FPS / 10;
 
 	if (tenths == 0) {
-		data.current_x			= data.finish_x;
-		data.current_y			= data.finish_y;
-		data.current_red		= data.finish_red;
-		data.current_green		= data.finish_green;
-		data.current_blue		= data.finish_blue;
-		data.current_sat		= data.finish_sat;
-		data.current_magnify	= data.finish_magnify;
-		data.current_top_trans	= data.finish_top_trans;
-		data.current_bot_trans	= data.finish_bot_trans;
+		data.current_x = data.finish_x;
+		data.current_y = data.finish_y;
+		data.current_red = data.finish_red;
+		data.current_green = data.finish_green;
+		data.current_blue = data.finish_blue;
+		data.current_sat = data.finish_sat;
+		data.current_magnify = data.finish_magnify;
+		data.current_top_trans = data.finish_top_trans;
+		data.current_bot_trans = data.finish_bot_trans;
 		UpdateSprite();
 	}
 }
 
-static double interpolate(double d, double x0, double x1) {
-	return (x0 * (d - 1) + x1) / d;
-}
+static double interpolate(double d, double x0, double x1) { return (x0 * (d - 1) + x1) / d; }
 
 void Game_Picture::Update() {
-	if (data.name.empty())
-		return;
+	if (data.name.empty()) return;
 
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
@@ -176,23 +158,21 @@ void Game_Picture::Update() {
 		old_map_y = Game_Map::GetDisplayY();
 	}
 
-	if (data.effect_mode == 1)
-		data.current_rotation += data.effect_speed;
-	if (data.effect_mode == 2)
-		data.current_waver += data.effect2_speed;
+	if (data.effect_mode == 1) data.current_rotation += data.effect_speed;
+	if (data.effect_mode == 2) data.current_waver += data.effect2_speed;
 
 	if (data.time_left > 0) {
 		double k = data.time_left;
 
-		data.current_x			= interpolate(k, data.current_x,			data.finish_x);
-		data.current_y			= interpolate(k, data.current_y,			data.finish_y);
-		data.current_red		= interpolate(k, data.current_red,			data.finish_red);
-		data.current_green		= interpolate(k, data.current_green,		data.finish_green);
-		data.current_blue		= interpolate(k, data.current_blue,			data.finish_blue);
-		data.current_sat		= interpolate(k, data.current_sat,			data.finish_sat);
-		data.current_magnify	= interpolate(k, data.current_magnify,		data.finish_magnify);
-		data.current_top_trans	= interpolate(k, data.current_top_trans,	data.finish_top_trans);
-		data.current_bot_trans	= interpolate(k, data.current_bot_trans,	data.finish_bot_trans);
+		data.current_x = interpolate(k, data.current_x, data.finish_x);
+		data.current_y = interpolate(k, data.current_y, data.finish_y);
+		data.current_red = interpolate(k, data.current_red, data.finish_red);
+		data.current_green = interpolate(k, data.current_green, data.finish_green);
+		data.current_blue = interpolate(k, data.current_blue, data.finish_blue);
+		data.current_sat = interpolate(k, data.current_sat, data.finish_sat);
+		data.current_magnify = interpolate(k, data.current_magnify, data.finish_magnify);
+		data.current_top_trans = interpolate(k, data.current_top_trans, data.finish_top_trans);
+		data.current_bot_trans = interpolate(k, data.current_bot_trans, data.finish_bot_trans);
 
 		data.time_left--;
 	}

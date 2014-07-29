@@ -136,15 +136,15 @@ namespace Game_Map {
 	 */
 	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
 
-    /**
-     * Gets if a tile coordinate can be jumped to.
-     *
-     * @param x tile x.
-     * @param y tile y.
-     * @param self_event Current character attemping to jump.
-     * @return whether is posible to jump.
-     */
-    bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
+	/**
+	 * Gets if a tile coordinate can be jumped to.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param self_event Current character attemping to jump.
+	 * @return whether is posible to jump.
+	 */
+	bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
 
 	/**
 	 * Gets if a tile has bush flag.
@@ -458,11 +458,9 @@ namespace Game_Map {
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
 
-
 	void SetParallaxName(const std::string& name);
-	void SetParallaxScroll(bool horz, bool vert,
-						   bool horz_auto, bool vert_auto,
-						   int horz_speed, int vert_speed);
+	void SetParallaxScroll(bool horz, bool vert, bool horz_auto, bool vert_auto, int horz_speed,
+	                       int vert_speed);
 
 	/**
 	 * Gets the map index from MapInfo vector using map ID.

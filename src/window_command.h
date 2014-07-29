@@ -26,7 +26,7 @@
 /**
  * Window Command class.
  */
-class Window_Command: public Window_Selectable {
+class Window_Command : public Window_Selectable {
 public:
 	/**
 	 * Constructor.

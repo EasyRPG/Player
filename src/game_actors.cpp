@@ -28,10 +28,8 @@ namespace {
 
 void Game_Actors::Init() {
 	data.resize(Data::actors.size() + 1);
-	for (size_t i = 1; i < data.size(); i++)
-		GetActor(i)->Init();
+	for (size_t i = 1; i < data.size(); i++) GetActor(i)->Init();
 }
-
 
 void Game_Actors::Fixup() {
 	for (size_t i = 1; i < data.size(); ++i) {
@@ -39,16 +37,13 @@ void Game_Actors::Fixup() {
 	}
 }
 
-void Game_Actors::Dispose() {
-	data.clear();
-}
+void Game_Actors::Dispose() { data.clear(); }
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
 		Output::Warning("Actor ID %d is invalid.", actor_id);
 		return NULL;
-	}
-	else if (!data[actor_id])
+	} else if (!data[actor_id])
 		data[actor_id].reset(new Game_Actor(actor_id));
 
 	return data[actor_id].get();

@@ -26,21 +26,31 @@
 #include "bitmap_screen.h"
 #include "bitmap.h"
 
-Background::Background(const std::string& name) :
-	visible(true),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(const std::string& name)
+    : visible(true)
+    , bg_hscroll(0)
+    , bg_vscroll(0)
+    , bg_x(0)
+    , bg_y(0)
+    , fg_hscroll(0)
+    , fg_vscroll(0)
+    , fg_x(0)
+    , fg_y(0) {
 	Graphics::RegisterDrawable(this);
 
 	bg_screen = BitmapScreen::Create(Cache::Backdrop(name));
 }
 
-Background::Background(int terrain_id) :
-	visible(true),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(int terrain_id)
+    : visible(true)
+    , bg_hscroll(0)
+    , bg_vscroll(0)
+    , bg_x(0)
+    , bg_y(0)
+    , fg_hscroll(0)
+    , fg_vscroll(0)
+    , fg_x(0)
+    , fg_y(0) {
 	Graphics::RegisterDrawable(this);
 
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
@@ -61,23 +71,14 @@ Background::Background(int terrain_id) :
 	}
 }
 
-Background::~Background() {
-	Graphics::RemoveDrawable(this);
-}
+Background::~Background() { Graphics::RemoveDrawable(this); }
 
-int Background::GetZ() const {
-	return z;
-}
+int Background::GetZ() const { return z; }
 
-DrawableType Background::GetType() const {
-	return type;
-}
+DrawableType Background::GetType() const { return type; }
 
 void Background::Update(int& rate, int& value) {
-	int step =
-		(rate > 0) ? 1 << rate :
-		(rate < 0) ? 1 << -rate :
-		0;
+	int step = (rate > 0) ? 1 << rate : (rate < 0) ? 1 << -rate : 0;
 	value += step;
 }
 
@@ -88,21 +89,18 @@ void Background::Update() {
 	Update(fg_vscroll, fg_y);
 }
 
-int Background::Scale(int x) {
-	return x > 0 ? x / 64 : -(-x / 64);
-}
+int Background::Scale(int x) { return x > 0 ? x / 64 : -(-x / 64); }
 
 void Background::Draw() {
-	if (!visible)
-		return;
+	if (!visible) return;
 
 	if (bg_screen)
 		bg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
-								   DisplayUi->GetDisplaySurface()->GetRect(),
-								   Scale(bg_x), Scale(bg_y));
+		                           DisplayUi->GetDisplaySurface()->GetRect(), Scale(bg_x),
+		                           Scale(bg_y));
 
 	if (fg_screen)
 		fg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
-								   DisplayUi->GetDisplaySurface()->GetRect(),
-								   Scale(fg_x), Scale(fg_y));
+		                           DisplayUi->GetDisplaySurface()->GetRect(), Scale(fg_x),
+		                           Scale(fg_y));
 }

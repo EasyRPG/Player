@@ -22,21 +22,14 @@
 #include "bitmap.h"
 #include "bitmap_screen.h"
 
-Plane::Plane() :
-	type(TypePlane),
-	visible(true),
-	z(0),
-	ox(0),
-	oy(0) {
+Plane::Plane() : type(TypePlane), visible(true), z(0), ox(0), oy(0) {
 
 	bitmap_screen = BitmapScreen::Create();
 
 	Graphics::RegisterDrawable(this);
 }
 
-Plane::~Plane() {
-	Graphics::RemoveDrawable(this);
-}
+Plane::~Plane() { Graphics::RemoveDrawable(this); }
 
 void Plane::Draw() {
 	if (!visible || !bitmap) return;
@@ -46,76 +39,34 @@ void Plane::Draw() {
 	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect, ox, oy);
 }
 
-BitmapRef const& Plane::GetBitmap() const {
-	return bitmap;
-}
+BitmapRef const& Plane::GetBitmap() const { return bitmap; }
 void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
 	bitmap_screen->SetBitmap(nbitmap);
 }
 
-bool Plane::GetVisible() const {
-	return visible;
-}
-void Plane::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
-int Plane::GetZ() const {
-	return z;
-}
+bool Plane::GetVisible() const { return visible; }
+void Plane::SetVisible(bool nvisible) { visible = nvisible; }
+int Plane::GetZ() const { return z; }
 void Plane::SetZ(int nz) {
 	if (z != nz) Graphics::UpdateZCallback();
 	z = nz;
 }
-int Plane::GetOx() const {
-	return ox;
-}
-void Plane::SetOx(int nox) {
-	ox = nox;
-}
-int Plane::GetOy() const {
-	return oy;
-}
-void Plane::SetOy(int noy) {
-	oy = noy;
-}
-double Plane::GetZoomX() const {
-	return bitmap_screen->GetZoomXEffect();
-}
-void Plane::SetZoomX(float zoom_x) {
-	bitmap_screen->SetZoomXEffect(zoom_x);
-}
-double Plane::GetZoomY() const {
-	return bitmap_screen->GetZoomYEffect();
-}
-void Plane::SetZoomY(float zoom_y) {
-	bitmap_screen->SetZoomYEffect(zoom_y);
-}
-int Plane::GetOpacity() const {
-	return bitmap_screen->GetOpacityEffect();
-}
-void Plane::SetOpacity(int opacity) {
-	bitmap_screen->SetOpacityEffect(opacity);
-}
-int Plane::GetBlendType() const {
-	return bitmap_screen->GetBlendType();
-}
-void Plane::SetBlendType(int blend_type) {
-	bitmap_screen->SetBlendType(blend_type);
-}
-Color Plane::GetBlendColor() const {
-	return bitmap_screen->GetBlendColor();
-}
-void Plane::SetBlendColor(Color color) {
-	bitmap_screen->SetBlendColor(color);
-}
-Tone Plane::GetTone() const {
-	return bitmap_screen->GetToneEffect();
-}
-void Plane::SetTone(Tone tone) {
-	bitmap_screen->SetToneEffect(tone);
-}
+int Plane::GetOx() const { return ox; }
+void Plane::SetOx(int nox) { ox = nox; }
+int Plane::GetOy() const { return oy; }
+void Plane::SetOy(int noy) { oy = noy; }
+double Plane::GetZoomX() const { return bitmap_screen->GetZoomXEffect(); }
+void Plane::SetZoomX(float zoom_x) { bitmap_screen->SetZoomXEffect(zoom_x); }
+double Plane::GetZoomY() const { return bitmap_screen->GetZoomYEffect(); }
+void Plane::SetZoomY(float zoom_y) { bitmap_screen->SetZoomYEffect(zoom_y); }
+int Plane::GetOpacity() const { return bitmap_screen->GetOpacityEffect(); }
+void Plane::SetOpacity(int opacity) { bitmap_screen->SetOpacityEffect(opacity); }
+int Plane::GetBlendType() const { return bitmap_screen->GetBlendType(); }
+void Plane::SetBlendType(int blend_type) { bitmap_screen->SetBlendType(blend_type); }
+Color Plane::GetBlendColor() const { return bitmap_screen->GetBlendColor(); }
+void Plane::SetBlendColor(Color color) { bitmap_screen->SetBlendColor(color); }
+Tone Plane::GetTone() const { return bitmap_screen->GetToneEffect(); }
+void Plane::SetTone(Tone tone) { bitmap_screen->SetToneEffect(tone); }
 
-DrawableType Plane::GetType() const {
-	return type;
-}
+DrawableType Plane::GetType() const { return type; }

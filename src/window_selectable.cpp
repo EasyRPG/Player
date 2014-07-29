@@ -23,13 +23,12 @@
 #include "bitmap.h"
 
 // Constructor
-Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	item_max(1),
-	column_max(1),
-	index(-1),
-	help_window(NULL) {
-}
+Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight)
+    , item_max(1)
+    , column_max(1)
+    , index(-1)
+    , help_window(NULL) {}
 
 void Window_Selectable::CreateContents() {
 	SetContents(Bitmap::Create(width - 16, max(height - 16, GetRowMax() * 16)));
@@ -38,9 +37,7 @@ void Window_Selectable::CreateContents() {
 
 // Properties
 
-int Window_Selectable::GetIndex() const {
-	return index;
-}
+int Window_Selectable::GetIndex() const { return index; }
 void Window_Selectable::SetIndex(int nindex) {
 	index = min(nindex, item_max - 1);
 	if (active && help_window != NULL) {
@@ -48,39 +45,29 @@ void Window_Selectable::SetIndex(int nindex) {
 	}
 	UpdateCursorRect();
 }
-int Window_Selectable::GetRowMax() const {
-	return (item_max + column_max - 1) / column_max;
-}
-int Window_Selectable::GetTopRow() const {
-	return oy / 16;
-}
+int Window_Selectable::GetRowMax() const { return (item_max + column_max - 1) / column_max; }
+int Window_Selectable::GetTopRow() const { return oy / 16; }
 void Window_Selectable::SetTopRow(int row) {
 	if (row < 0) row = 0;
 	if (row > GetRowMax() - 1) row = GetRowMax() - 1;
 	SetOy(row * 16);
 }
-int Window_Selectable::GetPageRowMax() const {
-	return (height - 16) / 16;
-}
-int Window_Selectable::GetPageItemMax() {
-	return GetPageRowMax() * column_max;
-}
+int Window_Selectable::GetPageRowMax() const { return (height - 16) / 16; }
+int Window_Selectable::GetPageItemMax() { return GetPageRowMax() * column_max; }
 
 Rect Window_Selectable::GetItemRect(int index) {
 	Rect rect = Rect();
 	rect.width = (contents->GetWidth()) / column_max - 4;
 	rect.height = 12;
 	rect.x = index % column_max * rect.width;
-	if (rect.x > 0){
+	if (rect.x > 0) {
 		rect.x += 8;
 	}
 	rect.y = index / column_max * 16 + 2;
 	return rect;
 }
 
-Window_Help* Window_Selectable::GetHelpWindow() {
-	return help_window;
-}
+Window_Help* Window_Selectable::GetHelpWindow() { return help_window; }
 
 void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 	help_window = nhelp_window;
@@ -89,8 +76,7 @@ void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 	}
 }
 
-void Window_Selectable::UpdateHelp() {
-}
+void Window_Selectable::UpdateHelp() {}
 
 // Update Cursor Rect
 void Window_Selectable::UpdateCursorRect() {
@@ -107,18 +93,16 @@ void Window_Selectable::UpdateCursorRect() {
 		SetTopRow(row - (GetPageRowMax() - 1));
 	}
 
-	if (column_max > 1){
+	if (column_max > 1) {
 		cursor_width = (width / column_max - 16) + 12;
-		x = (index % column_max * cursor_width) - 4 ;
-	}
-	else{
+		x = (index % column_max * cursor_width) - 4;
+	} else {
 		cursor_width = (width / column_max - 16) + 8;
 		x = (index % column_max * (cursor_width + 16)) - 4;
 	}
 
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
-
 }
 
 // Update
@@ -126,7 +110,8 @@ void Window_Selectable::Update() {
 	Window_Base::Update();
 	if (active && item_max > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
-			if ((column_max == 1 && Input::IsTriggered(Input::DOWN)) || index < item_max - column_max) {
+			if ((column_max == 1 && Input::IsTriggered(Input::DOWN)) ||
+			    index < item_max - column_max) {
 				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				index = (index + column_max) % item_max;
 			}

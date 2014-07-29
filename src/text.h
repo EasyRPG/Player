@@ -29,7 +29,8 @@ namespace Text {
 		AlignRight
 	};
 
-	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text,
+	          Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text using the specified color on dest

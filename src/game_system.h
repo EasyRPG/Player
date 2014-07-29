@@ -36,7 +36,6 @@ namespace Game_System {
 		BGM_Ship,
 		BGM_Airship,
 		BGM_GameOver,
-
 		BGM_Count
 	};
 
@@ -53,7 +52,6 @@ namespace Game_System {
 		SFX_Evasion,
 		SFX_EnemyKill,
 		SFX_UseItem,
-
 		SFX_Count
 	};
 
@@ -73,18 +71,9 @@ namespace Game_System {
 		int x;
 		int y;
 		int switch_id;
-		Target()
-			: map_id(0),
-			  x(0),
-			  y(0),
-			  switch_id(0)
-		{}
+		Target() : map_id(0), x(0), y(0), switch_id(0) {}
 		Target(int map_id, int x, int y, int switch_id)
-			: map_id(map_id),
-			  x(x),
-			  y(y),
-			  switch_id(switch_id)
-		{}
+		    : map_id(map_id), x(x), y(y), switch_id(switch_id) {}
 	};
 
 	/**
