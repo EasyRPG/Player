@@ -94,7 +94,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 
-	if (through) return true;
+	if (GetThrough()) return true;
 
 	if (!Game_Map::IsPassable(x, y, d, this))
 		return false;
@@ -116,7 +116,7 @@ bool Game_Character::IsLandable(int x, int y) const
 	if (!Game_Map::IsValid(x, y))
 		return false;
 
-	if (through) return true;
+	if (GetThrough()) return true;
 
 	if (!Game_Map::IsLandable(x, y, this))
 		return false;

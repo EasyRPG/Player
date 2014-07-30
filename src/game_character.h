@@ -646,7 +646,7 @@ public:
 	 *
 	 * @return through flag.
 	 */
-	bool GetThrough() const;
+	virtual bool GetThrough() const;
 
 	/**
 	 * Gets animation ID.

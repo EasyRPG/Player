@@ -25,14 +25,12 @@
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
+	battle(battle) {
 }
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data) :
 	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
+	battle(battle) {
 
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
@@ -65,11 +63,13 @@ void Game_CommonEvent::Update() {
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
+		Game_Map::SetParallelInterpreter(interpreter);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(GetList(), 0, -common_event_id, -2);
 		} else {
 			interpreter->Update();
 		}
+		Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter>());
 	}
 }
 

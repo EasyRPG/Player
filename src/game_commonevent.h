@@ -107,7 +107,7 @@ private:
 	bool battle;
 
 	/** Interpreter for parallel common events. */
-	boost::scoped_ptr<Game_Interpreter> interpreter;
+	EASYRPG_SHARED_PTR<Game_Interpreter> interpreter;
 };
 
 #endif

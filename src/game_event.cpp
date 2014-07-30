@@ -37,7 +37,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	from_save(false) {
 
 	ID = event.ID;
-	through = true;
 
 	SetMapId(map_id);
 	MoveTo(event.x, event.y);
@@ -225,6 +224,10 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
 }
 
+bool Game_Event::GetThrough() const {
+	return page == NULL || Game_Character::GetThrough();
+}
+
 void Game_Event::ClearStarting() {
 	starting = false;
 }
@@ -238,7 +241,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
 		//move_type = 0;
-		through = true;
 		trigger = -1;
 		list.clear();
 		interpreter.reset();
@@ -258,23 +260,24 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
 	}
-	//opacity = page.opacity;
-	//opacity = page.translucent ? 192 : 255;
-	//blend_type = page.blend_type;
+	
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
 	animation_type = page->animation_type;
+	SetOpacity(page->translucent ? 160 : 255);
 
 	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;
-	through = false;
 
 	// Free resources if needed
-	interpreter.reset();
+	if (interpreter) {
+		interpreter->Clear();
+		interpreter.reset();
+	}
 	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
@@ -467,7 +470,6 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 		return false;
 
 	if ((trigger == RPG::EventPage::Trigger_collision) && (Main_Data::game_player->IsInPosition(x, y))) {
-
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {
 			Start();
@@ -476,8 +478,6 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 
 	return true;
 }
-
-
 
 void Game_Event::Update() {
 	if (!data.active) {
@@ -488,13 +488,14 @@ void Game_Event::Update() {
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
+		Game_Map::SetParallelInterpreter(interpreter);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, -event.x, event.y);
 		} else {
 			interpreter->Update();
 		}
+		Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter>());
 	}
-
 }
 
 RPG::Event& Game_Event::GetEvent() {
