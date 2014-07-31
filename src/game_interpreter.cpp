@@ -423,6 +423,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -503,6 +504,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Cod
 	}
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	// Choices setup
 	std::vector<std::string> choices;
@@ -924,6 +926,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 	}
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;

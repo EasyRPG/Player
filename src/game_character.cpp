@@ -130,6 +130,10 @@ bool Game_Character::IsLandable(int x, int y) const
 	return true;
 }
 
+bool Game_Character::IsMessageBlocking() const {
+	return Game_Message::message_waiting && !Game_Message::GetContinueEvents();
+}
+
 void Game_Character::MoveTo(int x, int y) {
 	SetX(x % Game_Map::GetWidth());
 	SetY(y % Game_Map::GetHeight());

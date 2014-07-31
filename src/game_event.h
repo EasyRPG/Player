@@ -83,6 +83,7 @@ public:
 	void SetFlashLevel(int flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
+	bool IsMessageBlocking() const;
 	/** @} */
 
 	/**
