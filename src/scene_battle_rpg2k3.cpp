@@ -52,7 +52,6 @@ void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
 		case State_SelectActor: {
 			if (battle_actions.empty()) {
-				Game_Battle::UpdateEvents();
 				Game_Battle::UpdateGauges();
 			}
 

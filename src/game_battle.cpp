@@ -166,17 +166,27 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	return false;
 	}*/
 
+	if (condition.flags.fatigue) {
+		int fatigue = Main_Data::game_party->GetFatigue();
+		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
+			return false;
+	}
+
 	if (condition.flags.enemy_hp) {
 		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
 		int hp = enemy.GetHp();
-		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
+		int hpmin = enemy.GetMaxHp() * condition.enemy_hp_min / 100;
+		int hpmax = enemy.GetMaxHp() * condition.enemy_hp_max / 100;
+		if (hp < hpmin || hp > hpmax)
 			return false;
 	}
 
 	if (condition.flags.actor_hp) {
 		Game_Actor* actor = Game_Actors::GetActor(condition.actor_id);
 		int hp = actor->GetHp();
-		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max)
+		int hpmin = actor->GetMaxHp() * condition.actor_hp_min / 100;
+		int hpmax = actor->GetMaxHp() * condition.actor_hp_max / 100;
+		if (hp < hpmin || hp > hpmax)
 			return false;
 	}
 	/*
@@ -189,7 +199,6 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	if (ally->last_command != condition.command_id)
 	return false;
 	}*/
-
 	return true;
 }
 
