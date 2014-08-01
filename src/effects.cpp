@@ -138,12 +138,11 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 	}
 
 	if (rotate) {
-		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y, 
+		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y,
 			(src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) / 2, 
-			x + src_rect.width / 2, y + src_rect.height / 2);
+			x + src_rect.width * zoom_x / 2, y + src_rect.height * zoom_y / 2);
 		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
-	}
-	else if (scale)
+	} else if (scale)
 		EffectsBlit(x, y, *draw, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					zoom_x, zoom_y,
