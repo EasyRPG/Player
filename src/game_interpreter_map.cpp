@@ -1386,6 +1386,8 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	if (child_interpreter)
 		return false;
 
+	clear_child = false;
+
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
 
 	switch (com.parameters[0]) {

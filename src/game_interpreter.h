@@ -84,6 +84,7 @@ protected:
 	int button_timer;
 	bool active;
 	bool updating;
+	bool clear_child;
 
 	/**
 	 * Gets strings for choice selection.

@@ -51,6 +51,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	active = false;
 	index = 0;
 	updating = false;
+	clear_child = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -75,8 +76,12 @@ void Game_Interpreter::Clear() {
 	wait_count = 0;					// wait count
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
-	if (child_interpreter && !child_interpreter->updating)
-		child_interpreter.reset();		// child interpreter for common events, etc
+	if (child_interpreter) {		// clear child interpreter for called events
+		if (child_interpreter->updating)
+			clear_child = true;
+		else
+			child_interpreter.reset();
+	}			
 	list.clear();
 }
 
@@ -142,8 +147,9 @@ void Game_Interpreter::Update() {
 
 			child_interpreter->Update();
 
-			if (!child_interpreter->IsRunning()) {
+			if (!child_interpreter->IsRunning() || clear_child) {
 				child_interpreter.reset();
+				clear_child = false;
 			}
 
 			// If child interpreter still exists
