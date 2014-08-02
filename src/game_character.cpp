@@ -221,7 +221,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (Game_Message::GetContinueEvents() || !Game_Message::message_waiting) {
+		} else if (!IsMessageBlocking()) {
 			UpdateSelfMovement();
 		}
 	}

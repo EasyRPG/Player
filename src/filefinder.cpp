@@ -185,6 +185,10 @@ EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::s
 		 tree->directories : tree->files)[i->first] = i->second;
 	}
 
+	// Stop here if the tree is invalid
+	if (p == Main_Data::project_path && !IsRPG2kProject(*tree) && !IsEasyRpgProject(*tree))
+		return tree;
+
 	for(string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
 		GetDirectoryMembers(MakePath(tree->project_path, i->second), RECURSIVE)
 			.members.swap(tree->sub_members[i->first]);
