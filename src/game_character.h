@@ -736,7 +736,12 @@ public:
 	 */
 	bool IsSpinning();
 
-	virtual void UpdateBushDepth();
+	/**
+	 * Gets the bush depth of the tile where this character is standing
+	 *
+	 * @return Bush depth at this character's position
+	 */
+	int GetBushDepth();
 
 	void SetGraphic(const std::string& name, int index);
 

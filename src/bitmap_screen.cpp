@@ -73,19 +73,14 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
 
-	Rect bush_rect = src_rect_effect;
-	bush_rect.height -= bush_effect;
-	bush_rect = bush_rect.GetSubRect(src_rect);
-	int bush_y = (rect.y + rect.height) - (bush_rect.y + bush_rect.height);
-
 	bool need_scale = false;
-	BitmapRef draw_bitmap = Refresh(rect, need_scale, bush_y);
+	BitmapRef draw_bitmap = Refresh(rect, need_scale);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
 	if(draw_bitmap) {
-		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_y);
+		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_effect);
 	}
 }
 
@@ -94,10 +89,9 @@ void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, i
 		return;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
-	int bush_y = 0;
 
 	bool need_scale = false;
-	BitmapRef draw_bitmap = Refresh(rect, need_scale, bush_y);
+	BitmapRef draw_bitmap = Refresh(rect, need_scale);
 
 	bitmap_changed = false;
 	needs_refresh = false;
@@ -330,13 +324,11 @@ double BitmapScreen::GetWaverEffectPhase() const {
 }
 
 void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
-									Rect const& src_rect, bool need_scale, int bush_y) {
+									Rect const& src_rect, bool need_scale, int opacity_split) {
 	if (! &draw_bitmap)
 		return;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
-
-	int opacity_split = bush_y;
 
 	double zoom_x = need_scale ? zoom_x_effect : 1.0;
 	double zoom_y = need_scale ? zoom_y_effect : 1.0;
@@ -347,7 +339,7 @@ void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 					 waver_effect_depth, waver_effect_phase);
 }
 
-BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
+BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
 	need_scale = false;
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());

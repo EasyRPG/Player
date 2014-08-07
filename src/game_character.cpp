@@ -1179,8 +1179,8 @@ bool Game_Character::IsSpinning() {
 	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
-void Game_Character::UpdateBushDepth() {
-	// TODO
+int Game_Character::GetBushDepth() {
+	return Game_Map::GetBushDepth(GetX(), GetY());
 }
 
 void Game_Character::SetGraphic(const std::string& name, int index) {

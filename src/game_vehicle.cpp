@@ -278,7 +278,6 @@ void Game_Vehicle::SyncWithPlayer() {
 	real_x = Main_Data::game_player->GetRealX();
 	real_y = Main_Data::game_player->GetRealY();
 	SetDirection(Main_Data::game_player->GetDirection());
-	UpdateBushDepth();
 }
 
 int Game_Vehicle::GetScreenY() const {

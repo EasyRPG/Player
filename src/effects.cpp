@@ -80,10 +80,9 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 		EffectsBlit(x, y, src, blit_rect,
 					top_opacity, waver_depth, waver_phase);
 
-		blit_rect = src_rect;
-		blit_rect.y = src_rect.height - opacity_split;
+		blit_rect.y += blit_rect.height;
 		blit_rect.height = opacity_split;
-		x += src_rect.height - opacity_split;
+		y += src_rect.height - opacity_split;
 		EffectsBlit(x, y, src, blit_rect,
 					bottom_opacity, waver_depth, waver_phase);
 	}
