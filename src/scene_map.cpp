@@ -165,7 +165,6 @@ void Scene_Map::Update() {
 
 		if (Game_Temp::battle_calling) {
 			CallBattle();
-			Game_Temp::battle_calling = false;
 			return;
 		}
 
