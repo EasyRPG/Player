@@ -349,6 +349,13 @@ public:
 	 */
 	virtual bool IsLandable(int x, int y) const;
 
+ 	/**
+	 * Gets if a message is halting this character's processes.
+	 *
+	 * @return whether the character is halted by a message.
+	 */
+	virtual bool IsMessageBlocking() const;
+
 	/**
 	 * Moves the character to a new tile.
 	 *
@@ -729,7 +736,12 @@ public:
 	 */
 	bool IsSpinning();
 
-	virtual void UpdateBushDepth();
+	/**
+	 * Gets the bush depth of the tile where this character is standing
+	 *
+	 * @return Bush depth at this character's position
+	 */
+	int GetBushDepth();
 
 	void SetGraphic(const std::string& name, int index);
 

@@ -83,13 +83,13 @@ void Window::SetOpenAnimation(int frames) {
 }
 
 void Window::SetCloseAnimation(int frames) {
-	animation_frames = frames;
-	animation_count = (height / 2.0);
-	closing = true;
 	if (frames > 0) {
-		animation_increment = - (height / 2.0) / frames;
+		closing = true;
+		animation_frames = frames;
+		animation_count = (height / 2.0);
+		animation_increment = - animation_count / frames;
 	} else {
-		animation_increment = 0.0;
+		visible = false;
 	}
 }
 

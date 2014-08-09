@@ -20,6 +20,7 @@
 #include "game_actor.h"
 #include "game_actors.h"
 #include "game_map.h"
+#include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_switches.h"
@@ -222,6 +223,11 @@ int Game_Event::GetFlashTimeLeft() const {
 
 void Game_Event::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
+}
+
+bool Game_Event::IsMessageBlocking() const {
+	return Game_Message::message_waiting &&
+		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID);
 }
 
 bool Game_Event::GetThrough() const {

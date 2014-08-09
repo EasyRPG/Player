@@ -80,10 +80,9 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 		EffectsBlit(x, y, src, blit_rect,
 					top_opacity, waver_depth, waver_phase);
 
-		blit_rect = src_rect;
-		blit_rect.y = src_rect.height - opacity_split;
+		blit_rect.y += blit_rect.height;
 		blit_rect.height = opacity_split;
-		x += src_rect.height - opacity_split;
+		y += src_rect.height - opacity_split;
 		EffectsBlit(x, y, src, blit_rect,
 					bottom_opacity, waver_depth, waver_phase);
 	}
@@ -138,10 +137,11 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 	}
 
 	if (rotate) {
-		Matrix fwd = Matrix::Setup(1.0-angle, zoom_x, zoom_y, (src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) /2, x, y);
+		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y,
+			(src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) / 2, 
+			x + src_rect.width * zoom_x / 2, y + src_rect.height * zoom_y / 2);
 		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
-	}
-	else if (scale)
+	} else if (scale)
 		EffectsBlit(x, y, *draw, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					zoom_x, zoom_y,

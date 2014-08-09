@@ -130,6 +130,10 @@ bool Game_Character::IsLandable(int x, int y) const
 	return true;
 }
 
+bool Game_Character::IsMessageBlocking() const {
+	return Game_Message::message_waiting && !Game_Message::GetContinueEvents();
+}
+
 void Game_Character::MoveTo(int x, int y) {
 	SetX(x % Game_Map::GetWidth());
 	SetY(y % Game_Map::GetHeight());
@@ -217,7 +221,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (Game_Message::GetContinueEvents() || !Game_Message::message_waiting) {
+		} else if (!IsMessageBlocking()) {
 			UpdateSelfMovement();
 		}
 	}
@@ -1175,8 +1179,8 @@ bool Game_Character::IsSpinning() {
 	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
-void Game_Character::UpdateBushDepth() {
-	// TODO
+int Game_Character::GetBushDepth() {
+	return Game_Map::GetBushDepth(GetX(), GetY());
 }
 
 void Game_Character::SetGraphic(const std::string& name, int index) {

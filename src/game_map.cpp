@@ -542,9 +542,8 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     return true;
 }
 
-bool Game_Map::IsBush(int /* x */, int /* y */) {
-	// TODO
-	return false;
+int Game_Map::GetBushDepth(int x, int y) {
+	return Data::data.terrains[GetTerrainTag(x,y) - 1].bush_depth;
 }
 
 bool Game_Map::IsCounter(int x, int y) {

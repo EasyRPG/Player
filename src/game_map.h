@@ -147,13 +147,13 @@ namespace Game_Map {
     bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
 
 	/**
-	 * Gets if a tile has bush flag.
+	 * Gets the bush depth at a certain tile.
 	 *
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @return whether has the bush flag.
+	 * @return bush depth.
 	 */
-	bool IsBush(int x, int y);
+	int GetBushDepth(int x, int y);
 
 	/**
 	 * Gets if a tile has counter flag.

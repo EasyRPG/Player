@@ -50,6 +50,8 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	main_flag = _main_flag;
 	active = false;
 	index = 0;
+	updating = false;
+	clear_child = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -59,6 +61,9 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 }
 
 Game_Interpreter::~Game_Interpreter() {
+	if (depth == 0) {
+		CloseMessageWindow();
+	}
 }
 
 // Clear.
@@ -69,9 +74,14 @@ void Game_Interpreter::Clear() {
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
-	child_interpreter.reset();		// child interpreter for common events, etc
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
+	if (child_interpreter) {		// clear child interpreter for called events
+		if (child_interpreter->updating)
+			clear_child = true;
+		else
+			child_interpreter.reset();
+	}			
 	list.clear();
 }
 
@@ -95,7 +105,8 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 	index = 0;
 
 	CancelMenuCall();
-	Update();
+	if (!updating)
+		Update();
 }
 
 void Game_Interpreter::CancelMenuCall() {
@@ -122,6 +133,7 @@ void Game_Interpreter::EndMoveRoute(Game_Character*) {
 
 // Update
 void Game_Interpreter::Update() {
+	updating = true;
 	// 10000 based on: https://gist.github.com/4406621
 	for (loop_count = 0; loop_count < 10000; ++loop_count) {
 		/* If map is different than event startup time
@@ -135,24 +147,25 @@ void Game_Interpreter::Update() {
 
 			child_interpreter->Update();
 
-			if (!child_interpreter->IsRunning()) {
+			if (!child_interpreter->IsRunning() || clear_child) {
 				child_interpreter.reset();
+				clear_child = false;
 			}
 
 			// If child interpreter still exists
 			if (child_interpreter) {
-				return;
+				break;
 			}
 		}
 
 		if (Game_Message::message_waiting || Game_Message::closing) {
-			return;
+			break;
 		}
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
 			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
-				return;
+				break;
 			}
 
 			Game_Event* g_event;
@@ -160,7 +173,7 @@ void Game_Interpreter::Update() {
 				g_event = Game_Map::GetEvents().find(i)->second.get();
 
 				if (g_event->IsMoveRouteOverwritten()) {
-					return;
+					break;
 				}
 			}
 			move_route_waiting = false;
@@ -168,23 +181,23 @@ void Game_Interpreter::Update() {
 
 		if (button_input_variable_id > 0) {
 			InputButton();
-			return;
+			break;
 		}
 
 		if (wait_count > 0) {
 			wait_count--;
-			return;
+			break;
 		}
 
 		if (Game_Temp::forcing_battler != NULL) {
-			return;
+			break;
 		}
 
 		if (Game_Temp::transition_processing) {
-			return;
+			break;
 		}
 
-		if (Game_Temp::battle_calling ||
+		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
@@ -193,7 +206,7 @@ void Game_Interpreter::Update() {
 			Game_Temp::to_title ||
 			Game_Temp::gameover) {
 
-			return;
+			break;
 		}
 
 		if (continuation) {
@@ -201,7 +214,7 @@ void Game_Interpreter::Update() {
 			if (result)
 				continue;
 			else
-				return;
+				break;
 		}
 
 		if (!Main_Data::game_player->IsTeleporting()) {
@@ -211,13 +224,13 @@ void Game_Interpreter::Update() {
 		}
 
 		if (list.empty()) {
-			return;
+			break;
 		}
 
 		if (!ExecuteCommand()) {
 			CloseMessageWindow();
 			active = true;
-			return;
+			break;
 		}
 
 		active = false;
@@ -230,10 +243,14 @@ void Game_Interpreter::Update() {
 		index++;
 	} // for
 
-	// Executed Events Count exceeded (10000)
-	active = true;
-	Output::Debug("Event %d exceeded execution limit", event_id);
-	CloseMessageWindow();
+	if (loop_count > 9999) {
+		// Executed Events Count exceeded (10000)
+		active = true;
+		Output::Debug("Event %d exceeded execution limit", event_id);
+		CloseMessageWindow();
+	}
+
+	updating = false;
 }
 
 // Setup Starting Event
@@ -423,6 +440,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -503,6 +521,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Cod
 	}
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	// Choices setup
 	std::vector<std::string> choices;
@@ -924,6 +943,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 	}
 
 	Game_Message::message_waiting = true;
+	Game_Message::owner_id = event_id;
 
 	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;

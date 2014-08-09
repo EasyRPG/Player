@@ -83,9 +83,10 @@ void Sprite_Character::Update() {
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());
 	SetZ(character->GetScreenZ(chara_height));
-	
+
 	//SetBlendType(character->GetBlendType());
-	//SetBushDepth(character->GetBushDepth());
+	int bush_split = 4 - character->GetBushDepth();
+	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
 }
 
 Game_Character* Sprite_Character::GetCharacter() {
