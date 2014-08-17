@@ -392,19 +392,11 @@ namespace Game_Map {
 	Game_Interpreter& GetInterpreter();
 
 	/**
-	 * Gets the currently running parallel interpreter.
+	 * Destroy an interpreter after all events and common events have been updated.
 	 *
-	 * @return running parallel interpreter.
+	 * @param interpreter to destroy.
 	 */
-	EASYRPG_SHARED_PTR<Game_Interpreter> GetParallelInterpreter();
-
-	/**
-	 * Sets the currently running parallel interpreter.
-	 * Used to hold a 2nd stromg reference to prevent destruction on refresh.
-	 *
-	 * @param interpreter executed interpreter.
-	 */
-	void SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter);
+	void ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter);
 
 	/**
 	 * Sets the need refresh flag.

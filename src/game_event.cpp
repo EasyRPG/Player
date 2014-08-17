@@ -241,6 +241,13 @@ void Game_Event::ClearStarting() {
 void Game_Event::Setup(RPG::EventPage* new_page) {
 	page = new_page;
 
+	// Free resources if needed
+	if (interpreter) {
+		interpreter->Clear();
+		Game_Map::ReserveInterpreterDeletion(interpreter);
+		interpreter.reset();
+	}
+
 	if (page == NULL) {
 		tile_id = 0;
 		SetSpriteName("");
@@ -249,7 +256,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		//move_type = 0;
 		trigger = -1;
 		list.clear();
-		interpreter.reset();
 		return;
 	}
 	SetSpriteName(page->character_name);
@@ -279,11 +285,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	trigger = page->trigger;
 	list = page->event_commands;
 
-	// Free resources if needed
-	if (interpreter) {
-		interpreter->Clear();
-		interpreter.reset();
-	}
 	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
@@ -494,13 +495,11 @@ void Game_Event::Update() {
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
-		Game_Map::SetParallelInterpreter(interpreter);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, -event.x, event.y);
 		} else {
 			interpreter->Update();
 		}
-		Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter>());
 	}
 }
 
