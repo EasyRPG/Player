@@ -63,7 +63,7 @@ namespace {
 	int scroll_speed;
 
 	boost::scoped_ptr<Game_Interpreter> interpreter;
-	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter>> free_interpreters;
+	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
 	Game_Vehicle* vehicles[3];
 
 	bool pan_locked;
@@ -229,7 +229,6 @@ void Game_Map::SetupCommon(int _id) {
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
 
-	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
 

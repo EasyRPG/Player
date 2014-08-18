@@ -102,6 +102,7 @@ private:
 	bool vehicle_getting_on;
 	bool vehicle_getting_off;
 	int new_map_id, new_x, new_y;
+	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
 	void UpdateScroll(int last_real_x, int last_real_y);
