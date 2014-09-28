@@ -740,7 +740,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("lizard", "リザード")
 	 ("lizardman", "リザードマン")
 	 ("lich", "リッチ")
-	 ("lilith", "リリス")
+	 ("lillith", "リリス")
 	 ("wraith", "レイス")
 	 ("remora", "レモラ")
 	 ("werewolf", "ワーウルフ")
