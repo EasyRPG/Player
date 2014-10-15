@@ -1,0 +1,32 @@
+This font is based on Bakemuk Gulim as downloaded here:
+http://koji.fedoraproject.org/koji/buildinfo?buildID=523096
+
+The original comment is as follows:
+----
+Glyphs are imported from the Baekmuk font and heavily modified
+  to make a new font named as a johab font.
+Hangul fonts are automatically generated from this johab(32x15x11) font.
+Symbol glyphs are made by Woo-Hyun Jang <louis@mail.mizi.com>
+  and retouched by Won-kyu Park <wkpark@kldp.org>
+Hanja glyphs are imported from K12.bdf(a japaness public domain font)
+  and missing glyphs are made by wkpark@kldp.org
+
+ Wed Oct  9 15:33:42 KST 2002
+----
+
+Baekmuk license is as follows:
+----
+(c) Copyright 1986-2000, Hwan Design Inc.
+
+You are hereby granted permission under all Hwan Design propriety rights
+to use, copy, modify, sublicense, sell, and redistribute the 4 Baekmuk
+truetype outline fonts for any purpose and without restriction;
+provided, that this notice is left intact on all copies of such fonts
+and that Hwan Design Int.'s trademark is acknowledged as shown below
+on all copies of the 4 Baekmuk truetype fonts.
+
+BAEKMUK BATANG is a registered trademark of Hwan Design Inc.
+BAEKMUK GULIM is a registered trademark of Hwan Design Inc.
+BAEKMUK DOTUM is a registered trademark of Hwan Design Inc.
+BAEKMUK HEADLINE is a registered trademark of Hwan Design Inc.
+----

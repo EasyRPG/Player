@@ -147,9 +147,13 @@ print "Loading Mincho..."
 mincho = read_file(File.new('./mincho/font_src_diff.bit', 'r'), "JIS_X0208", false)
 print "done\n"
 
+print "Loading Korean..."
+korean = read_file(File.new('./korean/font_src_diff.bit', 'r'), "UTF-32LE", false)
+print "done\n"
+
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(latin).merge(latin_ext_a)
+gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(korean).merge(latin).merge(latin_ext_a)
 code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
