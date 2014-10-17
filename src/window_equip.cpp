@@ -43,7 +43,8 @@ void Window_Equip::Refresh() {
 	data.clear();
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 	for (int i = 0; i < 5; ++i) {
-		data.push_back(actor->GetEquipment(i));
+		int item_id = actor->GetEquipment(i);
+		data.push_back(item_id < Data::items.size() ? item_id : 0);
 	}
 	item_max = data.size();
 
