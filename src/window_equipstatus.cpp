@@ -63,12 +63,10 @@ void Window_EquipStatus::SetNewParameters(
 
 	dirty = true;
 
-	if (dirty) {
-		atk = new_atk;
-		def = new_def;
-		spi = new_spi;
-		agi = new_agi;
-	}
+	atk = new_atk;
+	def = new_def;
+	spi = new_spi;
+	agi = new_agi;
 }
 
 void Window_EquipStatus::ClearParameters() {
