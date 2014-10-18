@@ -61,7 +61,7 @@ void Window_EquipStatus::SetNewParameters(
 	int new_atk, int new_def, int new_spi, int new_agi) {
 	draw_params = true;
 
-	dirty = atk != new_atk || def != new_def || spi != new_spi || agi != new_agi;
+	dirty = true;
 
 	if (dirty) {
 		atk = new_atk;
