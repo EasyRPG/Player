@@ -384,7 +384,9 @@ void Game_Interpreter::InputButton() {
 
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
-	Game_Message::SetFaceName("");
+	if (depth == 0) {
+		Game_Message::SetFaceName("");
+	}
 
 	// FIXME: Hangs in some cases when Autostart events start
 	//if (main_flag) {
