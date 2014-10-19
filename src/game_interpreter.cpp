@@ -224,6 +224,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (list.empty()) {
+			Game_Message::SetFaceName("");
 			break;
 		}
 
