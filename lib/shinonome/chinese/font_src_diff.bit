@@ -1013,6 +1013,26 @@ BITMAP
 .....@@.....
 @@@@@..@@@@.
 ENDCHAR
+# baa1 / ba4 'father'
+STARTCHAR 7238
+ENCODING 19564
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+....@.@@....
+..@@....@@..
+@@..@..@..@.
+.....@@.....
+..@@@..@@@..
+@@@@@@@@@@@.
+@....@....@.
+@@@@@@@@@@@.
+@...........
+@...........
+@.........@.
+.@@@@@@@@@..
+ENDCHAR
 # zong6 / zhuang3 'form; condition; certificate'
 STARTCHAR 72c0
 ENCODING 15989
