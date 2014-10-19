@@ -193,9 +193,12 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#ifdef GEKKO
+#if defined (GEKKO)
 		// Wii stdin is non-blocking
 		sleep(5);
+#elif defined (EMSCRIPTEN)
+		// Don't show JavaScript Window.prompt from stdin call
+		std::cout << " Process finished.";
 #else
 		std::cout << " Press any key..." << std::endl;
 		std::cin.get();

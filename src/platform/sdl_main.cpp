@@ -20,7 +20,6 @@
 #include "graphics.h"
 #include "input.h"
 #include "audio.h"
-
 #include <cstdlib>
 #include <SDL.h>
 
