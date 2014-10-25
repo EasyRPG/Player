@@ -65,6 +65,9 @@
 	#include <dbghelp.h>
 	static void InitMiniDumpWriter();
 #endif
+#ifdef EMSCRIPTEN
+	#include <emscripten.h>
+#endif
 
 namespace Player {
 	bool exit_flag;
@@ -138,15 +141,32 @@ void Player::Run() {
 	Graphics::FrameReset();
 
 	// Main loop
+#ifdef EMSCRIPTEN
+	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+#else
+	Player::MainLoop();
+#endif
+
+	Player::Exit();
+}
+
+void Player::MainLoop() {
+#ifdef EMSCRIPTEN
+    if (Scene::instance->type == Scene::Null) {
+      emscripten_cancel_main_loop();
+      return;
+    }
+#else
 	while (Scene::instance->type != Scene::Null) {
+#endif
 		Scene::instance->MainFunction();
 		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
 			Graphics::Pop();
 		}
 		Scene::old_instances.clear();
+#ifndef EMSCRIPTEN
 	}
-
-	Player::Exit();
+#endif
 }
 
 void Player::Pause() {
