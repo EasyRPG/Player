@@ -105,11 +105,11 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 	index = 0;
 
 	CancelMenuCall();
-	
+
 	if (main_flag) {
 		Game_Message::SetFaceName("");
 	}
-	
+
 	if (!updating)
 		Update();
 }
