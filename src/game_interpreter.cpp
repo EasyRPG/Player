@@ -105,6 +105,11 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 	index = 0;
 
 	CancelMenuCall();
+	
+	if (main_flag) {
+		Game_Message::SetFaceName("");
+	}
+	
 	if (!updating)
 		Update();
 }
@@ -384,7 +389,7 @@ void Game_Interpreter::InputButton() {
 
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
-	if (depth == 0) {
+	if (main_flag) {
 		Game_Message::SetFaceName("");
 	}
 
