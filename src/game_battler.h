@@ -254,7 +254,7 @@ public:
 	/**
 	 * Removes all states which end after battle.
 	 */
-	void RemoveStates();
+	void RemoveBattleStates();
 
 	/**
 	 * Removes all states.

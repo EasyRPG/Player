@@ -145,18 +145,6 @@ std::vector<int16_t>& Game_Actor::GetStates() {
 	return data.status;
 }
 
-void Game_Actor::RemoveBattleStates() {
-	std::vector<int16_t>::iterator it = data.status.begin();
-	while (it != data.status.end()) {
-		if (Data::states[*it].type == RPG::State::Persistence::Persistence_ends) {
-			it = data.status.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-}
-
 int Game_Actor::GetHp() const {
 	return data.current_hp;
 }

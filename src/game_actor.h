@@ -375,11 +375,6 @@ public:
 	const std::vector<int16_t>& GetStates() const;
 	std::vector<int16_t>& GetStates();
 
-	/**
-	 * Removes non-persistent states if the actor has any.
-	 */
-	void RemoveBattleStates();	
-
 	int GetHp() const;
 	void SetHp(int _hp);
 	void ChangeHp(int hp);

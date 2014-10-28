@@ -211,10 +211,10 @@ void Game_Battler::RemoveState(int state_id) {
 }
 
 static bool NonPermanent(int state_id) {
-	return Data::states[state_id - 1].type == 0;
+	return Data::states[state_id - 1].type == RPG::State::Persistence::Persistence_ends;
 }
 
-void Game_Battler::RemoveStates() {
+void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
 	std::vector<int16_t>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
 	states.erase(end, states.end());
