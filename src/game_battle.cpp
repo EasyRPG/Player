@@ -61,11 +61,21 @@ void Game_Battle::Init() {
 	message_position = Game_Message::GetPosition();
 }
 
+void Game_Battle::RemoveBattleStates() {
+	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+
+	for (int actor_id = 0; actor_id < actors.size(); actor_id++) {
+		actors[actor_id]->RemoveBattleStates();
+	}
+}
+
 void Game_Battle::Quit() {
 	interpreter.reset();
 	spriteset.reset();
 
 	Game_Temp::battle_running = false;
+	
+	Game_Battle::RemoveBattleConditions();
 
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);

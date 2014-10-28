@@ -36,6 +36,11 @@ namespace Game_Battle {
 	 */
 	void Update();
 	void Terminate();
+	
+	/**
+	 * Removes all battle (non-persistent) states from the party members.
+         */
+        void RemoveBattleStates();
 
 	Spriteset_Battle& GetSpriteset();
 
