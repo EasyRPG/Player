@@ -211,7 +211,7 @@ void Game_Battler::RemoveState(int state_id) {
 }
 
 static bool NonPermanent(int state_id) {
-	return Data::states[state_id - 1].type == RPG::State::Persistence::Persistence_ends;
+	return Data::states[state_id - 1].type == RPG::State::Persistence_ends;
 }
 
 void Game_Battler::RemoveBattleStates() {
