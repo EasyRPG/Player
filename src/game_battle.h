@@ -36,7 +36,7 @@ namespace Game_Battle {
 	 */
 	void Update();
 	void Terminate();
-	
+
 	Spriteset_Battle& GetSpriteset();
 
 	void NextTurn();
