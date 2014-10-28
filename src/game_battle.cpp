@@ -75,7 +75,7 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 	
-	Game_Battle::RemoveBattleConditions();
+	Game_Battle::RemoveBattleStates();
 
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
