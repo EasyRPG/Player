@@ -67,6 +67,13 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 
+	std::vector<Game_Battler*> allies;
+	Main_Data::game_party->GetBattlers(allies);
+	// Remove conditions which end after battle
+	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
+		(*it)->RemoveBattleStates();
+	}
+
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
 }
