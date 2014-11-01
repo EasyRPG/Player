@@ -493,6 +493,26 @@ BITMAP
 ...@..@...@.
 ..@....@@@@.
 ENDCHAR
+# jau1 / you1 'the bleating of the deer', interjection of surprise or fear
+STARTCHAR 5466
+ENCODING 22841
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.....@..@...
+.....@..@...
+@@@.@...@...
+@.@.@.@@@@@.
+@.@@..@.@.@.
+@.@.@.@.@.@.
+@.@..@..@.@.
+@.@.@.@.@.@.
+@@@.@..@@.@.
+....@@@@@.@.
+....@..@..@.
+.......@.@@.
+ENDCHAR
 # gaa3 / ka1 ga1 used in phonetic transliteration like gaa3 fe1 / ka1 fei1 'coffee''
 STARTCHAR 5496
 ENCODING 12864
@@ -592,6 +612,26 @@ BITMAP
 @@@@.@@@@@@.
 .....@....@.
 .....@@@@@@.
+ENDCHAR
+# aai1 / ai1 'interjection of surprise and regret'
+STARTCHAR 54ce
+ENCODING 26472
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.....@..@...
+...@@@@@@@@.
+@@@..@..@...
+@.@.........
+@.@.@....@..
+@.@.@....@..
+@.@.@....@..
+@.@..@..@...
+@@@...@@....
+.....@..@...
+....@....@..
+..@@......@@
 ENDCHAR
 # naa5/na3 Mandarin equivalent of bin1 'which?'
 STARTCHAR 54ea
@@ -792,6 +832,26 @@ BITMAP
 ....@..@..@.
 ....@..@..@.
 ...@@..@@@@.
+ENDCHAR
+# wai3 / wei4 wei1 'hey, hello'
+STARTCHAR 5582
+ENCODING 14120
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+............
+....@@@@@@..
+@@@.@.@..@..
+@.@.@@@@@@..
+@.@.@.@..@..
+@.@.@@@@@@..
+@.@.........
+@.@@@@@@@@@.
+@@@.@.@..@..
+....@..@@...
+....@.@..@..
+...@@@....@.
 ENDCHAR
 # -- / o1 interjection of surprise
 STARTCHAR 5594
@@ -1272,6 +1332,46 @@ BITMAP
 .@.....@....
 .@..@@@@@@@.
 ENDCHAR
+# nau2 / niu3 'turn round; sprain; seize'
+STARTCHAR 626d
+ENCODING 22361
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.........
+..@.@@@@@...
+@@@@.@..@...
+..@..@..@...
+..@..@..@...
+..@@@@@@@@@.
+@@@..@..@...
+..@..@..@...
+..@..@..@...
+..@..@..@...
+..@..@..@...
+.@@@@@@@@@@.
+ENDCHAR
+# paau1 / pao1 'throw; abandon'
+STARTCHAR 62cb
+ENCODING 22825
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@..@.......
+.@..@...@...
+.@..@...@...
+@@@@@@@@@@@.
+.@..@.@.@.@.
+.@..@.@.@.@.
+.@@.@.@.@.@.
+@@..@.@.@.@.
+.@..@.@.@.@.
+.@..@.@@.@@.
+.@..@.@.....
+@@.@...@@@@@
+ENDCHAR
 # ce2 / che3 'to leave; to pull; to tear; to chat'
 STARTCHAR 626f
 ENCODING 15203
@@ -1351,6 +1451,26 @@ BITMAP
 ..@.@.@.@.@.
 ..@.@.@@@.@.
 .@@.@....@@.
+ENDCHAR
+# seot1 / shuai1 'tumble; plunge; smash; fling'
+STARTCHAR 6454
+ENCODING 27179
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@....@....
+..@.@@@@@@@.
+..@....@....
+@@@@@.@.@@..
+..@..@.@..@.
+..@.@.@.@@..
+..@@.@@@@.@.
+@@@....@....
+..@..@@@@@@.
+..@....@....
+..@....@....
+.@@....@....
 ENDCHAR
 # caang1 / cheng1 'prop up; support; prop open; unfurl; unfold', caang3 / cheng1 'back up; keep up'
 STARTCHAR 6490
@@ -1712,6 +1832,26 @@ BITMAP
 .@.@..@.@...
 @.@..@...@..
 @..@@.....@.
+ENDCHAR
+# haau1, haau2 / kao3 'bake; roast'
+STARTCHAR 70e4
+ENCODING 23390
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@....@....
+..@....@..@.
+..@..@@@@@..
+.@@.@..@.@..
+.@@@.@@@@@@.
+@.@...@.....
+@.@..@@@@@@.
+..@.@.@.....
+..@...@@@@..
+.@.@.@...@..
+.@..@....@..
+@......@@...
 ENDCHAR
 # oi3 / ai4 'love' (simplified)
 STARTCHAR 7231
@@ -2452,6 +2592,26 @@ BITMAP
 ..@@..@.@...
 .@..@.@.@...
 @.....@@@@@.
+ENDCHAR
+# zong1 / zang1 'dirty; unclean'
+STARTCHAR 9ad2
+ENCODING 16754
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@@@..@..@..
+.@.@.@@@@@@.
+.@@@..@..@..
+@@@@@@@@@@@.
+@...@.@..@..
+.@@@.@@@.@@.
+.@.@.@.@.@..
+.@@@.@@..@@.
+.@.@..@..@..
+.@@@.@@@@@@.
+.@.@..@..@..
+.@.@.@...@..
 ENDCHAR
 # min6 / mian4 'noodles; (wheat) flour; dough'
 STARTCHAR 9eb5
