@@ -76,7 +76,7 @@ bool Game_Character::IsMoving() const {
 	if (move_count > 0) return false; //Jumping
 
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
-	}
+}
 
 bool Game_Character::IsJumping() const {
 	return move_count > 0;
@@ -89,6 +89,13 @@ bool Game_Character::IsStopping() const {
 bool Game_Character::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
+
+	if (Game_Map::GetLoopHorizontal()) {
+		new_x = Game_Map::WrapX(new_x);
+	}
+	if (Game_Map::GetLoopVertical()) {
+		new_y = Game_Map::WrapY(new_y);
+	}
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
@@ -228,17 +235,75 @@ void Game_Character::Update() {
 
 void Game_Character::UpdateMove() {
 	int distance = ((SCREEN_TILE_WIDTH / 128) << GetMoveSpeed());
-	if (GetY() * SCREEN_TILE_WIDTH > real_y)
-		real_y = min(real_y + distance, GetY() * SCREEN_TILE_WIDTH);
 
-	if (GetX() * SCREEN_TILE_WIDTH < real_x)
-		real_x = max(real_x - distance, GetX() * SCREEN_TILE_WIDTH);
+	int real_targetx = GetX() * SCREEN_TILE_WIDTH;
+	int real_targety = GetY() * SCREEN_TILE_WIDTH;
+	int real_map_width = Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
+	int real_map_height = Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
 
-	if (GetX() * SCREEN_TILE_WIDTH > real_x)
-		real_x = min(real_x + distance, GetX() * SCREEN_TILE_WIDTH);
+	int dist = real_x - real_targetx;
 
-	if (GetY() * SCREEN_TILE_WIDTH < real_y)
-		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
+	if (dist < 0) { // target is to the right
+		dist = -dist;
+		int dist2 = real_map_width - dist;
+
+		if (dist < dist2) {
+			// better move to the right
+			real_x = (real_x + distance) % real_map_width;
+		}
+		else if (Game_Map::GetLoopHorizontal() && dist > dist2) {
+			// better move to the left
+			real_x = (real_x - distance) % real_map_width;
+		}
+	}
+	else if (dist > 0) { // target is to the left
+		int dist2 = real_map_width - dist;
+
+		if (dist < dist2) {
+			// better move to the left
+			real_x = (real_x -distance) % real_map_width;
+		}
+		else if (Game_Map::GetLoopHorizontal() && dist > dist2) {
+			// better move to the right
+			real_x = (real_x + distance) % real_map_width;
+		}
+	}
+
+	dist = real_y - real_targety;
+
+	if (dist < 0) { // target is above
+		dist = -dist;
+		int dist2 = real_map_height - dist;
+
+		if (dist < dist2) {
+			// better move upwards
+			real_y = (real_y + distance) % real_map_height;
+		}
+		else if (Game_Map::GetLoopVertical() && dist > dist2) {
+			// better move downwards
+			real_y = (real_y - distance) % real_map_height;
+		}
+	}
+	else if (dist > 0) { // target is below
+		int dist2 = real_map_height - dist;
+
+		if (dist < dist2) {
+			// better move downwards
+			real_y = (real_y - distance) % real_map_height;
+		}
+		else if (Game_Map::GetLoopVertical() && dist > dist2) {
+			// better move upwards
+			real_y = (real_y + distance) % real_map_height;
+		}
+	}
+
+	if (real_x < 0) {
+		real_x += real_map_width;
+	}
+
+	if (real_y < 0) {
+		real_y += real_map_height;
+	}
 
 	anime_count += 
 		(IsSpinning() ? 1.0 :
@@ -594,7 +659,7 @@ void Game_Character::MoveDown() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)) {
-		SetY(GetY() + 1);
+		SetY(Game_Map::WrapY(GetY() + 1));
 		BeginMove();
 		stop_count = 0;
 		move_failed = false;
@@ -613,7 +678,7 @@ void Game_Character::MoveLeft() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)) {
-		SetX(GetX() - 1);
+		SetX(Game_Map::WrapX(GetX() - 1));
 		BeginMove();
 		stop_count = 0;
 		move_failed = false;
@@ -632,7 +697,7 @@ void Game_Character::MoveRight() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)) {
-		SetX(GetX() + 1);
+		SetX(Game_Map::WrapX(GetX() + 1));
 		BeginMove();
 		stop_count = 0;
 		move_failed = false;
@@ -651,7 +716,7 @@ void Game_Character::MoveUp() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)) {
-		SetY(GetY() - 1);
+		SetY(Game_Map::WrapY(GetY() - 1));
 		BeginMove();
 		stop_count = 0;
 		move_failed = false;
@@ -806,8 +871,8 @@ void Game_Character::MoveRandom() {
 }
 
 void Game_Character::MoveTowardsPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+	int sx = GetDistanceXfromPlayer();
+	int sy = GetDistanceYfromPlayer();
 
 	if (sx != 0 || sy != 0) {
 		if ( std::abs(sx) > std::abs(sy) ) {
@@ -825,8 +890,8 @@ void Game_Character::MoveTowardsPlayer() {
 }
 
 void Game_Character::MoveAwayFromPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+	int sx = GetDistanceXfromPlayer();
+	int sy = GetDistanceYfromPlayer();
 
 	if (sx != 0 || sy != 0) {
 		if ( std::abs(sx) > std::abs(sy) ) {
@@ -942,8 +1007,8 @@ void Game_Character::BeginMove() {
 }
 
 void Game_Character::TurnTowardHero() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+	int sx = GetDistanceXfromPlayer();
+	int sy = GetDistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		(sx > 0) ? TurnLeft() : TurnRight();
@@ -954,8 +1019,8 @@ void Game_Character::TurnTowardHero() {
 }
 
 void Game_Character::TurnAwayFromHero() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
+	int sx = GetDistanceXfromPlayer();
+	int sy = GetDistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		(sx > 0) ? TurnRight() : TurnLeft();
@@ -1049,9 +1114,9 @@ int Game_Character::EndJump(const RPG::MoveRoute* current_route, int current_ind
 	return current_index;
 }
 
-int Game_Character::DistanceXfromPlayer() const {
+int Game_Character::GetDistanceXfromPlayer() const {
 	int sx = GetX() - Main_Data::game_player->GetX();
-	if (Game_Map::LoopHorizontal()) {
+	if (Game_Map::GetLoopHorizontal()) {
 		if (std::abs(sx) > Game_Map::GetWidth() / 2) {
 			sx -= Game_Map::GetWidth();
 		}
@@ -1059,9 +1124,9 @@ int Game_Character::DistanceXfromPlayer() const {
 	return sx;
 }
 
-int Game_Character::DistanceYfromPlayer() const {
+int Game_Character::GetDistanceYfromPlayer() const {
 	int sy = GetY() - Main_Data::game_player->GetY();
-	if (Game_Map::LoopVertical()) {
+	if (Game_Map::GetLoopVertical()) {
 		if (std::abs(sy) > Game_Map::GetHeight() / 2) {
 			sy -= Game_Map::GetHeight();
 		}

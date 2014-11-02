@@ -31,6 +31,7 @@
 #include "map_data.h"
 #include "main_data.h"
 #include "output.h"
+#include "rpg_map.h"
 #include "util_macro.h"
 #include "game_system.h"
 #include "filefinder.h"
@@ -178,7 +179,9 @@ void Game_Map::SetupFromSave() {
 void Game_Map::SetupCommon(int _id) {
 	ready = false;
 	// Execute remaining events (e.g. ones listed after a teleport)
-	Update();
+	if (map.get()) {
+		Update();
+	}
 	Dispose();
 
 	location.map_id = _id;
@@ -312,19 +315,39 @@ void Game_Map::ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> i
 }
 
 void Game_Map::ScrollDown(int distance) {
-	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	int dist = map_info.position_y + distance;
+	map_info.position_y = dist;
+
+	if (!GetLoopVertical()) {
+		map_info.position_y = min(dist, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	}
 }
 
 void Game_Map::ScrollLeft(int distance) {
-	map_info.position_x = max(map_info.position_x - distance, 0);
+	int dist = map_info.position_x - distance;
+	map_info.position_x = dist;
+
+	if (!GetLoopHorizontal()) {
+		map_info.position_x = max(dist, 0);
+	}
 }
 
 void Game_Map::ScrollRight(int distance) {
-	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	int dist = map_info.position_x + distance;
+	map_info.position_x = dist;
+
+	if (!GetLoopHorizontal()) {
+		map_info.position_x = min(dist, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	}
 }
 
 void Game_Map::ScrollUp(int distance) {
-	map_info.position_y = max(map_info.position_y - distance, 0);
+	int dist = map_info.position_y - distance;
+	map_info.position_y = dist;
+
+	if (!GetLoopVertical()) {
+		map_info.position_y = min(dist, 0);
+	}
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -618,16 +641,16 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	events.swap(result);
 }
 
-bool Game_Map::LoopHorizontal() {
-	return map->scroll_type == 2 || map->scroll_type == 3;
+bool Game_Map::GetLoopHorizontal() {
+	return map->scroll_type == RPG::Map::ScrollType_horizontal || map->scroll_type == RPG::Map::ScrollType_both;
 }
 
-bool Game_Map::LoopVertical() {
-	return map->scroll_type == 1 || map->scroll_type == 3;
+bool Game_Map::GetLoopVertical() {
+	return map->scroll_type == RPG::Map::ScrollType_vertical || map->scroll_type == RPG::Map::ScrollType_both;
 }
 
 int Game_Map::RoundX(int x) {
-	if ( LoopHorizontal() ) {
+	if (GetLoopHorizontal() ) {
 		return (x + GetWidth()) % GetWidth();
 	} else {
 		return x;
@@ -635,7 +658,7 @@ int Game_Map::RoundX(int x) {
 }
 
 int Game_Map::RoundY(int y) {
-	if ( LoopVertical() ) {
+	if (GetLoopVertical() ) {
 		return (y + GetHeight()) % GetHeight();
 	} else {
 		return y;
@@ -1088,4 +1111,24 @@ int Game_Map::GetParallaxY() {
 
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
+}
+
+int Game_Map::WrapX(int x) {
+	if (x < 0) {
+		x += Game_Map::GetWidth();
+	}
+	else if (x >= Game_Map::GetWidth()) {
+		x = 0;
+	}
+	return x;
+}
+
+int Game_Map::WrapY(int y) {
+	if (y < 0) {
+		y += Game_Map::GetHeight();
+	}
+	else if (y >= Game_Map::GetHeight()) {
+		y = 0;
+	}
+	return y;
 }
