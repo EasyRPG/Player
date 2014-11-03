@@ -23,6 +23,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "text.h"
+#include "game_system.h"
 
 #include <cctype>
 
@@ -55,11 +56,15 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	text_surface->Clear();
 
 	BitmapRef system;
-	if (!Data::system.system_name.empty()) {
-		// Load the system file for the shadow and text color
-		system = Cache::System(Data::system.system_name);
+	if (!Game_System::GetSystemName().empty()) {
+		system = Cache::System(Game_System::GetSystemName());
 	} else {
-		system = Bitmap::Create(160, 80, false);
+		if (!Data::system.system_name.empty()) {
+			// Load the system file for the shadow and text color
+			system = Cache::System(Data::system.system_name);
+		} else {
+			system = Bitmap::Create(160, 80, false);
+		}
 	}
 	// Load the exfont-file
 	BitmapRef exfont = Cache::Exfont();
