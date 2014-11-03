@@ -133,6 +133,26 @@ BITMAP
 ..@..@...@..
 ..@.@..@@...
 ENDCHAR
+# fong2 / fang3 'to imitate; to copy; to resemble'
+STARTCHAR 4eff
+ENCODING 25212
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@...@.....
+..@...@.....
+..@.@@@@@@@.
+.@....@.....
+.@....@.....
+@@....@@@@..
+.@....@..@..
+.@....@..@..
+.@...@...@..
+.@...@...@..
+.@..@....@..
+.@.@...@@...
+ENDCHAR
 # fo2 / huo3 'companion, colleague'
 STARTCHAR 4f19
 ENCODING 12861
@@ -352,6 +372,26 @@ BITMAP
 .@........@.
 .@........@.
 .@.......@@.
+ENDCHAR
+# waa1 / hua2 'paddle; row', faa3 / hua2 'worthwhile'; simplified of waak6 / hua4 'plan'
+STARTCHAR 5212
+ENCODING 18482
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.@.....@.
+..@..@..@.@.
+..@.....@.@.
+..@@@@..@.@.
+@@@.....@.@.
+..@.@...@.@.
+..@.@...@.@.
+...@....@.@.
+..@@....@.@.
+.@..@.@...@.
+@....@@...@.
+......@..@@.
 ENDCHAR
 # kaa1 / ka1 'card'
 STARTCHAR 5361
@@ -873,6 +913,26 @@ BITMAP
 ..@....@....
 .@.@@@@@@@@.
 ENDCHAR
+# jo1 / yo1 'oh; ah; ho', jo1 / yo5 final particle to urge sb on
+STARTCHAR 55b2
+ENCODING 19571
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+....@...@...
+....@...@...
+@@@@.@..@@@.
+@.@@.@..@.@.
+@.@.@..@..@.
+@.@@..@...@.
+@.@@@@@.@.@.
+@.@.@...@.@.
+@.@@@@....@.
+@@@@@.@...@.
+...@@.....@.
+....@...@@..
+ENDCHAR
 # miu1 / miao1 'meow'
 STARTCHAR 55B5
 ENCODING 18753
@@ -892,6 +952,26 @@ BITMAP
 ....@..@..@.
 ....@..@..@.
 ....@@@@@@@.
+ENDCHAR
+# jyu6 / yu4 'explain; understand; analogy'
+STARTCHAR 55bb
+ENCODING 24161
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+......@@....
+.......@....
+@@@...@.@...
+@.@..@@@@@..
+@.@.@.....@.
+@.@@@@@.@.@@
+@.@.@.@.@.@.
+@.@.@@@.@.@.
+@@@.@.@.@.@.
+....@@@.@.@.
+....@.@...@.
+....@.@..@..
 ENDCHAR
 STARTCHAR 55ce
 ENCODING 21824
@@ -991,6 +1071,26 @@ BITMAP
 ...@@@@@@@..
 ...@.@.@.@..
 ..@..@..@.@.
+ENDCHAR
+# ok3 / e3 'nauseating; sickening'
+STARTCHAR 5641
+ENCODING 28476
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+............
+....@@@@@@@.
+@@@...@.@...
+@.@.@@@.@@@.
+@.@.@.....@.
+@.@.@@@.@@@.
+@.@...@.@...
+@.@.@@@@@@@.
+@@@...@.....
+....@.@.@.@.
+...@..@...@.
+.......@@@@.
 ENDCHAR
 # lo1 lo4 lo3 / luo1 luo5 'repetitious', final particle
 STARTCHAR 56c9
@@ -1572,6 +1672,26 @@ BITMAP
 ......@.....
 .....@@.....
 ENDCHAR
+# laan4 / lan2 'block; obstruct'
+STARTCHAR 6514
+ENCODING 27430
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.@@@.@@@.
+..@.@.@.@.@.
+..@.@@@.@@@.
+@@@@@.@.@.@.
+..@.@@@.@@@.
+..@.@..@..@.
+..@@@@@@@@@.
+@@@.@@.@.@@.
+..@.@@@@@@@.
+..@.@.@@@.@.
+..@.@@.@.@@.
+.@@.@..@.@@.
+ENDCHAR
 # maan5/maan5*1 / wan3 'evening'
 STARTCHAR 665a
 ENCODING 18517
@@ -2073,6 +2193,26 @@ BITMAP
 .@@@..@.@...
 ....@@@@@@@.
 ENDCHAR
+# taa1 / ta1 Mandarin 'she, he' about gods
+STARTCHAR 7942
+ENCODING 16958
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@....@....
+..@..@.@....
+@@@@.@.@....
+...@.@.@@@..
+..@..@@@.@..
+..@@.@.@.@..
+.@@..@.@.@..
+@.@..@.@.@..
+..@..@.@@...
+..@..@....@.
+..@..@....@.
+..@...@@@@@.
+ENDCHAR
 # sou1 / su1 'revive'
 STARTCHAR 7a4c
 ENCODING 29245
@@ -2273,6 +2413,26 @@ BITMAP
 @...@.@.....
 .@@@@@@@@@@.
 ENDCHAR
+# maa5 / ma3 'ant, leech'; maa1 / ma1 'dragonfly', maa6 / ma4 'locust'
+STARTCHAR 879e
+ENCODING 21824
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.........
+..@...@@@@@.
+..@...@..@..
+@@@@@.@@@@@.
+@.@.@.@..@..
+@.@.@.@@@@@.
+@@@@@.@..@..
+..@...@@@@@.
+..@.@...@.@.
+..@@@.@.@.@.
+@@..@.@...@.
+...@...@@@..
+ENDCHAR
 # fu3 / ku4 'trousers, pants'
 STARTCHAR 8932
 ENCODING 27214
@@ -2312,6 +2472,26 @@ BITMAP
 @..@..@.@.@.
 @..@.@..@.@.
 @@@@@....@@.
+ENDCHAR
+# fong1 / huang3 'lie; false'
+STARTCHAR 8b0a
+ENCODING 14642
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@@..@...@..
+....@@@@@@@.
+@@@@.@...@..
+.......@....
+.@@..@@@@@@.
+.....@......
+.@@...@@@@..
+.....@.@.@..
+@@@@.@.@.@..
+@..@.@.@.@..
+@..@.@.@.@..
+@@@@@.....@.
 ENDCHAR
 # maau1 / mao1 'cat'
 STARTCHAR 8c93
@@ -2412,6 +2592,26 @@ BITMAP
 @.@@@.@.@.@.
 @@@..@.@..@.
 @.......@@..
+ENDCHAR
+# caai2, jaai2 / cai3 'step on; demean; peddle'
+STARTCHAR 8e29
+ENCODING 25917
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.........@@.
+@@@@.@@@@@..
+@..@.@.@..@.
+@..@.@..@.@.
+@@@@@...@...
+..@.@..@....
+@.@.@@@@@@@.
+@.@@@..@....
+@.@...@@@...
+@.@@@@.@.@..
+@@@.@..@..@.
+@......@....
 ENDCHAR
 # do2 / duo3 'dodge; hide onself'
 STARTCHAR 8eb2
