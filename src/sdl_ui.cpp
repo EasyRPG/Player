@@ -162,7 +162,9 @@ uint32_t SdlUi::GetTicks() const {
 }
 
 void SdlUi::Sleep(uint32_t time) {
+#ifndef EMSCRIPTEN
 	SDL_Delay(time);
+#endif
 }
 
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
@@ -648,19 +650,23 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 		// Filter SDL events with FilterUntilFocus until focus is
 		// regained
 		filtering_done = false;
-#if SDL_MAJOR_VERSION==1
+#ifndef EMSCRIPTEN
+#  if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(&FilterUntilFocus);
-#else
+#  else
 		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
+#  endif
 #endif
 
 		SDL_WaitEvent(NULL);
 
-#if SDL_MAJOR_VERSION==1
+#ifndef EMSCRIPTEN
+#  if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(NULL);
-#else
+#  else
 		SDL_SetEventFilter(NULL, NULL);
-#endif 
+#  endif
+#endif
 
 		ShowCursor(last);
 

@@ -31,9 +31,16 @@ PKG_CHECK_MODULES([ZLIB],[zlib])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
+
+
+AC_EGREP_CPP(yes,
+[#ifdef EMSCRIPTEN
+  yes
+#endif
+],[],[
 AC_LANG_PUSH([C++])
 AC_CHECK_HEADERS([boost/foreach.hpp],[],[AC_MSG_ERROR(['boost' is required but it doesn't seem to be installed on this system.])])
-AC_LANG_POP([C++])
+AC_LANG_POP([C++])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN

@@ -43,6 +43,11 @@ namespace Player {
 	void Run();
 
 	/**
+	 * Runs the game loop.
+	 */
+	void MainLoop();
+
+	/**
 	 * Pauses the game engine.
 	 */
 	void Pause();
