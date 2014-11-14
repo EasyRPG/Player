@@ -150,7 +150,7 @@ void Window::Draw() {
 				min(cursor_rect.height, height - cursor_rect.y + border_y)
 			);
 
-			if (cursor_frame < 16)
+			if (cursor_frame <= 10)
 				cursor1->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
 			else
 				cursor2->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
@@ -344,7 +344,7 @@ void Window::RefreshCursor() {
 void Window::Update() {
 	if (active) {
 		cursor_frame += 1;
-		if (cursor_frame > 32) cursor_frame = 0;
+		if (cursor_frame > 20) cursor_frame = 0;
 		if (pause) {
 			pause_frame += 1;
 			if (pause_frame == 40) pause_frame = 0;

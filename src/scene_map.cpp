@@ -220,14 +220,15 @@ void Scene_Map::CallName() {
 void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 
-	if (Game_Temp::menu_beep) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
-		Game_Temp::menu_beep = false;
-	}
-
-	// TODO: Main_Data::game_player->Straighten();
-
 	if (Game_System::GetAllowMenu()) {
+
+		if (Game_Temp::menu_beep) {
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_Temp::menu_beep = false;
+		}
+
+		// TODO: Main_Data::game_player->Straighten();
+
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
 	}
 	/*
