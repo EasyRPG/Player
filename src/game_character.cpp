@@ -148,11 +148,35 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	return real_x / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
+	int x = real_x - Game_Map::GetDisplayX();
+	int max_width = Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
+
+	if (x - max_width > 0) {
+		x -= max_width;
+	}
+	else if (x < 0) {
+		x += max_width;
+	}
+
+	x = x / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
+
+	return x;
+	/*return real_x / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);*/
 }
 
 int Game_Character::GetScreenY() const {
-	int y = real_y / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
+	/*int y = real_y / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;*/d
+	int y = real_y - Game_Map::GetDisplayY();
+	int max_height = Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
+
+	if (y - max_height > 0) {
+		y -= max_height;
+	}
+	else if (y < 0) {
+		y += max_height;
+	}
+
+	y = y / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
 
 	int n;
 	if (move_count >= jump_peak)
