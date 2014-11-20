@@ -233,6 +233,26 @@ BITMAP
 ..@.@..@..@.
 ..@....@....
 ENDCHAR
+# lou2 / lao3 'guy, fellow, bloke, chap'
+STARTCHAR 4f6c
+ENCODING 12600
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+...@...@....
+...@...@....
+...@.@@@@@@.
+..@....@.@..
+..@....@@...
+.@@.@@@@@@@.
+@.@....@....
+..@...@.....
+..@.@@@@@@..
+..@...@.....
+..@...@...@.
+..@....@@@@.
+ENDCHAR
 # hap6, haap6 / xia2 'chivalry; gallantry; heroic spirit; knight-errand'
 STARTCHAR 4fe0
 ENCODING 13858
@@ -452,6 +472,26 @@ BITMAP
 ....@....@..
 ...@.....@..
 .@@....@@@..
+ENDCHAR
+# tan1 / tun1 'swallow, gulp'
+STARTCHAR 541e
+ENCODING 15165
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+............
+@@@@@@@@@@@.
+.....@......
+.....@......
+.@@@@@@@@@..
+....@.@.....
+..@@...@@...
+@@.......@@.
+..@@@@@@@...
+..@.....@...
+..@@@@@@@...
+............
 ENDCHAR
 # baa1 / ba1 'bar', baa6 / ba5 final particle equivalent to Cantonese laa1
 STARTCHAR 5427
@@ -692,6 +732,26 @@ BITMAP
 ....@.@.@@@.
 ....@.@.@...
 ...@.@@.@...
+ENDCHAR
+# hang1, hng6 / heng1, hng5 'snort; hum; humph'
+STARTCHAR 54fc
+ENCODING 24155
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.......@....
+...@@@@@@@@.
+@@@.........
+@.@.@@@@@@..
+@.@.@....@..
+@.@@@@@@@@@.
+@.@@......@.
+@.@.@@@@@@..
+@@@....@....
+.......@....
+.......@....
+......@@....
 ENDCHAR
 # aai1 / ai1 'alas!'
 STARTCHAR 5509
@@ -1152,6 +1212,26 @@ BITMAP
 .......@....
 ....@@@@@@@.
 ENDCHAR
+# zin3, din3 / dian4 '[v/n] cushion, pad; level up', din6 / dian4 'advance money for others', zin2 / dian4 '(air) cushion'
+STARTCHAR 588a
+ENCODING 15417
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@...@.....
+@@@@@@@@@...
+..@...@.@...
+@@@@@.@.@...
+.@.@.@@.@...
+@@@@@.@@@...
+..@...@.@.@.
+@@@@.@...@@.
+..@..@......
+.@@@@@@@@@..
+.....@......
+@@@@@@@@@@@.
+ENDCHAR
 # naai5 / nai3 'breast, lady, milk'
 STARTCHAR 5976
 ENCODING 20539
@@ -1311,6 +1391,26 @@ BITMAP
 ..@...@.@.@.
 .@...@..@@@.
 @.......@...
+ENDCHAR
+# ting4 / ting2 'graceful'
+STARTCHAR 5a77
+ENCODING 24155
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@......@...
+.@...@@@@@@.
+.@..........
+@@@@@.@@@@..
+.@.@..@..@..
+.@.@.@@@@@@.
+.@.@.@....@.
+@..@..@@@@..
+@@@.....@...
+..@.....@...
+.@......@...
+@......@@...
 ENDCHAR
 # jin6 / yan4 'man of virtue and ability'
 STARTCHAR 5f65
@@ -1532,6 +1632,46 @@ BITMAP
 ..@.@.....@.
 .@@.@@@@@@@.
 ENDCHAR
+# zang1 / zheng1 'struggle; strive; make efforts', zaang6 / zheng4 'break away from; try to throw off; gorge; stuff with; fill with; earn/make (money)'
+STARTCHAR 6399
+ENCODING 24134
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@.....@@@..
+.@.@@@@.@...
+@@@.@.@..@..
+.@.@...@..@.
+.@.@@@@@@@..
+.@....@..@..
+.@@@@@@@@@@.
+@@....@..@..
+.@.@@@@@@@..
+.@....@.....
+.@....@.....
+@@...@@.....
+ENDCHAR
+# baai1 / bai1 'tear apart; rip up'
+STARTCHAR 63b0
+ENCODING 22854
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.@.@...@.
+@@.@..@.@@..
+.@.@..@..@..
+@@@.....@@@.
+.@.@@@@..@..
+.@..@.@..@..
+.@..@.@..@..
+@@@.@.@.@@@.
+.@..@.@..@..
+.@..@.@..@..
+.@..@.@..@..
+@@.@.@@.@@..
+ENDCHAR
 # gaau2 / gao3 'carry on; set up'
 STARTCHAR 641e
 ENCODING 23625
@@ -1671,6 +1811,26 @@ BITMAP
 @@@@@@@@@@@.
 ......@.....
 .....@@.....
+ENDCHAR
+# lung5 / long3 'bring together; approach; add up'
+STARTCHAR 650f
+ENCODING 24700
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@...@..@...
+.@.@@@@@@@@.
+.@..@.@.@...
+@@@.@.@.@@@.
+.@.@@@@@..@.
+.@..@@@.@@@.
+.@@.@.@.@...
+@@..@@@.@@@.
+.@..@.@.@...
+.@..@@@.@@@.
+.@..@.@.@..@
+@@..@.@..@@@
 ENDCHAR
 # laan4 / lan2 'block; obstruct'
 STARTCHAR 6514
@@ -1832,6 +1992,26 @@ BITMAP
 ....@@@.....
 .@@@........
 ENDCHAR
+# kei4 / qi2 'fork; divergent'
+STARTCHAR 6b67
+ENCODING 15198
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.......@....
+..@....@....
+..@..@@@@@@.
+..@@@..@....
+..@....@....
+..@.@@@@@@..
+@.@..@...@..
+@.@...@.@...
+@.@....@....
+@.@...@.@...
+@.@@.@...@..
+@@..@.....@.
+ENDCHAR
 # seoi3 / sui4 'year; age (of a person); harvest'
 STARTCHAR 6b72
 ENCODING 14928
@@ -1932,6 +2112,26 @@ BITMAP
 .@.@.@.@.@..
 @..@.@.@.@..
 @.@@@@@@@@@.
+ENDCHAR
+# tou4 / tu2 surname
+STARTCHAR 6d82
+ENCODING 15737
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@....@.....
+..@...@@....
+.....@..@...
+@...@....@..
+.@@@@@@@@.@.
+......@.....
+...@@@@@@@@.
+..@...@.....
+.@..@.@.@...
+.@..@.@..@..
+@..@..@...@.
+@....@@.....
 ENDCHAR
 # leoi6 / lei4 'tears; teardrop'
 STARTCHAR 6dda
@@ -2152,6 +2352,26 @@ BITMAP
 .@@@..@.@...
 .....@...@..
 ...@@.....@.
+ENDCHAR
+# zaap3 / za2 'ram; pound at'
+STARTCHAR 7838
+ENCODING 16729
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.............
+@@@@@@@@@@@.
+..@..@..@...
+..@..@..@...
+.@...@@@@@@.
+.@@@.@@.@.@.
+@@.@.@@.@.@.
+.@.@.@@.@.@.
+.@.@.@@.@.@.
+.@.@.@..@...
+.@@@.@..@...
+.....@@@@@@.
 ENDCHAR
 # dip6 / die2 'plate', dip6*2 / die2 'CD'
 STARTCHAR 789f
@@ -2433,6 +2653,26 @@ BITMAP
 @@..@.@...@.
 ...@...@@@..
 ENDCHAR
+# zoeng1 / zhang1 'cockroach'
+STARTCHAR 87d1
+ENCODING 22097
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@....@....
+..@..@@@@@@.
+@@@@@.@.@...
+@.@.@@@@@@@.
+@.@.@@...@..
+@@@@@@@@@@..
+..@..@...@..
+..@@.@@@@@..
+..@.@..@....
+..@@@@@@@@@.
+@@.....@....
+.......@....
+ENDCHAR
 # fu3 / ku4 'trousers, pants'
 STARTCHAR 8932
 ENCODING 27214
@@ -2452,6 +2692,26 @@ BITMAP
 .@.@.@@@@@@@
 .@.@....@...
 .@......@...
+ENDCHAR
+# gwing2 / xiong4 'to spy', hing3 / xiong4 'to give information'
+STARTCHAR 8a57
+ENCODING 24407
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@@@........
+.....@@@@@@.
+@@@@.@....@.
+.....@....@.
+.@@@.@@@@.@.
+.....@@.@.@.
+.@@@.@@.@.@.
+.....@@.@.@.
+@@@@.@@@@.@.
+@..@.@....@.
+@..@.@....@.
+@@@@.@...@@.
 ENDCHAR
 # syut3 / shuo1 'say'
 STARTCHAR 8aaa
@@ -2633,6 +2893,26 @@ BITMAP
 @@..@@.@.@..
 ...@@..@..@.
 ENDCHAR
+# tong2 / tang3 'lie; recline'
+STARTCHAR 8eba
+ENCODING 27965
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@.....@....
+@@@.@..@..@.
+@.@..@.@.@..
+@@@...@@@...
+@.@.@@@@@@@.
+@@@.@.....@.
+@.@.@.@@@.@.
+@@@.@.@.@.@.
+.@@.@.@.@.@.
+@.@.@.@@@.@.
+..@.@.....@.
+.@@.@....@@.
+ENDCHAR
 # baan6 / ban4 'manage; handle; deal with'
 STARTCHAR 8fa6
 ENCODING 16482
@@ -2732,6 +3012,26 @@ BITMAP
 @..@@@@@..@.
 @..@...@..@.
 @.@...@@.@@.
+ENDCHAR
+# Man5 / Min3 'Fujian'
+STARTCHAR 95a9
+ENCODING 28512
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+@@@@@.@@@@@.
+@...@.@...@.
+@@@@@.@@@@@.
+@...@.@...@.
+@@@@@.@@@@@.
+@....@....@.
+@..@@@@@..@.
+@..@.@.@..@.
+@..@@@@@..@.
+@....@.@..@.
+@....@@@@.@.
+@.@@@....@@.
 ENDCHAR
 # jyut6 / yue4 'review; read; experience'
 STARTCHAR 95b1
