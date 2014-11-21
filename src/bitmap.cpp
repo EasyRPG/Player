@@ -179,7 +179,7 @@ Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
 	return opacity? (*opacity)[row][col] : Partial;
 }
 
-uint8_t Bitmap::bytes() const {
+int Bitmap::bytes() const {
 	return format.bytes;
 }
 
@@ -662,7 +662,7 @@ void const* Bitmap::pixels() const {
 	return (void const*) pixman_image_get_data(bitmap);
 }
 
-uint8_t Bitmap::bpp() const {
+int Bitmap::bpp() const {
 	return (pixman_image_get_depth(bitmap) + 7) / 8;
 }
 
@@ -674,7 +674,7 @@ int Bitmap::height() const {
 	return pixman_image_get_height(bitmap);
 }
 
-uint16_t Bitmap::pitch() const {
+int Bitmap::pitch() const {
 	return pixman_image_get_stride(bitmap);
 }
 
