@@ -151,9 +151,14 @@ print "Loading Korean..."
 korean = read_file(File.new('./korean/font_src_diff.bit', 'r'), "UTF-32LE", false)
 print "done\n"
 
+print "Loading Chinese..."
+chinese = read_file(File.new('./chinese/font_src_diff.bit', 'r'), "UTF-32LE", false)
+print "done\n"
+
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(korean).merge(latin).merge(latin_ext_a)
+gothic_final = gothic.merge(cyrillic).merge(hankaku) \
+	.merge(korean).merge(chinese).merge(latin).merge(latin_ext_a)
 code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
