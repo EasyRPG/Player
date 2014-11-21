@@ -285,14 +285,14 @@ public:
 	 *
 	 * @return flash intensity
 	 */
-	virtual int GetFlashLevel() const = 0;
+	virtual double GetFlashLevel() const = 0;
 
 	/**
 	 * Sets intensity of flash effect.
 	 *
 	 * @param flash_level new flash intensity
 	 */
-	virtual void SetFlashLevel(int flash_level) = 0;
+	virtual void SetFlashLevel(double flash_level) = 0;
 
 	/**
 	 * Returns how many flash effect time is left.

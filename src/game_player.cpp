@@ -179,11 +179,11 @@ void Game_Player::SetFlashColor(const Color& flash_color) {
 	location.flash_green = flash_color.green;
 }
 
-int Game_Player::GetFlashLevel() const {
+double Game_Player::GetFlashLevel() const {
 	return location.flash_current_level;
 }
 
-void Game_Player::SetFlashLevel(int flash_level) {
+void Game_Player::SetFlashLevel(double flash_level) {
 	location.flash_current_level = flash_level;
 }
 

@@ -77,8 +77,8 @@ public:
 	void SetSpriteIndex(int index);
 	Color GetFlashColor() const;
 	void SetFlashColor(const Color& flash_color);
-	int GetFlashLevel() const;
-	void SetFlashLevel(int flash_level);
+	double GetFlashLevel() const;
+	void SetFlashLevel(double flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
 	/** @} */

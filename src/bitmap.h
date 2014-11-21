@@ -177,7 +177,7 @@ public:
 protected:
 	Bitmap();
 
-	uint8_t bytes() const;
+	int bytes() const;
 	uint32_t rmask() const;
 	uint32_t gmask() const;
 	uint32_t bmask() const;
@@ -701,8 +701,8 @@ public:
 	void const* pixels() const;
 	int width() const;
 	int height() const;
-	uint8_t bpp() const;
-	uint16_t pitch() const;
+	int bpp() const;
+	int pitch() const;
 
 protected:
 	/** Bitmap data. */

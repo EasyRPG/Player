@@ -916,7 +916,7 @@ void Game_Map::SetChipset(int id) {
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
 	animation_type = chipset.animation_type;
-	animation_fast = chipset.animation_speed;
+	animation_fast = chipset.animation_speed != 0;
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
