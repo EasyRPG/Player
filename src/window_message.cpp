@@ -44,7 +44,9 @@ const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
 
 // C4428 is nonsense
+#ifdef _MSC_VER
 #pragma warning (disable : 4428)
+#endif
 
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
