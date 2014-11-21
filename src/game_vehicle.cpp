@@ -174,11 +174,11 @@ void Game_Vehicle::SetFlashColor(const Color& flash_color) {
 	data.flash_green = flash_color.green;
 }
 
-int Game_Vehicle::GetFlashLevel() const {
+double Game_Vehicle::GetFlashLevel() const {
 	return data.flash_current_level;
 }
 
-void Game_Vehicle::SetFlashLevel(int flash_level) {
+void Game_Vehicle::SetFlashLevel(double flash_level) {
 	data.flash_current_level = flash_level;
 }
 

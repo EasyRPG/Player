@@ -209,11 +209,11 @@ void Game_Event::SetFlashColor(const Color& flash_color) {
 	data.flash_green = flash_color.green;
 }
 
-int Game_Event::GetFlashLevel() const {
+double Game_Event::GetFlashLevel() const {
 	return data.flash_current_level;
 }
 
-void Game_Event::SetFlashLevel(int flash_level) {
+void Game_Event::SetFlashLevel(double flash_level) {
 	data.flash_current_level = flash_level;
 }
 
