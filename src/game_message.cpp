@@ -108,7 +108,7 @@ void Game_Message::SetFaceRightPosition(bool right) {
 }
 
 bool Game_Message::IsTransparent() {
-	return data.message_transparent;
+	return data.message_transparent != 0;
 }
 
 void Game_Message::SetTransparent(bool transparent) {
@@ -132,7 +132,7 @@ void Game_Message::SetPositionFixed(bool fixed) {
 }
 
 bool Game_Message::GetContinueEvents() {
-	return data.message_continue_events;
+	return data.message_continue_events != 0;
 }
 
 void Game_Message::SetContinueEvents(bool continue_events) {
