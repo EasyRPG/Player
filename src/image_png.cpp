@@ -22,6 +22,9 @@
 #include <png.h>
 #include <cstdlib>
 #include <cstring>
+#include <csetjmp>
+#include <vector>
+
 #include "output.h"
 #include "image_png.h"
 
@@ -137,6 +140,65 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	png_read_end(png_ptr, NULL);
 
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+}
+
+static void write_data(png_structp out_ptr, png_bytep data, png_size_t len) {
+	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->write(reinterpret_cast<char const*>(data), len);
+}
+static void flush_stream(png_structp out_ptr) {
+	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->flush();
+}
+
+bool ImagePNG::WritePNG(std::ostream& os, int width, int height, uint32_t* data) {
+	for (size_t i = 0; i < width * height; ++i) {
+		uint32_t const p = data[i];
+		uint8_t* out = reinterpret_cast<uint8_t*>(&data[i]);
+		uint8_t
+			a = (p >> 24) & 0xff, r = (p >> 16) & 0xff,
+			g = (p >>  8) & 0xff, b = (p >>  0) & 0xff;
+		if(a != 0) {
+			r = (r * 255) / a;
+			g = (g * 255) / a;
+			b = (b * 255) / a;
+		}
+		*out++ = r; *out++ = g; *out++ = b; *out++ = a;
+	}
+
+	png_structp write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (!write) {
+		Output::Warning("Bitmap::WritePNG: error in png_create_write");
+		return false;
+	}
+
+	png_infop info = png_create_info_struct(write);
+	if (!info) {
+		png_destroy_write_struct(&write, &info);
+		Output::Warning("ImagePNG::WritePNG: error in png_create_info_struct");
+		return false;
+	}
+
+	png_bytep* ptrs = new png_bytep[height];
+	for (size_t i = 0; i < height; ++i) {
+		ptrs[i] = reinterpret_cast<png_bytep>(&data[width*i]);
+	}
+
+	if (setjmp(png_jmpbuf(write))) {
+		png_destroy_write_struct(&write, &info);
+		delete [] ptrs;
+		Output::Warning("ImagePNG::WritePNG: error writing PNG file");
+		return false;
+	}
+
+	png_set_write_fn(write, &os, &write_data, &flush_stream);
+
+	png_set_IHDR(write, info, width, height, 8,
+				 PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	png_write_info(write, info);
+	png_write_image(write, ptrs);
+	png_write_end(write, NULL);
+
+	return true;
 }
 
 #endif // SUPPORT_PNG
