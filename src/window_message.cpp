@@ -43,6 +43,9 @@
 const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
 
+// C4428 is nonsense
+#pragma warning (disable : 4428)
+
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text(""),
@@ -57,9 +60,9 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	visible = false;
 	SetZ(10000);
 
-	escape_char = (Player::escape_symbol == "\u00A5" ? L'¥' :
-		      (Player::escape_symbol == "\u20A9" ? L'₩' :
-		      '\\'));
+	escape_char = (Player::escape_symbol == "\xC2\xA5" ? L'\u00A5' :
+		      (Player::escape_symbol == "\xE2\x82\xA9" ? L'\u20A9' :
+		      L'\\'));
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
