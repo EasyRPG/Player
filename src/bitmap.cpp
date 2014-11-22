@@ -129,7 +129,7 @@ bool Bitmap::GetTransparent() const {
 }
 
 Color Bitmap::GetTransparentColor() const {
-	return GetColor(colorkey());
+	return Color();
 }
 
 void Bitmap::SetTransparentColor(Color /* color */) {
@@ -269,14 +269,11 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 
 BitmapUtils* Bitmap::Begin() {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
-	bm_utils->SetDstColorKey(colorkey());
 	return bm_utils;
 }
 
 BitmapUtils* Bitmap::Begin(Bitmap const& src) const {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, src.format, true);
-	bm_utils->SetDstColorKey(colorkey());
-	bm_utils->SetSrcColorKey(src.colorkey());
 	return bm_utils;
 }
 
@@ -692,10 +689,6 @@ uint32_t Bitmap::bmask() const {
 
 uint32_t Bitmap::amask() const {
 	return pixel_format.a.mask;
-}
-
-uint32_t Bitmap::colorkey() const {
-	return 0;
 }
 
 BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const {

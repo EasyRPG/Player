@@ -126,35 +126,8 @@ public:
 	void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a);
 	void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any);
 	void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a);
-	void SetPixels(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
-	void OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity);
-	void OverlayBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
-	void CopyBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
-	void FlipHBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
-	void OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity);
-	void OverlayScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step);
-	void CopyScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step);
-	void OpacityTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-							  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
-							  int opacity);
-	void OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-							  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
-	void CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-						   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
-	void MaskBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
 	void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
 					int hue, int sat, int lum, int loff);
-	void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone);
-	void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone, double factor);
-	void BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Color& color);
-	void OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity);
-	void FlipHV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n);
-	void FlipH(uint8_t*& pixels_left, uint8_t*& pixels_right, int n);
-	void FlipV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n, uint8_t* tmp_buffer);
-	void Blit2x(uint8_t* dst_pixels, const uint8_t* src_pixels, int n);
-
-	void SetDstColorKey(uint32_t colorkey);
-	void SetSrcColorKey(uint32_t colorkey);
 	void SetDstFormat(const DynamicFormat& format);
 	void SetSrcFormat(const DynamicFormat& format);
 	const DynamicFormat& GetDstFormat() const;
@@ -213,151 +186,6 @@ void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8_t* src_pixels, int n, b
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::SetPixel(uint8_t* dst_pixel, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
 	pf_dst.set_rgba(dst_pixel, r, g, b, a);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::SetPixels(uint8_t* dst_pixels, const uint8_t* src_pixel, int n) {
-	uint8_t tmp_pixel[4];
-	copy_pixel(tmp_pixel, src_pixel);
-	pf_dst.set_pixels(dst_pixels, tmp_pixel, n);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
-	for (int i = 0; i < n; i++) {
-		blend_pixel(dst_pixels, src_pixels, opacity);
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OverlayBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
-	for (int i = 0; i < n; i++) {
-		overlay_pixel(dst_pixels, src_pixels);
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::CopyBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
-	copy_pixels(dst_pixels, src_pixels, n);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::FlipHBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
-	for (int i = 0; i < n; i++) {
-		copy_pixel(dst_pixels, src_pixels);
-		src_pixels -= pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) {
-	for (int i = 0; i < n; i++) {
-		const uint8_t* p = src_pixels + (x >> FRAC_BITS) * pf_src.bytes;
-		blend_pixel(dst_pixels, p, opacity);
-		dst_pixels += pf_dst.bytes;
-		x += step;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OverlayScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) {
-	for (int i = 0; i < n; i++) {
-		const uint8_t* p = src_pixels + (x >> FRAC_BITS) * pf_src.bytes;
-		overlay_pixel(dst_pixels, p);
-		dst_pixels += pf_dst.bytes;
-		x += step;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::CopyScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) {
-	for (int i = 0; i < n; i++) {
-		const uint8_t* p = src_pixels + (x >> FRAC_BITS) * pf_src.bytes;
-		copy_pixel(dst_pixels, p);
-		dst_pixels += pf_dst.bytes;
-		x += step;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OpacityTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
-													 int opacity) {
-	const int sx0 = src_rect.x;
-	const int sy0 = src_rect.y;
-	const int sx1 = src_rect.x + src_rect.width;
-	const int sy1 = src_rect.y + src_rect.height;
-
-	for (int x = x0; x < x1; x++) {
-		double fx, fy;
-		inv.Transform(x + 0.5, y + 0.5, fx, fy);
-		int xi = (int) floor(fx);
-		int yi = (int) floor(fy);
-		if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
-			;
-		else
-			blend_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes], opacity);
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
-	const int sx0 = src_rect.x;
-	const int sy0 = src_rect.y;
-	const int sx1 = src_rect.x + src_rect.width;
-	const int sy1 = src_rect.y + src_rect.height;
-
-	for (int x = x0; x < x1; x++) {
-		double fx, fy;
-		inv.Transform(x + 0.5, y + 0.5, fx, fy);
-		int xi = (int) floor(fx);
-		int yi = (int) floor(fy);
-		if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
-			;
-		else
-			overlay_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes]);
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-												  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
-	const int sx0 = src_rect.x;
-	const int sy0 = src_rect.y;
-	const int sx1 = src_rect.x + src_rect.width;
-	const int sy1 = src_rect.y + src_rect.height;
-
-	for (int x = x0; x < x1; x++) {
-		double fx, fy;
-		inv.Transform(x + 0.5, y + 0.5, fx, fy);
-		int xi = (int) floor(fx);
-		int yi = (int) floor(fy);
-		if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
-			;
-		else
-			copy_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes]);
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::MaskBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
-	for (int i = 0; i < n; i++) {
-		uint8_t sa = pf_src.get_alpha(src_pixels);
-		uint8_t da = pf_dst.get_alpha(dst_pixels);
-		uint8_t ra = std::min(sa, da);
-		pf_dst.set_alpha(dst_pixels, ra);
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
 }
 
 static inline void RGB_to_HSL(const uint8_t& r, const uint8_t& g, const uint8_t& b,
@@ -449,132 +277,6 @@ void BitmapUtilsT<PFsrc,PFdst>::HSLBlit(uint8_t* dst_pixels, const uint8_t* src_
 }
 
 template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone) {
-	for (int i = 0; i < n; i++) {
-		uint8_t r, g, b, a;
-		pf_src.get_rgba(src_pixels, r, g, b, a);
-		if (a != 0) {
-			r = (uint8_t)std::max(std::min(r + tone.red,   255), 0);
-			g = (uint8_t)std::max(std::min(g + tone.green, 255), 0);
-			b = (uint8_t)std::max(std::min(b + tone.blue,  255), 0);
-		}
-		pf_dst.set_rgba(dst_pixels, r, g, b, a);
-		dst_pixels += pf_dst.bytes;
-		src_pixels += pf_src.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
-										 const Tone& tone, double factor) {
-	for (int i = 0; i < n; i++) {
-		uint8_t r, g, b, a;
-		pf_src.get_rgba(src_pixels, r, g, b, a);
-		if (a != 0) {
-			double gray = r * 0.299 + g * 0.587 + b * 0.114;
-
-			r = (uint8_t)std::max(std::min((r - gray) * factor + gray + tone.red   + 0.5, 255.0), 0.0);
-			g = (uint8_t)std::max(std::min((g - gray) * factor + gray + tone.green + 0.5, 255.0), 0.0);
-			b = (uint8_t)std::max(std::min((b - gray) * factor + gray + tone.blue  + 0.5, 255.0), 0.0);
-
-			pf_dst.set_rgba(dst_pixels, r, g, b, a);
-		}
-
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Color& color) {
-	for (int i = 0; i < n; i++) {
-		uint8_t r, g, b, a;
-		pf_src.get_rgba(src_pixels, r, g, b, a);
-		if (a != 0) {
-			uint8_t srca = color.alpha;
-			uint8_t rr = (uint8_t) ((r * (255 - srca) + color.red   * srca) / PF::ONE);
-			uint8_t rg = (uint8_t) ((g * (255 - srca) + color.green * srca) / PF::ONE);
-			uint8_t rb = (uint8_t) ((b * (255 - srca) + color.blue  * srca) / PF::ONE);
-			uint8_t ra = a;
-			pf_dst.set_rgba(dst_pixels, rr, rg, rb, ra);
-		}
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
-	for (int i = 0; i < n; i++) {
-		uint8_t a = pf_src.get_alpha(src_pixels);
-		a = (uint8_t) ((a * opacity) / pf_src.ONE);
-		pf_dst.set_alpha(dst_pixels, a);
-		src_pixels += pf_src.bytes;
-		dst_pixels += pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::FlipHV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n) {
-	for (int i = 0; i < n; i++) {
-		if (pixels_first == pixels_last)
-			break;
-
-		uint8_t tmp_buffer[4];
-		copy_pixel(tmp_buffer, pixels_first);
-		copy_pixel(pixels_first, pixels_last);
-		copy_pixel(pixels_last, tmp_buffer);
-
-		pixels_first += pf_dst.bytes;
-		pixels_last -= pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::FlipH(uint8_t*& pixels_left, uint8_t*& pixels_right, int n) {
-	for (int i = 0; i < n; i++) {
-		if (pixels_left == pixels_right)
-			continue;
-
-		uint8_t tmp_buffer[4];
-		copy_pixel(tmp_buffer, pixels_left);
-		copy_pixel(pixels_left, pixels_right);
-		copy_pixel(pixels_right, tmp_buffer);
-
-		pixels_left += pf_dst.bytes;
-		pixels_right -= pf_dst.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::FlipV(uint8_t*& pixels_up, uint8_t*& pixels_down, int n, uint8_t* tmp_buffer) {
-	copy_pixels(tmp_buffer, pixels_down, n);
-	copy_pixels(pixels_down, pixels_up, n);
-	copy_pixels(pixels_up, tmp_buffer, n);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::Blit2x(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
-	for (int i = 0; i < n; i++) {
-		copy_pixel(dst_pixels, src_pixels);
-		dst_pixels += pf_dst.bytes;
-		copy_pixel(dst_pixels, src_pixels);
-		dst_pixels += pf_dst.bytes;
-		src_pixels += pf_src.bytes;
-	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::SetDstColorKey(uint32_t colorkey) {
-	pf_dst.SetColorKey(colorkey);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::SetSrcColorKey(uint32_t colorkey) {
-	pf_src.SetColorKey(colorkey);
-}
-
-template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::SetDstFormat(const DynamicFormat& format) {
 	pf_dst.SetFormat(format);
 }
@@ -592,44 +294,6 @@ const DynamicFormat& BitmapUtilsT<PFsrc,PFdst>::GetDstFormat() const {
 template <class PFsrc, class PFdst>
 const DynamicFormat& BitmapUtilsT<PFsrc,PFdst>::GetSrcFormat() const {
 	return pf_src.Format();
-}
-
-void BitmapUtils::Blit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
-	bool opacity_blit = opacity < 255;
-	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
-
-	if (opacity_blit)
-		OpacityBlit(dst_pixels, src_pixels, n, opacity);
-	else if (overlay_blit)
-		OverlayBlit(dst_pixels, src_pixels, n);
-	else
-		CopyBlit(dst_pixels, src_pixels, n);
-}
-
-void BitmapUtils::ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) {
-	bool opacity_blit = opacity < 255;
-	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
-
-	if (opacity_blit)
-		OpacityScaleBlit(dst_pixels, src_pixels, n, x, step, opacity);
-	else if (overlay_blit)
-		OverlayScaleBlit(dst_pixels, src_pixels, n, x, step);
-	else
-		CopyScaleBlit(dst_pixels, src_pixels, n, x, step);
-}
-
-void BitmapUtils::TransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
-								int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
-								int opacity) {
-	bool opacity_blit = opacity < 255;
-	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
-
-	if (opacity_blit)
-		OpacityTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv, opacity);
-	else if (overlay_blit)
-		OverlayTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv);
-	else
-		CopyTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv);
 }
 
 typedef BitmapUtils* BitmapUtilsP;
@@ -656,35 +320,14 @@ static const BitmapUtilsP bitmap_utils[] = {
 	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_a>(),
 	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_n>(),
 
-	// 32-bpp with color-key => similar
-
-	new BitmapUtilsT<format_B8G8R8A8_k,format_B8G8R8A8_k>(),
-	new BitmapUtilsT<format_B8G8R8A8_k,format_B8G8R8A8_n>(),
-	new BitmapUtilsT<format_B8G8R8A8_n,format_B8G8R8A8_k>(),
-
-	new BitmapUtilsT<format_R8G8B8A8_k,format_R8G8B8A8_k>(),
-	new BitmapUtilsT<format_R8G8B8A8_k,format_R8G8B8A8_n>(),
-	new BitmapUtilsT<format_R8G8B8A8_n,format_R8G8B8A8_k>(),
-
-	new BitmapUtilsT<format_A8B8G8R8_k,format_A8B8G8R8_k>(),
-	new BitmapUtilsT<format_A8B8G8R8_k,format_A8B8G8R8_n>(),
-	new BitmapUtilsT<format_A8B8G8R8_n,format_A8B8G8R8_k>(),
-
-	new BitmapUtilsT<format_A8R8G8B8_k,format_A8R8G8B8_k>(),
-	new BitmapUtilsT<format_A8R8G8B8_k,format_A8R8G8B8_n>(),
-	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_k>(),
-
 	// 32-bpp RGBA (external image format) => dynamic
 
 	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_32_a>(),
-	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_32_k>(),
 	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_32_n>(),
 
-	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_24_k>(),
 	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_24_n>(),
 
 	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_16_a>(),
-	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_16_k>(),
 	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_16_n>(),
 
 	// 32-bpp => dynamic no-alpha
@@ -705,13 +348,8 @@ static const BitmapUtilsP bitmap_utils[] = {
 
 	// 8-bpp L (freetype) => dynamic
 
-	new BitmapUtilsT<format_L8_k,format_dynamic_32_a>(),
-	new BitmapUtilsT<format_L8_k,format_dynamic_32_k>(),
-
-	new BitmapUtilsT<format_L8_k,format_dynamic_24_k>(),
-
-	new BitmapUtilsT<format_L8_k,format_dynamic_16_a>(),
-	new BitmapUtilsT<format_L8_k,format_dynamic_16_k>(),
+	new BitmapUtilsT<format_L8,format_dynamic_32_a>(),
+	new BitmapUtilsT<format_L8,format_dynamic_16_a>(),
 
 	// Dynamic => Dynamic
 
@@ -720,14 +358,8 @@ static const BitmapUtilsP bitmap_utils[] = {
 	new BitmapUtilsT<format_dynamic_32_n,format_dynamic_32_a>(),
 	new BitmapUtilsT<format_dynamic_32_n,format_dynamic_32_n>(),
 
-	new BitmapUtilsT<format_dynamic_32_k,format_dynamic_32_k>(),
-	new BitmapUtilsT<format_dynamic_32_k,format_dynamic_32_n>(),
-	new BitmapUtilsT<format_dynamic_32_n,format_dynamic_32_k>(),
 	new BitmapUtilsT<format_dynamic_32_n,format_dynamic_32_n>(),
 
-	new BitmapUtilsT<format_dynamic_24_k,format_dynamic_24_k>(),
-	new BitmapUtilsT<format_dynamic_24_k,format_dynamic_24_n>(),
-	new BitmapUtilsT<format_dynamic_24_n,format_dynamic_24_k>(),
 	new BitmapUtilsT<format_dynamic_24_n,format_dynamic_24_n>(),
 
 	new BitmapUtilsT<format_dynamic_16_a,format_dynamic_16_a>(),
@@ -735,9 +367,6 @@ static const BitmapUtilsP bitmap_utils[] = {
 	new BitmapUtilsT<format_dynamic_16_n,format_dynamic_16_a>(),
 	new BitmapUtilsT<format_dynamic_16_n,format_dynamic_16_n>(),
 
-	new BitmapUtilsT<format_dynamic_16_k,format_dynamic_16_k>(),
-	new BitmapUtilsT<format_dynamic_16_k,format_dynamic_16_n>(),
-	new BitmapUtilsT<format_dynamic_16_n,format_dynamic_16_k>(),
 	new BitmapUtilsT<format_dynamic_16_n,format_dynamic_16_n>(),
 
 	(BitmapUtilsP) NULL
