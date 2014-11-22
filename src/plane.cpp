@@ -79,42 +79,6 @@ int Plane::GetOy() const {
 void Plane::SetOy(int noy) {
 	oy = noy;
 }
-double Plane::GetZoomX() const {
-	return bitmap_screen->GetZoomXEffect();
-}
-void Plane::SetZoomX(float zoom_x) {
-	bitmap_screen->SetZoomXEffect(zoom_x);
-}
-double Plane::GetZoomY() const {
-	return bitmap_screen->GetZoomYEffect();
-}
-void Plane::SetZoomY(float zoom_y) {
-	bitmap_screen->SetZoomYEffect(zoom_y);
-}
-int Plane::GetOpacity() const {
-	return bitmap_screen->GetOpacityEffect();
-}
-void Plane::SetOpacity(int opacity) {
-	bitmap_screen->SetOpacityEffect(opacity);
-}
-int Plane::GetBlendType() const {
-	return bitmap_screen->GetBlendType();
-}
-void Plane::SetBlendType(int blend_type) {
-	bitmap_screen->SetBlendType(blend_type);
-}
-Color Plane::GetBlendColor() const {
-	return bitmap_screen->GetBlendColor();
-}
-void Plane::SetBlendColor(Color color) {
-	bitmap_screen->SetBlendColor(color);
-}
-Tone Plane::GetTone() const {
-	return bitmap_screen->GetToneEffect();
-}
-void Plane::SetTone(Tone tone) {
-	bitmap_screen->SetToneEffect(tone);
-}
 
 DrawableType Plane::GetType() const {
 	return type;
