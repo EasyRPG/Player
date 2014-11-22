@@ -129,7 +129,7 @@ bool Bitmap::GetTransparent() const {
 }
 
 Color Bitmap::GetTransparentColor() const {
-	return GetColor(colorkey());
+	return Color();
 }
 
 void Bitmap::SetTransparentColor(Color /* color */) {
@@ -269,14 +269,11 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 
 BitmapUtils* Bitmap::Begin() {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
-	bm_utils->SetDstColorKey(colorkey());
 	return bm_utils;
 }
 
 BitmapUtils* Bitmap::Begin(Bitmap const& src) const {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, src.format, true);
-	bm_utils->SetDstColorKey(colorkey());
-	bm_utils->SetSrcColorKey(src.colorkey());
 	return bm_utils;
 }
 
@@ -694,10 +691,6 @@ uint32_t Bitmap::amask() const {
 	return pixel_format.a.mask;
 }
 
-uint32_t Bitmap::colorkey() const {
-	return 0;
-}
-
 BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const {
 	BitmapRef dst(new Bitmap(scale_w, scale_h, GetTransparent()));
 
@@ -713,7 +706,7 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
-							 src_rect.x / zoom_x, src_rect.y / zoom_y,
+							 src_rect.x * scale_w / src_rect.width, src_rect.y *scale_h / src_rect.height,
 							 0, 0,
 							 0, 0,
 							 scale_w, scale_h);
@@ -833,7 +826,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask, bitmap,
-							 src_rect.x / zoom_x, src_rect.y / zoom_y,
+							 src_rect.x * dst_rect.width / src_rect.width, src_rect.y * dst_rect.height / src_rect.height,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);

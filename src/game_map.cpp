@@ -416,7 +416,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
 		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-		int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+		int autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
 
 		tile_id += 6;
 
@@ -501,7 +501,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
 
     } else if (map->lower_layer[tile_index] >= BLOCK_D) {
         tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-        int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+        int autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
 
         tile_id += 6;
 

@@ -149,7 +149,7 @@ void Scene_Title::CreateCommandWindow() {
 	command_window.reset(new Window_Command(options));
 	if (!Player::hide_title_flag) {
 		command_window->SetX(SCREEN_TARGET_WIDTH / 2 - command_window->GetWidth() / 2);
-		command_window->SetY(SCREEN_TARGET_HEIGHT / 15 * 13.25 - command_window->GetHeight());
+		command_window->SetY(SCREEN_TARGET_HEIGHT * 53 / 60 - command_window->GetHeight());
 	} else {
 		command_window->SetX(SCREEN_TARGET_WIDTH / 2 - command_window->GetWidth() / 2);
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - command_window->GetHeight() / 2);

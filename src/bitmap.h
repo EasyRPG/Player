@@ -182,7 +182,6 @@ protected:
 	uint32_t gmask() const;
 	uint32_t bmask() const;
 	uint32_t amask() const;
-	uint32_t colorkey() const;
 	uint8_t const* pointer(int x, int y) const;
 	uint8_t* pointer(int x, int y);
 

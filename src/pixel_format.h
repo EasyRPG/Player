@@ -27,7 +27,7 @@
 
 /** Enums. */
 namespace PF {
-	enum AlphaType { NoAlpha, ColorKey, Alpha };
+	enum AlphaType { NoAlpha, Alpha };
 	enum OpacityType { Opaque, Binary, Variable };
 	enum { ONE = 255 };
 	enum { StaticMasks = false, DynamicMasks = true };
@@ -346,33 +346,7 @@ struct alpha_traits {
 	}
 };
 
-// dynamic, colorkey
-template <class TPF, bool aligned>
-struct alpha_traits<TPF, aligned, PF::DynamicAlpha, PF::ColorKey> {
-	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
-		uint32_t pix = pf->get_uint32_t(p);
-		return (pf->has_alpha() && pix == pf->colorkey) ? 0 : 255;
-	}
-	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
-		if (pf->has_alpha() && alpha == 0)
-			pf->set_uint32_t(p, pf->colorkey);
-	}
-};
-
-// colorkey
-template <class TPF, bool aligned>
-struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::ColorKey> {
-	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
-		uint32_t pix = pf->get_uint32_t(p);
-		return (pix == pf->colorkey) ? 0 : 255;
-	}
-	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
-		if (alpha == 0)
-			pf->set_uint32_t(p, pf->colorkey);
-	}
-};
-
-// no alpha or colorkey
+// no alpha
 template<class TPF, bool aligned>
 struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::NoAlpha> {
 	static inline uint8_t get_alpha(const TPF* /* pf */, const uint8_t* /* p */) {
@@ -419,28 +393,7 @@ struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::Alpha> {
 	}
 };
 
-// aligned, has colorkey
-template<class TPF, bool dynamic_alpha>
-struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
-		r = p[pf->r_byte()];
-		g = p[pf->g_byte()];
-		b = p[pf->b_byte()];
-		a = (pf->has_alpha() && pf->get_uint32_t(p) == pf->colorkey) ? 0 : 255;
-	}
-
-	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
-		if (pf->has_alpha() && a == 0)
-			pf->set_uint32_t(p, pf->colorkey);
-		else {
-			p[pf->r_byte()] = r;
-			p[pf->g_byte()] = g;
-			p[pf->b_byte()] = b;
-		}
-	}
-};
-
-// aligned, no alpha or colorkey
+// aligned, no alpha
 template<class TPF>
 struct rgba_traits<TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha> {
 	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
@@ -472,41 +425,7 @@ struct rgba_traits<TPF, PF::NotAligned, dynamic_alpha, PF::Alpha> {
 	}
 };
 
-// unaligned, has colorkey
-template<class TPF>
-struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
-		const uint32_t pix = pf->get_uint32_t(p);
-		pf->uint32_to_rgba(pix, r, g, b, a);
-		a = pix == pf->colorkey ? 0 : 255;
-	}
-
-	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
-		const uint32_t pix = a == 0
-			? pf->colorkey
-			: pf->rgba_to_uint32_t(r, g, b, a);
-		pf->set_uint32_t(p, pix);
-	}
-};
-
-// unaligned, has colorkey (dynamic)
-template<class TPF>
-struct rgba_traits<TPF, PF::NotAligned, PF::DynamicAlpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
-		const uint32_t pix = pf->get_uint32_t(p);
-		pf->uint32_to_rgba(pix, r, g, b, a);
-		a = (pf->has_alpha() && pix == pf->colorkey) ? 0 : 255;
-	}
-
-	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
-		const uint32_t pix = (pf->has_alpha() && a == 0)
-			? pf->colorkey
-			: pf->rgba_to_uint32_t(r, g, b, a);
-		pf->set_uint32_t(p, pix);
-	}
-};
-
-// unaligned, no alpha or colorkey
+// unaligned, no alpha
 template<class TPF>
 struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::NoAlpha> {
 	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
@@ -570,18 +489,12 @@ const DynamicFormat dynamic_traits_t<false, false, BITS, RB, RS, GB, GS, BB, BS,
  */
 class PixelFormat {
 public:
-	PixelFormat() : colorkey(0) {}
+	PixelFormat() {}
 
 	virtual bool Match(const DynamicFormat& ref) const = 0;
 	virtual int Bits() const = 0;
 	virtual bool HasAlpha() const = 0;
 	virtual const DynamicFormat& Format() const  = 0;
-
-	void SetColorKey(int _colorkey) {
-		colorkey = _colorkey;
-	}
-
-	uint32_t colorkey;
 };
 
 // PixelFormatT template
@@ -601,7 +514,7 @@ public:
 	static const PF::AlphaType alpha = (PF::AlphaType) ALPHA;
 	static const PF::OpacityType opacity =
 		ALPHA == PF::NoAlpha ? PF::Opaque :
-		(ALPHA == PF::ColorKey || AB == 1) ? PF::Binary :
+		(AB == 1) ? PF::Binary :
 		PF::Variable;
 
 	static const bool aligned = ALIGNED;
@@ -753,11 +666,6 @@ typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8_a;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,8,8,16,8,24,8,0> format_A8R8G8B8_a;
 
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,8,8,16,8,24,8,0> format_A8R8G8B8_k;
-
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8_n;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8_n;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8_n;
@@ -768,30 +676,22 @@ typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8_a;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8_a;
 
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8_k;
-typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8_k;
-
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8_n;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8_n;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8_n;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8_n;
 #endif
 
-typedef PixelFormatT< 8,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,0,8,0,8,0,0,0> format_L8_k;
+typedef PixelFormatT< 8,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,0,8,0,8,0,0,0> format_L8;
 
 typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_a;
-typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_k;
 typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_n;
 typedef PixelFormatT<32,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_d;
 
-typedef PixelFormatT<24,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_k;
 typedef PixelFormatT<24,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_n;
 typedef PixelFormatT<24,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_d;
 
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::Alpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_a;
-typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_k;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_n;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_d;
 
