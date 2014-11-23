@@ -27,7 +27,6 @@
 #include "cache.h"
 #include "bitmap.h"
 #include "bitmap_screen.h"
-#include "bitmap_utils.h"
 #include "text.h"
 #include "filefinder.h"
 #include "options.h"
@@ -40,6 +39,7 @@
 #include "font.h"
 #include "output.h"
 #include "util_macro.h"
+#include "bitmap_hslrgb.h"
 
 BitmapRef Bitmap::Create(int width, int height, const Color& color) {
     BitmapRef surface = Bitmap::Create(width, height, false);
@@ -235,36 +235,25 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 	else if (hue > 0x600)
 		hue -= (hue / 0x600) * 0x600;
 
-	BitmapUtils* bm_utils = Begin(src);
+	DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
+	std::vector<uint32_t> pixels;
+	pixels.resize(src_rect.width * src_rect.height);
+	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), src_rect.width, src_rect.height, src_rect.width * 4, format);
+	bmp.Blit(0, 0, src, src_rect, 255);
 
-	const uint8_t* src_pixels = src.pointer(src_rect.x, src_rect.y);
-	uint8_t* dst_pixels = pointer(dst_rect.x, dst_rect.y);
-
-	for (int i = 0; i < dst_rect.height; i++) {
-		bm_utils->HSLBlit(dst_pixels, src_pixels, dst_rect.width, hue, sat, lum, loff);
-
-		src_pixels += pitch();
-		dst_pixels += pitch();
+	for (std::vector<uint32_t>::iterator p = pixels.begin(); p != pixels.end(); ++p) {
+		uint32_t pixel = *p;
+		uint8_t r = (pixel>>24) & 0xFF;
+		uint8_t g = (pixel>>16) & 0xFF;
+		uint8_t b = (pixel>> 8) & 0xFF;
+		uint8_t a = pixel & 0xFF;
+		if (a > 0)
+			RGB_adjust_HSL(r, g, b, hue, sat, lum, loff);
+		*p = ((uint32_t) r << 24) | ((uint32_t) g << 16) | ((uint32_t) b << 8) | (uint32_t) a;
 	}
 
-	End(src);
-}
+	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), 255);
 
-BitmapUtils* Bitmap::Begin() {
-	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
-	return bm_utils;
-}
-
-BitmapUtils* Bitmap::Begin(Bitmap const& src) const {
-	BitmapUtils* bm_utils = BitmapUtils::Create(format, src.format, true);
-	return bm_utils;
-}
-
-void Bitmap::End() {
-	RefreshCallback();
-}
-
-void Bitmap::End(Bitmap const&) {
 	RefreshCallback();
 }
 

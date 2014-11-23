@@ -335,7 +335,6 @@
     <ClCompile Include="..\..\src\battle_animation.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\bitmap_screen.cpp" />
-    <ClCompile Include="..\..\src\bitmap_utils.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\effects.cpp" />
@@ -464,8 +463,8 @@
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\battle_animation.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
+    <ClInclude Include="..\..\src\bitmap_hslrgb.h" />
     <ClInclude Include="..\..\src\bitmap_screen.h" />
-    <ClInclude Include="..\..\src\bitmap_utils.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />

@@ -18,7 +18,6 @@
 // Headers
 #include <cmath>
 #include "bitmap.h"
-#include "bitmap_utils.h"
 
 // Rotate, Zoom, Single Opacity
 void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect, int opacity) {

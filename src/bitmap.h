@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include <list>
+#include <map>
 #include <pixman.h>
 
 #include "system.h"
@@ -29,12 +30,9 @@
 #include "pixel_format.h"
 #include "tone.h"
 #include "matrix.h"
-#include "bitmap_utils.h"
 #include "text.h"
 
 #include <boost/scoped_ptr.hpp>
-
-class BitmapUtils;
 
 /**
  * Base Bitmap class.
@@ -192,9 +190,6 @@ protected:
 
 	void AttachBitmapScreen(BitmapScreen* bitmap);
 	void DetachBitmapScreen(BitmapScreen* bitmap);
-
-	BitmapUtils* Begin();
-	void End();
 
 	TileOpacity CheckOpacity(Rect const& rect);
 
@@ -671,9 +666,7 @@ public:
 
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	template <class T1, class T2> friend class BitmapUtilsT;
 	friend class BitmapScreen;
-	friend class BitmapUtils;
 
 #ifdef USE_SDL
 	friend class SdlUi;
@@ -682,8 +675,6 @@ protected:
 	/** Font for text drawing. */
 	FontRef font;
 
-    BitmapUtils* Begin(Bitmap const& src) const;
-	void End(Bitmap const& src);
 	void RefreshCallback();
 
 	bool editing;
