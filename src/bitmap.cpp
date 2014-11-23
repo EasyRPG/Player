@@ -72,19 +72,6 @@ Bitmap::~Bitmap() {
 	pixman_image_unref(bitmap);
 }
 
-Color Bitmap::GetPixel(int x, int y) const {
-	if (x < 0 || y < 0 || x >= width() || y >= height())
-		return Color();
-
-	BitmapUtils* bm_utils = Begin(*this);
-
-	const uint8_t* src_pixels = pointer(x, y);
-	uint8_t r, g, b, a;
-	bm_utils->GetPixel(src_pixels, r, g, b, a);
-
-	return Color(r, g, b, a);
-}
-
 bool Bitmap::WritePNG(std::ostream& os) const {
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
@@ -139,18 +126,20 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	bool all = true;
 	bool any = false;
 
-	BitmapUtils* bm_utils = Begin();
+	DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
+	std::vector<uint32_t> pixels;
+	pixels.resize(rect.width * rect.height);
+	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), rect.width, rect.height, rect.width*4, format);
+	bmp.Blit(0, 0, *this, rect, 255);
 
-	uint8_t* src_pixels = pointer(rect.x, rect.y);
-
-	for (int y = 0; y < rect.height; y++) {
-		bm_utils->CheckOpacity(src_pixels, rect.width, all, any);
+	for (std::vector<uint32_t>::const_iterator p = pixels.cbegin(); p != pixels.cend(); ++p) {
+		if ((*p & 0xFF) != 0)
+			any = true;
+		else
+			all = false;
 		if (any && !all)
 			break;
-		src_pixels += pitch();
 	}
-
-	End();
 
 	return
 		all ? Bitmap::Opaque :
@@ -160,8 +149,13 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 
 void Bitmap::CheckPixels(uint32_t flags) {
 	if (flags & System) {
-		Cache::system_info.bg_color = GetPixel(0, 32);
-		Cache::system_info.sh_color = GetPixel(16, 32);
+		DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
+		uint32_t pixel;
+		Bitmap bmp(reinterpret_cast<void*>(&pixel), 1, 1, 4, format);
+		bmp.Blit(0, 0, *this, Rect(0, 32, 1, 1), 255);
+		Cache::system_info.bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
+		bmp.Blit(0, 0, *this, Rect(16, 32, 1, 1), 255);
+		Cache::system_info.sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
 	}
 
 	if (flags & Chipset) {

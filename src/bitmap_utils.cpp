@@ -123,8 +123,6 @@ class BitmapUtilsT : public BitmapUtils {
 public:
 	// Implementations of inherited pure virtual methods.
 	// For documentation, see parent BitmapUtils class.
-	void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a);
-	void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any);
 	void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
 					int hue, int sat, int lum, int loff);
 	void SetDstFormat(const DynamicFormat& format);
@@ -163,24 +161,6 @@ public:
 	PFsrc pf_src;
 	PFdst pf_dst;
 };
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::GetPixel(const uint8_t* src_pixel, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
-	pf_src.get_rgba(src_pixel, r, g, b, a);
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any) {
-	for (int x = 0; x < n; x++) {
-		if (pf_src.get_alpha(src_pixels) > 0)
-			any = true;
-		else
-			all = false;
-		if (any && !all)
-			return;
-		src_pixels += pf_src.bytes;
-	}
-}
 
 static inline void RGB_to_HSL(const uint8_t& r, const uint8_t& g, const uint8_t& b,
 							  int &h, int &s, int &l)

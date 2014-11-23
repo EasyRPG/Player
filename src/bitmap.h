@@ -669,15 +669,6 @@ public:
 	 */
 	void SetFont(FontRef const& font);
 
-	/**
-	 * Gets a pixel color.
-	 *
-	 * @param x pixel x.
-	 * @param y pixel y.
-	 * @return pixel color.
-	 */
-	Color GetPixel(int x, int y) const;
-
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
 	template <class T1, class T2> friend class BitmapUtilsT;

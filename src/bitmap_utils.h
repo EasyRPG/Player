@@ -35,27 +35,6 @@
 class BitmapUtils {
 public:
 	/**
-	 * Gets a pixel color.
-	 *
-	 * @param src_pixels pointer to source pixel.
-	 * @param r (out) red.
-	 * @param g (out) green.
-	 * @param b (out) blue.
-	 * @param a (out) alpha.
-	 */
-	virtual void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) = 0;
-
-	/**
-	 * Checks the opacity of a pixel row.
-	 *
-	 * @param src_pixels pointer to source pixel row.
-	 * @param n number of pixels.
-	 * @param all (out) true if all pixels are opaque.
-	 * @param any (out) true if any pixels are opaque.
-	 */
-	virtual void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any) = 0;
-
-	/**
 	 * Adjusts bitmap HSL colors.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
