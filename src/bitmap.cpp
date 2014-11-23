@@ -832,17 +832,6 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 	pixman_image_set_transform(src.bitmap, &xform);
 }
 
-void Bitmap::MaskBlit(int x, int y, Bitmap const& src, Rect const& src_rect) {
-	pixman_image_composite32(PIXMAN_OP_DISJOINT_IN_REVERSE,
-							 src.bitmap, (pixman_image_t*) NULL, bitmap,
-							 src_rect.x, src_rect.y,
-							 0, 0,
-							 x, y,
-							 src_rect.width, src_rect.height);
-
-	RefreshCallback();
-}
-
 void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity) {
 	if (opacity < 0)
 		return;

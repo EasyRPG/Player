@@ -316,16 +316,6 @@ public:
 							   int opacity);
 
 	/**
-	 * Blits source bitmap transparency to this one.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 */
-	void MaskBlit(int x, int y, Bitmap const& src, Rect const& src_rect);
-
-	/**
 	 * Blits source bitmap with waver effect.
 	 *
 	 * @param x x position.
