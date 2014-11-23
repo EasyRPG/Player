@@ -66,8 +66,6 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			system = Bitmap::Create(160, 80, false);
 		}
 	}
-	// Load the exfont-file
-	BitmapRef exfont = Cache::Exfont();
 
 	// Get the Shadow color
 	Color shadow_color(Cache::system_info.sh_color);
@@ -111,40 +109,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			} else { assert(false); }
 			is_exfont = true;
 
-			BitmapRef mask = Bitmap::Create(12, 12, true);
-
-			// Get exfont from graphic
-			Rect const rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
-
-			// Create a mask
-			mask->Clear();
-			mask->Blit(0, 0, *exfont, rect_exfont, 255);
-
-			// Get color region from system graphic
-			Rect clip_system(2+16*(color%10), 4+48+16*(color/10), 12, 12);
-
-			BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-			char_surface->SetTransparentColor(dest.GetTransparentColor());
-			char_surface->Clear();
-
-			// Blit gradient color background
-			char_surface->Blit(0, 0, *system, clip_system, 255);
-
-			// Blit mask onto background
-			char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
-
-			BitmapRef char_shadow = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-			char_shadow->SetTransparentColor(dest.GetTransparentColor());
-			char_shadow->Clear();
-
-			// Blit solid color background
-			char_shadow->Fill(shadow_color);
-			// Blit mask onto background
-			char_shadow->MaskBlit(0, 0, *mask, mask->GetRect());
-
-			// Blit first shadow and then text
-			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow, char_shadow->GetRect(), 255);
-			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface, char_surface->GetRect(), 255);
+			Font::exfont->Render(*text_surface, next_glyph_rect.x, next_glyph_rect.y, *system, color, exfont_value);
 		} else { // Not ExFont, draw normal text
 			font->Render(*text_surface, next_glyph_rect.x, next_glyph_rect.y, *system, color, *c);
 		}

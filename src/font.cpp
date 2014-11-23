@@ -37,6 +37,7 @@
 #include "font.h"
 #include "bitmap.h"
 #include "utils.h"
+#include "cache.h"
 
 bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
@@ -78,8 +79,7 @@ namespace {
 
 		Rect GetSize(std::string const& txt) const;
 
-		void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
-		void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
+		BitmapRef Glyph(unsigned code);
 
 	private:
 		function_type const func_;
@@ -103,8 +103,7 @@ namespace {
 
 		Rect GetSize(std::string const& txt) const;
 
-		void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
-		void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
+		BitmapRef Glyph(unsigned code);
 
 	private:
 		static EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Library>::type> library_checker_;
@@ -118,6 +117,12 @@ namespace {
 
 	FontRef const gothic = EASYRPG_MAKE_SHARED<ShinonomeFont>(&find_gothic_glyph);
 	FontRef const mincho = EASYRPG_MAKE_SHARED<ShinonomeFont>(&find_mincho_glyph);
+
+	struct ExFont : public Font {
+		ExFont();
+		Rect GetSize(std::string const& txt) const;
+		BitmapRef Glyph(unsigned code);
+	};
 } // anonymous namespace
 
 ShinonomeFont::ShinonomeFont(ShinonomeFont::function_type func)
@@ -136,37 +141,19 @@ Rect ShinonomeFont::GetSize(std::string const& txt) const {
 	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
 }
 
-void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, unsigned code) {
-	if(color != ColorShadow) {
-		Render(bmp, x + 1, y + 1, sys, ColorShadow, code);
-	}
-
+BitmapRef ShinonomeFont::Glyph(unsigned code) {
 	ShinonomeGlyph const* const glyph = func_(code);
 	assert(glyph);
 	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
 
-	unsigned const
-		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
-		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - HEIGHT;
-
-	uint8_t data[HEIGHT][FULL_WIDTH];
+	BitmapRef bm = Bitmap::Create(reinterpret_cast<void*>(NULL), width, HEIGHT, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+	uint8_t* data = reinterpret_cast<uint8_t*>(bm->pixels());
+	int pitch = bm->pitch();
 	for(size_t y_ = 0; y_ < HEIGHT; ++y_)
 		for(size_t x_ = 0; x_ < width; ++x_)
-			data[y_][x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
-	Bitmap bm(reinterpret_cast<void*>(data), width, HEIGHT, FULL_WIDTH, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
-	bmp.MaskedBlit(Rect(x, y, width, HEIGHT), bm, 0, 0, sys, src_x, src_y);
-}
+			data[y_*pitch+x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
 
-void ShinonomeFont::Render(Bitmap& bmp, int x, int y, Color const& color, unsigned code) {
-	ShinonomeGlyph const* const glyph = func_(code);
-	assert(glyph);
-	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
-	uint8_t data[HEIGHT][FULL_WIDTH];
-	for(size_t y_ = 0; y_ < HEIGHT; ++y_)
-		for(size_t x_ = 0; x_ < width; ++x_)
-			data[y_][x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
-	Bitmap bm(reinterpret_cast<void*>(data), width, HEIGHT, FULL_WIDTH, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
-	bmp.MaskedBlit(Rect(x, y, width, HEIGHT), bm, 0, 0, color);
+	return bm;
 }
 
 EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Library>::type> FTFont::library_checker_;
@@ -188,24 +175,17 @@ Rect FTFont::GetSize(std::string const& txt) const {
 	}
 }
 
-void FTFont::Render(Bitmap& bmp, int x, int y, Bitmap const& /* sys */, int /* color */, unsigned glyph) {
-	Render(bmp, x, y, Color(), glyph);
-}
-
-void FTFont::Render(Bitmap& bmp, int const x, int const y, Color const& color, unsigned const glyph) {
+BitmapRef FTFont::Glyph(unsigned glyph) {
 	if(!check_face()) {
-		Font::Default()->Render(bmp, x, y, color, glyph);
-		return;
+		return Font::Default()->Glyph(glyph);
 	}
 
 	if (FT_Load_Char(face_.get(), glyph, FT_LOAD_NO_BITMAP) != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character %d", glyph);
-		return;
 	}
 
     if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
 		Output::Error("Couldn't render FreeType character %d", glyph);
-		return;
 	}
 
 	FT_Bitmap const& ft_bitmap = face_->glyph->bitmap;
@@ -215,19 +195,19 @@ void FTFont::Render(Bitmap& bmp, int const x, int const y, Color const& color, u
 	int const width = ft_bitmap.width;
 	int const height = ft_bitmap.rows;
 
-	std::vector<uint8_t> data;
-	data.resize(width * height, 0);
+	BitmapRef bm = Bitmap::Create(reinterpret_cast<void*>(NULL), width, height, 0, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+	uint8_t* data = reinterpret_cast<uint8_t*>(bm->pixels());
+	int dst_pitch = bm->pitch();
 
 	for(int row = 0; row < height; ++row) {
 		for(int col = 0; col < width; ++col) {
 			unsigned c = ft_bitmap.buffer[pitch * row + (col/8)];
 			unsigned bit = 7 - (col%8);
-			data[row * pitch + col] = (c & (0x01 << bit)) ? 255 : 0;
+			data[row * dst_pitch + col] = (c & (0x01 << bit)) ? 255 : 0;
 		}
 	}
 
-	Bitmap bm(reinterpret_cast<void*>(&data.front()), width, height, width, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
-	bmp.MaskedBlit(Rect(x, y, width, height), bm, 0, 0, color);
+	return bm;
 }
 
 FontRef Font::Default(bool const m) {
@@ -319,3 +299,39 @@ bool FTFont::check_face() {
 
 	return true;
 }
+
+void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, unsigned code) {
+	if(color != ColorShadow) {
+		Render(bmp, x + 1, y + 1, sys, ColorShadow, code);
+	}
+
+	BitmapRef bm = Glyph(code);
+
+	unsigned const
+		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
+		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - bm->height();
+
+	bmp.MaskedBlit(Rect(x, y, bm->width(), bm->height()), *bm, 0, 0, sys, src_x, src_y);
+}
+
+void Font::Render(Bitmap& bmp, int x, int y, Color const& color, unsigned code) {
+	BitmapRef bm = Glyph(code);
+
+	bmp.MaskedBlit(Rect(x, y, bm->width(), bm->height()), *bm, 0, 0, color);
+}
+
+ExFont::ExFont() : Font("exfont", 12, false, false) {
+}
+
+FontRef Font::exfont = EASYRPG_MAKE_SHARED<ExFont>();
+
+BitmapRef ExFont::Glyph(unsigned code) {
+	BitmapRef exfont = Cache::Exfont();
+	Rect const rect((code % 13) * 12, (code / 13) * 12, 12, 12);
+	return Bitmap::Create(*exfont, rect, true);
+}
+
+Rect ExFont::GetSize(std::string const& /* txt */) const {
+	return Rect(0, 0, 12, 12);
+}
+
