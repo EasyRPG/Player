@@ -125,7 +125,6 @@ public:
 	// For documentation, see parent BitmapUtils class.
 	void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a);
 	void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any);
-	void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a);
 	void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
 					int hue, int sat, int lum, int loff);
 	void SetDstFormat(const DynamicFormat& format);
@@ -181,11 +180,6 @@ void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8_t* src_pixels, int n, b
 			return;
 		src_pixels += pf_src.bytes;
 	}
-}
-
-template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::SetPixel(uint8_t* dst_pixel, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
-	pf_dst.set_rgba(dst_pixel, r, g, b, a);
 }
 
 static inline void RGB_to_HSL(const uint8_t& r, const uint8_t& g, const uint8_t& b,

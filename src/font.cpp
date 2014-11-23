@@ -17,6 +17,7 @@
 
 // Headers
 #include <map>
+#include <vector>
 #include <ciso646>
 
 #include <boost/next_prior.hpp>
@@ -148,27 +149,24 @@ void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& 
 		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
 		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - HEIGHT;
 
-	for(size_t y_ = 0; y_ < HEIGHT; ++y_) {
-		for(size_t x_ = 0; x_ < width; ++x_) {
-			if(glyph->data[y_] & (0x1 << x_)) {
-				bmp.SetPixel(x + x_, y + y_, sys.GetPixel(src_x + x_, src_y + y_));
-			}
-		}
-	}
+	uint8_t data[HEIGHT][FULL_WIDTH];
+	for(size_t y_ = 0; y_ < HEIGHT; ++y_)
+		for(size_t x_ = 0; x_ < width; ++x_)
+			data[y_][x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
+	Bitmap bm(reinterpret_cast<void*>(data), width, HEIGHT, FULL_WIDTH, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+	bmp.MaskedBlit(Rect(x, y, width, HEIGHT), bm, 0, 0, sys, src_x, src_y);
 }
 
 void ShinonomeFont::Render(Bitmap& bmp, int x, int y, Color const& color, unsigned code) {
 	ShinonomeGlyph const* const glyph = func_(code);
 	assert(glyph);
 	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
-
-	for(size_t y_ = 0; y_ < HEIGHT; ++y_) {
-		for(size_t x_ = 0; x_ < width; ++x_) {
-			if(glyph->data[y_] & (0x1 << x_)) {
-				bmp.SetPixel(x + x_, y + y_, color);
-			}
-		}
-	}
+	uint8_t data[HEIGHT][FULL_WIDTH];
+	for(size_t y_ = 0; y_ < HEIGHT; ++y_)
+		for(size_t x_ = 0; x_ < width; ++x_)
+			data[y_][x_] = (glyph->data[y_] & (0x1 << x_)) ? 255 : 0;
+	Bitmap bm(reinterpret_cast<void*>(data), width, HEIGHT, FULL_WIDTH, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+	bmp.MaskedBlit(Rect(x, y, width, HEIGHT), bm, 0, 0, color);
 }
 
 EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Library>::type> FTFont::library_checker_;
@@ -214,17 +212,22 @@ void FTFont::Render(Bitmap& bmp, int const x, int const y, Color const& color, u
 	assert(face_->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_MONO);
 
 	size_t const pitch = std::abs(ft_bitmap.pitch);
+	int const width = ft_bitmap.width;
+	int const height = ft_bitmap.rows;
 
-	for(int row = 0; row < ft_bitmap.rows; ++row) {
-		for(size_t col = 0; col < pitch; ++col) {
-			unsigned c = ft_bitmap.buffer[pitch * row + col];
-			for(int bit = 7; bit >= 0; --bit) {
-				if(c & (0x01 << bit)) {
-					bmp.SetPixel(x + col * 8 + (7 - bit), y + row, color);
-				}
-			}
+	std::vector<uint8_t> data;
+	data.resize(width * height, 0);
+
+	for(int row = 0; row < height; ++row) {
+		for(int col = 0; col < width; ++col) {
+			unsigned c = ft_bitmap.buffer[pitch * row + (col/8)];
+			unsigned bit = 7 - (col%8);
+			data[row * pitch + col] = (c & (0x01 << bit)) ? 255 : 0;
 		}
 	}
+
+	Bitmap bm(reinterpret_cast<void*>(&data.front()), width, height, width, DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha));
+	bmp.MaskedBlit(Rect(x, y, width, height), bm, 0, 0, color);
 }
 
 FontRef Font::Default(bool const m) {

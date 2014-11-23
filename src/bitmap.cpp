@@ -199,17 +199,6 @@ BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const D
 	return EASYRPG_MAKE_SHARED<Bitmap>(pixels, width, height, pitch, format);
 }
 
-void Bitmap::SetPixel(int x, int y, const Color &color) {
-	if (x < 0 || y < 0 || x >= width() || y >= height()) return;
-
-	BitmapUtils* bm_utils = Begin();
-
-	uint8_t* dst_pixels = pointer(x, y);
-	bm_utils->SetPixel(dst_pixels, color.red, color.green, color.blue, color.alpha);
-
-	End();
-}
-
 void Bitmap::TransformBlit(Rect const& dst_rect_,
 							Bitmap const& src, Rect const& src_rect,
 							double angle,
@@ -1125,6 +1114,38 @@ void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 							 resampled->bitmap, (pixman_image_t*) NULL, bitmap,
 							 0, 0,
 							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	RefreshCallback();
+}
+
+void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Color const& color) {
+	pixman_color_t tcolor = {
+		static_cast<uint16_t>(color.red << 8),
+		static_cast<uint16_t>(color.green << 8),
+		static_cast<uint16_t>(color.blue << 8),
+		static_cast<uint16_t>(color.alpha << 8)};
+
+	pixman_image_t* source = pixman_image_create_solid_fill(&tcolor);
+
+	pixman_image_composite32(PIXMAN_OP_OVER,
+							 source, mask.bitmap, bitmap,
+							 0, 0,
+							 mx, my,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_image_unref(source);
+
+	RefreshCallback();
+}
+
+void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Bitmap const& src, int sx, int sy) {
+	pixman_image_composite32(PIXMAN_OP_OVER,
+							 src.bitmap, mask.bitmap, bitmap,
+							 sx, sy,
+							 mx, my,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
 

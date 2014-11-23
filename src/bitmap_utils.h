@@ -56,17 +56,6 @@ public:
 	virtual void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any) = 0;
 
 	/**
-	 * Sets a pixel to a given color.
-	 *
-	 * @param dst_pixels pointer to destination pixel.
-	 * @param r red.
-	 * @param g green.
-	 * @param b blue.
-	 * @param a alpha.
-	 */
-	virtual void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) = 0;
-
-	/**
 	 * Adjusts bitmap HSL colors.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
