@@ -44,7 +44,7 @@ protected:
 	const RPG::Animation* animation;
 	int frame;
 	bool large;
-	BitmapScreenRef screen;
+	BitmapRef screen;
 };
 
 #endif

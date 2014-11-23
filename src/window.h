@@ -107,8 +107,8 @@ protected:
 	int contents_opacity;
 
 private:
-	BitmapScreenRef
-		windowskin_screen, contents_screen, background, frame_down,
+	BitmapRef
+		background, frame_down,
 		frame_up, frame_left, frame_right, cursor1, cursor2;
 
 	void RefreshBackground();

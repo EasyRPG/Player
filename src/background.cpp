@@ -23,7 +23,6 @@
 #include "graphics.h"
 #include "cache.h"
 #include "background.h"
-#include "bitmap_screen.h"
 #include "bitmap.h"
 
 Background::Background(const std::string& name) :
@@ -33,7 +32,7 @@ Background::Background(const std::string& name) :
 
 	Graphics::RegisterDrawable(this);
 
-	bg_screen = BitmapScreen::Create(Cache::Backdrop(name));
+	bg_bitmap = Cache::Backdrop(name);
 }
 
 Background::Background(int terrain_id) :
@@ -46,16 +45,16 @@ Background::Background(int terrain_id) :
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
 	if (terrain.background_type == 0) {
-		bg_screen = BitmapScreen::Create(Cache::Backdrop(terrain.background_name));
+		bg_bitmap = Cache::Backdrop(terrain.background_name);
 		return;
 	}
 
-	bg_screen = BitmapScreen::Create(Cache::Frame(terrain.background_a_name));
+	bg_bitmap = Cache::Frame(terrain.background_a_name);
 	bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
 	bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
 
 	if (terrain.background_b) {
-		fg_screen = BitmapScreen::Create(Cache::Frame(terrain.background_b_name));
+		fg_bitmap = Cache::Frame(terrain.background_b_name);
 		fg_hscroll = terrain.background_b_scrollh ? terrain.background_b_scrollh_speed : 0;
 		fg_vscroll = terrain.background_b_scrollv ? terrain.background_b_scrollv_speed : 0;
 	}
@@ -96,13 +95,11 @@ void Background::Draw() {
 	if (!visible)
 		return;
 
-	if (bg_screen)
-		bg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
-								   DisplayUi->GetDisplaySurface()->GetRect(),
-								   Scale(bg_x), Scale(bg_y));
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
-	if (fg_screen)
-		fg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
-								   DisplayUi->GetDisplaySurface()->GetRect(),
-								   Scale(fg_x), Scale(fg_y));
+	if (bg_bitmap)
+		dst->TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst->GetRect(), 255);
+
+	if (fg_bitmap)
+		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst->GetRect(), 255);
 }

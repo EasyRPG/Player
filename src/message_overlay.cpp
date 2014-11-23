@@ -33,11 +33,9 @@ MessageOverlay::MessageOverlay() :
 	counter(0),
 	show_all(false) {
 	
-	bitmap_screen = BitmapScreen::Create();
 	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
 
 	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
-	bitmap_screen->SetBitmap(bitmap);
 
 	Graphics::RegisterDrawable(this);
 }
@@ -67,7 +65,7 @@ void MessageOverlay::Draw() {
 		}
 	} else {
 		if (!messages.empty()) {
-			bitmap_screen->BlitScreen(ox, oy);
+			DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 		}
 	}
 
@@ -86,7 +84,7 @@ void MessageOverlay::Draw() {
 		}
 	}
 
-	bitmap_screen->BlitScreen(ox, oy);
+	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 
 	dirty = false;
 }

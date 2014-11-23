@@ -51,7 +51,6 @@ private:
 	DrawableType type;
 
 	BitmapRef bitmap;
-	BitmapScreenRef bitmap_screen;
 
 	bool visible;
 	int z;

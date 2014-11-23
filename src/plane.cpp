@@ -20,7 +20,6 @@
 #include "graphics.h"
 #include "player.h"
 #include "bitmap.h"
-#include "bitmap_screen.h"
 
 Plane::Plane() :
 	type(TypePlane),
@@ -28,8 +27,6 @@ Plane::Plane() :
 	z(0),
 	ox(0),
 	oy(0) {
-
-	bitmap_screen = BitmapScreen::Create();
 
 	Graphics::RegisterDrawable(this);
 }
@@ -41,9 +38,10 @@ Plane::~Plane() {
 void Plane::Draw() {
 	if (!visible || !bitmap) return;
 
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
 
-	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect, ox, oy);
+	dst->TiledBlit(-ox, -oy, bitmap->GetRect(), *bitmap, dst_rect, 255);
 }
 
 BitmapRef const& Plane::GetBitmap() const {
@@ -51,7 +49,6 @@ BitmapRef const& Plane::GetBitmap() const {
 }
 void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
-	bitmap_screen->SetBitmap(nbitmap);
 }
 
 bool Plane::GetVisible() const {

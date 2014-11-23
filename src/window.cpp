@@ -19,7 +19,6 @@
 #include <math.h>
 #include "system.h"
 #include "graphics.h"
-#include "bitmap_screen.h"
 #include "player.h"
 #include "rect.h"
 #include "util_macro.h"
@@ -55,16 +54,13 @@ Window::Window():
 
 	Graphics::RegisterDrawable(this);
 
-	windowskin_screen = BitmapScreen::Create();
-	contents_screen = BitmapScreen::Create();
-
-	background = BitmapScreen::Create();
-	frame_down = BitmapScreen::Create();
-	frame_up = BitmapScreen::Create();
-	frame_left = BitmapScreen::Create();
-	frame_right = BitmapScreen::Create();
-	cursor1 = BitmapScreen::Create();
-	cursor2 = BitmapScreen::Create();
+	background = BitmapRef();
+	frame_down = BitmapRef();
+	frame_up = BitmapRef();
+	frame_left = BitmapRef();
+	frame_right = BitmapRef();
+	cursor1 = BitmapRef();
+	cursor2 = BitmapRef();
 }
 
 Window::~Window() {
@@ -98,6 +94,7 @@ void Window::Draw() {
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
 
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
@@ -108,9 +105,9 @@ void Window::Draw() {
 
 				Rect src_rect(0, height / 2 - ianimation_count, width, ianimation_count * 2);
 
-				background->BlitScreen(x, y + src_rect.y, src_rect);
+				dst->Blit(x, y + src_rect.y, *background, src_rect, back_opacity * opacity / 255);
 			} else {
-				background->BlitScreen(x, y);
+				dst->Blit(x, y, *background, background->GetRect(), back_opacity * opacity / 255);
 			}
 		}
 
@@ -123,20 +120,20 @@ void Window::Draw() {
 				if (ianimation_count > 8) {
 					Rect src_rect(0, height / 2 - ianimation_count, 8, ianimation_count * 2 - 16);
 
-					frame_left->BlitScreen(x, y + 8 + src_rect.y, src_rect);
-					frame_right->BlitScreen(x + width - 8, y + 8 + src_rect.y, src_rect);
+					dst->Blit(x, y + 8 + src_rect.y, *frame_left, src_rect, opacity);
+					dst->Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
 
-					frame_up->BlitScreen(x, y + height / 2 - ianimation_count);
-					frame_down->BlitScreen(x, y + height / 2 + ianimation_count - 8);
+					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
+					dst->Blit(x, y + height / 2 + ianimation_count - 8, *frame_up, frame_down->GetRect(), opacity);
 				} else {
-					frame_up->BlitScreen(x, y + height / 2 - ianimation_count, Rect(0, 0, width, ianimation_count));
-					frame_down->BlitScreen(x, y + height / 2, Rect(0, 8 - ianimation_count, width, ianimation_count));
+					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
+					dst->Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
 				}
 			} else {
-				frame_up->BlitScreen(x, y);
-				frame_down->BlitScreen(x, y + height - 8);
-				frame_left->BlitScreen(x, y + 8);
-				frame_right->BlitScreen(x + width - 8, y + 8);
+				dst->Blit(x, y, *frame_up, frame_up->GetRect(), opacity);
+				dst->Blit(x, y + height - 8, *frame_down, frame_down->GetRect(), opacity);
+				dst->Blit(x, y + 8, *frame_left, frame_left->GetRect(), opacity);
+				dst->Blit(x + width - 8, y + 8, *frame_right, frame_right->GetRect(), opacity);
 			}
 		}
 
@@ -151,9 +148,9 @@ void Window::Draw() {
 			);
 
 			if (cursor_frame <= 10)
-				cursor1->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
+				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor1, src_rect, 255);
 			else
-				cursor2->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
+				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor2, src_rect, 255);
 		}
 	}
 
@@ -165,26 +162,25 @@ void Window::Draw() {
 						  min(width - 2 * border_x, width - 2 * border_x + ox),
 						  min(height - 2 * border_y, height - 2 * border_y + oy));
 
-			contents_screen->SetOpacityEffect(contents_opacity);
-
-			contents_screen->BlitScreen(max(x + border_x, x + border_x - ox),
-										max(y + border_y, y + border_y - oy), src_rect);
+			dst->Blit(max(x + border_x, x + border_x - ox),
+					  max(y + border_y, y + border_y - oy),
+					  *contents, src_rect, contents_opacity);
 		}
 	}
 
 	if (pause && pause_frame > 16 && animation_frames <= 0) {
 		Rect src_rect(40, 16, 16, 8);
-		windowskin_screen->BlitScreen(x + width / 2 - 8, y + height - 8, src_rect);
+		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
-		windowskin_screen->BlitScreen(x + width / 2 - 8, y, src_rect);
+		dst->Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
 	}
 
 	if (down_arrow) {
 		Rect src_rect(40, 16, 16, 8);
-		windowskin_screen->BlitScreen(x + width / 2 - 8, y + height - 8, src_rect);
+		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 
 	if (animation_frames > 0) {
@@ -209,7 +205,7 @@ void Window::RefreshBackground() {
 		bitmap->TiledBlit(Rect(0, 0, 16, 16), *windowskin, bitmap->GetRect(), 255);
 	}
 
-	background->SetBitmap(bitmap);
+	background = bitmap;
 }
 
 void Window::RefreshFrame() {
@@ -248,8 +244,8 @@ void Window::RefreshFrame() {
 	// Lower right corner
 	down_bitmap->Blit(width - 8, 0, *windowskin, Rect(64 - 8, 32 - 8, 8, 8), 255);
 
-	frame_up->SetBitmap(up_bitmap);
-	frame_down->SetBitmap(down_bitmap);
+	frame_up = up_bitmap;
+	frame_down = down_bitmap;
 
 	if (height > 16) {
 		BitmapRef left_bitmap = Bitmap::Create(8, height - 16);
@@ -271,11 +267,11 @@ void Window::RefreshFrame() {
 		dst_rect.Set(0, 0, 8, height - 16);
 		right_bitmap->TiledBlit(0, 8, src_rect, *windowskin, dst_rect, 255);
 
-		frame_left->SetBitmap(left_bitmap);
-		frame_right->SetBitmap(right_bitmap);
+		frame_left = left_bitmap;
+		frame_right = right_bitmap;
 	} else {
-		frame_left->SetBitmap(BitmapRef());
-		frame_right->SetBitmap(BitmapRef());
+		frame_left = BitmapRef();
+		frame_right = BitmapRef();
 	}
 }
 
@@ -337,8 +333,8 @@ void Window::RefreshCursor() {
 	cursor1_bitmap->TiledBlit(8, 8, Rect(64 + 8, 8, 16, 16), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(8, 8, Rect(96 + 8, 8, 16, 16), *windowskin, dst_rect, 255);
 
-	cursor1->SetBitmap(cursor1_bitmap);
-	cursor2->SetBitmap(cursor2_bitmap);
+	cursor1 = cursor1_bitmap;
+	cursor2 = cursor2_bitmap;
 }
 
 void Window::Update() {
@@ -360,7 +356,6 @@ void Window::SetWindowskin(BitmapRef const& nwindowskin) {
 	frame_needs_refresh = true;
 	cursor_needs_refresh = true;
 	windowskin = nwindowskin;
-	windowskin_screen->SetBitmap(windowskin);
 }
 
 BitmapRef Window::GetContents() const {
@@ -368,7 +363,6 @@ BitmapRef Window::GetContents() const {
 }
 void Window::SetContents(BitmapRef const& ncontents) {
 	contents = ncontents;
-	contents_screen->SetBitmap(contents);
 }
 
 bool Window::GetStretch() const {
@@ -499,13 +493,6 @@ int Window::GetOpacity() const {
 }
 void Window::SetOpacity(int nopacity) {
 	opacity = nopacity;
-
-	background->SetOpacityEffect(back_opacity * opacity / 255);
-
-	frame_up->SetOpacityEffect(opacity);
-	frame_down->SetOpacityEffect(opacity);
-	frame_left->SetOpacityEffect(opacity);
-	frame_right->SetOpacityEffect(opacity);
 }
 
 int Window::GetBackOpacity() const {
@@ -513,8 +500,6 @@ int Window::GetBackOpacity() const {
 }
 void Window::SetBackOpacity(int nback_opacity) {
 	back_opacity = nback_opacity;
-
-	background->SetOpacityEffect(back_opacity * opacity / 255);
 }
 
 int Window::GetContentsOpacity() const {

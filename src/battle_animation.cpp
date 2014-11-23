@@ -22,7 +22,7 @@
 #include "filefinder.h"
 #include "cache.h"
 #include "battle_animation.h"
-#include "bitmap_screen.h"
+#include "baseui.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
 	x(x), y(y), animation(animation), frame(0)
@@ -43,7 +43,7 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 		return;
 	}
 
-	screen = BitmapScreen::Create(graphic);
+	screen = graphic;
 
 	Graphics::RegisterDrawable(this);
 }
@@ -78,12 +78,16 @@ void BattleAnimation::Draw() {
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
 		int zoomed = size * cell.zoom / 100;
-		screen->SetSrcRect(Rect(sx * size, sy * size, size, size));
-		screen->SetZoomXEffect(cell.zoom / 100.0);
-		screen->SetZoomYEffect(cell.zoom / 100.0);
-		screen->SetToneEffect(Tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray));
-		screen->SetOpacityEffect(255 * (100 - cell.transparency) / 100);
-		screen->BlitScreen(x + cell.x - zoomed / 2, y + cell.y - zoomed / 2);
+		Rect src_rect(sx * size, sy * size, size, size);
+		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
+		int opacity = 255 * (100 - cell.transparency) / 100;
+		double zoom = cell.zoom / 100.0;
+		DisplayUi->GetDisplaySurface()->EffectsBlit(
+			x + cell.x - zoomed / 2, y + cell.y - zoomed / 2,
+			*screen, src_rect, 
+			opacity, 0, 0, tone,
+			zoom, zoom, 0.0,
+			0, 0.0);
 	}
 }
 
