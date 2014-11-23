@@ -132,7 +132,7 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), rect.width, rect.height, rect.width*4, format);
 	bmp.Blit(0, 0, *this, rect, 255);
 
-	for (std::vector<uint32_t>::const_iterator p = pixels.cbegin(); p != pixels.cend(); ++p) {
+	for (std::vector<uint32_t>::const_iterator p = pixels.begin(); p != pixels.end(); ++p) {
 		if ((*p & 0xFF) != 0)
 			any = true;
 		else
