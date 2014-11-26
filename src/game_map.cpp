@@ -63,7 +63,7 @@ namespace {
 	int scroll_speed;
 
 	boost::scoped_ptr<Game_Interpreter> interpreter;
-	EASYRPG_SHARED_PTR<Game_Interpreter> parallel_interpreter;
+	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
 	Game_Vehicle* vehicles[3];
 
 	bool pan_locked;
@@ -229,7 +229,6 @@ void Game_Map::SetupCommon(int _id) {
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
 
-	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
 
@@ -306,12 +305,8 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 	return *interpreter;
 }
 
-EASYRPG_SHARED_PTR<Game_Interpreter> Game_Map::GetParallelInterpreter() {
-	return parallel_interpreter;
-}
-
-void Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter) {
-	parallel_interpreter = interpreter;
+void Game_Map::ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter) {
+	free_interpreters.push_back(interpreter);
 }
 
 void Game_Map::ScrollDown(int distance) {
@@ -679,6 +674,8 @@ void Game_Map::Update() {
 
 	for (int i = 0; i < 3; ++i)
 		vehicles[i]->Update();
+
+	free_interpreters.clear();
 }
 
 RPG::Map const& Game_Map::GetMap() {

@@ -36,7 +36,9 @@ Game_Player::Game_Player():
 	vehicle_getting_off(false),
 	new_map_id(0),
 	new_x(0),
-	new_y(0) {
+	new_y(0),
+	last_pan_x(0),
+	last_pan_y(0) {
 	SetDirection(RPG::EventPage::Direction_down);
 	SetMoveSpeed(4);
 }
@@ -199,6 +201,8 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y) {
 	new_map_id = map_id;
 	new_x = x;
 	new_y = y;
+	last_pan_x = 0;
+	last_pan_y = 0;
 }
 
 void Game_Player::StartTeleport() {
@@ -225,8 +229,8 @@ bool Game_Player::IsTeleporting() const {
 }
 
 void Game_Player::Center(int x, int y) {
-	int center_x = (DisplayUi->GetWidth() / ( TILE_SIZE / 16) - TILE_SIZE * 2) * 8;
-	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8;
+	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8 - Game_Map::GetPanX();
+	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
 	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * (SCREEN_TILE_WIDTH);
 	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * (SCREEN_TILE_WIDTH);
 	Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
@@ -248,36 +252,38 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
-	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8;
-	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8;
+	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8 - Game_Map::GetPanX();
+	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
+	int dx = 0;
+	int dy = 0;
 
-	if (Game_Map::IsPanLocked())
-		return;
-
-	if (Game_Map::GetPanX() != 0 || Game_Map::GetPanY() != 0) {
-		int dx = real_x - center_x + Game_Map::GetPanX() - Game_Map::GetDisplayX();
-		int dy = real_y - center_y + Game_Map::GetPanY() - Game_Map::GetDisplayY();
-		if (dx > 0)
-			Game_Map::ScrollRight(dx);
-		if (dx < 0)
-			Game_Map::ScrollLeft(-dx);
-		if (dy > 0)
-			Game_Map::ScrollDown(dy);
-		if (dy < 0)
-			Game_Map::ScrollUp(-dy);
-	} else {
-		if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
-			Game_Map::ScrollDown(real_y - last_real_y);
-
-		if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
-			Game_Map::ScrollLeft(last_real_x - real_x);
-
-		if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
-			Game_Map::ScrollRight(real_x - last_real_x);
-
-		if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
-			Game_Map::ScrollUp(last_real_y - real_y);
+	if (!Game_Map::IsPanLocked()) {
+		if ((real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x) ||
+			(real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)) {
+			dx = real_x - last_real_x;
+		}
+		if ((real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y) ||
+			(real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)) {
+			dy = real_y - last_real_y;
+		}
 	}
+
+	if (Game_Map::GetPanX() != last_pan_x || Game_Map::GetPanY() != last_pan_y) {
+		dx += Game_Map::GetPanX() - last_pan_x;
+		dy += Game_Map::GetPanY() - last_pan_y;
+
+		last_pan_x = Game_Map::GetPanX();
+		last_pan_y = Game_Map::GetPanY();
+	}
+
+	if (dx > 0)
+		Game_Map::ScrollRight(dx);
+	else if (dx < 0)
+		Game_Map::ScrollLeft(-dx);
+	if (dy > 0)
+		Game_Map::ScrollDown(dy);
+	else if (dy < 0)
+		Game_Map::ScrollUp(-dy);
 }
 
 void Game_Player::Update() {

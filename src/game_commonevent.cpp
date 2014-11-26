@@ -51,10 +51,12 @@ void Game_CommonEvent::Refresh() {
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
 				Update();
 			}
-		} else {
-			interpreter.reset();
+			return;
 		}
-	} else {
+	}
+	if (interpreter) {
+		interpreter->Clear();
+		Game_Map::ReserveInterpreterDeletion(interpreter);
 		interpreter.reset();
 	}
 }
@@ -63,13 +65,11 @@ void Game_CommonEvent::Update() {
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
-		Game_Map::SetParallelInterpreter(interpreter);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(GetList(), 0, -common_event_id, -2);
 		} else {
 			interpreter->Update();
 		}
-		Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter>());
 	}
 }
 
