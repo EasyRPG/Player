@@ -50,7 +50,7 @@ class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
 
-	void DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile);
+	void DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile);
 	void Draw(int z_order);
 
 	void Update();
@@ -80,7 +80,6 @@ public:
 
 private:
 	BitmapRef chipset;
-	BitmapScreenRef chipset_screen;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	std::vector<uint8_t> substitutions;
@@ -110,12 +109,12 @@ private:
 		TileXY(uint8_t x, uint8_t y) : x(x), y(y), valid(true) {}
 	};
 
-	BitmapScreenRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
+	BitmapRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
-	BitmapScreenRef autotiles_ab_screen;
-	BitmapScreenRef autotiles_d_screen;
+	BitmapRef autotiles_ab_screen;
+	BitmapRef autotiles_d_screen;
 
 	int autotiles_ab_next;
 	int autotiles_d_next;

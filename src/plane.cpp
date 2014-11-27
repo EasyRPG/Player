@@ -20,7 +20,6 @@
 #include "graphics.h"
 #include "player.h"
 #include "bitmap.h"
-#include "bitmap_screen.h"
 
 Plane::Plane() :
 	type(TypePlane),
@@ -28,8 +27,6 @@ Plane::Plane() :
 	z(0),
 	ox(0),
 	oy(0) {
-
-	bitmap_screen = BitmapScreen::Create();
 
 	Graphics::RegisterDrawable(this);
 }
@@ -41,9 +38,10 @@ Plane::~Plane() {
 void Plane::Draw() {
 	if (!visible || !bitmap) return;
 
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
 
-	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect, ox, oy);
+	dst->TiledBlit(-ox, -oy, bitmap->GetRect(), *bitmap, dst_rect, 255);
 }
 
 BitmapRef const& Plane::GetBitmap() const {
@@ -51,7 +49,6 @@ BitmapRef const& Plane::GetBitmap() const {
 }
 void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
-	bitmap_screen->SetBitmap(nbitmap);
 }
 
 bool Plane::GetVisible() const {
@@ -78,42 +75,6 @@ int Plane::GetOy() const {
 }
 void Plane::SetOy(int noy) {
 	oy = noy;
-}
-double Plane::GetZoomX() const {
-	return bitmap_screen->GetZoomXEffect();
-}
-void Plane::SetZoomX(float zoom_x) {
-	bitmap_screen->SetZoomXEffect(zoom_x);
-}
-double Plane::GetZoomY() const {
-	return bitmap_screen->GetZoomYEffect();
-}
-void Plane::SetZoomY(float zoom_y) {
-	bitmap_screen->SetZoomYEffect(zoom_y);
-}
-int Plane::GetOpacity() const {
-	return bitmap_screen->GetOpacityEffect();
-}
-void Plane::SetOpacity(int opacity) {
-	bitmap_screen->SetOpacityEffect(opacity);
-}
-int Plane::GetBlendType() const {
-	return bitmap_screen->GetBlendType();
-}
-void Plane::SetBlendType(int blend_type) {
-	bitmap_screen->SetBlendType(blend_type);
-}
-Color Plane::GetBlendColor() const {
-	return bitmap_screen->GetBlendColor();
-}
-void Plane::SetBlendColor(Color color) {
-	bitmap_screen->SetBlendColor(color);
-}
-Tone Plane::GetTone() const {
-	return bitmap_screen->GetToneEffect();
-}
-void Plane::SetTone(Tone tone) {
-	bitmap_screen->SetToneEffect(tone);
 }
 
 DrawableType Plane::GetType() const {

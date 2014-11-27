@@ -20,7 +20,6 @@
 
 #include <deque>
 #include "bitmap.h"
-#include "bitmap_screen.h"
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
@@ -60,7 +59,6 @@ private:
 
 	BitmapRef bitmap;
 	BitmapRef black;
-	BitmapScreenRef bitmap_screen;
 
 	int z;
 	int ox;

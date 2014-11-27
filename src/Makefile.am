@@ -32,10 +32,9 @@ easyrpg_player_SOURCES = \
 	battle_animation.h \
 	bitmap.cpp \
 	bitmap.h \
+	bitmap_hslrgb.h \
 	bitmap_screen.cpp \
 	bitmap_screen.h \
-	bitmap_utils.cpp \
-	bitmap_utils.h \
 	cache.cpp \
 	cache.h \
 	color.cpp \

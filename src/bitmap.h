@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include <list>
+#include <map>
 #include <pixman.h>
 
 #include "system.h"
@@ -29,12 +30,9 @@
 #include "pixel_format.h"
 #include "tone.h"
 #include "matrix.h"
-#include "bitmap_utils.h"
 #include "text.h"
 
 #include <boost/scoped_ptr.hpp>
-
-class BitmapUtils;
 
 /**
  * Base Bitmap class.
@@ -193,9 +191,6 @@ protected:
 	void AttachBitmapScreen(BitmapScreen* bitmap);
 	void DetachBitmapScreen(BitmapScreen* bitmap);
 
-	BitmapUtils* Begin();
-	void End();
-
 	TileOpacity CheckOpacity(Rect const& rect);
 
 	void CheckPixels(uint32_t flags);
@@ -321,16 +316,6 @@ public:
 							   int opacity);
 
 	/**
-	 * Blits source bitmap transparency to this one.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 */
-	void MaskBlit(int x, int y, Bitmap const& src, Rect const& src_rect);
-
-	/**
 	 * Blits source bitmap with waver effect.
 	 *
 	 * @param x x position.
@@ -436,6 +421,30 @@ public:
 	 * @param vertical flip vertically.
 	 */
 	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
+
+	/**
+	 * Blits source bitmap to this one through a mask bitmap.
+	 *
+	 * @param dst_rect destination rectangle.
+	 * @param mask mask bitmap
+	 * @param mx mask x position
+	 * @param my mask y position
+	 * @param src source bitmap.
+	 * @param sx source x position
+	 * @param sy source y position
+	 */
+	void MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Bitmap const& src, int sx, int sy);
+
+	/**
+	 * Blits constant color to this one through a mask bitmap.
+	 *
+	 * @param dst_rect destination rectangle.
+	 * @param mask mask bitmap
+	 * @param mx mask x position
+	 * @param my mask y position
+	 * @param color source color.
+	 */
+	void MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Color const& color);
 
 	/**
 	 * Blits source bitmap scaled 2:1, with no transparency.
@@ -645,29 +654,9 @@ public:
 	 */
 	void SetFont(FontRef const& font);
 
-	/**
-	 * Gets a pixel color.
-	 *
-	 * @param x pixel x.
-	 * @param y pixel y.
-	 * @return pixel color.
-	 */
-	Color GetPixel(int x, int y) const;
-
-	/**
-	 * Gets a pixel color.
-	 *
-	 * @param x pixel x.
-	 * @param y pixel y.
-	 * @param color pixel color.
-	 */
-	void SetPixel(int x, int y, const Color &color);
-
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	template <class T1, class T2> friend class BitmapUtilsT;
 	friend class BitmapScreen;
-	friend class BitmapUtils;
 
 #ifdef USE_SDL
 	friend class SdlUi;
@@ -676,8 +665,6 @@ protected:
 	/** Font for text drawing. */
 	FontRef font;
 
-    BitmapUtils* Begin(Bitmap const& src) const;
-	void End(Bitmap const& src);
 	void RefreshCallback();
 
 	bool editing;

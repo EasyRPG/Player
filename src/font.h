@@ -34,12 +34,16 @@ class Font {
 
 	virtual Rect GetSize(std::string const& txt) const = 0;
 
-	virtual void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph) = 0;
-	virtual void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph) = 0;
+	virtual BitmapRef Glyph(unsigned code) = 0;
+
+	void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
+	void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
 
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
 	static FontRef Default(bool mincho = false);
 	static void Dispose();
+
+	static FontRef exfont;
 
 	static const int default_size = 9;
 	static const bool default_bold = false;

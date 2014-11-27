@@ -72,7 +72,7 @@ struct Matrix {
 		ry = yx*x + yy*y + y0;
 	}
 
-	// in bitmap_utils.cpp
+	// in bitmap.cpp
 	static Matrix Setup(double angle,
 						double scale_x, double scale_y,
 						int src_pos_x, int src_pos_y,

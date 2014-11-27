@@ -44,12 +44,12 @@ private:
 
 	bool visible;
 
-	BitmapScreenRef bg_screen;
+	BitmapRef bg_bitmap;
 	int bg_hscroll;
 	int bg_vscroll;
 	int bg_x;
 	int bg_y;
-	BitmapScreenRef fg_screen;
+	BitmapRef fg_bitmap;
 	int fg_hscroll;
 	int fg_vscroll;
 	int fg_x;

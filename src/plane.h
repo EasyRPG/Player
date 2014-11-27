@@ -44,18 +44,6 @@ public:
 	void SetOx(int ox);
 	int GetOy() const;
 	void SetOy(int oy);
-	double GetZoomX() const;
-	void SetZoomX(float zoom_x);
-	double GetZoomY() const;
-	void SetZoomY(float zoom_y);
-	int GetOpacity() const;
-	void SetOpacity(int opacity);
-	int GetBlendType() const;
-	void SetBlendType(int blend_type);
-	Color GetBlendColor() const;
-	void SetBlendColor(Color color);
-	Tone GetTone() const;
-	void SetTone(Tone tone);
 
 	DrawableType GetType() const;
 
@@ -63,7 +51,6 @@ private:
 	DrawableType type;
 
 	BitmapRef bitmap;
-	BitmapScreenRef bitmap_screen;
 
 	bool visible;
 	int z;

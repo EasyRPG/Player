@@ -24,7 +24,6 @@
 #include "system.h"
 
 class Bitmap;
-class BitmapScreen;
 
 /**
  * Renders the weather effects.
@@ -49,7 +48,6 @@ private:
 	static const int z = 1001;
 	static const DrawableType type = TypeWeather;
 
-	BitmapScreenRef weather_screen;
 	//boost::scoped_ptr<Plane> weather_plane;
 	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;

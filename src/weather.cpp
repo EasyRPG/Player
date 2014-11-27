@@ -20,7 +20,6 @@
 #include <vector>
 #include "baseui.h"
 #include "bitmap.h"
-#include "bitmap_screen.h"
 #include "color.h"
 #include "game_screen.h"
 #include "graphics.h"
@@ -50,10 +49,8 @@ void Weather::Update() {
 
 void Weather::Draw() {
 	if (Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
-		if (!weather_screen || !weather_surface) {
-			weather_screen = BitmapScreen::Create();
+		if (!weather_surface) {
 			weather_surface = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
-			weather_screen->SetBitmap(weather_surface);
 		}
 	}
 
@@ -79,8 +76,9 @@ void Weather::Draw() {
 			break;
 	}
 
-	if (dirty && weather_screen) {
-		weather_screen->BlitScreen(0, 0);
+	if (dirty && weather_surface) {
+		BitmapRef dst = DisplayUi->GetDisplaySurface();
+		dst->Blit(0, 0, *weather_surface, weather_surface->GetRect(), 255);
 	}
 }
 

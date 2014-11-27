@@ -23,7 +23,6 @@
 
 #include "graphics.h"
 #include "bitmap.h"
-#include "bitmap_screen.h"
 #include "cache.h"
 #include "baseui.h"
 #include "drawable.h"
@@ -48,10 +47,10 @@ namespace Graphics {
 
 	void UpdateTransition();
 
-	BitmapScreenRef frozen_screen;
-	BitmapScreenRef black_screen;
-	BitmapScreenRef screen1;
-	BitmapScreenRef screen2;
+	BitmapRef frozen_screen;
+	BitmapRef black_screen;
+	BitmapRef screen1;
+	BitmapRef screen2;
 	bool frozen;
 	TransitionType transition_type;
 	int transition_duration;
@@ -87,11 +86,9 @@ void Graphics::Init() {
 	framecount = 0;
 	fps_mode = 0;
 	timer_wait = 0;
-	frozen_screen = BitmapScreen::Create();
+	frozen_screen = BitmapRef();
 
-	black_screen = BitmapScreen::Create();
-	BitmapRef black_bitmap = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
-	black_screen->SetBitmap(black_bitmap);
+	black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
 
 	frozen = false;
 	drawable_creation = 0;
@@ -317,7 +314,7 @@ BitmapRef Graphics::SnapToBitmap() {
 }
 
 void Graphics::Freeze() {
-	frozen_screen->SetBitmap(SnapToBitmap());
+	frozen_screen = SnapToBitmap();
 	frozen = true;
 }
 
@@ -360,7 +357,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		}
 	}
 
-	if (!erase) frozen_screen->SetBitmap(BitmapRef());
+	if (!erase) frozen_screen = BitmapRef();
 
 	frozen = false;
 	screen_erased = erase;
@@ -372,6 +369,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 
 void Graphics::UpdateTransition() {
 	// FIXME: Comments. Pleeeease. screen1, screen2?
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 	int w = DisplayUi->GetWidth();
 	int h = DisplayUi->GetHeight();
 
@@ -400,9 +398,8 @@ void Graphics::UpdateTransition() {
 	switch (transition_type) {
 	case TransitionFadeIn:
 	case TransitionFadeOut:
-		screen1->BlitScreen(0, 0);
-		screen2->SetOpacityEffect(255 * percentage / 100);
-		screen2->BlitScreen(0, 0);
+		dst->Blit(0, 0, *screen1, screen1->GetRect(), 255);
+		dst->Blit(0, 0, *screen2, screen2->GetRect(), 255 * percentage / 100);
 		break;
 	case TransitionRandomBlocks:
 		break;
@@ -412,105 +409,105 @@ void Graphics::UpdateTransition() {
 		break;
 	case TransitionBlindOpen:
 		for (int i = 0; i < h / 8; i++) {
-			screen1->BlitScreen(0, i * 8, Rect(0, i * 8, w, 8 - 8 * percentage / 100));
-			screen2->BlitScreen(0, i * 8 + 8 - 8 * percentage / 100, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100));
+			dst->Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - 8 * percentage / 100), 255);
+			dst->Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255 * percentage / 100);
 		}
 		break;
 	case TransitionBlindClose:
 		for (int i = 0; i < h / 8; i++) {
-			screen1->BlitScreen(0, i * 8 + 8 * percentage / 100, Rect(0, i * 8 + 8 * percentage / 100, w, 8 - 8 * percentage / 100));
-			screen2->BlitScreen(0, i * 8, Rect(0, i * 8, w, 8 * percentage / 100));
+			dst->Blit(0, i * 8 + 8 * percentage / 100, *screen1, Rect(0, i * 8 + 8 * percentage / 100, w, 8 - 8 * percentage / 100), 255);
+			dst->Blit(0, i * 8, *screen2, Rect(0, i * 8, w, 8 * percentage / 100), 255);
 		}
 		break;
 	case TransitionVerticalStripesIn:
 	case TransitionVerticalStripesOut:
 		for (int i = 0; i < h / 6 + 1 - h / 6 * percentage / 100; i++) {
-			screen1->BlitScreen(0, i * 6 + 3, Rect(0, i * 6 + 3, w, 3));
-			screen1->BlitScreen(0, h - i * 6, Rect(0, h - i * 6, w, 3));
+			dst->Blit(0, i * 6 + 3, *screen1, Rect(0, i * 6 + 3, w, 3), 255);
+			dst->Blit(0, h - i * 6, *screen1, Rect(0, h - i * 6, w, 3), 255);
 		}
 		for (int i = 0; i < h / 6 * percentage / 100; i++) {
-			screen2->BlitScreen(0, i * 6, Rect(0, i * 6, w, 3));
-			screen2->BlitScreen(0, h - 3 - i * 6, Rect(0, h - 3 - i * 6, w, 3));
+			dst->Blit(0, i * 6, *screen2, Rect(0, i * 6, w, 3), 255);
+			dst->Blit(0, h - 3 - i * 6, *screen2, Rect(0, h - 3 - i * 6, w, 3), 255);
 		}
 		break;
 	case TransitionHorizontalStripesIn:
 	case TransitionHorizontalStripesOut:
 		for (int i = 0; i < w / 8 + 1 - w / 8 * percentage / 100; i++) {
-			screen1->BlitScreen(i * 8 + 4, 0, Rect(i * 8 + 4, 0, 4, h));
-			screen1->BlitScreen(w  - i * 8, 0, Rect(w - i * 8, 0, 4, h));
+			dst->Blit(i * 8 + 4, 0, *screen1, Rect(i * 8 + 4, 0, 4, h), 255);
+			dst->Blit(w - i * 8, 0, *screen1, Rect(w - i * 8, 0, 4, h), 255);
 		}
 		for (int i = 0; i < w / 8 * percentage / 100; i++) {
-			screen2->BlitScreen(i * 8, 0, Rect(i * 8, 0, 4, h));
-			screen2->BlitScreen(w - 4 - i * 8, 0, Rect(w - 4 - i * 8, 0, 4, h));
+			dst->Blit(i * 8, 0, *screen2, Rect(i * 8, 0, 4, h), 255);
+			dst->Blit(w - 4 - i * 8, 0, *screen2, Rect(w - 4 - i * 8, 0, 4, h), 255);
 		}
 		break;
 	case TransitionBorderToCenterIn:
 	case TransitionBorderToCenterOut:
-		screen2->BlitScreen(0, 0);
-		screen1->BlitScreen((w / 2) * percentage / 100, (h / 2) * percentage / 100, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100));
+		dst->Blit(0,  0, *screen2, screen2->GetRect(), 255);
+		dst->Blit((w / 2) * percentage / 100, (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100), 255);
 		break;
 	case TransitionCenterToBorderIn:
 	case TransitionCenterToBorderOut:
-		screen1->BlitScreen(0, 0);
-		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100));
+		dst->Blit(0,  0, *screen1, screen1->GetRect(), 255);
+		dst->Blit(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100), 255);
 		break;
 	case TransitionScrollUpIn:
 	case TransitionScrollUpOut:
-		screen1->BlitScreen(0, -h * percentage / 100);
-		screen2->BlitScreen(0, h - h * percentage / 100);
+		dst->Blit(0,  -h * percentage / 100, *screen1, screen1->GetRect(), 255);
+		dst->Blit(0,  h - h * percentage / 100, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollDownIn:
 	case TransitionScrollDownOut:
-		screen1->BlitScreen(0, h * percentage / 100);
-		screen2->BlitScreen(0, -h + h * percentage / 100);
+		dst->Blit(0,  h * percentage / 100, *screen1, screen1->GetRect(), 255);
+		dst->Blit(0,  -h + h * percentage / 100, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollLeftIn:
 	case TransitionScrollLeftOut:
-		screen1->BlitScreen(-w * percentage / 100, 0);
-		screen2->BlitScreen(w - w * percentage / 100, 0);
+		dst->Blit(-w * percentage / 100,  0, *screen1, screen1->GetRect(), 255);
+		dst->Blit(w - w * percentage / 100,  0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionScrollRightIn:
 	case TransitionScrollRightOut:
-		screen1->BlitScreen(w * percentage / 100, 0);
-		screen2->BlitScreen(-w + w * percentage / 100, 0);
+		dst->Blit(w * percentage / 100,  0, *screen1, screen1->GetRect(), 255);
+		dst->Blit(-w + w * percentage / 100,  0, *screen2, screen2->GetRect(), 255);
 		break;
 	case TransitionVerticalCombine:
-		screen1->BlitScreen(0, (h / 2) * percentage / 100, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100));
-		screen2->BlitScreen(0, -h / 2 + (h / 2) * percentage / 100, Rect(0, 0, w, h / 2));
-		screen2->BlitScreen(0, h - (h / 2) * percentage / 100, Rect(0, h / 2, w, h / 2));
+		dst->Blit(0, (h / 2) * percentage / 100, *screen1, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100), 255);
+		dst->Blit(0, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(0, 0, w, h / 2), 255);
+		dst->Blit(0, h - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2, w, h / 2), 255);
 		break;
 	case TransitionVerticalDivision:
-		screen1->BlitScreen(0, -(h / 2) * percentage / 100, Rect(0, 0, w, h / 2));
-		screen1->BlitScreen(0, h / 2 + (h / 2) * percentage / 100, Rect(0, h / 2, w, h / 2));
-		screen2->BlitScreen(0, h / 2 - (h / 2) * percentage / 100, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100));
+		dst->Blit(0, -(h / 2) * percentage / 100, *screen1, Rect(0, 0, w, h / 2), 255);
+		dst->Blit(0, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(0, h / 2, w, h / 2), 255);
+		dst->Blit(0, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
 		break;
 	case TransitionHorizontalCombine:
-		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, h));
-		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, 0, Rect(0, 0, w / 2, h));
-		screen2->BlitScreen(w - (w / 2) * percentage / 100, 0, Rect(w / 2, 0, w / 2, h));
+		dst->Blit((w / 2) * percentage / 100, 0, *screen1, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, h), 255);
+		dst->Blit(- w / 2 + (w / 2) * percentage / 100, 0, *screen2, Rect(0, 0, w / 2, h), 255);
+		dst->Blit(w - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2, 0, w / 2, h), 255);
 		break;
 	case TransitionHorizontalDivision:
-		screen1->BlitScreen(-(w / 2) * percentage / 100, 0, Rect(0, 0, w / 2, h));
-		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, 0, Rect(w / 2, 0, w / 2, h));
-		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, 0, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h));
+		dst->Blit(-(w / 2) * percentage / 100, 0, *screen1, Rect(0, 0, w / 2, h), 255);
+		dst->Blit(w / 2 + (w / 2) * percentage / 100, 0, *screen1, Rect(w / 2, 0, w / 2, h), 255);
+		dst->Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h), 255);
 		break;
 	case TransitionCrossCombine:
-		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, (h / 2) * percentage / 100));
-		screen1->BlitScreen((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, w - w * percentage / 100, (h / 2) * percentage / 100));
-		screen1->BlitScreen(0, (h / 2) * percentage / 100, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100));
-		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, Rect(0, 0, w / 2, h / 2));
-		screen2->BlitScreen(w - (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, Rect(w / 2, 0, w / 2, h / 2));
-		screen2->BlitScreen(w - (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect(w / 2, h / 2, w / 2, h / 2));
-		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect(0, h / 2, w / 2, h / 2));
+		dst->Blit((w / 2) * percentage / 100, 0, *screen1, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, (h / 2) * percentage / 100), 255);
+		dst->Blit((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, w - w * percentage / 100, (h / 2) * percentage / 100), 255);
+		dst->Blit(0, (h / 2) * percentage / 100, *screen1, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100), 255);
+		dst->Blit(- w / 2 + (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(0, 0, w / 2, h / 2), 255);
+		dst->Blit(w - (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(w / 2, 0, w / 2, h / 2), 255);
+		dst->Blit(w - (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen2, Rect(w / 2, h / 2, w / 2, h / 2), 255);
+		dst->Blit(- w / 2 + (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2, w / 2, h / 2), 255);
 		break;
 	case TransitionCrossDivision:
-		screen1->BlitScreen(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, Rect(0, 0, w / 2, h / 2));
-		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, Rect(w / 2, 0, w / 2, h / 2));
-		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(w / 2, h / 2, w / 2, h / 2));
-		screen1->BlitScreen(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(0, h / 2, w / 2, h / 2));
-		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, 0, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100));
-		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100));
-		screen2->BlitScreen(0, h / 2 - (h / 2) * percentage / 100, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100));
+		dst->Blit(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen1, Rect(0, 0, w / 2, h / 2), 255);
+		dst->Blit(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen1, Rect(w / 2, 0, w / 2, h / 2), 255);
+		dst->Blit(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
+		dst->Blit(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(0, h / 2, w / 2, h / 2), 255);
+		dst->Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100), 255);
+		dst->Blit(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100), 255);
+		dst->Blit(0, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
 		break;
 	case TransitionZoomIn:
 		break;
