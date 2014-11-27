@@ -2,8 +2,8 @@
 <app version="1">
   <name>EasyRPG Player</name>
   <coder>EasyRPG Team</coder>
-  <version>0.2.1</version>
-  <release_date>20140701000000</release_date>
+  <version>0.2.2</version>
+  <release_date>20141127000000</release_date>
   <short_description>RPG Maker 2000/2003 player</short_description>
   <long_description>EasyRPG is a Role Playing Game interpreter for playing games created by the RPG Maker 2000/2003.
 
