@@ -293,29 +293,6 @@ public:
 	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, int opacity);
 
 	/**
-	 * Blits source bitmap scaled, rotated and translated.
-	 *
-	 * @param dst_rect destination rectangle.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param angle rotation angle (positive is clockwise).
-	 * @param scale_x scaled width.
-	 * @param scale_y scaled height.
-	 * @param src_pos_x source origin x.
-	 * @param src_pos_y source origin y.
-	 * @param dst_pos_x destination origin x.
-	 * @param dst_pos_y destination origin y.
-	 * @param opacity opacity.
-	 */
-	void TransformBlit(Rect const& dst_rect,
-							   Bitmap const& src, Rect const& src_rect,
-							   double angle,
-							   double scale_x, double scale_y,
-							   int src_pos_x, int src_pos_y,
-							   int dst_pos_x, int dst_pos_y,
-							   int opacity);
-
-	/**
 	 * Blits source bitmap with waver effect.
 	 *
 	 * @param x x position.
@@ -365,20 +342,6 @@ public:
 	 * @param hue hue change, degrees.
 	 */
 	void HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue);
-
-	/**
-	 * Adjusts bitmap HSL colors.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param h hue change, degrees.
-	 * @param s saturation scale.
-	 * @param l luminance scale.
-	 * @param lo luminance offset.
-	 */
-	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s, double l, double lo);
 
 	/**
 	 * Adjusts bitmap tone.
@@ -482,6 +445,22 @@ public:
 							 const Tone& tone,
 							 double zoom_x, double zoom_y, double angle,
 							 int waver_depth, double waver_phase);
+
+	/**
+	 * Blits source bitmap with tone, opacity and scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param opacity opacity.
+	 * @param tone tone.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 */
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
+						   int opacity, const Tone& tone,
+						   double zoom_x, double zoom_y);
 
 private:
 	/**

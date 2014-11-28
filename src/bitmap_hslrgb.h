@@ -54,20 +54,17 @@ static inline void HSL_to_RGB(const int& h, const int& s, const int& l,
 	}
 }
 
-static inline void HSL_adjust(int& h, int& s, int& l,
-							  int hue, int sat, int lmul, int loff) {
+static inline void HSL_adjust(int& h, int& s, int& l, int hue) {
 	h += hue;
 	if (h > 0x600) h -= 0x600;
-	s = s * sat / 0x100;
 	if (s > 0xFF) s = 0xFF;
-	l = l * lmul / 0x100 + loff;
 	l = (l > 0xFF) ? 0xFF : (l < 0) ? 0 : l;
 }
 
 static inline void RGB_adjust_HSL(uint8_t& r, uint8_t& g, uint8_t& b,
-								  int hue, int sat, int lmul, int loff) {
+								  int hue) {
 	int h, s, l;
 	RGB_to_HSL(r, g, b, h, s, l);
-	HSL_adjust(h, s, l, hue, sat, lmul, loff);
+	HSL_adjust(h, s, l, hue);
 	HSL_to_RGB(h, s, l, r, g, b);
 }

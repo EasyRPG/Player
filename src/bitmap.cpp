@@ -193,31 +193,7 @@ BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const D
 	return EASYRPG_MAKE_SHARED<Bitmap>(pixels, width, height, pitch, format);
 }
 
-void Bitmap::TransformBlit(Rect const& dst_rect_,
-							Bitmap const& src, Rect const& src_rect,
-							double angle,
-							double scale_x, double scale_y,
-							int src_pos_x, int src_pos_y,
-							int dst_pos_x, int dst_pos_y,
-							int opacity) {
-	Matrix fwd = Matrix::Setup(angle, scale_x, scale_y,
-							   src_pos_x, src_pos_y,
-							   dst_pos_x, dst_pos_y);
-	Matrix inv = fwd.Inverse();
-
-	Rect rect = TransformRectangle(fwd, src_rect);
-	Rect dst_rect = dst_rect_; dst_rect.Adjust(rect);
-	if (dst_rect.IsEmpty())
-		return;
-
-	TransformBlit(dst_rect, src, src_rect, inv, opacity);
-}
-
-void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue) {
-	HSLBlit(x, y, src, src_rect, hue, 1, 1, 0);
-}
-
-void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double h, double s, double l, double lo) {
+void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double hue_) {
 	Rect dst_rect(x, y, 0, 0), src_rect = src_rect_;
 
 	if (!Rect::AdjustRectangles(src_rect, dst_rect, src.GetRect()))
@@ -225,11 +201,7 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	int hue  = (int) (h / 60.0 * 0x100);
-	int sat  = (int) (s * 0x100);
-	int lum  = (int) (l * 0x100);
-	int loff = (int) (lo * 0x100);
-
+	int hue  = (int) (hue_ / 60.0 * 0x100);
 	if (hue < 0)
 		hue += ((-hue + 0x5FF) / 0x600) * 0x600;
 	else if (hue > 0x600)
@@ -248,7 +220,7 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 		uint8_t b = (pixel>> 8) & 0xFF;
 		uint8_t a = pixel & 0xFF;
 		if (a > 0)
-			RGB_adjust_HSL(r, g, b, hue, sat, lum, loff);
+			RGB_adjust_HSL(r, g, b, hue);
 		*p = ((uint32_t) r << 24) | ((uint32_t) g << 16) | ((uint32_t) b << 8) | (uint32_t) a;
 	}
 

@@ -85,9 +85,8 @@ void BattleAnimation::Draw() {
 		DisplayUi->GetDisplaySurface()->EffectsBlit(
 			x + cell.x - zoomed / 2, y + cell.y - zoomed / 2,
 			*screen, src_rect, 
-			opacity, 0, 0, tone,
-			zoom, zoom, 0.0,
-			0, 0.0);
+			opacity, tone,
+			zoom, zoom);
 	}
 }
 
