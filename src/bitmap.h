@@ -162,8 +162,6 @@ public:
 
 	TileOpacity GetTileOpacity(int row, int col);
 
-	bool IsAttachedToBitmapScreen();
-
 	/**
 	 * Writes PNG converted bitmap to output stream.
 	 *
@@ -188,16 +186,12 @@ protected:
 	uint32_t GetUint32Color(uint8_t r, uint8_t  g, uint8_t b, uint8_t a) const;
 	void GetColorComponents(uint32_t color, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &a) const;
 
-	void AttachBitmapScreen(BitmapScreen* bitmap);
-	void DetachBitmapScreen(BitmapScreen* bitmap);
-
 	TileOpacity CheckOpacity(Rect const& rect);
 
 	void CheckPixels(uint32_t flags);
 
 	DynamicFormat format;
 
-	std::list<BitmapScreen*> attached_screen_bitmaps;
 	typedef EASYRPG_ARRAY<EASYRPG_ARRAY<TileOpacity, 30>, 16> opacity_type;
 	boost::scoped_ptr<opacity_type> opacity;
 
@@ -626,7 +620,6 @@ public:
 
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	friend class BitmapScreen;
 
 #ifdef USE_SDL
 	friend class SdlUi;
@@ -636,7 +629,6 @@ protected:
 	FontRef font;
 
 	void RefreshCallback();
-
 	bool editing;
 public:
 	Bitmap(int width, int height, bool transparent);

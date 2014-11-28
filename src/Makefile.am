@@ -33,8 +33,6 @@ easyrpg_player_SOURCES = \
 	bitmap.cpp \
 	bitmap.h \
 	bitmap_hslrgb.h \
-	bitmap_screen.cpp \
-	bitmap_screen.h \
 	cache.cpp \
 	cache.h \
 	color.cpp \

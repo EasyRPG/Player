@@ -26,7 +26,6 @@
 #include "utils.h"
 #include "cache.h"
 #include "bitmap.h"
-#include "bitmap_screen.h"
 #include "text.h"
 #include "filefinder.h"
 #include "options.h"
@@ -85,18 +84,6 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 							 0, 0, 0, 0, 0, 0, width, height);
 
 	return ImagePNG::WritePNG(os, width, height, &data.front());
-}
-
-void Bitmap::AttachBitmapScreen(BitmapScreen* bitmap) {
-	attached_screen_bitmaps.push_back(bitmap);
-}
-
-void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
-	attached_screen_bitmaps.remove(bitmap);
-}
-
-bool Bitmap::IsAttachedToBitmapScreen() {
-	return !attached_screen_bitmaps.empty();
 }
 
 int Bitmap::GetWidth() const {
@@ -230,13 +217,6 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 }
 
 void Bitmap::RefreshCallback() {
-	if (editing) return;
-
-	std::list<BitmapScreen*>::iterator it;
-
-	for (it = attached_screen_bitmaps.begin(); it != attached_screen_bitmaps.end(); ++it) {
-		(*it)->SetDirty();
-	}
 }
 
 FontRef const& Bitmap::GetFont() const {
