@@ -87,16 +87,6 @@ public:
 	void BlitScreen(int x, int y, Rect const& src_rect);
 
 	/**
-	 * Blits the bitmap to the screen.
-	 *
-	 * @param src_rect source bitmap rect.
-	 * @param dst_rect screen destination rect.
-	 * @param ox tile start x offset.
-	 * @param oy tile start y offset.
-	 */
-	void BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy);
-
-	/**
 	 * Clears all effects data.
 	 */
 	void ClearEffects();
@@ -324,12 +314,9 @@ protected:
 	BitmapRef Refresh(Rect& rect, bool& need_scale);
 
 	BitmapRef bitmap_effects;
-	BitmapRef bitmap_scale;
 
 	Rect bitmap_effects_src_rect;
-	Rect bitmap_scale_src_rect;
 	bool bitmap_effects_valid;
-	bool bitmap_scale_valid;
 
 	Tone current_tone;
 	Color current_flash;

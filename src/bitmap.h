@@ -403,17 +403,6 @@ public:
 	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
 
 	/**
-	 * Changes the opacity of a bitmap.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param opacity the maximum opacity.
-	 */
-	void OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity);
-
-	/**
 	 * Flips the bitmap pixels.
 	 *
 	 * @param dst_rect the rectangle to flip.
@@ -494,6 +483,7 @@ public:
 							 double zoom_x, double zoom_y, double angle,
 							 int waver_depth, double waver_phase);
 
+private:
 	/**
 	 * Blits source bitmap with transformation and opacity scaling.
 	 *
@@ -573,6 +563,7 @@ public:
 							 int opacity,
 							 int waver_depth, double waver_phase);
 
+public:
 	/**
 	 * Draws text to bitmap.
 	 *

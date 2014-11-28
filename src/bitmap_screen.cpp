@@ -35,8 +35,7 @@ BitmapScreenRef BitmapScreen::Create() {
 
 BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	bitmap(bitmap),
-	bitmap_effects_valid(false),
-	bitmap_scale_valid(false) {
+	bitmap_effects_valid(false) {
 
 	ClearEffects();
 	bitmap_changed = true;
@@ -49,7 +48,6 @@ BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	current_flash = flash_effect;
 
 	bitmap_effects_src_rect = Rect();
-	bitmap_scale_src_rect = Rect();
 
 	if (bitmap) {
 		src_rect_effect = bitmap->GetRect();
@@ -81,52 +79,6 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 
 	if(draw_bitmap) {
 		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_effect);
-	}
-}
-
-void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
-	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
-		return;
-
-	Rect rect = src_rect_effect.GetSubRect(src_rect);
-
-	bool need_scale = false;
-	BitmapRef draw_bitmap = Refresh(rect, need_scale);
-
-	bitmap_changed = false;
-	needs_refresh = false;
-
-	int width = rect.width;
-	int height = rect.height;
-
-	if (need_scale) {
-		width  = (int)(width  * zoom_x_effect);
-		height = (int)(height * zoom_y_effect);
-	}
-
-	if (ox > 0)
-		ox -= width * ((ox + width - 1) / width);
-	else if (ox < 0)
-		ox += width * (ox / width);
-
-	if (oy > 0)
-		oy -= height * ((oy + height - 1) / height);
-	else if (oy < 0)
-		oy += height * (oy / height);
-
-	int x0 = dst_rect.x + ox;
-	int y0 = dst_rect.y + oy;
-	int x1 = dst_rect.x + dst_rect.width;
-	int y1 = dst_rect.y + dst_rect.height;
-	for (int y = y0; y < y1; y += height) {
-		for (int x = x0; x < x1; x += width) {
-			Rect blit_rect = rect;
-			if (y + blit_rect.height > y1)
-				blit_rect.height = y1 - y;
-			if (x + blit_rect.width > x1)
-				blit_rect.width = x1 - x;
-			BlitScreenIntern(*draw_bitmap, x, y, blit_rect, need_scale, 0);
-		}
 	}
 }
 
@@ -362,7 +314,6 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
 
 	if (effects_changed || effects_rect_changed || bitmap_changed) {
 		bitmap_effects_valid = false;
-		bitmap_scale_valid = false;
 	}
 
 	if (no_effects && no_zoom)

@@ -918,44 +918,6 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 	RefreshCallback();
 }
 
-void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
-	if (opacity == 255) {
-		if (&src != this)
-			Blit(x, y, src, src_rect, opacity);
-		return;
-	}
-
-	if (&src == this) {
-		pixman_color_t pcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		pixman_rectangle16_t rect = {
-			static_cast<int16_t>(src_rect.x),
-			static_cast<int16_t>(src_rect.y),
-			static_cast<uint16_t>(src_rect.width),
-			static_cast<uint16_t>(src_rect.height)
-		};
-
-		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, bitmap, &pcolor, 1, &rect);
-	}
-	else {
-		if (opacity > 255)
-			opacity = 255;
-
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		pixman_image_t* mask = pixman_image_create_solid_fill(&tcolor);
-
-		pixman_image_composite32(PIXMAN_OP_OVER,
-								 src.bitmap, mask, bitmap,
-								 src_rect.x, src_rect.y,
-								 0, 0,
-								 x, y,
-								 src_rect.width, src_rect.height);
-
-		pixman_image_unref(mask);
-	}
-
-	RefreshCallback();
-}
-
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
