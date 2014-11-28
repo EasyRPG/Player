@@ -162,8 +162,6 @@ public:
 
 	TileOpacity GetTileOpacity(int row, int col);
 
-	bool IsAttachedToBitmapScreen();
-
 	/**
 	 * Writes PNG converted bitmap to output stream.
 	 *
@@ -188,16 +186,12 @@ protected:
 	uint32_t GetUint32Color(uint8_t r, uint8_t  g, uint8_t b, uint8_t a) const;
 	void GetColorComponents(uint32_t color, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &a) const;
 
-	void AttachBitmapScreen(BitmapScreen* bitmap);
-	void DetachBitmapScreen(BitmapScreen* bitmap);
-
 	TileOpacity CheckOpacity(Rect const& rect);
 
 	void CheckPixels(uint32_t flags);
 
 	DynamicFormat format;
 
-	std::list<BitmapScreen*> attached_screen_bitmaps;
 	typedef EASYRPG_ARRAY<EASYRPG_ARRAY<TileOpacity, 30>, 16> opacity_type;
 	boost::scoped_ptr<opacity_type> opacity;
 
@@ -293,29 +287,6 @@ public:
 	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, int opacity);
 
 	/**
-	 * Blits source bitmap scaled, rotated and translated.
-	 *
-	 * @param dst_rect destination rectangle.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param angle rotation angle (positive is clockwise).
-	 * @param scale_x scaled width.
-	 * @param scale_y scaled height.
-	 * @param src_pos_x source origin x.
-	 * @param src_pos_y source origin y.
-	 * @param dst_pos_x destination origin x.
-	 * @param dst_pos_y destination origin y.
-	 * @param opacity opacity.
-	 */
-	void TransformBlit(Rect const& dst_rect,
-							   Bitmap const& src, Rect const& src_rect,
-							   double angle,
-							   double scale_x, double scale_y,
-							   int src_pos_x, int src_pos_y,
-							   int dst_pos_x, int dst_pos_y,
-							   int opacity);
-
-	/**
 	 * Blits source bitmap with waver effect.
 	 *
 	 * @param x x position.
@@ -367,20 +338,6 @@ public:
 	void HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue);
 
 	/**
-	 * Adjusts bitmap HSL colors.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param h hue change, degrees.
-	 * @param s saturation scale.
-	 * @param l luminance scale.
-	 * @param lo luminance offset.
-	 */
-	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s, double l, double lo);
-
-	/**
 	 * Adjusts bitmap tone.
 	 *
 	 * @param x x position.
@@ -401,17 +358,6 @@ public:
 	 * @param color color to apply.
 	 */
 	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
-
-	/**
-	 * Changes the opacity of a bitmap.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param opacity the maximum opacity.
-	 */
-	void OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity);
 
 	/**
 	 * Flips the bitmap pixels.
@@ -495,6 +441,23 @@ public:
 							 int waver_depth, double waver_phase);
 
 	/**
+	 * Blits source bitmap with tone, opacity and scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param opacity opacity.
+	 * @param tone tone.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 */
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
+						   int opacity, const Tone& tone,
+						   double zoom_x, double zoom_y);
+
+private:
+	/**
 	 * Blits source bitmap with transformation and opacity scaling.
 	 *
 	 * @param fwd forward (src->dst) transformation matrix.
@@ -573,6 +536,7 @@ public:
 							 int opacity,
 							 int waver_depth, double waver_phase);
 
+public:
 	/**
 	 * Draws text to bitmap.
 	 *
@@ -656,7 +620,6 @@ public:
 
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	friend class BitmapScreen;
 
 #ifdef USE_SDL
 	friend class SdlUi;
@@ -666,7 +629,6 @@ protected:
 	FontRef font;
 
 	void RefreshCallback();
-
 	bool editing;
 public:
 	Bitmap(int width, int height, bool transparent);

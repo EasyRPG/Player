@@ -70,7 +70,7 @@ public:
 	void SetFlipY(bool flipy);
 	int GetBushDepth() const;
 	void SetBushDepth(int bush_depth);
-	int GetOpacity() const;
+	int GetOpacity(int which = 0) const;
 	void SetOpacity(int top_opacity, int bottom_opacity = -1);
 	int GetBlendType() const;
 	void SetBlendType(int blend_type);
@@ -89,7 +89,6 @@ private:
 	DrawableType type;
 
 	BitmapRef bitmap;
-	BitmapScreenRef bitmap_screen;
 
 	Rect src_rect;
 	bool visible;
@@ -102,6 +101,43 @@ private:
 	Color flash_color;
 	int flash_duration;
 	int flash_frame;
+
+	bool needs_refresh;
+	bool bitmap_changed;
+
+	Rect src_rect_effect;
+	int opacity_top_effect;
+	int opacity_bottom_effect;
+	int bush_effect;
+	Tone tone_effect;
+	bool flipx_effect;
+	bool flipy_effect;
+	double zoom_x_effect;
+	double zoom_y_effect;
+	double angle_effect;
+	int blend_type_effect;
+	Color blend_color_effect;
+	int waver_effect_depth;
+	double waver_effect_phase;
+	Color flash_effect;
+
+	BitmapRef bitmap_effects;
+
+	Rect bitmap_effects_src_rect;
+	bool bitmap_effects_valid;
+
+	Tone current_tone;
+	Color current_flash;
+	double current_zoom_x;
+	double current_zoom_y;
+	bool current_flip_x;
+	bool current_flip_y;
+
+	void BlitScreen(int x, int y, Rect const& src_rect);
+	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
+							Rect const& src_rect, bool need_scale, int opacity_split);
+	BitmapRef Refresh(Rect& rect, bool& need_scale);
+	void SetFlashEffect(const Color &color);
 };
 
 #endif

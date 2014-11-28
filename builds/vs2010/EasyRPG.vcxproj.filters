@@ -64,9 +64,6 @@
     <ClCompile Include="..\..\src\bitmap.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\bitmap_screen.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\color.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
@@ -445,9 +442,6 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap.h">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\bitmap_screen.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\color.h">

@@ -51,11 +51,9 @@ typedef uint32_t wchar_t;
 #endif
 
 class Bitmap;
-class BitmapScreen;
 class Font;
 
 typedef EASYRPG_SHARED_PTR<Bitmap> BitmapRef;
-typedef EASYRPG_SHARED_PTR<BitmapScreen> BitmapScreenRef;
 typedef EASYRPG_SHARED_PTR<Font> FontRef;
 
 #endif // _MEMORY_MANAGEMENT_H_

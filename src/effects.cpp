@@ -150,3 +150,38 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 					top_opacity, bottom_opacity, opacity_split,
 					waver_depth, waver_phase);
 }
+
+// Tone, Zoom, Single Opacity
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
+						   int opacity, const Tone& tone,
+						   double zoom_x, double zoom_y) {
+	Rect src_rect = src_rect_;
+	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
+	bool tone_change = tone != Tone();
+
+	Bitmap const* draw = &src;
+	BitmapRef draw_;
+
+	if (tone_change) {
+		if (!scale && opacity < 255) {
+			ToneBlit(x, y, src, src_rect, tone);
+			return;
+		}
+
+		bool transparent = src.GetTransparent();
+		draw_ = Create(src_rect.width, src_rect.height, transparent);
+		if (transparent)
+			draw_->Clear();
+		draw_->ToneBlit(0, 0, src, src_rect, tone);
+		draw = draw_.get();
+		src_rect.x = 0;
+		src_rect.y = 0;
+	}
+
+	if (scale) {
+		Rect dst_rect(x, y, src_rect.width * zoom_x, src_rect.height * zoom_y);
+		StretchBlit(dst_rect, *draw, src_rect, opacity);
+	}
+	else
+		Blit(x, y, *draw, src_rect, opacity);
+}
