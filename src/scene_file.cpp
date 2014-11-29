@@ -29,6 +29,7 @@
 #include "player.h"
 #include "rpg_save.h"
 #include "scene_file.h"
+#include "bitmap.h"
 
 Scene_File::Scene_File(std::string message) :
 	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
@@ -37,7 +38,7 @@ Scene_File::Scene_File(std::string message) :
 }
 
 void Scene_File::Start() {
-	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));

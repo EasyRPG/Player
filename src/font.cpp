@@ -302,7 +302,7 @@ bool FTFont::check_face() {
 
 void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, unsigned code) {
 	if(color != ColorShadow) {
-		Render(bmp, x + 1, y + 1, Cache::system_info.sh_color, code);
+		Render(bmp, x + 1, y + 1, Cache::System()->GetShadowColor(), code);
 	}
 
 	BitmapRef bm = Glyph(code);

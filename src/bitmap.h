@@ -170,6 +170,22 @@ public:
 	 */
 	bool WritePNG(std::ostream& os) const;
 
+	/**
+	 * Gets the background color
+	 * Bitmap must have been loaded with the Bitmap::System flag
+	 *
+	 * @return background color.
+	 */
+	Color GetBackgroundColor();
+
+	/**
+	 * Gets the shadow color
+	 * Bitmap must have been loaded with the Bitmap::System flag
+	 *
+	 * @return shadow color.
+	 */
+	Color GetShadowColor();
+
 protected:
 	Bitmap();
 
@@ -194,6 +210,7 @@ protected:
 
 	typedef EASYRPG_ARRAY<EASYRPG_ARRAY<TileOpacity, 30>, 16> opacity_type;
 	boost::scoped_ptr<opacity_type> opacity;
+	Color bg_color, sh_color;
 
 	void InitBitmap();
 

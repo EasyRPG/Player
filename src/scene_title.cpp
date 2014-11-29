@@ -77,7 +77,7 @@ void Scene_Title::TransitionIn() {
 		if (!Player::hide_title_flag) {
 			Graphics::Transition(Graphics::TransitionFadeIn, 32);
 		} else {
-			DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+			DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 			Graphics::Transition(Graphics::TransitionFadeIn, 6);
 		}
 	}

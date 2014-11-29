@@ -31,6 +31,7 @@
 #include "bitmap.h"
 #include "output.h"
 #include "player.h"
+#include "data.h"
 
 namespace {
 
@@ -42,6 +43,8 @@ namespace {
 
 	typedef std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles_type;
 	cache_tiles_type cache_tiles;
+
+	static std::string system_name;
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
 						 bool transparent, uint32_t const flags) {
@@ -163,8 +166,6 @@ namespace {
 	}
 }
 
-tSystemInfo Cache::system_info;
-
 #define macro(r, data, elem) \
 	BitmapRef Cache::elem(const std::string& f) { \
 		bool trans = spec[Material::elem].transparent; \
@@ -240,4 +241,21 @@ void Cache::Clear() {
 					  i->first.first.c_str(), i->first.second);
 	}
 	cache_tiles.clear();
+}
+
+void Cache::SetSystemName(std::string const& filename) {
+	system_name = filename;
+}
+
+BitmapRef Cache::System() {
+	if (!system_name.empty()) {
+		return Cache::System(system_name);
+	} else {
+		if (!Data::system.system_name.empty()) {
+			// Load the system file for the shadow and text color
+			return Cache::System(Data::system.system_name);
+		} else {
+			return Bitmap::Create(160, 80, false);
+		}
+	}
 }

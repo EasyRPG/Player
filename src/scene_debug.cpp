@@ -30,13 +30,14 @@
 #include "window_command.h"
 #include "window_varlist.h"
 #include "window_numberinput.h"
+#include "bitmap.h"
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
 }
 
 void Scene_Debug::Start() {
-	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 
 	current_var_type = TypeSwitch;
 	range_index = 0;

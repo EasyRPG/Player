@@ -25,14 +25,6 @@
 #include "color.h"
 
 /**
- *Structs
- */
-typedef struct {
-	Color bg_color;
-	Color sh_color;
-} tSystemInfo;
-
-/**
  * Cache namespace.
  */
 namespace Cache {
@@ -56,7 +48,8 @@ namespace Cache {
 	BitmapRef Tile(const std::string& filename, int tile_id);
 	void Clear();
 
-	extern tSystemInfo system_info;
+	BitmapRef System();
+	void SetSystemName(std::string const& filename);
 }
 
 #endif

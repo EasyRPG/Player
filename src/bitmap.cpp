@@ -140,9 +140,9 @@ void Bitmap::CheckPixels(uint32_t flags) {
 		uint32_t pixel;
 		Bitmap bmp(reinterpret_cast<void*>(&pixel), 1, 1, 4, format);
 		bmp.Blit(0, 0, *this, Rect(0, 32, 1, 1), 255);
-		Cache::system_info.bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
+		bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
 		bmp.Blit(0, 0, *this, Rect(16, 32, 1, 1), 255);
-		Cache::system_info.sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
+		sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
 	}
 
 	if (flags & Chipset) {
@@ -158,6 +158,14 @@ void Bitmap::CheckPixels(uint32_t flags) {
 
 Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
 	return opacity? (*opacity)[row][col] : Partial;
+}
+
+Color Bitmap::GetBackgroundColor() {
+	return bg_color;
+}
+
+Color Bitmap::GetShadowColor() {
+	return sh_color;
 }
 
 int Bitmap::bytes() const {
