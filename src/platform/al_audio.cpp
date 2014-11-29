@@ -570,6 +570,16 @@ void ALAudio::ME_Fade(int fade) {
 }
 
 void ALAudio::SE_Play(std::string const &file, int volume, int pitch) {
+
+	if (file == "(OFF)" || file == "(Brak)")
+		return;
+
+	std::string const path = FileFinder::FindSound(file);
+	if (path.empty()) {
+		Output::Warning("Sound not found: %s", file.c_str());
+		return;
+	}
+
 	SET_CONTEXT(ctx_);
 
 	EASYRPG_SHARED_PTR<source> src = create_source(false);
