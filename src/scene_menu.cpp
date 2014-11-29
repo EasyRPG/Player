@@ -34,6 +34,7 @@
 #include "scene_order.h"
 #include "scene_save.h"
 #include "scene_status.h"
+#include "bitmap.h"
 
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
@@ -41,7 +42,7 @@ Scene_Menu::Scene_Menu(int menu_index) :
 }
 
 void Scene_Menu::Start() {
-	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 
 	CreateCommandWindow();
 

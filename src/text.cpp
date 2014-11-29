@@ -55,17 +55,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	text_surface->SetTransparentColor(dest.GetTransparentColor());
 	text_surface->Clear();
 
-	BitmapRef system;
-	if (!Game_System::GetSystemName().empty()) {
-		system = Cache::System(Game_System::GetSystemName());
-	} else {
-		if (!Data::system.system_name.empty()) {
-			// Load the system file for the shadow and text color
-			system = Cache::System(Data::system.system_name);
-		} else {
-			system = Bitmap::Create(160, 80, false);
-		}
-	}
+	BitmapRef system = Cache::System();
 
 	// Where to draw the next glyph (x pos)
 	int next_glyph_pos = 0;

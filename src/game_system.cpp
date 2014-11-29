@@ -20,6 +20,7 @@
 #include "audio.h"
 #include "graphics.h"
 #include "main_data.h"
+#include "cache.h"
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
 
@@ -75,6 +76,7 @@ std::string Game_System::GetSystemName() {
 
 void Game_System::SetSystemName(std::string const& new_system_name) {
 	data.graphics_name = new_system_name;
+	Cache::SetSystemName(new_system_name);
 }
 
 RPG::Music& Game_System::GetSystemBGM(int which) {
