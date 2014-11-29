@@ -240,6 +240,10 @@ void SdlAudio::ME_Fade(int fade) {
 }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
+
+	if (file == "(OFF)" || file == "(Brak)")
+		return;
+
 	std::string const path = FileFinder::FindSound(file);
 	if (path.empty()) {
 		Output::Warning("Sound not found: %s", file.c_str());
