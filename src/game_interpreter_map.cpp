@@ -67,12 +67,15 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 	list.clear();
 }
 
-bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
-	if (index < (int)save.size()) {
-		Setup(save[index].commands, _event_id);
-		this->index = save[index].current_command;
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int _index) {
+	if (_index < (int)save.size()) {
+		map_id = Game_Map::GetMapId();
+		event_id = _event_id;
+		list = save[_index].commands;
+		index = save[_index].current_command;
+
 		child_interpreter.reset(new Game_Interpreter_Map());
-		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, index + 1);
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, _index + 1);
 		if (!result) {
 			child_interpreter.reset();
 		}
