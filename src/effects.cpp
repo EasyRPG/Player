@@ -100,40 +100,18 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 				waver_depth, waver_phase);
 }
 
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
-						   const Tone& tone,
 						   double zoom_x, double zoom_y, double angle,
 						   int waver_depth, double waver_phase) {
-	Rect src_rect = src_rect_;
 	bool rotate = angle != 0.0;
 	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
 	bool waver = waver_depth != 0;
-	bool tone_change = tone != Tone();
 	bool opacity =
 		(opacity_split <= 0) ? (top_opacity < 255) :
 		(opacity_split >= src_rect.height) ? (bottom_opacity < 255) :
 		(top_opacity < 255 || bottom_opacity < 255);
 	opacity = top_opacity < 255 || bottom_opacity < 255;
-
-	Bitmap const* draw = &src;
-	BitmapRef draw_;
-
-	if (tone_change) {
-		if (!rotate && !scale && !opacity && !waver) {
-			ToneBlit(x, y, src, src_rect, tone);
-			return;
-		}
-
-		bool transparent = src.GetTransparent();
-		draw_ = Create(src_rect.width, src_rect.height, transparent);
-		if (transparent)
-			draw_->Clear();
-		draw_->ToneBlit(0, 0, src, src_rect, tone);
-		draw = draw_.get();
-		src_rect.x = 0;
-		src_rect.y = 0;
-	}
 
 	if (rotate) {
 		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y,
@@ -141,12 +119,12 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 			x + src_rect.width * zoom_x / 2, y + src_rect.height * zoom_y / 2);
 		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
 	} else if (scale)
-		EffectsBlit(x, y, *draw, src_rect,
+		EffectsBlit(x, y, src, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					zoom_x, zoom_y,
 					waver_depth, waver_phase);
 	else
-		EffectsBlit(x, y, *draw, src_rect,
+		EffectsBlit(x, y, src, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					waver_depth, waver_phase);
 }

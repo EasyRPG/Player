@@ -453,7 +453,6 @@ public:
 	 */
 	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
-							 const Tone& tone,
 							 double zoom_x, double zoom_y, double angle,
 							 int waver_depth, double waver_phase);
 
