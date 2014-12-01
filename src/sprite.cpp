@@ -55,8 +55,6 @@ Sprite::Sprite() :
 	flash_effect(Color(0,0,0,0)),
 
 	current_tone(Tone()),
-	current_zoom_x(1.0),
-	current_zoom_y(1.0),
 	current_flip_x(false),
 	current_flip_y(false),
 	current_flash(Color(0,0,0,0)) {
@@ -83,26 +81,25 @@ void Sprite::BlitScreen(int x, int y, Rect const& src_rect) {
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
 
-	bool need_scale = false;
-	BitmapRef draw_bitmap = Refresh(rect, need_scale);
+	BitmapRef draw_bitmap = Refresh(rect);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
 	if(draw_bitmap) {
-		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_effect);
+		BlitScreenIntern(*draw_bitmap, x, y, rect, bush_effect);
 	}
 }
 
 void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
-								Rect const& src_rect, bool need_scale, int opacity_split) {
+								Rect const& src_rect, int opacity_split) {
 	if (! &draw_bitmap)
 		return;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
-	double zoom_x = need_scale ? zoom_x_effect : 1.0;
-	double zoom_y = need_scale ? zoom_y_effect : 1.0;
+	double zoom_x = zoom_x_effect;
+	double zoom_y = zoom_y_effect;
 
 	dst->EffectsBlit(x, y, draw_bitmap, src_rect,
 					 opacity_top_effect, opacity_bottom_effect, opacity_split,
@@ -110,8 +107,7 @@ void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 					 waver_effect_depth, waver_effect_phase);
 }
 
-BitmapRef Sprite::Refresh(Rect& rect, bool& need_scale) {
-	need_scale = false;
+BitmapRef Sprite::Refresh(Rect& rect) {
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
@@ -122,23 +118,20 @@ BitmapRef Sprite::Refresh(Rect& rect, bool& need_scale) {
 	bool no_flash = flash_effect.alpha == 0;
 	bool no_flip = !flipx_effect && !flipy_effect;
 	bool no_effects = no_tone && no_flash && no_flip;
-	bool no_zoom = zoom_x_effect == 1.0 && zoom_y_effect == 1.0;
 	bool effects_changed = tone_effect != current_tone ||
 		flash_effect != current_flash ||
 		flipx_effect != current_flip_x ||
 		flipy_effect != current_flip_y;
 	bool effects_rect_changed = rect != bitmap_effects_src_rect;
-	bool zoom_changed = zoom_x_effect != current_zoom_x ||
-    	zoom_y_effect != current_zoom_y;
 
 	if (effects_changed || effects_rect_changed || bitmap_changed) {
 		bitmap_effects_valid = false;
 	}
 
-	if (no_effects && no_zoom)
+	if (no_effects)
 		return bitmap;
 
-	if (bitmap_effects && bitmap_effects_valid && no_zoom)
+	if (bitmap_effects && bitmap_effects_valid)
 		return bitmap_effects;
 
 	BitmapRef src_bitmap;
@@ -192,13 +185,6 @@ BitmapRef Sprite::Refresh(Rect& rect, bool& need_scale) {
 
 		src_bitmap = bitmap_effects;
 	}
-
-	if (no_zoom && !zoom_changed)
-		return src_bitmap;
-
-	current_zoom_x = zoom_x_effect;
-	current_zoom_y = zoom_y_effect;
-	need_scale = true;
 
 	return src_bitmap;
 }
@@ -325,20 +311,14 @@ double Sprite::GetZoomX() const {
 	return zoom_x_effect;
 }
 void Sprite::SetZoomX(double zoom_x) {
-	if (zoom_x_effect != zoom_x) {
-		zoom_x_effect = zoom_x;
-		needs_refresh = true;
-	}
+	zoom_x_effect = zoom_x;
 }
 
 double Sprite::GetZoomY() const {
 	return zoom_y_effect;
 }
 void Sprite::SetZoomY(double zoom_y) {
-	if (zoom_y_effect != zoom_y) {
-		zoom_y_effect = zoom_y;
-		needs_refresh = true;
-	}
+	zoom_y_effect = zoom_y;
 }
 
 double Sprite::GetAngle() const {
@@ -346,10 +326,7 @@ double Sprite::GetAngle() const {
 }
 
 void Sprite::SetAngle(double angle) {
-	if (angle_effect != angle) {
-		angle_effect = angle;
-		needs_refresh = true;
-	}
+	angle_effect = angle;
 }
 
 bool Sprite::GetFlipX() const {
