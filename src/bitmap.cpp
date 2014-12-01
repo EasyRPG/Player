@@ -623,32 +623,6 @@ uint32_t Bitmap::amask() const {
 	return pixel_format.a.mask;
 }
 
-BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const {
-	BitmapRef dst(new Bitmap(scale_w, scale_h, GetTransparent()));
-
-	double zoom_x = (double)src_rect.width  / scale_w;
-	double zoom_y = (double)src_rect.height / scale_h;
-
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_double_to_fixed(zoom_x),
-								pixman_double_to_fixed(zoom_y));
-
-	pixman_image_set_transform(bitmap, &xform);
-
-	pixman_image_composite32(PIXMAN_OP_SRC,
-							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
-							 src_rect.x * scale_w / src_rect.width, src_rect.y *scale_h / src_rect.height,
-							 0, 0,
-							 0, 0,
-							 scale_w, scale_h);
-
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(bitmap, &xform);
-
-	return dst;
-}
-
 void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity < 0)
 		return;

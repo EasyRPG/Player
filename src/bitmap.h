@@ -145,15 +145,6 @@ public:
 	static const uint32_t System  = 0x80000000;
 	static const uint32_t Chipset = 0x40000000;
 
-	/**
-	 * Creates a resampled bitmap.
-	 *
-	 * @param scale_w resampled width.
-	 * @param scale_h resampled height.
-	 * @param src_rect source rect to resample.
-	 */
-	BitmapRef Resample(int scale_w, int scale_h, Rect const& src_rect) const;
-
 	enum TileOpacity {
 		Opaque,
 		Partial,
