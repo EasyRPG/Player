@@ -72,10 +72,10 @@ void Sprite::Draw() {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
-	BlitScreen(x - ox, y - oy, src_rect);
+	BlitScreen(x, y, ox, oy, src_rect);
 }
 
-void Sprite::BlitScreen(int x, int y, Rect const& src_rect) {
+void Sprite::BlitScreen(int x, int y, int ox, int oy, Rect const& src_rect) {
 	if (!bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -87,11 +87,11 @@ void Sprite::BlitScreen(int x, int y, Rect const& src_rect) {
 	needs_refresh = false;
 
 	if(draw_bitmap) {
-		BlitScreenIntern(*draw_bitmap, x, y, rect, bush_effect);
+		BlitScreenIntern(*draw_bitmap, x, y, ox, oy, rect, bush_effect);
 	}
 }
 
-void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
+void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, int oy,
 								Rect const& src_rect, int opacity_split) {
 	if (! &draw_bitmap)
 		return;
@@ -101,7 +101,7 @@ void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 	double zoom_x = zoom_x_effect;
 	double zoom_y = zoom_y_effect;
 
-	dst->EffectsBlit(x, y, draw_bitmap, src_rect,
+	dst->EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
 					 opacity_top_effect, opacity_bottom_effect, opacity_split,
 					 zoom_x, zoom_y, angle_effect * 3.14159 / 180,
 					 waver_effect_depth, waver_effect_phase);

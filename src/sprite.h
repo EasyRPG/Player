@@ -133,8 +133,8 @@ private:
 	bool current_flip_x;
 	bool current_flip_y;
 
-	void BlitScreen(int x, int y, Rect const& src_rect);
-	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
+	void BlitScreen(int x, int y, int ox, int oy, Rect const& src_rect);
+	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, int oy,
 							Rect const& src_rect, int opacity_split);
 	BitmapRef Refresh(Rect& rect);
 	void SetFlashEffect(const Color &color);

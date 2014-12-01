@@ -51,8 +51,8 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetZ(1100 + data.ID);
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
-	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * data.current_magnify / 200.0));
-	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * data.current_magnify / 200.0));
+	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
+	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() / 2));
 
 	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
