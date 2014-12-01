@@ -772,28 +772,8 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	RefreshCallback();
 }
 
-void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, int /* opacity */) {
-	pixman_transform_t xform = {{
-		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
-		{ pixman_double_to_fixed(inv.yx), pixman_double_to_fixed(inv.yy), pixman_double_to_fixed(inv.y0) },
-		{ pixman_double_to_fixed(0.0),    pixman_double_to_fixed(0.0),    pixman_double_to_fixed(1.0) }
-		}};
-
-	pixman_image_set_transform(src.bitmap, &xform);
-
-	pixman_image_composite32(PIXMAN_OP_OVER,
-							 src.bitmap, (pixman_image_t*) NULL, bitmap,
-							 dst_rect.x, dst_rect.y,
-							 0, 0,
-							 dst_rect.x, dst_rect.y,
-							 dst_rect.width, dst_rect.height);
-
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
-}
-
-void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity) {
-	if (opacity < 0)
+void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, int opacity) {
+	if (opacity <= 0)
 		return;
 
 	if (opacity > 255) opacity = 255;
@@ -806,16 +786,70 @@ void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, in
 	else
 		mask = (pixman_image_t*) NULL;
 
-	for (int i = 0; i < src_rect.height; i++) {
-		int offset = (int) (depth * (1 + sin((phase + i * 20) * 3.14159 / 180)));
+	pixman_transform_t xform = {{
+		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
+		{ pixman_double_to_fixed(inv.yx), pixman_double_to_fixed(inv.yy), pixman_double_to_fixed(inv.y0) },
+		{ pixman_double_to_fixed(0.0),    pixman_double_to_fixed(0.0),    pixman_double_to_fixed(1.0) }
+		}};
+
+	pixman_image_set_transform(src.bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_OVER,
+							 src.bitmap, mask, bitmap,
+							 dst_rect.x, dst_rect.y,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(src.bitmap, &xform);
+
+	if (mask != NULL)
+		pixman_image_unref(mask);
+}
+
+void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity) {
+	if (opacity <= 0)
+		return;
+
+	if (opacity > 255) opacity = 255;
+
+	pixman_image_t* mask;
+	if (opacity < 255) {
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
+		mask = pixman_image_create_solid_fill(&tcolor);
+	}
+	else
+		mask = (pixman_image_t*) NULL;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(1.0 / zoom_x),
+								pixman_double_to_fixed(1.0 / zoom_y));
+
+	pixman_image_set_transform(src.bitmap, &xform);
+
+	int height = static_cast<int>(std::floor(src_rect.height * zoom_y));
+	int width  = static_cast<int>(std::floor(src_rect.width * zoom_x));
+	for (int i = 0; i < height; i++) {
+		int dy = y + i;
+		if (dy < 0)
+			continue;
+		if (dy >= this->height())
+			break;
+		int sy = static_cast<int>(std::floor((i+0.5) / zoom_y));
+		int offset = (int) (2 * zoom_x * depth * sin((phase + (src_rect.y + sy) * 20) * 3.14159 / 180));
 
 		pixman_image_composite32(PIXMAN_OP_OVER,
 								 src.bitmap, mask, bitmap,
-								 src_rect.x, src_rect.y + i,
+								 src_rect.x, i,
 								 0, 0,
-								 x + offset, y + i,
-								 src_rect.width, 1);
+								 x + offset, dy,
+								 width, 1);
 	}
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(src.bitmap, &xform);
 
 	if (mask != NULL)
 		pixman_image_unref(mask);

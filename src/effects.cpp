@@ -53,38 +53,12 @@ void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_r
 	}
 }
 
-// Waver, Single Opacity
+// Waver, Zoom, Single Opacity
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+						   double zoom_x, double zoom_y,
 						   int opacity,
 						   int waver_depth, double waver_phase) {
-	if (waver_depth == 0)
-		Blit(x, y, src, src_rect, opacity);
-	else
-		WaverBlit(x, y, src, src_rect, waver_depth, waver_phase, opacity);
-}
-
-// Waver, Split Opacity
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-						   int top_opacity, int bottom_opacity, int opacity_split,
-						   int waver_depth, double waver_phase) {
-	if (opacity_split <= 0)
-		EffectsBlit(x, y, src, src_rect,
-					top_opacity, waver_depth, waver_phase);
-	else if (opacity_split >= src_rect.height)
-		EffectsBlit(x, y, src, src_rect,
-					bottom_opacity, waver_depth, waver_phase);
-	else {
-		Rect blit_rect = src_rect;
-		blit_rect.height -= opacity_split;
-		EffectsBlit(x, y, src, blit_rect,
-					top_opacity, waver_depth, waver_phase);
-
-		blit_rect.y += blit_rect.height;
-		blit_rect.height = opacity_split;
-		y += src_rect.height - opacity_split;
-		EffectsBlit(x, y, src, blit_rect,
-					bottom_opacity, waver_depth, waver_phase);
-	}
+	WaverBlit(x, y, zoom_x, zoom_y, src, src_rect, waver_depth, waver_phase, opacity);
 }
 
 // Waver, Zoom, Split Opacity
@@ -92,12 +66,87 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   double zoom_x, double zoom_y,
 						   int waver_depth, double waver_phase) {
-	int zoomed_width  = (int)(src_rect.width  * zoom_x);
-	int zoomed_height = (int)(src_rect.height * zoom_y);
-	BitmapRef draw = src.Resample(zoomed_width, zoomed_height, src_rect);
-	EffectsBlit(x, y, *draw, draw->GetRect(),
-				top_opacity, bottom_opacity, (int) (opacity_split * zoom_y),
-				waver_depth, waver_phase);
+	if (opacity_split <= 0)
+		EffectsBlit(x, y, src, src_rect, zoom_x, zoom_y,
+					top_opacity, waver_depth, waver_phase);
+	else if (opacity_split >= src_rect.height)
+		EffectsBlit(x, y, src, src_rect, zoom_x, zoom_y,
+					bottom_opacity, waver_depth, waver_phase);
+	else {
+		Rect blit_rect = src_rect;
+		blit_rect.height -= opacity_split;
+		EffectsBlit(x, y, src, blit_rect, zoom_x, zoom_y,
+					top_opacity, waver_depth, waver_phase);
+
+		blit_rect.y += blit_rect.height;
+		blit_rect.height = opacity_split;
+		y += static_cast<int>(std::floor((src_rect.height - opacity_split) * zoom_y));
+		EffectsBlit(x, y, src, blit_rect, zoom_x, zoom_y,
+					bottom_opacity, waver_depth, waver_phase);
+	}
+}
+
+// Zoom, Single Opacity
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+						   double zoom_x, double zoom_y,
+						   int opacity) {
+	if (zoom_x != 1.0 || zoom_y != 1.0) {
+		Rect dst_rect(x, y, 
+			static_cast<int>(std::floor(src_rect.width * zoom_x)),
+			static_cast<int>(std::floor(src_rect.height * zoom_y)));
+		StretchBlit(dst_rect, src, src_rect, opacity);
+	}
+	else
+		Blit(x, y, src, src_rect, opacity);
+}
+
+// Zoom, Split Opacity
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+						   double zoom_x, double zoom_y,
+						   int top_opacity, int bottom_opacity, int opacity_split) {
+	if (opacity_split <= 0)
+		EffectsBlit(x, y, src, src_rect, zoom_x, zoom_y,
+					top_opacity);
+	else if (opacity_split >= src_rect.height)
+		EffectsBlit(x, y, src, src_rect, zoom_x, zoom_y,
+					bottom_opacity);
+	else {
+		Rect blit_rect = src_rect;
+		blit_rect.height -= opacity_split;
+		EffectsBlit(x, y, src, blit_rect, zoom_x, zoom_y,
+					top_opacity);
+
+		blit_rect.y += blit_rect.height;
+		blit_rect.height = opacity_split;
+		y += static_cast<int>(std::floor((src_rect.height - opacity_split) * zoom_y));
+		EffectsBlit(x, y, src, blit_rect, zoom_x, zoom_y,
+					bottom_opacity);
+	}
+}
+
+// Single Opacity
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+						   int opacity) {
+	Blit(x, y, src, src_rect, opacity);
+}
+
+// Split Opacity
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+						   int top_opacity, int bottom_opacity, int opacity_split) {
+	if (opacity_split <= 0)
+		EffectsBlit(x, y, src, src_rect, top_opacity);
+	else if (opacity_split >= src_rect.height)
+		EffectsBlit(x, y, src, src_rect, bottom_opacity);
+	else {
+		Rect blit_rect = src_rect;
+		blit_rect.height -= opacity_split;
+		EffectsBlit(x, y, src, blit_rect, top_opacity);
+
+		blit_rect.y += blit_rect.height;
+		blit_rect.height = opacity_split;
+		y += src_rect.height - opacity_split;
+		EffectsBlit(x, y, src, blit_rect, bottom_opacity);
+	}
 }
 
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
@@ -107,26 +156,27 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 	bool rotate = angle != 0.0;
 	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
 	bool waver = waver_depth != 0;
-	bool opacity =
-		(opacity_split <= 0) ? (top_opacity < 255) :
-		(opacity_split >= src_rect.height) ? (bottom_opacity < 255) :
-		(top_opacity < 255 || bottom_opacity < 255);
-	opacity = top_opacity < 255 || bottom_opacity < 255;
 
-	if (rotate) {
-		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y,
-			(src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) / 2, 
-			x + src_rect.width * zoom_x / 2, y + src_rect.height * zoom_y / 2);
-		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
-	} else if (scale)
+	if (waver) {
 		EffectsBlit(x, y, src, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					zoom_x, zoom_y,
 					waver_depth, waver_phase);
-	else
+	}
+	else if (rotate) {
+		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y,
+			(src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) / 2, 
+			x + src_rect.width * zoom_x / 2, y + src_rect.height * zoom_y / 2);
+		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
+	}
+	else if (scale) {
+		EffectsBlit(x, y, src, src_rect, zoom_x, zoom_y,
+					top_opacity, bottom_opacity, opacity_split);
+	}
+	else {
 		EffectsBlit(x, y, src, src_rect,
-					top_opacity, bottom_opacity, opacity_split,
-					waver_depth, waver_phase);
+					top_opacity, bottom_opacity, opacity_split);
+	}
 }
 
 // Tone, Zoom, Single Opacity
