@@ -145,15 +145,6 @@ public:
 	static const uint32_t System  = 0x80000000;
 	static const uint32_t Chipset = 0x40000000;
 
-	/**
-	 * Creates a resampled bitmap.
-	 *
-	 * @param scale_w resampled width.
-	 * @param scale_h resampled height.
-	 * @param src_rect source rect to resample.
-	 */
-	BitmapRef Resample(int scale_w, int scale_h, Rect const& src_rect) const;
-
 	enum TileOpacity {
 		Opaque,
 		Partial,
@@ -308,13 +299,15 @@ public:
 	 *
 	 * @param x x position.
 	 * @param y y position.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param depth wave magnitude.
 	 * @param phase wave phase.
 	 * @param opacity opacity.
 	 */
-	void WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
+	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
 
 	/**
 	 * Fills entire bitmap with color.
@@ -438,6 +431,8 @@ public:
 	 *
 	 * @param x destination x position.
 	 * @param y destination y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param top_opacity opacity of top section.
@@ -451,9 +446,9 @@ public:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+	void EffectsBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
-							 const Tone& tone,
 							 double zoom_x, double zoom_y, double angle,
 							 int waver_depth, double waver_phase);
 
@@ -462,6 +457,8 @@ public:
 	 *
 	 * @param x x position.
 	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
@@ -469,7 +466,8 @@ public:
 	 * @param zoom_x x scale factor.
 	 * @param zoom_y y scale factor.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
+	void EffectsBlit(int x, int y, int ox, int oy,
+						   Bitmap const& src, Rect const& src_rect_,
 						   int opacity, const Tone& tone,
 						   double zoom_x, double zoom_y);
 
@@ -504,6 +502,8 @@ private:
 	 *
 	 * @param x x position.
 	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param top_opacity opacity of top section.
@@ -515,43 +515,104 @@ private:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
+	void EffectsBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
 							 double zoom_x, double zoom_y,
 							 int waver_depth, double waver_phase);
 
 	/**
-	 * Blits source bitmap with waver and (split) opacity scaling.
+	 * Blits source bitmap with waver, zoom and opacity scaling.
 	 *
 	 * @param x x position.
 	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 * @param opacity opacity.
+	 * @param waver_depth wave magnitude.
+	 * @param waver_phase wave phase.
+	 */
+	void EffectsBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
+							 double zoom_x, double zoom_y,
+							 int opacity,
+							 int waver_depth, double waver_phase);
+
+	/**
+	 * Blits source bitmap with zoom and opacity scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 * @param opacity opacity.
+	 */
+	void EffectsBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
+							 double zoom_x, double zoom_y,
+							 int opacity);
+
+	/**
+	 * Blits source bitmap with zoom and (split) opacity scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param top_opacity opacity of top section.
 	 * @param bottom_opacity opacity of bottom section.
 	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge)
-	 * @param waver_depth wave magnitude.
-	 * @param waver_phase wave phase.
+	 *                      (zero is bottom edge).
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
+							 double zoom_x, double zoom_y,
+							 int top_opacity, int bottom_opacity, int opacity_split);
 
 	/**
-	 * Blits source bitmap with waver and opacity scaling.
+	 * Blits source bitmap with opacity scaling.
 	 *
 	 * @param x x position.
 	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
-	 * @param waver_depth wave magnitude.
-	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
-							 int opacity,
-							 int waver_depth, double waver_phase);
+	void EffectsBlit(int x, int y, int ox, int oy,
+						   Bitmap const& src, Rect const& src_rect,
+						   int opacity);
+
+	/**
+	 * Blits source bitmap with (split) opacity scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param top_opacity opacity of top section.
+	 * @param bottom_opacity opacity of bottom section.
+	 * @param opacity_split boundary between sections,
+	 *                      (zero is bottom edge).
+	 */
+	void EffectsBlit(int x, int y, int ox, int oy,
+						   Bitmap const& src, Rect const& src_rect,
+						   int top_opacity, int bottom_opacity, int opacity_split);
 
 public:
 	/**

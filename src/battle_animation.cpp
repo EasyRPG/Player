@@ -77,13 +77,13 @@ void BattleAnimation::Draw() {
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
-		int zoomed = size * cell.zoom / 100;
 		Rect src_rect(sx * size, sy * size, size, size);
 		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
 		int opacity = 255 * (100 - cell.transparency) / 100;
 		double zoom = cell.zoom / 100.0;
 		DisplayUi->GetDisplaySurface()->EffectsBlit(
-			x + cell.x - zoomed / 2, y + cell.y - zoomed / 2,
+			x + cell.x, y + cell.y,
+			size / 2, size / 2,
 			*screen, src_rect, 
 			opacity, tone,
 			zoom, zoom);
