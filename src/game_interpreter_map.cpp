@@ -807,6 +807,8 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 			break;
 	}
 
+	picture->SetTransition(0);
+
 	return true;
 }
 

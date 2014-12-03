@@ -56,7 +56,7 @@ void Game_Picture::UpdateSprite() {
 
 	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
-	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect2_speed : 0);
+	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect_speed : 0);
 	sprite->SetOpacity(
 		(int)(255 * (100 - data.current_top_trans) / 100),
 		(int)(255 * (100 - data.current_bot_trans) / 100));
@@ -115,19 +115,22 @@ void Game_Picture::SetTransparencyEffect(int top, int bottom) {
 }
 
 void Game_Picture::SetRotationEffect(int speed) {
-	data.effect_mode = 1;
-	data.effect_speed = data.effect2_speed = speed;
+	if (!data.time_left)
+		data.effect_mode = 1;
+	data.effect2_speed = speed;
 	data.current_rotation = 0;
 }
 
 void Game_Picture::SetWaverEffect(int depth) {
-	data.effect_mode = 2;
-	data.effect_speed = data.effect2_speed = depth;
+	if (!data.time_left)
+		data.effect_mode = 2;
+	data.effect2_speed = depth;
 	data.current_waver = 0;
 }
 
 void Game_Picture::StopEffects() {
-	data.effect_mode = 0;
+	if (!data.time_left)
+		data.effect_mode = 0;
 }
 
 void Game_Picture::SetTransition(int tenths) {
@@ -143,6 +146,7 @@ void Game_Picture::SetTransition(int tenths) {
 		data.current_magnify	= data.finish_magnify;
 		data.current_top_trans	= data.finish_top_trans;
 		data.current_bot_trans	= data.finish_bot_trans;
+		data.effect_speed		= data.effect2_speed;
 		UpdateSprite();
 	}
 }
@@ -179,7 +183,7 @@ void Game_Picture::Update() {
 	if (data.effect_mode == 1)
 		data.current_rotation += data.effect_speed;
 	if (data.effect_mode == 2)
-		data.current_waver += data.effect2_speed;
+		data.current_waver += 10;
 
 	if (data.time_left > 0) {
 		double k = data.time_left;
@@ -193,6 +197,7 @@ void Game_Picture::Update() {
 		data.current_magnify	= interpolate(k, data.current_magnify,		data.finish_magnify);
 		data.current_top_trans	= interpolate(k, data.current_top_trans,	data.finish_top_trans);
 		data.current_bot_trans	= interpolate(k, data.current_bot_trans,	data.finish_bot_trans);
+		data.effect_speed		= interpolate(k, data.effect_speed,			data.effect2_speed);
 
 		data.time_left--;
 	}
