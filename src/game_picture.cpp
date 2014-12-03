@@ -56,7 +56,7 @@ void Game_Picture::UpdateSprite() {
 
 	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
-	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect_speed : 0);
+	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect_speed * 2 : 0);
 	sprite->SetOpacity(
 		(int)(255 * (100 - data.current_top_trans) / 100),
 		(int)(255 * (100 - data.current_bot_trans) / 100));
