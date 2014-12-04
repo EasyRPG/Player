@@ -812,7 +812,7 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 		if (dy >= this->height())
 			break;
 		int sy = static_cast<int>(std::floor((i+0.5) / zoom_y));
-		int offset = (int) (2 * zoom_x * depth * sin((phase + (src_rect.y + sy) * 20) * 3.14159 / 180));
+		int offset = (int) (2 * zoom_x * depth * sin((phase + (src_rect.y + sy) * 11.2) * 3.14159 / 180));
 
 		pixman_image_composite32(PIXMAN_OP_OVER,
 								 src.bitmap, mask, bitmap,
