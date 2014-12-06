@@ -22,7 +22,7 @@
 namespace Game_Message {
 	std::vector<std::string> texts;
 
-	int owner_id;
+	unsigned int owner_id;
 
 	int choice_start;
 	int num_input_start;
