@@ -33,21 +33,16 @@ int Game_System::GetSaveCount() {
 }
 
 void Game_System::BgmPlay(RPG::Music const& bgm) {
-	// (OFF) means play nothing
-	if (!bgm.name.empty() && bgm.name != "(OFF)") {
-		// Same music: Only adjust volume and speed
-		if (data.current_music.name == bgm.name) {
-			if (data.current_music.volume != bgm.volume) {
-				Audio().BGM_Volume(bgm.volume);
-			}
-			if (data.current_music.tempo != bgm.tempo) {
-				Audio().BGM_Pitch(bgm.tempo);
-			}
-		} else {
-			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
+	// Same music: Only adjust volume and speed
+	if (data.current_music.name == bgm.name) {
+		if (data.current_music.volume != bgm.volume) {
+			Audio().BGM_Volume(bgm.volume);
+		}
+		if (data.current_music.tempo != bgm.tempo) {
+			Audio().BGM_Pitch(bgm.tempo);
 		}
 	} else {
-		Audio().BGM_Stop();
+		Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
 	}
 	data.current_music = bgm;
 	Graphics::FrameReset();
@@ -59,14 +54,12 @@ void Game_System::BgmStop() {
 }
 
 void Game_System::SePlay(RPG::Sound const& se) {
-	if (!se.name.empty() && se.name != "(OFF)") {
-		// HACK:
-		// Yume Nikki plays hundreds of sound effects at 0% volume on
-		// startup. Probably for caching. This triggers "No free channels"
-		// warnings.
-		if (se.volume > 0) {
-			Audio().SE_Play(se.name, se.volume, se.tempo);
-		}
+	// HACK:
+	// Yume Nikki plays hundreds of sound effects at 0% volume on
+	// startup. Probably for caching. This triggers "No free channels"
+	// warnings.
+	if (se.volume > 0) {
+		Audio().SE_Play(se.name, se.volume, se.tempo);
 	}
 }
 
