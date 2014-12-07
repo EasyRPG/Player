@@ -22,6 +22,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <cassert>
 #include <pixman.h>
 
 #include "system.h"
@@ -33,6 +34,45 @@
 #include "text.h"
 
 #include <boost/scoped_ptr.hpp>
+
+/**
+ * Opacity class.
+ */
+class Opacity {
+public:
+	int top;
+	int bottom;
+	int split;
+
+	static const Opacity opaque;
+
+	Opacity() :
+		top(255), bottom(255), split(0) {}
+
+	/* explicit */ Opacity(int opacity) :
+		top(opacity), bottom(opacity), split(0) {}
+
+	Opacity(int top_opacity, int bottom_opacity, int opacity_split) :
+		top(top_opacity), bottom(bottom_opacity), split(opacity_split) {}
+
+	int Value() const {
+		assert(!IsSplit());
+		return top;
+	}
+
+	bool IsSplit() const {
+		return split > 0 && top != bottom;
+	}
+
+	bool IsTransparent() const {
+		return IsSplit() ? top <= 0 && bottom <= 0 : top <= 0;
+	}
+
+	bool IsOpaque() const {
+		return IsSplit() ? top >= 255 && bottom >= 255 : top >= 255;
+	}
+};
+
 
 /**
  * Base Bitmap class.
@@ -227,7 +267,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity);
+	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap in tiles to this one.
@@ -237,7 +277,7 @@ public:
 	 * @param dst_rect destination rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity);
+	void TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap in tiles to this one.
@@ -249,7 +289,7 @@ public:
 	 * @param dst_rect destination rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity);
+	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap stretched to this one.
@@ -258,7 +298,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void StretchBlit(Bitmap const& src, Rect const& src_rect, int opacity);
+	void StretchBlit(Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap stretched to this one.
@@ -268,7 +308,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, int opacity);
+	void StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
 
 	/**
 	 * Blit source bitmap flipped.
@@ -292,7 +332,7 @@ public:
 	 *            to source coordinates.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, int opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with waver effect.
@@ -307,7 +347,7 @@ public:
 	 * @param phase wave phase.
 	 * @param opacity opacity.
 	 */
-	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
+	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity);
 
 	/**
 	 * Fills entire bitmap with color.
@@ -448,7 +488,7 @@ public:
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
+							 Opacity const& opacity,
 							 double zoom_x, double zoom_y, double angle,
 							 int waver_depth, double waver_phase);
 
@@ -468,7 +508,7 @@ public:
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
 						   Bitmap const& src, Rect const& src_rect_,
-						   int opacity, const Tone& tone,
+						   Opacity const& opacity, const Tone& tone,
 						   double zoom_x, double zoom_y);
 
 private:
@@ -481,45 +521,7 @@ private:
 	 * @param opacity opacity.
 	 */
 	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 int opacity);
-
-	/**
-	 * Blits source bitmap with transformation and (split) opacity scaling.
-	 *
-	 * @param fwd forward (src->dst) transformation matrix.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param top_opacity opacity of top section.
-	 * @param bottom_opacity opacity of bottom section.
-	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge)
-	 */
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split);
-
-	/**
-	 * Blits source bitmap with scaling, waver and (split) opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param top_opacity opacity of top section.
-	 * @param bottom_opacity opacity of bottom section.
-	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge).
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 * @param waver_depth wave magnitude.
-	 * @param waver_phase wave phase.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 int top_opacity, int bottom_opacity, int opacity_split,
-							 double zoom_x, double zoom_y,
-							 int waver_depth, double waver_phase);
+							 Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with waver, zoom and opacity scaling.
@@ -538,8 +540,8 @@ private:
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
+							 Opacity const& opacity,
 							 double zoom_x, double zoom_y,
-							 int opacity,
 							 int waver_depth, double waver_phase);
 
 	/**
@@ -558,28 +560,7 @@ private:
 	void EffectsBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
 							 double zoom_x, double zoom_y,
-							 int opacity);
-
-	/**
-	 * Blits source bitmap with zoom and (split) opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param top_opacity opacity of top section.
-	 * @param bottom_opacity opacity of bottom section.
-	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge).
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 double zoom_x, double zoom_y,
-							 int top_opacity, int bottom_opacity, int opacity_split);
+							 Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with opacity scaling.
@@ -594,25 +575,7 @@ private:
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
 						   Bitmap const& src, Rect const& src_rect,
-						   int opacity);
-
-	/**
-	 * Blits source bitmap with (split) opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param top_opacity opacity of top section.
-	 * @param bottom_opacity opacity of bottom section.
-	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge).
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-						   Bitmap const& src, Rect const& src_rect,
-						   int top_opacity, int bottom_opacity, int opacity_split);
+						   Opacity const& opacity);
 
 public:
 	/**

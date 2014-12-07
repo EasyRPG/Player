@@ -102,7 +102,7 @@ void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, i
 	double zoom_y = zoom_y_effect;
 
 	dst->EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
-					 opacity_top_effect, opacity_bottom_effect, opacity_split,
+					 Opacity(opacity_top_effect, opacity_bottom_effect, opacity_split),
 					 zoom_x, zoom_y, angle_effect * 3.14159 / 180,
 					 waver_effect_depth, waver_effect_phase);
 }
