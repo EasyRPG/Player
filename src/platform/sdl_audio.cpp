@@ -53,9 +53,18 @@ SdlAudio::~SdlAudio() {
 }
 
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+	if (file.empty() || file == "(OFF)")
+	{
+		BGM_Stop();
+		return;
+	}
+
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
-		Output::Warning("Music not found: %s", file.c_str());
+		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
+		if (file != ("Brak"))
+			Output::Warning("Music not found: %s", file.c_str());
+		BGM_Stop();
 		return;
 	}
 
@@ -241,12 +250,14 @@ void SdlAudio::ME_Fade(int fade) {
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 
-	if (file == "(OFF)" || file == "(Brak)")
+	if (file.empty() || file == "(OFF)")
 		return;
 
 	std::string const path = FileFinder::FindSound(file);
 	if (path.empty()) {
-		Output::Warning("Sound not found: %s", file.c_str());
+		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
+		if (file != "(Brak)")
+			Output::Warning("Sound not found: %s", file.c_str());
 		return;
 	}
 	EASYRPG_SHARED_PTR<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
