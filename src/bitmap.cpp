@@ -40,6 +40,8 @@
 #include "util_macro.h"
 #include "bitmap_hslrgb.h"
 
+const Opacity Opacity::opaque;
+
 BitmapRef Bitmap::Create(int width, int height, const Color& color) {
     BitmapRef surface = Bitmap::Create(width, height, false);
 	surface->Fill(color);
@@ -117,7 +119,7 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	std::vector<uint32_t> pixels;
 	pixels.resize(rect.width * rect.height);
 	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), rect.width, rect.height, rect.width*4, format);
-	bmp.Blit(0, 0, *this, rect, 255);
+	bmp.Blit(0, 0, *this, rect, Opacity::opaque);
 
 	for (std::vector<uint32_t>::const_iterator p = pixels.begin(); p != pixels.end(); ++p) {
 		if ((*p & 0xFF) != 0)
@@ -139,9 +141,9 @@ void Bitmap::CheckPixels(uint32_t flags) {
 		DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
 		uint32_t pixel;
 		Bitmap bmp(reinterpret_cast<void*>(&pixel), 1, 1, 4, format);
-		bmp.Blit(0, 0, *this, Rect(0, 32, 1, 1), 255);
+		bmp.Blit(0, 0, *this, Rect(0, 32, 1, 1), Opacity::opaque);
 		bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
-		bmp.Blit(0, 0, *this, Rect(16, 32, 1, 1), 255);
+		bmp.Blit(0, 0, *this, Rect(16, 32, 1, 1), Opacity::opaque);
 		sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
 	}
 
@@ -206,7 +208,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	std::vector<uint32_t> pixels;
 	pixels.resize(src_rect.width * src_rect.height);
 	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), src_rect.width, src_rect.height, src_rect.width * 4, format);
-	bmp.Blit(0, 0, src, src_rect, 255);
+	bmp.Blit(0, 0, src, src_rect, Opacity::opaque);
 
 	for (std::vector<uint32_t>::iterator p = pixels.begin(); p != pixels.end(); ++p) {
 		uint32_t pixel = *p;
@@ -219,7 +221,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 		*p = ((uint32_t) r << 24) | ((uint32_t) g << 16) | ((uint32_t) b << 8) | (uint32_t) a;
 	}
 
-	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), 255);
+	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::opaque);
 
 	RefreshCallback();
 }
@@ -480,7 +482,7 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 
 	Bitmap src(pixels, width, height, 0, img_format);
 	Clear();
-	Blit(0, 0, src, src.GetRect(), 255);
+	Blit(0, 0, src, src.GetRect(), Opacity::opaque);
 	free(pixels);
 }
 
@@ -581,7 +583,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 
 	Init(src_rect.width, src_rect.height, (void *) NULL);
 
-	Blit(0, 0, source, src_rect, 255);
+	Blit(0, 0, source, src_rect, Opacity::opaque);
 }
 
 void* Bitmap::pixels() {
@@ -623,19 +625,45 @@ uint32_t Bitmap::amask() const {
 	return pixel_format.a.mask;
 }
 
-void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
-	if (opacity < 0)
+namespace {
+	pixman_image_t *CreateMask(Opacity const& opacity, Rect const& src_rect, pixman_transform_t const* pxform = NULL) {
+		if (opacity.IsOpaque())
+			return (pixman_image_t*) NULL;
+
+		if (!opacity.IsSplit()) {
+			pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity.Value() << 8)};
+			return pixman_image_create_solid_fill(&tcolor);
+		}
+
+		pixman_image_t *mask = pixman_image_create_bits(PIXMAN_a8, 1, 2, (uint32_t*) NULL, 4);
+		uint32_t* pixels = pixman_image_get_data(mask);
+		*reinterpret_cast<uint8_t*>(&pixels[0]) = (opacity.top & 0xFF);
+		*reinterpret_cast<uint8_t*>(&pixels[1]) = (opacity.bottom & 0xFF);
+
+		pixman_transform_t xform;
+		pixman_transform_init_identity(&xform);
+
+		pixman_transform_scale((pixman_transform_t*) NULL, &xform, 
+								pixman_int_to_fixed(src_rect.width),
+								pixman_int_to_fixed(src_rect.height));
+
+		pixman_transform_translate((pixman_transform_t*) NULL, &xform,
+									   pixman_int_to_fixed(0),
+									   pixman_int_to_fixed(opacity.split-src_rect.height));
+		if (pxform)
+			pixman_transform_multiply(&xform, &xform, pxform);
+
+		pixman_image_set_transform(mask, &xform);
+
+		return mask;
+	}
+} // anonymous namespace
+
+void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
+	if (opacity.IsTransparent())
 		return;
 
-	if (opacity > 255) opacity = 255;
-
-	pixman_image_t* mask;
-	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		mask = pixman_image_create_solid_fill(&tcolor);
-	}
-	else
-		mask = (pixman_image_t*) NULL;
+	pixman_image_t* mask = CreateMask(opacity, src_rect);
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap,
@@ -657,15 +685,13 @@ pixman_image_t* Bitmap::GetSubimage(Bitmap const& src, const Rect& src_rect) {
 									(uint32_t*) pixels, src.pitch());
 }
 
-void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity) {
+void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity) {
 	TiledBlit(0, 0, src_rect, src, dst_rect, opacity);
 }
 
-void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity) {
-	if (opacity < 0)
+void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity) {
+	if (opacity.IsTransparent())
 		return;
-
-	if (opacity > 255) opacity = 255;
 
 	if (ox >= src_rect.width)	ox %= src_rect.width;
 	if (oy >= src_rect.height)	ox %= src_rect.height;
@@ -673,14 +699,6 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 	if (oy < 0) oy += src_rect.height * ((-oy + src_rect.height - 1) / src_rect.height);
 
 	pixman_image_t* src_bm = GetSubimage(src, src_rect);
-
-	pixman_image_t* mask;
-	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		mask = pixman_image_create_solid_fill(&tcolor);
-	}
-	else
-		mask = (pixman_image_t*) NULL;
 
 	pixman_image_set_repeat(src_bm, PIXMAN_REPEAT_NORMAL);
 
@@ -690,6 +708,8 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 									pixman_int_to_fixed(oy));
 
 	pixman_image_set_transform(src_bm, &xform);
+
+	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src_bm, mask, bitmap,
@@ -706,19 +726,13 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 	RefreshCallback();
 }
 
-void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, int opacity) {
+void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const& opacity) {
 	StretchBlit(GetRect(), src, src_rect, opacity);
 }
 
-void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, int opacity) {
-	if (opacity < 0)
+void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
+	if (opacity.IsTransparent())
 		return;
-
-	pixman_image_t* mask = (pixman_image_t*) NULL;
-	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		mask = pixman_image_create_solid_fill(&tcolor);
-	}
 
 	double zoom_x = (double)src_rect.width  / dst_rect.width;
 	double zoom_y = (double)src_rect.height / dst_rect.height;
@@ -728,11 +742,15 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 								pixman_double_to_fixed(zoom_x),
 								pixman_double_to_fixed(zoom_y));
 
+	pixman_transform_translate((pixman_transform_t *) NULL, &xform, src_rect.x, src_rect.y);
+
 	pixman_image_set_transform(src.bitmap, &xform);
+
+	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask, bitmap,
-							 src_rect.x * dst_rect.width / src_rect.width, src_rect.y * dst_rect.height / src_rect.height,
+							 0, 0,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
@@ -746,19 +764,9 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	RefreshCallback();
 }
 
-void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, int opacity) {
-	if (opacity <= 0)
+void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, Opacity const& opacity) {
+	if (opacity.IsTransparent())
 		return;
-
-	if (opacity > 255) opacity = 255;
-
-	pixman_image_t* mask;
-	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		mask = pixman_image_create_solid_fill(&tcolor);
-	}
-	else
-		mask = (pixman_image_t*) NULL;
 
 	pixman_transform_t xform = {{
 		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
@@ -768,10 +776,12 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 
 	pixman_image_set_transform(src.bitmap, &xform);
 
+	pixman_image_t* mask = CreateMask(opacity, src.GetRect(), &xform);
+
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask, bitmap,
 							 dst_rect.x, dst_rect.y,
-							 0, 0,
+							 dst_rect.x, dst_rect.y,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
 
@@ -782,19 +792,9 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 		pixman_image_unref(mask);
 }
 
-void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity) {
-	if (opacity <= 0)
+void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity) {
+	if (opacity.IsTransparent())
 		return;
-
-	if (opacity > 255) opacity = 255;
-
-	pixman_image_t* mask;
-	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
-		mask = pixman_image_create_solid_fill(&tcolor);
-	}
-	else
-		mask = (pixman_image_t*) NULL;
 
 	pixman_transform_t xform;
 	pixman_transform_init_scale(&xform,
@@ -802,6 +802,8 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 								pixman_double_to_fixed(1.0 / zoom_y));
 
 	pixman_image_set_transform(src.bitmap, &xform);
+
+	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
 	int height = static_cast<int>(std::floor(src_rect.height * zoom_y));
 	int width  = static_cast<int>(std::floor(src_rect.width * zoom_x));
@@ -817,7 +819,7 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 		pixman_image_composite32(PIXMAN_OP_OVER,
 								 src.bitmap, mask, bitmap,
 								 src_rect.x, i,
-								 0, 0,
+								 src_rect.x, i,
 								 x + offset, dy,
 								 width, 1);
 	}
@@ -889,7 +891,7 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
-			Blit(x, y, src, src_rect, 255);
+			Blit(x, y, src, src_rect, Opacity::opaque);
 		}
 		return;
 	}
@@ -946,7 +948,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color) {
 	if (color.alpha == 0) {
 		if (&src != this)
-			Blit(x, y, src, src_rect, 255);
+			Blit(x, y, src, src_rect, Opacity::opaque);
 		return;
 	}
 
@@ -975,7 +977,7 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 
 void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical) {
 	if (!horizontal && !vertical) {
-		Blit(x, y, src, src_rect, 255);
+		Blit(x, y, src, src_rect, Opacity::opaque);
 		return;
 	}
 
