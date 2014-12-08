@@ -503,7 +503,7 @@ void ALAudio::BGM_Play(std::string const &file, int volume, int pitch, int fadei
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
-		if (file != ("Brak"))
+		if (file != "(Brak)")
 			Output::Warning("Music not found: %s", file.c_str());
 		BGM_Stop();
 		return;
