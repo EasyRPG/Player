@@ -803,40 +803,41 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 
 		case 2:
+			int var_index = Game_Variables[com.parameters[1]];
 			switch (com.parameters[3]) {
 				case 0:
 					// Assignement
-					Game_Variables[com.parameters[1]] = value;
+					Game_Variables[var_index] = value;
 					break;
 				case 1:
 					// Addition
-					Game_Variables[com.parameters[1]] += value;
+					Game_Variables[var_index] += value;
 					break;
 				case 2:
 					// Subtraction
-					Game_Variables[com.parameters[1]] -= value;
+					Game_Variables[var_index] -= value;
 					break;
 				case 3:
 					// Multiplication
-					Game_Variables[com.parameters[1]] *= value;
+					Game_Variables[var_index] *= value;
 					break;
 				case 4:
 					// Division
 					if (value != 0) {
-						Game_Variables[com.parameters[1]] /= value;
+						Game_Variables[var_index] /= value;
 					}
 					break;
 				case 5:
 					// Module
 					if (value != 0) {
-						Game_Variables[com.parameters[1]] %= value;
+						Game_Variables[var_index] %= value;
 					}
 			}
-			if (Game_Variables[com.parameters[1]] > MaxSize) {
-				Game_Variables[com.parameters[1]] = MaxSize;
+			if (Game_Variables[var_index] > MaxSize) {
+				Game_Variables[var_index] = MaxSize;
 			}
-			if (Game_Variables[com.parameters[1]] < MinSize) {
-				Game_Variables[com.parameters[1]] = MinSize;
+			if (Game_Variables[var_index] < MinSize) {
+				Game_Variables[var_index] = MinSize;
 			}
 	}
 
