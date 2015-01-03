@@ -50,7 +50,6 @@ void Game_Message::Init() {
 
 void Game_Message::SemiClear() {
 	texts.clear();
-	owner_id = 0;
 	choice_disabled.reset();
 	choice_start = 99;
 	choice_max = 0;
