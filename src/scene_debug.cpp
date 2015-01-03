@@ -24,6 +24,7 @@
 #include "input.h"
 #include "game_variables.h"
 #include "game_switches.h"
+#include "game_map.h"
 #include "game_system.h"
 #include "scene_debug.h"
 #include "player.h"
@@ -98,6 +99,7 @@ void Scene_Debug::Update() {
 			var_window->SetActive(true);
 			var_window->Refresh();
 		}
+		Game_Map::SetNeedRefresh(true);
 	} else if (range_window->GetActive() &&  Input::IsTriggered(Input::RIGHT)) {
 		range_page++;
 		if (current_var_type == TypeSwitch && !Game_Switches.isValidSwitch(range_page*100+1)) {

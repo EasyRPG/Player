@@ -163,8 +163,9 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (Game_Message::message_waiting || Game_Message::closing) {
-			break;
+		if ((Game_Message::message_waiting || Game_Message::closing)
+			&& (main_flag || Game_Message::owner_id == event_id)) {
+				break;
 		}
 
 		// If waiting for a move to end
@@ -433,7 +434,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 }
 
 void Game_Interpreter::CloseMessageWindow() {
-	if (Game_Message::visible && !Game_Message::closing) {
+	if (Game_Message::visible && !Game_Message::closing && (main_flag || Game_Message::owner_id == event_id)) {
 		Game_Message::closing = true;
 		Game_Message::SemiClear();
 	}

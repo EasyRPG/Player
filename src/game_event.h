@@ -163,7 +163,7 @@ private:
 	// reference.
 	RPG::SaveMapEvent data;
 
-	int ID;
+	unsigned int ID;
 	bool starting;
 	int trigger;
 	RPG::Event event;

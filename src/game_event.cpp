@@ -401,8 +401,9 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Item in possession?
-	if (page.condition.flags.item && !Main_Data::game_party->GetItemCount(page.condition.item_id)) {
-		return false;
+	if (page.condition.flags.item && !(Main_Data::game_party->GetItemCount(page.condition.item_id)
+		+ Main_Data::game_party->GetItemCount(page.condition.item_id, true))) {
+			return false;
 	}
 
 	// Actor in party?

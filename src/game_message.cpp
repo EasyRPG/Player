@@ -22,7 +22,7 @@
 namespace Game_Message {
 	std::vector<std::string> texts;
 
-	int owner_id;
+	unsigned int owner_id;
 
 	int choice_start;
 	int num_input_start;
@@ -50,7 +50,6 @@ void Game_Message::Init() {
 
 void Game_Message::SemiClear() {
 	texts.clear();
-	owner_id = 0;
 	choice_disabled.reset();
 	choice_start = 99;
 	choice_max = 0;
