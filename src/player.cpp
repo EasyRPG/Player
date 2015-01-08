@@ -144,29 +144,21 @@ void Player::Run() {
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
-	Player::MainLoop();
+	while (true)
+		Player::MainLoop();
 #endif
-
-	Player::Exit();
 }
 
 void Player::MainLoop() {
-#ifdef EMSCRIPTEN
-    if (Scene::instance->type == Scene::Null) {
-      emscripten_cancel_main_loop();
-      return;
-    }
-#else
-	while (Scene::instance->type != Scene::Null) {
-#endif
-		Scene::instance->MainFunction();
-		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
-			Graphics::Pop();
-		}
-		Scene::old_instances.clear();
-#ifndef EMSCRIPTEN
+	if (Scene::instance->type == Scene::Null) {
+		Player::Exit();
+		return;
 	}
-#endif
+	Scene::instance->MainFunction();
+	for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
+		Graphics::Pop();
+	}
+	Scene::old_instances.clear();
 }
 
 void Player::Pause() {
@@ -203,6 +195,9 @@ void Player::Update() {
 }
 
 void Player::Exit() {
+#ifdef EMSCRIPTEN
+	emscripten_cancel_main_loop();
+#endif
 	Main_Data::Cleanup();
 	Graphics::Quit();
 	FileFinder::Quit();
