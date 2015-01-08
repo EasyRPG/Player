@@ -189,8 +189,6 @@ protected:
 
 	/** Character used before message commands. */
 	uint32_t escape_char;
-	/** Printed when escape_char is used twice in a row. */
-	std::string escape_symbol;
 
 	/**
 	 * Table contains how many frames drawing one single char takes.
