@@ -17,6 +17,7 @@
 
 // Headers
 #include <algorithm>
+#include <cstdlib>
 #include "data.h"
 #include "rpg_enemy.h"
 #include "game_battle.h"

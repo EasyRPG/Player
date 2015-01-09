@@ -18,6 +18,7 @@
 
 // Headers
 #include <algorithm>
+#include <cstdlib>
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
