@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstdlib>
 #include "registry.h"
 #include "filefinder.h"
 #include "output.h"

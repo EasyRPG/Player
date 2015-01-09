@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <cstdlib>
 #include <iomanip>
 #include <sstream>
 
