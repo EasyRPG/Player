@@ -53,18 +53,9 @@ SdlAudio::~SdlAudio() {
 }
 
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	if (file.empty() || file == "(OFF)")
-	{
-		BGM_Stop();
-		return;
-	}
-
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
-		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
-		if (file != "(Brak)")
-			Output::Warning("Music not found: %s", file.c_str());
-		BGM_Stop();
+		Output::Debug("Music not found: %s", file.c_str());
 		return;
 	}
 
@@ -168,7 +159,7 @@ void SdlAudio::BGM_Fade(int fade) {
 void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
-		Output::Warning("Music not found: %s", file.c_str());
+		Output::Debug("Music not found: %s", file.c_str());
 		return;
 	}
 	
@@ -220,7 +211,7 @@ void me_finish(int channel) {
 void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
-		Output::Warning("Music not found: %s", file.c_str());
+		Output::Debug("Music not found: %s", file.c_str());
 		return;
 	}
 	me.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
@@ -249,15 +240,9 @@ void SdlAudio::ME_Fade(int fade) {
 }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
-
-	if (file.empty() || file == "(OFF)")
-		return;
-
 	std::string const path = FileFinder::FindSound(file);
 	if (path.empty()) {
-		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
-		if (file != "(Brak)")
-			Output::Warning("Sound not found: %s", file.c_str());
+		Output::Debug("Sound not found: %s", file.c_str());
 		return;
 	}
 	EASYRPG_SHARED_PTR<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);

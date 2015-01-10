@@ -33,16 +33,26 @@ int Game_System::GetSaveCount() {
 }
 
 void Game_System::BgmPlay(RPG::Music const& bgm) {
-	// Same music: Only adjust volume and speed
-	if (data.current_music.name == bgm.name) {
-		if (data.current_music.volume != bgm.volume) {
-			Audio().BGM_Volume(bgm.volume);
-		}
-		if (data.current_music.tempo != bgm.tempo) {
-			Audio().BGM_Pitch(bgm.tempo);
+	// (OFF) means play nothing
+	// A Polish RPG Maker translation overtranslated the (OFF) reserved string.
+	// This particular translation uses (Brak) in editor for these cases.
+	// Because RPG_RT doesn't show warnings about audios not found,
+	// theses strings are ignored to prevent filling the log.
+	// Though RPG_RT plays files named (Brak) is still preferred to ignore it.
+	if (!bgm.name.empty() && bgm.name != "(OFF)" && bgm.name != "(Brak)") {
+		// Same music: Only adjust volume and speed
+		if (data.current_music.name == bgm.name) {
+			if (data.current_music.volume != bgm.volume) {
+				Audio().BGM_Volume(bgm.volume);
+			}
+			if (data.current_music.tempo != bgm.tempo) {
+				Audio().BGM_Pitch(bgm.tempo);
+			}
+		} else {
+			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
 		}
 	} else {
-		Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
+		Audio().BGM_Stop();
 	}
 	data.current_music = bgm;
 	Graphics::FrameReset();
@@ -54,12 +64,14 @@ void Game_System::BgmStop() {
 }
 
 void Game_System::SePlay(RPG::Sound const& se) {
-	// HACK:
-	// Yume Nikki plays hundreds of sound effects at 0% volume on
-	// startup. Probably for caching. This triggers "No free channels"
-	// warnings.
-	if (se.volume > 0) {
-		Audio().SE_Play(se.name, se.volume, se.tempo);
+	if (!se.name.empty() && se.name != "(OFF)" && se.name != "(Brak)") {
+		// HACK:
+		// Yume Nikki plays hundreds of sound effects at 0% volume on
+		// startup. Probably for caching. This triggers "No free channels"
+		// warnings.
+		if (se.volume > 0) {
+			Audio().SE_Play(se.name, se.volume, se.tempo);
+		}
 	}
 }
 

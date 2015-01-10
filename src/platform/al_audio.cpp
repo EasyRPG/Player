@@ -493,22 +493,6 @@ EASYRPG_SHARED_PTR<ALAudio::source> ALAudio::create_source(bool loop) const {
 }
 
 void ALAudio::BGM_Play(std::string const &file, int volume, int pitch, int fadein) {
-	
-	if (file.empty() || file == "(OFF)")
-	{
-		BGM_Stop();
-		return;
-	}
-
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
-		if (file != "(Brak)")
-			Output::Warning("Music not found: %s", file.c_str());
-		BGM_Stop();
-		return;
-	}
-
 	SET_CONTEXT(ctx_);
 
 	alSourcef(bgm_src_->get(), AL_PITCH, pitch * 0.01f);
@@ -586,18 +570,6 @@ void ALAudio::ME_Fade(int fade) {
 }
 
 void ALAudio::SE_Play(std::string const &file, int volume, int pitch) {
-
-	if (file.empty() || file == "(OFF)")
-		return;
-
-	std::string const path = FileFinder::FindSound(file);
-	if (path.empty()) {
-		//HACK: Polish RTP translation replaced (OFF) reserved string with (Brak)
-		if (file != "(Brak)")
-			Output::Warning("Sound not found: %s", file.c_str());
-		return;
-	}
-
 	SET_CONTEXT(ctx_);
 
 	EASYRPG_SHARED_PTR<source> src = create_source(false);
