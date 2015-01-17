@@ -153,8 +153,8 @@ public class GameBrowserActivity extends ListActivity {
 			Intent intent = new Intent(this, EasyRpgPlayerActivity.class);
 			// Path of game passed to PlayerActivity via intent "project_path"
 			intent.putExtra("project_path", dataDir + "/game");
-			startActivity(intent);
 			finish();
+			startActivity(intent);
 		}
 	}
 	
