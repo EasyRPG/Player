@@ -58,9 +58,7 @@ AudioInterface& SdlUi::GetAudio() {
 	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
 #endif
 
-static bool filtering_done;
 static int FilterUntilFocus(const SDL_Event* evnt);
-static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 	static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
@@ -657,25 +655,17 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		// Filter SDL events with FilterUntilFocus until focus is
 		// regained
-		filtering_done = false;
-#ifndef EMSCRIPTEN
-#  if SDL_MAJOR_VERSION==1
-		SDL_SetEventFilter(&FilterUntilFocus);
-#  else
-		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
-#  endif
-#endif
-
-		SDL_WaitEvent(NULL);
 
 #ifndef EMSCRIPTEN
-#  if SDL_MAJOR_VERSION==1
-		SDL_SetEventFilter(NULL);
-#  else
-		SDL_SetEventFilter(NULL, NULL);
-#  endif
-#endif
+		SDL_Event wait_event;
 
+		while (SDL_WaitEvent(&wait_event)) {
+			if (FilterUntilFocus(&wait_event)) {
+				break;
+			}
+		}
+#endif
+		
 		ShowCursor(last);
 
 		Player::Resume();
@@ -1230,13 +1220,11 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 int FilterUntilFocus(const SDL_Event* evnt) {
 	// Prevent throwing events away received after focus gained but filter
 	// not detached.
-	if (filtering_done) {
-		return true;
-	}
+	
+	bool filtering_done = false;
 
 	switch (evnt->type) {
 	case SDL_QUIT:
-		filtering_done = true;
 		Player::exit_flag = true;
 		return 1;
 
@@ -1246,15 +1234,12 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 #else
 		filtering_done = evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
 #endif
-		return filtering_done;
+
+		return !!filtering_done;
 
 	default:
 		return 0;
 	}
-}
-
-int FilterUntilFocus_SDL2(void*, SDL_Event* evnt) {
-	return FilterUntilFocus(evnt);
 }
 
 #ifdef GEKKO
