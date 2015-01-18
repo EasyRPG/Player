@@ -147,13 +147,11 @@ void Player::Run() {
 	while (Scene::instance->type != Scene::Null)
 		Player::MainLoop();
 #endif
+
+	Player::Exit();
 }
 
 void Player::MainLoop() {
-	if (Scene::instance->type == Scene::Null) {
-		Player::Exit();
-		return;
-	}
 	Scene::instance->MainFunction();
 	for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
 		Graphics::Pop();
