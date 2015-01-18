@@ -375,6 +375,14 @@ bool SdlUi::RefreshDisplayMode() {
 		PF::NoAlpha);
 #else
 	if (!sdl_window) {
+		#ifdef __ANDROID__
+		// Workaround SDL bug: https://bugzilla.libsdl.org/show_bug.cgi?id=2291
+		// Set back buffer format to 565
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+		#endif
+
 		// Create our window
 		sdl_window = SDL_CreateWindow("EasyRPG Player",
 			SDL_WINDOWPOS_CENTERED,
