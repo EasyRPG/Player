@@ -93,7 +93,7 @@ public class SDLActivity extends Activity {
         mSurface = new SDLSurface(getApplication());
         
         if(Build.VERSION.SDK_INT >= 12) {
-            mJoystickHandler = new SDLJoystickHandler();
+            mJoystickHandler = new SDLJoystickHandler_API12();
         }
         else {
             mJoystickHandler = new SDLJoystickHandler();
@@ -551,9 +551,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         mDisplay = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
         
-        /*if(Build.VERSION.SDK_INT >= 12) {
+        if(Build.VERSION.SDK_INT >= 12) {
             setOnGenericMotionListener(new SDLGenericMotionListener_API12());
-        }*/
+        }
 
         // Some arbitrary defaults to avoid a potential division by zero
         mWidth = 1.0f;
@@ -950,7 +950,7 @@ class SDLJoystickHandler {
     }
 }
 
-/* Actual joystick functionality available for API >= 12 devices *//*
+/* Actual joystick functionality available for API >= 12 devices */
 class SDLJoystickHandler_API12 extends SDLJoystickHandler {
   
     class SDLJoystick {
@@ -1014,7 +1014,7 @@ class SDLJoystickHandler_API12 extends SDLJoystickHandler {
             }
         }
         
-        /* Check removed devices *
+        /* Check removed devices */
         ArrayList<Integer> removedDevices = new ArrayList<Integer>();
         for(int i=0; i < mJoysticks.size(); i++) {
             int device_id = mJoysticks.get(i).device_id;
@@ -1059,7 +1059,7 @@ class SDLJoystickHandler_API12 extends SDLJoystickHandler {
                     if ( joystick != null ) {
                         for (int i = 0; i < joystick.axes.size(); i++) {
                             InputDevice.MotionRange range = joystick.axes.get(i);
-                            /* Normalize the value to -1...1 *
+                            /* Normalize the value to -1...1 */
                             float value = ( event.getAxisValue( range.getAxis(), actionPointerIndex) - range.getMin() ) / range.getRange() * 2.0f - 1.0f;
                             SDLActivity.onNativeJoy(joystick.device_id, i, value );
                         }          
@@ -1076,8 +1076,8 @@ class SDLJoystickHandler_API12 extends SDLJoystickHandler {
         }
         return true;
     }            
-}*/
-/*
+}
+
 class SDLGenericMotionListener_API12 implements View.OnGenericMotionListener {
     // Generic Motion (mouse hover, joystick...) events go here
     // We only have joysticks yet
@@ -1086,4 +1086,3 @@ class SDLGenericMotionListener_API12 implements View.OnGenericMotionListener {
         return SDLActivity.handleJoystickMotionEvent(event);
     }
 }
-*/
