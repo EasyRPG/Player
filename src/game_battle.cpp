@@ -54,6 +54,7 @@ void Game_Battle::Init() {
 	Game_Temp::battle_running = true;
 	turn = 0;
 	escape_fail_count = 0;
+	terminate = false;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 
@@ -69,6 +70,7 @@ void Game_Battle::Quit() {
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);
+
 	// Remove conditions which end after battle
 	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
 		(*it)->RemoveBattleStates();
@@ -118,18 +120,6 @@ void Game_Battle::UpdateGauges() {
 void Game_Battle::ChangeBackground(const std::string& name) {
 	background_name = name;
 }
-
-/*
-void Game_Battle::Quit() {
-// Remove conditions which end after battle
-for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-it->GetActor()->RemoveStates();
-
-interpreter.reset();
-
-scene = NULL;
-}
-*/
 
 int Game_Battle::GetTurn() {
 	return turn;
@@ -231,4 +221,13 @@ bool Game_Battle::IsEscapeAllowed() {
 	else {
 		return !!Game_Temp::battle_escape_mode;
 	}
+}
+
+bool Game_Battle::IsTerminating() {
+	return terminate;
+}
+
+Game_Interpreter& Game_Battle::GetInterpreter() {
+	assert(interpreter);
+	return *interpreter;
 }

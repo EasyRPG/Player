@@ -738,6 +738,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	double zoom_y = (double)src_rect.height / dst_rect.height;
 
 	pixman_transform_t xform;
+
 	pixman_transform_init_scale(&xform,
 								pixman_double_to_fixed(zoom_x),
 								pixman_double_to_fixed(zoom_y));
@@ -750,7 +751,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask, bitmap,
-							 0, 0,
+							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);

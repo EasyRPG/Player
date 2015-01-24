@@ -35,6 +35,7 @@ namespace Game_Battle {
 	 * Updates the battle state.
 	 */
 	void Update();
+
 	void Terminate();
 
 	Spriteset_Battle& GetSpriteset();
@@ -57,6 +58,14 @@ namespace Game_Battle {
 	void UpdateEvents();
 
 	bool IsEscapeAllowed();
+	bool IsTerminating();
+
+	/**
+	* Gets the game interpreter.
+	*
+	* @return the game interpreter.
+	*/
+	Game_Interpreter& GetInterpreter();
 
 	static int turn;
 	static bool message_is_fixed;

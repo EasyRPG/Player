@@ -23,11 +23,15 @@
 #include "rpg_troopmember.h"
 #include "rpg_actor.h"
 #include "rpg_enemy.h"
+
+#include "background.h"
+#include "battle_animation.h"
+#include "drawable.h"
 #include "game_actor.h"
 #include "game_enemy.h"
 #include "scene.h"
-#include "background.h"
-#include "drawable.h"
+#include "screen.h"
+#include "spriteset_battle.h"
 #include "window_help.h"
 #include "window_item.h"
 #include "window_skill.h"
@@ -36,8 +40,7 @@
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 #include "window_message.h"
-#include "battle_animation.h"
-#include "spriteset_battle.h"
+
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
@@ -56,7 +59,7 @@ class Scene_Battle : public Scene {
 public:
 	static EASYRPG_SHARED_PTR<Scene_Battle> Create();
 
-	~Scene_Battle();
+	virtual ~Scene_Battle();
 
 	virtual void Start();
 	virtual void Update();
@@ -199,6 +202,8 @@ protected:
 	boost::scoped_ptr<Window_Message> message_window;
 
 	boost::scoped_ptr<Background> background;
+
+	boost::scoped_ptr<Screen> screen;
 
 	std::deque<Game_Battler*> battle_actions;
 

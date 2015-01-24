@@ -51,6 +51,8 @@ private:
 	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
 	bool CommandTerminateBattle(RPG::EventCommand const& com);
 	bool CommandConditionalBranch(RPG::EventCommand const& com);
+
+	bool animation_wait;
 };
 
 #endif

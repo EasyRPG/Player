@@ -103,9 +103,9 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
-	message_window->SetZ(3002);
 
-	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));}
+	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
+}
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 	std::string skill_name = active_actor->GetSkillName();
@@ -263,12 +263,13 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			}
 			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 				RemoveCurrentAction();
+				battle_message_window->Clear();
+
 				if (CheckResultConditions()) {
 					return;
 				}
 			}
 		} else {
-			NextTurn();
 			actor_index = 0;
 			SetState(State_SelectOption);
 		}
@@ -333,11 +334,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
 
-					Main_Data::game_screen->ShowBattleAnimation(
+					Main_Data::game_screen->ShowBattleAnimationBattle(
 						action->GetAnimation()->ID,
-						action->GetTarget()->GetBattleX(),
-						action->GetTarget()->GetBattleY(),
-						false);
+						action->GetTarget());
 				}
 			}
 

@@ -27,6 +27,7 @@
 #include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
 
+class Game_Battler;
 class Screen;
 
 class Game_Screen {
@@ -49,7 +50,9 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void ShowBattleAnimation(int animation_id, int target_id, bool global);
+	void ShowGlobalBattleAnimation(int animation_id);
+	void ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool global = false);
+	void ShowBattleAnimationMap(int animation_id, int target_id, bool global = false);
 	void ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global);
 	bool IsBattleAnimationWaiting() const;
 	void Update();
@@ -125,6 +128,7 @@ protected:
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
 	void PlayBattleAnimationSound();
+	int GetAnimationOffsetY(int animation_id, int target_height);
 };
 
 #endif
