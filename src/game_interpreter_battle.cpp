@@ -17,13 +17,16 @@
 
 // Headers
 #include "game_actors.h"
+#include "game_battle.h"
 #include "game_enemyparty.h"
+#include "game_interpreter_battle.h"
 #include "game_party.h"
 #include "game_switches.h"
-#include "game_variables.h"
-#include "game_battle.h"
 #include "game_temp.h"
-#include "game_interpreter_battle.h"
+#include "game_variables.h"
+#include "player.h"
+#include "sprite_battler.h"
+#include "spriteset_battle.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag), animation_wait(false) {
@@ -90,6 +93,8 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 }
 
 bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
+	Output::Warning("Battle: Force Flee not implemented");
+
 	bool check = com.parameters[2] == 0;
 	// TODO
 	switch (com.parameters[0]) {
@@ -116,6 +121,8 @@ bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 	if (!Main_Data::game_party->IsActorInParty(actor_id)) {
 		return true;
 	}
+
+	Output::Warning("Battle: Enable Combo not implemented");
 
 	int command_id = com.parameters[1];
 	int multiple = com.parameters[2];
@@ -200,9 +207,7 @@ bool Game_Interpreter_Battle::CommandChangeBattleBG(RPG::EventCommand const& com
 	Game_Battle::ChangeBackground(com.string);
 	return true;
 }
-#include "player.h"
-#include "sprite_battler.h"
-#include "spriteset_battle.h"
+
 bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const& com) {
 	int animation_id = com.parameters[0];
 	int target = com.parameters[1];
@@ -295,22 +300,28 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 					break;
 			}
 			break;
-		// TODO
-		case 2:
+		case 2: {
 			// Hero can act
-			/*ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->CanAct());*/
+			Game_Actor* actor = Game_Actors::GetActor(com.parameters[1]);
+			if (actor) {
+				result = actor->CanAct();
+			}
 			break;
+		}
 		case 3:
 			// Monster can act
-			//result = Game_Battle::GetEnemy(com.parameters[1]).CanAct();
+			if (com.parameters[1] < Main_Data::game_enemyparty->GetBattlerCount()) {
+				result = (*Main_Data::game_enemyparty)[com.parameters[1]].CanAct();
+			}
 			break;
 		case 4:
+			Output::Warning("Battle: Monster is target not implemented");
 			// Monster is the current target
 			/*result = Game_Battle::HaveTargetEnemy() &&
 				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
 			break;
 		case 5:
+			Output::Warning("Battle: Hero uses command X not implemented");
 			// Hero uses the ... command
 			/*ally = Game_Battle::FindAlly(com.parameters[1]);
 			result = (ally != NULL && ally->last_command == com.parameters[2]);*/

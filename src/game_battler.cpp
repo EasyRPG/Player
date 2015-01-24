@@ -40,6 +40,18 @@ bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
+
+bool Game_Battler::CanAct() {
+	const std::vector<int16_t>& states = GetStates();
+	for (int i = 0; i < (int)states.size(); i++) {
+		const RPG::State* state = &Data::states[states[i] - 1];
+		if (state->restriction == RPG::State::Restriction_do_nothing) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool Game_Battler::IsDead() const {
 	return HasState(1);
 }

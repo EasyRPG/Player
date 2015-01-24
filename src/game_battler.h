@@ -60,6 +60,13 @@ public:
 	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/**
+	 * Tests if the battler has a "No Action" condition like sleep.
+	 *
+	 * @return can act 
+	 */
+	bool CanAct();
+
+	/**
 	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
