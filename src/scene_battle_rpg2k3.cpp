@@ -454,11 +454,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		action->Execute();
 
 		if (action->GetTarget() && action->GetAnimation()) {
-			Main_Data::game_screen->ShowBattleAnimation(
+			Main_Data::game_screen->ShowBattleAnimationBattle(
 				action->GetAnimation()->ID,
-				action->GetTarget()->GetBattleX(),
-				action->GetTarget()->GetBattleY(),
-				false);
+				action->GetTarget());
 		}
 
 		if (source_sprite) {

@@ -350,11 +350,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 						}
 					}
 
-					Main_Data::game_screen->ShowBattleAnimation(
+					Main_Data::game_screen->ShowBattleAnimationBattle(
 						action->GetAnimation()->ID,
-						action->GetTarget()->GetBattleX(),
-						action->GetTarget()->GetBattleY() + spr_height,
-						false);
+						action->GetTarget());
 				}
 			}
 

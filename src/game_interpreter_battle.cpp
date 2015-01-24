@@ -26,7 +26,7 @@
 #include "game_interpreter_battle.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
+	Game_Interpreter(depth, main_flag), animation_wait(false) {
 }
 
 // Execute Command.
@@ -35,6 +35,10 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		return CommandEnd();
 	}
 
+	if (animation_wait && Main_Data::game_screen->IsBattleAnimationWaiting()) {
+		return false;
+	}
+	
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
@@ -196,23 +200,49 @@ bool Game_Interpreter_Battle::CommandChangeBattleBG(RPG::EventCommand const& com
 	Game_Battle::ChangeBackground(com.string);
 	return true;
 }
-
+#include "player.h"
+#include "sprite_battler.h"
+#include "spriteset_battle.h"
 bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const& com) {
 	int animation_id = com.parameters[0];
 	int target = com.parameters[1];
 	bool wait = com.parameters[2] != 0;
-	bool allies = com.parameters[3] != 0;
+	bool allies = false;
 
-	// TODO
-	//Battle::Ally* ally = (allies && target >= 0) ? Game_Battle::FindAlly(target) : NULL;
-	//Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
+	if (Player::engine == Player::EngineRpg2k3) {
+		allies = com.parameters[3] != 0;
+	}
 
-	if (active)
-		return Main_Data::game_screen->IsBattleAnimationWaiting();
+	if (target < 0) {
+		// global TODO
+		return true;
+	}
+	else {
+		Game_Battler* battler_target = NULL;
 
-	//Main_Data::game_screen->ShowBattleAnimation(animation_id);
+		if (allies) {
+			if (target < Main_Data::game_party->GetBattlerCount()) {
+				battler_target = &(*Main_Data::game_party)[target];
+			}
+		}
+		else {
+			if (target < Main_Data::game_enemyparty->GetBattlerCount()) {
+				battler_target = &(*Main_Data::game_enemyparty)[target];
+			}
+		}
 
-	return !wait;
+		if (!battler_target) {
+			return true;
+		}
+
+		Main_Data::game_screen->ShowBattleAnimationBattle(animation_id, battler_target);
+	}
+
+	if (wait) {
+		animation_wait = true;
+	}
+
+	return true;
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {

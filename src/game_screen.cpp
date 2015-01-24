@@ -18,12 +18,16 @@
 // Headers
 #include <cstdlib>
 #include <ciso646>
+#include "bitmap.h"
 #include "data.h"
-#include "options.h"
-#include "main_data.h"
+#include "game_battle.h"
+#include "game_battler.h"
 #include "game_screen.h"
 #include "game_system.h"
-#include "bitmap.h"
+#include "main_data.h"
+#include "options.h"
+#include "sprite_battler.h"
+#include "spriteset_battle.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -184,11 +188,37 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_res_y = res_y;
 }
 
-void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+void Game_Screen::ShowGlobalBattleAnimation(int animation_id) {
+	data.battleanim_id = animation_id;
+
+	ShowBattleAnimation(animation_id, SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2, true);
+}
+
+void Game_Screen::ShowBattleAnimationMap(int animation_id, int target_id, bool global) {
+	// FIXME: The target_id must be used to flash the sprite
+	// FIXME: global
+
 	data.battleanim_target = target_id;
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
+
 	ShowBattleAnimation(animation_id, target->GetScreenX(), target->GetScreenY(), global);
+}
+
+void Game_Screen::ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool global) {
+	// FIXME: The target must be used to flash the sprite
+	// FIXME: global
+
+	int spr_height = 0;
+	Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+
+	if (target_sprite && target_sprite->GetBitmap()) {
+		spr_height = target_sprite->GetBitmap()->GetHeight();
+
+		spr_height = GetAnimationOffsetY(animation_id, spr_height);
+	}
+
+	ShowBattleAnimation(animation_id, target->GetBattleX(), target->GetBattleY() + spr_height, global);
 }
 
 void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global) {
@@ -199,8 +229,6 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target
 	RPG::Animation& anim = Data::animations[animation_id - 1];
 	animation.reset(new BattleAnimation(target_x, target_y,
 		&anim));
-	// FIXME: target
-	// FIXME: global
 
 	animation_timings.clear();
 	for (std::vector<RPG::AnimationTiming>::const_iterator it = anim.timings.begin();
@@ -354,4 +382,19 @@ int Game_Screen::GetWeatherStrength() {
 
 const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
 	return snowflakes;
+}
+
+int Game_Screen::GetAnimationOffsetY(int animation_id, int target_height) {
+	switch (Data::animations[animation_id - 1].position) {
+	case RPG::Animation::Position_down:
+		target_height /= 2;
+		break;
+	case RPG::Animation::Position_up:
+		target_height /= -2;
+		break;
+	default:
+		target_height = 0;
+	}
+
+	return target_height;
 }
