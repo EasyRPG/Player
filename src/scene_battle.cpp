@@ -21,6 +21,7 @@
 #include <ciso646>
 
 #include "rpg_battlecommand.h"
+#include "bitmap.h"
 #include "input.h"
 #include "output.h"
 #include "player.h"
@@ -42,7 +43,6 @@
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
-#include "bitmap.h"
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
@@ -84,6 +84,8 @@ void Scene_Battle::Start() {
 
 	CreateCursors();
 	CreateWindows();
+
+	screen.reset(new Screen());
 
 	Game_Temp::map_bgm = NULL; // Play map BGM on Scene_Map return
 	Game_System::BgmPlay(Data::system.battle_music);
@@ -145,11 +147,8 @@ void Scene_Battle::Update() {
 	target_window->Update();
 	message_window->Update();
 
-	if (!message_window->GetVisible()) {
-		ProcessActions();
-	}
-
 	if (!Game_Battle::GetInterpreter().IsRunning()) {
+		ProcessActions();
 		ProcessInput();
 	}
 
