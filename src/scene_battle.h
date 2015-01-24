@@ -56,7 +56,7 @@ class Scene_Battle : public Scene {
 public:
 	static EASYRPG_SHARED_PTR<Scene_Battle> Create();
 
-	~Scene_Battle();
+	virtual ~Scene_Battle();
 
 	virtual void Start();
 	virtual void Update();

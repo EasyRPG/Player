@@ -163,6 +163,10 @@ void Scene_Battle::Update() {
 	Game_Battle::Update();
 
 	Main_Data::game_screen->Update();
+
+	if (Game_Battle::IsTerminating()) {
+		Scene::Pop();
+	}
 }
 
 void Scene_Battle::InitBattleTest()
