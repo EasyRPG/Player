@@ -33,7 +33,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
-	SetZ(10000);
+	SetZ(9999);
 }
 
 void Window_BattleMessage::Push(const std::string& message) {

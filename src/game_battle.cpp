@@ -226,3 +226,8 @@ bool Game_Battle::IsEscapeAllowed() {
 bool Game_Battle::IsTerminating() {
 	return terminate;
 }
+
+Game_Interpreter& Game_Battle::GetInterpreter() {
+	assert(interpreter);
+	return *interpreter;
+}

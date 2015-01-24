@@ -297,6 +297,7 @@ void Window_Message::Update() {
 		if (Game_Temp::inn_calling) {
 			ShowGoldWindow();
 		}
+
 		StartMessageProcessing();
 		//printf("Text: %s\n", text.c_str());
 		if (!visible) {

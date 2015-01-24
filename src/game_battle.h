@@ -60,6 +60,13 @@ namespace Game_Battle {
 	bool IsEscapeAllowed();
 	bool IsTerminating();
 
+	/**
+	* Gets the game interpreter.
+	*
+	* @return the game interpreter.
+	*/
+	Game_Interpreter& GetInterpreter();
+
 	static int turn;
 	static bool message_is_fixed;
 	static int message_position;

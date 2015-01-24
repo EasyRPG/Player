@@ -37,6 +37,7 @@
 #include "game_enemyparty.h"
 #include "game_switches.h"
 #include "game_battle.h"
+#include "game_interpreter.h"
 #include "battle_animation.h"
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
@@ -148,7 +149,7 @@ void Scene_Battle::Update() {
 		ProcessActions();
 	}
 
-	if (!Game_Message::message_waiting) {
+	if (!Game_Battle::GetInterpreter().IsRunning()) {
 		ProcessInput();
 	}
 
