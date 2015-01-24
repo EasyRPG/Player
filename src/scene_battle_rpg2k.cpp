@@ -333,10 +333,27 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
 
+					int spr_height = 0;
+					Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+					if (target_sprite && target_sprite->GetBitmap()) {
+						spr_height = target_sprite->GetBitmap()->GetHeight();
+
+						switch (action->GetAnimation()->position) {
+						case RPG::Animation::Position_down:
+							spr_height /= 2;
+							break;
+						case RPG::Animation::Position_up:
+							spr_height /= -2;
+							break;
+						default:
+							spr_height = 0;
+						}
+					}
+
 					Main_Data::game_screen->ShowBattleAnimation(
 						action->GetAnimation()->ID,
 						action->GetTarget()->GetBattleX(),
-						action->GetTarget()->GetBattleY(),
+						action->GetTarget()->GetBattleY() + spr_height,
 						false);
 				}
 			}
