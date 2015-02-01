@@ -107,6 +107,8 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
+	srand(time(NULL));
+
 	ParseCommandLine(argc, argv);
 
 	if (Main_Data::project_path.empty()) {
@@ -292,6 +294,13 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--start-map") {
 			// overwrite start map by filename
 		}*/
+		else if (*it == "--seed") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			srand(atoi((*it).c_str()));
+		}
 		else if (*it == "--start-map-id") {
 			++it;
 			if (it == args.end()) {
@@ -541,6 +550,8 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--project-path PATH  " << "Instead of using the working directory the game in" << std::endl;
 	std::cout << "      " << "                     " << "PATH is used." << std::endl;
+
+	std::cout << "      " << "--seed N            " << "Seeds the random number generator with N." << std::endl;
 
 	std::cout << "      " << "--start-map-id N     " << "Overwrite the map used for new games and use." << std::endl;
 	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;
