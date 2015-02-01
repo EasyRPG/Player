@@ -58,6 +58,7 @@ void Scene_Item::Update() {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
+				Main_Data::game_party->UseItem(item_id);
 				Game_Switches[Data::items[item_id - 1].switch_id] = true;
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
