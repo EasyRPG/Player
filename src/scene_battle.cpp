@@ -440,7 +440,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 			ActionSelectedCallback(enemy);
 			break;
 		case RPG::Skill::Scope_party: {
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
 			ActionSelectedCallback(enemy);
 			break;
 		}
