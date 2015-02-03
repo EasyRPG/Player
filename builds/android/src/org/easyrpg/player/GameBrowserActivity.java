@@ -98,7 +98,8 @@ public class GameBrowserActivity extends ListActivity {
 				}
 	
 				if (values.size() == 0) {
-					values.add("No games found in " + path);
+					String no_game_found = getResources().getString(R.string.no_game_found).replace("$PATH", path);
+					values.add(no_game_found);
 				} else {
 					error = false;
 				}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyRPG Player</string>
+	<string name="toggle_fps">Afficher les FPS</string>
+	<string name="toggle_ui">Afficher les boutons virtuels</string>
+	<string name="end_game">Quitter le jeu</string>
+	<string name="autodetect">Detection automatique de la région (Recommandé)</string>
+	<string name="west_europe">Europe de l\'Ouest</string>
+	<string name="east_europe">Europe Centrale/de l\'Ouest</string>
+	<string name="cyrillic">Cyrillique</string>
+	<string name="japan">Japonais</string>
+	<string name="korean">Coréen</string>
+	<string name="chinese_simple">Chinois (Simplifié)</string>
+	<string name="chinese_traditional">Chinois (Traditionnel)</string>
+	<string name="greek">Grec</string>
+	<string name="turkish">Turque</string>
+	<string name="hebrew">Hébreux</string>
+	<string name="arabic">Arabe</string>
+	<string name="baltic">Balte</string>
+	<string name="thai">Thailandais</string>
+	<string name="vietnamese">Vietnamien</string>
+	<string name="cancel">Annuler</string>
+	<string name="no_game_found">Pas de jeu trouvé dans $PATH</string>
+</resources>

@@ -20,4 +20,5 @@
 	<string name="thai">Thai</string>
 	<string name="vietnamese">Vietnamese</string>
 	<string name="cancel">Cancel</string>
+	<string name="no_game_found">No game found in $PATH</string>
 </resources>
