@@ -1479,16 +1479,25 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	bool check_right    = false;
 	bool check_up       = false;
 	int result = 0;
+	size_t param_size = com.parameters.size();
 
 	if (Player::engine == Player::EngineRpg2k) {
-		bool check_dir = com.parameters[2] != 0;
-		check_up = check_dir;
-		check_down = check_dir;
-		check_left = check_dir;
-		check_right = check_dir;
+		if (param_size < 6) {
+			// For Rpg2k <1.50
+			bool check_dir = com.parameters[2] != 0;
+			check_down  = check_dir;
+			check_left  = check_dir;
+			check_right = check_dir;
+			check_up    = check_dir;
+		} else {
+			// For Rpg2k >=1.50
+			check_shift = com.parameters[5] != 0;
+			check_down  = param_size > 6 ? com.parameters[6] != 0 : false;
+			check_left  = param_size > 7 ? com.parameters[7] != 0 : false;
+			check_right = param_size > 8 ? com.parameters[8] != 0 : false;
+			check_up    = param_size > 9 ? com.parameters[9] != 0 : false;
+		}
 	} else if (Player::engine == Player::EngineRpg2k3) {
-		size_t param_size = com.parameters.size();
-
 		// Optimization: If missing -> default value
 		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
 		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
