@@ -370,7 +370,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 				continue;
 			}
 			else if ((*it)->GetLayer() == self_event->GetLayer()) {
-				if (self_event->GetX() == x && self_event->GetY() == y)
+				if (self_event->IsInPosition(x, y))
 					pass = true;
 				else
 					return false;
@@ -452,7 +452,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     if (self_event) {
         for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
             Game_Event* evnt = i->second.get();
-            if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
+            if (evnt != self_event && evnt->IsInPosition(x, y)) {
                 if (!evnt->GetThrough()) {
                     if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
                         return false;
@@ -576,7 +576,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); ++i) {
-		if (i->second->GetX() == x && i->second->GetY() == y && i->second->GetActive()) {
+		if (i->second->IsInPosition(x, y) && i->second->GetActive()) {
 			result.push_back(i->second.get());
 		}
 	}
@@ -619,7 +619,7 @@ int Game_Map::YwithDirection(int y, int direction) {
 int Game_Map::CheckEvent(int x, int y) {
 	tEventHash::iterator i;
 	for (i = events.begin(); i != events.end(); ++i) {
-		if (i->second->GetX() == x && i->second->GetY() == y) {
+		if (i->second->IsInPosition(x, y)) {
 			return i->second->GetId();
 		}
 	}
@@ -785,7 +785,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(x, y);
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
