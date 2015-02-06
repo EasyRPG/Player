@@ -324,8 +324,7 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 	if (last_moving && CheckTouchEvent()) return;
 
 	if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
-		// TODO
-		//if ( GetOnOffVehicle() ) return;
+		if ( GetOnOffVehicle() ) return;
 		if ( CheckActionEvent() ) return;
 	}
 

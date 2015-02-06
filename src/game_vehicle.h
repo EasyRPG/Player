@@ -86,6 +86,7 @@ public:
 	void LoadSystemSettings();
 	void Refresh();
 	void SetPosition(int _map_id, int _x, int _y);
+	bool IsInCurrentMap() const;
 	virtual bool IsInPosition(int x, int y) const;
 	virtual bool GetVisible() const;
 	void GetOn();

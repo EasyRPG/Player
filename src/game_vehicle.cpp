@@ -22,6 +22,7 @@
 #include "game_map.h"
 #include "game_player.h"
 #include "game_vehicle.h"
+#include "output.h"
 
 Game_Vehicle::Game_Vehicle(Type _type) :
 	data(_type == Boat ? Main_Data::game_data.boat_location :
@@ -32,7 +33,8 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	altitude = 0;
 	driving = false;
 	SetDirection(RPG::EventPage::Direction_left);
-	walk_animation = false;
+	walk_animation = type != Airship;
+	animation_type = RPG::EventPage::AnimType_continuous;
 	LoadSystemSettings();
 }
 
@@ -224,7 +226,7 @@ void Game_Vehicle::Refresh() {
 		map_id = Game_Map::GetMapId();
 		SyncWithPlayer();
 	}
-	else if (map_id == Game_Map::GetMapId())
+	else if (IsInCurrentMap())
 		MoveTo(GetX(), GetY());
 	switch (type) {
 		case Boat:
@@ -240,7 +242,7 @@ void Game_Vehicle::Refresh() {
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_fourfold);
 			break;
 	}
-	walk_animation = driving;
+	walk_animation = (type != Airship) || driving;
 }
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
@@ -249,15 +251,20 @@ void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetY(_y);
 }
 
+bool Game_Vehicle::IsInCurrentMap() const {
+	return map_id == Game_Map::GetMapId();
+}
+
 bool Game_Vehicle::IsInPosition(int x, int y) const {
-	return map_id == Game_Map::GetMapId() && Game_Character::IsInPosition(x, y);
+	return IsInCurrentMap() && Game_Character::IsInPosition(x, y);
 }
 
 bool Game_Vehicle::GetVisible() const {
-	return map_id != Game_Map::GetMapId() || !Game_Character::GetVisible();
+	return IsInCurrentMap() && Game_Character::GetVisible();
 }
 
 void Game_Vehicle::GetOn() {
+	Output::Warning("Vehicle: Driving not implemented");
 	driving = true;
 	walk_animation = true;
 	if (type == Airship) {
@@ -268,7 +275,10 @@ void Game_Vehicle::GetOn() {
 
 void Game_Vehicle::GetOff() {
 	driving = false;
-	walk_animation = false;
+	if (type == Airship) {
+		walk_animation = false;
+		SetLayer(RPG::EventPage::Layers_below);
+	}
 	SetDirection(RPG::EventPage::Direction_left);
 }
 

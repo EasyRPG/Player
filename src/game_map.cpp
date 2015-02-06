@@ -387,6 +387,10 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 					return false;
 			}
 		}
+
+		if (!self_event->IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
+			return false;
+
 		if (pass) // All events here are passable
 			return true;
 	}
