@@ -25,5 +25,5 @@
 	<string name="no">No</string>
 	<string name="creating_dir_failed">Creating $PATH directory failed</string>
 	<string name="path_not_readable">$PATH not readable</string>
-	<string name="no_game_found">No game found in $PATH</string>
+	<string name="no_game_found">No games found in $PATH</string>
 </resources>
