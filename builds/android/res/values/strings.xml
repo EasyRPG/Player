@@ -20,5 +20,10 @@
 	<string name="thai">Thai</string>
 	<string name="vietnamese">Vietnamese</string>
 	<string name="cancel">Cancel</string>
+	<string name="do_want_quit">Do you really want to quit?</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="creating_dir_failed">Creating $PATH directory failed</string>
+	<string name="path_not_readable">$PATH not readable</string>
 	<string name="no_game_found">No game found in $PATH</string>
 </resources>

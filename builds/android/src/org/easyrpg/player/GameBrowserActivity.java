@@ -80,12 +80,14 @@ public class GameBrowserActivity extends ListActivity {
 			File dir = new File(path);
 			if (!dir.exists()) {
 				if (!dir.mkdirs()) {
-					values.add("Creating " + path + " directory failed");
+					String msg = getString(R.string.creating_dir_failed).replace("$PATH", path);
+					values.add(msg);
 				}
 			}
 	
 			if (!dir.canRead() || !dir.isDirectory()) {
-				values.add(path + " not readable");
+				String msg = getString(R.string.path_not_readable).replace("$PATH", path);
+				values.add(msg);
 			} else {
 	
 				File[] list = dir.listFiles();
@@ -98,7 +100,7 @@ public class GameBrowserActivity extends ListActivity {
 				}
 	
 				if (values.size() == 0) {
-					String no_game_found = getResources().getString(R.string.no_game_found).replace("$PATH", path);
+					String no_game_found = getString(R.string.no_game_found).replace("$PATH", path);
 					values.add(no_game_found);
 				} else {
 					error = false;
