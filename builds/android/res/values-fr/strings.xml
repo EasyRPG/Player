@@ -25,5 +25,13 @@
 	<string name="no">Non</string>
 	<string name="creating_dir_failed">La création du dossier $PATH a échoué</string>
 	<string name="path_not_readable">$PATH non lisible</string>
-	<string name="no_game_found">Pas de jeu trouvé dans $PATH</string>
+	<string name="no_games_found">Pas de jeu trouvé dans $PATH</string>
+	<string name="no_external_storage">Pas de stockage externé trouvé</string>
+	<string name="resolve_errors">Résolvez les erreurs et recommencez</string>
+	<string name="not_valid_game">$PATH n\'est pas un jeu valide</string>
+	<string name="accessing_configuration_failed">L\'accès à la configuration de $PATH a échoué.</string>
+	<string name="select_game_region">Selectionner la région du jeu</string>
+	<string name="unknown_region">Région inconnue</string>
+	<string name="region_modification_success">Région changée en $NAME</string>
+	<string name="region_modification_failed">Le changement de la région a échoué</string>
 </resources>

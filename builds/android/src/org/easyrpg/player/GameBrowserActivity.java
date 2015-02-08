@@ -100,14 +100,14 @@ public class GameBrowserActivity extends ListActivity {
 				}
 	
 				if (values.size() == 0) {
-					String no_game_found = getString(R.string.no_game_found).replace("$PATH", path);
+					String no_game_found = getString(R.string.no_games_found).replace("$PATH", path);
 					values.add(no_game_found);
 				} else {
 					error = false;
 				}
 			}
 		} else {
-			values.add("No external storage (e.g. SD card) found");
+			values.add(getString(R.string.no_external_storage));
 		}
 
 		Collections.sort(values);
@@ -241,7 +241,7 @@ public class GameBrowserActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		if (error) {
-			Toast.makeText(this, "Resolve errors and try again",
+			Toast.makeText(this, getString(R.string.resolve_errors),
 					Toast.LENGTH_LONG).show();
 			return;
 		}
@@ -253,8 +253,8 @@ public class GameBrowserActivity extends ListActivity {
 			intent.putExtra("project_path", filename);
 			startActivity(intent);
 		} else {
-			Toast.makeText(this, getGameAt(position) + " is not a valid game",
-					Toast.LENGTH_LONG).show();
+			String msg = getString(R.string.not_valid_game).replace("$PATH", getGameAt(position));
+			Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -273,8 +273,8 @@ public class GameBrowserActivity extends ListActivity {
 				Dialog dialog = new RegionDialog(parent, iniFile);
 				dialog.show();
 			} catch (IOException e) {
-				Toast.makeText(parent, "Accessing configuration of " + getGameAt(row) + " failed.",
-						Toast.LENGTH_LONG).show();
+				String msg = getString(R.string.accessing_configuration_failed).replace("$PATH", getGameAt(row));
+				Toast.makeText(parent, msg, Toast.LENGTH_LONG).show();
 			}
 			return false;
 		}
@@ -292,7 +292,7 @@ public class GameBrowserActivity extends ListActivity {
 			super(context);
 			this.iniFile = iniFile;
 		    setContentView(R.layout.region_menu);
-			setTitle("Select Game Region");
+			setTitle(getString(R.string.select_game_region));
 			setCancelable(true);
 			
 			rg = (RadioGroup)findViewById(R.id.rg);
@@ -338,7 +338,7 @@ public class GameBrowserActivity extends ListActivity {
 			if (rb != null) {
 				rb.toggle();
 			} else {
-				Toast.makeText(getContext(), "Unknown region",
+				Toast.makeText(getContext(), getString(R.string.unknown_region),
 						Toast.LENGTH_LONG).show();
 			}
 		}
@@ -391,10 +391,10 @@ public class GameBrowserActivity extends ListActivity {
 					}
 					try {
 						iniReader.save();
-						Toast.makeText(context, "Region changed to " + v.getText().toString(),
-								Toast.LENGTH_LONG).show();
+						String msg = getString(R.string.region_modification_success).replace("$NAME", v.getText().toString());
+						Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 					} catch (IOException e) {
-						Toast.makeText(context, "Changing region failed",
+						Toast.makeText(context, getString(R.string.region_modification_failed),
 								Toast.LENGTH_LONG).show();
 					}
 				}
