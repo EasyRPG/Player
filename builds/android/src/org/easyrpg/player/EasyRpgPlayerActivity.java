@@ -125,14 +125,14 @@ public class EasyRpgPlayerActivity extends SDLActivity {
     
 		// set dialog message
 		alertDialogBuilder
-			.setMessage("Do you really want to quit?")
+			.setMessage(R.string.do_want_quit)
 			.setCancelable(false)
-			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+			.setPositiveButton(R.string.yes,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
 					endGame();
 				}
 			  })
-			.setNegativeButton("No",new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
 					dialog.cancel();
 				}
