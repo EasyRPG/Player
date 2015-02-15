@@ -43,6 +43,9 @@ Spriteset_Map::Spriteset_Map() {
 	character_sprites.push_back
 		(EASYRPG_MAKE_SHARED<Sprite_Character>(Main_Data::game_player.get()));
 
+	timer1.reset(new Sprite_Timer(0));
+	timer2.reset(new Sprite_Timer(1));
+
 	Update();
 }
 
@@ -61,6 +64,9 @@ void Spriteset_Map::Update() {
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
+
+	timer1->Update();
+	timer2->Update();
 }
 
 // Finds the sprite for a specific character

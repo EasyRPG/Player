@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_message.h"
+#include "game_player.h"
 #include "main_data.h"
 
 namespace Game_Message {
@@ -136,4 +137,32 @@ bool Game_Message::GetContinueEvents() {
 
 void Game_Message::SetContinueEvents(bool continue_events) {
 	data.message_continue_events = continue_events;
+}
+
+int Game_Message::GetRealPosition() {
+	if (Game_Message::IsPositionFixed()) {
+		return Game_Message::GetPosition();
+	}
+	else {
+		// Move Message Box to prevent player hiding
+		int disp = Main_Data::game_player->GetScreenY();
+
+		switch (Game_Message::GetPosition()) {
+		case 0: // Up
+			return disp > (16 * 7) ? 0 : 2;
+		case 1: // Center
+			if (disp <= 16 * 7) {
+				return 2;
+			}
+			else if (disp >= 16 * 10) {
+				return 0;
+			}
+			else {
+				return 1;
+			}
+			break;
+		default: // Down
+			return disp >= (16 * 10) ? 0 : 2;
+		};
+	}
 }
