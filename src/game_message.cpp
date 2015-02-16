@@ -18,7 +18,9 @@
 // Headers
 #include "game_message.h"
 #include "game_player.h"
+#include "game_temp.h"
 #include "main_data.h"
+#include "player.h"
 
 namespace Game_Message {
 	std::vector<std::string> texts;
@@ -140,6 +142,15 @@ void Game_Message::SetContinueEvents(bool continue_events) {
 }
 
 int Game_Message::GetRealPosition() {
+	if (Game_Temp::battle_running) {
+		if (Player::engine == Player::EngineRpg2k) {
+			return 2;
+		}
+		else {
+			return 0;
+		}
+	}
+
 	if (Game_Message::IsPositionFixed()) {
 		return Game_Message::GetPosition();
 	}
