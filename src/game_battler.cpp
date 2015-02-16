@@ -159,6 +159,8 @@ bool Game_Battler::UseItem(int item_id) {
 	} else if (item.type == RPG::Item::Type_material) {
 		// TODO
 		return false;
+	} else if (item.type == RPG::Item::Type_switch) {
+		return true;
 	}
 
 	return false;
@@ -193,6 +195,7 @@ bool Game_Battler::UseSkill(int skill_id) {
 			// ToDo: Show Teleport/Escape target menu
 			break;
 		case RPG::Skill::Type_switch:
+			SetSp(GetSp() - skill.sp_cost);
 			Game_Switches[skill.switch_id] = true;
 			break;
 	}

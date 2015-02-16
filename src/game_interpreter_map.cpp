@@ -1837,7 +1837,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			}
 			break;
 		case 2:
-			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
+			value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:
@@ -1930,7 +1930,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// TODO BGM Playing
 			break;
 		case 10:
-			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
+			value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:

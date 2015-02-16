@@ -720,7 +720,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
-					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
+					value = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
@@ -750,7 +750,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					// TODO: MIDI play position
 					break;
 				case 9:
-					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
+					value = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
 					break;
 			}
 			break;

@@ -15,34 +15,41 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITESET_BATTLE_H_
-#define _SPRITESET_BATTLE_H_
+#ifndef _SPRITE_TIMER_H_
+#define _SPRITE_TIMER_H_
 
 // Headers
-#include "tilemap.h"
-#include "background.h"
-#include "sprite_battler.h"
-#include "sprite_character.h"
+#include "sprite.h"
 #include "sprite_timer.h"
-#include <boost/scoped_ptr.hpp>
 
-class Game_Battler;
+
 /**
- * Spriteset_Battle class.
+ * Renders the timer on screen
  */
-class Spriteset_Battle {
+class Sprite_Timer : public Sprite {
 public:
-	Spriteset_Battle();
+	/**
+	 * Constructor.
+	 *
+	 * @param which Timer 1 or 2
+	 */
+	Sprite_Timer(int which);
 
+	~Sprite_Timer();
+
+	/**
+	 * Updates sprite state.
+	 */
 	void Update();
-	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
 protected:
-	boost::scoped_ptr<Background> background;
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> > sprites;
+	void CreateSprite();
+	void Draw();
 
-	boost::scoped_ptr<Sprite_Timer> timer1;
-	boost::scoped_ptr<Sprite_Timer> timer2;
+	int which;
+	int counter;
+
+	Rect digits[5];
 };
 
 #endif

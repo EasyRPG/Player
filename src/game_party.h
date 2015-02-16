@@ -250,7 +250,7 @@ public:
 	void StartTimer(int which, bool visible, bool battle);
 	void StopTimer(int which);
 	void UpdateTimers();
-	int ReadTimer(int which);
+	int GetTimer(int which, bool* visible = NULL, bool* battle = NULL);
 };
 
 #endif

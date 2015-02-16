@@ -147,6 +147,16 @@ void Scene_Battle::Update() {
 	target_window->Update();
 	message_window->Update();
 
+	// Query Timer before and after update.
+	// If it reached zero during update was a running battle timer.
+	int timer1 = Main_Data::game_party->GetTimer(Game_Party::Timer1);
+	int timer2 = Main_Data::game_party->GetTimer(Game_Party::Timer2);
+	Main_Data::game_party->UpdateTimers();
+	if ((Main_Data::game_party->GetTimer(Game_Party::Timer1) == 0 && timer1 > 0) ||
+		(Main_Data::game_party->GetTimer(Game_Party::Timer2) == 0 && timer2 > 0)) {
+		Scene::Pop();
+	}
+
 	if (!Game_Battle::GetInterpreter().IsRunning()) {
 		ProcessActions();
 		ProcessInput();
@@ -440,7 +450,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 			ActionSelectedCallback(enemy);
 			break;
 		case RPG::Skill::Scope_party: {
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
 			ActionSelectedCallback(enemy);
 			break;
 		}

@@ -19,6 +19,8 @@
 #define _SPRITESET_MAP_H_
 
 // Headers
+#include <boost/scoped_ptr.hpp>
+#include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
 #include "plane.h"
@@ -60,6 +62,8 @@ protected:
 	Plane panorama;
 	std::string panorama_name;
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> > character_sprites;
+	boost::scoped_ptr<Sprite_Timer> timer1;
+	boost::scoped_ptr<Sprite_Timer> timer2;
 };
 
 #endif

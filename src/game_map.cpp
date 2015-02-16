@@ -88,6 +88,10 @@ void Game_Map::Init() {
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
+	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
+	}
+
 	for (int i = 0; i < 3; i++)
 		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
 
@@ -103,7 +107,6 @@ void Game_Map::Init() {
 
 void Game_Map::Dispose() {
 	events.clear();
-	common_events.clear();
 
 	if (Main_Data::game_screen) {
 		Main_Data::game_screen->Reset();
@@ -114,6 +117,8 @@ void Game_Map::Dispose() {
 
 void Game_Map::Quit() {
 	Dispose();
+
+	common_events.clear();
 	interpreter.reset();
 }
 
@@ -122,10 +127,6 @@ void Game_Map::Setup(int _id) {
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
-	}
-
-	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
 	location.pan_finish_x = 0;

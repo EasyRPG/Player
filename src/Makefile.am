@@ -193,6 +193,8 @@ easyrpg_player_SOURCES = \
 	sprite_battler.h \
 	sprite_character.cpp \
 	sprite_character.h \
+	sprite_timer.cpp \
+	sprite_timer.h \
 	sprite.cpp \
 	sprite.h \
 	spriteset_battle.cpp \

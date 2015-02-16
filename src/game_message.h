@@ -117,49 +117,57 @@ namespace Game_Message {
 
 
 	/**
-	* Gets the message box position.
-	*
-	* @return 0: top, 1: middle, 2: bottom
-	*/
+	 * Gets the message box position.
+	 *
+	 * @return 0: top, 1: middle, 2: bottom
+	 */
 	int GetPosition();
 
 	/**
-	* Sets the message box position.
-	* Depending on the player position this value is ignored to prevent overlap.
-	* (see SetPositionFixed)
-	*
-	* @param new_position 0: top, 1: middle, 2: bottom
-	*/
+	 * Sets the message box position.
+	 * Depending on the player position this value is ignored to prevent overlap.
+	 * (see SetPositionFixed)
+	 *
+	 * @param new_position 0: top, 1: middle, 2: bottom
+	 */
 	void SetPosition(int new_position);
 
 	/**
-	* Gets whether message box position is fixed.
-	* In that case the hero can be obstructed.
-	*
-	* @return fixed
-	*/
+	 * Gets whether message box position is fixed.
+	 * In that case the hero can be obstructed.
+	 *
+	 * @return fixed
+	 */
 	bool IsPositionFixed();
 
 	/**
-	* Sets if message box is moved to avoid obscuring the player.
-	*
-	* @param fixed position fixed
-	*/
+	 * Sets if message box is moved to avoid obscuring the player.
+	 *
+	 * @param fixed position fixed
+	 */
 	void SetPositionFixed(bool fixed);
 
 	/**
-	* Gets if parallel events continue while message box is displayed.
-	*
-	* @return whether events continue
-	*/
+	 * Gets if parallel events continue while message box is displayed.
+	 *
+	 * @return whether events continue
+	 */
 	bool GetContinueEvents();
 
 	/**
-	* Sets if parallel events continue while message box is displayed.
-	*
-	* @param continue_events continue events
-	*/
+	 * Sets if parallel events continue while message box is displayed.
+	 *
+	 * @param continue_events continue events
+	 */
 	void SetContinueEvents(bool continue_events);
+
+	/**
+	 * Determines the position of the message box respecting the player's map
+	 * position and if obstructing is allowed.
+	 *
+	 * @return Best message box position
+	 */
+	int GetRealPosition();
 
 	/**
 	 * Number of lines before the start

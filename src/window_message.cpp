@@ -143,31 +143,7 @@ void Window_Message::ShowGoldWindow() {
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
-	if (Game_Message::IsPositionFixed()) {
-		y = Game_Message::GetPosition() * 80;
-	} else {
-		// Move Message Box to prevent player hiding
-		int disp = Main_Data::game_player->GetScreenY();
-
-		switch (Game_Message::GetPosition()) {
-		case 0: // Up
-			y = disp > (16 * 7) ? 0 : 2 * 80;
-			break;
-		case 1: // Center
-			if (disp <= 16 * 7) {
-				y = 2 * 80;
-			} else if (disp >= 16 * 10) {
-				y = 0;
-			} else {
-				y = 80;
-			}
-			break;
-		case 2: // Down
-			y = disp >= (16 * 10) ? 0 : 2 * 80;
-			break;
-		};
-	}
-
+	y = Game_Message::GetRealPosition() * 80;
 
 	if (Game_Message::IsTransparent()) {
 		opacity = 0;
