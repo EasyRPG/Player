@@ -42,6 +42,9 @@ Spriteset_Battle::Spriteset_Battle() {
 		sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Battler>(*it));
 	}
 
+	timer1.reset(new Sprite_Timer(0));
+	timer2.reset(new Sprite_Timer(1));
+
 	Update();
 }
 
@@ -50,6 +53,9 @@ void Spriteset_Battle::Update() {
 	for (it = sprites.begin(); it != sprites.end(); ++it) {
 		(*it)->Update();
 	}
+
+	timer1->Update();
+	timer2->Update();
 }
 
 Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)

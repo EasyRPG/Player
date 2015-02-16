@@ -23,6 +23,7 @@
 #include "background.h"
 #include "sprite_battler.h"
 #include "sprite_character.h"
+#include "sprite_timer.h"
 #include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
@@ -39,8 +40,9 @@ public:
 protected:
 	boost::scoped_ptr<Background> background;
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> > sprites;
-	/*std::vector<Sprite_Picture*> picture_sprites;
-	Sprite_Timer* timer_sprite;*/
+
+	boost::scoped_ptr<Sprite_Timer> timer1;
+	boost::scoped_ptr<Sprite_Timer> timer2;
 };
 
 #endif

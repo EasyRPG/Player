@@ -119,7 +119,10 @@ void Sprite_Timer::Update() {
 	digits[3].x = 32 + 8 * secs_10;
 	digits[4].x = 32 + 8 * secs_1;
 
-	if (Game_Message::GetRealPosition() == 0) {
+	if (Game_Temp::battle_running) {
+		SetY(SCREEN_TARGET_HEIGHT / 3 * 2 - 20);
+	}
+	else if (Game_Message::GetRealPosition() == 0) {
 		SetY(SCREEN_TARGET_HEIGHT - 20);
 	}
 	else {
@@ -134,6 +137,8 @@ void Sprite_Timer::CreateSprite() {
 	digits[2].x = 32 + 8 * 10; // :
 
 	SetBitmap(Bitmap::Create(40, 16));
+
+	SetVisible(false);
 
 	switch (which) {
 		case Game_Party::Timer1:

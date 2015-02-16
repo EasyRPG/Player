@@ -344,15 +344,23 @@ void Game_Party::StopTimer(int which) {
 
 void Game_Party::UpdateTimers() {
 	bool battle = Game_Temp::battle_running;
-	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
+	if (data.timer1_active && (data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
-		if (data.timer1_secs % DEFAULT_FPS == 0)
+		if (data.timer1_secs % DEFAULT_FPS == 0) {
 			Game_Map::SetNeedRefresh(true);
+		}
+		if (data.timer1_secs == 0) {
+			StopTimer(Timer1);
+		}
 	}
-	if (data.timer2_active && (!data.timer2_battle || !battle) && data.timer2_secs > 0) {
+	if (data.timer2_active && (data.timer2_battle || !battle) && data.timer2_secs > 0) {
 		data.timer2_secs--;
-		if (data.timer2_secs % DEFAULT_FPS == 0)
+		if (data.timer2_secs % DEFAULT_FPS == 0) {
 			Game_Map::SetNeedRefresh(true);
+		}
+		if (data.timer2_secs == 0) {
+			StopTimer(Timer2);
+		}
 	}
 }
 
