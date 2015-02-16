@@ -107,6 +107,10 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
+#ifdef EMSCRIPTEN
+	Output::IgnorePause(true);
+#endif
+
 	srand(time(NULL));
 
 	ParseCommandLine(argc, argv);
