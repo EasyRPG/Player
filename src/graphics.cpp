@@ -351,10 +351,13 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 				screen1 = screen2;
 		}
 
+#ifndef EMSCRIPTEN
+		// Fixme: Refactor how transitions work, they should return to the main loop
 		for (int i = 1; i <= transition_duration; i++) {
 			Player::Update();
 			InternUpdate1();
 		}
+#endif
 	}
 
 	if (!erase) frozen_screen = BitmapRef();
