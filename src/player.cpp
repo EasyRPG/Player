@@ -149,8 +149,6 @@ void Player::Run() {
 	while (Scene::instance->type != Scene::Null)
 		Player::MainLoop();
 #endif
-
-	Player::Exit();
 }
 
 void Player::MainLoop() {
@@ -159,6 +157,10 @@ void Player::MainLoop() {
 		Graphics::Pop();
 	}
 	Scene::old_instances.clear();
+
+	if (Scene::instance->type == Scene::Null) {
+		Player::Exit();
+	}
 }
 
 void Player::Pause() {
