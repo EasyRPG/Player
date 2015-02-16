@@ -153,6 +153,14 @@ int Game_Enemy::GetMoney() const {
 	return enemy->gold;
 }
 
+int Game_Enemy::GetDropId() const {
+	return enemy->drop_id;
+}
+
+int Game_Enemy::GetDropProbability() const {
+	return enemy->drop_prob;
+}
+
 bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	switch (action.condition_type) {
 	case RPG::EnemyAction::ConditionType_always:

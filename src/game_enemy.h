@@ -135,6 +135,21 @@ public:
 
 	int GetMoney() const;
 
+	/**
+	 * Get's the ID of the item the enemy drops when defeated.
+	 *
+	 * @return Dropped item ID, or 0 if no drop
+	 */
+	int GetDropId() const;
+
+	/**
+	 * Get's the probability that the enemy's item will be
+	 * dropped.
+	 *
+	 * @return Probability of drop as a percent (0-100)
+	 */
+	int GetDropProbability() const;
+
 	BattlerType GetType() const;
 
 	bool IsActionValid(const RPG::EnemyAction& action);

@@ -73,6 +73,13 @@ public:
 	 */
 	int GetMoney() const;
 
+	/**
+	 * Rolls once for each enemy's drops.
+	 *
+	 * @param out List of the dropped items' IDs
+	 */
+	void GenerateDrops(std::vector<int>& out) const;
+
 private:
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> > enemies;
 	RPG::Troop* troop;
