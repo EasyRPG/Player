@@ -581,7 +581,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			// no-op
 			break;
 		case State_Victory:
-			Scene::Pop();
+			if (message_window->IsNextMessagePossible()) {
+				message_window->Update();
+			} else {
+				Scene::Pop();
+			}
 			break;
 		case State_Defeat:
 			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
@@ -625,7 +629,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_Victory:
 		case State_Defeat:
-			Scene::Pop();
+			if (message_window->IsNextMessagePossible()) {
+				message_window->Update();
+			} else {
+				Scene::Pop();
+			}
 			break;
 		case State_Escape:
 			// no-op
@@ -769,7 +777,6 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		Game_Message::texts.push_back(Data::terms.victory + "\f");
 
-		// FIXME nothing after the victory message seems to be displayed
 		std::stringstream ss;
 		ss << exp << Data::terms.exp_received << "\f";
 		Game_Message::texts.push_back(ss.str());
