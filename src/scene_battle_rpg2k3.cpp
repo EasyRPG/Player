@@ -581,7 +581,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			// no-op
 			break;
 		case State_Victory:
-			Scene::Pop();
+			if (message_window->IsNextMessagePossible()) {
+				message_window->Update();
+			} else {
+				Scene::Pop();
+			}
 			break;
 		case State_Defeat:
 			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
@@ -625,7 +629,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_Victory:
 		case State_Defeat:
-			Scene::Pop();
+			if (message_window->IsNextMessagePossible()) {
+				message_window->Update();
+			} else {
+				Scene::Pop();
+			}
 			break;
 		case State_Escape:
 			// no-op
@@ -764,6 +772,8 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		int exp = Main_Data::game_enemyparty->GetExp();
 		int money = Main_Data::game_enemyparty->GetMoney();
+		std::vector<int> drops;
+		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		Game_Message::texts.push_back(Data::terms.victory + "\f");
 
@@ -774,6 +784,12 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		ss.str("");
 		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
 		Game_Message::texts.push_back(ss.str());
+
+		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+			ss.str("");
+			ss << Data::items[*it - 1].name << Data::terms.item_recieved << "\f";
+			Game_Message::texts.push_back(ss.str());
+		}
 
 		message_window->SetHeight(32);
 		Game_Message::SetPositionFixed(true);
@@ -792,6 +808,9 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 				actor->ChangeExp(actor->GetExp() + exp, true);
 		}
 		Main_Data::game_party->GainGold(money);
+		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+			Main_Data::game_party->AddItem(*it, 1);
+		}
 
 		return true;
 	}

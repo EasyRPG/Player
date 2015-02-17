@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cstdlib>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "game_enemy.h"
@@ -81,4 +82,17 @@ int Game_EnemyParty::GetMoney() const {
 		sum += (*it)->GetMoney();
 	}
 	return sum;
+}
+
+void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
+	for (it = enemies.begin(); it != enemies.end(); ++it) {
+		// Only roll if the enemy has something to drop
+		if ((*it)->GetDropId() != 0) {
+			bool dropped = (rand() % 100) < (*it)->GetDropProbability();
+			if (dropped) {
+				out.push_back((*it)->GetDropId());
+			}
+		}
+	}
 }

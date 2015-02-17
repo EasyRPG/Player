@@ -748,6 +748,8 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 
 		int exp = Main_Data::game_enemyparty->GetExp();
 		int money = Main_Data::game_enemyparty->GetMoney();
+		std::vector<int> drops;
+		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(2);
@@ -762,6 +764,12 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
 		Game_Message::texts.push_back(ss.str());
 
+		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+			ss.str("");
+			ss << Data::items[*it - 1].name << Data::terms.item_recieved;
+			Game_Message::texts.push_back(ss.str());
+		}
+
 		Game_System::BgmPlay(Data::system.battle_end_music);
 
 		// Update attributes
@@ -774,6 +782,9 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 				actor->ChangeExp(actor->GetExp() + exp, true);
 		}
 		Main_Data::game_party->GainGold(money);
+		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+			Main_Data::game_party->AddItem(*it, 1);
+		}
 
 		return true;
 	}
