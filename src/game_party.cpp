@@ -138,6 +138,13 @@ void Game_Party::AddItem(int item_id, int amount) {
 		}
 
 		data.item_counts[i] = (uint8_t)std::min(total_items, 99);
+		// If the item was removed, the number of uses resets.
+		// (Adding an item never changes the number of uses, even when
+		// you already have x99 of them.)
+		if (amount < 0) {
+			data.item_usage[i] = (uint8_t)Data::items[item_id - 1].uses;
+		}
+
 		return;
 	}
 
@@ -154,6 +161,39 @@ void Game_Party::AddItem(int item_id, int amount) {
 
 void Game_Party::RemoveItem(int item_id, int amount) {
 	AddItem(item_id, -amount);
+}
+
+void Game_Party::ConsumeItemUse(int item_id) {
+	if (item_id < 1 || item_id > (int) Data::items.size()) {
+		Output::Warning("Can't use up item.\n%04d is not a valid item ID.",
+						item_id);
+		return;
+	}
+
+	for (int i = 0; i < (int) data.item_ids.size(); i++) {
+		if (data.item_ids[i] != item_id)
+			continue;
+
+		if (data.item_usage[i] == 0) {
+			// Limitless uses
+			return;
+		}
+
+		data.item_usage[i]--;
+
+		if (data.item_usage[i] == 0) {
+			if (data.item_counts[i] == 1) {
+				// We just used up the last one
+				data.item_ids.erase(data.item_ids.begin() + i);
+				data.item_counts.erase(data.item_counts.begin() + i);
+				data.item_usage.erase(data.item_usage.begin() + i);
+			} else {
+				data.item_counts[i]--;
+				data.item_usage[i] = (uint8_t)Data::items[item_id - 1].uses;
+			}
+		}
+		return;
+	}
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
@@ -202,9 +242,8 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 		}
 	}
 
-	// Todo usage count
 	if (was_used) {
-		RemoveItem(item_id, 1);
+		ConsumeItemUse(item_id);
 	}
 
 	return was_used;

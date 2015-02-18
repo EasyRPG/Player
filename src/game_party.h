@@ -142,6 +142,14 @@ public:
 	void RemoveItem(int item_id, int amount);
 
 	/**
+	 * Consumes one use of an item (eg. for multi-use items).
+	 * Doesn't actually do anything with the item, just uses up one use.
+	 *
+	 * @param item_id database item ID
+	 */
+	void ConsumeItemUse(int item_id);
+
+	/**
 	 * Gets if item can be used.
 	 *
 	 * @param item_id database item ID.
