@@ -23,6 +23,7 @@
 #include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
+#include "dynrpg.h"
 #include "filefinder.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -597,6 +598,9 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEndEventProcessing(com);
 		case Cmd::Comment:
 		case Cmd::Comment_2:
+			if (Player::IsPatchDynRpg()) {
+				return DynRpg::Invoke(com);
+			}
 			return true;
 		case Cmd::GameOver:
 			return CommandGameOver(com);
