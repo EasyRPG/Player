@@ -64,8 +64,6 @@ namespace {
 		text_index = text.begin();
 		end = text.end();
 
-		char32_t chr = *text_index;
-
 		std::stringstream msg;
 
 		for (; text_index != end; ++text_index) {
@@ -192,11 +190,12 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 		}
 
 		if (text_index == end) {
-			// Convert backwards
+			// Variable reference
 			std::string tmp = number_part.str();
 			int number = atoi(tmp.c_str());
 			tmp = var_part.str();
 
+			// Convert backwards
 			for (std::string::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it) {
 				if (*it == 'N') {
 					if (!Game_Actors::ActorExists(number)) {
@@ -303,20 +302,23 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 			switch (mode) {
 			case ParseMode_Function:
 				// End of function token
-				if (!ValidFunction(token.str())) {
-					return true;
-				}
-				function_name = token.str();
+				ValidFunction(token.str());
+				function_name = Utils::LowerCase(token.str());
 				token.str("");
 
 				mode = ParseMode_WaitForArg;
 				break;
 			case ParseMode_WaitForComma:
-			case ParseMode_WaitForArg:
 				// no-op
 				break;
+			case ParseMode_WaitForArg:
+				if (args.size() > 0) {
+					// Found , but no token -> empty arg
+					args.push_back("");
+				}
+				break;
 			case ParseMode_String:
-				Output::Warning("%s: Unterminated literal", function_name.c_str());
+				Output::Warning("{}: Unterminated literal", function_name);
 				return true;
 			case ParseMode_Token:
 				tmp = ParseToken(token.str(), function_name);
@@ -334,10 +336,8 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 			switch (mode) {
 			case ParseMode_Function:
 				// End of function token
-				if (!ValidFunction(token.str())) {
-					return true;
-				}
-				function_name = token.str();
+				ValidFunction(token.str());
+				function_name = Utils::LowerCase(token.str());
 				token.str("");
 
 				mode = ParseMode_WaitForArg;
@@ -357,14 +357,15 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 			switch (mode) {
 			case ParseMode_Function:
 				// End of function token
-				Output::Warning("%s: Expected space or end, got \",\"", function_name.c_str());
+				Output::Warning("{}: Expected space or end, got \",\"", function_name);
 				return true;
 			case ParseMode_WaitForComma:
 				mode = ParseMode_WaitForArg;
 				break;
 			case ParseMode_WaitForArg:
-				Output::Warning("%s: Expected token, got \",\"", function_name.c_str());
-				return true;
+				// Empty arg
+				args.push_back("");
+				break;
 			case ParseMode_String:
 				token << chr;
 				break;
@@ -386,7 +387,7 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 				token << chr;
 				break;
 			case ParseMode_WaitForComma:
-				Output::Warning("%s: Expected \",\", got token", function_name.c_str());
+				Output::Warning("{}: Expected \",\", got token", function_name);
 				return true;
 			case ParseMode_WaitForArg:
 				if (chr == '"') {
@@ -428,5 +429,9 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 	}
 
 	dyn_rpg_func::const_iterator const name_it = dyn_rpg_functions.find(function_name);
-	return name_it->second(args);
+
+	if (name_it != dyn_rpg_functions.end()) {
+		return name_it->second(args);
+	}
+	return true;
 }
