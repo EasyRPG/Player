@@ -135,8 +135,9 @@ void Graphics::Update() {
 
 void Graphics::InternUpdate1(bool reset) {
 #ifdef EMSCRIPTEN
-	framecount++;
+	// FIXME: Graphics code doesn't play well with Emscripten (only 1 FPS)
 	DrawFrame();
+	framecount++;
 #else
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;

@@ -150,7 +150,7 @@ void Player::Run() {
 
 	// Main loop
 #ifdef EMSCRIPTEN
-	emscripten_set_main_loop(Player::MainLoop, 60, 0);
+	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
 	while (Scene::instance->type != Scene::Null)
 		Player::MainLoop();
