@@ -134,6 +134,10 @@ void Graphics::Update() {
 }
 
 void Graphics::InternUpdate1(bool reset) {
+#ifdef EMSCRIPTEN
+	framecount++;
+	DrawFrame();
+#else
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
 	static uint32_t current_time = 0;
@@ -182,6 +186,7 @@ void Graphics::InternUpdate1(bool reset) {
 			DisplayUi->Sleep((uint32_t)(framerate_interval - (current_time - last_time)));
 		}
 	}
+#endif
 }
 
 void Graphics::InternUpdate2(bool reset) {
