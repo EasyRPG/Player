@@ -188,6 +188,7 @@ void Output::ErrorStr(std::string const& err) {
 	if (!recursive_call && DisplayUi) {
 		recursive_call = true;
 		HandleErrorOutput(err);
+		DisplayUi.reset();
 	} else {
 		// Fallback to Console if the display is not ready yet
 		std::cout << err << std::endl;

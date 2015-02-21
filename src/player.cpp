@@ -107,6 +107,12 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
+#ifdef EMSCRIPTEN
+	Output::IgnorePause(true);
+	
+	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
+#endif
+
 	srand(time(NULL));
 
 	ParseCommandLine(argc, argv);
@@ -149,8 +155,6 @@ void Player::Run() {
 	while (Scene::instance->type != Scene::Null)
 		Player::MainLoop();
 #endif
-
-	Player::Exit();
 }
 
 void Player::MainLoop() {
@@ -159,6 +163,10 @@ void Player::MainLoop() {
 		Graphics::Pop();
 	}
 	Scene::old_instances.clear();
+
+	if (Scene::instance->type == Scene::Null) {
+		Player::Exit();
+	}
 }
 
 void Player::Pause() {

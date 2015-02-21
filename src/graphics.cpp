@@ -134,6 +134,11 @@ void Graphics::Update() {
 }
 
 void Graphics::InternUpdate1(bool reset) {
+#ifdef EMSCRIPTEN
+	// FIXME: Graphics code doesn't play well with Emscripten (only 1 FPS)
+	DrawFrame();
+	framecount++;
+#else
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
 	static uint32_t current_time = 0;
@@ -182,6 +187,7 @@ void Graphics::InternUpdate1(bool reset) {
 			DisplayUi->Sleep((uint32_t)(framerate_interval - (current_time - last_time)));
 		}
 	}
+#endif
 }
 
 void Graphics::InternUpdate2(bool reset) {
@@ -351,10 +357,13 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 				screen1 = screen2;
 		}
 
+#ifndef EMSCRIPTEN
+		// Fixme: Refactor how transitions work, they should return to the main loop
 		for (int i = 1; i <= transition_duration; i++) {
 			Player::Update();
 			InternUpdate1();
 		}
+#endif
 	}
 
 	if (!erase) frozen_screen = BitmapRef();

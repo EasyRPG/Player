@@ -84,7 +84,12 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
-	uint32_t flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
+	uint32_t flags = SDL_INIT_VIDEO;
+	
+#ifndef EMSCRIPTEN
+	flags |= SDL_INIT_TIMER;
+#endif
+
 #if (!defined(NDEBUG) || defined(_WIN32))
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
@@ -294,7 +299,14 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 	toggle_fs_available = true;
+	
+#ifdef SUPPORT_ZOOM
 	current_display_mode.zoom = true;
+	zoom_available = true;
+#else
+	current_display_mode.zoom = false;
+	zoom_available = false;
+#endif
 
 	return true;
 #endif

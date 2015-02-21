@@ -63,44 +63,54 @@ Scene::Scene() {
 }
 
 void Scene::MainFunction() {
-	switch(push_pop_operation) {
-	case ScenePushed:
-		Start();
-		break;
-	case ScenePopped:
-		Continue();
-		break;
-	default:;
+	static bool init = false;
+
+	if (!init) {
+		// Initialization after scene switch 
+		switch (push_pop_operation) {
+		case ScenePushed:
+			Start();
+			break;
+		case ScenePopped:
+			Continue();
+			break;
+		default:;
+		}
+
+		push_pop_operation = 0;
+
+		TransitionIn();
+		Resume();
+
+		init = true;
 	}
 
-	push_pop_operation = 0;
-
-	TransitionIn();
-	Resume();
-
-	// Scene loop
-	while (Scene::instance.get() == this) {
-		Player::Update();
-		Graphics::Update();
-		Audio().Update();
-		Input::Update();
-		Update();
-	}
-
-	assert(Scene::instance == instances.back() &&
-		   "Don't set Scene::instance directly, use Push instead!");
-
+	// Update scene
+	Player::Update();
 	Graphics::Update();
+	Audio().Update();
+	Input::Update();
+	Update();
 
-	Suspend();
-	TransitionOut();
+	if (Scene::instance.get() != this) {
+		// Shutdown after scene switch
+		assert(Scene::instance == instances.back() &&
+			"Don't set Scene::instance directly, use Push instead!");
 
-	switch (push_pop_operation) {
-	case ScenePushed:
-		Graphics::Push();
-		break;
-	// Graphics::Pop done in Player Loop
-	default:;
+		Graphics::Update();
+
+		Suspend();
+		TransitionOut();
+
+		switch (push_pop_operation) {
+		case ScenePushed:
+			Graphics::Push();
+			break;
+			// Graphics::Pop done in Player Loop
+		default:;
+		}
+
+		init = false;
 	}
 }
 
