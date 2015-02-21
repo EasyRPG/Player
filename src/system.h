@@ -71,6 +71,10 @@
 #    undef USE_SDL_MIXER
 #  endif
 
+#  ifdef EMSCRIPTEN
+#    undef SUPPORT_AUDIO
+#  endif
+
 #  if defined(GEKKO) || defined(OPENDINGUX)
 #    undef SUPPORT_ZOOM
 #  endif
