@@ -65,14 +65,14 @@
 #ifdef USE_SDL
 #  define USE_SDL_MIXER
 
-
 #  ifdef PSP
-#    undef SUPPORT_AUDIO
 #    undef USE_SDL_MIXER
+#    define NO_SDL_MIXER
 #  endif
 
 #  ifdef EMSCRIPTEN
-#    undef SUPPORT_AUDIO
+#    undef USE_SDL_MIXER
+#    define NO_SDL_MIXER
 #  endif
 
 #  if defined(GEKKO) || defined(OPENDINGUX) || defined(EMSCRIPTEN)
