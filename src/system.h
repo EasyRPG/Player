@@ -75,7 +75,7 @@
 #    undef SUPPORT_AUDIO
 #  endif
 
-#  if defined(GEKKO) || defined(OPENDINGUX)
+#  if defined(GEKKO) || defined(OPENDINGUX) || defined(EMSCRIPTEN)
 #    undef SUPPORT_ZOOM
 #  endif
 

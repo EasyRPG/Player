@@ -299,7 +299,14 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 	toggle_fs_available = true;
+	
+#ifdef SUPPORT_ZOOM
 	current_display_mode.zoom = true;
+	zoom_available = true;
+#else
+	current_display_mode.zoom = false;
+	zoom_available = false;
+#endif
 
 	return true;
 #endif
