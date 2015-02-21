@@ -110,7 +110,7 @@ void Player::Init(int argc, char *argv[]) {
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
 	
-	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * RUN_ZOOM ? 2 : 1, SCREEN_TARGET_HEIGHT * RUN_ZOOM ? 2 : 1);
+	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * (RUN_ZOOM ? 2 : 1), SCREEN_TARGET_HEIGHT * (RUN_ZOOM ? 2 : 1));
 #endif
 
 	srand(time(NULL));
