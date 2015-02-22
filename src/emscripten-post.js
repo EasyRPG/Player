@@ -6,16 +6,16 @@ function parseargs() {
         tmp = items[index].split("=");
         ret.push("--" + tmp[0]);
         if (tmp.length > 1) {
-		    arg = decodeURI(tmp[1]);
-			// split except if it's a string
-			if (arg.length > 0) {
-			    if (arg.slice(0) == "\"" && arg.slice(-1) == "\"") {
-				    ret.push(arg.slice(1, -1));
-				} else {
-					var spl = arg.split(" ");
-					ret = ret.concat(spl);
-				}
-			}
+            arg = decodeURI(tmp[1]);
+            // split except if it's a string
+            if (arg.length > 0) {
+                if (arg.slice(0) == "\"" && arg.slice(-1) == "\"") {
+                    ret.push(arg.slice(1, -1));
+                } else {
+                    var spl = arg.split(" ");
+                    ret = ret.concat(spl);
+                }
+            }
             
         }
     }
