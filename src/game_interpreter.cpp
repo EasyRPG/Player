@@ -216,7 +216,12 @@ void Game_Interpreter::Update() {
 		}
 
 		if (continuation) {
-			bool result = (this->*continuation)(list[index]);
+			bool result;
+			if (index >= list.size()) {
+				result = (this->*continuation)(RPG::EventCommand());
+			} else {
+				result = (this->*continuation)(list[index]);
+			}
 
 			if (result)
 				continue;

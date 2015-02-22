@@ -1083,7 +1083,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
 		Game_Message::choice_result = 0;
-		return ContinuationShowInnStart(com);
+		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+		return true;
 	}
 
 	Game_Message::message_waiting = true;
