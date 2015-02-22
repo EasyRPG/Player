@@ -114,6 +114,11 @@ namespace Graphics {
 	void Transition(TransitionType type, int duration, bool erase = false);
 
 	/**
+	 * Gets if a screen transition is executing.
+	 */
+	bool IsTransitionPending();
+
+	/**
 	 * Freezes the screen, and prepares it for a
 	 * transition.
 	 */

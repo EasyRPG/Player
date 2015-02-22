@@ -55,8 +55,8 @@ public:
 	boost::scoped_ptr<Window_Message> message_window;
 
 private:
-	void UpdateTeleportPlayer();
-
+	void StartTeleportPlayer();
+	void FinishTeleportPlayer();
 	boost::scoped_ptr<Screen> screen;
 	boost::scoped_ptr<Weather> weather;
 

@@ -54,6 +54,7 @@ namespace Graphics {
 	bool frozen;
 	TransitionType transition_type;
 	int transition_duration;
+	int transition_frames_left;
 	int transition_frame;
 	bool screen_erased;
 
@@ -64,6 +65,7 @@ namespace Graphics {
 		std::list<Drawable*> drawable_list;
 		bool zlist_dirty;
 	};
+
 	EASYRPG_SHARED_PTR<State> state;
 	std::vector<EASYRPG_SHARED_PTR<State> > stack;
 	EASYRPG_SHARED_PTR<State> global_state;
@@ -87,15 +89,14 @@ void Graphics::Init() {
 	fps_mode = 0;
 	timer_wait = 0;
 	frozen_screen = BitmapRef();
+	screen_erased = false;
+	transition_frames_left = 0;
 
 	black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
 
-	frozen = false;
 	drawable_creation = 0;
 	state.reset(new State());
 	global_state.reset(new State());
-	screen_erased = false;
-
 }
 
 void Graphics::Quit() {
@@ -122,8 +123,6 @@ void Graphics::Quit() {
 }
 
 void Graphics::Update() {
-	if (frozen) return;
-
 	switch(fps_mode) {
 		case 1:
 			InternUpdate2();
@@ -262,11 +261,18 @@ void Graphics::UpdateTitle() {
 }
 
 void Graphics::DrawFrame() {
-	if (transition_duration > 0) {
+	if (transition_frames_left > 0) {
 		UpdateTransition();
+
+		if (overlay_visible) {
+			DrawOverlay();
+		}
 		return;
 	}
-	if (screen_erased) return;
+
+	if (screen_erased) {
+		return;
+	}
 
 	if (state->zlist_dirty) {
 		state->drawable_list.sort(SortDrawableList);
@@ -321,16 +327,14 @@ BitmapRef Graphics::SnapToBitmap() {
 
 void Graphics::Freeze() {
 	frozen_screen = SnapToBitmap();
-	frozen = true;
 }
 
 void Graphics::Transition(TransitionType type, int duration, bool erase) {
-	if (erase && screen_erased) return;
-
 	if (type != TransitionNone) {
 		transition_type = type;
 		transition_frame = 0;
 		transition_duration = type == TransitionErase ? 1 : duration;
+		transition_frames_left = transition_duration;
 
 		if (state->zlist_dirty) {
 			state->drawable_list.sort(SortDrawableList);
@@ -342,7 +346,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 			global_state->zlist_dirty = false;
 		}
 
-		if (!frozen) Freeze();
+		Freeze();
 
 		if (erase) {
 			screen1 = frozen_screen;
@@ -356,24 +360,13 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 			else
 				screen1 = screen2;
 		}
-
-#ifndef EMSCRIPTEN
-		// Fixme: Refactor how transitions work, they should return to the main loop
-		for (int i = 1; i <= transition_duration; i++) {
-			Player::Update();
-			InternUpdate1();
-		}
-#endif
 	}
 
-	if (!erase) frozen_screen = BitmapRef();
-
-	frozen = false;
 	screen_erased = erase;
+}
 
-	transition_duration = 0;
-
-	FrameReset();
+bool Graphics::IsTransitionPending() {
+	return transition_frames_left > 0;
 }
 
 void Graphics::UpdateTransition() {
@@ -385,6 +378,8 @@ void Graphics::UpdateTransition() {
 	transition_frame++;
 
 	int percentage = transition_frame * 100 / transition_duration;
+
+	transition_frames_left--;
 
 	// Fallback to FadeIn/Out for not implemented transition types:
 	// (Remove from here when implemented below)
