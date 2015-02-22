@@ -111,6 +111,15 @@ void Player::Init(int argc, char *argv[]) {
 	Output::IgnorePause(true);
 	
 	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
+
+	// Retrieve save directory from persistent storage
+	EM_ASM(
+		FS.mkdir('/Save');
+		FS.mount(IDBFS, {}, '/Save');
+	
+		FS.syncfs(true, function(err) {
+		});
+	);
 #endif
 
 	srand(time(NULL));

@@ -421,6 +421,16 @@ std::string FileFinder::FindDefault(std::string const& name) {
 	return FindDefault(GetProjectTree(), name);
 }
 
+std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& dir, const std::string& name) {
+	static const char* no_exts[] = { "", NULL };
+
+	boost::optional<std::string> file = FindFile(tree, dir, name, no_exts);
+	if (file != boost::none) {
+		return *file;
+	}
+	return "";
+}
+
 std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
 	ProjectTree const& p = tree;
 	string_map const& files = p.files;

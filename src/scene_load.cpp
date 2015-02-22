@@ -32,7 +32,11 @@ void Scene_Load::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
+#ifdef EMSCRIPTEN
+	std::string save_name = FileFinder::FindDefault(*tree, "Save", ss.str());
+#else
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
+#endif
 
 	Player::CreateGameObjects();	
 
