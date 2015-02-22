@@ -31,6 +31,7 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	Window_Selectable(ix, iy, iwidth, iheight),
 	digits_max(Player::engine == Player::EngineRpg2k ? 6 : 7) {
 	number = 0;
+	plus = true;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());

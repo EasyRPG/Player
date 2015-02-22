@@ -409,8 +409,8 @@ void Window_Message::UpdateMessage() {
 			default:
 				if (*text_index == escape_char) {
 					// Show Escape Symbol
-					contents->TextDraw(contents_x, contents_y, text_color, escape_symbol);
-					contents_x += contents->GetFont()->GetSize(escape_symbol).width;
+					contents->TextDraw(contents_x, contents_y, text_color, Player::escape_symbol);
+					contents_x += contents->GetFont()->GetSize(Player::escape_symbol).width;
 				}
 			}
 		} else if (*text_index == '$'
