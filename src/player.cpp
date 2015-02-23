@@ -111,6 +111,15 @@ void Player::Init(int argc, char *argv[]) {
 	Output::IgnorePause(true);
 	
 	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
+
+	// Retrieve save directory from persistent storage
+	EM_ASM(
+		FS.mkdir('/Save');
+		FS.mount(IDBFS, {}, '/Save');
+	
+		FS.syncfs(true, function(err) {
+		});
+	);
 #endif
 
 	srand(time(NULL));
@@ -152,7 +161,7 @@ void Player::Run() {
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
-	while (Scene::instance->type != Scene::Null)
+	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		Player::MainLoop();
 #endif
 }
@@ -164,7 +173,7 @@ void Player::MainLoop() {
 	}
 	Scene::old_instances.clear();
 
-	if (Scene::instance->type == Scene::Null) {
+	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
 		Player::Exit();
 	}
 }
@@ -205,7 +214,14 @@ void Player::Update() {
 void Player::Exit() {
 #ifdef EMSCRIPTEN
 	emscripten_cancel_main_loop();
+
+	BitmapRef surface = DisplayUi->GetDisplaySurface();
+	std::string error = "You can turn off your browser now.";
+
+	Text::Draw(*surface, 55, DisplayUi->GetHeight() / 2 - 6, Color(255, 255, 255, 255), error);
+	DisplayUi->UpdateDisplay();
 #endif
+
 	Main_Data::Cleanup();
 	Graphics::Quit();
 	FileFinder::Quit();

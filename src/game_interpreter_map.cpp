@@ -1083,7 +1083,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
 		Game_Message::choice_result = 0;
-		return ContinuationShowInn(com);
+		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+		return true;
 	}
 
 	Game_Message::message_waiting = true;
@@ -1136,11 +1137,11 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	Game_Temp::inn_calling = true;
 	Game_Message::choice_result = 4;
 
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInn));
+	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
 	return true;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
 	if (Game_Message::visible) {
 		CloseMessageWindow();
 		return false;
@@ -1167,7 +1168,8 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 				actor->RemoveAllStates();
 			}
 			Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
-			Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+			SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
+			return false;
 		}
 		index++;
 		return true;
@@ -1177,6 +1179,15 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 		return false;
 	index++;
 	return true;
+}
+
+bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
+	continuation = NULL;
+
+	Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+
+	index++;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740

@@ -97,6 +97,10 @@ void Scene_Map::TransitionOut() {
 }
 
 void Scene_Map::Update() {
+	if (Main_Data::game_player->IsTeleporting()) {
+		FinishTeleportPlayer();
+	}
+
 	Game_Map::GetInterpreter().Update();
 
 	Main_Data::game_party->UpdateTimers();
@@ -107,7 +111,7 @@ void Scene_Map::Update() {
 	spriteset->Update();
 	message_window->Update();
 
-	UpdateTeleportPlayer();
+	StartTeleportPlayer();
 
 	if (!Main_Data::game_party->IsAnyAlive()) {
 		// Empty party is allowed
@@ -176,13 +180,18 @@ void Scene_Map::Update() {
 	}
 }
 
-void Scene_Map::UpdateTeleportPlayer() {
+void Scene_Map::StartTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
 	bool const autotransition = !Game_Temp::transition_erase;
 
-	if (autotransition)
+	if (autotransition) {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+	}
+}
+
+void Scene_Map::FinishTeleportPlayer() {
+	bool const autotransition = !Game_Temp::transition_erase;
 
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
@@ -191,10 +200,9 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	Game_Map::Update();
 
-	if (autotransition)
+	if (autotransition) {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
-
-	Input::Update();
+	}
 }
 
 // Scene calling stuff.

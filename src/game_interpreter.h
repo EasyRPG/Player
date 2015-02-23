@@ -158,7 +158,8 @@ protected:
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
 	virtual bool ContinuationChoices(RPG::EventCommand const& com);
 	virtual bool ContinuationOpenShop(RPG::EventCommand const& com);
-	virtual bool ContinuationShowInn(RPG::EventCommand const& com);
+	virtual bool ContinuationShowInnStart(RPG::EventCommand const& com);
+	virtual bool ContinuationShowInnFinish(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int debug_x;

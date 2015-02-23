@@ -65,6 +65,12 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
+	if (Graphics::IsTransitionPending()) {
+		Player::Update();
+		Graphics::Update();
+		return;
+	}
+
 	if (!init) {
 		// Initialization after scene switch 
 		switch (push_pop_operation) {
@@ -83,6 +89,8 @@ void Scene::MainFunction() {
 		Resume();
 
 		init = true;
+
+		return;
 	}
 
 	// Update scene
