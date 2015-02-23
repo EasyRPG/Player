@@ -81,7 +81,11 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
+#ifdef EMSCRIPTEN
+	overlay_visible = false;
+#else
 	overlay_visible = true;
+#endif
 	fps_on_screen = false;
 	fps = 0;
 	framerate = DEFAULT_FPS;
