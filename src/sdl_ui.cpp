@@ -300,13 +300,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	}
 	toggle_fs_available = true;
 	
-#ifdef SUPPORT_ZOOM
 	current_display_mode.zoom = true;
 	zoom_available = true;
-#else
-	current_display_mode.zoom = false;
-	zoom_available = false;
-#endif
 
 	return true;
 #endif
