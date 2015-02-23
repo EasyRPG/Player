@@ -161,7 +161,7 @@ void Player::Run() {
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
-	while (Scene::instance->type != Scene::Null)
+	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		Player::MainLoop();
 #endif
 }
@@ -173,7 +173,7 @@ void Player::MainLoop() {
 	}
 	Scene::old_instances.clear();
 
-	if (Scene::instance->type == Scene::Null) {
+	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
 		Player::Exit();
 	}
 }
