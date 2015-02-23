@@ -261,12 +261,20 @@ void Graphics::UpdateTitle() {
 }
 
 void Graphics::DrawFrame() {
+	std::list<Drawable*>::iterator it_list;
+
 	if (transition_frames_left > 0) {
 		UpdateTransition();
+
+		for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
+			(*it_list)->Draw();
+		}
 
 		if (overlay_visible) {
 			DrawOverlay();
 		}
+
+		DisplayUi->UpdateDisplay();
 		return;
 	}
 
@@ -286,7 +294,6 @@ void Graphics::DrawFrame() {
 
 	DisplayUi->CleanDisplay();
 
-	std::list<Drawable*>::iterator it_list;
 	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); ++it_list) {
 		(*it_list)->Draw();
 	}
@@ -529,8 +536,6 @@ void Graphics::UpdateTransition() {
 		DisplayUi->CleanDisplay();
 		break;
 	}
-
-	DisplayUi->UpdateDisplay();
 }
 
 void Graphics::FrameReset() {
