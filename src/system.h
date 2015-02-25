@@ -70,11 +70,6 @@
 #    define NO_SDL_MIXER
 #  endif
 
-#  ifdef EMSCRIPTEN
-#    undef USE_SDL_MIXER
-#    define NO_SDL_MIXER
-#  endif
-
 #  if defined(GEKKO) || defined(OPENDINGUX) || defined(EMSCRIPTEN)
 #    undef SUPPORT_ZOOM
 #  endif
