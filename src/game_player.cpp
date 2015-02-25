@@ -201,8 +201,6 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y) {
 	new_map_id = map_id;
 	new_x = x;
 	new_y = y;
-	last_pan_x = 0;
-	last_pan_y = 0;
 }
 
 void Game_Player::StartTeleport() {
@@ -217,6 +215,8 @@ void Game_Player::PerformTeleport() {
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
 		Game_Map::Setup(new_map_id);
+		last_pan_x = 0;
+		last_pan_y = 0;
 	}
 
 	Main_Data::game_player->SetOpacity(255);
