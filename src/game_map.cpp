@@ -1020,7 +1020,7 @@ void Game_Map::UpdateParallax() {
 		if (map_info.parallax_horz_auto) {
 			int step =
 				(map_info.parallax_horz_speed > 0) ? 1 << map_info.parallax_horz_speed :
-				(map_info.parallax_horz_speed < 0) ? 1 << -map_info.parallax_horz_speed :
+				(map_info.parallax_horz_speed < 0) ? -(1 << -map_info.parallax_horz_speed) :
 				0;
 			parallax_auto_x += step;
 		}
@@ -1032,7 +1032,7 @@ void Game_Map::UpdateParallax() {
 		if (map_info.parallax_vert_auto) {
 			int step =
 				(map_info.parallax_vert_speed > 0) ? 1 << map_info.parallax_vert_speed :
-				(map_info.parallax_vert_speed < 0) ? 1 << -map_info.parallax_vert_speed :
+				(map_info.parallax_vert_speed < 0) ? -(1 << -map_info.parallax_vert_speed) :
 				0;
 			parallax_auto_y += step;
 		}
