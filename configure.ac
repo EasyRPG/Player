@@ -67,7 +67,6 @@ DX_DOT_FEATURE(ON)
 DX_INIT_DOXYGEN(easyrpg-player, builds/Doxyfile, doc)
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile
                  builds/Doxyfile])
 
 AC_OUTPUT
