@@ -1018,7 +1018,11 @@ int Game_Character::BeginJump(const RPG::MoveRoute* current_route, int current_i
 int Game_Character::EndJump(const RPG::MoveRoute* current_route, int current_index) {
 	jumping = false;
 
-	if (!IsLandable(jump_x + jump_plus_x, jump_y + jump_plus_y)) {
+	if (
+		// A character can always land on a tile they were already standing on
+		!(jump_plus_x == 0 && jump_plus_y == 0) &&
+		!IsLandable(jump_x + jump_plus_x, jump_y + jump_plus_y)
+	) {
 		// Reset to begin jump command and try again...
 		move_failed = true;
 
