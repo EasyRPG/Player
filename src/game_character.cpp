@@ -142,11 +142,11 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
+	return real_x / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
 }
 
 int Game_Character::GetScreenY() const {
-	int y = (real_y - Game_Map::GetDisplayY() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
+	int y = real_y / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
 
 	int n;
 	if (move_count >= jump_peak)
@@ -1018,7 +1018,11 @@ int Game_Character::BeginJump(const RPG::MoveRoute* current_route, int current_i
 int Game_Character::EndJump(const RPG::MoveRoute* current_route, int current_index) {
 	jumping = false;
 
-	if (!IsLandable(jump_x + jump_plus_x, jump_y + jump_plus_y)) {
+	if (
+		// A character can always land on a tile they were already standing on
+		!(jump_plus_x == 0 && jump_plus_y == 0) &&
+		!IsLandable(jump_x + jump_plus_x, jump_y + jump_plus_y)
+	) {
 		// Reset to begin jump command and try again...
 		move_failed = true;
 
