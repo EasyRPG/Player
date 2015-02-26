@@ -977,7 +977,7 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = 2 << (pan_speed - 1);
+	int step = (SCREEN_TILE_WIDTH/128) << (pan_speed + 1);
 	int dx = location.pan_finish_x - location.pan_current_x;
 	int dy = location.pan_finish_y - location.pan_current_y;
 
@@ -1016,11 +1016,12 @@ void Game_Map::UpdateParallax() {
 	if (map_info.parallax_name.empty())
 		return;
 
+	const int base = SCREEN_TILE_WIDTH / 128;
 	if (map_info.parallax_horz) {
 		if (map_info.parallax_horz_auto) {
 			int step =
-				(map_info.parallax_horz_speed > 0) ? 1 << map_info.parallax_horz_speed :
-				(map_info.parallax_horz_speed < 0) ? -(1 << -map_info.parallax_horz_speed) :
+				(map_info.parallax_horz_speed > 0) ? base << map_info.parallax_horz_speed :
+				(map_info.parallax_horz_speed < 0) ? -(base << -map_info.parallax_horz_speed) :
 				0;
 			parallax_auto_x += step;
 		}
@@ -1031,8 +1032,8 @@ void Game_Map::UpdateParallax() {
 	if (map_info.parallax_vert) {
 		if (map_info.parallax_vert_auto) {
 			int step =
-				(map_info.parallax_vert_speed > 0) ? 1 << map_info.parallax_vert_speed :
-				(map_info.parallax_vert_speed < 0) ? -(1 << -map_info.parallax_vert_speed) :
+				(map_info.parallax_vert_speed > 0) ? base << map_info.parallax_vert_speed :
+				(map_info.parallax_vert_speed < 0) ? -(base << -map_info.parallax_vert_speed) :
 				0;
 			parallax_auto_y += step;
 		}
