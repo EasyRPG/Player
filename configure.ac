@@ -14,7 +14,9 @@ AC_CONFIG_SRCDIR([src/battle_animation.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
+AM_PROG_AR
 AC_PROG_CXX
+LT_INIT
 
 # Checks for libraries.
 PKG_CHECK_MODULES([LCF],[liblcf])

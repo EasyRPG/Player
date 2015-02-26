@@ -1,30 +1,14 @@
+ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 include builds/autoconf/aminclude/doxygen.am
 
-EXTRA_DIST = builds lib Modules resources tests CMakeLists.txt src/platform
+EXTRA_DIST = builds lib Modules resources CMakeLists.txt src/platform
 MOSTLYCLEANFILES = DX_CLEANFILES
 
 bin_PROGRAMS = easyrpg-player
-easyrpg_player_CXXFLAGS = \
-	-I$(srcdir)/src \
-	-I$(srcdir)/lib/shinonome \
-	-std=c++0x \
-	$(LCF_CFLAGS) \
-	$(PIXMAN_CFLAGS) \
-	$(FREETYPE_CFLAGS) \
-	$(SDL_CFLAGS) \
-	$(SDLMIXER_CFLAGS) \
-	$(PNG_CFLAGS) \
-	$(ZLIB_CFLAGS)
-easyrpg_player_LDADD = \
-	$(LCF_LIBS) \
-	$(PIXMAN_LIBS) \
-	$(FREETYPE_LIBS) \
-	$(SDL_LIBS) \
-	$(SDLMIXER_LIBS) \
-	$(PNG_LIBS) \
-	$(ZLIB_LIBS)
-easyrpg_player_SOURCES = \
-	src/al_audio.cpp \
+
+noinst_LTLIBRARIES = libeasyrpg-player.la
+libeasyrpg_player_la_SOURCES = \
+ 	src/al_audio.cpp \
 	src/al_audio.h \
 	src/audio.cpp \
 	src/audio.h \
@@ -121,7 +105,6 @@ easyrpg_player_SOURCES = \
 	src/input.cpp \
 	src/input.h \
 	src/keys.h \
-	src/main.cpp \
 	src/main_data.cpp \
 	src/main_data.h \
 	src/map_data.h \
@@ -292,3 +275,43 @@ easyrpg_player_SOURCES = \
 	lib/shinonome/shinonome.hxx \
 	lib/shinonome/gothic.cxx \
 	lib/shinonome/mincho.cxx
+libeasyrpg_player_la_CXXFLAGS = \
+	-I$(srcdir)/src \
+	-I$(srcdir)/lib/shinonome \
+	-std=c++0x \
+	$(LCF_CFLAGS) \
+	$(PIXMAN_CFLAGS) \
+	$(FREETYPE_CFLAGS) \
+	$(SDL_CFLAGS) \
+	$(SDLMIXER_CFLAGS) \
+	$(PNG_CFLAGS) \
+	$(ZLIB_CFLAGS)
+libeasyrpg_player_la_LIBADD = \
+	$(LCF_LIBS) \
+	$(PIXMAN_LIBS) \
+	$(FREETYPE_LIBS) \
+	$(SDL_LIBS) \
+	$(SDLMIXER_LIBS) \
+	$(PNG_LIBS) \
+	$(ZLIB_LIBS)
+
+easyrpg_player_SOURCES = src/main.cpp
+easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+easyrpg_player_LDADD = libeasyrpg-player.la
+
+# FIXME make filefinder work without external scripting
+check_PROGRAMS = output utils
+TESTS = output utils
+#filefinder_SOURCES = tests/filefinder.cpp
+#filefinder_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+#filefinder_LDADD = $(easyrpg_player_LDADD)
+output_SOURCES = tests/output.cpp
+output_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+output_LDADD = $(easyrpg_player_LDADD)
+utils_SOURCES = tests/utils.cpp
+utils_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+utils_LDADD = $(easyrpg_player_LDADD)
+
+# Some tests will create this file
+# make distcheck will fail if it is not cleaned after runing these tests
+CLEANFILES = easyrpg_log.txt
