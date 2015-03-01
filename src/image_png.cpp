@@ -42,7 +42,7 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Error("%s", error_msg);
 }
 
-static void ReadPaletteData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
+static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
 static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
 static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
 static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
@@ -83,7 +83,7 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
-			ReadPaletteData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
+			ReadPalettedData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_GRAY:
 			ReadGrayData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
@@ -103,7 +103,7 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 }
 
-static void ReadPaletteData(
+static void ReadPalettedData(
 	png_struct* png_ptr, png_info* info_ptr,
 	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
 	uint32_t* pixels
