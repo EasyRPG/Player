@@ -42,6 +42,12 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Error("%s", error_msg);
 }
 
+static void ReadPaletteData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
+static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
+static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
+static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
+static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
+
 void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
@@ -70,65 +76,113 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	png_get_IHDR(png_ptr, info_ptr, &w, &h,
 				 &bit_depth, &color_type, NULL, NULL, NULL);
 
-	png_color black = {0,0,0};
-	png_colorp palette = NULL;
-	int num_palette = 0;
+	width = w;
+	height = h;
+
+	pixels = malloc(w * h * 4);
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
-			if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
-				Output::Error("Palette PNG without PLTE block");
-			}
-			if (transparent) {
-				png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
-			}
-			png_set_strip_alpha(png_ptr);
-			png_set_palette_to_rgb(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
+			ReadPaletteData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_GRAY:
-			png_set_gray_to_rgb(png_ptr);
-			if (bit_depth < 8)
-				png_set_expand_gray_1_2_4_to_8(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
-			if (transparent) {
-				palette = &black;
-				num_palette = 1;
-			}
+			ReadGrayData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_GRAY_ALPHA:
-			png_set_gray_to_rgb(png_ptr);
-			if (bit_depth < 8)
-				png_set_expand_gray_1_2_4_to_8(png_ptr);
+			ReadGrayAlphaData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_RGB:
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
+			ReadRGBData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_RGB_ALPHA:
+			ReadRGBAData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
 			break;
 	}
 
-	if (bit_depth < 8)
-		png_set_packing(png_ptr);
+	png_read_end(png_ptr, NULL);
+	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+}
 
+static void ReadPaletteData(
+	png_struct* png_ptr, png_info* info_ptr,
+	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
+	uint32_t* pixels
+) {
+	// For transparent images, all the colors are opaque, except the
+	// color with index 0. To get this, we read each row into a
+	// temporary buffer and convert to RGBA manually.
+	if (transparent) {
+		if (bit_depth < 8)
+			png_set_packing(png_ptr);
+		if (bit_depth == 16)
+			png_set_strip_16(png_ptr);
+		png_read_update_info(png_ptr, info_ptr);
+
+		if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
+			Output::Error("Palette PNG without PLTE block");
+		}
+
+		png_colorp palette;
+		int num_palette;
+		png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+
+		uint32_t* dst = pixels;
+		uint8_t* tmp = (uint8_t*)malloc(w);
+		for (png_uint_32 y = 0; y < h; y++) {
+			png_read_row(png_ptr, (png_bytep)tmp, NULL);
+
+			for(png_uint_32 x = 0; x < w; x++, dst++) {
+				uint8_t idx = tmp[x];
+				png_color& color = palette[idx];
+				uint8_t alpha = idx == 0 ? 0 : 255;
+				uint8_t rgba[4] = { color.red, color.green, color.blue, alpha };
+				*dst = *(uint32_t*)rgba;
+			}
+		}
+		free(tmp);
+	}
+	// Otherwise, libpng can convert to RGBA on its own
+	else {
+		if (bit_depth < 8)
+			png_set_packing(png_ptr);
+		if (bit_depth == 16)
+			png_set_strip_16(png_ptr);
+		png_set_strip_alpha(png_ptr);
+		png_set_palette_to_rgb(png_ptr);
+		png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
+		png_read_update_info(png_ptr, info_ptr);
+
+		for (png_uint_32 y = 0; y < h; y++) {
+			png_bytep dst = (png_bytep) pixels + y * w * 4;
+			png_read_row(png_ptr, dst, NULL);
+		}
+	}
+}
+
+static void ReadGrayData(
+	png_struct* png_ptr, png_info* info_ptr,
+	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
+	uint32_t* pixels
+) {
+	png_set_gray_to_rgb(png_ptr);
+	if (bit_depth < 8) {
+		png_set_expand_gray_1_2_4_to_8(png_ptr);
+		png_set_packing(png_ptr);
+	}
 	if (bit_depth == 16)
 		png_set_strip_16(png_ptr);
-
+	png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 	png_read_update_info(png_ptr, info_ptr);
-
-	width = w;
-	height = h;
-	pixels = malloc(w * h * 4);
 
 	for (png_uint_32 y = 0; y < h; y++) {
 		png_bytep dst = (png_bytep) pixels + y * w * 4;
 		png_read_row(png_ptr, dst, NULL);
 	}
 
-	if (transparent && num_palette > 0) {
-		png_color& ck = palette[0];
-		uint8_t ck1[4] = {ck.red, ck.green, ck.blue, 255};
-		uint8_t ck2[4] = {ck.red, ck.green, ck.blue,   0};
+	// Black pixels are transparent
+	if (transparent) {
+		uint8_t ck1[4] = {0, 0, 0, 255};
+		uint8_t ck2[4] = {0, 0, 0,   0};
 		uint32_t srckey = *(uint32_t*)ck1;
 		uint32_t dstkey = *(uint32_t*)ck2;
 		uint32_t* p = (uint32_t*) pixels;
@@ -136,10 +190,62 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 			if (*p == srckey)
 				*p = dstkey;
 	}
+}
 
-	png_read_end(png_ptr, NULL);
+static void ReadGrayAlphaData(
+	png_struct* png_ptr, png_info* info_ptr,
+	png_uint_32 w, png_uint_32 h, int bit_depth,
+	uint32_t* pixels
+) {
+	png_set_gray_to_rgb(png_ptr);
+	if (bit_depth < 8) {
+		png_set_expand_gray_1_2_4_to_8(png_ptr);
+		png_set_packing(png_ptr);
+	}
+	if (bit_depth == 16)
+		png_set_strip_16(png_ptr);
+	png_read_update_info(png_ptr, info_ptr);
 
-	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	for (png_uint_32 y = 0; y < h; y++) {
+		png_bytep dst = (png_bytep) pixels + y * w * 4;
+		png_read_row(png_ptr, dst, NULL);
+	}
+}
+
+
+static void ReadRGBData(
+	png_struct* png_ptr, png_info* info_ptr,
+	png_uint_32 w, png_uint_32 h, int bit_depth,
+	uint32_t* pixels
+) {
+	png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
+	if (bit_depth < 8)
+		png_set_packing(png_ptr);
+	if (bit_depth == 16)
+		png_set_strip_16(png_ptr);
+	png_read_update_info(png_ptr, info_ptr);
+
+	for (png_uint_32 y = 0; y < h; y++) {
+		png_bytep dst = (png_bytep) pixels + y * w * 4;
+		png_read_row(png_ptr, dst, NULL);
+	}
+}
+
+static void ReadRGBAData(
+	png_struct* png_ptr, png_info* info_ptr,
+	png_uint_32 w, png_uint_32 h, int bit_depth,
+	uint32_t* pixels
+) {
+	if (bit_depth < 8)
+		png_set_packing(png_ptr);
+	if (bit_depth == 16)
+		png_set_strip_16(png_ptr);
+	png_read_update_info(png_ptr, info_ptr);
+
+	for (png_uint_32 y = 0; y < h; y++) {
+		png_bytep dst = (png_bytep) pixels + y * w * 4;
+		png_read_row(png_ptr, dst, NULL);
+	}
 }
 
 static void write_data(png_structp out_ptr, png_bytep data, png_size_t len) {
