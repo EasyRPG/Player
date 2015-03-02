@@ -109,8 +109,8 @@ static void ReadPalettedData(
 	uint32_t* pixels
 ) {
 	// For transparent images, all the colors are opaque, except the
-	// color with index 0. To get this, we read each row into a
-	// temporary buffer and convert to RGBA manually.
+	// color with index 0. So we'll need to do index->RGB conversion
+	// on our own.
 	if (transparent) {
 		if (bit_depth < 8)
 			png_set_packing(png_ptr);
@@ -126,20 +126,28 @@ static void ReadPalettedData(
 		int num_palette;
 		png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
 
-		uint32_t* dst = pixels;
-		uint8_t* tmp = (uint8_t*)malloc(w);
 		for (png_uint_32 y = 0; y < h; y++) {
-			png_read_row(png_ptr, (png_bytep)tmp, NULL);
+			// There are 4w bytes in a row of pixel data.
+			// We need w bytes to hold the indices.
+			// To avoid allocating a temporary array, we'll read the
+			// indicies into the last w bytes of pixel data for this row.
+			uint8_t* indices = (uint8_t*)pixels + y * w * 4 + w * 3;
+			png_read_row(png_ptr, (png_bytep)indices, NULL);
 
-			for(png_uint_32 x = 0; x < w; x++, dst++) {
-				uint8_t idx = tmp[x];
+			// Now we read the nth index and use it write the nth RGBA
+			// value. Since the indices and pixels are in the same buffer,
+			// we have to be sure we don't overwrite an index we'll need
+			// later. Putting the indices at the end of the buffer
+			// guaranteed this.
+			uint32_t* dst = pixels + y * w;
+			for (png_uint_32 x = 0; x < w; x++, dst++) {
+				uint8_t idx = indices[x];
 				png_color& color = palette[idx];
 				uint8_t alpha = idx == 0 ? 0 : 255;
 				uint8_t rgba[4] = { color.red, color.green, color.blue, alpha };
 				*dst = *(uint32_t*)rgba;
 			}
 		}
-		free(tmp);
 	}
 	// Otherwise, libpng can convert to RGBA on its own
 	else {
