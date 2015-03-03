@@ -89,7 +89,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
 	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
 #else
+#  ifndef EMSCRIPTEN
 	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+#  endif
 #endif
 	     == -1) {
 		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
