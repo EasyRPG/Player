@@ -69,7 +69,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION>1 && !defined(EMSCRIPTEN)
 	// SDL2_mixer produces noise when playing wav.
 	// Workaround: Use Mix_LoadWAV
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
@@ -99,7 +99,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 void SdlAudio::BGM_Pause() {
 	// Midi pause is not supported... (for some systems -.-)
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION>1 && !defined(EMSCRIPTEN)
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Pause();
@@ -110,7 +110,7 @@ void SdlAudio::BGM_Pause() {
 }
 
 void SdlAudio::BGM_Resume() {
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION>1 && !defined(EMSCRIPTEN)
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Resume();
@@ -121,7 +121,7 @@ void SdlAudio::BGM_Resume() {
 }
 
 void SdlAudio::BGM_Stop() {
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION>1 && !defined(EMSCRIPTEN)
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Stop();
