@@ -112,10 +112,7 @@ static void ReadPalettedData(
 	// color with index 0. So we'll need to do index->RGB conversion
 	// on our own.
 	if (transparent) {
-		if (bit_depth < 8)
-			png_set_packing(png_ptr);
-		if (bit_depth == 16)
-			png_set_strip_16(png_ptr);
+		png_set_packing(png_ptr);
 		png_read_update_info(png_ptr, info_ptr);
 
 		if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
@@ -127,19 +124,17 @@ static void ReadPalettedData(
 		png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
 
 		for (png_uint_32 y = 0; y < h; y++) {
-			// There are 4w bytes in a row of pixel data.
-			// We need w bytes to hold the indices.
-			// To avoid allocating a temporary array, we'll read the
-			// indicies into the last w bytes of pixel data for this row.
-			uint8_t* indices = (uint8_t*)pixels + y * w * 4 + w * 3;
+			// We read the indices (w bytes) into the end of the pixel
+			// data for this row (4w bytes), then scan over them
+			// converting them into RGBA values. Putting them at the end
+			// gives us enough room that we don't overwrite an index
+			// we'll need later with an RGBA value.
+
+			uint8_t* beginning_of_row = (uint8_t*)pixels + y * w * 4;
+			uint32_t* dst = (uint32_t*)beginning_of_row;
+			uint8_t* indices = beginning_of_row + w * 3;
 			png_read_row(png_ptr, (png_bytep)indices, NULL);
 
-			// Now we read the nth index and use it write the nth RGBA
-			// value. Since the indices and pixels are in the same buffer,
-			// we have to be sure we don't overwrite an index we'll need
-			// later. Putting the indices at the end of the buffer
-			// guaranteed this.
-			uint32_t* dst = pixels + y * w;
 			for (png_uint_32 x = 0; x < w; x++, dst++) {
 				uint8_t idx = indices[x];
 				png_color& color = palette[idx];
@@ -151,11 +146,6 @@ static void ReadPalettedData(
 	}
 	// Otherwise, libpng can convert to RGBA on its own
 	else {
-		if (bit_depth < 8)
-			png_set_packing(png_ptr);
-		if (bit_depth == 16)
-			png_set_strip_16(png_ptr);
-		png_set_strip_alpha(png_ptr);
 		png_set_palette_to_rgb(png_ptr);
 		png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 		png_read_update_info(png_ptr, info_ptr);
@@ -172,13 +162,8 @@ static void ReadGrayData(
 	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
 	uint32_t* pixels
 ) {
+	png_set_strip_16(png_ptr);
 	png_set_gray_to_rgb(png_ptr);
-	if (bit_depth < 8) {
-		png_set_expand_gray_1_2_4_to_8(png_ptr);
-		png_set_packing(png_ptr);
-	}
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
 	png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 	png_read_update_info(png_ptr, info_ptr);
 
@@ -205,13 +190,8 @@ static void ReadGrayAlphaData(
 	png_uint_32 w, png_uint_32 h, int bit_depth,
 	uint32_t* pixels
 ) {
+	png_set_strip_16(png_ptr);
 	png_set_gray_to_rgb(png_ptr);
-	if (bit_depth < 8) {
-		png_set_expand_gray_1_2_4_to_8(png_ptr);
-		png_set_packing(png_ptr);
-	}
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
 	png_read_update_info(png_ptr, info_ptr);
 
 	for (png_uint_32 y = 0; y < h; y++) {
@@ -226,11 +206,8 @@ static void ReadRGBData(
 	png_uint_32 w, png_uint_32 h, int bit_depth,
 	uint32_t* pixels
 ) {
+	png_set_strip_16(png_ptr);
 	png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
-	if (bit_depth < 8)
-		png_set_packing(png_ptr);
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
 	png_read_update_info(png_ptr, info_ptr);
 
 	for (png_uint_32 y = 0; y < h; y++) {
@@ -244,10 +221,7 @@ static void ReadRGBAData(
 	png_uint_32 w, png_uint_32 h, int bit_depth,
 	uint32_t* pixels
 ) {
-	if (bit_depth < 8)
-		png_set_packing(png_ptr);
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
+	png_set_strip_16(png_ptr);
 	png_read_update_info(png_ptr, info_ptr);
 
 	for (png_uint_32 y = 0; y < h; y++) {
