@@ -24,6 +24,8 @@
 #include "game_character.h"
 #include <vector>
 
+class Game_Vehicle;
+
 /**
  * Game Player class
  */
@@ -90,7 +92,6 @@ public:
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
-	bool AirshipLandOk(int x, int y) const;
 	bool CanWalk(int x, int y);
 	void BeginMove();
 
@@ -99,8 +100,7 @@ private:
 
 	bool teleporting;
 	int vehicle_type;
-	bool vehicle_getting_on;
-	bool vehicle_getting_off;
+	Game_Vehicle* vehicle;
 	int new_map_id, new_x, new_y;
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
@@ -113,6 +113,7 @@ private:
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
+	void Unboard();
 };
 
 #endif

@@ -29,8 +29,6 @@
  */
 class Game_Vehicle : public Game_Character {
 public:
-	static const int MAX_ALTITUDE = 32;	// the airship flies at
-
 	enum Type {
 		Boat,
 		Ship,
@@ -89,11 +87,15 @@ public:
 	bool IsInCurrentMap() const;
 	virtual bool IsInPosition(int x, int y) const;
 	virtual bool GetVisible() const;
+	bool IsAscending() const;
+	bool IsDescending() const;
 	void GetOn();
 	void GetOff();
+	bool IsInUse() const;
 	void SyncWithPlayer();
 	virtual int GetScreenY() const;
 	bool IsMovable();
+	bool CanLand() const;
 	virtual void Update();
 	virtual bool CheckEventTriggerTouch(int x, int y);
 
@@ -102,7 +104,6 @@ protected:
 
 	int map_id;
 	Type type;
-	int altitude;
 	bool driving;
 	RPG::Music bgm;
 };
