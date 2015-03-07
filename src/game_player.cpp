@@ -222,6 +222,16 @@ void Game_Player::PerformTeleport() {
 	MoveTo(new_x, new_y);
 }
 
+bool Game_Player::IsPassable(int x, int y, int d) const {
+	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH))
+		return true;
+
+	if (InVehicle() && !location.unboarding)
+		return vehicle->IsPassable(x, y, d);
+	
+	return Game_Character::IsPassable(x, y, d);
+}
+
 bool Game_Player::IsTeleporting() const {
 	return teleporting;
 }
@@ -570,11 +580,7 @@ bool Game_Player::InAirship() const {
 }
 
 bool Game_Player::CanWalk(int x, int y) {
-	int last_vehicle_type = vehicle_type;
-    vehicle_type = -1;
-	bool result = IsPassable(x, y, GetDirection());
-    vehicle_type = last_vehicle_type;
-    return result;
+	return Game_Map::IsPassable(x, y, GetDirection(), this);
 }
 
 void Game_Player::BeginMove() {

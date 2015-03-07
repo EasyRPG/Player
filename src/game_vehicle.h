@@ -79,6 +79,7 @@ public:
 	void SetFlashLevel(double flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
+	bool IsPassable(int x, int y, int d) const;
 	/** @} */
 
 	void LoadSystemSettings();

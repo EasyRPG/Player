@@ -86,11 +86,6 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
-	if (Player::debug_flag && (this == Main_Data::game_player.get())
-		&& Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return true;
-	}
-
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 

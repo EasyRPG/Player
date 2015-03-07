@@ -136,6 +136,16 @@ namespace Game_Map {
 	 */
 	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
 
+	/**
+	 * Gets if a tile coordinate is passable in a direction by a vehicle.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param vehicle_type type of vehicle
+	 * @return whether is passable.
+	 */
+	bool IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type);
+
     /**
      * Gets if a tile coordinate can be jumped to.
      *
