@@ -1008,6 +1008,11 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 	int event_id = com.parameters[0];
 	Game_Character* event = GetCharacter(event_id);
 	if (event != NULL) {
+		// If the event is a vehicle in use, push the commands to the player instead
+		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
+			if (static_cast<Game_Vehicle*>(event)->IsInUse())
+				event = Main_Data::game_player.get();
+
 		RPG::MoveRoute* route = new RPG::MoveRoute;
 		int move_freq = com.parameters[1];
 		route->repeat = com.parameters[2] != 0;
@@ -1941,7 +1946,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			}
 			break;
 		case 7:
-			// TODO On vehicle
+			// Vehicle in use
+			result = Game_Map::GetVehicle((Game_Vehicle::Type) com.parameters[1])->IsInUse();
 			break;
 		case 8:
 			// TODO Key decision initiated this event
