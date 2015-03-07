@@ -42,11 +42,11 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Error("%s", error_msg);
 }
 
-static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
-static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, int, bool, uint32_t*);
-static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
-static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
-static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, int, uint32_t*);
+static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
+static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
+static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
+static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
+static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 
 void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
@@ -83,19 +83,19 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
-			ReadPalettedData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
+			ReadPalettedData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_GRAY:
-			ReadGrayData(png_ptr, info_ptr, w, h, bit_depth, transparent, (uint32_t*)pixels);
+			ReadGrayData(png_ptr, info_ptr, w, h, transparent, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_GRAY_ALPHA:
-			ReadGrayAlphaData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
+			ReadGrayAlphaData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_RGB:
-			ReadRGBData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
+			ReadRGBData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
 			break;
 		case PNG_COLOR_TYPE_RGB_ALPHA:
-			ReadRGBAData(png_ptr, info_ptr, w, h, bit_depth, (uint32_t*)pixels);
+			ReadRGBAData(png_ptr, info_ptr, w, h, (uint32_t*)pixels);
 			break;
 	}
 
@@ -105,7 +105,8 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 static void ReadPalettedData(
 	png_struct* png_ptr, png_info* info_ptr,
-	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
+	png_uint_32 w, png_uint_32 h,
+	bool transparent,
 	uint32_t* pixels
 ) {
 	// For transparent images, all the colors are opaque, except the
@@ -130,11 +131,12 @@ static void ReadPalettedData(
 			// gives us enough room that we don't overwrite an index
 			// we'll need later with an RGBA value.
 
-			uint8_t* beginning_of_row = (uint8_t*)pixels + y * w * 4;
-			uint32_t* dst = (uint32_t*)beginning_of_row;
-			uint8_t* indices = beginning_of_row + w * 3;
+			uint32_t* beginning_of_row = pixels + y * w;
+
+			uint8_t* indices = (uint8_t*)beginning_of_row + w * 3;
 			png_read_row(png_ptr, (png_bytep)indices, NULL);
 
+			uint32_t* dst = beginning_of_row;
 			for (png_uint_32 x = 0; x < w; x++, dst++) {
 				uint8_t idx = indices[x];
 				png_color& color = palette[idx];
@@ -159,7 +161,8 @@ static void ReadPalettedData(
 
 static void ReadGrayData(
 	png_struct* png_ptr, png_info* info_ptr,
-	png_uint_32 w, png_uint_32 h, int bit_depth, bool transparent,
+	png_uint_32 w, png_uint_32 h,
+	bool transparent,
 	uint32_t* pixels
 ) {
 	png_set_strip_16(png_ptr);
@@ -187,7 +190,7 @@ static void ReadGrayData(
 
 static void ReadGrayAlphaData(
 	png_struct* png_ptr, png_info* info_ptr,
-	png_uint_32 w, png_uint_32 h, int bit_depth,
+	png_uint_32 w, png_uint_32 h,
 	uint32_t* pixels
 ) {
 	png_set_strip_16(png_ptr);
@@ -203,7 +206,7 @@ static void ReadGrayAlphaData(
 
 static void ReadRGBData(
 	png_struct* png_ptr, png_info* info_ptr,
-	png_uint_32 w, png_uint_32 h, int bit_depth,
+	png_uint_32 w, png_uint_32 h,
 	uint32_t* pixels
 ) {
 	png_set_strip_16(png_ptr);
@@ -218,7 +221,7 @@ static void ReadRGBData(
 
 static void ReadRGBAData(
 	png_struct* png_ptr, png_info* info_ptr,
-	png_uint_32 w, png_uint_32 h, int bit_depth,
+	png_uint_32 w, png_uint_32 h,
 	uint32_t* pixels
 ) {
 	png_set_strip_16(png_ptr);
@@ -237,7 +240,7 @@ static void flush_stream(png_structp out_ptr) {
 	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->flush();
 }
 
-bool ImagePNG::WritePNG(std::ostream& os, int width, int height, uint32_t* data) {
+bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
 	for (size_t i = 0; i < width * height; ++i) {
 		uint32_t const p = data[i];
 		uint8_t* out = reinterpret_cast<uint8_t*>(&data[i]);
@@ -285,6 +288,9 @@ bool ImagePNG::WritePNG(std::ostream& os, int width, int height, uint32_t* data)
 	png_write_info(write, info);
 	png_write_image(write, ptrs);
 	png_write_end(write, NULL);
+
+	png_destroy_write_struct(&write, &info);
+	delete [] ptrs;
 
 	return true;
 }
