@@ -28,7 +28,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	data(_type == Boat ? Main_Data::game_data.boat_location :
 		 _type == Ship ? Main_Data::game_data.ship_location :
 		 Main_Data::game_data.airship_location) {
-	assert(_type >= 0 && _type <= 2 && "Invalid Vehicle index");
+	assert(_type >= 1 && _type <= 3 && "Invalid Vehicle index");
 	type = _type;
 	driving = false;
 	SetDirection(RPG::EventPage::Direction_left);
@@ -210,11 +210,13 @@ bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
+		case None:
+			break;
 		case Boat:
 			SetSpriteName(Data::system.boat_name);
 			SetSpriteIndex(Data::system.boat_index);
 			bgm = Data::system.boat_music;
-			map_id = Data::treemap.start.boat_map_id;
+			SetMapId(Data::treemap.start.boat_map_id);
 			SetX(Data::treemap.start.boat_x);
 			SetY(Data::treemap.start.boat_y);
 			break;
@@ -222,7 +224,7 @@ void Game_Vehicle::LoadSystemSettings() {
 			SetSpriteName(Data::system.ship_name);
 			SetSpriteIndex(Data::system.ship_index);
 			bgm = Data::system.ship_music;
-			map_id = Data::treemap.start.ship_map_id;
+			SetMapId(Data::treemap.start.ship_map_id);
 			SetX(Data::treemap.start.ship_x);
 			SetY(Data::treemap.start.ship_y);
 			break;
@@ -230,7 +232,7 @@ void Game_Vehicle::LoadSystemSettings() {
 			SetSpriteName(Data::system.airship_name);
 			SetSpriteIndex(Data::system.airship_index);
 			bgm = Data::system.airship_music;
-			map_id = Data::treemap.start.airship_map_id;
+			SetMapId(Data::treemap.start.airship_map_id);
 			SetX(Data::treemap.start.airship_x);
 			SetY(Data::treemap.start.airship_y);
 			break;
@@ -238,13 +240,17 @@ void Game_Vehicle::LoadSystemSettings() {
 }
 
 void Game_Vehicle::Refresh() {
-	if (driving) {
-		map_id = Game_Map::GetMapId();
-		SyncWithPlayer();
-	}
+	if (!driving && Main_Data::game_player->GetVehicle() == this)
+		driving = true;
+
+	if (driving)
+		SetMapId(Game_Map::GetMapId());
 	else if (IsInCurrentMap())
 		MoveTo(GetX(), GetY());
+
 	switch (type) {
+		case None:
+			break;
 		case Boat:
 			SetLayer(RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
@@ -262,13 +268,13 @@ void Game_Vehicle::Refresh() {
 }
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
-	map_id = _map_id;
+	SetMapId(_map_id);
 	SetX(_x);
 	SetY(_y);
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {
-	return map_id == Game_Map::GetMapId();
+	return GetMapId() == Game_Map::GetMapId();
 }
 
 bool Game_Vehicle::IsInPosition(int x, int y) const {
@@ -276,7 +282,7 @@ bool Game_Vehicle::IsInPosition(int x, int y) const {
 }
 
 bool Game_Vehicle::IsAscending() const {
-	return data.remaining_ascension > 0;
+	return data.remaining_ascent > 0;
 }
 
 bool Game_Vehicle::IsDescending() const {
@@ -291,7 +297,7 @@ void Game_Vehicle::GetOn() {
 	driving = true;
 	if (type == Airship) {
 		SetLayer(RPG::EventPage::Layers_above);
-		data.remaining_ascension = SCREEN_TILE_WIDTH;
+		data.remaining_ascent = SCREEN_TILE_WIDTH;
 		data.flying = true;
 	} else {
 		walk_animation = true;
@@ -325,7 +331,7 @@ int Game_Vehicle::GetScreenY() const {
 	int altitude = 0;
 	if (data.flying) {
 		if (IsAscending())
-			altitude = (SCREEN_TILE_WIDTH - data.remaining_ascension) / (SCREEN_TILE_WIDTH / TILE_SIZE);
+			altitude = (SCREEN_TILE_WIDTH - data.remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
 		else if (IsDescending())
 			altitude = data.remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
 		else
@@ -357,7 +363,7 @@ void Game_Vehicle::Update() {
 
 	if (type == Airship) {
 		if (IsAscending()) {
-			data.remaining_ascension -= 8;
+			data.remaining_ascent -= 8;
 			if (!IsAscending())
 				walk_animation = true;
 		} else if (IsDescending()) {
@@ -369,7 +375,7 @@ void Game_Vehicle::Update() {
 					data.flying = false;
 				} else {
 					// Can't land here, ascend again
-					data.remaining_ascension = SCREEN_TILE_WIDTH;
+					data.remaining_ascent = SCREEN_TILE_WIDTH;
 				}
 			}
 		}

@@ -93,7 +93,7 @@ void Game_Map::Init() {
 	}
 
 	for (int i = 0; i < 3; i++)
-		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
+		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) (i + 1));
 
 	pan_locked = false;
 	pan_wait = false;
@@ -967,7 +967,7 @@ void Game_Map::SetChipset(int id) {
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
-	return vehicles[which];
+	return vehicles[which - 1];
 }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {

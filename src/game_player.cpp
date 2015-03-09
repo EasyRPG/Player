@@ -31,7 +31,6 @@
 Game_Player::Game_Player():
 	location(Main_Data::game_data.party_location),
 	teleporting(false),
-	vehicle_type(-1),
 	new_map_id(0),
 	new_x(0),
 	new_y(0),
@@ -169,6 +168,10 @@ void Game_Player::SetSpriteIndex(int index) {
 	location.sprite_id = index;
 }
 
+bool Game_Player::GetVisible() const {
+	return visible && !location.aboard;
+}
+
 Color Game_Player::GetFlashColor() const {
 	return Color(location.flash_red, location.flash_green, location.flash_blue, 128);
 }
@@ -220,15 +223,17 @@ void Game_Player::PerformTeleport() {
 	SetOpacity(255);
 
 	MoveTo(new_x, new_y);
+	if (InVehicle())
+		GetVehicle()->MoveTo(new_x, new_y);
 }
 
 bool Game_Player::IsPassable(int x, int y, int d) const {
 	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH))
 		return true;
 
-	if (InVehicle() && !location.unboarding)
-		return vehicle->IsPassable(x, y, d);
-	
+	if (location.aboard)
+		return GetVehicle()->IsPassable(x, y, d);
+
 	return Game_Character::IsPassable(x, y, d);
 }
 
@@ -319,7 +324,7 @@ void Game_Player::Update() {
 	Game_Character::Update();
 
 	if (location.aboard)
-		vehicle->SyncWithPlayer();
+		GetVehicle()->SyncWithPlayer();
 
 	UpdateScroll(last_real_x, last_real_y);
 
@@ -334,23 +339,20 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 	if (last_moving && location.boarding) {
 		location.aboard = true;
 		location.boarding = false;
-		SetMoveSpeed(vehicle->GetMoveSpeed());
-		SetOpacity(0);
+		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 		return;
 	}
 
 	if (last_moving && location.unboarding) {
 		location.unboarding = false;
-		vehicle_type = -1;
-		vehicle = NULL;
+		location.vehicle = Game_Vehicle::None;
 		return;
 	}
 
-	if (InAirship() && !vehicle->IsInUse()) {
+	if (InAirship() && !GetVehicle()->IsInUse()) {
 		// Airship has landed
 		Unboard();
-		vehicle_type = -1;
-		vehicle = NULL;
+		location.vehicle = Game_Vehicle::None;
 	}
 
 	if (last_moving && CheckTouchEvent()) return;
@@ -493,6 +495,9 @@ void Game_Player::Refresh() {
 
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
+
+	if (location.aboard)
+		GetVehicle()->SyncWithPlayer();
 }
 
 bool Game_Player::GetOnOffVehicle() {
@@ -517,8 +522,7 @@ bool Game_Player::GetOnVehicle() {
 	else
 		return false;
 
-	vehicle_type = type;
-	vehicle = Game_Map::GetVehicle(type);
+	location.vehicle = type;
 	location.preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
 		location.boarding = true;
@@ -527,11 +531,10 @@ bool Game_Player::GetOnVehicle() {
 		through = false;
 	} else {
 		location.aboard = true;
-		SetOpacity(0);
 	}
 
 	walking_bgm = Game_System::GetCurrentBGM();
-	vehicle->GetOn();
+	GetVehicle()->GetOn();
 	return true;
 }
 
@@ -543,7 +546,7 @@ bool Game_Player::GetOffVehicle() {
 			return false;
 	}
 
-	vehicle->GetOff();
+	GetVehicle()->GetOff();
 	if (!InAirship()) {
 		location.unboarding = true;
 		Unboard();
@@ -566,17 +569,21 @@ bool Game_Player::IsMovable() const {
 		return false;
 	if (Game_Message::visible)
 		return false;
-	if (InAirship() && !vehicle->IsMovable())
+	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
     return true;
 }
 
 bool Game_Player::InVehicle() const {
-	return vehicle_type >= 0;
+	return location.vehicle > 0;
 }
 
 bool Game_Player::InAirship() const {
-	return vehicle_type == Game_Vehicle::Airship;
+	return location.vehicle == Game_Vehicle::Airship;
+}
+
+Game_Vehicle* Game_Player::GetVehicle() const {
+	return Game_Map::GetVehicle((Game_Vehicle::Type) location.vehicle);
 }
 
 bool Game_Player::CanWalk(int x, int y) {
@@ -594,7 +601,6 @@ void Game_Player::BeginMove() {
 
 void Game_Player::Unboard() {
 	location.aboard = false;
-	SetOpacity(255);
 	SetMoveSpeed(location.preboard_move_speed);
 
 	Game_System::BgmPlay(walking_bgm);

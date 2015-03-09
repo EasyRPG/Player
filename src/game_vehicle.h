@@ -30,6 +30,7 @@
 class Game_Vehicle : public Game_Character {
 public:
 	enum Type {
+		None,
 		Boat,
 		Ship,
 		Airship
@@ -103,7 +104,6 @@ public:
 protected:
 	RPG::SaveVehicleLocation& data;
 
-	int map_id;
 	Type type;
 	bool driving;
 	RPG::Music bgm;

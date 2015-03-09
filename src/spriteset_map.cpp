@@ -42,8 +42,8 @@ Spriteset_Map::Spriteset_Map() {
 	}
 
 	Game_Vehicle* vehicle;
-	for (int i = 0; i < 3; ++i) {
-		vehicle = Game_Map::GetVehicle(static_cast<Game_Vehicle::Type>(i));
+	for (int i = 1; i <= 3; ++i) {
+		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
 		if (vehicle->IsInCurrentMap())
 			character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
 	}

@@ -69,6 +69,7 @@ public:
 	void SetSpriteName(const std::string& sprite_name);
 	int GetSpriteIndex() const;
 	void SetSpriteIndex(int index);
+	bool GetVisible() const;
 	Color GetFlashColor() const;
 	void SetFlashColor(const Color& flash_color);
 	double GetFlashLevel() const;
@@ -89,10 +90,12 @@ public:
 	void Refresh();
 
 	bool CheckEventTriggerTouch(int x, int y);
+
 	bool GetOnOffVehicle();
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
+	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 	void BeginMove();
 
@@ -100,8 +103,6 @@ private:
 	RPG::SavePartyLocation& location;
 
 	bool teleporting;
-	int vehicle_type;
-	Game_Vehicle* vehicle;
 	int new_map_id, new_x, new_y;
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
