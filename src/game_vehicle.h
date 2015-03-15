@@ -30,7 +30,7 @@
 class Game_Vehicle : public Game_Character {
 public:
 	enum Type {
-		None,
+		None = 0,
 		Boat,
 		Ship,
 		Airship

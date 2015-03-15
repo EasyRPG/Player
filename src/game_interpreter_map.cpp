@@ -1947,7 +1947,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			break;
 		case 7:
 			// Vehicle in use
-			result = Game_Map::GetVehicle((Game_Vehicle::Type) com.parameters[1])->IsInUse();
+			result = Game_Map::GetVehicle((Game_Vehicle::Type) (com.parameters[1]+1))->IsInUse();
 			break;
 		case 8:
 			// TODO Key decision initiated this event
