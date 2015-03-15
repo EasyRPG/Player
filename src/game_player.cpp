@@ -302,7 +302,7 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
-	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning() && !Game_Message::message_waiting) {
+	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();
@@ -337,15 +337,19 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 	if (IsMoving() ) return;
 
 	if (last_moving && location.boarding) {
+		// Boarding completed
 		location.aboard = true;
 		location.boarding = false;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
+		SetDirection(GetVehicle()->GetDirection());
 		return;
 	}
 
 	if (last_moving && location.unboarding) {
+		// Unboarding completed
 		location.unboarding = false;
 		location.vehicle = Game_Vehicle::None;
+		CheckTouchEvent();
 		return;
 	}
 
@@ -367,10 +371,8 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 }
 
 bool Game_Player::CheckActionEvent() {
-	// TODO
-	//if ( IsInAirship() ) {
-		//return false;
-	//}
+	if (InAirship())
+		return false;
 	int triggers_here[] = { 0 };
 	std::vector<int> triggers(triggers_here, triggers_here + sizeof triggers_here / sizeof(int));
 
@@ -386,6 +388,8 @@ bool Game_Player::CheckActionEvent() {
 }
 
 bool Game_Player::CheckTouchEvent() {
+	if (InAirship())
+		return false;
 	int triggers[] = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
 	std::vector<int> v_triggers( triggers, triggers + sizeof(triggers) / sizeof(int) );
 	return CheckEventTriggerHere(v_triggers);
@@ -567,7 +571,7 @@ bool Game_Player::IsMovable() const {
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;
-	if (Game_Message::visible)
+	if (Game_Message::message_waiting)
 		return false;
 	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
