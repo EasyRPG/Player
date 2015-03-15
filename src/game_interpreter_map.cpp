@@ -1587,7 +1587,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0]+1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	const std::string& name = com.string;
 	int vehicle_index = com.parameters[1];
@@ -1604,7 +1604,7 @@ bool Game_Interpreter_Map::CommandEnterExitVehicle(RPG::EventCommand const& /* c
 }
 
 bool Game_Interpreter_Map::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0]+1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	int map_id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);

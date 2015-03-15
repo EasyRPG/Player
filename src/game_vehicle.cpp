@@ -268,6 +268,8 @@ void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetMapId(_map_id);
 	SetX(_x);
 	SetY(_y);
+	real_x = _x * SCREEN_TILE_WIDTH;
+	real_y = _y * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {
