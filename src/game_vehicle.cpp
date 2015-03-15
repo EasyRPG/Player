@@ -252,16 +252,13 @@ void Game_Vehicle::Refresh() {
 		case None:
 			break;
 		case Boat:
+		case Ship:
 			SetLayer(RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
-		case Ship:
-			SetLayer(RPG::EventPage::Layers_same);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
-			break;
 		case Airship:
 			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_fourfold);
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
 	walk_animation = (type != Airship) || driving;
