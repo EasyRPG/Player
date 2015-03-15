@@ -375,12 +375,11 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 				else
 					return false;
 			}
-			else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
+			else if ((*it)->GetLayer() == RPG::EventPage::Layers_below) {
 				// Event layer Chipset Tile
 				tile_id = (*it)->GetTileId();
 				if ((passages_up[tile_id] & Passable::Above) != 0)
-					if ((passages_down[tile_id] & bit) == 0)
-						return false;
+					continue;
 				if ((passages_up[tile_id] & bit) != 0)
 					pass = true;
 				else
@@ -475,11 +474,25 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 		} else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
 			// Event layer Chipset Tile
 			tile_id = (*it)->GetTileId();
-			if ((passages_up[tile_id] & Passable::Above) != 0)
-				return false;
-			else
+			if ((passages_up[tile_id] & Passable::Above) == 0)
 				return false;
 		}
+	}
+
+	int const tile_index = x + y * GetWidth();
+
+	tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
+
+	if ((passages_up[tile_id] & Passable::Above) == 0)
+		return false;
+
+	for (int i = 0; i < 3; i++) {
+		if (i+1 == vehicle_type)
+			continue;
+		Game_Vehicle* vehicle = vehicles[i];
+		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
+			return false;
 	}
 
 	return true;
@@ -500,10 +513,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
                     else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
                         // Event layer Chipset Tile
                         tile_id = i->second->GetTileId();
-                        return (passages_up[tile_id] & Passable::Down ||
-                                passages_up[tile_id] & Passable::Right ||
-                                passages_up[tile_id] & Passable::Left ||
-                                passages_up[tile_id] & Passable::Up);
+                        return (passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up));
                     }
                 }
             }
@@ -515,12 +525,8 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     tile_id = map->upper_layer[tile_index] - BLOCK_F;
     tile_id = map_info.upper_tiles[tile_id];
 
-    if ((passages_up[tile_id] & Passable::Down) == 0 &&
-        (passages_up[tile_id] & Passable::Right) == 0 &&
-        (passages_up[tile_id] & Passable::Left) == 0 &&
-        (passages_up[tile_id] & Passable::Up) == 0) {
-        return false;
-    }
+    if ((passages_up[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
+            return false;
 
     if ((passages_up[tile_id] & Passable::Above) == 0)
         return true;
@@ -530,10 +536,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
         tile_id = map_info.lower_tiles[tile_id];
         tile_id += 18;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] >= BLOCK_D) {
@@ -551,28 +554,19 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
             ))
             return true;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] >= BLOCK_C) {
         tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] < BLOCK_C) {
         tile_id = map->lower_layer[tile_index] / 1000;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
     }
 
@@ -825,7 +819,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(x, y);
+	Game_Temp::battle_terrain_id = GetTerrainTag(x, y);
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
