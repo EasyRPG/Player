@@ -1008,6 +1008,11 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 	int event_id = com.parameters[0];
 	Game_Character* event = GetCharacter(event_id);
 	if (event != NULL) {
+		// If the event is a vehicle in use, push the commands to the player instead
+		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
+			if (static_cast<Game_Vehicle*>(event)->IsInUse())
+				event = Main_Data::game_player.get();
+
 		RPG::MoveRoute* route = new RPG::MoveRoute;
 		int move_freq = com.parameters[1];
 		route->repeat = com.parameters[2] != 0;
@@ -1582,7 +1587,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0]+1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	const std::string& name = com.string;
 	int vehicle_index = com.parameters[1];
@@ -1599,7 +1604,7 @@ bool Game_Interpreter_Map::CommandEnterExitVehicle(RPG::EventCommand const& /* c
 }
 
 bool Game_Interpreter_Map::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
-	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) com.parameters[0];
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0]+1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	int map_id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -1941,7 +1946,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			}
 			break;
 		case 7:
-			// TODO On vehicle
+			// Vehicle in use
+			result = Game_Map::GetVehicle((Game_Vehicle::Type) (com.parameters[1]+1))->IsInUse();
 			break;
 		case 8:
 			// TODO Key decision initiated this event

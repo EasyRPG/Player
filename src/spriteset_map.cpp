@@ -23,6 +23,7 @@
 #include "sprite_character.h"
 #include "game_character.h"
 #include "game_player.h"
+#include "game_vehicle.h"
 #include "bitmap.h"
 
 // Constructor
@@ -38,6 +39,13 @@ Spriteset_Map::Spriteset_Map() {
 	tEventHash events = Game_Map::GetEvents();
 	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(i->second.get()));
+	}
+
+	Game_Vehicle* vehicle;
+	for (int i = 1; i <= 3; ++i) {
+		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
+		if (vehicle->IsInCurrentMap())
+			character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
 	}
 
 	character_sprites.push_back

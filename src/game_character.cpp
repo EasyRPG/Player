@@ -86,11 +86,6 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
-	if (Player::debug_flag && (this == Main_Data::game_player.get())
-		&& Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return true;
-	}
-
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 
@@ -102,8 +97,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
 
-	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y
-		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty() 
+	if (Main_Data::game_player->IsInPosition(new_x, new_y)
+		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty()
 		&& GetLayer() != RPG::EventPage::Layers_above) {
 			return false;
 	}
@@ -121,7 +116,7 @@ bool Game_Character::IsLandable(int x, int y) const
 	if (!Game_Map::IsLandable(x, y, this))
 		return false;
 
-	if (Main_Data::game_player->GetX() == x && Main_Data::game_player->GetY() == y) {
+	if (Main_Data::game_player->IsInPosition(x, y)) {
 		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
 			return false;
 		}

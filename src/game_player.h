@@ -24,6 +24,8 @@
 #include "game_character.h"
 #include <vector>
 
+class Game_Vehicle;
+
 /**
  * Game Player class
  */
@@ -67,12 +69,14 @@ public:
 	void SetSpriteName(const std::string& sprite_name);
 	int GetSpriteIndex() const;
 	void SetSpriteIndex(int index);
+	bool GetVisible() const;
 	Color GetFlashColor() const;
 	void SetFlashColor(const Color& flash_color);
 	double GetFlashLevel() const;
 	void SetFlashLevel(double flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
+	bool IsPassable(int x, int y, int d) const;
 	/** @} */
 
 	bool IsTeleporting() const;
@@ -86,11 +90,12 @@ public:
 	void Refresh();
 
 	bool CheckEventTriggerTouch(int x, int y);
+
 	bool GetOnOffVehicle();
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
-	bool AirshipLandOk(int x, int y) const;
+	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 	void BeginMove();
 
@@ -98,9 +103,6 @@ private:
 	RPG::SavePartyLocation& location;
 
 	bool teleporting;
-	int vehicle_type;
-	bool vehicle_getting_on;
-	bool vehicle_getting_off;
 	int new_map_id, new_x, new_y;
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
@@ -113,6 +115,7 @@ private:
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
+	void Unboard();
 };
 
 #endif

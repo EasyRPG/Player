@@ -69,8 +69,8 @@ Game_Interpreter::~Game_Interpreter() {
 // Clear.
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
+	CloseMessageWindow();
 	event_id = 0;					// event ID
-	//Game_Message::message_waiting = false;	// waiting for message to end
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count

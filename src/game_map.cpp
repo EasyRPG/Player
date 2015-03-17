@@ -93,7 +93,7 @@ void Game_Map::Init() {
 	}
 
 	for (int i = 0; i < 3; i++)
-		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
+		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) (i + 1));
 
 	pan_locked = false;
 	pan_wait = false;
@@ -370,23 +370,26 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 				continue;
 			}
 			else if ((*it)->GetLayer() == self_event->GetLayer()) {
-				if (self_event->GetX() == x && self_event->GetY() == y)
+				if (self_event->IsInPosition(x, y))
 					pass = true;
 				else
 					return false;
 			}
-			else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
+			else if ((*it)->GetLayer() == RPG::EventPage::Layers_below) {
 				// Event layer Chipset Tile
 				tile_id = (*it)->GetTileId();
 				if ((passages_up[tile_id] & Passable::Above) != 0)
-					if ((passages_down[tile_id] & bit) == 0)
-						return false;
+					continue;
 				if ((passages_up[tile_id] & bit) != 0)
 					pass = true;
 				else
 					return false;
 			}
 		}
+
+		if (!self_event->IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
+			return false;
+
 		if (pass) // All events here are passable
 			return true;
 	}
@@ -445,6 +448,56 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	return true;
 }
 
+bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) {
+	if (!Game_Map::IsValid(x, y)) return false;
+
+	if (vehicle_type == Game_Vehicle::Boat) {
+		if (!Data::data.terrains[GetTerrainTag(x, y) -1].boat_pass)
+			return false;
+	} else if (vehicle_type == Game_Vehicle::Ship) {
+		if (!Data::data.terrains[GetTerrainTag(x, y) -1].ship_pass)
+			return false;
+	} else if (vehicle_type == Game_Vehicle::Airship) {
+		return Data::data.terrains[GetTerrainTag(x, y) -1].airship_pass;
+	}
+
+	int tile_id;
+	std::vector<Game_Event*> events;
+	std::vector<Game_Event*>::iterator it;
+
+	Game_Map::GetEventsXY(events, x, y);
+	for (it = events.begin(); it != events.end(); ++it) {
+		if ((*it)->GetThrough()) {
+			continue;
+		} else if ((*it)->GetLayer() == 1) {
+			return false;
+		} else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
+			// Event layer Chipset Tile
+			tile_id = (*it)->GetTileId();
+			if ((passages_up[tile_id] & Passable::Above) == 0)
+				return false;
+		}
+	}
+
+	int const tile_index = x + y * GetWidth();
+
+	tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
+
+	if ((passages_up[tile_id] & Passable::Above) == 0)
+		return false;
+
+	for (int i = 0; i < 3; i++) {
+		if (i+1 == vehicle_type)
+			continue;
+		Game_Vehicle* vehicle = vehicles[i];
+		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
+			return false;
+	}
+
+	return true;
+}
+
 bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
 {
     int tile_id;
@@ -452,7 +505,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     if (self_event) {
         for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
             Game_Event* evnt = i->second.get();
-            if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
+            if (evnt != self_event && evnt->IsInPosition(x, y)) {
                 if (!evnt->GetThrough()) {
                     if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
                         return false;
@@ -460,10 +513,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
                     else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
                         // Event layer Chipset Tile
                         tile_id = i->second->GetTileId();
-                        return (passages_up[tile_id] & Passable::Down ||
-                                passages_up[tile_id] & Passable::Right ||
-                                passages_up[tile_id] & Passable::Left ||
-                                passages_up[tile_id] & Passable::Up);
+                        return (passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up));
                     }
                 }
             }
@@ -475,12 +525,8 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     tile_id = map->upper_layer[tile_index] - BLOCK_F;
     tile_id = map_info.upper_tiles[tile_id];
 
-    if ((passages_up[tile_id] & Passable::Down) == 0 &&
-        (passages_up[tile_id] & Passable::Right) == 0 &&
-        (passages_up[tile_id] & Passable::Left) == 0 &&
-        (passages_up[tile_id] & Passable::Up) == 0) {
-        return false;
-    }
+    if ((passages_up[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
+            return false;
 
     if ((passages_up[tile_id] & Passable::Above) == 0)
         return true;
@@ -490,10 +536,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
         tile_id = map_info.lower_tiles[tile_id];
         tile_id += 18;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] >= BLOCK_D) {
@@ -511,28 +554,19 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
             ))
             return true;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] >= BLOCK_C) {
         tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
 
     } else if (map->lower_layer[tile_index] < BLOCK_C) {
         tile_id = map->lower_layer[tile_index] / 1000;
 
-        if ((passages_down[tile_id] & Passable::Down) == 0 &&
-            (passages_down[tile_id] & Passable::Right) == 0 &&
-            (passages_down[tile_id] & Passable::Left) == 0 &&
-            (passages_down[tile_id] & Passable::Up) == 0)
+        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
             return false;
     }
 
@@ -576,7 +610,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); ++i) {
-		if (i->second->GetX() == x && i->second->GetY() == y && i->second->GetActive()) {
+		if (i->second->IsInPosition(x, y) && i->second->GetActive()) {
 			result.push_back(i->second.get());
 		}
 	}
@@ -619,7 +653,7 @@ int Game_Map::YwithDirection(int y, int direction) {
 int Game_Map::CheckEvent(int x, int y) {
 	tEventHash::iterator i;
 	for (i = events.begin(); i != events.end(); ++i) {
-		if (i->second->GetX() == x && i->second->GetY() == y) {
+		if (i->second->IsInPosition(x, y)) {
 			return i->second->GetId();
 		}
 	}
@@ -785,7 +819,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_terrain_id = GetTerrainTag(x, y);
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
@@ -927,7 +961,7 @@ void Game_Map::SetChipset(int id) {
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
-	return vehicles[which];
+	return vehicles[which - 1];
 }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {
