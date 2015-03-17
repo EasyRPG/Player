@@ -183,11 +183,13 @@ public class GameBrowserActivity extends ListActivity {
 	
 	/**
 	 * Returns Ini File of game at index.
+	 * Optionally creates it.
 	 * 
 	 * @param index list index
+	 * @param create create ini if not found
 	 * @return ini
 	 */
-	public File getIniOfGameAt(int index) {
+	public File getIniOfGameAt(int index, boolean create) {
 		File dir = new File(getGamepathAt(index));
 		
 		if (!dir.isDirectory() || !dir.canRead()) {
@@ -201,8 +203,30 @@ public class GameBrowserActivity extends ListActivity {
 				}
 			}
 		}
+		
+		if (create) {
+			File newIni = new File(dir.getAbsolutePath() + "/RPG_RT.ini");
+			
+			try {
+				newIni.createNewFile();
+			} catch (IOException e) {
+				return null;
+			}
+			
+			return newIni;
+		}
 
 		return null;
+	}
+	
+	/**
+	 * Returns Ini File of game at index.
+	 * 
+	 * @param index list index
+	 * @return ini
+	 */
+	public File getIniOfGameAt(int index) {
+		return getIniOfGameAt(index, false);
 	}
 
 	/**
@@ -218,7 +242,6 @@ public class GameBrowserActivity extends ListActivity {
 
 		boolean databaseFound = false;
 		boolean treemapFound = false;
-		boolean iniFound = false;
 
 		for (File entry : dir.listFiles()) {
 			if (entry.isFile() && entry.canRead()) {
@@ -226,10 +249,9 @@ public class GameBrowserActivity extends ListActivity {
 					databaseFound = true;
 				} else if (!treemapFound && entry.getName().equalsIgnoreCase(TREEMAP_NAME)) {
 					treemapFound = true;
-				} else if (!iniFound && entry.getName().equalsIgnoreCase(INI_FILE)) {
-					iniFound = true;
 				}
-				if (databaseFound && treemapFound && iniFound) {
+
+				if (databaseFound && treemapFound) {
 					return true;
 				}
 			}
@@ -268,13 +290,20 @@ public class GameBrowserActivity extends ListActivity {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 				int row, long arg3) {
-			File iniFile = parent.getIniOfGameAt(row);
+			File iniFile = parent.getIniOfGameAt(row, true);
+
+			String error_msg = getString(R.string.accessing_configuration_failed).replace("$PATH", getGameAt(row));
+			
+			if (iniFile == null) {
+				Toast.makeText(parent, error_msg, Toast.LENGTH_LONG).show();
+				return false;
+			}
+			
 			try {
 				Dialog dialog = new RegionDialog(parent, iniFile);
 				dialog.show();
 			} catch (IOException e) {
-				String msg = getString(R.string.accessing_configuration_failed).replace("$PATH", getGameAt(row));
-				Toast.makeText(parent, msg, Toast.LENGTH_LONG).show();
+				Toast.makeText(parent, error_msg, Toast.LENGTH_LONG).show();
 			}
 			return false;
 		}
