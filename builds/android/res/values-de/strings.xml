@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyRPG Player</string>
+	<string name="toggle_fps">FPS ein-/ausblenden</string>
+	<string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
+	<string name="end_game">Spiel beenden</string>
+	<string name="autodetect">Region automatisch erkennen (Empfohlen)</string>
+	<string name="west_europe">Westeuropa</string>
+	<string name="east_europe">Mittel-/Osteuropa</string>
+	<string name="cyrillic">Kyrillisch</string>
+	<string name="japan">Japanisch</string>
+	<string name="korean">Koreanisch</string>
+	<string name="chinese_simple">Chinesisch (Vereinfacht)</string>
+	<string name="chinese_traditional">Chinesisch (Traditionell)</string>
+	<string name="greek">Griechisch</string>
+	<string name="turkish">Türkisch</string>
+	<string name="hebrew">Hebräisch</string>
+	<string name="arabic">Arabisch</string>
+	<string name="baltic">Baltisch</string>
+	<string name="thai">Thai</string>
+	<string name="vietnamese">Vietnamesisch</string>
+	<string name="cancel">Abbrechen</string>
+	<string name="do_want_quit">Möchtest du wirklich beenden?</string>
+	<string name="yes">Ja</string>
+	<string name="no">Nein</string>
+	<string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden.</string>
+	<string name="path_not_readable">$PATH ist nicht lesbar</string>
+	<string name="no_games_found">Keine Spiele in $PATH gefunden</string>
+	<string name="no_external_storage">Kein externer Speicher (z.B. SD-Karte) gefunden.</string>
+	<string name="resolve_errors">Behebe die Fehler und versuche es dann erneut.</string>
+	<string name="not_valid_game">$PATH ist kein gültiges Spiel</string>
+	<string name="accessing_configuration_failed">Konfiguration von $PATH konnte nicht gelesen werden.</string>
+	<string name="select_game_region">Spielregion auswählen</string>
+	<string name="unknown_region">Unbekannte Region</string>
+	<string name="region_modification_success">Region in $NAME geändert</string>
+	<string name="region_modification_failed">Ändern der Region fehlgeschlagen</string>
+</resources>
