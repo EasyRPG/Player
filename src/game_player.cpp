@@ -528,6 +528,7 @@ bool Game_Player::GetOnVehicle() {
 
 	location.vehicle = type;
 	location.preboard_move_speed = GetMoveSpeed();
+	SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 	if (type != Game_Vehicle::Airship) {
 		location.boarding = true;
 		through = true;
