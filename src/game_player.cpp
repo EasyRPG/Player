@@ -528,7 +528,6 @@ bool Game_Player::GetOnVehicle() {
 
 	location.vehicle = type;
 	location.preboard_move_speed = GetMoveSpeed();
-	SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 	if (type != Game_Vehicle::Airship) {
 		location.boarding = true;
 		through = true;
@@ -536,6 +535,7 @@ bool Game_Player::GetOnVehicle() {
 		through = false;
 	} else {
 		location.aboard = true;
+		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 	}
 
 	walking_bgm = Game_System::GetCurrentBGM();
