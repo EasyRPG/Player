@@ -50,7 +50,6 @@ import android.widget.RelativeLayout;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	private ImageView cView;
 	private VirtualButton aButton, bButton;
 	private VirtualCross vCross;
 	private boolean uiVisible = true;
@@ -105,11 +104,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			if (uiVisible) {
 				mLayout.removeView(aButton);
 				mLayout.removeView(bButton);
-				mLayout.removeView(cView);
+				mLayout.removeView(vCross);
 			} else {
 				mLayout.addView(aButton);
 				mLayout.addView(bButton);
-				mLayout.addView(cView);
+				mLayout.addView(vCross);
 			}
 			uiVisible = !uiVisible;
 			return true;
