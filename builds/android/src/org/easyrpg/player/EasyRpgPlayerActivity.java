@@ -26,34 +26,42 @@ package org.easyrpg.player;
 
 import java.io.File;
 
+import org.easyrpg.player.virtual_buttons.GameButton;
 import org.libsdl.app.SDLActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.*;
-import android.graphics.Paint.Style;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	private ImageView aView, bView, cView;
+	private ImageView cView;
+	private GameButton aButton, bButton;
 	private boolean uiVisible = true;
 	
 	@Override
@@ -70,6 +78,9 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		mLayout = (RelativeLayout)findViewById(R.id.main_layout);
 	    mLayout.addView(mSurface);
 	    
+
+		aButton = new GameButton(this, KeyEvent.KEYCODE_SPACE);
+		bButton = new GameButton(this, KeyEvent.KEYCODE_ESCAPE);
 	    drawButtons();
 	    drawCross();
 	}
@@ -101,12 +112,12 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	            return true;
 	        case R.id.toggle_ui:
 	        	if (uiVisible) {
-	        		mLayout.removeView(aView);
-	        		mLayout.removeView(bView);
+	        		mLayout.removeView(aButton);
+	        		mLayout.removeView(bButton);
 	        		mLayout.removeView(cView);
 	        	} else {
-	        		mLayout.addView(aView);
-	        		mLayout.addView(bView);
+	        		mLayout.addView(aButton);
+	        		mLayout.addView(bButton);
 	        		mLayout.addView(cView);
 	        	}
 	        	uiVisible = !uiVisible;
@@ -224,26 +235,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * Draws A and B button.
 	 */
 	private void drawButtons() {
-		// Setup color
-		Paint circlePaint = getPainter();
-		
-		// Set size
-		int iconSize = getPixels(60); // ~1cm
-
-		// Draw
-		Bitmap abBmp = Bitmap.createBitmap(iconSize + 10, iconSize + 10, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(abBmp);
-		c.drawCircle(iconSize / 2, iconSize / 2, iconSize / 2 - 5, circlePaint);
-		
 		// Add to screen layout
-		aView = new ImageView(this);
-		aView.setImageBitmap(abBmp);
-		bView = new ImageView(this);
-		bView.setImageBitmap(abBmp);
-		setLayoutPositionRight(aView, 0.13, 0.7);
-		setLayoutPositionRight(bView, 0.03, 0.6);
-		mLayout.addView(aView);
-		mLayout.addView(bView);
+		setLayoutPositionRight(aButton, 0.13, 0.7);
+		setLayoutPositionRight(bButton, 0.03, 0.6);
+		mLayout.addView(aButton);
+		mLayout.addView(bButton);
 	}
 	
 	/**
