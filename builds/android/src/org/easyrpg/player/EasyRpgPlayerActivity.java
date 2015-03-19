@@ -42,10 +42,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
@@ -56,102 +54,104 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	private VirtualButton aButton, bButton;
 	private VirtualCross vCross;
 	private boolean uiVisible = true;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {		
-		super.onCreate(savedInstanceState);
-		
-	    try {
- 			if (Build.VERSION.SDK_INT >= 11) {
- 				// Api 11: FLAG_HARDWARE_ACCELERATED
- 				getWindow().setFlags(0x01000000, 0x01000000);
- 			}
- 		} catch (Exception e) {}
-	    
-		mLayout = (RelativeLayout)findViewById(R.id.main_layout);
-	    mLayout.addView(mSurface);
-	    
 
-		aButton = new VirtualButton(this, KeyEvent.KEYCODE_SPACE);
-		bButton = new VirtualButton(this, KeyEvent.KEYCODE_ESCAPE);
-		vCross 	= new VirtualCross(this);
-	    drawButtons();
-	    drawCross();
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		try {
+			if (Build.VERSION.SDK_INT >= 11) {
+				// Api 11: FLAG_HARDWARE_ACCELERATED
+				getWindow().setFlags(0x01000000, 0x01000000);
+			}
+		} catch (Exception e) {
+		}
+
+		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
+		mLayout.addView(mSurface);
+
+		aButton = new VirtualButton(this, KeyEvent.KEYCODE_SPACE, 'A');
+		bButton = new VirtualButton(this, KeyEvent.KEYCODE_B, 'B');
+		vCross = new VirtualCross(this);
+		drawButtons();
+		drawCross();
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// Alt-Test for working around ugly Xperia Play button mapping
-	    if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed()))
-	    {
-	        showEndGameDialog();
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed())) {
+			showEndGameDialog();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.player_menu, menu);
-	    Log.v("Player", "onCreateOption");
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.player_menu, menu);
+		Log.v("Player", "onCreateOption");
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.toggle_fps:
-	            toggleFps();
-	            return true;
-	        case R.id.toggle_ui:
-	        	if (uiVisible) {
-	        		mLayout.removeView(aButton);
-	        		mLayout.removeView(bButton);
-	        		mLayout.removeView(cView);
-	        	} else {
-	        		mLayout.addView(aButton);
-	        		mLayout.addView(bButton);
-	        		mLayout.addView(cView);
-	        	}
-	        	uiVisible = !uiVisible;
-	            return true;
-	        case R.id.end_game:
-	        	showEndGameDialog();
-	        	return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.toggle_fps:
+			toggleFps();
+			return true;
+		case R.id.toggle_ui:
+			if (uiVisible) {
+				mLayout.removeView(aButton);
+				mLayout.removeView(bButton);
+				mLayout.removeView(cView);
+			} else {
+				mLayout.addView(aButton);
+				mLayout.addView(bButton);
+				mLayout.addView(cView);
+			}
+			uiVisible = !uiVisible;
+			return true;
+		case R.id.end_game:
+			showEndGameDialog();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void showEndGameDialog() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("EasyRPG Player");
-    
+
 		// set dialog message
 		alertDialogBuilder
-			.setMessage(R.string.do_want_quit)
-			.setCancelable(false)
-			.setPositiveButton(R.string.yes,new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					endGame();
-				}
-			  })
-			.setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					dialog.cancel();
-				}
-			});
-    
-			// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();
+				.setMessage(R.string.do_want_quit)
+				.setCancelable(false)
+				.setPositiveButton(R.string.yes,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								endGame();
+							}
+						})
+				.setNegativeButton(R.string.no,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
 
-			alertDialog.show();
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		alertDialog.show();
 	}
-	
+
 	public static native void toggleFps();
+
 	public static native void endGame();
-	
+
 	/**
 	 * Used by the native code to retrieve the selected game in the browser.
 	 * Invoked via JNI.
@@ -161,35 +161,37 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	public String getProjectPath() {
 		return getIntent().getStringExtra("project_path");
 	}
-	
+
 	/**
-	 * Used by timidity of SDL_mixer to find the timidity folder for the instruments.
-	 * Invoked via JNI.
+	 * Used by timidity of SDL_mixer to find the timidity folder for the
+	 * instruments. Invoked via JNI.
 	 * 
 	 * @return Full path to the timidity.cfg
 	 */
 	public String getTimidityPath() {
-		//Log.v("SDL", "getTimidity " + getApplication().getApplicationInfo().dataDir);
+		// Log.v("SDL", "getTimidity " +
+		// getApplication().getApplicationInfo().dataDir);
 		String s = getApplication().getApplicationInfo().dataDir + "/timidity";
 		if (new File(s).exists()) {
 			return s;
 		}
-		
-		return Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
+
+		return Environment.getExternalStorageDirectory().getPath()
+				+ "/easyrpg/timidity";
 	}
-	
+
 	/**
-	 * Used by the native code to retrieve the RTP directory.
-	 * Invoked via JNI.
+	 * Used by the native code to retrieve the RTP directory. Invoked via JNI.
 	 * 
 	 * @return Full path to the RTP
 	 */
 	public String getRtpPath() {
-		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/rtp";
-		//Log.v("SDL", "getRtpPath " + str);
+		String str = Environment.getExternalStorageDirectory().getPath()
+				+ "/easyrpg/rtp";
+		// Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}
-	
+
 	/**
 	 * Gets the display height in pixel.
 	 * 
@@ -197,10 +199,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	public int getScreenHeight() {
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.heightPixels;
-        return (int)screenWidthDp;
+		float screenWidthDp = displayMetrics.heightPixels;
+		return (int) screenWidthDp;
 	}
-	
+
 	/**
 	 * Gets the display width in pixel.
 	 * 
@@ -208,10 +210,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	public int getScreenWidth() {
 		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.widthPixels;
-        return (int)screenWidthDp;
+		float screenWidthDp = displayMetrics.widthPixels;
+		return (int) screenWidthDp;
 	}
-	
+
 	/**
 	 * Draws A and B button.
 	 */
@@ -222,7 +224,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		mLayout.addView(aButton);
 		mLayout.addView(bButton);
 	}
-	
+
 	/**
 	 * Draws the digital cross.
 	 */
@@ -231,6 +233,5 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		Utilitary.setLayoutPosition(this, vCross, 0.03, 0.5);
 		mLayout.addView(vCross);
 	}
-    
-   
+
 }
