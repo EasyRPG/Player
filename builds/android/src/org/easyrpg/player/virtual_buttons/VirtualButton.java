@@ -16,22 +16,22 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class GameButton extends View {
+public class VirtualButton extends View {
 	private int		iconSize;
 	private Paint	painter;
 	private Rect	bound;
 	private boolean isPressed; //To know when the touch go out the button
 	private int		keyCode;
 
-	public GameButton(Context context, int keyCode) {
+	public VirtualButton(Context context, int keyCode) {
 		super(context);
 
 		this.keyCode = keyCode;
 		// Set size
-		iconSize = getPixels(60); // ~1cm
+		iconSize = Utilitary.getPixels(this, 60); // ~1cm
 
 		// Setup color
-		painter = getPainter();
+		painter = Utilitary.getUIPainter();
 	}
 
 	@Override
@@ -43,22 +43,6 @@ public class GameButton extends View {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		setMeasuredDimension(iconSize, iconSize);
-	}
-
-	public int getPixels(double dipValue) {
-		int dValue = (int) dipValue;
-		Resources r = getResources();
-		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-				dValue, r.getDisplayMetrics());
-		return px;
-	}
-
-	private Paint getPainter() {
-		Paint uiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		uiPaint.setColor(Color.argb(128, 255, 255, 255));
-		uiPaint.setStyle(Style.STROKE);
-		uiPaint.setStrokeWidth((float) 3.0);
-		return uiPaint;
 	}
 
 	@Override
@@ -90,7 +74,7 @@ public class GameButton extends View {
 	public void onPressed(){
 		if(!isPressed){
 			isPressed = true;
-			Log.d("Button", "Pressed");
+			Log.d("Button", keyCode + "Pressed");
 			
 			SDLActivity.onNativeKeyDown(this.keyCode);
 		}
@@ -101,7 +85,7 @@ public class GameButton extends View {
 		// released (in case the touch mouvement go out the button bounds)
 		if(isPressed){
 			isPressed = false;
-			Log.d("Button", "Released");
+			Log.d("Button", keyCode + "Released");
 			SDLActivity.onNativeKeyUp(this.keyCode);
 		}	
 	}
