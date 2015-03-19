@@ -312,10 +312,11 @@ void Game_Vehicle::GetOff() {
 	if (type == Airship) {
 		walk_animation = false;
 		data.remaining_descent = SCREEN_TILE_WIDTH;
+		Main_Data::game_player->SetDirection(RPG::EventPage::Direction_left);
 	} else {
 		driving = false;
+		SetDirection(RPG::EventPage::Direction_left);
 	}
-	SetDirection(RPG::EventPage::Direction_left);
 }
 
 bool Game_Vehicle::IsInUse() const {

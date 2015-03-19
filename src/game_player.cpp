@@ -357,6 +357,8 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 		// Airship has landed
 		Unboard();
 		location.vehicle = Game_Vehicle::None;
+		SetDirection(RPG::EventPage::Direction_down);
+
 	}
 
 	if (last_moving && CheckTouchEvent()) return;
@@ -519,9 +521,9 @@ bool Game_Player::GetOnVehicle() {
 
 	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(GetX(), GetY()))
 		type = Game_Vehicle::Airship;
-    else if (Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
+	else if (Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 		type = Game_Vehicle::Ship;
-    else if (Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y))
+	else if (Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y))
 		type = Game_Vehicle::Boat;
 	else
 		return false;
@@ -536,6 +538,7 @@ bool Game_Player::GetOnVehicle() {
 	} else {
 		location.aboard = true;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
+		SetDirection(RPG::EventPage::Direction_left);
 	}
 
 	walking_bgm = Game_System::GetCurrentBGM();
@@ -558,8 +561,6 @@ bool Game_Player::GetOffVehicle() {
 		through = true;
 		MoveForward();
 		through = false;
-	} else {
-		SetDirection(RPG::EventPage::Direction_down);
 	}
 
 	return true;
