@@ -26,31 +26,23 @@ package org.easyrpg.player;
 
 import java.io.File;
 
-import org.easyrpg.player.virtual_buttons.GameButton;
+import org.easyrpg.player.virtual_buttons.Utilitary;
+import org.easyrpg.player.virtual_buttons.VirtualButton;
+import org.easyrpg.player.virtual_buttons.VirtualCross;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -61,7 +53,8 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class EasyRpgPlayerActivity extends SDLActivity {
 	private ImageView cView;
-	private GameButton aButton, bButton;
+	private VirtualButton aButton, bButton;
+	private VirtualCross vCross;
 	private boolean uiVisible = true;
 	
 	@Override
@@ -79,8 +72,9 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	    mLayout.addView(mSurface);
 	    
 
-		aButton = new GameButton(this, KeyEvent.KEYCODE_SPACE);
-		bButton = new GameButton(this, KeyEvent.KEYCODE_ESCAPE);
+		aButton = new VirtualButton(this, KeyEvent.KEYCODE_SPACE);
+		bButton = new VirtualButton(this, KeyEvent.KEYCODE_ESCAPE);
+		vCross 	= new VirtualCross(this);
 	    drawButtons();
 	    drawCross();
 	}
@@ -219,25 +213,12 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 	
 	/**
-	 * Gets Painter used for ui drawing.
-	 * 
-	 * @return painter
-	 */
-	private Paint getPainter() {
-		Paint uiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		uiPaint.setColor(Color.argb(128, 255, 255, 255));
-		uiPaint.setStyle(Style.STROKE);
-		uiPaint.setStrokeWidth((float)3.0);
-		return uiPaint;
-	}
-	
-	/**
 	 * Draws A and B button.
 	 */
 	private void drawButtons() {
 		// Add to screen layout
-		setLayoutPositionRight(aButton, 0.13, 0.7);
-		setLayoutPositionRight(bButton, 0.03, 0.6);
+		Utilitary.setLayoutPositionRight(this, aButton, 0.13, 0.7);
+		Utilitary.setLayoutPositionRight(this, bButton, 0.03, 0.6);
 		mLayout.addView(aButton);
 		mLayout.addView(bButton);
 	}
@@ -246,92 +227,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * Draws the digital cross.
 	 */
 	private void drawCross() {
-		// Setup color
-		Paint crossPaint = getPainter();
-		
-		// Set size
-		int iconSize = getPixels(150); // ~2.5cm
-		int iconSize_33 = (int)(iconSize * 0.33);
-		
-		// Draw the cross
-		Bitmap cBmp = Bitmap.createBitmap(iconSize + 10, iconSize + 10, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(cBmp);
-		Path path = new Path();
-		path.moveTo(iconSize_33, 5);
-		path.lineTo(iconSize_33*2, 5);
-		path.lineTo(iconSize_33*2, iconSize_33);
-		path.lineTo(iconSize - 5, iconSize_33);
-		path.lineTo(iconSize - 5, iconSize_33*2);
-		path.lineTo(iconSize_33*2, iconSize_33*2);
-		path.lineTo(iconSize_33*2, iconSize-5);
-		path.lineTo(iconSize_33, iconSize-5);
-		path.lineTo(iconSize_33, iconSize_33*2);
-		path.lineTo(5, iconSize_33*2);
-		path.lineTo(5, iconSize_33);
-		path.lineTo(iconSize_33, iconSize_33);
-		path.close();
-		path.offset(0, 0);
-		c.drawPath(path, crossPaint);
-		
 		// Add to screen layout
-		cView = new ImageView(this);
-		cView.setImageBitmap(cBmp);
-		setLayoutPosition(cView, 0.03, 0.5);
-		mLayout.addView(cView);
+		Utilitary.setLayoutPosition(this, vCross, 0.03, 0.5);
+		mLayout.addView(vCross);
 	}
-	
-	/**
-	 * Converts density independent pixel to real screen pixel.
-	 * 160 dip = 1 inch ~ 2.5 cm
-	 * 
-	 * @param dipValue dip
-	 * @return pixel
-	 */
-    public int getPixels(double dipValue) { 
-    	int dValue = (int)dipValue;
-        Resources r = getResources();
-        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dValue, r.getDisplayMetrics());
-        return px; 
-   }
     
-    /**
-     * Moves a view to a screen position.
-     * Position is from 0 to 1 and converted to screen pixel.
-     * Alignment is top left.
-     * 
-     * @param view View to move
-     * @param x X position from 0 to 1
-     * @param y Y position from 0 to 1
-     */
-	private void setLayoutPosition(View view, double x, double y) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-        float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
-        
-    	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-    	params.leftMargin = getPixels(screenWidthDp * x);
-    	params.topMargin = getPixels(screenHeightDp * y);
-    	view.setLayoutParams(params);        
-	}
-	
-    /**
-     * Moves a view to a screen position.
-     * Position is from 0 to 1 and converted to screen pixel.
-     * Alignment is top right.
-     * 
-     * @param view View to move
-     * @param x X position from 0 to 1
-     * @param y Y position from 0 to 1
-     */
-	private void setLayoutPositionRight(View view, double x, double y) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-        float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
-        
-    	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-    	params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-    	params.rightMargin = getPixels(screenWidthDp * x);
-    	params.topMargin = getPixels(screenHeightDp * y);
-    	view.setLayoutParams(params);        
-	}
+   
 }
