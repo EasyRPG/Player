@@ -4,12 +4,10 @@ import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 
 public class VirtualCross extends VirtualButton {
 	public static final int KeyCode = -1; //A fake keycode for distinguish from Virtual Button
