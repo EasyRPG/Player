@@ -256,12 +256,6 @@ void Game_Player::MoveTo(int x, int y) {
 
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
-
-	// TODO: vehicle stuff
-	/* if in_vehicle?                                    # Riding in vehicle
-      vehicle = $game_map.vehicles[@vehicle_type]     # Get vehicle
-      vehicle.refresh                                 # Refresh
-    end */
 }
 
 void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
