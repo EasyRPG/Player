@@ -25,10 +25,11 @@
 package org.easyrpg.player;
 
 import java.io.File;
+import java.util.List;
 
+import org.easyrpg.player.virtual_buttons.ButtonMappingModel;
 import org.easyrpg.player.virtual_buttons.Utilitary;
 import org.easyrpg.player.virtual_buttons.VirtualButton;
-import org.easyrpg.player.virtual_buttons.VirtualCross;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -42,7 +43,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 /**
@@ -50,8 +50,7 @@ import android.widget.RelativeLayout;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	private VirtualButton aButton, bButton;
-	private VirtualCross vCross;
+	private List<VirtualButton> buttonList;
 	private boolean uiVisible = true;
 
 	@Override
@@ -69,11 +68,8 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mLayout.addView(mSurface);
 
-		aButton = new VirtualButton(this, KeyEvent.KEYCODE_SPACE, 'A');
-		bButton = new VirtualButton(this, KeyEvent.KEYCODE_B, 'B');
-		vCross = new VirtualCross(this);
+		buttonList = ButtonMappingModel.readDefaultButtonMappingFile(this);
 		drawButtons();
-		drawCross();
 	}
 
 	@Override
@@ -102,13 +98,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return true;
 		case R.id.toggle_ui:
 			if (uiVisible) {
-				mLayout.removeView(aButton);
-				mLayout.removeView(bButton);
-				mLayout.removeView(vCross);
+				for(VirtualButton v : buttonList){
+					mLayout.removeView(v);
+				}
 			} else {
-				mLayout.addView(aButton);
-				mLayout.addView(bButton);
-				mLayout.addView(vCross);
+				drawButtons();
 			}
 			uiVisible = !uiVisible;
 			return true;
@@ -214,23 +208,12 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 
 	/**
-	 * Draws A and B button.
+	 * Draws all buttons.
 	 */
 	private void drawButtons() {
-		// Add to screen layout
-		Utilitary.setLayoutPositionRight(this, aButton, 0.13, 0.7);
-		Utilitary.setLayoutPositionRight(this, bButton, 0.03, 0.6);
-		mLayout.addView(aButton);
-		mLayout.addView(bButton);
+		for(VirtualButton b : buttonList){
+			Utilitary.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
+			mLayout.addView(b);
+		}
 	}
-
-	/**
-	 * Draws the digital cross.
-	 */
-	private void drawCross() {
-		// Add to screen layout
-		Utilitary.setLayoutPosition(this, vCross, 0.03, 0.5);
-		mLayout.addView(vCross);
-	}
-
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/button_mapping_menu_save"
+        android:title="Save button mapping"/>
+    <item android:id="@+id/button_mapping_menu_add_button"
+        android:title="Add a button" />
+    <item android:id="@+id/button_mapping_menu_reset"
+        android:title="Reset button mapping" />
+</menu>

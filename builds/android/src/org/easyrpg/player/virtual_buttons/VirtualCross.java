@@ -11,28 +11,24 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class VirtualCross extends View {
-	private int iconSize;
-	private Paint painter;
+public class VirtualCross extends VirtualButton {
+	public static final int KeyCode = -1; //A fake keycode for distinguish from Virtual Button
+	
 	private Rect boundLeft, boundRight, boundUp, boundDown;
-	private boolean isPressed; // To know when the touch go out the button
 	private int key_pressed;
 	private Path path; // For the drawing
 
 	public VirtualCross(Context context) {
-		super(context);
+		super(context, VirtualCross.KeyCode, '0');
 		// Set size
 		iconSize = Utilitary.getPixels(this, 150); // ~1cm
-
-		// Setup Painter and Bounds
-		painter = Utilitary.getUIPainter();
 		path = new Path();
 		setBounds();
 	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(iconSize, iconSize);
+	public VirtualCross(Context context, double posX, double posY){
+		this(context);
+		this.posX = posX;
+		this.posY = posY;
 	}
 
 	@Override
