@@ -22,7 +22,6 @@ public class VirtualCross extends VirtualButton {
 		// Set size
 		iconSize = Utilitary.getPixels(this, 150); // ~1cm
 		path = new Path();
-		setBounds();
 	}
 	public VirtualCross(Context context, double posX, double posY){
 		this(context);
@@ -54,8 +53,7 @@ public class VirtualCross extends VirtualButton {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		this.setBounds();
-
+		setBounds();
 		int action = event.getActionMasked();
 		int keyCode = -1;
 
@@ -134,16 +132,31 @@ public class VirtualCross extends VirtualButton {
 	/** Set the direction's hitbox position */
 	public void setBounds() {
 		int iconSize_33 = (int) (iconSize * 0.33);
-		boundLeft = new Rect(this.getLeft(), this.getTop() + iconSize_33,
-				this.getRight() - 2 * iconSize_33, this.getBottom()
-						- iconSize_33);
-		boundRight = new Rect(this.getLeft() + 2 * iconSize_33, this.getTop()
-				+ iconSize_33, this.getRight(), this.getBottom() - iconSize_33);
-		boundUp = new Rect(this.getLeft() + iconSize_33, this.getTop(),
-				this.getRight() - iconSize_33, this.getBottom() - 2
-						* iconSize_33);
-		boundDown = new Rect(this.getLeft() + iconSize_33, this.getTop() + 2
-				* iconSize_33, this.getRight() - iconSize_33, this.getBottom());
+		int padding = (int) (iconSize * 0.20); //We use it to slightly increase hitboxs
+		boundLeft = new Rect(
+				this.getLeft() - padding,
+				this.getTop() + iconSize_33,
+				this.getRight() - 2 * iconSize_33, 
+				this.getBottom() - iconSize_33 + padding
+				);
+		boundRight = new Rect(
+				this.getLeft() + 2 * iconSize_33,
+				this.getTop() + iconSize_33,
+				this.getRight() + padding,
+				this.getBottom() - iconSize_33 + padding
+				);
+		boundUp = new Rect(
+				this.getLeft() + iconSize_33,
+				this.getTop() - padding,
+				this.getRight() - iconSize_33,
+				this.getBottom() - 2 * iconSize_33
+				);
+		boundDown = new Rect(
+				this.getLeft() + iconSize_33,
+				this.getTop() + 2 * iconSize_33,
+				this.getRight() - iconSize_33,
+				this.getBottom() + padding
+				);
 	}
 
 }
