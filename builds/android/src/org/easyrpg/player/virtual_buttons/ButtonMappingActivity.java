@@ -68,7 +68,7 @@ public class ButtonMappingActivity extends Activity {
 	}
 
 	public void showSupportedButton(){
-		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/", "F2", "F5"};
+		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getResources().getString(R.string.add_a_button));
 		builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -115,21 +115,13 @@ public class ButtonMappingActivity extends Activity {
 		}else if(s.equals("9")){
 			keyCode = KeyEvent.KEYCODE_9;
 		}else if(s.equals("+")){
-			keyCode = KeyEvent.KEYCODE_PLUS;
+			keyCode = KeyEvent.KEYCODE_NUMPAD_ADD;
 		}else if(s.equals("-")){
-			keyCode = KeyEvent.KEYCODE_MINUS;
+			keyCode = KeyEvent.KEYCODE_NUMPAD_SUBTRACT;
 		}else if(s.equals("*")){
-			//keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
-			//keyCode = KeyEvent.KEYCODE_F5;
-			//TODO : Enable this line with API AA
+			keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
 		}else if(s.equals("/")){
-			keyCode = KeyEvent.KEYCODE_PERIOD;
-		}else if(s.equals("F2")){
-			//keyCode = KeyEvent.KEYCODE_F2;
-			//TODO : Enable this ligne with API 11 
-		}else if(s.equals("F5")){
-			//keyCode = KeyEvent.KEYCODE_F5;
-			//TODO : Enable this line with API AA
+			keyCode = KeyEvent.KEYCODE_NUMPAD_DIVIDE;
 		}
 		
 		if(charButton == ' '){
