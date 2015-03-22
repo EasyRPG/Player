@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -95,11 +96,13 @@ public class VirtualCross extends VirtualButton {
 		if (isPressed && key_pressed != keyCode) {
 			// If the DPad is already pressed but the direction
 			// is different, we have to "up" the previous key
-			if (key_pressed != -1)
-				SDLActivity.onNativeKeyUp(key_pressed);
+			if (key_pressed != -1){
+				sendSDLUpMessage(key_pressed);
+			}
 		}
-		if (keyCode != 1)
-			SDLActivity.onNativeKeyDown(keyCode);
+		if (keyCode != -1){
+			sendSDLDownMessage(keyCode);
+		}
 		key_pressed = keyCode;
 		isPressed = true;
 	}
@@ -110,13 +113,24 @@ public class VirtualCross extends VirtualButton {
 		// released (in case the touch mouvement go out the button bounds)
 		if (isPressed) {
 			isPressed = false;
-			if (key_pressed != -1)
-				SDLActivity.onNativeKeyUp(key_pressed);
+			if (key_pressed != -1){
+				sendSDLUpMessage(key_pressed);
+			}
 		}
 		key_pressed = -1;
 		isPressed = false;
 	}
 
+	public void sendSDLDownMessage(int keycode){
+		//Log.i("Cross", keycode + " pressed.");
+		SDLActivity.onNativeKeyDown(keycode);
+	}
+	
+	public void sendSDLUpMessage(int keycode){
+		//Log.i("Cross", keycode + " released.");
+		SDLActivity.onNativeKeyUp(keycode);
+	}
+	
 	/** Set the direction's hitbox position */
 	public void setBounds() {
 		int iconSize_33 = (int) (iconSize * 0.33);
