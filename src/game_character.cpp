@@ -68,6 +68,10 @@ Game_Character::~Game_Character() {
 	}
 }
 
+int Game_Character::GetSteppingSpeed() const {
+	return GetMoveSpeed();
+}
+
 bool Game_Character::IsMoving() const {
 	if (move_count > 0) return false; //Jumping
 
@@ -181,7 +185,7 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 36.0/(GetMoveSpeed()+1)) {
+	if (anime_count > 36.0/(GetSteppingSpeed()+1)) {
 		if (IsSpinning()) {
 			SetPrelockDirection((GetPrelockDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {

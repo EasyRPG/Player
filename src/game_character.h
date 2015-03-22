@@ -141,6 +141,14 @@ public:
 	virtual void SetLayer(int new_layer) = 0;
 
 	/**
+	 * Gets character stepping speed: the speed of the left-middle-right-middle
+	 * walking animation. Same as the movement speed, by default.
+	 *
+	 * @return stepping speed (the same units as movement speed)
+	 */
+	virtual int GetSteppingSpeed() const;
+
+	/**
 	 * Gets character movement speed.
 	 *
 	 * @return character movement speed 

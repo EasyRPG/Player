@@ -93,6 +93,10 @@ void Game_Vehicle::SetLayer(int new_layer) {
 	data.layer = new_layer;
 }
 
+int Game_Vehicle::GetSteppingSpeed() const {
+	return RPG::EventPage::MoveSpeed_eighth;
+}
+
 int Game_Vehicle::GetMoveSpeed() const {
 	return data.move_speed;
 }
@@ -308,10 +312,11 @@ void Game_Vehicle::GetOff() {
 	if (type == Airship) {
 		walk_animation = false;
 		data.remaining_descent = SCREEN_TILE_WIDTH;
+		Main_Data::game_player->SetDirection(RPG::EventPage::Direction_left);
 	} else {
 		driving = false;
+		SetDirection(RPG::EventPage::Direction_left);
 	}
-	SetDirection(RPG::EventPage::Direction_left);
 }
 
 bool Game_Vehicle::IsInUse() const {
