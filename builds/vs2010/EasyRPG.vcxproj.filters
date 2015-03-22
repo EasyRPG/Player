@@ -436,6 +436,9 @@
     <ClCompile Include="..\..\src\sprite_timer.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sprite_shadow.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -844,6 +847,9 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sprite_timer.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sprite_shadow.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>

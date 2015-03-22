@@ -92,6 +92,7 @@ public:
 	virtual bool GetVisible() const;
 	bool IsAscending() const;
 	bool IsDescending() const;
+	int GetAltitude() const;
 	void GetOn();
 	void GetOff();
 	bool IsInUse() const;

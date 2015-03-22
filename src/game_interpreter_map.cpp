@@ -887,6 +887,14 @@ bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) {
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
 	Game_System::SetSystemName(com.string);
+
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
+
+	if (!scene)
+		return true;
+
+	scene->spriteset->SystemGraphicUpdated();
+
 	return true;
 }
 
