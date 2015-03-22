@@ -34,4 +34,8 @@
 	<string name="unknown_region">Unknown region</string>
 	<string name="region_modification_success">Region changed to $NAME</string>
 	<string name="region_modification_failed">Changing region failed</string>
+	<string name="change_default_mapping">Change the default button mapping</string>
+	<string name="save_button_mapping">Save button mapping</string>
+	<string name="add_a_button">Add a button</string>
+	<string name="reset_button_mapping">Reset button mapping</string>
 </resources>

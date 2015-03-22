@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.easyrpg.player.virtual_buttons.ButtonMappingActivity;
+
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -37,6 +39,9 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -120,6 +125,26 @@ public class GameBrowserActivity extends ListActivity {
 		// Setup long click listener
 		ListView lv = getListView();
 		lv.setOnItemLongClickListener(new OnLongClickListener(this));
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.game_browser_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.game_browser_menu_change_mapping:
+			Intent intent = new Intent(this, ButtonMappingActivity.class);
+		    startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	/**

@@ -7,28 +7,33 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class VirtualButton extends View {
-	private int iconSize;
-	private Paint painter;
+	protected int iconSize;
+	protected Paint painter;
 	private Rect bound;
-	private boolean isPressed; // To know when the touch go out the button
+	protected boolean isPressed; // To know when the touch go out the button
 	private int keyCode;
 	private char charButton; // The char displayed on the button
+	protected double posX, posY; //Relative position on the screen
 
 	public VirtualButton(Context context, int keyCode, char charButton) {
 		super(context);
 
-		this.keyCode = keyCode;
-		// Set size
-		iconSize = Utilitary.getPixels(this, 60); // ~1cm
-
-		// Setup Painter and Button char
-		painter = Utilitary.getUIPainter();
 		this.charButton = charButton;
+		this.keyCode = keyCode;
+		
+		// Set UI properties
+		iconSize = Utilitary.getPixels(this, 60); // ~1cm
+		painter = Utilitary.getUIPainter();
+	}
+	public VirtualButton(Context context, int keyCode, char charButton, double posX, double posY){
+		this(context, keyCode, charButton);
+		
+		this.posX = posX;
+		this.posY = posY;
 	}
 
 	@Override
@@ -90,4 +95,24 @@ public class VirtualButton extends View {
 			SDLActivity.onNativeKeyUp(this.keyCode);
 		}
 	}
+	
+	public double getPosX() {
+		return posX;
+	}
+	public void setPosX(double posX) {
+		this.posX = posX;
+	}
+	public double getPosY() {
+		return posY;
+	}
+	public void setPosY(double posY) {
+		this.posY = posY;
+	}
+	public int getKeyCode() {
+		return keyCode;
+	}
+	public char getCharButton() {
+		return charButton;
+	}
+	
 }

@@ -4,35 +4,28 @@ import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 
-public class VirtualCross extends View {
-	private int iconSize;
-	private Paint painter;
+public class VirtualCross extends VirtualButton {
+	public static final int KeyCode = -1; //A fake keycode for distinguish from Virtual Button
+	
 	private Rect boundLeft, boundRight, boundUp, boundDown;
-	private boolean isPressed; // To know when the touch go out the button
 	private int key_pressed;
 	private Path path; // For the drawing
 
 	public VirtualCross(Context context) {
-		super(context);
+		super(context, VirtualCross.KeyCode, '0');
 		// Set size
 		iconSize = Utilitary.getPixels(this, 150); // ~1cm
-
-		// Setup Painter and Bounds
-		painter = Utilitary.getUIPainter();
 		path = new Path();
-		setBounds();
 	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(iconSize, iconSize);
+	public VirtualCross(Context context, double posX, double posY){
+		this(context);
+		this.posX = posX;
+		this.posY = posY;
 	}
 
 	@Override
@@ -59,8 +52,7 @@ public class VirtualCross extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		this.setBounds();
-
+		setBounds();
 		int action = event.getActionMasked();
 		int keyCode = -1;
 
@@ -101,11 +93,13 @@ public class VirtualCross extends View {
 		if (isPressed && key_pressed != keyCode) {
 			// If the DPad is already pressed but the direction
 			// is different, we have to "up" the previous key
-			if (key_pressed != -1)
-				SDLActivity.onNativeKeyUp(key_pressed);
+			if (key_pressed != -1){
+				sendSDLUpMessage(key_pressed);
+			}
 		}
-		if (keyCode != 1)
-			SDLActivity.onNativeKeyDown(keyCode);
+		if (keyCode != -1){
+			sendSDLDownMessage(keyCode);
+		}
 		key_pressed = keyCode;
 		isPressed = true;
 	}
@@ -116,26 +110,52 @@ public class VirtualCross extends View {
 		// released (in case the touch mouvement go out the button bounds)
 		if (isPressed) {
 			isPressed = false;
-			if (key_pressed != -1)
-				SDLActivity.onNativeKeyUp(key_pressed);
+			if (key_pressed != -1){
+				sendSDLUpMessage(key_pressed);
+			}
 		}
 		key_pressed = -1;
 		isPressed = false;
 	}
 
+	public void sendSDLDownMessage(int keycode){
+		//Log.i("Cross", keycode + " pressed.");
+		SDLActivity.onNativeKeyDown(keycode);
+	}
+	
+	public void sendSDLUpMessage(int keycode){
+		//Log.i("Cross", keycode + " released.");
+		SDLActivity.onNativeKeyUp(keycode);
+	}
+	
 	/** Set the direction's hitbox position */
 	public void setBounds() {
 		int iconSize_33 = (int) (iconSize * 0.33);
-		boundLeft = new Rect(this.getLeft(), this.getTop() + iconSize_33,
-				this.getRight() - 2 * iconSize_33, this.getBottom()
-						- iconSize_33);
-		boundRight = new Rect(this.getLeft() + 2 * iconSize_33, this.getTop()
-				+ iconSize_33, this.getRight(), this.getBottom() - iconSize_33);
-		boundUp = new Rect(this.getLeft() + iconSize_33, this.getTop(),
-				this.getRight() - iconSize_33, this.getBottom() - 2
-						* iconSize_33);
-		boundDown = new Rect(this.getLeft() + iconSize_33, this.getTop() + 2
-				* iconSize_33, this.getRight() - iconSize_33, this.getBottom());
+		int padding = (int) (iconSize * 0.20); //We use it to slightly increase hitboxs
+		boundLeft = new Rect(
+				this.getLeft() - padding,
+				this.getTop() + iconSize_33,
+				this.getRight() - 2 * iconSize_33, 
+				this.getBottom() - iconSize_33 + padding
+				);
+		boundRight = new Rect(
+				this.getLeft() + 2 * iconSize_33,
+				this.getTop() + iconSize_33,
+				this.getRight() + padding,
+				this.getBottom() - iconSize_33 + padding
+				);
+		boundUp = new Rect(
+				this.getLeft() + iconSize_33,
+				this.getTop() - padding,
+				this.getRight() - iconSize_33,
+				this.getBottom() - 2 * iconSize_33
+				);
+		boundDown = new Rect(
+				this.getLeft() + iconSize_33,
+				this.getTop() + 2 * iconSize_33,
+				this.getRight() - iconSize_33,
+				this.getBottom() + padding
+				);
 	}
 
 }
