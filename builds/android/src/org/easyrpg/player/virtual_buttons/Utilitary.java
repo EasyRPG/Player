@@ -1,6 +1,7 @@
 package org.easyrpg.player.virtual_buttons;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class Utilitary {
@@ -91,5 +93,9 @@ public class Utilitary {
 		uiPaint.setStyle(Style.STROKE);
 		uiPaint.setStrokeWidth((float) 3.0);
 		return uiPaint;
+	}
+	
+	public static void showWrongAPIVersion(Context context){
+		Toast.makeText(context, "Not avaible on this API", Toast.LENGTH_SHORT).show();
 	}
 }

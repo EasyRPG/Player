@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 

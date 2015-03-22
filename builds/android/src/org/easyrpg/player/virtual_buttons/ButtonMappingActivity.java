@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -115,13 +116,25 @@ public class ButtonMappingActivity extends Activity {
 		}else if(s.equals("9")){
 			keyCode = KeyEvent.KEYCODE_9;
 		}else if(s.equals("+")){
-			keyCode = KeyEvent.KEYCODE_NUMPAD_ADD;
+			if(Build.VERSION.SDK_INT >= 11)
+				keyCode = KeyEvent.KEYCODE_NUMPAD_ADD;
+			else
+				Utilitary.showWrongAPIVersion(getApplicationContext());
 		}else if(s.equals("-")){
-			keyCode = KeyEvent.KEYCODE_NUMPAD_SUBTRACT;
+			if(Build.VERSION.SDK_INT >= 11)
+				keyCode = KeyEvent.KEYCODE_NUMPAD_SUBTRACT;
+			else
+				Utilitary.showWrongAPIVersion(getApplicationContext());
 		}else if(s.equals("*")){
-			keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
+			if(Build.VERSION.SDK_INT >= 11)
+				keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
+			else
+				Utilitary.showWrongAPIVersion(getApplicationContext());
 		}else if(s.equals("/")){
-			keyCode = KeyEvent.KEYCODE_NUMPAD_DIVIDE;
+			if(Build.VERSION.SDK_INT >= 11)
+				keyCode = KeyEvent.KEYCODE_NUMPAD_DIVIDE;
+			else
+				Utilitary.showWrongAPIVersion(getApplicationContext());
 		}
 		
 		if(charButton == ' '){
