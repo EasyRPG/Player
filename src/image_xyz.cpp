@@ -74,7 +74,11 @@ void ImageXYZ::ReadXYZ(FILE* stream, bool transparent,
     long size = ftell(stream);
     fseek(stream, 0, SEEK_SET);
 	std::vector<uint8_t> buffer(size);
-	fread((void*) &buffer.front(), 1, size, stream);
+    long size_read = fread((void*) &buffer.front(), 1, size, stream);
+    if (size_read != size) {
+        Output::Error("Error reading XYZ file.");
+        return;
+    }
 	ReadXYZ(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
 }
 
