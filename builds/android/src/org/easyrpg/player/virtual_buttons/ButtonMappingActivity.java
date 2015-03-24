@@ -116,12 +116,16 @@ public class ButtonMappingActivity extends Activity {
 		}else if(s.equals("9")){
 			keyCode = KeyEvent.KEYCODE_9;
 		}else if(s.equals("+")){
+			// API11: KeyEvent.KEYCODE_NUMPAD_ADD
 			keyCode = 157;
 		}else if(s.equals("-")){
+			// API11: KeyEvent.KEYCODE_NUMPAD_SUBTRACT
 			keyCode = 156;
 		}else if(s.equals("*")){
+			// API11: KeyEvent.KEYCODE_NUMPAD_MULTIPLY
 			keyCode = 155;
 		}else if(s.equals("/")){
+			// API11: KeyEvent.KEYCODE_NUMPAD_DIVIDE
 			keyCode = 154;
 		}
 		
