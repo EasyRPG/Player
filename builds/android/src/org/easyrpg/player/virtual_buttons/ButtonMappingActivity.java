@@ -116,25 +116,13 @@ public class ButtonMappingActivity extends Activity {
 		}else if(s.equals("9")){
 			keyCode = KeyEvent.KEYCODE_9;
 		}else if(s.equals("+")){
-			if(Build.VERSION.SDK_INT >= 11)
-				keyCode = KeyEvent.KEYCODE_NUMPAD_ADD;
-			else
-				Utilitary.showWrongAPIVersion(getApplicationContext());
+			keyCode = 157;
 		}else if(s.equals("-")){
-			if(Build.VERSION.SDK_INT >= 11)
-				keyCode = KeyEvent.KEYCODE_NUMPAD_SUBTRACT;
-			else
-				Utilitary.showWrongAPIVersion(getApplicationContext());
+			keyCode = 156;
 		}else if(s.equals("*")){
-			if(Build.VERSION.SDK_INT >= 11)
-				keyCode = KeyEvent.KEYCODE_NUMPAD_MULTIPLY;
-			else
-				Utilitary.showWrongAPIVersion(getApplicationContext());
+			keyCode = 155;
 		}else if(s.equals("/")){
-			if(Build.VERSION.SDK_INT >= 11)
-				keyCode = KeyEvent.KEYCODE_NUMPAD_DIVIDE;
-			else
-				Utilitary.showWrongAPIVersion(getApplicationContext());
+			keyCode = 154;
 		}
 		
 		if(charButton == ' '){
