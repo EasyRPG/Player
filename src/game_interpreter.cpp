@@ -275,7 +275,7 @@ void Game_Interpreter::CheckGameOver() {
 }
 
 // Skip to command.
-bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent) {
+bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent, bool otherwise_end) {
 	if (code2 < 0)
 		code2 = code;
 	if (min_indent < 0)
@@ -283,7 +283,8 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 	if (max_indent < 0)
 		max_indent = list[index].indent;
 
-	for (int idx = index; (size_t) idx < list.size(); idx++) {
+	int idx;
+	for (idx = index; (size_t) idx < list.size(); idx++) {
 		if (list[idx].indent < min_indent)
 			return false;
 		if (list[idx].indent > max_indent)
@@ -294,6 +295,9 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 		index = idx;
 		return true;
 	}
+
+	if (otherwise_end)
+		index = idx;
 
 	return true;
 }

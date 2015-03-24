@@ -980,7 +980,7 @@ bool Game_Interpreter_Map::CommandJumpToLabel(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandBreakLoop(RPG::EventCommand const& com) { // code 12220
-	return SkipTo(Cmd::EndLoop, Cmd::EndLoop, 0, com.indent - 1);
+	return SkipTo(Cmd::EndLoop, Cmd::EndLoop, 0, com.indent - 1, true);
 }
 
 bool Game_Interpreter_Map::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
