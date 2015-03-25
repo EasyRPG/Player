@@ -176,6 +176,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/sdl_audio.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
+	src/sprite_airshipshadow.h \
+	src/sprite_airshipshadow.cpp \
 	src/sprite_battler.cpp \
 	src/sprite_battler.h \
 	src/sprite_character.cpp \

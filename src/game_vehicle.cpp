@@ -331,17 +331,19 @@ void Game_Vehicle::SyncWithPlayer() {
 	SetDirection(Main_Data::game_player->GetDirection());
 }
 
+int Game_Vehicle::GetAltitude() const {
+	if (!data.flying)
+		return 0;
+	else if (IsAscending())
+		return (SCREEN_TILE_WIDTH - data.remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
+	else if (IsDescending())
+		return data.remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
+	else
+		return SCREEN_TILE_WIDTH / (SCREEN_TILE_WIDTH / TILE_SIZE);
+}
+
 int Game_Vehicle::GetScreenY() const {
-	int altitude = 0;
-	if (data.flying) {
-		if (IsAscending())
-			altitude = (SCREEN_TILE_WIDTH - data.remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
-		else if (IsDescending())
-			altitude = data.remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
-		else
-			altitude = SCREEN_TILE_WIDTH / (SCREEN_TILE_WIDTH / TILE_SIZE);
-	}
-	return Game_Character::GetScreenY() - altitude;
+	return Game_Character::GetScreenY() - GetAltitude();
 }
 
 bool Game_Vehicle::IsMovable() {

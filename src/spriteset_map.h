@@ -20,6 +20,7 @@
 
 // Headers
 #include <boost/scoped_ptr.hpp>
+#include "sprite_airshipshadow.h"
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
@@ -49,6 +50,11 @@ public:
 	void ChipsetUpdated();
 
 	/**
+	 * Notifies that the System graphic has changed.
+	 */
+	void SystemGraphicUpdated();
+
+	/**
 	 * Substitutes tile in lower layer.
 	 */
 	void SubstituteDown(int old_id, int new_id);
@@ -62,6 +68,7 @@ protected:
 	Plane panorama;
 	std::string panorama_name;
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> > character_sprites;
+	boost::scoped_ptr<Sprite_AirshipShadow> airship_shadow;
 	boost::scoped_ptr<Sprite_Timer> timer1;
 	boost::scoped_ptr<Sprite_Timer> timer2;
 };
