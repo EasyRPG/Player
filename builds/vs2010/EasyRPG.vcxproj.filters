@@ -436,7 +436,7 @@
     <ClCompile Include="..\..\src\sprite_timer.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sprite_shadow.cpp">
+    <ClCompile Include="..\..\src\sprite_airshipshadow.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
@@ -849,7 +849,7 @@
     <ClInclude Include="..\..\src\sprite_timer.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\sprite_shadow.h">
+    <ClInclude Include="..\..\src\sprite_airshipshadow.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>

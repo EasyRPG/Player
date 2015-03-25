@@ -411,9 +411,9 @@
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_battle.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
+    <ClCompile Include="..\..\src\sprite_airshipshadow.cpp" />
     <ClCompile Include="..\..\src\sprite_battler.cpp" />
     <ClCompile Include="..\..\src\sprite_character.cpp" />
-    <ClCompile Include="..\..\src\sprite_shadow.cpp" />
     <ClCompile Include="..\..\src\sprite_timer.cpp" />
     <ClCompile Include="..\..\src\text.cpp" />
     <ClCompile Include="..\..\src\tilemap.cpp" />
@@ -548,9 +548,9 @@
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_battle.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />
+    <ClInclude Include="..\..\src\sprite_airshipshadow.h" />
     <ClInclude Include="..\..\src\sprite_battler.h" />
     <ClInclude Include="..\..\src\sprite_character.h" />
-    <ClInclude Include="..\..\src\sprite_shadow.h" />
     <ClInclude Include="..\..\src\sprite_timer.h" />
     <ClInclude Include="..\..\src\system.h" />
     <ClInclude Include="..\..\src\text.h" />

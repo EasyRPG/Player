@@ -20,8 +20,8 @@
 #include "cache.h"
 #include "game_map.h"
 #include "main_data.h"
+#include "sprite_airshipshadow.h"
 #include "sprite_character.h"
-#include "sprite_shadow.h"
 #include "game_character.h"
 #include "game_player.h"
 #include "game_vehicle.h"
@@ -47,7 +47,7 @@ Spriteset_Map::Spriteset_Map() {
 		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
 	}
-	shadow.reset(new Sprite_Shadow());
+	airship_shadow.reset(new Sprite_AirshipShadow());
 
 	character_sprites.push_back
 		(EASYRPG_MAKE_SHARED<Sprite_Character>(Main_Data::game_player.get()));
@@ -74,7 +74,7 @@ void Spriteset_Map::Update() {
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
 
-	shadow->Update();
+	airship_shadow->Update();
 
 	timer1->Update();
 	timer2->Update();
@@ -105,7 +105,7 @@ void Spriteset_Map::ChipsetUpdated() {
 }
 
 void Spriteset_Map::SystemGraphicUpdated() {
-	shadow->RecreateShadow();
+	airship_shadow->RecreateShadow();
 }
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {

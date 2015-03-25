@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITE_SHADOW_H_
-#define _SPRITE_SHADOW_H_
+#ifndef _SPRITE_AIRSHIPSHADOW_H_
+#define _SPRITE_AIRSHIPSHADOW_H_
 
 // Headers
 #include "sprite.h"
@@ -29,9 +29,9 @@
  * System file drawn on top of each other. These are blit to an
  * intermediate bitmap and cached until the system graphic is changed.
  */
-class Sprite_Shadow : public Sprite {
+class Sprite_AirshipShadow : public Sprite {
 public:
-	Sprite_Shadow();
+	Sprite_AirshipShadow();
 	void Update();
 	void RecreateShadow();
 };

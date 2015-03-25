@@ -22,10 +22,10 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "main_data.h"
-#include "sprite_shadow.h"
+#include "sprite_airshipshadow.h"
 #include <string>
 
-Sprite_Shadow::Sprite_Shadow() {
+Sprite_AirshipShadow::Sprite_AirshipShadow() {
 	SetBitmap(Bitmap::Create(16,16));
 
 	SetOx(TILE_SIZE/2);
@@ -36,7 +36,7 @@ Sprite_Shadow::Sprite_Shadow() {
 
 // Draws the two shadow sprites to a single intermediate bitmap to be blit to the map
 // Needs to be recalled when the System graphic changes
-void Sprite_Shadow::RecreateShadow() {
+void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Clear();
 
 	std::string system_name = Game_System::GetSystemName();
@@ -51,7 +51,7 @@ void Sprite_Shadow::RecreateShadow() {
 	GetBitmap()->Blit(0, 0, *system, Rect(128+16,32,16,16), opacity);
 }
 
-void Sprite_Shadow::Update() {
+void Sprite_AirshipShadow::Update() {
 	Sprite::Update();
 
 	if (!Main_Data::game_player->InAirship()) {
