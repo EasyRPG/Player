@@ -192,7 +192,6 @@ bool Scene_Title::CheckValidPlayerLocation() {
 void Scene_Title::PrepareBattleTest() {
 	Player::CreateGameObjects();
 
-
 	Scene::Push(Scene_Battle::Create(), true);
 }
 
@@ -202,7 +201,6 @@ void Scene_Title::CommandNewGame() {
 	} else {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Game_System::BgmStop();
-		Graphics::SetFrameCount(0);
 		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}

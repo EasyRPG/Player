@@ -142,9 +142,6 @@ static void HandleErrorOutput(const std::string& err) {
 
 		Input::Update();
 	}
-	Input::ResetKeys();
-	Graphics::FrameReset();
-	DisplayUi->UpdateDisplay();
 }
 
 bool Output::TakeScreenshot() {

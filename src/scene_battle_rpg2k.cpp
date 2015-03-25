@@ -708,7 +708,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	}
 
 	if (sleep_until > -1) {
-		if (Graphics::GetFrameCount() >= sleep_until) {
+		if (Player::GetFrames() >= sleep_until) {
 			// Sleep over
 			sleep_until = -1;
 		} else {
@@ -730,10 +730,10 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 	if (battle_message_window->GetLineCount() == 4) {
 		// Half second sleep
-		sleep_until = Graphics::GetFrameCount() + 60 / 2;
+		sleep_until = Player::GetFrames() + 60 / 2;
 	} else {
 		// 1/10 second sleep
-		sleep_until = Graphics::GetFrameCount() + 60 / 10;
+		sleep_until = Player::GetFrames() + 60 / 10;
 	}
 
 	++enemy_iterator;

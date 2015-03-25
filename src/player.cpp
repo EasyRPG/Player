@@ -89,10 +89,14 @@ namespace Player {
 	std::string escape_symbol;
 	EngineType engine;
 	std::string game_title;
+	double start_time;
+	double next_frame;
+	int frames;
 }
 
 void Player::Init(int argc, char *argv[]) {
 	static bool init = false;
+	frames = 0;
 
 	if (init) return;
 
@@ -155,7 +159,7 @@ void Player::Run() {
 	reset_flag = false;
 
 	// Reset frames before starting
-	Graphics::FrameReset();
+	FrameReset();
 
 	// Main loop
 #ifdef EMSCRIPTEN
@@ -185,10 +189,32 @@ void Player::Pause() {
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
-	Graphics::FrameReset();
+	FrameReset();
 }
 
-void Player::Update() {
+void Player::Update(bool update_scene) {
+	// available ms per frame, game logic expects 60 fps
+	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
+	next_frame = start_time + framerate_interval;
+
+	// Time left before next frame? Let's render the current frame.
+	if (start_time > (double)DisplayUi->GetTicks()) {
+		Graphics::Update(true);
+
+		double cur_time = (double)DisplayUi->GetTicks();
+		// Still time after graphic update? Yield until it's time for next one.
+		if (cur_time < next_frame) {
+#ifdef EMSCRIPTEN
+			return;
+#else
+			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
+#endif
+		}
+	} else {
+		Graphics::Update(false);
+	}
+
+	// Normal logic update
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		Graphics::fps_on_screen = !Graphics::fps_on_screen;
 	}
@@ -209,6 +235,32 @@ void Player::Update() {
 			Scene::PopUntil(Scene::Title);
 		}
 	}
+
+	Audio().Update();
+	Input::Update();
+	if (update_scene) {
+		Scene::instance->Update();
+	}
+
+	start_time = next_frame;
+	++frames;
+}
+
+void Player::FrameReset() {
+	// When update started
+	start_time = (double)DisplayUi->GetTicks();
+
+	// available ms per frame, game logic expects 60 fps
+	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
+
+	// When next frame is expected
+	static double next_frame = start_time + framerate_interval;
+
+	Graphics::FrameReset();
+}
+
+int Player::GetFrames() {
+	return frames;
 }
 
 void Player::Exit() {
@@ -431,7 +483,7 @@ void Player::CreateGameObjects() {
 	Main_Data::game_player.reset(new Game_Player());
 	Main_Data::game_screen.reset(new Game_Screen());
 
-	Graphics::FrameReset();
+	FrameReset();
 }
 
 void Player::LoadDatabase() {

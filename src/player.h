@@ -59,8 +59,24 @@ namespace Player {
 
 	/**
 	 * Updates EasyRPG Player.
+	 *
+	 * @param update_scene Whether to update the current scene.
 	 */
-	void Update();
+	void Update(bool update_scene = true);
+
+	/**
+	 * Returns executed game frames since player start.
+	 * Should be 60 fps when game ran fast enough.
+	 *
+	 * @return Update frames since player start
+	 */
+	int GetFrames();
+
+	/**
+	 * Resets the fps count (both updates and frames per second).
+	 * Should be called after an expensive operation.
+	 */
+	void FrameReset();
 
 	/**
 	 * Exits EasyRPG Player.

@@ -42,20 +42,17 @@ namespace Graphics {
 
 	/**
 	 * Updates the screen.
+	 * The rendering is skipped when time_left is false.
+	 *
+	 * @param time_left Whether time is left to render the frame.
 	 */
-	void Update();
+	void Update(bool time_left);
 
 	/**
-	 * Resets the fps count, should be called after an
-	 * expensive operation.
+	 * Resets the fps count.
+	 * Don't call this function directly, use Player::FrameReset.
 	 */
 	void FrameReset();
-
-	/**
-	 * Waits frames.
-	 * @param duration frames to wait.
-	 */
-	void Wait(int duration);
 
 	/**
 	 * Gets a bitmap with the actual contents of the screen.
@@ -124,20 +121,6 @@ namespace Graphics {
 	 */
 	void Freeze();
 
-	/**
-	 * Gets frame count.
-	 *
-	 * @return frame count since player started.
-	 */
-	int GetFrameCount();
-
-	/**
-	 * Sets frame count.
-	 *
-	 * @param framecount frame count since player started.
-	 */
-	void SetFrameCount(int framecount);
-
 	void RegisterDrawable(Drawable* drawable);
 	void RemoveDrawable(Drawable* drawable);
 
@@ -149,6 +132,13 @@ namespace Graphics {
 	void Pop();
 
 	unsigned SecondToFrame(float second);
+
+	/**
+	 * Gets target frame rate.
+	 *
+	 * @return target frame rate
+	 */
+	int GetDefaultFps();
 }
 
 #endif

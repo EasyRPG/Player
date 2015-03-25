@@ -57,7 +57,7 @@ void Scene_Map::Start() {
 		Main_Data::game_screen->CreatePicturesFromSave();
 	}
 
-	Graphics::FrameReset();
+	Player::FrameReset();
 }
 
 Scene_Map::~Scene_Map() {

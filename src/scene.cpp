@@ -66,8 +66,7 @@ void Scene::MainFunction() {
 	static bool init = false;
 
 	if (Graphics::IsTransitionPending()) {
-		Player::Update();
-		Graphics::Update();
+		Player::Update(false);
 		return;
 	}
 
@@ -93,19 +92,14 @@ void Scene::MainFunction() {
 		return;
 	}
 
-	// Update scene
 	Player::Update();
-	Graphics::Update();
-	Audio().Update();
-	Input::Update();
-	Update();
 
 	if (Scene::instance.get() != this) {
 		// Shutdown after scene switch
 		assert(Scene::instance == instances.back() &&
 			"Don't set Scene::instance directly, use Push instead!");
 
-		Graphics::Update();
+		Graphics::Update(true);
 
 		Suspend();
 		TransitionOut();
