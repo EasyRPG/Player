@@ -303,7 +303,7 @@ void Window_Message::UpdateMessage() {
 	}
 
 	if (sleep_until > -1) {
-		if (Graphics::GetFrameCount() >= sleep_until) {
+		if (Player::GetFrames() >= sleep_until) {
 			// Sleep over
 			sleep_until = -1;
 		} else {
@@ -396,13 +396,13 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '.':
 				// 1/4 second sleep
-				sleep_until = Graphics::GetFrameCount() + 60 / 4;
+				sleep_until = Player::GetFrames() + 60 / 4;
 				++text_index;
 				return;
 				break;
 			case '|':
 				// Second sleep
-				sleep_until = Graphics::GetFrameCount() + 60;
+				sleep_until = Player::GetFrames() + 60;
 				++text_index;
 				return;
 				break;

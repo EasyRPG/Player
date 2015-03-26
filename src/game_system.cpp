@@ -55,7 +55,6 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 		Audio().BGM_Stop();
 	}
 	data.current_music = bgm;
-	Graphics::FrameReset();
 }
 
 void Game_System::BgmStop() {
