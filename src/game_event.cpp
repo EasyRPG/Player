@@ -95,18 +95,15 @@ int Game_Event::GetDirection() const {
 void Game_Event::SetDirection(int new_direction) {
 	if (new_direction != -1) {
 		data.direction = new_direction;
-		if (!IsSpinning()) {
-			SetPrelockDirection(new_direction);
-		}
 	}
 }
 
-int Game_Event::GetPrelockDirection() const {
-	return data.prelock_direction;
+int Game_Event::GetSpriteDirection() const {
+	return data.sprite_direction;
 }
 
-void Game_Event::SetPrelockDirection(int new_direction) {
-	data.prelock_direction = new_direction;
+void Game_Event::SetSpriteDirection(int new_direction) {
+	data.sprite_direction = new_direction;
 }
 
 bool Game_Event::IsFacingLocked() const {
@@ -266,7 +263,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	if (GetDirection() != page->character_direction) {
 		SetDirection(page->character_direction);
-		SetPrelockDirection(page->character_direction);
+		SetSpriteDirection(page->character_direction);
 	}
 
 	if (original_pattern != page->character_pattern) {

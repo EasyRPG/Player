@@ -85,32 +85,32 @@ public:
 	virtual void SetMapId(int new_map_id) = 0;
 
 	/**
-	 * Gets character facing direction.
+	 * Gets character's front direction.
 	 *
-	 * @return current facing direction.
+	 * @return current front direction.
 	 */
 	virtual int GetDirection() const = 0;
 
 	/**
-	 * Sets character facing direction.
+	 * Sets character's front direction.
 	 *
-	 * @param new_direction New current facing direction.
+	 * @param new_direction New current front direction.
 	 */
 	virtual void SetDirection(int new_direction) = 0;
 
 	/**
-	 * Gets facing direction before direction was locked.
+	 * Gets direction of the sprite.
 	 *
-	 * @return facing direction before lock.
+	 * @return direction of the sprite.
 	 */
-	virtual int GetPrelockDirection() const = 0;
+	virtual int GetSpriteDirection() const = 0;
 
 	/**
-	 * Sets character facing used before locking.
+	 * Sets sprite direction.
 	 *
-	 * @param new_direction New prelock facing direction.
+	 * @param new_direction New sprite direction.
 	 */
-	virtual void SetPrelockDirection(int new_direction) = 0;
+	virtual void SetSpriteDirection(int new_direction) = 0;
 
 	/**
 	 * Gets whether facing is locked.

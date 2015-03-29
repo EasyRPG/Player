@@ -50,8 +50,8 @@ public:
 	void SetMapId(int new_map_id);
 	int GetDirection() const;
 	void SetDirection(int new_direction);
-	int GetPrelockDirection() const;
-	void SetPrelockDirection(int new_direction);
+	int GetSpriteDirection() const;
+	void SetSpriteDirection(int new_direction);
 	bool IsFacingLocked() const;
 	void SetFacingLocked(bool locked);
 	int GetLayer() const;
