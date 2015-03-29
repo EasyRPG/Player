@@ -94,7 +94,7 @@ void Game_Vehicle::SetLayer(int new_layer) {
 }
 
 int Game_Vehicle::GetSteppingSpeed() const {
-	return RPG::EventPage::MoveSpeed_eighth;
+	return 16;
 }
 
 int Game_Vehicle::GetMoveSpeed() const {

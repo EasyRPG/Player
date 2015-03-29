@@ -141,8 +141,8 @@ public:
 	virtual void SetLayer(int new_layer) = 0;
 
 	/**
-	 * Gets character stepping speed: the speed of the left-middle-right-middle
-	 * walking animation. Same as the movement speed, by default.
+	 * Gets character stepping speed: the number of frames between each change
+	 * of the left-middle-right-middle walking animation or the spinning animation
 	 *
 	 * @return stepping speed (the same units as movement speed)
 	 */
@@ -728,21 +728,21 @@ public:
 	 *
 	 * @return Whether direction is fixed
 	 */
-	bool IsDirectionFixed();
+	bool IsDirectionFixed() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	bool IsContinuous();
+	bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
 	 *
 	 * @return Whether animation is spin type
 	 */
-	bool IsSpinning();
+	bool IsSpinning() const;
 
 	/**
 	 * Gets the bush depth of the tile where this character is standing
@@ -795,8 +795,8 @@ protected:
 	int jump_plus_x;
 	int jump_plus_y;
 
-	double anime_count;
-	double stop_count;
+	int anime_count;
+	int stop_count;
 	bool walk_animation;
 
 	/** used by cycle left-right, up-down */

@@ -69,7 +69,17 @@ Game_Character::~Game_Character() {
 }
 
 int Game_Character::GetSteppingSpeed() const {
-	return GetMoveSpeed();
+	int move_speed = GetMoveSpeed();
+	if (IsSpinning()) {
+		// 24, 16, 12, 8, 6, 4
+		return (move_speed < 4) ? 48 / (move_speed + 1) : 24 / (move_speed - 1);
+	} else if (IsMoving()) {
+		// 12, 10, 8, 6, 5, 4
+		return (move_speed < 4) ? 60 / (move_speed + 4) : 30 / (move_speed + 1);
+	} else {
+		// 16, 12, 10, 8, 7, 6
+		return (move_speed < 2) ? 16 : 60 / (move_speed + 3);
+	}
 }
 
 bool Game_Character::IsMoving() const {
@@ -173,7 +183,7 @@ int Game_Character::GetScreenZ(int /* height */) const {
 void Game_Character::Update() {
 	if (IsJumping()) {
 		UpdateJump();
-		anime_count += (IsSpinning() ? 1.0 : 0);
+		anime_count += (IsSpinning() ? 1 : 0);
 	} else if (IsContinuous() || IsSpinning()) {
 		UpdateMove();
 		UpdateStop();
@@ -185,7 +195,7 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 36.0/(GetSteppingSpeed()+1)) {
+	if (anime_count >= GetSteppingSpeed()) {
 		if (IsSpinning()) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
@@ -240,10 +250,8 @@ void Game_Character::UpdateMove() {
 	if (GetY() * SCREEN_TILE_WIDTH < real_y)
 		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
 
-	anime_count += 
-		(IsSpinning() ? 1.0 :
-		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1.5 :
-		0);
+	anime_count +=
+		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1 : 0;
 }
 
 void Game_Character::UpdateJump() {
@@ -285,10 +293,8 @@ void Game_Character::UpdateSelfMovement() {
 
 void Game_Character::UpdateStop() {
 	if (pattern != original_pattern && !IsContinuous())
-		anime_count += 1.5;
-
-	//if (!starting || !IsLock())
-		stop_count += 1;
+		anime_count++;
+	stop_count++;
 }
 
 void Game_Character::MoveTypeRandom() {
@@ -1166,7 +1172,7 @@ bool Game_Character::IsFlashPending() const {
 	return GetFlashTimeLeft() > 0;
 }
 
-bool Game_Character::IsDirectionFixed() {
+bool Game_Character::IsDirectionFixed() const {
 	return
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
@@ -1174,13 +1180,13 @@ bool Game_Character::IsDirectionFixed() {
 		IsFacingLocked();
 }
 
-bool Game_Character::IsContinuous() {
+bool Game_Character::IsContinuous() const {
 	return
 		animation_type == RPG::EventPage::AnimType_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_continuous;
 }
 
-bool Game_Character::IsSpinning() {
+bool Game_Character::IsSpinning() const {
 	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
