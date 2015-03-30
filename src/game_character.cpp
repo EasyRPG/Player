@@ -1101,6 +1101,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* /* owner */) {
+	// FIXME unused Game_Interpreter* parameter
 	SetMoveRouteOverwritten(false);
 	move_route_owner = NULL;
 }
