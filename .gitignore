@@ -6,6 +6,7 @@
 /lib/liblcf/
 /lib/TestGame/
 /lib/RTP/
+/.libs/
 .deps/
 CMakeCache.txt
 Makefile
@@ -22,6 +23,7 @@ easyrpg-player
 easyrpg-player-*.tar.gz
 install-sh
 libtool
+libeasyrpg-player.la
 missing
 stamp-h1
 test-driver
@@ -29,6 +31,8 @@ test-driver
 *.a
 *.elf
 /*.log
+/src/*.lo
+/lib/shinonome/*.lo
 *.o
 /*.trs
 *~

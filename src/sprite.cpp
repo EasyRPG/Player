@@ -35,10 +35,8 @@ Sprite::Sprite() :
 	flash_duration(0),
 	flash_frame(0),
 
-	bitmap_effects_valid(false),
 	needs_refresh(true),
 	bitmap_changed(true),
-	bitmap_effects_src_rect(Rect()),
 	src_rect_effect(Rect()),
 
 	opacity_top_effect(255),
@@ -53,11 +51,13 @@ Sprite::Sprite() :
 	waver_effect_depth(0),
 	waver_effect_phase(0.0),
 	flash_effect(Color(0,0,0,0)),
+	bitmap_effects_src_rect(Rect()),
+	bitmap_effects_valid(false),
 
 	current_tone(Tone()),
+	current_flash(Color(0,0,0,0)),
 	current_flip_x(false),
-	current_flip_y(false),
-	current_flash(Color(0,0,0,0)) {
+	current_flip_y(false) {
 
 	Graphics::RegisterDrawable(this);
 }

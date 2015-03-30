@@ -44,7 +44,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data) :
+Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& data) :
+	// FIXME unused int parameter
 	starting(false),
 	event(event),
 	page(NULL),
