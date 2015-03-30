@@ -111,7 +111,7 @@ int Game_Actor::GetEquipment(int equip_type) const {
 	if (equip_type < 0 || equip_type >= (int) data.equipped.size())
 		return -1;
 	int item_id = data.equipped[equip_type];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
@@ -119,7 +119,7 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 		return -1;
 
 	int old_item_id = data.equipped[equip_type];
-	if (old_item_id > Data::items.size())
+	if (old_item_id > (int)Data::items.size())
 		old_item_id = 0;
 	
 	data.equipped[equip_type] = (short)new_item_id;
@@ -193,7 +193,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= Data::items.size())
+			if (*it > 0 && *it <= (int)Data::items.size())
 				n += Data::items[*it - 1].atk_points1;
 
 	return min(max(n, 1), 999);
@@ -213,7 +213,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= Data::items.size())
+			if (*it > 0 && *it <= (int)Data::items.size())
 				n += Data::items[*it - 1].def_points1;
 
 	return min(max(n, 1), 999);
@@ -233,7 +233,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= Data::items.size())
+			if (*it > 0 && *it <= (int)Data::items.size())
 				n += Data::items[*it - 1].spi_points1;
 
 	return min(max(n, 1), 999);
@@ -253,7 +253,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= Data::items.size())
+			if (*it > 0 && *it <= (int)Data::items.size())
 				n += Data::items[*it - 1].agi_points1;
 
 	return min(max(n, 1), 999);
@@ -370,27 +370,27 @@ std::string Game_Actor::GetTitle() const {
 
 int Game_Actor::GetWeaponId() const {
 	int item_id = data.equipped[0];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::GetShieldId() const {
 	int item_id = data.equipped[1];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::GetArmorId() const {
 	int item_id = data.equipped[2];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::GetHelmetId() const {
 	int item_id = data.equipped[3];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::GetAccessoryId() const {
 	int item_id = data.equipped[4];
-	return item_id <= Data::items.size() ? item_id : 0;
+	return item_id <= (int)Data::items.size() ? item_id : 0;
 }
 
 int Game_Actor::GetLevel() const {

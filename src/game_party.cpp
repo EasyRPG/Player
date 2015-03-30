@@ -197,7 +197,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
-	if (item_id <= 0 || item_id > Data::items.size()) {
+	if (item_id <= 0 || item_id > (int)Data::items.size()) {
 		return false;
 	}
 
