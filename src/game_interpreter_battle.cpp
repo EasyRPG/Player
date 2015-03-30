@@ -124,10 +124,10 @@ bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 
 	Output::Warning("Battle: Enable Combo not implemented");
 
-	int command_id = com.parameters[1];
-	int multiple = com.parameters[2];
-
 	// TODO
+	// int command_id = com.parameters[1];
+	// int multiple = com.parameters[2];
+
 	// Game_Actors::GetActor(actor_id)->EnableCombo(command_id, multiple);
 
 	return true;
