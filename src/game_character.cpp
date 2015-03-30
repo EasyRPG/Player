@@ -1100,7 +1100,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	stop_count = 256;
 }
 
-void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
+void Game_Character::CancelMoveRoute(Game_Interpreter* /* owner */) {
 	SetMoveRouteOverwritten(false);
 	move_route_owner = NULL;
 }
