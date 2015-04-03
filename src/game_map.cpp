@@ -394,58 +394,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			return true;
 	}
 
-	int const tile_index = x + y * GetWidth();
-
-	tile_id = map->upper_layer[tile_index] - BLOCK_F;
-	tile_id = map_info.upper_tiles[tile_id];
-
-	if ((passages_up[tile_id] & bit) == 0) {
-		return false;
-	}
-
-	if ((passages_up[tile_id] & Passable::Above) == 0)
-		return true;
-
-	if (map->lower_layer[tile_index] >= BLOCK_E) {
-		tile_id = map->lower_layer[tile_index] - BLOCK_E;
-		tile_id = map_info.lower_tiles[tile_id];
-		tile_id += 18;
-
-		if ((passages_down[tile_id] & bit) == 0)
-			return false;
-
-	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
-		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-		int autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
-
-		tile_id += 6;
-
-		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
-				(autotile_id >= 20 && autotile_id <= 23) ||
-				(autotile_id >= 33 && autotile_id <= 37) ||
-				autotile_id == 42 ||
-				autotile_id == 43 ||
-				autotile_id == 45
-			))
-			return true;
-
-		if ((passages_down[tile_id] & bit) == 0)
-			return false;
-
-	} else if (map->lower_layer[tile_index] >= BLOCK_C) {
-		tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
-
-		if ((passages_down[tile_id] & bit) == 0)
-			return false;
-
-	} else if (map->lower_layer[tile_index] < BLOCK_C) {
-		tile_id = map->lower_layer[tile_index] / 1000;
-
-		if ((passages_down[tile_id] & bit) == 0)
-			return false;
-	}
-
-	return true;
+	return IsPassableTile(bit, x + y * GetWidth());
 }
 
 bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) {
@@ -498,79 +447,65 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 	return true;
 }
 
-bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
-{
-    int tile_id;
+bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
+	int tile_id;
+	int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
-    if (self_event) {
-        for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-            Game_Event* evnt = i->second.get();
-            if (evnt != self_event && evnt->IsInPosition(x, y)) {
-                if (!evnt->GetThrough()) {
-                    if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
-                        return false;
-                    }
-                    else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
-                        // Event layer Chipset Tile
-                        tile_id = i->second->GetTileId();
-                        return (passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up));
-                    }
-                }
-            }
-        }
-    }
+	if (self_event) {
+		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
+			Game_Event* evnt = i->second.get();
+			if (evnt != self_event && evnt->IsInPosition(x, y)) {
+				if (!evnt->GetThrough()) {
+					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+						return false;
+					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
+						// Event layer Chipset Tile
+						tile_id = i->second->GetTileId();
+						return (passages_down[tile_id] & bit);
+					}
+				}
+			}
+		}
+	}
 
-    int const tile_index = x + y * GetWidth();
+	return IsPassableTile(bit, x + y * GetWidth());
+}
 
-    tile_id = map->upper_layer[tile_index] - BLOCK_F;
-    tile_id = map_info.upper_tiles[tile_id];
+bool Game_Map::IsPassableTile(int bit, int tile_index) {
+	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
 
-    if ((passages_up[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
-            return false;
+	if ((passages_up[tile_id] & bit) == 0)
+		return false;
 
-    if ((passages_up[tile_id] & Passable::Above) == 0)
-        return true;
+	if ((passages_up[tile_id] & Passable::Above) == 0)
+		return true;
 
-    if (map->lower_layer[tile_index] >= BLOCK_E) {
-        tile_id = map->lower_layer[tile_index] - BLOCK_E;
-        tile_id = map_info.lower_tiles[tile_id];
-        tile_id += 18;
+	int tile_raw_id = map->lower_layer[tile_index];
 
-        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
-            return false;
+	if (tile_raw_id >= BLOCK_E) {
+		tile_id = tile_raw_id - BLOCK_E;
+		tile_id = map_info.lower_tiles[tile_id] + 18;
 
-    } else if (map->lower_layer[tile_index] >= BLOCK_D) {
-        tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-        int autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+	} else if (tile_raw_id >= BLOCK_D) {
+		tile_id = (tile_raw_id - BLOCK_D) / 50 + 6;
+		int autotile_id = (tile_raw_id - BLOCK_D) % 50;
 
-        tile_id += 6;
+		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
+				(autotile_id >= 20 && autotile_id <= 23) ||
+				(autotile_id >= 33 && autotile_id <= 37) ||
+				autotile_id == 42 || autotile_id == 43 ||
+				autotile_id == 45 || autotile_id == 46))
+			return true;
 
-        if (((passages_down[tile_id] & Passable::Wall) != 0) && (
-                (autotile_id >= 20 && autotile_id <= 23) ||
-                (autotile_id >= 33 && autotile_id <= 37) ||
-                autotile_id == 42 ||
-                autotile_id == 43 ||
-                autotile_id == 45
-            ))
-            return true;
+	} else if (tile_raw_id >= BLOCK_C) {
+		tile_id = (tile_raw_id - BLOCK_C) / 50 + 3;
 
-        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
-            return false;
+	} else if (map->lower_layer[tile_index] < BLOCK_C) {
+		tile_id = tile_raw_id / 1000;
+	}
 
-    } else if (map->lower_layer[tile_index] >= BLOCK_C) {
-        tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
-
-        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
-            return false;
-
-    } else if (map->lower_layer[tile_index] < BLOCK_C) {
-        tile_id = map->lower_layer[tile_index] / 1000;
-
-        if ((passages_down[tile_id] & (Passable::Down | Passable::Right | Passable::Left | Passable::Up)) == 0)
-            return false;
-    }
-
-    return true;
+	return (passages_down[tile_id] & bit) != 0;
 }
 
 int Game_Map::GetBushDepth(int x, int y) {

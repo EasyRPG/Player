@@ -500,6 +500,8 @@ namespace Game_Map {
 	void SubstituteDown(int old_id, int new_id);
 	void SubstituteUp(int old_id, int new_id);
 
+	bool IsPassableTile(int bit, int tile_index);
+
 	enum PanDirection {
 		PanUp,
 		PanRight,
