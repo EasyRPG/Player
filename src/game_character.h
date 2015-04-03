@@ -769,6 +769,8 @@ protected:
 	void UpdateSelfMovement();
 	void UpdateStop();
 
+	void Turn(int dir);
+
 	int tile_id;
 	int real_x;
 	int real_y;

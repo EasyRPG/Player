@@ -854,83 +854,39 @@ void Game_Character::MoveAwayFromPlayer() {
 	}
 }
 
-void Game_Character::TurnDown() {
-	SetDirection(RPG::EventPage::Direction_down);
-	SetSpriteDirection(RPG::EventPage::Direction_down);
+void Game_Character::Turn(int dir) {
+	SetDirection(dir);
+	SetSpriteDirection(dir);
 	move_failed = false;
 	stop_count = pow(2.0, 8 - GetMoveFrequency());
+}
+
+void Game_Character::TurnDown() {
+	Turn(RPG::EventPage::Direction_down);
 }
 
 void Game_Character::TurnLeft() {
-	SetDirection(RPG::EventPage::Direction_left);
-	SetSpriteDirection(RPG::EventPage::Direction_left);
-	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	Turn(RPG::EventPage::Direction_left);
 }
 
 void Game_Character::TurnRight() {
-	SetDirection(RPG::EventPage::Direction_right);
-	SetSpriteDirection(RPG::EventPage::Direction_right);
-	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	Turn(RPG::EventPage::Direction_right);
 }
 
 void Game_Character::TurnUp() {
-	SetDirection(RPG::EventPage::Direction_up);
-	SetSpriteDirection(RPG::EventPage::Direction_up);
-	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	Turn(RPG::EventPage::Direction_up);
 }
 
 void Game_Character::Turn90DegreeLeft() {
-	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnRight();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnDown();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnLeft();
-			break;
-	}
+	Turn((GetSpriteDirection() + 3) % 4);
 }
 
 void Game_Character::Turn90DegreeRight() {
-	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnLeft();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnDown();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnRight();
-			break;
-	}
+	Turn((GetSpriteDirection() + 1) % 4);
 }
 
 void Game_Character::Turn180Degree() {
-	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			TurnUp();
-			break;
-		case RPG::EventPage::Direction_left:
-			TurnRight();
-			break;
-		case RPG::EventPage::Direction_right:
-			TurnLeft();
-			break;
-		case RPG::EventPage::Direction_up:
-			TurnDown();
-			break;
-	}
+	Turn((GetSpriteDirection() + 2) % 4);
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
@@ -973,20 +929,7 @@ void Game_Character::TurnAwayFromHero() {
 }
 
 void Game_Character::FaceRandomDirection() {
-	switch (rand() % 4) {
-	case 0:
-		TurnDown();
-		break;
-	case 1:
-		TurnLeft();
-		break;
-	case 2:
-		TurnRight();
-		break;
-	case 3:
-		TurnUp();
-		break;
-	}
+	Turn(rand() % 4);
 }
 
 void Game_Character::Wait() {
