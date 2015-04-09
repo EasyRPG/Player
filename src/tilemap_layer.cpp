@@ -169,6 +169,10 @@ void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool
 void TilemapLayer::Draw(int z_order) {
 	if (!visible) return;
 
+	// FIXME: 
+	// When the map is looping and the camera is over a map boundary the tiles
+	// on one half of the map are rendered too late.
+
 	// Get the number of tiles that can be displayed on window
 	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);

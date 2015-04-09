@@ -203,7 +203,7 @@ int Game_Character::GetScreenZ() const {
 	}
 
 	// Prevent underflow (not rendered in this case)
-	// ToDo: It's probably the best to rework the tilemap code
+	// ToDo: It's probably the best to rework the z-layer part of the tilemap code
 	if (z < 1) {
 		z = 1;
 	}
