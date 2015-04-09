@@ -69,6 +69,6 @@ void Sprite_AirshipShadow::Update() {
 
 	SetX(Main_Data::game_player->GetScreenX());
 	SetY(Main_Data::game_player->GetScreenY());
-	// TODO figure out correct Z value
-	SetZ(Main_Data::game_player->GetScreenZ(32*(TILE_SIZE/16)));
+	// Bit higher then the rest on the tilemap
+	SetZ(Main_Data::game_player->GetScreenZ() + TILE_SIZE * 2);
 }
