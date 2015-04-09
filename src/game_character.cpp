@@ -148,9 +148,11 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	int x = real_x - Game_Map::GetDisplayX();
-	int max_width = Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
+	int x = real_x / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE / 2);
 
+	int max_width = Game_Map::GetWidth() * TILE_SIZE;
+
+	// wrap on map boundaries
 	if (x - max_width > 0) {
 		x -= max_width;
 	}
@@ -158,25 +160,21 @@ int Game_Character::GetScreenX() const {
 		x += max_width;
 	}
 
-	x = x / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
-
 	return x;
-	/*return real_x / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);*/
 }
 
 int Game_Character::GetScreenY() const {
-	/*int y = real_y / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;*/d
-	int y = real_y - Game_Map::GetDisplayY();
-	int max_height = Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
+	int y = real_y / (SCREEN_TILE_WIDTH / TILE_SIZE) - Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
+	
+	int max_height = Game_Map::GetHeight() * TILE_SIZE;
 
+	// wrap on map boundaries
 	if (y - max_height > 0) {
 		y -= max_height;
 	}
 	else if (y < 0) {
 		y += max_height;
 	}
-
-	y = y / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
 
 	int n;
 	if (move_count >= jump_peak)
@@ -188,17 +186,30 @@ int Game_Character::GetScreenY() const {
 }
 
 int Game_Character::GetScreenZ() const {
-	return GetScreenZ(0);
-}
-
-int Game_Character::GetScreenZ(int /* height */) const {
-	if (GetLayer() == RPG::EventPage::Layers_above) return 999;
-
-	if (GetLayer() == RPG::EventPage::Layers_below) return 0;
-	
 	int z = (real_y - Game_Map::GetDisplayY() + 3) / TILE_SIZE + (SCREEN_TILE_WIDTH / TILE_SIZE);
 
-	return z;
+	int max_height = Game_Map::GetHeight() * TILE_SIZE;
+
+	// wrap on map boundaries
+	if (z < 0) {
+		z += max_height;
+	}
+
+	if (GetLayer() == RPG::EventPage::Layers_below) {
+		z -= TILE_SIZE;
+	}
+	if (GetLayer() == RPG::EventPage::Layers_above) {
+		z += TILE_SIZE;
+	}
+
+	// Prevent underflow (not rendered in this case)
+	// ToDo: It's probably the best to rework the tilemap code
+	if (z < 1) {
+		z = 1;
+	}
+
+	// 1 less to correctly render compared to some tile map tiles (star tiles e.g.)
+	return z - 1;
 }
 
 void Game_Character::Update() {

@@ -346,7 +346,7 @@ void Game_Map::ScrollUp(int distance) {
 	map_info.position_y = dist;
 
 	if (!GetLoopVertical()) {
-		map_info.position_y = min(dist, 0);
+		map_info.position_y = max(dist, 0);
 	}
 }
 
