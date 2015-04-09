@@ -466,8 +466,8 @@ namespace Game_Map {
 
 	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
 
-	bool LoopHorizontal();
-	bool LoopVertical();
+	bool GetLoopHorizontal();
+	bool GetLoopVertical();
 
 	int RoundX(int x);
 	int RoundY(int y);
@@ -523,6 +523,9 @@ namespace Game_Map {
 	int GetParallaxX();
 	int GetParallaxY();
 	const std::string& GetParallaxName();
+
+	int WrapX(int x);
+	int WrapY(int y);
 }
 
 #endif

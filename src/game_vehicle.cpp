@@ -201,6 +201,13 @@ bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
+	if (Game_Map::GetLoopHorizontal()) {
+		new_x = Game_Map::WrapX(new_x);
+	}
+	if (Game_Map::GetLoopVertical()) {
+		new_y = Game_Map::WrapY(new_y);
+	}
+
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 

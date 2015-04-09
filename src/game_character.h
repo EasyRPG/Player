@@ -621,14 +621,6 @@ public:
 	virtual int GetScreenZ() const;
 
 	/**
-	 * Gets screen z coordinate in pixels.
-	 *
-	 * @param height character height.
-	 * @return screen z coordinate in pixels.
-	 */
-	virtual int GetScreenZ(int height) const;
-
-	/**
 	 * Gets tile graphic ID.
 	 *
 	 * @return tile graphic ID.
@@ -677,8 +669,8 @@ public:
 	 */
 	void SetAnimationId(int animation_id);
 
-	int DistanceXfromPlayer() const;
-	int DistanceYfromPlayer() const;
+	int GetDistanceXfromPlayer() const;
+	int GetDistanceYfromPlayer() const;
 
 	virtual bool IsInPosition(int x, int y) const;
 
@@ -768,7 +760,6 @@ protected:
 	void UpdateJump();
 	void UpdateSelfMovement();
 	void UpdateStop();
-
 	int tile_id;
 	int real_x;
 	int real_y;
