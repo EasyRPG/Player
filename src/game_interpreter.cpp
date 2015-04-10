@@ -686,16 +686,13 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 6:
 			// Characters
-			if (com.parameters[6] != 0){
-				character = GetCharacter(com.parameters[5]);
-			} else {
-				// Special case for Player Map ID
-				character = NULL;
-				value = Game_Map::GetMapId();
-			}
-			// Other cases
+			character = GetCharacter(com.parameters[5]);
 			if (character != NULL) {
 				switch (com.parameters[6]) {
+					case 0:
+						// Map ID
+						value = character->GetMapId();
+						break;
 					case 1:
 						// X Coordinate
 						value = character->GetX();
@@ -706,7 +703,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						break;
 					case 3:
 						// Orientation
-						value = character->GetDirection();
+						int dir;
+						dir = character->GetSpriteDirection();
+						value = dir == 0 ? 8 :
+								dir == 1 ? 6 :
+								dir == 2 ? 2 : 4;
 						break;
 					case 4:
 						// Screen X

@@ -1950,7 +1950,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// Orientation of char
 			character = GetCharacter(com.parameters[1]);
 			if (character != NULL) {
-				result = character->GetDirection() == com.parameters[2];
+				result = character->GetSpriteDirection() == com.parameters[2];
 			}
 			break;
 		case 7:
