@@ -72,12 +72,12 @@ void Game_Player::SetDirection(int new_direction) {
 	location.direction = new_direction;
 }
 
-int Game_Player::GetPrelockDirection() const {
-	return location.prelock_direction;
+int Game_Player::GetSpriteDirection() const {
+	return location.sprite_direction;
 }
 
-void Game_Player::SetPrelockDirection(int new_direction) {
-	location.prelock_direction = new_direction;
+void Game_Player::SetSpriteDirection(int new_direction) {
+	location.sprite_direction = new_direction;
 }
 
 bool Game_Player::IsFacingLocked() const {

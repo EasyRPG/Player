@@ -69,12 +69,12 @@ void Game_Vehicle::SetDirection(int new_direction) {
 	data.direction = new_direction;
 }
 
-int Game_Vehicle::GetPrelockDirection() const {
-	return data.prelock_direction;
+int Game_Vehicle::GetSpriteDirection() const {
+	return data.sprite_direction;
 }
 
-void Game_Vehicle::SetPrelockDirection(int new_direction) {
-	data.prelock_direction = new_direction;
+void Game_Vehicle::SetSpriteDirection(int new_direction) {
+	data.sprite_direction = new_direction;
 }
 
 bool Game_Vehicle::IsFacingLocked() const {
@@ -94,7 +94,7 @@ void Game_Vehicle::SetLayer(int new_layer) {
 }
 
 int Game_Vehicle::GetSteppingSpeed() const {
-	return RPG::EventPage::MoveSpeed_eighth;
+	return 16;
 }
 
 int Game_Vehicle::GetMoveSpeed() const {

@@ -62,7 +62,7 @@ void Sprite_Character::Update() {
 	}
 
 	if (tile_id == 0) {
-		int row = (character->IsSpinning() ? character->GetPrelockDirection() : character->GetDirection());
+		int row = character->GetSpriteDirection();
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}

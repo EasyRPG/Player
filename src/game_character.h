@@ -85,32 +85,32 @@ public:
 	virtual void SetMapId(int new_map_id) = 0;
 
 	/**
-	 * Gets character facing direction.
+	 * Gets character's front direction.
 	 *
-	 * @return current facing direction.
+	 * @return current front direction.
 	 */
 	virtual int GetDirection() const = 0;
 
 	/**
-	 * Sets character facing direction.
+	 * Sets character's front direction.
 	 *
-	 * @param new_direction New current facing direction.
+	 * @param new_direction New current front direction.
 	 */
 	virtual void SetDirection(int new_direction) = 0;
 
 	/**
-	 * Gets facing direction before direction was locked.
+	 * Gets direction of the sprite.
 	 *
-	 * @return facing direction before lock.
+	 * @return direction of the sprite.
 	 */
-	virtual int GetPrelockDirection() const = 0;
+	virtual int GetSpriteDirection() const = 0;
 
 	/**
-	 * Sets character facing used before locking.
+	 * Sets sprite direction.
 	 *
-	 * @param new_direction New prelock facing direction.
+	 * @param new_direction New sprite direction.
 	 */
-	virtual void SetPrelockDirection(int new_direction) = 0;
+	virtual void SetSpriteDirection(int new_direction) = 0;
 
 	/**
 	 * Gets whether facing is locked.
@@ -141,8 +141,8 @@ public:
 	virtual void SetLayer(int new_layer) = 0;
 
 	/**
-	 * Gets character stepping speed: the speed of the left-middle-right-middle
-	 * walking animation. Same as the movement speed, by default.
+	 * Gets character stepping speed: the number of frames between each change
+	 * of the left-middle-right-middle walking animation or the spinning animation
 	 *
 	 * @return stepping speed (the same units as movement speed)
 	 */
@@ -728,21 +728,21 @@ public:
 	 *
 	 * @return Whether direction is fixed
 	 */
-	bool IsDirectionFixed();
+	bool IsDirectionFixed() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	bool IsContinuous();
+	bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
 	 *
 	 * @return Whether animation is spin type
 	 */
-	bool IsSpinning();
+	bool IsSpinning() const;
 
 	/**
 	 * Gets the bush depth of the tile where this character is standing
@@ -768,6 +768,8 @@ protected:
 	void UpdateJump();
 	void UpdateSelfMovement();
 	void UpdateStop();
+
+	void Turn(int dir);
 
 	int tile_id;
 	int real_x;
@@ -795,8 +797,8 @@ protected:
 	int jump_plus_x;
 	int jump_plus_y;
 
-	double anime_count;
-	double stop_count;
+	int anime_count;
+	int stop_count;
 	bool walk_animation;
 
 	/** used by cycle left-right, up-down */
