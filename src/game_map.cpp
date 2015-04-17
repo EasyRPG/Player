@@ -312,19 +312,40 @@ void Game_Map::ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> i
 }
 
 void Game_Map::ScrollDown(int distance) {
-	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	if (LoopVertical()) {
+		int height = GetHeight() * SCREEN_TILE_WIDTH;
+		map_info.position_y = (map_info.position_y + distance + height) % height;
+	} else {
+		map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	}
 }
 
 void Game_Map::ScrollLeft(int distance) {
-	map_info.position_x = max(map_info.position_x - distance, 0);
+	if (LoopHorizontal()) {
+		int width = GetWidth() * SCREEN_TILE_WIDTH;
+		map_info.position_x = (map_info.position_x - distance + width) % width;
+	} else {
+		map_info.position_x = max(map_info.position_x - distance, 0);
+	}
 }
 
 void Game_Map::ScrollRight(int distance) {
-	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	if (LoopHorizontal()) {
+		int width = GetWidth() * SCREEN_TILE_WIDTH;
+		map_info.position_x = (map_info.position_x + distance + width) % width;
+	} else {
+		map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	}
+	
 }
 
 void Game_Map::ScrollUp(int distance) {
-	map_info.position_y = max(map_info.position_y - distance, 0);
+	if (LoopVertical()) {
+		int height = GetHeight() * SCREEN_TILE_WIDTH;
+		map_info.position_y = (map_info.position_y - distance + height) % height;
+	} else {
+		map_info.position_y = max(map_info.position_y - distance, 0);
+	}
 }
 
 bool Game_Map::IsValid(int x, int y) {
