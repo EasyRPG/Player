@@ -150,6 +150,7 @@ int Game_Character::GetScreenX() const {
 		int map_width = Game_Map::GetWidth() * TILE_SIZE;
 		x = (x + map_width) % map_width;
 	}
+
 	return x;
 }
 
@@ -753,6 +754,27 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	int new_x = jump_x + jump_plus_x;
 	int new_y = jump_y + jump_plus_y;
 
+	if (Game_Map::LoopHorizontal()) {
+		int map_width = Game_Map::GetWidth();
+		if (new_x < 0) {
+			jump_x += map_width;
+			new_x += map_width;
+		} else if (new_x >= map_width) {
+			jump_x -= map_width;
+			new_x -= map_width;
+		}
+	}
+
+	if (Game_Map::LoopVertical()) {
+		int map_height = Game_Map::GetHeight();
+		if (new_y < 0) {
+			jump_y += map_height;
+			new_y += map_height;
+		} else if (new_y >= map_height) {
+			jump_y -= map_height;
+			new_y -= map_height;
+		}
+	}
 
 	if (
 		// A character can always land on a tile they were already standing on
