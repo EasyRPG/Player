@@ -97,8 +97,8 @@ bool Game_Character::IsStopping() const {
 }
 
 bool Game_Character::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
-	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
+	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
+	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
@@ -314,7 +314,7 @@ void Game_Character::MoveTypeRandom() {
 
 void Game_Character::MoveTypeCycleLeftRight() {
 	if (IsStopping()) {
-		cycle_stat ? MoveLeft() : MoveRight();
+		Move(cycle_stat ? Left : Right);
 
 		if (move_failed) {
 			Wait();
@@ -327,7 +327,7 @@ void Game_Character::MoveTypeCycleLeftRight() {
 
 void Game_Character::MoveTypeCycleUpDown() {
 	if (IsStopping()) {
-		cycle_stat ? MoveUp() : MoveDown();
+		Move(cycle_stat ? Up : Down);
 
 		if (move_failed) {
 			Wait();
@@ -415,57 +415,43 @@ void Game_Character::MoveTypeCustom() {
 				int command_id = move_command.command_id;
 				if (!jumping && command_id == RPG::MoveCommand::Code::begin_jump) {
 					active_route_index = BeginJump(active_route, active_route_index);
+			case RPG::MoveCommand::Code::move_up:
+			case RPG::MoveCommand::Code::move_right:
+			case RPG::MoveCommand::Code::move_down:
+			case RPG::MoveCommand::Code::move_left:
+			case RPG::MoveCommand::Code::move_upright:
+			case RPG::MoveCommand::Code::move_downright:
+			case RPG::MoveCommand::Code::move_downleft:
+			case RPG::MoveCommand::Code::move_upleft:
+				Move(move_command.command_id);
+				break;
+			case RPG::MoveCommand::Code::move_random:
+				MoveRandom();
+				break;
+			case RPG::MoveCommand::Code::move_towards_hero:
+				MoveTowardsPlayer();
+				break;
+			case RPG::MoveCommand::Code::move_away_from_hero:
+				MoveAwayFromPlayer();
+				break;
+			case RPG::MoveCommand::Code::move_forward:
+				MoveForward();
+				break;
+			case RPG::MoveCommand::Code::face_up:
+				Turn(Up);
+				break;
+			case RPG::MoveCommand::Code::face_right:
+				Turn(Right);
+				break;
+			case RPG::MoveCommand::Code::face_down:
+				Turn(Down);
+				break;
+			case RPG::MoveCommand::Code::face_left:
+				Turn(Left);
+				break;
 				}
 
 				switch (move_command.command_id) {
-				case RPG::MoveCommand::Code::move_up:
-					MoveUp();
-					break;
-				case RPG::MoveCommand::Code::move_right:
-					MoveRight();
-					break;
-				case RPG::MoveCommand::Code::move_down:
-					MoveDown();
-					break;
-				case RPG::MoveCommand::Code::move_left:
-					MoveLeft();
-					break;
-				case RPG::MoveCommand::Code::move_upright:
-					MoveUpRight();
-					break;
-				case RPG::MoveCommand::Code::move_downright:
-					MoveDownRight();
-					break;
-				case RPG::MoveCommand::Code::move_downleft:
-					MoveDownLeft();
-					break;
-				case RPG::MoveCommand::Code::move_upleft:
-					MoveUpLeft();
-					break;
-				case RPG::MoveCommand::Code::move_random:
-					MoveRandom();
-					break;
-				case RPG::MoveCommand::Code::move_towards_hero:
-					MoveTowardsPlayer();
-					break;
-				case RPG::MoveCommand::Code::move_away_from_hero:
-					MoveAwayFromPlayer();
-					break;
-				case RPG::MoveCommand::Code::move_forward:
-					MoveForward();
-					break;
-				case RPG::MoveCommand::Code::face_up:
-					TurnUp();
-					break;
-				case RPG::MoveCommand::Code::face_right:
-					TurnRight();
-					break;
-				case RPG::MoveCommand::Code::face_down:
-					TurnDown();
-					break;
-				case RPG::MoveCommand::Code::face_left:
-					TurnLeft();
-					break;
 				case RPG::MoveCommand::Code::turn_90_degree_right:
 					Turn90DegreeRight();
 					break;
@@ -591,229 +577,44 @@ void Game_Character::EndMoveRoute() {
 	SetMoveFrequency(original_move_frequency);
 }
 
-void Game_Character::MoveDown() {
-	SetDirection(RPG::EventPage::Direction_down);
-	if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_down);
+void Game_Character::Move(int dir) {
+	int dx = (dir == Right || dir == UpRight || dir == DownRight) - (dir == Left || dir == DownLeft || dir == UpLeft);
+	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
+
+	SetDirection(dir);
+	if (!IsDirectionFixed()) {
+		if (dir > 3) // Diagonal
+			SetSpriteDirection(GetSpriteDirection() % 2 ? -dx + 2 : dy + 1);
+		else
+			SetSpriteDirection(dir);
+	}
 
 	if (jumping) {
-		jump_plus_y++;
+		jump_plus_x += dx;
+		jump_plus_y += dy;
 		return;
 	}
 
-	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)) {
-		SetY(GetY() + 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
-	} else {
-		CheckEventTriggerTouch(GetX(), GetY() + 1);
-		move_failed = true;
-	}
-}
-
-void Game_Character::MoveLeft() {
-	SetDirection(RPG::EventPage::Direction_left);
-	if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_left);
-
-	if (jumping) {
-		jump_plus_x--;
+	if (dir > 3 && (!(IsPassable(GetX(), GetY(), -dx + 2) && IsPassable(GetX() + dx, GetY(), dy + 1)) &&
+					!(IsPassable(GetX(), GetY(), dy + 1) && IsPassable(GetX(), GetY() + dy, -dx + 2))))
 		return;
-	}
 
-	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)) {
-		SetX(GetX() - 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
-	} else {
-		CheckEventTriggerTouch(GetX() - 1, GetY());
-		move_failed = true;
-	}
-}
-
-void Game_Character::MoveRight() {
-	SetDirection(RPG::EventPage::Direction_right);
-	if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_right);
-
-	if (jumping) {
-		jump_plus_x++;
+	if (dir <= 3 && !IsPassable(GetX(), GetY(), dir))
 		return;
-	}
 
-	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)) {
-		SetX(GetX() + 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
-	} else {
-		CheckEventTriggerTouch(GetX() + 1, GetY());
-		move_failed = true;
-	}
-}
-
-void Game_Character::MoveUp() {
-	SetDirection(RPG::EventPage::Direction_up);
-	if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_up);
-
-	if (jumping) {
-		jump_plus_y--;
-		return;
-	}
-
-	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)) {
-		SetY(GetY() - 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
-	} else {
-		CheckEventTriggerTouch(GetX(), GetY() - 1);
-		move_failed = true;
-	}
+	SetX(Game_Map::RoundX(GetX() + dx));
+	SetY(Game_Map::RoundY(GetY() + dy));
+	BeginMove();
+	stop_count = 0;
+	move_failed = false;
 }
 
 void Game_Character::MoveForward() {
-	switch (GetDirection()) {
-		case RPG::EventPage::Direction_down:
-			MoveDown();
-			break;
-		case RPG::EventPage::Direction_left:
-			MoveLeft();
-			break;
-		case RPG::EventPage::Direction_right:
-			MoveRight();
-			break;
-		case RPG::EventPage::Direction_up:
-			MoveUp();
-			break;
-	}
-}
-
-void Game_Character::MoveDownLeft() {
-	if (GetDirection() % 2) {
-		SetDirection(RPG::EventPage::Direction_left);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_left);
-	} else {
-		SetDirection(RPG::EventPage::Direction_down);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_down);
-	}
-
-	if (jumping) {
-		jump_plus_x--;
-		jump_plus_y++;
-		return;
-	}
-
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
-		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_down))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
-		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_left))) {
-			SetX(GetX() - 1);
-			SetY(GetY() + 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
-	}
-}
-
-void Game_Character::MoveDownRight() {
-	if (GetDirection() % 2) {
-		SetDirection(RPG::EventPage::Direction_right);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_right);
-	} else {
-		SetDirection(RPG::EventPage::Direction_down);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_down);
-	}
-
-
-	if (jumping) {
-		jump_plus_x++;
-		jump_plus_y++;
-		return;
-	}
-
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
-		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_down))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
-		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_right))) {
-			SetX(GetX() + 1);
-			SetY(GetY() + 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
-	}
-}
-
-
-void Game_Character::MoveUpLeft() {
-	if (GetDirection() % 2) {
-		SetDirection(RPG::EventPage::Direction_left);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_left);
-	} else {
-		SetDirection(RPG::EventPage::Direction_up);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_up);
-	}
-
-	if (jumping) {
-		jump_plus_x--;
-		jump_plus_y--;
-		return;
-	}
-
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
-		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_up))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
-		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_left))) {
-			SetX(GetX() - 1);
-			SetY(GetY() - 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
-	}
-}
-
-
-void Game_Character::MoveUpRight() {
-	if (GetDirection() % 2) {
-		SetDirection(RPG::EventPage::Direction_right);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_right);
-	} else {
-		SetDirection(RPG::EventPage::Direction_up);
-		if (!IsDirectionFixed()) SetSpriteDirection(RPG::EventPage::Direction_up);
-	}
-
-	if (jumping) {
-		jump_plus_x++;
-		jump_plus_y--;
-		return;
-	}
-
-	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
-		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_up))
-		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
-		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_right))) {
-			SetX(GetX() + 1);
-			SetY(GetY() - 1);
-			BeginMove();
-			stop_count = 0;
-			move_failed = false;
-	}
+	Move(GetDirection());
 }
 
 void Game_Character::MoveRandom() {
-	switch (rand() % 4) {
-	case 0:
-		MoveDown();
-		break;
-	case 1:
-		MoveLeft();
-		break;
-	case 2:
-		MoveRight();
-		break;
-	case 3:
-		MoveUp();
-		break;
-	}
+	Move(rand() % 4);
 }
 
 void Game_Character::MoveTowardsPlayer() {
@@ -822,14 +623,13 @@ void Game_Character::MoveTowardsPlayer() {
 
 	if (sx != 0 || sy != 0) {
 		if ( std::abs(sx) > std::abs(sy) ) {
-			(sx > 0) ? MoveLeft() : MoveRight();
-			if (move_failed && sy != 0) {
-				(sy > 0) ? MoveUp() : MoveDown();
-			}
+			Move((sx > 0) ? Left : Right);
+			if (move_failed && sy != 0)
+				Move((sy > 0) ? Up : Down);
 		} else {
-			(sy > 0) ? MoveUp() : MoveDown();
+			Move((sy > 0) ? Up : Down);
 			if (move_failed && sx != 0) {
-				(sx > 0) ? MoveLeft() : MoveRight();
+				Move((sx > 0) ? Left : Right);
 			}
 		}
 	}
@@ -841,15 +641,13 @@ void Game_Character::MoveAwayFromPlayer() {
 
 	if (sx != 0 || sy != 0) {
 		if ( std::abs(sx) > std::abs(sy) ) {
-			(sx > 0) ? MoveRight() : MoveLeft();
-			if (move_failed && sy != 0) {
-				(sy > 0) ? MoveDown() : MoveUp();
-			}
+			Move((sx > 0) ? Right : Left);
+			if (move_failed && sy != 0)
+				Move((sy > 0) ? Down : Up);
 		} else {
-			(sy > 0) ? MoveDown() : MoveUp();
-			if (move_failed && sx != 0) {
-				(sx > 0) ? MoveRight() : MoveLeft();
-			}
+			Move((sy > 0) ? Down : Up);
+			if (move_failed && sx != 0)
+				Move((sx > 0) ? Right : Left);
 		}
 	}
 }
@@ -859,22 +657,6 @@ void Game_Character::Turn(int dir) {
 	SetSpriteDirection(dir);
 	move_failed = false;
 	stop_count = pow(2.0, 8 - GetMoveFrequency());
-}
-
-void Game_Character::TurnDown() {
-	Turn(RPG::EventPage::Direction_down);
-}
-
-void Game_Character::TurnLeft() {
-	Turn(RPG::EventPage::Direction_left);
-}
-
-void Game_Character::TurnRight() {
-	Turn(RPG::EventPage::Direction_right);
-}
-
-void Game_Character::TurnUp() {
-	Turn(RPG::EventPage::Direction_up);
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -909,10 +691,10 @@ void Game_Character::TurnTowardHero() {
 	int sy = DistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
-		(sx > 0) ? TurnLeft() : TurnRight();
+		Turn((sx > 0) ? Left : Right);
 	}
 	else if ( std::abs(sx) < std::abs(sy) ) {
-		(sy > 0) ? TurnUp() : TurnDown();
+		Turn((sy > 0) ? Up : Down);
 	}
 }
 
@@ -921,10 +703,10 @@ void Game_Character::TurnAwayFromHero() {
 	int sy = DistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
-		(sx > 0) ? TurnRight() : TurnLeft();
+		Turn((sx > 0) ? Right : Left);
 	}
 	else if ( std::abs(sx) < std::abs(sy) ) {
-		(sy > 0) ? TurnDown() : TurnUp();
+		Turn((sy > 0) ? Down : Up);
 	}
 }
 

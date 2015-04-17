@@ -23,8 +23,6 @@
 #include "color.h"
 #include "rpg_moveroute.h"
 
-class Game_Event;
-class Game_Player;
 class Game_Interpreter;
 
 /**
@@ -415,50 +413,13 @@ public:
 	 */
 	void EndMoveRoute();
 
-	/**
-	 * Moves the character down.
-	 */
-	void MoveDown();
-
-	/**
-	 * Moves the character left.
-	 */
-	void MoveLeft();
-
-	/**
-	 * Moves the character right.
-	 */
-	void MoveRight();
-
-	/**
-	 * Moves the character up.
-	 */
-	void MoveUp();
+	void Turn(int dir);
+	void Move(int dir);
 
 	/**
 	 * Moves the character forward.
 	 */
 	void MoveForward();
-
-	/**
-	 * Moves the character diagonal (downleft), moves down if blocked.
-	 */
-	void MoveDownLeft();
-
-	/**
-	 * Moves the character diagonal (downright), moves down if blocked.
-	 */
-	void MoveDownRight();
-
-	/**
-	 * Moves the character diagonal (upleft), moves up if blocked.
-	 */
-	void MoveUpLeft();
-
-	/**
-	 * Moves the character diagonal (downright), moves up if blocked.
-	 */
-	void MoveUpRight();
 
 	/**
 	 * Does a random movement.
@@ -474,26 +435,6 @@ public:
 	 * Does a move away from the player hero.
 	 */
 	void MoveAwayFromPlayer();
-
-	/**
-	 * Turns the character down.
-	 */
-	void TurnDown();
-
-	/**
-	 * Turns the character left.
-	 */
-	void TurnLeft();
-
-	/**
-	 * Turns the character right.
-	 */
-	void TurnRight();
-
-	/**
-	 * Turns the character up.
-	 */
-	void TurnUp();
 
 	/**
 	 * Turns the character 90 Degree to the left.
@@ -761,6 +702,17 @@ public:
 		CharThisEvent	= 10005
 	};
 
+	enum Direction {
+		Up = 0,
+		Right,
+		Down,
+		Left,
+		UpRight,
+		DownRight,
+		DownLeft,
+		UpLeft
+	};
+
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
@@ -768,8 +720,6 @@ protected:
 	void UpdateJump();
 	void UpdateSelfMovement();
 	void UpdateStop();
-
-	void Turn(int dir);
 
 	int tile_id;
 	int real_x;

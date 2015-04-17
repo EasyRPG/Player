@@ -299,16 +299,16 @@ void Game_Player::Update() {
 	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
-				MoveDown();
+				Move(Down);
 				break;
 			case 4:
-				MoveLeft();
+				Move(Left);
 				break;
 			case 6:
-				MoveRight();
+				Move(Right);
 				break;
 			case 8:
-				MoveUp();
+				Move(Up);
 		}
 	}
 
