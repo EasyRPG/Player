@@ -45,6 +45,7 @@ Game_Character::Game_Character() :
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
+	remaining_step(0),
 	move_count(0),
 	wait_count(0),
 	jumping(false),
@@ -83,10 +84,7 @@ int Game_Character::GetSteppingSpeed() const {
 }
 
 bool Game_Character::IsMoving() const {
-	if (move_count > 0) return false; //Jumping
-
-	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
-	}
+	return !IsJumping() && remaining_step > 0;
 
 bool Game_Character::IsJumping() const {
 	return move_count > 0;
@@ -237,18 +235,8 @@ void Game_Character::Update() {
 }
 
 void Game_Character::UpdateMove() {
-	int distance = ((SCREEN_TILE_WIDTH / 128) << GetMoveSpeed());
-	if (GetY() * SCREEN_TILE_WIDTH > real_y)
-		real_y = min(real_y + distance, GetY() * SCREEN_TILE_WIDTH);
-
-	if (GetX() * SCREEN_TILE_WIDTH < real_x)
-		real_x = max(real_x - distance, GetX() * SCREEN_TILE_WIDTH);
-
-	if (GetX() * SCREEN_TILE_WIDTH > real_x)
-		real_x = min(real_x + distance, GetX() * SCREEN_TILE_WIDTH);
-
-	if (GetY() * SCREEN_TILE_WIDTH < real_y)
-		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
+	if (remaining_step > 0)
+		remaining_step -= pow(2.0, 1 + GetMoveSpeed());
 
 	anime_count +=
 		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1 : 0;
@@ -606,6 +594,7 @@ void Game_Character::Move(int dir) {
 	SetY(Game_Map::RoundY(GetY() + dy));
 	BeginMove();
 	stop_count = 0;
+	remaining_step = SCREEN_TILE_WIDTH;
 	move_failed = false;
 }
 
@@ -851,11 +840,33 @@ int Game_Character::GetTileId() const {
 }
 
 int Game_Character::GetRealX() const {
-	return real_x;
+	int x = GetX() * SCREEN_TILE_WIDTH;
+
+	if (IsMoving()) {
+		int d = GetDirection();
+		if (d == Right || d == UpRight || d == DownRight)
+			x -= remaining_step;
+		else if (d == Left || d == UpLeft || d == DownLeft)
+			x += remaining_step;
+	} else if (IsJumping())
+		x -= ((GetX() - jump_x) * remaining_step);
+
+	return x;
 }
 
 int Game_Character::GetRealY() const {
-	return real_y;
+	int y = GetY() * SCREEN_TILE_WIDTH;
+
+	if (IsMoving()) {
+		int d = GetDirection();
+		if (d == Down || d == DownRight || d == DownLeft)
+			y -= remaining_step;
+		else if (d == Up || d == UpRight || d == UpLeft)
+			y += remaining_step;
+	} else if (IsJumping())
+		y -= ((GetY() - jump_y) * TILE_SIZE * remaining_step) / SCREEN_TILE_WIDTH;
+
+	return y;
 }
 
 int Game_Character::GetPattern() const {

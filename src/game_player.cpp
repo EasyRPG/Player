@@ -258,20 +258,26 @@ void Game_Player::MoveTo(int x, int y) {
 	Center(x, y);
 }
 
-void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
-	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8 - Game_Map::GetPanX();
-	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
+void Game_Player::UpdateScroll() {
+	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - Game_Map::GetPanX() / (SCREEN_TILE_WIDTH / TILE_SIZE);
+	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - Game_Map::GetPanY() / (SCREEN_TILE_WIDTH / TILE_SIZE);
 	int dx = 0;
 	int dy = 0;
 
 	if (!Game_Map::IsPanLocked()) {
-		if ((real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x) ||
-			(real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)) {
-			dx = real_x - last_real_x;
-		}
-		if ((real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y) ||
-			(real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)) {
-			dy = real_y - last_real_y;
+		if (IsMoving()) {
+			int d = GetDirection();
+			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() >= center_x)
+				dx = 1; 
+			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() <= center_x)
+				dx = -1;
+			dx *= pow(2.0, 1 + GetMoveSpeed());
+
+			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() >= center_y)
+				dy = 1;
+			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
+				dy = -1;
+			dy *= pow(2.0, 1 + GetMoveSpeed());
 		}
 	}
 
@@ -312,15 +318,12 @@ void Game_Player::Update() {
 		}
 	}
 
-	int last_real_x = real_x;
-	int last_real_y = real_y;
-
+	UpdateScroll();
 	Game_Character::Update();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
 
-	UpdateScroll(last_real_x, last_real_y);
 
 	UpdateNonMoving(last_moving);
 }
