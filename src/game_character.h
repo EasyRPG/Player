@@ -491,7 +491,7 @@ public:
 	 *
 	 * @return current_index if EndJump found, otherwise end of route.
 	 */
-	int BeginJump(const RPG::MoveRoute* current_route, int current_index);
+	void BeginJump(const RPG::MoveRoute* current_route, int* current_index);
 
 	/**
 	 * Jump action ends.
@@ -501,7 +501,7 @@ public:
 	 *
 	 * @return current_index if jump was successful, else index of BeginJump.
 	 */
-	int EndJump(const RPG::MoveRoute* current_route, int current_index);
+	void EndJump();
 
 	/**
 	 * Locks character facing direction.
@@ -741,8 +741,6 @@ protected:
 	int wait_count;
 
 	bool jumping;
-	int jump_peak;
-	int jump_index;
 	int jump_x;
 	int jump_y;
 	int jump_plus_x;

@@ -278,6 +278,11 @@ void Game_Player::UpdateScroll() {
 			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
 				dy = -1;
 			dy *= pow(2.0, 1 + GetMoveSpeed());
+		} else if (IsJumping()) {
+			int move_speed = GetMoveSpeed();
+			int diff = move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
+			dx += (GetX() - jump_x) * diff;
+			dy -= (GetY() - jump_y) * diff;
 		}
 	}
 
