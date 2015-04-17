@@ -33,8 +33,6 @@
 
 Game_Character::Game_Character() :
 	tile_id(0),
-	real_x(0),
-	real_y(0),
 	pattern(RPG::EventPage::Frame_middle),
 	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
@@ -875,6 +873,10 @@ int Game_Character::GetRealY() const {
 		y -= ((GetY() - jump_y) * TILE_SIZE * remaining_step) / SCREEN_TILE_WIDTH;
 
 	return y;
+}
+
+int Game_Character::GetRemainingStep() const {
+	return remaining_step;
 }
 
 int Game_Character::GetPattern() const {

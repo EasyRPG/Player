@@ -591,6 +591,13 @@ public:
 	int GetRealY() const;
 
 	/**
+	 * Gets remaining step
+	 *
+	 * @return remaining step
+	 */
+	int GetRemainingStep() const;
+
+	/**
 	 * Gets pattern.
 	 *
 	 * @return pattern.
@@ -722,8 +729,6 @@ protected:
 	void UpdateStop();
 
 	int tile_id;
-	int real_x;
-	int real_y;
 	int pattern;
 	int original_pattern;
 	int last_pattern;

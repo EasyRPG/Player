@@ -272,8 +272,6 @@ void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetMapId(_map_id);
 	SetX(_x);
 	SetY(_y);
-	real_x = _x * SCREEN_TILE_WIDTH;
-	real_y = _y * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {
@@ -326,9 +324,9 @@ bool Game_Vehicle::IsInUse() const {
 void Game_Vehicle::SyncWithPlayer() {
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
-	real_x = Main_Data::game_player->GetRealX();
-	real_y = Main_Data::game_player->GetRealY();
+	remaining_step = Main_Data::game_player->GetRemainingStep();
 	SetDirection(Main_Data::game_player->GetDirection());
+	SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
 }
 
 int Game_Vehicle::GetAltitude() const {

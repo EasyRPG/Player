@@ -329,7 +329,6 @@ void Game_Player::Update() {
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
 
-
 	UpdateNonMoving(last_moving);
 }
 
