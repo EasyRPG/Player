@@ -171,17 +171,30 @@ int Game_Character::GetScreenY() const {
 }
 
 int Game_Character::GetScreenZ() const {
-	return GetScreenZ(0);
-}
-
-int Game_Character::GetScreenZ(int /* height */) const {
-	if (GetLayer() == RPG::EventPage::Layers_above) return 999;
-
-	if (GetLayer() == RPG::EventPage::Layers_below) return 0;
-
 	int z = (GetRealY() - Game_Map::GetDisplayY() + 3) / TILE_SIZE + (SCREEN_TILE_WIDTH / TILE_SIZE);
 
-	return z;
+	int max_height = Game_Map::GetHeight() * TILE_SIZE;
+
+	// wrap on map boundaries
+	if (z < 0) {
+		z += max_height;
+	}
+
+	if (GetLayer() == RPG::EventPage::Layers_below) {
+		z -= TILE_SIZE;
+	}
+	if (GetLayer() == RPG::EventPage::Layers_above) {
+		z += TILE_SIZE;
+	}
+
+	// Prevent underflow (not rendered in this case)
+	// ToDo: It's probably the best to rework the z-layer part of the tilemap code
+	if (z < 1) {
+		z = 1;
+	}
+
+	// 1 less to correctly render compared to some tile map tiles (star tiles e.g.)
+	return z - 1;
 }
 
 void Game_Character::Update() {

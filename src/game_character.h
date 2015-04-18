@@ -562,14 +562,6 @@ public:
 	virtual int GetScreenZ() const;
 
 	/**
-	 * Gets screen z coordinate in pixels.
-	 *
-	 * @param height character height.
-	 * @return screen z coordinate in pixels.
-	 */
-	virtual int GetScreenZ(int height) const;
-
-	/**
 	 * Gets tile graphic ID.
 	 *
 	 * @return tile graphic ID.
