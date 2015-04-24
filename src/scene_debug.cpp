@@ -180,7 +180,7 @@ void Scene_Debug::CreateVarListWindow() {
 
 void Scene_Debug::CreateNumberInputWindow() {
 	numberinput_window.reset(new Window_NumberInput(105, 104,
-		Player::engine == Player::EngineRpg2k ? 12*7 + 16 : 12*8 + 16, 32));
+		Player::IsRPG2k() ? 12 * 7 + 16 : 12 * 8 + 16, 32));
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);

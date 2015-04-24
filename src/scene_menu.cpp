@@ -75,7 +75,7 @@ void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
 
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		command_options.resize(5);
 		command_options[0] = Item;
 		command_options[1] = Skill;

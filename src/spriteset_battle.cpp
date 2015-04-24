@@ -33,7 +33,7 @@ Spriteset_Battle::Spriteset_Battle() {
 	// Create the sprites
 	std::vector<Game_Battler*> battler;
 	Main_Data::game_enemyparty->GetBattlers(battler);
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::IsRPG2k3()) {
 		Main_Data::game_party->GetBattlers(battler);
 	}
 

@@ -29,7 +29,7 @@
 
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	digits_max(Player::engine == Player::EngineRpg2k ? 6 : 7) {
+	digits_max(Player::IsRPG2k() ? 6 : 7) {
 	number = 0;
 	plus = true;
 
@@ -91,7 +91,7 @@ int Window_NumberInput::GetMaxDigits() {
 
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	// Only accepts values between 1 and 6 (or 7) as RPG2K (or RPG2k3)
-	int top = Player::engine == Player::EngineRpg2k ? 6 : 7;
+	int top = Player::IsRPG2k() ? 6 : 7;
 	digits_max = 
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :

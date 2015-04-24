@@ -123,7 +123,7 @@ void Game_Picture::SetTransparencyEffect(int top, int bottom) {
 }
 
 void Game_Picture::SetRotationEffect(int speed) {
-	if (!data.time_left || Player::engine == Player::EngineRpg2k3) {
+	if (!data.time_left || Player::IsRPG2k3()) {
 		if (data.effect_mode != 1)
 			data.current_rotation = 0;
 		data.effect_mode = 1;
@@ -132,7 +132,7 @@ void Game_Picture::SetRotationEffect(int speed) {
 }
 
 void Game_Picture::SetWaverEffect(int depth) {
-	if (!data.time_left || Player::engine == Player::EngineRpg2k3) {
+	if (!data.time_left || Player::IsRPG2k3()) {
 		if (data.effect_mode != 2)
 			data.current_waver = 0;
 		data.effect_mode = 2;
@@ -141,7 +141,7 @@ void Game_Picture::SetWaverEffect(int depth) {
 }
 
 void Game_Picture::StopEffects() {
-	if (!data.time_left || Player::engine == Player::EngineRpg2k3)
+	if (!data.time_left || Player::IsRPG2k3())
 		data.effect_mode = 0;
 }
 

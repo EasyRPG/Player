@@ -74,7 +74,7 @@ void Window_BattleStatus::Refresh() {
 }
 
 void Window_BattleStatus::RefreshGauge() {
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::IsRPG2k3()) {
 		contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 
 		for (int i = 0; i < item_max; ++i) {
@@ -119,7 +119,7 @@ void Window_BattleStatus::Update() {
 	// (breaks up/down-logic)
 	Window_Base::Update();
 
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::IsRPG2k3()) {
 		RefreshGauge();
 	}
 

@@ -26,10 +26,15 @@
  * Player namespace.
  */
 namespace Player {
+	/** Bitmask for type of emulated engine */
 	enum EngineType {
-		EngineNone,
-		EngineRpg2k,
-		EngineRpg2k3
+		EngineNone = 0,
+		/** All versions of RPG Maker 2000 */
+		EngineRpg2k = 1,
+		/** All versions of RPG Maker 2003 */
+		EngineRpg2k3 = 2,
+		/** RPG Maker 2003 v1.10 or newer (Official English translation) */
+		EngineRpg2k3v110 = 4
 	};
 
 	/**
@@ -117,6 +122,26 @@ namespace Player {
 	 */
 	std::string GetEncoding();
 
+	/**
+	 * @return Whether engine is RPG2k
+	 */
+	bool IsRPG2k();
+
+	/**
+	 * @return If engine is RPG2k3 v1.09 or older
+	 */
+	bool IsRPG2k3Legacy();
+
+	/**
+	 * @return If engine is RPG2k3 or newer
+	 */
+	bool IsRPG2k3();
+
+	/**
+	 * @return If engine is RPG2k3 v1.10 or newer 
+	 */
+	bool IsRPG2k3v110();
+
 	/** Output program version on stdout */
 	void PrintVersion();
 
@@ -175,7 +200,7 @@ namespace Player {
 	extern std::string escape_symbol;
 
 	/** Currently interpreted engine. */
-	extern EngineType engine;
+	extern int engine;
 
 	/** Game title. */
 	extern std::string game_title;

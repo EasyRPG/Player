@@ -124,8 +124,7 @@ namespace {
 
 	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
 		rtp_table_type const& table =
-			Player::engine == Player::EngineRpg2k3? RTP_TABLE_2003:
-			RTP_TABLE_2000;
+			Player::IsRPG2k() ? RTP_TABLE_2000 : RTP_TABLE_2003;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
 		std::string lower_name = Utils::LowerCase(name);
@@ -323,19 +322,23 @@ void FileFinder::InitRtpPaths() {
 #endif
 
 	std::string const version_str =
-		Player::engine == Player::EngineRpg2k ? "2000":
-		Player::engine == Player::EngineRpg2k3 ? "2003":
+		Player::IsRPG2k() ? "2000" :
+		Player::IsRPG2k3() ? "2003" :
 		"";
 
 	assert(!version_str.empty());
 
 	std::string const company =
-		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
+		Player::IsRPG2k() ? "ASCII" :
+		Player::IsRPG2k3Legacy() ? "Enterbrain" :
+		Player::IsRPG2k3v110() ? "KADOKAWA" : "";
 
 	// Original 2003 RTP installer registry key is upper case
-	// and Wine registry is case insensitive
+	// and Wine registry is case insensitive but new 2k3v1.10 installier is not
 	std::string const key =
-		Player::engine == Player::EngineRpg2k? "RuntimePackagePath": "RUNTIMEPACKAGEPATH";
+		Player::IsRPG2k() ? "RuntimePackagePath" :
+		Player::IsRPG2k3Legacy() ? "RUNTIMEPACKAGEPATH" :
+		Player::IsRPG2k3v110() ? "RuntimePackagePath" : "";
 
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
@@ -370,14 +373,15 @@ void FileFinder::InitRtpPaths() {
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
 
-	if (Player::engine == Player::EngineRpg2k && getenv("RPG2K_RTP_PATH"))
+	if (Player::IsRPG2k() && getenv("RPG2K_RTP_PATH"))
 		add_rtp_path(getenv("RPG2K_RTP_PATH"));
-	else if (Player::engine == Player::EngineRpg2k3 && getenv("RPG2K3_RTP_PATH"))
+	else if (Player::IsRPG2k3() && getenv("RPG2K3_RTP_PATH"))
 		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
+
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
-	if (!search_paths.size()) {
+	if (search_paths.empty()) {
 		Output::Warning("RTP not found. This may create missing file errors.\n"
 			"Install RTP files or check they are installed fine.\n"
 			"If this game really does not require RTP, then add\n"

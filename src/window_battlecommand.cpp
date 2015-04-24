@@ -136,7 +136,7 @@ void Window_BattleCommand::SetIndex(int _index) {
 }
 
 void Window_BattleCommand::SetActor(int _actor_id) {
-	actor_id = (Player::engine == Player::EngineRpg2k3) ? _actor_id : 0;
+	actor_id = (Player::IsRPG2k()) ? 0 : _actor_id;
 	commands.clear();
 
 	if (actor_id == 0) {

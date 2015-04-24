@@ -85,7 +85,7 @@ void Sprite_Battler::Update() {
 			}
 		}
 	} else if (anim_state > 0) {
-		if (Player::engine == Player::EngineRpg2k3) {
+		if (Player::IsRPG2k3()) {
 			static const int frames[] = {0,1,2,1};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
@@ -116,7 +116,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 	cycle = 0;
 
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::IsRPG2k3()) {
 		if (battler->GetBattleAnimationId() > 0) {
 			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
 			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];

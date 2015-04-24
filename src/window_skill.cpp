@@ -98,7 +98,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 		return true;
 	}
 
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return true;
 	}
 	else {

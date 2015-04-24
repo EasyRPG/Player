@@ -350,7 +350,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 
 EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
 {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k>();
 	}
 	else {

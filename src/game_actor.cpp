@@ -280,7 +280,7 @@ int Game_Actor::CalculateExp(int level) const
 	}
 
 	int result = 0;
-	if (Player::engine == Player::EngineRpg2k)/*Rpg2k*/{
+	if (Player::IsRPG2k()) {
 		inflation = 1.5 + (inflation * 0.01);
 
 		for (int i = level; i >= 1; i--)
@@ -297,7 +297,7 @@ int Game_Actor::CalculateExp(int level) const
 			result += (int)correction;
 		}
 	}
-	return min(result, Player::engine == Player::EngineRpg2k ? 1000000 : 10000000);
+	return min(result, Player::IsRPG2k() ? 1000000 : 10000000);
 }
 
 void Game_Actor::MakeExpList() {
@@ -652,7 +652,7 @@ void Game_Actor::SetBattleRow(int battle_row) {
 }
 
 int Game_Actor::GetBattleAnimationId() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return 0;
 	}
 
