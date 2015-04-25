@@ -92,6 +92,13 @@ bool Game_Character::IsStopping() const {
 }
 
 bool Game_Character::IsPassable(int x, int y, int d) const {
+	if (d > 3) {
+		int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
+		int dy = (d == UpRight || d == UpLeft) - (d == DownRight || d == DownLeft);
+		return ((IsPassable(x, y, -dx + 2) && IsPassable(x + dx, y, dy + 1)) ||
+			(IsPassable(x, y, dy + 1) && IsPassable(x, y + dy, -dx + 2)));
+	}
+
 	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
 	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
 
@@ -589,12 +596,12 @@ void Game_Character::Move(int dir) {
 		return;
 	}
 
-	if (dir > 3 && (!(IsPassable(GetX(), GetY(), -dx + 2) && IsPassable(GetX() + dx, GetY(), dy + 1)) &&
-					!(IsPassable(GetX(), GetY(), dy + 1) && IsPassable(GetX(), GetY() + dy, -dx + 2))))
+	if (!IsPassable(GetX(), GetY(), dir)) {
+		if (CheckEventTriggerTouch(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy)))
+			stop_count = 0;
+		move_failed = true;
 		return;
-
-	if (dir <= 3 && !IsPassable(GetX(), GetY(), dir))
-		return;
+	}
 
 	SetX(Game_Map::RoundX(GetX() + dx));
 	SetY(Game_Map::RoundY(GetY() + dy));
