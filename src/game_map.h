@@ -480,6 +480,7 @@ namespace Game_Map {
 	void SetParallaxScroll(bool horz, bool vert,
 						   bool horz_auto, bool vert_auto,
 						   int horz_speed, int vert_speed);
+	void InitializeParallax();
 
 	/**
 	 * Gets the map index from MapInfo vector using map ID.
