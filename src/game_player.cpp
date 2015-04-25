@@ -280,16 +280,16 @@ void Game_Player::UpdateScroll() {
 		if (IsMoving()) {
 			int d = GetDirection();
 			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() >= center_x)
-				dx = 1; 
+				dx = 1;
 			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() <= center_x)
 				dx = -1;
-			dx *= pow(2.0, 1 + GetMoveSpeed());
+			dx <<= 1 + GetMoveSpeed();
 
 			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() >= center_y)
 				dy = 1;
 			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
 				dy = -1;
-			dy *= pow(2.0, 1 + GetMoveSpeed());
+			dy <<= 1 + GetMoveSpeed();
 		} else if (IsJumping()) {
 			int move_speed = GetMoveSpeed();
 			int diff = move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
