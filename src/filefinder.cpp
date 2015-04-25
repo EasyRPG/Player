@@ -314,6 +314,17 @@ static void add_rtp_path(std::string const& p) {
 	}
 }
 
+static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+}
 
 void FileFinder::InitRtpPaths() {
 #ifdef EMSCRIPTEN
@@ -328,26 +339,20 @@ void FileFinder::InitRtpPaths() {
 
 	assert(!version_str.empty());
 
-	std::string const company =
-		Player::IsRPG2k() ? "ASCII" :
-		Player::IsRPG2k3Legacy() ? "Enterbrain" :
-		Player::IsRPG2k3v110() ? "KADOKAWA" : "";
-
-	// Original 2003 RTP installer registry key is upper case
-	// and Wine registry is case insensitive but new 2k3v1.10 installier is not
-	std::string const key =
-		Player::IsRPG2k() ? "RuntimePackagePath" :
-		Player::IsRPG2k3Legacy() ? "RUNTIMEPACKAGEPATH" :
-		Player::IsRPG2k3v110() ? "RuntimePackagePath" : "";
-
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
-	if (!rtp_path.empty()) {
-		add_rtp_path(rtp_path);
+	if (Player::IsRPG2k()) {
+		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
 	}
-
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
-	if (!rtp_path.empty()) {
-		add_rtp_path(rtp_path);
+	else if (Player::IsRPG2k3Legacy()) {
+		// Original 2003 RTP installer registry key is upper case
+		// and Wine registry is case insensitive but new 2k3v1.10 installer is not
+		// Prefer Enterbrain RTP over Kadokawa for old RPG2k3 (search order)
+		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+	}
+	else if (Player::IsRPG2k3v110()) {
+		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
 	}
 
 #ifdef GEKKO
