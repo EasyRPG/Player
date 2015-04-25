@@ -141,9 +141,11 @@ void Bitmap::CheckPixels(uint32_t flags) {
 		DynamicFormat format(32,8,24,8,16,8,8,8,0,PF::Alpha);
 		uint32_t pixel;
 		Bitmap bmp(reinterpret_cast<void*>(&pixel), 1, 1, 4, format);
-		bmp.Blit(0, 0, *this, Rect(0, 32, 1, 1), Opacity::opaque);
+		pixman_image_composite32(PIXMAN_OP_SRC, bitmap, (pixman_image_t*) NULL, bmp.bitmap,
+								 0, 32,  0, 0,  0, 0,  1, 1);
 		bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
-		bmp.Blit(0, 0, *this, Rect(16, 32, 1, 1), Opacity::opaque);
+		pixman_image_composite32(PIXMAN_OP_SRC, bitmap, (pixman_image_t*) NULL, bmp.bitmap,
+								 16, 32,  0, 0,  0, 0,  1, 1);
 		sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
 	}
 
