@@ -27,7 +27,7 @@
 #include "game_message.h"
 #include "player.h"
 #include "util_macro.h"
-#include <math.h>
+#include <cmath>
 #include <cassert>
 #include <cstdlib>
 

@@ -27,6 +27,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include <algorithm>
+#include <cmath>
 
 Game_Player::Game_Player():
 	location(Main_Data::game_data.party_location),

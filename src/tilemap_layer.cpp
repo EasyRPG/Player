@@ -17,7 +17,7 @@
 
 // Headers
 #include <cstring>
-#include <math.h>
+#include <cmath>
 #include "tilemap_layer.h"
 #include "graphics.h"
 #include "output.h"

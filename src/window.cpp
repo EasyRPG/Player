@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include <math.h>
+#include <cmath>
 #include "system.h"
 #include "graphics.h"
 #include "player.h"
