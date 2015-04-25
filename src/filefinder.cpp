@@ -349,7 +349,7 @@ void FileFinder::InitRtpPaths() {
 		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
 		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
 	}
-	else if (Player::IsRPG2k3v110()) {
+	else if (Player::IsRPG2k3E()) {
 		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
 		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
 		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");

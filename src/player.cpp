@@ -424,8 +424,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			else if (*it == "rpg2k3" || *it == "2003") {
 				engine = EngineRpg2k3;
 			}
-			else if (*it == "rpg2k3v110") {
-				engine = EngineRpg2k3 | EngineRpg2k3v110;
+			else if (*it == "rpg2k3e") {
+				engine = EngineRpg2k3 | EngineRpg2k3E;
 			}
 		}
 		else if (*it == "--encoding") {
@@ -491,8 +491,8 @@ void Player::CreateGameObjects() {
 					Output::Debug("Switching to RPG2k3 Interpreter");
 				}
 				else {
-					Player::engine |= EngineRpg2k3v110;
-					Output::Debug("Switching to RPG2k3 v1.10 Interpreter");
+					Player::engine |= EngineRpg2k3E;
+					Output::Debug("Switching to RPG2k3 (English release, v1.10) Interpreter");
 				}
 			}
 			else {
@@ -678,9 +678,9 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
 	std::cout << "      " << "                     " << "Possible options:" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k      - RPG Maker 2000 engine" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k3     - RPG Maker 2003 engine" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k3v110 - RPG Maker 2003 v1.10 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k   - RPG Maker 2000 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3  - RPG Maker 2003 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3e - RPG Maker 2003 (English release) engine" << std::endl;
 
 	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
 
@@ -740,8 +740,8 @@ bool Player::IsRPG2k3() {
 	return (engine & EngineRpg2k3) == EngineRpg2k3;
 }
 
-bool Player::IsRPG2k3v110() {
-	return (engine & EngineRpg2k3v110) == EngineRpg2k3v110;
+bool Player::IsRPG2k3E() {
+	return (engine & EngineRpg2k3E) == EngineRpg2k3E;
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

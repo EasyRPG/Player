@@ -34,7 +34,7 @@ namespace Player {
 		/** All versions of RPG Maker 2003 */
 		EngineRpg2k3 = 2,
 		/** RPG Maker 2003 v1.10 or newer (Official English translation) */
-		EngineRpg2k3v110 = 4
+		EngineRpg2k3E = 4
 	};
 
 	/**
@@ -138,9 +138,9 @@ namespace Player {
 	bool IsRPG2k3();
 
 	/**
-	 * @return If engine is RPG2k3 v1.10 or newer 
+	 * @return If engine is the official English release (v1.10) or newer.
 	 */
-	bool IsRPG2k3v110();
+	bool IsRPG2k3E();
 
 	/** Output program version on stdout */
 	void PrintVersion();
