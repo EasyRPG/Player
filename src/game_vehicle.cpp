@@ -31,7 +31,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	assert(_type >= 1 && _type <= 3 && "Invalid Vehicle index");
 	type = _type;
 	driving = false;
-	SetDirection(RPG::EventPage::Direction_left);
+	SetDirection(Left);
 	walk_animation = type != Airship;
 	animation_type = RPG::EventPage::AnimType_continuous;
 	LoadSystemSettings();
@@ -198,8 +198,8 @@ void Game_Vehicle::SetFlashTimeLeft(int time_left) {
 }
 
 bool Game_Vehicle::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
-	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
+	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
+	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
@@ -272,8 +272,6 @@ void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetMapId(_map_id);
 	SetX(_x);
 	SetY(_y);
-	real_x = _x * SCREEN_TILE_WIDTH;
-	real_y = _y * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {
@@ -312,10 +310,10 @@ void Game_Vehicle::GetOff() {
 	if (type == Airship) {
 		walk_animation = false;
 		data.remaining_descent = SCREEN_TILE_WIDTH;
-		Main_Data::game_player->SetDirection(RPG::EventPage::Direction_left);
+		Main_Data::game_player->SetDirection(Left);
 	} else {
 		driving = false;
-		SetDirection(RPG::EventPage::Direction_left);
+		SetDirection(Left);
 	}
 }
 
@@ -326,9 +324,9 @@ bool Game_Vehicle::IsInUse() const {
 void Game_Vehicle::SyncWithPlayer() {
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
-	real_x = Main_Data::game_player->GetRealX();
-	real_y = Main_Data::game_player->GetRealY();
+	remaining_step = Main_Data::game_player->GetRemainingStep();
 	SetDirection(Main_Data::game_player->GetDirection());
+	SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
 }
 
 int Game_Vehicle::GetAltitude() const {

@@ -107,7 +107,7 @@ private:
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
-	void UpdateScroll(int last_real_x, int last_real_y);
+	void UpdateScroll();
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();
 	bool CheckActionEvent();

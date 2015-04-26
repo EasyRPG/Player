@@ -46,8 +46,6 @@ namespace {
 	std::string battleback_name;
 	bool need_refresh;
 
-	int parallax_auto_x;
-	int parallax_auto_y;
 	int parallax_x;
 	int parallax_y;
 	int animation_type;
@@ -312,19 +310,55 @@ void Game_Map::ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> i
 }
 
 void Game_Map::ScrollDown(int distance) {
-	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
+	if (LoopVertical()) {
+		int height = GetHeight() * SCREEN_TILE_WIDTH;
+		map_info.position_y = (map_info.position_y + distance + height) % height;
+		parallax_y -= map_info.parallax_vert ? distance / 2 : 0;
+	} else {
+		if (map_info.position_x + distance <= (GetHeight() - 15) * SCREEN_TILE_WIDTH) {
+			map_info.position_y += distance;
+			parallax_y -= map_info.parallax_vert ? distance / 2 : 0;
+		}
+	}
 }
 
 void Game_Map::ScrollLeft(int distance) {
-	map_info.position_x = max(map_info.position_x - distance, 0);
+	if (LoopHorizontal()) {
+		int width = GetWidth() * SCREEN_TILE_WIDTH;
+		map_info.position_x = (map_info.position_x - distance + width) % width;
+		parallax_x += map_info.parallax_horz ? distance / 2 : 0;
+	} else {
+		if (map_info.position_x - distance >= 0) {
+			map_info.position_x -= distance;
+			parallax_x += map_info.parallax_horz ? distance / 2 : 0;
+		}
+	}
 }
 
 void Game_Map::ScrollRight(int distance) {
-	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
+	if (LoopHorizontal()) {
+		int width = GetWidth() * SCREEN_TILE_WIDTH;
+		map_info.position_x = (map_info.position_x + distance + width) % width;
+		parallax_x -= map_info.parallax_horz ? distance / 2 : 0;
+	} else {
+		if (map_info.position_x + distance <= (GetWidth() - 20) * SCREEN_TILE_WIDTH) {
+			map_info.position_x += distance;
+			parallax_x -= map_info.parallax_horz ? distance / 2 : 0;
+		}
+	}
 }
 
 void Game_Map::ScrollUp(int distance) {
-	map_info.position_y = max(map_info.position_y - distance, 0);
+	if (LoopVertical()) {
+		int height = GetHeight() * SCREEN_TILE_WIDTH;
+		map_info.position_y = (map_info.position_y - distance + height) % height;
+		parallax_y += map_info.parallax_vert ? distance / 2 : 0;
+	} else {
+		if (map_info.position_y - distance >= 0) {
+			map_info.position_y -= distance;
+			parallax_y += map_info.parallax_vert ? distance / 2 : 0;
+		}
+	}
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -554,11 +588,11 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 }
 
 bool Game_Map::LoopHorizontal() {
-	return map->scroll_type == 2 || map->scroll_type == 3;
+	return map->scroll_type == RPG::Map::ScrollType_horizontal || map->scroll_type == RPG::Map::ScrollType_both;
 }
 
 bool Game_Map::LoopVertical() {
-	return map->scroll_type == 1 || map->scroll_type == 3;
+	return map->scroll_type == RPG::Map::ScrollType_vertical || map->scroll_type == RPG::Map::ScrollType_both;
 }
 
 int Game_Map::RoundX(int x) {
@@ -861,10 +895,12 @@ void Game_Map::SetParallaxScroll(bool horz, bool vert,
 	map_info.parallax_vert_auto = vert_auto;
 	map_info.parallax_horz_speed = horz_speed;
 	map_info.parallax_vert_speed = vert_speed;
-	parallax_auto_x = 0;
-	parallax_auto_y = 0;
-	parallax_x = 0;
-	parallax_y = 0;
+	InitializeParallax();
+}
+
+void Game_Map::InitializeParallax() {
+	parallax_x = map_info.parallax_horz ? -map_info.position_x / 2 : 0;
+	parallax_y = map_info.parallax_vert ? map_info.position_y : 0;
 }
 
 int Game_Map::GetMapIndex(int id) {
@@ -985,40 +1021,27 @@ void Game_Map::UpdateParallax() {
 	if (map_info.parallax_name.empty())
 		return;
 
-	const int base = SCREEN_TILE_WIDTH / 128;
-	if (map_info.parallax_horz) {
-		if (map_info.parallax_horz_auto) {
-			int step =
-				(map_info.parallax_horz_speed > 0) ? base << map_info.parallax_horz_speed :
-				(map_info.parallax_horz_speed < 0) ? -(base << -map_info.parallax_horz_speed) :
-				0;
-			parallax_auto_x += step;
-		}
-		parallax_x = map_info.position_x * 2 + parallax_auto_x;
-	} else
-		parallax_x = 0;
+	if (map_info.parallax_horz && map_info.parallax_horz_auto) {
+		parallax_x +=
+			map_info.parallax_horz_speed > 0 ? 1 << (map_info.parallax_horz_speed - 1) :
+			map_info.parallax_horz_speed < 0 ? -1 << (-map_info.parallax_horz_speed - 1) :
+			0;
+	}
 
-	if (map_info.parallax_vert) {
-		if (map_info.parallax_vert_auto) {
-			int step =
-				(map_info.parallax_vert_speed > 0) ? base << map_info.parallax_vert_speed :
-				(map_info.parallax_vert_speed < 0) ? -(base << -map_info.parallax_vert_speed) :
-				0;
-			parallax_auto_y += step;
-		}
-		parallax_y = map_info.position_y * 2 + parallax_auto_y;
-	} else
-		parallax_y = 0;
+	if (map_info.parallax_vert && map_info.parallax_vert_auto) {
+		parallax_y +=
+			map_info.parallax_vert_speed > 0 ? 1 << (map_info.parallax_vert_speed - 1) :
+			map_info.parallax_vert_speed < 0 ? -1 << (-map_info.parallax_vert_speed - 1) :
+			0;
+	}
 }
 
 int Game_Map::GetParallaxX() {
-	int px = parallax_x - map_info.position_x * (SCREEN_TILE_WIDTH / 64);
-	return (px < 0) ? -(-px / 64) : (px / 64);
+	return parallax_x / 16;
 }
 
 int Game_Map::GetParallaxY() {
-	int py = parallax_y - map_info.position_y * (SCREEN_TILE_WIDTH / 64);
-	return (py < 0) ? -(-py / 64) : (py / 64);
+	return parallax_y / 16;
 }
 
 const std::string& Game_Map::GetParallaxName() {

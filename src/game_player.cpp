@@ -27,6 +27,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include <algorithm>
+#include <cmath>
 
 Game_Player::Game_Player():
 	location(Main_Data::game_data.party_location),
@@ -244,10 +245,21 @@ bool Game_Player::IsTeleporting() const {
 void Game_Player::Center(int x, int y) {
 	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8 - Game_Map::GetPanX();
 	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
-	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * SCREEN_TILE_WIDTH;
-	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * SCREEN_TILE_WIDTH;
-	Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
-	Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
+
+	if (Game_Map::LoopHorizontal()) {
+		Game_Map::SetDisplayX(x*SCREEN_TILE_WIDTH - center_x);
+	} else {
+		int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * SCREEN_TILE_WIDTH;
+		Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
+	}
+
+	if (Game_Map::LoopVertical()) {
+		Game_Map::SetDisplayY(y * SCREEN_TILE_WIDTH - center_y);
+	} else {
+		int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * SCREEN_TILE_WIDTH;
+		Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
+	}
+	Game_Map::InitializeParallax();
 }
 
 void Game_Player::MoveTo(int x, int y) {
@@ -258,20 +270,31 @@ void Game_Player::MoveTo(int x, int y) {
 	Center(x, y);
 }
 
-void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
-	int center_x = (DisplayUi->GetWidth() / (TILE_SIZE / 16) - TILE_SIZE * 2) * 8 - Game_Map::GetPanX();
-	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
+void Game_Player::UpdateScroll() {
+	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - Game_Map::GetPanX() / (SCREEN_TILE_WIDTH / TILE_SIZE);
+	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - Game_Map::GetPanY() / (SCREEN_TILE_WIDTH / TILE_SIZE);
 	int dx = 0;
 	int dy = 0;
 
 	if (!Game_Map::IsPanLocked()) {
-		if ((real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x) ||
-			(real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)) {
-			dx = real_x - last_real_x;
-		}
-		if ((real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y) ||
-			(real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)) {
-			dy = real_y - last_real_y;
+		if (IsMoving()) {
+			int d = GetDirection();
+			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() >= center_x)
+				dx = 1;
+			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() <= center_x)
+				dx = -1;
+			dx <<= 1 + GetMoveSpeed();
+
+			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() >= center_y)
+				dy = 1;
+			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
+				dy = -1;
+			dy <<= 1 + GetMoveSpeed();
+		} else if (IsJumping()) {
+			int move_speed = GetMoveSpeed();
+			int diff = move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
+			dx += (GetX() - jump_x) * diff;
+			dy -= (GetY() - jump_y) * diff;
 		}
 	}
 
@@ -299,28 +322,24 @@ void Game_Player::Update() {
 	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
-				MoveDown();
+				Move(Down);
 				break;
 			case 4:
-				MoveLeft();
+				Move(Left);
 				break;
 			case 6:
-				MoveRight();
+				Move(Right);
 				break;
 			case 8:
-				MoveUp();
+				Move(Up);
 		}
 	}
 
-	int last_real_x = real_x;
-	int last_real_y = real_y;
-
+	UpdateScroll();
 	Game_Character::Update();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
-
-	UpdateScroll(last_real_x, last_real_y);
 
 	UpdateNonMoving(last_moving);
 }
