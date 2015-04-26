@@ -69,7 +69,10 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		panorama.SetBitmap(Cache::Panorama(panorama_name));
+		BitmapRef panorama_bmp = Cache::Panorama(panorama_name);
+		Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
+		panorama.SetBitmap(panorama_bmp);
+		Game_Map::InitializeParallax();
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());

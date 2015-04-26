@@ -259,7 +259,6 @@ void Game_Player::Center(int x, int y) {
 		int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * SCREEN_TILE_WIDTH;
 		Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
 	}
-	Game_Map::InitializeParallax();
 }
 
 void Game_Player::MoveTo(int x, int y) {
