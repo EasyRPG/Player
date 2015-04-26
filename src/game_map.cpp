@@ -1017,7 +1017,7 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = (SCREEN_TILE_WIDTH/128) << (pan_speed + 1);
+	int step = (SCREEN_TILE_WIDTH/128) << pan_speed;
 	int dx = location.pan_finish_x - location.pan_current_x;
 	int dy = location.pan_finish_y - location.pan_current_y;
 
