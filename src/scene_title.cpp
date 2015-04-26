@@ -77,7 +77,6 @@ void Scene_Title::TransitionIn() {
 		if (!Player::hide_title_flag) {
 			Graphics::Transition(Graphics::TransitionFadeIn, 32);
 		} else {
-			DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 			Graphics::Transition(Graphics::TransitionFadeIn, 6);
 		}
 	}
@@ -92,6 +91,10 @@ void Scene_Title::Suspend() {
 }
 
 void Scene_Title::Update() {
+	if (!title_ready) {
+		title->SetBitmap(Cache::Title(Data::system.title_name, title_ready));
+	}
+
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
 		return;
@@ -143,9 +146,8 @@ void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
 	{
-		if (Data::system.title_name.empty()) { return; }
+		title_ready = Data::system.title_name.empty();
 		title.reset(new Sprite());
-		title->SetBitmap(Cache::Title(Data::system.title_name));
 	}
 }
 

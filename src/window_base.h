@@ -44,6 +44,8 @@ public:
 	 */
 	virtual void Update();
 
+	virtual void Refresh();
+
 	/**
 	 * Draw helpers.
 	 */

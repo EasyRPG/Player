@@ -107,6 +107,8 @@ private:
 
 	/** Contains the state of continue button. */
 	bool continue_enabled;
+
+	bool title_ready;
 };
 
 #endif

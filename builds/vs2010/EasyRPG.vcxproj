@@ -337,6 +337,7 @@
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\effects.cpp" />
+    <ClCompile Include="..\..\src\event_system.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
@@ -469,6 +470,7 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
+    <ClInclude Include="..\..\src\event_system.h" />
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />

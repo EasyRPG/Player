@@ -116,9 +116,12 @@ void Player::Init(int argc, char *argv[]) {
 	
 	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
 
+	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
-		FS.mkdir('/Save');
+		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save']
+		dirs.forEach(function(dir) { FS.mkdir('/' + dir });
+
 		FS.mount(IDBFS, {}, '/Save');
 	
 		FS.syncfs(true, function(err) {
@@ -151,6 +154,36 @@ void Player::Init(int argc, char *argv[]) {
 	init = true;
 }
 
+#ifdef EMSCRIPTEN
+// Request Database, Maptree and Ini for download
+// When all 3 requests are finished start the Player
+// Doesn't matter when download fails, in this case the Player will report
+// error later.
+
+static void asset_status(const char*) {
+	static int i = 0;
+	++i;
+
+	if (i >= 3) {
+		FileFinder::Init();
+
+		emscripten_cancel_main_loop();
+		emscripten_set_main_loop(Player::MainLoop, 0, 0);
+	}
+}
+
+static void download_assets() {
+	static bool init = false;
+	if (!init) {
+		emscripten_async_wget(DATABASE_NAME, DATABASE_NAME, asset_status, asset_status);
+		emscripten_async_wget(TREEMAP_NAME, TREEMAP_NAME, asset_status, asset_status);
+		emscripten_async_wget(INI_NAME, INI_NAME, asset_status, asset_status);
+
+		init = true;
+	}
+}
+#endif
+
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 
@@ -163,7 +196,7 @@ void Player::Run() {
 
 	// Main loop
 #ifdef EMSCRIPTEN
-	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+	emscripten_set_main_loop(download_assets, 0, 0);
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		Player::MainLoop();

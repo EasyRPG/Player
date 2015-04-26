@@ -23,32 +23,35 @@
 
 #include "system.h"
 #include "color.h"
+#include "event_system.h"
+#include "memory_management.h"
 
 /**
  * Cache namespace.
  */
 namespace Cache {
-	BitmapRef Backdrop(const std::string& filename);
-	BitmapRef Battle(const std::string& filename);
-	BitmapRef Battle2(const std::string& filename);
-	BitmapRef Battlecharset(const std::string& filename);
-	BitmapRef Battleweapon(const std::string& filename);
-	BitmapRef Charset(const std::string& filename);
+	BitmapRef Backdrop(const std::string& filename, bool& ready);
+	BitmapRef Battle(const std::string& filename, bool& ready);
+	BitmapRef Battle2(const std::string& filename, bool& ready);
+	BitmapRef Battlecharset(const std::string& filename, bool& ready);
+	BitmapRef Battleweapon(const std::string& filename, bool& ready);
+	BitmapRef Charset(const std::string& filename, bool& ready);
 	BitmapRef Exfont();
-	BitmapRef Faceset(const std::string& filename);
-	BitmapRef Frame(const std::string& filename);
-	BitmapRef Gameover(const std::string& filename);
-	BitmapRef Monster(const std::string& filename);
-	BitmapRef Panorama(const std::string& filename);
-	BitmapRef Picture(const std::string& filename, bool transparent);
-	BitmapRef Chipset(const std::string& filename);
-	BitmapRef Title(const std::string& filename);
-	BitmapRef System(const std::string& filename);
-	BitmapRef System2(const std::string& filename);
+	BitmapRef Faceset(const std::string& filename, bool& ready);
+	BitmapRef Frame(const std::string& filename, bool& ready);
+	BitmapRef Gameover(const std::string& filename, bool& ready);
+	BitmapRef Monster(const std::string& filename, bool& ready);
+	BitmapRef Panorama(const std::string& filename, bool& ready);
+	BitmapRef Picture(const std::string& filename, bool transparent, bool& ready);
+	BitmapRef Chipset(const std::string& filename, bool& ready);
+	BitmapRef Title(const std::string& filename, bool& ready);
+	BitmapRef System(const std::string& filename, bool& ready);
+	BitmapRef System2(const std::string& filename, bool& ready);
 	BitmapRef Tile(const std::string& filename, int tile_id);
+
 	void Clear();
 
-	BitmapRef System();
+	BitmapRef System(bool& ready);
 	void SetSystemName(std::string const& filename);
 }
 

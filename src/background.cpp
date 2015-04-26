@@ -32,7 +32,8 @@ Background::Background(const std::string& name) :
 
 	Graphics::RegisterDrawable(this);
 
-	bg_bitmap = Cache::Backdrop(name);
+	bool ready;
+	bg_bitmap = Cache::Backdrop(name, ready); // TODO
 }
 
 Background::Background(int terrain_id) :
@@ -45,16 +46,18 @@ Background::Background(int terrain_id) :
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
 	if (terrain.background_type == 0) {
-		bg_bitmap = Cache::Backdrop(terrain.background_name);
+		bool ready;
+		bg_bitmap = Cache::Backdrop(terrain.background_name, ready); // TODO
 		return;
 	}
 
-	bg_bitmap = Cache::Frame(terrain.background_a_name);
+	bool ready;
+	bg_bitmap = Cache::Frame(terrain.background_a_name, ready); // TODO
 	bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
 	bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
 
 	if (terrain.background_b) {
-		fg_bitmap = Cache::Frame(terrain.background_b_name);
+		fg_bitmap = Cache::Frame(terrain.background_b_name, ready); // TODO
 		fg_hscroll = terrain.background_b_scrollh ? terrain.background_b_scrollh_speed : 0;
 		fg_vscroll = terrain.background_b_scrollv ? terrain.background_b_scrollv_speed : 0;
 	}

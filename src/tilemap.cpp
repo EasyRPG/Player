@@ -34,8 +34,10 @@ BitmapRef const& Tilemap::GetChipset() const {
 	return layer_down.GetChipset();
 }
 void Tilemap::SetChipset(BitmapRef const& chipset) {
-	layer_down.SetChipset(chipset);
-	layer_up.SetChipset(chipset);
+	if (chipset) {
+		layer_down.SetChipset(chipset);
+		layer_up.SetChipset(chipset);
+	}
 }
 std::vector<short> Tilemap::GetMapDataDown() const {
 	return layer_down.GetMapData();

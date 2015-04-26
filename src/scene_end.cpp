@@ -35,8 +35,6 @@ Scene_End::Scene_End() {
 void Scene_End::Start() {
 	CreateCommandWindow();
 	CreateHelpWindow();
-
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 }
 
 void Scene_End::Update() {

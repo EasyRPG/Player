@@ -91,7 +91,8 @@ void Scene_Battle_Rpg2k3::Update() {
 }
 
 void Scene_Battle_Rpg2k3::CreateCursors() {
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
+	bool ready;
+	BitmapRef system2 = Cache::System2(Data::system.system2_name, ready); // TODO
 
 	ally_cursor.reset(new Sprite());
 	ally_cursor->SetBitmap(system2);

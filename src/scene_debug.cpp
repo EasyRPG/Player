@@ -38,8 +38,6 @@ Scene_Debug::Scene_Debug() {
 }
 
 void Scene_Debug::Start() {
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
-
 	current_var_type = TypeSwitch;
 	range_index = 0;
 	range_page = 0;

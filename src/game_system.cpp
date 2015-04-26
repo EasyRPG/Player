@@ -49,6 +49,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 				Audio().BGM_Pitch(bgm.tempo);
 			}
 		} else {
+			// TODO Async playback
 			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
 		}
 	} else {
@@ -69,6 +70,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 		// startup. Probably for caching. This triggers "No free channels"
 		// warnings.
 		if (se.volume > 0) {
+			// TODO Async load
 			Audio().SE_Play(se.name, se.volume, se.tempo);
 		}
 	}

@@ -64,6 +64,8 @@ private:
 
 	int chara_width;
 	int chara_height;
+
+	bool async_ready;
 };
 
 #endif

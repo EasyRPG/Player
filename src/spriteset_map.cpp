@@ -60,6 +60,10 @@ Spriteset_Map::Spriteset_Map() {
 
 // Update
 void Spriteset_Map::Update() {
+	if (!chipset_ready) {
+		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName(), chipset_ready));
+	}
+
 	tilemap.SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap.SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap.Update();
@@ -69,7 +73,8 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		BitmapRef panorama_bmp = Cache::Panorama(panorama_name);
+		bool ready;
+		BitmapRef panorama_bmp = Cache::Panorama(panorama_name, ready);
 		Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
 		panorama.SetBitmap(panorama_bmp);
 		Game_Map::InitializeParallax();
@@ -96,11 +101,9 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	if (!Game_Map::GetChipsetName().empty()) {
-		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
-	} else {
-		tilemap.SetChipset(Bitmap::Create(480, 256, true));
-	}
+	chipset_ready = Game_Map::GetChipsetName().empty();
+	tilemap.SetChipset(Bitmap::Create(480, 256, true));
+
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
 	tilemap.SetAnimationType(Game_Map::GetAnimationType());

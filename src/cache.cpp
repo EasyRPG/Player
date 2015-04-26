@@ -47,20 +47,34 @@ namespace {
 	static std::string system_name;
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
-						 bool transparent, uint32_t const flags) {
+						 bool transparent, uint32_t const flags, bool& ready) {
 		string_pair const key(folder_name, filename);
 
 		cache_type::const_iterator const it = cache.find(key);
 
 		if (it == cache.end() || it->second.expired()) {
-			std::string const path = FileFinder::FindImage(folder_name, filename);
+			FileLoaderAsync loader = AsyncManager::RequestBitmap(folder_name, filename);
 
-			if (path.empty()) {
+			if (loader.state == 1) {
+				std::string const path = loader.GetPath();
+				ready = true;
+				return (cache[key] = Bitmap::Create(path, transparent, flags)).lock();
+			}
+			else if (loader.state == 0) {
+				// pending
+				ready = false;
 				return BitmapRef();
 			}
+			else if (loader.state == 2) {
+				// oops
+				ready = true;
+			}
 
-			return (cache[key] = Bitmap::Create(path, transparent, flags)).lock();
-		} else { return it->second.lock(); }
+			return BitmapRef();			
+		} else { 
+			ready = true;
+			return it->second.lock();
+		}
 	}
 
 	struct Material {
@@ -139,16 +153,22 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
+	BitmapRef LoadBitmap(std::string const& f, bool transparent, bool& ready) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
 		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
 										 T == Material::Chipset? Bitmap::Chipset:
 										 T == Material::System? Bitmap::System:
-										 0);
+										 0, ready);
 
-		if (!ret) {
+		if (!ready) {
+			// Will crash nicely :)
+			Output::Debug("Waiting for %s/%s", s.directory, f.c_str());
+			return ret;
+		}
+
+		if (ready && !ret) {
 			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
 
 			return LoadDummyBitmap<T>(s.directory, f);
@@ -167,9 +187,9 @@ namespace {
 }
 
 #define macro(r, data, elem) \
-	BitmapRef Cache::elem(const std::string& f) { \
+	BitmapRef Cache::elem(const std::string& f, bool& ready) { \
 		bool trans = spec[Material::elem].transparent; \
-		return LoadBitmap<Material::elem>(f, trans); \
+		return LoadBitmap<Material::elem>(f, trans, ready); \
 	}
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
@@ -180,8 +200,8 @@ BOOST_PP_SEQ_FOR_EACH(macro, ,
 
 #undef macro
 
-BitmapRef Cache::Picture(const std::string& f, bool trans) {
-	return LoadBitmap<Material::Picture>(f, trans);
+BitmapRef Cache::Picture(const std::string& f, bool trans, bool& ready) {
+	return LoadBitmap<Material::Picture>(f, trans, ready);
 }
 
 BitmapRef Cache::Exfont() {
@@ -199,7 +219,8 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
 
 	if (it == cache_tiles.end() || it->second.expired()) {
-		BitmapRef chipset = Cache::Chipset(filename);
+		bool ready;
+		BitmapRef chipset = Cache::Chipset(filename, ready); // TODO
 		Rect rect = Rect(0, 0, 16, 16);
 
 		int sub_tile_id = 0;
@@ -247,13 +268,13 @@ void Cache::SetSystemName(std::string const& filename) {
 	system_name = filename;
 }
 
-BitmapRef Cache::System() {
+BitmapRef Cache::System(bool& ready) {
 	if (!system_name.empty()) {
-		return Cache::System(system_name);
+		return Cache::System(system_name, ready);
 	} else {
 		if (!Data::system.system_name.empty()) {
 			// Load the system file for the shadow and text color
-			return Cache::System(Data::system.system_name);
+			return Cache::System(Data::system.system_name, ready);
 		} else {
 			return Bitmap::Create(160, 80, false);
 		}

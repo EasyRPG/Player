@@ -42,8 +42,6 @@ Scene_Menu::Scene_Menu(int menu_index) :
 }
 
 void Scene_Menu::Start() {
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
-
 	CreateCommandWindow();
 
 	// Gold Window

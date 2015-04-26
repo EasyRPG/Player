@@ -287,10 +287,10 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
+FileFinder::ProjectTree const& FileFinder::GetProjectTree(bool init) {
 	static ProjectTree tree_;
 
-	if(tree_.project_path != Main_Data::project_path) {
+	if(tree_.project_path != Main_Data::project_path || init) {
 		EASYRPG_SHARED_PTR<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
 		if(! t) {
 			Output::Error("invalid project path: %s", Main_Data::project_path.c_str());
@@ -303,7 +303,7 @@ FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 }
 
 void FileFinder::Init() {
-	GetProjectTree(); // empty call
+	GetProjectTree(true); // empty call
 }
 
 static void add_rtp_path(std::string const& p) {
