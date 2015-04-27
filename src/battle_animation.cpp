@@ -39,7 +39,7 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 		graphic = Cache::Battle2(name);
 	}
 	else {
-		Output::Warning("Couldn't find animation: %s", name.c_str());
+		Output::Debug("Called battle animation without graphic file");
 		return;
 	}
 
