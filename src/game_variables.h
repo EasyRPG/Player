@@ -33,7 +33,7 @@ public:
 
 	int& operator[] (int variable_id) {
 		if (!isValidVar(variable_id)) {
-			Output::Warning("Variable index %d is invalid.",
+			Output::Debug("Variable index %d is invalid.",
 							variable_id);
 			dummy = 0;
 			return dummy;
@@ -44,7 +44,7 @@ public:
 
 	std::string GetName(int _id) {
 		if (!isValidVar(_id)) {
-			Output::Warning("Variable index %d is invalid.\n",
+			Output::Debug("Variable index %d is invalid.\n",
 				_id);
 			return "";
 		}
