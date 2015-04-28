@@ -48,6 +48,8 @@ namespace {
 
 	int parallax_x;
 	int parallax_y;
+	int parallax_width;
+	int parallax_height;
 	int animation_type;
 	bool animation_fast;
 
@@ -315,9 +317,13 @@ void Game_Map::ScrollDown(int distance) {
 		map_info.position_y = (map_info.position_y + distance + height) % height;
 		parallax_y -= map_info.parallax_vert ? distance / 2 : 0;
 	} else {
-		if (map_info.position_x + distance <= (GetHeight() - 15) * SCREEN_TILE_WIDTH) {
+		if (map_info.position_y + distance <= (GetHeight() - 15) * SCREEN_TILE_WIDTH) {
 			map_info.position_y += distance;
-			parallax_y -= map_info.parallax_vert ? distance / 2 : 0;
+			if (map_info.parallax_vert)
+				parallax_y -= distance / 2;
+			else if (!LoopVertical() && GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+				parallax_y -=
+					std::min(distance, (distance / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
 		}
 	}
 }
@@ -330,7 +336,11 @@ void Game_Map::ScrollLeft(int distance) {
 	} else {
 		if (map_info.position_x - distance >= 0) {
 			map_info.position_x -= distance;
-			parallax_x += map_info.parallax_horz ? distance / 2 : 0;
+			if (map_info.parallax_horz)
+				parallax_x += distance / 2;
+			else if (!LoopHorizontal() && GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+				parallax_x +=
+					std::min(distance, (distance / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
 		}
 	}
 }
@@ -343,7 +353,11 @@ void Game_Map::ScrollRight(int distance) {
 	} else {
 		if (map_info.position_x + distance <= (GetWidth() - 20) * SCREEN_TILE_WIDTH) {
 			map_info.position_x += distance;
-			parallax_x -= map_info.parallax_horz ? distance / 2 : 0;
+			if (map_info.parallax_horz)
+				parallax_x -= distance / 2;
+			else if (!LoopHorizontal() && GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+				parallax_x -=
+					std::min(distance, (distance / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
 		}
 	}
 }
@@ -356,7 +370,11 @@ void Game_Map::ScrollUp(int distance) {
 	} else {
 		if (map_info.position_y - distance >= 0) {
 			map_info.position_y -= distance;
-			parallax_y += map_info.parallax_vert ? distance / 2 : 0;
+			if (map_info.parallax_vert)
+				parallax_y += distance / 2;
+			else if (!LoopVertical() && GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+				parallax_y +=
+					std::min(distance, (distance / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
 		}
 	}
 }
@@ -895,12 +913,29 @@ void Game_Map::SetParallaxScroll(bool horz, bool vert,
 	map_info.parallax_vert_auto = vert_auto;
 	map_info.parallax_horz_speed = horz_speed;
 	map_info.parallax_vert_speed = vert_speed;
-	InitializeParallax();
+}
+
+void Game_Map::SetParallaxSize(int width, int height) {
+	parallax_width = width;
+	parallax_height = height;
 }
 
 void Game_Map::InitializeParallax() {
-	parallax_x = map_info.parallax_horz ? -map_info.position_x / 2 : 0;
-	parallax_y = map_info.parallax_vert ? map_info.position_y : 0;
+	if (map_info.parallax_horz)
+		parallax_x = -map_info.position_x / 2;
+	else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+		parallax_x = -std::min(map_info.position_x,
+			(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
+	else
+		parallax_x = 0;
+
+	if (map_info.parallax_vert)
+		parallax_y = -map_info.position_y / 2;
+	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+		parallax_y = -std::min(map_info.position_y, 
+			(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
+	else
+		parallax_y = 0;
 }
 
 int Game_Map::GetMapIndex(int id) {
@@ -982,7 +1017,7 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = (SCREEN_TILE_WIDTH/128) << (pan_speed + 1);
+	int step = (SCREEN_TILE_WIDTH/128) << pan_speed;
 	int dx = location.pan_finish_x - location.pan_current_x;
 	int dy = location.pan_finish_y - location.pan_current_y;
 
@@ -1037,11 +1072,11 @@ void Game_Map::UpdateParallax() {
 }
 
 int Game_Map::GetParallaxX() {
-	return parallax_x / 16;
+	return parallax_x / TILE_SIZE;
 }
 
 int Game_Map::GetParallaxY() {
-	return parallax_y / 16;
+	return parallax_y / TILE_SIZE;
 }
 
 const std::string& Game_Map::GetParallaxName() {
