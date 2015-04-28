@@ -33,7 +33,7 @@ public:
 
 	std::vector<bool>::reference operator[](int switch_id) {
 		if (!isValidSwitch(switch_id)) {
-			Output::Warning("Switch index %d is invalid.", switch_id);
+			Output::Debug("Switch index %d is invalid.", switch_id);
 			dummy.resize(1);
 			return dummy[0];
 		}
@@ -43,7 +43,7 @@ public:
 	
 	std::string GetName(int _id) {
 		if (!isValidSwitch(_id)) {
-			Output::Warning("Switch index %d is invalid.\n",
+			Output::Debug("Switch index %d is invalid.\n",
 				_id);
 			return "";
 		}
