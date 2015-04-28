@@ -30,6 +30,8 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
 
+	if (name.empty()) return;
+
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
 		graphic = Cache::Battle(name);
@@ -39,7 +41,7 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 		graphic = Cache::Battle2(name);
 	}
 	else {
-		Output::Debug("Called battle animation without graphic file");
+		Output::Warning("Couldn't find animation: %s", name.c_str());
 		return;
 	}
 
