@@ -119,8 +119,8 @@ void Player::Init(int argc, char *argv[]) {
 	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
-		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save']
-		dirs.forEach(function(dir) { FS.mkdir('/' + dir });
+		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
+		dirs.forEach(function(dir) { FS.mkdir('/' + dir) });
 
 		FS.mount(IDBFS, {}, '/Save');
 	
@@ -575,6 +575,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_data.screen.Fixup();
 	Game_Actors::Fixup();
 
+	// TODO: Place in functor
 	Game_Map::SetupFromSave();
 
 	Main_Data::game_player->MoveTo(
@@ -586,17 +587,17 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_System::BgmPlay(current_music);
 }
 
-void Player::SetupPlayerSpawn() {
+static void SetupPlayerSpawnAsync() {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
 	int x_pos = Player::party_x_position == -1 ?
 		Data::treemap.start.party_x : Player::party_x_position;
 	int y_pos = Player::party_y_position == -1 ?
 		Data::treemap.start.party_y : Player::party_y_position;
-	if (party_members.size() > 0) {
+	if (Player::party_members.size() > 0) {
 		Main_Data::game_party->Clear();
 		std::vector<int>::iterator member;
-		for (member = party_members.begin(); member != party_members.end(); ++member) {
+		for (member = Player::party_members.begin(); member != Player::party_members.end(); ++member) {
 			Main_Data::game_party->AddActor(*member);
 		}
 	}
@@ -605,6 +606,17 @@ void Player::SetupPlayerSpawn() {
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
 	Game_Map::PlayBgm();
+}
+#include <iomanip>
+void Player::SetupPlayerSpawn() {
+	int map_id = Player::start_map_id == -1 ?
+		Data::treemap.start.party_map_id : Player::start_map_id;
+
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
+
+	AsyncManager::RequestFile(".", ss.str(), SetupPlayerSpawnAsync, true);
+
 }
 
 std::string Player::GetEncoding() {

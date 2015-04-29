@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include "event_system.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -64,6 +65,10 @@ Scene::Scene() {
 
 void Scene::MainFunction() {
 	static bool init = false;
+
+	if (AsyncManager::IsCriticalPending()) {
+		return;
+	}
 
 	if (Graphics::IsTransitionPending()) {
 		Player::Update(false);

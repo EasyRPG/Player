@@ -27,7 +27,8 @@ class BitmapAsync;
 
 namespace AsyncManager {
 	FileLoaderAsync RequestBitmap(const std::string& folder_name, const std::string& filename);
-	FileLoaderAsync RequestFile(const std::string& folder_name, const std::string& filename);
+	FileLoaderAsync RequestFile(const std::string& folder_name, const std::string& filename, void(*call_after_finish)(), bool critical);
+	bool IsCriticalPending();
 	void Update();
 
 	typedef std::string(*search_function)(const std::string&, const std::string&);
@@ -39,16 +40,20 @@ namespace AsyncManager {
 	class FileLoaderAsync {
 	public:
 		FileLoaderAsync();
-		FileLoaderAsync(const std::string& folder_name, const std::string& filename, AsyncManager::search_function search_func);
+		FileLoaderAsync(const std::string& folder_name, const std::string& filename, AsyncManager::search_function search_func, void(*call_after_finish)(), bool critical);
 
 		bool IsReady() const;
 
 		void UpdateProgress();
 
 		std::string GetPath() const;
+		std::string GetName() const;
 
 		int state;
 		bool fake_wait;
+		void(*call_after_finish)();
+		bool critical;
+
 	private:
 
 		std::string folder_name;

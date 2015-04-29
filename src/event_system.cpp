@@ -19,16 +19,24 @@
 #include "memory_management.h"
 #include "filefinder.h"
 #include <map>
+#include "output.h"
+#include <cstdlib>
+
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 
 bool FileLoaderAsync::IsReady() const {
 	return ready;
 }
 
-FileLoaderAsync::FileLoaderAsync(const std::string& folder_name, const std::string& filename, AsyncManager::search_function search_func) {
+FileLoaderAsync::FileLoaderAsync(const std::string& folder_name, const std::string& filename, AsyncManager::search_function search_func, void(*call_after_finish)() = NULL, bool critical = false) {
 	std::string path = search_func(folder_name, filename);
 	this->search_func = search_func;
 	this->folder_name = folder_name;
 	this->filename = filename;
+	this->call_after_finish = call_after_finish;
+	this->critical = critical;
 
 	if (!path.empty()) {
 		// File is already there but we fake a pending to detect bugs
@@ -40,7 +48,7 @@ FileLoaderAsync::FileLoaderAsync(const std::string& folder_name, const std::stri
 #ifdef EMSCRIPTEN
 		state = 0;
 		std::string p = FileFinder::MakePath(folder_name, filename);
-		emscripten_async_wget(p, p, download_success, download_failure);
+		emscripten_async_wget(("/games/testgame-2000/" + p).c_str(), p.c_str(), AsyncManager::download_success, AsyncManager::download_failure);
 #else
 		state = 2;
 #endif
@@ -57,14 +65,20 @@ std::string FileLoaderAsync::GetPath() const {
 
 void FileLoaderAsync::UpdateProgress() {
 	if (fake_wait) {
-		fake_wait = false;
-		if (GetPath().empty()) {
-			state = 2;
-		}
-		else {
-			state = 1;
+		if (rand() % 100 == 0) {
+			fake_wait = false;
+			if (GetPath().empty()) {
+				AsyncManager::download_failure(GetName().c_str());
+			}
+			else {
+				AsyncManager::download_success(GetName().c_str());
+			}
 		}
 	}
+}
+
+std::string FileLoaderAsync::GetName() const {
+	return FileFinder::MakePath(folder_name, filename);
 }
 
 namespace {
@@ -77,10 +91,7 @@ FileLoaderAsync AsyncManager::RequestBitmap(const std::string& folder_name, cons
 	std::map<std::string, FileLoaderAsync>::iterator it = pending.find(path);
 
 	if (it != pending.end()) {
-		if (it->second.fake_wait) {
-			it->second.UpdateProgress();
-		}
-		it->second.fake_wait = false;
+		it->second.UpdateProgress();
 		return it->second;
 	}
 
@@ -89,19 +100,17 @@ FileLoaderAsync AsyncManager::RequestBitmap(const std::string& folder_name, cons
 	return pending[path];
 }
 
-FileLoaderAsync AsyncManager::RequestFile(const std::string& folder_name, const std::string& filename) {
+FileLoaderAsync AsyncManager::RequestFile(const std::string& folder_name, const std::string& filename, void (*call_after_finish)()=NULL, bool critical=false) {
 	std::string path = FileFinder::MakePath(folder_name, filename);
 
 	std::map<std::string, FileLoaderAsync>::iterator it = pending.find(path);
 
 	if (it != pending.end()) {
-		if (it->second.fake_wait) {
-			it->second.UpdateProgress();
-		}
+		it->second.UpdateProgress();
 		return it->second;
 	}
 
-	pending[path] = FileLoaderAsync(folder_name, filename, &FileFinder::FindDefault);
+	pending[path] = FileLoaderAsync(folder_name, filename, &FileFinder::FindDefault, call_after_finish, critical);
 
 	return pending[path];
 }
@@ -109,17 +118,43 @@ FileLoaderAsync AsyncManager::RequestFile(const std::string& folder_name, const 
 void AsyncManager::download_success(const char* filename) {
 	std::map<std::string, FileLoaderAsync>::iterator it = pending.find(filename);
 
-	if (it != pending.end()) {
-		it->second.state = 1;
-	}
+	Output::Debug("DL Success %s", it->second.GetName().c_str());
 
 	FileFinder::Init();
+
+	if (it != pending.end()) {
+		it->second.state = 1;
+		if (it->second.call_after_finish) {
+			it->second.call_after_finish();
+		}
+	}
 }
 
 void AsyncManager::download_failure(const char* filename) {
 	std::map<std::string, FileLoaderAsync>::iterator it = pending.find(filename);
 
+	Output::Debug("DL Failure %s", it->second.GetName().c_str());
+
 	if (it != pending.end()) {
 		it->second.state = 2;
+		if (it->second.call_after_finish) {
+			it->second.call_after_finish();
+		}
 	}
 }
+
+bool AsyncManager::IsCriticalPending() {
+	std::map<std::string, FileLoaderAsync>::iterator it;
+
+	for (it = pending.begin(); it != pending.end(); ++it) {
+		it->second.UpdateProgress();
+
+		if (it->second.state == 0 && it->second.critical) {
+			Output::Debug("Waiting for %s", it->second.GetName().c_str());
+			return true;
+		}
+	}
+
+	return false;
+}
+
