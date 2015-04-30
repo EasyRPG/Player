@@ -329,6 +329,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\al_audio.cpp" />
+    <ClCompile Include="..\..\src\async_handler.cpp" />
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
@@ -337,7 +338,6 @@
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\effects.cpp" />
-    <ClCompile Include="..\..\src\event_system.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
@@ -460,6 +460,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\al_audio.h" />
+    <ClInclude Include="..\..\src\async_handler.h" />
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />
@@ -470,7 +471,6 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
-    <ClInclude Include="..\..\src\event_system.h" />
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />

@@ -615,7 +615,7 @@ void Player::SetupPlayerSpawn() {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
 
-	AsyncManager::RequestFile(".", ss.str(), SetupPlayerSpawnAsync, true);
+	//AsyncHandler::RequestFile(".", ss.str(), SetupPlayerSpawnAsync, true);
 
 }
 

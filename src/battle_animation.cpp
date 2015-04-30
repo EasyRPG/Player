@@ -29,17 +29,15 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 {
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
-	bool ready;
 
 	if (name.empty()) return;
 
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
-		graphic = Cache::Battle(name, ready); // TODO
+		graphic = Cache::Battle(name); // TODO
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		large = true;
-		graphic = Cache::Battle2(name, ready); // TODO
+		graphic = Cache::Battle2(name); // TODO
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());

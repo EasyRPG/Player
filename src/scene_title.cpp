@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include "scene_title.h"
+#include "async_handler.h"
 #include "audio.h"
 #include "bitmap.h"
 #include "cache.h"
@@ -91,10 +92,6 @@ void Scene_Title::Suspend() {
 }
 
 void Scene_Title::Update() {
-	if (!title_ready) {
-		title->SetBitmap(Cache::Title(Data::system.title_name, title_ready));
-	}
-
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
 		return;
@@ -146,8 +143,10 @@ void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
 	{
-		title_ready = Data::system.title_name.empty();
 		title.reset(new Sprite());
+		FileLoaderAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+		request->Bind(&Scene_Title::OnTitleSpriteReady, this);
+		request->Start();
 	}
 }
 
@@ -216,7 +215,6 @@ void Scene_Title::CommandContinue() {
 		return;
 	}
 
-	// Change scene
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
 }
 
@@ -225,4 +223,8 @@ void Scene_Title::CommandShutdown() {
 	Audio().BGS_Fade(800);
 	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
 	Scene::Pop();
+}
+
+void Scene_Title::OnTitleSpriteReady(bool) {
+	title->SetBitmap(Cache::Title(Data::system.title_name));
 }

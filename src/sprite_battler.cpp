@@ -123,8 +123,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 
-			bool ready;
-			SetBitmap(Cache::Battlecharset(sprite_file, ready));
+			SetBitmap(Cache::Battlecharset(sprite_file));
 			SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
 		}
 	}
@@ -144,8 +143,7 @@ void Sprite_Battler::CreateSprite() {
 			graphic = Bitmap::Create(0, 0);
 		}
 		else {
-			bool ready;
-			graphic = Cache::Monster(sprite_name, ready); // TODO
+			graphic = Cache::Monster(sprite_name); // TODO
 		}
 		SetOx(graphic->GetWidth() / 2);
 		SetOy(graphic->GetHeight() / 2);

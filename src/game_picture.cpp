@@ -74,8 +74,7 @@ void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	data.transparency = _transparency;
 	data.time_left = 0;
 
-	bool ready;
-	BitmapRef bitmap = Cache::Picture(data.name, data.transparency, ready); // TODO
+	BitmapRef bitmap = Cache::Picture(data.name, data.transparency); // TODO
 
 	sprite.reset(new Sprite());
 	sprite->SetBitmap(bitmap);

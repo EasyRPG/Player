@@ -58,8 +58,8 @@ void Sprite_Timer::Draw() {
 	if (system_name.empty()) {
 		return;
 	}
-	bool ready;
-	BitmapRef system = Cache::System(system_name, ready); // TODO
+
+	BitmapRef system = Cache::System(system_name); // TODO
 
 	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {

@@ -10,6 +10,8 @@ noinst_LTLIBRARIES = libeasyrpg-player.la
 libeasyrpg_player_la_SOURCES = \
  	src/al_audio.cpp \
 	src/al_audio.h \
+	src/async_handler.cpp \
+	src/async_handler.h \
 	src/audio.cpp \
 	src/audio.h \
 	src/background.cpp \

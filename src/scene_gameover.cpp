@@ -31,8 +31,7 @@ void Scene_Gameover::Start() {
 	if (!Data::system.gameover_name.empty()) {
 		// Load Background Graphic
 		background.reset(new Sprite());
-		bool ready;
-		background->SetBitmap(Cache::Gameover(Data::system.gameover_name, ready)); // TODO
+		background->SetBitmap(Cache::Gameover(Data::system.gameover_name)); // TODO
 	}
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));

@@ -18,6 +18,8 @@
 #ifndef _EASYRPG_ASYNC_MANAGER_H_
 #define _EASYRPG_ASYNC_MANAGER_H_
 
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 #include <string>
 #include <vector>
 
@@ -25,41 +27,47 @@ class FileLoaderAsync;
 class BitmapAsync;
 #include "stdint.h"
 
-namespace AsyncManager {
-	FileLoaderAsync RequestBitmap(const std::string& folder_name, const std::string& filename);
-	FileLoaderAsync RequestFile(const std::string& folder_name, const std::string& filename, void(*call_after_finish)(), bool critical);
-	bool IsCriticalPending();
+namespace AsyncHandler {
+	FileLoaderAsync* RequestFile(const std::string& folder_name, const std::string& filename);
+
+	bool IsImportantFilePending();
 	void Update();
-
-	typedef std::string(*search_function)(const std::string&, const std::string&);
-
-	void download_success(const char* filename);
-	void download_failure(const char* filename);
 }
 
 	class FileLoaderAsync {
 	public:
 		FileLoaderAsync();
-		FileLoaderAsync(const std::string& folder_name, const std::string& filename, AsyncManager::search_function search_func, void(*call_after_finish)(), bool critical);
+		FileLoaderAsync(const std::string& path);
 
 		bool IsReady() const;
+		bool IsImportantFile() const;
+		void SetImportantFile(bool important);
+
+		void Start();
 
 		void UpdateProgress();
 
-		std::string GetPath() const;
-		std::string GetName() const;
+		const std::string& GetPath() const;
 
-		int state;
-		bool fake_wait;
-		void(*call_after_finish)();
-		bool critical;
+		std::vector<boost::function<void(bool)> > listeners;
+		template<typename T> void Bind(void (T::*func)(bool), T* that);
 
+		void Bind(void (*func)(int));
 	private:
+		void CallListeners(bool success);
 
-		std::string folder_name;
-		std::string filename;
-		int progress;
-		bool ready;
-		AsyncManager::search_function search_func;
+		void DownloadSuccess(const char* filename);
+		void DownloadFailure(const char* filename);
+
+		std::string path;
+		int state;
+		bool important;
 	};
+
+	template<typename T>
+	void FileLoaderAsync::Bind(void (T::*func)(bool), T* that) {
+		boost::function1<void, bool> f;
+		f = std::bind1st(std::mem_fun(func), that);
+		listeners.push_back(f);
+	}
 #endif

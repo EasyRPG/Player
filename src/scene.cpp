@@ -17,7 +17,7 @@
 
 // Headers
 #include <cassert>
-#include "event_system.h"
+#include "async_handler.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -66,7 +66,7 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
-	if (AsyncManager::IsCriticalPending()) {
+	if (AsyncHandler::IsImportantFilePending()) {
 		return;
 	}
 

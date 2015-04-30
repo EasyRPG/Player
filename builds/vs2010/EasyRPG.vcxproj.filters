@@ -439,7 +439,7 @@
     <ClCompile Include="..\..\src\sprite_airshipshadow.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\event_system.cpp">
+    <ClCompile Include="..\..\src\async_handler.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -855,7 +855,7 @@
     <ClInclude Include="..\..\src\sprite_airshipshadow.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\event_system.h">
+    <ClInclude Include="..\..\src\async_handler.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

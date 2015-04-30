@@ -38,24 +38,17 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 void Window_Base::Update() {
 	Window::Update();
 	if (Game_System::GetSystemName() != windowskin_name) {
-		bool ready;
-		BitmapRef bmp = Cache::System(Game_System::GetSystemName(), ready);
-		if (ready) {
-			windowskin_name = Game_System::GetSystemName();
-			SetWindowskin(bmp);
-			contents->SetTransparentColor(windowskin->GetTransparentColor());
-		}
+		BitmapRef bmp = Cache::System(Game_System::GetSystemName()); // TODO
+		windowskin_name = Game_System::GetSystemName();
+		SetWindowskin(bmp);
+		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 }
 
 void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
 	if (face_name.empty()) { return; }
-	bool ready;
-	BitmapRef faceset = Cache::Faceset(face_name, ready);
 
-	if (!ready) {
-		return;
-	}
+	BitmapRef faceset = Cache::Faceset(face_name); // TODO
 
 	Rect src_rect(
 		(face_index % 4) * 48,
@@ -273,8 +266,7 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 }
 
 void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {
-	bool ready;
-	BitmapRef system2 = Cache::System2(Data::system.system2_name, ready); // TODO
+	BitmapRef system2 = Cache::System2(Data::system.system2_name); // TODO
 
 	bool full = actor->IsGaugeFull();
 	int gauge_w = actor->GetGauge() / 4;

@@ -55,12 +55,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	text_surface->SetTransparentColor(dest.GetTransparentColor());
 	text_surface->Clear();
 
-	bool ready;
-	BitmapRef system = Cache::System(ready);
-
-	if (!ready) {
-		return;
-	}
+	BitmapRef system = Cache::System(); // TODO
 
 	// Where to draw the next glyph (x pos)
 	int next_glyph_pos = 0;

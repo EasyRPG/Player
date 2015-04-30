@@ -26,8 +26,7 @@ Sprite_Character::Sprite_Character(Game_Character* character) :
 	tile_id(0),
 	character_index(0),
 	chara_width(24*(TILE_SIZE/16)),
-	chara_height(32*(TILE_SIZE/16)),
-	async_ready(true) {
+	chara_height(32*(TILE_SIZE/16)) {
 	Update();
 }
 
@@ -41,27 +40,24 @@ void Sprite_Character::Update() {
 		character_name = character->GetSpriteName();
 		character_index = character->GetSpriteIndex();
 		if (tile_id > 0) {
-			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id); // TODO
 			SetBitmap(tile);
 			r.Set(0, 0, TILE_SIZE, TILE_SIZE);
 			SetSrcRect(r);
 			SetOx(8);
 			SetOy(16);
 		} else {
-			async_ready = character_name.empty();
-			SetBitmap(BitmapRef());
-		}
-	}
-
-	if (!async_ready) {
-		SetBitmap(Cache::Charset(character_name, async_ready));
-		if (async_ready) {
-			SetOx(chara_width / 2);
-			SetOy(chara_height);
-			int sx = (character_index % 4) * chara_width * 3;
-			int sy = (character_index / 4) * chara_height * 4;
-			r.Set(sx, sy, chara_width * 3, chara_height * 4);
-			SetSpriteRect(r);
+			if (character_name.empty()) {
+				SetBitmap(BitmapRef());
+			} else {
+				SetBitmap(Cache::Charset(character_name)); // TODO
+				SetOx(chara_width / 2);
+				SetOy(chara_height);
+				int sx = (character_index % 4) * chara_width * 3;
+				int sy = (character_index / 4) * chara_height * 4;
+				r.Set(sx, sy, chara_width * 3, chara_height * 4);
+				SetSpriteRect(r);
+			}
 		}
 	}
 

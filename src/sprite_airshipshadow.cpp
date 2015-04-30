@@ -41,8 +41,8 @@ void Sprite_AirshipShadow::RecreateShadow() {
 
 	std::string system_name = Game_System::GetSystemName();
 	if (system_name.empty()) return;
-	bool ready;
-	BitmapRef system = Cache::System(system_name, ready); // TODO
+
+	BitmapRef system = Cache::System(system_name); // TODO
 
 	// Offset of the shadow in the System graphic as per
 	// https://easy-rpg.org/wiki/development/technical-details/system-graphics
