@@ -65,7 +65,8 @@ private:
 	int chara_width;
 	int chara_height;
 
-	bool async_ready;
+	void OnTileSpriteReady(bool);
+	void OnCharSpriteReady(bool);
 };
 
 #endif

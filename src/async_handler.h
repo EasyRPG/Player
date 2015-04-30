@@ -18,56 +18,56 @@
 #ifndef _EASYRPG_ASYNC_MANAGER_H_
 #define _EASYRPG_ASYNC_MANAGER_H_
 
-#include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <string>
 #include <vector>
 
-class FileLoaderAsync;
-class BitmapAsync;
-#include "stdint.h"
+class FileRequestAsync;
 
 namespace AsyncHandler {
-	FileLoaderAsync* RequestFile(const std::string& folder_name, const std::string& filename);
+	FileRequestAsync* RequestFile(const std::string& folder_name, const std::string& filename);
+	FileRequestAsync* RequestFile(const std::string& filename);
 
 	bool IsImportantFilePending();
 	void Update();
 }
 
-	class FileLoaderAsync {
-	public:
-		FileLoaderAsync();
-		FileLoaderAsync(const std::string& path);
+class FileRequestAsync {
+public:
+	FileRequestAsync();
+	FileRequestAsync(const std::string& path);
 
-		bool IsReady() const;
-		bool IsImportantFile() const;
-		void SetImportantFile(bool important);
+	bool IsReady() const;
+	bool IsImportantFile() const;
+	void SetImportantFile(bool important);
 
-		void Start();
+	void Start();
 
-		void UpdateProgress();
+	void UpdateProgress();
 
-		const std::string& GetPath() const;
+	const std::string& GetPath() const;
 
-		std::vector<boost::function<void(bool)> > listeners;
-		template<typename T> void Bind(void (T::*func)(bool), T* that);
+	std::vector<boost::function<void(bool)> > listeners;
+	template<typename T> void Bind(void (T::*func)(bool), T* that);
 
-		void Bind(void (*func)(int));
-	private:
-		void CallListeners(bool success);
+	void Bind(boost::function<void(bool)> func);
+	void Bind(void(*func)(bool));
 
-		void DownloadSuccess(const char* filename);
-		void DownloadFailure(const char* filename);
+private:
+	void CallListeners(bool success);
 
-		std::string path;
-		int state;
-		bool important;
-	};
+	void DownloadSuccess(const char* filename);
+	void DownloadFailure(const char* filename);
 
-	template<typename T>
-	void FileLoaderAsync::Bind(void (T::*func)(bool), T* that) {
-		boost::function1<void, bool> f;
-		f = std::bind1st(std::mem_fun(func), that);
-		listeners.push_back(f);
-	}
+	std::string path;
+	int state;
+	bool important;
+};
+
+template<typename T>
+void FileRequestAsync::Bind(void (T::*func)(bool), T* that) {
+	boost::function1<void, bool> f;
+	f = std::bind1st(std::mem_fun(func), that);
+	listeners.push_back(f);
+}
 #endif

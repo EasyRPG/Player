@@ -16,9 +16,11 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include <iomanip>
 #include <sstream>
 #include "window_base.h"
+#include "async_handler.h"
 #include "cache.h"
 #include "data.h"
 #include "game_system.h"
@@ -26,7 +28,12 @@
 #include "font.h"
 
 Window_Base::Window_Base(int x, int y, int width, int height) {
-	SetWindowskin(Bitmap::Create(160, 80, false));
+	windowskin_name = Game_System::GetSystemName();
+	if (!windowskin_name.empty()) {
+		SetWindowskin(Cache::System(windowskin_name)); // TODO
+	} else {
+		SetWindowskin(Bitmap::Create(160, 80, false));
+	}
 
 	SetX(x);
 	SetY(y);
@@ -38,30 +45,36 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 void Window_Base::Update() {
 	Window::Update();
 	if (Game_System::GetSystemName() != windowskin_name) {
-		BitmapRef bmp = Cache::System(Game_System::GetSystemName()); // TODO
 		windowskin_name = Game_System::GetSystemName();
-		SetWindowskin(bmp);
+		SetWindowskin(Cache::System(windowskin_name)); // TODO
 		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 }
 
-void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
-	if (face_name.empty()) { return; }
-
-	BitmapRef faceset = Cache::Faceset(face_name); // TODO
+void Window_Base::OnFaceReady(bool, const std::string& face_name, int face_index, int cx, int cy, bool flip) {
+	BitmapRef faceset = Cache::Faceset(face_name);
 
 	Rect src_rect(
 		(face_index % 4) * 48,
 		face_index / 4 * 48,
 		48,
 		48
-	);
+		);
 
 	if (flip) {
 		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false);
-	} else {
+	}
+	else {
 		contents->Blit(cx, cy, *faceset, src_rect, 255);
 	}
+}
+
+void Window_Base::DrawFace(const std::string& face_name, int face_index, int cx, int cy, bool flip) {
+	if (face_name.empty()) { return; }
+
+	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
+	request->Bind(boost::bind(&Window_Base::OnFaceReady, this, _1, face_name, face_index, cx, cy, flip));
+	request->Start();
 }
 
 void Window_Base::DrawActorFace(Game_Actor* actor, int cx, int cy) {
@@ -290,8 +303,4 @@ void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {
 
 	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
 	contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
-}
-
-void Window_Base::Refresh() {
-
 }

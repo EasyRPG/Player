@@ -17,6 +17,7 @@
 
 // Headers
 #include "scene_logo.h"
+#include "async_handler.h"
 #include "bitmap.h"
 #include "filefinder.h"
 #include "graphics.h"
@@ -922,6 +923,25 @@ void Scene_Logo::Start() {
 
 void Scene_Logo::Update() {
 	if (frame_counter == 0) {
+#ifdef EMSCRIPTEN
+		static bool once = true;
+		if (once) {
+			FileRequestAsync* db = AsyncHandler::RequestFile(DATABASE_NAME);
+			db->SetImportantFile(true);
+			FileRequestAsync* tree = AsyncHandler::RequestFile(TREEMAP_NAME);
+			tree->SetImportantFile(true);
+			FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
+			ini->SetImportantFile(true);
+
+			db->Start();
+			tree->Start();
+			ini->Start();
+
+			once = false;
+			return;
+		}
+#endif
+
 		Player::CreateGameObjects();
 	}
 

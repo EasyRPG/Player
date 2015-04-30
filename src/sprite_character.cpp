@@ -17,6 +17,7 @@
 
 // Headers
 #include "sprite_character.h"
+#include "async_handler.h"
 #include "cache.h"
 #include "game_map.h"
 #include "bitmap.h"
@@ -40,8 +41,10 @@ void Sprite_Character::Update() {
 		character_name = character->GetSpriteName();
 		character_index = character->GetSpriteIndex();
 		if (tile_id > 0) {
-			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id); // TODO
-			SetBitmap(tile);
+			FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+			request->Bind(&Sprite_Character::OnTileSpriteReady, this);
+			request->Start();
+
 			r.Set(0, 0, TILE_SIZE, TILE_SIZE);
 			SetSrcRect(r);
 			SetOx(8);
@@ -50,7 +53,10 @@ void Sprite_Character::Update() {
 			if (character_name.empty()) {
 				SetBitmap(BitmapRef());
 			} else {
-				SetBitmap(Cache::Charset(character_name)); // TODO
+				FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", character_name);
+				request->Bind(&Sprite_Character::OnCharSpriteReady, this);
+				request->Start();
+
 				SetOx(chara_width / 2);
 				SetOy(chara_height);
 				int sx = (character_index % 4) * chara_width * 3;
@@ -94,4 +100,13 @@ Game_Character* Sprite_Character::GetCharacter() {
 }
 void Sprite_Character::SetCharacter(Game_Character* new_character) {
 	character = new_character;
+}
+
+void Sprite_Character::OnTileSpriteReady(bool) {
+	BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+	SetBitmap(tile);
+}
+
+void Sprite_Character::OnCharSpriteReady(bool) {
+	SetBitmap(Cache::Charset(character->GetSpriteName()));
 }

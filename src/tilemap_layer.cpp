@@ -705,6 +705,10 @@ TilemapTile::~TilemapTile() {
 }
 
 void TilemapTile::Draw() {
+	if (!tilemap->GetChipset()) {
+		return;
+	}
+
 	tilemap->Draw(GetZ());
 }
 

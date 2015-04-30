@@ -144,7 +144,7 @@ void Scene_Title::CreateTitleGraphic() {
 	if (!title) // No need to recreate Title on Resume
 	{
 		title.reset(new Sprite());
-		FileLoaderAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
 		request->Bind(&Scene_Title::OnTitleSpriteReady, this);
 		request->Start();
 	}

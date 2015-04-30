@@ -17,6 +17,7 @@
 
 // Headers
 #include "spriteset_map.h"
+#include "async_handler.h"
 #include "cache.h"
 #include "game_map.h"
 #include "main_data.h"
@@ -32,8 +33,6 @@ Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	ChipsetUpdated();
-	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
-	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 
 	panorama.SetZ(-1000);
 
@@ -96,7 +95,10 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName())); // TODO
+	FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+	request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	request->Start();
+
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
 	tilemap.SetAnimationType(Game_Map::GetAnimationType());
@@ -115,4 +117,10 @@ void Spriteset_Map::SubstituteDown(int old_id, int new_id) {
 void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	Game_Map::SubstituteUp(old_id, new_id);
 	tilemap.SubstituteUp(old_id, new_id);
+}
+
+void Spriteset_Map::OnTilemapSpriteReady(bool) {
+	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }

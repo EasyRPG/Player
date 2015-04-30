@@ -27,33 +27,32 @@
 #endif
 
 namespace {
-	std::map<std::string, FileLoaderAsync> async_requests;
+	std::map<std::string, FileRequestAsync> async_requests;
 
-	FileLoaderAsync* GetRequest(const std::string& path) {
-		std::map<std::string, FileLoaderAsync>::iterator it = async_requests.find(path);
+	FileRequestAsync* GetRequest(const std::string& path) {
+		std::map<std::string, FileRequestAsync>::iterator it = async_requests.find(path);
 
 		if (it != async_requests.end()) {
 			return &(it->second);
 		}
-
 		return NULL;
 	}
 
-	void RegisterRequest(const std::string& path, const FileLoaderAsync& request) {
+	void RegisterRequest(const std::string& path, const FileRequestAsync& request) {
 		async_requests[path] = request;
 	}
 }
 
-FileLoaderAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
+FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
 	std::string path = FileFinder::MakePath(folder_name, file_name);
 
-	FileLoaderAsync* request = GetRequest(path);
+	FileRequestAsync* request = GetRequest(path);
 
 	if (request) {
 		return request;
 	}
 
-	FileLoaderAsync req(path);
+	FileRequestAsync req(path);
 	RegisterRequest(path, req);
 
 	Output::Debug("Waiting for %s", path.c_str());
@@ -61,14 +60,18 @@ FileLoaderAsync* AsyncHandler::RequestFile(const std::string& folder_name, const
 	return GetRequest(path);
 }
 
+FileRequestAsync* AsyncHandler::RequestFile(const std::string& filename) {
+	return RequestFile(".", filename);
+}
+
 bool AsyncHandler::IsImportantFilePending() {
-	std::map<std::string, FileLoaderAsync>::iterator it;
+	std::map<std::string, FileRequestAsync>::iterator it;
 
 	for (it = async_requests.begin(); it != async_requests.end(); ++it) {
-		it->second.UpdateProgress();
+		FileRequestAsync& request = it->second;
+		request.UpdateProgress();
 
-		if (!it->second.IsReady() && it->second.IsImportantFile()) {
-			Output::Debug("Waiting for %s", it->second.GetPath().c_str());
+		if (!request.IsReady() && request.IsImportantFile()) {
 			return true;
 		}
 	}
@@ -76,45 +79,44 @@ bool AsyncHandler::IsImportantFilePending() {
 	return false;
 }
 
-FileLoaderAsync::FileLoaderAsync(const std::string& path) {
+FileRequestAsync::FileRequestAsync(const std::string& path) {
 	this->path = path;
 	this->important = false;
 
 	state = 0;
 }
 
-FileLoaderAsync::FileLoaderAsync() {
+FileRequestAsync::FileRequestAsync() {
 }
 
-bool FileLoaderAsync::IsReady() const {
+bool FileRequestAsync::IsReady() const {
 	return state != 0;
 }
 
-bool FileLoaderAsync::IsImportantFile() const {
+bool FileRequestAsync::IsImportantFile() const {
 	return important;
 }
 
-void FileLoaderAsync::SetImportantFile(bool important) {
+void FileRequestAsync::SetImportantFile(bool important) {
 	this->important = important;
 }
 
-void FileLoaderAsync::Start() {
+void FileRequestAsync::Start() {
 	if (IsReady()) {
 		// Fire immediately
 		DownloadSuccess(NULL);
-		DownloadFailure(NULL);
 	}
 
 #ifdef EMSCRIPTEN
 	boost::function1<void, const char*> success, failure;
-	success = std::bind1st(std::mem_fun(&FileLoaderAsync::DownloadSuccess), this);
-	failure = std::bind1st(std::mem_fun(&FileLoaderAsync::DownloadFailure), this);
+	success = std::bind1st(std::mem_fun(&FileRequestAsync::DownloadSuccess), this);
+	failure = std::bind1st(std::mem_fun(&FileRequestAsync::DownloadFailure), this);
 
 	emscripten_async_wget(("/games/testgame-2000/" + path).c_str(), path.c_str(), success, failure);
 #endif
 }
 
-void FileLoaderAsync::UpdateProgress() {
+void FileRequestAsync::UpdateProgress() {
 #ifndef EMSCRIPTEN
 	// Fake download for testing event handlers
 
@@ -124,15 +126,19 @@ void FileLoaderAsync::UpdateProgress() {
 #endif
 }
 
-const std::string& FileLoaderAsync::GetPath() const {
+const std::string& FileRequestAsync::GetPath() const {
 	return path;
 }
 
-void FileLoaderAsync::Bind(void(*func)(int)) {
+void FileRequestAsync::Bind(void(*func)(bool)) {
 	listeners.push_back(func);
 }
 
-void FileLoaderAsync::CallListeners(bool success) {
+void FileRequestAsync::Bind(boost::function<void(bool)> func) {
+	listeners.push_back(func);
+}
+
+void FileRequestAsync::CallListeners(bool success) {
 	std::vector<boost::function<void(bool)> >::iterator it;
 	for (it = listeners.begin(); it != listeners.end(); ++it) {
 		(*it)(success);
@@ -141,22 +147,22 @@ void FileLoaderAsync::CallListeners(bool success) {
 	listeners.clear();
 }
 
-void FileLoaderAsync::DownloadSuccess(const char*) {
+void FileRequestAsync::DownloadSuccess(const char*) {
 	Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
 	FileFinder::Init();
 #endif
 
-	CallListeners(true);
-
 	state = 1;
+
+	CallListeners(true);
 }
 
-void FileLoaderAsync::DownloadFailure(const char*) {
+void FileRequestAsync::DownloadFailure(const char*) {
 	Output::Debug("DL Failure %s", path.c_str());
 
-	CallListeners(false);
-
 	state = 2;
+
+	CallListeners(false);
 }

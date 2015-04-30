@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
 #include "filefinder.h"
@@ -48,6 +49,7 @@
 #include "utils.h"
 
 #include <algorithm>
+#include <iomanip>
 #include <set>
 #include <locale>
 #include <cstring>
@@ -154,36 +156,6 @@ void Player::Init(int argc, char *argv[]) {
 	init = true;
 }
 
-#ifdef EMSCRIPTEN
-// Request Database, Maptree and Ini for download
-// When all 3 requests are finished start the Player
-// Doesn't matter when download fails, in this case the Player will report
-// error later.
-
-static void asset_status(const char*) {
-	static int i = 0;
-	++i;
-
-	if (i >= 3) {
-		FileFinder::Init();
-
-		emscripten_cancel_main_loop();
-		emscripten_set_main_loop(Player::MainLoop, 0, 0);
-	}
-}
-
-static void download_assets() {
-	static bool init = false;
-	if (!init) {
-		emscripten_async_wget(DATABASE_NAME, DATABASE_NAME, asset_status, asset_status);
-		emscripten_async_wget(TREEMAP_NAME, TREEMAP_NAME, asset_status, asset_status);
-		emscripten_async_wget(INI_NAME, INI_NAME, asset_status, asset_status);
-
-		init = true;
-	}
-}
-#endif
-
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 
@@ -196,7 +168,7 @@ void Player::Run() {
 
 	// Main loop
 #ifdef EMSCRIPTEN
-	emscripten_set_main_loop(download_assets, 0, 0);
+	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		Player::MainLoop();
@@ -503,6 +475,10 @@ void Player::CreateGameObjects() {
 		if (!no_rtp_flag) {
 			FileFinder::InitRtpPaths();
 		}
+
+		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
+		request->SetImportantFile(true);
+		request->Start();
 	}
 	init = true;
 
@@ -587,7 +563,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_System::BgmPlay(current_music);
 }
 
-static void SetupPlayerSpawnAsync() {
+static void OnMapFileReady(bool) {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
 	int x_pos = Player::party_x_position == -1 ?
@@ -607,7 +583,7 @@ static void SetupPlayerSpawnAsync() {
 	Main_Data::game_player->Refresh();
 	Game_Map::PlayBgm();
 }
-#include <iomanip>
+
 void Player::SetupPlayerSpawn() {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
@@ -615,8 +591,10 @@ void Player::SetupPlayerSpawn() {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
 
-	//AsyncHandler::RequestFile(".", ss.str(), SetupPlayerSpawnAsync, true);
-
+	FileRequestAsync* request = AsyncHandler::RequestFile(ss.str());
+	request->Bind(&OnMapFileReady);
+	request->SetImportantFile(true);
+	request->Start();
 }
 
 std::string Player::GetEncoding() {
