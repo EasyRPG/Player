@@ -41,6 +41,15 @@ namespace {
 	void RegisterRequest(const std::string& path, const FileRequestAsync& request) {
 		async_requests[path] = request;
 	}
+
+
+	void download_success(unsigned, void* userData, const char*) {
+		(static_cast<FileRequestAsync*>(userData))->DownloadDone(true);
+	}
+
+	void download_failure(unsigned, void* userData, int) {
+		(static_cast<FileRequestAsync*>(userData))->DownloadDone(false);
+	}
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
@@ -104,15 +113,19 @@ void FileRequestAsync::SetImportantFile(bool important) {
 void FileRequestAsync::Start() {
 	if (IsReady()) {
 		// Fire immediately
-		DownloadSuccess(NULL);
+		DownloadDone(true);
 	}
 
 #ifdef EMSCRIPTEN
-	boost::function1<void, const char*> success, failure;
-	success = std::bind1st(std::mem_fun(&FileRequestAsync::DownloadSuccess), this);
-	failure = std::bind1st(std::mem_fun(&FileRequestAsync::DownloadFailure), this);
-
-	emscripten_async_wget(("/games/testgame-2000/" + path).c_str(), path.c_str(), success, failure);
+	emscripten_async_wget2(
+		("/games/testgame-2000/" + path).c_str(),
+		path.c_str(),
+		"GET",
+		NULL,
+		this,
+		download_success,
+		download_failure,
+		NULL);
 #endif
 }
 
@@ -121,7 +134,7 @@ void FileRequestAsync::UpdateProgress() {
 	// Fake download for testing event handlers
 
 	if (!IsReady() && rand() % 100 == 0) {
-		DownloadSuccess(path.c_str());
+		DownloadDone(true);
 	}
 #endif
 }
@@ -147,22 +160,27 @@ void FileRequestAsync::CallListeners(bool success) {
 	listeners.clear();
 }
 
-void FileRequestAsync::DownloadSuccess(const char*) {
-	Output::Debug("DL Success %s", path.c_str());
+void FileRequestAsync::DownloadDone(bool success) {
+	if (IsReady()) {
+		success = state == 1;
+	}
+
+	if (success) {
+		Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
-	FileFinder::Init();
+		FileFinder::Init();
 #endif
 
-	state = 1;
+		state = 1;
 
-	CallListeners(true);
-}
+		CallListeners(true);
+	}
+	else {
+		Output::Debug("DL Failure %s", path.c_str());
 
-void FileRequestAsync::DownloadFailure(const char*) {
-	Output::Debug("DL Failure %s", path.c_str());
+		state = 2;
 
-	state = 2;
-
-	CallListeners(false);
+		CallListeners(false);
+	}
 }

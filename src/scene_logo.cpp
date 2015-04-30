@@ -933,11 +933,11 @@ void Scene_Logo::Update() {
 			FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
 			ini->SetImportantFile(true);
 
+			once = false;
+
 			db->Start();
 			tree->Start();
 			ini->Start();
-
-			once = false;
 			return;
 		}
 #endif

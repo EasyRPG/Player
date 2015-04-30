@@ -53,11 +53,10 @@ public:
 	void Bind(boost::function<void(bool)> func);
 	void Bind(void(*func)(bool));
 
+	void DownloadDone(bool success);
+
 private:
 	void CallListeners(bool success);
-
-	void DownloadSuccess(const char* filename);
-	void DownloadFailure(const char* filename);
 
 	std::string path;
 	int state;
