@@ -407,6 +407,10 @@ EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault(dir, name);
+#endif
+
 	static const char* IMG_TYPES[] = {
 		".bmp",  ".png", ".xyz", /*".gif", ".jpg", ".jpeg",*/ NULL };
 	return FindFile(dir, name, IMG_TYPES);
