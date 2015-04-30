@@ -17,6 +17,7 @@
 
 // Headers
 #include "bitmap.h"
+#include "async_handler.h"
 #include "options.h"
 #include "cache.h"
 #include "main_data.h"
@@ -74,15 +75,21 @@ void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	data.transparency = _transparency;
 	data.time_left = 0;
 
-	BitmapRef bitmap = Cache::Picture(data.name, data.transparency); // TODO
+	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", data.name);
+	request->Bind(&Game_Picture::OnPictureSpriteReady, this);
+	request->Start();
+
+	old_map_x = Game_Map::GetDisplayX();
+	old_map_y = Game_Map::GetDisplayY();
+}
+
+void Game_Picture::OnPictureSpriteReady(bool) {
+	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
 
 	sprite.reset(new Sprite());
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
 	sprite->SetOy(bitmap->GetHeight() / 2);
-
-	old_map_x = Game_Map::GetDisplayX();
-	old_map_y = Game_Map::GetDisplayY();
 }
 
 void Game_Picture::Erase() {

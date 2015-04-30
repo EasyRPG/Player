@@ -78,6 +78,7 @@ public:
 
 protected:
 	void CreateSprite();
+	void OnMonsterSpriteReady(bool);
 
 	std::string sprite_name;
 	int hue;

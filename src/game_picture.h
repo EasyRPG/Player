@@ -59,6 +59,8 @@ private:
 
 	void UpdateSprite();
 
+	void OnPictureSpriteReady(bool);
+
 	int old_map_x;
 	int old_map_y;
 };

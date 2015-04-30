@@ -17,6 +17,7 @@
 
 // Headers
 #include "sprite_battler.h"
+#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
@@ -123,7 +124,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 
-			SetBitmap(Cache::Battlecharset(sprite_file));
+			SetBitmap(Cache::Battlecharset(sprite_file)); // TODO
 			SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
 		}
 	}
@@ -135,27 +136,20 @@ bool Sprite_Battler::IsIdling() {
 
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
-	hue = battler->GetHue();
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
 		if (sprite_name.empty()) {
 			graphic = Bitmap::Create(0, 0);
+			SetOx(graphic->GetWidth() / 2);
+			SetOy(graphic->GetHeight() / 2);
+			SetBitmap(graphic);
 		}
 		else {
-			graphic = Cache::Monster(sprite_name); // TODO
+			FileRequestAsync* request = AsyncHandler::RequestFile("Monster", sprite_name);
+			request->Bind(&Sprite_Battler::OnMonsterSpriteReady, this);
+			request->Start();
 		}
-		SetOx(graphic->GetWidth() / 2);
-		SetOy(graphic->GetHeight() / 2);
-
-		bool hue_change = hue != 0;
-		if (hue_change) {
-			BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
-			new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), hue);
-			graphic = new_graphic;
-		}
-
-		SetBitmap(graphic);
 	}
 	else { // animated
 		SetOx(24);
@@ -167,4 +161,20 @@ void Sprite_Battler::CreateSprite() {
 	SetY(battler->GetBattleY());
 	SetZ(battler->GetBattleY()); // Not a typo
 	SetVisible(!battler->IsHidden());
+}
+
+void Sprite_Battler::OnMonsterSpriteReady(bool) {
+	graphic = Cache::Monster(sprite_name);
+
+	SetOx(graphic->GetWidth() / 2);
+	SetOy(graphic->GetHeight() / 2);
+
+	bool hue_change = battler->GetHue() != 0;
+	if (hue_change) {
+		BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
+		new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), hue);
+		graphic = new_graphic;
+	}
+
+	SetBitmap(graphic);
 }
