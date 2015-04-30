@@ -49,14 +49,12 @@
 #include "utils.h"
 
 #include <algorithm>
-#include <iomanip>
 #include <set>
 #include <locale>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 #ifdef GEKKO
 	#include <fat.h>
@@ -588,10 +586,7 @@ void Player::SetupPlayerSpawn() {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
 
-	std::stringstream ss;
-	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
-
-	FileRequestAsync* request = AsyncHandler::RequestFile(ss.str());
+	FileRequestAsync* request = Game_Map::RequestMap(map_id);
 	request->Bind(&OnMapFileReady);
 	request->SetImportantFile(true);
 	request->Start();

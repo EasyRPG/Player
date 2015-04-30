@@ -17,6 +17,7 @@
 
 // Headers
 #include "game_player.h"
+#include "async_handler.h"
 #include "game_actor.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -203,6 +204,10 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y) {
 	new_map_id = map_id;
 	new_x = x;
 	new_y = y;
+
+	FileRequestAsync* request = Game_Map::RequestMap(new_map_id);
+	request->SetImportantFile(true);
+	request->Start();
 }
 
 void Game_Player::StartTeleport() {

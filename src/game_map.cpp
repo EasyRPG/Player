@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "async_handler.h"
 #include "system.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
@@ -1088,4 +1089,11 @@ int Game_Map::GetParallaxY() {
 
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
+}
+
+FileRequestAsync* Game_Map::RequestMap(int map_id) {
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
+	
+	return AsyncHandler::RequestFile(ss.str());
 }
