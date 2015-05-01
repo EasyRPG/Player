@@ -270,9 +270,7 @@ namespace Game_System {
 	void PlayMemorizedBGM();
 
 	void OnBgmReady(FileRequestResult* result);
-	void OnSeReady(FileRequestResult* result);
-	/*bool pending_bgm_ready;
-	RPG::Music pending_bgm_settings;*/
+	void OnSeReady(FileRequestResult* result, int volume, int tempo);
 }
 
 #endif

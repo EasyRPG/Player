@@ -16,13 +16,17 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include "game_system.h"
+#include "async_handler.h"
 #include "audio.h"
 #include "graphics.h"
 #include "main_data.h"
 #include "cache.h"
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
+
+bool bgm_pending = false;
 
 void Game_System::Init() {
 	data.Setup();
@@ -33,6 +37,9 @@ int Game_System::GetSaveCount() {
 }
 
 void Game_System::BgmPlay(RPG::Music const& bgm) {
+	RPG::Music previous_music = data.current_music;
+	data.current_music = bgm;
+
 	// (OFF) means play nothing
 	// A Polish RPG Maker translation overtranslated the (OFF) reserved string.
 	// This particular translation uses (Brak) in editor for these cases.
@@ -41,22 +48,27 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	// Though RPG_RT plays files named (Brak) is still preferred to ignore it.
 	if (!bgm.name.empty() && bgm.name != "(OFF)" && bgm.name != "(Brak)") {
 		// Same music: Only adjust volume and speed
-		if (data.current_music.name == bgm.name) {
-			if (data.current_music.volume != bgm.volume) {
-				Audio().BGM_Volume(bgm.volume);
+		if (previous_music.name == bgm.name) {
+			if (previous_music.volume != bgm.volume) {
+				if (!bgm_pending) { // Delay if not ready
+					Audio().BGM_Volume(bgm.volume);
+				}
 			}
-			if (data.current_music.tempo != bgm.tempo) {
-				Audio().BGM_Pitch(bgm.tempo);
+			if (previous_music.tempo != bgm.tempo) {
+				if (!bgm_pending) { // Delay if not ready
+					Audio().BGM_Pitch(bgm.tempo);
+				}
 			}
 		} else {
-			// TODO Async playback
-			//pending_bgm_settings = bgm;
-			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
+			Audio().BGM_Stop();
+			bgm_pending = true;
+			FileRequestAsync* request = AsyncHandler::RequestFile("Music", bgm.name);
+			request->Bind(&Game_System::OnBgmReady);
+			request->Start();
 		}
 	} else {
-		Audio().BGM_Stop();
+		BgmStop();
 	}
-	data.current_music = bgm;
 }
 
 void Game_System::BgmStop() {
@@ -66,13 +78,13 @@ void Game_System::BgmStop() {
 
 void Game_System::SePlay(RPG::Sound const& se) {
 	if (!se.name.empty() && se.name != "(OFF)" && se.name != "(Brak)") {
-		// HACK:
 		// Yume Nikki plays hundreds of sound effects at 0% volume on
 		// startup. Probably for caching. This triggers "No free channels"
 		// warnings.
 		if (se.volume > 0) {
-			// TODO Async load
-			Audio().SE_Play(se.name, se.volume, se.tempo);
+			FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
+			request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
+			request->Start();
 		}
 	}
 }
@@ -260,9 +272,17 @@ void Game_System::SetTransition(int which, int transition) {
 }
 
 void Game_System::OnBgmReady(FileRequestResult* result) {
+	if (data.current_music.name != result->file) {
+		// Not the music we expect, probably changed over time
+		return;
+	}
 
+	// Take from current_music, params could have changed over time
+	Audio().BGM_Play(result->file, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+
+	bgm_pending = false;
 }
 
-void Game_System::OnSeReady(FileRequestResult* result) {
-
+void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
+	Audio().SE_Play(result->file, volume, tempo);
 }
