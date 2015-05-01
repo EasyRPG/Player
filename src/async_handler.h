@@ -35,6 +35,13 @@ namespace AsyncHandler {
 
 class FileRequestAsync {
 public:
+	enum AsyncState {
+		State_WaitForStart,
+		State_DoneSuccess,
+		State_DoneFailure,
+		State_Pending
+	};
+
 	FileRequestAsync();
 	FileRequestAsync(const std::string& folder_name, const std::string& file_name);
 

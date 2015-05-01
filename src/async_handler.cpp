@@ -95,14 +95,14 @@ FileRequestAsync::FileRequestAsync(const std::string& folder_name, const std::st
 	this->path = path = FileFinder::MakePath(folder_name, file_name);
 	this->important = false;
 
-	state = 0;
+	state = State_WaitForStart;
 }
 
 FileRequestAsync::FileRequestAsync() {
 }
 
 bool FileRequestAsync::IsReady() const {
-	return state != 0;
+	return state == State_DoneSuccess || state == State_DoneFailure;
 }
 
 bool FileRequestAsync::IsImportantFile() const {
@@ -114,11 +114,17 @@ void FileRequestAsync::SetImportantFile(bool important) {
 }
 
 void FileRequestAsync::Start() {
+	if (state == State_Pending) {
+		return;
+	}
+
 	if (IsReady()) {
 		// Fire immediately
 		DownloadDone(true);
 		return;
 	}
+
+	state = State_Pending;
 
 #ifdef EMSCRIPTEN
 	std::string request_path = Player::emscripten_game_folder + "/easyrpg-filefinder.php?file=" + path;
@@ -193,7 +199,7 @@ void FileRequestAsync::CallListeners(bool success) {
 
 void FileRequestAsync::DownloadDone(bool success) {
 	if (IsReady()) {
-		success = state == 1;
+		success = state == State_DoneSuccess;
 	}
 
 	if (success) {
@@ -205,14 +211,14 @@ void FileRequestAsync::DownloadDone(bool success) {
 		}
 #endif
 
-		state = 1;
+		state = State_DoneSuccess;
 
 		CallListeners(true);
 	}
 	else {
 		Output::Debug("DL Failure %s", path.c_str());
 
-		state = 2;
+		state = State_DoneFailure;
 
 		CallListeners(false);
 	}
