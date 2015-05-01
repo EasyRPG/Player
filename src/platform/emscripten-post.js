@@ -6,8 +6,10 @@ function parseargs() {
         tmp = items[index].split("=");
         if (tmp[0] == "game") {
 			// Move to different directory to prevent Save file collisions in IDBFS
-			FS.mkdir(tmp[0]);
-			FS.chdir(tmp[0]);
+			if (tmp.length > 1) {
+				FS.mkdir(tmp[1]);
+				FS.chdir(tmp[1]);
+			}
 		}
         ret.push("--" + tmp[0]);
         if (tmp.length > 1) {

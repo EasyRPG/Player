@@ -206,7 +206,7 @@ void FileRequestAsync::DownloadDone(bool success) {
 		Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
-		if (state == 0) {
+		if (state == State_Pending) {
 			FileFinder::Init();
 		}
 #endif
