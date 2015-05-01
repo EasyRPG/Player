@@ -15,12 +15,13 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "async_handler.h"
-#include "memory_management.h"
-#include "filefinder.h"
-#include <map>
-#include "output.h"
 #include <cstdlib>
+#include <map>
+#include "async_handler.h"
+#include "filefinder.h"
+#include "memory_management.h"
+#include "output.h"
+#include "player.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
@@ -120,8 +121,13 @@ void FileRequestAsync::Start() {
 	}
 
 #ifdef EMSCRIPTEN
+	std::string request_path = Player::emscripten_game_folder + "/easyrpg-filefinder.php?file=" + path;
+	if (!Player::emscripten_game_name.empty()) {
+		request_path += "&game=" + Player::emscripten_game_name;
+	}
+
 	emscripten_async_wget2(
-		("/games/testgame-2000/" + path).c_str(),
+		request_path.c_str(),
 		path.c_str(),
 		"GET",
 		NULL,

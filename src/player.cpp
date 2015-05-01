@@ -92,6 +92,10 @@ namespace Player {
 	double start_time;
 	double next_frame;
 	int frames;
+#ifdef EMSCRIPTEN
+	std::string emscripten_game_folder;
+	std::string emscripten_game_name;
+#endif
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -112,19 +116,20 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 
 #ifdef EMSCRIPTEN
+	emscripten_game_folder = "games";
+	emscripten_game_name = "";
+
 	Output::IgnorePause(true);
 	
 	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
-
-	mkdir()
 
 	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
-		dirs.forEach(function(dir) { FS.mkdir('/' + dir) });
+		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
-		FS.mount(IDBFS, {}, '/Save');
+		FS.mount(IDBFS, {}, 'Save');
 	
 		FS.syncfs(true, function(err) {
 		});
@@ -441,6 +446,15 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			PrintUsage();
 			exit(0);
 		}
+#ifdef EMSCRIPTEN
+		else if (*it == "--game") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			emscripten_game_name = *it;
+		}
+#endif
 	}
 }
 

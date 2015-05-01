@@ -4,6 +4,11 @@ function parseargs() {
     var items = location.search.substr(1).split("&");
     for (var index = 0; index < items.length; index++) {
         tmp = items[index].split("=");
+        if (tmp[0] == "game") {
+			// Move to different directory to prevent Save file collisions in IDBFS
+			FS.mkdir(tmp[0]);
+			FS.chdir(tmp[0]);
+		}
         ret.push("--" + tmp[0]);
         if (tmp.length > 1) {
             arg = decodeURI(tmp[1]);
