@@ -22,6 +22,8 @@
 #include "window_base.h"
 #include "bitmap.h"
 
+struct FileRequestResult;
+
 /**
  * Window ShopParty Class.
  * Displays the party in the shop scene.
@@ -59,6 +61,8 @@ protected:
 	 * bitmaps[actor#][anim phase][equippable]
 	 */
 	BitmapRef bitmaps[4][3][2];
+
+	void OnCharsetSpriteReady(FileRequestResult* result, int party_index);
 
 	/** Animation rate. */
 	static const int anim_rate = 12;
