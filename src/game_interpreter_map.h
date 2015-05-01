@@ -133,7 +133,7 @@ private:
 	bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 private:
-
+	void OnChangeSystemGraphicReady(bool, const std::string& system);
 	int DecodeInt(std::vector<int>::const_iterator& it);
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);

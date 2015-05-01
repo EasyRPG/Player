@@ -30,7 +30,7 @@
 Window_Base::Window_Base(int x, int y, int width, int height) {
 	windowskin_name = Game_System::GetSystemName();
 	if (!windowskin_name.empty()) {
-		SetWindowskin(Cache::System(windowskin_name)); // TODO
+		SetWindowskin(Cache::System(windowskin_name));
 	} else {
 		SetWindowskin(Bitmap::Create(160, 80, false));
 	}
@@ -46,7 +46,7 @@ void Window_Base::Update() {
 	Window::Update();
 	if (Game_System::GetSystemName() != windowskin_name) {
 		windowskin_name = Game_System::GetSystemName();
-		SetWindowskin(Cache::System(windowskin_name)); // TODO
+		SetWindowskin(Cache::System(windowskin_name));
 		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 }

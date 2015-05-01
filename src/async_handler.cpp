@@ -114,6 +114,7 @@ void FileRequestAsync::Start() {
 	if (IsReady()) {
 		// Fire immediately
 		DownloadDone(true);
+		return;
 	}
 
 #ifdef EMSCRIPTEN

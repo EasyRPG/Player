@@ -59,7 +59,7 @@ void Sprite_Timer::Draw() {
 		return;
 	}
 
-	BitmapRef system = Cache::System(system_name); // TODO
+	BitmapRef system = Cache::System(system_name);
 
 	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {
