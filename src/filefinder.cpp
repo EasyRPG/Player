@@ -465,7 +465,7 @@ bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
 
 std::string FileFinder::FindMusic(const std::string& name) {
 #ifdef EMSCRIPTEN
-	return FindDefault(dir, name);
+	return FindDefault("Music", name);
 #endif
 
 	static const char* MUSIC_TYPES[] = {
@@ -475,7 +475,7 @@ std::string FileFinder::FindMusic(const std::string& name) {
 
 std::string FileFinder::FindSound(const std::string& name) {
 #ifdef EMSCRIPTEN
-	return FindDefault(dir, name);
+	return FindDefault("Sound", name);
 #endif
 
 	static const char* SOUND_TYPES[] = {
