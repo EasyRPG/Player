@@ -18,6 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
 #include "scene_battle.h"
+#include "async_handler.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
 #include "output.h"
@@ -90,22 +91,28 @@ void Scene_Battle_Rpg2k3::Update() {
 	//enemy_status_window->Update();
 }
 
-void Scene_Battle_Rpg2k3::CreateCursors() {
-	BitmapRef system2 = Cache::System2(Data::system.system2_name); // TODO
+void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
+	BitmapRef system2 = Cache::System2(result->file);
 
-	ally_cursor.reset(new Sprite());
 	ally_cursor->SetBitmap(system2);
 	ally_cursor->SetSrcRect(Rect(0, 16, 16, 16));
 	ally_cursor->SetZ(999);
 	ally_cursor->SetVisible(false);
 
-	enemy_cursor.reset(new Sprite());
 	enemy_cursor->SetBitmap(system2);
 	enemy_cursor->SetSrcRect(Rect(0, 0, 16, 16));
 	enemy_cursor->SetZ(999);
 	enemy_cursor->SetVisible(false);
 }
 
+void Scene_Battle_Rpg2k3::CreateCursors() {
+	ally_cursor.reset(new Sprite());
+	enemy_cursor.reset(new Sprite());
+
+	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+	request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
+	request->Start();
+}
 
 void Scene_Battle_Rpg2k3::UpdateCursors() {
 	/*if (Game_Battle::HaveActiveAlly()) {

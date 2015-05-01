@@ -90,7 +90,7 @@ void Sprite_Character::SetCharacter(Game_Character* new_character) {
 	character = new_character;
 }
 
-void Sprite_Character::OnTileSpriteReady(bool) {
+void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
 	BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 	SetBitmap(tile);
 
@@ -101,7 +101,7 @@ void Sprite_Character::OnTileSpriteReady(bool) {
 	SetOy(16);
 }
 
-void Sprite_Character::OnCharSpriteReady(bool) {
+void Sprite_Character::OnCharSpriteReady(FileRequestResult*) {
 	SetBitmap(Cache::Charset(character_name));
 
 	SetOx(chara_width / 2);

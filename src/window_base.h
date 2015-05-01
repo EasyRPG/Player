@@ -67,7 +67,7 @@ public:
 	/** @} */
 
 protected:
-	void OnFaceReady(bool, const std::string& face_name, int face_index, int cx, int cy, bool flip);
+	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
 
 	std::string windowskin_name;
 };

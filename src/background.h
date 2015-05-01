@@ -23,6 +23,8 @@
 #include "system.h"
 #include "drawable.h"
 
+struct FileRequestResult;
+
 class Background : public Drawable {
 public:
 	Background(const std::string& name);
@@ -41,6 +43,9 @@ private:
 
 	static void Update(int& rate, int& value);
 	static int Scale(int x);
+
+	void OnBackgroundGraphicReady(FileRequestResult* result);
+	void OnForegroundFrameGraphicReady(FileRequestResult* result);
 
 	bool visible;
 

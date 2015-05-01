@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include "sprite_battler.h"
 #include "async_handler.h"
 #include "bitmap.h"
@@ -124,8 +125,9 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 
-			SetBitmap(Cache::Battlecharset(sprite_file)); // TODO
-			SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
+			FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+			request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+			request->Start();
 		}
 	}
 }
@@ -163,8 +165,8 @@ void Sprite_Battler::CreateSprite() {
 	SetVisible(!battler->IsHidden());
 }
 
-void Sprite_Battler::OnMonsterSpriteReady(bool) {
-	graphic = Cache::Monster(sprite_name);
+void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {
+	graphic = Cache::Monster(result->file);
 
 	SetOx(graphic->GetWidth() / 2);
 	SetOy(graphic->GetHeight() / 2);
@@ -177,4 +179,9 @@ void Sprite_Battler::OnMonsterSpriteReady(bool) {
 	}
 
 	SetBitmap(graphic);
+}
+
+void Sprite_Battler::OnBattlercharsetReady(FileRequestResult* result, int battler_index) {
+	SetBitmap(Cache::Battlecharset(result->file));
+	SetSrcRect(Rect(0, battler_index * 48, 48, 48));
 }

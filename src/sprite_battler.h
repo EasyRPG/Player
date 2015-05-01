@@ -23,6 +23,7 @@
 #include "game_battler.h"
 
 class Game_Character;
+struct FileRequestResult;
 
 /**
  * Sprite_Battler class, used for battle sprites
@@ -78,7 +79,8 @@ public:
 
 protected:
 	void CreateSprite();
-	void OnMonsterSpriteReady(bool);
+	void OnMonsterSpriteReady(FileRequestResult* result);
+	void OnBattlercharsetReady(FileRequestResult* result, int battler_index);
 
 	std::string sprite_name;
 	int hue;

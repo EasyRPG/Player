@@ -68,10 +68,9 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		BitmapRef panorama_bmp = Cache::Panorama(panorama_name); // TODO
-		Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
-		panorama.SetBitmap(panorama_bmp);
-		Game_Map::InitializeParallax();
+		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
+		request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+		request->Start();
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
@@ -81,6 +80,7 @@ void Spriteset_Map::Update() {
 	timer1->Update();
 	timer2->Update();
 }
+
 
 // Finds the sprite for a specific character
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
@@ -119,8 +119,15 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	tilemap.SubstituteUp(old_id, new_id);
 }
 
-void Spriteset_Map::OnTilemapSpriteReady(bool) {
+void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
 	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
 	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
+}
+
+void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
+	BitmapRef panorama_bmp = Cache::Panorama(result->file);
+	Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
+	panorama.SetBitmap(panorama_bmp);
+	Game_Map::InitializeParallax();
 }

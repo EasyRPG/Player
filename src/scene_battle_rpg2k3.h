@@ -60,7 +60,7 @@ public:
 	void Update();
 
 protected:
-
+	void OnSystem2Ready(FileRequestResult* result);
 	void CreateCursors();
 	void UpdateCursors();
 	void DrawFloatText(int x, int y, int color, const std::string& text, int _duration);

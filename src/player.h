@@ -179,6 +179,9 @@ namespace Player {
 
 	/** Game title. */
 	extern std::string game_title;
+
+	/** Folder where emscripten */
+	extern std::string emscripten_game_folder;
 }
 
 #endif

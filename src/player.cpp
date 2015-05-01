@@ -116,6 +116,8 @@ void Player::Init(int argc, char *argv[]) {
 	
 	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
 
+	mkdir()
+
 	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
@@ -533,27 +535,18 @@ void Player::LoadDatabase() {
 	}
 }
 
-void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
-
-	if (!save.get()) {
-		Output::Error("%s", LcfReader::GetError().c_str());
-	}
-
-	RPG::SaveSystem system = Main_Data::game_data.system;
-
-	Main_Data::game_data = *save.get();
-
+static void OnMapSaveFileReady(FileRequestResult*) {
 	Main_Data::game_data.party_location.Fixup();
 	Main_Data::game_data.system.Fixup();
 	Main_Data::game_data.screen.Fixup();
 	Game_Actors::Fixup();
 
-	// TODO: Place in functor
 	Game_Map::SetupFromSave();
 
 	Main_Data::game_player->MoveTo(
-		save->party_location.position_x, save->party_location.position_y);
+		Main_Data::game_data.party_location.position_x,
+		Main_Data::game_data.party_location.position_y
+		);
 	Main_Data::game_player->Refresh();
 
 	RPG::Music current_music = Main_Data::game_data.system.current_music;
@@ -561,7 +554,24 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_System::BgmPlay(current_music);
 }
 
-static void OnMapFileReady(bool) {
+void Player::LoadSavegame(const std::string& save_name) {
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
+
+	if (!save.get()) {
+		Output::Error("%s", LcfReader::GetError().c_str());
+	}
+
+	Main_Data::game_data = *save.get();
+
+	int map_id = save->party_location.map_id;
+
+	FileRequestAsync* request = Game_Map::RequestMap(map_id);
+	request->Bind(&OnMapSaveFileReady);
+	request->SetImportantFile(true);
+	request->Start();
+}
+
+static void OnMapFileReady(FileRequestResult*) {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
 	int x_pos = Player::party_x_position == -1 ?

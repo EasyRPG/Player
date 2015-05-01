@@ -225,6 +225,6 @@ void Scene_Title::CommandShutdown() {
 	Scene::Pop();
 }
 
-void Scene_Title::OnTitleSpriteReady(bool) {
-	title->SetBitmap(Cache::Title(Data::system.title_name));
+void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
+	title->SetBitmap(Cache::Title(result->file));
 }

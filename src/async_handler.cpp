@@ -28,6 +28,7 @@
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
+	int next_id = 0;
 
 	FileRequestAsync* GetRequest(const std::string& path) {
 		std::map<std::string, FileRequestAsync>::iterator it = async_requests.find(path);
@@ -41,7 +42,6 @@ namespace {
 	void RegisterRequest(const std::string& path, const FileRequestAsync& request) {
 		async_requests[path] = request;
 	}
-
 
 	void download_success(unsigned, void* userData, const char*) {
 		(static_cast<FileRequestAsync*>(userData))->DownloadDone(true);
@@ -61,7 +61,7 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, cons
 		return request;
 	}
 
-	FileRequestAsync req(path);
+	FileRequestAsync req(folder_name, file_name);
 	RegisterRequest(path, req);
 
 	Output::Debug("Waiting for %s", path.c_str());
@@ -88,8 +88,10 @@ bool AsyncHandler::IsImportantFilePending() {
 	return false;
 }
 
-FileRequestAsync::FileRequestAsync(const std::string& path) {
-	this->path = path;
+FileRequestAsync::FileRequestAsync(const std::string& folder_name, const std::string& file_name) :
+	directory(folder_name),
+	file(file_name) {
+	this->path = path = FileFinder::MakePath(folder_name, file_name);
 	this->important = false;
 
 	state = 0;
@@ -144,18 +146,40 @@ const std::string& FileRequestAsync::GetPath() const {
 	return path;
 }
 
-void FileRequestAsync::Bind(void(*func)(bool)) {
-	listeners.push_back(func);
+int FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
+	listeners.push_back(std::make_pair(next_id, func));
+
+	return next_id++;
 }
 
-void FileRequestAsync::Bind(boost::function<void(bool)> func) {
-	listeners.push_back(func);
+int FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
+	listeners.push_back(std::make_pair(next_id, func));
+
+	return next_id++;
+}
+
+bool FileRequestAsync::Unbind(int id) {
+	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > >::iterator it;
+
+	for (it = listeners.begin(); it != listeners.end(); ++it) {
+		if (it->first == id) {
+			listeners.erase(it);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void FileRequestAsync::CallListeners(bool success) {
-	std::vector<boost::function<void(bool)> >::iterator it;
+	FileRequestResult result;
+	result.directory = directory;
+	result.file = file;
+	result.success = success;
+
+	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > >::iterator it;
 	for (it = listeners.begin(); it != listeners.end(); ++it) {
-		(*it)(success);
+		(it->second)(&result);
 	}
 
 	listeners.clear();
@@ -170,7 +194,9 @@ void FileRequestAsync::DownloadDone(bool success) {
 		Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
-		FileFinder::Init();
+		if (state == 0) {
+			FileFinder::Init();
+		}
 #endif
 
 		state = 1;

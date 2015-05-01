@@ -100,7 +100,7 @@ public:
 	void CommandShutdown();
 
 private:
-	void OnTitleSpriteReady(bool success);
+	void OnTitleSpriteReady(FileRequestResult* result);
 
 	/** Displays the options of the title scene. */
 	boost::scoped_ptr<Window_Command> command_window;

@@ -464,12 +464,20 @@ bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault(dir, name);
+#endif
+
 	static const char* MUSIC_TYPES[] = {
 		".wav", ".ogg", ".mid", ".midi", ".mp3", NULL };
 	return FindFile("Music", name, MUSIC_TYPES);
 }
 
 std::string FileFinder::FindSound(const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault(dir, name);
+#endif
+
 	static const char* SOUND_TYPES[] = {
 		".wav", ".ogg", ".mp3", NULL };
 	return FindFile("Sound", name, SOUND_TYPES);

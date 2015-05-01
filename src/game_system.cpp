@@ -50,6 +50,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 			}
 		} else {
 			// TODO Async playback
+			//pending_bgm_settings = bgm;
 			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
 		}
 	} else {
@@ -256,4 +257,12 @@ void Game_System::SetTransition(int which, int transition) {
 		case Transition_EndBattleShow:		data.battle_end_fadein		= transition; break;
 		default: assert(false && "Bad transition");
 	}
+}
+
+void Game_System::OnBgmReady(FileRequestResult* result) {
+
+}
+
+void Game_System::OnSeReady(FileRequestResult* result) {
+
 }

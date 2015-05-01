@@ -30,6 +30,7 @@
  * Picture class.
  */
 class Sprite;
+struct FileRequestResult;
 
 class Game_Picture {
 public:
@@ -59,7 +60,7 @@ private:
 
 	void UpdateSprite();
 
-	void OnPictureSpriteReady(bool);
+	void OnPictureSpriteReady(FileRequestResult*);
 
 	int old_map_x;
 	int old_map_y;

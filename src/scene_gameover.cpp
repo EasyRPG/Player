@@ -17,6 +17,7 @@
 
 // Headers
 #include "scene_gameover.h"
+#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "game_system.h"
@@ -29,9 +30,9 @@ Scene_Gameover::Scene_Gameover() {
 
 void Scene_Gameover::Start() {
 	if (!Data::system.gameover_name.empty()) {
-		// Load Background Graphic
-		background.reset(new Sprite());
-		background->SetBitmap(Cache::Gameover(Data::system.gameover_name)); // TODO
+		FileRequestAsync* request = AsyncHandler::RequestFile("GameOver", Data::system.gameover_name);
+		request->Bind(&Scene_Gameover::OnBackgroundReady, this);
+		request->Start();
 	}
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
@@ -41,4 +42,10 @@ void Scene_Gameover::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Scene::PopUntil(Scene::Title);
 	}
+}
+
+void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
+	// Load Background Graphic
+	background.reset(new Sprite());
+	background->SetBitmap(Cache::Gameover(result->file));
 }

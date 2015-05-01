@@ -83,7 +83,7 @@ void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	old_map_y = Game_Map::GetDisplayY();
 }
 
-void Game_Picture::OnPictureSpriteReady(bool) {
+void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
 
 	sprite.reset(new Sprite());

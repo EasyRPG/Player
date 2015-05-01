@@ -887,8 +887,8 @@ bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) {
 	return true;
 }
 
-void Game_Interpreter_Map::OnChangeSystemGraphicReady(bool, const std::string& system) {
-	Game_System::SetSystemName(system);
+void Game_Interpreter_Map::OnChangeSystemGraphicReady(FileRequestResult* result) {
+	Game_System::SetSystemName(result->file);
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 
@@ -900,7 +900,7 @@ void Game_Interpreter_Map::OnChangeSystemGraphicReady(bool, const std::string& s
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
-	request->Bind(boost::bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this, _1, com.string));
+	request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
 	request->Start();
 

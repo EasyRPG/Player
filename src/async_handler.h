@@ -23,6 +23,7 @@
 #include <vector>
 
 class FileRequestAsync;
+struct FileRequestResult;
 
 namespace AsyncHandler {
 	FileRequestAsync* RequestFile(const std::string& folder_name, const std::string& filename);
@@ -35,7 +36,7 @@ namespace AsyncHandler {
 class FileRequestAsync {
 public:
 	FileRequestAsync();
-	FileRequestAsync(const std::string& path);
+	FileRequestAsync(const std::string& folder_name, const std::string& file_name);
 
 	bool IsReady() const;
 	bool IsImportantFile() const;
@@ -47,26 +48,36 @@ public:
 
 	const std::string& GetPath() const;
 
-	std::vector<boost::function<void(bool)> > listeners;
-	template<typename T> void Bind(void (T::*func)(bool), T* that);
+	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > > listeners;
+	template<typename T> int Bind(void (T::*func)(FileRequestResult*), T* that);
 
-	void Bind(boost::function<void(bool)> func);
-	void Bind(void(*func)(bool));
+	int Bind(boost::function<void(FileRequestResult*)> func);
+	int Bind(void(*func)(FileRequestResult*));
+
+	bool Unbind(int id);
 
 	void DownloadDone(bool success);
 
 private:
 	void CallListeners(bool success);
-
+	
+	std::string directory;
+	std::string file;
 	std::string path;
 	int state;
 	bool important;
 };
 
+struct FileRequestResult {
+	std::string directory;
+	std::string file;
+	bool success;
+};
+
 template<typename T>
-void FileRequestAsync::Bind(void (T::*func)(bool), T* that) {
-	boost::function1<void, bool> f;
+int FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
+	boost::function1<void, FileRequestResult*> f;
 	f = std::bind1st(std::mem_fun(func), that);
-	listeners.push_back(f);
+	return Bind(f);
 }
 #endif

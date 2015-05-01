@@ -23,6 +23,8 @@
 #include "sprite.h"
 #include <boost/scoped_ptr.hpp>
 
+struct FileRequestResult;
+
 /**
  * Scene Game Over class.
  * Displays the Game Over screen.
@@ -37,10 +39,11 @@ public:
 
 	void Start();
 	void Update();
-
 private:
 	/** Background graphic. */
 	boost::scoped_ptr<Sprite> background;
+	
+	void OnBackgroundReady(FileRequestResult* result);
 };
 
 #endif
