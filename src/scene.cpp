@@ -66,11 +66,7 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
-	if (AsyncHandler::IsImportantFilePending()) {
-		return;
-	}
-
-	if (Graphics::IsTransitionPending()) {
+	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
 		Player::Update(false);
 		return;
 	}
