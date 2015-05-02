@@ -118,8 +118,6 @@ void Player::Init(int argc, char *argv[]) {
 	emscripten_game_name = "";
 
 	Output::IgnorePause(true);
-	
-	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
 
 	// Create initial directory structure
 	// Retrieve save directory from persistent storage
