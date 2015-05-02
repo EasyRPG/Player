@@ -317,6 +317,11 @@ static void add_rtp_path(std::string const& p) {
 
 
 void FileFinder::InitRtpPaths() {
+#ifdef EMSCRIPTEN
+	// No RTP support for emscripten at the moment.
+	return;
+#endif
+
 	std::string const version_str =
 		Player::engine == Player::EngineRpg2k ? "2000":
 		Player::engine == Player::EngineRpg2k3 ? "2003":
