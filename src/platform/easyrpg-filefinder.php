@@ -1,22 +1,27 @@
 <?php                                                                                                                                                                         
+/* Licensed under WTFPL. Do what you want. */
+
 //if (empty($_GET)) exit(0);
 function x($s) { printf('<pre>%s</pre>', print_r($s, true)); }
 
-$GAME = '';
+$GAME = 'default';
 if (isset($_GET['game'])) {
     if (strpos($_GET['game'],'.') !== false) {
-        exit('GAME PANIC!');
+        exit('PANIC! Bad game!');
     }
     if (strpos($_GET['game'],'/') !== false) {
-        exit('MORE GAME PANIC!');
+        exit('MANY PANIC! Bad game!');
+    }
+    if (strpos($_GET['game'],'\\') !== false) {
+        exit('MORE PANIC! Bad game!');
+    }
+    if (strpos($_GET['game'],'cache') !== false) {
+        exit('MOST PANIC! Bad game!');
     }
     $GAME = $_GET['game'];
 }
-else {
-    exit();
-}
 
-define('CACHE_FILE', __DIR__ . '/cache/' . $GAME . 'cache.json');
+define('CACHE_FILE', __DIR__ . '/cache/' . $GAME . '.json');
 define('BASE_DIR', __DIR__ . '/' . $GAME);
 
 function storeList(&$store, $dir = '.') {
@@ -34,17 +39,21 @@ function storeList(&$store, $dir = '.') {
 function updateCache() {
     $store = array();
     storeList($store);
-    file_exists(CACHE_FILE) && (unlink(CACHE_FILE) || exit('PANIC!'));
-    file_put_contents(CACHE_FILE, json_encode($store)) !== false || exit('MORE PANIC!');
+    file_exists(CACHE_FILE) && (unlink(CACHE_FILE) || exit('PANIC! Cache not writable!'));
+    file_put_contents(CACHE_FILE, json_encode($store)) !== false || exit('MORE PANIC! Cache not writable!');
     echo 'Cache updated.<br />';
 }
 
+if (!is_file(__DIR__ . '/cache')) {
+    mkdir(__DIR__ . '/cache');
+}
+
 if (!is_dir(__DIR__ . '/cache')) {
-    exit("CACHE PANIC!");
+    exit("PANIC! Create a directory 'cache'!");
 }
 
 if (!is_dir(BASE_DIR)) {
-    exit("IO PANIC!");
+    exit("PANIC! Game not found!");
 }
 
 if (isset($_GET['update']) || !file_exists(CACHE_FILE)) {
@@ -57,7 +66,7 @@ $db = json_decode(file_get_contents(CACHE_FILE), true);
 if (isset($_GET['file'])) {
     $file = strtolower($_GET['file']);
     if (isset($db[$file])) {
-    $url = $_GET['game'] . '/' . $db[$file];
+    $url = $GAME . '/' . $db[$file];
         header('Location: ' . $url);
         return;
     }
