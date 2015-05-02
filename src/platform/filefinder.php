@@ -18,7 +18,7 @@ if (isset($_GET['game'])) {
     if (strpos($_GET['game'],'cache') !== false) {
         exit('MOST PANIC! Bad game!');
     }
-    $GAME = $_GET['game'];
+    $GAME = strtolower($_GET['game']);
 }
 
 define('CACHE_FILE', __DIR__ . '/cache/' . $GAME . '.json');
@@ -44,7 +44,7 @@ function updateCache() {
     echo 'Cache updated.<br />';
 }
 
-if (!is_file(__DIR__ . '/cache')) {
+if (!file_exists(__DIR__ . '/cache')) {
     mkdir(__DIR__ . '/cache');
 }
 
