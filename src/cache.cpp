@@ -144,6 +144,8 @@ namespace {
 
 		Spec const& s = spec[T];
 
+		// Test if the file was requested asynchronously before.
+		// If not the file can't be expected to exist -> bug.
 		FileRequestAsync* request = AsyncHandler::RequestFile(s.directory, f);
 		if (!request->IsReady()) {
 			Output::Debug("BUG Not Requested: %s/%s", s.directory, f.c_str());

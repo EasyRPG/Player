@@ -65,13 +65,13 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, cons
 	FileRequestAsync req(folder_name, file_name);
 	RegisterRequest(path, req);
 
-	Output::Debug("Waiting for %s", path.c_str());
+	//Output::Debug("Waiting for %s", path.c_str());
 
 	return GetRequest(path);
 }
 
-FileRequestAsync* AsyncHandler::RequestFile(const std::string& filename) {
-	return RequestFile(".", filename);
+FileRequestAsync* AsyncHandler::RequestFile(const std::string& file_name) {
+	return RequestFile(".", file_name);
 }
 
 bool AsyncHandler::IsImportantFilePending() {
@@ -79,7 +79,8 @@ bool AsyncHandler::IsImportantFilePending() {
 
 	for (it = async_requests.begin(); it != async_requests.end(); ++it) {
 		FileRequestAsync& request = it->second;
-		request.UpdateProgress();
+		// remove comment for fake download testing
+		//request.UpdateProgress();
 
 		if (!request.IsReady() && request.IsImportantFile()) {
 			return true;
@@ -141,6 +142,9 @@ void FileRequestAsync::Start() {
 		download_success,
 		download_failure,
 		NULL);
+#else
+	// add comment for fake download testing
+	DownloadDone(true);
 #endif
 }
 
@@ -199,11 +203,12 @@ void FileRequestAsync::CallListeners(bool success) {
 
 void FileRequestAsync::DownloadDone(bool success) {
 	if (IsReady()) {
+		// Change to real success state when already finished before
 		success = state == State_DoneSuccess;
 	}
 
 	if (success) {
-		Output::Debug("DL Success %s", path.c_str());
+		//Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
@@ -216,7 +221,7 @@ void FileRequestAsync::DownloadDone(bool success) {
 		CallListeners(true);
 	}
 	else {
-		Output::Debug("DL Failure %s", path.c_str());
+		//Output::Debug("DL Failure %s", path.c_str());
 
 		state = State_DoneFailure;
 
