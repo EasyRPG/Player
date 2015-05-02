@@ -16,6 +16,7 @@
  */
 
 #include "bitmap.h"
+#include "async_handler.h"
 #include "rpg_animation.h"
 #include "output.h"
 #include "graphics.h"
@@ -30,22 +31,26 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
 
+	large = false;
+
 	if (name.empty()) return;
 
+	// Emscripten handled special here because of the FileFinder checks
+#ifdef EMSCRIPTEN
+	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation->animation_name);
+	request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
+	request->Start();
+#else
 	if (!FileFinder::FindImage("Battle", name).empty()) {
-		large = false;
-		graphic = Cache::Battle(name);
+		screen = Cache::Battle(name);
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		large = true;
-		graphic = Cache::Battle2(name);
+		screen = Cache::Battle2(name);
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());
-		return;
 	}
-
-	screen = graphic;
+#endif
 
 	Graphics::RegisterDrawable(this);
 }
@@ -114,4 +119,25 @@ int BattleAnimation::GetFrames() const {
 
 bool BattleAnimation::IsDone() const {
 	return GetFrame() >= GetFrames();
+}
+
+void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
+	if (result->success) {
+		screen = Cache::Battle(result->file);
+	}
+	else {
+		// Try battle2
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation->animation_name);
+		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
+		request->Start();
+	}
+}
+
+void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
+	if (result->success) {
+		screen = Cache::Battle2(result->file);
+	}
+	else {
+		Output::Warning("Couldn't find animation: %s", result->file.c_str());
+	}
 }

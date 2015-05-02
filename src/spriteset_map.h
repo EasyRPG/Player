@@ -29,6 +29,7 @@
 
 class Sprite_Character;
 class Game_Character;
+struct FileRequestResult;
 
 /**
  * Spriteset_Map class.
@@ -71,6 +72,8 @@ protected:
 	boost::scoped_ptr<Sprite_AirshipShadow> airship_shadow;
 	boost::scoped_ptr<Sprite_Timer> timer1;
 	boost::scoped_ptr<Sprite_Timer> timer2;
-};
 
+	void OnTilemapSpriteReady(FileRequestResult*);
+	void OnPanoramaSpriteReady(FileRequestResult* result);
+};
 #endif

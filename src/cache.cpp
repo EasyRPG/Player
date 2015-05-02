@@ -25,6 +25,7 @@
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/static_assert.hpp>
 
+#include "async_handler.h"
 #include "cache.h"
 #include "filefinder.h"
 #include "exfont.h"
@@ -34,7 +35,6 @@
 #include "data.h"
 
 namespace {
-
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
@@ -143,6 +143,15 @@ namespace {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
+
+		// Test if the file was requested asynchronously before.
+		// If not the file can't be expected to exist -> bug.
+		FileRequestAsync* request = AsyncHandler::RequestFile(s.directory, f);
+		if (!request->IsReady()) {
+			Output::Debug("BUG Not Requested: %s/%s", s.directory, f.c_str());
+			return BitmapRef();
+		}
+
 		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
 										 T == Material::Chipset? Bitmap::Chipset:
 										 T == Material::System? Bitmap::System:

@@ -16,7 +16,9 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include <string>
+#include "async_handler.h"
 #include "data.h"
 #include "rpg_terrain.h"
 #include "baseui.h"
@@ -32,7 +34,9 @@ Background::Background(const std::string& name) :
 
 	Graphics::RegisterDrawable(this);
 
-	bg_bitmap = Cache::Backdrop(name);
+	FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
+	request->Bind(&Background::OnBackgroundGraphicReady, this);
+	request->Start();
 }
 
 Background::Background(int terrain_id) :
@@ -45,19 +49,40 @@ Background::Background(int terrain_id) :
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
 	if (terrain.background_type == 0) {
-		bg_bitmap = Cache::Backdrop(terrain.background_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
+		request->Bind(&Background::OnBackgroundGraphicReady, this);
+		request->Start();
 		return;
 	}
 
-	bg_bitmap = Cache::Frame(terrain.background_a_name);
+	FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
+	request->Bind(&Background::OnBackgroundGraphicReady, this);
+	request->Start();
+
 	bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
 	bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
 
 	if (terrain.background_b) {
-		fg_bitmap = Cache::Frame(terrain.background_b_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_b_name);
+		request->Bind(&Background::OnForegroundFrameGraphicReady, this);
+		request->Start();
+
 		fg_hscroll = terrain.background_b_scrollh ? terrain.background_b_scrollh_speed : 0;
 		fg_vscroll = terrain.background_b_scrollv ? terrain.background_b_scrollv_speed : 0;
 	}
+}
+
+void Background::OnBackgroundGraphicReady(FileRequestResult* result) {
+	if (result->directory == "Backdrop") {
+		bg_bitmap = Cache::Backdrop(result->file);
+	}
+	else if (result->directory == "Frame") {
+		bg_bitmap = Cache::Frame(result->file);
+	}
+}
+
+void Background::OnForegroundFrameGraphicReady(FileRequestResult* result) {
+	fg_bitmap = Cache::Frame(result->file);
 }
 
 Background::~Background() {

@@ -38,8 +38,6 @@ Scene_File::Scene_File(std::string message) :
 }
 
 void Scene_File::Start() {
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
-
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);

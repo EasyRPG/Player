@@ -30,6 +30,8 @@
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
 
+class FileRequestAsync;
+
 #define SCREEN_TILE_WIDTH 256
 
 /**
@@ -527,6 +529,8 @@ namespace Game_Map {
 	int GetParallaxX();
 	int GetParallaxY();
 	const std::string& GetParallaxName();
+
+	FileRequestAsync* RequestMap(int map_id);
 }
 
 #endif

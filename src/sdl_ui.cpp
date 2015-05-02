@@ -33,6 +33,8 @@
 #elif __ANDROID__
 	#include <jni.h>
 	#include <SDL_system.h>
+#elif EMSCRIPTEN
+	#include <emscripten.h>
 #endif
 #include "color.h"
 #include "graphics.h"
@@ -300,11 +302,10 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	}
 	toggle_fs_available = true;
 	
-#ifdef SUPPORT_ZOOM
 	current_display_mode.zoom = true;
+#ifdef SUPPORT_ZOOM
 	zoom_available = true;
 #else
-	current_display_mode.zoom = false;
 	zoom_available = false;
 #endif
 
@@ -423,6 +424,8 @@ bool SdlUi::RefreshDisplayMode() {
 		if (!sdl_texture)
 			return false;
 	} else {
+		// Browser handles fast resizing for emscripten
+#ifndef EMSCRIPTEN
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		} else {
@@ -437,6 +440,7 @@ bool SdlUi::RefreshDisplayMode() {
 			}
 			SetAppIcon();
 		}
+#endif
 	}
 
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN

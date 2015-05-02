@@ -192,7 +192,7 @@ namespace FileFinder {
 	std::string MakePath(std::string const& dir, std::string const& name);
 
 	/**
-	 * GetDirectoryMembers memer listing mode.
+	 * GetDirectoryMembers member listing mode.
 	 */
 	enum Mode {
 		ALL, /**< list files and directory */
@@ -210,7 +210,7 @@ namespace FileFinder {
 	 */
 	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL, std::string const& parent = "");
 
-	ProjectTree const& GetProjectTree();
+	ProjectTree const& GetProjectTree(bool init = false);
 	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p, bool recursive = true);
 
 	bool IsRPG2kProject(ProjectTree const& dir);

@@ -510,18 +510,6 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	int namelen = (int) filename.size();
-	if (namelen < 5 || filename[namelen - 4] != '.') {
-		Output::Error("Invalid extension for image file %s", filename.c_str());
-		return;
-	}
-
-	std::string ext = Utils::LowerCase(filename.substr(namelen - 3, 3));
-	if (ext != "png" && ext != "xyz" && ext != "bmp") {
-		Output::Error("Unsupported image file %s", filename.c_str());
-		return;
-	}
-
 	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
 	if (!stream) {
 		Output::Error("Couldn't open image file %s", filename.c_str());

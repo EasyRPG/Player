@@ -21,7 +21,6 @@
 #include <map>
 #include <vector>
 #include "system.h"
-#include "plane.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"

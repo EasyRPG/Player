@@ -112,7 +112,7 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
-	return BitmapRef();
+		return BitmapRef();
 
 	bool no_tone = tone_effect == Tone();
 	bool no_flash = flash_effect.alpha == 0;

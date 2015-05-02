@@ -24,6 +24,8 @@
 #include "rpg_music.h"
 #include "rpg_sound.h"
 
+struct FileRequestResult;
+
 /**
  * Game System namespace.
  */
@@ -267,22 +269,8 @@ namespace Game_System {
 	void MemorizeBGM();
 	void PlayMemorizedBGM();
 
-	/** Menu saving option disabled flag. */
-	// extern bool save_disabled;
-	// extern bool teleport_disabled;
-	// extern bool escape_disabled;
-	// extern bool main_menu_disabled;
-	// extern RPG::Music current_bgm;
-	// extern RPG::Music memorized_bgm;
-	// extern RPG::Music system_bgm[BGM_Count];
-	// extern RPG::Sound system_sfx[SFX_Count];
-	// extern Timer timers[2];
-	// extern int transitions[Transition_Count];
-	// extern std::map<int, Target> teleport_targets;
-	// extern Target escape_target;
-
-	/** Number of saves. */
-	// extern unsigned int save_count;
+	void OnBgmReady(FileRequestResult* result);
+	void OnSeReady(FileRequestResult* result, int volume, int tempo);
 }
 
 #endif

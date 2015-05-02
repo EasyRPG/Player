@@ -23,6 +23,7 @@
 
 #include "system.h"
 #include "color.h"
+#include "memory_management.h"
 
 /**
  * Cache namespace.
@@ -46,6 +47,7 @@ namespace Cache {
 	BitmapRef System(const std::string& filename);
 	BitmapRef System2(const std::string& filename);
 	BitmapRef Tile(const std::string& filename, int tile_id);
+
 	void Clear();
 
 	BitmapRef System();

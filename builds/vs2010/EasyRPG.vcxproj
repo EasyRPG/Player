@@ -329,6 +329,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\al_audio.cpp" />
+    <ClCompile Include="..\..\src\async_handler.cpp" />
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
@@ -459,6 +460,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\al_audio.h" />
+    <ClInclude Include="..\..\src\async_handler.h" />
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />

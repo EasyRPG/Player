@@ -16,9 +16,11 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
+#include "async_handler.h"
 #include "audio.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -885,15 +887,22 @@ bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
-	Game_System::SetSystemName(com.string);
+void Game_Interpreter_Map::OnChangeSystemGraphicReady(FileRequestResult* result) {
+	Game_System::SetSystemName(result->file);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 
 	if (!scene)
-		return true;
+		return;
 
 	scene->spriteset->SystemGraphicUpdated();
+}
+
+bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
+	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
+	request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
+	request->SetImportantFile(true);
+	request->Start();
 
 	return true;
 }

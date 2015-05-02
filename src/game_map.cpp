@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "async_handler.h"
 #include "system.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
@@ -500,6 +501,8 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 }
 
 bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
+	if (!Game_Map::IsValid(x, y)) return false;
+
 	int tile_id;
 	int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
@@ -513,7 +516,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
-						return (passages_down[tile_id] & bit);
+						return !!(passages_down[tile_id] & bit);
 					}
 				}
 			}
@@ -561,11 +564,14 @@ bool Game_Map::IsPassableTile(int bit, int tile_index) {
 }
 
 int Game_Map::GetBushDepth(int x, int y) {
+	if (!Game_Map::IsValid(x, y)) return 0;
+
 	return Data::data.terrains[GetTerrainTag(x,y) - 1].bush_depth;
 }
 
 bool Game_Map::IsCounter(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
+
 	int const tile_id = map->upper_layer[x + y * GetWidth()];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.upper_tiles[tile_id - BLOCK_F];
@@ -573,6 +579,8 @@ bool Game_Map::IsCounter(int x, int y) {
 }
 
 int Game_Map::GetTerrainTag(int const x, int const y) {
+	if (!Game_Map::IsValid(x, y)) return 1;
+
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned const chip_index =
 		(chipID <  3050)?  0 + chipID/1000 :
@@ -589,7 +597,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 }
 
 bool Game_Map::AirshipLandOk(int const x, int const y) {
-	return Data::data.terrains[GetTerrainTag(x, y) -1].airship_land;
+	return Data::data.terrains[GetTerrainTag(x, y) - 1].airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
@@ -1081,4 +1089,11 @@ int Game_Map::GetParallaxY() {
 
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
+}
+
+FileRequestAsync* Game_Map::RequestMap(int map_id) {
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
+	
+	return AsyncHandler::RequestFile(ss.str());
 }

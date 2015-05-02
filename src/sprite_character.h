@@ -23,6 +23,7 @@
 #include <string>
 
 class Game_Character;
+struct FileRequestResult;
 
 /**
  * Sprite character class.
@@ -64,6 +65,9 @@ private:
 
 	int chara_width;
 	int chara_height;
+
+	void OnTileSpriteReady(FileRequestResult*);
+	void OnCharSpriteReady(FileRequestResult*);
 };
 
 #endif

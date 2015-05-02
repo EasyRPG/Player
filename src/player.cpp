@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
 #include "filefinder.h"
@@ -54,7 +55,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 #ifdef GEKKO
 	#include <fat.h>
@@ -92,6 +92,9 @@ namespace Player {
 	double start_time;
 	double next_frame;
 	int frames;
+#ifdef EMSCRIPTEN
+	std::string emscripten_game_name;
+#endif
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -112,14 +115,17 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 
 #ifdef EMSCRIPTEN
-	Output::IgnorePause(true);
-	
-	emscripten_set_canvas_size(SCREEN_TARGET_WIDTH * 2, SCREEN_TARGET_HEIGHT * 2);
+	emscripten_game_name = "";
 
+	Output::IgnorePause(true);
+
+	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
-		FS.mkdir('/Save');
-		FS.mount(IDBFS, {}, '/Save');
+		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
+		dirs.forEach(function(dir) { FS.mkdir(dir) });
+
+		FS.mount(IDBFS, {}, 'Save');
 	
 		FS.syncfs(true, function(err) {
 		});
@@ -291,7 +297,11 @@ void Player::Exit() {
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
 	engine = EngineNone;
+#ifdef EMSCRIPTEN
+	window_flag = true;
+#else
 	window_flag = false;
+#endif
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
@@ -436,7 +446,20 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			PrintUsage();
 			exit(0);
 		}
+#ifdef EMSCRIPTEN
+		else if (*it == "--game") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			emscripten_game_name = *it;
+		}
+#endif
 	}
+}
+
+static void OnSystemFileReady(FileRequestResult* result) {
+	Game_System::SetSystemName(result->file);
 }
 
 void Player::CreateGameObjects() {
@@ -470,6 +493,11 @@ void Player::CreateGameObjects() {
 		if (!no_rtp_flag) {
 			FileFinder::InitRtpPaths();
 		}
+
+		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
+		request->SetImportantFile(true);
+		request->Bind(&OnSystemFileReady);
+		request->Start();
 	}
 	init = true;
 
@@ -526,17 +554,7 @@ void Player::LoadDatabase() {
 	}
 }
 
-void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
-
-	if (!save.get()) {
-		Output::Error("%s", LcfReader::GetError().c_str());
-	}
-
-	RPG::SaveSystem system = Main_Data::game_data.system;
-
-	Main_Data::game_data = *save.get();
-
+static void OnMapSaveFileReady(FileRequestResult*) {
 	Main_Data::game_data.party_location.Fixup();
 	Main_Data::game_data.system.Fixup();
 	Main_Data::game_data.screen.Fixup();
@@ -545,7 +563,9 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_Map::SetupFromSave();
 
 	Main_Data::game_player->MoveTo(
-		save->party_location.position_x, save->party_location.position_y);
+		Main_Data::game_data.party_location.position_x,
+		Main_Data::game_data.party_location.position_y
+		);
 	Main_Data::game_player->Refresh();
 
 	RPG::Music current_music = Main_Data::game_data.system.current_music;
@@ -553,17 +573,40 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Game_System::BgmPlay(current_music);
 }
 
-void Player::SetupPlayerSpawn() {
+void Player::LoadSavegame(const std::string& save_name) {
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
+
+	if (!save.get()) {
+		Output::Error("%s", LcfReader::GetError().c_str());
+	}
+
+	Main_Data::game_data = *save.get();
+
+	int map_id = save->party_location.map_id;
+
+	FileRequestAsync* map = Game_Map::RequestMap(map_id);
+	map->Bind(&OnMapSaveFileReady);
+	map->SetImportantFile(true);
+
+	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
+	system->SetImportantFile(true);
+	system->Bind(&OnSystemFileReady);
+
+	map->Start();
+	system->Start();
+}
+
+static void OnMapFileReady(FileRequestResult*) {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
 	int x_pos = Player::party_x_position == -1 ?
 		Data::treemap.start.party_x : Player::party_x_position;
 	int y_pos = Player::party_y_position == -1 ?
 		Data::treemap.start.party_y : Player::party_y_position;
-	if (party_members.size() > 0) {
+	if (Player::party_members.size() > 0) {
 		Main_Data::game_party->Clear();
 		std::vector<int>::iterator member;
-		for (member = party_members.begin(); member != party_members.end(); ++member) {
+		for (member = Player::party_members.begin(); member != Player::party_members.end(); ++member) {
 			Main_Data::game_party->AddActor(*member);
 		}
 	}
@@ -572,6 +615,16 @@ void Player::SetupPlayerSpawn() {
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
 	Game_Map::PlayBgm();
+}
+
+void Player::SetupPlayerSpawn() {
+	int map_id = Player::start_map_id == -1 ?
+		Data::treemap.start.party_map_id : Player::start_map_id;
+
+	FileRequestAsync* request = Game_Map::RequestMap(map_id);
+	request->Bind(&OnMapFileReady);
+	request->SetImportantFile(true);
+	request->Start();
 }
 
 std::string Player::GetEncoding() {

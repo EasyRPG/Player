@@ -16,7 +16,8 @@
  */
 
 // Headers
-#include "bitmap.h"
+#include <boost/bind.hpp>
+#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "game_party.h"
@@ -36,26 +37,10 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
-		Game_Actor *actor = actors[i];
-		const std::string& sprite_name = actor->GetSpriteName();
-		int sprite_id = actor->GetSpriteIndex();
-		BitmapRef bm = Cache::Charset(sprite_name);
-		int width = bm->GetWidth() / 4 / 3;
-		int height = bm->GetHeight() / 2 / 4;
-		for (int j = 0; j < 3; j++) {
-			int sx = ((sprite_id % 4) * 3 + j) * width;
-			int sy = ((sprite_id / 4) * 4 + 2) * height;
-			Rect src(sx, sy, width, height);
-			for (int k = 0; k < 2; k++) {
-				BitmapRef bm2 = Bitmap::Create(width, height, true);
-				bm2->SetTransparentColor(bm->GetTransparentColor());
-				bm2->Clear();
-				bm2->Blit(0, 0, *bm, src, 255);
-				if (k == 0)
-					bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
-				bitmaps[i][j][k] = bm2;
-			}
-		}
+		const std::string& sprite_name = actors[i]->GetSpriteName();
+		FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", sprite_name);
+		request->Bind(boost::bind(&Window_ShopParty::OnCharsetSpriteReady, this, _1, (int)i));
+		request->Start();
 	}
 
 	Refresh();
@@ -75,7 +60,10 @@ void Window_ShopParty::Refresh() {
 		}
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
 		BitmapRef bm = bitmaps[i][phase][equippable ? 1 : 0];
-		contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
+
+		if (bm) {
+			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
+		}
 
 		if (equippable) {
 			//check if item is equipped by each member
@@ -153,4 +141,27 @@ void Window_ShopParty::Update() {
 	cycle++;
 	if (cycle % anim_rate == 0)
 		Refresh();
+}
+
+void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult*, int party_index) {
+	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
+	const std::string& sprite_name = actor->GetSpriteName();
+	int sprite_id = actor->GetSpriteIndex();
+	BitmapRef bm = Cache::Charset(sprite_name);
+	int width = bm->GetWidth() / 4 / 3;
+	int height = bm->GetHeight() / 2 / 4;
+	for (int j = 0; j < 3; j++) {
+		int sx = ((sprite_id % 4) * 3 + j) * width;
+		int sy = ((sprite_id / 4) * 4 + 2) * height;
+		Rect src(sx, sy, width, height);
+		for (int k = 0; k < 2; k++) {
+			BitmapRef bm2 = Bitmap::Create(width, height, true);
+			bm2->SetTransparentColor(bm->GetTransparentColor());
+			bm2->Clear();
+			bm2->Blit(0, 0, *bm, src, 255);
+			if (k == 0)
+				bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
+			bitmaps[party_index][j][k] = bm2;
+		}
+	}
 }

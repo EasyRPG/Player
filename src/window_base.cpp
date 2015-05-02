@@ -16,9 +16,11 @@
  */
 
 // Headers
+#include <boost/bind.hpp>
 #include <iomanip>
 #include <sstream>
 #include "window_base.h"
+#include "async_handler.h"
 #include "cache.h"
 #include "data.h"
 #include "game_system.h"
@@ -49,22 +51,30 @@ void Window_Base::Update() {
 	}
 }
 
-void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
-	if (face_name.empty()) { return; }
-	BitmapRef faceset = Cache::Faceset(face_name);
+void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip) {
+	BitmapRef faceset = Cache::Faceset(result->file);
 
 	Rect src_rect(
 		(face_index % 4) * 48,
 		face_index / 4 * 48,
 		48,
 		48
-	);
+		);
 
 	if (flip) {
 		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false);
-	} else {
+	}
+	else {
 		contents->Blit(cx, cy, *faceset, src_rect, 255);
 	}
+}
+
+void Window_Base::DrawFace(const std::string& face_name, int face_index, int cx, int cy, bool flip) {
+	if (face_name.empty()) { return; }
+
+	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
+	request->Bind(boost::bind(&Window_Base::OnFaceReady, this, _1, face_index, cx, cy, flip));
+	request->Start();
 }
 
 void Window_Base::DrawActorFace(Game_Actor* actor, int cx, int cy) {
@@ -269,6 +279,13 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 }
 
 void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {
+	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+	if (!request->IsReady()) {
+		// Gauge refreshed each frame, so we can wait via polling
+		request->Start();
+		return;
+	}
+
 	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 	bool full = actor->IsGaugeFull();

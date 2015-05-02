@@ -287,10 +287,10 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
+FileFinder::ProjectTree const& FileFinder::GetProjectTree(bool init) {
 	static ProjectTree tree_;
 
-	if(tree_.project_path != Main_Data::project_path) {
+	if(tree_.project_path != Main_Data::project_path || init) {
 		EASYRPG_SHARED_PTR<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
 		if(! t) {
 			Output::Error("invalid project path: %s", Main_Data::project_path.c_str());
@@ -303,7 +303,7 @@ FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 }
 
 void FileFinder::Init() {
-	GetProjectTree(); // empty call
+	GetProjectTree(true); // empty call
 }
 
 static void add_rtp_path(std::string const& p) {
@@ -317,6 +317,11 @@ static void add_rtp_path(std::string const& p) {
 
 
 void FileFinder::InitRtpPaths() {
+#ifdef EMSCRIPTEN
+	// No RTP support for emscripten at the moment.
+	return;
+#endif
+
 	std::string const version_str =
 		Player::engine == Player::EngineRpg2k ? "2000":
 		Player::engine == Player::EngineRpg2k3 ? "2003":
@@ -407,6 +412,10 @@ EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault(dir, name);
+#endif
+
 	static const char* IMG_TYPES[] = {
 		".bmp",  ".png", ".xyz", /*".gif", ".jpg", ".jpeg",*/ NULL };
 	return FindFile(dir, name, IMG_TYPES);
@@ -457,12 +466,20 @@ bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault("Music", name);
+#endif
+
 	static const char* MUSIC_TYPES[] = {
 		".wav", ".ogg", ".mid", ".midi", ".mp3", NULL };
 	return FindFile("Music", name, MUSIC_TYPES);
 }
 
 std::string FileFinder::FindSound(const std::string& name) {
+#ifdef EMSCRIPTEN
+	return FindDefault("Sound", name);
+#endif
+
 	static const char* SOUND_TYPES[] = {
 		".wav", ".ogg", ".mp3", NULL };
 	return FindFile("Sound", name, SOUND_TYPES);

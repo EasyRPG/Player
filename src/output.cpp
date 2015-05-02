@@ -35,6 +35,10 @@
 	#include <android/log.h>
 #endif
 
+#ifdef EMSCRIPTEN
+	#include <emscripten.h>
+#endif
+
 #include "filefinder.h"
 #include "font.h"
 #include "graphics.h"
@@ -118,6 +122,10 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 }
 
 static void HandleErrorOutput(const std::string& err) {
+#ifdef EMSCRIPTEN
+	emscripten_cancel_main_loop();
+#endif
+
 	// Drawing directly on the screen because message_overlay is not visible
 	// when faded out
 	BitmapRef surface = DisplayUi->GetDisplaySurface();

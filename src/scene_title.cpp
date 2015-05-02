@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include "scene_title.h"
+#include "async_handler.h"
 #include "audio.h"
 #include "bitmap.h"
 #include "cache.h"
@@ -77,7 +78,6 @@ void Scene_Title::TransitionIn() {
 		if (!Player::hide_title_flag) {
 			Graphics::Transition(Graphics::TransitionFadeIn, 32);
 		} else {
-			DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
 			Graphics::Transition(Graphics::TransitionFadeIn, 6);
 		}
 	}
@@ -143,9 +143,10 @@ void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
 	{
-		if (Data::system.title_name.empty()) { return; }
 		title.reset(new Sprite());
-		title->SetBitmap(Cache::Title(Data::system.title_name));
+		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+		request->Bind(&Scene_Title::OnTitleSpriteReady, this);
+		request->Start();
 	}
 }
 
@@ -214,7 +215,6 @@ void Scene_Title::CommandContinue() {
 		return;
 	}
 
-	// Change scene
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
 }
 
@@ -223,4 +223,8 @@ void Scene_Title::CommandShutdown() {
 	Audio().BGS_Fade(800);
 	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
 	Scene::Pop();
+}
+
+void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
+	title->SetBitmap(Cache::Title(result->file));
 }

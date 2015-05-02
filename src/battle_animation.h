@@ -23,6 +23,8 @@
 #include "rpg_animation.h"
 #include "drawable.h"
 
+struct FileRequestResult;
+
 class BattleAnimation : public Drawable {
 public:
 	BattleAnimation(int x, int y, const RPG::Animation* animation);
@@ -39,6 +41,9 @@ public:
 	bool IsDone() const;
 
 protected:
+	void OnBattleSpriteReady(FileRequestResult* result);
+	void OnBattle2SpriteReady(FileRequestResult* result);
+
 	int x;
 	int y;
 	const RPG::Animation* animation;

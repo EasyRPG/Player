@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include "async_handler.h"
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
@@ -65,7 +66,7 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
-	if (Graphics::IsTransitionPending()) {
+	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
 		Player::Update(false);
 		return;
 	}

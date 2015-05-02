@@ -30,6 +30,7 @@
  * Picture class.
  */
 class Sprite;
+struct FileRequestResult;
 
 class Game_Picture {
 public:
@@ -58,6 +59,8 @@ private:
 	boost::scoped_ptr<Sprite> sprite;
 
 	void UpdateSprite();
+
+	void OnPictureSpriteReady(FileRequestResult*);
 
 	int old_map_x;
 	int old_map_y;

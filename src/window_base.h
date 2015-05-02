@@ -48,7 +48,7 @@ public:
 	 * Draw helpers.
 	 */
 	/** @{ */
-	void DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip = false);
+	void DrawFace(const std::string& face_name, int face_index, int cx, int cy, bool flip = false);
 	void DrawActorFace(Game_Actor* actor, int cx, int cy);
 	void DrawActorName(Game_Battler* actor, int cx, int cy);
 	void DrawActorTitle(Game_Actor* actor, int cx, int cy);
@@ -67,6 +67,8 @@ public:
 	/** @} */
 
 protected:
+	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
+
 	std::string windowskin_name;
 };
 
