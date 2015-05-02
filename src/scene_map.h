@@ -52,11 +52,13 @@ public:
 	void CallDebug();
 
 	boost::scoped_ptr<Spriteset_Map> spriteset;
-	boost::scoped_ptr<Window_Message> message_window;
 
 private:
 	void StartTeleportPlayer();
 	void FinishTeleportPlayer();
+
+	boost::scoped_ptr<Window_Message> message_window;
+	boost::scoped_ptr<Sprite> background;
 	boost::scoped_ptr<Screen> screen;
 	boost::scoped_ptr<Weather> weather;
 

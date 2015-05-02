@@ -460,6 +460,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	}
 }
 
+static void OnSystemFileReady(FileRequestResult* result) {
+	Game_System::SetSystemName(result->file);
+}
+
 void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
@@ -494,6 +498,7 @@ void Player::CreateGameObjects() {
 
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
+		request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
 	init = true;
@@ -581,10 +586,16 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	int map_id = save->party_location.map_id;
 
-	FileRequestAsync* request = Game_Map::RequestMap(map_id);
-	request->Bind(&OnMapSaveFileReady);
-	request->SetImportantFile(true);
-	request->Start();
+	FileRequestAsync* map = Game_Map::RequestMap(map_id);
+	map->Bind(&OnMapSaveFileReady);
+	map->SetImportantFile(true);
+
+	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
+	system->SetImportantFile(true);
+	system->Bind(&OnSystemFileReady);
+
+	map->Start();
+	system->Start();
 }
 
 static void OnMapFileReady(FileRequestResult*) {
