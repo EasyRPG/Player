@@ -181,9 +181,6 @@ namespace Player {
 	extern std::string game_title;
 
 #ifdef EMSCRIPTEN
-	/** Folder where emscripten searches for games */
-	extern std::string emscripten_game_folder;
-
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif

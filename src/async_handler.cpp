@@ -127,7 +127,7 @@ void FileRequestAsync::Start() {
 	state = State_Pending;
 
 #ifdef EMSCRIPTEN
-	std::string request_path = Player::emscripten_game_folder + "/easyrpg-filefinder.php?file=" + path;
+	std::string request_path = "games/?file=" + path;
 	if (!Player::emscripten_game_name.empty()) {
 		request_path += "&game=" + Player::emscripten_game_name;
 	}

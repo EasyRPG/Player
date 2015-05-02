@@ -93,7 +93,6 @@ namespace Player {
 	double next_frame;
 	int frames;
 #ifdef EMSCRIPTEN
-	std::string emscripten_game_folder;
 	std::string emscripten_game_name;
 #endif
 }
@@ -116,7 +115,6 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 
 #ifdef EMSCRIPTEN
-	emscripten_game_folder = "games";
 	emscripten_game_name = "";
 
 	Output::IgnorePause(true);
@@ -301,7 +299,11 @@ void Player::Exit() {
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
 	engine = EngineNone;
+#ifdef EMSCRIPTEN
+	window_flag = true;
+#else
 	window_flag = false;
+#endif
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
