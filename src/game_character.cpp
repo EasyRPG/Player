@@ -53,6 +53,7 @@ Game_Character::Game_Character() :
 	jump_plus_y(0),
 	anime_count(0),
 	stop_count(0),
+	max_stop_count(0),
 	walk_animation(true),
 	cycle_stat(false),
 	opacity(255),
@@ -251,7 +252,7 @@ void Game_Character::Update() {
 		return;
 	}
 
-	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
+	if (stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else if (!IsMessageBlocking()) {
@@ -596,19 +597,19 @@ void Game_Character::Move(int dir) {
 		return;
 	}
 
-	if (!IsPassable(GetX(), GetY(), dir)) {
-		if (CheckEventTriggerTouch(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy)))
-			stop_count = 0;
-		move_failed = true;
-		return;
+	move_failed = !IsPassable(GetX(), GetY(), dir);
+	if (move_failed) {
+		if (!CheckEventTriggerTouch(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy)))
+			return;
+	} else {
+		SetX(Game_Map::RoundX(GetX() + dx));
+		SetY(Game_Map::RoundY(GetY() + dy));
+		remaining_step = SCREEN_TILE_WIDTH;
+		BeginMove();
 	}
 
-	SetX(Game_Map::RoundX(GetX() + dx));
-	SetY(Game_Map::RoundY(GetY() + dy));
-	BeginMove();
 	stop_count = 0;
-	remaining_step = SCREEN_TILE_WIDTH;
-	move_failed = false;
+	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
 }
 
 void Game_Character::MoveForward() {
@@ -658,7 +659,8 @@ void Game_Character::Turn(int dir) {
 	SetDirection(dir);
 	SetSpriteDirection(dir);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	stop_count = 0;
+	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -819,6 +821,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 
 	remaining_step = SCREEN_TILE_WIDTH;
 	stop_count = 0;
+	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
 	move_failed = false;
 }
 
@@ -874,7 +877,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	SetMoveFrequency(frequency);
 	move_route_owner = owner;
 	wait_count = 0;
-	stop_count = 256;
+	max_stop_count = 0;
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* /* owner */) {
