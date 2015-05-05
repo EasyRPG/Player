@@ -31,7 +31,7 @@ DEFAULT_CHAR 8481
 FONT_ASCENT 10
 FONT_DESCENT 2
 ENDPROPERTIES
-CHARS 167
+CHARS 177
 # gei1 / ji1 'table' radical; variant of kei4 / qi2 'his, their'
 STARTCHAR 4e0c
 ENCODING 19980
@@ -291,6 +291,26 @@ BITMAP
 ..@.@@@@@@@@
 ..@...@..@..
 ..@.@@....@.
+ENDCHAR
+# tong2 / tang3 'if; supposing'
+STARTCHAR 5018
+ENCODING 20504
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.@..@..@.
+..@..@.@.@..
+..@.@@@@@@@.
+.@..@.....@.
+.@..@.....@.
+@@..@.@@@.@.
+.@..@.@.@.@.
+.@..@.@.@.@.
+.@..@.@@@.@.
+.@..@.....@.
+.@..@.....@.
+.@..@....@@.
 ENDCHAR
 # zik6 / zhi2 'value; worth'
 STARTCHAR 503c
@@ -1131,6 +1151,26 @@ BITMAP
 .....@@@..@.
 ...@@@..@@@.
 ENDCHAR
+# dut1 'swipe a card', dyut1 'pout one's mouth; chubby; plump; obese', dut1 / du1 'toot; honk; beep'
+STARTCHAR 561f
+ENCODING 22047
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.....@......
+...@@@@@@@@.
+@@@..@.@@.@.
+@.@..@@.@.@.
+@.@@@@@@@@..
+@.@.@@..@@..
+@.@.@@@.@.@.
+@.@@@.@.@.@.
+@@@.@@@.@.@.
+....@.@.@@..
+....@.@.@...
+....@@@.@...
+ENDCHAR
 # hei1 / xi1 'mirthful, happy', interjection
 STARTCHAR 563b
 ENCODING 22075
@@ -1191,6 +1231,26 @@ BITMAP
 ...@..@...@.
 .......@@@@.
 ENDCHAR
+# dong1 / dang1 onomatopoeia 'clang; jingle'
+STARTCHAR 5679
+ENCODING 22137
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+....@..@..@.
+.....@.@.@..
+@@@.@@@@@@@.
+@.@.@.....@.
+@.@..@@@@@..
+@.@..@...@..
+@.@..@@@@@..
+@.@.@@@@@@@.
+@@@.@..@..@.
+....@@@@@@@.
+....@..@..@.
+....@@@@@@@.
+ENDCHAR
 # lo1 lo4 lo3 / luo1 luo5 'repetitious', final particle
 STARTCHAR 56c9
 ENCODING 22217
@@ -1250,6 +1310,26 @@ BITMAP
 @@....@.@...
 .......@....
 ....@@@@@@@.
+ENDCHAR
+# kwaa1 / kua3 'collapse'
+STARTCHAR 57ae
+ENCODING 22446
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.......@....
+..@....@....
+..@.@@@@@@@.
+@@@@..@.@...
+..@..@@@@@..
+..@.@.....@.
+..@@@@@@@@.@
+..@...@.....
+..@@..@@@@..
+@@...@...@..
+.........@..
+.......@@...
 ENDCHAR
 # zin3, din3 / dian4 '[v/n] cushion, pad; level up', din6 / dian4 'advance money for others', zin2 / dian4 '(air) cushion'
 STARTCHAR 588a
@@ -1450,6 +1530,26 @@ BITMAP
 ..@.....@...
 .@......@...
 @......@@...
+ENDCHAR
+# paak3 / pa4 'kerchief', mak6 / mo4 'turban'
+STARTCHAR 5e15
+ENCODING 24085
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@......@..
+..@.....@...
+..@...@@@@@.
+@@@@@.@...@.
+@.@.@.@...@.
+@.@.@.@...@.
+@.@.@.@@@@@.
+@.@.@.@...@.
+@.@@..@...@.
+..@...@...@.
+..@...@@@@@.
+..@.........
 ENDCHAR
 # bong1 / bang1 'help'
 STARTCHAR 5e6b
@@ -2111,6 +2211,26 @@ BITMAP
 .@......@...
 ......@@....
 ENDCHAR
+# joeng5 / yang3 'oxygen'
+STARTCHAR 6c27
+ENCODING 27687
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.........
+..@@@@@@@@..
+..@.........
+.@.@@@@@....
+@...........
+.@@@@@@@@...
+...@.@..@...
+..@@@@@.@...
+....@...@...
+...@@@..@.@.
+..@@@@@..@@.
+....@.....@.
+ENDCHAR
 # wu1 / wu1 'filthy, dirty, impure, polluted
 STARTCHAR 6c61
 ENCODING 27745
@@ -2410,6 +2530,26 @@ BITMAP
 .@@..@..@@..
 @..@.@.@..@.
 .....@......
+ENDCHAR
+# zaang1, zang1 / zheng1 'open (the eyes)'
+STARTCHAR 775c
+ENCODING 30556
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.......@@@..
+@@@@.@@.@...
+@..@.@@..@..
+@..@@..@..@.
+@@@@@@@@@@..
+@..@..@..@..
+@..@@@@@@@@.
+@@@@..@..@..
+@..@@@@@@@..
+@..@..@.....
+@@@@..@.....
+.....@@.....
 ENDCHAR
 # ciu4 / qiao2 'glance at, look at, see'
 STARTCHAR 77a7
@@ -2891,6 +3031,26 @@ BITMAP
 @..@.@.@.@..
 @@@@@.....@.
 ENDCHAR
+# jim6 / yan4 'beautiful; sexy; voluptuous'
+STARTCHAR 8c54
+ENCODING 35924
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+@.@.@...@...
+@@@@@.@@@@@.
+@.@.@...@...
+@@@@@@@@@@@.
+........@...
+@@@@@@.@..@.
+.@@@@.@@@@@.
+.@..@.......
+.@@@@.@@@@@.
+.@..@.@.@.@.
+..@.@@@.@.@.
+@@@@..@@@@@.
+ENDCHAR
 # maau1 / mao1 'cat'
 STARTCHAR 8c93
 ENCODING 35987
@@ -3290,6 +3450,46 @@ BITMAP
 ..@@..@.@...
 .@..@.@.@...
 @.....@@@@@.
+ENDCHAR
+# mui4 / mei2 'mildew; mould'
+STARTCHAR 9709
+ENCODING 38665
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+.@@@@@@@@@..
+.....@......
+@@@@@@@@@@@.
+@.@..@.@..@.
+@..@.@..@.@.
+.@@@@@@@@@@.
+@.@@@@@@@...
+..@..@..@...
+@@@@@@@@@@@.
+.@..@...@...
+.@@@@@@@@@..
+......@@....
+ENDCHAR
+# wai3 / wei4 'feed'
+STARTCHAR 9935
+ENCODING 39221
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+..@.........
+..@@..@@@@@.
+.@..@.@.@.@.
+@.@@..@@@@@.
+.@@@@.@.@.@.
+.@..@@@@@@@.
+.@@@@.......
+.@...@@@@@@.
+.@@@.@.@.@..
+.@...@..@...
+.@@@@@@@.@..
+.@..@@....@.
 ENDCHAR
 # zong1 / zang1 'dirty; unclean'
 STARTCHAR 9ad2
