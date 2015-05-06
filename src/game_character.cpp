@@ -255,7 +255,7 @@ void Game_Character::Update() {
 	if (stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsMessageBlocking()) {
+		} else if (!IsMessageBlocking() && !Game_Map::GetInterpreter().IsRunning()) {
 			UpdateSelfMovement();
 		}
 	}
