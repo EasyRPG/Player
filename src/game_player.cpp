@@ -298,7 +298,7 @@ void Game_Player::UpdateScroll() {
 			int move_speed = GetMoveSpeed();
 			int diff = move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
 			dx += (GetX() - jump_x) * diff;
-			dy -= (GetY() - jump_y) * diff;
+			dy += (GetY() - jump_y) * diff;
 		}
 	}
 

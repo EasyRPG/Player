@@ -95,7 +95,7 @@ bool Game_Character::IsStopping() const {
 bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (d > 3) {
 		int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
-		int dy = (d == UpRight || d == UpLeft) - (d == DownRight || d == DownLeft);
+		int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
 		return ((IsPassable(x, y, -dx + 2) && IsPassable(x + dx, y, dy + 1)) ||
 			(IsPassable(x, y, dy + 1) && IsPassable(x, y + dy, -dx + 2)));
 	}
@@ -926,7 +926,7 @@ int Game_Character::GetRealY() const {
 		else if (d == Up || d == UpRight || d == UpLeft)
 			y += remaining_step;
 	} else if (IsJumping())
-		y -= ((GetY() - jump_y) * TILE_SIZE * remaining_step) / SCREEN_TILE_WIDTH;
+		y -= (GetY() - jump_y) * remaining_step;
 
 	return y;
 }
