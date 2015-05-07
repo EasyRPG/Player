@@ -33,6 +33,8 @@ Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	ChipsetUpdated();
+	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 
 	panorama.SetZ(-1000);
 
@@ -81,7 +83,6 @@ void Spriteset_Map::Update() {
 	timer2->Update();
 }
 
-
 // Finds the sprite for a specific character
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 {
@@ -121,8 +122,6 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
-	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
-	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
