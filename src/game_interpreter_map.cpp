@@ -1515,6 +1515,8 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	int result = 0;
 	size_t param_size = com.parameters.size();
 
+	bool (*check)(Input::InputButton) = wait ? Input::IsTriggered : Input::IsPressed;
+
 	if (Player::IsRPG2k()) {
 		if (param_size < 6) {
 			// For Rpg2k <1.50
@@ -1547,37 +1549,37 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		}
 	}
 
-	if (check_down && Input::IsTriggered(Input::DOWN)) {
+	if (check_down && check(Input::DOWN)) {
 		result = 1;
 	}
-	if (check_left && Input::IsTriggered(Input::LEFT)) {
+	if (check_left && check(Input::LEFT)) {
 		result = 2;
 	}
-	if (check_right && Input::IsTriggered(Input::RIGHT)) {
+	if (check_right && check(Input::RIGHT)) {
 		result = 3;
 	}
-	if (check_up && Input::IsTriggered(Input::UP)) {
+	if (check_up && check(Input::UP)) {
 		result = 4;
 	}
-	if (check_decision && Input::IsTriggered(Input::DECISION)) {
+	if (check_decision && check(Input::DECISION)) {
 		result = 5;
 	}
-	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
+	if (check_cancel && check(Input::CANCEL)) {
 		result = 6;
 	}
-	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
+	if (check_shift && check(Input::SHIFT)) {
 		result = 7;
 	}
 	if (check_numbers) {
 		for (int i = 0; i < 10; ++i) {
-			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
+			if (check((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
 			}
 		}
 	}
 	if (check_arith) {
 		for (int i = 0; i < 5; ++i) {
-			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
+			if (check((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
 			}
 		}
