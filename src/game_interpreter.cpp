@@ -72,7 +72,6 @@ void Game_Interpreter::Clear() {
 	CloseMessageWindow();
 	event_id = 0;					// event ID
 	move_route_waiting = false;		// waiting for move completion
-	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
@@ -183,11 +182,6 @@ void Game_Interpreter::Update() {
 				}
 			}
 			move_route_waiting = false;
-		}
-
-		if (button_input_variable_id > 0) {
-			InputButton();
-			break;
 		}
 
 		if (wait_count > 0) {
@@ -373,24 +367,6 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 		return true;
 	} else {
 		return Input::IsAnyTriggered();
-	}
-}
-
-void Game_Interpreter::InputButton() {
-	int n;
-	for (n = Input::UP; n != Input::N0; ++n) {
-		if (Input::IsTriggered((Input::InputButton) n)) {
-			break;
-		}
-	}
-
-	// If a button was pressed
-	if (n != Input::N0) {
-		// Set variable
-		Game_Variables[button_input_variable_id] = n;
-		Game_Map::SetNeedRefresh(true);
-		button_input_variable_id = 0;
-		Input::ResetKeys();
 	}
 }
 
