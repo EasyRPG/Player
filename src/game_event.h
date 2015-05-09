@@ -134,6 +134,16 @@ public:
 	 */
 	std::vector<RPG::EventCommand>& GetList();
 
+	/**
+	 * Event's sprite looks towards the hero but its original direction is remembered.
+	 */
+	void StartTalkToHero();
+
+	/**
+	 * Event returns to its original direction before talking to the hero.
+	 */
+	void StopTalkToHero();
+
 	void CheckEventTriggerAuto();
 	bool CheckEventTriggerTouch(int x, int y);
 	void Start();

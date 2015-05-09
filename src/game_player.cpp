@@ -452,7 +452,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 		)
 		{
 			if (!(*i)->GetList().empty()) {
-				(*i)->Lock();
+				(*i)->StartTalkToHero();
 			}
 			(*i)->Start();
 			result = true;
@@ -472,7 +472,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			)
 			{
 				if (!(*i)->GetList().empty()) {
-					(*i)->Lock();
+					(*i)->StartTalkToHero();
 				}
 				(*i)->Start();
 				result = true;
@@ -496,7 +496,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
 			if (!(*i)->GetList().empty()) {
-				(*i)->Lock();
+				(*i)->StartTalkToHero();
 			}
 			(*i)->Start();
 			result = true;

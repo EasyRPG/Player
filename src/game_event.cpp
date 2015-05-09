@@ -474,6 +474,20 @@ std::vector<RPG::EventCommand>& Game_Event::GetList() {
 	return list;
 }
 
+void Game_Event::StartTalkToHero() {
+	if (!IsDirectionFixed()) {
+		int prelock_dir = GetDirection();
+		TurnTowardHero();
+		SetDirection(prelock_dir);
+	}
+}
+
+void Game_Event::StopTalkToHero() {
+	if (!IsDirectionFixed()) {
+		SetSpriteDirection(GetDirection());
+	}
+}
+
 bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;

@@ -384,7 +384,7 @@ bool Game_Interpreter::CommandEnd() {
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
-		Game_Map::GetEvents().find(event_id)->second->Unlock();
+		Game_Map::GetEvents().find(event_id)->second->StopTalkToHero();
 	}
 
 	return true;
