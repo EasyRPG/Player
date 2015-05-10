@@ -128,6 +128,8 @@ void Sprite_Timer::Update() {
 	else {
 		SetY(4);
 	}
+
+	SetZ(10000);
 }
 
 void Sprite_Timer::CreateSprite() {

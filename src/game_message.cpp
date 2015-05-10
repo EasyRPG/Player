@@ -143,7 +143,7 @@ void Game_Message::SetContinueEvents(bool continue_events) {
 
 int Game_Message::GetRealPosition() {
 	if (Game_Temp::battle_running) {
-		if (Player::engine == Player::EngineRpg2k) {
+		if (Player::IsRPG2k()) {
 			return 2;
 		}
 		else {

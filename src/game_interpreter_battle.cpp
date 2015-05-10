@@ -214,7 +214,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	bool wait = com.parameters[2] != 0;
 	bool allies = false;
 
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;
 	}
 

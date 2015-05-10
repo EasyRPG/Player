@@ -1239,24 +1239,24 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	int tenths = com.parameters[4];
 	bool wait = com.parameters[5] != 0;
 
-	if (Player::engine == Player::EngineRpg2k3) {
-		switch (com.parameters[6]) {
-			case 0:
-				screen->FlashOnce(r, g, b, s, tenths);
-				if (wait)
-					SetupWait(tenths);
-				break;
-			case 1:
-				screen->FlashBegin(r, g, b, s, tenths);
-				break;
-			case 2:
-				screen->FlashEnd();
-				break;
-		}
-	} else {
+	if (Player::IsRPG2k()) {
 		screen->FlashOnce(r, g, b, s, tenths);
 		if (wait)
 			SetupWait(tenths);
+	} else {
+		switch (com.parameters[6]) {
+		case 0:
+			screen->FlashOnce(r, g, b, s, tenths);
+			if (wait)
+				SetupWait(tenths);
+			break;
+		case 1:
+			screen->FlashBegin(r, g, b, s, tenths);
+			break;
+		case 2:
+			screen->FlashEnd();
+			break;
+		}
 	}
 
 	return true;
@@ -1269,7 +1269,7 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	int tenths = com.parameters[2];
 	bool wait = com.parameters[3] != 0;
 
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		screen->ShakeOnce(strength, speed, tenths);
 		if (wait) {
 			SetupWait(tenths);

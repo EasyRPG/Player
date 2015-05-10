@@ -998,6 +998,8 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
+	tEventHash::const_iterator it;
+
 	switch (character_id) {
 		case CharPlayer:
 			// Player/Hero
@@ -1010,9 +1012,21 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second.get();
+			it = Game_Map::GetEvents().find(event_id);
+
+			if (it == Game_Map::GetEvents().end()) {
+				return NULL;
+			}
+
+			return it->second.get();
 		default:
 			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second.get();
+			it = Game_Map::GetEvents().find(character_id);
+
+			if (it == Game_Map::GetEvents().end()) {
+				return NULL;
+			}
+
+			return it->second.get();
 	}
 }

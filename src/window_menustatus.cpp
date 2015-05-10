@@ -45,7 +45,7 @@ void Window_MenuStatus::Refresh() {
 		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
 
 		int face_x = 0;
-		if (Player::engine == Player::EngineRpg2k3) {
+		if (Player::IsRPG2k3()) {
 			face_x = actor->GetBattleRow() == 1 ? 5 : 0;
 		}
 		DrawActorFace(actor, face_x, i*48 + y);

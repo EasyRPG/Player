@@ -433,7 +433,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.attacking;
 	}
 	else {
@@ -570,7 +570,7 @@ void Game_BattleAlgorithm::Skill::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		// TODO: How to handle using_message2?
 		if (item && item->using_message == 0) {
 			// Use item message
@@ -697,7 +697,7 @@ void Game_BattleAlgorithm::Item::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + " " + item.name + Data::terms.use_item;
 	}
 	else {
@@ -728,7 +728,7 @@ Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler*
 }
 
 std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + " TODO DUAL";
 	}
 	else {
@@ -747,7 +747,7 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.defending;
 	}
 	else {
@@ -770,7 +770,7 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.observing;
 	}
 	else {
@@ -789,7 +789,7 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.focus;
 	}
 	else {
@@ -808,7 +808,7 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.autodestruction;
 	}
 	else {
@@ -827,7 +827,7 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		// Only monsters can escape during a battle phase
 
 		if (source->GetType() == Game_Battler::Type_Enemy) {
@@ -891,7 +891,7 @@ AlgorithmBase(source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.enemy_transform;
 	}
 	else {

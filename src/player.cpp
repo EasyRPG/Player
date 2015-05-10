@@ -87,7 +87,7 @@ namespace Player {
 	bool no_audio_flag;
 	std::string encoding;
 	std::string escape_symbol;
-	EngineType engine;
+	int engine;
 	std::string game_title;
 	double start_time;
 	double next_frame;
@@ -424,6 +424,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			else if (*it == "rpg2k3" || *it == "2003") {
 				engine = EngineRpg2k3;
 			}
+			else if (*it == "rpg2k3e") {
+				engine = EngineRpg2k3 | EngineRpg2k3E;
+			}
 		}
 		else if (*it == "--encoding") {
 			++it;
@@ -465,13 +468,13 @@ static void OnSystemFileReady(FileRequestResult* result) {
 void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
-		Player::GetEncoding();
+		GetEncoding();
 		escape_symbol = ReaderUtil::Recode("\\", encoding);
 		if (escape_symbol.empty()) {
 			Output::Error("Invalid encoding: %s.", encoding.c_str());
 		}
 
-		Player::LoadDatabase();
+		LoadDatabase();
 
 		INIReader ini(FileFinder::FindDefault(INI_NAME));
 		if (ini.ParseError() != -1) {
@@ -482,11 +485,18 @@ void Player::CreateGameObjects() {
 
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {
-				Output::Debug("Switching to Rpg2003 Interpreter");
-				Player::engine = Player::EngineRpg2k3;
+				Player::engine = EngineRpg2k3;
+
+				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+					Output::Debug("Switching to RPG2k3 Interpreter");
+				}
+				else {
+					Player::engine |= EngineRpg2k3E;
+					Output::Debug("Switching to RPG2k3 (English release, v1.10) Interpreter");
+				}
 			}
 			else {
-				Player::engine = Player::EngineRpg2k;
+				Player::engine = EngineRpg2k;
 			}
 		}
 
@@ -668,8 +678,9 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
 	std::cout << "      " << "                     " << "Possible options:" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k  - RPG Maker 2000 engine" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k3 - RPG Maker 2003 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k   - RPG Maker 2000 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3  - RPG Maker 2003 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3e - RPG Maker 2003 (English release) engine" << std::endl;
 
 	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
 
@@ -714,6 +725,23 @@ void Player::PrintUsage() {
 	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
+}
+
+bool Player::IsRPG2k() {
+	return engine == EngineRpg2k;
+}
+
+
+bool Player::IsRPG2k3Legacy() {
+	return engine == EngineRpg2k3;
+}
+
+bool Player::IsRPG2k3() {
+	return (engine & EngineRpg2k3) == EngineRpg2k3;
+}
+
+bool Player::IsRPG2k3E() {
+	return (engine & EngineRpg2k3E) == EngineRpg2k3E;
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

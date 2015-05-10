@@ -778,7 +778,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	int speed = com.parameters[13];
 	int bottom_trans;
 
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
@@ -834,7 +834,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	bool wait = com.parameters[15] != 0;
 
 	int bottom_trans;
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
@@ -945,7 +945,7 @@ bool Game_Interpreter_Map::CommandTradeEventLocations(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) { // code 10230
-	int timer_id = (Player::engine == Player::EngineRpg2k3) ? com.parameters[5] : 0;
+	int timer_id = (Player::IsRPG2k()) ? 0 : com.parameters[5];
 	int seconds;
 	bool visible, battle;
 
@@ -1259,9 +1259,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		case 1:
 			Game_Temp::battle_terrain_id = 0;
 			Game_Temp::battle_background = com.string;
-			if (Player::engine == Player::EngineRpg2k3) {
+			if (Player::IsRPG2k())
+				Game_Temp::battle_formation = 0;
+			else
 				Game_Temp::battle_formation = com.parameters[7];
-			}
 			break;
 		case 2:
 			Game_Temp::battle_terrain_id = com.parameters[8];
@@ -1274,10 +1275,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Game_Temp::battle_defeat_mode = com.parameters[4]; // game over, custom handler
 	Game_Temp::battle_first_strike = com.parameters[5] != 0;
 
-	if (Player::engine == Player::EngineRpg2k3)
-		Game_Temp::battle_mode = com.parameters[6]; // normal, initiative, surround, back attack, pincer
-	else
+	if (Player::IsRPG2k())
 		Game_Temp::battle_mode = 0;
+	else
+		Game_Temp::battle_mode = com.parameters[6]; // normal, initiative, surround, back attack, pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
@@ -1431,7 +1432,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	switch (com.parameters[0]) {
 		case 0: // Common Event
 			evt_id = com.parameters[1];
-			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
+			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, event_id, Data::commonevents[evt_id - 1].ID, -2);
 			return true;
 		case 1: // Map Event
 			evt_id = com.parameters[1];
@@ -1514,7 +1515,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	int result = 0;
 	size_t param_size = com.parameters.size();
 
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::IsRPG2k()) {
 		if (param_size < 6) {
 			// For Rpg2k <1.50
 			bool check_dir = com.parameters[2] != 0;
@@ -1530,7 +1531,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 			check_right = param_size > 8 ? com.parameters[8] != 0 : false;
 			check_up    = param_size > 9 ? com.parameters[9] != 0 : false;
 		}
-	} else if (Player::engine == Player::EngineRpg2k3) {
+	} else {
 		// Optimization: If missing -> default value
 		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
 		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
@@ -1544,8 +1545,6 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 			time_id = com.parameters[7];
 			time = com.parameters[8] != 0;
 		}
-	} else {
-		assert(false);
 	}
 
 	if (check_down && Input::IsTriggered(Input::DOWN)) {
