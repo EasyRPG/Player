@@ -106,14 +106,6 @@ void Spriteset_Map::ChipsetUpdated() {
 	}
 	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	int a  = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	int b = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	int c = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	tilemap_request->Unbind(b);
-	tilemap_request->Unbind(1337);
-	tilemap_request->Unbind(a);
-	tilemap_request->Unbind(c);
-	tilemap_request->Unbind(-1);
 	tilemap_request->Start();
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
