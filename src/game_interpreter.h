@@ -66,10 +66,9 @@ protected:
 	bool main_flag;
 
 	int loop_count;
-	
+
 	bool move_route_waiting;
 
-	int button_input_variable_id;
 	unsigned int index;
 	int map_id;
 	unsigned int event_id;

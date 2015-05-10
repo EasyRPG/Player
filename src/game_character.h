@@ -504,16 +504,6 @@ public:
 	void EndJump();
 
 	/**
-	 * Locks character facing direction.
-	 */
-	void Lock();
-
-	/**
-	 * Unlocks character facing direction.
-	 */
-	void Unlock();
-
-	/**
 	 * Forces a new, temporary, move route.
 	 *
 	 * @param new_route new move route.

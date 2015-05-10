@@ -594,9 +594,9 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
-	// FIXME: RPG2K3 => facing direction = com.parameters[3]
+	int direction = com.parameters[3] - 1;
 
-	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
 	Main_Data::game_player->StartTeleport();
 
 	index++;
@@ -1500,6 +1500,12 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
 
+	// Wait the first frame so that it ignores keys that were pressed before this command started.
+	if (wait && button_timer == 0) {
+		button_timer++;
+		return false;
+	}
+
 	bool time = false;
 	int time_id = 0;
 
@@ -1514,6 +1520,9 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	bool check_up       = false;
 	int result = 0;
 	size_t param_size = com.parameters.size();
+
+	// Use a function pointer to check triggered keys if it waits for input and pressed keys otherwise
+	bool (*check)(Input::InputButton) = wait ? Input::IsTriggered : Input::IsPressed;
 
 	if (Player::IsRPG2k()) {
 		if (param_size < 6) {
@@ -1547,37 +1556,37 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		}
 	}
 
-	if (check_down && Input::IsTriggered(Input::DOWN)) {
+	if (check_down && check(Input::DOWN)) {
 		result = 1;
 	}
-	if (check_left && Input::IsTriggered(Input::LEFT)) {
+	if (check_left && check(Input::LEFT)) {
 		result = 2;
 	}
-	if (check_right && Input::IsTriggered(Input::RIGHT)) {
+	if (check_right && check(Input::RIGHT)) {
 		result = 3;
 	}
-	if (check_up && Input::IsTriggered(Input::UP)) {
+	if (check_up && check(Input::UP)) {
 		result = 4;
 	}
-	if (check_decision && Input::IsTriggered(Input::DECISION)) {
+	if (check_decision && check(Input::DECISION)) {
 		result = 5;
 	}
-	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
+	if (check_cancel && check(Input::CANCEL)) {
 		result = 6;
 	}
-	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
+	if (check_shift && check(Input::SHIFT)) {
 		result = 7;
 	}
 	if (check_numbers) {
 		for (int i = 0; i < 10; ++i) {
-			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
+			if (check((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
 			}
 		}
 	}
 	if (check_arith) {
 		for (int i = 0; i < 5; ++i) {
-			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
+			if (check((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
 			}
 		}
@@ -1598,8 +1607,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	++index;
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650

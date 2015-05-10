@@ -852,20 +852,6 @@ int Game_Character::DistanceYfromPlayer() const {
 	return sy;
 }
 
-void Game_Character::Lock() {
-	if (!IsDirectionFixed()) {
-		int prelock_dir = GetDirection();
-		TurnTowardHero();
-		SetDirection(prelock_dir);
-	}
-}
-
-void Game_Character::Unlock() {
-	if (!IsDirectionFixed()) {
-		SetSpriteDirection(GetDirection());
-	}
-}
-
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 									int frequency,
 									Game_Interpreter* owner) {
