@@ -175,6 +175,7 @@ private:
 
 	unsigned int ID;
 	bool starting;
+	bool ready1, ready2;
 	int trigger;
 	RPG::Event event;
 	RPG::EventPage* page;
