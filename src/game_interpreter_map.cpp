@@ -594,9 +594,9 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
-	// FIXME: RPG2K3 => facing direction = com.parameters[3]
+	int direction = com.parameters[3] - 1;
 
-	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
 	Main_Data::game_player->StartTeleport();
 
 	index++;
@@ -1521,6 +1521,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	int result = 0;
 	size_t param_size = com.parameters.size();
 
+	// Use a function pointer to check triggered keys if it waits for input and pressed keys otherwise
 	bool (*check)(Input::InputButton) = wait ? Input::IsTriggered : Input::IsPressed;
 
 	if (Player::IsRPG2k()) {

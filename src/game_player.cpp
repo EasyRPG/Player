@@ -200,10 +200,11 @@ void Game_Player::SetFlashTimeLeft(int time_left) {
 	location.flash_time_left = time_left;
 }
 
-void Game_Player::ReserveTeleport(int map_id, int x, int y) {
+void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
 	new_map_id = map_id;
 	new_x = x;
 	new_y = y;
+	new_direction = direction;
 
 	FileRequestAsync* request = Game_Map::RequestMap(new_map_id);
 	request->SetImportantFile(true);
@@ -229,6 +230,11 @@ void Game_Player::PerformTeleport() {
 	SetOpacity(255);
 
 	MoveTo(new_x, new_y);
+	if (new_direction >= 0) {
+		SetDirection(new_direction);
+		SetSpriteDirection(new_direction);
+	}
+
 	if (InVehicle())
 		GetVehicle()->MoveTo(new_x, new_y);
 }

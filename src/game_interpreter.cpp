@@ -43,8 +43,6 @@
 #include "player.h"
 #include "util_macro.h"
 
-// Forward declarations.
-
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;

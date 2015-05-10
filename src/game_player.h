@@ -80,7 +80,16 @@ public:
 	/** @} */
 
 	bool IsTeleporting() const;
-	void ReserveTeleport(int map_id, int x, int y);
+
+	/**
+	 * Sets the map, position and direction that the game player must have after the teleport is over
+	 *
+	 * @param map_id Id of the target map
+	 * @param x new x position after teleport
+	 * @param y new y position after teleport
+	 * @param direction New direction after teleport. If -1, the direction isn't changed.
+	 */
+	void ReserveTeleport(int map_id, int x, int y, int direction = -1);
 	void StartTeleport();
 	void PerformTeleport();
 	void Center(int x, int y);
@@ -103,7 +112,7 @@ private:
 	RPG::SavePartyLocation& location;
 
 	bool teleporting;
-	int new_map_id, new_x, new_y;
+	int new_map_id, new_x, new_y, new_direction;
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
