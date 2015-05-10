@@ -639,7 +639,7 @@ namespace {
 
 		pixman_transform_translate((pixman_transform_t*) NULL, &xform,
 									   pixman_int_to_fixed(0),
-									   pixman_int_to_fixed(opacity.split-src_rect.height));
+									   pixman_int_to_fixed(-opacity.split));
 		if (pxform)
 			pixman_transform_multiply(&xform, &xform, pxform);
 
