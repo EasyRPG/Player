@@ -29,7 +29,9 @@
 #include "bitmap.h"
 
 // Constructor
-Spriteset_Map::Spriteset_Map() {
+Spriteset_Map::Spriteset_Map() :
+	panorama_request(NULL),
+	tilemap_request(NULL) {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	ChipsetUpdated();
@@ -70,9 +72,12 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
-		request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
-		request->Start();
+		if (panorama_request) {
+			panorama_request->Unbind(panorama_request_id);
+		}
+		panorama_request = AsyncHandler::RequestFile("Panorama", panorama_name);
+		panorama_request_id = panorama_request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+		panorama_request->Start();
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
@@ -96,9 +101,20 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
-	request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	request->Start();
+	if (tilemap_request) {
+		tilemap_request->Unbind(tilemap_request_id);
+	}
+	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	int a  = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	int b = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	int c = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	tilemap_request->Unbind(b);
+	tilemap_request->Unbind(1337);
+	tilemap_request->Unbind(a);
+	tilemap_request->Unbind(c);
+	tilemap_request->Unbind(-1);
+	tilemap_request->Start();
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());

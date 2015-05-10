@@ -30,6 +30,7 @@
  * Picture class.
  */
 class Sprite;
+class FileRequestAsync;
 struct FileRequestResult;
 
 class Game_Picture {
@@ -64,6 +65,9 @@ private:
 
 	int old_map_x;
 	int old_map_y;
+
+	int request_id;
+	FileRequestAsync* request;
 };
 
 #endif

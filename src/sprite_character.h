@@ -23,6 +23,7 @@
 #include <string>
 
 class Game_Character;
+class FileRequestAsync;
 struct FileRequestResult;
 
 /**
@@ -68,6 +69,11 @@ private:
 
 	void OnTileSpriteReady(FileRequestResult*);
 	void OnCharSpriteReady(FileRequestResult*);
+
+	FileRequestAsync* tile_request;
+	FileRequestAsync* char_request;
+	int tile_request_id;
+	int char_request_id;
 };
 
 #endif
