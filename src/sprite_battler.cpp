@@ -125,7 +125,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 
-			FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+			FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
 			request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
 			request->Start();
 		}
