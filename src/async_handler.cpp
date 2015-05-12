@@ -44,13 +44,19 @@ namespace {
 		async_requests[path] = request;
 	}
 
+#ifdef EMSCRIPTEN
 	void download_success(unsigned, void* userData, const char*) {
-		(static_cast<FileRequestAsync*>(userData))->DownloadDone(true);
+		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
+		//Output::Debug("DL Success: %s", req->GetPath().c_str());
+		req->DownloadDone(true);
 	}
 
 	void download_failure(unsigned, void* userData, int) {
-		(static_cast<FileRequestAsync*>(userData))->DownloadDone(false);
+		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
+		Output::Debug("DL Failure: %s", req->GetPath().c_str());
+		req->DownloadDone(false);
 	}
+#endif
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
@@ -208,7 +214,6 @@ void FileRequestAsync::DownloadDone(bool success) {
 	}
 
 	if (success) {
-		//Output::Debug("DL Success %s", path.c_str());
 
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
@@ -221,8 +226,6 @@ void FileRequestAsync::DownloadDone(bool success) {
 		CallListeners(true);
 	}
 	else {
-		//Output::Debug("DL Failure %s", path.c_str());
-
 		state = State_DoneFailure;
 
 		CallListeners(false);
