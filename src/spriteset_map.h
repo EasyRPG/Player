@@ -29,6 +29,7 @@
 
 class Sprite_Character;
 class Game_Character;
+class FileRequestAsync;
 struct FileRequestResult;
 
 /**
@@ -75,5 +76,10 @@ protected:
 
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);
+
+	FileRequestAsync* panorama_request;
+	FileRequestAsync* tilemap_request;
+	int panorama_request_id;
+	int tilemap_request_id;
 };
 #endif

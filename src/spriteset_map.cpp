@@ -29,10 +29,14 @@
 #include "bitmap.h"
 
 // Constructor
-Spriteset_Map::Spriteset_Map() {
+Spriteset_Map::Spriteset_Map() :
+	panorama_request(NULL),
+	tilemap_request(NULL) {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	ChipsetUpdated();
+	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 
 	panorama.SetZ(-1000);
 
@@ -68,9 +72,12 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
-		request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
-		request->Start();
+		if (panorama_request) {
+			panorama_request->Unbind(panorama_request_id);
+		}
+		panorama_request = AsyncHandler::RequestFile("Panorama", panorama_name);
+		panorama_request_id = panorama_request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+		panorama_request->Start();
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
@@ -80,7 +87,6 @@ void Spriteset_Map::Update() {
 	timer1->Update();
 	timer2->Update();
 }
-
 
 // Finds the sprite for a specific character
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
@@ -95,9 +101,12 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
-	request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	request->Start();
+	if (tilemap_request) {
+		tilemap_request->Unbind(tilemap_request_id);
+	}
+	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	tilemap_request->Start();
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
@@ -121,8 +130,6 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
-	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
-	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {

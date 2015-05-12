@@ -32,9 +32,10 @@ function storeList(&$store, $dir = '.') {
         elseif (is_file(BASE_DIR . '/' . $dir . '/' . $i)) { 
             $pos = strrpos($i, '.');
             $fn = ($dir === '.' || $pos === false) ? './' . $i : $dir . '/' . substr($i, 0, $pos);
-            $store[strtolower($fn)] = $dir . '/' . $i; 
+            // workaround Emscripten problem: + not encoded -> handled as space
+            $store[strtolower(preg_replace('/\+/u'," ", $fn))] = $result = $dir . '/' . $i;
         }
-    }   
+    }
 }
 function updateCache() {
     $store = array();
@@ -62,6 +63,7 @@ if (isset($_GET['update']) || !file_exists(CACHE_FILE)) {
 }
 
 $db = json_decode(file_get_contents(CACHE_FILE), true);
+
 //x($db);
 if (isset($_GET['file'])) {
     $file = strtolower($_GET['file']);

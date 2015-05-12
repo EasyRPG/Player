@@ -33,7 +33,8 @@
 Game_Picture::Game_Picture(int ID) :
 	data(Main_Data::game_data.pictures[ID - 1]),
 	old_map_x(0),
-	old_map_y(0)
+	old_map_y(0),
+	request(NULL)
 {
 	SetTransition(0);
 }
@@ -75,8 +76,11 @@ void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	data.transparency = _transparency;
 	data.time_left = 0;
 
-	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", data.name);
-	request->Bind(&Game_Picture::OnPictureSpriteReady, this);
+	if (request) {
+		request->Unbind(request_id);
+	}
+	request = AsyncHandler::RequestFile("Picture", data.name);
+	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
 	request->Start();
 
 	old_map_x = Game_Map::GetDisplayX();
