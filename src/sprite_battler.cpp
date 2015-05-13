@@ -138,6 +138,7 @@ bool Sprite_Battler::IsIdling() {
 
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
+	hue = battler->GetHue();
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
@@ -171,7 +172,7 @@ void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {
 	SetOx(graphic->GetWidth() / 2);
 	SetOy(graphic->GetHeight() / 2);
 
-	bool hue_change = battler->GetHue() != 0;
+	bool hue_change = hue != 0;
 	if (hue_change) {
 		BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
 		new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), hue);

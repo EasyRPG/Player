@@ -322,7 +322,13 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 	animation_type = page->animation_type;
 	trigger = page->trigger;
 	list = page->event_commands;
-	through = false;
+
+	// Trigger parallel events when the interpreter wasn't already running
+	// (because it was the middle of a parallel event while saving)
+	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
+		interpreter.reset(new Game_Interpreter_Map());
+	}
+	CheckEventTriggerAuto();
 }
 
 void Game_Event::Refresh() {
