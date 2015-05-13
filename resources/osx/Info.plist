@@ -13,7 +13,7 @@
     <string>Player.icns</string>
 
     <key>CFBundleIdentifier</key>
-    <string>com.easyrpg.player</string>
+    <string>org.easyrpg.player</string>
 
     <key>CFBundleSignature</key>
     <string>RPGP</string>
@@ -31,7 +31,7 @@
     <string>APPL</string>
 
     <key>CFBundleShortVersionString</key>
-    <string>0.2.2</string>
+    <string>0.3</string>
 
 </dict>
 </plist>
