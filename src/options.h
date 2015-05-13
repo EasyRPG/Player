@@ -95,7 +95,7 @@
 
 /** Version of player. Should be redefined by build system. */
 #ifndef PLAYER_VERSION
-#  define PLAYER_VERSION "0.2.2"
+#  define PLAYER_VERSION "0.3"
 #endif
 
 #endif
