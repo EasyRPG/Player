@@ -140,6 +140,9 @@ void Game_Map::Setup(int _id) {
 void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id);
 
+	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
+	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
+
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		EASYRPG_SHARED_PTR<Game_Event> evnt;
 		if (i < map_info.events.size()) {
@@ -163,8 +166,6 @@ void Game_Map::SetupFromSave() {
 
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, evnt));
 	}
-
-	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
 
 	map_info.Fixup(*map.get());
 
