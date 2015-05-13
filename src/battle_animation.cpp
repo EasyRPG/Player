@@ -36,16 +36,24 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	if (name.empty()) return;
 
 	// Emscripten handled special here because of the FileFinder checks
+	// Filefinder is not reliable for Emscripten because the files must be
+	// downloaded first.
+	// And we can't rely on "success" state of FileRequest because it's always
+	// true on desktop.
 #ifdef EMSCRIPTEN
 	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation->animation_name);
 	request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 	request->Start();
 #else
 	if (!FileFinder::FindImage("Battle", name).empty()) {
-		screen = Cache::Battle(name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation->animation_name);
+		request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
+		request->Start();
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		screen = Cache::Battle2(name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation->animation_name);
+		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
+		request->Start();
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());
@@ -127,7 +135,7 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	}
 	else {
 		// Try battle2
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation->animation_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", result->file);
 		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	}
