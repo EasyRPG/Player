@@ -317,7 +317,9 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 	trigger = page->trigger;
 	list = page->event_commands;
 
-	if (trigger == RPG::EventPage::Trigger_parallel) {
+	// Trigger parallel events when the interpreter wasn't already running
+	// (because it was the middle of a parallel event while saving)
+	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 	CheckEventTriggerAuto();
