@@ -40,6 +40,16 @@ bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
+int Game_Battler::GetSignificantRestriction() {
+	const std::vector<int16_t>& states = GetStates();
+	for (int i = 0; i < (int)states.size(); i++) {
+		const RPG::State* state = &Data::states[states[i] - 1];
+		if (state->restriction != RPG::State::Restriction_normal) {
+			return state->restriction;
+		}
+	}
+	return RPG::State::Restriction_normal;
+}
 
 bool Game_Battler::CanAct() {
 	const std::vector<int16_t>& states = GetStates();
@@ -292,8 +302,8 @@ int Game_Battler::GetAtk() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_attack) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_atk);
+		if(Data::states[(*i) - 1].affect_attack) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_atk);
 			break;
 		}
 	}
@@ -309,8 +319,8 @@ int Game_Battler::GetDef() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_defense) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_def);
+		if(Data::states[(*i) - 1].affect_defense) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
 			break;
 		}
 	}
@@ -326,8 +336,8 @@ int Game_Battler::GetSpi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_spirit) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_spi);
+		if(Data::states[(*i) - 1].affect_spirit) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_spi);
 			break;
 		}
 	}
@@ -343,8 +353,8 @@ int Game_Battler::GetAgi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_agility) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_agi);
+		if(Data::states[(*i) - 1].affect_agility) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_agi);
 			break;
 		}
 	}

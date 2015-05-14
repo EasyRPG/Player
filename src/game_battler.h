@@ -60,6 +60,14 @@ public:
 	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/**
+	 * Checks all states and returns the first restriction that different to
+	 * normal or normal if that is the only restriction.
+	 *
+	 * @return First non-normal restriction or normal if not restricted
+	 */
+	int GetSignificantRestriction();
+
+	/**
 	 * Tests if the battler has a "No Action" condition like sleep.
 	 *
 	 * @return can act 

@@ -99,6 +99,13 @@ public:
 	 */
 	virtual int GetAverageAgility();
 
+	/**
+	 * Tests if any party member has no state restriction.
+	 *
+	 * @return Whether any party member accepts custom battle commands.
+	 */
+	bool IsAnyControllable();
+
 private:
 
 };

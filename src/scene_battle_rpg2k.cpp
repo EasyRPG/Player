@@ -244,6 +244,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			CheckResultConditions();
 		}
 		break;
+	case State_SelectOption:
+		// No Auto battle/Escape when all actors are sleeping or similar
+		if (!Main_Data::game_party->IsAnyControllable()) {
+			SelectNextActor();
+		}
+		break;
 	case State_SelectActor:
 	case State_AutoBattle:
 		CheckResultConditions();
@@ -270,6 +276,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				}
 			}
 		} else {
+			// Everybody acted
 			actor_index = 0;
 			SetState(State_SelectOption);
 		}
@@ -624,6 +631,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	std::vector<Game_Actor*> allies = Main_Data::game_party->GetActors();
 
 	if ((size_t)actor_index == allies.size()) {
+		// All actor actions decided, player turn ends
 		SetState(State_Battle);
 		CreateEnemyActions();
 		CreateExecutionOrder();
@@ -636,14 +644,28 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	status_window->SetIndex(actor_index);
 	actor_index++;
 
-	if (active_actor->IsDead()) {
+	if (!active_actor->CanAct() || active_actor->IsDead()) {
 		SelectNextActor();
 		return;
 	}
 
-	if (auto_battle || active_actor->GetAutoBattle()) {
+	Game_Battler* random_target = NULL;
+	switch (active_actor->GetSignificantRestriction()) {
+		case RPG::State::Restriction_attack_ally:
+			random_target = Main_Data::game_party->GetRandomAliveBattler();
+			break;
+		case RPG::State::Restriction_attack_enemy:
+			random_target = Main_Data::game_enemyparty->GetRandomAliveBattler();
+			break;
+	}
+
+	if (random_target || auto_battle || active_actor->GetAutoBattle()) {
+		if (!random_target) {
+			random_target = Main_Data::game_enemyparty->GetRandomAliveBattler();
+		}
+
 		// ToDo: Auto battle logic is dumb
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty->GetRandomAliveBattler()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, random_target));
 		battle_actions.push_back(active_actor);
 
 		SelectNextActor();

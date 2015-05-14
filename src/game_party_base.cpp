@@ -115,3 +115,18 @@ int Game_Party_Base::GetAverageAgility() {
 
 	return agi /= battlers.size();
 }
+
+bool Game_Party_Base::IsAnyControllable() {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	std::vector<Game_Battler*>::const_iterator it;
+
+	for (it = battlers.begin(); it != battlers.end(); ++it) {
+		if ((*it)->GetSignificantRestriction() == RPG::State::Restriction_normal) {
+			return true;
+		}
+	}
+
+	return false;
+}
