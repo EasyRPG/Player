@@ -344,6 +344,10 @@ int Game_Actor::GetNextExp(int level) const {
 	}
 }
 
+int Game_Actor::GetStateProbability(int state_id) {
+	return GetStateRate(state_id, Data::actors[data.ID - 1].state_ranks[state_id - 1]);
+}
+
 const std::string& Game_Actor::GetName() const {
 	return data.name;
 }

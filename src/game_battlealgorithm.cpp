@@ -541,8 +541,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 
 			this->success = true;
-
-			conditions.push_back(Data::states[i]);
+			
+			if (rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
+				conditions.push_back(Data::states[i]);
+			}
 		}
 
 		return this->success;

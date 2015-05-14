@@ -34,6 +34,14 @@ public:
 	std::vector<int16_t>& GetStates();
 
 	/**
+	 * Gets probability that a state can be inflicted on this actor.
+	 *
+	 * @param state_id State to test
+	 * @return Probability of state infliction
+	 */
+	int GetStateProbability(int state_id);
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name

@@ -43,6 +43,10 @@ std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
 }
 
+int Game_Enemy::GetStateProbability(int state_id) {
+	return GetStateRate(state_id, Data::enemies[enemy_id].state_ranks[state_id - 1]);
+}
+
 const std::string& Game_Enemy::GetName() const {
 	return enemy->name;
 }

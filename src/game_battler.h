@@ -75,6 +75,23 @@ public:
 	const RPG::State* GetSignificantState();
 
 	/**
+	 * Gets the state probability by rate (A-E).
+	 *
+	 * @param state_id State to test
+	 * @param rate State rate to get
+	 * @return state rate (probability)
+	 */
+	int GetStateRate(int state_id, int rate);
+
+	/**
+	 * Gets probability that a state can be inflicted on this actor.
+	 * 
+	 * @param state_id State to test
+	 * @return Probability of state infliction
+	 */
+	virtual int GetStateProbability(int state_id) = 0;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name
