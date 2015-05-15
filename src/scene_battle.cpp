@@ -214,7 +214,10 @@ void Scene_Battle::UpdateBackground() {
 }
 
 void Scene_Battle::EnemySelected() {
-	Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+	std::vector<Game_Battler*> enemies;
+	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+	Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 
 	switch (previous_state) {
 		case State_SelectCommand:
@@ -379,11 +382,11 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 
 	switch (action->basic) {
 		case RPG::EnemyAction::Basic_attack:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
 			// ToDo: Must be NormalDual, not implemented
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(enemy));
@@ -435,10 +438,10 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 		switch (skill.scope) {
 		case RPG::Skill::Scope_enemy:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomAliveBattler(), skill));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), skill));
 			break;
 		case RPG::Skill::Scope_ally:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomAliveBattler(), skill));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), skill));
 			break;
 		case RPG::Skill::Scope_enemies:
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), skill));

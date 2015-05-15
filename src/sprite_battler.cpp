@@ -56,6 +56,8 @@ void Sprite_Battler::Update() {
 		CreateSprite();
 	}
 
+	SetVisible(!battler->IsHidden());
+
 	Sprite::Update();
 
 	++cycle;
@@ -163,7 +165,6 @@ void Sprite_Battler::CreateSprite() {
 	SetX(battler->GetBattleX());
 	SetY(battler->GetBattleY());
 	SetZ(battler->GetBattleY()); // Not a typo
-	SetVisible(!battler->IsHidden());
 }
 
 void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {

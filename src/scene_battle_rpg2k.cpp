@@ -74,9 +74,10 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	std::vector<std::string> commands;
-	std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
+	std::vector<Game_Battler*> enemies;
+	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-	for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
+	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
 		it != enemies.end(); ++it) {
 		commands.push_back((*it)->GetName());
 	}
@@ -284,7 +285,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_SelectEnemyTarget: {
 		static int flash_count = 0;
 
-		Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+		std::vector<Game_Battler*> enemies;
+		Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+		Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
 		if (sprite) {
 			++flash_count;
@@ -322,7 +326,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_message_window->Clear();
 
 			if (!action->IsTargetValid()) {
-				action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
+				action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 			}
 
 			action->Execute();
@@ -652,16 +656,16 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	Game_Battler* random_target = NULL;
 	switch (active_actor->GetSignificantRestriction()) {
 		case RPG::State::Restriction_attack_ally:
-			random_target = Main_Data::game_party->GetRandomAliveBattler();
+			random_target = Main_Data::game_party->GetRandomActiveBattler();
 			break;
 		case RPG::State::Restriction_attack_enemy:
-			random_target = Main_Data::game_enemyparty->GetRandomAliveBattler();
+			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 			break;
 	}
 
 	if (random_target || auto_battle || active_actor->GetAutoBattle()) {
 		if (!random_target) {
-			random_target = Main_Data::game_enemyparty->GetRandomAliveBattler();
+			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 		}
 
 		// ToDo: Auto battle logic is dumb
@@ -710,12 +714,14 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
-	std::vector<Game_Enemy*> alive_enemies = Main_Data::game_enemyparty->GetAliveEnemies();
-	std::vector<Game_Enemy*>::const_iterator it;
-	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
-		const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+	std::vector<Game_Battler*> active_enemies;
+	Main_Data::game_enemyparty->GetActiveBattlers(active_enemies);
+
+	std::vector<Game_Battler*>::const_iterator it;
+	for (it = active_enemies.begin(); it != active_enemies.end(); ++it) {
+		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(*it)->ChooseRandomAction();
 		if (action) {
-			CreateEnemyAction(*it, action);
+			CreateEnemyAction(static_cast<Game_Enemy*>(*it), action);
 		}
 	}
 }
@@ -764,7 +770,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 }
 
 bool Scene_Battle_Rpg2k::CheckWin() {
-	if (!Main_Data::game_enemyparty->IsAnyAlive()) {
+	if (!Main_Data::game_enemyparty->IsAnyActive()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
@@ -796,7 +802,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
-		Main_Data::game_party->GetAliveBattlers(ally_battlers);
+		Main_Data::game_party->GetActiveBattlers(ally_battlers);
 
 		for (std::vector<Game_Battler*>::iterator it = ally_battlers.begin();
 			it != ally_battlers.end(); ++it) {
@@ -815,7 +821,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 }
 
 bool Scene_Battle_Rpg2k::CheckLose() {
-	if (!Main_Data::game_party->IsAnyAlive()) {
+	if (!Main_Data::game_party->IsAnyActive()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 

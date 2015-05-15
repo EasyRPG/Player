@@ -53,13 +53,6 @@ public:
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& GetEnemies();
 
 	/**
-	 * Gets a list with all alive party members
-	 *
-	 * @return list of alive party members
-	 */
-	std::vector<Game_Enemy*> GetAliveEnemies();
-
-	/**
 	 * Sums up the experience points of all enemy party members.
 	 *
 	 * @return All experience points

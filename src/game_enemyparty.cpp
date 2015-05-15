@@ -55,22 +55,13 @@ std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
-std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
-	std::vector<Game_Enemy*> alive;
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::iterator it;
-	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		if (!(*it)->IsDead()) {
-			alive.push_back(it->get());
-		}
-	}
-	return alive;
-}
-
 int Game_EnemyParty::GetExp() const {
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		sum += (*it)->GetExp();
+		if ((*it)->IsDead()) {
+			sum += (*it)->GetExp();
+		}
 	}
 	return sum;
 }
@@ -79,7 +70,9 @@ int Game_EnemyParty::GetMoney() const {
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		sum += (*it)->GetMoney();
+		if ((*it)->IsDead()) {
+			sum += (*it)->GetMoney();
+		}
 	}
 	return sum;
 }
@@ -87,11 +80,13 @@ int Game_EnemyParty::GetMoney() const {
 void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		// Only roll if the enemy has something to drop
-		if ((*it)->GetDropId() != 0) {
-			bool dropped = (rand() % 100) < (*it)->GetDropProbability();
-			if (dropped) {
-				out.push_back((*it)->GetDropId());
+		if ((*it)->IsDead()) {
+			// Only roll if the enemy has something to drop
+			if ((*it)->GetDropId() != 0) {
+				bool dropped = (rand() % 100) < (*it)->GetDropProbability();
+				if (dropped) {
+					out.push_back((*it)->GetDropId());
+				}
 			}
 		}
 	}

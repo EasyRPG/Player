@@ -51,11 +51,11 @@ public:
 	virtual void GetBattlers(std::vector<Game_Battler*>& out);
 
 	/**
-	 * Returns a list of all alive battlers in the party
+	 * Gets a list with all active (not dead or hidden) party members.
 	 *
-	 * @param out List of all dead battlers
+	 * @return list of all active party members
 	 */
-	virtual void GetAliveBattlers(std::vector<Game_Battler*>& out);
+	virtual void GetActiveBattlers(std::vector<Game_Battler*>& out);
 
 	/**
 	 * Returns a list of all dead battlers in the party
@@ -65,18 +65,19 @@ public:
 	virtual void GetDeadBattlers(std::vector<Game_Battler*>& out);
 
 	/**
-	 * Return the next alive battler in the party based on the passed battler.
+	 * Return the next active battler (not dead or hidden) in the party based on
+	 * the passed battler.
 	 *
 	 * @param battler Battler
 	 * @return Battler after the provided one, NULL if battler isn't in party at all.
 	 */
-	virtual Game_Battler* GetNextAliveBattler(Game_Battler* battler);
+	virtual Game_Battler* GetNextActiveBattler(Game_Battler* battler);
 
 	/**
-	 * Gets a random alive battler from the party
+	 * Gets a random active (not dead or hidden) battler from the party
 	 * @return Random alive battler
 	 */
-	virtual Game_Battler* GetRandomAliveBattler();
+	virtual Game_Battler* GetRandomActiveBattler();
 
 	/**
 	 * Gets a random dead battler from the party
@@ -86,11 +87,11 @@ public:
 	virtual Game_Battler* GetRandomDeadBattler();
 
 	/**
-	 * Tests if all party members are dead.
+	 * Tests if any party members is active (not dead or hidden)
 	 *
 	 * @return Whether all are dead.
 	 */
-	virtual bool IsAnyAlive();
+	virtual bool IsAnyActive();
 
 	/**
 	 * Gets average agility of the party (for battle)

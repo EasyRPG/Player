@@ -229,6 +229,10 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 		}
 	}
 
+	if (total == 0) {
+		return NULL;
+	}
+
 	int which = rand() % total;
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
 		const RPG::EnemyAction& action = actions[*it];

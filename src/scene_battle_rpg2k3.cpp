@@ -58,14 +58,16 @@ void Scene_Battle_Rpg2k3::Update() {
 
 			SelectNextActor();
 
-			std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
+			std::vector<Game_Battler*> enemies;
+			Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-			for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
+			for (std::vector<Game_Battler*>::iterator it = enemies.begin();
 				it != enemies.end(); ++it) {
 				if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-					const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+					Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
+					const RPG::EnemyAction* action = enemy->ChooseRandomAction();
 					if (action) {
-						CreateEnemyAction(*it, action);
+						CreateEnemyAction(enemy, action);
 					}
 				}
 			}
@@ -183,11 +185,13 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 
 void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	std::vector<std::string> commands;
-	std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
 
-	for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
+	std::vector<Game_Battler*> enemies;
+	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
 		it != enemies.end(); ++it) {
-			commands.push_back((*it)->GetName());
+		commands.push_back((*it)->GetName());
 	}
 
 	target_window.reset(new Window_Command(commands, 136, 4));
@@ -411,7 +415,10 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		case State_SelectEnemyTarget: {
 			static int flash_count = 0;
 
-			Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+			std::vector<Game_Battler*> enemies;
+			Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+
+			Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
 			if (sprite) {
 				++flash_count;
@@ -453,7 +460,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
-			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
+			action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 		}
 
 		//printf("Action: %s\n", action->GetSource()->GetName().c_str());
@@ -764,12 +771,12 @@ void Scene_Battle_Rpg2k3::Escape() {
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
-	if (!Main_Data::game_enemyparty->IsAnyAlive()) {
+	if (!Main_Data::game_enemyparty->IsAnyActive()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
 		std::vector<Game_Battler*> battlers;
-		Main_Data::game_party->GetAliveBattlers(battlers);
+		Main_Data::game_party->GetActiveBattlers(battlers);
 		for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end(); ++it) {
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 			if (sprite) {
@@ -807,7 +814,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
-		Main_Data::game_party->GetAliveBattlers(ally_battlers);
+		Main_Data::game_party->GetActiveBattlers(ally_battlers);
 
 		for (std::vector<Game_Battler*>::iterator it = ally_battlers.begin();
 			it != ally_battlers.end(); ++it) {
@@ -826,7 +833,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 }
 
 bool Scene_Battle_Rpg2k3::CheckLose() {
-	if (!Main_Data::game_party->IsAnyAlive()) {
+	if (!Main_Data::game_party->IsAnyActive()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
@@ -870,7 +877,7 @@ bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
 	std::vector<Game_Battler*> battler;
-	Main_Data::game_party->GetAliveBattlers(battler);
+	Main_Data::game_party->GetActiveBattlers(battler);
 
 	int i = 0;
 	for (std::vector<Game_Battler*>::iterator it = battler.begin();

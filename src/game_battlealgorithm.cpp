@@ -54,7 +54,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Pa
 	source(source) {
 	Reset();
 
-	target->GetAliveBattlers(targets);
+	target->GetActiveBattlers(targets);
 	current_target = targets.begin();
 }
 
