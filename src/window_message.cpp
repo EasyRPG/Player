@@ -59,6 +59,10 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
+	if (Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
+		SetBackOpacity(128);
+	}
+
 	visible = false;
 	SetZ(10000);
 
@@ -146,9 +150,9 @@ void Window_Message::InsertNewPage() {
 	y = Game_Message::GetRealPosition() * 80;
 
 	if (Game_Message::IsTransparent()) {
-		opacity = 0;
+		SetOpacity(0);
 	} else {
-		opacity = 255;
+		SetOpacity(255);
 	}
 
 	if (!Game_Message::GetFaceName().empty()) {
