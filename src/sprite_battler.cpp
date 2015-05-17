@@ -35,7 +35,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	sprite_frame(-1),
 	fade_out(255),
 	flash_counter(0),
-	old_hidden(battler->IsHidden()) {
+	old_hidden(false) {
 	
 	CreateSprite();
 }
@@ -173,6 +173,8 @@ void Sprite_Battler::CreateSprite() {
 	SetX(battler->GetBattleX());
 	SetY(battler->GetBattleY());
 	SetZ(battler->GetBattleY()); // Not a typo
+
+	SetVisible(!battler->IsHidden());
 }
 
 void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {
