@@ -67,11 +67,6 @@ namespace Game_Battle {
 	*/
 	Game_Interpreter& GetInterpreter();
 
-	static int turn;
-	static bool message_is_fixed;
-	static int message_position;
-	extern bool terminate;
-	extern std::string background_name;
-
 	extern int escape_fail_count;
+	extern std::string background_name;
 }

@@ -347,7 +347,7 @@ int Game_Actor::GetNextExp(int level) const {
 int Game_Actor::GetStateProbability(int state_id) {
 	int rate = 3; // C - default
 
-	if (state_id <= Data::actors[data.ID - 1].state_ranks.size()) {
+	if (state_id <= (int)Data::actors[data.ID - 1].state_ranks.size()) {
 		rate = Data::actors[data.ID - 1].state_ranks[state_id - 1];
 	}
 

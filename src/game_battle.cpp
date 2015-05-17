@@ -47,6 +47,13 @@ namespace Game_Battle {
 	int escape_fail_count;
 }
 
+namespace {
+	int turn;
+	bool message_is_fixed;
+	int message_position;
+	bool terminate;
+}
+
 void Game_Battle::Init() {
 	interpreter.reset(new Game_Interpreter_Battle(0, true));
 	spriteset.reset(new Spriteset_Battle());
