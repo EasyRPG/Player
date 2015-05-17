@@ -642,16 +642,16 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 		ss << (*current_target)->GetName();
 
 		switch (skill.failure_message) {
-			case 1:
+			case 0:
 				ss << Data::terms.skill_failure_a;
 				break;
-			case 2:
+			case 1:
 				ss << Data::terms.skill_failure_b;
 				break;
-			case 3:
+			case 2:
 				ss << Data::terms.skill_failure_c;
 				break;
-			case 4:
+			case 3:
 				ss << Data::terms.dodge;
 				break;
 			default:
