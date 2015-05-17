@@ -635,7 +635,6 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	}
 }
 
-
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
 		std::stringstream ss;

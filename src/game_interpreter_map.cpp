@@ -594,7 +594,9 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
-	int direction = com.parameters[3] - 1;
+
+	// RPG2k3 feature
+	int direction = com.parameters.size() > 3 ? com.parameters[3] - 1 : -1;
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
 	Main_Data::game_player->StartTeleport();
