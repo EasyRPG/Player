@@ -60,6 +60,8 @@ void Game_Battle::Init() {
 
 	message_is_fixed = Game_Message::IsPositionFixed();
 	message_position = Game_Message::GetPosition();
+	
+	Main_Data::game_party->ResetBattle();
 }
 
 void Game_Battle::Quit() {

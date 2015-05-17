@@ -625,6 +625,7 @@ public:
 	 * @return row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	int GetBattleRow() const;
+
 	/**
 	 * Sets battle row for Rpg2k3 battles.
 	 *
@@ -634,8 +635,9 @@ public:
 
 	int GetBattleAnimationId() const;
 
-	BattlerType GetType() const;
+	int GetCriticalHitChance() const;
 
+	BattlerType GetType() const;
 private:
 	RPG::SaveActor& data;
 

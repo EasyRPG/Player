@@ -669,6 +669,10 @@ int Game_Actor::GetBattleAnimationId() const {
 	return Data::battleranimations[Data::actors[data.ID - 1].battler_animation - 1].ID;
 }
 
+int Game_Actor::GetCriticalHitChance() const {
+	return Data::actors[data.ID - 1].critical_hit ? Data::actors[data.ID - 1].critical_hit_chance : 0;
+}
+
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }

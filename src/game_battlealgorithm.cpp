@@ -851,6 +851,12 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	effect += change;
 	this->hp = effect;
 
+	if ((*current_target)->GetHp() - this->hp <= 0) {
+		// Death state
+		killed_by_attack_damage = true;
+		conditions.push_back(Data::states[0]);
+	}
+
 	success = true;
 
 	return true;

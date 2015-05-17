@@ -130,3 +130,14 @@ bool Game_Party_Base::IsAnyControllable() {
 
 	return false;
 }
+
+void Game_Party_Base::ResetBattle() {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	std::vector<Game_Battler*>::const_iterator it;
+
+	for (it = battlers.begin(); it != battlers.end(); ++it) {
+		(*it)->ResetBattle();
+	}
+}

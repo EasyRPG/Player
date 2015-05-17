@@ -32,8 +32,8 @@
 
 #define EASYRPG_GAUGE_MAX_VALUE 120000
 
-Game_Battler::Game_Battler() : gauge(EASYRPG_GAUGE_MAX_VALUE / 2) {
-	// no-op
+Game_Battler::Game_Battler() {
+	ResetBattle();
 }
 
 bool Game_Battler::HasState(int state_id) const {
@@ -272,6 +272,22 @@ void Game_Battler::RemoveAllStates() {
 	states.clear();
 }
 
+bool Game_Battler::IsCharged() const {
+	return charged;
+}
+
+void Game_Battler::SetCharged(bool charge) {
+	charged = charge;
+}
+
+bool Game_Battler::IsDefending() const {
+	return defending;
+}
+
+void Game_Battler::SetDefending(bool defend) {
+	defending = defend;
+}
+
 bool Game_Battler::IsHidden() const {
 	return false;
 }
@@ -409,4 +425,10 @@ const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
 
 void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
+}
+
+void Game_Battler::ResetBattle() {
+	gauge = EASYRPG_GAUGE_MAX_VALUE / 2;
+	charged = false;
+	defending = false;
 }

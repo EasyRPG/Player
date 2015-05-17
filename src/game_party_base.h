@@ -107,6 +107,11 @@ public:
 	 */
 	bool IsAnyControllable();
 
+	/**
+	 * Resets battle modifiers of all members (gauge, defense and charge).
+	 */
+	void ResetBattle();
+
 private:
 
 };
