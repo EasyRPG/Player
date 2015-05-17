@@ -35,7 +35,7 @@ Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 }
 
 int Game_EnemyParty::GetBattlerCount() const {
-	return enemies.size();
+	return (int)enemies.size();
 }
 
 void Game_EnemyParty::Setup(int battle_troop_id) {

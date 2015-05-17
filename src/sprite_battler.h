@@ -94,6 +94,7 @@ protected:
 	int fade_out;
 	int flash_counter;
 	LoopState loop_state;
+	bool old_hidden;
 };
 
 #endif

@@ -625,7 +625,12 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 		return &skill.sound_effect;
 	}
 	else {
-		return AlgorithmBase::GetStartSe();
+		if (source->GetType() == Game_Battler::Type_Enemy) {
+			return &Data::system.enemy_attack_se;
+		}
+		else {
+			return NULL;
+		}
 	}
 }
 
@@ -753,7 +758,12 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 		return &Data::system.item_se;
 	}
 	else {
-		return AlgorithmBase::GetStartSe();
+		if (source->GetType() == Game_Battler::Type_Enemy) {
+			return &Data::system.enemy_attack_se;
+		}
+		else {
+			return NULL;
+		}
 	}
 }
 
@@ -905,7 +915,7 @@ void Game_BattleAlgorithm::SelfDestruct::Apply() {
 
 	// Only monster can self destruct
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		static_cast<Game_Enemy*>(source)->SetRemoved(true);
+		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
 }
 
@@ -977,7 +987,7 @@ void Game_BattleAlgorithm::Escape::Apply() {
 	}
 
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		static_cast<Game_Enemy*>(source)->SetRemoved(true);
+		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
 }
 
