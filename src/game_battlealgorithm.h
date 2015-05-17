@@ -34,7 +34,7 @@ namespace RPG {
 
 /**
  * Contains algorithms to handle the different battle attacks, skills and items.
- * The algorithms are support single targets and party targets.
+ * The algorithms support single targets and party targets.
  * For party targets the caller is responsible for retargeting using TargetNext.
  *
  * The action is simulated using Execute and the results can be applied after the
@@ -54,7 +54,7 @@ public:
 	/**
 	 * Returns the current target.
 	 *
-	 * @return current target battler 
+	 * @return current target battler
 	 */
 	Game_Battler* GetTarget() const;
 
@@ -152,19 +152,24 @@ public:
 	 *
 	 * @return if the action hit the target
 	 */
-	bool GetSuccess() const;
+	bool IsSuccess() const;
 
 	/**
 	 * See GetDeathMessage for further explanations
 	 *
 	 * @return True when the caller died because his hp reached 0 (false when a condition caused death)
 	 */
-	bool GetKilledByAttack() const;
+	bool IsKilledByAttack() const;
 
 	/**
 	 * Gets if the last action was a critical hit.
 	 */
-	bool GetCriticalHit() const;
+	bool IsCriticalHit() const;
+
+	/**
+	 * Gets if that is the first target of the action.
+	 */
+	bool IsFirstAttack() const;
 
 	/**
 	 * Executes the algorithm. Must be called before using the other functions.
@@ -262,6 +267,7 @@ protected:
 	int agility;
 	int switch_id;
 
+	bool first_attack;
 	bool healing;
 	bool success;
 	bool killed_by_attack_damage;
@@ -282,6 +288,7 @@ public:
 
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 };
 
 class Skill : public AlgorithmBase {
@@ -296,7 +303,7 @@ public:
 
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
-	virtual const RPG::Sound* GetStartSe() const;
+	const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
@@ -319,7 +326,6 @@ public:
 	const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
-
 private:
 	const RPG::Item& item;
 };
@@ -329,6 +335,7 @@ public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
 
 	std::string GetStartMessage() const;
+	const RPG::Sound* GetStartSe() const;
 	bool Execute();
 };
 
@@ -339,6 +346,7 @@ public:
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
 	bool Execute();
+	void Apply();
 };
 
 class Observe : public AlgorithmBase {
@@ -355,14 +363,18 @@ public:
 
 	std::string GetStartMessage() const;
 	bool Execute();
+	void Apply();
 };
 
 class SelfDestruct : public AlgorithmBase {
 public:
-	SelfDestruct(Game_Battler* source);
+	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 	bool Execute();
+	void Apply();
 };
 
 class Escape : public AlgorithmBase {
@@ -370,6 +382,8 @@ public:
 	Escape(Game_Battler* source);
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 	bool Execute();
 	void Apply();
 

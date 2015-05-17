@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cmath>
 #include <cstdlib>
 #include <sstream>
 #include "game_actor.h"
@@ -37,24 +38,24 @@
 #include "sprite_battler.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
-source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
-	source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
-	source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
-	target->GetAliveBattlers(targets);
+	target->GetActiveBattlers(targets);
 	current_target = targets.begin();
 }
 
@@ -113,12 +114,20 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetSuccess() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetKilledByAttack() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByAttack() const {
 	return killed_by_attack_damage;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
+	return critical_hit;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsFirstAttack() const {
+	return first_attack;
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
@@ -161,6 +170,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 		}
 		else {
+			if (critical_hit) {
+				out.push_back(target_is_ally ?
+					Data::terms.actor_critical :
+					Data::terms.enemy_critical);
+			}
+
 			if (GetAffectedHp() == 0) {
 				ss << (target_is_ally ?
 					Data::terms.actor_undamaged :
@@ -310,6 +325,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			(*current_target)->AddState(it->ID);
 		}
 	}
+
+	source->SetDefending(false);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
@@ -331,17 +348,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 
 	if (current_target + 1 != targets.end()) {
 		++current_target;
+		first_attack = false;
 		return true;
 	}
 	return false;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Data::system.enemy_attack_se;
-	} else {
-		return NULL;
-	}
+	return NULL;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
@@ -385,7 +399,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		int hit_chance = 80; // FIXME
+		int hit_chance = source->GetHitChance();
 		if (ally->GetWeaponId() == 0) {
 			// No Weapon
 			// Todo: Two Sword style
@@ -399,19 +413,24 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Source is Enemy
 
 		//int hit = src->IsMissingOften() ? 70 : 90;
-		int hit = 70;
+		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
 	}
 
 	// Damage calculation
 	if (rand() % 100 < to_hit) {
-		int effect = source->GetAtk() / 2 - (*current_target)->GetDef() / 4;
+		if (!source->IsCharged() && rand() % 100 < source->GetCriticalHitChance()) {
+			critical_hit = true;
+		}
+
+		int effect = (source->GetAtk() / 2 - (*current_target)->GetDef() / 4);
 		if (effect < 0)
 			effect = 0;
 		int act_perc = (rand() % 40) - 20;
-		int change = effect * act_perc / 100;
+		// Change rounded up
+		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
-		this->hp = effect;
+		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) / ((*current_target)->IsDefending() ? 2 : 1);
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
@@ -430,6 +449,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
+
+	source->SetCharged(false);
 }
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
@@ -443,6 +464,15 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 
 int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_LeftHand;
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return &Data::system.enemy_attack_se;
+	}
+	else {
+		return NULL;
+	}
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
@@ -513,7 +543,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				}
 
 				if (skill.affect_hp) {
-					this->hp = effect;
+					this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
 
 					if ((*current_target)->GetHp() - this->hp <= 0) {
 						// Death state
@@ -541,8 +571,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 
 			this->success = true;
-
-			conditions.push_back(Data::states[i]);
+			
+			if (rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
+				conditions.push_back(Data::states[i]);
+			}
 		}
 
 		return this->success;
@@ -565,7 +597,9 @@ void Game_BattleAlgorithm::Skill::Apply() {
 		Main_Data::game_party->ConsumeItemUse(item->ID);
 	}
 	else {
-		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+		if (first_attack) {
+			source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+		}
 	}
 }
 
@@ -592,7 +626,12 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 		return &skill.sound_effect;
 	}
 	else {
-		return AlgorithmBase::GetStartSe();
+		if (source->GetType() == Game_Battler::Type_Enemy) {
+			return &Data::system.enemy_attack_se;
+		}
+		else {
+			return NULL;
+		}
 	}
 }
 
@@ -693,7 +732,9 @@ bool Game_BattleAlgorithm::Item::Execute() {
 void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
 
-	Main_Data::game_party->RemoveItem(item.ID, 1);
+	if (first_attack) {
+		Main_Data::game_party->RemoveItem(item.ID, 1);
+	}
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
@@ -701,7 +742,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 		return source->GetName() + " " + item.name + Data::terms.use_item;
 	}
 	else {
-		return source->GetName() + ": " + item.name;;
+		return source->GetName() + ": " + item.name;
 	}
 }
 
@@ -718,7 +759,12 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 		return &Data::system.item_se;
 	}
 	else {
-		return AlgorithmBase::GetStartSe();
+		if (source->GetType() == Game_Battler::Type_Enemy) {
+			return &Data::system.enemy_attack_se;
+		}
+		else {
+			return NULL;
+		}
 	}
 }
 
@@ -733,6 +779,15 @@ std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
 	}
 	else {
 		return "";
+	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return &Data::system.enemy_attack_se;
+	}
+	else {
+		return NULL;
 	}
 }
 
@@ -755,13 +810,16 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 	}
 }
 
+int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Defending;
+}
+
 bool Game_BattleAlgorithm::Defend::Execute() {
-	Output::Warning("Battle: Defend not implemented");
 	return true;
 }
 
-int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Defending;
+void Game_BattleAlgorithm::Defend::Apply() {
+	source->SetDefending(true);
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
@@ -798,12 +856,15 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Charge::Execute() {
-	Output::Warning("Battle: Enemy Charge not implemented");
 	return true;
 }
 
-Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source) :
-AlgorithmBase(source) {
+void Game_BattleAlgorithm::Charge::Apply() {
+	source->SetCharged(true);
+}
+
+Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
+AlgorithmBase(source, target) {
 	// no-op
 }
 
@@ -816,9 +877,47 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 	}
 }
 
+int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Dead;
+}
+
+const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
+	return &Data::system.enemy_death_se;
+}
+
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
-	Output::Warning("Battle: Enemy SelfDestruct not implemented");
+	Reset();
+
+	// Like a normal attack, but with double damage and always hitting
+	// Never crits, ignores charge
+	int effect = source->GetAtk() - (*current_target)->GetDef() / 2;
+	if (effect < 0)
+		effect = 0;
+
+	// up to 20% stronger/weaker
+	int act_perc = (rand() % 40) - 20;
+	int change = (int)(std::ceil(effect * act_perc / 100.0));
+	effect += change;
+	this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);;
+
+	if ((*current_target)->GetHp() - this->hp <= 0) {
+		// Death state
+		killed_by_attack_damage = true;
+		conditions.push_back(Data::states[0]);
+	}
+
+	success = true;
+
 	return true;
+}
+
+void Game_BattleAlgorithm::SelfDestruct::Apply() {
+	AlgorithmBase::Apply();
+
+	// Only monster can self destruct
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(source)->SetHidden(true);
+	}
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
@@ -836,6 +935,24 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 	}
 
 	return "";
+}
+
+int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		return AlgorithmBase::GetSourceAnimationState();
+	}
+	else {
+		return Sprite_Battler::AnimationState_Dead;
+	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		return AlgorithmBase::GetStartSe();
+	}
+	else {
+		return &Data::system.escape_se;
+	}
 }
 
 bool Game_BattleAlgorithm::Escape::Execute() {
@@ -861,9 +978,6 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 		this->success = rand() % 100 < (int)to_hit;
 	}
-	else {
-		Output::Warning("Battle: Enemy Escape not implemented");
-	}
 
 	return this->success;
 }
@@ -871,6 +985,10 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 void Game_BattleAlgorithm::Escape::Apply() {
 	if (!this->success) {
 		Game_Battle::escape_fail_count += 1;
+	}
+
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
 }
 

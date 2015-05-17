@@ -34,6 +34,14 @@ public:
 	std::vector<int16_t>& GetStates();
 
 	/**
+	 * Gets probability that a state can be inflicted on this actor.
+	 *
+	 * @param state_id State to test
+	 * @return Probability of state infliction
+	 */
+	int GetStateProbability(int state_id);
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name
@@ -129,6 +137,8 @@ public:
 	bool IsHidden() const;
 	void Transform(int new_enemy_id);
 
+	int GetHitChance() const;
+	int GetCriticalHitChance() const;
 	int GetBattleAnimationId() const;
 
 	int GetExp() const;
@@ -162,13 +172,16 @@ protected:
 	int y;
 
 	int enemy_id;
+	// hidden at battle begin
 	bool hidden;
 	int hp;
 	int sp;
 	std::vector<int16_t> states;
 
 	RPG::Enemy* enemy;
+
+	// normal attack instance for use after charge
+	RPG::EnemyAction normal_atk;
 };
 
 #endif
-

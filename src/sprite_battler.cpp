@@ -21,6 +21,7 @@
 #include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
+#include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
 #include "rpg_battleranimation.h"
@@ -33,7 +34,8 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	sprite_file(""),
 	sprite_frame(-1),
 	fade_out(255),
-	flash_counter(0) {
+	flash_counter(0),
+	old_hidden(false) {
 	
 	CreateSprite();
 }
@@ -56,6 +58,14 @@ void Sprite_Battler::Update() {
 		CreateSprite();
 	}
 
+	if (!battler->IsHidden() && old_hidden != battler->IsHidden()) {
+		SetOpacity(255);
+		SetVisible(true);
+		SetAnimationState(AnimationState_Idle);
+	}
+
+	old_hidden = battler->IsHidden();
+
 	Sprite::Update();
 
 	++cycle;
@@ -68,7 +78,7 @@ void Sprite_Battler::Update() {
 			if (fade_out > 0) {
 				fade_out -= 15;
 				SetOpacity(std::max(0, fade_out));
-			}
+			} 
 		}
 		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
@@ -163,6 +173,7 @@ void Sprite_Battler::CreateSprite() {
 	SetX(battler->GetBattleX());
 	SetY(battler->GetBattleY());
 	SetZ(battler->GetBattleY()); // Not a typo
+
 	SetVisible(!battler->IsHidden());
 }
 

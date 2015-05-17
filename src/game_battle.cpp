@@ -47,6 +47,13 @@ namespace Game_Battle {
 	int escape_fail_count;
 }
 
+namespace {
+	int turn;
+	bool message_is_fixed;
+	int message_position;
+	bool terminate;
+}
+
 void Game_Battle::Init() {
 	interpreter.reset(new Game_Interpreter_Battle(0, true));
 	spriteset.reset(new Spriteset_Battle());
@@ -60,6 +67,8 @@ void Game_Battle::Init() {
 
 	message_is_fixed = Game_Message::IsPositionFixed();
 	message_position = Game_Message::GetPosition();
+	
+	Main_Data::game_party->ResetBattle();
 }
 
 void Game_Battle::Quit() {
@@ -75,6 +84,8 @@ void Game_Battle::Quit() {
 	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
 		(*it)->RemoveBattleStates();
 	}
+
+	Main_Data::game_party->ResetBattle();
 
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);

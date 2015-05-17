@@ -23,6 +23,8 @@
 #include "output.h"
 #include <vector>
 
+#define PLAYER_VAR_LIMIT 1000000
+
 /**
  * Game_Variables class.
  */
@@ -33,23 +35,28 @@ public:
 
 	int& operator[] (int variable_id) {
 		if (!isValidVar(variable_id)) {
-			Output::Debug("Variable index %d is invalid.",
-							variable_id);
-			dummy = 0;
-			return dummy;
+			if (variable_id > 0 && variable_id <= PLAYER_VAR_LIMIT) {
+				Output::Debug("Resizing variable array to %d elements.", variable_id);
+				variables.resize(variable_id);
+			}
+			else {
+				Output::Debug("Variable index %d is invalid.",
+					variable_id);
+				dummy = 0;
+				return dummy;
+			}
 		}
 
 		return (int&) variables[variable_id - 1];
 	}
 
 	std::string GetName(int _id) {
-		if (!isValidVar(_id)) {
-			Output::Debug("Variable index %d is invalid.\n",
-				_id);
+		if (!(_id > 0 && _id <= (int)Data::variables.size())) {
 			return "";
 		}
-		else
-			return Data::variables.at(_id - 1).name;
+		else {
+			return Data::variables[_id - 1].name;
+		}
 	}
 
 	bool isValidVar(int variable_id) {
@@ -61,6 +68,8 @@ public:
 	}
 
 	void Reset() {
+		variables.resize(Data::variables.size());
+
 		std::fill(variables.begin(), variables.end(), 0);
 	}
 
@@ -68,6 +77,8 @@ private:
 	std::vector<uint32_t>& variables;
 	int dummy;
 };
+
+#undef PLAYER_VAR_LIMIT
 
 // Global variable
 extern Game_Variables_Class Game_Variables;

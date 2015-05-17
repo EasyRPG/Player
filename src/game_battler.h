@@ -60,6 +60,14 @@ public:
 	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/**
+	 * Checks all states and returns the first restriction that different to
+	 * normal or normal if that is the only restriction.
+	 *
+	 * @return First non-normal restriction or normal if not restricted
+	 */
+	int GetSignificantRestriction();
+
+	/**
 	 * Tests if the battler has a "No Action" condition like sleep.
 	 *
 	 * @return can act 
@@ -73,6 +81,23 @@ public:
 	 *         Returns NULL if no states.
 	 */
 	const RPG::State* GetSignificantState();
+
+	/**
+	 * Gets the state probability by rate (A-E).
+	 *
+	 * @param state_id State to test
+	 * @param rate State rate to get
+	 * @return state rate (probability)
+	 */
+	int GetStateRate(int state_id, int rate);
+
+	/**
+	 * Gets probability that a state can be inflicted on this actor.
+	 * 
+	 * @param state_id State to test
+	 * @return Probability of state infliction
+	 */
+	virtual int GetStateProbability(int state_id) = 0;
 
 	/**
 	 * Gets the characters name
@@ -205,7 +230,7 @@ public:
 	virtual bool IsHidden() const;
 	virtual bool IsImmortal() const;
 
-	bool Exists() const;
+	virtual bool Exists() const;
 	bool IsDead() const;
 
 	/**
@@ -286,6 +311,34 @@ public:
 
 	virtual int GetBattleAnimationId() const = 0;
 
+	virtual int GetHitChance() const = 0;
+
+	virtual int GetCriticalHitChance() const = 0;
+
+	/**
+	 * @return If battler is charged (next attack double damages)
+	 */
+	bool IsCharged() const;
+
+	/**
+	 * Sets charge state (next attack double damages)
+	 *
+	 * @param charge new charge state
+	 */
+	void SetCharged(bool charge);
+
+	/**
+	* @return If battler is defending (next turn, defense is doubled)
+	*/
+	bool IsDefending() const;
+
+	/**
+	 * Sets defence state (next turn, defense is doubled)
+	 *
+	 * @param charge new charge state
+	 */
+	void SetDefending(bool defend);
+
 	enum BattlerType {
 		Type_Ally,
 		Type_Enemy
@@ -350,11 +403,18 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
+	/**
+	 * Resets battle modifiers (gauge, defense and charge).
+	 */
+	void ResetBattle();
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
 
 	BattleAlgorithmRef battle_algorithm;
+	bool charged;
+	bool defending;
 };
 
 #endif

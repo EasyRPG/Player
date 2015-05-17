@@ -32,14 +32,24 @@
 
 #define EASYRPG_GAUGE_MAX_VALUE 120000
 
-Game_Battler::Game_Battler() : gauge(EASYRPG_GAUGE_MAX_VALUE / 2) {
-	// no-op
+Game_Battler::Game_Battler() {
+	ResetBattle();
 }
 
 bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
+int Game_Battler::GetSignificantRestriction() {
+	const std::vector<int16_t>& states = GetStates();
+	for (int i = 0; i < (int)states.size(); i++) {
+		const RPG::State* state = &Data::states[states[i] - 1];
+		if (state->restriction != RPG::State::Restriction_normal) {
+			return state->restriction;
+		}
+	}
+	return RPG::State::Restriction_normal;
+}
 
 bool Game_Battler::CanAct() {
 	const std::vector<int16_t>& states = GetStates();
@@ -78,6 +88,27 @@ const RPG::State* Game_Battler::GetSignificantState() {
 	}
 
 	return the_state;
+}
+
+int Game_Battler::GetStateRate(int state_id, int rate) {
+	const RPG::State& state = Data::states[state_id - 1];
+
+	switch (rate) {
+	case 0:
+		return state.a_rate;
+	case 1:
+		return state.b_rate;
+	case 2:
+		return state.c_rate;
+	case 3:
+		return state.d_rate;
+	case 4:
+		return state.e_rate;
+	default:;
+	}
+
+	assert(false && "bad rate");
+	return 0;
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
@@ -241,6 +272,22 @@ void Game_Battler::RemoveAllStates() {
 	states.clear();
 }
 
+bool Game_Battler::IsCharged() const {
+	return charged;
+}
+
+void Game_Battler::SetCharged(bool charge) {
+	charged = charge;
+}
+
+bool Game_Battler::IsDefending() const {
+	return defending;
+}
+
+void Game_Battler::SetDefending(bool defend) {
+	defending = defend;
+}
+
 bool Game_Battler::IsHidden() const {
 	return false;
 }
@@ -271,8 +318,8 @@ int Game_Battler::GetAtk() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_attack) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_atk);
+		if(Data::states[(*i) - 1].affect_attack) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_atk);
 			break;
 		}
 	}
@@ -288,8 +335,8 @@ int Game_Battler::GetDef() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_defense) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_def);
+		if(Data::states[(*i) - 1].affect_defense) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
 			break;
 		}
 	}
@@ -305,8 +352,8 @@ int Game_Battler::GetSpi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_spirit) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_spi);
+		if(Data::states[(*i) - 1].affect_spirit) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_spi);
 			break;
 		}
 	}
@@ -322,8 +369,8 @@ int Game_Battler::GetAgi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i)].affect_agility) {
-			n = AffectParameter(Data::states[(*i)].affect_type, base_agi);
+		if(Data::states[(*i) - 1].affect_agility) {
+			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_agi);
 			break;
 		}
 	}
@@ -378,4 +425,10 @@ const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
 
 void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
+}
+
+void Game_Battler::ResetBattle() {
+	gauge = EASYRPG_GAUGE_MAX_VALUE / 2;
+	charged = false;
+	defending = false;
 }

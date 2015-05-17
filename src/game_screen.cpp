@@ -40,7 +40,7 @@ void Game_Screen::CreatePicturesFromSave() {
 
 	pictures.resize(save_pics.size());
 
-	for (size_t id = 1; id < save_pics.size(); ++id) {
+	for (int id = 1; id < (int)save_pics.size(); ++id) {
 		if (!save_pics[id - 1].name.empty()) {
 			pictures[id - 1].reset(new Game_Picture(id));
 			int time_left = save_pics[id - 1].time_left;

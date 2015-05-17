@@ -176,6 +176,14 @@ public:
 	int GetNextExp(int level) const;
 
 	/**
+	 * Gets probability that a state can be inflicted on this actor.
+	 *
+	 * @param state_id State to test
+	 * @return Probability of state infliction
+	 */
+	int GetStateProbability(int state_id);
+
+	/**
 	 * Gets actor name.
 	 *
 	 * @return name.
@@ -617,6 +625,7 @@ public:
 	 * @return row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	int GetBattleRow() const;
+
 	/**
 	 * Sets battle row for Rpg2k3 battles.
 	 *
@@ -626,8 +635,10 @@ public:
 
 	int GetBattleAnimationId() const;
 
-	BattlerType GetType() const;
+	int GetHitChance() const;
+	int GetCriticalHitChance() const;
 
+	BattlerType GetType() const;
 private:
 	RPG::SaveActor& data;
 

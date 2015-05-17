@@ -33,6 +33,9 @@ void Game_Enemy::Setup(int enemy_id) {
 	Transform(enemy_id);
 	hp = GetMaxHp();
 	sp = GetMaxSp();
+	x = 0;
+	y = 0;
+	hidden = false;
 }
 
 const std::vector<int16_t>& Game_Enemy::GetStates() const {
@@ -41,6 +44,16 @@ const std::vector<int16_t>& Game_Enemy::GetStates() const {
 
 std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
+}
+
+int Game_Enemy::GetStateProbability(int state_id) {
+	int rate = 3; // C - default
+
+	if (state_id <= Data::enemies[enemy_id].state_ranks.size()) {
+		rate = Data::enemies[enemy_id].state_ranks[state_id - 1];
+	}
+
+	return GetStateRate(state_id, rate);
 }
 
 const std::string& Game_Enemy::GetName() const {
@@ -141,6 +154,14 @@ int Game_Enemy::GetBattleAnimationId() const {
 	return 0;
 }
 
+int Game_Enemy::GetHitChance() const {
+	return enemy->miss ? 70 : 90;
+}
+
+int Game_Enemy::GetCriticalHitChance() const {
+	return enemy->critical_hit ? enemy->critical_hit_chance : 0;
+}
+
 Game_Battler::BattlerType Game_Enemy::GetType() const {
 	return Game_Battler::Type_Enemy;
 }
@@ -208,6 +229,10 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 }
 
 const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
+	if (IsCharged()) {
+		return &normal_atk;
+	}
+
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
 	int total = 0;
@@ -217,6 +242,10 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 			valid.push_back(i);
 			total += action.rating;
 		}
+	}
+
+	if (total == 0) {
+		return NULL;
 	}
 
 	int which = rand() % total;

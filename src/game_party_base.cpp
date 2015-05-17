@@ -28,11 +28,11 @@ void Game_Party_Base::GetBattlers(std::vector<Game_Battler*>& out) {
 	}
 }
 
-void Game_Party_Base::GetAliveBattlers(std::vector<Game_Battler*>& out) {
+void Game_Party_Base::GetActiveBattlers(std::vector<Game_Battler*>& out) {
 	int count = GetBattlerCount();
 	for (int i = 0; i < count; ++i) {
 		Game_Battler* battler = &(*this)[i];
-		if (!battler->IsDead()) {
+		if (battler->Exists()) {
 			out.push_back(battler);
 		}
 	}
@@ -48,7 +48,7 @@ void Game_Party_Base::GetDeadBattlers(std::vector<Game_Battler*>& out) {
 	}
 }
 
-Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
+Game_Battler* Game_Party_Base::GetNextActiveBattler(Game_Battler* battler) {
 	std::vector<Game_Battler*> battlers;
 	GetBattlers(battlers);
 
@@ -61,7 +61,7 @@ Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
 
 	for (++it; it != battlers.end(); ++it) {
 		Game_Battler* b = *it;
-		if (!b->IsDead()) {
+		if (b->Exists()) {
 			return b;
 		}
 	}
@@ -69,7 +69,7 @@ Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
 	// None found after battler, try from the beginning now
 	for (it = battlers.begin(); *it != battler; ++it) {
 		Game_Battler* b = *it;
-		if (!b->IsDead()) {
+		if (b->Exists()) {
 			return b;
 		}
 	}
@@ -77,9 +77,9 @@ Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
 	return NULL;
 }
 
-Game_Battler* Game_Party_Base::GetRandomAliveBattler() {
+Game_Battler* Game_Party_Base::GetRandomActiveBattler() {
 	std::vector<Game_Battler*> battlers;
-	GetAliveBattlers(battlers);
+	GetActiveBattlers(battlers);
 	if (battlers.empty()) {
 		return NULL;
 	}
@@ -97,8 +97,8 @@ Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
 	return battlers[rand() / (RAND_MAX / battlers.size() + 1)];
 }
 
-bool Game_Party_Base::IsAnyAlive() {
-	return GetRandomAliveBattler() != NULL;
+bool Game_Party_Base::IsAnyActive() {
+	return GetRandomActiveBattler() != NULL;
 }
 
 int Game_Party_Base::GetAverageAgility() {
@@ -114,4 +114,30 @@ int Game_Party_Base::GetAverageAgility() {
 	}
 
 	return agi /= battlers.size();
+}
+
+bool Game_Party_Base::IsAnyControllable() {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	std::vector<Game_Battler*>::const_iterator it;
+
+	for (it = battlers.begin(); it != battlers.end(); ++it) {
+		if ((*it)->GetSignificantRestriction() == RPG::State::Restriction_normal) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Game_Party_Base::ResetBattle() {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	std::vector<Game_Battler*>::const_iterator it;
+
+	for (it = battlers.begin(); it != battlers.end(); ++it) {
+		(*it)->ResetBattle();
+	}
 }

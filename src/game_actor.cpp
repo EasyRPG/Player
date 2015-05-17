@@ -344,6 +344,16 @@ int Game_Actor::GetNextExp(int level) const {
 	}
 }
 
+int Game_Actor::GetStateProbability(int state_id) {
+	int rate = 3; // C - default
+
+	if (state_id <= (int)Data::actors[data.ID - 1].state_ranks.size()) {
+		rate = Data::actors[data.ID - 1].state_ranks[state_id - 1];
+	}
+
+	return GetStateRate(state_id, rate);
+}
+
 const std::string& Game_Actor::GetName() const {
 	return data.name;
 }
@@ -657,6 +667,14 @@ int Game_Actor::GetBattleAnimationId() const {
 	}
 
 	return Data::battleranimations[Data::actors[data.ID - 1].battler_animation - 1].ID;
+}
+
+int Game_Actor::GetHitChance() const {
+	return 90;
+}
+
+int Game_Actor::GetCriticalHitChance() const {
+	return Data::actors[data.ID - 1].critical_hit ? Data::actors[data.ID - 1].critical_hit_chance : 0;
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {

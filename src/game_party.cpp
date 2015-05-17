@@ -44,7 +44,7 @@ Game_Actor& Game_Party::operator[] (const int index) {
 }
 
 int Game_Party::GetBattlerCount() const {
-	return GetActors().size();
+	return (int)GetActors().size();
 }
 
 void Game_Party::SetupBattleTestMembers() {
@@ -440,7 +440,7 @@ int Game_Party::GetAverageLevel() {
 		party_lvl += (*it)->GetLevel();
 	}
 
-	return party_lvl /= actors.size();
+	return party_lvl /= (int)actors.size();
 }
 
 int Game_Party::GetFatigue() {
@@ -458,5 +458,5 @@ int Game_Party::GetFatigue() {
 			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
 	}
 
-	return party_exh /= actors.size();
+	return party_exh /= (int)actors.size();
 }

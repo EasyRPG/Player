@@ -1700,6 +1700,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		 i != actors.end();
 		 ++i) {
 		Game_Actor* actor = *i;
+		actor->ResetBattle();
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
 		result -= (actor->GetSpi() * spi) / 800;
