@@ -324,6 +324,10 @@ int Game_Battler::GetAtk() const {
 		}
 	}
 
+	if (IsCharged()) {
+		n *= 2;
+	}
+
 	n = min(max(n, 1), 999);
 
 	return n;
@@ -339,6 +343,10 @@ int Game_Battler::GetDef() const {
 			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
 			break;
 		}
+	}
+
+	if (IsDefending()) {
+		n *= 2;
 	}
 
 	n = min(max(n, 1), 999);

@@ -183,6 +183,9 @@ protected:
 	std::vector<int16_t> states;
 
 	RPG::Enemy* enemy;
+
+	// normal attack instance for use after charge
+	RPG::EnemyAction normal_atk;
 };
 
 #endif

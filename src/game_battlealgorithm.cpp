@@ -318,6 +318,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			(*current_target)->AddState(it->ID);
 		}
 	}
+
+	source->SetDefending(false);
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
@@ -346,11 +348,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Data::system.enemy_attack_se;
-	} else {
-		return NULL;
-	}
+	return NULL;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
@@ -440,6 +438,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
+
+	source->SetCharged(false);
 }
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
@@ -453,6 +453,15 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 
 int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_LeftHand;
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return &Data::system.enemy_attack_se;
+	}
+	else {
+		return NULL;
+	}
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
@@ -748,6 +757,15 @@ std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
 	}
 }
 
+const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return &Data::system.enemy_attack_se;
+	}
+	else {
+		return NULL;
+	}
+}
+
 bool Game_BattleAlgorithm::NormalDual::Execute() {
 	Output::Warning("Battle: Enemy Double Attack not implemented");
 	return true;
@@ -767,13 +785,16 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 	}
 }
 
+int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Defending;
+}
+
 bool Game_BattleAlgorithm::Defend::Execute() {
-	Output::Warning("Battle: Defend not implemented");
 	return true;
 }
 
-int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Defending;
+void Game_BattleAlgorithm::Defend::Apply() {
+	source->SetDefending(true);
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
@@ -810,8 +831,11 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Charge::Execute() {
-	Output::Warning("Battle: Enemy Charge not implemented");
 	return true;
+}
+
+void Game_BattleAlgorithm::Charge::Apply() {
+	source->SetCharged(true);
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
@@ -839,11 +863,15 @@ const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	Reset();
 
+	bool real_charge = source->IsCharged();
+
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
+	source->SetCharged(false);
 	int effect = source->GetAtk() - (*current_target)->GetDef() / 2;
 	if (effect < 0)
 		effect = 0;
+	source->SetCharged(real_charge);
 
 	// up to 20% stronger/weaker
 	int act_perc = (rand() % 40) - 20;

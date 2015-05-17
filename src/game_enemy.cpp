@@ -237,6 +237,10 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 }
 
 const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
+	if (IsCharged()) {
+		return &normal_atk;
+	}
+
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
 	int total = 0;

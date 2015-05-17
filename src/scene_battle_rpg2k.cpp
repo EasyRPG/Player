@@ -279,6 +279,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		} else {
 			// Everybody acted
 			actor_index = 0;
+
 			SetState(State_SelectOption);
 		}
 		break;
@@ -377,7 +378,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
-					if (target_sprite) {
+					if (action->IsSuccess() && target_sprite) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
 					}
 

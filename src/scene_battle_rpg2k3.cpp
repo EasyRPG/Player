@@ -491,7 +491,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-			if (target_sprite) {
+			if (action->IsSuccess() && target_sprite) {
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 			}
 

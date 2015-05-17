@@ -288,6 +288,7 @@ public:
 
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 };
 
 class Skill : public AlgorithmBase {
@@ -302,7 +303,7 @@ public:
 
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
-	virtual const RPG::Sound* GetStartSe() const;
+	const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
@@ -334,6 +335,7 @@ public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
 
 	std::string GetStartMessage() const;
+	const RPG::Sound* GetStartSe() const;
 	bool Execute();
 };
 
@@ -344,6 +346,7 @@ public:
 	std::string GetStartMessage() const;
 	int GetSourceAnimationState() const;
 	bool Execute();
+	void Apply();
 };
 
 class Observe : public AlgorithmBase {
@@ -360,6 +363,7 @@ public:
 
 	std::string GetStartMessage() const;
 	bool Execute();
+	void Apply();
 };
 
 class SelfDestruct : public AlgorithmBase {

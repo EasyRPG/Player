@@ -78,6 +78,8 @@ void Game_Battle::Quit() {
 		(*it)->RemoveBattleStates();
 	}
 
+	Main_Data::game_party->ResetBattle();
+
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
 }
