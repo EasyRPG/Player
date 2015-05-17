@@ -263,6 +263,14 @@ static bool NonPermanent(int state_id) {
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
+
+	// If death is non-permanent change HP to 1
+	if (GetSignificantState() != NULL &&
+		GetSignificantState()->ID == 1 &&
+		NonPermanent(1)) {
+		ChangeHp(1);
+	}
+
 	std::vector<int16_t>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
 	states.erase(end, states.end());
 }
