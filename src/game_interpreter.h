@@ -122,6 +122,11 @@ protected:
 	static int ValueOrVariable(int mode, int val);
 
 	/**
+	 * Triggers a game over when all party members are dead.
+	 */
+	void CheckGameOver();
+
+	/**
 	 * Closes the message window.
 	 */
 	void CloseMessageWindow();

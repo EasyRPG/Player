@@ -1713,6 +1713,8 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		result = std::max(0, result);
 		actor->ChangeHp(-result);
 
+		CheckGameOver();
+
 		if (com.parameters[6] != 0)
 			Game_Variables[com.parameters[7]] = result;
 	}
