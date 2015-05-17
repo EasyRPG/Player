@@ -478,7 +478,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 		}
 
-		if (action->GetFirstAttack() && action->GetStartSe()) {
+		if (action->IsFirstAttack() && action->GetStartSe()) {
 			Game_System::SePlay(*action->GetStartSe());
 		}
 
@@ -486,7 +486,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		break;
 	case BattleActionState_Result:
 		do {
-			if (!action->GetFirstAttack()) {
+			if (!action->IsFirstAttack()) {
 				action->Execute();
 			}
 
@@ -502,7 +502,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					action->GetTarget()->GetBattleX(),
 					action->GetTarget()->GetBattleY(),
 					0,
-					action->GetSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
+					action->IsSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
 					30);
 			}
 

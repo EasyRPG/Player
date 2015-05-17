@@ -152,24 +152,24 @@ public:
 	 *
 	 * @return if the action hit the target
 	 */
-	bool GetSuccess() const;
+	bool IsSuccess() const;
 
 	/**
 	 * See GetDeathMessage for further explanations
 	 *
 	 * @return True when the caller died because his hp reached 0 (false when a condition caused death)
 	 */
-	bool GetKilledByAttack() const;
+	bool IsKilledByAttack() const;
 
 	/**
 	 * Gets if the last action was a critical hit.
 	 */
-	bool GetCriticalHit() const;
+	bool IsCriticalHit() const;
 
 	/**
 	 * Gets if that is the first target of the action.
 	 */
-	bool GetFirstAttack() const;
+	bool IsFirstAttack() const;
 
 	/**
 	 * Executes the algorithm. Must be called before using the other functions.

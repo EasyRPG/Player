@@ -113,19 +113,19 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetSuccess() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetKilledByAttack() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByAttack() const {
 	return killed_by_attack_damage;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetCriticalHit() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 	return critical_hit;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::GetFirstAttack() const {
+bool Game_BattleAlgorithm::AlgorithmBase::IsFirstAttack() const {
 	return first_attack;
 }
 

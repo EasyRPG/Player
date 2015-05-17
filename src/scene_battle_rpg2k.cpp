@@ -338,7 +338,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			battle_result_messages_it = battle_result_messages.begin();
 
-			if (action->GetFirstAttack()) {
+			if (action->IsFirstAttack()) {
 				if (action->GetTarget() &&
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
@@ -357,7 +357,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 			}
 
-			if (action->GetFirstAttack() && action->GetStartSe()) {
+			if (action->IsFirstAttack() && action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
 			}
 			
@@ -396,7 +396,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
 			} else {
-				if (action->GetKilledByAttack()) {
+				if (action->IsKilledByAttack()) {
 					battle_message_window->Push(action->GetDeathMessage());
 				}
 				battle_action_state = BattleActionState_Finished;
