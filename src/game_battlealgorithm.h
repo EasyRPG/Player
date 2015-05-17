@@ -378,6 +378,8 @@ public:
 	Escape(Game_Battler* source);
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 	bool Execute();
 	void Apply();
 

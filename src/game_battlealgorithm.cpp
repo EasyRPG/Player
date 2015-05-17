@@ -882,6 +882,24 @@ std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 	return "";
 }
 
+int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		return AlgorithmBase::GetSourceAnimationState();
+	}
+	else {
+		return Sprite_Battler::AnimationState_Dead;
+	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		return AlgorithmBase::GetStartSe();
+	}
+	else {
+		return &Data::system.escape_se;
+	}
+}
+
 bool Game_BattleAlgorithm::Escape::Execute() {
 	Reset();
 
@@ -905,9 +923,6 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 		this->success = rand() % 100 < (int)to_hit;
 	}
-	else {
-		Output::Warning("Battle: Enemy Escape not implemented");
-	}
 
 	return this->success;
 }
@@ -915,6 +930,10 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 void Game_BattleAlgorithm::Escape::Apply() {
 	if (!this->success) {
 		Game_Battle::escape_fail_count += 1;
+	}
+
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(source)->SetRemoved(true);
 	}
 }
 
