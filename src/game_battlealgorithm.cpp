@@ -169,6 +169,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 		}
 		else {
+			if (critical_hit) {
+				out.push_back(target_is_ally ?
+					Data::terms.actor_critical :
+					Data::terms.enemy_critical);
+			}
+
 			if (GetAffectedHp() == 0) {
 				ss << (target_is_ally ?
 					Data::terms.actor_undamaged :
@@ -412,14 +418,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	// Damage calculation
 	if (rand() % 100 < to_hit) {
-		int effect = source->GetAtk() / 2 - (*current_target)->GetDef() / 4;
+		if (rand() % 100 < source->GetCriticalHitChance()) {
+			critical_hit = true;
+		}
+
+		int effect = (source->GetAtk() / 2 - (*current_target)->GetDef() / 4);
 		if (effect < 0)
 			effect = 0;
 		int act_perc = (rand() % 40) - 20;
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
-		this->hp = effect;
+		this->hp = effect * (critical_hit ? 3 : 1);
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
