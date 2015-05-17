@@ -398,7 +398,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Charge>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_autodestruction:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::SelfDestruct>(enemy));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
 			break;
 		case RPG::EnemyAction::Basic_escape:
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Escape>(enemy));

@@ -453,8 +453,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
-	bool first = true;
-
 	switch (battle_action_state) {
 	case BattleActionState_Start:
 		ShowNotification(action->GetStartMessage());
@@ -480,7 +478,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 		}
 
-		if (action->GetStartSe()) {
+		if (action->GetFirstAttack() && action->GetStartSe()) {
 			Game_System::SePlay(*action->GetStartSe());
 		}
 
@@ -488,9 +486,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		break;
 	case BattleActionState_Result:
 		do {
-			if (first) {
-				first = false;
-			} else {
+			if (!action->GetFirstAttack()) {
 				action->Execute();
 			}
 

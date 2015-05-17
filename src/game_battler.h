@@ -230,7 +230,7 @@ public:
 	virtual bool IsHidden() const;
 	virtual bool IsImmortal() const;
 
-	bool Exists() const;
+	virtual bool Exists() const;
 	bool IsDead() const;
 
 	/**

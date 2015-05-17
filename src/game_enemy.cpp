@@ -33,6 +33,10 @@ void Game_Enemy::Setup(int enemy_id) {
 	Transform(enemy_id);
 	hp = GetMaxHp();
 	sp = GetMaxSp();
+	x = 0;
+	y = 0;
+	removed = false;
+	hidden = false;
 }
 
 const std::vector<int16_t>& Game_Enemy::GetStates() const {
@@ -140,6 +144,17 @@ void Game_Enemy::SetHidden(bool _hidden) {
 
 bool Game_Enemy::IsHidden() const {
 	return hidden;
+}
+
+void Game_Enemy::SetRemoved(bool _removed) {
+	removed = _removed;
+}
+bool Game_Enemy::IsRemoved() const {
+	return removed;
+}
+
+bool Game_Enemy::Exists() const {
+	return Game_Battler::Exists() && !IsRemoved();
 }
 
 void Game_Enemy::Transform(int new_enemy_id) {

@@ -313,8 +313,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	static bool first = true;
-
 	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
 		return false;
 	}
@@ -340,7 +338,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			battle_result_messages_it = battle_result_messages.begin();
 
-			if (first) {
+			if (action->GetFirstAttack()) {
 				if (action->GetTarget() &&
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
@@ -354,9 +352,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 			if (source_sprite) {
 				source_sprite->Flash(Color(255, 255, 255, 100), 15);
+				source_sprite->SetAnimationState(
+					action->GetSourceAnimationState(),
+					Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 			}
 
-			if (action->GetStartSe()) {
+			if (action->GetFirstAttack() && action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
 			}
 			
@@ -431,14 +432,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			if (action->TargetNext()) {
-				first = false;
 				battle_action_state = BattleActionState_Start;
 				return false;
 			}
 
 			// Reset variables
 			battle_action_state = BattleActionState_Start;
-			first = true;
 
 			return true;
 	}

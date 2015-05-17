@@ -133,8 +133,11 @@ public:
 	int GetSp() const;
 	void SetSp(int _sp);
 
+	bool Exists() const;
 	void SetHidden(bool _hidden);
 	bool IsHidden() const;
+	void SetRemoved(bool _removed);
+	bool IsRemoved() const;
 	void Transform(int new_enemy_id);
 
 	int GetBattleAnimationId() const;
@@ -170,7 +173,10 @@ protected:
 	int y;
 
 	int enemy_id;
+	// hidden at battle begin
 	bool hidden;
+	// removed during battle via escape/self destruct
+	bool removed;
 	int hp;
 	int sp;
 	std::vector<int16_t> states;

@@ -37,21 +37,21 @@
 #include "sprite_battler.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
-source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
-	source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
-	source(source) {
+	source(source), first_attack(true) {
 	Reset();
 
 	target->GetActiveBattlers(targets);
@@ -119,6 +119,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::GetSuccess() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::GetKilledByAttack() const {
 	return killed_by_attack_damage;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::GetCriticalHit() const {
+	return critical_hit;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::GetFirstAttack() const {
+	return first_attack;
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
@@ -331,6 +339,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 
 	if (current_target + 1 != targets.end()) {
 		++current_target;
+		first_attack = false;
 		return true;
 	}
 	return false;
@@ -385,7 +394,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		int hit_chance = 80; // FIXME
+		int hit_chance = 80; // FIXMEg
 		if (ally->GetWeaponId() == 0) {
 			// No Weapon
 			// Todo: Two Sword style
@@ -409,7 +418,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (effect < 0)
 			effect = 0;
 		int act_perc = (rand() % 40) - 20;
-		int change = effect * act_perc / 100;
+		// Change rounded up
+		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
 		this->hp = effect;
 
@@ -703,7 +713,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 		return source->GetName() + " " + item.name + Data::terms.use_item;
 	}
 	else {
-		return source->GetName() + ": " + item.name;;
+		return source->GetName() + ": " + item.name;
 	}
 }
 
@@ -804,8 +814,8 @@ bool Game_BattleAlgorithm::Charge::Execute() {
 	return true;
 }
 
-Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source) :
-AlgorithmBase(source) {
+Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
+AlgorithmBase(source, target) {
 	// no-op
 }
 
@@ -818,9 +828,41 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 	}
 }
 
+int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Dead;
+}
+
+const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
+	return &Data::system.enemy_death_se;
+}
+
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
-	Output::Warning("Battle: Enemy SelfDestruct not implemented");
+	Reset();
+
+	// Like a normal attack, but with double damage and always hitting
+	// Never crits, ignores charge
+	int effect = source->GetAtk() - (*current_target)->GetDef() / 2;
+	if (effect < 0)
+		effect = 0;
+
+	// up to 20% stronger/weaker
+	int act_perc = (rand() % 40) - 20;
+	int change = (int)(std::ceil(effect * act_perc / 100.0));
+	effect += change;
+	this->hp = effect;
+
+	success = true;
+
 	return true;
+}
+
+void Game_BattleAlgorithm::SelfDestruct::Apply() {
+	AlgorithmBase::Apply();
+
+	// Only monster can self destruct
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		static_cast<Game_Enemy*>(source)->SetRemoved(true);
+	}
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
