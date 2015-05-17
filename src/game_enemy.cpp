@@ -166,6 +166,10 @@ int Game_Enemy::GetBattleAnimationId() const {
 	return 0;
 }
 
+int Game_Enemy::GetHitChance() const {
+	return enemy->miss ? 70 : 90;
+}
+
 int Game_Enemy::GetCriticalHitChance() const {
 	return enemy->critical_hit ? enemy->critical_hit_chance : 0;
 }

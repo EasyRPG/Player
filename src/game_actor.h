@@ -635,6 +635,7 @@ public:
 
 	int GetBattleAnimationId() const;
 
+	int GetHitChance() const;
 	int GetCriticalHitChance() const;
 
 	BattlerType GetType() const;

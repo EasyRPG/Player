@@ -140,6 +140,7 @@ public:
 	bool IsRemoved() const;
 	void Transform(int new_enemy_id);
 
+	int GetHitChance() const;
 	int GetCriticalHitChance() const;
 	int GetBattleAnimationId() const;
 

@@ -398,7 +398,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		int hit_chance = 80; // FIXMEg
+		int hit_chance = source->GetHitChance();
 		if (ally->GetWeaponId() == 0) {
 			// No Weapon
 			// Todo: Two Sword style
@@ -412,13 +412,13 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Source is Enemy
 
 		//int hit = src->IsMissingOften() ? 70 : 90;
-		int hit = 70;
+		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
 	}
 
 	// Damage calculation
 	if (rand() % 100 < to_hit) {
-		if (rand() % 100 < source->GetCriticalHitChance()) {
+		if (!source->IsCharged() && rand() % 100 < source->GetCriticalHitChance()) {
 			critical_hit = true;
 		}
 
@@ -429,7 +429,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
-		this->hp = effect * (critical_hit ? 3 : 1);
+		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) / ((*current_target)->IsDefending() ? 2 : 1);
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
@@ -542,7 +542,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				}
 
 				if (skill.affect_hp) {
-					this->hp = effect;
+					this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
 
 					if ((*current_target)->GetHp() - this->hp <= 0) {
 						// Death state
@@ -877,21 +877,17 @@ const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	Reset();
 
-	bool real_charge = source->IsCharged();
-
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
-	source->SetCharged(false);
 	int effect = source->GetAtk() - (*current_target)->GetDef() / 2;
 	if (effect < 0)
 		effect = 0;
-	source->SetCharged(real_charge);
 
 	// up to 20% stronger/weaker
 	int act_perc = (rand() % 40) - 20;
 	int change = (int)(std::ceil(effect * act_perc / 100.0));
 	effect += change;
-	this->hp = effect;
+	this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);;
 
 	if ((*current_target)->GetHp() - this->hp <= 0) {
 		// Death state

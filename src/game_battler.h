@@ -311,6 +311,8 @@ public:
 
 	virtual int GetBattleAnimationId() const = 0;
 
+	virtual int GetHitChance() const = 0;
+
 	virtual int GetCriticalHitChance() const = 0;
 
 	/**
