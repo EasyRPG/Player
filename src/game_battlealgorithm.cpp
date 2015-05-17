@@ -586,7 +586,9 @@ void Game_BattleAlgorithm::Skill::Apply() {
 		Main_Data::game_party->ConsumeItemUse(item->ID);
 	}
 	else {
-		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+		if (first_attack) {
+			source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+		}
 	}
 }
 
@@ -714,7 +716,9 @@ bool Game_BattleAlgorithm::Item::Execute() {
 void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
 
-	Main_Data::game_party->RemoveItem(item.ID, 1);
+	if (first_attack) {
+		Main_Data::game_party->RemoveItem(item.ID, 1);
+	}
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
