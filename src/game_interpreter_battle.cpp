@@ -29,7 +29,7 @@
 #include "spriteset_battle.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag), animation_wait(false) {
+	Game_Interpreter(depth, main_flag) {
 }
 
 // Execute Command.
@@ -38,7 +38,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		return CommandEnd();
 	}
 
-	if (animation_wait && Main_Data::game_screen->IsBattleAnimationWaiting()) {
+	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
 		return false;
 	}
 	
@@ -219,8 +219,8 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	}
 
 	if (target < 0) {
-		// global TODO
-		return true;
+		Main_Data::game_screen->ShowGlobalBattleAnimation(animation_id);
+		return !wait;
 	}
 	else {
 		Game_Battler* battler_target = NULL;
@@ -237,17 +237,13 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		}
 
 		if (!battler_target) {
-			return true;
+			return !wait;
 		}
 
 		Main_Data::game_screen->ShowBattleAnimationBattle(animation_id, battler_target);
 	}
 
-	if (wait) {
-		animation_wait = true;
-	}
-
-	return true;
+	return !wait;
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
