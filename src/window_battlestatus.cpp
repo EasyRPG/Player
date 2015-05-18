@@ -36,6 +36,14 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
 
+	index = -1;
+
+	Refresh();
+}
+
+void Window_BattleStatus::Refresh() {
+	contents->Clear();
+
 	if (enemy) {
 		item_max = Main_Data::game_enemyparty->GetBattlerCount();
 	}
@@ -44,14 +52,6 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 	}
 
 	item_max = std::min(item_max, 4);
-
-	index = -1;
-
-	Refresh();
-}
-
-void Window_BattleStatus::Refresh() {
-	contents->Clear();
 
 	for (int i = 0; i < item_max; i++) {
 		int y = 2 + i * 16;

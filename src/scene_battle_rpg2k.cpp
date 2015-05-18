@@ -240,7 +240,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
-			Game_Battle::UpdateEvents();
 			SetState(State_SelectOption);
 			CheckResultConditions();
 		}

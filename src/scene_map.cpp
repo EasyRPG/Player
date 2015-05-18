@@ -119,11 +119,6 @@ void Scene_Map::Update() {
 
 	StartTeleportPlayer();
 
-	if (!Main_Data::game_party->IsAnyActive()) {
-		// Empty party is allowed
-		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
-	}
-
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());

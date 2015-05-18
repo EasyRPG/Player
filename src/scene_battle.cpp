@@ -157,7 +157,7 @@ void Scene_Battle::Update() {
 		Scene::Pop();
 	}
 
-	if (!Game_Battle::GetInterpreter().IsRunning()) {
+	if (Game_Battle::UpdateEvents()) {
 		ProcessActions();
 		ProcessInput();
 	}
@@ -194,7 +194,6 @@ void Scene_Battle::NextTurn() {
 	auto_battle = false;
 
 	Game_Battle::NextTurn();
-	Game_Battle::UpdateEvents();
 }
 
 void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {

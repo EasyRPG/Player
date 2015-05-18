@@ -267,6 +267,13 @@ void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
 	Setup(ev->GetList(), 0, ev->GetIndex(), -2);
 }
 
+void Game_Interpreter::CheckGameOver() {
+	if (!Main_Data::game_party->IsAnyActive()) {
+		// Empty party is allowed
+		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
+	}
+}
+
 // Skip to command.
 bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent) {
 	if (code2 < 0)
@@ -976,6 +983,8 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 		} else {
 			// Remove members
 			Main_Data::game_party->RemoveActor(id);
+
+			CheckGameOver();
 		}
 	}
 
@@ -1099,6 +1108,10 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 		actor->ChangeHp(amount);
 	}
 
+	if (lethal) {
+		CheckGameOver();
+	}
+
 	return true;
 }
 
@@ -1135,10 +1148,12 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 		 i != actors.end();
 		 ++i) {
 		Game_Actor* actor = *i;
-		if (remove)
+		if (remove) {
 			actor->RemoveState(state_id);
-		else
+		} else {
 			actor->AddState(state_id);
+			CheckGameOver();
+		}
 	}
 
 	return true;

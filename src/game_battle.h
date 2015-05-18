@@ -55,7 +55,7 @@ namespace Game_Battle {
 	bool CheckTurns(int turns, int base, int multiple);
 
 	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
-	void UpdateEvents();
+	bool UpdateEvents();
 
 	bool IsEscapeAllowed();
 	bool IsTerminating();

@@ -38,8 +38,6 @@ namespace Game_Battle {
 	bool terminate;
 	std::string background_name;
 
-	const RPG::TroopPage* script_page;
-
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 	/** Contains battle related sprites */
 	boost::scoped_ptr<Spriteset_Battle> spriteset;
@@ -52,6 +50,7 @@ namespace {
 	bool message_is_fixed;
 	int message_position;
 	bool terminate;
+	std::vector<bool> page_executed;
 }
 
 void Game_Battle::Init() {
@@ -64,6 +63,7 @@ void Game_Battle::Init() {
 	terminate = false;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
+	page_executed.resize(troop->pages.size());
 
 	message_is_fixed = Game_Message::IsPositionFixed();
 	message_position = Game_Message::GetPosition();
@@ -98,6 +98,10 @@ void Game_Battle::Update() {
 
 void Game_Battle::Terminate() {
 	terminate = true;
+
+	// Prevent gameover in cause some battle interpreter event toggled that
+	// flag, checked again on map.
+	Game_Temp::gameover = false;
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
@@ -105,6 +109,7 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 }
 
 void Game_Battle::NextTurn() {
+	std::fill(page_executed.begin(), page_executed.end(), false);
 	++turn;
 }
 
@@ -210,19 +215,27 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	return true;
 }
 
-void Game_Battle::UpdateEvents() {
+bool Game_Battle::UpdateEvents() {
+	if (interpreter->IsRunning()) {
+		return false;
+	}
+
 	const RPG::TroopPage* new_page = NULL;
-	std::vector<RPG::TroopPage>::const_reverse_iterator it;
-	for (it = troop->pages.rbegin(); it != troop->pages.rend(); ++it) {
+	std::vector<RPG::TroopPage>::const_iterator it;
+	for (it = troop->pages.begin(); it != troop->pages.end(); ++it) {
 		const RPG::TroopPage& page = *it;
-		if (AreConditionsMet(page.condition)) {
+		if (!page_executed[(*it).ID - 1] && AreConditionsMet(page.condition)) {
 			new_page = &*it;
+			page_executed[(*it).ID - 1] = true;
 			break;
 		}
 	}
 
-	if (new_page != NULL && new_page != script_page)
+	if (new_page != NULL) {
 		interpreter->Setup(new_page->event_commands, 0);
+	}
+
+	return new_page == NULL;
 }
 
 bool Game_Battle::IsEscapeAllowed() {
