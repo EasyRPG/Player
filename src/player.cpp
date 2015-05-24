@@ -245,6 +245,8 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::instance->type != Scene::Logo) {
 			Scene::PopUntil(Scene::Title);
+			// Do not update this scene until it's properly set up in the next main loop
+			update_scene = false;
 		}
 	}
 
