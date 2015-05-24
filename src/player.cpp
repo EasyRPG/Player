@@ -521,13 +521,15 @@ void Player::CreateGameObjects() {
 		if (!no_rtp_flag) {
 			FileFinder::InitRtpPaths();
 		}
+	}
+	init = true;
 
+	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
 		request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
-	init = true;
 
 	Main_Data::game_data.Setup();
 
