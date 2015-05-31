@@ -47,12 +47,13 @@ void Screen::Update() {
 }
 
 void Screen::Draw() {
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
+	BitmapRef disp = DisplayUi->GetDisplaySurface();
+	BitmapRef dst = Bitmap::Create(*disp, disp->GetRect());
 
 	Tone tone = Main_Data::game_screen->GetTone();
 
 	if (tone != default_tone) {
-		dst->ToneBlit(0, 0, *dst, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone);
+		dst->ToneBlit(0, 0, *disp, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone);
 	}
 
 	int flash_time_left;
@@ -67,4 +68,6 @@ void Screen::Draw() {
 		}
 		dst->Blit(0, 0, *flash, flash->GetRect(), flash_current_level);
 	}
+
+	disp->Blit(0, 0, *dst, dst->GetRect(), Opacity::opaque);
 }
