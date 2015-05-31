@@ -923,7 +923,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			x, y,
 			src_rect.width, src_rect.height);
 
-		pixman_image_unref(gimage);
+		pixman_image_unref(timage);
 	}
 
 	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
