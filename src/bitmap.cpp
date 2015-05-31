@@ -897,11 +897,8 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 	// FIXME: Saturation looks incorrect (compared to RPG_RT) for values > 128
 	if (tone.gray != 128) {
-		pixman_color_t gcolor = {
-			static_cast<uint16_t>(tone.gray << 8),
-			0,
-			0,
-			0xFFFF};
+		uint16_t level = tone.gray < 128 ? 0 : 0xFFFF;
+		pixman_color_t gcolor = {level, 0, 0, 0xFFFF};
 
 		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
 
@@ -913,6 +910,20 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			src_rect.width, src_rect.height);
 
 		pixman_image_unref(gimage);
+
+		int factor = 255 - std::abs(tone.gray * 2 - 255);
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(factor << 8)};
+
+		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+
+		pixman_image_composite32(PIXMAN_OP_OVER,
+			src.bitmap, timage, bitmap,
+			0, 0,
+			src_rect.x, src_rect.y,
+			x, y,
+			src_rect.width, src_rect.height);
+
+		pixman_image_unref(timage);
 	}
 
 	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
