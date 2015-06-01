@@ -522,7 +522,8 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, Ti
 				
 				rect.x = (x * 2 + i) * (TILE_SIZE/2);
 				rect.y = (y * 2 + j) * (TILE_SIZE/2);
-				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE/2), (dst.y * 2 + j) * (TILE_SIZE/2), *chipset, rect, 255);
+
+				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2), *chipset, rect, 255);
 			}
 		}
 	}
@@ -573,35 +574,36 @@ std::vector<short> TilemapLayer::GetMapData() const {
 }
 
 void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
-	if (map_data != nmap_data) {
-		// Create the tiles data cache
-		CreateTileCache(nmap_data);
+	// Create the tiles data cache
+	CreateTileCache(nmap_data);
+	memset(autotiles_ab, 0, sizeof(autotiles_ab));
+	memset(autotiles_d, 0, sizeof(autotiles_d));
 
-		if (layer == 0) {
-			autotiles_ab_map.clear();
-			autotiles_d_map.clear();
-			autotiles_ab_next = 0;
-			autotiles_d_next = 0;
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width; x++) {
+	if (layer == 0) {
+		autotiles_ab_map.clear();
+		autotiles_d_map.clear();
+		autotiles_ab_next = 0;
+		autotiles_d_next = 0;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
 
-					if (data_cache[x][y].ID < BLOCK_C) {
-						// If blocks A and B
+				if (data_cache[x][y].ID < BLOCK_C) {
+					// If blocks A and B
 
-						GenerateAutotileAB(data_cache[x][y].ID, 0);
-						GenerateAutotileAB(data_cache[x][y].ID, 1);
-						GenerateAutotileAB(data_cache[x][y].ID, 2);
-					} else if (data_cache[x][y].ID >= BLOCK_D && data_cache[x][y].ID < BLOCK_E) {
-						// If block D
+					GenerateAutotileAB(data_cache[x][y].ID, 0);
+					GenerateAutotileAB(data_cache[x][y].ID, 1);
+					GenerateAutotileAB(data_cache[x][y].ID, 2);
+				} else if (data_cache[x][y].ID >= BLOCK_D && data_cache[x][y].ID < BLOCK_E) {
+					// If block D
 
-						GenerateAutotileD(data_cache[x][y].ID);
-					}
+					GenerateAutotileD(data_cache[x][y].ID);
 				}
 			}
-			autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
-			autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
 		}
+		autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
+		autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
 	}
+
 	map_data = nmap_data;
 }
 
@@ -618,6 +620,9 @@ void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 		for (uint8_t i = 0; i < substitutions.size(); i++)
 			substitutions[i] = i;
 	}
+
+	// Recalculate z values of all tiles
+	CreateTileCache(map_data);
 }
 
 bool TilemapLayer::GetVisible() const {

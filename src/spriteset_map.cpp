@@ -35,8 +35,6 @@ Spriteset_Map::Spriteset_Map() :
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	ChipsetUpdated();
-	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
-	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 
 	panorama.SetZ(-1000);
 
@@ -106,6 +104,7 @@ void Spriteset_Map::ChipsetUpdated() {
 	}
 	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+	tilemap_request->SetImportantFile(true);
 	tilemap_request->Start();
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
@@ -130,6 +129,8 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
