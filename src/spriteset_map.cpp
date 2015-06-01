@@ -104,7 +104,6 @@ void Spriteset_Map::ChipsetUpdated() {
 	}
 	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	tilemap_request->SetImportantFile(true);
 	tilemap_request->Start();
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());

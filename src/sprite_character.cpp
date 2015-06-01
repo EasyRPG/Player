@@ -107,6 +107,8 @@ void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
 	SetSrcRect(r);
 	SetOx(8);
 	SetOy(16);
+
+	Update();
 }
 
 void Sprite_Character::OnCharSpriteReady(FileRequestResult*) {
@@ -119,4 +121,6 @@ void Sprite_Character::OnCharSpriteReady(FileRequestResult*) {
 	Rect r;
 	r.Set(sx, sy, chara_width * 3, chara_height * 4);
 	SetSpriteRect(r);
+
+	Update();
 }

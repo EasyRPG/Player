@@ -29,7 +29,7 @@
 
 /**
  * Picture class.
-*/
+ */
 Game_Picture::Game_Picture(int ID) :
 	data(Main_Data::game_data.pictures[ID - 1]),
 	old_map_x(0),
@@ -92,8 +92,7 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 
 	sprite.reset(new Sprite());
 	sprite->SetBitmap(bitmap);
-	sprite->SetOx(bitmap->GetWidth() / 2);
-	sprite->SetOy(bitmap->GetHeight() / 2);
+	UpdateSprite();
 }
 
 void Game_Picture::Erase() {
