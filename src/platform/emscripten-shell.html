@@ -3,15 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EasyRPG Player</title>
     <style>
       body { font-family: sans-serif; margin: 0; padding: none; color: white; background: black; }
-      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      div.emscripten { text-align: center; }      
-      canvas.emscripten { border: 0px none; }
+      canvas.emscripten { border: 0px none; width: 320px; height: 240px; max-width: 100%; max-height: 100%; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
       #status { font-weight: bold; color: #888888; text-align: center; margin: auto; }
-      #controls { text-align: center; }
+      #controls { text-align: right; } #controls input { border: 1px solid gray; background: black; color: gray; }
       @media all and (min-width: 640px) { canvas.emscripten { width: 640px; height: 480px;
         image-rendering: optimizeSpeed;             /* Older versions of FF          */
         image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
@@ -20,21 +18,16 @@
         image-rendering: pixelated;                 /* Awesome future-browsers       */
         -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
       } }
+      @media all and (max-width: 639px) { canvas.emscripten { width: 320px; height: 240px; } }
     </style>
   </head>
   <body>
 
-    <div id='controls'>
-      <span><input type="checkbox" id="resize">Resize canvas</span>
-      <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
-      <span><input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
-    </div>
+    <div id="controls"><input type="button" value="Full screen" onclick="if (Module.requestFullScreen) Module.requestFullScreen()"></div>
 
-    <div class="emscripten" id="status">Downloading...</div>
+    <div id="status">Downloading...</div>
 
-    <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    </div>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
 
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
@@ -82,7 +75,6 @@
       Module.setStatus('Downloading...');
       window.onerror = function(event) {
         Module.setStatus('Exception thrown, see JavaScript console');
-        spinnerElement.style.display = 'none';
         Module.setStatus = function(text) {
           if (text) Module.printErr('[post-exception status] ' + text);
         };
