@@ -116,7 +116,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 
 	if (Main_Data::game_player->IsInPosition(new_x, new_y)
 		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty()
-		&& GetLayer() != RPG::EventPage::Layers_above) {
+		&& GetLayer() == RPG::EventPage::Layers_same) {
 			return false;
 	}
 
