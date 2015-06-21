@@ -59,7 +59,7 @@ void Window_BattleOption::Update() {
 
 	int num_commands = commands.size();
 
-	if (active && num_commands >= 0 && index >= 0) {
+	if (active && num_commands > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
 			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 			index++;
