@@ -20,7 +20,6 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include <ciso646>
 
 #include <algorithm>
 #include <fstream>

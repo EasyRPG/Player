@@ -18,7 +18,6 @@
 // Headers
 #include <algorithm>
 #include <string>
-#include <ciso646>
 
 #include "window_keyboard.h"
 #include "game_system.h"
@@ -206,7 +205,7 @@ void Window_Keyboard::Update() {
 			play_cursor = true;
 			row = (row + 1) % row_max;
 
-			if(col > 0 and GetSelected().empty() and not items[mode][row][col - 1].empty()) {
+			if(col > 0 && GetSelected().empty() && !items[mode][row][col - 1].empty()) {
 				col--;
 			}
 		}
@@ -214,7 +213,7 @@ void Window_Keyboard::Update() {
 			play_cursor = true;
 			row = (row + row_max - 1) % row_max;
 
-			if(col > 0 and GetSelected().empty() and not items[mode][row][col - 1].empty()) {
+			if(col > 0 && GetSelected().empty() && !items[mode][row][col - 1].empty()) {
 				col--;
 			}
 		}

@@ -251,7 +251,7 @@ public:
 		alSourceUnqueueBuffers(src_, processed, &unqueued.front());
 		int queuing_count = 0;
 		for (; queuing_count < processed; ++queuing_count) {
-			if (not loop_play_ and loader_->is_end()) {
+			if (!loop_play_ && loader_->is_end()) {
 				loader_.reset();
 				++queuing_count;
 				break;
@@ -282,7 +282,7 @@ public:
 		alSourceStop(src_);
 		alSourcei(src_, AL_BUFFER, AL_NONE);
 
-		if (not l) {
+		if (!l) {
 			loader_.reset();
 			return;
 		}
@@ -294,7 +294,7 @@ public:
 
 		loader_ = l;
 		int queuing_count = 0;
-		BOOST_ASSERT(not l->is_end());
+		BOOST_ASSERT(!l->is_end());
 		ticks_.push_back(0);
 		for (; queuing_count < BUFFER_NUMBER; ++queuing_count) {
 			buf_sizes_.push_back(loader_->load_buffer(buffers_[queuing_count]));
@@ -310,7 +310,7 @@ public:
 	}
 
 	unsigned midi_ticks() const {
-		if (not loader_) {
+		if (!loader_) {
 			return 0;
 		}
 
@@ -325,7 +325,7 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 	static EASYRPG_SHARED_PTR<buffer_loader> create(std::string const &filename) {
 		SF_INFO info;
 		EASYRPG_SHARED_PTR<SNDFILE> f(sf_open(filename.c_str(), SFM_READ, &info), sf_close);
-		if (not f) {
+		if (!f) {
 			return EASYRPG_SHARED_PTR<buffer_loader>();
 		}
 		return EASYRPG_MAKE_SHARED<sndfile_loader>(filename, f, info);
@@ -351,7 +351,7 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 				}
 			} else {
 				file_.reset(sf_open(filename_.c_str(), SFM_READ, &info_), sf_close);
-				if (not file_) {
+				if (!file_) {
 					Output::Error("libsndfile open error: %s", sf_strerror(NULL));
 				}
 			}
@@ -476,7 +476,7 @@ ALAudio::ALAudio(char const *const dev_name) {
 	bgs_src_ = create_source(true);
 	me_src_ = create_source(false);
 
-        if (not getenv("DEFAULT_SOUNDFONT")) {
+        if (!getenv("DEFAULT_SOUNDFONT")) {
           Output::Error("Default sound font not found.");
         }
 }
