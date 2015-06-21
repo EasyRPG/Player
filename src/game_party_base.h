@@ -19,7 +19,6 @@
 #define _GAME_PARTY_BASE_H_
 
 #include <vector>
-#include <map>
 #include "game_actor.h"
 #include "main_data.h"
 

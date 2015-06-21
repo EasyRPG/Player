@@ -19,7 +19,6 @@
 #define _GAME_INTERPRETER_MAP_H_
 
 // Headers
-#include <map>
 #include <string>
 #include <vector>
 #include "game_character.h"

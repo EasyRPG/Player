@@ -21,11 +21,9 @@
 #include "options.h"
 #include "cache.h"
 #include "main_data.h"
-#include "sprite.h"
 #include "game_map.h"
 #include "game_picture.h"
 #include "player.h"
-#include <vector>
 
 /**
  * Picture class.

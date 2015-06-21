@@ -18,8 +18,6 @@
 #ifndef _GAME_TARGETS_H_
 #define _GAME_TARGETS_H_
 
-#include "rpg_save.h"
-
 namespace Game_Targets {
 	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
 	void RemoveTeleportTarget(int map_id);

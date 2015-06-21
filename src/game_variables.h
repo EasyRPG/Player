@@ -19,7 +19,7 @@
 #define _GAME_VARIABLES_H_
 
 // Headers
-#include "main_data.h"
+#include "data.h"
 #include "output.h"
 #include <vector>
 

@@ -20,8 +20,6 @@
 
 // Headers
 #include "sprite.h"
-#include "sprite_timer.h"
-
 
 /**
  * Renders the timer on screen

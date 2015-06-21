@@ -19,7 +19,6 @@
 #define _WINDOW_BATTLEMESSAGE_H_
 
 // Headers
-#include <deque>
 #include "window_base.h"
 
 /**

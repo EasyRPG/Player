@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <map>
 #include "rpg_music.h"
 #include "rpg_sound.h"
 

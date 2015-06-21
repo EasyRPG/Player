@@ -23,8 +23,6 @@
 #include "drawable.h"
 #include "system.h"
 
-class Bitmap;
-
 /**
  * Renders the weather effects.
  */

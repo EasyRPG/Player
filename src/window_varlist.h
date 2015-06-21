@@ -20,7 +20,6 @@
 
 // Headers
 #include "window_command.h"
-#include "font.h"
 
 class Window_VarList : public Window_Command
 {

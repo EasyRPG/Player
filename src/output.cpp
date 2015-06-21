@@ -21,10 +21,8 @@
 #include <ctime>
 #include <cstdio>
 
-#include <iomanip>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <exception>
 
 #ifdef GEKKO
@@ -50,9 +48,7 @@
 #include "main_data.h"
 #include "message_overlay.h"
 
-#include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/scoped_ptr.hpp>
 
 #ifdef BOOST_NO_EXCEPTIONS
 #include <boost/throw_exception.hpp>

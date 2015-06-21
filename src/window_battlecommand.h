@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 #include "window_base.h"
-#include "window_help.h"
 #include "rpg_battlecommand.h"
 #include "font.h"
 

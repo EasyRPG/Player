@@ -24,10 +24,6 @@
 #include "drawable.h"
 #include "system.h"
 
-namespace RPG {
-	class SaveScreen;
-}
-
 /**
  * A special drawable for handling screen effects.
  * This basically works by taking the screen surface and drawing on itself.

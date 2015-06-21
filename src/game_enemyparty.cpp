@@ -19,9 +19,7 @@
 #include <cstdlib>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
-#include "game_enemy.h"
 #include "main_data.h"
-#include "rpg_enemy.h"
 
 Game_EnemyParty::Game_EnemyParty() {
 }

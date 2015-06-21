@@ -20,7 +20,6 @@
 
 // Headers
 #include <vector>
-#include <map>
 #include "game_party_base.h"
 #include "game_actor.h"
 #include "main_data.h"

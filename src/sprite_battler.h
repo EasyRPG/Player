@@ -22,7 +22,6 @@
 #include "sprite.h"
 #include "game_battler.h"
 
-class Game_Character;
 struct FileRequestResult;
 
 /**

@@ -19,7 +19,6 @@
 #define _SPRITESET_BATTLE_H_
 
 // Headers
-#include "tilemap.h"
 #include "background.h"
 #include "sprite_battler.h"
 #include "sprite_character.h"

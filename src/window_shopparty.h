@@ -20,7 +20,6 @@
 
 // Headers
 #include "window_base.h"
-#include "bitmap.h"
 
 struct FileRequestResult;
 

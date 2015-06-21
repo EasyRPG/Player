@@ -20,7 +20,6 @@
 
 // Headers
 #include "window_base.h"
-#include "window_selectable.h"
 
 /**
  * Window Input Number Class.
