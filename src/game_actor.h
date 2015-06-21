@@ -21,7 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
-#include "rpg_save.h"
+#include "rpg_saveactor.h"
 #include "game_battler.h"
 
 namespace RPG {
