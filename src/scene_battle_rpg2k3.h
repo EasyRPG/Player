@@ -19,31 +19,9 @@
 #define _SCENE_BATTLE_RPG2K3_H_
 
 // Headers
-#include <deque>
 #include "scene_battle.h"
-#include "rpg_troopmember.h"
-#include "rpg_actor.h"
-#include "rpg_enemy.h"
-#include "game_actor.h"
-#include "game_enemy.h"
-#include "scene.h"
-#include "background.h"
-#include "drawable.h"
-#include "window_help.h"
-#include "window_item.h"
-#include "window_skill.h"
-#include "window_battleoption.h"
-#include "window_message.h"
 
-#include "window_command.h"
-#include "window_battlemessage.h"
-#include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
-
-namespace Battle {
-class Action;
-class SpriteAction;
-}
 
 typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
 

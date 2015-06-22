@@ -20,7 +20,6 @@
 
 // Headers
 #include <vector>
-#include "window_help.h"
 #include "window_item.h"
 
 /**

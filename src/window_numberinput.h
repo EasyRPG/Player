@@ -19,7 +19,6 @@
 #define _WINDOW_NUMBERINPUT_H_
 
 // Headers
-#include "window_base.h"
 #include "window_selectable.h"
 
 /**

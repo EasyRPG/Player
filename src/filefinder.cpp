@@ -18,14 +18,11 @@
 // Headers
 #include <cerrno>
 #include <cstdio>
-#include <cstring>
 #include <cstdlib>
-#include <ciso646>
 
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <string>
 #include <vector>
 

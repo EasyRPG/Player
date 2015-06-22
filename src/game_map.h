@@ -26,6 +26,7 @@
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "rpg_encounter.h"
+#include "rpg_map.h"
 
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;

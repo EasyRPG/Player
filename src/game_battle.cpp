@@ -15,7 +15,6 @@
 * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <deque>
 #include <algorithm>
 #include "data.h"
 #include "game_actors.h"

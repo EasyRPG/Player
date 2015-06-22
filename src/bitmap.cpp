@@ -22,11 +22,9 @@
 #include <algorithm>
 #include <iostream>
 
-#include "system.h"
 #include "utils.h"
 #include "cache.h"
 #include "bitmap.h"
-#include "text.h"
 #include "filefinder.h"
 #include "options.h"
 #include "data.h"
@@ -34,7 +32,6 @@
 #include "image_xyz.h"
 #include "image_bmp.h"
 #include "image_png.h"
-#include "pixel_format.h"
 #include "font.h"
 #include "output.h"
 #include "util_macro.h"

@@ -17,7 +17,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
-#include "scene_battle.h"
 #include "async_handler.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
@@ -37,7 +36,6 @@
 #include "game_switches.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
-#include "battle_animation.h"
 #include "scene_gameover.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),

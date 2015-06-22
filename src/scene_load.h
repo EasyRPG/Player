@@ -20,7 +20,6 @@
 
 // Headers
 #include <vector>
-#include "scene.h"
 #include "scene_file.h"
 
 /**

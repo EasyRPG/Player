@@ -21,7 +21,6 @@
 #include <string>
 #include <vector>
 
-class Game_Actor;
 class Game_Battler;
 class Game_Party_Base;
 namespace RPG {

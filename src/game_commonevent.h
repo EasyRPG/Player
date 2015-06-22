@@ -23,6 +23,8 @@
 #include <vector>
 #include "game_interpreter.h"
 #include "rpg_commonevent.h"
+#include "rpg_savecommonevent.h"
+#include "rpg_saveeventdata.h"
 #include <boost/scoped_ptr.hpp>
 
 /**

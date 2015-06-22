@@ -18,7 +18,6 @@
 // Headers
 #include <map>
 #include <vector>
-#include <ciso646>
 
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
@@ -49,7 +48,7 @@ namespace {
 	face_cache_type face_cache;
 	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
-		if(ret != (data + size) and ret->code == code) {
+		if(ret != (data + size) && ret->code == code) {
 			return ret;
 		} else {
 			static ShinonomeGlyph const empty_glyph = { 0, true, {0} };

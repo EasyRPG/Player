@@ -19,7 +19,7 @@
 #define _MESSAGE_OVERLAY_H_
 
 #include <deque>
-#include "bitmap.h"
+#include <string>
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
