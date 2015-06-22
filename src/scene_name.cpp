@@ -22,7 +22,6 @@
 #include "game_temp.h"
 #include "input.h"
 
-#include <ciso646>
 #include <cassert>
 
 Scene_Name::Scene_Name() :
@@ -62,7 +61,7 @@ void Scene_Name::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		std::string const& s = kbd_window->GetSelected();
 
-		assert(not s.empty());
+		assert(!s.empty());
 
 		if(s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
 			Game_Temp::hero_name = name_window->Get();

@@ -17,7 +17,6 @@
 
 // Headers
 #include <cstdlib>
-#include <ciso646>
 #include "bitmap.h"
 #include "data.h"
 #include "game_battle.h"

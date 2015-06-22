@@ -18,7 +18,6 @@
 // Headers
 #include <algorithm>
 #include <sstream>
-#include <ciso646>
 
 #include "rpg_battlecommand.h"
 #include "bitmap.h"

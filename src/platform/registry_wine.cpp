@@ -65,7 +65,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 		if (string_value.size()) string_value.erase(string_value.size() - 1, 1);
 
 		if(string_value.size() < 3
-			|| not std::isupper(*string_value.begin())
+			|| !std::isupper(*string_value.begin())
 			|| std::string(string_value.begin() + 1, string_value.begin() + 3) != ":\\")
 		{ return string_value; }
 

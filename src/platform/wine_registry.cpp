@@ -22,7 +22,6 @@
 #include <stdint.h>
 #include <cassert>
 #include <cctype>
-#include <ciso646>
 #include <cstdlib>
 
 #include <algorithm>
@@ -91,13 +90,13 @@ struct parse_registry {
 		line.clear();
 		std::string tmp;
 		do {
-			if(not line.empty() and *line.rbegin() == '\\')
+			if(!line.empty() && *line.rbegin() == '\\')
 			{ line.resize(line.size() - 1); }
 			std::getline(stream, tmp);
 			++line_number;
 			line += tmp;
-		} while(stream and not tmp.empty() and *tmp.rbegin() == '\\');
-		assert(line.empty() or *line.rbegin() != '\\');
+		} while(stream && !tmp.empty() && *tmp.rbegin() == '\\');
+		assert(line.empty() || *line.rbegin() != '\\');
 		i = line.begin(), end = line.end();
 		return stream;
 	}
@@ -111,18 +110,18 @@ struct parse_registry {
 		do {
 			++str_end;
 			std::string::const_iterator const next_str_end = std::find(str_end, end, TERM);
-			if (not has_escape_char) {
+			if (!has_escape_char) {
 				has_escape_char = std::find(str_end, next_str_end, '\\') != next_str_end;
 			}
 			str_end = next_str_end;
-		} while (str_end < end and str_end[-1] == '\\' and str_end[-2] != '\\');
+		} while (str_end < end && str_end[-1] == '\\' && str_end[-2] != '\\');
 		if(str_end >= end) {
 			error(format("string parse error"));
 			return std::string();
 		}
 		i = str_end + 1; // skip term char
 
-		if (not has_escape_char) { return std::string(str_beg, str_end); }
+		if (!has_escape_char) { return std::string(str_beg, str_end); }
 
 		typedef boost::u16_to_u32_iterator<vector<uint16_t>::const_iterator> u16_to_u32;
 		typedef boost::u32_to_u8_iterator<u16_to_u32> u32_to_u8;
@@ -132,10 +131,10 @@ struct parse_registry {
 		qi::uint_parser<uint16_t, 8, 1, 3> octal;
 		qi::uint_parser<uint16_t, 16, 1, 4> hex;
 		std::string::const_iterator str_it = str_beg;
-		if(not qi::parse(
+		if(!qi::parse(
 			   str_it, str_end,
 			   *(escape | ('\\' >> (('x' >> hex) | octal)) | qi::char_), escaped)
-		   or str_it != str_end) {
+		   || str_it != str_end) {
 			error(format("escaping error"));
 			return std::string();
 		}
@@ -173,9 +172,9 @@ struct parse_registry {
 			{ "", -1 },
 		};
 
-		for(prefix const* pre = prefixes; not pre->pre.empty(); ++pre) {
-			if(size_t(i - end) < pre->pre.size() or
-                           not std::equal(i, i + pre->pre.size(), pre->pre.begin())) { continue; }
+		for(prefix const* pre = prefixes; !pre->pre.empty(); ++pre) {
+			if(size_t(i - end) < pre->pre.size() ||
+                           !std::equal(i, i + pre->pre.size(), pre->pre.begin())) { continue; }
 
 			i += pre->pre.size();
 			switch(pre->type) {
@@ -184,7 +183,7 @@ struct parse_registry {
 				case BINARY: {
 					binary_type ret;
 					qi::uint_parser<uint8_t, 16, 2, 2> octed;
-					if(not phrase_parse(i, end, -("(" >> uint_ >> ")") >> ":" >>
+					if(!phrase_parse(i, end, -("(" >> uint_ >> ")") >> ":" >>
 										octed[push_back(phoenix::ref(ret), _1)] % ',' >>
 										-char_(')'), space)) {
 						error(format("cannot parse %s") % pre->pre);
@@ -194,7 +193,7 @@ struct parse_registry {
 				case INTEGER: {
 					uint32_t ret;
                                         qi::uint_parser<uint32_t, 16, 8, 8> dword;
-					if(not phrase_parse(i, end, dword, space, ret)) {
+					if(!phrase_parse(i, end, dword, space, ret)) {
 						error(format("cannot parse %s") % pre->pre);
 					}
 					return ret;
@@ -207,14 +206,14 @@ struct parse_registry {
 	}
 
 	void skip_space() {
-		while(i < end and std::isspace(*i)) { ++i; }
+		while(i < end && std::isspace(*i)) { ++i; }
 	}
 
 	parse_registry(std::string const& name)
 			: line_number(0)
 			, stream(name.c_str(), std::ios_base::binary | std::ios_base::in)
 	{
-		if(not stream) {
+		if(!stream) {
 			error(format("file open error: \"%s\"") % name);
 			return;
 		}
@@ -239,7 +238,7 @@ struct parse_registry {
 
 			switch(*i) {
 				case '[':
-					if(not current_section_name.empty()) {
+					if(!current_section_name.empty()) {
 						assert(result.find(current_section_name) == result.end());
 						result[current_section_name].swap(current_section);
 					}
@@ -255,7 +254,7 @@ struct parse_registry {
 					++i; // skip '\"'
 					std::string const val_name = parse_str<'\"'>();
 					skip_space();
-					if(i >= end or *i != '=') {
+					if(i >= end || *i != '=') {
 						error(format("unexpected char or end of line"));
 						return;
 					}
@@ -283,7 +282,7 @@ section_list const& get_section(HKEY key) {
 
 	std::string const prefix = get_wine_prefix();
 
-	if(prefix.empty() or not FileFinder::Exists(prefix)) {
+	if(prefix.empty() || !FileFinder::Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
 		return empty_sec;
 	}
@@ -320,7 +319,7 @@ T const& get_value_with_type(HKEY hkey, std::string const& key, std::string cons
 		Output::Debug("registry not found: %s, %s", key.c_str(), val.c_str());
 		return err_val;
 	}
-	if(not (ptr = boost::get<T>(&*v))) {
+	if(!(ptr = boost::get<T>(&*v))) {
 		Output::Debug("type mismatch: %s, %s", key.c_str(), val.c_str());
 		return err_val;
 	}
@@ -331,8 +330,8 @@ T const& get_value_with_type(HKEY hkey, std::string const& key, std::string cons
 std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
 	std::string const ret = get_value_with_type<std::string>(hkey, key, val);
 	if(ret.size() < 3
-	   or not std::isupper(*ret.begin())
-	   or std::string(ret.begin() + 1, ret.begin() + 3) != ":\\")
+	   || !std::isupper(*ret.begin())
+	   || std::string(ret.begin() + 1, ret.begin() + 3) != ":\\")
 	{ return ret; }
 
 	std::string path;
