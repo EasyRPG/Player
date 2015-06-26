@@ -503,6 +503,9 @@ bool FileFinder::Exists(std::string const& filename) {
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
+#ifdef EMSCRIPTEN
+	Output::Debug("IsDirectory(\"%s\")", dir.c_str());
+#endif
 	assert(Exists(dir));
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
