@@ -69,7 +69,7 @@ if (isset($_GET['file'])) {
     $file = strtolower($_GET['file']);
     if (isset($db[$file])) {
     $url = $GAME . '/' . $db[$file];
-        header('Location: ' . $url);
+        header('Location: ' . rawurlencode($url));
         return;
     }
 }
