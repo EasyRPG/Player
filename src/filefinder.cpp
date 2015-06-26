@@ -65,6 +65,12 @@
 #   include <SDL_system.h>
 #endif
 
+#ifdef EMSCRIPTEN
+#  include <sstream>
+#  include <iterator>
+#  include <iomanip>
+#endif
+
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
 #define SHGFP_TYPE_CURRENT 0
@@ -504,7 +510,10 @@ bool FileFinder::Exists(std::string const& filename) {
 
 bool FileFinder::IsDirectory(std::string const& dir) {
 #ifdef EMSCRIPTEN
-	Output::Debug("IsDirectory(\"%s\")", dir.c_str());
+	std::stringstream hexpath;
+	hexpath << std::setw(2) << std::setfill('0') << std::hex << std::uppercase;
+	std::copy(dir.begin(), dir.end(), std::ostream_iterator<unsigned int>(hexpath, " "));
+	Output::Debug("IsDirectory() hex dump: %s", hexpath.str().c_str());
 #endif
 	assert(Exists(dir));
 #ifdef _WIN32
