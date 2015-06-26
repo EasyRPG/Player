@@ -514,9 +514,8 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	hexpath << std::setw(2) << std::setfill('0') << std::hex << std::uppercase;
 	std::copy((const unsigned char*)&*dir.begin(), (const unsigned char*)&*dir.end(), std::ostream_iterator<unsigned int>(hexpath, " "));
 	Output::Debug("IsDirectory() hex dump: %s", hexpath.str().c_str());
-#else
-	assert(Exists(dir));
 #endif
+	assert(Exists(dir));
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
@@ -526,7 +525,9 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #   ifdef GEKKO
 	BOOST_VERIFY(::stat(dir.c_str(), &sb) != -1);
 #   else
+#      ifndef EMSCRIPTEN
 	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
+#  endif
 #endif
 	return S_ISDIR(sb.st_mode);
 #endif
