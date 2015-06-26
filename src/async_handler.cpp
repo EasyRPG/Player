@@ -47,7 +47,7 @@ namespace {
 #ifdef EMSCRIPTEN
 	void download_success(unsigned, void* userData, const char*) {
 		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
-		//Output::Debug("DL Success: %s", req->GetPath().c_str());
+		Output::Debug("DL Success: %s", req->GetPath().c_str());
 		req->DownloadDone(true);
 	}
 
@@ -71,7 +71,7 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, cons
 	FileRequestAsync req(folder_name, file_name);
 	RegisterRequest(path, req);
 
-	//Output::Debug("Waiting for %s", path.c_str());
+	Output::Debug("Waiting for %s", path.c_str());
 
 	return GetRequest(path);
 }
