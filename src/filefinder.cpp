@@ -512,7 +512,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #ifdef EMSCRIPTEN
 	std::stringstream hexpath;
 	hexpath << std::setw(2) << std::setfill('0') << std::hex << std::uppercase;
-	std::copy((unsigned char*)dir.begin(), (unsigned char*)dir.end(), std::ostream_iterator<unsigned int>(hexpath, " "));
+	std::copy((const unsigned char*)dir.begin(), (const unsigned char*)dir.end(), std::ostream_iterator<unsigned int>(hexpath, " "));
 	Output::Debug("IsDirectory() hex dump: %s", hexpath.str().c_str());
 #endif
 	assert(Exists(dir));
