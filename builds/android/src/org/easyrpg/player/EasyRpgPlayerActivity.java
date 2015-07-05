@@ -73,15 +73,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// Alt-Test for working around ugly Xperia Play button mapping
-		if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed())) {
-			showEndGameDialog();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.player_menu, menu);
@@ -112,6 +103,15 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// Alt-Test for working around ugly Xperia Play button mapping
+		if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed())) {
+			showEndGameDialog();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	private void showEndGameDialog() {

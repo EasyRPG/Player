@@ -35,7 +35,8 @@
 	<string name="region_modification_success">Région changée en $NAME</string>
 	<string name="region_modification_failed">Le changement de la région a échoué</string>
 	<string name="change_default_mapping">Changer les boutons virtuels</string>
-	<string name="save_button_mapping">Sauvegarder l\'agencement</string>
 	<string name="add_a_button">Ajouter un bouton</string>
 	<string name="reset_button_mapping">Réinitialiser l\'agencement</string>
+	<string name="exit_without_saving">Quitter sans sauvegarder</string>
+	<string name="save_and_quit">Sauvegarder et quitter</string>
 </resources>
