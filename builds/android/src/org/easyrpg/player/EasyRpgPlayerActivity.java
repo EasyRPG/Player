@@ -106,12 +106,8 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// Alt-Test for working around ugly Xperia Play button mapping
-		if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed())) {
-			showEndGameDialog();
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed(){
+		openOptionsMenu();
 	}
 
 	private void showEndGameDialog() {
