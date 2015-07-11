@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -60,14 +59,23 @@ public class ButtonMappingActivity extends Activity {
 			bList = ButtonMappingModel.getDefaultButtonMapping(this);
 			drawButtons();
 			return true;
-		case R.id.button_mapping_menu_save:
+		case R.id.button_mapping_menu_exit_without_saving:
+			this.finish();
+			return true;
+		case R.id.button_mapping_menu_save_and_quit:
 			ButtonMappingModel.writeButtonMappingFile(bList);
+			this.finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
+	@Override
+	public void onBackPressed(){
+		openOptionsMenu ();
+	}
+	
 	public void showSupportedButton(){
 		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
