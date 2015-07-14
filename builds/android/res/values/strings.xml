@@ -25,7 +25,7 @@
 	<string name="no">No</string>
 	<string name="creating_dir_failed">Creating $PATH directory failed</string>
 	<string name="path_not_readable">$PATH not readable</string>
-	<string name="no_games_found">No games found in $PATH</string>
+	<string name="no_games_found">No games found in the /easyrpg/games folder in the storage root</string>
 	<string name="no_external_storage">No external storage (e.g. SD card) found</string>
 	<string name="resolve_errors">Resolve errors and try again</string>
 	<string name="not_valid_game">$PATH is not a valid game</string>
