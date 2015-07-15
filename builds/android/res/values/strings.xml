@@ -19,6 +19,7 @@
 	<string name="baltic">Baltic</string>
 	<string name="thai">Thai</string>
 	<string name="vietnamese">Vietnamese</string>
+	<string name="ok">Ok</string>
 	<string name="cancel">Cancel</string>
 	<string name="do_want_quit">Do you really want to quit?</string>
 	<string name="yes">Yes</string>

@@ -19,9 +19,9 @@
 	<string name="baltic">Balte</string>
 	<string name="thai">Thailandais</string>
 	<string name="vietnamese">Vietnamien</string>
+	<string name="ok">Ok</string>
 	<string name="cancel">Annuler</string>
 	<string name="do_want_quit">Voulez-vous vraiment quitter ?</string>
-	<string name="ok">Ok</string>
 	<string name="yes">Oui</string>
 	<string name="no">Non</string>
 	<string name="creating_dir_failed">La création du dossier $PATH a échoué</string>
