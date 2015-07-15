@@ -23,9 +23,9 @@
 	<string name="do_want_quit">Möchtest du wirklich beenden?</string>
 	<string name="yes">Ja</string>
 	<string name="no">Nein</string>
-	<string name="creating_dir_failed">Der Ordner /easyrpg/games konnte nicht erstellt werden.</string>
+	<string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden.</string>
 	<string name="path_not_readable">$PATH ist nicht lesbar</string>
-	<string name="no_games_found">Keine Spiele in $PATH gefunden</string>
+	<string name="no_games_found">Keine Spiele in /easyrpg/games gefunden</string>
 	<string name="no_external_storage">Kein externer Speicher (z.B. SD-Karte) gefunden.</string>
 	<string name="resolve_errors">Behebe die Fehler und versuche es dann erneut.</string>
 	<string name="not_valid_game">$PATH ist kein gültiges Spiel</string>

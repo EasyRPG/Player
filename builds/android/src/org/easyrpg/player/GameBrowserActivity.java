@@ -108,7 +108,8 @@ public class GameBrowserActivity extends ListActivity {
 				}
 	
 				if (values.size() == 0) {
-					String no_game_found = getString(R.string.no_games_found).replace("$PATH", path);
+					//String no_game_found = getString(R.string.no_games_found).replace("$PATH", path);
+					String no_game_found = getString(R.string.no_games_found);
 					values.add(no_game_found);
 				} else {
 					error = false;
