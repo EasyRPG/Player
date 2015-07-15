@@ -35,6 +35,14 @@
 	<string name="region_modification_success">Region changed to $NAME</string>
 	<string name="region_modification_failed">Changing region failed</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
+	<string name="how_to_use_easy_rpg">How to use EasyRPG</string>
+	<string name="how_to_use_easy_rpg_explanation">
+	    Installation instructions:\n
+			\t1. Place the game folders in [storage]/easyrpg/games.\n
+			\t2. Place the RTP in [storage]/easyrpg/rtp/2000 for RTP 2000 and in 2003 for RTP 2003.\n\n
+		Special features:\n
+			\tDo a long click on a game in the game browser to set the region.\n
+	</string>
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
 	<string name="exit_without_saving">Exit without saving</string>

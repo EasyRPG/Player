@@ -29,9 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.easyrpg.player.virtual_buttons.ButtonMappingActivity;
-
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -57,13 +56,13 @@ import android.widget.Toast;
  * Game browser for EasyRPG Player
  */
 public class GameBrowserActivity extends ListActivity {
-	private String path;
-	
-	private boolean error = true;
-
+	//Files' names
 	final String DATABASE_NAME = "RPG_RT.ldb";
 	final String TREEMAP_NAME = "RPG_RT.lmt";
 	final String INI_FILE = "RPG_RT.ini";
+	
+	private String path;
+	private boolean error = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,9 +141,27 @@ public class GameBrowserActivity extends ListActivity {
 			Intent intent = new Intent(this, ButtonMappingActivity.class);
 		    startActivity(intent);
 			return true;
+		case R.id.game_browser_how_to_use_easy_rpg:
+			displayHowToUseEasyRpgDialog();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	/**
+	 * Prepare and display the dialog box explaining how to use EasyRPG
+	 */
+	public void displayHowToUseEasyRpgDialog(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		// Dialog construction
+		builder.setMessage(R.string.how_to_use_easy_rpg_explanation)
+			.setTitle(R.string.how_to_use_easy_rpg)
+			.setNeutralButton(R.string.ok, null);
+
+		builder.create();
+		builder.show();
 	}
 	
 	/**
