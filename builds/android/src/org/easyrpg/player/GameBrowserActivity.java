@@ -29,15 +29,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.easyrpg.player.virtual_buttons.ButtonMappingActivity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -124,6 +128,19 @@ public class GameBrowserActivity extends ListActivity {
 		// Setup long click listener
 		ListView lv = getListView();
 		lv.setOnItemLongClickListener(new OnLongClickListener(this));
+		
+		// First launch
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean first_launch = preferences.getBoolean("FIRST_LAUNCH", true);
+		if(first_launch){
+			// Displaying the "how to use" dialog box	
+			displayHowToUseEasyRpgDialog();
+			
+			// Set FIRST_LAUNCH to false
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putBoolean("FIRST_LAUNCH", false);
+			editor.commit();
+		}	
 	}
 	
 	@Override
