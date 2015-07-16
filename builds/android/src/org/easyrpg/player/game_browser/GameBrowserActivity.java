@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package org.easyrpg.player;
+package org.easyrpg.player.game_browser;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.easyrpg.player.virtual_buttons.ButtonMappingActivity;
+import org.easyrpg.player.R;
+import org.easyrpg.player.R.id;
+import org.easyrpg.player.R.layout;
+import org.easyrpg.player.R.menu;
+import org.easyrpg.player.R.string;
+import org.easyrpg.player.button_mapping.ButtonMappingActivity;
+import org.easyrpg.player.player.AssetUtils;
+import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -75,7 +82,7 @@ public class GameBrowserActivity extends ListActivity {
 		prepareData();
 		startGameStandalone();
 
-		setContentView(R.layout.game_browser);
+		setContentView(R.layout.game_browser_activity);
 
 		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
 		//setTitle("Select RPG Maker 2000/2003 Game");
@@ -147,7 +154,7 @@ public class GameBrowserActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.game_browser_menu, menu);
+		inflater.inflate(R.menu.game_browser, menu);
 		return true;
 	}
 	
@@ -374,13 +381,13 @@ public class GameBrowserActivity extends ListActivity {
 	 */
 	private class RegionDialog extends Dialog {
 		private File iniFile;
-		private SimpleIniEncodingReader iniReader;
+		private IniEncodingReader iniReader;
 		private RadioGroup rg;
 
 		public RegionDialog(Context context, File iniFile) throws IOException {
 			super(context);
 			this.iniFile = iniFile;
-		    setContentView(R.layout.region_menu);
+		    setContentView(R.layout.game_browser_region_dialog);
 			setTitle(getString(R.string.select_game_region));
 			setCancelable(true);
 			
@@ -396,7 +403,7 @@ public class GameBrowserActivity extends ListActivity {
 		}
 
 		private void OpenIni() throws IOException {
-			iniReader = new SimpleIniEncodingReader(iniFile);
+			iniReader = new IniEncodingReader(iniFile);
 			String encoding = iniReader.getEncoding();
 			RadioButton rb = null;
 						

@@ -82,7 +82,7 @@ public class SDLActivity extends Activity {
         Log.v("SDL", "onCreate():" + mSingleton);
         super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.main);
+		setContentView(R.layout.player_activity);
 		        
         SDLActivity.initialize();
         // So we can call stuff from static callbacks
