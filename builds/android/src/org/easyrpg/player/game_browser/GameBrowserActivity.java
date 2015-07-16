@@ -28,13 +28,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.R.id;
-import org.easyrpg.player.R.layout;
-import org.easyrpg.player.R.menu;
-import org.easyrpg.player.R.string;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.player.AssetUtils;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
@@ -73,7 +70,6 @@ public class GameBrowserActivity extends ListActivity {
 	final String INI_FILE = "RPG_RT.ini";
 	
 	private String path;
-	private boolean error = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +81,9 @@ public class GameBrowserActivity extends ListActivity {
 		setContentView(R.layout.game_browser_activity);
 
 		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
-		//setTitle("Select RPG Maker 2000/2003 Game");
 
-		List<String> values = new ArrayList<String>();
+		LinkedList<ProjectInformation> project_list = new LinkedList<ProjectInformation>();
+		LinkedList<String> error_list = new LinkedList<String>();
 		
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -96,46 +92,45 @@ public class GameBrowserActivity extends ListActivity {
 			if (!dir.exists()) {
 				if (!dir.mkdirs()) {
 					String msg = getString(R.string.creating_dir_failed).replace("$PATH", path);
-					values.add(msg);
+					project_list.add(new ProjectInformation(msg));
 				}
 			}
 	
 			if (!dir.canRead() || !dir.isDirectory()) {
 				String msg = getString(R.string.path_not_readable).replace("$PATH", path);
-				values.add(msg);
+				project_list.add(new ProjectInformation(msg));
 			} else {
-	
 				File[] list = dir.listFiles();
 				if (list != null) {
 					for (File file : list) {
 						if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
-							values.add(file.getName());
+							project_list.add(new ProjectInformation(file.getName()));
 						}
 					}
 				}
-	
-				if (values.size() == 0) {
-					//String no_game_found = getString(R.string.no_games_found).replace("$PATH", path);
-					String no_game_found = getString(R.string.no_games_found);
-					values.add(no_game_found);
-				} else {
-					error = false;
+				if (project_list.size() == 0) {
+					error_list.add(getString(R.string.no_games_found));
 				}
 			}
 		} else {
-			values.add(getString(R.string.no_external_storage));
+			error_list.add(getString(R.string.no_external_storage));
 		}
 
-		Collections.sort(values);
-
 		// Put the data into the list
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_2, android.R.id.text1, values);
-		setListAdapter(adapter);
+		if (error_list.size() > 0) {
+			//If the game list is empty, we use a simplified adapter
+			LinkedList<String> l = new LinkedList<String>();
+			l.add(getString(R.string.no_games_found));
+			
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_2, android.R.id.text1, l);
+			setListAdapter(adapter);
+		} else {
+			//If the game list is not empty, we use the proper adapter
+			GameListAdapter adapter = new GameListAdapter(this, project_list);
+			setListAdapter(adapter);
+		}
 		
-		// Setup long click listener
-		ListView lv = getListView();
-		lv.setOnItemLongClickListener(new OnLongClickListener(this));
 		
 		// First launch
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -235,7 +230,7 @@ public class GameBrowserActivity extends ListActivity {
 	 * @return game folder name
 	 */
 	public String getGameAt(int index) {
-		return (String) getListAdapter().getItem(index);
+		return ((ProjectInformation) getListAdapter().getItem(index)).getTitle();
 	}
 	
 	/**
@@ -327,13 +322,7 @@ public class GameBrowserActivity extends ListActivity {
 		return false;
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		if (error) {
-			Toast.makeText(this, getString(R.string.resolve_errors),
-					Toast.LENGTH_LONG).show();
-			return;
-		}
+	public void launchGame(int position){
 		String filename = getGamepathAt(position);
 		// Test again in case somebody messed with the file system
 		if (isRpg2kGame(new File(filename))) {
@@ -347,32 +336,21 @@ public class GameBrowserActivity extends ListActivity {
 		}
 	}
 	
-	private class OnLongClickListener implements OnItemLongClickListener {
-		private GameBrowserActivity parent;
+	public void regionButton(int position){
+		File iniFile = getIniOfGameAt(position, true);
+
+		String error_msg = getString(R.string.accessing_configuration_failed).replace("$PATH", getGameAt(position));
 		
-		public OnLongClickListener(GameBrowserActivity activity) {
-			this.parent = activity;
+		if (iniFile == null) {
+			Toast.makeText(this, error_msg, Toast.LENGTH_LONG).show();
+			return;
 		}
-
-		@Override
-		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-				int row, long arg3) {
-			File iniFile = parent.getIniOfGameAt(row, true);
-
-			String error_msg = getString(R.string.accessing_configuration_failed).replace("$PATH", getGameAt(row));
-			
-			if (iniFile == null) {
-				Toast.makeText(parent, error_msg, Toast.LENGTH_LONG).show();
-				return false;
-			}
-			
-			try {
-				Dialog dialog = new RegionDialog(parent, iniFile);
-				dialog.show();
-			} catch (IOException e) {
-				Toast.makeText(parent, error_msg, Toast.LENGTH_LONG).show();
-			}
-			return false;
+		
+		try {
+			Dialog dialog = new RegionDialog(this, iniFile);
+			dialog.show();
+		} catch (IOException e) {
+			Toast.makeText(this, error_msg, Toast.LENGTH_LONG).show();
 		}
 	}
 	
