@@ -1,5 +1,6 @@
-package org.easyrpg.player.virtual_buttons;
+package org.easyrpg.player.button_mapping;
 
+import org.easyrpg.player.Helper;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -26,8 +27,8 @@ public class VirtualButton extends View {
 		this.keyCode = keyCode;
 		
 		// Set UI properties
-		iconSize = Utilitary.getPixels(this, 60); // ~1cm
-		painter = Utilitary.getUIPainter();
+		iconSize = Helper.getPixels(this, 60); // ~1cm
+		painter = Helper.getUIPainter();
 	}
 	public VirtualButton(Context context, int keyCode, char charButton, double posX, double posY){
 		this(context, keyCode, charButton);
@@ -40,7 +41,7 @@ public class VirtualButton extends View {
 	protected void onDraw(Canvas canvas) {
 		// Draw
 		canvas.drawCircle(iconSize / 2, iconSize / 2, iconSize / 2 - 5, painter);
-		painter.setTextSize(Utilitary.getPixels(this, 55));
+		painter.setTextSize(Helper.getPixels(this, 55));
 		painter.setTextAlign(Align.CENTER);
 		canvas.drawText("" + charButton, iconSize / 2, iconSize / 5 * 4,
 				painter);

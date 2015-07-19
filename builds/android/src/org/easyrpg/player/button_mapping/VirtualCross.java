@@ -1,5 +1,6 @@
-package org.easyrpg.player.virtual_buttons;
+package org.easyrpg.player.button_mapping;
 
+import org.easyrpg.player.Helper;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -19,7 +20,7 @@ public class VirtualCross extends VirtualButton {
 	public VirtualCross(Context context) {
 		super(context, VirtualCross.KeyCode, '0');
 		// Set size
-		iconSize = Utilitary.getPixels(this, 150); // ~1cm
+		iconSize = Helper.getPixels(this, 150); // ~1cm
 		path = new Path();
 	}
 	public VirtualCross(Context context, double posX, double posY){

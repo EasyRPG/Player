@@ -1,4 +1,4 @@
-package org.easyrpg.player.virtual_buttons;
+package org.easyrpg.player.button_mapping;
 
 import java.io.BufferedReader;
 import java.io.File;

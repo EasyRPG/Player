@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package org.easyrpg.player;
+package org.easyrpg.player.game_browser;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 /**
  * Reads the encoding from the RPG_RT.ini file
  */
-public class SimpleIniEncodingReader {
+public class IniEncodingReader {
 	private ArrayList<String> lines = new ArrayList<String>();
 	private File iniFile;
 	
@@ -47,7 +47,7 @@ public class SimpleIniEncodingReader {
 	 * @param iniFile Ini file
 	 * @throws IOException On any IO error
 	 */
-	public SimpleIniEncodingReader(File iniFile) throws IOException {
+	public IniEncodingReader(File iniFile) throws IOException {
 		this.iniFile = iniFile;
 		BufferedReader br = null;
 		try {

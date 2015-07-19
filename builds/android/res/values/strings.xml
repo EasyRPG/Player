@@ -19,13 +19,14 @@
 	<string name="baltic">Baltic</string>
 	<string name="thai">Thai</string>
 	<string name="vietnamese">Vietnamese</string>
+	<string name="ok">Ok</string>
 	<string name="cancel">Cancel</string>
 	<string name="do_want_quit">Do you really want to quit?</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="creating_dir_failed">Creating $PATH directory failed</string>
 	<string name="path_not_readable">$PATH not readable</string>
-	<string name="no_games_found">No games found in $PATH</string>
+	<string name="no_games_found">No games found in the /easyrpg/games folder in the storage root</string>
 	<string name="no_external_storage">No external storage (e.g. SD card) found</string>
 	<string name="resolve_errors">Resolve errors and try again</string>
 	<string name="not_valid_game">$PATH is not a valid game</string>
@@ -35,6 +36,14 @@
 	<string name="region_modification_success">Region changed to $NAME</string>
 	<string name="region_modification_failed">Changing region failed</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
+	<string name="how_to_use_easy_rpg">How to use EasyRPG</string>
+	<string name="how_to_use_easy_rpg_explanation">
+Installation instructions:\n
+\t1. Place the game folders in [storage]/easyrpg/games.\n
+\t2. Place the RTP in [storage]/easyrpg/rtp/2000 for RTP 2000 and in 2003 for RTP 2003.\n\n
+Special features:\n
+\tDo a long click on a game in the game browser to set the region.\n
+	</string>
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
 	<string name="exit_without_saving">Exit without saving</string>

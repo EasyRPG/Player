@@ -1,8 +1,9 @@
-package org.easyrpg.player.virtual_buttons;
+package org.easyrpg.player.button_mapping;
 
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.Helper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,7 +27,7 @@ public class ButtonMappingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.buton_mapping_activity);
+		setContentView(R.layout.button_mapping_activity);
 
 		layout = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 		
@@ -45,7 +46,7 @@ public class ButtonMappingActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.button_mapping_menu, menu);
+		inflater.inflate(R.menu.button_mapping, menu);
 		return true;
 	}
 	
@@ -156,7 +157,7 @@ public class ButtonMappingActivity extends Activity {
 		layout.removeAllViews();
 		Log.i("Player", bList.size() + " boutons");
 		for (VirtualButton b : bList) {
-			Utilitary.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
+			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			layout.addView(b);
 		}
 	}
@@ -175,7 +176,7 @@ public class ButtonMappingActivity extends Activity {
 			y = (v.getTop() + event.getY() - v.getHeight() / 2)
 					/ v.getResources().getDisplayMetrics().heightPixels;
 
-			Utilitary.setLayoutPosition((Activity) v.getContext(), v, x, y);
+			Helper.setLayoutPosition((Activity) v.getContext(), v, x, y);
 			
 			v.setPosX(x);
 			v.setPosY(y);
