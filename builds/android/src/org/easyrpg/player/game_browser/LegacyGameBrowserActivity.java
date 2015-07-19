@@ -24,18 +24,13 @@
 
 package org.easyrpg.player.game_browser;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
-import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -47,12 +42,11 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
- * Game browser for EasyRPG Player
+ * Game browser for API < 12
  */
-public class GameBrowserActivity extends Activity {
+public class LegacyGameBrowserActivity extends Activity {
 	private String path;
 	private ListAdapter adapter;
 	LinkedList<ProjectInformation> project_list = new LinkedList<ProjectInformation>();

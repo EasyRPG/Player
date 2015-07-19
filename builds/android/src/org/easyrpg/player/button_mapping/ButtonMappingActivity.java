@@ -27,7 +27,7 @@ public class ButtonMappingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.buton_mapping_activity);
+		setContentView(R.layout.button_mapping_activity);
 
 		layout = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 		

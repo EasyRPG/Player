@@ -24,26 +24,33 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="org.easyrpg.player.game_browser.GameBrowserActivity"
-            android:label="@string/app_name" >
+            android:name="org.easyrpg.player.MainActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+       	>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name="org.easyrpg.player.game_browser.GameBrowserActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name="org.easyrpg.player.game_browser.LegacyGameBrowserActivity"
+            android:label="@string/app_name"/>
+        <activity
             android:name="org.easyrpg.player.player.EasyRpgPlayerActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity
             android:name="org.easyrpg.player.button_mapping.ButtonMappingActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
 
     <!-- Android 2.3.3 -->

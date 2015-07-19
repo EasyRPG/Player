@@ -42,7 +42,7 @@ public class GameListAdapter extends BaseAdapter {
 		regionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 		    public void onClick(View v) {
-		    	((GameBrowserActivity)context).regionButton(position);
+		    	GameBrowserHelper.regionButton(context, project_list.get(position));
 		    }
 		});
 		
@@ -50,7 +50,7 @@ public class GameListAdapter extends BaseAdapter {
 		convertView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((GameBrowserActivity)context).launchGame(position);
+				GameBrowserHelper.launchGame(context, project_list.get(position));
 			}
 		});
         return convertView;
