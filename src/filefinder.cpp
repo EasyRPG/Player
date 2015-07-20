@@ -65,6 +65,12 @@
 #   include <SDL_system.h>
 #endif
 
+#ifdef EMSCRIPTEN
+#  include <sstream>
+#  include <iterator>
+#  include <iomanip>
+#endif
+
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
 #define SHGFP_TYPE_CURRENT 0
@@ -503,7 +509,14 @@ bool FileFinder::Exists(std::string const& filename) {
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
+#ifdef EMSCRIPTEN
+	std::stringstream hexpath;
+	hexpath << std::setw(2) << std::setfill('0') << std::hex << std::uppercase;
+	std::copy((const unsigned char*)&*dir.begin(), (const unsigned char*)&*dir.end(), std::ostream_iterator<unsigned int>(hexpath, " "));
+	Output::Debug("IsDirectory() hex dump: %s", hexpath.str().c_str());
+#else
 	assert(Exists(dir));
+#endif
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
@@ -512,6 +525,11 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	struct stat sb;
 #   ifdef GEKKO
 	BOOST_VERIFY(::stat(dir.c_str(), &sb) != -1);
+#   else
+#      ifdef EMSCRIPTEN
+	::lstat(dir.c_str(), &sb);
+#      else
+	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
 #   endif
 	return S_ISDIR(sb.st_mode);
 #endif
