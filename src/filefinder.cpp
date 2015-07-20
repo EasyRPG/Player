@@ -530,6 +530,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	::lstat(dir.c_str(), &sb);
 #      else
 	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
+#      endif
 #   endif
 	return S_ISDIR(sb.st_mode);
 #endif
