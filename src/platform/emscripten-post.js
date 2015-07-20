@@ -32,6 +32,7 @@ function parseargs() {
 Module.arguments.push("easyrpg-player");
 Module.arguments = Module.arguments.concat(parseargs());
 
+/*
 function _readdir_r(dirp, entry, result) {
     // int readdir_r(DIR *dirp, struct dirent *entry, struct dirent **result);
     // http://pubs.opengroup.org/onlinepubs/007908799/xsh/readdir_r.html
@@ -79,3 +80,4 @@ function _readdir_r(dirp, entry, result) {
     HEAP32[((result)>>2)]=entry;
     return 0;
 }
+*/
