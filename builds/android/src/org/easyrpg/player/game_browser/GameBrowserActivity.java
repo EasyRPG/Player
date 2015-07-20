@@ -41,6 +41,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.InputFilter.LengthFilter;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,6 +55,8 @@ import android.widget.Toast;
  */
 public class GameBrowserActivity extends Activity {
 	private String path;
+	
+	ListView list_view;
 	private ListAdapter adapter;
 	LinkedList<ProjectInformation> project_list = new LinkedList<ProjectInformation>();
 	LinkedList<String> error_list = new LinkedList<String>();
@@ -63,26 +66,10 @@ public class GameBrowserActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Scan the folder
-		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
-		GameBrowserHelper.scanGame(this, path, project_list, error_list);
-		
-		// Put the result into the proper adapter
-		if (error_list.size() > 0) {
-			//If the game list is empty, we use a simplified adapter
-			ArrayAdapter<String> a = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_2, android.R.id.text1, error_list);
-			adapter = a;
-		} else {
-			//If the game list is not empty, we use the proper adapter
-			GameListAdapter a = new GameListAdapter(this, project_list);
-			adapter = a;
-		}
-		
-		//Set the view
+		// Setting the game list
 		setContentView(R.layout.game_browser_activity);
-		ListView list_view = (ListView)findViewById(R.id.game_browser_list_view);
-		list_view.setAdapter(adapter);
+		list_view = (ListView)findViewById(R.id.game_browser_list_view);
+		displayGameList();
 		
 		// First launch : display the "how to use" dialog box	
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -109,6 +96,9 @@ public class GameBrowserActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+		case R.id.game_browser_refresh:
+			displayGameList();
+			return true;
 		case R.id.game_browser_menu_change_mapping:
 			Intent intent = new Intent(this, ButtonMappingActivity.class);
 		    startActivity(intent);
@@ -121,6 +111,25 @@ public class GameBrowserActivity extends Activity {
 		}
 	}
 
+	public void displayGameList(){
+		//Scan the folder
+		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
+		GameBrowserHelper.scanGame(this, path, project_list, error_list);
+		
+		// Put the result into the proper adapter
+		if (error_list.size() > 0) {
+			//If the game list is empty, we use a simplified adapter
+			adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_2, android.R.id.text1, error_list);
+		} else {
+			//If the game list is not empty, we use the proper adapter
+			adapter = new GameListAdapter(this, project_list);
+		}
+		
+		//Set the view;
+		list_view.setAdapter(adapter);
+	}
+	
 	/**
 	 * Prepare and display the dialog box explaining how to use EasyRPG
 	 */

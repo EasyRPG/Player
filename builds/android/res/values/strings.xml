@@ -19,7 +19,7 @@
 	<string name="baltic">Baltic</string>
 	<string name="thai">Thai</string>
 	<string name="vietnamese">Vietnamese</string>
-	<string name="ok">Ok</string>
+	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
 	<string name="do_want_quit">Do you really want to quit?</string>
 	<string name="yes">Yes</string>
@@ -35,6 +35,7 @@
 	<string name="unknown_region">Unknown region</string>
 	<string name="region_modification_success">Region changed to $NAME</string>
 	<string name="region_modification_failed">Changing region failed</string>
+	<string name="refresh">Refresh</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
 	<string name="how_to_use_easy_rpg">How to use EasyRPG</string>
 	<string name="how_to_use_easy_rpg_explanation">
