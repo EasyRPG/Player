@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/game_browser_refresh"
-        android:title="@string/refresh"
-        android:icon="@drawable/ic_action_action_autorenew" 
-        android:showAsAction="ifRoom"
-        />
     <item android:id="@+id/game_browser_menu_change_mapping"
         android:title="@string/change_default_mapping" />
     <item android:id="@+id/game_browser_how_to_use_easy_rpg"

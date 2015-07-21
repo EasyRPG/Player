@@ -40,15 +40,13 @@ public class GameBrowserHelper {
 				if (list != null) {
 					if(list.length == 0){
 						error_list.add(context.getString(R.string.no_games_found));
-					}
-					for (File file : list) {
-						if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
-							project_list.add(new ProjectInformation(file.getName(), file.getAbsolutePath()));
+					}else {
+						for (File file : list) {
+							if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
+								project_list.add(new ProjectInformation(file.getName(), file.getAbsolutePath()));
+							}
 						}
 					}
-				}
-				if (project_list.size() == 0) {
-					error_list.add(context.getString(R.string.no_games_found));
 				}
 			}
 		} else {
