@@ -189,8 +189,6 @@ void Game_Map::SetupFromSave() {
 
 void Game_Map::SetupCommon(int _id) {
 	ready = false;
-	// Execute remaining events (e.g. ones listed after a teleport)
-	Update();
 	Dispose();
 
 	location.map_id = _id;
