@@ -520,6 +520,11 @@ namespace Game_Map {
 	void ResetPan(int speed, bool wait);
 	void UpdatePan();
 
+	bool IsAnyMovePending();
+	void AddPendingMove(Game_Character* character);
+	void RemovePendingMove(Game_Character* character);
+	void RemoveAllPendingMoves();
+
 	bool IsPanActive();
 	bool IsPanWaiting();
 	bool IsPanLocked();

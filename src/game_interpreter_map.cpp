@@ -56,16 +56,6 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 }
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
-	std::vector<Game_Character*>::iterator it;
-	std::vector<Game_Character*> toerase;
-	for (it = pending.begin(); it != pending.end(); ++it) {
-		if ((*it)->DetachMoveRouteOwner(this))
-			toerase.push_back(*it);
-	}
-	for (it = toerase.begin(); it != toerase.end(); ++it) {
-		EndMoveRoute(*it);
-	}
-
 	list.clear();
 }
 
@@ -185,19 +175,6 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 	}
 
 	return cmd;
-}
-
-void Game_Interpreter_Map::EndMoveRoute(Game_Character* moving_character) {
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it) {
-		if ((*it) == moving_character) {
-			break;
-		}
-	}
-
-	if (it != pending.end()) {
-		pending.erase(it);
-	}
 }
 
 /**
@@ -1041,8 +1018,7 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
 			route->move_commands.push_back(DecodeMove(it));
 
-		event->ForceMoveRoute(route, move_freq, this);
-		pending.push_back(event);
+		event->ForceMoveRoute(route, move_freq);
 	}
 	return true;
 }
@@ -1466,13 +1442,7 @@ bool Game_Interpreter_Map::CommandChangeEncounterRate(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code 11340
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it) {
-		if (!(*it)->IsMoveRouteRepeated()) {
-			return false;
-		}
-	}
-	return true;
+	return !Game_Map::IsAnyMovePending();
 }
 
 bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // code 11560
@@ -1833,10 +1803,7 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		(*it)->CancelMoveRoute(this);
-	pending.clear();
+	Game_Map::RemoveAllPendingMoves();
 	return true;
 }
 
