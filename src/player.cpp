@@ -563,9 +563,6 @@ void Player::LoadDatabase() {
 }
 
 static void OnMapSaveFileReady(FileRequestResult*) {
-	Main_Data::game_data.party_location.Fixup();
-	Main_Data::game_data.system.Fixup();
-	Main_Data::game_data.screen.Fixup();
 	Game_Actors::Fixup();
 
 	Game_Map::SetupFromSave();
@@ -589,6 +586,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	}
 
 	Main_Data::game_data = *save.get();
+	Main_Data::game_data.system.Fixup();
 
 	int map_id = save->party_location.map_id;
 
