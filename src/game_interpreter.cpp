@@ -222,7 +222,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (!Main_Data::game_player->IsTeleporting()) {
-			if (Game_Map::GetNeedRefresh()) {
+			if (main_flag && Game_Map::GetNeedRefresh()) {
 				Game_Map::Refresh();
 			}
 		}
