@@ -528,7 +528,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
-						return !!(passages_down[tile_id] & bit);
+						return (passages_up[tile_id] & bit != 0);
 					}
 				}
 			}
