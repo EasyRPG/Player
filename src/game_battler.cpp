@@ -81,7 +81,7 @@ const RPG::State* Game_Battler::GetSignificantState() {
 		if (state->ID == 1)
 			return state;
 
-		if (state->priority > priority) {
+		if (state->priority >= priority) {
 			the_state = state;
 			priority = state->priority;
 		}

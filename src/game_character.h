@@ -23,8 +23,6 @@
 #include "color.h"
 #include "rpg_moveroute.h"
 
-class Game_Interpreter;
-
 /**
  * Game_Character class.
  */
@@ -407,12 +405,6 @@ public:
 	 */
 	void MoveTypeCustom();
 
-	/**
-	 * Signals the owner of the current move route that the move ended.
-	 * (or was overwritten by a new one)
-	 */
-	void EndMoveRoute();
-
 	void Turn(int dir);
 	void Move(int dir);
 
@@ -508,27 +500,13 @@ public:
 	 *
 	 * @param new_route new move route.
 	 * @param frequency frequency.
-	 * @param owner the interpreter which set the route.
 	 */
-	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency, Game_Interpreter* owner);
+	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency);
 
 	/**
 	 * Cancels a previous forced move route.
-	 *
-	 * @param owner the interpreter which set the route.
 	 */
-	void CancelMoveRoute(Game_Interpreter* owner);
-
-	/**
-	 * Tells the character to not report back to the owner.
-	 * (Usually because the owner got deleted).
-	 *
-	 * @param owner the owner of the move route;
-	 *              if the owner is not the real owner
-	 *              this function does nothing.
-	 * @return true if the owner has been detached, false otherwise
-	 */
-	bool DetachMoveRouteOwner(Game_Interpreter* owner);
+	void CancelMoveRoute();
 
 	/**
 	 * Gets screen x coordinate in pixels.
@@ -719,7 +697,6 @@ protected:
 	int animation_type;
 	
 	RPG::MoveRoute original_move_route;
-	Game_Interpreter* move_route_owner;
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;

@@ -57,8 +57,6 @@ public:
 
 	bool ExecuteCommand();
 
-	void EndMoveRoute(Game_Character* moving_character);
-
 private:
 	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeExp(RPG::EventCommand const& com);

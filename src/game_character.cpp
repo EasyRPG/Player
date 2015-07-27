@@ -39,7 +39,6 @@ Game_Character::Game_Character() :
 	through(false),
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
-	move_route_owner(NULL),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
@@ -61,9 +60,7 @@ Game_Character::Game_Character() :
 }
 
 Game_Character::~Game_Character() {
-	if (move_route_owner != NULL) {
-		move_route_owner->EndMoveRoute(this);
-	}
+	Game_Map::RemovePendingMove(this);
 }
 
 int Game_Character::GetSteppingSpeed() const {
@@ -413,8 +410,8 @@ void Game_Character::MoveTypeCustom() {
 				active_route_index = 0;
 				SetMoveRouteRepeated(true);
 			} else if (IsMoveRouteOverwritten()) {
-				SetMoveRouteOverwritten(false);
-				EndMoveRoute();
+				CancelMoveRoute();
+				Game_Map::RemovePendingMove(this);
 				stop_count = 0;
 			}
 		} else {
@@ -571,15 +568,6 @@ void Game_Character::MoveTypeCustom() {
 			SetOriginalMoveRouteIndex(active_route_index);
 		}
 	}
-}
-
-void Game_Character::EndMoveRoute() {
-	if (move_route_owner != NULL) {
-		move_route_owner->EndMoveRoute(this);
-		move_route_owner = NULL;
-	}
-
-	SetMoveFrequency(original_move_frequency);
 }
 
 void Game_Character::Move(int dir) {
@@ -853,9 +841,10 @@ int Game_Character::DistanceYfromPlayer() const {
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
-									int frequency,
-									Game_Interpreter* owner) {
-	EndMoveRoute();
+									int frequency) {
+
+	Game_Map::RemovePendingMove(this);
+	Game_Map::AddPendingMove(this);
 
 	original_move_frequency = GetMoveFrequency();
 
@@ -864,23 +853,13 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	SetMoveRouteOverwritten(true);
 	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
-	move_route_owner = owner;
 	wait_count = 0;
 	max_stop_count = 0;
 }
 
-void Game_Character::CancelMoveRoute(Game_Interpreter* /* owner */) {
-	// FIXME unused Game_Interpreter* parameter
+void Game_Character::CancelMoveRoute() {
 	SetMoveRouteOverwritten(false);
-	move_route_owner = NULL;
-}
-
-bool Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
-	if (owner == move_route_owner) {
-		move_route_owner = NULL;
-		return true;
-	}
-	return false;
+	SetMoveFrequency(original_move_frequency);
 }
 
 int Game_Character::GetTileId() const {

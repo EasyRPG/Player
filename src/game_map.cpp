@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <algorithm>
 
 #include "async_handler.h"
 #include "system.h"
@@ -67,6 +68,7 @@ namespace {
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
 	Game_Vehicle* vehicles[3];
+	std::vector<Game_Character*> pending;
 
 	bool pan_locked;
 	bool pan_wait;
@@ -108,6 +110,7 @@ void Game_Map::Init() {
 
 void Game_Map::Dispose() {
 	events.clear();
+	pending.clear();
 
 	if (Main_Data::game_screen) {
 		Main_Data::game_screen->Reset();
@@ -153,6 +156,9 @@ void Game_Map::SetupFromSave() {
 		}
 
 		events.insert(std::make_pair(map->events[i].ID, evnt));
+
+		if (evnt->IsMoveRouteOverwritten())
+			pending.push_back(evnt.get());
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
@@ -167,6 +173,10 @@ void Game_Map::SetupFromSave() {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, evnt));
 	}
 
+	for (size_t i = 0; i < 3; i++)
+		if (vehicles[i]->IsMoveRouteOverwritten())
+			pending.push_back(vehicles[i]);
+
 	map_info.Fixup(*map.get());
 
 	// FIXME: Handle Pan correctly
@@ -179,8 +189,6 @@ void Game_Map::SetupFromSave() {
 
 void Game_Map::SetupCommon(int _id) {
 	ready = false;
-	// Execute remaining events (e.g. ones listed after a teleport)
-	Update();
 	Dispose();
 
 	location.map_id = _id;
@@ -230,8 +238,11 @@ void Game_Map::SetupCommon(int _id) {
 	}
 	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
 
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
+
+	if (Main_Data::game_player->IsMoveRouteOverwritten())
+		pending.push_back(Main_Data::game_player.get());
 
 	pan_wait = false;
 	pan_speed = 0;
@@ -517,7 +528,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
-						return !!(passages_down[tile_id] & bit);
+						return (passages_up[tile_id] & bit != 0);
 					}
 				}
 			}
@@ -977,6 +988,31 @@ void Game_Map::SetChipset(int id) {
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	return vehicles[which - 1];
+}
+
+bool Game_Map::IsAnyMovePending() {
+	std::vector<Game_Character*>::iterator it;
+	for (it = pending.begin(); it != pending.end(); ++it)
+		if (!(*it)->IsMoveRouteRepeated())
+			return true;
+
+	return false;
+}
+
+void Game_Map::AddPendingMove(Game_Character* character) {
+	pending.push_back(character);
+}
+
+void Game_Map::RemovePendingMove(Game_Character* character) {
+	pending.erase(std::remove(pending.begin(), pending.end(), character), pending.end());
+}
+
+void Game_Map::RemoveAllPendingMoves() {
+	std::vector<Game_Character*>::iterator it;
+	for (it = pending.begin(); it != pending.end(); ++it)
+		(*it)->CancelMoveRoute();
+
+	pending.clear();
 }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {
