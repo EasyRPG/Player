@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package org.easyrpg.player;
+package org.easyrpg.player.player;
 
 import java.io.File;
 import java.io.FileOutputStream;

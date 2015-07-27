@@ -1,4 +1,4 @@
-package org.easyrpg.player.virtual_buttons;
+package org.easyrpg.player;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
-public class Utilitary {
+public class Helper {
 	/**
 	 * Converts density independent pixel to real screen pixel. 
 	 * 160 dip = 1 inch ~ 2.5 cm
@@ -56,8 +56,8 @@ public class Utilitary {
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.leftMargin = Utilitary.getPixels(a, screenWidthDp * x);
-		params.topMargin = Utilitary.getPixels(a, screenHeightDp * y);
+		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
 		view.setLayoutParams(params);
 	}
 
@@ -82,8 +82,8 @@ public class Utilitary {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-		params.rightMargin = Utilitary.getPixels(a, screenWidthDp * x);
-		params.topMargin = Utilitary.getPixels(a, screenHeightDp * y);
+		params.rightMargin = Helper.getPixels(a, screenWidthDp * x);
+		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
 		view.setLayoutParams(params);
 	}
 

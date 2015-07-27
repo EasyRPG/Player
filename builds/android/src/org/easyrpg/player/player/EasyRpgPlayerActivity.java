@@ -22,14 +22,18 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package org.easyrpg.player;
+package org.easyrpg.player.player;
 
 import java.io.File;
 import java.util.List;
 
-import org.easyrpg.player.virtual_buttons.ButtonMappingModel;
-import org.easyrpg.player.virtual_buttons.Utilitary;
-import org.easyrpg.player.virtual_buttons.VirtualButton;
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.R;
+import org.easyrpg.player.R.id;
+import org.easyrpg.player.R.menu;
+import org.easyrpg.player.R.string;
+import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.VirtualButton;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -75,7 +79,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.player_menu, menu);
+		inflater.inflate(R.menu.player, menu);
 		Log.v("Player", "onCreateOption");
 		return true;
 	}
@@ -208,7 +212,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	private void drawButtons() {
 		for(VirtualButton b : buttonList){
-			Utilitary.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
+			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			mLayout.addView(b);
 		}
 	}
