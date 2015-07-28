@@ -892,24 +892,49 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 								 x, y,
 								 src_rect.width, src_rect.height);
 
-	// FIXME: Saturation looks incorrect (compared to RPG_RT) for values > 128
 	if (tone.gray != 128) {
-		pixman_color_t gcolor = {
-			static_cast<uint16_t>(tone.gray << 8),
-			0,
-			0,
-			0xFFFF};
+		DynamicFormat format(32, 8, 24, 8, 16, 8, 8, 8, 0, PF::Alpha);
+		uint32_t* pixels = new uint32_t[src_rect.width * src_rect.height];
+		Bitmap bmp(pixels, src_rect.width, src_rect.height, src_rect.width * 4, format);
+		bmp.Blit(0, 0, src, src_rect, Opacity::opaque);
+		Rect dst_rect(x, y, 0, 0);
 
-		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
+		int sat;
+		if (tone.gray > 128) {
+			sat = 1024 + (tone.gray - 128) * 16;
+		}
+		else {
+			sat = tone.gray * 8;
+		}
 
-		pixman_image_composite32(PIXMAN_OP_HSL_SATURATION,
-			gimage, src.bitmap, bitmap,
-			src_rect.x, src_rect.y,
+		// Algorithm from OpenPDN (MIT license)
+		// Transformation in Y'CbCr color space
+		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
+			uint32_t pixel = pixels[i];
+			uint8_t r = (pixel >> 24) & 0xFF;
+			uint8_t g = (pixel >> 16) & 0xFF;
+			uint8_t b = (pixel >> 8) & 0xFF;
+			uint8_t a = pixel & 0xFF;
+			// Y' = 0.299 R' + 0.587 G' + 0.114 B'
+			uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
+			// Scale Cb/Cr by scale factor "sat"
+			int red = ((lum * 1024 + (r - lum) * sat) >> 10);
+			red = red > 255 ? 255 : red < 0 ? 0 : red;
+			int green = ((lum * 1024 + (g - lum) * sat) >> 10);
+			green = green > 255 ? 255 : green < 0 ? 0 : green;
+			int blue = ((lum * 1024 + (b - lum) * sat) >> 10);
+			blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+			pixels[i] = ((uint32_t)red << 24) | ((uint32_t)green << 16) | ((uint32_t)blue << 8) | (uint32_t)a;
+		}
+
+		pixman_image_composite32(PIXMAN_OP_OVER,
+			bmp.bitmap, src.bitmap, bitmap,
 			0, 0,
+			src_rect.x, src_rect.y,
 			x, y,
 			src_rect.width, src_rect.height);
 
-		pixman_image_unref(gimage);
+		delete[] pixels;
 	}
 
 	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
