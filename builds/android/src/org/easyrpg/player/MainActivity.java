@@ -1,6 +1,7 @@
 package org.easyrpg.player;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.LegacyGameBrowserActivity;
@@ -12,6 +13,8 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 	@Override
@@ -39,6 +42,29 @@ public class MainActivity extends Activity {
 			if (!(new File(dataDir + "/timidity").exists())) {
 				AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
 			}
+		}
+		
+		// Create the easyrpg's directories
+		String path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg";
+		File dir = new File(path);
+		dir.mkdir();
+		
+		File dirGames = new File(dir, "games/");
+		dirGames.mkdir();
+		
+		File dirRtp = new File(dir, "rtp/");
+		dirRtp.mkdir();
+		File dirRtp2000 = new File(dirRtp, "2000");
+		dirRtp2000.mkdir();
+		File dirRtp2003 = new File(dirRtp, "2003");
+		dirRtp2003.mkdir();
+		
+		// The .nomedia file
+		File nomediafile = new File(dir, ".nomedia");
+		try {
+			nomediafile.createNewFile();
+		} catch (IOException e) {
+			Log.e("Create File", "Error creating .nomedia file");
 		}
 	}
 	
