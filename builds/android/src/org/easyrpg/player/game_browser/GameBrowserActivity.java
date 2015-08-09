@@ -24,6 +24,7 @@
 
 package org.easyrpg.player.game_browser;
 
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
@@ -36,9 +37,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -63,6 +66,7 @@ public class GameBrowserActivity extends Activity {
 		setContentView(R.layout.game_browser_activity);
 		list_view = (ListView)findViewById(R.id.game_browser_list_view);
 		displayGameList();
+		makeActionOverflowMenuShown();
 		
 		// First launch : display the "how to use" dialog box	
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -136,5 +140,22 @@ public class GameBrowserActivity extends Activity {
 
 		builder.create();
 		builder.show();
+	}
+	
+	/** This function prevents some Samsung's device to not show the action overflow button
+	 *  in the action bar
+	 */
+	private void makeActionOverflowMenuShown() {
+	    //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+	    try {
+	        ViewConfiguration config = ViewConfiguration.get(this);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        if (menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	    } catch (Exception e) {
+	        Log.d("TAG", e.getLocalizedMessage());
+	    }
 	}
 }
