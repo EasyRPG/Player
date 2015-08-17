@@ -515,8 +515,6 @@ void Game_Event::Update() {
 		return;
 	}
 
-	Game_Character::Update();
-
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
@@ -529,6 +527,8 @@ void Game_Event::Update() {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);
 		running = true;
 	}
+
+	Game_Character::Update();
 
 	if (halting) {
 		running = false;
