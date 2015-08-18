@@ -157,8 +157,12 @@ bool Game_Battler::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_medicine) {
+		bool was_used;
+
 		int hp_change = item.recover_hp_rate * GetMaxHp() / 100 + item.recover_hp;
 		int sp_change = item.recover_sp_rate * GetMaxSp() / 100 + item.recover_sp;
+
+		was_used = hp_change > 0 || sp_change > 0;
 
 		if (IsDead()) {
 			// Check if item can revive
@@ -169,6 +173,7 @@ bool Game_Battler::UseItem(int item_id) {
 			// Revive gives at least 1 Hp
 			if (hp_change == 0) {
 				ChangeHp(1);
+				was_used = true;
 			}
 		} else if (item.ko_only) {
 			// Must be dead
@@ -181,15 +186,12 @@ bool Game_Battler::UseItem(int item_id) {
 		for (std::vector<bool>::const_iterator it = item.state_set.begin();
 			it != item.state_set.end(); ++it) {
 			if (*it) {
+				was_used |= HasState(*it);
 				RemoveState(*it);
 			}
 		}
 
-		// TODO
-		return true;
-	} else if (item.type == RPG::Item::Type_material) {
-		// TODO
-		return false;
+		return was_used;
 	} else if (item.type == RPG::Item::Type_switch) {
 		return true;
 	}

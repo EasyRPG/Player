@@ -59,10 +59,36 @@ int Game_Actor::GetId() const {
 bool Game_Actor::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
+	if (IsDead() && item.type != RPG::Item::Type_medicine) {
+		return false;
+	}
+
 	if (item.type == RPG::Item::Type_book) {
 		return LearnSkill(item.skill_id);
+	} else if (item.type == RPG::Item::Type_material) {
+		SetBaseMaxHp(GetBaseMaxHp() + item.max_hp_points);
+		SetBaseMaxSp(GetBaseMaxSp() + item.max_sp_points);
+		SetBaseAtk(GetBaseAtk() + item.atk_points2);
+		SetBaseDef(GetBaseDef() + item.def_points2);
+		SetBaseAgi(GetBaseAgi() + item.agi_points2);
+		SetBaseSpi(GetBaseSpi() + item.spi_points2);
+
+		return true;
 	} else {
 		return Game_Battler::UseItem(item_id);
+	}
+}
+
+bool Game_Actor::IsItemUsable(int item_id) const {
+	const RPG::Item& item = Data::items[item_id - 1];
+
+	// If the actor ID is out of range this is an optimization in the ldb file
+	// (all actors missing can equip the item)
+	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
+		return true;
+	}
+	else {
+		return Data::items[item_id - 1].actor_set.at(data.ID - 1);
 	}
 }
 
@@ -510,13 +536,7 @@ bool Game_Actor::IsEquippable(int item_id) const {
 			return false;
 	}
 
-	// If the actor ID is out of range this is an optimization in the ldb file
-	// (all actors missing can equip the item)
-	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
-		return true;
-	} else {
-		return Data::items[item_id - 1].actor_set.at(data.ID - 1);
-	}
+	return IsItemUsable(item_id);
 }
 
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
