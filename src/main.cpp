@@ -15,8 +15,17 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "system.h"
+#include "player.h"
+#include "graphics.h"
+#include "input.h"
+#include <cstdlib>
 
-#ifdef USE_SDL
-#include "platform/sdl_main.cpp"
-#endif
+extern "C" int main(int argc, char* argv[]) {
+	Player::Init(argc, argv);
+	Graphics::Init();
+	Input::Init();
+
+	Player::Run();
+
+	return EXIT_SUCCESS;
+}
