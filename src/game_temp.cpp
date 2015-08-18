@@ -19,7 +19,6 @@
 #include "game_temp.h"
 
 bool Game_Temp::menu_calling;
-bool Game_Temp::menu_beep;
 Game_Battler* Game_Temp::forcing_battler;
 bool Game_Temp::battle_calling;
 bool Game_Temp::shop_calling;
@@ -57,7 +56,6 @@ RPG::Music* Game_Temp::map_bgm;
 
 void Game_Temp::Init() {
 	menu_calling = false;
-	menu_beep = false;
 	forcing_battler = NULL;
 	battle_calling = false;
 	shop_calling = false;
