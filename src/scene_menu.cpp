@@ -53,9 +53,7 @@ void Scene_Menu::Start() {
 }
 
 void Scene_Menu::Continue() {
-	if (command_options[command_window->GetIndex()] == Order) {
-		menustatus_window->Refresh();
-	}
+	menustatus_window->Refresh();
 }
 
 void Scene_Menu::Update() {

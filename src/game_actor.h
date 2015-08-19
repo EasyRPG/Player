@@ -69,6 +69,14 @@ public:
 	virtual bool UseItem(int item_id);
 
 	/**
+	 * Checks if the actor is permitted to use the item at all.
+	 *
+	 * @param ID of item to test
+	 * @return true if item is usable
+	 */
+	virtual bool IsItemUsable(int item_id) const;
+
+	/**
 	 * Applies the effects of a skill.
 	 * Tests if using that skill makes any sense (e.g. for HP healing
 	 * skills if there are any HP to heal)

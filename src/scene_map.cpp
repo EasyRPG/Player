@@ -134,8 +134,12 @@ void Scene_Map::Update() {
 
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_Temp::menu_calling = true;
-		Game_Temp::menu_beep = true;
+		// Prevent calling when disabled or the main interpreter is waiting
+		if (Game_System::GetAllowMenu() &&
+			!Game_Map::GetInterpreter().IsWaiting() &&
+			!Game_Map::IsPanWaiting()) {
+			Game_Temp::menu_calling = true;
+		}
 	}
 
 	if (Player::debug_flag) {
@@ -229,17 +233,12 @@ void Scene_Map::CallName() {
 void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 
-	if (Game_System::GetAllowMenu()) {
+	Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
-		if (Game_Temp::menu_beep) {
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
-			Game_Temp::menu_beep = false;
-		}
+	// TODO: Main_Data::game_player->Straighten();
 
-		// TODO: Main_Data::game_player->Straighten();
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
 
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
-	}
 	/*
 	FIXME:
 	The intention was that you can still exit the game with ESC when the menu

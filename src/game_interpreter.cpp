@@ -87,6 +87,10 @@ bool Game_Interpreter::IsRunning() const {
 	return !list.empty();
 }
 
+bool Game_Interpreter::IsWaiting() const {
+	return wait_count > 0;
+}
+
 // Setup.
 void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
 

@@ -35,7 +35,6 @@ public:
 	static void Init();
 
 	static bool menu_calling;
-	static bool menu_beep;
 
 	static Game_Battler* forcing_battler;
 

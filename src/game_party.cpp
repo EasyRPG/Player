@@ -233,12 +233,16 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	bool was_used = false;
 
 	if (target) {
-		was_used = target->UseItem(item_id);
+		if (target->IsItemUsable(item_id)) {
+			was_used = target->UseItem(item_id);
+		}
 	} else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
-			was_used |= (*it)->UseItem(item_id);
+			if ((*it)->IsItemUsable(item_id)) {
+				was_used |= (*it)->UseItem(item_id);
+			}
 		}
 	}
 
