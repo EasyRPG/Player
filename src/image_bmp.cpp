@@ -111,7 +111,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		return;
 	}
 
-	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
+	int num_colors = std::min((uint32_t) 256, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
 	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE +
 		get_4(&data[BITMAPFILEHEADER_SIZE + 0])];
 	const uint8_t* src_pixels = &data[bits_offset];
