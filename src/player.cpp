@@ -69,6 +69,9 @@
 #include "utils.h"
 #include "version.h"
 
+#ifdef _3DS
+	#include <3ds.h>
+#endif
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -191,6 +194,12 @@ void Player::Run() {
 	// Main loop
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+#elif defined(_3DS)
+	while (aptMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
+	{
+		hidScanInput();
+		Player::MainLoop();
+	}
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		MainLoop();

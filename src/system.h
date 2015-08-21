@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !defined(USE_SDL)
+#if !(defined(USE_SDL) || defined(_3DS))
 #  error "This build doesn't target a backend"
 #endif
 
@@ -98,4 +98,9 @@
 #  endif
 #endif
 
+#ifdef _3DS
+#  undef SUPPORT_AUDIO
+#  define NO_SDL_MIXER
+#  undef SUPPORT_ZOOM
+#endif
 #endif

@@ -560,7 +560,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	      == FILE_ATTRIBUTE_DIRECTORY;
 #else
 	struct stat sb;
-#   ifdef GEKKO
+#   if (defined(GEKKO) || defined(_3DS))
 	::stat(dir.c_str(), &sb);
 #   else
 	::lstat(dir.c_str(), &sb);

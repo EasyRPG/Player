@@ -28,7 +28,9 @@
 #include "rect.h"
 #include "keys.h"
 
-struct AudioInterface;
+#ifdef SUPPORT_AUDIO
+	struct AudioInterface;
+#endif
 
 /**
  * BaseUi base abstract class.
@@ -136,12 +138,14 @@ public:
 	 */
 	virtual void Sleep(uint32_t time_milli) = 0;
 
+#ifdef SUPPORT_AUDIO
 	/**
 	 * Returns audio instance.
 	 *
 	 * @return audio implementation.
 	 */
 	virtual AudioInterface& GetAudio() = 0;
+#endif
 
 	/**
 	 * Gets client width size.
