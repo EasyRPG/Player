@@ -95,7 +95,17 @@ bool CtrUi::IsFullscreen() {
 }
 
 void CtrUi::ProcessEvents() {
-	// ToDo
+	hidScanInput();
+	uint32_t kDown = hidKeysDown();
+	if (kDown & KEY_A) keys[Input::Keys::Z] = true;
+	if (kDown & KEY_B) keys[Input::Keys::X] = true;
+	if (kDown & KEY_SELECT) keys[Input::Keys::F12] = true;
+	if (kDown & KEY_START) Player::exit_flag = true;
+
+	uint32_t kUp = hidKeysUp();
+	if (kUp & KEY_A) keys[Input::Keys::Z] = false;
+	if (kUp & KEY_B) keys[Input::Keys::X] = false;
+	if (kUp & KEY_START) Player::exit_flag = false;
 }
 
 void CtrUi::UpdateDisplay() {
