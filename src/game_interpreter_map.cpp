@@ -757,17 +757,13 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	int speed = com.parameters[13];
 	int bottom_trans;
 
-	if (Player::IsRPG2k()) {
-		// Rpg2k does not support this option
+	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		// RKG2k and RPG2k3 1.10 do not support this option
 		bottom_trans = top_trans;
 	} else {
-		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
-		if (param_size > 14) {
-			bottom_trans = com.parameters[14];
-		} else {
-			bottom_trans = top_trans;
-		}
+		bottom_trans = param_size > 14 ? com.parameters[14] : top_trans;
 	}
 
 	picture->Show(pic_name, use_trans);
@@ -813,17 +809,13 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	bool wait = com.parameters[15] != 0;
 
 	int bottom_trans;
-	if (Player::IsRPG2k()) {
-		// Rpg2k does not support this option
+	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		// RPG2k and RPG2k3 1.10 do not support this option
 		bottom_trans = top_trans;
 	} else {
-		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
-		if (param_size > 16) {
-			bottom_trans = com.parameters[16];
-		} else {
-			bottom_trans = top_trans;
-		}
+		bottom_trans = param_size > 16 ? com.parameters[16] : top_trans;
 	}
 
 	picture->SetMovementEffect(x, y);
