@@ -46,11 +46,6 @@ public:
 	bool IsRunning() const;
 	void Update();
 
-	/**
-	 * @return If blocked by a "Wait Event"
-	 */
-	bool IsWaiting() const;
-
 	void SetupStartingEvent(Game_Event* ev);
 	void SetupStartingEvent(Game_CommonEvent* ev);
 	void InputButton();

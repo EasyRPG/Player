@@ -33,8 +33,8 @@
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
-	ready1(true),
-	ready2(true),
+	running(false),
+	halting(false),
 	trigger(-1),
 	event(event),
 	page(NULL),
@@ -50,8 +50,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& data) :
 	// FIXME unused int parameter
 	starting(false),
-	ready1(true),
-	ready2(true),
+	running(false),
+	halting(false),
 	event(event),
 	page(NULL),
 	from_save(true) {
@@ -464,14 +464,10 @@ bool Game_Event::GetActive() const {
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data.active || !ready1 || !ready2)
+	if (list.empty() || !data.active || running)
 		return;
 
 	starting = true;
-
-	if (!Game_Map::GetInterpreter().IsRunning()) {
-		Game_Map::GetInterpreter().SetupStartingEvent(this);
-	}
 }
 
 void Game_Event::CheckEventTriggerAuto() {
@@ -497,7 +493,7 @@ void Game_Event::StopTalkToHero() {
 		SetSpriteDirection(GetDirection());
 	}
 
-	ready1 = true;
+	halting = true;
 }
 
 bool Game_Event::CheckEventTriggerTouch(int x, int y) {
@@ -519,13 +515,6 @@ void Game_Event::Update() {
 		return;
 	}
 
-	// Workaround to make sure the event can't start again in the same frame it ended.
-	// TODO: Find a better way to do this. See: https://github.com/EasyRPG/Player/pull/469
-	ready2 = ready1;
-	ready1 = true;
-
-	Game_Character::Update();
-
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
@@ -534,6 +523,16 @@ void Game_Event::Update() {
 		} else {
 			interpreter->Update();
 		}
+	} else if (starting && !Game_Map::GetInterpreter().IsRunning()) {
+		Game_Map::GetInterpreter().SetupStartingEvent(this);
+		running = true;
+	}
+
+	Game_Character::Update();
+
+	if (halting) {
+		running = false;
+		halting = false;
 	}
 }
 

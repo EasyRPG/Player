@@ -175,8 +175,7 @@ private:
 	RPG::SaveMapEvent data;
 
 	unsigned int ID;
-	bool starting;
-	bool ready1, ready2;
+	bool starting, running, halting;
 	int trigger;
 	RPG::Event event;
 	RPG::EventPage* page;

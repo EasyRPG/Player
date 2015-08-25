@@ -31,6 +31,14 @@ static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
 Game_Party::Game_Party() {
 	data.Setup();
+
+	// Remove non existing actors
+	std::vector<int16_t> temp_party;
+	std::swap(temp_party, data.party);
+	std::vector<int16_t>::iterator it;
+	for (it = temp_party.begin(); it != temp_party.end(); ++it)
+		if (Game_Actors::ActorExists(*it))
+			data.party.push_back(*it);
 }
 
 Game_Actor& Game_Party::operator[] (const int index) {

@@ -328,7 +328,7 @@ void Game_Player::UpdateScroll() {
 }
 
 void Game_Player::Update() {
-	bool last_moving = IsMoving();
+	bool last_moving = IsMoving() || IsJumping();
 
 	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
@@ -356,9 +356,7 @@ void Game_Player::Update() {
 }
 
 void Game_Player::UpdateNonMoving(bool last_moving) {
-	if (Game_Map::GetInterpreter().IsRunning()) return;
-
-	if (IsMoving() ) return;
+	if (IsMoving() || IsMoveRouteOverwritten()) return;
 
 	if (last_moving && location.boarding) {
 		// Boarding completed
@@ -422,8 +420,6 @@ bool Game_Player::CheckTouchEvent() {
 }
 
 bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
-
 	bool result = false;
 
 	std::vector<Game_Event*> events;
@@ -431,8 +427,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); ++i) {
-		if (((*i)->GetLayer() == RPG::EventPage::Layers_below ||
-			(*i)->GetLayer() == RPG::EventPage::Layers_above)
+		if (((*i)->GetLayer() != RPG::EventPage::Layers_same)
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
@@ -591,7 +586,7 @@ bool Game_Player::GetOffVehicle() {
 }
 
 bool Game_Player::IsMovable() const {
-	if (IsMoving())
+	if (IsMoving() || IsJumping())
 		return false;
 	if (IsMoveRouteOverwritten())
 		return false;
