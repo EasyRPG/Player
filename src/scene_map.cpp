@@ -134,10 +134,8 @@ void Scene_Map::Update() {
 
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL)) {
-		// Prevent calling when disabled or the main interpreter is waiting
-		if (Game_System::GetAllowMenu() &&
-			!Game_Map::GetInterpreter().IsWaiting() &&
-			!Game_Map::IsPanWaiting()) {
+		// Prevent calling when disabled or the main interpreter is running
+		if (Game_System::GetAllowMenu() && !Game_Map::GetInterpreter().IsRunning()) {
 			Game_Temp::menu_calling = true;
 		}
 	}

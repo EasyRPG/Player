@@ -78,17 +78,13 @@ void Game_Interpreter::Clear() {
 			clear_child = true;
 		else
 			child_interpreter.reset();
-	}			
+	}
 	list.clear();
 }
 
 // Is interpreter running.
 bool Game_Interpreter::IsRunning() const {
 	return !list.empty();
-}
-
-bool Game_Interpreter::IsWaiting() const {
-	return wait_count > 0;
 }
 
 // Setup.
