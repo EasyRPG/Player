@@ -124,7 +124,7 @@ void Window::Draw() {
 					dst->Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
 
 					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
-					dst->Blit(x, y + height / 2 + ianimation_count - 8, *frame_up, frame_down->GetRect(), opacity);
+					dst->Blit(x, y + height / 2 + ianimation_count - 8, *frame_down, frame_down->GetRect(), opacity);
 				} else {
 					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
 					dst->Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
