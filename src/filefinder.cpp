@@ -87,14 +87,18 @@ namespace {
 		std::string const lower_dir = Utils::LowerCase(dir);
 		std::string const escape_symbol = Player::escape_symbol;
 		std::string corrected_name = Utils::LowerCase(name);
+#ifdef _WIN32
 		if (escape_symbol != "\\") {
+#endif
 			std::size_t escape_pos = corrected_name.find(escape_symbol);
 			while (escape_pos != std::string::npos) {
 				corrected_name.erase(escape_pos, escape_symbol.length());
 				corrected_name.insert(escape_pos, "/");
 				escape_pos = corrected_name.find(escape_symbol);
 			}
+#ifdef _WIN32
 		}
+#endif
 
 		string_map::const_iterator dir_it = tree.directories.find(lower_dir);
 		if(dir_it == tree.directories.end()) { return boost::none; }
