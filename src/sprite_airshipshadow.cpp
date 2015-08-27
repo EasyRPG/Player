@@ -70,6 +70,6 @@ void Sprite_AirshipShadow::Update() {
 
 	SetX(Main_Data::game_player->GetScreenX());
 	SetY(Main_Data::game_player->GetScreenY());
-	// Bit higher then the rest on the tilemap
-	SetZ(Main_Data::game_player->GetScreenZ() + TILE_SIZE * 2);
+	// Higher than the events in the upper layer
+	SetZ(151);
 }

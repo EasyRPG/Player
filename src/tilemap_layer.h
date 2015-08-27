@@ -26,10 +26,13 @@
 
 class TilemapLayer;
 
-class TilemapTile : public Drawable {
+/**
+ * TilemapSubLayer class.
+ */
+class TilemapSubLayer : public Drawable {
 public:
-	TilemapTile(TilemapLayer* tilemap, int z);
-	~TilemapTile();
+	TilemapSubLayer(TilemapLayer* tilemap, int z);
+	~TilemapSubLayer();
 
 	void Draw();
 
@@ -130,7 +133,7 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
-	std::vector<EASYRPG_SHARED_PTR<TilemapTile> > tilemap_tiles;
+	std::vector<EASYRPG_SHARED_PTR<TilemapSubLayer> > sublayers;
 };
 
 #endif
