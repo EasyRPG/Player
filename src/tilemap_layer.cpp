@@ -151,10 +151,12 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	memset(autotiles_ab, 0, sizeof(autotiles_ab));
 	memset(autotiles_d, 0, sizeof(autotiles_d));
 
-	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE) + 1;
-	for (int i = 0; i < tiles_y + 2; i++) {
-		tilemap_tiles.push_back(EASYRPG_MAKE_SHARED<TilemapTile>(this, TILE_SIZE * i));
-	}
+	// SubLayer for the tiles with Wall or Above passability
+	// Its z-value should be between the z of the events in the upper layer and the hero
+	sublayers.push_back(EASYRPG_MAKE_SHARED<TilemapSubLayer>(this, 98+layer));
+	// SubLayer for the tiles without Wall or Above passability
+	// Its z-value should be under z of the events in the lower layer
+	sublayers.push_back(EASYRPG_MAKE_SHARED<TilemapSubLayer>(this, -2+layer));
 }
 
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile) {
@@ -197,17 +199,8 @@ void TilemapLayer::Draw(int z_order) {
 			// Get the tile data
 			TileData &tile = data_cache[map_x][map_y];
 
-			int map_draw_z = tile.z;
-
-			if (map_draw_z > 0) {
-				if (map_draw_z < 9999) {
-					map_draw_z += y * TILE_SIZE;
-					if (y == 0) map_draw_z += TILE_SIZE;
-				}
-			}
-
-			// Draw the tile if its z is being draw now
-			if (z_order == map_draw_z) {
+			// Draw the sublayer if its z is being draw now
+			if (z_order == tile.z) {
 				if (layer == 0) {
 					// If lower layer
 
@@ -306,29 +299,23 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 
 			// Calculate the tile Z
 			if (!passable.empty()) {
-				if (tile.ID >= BLOCK_F) {
+				if (tile.ID >= BLOCK_F) { // Upper layer
 					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-						tile.z = 32;
+						tile.z = 99; // Upper sublayer
+					else
+						tile.z = -1; // Lower sublayer
 
-				}
-				else if (tile.ID >= BLOCK_E) {
-					if ((passable[substitutions[tile.ID - BLOCK_E + 18]] & Passable::Above) != 0)
-						tile.z = 32;
+				} else { // Lower layer
+					int chip_index =
+						tile.ID >= BLOCK_E ? tile.ID - BLOCK_E + 18 :
+						tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
+						tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
+						tile.ID / 1000;
+					if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
+						tile.z = 98; // Upper sublayer
+					else
+						tile.z = -2; // Lower sublayer
 
-				}
-				else if (tile.ID >= BLOCK_D) {
-					if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (Passable::Wall | Passable::Above)) != 0)
-						tile.z = 32;
-
-				}
-				else if (tile.ID >= BLOCK_C) {
-					if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0)
-						tile.z = 32;
-
-				}
-				else {
-					if ((passable[tile.ID / 1000] & Passable::Above) != 0)
-						tile.z = 32;
 				}
 			}
 			data_cache[x][y] = tile;
@@ -697,7 +684,7 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 	}
 }
 
-TilemapTile::TilemapTile(TilemapLayer* tilemap, int z) :
+TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
 	type(TypeTilemap),
 	tilemap(tilemap),
 	z(z)
@@ -705,11 +692,11 @@ TilemapTile::TilemapTile(TilemapLayer* tilemap, int z) :
 	Graphics::RegisterDrawable(this);
 }
 
-TilemapTile::~TilemapTile() {
+TilemapSubLayer::~TilemapSubLayer() {
 	Graphics::RemoveDrawable(this);
 }
 
-void TilemapTile::Draw() {
+void TilemapSubLayer::Draw() {
 	if (!tilemap->GetChipset()) {
 		return;
 	}
@@ -717,10 +704,10 @@ void TilemapTile::Draw() {
 	tilemap->Draw(GetZ());
 }
 
-int TilemapTile::GetZ() const {
+int TilemapSubLayer::GetZ() const {
 	return z;
 }
 
-DrawableType TilemapTile::GetType() const {
+DrawableType TilemapSubLayer::GetType() const {
 	return type;
 }

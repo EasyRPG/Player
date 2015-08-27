@@ -176,30 +176,14 @@ int Game_Character::GetScreenY() const {
 }
 
 int Game_Character::GetScreenZ() const {
-	int z = (GetRealY() - Game_Map::GetDisplayY() + 3) / TILE_SIZE + (SCREEN_TILE_WIDTH / TILE_SIZE);
+	int z = this == Main_Data::game_player.get() ? 1 : 0;
 
-	int max_height = Game_Map::GetHeight() * TILE_SIZE;
+	// For events on the screen, this should be inside a 0-40 range
+	z += GetScreenY() >> 3;
 
-	// wrap on map boundaries
-	if (z < 0) {
-		z += max_height;
-	}
+	z += GetLayer() * 50;
 
-	if (GetLayer() == RPG::EventPage::Layers_below) {
-		z -= TILE_SIZE;
-	}
-	if (GetLayer() == RPG::EventPage::Layers_above) {
-		z += TILE_SIZE;
-	}
-
-	// Prevent underflow (not rendered in this case)
-	// ToDo: It's probably the best to rework the z-layer part of the tilemap code
-	if (z < 1) {
-		z = 1;
-	}
-
-	// 1 less to correctly render compared to some tile map tiles (star tiles e.g.)
-	return z - 1;
+	return z;
 }
 
 void Game_Character::Update() {

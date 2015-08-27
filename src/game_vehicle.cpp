@@ -32,6 +32,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	type = _type;
 	driving = false;
 	SetDirection(Left);
+	SetSpriteDirection(Left);
 	walk_animation = type != Airship;
 	animation_type = RPG::EventPage::AnimType_continuous;
 	LoadSystemSettings();
@@ -261,7 +262,7 @@ void Game_Vehicle::Refresh() {
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
+			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
@@ -308,13 +309,12 @@ void Game_Vehicle::GetOn() {
 
 void Game_Vehicle::GetOff() {
 	if (type == Airship) {
-		walk_animation = false;
 		data.remaining_descent = SCREEN_TILE_WIDTH;
-		Main_Data::game_player->SetDirection(Left);
 	} else {
 		driving = false;
-		SetDirection(Left);
 	}
+	SetDirection(Left);
+	SetSpriteDirection(Left);
 }
 
 bool Game_Vehicle::IsInUse() const {
@@ -322,6 +322,8 @@ bool Game_Vehicle::IsInUse() const {
 }
 
 void Game_Vehicle::SyncWithPlayer() {
+	if (!driving || IsAscending() || IsDescending())
+		return;
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
 	remaining_step = Main_Data::game_player->GetRemainingStep();
@@ -378,9 +380,11 @@ void Game_Vehicle::Update() {
 			data.remaining_descent -= 8;
 			if (!IsDescending()) {
 				if (CanLand()) {
-					SetLayer(RPG::EventPage::Layers_below);
+					SetLayer(RPG::EventPage::Layers_same);
 					driving = false;
 					data.flying = false;
+					walk_animation = false;
+					pattern = 1;
 				} else {
 					// Can't land here, ascend again
 					data.remaining_ascent = SCREEN_TILE_WIDTH;
