@@ -337,14 +337,13 @@ void Window_Message::UpdateMessage() {
 			pause = true;
 			new_page_after_pause = true;
 			break;
+		} else if (pause) {
+			break;
 		}
 
 		if (*text_index == '\n') {
 			instant_speed = false;
 			InsertNewLine();
-			if (pause) {
-				break;
-			}
 		} else if (*text_index == '\f') {
 			instant_speed = false;
 			++text_index;
