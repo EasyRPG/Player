@@ -59,7 +59,7 @@ void Window_ShopParty::Refresh() {
 			phase = 1;
 		}
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
-		BitmapRef bm = bitmaps[i][phase][equippable ? 1 : 0];
+		BitmapRef bm = bitmaps[i][equippable ? phase : 1][equippable ? 1 : 0];
 
 		if (bm) {
 			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
@@ -160,7 +160,7 @@ void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult*, int party_index)
 			bm2->Clear();
 			bm2->Blit(0, 0, *bm, src, 255);
 			if (k == 0)
-				bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
+				bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(128, 128, 128, 0));
 			bitmaps[party_index][j][k] = bm2;
 		}
 	}
