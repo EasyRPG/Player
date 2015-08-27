@@ -129,7 +129,8 @@ static void HandleErrorOutput(const std::string& err) {
 
 	std::string error = "Error:\n";
 	error += err;
-	error += "\n\nEasyRPG Player will close now. Press any key...";
+
+	error += "\n\nEasyRPG Player will close now.\nPress [ENTER] key to exit...";
 
 	Text::Draw(*surface, 11, 11, Color(0, 0, 0, 255), error);
 	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), error);

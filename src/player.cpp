@@ -533,6 +533,11 @@ void Player::LoadDatabase() {
 	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
 		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
 		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
+
+		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
+			"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
+			"This engine only supports RPG Maker 2000 and 2003\ngames.",
+			"RPG Maker XP, VX, VX Ace and MV are NOT supported.");
 	}
 
 	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
