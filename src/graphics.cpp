@@ -27,6 +27,7 @@
 #include "baseui.h"
 #include "drawable.h"
 #include "util_macro.h"
+#include "output.h"
 #include "player.h"
 
 namespace Graphics {
@@ -122,6 +123,12 @@ void Graphics::Update(bool time_left) {
 		// 1 sec over
 		next_fps_time += 1000;
 		real_fps = fps;
+
+		if (fps == 0) {
+			Output::Debug("Framerate is 0 FPS!");
+			DrawFrame();
+		}
+
 		fps = 0;
 
 		next_fps_time = current_time + 1000;

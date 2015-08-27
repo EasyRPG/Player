@@ -95,6 +95,11 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 	if (id > (int)pictures.size()) {
 		// Some games use more pictures then RPG_RT officially supported
 		Main_Data::game_data.pictures.resize(id);
+
+		for (size_t i = 0; i < Main_Data::game_data.pictures.size(); ++i) {
+			Main_Data::game_data.pictures[i].ID = i + 1;
+		}
+
 		pictures.resize(id);
 	}
 	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
