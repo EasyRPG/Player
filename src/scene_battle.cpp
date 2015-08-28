@@ -94,7 +94,7 @@ void Scene_Battle::Start() {
 	if (!Game_Temp::battle_background.empty())
 		background.reset(new Background(Game_Temp::battle_background));
 	else
-		background.reset(new Background(Game_Temp::battle_terrain_id));
+		background.reset(new Background(Game_Battle::GetTerrainId()));
 
 	SetState(State_Start);
 }

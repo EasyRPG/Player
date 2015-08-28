@@ -24,6 +24,7 @@
 
 #include "async_handler.h"
 #include "system.h"
+#include "game_battle.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
@@ -826,7 +827,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = GetTerrainTag(x, y);
+	Game_Battle::SetTerrainId(GetTerrainTag(x, y));
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
@@ -837,7 +838,7 @@ bool Game_Map::PrepareEncounter() {
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
 	} else {
-		Game_Temp::battle_background = Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
+		Game_Temp::battle_background = Data::terrains[Game_Battle::GetTerrainId() - 1].background_name;
 	}
 
 	Game_Temp::battle_calling = true;

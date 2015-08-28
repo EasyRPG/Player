@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <sstream>
 #include "game_actor.h"
+#include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
 #include "main_data.h"
@@ -558,11 +559,134 @@ bool Game_Actor::GetAutoBattle() const {
 }
 
 int Game_Actor::GetBattleX() const {
-	return (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH/320);
+	float position;
+
+	if (Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
+		int party_size = Main_Data::game_party->GetBattlerCount();
+
+		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
+		float right = left + Data::terrains[0].grid_c / 1103;
+
+		switch (party_size) {
+		case 1:
+			position = (right - left) / 2;
+			break;
+		case 2:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left;
+				break;
+			}
+		case 3:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left + ((right - left) / 2);
+				break;
+			case 2:
+				position = left;
+				break;
+			}
+		case 4:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left + ((right - left) * 2.0/3);
+				break;
+			case 2:
+				position = left + ((right - left) * 1.0/3);
+				break;
+			case 3:
+				position = left;
+				break;
+			}
+		}
+	}
+	else {
+		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
+
+		position = (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
+	}
+
+	switch (Game_Battle::GetBattleMode()) {
+	case Game_Battle::BattleNormal:
+	case Game_Battle::BattleInitiative:
+		return SCREEN_TARGET_WIDTH - position;
+	case Game_Battle::BattleBackAttack:
+		return position;
+	case Game_Battle::BattlePincer:
+	case Game_Battle::BattleSurround:
+		return 0;
+	}
 }
 
 int Game_Actor::GetBattleY() const {
-	return (Data::actors[data.ID - 1].battle_y*SCREEN_TARGET_HEIGHT/240);
+	float position;
+
+	if (Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
+		int party_size = Main_Data::game_party->GetBattlerCount();
+
+		float top = Data::terrains[0].grid_a;
+		float bottom = top + Data::terrains[0].grid_b / 13;
+
+		switch (party_size) {
+		case 1:
+			position = (bottom - top) / 2;
+			break;
+		case 2:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = bottom;
+				break;
+			}
+		case 3:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = top + ((bottom - top) / 2);
+				break;
+			case 2:
+				position = bottom;
+				break;
+			}
+		case 4:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = top + ((bottom - top) * 1.0/3);
+				break;
+			case 2:
+				position = top + ((bottom - top) * 2.0/3);
+				break;
+			case 3:
+				position = bottom;
+				break;
+			}
+		}
+
+		position -= 24;
+	}
+	else {
+		position = (Data::actors[data.ID - 1].battle_y*SCREEN_TARGET_HEIGHT / 240);
+	}
+
+	return (int)position;
 }
 
 const std::string& Game_Actor::GetSkillName() const {

@@ -966,7 +966,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		int ally_agi = Main_Data::game_party->GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 
-		double to_hit = 1.5 * (ally_agi / enemy_agi);
+		double to_hit = 1.5 * ((float)ally_agi / enemy_agi);
 
 		// Every failed escape is worth 10% higher escape chance (see help file)
 		for (int i = 0; i < Game_Battle::escape_fail_count; ++i) {

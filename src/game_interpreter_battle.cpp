@@ -99,15 +99,15 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	// TODO
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Temp::battle_mode != Game_Temp::BattlePincer)
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer)
 		//Game_Battle::allies_flee = true;
 	    break;
 	case 1:
-		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
 			//Game_Battle::MonstersFlee();
 	    break;
 	case 2:
-		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
 			//Game_Battle::MonsterFlee(com.parameters[1]);
 	    break;
 	}

@@ -50,6 +50,8 @@ namespace {
 	int message_position;
 	bool terminate;
 	std::vector<bool> page_executed;
+	int terrain_id;
+	int battle_mode;
 }
 
 void Game_Battle::Init() {
@@ -253,4 +255,20 @@ bool Game_Battle::IsTerminating() {
 Game_Interpreter& Game_Battle::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
+}
+
+void Game_Battle::SetTerrainId(int terrain_id_) {
+	terrain_id = terrain_id_;
+}
+
+int Game_Battle::GetTerrainId() {
+	return terrain_id;
+}
+
+void Game_Battle::SetBattleMode(int battle_mode_) {
+	battle_mode = battle_mode_;
+}
+
+int Game_Battle::GetBattleMode() {
+	return battle_mode;
 }
