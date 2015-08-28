@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include "scene_order.h"
+#include "game_actor.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
@@ -151,8 +152,14 @@ void Scene_Order::Confirm() {
 
 	std::vector<Game_Actor*> party_actors = Main_Data::game_party->GetActors();
 
-	for (size_t i = 0; i < party_actors.size(); ++i) {
-		Main_Data::game_party->GetActors()[i] = party_actors[actors[i] - 1];
+	std::vector<int>::const_iterator it;
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		Main_Data::game_party->RemoveActor(party_actors[*it - 1]->GetId());
+	}
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		Main_Data::game_party->AddActor(party_actors[*it - 1]->GetId());
 	}
 
 	// TODO: Where is the best place to overwrite the character map graphic?

@@ -53,7 +53,7 @@ public:
 	void Update();
 
 private:
-	RPG::SavePicture& data;
+	int id;
 
 	static const int waver_speed = 10;
 
@@ -62,6 +62,16 @@ private:
 	void UpdateSprite();
 
 	void OnPictureSpriteReady(FileRequestResult*);
+
+	/**
+	 * Compared to other classes picture doesn't hold a direct reference.
+	 * Resizing the picture vector when the ID is larger then the vector can
+	 * result in a memmove on resize, resulting in data pointers pointing into
+	 * garbage.
+	 *
+	 * @return Reference to the SavePicture data 
+	 */
+	RPG::SavePicture& GetData();
 
 	int old_map_x;
 	int old_map_y;

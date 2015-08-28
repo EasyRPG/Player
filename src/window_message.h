@@ -40,7 +40,7 @@ public:
 		LeftMargin = 8,
 		FaceSize = 48,
 		RightFaceMargin = 16,
-		TopMargin = 6
+		TopMargin = 8
 	};
 
 	/*
