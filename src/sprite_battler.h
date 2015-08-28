@@ -21,6 +21,8 @@
 // Headers
 #include "sprite.h"
 #include "game_battler.h"
+#include "battle_animation.h"
+#include <boost/scoped_ptr.hpp>
 
 struct FileRequestResult;
 
@@ -94,6 +96,7 @@ protected:
 	int flash_counter;
 	LoopState loop_state;
 	bool old_hidden;
+	boost::scoped_ptr<BattleAnimation> animation;
 };
 
 #endif

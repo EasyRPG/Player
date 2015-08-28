@@ -96,6 +96,19 @@ void Sprite_Battler::Update() {
 		}
 	} else if (anim_state > 0) {
 		if (Player::IsRPG2k3()) {
+			if (animation) {
+				if (animation->IsDone()) {
+					if (loop_state == LoopState_IdleAnimationAfterFinish) {
+						SetAnimationState(AnimationState_Idle);
+					}
+					animation->SetFrame(0);
+				}
+
+				animation->Update();
+
+				return;
+			}
+
 			static const int frames[] = {0,1,2,1};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
@@ -135,9 +148,16 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 
-			FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-			request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
-			request->Start();
+			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
+				SetBitmap(BitmapRef());
+				animation.reset(new BattleAnimation(GetX(), GetY(), &Data::animations[ext.animation_id - 1]));
+			}
+			else {
+				animation.reset();
+				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
+				request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+				request->Start();
+			}
 		}
 	}
 }
@@ -149,6 +169,10 @@ bool Sprite_Battler::IsIdling() {
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
+
+	SetX(battler->GetBattleX());
+	SetY(battler->GetBattleY());
+	SetZ(battler->GetBattleY()); // Not a typo
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
@@ -169,10 +193,6 @@ void Sprite_Battler::CreateSprite() {
 		SetOy(24);
 		SetAnimationState(anim_state);
 	}
-
-	SetX(battler->GetBattleX());
-	SetY(battler->GetBattleY());
-	SetZ(battler->GetBattleY()); // Not a typo
 
 	SetVisible(!battler->IsHidden());
 }

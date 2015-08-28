@@ -32,6 +32,7 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	BitmapRef graphic;
 
 	large = false;
+	z = 1500;
 
 	if (name.empty()) return;
 
@@ -68,11 +69,31 @@ BattleAnimation::~BattleAnimation() {
 }
 
 int BattleAnimation::GetZ() const {
-	return 1500;
+	return z;
+}
+
+void BattleAnimation::SetZ(int nz) {
+	z = nz;
 }
 
 DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
+}
+
+int BattleAnimation::GetX() const {
+	return x;
+}
+
+void BattleAnimation::SetX(int nx) {
+	x = nx;
+}
+
+int BattleAnimation::GetY() const {
+	return y;
+}
+
+void BattleAnimation::SetY(int ny) {
+	y = ny;
 }
 
 void BattleAnimation::Draw() {
@@ -149,3 +170,4 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
 	}
 }
+
