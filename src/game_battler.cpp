@@ -117,7 +117,31 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
-	// TODO: Check for Movable(?) and Silence
+	
+	// > 10 makes any skill usable
+	int smallest_physical_rate = 11;
+	int smallest_magical_rate = 11;
+
+	const std::vector<int16_t> states = GetStates();
+	for (std::vector<int16_t>::const_iterator it = states.begin();
+		it != states.end(); ++it) {
+		const RPG::State& state = Data::states[(*it) - 1];
+
+		if (state.restrict_skill) {
+			smallest_physical_rate = std::min(state.restrict_skill_level, smallest_physical_rate);
+		}
+
+		if (state.restrict_magic) {
+			smallest_magical_rate = std::min(state.restrict_magic_level, smallest_magical_rate);
+		}
+	}
+
+	if (skill.physical_rate >= smallest_physical_rate) {
+		return false;
+	}
+	if (skill.magical_rate >= smallest_magical_rate) {
+		return false;
+	}
 
 	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
 	// SetEscapePlace first. Not sure if any game uses this...
