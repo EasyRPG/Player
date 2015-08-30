@@ -203,6 +203,13 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 		if (hp < hpmin || hp > hpmax)
 			return false;
 	}
+
+	if (condition.flags.turn_actor) {
+		if (!CheckTurns(Game_Actors::GetActor(condition.actor_id)->GetBattleTurn(),
+			condition.turn_actor_b, condition.turn_actor_a)) {
+			return false;
+		}
+	}
 	/*
 	TODO RPG2k3
 

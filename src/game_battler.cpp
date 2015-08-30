@@ -495,8 +495,17 @@ void Game_Battler::ResetBattle() {
 	battle_turn = 0;
 	states_turn_count.clear();
 	states_turn_count.resize(Data::states.size());
+	last_battle_action = -1;
 }
 
 int Game_Battler::GetBattleTurn() const {
 	return battle_turn;
+}
+
+void Game_Battler::SetLastBattleAction(int battle_action) {
+	last_battle_action = battle_action;
+}
+
+int Game_Battler::GetLastBattleAction() const {
+	return last_battle_action;
 }

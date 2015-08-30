@@ -416,6 +416,10 @@ public:
 	 */
 	std::vector<int16_t> NextBattleTurn();
 
+	void SetLastBattleAction(int battle_action);
+
+	int GetLastBattleAction() const;
+
 	/**
 	 * Initializes battle related data to there default values.
 	 */
@@ -432,6 +436,7 @@ protected:
 	bool defending;
 	int battle_turn;
 	std::vector<int16_t> states_turn_count;
+	int last_battle_action;
 };
 
 #endif

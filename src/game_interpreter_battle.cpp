@@ -214,6 +214,9 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	bool wait = com.parameters[2] != 0;
 	bool allies = false;
 
+	if (active)
+		return !Main_Data::game_screen->IsBattleAnimationWaiting();
+
 	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;
 	}
@@ -317,10 +320,8 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
 			break;
 		case 5:
-			Output::Warning("Battle: Hero uses command X not implemented");
 			// Hero uses the ... command
-			/*ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->last_command == com.parameters[2]);*/
+			result = Game_Actors::GetActor(com.parameters[1])->GetLastBattleAction() == com.parameters[2];
 			break;
 	}
 

@@ -487,6 +487,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			if (!action->IsFirstAttack()) {
 				action->Execute();
 			}
+			else {
+				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
+			}
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 			if (action->IsSuccess() && target_sprite) {
@@ -620,6 +623,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			SetState(State_SelectOption);
 			break;
 		case State_SelectCommand:
+			active_actor->SetLastBattleAction(-1);
 			SetState(State_SelectOption);
 			break;
 		case State_SelectEnemyTarget:
@@ -674,6 +678,8 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 void Scene_Battle_Rpg2k3::CommandSelected() {
 	const RPG::BattleCommand& command = 
 		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
+
+	active_actor->SetLastBattleAction(command.ID);
 
 	switch (command.type) {
 	case RPG::BattleCommand::Type_attack:
