@@ -403,8 +403,21 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
+	/** 
+	 * @return Current turn in battle
+	 */
+	int GetBattleTurn() const;
+
 	/**
-	 * Resets battle modifiers (gauge, defense and charge).
+	 * Increases the turn counter of the actor and heals states that reached
+	 * the required numbers of turns.
+	 *
+	 * @return Healed states
+	 */
+	std::vector<int16_t> NextBattleTurn();
+
+	/**
+	 * Initializes battle related data to there default values.
 	 */
 	void ResetBattle();
 
@@ -412,9 +425,13 @@ protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
 
+	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
+
 	bool charged;
 	bool defending;
+	int battle_turn;
+	std::vector<int16_t> states_turn_count;
 };
 
 #endif

@@ -401,6 +401,17 @@ private:
 	int new_monster_id;
 };
 
+// Special algorithm for handling non-moving because of states
+class NoMove : public AlgorithmBase {
+public:
+	NoMove(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+
+	bool Execute();
+	void Apply();
+};
+
 }
 
 

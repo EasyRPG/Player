@@ -360,13 +360,34 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (action->IsFirstAttack() && action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
 			}
+
+			battle_action_state = BattleActionState_ConditionHeal;
 			
+			break;
+		case BattleActionState_ConditionHeal:
+			if (battle_action_wait--) {
+				return false;
+			}
+			battle_action_wait = 0;
+
+			if (action->IsFirstAttack()) {
+				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
+				if (!states.empty()) {
+					battle_message_window->Clear();
+					for (std::vector<int16_t>::iterator it = states.begin(); it != states.end(); ++it) {
+						battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+					}
+					battle_action_wait = 30;
+				}
+			}
+
 			if (!action->GetTarget()) {
 				battle_action_state = BattleActionState_Finished;
 			}
 			else {
 				battle_action_state = BattleActionState_Result;
 			}
+
 			break;
 		case BattleActionState_Result:
 			if (battle_action_wait--) {
@@ -647,19 +668,28 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	status_window->SetIndex(actor_index);
 	actor_index++;
 
-	if (!active_actor->CanAct() || active_actor->IsDead()) {
+	if (active_actor->IsDead()) {
 		SelectNextActor();
 		return;
 	}
 
 	Game_Battler* random_target = NULL;
-	switch (active_actor->GetSignificantRestriction()) {
+
+	if (active_actor->CanAct()) {
+		switch (active_actor->GetSignificantRestriction()) {
 		case RPG::State::Restriction_attack_ally:
 			random_target = Main_Data::game_party->GetRandomActiveBattler();
 			break;
 		case RPG::State::Restriction_attack_enemy:
 			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 			break;
+		}
+	}
+	else {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NoMove>(active_actor));
+		battle_actions.push_back(active_actor);
+		SelectNextActor();
+		return;
 	}
 
 	if (random_target || auto_battle || active_actor->GetAutoBattle()) {

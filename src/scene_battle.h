@@ -107,6 +107,10 @@ public:
 		 */
 		BattleActionState_Start,
 		/**
+		 * Handles healing of conditions that get auto removed after X turns.
+		 */
+		BattleActionState_ConditionHeal,
+		/**
 		 * Used to apply the new conditions that were caused.
 		 * Called once for each condition.
 		 */

@@ -563,6 +563,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					this->agility = agility;
 			}
 		}
+		else {
+			// Force a no damage message
+			this->hp = 0;
+		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
@@ -1023,3 +1027,37 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 void Game_BattleAlgorithm::Transform::Apply() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }
+
+Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
+	const std::vector<int16_t>& states = source->GetStates();
+
+	for (std::vector<int16_t>::const_iterator it = states.begin();
+		it != states.end(); ++it) {
+		if (Data::states[*it].restriction == RPG::State::Restriction_do_nothing) {
+			std::string msg = Data::states[*it].message_affected;
+			if (!msg.empty()) {
+				return source->GetName() + msg;
+			}
+			return "";
+		}
+	}
+
+	// State was healed before the actor got his turn
+	return "";
+}
+
+bool Game_BattleAlgorithm::NoMove::Execute() {
+	// no-op
+	return true;
+}
+
+void Game_BattleAlgorithm::NoMove::Apply() {
+	// no-op
+}
+
+

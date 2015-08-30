@@ -257,6 +257,8 @@ void Game_Battler::RemoveState(int state_id) {
 	std::vector<int16_t>::iterator it = std::find(states.begin(), states.end(), state_id);
 	if (it != states.end())
 		states.erase(it);
+
+	states_turn_count[state_id - 1] = 0;
 }
 
 static bool NonPermanent(int state_id) {
@@ -278,6 +280,9 @@ void Game_Battler::RemoveBattleStates() {
 }
 
 void Game_Battler::RemoveAllStates() {
+	states_turn_count.clear();
+	states_turn_count.resize(Data::states.size());
+
 	std::vector<int16_t>& states = GetStates();
 	states.clear();
 }
@@ -437,8 +442,37 @@ void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
 }
 
+std::vector<int16_t> Game_Battler::NextBattleTurn() {
+	++battle_turn;
+
+	std::vector<int16_t> healed_states;
+
+	for (size_t i = 0; i < states_turn_count.size(); ++i) {
+		if (HasState(i + 1)) {
+			states_turn_count[i] += 1;
+
+			if (states_turn_count[i] >= Data::states[i].hold_turn) {
+				if (rand() % 100 < Data::states[i].auto_release_prob) {
+					healed_states.push_back(i + 1);
+					states_turn_count[i] = 0;
+					RemoveState(i + 1);
+				}
+			}
+		}
+	}
+
+	return healed_states;
+}
+
 void Game_Battler::ResetBattle() {
 	gauge = EASYRPG_GAUGE_MAX_VALUE / 2;
 	charged = false;
 	defending = false;
+	battle_turn = 0;
+	states_turn_count.clear();
+	states_turn_count.resize(Data::states.size());
+}
+
+int Game_Battler::GetBattleTurn() const {
+	return battle_turn;
 }

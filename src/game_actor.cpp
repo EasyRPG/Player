@@ -624,7 +624,8 @@ int Game_Actor::GetBattleX() const {
 		return position;
 	case Game_Battle::BattlePincer:
 	case Game_Battle::BattleSurround:
-		return 0;
+		// ToDo: Correct position
+		return SCREEN_TARGET_WIDTH - position;
 	}
 }
 
