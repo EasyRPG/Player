@@ -1221,15 +1221,15 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
 	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
 												 com.parameters[1]);
-	Game_Character *player;
+	Game_Character *player = Main_Data::game_player.get();
+	Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+
 	switch (com.parameters[2]) {
 		case 0:
-			player = Main_Data::game_player.get();
-			Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
 			break;
 		case 1:
-			Game_Battle::SetTerrainId(0);
 			Game_Temp::battle_background = com.string;
+
 			if (Player::IsRPG2k())
 				Game_Temp::battle_formation = 0;
 			else

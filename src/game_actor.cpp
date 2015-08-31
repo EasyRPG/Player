@@ -561,12 +561,13 @@ bool Game_Actor::GetAutoBattle() const {
 int Game_Actor::GetBattleX() const {
 	float position;
 
-	if (Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+	if (Data::actors[data.ID - 1].battle_x == 0 ||
+		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
 		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
 		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
-		float right = left + Data::terrains[0].grid_c / 1103;
+		float right = left + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_c / 1103;
 
 		switch (party_size) {
 		case 1:
@@ -609,6 +610,18 @@ int Game_Actor::GetBattleX() const {
 				break;
 			}
 		}
+
+		switch (Game_Battle::GetBattleMode()) {
+			case Game_Battle::BattleNormal:
+			case Game_Battle::BattleInitiative:
+				return SCREEN_TARGET_WIDTH - position;
+			case Game_Battle::BattleBackAttack:
+				return position;
+			case Game_Battle::BattlePincer:
+			case Game_Battle::BattleSurround:
+				// ToDo: Correct position
+				return SCREEN_TARGET_WIDTH - position;
+		}
 	}
 	else {
 		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
@@ -616,28 +629,19 @@ int Game_Actor::GetBattleX() const {
 		position = (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
 	}
 
-	switch (Game_Battle::GetBattleMode()) {
-	case Game_Battle::BattleNormal:
-	case Game_Battle::BattleInitiative:
-		return SCREEN_TARGET_WIDTH - position;
-	case Game_Battle::BattleBackAttack:
-		return position;
-	case Game_Battle::BattlePincer:
-	case Game_Battle::BattleSurround:
-		// ToDo: Correct position
-		return SCREEN_TARGET_WIDTH - position;
-	}
+	return position;
 }
 
 int Game_Actor::GetBattleY() const {
 	float position;
 
-	if (Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+	if (Data::actors[data.ID - 1].battle_y == 0 ||
+		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
 		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
-		float top = Data::terrains[0].grid_a;
-		float bottom = top + Data::terrains[0].grid_b / 13;
+		float top = Data::terrains[Game_Battle::GetTerrainId() - 1].grid_a;
+		float bottom = top + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_b / 13;
 
 		switch (party_size) {
 		case 1:
