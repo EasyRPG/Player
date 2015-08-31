@@ -871,10 +871,39 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 	int i = 0;
 	for (std::vector<Game_Battler*>::iterator it = battler.begin();
 		it != battler.end(); ++it) {
+
 		if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
 			actor_index = i;
 			active_actor = static_cast<Game_Actor*>(*it);
 
+			// Handle automatic attack
+			Game_Battler* random_target = NULL;
+
+			if (active_actor->CanAct()) {
+				switch (active_actor->GetSignificantRestriction()) {
+				case RPG::State::Restriction_attack_ally:
+					random_target = Main_Data::game_party->GetRandomActiveBattler();
+					break;
+				case RPG::State::Restriction_attack_enemy:
+					random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
+					break;
+				}
+			}
+
+			if (random_target || auto_battle || active_actor->GetAutoBattle()) {
+				if (!random_target) {
+					random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
+				}
+
+				// ToDo: Auto battle logic is dumb
+				active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+				battle_actions.push_back(active_actor);
+				active_actor->SetGauge(0);
+				
+				return;
+			}
+
+			// Handle manual attack
 			status_window->SetIndex(actor_index);
 
 			RefreshCommandWindow();
@@ -883,6 +912,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 
 			return;
 		}
+
 		++i;
 	}
 }
