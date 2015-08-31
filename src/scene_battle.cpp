@@ -189,6 +189,7 @@ void Scene_Battle::InitBattleTest()
 {
 	Game_Temp::battle_troop_id = Player::battle_test_troop_id;
 	Game_Temp::battle_background = Data::system.battletest_background;
+	Game_Battle::SetTerrainId(Data::system.battletest_terrain);
 
 	Main_Data::game_party->SetupBattleTestMembers();
 
