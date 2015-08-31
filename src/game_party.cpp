@@ -307,9 +307,9 @@ bool Game_Party::IsActorInParty(int actor_id) {
 }
 
 int Game_Party::GetActorPositionInParty(int actor_id) {
-	std::vector<short>::const_iterator it = std::find(data.party.begin(), data.party.end(), actor_id);
+	std::vector<short>::iterator it = std::find(data.party.begin(), data.party.end(), actor_id);
 
-	return it != data.party.end() ? std::distance(data.party.cbegin(), it) : -1;
+	return it != data.party.end() ? std::distance(data.party.begin(), it) : -1;
 }
 
 int Game_Party::GetGold() {
