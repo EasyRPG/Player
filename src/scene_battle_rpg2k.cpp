@@ -159,8 +159,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		skill_window->SetActor(active_actor->GetId());
 		skill_window->SetIndex(0);
 		break;
-	case State_AllyAction:
-	case State_EnemyAction:
 	case State_Victory:
 	case State_Defeat:
 		// no-op
@@ -211,8 +209,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		command_window->SetVisible(true);
 		break;
-	case State_AllyAction:
-	case State_EnemyAction:
 	case State_Battle:
 		battle_message_window->SetVisible(true);
 		break;
@@ -300,10 +296,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		}
 		break;
 	}
-	case State_AllyAction:
-	case State_EnemyAction:
-		// no-op
-		break;
 	case State_Escape:
 		Escape();
 		break;
@@ -503,10 +495,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_SelectSkill:
 			SkillSelected();
 			break;
-		case State_AllyAction:
-		case State_EnemyAction:
-			// no-op
-			break;
 		case State_Victory:
 			Scene::Pop();
 			break;
@@ -546,8 +534,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_SelectAllyTarget:
 			SetState(previous_state);
 			break;
-		case State_AllyAction:
-		case State_EnemyAction:
 		case State_Battle:
 			// no-op
 			break;

@@ -88,10 +88,6 @@ public:
 		State_SelectAllyTarget,
 		/** Battle Running */
 		State_Battle,
-		/** Battle Running, ally does move */
-		State_AllyAction,
-		/** Battle running, enemy does move */
-		State_EnemyAction,
 		/** Battle ended with a victory */
 		State_Victory,
 		/** Battle ended with a defeat */
