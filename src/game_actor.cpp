@@ -571,7 +571,7 @@ int Game_Actor::GetBattleX() const {
 
 		switch (party_size) {
 		case 1:
-			position = (right - left) / 2;
+			position = left + ((right - left) / 2);
 			break;
 		case 2:
 			switch (party_pos) {
@@ -645,7 +645,7 @@ int Game_Actor::GetBattleY() const {
 
 		switch (party_size) {
 		case 1:
-			position = (bottom - top) / 2;
+			position = top + ((bottom - top) / 2);
 			break;
 		case 2:
 			switch (party_pos) {
