@@ -280,6 +280,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		command_window->SetActive(true);
 		break;
 	case State_SelectEnemyTarget:
+		CreateBattleTargetWindow();
+		break;
 	case State_Battle:
 		// no-op
 		break;
@@ -721,8 +723,6 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k3::AttackSelected() {
-	CreateBattleTargetWindow();
-
 	Scene_Battle::AttackSelected();
 }
 
