@@ -426,6 +426,17 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			}
 			break;
 		}
+		case State_Victory:
+			Scene::Pop();
+			break;
+		case State_Defeat:
+			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
+				Scene::Pop();
+			}
+			else {
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+			}
+			break;
 		case State_Escape:
 			Escape();
 			break;
@@ -585,19 +596,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			// no-op
 			break;
 		case State_Victory:
-			if (message_window->IsNextMessagePossible()) {
-				message_window->Update();
-			} else {
-				Scene::Pop();
-			}
-			break;
 		case State_Defeat:
-			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
-				Scene::Pop();
-			} else {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
-			}
-			break;
 		case State_Escape:
 			// no-op
 			break;
@@ -632,12 +631,6 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_Victory:
 		case State_Defeat:
-			if (message_window->IsNextMessagePossible()) {
-				message_window->Update();
-			} else {
-				Scene::Pop();
-			}
-			break;
 		case State_Escape:
 			// no-op
 			break;

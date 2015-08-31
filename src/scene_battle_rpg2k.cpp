@@ -296,6 +296,17 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		}
 		break;
 	}
+	case State_Victory:
+		Scene::Pop();
+		break;
+	case State_Defeat:
+		if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
+			Scene::Pop();
+		}
+		else {
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+		}
+		break;
 	case State_Escape:
 		Escape();
 		break;
@@ -496,15 +507,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			SkillSelected();
 			break;
 		case State_Victory:
-			Scene::Pop();
-			break;
 		case State_Defeat:
-			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
-				Scene::Pop();
-			} else {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
-			}
-			break;
 		case State_Escape:
 			// no-op
 			break;
@@ -539,8 +542,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_Victory:
 		case State_Defeat:
-			Scene::Pop();
-			break;
 		case State_Escape:
 			// no-op
 			break;
