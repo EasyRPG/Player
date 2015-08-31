@@ -102,12 +102,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 		return true;
 	}
 	else {
-		if (subset > 0) {
-			return Data::skills[skill_id - 1].type == subset;
-		}
-		else {
-			return Data::skills[skill_id - 1].type < RPG::Skill::Type_subskill;
-		}
+		return subset == 0 || Data::skills[skill_id - 1].type == subset;
 	}
 }
 
