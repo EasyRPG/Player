@@ -628,7 +628,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			SetState(State_SelectCommand);
 			break;
 		case State_SelectAllyTarget:
-			SetState(State_SelectItem);
+			SetState(previous_state);
 			break;
 		case State_Battle:
 		case State_AllyAction:
