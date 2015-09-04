@@ -56,20 +56,13 @@ void Scene_Battle_Rpg2k::Update() {
 	Scene_Battle::Update();
 }
 
-void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
-	std::vector<std::string> commands;
-	commands.push_back(Data::terms.battle_fight);
-	commands.push_back(Data::terms.battle_auto);
-	commands.push_back(Data::terms.battle_escape);
+void Scene_Battle_Rpg2k::CreateUi() {
+	Scene_Battle::CreateUi();
 
-	options_window.reset(new Window_Command(commands, 76));
-	options_window->SetHeight(80);
-	options_window->SetY(SCREEN_TARGET_HEIGHT-80);
-	
-	if (!Game_Battle::IsEscapeAllowed()) {
-		// No escape
-		options_window->DisableItem(2);
-	}
+	CreateBattleTargetWindow();
+	CreateBattleCommandWindow();
+
+	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 }
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
@@ -99,13 +92,6 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
 	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
-}
-
-
-void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
-	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
-
-	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {

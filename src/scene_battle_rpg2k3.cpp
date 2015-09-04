@@ -87,6 +87,7 @@ void Scene_Battle_Rpg2k3::Update() {
 	}
 
 	Scene_Battle::Update();
+	UpdateCursors();
 
 	//enemy_status_window->Update();
 }
@@ -105,7 +106,20 @@ void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
 	enemy_cursor->SetVisible(false);
 }
 
-void Scene_Battle_Rpg2k3::CreateCursors() {
+void Scene_Battle_Rpg2k3::CreateUi() {
+	Scene_Battle::CreateUi();
+
+	CreateBattleTargetWindow();
+	CreateBattleCommandWindow();
+
+	// TODO: Auto Battle not implemented
+	options_window->DisableItem(1);
+	// No escape. FIXME: Only enabled when party has initiative.
+	options_window->DisableItem(2);
+
+	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - 76, 80, true));
+	enemy_status_window->SetVisible(false);
+
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
 
@@ -160,25 +174,6 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::stri
 	FloatText float_text = FloatText(EASYRPG_SHARED_PTR<Sprite>(floating_text), _duration);
 
 	floating_texts.push_back(float_text);
-}
-
-void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
-	std::vector<std::string> commands;
-	commands.push_back(Data::terms.battle_fight);
-	commands.push_back(Data::terms.battle_auto);
-	commands.push_back(Data::terms.battle_escape);
-
-	options_window.reset(new Window_Command(commands, 76));
-	options_window->SetHeight(80);
-	options_window->SetY(SCREEN_TARGET_HEIGHT-80);
-	// TODO: Auto Battle not implemented
-	options_window->DisableItem(1);
-
-	// No escape. FIXME: Only enabled when party has initiative.
-	options_window->DisableItem(2);
-
-	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - 76, 80, true));
-	enemy_status_window->SetVisible(false);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
@@ -238,11 +233,6 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
 	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
-}
-
-void Scene_Battle_Rpg2k3::CreateBattleMessageWindow() {
-	message_window.reset(new Window_Message(0,(SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
-	message_window->SetZ(3002);
 }
 
 void Scene_Battle_Rpg2k3::RefreshCommandWindow() {

@@ -89,8 +89,7 @@ void Scene_Battle::Start() {
 	auto_battle = false;
 	enemy_action = NULL;
 
-	CreateCursors();
-	CreateWindows();
+	CreateUi();
 
 	screen.reset(new Screen());
 
@@ -120,15 +119,14 @@ void Scene_Battle::TransitionOut() {
 	}
 }
 
-void Scene_Battle::CreateCursors() {
-
-}
-
-void Scene_Battle::CreateWindows() {
-	CreateBattleOptionWindow();
-	CreateBattleTargetWindow();
-	CreateBattleCommandWindow();
-	CreateBattleMessageWindow();
+void Scene_Battle::CreateUi() {
+	std::vector<std::string> commands;
+	commands.push_back(Data::terms.battle_fight);
+	commands.push_back(Data::terms.battle_auto);
+	commands.push_back(Data::terms.battle_escape);
+	options_window.reset(new Window_Command(commands, 76));
+	options_window->SetHeight(80);
+	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetVisible(false);
@@ -142,6 +140,9 @@ void Scene_Battle::CreateWindows() {
 	skill_window->SetHelpWindow(help_window.get());
 
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
+
+	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+	message_window->SetZ(3002);
 }
 
 void Scene_Battle::Update() {
@@ -176,13 +177,7 @@ void Scene_Battle::Update() {
 		ProcessInput();
 	}
 
-	//DoAuto();
-
 	UpdateBackground();
-	//UpdateCursors();
-	//UpdateSprites();
-	//UpdateFloaters();
-	//UpdateAnimations();
 
 	Game_Battle::Update();
 

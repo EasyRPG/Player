@@ -39,7 +39,11 @@ public:
 
 protected:
 	void OnSystem2Ready(FileRequestResult* result);
-	void CreateCursors();
+	void CreateUi();
+
+	void CreateBattleTargetWindow();
+	void CreateBattleCommandWindow();
+
 	void UpdateCursors();
 	void DrawFloatText(int x, int y, int color, const std::string& text, int _duration);
 
@@ -52,11 +56,6 @@ protected:
 	bool CheckAbort();
 	bool CheckFlee();
 	bool CheckResultConditions();
-
-	void CreateBattleOptionWindow();
-	void CreateBattleTargetWindow();
-	void CreateBattleCommandWindow();
-	void CreateBattleMessageWindow();
 
 	void ProcessActions();
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);

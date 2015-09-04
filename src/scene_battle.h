@@ -124,13 +124,7 @@ protected:
 
 	virtual void InitBattleTest();
 
-	virtual void CreateCursors();
-	virtual void CreateWindows();
-
-	virtual void CreateBattleOptionWindow() = 0;
-	virtual void CreateBattleTargetWindow() = 0;
-	virtual void CreateBattleCommandWindow() = 0;
-	virtual void CreateBattleMessageWindow() = 0;
+	virtual void CreateUi();
 
 	virtual void ProcessActions() = 0;
 	virtual void ProcessInput() = 0;

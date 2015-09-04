@@ -41,16 +41,16 @@ public:
 protected:
 	void SetState(State new_state);
 
+	void CreateUi();
+
+	void CreateBattleTargetWindow();
+	void CreateBattleCommandWindow();
+
 	bool CheckWin();
 	bool CheckLose();
 	bool CheckAbort();
 	bool CheckFlee();
 	bool CheckResultConditions();
-
-	void CreateBattleOptionWindow();
-	void CreateBattleTargetWindow();
-	void CreateBattleCommandWindow();
-	void CreateBattleMessageWindow();
 
 	void RefreshCommandWindow();
 
