@@ -952,6 +952,12 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	pattern = RPG::EventPage::Frame_middle;
 }
 
+void Game_Character::Flash(Color color, int duration) {
+	SetFlashColor(color);
+	SetFlashTimeLeft(duration * DEFAULT_FPS / 10);
+}
+
+
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	tEventHash::const_iterator it;

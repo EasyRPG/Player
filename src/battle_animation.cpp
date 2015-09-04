@@ -19,19 +19,22 @@
 #include "async_handler.h"
 #include "rpg_animation.h"
 #include "output.h"
+#include "game_battle.h"
+#include "game_system.h"
+#include "game_map.h"
 #include "graphics.h"
+#include "main_data.h"
 #include "filefinder.h"
 #include "cache.h"
 #include "battle_animation.h"
 #include "baseui.h"
+#include "spriteset_battle.h"
 
-BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0)
+BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
+	animation(anim), frame(0), update_flag(true), large(false)
 {
-	const std::string& name = animation->animation_name;
+	const std::string& name = animation.animation_name;
 	BitmapRef graphic;
-
-	large = false;
 
 	if (name.empty()) return;
 
@@ -41,17 +44,17 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	// And we can't rely on "success" state of FileRequest because it's always
 	// true on desktop.
 #ifdef EMSCRIPTEN
-	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation->animation_name);
+	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
 	request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 	request->Start();
 #else
 	if (!FileFinder::FindImage("Battle", name).empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation->animation_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
 		request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation->animation_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation.animation_name);
 		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	}
@@ -59,12 +62,6 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 		Output::Warning("Couldn't find animation: %s", name.c_str());
 	}
 #endif
-
-	Graphics::RegisterDrawable(this);
-}
-
-BattleAnimation::~BattleAnimation() {
-	Graphics::RemoveDrawable(this);
 }
 
 int BattleAnimation::GetZ() const {
@@ -75,42 +72,13 @@ DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
 }
 
-void BattleAnimation::Draw() {
-	if (!screen) {
-		// Initialization failed
-		return;
-	}
-
-	if (frame >= (int) animation->frames.size())
-		return;
-
-	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
-
-	std::vector<RPG::AnimationCellData>::const_iterator it;
-	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
-		const RPG::AnimationCellData& cell = *it;
-		int sx = cell.cell_id % 5;
-		int sy = cell.cell_id / 5;
-		int size = large ? 128 : 96;
-		Rect src_rect(sx * size, sy * size, size, size);
-		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
-		int opacity = 255 * (100 - cell.transparency) / 100;
-		double zoom = cell.zoom / 100.0;
-		DisplayUi->GetDisplaySurface()->EffectsBlit(
-			x + cell.x, y + cell.y,
-			size / 2, size / 2,
-			*screen, src_rect, 
-			opacity, tone,
-			zoom, zoom);
-	}
-}
-
 void BattleAnimation::Update() {
-	static bool update = true;
-	if (update) {
+	// Update every other frame
+	if (update_flag) {
 		frame++;
+		RunTimedSfx();
 	}
-	update = !update;
+	update_flag = !update_flag;
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -122,7 +90,7 @@ int BattleAnimation::GetFrame() const {
 }
 
 int BattleAnimation::GetFrames() const {
-	return animation->frames.size();
+	return animation.frames.size();
 }
 
 bool BattleAnimation::IsDone() const {
@@ -148,4 +116,146 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 	else {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
 	}
+}
+
+void BattleAnimation::DrawAt(int x, int y) {
+	if (!screen) return; // Initialization failed
+	if (IsDone()) return;
+
+	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
+
+	std::vector<RPG::AnimationCellData>::const_iterator it;
+	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
+		const RPG::AnimationCellData& cell = *it;
+		int sx = cell.cell_id % 5;
+		int sy = cell.cell_id / 5;
+		int size = large ? 128 : 96;
+		Rect src_rect(sx * size, sy * size, size, size);
+		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
+		int opacity = 255 * (100 - cell.transparency) / 100;
+		double zoom = cell.zoom / 100.0;
+		DisplayUi->GetDisplaySurface()->EffectsBlit(
+			x + cell.x, y + cell.y,
+			size / 2, size / 2,
+			*screen, src_rect,
+			opacity, tone,
+			zoom, zoom);
+	}
+}
+
+// FIXME: looks okay, but needs to be measured
+static int flash_duration = 5;
+
+void BattleAnimation::RunTimedSfx() {
+	// Lookup any timed SFX (SE/flash/shake) data for this frame
+	std::vector<RPG::AnimationTiming>::const_iterator it = animation.timings.begin();
+	for (; it != animation.timings.end(); ++it) {
+		if (it->frame == GetFrame()) break;
+	}
+	if (it == animation.timings.end()) return;
+	const RPG::AnimationTiming& timing = *it;
+	// We got some!
+
+	// Play the SE.
+	Game_System::SePlay(timing.se);
+
+	// Flash.
+	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
+		Flash(Color(timing.flash_red << 3,
+			timing.flash_green << 3,
+			timing.flash_blue << 3,
+			timing.flash_power << 3));
+	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen) {
+		Main_Data::game_screen->FlashOnce(
+			timing.flash_red << 3,
+			timing.flash_green << 3,
+			timing.flash_blue << 3,
+			timing.flash_power << 3,
+			flash_duration);
+	}
+
+	// TODO: Shake.
+}
+
+// For handling the vertical position.
+// (The first argument should be an RPG::Animation::Position,
+// but the position member is an int, so take an int.)
+static int CalculateOffset(int pos, int target_height) {
+	switch (pos) {
+	case RPG::Animation::Position_down:
+		return target_height / 2;
+	case RPG::Animation::Position_up:
+		return -(target_height / 2);
+	default:
+		return 0;
+	}
+}
+
+/////////
+
+BattleAnimationChara::BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara) :
+	BattleAnimation(anim), character(chara)
+{
+	Graphics::RegisterDrawable(this);
+}
+BattleAnimationChara::~BattleAnimationChara() {
+	Graphics::RemoveDrawable(this);
+}
+void BattleAnimationChara::Draw() {
+	const int character_height = 24;
+	int vertical_center = character.GetScreenY() - character_height/2;
+	int offset = CalculateOffset(animation.position, character_height);
+	DrawAt(character.GetScreenX(), vertical_center + offset);
+}
+void BattleAnimationChara::Flash(Color c) {
+	character.Flash(c, flash_duration);
+}
+
+/////////
+
+BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, Game_Battler& batt) :
+	BattleAnimation(anim), battler(batt), sprite(Game_Battle::GetSpriteset().FindBattler(&battler))
+{
+	Graphics::RegisterDrawable(this);
+}
+BattleAnimationBattle::~BattleAnimationBattle() {
+	Graphics::RemoveDrawable(this);
+}
+void BattleAnimationBattle::Draw() {
+	int offset = 0;
+	if (sprite && sprite->GetBitmap()) {
+		offset = CalculateOffset(animation.position, sprite->GetBitmap()->GetHeight());
+	}
+	DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
+}
+void BattleAnimationBattle::Flash(Color c) {
+	if (sprite)
+		sprite->Flash(c, flash_duration);
+}
+
+/////////
+
+BattleAnimationGlobal::BattleAnimationGlobal(const RPG::Animation& anim) :
+	BattleAnimation(anim)
+{
+	Graphics::RegisterDrawable(this);
+}
+BattleAnimationGlobal::~BattleAnimationGlobal() {
+	Graphics::RemoveDrawable(this);
+}
+void BattleAnimationGlobal::Draw() {
+	// The animations are played at the vertices of a regular grid,
+	// 16 tiles wide by 10 tiles high, fixed against the map.
+	const int x_stride = 16 * TILE_SIZE;
+	const int y_stride = 10 * TILE_SIZE;
+	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
+	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
+	for (int y = 0; y != 3; ++y) {
+		for (int x = 0; x != 3; ++x) {
+			DrawAt(x_stride*x - x_offset, y_stride*y - y_offset);
+		}
+	}
+}
+void BattleAnimationGlobal::Flash(Color c) {
+	// nop
 }

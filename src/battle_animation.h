@@ -19,18 +19,24 @@
 #define _BATTLE_ANIMATION_H_
 
 // Headers
+#include "game_battler.h"
+#include "game_character.h"
 #include "system.h"
 #include "rpg_animation.h"
 #include "drawable.h"
+#include "sprite_battler.h"
+
 
 struct FileRequestResult;
 
+// BattleAnimation is responsible for playing an animation.
+// It's an abstract class; there are three derived classes
+// that can be used, depending on what is targeted.
+
 class BattleAnimation : public Drawable {
 public:
-	BattleAnimation(int x, int y, const RPG::Animation* animation);
-	~BattleAnimation();
+	BattleAnimation(const RPG::Animation& anim);
 
-	void Draw();
 	int GetZ() const;
 	DrawableType GetType() const;
 
@@ -41,15 +47,50 @@ public:
 	bool IsDone() const;
 
 protected:
+	virtual void Flash(Color c) = 0;
+	void DrawAt(int x, int y);
+	void RunTimedSfx();
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
 
-	int x;
-	int y;
-	const RPG::Animation* animation;
-	int frame;
-	bool large;
+	const RPG::Animation& animation;
 	BitmapRef screen;
+	int frame;
+	bool update_flag;
+	bool large;
+};
+
+// For playing animations against a character on the map.
+class BattleAnimationChara : public BattleAnimation {
+public:
+	BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara);
+	~BattleAnimationChara();
+	void Draw();
+protected:
+	void Flash(Color c);
+	Game_Character& character;
+};
+
+// For playing animations against a battler in battle.
+class BattleAnimationBattle : public BattleAnimation {
+public:
+	BattleAnimationBattle(const RPG::Animation& anim, Game_Battler& batt);
+	~BattleAnimationBattle();
+	void Draw();
+protected:
+	void Flash(Color c);
+	Game_Battler& battler;
+	Sprite_Battler* sprite;
+};
+
+// For playing "Show on the entire map" animations.
+class BattleAnimationGlobal : public BattleAnimation {
+public:
+	BattleAnimationGlobal(const RPG::Animation& anim);
+	~BattleAnimationGlobal();
+	void Draw();
+protected:
+	void Flash(Color c);
 };
 
 #endif

@@ -219,7 +219,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	}
 
 	if (target < 0) {
-		Main_Data::game_screen->ShowGlobalBattleAnimation(animation_id);
+		// FIXME: is this a "target all enemies" animation?
 		return !wait;
 	}
 	else {

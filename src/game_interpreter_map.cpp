@@ -1354,8 +1354,7 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		event->SetFlashColor(color);
-		event->SetFlashTimeLeft(tenths * DEFAULT_FPS / 10);
+		event->Flash(color, tenths);
 
 		if (wait)
 			SetupWait(tenths);
