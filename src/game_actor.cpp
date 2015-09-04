@@ -27,6 +27,14 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 
+static int max_stat_value() {
+	return Data::system.ldb_id == 2003 ? 9999 : 999;
+}
+
+static int max_exp_value() {
+	return Data::system.ldb_id == 2003 ? 9999999 : 999999;
+}
+
 Game_Actor::Game_Actor(int actor_id) :
 	Game_Battler(),
 	data(Main_Data::game_data.actors[actor_id - 1]) {
@@ -188,7 +196,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += data.hp_mod;
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_stat_value());
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -203,7 +211,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += data.sp_mod;
 
-	return min(max(n, 0), 999);
+	return min(max(n, 0), max_stat_value());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -215,15 +223,19 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.attack[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.attack[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.attack_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].atk_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_stat_value());
 }
 
 int Game_Actor::GetBaseAtk() const {
@@ -235,15 +247,19 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.defense[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.defense[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.defense_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].def_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_stat_value());
 }
 
 int Game_Actor::GetBaseDef() const {
@@ -255,15 +271,19 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.spirit[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.spirit[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.spirit_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].spi_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_stat_value());
 }
 
 int Game_Actor::GetBaseSpi() const {
@@ -275,15 +295,19 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.agility[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.agility[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.agility_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].agi_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_stat_value());
 }
 
 int Game_Actor::GetBaseAgi() const {
@@ -443,12 +467,12 @@ int Game_Actor::GetExp() const {
 }
 
 void Game_Actor::SetExp(int _exp) {
-	data.exp = min(max(_exp, 0), 999999);
+	data.exp = min(max(_exp, 0), max_exp_value());
 }
 
 void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 	int new_level = GetLevel();
-	int new_exp = min(max(exp, 0), 999999);
+	int new_exp = min(max(exp, 0), max_exp_value());
 
 	if (new_exp > GetExp()) {
 		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {
