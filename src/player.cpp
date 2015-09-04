@@ -101,6 +101,9 @@ void Player::Init(int argc, char *argv[]) {
 
 	if (init) return;
 
+	Output::Debug("EasyRPG Player started");
+	Output::Debug("======================");
+
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
 	if (!fatInitDefault()) {
@@ -322,7 +325,11 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 
 	std::vector<std::string>::const_iterator it;
 
+	std::stringstream ss;
+
 	for (it = args.begin(); it != args.end(); ++it) {
+		ss << *it << " ";
+
 		if (*it == "window" || *it == "--window") {
 			window_flag = true;
 		}
@@ -457,6 +464,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 #endif
 	}
+
+	Output::Debug("CLI: %s", ss.str().c_str());
 }
 
 static void OnSystemFileReady(FileRequestResult* result) {
@@ -481,20 +490,23 @@ void Player::CreateGameObjects() {
 			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 		}
 
+		Output::Debug("Loading game %s", Player::game_title.c_str());
+
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {
 				Player::engine = EngineRpg2k3;
 
 				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-					Output::Debug("Switching to RPG2k3 Interpreter");
+					Output::Debug("Using RPG2k3 Interpreter");
 				}
 				else {
 					Player::engine |= EngineRpg2k3E;
-					Output::Debug("Switching to RPG2k3 (English release, v1.10) Interpreter");
+					Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
 				}
 			}
 			else {
 				Player::engine = EngineRpg2k;
+				Output::Debug("Using RPG2k Interpreter");
 			}
 		}
 

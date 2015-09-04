@@ -234,6 +234,17 @@ void Game_Map::SetupCommon(int _id) {
 	int current_index = GetMapIndex(location.map_id);
 	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
 
+	ss.str("");
+	for (int cur = current_index;
+		GetMapIndex(Data::treemap.maps[cur].parent_map) != cur;
+		cur = Data::treemap.maps[cur].parent_map) {
+		if (cur != current_index) {
+			ss << " < ";
+		}
+		ss << Data::treemap.maps[cur].name.c_str();
+	}
+	Output::Debug("Tree: %s", ss.str().c_str());
+
 	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
@@ -529,7 +540,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
-						return (passages_up[tile_id] & bit != 0);
+						return (passages_up[tile_id] & bit) != 0;
 					}
 				}
 			}

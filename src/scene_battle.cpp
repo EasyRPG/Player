@@ -62,11 +62,19 @@ void Scene_Battle::Start() {
 
 	if (Game_Temp::battle_troop_id <= 0 ||
 		Game_Temp::battle_troop_id > (int)Data::troops.size()) {
-			Output::Warning("Invalid Monster Party Id %d", Game_Temp::battle_troop_id);
-			Game_Temp::battle_result = Game_Temp::BattleVictory;
-			Scene::Pop();
-			return;
+		char* error_msg = "Invalid Monster Party Id %d";
+		if (Player::battle_test_flag) {
+			Output::Error(error_msg, Game_Temp::battle_troop_id);
+		}
+		else {
+			Output::Warning(error_msg, Game_Temp::battle_troop_id);
+		}
+		Game_Temp::battle_result = Game_Temp::BattleVictory;
+		Scene::Pop();
+		return;
 	}
+
+	Output::Debug("Starting battle %d (%s)", Game_Temp::battle_troop_id, Data::troops[Game_Temp::battle_troop_id-1].name.c_str());
 
 	if (Player::battle_test_flag) {
 		InitBattleTest();

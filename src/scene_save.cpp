@@ -23,6 +23,7 @@
 #include "game_map.h"
 #include "game_party.h"
 #include "lsd_reader.h"
+#include "output.h"
 #include "player.h"
 #include "scene_save.h"
 #include "scene_file.h"
@@ -52,6 +53,8 @@ void Scene_Save::Start() {
 void Scene_Save::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
+
+	Output::Debug("Saving to %s", ss.str().c_str());
 
 	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;
