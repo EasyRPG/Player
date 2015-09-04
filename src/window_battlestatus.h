@@ -79,6 +79,9 @@ protected:
 	 */
 	void RefreshGauge();
 
+	void DrawGaugeSystem2(int x, int y, int cur_value, int max_value, int which);
+	void DrawNumberSystem2(int x, int y, int value);
+
 	/**
 	 * Tests whether actor is selectable in current ChoiceMode.
 	 *
@@ -87,6 +90,8 @@ protected:
 	bool IsChoiceValid(const Game_Battler& battler) const;
 
 	ChoiceMode mode;
+
+	void OnSystem2Ready(FileRequestResult* result);
 
 	// Debug helper
 	bool enemy;

@@ -123,6 +123,21 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
 
+	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+		item_window->SetY(64);
+		skill_window->SetY(64);
+	}
+
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+		options_window->SetBackOpacity(transp);
+		item_window->SetBackOpacity(transp);
+		skill_window->SetBackOpacity(transp);
+		help_window->SetBackOpacity(transp);
+		status_window->SetBackOpacity(transp);
+		enemy_status_window->SetBackOpacity(transp);
+	}
+
 	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
 	request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
 	request->Start();
@@ -191,6 +206,11 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	target_window->SetZ(3001);
+
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+		target_window->SetBackOpacity(transp);
+	}
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
@@ -231,8 +251,19 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	}
 
 	command_window->SetHeight(80);
-	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
-	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
+		command_window->SetX(0);
+		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2);
+	}
+	else {
+		command_window->SetX(SCREEN_TARGET_WIDTH - 76);
+		command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
+	}
+
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;
+		command_window->SetBackOpacity(transp);
+	}
 }
 
 void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
@@ -318,8 +349,13 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectActor:
 		command_window->SetIndex(-1);
+		status_window->SetVisible(true);
+		status_window->SetX(0);
 		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
-		// fall-through
+		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+			command_window->SetVisible(true);
+		}
+		break;
 	case State_SelectCommand:
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);

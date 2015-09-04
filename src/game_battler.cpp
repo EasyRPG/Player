@@ -30,8 +30,6 @@
 #include "util_macro.h"
 #include "main_data.h"
 
-#define EASYRPG_GAUGE_MAX_VALUE 120000
-
 Game_Battler::Game_Battler() {
 	ResetBattle();
 }
@@ -431,18 +429,22 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
+int Game_Battler::GetMaxGauge() const {
+	return 120000;
+}
+
 int Game_Battler::GetGauge() const {
-	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
+	return gauge / (GetMaxGauge() / 100);
 }
 
 void Game_Battler::SetGauge(int new_gauge) {
 	new_gauge = min(max(new_gauge, 0), 100);
 
-	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
+	gauge = new_gauge * (GetMaxGauge() / 100);
 }
 
 bool Game_Battler::IsGaugeFull() const {
-	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
+	return gauge >= GetMaxGauge();
 }
 
 void Game_Battler::UpdateGauge(int multiplier) {
@@ -450,7 +452,7 @@ void Game_Battler::UpdateGauge(int multiplier) {
 		return;
 	}
 
-	if (gauge > EASYRPG_GAUGE_MAX_VALUE) {
+	if (gauge > GetMaxGauge()) {
 		return;
 	}
 	gauge += GetAgi() * multiplier;
@@ -489,7 +491,7 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 }
 
 void Game_Battler::ResetBattle() {
-	gauge = EASYRPG_GAUGE_MAX_VALUE / 2;
+	gauge = GetMaxGauge() / 2;
 	charged = false;
 	defending = false;
 	battle_turn = 0;

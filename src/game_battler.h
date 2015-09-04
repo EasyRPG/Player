@@ -355,6 +355,11 @@ public:
 	Game_Party_Base& GetParty() const;
 
 	/**
+	 * Gets the maximal gauge value.
+ 	 */
+	int GetMaxGauge() const;
+
+	/**
 	 * Gets the current state of the battle gauge in percent.
 	 * Used by RPG2k3 battle system.
 	 *
