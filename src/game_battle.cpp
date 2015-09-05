@@ -269,7 +269,10 @@ void Game_Battle::SetTerrainId(int terrain_id_) {
 }
 
 int Game_Battle::GetTerrainId() {
-	return terrain_id;
+	// Fixme: Workaround for battle test
+	// Has options loose/tight formation which hardcodes to specific
+	// x/y values and ignores terrain
+	return terrain_id <= 0 ? 1 : terrain_id;
 }
 
 void Game_Battle::SetBattleMode(int battle_mode_) {
