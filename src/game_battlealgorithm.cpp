@@ -183,9 +183,17 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 					Data::terms.enemy_undamaged);
 			}
 			else {
-				ss << " " << GetAffectedHp() << (target_is_ally ?
-					Data::terms.actor_damaged :
-					Data::terms.enemy_damaged);
+				if (absorb) {
+					ss << " " << Data::terms.health_points << " " << GetAffectedHp();
+					ss << (target_is_ally ?
+						Data::terms.actor_hp_absorbed :
+						Data::terms.enemy_hp_absorbed);
+				}
+				else {
+					ss << " " << GetAffectedHp() << (target_is_ally ?
+						Data::terms.actor_damaged :
+						Data::terms.enemy_damaged);
+				}
 			}
 			out.push_back(ss.str());
 		}
@@ -201,7 +209,15 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			ss << Data::terms.hp_recovery;
 		}
 		else {
-			ss << " " << Data::terms.attack << " " << GetAffectedSp();
+			if (absorb) {
+				ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
+				ss << (target_is_ally ?
+					Data::terms.actor_hp_absorbed :
+					Data::terms.enemy_hp_absorbed);
+			}
+			else {
+				ss << " " << Data::terms.attack << " " << GetAffectedSp();
+			}
 		}
 		out.push_back(ss.str());
 	}
@@ -423,8 +439,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2));
 	} else {
 		// Source is Enemy
-
-		//int hit = src->IsMissingOften() ? 70 : 90;
 		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
 	}
