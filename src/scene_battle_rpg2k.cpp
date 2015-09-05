@@ -218,6 +218,12 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	}
 }
 
+void Scene_Battle_Rpg2k::NextTurn() {
+	Scene_Battle::NextTurn();
+
+	auto_battle = false;
+}
+
 void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:

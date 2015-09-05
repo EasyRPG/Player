@@ -239,6 +239,11 @@ void Window_BattleStatus::Update() {
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		SetCursorRect(Rect());
+		return;
+	}
+
 	if (index < 0)
 		SetCursorRect(Rect());
 	else

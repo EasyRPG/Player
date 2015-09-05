@@ -201,8 +201,6 @@ void Scene_Battle::InitBattleTest()
 }
 
 void Scene_Battle::NextTurn() {
-	auto_battle = false;
-
 	Game_Battle::NextTurn();
 }
 
@@ -243,7 +241,6 @@ void Scene_Battle::EnemySelected() {
 	}
 
 	ActionSelectedCallback(active_actor);
-
 }
 
 void Scene_Battle::AllySelected() {

@@ -49,7 +49,8 @@ Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
-		case State_SelectActor: {
+		case State_SelectActor:
+		case State_AutoBattle: {
 			if (battle_actions.empty()) {
 				Game_Battle::UpdateGauges();
 			}
@@ -96,12 +97,10 @@ void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
 	BitmapRef system2 = Cache::System2(result->file);
 
 	ally_cursor->SetBitmap(system2);
-	ally_cursor->SetSrcRect(Rect(0, 16, 16, 16));
 	ally_cursor->SetZ(999);
 	ally_cursor->SetVisible(false);
 
 	enemy_cursor->SetBitmap(system2);
-	enemy_cursor->SetSrcRect(Rect(0, 0, 16, 16));
 	enemy_cursor->SetZ(999);
 	enemy_cursor->SetVisible(false);
 }
@@ -112,8 +111,6 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
-	// TODO: Auto Battle not implemented
-	options_window->DisableItem(1);
 	// No escape. FIXME: Only enabled when party has initiative.
 	options_window->DisableItem(2);
 
@@ -126,6 +123,9 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 		item_window->SetY(64);
 		skill_window->SetY(64);
+
+		// Default window too small for 4 actors
+		status_window.reset(new Window_BattleStatus(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 	}
 
 	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
@@ -144,31 +144,53 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 }
 
 void Scene_Battle_Rpg2k3::UpdateCursors() {
-	/*if (Game_Battle::HaveActiveAlly()) {
-		const Battle::Ally& ally = state == State_SelectAllyTarget && Game_Battle::HaveTargetAlly()
-			? Game_Battle::GetTargetAlly()
-			: Game_Battle::GetActiveAlly();
-		ally_cursor->SetVisible(true);
-		ally_cursor->SetX(ally.rpg_actor->battle_x - ally_cursor->GetWidth() / 2);
-		ally_cursor->SetY(ally.rpg_actor->battle_y - ally.sprite->GetHeight() / 2 - ally_cursor->GetHeight() - 2);
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[(cycle / 15) % 4];
-		ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
-	}
-	else
-		ally_cursor->SetVisible(false);
+	if (state == State_SelectActor ||
+		state == State_SelectCommand ||
+		state == State_SelectAllyTarget ||
+		state == State_SelectEnemyTarget) {
 
-	if (state == State_SelectEnemyTarget && Game_Battle::HaveTargetEnemy()) {
-		const Battle::Enemy& enemy = Game_Battle::GetTargetEnemy();
-		enemy_cursor->SetVisible(true);
-		enemy_cursor->SetX(enemy.member->x + enemy.sprite->GetWidth() / 2 + 2);
-		enemy_cursor->SetY(enemy.member->y - enemy_cursor->GetHeight() / 2);
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[(cycle / 15) % 4];
-		enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
+		int ally_index = status_window->GetIndex();
+		int enemy_index = target_window->GetIndex();
+
+		if (state != State_SelectEnemyTarget) {
+			enemy_index = -1;
+			enemy_cursor->SetVisible(false);
+		}
+
+		std::vector<Game_Battler*> actors;
+
+		if (ally_index >= 0) {
+			ally_cursor->SetVisible(true);
+			Main_Data::game_party->GetActiveBattlers(actors);
+			const Game_Battler* actor = actors[ally_index];
+			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			ally_cursor->SetX(actor->GetBattleX());
+			ally_cursor->SetY(actor->GetBattleY() - sprite->GetHeight() / 2);
+			static const int frames[] = { 0, 1, 2, 1 };
+			int frame = frames[(cycle / 15) % 4];
+			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
+		}
+
+		if (enemy_index >= 0) {
+			enemy_cursor->SetVisible(true);
+			actors.clear();
+			Main_Data::game_enemyparty->GetActiveBattlers(actors);
+			const Game_Battler* actor = actors[enemy_index];
+			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			enemy_cursor->SetX(actor->GetBattleX() + sprite->GetWidth() / 2 + 2);
+			enemy_cursor->SetY(actor->GetBattleY() - enemy_cursor->GetHeight() / 2);
+			static const int frames[] = { 0, 1, 2, 1 };
+			int frame = frames[(cycle / 15) % 4];
+			enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
+		}
+
+		++cycle;
 	}
-	else
-		enemy_cursor->SetVisible(false);*/
+	else {
+		ally_cursor->SetVisible(false);
+		enemy_cursor->SetVisible(false);
+		cycle = 0;
+	}
 }
 
 void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text, int _duration) {
@@ -345,8 +367,6 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->Refresh();
 		break;
 	case State_AutoBattle:
-		// no-op
-		break;
 	case State_SelectActor:
 		command_window->SetIndex(-1);
 		status_window->SetVisible(true);
@@ -363,9 +383,15 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectEnemyTarget:
 		status_window->SetVisible(true);
-		command_window->SetVisible(true);
 		target_window->SetActive(true);
-		target_window->SetVisible(true);
+
+		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+			command_window->SetVisible(true);
+		}
+
+		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+			target_window->SetVisible(true);
+		}
 		break;
 	case State_SelectAllyTarget:
 		status_window->SetVisible(true);
@@ -612,6 +638,8 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			CommandSelected();
 			break;
 		case State_SelectEnemyTarget:
+			ally_cursor->SetVisible(false);
+			enemy_cursor->SetVisible(false);
 			EnemySelected();
 			break;
 		case State_SelectAllyTarget:
@@ -677,10 +705,9 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 			SetState(State_SelectActor);
 			break;
 		case 1: // Auto Battle
-			//auto_battle = true;
-			Output::Post("Auto Battle not implemented yet. Sorry :)");
-			//SetState(State_SelectActor);
-			Game_System::SePlay(Data::system.buzzer_se);
+			auto_battle = true;
+			SetState(State_AutoBattle);
+			Game_System::SePlay(Data::system.decision_se);
 			break;
 		case 2: // Escape
 			// FIXME : Only enabled when party has initiative.

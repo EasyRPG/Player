@@ -41,6 +41,8 @@ public:
 protected:
 	void SetState(State new_state);
 
+	void NextTurn();
+
 	void CreateUi();
 
 	void CreateBattleTargetWindow();
