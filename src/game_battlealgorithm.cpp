@@ -529,18 +529,16 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (healing || rand() % 100 < skill.hit) {
 				this->success = true;
 
-				// FIXME: is this still affected by stats for allies?
-				// FIXME: This is what the help file says, but it doesn't look right
 				int effect = skill.power +
 					source->GetAtk() * skill.physical_rate / 20 +
-					(*current_target)->GetDef() * skill.magical_rate / 40;
+					source->GetSpi() * skill.magical_rate / 40 -
+					(*current_target)->GetDef() * skill.physical_rate / 40 -
+					(*current_target)->GetSpi() * skill.magical_rate / 80;
 
-				if (skill.variance > 0) {
-					int var_perc = skill.variance * 5;
-					int act_perc = rand() % (var_perc * 2) - var_perc;
-					int change = effect * act_perc / 100;
-					effect += change;
-				}
+				// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
+				// see #480
+
+				effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
 
 				if (skill.affect_hp) {
 					this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
