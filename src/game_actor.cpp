@@ -27,12 +27,16 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 
-static int max_stat_value() {
-	return Data::system.ldb_id == 2003 ? 9999 : 999;
+static int max_hp_value() {
+	return Player::IsRPG2k() ? 999 : 9999;
+}
+
+static int max_other_stat_value() {
+	return 999;
 }
 
 static int max_exp_value() {
-	return Data::system.ldb_id == 2003 ? 9999999 : 999999;
+	return Player::IsRPG2k() ? 999999 : 9999999;
 }
 
 Game_Actor::Game_Actor(int actor_id) :
@@ -93,11 +97,11 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 
 	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
-	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
+	if (item.actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;
 	}
 	else {
-		return Data::items[item_id - 1].actor_set.at(data.ID - 1);
+		return item.actor_set.at(data.ID - 1);
 	}
 }
 
@@ -196,7 +200,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += data.hp_mod;
 
-	return min(max(n, 1), max_stat_value());
+	return min(max(n, 1), max_hp_value());
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -211,7 +215,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += data.sp_mod;
 
-	return min(max(n, 0), max_stat_value());
+	return min(max(n, 0), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -235,7 +239,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_stat_value());
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseAtk() const {
@@ -259,7 +263,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_stat_value());
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseDef() const {
@@ -283,7 +287,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_stat_value());
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseSpi() const {
@@ -307,7 +311,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_stat_value());
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseAgi() const {
@@ -348,7 +352,7 @@ int Game_Actor::CalculateExp(int level) const
 			result += (int)correction;
 		}
 	}
-	return min(result, Player::IsRPG2k() ? 1000000 : 10000000);
+	return min(result, max_exp_value());
 }
 
 void Game_Actor::MakeExpList() {
@@ -583,7 +587,7 @@ bool Game_Actor::GetAutoBattle() const {
 }
 
 int Game_Actor::GetBattleX() const {
-	float position;
+	float position = 0.0;
 
 	if (Data::actors[data.ID - 1].battle_x == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
@@ -657,7 +661,7 @@ int Game_Actor::GetBattleX() const {
 }
 
 int Game_Actor::GetBattleY() const {
-	float position;
+	float position = 0.0;
 
 	if (Data::actors[data.ID - 1].battle_y == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
