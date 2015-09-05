@@ -244,25 +244,7 @@ void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
 
-	if (!IsNextMessagePossible() && Game_Message::closing) {
-		if (visible && !closing) {
-			// The Event Page ended but the MsgBox was used in this Event
-			// It can be closed now.
-			TerminateMessage();
-			if (Game_Temp::battle_running) {
-				SetCloseAnimation(0);
-			} else {
-				SetCloseAnimation(5);
-			}
-		} else if (!visible && !closing) {
-			// The closing animation has finished
-			Game_Message::visible = false;
-			Game_Message::closing = false;
-			Game_Message::owner_id = 0;
-			return;
-		}
-	}
-	else if (pause) {
+	if (pause) {
 		WaitForInput();
 	} else if (active) {
 		InputChoice();
@@ -271,8 +253,7 @@ void Window_Message::Update() {
 	} else if (!text.empty()) {
 		// Output the remaining text for the current page
 		UpdateMessage();
-	}
-	else if (IsNextMessagePossible()) {
+	} else if (IsNextMessagePossible()) {
 		// Output a new page
 		if (Game_Temp::inn_calling) {
 			ShowGoldWindow();
@@ -291,6 +272,25 @@ void Window_Message::Update() {
 			visible = true;
 		}
 		Game_Message::visible = true;
+	} else if (!IsNextMessagePossible() && Game_Message::closing) {
+		if (visible && !closing) {
+			// The Event Page ended but the MsgBox was used in this Event
+			// It can be closed now.
+			TerminateMessage();
+			if (Game_Temp::battle_running) {
+				SetCloseAnimation(0);
+			}
+			else {
+				SetCloseAnimation(5);
+			}
+		}
+		else if (!visible && !closing) {
+			// The closing animation has finished
+			Game_Message::visible = false;
+			Game_Message::closing = false;
+			Game_Message::owner_id = 0;
+			return;
+		}
 	}
 }
 
