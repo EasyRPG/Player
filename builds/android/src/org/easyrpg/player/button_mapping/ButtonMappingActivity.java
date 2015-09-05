@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -75,6 +76,26 @@ public class ButtonMappingActivity extends Activity {
 	@Override
 	public void onBackPressed(){
 		openOptionsMenu ();
+	}
+	
+	/** This function prevents some Samsung's device to not show the option menu
+	 */
+	@Override
+	public void openOptionsMenu() {
+
+	    Configuration config = getResources().getConfiguration();
+
+	    if((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) 
+	            > Configuration.SCREENLAYOUT_SIZE_LARGE) {
+
+	        int originalScreenLayout = config.screenLayout;
+	        config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
+	        super.openOptionsMenu();
+	        config.screenLayout = originalScreenLayout;
+
+	    } else {
+	        super.openOptionsMenu();
+	    }
 	}
 	
 	public void showSupportedButton(){

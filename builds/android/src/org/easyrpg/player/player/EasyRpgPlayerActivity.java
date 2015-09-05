@@ -38,6 +38,7 @@ import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -114,6 +115,26 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		openOptionsMenu();
 	}
 
+	/** This function prevents some Samsung's device to not show the option menu
+	 */
+	@Override
+	public void openOptionsMenu() {
+
+	    Configuration config = getResources().getConfiguration();
+
+	    if((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) 
+	            > Configuration.SCREENLAYOUT_SIZE_LARGE) {
+
+	        int originalScreenLayout = config.screenLayout;
+	        config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
+	        super.openOptionsMenu();
+	        config.screenLayout = originalScreenLayout;
+
+	    } else {
+	        super.openOptionsMenu();
+	    }
+	}
+	
 	private void showEndGameDialog() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("EasyRPG Player");
