@@ -735,7 +735,8 @@ void Player::PrintUsage() {
 	std::cout << "      " << "BattleTest N         " << "Same as --battle-test. When N is not a valid number" << std::endl;
 	std::cout << "      " << "                     " << "the 4th argument is used as the party id." << std::endl;
 	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
-	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl << std::endl;
+	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
+	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }
