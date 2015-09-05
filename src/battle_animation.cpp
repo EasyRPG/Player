@@ -26,7 +26,7 @@
 #include "baseui.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0)
+x(x), y(y), animation(animation), frame(0), frame_update(true)
 {
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
@@ -127,11 +127,10 @@ void BattleAnimation::Draw() {
 }
 
 void BattleAnimation::Update() {
-	static bool update = true;
-	if (update) {
+	if (frame_update) {
 		frame++;
 	}
-	update = !update;
+	frame_update = !frame_update;
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -147,7 +146,7 @@ int BattleAnimation::GetFrames() const {
 }
 
 bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
+	return GetFrame()+1 >= GetFrames();
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
