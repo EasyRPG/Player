@@ -271,6 +271,7 @@ protected:
 	bool success;
 	bool killed_by_attack_damage;
 	bool critical_hit;
+	bool absorb;
 
 	RPG::Animation* animation;
 

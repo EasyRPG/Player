@@ -71,6 +71,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	success = false;
 	killed_by_attack_damage = false;
 	critical_hit = false;
+	absorb = false;
 	animation = NULL;
 }
 
@@ -290,12 +291,23 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedHp() != -1) {
 		int hp = GetAffectedHp();
+		int target_hp = (*current_target)->GetHp();
 		(*current_target)->ChangeHp(IsPositive() ? hp : -hp);
+		if (absorb) {
+			// Only absorb the hp that were left
+			int src_hp = std::min(target_hp, IsPositive() ? -hp : hp);
+			source->ChangeHp(src_hp);
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
 		int sp = GetAffectedSp();
+		int target_sp = (*current_target)->GetSp();
 		(*current_target)->SetSp((*current_target)->GetSp() + (IsPositive() ? sp : -sp));
+		if (absorb) {
+			int src_sp = std::min(target_sp, IsPositive() ? -sp : sp);
+			source->ChangeHp(src_sp);
+		}
 	}
 
 	// TODO
@@ -578,8 +590,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				conditions.push_back(Data::states[i]);
 			}
 		}
-
-		return this->success;
 	}
 	else if (skill.type == RPG::Skill::Type_switch) {
 		switch_id = skill.switch_id;
@@ -588,6 +598,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	else {
 		assert(false && "Unsupported skill type");
 	}
+
+	absorb = skill.absorb_damage;
 
 	return this->success;
 }
