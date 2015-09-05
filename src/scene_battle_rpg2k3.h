@@ -81,6 +81,8 @@ protected:
 	int battle_action_state;
 
 	boost::scoped_ptr<Window_BattleStatus> enemy_status_window;
+
+	std::vector<Game_Battler*> targets;
 };
 
 #endif

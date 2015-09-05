@@ -483,6 +483,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	std::vector<Game_Battler*>::const_iterator it;
+
 	switch (battle_action_state) {
 	case BattleActionState_Start:
 		ShowNotification(action->GetStartMessage());
@@ -537,6 +539,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					0,
 					action->IsSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
 					30);
+
+				targets.push_back(action->GetTarget());
 			}
 
 			status_window->Refresh();
@@ -557,10 +561,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 		battle_action_wait = 30;
 
-		if (action->GetTarget()) {
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+		for (it = targets.begin(); it != targets.end(); it++) {
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 
-			if (action->GetTarget()->IsDead()) {
+			if ((*it)->IsDead()) {
 				if (action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
 				}
@@ -578,6 +582,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		// Reset variables
 		battle_action_state = BattleActionState_Start;
+		targets.clear();
 
 		return true;
 	}
