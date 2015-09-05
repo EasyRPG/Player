@@ -29,6 +29,7 @@ doxygen-doc: doxygen-run
 @DX_DOCDIR@/@PACKAGE@.tag: $(DX_CONFIG) $(pkginclude_HEADERS)
 	rm -rf @DX_DOCDIR@
 	$(DX_ENV) $(DX_DOXYGEN) $(srcdir)/$(DX_CONFIG)
+	echo Timestamp >$@
 
 DX_CLEANFILES = \
 	@DX_DOCDIR@/@PACKAGE@.tag \

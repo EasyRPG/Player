@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 include builds/autoconf/aminclude/doxygen.am
 
 EXTRA_DIST = builds lib Modules resources CMakeLists.txt src/platform
-MOSTLYCLEANFILES = DX_CLEANFILES
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
 
