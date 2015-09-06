@@ -72,9 +72,10 @@ public:
 	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
 
 	/**
-	 * Returns true when the state is idle.
+	 * Returns true when the actor is in it's default state (Depending on
+	 * conditions)
 	 *
-	 * @return Whether state is idle
+	 * @return Whether state is default
 	 */
 	bool IsIdling();
 
@@ -97,6 +98,8 @@ protected:
 	LoopState loop_state;
 	bool old_hidden;
 	boost::scoped_ptr<BattleAnimation> animation;
+	// false when a newly set animation didn't loop once
+	bool idling;
 };
 
 #endif

@@ -35,7 +35,8 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	sprite_frame(-1),
 	fade_out(255),
 	flash_counter(0),
-	old_hidden(false) {
+	old_hidden(false),
+	idling(true) {
 	
 	CreateSprite();
 }
@@ -62,6 +63,7 @@ void Sprite_Battler::Update() {
 		SetOpacity(255);
 		SetVisible(true);
 		SetAnimationState(AnimationState_Idle);
+		idling = true;
 	}
 
 	old_hidden = battler->IsHidden();
@@ -71,6 +73,7 @@ void Sprite_Battler::Update() {
 	++cycle;
 	
 	if (battler->GetBattleAnimationId() <= 0) {
+		// Animations for monster
 		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
 		}
@@ -85,16 +88,19 @@ void Sprite_Battler::Update() {
 			SetOpacity(flash_counter > 5 ? 50 : 255);
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
+				idling = true;
 				cycle = 0;
 			}
 		}
 		else {
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
+				idling = true;
 				cycle = 0;
 			}
 		}
 	} else if (anim_state > 0) {
+		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				if (animation->IsDone()) {
@@ -105,6 +111,7 @@ void Sprite_Battler::Update() {
 						} else {
 							SetAnimationState(AnimationState_Idle);
 						}
+						idling = true;
 					}
 					animation->SetFrame(0);
 				}
@@ -135,6 +142,7 @@ void Sprite_Battler::Update() {
 					else {
 						SetAnimationState(AnimationState_Idle);
 					}
+					idling = true;
 				}
 			}
 		}
@@ -142,6 +150,11 @@ void Sprite_Battler::Update() {
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
+	// Default value is 100, which maps for all states to "Bad state" (7)
+	if (state == 100) {
+		state = 7;
+	}
+
 	anim_state = state;
 
 	flash_counter = 0;
@@ -149,6 +162,8 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	loop_state = loop;
 
 	cycle = 0;
+
+	idling = false;
 
 	if (Player::IsRPG2k3()) {
 		if (battler->GetBattleAnimationId() > 0) {
@@ -174,7 +189,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 }
 
 bool Sprite_Battler::IsIdling() {
-	return anim_state == AnimationState_Idle;
+	return idling;
 }
 
 void Sprite_Battler::CreateSprite() {
@@ -203,6 +218,7 @@ void Sprite_Battler::CreateSprite() {
 		SetOx(24);
 		SetOy(24);
 		SetAnimationState(anim_state);
+		idling = true;
 	}
 
 	SetVisible(!battler->IsHidden());

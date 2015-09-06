@@ -588,11 +588,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		battle_action_wait = 30;
 
 		for (it = targets.begin(); it != targets.end(); it++) {
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
-
 			if ((*it)->IsDead()) {
 				if (action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
+				}
+
+				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+
+				if (target_sprite) {
+					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
 				}
 			}
 		}
@@ -629,8 +633,6 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			CommandSelected();
 			break;
 		case State_SelectEnemyTarget:
-			ally_cursor->SetVisible(false);
-			enemy_cursor->SetVisible(false);
 			EnemySelected();
 			break;
 		case State_SelectAllyTarget:
@@ -965,6 +967,9 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
 		status_window->SetIndex(-1);
 	}
+
+	ally_cursor->SetVisible(false);
+	enemy_cursor->SetVisible(false);
 
 	Scene_Battle::ActionSelectedCallback(for_battler);
 }
