@@ -107,7 +107,7 @@ void Sprite_Battler::Update() {
 					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
 						const RPG::State* state = battler->GetSignificantState();
 						if (state) {
-							SetAnimationState(state->battler_animation_id);
+							SetAnimationState(state->battler_animation_id + 1);
 						} else {
 							SetAnimationState(AnimationState_Idle);
 						}
@@ -137,7 +137,7 @@ void Sprite_Battler::Update() {
 				if (loop_state == LoopState_DefaultAnimationAfterFinish) {
 					const RPG::State* state = battler->GetSignificantState();
 					if (state) {
-						SetAnimationState(state->battler_animation_id);
+						SetAnimationState(state->battler_animation_id + 1);
 					}
 					else {
 						SetAnimationState(AnimationState_Idle);
@@ -150,8 +150,9 @@ void Sprite_Battler::Update() {
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
-	// Default value is 100, which maps for all states to "Bad state" (7)
-	if (state == 100) {
+	// Default value is 100 (function called with val+1)
+	// 100 maps all states to "Bad state" (7)
+	if (state == 101) {
 		state = 7;
 	}
 
@@ -169,14 +170,13 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 		if (battler->GetBattleAnimationId() > 0) {
 			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
 			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-			if (ext.battler_name == sprite_file)
-				return;
 
 			sprite_file = ext.battler_name;
 
 			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
 				animation.reset(new BattleAnimation(GetX(), GetY(), &Data::animations[ext.animation_id - 1]));
+				animation->SetZ(GetZ());
 			}
 			else {
 				animation.reset();
