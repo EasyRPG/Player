@@ -846,6 +846,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		message_window->SetHeight(32);
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(0);
+		Game_Message::SetTransparent(false);
 		Game_Message::message_waiting = true;
 
 		Game_System::BgmPlay(Data::system.battle_end_music);
@@ -878,6 +879,7 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 		message_window->SetHeight(32);
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(0);
+		Game_Message::SetTransparent(false);
 		Game_Message::message_waiting = true;
 
 		Game_Message::texts.push_back(Data::terms.defeat);

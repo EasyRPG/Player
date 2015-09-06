@@ -48,6 +48,7 @@ namespace {
 	int turn;
 	bool message_is_fixed;
 	int message_position;
+	bool message_is_transparent;
 	bool terminate;
 	std::vector<bool> page_executed;
 	int terrain_id;
@@ -90,6 +91,7 @@ void Game_Battle::Quit() {
 
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
+	Game_Message::SetTransparent(message_is_transparent);
 }
 
 void Game_Battle::Update() {

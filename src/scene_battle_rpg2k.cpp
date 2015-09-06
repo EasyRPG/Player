@@ -798,6 +798,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(2);
+		Game_Message::SetTransparent(false);
 
 		Game_Message::texts.push_back(Data::terms.victory);
 
@@ -844,6 +845,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(2);
+		Game_Message::SetTransparent(false);
 
 		Game_Message::texts.push_back(Data::terms.defeat);
 
