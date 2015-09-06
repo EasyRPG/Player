@@ -161,7 +161,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 
 		if (ally_index >= 0) {
 			ally_cursor->SetVisible(true);
-			Main_Data::game_party->GetActiveBattlers(actors);
+			Main_Data::game_party->GetBattlers(actors);
 			const Game_Battler* actor = actors[ally_index];
 			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
 			ally_cursor->SetX(actor->GetBattleX());
