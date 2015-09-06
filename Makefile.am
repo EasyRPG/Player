@@ -303,6 +303,19 @@ easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
 easyrpg_player_LDADD = libeasyrpg-player.la
 
+# manual page
+if HAVE_A2X
+builds/easyrpg-player.6: builds/easyrpg-player.6.adoc
+	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/builds $(srcdir)/$<
+
+dist_man6_MANS = builds/easyrpg-player.6
+MOSTLYCLEANFILES += builds/easyrpg-player.6
+else
+if HAVE_MANUAL
+dist_man6_MANS = builds/easyrpg-player.6
+endif
+endif
+
 # FIXME make filefinder work without external scripting
 check_PROGRAMS = output utils
 TESTS = output utils

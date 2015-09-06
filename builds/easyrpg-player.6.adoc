@@ -1,0 +1,153 @@
+easyrpg-player(6)
+=================
+:doctype: manpage
+:man source:   EasyRPG Player
+:man version:  {player_version}
+:man manual:   EasyRPG Manual
+
+
+== NAME
+easyrpg-player - Interpreter for RPG Maker 2000/2003 games
+
+
+== SYNOPSIS
+*easyrpg-player* [<optional flags>...]
+
+
+== DESCRIPTION
+EasyRPG Player is an open source interpreter for RPG Maker 2000 and 2003 games.
+It aims to support all features of unmodified games and also has some support
+for some additional binary patches.
+
+
+== OPTIONS
+*--battle-test* 'MONSTERPARTY'::
+  Starts a battle test with the specified monster party.
+
+*--disable-audio*::
+  Disable audio (in case you prefer your own music).
+
+*--disable-rtp*::
+  Disable support for the Runtime Package (RTP).
+
+*--encoding* 'ENCODING'::
+  Instead of using the default, detected platform encoding or the one in
+  RPG_RT.ini, the specified encoding is used.
+
+*--engine* 'ENGINE'::
+  Disable auto detection of the simulated engine. Possible options:
+   - 'rpg2k'   - RPG Maker 2000 engine
+   - 'rpg2k3'  - RPG Maker 2003 engine
+   - 'rpg2k3e' - RPG Maker 2003 (English release) engine
+
+*--fullscreen*::
+  Start in fullscreen mode.
+
+*--hide-title*::
+  Hide the title background image and center the command menu.
+
+*--load-game-id* 'ID'::
+  Skip the title scene and load Save__ID__.lsd ('ID' is padded to two digits).
+
+*--new-game*::
+  Skip the title scene and start a new game directly.
+
+*--project-path* 'PATH'::
+  Instead of using the working directory the game in 'PATH' is used.
+
+*--seed* 'SEED'::
+  Seeds the random number generator.
+
+*--start-map-id* 'ID'::
+  Overwrite the map used for new games and use Map__ID__.lmu instead ('ID' is
+  padded to four digits).
+
+NOTE: Incompatible with *--load-game-id*.
+
+*--start-position* 'X' 'Y'::
+  Overwrite the party start position and move the party to position ('X', 'Y').
+
+NOTE: Incompatible with *--load-game-id*.
+
+*--start-party* 'A' ['B' '...']::
+  Overwrite the starting party members with the actors with IDs 'A', 'B', '...'
+
+NOTE: Incompatible with *--load-game-id*.
+
+*--test-play*::
+  Enable TestPlay mode.
+
+*--window*::
+  Start in window mode.
+
+*-v*, *--version*::
+  Display program version and exit.
+
+*-h*, *--help*::
+  Display help and exit.
+
+For compatibility with the original RPG Maker runtime the following legacy
+arguments are supported:
+
+*BattleTest* 'ID'::
+  Same as *--battle-test*. When 'ID' is not a valid number the 4th argument is
+  used as the party id.
+
+*HideTitle*::
+  Same as *--hide-title*.
+
+*TestPlay*::
+  Same as *--test-play*.
+
+*Window*::
+  Same as *--window*.
+
+
+== ENVIRONMENT
+'RPG2K_RTP_PATH'::
+  Full path to a folder containing the extracted RPG Maker 2000
+  Run-Time-Package(RTP).
+
+'RPG2K3_RTP_PATH'::
+  Full path to a folder containing the extracted RPG Maker 2003
+  Run-Time-Package(RTP).
+
+'RPG_RTP_PATH'::
+  Full path to a folder containing both RTPs.
+
+
+== FILES
+'RPG_RT.ini'::
+  The game configuration file. It follows a simple *Key*='Value' syntax in
+  multiple sections. Specific options can be set in the [EasyRPG] section.
+  For example:
+----
+[EasyRPG]
+Encoding=1252
+----
+  This will set the correct encoding for most english games.
+
+NOTE: Values in the configuration file will overwrite auto detected ones,
+however command line parameters will take precedence.
+
+== REPORTING BUGS
+Bugs should be reported at the issue tracker:
+https://github.com/EasyRPG/Player/issues
+
+
+== COPYRIGHT / AUTHORS
+EasyRPG Player is Copyright (C) 2007-2015 the EasyRPG authors, see file AUTHORS
+for details.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU GPL version 3.
+See the file COPYING or http://gnu.org/licenses/gpl.html for details.
+
+
+== SEE ALSO
+mkxp - An open source RGSS (Ruby Game Scripting System) interface
+implementation that aims to support games created by "RPG Maker XP",
+"RPG Maker VX" and "RPG Maker VX Ace"
+
+For additional information aubout EasyRPG software and related projects there
+is a wiki: https://easy-rpg.org/wiki/

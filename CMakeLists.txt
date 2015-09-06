@@ -155,6 +155,28 @@ foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
 endforeach()
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
+# manpage
+set(MAN_NAME easyrpg-player.6)
+find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
+if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
+  add_custom_command(OUTPUT builds/${MAN_NAME}
+    COMMAND ${A2X_EXECUTABLE} -a player_version="0.3" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/builds ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME}.adoc
+    DEPENDS builds/${MAN_NAME}.adoc
+    COMMENT "(Re-)building manpage ${MAN_NAME}"
+    VERBATIM)
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_custom_target(man ALL DEPENDS builds/${MAN_NAME})
+    install(FILES builds/${MAN_NAME} DESTINATION share/man/man6)
+  else()
+    add_custom_target(man DEPENDS builds/${MAN_NAME})
+  endif()
+else()
+  # no a2x, distribution archive?
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME})
+    install(FILES builds/${MAN_NAME} DESTINATION share/man/man6)
+  endif()
+endif()
+
 # CPack
 set(CPACK_GENERATOR "ZIP" "TGZ")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
