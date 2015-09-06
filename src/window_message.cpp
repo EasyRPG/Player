@@ -59,7 +59,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
-	if (Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional &&
+		Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
 		SetBackOpacity(128);
 	}
 

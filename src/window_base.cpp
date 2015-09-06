@@ -118,7 +118,9 @@ void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
 
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw EXP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+	if (Player::IsRPG2k()) {
+		contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+	}
 
 	// Current Exp of the Actor
 	// ------/------
@@ -130,7 +132,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
-	contents->TextDraw(cx + 12, cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
 }
 
 void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max) {

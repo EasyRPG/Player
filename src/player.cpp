@@ -319,17 +319,20 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 
 	std::vector<std::string> args;
 
+	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
+		ss << argv[i] << " ";
 		args.push_back(Utils::LowerCase(argv[i]));
 	}
+	Output::Debug("CLI: %s", ss.str().c_str());
 
 	std::vector<std::string>::const_iterator it;
 
-	std::stringstream ss;
-
 	for (it = args.begin(); it != args.end(); ++it) {
 		ss << *it << " ";
+	}
 
+	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
 			window_flag = true;
 		}
@@ -464,8 +467,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 #endif
 	}
-
-	Output::Debug("CLI: %s", ss.str().c_str());
 }
 
 static void OnSystemFileReady(FileRequestResult* result) {
