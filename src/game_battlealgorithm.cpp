@@ -38,21 +38,21 @@
 #include "sprite_battler.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
-	source(source), first_attack(true) {
+	source(source), no_target(true), first_attack(true) {
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
-	source(source), first_attack(true) {
+	source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
-	source(source), first_attack(true) {
+	source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	target->GetActiveBattlers(targets);
@@ -300,8 +300,15 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	targets.clear();
-	targets.push_back(target);
-	current_target = targets.begin();
+
+	if (target) {
+		targets.push_back(target);
+		current_target = targets.begin();
+	}
+	else {
+		// Set target is invalid
+		current_target = targets.end();
+	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
@@ -358,8 +365,15 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
+		// Selected algorithm does not need a target because it targets
+		// the source
 		return true;
+	}
+	
+	if (current_target == targets.end()) {
+		// End of target list reached
+		return false;
 	}
 
 	return (!(*current_target)->IsDead());

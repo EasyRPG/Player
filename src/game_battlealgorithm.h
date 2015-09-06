@@ -258,6 +258,8 @@ protected:
 	std::vector<Game_Battler*> targets;
 	std::vector<Game_Battler*>::iterator current_target;
 
+	bool no_target;
+
 	int hp;
 	int sp;
 	int attack;

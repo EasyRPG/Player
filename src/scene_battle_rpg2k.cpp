@@ -255,9 +255,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	case State_Battle:
 		if (!battle_actions.empty()) {
-			if (CheckResultConditions()) {
-				return;
-			}
 			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
 				RemoveCurrentAction();
@@ -265,6 +262,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 				RemoveCurrentAction();
 				battle_message_window->Clear();
+
+				if (CheckResultConditions()) {
+					return;
+				}
 			}
 		} else {
 			// Everybody acted
@@ -323,6 +324,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (!action->IsTargetValid()) {
 				action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
+
+				if (!action->IsTargetValid()) {
+					// Nothing left to target, abort
+					return true;
+				}
 			}
 
 			action->Execute();
