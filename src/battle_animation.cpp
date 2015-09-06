@@ -111,7 +111,7 @@ void BattleAnimation::Draw() {
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
 		const RPG::AnimationCellData& cell = *it;
 
-		if (cell.cell_id == 0) {
+		if (!cell.valid) {
 			// Skip unused cells (they are created by deleting cells in the
 			// animation editor, resulting in gaps)
 			continue;
@@ -121,7 +121,18 @@ void BattleAnimation::Draw() {
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
 		Rect src_rect(sx * size, sy * size, size, size);
-		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
+
+		// FIXME: Tone != 128 results in broken transparency (#554)
+		// Not sure what the real problem is: Incorrect code in battle
+		// animation or incorrect pixman usage.
+		// Pictures don't have this issue
+		Tone tone(128, 128, 128, 128);
+
+		/*Tone tone((int)((cell.tone_red) * 128 / 100),
+			(int)((cell.tone_green) * 128 / 100),
+			(int)((cell.tone_blue) * 128 / 100),
+			(int)((cell.tone_gray) * 128 / 100));*/
+
 		int opacity = 255 * (100 - cell.transparency) / 100;
 		double zoom = cell.zoom / 100.0;
 		DisplayUi->GetDisplaySurface()->EffectsBlit(

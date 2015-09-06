@@ -53,7 +53,7 @@ void Screen::Draw() {
 	Tone tone = Main_Data::game_screen->GetTone();
 
 	if (tone != default_tone) {
-		dst->ToneBlit(0, 0, *disp, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone);
+		dst->ToneBlit(0, 0, *disp, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone, Opacity::opaque);
 	}
 
 	int flash_time_left;

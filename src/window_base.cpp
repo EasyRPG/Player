@@ -63,7 +63,7 @@ void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx,
 		);
 
 	if (flip) {
-		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false);
+		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false, Opacity::opaque);
 	}
 	else {
 		contents->Blit(cx, cy, *faceset, src_rect, 255);

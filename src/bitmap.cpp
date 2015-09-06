@@ -876,10 +876,10 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 	RefreshCallback();
 }
 
-void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
+void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
-			Blit(x, y, src, src_rect, Opacity::opaque);
+			Blit(x, y, src, src_rect, opacity);
 		}
 		return;
 	}
@@ -896,7 +896,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		DynamicFormat format(32, 8, 24, 8, 16, 8, 8, 8, 0, PF::Alpha);
 		uint32_t* pixels = new uint32_t[src_rect.width * src_rect.height];
 		Bitmap bmp(pixels, src_rect.width, src_rect.height, src_rect.width * 4, format);
-		bmp.Blit(0, 0, src, src_rect, Opacity::opaque);
+		bmp.Blit(0, 0, src, src_rect, opacity);
 		Rect dst_rect(x, y, 0, 0);
 
 		int sat;
@@ -928,7 +928,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		}
 
 		pixman_image_composite32(PIXMAN_OP_OVER,
-			bmp.bitmap, src.bitmap, bitmap,
+			bmp.bitmap, NULL, bitmap,
 			0, 0,
 			src_rect.x, src_rect.y,
 			x, y,
@@ -947,8 +947,8 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 		pixman_image_composite32(PIXMAN_OP_HARD_LIGHT,
 			timage, src.bitmap, bitmap,
-			src_rect.x, src_rect.y,
 			0, 0,
+			src_rect.x, src_rect.y,
 			x, y,
 			src_rect.width, src_rect.height);
 
@@ -958,18 +958,18 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 	RefreshCallback();
 }
 
-void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color) {
+void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color, Opacity const& opacity) {
 	if (color.alpha == 0) {
 		if (&src != this)
-			Blit(x, y, src, src_rect, Opacity::opaque);
+			Blit(x, y, src, src_rect, opacity);
 		return;
 	}
 
 	if (&src != this)
 		pixman_image_composite32(PIXMAN_OP_SRC,
 								 src.bitmap, (pixman_image_t*) NULL, bitmap,
-								 src_rect.x, src_rect.y,
 								 0, 0,
+								 src_rect.x, src_rect.y,
 								 x, y,
 								 src_rect.width, src_rect.height);
 
@@ -988,9 +988,9 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 	RefreshCallback();
 }
 
-void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical) {
+void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity) {
 	if (!horizontal && !vertical) {
-		Blit(x, y, src, src_rect, Opacity::opaque);
+		Blit(x, y, src, src_rect, opacity);
 		return;
 	}
 
@@ -1025,7 +1025,7 @@ void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 
 	BitmapRef resampled(new Bitmap(dst_rect.width, dst_rect.height, GetTransparent()));
 
-	resampled->FlipBlit(0, 0, *this, dst_rect, horizontal, vertical);
+	resampled->FlipBlit(0, 0, *this, dst_rect, horizontal, vertical, Opacity::opaque);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 resampled->bitmap, (pixman_image_t*) NULL, bitmap,

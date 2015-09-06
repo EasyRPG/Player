@@ -20,10 +20,10 @@
 #include "util_macro.h"
 
 Tone::Tone()  :
-	red(0),
-	green(0),
-	blue(0),
-	gray(0) {
+	red(128),
+	green(128),
+	blue(128),
+	gray(128) {
 }
 
 Tone::Tone(int red, int green, int blue, int gray) :
