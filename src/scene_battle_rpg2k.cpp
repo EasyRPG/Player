@@ -348,7 +348,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				source_sprite->Flash(Color(255, 255, 255, 100), 15);
 				source_sprite->SetAnimationState(
 					action->GetSourceAnimationState(),
-					Sprite_Battler::LoopState_IdleAnimationAfterFinish);
+					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
 			if (action->IsFirstAttack() && action->GetStartSe()) {

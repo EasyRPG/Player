@@ -98,8 +98,13 @@ void Sprite_Battler::Update() {
 		if (Player::IsRPG2k3()) {
 			if (animation) {
 				if (animation->IsDone()) {
-					if (loop_state == LoopState_IdleAnimationAfterFinish) {
-						SetAnimationState(AnimationState_Idle);
+					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
+						const RPG::State* state = battler->GetSignificantState();
+						if (state) {
+							SetAnimationState(state->battler_animation_id);
+						} else {
+							SetAnimationState(AnimationState_Idle);
+						}
 					}
 					animation->SetFrame(0);
 				}
@@ -122,8 +127,14 @@ void Sprite_Battler::Update() {
 			if (cycle == 40) {
 				cycle = 0;
 
-				if (loop_state == LoopState_IdleAnimationAfterFinish) {
-					SetAnimationState(AnimationState_Idle);
+				if (loop_state == LoopState_DefaultAnimationAfterFinish) {
+					const RPG::State* state = battler->GetSignificantState();
+					if (state) {
+						SetAnimationState(state->battler_animation_id);
+					}
+					else {
+						SetAnimationState(AnimationState_Idle);
+					}
 				}
 			}
 		}

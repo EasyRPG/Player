@@ -533,7 +533,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			source_sprite->SetAnimationState(
 				action->GetSourceAnimationState(),
-				Sprite_Battler::LoopState_IdleAnimationAfterFinish);
+				Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
 
 		if (action->IsFirstAttack() && action->GetStartSe()) {
@@ -553,7 +553,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 			if (action->IsSuccess() && target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_IdleAnimationAfterFinish);
+				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
 			action->Apply();
@@ -593,15 +593,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			if ((*it)->IsDead()) {
 				if (action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
-				}
-
-				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
-				}
-			}
-			else {
-				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle);
 				}
 			}
 		}
