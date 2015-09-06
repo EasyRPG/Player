@@ -928,7 +928,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		}
 
 		pixman_image_composite32(PIXMAN_OP_OVER,
-			bmp.bitmap, NULL, bitmap,
+			bmp.bitmap, src.bitmap, bitmap,
 			0, 0,
 			src_rect.x, src_rect.y,
 			x, y,
