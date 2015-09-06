@@ -531,8 +531,12 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
 		return true;
+	}
+
+	if (current_target == targets.end()) {
+		return false;
 	}
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
@@ -609,12 +613,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (rand() % 100 >= skill.hit)
+			if (!healing || rand() % 100 >= skill.hit)
 				continue;
 
 			this->success = true;
 			
-			if (rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
+			if (healing || rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
 				conditions.push_back(Data::states[i]);
 			}
 		}
@@ -721,8 +725,12 @@ AlgorithmBase(source), item(item) {
 }
 
 bool Game_BattleAlgorithm::Item::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
 		return true;
+	}
+
+	if (current_target == targets.end()) {
+		return false;
 	}
 
 	return item.type == RPG::Item::Type_medicine;
