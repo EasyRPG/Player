@@ -26,7 +26,7 @@
 #include "baseui.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-x(x), y(y), animation(animation), frame(0), frame_update(true)
+x(x), y(y), animation(animation), frame(0), frame_update(false)
 {
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
@@ -110,6 +110,13 @@ void BattleAnimation::Draw() {
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
 		const RPG::AnimationCellData& cell = *it;
+
+		if (cell.cell_id == 0) {
+			// Skip unused cells (they are created by deleting cells in the
+			// animation editor, resulting in gaps)
+			continue;
+		}
+
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
