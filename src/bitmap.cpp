@@ -884,6 +884,14 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		return;
 	}
 
+	if (&src != this)
+		pixman_image_composite32(PIXMAN_OP_SRC,
+		src.bitmap, (pixman_image_t*)NULL, bitmap,
+		src_rect.x, src_rect.y,
+		0, 0,
+		x, y,
+		src_rect.width, src_rect.height);
+
 	if (tone.gray != 128) {
 		DynamicFormat format(32, 8, 24, 8, 16, 8, 8, 8, 0, PF::Alpha);
 		uint32_t* pixels = new uint32_t[src_rect.width * src_rect.height];

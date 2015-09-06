@@ -63,6 +63,10 @@ void Scene_Battle_Rpg2k::CreateUi() {
 	CreateBattleCommandWindow();
 
 	battle_message_window.reset(new Window_BattleMessage(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+
+	if (!Game_Battle::IsEscapeAllowed()) {
+		options_window->DisableItem(2);
+	}
 }
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
