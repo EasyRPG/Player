@@ -26,12 +26,13 @@
 #include "baseui.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0)
+x(x), y(y), animation(animation), frame(0), frame_update(false)
 {
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
 
 	large = false;
+	z = 1500;
 
 	if (name.empty()) return;
 
@@ -68,11 +69,31 @@ BattleAnimation::~BattleAnimation() {
 }
 
 int BattleAnimation::GetZ() const {
-	return 1500;
+	return z;
+}
+
+void BattleAnimation::SetZ(int nz) {
+	z = nz;
 }
 
 DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
+}
+
+int BattleAnimation::GetX() const {
+	return x;
+}
+
+void BattleAnimation::SetX(int nx) {
+	x = nx;
+}
+
+int BattleAnimation::GetY() const {
+	return y;
+}
+
+void BattleAnimation::SetY(int ny) {
+	y = ny;
 }
 
 void BattleAnimation::Draw() {
@@ -89,11 +110,23 @@ void BattleAnimation::Draw() {
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
 		const RPG::AnimationCellData& cell = *it;
+
+		if (!cell.valid) {
+			// Skip unused cells (they are created by deleting cells in the
+			// animation editor, resulting in gaps)
+			continue;
+		}
+
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
 		Rect src_rect(sx * size, sy * size, size, size);
-		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
+
+		Tone tone((int)((cell.tone_red) * 128 / 100),
+			(int)((cell.tone_green) * 128 / 100),
+			(int)((cell.tone_blue) * 128 / 100),
+			(int)((cell.tone_gray) * 128 / 100));
+
 		int opacity = 255 * (100 - cell.transparency) / 100;
 		double zoom = cell.zoom / 100.0;
 		DisplayUi->GetDisplaySurface()->EffectsBlit(
@@ -106,11 +139,10 @@ void BattleAnimation::Draw() {
 }
 
 void BattleAnimation::Update() {
-	static bool update = true;
-	if (update) {
+	if (frame_update) {
 		frame++;
 	}
-	update = !update;
+	frame_update = !frame_update;
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -126,7 +158,7 @@ int BattleAnimation::GetFrames() const {
 }
 
 bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
+	return GetFrame()+1 >= GetFrames();
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
@@ -149,3 +181,4 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
 	}
 }
+

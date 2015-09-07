@@ -108,7 +108,7 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy, Bitmap const& src, Rect c
 
 	if (tone_change) {
 		if (!scale && !opacity.IsOpaque()) {
-			ToneBlit(x - ox, y - oy, src, src_rect, tone);
+			ToneBlit(x - ox, y - oy, src, src_rect, tone, opacity);
 			return;
 		}
 
@@ -116,7 +116,7 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy, Bitmap const& src, Rect c
 		draw_ = Create(src_rect.width, src_rect.height, transparent);
 		if (transparent)
 			draw_->Clear();
-		draw_->ToneBlit(0, 0, src, src_rect, tone);
+		draw_->ToneBlit(0, 0, src, src_rect, tone, opacity);
 		draw = draw_.get();
 		src_rect.x = 0;
 		src_rect.y = 0;

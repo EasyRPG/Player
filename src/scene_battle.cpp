@@ -62,11 +62,19 @@ void Scene_Battle::Start() {
 
 	if (Game_Temp::battle_troop_id <= 0 ||
 		Game_Temp::battle_troop_id > (int)Data::troops.size()) {
-			Output::Warning("Invalid Monster Party Id %d", Game_Temp::battle_troop_id);
-			Game_Temp::battle_result = Game_Temp::BattleVictory;
-			Scene::Pop();
-			return;
+		char* error_msg = "Invalid Monster Party Id %d";
+		if (Player::battle_test_flag) {
+			Output::Error(error_msg, Game_Temp::battle_troop_id);
+		}
+		else {
+			Output::Warning(error_msg, Game_Temp::battle_troop_id);
+		}
+		Game_Temp::battle_result = Game_Temp::BattleVictory;
+		Scene::Pop();
+		return;
 	}
+
+	Output::Debug("Starting battle %d (%s)", Game_Temp::battle_troop_id, Data::troops[Game_Temp::battle_troop_id-1].name.c_str());
 
 	if (Player::battle_test_flag) {
 		InitBattleTest();
@@ -81,8 +89,7 @@ void Scene_Battle::Start() {
 	auto_battle = false;
 	enemy_action = NULL;
 
-	CreateCursors();
-	CreateWindows();
+	CreateUi();
 
 	screen.reset(new Screen());
 
@@ -94,7 +101,7 @@ void Scene_Battle::Start() {
 	if (!Game_Temp::battle_background.empty())
 		background.reset(new Background(Game_Temp::battle_background));
 	else
-		background.reset(new Background(Game_Temp::battle_terrain_id));
+		background.reset(new Background(Game_Battle::GetTerrainId()));
 
 	SetState(State_Start);
 }
@@ -112,15 +119,14 @@ void Scene_Battle::TransitionOut() {
 	}
 }
 
-void Scene_Battle::CreateCursors() {
-
-}
-
-void Scene_Battle::CreateWindows() {
-	CreateBattleOptionWindow();
-	CreateBattleTargetWindow();
-	CreateBattleCommandWindow();
-	CreateBattleMessageWindow();
+void Scene_Battle::CreateUi() {
+	std::vector<std::string> commands;
+	commands.push_back(Data::terms.battle_fight);
+	commands.push_back(Data::terms.battle_auto);
+	commands.push_back(Data::terms.battle_escape);
+	options_window.reset(new Window_Command(commands, 76));
+	options_window->SetHeight(80);
+	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetVisible(false);
@@ -134,6 +140,9 @@ void Scene_Battle::CreateWindows() {
 	skill_window->SetHelpWindow(help_window.get());
 
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
+
+	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+	message_window->SetZ(3002);
 }
 
 void Scene_Battle::Update() {
@@ -156,18 +165,19 @@ void Scene_Battle::Update() {
 		Scene::Pop();
 	}
 
-	if (Game_Battle::UpdateEvents()) {
+	bool events_finished = Game_Battle::UpdateEvents();
+
+	if (Game_Message::visible && events_finished && !message_window->IsNextMessagePossible()) {
+		// Handle message box closing when not caused by event e.g. victory message
+		Game_Message::closing = true;
+	}
+
+	if (!Game_Message::visible && events_finished) {
 		ProcessActions();
 		ProcessInput();
 	}
 
-	//DoAuto();
-
 	UpdateBackground();
-	//UpdateCursors();
-	//UpdateSprites();
-	//UpdateFloaters();
-	//UpdateAnimations();
 
 	Game_Battle::Update();
 
@@ -182,6 +192,7 @@ void Scene_Battle::InitBattleTest()
 {
 	Game_Temp::battle_troop_id = Player::battle_test_troop_id;
 	Game_Temp::battle_background = Data::system.battletest_background;
+	Game_Battle::SetTerrainId(Data::system.battletest_terrain);
 
 	Main_Data::game_party->SetupBattleTestMembers();
 
@@ -190,8 +201,6 @@ void Scene_Battle::InitBattleTest()
 }
 
 void Scene_Battle::NextTurn() {
-	auto_battle = false;
-
 	Game_Battle::NextTurn();
 }
 
@@ -232,7 +241,6 @@ void Scene_Battle::EnemySelected() {
 	}
 
 	ActionSelectedCallback(active_actor);
-
 }
 
 void Scene_Battle::AllySelected() {

@@ -38,21 +38,21 @@
 #include "sprite_battler.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
-	source(source), first_attack(true) {
+	source(source), no_target(true), first_attack(true) {
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
-	source(source), first_attack(true) {
+	source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
-	source(source), first_attack(true) {
+	source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	target->GetActiveBattlers(targets);
@@ -71,6 +71,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	success = false;
 	killed_by_attack_damage = false;
 	critical_hit = false;
+	absorb = false;
 	animation = NULL;
 }
 
@@ -182,9 +183,17 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 					Data::terms.enemy_undamaged);
 			}
 			else {
-				ss << " " << GetAffectedHp() << (target_is_ally ?
-					Data::terms.actor_damaged :
-					Data::terms.enemy_damaged);
+				if (absorb) {
+					ss << " " << Data::terms.health_points << " " << GetAffectedHp();
+					ss << (target_is_ally ?
+						Data::terms.actor_hp_absorbed :
+						Data::terms.enemy_hp_absorbed);
+				}
+				else {
+					ss << " " << GetAffectedHp() << (target_is_ally ?
+						Data::terms.actor_damaged :
+						Data::terms.enemy_damaged);
+				}
 			}
 			out.push_back(ss.str());
 		}
@@ -200,7 +209,15 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			ss << Data::terms.hp_recovery;
 		}
 		else {
-			ss << " " << Data::terms.attack << " " << GetAffectedSp();
+			if (absorb) {
+				ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
+				ss << (target_is_ally ?
+					Data::terms.actor_hp_absorbed :
+					Data::terms.enemy_hp_absorbed);
+			}
+			else {
+				ss << " " << Data::terms.attack << " " << GetAffectedSp();
+			}
 		}
 		out.push_back(ss.str());
 	}
@@ -283,19 +300,37 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	targets.clear();
-	targets.push_back(target);
-	current_target = targets.begin();
+
+	if (target) {
+		targets.push_back(target);
+		current_target = targets.begin();
+	}
+	else {
+		// Set target is invalid
+		current_target = targets.end();
+	}
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedHp() != -1) {
 		int hp = GetAffectedHp();
+		int target_hp = (*current_target)->GetHp();
 		(*current_target)->ChangeHp(IsPositive() ? hp : -hp);
+		if (absorb) {
+			// Only absorb the hp that were left
+			int src_hp = std::min(target_hp, IsPositive() ? -hp : hp);
+			source->ChangeHp(src_hp);
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
 		int sp = GetAffectedSp();
+		int target_sp = (*current_target)->GetSp();
 		(*current_target)->SetSp((*current_target)->GetSp() + (IsPositive() ? sp : -sp));
+		if (absorb) {
+			int src_sp = std::min(target_sp, IsPositive() ? -sp : sp);
+			source->ChangeHp(src_sp);
+		}
 	}
 
 	// TODO
@@ -330,8 +365,15 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
+		// Selected algorithm does not need a target because it targets
+		// the source
 		return true;
+	}
+	
+	if (current_target == targets.end()) {
+		// End of target list reached
+		return false;
 	}
 
 	return (!(*current_target)->IsDead());
@@ -411,8 +453,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2));
 	} else {
 		// Source is Enemy
-
-		//int hit = src->IsMissingOften() ? 70 : 90;
 		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
 	}
@@ -491,8 +531,12 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
 		return true;
+	}
+
+	if (current_target == targets.end()) {
+		return false;
 	}
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
@@ -529,18 +573,16 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (healing || rand() % 100 < skill.hit) {
 				this->success = true;
 
-				// FIXME: is this still affected by stats for allies?
-				// FIXME: This is what the help file says, but it doesn't look right
 				int effect = skill.power +
 					source->GetAtk() * skill.physical_rate / 20 +
-					(*current_target)->GetDef() * skill.magical_rate / 40;
+					source->GetSpi() * skill.magical_rate / 40 -
+					(*current_target)->GetDef() * skill.physical_rate / 40 -
+					(*current_target)->GetSpi() * skill.magical_rate / 80;
 
-				if (skill.variance > 0) {
-					int var_perc = skill.variance * 5;
-					int act_perc = rand() % (var_perc * 2) - var_perc;
-					int change = effect * act_perc / 100;
-					effect += change;
-				}
+				// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
+				// see #480
+
+				effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
 
 				if (skill.affect_hp) {
 					this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
@@ -563,21 +605,23 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					this->agility = agility;
 			}
 		}
+		else {
+			// Force a no damage message
+			this->hp = 0;
+		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (rand() % 100 >= skill.hit)
+			if (!healing || rand() % 100 >= skill.hit)
 				continue;
 
 			this->success = true;
 			
-			if (rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
+			if (healing || rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
 				conditions.push_back(Data::states[i]);
 			}
 		}
-
-		return this->success;
 	}
 	else if (skill.type == RPG::Skill::Type_switch) {
 		switch_id = skill.switch_id;
@@ -586,6 +630,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	else {
 		assert(false && "Unsupported skill type");
 	}
+
+	absorb = skill.absorb_damage;
 
 	return this->success;
 }
@@ -679,8 +725,12 @@ AlgorithmBase(source), item(item) {
 }
 
 bool Game_BattleAlgorithm::Item::IsTargetValid() {
-	if (current_target == targets.end()) {
+	if (no_target) {
 		return true;
+	}
+
+	if (current_target == targets.end()) {
+		return false;
 	}
 
 	return item.type == RPG::Item::Type_medicine;
@@ -966,7 +1016,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		int ally_agi = Main_Data::game_party->GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 
-		double to_hit = 1.5 * (ally_agi / enemy_agi);
+		double to_hit = 1.5 * ((float)ally_agi / enemy_agi);
 
 		// Every failed escape is worth 10% higher escape chance (see help file)
 		for (int i = 0; i < Game_Battle::escape_fail_count; ++i) {
@@ -1023,3 +1073,37 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 void Game_BattleAlgorithm::Transform::Apply() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }
+
+Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
+	const std::vector<int16_t>& states = source->GetStates();
+
+	for (std::vector<int16_t>::const_iterator it = states.begin();
+		it != states.end(); ++it) {
+		if (Data::states[*it].restriction == RPG::State::Restriction_do_nothing) {
+			std::string msg = Data::states[*it].message_affected;
+			if (!msg.empty()) {
+				return source->GetName() + msg;
+			}
+			return "";
+		}
+	}
+
+	// State was healed before the actor got his turn
+	return "";
+}
+
+bool Game_BattleAlgorithm::NoMove::Execute() {
+	// no-op
+	return true;
+}
+
+void Game_BattleAlgorithm::NoMove::Apply() {
+	// no-op
+}
+
+

@@ -23,6 +23,7 @@
 #include "async_handler.h"
 #include "audio.h"
 #include "game_map.h"
+#include "game_battle.h"
 #include "game_event.h"
 #include "game_player.h"
 #include "game_temp.h"
@@ -1220,22 +1221,22 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
 	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
 												 com.parameters[1]);
-	Game_Character *player;
+	Game_Character *player = Main_Data::game_player.get();
+	Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+
 	switch (com.parameters[2]) {
 		case 0:
-			player = Main_Data::game_player.get();
-			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
 			break;
 		case 1:
-			Game_Temp::battle_terrain_id = 0;
 			Game_Temp::battle_background = com.string;
+
 			if (Player::IsRPG2k())
 				Game_Temp::battle_formation = 0;
 			else
 				Game_Temp::battle_formation = com.parameters[7];
 			break;
 		case 2:
-			Game_Temp::battle_terrain_id = com.parameters[8];
+			Game_Battle::SetTerrainId(com.parameters[8]);
 			Game_Temp::battle_background = Data::terrains[com.parameters[8] - 1].background_name;
 			break;
 		default:
@@ -1246,9 +1247,9 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Game_Temp::battle_first_strike = com.parameters[5] != 0;
 
 	if (Player::IsRPG2k())
-		Game_Temp::battle_mode = 0;
+		Game_Battle::SetBattleMode(0);
 	else
-		Game_Temp::battle_mode = com.parameters[6]; // normal, initiative, surround, back attack, pincer
+		Game_Battle::SetBattleMode(com.parameters[6]); // normal, initiative, surround, back attack, pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 

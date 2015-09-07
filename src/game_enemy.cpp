@@ -190,9 +190,8 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 		return Game_Switches[action.switch_id];
 	case RPG::EnemyAction::ConditionType_turn:
 		{
-			int interval = action.condition_param2 == 0 ? 1 : action.condition_param2;
 			int turns = Game_Battle::GetTurn();
-			return (turns - action.condition_param1) % interval == 0;
+			return Game_Battle::CheckTurns(turns, action.condition_param2, action.condition_param1);
 		}
 	case RPG::EnemyAction::ConditionType_actors:
 		{

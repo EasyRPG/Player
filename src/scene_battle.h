@@ -88,10 +88,6 @@ public:
 		State_SelectAllyTarget,
 		/** Battle Running */
 		State_Battle,
-		/** Battle Running, ally does move */
-		State_AllyAction,
-		/** Battle running, enemy does move */
-		State_EnemyAction,
 		/** Battle ended with a victory */
 		State_Victory,
 		/** Battle ended with a defeat */
@@ -106,6 +102,10 @@ public:
 		 * Used to execute the algorithm to play an optional battle animation.
 		 */
 		BattleActionState_Start,
+		/**
+		 * Handles healing of conditions that get auto removed after X turns.
+		 */
+		BattleActionState_ConditionHeal,
 		/**
 		 * Used to apply the new conditions that were caused.
 		 * Called once for each condition.
@@ -124,13 +124,7 @@ protected:
 
 	virtual void InitBattleTest();
 
-	virtual void CreateCursors();
-	virtual void CreateWindows();
-
-	virtual void CreateBattleOptionWindow() = 0;
-	virtual void CreateBattleTargetWindow() = 0;
-	virtual void CreateBattleCommandWindow() = 0;
-	virtual void CreateBattleMessageWindow() = 0;
+	virtual void CreateUi();
 
 	virtual void ProcessActions() = 0;
 	virtual void ProcessInput() = 0;

@@ -18,6 +18,7 @@
 // Headers
 #include <sstream>
 #include "filefinder.h"
+#include "output.h"
 #include "player.h"
 #include "scene_load.h"
 #include "scene_file.h"
@@ -31,6 +32,8 @@ Scene_Load::Scene_Load() :
 void Scene_Load::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
+
+	Output::Debug("Loading save %s", ss.str().c_str());
 
 #ifdef EMSCRIPTEN
 	std::string save_name = FileFinder::FindDefault(*tree, "Save", ss.str());

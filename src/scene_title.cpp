@@ -200,6 +200,7 @@ void Scene_Title::CommandNewGame() {
 	if (!CheckValidPlayerLocation()) {
 		Output::Warning("The game has no start location set.");
 	} else {
+		Output::Debug("Starting new game");
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Game_System::BgmStop();
 		Player::SetupPlayerSpawn();

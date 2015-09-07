@@ -21,6 +21,8 @@
 // Headers
 #include "sprite.h"
 #include "game_battler.h"
+#include "battle_animation.h"
+#include <boost/scoped_ptr.hpp>
 
 struct FileRequestResult;
 
@@ -45,7 +47,7 @@ public:
 	};
 
 	enum LoopState {
-		LoopState_IdleAnimationAfterFinish,
+		LoopState_DefaultAnimationAfterFinish,
 		LoopState_LoopAnimation
 	};
 
@@ -70,9 +72,10 @@ public:
 	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
 
 	/**
-	 * Returns true when the state is idle.
+	 * Returns true when the actor is in it's default state (Depending on
+	 * conditions)
 	 *
-	 * @return Whether state is idle
+	 * @return Whether state is default
 	 */
 	bool IsIdling();
 
@@ -94,6 +97,9 @@ protected:
 	int flash_counter;
 	LoopState loop_state;
 	bool old_hidden;
+	boost::scoped_ptr<BattleAnimation> animation;
+	// false when a newly set animation didn't loop once
+	bool idling;
 };
 
 #endif

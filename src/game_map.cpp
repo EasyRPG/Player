@@ -24,6 +24,7 @@
 
 #include "async_handler.h"
 #include "system.h"
+#include "game_battle.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
@@ -232,6 +233,17 @@ void Game_Map::SetupCommon(int _id) {
 
 	int current_index = GetMapIndex(location.map_id);
 	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
+
+	ss.str("");
+	for (int cur = current_index;
+		GetMapIndex(Data::treemap.maps[cur].parent_map) != cur;
+		cur = Data::treemap.maps[cur].parent_map) {
+		if (cur != current_index) {
+			ss << " < ";
+		}
+		ss << Data::treemap.maps[cur].name.c_str();
+	}
+	Output::Debug("Tree: %s", ss.str().c_str());
 
 	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
@@ -528,7 +540,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
-						return (passages_up[tile_id] & bit != 0);
+						return (passages_up[tile_id] & bit) != 0;
 					}
 				}
 			}
@@ -826,7 +838,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_terrain_id = GetTerrainTag(x, y);
+	Game_Battle::SetTerrainId(GetTerrainTag(x, y));
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
 
@@ -837,7 +849,7 @@ bool Game_Map::PrepareEncounter() {
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
 	} else {
-		Game_Temp::battle_background = Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
+		Game_Temp::battle_background = Data::terrains[Game_Battle::GetTerrainId() - 1].background_name;
 	}
 
 	Game_Temp::battle_calling = true;

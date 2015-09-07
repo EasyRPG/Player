@@ -157,26 +157,26 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 
 		bitmap_effects->Clear();
 		if (no_tone && no_flash)
-			bitmap_effects->FlipBlit(rect.x, rect.y, *bitmap, rect, flipx_effect, flipy_effect);
+			bitmap_effects->FlipBlit(rect.x, rect.y, *bitmap, rect, flipx_effect, flipy_effect, Opacity::opaque);
 		else if (no_flip && no_flash)
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect, Opacity::opaque);
 		else if (no_flip && no_tone)
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
 		else if (no_flash) {
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect, Opacity::opaque);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 		else if (no_tone) {
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 		else if (no_flip) {
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect, Opacity::opaque);
 		}
 		else {
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect, Opacity::opaque);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 

@@ -32,8 +32,13 @@ public:
 
 	void Draw();
 	int GetZ() const;
+	void SetZ(int nz);
 	DrawableType GetType() const;
 
+	int GetX() const;
+	void SetX(int nx);
+	int GetY() const;
+	void SetY(int ny);
 	void Update();
 	int GetFrame() const;
 	int GetFrames() const;
@@ -46,9 +51,11 @@ protected:
 
 	int x;
 	int y;
+	int z;
 	const RPG::Animation* animation;
 	int frame;
 	bool large;
+	bool frame_update;
 	BitmapRef screen;
 };
 

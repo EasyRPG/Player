@@ -341,7 +341,11 @@ void FileFinder::InitRtpPaths() {
 	assert(!version_str.empty());
 
 	if (Player::IsRPG2k()) {
+		// Prefer original 2000 RTP over Kadokawa, because there is no
+		// reliable way to detect these engine and much more 2k games
+		// use the non-English version
 		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
 	}
 	else if (Player::IsRPG2k3Legacy()) {
 		// Original 2003 RTP installer registry key is upper case

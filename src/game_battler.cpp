@@ -30,8 +30,6 @@
 #include "util_macro.h"
 #include "main_data.h"
 
-#define EASYRPG_GAUGE_MAX_VALUE 120000
-
 Game_Battler::Game_Battler() {
 	ResetBattle();
 }
@@ -117,7 +115,31 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
-	// TODO: Check for Movable(?) and Silence
+	
+	// > 10 makes any skill usable
+	int smallest_physical_rate = 11;
+	int smallest_magical_rate = 11;
+
+	const std::vector<int16_t> states = GetStates();
+	for (std::vector<int16_t>::const_iterator it = states.begin();
+		it != states.end(); ++it) {
+		const RPG::State& state = Data::states[(*it) - 1];
+
+		if (state.restrict_skill) {
+			smallest_physical_rate = std::min(state.restrict_skill_level, smallest_physical_rate);
+		}
+
+		if (state.restrict_magic) {
+			smallest_magical_rate = std::min(state.restrict_magic_level, smallest_magical_rate);
+		}
+	}
+
+	if (skill.physical_rate >= smallest_physical_rate) {
+		return false;
+	}
+	if (skill.magical_rate >= smallest_magical_rate) {
+		return false;
+	}
 
 	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
 	// SetEscapePlace first. Not sure if any game uses this...
@@ -257,6 +279,8 @@ void Game_Battler::RemoveState(int state_id) {
 	std::vector<int16_t>::iterator it = std::find(states.begin(), states.end(), state_id);
 	if (it != states.end())
 		states.erase(it);
+
+	states_turn_count[state_id - 1] = 0;
 }
 
 static bool NonPermanent(int state_id) {
@@ -278,6 +302,9 @@ void Game_Battler::RemoveBattleStates() {
 }
 
 void Game_Battler::RemoveAllStates() {
+	states_turn_count.clear();
+	states_turn_count.resize(Data::states.size());
+
 	std::vector<int16_t>& states = GetStates();
 	states.clear();
 }
@@ -402,18 +429,22 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
+int Game_Battler::GetMaxGauge() const {
+	return 120000;
+}
+
 int Game_Battler::GetGauge() const {
-	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
+	return gauge / (GetMaxGauge() / 100);
 }
 
 void Game_Battler::SetGauge(int new_gauge) {
 	new_gauge = min(max(new_gauge, 0), 100);
 
-	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
+	gauge = new_gauge * (GetMaxGauge() / 100);
 }
 
 bool Game_Battler::IsGaugeFull() const {
-	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
+	return gauge >= GetMaxGauge();
 }
 
 void Game_Battler::UpdateGauge(int multiplier) {
@@ -421,7 +452,7 @@ void Game_Battler::UpdateGauge(int multiplier) {
 		return;
 	}
 
-	if (gauge > EASYRPG_GAUGE_MAX_VALUE) {
+	if (gauge > GetMaxGauge()) {
 		return;
 	}
 	gauge += GetAgi() * multiplier;
@@ -437,8 +468,46 @@ void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
 }
 
+std::vector<int16_t> Game_Battler::NextBattleTurn() {
+	++battle_turn;
+
+	std::vector<int16_t> healed_states;
+
+	for (size_t i = 0; i < states_turn_count.size(); ++i) {
+		if (HasState(i + 1)) {
+			states_turn_count[i] += 1;
+
+			if (states_turn_count[i] >= Data::states[i].hold_turn) {
+				if (rand() % 100 < Data::states[i].auto_release_prob) {
+					healed_states.push_back(i + 1);
+					states_turn_count[i] = 0;
+					RemoveState(i + 1);
+				}
+			}
+		}
+	}
+
+	return healed_states;
+}
+
 void Game_Battler::ResetBattle() {
-	gauge = EASYRPG_GAUGE_MAX_VALUE / 2;
+	gauge = GetMaxGauge() / 2;
 	charged = false;
 	defending = false;
+	battle_turn = 0;
+	states_turn_count.clear();
+	states_turn_count.resize(Data::states.size());
+	last_battle_action = -1;
+}
+
+int Game_Battler::GetBattleTurn() const {
+	return battle_turn;
+}
+
+void Game_Battler::SetLastBattleAction(int battle_action) {
+	last_battle_action = battle_action;
+}
+
+int Game_Battler::GetLastBattleAction() const {
+	return last_battle_action;
 }

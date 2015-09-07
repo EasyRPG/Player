@@ -35,7 +35,8 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	sprite_frame(-1),
 	fade_out(255),
 	flash_counter(0),
-	old_hidden(false) {
+	old_hidden(false),
+	idling(true) {
 	
 	CreateSprite();
 }
@@ -62,6 +63,7 @@ void Sprite_Battler::Update() {
 		SetOpacity(255);
 		SetVisible(true);
 		SetAnimationState(AnimationState_Idle);
+		idling = true;
 	}
 
 	old_hidden = battler->IsHidden();
@@ -71,6 +73,7 @@ void Sprite_Battler::Update() {
 	++cycle;
 	
 	if (battler->GetBattleAnimationId() <= 0) {
+		// Animations for monster
 		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
 		}
@@ -85,17 +88,39 @@ void Sprite_Battler::Update() {
 			SetOpacity(flash_counter > 5 ? 50 : 255);
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
+				idling = true;
 				cycle = 0;
 			}
 		}
 		else {
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
+				idling = true;
 				cycle = 0;
 			}
 		}
 	} else if (anim_state > 0) {
+		// Animations for allies
 		if (Player::IsRPG2k3()) {
+			if (animation) {
+				if (animation->IsDone()) {
+					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
+						const RPG::State* state = battler->GetSignificantState();
+						if (state) {
+							SetAnimationState(state->battler_animation_id + 1);
+						} else {
+							SetAnimationState(AnimationState_Idle);
+						}
+						idling = true;
+					}
+					animation->SetFrame(0);
+				}
+
+				animation->Update();
+
+				return;
+			}
+
 			static const int frames[] = {0,1,2,1};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
@@ -109,8 +134,15 @@ void Sprite_Battler::Update() {
 			if (cycle == 40) {
 				cycle = 0;
 
-				if (loop_state == LoopState_IdleAnimationAfterFinish) {
-					SetAnimationState(AnimationState_Idle);
+				if (loop_state == LoopState_DefaultAnimationAfterFinish) {
+					const RPG::State* state = battler->GetSignificantState();
+					if (state) {
+						SetAnimationState(state->battler_animation_id + 1);
+					}
+					else {
+						SetAnimationState(AnimationState_Idle);
+					}
+					idling = true;
 				}
 			}
 		}
@@ -118,6 +150,12 @@ void Sprite_Battler::Update() {
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
+	// Default value is 100 (function called with val+1)
+	// 100 maps all states to "Bad state" (7)
+	if (state == 101) {
+		state = 7;
+	}
+
 	anim_state = state;
 
 	flash_counter = 0;
@@ -126,29 +164,41 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 	cycle = 0;
 
+	idling = false;
+
 	if (Player::IsRPG2k3()) {
 		if (battler->GetBattleAnimationId() > 0) {
 			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
 			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-			if (ext.battler_name == sprite_file)
-				return;
 
 			sprite_file = ext.battler_name;
 
-			FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-			request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
-			request->Start();
+			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
+				SetBitmap(BitmapRef());
+				animation.reset(new BattleAnimation(GetX(), GetY(), &Data::animations[ext.animation_id - 1]));
+				animation->SetZ(GetZ());
+			}
+			else {
+				animation.reset();
+				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
+				request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+				request->Start();
+			}
 		}
 	}
 }
 
 bool Sprite_Battler::IsIdling() {
-	return anim_state == AnimationState_Idle;
+	return idling;
 }
 
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
+
+	SetX(battler->GetBattleX());
+	SetY(battler->GetBattleY());
+	SetZ(battler->GetBattleY()); // Not a typo
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
@@ -168,11 +218,8 @@ void Sprite_Battler::CreateSprite() {
 		SetOx(24);
 		SetOy(24);
 		SetAnimationState(anim_state);
+		idling = true;
 	}
-
-	SetX(battler->GetBattleX());
-	SetY(battler->GetBattleY());
-	SetZ(battler->GetBattleY()); // Not a typo
 
 	SetVisible(!battler->IsHidden());
 }

@@ -167,7 +167,7 @@ namespace {
 			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
 			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
 		) {
-			Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
+			Output::Debug("Image has non-default size: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
 						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
 		}
 
