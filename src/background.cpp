@@ -34,9 +34,11 @@ Background::Background(const std::string& name) :
 
 	Graphics::RegisterDrawable(this);
 
-	FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
-	request->Bind(&Background::OnBackgroundGraphicReady, this);
-	request->Start();
+	if (!name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
+		request->Bind(&Background::OnBackgroundGraphicReady, this);
+		request->Start();
+	}
 }
 
 Background::Background(int terrain_id) :
@@ -48,16 +50,18 @@ Background::Background(int terrain_id) :
 
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
-	if (terrain.background_type == 0) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
+	if (!terrain.background_name.empty()) {
+		if (terrain.background_type == 0) {
+			FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
+			request->Bind(&Background::OnBackgroundGraphicReady, this);
+			request->Start();
+			return;
+		}
+	
+		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
 		request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
-		return;
 	}
-
-	FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
-	request->Bind(&Background::OnBackgroundGraphicReady, this);
-	request->Start();
 
 	bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
 	bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
