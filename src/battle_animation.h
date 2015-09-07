@@ -38,6 +38,7 @@ public:
 	BattleAnimation(const RPG::Animation& anim);
 
 	int GetZ() const;
+	void SetZ(int nz);
 	DrawableType GetType() const;
 
 	void Update();
@@ -56,7 +57,8 @@ protected:
 	const RPG::Animation& animation;
 	BitmapRef screen;
 	int frame;
-	bool update_flag;
+	int z;
+	bool frame_update;
 	bool large;
 };
 
@@ -72,10 +74,10 @@ protected:
 };
 
 // For playing animations against a battler in battle.
-class BattleAnimationBattle : public BattleAnimation {
+class BattleAnimationBattler : public BattleAnimation {
 public:
-	BattleAnimationBattle(const RPG::Animation& anim, Game_Battler& batt);
-	~BattleAnimationBattle();
+	BattleAnimationBattler(const RPG::Animation& anim, Game_Battler& batt);
+	~BattleAnimationBattler();
 	void Draw();
 protected:
 	void Flash(Color c);

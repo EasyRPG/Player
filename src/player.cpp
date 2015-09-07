@@ -101,6 +101,9 @@ void Player::Init(int argc, char *argv[]) {
 
 	if (init) return;
 
+	Output::Debug("EasyRPG Player started");
+	Output::Debug("======================");
+
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
 	if (!fatInitDefault()) {
@@ -316,11 +319,18 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 
 	std::vector<std::string> args;
 
+	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
+		ss << argv[i] << " ";
 		args.push_back(Utils::LowerCase(argv[i]));
 	}
+	Output::Debug("CLI: %s", ss.str().c_str());
 
 	std::vector<std::string>::const_iterator it;
+
+	for (it = args.begin(); it != args.end(); ++it) {
+		ss << *it << " ";
+	}
 
 	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
@@ -481,20 +491,23 @@ void Player::CreateGameObjects() {
 			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 		}
 
+		Output::Debug("Loading game %s", Player::game_title.c_str());
+
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {
 				Player::engine = EngineRpg2k3;
 
 				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-					Output::Debug("Switching to RPG2k3 Interpreter");
+					Output::Debug("Using RPG2k3 Interpreter");
 				}
 				else {
 					Player::engine |= EngineRpg2k3E;
-					Output::Debug("Switching to RPG2k3 (English release, v1.10) Interpreter");
+					Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
 				}
 			}
 			else {
 				Player::engine = EngineRpg2k;
+				Output::Debug("Using RPG2k Interpreter");
 			}
 		}
 
@@ -723,7 +736,8 @@ void Player::PrintUsage() {
 	std::cout << "      " << "BattleTest N         " << "Same as --battle-test. When N is not a valid number" << std::endl;
 	std::cout << "      " << "                     " << "the 4th argument is used as the party id." << std::endl;
 	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
-	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl << std::endl;
+	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
+	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }

@@ -26,6 +26,7 @@
 #include "game_system.h"
 #include "bitmap.h"
 #include "font.h"
+#include "player.h"
 
 Window_Base::Window_Base(int x, int y, int width, int height) {
 	windowskin_name = Game_System::GetSystemName();
@@ -62,7 +63,7 @@ void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx,
 		);
 
 	if (flip) {
-		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false);
+		contents->FlipBlit(cx, cy, *faceset, src_rect, true, false, Opacity::opaque);
 	}
 	else {
 		contents->Blit(cx, cy, *faceset, src_rect, 255);
@@ -117,7 +118,9 @@ void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
 
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw EXP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+	if (Player::IsRPG2k()) {
+		contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+	}
 
 	// Current Exp of the Actor
 	// ------/------
@@ -129,7 +132,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
-	contents->TextDraw(cx + 12, cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
 }
 
 void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max) {
@@ -147,20 +150,20 @@ void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max
 	}
 	std::stringstream ss;
 	ss << actor->GetHp();
-	contents->TextDraw(cx + 18, cy, color, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, color, ss.str(), Text::AlignRight);
 
 	if (!draw_max)
 		return;
 
 	// Draw the /
-	cx += 3 * 6;
+	cx += (Player::IsRPG2k() ? 3 : 4) * 6;
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 
 	// Draw Max Hp
 	cx += 6;
 	ss.str("");
 	ss << actor->GetMaxHp();
-	contents->TextDraw(cx + 18, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max) {

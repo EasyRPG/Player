@@ -89,6 +89,14 @@ public:
 	bool IsActorInParty(int actor_id);
 
 	/**
+	 * Gets position of actor in party.
+	 *
+	 * @param actor_id database actor ID
+	 * @return Party position 0 - 3 or -1 if not in
+	 */
+	int GetActorPositionInParty(int actor_id);
+
+	/**
 	 * Gains gold.
 	 *
 	 * @param value gained gold.

@@ -42,14 +42,12 @@ namespace Game_Battle {
 
 	void NextTurn();
 
-
 	/**
 	 * Updates the gauge of all battlers based on the highest agi of all.
 	 */
 	void UpdateGauges();
 
 	void ChangeBackground(const std::string& name);
-
 
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
@@ -61,11 +59,25 @@ namespace Game_Battle {
 	bool IsTerminating();
 
 	/**
-	* Gets the game interpreter.
-	*
-	* @return the game interpreter.
-	*/
+	 * Gets the game interpreter.
+	 *
+	 * @return the game interpreter.
+	 */
 	Game_Interpreter& GetInterpreter();
+
+	void SetTerrainId(int terrain_id_);
+	int GetTerrainId();
+
+	enum BattleMode {
+		BattleNormal,
+		BattleInitiative,
+		BattleSurround,
+		BattleBackAttack,
+		BattlePincer
+	};
+
+	void SetBattleMode(int battle_mode_);
+	int GetBattleMode();
 
 	extern int escape_fail_count;
 	extern std::string background_name;

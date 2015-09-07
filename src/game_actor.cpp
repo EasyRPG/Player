@@ -19,12 +19,25 @@
 #include <algorithm>
 #include <sstream>
 #include "game_actor.h"
+#include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
 #include "main_data.h"
 #include "player.h"
 #include "rpg_skill.h"
 #include "util_macro.h"
+
+static int max_hp_value() {
+	return Player::IsRPG2k() ? 999 : 9999;
+}
+
+static int max_other_stat_value() {
+	return 999;
+}
+
+static int max_exp_value() {
+	return Player::IsRPG2k() ? 999999 : 9999999;
+}
 
 Game_Actor::Game_Actor(int actor_id) :
 	Game_Battler(),
@@ -84,11 +97,11 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 
 	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
-	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
+	if (item.actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;
 	}
 	else {
-		return Data::items[item_id - 1].actor_set.at(data.ID - 1);
+		return item.actor_set.at(data.ID - 1);
 	}
 }
 
@@ -187,7 +200,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += data.hp_mod;
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_hp_value());
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -202,7 +215,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += data.sp_mod;
 
-	return min(max(n, 0), 999);
+	return min(max(n, 0), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -214,15 +227,19 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.attack[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.attack[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.attack_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].atk_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseAtk() const {
@@ -234,15 +251,19 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.defense[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.defense[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.defense_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].def_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseDef() const {
@@ -254,15 +275,19 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.spirit[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.spirit[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.spirit_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].spi_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseSpi() const {
@@ -274,15 +299,19 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		? Data::classes[data.class_id - 1].parameters.agility[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.agility[data.level - 1];
 
-	if (mod)
+	if (mod) {
 		n += data.agility_mod;
+	}
 
-	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
-			if (*it > 0 && *it <= (int)Data::items.size())
+	if (equip) {
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it) {
+			if (*it > 0 && *it <= (int)Data::items.size()) {
 				n += Data::items[*it - 1].agi_points1;
+			}
+		}
+	}
 
-	return min(max(n, 1), 999);
+	return min(max(n, 1), max_other_stat_value());
 }
 
 int Game_Actor::GetBaseAgi() const {
@@ -323,7 +352,7 @@ int Game_Actor::CalculateExp(int level) const
 			result += (int)correction;
 		}
 	}
-	return min(result, Player::IsRPG2k() ? 1000000 : 10000000);
+	return min(result, max_exp_value());
 }
 
 void Game_Actor::MakeExpList() {
@@ -442,12 +471,12 @@ int Game_Actor::GetExp() const {
 }
 
 void Game_Actor::SetExp(int _exp) {
-	data.exp = min(max(_exp, 0), 999999);
+	data.exp = min(max(_exp, 0), max_exp_value());
 }
 
 void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 	int new_level = GetLevel();
-	int new_exp = min(max(exp, 0), 999999);
+	int new_exp = min(max(exp, 0), max_exp_value());
 
 	if (new_exp > GetExp()) {
 		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {
@@ -558,11 +587,139 @@ bool Game_Actor::GetAutoBattle() const {
 }
 
 int Game_Actor::GetBattleX() const {
-	return (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH/320);
+	float position = 0.0;
+
+	if (Data::actors[data.ID - 1].battle_x == 0 ||
+		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
+		int party_size = Main_Data::game_party->GetBattlerCount();
+
+		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
+		float right = left + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_c / 1103;
+
+		switch (party_size) {
+		case 1:
+			position = left + ((right - left) / 2);
+			break;
+		case 2:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left;
+				break;
+			}
+		case 3:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left + ((right - left) / 2);
+				break;
+			case 2:
+				position = left;
+				break;
+			}
+		case 4:
+			switch (party_pos) {
+			case 0:
+				position = right;
+				break;
+			case 1:
+				position = left + ((right - left) * 2.0/3);
+				break;
+			case 2:
+				position = left + ((right - left) * 1.0/3);
+				break;
+			case 3:
+				position = left;
+				break;
+			}
+		}
+
+		switch (Game_Battle::GetBattleMode()) {
+			case Game_Battle::BattleNormal:
+			case Game_Battle::BattleInitiative:
+				return SCREEN_TARGET_WIDTH - position;
+			case Game_Battle::BattleBackAttack:
+				return position;
+			case Game_Battle::BattlePincer:
+			case Game_Battle::BattleSurround:
+				// ToDo: Correct position
+				return SCREEN_TARGET_WIDTH - position;
+		}
+	}
+	else {
+		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
+
+		position = (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
+	}
+
+	return position;
 }
 
 int Game_Actor::GetBattleY() const {
-	return (Data::actors[data.ID - 1].battle_y*SCREEN_TARGET_HEIGHT/240);
+	float position = 0.0;
+
+	if (Data::actors[data.ID - 1].battle_y == 0 ||
+		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(data.ID);
+		int party_size = Main_Data::game_party->GetBattlerCount();
+
+		float top = Data::terrains[Game_Battle::GetTerrainId() - 1].grid_a;
+		float bottom = top + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_b / 13;
+
+		switch (party_size) {
+		case 1:
+			position = top + ((bottom - top) / 2);
+			break;
+		case 2:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = bottom;
+				break;
+			}
+		case 3:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = top + ((bottom - top) / 2);
+				break;
+			case 2:
+				position = bottom;
+				break;
+			}
+		case 4:
+			switch (party_pos) {
+			case 0:
+				position = top;
+				break;
+			case 1:
+				position = top + ((bottom - top) * 1.0/3);
+				break;
+			case 2:
+				position = top + ((bottom - top) * 2.0/3);
+				break;
+			case 3:
+				position = bottom;
+				break;
+			}
+		}
+
+		position -= 24;
+	}
+	else {
+		position = (Data::actors[data.ID - 1].battle_y*SCREEN_TARGET_HEIGHT / 240);
+	}
+
+	return (int)position;
 }
 
 const std::string& Game_Actor::GetSkillName() const {

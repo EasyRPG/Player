@@ -212,7 +212,7 @@ void Game_Screen::ShowBattleAnimationBattle(int animation_id, Game_Battler* targ
 	data.battleanim_global = global; // can these be global?
 
 	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattle(anim, *target));
+	animation.reset(new BattleAnimationBattler(anim, *target));
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {

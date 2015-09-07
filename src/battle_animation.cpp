@@ -31,7 +31,7 @@
 #include "spriteset_battle.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
-	animation(anim), frame(0), update_flag(true), large(false)
+	animation(anim), frame(0), z(1500), frame_update(true), large(false)
 {
 	const std::string& name = animation.animation_name;
 	BitmapRef graphic;
@@ -65,7 +65,11 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 }
 
 int BattleAnimation::GetZ() const {
-	return 1500;
+	return z;
+}
+
+void BattleAnimation::SetZ(int nz) {
+	z = nz;
 }
 
 DrawableType BattleAnimation::GetType() const {
@@ -73,12 +77,11 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Update() {
-	// Update every other frame
-	if (update_flag) {
+	if (frame_update) {
 		frame++;
 		RunTimedSfx();
 	}
-	update_flag = !update_flag;
+	frame_update = !frame_update;
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -94,7 +97,7 @@ int BattleAnimation::GetFrames() const {
 }
 
 bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
+	return GetFrame()+1 >= GetFrames();
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
@@ -127,11 +130,21 @@ void BattleAnimation::DrawAt(int x, int y) {
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
 		const RPG::AnimationCellData& cell = *it;
+
+		if (!cell.valid) {
+			// Skip unused cells (they are created by deleting cells in the
+			// animation editor, resulting in gaps.)
+			continue;
+		}
+
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
 		Rect src_rect(sx * size, sy * size, size, size);
-		Tone tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray);
+		Tone tone(cell.tone_red * 128 / 100,
+			cell.tone_green * 128 / 100,
+			cell.tone_blue * 128/100,
+			cell.tone_gray * 128/100);
 		int opacity = 255 * (100 - cell.transparency) / 100;
 		double zoom = cell.zoom / 100.0;
 		DisplayUi->GetDisplaySurface()->EffectsBlit(
@@ -213,22 +226,22 @@ void BattleAnimationChara::Flash(Color c) {
 
 /////////
 
-BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, Game_Battler& batt) :
+BattleAnimationBattler::BattleAnimationBattler(const RPG::Animation& anim, Game_Battler& batt) :
 	BattleAnimation(anim), battler(batt), sprite(Game_Battle::GetSpriteset().FindBattler(&battler))
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattle::~BattleAnimationBattle() {
+BattleAnimationBattler::~BattleAnimationBattler() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationBattle::Draw() {
+void BattleAnimationBattler::Draw() {
 	int offset = 0;
 	if (sprite && sprite->GetBitmap()) {
 		offset = CalculateOffset(animation.position, sprite->GetBitmap()->GetHeight());
 	}
 	DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 }
-void BattleAnimationBattle::Flash(Color c) {
+void BattleAnimationBattler::Flash(Color c) {
 	if (sprite)
 		sprite->Flash(c, flash_duration);
 }
@@ -246,6 +259,7 @@ BattleAnimationGlobal::~BattleAnimationGlobal() {
 void BattleAnimationGlobal::Draw() {
 	// The animations are played at the vertices of a regular grid,
 	// 16 tiles wide by 10 tiles high, fixed against the map.
+	// FIXME: probably doesn't work for verically looping maps
 	const int x_stride = 16 * TILE_SIZE;
 	const int y_stride = 10 * TILE_SIZE;
 	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;

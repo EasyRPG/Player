@@ -49,7 +49,7 @@ public:
 	Opacity() :
 		top(255), bottom(255), split(0) {}
 
-	/* explicit */ Opacity(int opacity) :
+	Opacity(int opacity) :
 		top(opacity), bottom(opacity), split(0) {}
 
 	Opacity(int top_opacity, int bottom_opacity, int opacity_split) :
@@ -320,7 +320,7 @@ public:
 	 * @param horizontal flip horizontally.
 	 * @param vertical flip vertically.
 	 */
-	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical);
+	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap scaled, rotated and translated.
@@ -396,7 +396,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param tone tone to apply.
 	 */
-	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone);
+	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity);
 
 	/**
 	 * Blends bitmap with color.
@@ -407,7 +407,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param color color to apply.
 	 */
-	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
+	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color, Opacity const& opacity);
 
 	/**
 	 * Flips the bitmap pixels.

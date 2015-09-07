@@ -258,6 +258,8 @@ protected:
 	std::vector<Game_Battler*> targets;
 	std::vector<Game_Battler*>::iterator current_target;
 
+	bool no_target;
+
 	int hp;
 	int sp;
 	int attack;
@@ -271,6 +273,7 @@ protected:
 	bool success;
 	bool killed_by_attack_damage;
 	bool critical_hit;
+	bool absorb;
 
 	RPG::Animation* animation;
 
@@ -399,6 +402,17 @@ public:
 
 private:
 	int new_monster_id;
+};
+
+// Special algorithm for handling non-moving because of states
+class NoMove : public AlgorithmBase {
+public:
+	NoMove(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+
+	bool Execute();
+	void Apply();
 };
 
 }

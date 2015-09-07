@@ -48,8 +48,11 @@ namespace {
 	int turn;
 	bool message_is_fixed;
 	int message_position;
+	bool message_is_transparent;
 	bool terminate;
 	std::vector<bool> page_executed;
+	int terrain_id;
+	int battle_mode;
 }
 
 void Game_Battle::Init() {
@@ -88,6 +91,7 @@ void Game_Battle::Quit() {
 
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
+	Game_Message::SetTransparent(message_is_transparent);
 }
 
 void Game_Battle::Update() {
@@ -201,6 +205,13 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 		if (hp < hpmin || hp > hpmax)
 			return false;
 	}
+
+	if (condition.flags.turn_actor) {
+		if (!CheckTurns(Game_Actors::GetActor(condition.actor_id)->GetBattleTurn(),
+			condition.turn_actor_b, condition.turn_actor_a)) {
+			return false;
+		}
+	}
 	/*
 	TODO RPG2k3
 
@@ -253,4 +264,23 @@ bool Game_Battle::IsTerminating() {
 Game_Interpreter& Game_Battle::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
+}
+
+void Game_Battle::SetTerrainId(int terrain_id_) {
+	terrain_id = terrain_id_;
+}
+
+int Game_Battle::GetTerrainId() {
+	// Fixme: Workaround for battle test
+	// Has options loose/tight formation which hardcodes to specific
+	// x/y values and ignores terrain
+	return terrain_id <= 0 ? 1 : terrain_id;
+}
+
+void Game_Battle::SetBattleMode(int battle_mode_) {
+	battle_mode = battle_mode_;
+}
+
+int Game_Battle::GetBattleMode() {
+	return battle_mode;
 }
