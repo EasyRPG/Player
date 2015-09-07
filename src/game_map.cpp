@@ -237,7 +237,7 @@ void Game_Map::SetupCommon(int _id) {
 	ss.str("");
 	for (int cur = current_index;
 		GetMapIndex(Data::treemap.maps[cur].parent_map) != cur;
-		cur = Data::treemap.maps[cur].parent_map) {
+		cur = GetMapIndex(Data::treemap.maps[cur].parent_map)) {
 		if (cur != current_index) {
 			ss << " < ";
 		}
