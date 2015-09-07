@@ -141,7 +141,7 @@ bool Scene_Title::CheckContinue() {
 
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	if (!title) // No need to recreate Title on Resume
+	if (!title && !Data::system.title_name.empty()) // No need to recreate Title on Resume
 	{
 		title.reset(new Sprite());
 		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);

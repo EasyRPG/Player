@@ -182,16 +182,6 @@ void Window::Draw() {
 		Rect src_rect(40, 16, 16, 8);
 		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
-
-	if (animation_frames > 0) {
-		// Open/Close Animation
-		animation_frames -= 1;
-		animation_count += animation_increment;
-		if (closing && animation_frames <= 0) {
-			visible = false;
-			closing = false;
-		}
-	}
 }
 
 void Window::RefreshBackground() {
@@ -344,6 +334,16 @@ void Window::Update() {
 		if (pause) {
 			pause_frame += 1;
 			if (pause_frame == 40) pause_frame = 0;
+		}
+	}
+
+	if (animation_frames > 0) {
+		// Open/Close Animation
+		animation_frames -= 1;
+		animation_count += animation_increment;
+		if (closing && animation_frames <= 0) {
+			visible = false;
+			closing = false;
 		}
 	}
 }

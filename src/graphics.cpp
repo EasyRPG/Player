@@ -174,6 +174,7 @@ void Graphics::DrawFrame() {
 	}
 
 	if (screen_erased) {
+		DisplayUi->CleanDisplay();
 		return;
 	}
 
