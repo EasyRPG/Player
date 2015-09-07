@@ -31,7 +31,7 @@
 #include "spriteset_battle.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
-	animation(anim), frame(0), z(1500), frame_update(true), large(false)
+	animation(anim), frame(0), z(1500), frame_update(false), large(false)
 {
 	const std::string& name = animation.animation_name;
 	BitmapRef graphic;
@@ -133,7 +133,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 
 		if (!cell.valid) {
 			// Skip unused cells (they are created by deleting cells in the
-			// animation editor, resulting in gaps.)
+			// animation editor, resulting in gaps)
 			continue;
 		}
 
@@ -143,8 +143,8 @@ void BattleAnimation::DrawAt(int x, int y) {
 		Rect src_rect(sx * size, sy * size, size, size);
 		Tone tone(cell.tone_red * 128 / 100,
 			cell.tone_green * 128 / 100,
-			cell.tone_blue * 128/100,
-			cell.tone_gray * 128/100);
+			cell.tone_blue * 128 / 100,
+			cell.tone_gray * 128 / 100);
 		int opacity = 255 * (100 - cell.transparency) / 100;
 		double zoom = cell.zoom / 100.0;
 		DisplayUi->GetDisplaySurface()->EffectsBlit(
