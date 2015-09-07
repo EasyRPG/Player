@@ -48,7 +48,8 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool global = false);
+	void ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool flash = true);
+	void ShowBattleAnimationBattle(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true);
 	void ShowBattleAnimationMap(int animation_id, int target_id, bool global = false);
 	bool IsBattleAnimationWaiting() const;
 	void Update();

@@ -175,7 +175,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				animation.reset(new BattleAnimationBattler(Data::animations[ext.animation_id - 1], *battler));
+				animation.reset(new BattleAnimationBattlers(Data::animations[ext.animation_id - 1], *battler));
 				animation->SetZ(GetZ());
 			}
 			else {

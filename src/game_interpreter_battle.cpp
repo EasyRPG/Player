@@ -222,7 +222,16 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	}
 
 	if (target < 0) {
-		// FIXME: is this a "target all enemies" animation?
+		std::vector<Game_Battler*> v;
+
+		if (allies) {
+			Main_Data::game_party->GetActiveBattlers(v);
+		} else {
+			Main_Data::game_enemyparty->GetActiveBattlers(v);
+		}
+
+		Main_Data::game_screen->ShowBattleAnimationBattle(animation_id, v, false);
+
 		return !wait;
 	}
 	else {

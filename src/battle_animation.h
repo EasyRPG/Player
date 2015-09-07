@@ -30,7 +30,7 @@
 struct FileRequestResult;
 
 // BattleAnimation is responsible for playing an animation.
-// It's an abstract class; there are three derived classes
+// It's an abstract class; there are derived classes below
 // that can be used, depending on what is targeted.
 
 class BattleAnimation : public Drawable {
@@ -49,6 +49,7 @@ public:
 
 protected:
 	virtual void Flash(Color c) = 0;
+	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void RunTimedSfx();
 	void OnBattleSpriteReady(FileRequestResult* result);
@@ -70,19 +71,22 @@ public:
 	void Draw();
 protected:
 	void Flash(Color c);
+	bool ShouldScreenFlash() const;
 	Game_Character& character;
 };
 
-// For playing animations against a battler in battle.
-class BattleAnimationBattler : public BattleAnimation {
+// For playing animations against a (group of) battlers in battle.
+class BattleAnimationBattlers : public BattleAnimation {
 public:
-	BattleAnimationBattler(const RPG::Animation& anim, Game_Battler& batt);
-	~BattleAnimationBattler();
+	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true);
+	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true);
+	~BattleAnimationBattlers();
 	void Draw();
 protected:
 	void Flash(Color c);
-	Game_Battler& battler;
-	Sprite_Battler* sprite;
+	bool ShouldScreenFlash() const;
+	std::vector<Game_Battler*> battlers;
+	bool should_flash;
 };
 
 // For playing "Show on the entire map" animations.
@@ -93,6 +97,7 @@ public:
 	void Draw();
 protected:
 	void Flash(Color c);
+	bool ShouldScreenFlash() const;
 };
 
 #endif

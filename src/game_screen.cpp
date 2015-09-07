@@ -207,12 +207,18 @@ void Game_Screen::ShowBattleAnimationMap(int animation_id, int target_id, bool g
 	}
 }
 
-void Game_Screen::ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool global) {
+void Game_Screen::ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool flash) {
 	data.battleanim_id = animation_id;
-	data.battleanim_global = global; // can these be global?
 
 	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattler(anim, *target));
+	animation.reset(new BattleAnimationBattlers(anim, *target, flash));
+}
+
+void Game_Screen::ShowBattleAnimationBattle(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
+	data.battleanim_id = animation_id;
+
+	const RPG::Animation& anim = Data::animations[animation_id - 1];
+	animation.reset(new BattleAnimationBattlers(anim, targets, flash));
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {

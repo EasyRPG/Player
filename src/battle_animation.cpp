@@ -178,7 +178,7 @@ void BattleAnimation::RunTimedSfx() {
 			timing.flash_green << 3,
 			timing.flash_blue << 3,
 			timing.flash_power << 3));
-	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen) {
+	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
 		Main_Data::game_screen->FlashOnce(
 			timing.flash_red << 3,
 			timing.flash_green << 3,
@@ -223,28 +223,44 @@ void BattleAnimationChara::Draw() {
 void BattleAnimationChara::Flash(Color c) {
 	character.Flash(c, flash_duration);
 }
+bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
 
 /////////
 
-BattleAnimationBattler::BattleAnimationBattler(const RPG::Animation& anim, Game_Battler& batt) :
-	BattleAnimation(anim), battler(batt), sprite(Game_Battle::GetSpriteset().FindBattler(&battler))
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash) :
+	BattleAnimation(anim), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattler::~BattleAnimationBattler() {
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash) :
+	BattleAnimation(anim), battlers(batts), should_flash(flash)
+{
+	Graphics::RegisterDrawable(this);
+}
+BattleAnimationBattlers::~BattleAnimationBattlers() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationBattler::Draw() {
-	int offset = 0;
-	if (sprite && sprite->GetBitmap()) {
-		offset = CalculateOffset(animation.position, sprite->GetBitmap()->GetHeight());
+void BattleAnimationBattlers::Draw() {
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
+	     it != battlers.end(); ++it) {
+		const Game_Battler& battler = **it;
+		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(&battler);
+		int offset = 0;
+		if (sprite && sprite->GetBitmap()) {
+			offset = CalculateOffset(animation.position, sprite->GetBitmap()->GetHeight());
+		}
+		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
-	DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 }
-void BattleAnimationBattler::Flash(Color c) {
-	if (sprite)
-		sprite->Flash(c, flash_duration);
+void BattleAnimationBattlers::Flash(Color c) {
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
+	     it != battlers.end(); ++it) {
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+		if (sprite)
+			sprite->Flash(c, flash_duration);
+	}
 }
+bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
 
 /////////
 
@@ -273,3 +289,4 @@ void BattleAnimationGlobal::Draw() {
 void BattleAnimationGlobal::Flash(Color) {
 	// nop
 }
+bool BattleAnimationGlobal::ShouldScreenFlash() const { return true; }
