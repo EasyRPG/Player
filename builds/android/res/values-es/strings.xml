@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyRPG Player</string>
+	<string name="toggle_fps">Ver/ocultar FPS</string>
+	<string name="toggle_ui">Ver/ocultar botones</string>
+	<string name="end_game">Salir del juego</string>
+	<string name="autodetect">Autodetectar región (recomendado)</string>
+	<string name="west_europe">Europa occidental</string>
+	<string name="east_europe">Europa central y del este</string>
+	<string name="cyrillic">Cirílico</string>
+	<string name="japan">Japonés</string>
+	<string name="korean">Coreano</string>
+	<string name="chinese_simple">Chino (simplificado)</string>
+	<string name="chinese_traditional">Chino (tradicional)</string>
+	<string name="greek">Griego</string>
+	<string name="turkish">Turco</string>
+	<string name="hebrew">Hebreo</string>
+	<string name="arabic">Árabe</string>
+	<string name="baltic">Báltico</string>
+	<string name="thai">Tailandés</string>
+	<string name="vietnamese">Vietnamita</string>
+	<string name="ok">Aceptar</string>
+	<string name="cancel">Cancelar</string>
+	<string name="do_want_quit">¿Realmente quieres salir?</string>
+	<string name="yes">Sí</string>
+	<string name="no">No</string>
+	<string name="creating_dir_failed">Falló la creación de la carpeta $PATH</string>
+	<string name="path_not_readable">$PATH no es legible</string>
+	<string name="no_games_found">No se han encontrado juegos en la ruta /easyrpg/games de la raíz del almacenamiento</string>
+	<string name="no_external_storage">No se ha encontrado almacenamiento externo (ej. tarjeta SD)</string>
+	<string name="resolve_errors">Arregla los errores e intenta de nuevo</string>
+	<string name="not_valid_game">$PATH no es un juego válido</string>
+	<string name="accessing_configuration_failed">Falló el acceso a la configuración de $PATH</string>
+	<string name="select_game_region">Seleccionar región del juego</string>
+	<string name="unknown_region">Región desconocida</string>
+	<string name="region_modification_success">Región cambiada $NAME</string>
+	<string name="region_modification_failed">Falló el cambio de región</string>
+	<string name="refresh">Refrescar</string>
+	<string name="change_default_mapping">Cambiar la asignación de teclas</string>
+	<string name="how_to_use_easy_rpg">Cómo usar EasyRPG Player</string>
+	<string name="how_to_use_easy_rpg_explanation">
+Instrucciones de instalación:\n
+\t1. Coloca la carpeta de cada juego en la ruta /easyrpg/games de la raíz del almacenamiento del dispositivo.\n
+\t2. Coloca las carpetas de los RTP en /easyrpg/rtp/2000 para el RTP de RPG Maker 2000 y /easyrpg/rtp/2003 para el RTP de RPG Maker 2003.\n
+\n
+\tSi no te detecta los juegos y tienes más de un almacenamiento disponible en el dispositivo, mueve la carpeta easyrpg a la raíz del otro almacanamiento y toca el botón de refrescar.\n
+\n
+Nota: para que los juegos puedan sean detectados deben estar descomprimidos y NO deben colocarse en una subcarpeta, por ejemplo:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb está MAL.\n
+\t/easyrpg/games/MyGame/Data/GameOver/GameOver.png está MAL.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb está BIEN.\n
+\t/easyrpg/games/MyGame/GameOver/GameOver.png está BIEN.\n
+\n
+Características especiales:\n
+\tToca el botón de menú para editar la posición de los botones.\n
+\tUna vez allí, toca el botón atrás para acceder a otro menú para añadir más botones a la pantalla.\n
+	</string>
+	<string name="add_a_button">Añadir un botón</string>
+	<string name="reset_button_mapping">Reiniciar asignación</string>
+	<string name="exit_without_saving">Salir sin guardar</string>
+	<string name="save_and_quit">Guardar y salir</string>
+</resources>

@@ -40,10 +40,20 @@
 	<string name="how_to_use_easy_rpg">How to use EasyRPG</string>
 	<string name="how_to_use_easy_rpg_explanation">
 Installation instructions:\n
-\t1. Place the game folders in [storage]/easyrpg/games.\n
-\t2. Place the RTP in [storage]/easyrpg/rtp/2000 for RTP 2000 and in 2003 for RTP 2003.\n\n
+\t1. Place game folders in /easyrpg/games folder in the storage root of the device.\n
+\t2. Place RTP folders in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n
+\n
+If games are not detected and your device has more than one storage available, try moving the easyrpg folder into another storage root and tap the refresh button.\n
+\n
+Hint: in order to get games properly detected they must be uncompressed and NOT placed in a subfolder, e.g.:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is WRONG.\n
+\t/easyrpg/games/MyGame/Data/GameOver/GameOver.png is WRONG.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n
+\t/easyrpg/games/MyGame/GameOver/GameOver.png is OK.\n
+\n
 Special features:\n
-\tDo a long click on a game in the game browser to set the region.\n
+\tTap the menu button to edit screen buttons position.\n
+\tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
 	</string>
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
