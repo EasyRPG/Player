@@ -102,9 +102,15 @@ void Spriteset_Map::ChipsetUpdated() {
 	if (tilemap_request) {
 		tilemap_request->Unbind(tilemap_request_id);
 	}
-	tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
-	tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-	tilemap_request->Start();
+
+	if (!Game_Map::GetChipsetName().empty()) {
+		tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+		tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+		tilemap_request->Start();
+	}
+	else {
+		OnTilemapSpriteReady(NULL);
+	}
 
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
@@ -127,7 +133,9 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 }
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
-	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	if (!Game_Map::GetChipsetName().empty()) {
+		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	}
 	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
 	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }
