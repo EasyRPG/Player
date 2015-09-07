@@ -24,7 +24,7 @@
 #include <boost/scoped_ptr.hpp>
 
 struct FileRequestResult;
-struct BattleAnimation;
+class BattleAnimation;
 
 /**
  * Sprite_Battler class, used for battle sprites

@@ -270,6 +270,6 @@ void BattleAnimationGlobal::Draw() {
 		}
 	}
 }
-void BattleAnimationGlobal::Flash(Color c) {
+void BattleAnimationGlobal::Flash(Color) {
 	// nop
 }
