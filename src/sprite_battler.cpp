@@ -122,7 +122,7 @@ void Sprite_Battler::Update() {
 				return;
 			}
 
-			static const int frames[] = {0,1,2,1};
+			static const int frames[] = {0,1,2,1,0};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
 				return;
