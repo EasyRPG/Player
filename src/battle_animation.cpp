@@ -274,9 +274,9 @@ BattleAnimationGlobal::~BattleAnimationGlobal() {
 }
 void BattleAnimationGlobal::Draw() {
 	// The animations are played at the vertices of a regular grid,
-	// 16 tiles wide by 10 tiles high, fixed against the map.
-	// FIXME: probably doesn't work for verically looping maps
-	const int x_stride = 16 * TILE_SIZE;
+	// 20 tiles wide by 10 tiles high, independant of the map.
+	// NOTE: not accurate, but see #574
+	const int x_stride = 20 * TILE_SIZE;
 	const int y_stride = 10 * TILE_SIZE;
 	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
 	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
