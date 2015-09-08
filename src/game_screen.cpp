@@ -192,39 +192,6 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_res_y = res_y;
 }
 
-void Game_Screen::ShowBattleAnimationMap(int animation_id, int target_id, bool global) {
-	data.battleanim_id = animation_id;
-	data.battleanim_target = target_id;
-	data.battleanim_global = global;
-
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	Game_Character& chara = *Game_Character::GetCharacter(target_id, target_id);
-	chara.SetFlashTimeLeft(0); 	// Any flash always ends
-	if (global) {
-		animation.reset(new BattleAnimationGlobal(anim));
-	} else {
-		animation.reset(new BattleAnimationChara(anim, chara));
-	}
-}
-
-void Game_Screen::ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool flash) {
-	data.battleanim_id = animation_id;
-
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattlers(anim, *target, flash));
-}
-
-void Game_Screen::ShowBattleAnimationBattle(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
-	data.battleanim_id = animation_id;
-
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattlers(anim, targets, flash));
-}
-
-bool Game_Screen::IsBattleAnimationWaiting() const {
-	return bool(animation);
-}
-
 static double interpolate(double d, double x0, double x1)
 {
 	return (x0 * (d - 1) + x1) / d;
@@ -321,14 +288,6 @@ void Game_Screen::Update() {
 			break;
 		case Weather_Sandstorm:
 			break;
-	}
-
-	if (animation) {
-		animation->Update();
-
-		if (animation->IsDone()) {
-			animation.reset();
-		}
 	}
 }
 

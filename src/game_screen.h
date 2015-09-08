@@ -22,7 +22,6 @@
 #include "system.h"
 #include "game_picture.h"
 #include "game_character.h"
-#include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
@@ -48,10 +47,6 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool flash = true);
-	void ShowBattleAnimationBattle(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true);
-	void ShowBattleAnimationMap(int animation_id, int target_id, bool global = false);
-	bool IsBattleAnimationWaiting() const;
 	void Update();
 
 	/**
@@ -116,8 +111,6 @@ private:
 
 protected:
 	std::vector<Snowflake> snowflakes;
-
-	boost::scoped_ptr<BattleAnimation> animation;
 
 	void StopWeather();
 	void InitSnowRain();

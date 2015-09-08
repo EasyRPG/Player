@@ -1688,7 +1688,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
 	if (active)
-		return !Main_Data::game_screen->IsBattleAnimationWaiting();
+		return !Game_Map::IsBattleAnimationWaiting();
 
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
@@ -1698,7 +1698,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	if (evt_id == Game_Character::CharThisEvent)
 		evt_id = event_id;
 
-	Main_Data::game_screen->ShowBattleAnimationMap(animation_id, evt_id, global);
+	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
 
 	return !wait;
 }
