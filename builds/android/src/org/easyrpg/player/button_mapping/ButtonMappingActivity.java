@@ -3,6 +3,7 @@ package org.easyrpg.player.button_mapping;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingModel.Preset;
 import org.easyrpg.player.Helper;
 
 import android.app.Activity;
@@ -34,8 +35,17 @@ public class ButtonMappingActivity extends Activity {
 		
 		//Get the button list and convert it in debug buttons
 		bList = new LinkedList<VirtualButton>();
-		LinkedList<VirtualButton> tmp = ButtonMappingModel.readDefaultButtonMappingFile(this);
-		for(VirtualButton b : tmp){
+		/*
+		ButtonMappingModel tmp = ButtonMappingModel.readDefaultButtonMappingFile(this);
+		for(VirtualButton b : tmp.get){
+			if(b instanceof VirtualCross)
+				bList.add(new VirtualCross_Debug(this, (VirtualCross)b));
+			else
+				bList.add(new VirtualButton_Debug(this, b));
+		}
+		*/
+		Preset p = Preset.getDefaultPreset(this);
+		for(VirtualButton b : p.button_list){
 			if(b instanceof VirtualCross)
 				bList.add(new VirtualCross_Debug(this, (VirtualCross)b));
 			else
@@ -58,14 +68,14 @@ public class ButtonMappingActivity extends Activity {
 			showSupportedButton();
 			return true;
 		case R.id.button_mapping_menu_reset:
-			bList = ButtonMappingModel.getDefaultButtonMapping(this);
+			bList = Preset.getDefaultPreset(this).button_list;
 			drawButtons();
 			return true;
 		case R.id.button_mapping_menu_exit_without_saving:
 			this.finish();
 			return true;
 		case R.id.button_mapping_menu_save_and_quit:
-			ButtonMappingModel.writeButtonMappingFile(bList);
+			ButtonMappingModel.writeButtonMappingFile(ButtonMappingModel.getDefaultButtonMappingModel(this));;
 			this.finish();
 			return true;
 		default:
@@ -211,11 +221,12 @@ public class ButtonMappingActivity extends Activity {
 	class VirtualButton_Debug extends VirtualButton {
 		float x, y; // Relative position on screen (between 0 and 1)
 
-		public VirtualButton_Debug(Context context, int keyCode, char charButton) {
-			super(context, keyCode, charButton);
+		public VirtualButton_Debug(Context context, int keyCode, char charButton){
+			super(context, keyCode, 0.5, 0.5, 100);
 		}
+		
 		public VirtualButton_Debug(Context context, VirtualButton b){
-			super(context, b.getKeyCode(), b.getCharButton(), b.getPosX(), b.getPosY());
+			super(context, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
 		}
 		
 		@Override
@@ -226,11 +237,8 @@ public class ButtonMappingActivity extends Activity {
 	}
 
 	class VirtualCross_Debug extends VirtualCross {
-		public VirtualCross_Debug(Context context) {
-			super(context);
-		}
 		public VirtualCross_Debug(Context context, VirtualCross b){
-			super(context, b.getPosX(), b.getPosY());
+			super(context, b.getPosX(), b.getPosY(), b.getSize());
 		}
 
 		@Override

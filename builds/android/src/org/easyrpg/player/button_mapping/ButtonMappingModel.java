@@ -3,8 +3,13 @@ package org.easyrpg.player.button_mapping;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.Environment;
@@ -12,92 +17,193 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 public class ButtonMappingModel {
-	LinkedList<VirtualButton> keyList;
-	
-	public ButtonMappingModel(){
-		this.keyList = new LinkedList<VirtualButton>();
+	public static final int NUM_VERSION = 1;
+	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets",
+			FILE_NAME = "button_mapping.txt";
+
+	public LinkedList<Preset> presets_list;
+
+	public ButtonMappingModel() {
+		presets_list = new LinkedList<Preset>();
 	}
 
-	public void add(VirtualButton v){
-		keyList.add(v);
+	public void add(Preset p) {
+		presets_list.add(p);
 	}
-	
-	public static LinkedList<VirtualButton> readButtonMappingFile(Context context, String path){
-		ButtonMappingModel b = new ButtonMappingModel();
-		BufferedReader bf;
-		
-		//TODO: lecture fichier
-		try{
-			bf = new BufferedReader(new FileReader(path));
-			Log.i("IOSucces", "Mapping Button File opened with success.");
-			String tmp;
-			
-			while((tmp = bf.readLine()) != null && tmp.length() > 4){
-				String[] t = tmp.split(":");
-				VirtualButton v;
-				
-				//Type of button
-				int keyCode = Integer.valueOf(t[0]);
-				
-				//Char of the button (if there is one)
-				char charButton = t[1].length() > 0 ? t[1].charAt(0) : ' ';
-				
-				//PosX
-				double posX = Double.valueOf(t[2]);
-				
-				//PosY
-				double posY = Double.valueOf(t[3]);
-				
-				if(keyCode == VirtualCross.KeyCode){ // -1 is the fake keycode for virtual cross
-					v = new VirtualCross(context, posX, posY);
-				}else{
-					v = new VirtualButton(context, keyCode, charButton, posX, posY);
-				}
-				
-				b.add(v);
+
+	public JSONObject serialize() {
+		JSONObject o = new JSONObject();
+
+		try {
+			JSONArray presets = new JSONArray();
+			for (Preset p : this.presets_list) {
+				presets.put(p.serialize());
 			}
-			Log.i("Player", "Mapping Button File read with success.");
-			bf.close();
-		}catch(Exception e){
-			Log.e("IOError", "Error reading the button mapping file, loading the default one.");
-			return getDefaultButtonMapping(context);
+
+			o.put(TAG_VERSION, NUM_VERSION);
+			o.put(TAG_PRESETS, presets);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		return b.keyList;
+
+		return o;
 	}
-	
-	public static LinkedList<VirtualButton> readDefaultButtonMappingFile(Context context){
-		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/mapping_path";
+
+	public static ButtonMappingModel getDefaultButtonMappingModel(Context context) {
+		ButtonMappingModel m = new ButtonMappingModel();
+		m.add(Preset.getDefaultPreset(context));
+		return m;
+	}
+
+	public static ButtonMappingModel readButtonMappingFile(Context context, String path) {
+		ButtonMappingModel m = new ButtonMappingModel();
+		JSONObject jso;
+
+		// Read the file
+		String file = new String(), st;
+		BufferedReader bf;
+		try {
+			bf = new BufferedReader(new FileReader(new File(path)));
+			while ((st = bf.readLine()) != null) {
+				file += st;
+			}
+			bf.close();
+
+			// Parse the JSON
+			jso = new JSONObject(file);
+		} catch (Exception e) {
+			m.add(Preset.getDefaultPreset(context));
+			return m;
+		}
+
+		// Presets' extraction
+		JSONArray presets;
+		ButtonMappingModel bmm = new ButtonMappingModel();
+		try {
+			presets = jso.getJSONArray("presets");
+			JSONArray p;
+			for (int i = 0; i < presets.length(); i++) {
+				p = (JSONArray) presets.get(i);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return m;
+	}
+
+	public static ButtonMappingModel readDefaultButtonMappingFile(Context context) {
+		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
 		return readButtonMappingFile(context, button_mapping_path);
 	}
-	
-	/** Return the default button mapping model : one cross, two buttons */
-	public static LinkedList<VirtualButton> getDefaultButtonMapping(Context context){
-		ButtonMappingModel b = new ButtonMappingModel();
-		
-		b.add(new VirtualCross(context, 0.0, 0.5));
-		b.add(new VirtualButton(context, KeyEvent.KEYCODE_SPACE, 'A', 0.80, 0.7));
-		b.add(new VirtualButton(context, KeyEvent.KEYCODE_B, 'B', 0.90, 0.6));
 
-		return b.keyList;
+	public static void writeButtonMappingFile(ButtonMappingModel m) {
+		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
+		FileWriter file = null;
+
+		try {
+			file = new FileWriter(button_mapping_path);
+			JSONObject obj = m.serialize();
+			file.write(obj.toString(4));
+			file.flush();
+			file.close();
+			System.out.println("Successfully Copied JSON Object to File...");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
-	public static void writeButtonMappingFile(LinkedList<VirtualButton> l){
-		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/mapping_path";
-		PrintWriter pw;
-		
-		try{
-			pw = new PrintWriter(new File(button_mapping_path));
-			Log.i("Player", "Mapping Button File opened with success.");
-			
-			for(VirtualButton v : l){
-				pw.printf("%s:%s:%s:%s\n", v.getKeyCode(), v.getCharButton(), v.getPosX(), v.getPosY());
+
+	public static class Preset {
+		public static final String DEFAULT_NAME = "default", TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons",
+				TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
+
+		public LinkedList<VirtualButton> button_list = new LinkedList<VirtualButton>();
+		String name;
+		int id;
+
+		public Preset() {
+		}
+
+		public Preset(String name) {
+			this.name = name;
+		}
+
+		public Preset(String name, int id) {
+			this(name);
+			this.id = id;
+		}
+
+		public void add(VirtualButton v) {
+			button_list.add(v);
+		}
+
+		public JSONObject serialize() {
+			JSONObject preset = new JSONObject();
+
+			try {
+				preset.put(TAG_NAME, name);
+				preset.put(TAG_ID, id);
+
+				// Circle/Buttons
+				JSONArray l = new JSONArray();
+				for (VirtualButton b : button_list) {
+					JSONObject jso = new JSONObject();
+					jso.put(TAG_KEYCODE, b.getKeyCode());
+					jso.put(TAG_X, b.getPosX());
+					jso.put(TAG_Y, b.getPosY());
+					jso.put(TAG_SIZE, b.getSize());
+
+					l.put(jso);
+				}
+				preset.put(TAG_BUTTONS, l);
+			} catch (JSONException e) {
+				Log.e("JSONException", e.getLocalizedMessage());
 			}
-			pw.flush();
-			Log.i("Player", "Mapping Button File writed with success.");
-			pw.close();
-		}catch(Exception e){
-			Log.e("IOError", "Error writing the button mapping file.");
+
+			return preset;
+		}
+
+		public Preset deserialize(Context context, JSONObject jso) {
+			Preset preset = new Preset();
+			try {
+				String name = jso.getString(TAG_NAME);
+				int id = jso.getInt(TAG_ID);
+				
+				JSONArray button_list = new JSONArray();
+				for(int i = 0; i < button_list.length(); i++){
+					JSONObject b = (JSONObject)button_list.get(i);
+					int keyCode = b.getInt(TAG_KEYCODE), size = b.getInt(TAG_SIZE);
+					double posX = b.getDouble(TAG_X), posY = b.getDouble(TAG_Y);
+					if (keyCode == VirtualButton.DPAD) {
+						preset.add(new VirtualCross(context, posX, posY, size));
+					} else {
+						preset.add(new VirtualButton(context, keyCode, posX, posY, size));
+					}
+				}
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return preset;
+		}
+
+		/** Return the default button mapping preset : one cross, two buttons */
+		public static Preset getDefaultPreset(Context context) {
+			Preset b = new Preset(DEFAULT_NAME);
+
+			b.add(new VirtualCross(context, 0.0, 0.5, 100));
+			b.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
+			b.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
+
+			return b;
 		}
 	}
 }

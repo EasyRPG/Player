@@ -15,33 +15,28 @@ public class VirtualCross extends VirtualButton {
 	
 	private Rect boundLeft, boundRight, boundUp, boundDown;
 	private int key_pressed;
-	private Path path; // For the drawing
+	private Path path = new Path(); // For the drawing
 
-	public VirtualCross(Context context) {
-		super(context, VirtualCross.KeyCode, '0');
+	public VirtualCross(Context context, double posX, double posY, int size) {
+		super(context, VirtualButton.DPAD, posX, posY, size);
+		
 		// Set size
-		iconSize = Helper.getPixels(this, 150); // ~1cm
-		path = new Path();
-	}
-	public VirtualCross(Context context, double posX, double posY){
-		this(context);
-		this.posX = posX;
-		this.posY = posY;
+		realSize = Helper.getPixels(this, 150); // ~1cm
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		int iconSize_33 = (int) (iconSize * 0.33);
+		int iconSize_33 = (int) (realSize * 0.33);
 		// Draw the cross
 		path.reset();
 		path.moveTo(iconSize_33, 5);
 		path.lineTo(iconSize_33 * 2, 5);
 		path.lineTo(iconSize_33 * 2, iconSize_33);
-		path.lineTo(iconSize - 5, iconSize_33);
-		path.lineTo(iconSize - 5, iconSize_33 * 2);
+		path.lineTo(realSize - 5, iconSize_33);
+		path.lineTo(realSize - 5, iconSize_33 * 2);
 		path.lineTo(iconSize_33 * 2, iconSize_33 * 2);
-		path.lineTo(iconSize_33 * 2, iconSize - 5);
-		path.lineTo(iconSize_33, iconSize - 5);
+		path.lineTo(iconSize_33 * 2, realSize - 5);
+		path.lineTo(iconSize_33, realSize - 5);
 		path.lineTo(iconSize_33, iconSize_33 * 2);
 		path.lineTo(5, iconSize_33 * 2);
 		path.lineTo(5, iconSize_33);
@@ -131,8 +126,8 @@ public class VirtualCross extends VirtualButton {
 	
 	/** Set the direction's hitbox position */
 	public void setBounds() {
-		int iconSize_33 = (int) (iconSize * 0.33);
-		int padding = (int) (iconSize * 0.20); //We use it to slightly increase hitboxs
+		int iconSize_33 = (int) (realSize * 0.33);
+		int padding = (int) (realSize * 0.20); //We use it to slightly increase hitboxs
 		boundLeft = new Rect(
 				this.getLeft() - padding,
 				this.getTop() + iconSize_33,
