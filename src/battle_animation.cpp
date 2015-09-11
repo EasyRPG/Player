@@ -163,12 +163,13 @@ void BattleAnimation::RunTimedSfx() {
 	// Lookup any timed SFX (SE/flash/shake) data for this frame
 	std::vector<RPG::AnimationTiming>::const_iterator it = animation.timings.begin();
 	for (; it != animation.timings.end(); ++it) {
-		if (it->frame == GetFrame()) break;
+		if (it->frame == GetFrame()) {
+			ProcessAnimationTiming(*it);
+		}
 	}
-	if (it == animation.timings.end()) return;
-	const RPG::AnimationTiming& timing = *it;
-	// We got some!
+}
 
+void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
 
