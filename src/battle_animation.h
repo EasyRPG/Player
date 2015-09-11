@@ -52,7 +52,7 @@ protected:
 	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void RunTimedSfx();
-	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
+	void PlayFlash(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
 
