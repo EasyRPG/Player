@@ -106,7 +106,7 @@ RPG::Music& Game_System::GetSystemBGM(int which) {
 		case BGM_Battle:		return data.battle_music;
 		case BGM_Victory:		return data.battle_end_music;
 		case BGM_Inn:			return data.inn_music;
-		case BGM_Skiff:			return data.boat_music;
+		case BGM_Boat:			return data.boat_music;
 		case BGM_Ship:			return data.ship_music;
 		case BGM_Airship:		return data.airship_music;
 		case BGM_GameOver:		return data.gameover_music;

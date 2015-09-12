@@ -116,7 +116,7 @@ void Window_NumberInput::Update() {
 	Window_Selectable::Update();
 	if (active) {
 		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::UP)) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 
 			if (show_operator && index == 0) {
 				plus = !plus;
@@ -140,13 +140,13 @@ void Window_NumberInput::Update() {
 
 		if (Input::IsRepeated(Input::RIGHT)) {
 			if (digits_max >= 2) {
-				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				index = (index + 1) % (digits_max + (int)show_operator);
 			}
 		}
 
 		if (Input::IsRepeated(Input::LEFT)) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			index = (index + digits_max - 1 + (int)show_operator) % (digits_max + (int)show_operator);
 		}
 

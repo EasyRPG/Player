@@ -49,13 +49,13 @@ void Scene_Item::Update() {
 	item_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItem() == NULL ? 0 : item_window->GetItem()->ID;
 
 		if (Main_Data::game_party->IsItemUsable(item_id)) {
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
 				Main_Data::game_party->UseItem(item_id);
@@ -67,7 +67,7 @@ void Scene_Item::Update() {
 				item_index = item_window->GetIndex();
 			}
 		} else {
-			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}
 }

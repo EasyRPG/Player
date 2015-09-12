@@ -49,7 +49,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
-	BitmapRef system = Cache::System(Data::system.system_name);
+	BitmapRef system = Cache::System();
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {

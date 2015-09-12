@@ -52,13 +52,13 @@ void Scene_Name::Update() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (name_window->Get().size() > 0) {
-			Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			name_window->Erase();
 		}
 		else
-			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		std::string const& s = kbd_window->GetSelected();
 
 		assert(!s.empty());

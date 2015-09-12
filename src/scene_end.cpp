@@ -41,10 +41,10 @@ void Scene_End::Update() {
 	command_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop(); // Select End Game
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
 			Audio().BGM_Fade(800);

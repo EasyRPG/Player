@@ -215,12 +215,9 @@ bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
-		case None:
-			break;
 		case Boat:
 			SetSpriteName(Data::system.boat_name);
 			SetSpriteIndex(Data::system.boat_index);
-			bgm = Data::system.boat_music;
 			SetMapId(Data::treemap.start.boat_map_id);
 			SetX(Data::treemap.start.boat_x);
 			SetY(Data::treemap.start.boat_y);
@@ -228,7 +225,6 @@ void Game_Vehicle::LoadSystemSettings() {
 		case Ship:
 			SetSpriteName(Data::system.ship_name);
 			SetSpriteIndex(Data::system.ship_index);
-			bgm = Data::system.ship_music;
 			SetMapId(Data::treemap.start.ship_map_id);
 			SetX(Data::treemap.start.ship_x);
 			SetY(Data::treemap.start.ship_y);
@@ -236,12 +232,24 @@ void Game_Vehicle::LoadSystemSettings() {
 		case Airship:
 			SetSpriteName(Data::system.airship_name);
 			SetSpriteIndex(Data::system.airship_index);
-			bgm = Data::system.airship_music;
 			SetMapId(Data::treemap.start.airship_map_id);
 			SetX(Data::treemap.start.airship_x);
 			SetY(Data::treemap.start.airship_y);
 			break;
 	}
+}
+
+RPG::Music& Game_Vehicle::GetBGM() {
+	switch (type) {
+	case Boat:
+		return Game_System::GetSystemBGM(Game_System::BGM_Boat);
+	case Ship:
+		return Game_System::GetSystemBGM(Game_System::BGM_Ship);
+	case Airship:
+		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
+	}
+
+	assert(false);
 }
 
 void Game_Vehicle::Refresh() {
@@ -254,8 +262,6 @@ void Game_Vehicle::Refresh() {
 		MoveTo(GetX(), GetY());
 
 	switch (type) {
-		case None:
-			break;
 		case Boat:
 		case Ship:
 			SetLayer(RPG::EventPage::Layers_same);
@@ -304,7 +310,7 @@ void Game_Vehicle::GetOn() {
 	} else {
 		walk_animation = true;
 	}
-	Game_System::BgmPlay(bgm);
+	Game_System::BgmPlay(GetBGM());
 }
 
 void Game_Vehicle::GetOff() {

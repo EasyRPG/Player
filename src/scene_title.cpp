@@ -201,7 +201,7 @@ void Scene_Title::CommandNewGame() {
 		Output::Warning("The game has no start location set.");
 	} else {
 		Output::Debug("Starting new game");
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
 		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
@@ -210,9 +210,9 @@ void Scene_Title::CommandNewGame() {
 
 void Scene_Title::CommandContinue() {
 	if (continue_enabled) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	} else {
-		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}
 
@@ -220,7 +220,7 @@ void Scene_Title::CommandContinue() {
 }
 
 void Scene_Title::CommandShutdown() {
-	Game_System::SePlay(Main_Data::game_data.system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	Audio().BGS_Fade(800);
 	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
 	Scene::Pop();

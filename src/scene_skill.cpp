@@ -50,7 +50,7 @@ void Scene_Skill::Update() {
 	skill_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		const RPG::Skill* skill = skill_window->GetSkill();
@@ -59,7 +59,7 @@ void Scene_Skill::Update() {
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
 		if (skill && actor->IsSkillUsable(skill_id)) {
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
 				actor->UseSkill(skill_id);
@@ -74,7 +74,7 @@ void Scene_Skill::Update() {
 				// TODO: Displays the escape target scene/window
 			}
 		} else {
-			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}
 }
