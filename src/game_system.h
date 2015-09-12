@@ -33,7 +33,7 @@ namespace Game_System {
 		BGM_Battle,
 		BGM_Victory,
 		BGM_Inn,
-		BGM_Skiff,
+		BGM_Boat,
 		BGM_Ship,
 		BGM_Airship,
 		BGM_GameOver,

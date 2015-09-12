@@ -94,9 +94,7 @@ void Scene_Battle::Start() {
 	screen.reset(new Screen());
 
 	Game_Temp::map_bgm = NULL; // Play map BGM on Scene_Map return
-	Game_System::BgmPlay(Data::system.battle_music);
-
-	Game_System::SePlay(Data::system.battle_se);
+	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
 	if (!Game_Temp::battle_background.empty())
 		background.reset(new Background(Game_Temp::battle_background));
@@ -261,13 +259,13 @@ void Scene_Battle::AllySelected() {
 }
 
 void Scene_Battle::AttackSelected() {
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	SetState(State_SelectEnemyTarget);
 }
 
 void Scene_Battle::DefendSelected() {
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(active_actor));
 
@@ -280,11 +278,11 @@ void Scene_Battle::ItemSelected() {
 	skill_item = NULL;
 
 	if (!item || !Main_Data::game_party->IsItemUsable(item->ID)) {
-		Game_System::SePlay(Data::system.buzzer_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}
 
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	if (item->entire_party) {
 		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
@@ -312,11 +310,11 @@ void Scene_Battle::SkillSelected() {
 	skill_item = NULL;
 
 	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
-		Game_System::SePlay(Data::system.buzzer_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}
 
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	AssignSkill(skill);
 }

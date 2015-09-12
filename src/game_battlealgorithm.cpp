@@ -406,13 +406,13 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 	}
 
 	if (!success) {
-		return &Data::system.dodge_se;
+		return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 	}
 	else {
 		if (current_target != targets.end()) {
 			return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
-				&Data::system.actor_damaged_se :
-				&Data::system.enemy_damaged_se);
+				&Game_System::GetSystemSE(Game_System::SFX_AllyDamage) :
+				&Game_System::GetSystemSE(Game_System::SFX_EnemyDamage));
 		}
 	}
 
@@ -421,7 +421,7 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 	return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
-		NULL : &Data::system.enemy_death_se);
+		NULL : &Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
@@ -508,7 +508,7 @@ int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
 
 const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Data::system.enemy_attack_se;
+		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
 	}
 	else {
 		return NULL;
@@ -673,7 +673,7 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	}
 	else {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Data::system.enemy_attack_se;
+			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
 		}
 		else {
 			return NULL;
@@ -805,11 +805,11 @@ void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	if (item.type == RPG::Item::Type_switch) {
-		return &Data::system.item_se;
+		return &Game_System::GetSystemSE(Game_System::SFX_UseItem);
 	}
 	else {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Data::system.enemy_attack_se;
+			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
 		}
 		else {
 			return NULL;
@@ -833,7 +833,7 @@ std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
 
 const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Data::system.enemy_attack_se;
+		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
 	}
 	else {
 		return NULL;
@@ -931,7 +931,7 @@ int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
 }
 
 const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
-	return &Data::system.enemy_death_se;
+	return &Game_System::GetSystemSE(Game_System::SFX_EnemyKill);
 }
 
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
@@ -1000,7 +1000,7 @@ const RPG::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {
 		return AlgorithmBase::GetStartSe();
 	}
 	else {
-		return &Data::system.escape_se;
+		return &Game_System::GetSystemSE(Game_System::SFX_Escape);
 	}
 }
 

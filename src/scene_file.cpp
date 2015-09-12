@@ -132,15 +132,15 @@ void Scene_File::Refresh() {
 
 void Scene_File::Update() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (IsSlotValid(index)) {
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Action(index);
 		}
 		else {
-			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}
 
@@ -149,7 +149,7 @@ void Scene_File::Update() {
 
 	if (Input::IsRepeated(Input::DOWN)) {
 		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			index = (index + 1) % file_windows.size();
 		}
 
@@ -157,7 +157,7 @@ void Scene_File::Update() {
 	}
 	if (Input::IsRepeated(Input::UP)) {
 		if (Input::IsTriggered(Input::UP) || index >= 1) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			index = (index + file_windows.size() - 1) % file_windows.size();
 		}
 
