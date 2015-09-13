@@ -30,7 +30,7 @@ void ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
-    if (len < 8 || strncmp((char *) data, "XYZ1", 4) != 0) {
+    if (len < 8) {
 		Output::Error("Not a valid XYZ file.");
 		return;
     }
