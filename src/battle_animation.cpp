@@ -162,20 +162,18 @@ static int flash_duration = 5;
 void BattleAnimation::RunTimedSfx() {
 	// Lookup any timed SFX (SE/flash/shake) data for this frame
 	std::vector<RPG::AnimationTiming>::const_iterator it = animation.timings.begin();
-	std::vector<RPG::AnimationTiming>::const_iterator last = animation.timings.end();
 	for (; it != animation.timings.end(); ++it) {
 		if (it->frame == GetFrame()) {
-			last = it;
-			PlayFlash(*it);
+			ProcessAnimationTiming(*it);
 		}
-	}
-	// Only the last SE for a frame seems to play
-	if (last != animation.timings.end()) {
-		Game_System::SePlay(last->se);
 	}
 }
 
-void BattleAnimation::PlayFlash(const RPG::AnimationTiming& timing) {
+void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
+	// Play the SE.
+	Game_System::SePlay(timing.se);
+
+	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
 		Flash(Color(timing.flash_red << 3,
 			timing.flash_green << 3,
@@ -189,6 +187,8 @@ void BattleAnimation::PlayFlash(const RPG::AnimationTiming& timing) {
 			timing.flash_power << 3,
 			flash_duration);
 	}
+
+	// TODO: Shake.
 }
 
 // For handling the vertical position.
