@@ -97,7 +97,7 @@ int BattleAnimation::GetFrames() const {
 }
 
 bool BattleAnimation::IsDone() const {
-	return GetFrame()+1 >= GetFrames();
+	return GetFrame() >= GetFrames();
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {

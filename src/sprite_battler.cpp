@@ -104,6 +104,8 @@ void Sprite_Battler::Update() {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
+				animation->Update();
+
 				if (animation->IsDone()) {
 					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
 						const RPG::State* state = battler->GetSignificantState();
@@ -116,8 +118,6 @@ void Sprite_Battler::Update() {
 					}
 					animation->SetFrame(0);
 				}
-
-				animation->Update();
 
 				return;
 			}
