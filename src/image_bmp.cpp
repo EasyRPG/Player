@@ -56,7 +56,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	// 10	4	offset to bitmap data
 	static const unsigned BITMAPFILEHEADER_SIZE = 14;
 
-	if (len < 64 || strncmp((char*) &data[0], "BM", 2) != 0) {
+	if (len < 64) {
 		Output::Error("Not a valid BMP file.");
 		return;
 	}
