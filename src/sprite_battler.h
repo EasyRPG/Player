@@ -21,10 +21,10 @@
 // Headers
 #include "sprite.h"
 #include "game_battler.h"
-#include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
 
 struct FileRequestResult;
+class BattleAnimation;
 
 /**
  * Sprite_Battler class, used for battle sprites

@@ -24,7 +24,9 @@
 
 #include "async_handler.h"
 #include "system.h"
+#include "battle_animation.h"
 #include "game_battle.h"
+#include "game_battler.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
@@ -70,6 +72,8 @@ namespace {
 	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
 	Game_Vehicle* vehicles[3];
 	std::vector<Game_Character*> pending;
+
+	boost::scoped_ptr<BattleAnimation> animation;
 
 	bool pan_locked;
 	bool pan_wait;
@@ -118,6 +122,7 @@ void Game_Map::Dispose() {
 	}
 
 	map.reset();
+	animation.reset();
 }
 
 void Game_Map::Quit() {
@@ -716,6 +721,12 @@ void Game_Map::Update() {
 	UpdateScroll();
 	UpdatePan();
 	UpdateParallax();
+	if (animation) {
+		animation->Update();
+		if (animation->IsDone()) {
+			animation.reset();
+		}
+	}
 
 	for (tEventHash::iterator i = events.begin();
 		i != events.end(); ++i) {
@@ -857,6 +868,25 @@ bool Game_Map::PrepareEncounter() {
 	return true;
 }
 
+void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+	Main_Data::game_data.screen.battleanim_id = animation_id;
+	Main_Data::game_data.screen.battleanim_target = target_id;
+	Main_Data::game_data.screen.battleanim_global = global;
+
+	const RPG::Animation& anim = Data::animations[animation_id - 1];
+	Game_Character& chara = *Game_Character::GetCharacter(target_id, target_id);
+	chara.SetFlashTimeLeft(0); 	// Any flash always ends
+	if (global) {
+		animation.reset(new BattleAnimationGlobal(anim));
+	} else {
+		animation.reset(new BattleAnimationChara(anim, chara));
+	}
+}
+
+bool Game_Map::IsBattleAnimationWaiting() {
+	return (bool)animation;
+}
+
 std::vector<short>& Game_Map::GetMapDataDown() {
 	return map->lower_layer;
 }
@@ -964,7 +994,7 @@ void Game_Map::InitializeParallax() {
 	if (map_info.parallax_vert)
 		parallax_y = -map_info.position_y / 2;
 	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
-		parallax_y = -std::min(map_info.position_y, 
+		parallax_y = -std::min(map_info.position_y,
 			(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
 	else
 		parallax_y = 0;
@@ -1143,6 +1173,6 @@ const std::string& Game_Map::GetParallaxName() {
 FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	std::stringstream ss;
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
-	
+
 	return AsyncHandler::RequestFile(ss.str());
 }

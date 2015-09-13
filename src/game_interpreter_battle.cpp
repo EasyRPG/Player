@@ -38,10 +38,10 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		return CommandEnd();
 	}
 
-	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}
-	
+
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
@@ -215,14 +215,23 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	bool allies = false;
 
 	if (active)
-		return !Main_Data::game_screen->IsBattleAnimationWaiting();
+		return !Game_Battle::IsBattleAnimationWaiting();
 
 	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;
 	}
 
 	if (target < 0) {
-		Main_Data::game_screen->ShowGlobalBattleAnimation(animation_id);
+		std::vector<Game_Battler*> v;
+
+		if (allies) {
+			Main_Data::game_party->GetActiveBattlers(v);
+		} else {
+			Main_Data::game_enemyparty->GetActiveBattlers(v);
+		}
+
+		Game_Battle::ShowBattleAnimation(animation_id, v, false);
+
 		return !wait;
 	}
 	else {
@@ -243,7 +252,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 			return !wait;
 		}
 
-		Main_Data::game_screen->ShowBattleAnimationBattle(animation_id, battler_target);
+		Game_Battle::ShowBattleAnimation(animation_id, battler_target);
 	}
 
 	return !wait;

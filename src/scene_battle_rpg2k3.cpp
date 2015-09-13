@@ -498,7 +498,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}
 
@@ -529,7 +529,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		action->Execute();
 
 		if (action->GetTarget() && action->GetAnimation()) {
-			Main_Data::game_screen->ShowBattleAnimationBattle(
+			Game_Battle::ShowBattleAnimation(
 				action->GetAnimation()->ID,
 				action->GetTarget());
 		}
@@ -716,7 +716,7 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k3::CommandSelected() {
-	const RPG::BattleCommand& command = 
+	const RPG::BattleCommand& command =
 		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
 
 	active_actor->SetLastBattleAction(command.ID);
@@ -950,7 +950,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, random_target));
 				battle_actions.push_back(active_actor);
 				active_actor->SetGauge(0);
-				
+
 				return;
 			}
 

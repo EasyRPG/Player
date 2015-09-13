@@ -312,7 +312,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}
 
@@ -347,7 +347,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
 
-					Main_Data::game_screen->ShowBattleAnimationBattle(
+					Game_Battle::ShowBattleAnimation(
 						action->GetAnimation()->ID,
 						action->GetTarget());
 				}
@@ -366,7 +366,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			battle_action_state = BattleActionState_ConditionHeal;
-			
+
 			break;
 		case BattleActionState_ConditionHeal:
 			if (battle_action_wait--) {
@@ -441,7 +441,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					}
 				}
 			}
-			
+
 			break;
 		case BattleActionState_Finished:
 			if (battle_action_wait--) {
@@ -704,7 +704,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 		actor_index = 0;
 		return;
 	}
-	
+
 	actor_index--;
 	RemoveCurrentAction();
 	active_actor = allies[actor_index];

@@ -17,6 +17,7 @@
 
 #include "rpg_troop.h"
 
+class Game_Battler;
 class Game_Interpreter;
 class Spriteset_Battle;
 
@@ -39,6 +40,29 @@ namespace Game_Battle {
 	void Terminate();
 
 	Spriteset_Battle& GetSpriteset();
+
+	/**
+	 * Plays a battle animation against the given target.
+	 *
+	 * @param animation_id the animation ID
+	 * @param target pointer to the battler to play against
+	 * @param flash whether or not the screen should flash during the animation
+	 */
+	void ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash = true);
+
+	/**
+	 * Plays a battle animation against several targets simultaneously.
+	 *
+	 * @param animation_id the animation ID
+	 * @param targets a vector of pointer to the battlers to play against
+	 * @param flash whether or not the screen should flash during the animation
+	 */
+	void ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true);
+
+	/**
+	 * Whether or not a battle animation is currently playing.
+	 */
+	bool IsBattleAnimationWaiting();
 
 	void NextTurn();
 
