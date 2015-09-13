@@ -367,7 +367,6 @@
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\image_bmp.cpp" />
-    <ClCompile Include="..\..\src\image_jpg.cpp" />
     <ClCompile Include="..\..\src\image_png.cpp" />
     <ClCompile Include="..\..\src\image_xyz.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
@@ -503,7 +502,6 @@
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
     <ClInclude Include="..\..\src\image_bmp.h" />
-    <ClInclude Include="..\..\src\image_jpg.h" />
     <ClInclude Include="..\..\src\image_png.h" />
     <ClInclude Include="..\..\src\image_xyz.h" />
     <ClInclude Include="..\..\src\input.h" />

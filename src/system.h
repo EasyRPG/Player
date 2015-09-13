@@ -50,13 +50,6 @@
 #define SUPPORT_BMP
 #define SUPPORT_PNG
 #define SUPPORT_XYZ
-
-/*
-#define SUPPORT_JPG
-#define SUPPORT_GIF
-#define SUPPORT_TIFF
-*/
-
 #define SUPPORT_TTF
 #define SUPPORT_FON
 
