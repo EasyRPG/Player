@@ -1002,14 +1002,14 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 			if (static_cast<Game_Vehicle*>(event)->IsInUse())
 				event = Main_Data::game_player.get();
 
-		RPG::MoveRoute* route = new RPG::MoveRoute;
+		RPG::MoveRoute route;
 		int move_freq = com.parameters[1];
-		route->repeat = com.parameters[2] != 0;
-		route->skippable = com.parameters[3] != 0;
+		route.repeat = com.parameters[2] != 0;
+		route.skippable = com.parameters[3] != 0;
 
 		std::vector<int>::const_iterator it;
 		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
-			route->move_commands.push_back(DecodeMove(it));
+			route.move_commands.push_back(DecodeMove(it));
 
 		event->ForceMoveRoute(route, move_freq);
 	}

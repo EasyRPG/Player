@@ -62,7 +62,7 @@ void Scene_Battle::Start() {
 
 	if (Game_Temp::battle_troop_id <= 0 ||
 		Game_Temp::battle_troop_id > (int)Data::troops.size()) {
-		char* error_msg = "Invalid Monster Party Id %d";
+		const char* error_msg = "Invalid Monster Party Id %d";
 		if (Player::battle_test_flag) {
 			Output::Error(error_msg, Game_Temp::battle_troop_id);
 		}

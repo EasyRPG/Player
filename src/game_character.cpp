@@ -825,7 +825,7 @@ int Game_Character::DistanceYfromPlayer() const {
 	return sy;
 }
 
-void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
+void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 									int frequency) {
 
 	Game_Map::RemovePendingMove(this);
@@ -833,7 +833,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 
 	original_move_frequency = GetMoveFrequency();
 
-	SetMoveRoute(*new_route);
+	SetMoveRoute(new_route);
 	SetMoveRouteIndex(0);
 	SetMoveRouteOverwritten(true);
 	SetMoveRouteRepeated(false);

@@ -50,7 +50,7 @@ public:
 		return (int&) variables[variable_id - 1];
 	}
 
-	std::string GetName(int _id) {
+	std::string GetName(int _id) const {
 		if (!(_id > 0 && _id <= (int)Data::variables.size())) {
 			return "";
 		}
@@ -59,18 +59,16 @@ public:
 		}
 	}
 
-	bool isValidVar(int variable_id) {
+	bool isValidVar(int variable_id) const {
 		return (variable_id > 0 && variable_id <= (int) variables.size());
 	}
 
-	int size () {
+	int size () const {
 		return (int)variables.size();
 	}
 
 	void Reset() {
-		variables.resize(Data::variables.size());
-
-		std::fill(variables.begin(), variables.end(), 0);
+		variables.assign(Data::variables.size(), 0);
 	}
 
 private:

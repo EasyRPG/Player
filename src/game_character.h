@@ -509,7 +509,7 @@ public:
 	 * @param new_route new move route.
 	 * @param frequency frequency.
 	 */
-	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency);
+	void ForceMoveRoute(const RPG::MoveRoute& new_route, int frequency);
 
 	/**
 	 * Cancels a previous forced move route.
