@@ -9,6 +9,12 @@ available at the project website:
 
   https://easy-rpg.org/
 
+Simple Use
+----------
+
+Place the binary of the player (or a symbolic link to the player) in
+the folder of the game you want to run and execute the player.
+
 
 Documentation
 -------------
