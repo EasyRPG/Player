@@ -17,6 +17,7 @@
 
 // Headers
 #include <boost/bind.hpp>
+#include "battle_animation.h"
 #include "sprite_battler.h"
 #include "async_handler.h"
 #include "bitmap.h"
@@ -37,7 +38,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	flash_counter(0),
 	old_hidden(false),
 	idling(true) {
-	
+
 	CreateSprite();
 }
 
@@ -71,7 +72,7 @@ void Sprite_Battler::Update() {
 	Sprite::Update();
 
 	++cycle;
-	
+
 	if (battler->GetBattleAnimationId() <= 0) {
 		// Animations for monster
 		if (anim_state == AnimationState_Idle) {
@@ -81,7 +82,7 @@ void Sprite_Battler::Update() {
 			if (fade_out > 0) {
 				fade_out -= 15;
 				SetOpacity(std::max(0, fade_out));
-			} 
+			}
 		}
 		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
@@ -103,6 +104,8 @@ void Sprite_Battler::Update() {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
+				animation->Update();
+
 				if (animation->IsDone()) {
 					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
 						const RPG::State* state = battler->GetSignificantState();
@@ -116,12 +119,10 @@ void Sprite_Battler::Update() {
 					animation->SetFrame(0);
 				}
 
-				animation->Update();
-
 				return;
 			}
 
-			static const int frames[] = {0,1,2,1};
+			static const int frames[] = {0,1,2,1,0};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
 				return;
@@ -175,7 +176,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				animation.reset(new BattleAnimation(GetX(), GetY(), &Data::animations[ext.animation_id - 1]));
+				animation.reset(new BattleAnimationBattlers(Data::animations[ext.animation_id - 1], *battler));
 				animation->SetZ(GetZ());
 			}
 			else {

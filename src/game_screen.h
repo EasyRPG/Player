@@ -18,12 +18,10 @@
 #ifndef _EASYRPG_GAME_SCREEN_H_
 #define _EASYRPG_GAME_SCREEN_H_
 
-#include <map>
 #include <vector>
 #include "system.h"
 #include "game_picture.h"
 #include "game_character.h"
-#include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
@@ -49,24 +47,19 @@ public:
 	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void ShowGlobalBattleAnimation(int animation_id);
-	void ShowBattleAnimationBattle(int animation_id, Game_Battler* target, bool global = false);
-	void ShowBattleAnimationMap(int animation_id, int target_id, bool global = false);
-	void ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global);
-	bool IsBattleAnimationWaiting() const;
 	void Update();
 
 	/**
 	 * Returns the current screen tone.
 	 *
-	 * @return Tone 
+	 * @return Tone
 	 */
 	Tone GetTone();
 
 	/**
 	 * Returns the current flash color.
 	 *
-	 * @param current_level Current strength adjusted to 0-255 
+	 * @param current_level Current strength adjusted to 0-255
 	 * @param time_left how many frames of flashing are left
 	 * @return Flash color
 	 */
@@ -75,7 +68,7 @@ public:
 	/**
 	 * Returns the weather type
 	 *
-	 * @return Weather type 
+	 * @return Weather type
 	 */
 	int GetWeatherType();
 
@@ -105,8 +98,6 @@ public:
 private:
 	std::vector<EASYRPG_SHARED_PTR<Game_Picture> > pictures;
 
-	std::map<int, RPG::AnimationTiming> animation_timings;
-
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
@@ -121,13 +112,9 @@ private:
 protected:
 	std::vector<Snowflake> snowflakes;
 
-	boost::scoped_ptr<BattleAnimation> animation;
-
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
-	void PlayBattleAnimationSound();
-	int GetAnimationOffsetY(int animation_id, int target_height);
 };
 
 #endif

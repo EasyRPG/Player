@@ -147,7 +147,7 @@ public:
 	/**
 	 * Gets character movement speed.
 	 *
-	 * @return character movement speed 
+	 * @return character movement speed
 	 */
 	virtual int GetMoveSpeed() const = 0;
 
@@ -188,7 +188,7 @@ public:
 
 	/**
 	 * Returns current index of a "Movement Type Custom" move route.
-	 * 
+	 *
 	 * @return current original move route index
 	 */
 	virtual int GetOriginalMoveRouteIndex() const = 0;
@@ -269,6 +269,14 @@ public:
 	 * @param index new sprite index
 	 */
 	virtual void SetSpriteIndex(int index) = 0;
+
+	/**
+	 * Begins a flash.
+	 *
+	 * @param color The flash color.
+	 * @param tenths Duration of the flash in tenths of a second.
+	 */
+	void Flash(Color color, int tenths);
 
 	/**
 	 * Gets flash effect color.
@@ -695,7 +703,7 @@ protected:
 	bool through;
 	int animation_id;
 	int animation_type;
-	
+
 	RPG::MoveRoute original_move_route;
 	int original_move_frequency;
 	int move_type;

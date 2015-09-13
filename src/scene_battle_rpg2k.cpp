@@ -312,7 +312,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}
 
@@ -347,7 +347,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
 					action->GetAnimation()) {
 
-					Main_Data::game_screen->ShowBattleAnimationBattle(
+					Game_Battle::ShowBattleAnimation(
 						action->GetAnimation()->ID,
 						action->GetTarget());
 				}
@@ -366,7 +366,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			battle_action_state = BattleActionState_ConditionHeal;
-			
+
 			break;
 		case BattleActionState_ConditionHeal:
 			if (battle_action_wait--) {
@@ -441,7 +441,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					}
 				}
 			}
-			
+
 			break;
 		case BattleActionState_Finished:
 			if (battle_action_wait--) {
@@ -516,7 +516,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		switch (state) {
 		case State_Start:
 		case State_SelectOption:
@@ -553,7 +553,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 void Scene_Battle_Rpg2k::OptionSelected() {
 	switch (options_window->GetIndex()) {
 		case 0: // Battle
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			CreateBattleTargetWindow();
 			auto_battle = false;
 			SetState(State_SelectActor);
@@ -561,14 +561,14 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 		case 1: // Auto Battle
 			auto_battle = true;
 			SetState(State_AutoBattle);
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			break;
 		case 2: // Escape
 			if (!Game_Battle::IsEscapeAllowed()) {
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			}
 			else {
-				Game_System::SePlay(Data::system.decision_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				SetState(State_Escape);
 			}
 			break;
@@ -576,7 +576,7 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k::CommandSelected() {
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
@@ -704,7 +704,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 		actor_index = 0;
 		return;
 	}
-	
+
 	actor_index--;
 	RemoveCurrentAction();
 	active_actor = allies[actor_index];
@@ -816,7 +816,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 			Game_Message::texts.push_back(ss.str());
 		}
 
-		Game_System::BgmPlay(Data::system.battle_end_music);
+		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
@@ -849,7 +849,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 
 		Game_Message::texts.push_back(Data::terms.defeat);
 
-		Game_System::BgmPlay(Data::system.gameover_music);
+		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 
 		return true;
 	}

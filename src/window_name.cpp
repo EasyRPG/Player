@@ -51,7 +51,7 @@ void Window_Name::Append(const std::string& text) {
 		name += text;
 		Refresh();
 	} else {
-		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 	}
 }
 

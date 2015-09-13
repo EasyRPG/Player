@@ -41,6 +41,8 @@ namespace Game_Battle {
 	/** Contains battle related sprites */
 	boost::scoped_ptr<Spriteset_Battle> spriteset;
 
+	boost::scoped_ptr<BattleAnimation> animation;
+
 	int escape_fail_count;
 }
 
@@ -58,6 +60,7 @@ namespace {
 void Game_Battle::Init() {
 	interpreter.reset(new Game_Interpreter_Battle(0, true));
 	spriteset.reset(new Spriteset_Battle());
+	animation.reset();
 
 	Game_Temp::battle_running = true;
 	turn = 0;
@@ -69,13 +72,14 @@ void Game_Battle::Init() {
 
 	message_is_fixed = Game_Message::IsPositionFixed();
 	message_position = Game_Message::GetPosition();
-	
+
 	Main_Data::game_party->ResetBattle();
 }
 
 void Game_Battle::Quit() {
 	interpreter.reset();
 	spriteset.reset();
+	animation.reset();
 
 	Game_Temp::battle_running = false;
 
@@ -97,6 +101,12 @@ void Game_Battle::Quit() {
 void Game_Battle::Update() {
 	interpreter->Update();
 	spriteset->Update();
+	if (animation) {
+		animation->Update();
+		if (animation->IsDone()) {
+			animation.reset();
+		}
+	}
 }
 
 void Game_Battle::Terminate() {
@@ -109,6 +119,24 @@ void Game_Battle::Terminate() {
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
+}
+
+void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash) {
+	Main_Data::game_data.screen.battleanim_id = animation_id;
+
+	const RPG::Animation& anim = Data::animations[animation_id - 1];
+	animation.reset(new BattleAnimationBattlers(anim, *target, flash));
+}
+
+void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
+	Main_Data::game_data.screen.battleanim_id = animation_id;
+
+	const RPG::Animation& anim = Data::animations[animation_id - 1];
+	animation.reset(new BattleAnimationBattlers(anim, targets, flash));
+}
+
+bool Game_Battle::IsBattleAnimationWaiting() {
+	return bool(animation);
 }
 
 void Game_Battle::NextTurn() {

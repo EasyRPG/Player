@@ -152,7 +152,7 @@ void Scene_Menu::CreateCommandWindow() {
 
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		menu_index = command_window->GetIndex();
@@ -160,9 +160,9 @@ void Scene_Menu::UpdateCommand() {
 		switch (command_options[menu_index]) {
 		case Item:
 			if (Main_Data::game_party->GetActors().empty()) {
-				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Main_Data::game_data.system.decision_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Item>());
 			}
 			break;
@@ -171,9 +171,9 @@ void Scene_Menu::UpdateCommand() {
 		case Status:
 		case Row:
 			if (Main_Data::game_party->GetActors().empty()) {
-				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Main_Data::game_data.system.decision_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				command_window->SetActive(false);
 				menustatus_window->SetActive(true);
 				menustatus_window->SetIndex(0);
@@ -181,27 +181,27 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Save:
 			if (!Game_System::GetAllowSave()) {
-				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Main_Data::game_data.system.decision_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
 			}
 			break;
 		case Order:
 			if (Main_Data::game_party->GetActors().size() <= 1) {
-				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
-				Game_System::SePlay(Main_Data::game_data.system.decision_se);
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Order>());
 			}
 			break;
 		case Wait:
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Game_Temp::battle_wait = !Game_Temp::battle_wait;
 			command_window->SetItemText(menu_index, Game_Temp::battle_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
 		case Quit:
-			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
 			break;
 		}
@@ -210,12 +210,12 @@ void Scene_Menu::UpdateCommand() {
 
 void Scene_Menu::UpdateActorSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		command_window->SetActive(true);
 		menustatus_window->SetActive(false);
 		menustatus_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));

@@ -165,7 +165,7 @@ void Window_Shop::Update() {
 					else {
 						index = 1;
 					}
-					Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				}
 				if (Input::IsRepeated(Input::UP)) {
 					if (index > 1) {
@@ -174,10 +174,10 @@ void Window_Shop::Update() {
 					else {
 						index = leave_index;
 					}
-					Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				}
 				if (Input::IsTriggered(Input::DECISION)) {
-					Game_System::SePlay(Main_Data::game_data.system.decision_se);
+					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 					if (index == buy_index)
 						choice = Scene_Shop::Buy;
 					if (index == sell_index)

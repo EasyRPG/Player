@@ -211,7 +211,8 @@ void Scene_Map::FinishTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Main_Data::game_data.system.before_battle_music = Main_Data::game_data.system.current_music;
+	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 
 	Scene::Push(Scene_Battle::Create());
 }
@@ -231,7 +232,7 @@ void Scene_Map::CallName() {
 void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 
-	Game_System::SePlay(Main_Data::game_data.system.decision_se);
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	// TODO: Main_Data::game_player->Straighten();
 

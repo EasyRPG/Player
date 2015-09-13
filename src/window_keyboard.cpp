@@ -242,7 +242,7 @@ void Window_Keyboard::Update() {
 	}
 
 	if(play_cursor) {
-		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 		play_cursor = false;
 	}
 	UpdateCursorRect();

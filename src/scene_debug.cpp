@@ -63,7 +63,7 @@ void Scene_Debug::Update() {
 		numberinput_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		if (range_window->GetActive())
 			Scene::Pop();
 		else if (var_window->GetActive()) {
