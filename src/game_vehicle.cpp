@@ -215,6 +215,8 @@ bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
+		case None:
+			break;
 		case Boat:
 			SetSpriteName(Data::system.boat_name);
 			SetSpriteIndex(Data::system.boat_index);
@@ -241,6 +243,8 @@ void Game_Vehicle::LoadSystemSettings() {
 
 RPG::Music& Game_Vehicle::GetBGM() {
 	switch (type) {
+	case None:
+		break;
 	case Boat:
 		return Game_System::GetSystemBGM(Game_System::BGM_Boat);
 	case Ship:
@@ -262,6 +266,8 @@ void Game_Vehicle::Refresh() {
 		MoveTo(GetX(), GetY());
 
 	switch (type) {
+		case None:
+			break;
 		case Boat:
 		case Ship:
 			SetLayer(RPG::EventPage::Layers_same);

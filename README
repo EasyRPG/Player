@@ -62,11 +62,11 @@ Building
 
   1. Unpack the tarball with:
 
-    tar xf easyrpg-player-0.3.1.tar.xz
+    tar xf easyrpg-player-0.3.2.tar.xz
 
   2. Enter in the package directory with:
 
-    cd easyrpg-player-0.3.1
+    cd easyrpg-player-0.3.2
 
   3. Compile with:
 
@@ -78,6 +78,7 @@ Building
 
     autoconf >= 2.69
     automake >= 1.11.4
+    libtool
 
   To generate the "configure" script, run:
 
