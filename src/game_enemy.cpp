@@ -49,7 +49,7 @@ std::vector<int16_t>& Game_Enemy::GetStates() {
 int Game_Enemy::GetStateProbability(int state_id) {
 	int rate = 3; // C - default
 
-	if (state_id <= Data::enemies[enemy_id].state_ranks.size()) {
+	if (state_id <= (int)Data::enemies[enemy_id].state_ranks.size()) {
 		rate = Data::enemies[enemy_id].state_ranks[state_id - 1];
 	}
 

@@ -21,8 +21,20 @@
 #include "bitmap.h"
 #include "util_macro.h"
 
-Window_Command::Window_Command(std::vector<std::string> commands, int width, int max_item) :
-	Window_Selectable(0, 0, GetRequiredWidth(commands, width), (max_item == -1 ? commands.size() : max_item) * 16 + 16),
+static int CalculateWidth(const std::vector<std::string>& commands, int width) {
+	if (width < 0) {
+		int max = 0;
+		for (size_t i = 0; i < commands.size(); ++i) {
+			max = std::max(max, Font::Default()->GetSize(commands[i]).width);
+		}
+		return max + 16;
+	} else {
+		return width;
+	}
+}
+
+Window_Command::Window_Command(const std::vector<std::string>& commands, int width, int max_item) :
+	Window_Selectable(0, 0, CalculateWidth(commands, width), (max_item < 0 ? commands.size() : max_item) * 16 + 16),
 	commands(commands) {
 
 	index = 0;
@@ -54,16 +66,5 @@ void Window_Command::SetItemText(unsigned index, std::string const& text) {
 	if (index < commands.size()) {
 		commands[index] = text;
 		DrawItem(index, Font::ColorDefault);
-	}
-}
-
-int Window_Command::GetRequiredWidth(std::vector<std::string>& commands, int width) {
-	if (width < 0) {
-		for (size_t i = 0; i < commands.size(); ++i) {
-			width = std::max(width, Font::Default()->GetSize(commands[i]).width);
-		}
-		return width + 16;
-	} else {
-		return width;
 	}
 }

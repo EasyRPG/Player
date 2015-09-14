@@ -49,7 +49,7 @@ public:
 		return switches[switch_id - 1];
 	}
 	
-	std::string GetName(int _id) {
+	std::string GetName(int _id) const {
 		if (!(_id > 0 && _id <= (int)Data::switches.size())) {
 			return "";
 		}
@@ -58,18 +58,16 @@ public:
 		}
 	}
 
-	bool isValidSwitch(int switch_id) {
+	bool isValidSwitch(int switch_id) const {
 		return (switch_id > 0 && switch_id <= (int) switches.size());
 	}
 
-	int size () {
+	int size () const {
 		return (int)switches.size();
 	}
 
 	void Reset() {
-		switches.resize(Data::switches.size());
-
-		std::fill(switches.begin(), switches.end(), false);
+		switches.assign(Data::switches.size(), false);
 	}
 
 private:

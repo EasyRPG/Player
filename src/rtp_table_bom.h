@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _RTP_TABLE_BOM_H_
-#define _RTP_TABLE_BOM_H_
+#ifndef _RTP_TABLE_H_
+#define _RTP_TABLE_H_
 
 #include <boost/assign/list_of.hpp>
 #include <map>

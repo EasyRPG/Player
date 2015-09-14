@@ -430,8 +430,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 	return FindDefault(dir, name);
 #endif
 
-	static const char* IMG_TYPES[] = {
-		".bmp",  ".png", ".xyz", /*".gif", ".jpg", ".jpeg",*/ NULL };
+	static const char* IMG_TYPES[] = { ".bmp",  ".png", ".xyz", NULL };
 	return FindFile(dir, name, IMG_TYPES);
 }
 

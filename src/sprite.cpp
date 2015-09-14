@@ -93,9 +93,6 @@ void Sprite::BlitScreen(int x, int y, int ox, int oy, Rect const& src_rect) {
 
 void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, int oy,
 								Rect const& src_rect, int opacity_split) {
-	if (! &draw_bitmap)
-		return;
-
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	double zoom_x = zoom_x_effect;

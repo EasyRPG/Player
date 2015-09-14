@@ -56,7 +56,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	// 10	4	offset to bitmap data
 	static const unsigned BITMAPFILEHEADER_SIZE = 14;
 
-	if (len < 64 || strncmp((char*) &data[0], "BM", 2) != 0) {
+	if (len < 64) {
 		Output::Error("Not a valid BMP file.");
 		return;
 	}
@@ -84,6 +84,9 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 
 	width = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 4]);
 	height = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 8]);
+
+	// bitmap scan lines need to be aligned to 32 bit boundaries, add padding if needed
+	int padding = (width % 4 != 0) ? 4 - width % 4 : 0;
 
 	bool vflip = height > 0;
 	if (!vflip)
@@ -126,7 +129,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 
 	uint8_t* dst = (uint8_t*) pixels;
 	for (int y = 0; y < height; y++) {
-		const uint8_t* src = src_pixels + (vflip ? height - 1 - y : y) * width;
+		const uint8_t* src = src_pixels + (vflip ? height - 1 - y : y) * (width + padding);
 		for (int x = 0; x < width; x++) {
 			const uint8_t& pix = *src++;
 			const uint8_t* color = palette[pix];

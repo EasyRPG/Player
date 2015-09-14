@@ -38,7 +38,7 @@ public:
 	 *                 items, if no height is passed
 	 *                 the height is autocalculated.
 	 */
-	Window_Command(std::vector<std::string> commands, int width = -1, int max_item = -1);
+	Window_Command(const std::vector<std::string>& commands, int width = -1, int max_item = -1);
 
 	/**
 	 * Refreshes the window contents.
@@ -64,8 +64,6 @@ protected:
 	std::vector<std::string> commands;
 
 	void DrawItem(int index, Font::SystemColor color);
-
-	int GetRequiredWidth(std::vector<std::string>& commands, int width);
 };
 
 #endif
