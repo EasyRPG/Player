@@ -137,7 +137,7 @@ void Window::Draw() {
 			}
 		}
 
-		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 && animation_frames == 0) {
+		if (width >= 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 && animation_frames == 0) {
 			if (cursor_needs_refresh) RefreshCursor();
 
 			Rect src_rect(
