@@ -246,7 +246,10 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	// Free resources if needed
 	if (interpreter) {
-		interpreter->Clear();
+		// If the new page is null and the interpreter is running, it should
+		// carry on executing its command list during this frame
+		if (page)
+			interpreter->Clear();
 		Game_Map::ReserveInterpreterDeletion(interpreter);
 		interpreter.reset();
 	}
