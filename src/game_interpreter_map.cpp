@@ -56,10 +56,6 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
-Game_Interpreter_Map::~Game_Interpreter_Map() {
-	list.clear();
-}
-
 bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int _index) {
 	if (_index < (int)save.size()) {
 		map_id = Game_Map::GetMapId();
@@ -1044,7 +1040,6 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
-	CloseMessageWindow();
 	Game_Temp::shop_calling = true;
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
 	return false;
@@ -1136,7 +1131,6 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
 	if (Game_Message::visible) {
-		CloseMessageWindow();
 		return false;
 	}
 	continuation = NULL;
@@ -1192,27 +1186,23 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	else
 		Game_Temp::hero_name.clear();
 
-	CloseMessageWindow();
 	Game_Temp::name_calling = true;
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
-	CloseMessageWindow();
 	Game_Temp::to_title = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
-	CloseMessageWindow();
 	Game_Temp::save_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
-	CloseMessageWindow();
 	Game_Temp::menu_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
@@ -1252,8 +1242,6 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		Game_Battle::SetBattleMode(com.parameters[6]); // normal, initiative, surround, back attack, pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
-
-	CloseMessageWindow();
 	Game_Temp::battle_calling = true;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));

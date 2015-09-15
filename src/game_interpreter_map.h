@@ -36,7 +36,6 @@ class Game_Interpreter_Map : public Game_Interpreter
 {
 public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
-	~Game_Interpreter_Map();
 
 	/**
 	* Parses a SaveEventCommand to create an interpreter.

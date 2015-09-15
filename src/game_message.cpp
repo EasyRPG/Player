@@ -40,7 +40,6 @@ namespace Game_Message {
 
 	bool message_waiting;
 	bool visible;
-	bool closing;
 
 	int choice_result;
 }

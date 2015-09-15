@@ -58,16 +58,9 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	Clear();
 }
 
-Game_Interpreter::~Game_Interpreter() {
-	if (depth == 0) {
-		CloseMessageWindow();
-	}
-}
-
 // Clear.
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
-	CloseMessageWindow();
 	event_id = 0;					// event ID
 	move_route_waiting = false;		// waiting for move completion
 	wait_count = 0;					// wait count
@@ -116,7 +109,6 @@ void Game_Interpreter::CancelMenuCall() {
 }
 
 void Game_Interpreter::SetupWait(int duration) {
-	CloseMessageWindow();
 	if (duration == 0) {
 		// 0.0 waits 1 frame
 		wait_count = 1;
@@ -160,9 +152,8 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if ((Game_Message::message_waiting || Game_Message::closing)
-			&& (main_flag || Game_Message::owner_id == event_id)) {
-				break;
+		if (Game_Message::message_waiting && (main_flag || Game_Message::owner_id == event_id)) {
+			break;
 		}
 
 		// If waiting for a move to end
@@ -230,7 +221,6 @@ void Game_Interpreter::Update() {
 		}
 
 		if (!ExecuteCommand()) {
-			CloseMessageWindow();
 			active = true;
 			break;
 		}
@@ -249,7 +239,6 @@ void Game_Interpreter::Update() {
 		// Executed Events Count exceeded (10000)
 		active = true;
 		Output::Debug("Event %d exceeded execution limit", event_id);
-		CloseMessageWindow();
 	}
 
 	updating = false;
@@ -378,7 +367,6 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter::CommandEnd() {
-	CloseMessageWindow();
 	if (main_flag) {
 		Game_Message::SetFaceName("");
 	}
@@ -422,17 +410,10 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	ret_val.swap(s_choices);
 }
 
-void Game_Interpreter::CloseMessageWindow() {
-	if (Game_Message::visible && !Game_Message::closing && (main_flag || Game_Message::owner_id == event_id)) {
-		Game_Message::closing = true;
-		Game_Message::SemiClear();
-	}
-}
-
 // Command Show Message
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Code ShowMessage
 	// If there's a text already, return immediately
-	if (!Game_Message::texts.empty()) {
+	if (Game_Message::message_waiting) {
 		return false;
 	}
 	unsigned int line_count = 0;
@@ -938,14 +919,13 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 
 // Input Number.
 bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
-	if (!Game_Message::texts.empty()) {
+	if (Game_Message::message_waiting) {
 		return false;
 	}
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
 
-	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];
 	Game_Message::num_input_digits_max = com.parameters[0];
@@ -1297,7 +1277,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
-	CloseMessageWindow();
 	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;

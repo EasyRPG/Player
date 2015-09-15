@@ -204,7 +204,6 @@ namespace Game_Message {
 	/** If a message is currently being processed. */
 	extern bool message_waiting;
 	extern bool visible;
-	extern bool closing;
 
 	/** Selected option (4 => cancel). */
 	extern int choice_result;
