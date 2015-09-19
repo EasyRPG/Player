@@ -3,13 +3,17 @@ package org.easyrpg.player.button_mapping;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -33,6 +37,38 @@ public class ControlsActivity extends Activity {
 		layout_list_view.setAdapter(layout_list_adapter);
 	}
 
+	public void addAButton(View view){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Add an input layout"); //TODO hardcode the string
+
+		// The editText field
+		final EditText input = new EditText(this);
+		builder.setView(input);
+
+		// The buttons
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        String text = input.getText().toString();
+		        if(!text.isEmpty()){
+		        	InputLayout layout = new InputLayout(text);
+		        	layout.setButton_list(ButtonMappingModel.InputLayout.getDefaultButtonList(getApplicationContext()));
+		        	mappingModel.add(layout);
+		        	
+		        	ButtonMappingModel.writeButtonMappingFile(mappingModel);
+		        }
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+
+		builder.show();
+	}
+	
 	private class LayoutAdapter extends BaseAdapter {
 		LinkedList<ButtonMappingModel.InputLayout> layout_list;
 		LayoutInflater inflater;

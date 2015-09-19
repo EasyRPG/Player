@@ -52,7 +52,7 @@ public class ButtonMappingModel {
 
 	public static ButtonMappingModel getDefaultButtonMappingModel(Context context) {
 		ButtonMappingModel m = new ButtonMappingModel();
-		m.add(InputLayout.getDefaultPreset(context));
+		m.add(InputLayout.getDefaultInputLayout(context));
 		return m;
 	}
 
@@ -122,6 +122,7 @@ public class ButtonMappingModel {
 
 		public InputLayout(String name) {
 			this.name = name;
+			//TODO : Deal with the random id generation
 		}
 
 		public InputLayout(String name, int id) {
@@ -152,6 +153,8 @@ public class ButtonMappingModel {
 					layout_array.put(jso);
 				}
 				preset.put(TAG_BUTTONS, layout_array);
+				
+				return preset;
 			} catch (JSONException e) {
 				Log.e("Button Mapping File", "Error while serializing an input layout : " + e.getLocalizedMessage());
 			}
@@ -186,16 +189,21 @@ public class ButtonMappingModel {
 		}
 
 		/** Return the default button mapping preset : one cross, two buttons */
-		public static InputLayout getDefaultPreset(Context context) {
+		public static InputLayout getDefaultInputLayout(Context context) {
 			InputLayout b = new InputLayout(DEFAULT_NAME);
-
-			b.add(new VirtualCross(context, 0.0, 0.5, 100));
-			b.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
-			b.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
-
+			b.setButton_list(getDefaultButtonList(context));
 			return b;
 		}
 
+		public static LinkedList<VirtualButton> getDefaultButtonList(Context context) {
+			LinkedList<VirtualButton> l = new LinkedList<VirtualButton>();
+			l.add(new VirtualCross(context, 0.0, 0.5, 100));
+			l.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
+			l.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
+
+			return l;
+		}
+		
 		public String getName() {
 			return name;
 		}
@@ -206,6 +214,10 @@ public class ButtonMappingModel {
 
 		public LinkedList<VirtualButton> getButton_list() {
 			return button_list;
+		}
+
+		public void setButton_list(LinkedList<VirtualButton> button_list) {
+			this.button_list = button_list;
 		}
 	}
 }

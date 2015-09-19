@@ -29,10 +29,6 @@ import java.util.List;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.R.id;
-import org.easyrpg.player.R.menu;
-import org.easyrpg.player.R.string;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.VirtualButton;
 import org.libsdl.app.SDLActivity;
 
@@ -44,7 +40,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

@@ -28,8 +28,6 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingActivity;
-import org.easyrpg.player.button_mapping.ControlsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;

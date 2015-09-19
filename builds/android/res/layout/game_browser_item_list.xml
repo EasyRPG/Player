@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
     <TextView
         android:id="@+id/game_browser_thumbnail_title"
         android:textSize="20sp"
@@ -9,8 +10,8 @@
         android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
 		android:layout_centerVertical="true"
-		android:layout_alignParentLeft="true"
-	/>
+		android:layout_alignParentLeft="true" />
+    
     <ImageButton
         android:id="@+id/game_browser_thumbnail_region_button"
         android:src="@drawable/ic_action_action_settings" 
