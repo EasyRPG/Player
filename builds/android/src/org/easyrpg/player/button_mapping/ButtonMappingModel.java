@@ -14,22 +14,21 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import android.view.KeyEvent;
 
 public class ButtonMappingModel {
+	public LinkedList<InputLayout> layout_list;
+
 	public static final int NUM_VERSION = 1;
 	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets", DEFAULT_NAME = "default",
 			TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons", TAG_KEYCODE = "keycode", TAG_X = "x",
 			TAG_Y = "y", TAG_SIZE = "size";
 	public static final String FILE_NAME = "button_mapping.txt";
 
-	public LinkedList<Layout> layout_list;
-
 	public ButtonMappingModel() {
-		layout_list = new LinkedList<Layout>();
+		layout_list = new LinkedList<InputLayout>();
 	}
 
-	public void add(Layout p) {
+	public void add(InputLayout p) {
 		layout_list.add(p);
 	}
 
@@ -38,15 +37,14 @@ public class ButtonMappingModel {
 
 		try {
 			JSONArray presets = new JSONArray();
-			for (Layout p : this.layout_list) {
+			for (InputLayout p : this.layout_list) {
 				presets.put(p.serialize());
 			}
 
 			o.put(TAG_VERSION, NUM_VERSION);
 			o.put(TAG_PRESETS, presets);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("Button Maping Model", "Impossible to serialize the button mapping model");
 		}
 
 		return o;
@@ -54,44 +52,7 @@ public class ButtonMappingModel {
 
 	public static ButtonMappingModel getDefaultButtonMappingModel(Context context) {
 		ButtonMappingModel m = new ButtonMappingModel();
-		m.add(Layout.getDefaultPreset(context));
-		return m;
-	}
-
-	public static ButtonMappingModel readButtonMappingFile(Context context, String path) {
-		ButtonMappingModel m = new ButtonMappingModel();
-		JSONObject jso;
-
-		// Read the file
-		String file = new String(), st;
-		BufferedReader bf;
-		try {
-			bf = new BufferedReader(new FileReader(new File(path)));
-			while ((st = bf.readLine()) != null) {
-				file += st;
-			}
-			bf.close();
-
-			// Parse the JSON
-			jso = new JSONObject(file);
-		} catch (Exception e) {
-			m.add(Layout.getDefaultPreset(context));
-			return m;
-		}
-
-		// Presets' extraction
-		JSONArray layout_array;
-		try {
-			layout_array = jso.getJSONArray("presets");
-			JSONObject p;
-			for (int i = 0; i < layout_array.length(); i++) {
-				p = (JSONObject) layout_array.get(i);
-				m.add(Layout.deserialize(context, p));
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
+		m.add(InputLayout.getDefaultPreset(context));
 		return m;
 	}
 
@@ -100,43 +61,70 @@ public class ButtonMappingModel {
 		return readButtonMappingFile(context, button_mapping_path);
 	}
 
-	public LinkedList<Layout> getLayout_list() {
-		return layout_list;
+	public static ButtonMappingModel readButtonMappingFile(Context context, String path) {
+		ButtonMappingModel m = new ButtonMappingModel();
+
+		String file = new String(), tmp;
+		try {
+			// Read the file
+			BufferedReader bf = new BufferedReader(new FileReader(new File(path)));
+			while ((tmp = bf.readLine()) != null) {
+				file += tmp;
+			}
+			bf.close();
+
+			// Parse the JSON
+			JSONObject jso = new JSONObject(file);
+
+			// Presets' extraction
+			JSONArray layout_array = jso.getJSONArray("presets");
+			JSONObject p;
+			for (int i = 0; i < layout_array.length(); i++) {
+				p = (JSONObject) layout_array.get(i);
+				m.add(InputLayout.deserialize(context, p));
+			}
+
+			return m;
+		} catch (JSONException e) {
+			Log.e("Button Mapping Model", "Error parsing de JSO file, loading the default one");
+		} catch (IOException e) {
+			Log.e("Button Mapping Model", "Error reading the button mapping file, loading the default one");
+		}
+
+		return getDefaultButtonMappingModel(context);
 	}
 
 	public static void writeButtonMappingFile(ButtonMappingModel m) {
 		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
-		FileWriter file = null;
 
 		try {
-			file = new FileWriter(button_mapping_path);
+			FileWriter file = new FileWriter(button_mapping_path);
 			JSONObject obj = m.serialize();
-			file.write(obj.toString(4));
+			file.write(obj.toString(2));
 			file.flush();
 			file.close();
-			System.out.println("Successfully Copied JSON Object to File...");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e("Button Mapping Model", "Error writting the button mapping file");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("Button Mapping Model", "Error parsing the button mapping file for writing");
 		}
 
 	}
 
-	public static class Layout {
-		public LinkedList<VirtualButton> button_list = new LinkedList<VirtualButton>();
-		String name;
-		int id;
+	public LinkedList<InputLayout> getLayout_list() {
+		return layout_list;
+	}
 
-		public Layout() {
-		}
+	public static class InputLayout {
+		private String name;
+		private int id;
+		private LinkedList<VirtualButton> button_list = new LinkedList<VirtualButton>();
 
-		public Layout(String name) {
+		public InputLayout(String name) {
 			this.name = name;
 		}
 
-		public Layout(String name, int id) {
+		public InputLayout(String name, int id) {
 			this(name);
 			this.id = id;
 		}
@@ -146,60 +134,60 @@ public class ButtonMappingModel {
 		}
 
 		public JSONObject serialize() {
-			JSONObject preset = new JSONObject();
-
 			try {
+				JSONObject preset = new JSONObject();
+
 				preset.put(TAG_NAME, name);
 				preset.put(TAG_ID, id);
 
 				// Circle/Buttons
-				JSONArray l = new JSONArray();
-				for (VirtualButton b : button_list) {
+				JSONArray layout_array = new JSONArray();
+				for (VirtualButton button : button_list) {
 					JSONObject jso = new JSONObject();
-					jso.put(TAG_KEYCODE, b.getKeyCode());
-					jso.put(TAG_X, b.getPosX());
-					jso.put(TAG_Y, b.getPosY());
-					jso.put(TAG_SIZE, b.getSize());
+					jso.put(TAG_KEYCODE, button.getKeyCode());
+					jso.put(TAG_X, button.getPosX());
+					jso.put(TAG_Y, button.getPosY());
+					jso.put(TAG_SIZE, button.getSize());
 
-					l.put(jso);
+					layout_array.put(jso);
 				}
-				preset.put(TAG_BUTTONS, l);
+				preset.put(TAG_BUTTONS, layout_array);
 			} catch (JSONException e) {
-				Log.e("JSONException", e.getLocalizedMessage());
+				Log.e("Button Mapping File", "Error while serializing an input layout : " + e.getLocalizedMessage());
 			}
 
-			return preset;
+			return null;
 		}
 
-		public static Layout deserialize(Context context, JSONObject jso) {
-			Layout preset = new Layout();
+		public static InputLayout deserialize(Context context, JSONObject jso) {
 			try {
-				String name = jso.getString(TAG_NAME);
-				int id = jso.getInt(TAG_ID);
+				InputLayout layout = new InputLayout(jso.getString(TAG_NAME), jso.getInt(TAG_ID));
 
-				JSONArray button_list = new JSONArray();
+				JSONArray button_list = jso.getJSONArray(TAG_BUTTONS);
 				for (int i = 0; i < button_list.length(); i++) {
-					JSONObject b = (JSONObject) button_list.get(i);
-					int keyCode = b.getInt(TAG_KEYCODE), size = b.getInt(TAG_SIZE);
-					double posX = b.getDouble(TAG_X), posY = b.getDouble(TAG_Y);
+					JSONObject button = (JSONObject) button_list.get(i);
+					int keyCode = button.getInt(TAG_KEYCODE);
+					int size = button.getInt(TAG_SIZE);
+					double posX = button.getDouble(TAG_X);
+					double posY = button.getDouble(TAG_Y);
 					if (keyCode == VirtualButton.DPAD) {
-						preset.add(new VirtualCross(context, posX, posY, size));
+						layout.add(new VirtualCross(context, posX, posY, size));
 					} else {
-						preset.add(new VirtualButton(context, keyCode, posX, posY, size));
+						layout.add(new VirtualButton(context, keyCode, posX, posY, size));
 					}
 				}
 
+				return layout;
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("Button Mapping File", "Error while deserializing an input layout : " + e.getLocalizedMessage());
 			}
 
-			return preset;
+			return null;
 		}
 
 		/** Return the default button mapping preset : one cross, two buttons */
-		public static Layout getDefaultPreset(Context context) {
-			Layout b = new Layout(DEFAULT_NAME);
+		public static InputLayout getDefaultPreset(Context context) {
+			InputLayout b = new InputLayout(DEFAULT_NAME);
 
 			b.add(new VirtualCross(context, 0.0, 0.5, 100));
 			b.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
@@ -208,12 +196,16 @@ public class ButtonMappingModel {
 			return b;
 		}
 
+		public String getName() {
+			return name;
+		}
+
 		public int getId() {
 			return id;
 		}
 
-		public String getName() {
-			return name;
+		public LinkedList<VirtualButton> getButton_list() {
+			return button_list;
 		}
 	}
 }

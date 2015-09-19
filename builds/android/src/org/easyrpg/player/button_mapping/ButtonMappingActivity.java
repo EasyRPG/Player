@@ -3,7 +3,7 @@ package org.easyrpg.player.button_mapping;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingModel.Layout;
+import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.easyrpg.player.Helper;
 
 import android.app.Activity;
@@ -44,8 +44,8 @@ public class ButtonMappingActivity extends Activity {
 				bList.add(new VirtualButton_Debug(this, b));
 		}
 		*/
-		Layout p = Layout.getDefaultPreset(this);
-		for(VirtualButton b : p.button_list){
+		InputLayout p = InputLayout.getDefaultPreset(this);
+		for(VirtualButton b : p.getButton_list()){
 			if(b instanceof VirtualCross)
 				bList.add(new VirtualCross_Debug(this, (VirtualCross)b));
 			else
@@ -68,7 +68,7 @@ public class ButtonMappingActivity extends Activity {
 			showSupportedButton();
 			return true;
 		case R.id.button_mapping_menu_reset:
-			bList = Layout.getDefaultPreset(this).button_list;
+			bList = InputLayout.getDefaultPreset(this).getButton_list();
 			drawButtons();
 			return true;
 		case R.id.button_mapping_menu_exit_without_saving:

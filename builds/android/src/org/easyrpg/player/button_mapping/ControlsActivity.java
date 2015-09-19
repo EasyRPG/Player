@@ -34,10 +34,10 @@ public class ControlsActivity extends Activity {
 	}
 
 	private class LayoutAdapter extends BaseAdapter {
-		LinkedList<ButtonMappingModel.Layout> layout_list;
+		LinkedList<ButtonMappingModel.InputLayout> layout_list;
 		LayoutInflater inflater;
 
-		public LayoutAdapter(LinkedList<ButtonMappingModel.Layout> layout_list) {
+		public LayoutAdapter(LinkedList<ButtonMappingModel.InputLayout> layout_list) {
 			this.layout_list = layout_list;
 			inflater = getLayoutInflater();
 		}
@@ -79,7 +79,7 @@ public class ControlsActivity extends Activity {
 			}
 
 			//Get and configure the proper layout
-			ButtonMappingModel.Layout game_layout = (ButtonMappingModel.Layout)getItem(position);
+			ButtonMappingModel.InputLayout game_layout = (ButtonMappingModel.InputLayout)getItem(position);
 			if (game_layout != null) {
 				holder.name.setText(game_layout.getName());
 			}
