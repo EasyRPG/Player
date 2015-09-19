@@ -29,6 +29,7 @@ import java.util.LinkedList;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
+import org.easyrpg.player.button_mapping.ControlsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -96,8 +97,8 @@ public class GameBrowserActivity extends Activity {
 		case R.id.game_browser_refresh:
 			displayGameList();
 			return true;
-		case R.id.game_browser_menu_change_mapping:
-			Intent intent = new Intent(this, ButtonMappingActivity.class);
+		case R.id.game_browser_controls_settings:
+			Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ControlsActivity.class);
 		    startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:

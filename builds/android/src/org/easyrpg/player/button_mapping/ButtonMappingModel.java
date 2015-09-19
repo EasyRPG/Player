@@ -18,17 +18,19 @@ import android.view.KeyEvent;
 
 public class ButtonMappingModel {
 	public static final int NUM_VERSION = 1;
-	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets",
-			FILE_NAME = "button_mapping.txt";
+	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets", DEFAULT_NAME = "default",
+			TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons", TAG_KEYCODE = "keycode", TAG_X = "x",
+			TAG_Y = "y", TAG_SIZE = "size";
+	public static final String FILE_NAME = "button_mapping.txt";
 
-	public LinkedList<Preset> presets_list;
+	public LinkedList<Layout> layout_list;
 
 	public ButtonMappingModel() {
-		presets_list = new LinkedList<Preset>();
+		layout_list = new LinkedList<Layout>();
 	}
 
-	public void add(Preset p) {
-		presets_list.add(p);
+	public void add(Layout p) {
+		layout_list.add(p);
 	}
 
 	public JSONObject serialize() {
@@ -36,7 +38,7 @@ public class ButtonMappingModel {
 
 		try {
 			JSONArray presets = new JSONArray();
-			for (Preset p : this.presets_list) {
+			for (Layout p : this.layout_list) {
 				presets.put(p.serialize());
 			}
 
@@ -52,7 +54,7 @@ public class ButtonMappingModel {
 
 	public static ButtonMappingModel getDefaultButtonMappingModel(Context context) {
 		ButtonMappingModel m = new ButtonMappingModel();
-		m.add(Preset.getDefaultPreset(context));
+		m.add(Layout.getDefaultPreset(context));
 		return m;
 	}
 
@@ -73,30 +75,33 @@ public class ButtonMappingModel {
 			// Parse the JSON
 			jso = new JSONObject(file);
 		} catch (Exception e) {
-			m.add(Preset.getDefaultPreset(context));
+			m.add(Layout.getDefaultPreset(context));
 			return m;
 		}
 
 		// Presets' extraction
-		JSONArray presets;
-		ButtonMappingModel bmm = new ButtonMappingModel();
+		JSONArray layout_array;
 		try {
-			presets = jso.getJSONArray("presets");
-			JSONArray p;
-			for (int i = 0; i < presets.length(); i++) {
-				p = (JSONArray) presets.get(i);
+			layout_array = jso.getJSONArray("presets");
+			JSONObject p;
+			for (int i = 0; i < layout_array.length(); i++) {
+				p = (JSONObject) layout_array.get(i);
+				m.add(Layout.deserialize(context, p));
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return m;
 	}
 
-	public static ButtonMappingModel readDefaultButtonMappingFile(Context context) {
+	public static ButtonMappingModel getButtonMapping(Context context) {
 		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
 		return readButtonMappingFile(context, button_mapping_path);
+	}
+
+	public LinkedList<Layout> getLayout_list() {
+		return layout_list;
 	}
 
 	public static void writeButtonMappingFile(ButtonMappingModel m) {
@@ -119,22 +124,19 @@ public class ButtonMappingModel {
 
 	}
 
-	public static class Preset {
-		public static final String DEFAULT_NAME = "default", TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons",
-				TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
-
+	public static class Layout {
 		public LinkedList<VirtualButton> button_list = new LinkedList<VirtualButton>();
 		String name;
 		int id;
 
-		public Preset() {
+		public Layout() {
 		}
 
-		public Preset(String name) {
+		public Layout(String name) {
 			this.name = name;
 		}
 
-		public Preset(String name, int id) {
+		public Layout(String name, int id) {
 			this(name);
 			this.id = id;
 		}
@@ -169,15 +171,15 @@ public class ButtonMappingModel {
 			return preset;
 		}
 
-		public Preset deserialize(Context context, JSONObject jso) {
-			Preset preset = new Preset();
+		public static Layout deserialize(Context context, JSONObject jso) {
+			Layout preset = new Layout();
 			try {
 				String name = jso.getString(TAG_NAME);
 				int id = jso.getInt(TAG_ID);
-				
+
 				JSONArray button_list = new JSONArray();
-				for(int i = 0; i < button_list.length(); i++){
-					JSONObject b = (JSONObject)button_list.get(i);
+				for (int i = 0; i < button_list.length(); i++) {
+					JSONObject b = (JSONObject) button_list.get(i);
 					int keyCode = b.getInt(TAG_KEYCODE), size = b.getInt(TAG_SIZE);
 					double posX = b.getDouble(TAG_X), posY = b.getDouble(TAG_Y);
 					if (keyCode == VirtualButton.DPAD) {
@@ -186,24 +188,32 @@ public class ButtonMappingModel {
 						preset.add(new VirtualButton(context, keyCode, posX, posY, size));
 					}
 				}
-				
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return preset;
 		}
 
 		/** Return the default button mapping preset : one cross, two buttons */
-		public static Preset getDefaultPreset(Context context) {
-			Preset b = new Preset(DEFAULT_NAME);
+		public static Layout getDefaultPreset(Context context) {
+			Layout b = new Layout(DEFAULT_NAME);
 
 			b.add(new VirtualCross(context, 0.0, 0.5, 100));
 			b.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
 			b.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
 
 			return b;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public String getName() {
+			return name;
 		}
 	}
 }

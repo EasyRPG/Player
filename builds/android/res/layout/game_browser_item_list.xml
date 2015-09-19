@@ -20,5 +20,4 @@
 		android:layout_centerVertical="true"
 		android:layout_alignParentRight="true"
 		style="?android:attr/borderlessButtonStyle" />
-	/>
 </RelativeLayout>

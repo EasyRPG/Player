@@ -11,8 +11,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class VirtualCross extends VirtualButton {
-	public static final int KeyCode = -1; //A fake keycode for distinguish from Virtual Button
-	
 	private Rect boundLeft, boundRight, boundUp, boundDown;
 	private int key_pressed;
 	private Path path = new Path(); // For the drawing
@@ -153,5 +151,4 @@ public class VirtualCross extends VirtualButton {
 				this.getBottom() + padding
 				);
 	}
-
 }

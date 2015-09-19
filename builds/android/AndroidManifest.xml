@@ -46,6 +46,9 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity
+            android:name="org.easyrpg.player.button_mapping.ControlsActivity"
+            android:label="@string/app_name"/>
+        <activity
             android:name="org.easyrpg.player.button_mapping.ButtonMappingActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
