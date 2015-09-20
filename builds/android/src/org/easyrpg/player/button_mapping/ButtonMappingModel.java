@@ -16,12 +16,13 @@ import android.os.Environment;
 import android.util.Log;
 
 public class ButtonMappingModel {
-	public LinkedList<InputLayout> layout_list;
+	private LinkedList<InputLayout> layout_list;
+	private int id_default_layout;
 
 	public static final int NUM_VERSION = 1;
-	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets", DEFAULT_NAME = "default",
-			TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons", TAG_KEYCODE = "keycode", TAG_X = "x",
-			TAG_Y = "y", TAG_SIZE = "size";
+	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets", TAG_DEFAULT_LAYOUT = "default",
+			DEFAULT_NAME = "RPG Maker 2000", TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons",
+			TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
 	public static final String FILE_NAME = "button_mapping.txt";
 
 	public ButtonMappingModel() {
@@ -30,6 +31,20 @@ public class ButtonMappingModel {
 
 	public void add(InputLayout p) {
 		layout_list.add(p);
+		
+		//Set the default layout, if there is no
+		if(layout_list.size() == 1){
+			setDefaultLayout(p.getId());
+		}
+	}
+	
+	public void delete(InputLayout p){
+		layout_list.remove(p);
+	}
+	
+	public void setDefaultLayout(int id){
+		//TODO : Verify if the id is in the input layout's list
+		this.id_default_layout = id;
 	}
 
 	public JSONObject serialize() {
@@ -42,6 +57,7 @@ public class ButtonMappingModel {
 			}
 
 			o.put(TAG_VERSION, NUM_VERSION);
+			o.put(TAG_DEFAULT_LAYOUT, id_default_layout);
 			o.put(TAG_PRESETS, presets);
 		} catch (JSONException e) {
 			Log.e("Button Maping Model", "Impossible to serialize the button mapping model");
@@ -83,6 +99,9 @@ public class ButtonMappingModel {
 				p = (JSONObject) layout_array.get(i);
 				m.add(InputLayout.deserialize(context, p));
 			}
+			
+			// Default layout
+			m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
 
 			return m;
 		} catch (JSONException e) {
@@ -111,6 +130,15 @@ public class ButtonMappingModel {
 
 	}
 
+	public InputLayout getLayoutById(Context context, int id){
+		for(InputLayout i : layout_list){
+			if(i.getId() == id)
+				return i;
+		}
+		
+		return InputLayout.getDefaultInputLayout(context);
+	}
+	
 	public LinkedList<InputLayout> getLayout_list() {
 		return layout_list;
 	}
@@ -122,7 +150,9 @@ public class ButtonMappingModel {
 
 		public InputLayout(String name) {
 			this.name = name;
-			//TODO : Deal with the random id generation
+			// TODO : Verify that id hasn't been already taken (yeah, 0,00000001
+			// probability)
+			this.id = (int) (Math.random() * 100000000);
 		}
 
 		public InputLayout(String name, int id) {
@@ -153,7 +183,7 @@ public class ButtonMappingModel {
 					layout_array.put(jso);
 				}
 				preset.put(TAG_BUTTONS, layout_array);
-				
+
 				return preset;
 			} catch (JSONException e) {
 				Log.e("Button Mapping File", "Error while serializing an input layout : " + e.getLocalizedMessage());
@@ -190,7 +220,7 @@ public class ButtonMappingModel {
 
 		/** Return the default button mapping preset : one cross, two buttons */
 		public static InputLayout getDefaultInputLayout(Context context) {
-			InputLayout b = new InputLayout(DEFAULT_NAME);
+			InputLayout b = new InputLayout(DEFAULT_NAME, 0);
 			b.setButton_list(getDefaultButtonList(context));
 			return b;
 		}
@@ -203,9 +233,13 @@ public class ButtonMappingModel {
 
 			return l;
 		}
-		
+
 		public String getName() {
 			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
 		}
 
 		public int getId() {

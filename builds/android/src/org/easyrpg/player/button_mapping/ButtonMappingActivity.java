@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,33 +24,39 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class ButtonMappingActivity extends Activity {
+	ViewGroup layoutManager;
 	LinkedList<VirtualButton> bList;
-	ViewGroup layout;
+	ButtonMappingModel mapping_model;
+	InputLayout input_layout;
+	
+	public static final String TAG_ID = "id";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.button_mapping_activity);
-
-		layout = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 		
-		//Get the button list and convert it in debug buttons
+		layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
+
+		//Retrive the InputLayout to work with
+		Intent intent = getIntent();
+		int id = intent.getIntExtra(TAG_ID, 0);
+		mapping_model = ButtonMappingModel.getButtonMapping(this);
+		input_layout = mapping_model.getLayoutById(this, id);
+		
+		//We does a copy of the input_layout's button list
 		bList = new LinkedList<VirtualButton>();
-		/*
-		ButtonMappingModel tmp = ButtonMappingModel.readDefaultButtonMappingFile(this);
-		for(VirtualButton b : tmp.get){
-			if(b instanceof VirtualCross)
-				bList.add(new VirtualCross_Debug(this, (VirtualCross)b));
-			else
-				bList.add(new VirtualButton_Debug(this, b));
-		}
-		*/
-		InputLayout p = InputLayout.getDefaultInputLayout(this);
-		for(VirtualButton b : p.getButton_list()){
-			if(b instanceof VirtualCross)
-				bList.add(new VirtualCross_Debug(this, (VirtualCross)b));
-			else
-				bList.add(new VirtualButton_Debug(this, b));
+		for(VirtualButton b : input_layout.getButton_list()){
+			if(b instanceof VirtualCross){
+				VirtualCross v = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
+				v.setDebug_mode(true);
+				bList.add(v);
+			}
+			else{
+				VirtualButton vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
+				vb.setDebug_mode(true);
+				bList.add(vb);
+			}
 		}
 		drawButtons();
 	}
@@ -75,7 +82,7 @@ public class ButtonMappingActivity extends Activity {
 			this.finish();
 			return true;
 		case R.id.button_mapping_menu_save_and_quit:
-			ButtonMappingModel.writeButtonMappingFile(ButtonMappingModel.getDefaultButtonMappingModel(this));;
+			save();
 			this.finish();
 			return true;
 		default:
@@ -106,6 +113,20 @@ public class ButtonMappingActivity extends Activity {
 	    } else {
 	        super.openOptionsMenu();
 	    }
+	}
+	
+	public void save(){
+		//Copy the button from bList to the InputLayout
+		input_layout.getButton_list().clear();
+		for(VirtualButton b : bList){
+			if(b instanceof VirtualCross)
+				input_layout.getButton_list().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
+			else
+				input_layout.getButton_list().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
+		}
+		
+		//Save the ButtonMappingModel
+		ButtonMappingModel.writeButtonMappingFile(mapping_model);
 	}
 	
 	public void showSupportedButton(){
@@ -174,7 +195,9 @@ public class ButtonMappingActivity extends Activity {
 		}
 		
 		if(keyCode != -1){
-			bList.add(new VirtualButton_Debug(this, keyCode, charButton));
+			VirtualButton vb = new VirtualButton(this, keyCode, 0.5, 0.5, 100);
+			vb.setDebug_mode(true);
+			bList.add(vb);
 			drawButtons();
 		}else{
 			Toast.makeText(getApplicationContext(), "Button not supported on this API", Toast.LENGTH_SHORT).show();
@@ -185,11 +208,11 @@ public class ButtonMappingActivity extends Activity {
 	 * Draws all buttons.
 	 */
 	private void drawButtons() {
-		layout.removeAllViews();
+		layoutManager.removeAllViews();
 		Log.i("Player", bList.size() + " boutons");
 		for (VirtualButton b : bList) {
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
-			layout.addView(b);
+			layoutManager.addView(b);
 		}
 	}
 
@@ -218,6 +241,7 @@ public class ButtonMappingActivity extends Activity {
 		}
 	}
 
+	/*
 	class VirtualButton_Debug extends VirtualButton {
 		float x, y; // Relative position on screen (between 0 and 1)
 
@@ -247,4 +271,5 @@ public class ButtonMappingActivity extends Activity {
 			return true;
 		}
 	}
+	*/
 }
