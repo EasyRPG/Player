@@ -2,6 +2,7 @@ package org.easyrpg.player;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -56,8 +57,16 @@ public class Helper {
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
-		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		
+		if (a.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			//TODO : Modify the margin to get a good orientation in PORTRAIT 
+			// Idea -> Use the half bottom of the screen 
+			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		} else {
+			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		}
 		view.setLayoutParams(params);
 	}
 

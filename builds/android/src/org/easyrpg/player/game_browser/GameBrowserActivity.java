@@ -96,7 +96,7 @@ public class GameBrowserActivity extends Activity {
 			displayGameList();
 			return true;
 		case R.id.game_browser_controls_settings:
-			Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ControlsActivity.class);
+			Intent intent = new Intent(this, org.easyrpg.player.PreferencesActivity.class);
 		    startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:

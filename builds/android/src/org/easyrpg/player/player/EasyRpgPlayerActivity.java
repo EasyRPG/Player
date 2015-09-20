@@ -30,6 +30,8 @@ import java.util.List;
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -50,7 +52,7 @@ import android.widget.RelativeLayout;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	private List<VirtualButton> buttonList;
+	InputLayout input_layout;
 	private boolean uiVisible = true;
 
 	@Override
@@ -67,7 +69,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mLayout.addView(mSurface);
 
-		//TODO : Read a file, extract the good preset
+		//Open the proper input_layout
+		ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(this);
+		//TODO : select the proper layout
+		input_layout = bmm.getLayoutById(this, bmm.getId_default_layout());
 		drawButtons();
 	}
 
@@ -88,7 +93,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return true;
 		case R.id.toggle_ui:
 			if (uiVisible) {
-				for(VirtualButton v : buttonList){
+				for(VirtualButton v : input_layout.getButton_list()){
 					mLayout.removeView(v);
 				}
 			} else {
@@ -226,7 +231,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * Draws all buttons.
 	 */
 	private void drawButtons() {
-		for(VirtualButton b : buttonList){
+		for(VirtualButton b : input_layout.getButton_list()){
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			mLayout.addView(b);
 		}

@@ -41,11 +41,6 @@ public class ButtonMappingModel {
 	public void delete(InputLayout p){
 		layout_list.remove(p);
 	}
-	
-	public void setDefaultLayout(int id){
-		//TODO : Verify if the id is in the input layout's list
-		this.id_default_layout = id;
-	}
 
 	public JSONObject serialize() {
 		JSONObject o = new JSONObject();
@@ -137,6 +132,15 @@ public class ButtonMappingModel {
 		}
 		
 		return InputLayout.getDefaultInputLayout(context);
+	}
+	
+	public void setDefaultLayout(int id){
+		//TODO : Verify if the id is in the input layout's list
+		this.id_default_layout = id;
+	}
+
+	public int getId_default_layout() {
+		return id_default_layout;
 	}
 	
 	public LinkedList<InputLayout> getLayout_list() {

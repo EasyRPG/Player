@@ -209,7 +209,6 @@ public class ButtonMappingActivity extends Activity {
 	 */
 	private void drawButtons() {
 		layoutManager.removeAllViews();
-		Log.i("Player", bList.size() + " boutons");
 		for (VirtualButton b : bList) {
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			layoutManager.addView(b);
@@ -240,36 +239,14 @@ public class ButtonMappingActivity extends Activity {
 			return;
 		}
 	}
+	
+	/** Called after a screen orientation changement */
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
 
-	/*
-	class VirtualButton_Debug extends VirtualButton {
-		float x, y; // Relative position on screen (between 0 and 1)
-
-		public VirtualButton_Debug(Context context, int keyCode, char charButton){
-			super(context, keyCode, 0.5, 0.5, 100);
-		}
-		
-		public VirtualButton_Debug(Context context, VirtualButton b){
-			super(context, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
-		}
-		
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
-			ButtonMappingActivity.dragVirtualButton(this, event);
-			return true;
-		}
+	    // We draw the button again to match the positions
+	    // TODO : Change the size of button ?
+	    drawButtons();
 	}
-
-	class VirtualCross_Debug extends VirtualCross {
-		public VirtualCross_Debug(Context context, VirtualCross b){
-			super(context, b.getPosX(), b.getPosY(), b.getSize());
-		}
-
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
-			ButtonMappingActivity.dragVirtualButton(this, event);
-			return true;
-		}
-	}
-	*/
 }

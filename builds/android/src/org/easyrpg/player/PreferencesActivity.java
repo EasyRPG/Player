@@ -1,8 +1,10 @@
-package org.easyrpg.player.button_mapping;
+package org.easyrpg.player;
 
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingActivity;
+import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
@@ -22,7 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ControlsActivity extends Activity {
+public class PreferencesActivity extends Activity {
 	ButtonMappingModel mappingModel;
 	ListView layout_list_view;
 	ListAdapter layout_list_adapter;
