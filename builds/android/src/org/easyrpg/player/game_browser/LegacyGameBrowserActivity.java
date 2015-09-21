@@ -103,8 +103,8 @@ public class LegacyGameBrowserActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.game_browser_menu_change_mapping:
-			Intent intent = new Intent(this, ButtonMappingActivity.class);
+		case R.id.game_browser_controls_settings:
+			Intent intent = new Intent(this, org.easyrpg.player.PreferencesActivity.class);
 		    startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:
