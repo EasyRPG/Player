@@ -25,13 +25,13 @@
 package org.easyrpg.player.player;
 
 import java.io.File;
-import java.util.List;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.VirtualButton;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
+import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.game_browser.ProjectInformation;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -52,6 +52,9 @@ import android.widget.RelativeLayout;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
+	public static final String TAG_PROJECT_PATH = "project_path";
+	
+	ButtonMappingModel bmm;
 	InputLayout input_layout;
 	private boolean uiVisible = true;
 
@@ -70,9 +73,15 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		mLayout.addView(mSurface);
 
 		//Open the proper input_layout
-		ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(this);
-		//TODO : select the proper layout
-		input_layout = bmm.getLayoutById(this, bmm.getId_default_layout());
+		bmm = ButtonMappingModel.getButtonMapping(this);
+		
+		//Project preferences
+		ProjectInformation project = new ProjectInformation(getProjectPath());
+		project.read_project_preferences(bmm);
+		
+		//Choose the proper inputLayout
+		input_layout = bmm.getLayoutById(this, project.id_input_layout);
+		
 		drawButtons();
 	}
 
@@ -172,7 +181,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to game
 	 */
 	public String getProjectPath() {
-		return getIntent().getStringExtra("project_path");
+		return getIntent().getStringExtra(TAG_PROJECT_PATH);
 	}
 
 	/**

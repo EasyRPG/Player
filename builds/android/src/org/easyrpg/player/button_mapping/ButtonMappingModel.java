@@ -1,12 +1,10 @@
 package org.easyrpg.player.button_mapping;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.easyrpg.player.Helper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,17 +27,32 @@ public class ButtonMappingModel {
 		layout_list = new LinkedList<InputLayout>();
 	}
 
+	/** Add an input layout, add it as the default one if the list was empty */
 	public void add(InputLayout p) {
 		layout_list.add(p);
 		
-		//Set the default layout, if there is no
+		//Set the default layout if there is no one
 		if(layout_list.size() == 1){
 			setDefaultLayout(p.getId());
 		}
 	}
 	
-	public void delete(InputLayout p){
+	/** Delete safely a layout, handle problems of empty layout list or suppresion of default layout */ 
+	public void delete(Context context, InputLayout p){
+		int id_p = p.id;
+		
+		//Remove p
 		layout_list.remove(p);
+		
+		//If p was the last layout : add the default layout
+		if(layout_list.size() <= 0){
+			add(InputLayout.getDefaultInputLayout(context));
+		}
+		
+		//If p was the default layout : the first layout is the new default layout
+		if(id_p == id_default_layout){
+			id_default_layout = layout_list.getFirst().getId();
+		}
 	}
 
 	public JSONObject serialize() {
@@ -72,20 +85,25 @@ public class ButtonMappingModel {
 		return readButtonMappingFile(context, button_mapping_path);
 	}
 
+	public String[] getLayoutsNames(Context context){
+		//Create the layout array
+		String[] layout_name_array = new String[this.layout_list.size()];
+		for(int i = 0; i < layout_name_array.length; i++){
+			layout_name_array[i] = this.layout_list.get(i).getName();
+		}
+		return layout_name_array;
+	}
+	
 	public static ButtonMappingModel readButtonMappingFile(Context context, String path) {
 		ButtonMappingModel m = new ButtonMappingModel();
 
-		String file = new String(), tmp;
 		try {
-			// Read the file
-			BufferedReader bf = new BufferedReader(new FileReader(new File(path)));
-			while ((tmp = bf.readLine()) != null) {
-				file += tmp;
-			}
-			bf.close();
-
 			// Parse the JSON
-			JSONObject jso = new JSONObject(file);
+			JSONObject jso = Helper.readJSONFile(path);
+			if(jso == null){
+				Log.i("Button Mapping Model", "No " + path + " file, loading the default Button Mapping System");
+				return getDefaultButtonMappingModel(context);
+			}
 
 			// Presets' extraction
 			JSONArray layout_array = jso.getJSONArray("presets");
@@ -96,13 +114,12 @@ public class ButtonMappingModel {
 			}
 			
 			// Default layout
+			//TODO : Verify that this default layout exists in the list
 			m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
 
 			return m;
 		} catch (JSONException e) {
 			Log.e("Button Mapping Model", "Error parsing de JSO file, loading the default one");
-		} catch (IOException e) {
-			Log.e("Button Mapping Model", "Error reading the button mapping file, loading the default one");
 		}
 
 		return getDefaultButtonMappingModel(context);
@@ -126,12 +143,14 @@ public class ButtonMappingModel {
 	}
 
 	public InputLayout getLayoutById(Context context, int id){
+		//The layout exist : return it
 		for(InputLayout i : layout_list){
 			if(i.getId() == id)
 				return i;
 		}
 		
-		return InputLayout.getDefaultInputLayout(context);
+		//The layout doesn't exist : return the default one
+		return getLayoutById(context, id_default_layout);
 	}
 	
 	public void setDefaultLayout(int id){
@@ -154,7 +173,7 @@ public class ButtonMappingModel {
 
 		public InputLayout(String name) {
 			this.name = name;
-			// TODO : Verify that id hasn't been already taken (yeah, 0,00000001
+			// TODO : Verify that id hasn't been already taken (yeah, 0,00000001%
 			// probability)
 			this.id = (int) (Math.random() * 100000000);
 		}
@@ -190,7 +209,7 @@ public class ButtonMappingModel {
 
 				return preset;
 			} catch (JSONException e) {
-				Log.e("Button Mapping File", "Error while serializing an input layout : " + e.getLocalizedMessage());
+				Log.e("Button Mapping File", "Error while serializing an input layout : " + e.getMessage());
 			}
 
 			return null;
@@ -216,7 +235,7 @@ public class ButtonMappingModel {
 
 				return layout;
 			} catch (JSONException e) {
-				Log.e("Button Mapping File", "Error while deserializing an input layout : " + e.getLocalizedMessage());
+				Log.e("Button Mapping File", "Error while deserializing an input layout : " + e.getMessage());
 			}
 
 			return null;

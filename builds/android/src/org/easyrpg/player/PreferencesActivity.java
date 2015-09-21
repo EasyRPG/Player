@@ -27,7 +27,7 @@ import android.widget.Toast;
 public class PreferencesActivity extends Activity {
 	ButtonMappingModel mappingModel;
 	ListView layout_list_view;
-	ListAdapter layout_list_adapter;
+	LayoutAdapter layout_list_adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class PreferencesActivity extends Activity {
 	}
 	
 	public void refreshAndSaveLayoutList(){
-		layout_list_view.invalidate();
+		layout_list_adapter.notifyDataSetChanged();
 		ButtonMappingModel.writeButtonMappingFile(mappingModel);
 	}
 	
@@ -143,7 +143,7 @@ public class PreferencesActivity extends Activity {
 
 	public void delete_layout(final ButtonMappingModel.InputLayout game_layout){
 		//TODO : Ask confirmation
-		mappingModel.delete(game_layout);
+		mappingModel.delete(this, game_layout);
 		refreshAndSaveLayoutList();
 	}
 	
@@ -207,7 +207,7 @@ public class PreferencesActivity extends Activity {
 			}
 			return convertView;
 		}
-
+		
 	}
 
 	static class ViewHolder {

@@ -3,14 +3,21 @@ package org.easyrpg.player.game_browser;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameListAdapter extends BaseAdapter {
 	Context context;
@@ -36,12 +43,32 @@ public class GameListAdapter extends BaseAdapter {
 		TextView titleView = (TextView)convertView.findViewById(R.id.game_browser_thumbnail_title);
 		titleView.setText(game.getTitle());
 		
-		// Region button
-		ImageButton regionButton = (ImageButton)convertView.findViewById(R.id.game_browser_thumbnail_region_button);
-		regionButton.setOnClickListener(new View.OnClickListener() {
+		// Option button
+		ImageButton optionButton = (ImageButton)convertView.findViewById(R.id.game_browser_thumbnail_option_button);
+		optionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 		    public void onClick(View v) {
-		    	GameBrowserHelper.regionButton(context, project_list.get(position));
+				String[] choices_list = { context.getResources().getString(R.string.select_game_region), "Change the layout"};
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder
+					.setTitle("Preferences")
+					.setItems(choices_list, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								GameBrowserHelper.regionButton(context, project_list.get(position));
+								break;
+							case 1:
+								chooseLayout(context, project_list.get(position));
+								break;
+							default:
+								break;
+							}
+						}
+					});
+				builder.show();
 		    }
 		});
 		
@@ -68,5 +95,22 @@ public class GameListAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return position;
+	}
+	
+	public void chooseLayout(Context context, final ProjectInformation pi){
+		final ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(context);
+		String[] layout_name_array = bmm.getLayoutsNames(context);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder
+			.setTitle("Choose a layout")
+			.setItems(layout_name_array, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					pi.setId_input_layout(bmm.getLayout_list().get(which).getId());
+					pi.write_project_preferences();
+				}
+			});
+		builder.show();
 	}
 }

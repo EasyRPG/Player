@@ -13,7 +13,7 @@
 		android:layout_alignParentLeft="true" />
     
     <ImageButton
-        android:id="@+id/game_browser_thumbnail_region_button"
+        android:id="@+id/game_browser_thumbnail_option_button"
         android:src="@drawable/ic_action_action_settings" 
         
         android:layout_width="wrap_content" 

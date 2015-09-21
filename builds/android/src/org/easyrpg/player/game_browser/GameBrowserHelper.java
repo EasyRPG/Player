@@ -130,7 +130,7 @@ public class GameBrowserHelper {
 		if (GameBrowserHelper.isRpg2kGame(new File(path))) {
 			Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
 			// Path of game passed to PlayerActivity via intent "project_path"
-			intent.putExtra("project_path", path);
+			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			context.startActivity(intent);
 		} else {
 			String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
