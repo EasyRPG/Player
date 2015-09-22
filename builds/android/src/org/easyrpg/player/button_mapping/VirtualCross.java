@@ -1,6 +1,7 @@
 package org.easyrpg.player.button_mapping;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.UserSettingActivity;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -94,6 +95,10 @@ public class VirtualCross extends VirtualButton {
 			}
 			if (keyCode != -1) {
 				sendSDLDownMessage(keyCode);
+				
+				if(UserSettingActivity.VIBRATION){
+					vibrator.vibrate(UserSettingActivity.VIBRATION_DURATION);
+				}
 			}
 			key_pressed = keyCode;
 			isPressed = true;

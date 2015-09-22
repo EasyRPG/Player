@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Preferences keys, do not translate -->
+    <string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
+    
+    <!-- Game Browser -->
     <string name="app_name">EasyRPG Player</string>
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
@@ -56,7 +60,11 @@ Special features:\n
 \tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
 	</string>
 	
-	<!-- Preferences' activity -->
+	<!-- Settings -->
+	<string name="settings">Settings</string>
+	<string name="enable_vibration">Enable vibrations</string>
+	
+	<!-- InputLayout Managing activity -->
 	<string name="manage_input_layouts">Manage Input Layouts</string>
 	<string name="add_an_input_layout">Add an Input Layout</string>
 	<string name="set_as_default">Set as default</string>

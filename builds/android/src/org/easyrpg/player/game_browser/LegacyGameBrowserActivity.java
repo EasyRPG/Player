@@ -94,7 +94,7 @@ public class LegacyGameBrowserActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.legacy_game_browser, menu);
+		inflater.inflate(R.menu.game_browser, menu);
 		return true;
 	}
 	
@@ -102,9 +102,16 @@ public class LegacyGameBrowserActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.game_browser_controls_settings:
-			Intent intent = new Intent(this, org.easyrpg.player.PreferencesActivity.class);
-		    startActivity(intent);
+		case R.id.game_browser_refresh:
+			//TODO : Refresh game list on legacy devices
+			return true;
+		case R.id.game_browser_settings:
+			Intent intent = new Intent(this, org.easyrpg.player.UserSettingActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.game_browser_manage_input_layout:
+			Intent intent2 = new Intent(this, org.easyrpg.player.button_mapping.InputLayoutManagingActivity.class);
+		    startActivity(intent2);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:
 			displayHowToUseEasyRpgDialog();

@@ -1,6 +1,7 @@
 package org.easyrpg.player.button_mapping;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.UserSettingActivity;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +23,8 @@ public class VirtualButton extends View {
 	private Rect bound;
 	protected boolean isPressed; // To know when the touch go out the button
 	protected boolean debug_mode;
+	Context context;
+	Vibrator vibrator;
 
 	public static final int DPAD = -1, ENTER = KeyEvent.KEYCODE_SPACE, CANCEL = KeyEvent.KEYCODE_B,
 			SHIFT = KeyEvent.KEYCODE_SHIFT_LEFT, KEY_0 = KeyEvent.KEYCODE_0, KEY_1 = KeyEvent.KEYCODE_1,
@@ -31,6 +35,9 @@ public class VirtualButton extends View {
 
 	public VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
 		super(context);
+		this.context = context;
+		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		
 		this.keyCode = keyCode;
 		this.posX = posX;
 		this.posY = posY;
@@ -94,6 +101,10 @@ public class VirtualButton extends View {
 				isPressed = true;
 
 				SDLActivity.onNativeKeyDown(this.keyCode);
+				//Vibration
+				if(UserSettingActivity.VIBRATION){
+					vibrator.vibrate(UserSettingActivity.VIBRATION_DURATION);
+				}
 			}
 		}
 	}

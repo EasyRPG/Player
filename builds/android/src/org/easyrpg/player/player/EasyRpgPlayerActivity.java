@@ -28,6 +28,7 @@ import java.io.File;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.easyrpg.player.UserSettingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
@@ -61,7 +62,9 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		UserSettingActivity.updateUserPreferences(getContext());
+		
+		//Hardware acceleration
 		try {
 			if (Build.VERSION.SDK_INT >= 11) {
 				// Api 11: FLAG_HARDWARE_ACCELERATED

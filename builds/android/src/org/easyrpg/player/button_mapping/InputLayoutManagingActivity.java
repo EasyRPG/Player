@@ -1,9 +1,8 @@
-package org.easyrpg.player;
+package org.easyrpg.player.button_mapping;
 
 import java.util.LinkedList;
 
-import org.easyrpg.player.button_mapping.ButtonMappingActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
@@ -11,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,11 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/** Represents Preferences' Activity, where users configure EasyRPG 
- * 	It contains :
- * 		- The InputLayout preferences 
- */
-public class PreferencesActivity extends Activity {
+/** Activity where users manage InputLayout */
+public class InputLayoutManagingActivity extends Activity {
 	
 	//ButtonMapping options
 	private ButtonMappingModel mapping_model;
@@ -36,7 +31,7 @@ public class PreferencesActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.controls_settings_activity);
+		setContentView(R.layout.input_layout_managing_activity);
 
 		// Retrieve the Button Mapping Model from the preferences' file
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
