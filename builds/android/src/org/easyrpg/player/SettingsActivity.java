@@ -23,13 +23,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /** Activity where users can change options */
 public class SettingsActivity extends Activity {
 	public static boolean	VIBRATION;
 	public static long 		VIBRATION_DURATION = 20; //ms
+	public static int		LAYOUT_TRANSPARENCY;
 	
 	//ButtonMapping options
 	private SharedPreferences pref;
@@ -50,6 +52,10 @@ public class SettingsActivity extends Activity {
 		CheckBox cb_vibration = (CheckBox)findViewById(R.id.settings_enable_vibration);
 		cb_vibration.setChecked(pref.getBoolean(getString(R.string.pref_enable_vibration), true));
 		
+		SeekBar sb_input_transparency = (SeekBar)findViewById(R.id.settings_layout_transparency);
+		configureSeekBarLayoutTransparency(sb_input_transparency);
+		sb_input_transparency.setProgress(pref.getInt(getString(R.string.pref_layout_transparency), 100));
+		
 		// Retrieve the Button Mapping Model from the preferences' file
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
 
@@ -67,6 +73,23 @@ public class SettingsActivity extends Activity {
 			editor.putBoolean(getString(R.string.pref_enable_vibration), false);
 		}
 		editor.commit();
+	}
+	
+	public void configureSeekBarLayoutTransparency(SeekBar b){
+		b.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				editor.putInt(getString(R.string.pref_layout_transparency), seekBar.getProgress());
+				editor.commit();
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+		});
 	}
 	
 	/** Update the InputLayouts' list and save the modification done by the user */
@@ -194,6 +217,7 @@ public class SettingsActivity extends Activity {
 	public static void updateUserPreferences(Context context){
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
+		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100); 
 	}
 	
 	/** The Adapter used to display the InputLayout list */ 

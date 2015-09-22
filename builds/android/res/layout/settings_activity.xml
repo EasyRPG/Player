@@ -6,18 +6,30 @@
 
     <!-- Vibration -->
     <CheckBox
+        android:id="@+id/settings_enable_vibration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/settings_enable_vibration"
-        android:text="@string/enable_vibration"
         android:onClick="checkboxEnableVibration"
-        />
+        android:text="@string/enable_vibration" />
 
-    <!-- Input Layout Managing -->
+    <!-- InputLayout transparency -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
+        android:text="@string/input_layout_transparency" />
+    
+    <SeekBar
+        android:id="@+id/settings_layout_transparency"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        />
+
+    <!-- Input Layout Managing -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/manage_input_layouts" />
 
     <ListView

@@ -25,6 +25,8 @@ public class VirtualCross extends VirtualButton {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		
 		int iconSize_33 = (int) (realSize * 0.33);
 		// Draw the cross
 		path.reset();

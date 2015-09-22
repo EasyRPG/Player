@@ -52,6 +52,8 @@ public class VirtualButton extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		
 		// Draw
 		canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
 		painter.setTextSize(Helper.getPixels(this, 55));
