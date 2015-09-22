@@ -224,7 +224,7 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 			sub_tile_id = tile_id - 96;
 			rect.x += 384;
 			rect.y += 128;
-		} else { // Invalid -> Use empty file (first one)
+		} else { // Invalid -> Use empty tile (first one)
 			rect.x = 288;
 			rect.y = 128;
 		}
