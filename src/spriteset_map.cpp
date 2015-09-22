@@ -136,6 +136,9 @@ void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	if (!Game_Map::GetChipsetName().empty()) {
 		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
 	}
+	else {
+		tilemap.SetChipset(Bitmap::Create(480, 256, Color()));
+	}
 	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
 	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 }

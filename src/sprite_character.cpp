@@ -99,7 +99,16 @@ void Sprite_Character::SetCharacter(Game_Character* new_character) {
 }
 
 void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
-	BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+	std::string chipset = Game_Map::GetChipsetName();
+
+	BitmapRef tile;
+	if (!chipset.empty()) {
+		tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+	}
+	else {
+		tile = Bitmap::Create(16, 16, Color());
+	}
+ 
 	SetBitmap(tile);
 
 	Rect r;
