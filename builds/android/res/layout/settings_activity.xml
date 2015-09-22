@@ -5,32 +5,57 @@
     android:orientation="vertical" >
 
     <!-- Vibration -->
+
     <CheckBox
         android:id="@+id/settings_enable_vibration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="checkboxEnableVibration"
-        android:text="@string/enable_vibration" />
+        android:text="@string/enable_vibration"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
 
     <!-- InputLayout transparency -->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/input_layout_transparency" />
-    
+        android:text="@string/input_layout_transparency"
+        android:textSize="20sp" 
+        android:layout_marginLeft="5dp"/>
+
     <SeekBar
         android:id="@+id/settings_layout_transparency"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:max="255"
-        />
+        android:max="255" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
 
     <!-- Input Layout Managing -->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/manage_input_layouts" />
+        android:text="@string/manage_input_layouts"
+        android:textSize="20sp"
+        android:layout_marginLeft="5dp" />
 
     <ListView
         android:id="@+id/controls_settings_layout_list"
@@ -40,7 +65,10 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:onClick="addAnInputLayout"
-        android:text="@string/add_an_input_layout" />
+        android:text="@string/add_an_input_layout"
+        android:textSize="20sp" />
 
 </LinearLayout>

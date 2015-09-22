@@ -67,7 +67,7 @@ Special features:\n
 	<string name="input_layout_transparency">Input Layout transparency :</string>
 	
 	<!-- InputLayout Managing activity -->
-	<string name="manage_input_layouts">Manage Input Layouts</string>
+	<string name="manage_input_layouts">Manage Input Layouts :</string>
 	<string name="add_an_input_layout">Add an Input Layout</string>
 	<string name="set_as_default">Set as default</string>
 	<string name="edit_name">Edit name</string>
