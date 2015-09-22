@@ -1,7 +1,7 @@
 package org.easyrpg.player.button_mapping;
 
 import org.easyrpg.player.Helper;
-import org.easyrpg.player.UserSettingActivity;
+import org.easyrpg.player.SettingsActivity;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -102,8 +102,8 @@ public class VirtualButton extends View {
 
 				SDLActivity.onNativeKeyDown(this.keyCode);
 				//Vibration
-				if(UserSettingActivity.VIBRATION){
-					vibrator.vibrate(UserSettingActivity.VIBRATION_DURATION);
+				if(SettingsActivity.VIBRATION && vibrator != null){
+					vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
 				}
 			}
 		}

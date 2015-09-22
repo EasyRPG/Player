@@ -4,9 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <!-- Vibration -->
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_enable_vibration"
+        android:text="@string/enable_vibration"
+        android:onClick="checkboxEnableVibration"
+        />
+
+    <!-- Input Layout Managing -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        
         android:text="@string/manage_input_layouts" />
 
     <ListView
@@ -14,11 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button 
-        android:text="@string/add_an_input_layout"
-         
+    <Button
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	
-    	android:onClick="addAnInputLayout"/>
+        android:layout_height="wrap_content"
+        android:onClick="addAnInputLayout"
+        android:text="@string/add_an_input_layout" />
+
 </LinearLayout>

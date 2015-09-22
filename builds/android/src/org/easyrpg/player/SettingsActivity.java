@@ -1,29 +1,39 @@
-package org.easyrpg.player.button_mapping;
+package org.easyrpg.player;
 
 import java.util.LinkedList;
 
-import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingActivity;
+import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-/** Activity where users manage InputLayout */
-public class InputLayoutManagingActivity extends Activity {
+/** Activity where users can change options */
+public class SettingsActivity extends Activity {
+	public static boolean	VIBRATION;
+	public static long 		VIBRATION_DURATION = 20; //ms
 	
 	//ButtonMapping options
+	private SharedPreferences pref;
+	private SharedPreferences.Editor editor ;
 	private ButtonMappingModel mapping_model;
 	private ListView layout_list_view;
 	private InputLayoutListAdapter layout_list_adapter;
@@ -31,8 +41,15 @@ public class InputLayoutManagingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.input_layout_managing_activity);
+		setContentView(R.layout.settings_activity);
+		
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = pref.edit();
 
+		// Retrieve configuration to set the state of checkbox's
+		CheckBox cb_vibration = (CheckBox)findViewById(R.id.settings_enable_vibration);
+		cb_vibration.setChecked(pref.getBoolean(getString(R.string.pref_enable_vibration), true));
+		
 		// Retrieve the Button Mapping Model from the preferences' file
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
 
@@ -40,6 +57,16 @@ public class InputLayoutManagingActivity extends Activity {
 		layout_list_view = (ListView) findViewById(R.id.controls_settings_layout_list);
 		layout_list_adapter = new InputLayoutListAdapter(mapping_model.getLayout_list());
 		layout_list_view.setAdapter(layout_list_adapter);
+	}
+	
+	public void checkboxEnableVibration(View v){
+		CheckBox t = (CheckBox)v;
+		if(t.isChecked()){
+			editor.putBoolean(getString(R.string.pref_enable_vibration), true);
+		}else{
+			editor.putBoolean(getString(R.string.pref_enable_vibration), false);
+		}
+		editor.commit();
 	}
 	
 	/** Update the InputLayouts' list and save the modification done by the user */
@@ -161,6 +188,12 @@ public class InputLayoutManagingActivity extends Activity {
 		//TODO : Ask confirmation
 		mapping_model.delete(this, game_layout);
 		refreshAndSaveLayoutList();
+	}
+	
+	/** Load user preferences */
+	public static void updateUserPreferences(Context context){
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
 	}
 	
 	/** The Adapter used to display the InputLayout list */ 
