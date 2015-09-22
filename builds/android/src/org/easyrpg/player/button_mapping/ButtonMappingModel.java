@@ -257,6 +257,10 @@ public class ButtonMappingModel {
 			return l;
 		}
 
+		public boolean isDefaultInputLayout(ButtonMappingModel bmm){
+			return id == bmm.getId_default_layout();
+		}
+		
 		public String getName() {
 			return name;
 		}

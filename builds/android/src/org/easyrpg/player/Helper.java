@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

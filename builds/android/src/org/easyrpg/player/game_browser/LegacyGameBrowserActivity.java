@@ -27,7 +27,6 @@ package org.easyrpg.player.game_browser;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;

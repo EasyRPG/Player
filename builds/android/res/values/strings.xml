@@ -55,6 +55,17 @@ Special features:\n
 \tTap the menu button to edit screen buttons position.\n
 \tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
 	</string>
+	
+	<!-- Preferences' activity -->
+	<string name="manage_input_layouts">Manage Input Layouts</string>
+	<string name="add_an_input_layout">Add an Input Layout</string>
+	<string name="set_as_default">Set as default</string>
+	<string name="edit_name">Edit name</string>
+	<string name="edit_layout">Edit the layout</string>
+	<string name="delete">Delete</string>
+	<string name="default_layout">Default</string>
+	
+	<!-- ButtonMapping' activity-->
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
 	<string name="exit_without_saving">Exit without saving</string>
