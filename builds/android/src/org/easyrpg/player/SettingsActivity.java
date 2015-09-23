@@ -31,6 +31,7 @@ import android.widget.TextView;
 public class SettingsActivity extends Activity {
 	public static boolean	VIBRATION;
 	public static long 		VIBRATION_DURATION = 20; //ms
+	public static boolean	VIBRATE_WHEN_SLIDING_DIRECTION;
 	public static int		LAYOUT_TRANSPARENCY;
 	
 	//ButtonMapping options
@@ -39,6 +40,9 @@ public class SettingsActivity extends Activity {
 	private ButtonMappingModel mapping_model;
 	private ListView layout_list_view;
 	private InputLayoutListAdapter layout_list_adapter;
+	
+	//GUI component
+	CheckBox cb_vibration_direction;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,9 @@ public class SettingsActivity extends Activity {
 		// Retrieve configuration to set the state of checkbox's
 		CheckBox cb_vibration = (CheckBox)findViewById(R.id.settings_enable_vibration);
 		cb_vibration.setChecked(pref.getBoolean(getString(R.string.pref_enable_vibration), true));
+		
+		cb_vibration_direction = (CheckBox)findViewById(R.id.settings_vibrate_when_slidind);
+		cb_vibration_direction.setChecked(pref.getBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false));
 		
 		SeekBar sb_input_transparency = (SeekBar)findViewById(R.id.settings_layout_transparency);
 		configureSeekBarLayoutTransparency(sb_input_transparency);
@@ -69,8 +76,20 @@ public class SettingsActivity extends Activity {
 		CheckBox t = (CheckBox)v;
 		if(t.isChecked()){
 			editor.putBoolean(getString(R.string.pref_enable_vibration), true);
+			cb_vibration_direction.setEnabled(true);
 		}else{
 			editor.putBoolean(getString(R.string.pref_enable_vibration), false);
+			cb_vibration_direction.setEnabled(false);
+		}
+		editor.commit();
+	}
+	
+	public void checkboxVibrateWhenSlidingToAnotherDirection(View v){
+		CheckBox c = (CheckBox)v;
+		if(c.isChecked()){
+			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), true);
+		}else{
+			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false);
 		}
 		editor.commit();
 	}
@@ -217,7 +236,8 @@ public class SettingsActivity extends Activity {
 	public static void updateUserPreferences(Context context){
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
-		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100); 
+		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100);
+		VIBRATE_WHEN_SLIDING_DIRECTION = sharedPref.getBoolean(context.getString(R.string.pref_vibrate_when_sliding_direction), false);
 	}
 	
 	/** The Adapter used to display the InputLayout list */ 

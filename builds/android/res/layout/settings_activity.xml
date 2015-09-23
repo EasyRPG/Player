@@ -4,26 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!-- Vibration -->
-
-    <CheckBox
-        android:id="@+id/settings_enable_vibration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="checkboxEnableVibration"
-        android:text="@string/enable_vibration"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="20sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/darker_gray" />
-
     <!-- InputLayout transparency -->
 
     <TextView
@@ -47,7 +27,37 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
+    
+    <!-- Vibration -->
 
+    <CheckBox
+        android:id="@+id/settings_enable_vibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="checkboxEnableVibration"
+        android:text="@string/enable_vibration"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        android:layout_marginLeft="5dp"/>
+    <CheckBox
+        android:id="@+id/settings_vibrate_when_slidind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="checkboxVibrateWhenSlidingToAnotherDirection"
+        android:text="@string/vibrate_when_sliding_direction"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+    
     <!-- Input Layout Managing -->
 
     <TextView

@@ -52,7 +52,9 @@ public class VirtualButton extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		if(!debug_mode){
+			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		}
 		
 		// Draw
 		canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);

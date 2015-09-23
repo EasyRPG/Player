@@ -15,6 +15,8 @@ public class VirtualCross extends VirtualButton {
 	private Rect boundLeft, boundRight, boundUp, boundDown;
 	private int key_pressed;
 	private Path path = new Path(); // For the drawing
+	
+	private boolean hasVibrate;
 
 	public VirtualCross(Context context, double posX, double posY, int size) {
 		super(context, VirtualButton.DPAD, posX, posY, size);
@@ -25,7 +27,9 @@ public class VirtualCross extends VirtualButton {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		if(!debug_mode){
+			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		}
 		
 		int iconSize_33 = (int) (realSize * 0.33);
 		// Draw the cross
@@ -98,8 +102,17 @@ public class VirtualCross extends VirtualButton {
 			if (keyCode != -1) {
 				sendSDLDownMessage(keyCode);
 				
-				if(SettingsActivity.VIBRATION && vibrator != null){
-					vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
+				//Vibration
+				if(vibrator != null && SettingsActivity.VIBRATION){
+					// 2 cases :
+					// 1) Vibration while sliding DESACTIVATE	
+					//   -> Vibrate only one time on a pressed button
+					// 2) Vibration while sliding ACTIVATED
+					//	-> Vibrate
+					if((!SettingsActivity.VIBRATE_WHEN_SLIDING_DIRECTION && !hasVibrate) || SettingsActivity.VIBRATE_WHEN_SLIDING_DIRECTION){
+						vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
+						hasVibrate = true;
+					}
 				}
 			}
 			key_pressed = keyCode;
@@ -120,6 +133,7 @@ public class VirtualCross extends VirtualButton {
 			}
 			key_pressed = -1;
 			isPressed = false;
+			hasVibrate = false;
 		}
 	}
 

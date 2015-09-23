@@ -3,6 +3,7 @@
     <!-- Preferences keys, do not translate -->
     <string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
     <string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
+    <string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
     
     <!-- Game Browser -->
     <string name="app_name">EasyRPG Player</string>
@@ -64,10 +65,11 @@ Special features:\n
 	<!-- Settings -->
 	<string name="settings">Settings</string>
 	<string name="enable_vibration">Enable vibrations</string>
-	<string name="input_layout_transparency">Input Layout transparency :</string>
+	<string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
+	<string name="input_layout_transparency">Input Layout transparency:</string>
 	
 	<!-- InputLayout Managing activity -->
-	<string name="manage_input_layouts">Manage Input Layouts :</string>
+	<string name="manage_input_layouts">Manage Input Layouts:</string>
 	<string name="add_an_input_layout">Add an Input Layout</string>
 	<string name="set_as_default">Set as default</string>
 	<string name="edit_name">Edit name</string>
