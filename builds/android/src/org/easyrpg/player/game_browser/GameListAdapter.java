@@ -1,5 +1,6 @@
 package org.easyrpg.player.game_browser;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameListAdapter extends BaseAdapter {
 	Context context;
@@ -94,20 +96,41 @@ public class GameListAdapter extends BaseAdapter {
 		return position;
 	}
 	
-	public void chooseLayout(Context context, final ProjectInformation pi){
+	public void chooseLayout(final Context context, final ProjectInformation pi){
 		final ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(context);
 		String[] layout_name_array = bmm.getLayoutsNames(context);
 		
+		//Detect default layout
+		pi.read_project_preferences(bmm);
+		int id = -1;
+		for(int i = 0; i < bmm.getLayout_list().size(); i++){
+			if(bmm.getLayout_list().get(i).getId() == pi.getId_input_layout()){
+				id = i;
+				break;
+			}
+		}
+		
+		final ArrayList<Integer> selected = new ArrayList<Integer>();
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder
-			.setTitle("Choose a layout")
-			.setItems(layout_name_array, new OnClickListener() {
+			.setTitle(R.string.choose_layout)
+			.setSingleChoiceItems(layout_name_array, id, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					pi.setId_input_layout(bmm.getLayout_list().get(which).getId());
-					pi.write_project_preferences();
+					selected.clear();
+					selected.add(Integer.valueOf(which));
 				}
-			});
+			})
+			.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					if(!selected.isEmpty()){
+						pi.setId_input_layout(bmm.getLayout_list().get(selected.get(0)).getId());
+						pi.write_project_preferences();
+					}
+				}
+			})
+			.setNegativeButton(R.string.cancel, null);
 		builder.show();
 	}
 }

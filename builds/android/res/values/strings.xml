@@ -38,6 +38,7 @@
 	<string name="not_valid_game">$PATH is not a valid game</string>
 	<string name="accessing_configuration_failed">Accessing configuration of $PATH failed.</string>
 	<string name="select_game_region">Select Game Region</string>
+	<string name="choose_layout">"Choose a layout"</string>
 	<string name="unknown_region">Unknown region</string>
 	<string name="region_modification_success">Region changed to $NAME</string>
 	<string name="region_modification_failed">Changing region failed</string>
