@@ -47,12 +47,10 @@ public class ButtonMappingActivity extends Activity {
 		for(VirtualButton b : input_layout.getButton_list()){
 			if(b instanceof VirtualCross){
 				VirtualCross v = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
-				v.setDebug_mode(true);
 				bList.add(v);
 			}
 			else{
 				VirtualButton vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
-				vb.setDebug_mode(true);
 				bList.add(vb);
 			}
 		}
@@ -208,6 +206,7 @@ public class ButtonMappingActivity extends Activity {
 	private void drawButtons() {
 		layoutManager.removeAllViews();
 		for (VirtualButton b : bList) {
+			b.setDebug_mode(true);
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			layoutManager.addView(b);
 		}

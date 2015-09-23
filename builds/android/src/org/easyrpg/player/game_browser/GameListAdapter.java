@@ -47,7 +47,7 @@ public class GameListAdapter extends BaseAdapter {
 		optionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 		    public void onClick(View v) {
-				String[] choices_list = { context.getResources().getString(R.string.select_game_region), "Change the layout"};
+				String[] choices_list = { context.getResources().getString(R.string.select_game_region), context.getString(R.string.change_the_layout)};
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder
