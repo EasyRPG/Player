@@ -137,21 +137,4 @@ public class GameBrowserHelper {
 			Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 		}
 	}
-	
-	public static void regionButton(Context context, ProjectInformation project){
-		File iniFile = GameBrowserHelper.getIniOfGame(project.getPath(), true);
-		String error_msg = context.getString(R.string.accessing_configuration_failed).replace("$PATH", project.getTitle());
-		
-		if (iniFile == null) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
-			return;
-		}
-		
-		try {
-			Dialog dialog = new RegionDialog(context, iniFile);
-			dialog.show();
-		} catch (IOException e) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
-		}
-	}
 }
