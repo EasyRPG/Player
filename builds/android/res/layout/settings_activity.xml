@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/input_layout_transparency"
         android:textSize="20sp" 
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"/>
 
     <SeekBar
         android:id="@+id/settings_layout_transparency"
@@ -70,7 +71,9 @@
     <ListView
         android:id="@+id/controls_settings_layout_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
     <Button
         android:layout_width="match_parent"
