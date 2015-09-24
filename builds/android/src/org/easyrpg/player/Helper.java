@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.easyrpg.player.button_mapping.VirtualButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,15 +68,9 @@ public class Helper {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		
-		if (a.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			//TODO : Modify the margin to get a good orientation in PORTRAIT 
-			// Idea -> Use the half bottom of the screen 
-			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
-			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
-		} else {
-			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
-			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
-		}
+		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		
 		view.setLayoutParams(params);
 	}
 
