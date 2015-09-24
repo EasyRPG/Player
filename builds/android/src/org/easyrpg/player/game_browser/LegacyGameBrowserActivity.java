@@ -27,7 +27,6 @@ package org.easyrpg.player.game_browser;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -95,7 +94,7 @@ public class LegacyGameBrowserActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.legacy_game_browser, menu);
+		inflater.inflate(R.menu.game_browser, menu);
 		return true;
 	}
 	
@@ -103,9 +102,12 @@ public class LegacyGameBrowserActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.game_browser_menu_change_mapping:
-			Intent intent = new Intent(this, ButtonMappingActivity.class);
-		    startActivity(intent);
+		case R.id.game_browser_refresh:
+			//TODO : Refresh game list on legacy devices
+			return true;
+		case R.id.game_browser_settings:
+			Intent intent = new Intent(this, org.easyrpg.player.SettingsActivity.class);
+			startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:
 			displayHowToUseEasyRpgDialog();

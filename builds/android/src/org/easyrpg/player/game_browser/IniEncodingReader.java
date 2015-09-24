@@ -53,11 +53,9 @@ public class IniEncodingReader {
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(iniFile)));
 			String line;
-			line = br.readLine();
-			while (line != null) {
+			while ((line = br.readLine()) != null) {
 				//Log.v("Ini", line);
 				lines.add(line);
-				line = br.readLine();
 			}
 		} finally {
 			if (br != null) {

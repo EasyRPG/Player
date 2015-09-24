@@ -1,12 +1,22 @@
 package org.easyrpg.player;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -56,8 +66,16 @@ public class Helper {
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
-		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		
+		if (a.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			//TODO : Modify the margin to get a good orientation in PORTRAIT 
+			// Idea -> Use the half bottom of the screen 
+			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		} else {
+			params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
+			params.topMargin = Helper.getPixels(a, screenHeightDp * y);
+		}
 		view.setLayoutParams(params);
 	}
 
@@ -97,5 +115,27 @@ public class Helper {
 	
 	public static void showWrongAPIVersion(Context context){
 		Toast.makeText(context, "Not avaible on this API", Toast.LENGTH_SHORT).show();
+	}
+	
+	public static JSONObject readJSONFile(String path){
+		String file = new String(), tmp;
+		try {
+			// Read the file
+			BufferedReader bf = new BufferedReader(new FileReader(new File(path)));
+			while ((tmp = bf.readLine()) != null) {
+				file += tmp;
+			}
+			bf.close();
+
+			// Parse the JSON
+			JSONObject jso = new JSONObject(file);
+			return jso;
+		} catch (JSONException e) {
+			Log.e("JSO reading", "Error parsing the JSO file " + path + "\n" + e.getMessage());
+		} catch (IOException e) {
+			Log.e("JSO reading", "Error reading the file "+ path + "\n" + e.getMessage());
+		}
+		
+		return null;
 	}
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Preferences keys, do not translate -->
+    <string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
+    <string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
+    <string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
+    
+    <!-- Game Browser -->
     <string name="app_name">EasyRPG Player</string>
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
@@ -32,8 +38,10 @@
 	<string name="not_valid_game">$PATH is not a valid game</string>
 	<string name="accessing_configuration_failed">Accessing configuration of $PATH failed.</string>
 	<string name="select_game_region">Select Game Region</string>
+	<string name="change_the_layout">"Change the layout"</string>
+	<string name="choose_layout">"Choose a layout"</string>
 	<string name="unknown_region">Unknown region</string>
-	<string name="region_modification_success">Region changed to $NAME</string>
+	<string name="region_modification_success">Region changed with success</string>
 	<string name="region_modification_failed">Changing region failed</string>
 	<string name="refresh">Refresh</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
@@ -55,6 +63,23 @@ Special features:\n
 \tTap the menu button to edit screen buttons position.\n
 \tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
 	</string>
+	
+	<!-- Settings -->
+	<string name="settings">Settings</string>
+	<string name="enable_vibration">Enable vibrations</string>
+	<string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
+	<string name="input_layout_transparency">Input Layout transparency:</string>
+	
+	<!-- InputLayout Managing activity -->
+	<string name="manage_input_layouts">Manage Input Layouts:</string>
+	<string name="add_an_input_layout">Add an Input Layout</string>
+	<string name="set_as_default">Set as default</string>
+	<string name="edit_name">Edit name</string>
+	<string name="edit_layout">Edit the layout</string>
+	<string name="delete">Delete</string>
+	<string name="default_layout">Default</string>
+	
+	<!-- ButtonMapping' activity-->
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
 	<string name="exit_without_saving">Exit without saving</string>

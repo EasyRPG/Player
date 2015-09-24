@@ -33,7 +33,7 @@
 	<string name="accessing_configuration_failed">L\'accès à la configuration de $PATH a échoué.</string>
 	<string name="select_game_region">Selectionner la région du jeu</string>
 	<string name="unknown_region">Région inconnue</string>
-	<string name="region_modification_success">Région changée en $NAME</string>
+	<string name="region_modification_success">Région changée avec succès</string>
 	<string name="region_modification_failed">Le changement de la région a échoué</string>
 	<string name="change_default_mapping">Changer les boutons virtuels</string>
 	<string name="add_a_button">Ajouter un bouton</string>

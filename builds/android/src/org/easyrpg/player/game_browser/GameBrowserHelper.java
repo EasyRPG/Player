@@ -130,28 +130,11 @@ public class GameBrowserHelper {
 		if (GameBrowserHelper.isRpg2kGame(new File(path))) {
 			Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
 			// Path of game passed to PlayerActivity via intent "project_path"
-			intent.putExtra("project_path", path);
+			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			context.startActivity(intent);
 		} else {
 			String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
 			Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-		}
-	}
-	
-	public static void regionButton(Context context, ProjectInformation project){
-		File iniFile = GameBrowserHelper.getIniOfGame(project.getPath(), true);
-		String error_msg = context.getString(R.string.accessing_configuration_failed).replace("$PATH", project.getTitle());
-		
-		if (iniFile == null) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
-			return;
-		}
-		
-		try {
-			Dialog dialog = new RegionDialog(context, iniFile);
-			dialog.show();
-		} catch (IOException e) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
 		}
 	}
 }

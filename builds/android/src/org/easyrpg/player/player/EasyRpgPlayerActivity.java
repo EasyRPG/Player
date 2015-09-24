@@ -25,15 +25,14 @@
 package org.easyrpg.player.player;
 
 import java.io.File;
-import java.util.List;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.R.id;
-import org.easyrpg.player.R.menu;
-import org.easyrpg.player.R.string;
+import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.game_browser.ProjectInformation;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -44,7 +43,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,25 +53,38 @@ import android.widget.RelativeLayout;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	private List<VirtualButton> buttonList;
+	public static final String TAG_PROJECT_PATH = "project_path";
+	
+	ButtonMappingModel bmm;
+	InputLayout input_layout;
 	private boolean uiVisible = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		SettingsActivity.updateUserPreferences(getContext());
+		
+		//Hardware acceleration
 		try {
 			if (Build.VERSION.SDK_INT >= 11) {
 				// Api 11: FLAG_HARDWARE_ACCELERATED
 				getWindow().setFlags(0x01000000, 0x01000000);
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) { }
 
 		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mLayout.addView(mSurface);
 
-		buttonList = ButtonMappingModel.readDefaultButtonMappingFile(this);
+		//Open the proper input_layout
+		bmm = ButtonMappingModel.getButtonMapping(this);
+		
+		//Project preferences
+		ProjectInformation project = new ProjectInformation(getProjectPath());
+		project.read_project_preferences(bmm);
+		
+		//Choose the proper inputLayout
+		input_layout = bmm.getLayoutById(this, project.id_input_layout);
+		
 		drawButtons();
 	}
 
@@ -94,7 +105,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return true;
 		case R.id.toggle_ui:
 			if (uiVisible) {
-				for(VirtualButton v : buttonList){
+				for(VirtualButton v : input_layout.getButton_list()){
 					mLayout.removeView(v);
 				}
 			} else {
@@ -173,7 +184,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to game
 	 */
 	public String getProjectPath() {
-		return getIntent().getStringExtra("project_path");
+		return getIntent().getStringExtra(TAG_PROJECT_PATH);
 	}
 
 	/**
@@ -232,7 +243,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * Draws all buttons.
 	 */
 	private void drawButtons() {
-		for(VirtualButton b : buttonList){
+		for(VirtualButton b : input_layout.getButton_list()){
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			mLayout.addView(b);
 		}
