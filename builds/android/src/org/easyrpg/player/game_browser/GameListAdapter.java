@@ -244,7 +244,6 @@ public class GameListAdapter extends BaseAdapter {
 						}
 						try {
 							iniReader.save();
-							Toast.makeText(context, context.getString(R.string.region_modification_success), Toast.LENGTH_LONG).show();
 						} catch (IOException e) {
 							Toast.makeText(context, context.getString(R.string.region_modification_failed), Toast.LENGTH_LONG).show();
 						}
