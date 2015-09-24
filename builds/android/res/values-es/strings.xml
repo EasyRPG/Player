@@ -33,7 +33,7 @@
 	<string name="not_valid_game">$PATH no es un juego válido</string>
 	<string name="accessing_configuration_failed">Falló el acceso a la configuración de $PATH</string>
 	<string name="select_game_region">Seleccionar región del juego</string>
-	<string name="change_the_layout">Cambiar la distribución</string>
+	<string name="change_the_layout">Cambiar la distribución de los botones</string>
 	<string name="choose_layout">Elegir una distribución</string>
 	<string name="unknown_region">Región desconocida</string>
 	<string name="region_modification_success">Región cambiada a $NAME</string>
@@ -69,8 +69,8 @@ Características especiales:\n
 	<!-- InputLayout Managing activity -->
 	<string name="manage_input_layouts">Administrar distribuciones de botones:</string>
 	<string name="add_an_input_layout">Añadir una distribución de botones</string>
-	<string name="set_as_default">Configurar como predeterminada</string>
-	<string name="edit_name">Editar nombre</string>
+	<string name="set_as_default">Elegir como predeterminada</string>
+	<string name="edit_name">Cambiar el nombre</string>
 	<string name="edit_layout">Editar la distribución</string>
 	<string name="delete">Borrar</string>
 	<string name="default_layout">Predeterminada</string>
