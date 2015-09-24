@@ -46,7 +46,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
@@ -54,38 +56,45 @@ import android.widget.RelativeLayout;
 
 public class EasyRpgPlayerActivity extends SDLActivity {
 	public static final String TAG_PROJECT_PATH = "project_path";
-	
+
 	ButtonMappingModel bmm;
 	InputLayout input_layout;
 	private boolean uiVisible = true;
+	SurfaceView surface;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SettingsActivity.updateUserPreferences(getContext());
-		
-		//Hardware acceleration
+
+		// Hardware acceleration
 		try {
 			if (Build.VERSION.SDK_INT >= 11) {
 				// Api 11: FLAG_HARDWARE_ACCELERATED
 				getWindow().setFlags(0x01000000, 0x01000000);
 			}
-		} catch (Exception e) { }
+		} catch (Exception e) {
+		}
 
+		// Put the gamescreen
+		surface = mSurface;
 		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
-		mLayout.addView(mSurface);
+		mLayout.addView(surface);
+		udpateScreenPosition();
 
-		//Open the proper input_layout
+		// Open the proper input_layout
 		bmm = ButtonMappingModel.getButtonMapping(this);
-		
-		//Project preferences
+
+		// Project preferences
 		ProjectInformation project = new ProjectInformation(getProjectPath());
 		project.read_project_preferences(bmm);
-		
-		//Choose the proper inputLayout
+
+		// Choose the proper InputLayout
 		input_layout = bmm.getLayoutById(this, project.id_input_layout);
-		
-		drawButtons();
+
+		// Add buttons
+		addButtons();
+		updateButtonsPosition(); 
 	}
 
 	@Override
@@ -105,11 +114,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return true;
 		case R.id.toggle_ui:
 			if (uiVisible) {
-				for(VirtualButton v : input_layout.getButton_list()){
+				for (VirtualButton v : input_layout.getButton_list()) {
 					mLayout.removeView(v);
 				}
 			} else {
-				drawButtons();
+				addButtons();
 			}
 			uiVisible = !uiVisible;
 			return true;
@@ -120,52 +129,47 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		openOptionsMenu();
 	}
 
-	/** This function prevents some Samsung's device to not show the option menu
+	/**
+	 * This function prevents some Samsung's device to not show the option menu
 	 */
 	@Override
 	public void openOptionsMenu() {
 
-	    Configuration config = getResources().getConfiguration();
+		Configuration config = getResources().getConfiguration();
 
-	    if((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) 
-	            > Configuration.SCREENLAYOUT_SIZE_LARGE) {
+		if ((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) > Configuration.SCREENLAYOUT_SIZE_LARGE) {
 
-	        int originalScreenLayout = config.screenLayout;
-	        config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
-	        super.openOptionsMenu();
-	        config.screenLayout = originalScreenLayout;
+			int originalScreenLayout = config.screenLayout;
+			config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
+			super.openOptionsMenu();
+			config.screenLayout = originalScreenLayout;
 
-	    } else {
-	        super.openOptionsMenu();
-	    }
+		} else {
+			super.openOptionsMenu();
+		}
 	}
-	
+
 	private void showEndGameDialog() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("EasyRPG Player");
 
 		// set dialog message
-		alertDialogBuilder
-				.setMessage(R.string.do_want_quit)
-				.setCancelable(false)
-				.setPositiveButton(R.string.yes,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								endGame();
-							}
-						})
-				.setNegativeButton(R.string.no,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
+		alertDialogBuilder.setMessage(R.string.do_want_quit).setCancelable(false)
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						endGame();
+					}
+				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
 
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
@@ -201,8 +205,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return s;
 		}
 
-		return Environment.getExternalStorageDirectory().getPath()
-				+ "/easyrpg/timidity";
+		return Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
 	}
 
 	/**
@@ -211,8 +214,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to the RTP
 	 */
 	public String getRtpPath() {
-		String str = Environment.getExternalStorageDirectory().getPath()
-				+ "/easyrpg/rtp";
+		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/rtp";
 		// Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}
@@ -242,10 +244,69 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	/**
 	 * Draws all buttons.
 	 */
-	private void drawButtons() {
-		for(VirtualButton b : input_layout.getButton_list()){
+	private void addButtons() {
+		// Adding the buttons
+		for (VirtualButton b : input_layout.getButton_list()) {
+			// Define the position according to the screen position
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
-			mLayout.addView(b);
+
+			// We add it, if it's not the case already
+			if (b.getParent() != mLayout) {
+				mLayout.addView(b);
+			}
 		}
+	}
+
+	public void updateButtonsPosition() {
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+
+		int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+
+		for (VirtualButton b : input_layout.getButton_list()) {
+			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
+
+			// We have to adjust the position in portrait configuration
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				params = (RelativeLayout.LayoutParams) b.getLayoutParams();
+				// vertical : use approximatively the second part of the screen
+				params.topMargin += (int) (screenHeight / 6);
+				// horizontal : use a little gap to avoid button to be out of
+				// the screen for button to the right
+				if (b.getPosX() > 0.5) {
+					params.leftMargin -= screenWidth / 8;
+				}
+
+				b.setLayoutParams(params);
+			}
+
+			// We add it, if it's not the case already
+			if (b.getParent() != mLayout) {
+				mLayout.addView(b);
+			}
+		}
+	}
+
+	public void udpateScreenPosition() {
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		params.leftMargin = 0;
+
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			params.topMargin = -(getWindowManager().getDefaultDisplay().getHeight() / 2);
+		} else {
+			params.topMargin = 0;
+		}
+		surface.setLayoutParams(params);
+	}
+
+	/** Called after a screen orientation changement */
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		udpateScreenPosition();
+		updateButtonsPosition();
 	}
 }
