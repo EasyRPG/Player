@@ -116,6 +116,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 				for (VirtualButton v : input_layout.getButton_list()) {
 					mLayout.removeView(v);
 				}
+				updateButtonsPosition();
 			} else {
 				addButtons();
 			}
