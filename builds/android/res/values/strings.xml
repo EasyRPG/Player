@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Preferences keys, do not translate -->
-    <string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
-    <string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
-    <string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
-    <string name="pref_ignore_size_settings">PREF_IGNORE_SIZE_SETTINGS</string>
-    <string name="pref_size_every_buttons">PREF_SIZE_EVERY_BUTTONS</string>
-    
-    <!-- Game Browser -->
-    <string name="app_name">EasyRPG Player</string>
+	<!-- Preferences keys, do not translate -->
+	<string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
+	<string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
+	<string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
+	<string name="pref_ignore_size_settings">PREF_IGNORE_SIZE_SETTINGS</string>
+	<string name="pref_size_every_buttons">PREF_SIZE_EVERY_BUTTONS</string>
+
+	<!-- Game Browser -->
+	<string name="app_name">EasyRPG Player</string>
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
 	<string name="end_game">End Game</string>
@@ -40,14 +40,14 @@
 	<string name="not_valid_game">$PATH is not a valid game</string>
 	<string name="accessing_configuration_failed">Accessing configuration of $PATH failed.</string>
 	<string name="select_game_region">Select Game Region</string>
-	<string name="change_the_layout">"Change the layout"</string>
-	<string name="choose_layout">"Choose a layout"</string>
+	<string name="change_the_layout">Change the layout</string>
+	<string name="choose_layout">Choose a layout</string>
 	<string name="unknown_region">Unknown region</string>
 	<string name="region_modification_success">Region changed with success</string>
 	<string name="region_modification_failed">Changing region failed</string>
 	<string name="refresh">Refresh</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
-	<string name="how_to_use_easy_rpg">How to use EasyRPG</string>
+	<string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
 	<string name="how_to_use_easy_rpg_explanation">
 Installation instructions:\n
 \t1. Place game folders in /easyrpg/games folder in the storage root of the device.\n
@@ -65,7 +65,7 @@ Special features:\n
 \tTap the menu button to edit screen buttons position.\n
 \tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
 	</string>
-	
+
 	<!-- Settings -->
 	<string name="settings">Settings</string>
 	<string name="enable_vibration">Enable vibrations</string>
@@ -81,7 +81,7 @@ Special features:\n
 	<string name="edit_layout">Edit the layout</string>
 	<string name="delete">Delete</string>
 	<string name="default_layout">Default</string>
-	
+
 	<!-- ButtonMapping' activity-->
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
