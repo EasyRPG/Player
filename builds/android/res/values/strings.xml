@@ -43,7 +43,6 @@
 	<string name="change_the_layout">Change the layout</string>
 	<string name="choose_layout">Choose a layout</string>
 	<string name="unknown_region">Unknown region</string>
-	<string name="region_modification_success">Region changed with success</string>
 	<string name="region_modification_failed">Changing region failed</string>
 	<string name="refresh">Refresh</string>
 	<string name="change_default_mapping">Change the default button mapping</string>
