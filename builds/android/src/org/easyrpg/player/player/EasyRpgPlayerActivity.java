@@ -243,9 +243,23 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * Draws all buttons.
 	 */
 	private void drawButtons() {
+		//Adding the buttons
 		for(VirtualButton b : input_layout.getButton_list()){
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
-			mLayout.addView(b);
+			//We add it, if it's not the case already
+			if(b.getParent() != mLayout){
+				mLayout.addView(b);
+			}
 		}
+	}
+	
+	/** Called after a screen orientation changement */
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+
+	    // We draw the button again to match the positions
+	    // TODO : Change the size of button ?
+	    drawButtons();
 	}
 }
