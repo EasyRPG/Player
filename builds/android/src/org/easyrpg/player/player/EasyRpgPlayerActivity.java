@@ -94,7 +94,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
 		// Add buttons
 		addButtons();
-		updateButtonsPosition(); 
 	}
 
 	@Override
@@ -255,6 +254,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 				mLayout.addView(b);
 			}
 		}
+		updateButtonsPosition();
 	}
 
 	public void updateButtonsPosition() {
@@ -279,11 +279,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 				}
 
 				b.setLayoutParams(params);
-			}
-
-			// We add it, if it's not the case already
-			if (b.getParent() != mLayout) {
-				mLayout.addView(b);
 			}
 		}
 	}
