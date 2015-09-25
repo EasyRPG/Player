@@ -1,10 +1,12 @@
 package org.easyrpg.player;
 
 import java.util.LinkedList;
+import java.util.zip.Inflater;
 
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
+import org.easyrpg.player.game_browser.ProjectInformation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,7 +24,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -38,8 +41,7 @@ public class SettingsActivity extends Activity {
 	private SharedPreferences pref;
 	private SharedPreferences.Editor editor ;
 	private ButtonMappingModel mapping_model;
-	private ListView layout_list_view;
-	private InputLayoutListAdapter layout_list_adapter;
+	private LinearLayout layout_settings;
 	
 	//GUI component
 	CheckBox cb_vibration_direction;
@@ -67,9 +69,25 @@ public class SettingsActivity extends Activity {
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
 
 		// Configure the InputLayouts list
-		layout_list_view = (ListView) findViewById(R.id.controls_settings_layout_list);
-		layout_list_adapter = new InputLayoutListAdapter(mapping_model.getLayout_list());
-		layout_list_view.setAdapter(layout_list_adapter);
+		layout_settings = (LinearLayout) findViewById(R.id.controls_settings_layout_list);
+		updateSettingsList();
+	}
+	
+	public void configureSeekBarLayoutTransparency(SeekBar b){
+		b.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				editor.putInt(getString(R.string.pref_layout_transparency), seekBar.getProgress());
+				editor.commit();
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+		});
 	}
 	
 	public void checkboxEnableVibration(View v){
@@ -94,31 +112,22 @@ public class SettingsActivity extends Activity {
 		editor.commit();
 	}
 	
-	public void configureSeekBarLayoutTransparency(SeekBar b){
-		b.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				editor.putInt(getString(R.string.pref_layout_transparency), seekBar.getProgress());
-				editor.commit();
-			}
-			
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {}
-			
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
-		});
-	}
-	
 	/** Update the InputLayouts' list and save the modification done by the user */
 	public void refreshAndSaveLayoutList(){
-		layout_list_adapter.notifyDataSetChanged();
+		updateSettingsList();
 		ButtonMappingModel.writeButtonMappingFile(mapping_model);
 	}
 	
+	public void updateSettingsList(){
+		layout_settings.removeAllViews();
+		for(InputLayout i : mapping_model.getLayout_list()){
+			InputLayoutItemListView view = new InputLayoutItemListView(this, i);
+			layout_settings.addView(view.layout);
+		}
+	}
+	
 	/** Open a dialog box to add an InputLayout */
-	public void addAnInputLayout(View view) {
+	public void addAnInputLayout(View v) {
 		final EditText input = new EditText(this);
 		//TODO : Restrict the edit text to alpha numeric characters
 
@@ -240,88 +249,40 @@ public class SettingsActivity extends Activity {
 		VIBRATE_WHEN_SLIDING_DIRECTION = sharedPref.getBoolean(context.getString(R.string.pref_vibrate_when_sliding_direction), false);
 	}
 	
-	/** The Adapter used to display the InputLayout list */ 
-	private class InputLayoutListAdapter extends BaseAdapter {
-		private LinkedList<InputLayout> layout_list;
-		private LayoutInflater inflater;
-
-		public InputLayoutListAdapter(LinkedList<InputLayout> layout_list) {
-			this.layout_list = layout_list;
-			this.inflater = getLayoutInflater();
+	private class InputLayoutItemListView{
+		public InputLayout input_layout;
+		private Context context;
+		private RelativeLayout layout;
+		private ImageButton settings_button;
+		
+		public InputLayoutItemListView(Context context, final InputLayout input_layout) {
+			this.context = context;
+			this.input_layout = input_layout;
+			
+			LayoutInflater inflater = LayoutInflater.from(context);
+			layout = (RelativeLayout)inflater.inflate(R.layout.controls_settings_item_list, null);
+			
+			//The name
+			TextView input_layout_name = (TextView)layout.findViewById(R.id.controls_settings_preset_name);
+			input_layout_name.setText(input_layout.getName());
+			
+			//Option button
+			settings_button = (ImageButton)layout.findViewById(R.id.controls_settings_preset_option_button);
+			settings_button.setOnClickListener(new OnClickListener() {  
+				@Override
+				public void onClick(View v) {
+					configureInputLayout(input_layout);
+				}
+			});
+			
+			//Edit the layout by clicking on the view
+			layout.setOnClickListener(new OnClickListener() {  
+				@Override
+				public void onClick(View v) {
+					editInputLayout(input_layout);
+				}
+			});
 		}
 		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
-
-			// If the view is new (not recycled)
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.controls_settings_item_list, null);
-				holder = new ViewHolder();
-
-				// Place widgets in holder
-				holder.name = (TextView) convertView.findViewById(R.id.controls_settings_preset_name);
-				holder.option_button = (ImageButton) convertView
-						.findViewById(R.id.controls_settings_preset_option_button);
-
-				// Put the holder in the layout as a tag
-				convertView.setTag(holder);
-			} else {
-				// Si on recycle la vue, on récupère son holder en tag
-				holder = (ViewHolder) convertView.getTag();
-			}
-
-			// Get and configure the proper layout
-			final InputLayout input_layout = (ButtonMappingModel.InputLayout) getItem(position);
-			if (input_layout != null) {
-				// The name (+ "is the default layout" indication)
-				if(input_layout.isDefaultInputLayout(mapping_model)){
-					holder.name.setText(input_layout.getName() + " (" + getString(R.string.default_layout) + ")");
-				}
-				else{
-					holder.name.setText(input_layout.getName());
-				}
-				
-				//Configuration Button
-				holder.option_button.setOnClickListener(new OnClickListener() {  
-					@Override
-					public void onClick(View v) {
-						configureInputLayout(input_layout);
-					}
-				});
-				
-				//Call the Edit Layout feature when clicking on the view
-				convertView.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						editInputLayout(input_layout);
-					}
-				});
-			}
-			return convertView;
-		}
-		
-		@Override
-		public int getCount() {
-			return layout_list.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return layout_list.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return layout_list.get(position).getId();
-		}
-	}
-
-	/** ViewHolder is used as a pattern programming for optimizations purposes */
-	static class ViewHolder {
-		public TextView name;
-		public ImageButton option_button;
-
-	}
+	}	
 }
