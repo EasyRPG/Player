@@ -24,6 +24,22 @@
             android:layout_height="wrap_content"
             android:max="255" />
 
+         <CheckBox
+            android:id="@+id/settings_ignore_layout_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:onClick="checkboxEnableIgnoreLayoutSize"
+            android:text="@string/ignore_size_settings"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <SeekBar
+            android:id="@+id/settings_layout_size"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="255" />
+        
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

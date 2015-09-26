@@ -20,11 +20,19 @@ public class VirtualCross extends VirtualButton {
 
 	public VirtualCross(Context context, double posX, double posY, int size) {
 		super(context, VirtualButton.DPAD, posX, posY, size);
-
-		// Set size
-		realSize = Helper.getPixels(this, 150); // ~1cm
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		//Base size: ~1 cm
+		realSize = Helper.getPixels(this, 150);
+		
+		//Resize
+		realSize = (int)((float)realSize * size / 100);
+		
+		setMeasuredDimension(realSize, realSize);
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if(!debug_mode){

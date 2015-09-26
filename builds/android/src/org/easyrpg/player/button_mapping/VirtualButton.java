@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,13 +42,16 @@ public class VirtualButton extends View {
 		this.keyCode = keyCode;
 		this.posX = posX;
 		this.posY = posY;
-		this.size = size;
 
 		this.charButton = getAppropriateChar(keyCode);
 
 		// Set UI properties
-		realSize = Helper.getPixels(this, 60) * (size / 100); // ~1cm
 		painter = Helper.getUIPainter();
+		if(SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS){
+			this.size = SettingsActivity.LAYOUT_SIZE;
+		}else{
+			this.size = size;
+		}
 	}
 
 	@Override
@@ -65,6 +69,12 @@ public class VirtualButton extends View {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		//Base size: ~1 cm
+		realSize = Helper.getPixels(this, 60);
+		
+		//Resize
+		realSize = (int)((float)realSize * size / 100);
+		
 		setMeasuredDimension(realSize, realSize);
 	}
 
