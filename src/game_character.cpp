@@ -144,8 +144,8 @@ bool Game_Character::IsMessageBlocking() const {
 }
 
 void Game_Character::MoveTo(int x, int y) {
-	SetX(x % Game_Map::GetWidth());
-	SetY(y % Game_Map::GetHeight());
+	SetX(Game_Map::RoundX(x));
+	SetY(Game_Map::RoundY(y));
 }
 
 int Game_Character::GetScreenX() const {
