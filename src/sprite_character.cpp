@@ -108,7 +108,7 @@ void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
 	else {
 		tile = Bitmap::Create(16, 16, Color());
 	}
- 
+
 	SetBitmap(tile);
 
 	Rect r;
