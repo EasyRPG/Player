@@ -42,6 +42,7 @@ public class SettingsActivity extends Activity {
 	// GUI component
 	CheckBox cb_vibration_direction, cb_ignore_layout_size;
 	SeekBar sb_layout_size_buttons, sb_input_transparency;
+	TextView tv_layout_transparency, tv_layout_button_size;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +103,12 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				tv_layout_transparency.setText((sb_input_transparency.getProgress() * 100 / 255) +"%");
 			}
 		});
+
+		tv_layout_transparency = (TextView) findViewById(R.id.settings_layout_transparency_text_view);
+		tv_layout_transparency.setText(sb_input_transparency.getProgress() +"%");
 	}
 
 	public void checkboxEnableIgnoreLayoutSize(View v) {
@@ -138,8 +143,12 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				tv_layout_button_size.setText(sb_layout_size_buttons.getProgress() + "%");
 			}
 		});
+		
+		tv_layout_button_size = (TextView) findViewById(R.id.settings_input_size_text_view);
+		tv_layout_button_size.setText(sb_layout_size_buttons.getProgress() +"%");
 	}
 
 	public void checkboxEnableVibration(View v) {
@@ -288,7 +297,7 @@ public class SettingsActivity extends Activity {
 		public InputLayoutItemListView(Context context, final InputLayout input_layout) {
 
 			LayoutInflater inflater = LayoutInflater.from(context);
-			layout = (RelativeLayout) inflater.inflate(R.layout.controls_settings_item_list, null);
+			layout = (RelativeLayout) inflater.inflate(R.layout.settings_input_layout_item_list, null);
 
 			// The name
 			TextView input_layout_name = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
