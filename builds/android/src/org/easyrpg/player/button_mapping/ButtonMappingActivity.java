@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
@@ -33,6 +34,7 @@ public class ButtonMappingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.button_mapping_activity);
+		SettingsActivity.updateUserPreferences(this);
 		
 		layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 

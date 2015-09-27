@@ -20,16 +20,9 @@ public class VirtualCross extends VirtualButton {
 
 	public VirtualCross(Context context, double posX, double posY, int size) {
 		super(context, VirtualButton.DPAD, posX, posY, size);
-	}
 
-	@Override
-	public int getFuturSize() {
 		// Base size: ~1 cm
-		realSize = Helper.getPixels(this, 150);
-
-		// Resize
-		realSize = (int) ((float) realSize * size / 100);
-		return realSize;
+		originalSize = Helper.getPixels(this, 150);
 	}
 	
 	@Override

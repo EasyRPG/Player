@@ -18,10 +18,10 @@ import android.view.View;
 public class VirtualButton extends View {
 	private int keyCode;
 	protected double posX, posY; // Relative position on the screen
-	protected int realSize, size;
+	protected int originalSize, resizeFactor, realSize;
 	private char charButton; // The char displayed on the button
 	protected Paint painter;
-	private Rect bound;
+	private Rect bound, letterBound = new Rect();
 	protected boolean isPressed; // To know when the touch go out the button
 	protected boolean debug_mode;
 	Context context;
@@ -47,10 +47,15 @@ public class VirtualButton extends View {
 
 		// Set UI properties
 		painter = Helper.getUIPainter();
+
+		// Base size: ~1 cm
+		originalSize = Helper.getPixels(this, 60);
+
+		// Retrieve the size factor
 		if (SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS) {
-			this.size = SettingsActivity.LAYOUT_SIZE;
+			this.resizeFactor = SettingsActivity.LAYOUT_SIZE;
 		} else {
-			this.size = size;
+			this.resizeFactor = size;
 		}
 	}
 
@@ -61,19 +66,23 @@ public class VirtualButton extends View {
 		}
 
 		// Draw
+		// The circle
 		canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
-		painter.setTextSize(Helper.getPixels(this, 55));
-		painter.setTextAlign(Align.CENTER);
-		canvas.drawText("" + charButton, realSize / 2, realSize / 5 * 4, painter);
+
+		// The letter
+		// Anticipate the size of the letter
+		painter.setTextSize(Helper.getPixels(this, (int) (55f * ((float) resizeFactor / 100))));
+		painter.getTextBounds("" + charButton, 0, 1, letterBound);
+
+		// Draw the letter, centered in the circle
+		canvas.drawText("" + charButton, (realSize - letterBound.width()) / 2,
+				letterBound.height() + (realSize - letterBound.height()) / 2, painter);
 	}
 
 	public int getFuturSize() {
-		// Base size: ~1 cm
-		realSize = Helper.getPixels(this, 60);
-
 		// Resize
-		realSize = (int) ((float) realSize * size / 100);
-		
+		realSize = (int) ((float) originalSize * resizeFactor / 100);
+
 		return realSize;
 	}
 
@@ -210,11 +219,11 @@ public class VirtualButton extends View {
 	}
 
 	public int getSize() {
-		return size;
+		return resizeFactor;
 	}
 
 	public void setSize(int size) {
-		this.size = size;
+		this.resizeFactor = size;
 	}
 
 	public void setDebug_mode(boolean debug_mode) {
