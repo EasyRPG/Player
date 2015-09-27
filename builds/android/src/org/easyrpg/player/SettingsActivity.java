@@ -116,6 +116,7 @@ public class SettingsActivity extends Activity {
 
 		editor.putBoolean(getString(R.string.pref_ignore_size_settings), t.isChecked());
 		sb_layout_size_buttons.setEnabled(t.isChecked());
+		tv_layout_button_size.setEnabled(cb_ignore_layout_size.isChecked());
 
 		editor.commit();
 	}
@@ -149,6 +150,7 @@ public class SettingsActivity extends Activity {
 		
 		tv_layout_button_size = (TextView) findViewById(R.id.settings_input_size_text_view);
 		tv_layout_button_size.setText(sb_layout_size_buttons.getProgress() +"%");
+		tv_layout_button_size.setEnabled(cb_ignore_layout_size.isChecked());
 	}
 
 	public void checkboxEnableVibration(View v) {
