@@ -28,7 +28,7 @@ public class VirtualCross extends VirtualButton {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if(!debug_mode){
-			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+			painter.setAlpha(255 - SettingsActivity.LAYOUT_TRANSPARENCY);
 		}
 		
 		int iconSize_33 = (int) (realSize * 0.33);

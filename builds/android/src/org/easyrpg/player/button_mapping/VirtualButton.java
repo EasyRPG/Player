@@ -18,7 +18,7 @@ import android.view.View;
 public class VirtualButton extends View {
 	private int keyCode;
 	protected double posX, posY; // Relative position on the screen
-	protected int originalSize, resizeFactor, realSize;
+	protected int originalSize, originalLetterSize, resizeFactor, realSize;
 	private char charButton; // The char displayed on the button
 	protected Paint painter;
 	private Rect bound, letterBound = new Rect();
@@ -50,6 +50,7 @@ public class VirtualButton extends View {
 
 		// Base size: ~1 cm
 		originalSize = Helper.getPixels(this, 60);
+		originalLetterSize = Helper.getPixels(this, 25);
 
 		// Retrieve the size factor
 		if (SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS) {
@@ -62,7 +63,7 @@ public class VirtualButton extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (!debug_mode) {
-			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+			painter.setAlpha(255 - SettingsActivity.LAYOUT_TRANSPARENCY);
 		}
 
 		// Draw
@@ -71,7 +72,7 @@ public class VirtualButton extends View {
 
 		// The letter
 		// Anticipate the size of the letter
-		painter.setTextSize(Helper.getPixels(this, (int) (55f * ((float) resizeFactor / 100))));
+		painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
 		painter.getTextBounds("" + charButton, 0, 1, letterBound);
 
 		// Draw the letter, centered in the circle
@@ -81,7 +82,7 @@ public class VirtualButton extends View {
 
 	public int getFuturSize() {
 		// Resize
-		realSize = (int) ((float) originalSize * resizeFactor / 100);
+		realSize = (int) ((float) originalSize * resizeFactor / 100); 
 
 		return realSize;
 	}
