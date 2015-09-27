@@ -23,14 +23,13 @@ public class VirtualCross extends VirtualButton {
 	}
 
 	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		//Base size: ~1 cm
+	public int getFuturSize() {
+		// Base size: ~1 cm
 		realSize = Helper.getPixels(this, 150);
-		
-		//Resize
-		realSize = (int)((float)realSize * size / 100);
-		
-		setMeasuredDimension(realSize, realSize);
+
+		// Resize
+		realSize = (int) ((float) realSize * size / 100);
+		return realSize;
 	}
 	
 	@Override

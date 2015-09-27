@@ -38,7 +38,7 @@ public class VirtualButton extends View {
 		super(context);
 		this.context = context;
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-		
+
 		this.keyCode = keyCode;
 		this.posX = posX;
 		this.posY = posY;
@@ -47,19 +47,19 @@ public class VirtualButton extends View {
 
 		// Set UI properties
 		painter = Helper.getUIPainter();
-		if(SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS){
+		if (SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS) {
 			this.size = SettingsActivity.LAYOUT_SIZE;
-		}else{
+		} else {
 			this.size = size;
 		}
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if(!debug_mode){
+		if (!debug_mode) {
 			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
 		}
-		
+
 		// Draw
 		canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
 		painter.setTextSize(Helper.getPixels(this, 55));
@@ -67,15 +67,21 @@ public class VirtualButton extends View {
 		canvas.drawText("" + charButton, realSize / 2, realSize / 5 * 4, painter);
 	}
 
+	public int getFuturSize() {
+		// Base size: ~1 cm
+		realSize = Helper.getPixels(this, 60);
+
+		// Resize
+		realSize = (int) ((float) realSize * size / 100);
+		
+		return realSize;
+	}
+
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		//Base size: ~1 cm
-		realSize = Helper.getPixels(this, 60);
-		
-		//Resize
-		realSize = (int)((float)realSize * size / 100);
-		
-		setMeasuredDimension(realSize, realSize);
+		int s = getFuturSize();
+
+		setMeasuredDimension(s, s);
 	}
 
 	@Override
@@ -115,8 +121,8 @@ public class VirtualButton extends View {
 				isPressed = true;
 
 				SDLActivity.onNativeKeyDown(this.keyCode);
-				//Vibration
-				if(SettingsActivity.VIBRATION && vibrator != null){
+				// Vibration
+				if (SettingsActivity.VIBRATION && vibrator != null) {
 					vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
 				}
 			}
