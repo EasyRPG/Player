@@ -293,6 +293,9 @@ public class SettingsActivity extends Activity {
 			// The name
 			TextView input_layout_name = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
 			input_layout_name.setText(input_layout.getName());
+			if(input_layout.isDefaultInputLayout(mapping_model)){
+				input_layout_name.setText(input_layout_name.getText() + " (" + getString(R.string.default_layout) + ")");
+			}
 
 			// Option button
 			settings_button = (ImageButton) layout.findViewById(R.id.controls_settings_preset_option_button);
