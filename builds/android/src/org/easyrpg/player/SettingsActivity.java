@@ -108,7 +108,7 @@ public class SettingsActivity extends Activity {
 		});
 
 		tv_layout_transparency = (TextView) findViewById(R.id.settings_layout_transparency_text_view);
-		tv_layout_transparency.setText(sb_input_transparency.getProgress() +"%");
+		tv_layout_transparency.setText((sb_input_transparency.getProgress() * 100 / 255) +"%");
 	}
 
 	public void checkboxEnableIgnoreLayoutSize(View v) {
