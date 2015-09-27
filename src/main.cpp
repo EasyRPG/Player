@@ -20,6 +20,10 @@
 #include "input.h"
 #include <cstdlib>
 
+#ifdef USE_SDL
+#  include <SDL.h>
+#endif
+
 extern "C" int main(int argc, char* argv[]) {
 	Player::Init(argc, argv);
 	Graphics::Init();
