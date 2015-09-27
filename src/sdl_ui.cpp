@@ -643,7 +643,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 }
 
 void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
-#ifdef PAUSE_GAME_WHEN_FOCUS_LOST
+#if PAUSE_GAME_WHEN_FOCUS_LOST
 	int state;
 #if SDL_MAJOR_VERSION==1
 	state = evnt.active.state;

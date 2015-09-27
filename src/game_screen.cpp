@@ -84,8 +84,6 @@ void Game_Screen::Reset()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
-
-	StopWeather();
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
