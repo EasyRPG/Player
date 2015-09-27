@@ -225,7 +225,7 @@ public class ButtonMappingActivity extends Activity {
 					/ v.getResources().getDisplayMetrics().widthPixels;
 			y = (v.getTop() + event.getY() - v.getHeight() / 2)
 					/ v.getResources().getDisplayMetrics().heightPixels;
-
+			
 			Helper.setLayoutPosition((Activity) v.getContext(), v, x, y);
 			
 			v.setPosX(x);

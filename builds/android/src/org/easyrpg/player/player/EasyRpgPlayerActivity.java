@@ -247,7 +247,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	private void addButtons() {
 		// Adding the buttons
-		for (VirtualButton b : input_layout.getButton_list()) {			
+		for (VirtualButton b : input_layout.getButton_list()) {
 			// We add it, if it's not the case already
 			if (b.getParent() != mLayout) {
 				mLayout.addView(b);
@@ -279,12 +279,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
 				b.setLayoutParams(params);
 			}
-			
-			//Centrate button
-			RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams)b.getLayoutParams();
-			param.topMargin = param.topMargin - (b.getFuturSize()/2);
-			param.leftMargin = param.leftMargin - (b.getFuturSize()/2);
-			b.setLayoutParams(param);
 		}
 	}
 

@@ -40,8 +40,8 @@ public class SettingsActivity extends Activity {
 	private LinearLayout layout_settings;
 
 	// GUI component
-	CheckBox cb_vibration_direction;
-	SeekBar sb_layout_size_buttons;
+	CheckBox cb_vibration_direction, cb_ignore_layout_size;
+	SeekBar sb_layout_size_buttons, sb_input_transparency;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +51,20 @@ public class SettingsActivity extends Activity {
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = pref.edit();
 
-		// Retrieve configuration to set the state of checkbox's
-		SeekBar sb_input_transparency = (SeekBar) findViewById(R.id.settings_layout_transparency);
-		configureSeekBarLayoutTransparency(sb_input_transparency);
-		sb_input_transparency.setProgress(pref.getInt(getString(R.string.pref_layout_transparency), 100));
+		// Retrieve configuration to set the state of component
+		configureSeekBarLayoutTransparency();
+		configureSeekBarLayoutSize();
 
-		CheckBox cb_ignore_layout_size = (CheckBox) findViewById(R.id.settings_ignore_layout_size);
-		cb_ignore_layout_size.setChecked(pref.getBoolean(getString(R.string.pref_ignore_size_settings), false));
-
-		sb_layout_size_buttons = (SeekBar) findViewById(R.id.settings_layout_size);
-		configureSeekBarLayoutSize(sb_layout_size_buttons);
-		sb_layout_size_buttons.setProgress(pref.getInt(getString(R.string.pref_size_every_buttons), 100));
-
+		// Vibration
 		CheckBox cb_vibration = (CheckBox) findViewById(R.id.settings_enable_vibration);
 		cb_vibration.setChecked(pref.getBoolean(getString(R.string.pref_enable_vibration), true));
 
 		cb_vibration_direction = (CheckBox) findViewById(R.id.settings_vibrate_when_slidind);
 		cb_vibration_direction
 				.setChecked(pref.getBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false));
+		cb_vibration_direction.setEnabled(cb_vibration.isChecked());
 
+		// ButtonMapping system
 		// Retrieve the Button Mapping Model from the preferences' file
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
 
@@ -78,8 +73,22 @@ public class SettingsActivity extends Activity {
 		updateSettingsList();
 	}
 
-	public void configureSeekBarLayoutTransparency(SeekBar b) {
-		b.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+	/** Load user preferences */
+	public static void updateUserPreferences(Context context) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
+		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100);
+		VIBRATE_WHEN_SLIDING_DIRECTION = sharedPref
+				.getBoolean(context.getString(R.string.pref_vibrate_when_sliding_direction), false);
+		IGNORE_LAYOUT_SIZE_SETTINGS = sharedPref.getBoolean(context.getString(R.string.pref_ignore_size_settings),
+				false);
+		LAYOUT_SIZE = sharedPref.getInt(context.getString(R.string.pref_size_every_buttons), 100);
+	}
+
+	public void configureSeekBarLayoutTransparency() {
+		sb_input_transparency = (SeekBar) findViewById(R.id.settings_layout_transparency);
+		sb_input_transparency.setProgress(pref.getInt(getString(R.string.pref_layout_transparency), 100));
+		sb_input_transparency.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
@@ -106,8 +115,16 @@ public class SettingsActivity extends Activity {
 		editor.commit();
 	}
 
-	public void configureSeekBarLayoutSize(SeekBar b) {
-		b.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+	public void configureSeekBarLayoutSize() {
+		// Checkbox
+		cb_ignore_layout_size = (CheckBox) findViewById(R.id.settings_ignore_layout_size);
+		cb_ignore_layout_size.setChecked(pref.getBoolean(getString(R.string.pref_ignore_size_settings), false));
+
+		// Seekbar
+		sb_layout_size_buttons = (SeekBar) findViewById(R.id.settings_layout_size);
+		sb_layout_size_buttons.setProgress(pref.getInt(getString(R.string.pref_size_every_buttons), 100));
+		sb_layout_size_buttons.setEnabled(cb_ignore_layout_size.isChecked());
+		sb_layout_size_buttons.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
@@ -136,11 +153,12 @@ public class SettingsActivity extends Activity {
 
 	public void checkboxVibrateWhenSlidingToAnotherDirection(View v) {
 		CheckBox c = (CheckBox) v;
-		if (c.isChecked()) {
+
+		if (c.isChecked())
 			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), true);
-		} else {
+		else
 			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false);
-		}
+
 		editor.commit();
 	}
 
@@ -261,18 +279,6 @@ public class SettingsActivity extends Activity {
 		// TODO : Ask confirmation
 		mapping_model.delete(this, game_layout);
 		refreshAndSaveLayoutList();
-	}
-
-	/** Load user preferences */
-	public static void updateUserPreferences(Context context) {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
-		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100);
-		VIBRATE_WHEN_SLIDING_DIRECTION = sharedPref
-				.getBoolean(context.getString(R.string.pref_vibrate_when_sliding_direction), false);
-		IGNORE_LAYOUT_SIZE_SETTINGS = sharedPref.getBoolean(context.getString(R.string.pref_ignore_size_settings),
-				false);
-		LAYOUT_SIZE = sharedPref.getInt(context.getString(R.string.pref_size_every_buttons), 100);
 	}
 
 	private class InputLayoutItemListView {
