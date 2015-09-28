@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
-import org.easyrpg.player.button_mapping.VirtualButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,16 +25,16 @@ import android.widget.Toast;
 
 public class Helper {
 	/**
-	 * Converts density independent pixel to real screen pixel. 
-	 * 160 dip = 1 inch ~ 2.5 cm
+	 * Converts density independent pixel to real screen pixel. 160 dip = 1 inch
+	 * ~ 2.5 cm
+	 * 
 	 * @param dipValue
 	 *            dip
 	 * @return pixel
 	 */
 	public static int getPixels(Resources r, double dipValue) {
 		int dValue = (int) dipValue;
-		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-				dValue, r.getDisplayMetrics());
+		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dValue, r.getDisplayMetrics());
 		return px;
 	}
 
@@ -50,6 +49,7 @@ public class Helper {
 	/**
 	 * Moves a view to a screen position. Position is from 0 to 1 and converted
 	 * to screen pixel. Alignment is top left.
+	 * 
 	 * @param view
 	 *            View to move
 	 * @param x
@@ -57,26 +57,24 @@ public class Helper {
 	 * @param y
 	 *            Y position from 0 to 1
 	 */
-	public static void setLayoutPosition(Activity a, View view, double x,
-			double y) {
+	public static void setLayoutPosition(Activity a, View view, double x, double y) {
 		DisplayMetrics displayMetrics = a.getResources().getDisplayMetrics();
-		float screenWidthDp = displayMetrics.widthPixels
-				/ displayMetrics.density;
-		float screenHeightDp = displayMetrics.heightPixels
-				/ displayMetrics.density;
+		float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
+		float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
 
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+
 		params.leftMargin = Helper.getPixels(a, screenWidthDp * x);
 		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
-		
+
 		view.setLayoutParams(params);
 	}
 
 	/**
 	 * Moves a view to a screen position. Position is from 0 to 1 and converted
 	 * to screen pixel. Alignment is top right.
+	 * 
 	 * @param view
 	 *            View to move
 	 * @param x
@@ -84,16 +82,13 @@ public class Helper {
 	 * @param y
 	 *            Y position from 0 to 1
 	 */
-	public static void setLayoutPositionRight(Activity a, View view, double x,
-			double y) {
+	public static void setLayoutPositionRight(Activity a, View view, double x, double y) {
 		DisplayMetrics displayMetrics = a.getResources().getDisplayMetrics();
-		float screenWidthDp = displayMetrics.widthPixels
-				/ displayMetrics.density;
-		float screenHeightDp = displayMetrics.heightPixels
-				/ displayMetrics.density;
+		float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
+		float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
 
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
 		params.rightMargin = Helper.getPixels(a, screenWidthDp * x);
 		params.topMargin = Helper.getPixels(a, screenHeightDp * y);
@@ -107,12 +102,24 @@ public class Helper {
 		uiPaint.setStrokeWidth((float) 3.0);
 		return uiPaint;
 	}
-	
-	public static void showWrongAPIVersion(Context context){
+
+	public static void showWrongAPIVersion(Context context) {
 		Toast.makeText(context, "Not avaible on this API", Toast.LENGTH_SHORT).show();
 	}
-	
-	public static JSONObject readJSONFile(String path){
+
+	public static JSONObject readJSON(String contentFile) {
+		try {
+			// Parse the JSON
+			JSONObject jso = new JSONObject(contentFile);
+			return jso;
+		} catch (JSONException e) {
+			Log.e("JSO reading", "Error parsing a JSO file : " + e.getMessage());
+		}
+
+		return null;
+	}
+
+	public static JSONObject readJSONFile(String path) {
 		String file = new String(), tmp;
 		try {
 			// Read the file
@@ -128,9 +135,24 @@ public class Helper {
 		} catch (JSONException e) {
 			Log.e("JSO reading", "Error parsing the JSO file " + path + "\n" + e.getMessage());
 		} catch (IOException e) {
-			Log.e("JSO reading", "Error reading the file "+ path + "\n" + e.getMessage());
+			Log.e("JSO reading", "Error reading the file " + path + "\n" + e.getMessage());
 		}
-		
+
 		return null;
+	}
+
+	public static String readInternalFileContent(Context content, String fileName) {
+		String file = new String(), tmp;
+		try {
+			// Read the file
+			BufferedReader bf = new BufferedReader(new InputStreamReader(content.openFileInput(fileName)));
+			while ((tmp = bf.readLine()) != null) {
+				file += tmp;
+			}
+			bf.close();
+		} catch (IOException e) {
+			Log.e("JSO reading", "Error reading the file " + fileName + "\n" + e.getMessage());
+		}
+		return file;
 	}
 }

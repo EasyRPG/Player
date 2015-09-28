@@ -124,7 +124,7 @@ public class ButtonMappingActivity extends Activity {
 		}
 		
 		//Save the ButtonMappingModel
-		ButtonMappingModel.writeButtonMappingFile(mapping_model);
+		ButtonMappingModel.writeButtonMappingFile(this, mapping_model);
 	}
 	
 	public void showSupportedButton(){

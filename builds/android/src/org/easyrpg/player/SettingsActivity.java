@@ -178,7 +178,7 @@ public class SettingsActivity extends Activity {
 	 */
 	public void refreshAndSaveLayoutList() {
 		updateSettingsList();
-		ButtonMappingModel.writeButtonMappingFile(mapping_model);
+		ButtonMappingModel.writeButtonMappingFile(this, mapping_model);
 	}
 
 	public void updateSettingsList() {
