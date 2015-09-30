@@ -47,6 +47,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -116,6 +117,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 				for (VirtualButton v : input_layout.getButton_list()) {
 					mLayout.removeView(v);
 				}
+				updateButtonsPosition();
 			} else {
 				addButtons();
 			}
@@ -246,9 +248,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	private void addButtons() {
 		// Adding the buttons
 		for (VirtualButton b : input_layout.getButton_list()) {
-			// Define the position according to the screen position
-			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
-
 			// We add it, if it's not the case already
 			if (b.getParent() != mLayout) {
 				mLayout.addView(b);

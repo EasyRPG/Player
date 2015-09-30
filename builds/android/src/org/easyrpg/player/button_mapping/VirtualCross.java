@@ -21,14 +21,14 @@ public class VirtualCross extends VirtualButton {
 	public VirtualCross(Context context, double posX, double posY, int size) {
 		super(context, VirtualButton.DPAD, posX, posY, size);
 
-		// Set size
-		realSize = Helper.getPixels(this, 150); // ~1cm
+		// Base size: ~1 cm
+		originalSize = Helper.getPixels(this, 150);
 	}
-
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if(!debug_mode){
-			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+			painter.setAlpha(255 - SettingsActivity.LAYOUT_TRANSPARENCY);
 		}
 		
 		int iconSize_33 = (int) (realSize * 0.33);

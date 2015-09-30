@@ -1,7 +1,10 @@
 package org.easyrpg.player.button_mapping;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 
 import org.easyrpg.player.Helper;
@@ -30,27 +33,31 @@ public class ButtonMappingModel {
 	/** Add an input layout, add it as the default one if the list was empty */
 	public void add(InputLayout p) {
 		layout_list.add(p);
-		
-		//Set the default layout if there is no one
-		if(layout_list.size() == 1){
+
+		// Set the default layout if there is no one
+		if (layout_list.size() == 1) {
 			setDefaultLayout(p.getId());
 		}
 	}
-	
-	/** Delete safely a layout, handle problems of empty layout list or suppresion of default layout */ 
-	public void delete(Context context, InputLayout p){
+
+	/**
+	 * Delete safely a layout, handle problems of empty layout list or
+	 * suppresion of default layout
+	 */
+	public void delete(Context context, InputLayout p) {
 		int id_p = p.id;
-		
-		//Remove p
+
+		// Remove p
 		layout_list.remove(p);
-		
-		//If p was the last layout : add the default layout
-		if(layout_list.size() <= 0){
+
+		// If p was the last layout : add the default layout
+		if (layout_list.size() <= 0) {
 			add(InputLayout.getDefaultInputLayout(context));
 		}
-		
-		//If p was the default layout : the first layout is the new default layout
-		if(id_p == id_default_layout){
+
+		// If p was the default layout : the first layout is the new default
+		// layout
+		if (id_p == id_default_layout) {
 			id_default_layout = layout_list.getFirst().getId();
 		}
 	}
@@ -80,28 +87,29 @@ public class ButtonMappingModel {
 		return m;
 	}
 
-	public static ButtonMappingModel getButtonMapping(Context context) {
-		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
-		return readButtonMappingFile(context, button_mapping_path);
-	}
-
-	public String[] getLayoutsNames(Context context){
-		//Create the layout array
+	public String[] getLayoutsNames(Context context) {
+		// Create the layout array
 		String[] layout_name_array = new String[this.layout_list.size()];
-		for(int i = 0; i < layout_name_array.length; i++){
+		for (int i = 0; i < layout_name_array.length; i++) {
 			layout_name_array[i] = this.layout_list.get(i).getName();
 		}
 		return layout_name_array;
 	}
+
+	public static ButtonMappingModel getButtonMapping(Context context) {
+		return readButtonMappingFile(context);
+	}
 	
-	public static ButtonMappingModel readButtonMappingFile(Context context, String path) {
+	public static ButtonMappingModel readButtonMappingFile(Context context) {
 		ButtonMappingModel m = new ButtonMappingModel();
 
 		try {
 			// Parse the JSON
-			JSONObject jso = Helper.readJSONFile(path);
-			if(jso == null){
-				Log.i("Button Mapping Model", "No " + path + " file, loading the default Button Mapping System");
+			String text = Helper.readInternalFileContent(context, FILE_NAME);
+			JSONObject jso = Helper.readJSON(text);
+
+			if (jso == null) {
+				Log.i("Button Mapping Model", "No " + FILE_NAME + " file, loading the default Button Mapping System");
 				return getDefaultButtonMappingModel(context);
 			}
 
@@ -112,9 +120,9 @@ public class ButtonMappingModel {
 				p = (JSONObject) layout_array.get(i);
 				m.add(InputLayout.deserialize(context, p));
 			}
-			
+
 			// Default layout
-			//TODO : Verify that this default layout exists in the list
+			// TODO : Verify that this default layout exists in the list
 			m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
 
 			return m;
@@ -125,15 +133,16 @@ public class ButtonMappingModel {
 		return getDefaultButtonMappingModel(context);
 	}
 
-	public static void writeButtonMappingFile(ButtonMappingModel m) {
-		String button_mapping_path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/" + FILE_NAME;
-
+	public static void writeButtonMappingFile(Context context, ButtonMappingModel m) {
 		try {
-			FileWriter file = new FileWriter(button_mapping_path);
+			// FileWriter file = new FileWriter(button_mapping_path);
+			FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+			BufferedWriter file = new BufferedWriter(new OutputStreamWriter(fos));
 			JSONObject obj = m.serialize();
 			file.write(obj.toString(2));
 			file.flush();
 			file.close();
+			Log.i("Button Mapping Model", "File writed with success");
 		} catch (IOException e) {
 			Log.e("Button Mapping Model", "Error writting the button mapping file");
 		} catch (JSONException e) {
@@ -142,26 +151,26 @@ public class ButtonMappingModel {
 
 	}
 
-	public InputLayout getLayoutById(Context context, int id){
-		//The layout exist : return it
-		for(InputLayout i : layout_list){
-			if(i.getId() == id)
+	public InputLayout getLayoutById(Context context, int id) {
+		// The layout exist : return it
+		for (InputLayout i : layout_list) {
+			if (i.getId() == id)
 				return i;
 		}
-		
-		//The layout doesn't exist : return the default one
+
+		// The layout doesn't exist : return the default one
 		return getLayoutById(context, id_default_layout);
 	}
-	
-	public void setDefaultLayout(int id){
-		//TODO : Verify if the id is in the input layout's list
+
+	public void setDefaultLayout(int id) {
+		// TODO : Verify if the id is in the input layout's list
 		this.id_default_layout = id;
 	}
 
 	public int getId_default_layout() {
 		return id_default_layout;
 	}
-	
+
 	public LinkedList<InputLayout> getLayout_list() {
 		return layout_list;
 	}
@@ -173,7 +182,8 @@ public class ButtonMappingModel {
 
 		public InputLayout(String name) {
 			this.name = name;
-			// TODO : Verify that id hasn't been already taken (yeah, 0,00000001%
+			// TODO : Verify that id hasn't been already taken (yeah,
+			// 0,00000001%
 			// probability)
 			this.id = (int) (Math.random() * 100000000);
 		}
@@ -257,10 +267,10 @@ public class ButtonMappingModel {
 			return l;
 		}
 
-		public boolean isDefaultInputLayout(ButtonMappingModel bmm){
+		public boolean isDefaultInputLayout(ButtonMappingModel bmm) {
 			return id == bmm.getId_default_layout();
 		}
-		
+
 		public String getName() {
 			return name;
 		}

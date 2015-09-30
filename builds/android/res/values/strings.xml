@@ -4,6 +4,8 @@
     <string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
     <string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
     <string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
+    <string name="pref_ignore_size_settings">PREF_IGNORE_SIZE_SETTINGS</string>
+    <string name="pref_size_every_buttons">PREF_SIZE_EVERY_BUTTONS</string>
     
     <!-- Game Browser -->
     <string name="app_name">EasyRPG Player</string>
@@ -69,6 +71,7 @@ Special features:\n
 	<string name="enable_vibration">Enable vibrations</string>
 	<string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
 	<string name="input_layout_transparency">Input Layout transparency:</string>
+	<string name="ignore_size_settings">Ignore buttons\' size settings and use this one for every buttons:</string>
 	
 	<!-- InputLayout Managing activity -->
 	<string name="manage_input_layouts">Manage Input Layouts:</string>

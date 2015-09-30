@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +18,10 @@ import android.view.View;
 public class VirtualButton extends View {
 	private int keyCode;
 	protected double posX, posY; // Relative position on the screen
-	protected int realSize, size;
+	protected int originalSize, originalLetterSize, resizeFactor, realSize;
 	private char charButton; // The char displayed on the button
 	protected Paint painter;
-	private Rect bound;
+	private Rect bound, letterBound = new Rect();
 	protected boolean isPressed; // To know when the touch go out the button
 	protected boolean debug_mode;
 	Context context;
@@ -37,35 +38,60 @@ public class VirtualButton extends View {
 		super(context);
 		this.context = context;
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-		
+
 		this.keyCode = keyCode;
 		this.posX = posX;
 		this.posY = posY;
-		this.size = size;
 
 		this.charButton = getAppropriateChar(keyCode);
 
 		// Set UI properties
-		realSize = Helper.getPixels(this, 60) * (size / 100); // ~1cm
 		painter = Helper.getUIPainter();
+
+		// Base size: ~1 cm
+		originalSize = Helper.getPixels(this, 60);
+		originalLetterSize = Helper.getPixels(this, 25);
+
+		// Retrieve the size factor
+		if (SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS) {
+			this.resizeFactor = SettingsActivity.LAYOUT_SIZE;
+		} else {
+			this.resizeFactor = size;
+		}
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if(!debug_mode){
-			painter.setAlpha(SettingsActivity.LAYOUT_TRANSPARENCY);
+		if (!debug_mode) {
+			painter.setAlpha(255 - SettingsActivity.LAYOUT_TRANSPARENCY);
 		}
-		
+
 		// Draw
+		// The circle
 		canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
-		painter.setTextSize(Helper.getPixels(this, 55));
-		painter.setTextAlign(Align.CENTER);
-		canvas.drawText("" + charButton, realSize / 2, realSize / 5 * 4, painter);
+
+		// The letter
+		// Anticipate the size of the letter
+		painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
+		painter.getTextBounds("" + charButton, 0, 1, letterBound);
+
+		// Draw the letter, centered in the circle
+		canvas.drawText("" + charButton, (realSize - letterBound.width()) / 2,
+				letterBound.height() + (realSize - letterBound.height()) / 2, painter);
+	}
+
+	public int getFuturSize() {
+		// Resize
+		realSize = (int) ((float) originalSize * resizeFactor / 100); 
+
+		return realSize;
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(realSize, realSize);
+		int s = getFuturSize();
+
+		setMeasuredDimension(s, s);
 	}
 
 	@Override
@@ -105,8 +131,8 @@ public class VirtualButton extends View {
 				isPressed = true;
 
 				SDLActivity.onNativeKeyDown(this.keyCode);
-				//Vibration
-				if(SettingsActivity.VIBRATION && vibrator != null){
+				// Vibration
+				if (SettingsActivity.VIBRATION && vibrator != null) {
 					vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
 				}
 			}
@@ -194,11 +220,11 @@ public class VirtualButton extends View {
 	}
 
 	public int getSize() {
-		return size;
+		return resizeFactor;
 	}
 
 	public void setSize(int size) {
-		this.size = size;
+		this.resizeFactor = size;
 	}
 
 	public void setDebug_mode(boolean debug_mode) {
