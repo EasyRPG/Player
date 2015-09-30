@@ -76,6 +76,7 @@ Special features:\n
 	<string name="dir_does_not_exist">The directory %s$1 doesn\'t exist</string>
 	<string name="no_write_access_on_dir">No write access on %1$s</string>
 	<string name="no_read_access_on_dir">No read access on %1$s</string>
+	<string name="easyrpg_folder">EasyRPG folder</string>
 	
 	
 	<!-- InputLayout Managing activity -->

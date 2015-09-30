@@ -47,16 +47,21 @@ public class SettingsActivity extends Activity {
 	// GUI component
 	CheckBox cb_vibration_direction, cb_ignore_layout_size;
 	SeekBar sb_layout_size_buttons, sb_input_transparency;
-	TextView tv_layout_transparency, tv_layout_button_size;
+	TextView tv_layout_transparency, tv_layout_button_size, tv_directory;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_activity);
+		updateUserPreferences(this);
 
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = pref.edit();
 
+		//Main directory
+		tv_directory = (TextView) findViewById(R.id.settings_directory_text_view);
+		tv_directory.setText(DIRECTORY);
+		
 		// Retrieve configuration to set the state of component
 		configureSeekBarLayoutTransparency();
 		configureSeekBarLayoutSize();
@@ -114,10 +119,14 @@ public class SettingsActivity extends Activity {
 		//There is (in theory) no problem to change dir
 		//So let's create all the necessary folder in it
 		if(Helper.createEasyRPGDirectories(newDir)){
+			DIRECTORY = newDir;
 			// No problem, we can change the directory in settings
 			editor.putString(getResources().getString(R.string.pref_directory), newDir);
 			editor.commit();
 		}
+		
+		//Update 
+		tv_directory.setText(newDir);
 	}
 	
 	public void configureSeekBarLayoutTransparency() {
