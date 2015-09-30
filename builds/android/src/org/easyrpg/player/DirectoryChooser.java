@@ -9,10 +9,13 @@ import java.util.LinkedList;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ public class DirectoryChooser {
 
 		builder.setTitle("Select a directory");
 		builder.setPositiveButton("Ok", null);
+		builder.setNeutralButton("Create a directory", null);
 		builder.setView(listView);
 
 		displayItemList();
@@ -55,6 +59,16 @@ public class DirectoryChooser {
 
 						// Dismiss once everything is OK.
 						dialog.dismiss();
+					}
+				});
+
+				Button b2 = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+				b2.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						// TODO Do something
+						createDirectory();
 					}
 				});
 			}
@@ -123,7 +137,27 @@ public class DirectoryChooser {
 	}
 
 	public void createDirectory() {
-
+		final EditText et = new EditText(context);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder
+			.setTitle("Create a directory")
+			.setView(et)
+			.setPositiveButton("Ok", new OnClickListener() {			
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					File f = new File(dirListToPath(currentDirPath) + "/" +  et.getText().toString());
+					f.mkdir();
+					if(!f.exists()){
+						Toast.makeText(context, "Impossible to create the folder", Toast.LENGTH_SHORT).show();
+						return;
+					}
+					displayItemList();
+				}
+			})
+			.setCancelable(true);
+		
+		builder.show();
 	}
 
 	public void valid() {

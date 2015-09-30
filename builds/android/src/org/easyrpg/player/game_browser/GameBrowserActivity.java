@@ -109,6 +109,12 @@ public class GameBrowserActivity extends Activity {
 		}
 	}
 	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    displayGameList();
+	}
+	
 	public void displayGameList(){
 		//Scan the folder
 		SettingsActivity.updateUserPreferences(this);
