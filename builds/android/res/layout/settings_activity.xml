@@ -8,6 +8,37 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <!-- Change directory -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:onClick="changeDirectory"
+            android:text="Change the working directory"
+            android:textSize="20sp" />
+
         <!-- InputLayout transparency -->
 
         <TextView
@@ -37,7 +68,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:max="255"
-                android:progress="5"/>
+                android:progress="5" />
         </LinearLayout>
 
         <!-- InputLayout size -->
@@ -71,7 +102,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:max="300"
-                android:progress="10"/>
+                android:progress="10" />
         </LinearLayout>
 
         <View

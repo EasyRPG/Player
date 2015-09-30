@@ -206,7 +206,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return s;
 		}
 
-		return Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
+		return SettingsActivity.DIRECTORY + "/timidity"; //Shouldn't be called anymore
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to the RTP
 	 */
 	public String getRtpPath() {
-		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/rtp";
+		String str = SettingsActivity.DIRECTORY + "/rtp";
 		// Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}

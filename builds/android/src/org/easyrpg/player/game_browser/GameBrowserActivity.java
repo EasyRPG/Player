@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.SettingsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,6 +45,7 @@ import android.view.ViewConfiguration;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Game browser for EasyRPG Player
@@ -106,10 +108,11 @@ public class GameBrowserActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
 	public void displayGameList(){
 		//Scan the folder
-		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
+		SettingsActivity.updateUserPreferences(this);
+		path = SettingsActivity.DIRECTORY + "/games";
 		GameBrowserHelper.scanGame(this, path, project_list, error_list);
 		
 		// Put the result into the proper adapter
@@ -121,6 +124,8 @@ public class GameBrowserActivity extends Activity {
 			//If the game list is not empty, we use the proper adapter
 			adapter = new GameListAdapter(this, project_list);
 		}
+		
+		Log.i("Browser", error_list.size() + " jeux trouvés");
 		
 		//Set the view;
 		list_view.setAdapter(adapter);

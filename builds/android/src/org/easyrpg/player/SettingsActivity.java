@@ -1,5 +1,7 @@
 package org.easyrpg.player;
 
+import java.io.File;
+
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
@@ -11,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /** Activity where users can change options */
 public class SettingsActivity extends Activity {
@@ -32,6 +36,7 @@ public class SettingsActivity extends Activity {
 	public static int LAYOUT_TRANSPARENCY;
 	public static boolean IGNORE_LAYOUT_SIZE_SETTINGS;
 	public static int LAYOUT_SIZE;
+	public static String DIRECTORY;
 
 	// ButtonMapping options
 	private SharedPreferences pref;
@@ -84,8 +89,37 @@ public class SettingsActivity extends Activity {
 		IGNORE_LAYOUT_SIZE_SETTINGS = sharedPref.getBoolean(context.getString(R.string.pref_ignore_size_settings),
 				false);
 		LAYOUT_SIZE = sharedPref.getInt(context.getString(R.string.pref_size_every_buttons), 100);
+		DIRECTORY = sharedPref.getString(context.getString(R.string.pref_directory), Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
 	}
 
+	public void changeDirectory(View v){
+		new DirectoryChooser(this);
+	}
+	public void changeDirectory(String newDir){
+		//Verify existence and read/write access on the new folder
+		File f = new File(newDir);
+		if(!f.exists()){
+			Toast.makeText(this, getString(R.string.dir_does_not_exist, newDir), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if(!f.canRead()){
+			Toast.makeText(this, getString(R.string.no_read_access_on_dir, newDir), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if(!f.canWrite()){
+			Toast.makeText(this, getString(R.string.no_write_access_on_dir, newDir), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		//There is (in theory) no problem to change dir
+		//So let's create all the necessary folder in it
+		if(Helper.createEasyRPGDirectories(newDir)){
+			// No problem, we can change the directory in settings
+			editor.putString(getResources().getString(R.string.pref_directory), newDir);
+			editor.commit();
+		}
+	}
+	
 	public void configureSeekBarLayoutTransparency() {
 		sb_input_transparency = (SeekBar) findViewById(R.id.settings_layout_transparency);
 		sb_input_transparency.setProgress(pref.getInt(getString(R.string.pref_layout_transparency), 100));

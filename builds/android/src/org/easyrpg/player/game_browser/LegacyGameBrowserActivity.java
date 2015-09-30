@@ -27,6 +27,7 @@ package org.easyrpg.player.game_browser;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.SettingsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,7 +58,8 @@ public class LegacyGameBrowserActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		//Scan the folder
-		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
+		SettingsActivity.updateUserPreferences(this);
+		path = SettingsActivity.DIRECTORY + "/games";
 		GameBrowserHelper.scanGame(this, path, project_list, error_list);
 		
 		// Put the result into the proper adapter

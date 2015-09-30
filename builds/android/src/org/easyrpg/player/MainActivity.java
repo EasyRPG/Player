@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SettingsActivity.updateUserPreferences(this);
 		
 		prepareData();
 		
@@ -44,28 +45,8 @@ public class MainActivity extends Activity {
 			}
 		}
 		
-		// Create the easyrpg's directories
-		String path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg";
-		File dir = new File(path);
-		dir.mkdir();
-		
-		File dirGames = new File(dir, "games/");
-		dirGames.mkdir();
-		
-		File dirRtp = new File(dir, "rtp/");
-		dirRtp.mkdir();
-		File dirRtp2000 = new File(dirRtp, "2000");
-		dirRtp2000.mkdir();
-		File dirRtp2003 = new File(dirRtp, "2003");
-		dirRtp2003.mkdir();
-		
-		// The .nomedia file
-		File nomediafile = new File(dir, ".nomedia");
-		try {
-			nomediafile.createNewFile();
-		} catch (IOException e) {
-			Log.e("Create File", "Error creating .nomedia file");
-		}
+		// Create the easyrpg's directories if they don't exist
+		Helper.createEasyRPGDirectories(SettingsActivity.DIRECTORY);
 	}
 	
 	/**
