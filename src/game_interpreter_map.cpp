@@ -1488,36 +1488,31 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	// Use a function pointer to check triggered keys if it waits for input and pressed keys otherwise
 	bool (*check)(Input::InputButton) = wait ? Input::IsTriggered : Input::IsPressed;
 
-	if (Player::IsRPG2k()) {
-		if (param_size < 6) {
-			// For Rpg2k <1.50
-			bool check_dir = com.parameters[2] != 0;
-			check_down  = check_dir;
-			check_left  = check_dir;
-			check_right = check_dir;
-			check_up    = check_dir;
-		} else {
-			// For Rpg2k >=1.50
-			check_shift = com.parameters[5] != 0;
-			check_down  = param_size > 6 ? com.parameters[6] != 0 : false;
-			check_left  = param_size > 7 ? com.parameters[7] != 0 : false;
-			check_right = param_size > 8 ? com.parameters[8] != 0 : false;
-			check_up    = param_size > 9 ? com.parameters[9] != 0 : false;
-		}
+	if (param_size < 6) {
+		// For Rpg2k <1.50
+		bool check_dir = com.parameters[2] != 0;
+		check_down  = check_dir;
+		check_left  = check_dir;
+		check_right = check_dir;
+		check_up    = check_dir;
+	} else if (param_size < 11) {
+		// For Rpg2k >=1.50
+		check_shift = com.parameters[5] != 0;
+		check_down  = param_size > 6 ? com.parameters[6] != 0 : false;
+		check_left  = param_size > 7 ? com.parameters[7] != 0 : false;
+		check_right = param_size > 8 ? com.parameters[8] != 0 : false;
+		check_up    = param_size > 9 ? com.parameters[9] != 0 : false;
 	} else {
-		// Optimization: If missing -> default value
-		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
-		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
-		check_shift    = param_size > 9 ? com.parameters[9] != 0 : true;
-		check_down     = param_size > 10 ? com.parameters[10] != 0 : true;
-		check_left     = param_size > 11 ? com.parameters[11] != 0 : true;
-		check_right    = param_size > 12 ? com.parameters[12] != 0 : true;
-		check_up       = param_size > 13 ? com.parameters[13] != 0 : true;
-
-		if (param_size > 8) {
-			time_id = com.parameters[7];
-			time = com.parameters[8] != 0;
-		}
+		// For Rpg2k3
+		check_numbers  = com.parameters[5] != 0;
+		check_arith    = com.parameters[6] != 0;
+		time_id        = com.parameters[7];
+		time           = com.parameters[8] != 0;
+		check_shift    = com.parameters[9] != 0;
+		check_down     = com.parameters[10] != 0;
+		check_left     = param_size > 11 ? com.parameters[11] != 0 : false;
+		check_right    = param_size > 12 ? com.parameters[12] != 0 : false;
+		check_up       = param_size > 13 ? com.parameters[13] != 0 : false;
 	}
 
 	if (check_down && check(Input::DOWN)) {
