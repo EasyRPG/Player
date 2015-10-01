@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import org.easyrpg.player.R;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;

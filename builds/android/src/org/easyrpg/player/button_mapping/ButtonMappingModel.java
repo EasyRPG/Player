@@ -2,7 +2,6 @@ package org.easyrpg.player.button_mapping;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
@@ -13,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 public class ButtonMappingModel {
