@@ -71,7 +71,9 @@
 #endif
 
 namespace {
+	/* UNUSED, yet:
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
+	*/
 
 	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::ProjectTree> > search_path_list;
 	search_path_list search_paths;
