@@ -544,7 +544,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	int w, h;
+	int w = 0, h = 0;
 	void* pixels;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
