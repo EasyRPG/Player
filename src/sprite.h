@@ -128,8 +128,6 @@ private:
 
 	Tone current_tone;
 	Color current_flash;
-	double current_zoom_x;
-	double current_zoom_y;
 	bool current_flip_x;
 	bool current_flip_y;
 

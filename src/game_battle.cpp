@@ -51,7 +51,6 @@ namespace {
 	bool message_is_fixed;
 	int message_position;
 	bool message_is_transparent;
-	bool terminate;
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
@@ -65,7 +64,6 @@ void Game_Battle::Init() {
 	Game_Temp::battle_running = true;
 	turn = 0;
 	escape_fail_count = 0;
-	terminate = false;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
@@ -111,8 +109,6 @@ void Game_Battle::Update() {
 }
 
 void Game_Battle::Terminate() {
-	terminate = true;
-
 	// Prevent gameover in cause some battle interpreter event toggled that
 	// flag, checked again on map.
 	Game_Temp::gameover = false;

@@ -72,8 +72,6 @@ private:
 
 	/** ID of item/skill to use. */
 	int id;
-	/* Index of item/skill in previous scene. */
-	int index;
 	/* Index of spell caster in party (only for skills). */
 	int actor_index;
 	/** True if item, false if skill. */
