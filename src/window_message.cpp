@@ -461,7 +461,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		else if (*text_index == '0') {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
-				ss << '0';
+				ss << "0";
 			} else {
 				null_at_start = true;
 			}
@@ -496,7 +496,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 
 	if (ss.str().empty()) {
 		if (null_at_start) {
-			ss << L"0";
+			ss << "0";
 		} else {
 			is_valid = false;
 			return 0;
@@ -584,9 +584,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			return ss.str();
 		} else {
 			// Invalid Var is always 0
-			std::stringstream ss;
-			ss << "0";
-			return ss.str();
+			return "0";
 		}
 	default:;
 		// When this happens text_index was not on a \ during calling
