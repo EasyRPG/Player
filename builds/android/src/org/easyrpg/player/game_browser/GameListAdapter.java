@@ -56,7 +56,7 @@ public class GameListAdapter extends BaseAdapter {
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder
-					.setTitle("Preferences")
+					.setTitle(R.string.settings)
 					.setItems(choices_list, new OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
