@@ -44,9 +44,9 @@ Installation:\n
 \t1. Platziere die Spiele in /easyrpg/games im Hauptverzeichnis deines Geräts.\n
 \t2. Platziere das RTP in /easyrpg/rtp/2000 für das RPG Maker 2000 RTP bzw. in /easyrpg/rtp/2003 für das RPG Maker 2003 RTP.\n
 \n
-Wenn Spiele nicht erkannt werden und dein Gerät hat mehr als einen Speicher (z.B. MicroSD) zur Verfügung, versuche den easyrpg-Ordner auf den anderen Speicher zu kopieren und drücke "Aktualisieren".\n
+Wenn Spiele nicht erkannt werden und dein Gerät mehr als ein Speichermedium (z.B. MicroSD) zur Verfügung hat, versuche den easyrpg Ordner auf das andere Speichermedium zu kopieren. Tippe danach auf "Aktualisieren"..\n
 \n
-Tipp: Damit Spiele korrekt erkannt werden, müssen sie entpackt sein und dürfen NICHT in Unterordnern liegen, z.B..:\n
+Tipp: Damit Spiele korrekt erkannt werden, müssen sie entpackt sein und dürfen NICHT in Unterordnern liegen, z.B.:\n
 \t/easyrpg/games/MeinSpiel/Data/RPG_RT.ldb ist FALSCH.\n
 \t/easyrpg/games/MeinSpiel/Data/GameOver/GameOver.png ist FALSCH.\n
 \t/easyrpg/games/MeinSpiel/RPG_RT.ldb ist RICHTIG.\n
@@ -75,6 +75,6 @@ Spezielle Funktionen:\n
 	<!-- ButtonMapping' activity-->
 	<string name="add_a_button">Taste hinzufügen</string>
 	<string name="reset_button_mapping">Tastenbelegung zurücksetzen</string>
-	<string name="exit_without_saving">Ohne speichern beenden</string>
-	<string name="save_and_quit">Speichern und Beenden</string>
+	<string name="exit_without_saving">Änderungen verwerfen und beenden</string>
+	<string name="save_and_quit">Speichern und beenden</string>
 </resources>
