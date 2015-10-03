@@ -100,7 +100,7 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 		Game_Message::SetFaceName("");
 	}
 
-	if (!updating)
+	if (!updating && depth == 0)
 		Update();
 }
 
