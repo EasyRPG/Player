@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- Game Browser -->
-	<string name="app_name">EasyRPG Player</string>
 	<string name="toggle_fps">Ver/ocultar FPS</string>
 	<string name="toggle_ui">Ver/ocultar botones</string>
 	<string name="end_game">Salir del juego</string>
