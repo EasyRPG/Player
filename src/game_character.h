@@ -640,7 +640,7 @@ public:
 	bool IsFlashPending() const;
 
 	/**
-	 * Tests if animation type is any fixed state or if the direction is locked.
+	 * Tests if animation type is any fixed state.
 	 *
 	 * @return Whether direction is fixed
 	 */

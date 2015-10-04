@@ -98,9 +98,7 @@ int Game_Event::GetDirection() const {
 }
 
 void Game_Event::SetDirection(int new_direction) {
-	if (new_direction != -1) {
-		data.direction = new_direction;
-	}
+	data.direction = new_direction;
 }
 
 int Game_Event::GetSpriteDirection() const {
@@ -243,6 +241,7 @@ void Game_Event::ClearStarting() {
 }
 
 void Game_Event::Setup(RPG::EventPage* new_page) {
+	bool from_null = page == NULL;
 	page = new_page;
 
 	// Free resources if needed
@@ -270,11 +269,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (GetDirection() != page->character_direction) {
-		SetDirection(page->character_direction);
-		SetSpriteDirection(page->character_direction);
-	}
-
 	if (original_pattern != page->character_pattern) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
@@ -289,6 +283,11 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	SetOriginalMoveRouteIndex(0);
 	animation_type = page->animation_type;
 	SetOpacity(page->translucent ? 160 : 255);
+
+	if (from_null || IsDirectionFixed()) {
+		SetDirection(page->character_direction);
+		SetSpriteDirection(page->character_direction);
+	}
 
 	SetLayer(page->layer);
 	trigger = page->trigger;
@@ -316,10 +315,8 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (original_pattern != page->character_pattern) {
-		pattern = page->character_pattern;
-		original_pattern = pattern;
-	}
+	pattern = page->character_pattern;
+	original_pattern = pattern;
 
 	move_type = page->move_type;
 	original_move_route = page->move_route;
@@ -485,7 +482,7 @@ std::vector<RPG::EventCommand>& Game_Event::GetList() {
 }
 
 void Game_Event::StartTalkToHero() {
-	if (!IsDirectionFixed()) {
+	if (!(IsDirectionFixed() || IsFacingLocked())) {
 		int prelock_dir = GetDirection();
 		TurnTowardHero();
 		SetDirection(prelock_dir);
@@ -493,7 +490,7 @@ void Game_Event::StartTalkToHero() {
 }
 
 void Game_Event::StopTalkToHero() {
-	if (!IsDirectionFixed()) {
+	if (!(IsDirectionFixed() || IsFacingLocked())) {
 		SetSpriteDirection(GetDirection());
 	}
 
