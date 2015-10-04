@@ -941,6 +941,9 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 
 // Change Face Graphic.
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
+	if (Game_Message::message_waiting && Game_Message::owner_id != event_id)
+		return false;
+
 	Game_Message::SetFaceName(com.string);
 	Game_Message::SetFaceIndex(com.parameters[0]);
 	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
