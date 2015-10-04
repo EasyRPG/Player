@@ -26,6 +26,7 @@ namespace Game_Message {
 	std::vector<std::string> texts;
 
 	unsigned int owner_id;
+	bool owner_parallel;
 
 	int choice_start;
 	int num_input_start;
@@ -133,7 +134,7 @@ void Game_Message::SetPositionFixed(bool fixed) {
 }
 
 bool Game_Message::GetContinueEvents() {
-	return data.message_continue_events != 0;
+	return data.message_continue_events;
 }
 
 void Game_Message::SetContinueEvents(bool continue_events) {

@@ -413,13 +413,18 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 // Command Show Message
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Code ShowMessage
 	// If there's a text already, return immediately
-	if (Game_Message::message_waiting) {
+	if (Game_Message::message_waiting)
 		return false;
-	}
+
+	// Parallel interpreters must wait until the message window is closed
+	if (!main_flag && Game_Message::visible)
+		return false;
+
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
+	Game_Message::owner_parallel = !main_flag;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);

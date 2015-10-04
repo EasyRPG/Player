@@ -230,7 +230,8 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 
 bool Game_Event::IsMessageBlocking() const {
 	return Game_Message::message_waiting &&
-		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID);
+		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID) &&
+		!Game_Message::owner_parallel;
 }
 
 bool Game_Event::GetThrough() const {
