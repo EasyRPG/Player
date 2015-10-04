@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- Preferences keys, do not translate -->
-	<string name="pref_enable_vibration">PREF_ENABLE_VIBRATION</string>
-	<string name="pref_layout_transparency">PREF_LAYOUT_TRANSPARENCY</string>
-	<string name="pref_vibrate_when_sliding_direction">PREF_VIBRATE_WHEN_SLIDING</string>
-	<string name="pref_ignore_size_settings">PREF_IGNORE_SIZE_SETTINGS</string>
-	<string name="pref_size_every_buttons">PREF_SIZE_EVERY_BUTTONS</string>
+	<string name="pref_enable_vibration" translate="false">PREF_ENABLE_VIBRATION</string>
+	<string name="pref_layout_transparency" translate="false">PREF_LAYOUT_TRANSPARENCY</string>
+	<string name="pref_vibrate_when_sliding_direction" translate="false">PREF_VIBRATE_WHEN_SLIDING</string>
+	<string name="pref_ignore_size_settings" translate="false">PREF_IGNORE_SIZE_SETTINGS</string>
+	<string name="pref_size_every_buttons" translate="false">PREF_SIZE_EVERY_BUTTONS</string>
 
 	<!-- Game Browser -->
-	<string name="app_name">EasyRPG Player</string>
+	<string name="app_name" translate="false">EasyRPG Player</string>
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
 	<string name="end_game">End Game</string>
