@@ -942,7 +942,10 @@ bool Game_Character::IsSpinning() const {
 	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
-int Game_Character::GetBushDepth() {
+int Game_Character::GetBushDepth() const {
+	if (jumping)
+		return 0;
+
 	return Game_Map::GetBushDepth(GetX(), GetY());
 }
 
