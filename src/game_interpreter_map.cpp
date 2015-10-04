@@ -1253,8 +1253,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
-				// Was an event battle with no handlers
+			if (Game_Temp::battle_defeat_mode == 0 || !SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
 				index++;
 				return false;
 			}
