@@ -75,7 +75,7 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
-	show_fps = false;
+	show_fps = Player::fps_flag;
 	fps = 0;
 	frozen_screen = BitmapRef();
 	screen_erased = false;

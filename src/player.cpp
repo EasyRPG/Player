@@ -73,6 +73,7 @@ namespace Player {
 	bool debug_flag;
 	bool hide_title_flag;
 	bool window_flag;
+	bool fps_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	bool new_game_flag;
@@ -303,6 +304,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 #else
 	window_flag = false;
 #endif
+	fps_flag = false;
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
@@ -335,6 +337,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
 			window_flag = true;
+		}
+		else if (*it == "--show-fps") {
+			fps_flag = true;
 		}
 		else if (*it == "testplay" || *it == "--test-play") {
 			debug_flag = true;
@@ -697,6 +702,8 @@ void Player::PrintUsage() {
 	std::cout << "      " << "                     " << " rpg2k3e - RPG Maker 2003 (English release) engine" << std::endl;
 
 	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
+
+	std::cout << "      " << "--show-fps           " << "Enable frames per second counter." << std::endl;
 
 	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
 	std::cout << "      " << "                     " << "command menu." << std::endl;

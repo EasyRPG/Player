@@ -43,6 +43,9 @@ for some additional binary patches.
 *--fullscreen*::
   Start in fullscreen mode.
 
+*--show-fps*::
+  Enable frames per second counter.
+
 *--hide-title*::
   Hide the title background image and center the command menu.
 
