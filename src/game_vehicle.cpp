@@ -213,6 +213,13 @@ bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 	return true;
 }
 
+int Game_Vehicle::GetBushDepth() const {
+	if (data.flying)
+		return 0;
+
+	return Game_Character::GetBushDepth();
+}
+
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case None:

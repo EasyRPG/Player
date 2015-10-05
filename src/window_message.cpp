@@ -93,6 +93,7 @@ void Window_Message::StartMessageProcessing() {
 		std::string const line = Game_Message::texts[i];
 		text.append(line + "\n");
 	}
+	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
 	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
@@ -226,15 +227,7 @@ void Window_Message::TerminateMessage() {
 }
 
 bool Window_Message::IsNextMessagePossible() {
-	if (Game_Message::num_input_variable_id > 0) {
-		return true;
-	}
-
-	if (Game_Message::texts.empty()) {
-		return false;
-	}
-
-	return true;
+	return Game_Message::num_input_variable_id > 0 || !Game_Message::texts.empty();
 }
 
 void Window_Message::ResetWindow() {
@@ -265,32 +258,20 @@ void Window_Message::Update() {
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
 			// Open and Close Animations are skipped in battle
-			if (Game_Temp::battle_running) {
-				SetOpenAnimation(0);
-			} else {
-				SetOpenAnimation(5);
-			}
-			visible = true;
+			SetOpenAnimation(Game_Temp::battle_running ? 0 : 5);
+		} else if (closing) {
+			// Cancel closing animation
+			SetOpenAnimation(0);
 		}
 		Game_Message::visible = true;
-	} else if (!IsNextMessagePossible() && Game_Message::closing) {
+	} else if (!Game_Message::message_waiting && Game_Message::visible) {
 		if (visible && !closing) {
-			// The Event Page ended but the MsgBox was used in this Event
-			// It can be closed now.
-			TerminateMessage();
-			if (Game_Temp::battle_running) {
-				SetCloseAnimation(0);
-			}
-			else {
-				SetCloseAnimation(5);
-			}
-		}
-		else if (!visible && !closing) {
+			// Start the closing animation
+			SetCloseAnimation(Game_Temp::battle_running ? 0 : 5);
+		} else if (!visible) {
 			// The closing animation has finished
 			Game_Message::visible = false;
-			Game_Message::closing = false;
 			Game_Message::owner_id = 0;
-			return;
 		}
 	}
 }

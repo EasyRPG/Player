@@ -38,7 +38,6 @@ class Game_Interpreter
 {
 public:
 	Game_Interpreter(int _depth = 0, bool _main_flag = false);
-	virtual ~Game_Interpreter();
 
 	void Clear();
 	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
@@ -125,11 +124,6 @@ protected:
 	 * Triggers a game over when all party members are dead.
 	 */
 	void CheckGameOver();
-
-	/**
-	 * Closes the message window.
-	 */
-	void CloseMessageWindow();
 
 	bool CommandShowMessage(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);

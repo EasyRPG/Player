@@ -165,11 +165,6 @@ void Scene_Battle::Update() {
 
 	bool events_finished = Game_Battle::UpdateEvents();
 
-	if (Game_Message::visible && events_finished && !message_window->IsNextMessagePossible()) {
-		// Handle message box closing when not caused by event e.g. victory message
-		Game_Message::closing = true;
-	}
-
 	if (!Game_Message::visible && events_finished) {
 		ProcessActions();
 		ProcessInput();
