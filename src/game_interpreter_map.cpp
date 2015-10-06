@@ -50,8 +50,6 @@
 #include "filefinder.h"
 #include "reader_lcf.h"
 
-std::vector<Game_Character*> Game_Interpreter_Map::pending;
-
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
