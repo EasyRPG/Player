@@ -150,7 +150,6 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -492,6 +491,7 @@ void Player::CreateGameObjects() {
 		}
 
 		Output::Debug("Loading game %s", Player::game_title.c_str());
+		DisplayUi->SetTitle(game_title);
 
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {

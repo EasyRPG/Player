@@ -74,7 +74,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static void GekkoResetCallback();
 #endif
 
-SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
+SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	BaseUi(),
 	zoom_available(true),
 	toggle_fs_available(false),
@@ -127,7 +127,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 		}
 	EndDisplayModeChange();
 
-	SetTitle(title);
+	SetTitle("EasyRPG Player");
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
