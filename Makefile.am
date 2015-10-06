@@ -105,6 +105,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/input.cpp \
 	src/input.h \
 	src/keys.h \
+	src/logos.h \
 	src/main_data.cpp \
 	src/main_data.h \
 	src/map_data.h \

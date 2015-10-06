@@ -26,7 +26,6 @@
 	#define NOMINMAX
 	#endif
 	#include <windows.h>
-	#include "SDL_syswm.h"
 #elif GEKKO
 	#include <gccore.h>
 	#include <wiiuse/wpad.h>
@@ -35,6 +34,16 @@
 	#include <SDL_system.h>
 #elif EMSCRIPTEN
 	#include <emscripten.h>
+#endif
+#if defined(_WIN32) || SDL_MAJOR_VERSION>1
+	#include "logos.h"
+
+	// Prevent some XLib name clashes under Linux
+	#define Font Font_XLib
+	#define Drawable Drawable_XLib
+	#include "SDL_syswm.h"
+	#undef Font
+	#undef Drawable
 #endif
 #include "color.h"
 #include "graphics.h"
@@ -115,8 +124,6 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 #if SDL_MAJOR_VERSION==1
 	sdl_surface = NULL;
-
-	SetAppIcon();
 #else
 	sdl_window = NULL;
 #endif
@@ -886,39 +893,48 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 #endif
 
 void SdlUi::SetAppIcon() {
-#ifdef _WIN32
 	static bool icon_set = false;
+
 	if (icon_set)
 		return;
 
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
-
-#if SDL_MAJOR_VERSION==1
-	int success = SDL_GetWMInfo(&wminfo);
-#else
 	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
-#endif
 
 	if (success < 0)
 		Output::Error("Wrong SDL version");
 
+#ifdef _WIN32
+	HWND window;
 	HINSTANCE handle = GetModuleHandle(NULL);
 	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
+#else //Linux, OS X
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+		uint32_t Rmask = 0x000000FF;
+		uint32_t Gmask = 0x0000FF00;
+		uint32_t Bmask = 0x00FF0000;
+		uint32_t Amask = 0xFF000000;
+	#else
+		uint32_t Rmask = 0xFF000000;
+		uint32_t Gmask = 0x00FF0000;
+		uint32_t Bmask = 0x0000FF00;
+		uint32_t Amask = 0x000000FF;
+	#endif
+	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon32, 32, 32, 32, 32*4, Rmask, Gmask, Bmask, Amask);
+#endif
 
 	if (icon == NULL)
 		Output::Error("Couldn't load icon.");
 
-	HWND window;
-#if SDL_MAJOR_VERSION==1
-	window = wminfo.window;
-#else
+#ifdef _WIN32
 	window = wminfo.info.win.window;
-#endif
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
-
-	icon_set = true;
+#else
+	SDL_SetWindowIcon(sdl_window, icon);
+	SDL_FreeSurface(icon);
 #endif
+	icon_set = true;
 }
 
 void SdlUi::ResetKeys() {
