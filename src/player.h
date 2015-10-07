@@ -163,6 +163,9 @@ namespace Player {
 	/** Window flag, if true will run in window mode instead of full screen. */
 	extern bool window_flag;
 
+	/** FPS flag, if true will display frames per second counter. */
+	extern bool fps_flag;
+
 	/** Battle Test flag, if true will run battle test. */
 	extern bool battle_test_flag;
 

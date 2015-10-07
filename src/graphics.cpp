@@ -31,8 +31,6 @@
 #include "player.h"
 
 namespace Graphics {
-	bool fps_on_screen;
-
 	void UpdateTitle();
 	void DrawFrame();
 	void DrawOverlay();
@@ -75,7 +73,6 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
-	fps_on_screen = false;
 	fps = 0;
 	frozen_screen = BitmapRef();
 	screen_erased = false;
@@ -150,7 +147,7 @@ void Graphics::UpdateTitle() {
 	std::stringstream title;
 	title << Player::game_title;
 
-	if (!fps_on_screen) {
+	if (Player::fps_flag) {
 		title << " - FPS " << real_fps;
 	}
 
@@ -204,7 +201,7 @@ void Graphics::DrawFrame() {
 }
 
 void Graphics::DrawOverlay() {
-	if (Graphics::fps_on_screen) {
+	if (DisplayUi->IsFullscreen() && Player::fps_flag) {
 		std::stringstream text;
 		text << "FPS: " << real_fps;
 		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());

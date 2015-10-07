@@ -351,10 +351,7 @@ bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
-
-	// Display on screen fps while fullscreen or no window available
 	bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
-	Graphics::fps_on_screen = is_fullscreen || !toggle_fs_available;
 
 	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
