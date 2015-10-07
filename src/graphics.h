@@ -126,8 +126,6 @@ namespace Graphics {
 
 	void UpdateZCallback();
 
-	extern bool show_fps;
-
 	void Push();
 	void Pop();
 

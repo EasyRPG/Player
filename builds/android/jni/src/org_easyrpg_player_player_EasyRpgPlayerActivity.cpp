@@ -33,7 +33,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps
   (JNIEnv *, jclass)
 {
-	Graphics::show_fps = !Graphics::show_fps;
+	Player::fps_flag = !Player::fps_flag;
 }
 
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame

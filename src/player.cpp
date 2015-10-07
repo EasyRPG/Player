@@ -228,7 +228,7 @@ void Player::Update(bool update_scene) {
 
 	// Normal logic update
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
-		Graphics::show_fps = !Graphics::show_fps;
+		fps_flag = !fps_flag;
 	}
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
