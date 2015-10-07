@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Preferences keys, do not translate-->
-  <!--Game Browser-->
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
   <string name="toggle_fps">Ver/ocultar FPS</string>
   <string name="toggle_ui">Ver/ocultar botones</string>
   <string name="end_game">Salir del juego</string>
@@ -57,13 +57,13 @@ Características especiales:\n
 \tToca el botón de menú para editar la posición de los botones.\n
 \tUna vez allí, toca el botón atrás para acceder a otro menú para añadir más botones a la pantalla.\n
 	</string>
-  <!--Settings-->
+  <!--Settings Activity-->
   <string name="settings">Configuración</string>
   <string name="enable_vibration">Activar vibración</string>
   <string name="vibrate_when_sliding_direction">Vibrar al desplazarse a otra dirección</string>
   <string name="input_layout_transparency">Transparencia de los botones:</string>
   <string name="ignore_size_settings">Ignorar configuración de tamaño de los botones y usar ésta para todos:</string>
-  <!--InputLayout Managing activity-->
+  <!--InputLayout Managing-->
   <string name="manage_input_layouts">Administrar distribuciones de botones:</string>
   <string name="add_an_input_layout">Añadir una distribución de botones</string>
   <string name="set_as_default">Elegir como predeterminada</string>
@@ -71,7 +71,7 @@ Características especiales:\n
   <string name="edit_layout">Editar la distribución</string>
   <string name="delete">Borrar</string>
   <string name="default_layout">Predeterminada</string>
-  <!--ButtonMapping' activity-->
+  <!--ButtonMapping Activity-->
   <string name="add_a_button">Añadir un botón</string>
   <string name="reset_button_mapping">Reiniciar asignación</string>
   <string name="exit_without_saving">Salir sin guardar</string>

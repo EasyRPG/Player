@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Preferences keys, do not translate-->
-  <!--Game Browser-->
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
   <string name="toggle_fps">切换FPS</string>
   <string name="toggle_ui">设置虚拟按钮</string>
   <string name="end_game">结束游戏</string>
@@ -59,13 +59,13 @@
 特殊功能：
 在设置游戏按键的时候，点击手机菜单按钮可以设置游戏按键，
 在这个界面的时候，点击手机返回键也可以设置游戏按键。</string>
-  <!--Settings-->
+  <!--Settings Activity-->
   <string name="settings">设置</string>
   <string name="enable_vibration">开启震动</string>
   <string name="vibrate_when_sliding_direction">在往另一个方向滑动时震动</string>
   <string name="input_layout_transparency">按键透明度:</string>
   <string name="ignore_size_settings">忽略按键的大小设定并将这个应用到所有的按键：</string>
-  <!--InputLayout Managing activity-->
+  <!--InputLayout Managing-->
   <string name="manage_input_layouts">管理按键显示</string>
   <string name="add_an_input_layout">增加一个按键显示方案</string>
   <string name="set_as_default">设置为默认</string>
@@ -73,7 +73,7 @@
   <string name="edit_layout">编辑按键</string>
   <string name="delete">删除</string>
   <string name="default_layout">默认</string>
-  <!--ButtonMapping' activity-->
+  <!--ButtonMapping Activity-->
   <string name="add_a_button">添加一个按钮</string>
   <string name="reset_button_mapping">重置按钮</string>
   <string name="exit_without_saving">不保存并退出</string>

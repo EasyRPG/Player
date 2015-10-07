@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Preferences keys, do not translate-->
-  <!--Game Browser-->
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
   <string name="toggle_fps">FPS ein-/ausblenden</string>
   <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
   <string name="end_game">Spiel beenden</string>
@@ -39,7 +39,7 @@
   <string name="region_modification_failed">Ändern der Region fehlgeschlagen</string>
   <string name="refresh">Aktualisieren</string>
   <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
-  <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG</string>
+  <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
   <string name="how_to_use_easy_rpg_explanation">
 Installation:\n
 \t1. Platziere die Spiele in /easyrpg/games im Hauptverzeichnis deines Geräts.\n
@@ -56,13 +56,13 @@ Tipp: Damit Spiele korrekt erkannt werden, müssen sie entpackt sein und dürfen
 Spezielle Funktionen:\n
 \tIm Einstellungsmenü kannst du Tasten verschieben und neue hinzufügen.\n
 	</string>
-  <!--Settings-->
+  <!--Settings Activity-->
   <string name="settings">Einstellungen</string>
   <string name="enable_vibration">Vibrationen aktivieren</string>
   <string name="vibrate_when_sliding_direction">Vibrieren, wenn in eine andere Bewegungsrichtung gewischt wird</string>
   <string name="input_layout_transparency">Layout-Transparenz:</string>
   <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
-  <!--InputLayout Managing activity-->
+  <!--InputLayout Managing-->
   <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
   <string name="add_an_input_layout">Eingabe-Layout hinzufügen</string>
   <string name="set_as_default">Als Standard festlegen</string>
@@ -70,7 +70,7 @@ Spezielle Funktionen:\n
   <string name="edit_layout">Layout bearbeiten</string>
   <string name="delete">Löschen</string>
   <string name="default_layout">Standard</string>
-  <!--ButtonMapping' activity-->
+  <!--ButtonMapping Activity-->
   <string name="add_a_button">Taste hinzufügen</string>
   <string name="reset_button_mapping">Tastenbelegung zurücksetzen</string>
   <string name="exit_without_saving">Änderungen verwerfen und beenden</string>

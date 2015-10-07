@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Preferences keys, do not translate-->
-  <!--Game Browser-->
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
   <string name="toggle_fps">Afficher les FPS</string>
   <string name="toggle_ui">Afficher les boutons virtuels</string>
   <string name="end_game">Quitter le jeu</string>
@@ -49,13 +49,13 @@ Si vous ne trouvez pas le dossier /easyrpg, alors celui-ci se trouve sur un autr
 \n
 Les dossiers de jeux doivent être décompressés et non placés dans un sous dossier afin d\'être détéctés.\n
 	</string>
-  <!--Settings-->
+  <!--Settings Activity-->
   <string name="settings">Préférences</string>
   <string name="enable_vibration">Activer les vibrations</string>
   <string name="vibrate_when_sliding_direction">Vibrer lors du glissement vers une autre direction</string>
   <string name="input_layout_transparency">Transparence des boutons virtuels :</string>
   <string name="ignore_size_settings">Ignorer préférences individuelles et forcer la taille des boutons virtuels :</string>
-  <!--InputLayout Managing activity-->
+  <!--InputLayout Managing-->
   <string name="manage_input_layouts">Gérer les agencements de boutons virtuels :</string>
   <string name="add_an_input_layout">Ajouter un agencement de boutons</string>
   <string name="set_as_default">Définir par défaut</string>
@@ -63,7 +63,7 @@ Les dossiers de jeux doivent être décompressés et non placés dans un sous do
   <string name="edit_layout">Changer l\'agencement</string>
   <string name="delete">Supprimer</string>
   <string name="default_layout">Par défaut</string>
-  <!--ButtonMapping' activity-->
+  <!--ButtonMapping Activity-->
   <string name="add_a_button">Ajouter un bouton</string>
   <string name="reset_button_mapping">Réinitialiser l\'agencement</string>
   <string name="exit_without_saving">Quitter sans sauvegarder</string>
