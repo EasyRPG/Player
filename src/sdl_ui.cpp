@@ -441,12 +441,11 @@ bool SdlUi::RefreshDisplayMode() {
 					== SDL_WINDOW_FULLSCREEN_DESKTOP) {
 				// Restore to pre-fullscreen size
 				SDL_SetWindowSize(sdl_window, 0, 0);
-			}
-			else {
+			} else {
 				SDL_SetWindowSize(sdl_window, display_width, display_height);
 			}
-			SetAppIcon();
 		}
+		SetAppIcon();
 #endif
 	}
 
