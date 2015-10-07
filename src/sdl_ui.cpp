@@ -35,7 +35,7 @@
 #elif EMSCRIPTEN
 	#include <emscripten.h>
 #endif
-#if defined(_WIN32) || SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION>1
 	#include "logos.h"
 
 	// Prevent some XLib name clashes under Linux
@@ -445,7 +445,7 @@ bool SdlUi::RefreshDisplayMode() {
 				SDL_SetWindowSize(sdl_window, display_width, display_height);
 			}
 		}
-		SetAppIcon();
+		SetAppIcon(); // This will fail
 #endif
 	}
 
@@ -894,8 +894,10 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 void SdlUi::SetAppIcon() {
 	static bool icon_set = false;
 
-	if (icon_set)
+	if (icon_set) {
+	    Output::Debug("Attempting to set App Icon, but already set.");
 		return;
+	}
 
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
@@ -904,11 +906,6 @@ void SdlUi::SetAppIcon() {
 	if (success < 0)
 		Output::Error("Wrong SDL version");
 
-#ifdef _WIN32
-	HWND window;
-	HINSTANCE handle = GetModuleHandle(NULL);
-	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
-#else //Linux, OS X
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 		uint32_t Rmask = 0x000000FF;
 		uint32_t Gmask = 0x0000FF00;
@@ -921,18 +918,12 @@ void SdlUi::SetAppIcon() {
 		uint32_t Amask = 0x000000FF;
 	#endif
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon32, 32, 32, 32, 32*4, Rmask, Gmask, Bmask, Amask);
-#endif
-
 	if (icon == NULL)
 		Output::Error("Couldn't load icon.");
 
-#ifdef _WIN32
-	window = wminfo.info.win.window;
-	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
-#else
 	SDL_SetWindowIcon(sdl_window, icon);
 	SDL_FreeSurface(icon);
-#endif
+
 	icon_set = true;
 }
 
