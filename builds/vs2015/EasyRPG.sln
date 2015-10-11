@@ -8,7 +8,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Player", "Player.vcxproj", 
 		{16E3AAE8-AE1A-4960-B7FF-20B2E77FF15F} = {16E3AAE8-AE1A-4960-B7FF-20B2E77FF15F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liblcf", "..\..\lib\liblcf\builds\vs2010\liblcf.vcxproj", "{16E3AAE8-AE1A-4960-B7FF-20B2E77FF15F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liblcf", "..\..\lib\liblcf\builds\vs2015\liblcf.vcxproj", "{16E3AAE8-AE1A-4960-B7FF-20B2E77FF15F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

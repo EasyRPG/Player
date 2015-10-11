@@ -10,7 +10,7 @@
   <PropertyGroup Label="Configuration">
     <OutDir>..\..\bin\</OutDir>
 	<TargetName>$(ProjectName)$(PlatformSuffix)$(DebugSuffix)</TargetName>
-	<IntDir>Output\$(ProjectName)\$(PlatformShortName)\$(Configuration)\</IntDir>
+	<IntDir>Output\$(PlatformShortName)\$(Configuration)\</IntDir>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v140</PlatformToolset>
