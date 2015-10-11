@@ -50,7 +50,7 @@ resources/player.aps
 /builds/vs20*/*.psess
 /builds/vs20*/*.suo
 /builds/vs20*/*.user
-/builds/vs20*/*.vsp
+/builds/vs20*/*.vsp*
 /builds/vs20*/.vs/
 /builds/vs20*/ipch/
 /builds/vs20*/x64/
