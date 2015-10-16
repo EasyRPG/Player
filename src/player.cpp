@@ -690,25 +690,22 @@ void Player::SetupPlayerSpawn() {
 std::string Player::GetEncoding() {
 	encoding = forced_encoding;
 
+	// command line > ini > detection > current locale
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
-
 		encoding = ReaderUtil::GetEncoding(ini);
-	} else {
-		return encoding;
-	}
-	if (encoding.empty()) {
-		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 
-		encoding = ReaderUtil::DetectEncoding(ldb);
-	} else {
-		return encoding;
-	}
-	if (encoding.empty()) {
-		Output::Debug("Encoding not detected");
-		encoding = ReaderUtil::GetLocaleEncoding();
-	} else {
-		Output::Debug("Detected encoding: %s", encoding.c_str());
+		if (encoding.empty()) {
+			std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+			encoding = ReaderUtil::DetectEncoding(ldb);
+
+			if (!encoding.empty()) {
+				Output::Debug("Detected encoding: %s", encoding.c_str());
+			} else {
+				Output::Debug("Encoding not detected");
+				encoding = ReaderUtil::GetLocaleEncoding();
+			}
+		}
 	}
 
 	return encoding;
