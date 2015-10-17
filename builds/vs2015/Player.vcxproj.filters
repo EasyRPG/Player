@@ -48,6 +48,9 @@
     <Filter Include="Source Files\Backend\UI">
       <UniqueIdentifier>{ce2d7343-39dd-458d-b5a6-ab688e16af7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shinonome">
+      <UniqueIdentifier>{0c60afba-b3ff-41a5-ae63-beea5838ba61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\player.rc">
@@ -438,6 +441,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\async_handler.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\shinonome\gothic.cxx">
+      <Filter>Source Files\Shinonome</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\shinonome\mincho.cxx">
+      <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -851,6 +860,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\async_handler.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\shinonome\shinonome.hxx">
+      <Filter>Source Files\Shinonome</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

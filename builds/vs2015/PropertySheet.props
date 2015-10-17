@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <DebugSuffix Condition="'$(Configuration)'=='Debug'">d</DebugSuffix>
+    <DebugSuffix Condition="'$(Configuration)'!='Debug'"></DebugSuffix>
+    <PlatformSuffix Condition="'$(Platform)' == 'Win32'"></PlatformSuffix>
+    <PlatformSuffix Condition="'$(Platform)' == 'x64'">64</PlatformSuffix>	
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <OutDir>..\..\bin\</OutDir>
+	<TargetName>$(ProjectName)$(PlatformSuffix)$(DebugSuffix)</TargetName>
+	<IntDir>Output\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile Condition="'$(Configuration)'=='Release'">
+      <Optimization>MaxSpeed</Optimization>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <ClCompile Condition="'$(Configuration)'=='Debug'">
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+	  <PreprocessorDefinitions>DEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+	  <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+	  <PreprocessorDefinitions>UNICODE;_CRT_SECURE_NO_WARNINGS;MSVC;USE_SDL;HAVE_SDL_MIXER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+	</ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(Configuration);$(DXSDK_DIR)\Lib\$(PlatformShortName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;libmodplug.lib;native_midi.lib;sicudt$(DebugSuffix).lib;sicuuc$(DebugSuffix).lib;sicuin$(DebugSuffix).lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
