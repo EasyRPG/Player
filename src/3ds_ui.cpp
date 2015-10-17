@@ -49,11 +49,11 @@ CtrUi::CtrUi(int width, int height) :
 	current_display_mode.bpp = 32;
 	const DynamicFormat format(
 		32,
-		0xFF000000,
-		0x00FF0000,
-		0x0000FF00,
 		0x000000FF,
-		PF::NoAlpha);
+		0x0000FF00,
+		0x00FF0000,
+		0xFF000000,
+		PF::Alpha);
 	Bitmap::SetFormat(format);
 	main_surface = Bitmap::Create(width, height, false, 32);
 }
