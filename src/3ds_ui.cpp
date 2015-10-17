@@ -104,15 +104,17 @@ bool CtrUi::IsFullscreen() {
 void CtrUi::ProcessEvents() {
 	hidScanInput();
 
-	keys[Input::Keys::Z] = false;
-	keys[Input::Keys::X] = false;
-	keys[Input::Keys::N8] = false;
-	keys[Input::Keys::F12] = false;
-	keys[Input::Keys::RIGHT] = false;
-	keys[Input::Keys::LEFT] = false;
-	keys[Input::Keys::UP] = false;
-	keys[Input::Keys::DOWN] = false;
-	keys[Input::Keys::F2] = false;
+	uint32_t kUp = hidKeysUp();
+	if (kUp & KEY_A) keys[Input::Keys::Z] = false;
+	if (kUp & KEY_B) keys[Input::Keys::X] = false;
+	if (kUp & KEY_X) keys[Input::Keys::N8] = false;
+	if (kUp & KEY_SELECT) keys[Input::Keys::F12] = false;
+	if (kUp & KEY_START) Player::exit_flag = false;
+	if (kUp & KEY_DRIGHT) keys[Input::Keys::RIGHT] = false;
+	if (kUp & KEY_DLEFT) keys[Input::Keys::LEFT] = false;
+	if (kUp & KEY_DUP) keys[Input::Keys::UP] = false;
+	if (kUp & KEY_DDOWN) keys[Input::Keys::DOWN] = false;
+	if (kUp & KEY_L) keys[Input::Keys::F2] = false;
 
 	uint32_t kDown = hidKeysDown();
 	if (kDown & KEY_A) keys[Input::Keys::Z] = true;
