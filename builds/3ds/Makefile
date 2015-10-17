@@ -11,6 +11,8 @@ NO_SMDH=1
 TOPDIR ?= $(CURDIR)
 include $(DEVKITARM)/3ds_rules
 
+PORTLIBS := $(EASYRPG_PORTLIBS)
+
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
@@ -54,6 +56,7 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata -lpixman-arm-neon \
 			-lpixman-1 -lexpat -lpng -lz -lfreetype -lm
+
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
