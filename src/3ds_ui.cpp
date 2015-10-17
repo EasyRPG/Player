@@ -62,8 +62,15 @@ CtrUi::~CtrUi() {
 	sf2d_fini();
 }
 
+#define TICKS_PER_MSEC 268123.480
+static inline double u64_to_double(u64 value) {
+	return (((double)(u32)(value >> 32))*0x100000000ULL+(u32)value);
+}
+
 uint32_t CtrUi::GetTicks() const {
-	return 0;
+	double ticks = u64_to_double(svcGetSystemTick());
+	u64 usecs = (u64)(ticks/TICKS_PER_MSEC);
+	return usecs;
 }
 
 void CtrUi::Sleep(uint32_t time) {
@@ -96,16 +103,28 @@ bool CtrUi::IsFullscreen() {
 
 void CtrUi::ProcessEvents() {
 	hidScanInput();
+
+	keys[Input::Keys::Z] = false;
+	keys[Input::Keys::X] = false;
+	keys[Input::Keys::N8] = false;
+	keys[Input::Keys::F12] = false;
+	keys[Input::Keys::RIGHT] = false;
+	keys[Input::Keys::LEFT] = false;
+	keys[Input::Keys::UP] = false;
+	keys[Input::Keys::DOWN] = false;
+	keys[Input::Keys::F2] = false;
+
 	uint32_t kDown = hidKeysDown();
 	if (kDown & KEY_A) keys[Input::Keys::Z] = true;
 	if (kDown & KEY_B) keys[Input::Keys::X] = true;
+	if (kDown & KEY_X) keys[Input::Keys::N8] = true;
 	if (kDown & KEY_SELECT) keys[Input::Keys::F12] = true;
 	if (kDown & KEY_START) Player::exit_flag = true;
-
-	uint32_t kUp = hidKeysUp();
-	if (kUp & KEY_A) keys[Input::Keys::Z] = false;
-	if (kUp & KEY_B) keys[Input::Keys::X] = false;
-	if (kUp & KEY_START) Player::exit_flag = false;
+	if (kDown & KEY_DRIGHT) keys[Input::Keys::RIGHT] = true;
+	if (kDown & KEY_DLEFT) keys[Input::Keys::LEFT] = true;
+	if (kDown & KEY_DUP) keys[Input::Keys::UP] = true;
+	if (kDown & KEY_DDOWN) keys[Input::Keys::DOWN] = true;
+	if (kDown & KEY_L) keys[Input::Keys::F2] = true;
 }
 
 void CtrUi::UpdateDisplay() {
@@ -113,8 +132,7 @@ void CtrUi::UpdateDisplay() {
 	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
 	                                             main_surface->GetWidth(), main_surface->GetHeight(), 
 	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	if (frame++ % 30 == 1)
-		std::cout<<"FPS:"<<sf2d_get_fps()<<std::endl;
+
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
 		sf2d_draw_texture(main_texture, 40, 0);
 	sf2d_end_frame();
