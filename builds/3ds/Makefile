@@ -6,6 +6,8 @@ ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
+NO_SMDH=1
+
 TOPDIR ?= $(CURDIR)
 include $(DEVKITARM)/3ds_rules
 
@@ -43,14 +45,15 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DPIXMAN_NO_TLS
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lsf2d -lctru -llcf -lpixman-1 -lpng -lz -lfreetype -lm
+LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata -lpixman-arm-neon \
+			-lpixman-1 -lexpat -lpng -lz -lfreetype -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
