@@ -554,6 +554,14 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 		return false;
 	}
 
+#ifdef _3DS
+	DIR* d = opendir(dir.c_str());
+	if(d) {
+		closedir(d);
+		return true;
+	}
+	return false;
+#endif
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
