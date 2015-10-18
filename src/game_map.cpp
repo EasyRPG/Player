@@ -70,7 +70,7 @@ namespace {
 
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
-	Game_Vehicle* vehicles[3];
+	std::vector<EASYRPG_SHARED_PTR<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
 	boost::scoped_ptr<BattleAnimation> animation;
@@ -88,7 +88,6 @@ void Game_Map::Init() {
 	map_info.position_y = 0;
 	need_refresh = true;
 
-	map.reset();
 	location.map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
@@ -100,8 +99,9 @@ void Game_Map::Init() {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
+	vehicles.clear();
 	for (int i = 0; i < 3; i++)
-		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) (i + 1));
+		vehicles.push_back(EASYRPG_MAKE_SHARED<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
 
 	pan_locked = false;
 	pan_wait = false;
@@ -181,7 +181,7 @@ void Game_Map::SetupFromSave() {
 
 	for (size_t i = 0; i < 3; i++)
 		if (vehicles[i]->IsMoveRouteOverwritten())
-			pending.push_back(vehicles[i]);
+			pending.push_back(vehicles[i].get());
 
 	map_info.Fixup(*map.get());
 
@@ -521,7 +521,7 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 	for (int i = 0; i < 3; i++) {
 		if (i+1 == vehicle_type)
 			continue;
-		Game_Vehicle* vehicle = vehicles[i];
+		Game_Vehicle* vehicle = vehicles[i].get();
 		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
 			return false;
 	}
@@ -1032,7 +1032,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	if (which == Game_Vehicle::None) {
 		return NULL;
 	}
-	return vehicles[which - 1];
+	return vehicles[which - 1].get();
 }
 
 bool Game_Map::IsAnyMovePending() {
