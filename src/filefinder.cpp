@@ -554,12 +554,12 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
-		if (ent->d_name[0] == '.') { continue; }
 #ifdef _WIN32
 		std::string const name = Utils::FromWideString(ent->d_name);
 #else
 		std::string const name = ent->d_name;
 #endif
+		if (name == "." || name == "..") { continue; }
 		switch(m) {
 		case FILES:
 			if(IsDirectory(MakePath(path, name))) { continue; }
