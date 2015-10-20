@@ -280,7 +280,7 @@ libeasyrpg_player_la_SOURCES = \
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
 	-I$(srcdir)/lib/shinonome \
-	-std=c++0x \
+	-std=c++11 \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
