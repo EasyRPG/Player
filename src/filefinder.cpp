@@ -554,7 +554,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
-		if (ent->d_name[0] == '.') { continue; }
+		if (!strcmp(ent->d_name, "..") || !strcmp(ent->d_name, ".")) { continue; }
 #ifdef _WIN32
 		std::string const name = Utils::FromWideString(ent->d_name);
 #else
