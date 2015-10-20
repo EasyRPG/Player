@@ -142,7 +142,6 @@ void Window_Message::ShowGoldWindow() {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
 		gold_window->SetOpenAnimation(5);
-		gold_window->SetVisible(true);
 	}
 }
 
@@ -237,6 +236,7 @@ void Window_Message::ResetWindow() {
 void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
+	gold_window->Update();
 
 	if (pause) {
 		WaitForInput();
