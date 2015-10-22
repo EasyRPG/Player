@@ -212,8 +212,10 @@ void Game_Interpreter::Update() {
 				break;
 		}
 
-		if (!Main_Data::game_player->IsTeleporting() && Game_Map::GetNeedRefresh()) {
-			Game_Map::Refresh();
+		if (!Main_Data::game_player->IsTeleporting()) {
+			if (main_flag && Game_Map::GetNeedRefresh()) {
+				Game_Map::Refresh();
+			}
 		}
 
 		if (list.empty()) {
@@ -986,18 +988,13 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 // Change Experience.
 bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[3],
 		com.parameters[4]
 	);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
 
@@ -1016,16 +1013,10 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 }
 
 bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Code 10440
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int skill_id = ValueOrVariable(com.parameters[3],
-								   com.parameters[4]);
+	int skill_id = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove)
 			actor->UnlearnSkill(skill_id);
 		else
@@ -1036,8 +1027,6 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int item_id;
 	int type;
 	int slot;
@@ -1066,10 +1055,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 			return false;
 	}
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeEquipment(slot, item_id);
 	}
 
@@ -1087,10 +1073,7 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int hp = actor->GetHp() + amount;
 		if (!lethal && hp <= 0) {
 			amount += hp * (-1) + 1;
@@ -1106,19 +1089,13 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 10470
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int amount = ValueOrVariable(com.parameters[3],
-								 com.parameters[4]);
+	int amount = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int sp = actor->GetSp() + amount;
 		if (sp < 0)
 			sp = 0;
@@ -1129,15 +1106,10 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { // Code 10480
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
 	int state_id = com.parameters[3];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove) {
 			actor->RemoveState(state_id);
 		} else {
@@ -1150,13 +1122,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
-
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 		actor->RemoveAllStates();

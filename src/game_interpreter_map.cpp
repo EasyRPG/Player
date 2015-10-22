@@ -50,8 +50,6 @@
 #include "filefinder.h"
 #include "reader_lcf.h"
 
-std::vector<Game_Character*> Game_Interpreter_Map::pending;
-
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
@@ -357,18 +355,13 @@ bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) {
 
 
 bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // Code 10410
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[3],
 		com.parameters[4]
 	);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
 
@@ -376,18 +369,13 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 }
 
 bool Game_Interpreter_Map::CommandChangeParameters(RPG::EventCommand const& com) { // Code 10430
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[4],
 		com.parameters[5]
 		);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		switch (com.parameters[3]) {
 			case 0:
 				// Max HP
@@ -1635,17 +1623,12 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) { // code 10500
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int atk = com.parameters[2];
 	int def = com.parameters[3];
 	int spi = com.parameters[4];
 	int var = com.parameters[5];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ResetBattle();
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
