@@ -42,6 +42,7 @@ public:
 	void Clear();
 	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
 
+	bool HasRunned() const;
 	bool IsRunning() const;
 	void Update();
 
@@ -65,6 +66,7 @@ protected:
 	bool main_flag;
 
 	int loop_count;
+	bool runned;
 
 	bool move_route_waiting;
 
