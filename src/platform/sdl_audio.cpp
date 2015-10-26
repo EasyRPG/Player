@@ -59,6 +59,32 @@ SdlAudio::SdlAudio() :
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
+
+	int audio_rate;
+	Uint16 audio_format;
+	int audio_channels;
+        if (Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+		const char *audio_format_str;
+		switch (audio_format) {
+			case AUDIO_U8: audio_format_str = "U8"; break;
+			case AUDIO_S8: audio_format_str = "S8"; break;
+			case AUDIO_U16LSB: audio_format_str = "U16LSB"; break;
+			case AUDIO_S16LSB: audio_format_str = "S16LSB"; break;
+			case AUDIO_U16MSB: audio_format_str = "U16MSB"; break;
+			case AUDIO_S16MSB: audio_format_str = "S16MSB"; break;
+			case AUDIO_S32LSB: audio_format_str = "S32LSB"; break;
+			case AUDIO_S32MSB: audio_format_str = "S32MSB"; break;
+			case AUDIO_F32LSB: audio_format_str = "F32LSB"; break;
+			case AUDIO_F32MSB: audio_format_str = "F32MSB"; break;
+			default: audio_format_str = "Unknown"; break;
+		}
+		Output::Debug("Opened audio at %d Hz (%s), format: %s",
+			audio_rate,
+			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
+			audio_format_str);
+	} else {
+		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
+	}
 }
 
 SdlAudio::~SdlAudio() {
