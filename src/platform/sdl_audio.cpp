@@ -20,6 +20,9 @@
 #include "filefinder.h"
 #include "output.h"
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
 
 #ifdef _WIN32
 #  include "util_win.h"
@@ -39,6 +42,16 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
+#elif EMSCRIPTEN
+	int const frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
 #else
 	int const frequency = 44100;
 #endif
