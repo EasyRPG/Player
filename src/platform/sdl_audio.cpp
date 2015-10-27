@@ -42,18 +42,31 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
-#elif EMSCRIPTEN
-	int const frequency = EM_ASM_INT_V({
-		var context;
-		try {
-			context = new AudioContext();
-		} catch (e) {
-			context = new webkitAudioContext();
-		}
-		return context.sampleRate;
-	});
 #else
 	int const frequency = 44100;
+#endif
+
+#if SDL_MAJOR_VERSION>1
+	SDL_AudioSpec want, have;
+	SDL_AudioDeviceID dev;
+
+	SDL_zero(want);
+	want.freq = frequency;
+	want.format = MIX_DEFAULT_FORMAT;
+	want.channels = MIX_DEFAULT_CHANNELS;
+	want.samples = 1024;
+
+	dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
+
+	if (dev == 0) {
+		Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
+	} else {
+		if (have.format != want.format) {
+			Output::Debug("Audio device didn't accept wanted audio format.\n");
+		}
+		SDL_PauseAudioDevice(dev, 0); // start audio playing.
+	}
+
 #endif
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
