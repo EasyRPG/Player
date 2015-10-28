@@ -42,33 +42,26 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
+#elif EMSCRIPTEN
+	int const frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
 #else
 	int const frequency = 44100;
 #endif
 
-#if SDL_MAJOR_VERSION>1
-	SDL_AudioSpec want, have;
-	SDL_AudioDeviceID dev;
-
-	SDL_zero(want);
-	want.freq = frequency;
-	want.format = MIX_DEFAULT_FORMAT;
-	want.channels = MIX_DEFAULT_CHANNELS;
-	want.samples = 1024;
-
-	dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
-
-	if (dev == 0) {
-		Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
-	} else {
-		if (have.format != want.format) {
-			Output::Debug("Audio device didn't accept wanted audio format.\n");
-		}
-		SDL_PauseAudioDevice(dev, 0); // start audio playing.
-	}
-
-#endif
+#ifdef EMSCRIPTEN
+	// Note: this requires a patched SDL_mixer currently
+	if (Mix_OpenAudioDevice(NULL, 0, frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+#else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+#endif
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
@@ -76,7 +69,7 @@ SdlAudio::SdlAudio() :
 	int audio_rate;
 	Uint16 audio_format;
 	int audio_channels;
-        if (Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+	if (Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
 		const char *audio_format_str;
 		switch (audio_format) {
 			case AUDIO_U8: audio_format_str = "U8"; break;
@@ -138,14 +131,14 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	BGM_Volume(volume);
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
-	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
-	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+			? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
 #else
-	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+		Mix_FadeInMusic(bgm.get(), -1, fadein)
 #endif
-	     == -1) {
-		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
-		return;
+		== -1) {
+			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			return;
 	}
 }
 
