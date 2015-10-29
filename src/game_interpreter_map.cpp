@@ -436,6 +436,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -471,6 +472,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -481,6 +483,7 @@ bool Game_Interpreter_Map::CommandStoreEventID(RPG::EventCommand const& com) { /
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 	Game_Variables[var_id] = events.size() > 0 ? events.back()->GetId() : 0;
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -1527,6 +1530,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	}
 
 	Game_Variables[var_id] = result;
+	Game_Map::SetNeedRefresh(true);
 
 	if (!wait)
 		return true;
@@ -1644,8 +1648,10 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 
 		CheckGameOver();
 
-		if (com.parameters[6] != 0)
+		if (com.parameters[6] != 0) {
 			Game_Variables[com.parameters[7]] = result;
+			Game_Map::SetNeedRefresh(true);
+		}
 	}
 
 	return true;
