@@ -281,14 +281,15 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
-	animation_type = page->animation_type;
-	SetOpacity(page->translucent ? 160 : 255);
 
-	if (from_null || IsDirectionFixed()) {
+	bool last_direction_fixed = IsDirectionFixed() || IsFacingLocked();
+	animation_type = page->animation_type;
+	if (from_null || !last_direction_fixed || IsDirectionFixed()) {
 		SetDirection(page->character_direction);
 		SetSpriteDirection(page->character_direction);
 	}
 
+	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;
