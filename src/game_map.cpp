@@ -611,13 +611,17 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 	if (!Game_Map::IsValid(x, y)) return 1;
 
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
-	unsigned const chip_index =
+	unsigned chip_index =
 		(chipID <  3050)?  0 + chipID/1000 :
 		(chipID <  4000)?  4 + (chipID-3050)/50 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
 		(chipID <  5144)? 18 + (chipID-5000) :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
+
+	// Apply tile substitution
+	if (chip_index >= 18 && chip_index <= 144)
+		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
 	assert(chip_index < Data::data.chipsets[chipset_index].terrain_data.size());
