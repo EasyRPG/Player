@@ -68,8 +68,6 @@ protected:
 	int loop_count;
 	bool runned;
 
-	bool move_route_waiting;
-
 	unsigned int index;
 	int map_id;
 	unsigned int event_id;
@@ -82,7 +80,8 @@ protected:
 	std::vector<RPG::EventCommand> list;
 
 	int button_timer;
-	bool active;
+	bool waiting_battle_anim;
+	bool waiting_pan_screen;
 	bool updating;
 	bool clear_child;
 
@@ -164,7 +163,6 @@ protected:
 
 	int debug_x;
 	int debug_y;
-
 };
 
 #endif

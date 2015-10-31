@@ -214,8 +214,10 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	bool wait = com.parameters[2] != 0;
 	bool allies = false;
 
-	if (active)
-		return !Game_Battle::IsBattleAnimationWaiting();
+	if (waiting_battle_anim) {
+		waiting_battle_anim = Game_Battle::IsBattleAnimationWaiting();
+		return !waiting_battle_anim;
+	}
 
 	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;

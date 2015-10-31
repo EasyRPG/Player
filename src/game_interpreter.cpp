@@ -46,7 +46,6 @@
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
-	active = false;
 	index = 0;
 	updating = false;
 	clear_child = false;
@@ -63,8 +62,9 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
-	move_route_waiting = false;		// waiting for move completion
 	wait_count = 0;					// wait count
+	waiting_battle_anim = false;
+	waiting_pan_screen = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 	if (child_interpreter) {		// clear child interpreter for called events
@@ -162,23 +162,6 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
-		// If waiting for a move to end
-		if (move_route_waiting) {
-			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
-				break;
-			}
-
-			Game_Event* g_event;
-			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-				g_event = Game_Map::GetEvents().find(i)->second.get();
-
-				if (g_event->IsMoveRouteOverwritten()) {
-					break;
-				}
-			}
-			move_route_waiting = false;
-		}
-
 		if (wait_count > 0) {
 			wait_count--;
 			break;
@@ -230,11 +213,8 @@ void Game_Interpreter::Update() {
 
 		runned = true;
 		if (!ExecuteCommand()) {
-			active = true;
 			break;
 		}
-
-		active = false;
 
 		// FIXME?
 		// After calling SkipTo this index++ will skip execution of e.g. END.
@@ -246,7 +226,6 @@ void Game_Interpreter::Update() {
 
 	if (loop_count > 9999) {
 		// Executed Events Count exceeded (10000)
-		active = true;
 		Output::Debug("Event %d exceeded execution limit", event_id);
 	}
 

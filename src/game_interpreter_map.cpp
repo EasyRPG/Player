@@ -1597,10 +1597,11 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	int direction;
 	int distance;
 	int speed;
-	bool wait = false;
 
-	if (active)
-		return !Game_Map::IsPanWaiting();
+	if (waiting_pan_screen) {
+		waiting_pan_screen = Game_Map::IsPanWaiting();
+		return !waiting_pan_screen;
+	}
 
 	switch (com.parameters[0]) {
 	case 0: // Lock
@@ -1613,17 +1614,17 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		direction = com.parameters[1];
 		distance = com.parameters[2];
 		speed = com.parameters[3];
-		wait = com.parameters[4] != 0;
-		Game_Map::StartPan(direction, distance, speed, wait);
+		waiting_pan_screen = com.parameters[4] != 0;
+		Game_Map::StartPan(direction, distance, speed, waiting_pan_screen);
 		break;
 	case 3: // Reset
 		speed = com.parameters[3];
-		wait = com.parameters[4] != 0;
-		Game_Map::ResetPan(speed, wait);
+		waiting_pan_screen = com.parameters[4] != 0;
+		Game_Map::ResetPan(speed, waiting_pan_screen);
 		break;
 	}
 
-	return !wait;
+	return !waiting_pan_screen;
 }
 
 bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) { // code 10500
@@ -1658,12 +1659,14 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 }
 
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
-	if (active)
-		return !Game_Map::IsBattleAnimationWaiting();
+	if (waiting_battle_anim) {
+		waiting_battle_anim = Game_Map::IsBattleAnimationWaiting();
+		return !waiting_battle_anim;
+	}
 
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
-	bool wait = com.parameters[2] > 0;
+	waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
 	if (evt_id == Game_Character::CharThisEvent)
@@ -1671,7 +1674,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 
 	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
 
-	return !wait;
+	return !waiting_battle_anim;
 }
 
 bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { // code 1008
