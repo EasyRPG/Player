@@ -97,9 +97,8 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 
 	CancelMenuCall();
 
-	if (main_flag) {
+	if (main_flag && depth == 0)
 		Game_Message::SetFaceName("");
-	}
 
 	if (!updating && depth == 0)
 		Update();
@@ -201,10 +200,8 @@ void Game_Interpreter::Update() {
 				break;
 		}
 
-		if (!Main_Data::game_player->IsTeleporting()) {
-			if (main_flag && Game_Map::GetNeedRefresh()) {
-				Game_Map::Refresh();
-			}
+		if (!Main_Data::game_player->IsTeleporting() && Game_Map::GetNeedRefresh()) {
+			Game_Map::Refresh();
 		}
 
 		if (list.empty()) {
@@ -355,7 +352,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 }
 
 bool Game_Interpreter::CommandEnd() { // code 10
-	if (main_flag) {
+	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
 	}
 
@@ -366,7 +363,7 @@ bool Game_Interpreter::CommandEnd() { // code 10
 
 	list.clear();
 
-	if ((main_flag) && (event_id > 0)) {
+	if (main_flag && depth == 0 && event_id > 0) {
 		Game_Map::GetEvents().find(event_id)->second->StopTalkToHero();
 	}
 

@@ -462,8 +462,11 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
 	Main_Data::game_player->StartTeleport();
 
-	index++;
+	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
+	if (!main_flag)
+		return true;
 
+	index++;
 	return false;
 }
 
@@ -566,8 +569,11 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
 	Main_Data::game_player->StartTeleport();
 
-	index++;
+	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
+	if (!main_flag)
+		return true;
 
+	index++;
 	return false;
 }
 
@@ -1375,7 +1381,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 
 	clear_child = false;
 
-	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
+	child_interpreter.reset(new Game_Interpreter_Map(depth + 1, main_flag));
 
 	switch (com.parameters[0]) {
 		case 0: // Common Event
