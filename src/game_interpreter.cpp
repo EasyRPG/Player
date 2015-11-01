@@ -344,7 +344,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 }
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 	if (com.parameters.size() <= 1 ||
 		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
@@ -354,7 +354,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 	}
 }
 
-bool Game_Interpreter::CommandEnd() {
+bool Game_Interpreter::CommandEnd() { // code 10
 	if (main_flag) {
 		Game_Message::SetFaceName("");
 	}
@@ -399,7 +399,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 }
 
 // Command Show Message
-bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Code ShowMessage
+bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
 	// If there's a text already, return immediately
 	if (Game_Message::message_waiting)
 		return false;
@@ -487,7 +487,7 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 }
 
 // Command Show choices
-bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Code ShowChoice
+bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -505,7 +505,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Cod
 }
 
 // Command control switches
-bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // Code ControlSwitches
+bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // code 10210
 	int i;
 	switch (com.parameters[0]) {
 		case 0:
@@ -535,7 +535,7 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 }
 
 // Command control vars
-bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // Code ControlVars
+bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
 	int i, value = 0;
 	Game_Actor* actor;
 	Game_Character* character;
@@ -911,7 +911,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 }
 
 // Input Number.
-bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
 	if (Game_Message::message_waiting) {
 		return false;
 	}

@@ -540,7 +540,7 @@ bool Game_Interpreter_Map::CommandChangeMainMenuAccess(RPG::EventCommand const& 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) { // code 10640
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 	if (actor != NULL) {
 		actor->SetFace(com.string, com.parameters[1]);
@@ -571,7 +571,7 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
@@ -649,7 +649,7 @@ bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
 	}
 }
 
-bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
