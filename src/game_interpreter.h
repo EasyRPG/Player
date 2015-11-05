@@ -42,6 +42,7 @@ public:
 	void Clear();
 	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
 
+	bool HasRunned() const;
 	bool IsRunning() const;
 	void Update();
 
@@ -65,8 +66,7 @@ protected:
 	bool main_flag;
 
 	int loop_count;
-
-	bool move_route_waiting;
+	bool runned;
 
 	unsigned int index;
 	int map_id;
@@ -80,7 +80,8 @@ protected:
 	std::vector<RPG::EventCommand> list;
 
 	int button_timer;
-	bool active;
+	bool waiting_battle_anim;
+	bool waiting_pan_screen;
 	bool updating;
 	bool clear_child;
 
@@ -162,7 +163,6 @@ protected:
 
 	int debug_x;
 	int debug_y;
-
 };
 
 #endif

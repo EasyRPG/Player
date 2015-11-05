@@ -436,6 +436,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -461,8 +462,11 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
 	Main_Data::game_player->StartTeleport();
 
-	index++;
+	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
+	if (!main_flag)
+		return true;
 
+	index++;
 	return false;
 }
 
@@ -471,6 +475,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -481,6 +486,7 @@ bool Game_Interpreter_Map::CommandStoreEventID(RPG::EventCommand const& com) { /
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 	Game_Variables[var_id] = events.size() > 0 ? events.back()->GetId() : 0;
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -537,7 +543,7 @@ bool Game_Interpreter_Map::CommandChangeMainMenuAccess(RPG::EventCommand const& 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) { // code 10640
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
 	if (actor != NULL) {
 		actor->SetFace(com.string, com.parameters[1]);
@@ -563,12 +569,15 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
 	Main_Data::game_player->StartTeleport();
 
-	index++;
+	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
+	if (!main_flag)
+		return true;
 
+	index++;
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
@@ -646,7 +655,7 @@ bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
 	}
 }
 
-bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
@@ -1372,7 +1381,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 
 	clear_child = false;
 
-	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
+	child_interpreter.reset(new Game_Interpreter_Map(depth + 1, main_flag));
 
 	switch (com.parameters[0]) {
 		case 0: // Common Event
@@ -1527,6 +1536,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	}
 
 	Game_Variables[var_id] = result;
+	Game_Map::SetNeedRefresh(true);
 
 	if (!wait)
 		return true;
@@ -1593,10 +1603,11 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	int direction;
 	int distance;
 	int speed;
-	bool wait = false;
 
-	if (active)
-		return !Game_Map::IsPanWaiting();
+	if (waiting_pan_screen) {
+		waiting_pan_screen = Game_Map::IsPanWaiting();
+		return !waiting_pan_screen;
+	}
 
 	switch (com.parameters[0]) {
 	case 0: // Lock
@@ -1609,17 +1620,17 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		direction = com.parameters[1];
 		distance = com.parameters[2];
 		speed = com.parameters[3];
-		wait = com.parameters[4] != 0;
-		Game_Map::StartPan(direction, distance, speed, wait);
+		waiting_pan_screen = com.parameters[4] != 0;
+		Game_Map::StartPan(direction, distance, speed, waiting_pan_screen);
 		break;
 	case 3: // Reset
 		speed = com.parameters[3];
-		wait = com.parameters[4] != 0;
-		Game_Map::ResetPan(speed, wait);
+		waiting_pan_screen = com.parameters[4] != 0;
+		Game_Map::ResetPan(speed, waiting_pan_screen);
 		break;
 	}
 
-	return !wait;
+	return !waiting_pan_screen;
 }
 
 bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) { // code 10500
@@ -1644,20 +1655,24 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 
 		CheckGameOver();
 
-		if (com.parameters[6] != 0)
+		if (com.parameters[6] != 0) {
 			Game_Variables[com.parameters[7]] = result;
+			Game_Map::SetNeedRefresh(true);
+		}
 	}
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
-	if (active)
-		return !Game_Map::IsBattleAnimationWaiting();
+	if (waiting_battle_anim) {
+		waiting_battle_anim = Game_Map::IsBattleAnimationWaiting();
+		return !waiting_battle_anim;
+	}
 
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
-	bool wait = com.parameters[2] > 0;
+	waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
 	if (evt_id == Game_Character::CharThisEvent)
@@ -1665,7 +1680,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 
 	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
 
-	return !wait;
+	return !waiting_battle_anim;
 }
 
 bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { // code 1008

@@ -330,7 +330,7 @@ void Game_Player::UpdateScroll() {
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
 
-	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
+	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
 		switch (Input::dir4) {
 			case 2:
 				Move(Down);
@@ -385,9 +385,11 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 
 	if (last_moving && CheckTouchEvent()) return;
 
-	if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
-		if ( GetOnOffVehicle() ) return;
-		if ( CheckActionEvent() ) return;
+	if (!(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
+		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
+			if ( GetOnOffVehicle() ) return;
+			if ( CheckActionEvent() ) return;
+		}
 	}
 
 	if (last_moving)

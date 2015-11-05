@@ -49,13 +49,13 @@ void Game_CommonEvent::Refresh() {
 				interpreter.reset(battle
 								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
-				Update();
 			}
 			return;
 		}
 	}
 	if (interpreter) {
-		interpreter->Clear();
+		if (!interpreter->IsRunning())
+			interpreter->Clear();
 		Game_Map::ReserveInterpreterDeletion(interpreter);
 		interpreter.reset();
 	}
