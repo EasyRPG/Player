@@ -285,7 +285,6 @@ void Game_Map::PrepareSave() {
 
 	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
 	save_common_events.clear();
-	save_common_events.resize(Data::commonevents.size());
 
 	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
 		save_common_events.push_back(RPG::SaveCommonEvent());
