@@ -247,13 +247,13 @@ void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	}
 	EASYRPG_SHARED_PTR<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!sound) {
-		Output::Warning("Couldn't load %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	int channel = Mix_PlayChannel(-1, sound.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Warning("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	sounds[channel] = sound;
