@@ -107,6 +107,11 @@ public:
 private:
 	int common_event_id;
 	bool battle;
+	/**
+	 * If parallel interpreter is running (true) or suspended (false).
+	 * When switched to running it continues where it was suspended.
+	 */
+	bool parallel_running = false;
 
 	/** Interpreter for parallel common events. */
 	EASYRPG_SHARED_PTR<Game_Interpreter> interpreter;

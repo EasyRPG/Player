@@ -50,21 +50,17 @@ void Game_CommonEvent::Refresh() {
 								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
 			}
-			return;
+			parallel_running = true;
+		} else {
+			parallel_running = false;
 		}
-	}
-	if (interpreter) {
-		if (!interpreter->IsRunning())
-			interpreter->Clear();
-		Game_Map::ReserveInterpreterDeletion(interpreter);
-		interpreter.reset();
 	}
 }
 
 void Game_CommonEvent::Update() {
 	CheckEventTriggerAuto();
 
-	if (interpreter) {
+	if (interpreter && parallel_running) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(GetList(), 0, -common_event_id, -2);
 		} else {
