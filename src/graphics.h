@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <list>
 
 #include "system.h"
 #include "drawable.h"

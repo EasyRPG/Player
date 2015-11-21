@@ -76,10 +76,10 @@ namespace {
 	bool ignore_pause = false;
 
 	MessageOverlay& message_overlay() {
-		static MessageOverlay* overlay = NULL;
+		static std::unique_ptr<MessageOverlay> overlay;
 		assert(DisplayUi);
 		if (!overlay) {
-			overlay = new MessageOverlay();
+			overlay.reset(new MessageOverlay());
 		}
 		return *overlay;
 	}
