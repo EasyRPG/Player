@@ -41,8 +41,6 @@ void Scene_Load::Action(int index) {
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 #endif
 
-	Player::CreateGameObjects();	
-
 	Player::LoadSavegame(save_name);
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);

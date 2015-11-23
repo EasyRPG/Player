@@ -67,7 +67,7 @@ void Scene_Map::Start() {
 }
 
 Scene_Map::~Scene_Map() {
-	Main_Data::game_screen->Reset();
+	Main_Data::Cleanup();
 }
 
 void Scene_Map::Continue() {

@@ -286,7 +286,7 @@ void Player::Exit() {
 	DisplayUi->UpdateDisplay();
 #endif
 
-	Main_Data::Cleanup();
+	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
