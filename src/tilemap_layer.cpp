@@ -307,7 +307,7 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 
 				} else { // Lower layer
 					int chip_index =
-						tile.ID >= BLOCK_E ? tile.ID - BLOCK_E + 18 :
+						tile.ID >= BLOCK_E ? substitutions[tile.ID - BLOCK_E] + 18 :
 						tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
 						tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
 						tile.ID / 1000;

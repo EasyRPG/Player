@@ -68,11 +68,8 @@ void Scene::MainFunction() {
 
 	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
 		Player::Update(false);
-		return;
-	}
-
-	if (!init) {
-		// Initialization after scene switch 
+	} else if (!init) {
+		// Initialization after scene switch
 		switch (push_pop_operation) {
 		case ScenePushed:
 			Start();
@@ -91,9 +88,9 @@ void Scene::MainFunction() {
 		init = true;
 
 		return;
+	} else {
+		Player::Update();
 	}
-
-	Player::Update();
 
 	if (Scene::instance.get() != this) {
 		// Shutdown after scene switch

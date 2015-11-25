@@ -245,6 +245,8 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::instance->type != Scene::Logo) {
 			Scene::PopUntil(Scene::Title);
+			// Do not update this scene until it's properly set up in the next main loop
+			update_scene = false;
 		}
 	}
 
@@ -286,7 +288,7 @@ void Player::Exit() {
 	DisplayUi->UpdateDisplay();
 #endif
 
-	Main_Data::Cleanup();
+	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
@@ -519,13 +521,15 @@ void Player::CreateGameObjects() {
 		if (!no_rtp_flag) {
 			FileFinder::InitRtpPaths();
 		}
+	}
+	init = true;
 
+	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
 		request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
-	init = true;
 
 	Main_Data::game_data.Setup();
 

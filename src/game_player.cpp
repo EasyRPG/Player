@@ -222,7 +222,6 @@ void Game_Player::PerformTeleport() {
 
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
-		Game_Map::Update(); // Execute remaining events (e.g. ones listed after a teleport)
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;
