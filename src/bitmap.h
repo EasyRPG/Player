@@ -699,10 +699,6 @@ protected:
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
-
-	void ReadPNG(FILE* stream, const void *data);
-	void ReadXYZ(const uint8_t *data, unsigned len);
-	void ReadXYZ(FILE *stream);
 	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
 	static pixman_image_t* GetSubimage(Bitmap const& src, const Rect& src_rect);
