@@ -119,6 +119,7 @@ private:
 	void UpdateScroll();
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();
+	bool CheckCollisionEvent();
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(const std::vector<int>& triggers);
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);
