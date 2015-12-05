@@ -209,15 +209,15 @@ bool Game_Interpreter_Battle::CommandChangeBattleBG(RPG::EventCommand const& com
 }
 
 bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const& com) {
-	int animation_id = com.parameters[0];
-	int target = com.parameters[1];
-	bool wait = com.parameters[2] != 0;
-	bool allies = false;
-
 	if (waiting_battle_anim) {
 		waiting_battle_anim = Game_Battle::IsBattleAnimationWaiting();
 		return !waiting_battle_anim;
 	}
+
+	int animation_id = com.parameters[0];
+	int target = com.parameters[1];
+	waiting_battle_anim = com.parameters[2] != 0;
+	bool allies = false;
 
 	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;
@@ -234,7 +234,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 
 		Game_Battle::ShowBattleAnimation(animation_id, v, false);
 
-		return !wait;
+		return !waiting_battle_anim;
 	}
 	else {
 		Game_Battler* battler_target = NULL;
@@ -251,13 +251,13 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		}
 
 		if (!battler_target) {
-			return !wait;
+			return !waiting_battle_anim;
 		}
 
 		Game_Battle::ShowBattleAnimation(animation_id, battler_target);
 	}
 
-	return !wait;
+	return !waiting_battle_anim;
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
