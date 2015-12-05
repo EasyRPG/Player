@@ -158,7 +158,11 @@ void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_
 		gauge_x = 0;
 	}
 
-	int gauge_width = 25 * cur_value / max_value;
+	int gauge_width = 25;
+
+	if (max_value > 0) {
+		gauge_width = 25 * cur_value / max_value;
+	}
 
 	contents->StretchBlit(Rect(x, y, gauge_width, 16), *system2, Rect(48 + gauge_x, 32 + 16 * which, 16, 16), Opacity::opaque);
 }
