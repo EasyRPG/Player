@@ -1546,8 +1546,10 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	if (result == 0)
 		return false;
 
-	if (time)
-		Game_Variables[time_id] = button_timer;
+	if (time) {
+		// 10 per second
+		Game_Variables[time_id] = (int)((float)button_timer / Graphics::GetDefaultFps() * 10);
+	}
 
 	button_timer = 0;
 
@@ -1919,9 +1921,13 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			break;
 		case 8:
 			// TODO Key decision initiated this event
+			Output::Warning("Branch: Started using Key not implemented");
 			break;
 		case 9:
-			// TODO BGM Playing
+			// TODO BGM looped at least once
+			Output::Warning("Branch: BGM looped once not implemented");
+			// Lie and say yes...
+			result = true;
 			break;
 		case 10:
 			value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);

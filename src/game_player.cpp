@@ -411,7 +411,13 @@ bool Game_Player::CheckActionEvent() {
 bool Game_Player::CheckTouchEvent() {
 	if (InAirship())
 		return false;
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
+}
+
+bool Game_Player::CheckCollisionEvent() {
+	if (InAirship())
+		return false;
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
 bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
@@ -614,6 +620,8 @@ void Game_Player::BeginMove() {
 		Game_System::SePlay(terrain.footstep);
 	}
 	Main_Data::game_party->ApplyDamage(terrain.damage);
+
+	CheckCollisionEvent();
 }
 
 void Game_Player::Unboard() {
