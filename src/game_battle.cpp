@@ -89,6 +89,7 @@ void Game_Battle::Quit() {
 	// Remove conditions which end after battle
 	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
 		(*it)->RemoveBattleStates();
+		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
 	Main_Data::game_party->ResetBattle();
