@@ -66,6 +66,7 @@ SdlAudio::SdlAudio() :
 	}
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 
+#if SDL_MIXER_MAJOR_VERSION>1
 	int audio_rate;
 	Uint16 audio_format;
 	int audio_channels;
@@ -91,6 +92,7 @@ SdlAudio::SdlAudio() :
 	} else {
 		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
 	}
+#endif
 }
 
 SdlAudio::~SdlAudio() {
