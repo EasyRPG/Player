@@ -20,6 +20,9 @@
 #include "filefinder.h"
 #include "output.h"
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
 
 #ifdef _WIN32
 #  include "util_win.h"
@@ -39,13 +42,55 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
+#elif EMSCRIPTEN
+	int const frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
 #else
 	int const frequency = 44100;
 #endif
+
+#ifdef EMSCRIPTEN
+	// Note: this requires a patched SDL_mixer currently
+	if (Mix_OpenAudioDevice(NULL, 0, frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+#else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+#endif
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
+
+	int audio_rate;
+	Uint16 audio_format;
+	int audio_channels;
+	if (Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+		const char *audio_format_str;
+		switch (audio_format) {
+			case AUDIO_U8: audio_format_str = "U8"; break;
+			case AUDIO_S8: audio_format_str = "S8"; break;
+			case AUDIO_U16LSB: audio_format_str = "U16LSB"; break;
+			case AUDIO_S16LSB: audio_format_str = "S16LSB"; break;
+			case AUDIO_U16MSB: audio_format_str = "U16MSB"; break;
+			case AUDIO_S16MSB: audio_format_str = "S16MSB"; break;
+			case AUDIO_S32LSB: audio_format_str = "S32LSB"; break;
+			case AUDIO_S32MSB: audio_format_str = "S32MSB"; break;
+			case AUDIO_F32LSB: audio_format_str = "F32LSB"; break;
+			case AUDIO_F32MSB: audio_format_str = "F32MSB"; break;
+			default: audio_format_str = "Unknown"; break;
+		}
+		Output::Debug("Opened audio at %d Hz (%s), format: %s",
+			audio_rate,
+			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
+			audio_format_str);
+	} else {
+		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
+	}
 }
 
 SdlAudio::~SdlAudio() {
@@ -86,14 +131,14 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	BGM_Volume(volume);
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
-	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
-	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+			? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
 #else
-	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+		Mix_FadeInMusic(bgm.get(), -1, fadein)
 #endif
-	     == -1) {
-		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
-		return;
+		== -1) {
+			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			return;
 	}
 }
 
