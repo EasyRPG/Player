@@ -1546,8 +1546,10 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	if (result == 0)
 		return false;
 
-	if (time)
-		Game_Variables[time_id] = button_timer;
+	if (time) {
+		// 10 per second
+		Game_Variables[time_id] = (int)((float)button_timer / Graphics::GetDefaultFps() * 10);
+	}
 
 	button_timer = 0;
 
