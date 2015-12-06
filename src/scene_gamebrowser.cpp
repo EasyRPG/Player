@@ -34,19 +34,6 @@ Scene_GameBrowser::Scene_GameBrowser() {
 void Scene_GameBrowser::Start() {
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
 	CreateWindows();
-
-	/*if (Player::new_game_flag) {
-		Player::SetupPlayerSpawn();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
-	}
-	else if (Player::load_game_id > 0) {
-	std::stringstream ss;
-	ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
-
-	std::string save_name = FileFinder::FindDefault(ss.str());
-	Player::LoadSavegame(save_name);
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true));
-	}*/
 }
 
 void Scene_GameBrowser::Continue() {
@@ -74,11 +61,11 @@ void Scene_GameBrowser::CreateWindows() {
 	options.push_back("Games");
 	options.push_back("Exit");
 
-	command_window.reset(new Window_Command(options, 88));
+	command_window.reset(new Window_Command(options, 60));
 	command_window->SetY(32);
 	command_window->SetIndex(0);
 
-	gamelist_window.reset(new Window_GameList(88, 32, SCREEN_TARGET_WIDTH - 88, SCREEN_TARGET_HEIGHT - 32));
+	gamelist_window.reset(new Window_GameList(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
 	gamelist_window->Refresh();
 
 	if (!gamelist_window->HasValidGames()) {

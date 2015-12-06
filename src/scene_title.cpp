@@ -114,23 +114,14 @@ void Scene_Title::Update() {
 }
 
 bool Scene_Title::CheckContinue() {
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
-#ifdef EMSCRIPTEN
-	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, true);
-#else
-	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, false);
-#endif
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++)
 	{
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
-#ifdef EMSCRIPTEN
-		std::string filename = FileFinder::FindDefault(*tree, "Save", ss.str());
-#else
 		std::string filename = FileFinder::FindDefault(*tree, ss.str());
-#endif
 
 		if (!filename.empty()) {
 			return true;

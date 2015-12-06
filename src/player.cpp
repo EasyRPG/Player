@@ -558,6 +558,8 @@ void Player::LoadDatabase() {
 
 	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
 		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
+		// Unlikely to happen because of the game browser only launches valid games
+
 		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
 
 		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
@@ -775,6 +777,9 @@ void Player::PrintUsage() {
 	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
 	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
 	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
+
+	std::cout << "Game related parameters (e.g. new-game and load-game-id) don't work correctly when the " << std::endl;
+	std::cout << "startup directory does not contain a valid game (and the game browser loads)" << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }

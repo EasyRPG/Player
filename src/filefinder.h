@@ -217,6 +217,7 @@ namespace FileFinder {
 	 * @return directory tree
 	 */
 	const EASYRPG_SHARED_PTR<DirectoryTree> GetDirectoryTree();
+	const EASYRPG_SHARED_PTR<DirectoryTree> CreateSaveDirectoryTree();
 	EASYRPG_SHARED_PTR<DirectoryTree> CreateDirectoryTree(std::string const& p, bool recursive = true);
 
 	bool IsValidProject(DirectoryTree const& dir);

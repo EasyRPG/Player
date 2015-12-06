@@ -43,11 +43,7 @@ void Scene_File::Start() {
 	help_window->SetText(message);
 
 	// Refresh File Finder Save Folder
-#ifdef EMSCRIPTEN
-	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, true);
-#else
-	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, false);
-#endif
+	tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 0; i < 15; i++) {
 		EASYRPG_SHARED_PTR<Window_SaveFile>
@@ -58,11 +54,7 @@ void Scene_File::Start() {
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
 
-#ifdef EMSCRIPTEN
-		std::string file = FileFinder::FindDefault(*tree, "Save", ss.str());
-#else
 		std::string file = FileFinder::FindDefault(*tree, ss.str());
-#endif
 
 		if (!file.empty()) {
 			// File found
