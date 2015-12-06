@@ -122,7 +122,7 @@ void Scene_GameBrowser::UpdateCommand() {
 				command_window->SetActive(false);
 				command_window->SetIndex(-1);
 				gamelist_window->SetActive(true);
-				gamelist_window->SetIndex(0);
+				gamelist_window->SetIndex(old_gamelist_index);
 				break;
 			case About:
 				break;
@@ -137,6 +137,7 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 		command_window->SetActive(true);
 		command_window->SetIndex(0);
 		gamelist_window->SetActive(false);
+		old_gamelist_index = gamelist_window->GetIndex();
 		gamelist_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		load_window->SetVisible(true);

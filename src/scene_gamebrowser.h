@@ -86,6 +86,8 @@ private:
 	boost::scoped_ptr<Window_About> about_window;
 
 	bool game_loading = false;
+
+	int old_gamelist_index = 0;
 };
 
 #endif
