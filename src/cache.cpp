@@ -88,27 +88,7 @@ namespace {
 
 	}; // struct Material
 
-	template<Material::Type T>
-	BitmapRef DrawCheckerboard() {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
-
-		Spec const& s = spec[T];
-
-		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
-
-		// ToDo: Maybe use different renderers depending on material
-		// Will look ugly for some image types
-
-		// Draw chess board
-		Color color[2] = { Color(255, 255, 255, 255), Color(128, 128, 128, 255) };
-		for (int i = 0; i < s.max_width / 16; ++i) {
-			for (int j = 0; j < s.max_height / 16; ++j) {
-				bitmap->FillRect(Rect(i * 16, j * 16, 16, 16), color[(i + j) % 2]);
-			}
-		}
-
-		return bitmap;
-	}
+	template<Material::Type T> BitmapRef DrawCheckerboard();
 
 	BitmapRef DummySystem() {
 		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::System);
@@ -154,6 +134,28 @@ namespace {
 		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func },
 		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func },
 	};
+
+	template<Material::Type T>
+	BitmapRef DrawCheckerboard() {
+		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+
+		Spec const& s = spec[T];
+
+		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
+
+		// ToDo: Maybe use different renderers depending on material
+		// Will look ugly for some image types
+
+		// Draw chess board
+		Color color[2] = { Color(255, 255, 255, 255), Color(128, 128, 128, 255) };
+		for (int i = 0; i < s.max_width / 16; ++i) {
+			for (int j = 0; j < s.max_height / 16; ++j) {
+				bitmap->FillRect(Rect(i * 16, j * 16, 16, 16), color[(i + j) % 2]);
+			}
+		}
+
+		return bitmap;
+	}
 
 	template<Material::Type T>
 	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
