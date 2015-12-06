@@ -77,6 +77,11 @@ private:
 
 	/** Window displaying help text. */
 	boost::scoped_ptr<Window_Help> help_window;
+
+	/** Window displaying the loading text */
+	boost::scoped_ptr<Window_Help> load_window;
+
+	bool game_loading = false;
 };
 
 #endif

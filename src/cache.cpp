@@ -113,7 +113,7 @@ namespace {
 	struct Spec {
 		char const* directory;
 		bool transparent;
-		int min_width , max_width ;
+		int min_width , max_width;
 		int min_height, max_height;
 		std::function<BitmapRef()> dummy_renderer;
 	} const spec[] = {

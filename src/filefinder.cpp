@@ -335,7 +335,9 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 	}
 }
 
-void FileFinder::InitRtpPaths() {
+void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
+	search_paths.clear();
+
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
 	return;
@@ -399,7 +401,7 @@ void FileFinder::InitRtpPaths() {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
-	if (search_paths.empty()) {
+	if (warn_no_rtp_found && search_paths.empty()) {
 		Output::Warning("RTP not found. This may create missing file errors.\n"
 			"Install RTP files or check they are installed fine.\n"
 			"If this game really does not require RTP, then add\n"
@@ -409,6 +411,7 @@ void FileFinder::InitRtpPaths() {
 
 void FileFinder::Quit() {
 	search_paths.clear();
+	game_directory_tree.reset(new FileFinder::DirectoryTree());
 }
 
 FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {

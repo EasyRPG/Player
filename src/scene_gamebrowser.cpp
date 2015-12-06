@@ -37,12 +37,19 @@ void Scene_GameBrowser::Start() {
 }
 
 void Scene_GameBrowser::Continue() {
+	Data::Clear();
 	Player::ResetGameObjects();
+
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
 	Game_System::BgmStop();
 }
 
 void Scene_GameBrowser::Update() {
+	if (game_loading) {
+		BootGame();
+		return;
+	}
+
 	command_window->Update();
 	gamelist_window->Update();
 
@@ -74,6 +81,10 @@ void Scene_GameBrowser::CreateWindows() {
 
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText("EasyRPG Player - RPG Maker 2000/2003 interpreter");
+
+	load_window.reset(new Window_Help(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32));
+	load_window->SetText("Loading...");
+	load_window->SetVisible(false);
 }
 
 void Scene_GameBrowser::UpdateCommand() {
@@ -106,7 +117,8 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 		gamelist_window->SetActive(false);
 		gamelist_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		BootGame();
+		load_window->SetVisible(true);
+		game_loading = true;
 	}
 }
 
@@ -118,4 +130,7 @@ void Scene_GameBrowser::BootGame() {
 	Player::CreateGameObjects();
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>());
+
+	game_loading = false;
+	load_window->SetVisible(false);
 }
