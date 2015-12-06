@@ -47,6 +47,8 @@ public:
 	 */
 	void DrawItem(int index);
 
+	void DrawErrorText();
+
 	/**
 	 * @return true if at least one valid game is in the directory
 	 */

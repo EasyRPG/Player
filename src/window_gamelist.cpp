@@ -40,14 +40,21 @@ void Window_GameList::Refresh() {
 		}
 	}
 
-	item_max = std::max((size_t)1, game_directories.size());
+	if (HasValidGames()) {
+		item_max = game_directories.size();
 
-	CreateContents();
+		CreateContents();
 
-	contents->Clear();
+		contents->Clear();
 
-	for (int i = 0; i < item_max; ++i) {
-		DrawItem(i);
+		for (int i = 0; i < item_max; ++i) {
+			DrawItem(i);
+		}
+	}
+	else {
+		SetContents(Bitmap::Create(width - 16, height - 16));
+
+		DrawErrorText();
 	}
 }
 
@@ -60,11 +67,28 @@ void Window_GameList::DrawItem(int index) {
 	if (HasValidGames()) {
 		text = game_directories[index];
 	}
-	else {
-		text = "No games found :(";
-	}
 
 	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
+}
+
+void Window_GameList::DrawErrorText() {
+	std::vector<std::string> error_msg = {
+		"Games must be in a direct subdirectory",
+		"and must have the files RPG_RT.ldb and",
+		"RPG_RT.lmt in their main directory.",
+		"",
+		"This engine only supports RPG Maker 2000",
+		"and 2003 games.",
+		"",
+		"RPG Maker XP, VX, VX Ace and MV are NOT",
+		"supported."
+	};
+
+	contents->TextDraw(0, 0, Font::ColorKnockout, "No games found in the current directory");
+	
+	for (size_t i = 0; i < error_msg.size(); ++i) {
+		contents->TextDraw(0, 12 * (i + 2), Font::ColorCritical, error_msg[i]);
+	}
 }
 
 bool Window_GameList::HasValidGames()
