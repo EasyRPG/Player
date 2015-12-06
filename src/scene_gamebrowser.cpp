@@ -66,6 +66,7 @@ void Scene_GameBrowser::CreateWindows() {
 	std::vector<std::string> options;
 
 	options.push_back("Games");
+	options.push_back("About");
 	options.push_back("Exit");
 
 	command_window.reset(new Window_Command(options, 60));
@@ -85,27 +86,47 @@ void Scene_GameBrowser::CreateWindows() {
 	load_window.reset(new Window_Help(SCREEN_TARGET_WIDTH / 4, SCREEN_TARGET_HEIGHT / 2 - 16, SCREEN_TARGET_WIDTH / 2, 32));
 	load_window->SetText("Loading...");
 	load_window->SetVisible(false);
+
+	about_window.reset(new Window_About(60, 32, SCREEN_TARGET_WIDTH - 60, SCREEN_TARGET_HEIGHT - 32));
+	about_window->Refresh();
+	about_window->SetVisible(false);
 }
 
 void Scene_GameBrowser::UpdateCommand() {
+	int menu_index = command_window->GetIndex();
+
+	switch (menu_index) {
+		case GameList:
+			gamelist_window->SetVisible(true);
+			about_window->SetVisible(false);
+			break;
+		case About:
+			gamelist_window->SetVisible(false);
+			about_window->SetVisible(true);
+			break;
+		default:
+			break;
+	}
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int menu_index = command_window->GetIndex();
 
 		switch (menu_index) {
-		case 0:
-			if (!gamelist_window->HasValidGames()) {
-				return;
-			}
-			command_window->SetActive(false);
-			command_window->SetIndex(-1);
-			gamelist_window->SetActive(true);
-			gamelist_window->SetIndex(0);
-			break;
-		default:
-			Scene::Pop();
+			case GameList:
+				if (!gamelist_window->HasValidGames()) {
+					return;
+				}
+				command_window->SetActive(false);
+				command_window->SetIndex(-1);
+				gamelist_window->SetActive(true);
+				gamelist_window->SetIndex(0);
+				break;
+			case About:
+				break;
+			default:
+				Scene::Pop();
 		}
 	}
 }

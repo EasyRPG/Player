@@ -20,6 +20,7 @@
 
 // Headers
 #include "scene.h"
+#include "window_about.h"
 #include "window_command.h"
 #include "window_help.h"
 #include "window_gamelist.h"
@@ -63,8 +64,8 @@ public:
 
 	/** Options available in a Rpg2k3 menu. */
 	enum CommandOptionType {
-		GameList = 1,
-		//About,
+		GameList = 0,
+		About,
 		Quit
 	};
 
@@ -80,6 +81,9 @@ private:
 
 	/** Window displaying the loading text */
 	boost::scoped_ptr<Window_Help> load_window;
+
+	/** Window dislaying about text */
+	boost::scoped_ptr<Window_About> about_window;
 
 	bool game_loading = false;
 };

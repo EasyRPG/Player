@@ -73,6 +73,12 @@ void Window_GameList::DrawItem(int index) {
 
 void Window_GameList::DrawErrorText() {
 	std::vector<std::string> error_msg = {
+#ifdef EMSCRIPTEN
+		"Did you type in a wrong URL?",
+		"",
+		"If you followed a link and stranded here",
+		"please notify us (see About page)."
+#else
 		"Games must be in a direct subdirectory",
 		"and must have the files RPG_RT.ldb and",
 		"RPG_RT.lmt in their main directory.",
@@ -82,12 +88,17 @@ void Window_GameList::DrawErrorText() {
 		"",
 		"RPG Maker XP, VX, VX Ace and MV are NOT",
 		"supported."
+#endif
 	};
 
-	contents->TextDraw(0, 0, Font::ColorKnockout, "No games found in the current directory");
-	
+#ifdef EMSCRIPTEN
+	contents->TextDraw(0, 0, Font::ColorKnockout, "The game was not found.");
+#else
+	contents->TextDraw(0, 0, Font::ColorKnockout, "No games found in the current directory.");
+#endif
+
 	for (size_t i = 0; i < error_msg.size(); ++i) {
-		contents->TextDraw(0, 12 * (i + 2), Font::ColorCritical, error_msg[i]);
+		contents->TextDraw(0, 2 + 14 * (i + 2), Font::ColorCritical, error_msg[i]);
 	}
 }
 

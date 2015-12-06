@@ -209,6 +209,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/util_win.h \
 	src/weather.cpp \
 	src/weather.h \
+	src/window_about.cpp \
+	src/window_about.h \
 	src/window_actorinfo.cpp \
 	src/window_actorinfo.h \
 	src/window_actorstatus.cpp \
