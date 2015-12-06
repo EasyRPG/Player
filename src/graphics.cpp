@@ -132,7 +132,10 @@ void Graphics::UpdateTitle() {
 	if (DisplayUi->IsFullscreen()) return;
 
 	std::stringstream title;
-	title << Player::game_title;
+	if (!Player::game_title.empty()) {
+		title << Player::game_title << " - ";
+	}
+	title << GAME_TITLE;
 
 	if (Player::fps_flag) {
 		title << " - FPS " << real_fps;
