@@ -411,7 +411,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 void FileFinder::Quit() {
 	search_paths.clear();
-	game_directory_tree.reset(new FileFinder::DirectoryTree());
+	game_directory_tree.reset();
 }
 
 FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {

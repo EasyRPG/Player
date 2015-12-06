@@ -95,6 +95,7 @@ void Game_Map::Init() {
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
+	common_events.clear();
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
