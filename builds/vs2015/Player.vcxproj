@@ -296,6 +296,7 @@
     <ClInclude Include="..\..\src\bitmap_hslrgb.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
+    <ClInclude Include="..\..\src\default_graphics.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
     <ClInclude Include="..\..\src\exfont.h" />

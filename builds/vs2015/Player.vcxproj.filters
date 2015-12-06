@@ -876,5 +876,8 @@
     <ClInclude Include="..\..\src\window_gamelist.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\default_graphics.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

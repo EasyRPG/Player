@@ -32,7 +32,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 }
 
 void Scene_GameBrowser::Start() {
-	Game_System::SetSystemName(std::string("\x01"));
+	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
 	CreateWindows();
 
 	/*if (Player::new_game_flag) {
@@ -50,6 +50,9 @@ void Scene_GameBrowser::Start() {
 }
 
 void Scene_GameBrowser::Continue() {
+	Player::ResetGameObjects();
+	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
+	Game_System::BgmStop();
 }
 
 void Scene_GameBrowser::Update() {

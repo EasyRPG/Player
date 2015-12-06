@@ -27,6 +27,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \
 	src/drawable.h \
