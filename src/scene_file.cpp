@@ -30,6 +30,7 @@
 #include "rpg_save.h"
 #include "scene_file.h"
 #include "bitmap.h"
+#include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
 	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
@@ -58,6 +59,10 @@ void Scene_File::Start() {
 
 		if (!file.empty()) {
 			// File found
+#ifdef _WIN32
+			file = ReaderUtil::Recode(file, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
 			std::auto_ptr<RPG::Save> savegame =
 				LSD_Reader::Load(file, Player::encoding);
 
