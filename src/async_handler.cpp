@@ -22,6 +22,7 @@
 #include "memory_management.h"
 #include "output.h"
 #include "player.h"
+#include "main_data.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
