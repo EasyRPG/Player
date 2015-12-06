@@ -143,8 +143,6 @@ void Player::Init(int argc, char *argv[]) {
 		Main_Data::Init();
 	}
 
-	FileFinder::Init();
-
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
@@ -481,49 +479,47 @@ static void OnSystemFileReady(FileRequestResult* result) {
 }
 
 void Player::CreateGameObjects() {
-	static bool init = false;
-	if (!init) {
-		GetEncoding();
-		escape_symbol = ReaderUtil::Recode("\\", encoding);
-		if (escape_symbol.empty()) {
-			Output::Error("Invalid encoding: %s.", encoding.c_str());
-		}
+	GetEncoding();
+	escape_symbol = ReaderUtil::Recode("\\", encoding);
+	if (escape_symbol.empty()) {
+		Output::Error("Invalid encoding: %s.", encoding.c_str());
+	}
 
-		LoadDatabase();
+	LoadDatabase();
 
-		INIReader ini(FileFinder::FindDefault(INI_NAME));
-		if (ini.ParseError() != -1) {
-			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-			game_title = ReaderUtil::Recode(title, encoding);
-			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-		}
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if (ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		game_title = ReaderUtil::Recode(title, encoding);
+		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+	}
 
-		Output::Debug("Loading game %s", Player::game_title.c_str());
+	Output::Debug("Loading game %s", Player::game_title.c_str());
 
-		if (Player::engine == EngineNone) {
-			if (Data::system.ldb_id == 2003) {
-				Player::engine = EngineRpg2k3;
+	if (Player::engine == EngineNone) {
+		if (Data::system.ldb_id == 2003) {
+			Player::engine = EngineRpg2k3;
 
-				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-					Output::Debug("Using RPG2k3 Interpreter");
-				}
-				else {
-					Player::engine |= EngineRpg2k3E;
-					Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
-				}
+			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+				Output::Debug("Using RPG2k3 Interpreter");
 			}
 			else {
-				Player::engine = EngineRpg2k;
-				Output::Debug("Using RPG2k Interpreter");
+				Player::engine |= EngineRpg2k3E;
+				Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
 			}
 		}
-
-		if (!no_rtp_flag) {
-			FileFinder::InitRtpPaths();
+		else {
+			Player::engine = EngineRpg2k;
+			Output::Debug("Using RPG2k Interpreter");
 		}
 	}
-	init = true;
 
+	if (!no_rtp_flag) {
+		FileFinder::InitRtpPaths();
+	}
+}
+
+void Player::ResetGameObjects() {
 	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
@@ -552,8 +548,8 @@ void Player::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
-		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
+	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
+		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
 		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
 
 		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
@@ -565,6 +561,11 @@ void Player::LoadDatabase() {
 	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
 	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
 	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+
+#ifdef _WIN32
+	edb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+	emt = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
 	bool easyrpg_project = !edb.empty() && !emt.empty();
 
@@ -579,6 +580,11 @@ void Player::LoadDatabase() {
 	else {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
+
+#ifdef _WIN32
+		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+		lmt = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
 		if (!LDB_Reader::Load(ldb, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());

@@ -15,50 +15,68 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_FILE_H_
-#define _SCENE_FILE_H_
+#ifndef _SCENE_GAMEBROWSER_H_
+#define _SCENE_GAMEBROWSER_H_
 
 // Headers
-#include <vector>
 #include "scene.h"
-#include "filefinder.h"
+#include "window_command.h"
 #include "window_help.h"
-#include "window_savefile.h"
+#include "window_gamelist.h"
 #include <boost/scoped_ptr.hpp>
 
 /**
- * Base class used by the save and load scenes.
+ * Game browser class.
  */
-class Scene_File : public Scene {
-
+class Scene_GameBrowser : public Scene {
 public:
 	/**
 	 * Constructor.
 	 *
-	 * @param message title message.
+	 * @param menu_index selected index in the menu.
 	 */
-	Scene_File(std::string message);
+	Scene_GameBrowser();
 
 	void Start();
+	void Continue();
 	void Update();
 
-	virtual void Action(int index) = 0;
+	/**
+	 * Creates the window displaying the options.
+	 */
+	void CreateWindows();
 
-	virtual bool IsSlotValid(int index) = 0;
+	/**
+	 * Update function if command window is active.
+	 */
+	void UpdateCommand();
 
-protected:
-	void Refresh();
+	/**
+	 * Update function if status window is active.
+	 */
+	void UpdateGameListSelection();
 
-	unsigned int index;
-	unsigned int top_index;
+	/**
+	 * Starts the selected game.
+	 */
+	void BootGame();
+
+	/** Options available in a Rpg2k3 menu. */
+	enum CommandOptionType {
+		GameList = 1,
+		//About,
+		Quit
+	};
+
+private:
+	/** Window displaying settings */
+	boost::scoped_ptr<Window_Command> command_window;
+
+	/** Window displaying the games. */
+	boost::scoped_ptr<Window_GameList> gamelist_window;
+
+	/** Window displaying help text. */
 	boost::scoped_ptr<Window_Help> help_window;
-	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
-	std::string message;
-
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
-
-	double latest_time;
-	int latest_slot;
 };
 
 #endif

@@ -217,6 +217,7 @@
     <ClCompile Include="..\..\src\scene_end.cpp" />
     <ClCompile Include="..\..\src\scene_equip.cpp" />
     <ClCompile Include="..\..\src\scene_file.cpp" />
+    <ClCompile Include="..\..\src\scene_gamebrowser.cpp" />
     <ClCompile Include="..\..\src\scene_gameover.cpp" />
     <ClCompile Include="..\..\src\scene_item.cpp" />
     <ClCompile Include="..\..\src\scene_load.cpp" />
@@ -261,6 +262,7 @@
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
     <ClCompile Include="..\..\src\window_equipstatus.cpp" />
     <ClCompile Include="..\..\src\window_face.cpp" />
+    <ClCompile Include="..\..\src\window_gamelist.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_help.cpp" />
     <ClCompile Include="..\..\src\window_item.cpp" />
@@ -355,6 +357,7 @@
     <ClInclude Include="..\..\src\scene_end.h" />
     <ClInclude Include="..\..\src\scene_equip.h" />
     <ClInclude Include="..\..\src\scene_file.h" />
+    <ClInclude Include="..\..\src\scene_gamebrowser.h" />
     <ClInclude Include="..\..\src\scene_gameover.h" />
     <ClInclude Include="..\..\src\scene_item.h" />
     <ClInclude Include="..\..\src\scene_load.h" />
@@ -401,6 +404,7 @@
     <ClInclude Include="..\..\src\window_equipitem.h" />
     <ClInclude Include="..\..\src\window_equipstatus.h" />
     <ClInclude Include="..\..\src\window_face.h" />
+    <ClInclude Include="..\..\src\window_gamelist.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_help.h" />
     <ClInclude Include="..\..\src\window_item.h" />

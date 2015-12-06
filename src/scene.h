@@ -49,6 +49,7 @@ public:
 		Debug,
 		Logo,
 		Order,
+		GameBrowser,
 		SceneMax
 	};
 

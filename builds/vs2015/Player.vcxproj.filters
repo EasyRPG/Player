@@ -448,6 +448,12 @@
     <ClCompile Include="..\..\lib\shinonome\mincho.cxx">
       <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_gamebrowser.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_gamelist.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -863,6 +869,12 @@
     </ClInclude>
     <ClInclude Include="..\..\lib\shinonome\shinonome.hxx">
       <Filter>Source Files\Shinonome</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_gamebrowser.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_gamelist.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

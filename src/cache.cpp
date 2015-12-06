@@ -119,6 +119,10 @@ namespace {
 
 		string_pair const key(folder_name, filename);
 
+		if (T == Material::System) {
+			return(cache[key] = Bitmap::Create(system_h, sizeof(system_h), s.transparent, Bitmap::System)).lock();
+		}
+
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
 
 		// ToDo: Maybe use different renderers depending on material
@@ -184,17 +188,33 @@ namespace {
 BOOST_PP_SEQ_FOR_EACH(macro, ,
 					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(System)(System2)(Frame)(Title)
+					  (Panorama)(System2)(Frame)(Title)
 					  )
 
 #undef macro
+
+BitmapRef Cache::System(const std::string& f) {
+	if (f == "\x01") {
+		string_pair const hash("System", "\x01");
+
+		cache_type::const_iterator const it = cache.find(hash);
+
+		if (it == cache.end() || it->second.expired()) {
+			return(cache[hash] = Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::System)).lock();
+		}
+		else { return it->second.lock(); }
+	}
+
+	bool trans = spec[Material::System].transparent;
+	return LoadBitmap<Material::System>(f, trans);
+}
 
 BitmapRef Cache::Picture(const std::string& f, bool trans) {
 	return LoadBitmap<Material::Picture>(f, trans);
 }
 
 BitmapRef Cache::Exfont() {
-	string_pair const hash("\x00","ExFont");
+	string_pair const hash("ExFont","ExFont");
 
 	cache_type::const_iterator const it = cache.find(hash);
 

@@ -44,9 +44,9 @@ void Scene_File::Start() {
 
 	// Refresh File Finder Save Folder
 #ifdef EMSCRIPTEN
-	tree = FileFinder::CreateProjectTree(Main_Data::project_path, true);
+	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, true);
 #else
-	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
+	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, false);
 #endif
 
 	for (int i = 0; i < 15; i++) {

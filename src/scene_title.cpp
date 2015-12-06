@@ -67,7 +67,7 @@ void Scene_Title::Continue() {
 	// e.g. by pressing F12
 	Cache::Clear();
 
-	Player::CreateGameObjects();
+	Player::ResetGameObjects();
 
 	Start();
 }
@@ -114,11 +114,11 @@ void Scene_Title::Update() {
 }
 
 bool Scene_Title::CheckContinue() {
-	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
 #ifdef EMSCRIPTEN
-	tree = FileFinder::CreateProjectTree(Main_Data::project_path, true);
+	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, true);
 #else
-	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
+	tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, false);
 #endif
 
 	for (int i = 1; i <= 15; i++)
@@ -191,8 +191,6 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	Player::CreateGameObjects();
-
 	Scene::Push(Scene_Battle::Create(), true);
 }
 
