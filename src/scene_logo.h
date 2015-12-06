@@ -26,7 +26,9 @@
 
 /**
  * Scene Logo class.
- * Displays the shiny EasyRPG logo on startup.
+ * Displays the shiny EasyRPG logo on startup and inititalizes the game.
+ * When the startup directory does not contain a game it loads the Game Browser
+ * instead.
  */
 class Scene_Logo : public Scene {
 
