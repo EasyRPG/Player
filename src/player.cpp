@@ -88,12 +88,18 @@ namespace Player {
 	std::string escape_symbol;
 	int engine;
 	std::string game_title;
-	double start_time;
-	double next_frame;
 	int frames;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+}
+
+namespace {
+	double start_time;
+	double next_frame;
+
+	// Overwritten by --encoding
+	std::string forced_encoding;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -446,7 +452,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			encoding = *it;
+			forced_encoding = *it;
 		}
 		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
@@ -683,6 +689,8 @@ void Player::SetupPlayerSpawn() {
 }
 
 std::string Player::GetEncoding() {
+	encoding = forced_encoding;
+
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
 
