@@ -487,7 +487,13 @@ void Player::CreateGameObjects() {
 
 	LoadDatabase();
 
-	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	std::string ini_file = FileFinder::FindDefault(INI_NAME);
+
+#ifdef _WIN32
+	ini_file = ReaderUtil::Recode(ini_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
+	INIReader ini(ini_file);
 	if (ini.ParseError() != -1) {
 		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 		game_title = ReaderUtil::Recode(title, encoding);
@@ -517,6 +523,8 @@ void Player::CreateGameObjects() {
 	if (!no_rtp_flag) {
 		FileFinder::InitRtpPaths();
 	}
+
+	ResetGameObjects();
 }
 
 void Player::ResetGameObjects() {
@@ -563,8 +571,8 @@ void Player::LoadDatabase() {
 	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
 
 #ifdef _WIN32
-	edb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
-	emt = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+	edb = ReaderUtil::Recode(edb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+	emt = ReaderUtil::Recode(emt, "UTF-8", ReaderUtil::GetLocaleEncoding());
 #endif
 
 	bool easyrpg_project = !edb.empty() && !emt.empty();
@@ -583,7 +591,7 @@ void Player::LoadDatabase() {
 
 #ifdef _WIN32
 		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
-		lmt = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+		lmt = ReaderUtil::Recode(lmt, "UTF-8", ReaderUtil::GetLocaleEncoding());
 #endif
 
 		if (!LDB_Reader::Load(ldb, encoding)) {
@@ -668,12 +676,24 @@ void Player::SetupPlayerSpawn() {
 
 std::string Player::GetEncoding() {
 	if (encoding.empty()) {
-		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		std::string ini = FileFinder::FindDefault(INI_NAME);
+
+#ifdef _WIN32
+		ini = ReaderUtil::Recode(ini, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
+		encoding = ReaderUtil::GetEncoding(ini);
 	} else {
 		return encoding;
 	}
 	if (encoding.empty()) {
-		encoding = ReaderUtil::DetectEncoding(FileFinder::FindDefault(DATABASE_NAME));
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+
+#ifdef _WIN32
+		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
+		encoding = ReaderUtil::DetectEncoding(ldb);
 	} else {
 		return encoding;
 	}

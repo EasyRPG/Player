@@ -143,6 +143,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/scene_equip.h \
 	src/scene_file.cpp \
 	src/scene_file.h \
+	src/scene_gamebrowser.cpp \
+	src/scene_gamebrowser.h \
 	src/scene_gameover.cpp \
 	src/scene_gameover.h \
 	src/scene.h \
@@ -233,6 +235,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_equipstatus.h \
 	src/window_face.cpp \
 	src/window_face.h \
+	src/window_gamelist.cpp \
+	src/window_gamelist.h \
 	src/window_gold.cpp \
 	src/window_gold.h \
 	src/window.h \
