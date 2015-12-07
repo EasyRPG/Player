@@ -15,50 +15,53 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_FILE_H_
-#define _SCENE_FILE_H_
+#ifndef _WINDOW_GAMELIST_H_
+#define _WINDOW_GAMELIST_H_
 
 // Headers
 #include <vector>
-#include "scene.h"
-#include "filefinder.h"
 #include "window_help.h"
-#include "window_savefile.h"
-#include <boost/scoped_ptr.hpp>
+#include "window_selectable.h"
+#include "filefinder.h"
 
 /**
- * Base class used by the save and load scenes.
+ * Window_GameList class.
  */
-class Scene_File : public Scene {
+class Window_GameList : public Window_Selectable {
 
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param message title message.
 	 */
-	Scene_File(std::string message);
+	Window_GameList(int ix, int iy, int iwidth, int iheight);
 
-	void Start();
-	void Update();
-
-	virtual void Action(int index) = 0;
-
-	virtual bool IsSlotValid(int index) = 0;
-
-protected:
+	/**
+	 * Refreshes the item list.
+	 */
 	void Refresh();
 
-	unsigned int index;
-	unsigned int top_index;
-	boost::scoped_ptr<Window_Help> help_window;
-	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
-	std::string message;
+	/**
+	 * Draws an item together with the quantity.
+	 *
+	 * @param index index of item to draw.
+	 */
+	void DrawItem(int index);
 
+	void DrawErrorText();
+
+	/**
+	 * @return true if at least one valid game is in the directory
+	 */
+	bool HasValidGames();
+
+	/**
+	 * @return path to the selected game
+	 */
+	std::string GetGamePath();
+
+private:
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
-
-	double latest_time;
-	int latest_slot;
+	std::vector<std::string> game_directories;
 };
 
 #endif

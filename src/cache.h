@@ -25,6 +25,8 @@
 #include "color.h"
 #include "memory_management.h"
 
+#define CACHE_DEFAULT_BITMAP "\x01"
+
 /**
  * Cache namespace.
  */

@@ -15,50 +15,25 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_FILE_H_
-#define _SCENE_FILE_H_
+#ifndef _WINDOW_ABOUT_H_
+#define _WINDOW_ABOUT_H_
 
 // Headers
-#include <vector>
-#include "scene.h"
-#include "filefinder.h"
 #include "window_help.h"
-#include "window_savefile.h"
-#include <boost/scoped_ptr.hpp>
+#include "window_base.h"
 
 /**
- * Base class used by the save and load scenes.
+ * Window_About class.
  */
-class Scene_File : public Scene {
+class Window_About : public Window_Base {
 
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param message title message.
 	 */
-	Scene_File(std::string message);
+	Window_About(int ix, int iy, int iwidth, int iheight);
 
-	void Start();
-	void Update();
-
-	virtual void Action(int index) = 0;
-
-	virtual bool IsSlotValid(int index) = 0;
-
-protected:
 	void Refresh();
-
-	unsigned int index;
-	unsigned int top_index;
-	boost::scoped_ptr<Window_Help> help_window;
-	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
-	std::string message;
-
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
-
-	double latest_time;
-	int latest_slot;
 };
 
 #endif

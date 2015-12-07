@@ -27,6 +27,7 @@
 #include "player.h"
 #include "scene_save.h"
 #include "scene_file.h"
+#include "reader_util.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
@@ -93,17 +94,16 @@ void Scene_Save::Action(int index) {
 
 	Game_Map::PrepareSave();
 
-#ifdef EMSCRIPTEN
-	std::string save_file = FileFinder::MakePath("Save", ss.str());
-	std::string filename = FileFinder::FindDefault(*tree, "Save", ss.str());
-#else
 	std::string save_file = ss.str();
 	std::string filename = FileFinder::FindDefault(*tree, ss.str());
-#endif
 
 	if (filename.empty()) {
-		filename = FileFinder::MakePath(Main_Data::project_path, save_file);
+		filename = FileFinder::MakePath((*tree).directory_path, save_file);
 	}
+
+#ifdef _WIN32
+	filename = ReaderUtil::Recode(filename, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
 	LSD_Reader::Save(filename, Main_Data::game_data, Player::encoding);
 

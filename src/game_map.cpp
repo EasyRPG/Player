@@ -95,6 +95,7 @@ void Game_Map::Init() {
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
+	common_events.clear();
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
@@ -209,8 +210,16 @@ void Game_Map::SetupCommon(int _id) {
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
 		map_file = FileFinder::FindDefault(ss.str());
 
+#ifdef _WIN32
+		map_file = ReaderUtil::Recode(map_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
 		map = LMU_Reader::Load(map_file, Player::encoding);
 	} else {
+#ifdef _WIN32
+		map_file = ReaderUtil::Recode(map_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
 		map = LMU_Reader::LoadXml(map_file);
 	}
 	Output::Debug("Loading Map %s", map_file.c_str());

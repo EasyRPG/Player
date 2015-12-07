@@ -94,9 +94,15 @@ namespace Player {
 	void ParseCommandLine(int argc, char *argv[]);
 
 	/**
-	 * (Re)Initializes all game objects
+	 * Initializes all game objects
 	 */
 	void CreateGameObjects();
+
+	/**
+	 * Resets all game objects. Faster then CreateGameObjects because
+	 * the database is not reparsed.
+	 */
+	void ResetGameObjects();
 
 	/**
 	 * Loads all databases.

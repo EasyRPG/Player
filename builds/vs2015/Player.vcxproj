@@ -217,6 +217,7 @@
     <ClCompile Include="..\..\src\scene_end.cpp" />
     <ClCompile Include="..\..\src\scene_equip.cpp" />
     <ClCompile Include="..\..\src\scene_file.cpp" />
+    <ClCompile Include="..\..\src\scene_gamebrowser.cpp" />
     <ClCompile Include="..\..\src\scene_gameover.cpp" />
     <ClCompile Include="..\..\src\scene_item.cpp" />
     <ClCompile Include="..\..\src\scene_load.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\..\src\util_win.cpp" />
     <ClCompile Include="..\..\src\weather.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
+    <ClCompile Include="..\..\src\window_about.cpp" />
     <ClCompile Include="..\..\src\window_actorinfo.cpp" />
     <ClCompile Include="..\..\src\window_actorstatus.cpp" />
     <ClCompile Include="..\..\src\window_actortarget.cpp" />
@@ -261,6 +263,7 @@
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
     <ClCompile Include="..\..\src\window_equipstatus.cpp" />
     <ClCompile Include="..\..\src\window_face.cpp" />
+    <ClCompile Include="..\..\src\window_gamelist.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_help.cpp" />
     <ClCompile Include="..\..\src\window_item.cpp" />
@@ -294,6 +297,7 @@
     <ClInclude Include="..\..\src\bitmap_hslrgb.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
+    <ClInclude Include="..\..\src\default_graphics.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
     <ClInclude Include="..\..\src\exfont.h" />
@@ -355,6 +359,7 @@
     <ClInclude Include="..\..\src\scene_end.h" />
     <ClInclude Include="..\..\src\scene_equip.h" />
     <ClInclude Include="..\..\src\scene_file.h" />
+    <ClInclude Include="..\..\src\scene_gamebrowser.h" />
     <ClInclude Include="..\..\src\scene_gameover.h" />
     <ClInclude Include="..\..\src\scene_item.h" />
     <ClInclude Include="..\..\src\scene_load.h" />
@@ -388,6 +393,7 @@
     <ClInclude Include="..\..\src\util_win.h" />
     <ClInclude Include="..\..\src\weather.h" />
     <ClInclude Include="..\..\src\window.h" />
+    <ClInclude Include="..\..\src\window_about.h" />
     <ClInclude Include="..\..\src\window_actorinfo.h" />
     <ClInclude Include="..\..\src\window_actorstatus.h" />
     <ClInclude Include="..\..\src\window_actortarget.h" />
@@ -401,6 +407,7 @@
     <ClInclude Include="..\..\src\window_equipitem.h" />
     <ClInclude Include="..\..\src\window_equipstatus.h" />
     <ClInclude Include="..\..\src\window_face.h" />
+    <ClInclude Include="..\..\src\window_gamelist.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_help.h" />
     <ClInclude Include="..\..\src\window_item.h" />

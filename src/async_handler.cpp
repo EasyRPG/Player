@@ -22,6 +22,7 @@
 #include "memory_management.h"
 #include "output.h"
 #include "player.h"
+#include "main_data.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
@@ -217,7 +218,8 @@ void FileRequestAsync::DownloadDone(bool success) {
 
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
-			FileFinder::Init();
+			// Update directory structure (new file was added)
+			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::project_path));
 		}
 #endif
 

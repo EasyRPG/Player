@@ -29,6 +29,7 @@
 #include "cache.h"
 #include "filefinder.h"
 #include "exfont.h"
+#include "default_graphics.h"
 #include "bitmap.h"
 #include "output.h"
 #include "player.h"
@@ -87,42 +88,63 @@ namespace {
 
 	}; // struct Material
 
+	template<Material::Type T> BitmapRef DrawCheckerboard();
+
+	BitmapRef DummySystem() {
+		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::System);
+	}
+
+	std::function<BitmapRef()> backdrop_dummy_func = DrawCheckerboard<Material::Backdrop>;
+	std::function<BitmapRef()> battle_dummy_func = DrawCheckerboard<Material::Battle>;
+	std::function<BitmapRef()> charset_dummy_func = DrawCheckerboard<Material::Charset>;
+	std::function<BitmapRef()> chipset_dummy_func = DrawCheckerboard<Material::Chipset>;
+	std::function<BitmapRef()> faceset_dummy_func = DrawCheckerboard<Material::Faceset>;
+	std::function<BitmapRef()> gameover_dummy_func = DrawCheckerboard<Material::Gameover>;
+	std::function<BitmapRef()> monster_dummy_func = DrawCheckerboard<Material::Monster>;
+	std::function<BitmapRef()> panorama_dummy_func = DrawCheckerboard<Material::Panorama>;
+	std::function<BitmapRef()> picture_dummy_func = DrawCheckerboard<Material::Picture>;
+	std::function<BitmapRef()> title_dummy_func = DrawCheckerboard<Material::Title>;
+	std::function<BitmapRef()> system2_dummy_func = DrawCheckerboard<Material::System2>;
+	std::function<BitmapRef()> battle2_dummy_func = DrawCheckerboard<Material::Battle2>;
+	std::function<BitmapRef()> battlecharset_dummy_func = DrawCheckerboard<Material::Battlecharset>;
+	std::function<BitmapRef()> battleweapon_dummy_func = DrawCheckerboard<Material::Battleweapon>;
+	std::function<BitmapRef()> frame_dummy_func = DrawCheckerboard<Material::Frame>;
+
 	struct Spec {
 		char const* directory;
 		bool transparent;
-		int min_width , max_width ;
+		int min_width , max_width;
 		int min_height, max_height;
+		std::function<BitmapRef()> dummy_renderer;
 	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 160 },
-		{ "Battle", true, 480, 480, 96, 480 },
-		{ "CharSet", true, 288, 288, 256, 256 },
-		{ "ChipSet", true, 480, 480, 256, 256 },
-		{ "FaceSet", true, 192, 192, 192, 192 },
-		{ "GameOver", false, 320, 320, 240, 240 },
-		{ "Monster", true, 16, 320, 16, 160 },
-		{ "Panorama", false, 80, 640, 80, 480 },
-		{ "Picture", true, 1, 640, 1, 480 },
-		{ "System", true, 160, 160, 80, 80 },
-		{ "Title", false, 320, 320, 240, 240 },
-		{ "System2", true, 80, 80, 96, 96 },
-		{ "Battle2", true, 640, 640, 640, 640 },
-		{ "BattleCharSet", true, 144, 144, 384, 384 },
-		{ "BattleWeapon", true, 192, 192, 512, 512 },
-		{ "Frame", true, 320, 320, 240, 240 },
+		{ "Backdrop", false, 320, 320, 160, 160, backdrop_dummy_func},
+		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func },
+		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func },
+		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func },
+		{ "FaceSet", true, 192, 192, 192, 192, faceset_dummy_func },
+		{ "GameOver", false, 320, 320, 240, 240, gameover_dummy_func },
+		{ "Monster", true, 16, 320, 16, 160, monster_dummy_func },
+		{ "Panorama", false, 80, 640, 80, 480, panorama_dummy_func },
+		{ "Picture", true, 1, 640, 1, 480, picture_dummy_func },
+		{ "System", true, 160, 160, 80, 80, &DummySystem },
+		{ "Title", false, 320, 320, 240, 240, title_dummy_func },
+		{ "System2", true, 80, 80, 96, 96, system2_dummy_func },
+		{ "Battle2", true, 640, 640, 640, 640, battle2_dummy_func },
+		{ "BattleCharSet", true, 144, 144, 384, 384, battlecharset_dummy_func },
+		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func },
+		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func },
 	};
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
+	BitmapRef DrawCheckerboard() {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
 
-		string_pair const key(folder_name, filename);
-
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
 
 		// ToDo: Maybe use different renderers depending on material
-		// Will look ugly for some image types (especially System)
+		// Will look ugly for some image types
 
 		// Draw chess board
 		Color color[2] = { Color(255, 255, 255, 255), Color(128, 128, 128, 255) };
@@ -132,8 +154,18 @@ namespace {
 			}
 		}
 
-		// Draw filename
-		bitmap->TextDraw(4, 4, Color(255, 0, 0, 0), folder_name + "/" + filename);
+		return bitmap;
+	}
+
+	template<Material::Type T>
+	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
+		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+
+		Spec const& s = spec[T];
+
+		string_pair const key(folder_name, filename);
+
+		BitmapRef bitmap = s.dummy_renderer();
 
 		return (cache[key] = bitmap).lock();
 	}
@@ -143,6 +175,10 @@ namespace {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
+
+		if (f == CACHE_DEFAULT_BITMAP) {
+			return LoadDummyBitmap<T>(s.directory, f);
+		}
 
 		// Test if the file was requested asynchronously before.
 		// If not the file can't be expected to exist -> bug.
@@ -184,7 +220,7 @@ namespace {
 BOOST_PP_SEQ_FOR_EACH(macro, ,
 					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(System)(System2)(Frame)(Title)
+					  (Panorama)(System2)(Frame)(Title)(System)
 					  )
 
 #undef macro
@@ -194,7 +230,7 @@ BitmapRef Cache::Picture(const std::string& f, bool trans) {
 }
 
 BitmapRef Cache::Exfont() {
-	string_pair const hash("\x00","ExFont");
+	string_pair const hash("ExFont","ExFont");
 
 	cache_type::const_iterator const it = cache.find(hash);
 

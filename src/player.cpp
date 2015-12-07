@@ -88,12 +88,18 @@ namespace Player {
 	std::string escape_symbol;
 	int engine;
 	std::string game_title;
-	double start_time;
-	double next_frame;
 	int frames;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+}
+
+namespace {
+	double start_time;
+	double next_frame;
+
+	// Overwritten by --encoding
+	std::string forced_encoding;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -142,8 +148,6 @@ void Player::Init(int argc, char *argv[]) {
 		// Not overwritten by --project-path
 		Main_Data::Init();
 	}
-
-	FileFinder::Init();
 
 	DisplayUi.reset();
 
@@ -448,7 +452,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			encoding = *it;
+			forced_encoding = *it;
 		}
 		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
@@ -481,49 +485,55 @@ static void OnSystemFileReady(FileRequestResult* result) {
 }
 
 void Player::CreateGameObjects() {
-	static bool init = false;
-	if (!init) {
-		GetEncoding();
-		escape_symbol = ReaderUtil::Recode("\\", encoding);
-		if (escape_symbol.empty()) {
-			Output::Error("Invalid encoding: %s.", encoding.c_str());
-		}
+	GetEncoding();
+	escape_symbol = ReaderUtil::Recode("\\", encoding);
+	if (escape_symbol.empty()) {
+		Output::Error("Invalid encoding: %s.", encoding.c_str());
+	}
 
-		LoadDatabase();
+	LoadDatabase();
 
-		INIReader ini(FileFinder::FindDefault(INI_NAME));
-		if (ini.ParseError() != -1) {
-			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-			game_title = ReaderUtil::Recode(title, encoding);
-			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-		}
+	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
-		Output::Debug("Loading game %s", Player::game_title.c_str());
+#ifdef _WIN32
+	ini_file = ReaderUtil::Recode(ini_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
-		if (Player::engine == EngineNone) {
-			if (Data::system.ldb_id == 2003) {
-				Player::engine = EngineRpg2k3;
+	INIReader ini(ini_file);
+	if (ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		game_title = ReaderUtil::Recode(title, encoding);
+		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+	}
 
-				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-					Output::Debug("Using RPG2k3 Interpreter");
-				}
-				else {
-					Player::engine |= EngineRpg2k3E;
-					Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
-				}
+	Output::Debug("Loading game %s", Player::game_title.c_str());
+
+	if (Player::engine == EngineNone) {
+		if (Data::system.ldb_id == 2003) {
+			Player::engine = EngineRpg2k3;
+
+			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+				Output::Debug("Using RPG2k3 Interpreter");
 			}
 			else {
-				Player::engine = EngineRpg2k;
-				Output::Debug("Using RPG2k Interpreter");
+				Player::engine |= EngineRpg2k3E;
+				Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
 			}
 		}
-
-		if (!no_rtp_flag) {
-			FileFinder::InitRtpPaths();
+		else {
+			Player::engine = EngineRpg2k;
+			Output::Debug("Using RPG2k Interpreter");
 		}
 	}
-	init = true;
 
+	if (!no_rtp_flag) {
+		FileFinder::InitRtpPaths();
+	}
+
+	ResetGameObjects();
+}
+
+void Player::ResetGameObjects() {
 	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
@@ -552,8 +562,10 @@ void Player::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
-		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
+	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
+		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
+		// Unlikely to happen because of the game browser only launches valid games
+
 		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
 
 		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
@@ -565,6 +577,11 @@ void Player::LoadDatabase() {
 	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
 	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
 	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+
+#ifdef _WIN32
+	edb = ReaderUtil::Recode(edb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+	emt = ReaderUtil::Recode(emt, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
 	bool easyrpg_project = !edb.empty() && !emt.empty();
 
@@ -579,6 +596,11 @@ void Player::LoadDatabase() {
 	else {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
+
+#ifdef _WIN32
+		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+		lmt = ReaderUtil::Recode(lmt, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
 
 		if (!LDB_Reader::Load(ldb, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
@@ -606,7 +628,13 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
+#ifdef _WIN32
+	std::string save_filename = ReaderUtil::Recode(save_name, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#else
+	std::string save_filename = save_name;
+#endif
+
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_filename, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());
@@ -661,13 +689,27 @@ void Player::SetupPlayerSpawn() {
 }
 
 std::string Player::GetEncoding() {
+	encoding = forced_encoding;
+
 	if (encoding.empty()) {
-		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		std::string ini = FileFinder::FindDefault(INI_NAME);
+
+#ifdef _WIN32
+		ini = ReaderUtil::Recode(ini, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
+		encoding = ReaderUtil::GetEncoding(ini);
 	} else {
 		return encoding;
 	}
 	if (encoding.empty()) {
-		encoding = ReaderUtil::DetectEncoding(FileFinder::FindDefault(DATABASE_NAME));
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+
+#ifdef _WIN32
+		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
+#endif
+
+		encoding = ReaderUtil::DetectEncoding(ldb);
 	} else {
 		return encoding;
 	}
@@ -749,6 +791,9 @@ void Player::PrintUsage() {
 	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
 	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
 	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
+
+	std::cout << "Game related parameters (e.g. new-game and load-game-id) don't work correctly when the " << std::endl;
+	std::cout << "startup directory does not contain a valid game (and the game browser loads)" << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }
