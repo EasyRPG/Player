@@ -513,7 +513,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 }
 
 void Game_Event::Update() {
-	if (!data.active) {
+	if (!data.active || page == NULL) {
 		return;
 	}
 
