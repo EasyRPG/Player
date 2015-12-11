@@ -399,13 +399,9 @@ bool Game_Player::CheckActionEvent() {
 	if (InAirship())
 		return false;
 
-	if (CheckEventTriggerHere({RPG::EventPage::Trigger_action})) {
-		return true;
-	}
-
-	return CheckEventTriggerThere({RPG::EventPage::Trigger_action,
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_action})
+		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
 		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});
-
 }
 
 bool Game_Player::CheckTouchEvent() {
