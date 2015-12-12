@@ -1139,38 +1139,41 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 	if (inn_stay)
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
-	if (!Game_Temp::inn_handlers) {
-		if (inn_stay) {
-			// Full heal
-			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
-				 i != actors.end();
-				 ++i) {
-				Game_Actor* actor = *i;
-				actor->ChangeHp(actor->GetMaxHp());
-				actor->SetSp(actor->GetMaxSp());
-				actor->RemoveAllStates();
-			}
-			Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
-			SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
-			return false;
+	if (inn_stay) {
+		// Full heal
+		std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+		for (Game_Actor* actor : actors) {
+			actor->ChangeHp(actor->GetMaxHp());
+			actor->SetSp(actor->GetMaxSp());
+			actor->RemoveAllStates();
 		}
-		index++;
-		return true;
+		Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
+		Audio().BGM_Fade(800);
+		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
+		return false;
 	}
 
-	if (!SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
+	if (Game_Temp::inn_handlers && !SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
 		return false;
 	index++;
 	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
-	continuation = NULL;
+	if (Graphics::IsTransitionPending())
+		return false;
 
-	Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 
-	index++;
+	Game_System::BgmPlay(bgm_inn);
+	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(BRAK)" || Audio().BGM_PlayedOnce()) {
+		continuation = NULL;
+		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+		Game_System::BgmPlay(*Game_Temp::map_bgm);
+		index++;
+		return false;
+	}
+
 	return false;
 }
 
