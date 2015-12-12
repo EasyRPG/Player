@@ -246,7 +246,18 @@ void SdlAudio::BGM_Fade(int fade) {
 		return;
 	}
 #endif
+
 	bgm_stop = true;
+
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+		BGS_Fade(fade);
+		return;
+	}
+#endif
+
 	Mix_FadeOutMusic(fade);
 	me_stopped_bgm = false;
 }
