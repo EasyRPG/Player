@@ -399,6 +399,7 @@ bool Game_Player::CheckActionEvent() {
 	if (InAirship())
 		return false;
 
+	// Use | instead of || to avoid short-circuit evaluation
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_action})
 		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
 		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});

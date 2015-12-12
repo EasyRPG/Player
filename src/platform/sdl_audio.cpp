@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include "baseui.h"
 #include "sdl_audio.h"
 #include "filefinder.h"
 #include "output.h"
@@ -27,6 +28,13 @@
 #ifdef _WIN32
 #  include "util_win.h"
 #endif
+
+namespace {
+	void bgm_played_once() {
+		if (DisplayUi)
+			dynamic_cast<SdlAudio&>(Audio()).BGM_OnPlayedOnce();
+	}
+}
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
@@ -99,7 +107,17 @@ SdlAudio::~SdlAudio() {
 	Mix_CloseAudio();
 }
 
+void SdlAudio::BGM_OnPlayedOnce() {
+	if (!me_stopped_bgm && !bgm_stop) {
+		played_once = true;
+		// Play indefinitely without fade-in
+		Mix_PlayMusic(bgm.get(), -1);
+	}
+}
+
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+	bgm_stop = false;
+	played_once = false;
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		Output::Debug("Music not found: %s", file.c_str());
@@ -134,14 +152,16 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
 		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
-			? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+			? Mix_PlayMusic(bgm.get(), 0) : Mix_FadeInMusic(bgm.get(), 0, fadein))
 #else
-		Mix_FadeInMusic(bgm.get(), -1, fadein)
+		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
 		== -1) {
 			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 			return;
 	}
+
+	Mix_HookMusicFinished(&bgm_played_once);
 }
 
 void SdlAudio::BGM_Pause() {
@@ -175,8 +195,13 @@ void SdlAudio::BGM_Stop() {
 		return;
 	}
 #endif
+	bgm_stop = true;
 	Mix_HaltMusic();
 	me_stopped_bgm = false;
+}
+
+bool SdlAudio::BGM_PlayedOnce() {
+	return played_once;
 }
 
 void SdlAudio::BGM_Volume(int volume) {
@@ -199,6 +224,7 @@ void SdlAudio::BGM_Fade(int fade) {
 		return;
 	}
 #endif
+	bgm_stop = true;
 	Mix_FadeOutMusic(fade);
 	me_stopped_bgm = false;
 }

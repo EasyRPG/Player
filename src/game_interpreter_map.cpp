@@ -1924,10 +1924,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			Output::Warning("Branch: Started using Key not implemented");
 			break;
 		case 9:
-			// TODO BGM looped at least once
-			Output::Warning("Branch: BGM looped once not implemented");
-			// Lie and say yes...
-			result = true;
+			// BGM looped at least once
+			result = Audio().BGM_PlayedOnce();
 			break;
 		case 10:
 			value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);

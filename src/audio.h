@@ -49,6 +49,11 @@ struct AudioInterface : boost::noncopyable {
 	virtual void BGM_Stop() = 0;
 
 	/**
+	 * Returns whether the background music has played at least once.
+	 */
+	virtual bool BGM_PlayedOnce() = 0;
+
+	/**
 	 * Does a fade out of the background music.
 	 *
 	 * @param fade fade out time.
@@ -143,6 +148,7 @@ struct EmptyAudio : public AudioInterface {
 	void BGM_Pause() {}
 	void BGM_Resume() {}
 	void BGM_Stop() {}
+	bool BGM_PlayedOnce() {return true;};
 	void BGM_Fade(int) {}
 	void BGM_Volume(int) {}
 	void BGM_Pitch(int) {};
