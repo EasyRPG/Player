@@ -115,15 +115,15 @@ void Scene_Map::Update() {
 	if (auto_transition) {
 		auto_transition = false;
 
-		if (auto_transition_erase) {
-			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
-		} else {
+		if (!auto_transition_erase) {
+			// Fade Out not handled here but in StartTeleportPlayer because otherwise
+			// emscripten hangs before fading out when doing async loading...
 			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
 		}
 	}
 
 	// Async loading note:
-	// Fade In/Out must be done before finish teleport, otherwise chipset is not
+	// Fade In must be done before finish teleport, otherwise chipset is not
 	// loaded and renders black while fading -> ugly
 
 	if (Main_Data::game_player->IsTeleporting()) {
@@ -211,8 +211,7 @@ void Scene_Map::StartTeleportPlayer() {
 	bool const autotransition = !Game_Temp::transition_erase;
 
 	if (autotransition) {
-		auto_transition = true;
-		auto_transition_erase = true;
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
 	}
 }
 
