@@ -1166,10 +1166,12 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 
 	Game_System::BgmPlay(bgm_inn);
-	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(BRAK)" || Audio().BGM_PlayedOnce()) {
+	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(Brak)" || Audio().BGM_PlayedOnce()) {
 		continuation = NULL;
 		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
-		Game_System::BgmPlay(*Game_Temp::map_bgm);
+		// FIXME: It should play the music that was playing before the inn music
+		if (Game_Temp::map_bgm)
+			Game_System::BgmPlay(*Game_Temp::map_bgm);
 		index++;
 		return false;
 	}
