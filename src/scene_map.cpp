@@ -104,6 +104,28 @@ void Scene_Map::TransitionOut() {
 }
 
 void Scene_Map::Update() {
+	if (!Main_Data::game_player->IsMoving()) {
+		if (Game_Temp::transition_processing) {
+			Game_Temp::transition_processing = false;
+
+			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
+		}
+	}
+
+	if (auto_transition) {
+		auto_transition = false;
+
+		if (auto_transition_erase) {
+			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+		} else {
+			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+		}
+	}
+
+	// Async loading note:
+	// Fade In/Out must be done before finish teleport, otherwise chipset is not
+	// loaded and renders black while fading -> ugly
+
 	if (Main_Data::game_player->IsTeleporting()) {
 		FinishTeleportPlayer();
 	}
@@ -180,12 +202,6 @@ void Scene_Map::Update() {
 			CallBattle();
 			return;
 		}
-
-		if (Game_Temp::transition_processing) {
-			Game_Temp::transition_processing = false;
-
-			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
-		}
 	}
 }
 
@@ -195,7 +211,8 @@ void Scene_Map::StartTeleportPlayer() {
 	bool const autotransition = !Game_Temp::transition_erase;
 
 	if (autotransition) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+		auto_transition = true;
+		auto_transition_erase = true;
 	}
 }
 
@@ -210,7 +227,8 @@ void Scene_Map::FinishTeleportPlayer() {
 	Game_Map::Update();
 
 	if (autotransition) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+		auto_transition = true;
+		auto_transition_erase = false;
 	}
 }
 

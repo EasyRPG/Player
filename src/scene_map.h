@@ -64,6 +64,8 @@ private:
 	boost::scoped_ptr<Weather> weather;
 
 	bool from_save;
+	bool auto_transition = false;
+	bool auto_transition_erase = false;
 };
 
 #endif
