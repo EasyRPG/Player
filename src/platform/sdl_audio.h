@@ -52,7 +52,9 @@ struct SdlAudio : public AudioInterface {
 	void Update();
 
 	void BGM_OnPlayedOnce();
- private:
+	int BGS_GetChannel() const;
+
+private:
 	EASYRPG_SHARED_PTR<Mix_Music> bgm;
 	int bgm_volume;
 	bool bgm_stop = false;
