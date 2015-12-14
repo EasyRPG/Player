@@ -49,6 +49,7 @@ public:
 	void CallName();
 	void CallMenu();
 	void CallSave();
+	void CallLoad();
 	void CallDebug();
 
 	boost::scoped_ptr<Spriteset_Map> spriteset;

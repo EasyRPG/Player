@@ -122,6 +122,10 @@ private:
 	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
 	bool CommandChangeClass(RPG::EventCommand const& com);
 	bool CommandHaltAllMovement(RPG::EventCommand const& com);
+	bool CommandOpenLoadMenu(RPG::EventCommand const& com);
+	bool CommandExitGame(RPG::EventCommand const& com);
+	bool CommandToggleAtbMode(RPG::EventCommand const& com);
+	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
 	bool ContinuationOpenShop(RPG::EventCommand const& com);
 	bool ContinuationShowInnStart(RPG::EventCommand const& com);

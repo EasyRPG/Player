@@ -493,6 +493,21 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }
 
+bool FileFinder::HasSavegame(DirectoryTree const& dir) {
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+
+	for (int i = 1; i <= 15; i++) {
+		std::string savename = "Save" + std::string((i <= 9 ? "0" : "")) + std::to_string(i) + ".lsd";
+
+		std::string filename = FileFinder::FindDefault(*tree, savename);
+
+		if (!filename.empty()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 std::string FileFinder::FindMusic(const std::string& name) {
 #ifdef EMSCRIPTEN
 	return FindDefault("Music", name);

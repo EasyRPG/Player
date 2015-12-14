@@ -37,6 +37,7 @@ void Input::InitButtons() {
 	buttons[RIGHT].push_back(Keys::L);
 	buttons[RIGHT].push_back(Keys::KP6);
 	buttons[DECISION].push_back(Keys::Z);
+	buttons[DECISION].push_back(Keys::Y);
 	buttons[DECISION].push_back(Keys::SPACE);
 	buttons[DECISION].push_back(Keys::RETURN);
 	buttons[DECISION].push_back(Keys::SELECT);
