@@ -249,17 +249,12 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	}
 
 	if (actor) {
-		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
-		std::vector<uint32_t>::const_iterator it;
+		const std::vector<const RPG::BattleCommand*> bcmds = actor->GetBattleCommands();
 		int i = 0;
-		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
-			uint32_t bcmd = *it;
-			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
-				break;
-			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
-			commands.push_back(command.name);
+		for (const RPG::BattleCommand* command : bcmds) {
+			commands.push_back(command->name);
 
-			if (!Game_Battle::IsEscapeAllowed() && command.type == RPG::BattleCommand::Type_escape) {
+			if (!Game_Battle::IsEscapeAllowed() && command->type == RPG::BattleCommand::Type_escape) {
 				disabled_items.push_back(i);
 			}
 			++i;
@@ -716,12 +711,11 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k3::CommandSelected() {
-	const RPG::BattleCommand& command =
-		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
+	const RPG::BattleCommand* command = active_actor->GetBattleCommands()[command_window->GetIndex()];
 
-	active_actor->SetLastBattleAction(command.ID);
+	active_actor->SetLastBattleAction(command->ID);
 
-	switch (command.type) {
+	switch (command->type) {
 	case RPG::BattleCommand::Type_attack:
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		AttackSelected();
@@ -768,15 +762,18 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// Resolving a subskill battle command to skill id
 	int subskill = RPG::Skill::Type_subskill;
 
-	const std::vector<uint32_t>& bcmds = active_actor->GetBattleCommands();
+	const std::vector<const RPG::BattleCommand*> bcmds = active_actor->GetBattleCommands();
 	// Get ID of battle command
-	int command_id = Data::battlecommands.commands[bcmds[command_window->GetIndex()] - 1].ID - 1;
+	int command_id = bcmds[command_window->GetIndex()]->ID - 1;
 
 	// Loop through all battle commands smaller then that ID and count subsets
-	std::vector<RPG::BattleCommand>::const_iterator it;
 	int i = 0;
-	for (it = Data::battlecommands.commands.begin(); it != Data::battlecommands.commands.end() && i < command_id; ++it) {
-		if ((*it).type == RPG::BattleCommand::Type_subskill) {
+	for (RPG::BattleCommand& cmd : Data::battlecommands.commands) {
+		if (i >= command_id) {
+			break;
+		}
+
+		if (cmd.type == RPG::BattleCommand::Type_subskill) {
 			++subskill;
 		}
 		++i;
@@ -928,7 +925,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 			active_actor = static_cast<Game_Actor*>(*it);
 
 			// Handle automatic attack
-			Game_Battler* random_target = NULL;
+			Game_Battler* random_target = nullptr;
 
 			if (active_actor->CanAct()) {
 				switch (active_actor->GetSignificantRestriction()) {
@@ -956,6 +953,14 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 
 			// Handle manual attack
 			status_window->SetIndex(actor_index);
+
+			if (active_actor->GetBattleCommands().empty()) {
+				// Skip actors with only row command
+				// FIXME: Actually support row command ;)
+				NextTurn(active_actor);
+				active_actor->SetGauge(0);
+				return;
+			}
 
 			RefreshCommandWindow();
 
