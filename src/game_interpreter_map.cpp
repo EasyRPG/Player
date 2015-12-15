@@ -1139,38 +1139,43 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 	if (inn_stay)
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
-	if (!Game_Temp::inn_handlers) {
-		if (inn_stay) {
-			// Full heal
-			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
-				 i != actors.end();
-				 ++i) {
-				Game_Actor* actor = *i;
-				actor->ChangeHp(actor->GetMaxHp());
-				actor->SetSp(actor->GetMaxSp());
-				actor->RemoveAllStates();
-			}
-			Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
-			SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
-			return false;
+	if (inn_stay) {
+		// Full heal
+		std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+		for (Game_Actor* actor : actors) {
+			actor->ChangeHp(actor->GetMaxHp());
+			actor->SetSp(actor->GetMaxSp());
+			actor->RemoveAllStates();
 		}
-		index++;
-		return true;
+		Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
+		Audio().BGM_Fade(800);
+		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
+		return false;
 	}
 
-	if (!SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
+	if (Game_Temp::inn_handlers && !SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
 		return false;
 	index++;
 	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
-	continuation = NULL;
+	if (Graphics::IsTransitionPending())
+		return false;
 
-	Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 
-	index++;
+	Game_System::BgmPlay(bgm_inn);
+	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(Brak)" || Audio().BGM_PlayedOnce()) {
+		continuation = NULL;
+		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+		// FIXME: It should play the music that was playing before the inn music
+		if (Game_Temp::map_bgm)
+			Game_System::BgmPlay(*Game_Temp::map_bgm);
+		index++;
+		return false;
+	}
+
 	return false;
 }
 
@@ -1924,10 +1929,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			Output::Warning("Branch: Started using Key not implemented");
 			break;
 		case 9:
-			// TODO BGM looped at least once
-			Output::Warning("Branch: BGM looped once not implemented");
-			// Lie and say yes...
-			result = true;
+			// BGM looped at least once
+			result = Audio().BGM_PlayedOnce();
 			break;
 		case 10:
 			value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);

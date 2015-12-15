@@ -116,6 +116,9 @@ private:
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
+	/* Workaround used to avoid blocking the player with move routes that are completable in a single frame */
+	bool IsBlockedByMoveRoute() const;
+
 	void UpdateScroll();
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();

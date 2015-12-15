@@ -399,13 +399,10 @@ bool Game_Player::CheckActionEvent() {
 	if (InAirship())
 		return false;
 
-	if (CheckEventTriggerHere({RPG::EventPage::Trigger_action})) {
-		return true;
-	}
-
-	return CheckEventTriggerThere({RPG::EventPage::Trigger_action,
+	// Use | instead of || to avoid short-circuit evaluation
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_action})
+		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
 		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});
-
 }
 
 bool Game_Player::CheckTouchEvent() {
@@ -586,7 +583,7 @@ bool Game_Player::GetOffVehicle() {
 bool Game_Player::IsMovable() const {
 	if (IsMoving() || IsJumping())
 		return false;
-	if (IsMoveRouteOverwritten())
+	if (IsBlockedByMoveRoute())
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;
@@ -595,6 +592,22 @@ bool Game_Player::IsMovable() const {
 	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
     return true;
+}
+
+bool Game_Player::IsBlockedByMoveRoute() const {
+	if (!IsMoveRouteOverwritten() || GetMoveRouteIndex() > 0)
+		return false;
+
+	// Check if it includes a blocking move command
+	for (const auto& move_command : GetMoveRoute().move_commands) {
+		int code = move_command.command_id;
+		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
+			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
+			(code <= RPG::MoveCommand::Code::end_jump)) // Wait or jump
+				return true;
+	}
+
+	return false;
 }
 
 bool Game_Player::InVehicle() const {
