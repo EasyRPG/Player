@@ -83,6 +83,8 @@ protected:
 	boost::scoped_ptr<Window_BattleStatus> enemy_status_window;
 
 	std::vector<Game_Battler*> targets;
+
+	int select_target_flash_count = 0;
 };
 
 #endif

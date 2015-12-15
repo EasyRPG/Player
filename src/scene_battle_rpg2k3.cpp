@@ -324,6 +324,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectEnemyTarget:
 		CreateBattleTargetWindow();
+		select_target_flash_count = 0;
 		break;
 	case State_Battle:
 		// no-op
@@ -461,19 +462,17 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			// no-op
 			break;
 		case State_SelectEnemyTarget: {
-			static int flash_count = 0;
-
 			std::vector<Game_Battler*> enemies;
 			Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
 			Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
 			if (sprite) {
-				++flash_count;
+				++select_target_flash_count;
 
-				if (flash_count == 60) {
+				if (select_target_flash_count == 60) {
 					sprite->Flash(Color(255, 255, 255, 100), 15);
-					flash_count = 0;
+					select_target_flash_count = 0;
 				}
 			}
 			break;
