@@ -432,12 +432,12 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 	}
 
 	if (!battle_actions.empty()) {
-		if (battle_actions.front()->IsDead()) {
+		Game_Battler* action = battle_actions.front();
+		if (action->IsDead()) {
 			// No zombies allowed ;)
 			RemoveCurrentAction();
 		}
-		else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
-			NextTurn();
+		else if (ProcessBattleAction(action->GetBattleAlgorithm().get())) {
 			RemoveCurrentAction();
 			if (CheckResultConditions()) {
 				return;
@@ -553,6 +553,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				action->Execute();
 			}
 			else {
+				NextTurn(action->GetSource());
 				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
 			}
 

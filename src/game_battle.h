@@ -64,7 +64,13 @@ namespace Game_Battle {
 	 */
 	bool IsBattleAnimationWaiting();
 
-	void NextTurn();
+	/**
+	 * Starts a new battle turn.
+	 * Event pages are reset depending on the actor.
+	 *
+	 * @param battler Battler who did the turn.
+	 */
+	void NextTurn(Game_Battler* battler = nullptr);
 
 	/**
 	 * Updates the gauge of all battlers based on the highest agi of all.
