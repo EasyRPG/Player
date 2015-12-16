@@ -22,9 +22,9 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include <boost/optional.hpp>
 
@@ -34,8 +34,6 @@
 #include "filefinder.h"
 #include "output.h"
 #include "player.h"
-#include "main_data.h"
-#include "reader_util.h"
 #include "registry.h"
 
 #ifdef _MSC_VER
@@ -497,9 +495,9 @@ bool FileFinder::HasSavegame(DirectoryTree const& dir) {
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {
-		std::string savename = "Save" + std::string((i <= 9 ? "0" : "")) + std::to_string(i) + ".lsd";
-
-		std::string filename = FileFinder::FindDefault(*tree, savename);
+		std::stringstream ss;
+		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
+		std::string filename = FileFinder::FindDefault(*tree, ss.str());
 
 		if (!filename.empty()) {
 			return true;
