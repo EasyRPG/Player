@@ -101,10 +101,6 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath((*tree).directory_path, save_file);
 	}
 
-#ifdef _WIN32
-	filename = ReaderUtil::Recode(filename, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 	LSD_Reader::Save(filename, Main_Data::game_data, Player::encoding);
 
 #ifdef EMSCRIPTEN
