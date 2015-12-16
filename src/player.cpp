@@ -58,6 +58,7 @@
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
+	#include <Shellapi.h>
 #ifndef _DEBUG
 	#include <winioctl.h>
 	#include <dbghelp.h>
@@ -306,6 +307,10 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+#ifdef _WIN32
+	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
+#endif
+
 	engine = EngineNone;
 #ifdef EMSCRIPTEN
 	window_flag = true;
@@ -332,7 +337,11 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
 		ss << argv[i] << " ";
+#ifdef _WIN32
+		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
+#else
 		args.push_back(Utils::LowerCase(argv[i]));
+#endif
 	}
 	Output::Debug("CLI: %s", ss.str().c_str());
 
@@ -380,14 +389,15 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			// case sensitive
-			Main_Data::project_path = argv[it - args.begin() + 1];
-
 #ifdef _WIN32
+			Main_Data::project_path = *it;
 			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::project_path).c_str());
 			if (cur_dir) {
 				Main_Data::project_path = ".";
 			}
+#else
+			// case sensitive
+			Main_Data::project_path = argv[it - args.begin() + 1];
 #endif
 		}
 		else if (*it == "--new-game") {
