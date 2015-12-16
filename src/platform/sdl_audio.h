@@ -60,7 +60,8 @@ private:
 	bool bgm_stop = false;
 	EASYRPG_SHARED_PTR<Mix_Chunk> bgs;
 	int bgs_channel;
-	bool bgs_playing;
+	bool bgs_playing = false;
+	bool bgs_stop = false;
 	EASYRPG_SHARED_PTR<Mix_Chunk> me;
 	int me_channel;
 	bool me_stopped_bgm;

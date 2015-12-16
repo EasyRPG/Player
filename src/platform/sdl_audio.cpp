@@ -118,9 +118,12 @@ void SdlAudio::BGM_OnPlayedOnce() {
 	// Workaround: Use Mix_LoadWAV
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
 	if (bgs_playing) {
-		played_once = true;
-		// Play indefinitely without fade-in
-		Mix_PlayChannel(bgs_channel, bgs.get(), -1);
+		if (!bgs_stop) {
+			played_once = true;
+			// Play indefinitely without fade-in
+			Mix_PlayChannel(bgs_channel, bgs.get(), -1);
+			bgs_channel = -1;
+		}
 		return;
 	}
 #endif
@@ -263,6 +266,7 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 		return;
 	}
 	bgs_playing = true;
+	bgs_stop = false;
 
 #if SDL_MAJOR_VERSION>1
 	Mix_ChannelFinished(bgs_played_once);
@@ -281,13 +285,18 @@ void SdlAudio::BGS_Resume() {
 
 void SdlAudio::BGS_Stop() {
 	if (Mix_Playing(bgs_channel)) {
+		bgs_stop = true;
 		Mix_HaltChannel(bgs_channel);
+		bgs_channel = -1;
 		bgs_playing = false;
 	}
 }
 
 void SdlAudio::BGS_Fade(int fade) {
+	bgs_stop = true;
 	Mix_FadeOutChannel(bgs_channel, fade);
+	bgs_channel = -1;
+	bgs_playing = false;
 }
 
 int SdlAudio::BGS_GetChannel() const {
