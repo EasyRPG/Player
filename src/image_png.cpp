@@ -166,6 +166,7 @@ static void ReadGrayData(
 	uint32_t* pixels
 ) {
 	png_set_strip_16(png_ptr);
+	png_set_expand(png_ptr);
 	png_set_gray_to_rgb(png_ptr);
 	png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 	png_read_update_info(png_ptr, info_ptr);
