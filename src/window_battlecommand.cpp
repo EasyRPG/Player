@@ -59,7 +59,7 @@ void Window_BattleCommand::SetActive(bool active) {
 void Window_BattleCommand::Update() {
 	Window_Base::Update();
 
-	int num_commands = commands.size();
+	size_t num_commands = commands.size();
 	int old_index = index;
 	if (active && num_commands > 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
@@ -99,7 +99,7 @@ void Window_BattleCommand::Refresh() {
 	if (!contents)
 		return;
 
-	int num_commands = commands.size();
+	size_t num_commands = commands.size();
 
 	contents->Clear();
 	for (int i = 0; i < num_commands; i++) {
@@ -145,14 +145,9 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	}
 	else {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
-		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
-		std::vector<uint32_t>::const_iterator it;
-		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
-			uint32_t bcmd = *it;
-			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
-				break;
-			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
-			commands.push_back(command.name);
+		const std::vector<const RPG::BattleCommand*> bcmds = actor->GetBattleCommands();
+		for (const RPG::BattleCommand* command : bcmds) {
+			commands.push_back(command->name);
 		}
 	}
 
@@ -163,7 +158,7 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 RPG::BattleCommand Window_BattleCommand::GetCommand() {
 	if (actor_id > 0) {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
-		return Data::battlecommands.commands[actor->GetBattleCommands()[index] - 1];
+		return *actor->GetBattleCommands()[index];
 	}
 
 	RPG::BattleCommand command;
@@ -185,8 +180,8 @@ int Window_BattleCommand::GetSkillSubset() {
 		return RPG::Skill::Type_normal;
 
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
-	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
-	int bcmd = bcmds[index];
+	const std::vector<const RPG::BattleCommand*> bcmds = actor->GetBattleCommands();
+	int bcmd = bcmds[index]->ID;
 
 	int idx = 4;
 	for (int i = 0; i < bcmd - 1; i++) {

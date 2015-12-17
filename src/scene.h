@@ -170,6 +170,13 @@ private:
 	static std::vector<EASYRPG_SHARED_PTR<Scene> > instances;
 
 	static int push_pop_operation;
+
+	/**
+	 * true if Start() was called. For handling the special case that two 
+	 * or more scenes are pushed. In that case only the last calls start, the
+	 * other Continue(). This enforces calling Start().
+	 */
+	bool initialized = false;
 };
 
 #endif

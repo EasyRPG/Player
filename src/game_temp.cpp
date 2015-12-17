@@ -25,6 +25,7 @@ bool Game_Temp::shop_calling;
 bool Game_Temp::inn_calling;
 bool Game_Temp::name_calling;
 bool Game_Temp::save_calling;
+bool Game_Temp::load_calling;
 bool Game_Temp::to_title;
 bool Game_Temp::gameover;
 bool Game_Temp::transition_processing;
@@ -59,6 +60,7 @@ void Game_Temp::Init() {
 	shop_calling = false;
 	name_calling = false;
 	save_calling = false;
+	load_calling = false;
 	to_title = false;
 	gameover = false;
 	transition_processing = false;

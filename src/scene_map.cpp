@@ -39,6 +39,7 @@
 #include "audio.h"
 #include "input.h"
 #include "screen.h"
+#include "scene_load.h"
 
 Scene_Map::Scene_Map(bool from_save) :
 	from_save(from_save) {
@@ -170,6 +171,11 @@ void Scene_Map::Update() {
 			return;
 		}
 
+		if (Game_Temp::load_calling) {
+			CallLoad();
+			return;
+		}
+
 		if (Game_Temp::battle_calling) {
 			CallBattle();
 			return;
@@ -251,6 +257,12 @@ void Scene_Map::CallSave() {
 	Game_Temp::save_calling = false;
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
+}
+
+void Scene_Map::CallLoad() {
+	Game_Temp::load_calling = false;
+
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
 }
 
 void Scene_Map::CallDebug() {

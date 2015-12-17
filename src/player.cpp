@@ -43,9 +43,6 @@
 #include "reader_util.h"
 #include "scene_battle.h"
 #include "scene_logo.h"
-#include "scene_map.h"
-#include "scene_title.h"
-#include "system.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -57,12 +54,18 @@
 #ifdef GEKKO
 	#include <fat.h>
 #endif
-#if (defined(_WIN32) && defined(NDEBUG))
-	#include <windows.h>
+
+#ifdef _WIN32
+	#define WIN32_LEAN_AND_MEAN
+	#include <Windows.h>
+	#include <Shellapi.h>
+#ifndef _DEBUG
 	#include <winioctl.h>
 	#include <dbghelp.h>
 	static void InitMiniDumpWriter();
 #endif
+#endif
+
 #ifdef EMSCRIPTEN
 	#include <emscripten.h>
 #endif
@@ -304,6 +307,10 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+#ifdef _WIN32
+	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
+#endif
+
 	engine = EngineNone;
 #ifdef EMSCRIPTEN
 	window_flag = true;
@@ -330,7 +337,11 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
 		ss << argv[i] << " ";
+#ifdef _WIN32
+		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
+#else
 		args.push_back(Utils::LowerCase(argv[i]));
+#endif
 	}
 	Output::Debug("CLI: %s", ss.str().c_str());
 
@@ -378,8 +389,16 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
+#ifdef _WIN32
+			Main_Data::project_path = *it;
+			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::project_path).c_str());
+			if (cur_dir) {
+				Main_Data::project_path = ".";
+			}
+#else
 			// case sensitive
 			Main_Data::project_path = argv[it - args.begin() + 1];
+#endif
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
@@ -495,10 +514,6 @@ void Player::CreateGameObjects() {
 
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
-#ifdef _WIN32
-	ini_file = ReaderUtil::Recode(ini_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 	INIReader ini(ini_file);
 	if (ini.ParseError() != -1) {
 		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
@@ -517,7 +532,7 @@ void Player::CreateGameObjects() {
 			}
 			else {
 				Player::engine |= EngineRpg2k3E;
-				Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
+				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		}
 		else {
@@ -578,11 +593,6 @@ void Player::LoadDatabase() {
 	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
 	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
 
-#ifdef _WIN32
-	edb = ReaderUtil::Recode(edb, "UTF-8", ReaderUtil::GetLocaleEncoding());
-	emt = ReaderUtil::Recode(emt, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 	bool easyrpg_project = !edb.empty() && !emt.empty();
 
 	if (easyrpg_project) {
@@ -596,11 +606,6 @@ void Player::LoadDatabase() {
 	else {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
-
-#ifdef _WIN32
-		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
-		lmt = ReaderUtil::Recode(lmt, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
 
 		if (!LDB_Reader::Load(ldb, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
@@ -628,13 +633,7 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-#ifdef _WIN32
-	std::string save_filename = ReaderUtil::Recode(save_name, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#else
-	std::string save_filename = save_name;
-#endif
-
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_filename, encoding);
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());
@@ -694,20 +693,12 @@ std::string Player::GetEncoding() {
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
 
-#ifdef _WIN32
-		ini = ReaderUtil::Recode(ini, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 		encoding = ReaderUtil::GetEncoding(ini);
 	} else {
 		return encoding;
 	}
 	if (encoding.empty()) {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-
-#ifdef _WIN32
-		ldb = ReaderUtil::Recode(ldb, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
 
 		encoding = ReaderUtil::DetectEncoding(ldb);
 	} else {

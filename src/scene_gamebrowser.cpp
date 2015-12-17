@@ -18,14 +18,16 @@
 // Headers
 #include "scene_gamebrowser.h"
 #include "cache.h"
-#include "graphics.h"
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
-#include "scene_map.h"
-#include "scene_skill.h"
 #include "scene_title.h"
 #include "bitmap.h"
+
+#ifdef _WIN32
+	#define WIN32_LEAN_AND_MEAN
+	#include <Windows.h>
+#endif
 
 Scene_GameBrowser::Scene_GameBrowser() {
 	type = Scene::GameBrowser;
@@ -37,6 +39,10 @@ void Scene_GameBrowser::Start() {
 }
 
 void Scene_GameBrowser::Continue() {
+#ifdef _WIN32
+	SetCurrentDirectory(L"..");
+#endif
+
 	Data::Clear();
 	Player::ResetGameObjects();
 	Player::game_title = "";
@@ -146,7 +152,13 @@ void Scene_GameBrowser::UpdateGameListSelection() {
 }
 
 void Scene_GameBrowser::BootGame() {
+#ifdef _WIN32
+	SetCurrentDirectory(Utils::ToWideString(gamelist_window->GetGamePath()).c_str());
+	const std::string& path = ".";
+#else
 	const std::string& path = gamelist_window->GetGamePath();
+#endif
+
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
 	FileFinder::SetDirectoryTree(tree);
 

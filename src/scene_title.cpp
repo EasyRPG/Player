@@ -17,36 +17,22 @@
 
 // Headers
 #include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
 #include <vector>
 #include "scene_title.h"
 #include "async_handler.h"
 #include "audio.h"
-#include "bitmap.h"
 #include "cache.h"
-#include "filefinder.h"
-#include "game_map.h"
-#include "game_enemyparty.h"
-#include "game_player.h"
 #include "game_screen.h"
-#include "game_switches.h"
 #include "game_system.h"
-#include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
-#include "ldb_reader.h"
-#include "lmt_reader.h"
 #include "main_data.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "reader_lcf.h"
 #include "scene_battle.h"
 #include "scene_load.h"
 #include "scene_map.h"
-#include "util_macro.h"
 #include "window_command.h"
 
 Scene_Title::Scene_Title() {
@@ -54,7 +40,7 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	if (!Player::battle_test_flag && !Player::hide_title_flag) {
+	if (Data::system.show_title && !Player::battle_test_flag && !Player::hide_title_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
 	}
@@ -73,7 +59,7 @@ void Scene_Title::Continue() {
 }
 
 void Scene_Title::TransitionIn() {
-	if (!Player::battle_test_flag) {
+	if (!Player::battle_test_flag && Data::system.show_title) {
 		Graphics::Transition(Graphics::TransitionErase, 1, true);
 		if (!Player::hide_title_flag) {
 			Graphics::Transition(Graphics::TransitionFadeIn, 32);
@@ -84,7 +70,9 @@ void Scene_Title::TransitionIn() {
 }
 
 void Scene_Title::Resume() {
-	command_window->SetVisible(true);
+	if (Data::system.show_title) {
+		command_window->SetVisible(true);
+	}
 }
 
 void Scene_Title::Suspend() {
@@ -94,6 +82,15 @@ void Scene_Title::Suspend() {
 void Scene_Title::Update() {
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
+		return;
+	}
+
+	if (!Data::system.show_title) {
+		Player::SetupPlayerSpawn();
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		if (Player::debug_flag && Player::hide_title_flag) {
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
+		}
 		return;
 	}
 
@@ -111,23 +108,6 @@ void Scene_Title::Update() {
 			CommandShutdown();
 		}
 	}
-}
-
-bool Scene_Title::CheckContinue() {
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
-
-	for (int i = 1; i <= 15; i++)
-	{
-		std::stringstream ss;
-		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
-
-		std::string filename = FileFinder::FindDefault(*tree, ss.str());
-
-		if (!filename.empty()) {
-			return true;
-		}
-	}
-	return false;
 }
 
 void Scene_Title::CreateTitleGraphic() {
@@ -157,7 +137,7 @@ void Scene_Title::CreateCommandWindow() {
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - command_window->GetHeight() / 2);
 	}
 	// Enable load game if available
-	continue_enabled = CheckContinue();
+	continue_enabled = FileFinder::HasSavegame(*FileFinder::CreateSaveDirectoryTree());
 	if (continue_enabled) {
 		command_window->SetIndex(1);
 	} else {
@@ -167,6 +147,10 @@ void Scene_Title::CreateCommandWindow() {
 	// Set the number of frames for the opening animation to last
 	if (!Player::hide_title_flag) {
 		command_window->SetOpenAnimation(8);
+	}
+
+	if (Player::IsRPG2k3E() && Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
+		command_window->SetBackOpacity(128);
 	}
 
 	command_window->SetVisible(false);

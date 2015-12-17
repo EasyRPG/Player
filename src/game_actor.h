@@ -26,6 +26,7 @@
 
 namespace RPG {
 	class Skill;
+	class BattleCommand;
 }
 
 /**
@@ -625,7 +626,7 @@ public:
 	 *
 	 * @return all Rpg2k3 battle commands.
 	 */
-	const std::vector<uint32_t>& GetBattleCommands();
+	const std::vector<const RPG::BattleCommand*> GetBattleCommands() const;
 
 	/**
 	 * Gets battle row for Rpg2k3 battles.

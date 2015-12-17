@@ -47,8 +47,7 @@ Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
 		Output::Warning("Actor ID %d is invalid.", actor_id);
 		return NULL;
-	}
-	else if (!data[actor_id])
+	} else if (!data[actor_id])
 		data[actor_id].reset(new Game_Actor(actor_id));
 
 	return data[actor_id].get();

@@ -210,16 +210,8 @@ void Game_Map::SetupCommon(int _id) {
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
 		map_file = FileFinder::FindDefault(ss.str());
 
-#ifdef _WIN32
-		map_file = ReaderUtil::Recode(map_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 		map = LMU_Reader::Load(map_file, Player::encoding);
 	} else {
-#ifdef _WIN32
-		map_file = ReaderUtil::Recode(map_file, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 		map = LMU_Reader::LoadXml(map_file);
 	}
 	Output::Debug("Loading Map %s", map_file.c_str());

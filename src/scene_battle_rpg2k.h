@@ -80,6 +80,14 @@ protected:
 	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator enemy_iterator;
 	int battle_action_wait;
 	int battle_action_state;
+
+	int select_target_flash_count = 0;
+	bool encounter_message_first_monster = true;
+	int encounter_message_sleep_until = -1;
+
+	bool begin_escape = true;
+	bool escape_success = false;
+	int escape_counter = 0;
 };
 
 #endif

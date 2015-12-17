@@ -570,7 +570,24 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
 		if (skill.power > 0) {
-			if (healing || rand() % 100 < skill.hit) {
+			if (this->healing) {
+				this->success = true;
+
+				if (skill.affect_hp)
+					this->hp = skill.power;
+				if (skill.affect_sp)
+					this->sp = skill.power;
+				if (skill.affect_attack)
+					this->attack = skill.power;
+				if (skill.affect_defense)
+					this->defense = skill.power;
+				if (skill.affect_spirit)
+					this->spirit = skill.power;
+				if (skill.affect_agility)
+					this->agility = skill.power;
+
+			}
+			else if (rand() % 100 < skill.hit) {
 				this->success = true;
 
 				int effect = skill.power +

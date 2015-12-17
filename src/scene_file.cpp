@@ -59,10 +59,6 @@ void Scene_File::Start() {
 
 		if (!file.empty()) {
 			// File found
-#ifdef _WIN32
-			file = ReaderUtil::Recode(file, "UTF-8", ReaderUtil::GetLocaleEncoding());
-#endif
-
 			std::auto_ptr<RPG::Save> savegame =
 				LSD_Reader::Load(file, Player::encoding);
 

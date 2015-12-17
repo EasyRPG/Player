@@ -193,8 +193,8 @@ void Scene_Battle::InitBattleTest()
 	Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
 }
 
-void Scene_Battle::NextTurn() {
-	Game_Battle::NextTurn();
+void Scene_Battle::NextTurn(Game_Battler* battler) {
+	Game_Battle::NextTurn(battler);
 }
 
 void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {

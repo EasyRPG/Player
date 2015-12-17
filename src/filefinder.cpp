@@ -22,9 +22,9 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include <boost/optional.hpp>
 
@@ -34,8 +34,6 @@
 #include "filefinder.h"
 #include "output.h"
 #include "player.h"
-#include "main_data.h"
-#include "reader_util.h"
 #include "registry.h"
 
 #ifdef _MSC_VER
@@ -491,6 +489,21 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
 
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
+bool FileFinder::HasSavegame(DirectoryTree const& dir) {
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+
+	for (int i = 1; i <= 15; i++) {
+		std::stringstream ss;
+		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
+		std::string filename = FileFinder::FindDefault(*tree, ss.str());
+
+		if (!filename.empty()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {

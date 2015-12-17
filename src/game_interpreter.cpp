@@ -176,10 +176,11 @@ void Game_Interpreter::Update() {
 
 		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
 			Game_Temp::shop_calling ||
-//			Game_Temp::inn_calling ||
+			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
+			Game_Temp::load_calling ||
 			Game_Temp::to_title ||
 			Game_Temp::gameover) {
 

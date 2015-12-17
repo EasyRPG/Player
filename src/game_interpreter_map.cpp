@@ -337,6 +337,17 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return SkipTo(Cmd::EndBranch);
 		case Cmd::EndBranch:
 			return true;
+		case Cmd::OpenLoadMenu:
+			return CommandOpenLoadMenu(com);
+		case Cmd::ExitGame:
+			return CommandExitGame(com);
+		case Cmd::ToggleAtbMode:
+			return CommandToggleAtbMode(com);
+		case Cmd::ToggleFullscreen:
+			return CommandToggleFullscreen(com);
+		case Cmd::OpenVideoOptions:
+			// don't care
+			return true;
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -1786,6 +1797,28 @@ bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* co
 	return true;
 }
 
+bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& com) {
+	Game_Temp::load_calling = true;
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandExitGame(RPG::EventCommand const& com) {
+	Player::exit_flag = true;
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& com) {
+	Output::Warning("Command Toggle ATB mode not supported");
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandToggleFullscreen(RPG::EventCommand const& com) {
+	DisplayUi->BeginDisplayModeChange();
+	DisplayUi->ToggleFullscreen();
+	DisplayUi->EndDisplayModeChange();
+	return true;
+}
+
 /**
  * Conditional Branch
  */
@@ -1944,6 +1977,30 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 					break;
 			}
 			break;
+		case 11:
+			// RPG Maker 2003 v1.11 features
+			switch (com.parameters[1]) {
+				case 0:
+					// Any savestate available
+					result = FileFinder::HasSavegame(*FileFinder::CreateSaveDirectoryTree());
+					break;
+				case 1:
+					// Is Test Play mode?
+					result = Player::debug_flag;
+					break;
+				case 2:
+					// Is ATB wait?
+					Output::Warning("Branch: Is ATB wait not implemented");
+					break;
+				case 3:
+					// Is Fullscreen active?
+					result = DisplayUi->IsFullscreen();
+					break;
+
+			}
+			break;
+		default:
+			Output::Warning("Branch %d unsupported", com.parameters[0]);
 	}
 
 	if (result)

@@ -73,9 +73,15 @@ void Scene::MainFunction() {
 		switch (push_pop_operation) {
 		case ScenePushed:
 			Start();
+			initialized = true;
 			break;
 		case ScenePopped:
-			Continue();
+			if (!initialized) {
+				Start();
+				initialized = true;
+			} else {
+				Continue();
+			}
 			break;
 		default:;
 		}

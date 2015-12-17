@@ -225,6 +225,14 @@ namespace FileFinder {
 	bool IsValidProject(DirectoryTree const& dir);
 	bool IsRPG2kProject(DirectoryTree const& dir);
 	bool IsEasyRpgProject(DirectoryTree const& dir);
+
+	/**
+	 * Checks whether the directory contains any savegame with name
+	 * SaveXX.lsd (XX from 00 to 15).
+	 *
+	 * @return If directory Tree contains a savegame
+	 */
+	bool HasSavegame(DirectoryTree const& dir);
 } // namespace FileFinder
 
 #endif
