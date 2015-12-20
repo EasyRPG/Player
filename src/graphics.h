@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <list>
 
 #include "system.h"
 #include "drawable.h"
@@ -125,8 +124,6 @@ namespace Graphics {
 	void RemoveDrawable(Drawable* drawable);
 
 	void UpdateZCallback();
-
-	extern bool fps_on_screen;
 
 	void Push();
 	void Pop();

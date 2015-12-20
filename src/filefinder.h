@@ -30,18 +30,12 @@
  * insensitive files paths.
  */
 namespace FileFinder {
-
 	/**
-	 * Initializes FileFinder.
+	 * Adds RTP paths to the file finder
+	 *
+	 * @param warn_no_rtp_found Emits a warning on screen when no RTP was found.
 	 */
-	void Init();
-
-	/**
-	 * Next Init step that is performed after parsing
-	 * the database file. The rtp paths should be added
-	 * to the FileFinder here.
-	 */
-	void InitRtpPaths();
+	void InitRtpPaths(bool warn_no_rtp_found = true);
 
 	/**
 	 * Quits FileFinder.
@@ -58,14 +52,15 @@ namespace FileFinder {
 	*/
 	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
 
-	struct ProjectTree {
-		std::string project_path;
+	struct DirectoryTree {
+		std::string directory_path;
 		string_map files, directories;
 		sub_members_type sub_members;
-	}; // struct ProjectTree
+	}; // struct DirectoryTree
 
 	/**
 	 * Finds an image file.
+	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
 	 * @param dir directory to check.
 	 * @param name image file name to check.
@@ -75,6 +70,7 @@ namespace FileFinder {
 
 	/**
 	 * Finds a file.
+	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
 	 * @param dir directory to check.
 	 * @param name file name to check.
@@ -84,6 +80,7 @@ namespace FileFinder {
 
 	/**
 	 * Finds a file.
+	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
 	 * @param name the path and name.
 	 * @return path to file.
@@ -91,26 +88,28 @@ namespace FileFinder {
 	std::string FindDefault(const std::string& name);
 
 	/**
-	* Finds a file in a custom project tree.
+	* Finds a file in a subdirectory of a custom directory tree.
 	*
 	* @param tree Project tree to search
 	* @param dir directory to check
 	* @param name the path and name
 	* @return path to file.
 	*/
-	std::string FindDefault(const ProjectTree& tree, const std::string& dir, const std::string& name);
+	std::string FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name);
 
 	/**
-	 * Finds a file in a custom project tree.
+	 * Finds a file in the root of a custom project tree.
 	 *
 	 * @param tree Project tree to search
 	 * @param name the path and name
 	 * @return path to file.
 	 */
-	std::string FindDefault(const ProjectTree& tree, const std::string& name);
+	std::string FindDefault(const DirectoryTree& tree, const std::string& name);
 
 	/**
 	 * Finds a music file.
+	 * Searches through the Music folder of the current RPG Maker game and
+	 * the RTP directories.
 	 *
 	 * @param name the music path and name.
 	 * @return path to file.
@@ -119,6 +118,9 @@ namespace FileFinder {
 
 	/**
 	 * Finds a sound file.
+	 * Searches through the Sound folder of the current RPG Maker game and
+	 * the RTP directories.
+	 *
 	 * @param name the sound path and name.
 	 * @return path to file.
 	 */
@@ -126,6 +128,7 @@ namespace FileFinder {
 
 	/**
 	 * Finds a font file.
+	 * Searches through the current RPG Maker game and the RTP directories.
 	 *
 	 * @param name the font name.
 	 * @return path to file.
@@ -157,6 +160,7 @@ namespace FileFinder {
 
 	/**
 	 * Checks whether passed file is directory.
+	 * This function is case sensitve on some platform.
 	 *
 	 * @param file file to check.
 	 * @return true if file is directory, otherwise false.
@@ -165,22 +169,12 @@ namespace FileFinder {
 
 	/**
 	 * Checks whether passed file exists.
-	 * This function maybe is case sensitve in some platform.
+	 * This function is case sensitve on some platform.
 	 *
 	 * @param file file to check
 	 * @return true if file exists, otherwise false.
 	 */
 	bool Exists(std::string const& file);
-
-	/**
-	 * Checks whether file name exists in the directory.
-	 * This function is case insensitive.
-	 *
-	 * @param dir directory to check.
-	 * @param name file name to check. Don't pass full path.
-	 * @return true if file exists, otherwise false.
-	 */
-	bool Exists(Directory const& dir, std::string const& name);
 
 	/**
 	 * Appends name to directory.
@@ -200,6 +194,7 @@ namespace FileFinder {
 		DIRECTORIES, /**< list only directories */
 		RECURSIVE /**< list non-directory files recursively */
 	};
+
 	/**
 	 * Lists directory members.
 	 *
@@ -210,11 +205,34 @@ namespace FileFinder {
 	 */
 	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL, std::string const& parent = "");
 
-	ProjectTree const& GetProjectTree(bool init = false);
-	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p, bool recursive = true);
+	/**
+	 * Sets the directory tree that is used for executing the current RPG Maker
+	 * game.
+	 *
+	 * @param directory_tree Directory tree to use.
+	 */
+	void SetDirectoryTree(EASYRPG_SHARED_PTR<DirectoryTree> directory_tree);
 
-	bool IsRPG2kProject(ProjectTree const& dir);
-	bool IsEasyRpgProject(ProjectTree const& dir);
+	/**
+	 * Gets the directory tree that is used by the current game.
+	 *
+	 * @return directory tree
+	 */
+	const EASYRPG_SHARED_PTR<DirectoryTree> GetDirectoryTree();
+	const EASYRPG_SHARED_PTR<DirectoryTree> CreateSaveDirectoryTree();
+	EASYRPG_SHARED_PTR<DirectoryTree> CreateDirectoryTree(std::string const& p, bool recursive = true);
+
+	bool IsValidProject(DirectoryTree const& dir);
+	bool IsRPG2kProject(DirectoryTree const& dir);
+	bool IsEasyRpgProject(DirectoryTree const& dir);
+
+	/**
+	 * Checks whether the directory contains any savegame with name
+	 * SaveXX.lsd (XX from 00 to 15).
+	 *
+	 * @return If directory Tree contains a savegame
+	 */
+	bool HasSavegame(DirectoryTree const& dir);
 } // namespace FileFinder
 
 #endif

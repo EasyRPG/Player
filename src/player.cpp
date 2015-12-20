@@ -43,9 +43,6 @@
 #include "reader_util.h"
 #include "scene_battle.h"
 #include "scene_logo.h"
-#include "scene_map.h"
-#include "scene_title.h"
-#include "system.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -57,12 +54,18 @@
 #ifdef GEKKO
 	#include <fat.h>
 #endif
-#if (defined(_WIN32) && defined(NDEBUG))
-	#include <windows.h>
+
+#ifdef _WIN32
+	#define WIN32_LEAN_AND_MEAN
+	#include <Windows.h>
+	#include <Shellapi.h>
+#ifndef _DEBUG
 	#include <winioctl.h>
 	#include <dbghelp.h>
 	static void InitMiniDumpWriter();
 #endif
+#endif
+
 #ifdef EMSCRIPTEN
 	#include <emscripten.h>
 #endif
@@ -73,6 +76,7 @@ namespace Player {
 	bool debug_flag;
 	bool hide_title_flag;
 	bool window_flag;
+	bool fps_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	bool new_game_flag;
@@ -87,12 +91,18 @@ namespace Player {
 	std::string escape_symbol;
 	int engine;
 	std::string game_title;
-	double start_time;
-	double next_frame;
 	int frames;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+}
+
+namespace {
+	double start_time;
+	double next_frame;
+
+	// Overwritten by --encoding
+	std::string forced_encoding;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -141,8 +151,6 @@ void Player::Init(int argc, char *argv[]) {
 		// Not overwritten by --project-path
 		Main_Data::Init();
 	}
-
-	FileFinder::Init();
 
 	DisplayUi.reset();
 
@@ -227,7 +235,7 @@ void Player::Update(bool update_scene) {
 
 	// Normal logic update
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
-		Graphics::fps_on_screen = !Graphics::fps_on_screen;
+		fps_flag = !fps_flag;
 	}
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
@@ -244,6 +252,8 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::instance->type != Scene::Logo) {
 			Scene::PopUntil(Scene::Title);
+			// Do not update this scene until it's properly set up in the next main loop
+			update_scene = false;
 		}
 	}
 
@@ -285,7 +295,7 @@ void Player::Exit() {
 	DisplayUi->UpdateDisplay();
 #endif
 
-	Main_Data::Cleanup();
+	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
@@ -297,12 +307,17 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+#ifdef _WIN32
+	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
+#endif
+
 	engine = EngineNone;
 #ifdef EMSCRIPTEN
 	window_flag = true;
 #else
 	window_flag = false;
 #endif
+	fps_flag = false;
 	debug_flag = false;
 	hide_title_flag = false;
 	exit_flag = false;
@@ -322,7 +337,11 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
 		ss << argv[i] << " ";
+#ifdef _WIN32
+		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
+#else
 		args.push_back(Utils::LowerCase(argv[i]));
+#endif
 	}
 	Output::Debug("CLI: %s", ss.str().c_str());
 
@@ -335,6 +354,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
 			window_flag = true;
+		}
+		else if (*it == "--show-fps") {
+			fps_flag = true;
 		}
 		else if (*it == "testplay" || *it == "--test-play") {
 			debug_flag = true;
@@ -367,8 +389,16 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
+#ifdef _WIN32
+			Main_Data::project_path = *it;
+			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::project_path).c_str());
+			if (cur_dir) {
+				Main_Data::project_path = ".";
+			}
+#else
 			// case sensitive
 			Main_Data::project_path = argv[it - args.begin() + 1];
+#endif
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
@@ -441,7 +471,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			encoding = *it;
+			forced_encoding = *it;
 		}
 		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
@@ -474,53 +504,57 @@ static void OnSystemFileReady(FileRequestResult* result) {
 }
 
 void Player::CreateGameObjects() {
-	static bool init = false;
-	if (!init) {
-		GetEncoding();
-		escape_symbol = ReaderUtil::Recode("\\", encoding);
-		if (escape_symbol.empty()) {
-			Output::Error("Invalid encoding: %s.", encoding.c_str());
-		}
+	GetEncoding();
+	escape_symbol = ReaderUtil::Recode("\\", encoding);
+	if (escape_symbol.empty()) {
+		Output::Error("Invalid encoding: %s.", encoding.c_str());
+	}
 
-		LoadDatabase();
+	LoadDatabase();
 
-		INIReader ini(FileFinder::FindDefault(INI_NAME));
-		if (ini.ParseError() != -1) {
-			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-			game_title = ReaderUtil::Recode(title, encoding);
-			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-		}
+	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
-		Output::Debug("Loading game %s", Player::game_title.c_str());
+	INIReader ini(ini_file);
+	if (ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		game_title = ReaderUtil::Recode(title, encoding);
+		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+	}
 
-		if (Player::engine == EngineNone) {
-			if (Data::system.ldb_id == 2003) {
-				Player::engine = EngineRpg2k3;
+	Output::Debug("Loading game %s", Player::game_title.c_str());
 
-				if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-					Output::Debug("Using RPG2k3 Interpreter");
-				}
-				else {
-					Player::engine |= EngineRpg2k3E;
-					Output::Debug("Using RPG2k3 (English release, v1.10) Interpreter");
-				}
+	if (Player::engine == EngineNone) {
+		if (Data::system.ldb_id == 2003) {
+			Player::engine = EngineRpg2k3;
+
+			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
+				Output::Debug("Using RPG2k3 Interpreter");
 			}
 			else {
-				Player::engine = EngineRpg2k;
-				Output::Debug("Using RPG2k Interpreter");
+				Player::engine |= EngineRpg2k3E;
+				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		}
-
-		if (!no_rtp_flag) {
-			FileFinder::InitRtpPaths();
+		else {
+			Player::engine = EngineRpg2k;
+			Output::Debug("Using RPG2k Interpreter");
 		}
+	}
 
+	if (!no_rtp_flag) {
+		FileFinder::InitRtpPaths();
+	}
+
+	ResetGameObjects();
+}
+
+void Player::ResetGameObjects() {
+	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
 		request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
-	init = true;
 
 	Main_Data::game_data.Setup();
 
@@ -543,8 +577,10 @@ void Player::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
-		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
+	if (!FileFinder::IsRPG2kProject(*FileFinder::GetDirectoryTree()) &&
+		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
+		// Unlikely to happen because of the game browser only launches valid games
+
 		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
 
 		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
@@ -652,13 +688,19 @@ void Player::SetupPlayerSpawn() {
 }
 
 std::string Player::GetEncoding() {
+	encoding = forced_encoding;
+
 	if (encoding.empty()) {
-		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		std::string ini = FileFinder::FindDefault(INI_NAME);
+
+		encoding = ReaderUtil::GetEncoding(ini);
 	} else {
 		return encoding;
 	}
 	if (encoding.empty()) {
-		encoding = ReaderUtil::DetectEncoding(FileFinder::FindDefault(DATABASE_NAME));
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+
+		encoding = ReaderUtil::DetectEncoding(ldb);
 	} else {
 		return encoding;
 	}
@@ -697,6 +739,8 @@ void Player::PrintUsage() {
 	std::cout << "      " << "                     " << " rpg2k3e - RPG Maker 2003 (English release) engine" << std::endl;
 
 	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
+
+	std::cout << "      " << "--show-fps           " << "Enable frames per second counter." << std::endl;
 
 	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
 	std::cout << "      " << "                     " << "command menu." << std::endl;
@@ -738,6 +782,9 @@ void Player::PrintUsage() {
 	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
 	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
 	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
+
+	std::cout << "Game related parameters (e.g. new-game and load-game-id) don't work correctly when the " << std::endl;
+	std::cout << "startup directory does not contain a valid game (and the game browser loads)" << std::endl << std::endl;
 
 	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }

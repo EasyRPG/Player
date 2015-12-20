@@ -165,11 +165,6 @@ void Scene_Battle::Update() {
 
 	bool events_finished = Game_Battle::UpdateEvents();
 
-	if (Game_Message::visible && events_finished && !message_window->IsNextMessagePossible()) {
-		// Handle message box closing when not caused by event e.g. victory message
-		Game_Message::closing = true;
-	}
-
 	if (!Game_Message::visible && events_finished) {
 		ProcessActions();
 		ProcessInput();
@@ -198,8 +193,8 @@ void Scene_Battle::InitBattleTest()
 	Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
 }
 
-void Scene_Battle::NextTurn() {
-	Game_Battle::NextTurn();
+void Scene_Battle::NextTurn(Game_Battler* battler) {
+	Game_Battle::NextTurn(battler);
 }
 
 void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {

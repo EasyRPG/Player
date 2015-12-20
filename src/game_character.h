@@ -640,7 +640,7 @@ public:
 	bool IsFlashPending() const;
 
 	/**
-	 * Tests if animation type is any fixed state or if the direction is locked.
+	 * Tests if animation type is any fixed state.
 	 *
 	 * @return Whether direction is fixed
 	 */
@@ -665,7 +665,7 @@ public:
 	 *
 	 * @return Bush depth at this character's position
 	 */
-	int GetBushDepth();
+	virtual int GetBushDepth() const;
 
 	void SetGraphic(const std::string& name, int index);
 

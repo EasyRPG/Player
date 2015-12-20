@@ -236,7 +236,7 @@ void Game_Character::Update() {
 	if (stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsMessageBlocking() && !Game_Map::GetInterpreter().IsRunning()) {
+		} else if (!IsMessageBlocking() && !Game_Map::GetInterpreter().HasRunned() && !Game_Map::GetInterpreter().IsRunning()) {
 			UpdateSelfMovement();
 		}
 	}
@@ -560,7 +560,7 @@ void Game_Character::Move(int dir) {
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
 
 	SetDirection(dir);
-	if (!IsDirectionFixed()) {
+	if (!(IsDirectionFixed() || IsFacingLocked())) {
 		if (dir > 3) // Diagonal
 			SetSpriteDirection(GetSpriteDirection() % 2 ? -dx + 2 : dy + 1);
 		else
@@ -928,8 +928,7 @@ bool Game_Character::IsDirectionFixed() const {
 	return
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
-		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked();
+		animation_type == RPG::EventPage::AnimType_fixed_non_continuous;
 }
 
 bool Game_Character::IsContinuous() const {
@@ -942,13 +941,17 @@ bool Game_Character::IsSpinning() const {
 	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
-int Game_Character::GetBushDepth() {
+int Game_Character::GetBushDepth() const {
+	if (jumping)
+		return 0;
+
 	return Game_Map::GetBushDepth(GetX(), GetY());
 }
 
 void Game_Character::SetGraphic(const std::string& name, int index) {
 	SetSpriteName(name);
 	SetSpriteIndex(index);
+	tile_id = 0;
 	pattern = RPG::EventPage::Frame_middle;
 }
 

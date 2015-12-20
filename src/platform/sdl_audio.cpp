@@ -16,14 +16,30 @@
  */
 
 // Headers
+#include "baseui.h"
 #include "sdl_audio.h"
 #include "filefinder.h"
 #include "output.h"
 
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
 
 #ifdef _WIN32
 #  include "util_win.h"
 #endif
+
+namespace {
+	void bgm_played_once() {
+		if (DisplayUi)
+			static_cast<SdlAudio&>(Audio()).BGM_OnPlayedOnce();
+	}
+
+	void bgs_played_once(int channel) {
+		if (DisplayUi && channel == static_cast<SdlAudio&>(Audio()).BGS_GetChannel())
+			bgm_played_once();
+	}
+}
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
@@ -39,20 +55,89 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
+#elif EMSCRIPTEN
+	int const frequency = EM_ASM_INT_V({
+		var context;
+		try {
+			context = new AudioContext();
+		} catch (e) {
+			context = new webkitAudioContext();
+		}
+		return context.sampleRate;
+	});
 #else
 	int const frequency = 44100;
 #endif
+
+#ifdef EMSCRIPTEN
+	// Note: this requires a patched SDL_mixer currently
+	if (Mix_OpenAudioDevice(NULL, 0, frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+#else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+#endif
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
+
+#if SDL_MIXER_MAJOR_VERSION>1
+	int audio_rate;
+	Uint16 audio_format;
+	int audio_channels;
+	if (Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+		const char *audio_format_str;
+		switch (audio_format) {
+			case AUDIO_U8: audio_format_str = "U8"; break;
+			case AUDIO_S8: audio_format_str = "S8"; break;
+			case AUDIO_U16LSB: audio_format_str = "U16LSB"; break;
+			case AUDIO_S16LSB: audio_format_str = "S16LSB"; break;
+			case AUDIO_U16MSB: audio_format_str = "U16MSB"; break;
+			case AUDIO_S16MSB: audio_format_str = "S16MSB"; break;
+			case AUDIO_S32LSB: audio_format_str = "S32LSB"; break;
+			case AUDIO_S32MSB: audio_format_str = "S32MSB"; break;
+			case AUDIO_F32LSB: audio_format_str = "F32LSB"; break;
+			case AUDIO_F32MSB: audio_format_str = "F32MSB"; break;
+			default: audio_format_str = "Unknown"; break;
+		}
+		Output::Debug("Opened audio at %d Hz (%s), format: %s",
+			audio_rate,
+			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
+			audio_format_str);
+	} else {
+		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
+	}
+#endif
 }
 
 SdlAudio::~SdlAudio() {
 	Mix_CloseAudio();
 }
 
+void SdlAudio::BGM_OnPlayedOnce() {
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer produces noise when playing wav.
+	// Workaround: Use Mix_LoadWAV
+	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
+	if (bgs_playing) {
+		if (!bgs_stop) {
+			played_once = true;
+			// Play indefinitely without fade-in
+			Mix_PlayChannel(bgs_channel, bgs.get(), -1);
+			bgs_channel = -1;
+		}
+		return;
+	}
+#endif
+
+	if (!me_stopped_bgm && !bgm_stop) {
+		played_once = true;
+		// Play indefinitely without fade-in
+		Mix_PlayMusic(bgm.get(), -1);
+	}
+}
+
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+	bgm_stop = false;
+	played_once = false;
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		Output::Debug("Music not found: %s", file.c_str());
@@ -70,13 +155,12 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		return;
 	}
 #if SDL_MAJOR_VERSION>1
-	// SDL2_mixer produces noise when playing wav.
-	// Workaround: Use Mix_LoadWAV
-	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
+	// SDL2_mixer bug, see above
 	if (bgs_playing) {
 		BGS_Stop();
 	}
-	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
 		BGS_Play(file, volume, 0, fadein);
 		return;
@@ -86,22 +170,25 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	BGM_Volume(volume);
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
-	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
-	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+			? Mix_PlayMusic(bgm.get(), 0) : Mix_FadeInMusic(bgm.get(), 0, fadein))
 #else
-	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
-	     == -1) {
-		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
-		return;
+		== -1) {
+			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			return;
 	}
+
+	Mix_HookMusicFinished(&bgm_played_once);
 }
 
 void SdlAudio::BGM_Pause() {
 	// Midi pause is not supported... (for some systems -.-)
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGS_Pause();
 		return;
 	}
@@ -112,7 +199,8 @@ void SdlAudio::BGM_Pause() {
 void SdlAudio::BGM_Resume() {
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGS_Resume();
 		return;
 	}
@@ -123,13 +211,19 @@ void SdlAudio::BGM_Resume() {
 void SdlAudio::BGM_Stop() {
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGS_Stop();
 		return;
 	}
 #endif
+	bgm_stop = true;
 	Mix_HaltMusic();
 	me_stopped_bgm = false;
+}
+
+bool SdlAudio::BGM_PlayedOnce() {
+	return played_once;
 }
 
 void SdlAudio::BGM_Volume(int volume) {
@@ -152,6 +246,18 @@ void SdlAudio::BGM_Fade(int fade) {
 		return;
 	}
 #endif
+
+	bgm_stop = true;
+
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+		BGS_Fade(fade);
+		return;
+	}
+#endif
+
 	Mix_FadeOutMusic(fade);
 	me_stopped_bgm = false;
 }
@@ -162,19 +268,24 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Debug("Music not found: %s", file.c_str());
 		return;
 	}
-	
+
 	bgs.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
 		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), -1, fadein);
+	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), 0, fadein);
 	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
 	if (bgs_channel == -1) {
 		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
 	bgs_playing = true;
+	bgs_stop = false;
+
+#if SDL_MAJOR_VERSION>1
+	Mix_ChannelFinished(bgs_played_once);
+#endif
 }
 
 void SdlAudio::BGS_Pause() {
@@ -189,15 +300,23 @@ void SdlAudio::BGS_Resume() {
 
 void SdlAudio::BGS_Stop() {
 	if (Mix_Playing(bgs_channel)) {
+		bgs_stop = true;
 		Mix_HaltChannel(bgs_channel);
+		bgs_channel = -1;
 		bgs_playing = false;
 	}
 }
 
 void SdlAudio::BGS_Fade(int fade) {
+	bgs_stop = true;
 	Mix_FadeOutChannel(bgs_channel, fade);
+	bgs_channel = -1;
+	bgs_playing = false;
 }
 
+int SdlAudio::BGS_GetChannel() const {
+	return bgs_channel;
+}
 /*
 void me_finish(int channel) {
 	if (me_channel == channel && me_stopped_bgm) {
@@ -247,13 +366,13 @@ void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	}
 	EASYRPG_SHARED_PTR<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!sound) {
-		Output::Warning("Couldn't load %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	int channel = Mix_PlayChannel(-1, sound.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Warning("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	sounds[channel] = sound;

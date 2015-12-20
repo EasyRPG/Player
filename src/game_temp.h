@@ -43,6 +43,7 @@ public:
 	static bool inn_calling;
 	static bool name_calling;
 	static bool save_calling;
+	static bool load_calling;
 	static bool to_title;
 	static bool gameover;
 

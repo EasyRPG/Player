@@ -89,6 +89,7 @@ void Game_Battle::Quit() {
 	// Remove conditions which end after battle
 	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
 		(*it)->RemoveBattleStates();
+		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
 	Main_Data::game_party->ResetBattle();
@@ -139,8 +140,39 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation);
 }
 
-void Game_Battle::NextTurn() {
-	std::fill(page_executed.begin(), page_executed.end(), false);
+void Game_Battle::NextTurn(Game_Battler* battler) {
+	if (battler == nullptr) {
+		std::fill(page_executed.begin(), page_executed.end(), false);
+	} else {
+		std::vector<RPG::TroopPage>::const_iterator it;
+		for (it = troop->pages.begin(); it != troop->pages.end(); ++it) {
+			const RPG::TroopPage& page = *it;
+			const RPG::TroopPageCondition& condition = page.condition;
+
+			// Reset pages without actor/enemy condition each turn
+			if (!condition.flags.turn_actor &&
+				!condition.flags.turn_enemy) {
+				page_executed[(*it).ID - 1] = false;
+			}
+
+			// Reset pages of specific actor after that actors turn
+			if (page_executed[(*it).ID - 1]) {
+				if (battler->GetType() == Game_Battler::Type_Ally &&
+					condition.flags.turn_actor &&
+					Game_Actors::GetActor(condition.turn_actor_id) == battler) {
+					page_executed[(*it).ID - 1] = false;
+				}
+			}
+
+			// Reset pages of specific enemy after that enemies turn
+			if (battler->GetType() == Game_Battler::Type_Enemy &&
+				condition.flags.turn_enemy &&
+				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
+				page_executed[(*it).ID - 1] = false;
+			}
+		}
+	}
+
 	++turn;
 }
 
@@ -170,8 +202,6 @@ void Game_Battle::ChangeBackground(const std::string& name) {
 
 int Game_Battle::GetTurn() {
 	return turn;
-
-	//return turn_fragments / turn_length;
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
@@ -196,19 +226,13 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))
 		return false;
 
-	/*
-	TODO RPG 2k3
-	if (condition.flags.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
-	condition.turn_enemy_b, condition.turn_enemy_a))
-	return false;
+	if (condition.flags.turn_enemy &&
+		!CheckTurns((*Main_Data::game_enemyparty)[condition.turn_enemy_id].GetBattleTurn(),	condition.turn_enemy_b, condition.turn_enemy_a))
+		return false;
 
-	if (condition.flags.turn_actor) {
-	Battle::Ally* ally = FindAlly(condition.turn_actor_id);
-	if (!ally)
-	return false;
-	if (!CheckTurns(ally->GetTurns(), condition.turn_actor_b, condition.turn_actor_a))
-	return false;
-	}*/
+	if (condition.flags.turn_actor &&
+		!CheckTurns(Game_Actors::GetActor(condition.turn_actor_id)->GetBattleTurn(), condition.turn_actor_b, condition.turn_actor_a))
+		return false;
 
 	if (condition.flags.fatigue) {
 		int fatigue = Main_Data::game_party->GetFatigue();
@@ -234,22 +258,10 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 			return false;
 	}
 
-	if (condition.flags.turn_actor) {
-		if (!CheckTurns(Game_Actors::GetActor(condition.actor_id)->GetBattleTurn(),
-			condition.turn_actor_b, condition.turn_actor_a)) {
-			return false;
-		}
-	}
-	/*
-	TODO RPG2k3
+	if (condition.flags.command_actor &&
+		condition.command_id != Game_Actors::GetActor(condition.turn_actor_id)->GetLastBattleAction())
+		return false;
 
-	if (condition.flags.command_actor) {
-	Battle::Ally* ally = FindAlly(condition.actor_id);
-	if (!ally)
-	return false;
-	if (ally->last_command != condition.command_id)
-	return false;
-	}*/
 	return true;
 }
 

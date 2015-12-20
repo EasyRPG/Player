@@ -36,7 +36,6 @@ class Game_Interpreter_Map : public Game_Interpreter
 {
 public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
-	~Game_Interpreter_Map();
 
 	/**
 	* Parses a SaveEventCommand to create an interpreter.
@@ -123,6 +122,10 @@ private:
 	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
 	bool CommandChangeClass(RPG::EventCommand const& com);
 	bool CommandHaltAllMovement(RPG::EventCommand const& com);
+	bool CommandOpenLoadMenu(RPG::EventCommand const& com);
+	bool CommandExitGame(RPG::EventCommand const& com);
+	bool CommandToggleAtbMode(RPG::EventCommand const& com);
+	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
 	bool ContinuationOpenShop(RPG::EventCommand const& com);
 	bool ContinuationShowInnStart(RPG::EventCommand const& com);

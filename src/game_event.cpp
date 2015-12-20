@@ -98,9 +98,7 @@ int Game_Event::GetDirection() const {
 }
 
 void Game_Event::SetDirection(int new_direction) {
-	if (new_direction != -1) {
-		data.direction = new_direction;
-	}
+	data.direction = new_direction;
 }
 
 int Game_Event::GetSpriteDirection() const {
@@ -230,7 +228,8 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 
 bool Game_Event::IsMessageBlocking() const {
 	return Game_Message::message_waiting &&
-		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID);
+		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID) &&
+		!Game_Message::owner_parallel;
 }
 
 bool Game_Event::GetThrough() const {
@@ -242,6 +241,7 @@ void Game_Event::ClearStarting() {
 }
 
 void Game_Event::Setup(RPG::EventPage* new_page) {
+	bool from_null = page == NULL;
 	page = new_page;
 
 	// Free resources if needed
@@ -269,11 +269,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (GetDirection() != page->character_direction) {
-		SetDirection(page->character_direction);
-		SetSpriteDirection(page->character_direction);
-	}
-
 	if (original_pattern != page->character_pattern) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
@@ -286,9 +281,15 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
-	animation_type = page->animation_type;
-	SetOpacity(page->translucent ? 160 : 255);
 
+	bool last_direction_fixed = IsDirectionFixed() || IsFacingLocked();
+	animation_type = page->animation_type;
+	if (from_null || !last_direction_fixed || IsDirectionFixed()) {
+		SetDirection(page->character_direction);
+		SetSpriteDirection(page->character_direction);
+	}
+
+	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;
@@ -315,10 +316,8 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (original_pattern != page->character_pattern) {
-		pattern = page->character_pattern;
-		original_pattern = pattern;
-	}
+	pattern = page->character_pattern;
+	original_pattern = pattern;
 
 	move_type = page->move_type;
 	original_move_route = page->move_route;
@@ -484,7 +483,7 @@ std::vector<RPG::EventCommand>& Game_Event::GetList() {
 }
 
 void Game_Event::StartTalkToHero() {
-	if (!IsDirectionFixed()) {
+	if (!(IsDirectionFixed() || IsFacingLocked())) {
 		int prelock_dir = GetDirection();
 		TurnTowardHero();
 		SetDirection(prelock_dir);
@@ -492,7 +491,7 @@ void Game_Event::StartTalkToHero() {
 }
 
 void Game_Event::StopTalkToHero() {
-	if (!IsDirectionFixed()) {
+	if (!(IsDirectionFixed() || IsFacingLocked())) {
 		SetSpriteDirection(GetDirection());
 	}
 
@@ -514,7 +513,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 }
 
 void Game_Event::Update() {
-	if (!data.active) {
+	if (!data.active || page == NULL) {
 		return;
 	}
 

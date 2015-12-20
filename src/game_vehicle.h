@@ -82,6 +82,7 @@ public:
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
 	bool IsPassable(int x, int y, int d) const;
+	int GetBushDepth() const;
 	/** @} */
 
 	void LoadSystemSettings();

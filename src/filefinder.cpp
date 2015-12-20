@@ -22,9 +22,9 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include <boost/optional.hpp>
 
@@ -34,8 +34,6 @@
 #include "filefinder.h"
 #include "output.h"
 #include "player.h"
-#include "main_data.h"
-#include "reader_util.h"
 #include "registry.h"
 
 #ifdef _MSC_VER
@@ -73,11 +71,12 @@
 namespace {
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 
-	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::ProjectTree> > search_path_list;
+	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::DirectoryTree>> search_path_list;
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> game_directory_tree;
 	search_path_list search_paths;
 	std::string fonts_path;
 
-	boost::optional<std::string> FindFile(FileFinder::ProjectTree const& tree,
+	boost::optional<std::string> FindFile(FileFinder::DirectoryTree const& tree,
 										  std::string const& dir,
 										  std::string const& name,
 										  char const* exts[])
@@ -109,7 +108,7 @@ namespace {
 			string_map::const_iterator const name_it = dir_map.find(corrected_name + *c);
 			if(name_it != dir_map.end()) {
 				return MakePath
-					(std::string(tree.project_path).append("/")
+					(std::string(tree.directory_path).append("/")
 					 .append(dir_it->second), name_it->second);
 			}
 		}
@@ -149,8 +148,8 @@ namespace {
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
-		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
-		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
+		const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
+		boost::optional<std::string> const ret = FindFile(*tree, dir, name, exts);
 		if (ret != boost::none) { return *ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
@@ -170,28 +169,54 @@ namespace {
 
 		return std::string();
 	}
-
 } // anonymous namespace
 
-EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p, bool recursive) {
-	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
+const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
+	return game_directory_tree;
+}
 
-	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
-	tree->project_path = p;
+const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
+#ifdef EMSCRIPTEN
+	std::string save_path = MakePath(game_directory_tree.get()->directory_path, "Save");
+#else
+	std::string save_path = game_directory_tree.get()->directory_path;
+#endif
 
-	Directory mem = GetDirectoryMembers(tree->project_path, recursive ? ALL : FILES);
+	if (!(Exists(save_path) && IsDirectory(save_path))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+
+	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	tree->directory_path = save_path;
+
+	Directory mem = GetDirectoryMembers(tree->directory_path, FILES);
+	for (string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
+		(IsDirectory(MakePath(tree->directory_path, i->second)) ?
+			tree->directories : tree->files)[i->first] = i->second;
+	}
+
+	return tree;
+}
+
+void FileFinder::SetDirectoryTree(EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> directory_tree) {
+	game_directory_tree = directory_tree;
+}
+
+EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
+	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+
+	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	tree->directory_path = p;
+
+	Directory mem = GetDirectoryMembers(tree->directory_path, ALL);
 	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
-		(IsDirectory(MakePath(tree->project_path, i->second))?
+		(IsDirectory(MakePath(tree->directory_path, i->second))?
 		 tree->directories : tree->files)[i->first] = i->second;
 	}
 
-	// Stop here if the tree is invalid
-	if (p == Main_Data::project_path && !IsRPG2kProject(*tree) && !IsEasyRpgProject(*tree))
-		return tree;
-
-	for(string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
-		GetDirectoryMembers(MakePath(tree->project_path, i->second), RECURSIVE)
-			.members.swap(tree->sub_members[i->first]);
+	if (recursive) {
+		for (string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
+			GetDirectoryMembers(MakePath(tree->directory_path, i->second), RECURSIVE)
+				.members.swap(tree->sub_members[i->first]);
+		}
 	}
 
 	return tree;
@@ -287,28 +312,9 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-FileFinder::ProjectTree const& FileFinder::GetProjectTree(bool init) {
-	static ProjectTree tree_;
-
-	if(tree_.project_path != Main_Data::project_path || init) {
-		EASYRPG_SHARED_PTR<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
-		if(! t) {
-			Output::Error("invalid project path: %s", Main_Data::project_path.c_str());
-			return tree_;
-		}
-		tree_ = *t;
-	}
-
-	return tree_;
-}
-
-void FileFinder::Init() {
-	GetProjectTree(true); // empty call
-}
-
 static void add_rtp_path(std::string const& p) {
 	using namespace FileFinder;
-	EASYRPG_SHARED_PTR<ProjectTree> tree(CreateProjectTree(p));
+	EASYRPG_SHARED_PTR<DirectoryTree> tree(CreateDirectoryTree(p));
 	if(tree) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
 		search_paths.push_back(tree);
@@ -327,7 +333,9 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 	}
 }
 
-void FileFinder::InitRtpPaths() {
+void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
+	search_paths.clear();
+
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
 	return;
@@ -391,7 +399,7 @@ void FileFinder::InitRtpPaths() {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
-	if (search_paths.empty()) {
+	if (warn_no_rtp_found && search_paths.empty()) {
 		Output::Warning("RTP not found. This may create missing file errors.\n"
 			"Install RTP files or check they are installed fine.\n"
 			"If this game really does not require RTP, then add\n"
@@ -401,6 +409,7 @@ void FileFinder::InitRtpPaths() {
 
 void FileFinder::Quit() {
 	search_paths.clear();
+	game_directory_tree.reset();
 }
 
 FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
@@ -440,10 +449,10 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 }
 
 std::string FileFinder::FindDefault(std::string const& name) {
-	return FindDefault(GetProjectTree(), name);
+	return FindDefault(*GetDirectoryTree(), name);
 }
 
-std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& dir, const std::string& name) {
+std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name) {
 	static const char* no_exts[] = { "", NULL };
 
 	boost::optional<std::string> file = FindFile(tree, dir, name, no_exts);
@@ -453,16 +462,20 @@ std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& 
 	return "";
 }
 
-std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
-	ProjectTree const& p = tree;
+std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& name) {
+	DirectoryTree const& p = tree;
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
 
-	return(it != files.end()) ? MakePath(p.project_path, it->second) : "";
+	return(it != files.end()) ? MakePath(p.directory_path, it->second) : "";
 }
 
-bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
+bool FileFinder::IsValidProject(DirectoryTree const & dir) {
+	return IsRPG2kProject(dir) || IsEasyRpgProject(dir);
+}
+
+bool FileFinder::IsRPG2kProject(DirectoryTree const& dir) {
 	string_map::const_iterator const
 		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME)),
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME));
@@ -470,12 +483,27 @@ bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }
 
-bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
+bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 	string_map::const_iterator const
 		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME_EASYRPG)),
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
 
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
+bool FileFinder::HasSavegame(DirectoryTree const& dir) {
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+
+	for (int i = 1; i <= 15; i++) {
+		std::stringstream ss;
+		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
+		std::string filename = FileFinder::FindDefault(*tree, ss.str());
+
+		if (!filename.empty()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {
@@ -547,19 +575,19 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	EASYRPG_SHARED_PTR< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
 	if (!dir) {
-		Output::Error("Error opening dir %s: %s", path.c_str(),
+		Output::Debug("Error opening dir %s: %s", path.c_str(),
 					  ::strerror(errno));
 		return result;
 	}
 
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
-		if (ent->d_name[0] == '.') { continue; }
 #ifdef _WIN32
 		std::string const name = Utils::FromWideString(ent->d_name);
 #else
 		std::string const name = ent->d_name;
 #endif
+		if (name == "." || name == "..") { continue; }
 		switch(m) {
 		case FILES:
 			if(IsDirectory(MakePath(path, name))) { continue; }

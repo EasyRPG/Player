@@ -239,7 +239,7 @@ void Game_Screen::Update() {
 	}
 
 	if (data.flash_time_left > 0) {
-		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level, 0);
+		data.flash_current_level -= data.flash_current_level / data.flash_time_left;
 		data.flash_time_left--;
 		if (data.flash_time_left <= 0)
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
@@ -298,7 +298,7 @@ Tone Game_Screen::GetTone() {
 
 Color Game_Screen::GetFlash(int& current_level, int& time_left) {
 	time_left = data.flash_time_left;
-	current_level = data.flash_time_left * 255 / 31;
+	current_level = data.flash_current_level / 31 * 255;
 	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255);
 }
 

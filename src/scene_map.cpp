@@ -39,6 +39,7 @@
 #include "audio.h"
 #include "input.h"
 #include "screen.h"
+#include "scene_load.h"
 
 Scene_Map::Scene_Map(bool from_save) :
 	from_save(from_save) {
@@ -67,7 +68,7 @@ void Scene_Map::Start() {
 }
 
 Scene_Map::~Scene_Map() {
-	Main_Data::game_screen->Reset();
+	Main_Data::Cleanup();
 }
 
 void Scene_Map::Continue() {
@@ -103,6 +104,28 @@ void Scene_Map::TransitionOut() {
 }
 
 void Scene_Map::Update() {
+	if (!Main_Data::game_player->IsMoving()) {
+		if (Game_Temp::transition_processing) {
+			Game_Temp::transition_processing = false;
+
+			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
+		}
+	}
+
+	if (auto_transition) {
+		auto_transition = false;
+
+		if (!auto_transition_erase) {
+			// Fade Out not handled here but in StartTeleportPlayer because otherwise
+			// emscripten hangs before fading out when doing async loading...
+			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+		}
+	}
+
+	// Async loading note:
+	// Fade In must be done before finish teleport, otherwise chipset is not
+	// loaded and renders black while fading -> ugly
+
 	if (Main_Data::game_player->IsTeleporting()) {
 		FinishTeleportPlayer();
 	}
@@ -170,15 +193,14 @@ void Scene_Map::Update() {
 			return;
 		}
 
-		if (Game_Temp::battle_calling) {
-			CallBattle();
+		if (Game_Temp::load_calling) {
+			CallLoad();
 			return;
 		}
 
-		if (Game_Temp::transition_processing) {
-			Game_Temp::transition_processing = false;
-
-			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
+		if (Game_Temp::battle_calling) {
+			CallBattle();
+			return;
 		}
 	}
 }
@@ -204,7 +226,8 @@ void Scene_Map::FinishTeleportPlayer() {
 	Game_Map::Update();
 
 	if (autotransition) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+		auto_transition = true;
+		auto_transition_erase = false;
 	}
 }
 
@@ -251,6 +274,12 @@ void Scene_Map::CallSave() {
 	Game_Temp::save_calling = false;
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
+}
+
+void Scene_Map::CallLoad() {
+	Game_Temp::load_calling = false;
+
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
 }
 
 void Scene_Map::CallDebug() {

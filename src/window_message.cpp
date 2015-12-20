@@ -93,6 +93,7 @@ void Window_Message::StartMessageProcessing() {
 		std::string const line = Game_Message::texts[i];
 		text.append(line + "\n");
 	}
+	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
 	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
@@ -141,7 +142,6 @@ void Window_Message::ShowGoldWindow() {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
 		gold_window->SetOpenAnimation(5);
-		gold_window->SetVisible(true);
 	}
 }
 
@@ -226,15 +226,7 @@ void Window_Message::TerminateMessage() {
 }
 
 bool Window_Message::IsNextMessagePossible() {
-	if (Game_Message::num_input_variable_id > 0) {
-		return true;
-	}
-
-	if (Game_Message::texts.empty()) {
-		return false;
-	}
-
-	return true;
+	return Game_Message::num_input_variable_id > 0 || !Game_Message::texts.empty();
 }
 
 void Window_Message::ResetWindow() {
@@ -244,6 +236,7 @@ void Window_Message::ResetWindow() {
 void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
+	gold_window->Update();
 
 	if (pause) {
 		WaitForInput();
@@ -265,32 +258,20 @@ void Window_Message::Update() {
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
 			// Open and Close Animations are skipped in battle
-			if (Game_Temp::battle_running) {
-				SetOpenAnimation(0);
-			} else {
-				SetOpenAnimation(5);
-			}
-			visible = true;
+			SetOpenAnimation(Game_Temp::battle_running ? 0 : 5);
+		} else if (closing) {
+			// Cancel closing animation
+			SetOpenAnimation(0);
 		}
 		Game_Message::visible = true;
-	} else if (!IsNextMessagePossible() && Game_Message::closing) {
+	} else if (!Game_Message::message_waiting && Game_Message::visible) {
 		if (visible && !closing) {
-			// The Event Page ended but the MsgBox was used in this Event
-			// It can be closed now.
-			TerminateMessage();
-			if (Game_Temp::battle_running) {
-				SetCloseAnimation(0);
-			}
-			else {
-				SetCloseAnimation(5);
-			}
-		}
-		else if (!visible && !closing) {
+			// Start the closing animation
+			SetCloseAnimation(Game_Temp::battle_running ? 0 : 5);
+		} else if (!visible) {
 			// The closing animation has finished
 			Game_Message::visible = false;
-			Game_Message::closing = false;
 			Game_Message::owner_id = 0;
-			return;
 		}
 	}
 }
@@ -461,7 +442,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		else if (*text_index == '0') {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
-				ss << '0';
+				ss << "0";
 			} else {
 				null_at_start = true;
 			}
@@ -496,7 +477,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 
 	if (ss.str().empty()) {
 		if (null_at_start) {
-			ss << L"0";
+			ss << "0";
 		} else {
 			is_valid = false;
 			return 0;
@@ -584,9 +565,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			return ss.str();
 		} else {
 			// Invalid Var is always 0
-			std::stringstream ss;
-			ss << "0";
-			return ss.str();
+			return "0";
 		}
 	default:;
 		// When this happens text_index was not on a \ during calling

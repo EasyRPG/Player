@@ -116,9 +116,13 @@ private:
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
+	/* Workaround used to avoid blocking the player with move routes that are completable in a single frame */
+	bool IsBlockedByMoveRoute() const;
+
 	void UpdateScroll();
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();
+	bool CheckCollisionEvent();
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(const std::vector<int>& triggers);
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);

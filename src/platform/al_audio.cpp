@@ -143,13 +143,15 @@ struct ALAudio::buffer_loader {
 	virtual unsigned midi_ticks() const {
 		return 0;
 	}
+
+	unsigned loop_count_ = 0;
 };
 
 struct ALAudio::source {
 	source(EASYRPG_SHARED_PTR<ALCcontext> const &c, ALuint const s, bool loop)
 	    : ctx_(c)
 	    , src_(s)
-	    , loop_count_(0)
+	    , fade_count_(0)
 	    , fade_milli_(0)
 	    , volume_(1.0f)
 	    , is_fade_in_(false)
@@ -190,6 +192,10 @@ struct ALAudio::source {
 		alDeleteSources(1, &src_);
 	}
 
+	int loop_count() {
+		return loader_->loop_count_;
+	}
+
 	ALuint get() {
 		return src_;
 	}
@@ -203,7 +209,7 @@ struct ALAudio::source {
 private:
 	EASYRPG_SHARED_PTR<ALCcontext> ctx_;
 	ALuint src_;
-	unsigned loop_count_, fade_milli_;
+	unsigned fade_count_, fade_milli_;
 	ALfloat volume_;
 	bool is_fade_in_;
 	bool loop_play_;
@@ -212,7 +218,7 @@ private:
 	boost::circular_buffer<unsigned> ticks_, buf_sizes_;
 
 	unsigned progress_milli() const {
-		return (1000 * loop_count_ / 60);
+		return (1000 * fade_count_ / 60);
 	}
 	bool fade_ended() const {
 		return (fade_milli_ < progress_milli());
@@ -233,13 +239,13 @@ public:
 	}
 
 	void fade_out(unsigned const ms) {
-		loop_count_ = 0;
+		fade_count_ = 0;
 		fade_milli_ = ms;
 		is_fade_in_ = false;
 	}
 
 	void fade_in(unsigned const ms) {
-		loop_count_ = 0;
+		fade_count_ = 0;
 		fade_milli_ = ms;
 		is_fade_in_ = true;
 	}
@@ -267,10 +273,12 @@ public:
 
 		if (fade_milli_ != 0) {
 			SET_CONTEXT(ctx_);
-			loop_count_++;
+			fade_count_++;
 
 			if (fade_ended()) {
-				alSourceStop(src_);
+				fade_milli_ = 0;
+				if (!is_fade_in_)
+					alSourceStop(src_);
 			} else {
 				alSourcef(src_, AL_GAIN, current_volume());
 			}
@@ -348,13 +356,17 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 			if (info_.seekable) {
 				if (sf_seek(file_.get(), 0, SEEK_SET) == -1) {
 					Output::Error("libsndfile seek error: %s", sf_strerror(file_.get()));
+					return 0;
 				}
 			} else {
 				file_.reset(sf_open(filename_.c_str(), SFM_READ, &info_), sf_close);
 				if (!file_) {
 					Output::Error("libsndfile open error: %s", sf_strerror(NULL));
+					return 0;
 				}
 			}
+			loop_count_++;
+			seek_pos_ = 0;
 		}
 
 		data_.resize(info_.channels * info_.samplerate * SECOND_PER_BUFFER);
@@ -399,6 +411,7 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 			                                                 source_.synth.get()) != FLUID_FAILED);
 
 			BOOST_VERIFY(fluid_player_add(source_.player.get(), filename_.c_str()) != FLUID_FAILED);
+			loop_count_++;
 		}
 
 		data_.resize(2 * source_.sample_rate * SECOND_PER_BUFFER);
@@ -504,6 +517,10 @@ void ALAudio::BGM_Play(std::string const &file, int volume, int pitch, int fadei
 void ALAudio::BGM_Stop() {
 	SET_CONTEXT(ctx_);
 	alSourceStop(bgm_src_->get());
+}
+
+bool ALAudio::BGM_PlayedOnce() {
+	return bgm_src_->loop_count() > 0;
 }
 
 void ALAudio::BGM_Fade(int fade) {

@@ -46,10 +46,10 @@
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
-	active = false;
 	index = 0;
 	updating = false;
 	clear_child = false;
+	runned = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -58,19 +58,13 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	Clear();
 }
 
-Game_Interpreter::~Game_Interpreter() {
-	if (depth == 0) {
-		CloseMessageWindow();
-	}
-}
-
 // Clear.
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
-	CloseMessageWindow();
 	event_id = 0;					// event ID
-	move_route_waiting = false;		// waiting for move completion
 	wait_count = 0;					// wait count
+	waiting_battle_anim = false;
+	waiting_pan_screen = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 	if (child_interpreter) {		// clear child interpreter for called events
@@ -103,11 +97,10 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 
 	CancelMenuCall();
 
-	if (main_flag) {
+	if (main_flag && depth == 0)
 		Game_Message::SetFaceName("");
-	}
 
-	if (!updating)
+	if (!updating && depth == 0)
 		Update();
 }
 
@@ -116,7 +109,6 @@ void Game_Interpreter::CancelMenuCall() {
 }
 
 void Game_Interpreter::SetupWait(int duration) {
-	CloseMessageWindow();
 	if (duration == 0) {
 		// 0.0 waits 1 frame
 		wait_count = 1;
@@ -133,9 +125,14 @@ void Game_Interpreter::EndMoveRoute(Game_Character*) {
 	// This will only ever be called on Game_Interpreter_Map instances
 }
 
+bool Game_Interpreter::HasRunned() const {
+	return runned;
+}
+
 // Update
 void Game_Interpreter::Update() {
 	updating = true;
+	runned = false;
 	// 10000 based on: https://gist.github.com/4406621
 	for (loop_count = 0; loop_count < 10000; ++loop_count) {
 		/* If map is different than event startup time
@@ -160,26 +157,8 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if ((Game_Message::message_waiting || Game_Message::closing)
-			&& (main_flag || Game_Message::owner_id == event_id)) {
-				break;
-		}
-
-		// If waiting for a move to end
-		if (move_route_waiting) {
-			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
-				break;
-			}
-
-			Game_Event* g_event;
-			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-				g_event = Game_Map::GetEvents().find(i)->second.get();
-
-				if (g_event->IsMoveRouteOverwritten()) {
-					break;
-				}
-			}
-			move_route_waiting = false;
+		if (Game_Message::message_waiting && (main_flag || Game_Message::owner_id == event_id)) {
+			break;
 		}
 
 		if (wait_count > 0) {
@@ -197,10 +176,11 @@ void Game_Interpreter::Update() {
 
 		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
 			Game_Temp::shop_calling ||
-//			Game_Temp::inn_calling ||
+			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
+			Game_Temp::load_calling ||
 			Game_Temp::to_title ||
 			Game_Temp::gameover) {
 
@@ -229,13 +209,10 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
+		runned = true;
 		if (!ExecuteCommand()) {
-			CloseMessageWindow();
-			active = true;
 			break;
 		}
-
-		active = false;
 
 		// FIXME?
 		// After calling SkipTo this index++ will skip execution of e.g. END.
@@ -247,9 +224,7 @@ void Game_Interpreter::Update() {
 
 	if (loop_count > 9999) {
 		// Executed Events Count exceeded (10000)
-		active = true;
 		Output::Debug("Event %d exceeded execution limit", event_id);
-		CloseMessageWindow();
 	}
 
 	updating = false;
@@ -367,7 +342,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 }
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 	if (com.parameters.size() <= 1 ||
 		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
@@ -377,9 +352,8 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 	}
 }
 
-bool Game_Interpreter::CommandEnd() {
-	CloseMessageWindow();
-	if (main_flag) {
+bool Game_Interpreter::CommandEnd() { // code 10
+	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
 	}
 
@@ -390,7 +364,7 @@ bool Game_Interpreter::CommandEnd() {
 
 	list.clear();
 
-	if ((main_flag) && (event_id > 0)) {
+	if (main_flag && depth == 0 && event_id > 0) {
 		Game_Map::GetEvents().find(event_id)->second->StopTalkToHero();
 	}
 
@@ -422,23 +396,21 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	ret_val.swap(s_choices);
 }
 
-void Game_Interpreter::CloseMessageWindow() {
-	if (Game_Message::visible && !Game_Message::closing && (main_flag || Game_Message::owner_id == event_id)) {
-		Game_Message::closing = true;
-		Game_Message::SemiClear();
-	}
-}
-
 // Command Show Message
-bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Code ShowMessage
+bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
 	// If there's a text already, return immediately
-	if (!Game_Message::texts.empty()) {
+	if (Game_Message::message_waiting)
 		return false;
-	}
+
+	// Parallel interpreters must wait until the message window is closed
+	if (!main_flag && Game_Message::visible)
+		return false;
+
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
+	Game_Message::owner_parallel = !main_flag;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -513,7 +485,7 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 }
 
 // Command Show choices
-bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Code ShowChoice
+bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -531,7 +503,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Cod
 }
 
 // Command control switches
-bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // Code ControlSwitches
+bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // code 10210
 	int i;
 	switch (com.parameters[0]) {
 		case 0:
@@ -561,7 +533,7 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 }
 
 // Command control vars
-bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // Code ControlVars
+bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
 	int i, value = 0;
 	Game_Actor* actor;
 	Game_Character* character;
@@ -937,15 +909,14 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 }
 
 // Input Number.
-bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
-	if (!Game_Message::texts.empty()) {
+bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
+	if (Game_Message::message_waiting) {
 		return false;
 	}
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
 
-	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];
 	Game_Message::num_input_digits_max = com.parameters[0];
@@ -956,6 +927,9 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 
 // Change Face Graphic.
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
+	if (Game_Message::message_waiting && Game_Message::owner_id != event_id)
+		return false;
+
 	Game_Message::SetFaceName(com.string);
 	Game_Message::SetFaceIndex(com.parameters[0]);
 	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
@@ -998,18 +972,13 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 // Change Experience.
 bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int value = OperateValue(
 		com.parameters[2],
 		com.parameters[3],
 		com.parameters[4]
 	);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
 
@@ -1028,16 +997,10 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 }
 
 bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Code 10440
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int skill_id = ValueOrVariable(com.parameters[3],
-								   com.parameters[4]);
+	int skill_id = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove)
 			actor->UnlearnSkill(skill_id);
 		else
@@ -1048,8 +1011,6 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	int item_id;
 	int type;
 	int slot;
@@ -1078,10 +1039,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 			return false;
 	}
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeEquipment(slot, item_id);
 	}
 
@@ -1099,10 +1057,7 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int hp = actor->GetHp() + amount;
 		if (!lethal && hp <= 0) {
 			amount += hp * (-1) + 1;
@@ -1118,19 +1073,13 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 10470
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
-	int amount = ValueOrVariable(com.parameters[3],
-								 com.parameters[4]);
+	int amount = ValueOrVariable(com.parameters[3], com.parameters[4]);
 
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int sp = actor->GetSp() + amount;
 		if (sp < 0)
 			sp = 0;
@@ -1141,15 +1090,10 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 }
 
 bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { // Code 10480
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
 	int state_id = com.parameters[3];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove) {
 			actor->RemoveState(state_id);
 		} else {
@@ -1162,13 +1106,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
-
-	for (std::vector<Game_Actor*>::iterator i = actors.begin();
-		 i != actors.end();
-		 ++i) {
-		Game_Actor* actor = *i;
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 		actor->RemoveAllStates();
@@ -1297,7 +1235,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
-	CloseMessageWindow();
 	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;

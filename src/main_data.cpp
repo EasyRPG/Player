@@ -91,10 +91,11 @@ void Main_Data::Init() {
 void Main_Data::Cleanup() {
 	Game_Map::Quit();
 	Game_Actors::Dispose();
-	Font::Dispose();
 
 	game_screen.reset();
 	game_player.reset();
 	game_party.reset();
 	game_enemyparty.reset();
+
+	game_data = RPG::Save();
 }

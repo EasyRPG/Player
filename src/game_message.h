@@ -44,6 +44,8 @@ namespace Game_Message {
 
 	/** ID of the event that activated this message */
 	extern unsigned int owner_id;
+	/** Whether the owner is a parallel event */
+	extern bool owner_parallel;
 
 	/**
 	 * Returns name of file that contains the face.
@@ -204,7 +206,6 @@ namespace Game_Message {
 	/** If a message is currently being processed. */
 	extern bool message_waiting;
 	extern bool visible;
-	extern bool closing;
 
 	/** Selected option (4 => cancel). */
 	extern int choice_result;

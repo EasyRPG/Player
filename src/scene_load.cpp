@@ -35,13 +35,7 @@ void Scene_Load::Action(int index) {
 
 	Output::Debug("Loading save %s", ss.str().c_str());
 
-#ifdef EMSCRIPTEN
-	std::string save_name = FileFinder::FindDefault(*tree, "Save", ss.str());
-#else
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
-#endif
-
-	Player::CreateGameObjects();	
 
 	Player::LoadSavegame(save_name);
 

@@ -27,6 +27,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \
 	src/drawable.h \
@@ -143,6 +144,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/scene_equip.h \
 	src/scene_file.cpp \
 	src/scene_file.h \
+	src/scene_gamebrowser.cpp \
+	src/scene_gamebrowser.h \
 	src/scene_gameover.cpp \
 	src/scene_gameover.h \
 	src/scene.h \
@@ -206,6 +209,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/util_win.h \
 	src/weather.cpp \
 	src/weather.h \
+	src/window_about.cpp \
+	src/window_about.h \
 	src/window_actorinfo.cpp \
 	src/window_actorinfo.h \
 	src/window_actorstatus.cpp \
@@ -233,6 +238,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_equipstatus.h \
 	src/window_face.cpp \
 	src/window_face.h \
+	src/window_gamelist.cpp \
+	src/window_gamelist.h \
 	src/window_gold.cpp \
 	src/window_gold.h \
 	src/window.h \
@@ -280,7 +287,7 @@ libeasyrpg_player_la_SOURCES = \
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
 	-I$(srcdir)/lib/shinonome \
-	-std=c++0x \
+	-std=c++11 \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \

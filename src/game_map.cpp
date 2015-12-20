@@ -70,7 +70,7 @@ namespace {
 
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
-	Game_Vehicle* vehicles[3];
+	std::vector<EASYRPG_SHARED_PTR<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
 	boost::scoped_ptr<BattleAnimation> animation;
@@ -88,7 +88,6 @@ void Game_Map::Init() {
 	map_info.position_y = 0;
 	need_refresh = true;
 
-	map.reset();
 	location.map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
@@ -96,12 +95,14 @@ void Game_Map::Init() {
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
+	common_events.clear();
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
+	vehicles.clear();
 	for (int i = 0; i < 3; i++)
-		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) (i + 1));
+		vehicles.push_back(EASYRPG_MAKE_SHARED<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
 
 	pan_locked = false;
 	pan_wait = false;
@@ -181,7 +182,7 @@ void Game_Map::SetupFromSave() {
 
 	for (size_t i = 0; i < 3; i++)
 		if (vehicles[i]->IsMoveRouteOverwritten())
-			pending.push_back(vehicles[i]);
+			pending.push_back(vehicles[i].get());
 
 	map_info.Fixup(*map.get());
 
@@ -285,7 +286,6 @@ void Game_Map::PrepareSave() {
 
 	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
 	save_common_events.clear();
-	save_common_events.resize(Data::commonevents.size());
 
 	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
 		save_common_events.push_back(RPG::SaveCommonEvent());
@@ -521,7 +521,7 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 	for (int i = 0; i < 3; i++) {
 		if (i+1 == vehicle_type)
 			continue;
-		Game_Vehicle* vehicle = vehicles[i];
+		Game_Vehicle* vehicle = vehicles[i].get();
 		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
 			return false;
 	}
@@ -611,13 +611,17 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 	if (!Game_Map::IsValid(x, y)) return 1;
 
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
-	unsigned const chip_index =
+	unsigned chip_index =
 		(chipID <  3050)?  0 + chipID/1000 :
 		(chipID <  4000)?  4 + (chipID-3050)/50 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
 		(chipID <  5144)? 18 + (chipID-5000) :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
+
+	// Apply tile substitution
+	if (chip_index >= 18 && chip_index <= 144)
+		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
 	assert(chip_index < Data::data.chipsets[chipset_index].terrain_data.size());
@@ -1032,7 +1036,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	if (which == Game_Vehicle::None) {
 		return NULL;
 	}
-	return vehicles[which - 1];
+	return vehicles[which - 1].get();
 }
 
 bool Game_Map::IsAnyMovePending() {

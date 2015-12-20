@@ -76,10 +76,10 @@ namespace {
 	bool ignore_pause = false;
 
 	MessageOverlay& message_overlay() {
-		static MessageOverlay* overlay = NULL;
+		static std::unique_ptr<MessageOverlay> overlay;
 		assert(DisplayUi);
 		if (!overlay) {
-			overlay = new MessageOverlay();
+			overlay.reset(new MessageOverlay());
 		}
 		return *overlay;
 	}
@@ -102,7 +102,11 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
-	output_time() << type << ": " << msg << std::endl;
+	if (!Main_Data::project_path.empty()) {
+		// Only write to file when project path is initialized
+		// (happens after parsing the command line)
+		output_time() << type << ": " << msg << std::endl;
+	}
 
 #ifdef __ANDROID__
 	__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());

@@ -131,7 +131,7 @@ protected:
 
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
-	virtual void NextTurn();
+	virtual void NextTurn(Game_Battler* battler);
 
 	virtual void UpdateBackground();
 

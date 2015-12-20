@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
-#include <map>
+#include <list>
 
 #include "graphics.h"
 #include "bitmap.h"
@@ -31,8 +31,6 @@
 #include "player.h"
 
 namespace Graphics {
-	bool fps_on_screen;
-
 	void UpdateTitle();
 	void DrawFrame();
 	void DrawOverlay();
@@ -75,7 +73,6 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
-	fps_on_screen = false;
 	fps = 0;
 	frozen_screen = BitmapRef();
 	screen_erased = false;
@@ -90,19 +87,6 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
-	std::list<Drawable*>::iterator it;
-	std::list<Drawable*> drawable_list_temp = state->drawable_list;
-
-	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); ++it) {
-		delete *it;
-	}
-
-	drawable_list_temp = global_state->drawable_list;
-
-	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); ++it) {
-		delete *it;
-	}
-
 	state->drawable_list.clear();
 	global_state->drawable_list.clear();
 
@@ -148,9 +132,12 @@ void Graphics::UpdateTitle() {
 	if (DisplayUi->IsFullscreen()) return;
 
 	std::stringstream title;
-	title << Player::game_title;
+	if (!Player::game_title.empty()) {
+		title << Player::game_title << " - ";
+	}
+	title << GAME_TITLE;
 
-	if (!fps_on_screen) {
+	if (Player::fps_flag) {
 		title << " - FPS " << real_fps;
 	}
 
@@ -158,13 +145,11 @@ void Graphics::UpdateTitle() {
 }
 
 void Graphics::DrawFrame() {
-	std::list<Drawable*>::iterator it_list;
-
 	if (transition_frames_left > 0) {
 		UpdateTransition();
 
-		for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
-			(*it_list)->Draw();
+		for (Drawable* drawable : global_state->drawable_list) {
+			drawable->Draw();
 		}
 
 		DrawOverlay();
@@ -190,12 +175,12 @@ void Graphics::DrawFrame() {
 
 	DisplayUi->CleanDisplay();
 
-	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); ++it_list) {
-		(*it_list)->Draw();
+	for (Drawable* drawable : state->drawable_list) {
+		drawable->Draw();
 	}
 
-	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
-		(*it_list)->Draw();
+	for (Drawable* drawable : global_state->drawable_list) {
+		drawable->Draw();
 	}
 
 	DrawOverlay();
@@ -204,7 +189,7 @@ void Graphics::DrawFrame() {
 }
 
 void Graphics::DrawOverlay() {
-	if (Graphics::fps_on_screen) {
+	if (DisplayUi->IsFullscreen() && Player::fps_flag) {
 		std::stringstream text;
 		text << "FPS: " << real_fps;
 		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
@@ -214,13 +199,12 @@ void Graphics::DrawOverlay() {
 BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
-	std::list<Drawable*>::iterator it_list;
-	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); ++it_list) {
-		(*it_list)->Draw();
+	for (Drawable* drawable : state->drawable_list) {
+		drawable->Draw();
 	}
 
-	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
-		(*it_list)->Draw();
+	for (Drawable* drawable : global_state->drawable_list) {
+		drawable->Draw();
 	}
 
 	return DisplayUi->EndScreenCapture();
@@ -447,11 +431,14 @@ void Graphics::RegisterDrawable(Drawable* drawable) {
 }
 
 void Graphics::RemoveDrawable(Drawable* drawable) {
-	std::list<Drawable*>::iterator it = std::find(state->drawable_list.begin(), state->drawable_list.end(), drawable);
-	if (it != state->drawable_list.end()) { state->drawable_list.erase(it); }
-
-	it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
-	if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
+	std::list<Drawable*>::iterator it;
+	if (drawable->IsGlobal()) {
+		it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
+		if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
+	} else {
+		it = std::find(state->drawable_list.begin(), state->drawable_list.end(), drawable);
+		if (it != state->drawable_list.end()) { state->drawable_list.erase(it); }
+	}
 }
 
 void Graphics::UpdateZCallback() {

@@ -44,14 +44,14 @@ resources/player.aps
 /builds/android/local.properties
 /builds/android/assets/
 /builds/easyrpg-player.6
-/builds/vs20*/Debug*
-/builds/vs20*/Release*
+/builds/vs20*/Output/
 /builds/vs20*/*.*sdf
 /builds/vs20*/*.ncb
 /builds/vs20*/*.psess
 /builds/vs20*/*.suo
 /builds/vs20*/*.user
-/builds/vs20*/*.vsp
+/builds/vs20*/*.vsp*
+/builds/vs20*/.vs/
 /builds/vs20*/ipch/
 /builds/vs20*/x64/
 /builds/psp/PARAM.SFO

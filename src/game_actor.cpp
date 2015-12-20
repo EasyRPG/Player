@@ -759,8 +759,40 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	}
 }
 
-const std::vector<uint32_t>& Game_Actor::GetBattleCommands() {
-	return data.battle_commands;
+const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() const {
+	std::vector<const RPG::BattleCommand*> commands;
+
+	for (size_t i = 0; i < data.battle_commands.size(); ++i) {
+		int command_index = data.battle_commands[i];
+		if (command_index == 0) {
+			// Row command -> not impl
+			continue;
+		}
+
+		if (command_index == -1) {
+			// Fetch original command
+			const RPG::Actor& actor = Data::actors[GetId() - 1];
+			if (i + 1 <= actor.battle_commands.size()) {
+				int bcmd_idx = Data::actors[GetId() - 1].battle_commands[i];
+
+				if (bcmd_idx == -1) {
+					// End of list
+					continue;
+				}
+
+				if (bcmd_idx == 0) {
+					// Row command
+					continue;
+				}
+
+				commands.push_back(&Data::battlecommands.commands[bcmd_idx - 1]);
+			}
+		} else {
+			commands.push_back(&Data::battlecommands.commands[command_index - 1]);
+		}
+	}
+
+	return commands;
 }
 
 int Game_Actor::GetClass() const {

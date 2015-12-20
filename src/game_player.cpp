@@ -222,7 +222,6 @@ void Game_Player::PerformTeleport() {
 
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
-		Game_Map::Update(); // Execute remaining events (e.g. ones listed after a teleport)
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;
@@ -330,7 +329,7 @@ void Game_Player::UpdateScroll() {
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
 
-	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
+	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
 		switch (Input::dir4) {
 			case 2:
 				Move(Down);
@@ -385,9 +384,11 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 
 	if (last_moving && CheckTouchEvent()) return;
 
-	if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
-		if ( GetOnOffVehicle() ) return;
-		if ( CheckActionEvent() ) return;
+	if (!(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
+		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
+			if ( GetOnOffVehicle() ) return;
+			if ( CheckActionEvent() ) return;
+		}
 	}
 
 	if (last_moving)
@@ -397,26 +398,23 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 bool Game_Player::CheckActionEvent() {
 	if (InAirship())
 		return false;
-	int triggers_here[] = { 0 };
-	std::vector<int> triggers(triggers_here, triggers_here + sizeof triggers_here / sizeof(int));
 
-	if ( CheckEventTriggerHere(triggers) ) {
-		return true;
-	}
-
-	int triggers_there[] = { 0, 1, 2 };
-	triggers.assign(triggers_there, triggers_there + sizeof triggers_there / sizeof(int));
-
-	return CheckEventTriggerThere(triggers);
-
+	// Use | instead of || to avoid short-circuit evaluation
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_action})
+		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
+		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});
 }
 
 bool Game_Player::CheckTouchEvent() {
 	if (InAirship())
 		return false;
-	int triggers[] = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
-	std::vector<int> v_triggers( triggers, triggers + sizeof(triggers) / sizeof(int) );
-	return CheckEventTriggerHere(v_triggers);
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
+}
+
+bool Game_Player::CheckCollisionEvent() {
+	if (InAirship())
+		return false;
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
 bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
@@ -447,16 +445,15 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, front_x, front_y);
 
-	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); ++i) {
-		if ( (*i)->GetLayer() == RPG::EventPage::Layers_same &&
-			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
+	for (const auto& ev : events) {
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same &&
+			std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
 		)
 		{
-			if (!(*i)->GetList().empty()) {
-				(*i)->StartTalkToHero();
+			if (!ev->GetList().empty()) {
+				ev->StartTalkToHero();
 			}
-			(*i)->Start();
+			ev->Start();
 			result = true;
 		}
 	}
@@ -467,16 +464,15 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
-		std::vector<Game_Event*>::iterator i;
-		for (i = events.begin(); i != events.end(); ++i) {
-			if ( (*i)->GetLayer() == 1 &&
-				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
+		for (const auto& ev : events) {
+			if ( ev->GetLayer() == 1 &&
+				std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
 			)
 			{
-				if (!(*i)->GetList().empty()) {
-					(*i)->StartTalkToHero();
+				if (!ev->GetList().empty()) {
+					ev->StartTalkToHero();
 				}
-				(*i)->Start();
+				ev->Start();
 				result = true;
 			}
 		}
@@ -492,15 +488,14 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 
-	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); ++i) {
-		if ((*i)->GetLayer() == RPG::EventPage::Layers_same &&
-			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
-			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			if (!(*i)->GetList().empty()) {
-				(*i)->StartTalkToHero();
+	for (const auto& ev : events) {
+		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
+			(ev->GetTrigger() == RPG::EventPage::Trigger_touched ||
+			ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
+			if (!ev->GetList().empty()) {
+				ev->StartTalkToHero();
 			}
-			(*i)->Start();
+			ev->Start();
 			result = true;
 
 		}
@@ -588,7 +583,7 @@ bool Game_Player::GetOffVehicle() {
 bool Game_Player::IsMovable() const {
 	if (IsMoving() || IsJumping())
 		return false;
-	if (IsMoveRouteOverwritten())
+	if (IsBlockedByMoveRoute())
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;
@@ -597,6 +592,22 @@ bool Game_Player::IsMovable() const {
 	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
     return true;
+}
+
+bool Game_Player::IsBlockedByMoveRoute() const {
+	if (!IsMoveRouteOverwritten() || GetMoveRouteIndex() > 0)
+		return false;
+
+	// Check if it includes a blocking move command
+	for (const auto& move_command : GetMoveRoute().move_commands) {
+		int code = move_command.command_id;
+		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
+			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
+			(code <= RPG::MoveCommand::Code::end_jump)) // Wait or jump
+				return true;
+	}
+
+	return false;
 }
 
 bool Game_Player::InVehicle() const {
@@ -622,6 +633,8 @@ void Game_Player::BeginMove() {
 		Game_System::SePlay(terrain.footstep);
 	}
 	Main_Data::game_party->ApplyDamage(terrain.damage);
+
+	CheckCollisionEvent();
 }
 
 void Game_Player::Unboard() {

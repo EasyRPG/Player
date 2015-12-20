@@ -1,0 +1,10 @@
+[main]
+host = https://www.transifex.com
+
+[player-android.stringsxml]
+file_filter = builds/android/res/values-<lang>/strings.xml
+source_file = builds/android/res/values/strings.xml
+source_lang = en
+lang_map = pt_BR: pt-rBR
+type = ANDROID
+

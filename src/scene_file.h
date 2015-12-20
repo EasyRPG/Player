@@ -55,7 +55,7 @@ protected:
 	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
 	std::string message;
 
-	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
+	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
 
 	double latest_time;
 	int latest_slot;
