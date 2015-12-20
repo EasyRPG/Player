@@ -1026,6 +1026,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				case RPG::Item::Type_helmet:
 				case RPG::Item::Type_accessory:
 					slot = type - 1;
+					break;
 				default:
 					return true;
 			}
