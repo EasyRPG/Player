@@ -35,7 +35,6 @@ public class DirectoryChooser {
 		this.builder = new AlertDialog.Builder(context);
 		this.listView = new ListView(context);
 
-		builder.setTitle("Select a directory");
 		builder.setPositiveButton("Ok", null);
 		builder.setNeutralButton("Create a directory", null);
 		builder.setView(listView);
@@ -46,9 +45,8 @@ public class DirectoryChooser {
 		}
 		
 		//Display the folder's list first
-		displayItemList();
 		dialog = builder.create();
-
+		displayItemList();
 
 		// Set up action to button (after the dialog creation to avoid automatic closing)
 		// (Android "logic")
@@ -129,14 +127,18 @@ public class DirectoryChooser {
 				return newFile.isDirectory() && !newFile.isHidden();
 			}
 		});
-		dirList.addAll(new ArrayList<String>(Arrays.asList(directories)));
+		if(directories != null){
+			dirList.addAll(new ArrayList<String>(Arrays.asList(directories)));
+		}
 
 		return dirList;
 	}
 
 	public void displayItemList() {
 		// Retrieve the folder's list to display
-		dir_list = listDir(dirListToPath(currentDirPath));
+		String path = dirListToPath(currentDirPath);
+		dir_list = listDir(path);
+		dialog.setTitle(path);
 
 		listView.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, dir_list));
 
@@ -168,14 +170,18 @@ public class DirectoryChooser {
 	}
 
 	public static String dirListToPath(LinkedList<String> l) {
-		String s = new String();
-		if (l.isEmpty())
-			s += "/";
-		for (String st : l) {
-			s += "/" + st;
+		if (l.size() <= 1)
+			return "/";
+		
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < l.size(); i++) {
+			if(i>0){
+				s.append("/");
+			}
+			s.append(l.get(i));
 		}
 
-		return s;
+		return s.toString();
 	}
 
 	public boolean isReadable(String path) {
