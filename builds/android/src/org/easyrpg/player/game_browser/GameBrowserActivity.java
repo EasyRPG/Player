@@ -129,7 +129,7 @@ public class GameBrowserActivity extends Activity {
 			adapter = new GameListAdapter(this, project_list);
 		}
 		
-		Log.i("Browser", error_list.size() + " jeux trouvés");
+		Log.i("Browser", error_list.size() + " games found");
 		
 		//Set the view;
 		list_view.setAdapter(adapter);

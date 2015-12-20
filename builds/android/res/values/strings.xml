@@ -6,7 +6,7 @@
 	<string name="pref_vibrate_when_sliding_direction" translate="false">PREF_VIBRATE_WHEN_SLIDING</string>
 	<string name="pref_ignore_size_settings" translate="false">PREF_IGNORE_SIZE_SETTINGS</string>
 	<string name="pref_size_every_buttons" translate="false">PREF_SIZE_EVERY_BUTTONS</string>
-    <string name="pref_directory" translate="false">PREF_DIRECTORY</string>
+	<string name="pref_directory" translate="false">PREF_DIRECTORY</string>
 
 	<!--GameBrowser Activity-->
 	<string name="app_name" translate="false">EasyRPG Player</string>
@@ -76,7 +76,6 @@ Special features:\n
 	<string name="no_write_access_on_dir">No write access on %1$s</string>
 	<string name="no_read_access_on_dir">No read access on %1$s</string>
 	<string name="easyrpg_folder">EasyRPG folder</string>
-	
 	
 	<!--InputLayout Managing-->
 	<string name="manage_input_layouts">Manage Input Layouts:</string>
