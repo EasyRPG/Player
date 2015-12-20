@@ -98,7 +98,7 @@ public class SettingsActivity extends Activity {
 	}
 
 	public void changeDirectory(View v){
-		new DirectoryChooser(this);
+		new DirectoryChooser(this, DIRECTORY);
 	}
 	public void changeDirectory(String newDir){
 		//Verify existence and read/write access on the new folder
