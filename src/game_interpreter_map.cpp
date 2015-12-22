@@ -1160,7 +1160,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 		}
 		Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
 		Audio().BGM_Fade(800);
-		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
+		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
 		return false;
 	}
 
@@ -1170,19 +1170,32 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 	return true;
 }
 
+bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& /* com */) {
+	if (Graphics::IsTransitionPending())
+		return false;
+
+	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
+	// FIXME: Abusing before_battle_music (Which is unused when calling an Inn)
+	// Is there also before_inn_music in the savegame?
+	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
+
+	Game_System::BgmPlay(bgm_inn);
+	
+	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
+
+	return false;
+}
+
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
 	if (Graphics::IsTransitionPending())
 		return false;
 
 	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
-
-	Game_System::BgmPlay(bgm_inn);
 	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(Brak)" || Audio().BGM_PlayedOnce()) {
+		Game_System::BgmStop();
 		continuation = NULL;
 		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
-		// FIXME: It should play the music that was playing before the inn music
-		if (Game_Temp::map_bgm)
-			Game_System::BgmPlay(*Game_Temp::map_bgm);
+		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 		index++;
 		return false;
 	}
