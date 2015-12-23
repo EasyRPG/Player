@@ -93,7 +93,6 @@ void Scene_Battle::Start() {
 
 	screen.reset(new Screen());
 
-	Game_Temp::map_bgm = NULL; // Play map BGM on Scene_Map return
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
 	if (!Game_Temp::battle_background.empty())
