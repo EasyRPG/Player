@@ -129,6 +129,7 @@ private:
 
 	bool ContinuationOpenShop(RPG::EventCommand const& com);
 	bool ContinuationShowInnStart(RPG::EventCommand const& com);
+	bool ContinuationShowInnContinue(RPG::EventCommand const& com);
 	bool ContinuationShowInnFinish(RPG::EventCommand const& com);
 	bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 

@@ -305,16 +305,7 @@ void Game_Map::PlayBgm() {
 		if (Data::treemap.maps[current_index].music_type == 1) {
 			return;
 		}
-		if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
-			if (Game_Temp::map_bgm != NULL) {
-				if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
-					// TODO: Here the volume and pitch must be updated if the song is the same
-					return;
-				}
-			}
-			Game_Temp::map_bgm = &Data::treemap.maps[current_index].music;
-			Game_System::BgmPlay(*Game_Temp::map_bgm);
-		}
+		Game_System::BgmPlay(Data::treemap.maps[current_index].music);
 	}
 }
 
