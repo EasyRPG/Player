@@ -361,13 +361,6 @@ public:
 	 */
 	virtual bool IsLandable(int x, int y) const;
 
- 	/**
-	 * Gets if a message is halting this character's processes.
-	 *
-	 * @return whether the character is halted by a message.
-	 */
-	virtual bool IsMessageBlocking() const;
-
 	/**
 	 * Moves the character to a new tile.
 	 *
@@ -692,8 +685,8 @@ public:
 
 protected:
 	void UpdateMove();
+	virtual void UpdateSelfMovement();
 	void UpdateJump();
-	void UpdateSelfMovement();
 	void UpdateStop();
 
 	int tile_id;

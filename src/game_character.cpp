@@ -139,10 +139,6 @@ bool Game_Character::IsLandable(int x, int y) const
 	return true;
 }
 
-bool Game_Character::IsMessageBlocking() const {
-	return Game_Message::message_waiting && !Game_Message::GetContinueEvents();
-}
-
 void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
@@ -236,7 +232,8 @@ void Game_Character::Update() {
 	if (stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsMessageBlocking() && !Game_Map::GetInterpreter().HasRunned() && !Game_Map::GetInterpreter().IsRunning()) {
+		} else {
+			// Only events
 			UpdateSelfMovement();
 		}
 	}
@@ -259,26 +256,7 @@ void Game_Character::UpdateJump() {
 }
 
 void Game_Character::UpdateSelfMovement() {
-	switch (move_type) {
-	case RPG::EventPage::MoveType_random:
-		MoveTypeRandom();
-		break;
-	case RPG::EventPage::MoveType_vertical:
-		MoveTypeCycleUpDown();
-		break;
-	case RPG::EventPage::MoveType_horizontal:
-		MoveTypeCycleLeftRight();
-		break;
-	case RPG::EventPage::MoveType_toward:
-		MoveTypeTowardsPlayer();
-		break;
-	case RPG::EventPage::MoveType_away:
-		MoveTypeAwayFromPlayer();
-		break;
-	case RPG::EventPage::MoveType_custom:
-		MoveTypeCustom();
-		break;
-	}
+	// no-op: Only events can have custom move routes
 }
 
 void Game_Character::UpdateStop() {

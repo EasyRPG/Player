@@ -226,12 +226,6 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
 }
 
-bool Game_Event::IsMessageBlocking() const {
-	return Game_Message::message_waiting &&
-		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID) &&
-		!Game_Message::owner_parallel;
-}
-
 bool Game_Event::GetThrough() const {
 	return page == NULL || Game_Character::GetThrough();
 }
@@ -519,6 +513,35 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	}
 
 	return true;
+}
+
+void Game_Event::UpdateSelfMovement() {
+	if (running)
+		return;
+	if (!Game_Message::GetContinueEvents() &&
+		(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned()))
+		return;
+
+	switch (move_type) {
+	case RPG::EventPage::MoveType_random:
+		MoveTypeRandom();
+		break;
+	case RPG::EventPage::MoveType_vertical:
+		MoveTypeCycleUpDown();
+		break;
+	case RPG::EventPage::MoveType_horizontal:
+		MoveTypeCycleLeftRight();
+		break;
+	case RPG::EventPage::MoveType_toward:
+		MoveTypeTowardsPlayer();
+		break;
+	case RPG::EventPage::MoveType_away:
+		MoveTypeAwayFromPlayer();
+		break;
+	case RPG::EventPage::MoveType_custom:
+		MoveTypeCustom();
+		break;
+	}
 }
 
 void Game_Event::Update() {

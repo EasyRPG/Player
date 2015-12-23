@@ -84,7 +84,6 @@ public:
 	void SetFlashLevel(double flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
-	bool IsMessageBlocking() const;
 	/** @} */
 
 	/**
@@ -177,6 +176,8 @@ public:
 
 	const RPG::SaveMapEvent& GetSaveData();
 private:
+	void UpdateSelfMovement();
+
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.
