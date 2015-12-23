@@ -104,12 +104,10 @@ void Scene_Map::TransitionOut() {
 }
 
 void Scene_Map::Update() {
-	if (!Main_Data::game_player->IsMoving()) {
-		if (Game_Temp::transition_processing) {
-			Game_Temp::transition_processing = false;
+	if (Game_Temp::transition_processing) {
+		Game_Temp::transition_processing = false;
 
-			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
-		}
+		Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
 	}
 
 	if (auto_transition) {

@@ -157,8 +157,12 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (Game_Message::message_waiting && (main_flag || Game_Message::owner_id == event_id)) {
-			break;
+		if (main_flag) {
+			if (Game_Message::message_waiting)
+				break;
+		} else {
+			if (Game_Message::visible && Game_Message::owner_id == event_id)
+				break;
 		}
 
 		if (wait_count > 0) {
