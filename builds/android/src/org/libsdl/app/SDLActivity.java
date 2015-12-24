@@ -69,10 +69,10 @@ public class SDLActivity extends Activity {
         System.loadLibrary("SDL2");
         //System.loadLibrary("SDL2_image");
         //System.loadLibrary("smpeg2");
-        System.loadLibrary("SDL2_mixer");
+        System.loadLibrary("SDL2_mixer-2.0");
         //System.loadLibrary("SDL2_net");
         //System.loadLibrary("SDL2_ttf");
-        System.loadLibrary("iconv");
+        //System.loadLibrary("iconv");
         System.loadLibrary("main");
     }
     
