@@ -4,7 +4,11 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := SDL2
 
-EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/libs/armeabi-v7a
+ifeq ($(TARGET_ARCH_ABI),x86)
+	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/x86-toolchain/lib
+else ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/arm-toolchain/lib
+endif
 
 LOCAL_SRC_FILES := $(EASYRPG_LIB_DIR)/lib$(LOCAL_MODULE).so
 
