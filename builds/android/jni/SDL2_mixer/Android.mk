@@ -8,6 +8,10 @@ ifeq ($(TARGET_ARCH_ABI),x86)
 	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/x86-toolchain/lib
 else ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/arm-toolchain/lib
+else ifeq ($(TARGET_ARCH_ABI),armeabi)
+	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/arm-toolchain/lib
+else ifeq ($(TARGET_ARCH_ABI),mips)
+	EASYRPG_LIB_DIR = $(EASYDEV_ANDROID)/mips-toolchain/lib
 endif
 
 LOCAL_SRC_FILES := $(EASYRPG_LIB_DIR)/lib$(LOCAL_MODULE)-2.0.so

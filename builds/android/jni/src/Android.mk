@@ -9,8 +9,12 @@ PLAYER_PATH := ../../../..
 LOCAL_CPP_EXTENSION := .cxx .cpp
 ifeq ($(TARGET_ARCH_ABI),x86)
         EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/x86-toolchain
+else ifeq ($(TARGET_ARCH_ABI),armeabi)
+        EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/arm-toolchain
 else ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/arm-toolchain
+else ifeq ($(TARGET_ARCH_ABI),mips)
+        EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/mips-toolchain
 endif
 
 LOCAL_C_INCLUDES := \
