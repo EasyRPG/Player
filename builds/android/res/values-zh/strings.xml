@@ -51,10 +51,9 @@
 
 提示：为了保证模拟器检测到这个游戏，所以游戏文件不能是压缩的，
 并且不能被放在子文件夹里。
-例如:/easyrpg/games/MyGame/Data/RPG_RT.ldb 这样是错误的。
-/easyrpg/games/MyGame/Data/GameOver/GameOver.png 这样是错误的。
+例如:/easyrpg/games/MyGame/Data/RPG_RT.ldb 这样是正确的。
 /easyrpg/games/MyGame/RPG_RT.ldb 这样是正确的。
-/easyrpg/games/MyGame/GameOver/GameOver.png 这样是正确的。
+/easyrpg/games/MyGame.zip 这样是错误的。
 
 特殊功能：
 在设置游戏按键的时候，点击手机菜单按钮可以设置游戏按键，
