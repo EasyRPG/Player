@@ -18,7 +18,22 @@ public class GameBrowserHelper {
 	final static String DATABASE_NAME = "RPG_RT.ldb";
 	final static String TREEMAP_NAME = "RPG_RT.lmt";
 	final static String INI_FILE = "RPG_RT.ini";
-		
+
+	public static void scanFolder(Context context, File[] list, LinkedList<ProjectInformation> project_list, int depth) {
+		if (list != null) {
+			for (File file : list) {
+				if (!file.getName().startsWith(".")) {
+					if (isRpg2kGame(file)) {
+						project_list.add(new ProjectInformation(file.getName(), file.getAbsolutePath()));
+					} else if (file.isDirectory() && file.canRead() && depth > 0) {
+						// Not a RPG2k Game but a directory -> recurse
+						scanFolder(context, file.listFiles(), project_list, depth - 1);
+					}
+				}
+			}
+		}
+	}
+	
 	public static void scanGame(Context context, String path, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
 		project_list.clear();
 		error_list.clear();
@@ -37,16 +52,10 @@ public class GameBrowserHelper {
 				error_list.add(msg);
 			} else {
 				File[] list = dir.listFiles();
-				if (list != null) {
-					if(list.length == 0){
-						error_list.add(context.getString(R.string.no_games_found));
-					}else {
-						for (File file : list) {
-							if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
-								project_list.add(new ProjectInformation(file.getName(), file.getAbsolutePath()));
-							}
-						}
-					}
+				scanFolder(context, list, project_list, 3);
+				
+				if (project_list.size() == 0) {
+					error_list.add(context.getString(R.string.no_games_found));
 				}
 			}
 		} else {
