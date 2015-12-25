@@ -47,11 +47,10 @@ Instrucciones de instalación:\n
 \n
 \tSi no te detecta los juegos y tienes más de un almacenamiento disponible en el dispositivo, mueve la carpeta easyrpg a la raíz del otro almacanamiento y toca el botón de refrescar.\n
 \n
-Nota: para que los juegos puedan sean detectados deben estar descomprimidos y NO deben colocarse en una subcarpeta, por ejemplo:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb está MAL.\n
-\t/easyrpg/games/MyGame/Data/GameOver/GameOver.png está MAL.\n
+Nota: para que los juegos puedan sean detectados deben estar descomprimidos, por ejemplo:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb está BIEN.\n
 \t/easyrpg/games/MyGame/RPG_RT.ldb está BIEN.\n
-\t/easyrpg/games/MyGame/GameOver/GameOver.png está BIEN.\n
+\t/easyrpg/games/MyGame.zip está MAL.\n
 \n
 Características especiales:\n
 \tToca el botón de menú para editar la posición de los botones.\n
