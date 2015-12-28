@@ -120,8 +120,14 @@ public class SettingsActivity extends Activity {
 			public void run() {
 				String path = DirectoryChooser.getSelectedPath();
 
-				// Verify the game folder isn't already in the list
+				// 1) Verify the game folder isn't already in the list
 				if(GAMES_DIRECTORIES.contains(path)){
+					return;
+				}
+				// 2) Verify write and read permissions
+				File f = new File(path); 
+				if(!(f.canRead() && f.canWrite())){
+					Toast.makeText(SettingsActivity.this, R.string.no_read_write_access, Toast.LENGTH_LONG).show();
 					return;
 				}
 

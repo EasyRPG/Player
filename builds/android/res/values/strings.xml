@@ -76,6 +76,7 @@ Special features:\n
 	<string name="no_write_access_on_dir">No write access on %1$s</string>
 	<string name="no_read_access_on_dir">No read access on %1$s</string>
 	<string name="easyrpg_folder">EasyRPG folder</string>
+	<string name="no_read_write_access">No read or write access on this folder</string>
 	
 	<!--InputLayout Managing-->
 	<string name="manage_input_layouts">Manage Input Layouts:</string>
