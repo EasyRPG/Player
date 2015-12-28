@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
 public class GameBrowserHelper {
@@ -33,28 +35,29 @@ public class GameBrowserHelper {
 		}
 	}
 	
-	public static void scanGame(Context context, String path, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
+	public static void scanGame(Context context, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
 		project_list.clear();
 		error_list.clear();
 		
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			for(String path : SettingsActivity.GAMES_DIRECTORIES){
+				File dir = new File(path);
+				if (!dir.exists() && !dir.mkdirs()) {
+					String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
+					error_list.add(msg);
+				}
 		
-			File dir = new File(path);
-			if (!dir.exists() && !dir.mkdirs()) {
-				String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
-				error_list.add(msg);
-			}
-	
-			if (!dir.canRead() || !dir.isDirectory()) {
-				String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
-				error_list.add(msg);
-			} else {
-				File[] list = dir.listFiles();
-				scanFolder(context, list, project_list, 3);
-				
-				if (project_list.size() == 0) {
-					error_list.add(context.getString(R.string.no_games_found));
+				if (!dir.canRead() || !dir.isDirectory()) {
+					String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
+					error_list.add(msg);
+				} else {
+					File[] list = dir.listFiles();
+					scanFolder(context, list, project_list, 3);
+					
+					if (project_list.size() == 0) {
+						error_list.add(context.getString(R.string.no_games_found));
+					}
 				}
 			}
 		} else {

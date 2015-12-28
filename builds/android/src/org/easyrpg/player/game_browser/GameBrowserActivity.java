@@ -116,8 +116,7 @@ public class GameBrowserActivity extends Activity {
 	public void displayGameList(){
 		//Scan the folder
 		SettingsActivity.updateUserPreferences(this);
-		path = SettingsActivity.MAIN_DIRECTORY + "/games";
-		GameBrowserHelper.scanGame(this, path, project_list, error_list);
+		GameBrowserHelper.scanGame(this, project_list, error_list);
 		
 		// Put the result into the proper adapter
 		if (error_list.size() > 0) {
