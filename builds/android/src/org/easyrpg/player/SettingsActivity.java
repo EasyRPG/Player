@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.Html.ImageGetter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,10 +165,12 @@ public class SettingsActivity extends Activity {
 			// The name
 			TextView nameTextView = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
 			nameTextView.setText(dir_path);
+			nameTextView.setTextSize(12);
 
 			// Option button (not present in the default folder)
 			final String path = dir_path;
 			ImageButton remove_button = (ImageButton) layout.findViewById(R.id.controls_settings_preset_option_button);
+			remove_button.setImageResource(R.drawable.ic_action_content_clear);
 			if(path.equals(MAIN_DIRECTORY + "/games")){
 				layout.removeView(remove_button);
 			}
