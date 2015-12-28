@@ -1,25 +1,6 @@
-/* 
- * Simple DirectMedia Layer
- * Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
- *   
- * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
- * arising from the use of this software.
- * 
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- *   
- * 1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required. 
- * 2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
- */
-
- 
+/*
+    SDL_android_main.c, placed in the public domain by Sam Lantinga  3/13/14
+*/
 #include "SDL_config.h"
 
 #ifdef __ANDROID__
@@ -36,22 +17,60 @@
 extern void SDL_Android_Init(JNIEnv* env, jclass cls);
 
 /* Start up the SDL app */
-void Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject obj)
+JNIEXPORT int JNICALL Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject array)
 {
-    /* This interface could expand with ABI negotiation, calbacks, etc. */
+    int i;
+    int argc;
+    int status;
+
+    /* This interface could expand with ABI negotiation, callbacks, etc. */
     SDL_Android_Init(env, cls);
 
     SDL_SetMainReady();
 
-    /* Run the application code! */
-    int status;
-    char *argv[2];
-    argv[0] = SDL_strdup("SDL_app");
-    argv[1] = NULL;
-    status = SDL_main(1, argv);
+    /* Prepare the arguments. */
+
+    int len = (*env)->GetArrayLength(env, array);
+    char* argv[1 + len + 1];
+    argc = 0;
+    /* Use the name "app_process" so PHYSFS_platformCalcBaseDir() works.
+       https://bitbucket.org/MartinFelis/love-android-sdl2/issue/23/release-build-crash-on-start
+     */
+    argv[argc++] = SDL_strdup("app_process");
+    for (i = 0; i < len; ++i) {
+        const char* utf;
+        char* arg = NULL;
+        jstring string = (*env)->GetObjectArrayElement(env, array, i);
+        if (string) {
+            utf = (*env)->GetStringUTFChars(env, string, 0);
+            if (utf) {
+                arg = SDL_strdup(utf);
+                (*env)->ReleaseStringUTFChars(env, string, utf);
+            }
+            (*env)->DeleteLocalRef(env, string);
+        }
+        if (!arg) {
+            arg = SDL_strdup("");
+        }
+        argv[argc++] = arg;
+    }
+    argv[argc] = NULL;
+
+
+    /* Run the application. */
+
+    status = SDL_main(argc, argv);
+
+    /* Release the arguments. */
+
+    for (i = 0; i < argc; ++i) {
+        SDL_free(argv[i]);
+    }
 
     /* Do not issue an exit or the whole application will terminate instead of just the SDL thread */
     /* exit(status); */
+
+    return status;
 }
 
 #endif /* __ANDROID__ */

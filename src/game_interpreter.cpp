@@ -157,8 +157,12 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (Game_Message::message_waiting && (main_flag || Game_Message::owner_id == event_id)) {
-			break;
+		if (main_flag) {
+			if (Game_Message::message_waiting)
+				break;
+		} else {
+			if (Game_Message::visible && Game_Message::owner_id == event_id)
+				break;
 		}
 
 		if (wait_count > 0) {
@@ -176,7 +180,6 @@ void Game_Interpreter::Update() {
 
 		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
 			Game_Temp::shop_calling ||
-			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
@@ -1027,6 +1030,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				case RPG::Item::Type_helmet:
 				case RPG::Item::Type_accessory:
 					slot = type - 1;
+					break;
 				default:
 					return true;
 			}

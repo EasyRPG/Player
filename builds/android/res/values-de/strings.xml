@@ -47,11 +47,10 @@ Installation:\n
 \n
 Wenn Spiele nicht erkannt werden und dein Gerät mehr als ein Speichermedium (z.B. MicroSD) zur Verfügung hat, versuche den easyrpg Ordner auf das andere Speichermedium zu kopieren. Tippe danach auf \"Aktualisieren\"..\n
 \n
-Tipp: Damit Spiele korrekt erkannt werden, müssen sie entpackt sein und dürfen NICHT in Unterordnern liegen, z.B.:\n
-\t/easyrpg/games/MeinSpiel/Data/RPG_RT.ldb ist FALSCH.\n
-\t/easyrpg/games/MeinSpiel/Data/GameOver/GameOver.png ist FALSCH.\n
-\t/easyrpg/games/MeinSpiel/RPG_RT.ldb ist RICHTIG.\n
-\t/easyrpg/games/MeinSpiel/GameOver/GameOver.png ist RICHTIG.\n
+Tipp: Damit Spiele korrekt erkannt werden, müssen sie entpackt sein und in Unterordnern von /easyrpg/games/ liegen, z.B.:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb ist RICHTIG.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb ist RICHTIG.\n
+\t/easyrpg/games/MyGame.zip ist FALSCH\n
 \n
 Spezielle Funktionen:\n
 \tIm Einstellungsmenü kannst du Tasten verschieben und neue hinzufügen.\n

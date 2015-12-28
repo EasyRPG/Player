@@ -49,11 +49,10 @@ Ha az alkalmazás nem észlel játékokat és az ön készüléke több adattár
 \n
 Megjegyzés: Hogy a játékok biztosan felismerésre kerüljenek, NEM szabad tömörítve lenniük és NEM szabad almappákba helyezni őket vagy bennük almappákat létrehozni.\n
 Például a következő útvonalak HIBÁSAK:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb\n
-\t/easyrpg/games/MyGame/Data/GameOver/GameOver.png\n
+\t/easyrpg/games/MyGame.zip\n
 Így a HELYES:\n
 \t/easyrpg/games/MyGame/RPG_RT.ldb\n
-\t/easyrpg/games/MyGame/GameOver/GameOver.png\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb\n
 \n
 Különleges szolgátatások:\n
 \tÉrintse meg a menügombot a képernyő-gombok pozíciójának szerkesztéséhez.\n

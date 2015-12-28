@@ -56,11 +56,10 @@ Installation instructions:\n
 \n
 If games are not detected and your device has more than one storage available, try moving the easyrpg folder into another storage root and tap the refresh button.\n
 \n
-Hint: in order to get games properly detected they must be uncompressed and NOT placed in a subfolder, e.g.:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is WRONG.\n
-\t/easyrpg/games/MyGame/Data/GameOver/GameOver.png is WRONG.\n
+Hint: in order to get games properly detected they must be uncompressed into a subdirectory of /easyrpg/games, e.g.:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb is OK.\n
 \t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n
-\t/easyrpg/games/MyGame/GameOver/GameOver.png is OK.\n
+\t/easyrpg/games/MyGame.zip is WRONG.\n
 \n
 Special features:\n
 \tTap the menu button to edit screen buttons position.\n

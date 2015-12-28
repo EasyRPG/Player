@@ -23,6 +23,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_system.h"
+#include "graphics.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
@@ -515,6 +516,7 @@ void Game_Player::Refresh() {
 
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
+	pattern = RPG::EventPage::Frame_middle;
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
@@ -582,6 +584,8 @@ bool Game_Player::GetOffVehicle() {
 
 bool Game_Player::IsMovable() const {
 	if (IsMoving() || IsJumping())
+		return false;
+	if (Graphics::IsTransitionPending())
 		return false;
 	if (IsBlockedByMoveRoute())
 		return false;

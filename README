@@ -62,11 +62,11 @@ Building
 
   1. Unpack the tarball with:
 
-    tar xf easyrpg-player-0.3.2.tar.xz
+    tar xf easyrpg-player-0.4.0.tar.xz
 
   2. Enter in the package directory with:
 
-    cd easyrpg-player-0.3.2
+    cd easyrpg-player-0.4.0
 
   3. Compile with:
 

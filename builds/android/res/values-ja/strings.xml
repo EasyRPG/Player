@@ -49,10 +49,9 @@
 \n
 ヒント: ゲームを正しく検出するためには圧縮されていない状態でサブフォルダの中に置かれていない必要があります。\n
 例:\n
-\t/easyrpg/games/ゲーム名/余分なフォルダ/RPG_RT.ldb は間違いです。\n
-\t/easyrpg/games/ゲーム名/余分なフォルダ/GameOver/GameOver.png は間違いです。\n
 \t/easyrpg/games/ゲーム名/RPG_RT.ldb は問題ありません。\n
-\t/easyrpg/games/ゲーム名/GameOver/GameOver.png は問題ありません。\n
+\t/easyrpg/games/ゲーム名/余分なフォルダ/RPG_RT.ldb は問題ありません。\n
+\t/easyrpg/games/ゲーム名.zip は間違いです。\n
 \n
 特殊機能：\n
 \tメニューボタンをタップすることで画面上のボタン配置を設定することができます。\n

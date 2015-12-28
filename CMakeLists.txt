@@ -160,7 +160,7 @@ set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
   add_custom_command(OUTPUT builds/${MAN_NAME}
-    COMMAND ${A2X_EXECUTABLE} -a player_version="0.3.2" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/builds ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME}.adoc
+    COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.0" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/builds ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME}.adoc
     DEPENDS builds/${MAN_NAME}.adoc
     COMMENT "(Re-)building manpage ${MAN_NAME}"
     VERBATIM)
@@ -197,7 +197,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VERSION "0.3.2")
+set(CPACK_PACKAGE_VERSION "0.4.0")
 set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.ico")
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README)
 
