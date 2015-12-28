@@ -8,6 +8,7 @@ import java.util.List;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
+import org.easyrpg.player.game_browser.GameBrowserHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -129,6 +130,10 @@ public class SettingsActivity extends Activity {
 				if(!(f.canRead() && f.canWrite())){
 					Toast.makeText(SettingsActivity.this, R.string.no_read_write_access, Toast.LENGTH_LONG).show();
 					return;
+				}
+				// 3) When the user selects a directory containing a game, select automatically the folder above
+				if(GameBrowserHelper.isRpg2kGame(f)){
+					path = path.substring(0, path.lastIndexOf("/"));
 				}
 
 				// Update user's preferences
