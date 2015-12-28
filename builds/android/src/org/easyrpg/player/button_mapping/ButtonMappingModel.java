@@ -181,8 +181,7 @@ public class ButtonMappingModel {
 		public InputLayout(String name) {
 			this.name = name;
 			// TODO : Verify that id hasn't been already taken (yeah,
-			// 0,00000001%
-			// probability)
+			// 0,00000001% probability)
 			this.id = (int) (Math.random() * 100000000);
 		}
 

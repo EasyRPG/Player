@@ -22,6 +22,8 @@ import android.widget.Toast;
 //TODO : Remove hardcoded string
 
 public class DirectoryChooser {
+	private static String selected_path;
+	
 	AlertDialog.Builder builder;
 	AlertDialog dialog;
 	ListView listView;
@@ -30,7 +32,8 @@ public class DirectoryChooser {
 	LinkedList<String> currentDirPath = new LinkedList<String>();
 	List<String> dir_list;
 
-	public DirectoryChooser(final Context context, String path) {
+
+	public DirectoryChooser(final Context context, String path, final Runnable runnable) {
 		this.context = context;
 		this.builder = new AlertDialog.Builder(context);
 		this.listView = new ListView(context);
@@ -58,7 +61,8 @@ public class DirectoryChooser {
 				b.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						valid();
+						selected_path = dirListToPath(currentDirPath);
+						runnable.run();
 
 						// Dismiss once everything is OK.
 						dialog.dismiss();
@@ -77,12 +81,6 @@ public class DirectoryChooser {
 		});
 
 		dialog.show();
-	}
-
-	public void valid() {
-		if (context instanceof SettingsActivity) {
-			((SettingsActivity) context).changeDirectory(dirListToPath(currentDirPath));
-		}
 	}
 	
 	public void createDirectory() {
@@ -187,5 +185,9 @@ public class DirectoryChooser {
 	public boolean isReadable(String path) {
 		File file = new File(path);
 		return file.canRead();
+	}
+	
+	public static String getSelectedPath(){
+		return selected_path;
 	}
 }

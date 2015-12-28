@@ -58,7 +58,7 @@ public class LegacyGameBrowserActivity extends Activity {
 
 		//Scan the folder
 		SettingsActivity.updateUserPreferences(this);
-		path = SettingsActivity.DIRECTORY + "/games";
+		path = SettingsActivity.MAIN_DIRECTORY + "/games";
 		GameBrowserHelper.scanGame(this, path, project_list, error_list);
 		
 		// Put the result into the proper adapter

@@ -1,6 +1,9 @@
 package org.easyrpg.player;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
@@ -15,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,13 +40,14 @@ public class SettingsActivity extends Activity {
 	public static int LAYOUT_TRANSPARENCY;
 	public static boolean IGNORE_LAYOUT_SIZE_SETTINGS;
 	public static int LAYOUT_SIZE;
-	public static String DIRECTORY;
+	public static String MAIN_DIRECTORY;
+	public static List<String> GAMES_DIRECTORIES;
 
 	// ButtonMapping options
 	private SharedPreferences pref;
 	private SharedPreferences.Editor editor;
 	private ButtonMappingModel mapping_model;
-	private LinearLayout layout_settings;
+	private LinearLayout games_folders_list_layout, input_layout_list_layout;
 
 	// GUI component
 	CheckBox cb_vibration_direction, cb_ignore_layout_size;
@@ -58,11 +63,11 @@ public class SettingsActivity extends Activity {
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = pref.edit();
 
-		//Main directory
-		tv_directory = (TextView) findViewById(R.id.settings_directory_text_view);
-		tv_directory.setText(DIRECTORY);
-		
-		// Retrieve configuration to set the state of component
+		// Game folders
+		games_folders_list_layout = (LinearLayout) findViewById(R.id.games_folders_list);
+		updateGameFoldersList();
+
+		// Button's transparency
 		configureSeekBarLayoutTransparency();
 		configureSeekBarLayoutSize();
 
@@ -71,8 +76,7 @@ public class SettingsActivity extends Activity {
 		cb_vibration.setChecked(pref.getBoolean(getString(R.string.pref_enable_vibration), true));
 
 		cb_vibration_direction = (CheckBox) findViewById(R.id.settings_vibrate_when_slidind);
-		cb_vibration_direction
-				.setChecked(pref.getBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false));
+		cb_vibration_direction.setChecked(pref.getBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false));
 		cb_vibration_direction.setEnabled(cb_vibration.isChecked());
 
 		// ButtonMapping system
@@ -80,7 +84,7 @@ public class SettingsActivity extends Activity {
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
 
 		// Configure the InputLayouts list
-		layout_settings = (LinearLayout) findViewById(R.id.controls_settings_layout_list);
+		input_layout_list_layout = (LinearLayout) findViewById(R.id.controls_settings_layout_list);
 		updateSettingsList();
 	}
 
@@ -94,41 +98,92 @@ public class SettingsActivity extends Activity {
 		IGNORE_LAYOUT_SIZE_SETTINGS = sharedPref.getBoolean(context.getString(R.string.pref_ignore_size_settings),
 				false);
 		LAYOUT_SIZE = sharedPref.getInt(context.getString(R.string.pref_size_every_buttons), 100);
-		DIRECTORY = sharedPref.getString(context.getString(R.string.pref_directory), Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
+		MAIN_DIRECTORY = sharedPref.getString(context.getString(R.string.pref_directory), Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
+
+		// Games directores are :
+		GAMES_DIRECTORIES = new ArrayList<String>();
+		// 1) The default directory (cannot be modified)
+		GAMES_DIRECTORIES.add(MAIN_DIRECTORY + "/games");
+		// 2) Others defined by users
+		// Separator : "*"
+		String pref_games_folders = sharedPref.getString(context.getString(R.string.pref_games_directories), "");
+		if(!pref_games_folders.isEmpty()){
+			String[] user_folders = pref_games_folders.split("\\*");
+			GAMES_DIRECTORIES.addAll(Arrays.asList(user_folders));
+		}
 	}
 
-	public void changeDirectory(View v){
-		new DirectoryChooser(this, DIRECTORY);
-	}
-	public void changeDirectory(String newDir){
-		//Verify existence and read/write access on the new folder
-		File f = new File(newDir);
-		if(!f.exists()){
-			Toast.makeText(this, getString(R.string.dir_does_not_exist, newDir), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(!f.canRead()){
-			Toast.makeText(this, getString(R.string.no_read_access_on_dir, newDir), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(!f.canWrite()){
-			Toast.makeText(this, getString(R.string.no_write_access_on_dir, newDir), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
-		//There is (in theory) no problem to change dir
-		//So let's create all the necessary folder in it
-		if(Helper.createEasyRPGDirectories(newDir)){
-			DIRECTORY = newDir;
-			// No problem, we can change the directory in settings
-			editor.putString(getResources().getString(R.string.pref_directory), newDir);
-			editor.commit();
-		}
-		
-		//Update 
-		tv_directory.setText(newDir);
+	public void addAGameFolder(View v){
+		new DirectoryChooser(this, MAIN_DIRECTORY, new Runnable() {
+			@Override
+			public void run() {
+				String path = DirectoryChooser.getSelectedPath();
+
+				// Verify the game folder isn't already in the list
+				if(GAMES_DIRECTORIES.contains(path)){
+					return;
+				}
+
+				// Update user's preferences
+				Context context = SettingsActivity.this;
+				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+				String pref_games_folders = sharedPref.getString(context.getString(R.string.pref_games_directories), "");
+				pref_games_folders += path + "*";
+				editor.putString(context.getString(R.string.pref_games_directories), pref_games_folders);
+				editor.commit();
+				
+				//Update 
+				updateUserPreferences(SettingsActivity.this);
+				updateGameFoldersList();
+			}
+		});
 	}
 	
+	public void removeAGameFolder(String path){
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		String pref_games_folders = sharedPref.getString(this.getString(R.string.pref_games_directories), "");
+		
+		pref_games_folders = pref_games_folders.replace(path + "*", "");
+		
+		editor.putString(this.getString(R.string.pref_games_directories), pref_games_folders);
+		editor.commit();
+		
+		//Update 
+		updateUserPreferences(this);
+		updateGameFoldersList();
+	}
+
+	public void updateGameFoldersList() {
+		games_folders_list_layout.removeAllViews();
+		
+		for (String dir_path : GAMES_DIRECTORIES) {
+			Log.i("test", dir_path);
+			LayoutInflater inflater = LayoutInflater.from(this);
+			RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.settings_item_list, null);
+
+			// The name
+			TextView nameTextView = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
+			nameTextView.setText(dir_path);
+
+			// Option button (not present in the default folder)
+			final String path = dir_path;
+			ImageButton remove_button = (ImageButton) layout.findViewById(R.id.controls_settings_preset_option_button);
+			if(path.equals(MAIN_DIRECTORY + "/games")){
+				layout.removeView(remove_button);
+			}
+			else{
+				remove_button.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						removeAGameFolder(path);
+					}
+				});
+			}
+
+			games_folders_list_layout.addView(layout);
+		}
+	}
+
 	public void configureSeekBarLayoutTransparency() {
 		sb_input_transparency = (SeekBar) findViewById(R.id.settings_layout_transparency);
 		sb_input_transparency.setProgress(pref.getInt(getString(R.string.pref_layout_transparency), 100));
@@ -190,7 +245,7 @@ public class SettingsActivity extends Activity {
 				tv_layout_button_size.setText(sb_layout_size_buttons.getProgress() + "%");
 			}
 		});
-		
+
 		tv_layout_button_size = (TextView) findViewById(R.id.settings_input_size_text_view);
 		tv_layout_button_size.setText(sb_layout_size_buttons.getProgress() +"%");
 		tv_layout_button_size.setEnabled(cb_ignore_layout_size.isChecked());
@@ -225,10 +280,10 @@ public class SettingsActivity extends Activity {
 	}
 
 	public void updateSettingsList() {
-		layout_settings.removeAllViews();
+		input_layout_list_layout.removeAllViews();
 		for (InputLayout i : mapping_model.getLayout_list()) {
 			InputLayoutItemListView view = new InputLayoutItemListView(this, i);
-			layout_settings.addView(view.layout);
+			input_layout_list_layout.addView(view.layout);
 		}
 	}
 
@@ -240,25 +295,25 @@ public class SettingsActivity extends Activity {
 		// The dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.add_an_input_layout).setView(input)
-				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String text = input.getText().toString();
-						if (!text.isEmpty()) {
-							InputLayout layout = new InputLayout(text);
-							layout.setButton_list(
-									ButtonMappingModel.InputLayout.getDefaultButtonList(getApplicationContext()));
-							mapping_model.add(layout);
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String text = input.getText().toString();
+				if (!text.isEmpty()) {
+					InputLayout layout = new InputLayout(text);
+					layout.setButton_list(
+							ButtonMappingModel.InputLayout.getDefaultButtonList(getApplicationContext()));
+					mapping_model.add(layout);
 
-							refreshAndSaveLayoutList();
-						}
-					}
-				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
+					refreshAndSaveLayoutList();
+				}
+			}
+		}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
 		builder.show();
 	}
 
@@ -303,21 +358,21 @@ public class SettingsActivity extends Activity {
 		// The dialog box
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.edit_name).setView(input)
-				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String text = input.getText().toString();
-						if (!text.isEmpty()) {
-							game_layout.setName(text);
-						}
-						refreshAndSaveLayoutList();
-					}
-				}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String text = input.getText().toString();
+				if (!text.isEmpty()) {
+					game_layout.setName(text);
+				}
+				refreshAndSaveLayoutList();
+			}
+		}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
 		builder.show();
 	}
 
@@ -342,7 +397,7 @@ public class SettingsActivity extends Activity {
 		public InputLayoutItemListView(Context context, final InputLayout input_layout) {
 
 			LayoutInflater inflater = LayoutInflater.from(context);
-			layout = (RelativeLayout) inflater.inflate(R.layout.settings_input_layout_item_list, null);
+			layout = (RelativeLayout) inflater.inflate(R.layout.settings_item_list, null);
 
 			// The name
 			TextView input_layout_name = (TextView) layout.findViewById(R.id.controls_settings_preset_name);
@@ -368,6 +423,5 @@ public class SettingsActivity extends Activity {
 				}
 			});
 		}
-
 	}
 }

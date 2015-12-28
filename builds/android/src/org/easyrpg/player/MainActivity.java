@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
 		SettingsActivity.updateUserPreferences(this);
 
 		// Create the easyrpg's directories if they don't exist
-		Helper.createEasyRPGDirectories(SettingsActivity.DIRECTORY);
+		Helper.createEasyRPGDirectories(SettingsActivity.MAIN_DIRECTORY);
 
 		//Launch the proper game browser
 		Intent intent;

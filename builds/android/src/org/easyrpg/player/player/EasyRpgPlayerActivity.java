@@ -204,7 +204,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return s;
 		}
 
-		return SettingsActivity.DIRECTORY + "/timidity"; //Shouldn't be called anymore
+		return SettingsActivity.MAIN_DIRECTORY + "/timidity"; //Shouldn't be called anymore
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to the RTP
 	 */
 	public String getRtpPath() {
-		String str = SettingsActivity.DIRECTORY + "/rtp";
+		String str = SettingsActivity.MAIN_DIRECTORY + "/rtp";
 		// Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}

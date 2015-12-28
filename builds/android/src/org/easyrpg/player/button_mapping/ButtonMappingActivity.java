@@ -245,7 +245,6 @@ public class ButtonMappingActivity extends Activity {
 	    super.onConfigurationChanged(newConfig);
 
 	    // We draw the button again to match the positions
-	    // TODO : Change the size of button ?
 	    drawButtons();
 	}
 }
