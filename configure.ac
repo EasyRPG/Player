@@ -19,7 +19,7 @@ AC_PROG_CXX
 LT_INIT([disable-shared])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([LCF],[liblcf])
+PKG_CHECK_MODULES([LCF],[liblcf = 0.4.0])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])
 PKG_CHECK_MODULES([FREETYPE],[freetype2])
 PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[1],[Enable SDL2])],[
