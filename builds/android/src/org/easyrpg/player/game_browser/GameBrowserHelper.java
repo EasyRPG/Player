@@ -11,7 +11,6 @@ import org.easyrpg.player.player.EasyRpgPlayerActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
 public class GameBrowserHelper {
@@ -40,28 +39,40 @@ public class GameBrowserHelper {
 		error_list.clear();
 		
 		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			for(String path : SettingsActivity.GAMES_DIRECTORIES){
-				File dir = new File(path);
-				if (!dir.exists() && !dir.mkdirs()) {
-					String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
-					error_list.add(msg);
-				}
-		
-				if (!dir.canRead() || !dir.isDirectory()) {
-					String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
-					error_list.add(msg);
-				} else {
-					File[] list = dir.listFiles();
-					scanFolder(context, list, project_list, 3);
-					
-					if (project_list.size() == 0) {
-						error_list.add(context.getString(R.string.no_games_found));
-					}
-				}
-			}
-		} else {
+		if (!Environment.MEDIA_MOUNTED.equals(state)) {
 			error_list.add(context.getString(R.string.no_external_storage));
+			return;
+		}
+		
+		// Scanning all the games folders
+		for(String path : SettingsActivity.GAMES_DIRECTORIES){
+			File dir = new File(path);
+			// Verification
+			// 1) The folder must exist
+			if (!dir.exists() && !dir.mkdirs()) {
+				String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
+				error_list.add(msg);
+				
+				continue;
+			}
+	
+			// 2) The folder must be readable and writable
+			if (!dir.canRead() || !dir.canWrite() || !dir.isDirectory()) {
+				String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
+				error_list.add(msg);
+
+				continue;
+			}
+
+			// Scan of the folder
+			File[] list = dir.listFiles();
+			scanFolder(context, list, project_list, 3);
+		}
+		
+		// If the scan bring nothing in this folder : we notifiate the user
+		if (project_list.size() == 0) {
+			String error = context.getString(R.string.no_games_found_and_explanation);
+			error_list.add(error);
 		}
 	}
 	
