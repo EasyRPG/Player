@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -34,32 +34,45 @@ public class GameBrowserHelper {
 		}
 	}
 	
-	public static void scanGame(Context context, String path, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
+	public static void scanGame(Context context, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
 		project_list.clear();
 		error_list.clear();
 		
 		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
+		if (!Environment.MEDIA_MOUNTED.equals(state)) {
+			error_list.add(context.getString(R.string.no_external_storage));
+			return;
+		}
 		
+		// Scanning all the games folders
+		for(String path : SettingsActivity.GAMES_DIRECTORIES){
 			File dir = new File(path);
+			// Verification
+			// 1) The folder must exist
 			if (!dir.exists() && !dir.mkdirs()) {
 				String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
 				error_list.add(msg);
+				
+				continue;
 			}
 	
-			if (!dir.canRead() || !dir.isDirectory()) {
+			// 2) The folder must be readable and writable
+			if (!dir.canRead() || !dir.canWrite() || !dir.isDirectory()) {
 				String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
 				error_list.add(msg);
-			} else {
-				File[] list = dir.listFiles();
-				scanFolder(context, list, project_list, 3);
-				
-				if (project_list.size() == 0) {
-					error_list.add(context.getString(R.string.no_games_found));
-				}
+
+				continue;
 			}
-		} else {
-			error_list.add(context.getString(R.string.no_external_storage));
+
+			// Scan of the folder
+			File[] list = dir.listFiles();
+			scanFolder(context, list, project_list, 3);
+		}
+		
+		// If the scan bring nothing in this folder : we notifiate the user
+		if (project_list.size() == 0) {
+			String error = context.getString(R.string.no_games_found_and_explanation);
+			error_list.add(error);
 		}
 	}
 	

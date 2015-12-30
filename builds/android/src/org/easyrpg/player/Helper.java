@@ -155,4 +155,34 @@ public class Helper {
 		}
 		return file;
 	}
+	
+	/** Create the EasyRPG's directories in path it's possible */
+	public static boolean createEasyRPGDirectories(String path){
+		//Main folder
+		File dir = new File(path);
+		dir.mkdir();
+		
+		//Games' folder
+		File dirGames = new File(dir, "games/");
+		dirGames.mkdir();
+		
+		//RTP's folders
+		File dirRtp = new File(dir, "rtp/");
+		dirRtp.mkdir();
+		File dirRtp2000 = new File(dirRtp, "2000");
+		dirRtp2000.mkdir();
+		File dirRtp2003 = new File(dirRtp, "2003");
+		dirRtp2003.mkdir();
+		
+		// The .nomedia file (to not let app scan games and RTP's folders)
+		File nomediafile = new File(dir, ".nomedia");
+		try {
+			nomediafile.createNewFile();
+		} catch (IOException e) {
+			Log.e("Create File", "Error creating .nomedia file");
+		}
+		
+		//TODO : Verify if all the folders exists
+		return true;
+	}
 }
