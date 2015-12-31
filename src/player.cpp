@@ -92,9 +92,6 @@ namespace Player {
 	int engine;
 	std::string game_title;
 	int frames;
-#ifdef EMSCRIPTEN
-	std::string emscripten_game_name;
-#endif
 }
 
 namespace {
@@ -126,8 +123,6 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 
 #ifdef EMSCRIPTEN
-	emscripten_game_name = "";
-
 	Output::IgnorePause(true);
 
 	// Create initial directory structure
@@ -492,15 +487,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			PrintUsage();
 			exit(0);
 		}
-#ifdef EMSCRIPTEN
-		else if (*it == "--game") {
-			++it;
-			if (it == args.end()) {
-				return;
-			}
-			emscripten_game_name = *it;
-		}
-#endif
 	}
 }
 

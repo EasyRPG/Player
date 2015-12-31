@@ -136,8 +136,8 @@ void FileRequestAsync::Start() {
 
 #ifdef EMSCRIPTEN
 	std::string request_path = "games/?file=" + path;
-	if (!Player::emscripten_game_name.empty()) {
-		request_path += "&game=" + Player::emscripten_game_name;
+	if (Main_Data::GetProjectPath() != ".") {
+		request_path += "&game=" + Main_Data::GetProjectPath();
 	}
 
 	emscripten_async_wget2(

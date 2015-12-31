@@ -213,11 +213,6 @@ namespace Player {
 
 	/** Game title. */
 	extern std::string game_title;
-
-#ifdef EMSCRIPTEN
-	/** Name of game emscripten uses */
-	extern std::string emscripten_game_name;
-#endif
 }
 
 #endif
