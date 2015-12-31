@@ -349,6 +349,7 @@ void SdlUi::EndDisplayModeChange() {
 
 bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
+	uint32_t rendered_flag;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 	bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -403,7 +404,14 @@ bool SdlUi::RefreshDisplayMode() {
 
 		SetAppIcon();
 
-		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
+		// OS X needs the rendered to be vsync
+		#if defined(__APPLE__) && defined(__MACH__)
+			rendered_flag = SDL_RENDERER_PRESENTVSYNC;
+		#else
+			rendered_flag = 0;
+		#endif
+
+		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer)
 			return false;
 		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
