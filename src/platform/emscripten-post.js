@@ -2,11 +2,24 @@ function parseargs() {
     var tmp = [];
     var ret = [];
     var items = location.search.substr(1).split("&");
+	
+	// Store saves in subdirectory Save
+	ret.push("--save-path");
+	ret.push("Save");
+	
     for (var index = 0; index < items.length; index++) {
         tmp = items[index].split("=");
-        if (tmp[0] == "game") {
+        
+		if (tmp[0] == "project-path" || "save-path") {
+			// Filter arguments that are set by us
+			continue;
+		}
+		
+		if (tmp[0] == "game") {
 			// Move to different directory to prevent Save file collisions in IDBFS
+			tmp[0] = "project-path";
 			if (tmp.length > 1) {
+				tmp[1] = tmp[1].toLowerCase();
 				FS.mkdir(tmp[1]);
 				FS.chdir(tmp[1]);
 			}
@@ -23,7 +36,6 @@ function parseargs() {
                     ret = ret.concat(spl);
                 }
             }
-            
         }
     }
     return ret;
