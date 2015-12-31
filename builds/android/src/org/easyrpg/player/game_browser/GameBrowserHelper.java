@@ -162,6 +162,11 @@ public class GameBrowserHelper {
 			args.add("--save-path");
 			args.add(project.getSavePath());
 			
+			if (project.getEncoding().length() > 0 && project.getEncoding() != "auto") {
+				args.add("--encoding");
+				args.add(project.getEncoding());
+			}
+			
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray());
 			context.startActivity(intent);

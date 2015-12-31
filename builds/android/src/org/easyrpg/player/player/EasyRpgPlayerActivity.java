@@ -87,10 +87,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
 		// Project preferences
 		ProjectInformation project = new ProjectInformation(getProjectPath());
-		project.read_project_preferences(bmm);
+		project.read_project_preferences_input_layout(bmm);
 
 		// Choose the proper InputLayout
-		input_layout = bmm.getLayoutById(this, project.id_input_layout);
+		input_layout = bmm.getLayoutById(this, project.getId_input_layout());
 
 		// Add buttons
 		addButtons();
