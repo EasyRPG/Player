@@ -60,7 +60,7 @@ void boost::throw_exception(std::exception const& exp) {
 
 namespace {
 	std::ofstream LOG_FILE;
-	static bool init = false;
+	bool init = false;
 	
 	std::ostream& output_time() {
 		if (!init) {
@@ -102,7 +102,7 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
-	if (!Main_Data::GetProjectPath().empty()) {
+	if (!Main_Data::GetSavePath().empty()) {
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
 		output_time() << type << ": " << msg << std::endl;

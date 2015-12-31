@@ -89,10 +89,7 @@ void Main_Data::Cleanup() {
 	game_data = RPG::Save();
 }
 
-const std::string& Main_Data::GetProjectPath() {
-	// Path read without init
-	assert(project_path.empty());
-	
+const std::string& Main_Data::GetProjectPath() {	
 	return project_path;
 }
 
