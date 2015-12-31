@@ -945,9 +945,9 @@ void Scene_Logo::Update() {
 		}
 #endif
 
-		EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::project_path, false);
+		EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
 		if (FileFinder::IsValidProject(*tree)) {
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::project_path));
+			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
 			Player::CreateGameObjects();
 			is_valid = true;
 		}
