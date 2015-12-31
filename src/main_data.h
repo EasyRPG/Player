@@ -40,10 +40,15 @@ namespace Main_Data {
 	extern boost::scoped_ptr<Game_Party> game_party;
 	extern boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
 	extern RPG::Save game_data;
-	extern std::string project_path;
 
 	void Init();
 	void Cleanup();
+	
+	const std::string& GetProjectPath();
+	void SetProjectPath(const std::string& path);
+	
+	const std::string& GetSavePath();
+	void SetSavePath(const std::string& path);
 }
 
 #endif

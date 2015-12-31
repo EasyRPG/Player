@@ -35,6 +35,7 @@
 #include "output.h"
 #include "player.h"
 #include "registry.h"
+#include "main_data.h"
 
 #ifdef _MSC_VER
 #  include "rtp_table_bom.h"
@@ -178,11 +179,7 @@ const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree
 }
 
 const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
-#ifdef EMSCRIPTEN
-	std::string save_path = MakePath(game_directory_tree.get()->directory_path, "Save");
-#else
-	std::string save_path = game_directory_tree.get()->directory_path;
-#endif
+	std::string save_path = Main_Data::GetSavePath();
 
 	if (!(Exists(save_path) && IsDirectory(save_path))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
 
@@ -540,7 +537,10 @@ bool FileFinder::Exists(std::string const& filename) {
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
-	assert(Exists(dir));
+	if (!Exists(dir)) {
+		return false;
+	}
+
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))

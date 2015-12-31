@@ -64,7 +64,7 @@ namespace {
 	
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE.open(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetProjectPath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -102,7 +102,7 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
-	if (!Main_Data::project_path.empty()) {
+	if (!Main_Data::GetProjectPath().empty()) {
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
 		output_time() << type << ": " << msg << std::endl;
@@ -157,7 +157,7 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::project_path,
+		p = FileFinder::MakePath(Main_Data::GetProjectPath(),
 								 "screenshot_"
 								 + boost::lexical_cast<std::string>(index++)
 								 + ".png");
