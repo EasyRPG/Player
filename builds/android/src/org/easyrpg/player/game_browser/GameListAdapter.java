@@ -183,10 +183,13 @@ public class GameListAdapter extends BaseAdapter {
 					encoding = iniReader.getEncoding();
 				} catch (IOException e) {}				
 			}
+		} else {
+			encoding = pi.getEncoding();
 		}
+
 		int id = -1;
 
-		if (encoding == null) {
+		if (encoding == null || encoding.equals("auto")) {
 			id = 0;
 		} else if (encoding.equals("1252")) {
 			id = 1;

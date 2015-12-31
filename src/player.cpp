@@ -688,7 +688,7 @@ std::string Player::GetEncoding() {
 	} else {
 		return encoding;
 	}
-	if (encoding.empty()) {
+	if (encoding.empty() || encoding == "auto") {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 
 		encoding = ReaderUtil::DetectEncoding(ldb);
@@ -720,8 +720,9 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
 
-	std::cout << "      " << "--encoding N         " << "Instead of using the default platform encoding or" << std::endl;
-	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
+	std::cout << "      " << "--encoding N         " << "Instead of auto detecting the encoding or using" << std::endl;
+	std::cout << "      " << "                     " << "the one in RPG_RT.ini, the encoding N is used." << std::endl;
+	std::cout << "      " << "                     " << "Use \"auto\" for automatic detection." << std::endl;
 
 	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
 	std::cout << "      " << "                     " << "Possible options:" << std::endl;

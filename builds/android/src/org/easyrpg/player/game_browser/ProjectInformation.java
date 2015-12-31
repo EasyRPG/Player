@@ -91,7 +91,7 @@ public class ProjectInformation {
 				o.put(TAG_ID_INPUT_LAYOUT, id_input_layout);
 			}
 			
-			if (encoding.length() == 0) {
+			if (encoding.length() > 0) {
 				o.put(TAG_ENCODING, encoding);
 			}
 			

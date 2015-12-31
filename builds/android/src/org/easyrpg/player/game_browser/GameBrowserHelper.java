@@ -161,14 +161,16 @@ public class GameBrowserHelper {
 			
 			args.add("--save-path");
 			args.add(project.getSavePath());
-			
-			if (project.getEncoding().length() > 0 && project.getEncoding() != "auto") {
-				args.add("--encoding");
+	
+			args.add("--encoding");
+			if (project.getEncoding() == null || project.getEncoding().length() == 0) {
+				args.add("auto");
+			} else {
 				args.add(project.getEncoding());
 			}
 			
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
-			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray());
+			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
 			context.startActivity(intent);
 		} else {
 			String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
