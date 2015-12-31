@@ -832,7 +832,7 @@ static BOOL CALLBACK MyMiniDumpCallback(PVOID,
 		case ThreadCallback:
 		case ThreadExCallback:
 			return true;
-		case MemoryCallback:-
+		case MemoryCallback:
 		case CancelCallback:
 			return false;
 		case ModuleCallback:

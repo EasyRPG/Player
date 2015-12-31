@@ -55,6 +55,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class EasyRpgPlayerActivity extends SDLActivity {
 	public static final String TAG_PROJECT_PATH = "project_path";
+	public static final String TAG_COMMAND_LINE = "command_line";
 
 	ButtonMappingModel bmm;
 	InputLayout input_layout;
@@ -179,16 +180,20 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	public static native void toggleFps();
 
 	public static native void endGame();
-
+	
+    protected String[] getArguments() {
+        return getIntent().getStringArrayExtra(TAG_COMMAND_LINE);
+    }
+    
 	/**
-	 * Used by the native code to retrieve the selected game in the browser.
-	 * Invoked via JNI.
+	 * Used to retrieve the selected game in the browser.
 	 * 
 	 * @return Full path to game
 	 */
 	public String getProjectPath() {
 		return getIntent().getStringExtra(TAG_PROJECT_PATH);
 	}
+
 
 	/**
 	 * Used by timidity of SDL_mixer to find the timidity folder for the
