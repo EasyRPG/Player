@@ -125,10 +125,10 @@ public class SettingsActivity extends Activity {
 				if(GAMES_DIRECTORIES.contains(path)){
 					return;
 				}
-				// 2) Verify write and read permissions
+				// 2) Verify read permissions
 				File f = new File(path); 
-				if(!(f.canRead() && f.canWrite())){
-					Toast.makeText(SettingsActivity.this, R.string.no_read_write_access, Toast.LENGTH_LONG).show();
+				if(!f.canRead()){
+					Toast.makeText(SettingsActivity.this, R.string.no_read_access_on_dir, Toast.LENGTH_LONG).show();
 					return;
 				}
 				// 3) When the user selects a directory containing a game, select automatically the folder above
