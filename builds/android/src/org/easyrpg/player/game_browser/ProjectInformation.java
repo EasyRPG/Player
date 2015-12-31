@@ -1,8 +1,10 @@
 package org.easyrpg.player.game_browser;
 
+import java.io.File;
 import java.io.FileWriter;
 
 import org.easyrpg.player.Helper;
+import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.json.JSONObject;
 
@@ -12,15 +14,26 @@ public class ProjectInformation {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id", preferenceFileName = "easyrpg-pref.txt";
 	public int id_input_layout = -1;
 	
-	private String title, path;
+	private String title, path, save_path;
 
 	public ProjectInformation(String path){
 		this.path = path;
+		File f = new File(path);
+		
+		if (f.canWrite()) {
+			this.save_path = path;
+		} else {
+			// Not writable, redirect to a different path
+			// Try preventing collisions by using the names of the two parent directories
+			String savename = f.getParentFile().getName() + "/" + f.getName();  
+			save_path = SettingsActivity.MAIN_DIRECTORY + "/Save/" + savename;
+			new File(save_path).mkdirs();
+		}
 	}
 	
 	public ProjectInformation(String title, String path) {
+		this(path);
 		this.title = title;
-		this.path = path;
 	}
 
 	public String getTitle() {
@@ -30,9 +43,13 @@ public class ProjectInformation {
 	public String getPath() {
 		return path;
 	}
+	
+	public String getSavePath() {
+		return save_path;
+	}
 
 	public boolean read_project_preferences(ButtonMappingModel bmm) {
-		JSONObject jso = Helper.readJSONFile(path + "/" + preferenceFileName);
+		JSONObject jso = Helper.readJSONFile(save_path + "/" + preferenceFileName);
 		try {
 			id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
 			return true;
@@ -44,7 +61,7 @@ public class ProjectInformation {
 
 	public void write_project_preferences() {
 		try {
-			FileWriter file = new FileWriter(path + "/" + preferenceFileName);
+			FileWriter file = new FileWriter(save_path + "/" + preferenceFileName);
 			JSONObject o = new JSONObject();
 
 			o.put(TAG_ID_INPUT_LAYOUT, id_input_layout);
