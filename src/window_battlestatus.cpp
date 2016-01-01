@@ -170,15 +170,24 @@ void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_
 void Window_BattleStatus::DrawNumberSystem2(int x, int y, int value) {
 	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
+	bool handle_zero = false;
+
 	if (value >= 1000) {
 		contents->Blit(x, y, *system2, Rect((value / 1000) * 8, 80, 8, 16), Opacity::opaque);
 		value %= 1000;
+		if (value < 100) {
+			handle_zero = true;
+		}
 	}
-	if (value >= 100) {
+	if (handle_zero || value >= 100) {
+		handle_zero = false;
 		contents->Blit(x + 8, y, *system2, Rect((value / 100) * 8, 80, 8, 16), Opacity::opaque);
 		value %= 100;
+		if (value < 10) {
+			handle_zero = true;
+		}
 	}
-	if (value >= 10) {
+	if (handle_zero || value >= 10) {
 		contents->Blit(x + 8 * 2, y, *system2, Rect((value / 10) * 8, 80, 8, 16), Opacity::opaque);
 		value %= 10;
 	}
