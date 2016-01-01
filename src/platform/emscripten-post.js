@@ -2,28 +2,27 @@ function parseargs() {
     var tmp = [];
     var ret = [];
     var items = location.search.substr(1).split("&");
-	
-	// Store saves in subdirectory Save
-	ret.push("--save-path");
-	ret.push("Save");
-	
+    
+    // Store saves in subdirectory Save
+    ret.push("--save-path");
+    ret.push("Save");
+    
     for (var index = 0; index < items.length; index++) {
         tmp = items[index].split("=");
         
-		if (tmp[0] == "project-path" || "save-path") {
-			// Filter arguments that are set by us
-			continue;
-		}
-		
-		if (tmp[0] == "game") {
-			// Move to different directory to prevent Save file collisions in IDBFS
-			tmp[0] = "project-path";
-			if (tmp.length > 1) {
-				tmp[1] = tmp[1].toLowerCase();
-				FS.mkdir(tmp[1]);
-				FS.chdir(tmp[1]);
-			}
-		}
+        if (tmp[0] == "project-path" || "save-path") {
+            // Filter arguments that are set by us
+            continue;
+        }
+        
+        if (tmp[0] == "game") {
+            // Move to different directory to prevent Save file collisions in IDBFS
+            if (tmp.length > 1) {
+                tmp[1] = tmp[1].toLowerCase();
+                FS.mkdir(tmp[1]);
+                FS.chdir(tmp[1]);
+            }
+        }
         ret.push("--" + tmp[0]);
         if (tmp.length > 1) {
             arg = decodeURI(tmp[1]);
@@ -53,10 +52,10 @@ function _readdir_r(dirp, entry, result) {
     }
     if (!stream.currReading) {
         try {
-	    // load the list of entries now, then readdir will traverse that list, to ignore changes to files
-	    stream.currReading = FS.readdir(stream.path);
+        // load the list of entries now, then readdir will traverse that list, to ignore changes to files
+        stream.currReading = FS.readdir(stream.path);
         } catch (e) {
-	    return FS.handleFSError(e);
+        return FS.handleFSError(e);
         }
     }
     if (stream.position < 0 || stream.position >= stream.currReading.length) {
@@ -71,17 +70,17 @@ function _readdir_r(dirp, entry, result) {
         type = 4;
     } else {
         try {
-	    // child may have been removed since we started to read this directory
-	    var child = FS.lookupNode(stream.node, name);
+        // child may have been removed since we started to read this directory
+        var child = FS.lookupNode(stream.node, name);
         } catch (e) {
-	    // skip to the next entry (not infinite since position is incremented until currReading.length)
-	    return _readdir_r(dirp, entry, result);
+        // skip to the next entry (not infinite since position is incremented until currReading.length)
+        return _readdir_r(dirp, entry, result);
         }
         id = child.id;
         type = FS.isChrdev(child.mode) ? 2 :  // DT_CHR, character device.
-	    FS.isDir(child.mode) ? 4 :     // DT_DIR, directory.
-	    FS.isLink(child.mode) ? 10 :   // DT_LNK, symbolic link.
-	    8;                             // DT_REG, regular file.
+        FS.isDir(child.mode) ? 4 :     // DT_DIR, directory.
+        FS.isLink(child.mode) ? 10 :   // DT_LNK, symbolic link.
+        8;                             // DT_REG, regular file.
     }
     HEAP32[((entry)>>2)]=id;
     HEAP32[(((entry)+(4))>>2)]=stream.position;
