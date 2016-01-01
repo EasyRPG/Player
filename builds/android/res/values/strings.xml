@@ -36,11 +36,9 @@
 	<string name="no">No</string>
 	<string name="creating_dir_failed">Creating $PATH directory failed</string>
 	<string name="path_not_readable">$PATH not readable</string>
-	<string name="no_games_found_and_explanation">No games found.\nYou can add additional games directories in the settings.</string>
+	<string name="no_games_found_and_explanation">No games found.\nYou can add additional game directories in the settings.</string>
 	<string name="no_external_storage">No external storage (e.g. SD card) found</string>
-	<string name="resolve_errors">Resolve errors and try again</string>
 	<string name="not_valid_game">$PATH is not a valid game</string>
-	<string name="accessing_configuration_failed">Accessing configuration of $PATH failed.</string>
 	<string name="select_game_region">Select Game Region</string>
 	<string name="change_the_layout">Change the layout</string>
 	<string name="choose_layout">Choose a layout</string>
@@ -51,19 +49,17 @@
 	<string name="how_to_use_easy_rpg">How to use EasyRPG Player</string>
 	<string name="how_to_use_easy_rpg_explanation">
 Installation instructions:\n
-\t1. Place game folders in /easyrpg/games folder in the storage root of the device.\n
-\t2. Place RTP folders in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n
+By default game folders are searched for in /easyrpg/games. You can add additional game directories in the settings.\n
+Optional: Place the RTP in /easyrpg/rtp/2000 for the RPG Maker 2000 RTP and in /easyrpg/rtp/2003 for the RPG Maker 2003 RTP.\n
 \n
-If games are not detected and your device has more than one storage available, try moving the easyrpg folder into another storage root and tap the refresh button.\n
-\n
-Hint: in order to get games properly detected they must be uncompressed into a subdirectory of /easyrpg/games, e.g.:\n
+Hint: in order to get games properly detected they must be uncompressed into a subdirectory of /easyrpg/games (by default), e.g.:\n
 \t/easyrpg/games/MyGame/Data/RPG_RT.ldb is OK.\n
 \t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n
 \t/easyrpg/games/MyGame.zip is WRONG.\n
 \n
 Special features:\n
-\tTap the menu button to edit screen buttons position.\n
-\tOnce there, tap the back button to access to an additional menu to add more buttons to the screen.\n
+You can add additional on-screen buttons. Tap the menu button to edit screen buttons position.\n
+Once there, tap the back button to access to an additional menu to add more buttons to the screen.
 	</string>
 
 	<!--Settings Activity-->
