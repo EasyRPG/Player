@@ -130,8 +130,6 @@ void Player::Init(int argc, char *argv[]) {
 	ParseCommandLine(argc, argv);
 
 #ifdef EMSCRIPTEN
-	emscripten_game_name = "";
-
 	Output::IgnorePause(true);
 
 	// Create initial directory structure

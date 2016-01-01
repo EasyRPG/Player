@@ -10,7 +10,7 @@ function parseargs() {
     for (var index = 0; index < items.length; index++) {
         tmp = items[index].split("=");
         
-        if (tmp[0] == "project-path" || "save-path") {
+        if (tmp[0] == "project-path" || tmp[0] == "save-path") {
             // Filter arguments that are set by us
             continue;
         }
