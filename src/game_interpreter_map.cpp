@@ -1258,14 +1258,14 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		default:
 			return false;
 	}
-	Game_Temp::battle_escape_mode = com.parameters[3]; // disallow, end event processing, custom handler
-	Game_Temp::battle_defeat_mode = com.parameters[4]; // game over, custom handler
+	Game_Temp::battle_escape_mode = com.parameters[3]; // 0 disallow, 1 end event processing, 2 victory/escape custom handler
+	Game_Temp::battle_defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
 	Game_Temp::battle_first_strike = com.parameters[5] != 0;
 
 	if (Player::IsRPG2k())
 		Game_Battle::SetBattleMode(0);
 	else
-		Game_Battle::SetBattleMode(com.parameters[6]); // normal, initiative, surround, back attack, pincer
+		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 	Game_Temp::battle_calling = true;
@@ -1279,7 +1279,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			if (Game_Temp::battle_defeat_mode == 0 || !SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
+			if ((Game_Temp::battle_defeat_mode == 0 && Game_Temp::battle_escape_mode != 2) || !SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
 				index++;
 				return false;
 			}
