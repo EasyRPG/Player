@@ -92,6 +92,9 @@ namespace Player {
 	int engine;
 	std::string game_title;
 	int frames;
+#ifdef EMSCRIPTEN
+	std::string emscripten_game_name;
+#endif
 }
 
 namespace {
@@ -122,25 +125,27 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
+	srand(time(NULL));
+
+	ParseCommandLine(argc, argv);
+
 #ifdef EMSCRIPTEN
+	emscripten_game_name = "";
+
 	Output::IgnorePause(true);
 
 	// Create initial directory structure
 	// Retrieve save directory from persistent storage
 	EM_ASM(
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
-		dirs.forEach(function(dir) { FS.mkdir(dir) });
+	dirs.forEach(function(dir) { FS.mkdir(dir) });
 
-		FS.mount(IDBFS, {}, 'Save');
-	
-		FS.syncfs(true, function(err) {
-		});
+	FS.mount(IDBFS, {}, 'Save');
+
+	FS.syncfs(true, function(err) {
+	});
 	);
 #endif
-
-	srand(time(NULL));
-
-	ParseCommandLine(argc, argv);
 
 	Main_Data::Init();
 
@@ -487,6 +492,15 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			PrintUsage();
 			exit(0);
 		}
+#ifdef EMSCRIPTEN
+		else if (*it == "--game") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			emscripten_game_name = *it;
+		}
+#endif
 	}
 }
 
