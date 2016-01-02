@@ -46,6 +46,7 @@ public class GameBrowserHelper {
 		}
 		
 		// Scanning all the games folders
+		boolean first_directory = true;
 		for(String path : SettingsActivity.GAMES_DIRECTORIES){
 			File dir = new File(path);
 			// Verification
@@ -67,7 +68,9 @@ public class GameBrowserHelper {
 
 			// Scan the folder
 			File[] list = dir.listFiles();
-			scanFolder(context, list, project_list, 2);
+			// Go 2 directores deep to find games in /easyrpg/games, otherwise only 1
+			scanFolder(context, list, project_list, first_directory ? 2 : 1);
+			first_directory = false;
 		}
 		
 		// If the scan bring nothing in this folder : we notifiate the user
