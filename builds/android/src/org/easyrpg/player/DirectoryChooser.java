@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//TODO : Remove hardcoded string
 
 public class DirectoryChooser {
 	private static String selected_path;
@@ -38,8 +39,8 @@ public class DirectoryChooser {
 		this.builder = new AlertDialog.Builder(context);
 		this.listView = new ListView(context);
 
-		builder.setPositiveButton("Ok", null);
-		builder.setNeutralButton("Create a directory", null);
+		builder.setPositiveButton(R.string.ok, null);
+		builder.setNeutralButton(R.string.quick_access, null);
 		builder.setView(listView);
 
 		// Current directory
@@ -69,12 +70,12 @@ public class DirectoryChooser {
 					}
 				});
 
-				//Create Directory's button
+				//Create Quick access button
 				Button b2 = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						createDirectory();
+						quickAccess();
 					}
 				});
 			}
@@ -83,28 +84,42 @@ public class DirectoryChooser {
 		dialog.show();
 	}
 	
-	public void createDirectory() {
-		final EditText et = new EditText(context);
+	public void quickAccess() {
+		final ListView lv = new ListView(context);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder
-		.setTitle("Create a directory")
-		.setView(et)
-		.setPositiveButton("Ok", new OnClickListener() {			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				File f = new File(dirListToPath(currentDirPath) + "/" +  et.getText().toString());
-				f.mkdir();
-				if(!f.exists()){
-					Toast.makeText(context, "Impossible to create the folder", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				displayItemList();
-			}
-		})
+		.setTitle(R.string.quick_access)
+		.setView(lv)
 		.setCancelable(true);
+		
+		final AlertDialog quickDialog = builder.create();
+		
+		final Map<String, File> allLocations = ExternalStorage.getAllStorageLocations();
+		final String[] keySet = allLocations.keySet().toArray(new String[allLocations.size()]);
+		lv.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, keySet));
 
-		builder.show();
+		// When clicking on an item, the list display the new path
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			
+			public void onItemClick(AdapterView<?> arg0, View view, int pos, long id) {
+				String newPath = allLocations.get(keySet[pos]).getAbsolutePath();
+
+				if (isReadable(newPath)) {
+					currentDirPath.clear();
+					currentDirPath.addAll(Arrays.asList(newPath.split("/")));
+					
+					displayItemList();
+				}
+				else {
+					Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", newPath), Toast.LENGTH_SHORT).show();
+				}
+				
+				quickDialog.dismiss();
+			}
+		});
+
+		quickDialog.show();
 	}
 
 	/** Returns the folder's list of path */
@@ -125,7 +140,9 @@ public class DirectoryChooser {
 				return newFile.isDirectory() && !newFile.isHidden();
 			}
 		});
+
 		if(directories != null){
+			Arrays.sort(directories);
 			dirList.addAll(new ArrayList<String>(Arrays.asList(directories)));
 		}
 
@@ -158,7 +175,7 @@ public class DirectoryChooser {
 						currentDirPath.add(dir_list.get(pos));
 					}
 					else {
-						Toast.makeText(context, newPath + " is not accessible", Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", newPath), Toast.LENGTH_SHORT).show();
 					}
 				}
 				

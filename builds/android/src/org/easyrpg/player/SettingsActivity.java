@@ -128,7 +128,7 @@ public class SettingsActivity extends Activity {
 				// 2) Verify read permissions
 				File f = new File(path); 
 				if(!f.canRead()){
-					Toast.makeText(SettingsActivity.this, R.string.no_read_access_on_dir, Toast.LENGTH_LONG).show();
+					Toast.makeText(SettingsActivity.this, SettingsActivity.this.getApplicationContext().getString(R.string.path_not_readable).replace("$PATH", path), Toast.LENGTH_LONG).show();
 					return;
 				}
 				// 3) When the user selects a directory containing a game, select automatically the folder above
