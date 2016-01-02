@@ -38,8 +38,6 @@
 #endif
 
 #include "filefinder.h"
-#include "font.h"
-#include "graphics.h"
 #include "input.h"
 #include "options.h"
 #include "output.h"
@@ -64,7 +62,7 @@ namespace {
 	
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetProjectPath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);

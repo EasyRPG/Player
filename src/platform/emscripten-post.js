@@ -52,10 +52,10 @@ function _readdir_r(dirp, entry, result) {
     }
     if (!stream.currReading) {
         try {
-        // load the list of entries now, then readdir will traverse that list, to ignore changes to files
-        stream.currReading = FS.readdir(stream.path);
+            // load the list of entries now, then readdir will traverse that list, to ignore changes to files
+            stream.currReading = FS.readdir(stream.path);
         } catch (e) {
-        return FS.handleFSError(e);
+            return FS.handleFSError(e);
         }
     }
     if (stream.position < 0 || stream.position >= stream.currReading.length) {
@@ -70,11 +70,11 @@ function _readdir_r(dirp, entry, result) {
         type = 4;
     } else {
         try {
-        // child may have been removed since we started to read this directory
-        var child = FS.lookupNode(stream.node, name);
+            // child may have been removed since we started to read this directory
+            var child = FS.lookupNode(stream.node, name);
         } catch (e) {
-        // skip to the next entry (not infinite since position is incremented until currReading.length)
-        return _readdir_r(dirp, entry, result);
+            // skip to the next entry (not infinite since position is incremented until currReading.length)
+            return _readdir_r(dirp, entry, result);
         }
         id = child.id;
         type = FS.isChrdev(child.mode) ? 2 :  // DT_CHR, character device.
