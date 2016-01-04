@@ -223,6 +223,7 @@ void Game_Player::PerformTeleport() {
 
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
+		pattern = RPG::EventPage::Frame_middle;
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;
@@ -516,7 +517,6 @@ void Game_Player::Refresh() {
 
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
-	pattern = RPG::EventPage::Frame_middle;
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
