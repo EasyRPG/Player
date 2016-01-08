@@ -37,6 +37,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/filefinder.h \
 	src/font.cpp \
 	src/font.h \
+	src/frame.cpp \
+	src/frame.h \
 	src/game_actor.cpp \
 	src/game_actor.h \
 	src/game_actors.cpp \

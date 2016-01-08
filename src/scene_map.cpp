@@ -57,6 +57,7 @@ void Scene_Map::Start() {
 
 	screen.reset(new Screen());
 	weather.reset(new Weather());
+	frame.reset(new Frame());
 
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
