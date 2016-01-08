@@ -39,7 +39,7 @@ public:
 
 private:
 
-	static const int z = 1111;
+	static const int z = 11000;
 	static const DrawableType type = TypeFrame;
 
 	void OnFrameGraphicReady(FileRequestResult* result);
