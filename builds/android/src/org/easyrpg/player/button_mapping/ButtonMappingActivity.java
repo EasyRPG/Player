@@ -128,7 +128,7 @@ public class ButtonMappingActivity extends Activity {
 	}
 	
 	public void showSupportedButton(){
-		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
+		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/", "Ghost Mode (Debug)"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getResources().getString(R.string.add_a_button));
 		builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -186,6 +186,10 @@ public class ButtonMappingActivity extends Activity {
 		}else if(s.equals("/")){
 			// API11: KeyEvent.KEYCODE_NUMPAD_DIVIDE
 			keyCode = 154;
+		}else if(s.startsWith("Ghost")){
+			// API11: KeyEvent.KEYCODE_CTRL_LEFT
+			keyCode = 113;
+			charButton = '>';
 		}
 		
 		if(charButton == ' '){
