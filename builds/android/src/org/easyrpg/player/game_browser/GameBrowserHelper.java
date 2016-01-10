@@ -2,6 +2,7 @@ package org.easyrpg.player.game_browser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
@@ -45,6 +46,7 @@ public class GameBrowserHelper {
 		}
 		
 		// Scanning all the games folders
+		boolean first_directory = true;
 		for(String path : SettingsActivity.GAMES_DIRECTORIES){
 			File dir = new File(path);
 			// Verification
@@ -56,17 +58,19 @@ public class GameBrowserHelper {
 				continue;
 			}
 	
-			// 2) The folder must be readable and writable
-			if (!dir.canRead() || !dir.canWrite() || !dir.isDirectory()) {
+			// 2) The folder must be readable
+			if (!dir.canRead() || !dir.isDirectory()) {
 				String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
 				error_list.add(msg);
 
 				continue;
 			}
 
-			// Scan of the folder
+			// Scan the folder
 			File[] list = dir.listFiles();
-			scanFolder(context, list, project_list, 3);
+			// Go 2 directores deep to find games in /easyrpg/games, otherwise only 1
+			scanFolder(context, list, project_list, first_directory ? 2 : 1);
+			first_directory = false;
 		}
 		
 		// If the scan bring nothing in this folder : we notifiate the user
@@ -151,8 +155,25 @@ public class GameBrowserHelper {
 		// Test again in case somebody messed with the file system
 		if (GameBrowserHelper.isRpg2kGame(new File(path))) {
 			Intent intent = new Intent(context, EasyRpgPlayerActivity.class);
+			ArrayList<String> args = new ArrayList<String>();
+			
 			// Path of game passed to PlayerActivity via intent "project_path"
+			// Command line passed via intent "command_line"
+			args.add("--project-path");
+			args.add(path);
+			
+			args.add("--save-path");
+			args.add(project.getSavePath());
+	
+			args.add("--encoding");
+			if (project.getEncoding() == null || project.getEncoding().length() == 0) {
+				args.add("auto");
+			} else {
+				args.add(project.getEncoding());
+			}
+			
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
+			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
 			context.startActivity(intent);
 		} else {
 			String msg = context.getString(R.string.not_valid_game).replace("$PATH", project.getTitle());
