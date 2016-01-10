@@ -15,36 +15,36 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DRAWABLE_H_
-#define _DRAWABLE_H_
+#ifndef _EASYRPG_GRAPHIC_FRAME_H_
+#define _EASYRPG_GRAPHIC_FRAME_H_
 
-// What kind of drawable is the current one?
-enum DrawableType {
-	TypeWindow,
-	TypeTilemap,
-	TypeSprite,
-	TypePlane,
-	TypeBackground,
-	TypeScreen,
-	TypeFrame,
-	TypeWeather,
-	TypeMessageOverlay,
-	TypeDefault};
+// Headers
+#include <string>
+#include "drawable.h"
+#include "system.h"
 
 /**
- * Drawable virtual
+ * Renders the frame overlay.
  */
-class Drawable {
+class Frame : public Drawable {
 public:
-	virtual ~Drawable() {};
+	Frame();
+	~Frame();
 
-	virtual void Draw() = 0;
+	void Draw();
+	void Update();
 
-	virtual int GetZ() const = 0;
+	int GetZ() const;
+	DrawableType GetType() const;
 
-	virtual DrawableType GetType() const = 0;
+private:
 
-	virtual bool IsGlobal() const { return false; }
+	static const int z = 11000;
+	static const DrawableType type = TypeFrame;
+
+	void OnFrameGraphicReady(FileRequestResult* result);
+
+	BitmapRef frame_bitmap;
 };
 
 #endif

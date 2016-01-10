@@ -165,6 +165,7 @@
     <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
+    <ClCompile Include="..\..\src\frame.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battle.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
+    <ClInclude Include="..\..\src\frame.h" />
     <ClInclude Include="..\..\src\game_actor.h" />
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battle.h" />
