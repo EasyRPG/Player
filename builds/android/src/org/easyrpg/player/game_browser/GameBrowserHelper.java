@@ -172,6 +172,10 @@ public class GameBrowserHelper {
 				args.add(project.getEncoding());
 			}
 			
+			// We use --test-play to permit the ghost mode
+			args.add("--test-play");
+			args.add(path);
+			
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
 			context.startActivity(intent);
