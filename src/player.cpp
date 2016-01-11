@@ -697,6 +697,7 @@ std::string Player::GetEncoding() {
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
 		encoding = ReaderUtil::GetEncoding(ini);
+	}
 
 	if (encoding.empty() || encoding == "auto") {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
@@ -756,6 +757,8 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--save-path PATH     " << "Instead of storing save files in the game directory" << std::endl;
 	std::cout << "      " << "                     " << "they are stored in PATH. The directory must exist." << std::endl;
+	std::cout << "      " << "                     " << "When using the game browser all games will share" << std::endl;
+	std::cout << "      " << "                     " << "the same save directory!" << std::endl;
 
 	std::cout << "      " << "--seed N             " << "Seeds the random number generator with N." << std::endl;
 
