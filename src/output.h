@@ -27,7 +27,7 @@
  */
 namespace Output {
 	/**
-	 * Takes screenshot and save it to Main_Data::project_path.
+	 * Takes screenshot and save it to Main_Data::GetProjectPath().
 	 *
 	 * @return true if success, otherwise false.
 	 */

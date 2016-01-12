@@ -219,7 +219,7 @@ void FileRequestAsync::DownloadDone(bool success) {
 #ifdef EMSCRIPTEN
 		if (state == State_Pending) {
 			// Update directory structure (new file was added)
-			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::project_path));
+			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
 		}
 #endif
 

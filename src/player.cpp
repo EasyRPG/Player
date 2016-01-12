@@ -125,9 +125,11 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
-#ifdef EMSCRIPTEN
-	emscripten_game_name = "";
+	srand(time(NULL));
 
+	ParseCommandLine(argc, argv);
+
+#ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
 
 	// Create initial directory structure
@@ -137,20 +139,13 @@ void Player::Init(int argc, char *argv[]) {
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
 		FS.mount(IDBFS, {}, 'Save');
-	
+
 		FS.syncfs(true, function(err) {
 		});
 	);
 #endif
 
-	srand(time(NULL));
-
-	ParseCommandLine(argc, argv);
-
-	if (Main_Data::project_path.empty()) {
-		// Not overwritten by --project-path
-		Main_Data::Init();
-	}
+	Main_Data::Init();
 
 	DisplayUi.reset();
 
@@ -390,15 +385,23 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				return;
 			}
 #ifdef _WIN32
-			Main_Data::project_path = *it;
-			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::project_path).c_str());
+			Main_Data::SetProjectPath(*it);
+			BOOL cur_dir = SetCurrentDirectory(Utils::ToWideString(Main_Data::GetProjectPath()).c_str());
 			if (cur_dir) {
-				Main_Data::project_path = ".";
+				Main_Data::SetProjectPath(".");
 			}
 #else
 			// case sensitive
-			Main_Data::project_path = argv[it - args.begin() + 1];
+			Main_Data::SetProjectPath(argv[it - args.begin() + 1]);
 #endif
+		}
+		else if (*it == "--save-path") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			// case sensitive
+			Main_Data::SetSavePath(argv[it - args.begin() + 1]);
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
@@ -581,7 +584,7 @@ void Player::LoadDatabase() {
 		!FileFinder::IsEasyRpgProject(*FileFinder::GetDirectoryTree())) {
 		// Unlikely to happen because of the game browser only launches valid games
 
-		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
+		Output::Debug("%s is not a supported project", Main_Data::GetProjectPath().c_str());
 
 		Output::Error("%s\n\n%s\n\n%s\n\n%s","No valid game was found.",
 			"EasyRPG must be run from a game folder containing\nRPG_RT.ldb and RPG_RT.lmt.",
@@ -694,19 +697,20 @@ std::string Player::GetEncoding() {
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
 		encoding = ReaderUtil::GetEncoding(ini);
+	}
 
-		if (encoding.empty()) {
-			std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-			encoding = ReaderUtil::DetectEncoding(ldb);
+	if (encoding.empty() || encoding == "auto") {
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+		encoding = ReaderUtil::DetectEncoding(ldb);
 
-			if (!encoding.empty()) {
-				Output::Debug("Detected encoding: %s", encoding.c_str());
-			} else {
-				Output::Debug("Encoding not detected");
-				encoding = ReaderUtil::GetLocaleEncoding();
-			}
+		if (!encoding.empty()) {
+			Output::Debug("Detected encoding: %s", encoding.c_str());
+		} else {
+			Output::Debug("Encoding not detected");
+			encoding = ReaderUtil::GetLocaleEncoding();
 		}
 	}
+
 
 	return encoding;
 }
@@ -726,8 +730,9 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
 
-	std::cout << "      " << "--encoding N         " << "Instead of using the default platform encoding or" << std::endl;
-	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
+	std::cout << "      " << "--encoding N         " << "Instead of auto detecting the encoding or using" << std::endl;
+	std::cout << "      " << "                     " << "the one in RPG_RT.ini, the encoding N is used." << std::endl;
+	std::cout << "      " << "                     " << "Use \"auto\" for automatic detection." << std::endl;
 
 	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
 	std::cout << "      " << "                     " << "Possible options:" << std::endl;
@@ -750,7 +755,12 @@ void Player::PrintUsage() {
 	std::cout << "      " << "--project-path PATH  " << "Instead of using the working directory the game in" << std::endl;
 	std::cout << "      " << "                     " << "PATH is used." << std::endl;
 
-	std::cout << "      " << "--seed N            " << "Seeds the random number generator with N." << std::endl;
+	std::cout << "      " << "--save-path PATH     " << "Instead of storing save files in the game directory" << std::endl;
+	std::cout << "      " << "                     " << "they are stored in PATH. The directory must exist." << std::endl;
+	std::cout << "      " << "                     " << "When using the game browser all games will share" << std::endl;
+	std::cout << "      " << "                     " << "the same save directory!" << std::endl;
+
+	std::cout << "      " << "--seed N             " << "Seeds the random number generator with N." << std::endl;
 
 	std::cout << "      " << "--start-map-id N     " << "Overwrite the map used for new games and use." << std::endl;
 	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;

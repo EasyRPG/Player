@@ -78,7 +78,23 @@ public class GameListAdapter extends BaseAdapter {
 		convertView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				GameBrowserHelper.launchGame(context, project_list.get(position));
+				ProjectInformation pi = project_list.get(position);
+				
+				if (!pi.read_project_preferences_encoding()) {
+					File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+					
+					// Retrieve the current region (to check the correct radio button)
+					if (iniFile != null) {
+						iniReader = null;
+						try {
+							iniReader = new IniEncodingReader(iniFile);
+							String encoding = iniReader.getEncoding();
+							pi.setEncoding(encoding);
+						} catch (IOException e) {}
+					}
+				}
+				
+				GameBrowserHelper.launchGame(context, pi);
 			}
 		});
         return convertView;
@@ -104,7 +120,7 @@ public class GameListAdapter extends BaseAdapter {
 		String[] layout_name_array = bmm.getLayoutsNames(context);
 		
 		//Detect default layout
-		pi.read_project_preferences(bmm);
+		pi.read_project_preferences_input_layout(bmm);
 		int id = -1;
 		for(int i = 0; i < bmm.getLayout_list().size(); i++){
 			if(bmm.getLayout_list().get(i).getId() == pi.getId_input_layout()){
@@ -154,24 +170,26 @@ public class GameListAdapter extends BaseAdapter {
 		};
 		
 		//Retrieve the project's .ini file
-		File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), true);
-		String error_msg = context.getString(R.string.accessing_configuration_failed).replace("$PATH", pi.getTitle());
-		if (iniFile == null) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
-			return;
-		}
+		String encoding = null;
 		
-		// Retrieve the current region (to check the correct radio button)
-		iniReader = null;
-		try {
-			iniReader = new IniEncodingReader(iniFile);
-		} catch (IOException e) {
-			Toast.makeText(context, error_msg, Toast.LENGTH_LONG).show();
+		if (!pi.read_project_preferences_encoding()) {
+			File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+			
+			// Retrieve the current region (to check the correct radio button)
+			if (iniFile != null) {
+				iniReader = null;
+				try {
+					iniReader = new IniEncodingReader(iniFile);
+					encoding = iniReader.getEncoding();
+				} catch (IOException e) {}				
+			}
+		} else {
+			encoding = pi.getEncoding();
 		}
-		String encoding = iniReader.getEncoding();
+
 		int id = -1;
-					
-		if (encoding == null) {
+
+		if (encoding == null || encoding.equals("auto")) {
 			id = 0;
 		} else if (encoding.equals("1252")) {
 			id = 1;
@@ -235,16 +253,9 @@ public class GameListAdapter extends BaseAdapter {
 					}
 					
 					if (encoding != null) {
-						if (encoding.equals("auto")) {
-							iniReader.deleteEncoding();
-						} else {
-							iniReader.setEncoding(encoding);
-						}
-						try {
-							iniReader.save();
-						} catch (IOException e) {
-							Toast.makeText(context, context.getString(R.string.region_modification_failed), Toast.LENGTH_LONG).show();
-						}
+						pi.setEncoding(encoding);
+						
+						pi.write_project_preferences();
 					}	
 				}
 			})

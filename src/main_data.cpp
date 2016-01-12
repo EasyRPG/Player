@@ -43,32 +43,8 @@
 Game_Variables_Class Game_Variables(Main_Data::game_data.system.variables);
 Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
 
-static std::string GetProjectPath() {
-#ifdef __ANDROID__
-	// Invoke "String getProjectPath()" in EasyRPG Activity via JNI
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getProjectPath = env->GetMethodID(cls , "getProjectPath", "()Ljava/lang/String;");
-	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getProjectPath);
-	
-	const char *js = env->GetStringUTFChars(return_string, NULL);
-	std::string cs(js);
-
-	env->ReleaseStringUTFChars(return_string, js);
-	env->DeleteLocalRef(sdl_activity);
-	env->DeleteLocalRef(cls);
-
-	return cs;
-#elif GEKKO
-	// Wii doesn't provide a correct working directory before mounting
-	char gekko_dir[256];
-	getcwd(gekko_dir, 255);
-	return std::string(gekko_dir);
-#else
-	return std::string(".");
-#endif
-}
+std::string project_path;
+std::string save_path;
 
 namespace Main_Data {
 	// Dynamic Game Data
@@ -78,14 +54,27 @@ namespace Main_Data {
 	boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
 
 	RPG::Save game_data;
-	std::string project_path;
 }
 
 void Main_Data::Init() {
-	project_path =
-		getenv("RPG_TEST_GAME_PATH")? getenv("RPG_TEST_GAME_PATH"):
-		getenv("RPG_GAME_PATH")? getenv("RPG_GAME_PATH"):
-		GetProjectPath();
+	if (project_path.empty()) {
+		project_path =
+			getenv("RPG_TEST_GAME_PATH") ? getenv("RPG_TEST_GAME_PATH") :
+			getenv("RPG_GAME_PATH") ? getenv("RPG_GAME_PATH") :
+			"";
+
+		if (project_path.empty()) {
+#ifdef GEKKO
+			// Working directory not correctly handled under Wii
+			char gekko_dir[256];
+			getcwd(gekko_dir, 255);
+			project_path = std::string(gekko_dir);
+#else
+			project_path = ".";
+#endif
+		}
+
+	}
 }
 
 void Main_Data::Cleanup() {
@@ -98,4 +87,24 @@ void Main_Data::Cleanup() {
 	game_enemyparty.reset();
 
 	game_data = RPG::Save();
+}
+
+const std::string& Main_Data::GetProjectPath() {	
+	return project_path;
+}
+
+void Main_Data::SetProjectPath(const std::string& path) {
+	project_path = path;
+}
+	
+const std::string& Main_Data::GetSavePath() {
+	if (save_path.empty()) {
+		return GetProjectPath();
+	}
+	
+	return save_path;
+}
+
+void Main_Data::SetSavePath(const std::string& path) {
+	save_path = path;
 }

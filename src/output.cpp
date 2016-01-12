@@ -38,8 +38,6 @@
 #endif
 
 #include "filefinder.h"
-#include "font.h"
-#include "graphics.h"
 #include "input.h"
 #include "options.h"
 #include "output.h"
@@ -60,11 +58,11 @@ void boost::throw_exception(std::exception const& exp) {
 
 namespace {
 	std::ofstream LOG_FILE;
-	static bool init = false;
+	bool init = false;
 	
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE.open(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -102,7 +100,7 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
-	if (!Main_Data::project_path.empty()) {
+	if (!Main_Data::GetSavePath().empty()) {
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
 		output_time() << type << ": " << msg << std::endl;
@@ -157,7 +155,7 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::project_path,
+		p = FileFinder::MakePath(Main_Data::GetProjectPath(),
 								 "screenshot_"
 								 + boost::lexical_cast<std::string>(index++)
 								 + ".png");
