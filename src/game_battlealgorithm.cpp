@@ -560,12 +560,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	this->success = false;
 
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		this->healing =
-			skill.scope == RPG::Skill::Scope_ally ||
-			skill.scope == RPG::Skill::Scope_party ||
-			skill.scope == RPG::Skill::Scope_self;
-	}
+	this->healing =
+		skill.scope == RPG::Skill::Scope_ally ||
+		skill.scope == RPG::Skill::Scope_party ||
+		skill.scope == RPG::Skill::Scope_self;
 
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
