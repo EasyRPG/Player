@@ -70,7 +70,9 @@
 #endif
 
 namespace {
+#ifdef SUPPORT_MOVIES
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
+#endif
 
 	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::DirectoryTree>> search_path_list;
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> game_directory_tree;

@@ -457,6 +457,9 @@
     <ClCompile Include="..\..\src\window_about.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\frame.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -884,6 +887,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_about.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\frame.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

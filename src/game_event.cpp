@@ -325,6 +325,9 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 	trigger = page->trigger;
 	list = page->event_commands;
 
+	// FIXME: transparency gets not restored otherwise
+	SetOpacity(page->translucent ? 160 : 255);
+
 	// Trigger parallel events when the interpreter wasn't already running
 	// (because it was the middle of a parallel event while saving)
 	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {

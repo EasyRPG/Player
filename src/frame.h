@@ -15,17 +15,36 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
-#include "audio.h"
-#include "system.h"
-#include "baseui.h"
-#include "player.h"
+#ifndef _EASYRPG_GRAPHIC_FRAME_H_
+#define _EASYRPG_GRAPHIC_FRAME_H_
 
-AudioInterface& Audio() {
-	static EmptyAudio default_;
-#ifdef SUPPORT_AUDIO
-	if (!Player::no_audio_flag && DisplayUi)
-		return DisplayUi->GetAudio();
+// Headers
+#include <string>
+#include "drawable.h"
+#include "system.h"
+
+/**
+ * Renders the frame overlay.
+ */
+class Frame : public Drawable {
+public:
+	Frame();
+	~Frame();
+
+	void Draw();
+	void Update();
+
+	int GetZ() const;
+	DrawableType GetType() const;
+
+private:
+
+	static const int z = 11000;
+	static const DrawableType type = TypeFrame;
+
+	void OnFrameGraphicReady(FileRequestResult* result);
+
+	BitmapRef frame_bitmap;
+};
+
 #endif
-	return default_;
-}

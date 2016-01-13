@@ -693,26 +693,24 @@ void Player::SetupPlayerSpawn() {
 std::string Player::GetEncoding() {
 	encoding = forced_encoding;
 
+	// command line > ini > detection > current locale
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
-
 		encoding = ReaderUtil::GetEncoding(ini);
-	} else {
-		return encoding;
 	}
+
 	if (encoding.empty() || encoding == "auto") {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-
 		encoding = ReaderUtil::DetectEncoding(ldb);
-	} else {
-		return encoding;
+
+		if (!encoding.empty()) {
+			Output::Debug("Detected encoding: %s", encoding.c_str());
+		} else {
+			Output::Debug("Encoding not detected");
+			encoding = ReaderUtil::GetLocaleEncoding();
+		}
 	}
-	if (encoding.empty()) {
-		Output::Debug("Encoding not detected");
-		encoding = ReaderUtil::GetLocaleEncoding();
-	} else {
-		Output::Debug("Detected encoding: %s", encoding.c_str());
-	}
+
 
 	return encoding;
 }
@@ -759,6 +757,8 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--save-path PATH     " << "Instead of storing save files in the game directory" << std::endl;
 	std::cout << "      " << "                     " << "they are stored in PATH. The directory must exist." << std::endl;
+	std::cout << "      " << "                     " << "When using the game browser all games will share" << std::endl;
+	std::cout << "      " << "                     " << "the same save directory!" << std::endl;
 
 	std::cout << "      " << "--seed N             " << "Seeds the random number generator with N." << std::endl;
 
