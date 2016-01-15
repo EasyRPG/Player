@@ -24,7 +24,7 @@ public class ProjectInformation {
 		this.path = path;
 		File f = new File(path);
 		
-		if (f.canWrite()) {
+		if (GameBrowserHelper.canWrite(f)) {
 			this.save_path = path;
 		} else {
 			// Not writable, redirect to a different path

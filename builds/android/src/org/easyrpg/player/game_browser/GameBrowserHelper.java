@@ -1,6 +1,8 @@
 package org.easyrpg.player.game_browser;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -147,6 +149,34 @@ public class GameBrowserHelper {
 		}
 
 		return null;
+	}
+	
+	public static Boolean canWrite(File f) {
+		if (f.isDirectory()) {
+			FileWriter w = null;
+			try {
+				w = new FileWriter(f.getPath() + "/.EASYRPG_WRITE_TEST");
+				// Permissions are checked on open, but it is Android, better be save
+				w.write("Android >.<");
+			} catch (IOException e) {
+				return false;
+			} finally {
+				try {
+					if (w != null) {
+						w.close();
+					}
+				} catch (IOException e) {}
+			}
+		} else {
+			try {
+				FileWriter w = new FileWriter(f, true);
+				w.close();
+			} catch (IOException e) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public static void launchGame(Context context, ProjectInformation project){
