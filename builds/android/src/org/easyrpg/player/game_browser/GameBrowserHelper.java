@@ -168,7 +168,6 @@ public class GameBrowserHelper {
 				try {
 					if (w != null) {
 						w.close();
-						
 					}
 				} catch (IOException e) {}
 			}
@@ -225,19 +224,8 @@ public class GameBrowserHelper {
 			return true;
 		}
 		
-		File folder = new File(project.getSavePath());
-		File[] files = folder.listFiles();
-		if (files != null) {
-			for (final File fileEntry : files) {
-		        if (fileEntry.isFile()) {
-		            if (fileEntry.getName().toLowerCase().endsWith(".lsd")) {
-		            	return true;
-		            }
-		        }
-		    }
-		}
-		
-		return false;
+		File[] files = getSavegames(new File(project.getSavePath()));
+		return files.length > 0;
 	}
 	
 	private static void copySavesFromGameDirectoryToSaveDirectory(ProjectInformation project) {
@@ -245,20 +233,28 @@ public class GameBrowserHelper {
 			return;
 		}
 		
-		File folder = new File(project.getPath());
+		File[] files = getSavegames(new File(project.getPath()));
+		for (final File fileEntry : files) {
+        	try {
+        		copyFile(fileEntry, new File(project.getSavePath() + "/" + fileEntry.getName()));
+        	} catch (IOException e) {
+        	}
+	    }
+	}
+	
+	public static File[] getSavegames(File folder) {
 		File[] files = folder.listFiles();
+		ArrayList<File> saveFiles = new ArrayList<File>();
 		if (files != null) {
 			for (final File fileEntry : files) {
 		        if (fileEntry.isFile()) {
 		            if (fileEntry.getName().toLowerCase().endsWith(".lsd")) {
-		            	try {
-		            		copyFile(fileEntry, new File(project.getSavePath() + "/" + fileEntry.getName()));
-		            	} catch (IOException e) {
-		            	}
+		            	saveFiles.add(fileEntry);
 		            }
 		        }
 		    }
 		}
+		return saveFiles.toArray(new File[saveFiles.size()]);
 	}
 	
 	public static void launchGame(Context context, ProjectInformation project) {
@@ -290,6 +286,7 @@ public class GameBrowserHelper {
 				args.add(project.getEncoding());
 			}
 			
+			intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
 			context.startActivity(intent);

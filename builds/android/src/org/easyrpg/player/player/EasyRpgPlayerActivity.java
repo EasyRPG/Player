@@ -25,6 +25,7 @@
 package org.easyrpg.player.player;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
@@ -32,12 +33,15 @@ import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
+import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.game_browser.ProjectInformation;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -55,6 +59,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 public class EasyRpgPlayerActivity extends SDLActivity {
 	public static final String TAG_PROJECT_PATH = "project_path";
+	public static final String TAG_SAVE_PATH = "save_path";
 	public static final String TAG_COMMAND_LINE = "command_line";
 
 	ButtonMappingModel bmm;
@@ -122,12 +127,35 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			}
 			uiVisible = !uiVisible;
 			return true;
+		case R.id.report_bug:
+			reportBug();
+			return true;
 		case R.id.end_game:
 			showEndGameDialog();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void reportBug() {
+		ArrayList<Uri> files = new ArrayList<Uri>();
+		String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
+		files.add(Uri.fromFile(new File(savepath + "/easyrpg_log.txt")));
+		for (File f : GameBrowserHelper.getSavegames(new File(savepath))) {
+			files.add(Uri.fromFile(f));
+		}
+		
+	    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+	    intent.setData(Uri.parse("mailto:"));
+	    intent.setType("*/*");
+	    intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"easyrpg@easy-rpg.org"});
+	    intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
+	    intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_text));
+	    intent.putExtra(Intent.EXTRA_STREAM, files);
+	    if (intent.resolveActivity(getPackageManager()) != null) {
+	        startActivity(intent);
+	    }
 	}
 
 	@Override

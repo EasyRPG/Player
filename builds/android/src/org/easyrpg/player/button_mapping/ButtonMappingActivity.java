@@ -9,6 +9,7 @@ import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -128,7 +129,12 @@ public class ButtonMappingActivity extends Activity {
 	}
 	
 	public void showSupportedButton(){
-		final CharSequence[] items = {"Enter", "Cancel", "Shift", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
+		Context ctx = getApplicationContext();
+		final CharSequence[] items = {
+				ctx.getString(R.string.key_enter),
+				ctx.getString(R.string.key_cancel),
+				ctx.getString(R.string.key_shift),
+				"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getResources().getString(R.string.add_a_button));
 		builder.setItems(items, new DialogInterface.OnClickListener() {
