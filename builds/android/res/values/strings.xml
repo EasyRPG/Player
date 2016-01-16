@@ -97,6 +97,6 @@ Please tell us in detail what went wrong.\n
 	<string name="exit_without_saving">Exit without saving</string>
 	<string name="save_and_quit">Save and quit</string>
 	<string name="key_enter">Enter (Z)</string>
-	<string name="key_cancel">Cancel (X)</string>
+	<string name="key_cancel">Cancel (ESC and X)</string>
 	<string name="key_shift">Shift</string>
 </resources>
