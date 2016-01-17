@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/Enter"	android:title="Enter"/>
-    <item android:id="@+id/Cancel"	android:title="Cancel"/>
-    <item android:id="@+id/Shift" 	android:title="Shift"/>
+    <item android:id="@+id/Enter"	android:title="@string/key_enter"/>
+    <item android:id="@+id/Cancel"	android:title="@string/key_cancel"/>
+    <item android:id="@+id/Shift" 	android:title="@string/key_shift"/>
     <item android:id="@+id/N0" 		android:title="0"/>
     <item android:id="@+id/N1" 		android:title="1"/>
     <item android:id="@+id/N2" 		android:title="2"/>

@@ -1,7 +1,12 @@
 package org.easyrpg.player.game_browser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -149,7 +154,116 @@ public class GameBrowserHelper {
 		return null;
 	}
 	
-	public static void launchGame(Context context, ProjectInformation project){
+	public static Boolean canWrite(File f) {
+		if (f.isDirectory()) {
+			FileWriter w = null;
+			String testFilename = f.getPath() + "/.EASYRPG_WRITE_TEST";
+			try {
+				w = new FileWriter(testFilename);
+				// Permissions are checked on open, but it is Android, better be save
+				w.write("Android >.<");
+			} catch (IOException e) {
+				return false;
+			} finally {
+				try {
+					if (w != null) {
+						w.close();
+					}
+				} catch (IOException e) {}
+			}
+			
+			File testFile = new File(testFilename);
+			if (testFile.exists()) {
+				// Does not throw
+				testFile.delete();
+			}
+		} else {
+			boolean deleteAfter = f.exists();
+			try {
+				FileWriter w = new FileWriter(f, true);
+				w.close();
+			} catch (IOException e) {
+				return false;
+			}
+			
+			if (deleteAfter) {
+				f.delete();
+			}
+		}
+		
+		return true;
+	}
+	
+	// https://stackoverflow.com/q/106770/
+	public static void copyFile(File sourceFile, File destFile) throws IOException {
+	    if(!destFile.exists()) {
+	        destFile.createNewFile();
+	    }
+
+	    FileChannel source = null;
+	    FileChannel destination = null;
+
+	    try {
+	        source = new FileInputStream(sourceFile).getChannel();
+	        destination = new FileOutputStream(destFile).getChannel();
+	        destination.transferFrom(source, 0, source.size());
+	    }
+	    finally {
+	        if(source != null) {
+	            source.close();
+	        }
+	        if(destination != null) {
+	            destination.close();
+	        }
+	    }
+	}
+	
+	private static boolean saveDirectoryContainsSave(ProjectInformation project) {
+		if (project.getPath().equals(project.getSavePath())) {
+			// Doesn't matter because this is used for the copying logic to the save directory
+			return true;
+		}
+		
+		File[] files = getSavegames(new File(project.getSavePath()));
+		return files.length > 0;
+	}
+	
+	private static void copySavesFromGameDirectoryToSaveDirectory(ProjectInformation project) {
+		if (project.getPath().equals(project.getSavePath())) {
+			return;
+		}
+		
+		File[] files = getSavegames(new File(project.getPath()));
+		for (final File fileEntry : files) {
+        	try {
+        		copyFile(fileEntry, new File(project.getSavePath() + "/" + fileEntry.getName()));
+        	} catch (IOException e) {
+        	}
+	    }
+	}
+	
+	public static File[] getSavegames(File folder) {
+		File[] files = folder.listFiles();
+		ArrayList<File> saveFiles = new ArrayList<File>();
+		if (files != null) {
+			for (final File fileEntry : files) {
+		        if (fileEntry.isFile()) {
+		            if (fileEntry.getName().toLowerCase().endsWith(".lsd")) {
+		            	saveFiles.add(fileEntry);
+		            }
+		        }
+		    }
+		}
+		return saveFiles.toArray(new File[saveFiles.size()]);
+	}
+	
+	public static void launchGame(Context context, ProjectInformation project) {
+		// Prepare savegames, copy them to the save directory on launch to prevent unwanted side effects
+		// e.g. games copied from PC with savegames, or from internal storage.
+		if (!saveDirectoryContainsSave(project)) {
+			copySavesFromGameDirectoryToSaveDirectory(project);
+		}
+		
 		String path = project.getPath();
 		
 		// Test again in case somebody messed with the file system
@@ -172,6 +286,7 @@ public class GameBrowserHelper {
 				args.add(project.getEncoding());
 			}
 			
+			intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
 			context.startActivity(intent);

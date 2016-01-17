@@ -11,9 +11,6 @@
 
 	<!--GameBrowser Activity-->
 	<string name="app_name" translate="false">EasyRPG Player</string>
-	<string name="toggle_fps">Toggle FPS</string>
-	<string name="toggle_ui">Toggle Virtual Buttons</string>
-	<string name="end_game">End Game</string>
 	<string name="autodetect">Autodetect Region (Recommended)</string>
 	<string name="west_europe">Western European</string>
 	<string name="east_europe">Central/Eastern European</string>
@@ -61,6 +58,22 @@ Special features:\n
 You can add additional on-screen buttons. Tap the menu button to edit screen buttons position.\n
 Once there, tap the back button to access to an additional menu to add more buttons to the screen.
 	</string>
+	
+	<!--Ingame menu-->
+	<string name="toggle_fps">Toggle FPS</string>
+	<string name="toggle_ui">Toggle Virtual Buttons</string>
+	<string name="end_game">End Game</string>
+	<string name="report_bug">Report a bug</string>
+	<string name="report_bug_msg">This function will open your E-mail program (e.g. Gmail) to send us the bug report.\n
+If you don\'t want to send a mail or don\'t have a mail program configured you can open a new issue at https://github.com/EasyRPG/Player/issues instead.
+	</string>
+	<string name="report_bug_mail">Thank you for supporting EasyRPG Player.\n
+A logfile and your savegames were attached to this E-Mail.\n
+Please don\'t remove the logfile! We need a savegame that is close to the bug location.\n
+We speak English, German and Spanish.\n
+Please tell us in detail what went wrong.\n
+[You can remove this instruction text]
+	</string>
 
 	<!--Settings Activity-->
 	<string name="settings">Settings</string>
@@ -85,5 +98,8 @@ Once there, tap the back button to access to an additional menu to add more butt
 	<string name="add_a_button">Add a button</string>
 	<string name="reset_button_mapping">Reset button mapping</string>
 	<string name="exit_without_saving">Exit without saving</string>
-	<string name="save_and_quit">Save and quit</string>	
+	<string name="save_and_quit">Save and quit</string>
+	<string name="key_enter">Enter (Z)</string>
+	<string name="key_cancel">Cancel (ESC and X)</string>
+	<string name="key_shift">Shift</string>
 </resources>

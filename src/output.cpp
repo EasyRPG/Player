@@ -93,6 +93,8 @@ namespace {
 		assert(0 <= result && result < int(sizeof(buf)));
 		return std::string(buf, result);
 	}
+
+	std::vector<std::string> log_buffer;
 }
 
 void Output::IgnorePause(bool const val) {
@@ -103,7 +105,15 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 	if (!Main_Data::GetSavePath().empty()) {
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
+		for (std::string& log : log_buffer) {
+			output_time() << log << std::endl;
+		}
+		log_buffer.clear();
+
 		output_time() << type << ": " << msg << std::endl;
+	} else {
+		// buffer log messages until file system is ready
+		log_buffer.push_back(type + ": " + msg);
 	}
 
 #ifdef __ANDROID__
