@@ -63,8 +63,11 @@ Once there, tap the back button to access to an additional menu to add more butt
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
 	<string name="end_game">End Game</string>
-	<string name="report_bug">Report a bug (via E-Mail)</string>
-	<string name="report_bug_text">Thank you for supporting EasyRPG Player.\n
+	<string name="report_bug">Report a bug</string>
+	<string name="report_bug_msg">This function will open your E-mail program (e.g. Gmail) to send us the bug report.\n
+If you don\'t want to send a mail or don\'t have a mail program configured you can open a new issue at https://github.com/EasyRPG/Player/issues instead.
+	</string>
+	<string name="report_bug_mail">Thank you for supporting EasyRPG Player.\n
 A logfile and your savegames were attached to this E-Mail.\n
 Please don\'t remove the logfile! We need a savegame that is close to the bug location.\n
 We speak English, German and Spanish.\n

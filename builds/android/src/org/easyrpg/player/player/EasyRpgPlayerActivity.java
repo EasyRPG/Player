@@ -44,6 +44,9 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -52,6 +55,7 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
@@ -139,23 +143,45 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 
 	private void reportBug() {
-		ArrayList<Uri> files = new ArrayList<Uri>();
-		String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
-		files.add(Uri.fromFile(new File(savepath + "/easyrpg_log.txt")));
-		for (File f : GameBrowserHelper.getSavegames(new File(savepath))) {
-			files.add(Uri.fromFile(f));
-		}
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle(R.string.app_name);
 		
-	    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-	    intent.setData(Uri.parse("mailto:"));
-	    intent.setType("*/*");
-	    intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"easyrpg@easy-rpg.org"});
-	    intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
-	    intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_text));
-	    intent.putExtra(Intent.EXTRA_STREAM, files);
-	    if (intent.resolveActivity(getPackageManager()) != null) {
-	        startActivity(intent);
-	    }
+	    final SpannableString bug_msg = new SpannableString(getApplicationContext().getString(R.string.report_bug_msg));
+	    Linkify.addLinks(bug_msg, Linkify.ALL);
+
+		// set dialog message
+		alertDialogBuilder.setMessage(bug_msg).setCancelable(false)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {						
+						ArrayList<Uri> files = new ArrayList<Uri>();
+						String savepath = getIntent().getStringExtra(TAG_SAVE_PATH);
+						files.add(Uri.fromFile(new File(savepath + "/easyrpg_log.txt")));
+						for (File f : GameBrowserHelper.getSavegames(new File(savepath))) {
+							files.add(Uri.fromFile(f));
+						}
+						
+					    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+					    intent.setData(Uri.parse("mailto:"));
+					    intent.setType("*/*");
+					    intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"easyrpg@easy-rpg.org"});
+					    intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
+					    intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
+					    intent.putExtra(Intent.EXTRA_STREAM, files);
+					    if (intent.resolveActivity(getPackageManager()) != null) {
+					        startActivity(intent);
+					    }
+					}
+				}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		alertDialog.show();
+		
+		((TextView)alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
 	}
 
 	@Override
@@ -185,7 +211,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
 	private void showEndGameDialog() {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder.setTitle("EasyRPG Player");
+		alertDialogBuilder.setTitle(R.string.app_name);
 
 		// set dialog message
 		alertDialogBuilder.setMessage(R.string.do_want_quit).setCancelable(false)
