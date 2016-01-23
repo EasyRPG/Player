@@ -797,7 +797,7 @@ void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
 
 	if (first_attack) {
-		Main_Data::game_party->RemoveItem(item.ID, 1);
+		Main_Data::game_party->ConsumeItemUse(item.ID);
 	}
 }
 

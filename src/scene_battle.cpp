@@ -218,18 +218,14 @@ void Scene_Battle::EnemySelected() {
 
 	Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 
-	switch (previous_state) {
-		case State_SelectCommand:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
-			break;
-		case State_SelectSkill:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
-			break;
-		case State_SelectItem:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
-			break;
-		default:
-			assert("Invalid previous state for enemy selection" && false);
+	if (previous_state == State_SelectCommand) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+	} else if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+	} else if (previous_state == State_SelectItem) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+	} else {
+		assert("Invalid previous state for enemy selection" && false);
 	}
 
 	ActionSelectedCallback(active_actor);
@@ -238,15 +234,12 @@ void Scene_Battle::EnemySelected() {
 void Scene_Battle::AllySelected() {
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
-	switch (previous_state) {
-		case State_SelectSkill:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
-			break;
-		case State_SelectItem:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
-			break;
-		default:
-			assert("Invalid previous state for ally selection" && false);
+	if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+	} else if (previous_state == State_SelectItem) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
+	} else {
+		assert("Invalid previous state for ally selection" && false);
 	}
 
 	ActionSelectedCallback(active_actor);
@@ -271,7 +264,7 @@ void Scene_Battle::ItemSelected() {
 
 	skill_item = NULL;
 
-	if (!item || !Main_Data::game_party->IsItemUsable(item->ID)) {
+	if (!item || !Main_Data::game_party->IsItemUsable(item->ID, active_actor)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}
@@ -322,6 +315,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			ActionSelectedCallback(active_actor);
 			return;
 		case RPG::Skill::Type_normal:
+		case RPG::Skill::Type_subskill:
 		default:
 			break;
 	}
@@ -427,9 +421,10 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 		case RPG::Skill::Type_switch:
-			//BeginSkill();
+			// FIXME: Can enemy use this?
 			return;
 		case RPG::Skill::Type_normal:
+		case RPG::Skill::Type_subskill:
 		default:
 			break;
 		}
