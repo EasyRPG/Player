@@ -2,9 +2,6 @@
 <resources>
   <!--Preferences Keys-->
   <!--GameBrowser Activity-->
-  <string name="toggle_fps">FPSの表示</string>
-  <string name="toggle_ui">仮想ボタンの表示</string>
-  <string name="end_game">終了</string>
   <string name="autodetect">自動検出(推奨設定)</string>
   <string name="west_europe">西ヨーロッパ</string>
   <string name="east_europe">中央/東ヨーロッパ</string>
@@ -27,11 +24,9 @@
   <string name="no">いいえ</string>
   <string name="creating_dir_failed">ディレクトリ $PATH の作成に失敗しました。</string>
   <string name="path_not_readable">$PATH が読み込めませんでした。</string>
-  <string name="no_games_found">本体ストレージ内の/easyrpg/gamesのフォルダにゲームが見つかりませんでした。</string>
+  <string name="no_games_found_and_explanation">ゲームが見つかりません。\n設定で、追加のゲームディレクトリを追加することができます。</string>
   <string name="no_external_storage">外部ストレージ(SDカードなど)が見つかりませんでした。</string>
-  <string name="resolve_errors">エラーを解決後に再度実行してください。</string>
   <string name="not_valid_game">$PATHのゲームは対応していません。</string>
-  <string name="accessing_configuration_failed">$PATHのコンフィグへアクセス失敗しました。</string>
   <string name="select_game_region">ゲームの言語地域を選択</string>
   <string name="change_the_layout">レイアウトの変更</string>
   <string name="choose_layout">レイアウトの選択</string>
@@ -42,27 +37,39 @@
   <string name="how_to_use_easy_rpg">EasyRPG Playerの使い方</string>
   <string name="how_to_use_easy_rpg_explanation">
 インストール方法:\n
-\t1. デバイスのルートに /easyrpg/gamesのフォルダを作成してください。\n
-\t2. RPGツクール2000のRTPの中身を/easyrpg/rtp/2000の中にコピーし、RPGツクール2003のRTPの中身を/easyrpg/rtp/2003の中にコピーしてください。\n
+デフォルトでは、ゲームフォルダーは /easyrpg/games 内で検索されます。設定で、追加のゲームディレクトリを追加することができます。\n
+オプション: RPGツクール2000 RTP 用の /easyrpg/rtp/2000 および RPGツクール2003 RTP用の /easyrpg/rtp/2003 に RTP を入れてください。\n
 \n
-もしゲームが検出されず、あなたのデバイスに他のストレージがある場合、easyrpgのフォルダを他のストレージに移動させてリフレッシュボタンを押してみてください。\n
+ヒント: ゲームを正しく検出するためには、それらを (デフォルトで) /easyrpg/games のサブディレクトリに解凍する必要があります。例:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb は OK。\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb は OK。\n
+\t/easyrpg/games/MyGame.zip は間違い。\n
 \n
-ヒント: ゲームを正しく検出するためには圧縮されていない状態でサブフォルダの中に置かれていない必要があります。\n
-例:\n
-\t/easyrpg/games/ゲーム名/RPG_RT.ldb は問題ありません。\n
-\t/easyrpg/games/ゲーム名/余分なフォルダ/RPG_RT.ldb は問題ありません。\n
-\t/easyrpg/games/ゲーム名.zip は間違いです。\n
-\n
-特殊機能：\n
-\tメニューボタンをタップすることで画面上のボタン配置を設定することができます。\n
-\t戻るボタンを押しても、画面にボタンを追加するためのメニューにアクセスすることもできます。\n
-⇥</string>
+特別な機能:\n
+追加の画面ボタンを追加することができます。画面ボタンの位置を編集するには、メニューボタンをタップしてください。\n
+そこから、さらにボタンを追加するために、追加メニューにアクセスするには、戻るボタンをタップしてください。</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">FPSの表示</string>
+  <string name="toggle_ui">仮想ボタンの表示</string>
+  <string name="end_game">終了</string>
+  <string name="report_bug">バグを報告</string>
+  <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。\n
+メールを送信したくないか、メールプログラムを持っていない場合は https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
+  <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。\n
+ログファイルとセーブしたゲームが、このメールに添付されました。\n
+ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。\n
+私たちは、英語、ドイツ語、スペイン語を話します。\n
+何の問題があったのかを詳細に教えてください。\n
+[この手順のテキストは削除することができます]</string>
   <!--Settings Activity-->
   <string name="settings">設定</string>
   <string name="enable_vibration">バイブレーションの使用</string>
   <string name="vibrate_when_sliding_direction">スライドで別方向を押した時に振動させる</string>
   <string name="input_layout_transparency">入力レイアウトの透過:</string>
   <string name="ignore_size_settings">個々のボタン設定を無視し全てこのボタンサイズを使用する:</string>
+  <string name="no_read_access_on_dir">%1$s に読み取りアクセス権限がありません</string>
+  <string name="easyrpg_folder">EasyRPG フォルダー</string>
+  <string name="quick_access">クイック アクセス</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">入力レイアウトの管理</string>
   <string name="add_an_input_layout">入力レイアウトの追加</string>
@@ -76,4 +83,7 @@
   <string name="reset_button_mapping">ボタン設定のリセット</string>
   <string name="exit_without_saving">保存しないで閉じる</string>
   <string name="save_and_quit">保存して閉じる</string>
+  <string name="key_enter">入力 (Z)</string>
+  <string name="key_cancel">キャンセル (ESC および X)</string>
+  <string name="key_shift">Shift</string>
 </resources>

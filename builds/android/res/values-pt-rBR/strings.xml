@@ -2,9 +2,6 @@
 <resources>
   <!--Preferences Keys-->
   <!--GameBrowser Activity-->
-  <string name="toggle_fps">Alternar FPS</string>
-  <string name="toggle_ui">Alternar botões virtuais</string>
-  <string name="end_game">Finalizar Jogo</string>
   <string name="autodetect">Automático (Recomendado)</string>
   <string name="west_europe">Europeu Ocidental</string>
   <string name="east_europe">Europeu Central/Oriental</string>
@@ -27,11 +24,8 @@
   <string name="no">Não</string>
   <string name="creating_dir_failed">Criação de diretório $PATH falhou</string>
   <string name="path_not_readable">$PATH não legível</string>
-  <string name="no_games_found">Jogo(s) não encontrado(s) na pasta  /easyrpg/games no armazenamento raiz</string>
   <string name="no_external_storage">Mídia externa não encontrada (Ex. cartão SD)</string>
-  <string name="resolve_errors">Resolver erros e tentar de novo</string>
   <string name="not_valid_game">$PATH não é um jogo válido</string>
-  <string name="accessing_configuration_failed">O acesso a configuração de $PATH falhou</string>
   <string name="select_game_region">Escolha a região do jogo</string>
   <string name="change_the_layout">Mudar layout</string>
   <string name="choose_layout">Escolha layout</string>
@@ -45,7 +39,7 @@ Instruções de instalação:\n
 \t1. Coloque as pastas dos jogos em /easyrpg/games no armazenamento root do dispositivo.\n
 \t2. Coloque pastas RTP em /easyrpg/rtp/2000 para o RPG Maker 2000 RTP e /easyrpg/rtp/2003 para o RPG Maker 2003 RTP.\n
 \n
-Se os jogos não forem detectados e seu dispositivo tiver mais de um armazenamento disponível, tente mover a pasta easyrpg em outra  pasta root de armazenamento e toque no botão de recarregar.\n
+Se os jogos não forem detectados e seu dispositivo tiver mais de um armazenamento disponível, tente mover a pasta easyrpg em outra pasta root de armazenamento e toque no botão de recarregar.\n
 \n
 Dica: para obter jogos corretamente detectados eles devem ser descompactados, por exemplo:\n
 \t/easyrpg/games/MyGame/Data/RPG_RT.ldb está CORRETO.\n
@@ -54,8 +48,11 @@ Dica: para obter jogos corretamente detectados eles devem ser descompactados, po
 \n
 Características especiais:\n
 \tToque no botão menu para editar posição de botões da tela.\n
-\tUma vez lá, toque no botão voltar para adicionar a um menu adicional para colocar mais botões na tela.\n
-	</string>
+\tUma vez lá, toque no botão voltar para adicionar a um menu adicional para colocar mais botões na tela.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Alternar FPS</string>
+  <string name="toggle_ui">Alternar botões virtuais</string>
+  <string name="end_game">Finalizar Jogo</string>
   <!--Settings Activity-->
   <string name="settings">Configurações</string>
   <string name="enable_vibration">Habilitar vibrações</string>
