@@ -105,22 +105,8 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 	}
 }
 
-bool Game_Actor::UseSkill(int skill_id) {
-	//const RPG::Skill& skill = Data::skills[skill_id - 1];
-
-	return Game_Battler::UseSkill(skill_id);
-}
-
 bool Game_Actor::IsSkillLearned(int skill_id) const{
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
-}
-
-bool Game_Actor::IsSkillUsable(int skill_id) const{
-	if (!IsSkillLearned(skill_id)) {
-		return false;
-	} else {
-		return Game_Battler::IsSkillUsable(skill_id);
-	}
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {

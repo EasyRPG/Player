@@ -255,6 +255,7 @@ public:
 	 * Applies the effects of a skill.
 	 * Tests if using that skill makes any sense (e.g. for HP healing
 	 * skills if there are any HP to heal)
+	 * Does not reduce the MP, use Game_Party->UseSkill for this.
 	 *
 	 * @param skill_id ID of skill to use
 	 * @return true if skill affected anything

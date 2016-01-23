@@ -158,11 +158,13 @@ public:
 
 	/**
 	 * Gets if item can be used.
+	 * When a target is specified this also checks if the target can use the item.
 	 *
 	 * @param item_id database item ID.
+	 * @param target Target to test
 	 * @return whether the item can be used.
 	 */
-	bool IsItemUsable(int item_id);
+	bool IsItemUsable(int item_id, const Game_Actor* target = nullptr) const;
 
 	/**
 	 * Uses an item on an actor.
@@ -172,17 +174,26 @@ public:
 	 * @param item_id ID of item to use
 	 * @param target Target the item is used on (or NULL if its for the party)
 	 */
-	bool UseItem(int item_id, Game_Actor* target = NULL);
+	bool UseItem(int item_id, Game_Actor* target = nullptr);
 
 	/**
-	* Uses a skill on an actor.
-	* Tests if using that skill makes any sense (e.g. for HP healing
-	* skills if there are any HP to heal)
-	*
-	* @param skill_id ID of skill to use
-	* @param source Actor using the skill
-	* @param target Target the skill is used on (or NULL if its for the party)
-	*/
+	 * Determines if a skill can be used.
+	 * When a target is specified this also checks if the target can use the item.
+	 *
+	 * @param skill_id Skill to test
+	 * @param target Skill user to test
+	 */
+	bool IsSkillUsable(int skill_id, const Game_Actor* target = nullptr) const;
+
+	/**
+	 * Uses a skill on an actor.
+	 * Tests if using that skill makes any sense (e.g. for HP healing
+	 * skills if there are any HP to heal)
+	 *
+	 * @param skill_id ID of skill to use
+	 * @param source Actor using the skill
+	 * @param target Target the skill is used on (or NULL if its for the party)
+	 */
 	bool UseSkill(int skill_id, Game_Actor* source, Game_Actor* target = NULL);
 
 	/**

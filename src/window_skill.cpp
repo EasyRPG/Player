@@ -21,6 +21,7 @@
 #include "window_skill.h"
 #include "game_actor.h"
 #include "game_actors.h"
+#include "game_party.h"
 #include "game_temp.h"
 #include "bitmap.h"
 #include "font.h"
@@ -107,7 +108,9 @@ bool Window_Skill::CheckInclude(int skill_id) {
 }
 
 bool Window_Skill::CheckEnable(int skill_id) {
-	return Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
+	const Game_Actor* actor = Game_Actors::GetActor(actor_id);
+
+	return actor->IsSkillLearned(skill_id) && Main_Data::game_party->IsSkillUsable(skill_id, actor);
 }
 
 void Window_Skill::SetSubsetFilter(int subset) {

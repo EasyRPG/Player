@@ -78,16 +78,6 @@ public:
 	virtual bool IsItemUsable(int item_id) const;
 
 	/**
-	 * Applies the effects of a skill.
-	 * Tests if using that skill makes any sense (e.g. for HP healing
-	 * skills if there are any HP to heal)
-	 *
-	 * @param skill_id ID of skill to use
-	 * @return true if skill affected anything
-	 */
-	virtual bool UseSkill(int skill_id);
-
-	/**
 	 * Learns a new skill.
 	 *
 	 * @param skill_id database skill ID.
@@ -110,14 +100,6 @@ public:
 	 * @return true if skill has been learned.
 	 */
 	bool IsSkillLearned(int skill_id) const;
-
-	/**
-	 * Checks if the actor can use the skill.
-	 *
-	 * @param skill_id ID of skill to check.
-	 * @return true if skill can be used.
-	 */
-	bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Gets the actor ID.

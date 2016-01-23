@@ -141,38 +141,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 		return false;
 	}
 
-	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
-	// SetEscapePlace first. Not sure if any game uses this...
-	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
-	//	return is_there_a_teleport_set;
-	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
-	//	return is_there_an_escape_set;
-	//} else
-	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_subskill) {
-		int scope = skill.scope;
-
-		if (Game_Temp::battle_running) {
-			return true;
-		}
-		else if (scope == RPG::Skill::Scope_self ||
-			scope == RPG::Skill::Scope_ally ||
-			scope == RPG::Skill::Scope_party) {
-
-			return (skill.affect_hp ||
-					skill.affect_sp ||
-					skill.state_effect);
-		}
-	} else if (skill.type == RPG::Skill::Type_switch) {
-		if (Game_Temp::battle_running) {
-			return skill.occasion_battle;
-		}
-		else {
-			return skill.occasion_field;
-		}
-	}
-
-	return false;
+	return true;
 }
 
 bool Game_Battler::UseItem(int item_id) {
@@ -205,17 +174,18 @@ bool Game_Battler::UseItem(int item_id) {
 		ChangeHp(hp_change);
 		SetSp(GetSp() + sp_change);
 
-		for (std::vector<bool>::const_iterator it = item.state_set.begin();
-			it != item.state_set.end(); ++it) {
-			if (*it) {
-				was_used |= HasState(*it);
-				RemoveState(*it);
+		for (int i = 0; i < (int)item.state_set.size(); i++) {
+			if (item.state_set[i]) {
+				was_used |= HasState(Data::states[i].ID);
+				RemoveState(Data::states[i].ID);
 			}
 		}
 
 		return was_used;
 	} else if (item.type == RPG::Item::Type_switch) {
 		return true;
+	} else if (item.type == RPG::Item::Type_special) {
+		return UseSkill(item.skill_id);
 	}
 
 	return false;
@@ -224,38 +194,42 @@ bool Game_Battler::UseItem(int item_id) {
 bool Game_Battler::UseSkill(int skill_id) {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
+	bool was_used = false;
+
 	switch (skill.type) {
-		case RPG::Skill::Type_normal: {
-			int effect = skill.power;
+		case RPG::Skill::Type_normal:
+		case RPG::Skill::Type_subskill:
+			// Only takes care of healing skills, the other skill logic is in
+			// Game_BattleAlgorithm
 
-			if (skill.variance > 0) {
-				int var_perc = skill.variance * 5;
-				int act_perc = rand() % (var_perc * 2) - var_perc;
-				int change = effect * act_perc / 100;
-				effect += change;
+			if (!(skill.scope == RPG::Skill::Scope_ally ||
+				skill.scope == RPG::Skill::Scope_party ||
+				skill.scope == RPG::Skill::Scope_self)) {
+				return false;
 			}
 
-			if (skill.affect_hp) {
-				ChangeHp(effect);
-			}
-			if (skill.affect_sp) {
-				SetSp(GetSp() + effect);
+			if (skill.power > 0 && skill.affect_hp) {
+				// Only hp increasing is possible outside of battle
+				was_used = true;
+				ChangeHp(skill.power);
 			}
 
-			// ToDo
-			return true;
-		}
+			for (int i = 0; i < (int)skill.state_effects.size(); i++) {
+				if (skill.state_effects[i]) {
+					was_used |= HasState(Data::states[i].ID);
+					RemoveState(Data::states[i].ID);
+				}
+			}
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 			// ToDo: Show Teleport/Escape target menu
 			break;
 		case RPG::Skill::Type_switch:
-			SetSp(GetSp() - skill.sp_cost);
 			Game_Switches[skill.switch_id] = true;
-			break;
+			return true;
 	}
 
-	return false;
+	return was_used;
 }
 
 int Game_Battler::CalculateSkillCost(int skill_id) const {
