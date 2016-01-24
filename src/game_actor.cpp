@@ -53,7 +53,7 @@ void Game_Actor::Setup() {
 
 void Game_Actor::Init() {
 	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
-	for (int i = 0; i < (int) skills.size(); i++)
+	for (int i = 0; i < (int)skills.size(); i++)
 		if (skills[i].level <= GetLevel())
 			LearnSkill(skills[i].skill_id);
 	SetHp(GetMaxHp());
@@ -99,19 +99,47 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 	// (all actors missing can equip the item)
 	if (item.actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;
-	}
-	else {
+	} else {
 		return item.actor_set.at(data.ID - 1);
 	}
 }
 
-bool Game_Actor::IsSkillLearned(int skill_id) const{
+bool Game_Actor::IsSkillLearned(int skill_id) const {
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
 
 bool Game_Actor::IsSkillUsable(int skill_id) const {
 	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
 		return false;
+	}
+
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	// Actor must have all attributes of the skill equipped as weapons
+	if (!skill.attribute_effects.empty()) {
+		const RPG::Item* item = GetEquipment(0);
+		const RPG::Item* item2 = GetTwoSwordsStyle() ? GetEquipment(1) : nullptr;
+
+		if (item || item2) {
+			for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
+				bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
+				if (required) {
+					if (item && i < item->attribute_set.size()) {
+						if (!item->attribute_set[i]) {
+							return false;
+						}
+					} else if (item2 && i < item2->attribute_set.size()) {
+						if (!item2->attribute_set[i]) {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+			}
+		} else {
+			return false;
+		}
 	}
 
 	return Game_Battler::IsSkillUsable(skill_id);
