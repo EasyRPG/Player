@@ -115,6 +115,14 @@ public:
 	bool GetStarting() const;
 
 	/**
+	 * If the event is starting, whether or not it was started
+	 * by pushing the decision key.
+	 *
+	 * @return started by decision key
+	 */
+	bool WasStartedByDecisionKey() const;
+
+	/**
 	 * Gets trigger condition.
 	 *
 	 * @return trigger condition.
@@ -147,7 +155,7 @@ public:
 
 	void CheckEventTriggerAuto();
 	bool CheckEventTriggerTouch(int x, int y);
-	void Start();
+	void Start(bool triggered_by_decision_key = false);
 	void Update();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
@@ -176,6 +184,7 @@ private:
 
 	unsigned int ID;
 	bool starting, running, halting;
+	bool started_by_decision_key = false;
 	int trigger;
 	RPG::Event event;
 	RPG::EventPage* page;

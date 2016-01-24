@@ -124,8 +124,8 @@ private:
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(const std::vector<int>& triggers);
-	bool CheckEventTriggerThere(const std::vector<int>& triggers);
+	bool CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();

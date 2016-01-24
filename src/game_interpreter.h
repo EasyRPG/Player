@@ -40,7 +40,12 @@ public:
 	Game_Interpreter(int _depth = 0, bool _main_flag = false);
 
 	void Clear();
-	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
+	void Setup(
+		const std::vector<RPG::EventCommand>& _list,
+		int _event_id,
+		bool started_by_decision_key = false,
+		int dbg_x = -1, int dbg_y = -1
+	);
 
 	bool HasRunned() const;
 	bool IsRunning() const;
@@ -84,6 +89,8 @@ protected:
 	bool waiting_pan_screen;
 	bool updating;
 	bool clear_child;
+
+	bool triggered_by_decision_key = false;
 
 	/**
 	 * Gets strings for choice selection.
