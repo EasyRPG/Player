@@ -27,6 +27,7 @@
 namespace RPG {
 	class Skill;
 	class BattleCommand;
+	class Item;
 }
 
 /**
@@ -100,6 +101,14 @@ public:
 	 * @return true if skill has been learned.
 	 */
 	bool IsSkillLearned(int skill_id) const;
+
+	/**
+	 * Checks if the actor can use the skill.
+	 *
+	 * @param skill_id ID of skill to check.
+	 * @return true if skill can be used.
+	 */
+	bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Gets the actor ID.
@@ -328,9 +337,9 @@ public:
 	/**
 	 * Gets the equipped equipment based on the type.
 	 * @param equip_type type of equipment.
-	 * @return item_id or 0 if no equipment or -1 if invalid.
+	 * @return item if equipped or nullptr if no equipment.
 	 */
-	int GetEquipment(int equip_type) const;
+	const RPG::Item* GetEquipment(int equip_type) const;
 
 	/**
 	 * Sets the equipment based on the type.

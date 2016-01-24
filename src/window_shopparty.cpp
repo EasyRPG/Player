@@ -23,8 +23,6 @@
 #include "game_party.h"
 #include "game_actor.h"
 #include "window_shopparty.h"
-#include "bitmap.h"
-#include "font.h"
 
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -68,8 +66,12 @@ void Window_ShopParty::Refresh() {
 		if (equippable) {
 			//check if item is equipped by each member
 			bool is_equipped = false;
-			for (int j = 0; j < 5; ++j)
-				is_equipped |= (actor->GetEquipment(j) == item_id);
+			for (int j = 0; j < 5; ++j) {
+				const RPG::Item* item = actor->GetEquipment(j);
+				if (item) {
+					is_equipped |= (item->ID == item_id);
+				}
+			}
 			if (is_equipped)
 				contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {

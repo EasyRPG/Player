@@ -109,6 +109,14 @@ bool Game_Actor::IsSkillLearned(int skill_id) const{
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
 
+bool Game_Actor::IsSkillUsable(int skill_id) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+		return false;
+	}
+
+	return Game_Battler::IsSkillUsable(skill_id);
+}
+
 bool Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		data.skills.push_back((int16_t)skill_id);
@@ -132,11 +140,16 @@ void Game_Actor::SetFace(const std::string& file_name, int index) {
 	data.face_id = index;
 }
 
-int Game_Actor::GetEquipment(int equip_type) const {
-	if (equip_type < 0 || equip_type >= (int) data.equipped.size())
-		return -1;
+const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
+	if (equip_type < 0 || equip_type >= (int)data.equipped.size())
+		return nullptr;
 	int item_id = data.equipped[equip_type];
-	return item_id <= (int)Data::items.size() ? item_id : 0;
+
+	if (item_id <= 0 || item_id >(int)Data::items.size()) {
+		return nullptr;
+	}
+
+	return &Data::items[item_id - 1];
 }
 
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
