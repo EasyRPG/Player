@@ -110,6 +110,10 @@ int Game_Battler::GetStateRate(int state_id, int rate) {
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+		return false;
+	}
+
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	if (CalculateSkillCost(skill_id) > GetSp()) {

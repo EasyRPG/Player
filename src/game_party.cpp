@@ -172,6 +172,16 @@ void Game_Party::RemoveItem(int item_id, int amount) {
 }
 
 void Game_Party::ConsumeItemUse(int item_id) {
+	switch (Data::items[item_id - 1].type) {
+		case RPG::Item::Type_normal:
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+			return;
+	}
+
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
 		Output::Warning("Can't use up item.\n%04d is not a valid item ID.",
 						item_id);
@@ -216,14 +226,22 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 	RPG::Item& item = Data::items[item_id - 1];
 
 	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {
+		switch (item.type) {
+			case RPG::Item::Type_weapon:
+			case RPG::Item::Type_shield:
+			case RPG::Item::Type_armor:
+			case RPG::Item::Type_helmet:
+			case RPG::Item::Type_accessory:
+			case RPG::Item::Type_special:
+				return item.use_skill && IsSkillUsable(item.skill_id);
+		}
+
 		if (Game_Temp::battle_running) {
 			switch (item.type) {
 				case RPG::Item::Type_medicine:
 					return !item.occasion_field1;
 				case RPG::Item::Type_switch:
 					return item.occasion_battle;
-				case RPG::Item::Type_special:
-					return IsSkillUsable(item.skill_id);
 			}
 		} else {
 			switch (item.type) {
@@ -233,8 +251,6 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 					return true;
 				case RPG::Item::Type_switch:
 					return item.occasion_field2;
-				case RPG::Item::Type_special:
-					return IsSkillUsable(item.skill_id);
 			}
 		}
 	}
@@ -267,6 +283,10 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 }
 
 bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+		return false;
+	}
+
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	if (target && !target->IsSkillUsable(skill_id)) {
@@ -294,7 +314,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target) const {
 
 			return skill.affect_hp ||
 				skill.affect_sp ||
-				skill.state_effect;
+				(!skill.state_effect && !skill.state_effects.empty());
 		}
 	} else if (skill.type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {

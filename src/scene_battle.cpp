@@ -262,7 +262,7 @@ void Scene_Battle::DefendSelected() {
 void Scene_Battle::ItemSelected() {
 	const RPG::Item* item = item_window->GetItem();
 
-	skill_item = NULL;
+	skill_item = nullptr;
 
 	if (!item || !Main_Data::game_party->IsItemUsable(item->ID, active_actor)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
@@ -271,23 +271,34 @@ void Scene_Battle::ItemSelected() {
 
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	if (item->entire_party) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
-		ActionSelectedCallback(active_actor);
-	}
-	else {
-		if (item->type == RPG::Item::Type_switch) {
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
-			ActionSelectedCallback(active_actor);
-		}
-		else if (item->type == RPG::Item::Type_special) {
+	switch (item->type) {
+		case RPG::Item::Type_normal:
+		case RPG::Item::Type_book:
+		case RPG::Item::Type_material:
+			assert(false);
+			return;
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+		case RPG::Item::Type_special:
 			skill_item = item;
 			AssignSkill(&Data::skills[item->skill_id - 1]);
-		}
-		else {
-			SetState(State_SelectAllyTarget);
-			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
-		}
+			break;
+		case RPG::Item::Type_medicine:
+			if (item->entire_party) {
+				active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
+				ActionSelectedCallback(active_actor);
+			} else {
+				SetState(State_SelectAllyTarget);
+				status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
+			}
+			break;
+		case RPG::Item::Type_switch:
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
+			ActionSelectedCallback(active_actor);
+			break;
 	}
 }
 
