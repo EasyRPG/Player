@@ -65,6 +65,7 @@ void Game_Interpreter::Clear() {
 	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
 	waiting_pan_screen = false;
+	triggered_by_decision_key = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 	if (child_interpreter) {		// clear child interpreter for called events
@@ -82,13 +83,18 @@ bool Game_Interpreter::IsRunning() const {
 }
 
 // Setup.
-void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
-
+void Game_Interpreter::Setup(
+	const std::vector<RPG::EventCommand>& _list,
+	int _event_id,
+	bool started_by_decision_key,
+	int dbg_x, int dbg_y
+) {
 	Clear();
 
 	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
 	list = _list;
+	triggered_by_decision_key = started_by_decision_key;
 
 	debug_x = dbg_x;
 	debug_y = dbg_y;
@@ -235,12 +241,12 @@ void Game_Interpreter::Update() {
 
 // Setup Starting Event
 void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
+	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey(), ev->GetX(), ev->GetY());
 	ev->ClearStarting();
-	Setup(ev->GetList(), ev->GetId(), ev->GetX(), ev->GetY());
 }
 
 void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
-	Setup(ev->GetList(), 0, ev->GetIndex(), -2);
+	Setup(ev->GetList(), 0, false, ev->GetIndex(), -2);
 }
 
 void Game_Interpreter::CheckGameOver() {

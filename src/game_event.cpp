@@ -60,7 +60,7 @@ Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::Sav
 
 	this->data = data;
 	MoveTo(data.position_x, data.position_y);
-	
+
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
 		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, event.ID);
@@ -238,6 +238,7 @@ bool Game_Event::GetThrough() const {
 
 void Game_Event::ClearStarting() {
 	starting = false;
+	started_by_decision_key = false;
 }
 
 void Game_Event::Setup(RPG::EventPage* new_page) {
@@ -273,7 +274,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
 	}
-	
+
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
@@ -454,6 +455,10 @@ bool Game_Event::GetStarting() const {
 	return starting;
 }
 
+bool Game_Event::WasStartedByDecisionKey() const {
+	return started_by_decision_key;
+}
+
 int Game_Event::GetTrigger() const {
 	return trigger;
 }
@@ -467,12 +472,13 @@ bool Game_Event::GetActive() const {
 	return data.active;
 }
 
-void Game_Event::Start() {
+void Game_Event::Start(bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
 	if (list.empty() || !data.active || running)
 		return;
 
 	starting = true;
+	started_by_decision_key = by_decision_key;
 }
 
 void Game_Event::CheckEventTriggerAuto() {
@@ -524,7 +530,7 @@ void Game_Event::Update() {
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, -event.x, event.y);
+			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
 		} else {
 			interpreter->Update();
 		}

@@ -1180,7 +1180,7 @@ bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& 
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 
 	Game_System::BgmPlay(bgm_inn);
-	
+
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
 
 	return false;
@@ -1971,8 +1971,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			result = Game_Map::GetVehicle((Game_Vehicle::Type) (com.parameters[1]+1))->IsInUse();
 			break;
 		case 8:
-			// TODO Key decision initiated this event
-			Output::Warning("Branch: Started using Key not implemented");
+			// Key decision initiated this event
+			result = triggered_by_decision_key;
 			break;
 		case 9:
 			// BGM looped at least once

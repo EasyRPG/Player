@@ -401,9 +401,9 @@ bool Game_Player::CheckActionEvent() {
 		return false;
 
 	// Use | instead of || to avoid short-circuit evaluation
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_action})
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true)
 		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
-		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision});
+		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, true);
 }
 
 bool Game_Player::CheckTouchEvent() {
@@ -418,7 +418,7 @@ bool Game_Player::CheckCollisionEvent() {
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
-bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
+bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
@@ -428,14 +428,14 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 	for (i = events.begin(); i != events.end(); ++i) {
 		if (((*i)->GetLayer() != RPG::EventPage::Layers_same)
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
-			(*i)->Start();
+			(*i)->Start(triggered_by_decision_key);
 			result = (*i)->GetStarting();
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
+bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
 	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
 
 	bool result = false;
@@ -454,7 +454,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			if (!ev->GetList().empty()) {
 				ev->StartTalkToHero();
 			}
-			ev->Start();
+			ev->Start(triggered_by_decision_key);
 			result = true;
 		}
 	}
@@ -473,7 +473,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 				if (!ev->GetList().empty()) {
 					ev->StartTalkToHero();
 				}
-				ev->Start();
+				ev->Start(triggered_by_decision_key);
 				result = true;
 			}
 		}
