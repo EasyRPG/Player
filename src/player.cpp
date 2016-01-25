@@ -763,80 +763,60 @@ void Player::PrintVersion() {
 }
 
 void Player::PrintUsage() {
-	std::cout << "EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games." << std::endl << std::endl;
+	std::cout <<
+R"(EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games.
+Options:
+      --battle-test N      Start a battle test with monster party N.
+      --disable-audio      Disable audio (in case you prefer your own music).
+      --disable-rtp        Disable support for the Runtime Package (RTP).
+      --encoding N         Instead of auto detecting the encoding or using
+                           the one in RPG_RT.ini, the encoding N is used.
+                           Use "auto" for automatic detection.
+      --engine ENGINE      Disable auto detection of the simulated engine.
+                           Possible options:
+                            rpg2k   - RPG Maker 2000 engine
+                            rpg2k3  - RPG Maker 2003 engine
+                            rpg2k3e - RPG Maker 2003 (English release) engine
+      --fullscreen         Start in fullscreen mode.
+      --show-fps           Enable frames per second counter.
+      --hide-title         Hide the title background image and center the
+                           command menu.
+      --load-game-id N     Skip the title scene and load SaveN.lsd
+                           (N is padded to two digits).
+      --new-game           Skip the title scene and start a new game directly.
+      --project-path PATH  Instead of using the working directory the game in
+                           PATH is used.
+      --save-path PATH     Instead of storing save files in the game directory
+                           they are stored in PATH. The directory must exist.
+                           When using the game browser all games will share
+                           the same save directory!
+      --seed N             Seeds the random number generator with N.
+      --start-map-id N     Overwrite the map used for new games and use.
+                           MapN.lmu instead (N is padded to four digits).
+                           Incompatible with --load-game-id.
+      --start-position X Y Overwrite the party start position and move the
+                           party to position (X, Y).
+                           Incompatible with --load-game-id.
+      --start-party A B... Overwrite the starting party members with the actors
+                           with IDs A, B, C...
+                           Incompatible with --load-game-id.
+      --test-play          Enable TestPlay mode.
+      --window             Start in window mode.
+  -v, --version            Display program version and exit.
+  -h, --help               Display this help and exit.
 
-	std::cout << "Options:" << std::endl;
-	//                                                  "                                Line end marker -> "
-	std::cout << "      " << "--battle-test N      " << "Start a battle test with monster party N." << std::endl;
+For compatibility with the legacy RPG Maker runtime the following arguments
+are supported:
+      BattleTest N         Same as --battle-test. When N is not a valid number
+                           the 4th argument is used as the party id.
+      HideTitle            Same as --hide-title.
+      TestPlay             Same as --test-play.
+      Window               Same as --window.
 
-	std::cout << "      " << "--disable-audio      " << "Disable audio (in case you prefer your own music)." << std::endl;
+Game related parameters (e.g. new-game and load-game-id) don't work correctly when the
+startup directory does not contain a valid game (and the game browser loads)
 
-	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
-
-	std::cout << "      " << "--encoding N         " << "Instead of auto detecting the encoding or using" << std::endl;
-	std::cout << "      " << "                     " << "the one in RPG_RT.ini, the encoding N is used." << std::endl;
-	std::cout << "      " << "                     " << "Use \"auto\" for automatic detection." << std::endl;
-
-	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
-	std::cout << "      " << "                     " << "Possible options:" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k   - RPG Maker 2000 engine" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k3  - RPG Maker 2003 engine" << std::endl;
-	std::cout << "      " << "                     " << " rpg2k3e - RPG Maker 2003 (English release) engine" << std::endl;
-
-	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
-
-	std::cout << "      " << "--show-fps           " << "Enable frames per second counter." << std::endl;
-
-	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
-	std::cout << "      " << "                     " << "command menu." << std::endl;
-
-	std::cout << "      " << "--load-game-id N     " << "Skip the title scene and load SaveN.lsd" << std::endl;
-	std::cout << "      " << "                     " << "(N is padded to two digits)." << std::endl;
-
-	std::cout << "      " << "--new-game           " << "Skip the title scene and start a new game directly." << std::endl;
-
-	std::cout << "      " << "--project-path PATH  " << "Instead of using the working directory the game in" << std::endl;
-	std::cout << "      " << "                     " << "PATH is used." << std::endl;
-
-	std::cout << "      " << "--save-path PATH     " << "Instead of storing save files in the game directory" << std::endl;
-	std::cout << "      " << "                     " << "they are stored in PATH. The directory must exist." << std::endl;
-	std::cout << "      " << "                     " << "When using the game browser all games will share" << std::endl;
-	std::cout << "      " << "                     " << "the same save directory!" << std::endl;
-
-	std::cout << "      " << "--seed N             " << "Seeds the random number generator with N." << std::endl;
-
-	std::cout << "      " << "--start-map-id N     " << "Overwrite the map used for new games and use." << std::endl;
-	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;
-	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
-
-	std::cout << "      " << "--start-position X Y " << "Overwrite the party start position and move the" << std::endl;
-	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
-	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
-
-	std::cout << "      " << "--start-party A B... " << "Overwrite the starting party members with the actors" << std::endl;
-	std::cout << "      " << "                     " << "with IDs A, B, C..." << std::endl;
-	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
-
-	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;
-
-	std::cout << "      " << "--window             " << "Start in window mode." << std::endl;
-
-	std::cout << "  -v, " << "--version            " << "Display program version and exit." << std::endl;
-
-	std::cout << "  -h, " << "--help               " << "Display this help and exit." << std::endl << std::endl;
-
-	std::cout << "For compatibility with the legacy RPG Maker runtime the following arguments" << std::endl;
-	std::cout << "are supported:" << std::endl;
-	std::cout << "      " << "BattleTest N         " << "Same as --battle-test. When N is not a valid number" << std::endl;
-	std::cout << "      " << "                     " << "the 4th argument is used as the party id." << std::endl;
-	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
-	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl;
-	std::cout << "      " << "Window               " << "Same as --window." << std::endl << std::endl;
-
-	std::cout << "Game related parameters (e.g. new-game and load-game-id) don't work correctly when the " << std::endl;
-	std::cout << "startup directory does not contain a valid game (and the game browser loads)" << std::endl << std::endl;
-
-	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
+Alex, EV0001 and the EasyRPG authors wish you a lot of fun!)" << std::endl;
 }
 
 bool Player::IsRPG2k() {
