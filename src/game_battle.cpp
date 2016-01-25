@@ -109,9 +109,7 @@ void Game_Battle::Update() {
 }
 
 void Game_Battle::Terminate() {
-	// Prevent gameover in cause some battle interpreter event toggled that
-	// flag, checked again on map.
-	Game_Temp::gameover = false;
+	terminate = true;
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
