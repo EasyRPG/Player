@@ -93,7 +93,6 @@ void Scene_ActorTarget::UpdateItem() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 
-
 		status_window->Refresh();
 		target_window->Refresh();
 	}

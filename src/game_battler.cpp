@@ -186,10 +186,20 @@ bool Game_Battler::UseItem(int item_id) {
 		}
 
 		return was_used;
-	} else if (item.type == RPG::Item::Type_switch) {
+	}
+	
+	if (item.type == RPG::Item::Type_switch) {
 		return true;
-	} else if (item.type == RPG::Item::Type_special) {
-		return UseSkill(item.skill_id);
+	}
+	
+	switch (item.type) {
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+		case RPG::Item::Type_special:
+			return item.use_skill && UseSkill(item.skill_id);
 	}
 
 	return false;
@@ -203,8 +213,8 @@ bool Game_Battler::UseSkill(int skill_id) {
 	switch (skill.type) {
 		case RPG::Skill::Type_normal:
 		case RPG::Skill::Type_subskill:
-			// Only takes care of healing skills, the other skill logic is in
-			// Game_BattleAlgorithm
+			// Only takes care of healing skills outside of battle,
+			// the other skill logic is in Game_BattleAlgorithm
 
 			if (!(skill.scope == RPG::Skill::Scope_ally ||
 				skill.scope == RPG::Skill::Scope_party ||
@@ -212,16 +222,26 @@ bool Game_Battler::UseSkill(int skill_id) {
 				return false;
 			}
 
+			// Skills only increase hp and sp outside of battle
 			if (skill.power > 0 && skill.affect_hp) {
-				// Only hp increasing is possible outside of battle
 				was_used = true;
 				ChangeHp(skill.power);
 			}
 
+			if (skill.power > 0 && skill.affect_sp) {
+				was_used = true;
+				SetSp(GetSp() + skill.power);
+			}
+
 			for (int i = 0; i < (int)skill.state_effects.size(); i++) {
 				if (skill.state_effects[i]) {
-					was_used |= HasState(Data::states[i].ID);
-					RemoveState(Data::states[i].ID);
+					if (skill.state_effect) {
+						was_used |= !HasState(Data::states[i].ID);
+						AddState(Data::states[i].ID);
+					} else {
+						was_used |= HasState(Data::states[i].ID);
+						RemoveState(Data::states[i].ID);
+					}
 				}
 			}
 		case RPG::Skill::Type_teleport:

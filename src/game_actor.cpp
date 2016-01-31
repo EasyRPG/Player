@@ -78,7 +78,9 @@ bool Game_Actor::UseItem(int item_id) {
 
 	if (item.type == RPG::Item::Type_book) {
 		return LearnSkill(item.skill_id);
-	} else if (item.type == RPG::Item::Type_material) {
+	}
+
+	if (item.type == RPG::Item::Type_material) {
 		SetBaseMaxHp(GetBaseMaxHp() + item.max_hp_points);
 		SetBaseMaxSp(GetBaseMaxSp() + item.max_sp_points);
 		SetBaseAtk(GetBaseAtk() + item.atk_points2);
@@ -87,9 +89,9 @@ bool Game_Actor::UseItem(int item_id) {
 		SetBaseSpi(GetBaseSpi() + item.spi_points2);
 
 		return true;
-	} else {
-		return Game_Battler::UseItem(item_id);
 	}
+
+	return Game_Battler::UseItem(item_id);
 }
 
 bool Game_Actor::IsItemUsable(int item_id) const {
