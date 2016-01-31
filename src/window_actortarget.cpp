@@ -17,11 +17,10 @@
 
 // Headers
 #include "window_actortarget.h"
-#include "baseui.h"
-#include "cache.h"
 #include "game_actor.h"
 #include "game_party.h"
 #include "bitmap.h"
+#include "player.h"
 
 Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -43,8 +42,9 @@ void Window_ActorTarget::Refresh() {
 		DrawActorName(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + y);
 		DrawActorLevel(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
 		DrawActorState(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
-		DrawActorHp(Main_Data::game_party->GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
-		DrawActorSp(Main_Data::game_party->GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
+		int x_offset = 48 + 8 + 42 + (Player::IsRPG2k() ? 16 : 0);
+		DrawActorHp(Main_Data::game_party->GetActors()[i], x_offset, i * 48 + 2 + 16 + y);
+		DrawActorSp(Main_Data::game_party->GetActors()[i], x_offset, i * 48 + 2 + 16 + 16 + y);
 
 		y += 10;
 	}
