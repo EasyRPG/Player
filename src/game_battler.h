@@ -126,10 +126,12 @@ public:
 	virtual void SetHp(int hp) = 0;
 
 	/**
-	 * Sets the current battler HP.
+	 * Increases/Decreases hp.
 	 * Also handles death condition.
+	 *
+	 * @param hp relative hp change
 	 */
-	virtual void ChangeHp(int hp) = 0;
+	virtual void ChangeHp(int hp);
 
 	/**
 	 * Gets the battler max HP.
@@ -137,6 +139,13 @@ public:
 	 * @return current max HP.
 	 */
 	virtual int GetMaxHp() const;
+
+	/**
+	 * Gets if the battler has full hp.
+	 *
+	 * @return if battler is healty.
+	 */
+	virtual bool HasFullHp() const;
 
 	/**
 	 * Gets battler SP.
@@ -151,11 +160,25 @@ public:
 	virtual void SetSp(int _sp) = 0;
 
 	/**
+	 * Increases/Decreases sp.
+	 *
+	 * @param sp relative sp change
+	 */
+	virtual void ChangeSp(int sp);
+
+	/**
 	 * Gets the battler max SP.
 	 *
 	 * @return current max SP.
 	 */
 	virtual int GetMaxSp() const;
+
+	/**
+	 * Gets if the battler has full sp.
+	 *
+	 * @return if battler is full of magic.
+	 */
+	virtual bool HasFullSp() const;
 
 	/**
 	 * Gets the current battler attack.

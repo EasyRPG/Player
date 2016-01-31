@@ -855,7 +855,7 @@ void Game_Actor::SetHp(int hp) {
 }
 
 void Game_Actor::ChangeHp(int hp) {
-	SetHp(GetHp() + hp);
+	Game_Battler::ChangeHp(hp);
 
 	if (data.current_hp == 0) {
 		// Death

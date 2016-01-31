@@ -152,12 +152,10 @@ bool Game_Battler::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_medicine) {
-		bool was_used;
+		bool was_used = false;
 
 		int hp_change = item.recover_hp_rate * GetMaxHp() / 100 + item.recover_hp;
 		int sp_change = item.recover_sp_rate * GetMaxSp() / 100 + item.recover_sp;
-
-		was_used = hp_change > 0 || sp_change > 0;
 
 		if (IsDead()) {
 			// Check if item can revive
@@ -175,8 +173,15 @@ bool Game_Battler::UseItem(int item_id) {
 			return false;
 		}
 
-		ChangeHp(hp_change);
-		SetSp(GetSp() + sp_change);
+		if (hp_change > 0 && !HasFullHp()) {
+			ChangeHp(hp_change);
+			was_used = true;
+		}
+
+		if (sp_change > 0 && !HasFullSp()) {
+			ChangeSp(sp_change);
+			was_used = true;
+		}
 
 		for (int i = 0; i < (int)item.state_set.size(); i++) {
 			if (item.state_set[i]) {
@@ -224,14 +229,14 @@ bool Game_Battler::UseSkill(int skill_id) {
 			}
 
 			// Skills only increase hp and sp outside of battle
-			if (skill.power > 0 && skill.affect_hp) {
+			if (skill.power > 0 && skill.affect_hp && !HasFullHp()) {
 				was_used = true;
 				ChangeHp(skill.power);
 			}
 
-			if (skill.power > 0 && skill.affect_sp) {
+			if (skill.power > 0 && skill.affect_sp && !HasFullSp()) {
 				was_used = true;
-				SetSp(GetSp() + skill.power);
+				ChangeSp(skill.power);
 			}
 
 			for (int i = 0; i < (int)skill.state_effects.size(); i++) {
@@ -332,12 +337,28 @@ bool Game_Battler::IsImmortal() const {
 	return false;
 }
 
+void Game_Battler::ChangeHp(int hp) {
+	SetHp(GetHp() + hp);
+}
+
 int Game_Battler::GetMaxHp() const {
 	return GetBaseMaxHp();
 }
 
+bool Game_Battler::HasFullHp() const {
+	return GetMaxHp() == GetHp();
+}
+
+void Game_Battler::ChangeSp(int sp) {
+	SetSp(GetSp() + sp);
+}
+
 int Game_Battler::GetMaxSp() const {
 	return GetBaseMaxSp();
+}
+
+bool Game_Battler::HasFullSp() const {
+	return GetMaxSp() == GetSp();
 }
 
 static int AffectParameter(int const type, int const val) {
