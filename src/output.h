@@ -27,6 +27,11 @@
  */
 namespace Output {
 	/**
+	 * Closes the log file handle and trims the file.
+	 */
+	void Quit();
+
+	/**
 	 * Takes screenshot and save it to Main_Data::GetProjectPath().
 	 *
 	 * @return true if success, otherwise false.
