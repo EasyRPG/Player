@@ -198,8 +198,9 @@ bool Game_Battler::UseItem(int item_id) {
 		case RPG::Item::Type_armor:
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
-		case RPG::Item::Type_special:
 			return item.use_skill && UseSkill(item.skill_id);
+		case RPG::Item::Type_special:
+			return UseSkill(item.skill_id);
 	}
 
 	return false;

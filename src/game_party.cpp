@@ -232,8 +232,9 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 			case RPG::Item::Type_armor:
 			case RPG::Item::Type_helmet:
 			case RPG::Item::Type_accessory:
-			case RPG::Item::Type_special:
 				return item.use_skill && IsSkillUsable(item.skill_id, nullptr, true);
+			case RPG::Item::Type_special:
+				return IsSkillUsable(item.skill_id, nullptr, true);
 		}
 
 		if (Game_Temp::battle_running) {
