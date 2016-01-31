@@ -161,6 +161,37 @@ static void HandleErrorOutput(const std::string& err) {
 	}
 }
 
+void Output::Quit() {
+	if (LOG_FILE.is_open()) {
+		LOG_FILE.close();
+	}
+
+	int log_size = 1024 * 100;
+
+	char* buf = new char[log_size];
+
+	std::ifstream in;
+	in.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str());
+	if (!in.bad()) {
+		in.seekg(0, std::ios_base::end);
+		if (in.tellg() > log_size) {
+			in.seekg(-log_size, std::ios_base::end);
+			// skip current incomplete line
+			in.getline(buf, 1024 * 100);
+			in.read(buf, 1024 * 100);
+			size_t read = in.gcount();
+			in.close();
+
+			std::ofstream out;
+			out.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str());
+			out.write(buf, read);
+			out.close();
+		}
+	}
+
+	delete[] buf;
+}
+
 bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;

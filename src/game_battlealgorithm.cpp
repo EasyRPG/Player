@@ -754,6 +754,7 @@ bool Game_BattleAlgorithm::Item::IsTargetValid() {
 bool Game_BattleAlgorithm::Item::Execute() {
 	Reset();
 
+	// All other items are handled as skills because they invoke skills
 	switch (item.type) {
 		case RPG::Item::Type_medicine:
 		case RPG::Item::Type_switch:
@@ -797,7 +798,7 @@ void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
 
 	if (first_attack) {
-		Main_Data::game_party->RemoveItem(item.ID, 1);
+		Main_Data::game_party->ConsumeItemUse(item.ID);
 	}
 }
 

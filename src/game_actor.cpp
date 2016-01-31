@@ -53,7 +53,7 @@ void Game_Actor::Setup() {
 
 void Game_Actor::Init() {
 	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
-	for (int i = 0; i < (int) skills.size(); i++)
+	for (int i = 0; i < (int)skills.size(); i++)
 		if (skills[i].level <= GetLevel())
 			LearnSkill(skills[i].skill_id);
 	SetHp(GetMaxHp());
@@ -78,7 +78,9 @@ bool Game_Actor::UseItem(int item_id) {
 
 	if (item.type == RPG::Item::Type_book) {
 		return LearnSkill(item.skill_id);
-	} else if (item.type == RPG::Item::Type_material) {
+	}
+
+	if (item.type == RPG::Item::Type_material) {
 		SetBaseMaxHp(GetBaseMaxHp() + item.max_hp_points);
 		SetBaseMaxSp(GetBaseMaxSp() + item.max_sp_points);
 		SetBaseAtk(GetBaseAtk() + item.atk_points2);
@@ -87,9 +89,9 @@ bool Game_Actor::UseItem(int item_id) {
 		SetBaseSpi(GetBaseSpi() + item.spi_points2);
 
 		return true;
-	} else {
-		return Game_Battler::UseItem(item_id);
 	}
+
+	return Game_Battler::UseItem(item_id);
 }
 
 bool Game_Actor::IsItemUsable(int item_id) const {
@@ -99,28 +101,50 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 	// (all actors missing can equip the item)
 	if (item.actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;
-	}
-	else {
+	} else {
 		return item.actor_set.at(data.ID - 1);
 	}
 }
 
-bool Game_Actor::UseSkill(int skill_id) {
-	//const RPG::Skill& skill = Data::skills[skill_id - 1];
-
-	return Game_Battler::UseSkill(skill_id);
-}
-
-bool Game_Actor::IsSkillLearned(int skill_id) const{
+bool Game_Actor::IsSkillLearned(int skill_id) const {
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
 
-bool Game_Actor::IsSkillUsable(int skill_id) const{
-	if (!IsSkillLearned(skill_id)) {
+bool Game_Actor::IsSkillUsable(int skill_id) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
 		return false;
-	} else {
-		return Game_Battler::IsSkillUsable(skill_id);
 	}
+
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	// Actor must have all attributes of the skill equipped as weapons
+	if (!skill.attribute_effects.empty()) {
+		const RPG::Item* item = GetEquipment(0);
+		const RPG::Item* item2 = GetTwoSwordsStyle() ? GetEquipment(1) : nullptr;
+
+		if (item || item2) {
+			for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
+				bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
+				if (required) {
+					if (item && i < item->attribute_set.size()) {
+						if (!item->attribute_set[i]) {
+							return false;
+						}
+					} else if (item2 && i < item2->attribute_set.size()) {
+						if (!item2->attribute_set[i]) {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+			}
+		} else {
+			return false;
+		}
+	}
+
+	return Game_Battler::IsSkillUsable(skill_id);
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
@@ -146,11 +170,16 @@ void Game_Actor::SetFace(const std::string& file_name, int index) {
 	data.face_id = index;
 }
 
-int Game_Actor::GetEquipment(int equip_type) const {
-	if (equip_type < 0 || equip_type >= (int) data.equipped.size())
-		return -1;
+const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
+	if (equip_type < 0 || equip_type >= (int)data.equipped.size())
+		return nullptr;
 	int item_id = data.equipped[equip_type];
-	return item_id <= (int)Data::items.size() ? item_id : 0;
+
+	if (item_id <= 0 || item_id >(int)Data::items.size()) {
+		return nullptr;
+	}
+
+	return &Data::items[item_id - 1];
 }
 
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
@@ -826,7 +855,7 @@ void Game_Actor::SetHp(int hp) {
 }
 
 void Game_Actor::ChangeHp(int hp) {
-	SetHp(GetHp() + hp);
+	Game_Battler::ChangeHp(hp);
 
 	if (data.current_hp == 0) {
 		// Death

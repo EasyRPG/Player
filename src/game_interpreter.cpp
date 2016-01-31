@@ -167,7 +167,7 @@ void Game_Interpreter::Update() {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if (Game_Message::visible && Game_Message::owner_id == event_id)
+			if ((Game_Message::visible || Game_Message::message_waiting) && Game_Message::owner_id == event_id)
 				break;
 		}
 

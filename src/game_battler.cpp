@@ -110,6 +110,10 @@ int Game_Battler::GetStateRate(int state_id, int rate) {
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+		return false;
+	}
+
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	if (CalculateSkillCost(skill_id) > GetSp()) {
@@ -141,50 +145,17 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 		return false;
 	}
 
-	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
-	// SetEscapePlace first. Not sure if any game uses this...
-	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
-	//	return is_there_a_teleport_set;
-	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
-	//	return is_there_an_escape_set;
-	//} else
-	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_subskill) {
-		int scope = skill.scope;
-
-		if (Game_Temp::battle_running) {
-			return true;
-		}
-		else if (scope == RPG::Skill::Scope_self ||
-			scope == RPG::Skill::Scope_ally ||
-			scope == RPG::Skill::Scope_party) {
-
-			return (skill.affect_hp ||
-					skill.affect_sp ||
-					skill.state_effect);
-		}
-	} else if (skill.type == RPG::Skill::Type_switch) {
-		if (Game_Temp::battle_running) {
-			return skill.occasion_battle;
-		}
-		else {
-			return skill.occasion_field;
-		}
-	}
-
-	return false;
+	return true;
 }
 
 bool Game_Battler::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_medicine) {
-		bool was_used;
+		bool was_used = false;
 
 		int hp_change = item.recover_hp_rate * GetMaxHp() / 100 + item.recover_hp;
 		int sp_change = item.recover_sp_rate * GetMaxSp() / 100 + item.recover_sp;
-
-		was_used = hp_change > 0 || sp_change > 0;
 
 		if (IsDead()) {
 			// Check if item can revive
@@ -202,20 +173,39 @@ bool Game_Battler::UseItem(int item_id) {
 			return false;
 		}
 
-		ChangeHp(hp_change);
-		SetSp(GetSp() + sp_change);
+		if (hp_change > 0 && !HasFullHp()) {
+			ChangeHp(hp_change);
+			was_used = true;
+		}
 
-		for (std::vector<bool>::const_iterator it = item.state_set.begin();
-			it != item.state_set.end(); ++it) {
-			if (*it) {
-				was_used |= HasState(*it);
-				RemoveState(*it);
+		if (sp_change > 0 && !HasFullSp()) {
+			ChangeSp(sp_change);
+			was_used = true;
+		}
+
+		for (int i = 0; i < (int)item.state_set.size(); i++) {
+			if (item.state_set[i]) {
+				was_used |= HasState(Data::states[i].ID);
+				RemoveState(Data::states[i].ID);
 			}
 		}
 
 		return was_used;
-	} else if (item.type == RPG::Item::Type_switch) {
+	}
+	
+	if (item.type == RPG::Item::Type_switch) {
 		return true;
+	}
+	
+	switch (item.type) {
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+			return item.use_skill && UseSkill(item.skill_id);
+		case RPG::Item::Type_special:
+			return UseSkill(item.skill_id);
 	}
 
 	return false;
@@ -224,38 +214,52 @@ bool Game_Battler::UseItem(int item_id) {
 bool Game_Battler::UseSkill(int skill_id) {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
+	bool was_used = false;
+
 	switch (skill.type) {
-		case RPG::Skill::Type_normal: {
-			int effect = skill.power;
+		case RPG::Skill::Type_normal:
+		case RPG::Skill::Type_subskill:
+			// Only takes care of healing skills outside of battle,
+			// the other skill logic is in Game_BattleAlgorithm
 
-			if (skill.variance > 0) {
-				int var_perc = skill.variance * 5;
-				int act_perc = rand() % (var_perc * 2) - var_perc;
-				int change = effect * act_perc / 100;
-				effect += change;
+			if (!(skill.scope == RPG::Skill::Scope_ally ||
+				skill.scope == RPG::Skill::Scope_party ||
+				skill.scope == RPG::Skill::Scope_self)) {
+				return false;
 			}
 
-			if (skill.affect_hp) {
-				ChangeHp(effect);
-			}
-			if (skill.affect_sp) {
-				SetSp(GetSp() + effect);
+			// Skills only increase hp and sp outside of battle
+			if (skill.power > 0 && skill.affect_hp && !HasFullHp()) {
+				was_used = true;
+				ChangeHp(skill.power);
 			}
 
-			// ToDo
-			return true;
-		}
+			if (skill.power > 0 && skill.affect_sp && !HasFullSp()) {
+				was_used = true;
+				ChangeSp(skill.power);
+			}
+
+			for (int i = 0; i < (int)skill.state_effects.size(); i++) {
+				if (skill.state_effects[i]) {
+					if (skill.state_effect) {
+						was_used |= !HasState(Data::states[i].ID);
+						AddState(Data::states[i].ID);
+					} else {
+						was_used |= HasState(Data::states[i].ID);
+						RemoveState(Data::states[i].ID);
+					}
+				}
+			}
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 			// ToDo: Show Teleport/Escape target menu
 			break;
 		case RPG::Skill::Type_switch:
-			SetSp(GetSp() - skill.sp_cost);
 			Game_Switches[skill.switch_id] = true;
-			break;
+			return true;
 	}
 
-	return false;
+	return was_used;
 }
 
 int Game_Battler::CalculateSkillCost(int skill_id) const {
@@ -333,12 +337,28 @@ bool Game_Battler::IsImmortal() const {
 	return false;
 }
 
+void Game_Battler::ChangeHp(int hp) {
+	SetHp(GetHp() + hp);
+}
+
 int Game_Battler::GetMaxHp() const {
 	return GetBaseMaxHp();
 }
 
+bool Game_Battler::HasFullHp() const {
+	return GetMaxHp() == GetHp();
+}
+
+void Game_Battler::ChangeSp(int sp) {
+	SetSp(GetSp() + sp);
+}
+
 int Game_Battler::GetMaxSp() const {
 	return GetBaseMaxSp();
+}
+
+bool Game_Battler::HasFullSp() const {
+	return GetMaxSp() == GetSp();
 }
 
 static int AffectParameter(int const type, int const val) {

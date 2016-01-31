@@ -172,6 +172,16 @@ void Game_Party::RemoveItem(int item_id, int amount) {
 }
 
 void Game_Party::ConsumeItemUse(int item_id) {
+	switch (Data::items[item_id - 1].type) {
+		case RPG::Item::Type_normal:
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+			return;
+	}
+
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
 		Output::Warning("Can't use up item.\n%04d is not a valid item ID.",
 						item_id);
@@ -204,32 +214,44 @@ void Game_Party::ConsumeItemUse(int item_id) {
 	}
 }
 
-bool Game_Party::IsItemUsable(int item_id) {
+bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 	if (item_id <= 0 || item_id > (int)Data::items.size()) {
+		return false;
+	}
+
+	if (target && !target->IsItemUsable(item_id)) {
 		return false;
 	}
 
 	RPG::Item& item = Data::items[item_id - 1];
 
 	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {
+		switch (item.type) {
+			case RPG::Item::Type_weapon:
+			case RPG::Item::Type_shield:
+			case RPG::Item::Type_armor:
+			case RPG::Item::Type_helmet:
+			case RPG::Item::Type_accessory:
+				return item.use_skill && IsSkillUsable(item.skill_id, nullptr, true);
+			case RPG::Item::Type_special:
+				return IsSkillUsable(item.skill_id, nullptr, true);
+		}
+
 		if (Game_Temp::battle_running) {
-			if (item.type == RPG::Item::Type_medicine) {
-				return !item.occasion_field1;
-			}
-			else if (item.type == RPG::Item::Type_switch) {
-				return item.occasion_battle;
-			}
-			else if (item.type == RPG::Item::Type_special) {
-				// ToDo: Proper check
-				return true;
+			switch (item.type) {
+				case RPG::Item::Type_medicine:
+					return !item.occasion_field1;
+				case RPG::Item::Type_switch:
+					return item.occasion_battle;
 			}
 		} else {
-			if (item.type == RPG::Item::Type_medicine ||
-				item.type == RPG::Item::Type_material ||
-				item.type == RPG::Item::Type_book) {
+			switch (item.type) {
+				case RPG::Item::Type_medicine:
+				case RPG::Item::Type_material:
+				case RPG::Item::Type_book:
 					return true;
-			} else if (item.type == RPG::Item::Type_switch) {
-				return item.occasion_field2;
+				case RPG::Item::Type_switch:
+					return item.occasion_field2;
 			}
 		}
 	}
@@ -241,14 +263,14 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	bool was_used = false;
 
 	if (target) {
-		if (target->IsItemUsable(item_id)) {
+		if (IsItemUsable(item_id, target)) {
 			was_used = target->UseItem(item_id);
 		}
 	} else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
-			if ((*it)->IsItemUsable(item_id)) {
+			if (IsItemUsable(item_id, (*it))) {
 				was_used |= (*it)->UseItem(item_id);
 			}
 		}
@@ -259,6 +281,58 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	}
 
 	return was_used;
+}
+
+bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from_item) const {
+	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+		return false;
+	}
+
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	if (target && !target->IsSkillUsable(skill_id)) {
+		return false;
+	}
+
+	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
+	// SetEscapePlace first. Not sure if any game uses this...
+	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
+	//	return is_there_a_teleport_set;
+	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
+	//	return is_there_an_escape_set;
+	//} else
+	if (skill.type == RPG::Skill::Type_normal ||
+		skill.type >= RPG::Skill::Type_subskill) {
+		int scope = skill.scope;
+
+		if (Game_Temp::battle_running) {
+			return true;
+		}
+		
+		// Self targeting skills can not cure states only (except if called by an item).
+		// RPG_RT logic...
+
+		if (scope == RPG::Skill::Scope_self) {
+			return from_item || skill.affect_hp || skill.affect_sp;
+		}
+
+		if (scope == RPG::Skill::Scope_ally ||
+			scope == RPG::Skill::Scope_party) {
+
+			return from_item ||
+				skill.affect_hp ||
+				skill.affect_sp ||
+				!skill.state_effects.empty();
+		}
+	} else if (skill.type == RPG::Skill::Type_switch) {
+		if (Game_Temp::battle_running) {
+			return skill.occasion_battle;
+		}
+
+		return skill.occasion_field;
+	}
+
+	return false;
 }
 
 bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) {

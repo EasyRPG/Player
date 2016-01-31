@@ -27,6 +27,7 @@
 namespace RPG {
 	class Skill;
 	class BattleCommand;
+	class Item;
 }
 
 /**
@@ -76,16 +77,6 @@ public:
 	 * @return true if item is usable
 	 */
 	virtual bool IsItemUsable(int item_id) const;
-
-	/**
-	 * Applies the effects of a skill.
-	 * Tests if using that skill makes any sense (e.g. for HP healing
-	 * skills if there are any HP to heal)
-	 *
-	 * @param skill_id ID of skill to use
-	 * @return true if skill affected anything
-	 */
-	virtual bool UseSkill(int skill_id);
 
 	/**
 	 * Learns a new skill.
@@ -346,9 +337,9 @@ public:
 	/**
 	 * Gets the equipped equipment based on the type.
 	 * @param equip_type type of equipment.
-	 * @return item_id or 0 if no equipment or -1 if invalid.
+	 * @return item if equipped or nullptr if no equipment.
 	 */
-	int GetEquipment(int equip_type) const;
+	const RPG::Item* GetEquipment(int equip_type) const;
 
 	/**
 	 * Sets the equipment based on the type.

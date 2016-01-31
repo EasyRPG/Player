@@ -293,6 +293,7 @@ void Player::Exit() {
 	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();
+	Output::Quit();
 	DisplayUi.reset();
 	
 #ifdef __ANDROID__
