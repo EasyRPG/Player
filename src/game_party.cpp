@@ -233,7 +233,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 			case RPG::Item::Type_helmet:
 			case RPG::Item::Type_accessory:
 			case RPG::Item::Type_special:
-				return item.use_skill && IsSkillUsable(item.skill_id);
+				return item.use_skill && IsSkillUsable(item.skill_id, nullptr, true);
 		}
 
 		if (Game_Temp::battle_running) {
@@ -282,7 +282,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	return was_used;
 }
 
-bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target) const {
+bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from_item) const {
 	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
 		return false;
 	}
@@ -308,13 +308,20 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target) const {
 			return true;
 		}
 		
-		if (scope == RPG::Skill::Scope_self ||
-			scope == RPG::Skill::Scope_ally ||
+		// Self targeting skills can not cure states only (except if called by an item).
+		// RPG_RT logic...
+
+		if (scope == RPG::Skill::Scope_self) {
+			return from_item || skill.affect_hp || skill.affect_sp;
+		}
+
+		if (scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
 
-			return skill.affect_hp ||
+			return from_item ||
+				skill.affect_hp ||
 				skill.affect_sp ||
-				(!skill.state_effect && !skill.state_effects.empty());
+				!skill.state_effects.empty();
 		}
 	} else if (skill.type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {

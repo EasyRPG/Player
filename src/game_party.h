@@ -182,8 +182,9 @@ public:
 	 *
 	 * @param skill_id Skill to test
 	 * @param target Skill user to test
+	 * @param from_item Skill is invoked by an item. This alters the usable check outside of battles.
 	 */
-	bool IsSkillUsable(int skill_id, const Game_Actor* target = nullptr) const;
+	bool IsSkillUsable(int skill_id, const Game_Actor* target = nullptr, bool from_item = false) const;
 
 	/**
 	 * Uses a skill on an actor.
