@@ -70,10 +70,11 @@ SdlAudio::SdlAudio() :
 #endif
 
 #ifdef EMSCRIPTEN
-	// Note: this requires a patched SDL_mixer currently
-	if (Mix_OpenAudioDevice(NULL, 0, frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+	// FIXME: this requires SDL_mixer => 2.0.2 but not tagged yet (using Hg)
+	if (Mix_OpenAudioDevice(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048,
+		NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
 #else
-	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0) {
 #endif
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
