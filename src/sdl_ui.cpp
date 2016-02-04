@@ -71,6 +71,10 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 #endif
 
 #ifdef GEKKO
+	extern "C" {
+		extern void WII_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
+	}
+
 	static void GekkoResetCallback();
 #endif
 
@@ -130,6 +134,9 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 #ifdef GEKKO
 	// Eliminate debug spew in on-screen console
 	Output::WiiSetConsole();
+
+	// Eliminate overscan / add 5% borders
+	WII_ChangeSquare(304, 228, 0, 0);
 #endif
 
 	SetTitle(title);
