@@ -130,6 +130,14 @@ namespace Output {
 	 * @param msg formatted debug text to display.
 	 */
 	void DebugStr(std::string const& msg);
+
+#ifdef GEKKO
+	/**
+	 * Helper function to disable the console on Wii
+	 * and redirect to USB Gekko, if present.
+	 */
+	void WiiSetConsole();
+#endif
 }
 
 #endif

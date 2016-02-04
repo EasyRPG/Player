@@ -27,6 +27,8 @@
 
 #ifdef GEKKO
 	#include <unistd.h>
+	#include <gccore.h>
+	#include <sys/iosupport.h>
 #endif
 
 #ifdef __ANDROID__
@@ -95,6 +97,33 @@ namespace {
 	}
 
 	std::vector<std::string> log_buffer;
+
+#ifdef GEKKO
+	/* USBGecko Debugging on Wii */
+	bool usbgecko = false;
+	mutex_t usbgecko_mutex = 0;
+
+	static ssize_t __usbgecko_write(struct _reent * /* r */, int /* fd */, const char *ptr, size_t len) {
+		uint32_t level;
+
+		if (!ptr || !len || !usbgecko)
+			return 0;
+
+		LWP_MutexLock(usbgecko_mutex);
+		level = IRQ_Disable();
+		usb_sendbuffer(1, ptr, len);
+		IRQ_Restore(level);
+		LWP_MutexUnlock(usbgecko_mutex);
+
+		return len;
+	}
+
+	const devoptab_t dotab_geckoout = {
+		"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
+		NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	};
+#endif
+
 }
 
 void Output::IgnorePause(bool const val) {
@@ -284,3 +313,20 @@ void Output::Debug(const char* fmt, ...) {
 void Output::DebugStr(std::string const& msg) {
 	WriteLog("Debug", msg);
 }
+
+#ifdef GEKKO
+extern const devoptab_t dotab_stdnull;
+
+void Output::WiiSetConsole() {
+	LWP_MutexInit(&usbgecko_mutex, false);
+	usbgecko = usb_isgeckoalive(1);
+
+	if (usbgecko) {
+		devoptab_list[STD_OUT] = &dotab_geckoout;
+		devoptab_list[STD_ERR] = &dotab_geckoout;
+	} else {
+		devoptab_list[STD_OUT] = &dotab_stdnull;
+		devoptab_list[STD_ERR] = &dotab_stdnull;
+	}
+}
+#endif

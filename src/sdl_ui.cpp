@@ -127,6 +127,11 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 		}
 	EndDisplayModeChange();
 
+#ifdef GEKKO
+	// Eliminate debug spew in on-screen console
+	Output::WiiSetConsole();
+#endif
+
 	SetTitle(title);
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
