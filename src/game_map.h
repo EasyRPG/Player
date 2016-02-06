@@ -534,6 +534,14 @@ namespace Game_Map {
 	void ResetPan(int speed, bool wait);
 	void UpdatePan();
 
+	/**
+	 * Gets whether there are any starting non-parallel event or common event.
+	 * Used as a workaround for the Game Player.
+	 *
+	 * @return whether any starting non-parallel (common) event is starting
+	 */
+	bool IsAnyEventStarting();
+
 	bool IsAnyMovePending();
 	void AddPendingMove(Game_Character* character);
 	void RemovePendingMove(Game_Character* character);

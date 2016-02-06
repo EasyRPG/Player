@@ -29,6 +29,7 @@
 #include "game_battler.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
+#include "game_switches.h"
 #include "game_temp.h"
 #include "game_player.h"
 #include "lmu_reader.h"
@@ -1031,6 +1032,20 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 		return NULL;
 	}
 	return vehicles[which - 1].get();
+}
+
+bool Game_Map::IsAnyEventStarting() {
+	for (Game_Event& ev : events)
+		if (ev.GetStarting() && !ev.GetList().empty())
+			return true;
+
+	for (Game_CommonEvent& ev : common_events)
+		if ((ev.GetTrigger() == RPG::EventPage::Trigger_auto_start) &&
+			(ev.GetSwitchFlag() ? Game_Switches[ev.GetSwitchId()] : true) &&
+			(!ev.GetList().empty()))
+				return true;
+
+	return false;
 }
 
 bool Game_Map::IsAnyMovePending() {

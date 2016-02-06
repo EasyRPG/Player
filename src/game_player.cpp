@@ -328,6 +328,7 @@ void Game_Player::UpdateScroll() {
 		Game_Map::ScrollUp(-dy);
 }
 
+
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
 
@@ -588,6 +589,8 @@ bool Game_Player::IsMovable() const {
 	if (Graphics::IsTransitionPending())
 		return false;
 	if (IsBlockedByMoveRoute())
+		return false;
+	if (Game_Map::IsAnyEventStarting())
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;
