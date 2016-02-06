@@ -60,6 +60,7 @@ bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommand
 		event_id = _event_id;
 		list = save[_index].commands;
 		index = save[_index].current_command;
+		triggered_by_decision_key = save[_index].actioned;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
 		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, _index + 1);
@@ -109,6 +110,7 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 		save_commands.current_command = save_interpreter->index;
 		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
+		save_commands.actioned = triggered_by_decision_key;
 		save.push_back(save_commands);
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
