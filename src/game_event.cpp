@@ -292,7 +292,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
-	CheckEventTriggerAuto();
 }
 
 void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
@@ -328,7 +327,6 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
-	CheckEventTriggerAuto();
 }
 
 void Game_Event::Refresh() {
@@ -475,12 +473,6 @@ void Game_Event::Start(bool by_decision_key) {
 	started_by_decision_key = by_decision_key;
 }
 
-void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == RPG::EventPage::Trigger_auto_start && Game_Map::GetReady()) {
-		Start();
-	}
-}
-
 std::vector<RPG::EventCommand>& Game_Event::GetList() {
 	return list;
 }
@@ -499,6 +491,14 @@ void Game_Event::StopTalkToHero() {
 	}
 
 	halting = true;
+}
+
+void Game_Event::CheckEventTriggers() {
+	if (trigger == RPG::EventPage::Trigger_auto_start) {
+		Start();
+	} else if (trigger == RPG::EventPage::Trigger_collision) {
+		CheckEventTriggerTouch(GetX(),GetY());
+	}
 }
 
 bool Game_Event::CheckEventTriggerTouch(int x, int y) {
@@ -549,16 +549,9 @@ void Game_Event::Update() {
 		return;
 	}
 
-	CheckEventTriggerAuto();
-
-	if (interpreter) {
-		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
-		} else {
-			interpreter->Update();
-		}
-	} else if (starting && !Game_Map::GetInterpreter().IsRunning()) {
+	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);
+		Game_Map::GetInterpreter().Update();
 		running = true;
 	}
 
@@ -567,6 +560,19 @@ void Game_Event::Update() {
 	if (halting) {
 		running = false;
 		halting = false;
+	}
+}
+
+void Game_Event::UpdateParallel() {
+	if (!data.active || page == NULL) {
+		return;
+	}
+
+	if (interpreter) {
+		if (!interpreter->IsRunning()) {
+			interpreter->Setup(list, event.ID, -event.x, event.y);
+		}
+		interpreter->Update();
 	}
 }
 

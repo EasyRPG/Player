@@ -78,7 +78,6 @@ namespace {
 	bool pan_locked;
 	bool pan_wait;
 	int pan_speed;
-	bool ready;
 }
 
 void Game_Map::Init() {
@@ -112,7 +111,6 @@ void Game_Map::Init() {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
-	ready = false;
 }
 
 void Game_Map::Dispose() {
@@ -146,7 +144,6 @@ void Game_Map::Setup(int _id) {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
-	ready = true;
 }
 
 void Game_Map::SetupFromSave() {
@@ -190,11 +187,9 @@ void Game_Map::SetupFromSave() {
 	location.pan_current_y = 0;
 	location.pan_finish_x = 0;
 	location.pan_finish_y = 0;
-	ready = true;
 }
 
 void Game_Map::SetupCommon(int _id) {
-	ready = false;
 	Dispose();
 
 	location.map_id = _id;
@@ -701,7 +696,7 @@ void Game_Map::UpdateScroll() {
 	}
 }
 
-void Game_Map::Update() {
+void Game_Map::Update(bool only_parallel) {
 	if (GetNeedRefresh()) Refresh();
 	UpdateScroll();
 	UpdatePan();
@@ -712,6 +707,24 @@ void Game_Map::Update() {
 			animation.reset();
 		}
 	}
+
+	for (Game_CommonEvent& ev : common_events) {
+		ev.UpdateParallel();
+	}
+
+	for (Game_Event& ev : events) {
+		ev.UpdateParallel();
+	}
+
+	if (only_parallel)
+		return;
+
+	for (Game_Event& ev : events) {
+		ev.CheckEventTriggers();
+	}
+
+	Main_Data::game_player->Update();
+	GetInterpreter().Update();
 
 	for (Game_Event& ev : events) {
 		ev.Update();
@@ -911,10 +924,6 @@ bool Game_Map::GetNeedRefresh() {
 }
 void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 	need_refresh = new_need_refresh;
-}
-
-bool Game_Map::GetReady() {
-	return ready;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

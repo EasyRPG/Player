@@ -66,6 +66,7 @@ void Scene_Map::Start() {
 	}
 
 	Player::FrameReset();
+	Game_Map::Update(true);
 }
 
 Scene_Map::~Scene_Map() {
@@ -129,12 +130,9 @@ void Scene_Map::Update() {
 		FinishTeleportPlayer();
 	}
 
-	Game_Map::GetInterpreter().Update();
-
 	Main_Data::game_party->UpdateTimers();
 
 	Game_Map::Update();
-	Main_Data::game_player->Update();
 	Main_Data::game_screen->Update();
 	spriteset->Update();
 	message_window->Update();
@@ -222,7 +220,7 @@ void Scene_Map::FinishTeleportPlayer() {
 
 	spriteset.reset(new Spriteset_Map());
 
-	Game_Map::Update();
+	Game_Map::Update(true);
 
 	if (autotransition) {
 		auto_transition = true;

@@ -219,8 +219,10 @@ namespace Game_Map {
 
 	/**
 	 * Updates the map state.
+	 *
+	 * @param only_parallel Update only parallel interpreters
 	 */
-	void Update();
+	void Update(bool only_parallel = false);
 
 	/**
 	 * Updates the scroll state.
@@ -400,13 +402,6 @@ namespace Game_Map {
 	 * @return need refresh flag.
 	 */
 	bool GetNeedRefresh();
-
-	/**
-	 * Gets ready flag.
-	 *
-	 * @return ready flag.
-	 */
-	bool GetReady();
 
 	/**
 	 * Gets the game interpreter.

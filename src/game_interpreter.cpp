@@ -105,9 +105,6 @@ void Game_Interpreter::Setup(
 
 	if (main_flag && depth == 0)
 		Game_Message::SetFaceName("");
-
-	if (!updating && depth == 0)
-		Update();
 }
 
 void Game_Interpreter::CancelMenuCall() {

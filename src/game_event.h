@@ -152,10 +152,11 @@ public:
 	 */
 	void StopTalkToHero();
 
-	void CheckEventTriggerAuto();
+	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y);
 	void Start(bool triggered_by_decision_key = false);
 	void Update();
+	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
 	/**
