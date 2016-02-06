@@ -963,8 +963,6 @@ void Game_Character::Flash(Color color, int duration) {
 
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
-	tEventHash::const_iterator it;
-
 	switch (character_id) {
 		case CharPlayer:
 			// Player/Hero
@@ -977,21 +975,9 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			it = Game_Map::GetEvents().find(event_id);
-
-			if (it == Game_Map::GetEvents().end()) {
-				return NULL;
-			}
-
-			return it->second.get();
+			return Game_Map::GetEvent(event_id);
 		default:
 			// Other events
-			it = Game_Map::GetEvents().find(character_id);
-
-			if (it == Game_Map::GetEvents().end()) {
-				return NULL;
-			}
-
-			return it->second.get();
+			return Game_Map::GetEvent(character_id);
 	}
 }

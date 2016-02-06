@@ -28,9 +28,6 @@
 #include "rpg_encounter.h"
 #include "rpg_map.h"
 
-typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
-typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
-
 class FileRequestAsync;
 
 #define SCREEN_TILE_WIDTH 256
@@ -472,14 +469,22 @@ namespace Game_Map {
 	 *
 	 * @return events list.
 	 */
-	tEventHash& GetEvents();
+	std::vector<Game_Event>& GetEvents();
+
+	/**
+	 * Gets pointer to event.
+	 *
+	 * @param event_id event ID
+	 * @return pointer to event.
+	 */
+	Game_Event* GetEvent(int event_id);
 
 	/**
 	 * Gets common events list.
 	 *
 	 * @return common events list.
 	 */
-	tCommonEventHash& GetCommonEvents();
+	std::vector<Game_CommonEvent>& GetCommonEvents();
 
 	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
 

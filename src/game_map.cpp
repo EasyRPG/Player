@@ -60,15 +60,15 @@ namespace {
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
-	tEventHash events;
-	tCommonEventHash common_events;
+	std::vector<Game_Event> events;
+	std::vector<Game_CommonEvent> common_events;
 
 	std::auto_ptr<RPG::Map> map;
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
 
-	boost::scoped_ptr<Game_Interpreter> interpreter;
+	boost::scoped_ptr<Game_Interpreter_Map> interpreter;
 	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
 	std::vector<EASYRPG_SHARED_PTR<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
@@ -96,8 +96,9 @@ void Game_Map::Init() {
 	map_info.encounter_rate = 0;
 
 	common_events.clear();
-	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
+	common_events.reserve(Data::commonevents.size());
+	for (const RPG::CommonEvent& ev : Data::commonevents) {
+		common_events.emplace_back(ev.ID);
 	}
 
 	vehicles.clear();
@@ -136,8 +137,9 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id);
 
-	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
+	events.reserve(map->events.size());
+	for (const RPG::Event& ev : map->events) {
+		events.emplace_back(location.map_id, ev);
 	}
 
 	location.pan_finish_x = 0;
@@ -151,33 +153,30 @@ void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
+	interpreter->SetupFromSave(Main_Data::game_data.events.events, 0);
 
+	events.reserve(map->events.size());
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		EASYRPG_SHARED_PTR<Game_Event> evnt;
 		if (i < map_info.events.size()) {
-			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i]);
+			events.emplace_back(location.map_id, map->events[i], map_info.events[i]);
 		}
 		else {
-			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i]);
+			events.emplace_back(location.map_id, map->events[i]);
 		}
 
-		events.insert(std::make_pair(map->events[i].ID, evnt));
-
-		if (evnt->IsMoveRouteOverwritten())
-			pending.push_back(evnt.get());
+		if (events.back().IsMoveRouteOverwritten())
+			pending.push_back(&events.back());
 	}
 
+	common_events.reserve(Data::commonevents.size());
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		EASYRPG_SHARED_PTR<Game_CommonEvent> evnt;
 		if (i < Main_Data::game_data.common_events.size()) {
-			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
+			common_events.emplace_back(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
 		}
 		else {
-			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false);
+			common_events.emplace_back(Data::commonevents[i].ID, false);
 		}
-
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, evnt));
 	}
 
 	for (size_t i = 0; i < 3; i++)
@@ -273,24 +272,22 @@ void Game_Map::SetupCommon(int _id) {
 }
 
 void Game_Map::PrepareSave() {
-	Main_Data::game_data.events.events =
-		static_cast<Game_Interpreter_Map*>(interpreter.get())
-			->GetSaveData();
+	Main_Data::game_data.events.events = interpreter->GetSaveData();
 	Main_Data::game_data.events.events_size = Main_Data::game_data.events.events.size();
 
 	map_info.events.clear();
-
-	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		map_info.events.push_back(i->second->GetSaveData());
+	map_info.events.reserve(events.size());
+	for (Game_Event& ev : events) {
+		map_info.events.push_back(ev.GetSaveData());
 	}
 
 	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
 	save_common_events.clear();
-
-	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+	save_common_events.reserve(common_events.size());
+	for (Game_CommonEvent& ev : common_events) {
 		save_common_events.push_back(RPG::SaveCommonEvent());
-		save_common_events.back().ID = i->first;
-		save_common_events.back().event_data = i->second->GetSaveData();
+		save_common_events.back().ID = ev.GetIndex();
+		save_common_events.back().event_data = ev.GetSaveData();
 	}
 }
 
@@ -311,12 +308,12 @@ void Game_Map::PlayBgm() {
 
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
-		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-			i->second->Refresh();
+		for (Game_Event& ev : events) {
+			ev.Refresh();
 		}
 
-		for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
-			i->second->Refresh();
+		for (Game_CommonEvent& ev : common_events) {
+			ev.Refresh();
 		}
 	}
 
@@ -527,15 +524,14 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 	int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
 	if (self_event) {
-		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-			Game_Event* evnt = i->second.get();
-			if (evnt != self_event && evnt->IsInPosition(x, y)) {
-				if (!evnt->GetThrough()) {
-					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+		for (Game_Event& ev : events) {
+			if (&ev != self_event && ev.IsInPosition(x, y)) {
+				if (!ev.GetThrough()) {
+					if (ev.GetLayer() == RPG::EventPage::Layers_same) {
 						return false;
-					} else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
+					} else if (ev.GetTileId() >= 0 && ev.GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
-						tile_id = i->second->GetTileId();
+						tile_id = ev.GetTileId();
 						return (passages_up[tile_id] & bit) != 0;
 					}
 				}
@@ -625,16 +621,11 @@ bool Game_Map::AirshipLandOk(int const x, int const y) {
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
-	std::vector<Game_Event*> result;
-
-	tEventHash::const_iterator i;
-	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); ++i) {
-		if (i->second->IsInPosition(x, y) && i->second->GetActive()) {
-			result.push_back(i->second.get());
+	for (Game_Event& ev : GetEvents()) {
+		if (ev.IsInPosition(x, y) && ev.GetActive()) {
+			events.push_back(&ev);
 		}
 	}
-
-	events.swap(result);
 }
 
 bool Game_Map::LoopHorizontal() {
@@ -670,10 +661,9 @@ int Game_Map::YwithDirection(int y, int direction) {
 }
 
 int Game_Map::CheckEvent(int x, int y) {
-	tEventHash::iterator i;
-	for (i = events.begin(); i != events.end(); ++i) {
-		if (i->second->IsInPosition(x, y)) {
-			return i->second->GetId();
+	for (const Game_Event& ev : events) {
+		if (ev.IsInPosition(x, y)) {
+			return ev.GetId();
 		}
 	}
 
@@ -723,14 +713,12 @@ void Game_Map::Update() {
 		}
 	}
 
-	for (tEventHash::iterator i = events.begin();
-		i != events.end(); ++i) {
-		i->second->Update();
+	for (Game_Event& ev : events) {
+		ev.Update();
 	}
 
-	for (tCommonEventHash::iterator i = common_events.begin();
-		i != common_events.end(); ++i) {
-		i->second->Update();
+	for (Game_CommonEvent& ev : common_events) {
+		ev.Update();
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -949,11 +937,17 @@ std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
 }
 
-tEventHash& Game_Map::GetEvents() {
+std::vector<Game_Event>& Game_Map::GetEvents() {
 	return events;
 }
 
-tCommonEventHash& Game_Map::GetCommonEvents() {
+Game_Event* Game_Map::GetEvent(int event_id) {
+	auto it = std::find_if(events.begin(), events.end(),
+			[&event_id](Game_Event& ev) {return ev.GetId() == event_id;});
+	return it == events.end() ? nullptr : &(*it);
+}
+
+std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 

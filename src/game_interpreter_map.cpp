@@ -1381,8 +1381,9 @@ bool Game_Interpreter_Map::CommandEraseEvent(RPG::EventCommand const& /* com */)
 	if (event_id == 0)
 		return true;
 
-	tEventHash& events = Game_Map::GetEvents();
-	events[event_id]->SetActive(false);
+	Game_Event* evnt = Game_Map::GetEvent(event_id);
+	if (evnt)
+		evnt->SetActive(false);
 
 	return true;
 }
