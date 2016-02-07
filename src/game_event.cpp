@@ -125,6 +125,10 @@ void Game_Event::SetLayer(int new_layer) {
 	data.layer = new_layer;
 }
 
+bool Game_Event::IsOverlapForbidden() const {
+	return data.overlap_forbidden;
+}
+
 int Game_Event::GetMoveSpeed() const {
 	return data.move_speed;
 }
@@ -286,6 +290,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
+	data.overlap_forbidden = page->overlap_forbidden;
 	trigger = page->trigger;
 	list = page->event_commands;
 

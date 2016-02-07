@@ -60,6 +60,7 @@ public:
 	void SetFacingLocked(bool locked);
 	int GetLayer() const;
 	void SetLayer(int new_layer);
+	bool IsOverlapForbidden() const;
 	int GetMoveSpeed() const;
 	void SetMoveSpeed(int speed);
 	int GetMoveFrequency() const;

@@ -435,7 +435,13 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			if (*it == self_event || (*it)->GetThrough()) {
 				continue;
 			}
-			else if ((*it)->GetLayer() == self_event->GetLayer()) {
+
+			if (self_event != Main_Data::game_player.get()) {
+				if (self_event->IsOverlapForbidden() || (*it)->IsOverlapForbidden())
+					return false;
+			}
+
+			if ((*it)->GetLayer() == self_event->GetLayer()) {
 				if (self_event->IsInPosition(x, y))
 					pass = true;
 				else

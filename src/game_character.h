@@ -137,6 +137,13 @@ public:
 	virtual void SetLayer(int new_layer) = 0;
 
 	/**
+	 * Gets whether other events can be in the same tile.
+	 *
+	 * @return whether event overlap is forbidden.
+	 */
+	virtual bool IsOverlapForbidden() const;
+
+	/**
 	 * Gets character stepping speed: the number of frames between each change
 	 * of the left-middle-right-middle walking animation or the spinning animation
 	 *

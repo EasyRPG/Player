@@ -63,6 +63,10 @@ Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
 }
 
+bool Game_Character::IsOverlapForbidden() const {
+	return false;
+}
+
 int Game_Character::GetSteppingSpeed() const {
 	int move_speed = GetMoveSpeed();
 	if (IsSpinning()) {
