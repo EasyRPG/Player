@@ -74,7 +74,7 @@ void Game_CommonEvent::Update() {
 void Game_CommonEvent::UpdateParallel() {
 	if (interpreter && parallel_running) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(GetList(), 0, -common_event_id, -2);
+			interpreter->Setup(GetList(), 0, false, -common_event_id, -2);
 		}
 		interpreter->Update();
 	}

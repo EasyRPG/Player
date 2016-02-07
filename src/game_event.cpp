@@ -509,10 +509,11 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {
 			Start();
+			return true;
 		}
 	}
 
-	return true;
+	return false;
 }
 
 void Game_Event::UpdateSelfMovement() {
@@ -570,7 +571,7 @@ void Game_Event::UpdateParallel() {
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, -event.x, event.y);
+			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
 		}
 		interpreter->Update();
 	}
