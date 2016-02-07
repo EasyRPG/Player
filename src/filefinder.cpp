@@ -320,6 +320,7 @@ static void add_rtp_path(std::string const& p) {
 	}
 }
 
+#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
 static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
@@ -331,6 +332,7 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 		add_rtp_path(rtp_path);
 	}
 }
+#endif
 
 void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	search_paths.clear();
@@ -346,26 +348,6 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 		"";
 
 	assert(!version_str.empty());
-
-	if (Player::IsRPG2k()) {
-		// Prefer original 2000 RTP over Kadokawa, because there is no
-		// reliable way to detect these engine and much more 2k games
-		// use the non-English version
-		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
-	}
-	else if (Player::IsRPG2k3Legacy()) {
-		// Original 2003 RTP installer registry key is upper case
-		// and Wine registry is case insensitive but new 2k3v1.10 installer is not
-		// Prefer Enterbrain RTP over Kadokawa for old RPG2k3 (search order)
-		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
-	}
-	else if (Player::IsRPG2k3E()) {
-		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
-		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
-	}
 
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
@@ -387,6 +369,26 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	add_rtp_path(cs + "/" + version_str + "/");
 #else
+	if (Player::IsRPG2k()) {
+		// Prefer original 2000 RTP over Kadokawa, because there is no
+		// reliable way to detect this engine and much more 2k games
+		// use the non-English version
+		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+	}
+	else if (Player::IsRPG2k3Legacy()) {
+		// Original 2003 RTP installer registry key is upper case
+		// and Wine registry is case insensitive but new 2k3v1.10 installer is not
+		// Prefer Enterbrain RTP over Kadokawa for old RPG2k3 (search order)
+		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+	}
+	else if (Player::IsRPG2k3E()) {
+		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
+		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
+	}
+
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
 
@@ -398,6 +400,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
+
 	if (warn_no_rtp_found && search_paths.empty()) {
 		Output::Warning("RTP not found. This may create missing file errors.\n"
 			"Install RTP files or check they are installed fine.\n"
