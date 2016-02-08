@@ -1,6 +1,12 @@
 EasyRPG Player
 ==============
 
+The following note only applies to these builds:
+
+- Visual Studio 2015 project (Windows)
+- GPH Makefile (GP2X, Caanoo)
+- OpenDingux Makefile (Dingoo, GCW Zero)
+
 Before compiling the player clone liblcf into a subfolder called
 liblcf here.
 The library can be found under https://github.com/EasyRPG/liblcf
