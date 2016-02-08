@@ -214,7 +214,7 @@ void Game_Map::SetupCommon(int _id) {
 	} else {
 		map = LMU_Reader::LoadXml(map_file);
 	}
-	Output::Debug("Loading Map %s", map_file.c_str());
+	Output::Debug("Loading Map %s", ss.str().c_str());
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(LcfReader::GetError());

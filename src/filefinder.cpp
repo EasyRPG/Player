@@ -156,7 +156,6 @@ namespace {
 		if (ret != boost::none) { return *ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
-		Output::Debug("RTP name %s(%s)", rtp_name.c_str(), name.c_str());
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
@@ -168,7 +167,8 @@ namespace {
 			if (ret_rtp) { return *ret_rtp; }
 		}
 
-		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
+		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
+						name == rtp_name ? "!" : rtp_name.c_str());
 
 		return std::string();
 	}

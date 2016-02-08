@@ -184,7 +184,7 @@ namespace {
 		// If not the file can't be expected to exist -> bug.
 		FileRequestAsync* request = AsyncHandler::RequestFile(s.directory, f);
 		if (!request->IsReady()) {
-			Output::Debug("BUG Not Requested: %s/%s", s.directory, f.c_str());
+			Output::Debug("BUG: File Not Requested: %s/%s", s.directory, f.c_str());
 			return BitmapRef();
 		}
 
@@ -199,12 +199,11 @@ namespace {
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
-		if(
-			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-		) {
-			Output::Debug("Image has non-default size: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
-						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
+		if(ret->GetWidth() < s.min_width   || s.max_width  < ret->GetWidth() ||
+		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()) {
+			Output::Debug("Image size out of bounds: %s/%s (%dx%d < %dx%d < %dx%d)",
+						  s.directory, f.c_str(), s.min_width, s.min_height,
+						  ret->GetWidth(), ret->GetHeight(), s.max_width, s.max_height);
 		}
 
 		return ret;

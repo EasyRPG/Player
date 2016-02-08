@@ -207,7 +207,12 @@ bool Output::TakeScreenshot() {
 bool Output::TakeScreenshot(std::string const& file) {
 	EASYRPG_SHARED_PTR<std::fstream> ret =
 		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
-	return ret? Output::TakeScreenshot(*ret) : false;
+
+	if(ret) {
+		Output::Debug("Saving Screenshot %s", file.c_str());
+		return Output::TakeScreenshot(*ret);
+	}
+	return false;
 }
 
 bool Output::TakeScreenshot(std::ostream& os) {

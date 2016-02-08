@@ -514,6 +514,15 @@ void Player::CreateGameObjects() {
 		Output::Error("Invalid encoding: %s.", encoding.c_str());
 	}
 
+	std::string game_path = Main_Data::GetProjectPath();
+	std::string save_path = Main_Data::GetSavePath();
+	if (game_path == save_path) {
+		Output::Debug("Using %s as Game and Save directory", game_path.c_str());
+	} else {
+		Output::Debug("Using %s as Game directory", game_path.c_str());
+		Output::Debug("Using %s as Save directory", save_path.c_str());
+	}
+
 	LoadDatabase();
 
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
