@@ -29,6 +29,10 @@
 	#include <Windows.h>
 #endif
 
+namespace {
+	std::string browser_dir;
+}
+
 Scene_GameBrowser::Scene_GameBrowser() {
 	type = Scene::GameBrowser;
 }
@@ -42,6 +46,8 @@ void Scene_GameBrowser::Continue() {
 #ifdef _WIN32
 	SetCurrentDirectory(L"..");
 #endif
+
+	Main_Data::SetProjectPath(browser_dir);
 
 	Data::Clear();
 	Player::ResetGameObjects();
@@ -158,6 +164,10 @@ void Scene_GameBrowser::BootGame() {
 #else
 	const std::string& path = gamelist_window->GetGamePath();
 #endif
+
+	if (browser_dir.empty())
+		browser_dir = Main_Data::GetProjectPath();
+	Main_Data::SetProjectPath(gamelist_window->GetGamePath());
 
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
 	FileFinder::SetDirectoryTree(tree);
