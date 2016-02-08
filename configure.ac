@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 AC_INIT([easyrpg-player],[0.4.0],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easy-rpg.org/])
 
 AC_CONFIG_AUX_DIR([builds/autoconf])
-AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects -Wall -Werror])
+AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall -Werror])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
