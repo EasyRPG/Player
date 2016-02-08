@@ -442,10 +442,10 @@
     <ClCompile Include="..\..\src\async_handler.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\shinonome\gothic.cxx">
+    <ClCompile Include="..\..\src\shinonome_gothic.cpp">
       <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\shinonome\mincho.cxx">
+    <ClCompile Include="..\..\src\shinonome_mincho.cpp">
       <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_gamebrowser.cpp">
@@ -873,7 +873,7 @@
     <ClInclude Include="..\..\src\async_handler.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\shinonome\shinonome.hxx">
+    <ClInclude Include="..\..\lib\shinonome\shinonome.h">
       <Filter>Source Files\Shinonome</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_gamebrowser.h">

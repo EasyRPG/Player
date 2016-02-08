@@ -32,7 +32,6 @@ test-driver
 *.elf
 /*.log
 /src/*.lo
-/lib/shinonome/*.lo
 *.o
 /*.trs
 *~

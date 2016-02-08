@@ -8,7 +8,7 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LTLIBRARIES = libeasyrpg-player.la
 libeasyrpg_player_la_SOURCES = \
- 	src/al_audio.cpp \
+	src/al_audio.cpp \
 	src/al_audio.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
@@ -181,6 +181,9 @@ libeasyrpg_player_la_SOURCES = \
 	src/sdl_audio.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
+	src/shinonome.h \
+	src/shinonome_gothic.cpp \
+	src/shinonome_mincho.cpp \
 	src/sprite_airshipshadow.h \
 	src/sprite_airshipshadow.cpp \
 	src/sprite_battler.cpp \
@@ -282,13 +285,9 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_targetstatus.cpp \
 	src/window_targetstatus.h \
 	src/window_varlist.cpp \
-	src/window_varlist.h \
-	lib/shinonome/shinonome.hxx \
-	lib/shinonome/gothic.cxx \
-	lib/shinonome/mincho.cxx
+	src/window_varlist.h
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
-	-I$(srcdir)/lib/shinonome \
 	-std=c++11 \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \

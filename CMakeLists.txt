@@ -50,13 +50,10 @@ endif()
 
 # shinonome font
 set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
-set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
-include_directories(${SHINONOME_PATH})
 find_package(Ruby)
 if(RUBY_FOUND)
   set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
   add_custom_command(
-    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
     COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
     DEPENDS "${SHINONOME_GENERATOR}"
     WORKING_DIRECTORY "${SHINONOME_PATH}")
@@ -123,7 +120,6 @@ set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 # static library
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRCS)
 list(REMOVE_ITEM SRCS ${MAIN_FILE})
-list(APPEND SRCS ${SHINONOME_SRCS})
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
 endif()

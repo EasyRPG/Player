@@ -6,6 +6,7 @@ The following note only applies to these builds:
 - Visual Studio 2015 project (Windows)
 - GPH Makefile (GP2X, Caanoo)
 - OpenDingux Makefile (Dingoo, GCW Zero)
+- Android Makefile
 
 Before compiling the player clone liblcf into a subfolder called
 liblcf here.
