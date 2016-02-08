@@ -196,7 +196,7 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::GetProjectPath(),
+		p = FileFinder::MakePath(Main_Data::GetSavePath(),
 								 "screenshot_"
 								 + boost::lexical_cast<std::string>(index++)
 								 + ".png");
