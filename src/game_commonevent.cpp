@@ -41,8 +41,6 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::
 }
 
 void Game_CommonEvent::Refresh() {
-	CheckEventTriggerAuto();
-
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
 			if (!interpreter) {
@@ -58,14 +56,27 @@ void Game_CommonEvent::Refresh() {
 }
 
 void Game_CommonEvent::Update() {
-	CheckEventTriggerAuto();
+	if (GetTrigger() != RPG::EventPage::Trigger_auto_start)
+		return;
 
+	for (int i = 0; i < 500; ++i) {
+		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
+			if (!Game_Map::GetInterpreter().IsRunning()) {
+				Game_Map::GetInterpreter().SetupStartingEvent(this);
+				Game_Map::GetInterpreter().Update();
+				continue;
+			}
+		}
+		return;
+	}
+}
+
+void Game_CommonEvent::UpdateParallel() {
 	if (interpreter && parallel_running) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(GetList(), 0, false, -common_event_id, -2);
-		} else {
-			interpreter->Update();
 		}
+		interpreter->Update();
 	}
 }
 
@@ -91,17 +102,6 @@ int Game_CommonEvent::GetTrigger() const {
 
 std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 	return Data::commonevents[common_event_id - 1].event_commands;
-}
-
-void Game_CommonEvent::CheckEventTriggerAuto() {
-	if (GetTrigger() == RPG::EventPage::Trigger_auto_start) {
-		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
-			//printf("%d %d\n", GetSwitchId(), (int)Game_Switches[GetSwitchId()]);
-			if (!Game_Map::GetInterpreter().IsRunning()) {
-				Game_Map::GetInterpreter().SetupStartingEvent(this);
-			}
-		}
-	}
 }
 
 RPG::SaveEventData Game_CommonEvent::GetSaveData() {

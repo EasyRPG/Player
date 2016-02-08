@@ -60,6 +60,7 @@ public:
 	void SetFacingLocked(bool locked);
 	int GetLayer() const;
 	void SetLayer(int new_layer);
+	bool IsOverlapForbidden() const;
 	int GetMoveSpeed() const;
 	void SetMoveSpeed(int speed);
 	int GetMoveFrequency() const;
@@ -84,7 +85,6 @@ public:
 	void SetFlashLevel(double flash_level);
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
-	bool IsMessageBlocking() const;
 	/** @} */
 
 	/**
@@ -153,10 +153,11 @@ public:
 	 */
 	void StopTalkToHero();
 
-	void CheckEventTriggerAuto();
+	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y);
 	void Start(bool triggered_by_decision_key = false);
 	void Update();
+	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
 	/**
@@ -177,6 +178,8 @@ public:
 
 	const RPG::SaveMapEvent& GetSaveData();
 private:
+	void UpdateSelfMovement();
+
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.

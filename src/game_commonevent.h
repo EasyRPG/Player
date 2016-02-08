@@ -55,9 +55,14 @@ public:
 	void Refresh();
 
 	/**
-	 * Updates common event interpreter.
+	 * Updates common event.
 	 */
 	void Update();
+
+	/**
+	 * Updates common event parallel interpreter.
+	 */
+	void UpdateParallel();
 
 	/**
 	 * Gets common event index.
@@ -100,7 +105,6 @@ public:
 	 * @return event commands list.
 	 */
 	std::vector<RPG::EventCommand>& GetList();
-	void CheckEventTriggerAuto();
 
 	RPG::SaveEventData GetSaveData();
 

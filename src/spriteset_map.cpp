@@ -39,9 +39,8 @@ Spriteset_Map::Spriteset_Map() :
 
 	panorama.SetZ(-1000);
 
-	tEventHash events = Game_Map::GetEvents();
-	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(i->second.get()));
+	for (Game_Event& ev : Game_Map::GetEvents()) {
+		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(&ev));
 	}
 
 	Game_Vehicle* vehicle;

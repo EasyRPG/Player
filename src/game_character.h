@@ -137,6 +137,13 @@ public:
 	virtual void SetLayer(int new_layer) = 0;
 
 	/**
+	 * Gets whether other events can be in the same tile.
+	 *
+	 * @return whether event overlap is forbidden.
+	 */
+	virtual bool IsOverlapForbidden() const;
+
+	/**
 	 * Gets character stepping speed: the number of frames between each change
 	 * of the left-middle-right-middle walking animation or the spinning animation
 	 *
@@ -360,13 +367,6 @@ public:
 	 * @return whether the character can jump to.
 	 */
 	virtual bool IsLandable(int x, int y) const;
-
- 	/**
-	 * Gets if a message is halting this character's processes.
-	 *
-	 * @return whether the character is halted by a message.
-	 */
-	virtual bool IsMessageBlocking() const;
 
 	/**
 	 * Moves the character to a new tile.
@@ -692,8 +692,8 @@ public:
 
 protected:
 	void UpdateMove();
+	virtual void UpdateSelfMovement();
 	void UpdateJump();
-	void UpdateSelfMovement();
 	void UpdateStop();
 
 	int tile_id;

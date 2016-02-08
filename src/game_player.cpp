@@ -223,6 +223,7 @@ void Game_Player::PerformTeleport() {
 
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
+		pattern = RPG::EventPage::Frame_middle;
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;
@@ -326,6 +327,7 @@ void Game_Player::UpdateScroll() {
 	else if (dy < 0)
 		Game_Map::ScrollUp(-dy);
 }
+
 
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
@@ -516,7 +518,6 @@ void Game_Player::Refresh() {
 
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
-	pattern = RPG::EventPage::Frame_middle;
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
@@ -588,6 +589,8 @@ bool Game_Player::IsMovable() const {
 	if (Graphics::IsTransitionPending())
 		return false;
 	if (IsBlockedByMoveRoute())
+		return false;
+	if (Game_Map::IsAnyEventStarting())
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;

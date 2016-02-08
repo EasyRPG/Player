@@ -105,9 +105,6 @@ void Game_Interpreter::Setup(
 
 	if (main_flag && depth == 0)
 		Game_Message::SetFaceName("");
-
-	if (!updating && depth == 0)
-		Update();
 }
 
 void Game_Interpreter::CancelMenuCall() {
@@ -374,7 +371,9 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	list.clear();
 
 	if (main_flag && depth == 0 && event_id > 0) {
-		Game_Map::GetEvents().find(event_id)->second->StopTalkToHero();
+		Game_Event* evnt = Game_Map::GetEvent(event_id);
+		if (evnt)
+			evnt->StopTalkToHero();
 	}
 
 	return true;
@@ -1057,8 +1056,6 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 10460
-	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
-												com.parameters[1]);
 	bool remove = com.parameters[2] != 0;
 	int amount = ValueOrVariable(com.parameters[3],
 								 com.parameters[4]);

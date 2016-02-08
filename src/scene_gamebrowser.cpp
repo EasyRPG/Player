@@ -46,6 +46,7 @@ void Scene_GameBrowser::Continue() {
 	Data::Clear();
 	Player::ResetGameObjects();
 	Player::game_title = "";
+	Player::engine = Player::EngineNone;
 
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
 	Game_System::BgmStop();

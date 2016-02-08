@@ -28,9 +28,6 @@
 #include "rpg_encounter.h"
 #include "rpg_map.h"
 
-typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
-typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
-
 class FileRequestAsync;
 
 #define SCREEN_TILE_WIDTH 256
@@ -222,8 +219,10 @@ namespace Game_Map {
 
 	/**
 	 * Updates the map state.
+	 *
+	 * @param only_parallel Update only parallel interpreters
 	 */
-	void Update();
+	void Update(bool only_parallel = false);
 
 	/**
 	 * Updates the scroll state.
@@ -405,13 +404,6 @@ namespace Game_Map {
 	bool GetNeedRefresh();
 
 	/**
-	 * Gets ready flag.
-	 *
-	 * @return ready flag.
-	 */
-	bool GetReady();
-
-	/**
 	 * Gets the game interpreter.
 	 *
 	 * @return the game interpreter.
@@ -472,14 +464,22 @@ namespace Game_Map {
 	 *
 	 * @return events list.
 	 */
-	tEventHash& GetEvents();
+	std::vector<Game_Event>& GetEvents();
+
+	/**
+	 * Gets pointer to event.
+	 *
+	 * @param event_id event ID
+	 * @return pointer to event.
+	 */
+	Game_Event* GetEvent(int event_id);
 
 	/**
 	 * Gets common events list.
 	 *
 	 * @return common events list.
 	 */
-	tCommonEventHash& GetCommonEvents();
+	std::vector<Game_CommonEvent>& GetCommonEvents();
 
 	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
 
@@ -533,6 +533,14 @@ namespace Game_Map {
 	void StartPan(int direction, int distance, int speed, bool wait);
 	void ResetPan(int speed, bool wait);
 	void UpdatePan();
+
+	/**
+	 * Gets whether there are any starting non-parallel event or common event.
+	 * Used as a workaround for the Game Player.
+	 *
+	 * @return whether any starting non-parallel (common) event is starting
+	 */
+	bool IsAnyEventStarting();
 
 	bool IsAnyMovePending();
 	void AddPendingMove(Game_Character* character);

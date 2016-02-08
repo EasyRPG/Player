@@ -125,6 +125,10 @@ void Game_Event::SetLayer(int new_layer) {
 	data.layer = new_layer;
 }
 
+bool Game_Event::IsOverlapForbidden() const {
+	return data.overlap_forbidden;
+}
+
 int Game_Event::GetMoveSpeed() const {
 	return data.move_speed;
 }
@@ -226,12 +230,6 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
 }
 
-bool Game_Event::IsMessageBlocking() const {
-	return Game_Message::message_waiting &&
-		!(Game_Message::GetContinueEvents() && Game_Message::owner_id != ID) &&
-		!Game_Message::owner_parallel;
-}
-
 bool Game_Event::GetThrough() const {
 	return page == NULL || Game_Character::GetThrough();
 }
@@ -292,13 +290,13 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
+	data.overlap_forbidden = page->overlap_forbidden;
 	trigger = page->trigger;
 	list = page->event_commands;
 
 	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
-	CheckEventTriggerAuto();
 }
 
 void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
@@ -334,7 +332,6 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
-	CheckEventTriggerAuto();
 }
 
 void Game_Event::Refresh() {
@@ -481,12 +478,6 @@ void Game_Event::Start(bool by_decision_key) {
 	started_by_decision_key = by_decision_key;
 }
 
-void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == RPG::EventPage::Trigger_auto_start && Game_Map::GetReady()) {
-		Start();
-	}
-}
-
 std::vector<RPG::EventCommand>& Game_Event::GetList() {
 	return list;
 }
@@ -507,6 +498,14 @@ void Game_Event::StopTalkToHero() {
 	halting = true;
 }
 
+void Game_Event::CheckEventTriggers() {
+	if (trigger == RPG::EventPage::Trigger_auto_start) {
+		Start();
+	} else if (trigger == RPG::EventPage::Trigger_collision) {
+		CheckEventTriggerTouch(GetX(),GetY());
+	}
+}
+
 bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;
@@ -515,10 +514,40 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {
 			Start();
+			return true;
 		}
 	}
 
-	return true;
+	return false;
+}
+
+void Game_Event::UpdateSelfMovement() {
+	if (running)
+		return;
+	if (!Game_Message::GetContinueEvents() &&
+		(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned()))
+		return;
+
+	switch (move_type) {
+	case RPG::EventPage::MoveType_random:
+		MoveTypeRandom();
+		break;
+	case RPG::EventPage::MoveType_vertical:
+		MoveTypeCycleUpDown();
+		break;
+	case RPG::EventPage::MoveType_horizontal:
+		MoveTypeCycleLeftRight();
+		break;
+	case RPG::EventPage::MoveType_toward:
+		MoveTypeTowardsPlayer();
+		break;
+	case RPG::EventPage::MoveType_away:
+		MoveTypeAwayFromPlayer();
+		break;
+	case RPG::EventPage::MoveType_custom:
+		MoveTypeCustom();
+		break;
+	}
 }
 
 void Game_Event::Update() {
@@ -526,16 +555,9 @@ void Game_Event::Update() {
 		return;
 	}
 
-	CheckEventTriggerAuto();
-
-	if (interpreter) {
-		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
-		} else {
-			interpreter->Update();
-		}
-	} else if (starting && !Game_Map::GetInterpreter().IsRunning()) {
+	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);
+		Game_Map::GetInterpreter().Update();
 		running = true;
 	}
 
@@ -544,6 +566,19 @@ void Game_Event::Update() {
 	if (halting) {
 		running = false;
 		halting = false;
+	}
+}
+
+void Game_Event::UpdateParallel() {
+	if (!data.active || page == NULL) {
+		return;
+	}
+
+	if (interpreter) {
+		if (!interpreter->IsRunning()) {
+			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
+		}
+		interpreter->Update();
 	}
 }
 

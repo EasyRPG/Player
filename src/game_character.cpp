@@ -63,6 +63,10 @@ Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
 }
 
+bool Game_Character::IsOverlapForbidden() const {
+	return false;
+}
+
 int Game_Character::GetSteppingSpeed() const {
 	int move_speed = GetMoveSpeed();
 	if (IsSpinning()) {
@@ -137,10 +141,6 @@ bool Game_Character::IsLandable(int x, int y) const
 	}
 
 	return true;
-}
-
-bool Game_Character::IsMessageBlocking() const {
-	return Game_Message::message_waiting && !Game_Message::GetContinueEvents();
 }
 
 void Game_Character::MoveTo(int x, int y) {
@@ -236,7 +236,8 @@ void Game_Character::Update() {
 	if (stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsMessageBlocking() && !Game_Map::GetInterpreter().HasRunned() && !Game_Map::GetInterpreter().IsRunning()) {
+		} else {
+			// Only events
 			UpdateSelfMovement();
 		}
 	}
@@ -259,26 +260,7 @@ void Game_Character::UpdateJump() {
 }
 
 void Game_Character::UpdateSelfMovement() {
-	switch (move_type) {
-	case RPG::EventPage::MoveType_random:
-		MoveTypeRandom();
-		break;
-	case RPG::EventPage::MoveType_vertical:
-		MoveTypeCycleUpDown();
-		break;
-	case RPG::EventPage::MoveType_horizontal:
-		MoveTypeCycleLeftRight();
-		break;
-	case RPG::EventPage::MoveType_toward:
-		MoveTypeTowardsPlayer();
-		break;
-	case RPG::EventPage::MoveType_away:
-		MoveTypeAwayFromPlayer();
-		break;
-	case RPG::EventPage::MoveType_custom:
-		MoveTypeCustom();
-		break;
-	}
+	// no-op: Only events can have custom move routes
 }
 
 void Game_Character::UpdateStop() {
@@ -963,8 +945,6 @@ void Game_Character::Flash(Color color, int duration) {
 
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
-	tEventHash::const_iterator it;
-
 	switch (character_id) {
 		case CharPlayer:
 			// Player/Hero
@@ -977,21 +957,9 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			it = Game_Map::GetEvents().find(event_id);
-
-			if (it == Game_Map::GetEvents().end()) {
-				return NULL;
-			}
-
-			return it->second.get();
+			return Game_Map::GetEvent(event_id);
 		default:
 			// Other events
-			it = Game_Map::GetEvents().find(character_id);
-
-			if (it == Game_Map::GetEvents().end()) {
-				return NULL;
-			}
-
-			return it->second.get();
+			return Game_Map::GetEvent(character_id);
 	}
 }
