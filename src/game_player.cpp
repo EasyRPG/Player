@@ -602,7 +602,7 @@ bool Game_Player::IsMovable() const {
 }
 
 bool Game_Player::IsBlockedByMoveRoute() const {
-	if (!IsMoveRouteOverwritten() || GetMoveRouteIndex() > 0)
+	if (!IsMoveRouteOverwritten())
 		return false;
 
 	// Check if it includes a blocking move command
@@ -610,7 +610,7 @@ bool Game_Player::IsBlockedByMoveRoute() const {
 		int code = move_command.command_id;
 		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
 			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
-			(code <= RPG::MoveCommand::Code::end_jump)) // Wait or jump
+			(code == RPG::MoveCommand::Code::wait || code == RPG::MoveCommand::Code::begin_jump)) // Wait or jump
 				return true;
 	}
 

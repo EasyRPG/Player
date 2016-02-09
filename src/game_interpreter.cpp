@@ -124,10 +124,6 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-void Game_Interpreter::EndMoveRoute(Game_Character*) {
-	// This will only ever be called on Game_Interpreter_Map instances
-}
-
 bool Game_Interpreter::HasRunned() const {
 	return runned;
 }
