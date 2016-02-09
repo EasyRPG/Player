@@ -23,11 +23,13 @@
 #include <vector>
 #include "game_character.h"
 #include "rpg_eventcommand.h"
+#include "rpg_saveeventcommands.h"
 #include "system.h"
 #include "game_interpreter.h"
 
 class Game_Event;
 class Game_CommonEvent;
+class FileRequestResult;
 
 /**
  * Game_Interpreter_Map class

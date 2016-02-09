@@ -21,11 +21,9 @@
 // Headers
 #include <string>
 #include <vector>
-#include "game_interpreter.h"
+#include "game_interpreter_map.h"
 #include "rpg_commonevent.h"
-#include "rpg_savecommonevent.h"
 #include "rpg_saveeventdata.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Game_CommonEvent class.
@@ -36,18 +34,15 @@ public:
 	 * Constructor.
 	 *
 	 * @param common_event_id database common event ID.
-	 * @param battle FIXME.
 	 */
-	Game_CommonEvent(int common_event_id, bool battle = false);
+	explicit Game_CommonEvent(int common_event_id);
 
 	/**
-	* Constructor for loading savegame data.
+	* Set savegame data.
 	*
-	* @param common_event_id database common event ID.
-	* @param battle FIXME.
 	* @param data savegame data.
 	 */
-	Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data);
+	void SetSaveData(const RPG::SaveEventData& data);
 
 	/**
 	 * Refreshes the common event.
@@ -110,7 +105,6 @@ public:
 
 private:
 	int common_event_id;
-	bool battle;
 	/**
 	 * If parallel interpreter is running (true) or suspended (false).
 	 * When switched to running it continues where it was suspended.
@@ -118,7 +112,7 @@ private:
 	bool parallel_running = false;
 
 	/** Interpreter for parallel common events. */
-	EASYRPG_SHARED_PTR<Game_Interpreter> interpreter;
+	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
 
 #endif
