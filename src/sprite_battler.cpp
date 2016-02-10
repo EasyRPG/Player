@@ -83,6 +83,8 @@ void Sprite_Battler::Update() {
 			if (fade_out > 0) {
 				fade_out -= 15;
 				SetOpacity(std::max(0, fade_out));
+			} else {
+				idling = true;
 			}
 		}
 		else if (anim_state == AnimationState_Damage) {
