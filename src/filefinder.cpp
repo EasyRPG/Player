@@ -337,11 +337,6 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	search_paths.clear();
 
-#ifdef EMSCRIPTEN
-	// No RTP support for emscripten at the moment.
-	return;
-#endif
-
 	std::string const version_str =
 		Player::IsRPG2k() ? "2000" :
 		Player::IsRPG2k3() ? "2003" :
@@ -349,10 +344,13 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	assert(!version_str.empty());
 
-#ifdef GEKKO
+#ifdef EMSCRIPTEN
+	// No RTP support for emscripten at the moment.
+	return;
+#elif defined(GEKKO)
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
-#elif __ANDROID__
+#elif defined(__ANDROID__)
 	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
 	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
