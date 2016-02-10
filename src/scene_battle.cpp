@@ -19,15 +19,11 @@
 #include <algorithm>
 #include <sstream>
 
-#include "rpg_battlecommand.h"
 #include "bitmap.h"
 #include "input.h"
 #include "output.h"
 #include "player.h"
-#include "sprite.h"
 #include "graphics.h"
-#include "filefinder.h"
-#include "cache.h"
 #include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"
@@ -35,9 +31,7 @@
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
-#include "game_switches.h"
 #include "game_battle.h"
-#include "game_interpreter.h"
 #include "battle_animation.h"
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
