@@ -331,6 +331,7 @@ void Game_Player::UpdateScroll() {
 
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
+	bool last_overwritten = IsMoveRouteOverwritten();
 
 	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
 		switch (Input::dir4) {
@@ -354,11 +355,7 @@ void Game_Player::Update() {
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
 
-	UpdateNonMoving(last_moving);
-}
-
-void Game_Player::UpdateNonMoving(bool last_moving) {
-	if (IsMoving() || IsMoveRouteOverwritten()) return;
+	if (IsMoving() || last_overwritten) return;
 
 	if (last_moving && location.boarding) {
 		// Boarding completed
@@ -640,8 +637,20 @@ void Game_Player::BeginMove() {
 		Game_System::SePlay(terrain.footstep);
 	}
 	Main_Data::game_party->ApplyDamage(terrain.damage);
+}
 
-	CheckCollisionEvent();
+void Game_Player::CancelMoveRoute() {
+	if (!IsMoveRouteOverwritten())
+		return;
+
+	// If the last executed command of the move route was a Move command, check touch and collision triggers
+	const RPG::MoveRoute& active_route = GetMoveRoute();
+	if (active_route.move_commands[GetMoveRouteIndex()].command_id <= RPG::MoveCommand::Code::move_forward) {
+		CheckTouchEvent();
+		CheckCollisionEvent();
+	}
+
+	Game_Character::CancelMoveRoute();
 }
 
 void Game_Player::Unboard() {

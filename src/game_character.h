@@ -458,7 +458,6 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
-	 * Locks character direction.
 	 * Signals a move begin.
 	 */
 	virtual void BeginMove();
@@ -514,7 +513,7 @@ public:
 	/**
 	 * Cancels a previous forced move route.
 	 */
-	void CancelMoveRoute();
+	virtual void CancelMoveRoute();
 
 	/**
 	 * Gets screen x coordinate in pixels.

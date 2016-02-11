@@ -510,9 +510,8 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;
 
-	if ((trigger == RPG::EventPage::Trigger_collision) && (Main_Data::game_player->IsInPosition(x, y))) {
-		// TODO check over trigger VX differs from XP here
-		if (!IsJumping()) {
+	if (trigger == RPG::EventPage::Trigger_collision && !IsJumping()) {
+		if (Main_Data::game_player->IsInPosition(x, y) && !Main_Data::game_player->IsBlockedByMoveRoute()) {
 			Start();
 			return true;
 		}
