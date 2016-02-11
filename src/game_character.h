@@ -705,6 +705,7 @@ protected:
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;
+	bool last_move_failed;
 	int remaining_step;
 	int move_count;
 	int wait_count;

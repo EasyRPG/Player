@@ -526,6 +526,8 @@ void Game_Event::UpdateSelfMovement() {
 	if (!Game_Message::GetContinueEvents() &&
 		(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned()))
 		return;
+	if (!IsStopping())
+		return;
 
 	switch (move_type) {
 	case RPG::EventPage::MoveType_random:

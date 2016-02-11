@@ -166,7 +166,7 @@ void Game_Map::SetupFromSave() {
 			pending.push_back(&events.back());
 	}
 
-	for (size_t i = 0; i < Main_Data::game_data.common_events.size(); ++i) {
+	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
 		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].event_data);
 	}
 

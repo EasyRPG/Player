@@ -42,6 +42,7 @@ Game_Character::Game_Character() :
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
+	last_move_failed(false),
 	remaining_step(0),
 	move_count(0),
 	wait_count(0),
@@ -256,86 +257,69 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::MoveTypeRandom() {
-	if (IsStopping()) {
-		switch (rand() % 6) {
-		case 0:
-			stop_count = 0;
-			break;
-		case 1: case 2:
-			MoveRandom();
-			break;
-		default:
-			MoveForward();
-		}
+	switch (rand() % 6) {
+	case 0:
+		stop_count = 0;
+		break;
+	case 1: case 2:
+		MoveRandom();
+		break;
+	default:
+		MoveForward();
 	}
 }
 
 void Game_Character::MoveTypeCycleLeftRight() {
-	if (IsStopping()) {
-		Move(cycle_stat ? Left : Right);
-
-		if (move_failed) {
-			Wait();
-			stop_count = 0;
-			// TODO: After waiting, try once more in the same direction
-			cycle_stat = move_failed ? !cycle_stat : cycle_stat;
-		}
+	Move(cycle_stat ? Left : Right);
+	if (move_failed && stop_count >= max_stop_count + 20) {
+		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
 	}
 }
 
 void Game_Character::MoveTypeCycleUpDown() {
-	if (IsStopping()) {
-		Move(cycle_stat ? Up : Down);
+	Move(cycle_stat ? Up : Down);
 
-		if (move_failed) {
-			Wait();
-			stop_count = 0;
-			// TODO: After waiting, try once more in the same direction
-			cycle_stat = !cycle_stat;
-		}
+	if (move_failed && stop_count >= max_stop_count + 20) {
+		cycle_stat = !cycle_stat;
 	}
 }
 
 void Game_Character::MoveTypeTowardsPlayer() {
-	if (IsStopping()) {
-		int sx = GetX() - Main_Data::game_player->GetX();
-		int sy = GetY() - Main_Data::game_player->GetY();
+	int sx = GetX() - Main_Data::game_player->GetX();
+	int sy = GetY() - Main_Data::game_player->GetY();
 
-		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		MoveRandom();
+	} else {
+		switch (rand() % 6) {
+		case 0:
 			MoveRandom();
-		} else {
-			switch (rand() % 6) {
-			case 0:
-				MoveRandom();
-				break;
-			case 1:
-				MoveForward();
-				break;
-			default:
-				MoveTowardsPlayer();
-			}
+			break;
+		case 1:
+			MoveForward();
+			break;
+		default:
+			MoveTowardsPlayer();
 		}
 	}
 }
 
 void Game_Character::MoveTypeAwayFromPlayer() {
-	if (IsStopping()) {
-		int sx = GetX() - Main_Data::game_player->GetX();
-		int sy = GetY() - Main_Data::game_player->GetY();
+	int sx = GetX() - Main_Data::game_player->GetX();
+	int sy = GetY() - Main_Data::game_player->GetY();
 
-		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		MoveRandom();
+	} else {
+		switch (rand() % 6) {
+		case 0:
 			MoveRandom();
-		} else {
-			switch (rand() % 6) {
-			case 0:
-				MoveRandom();
-				break;
-			case 1:
-				MoveForward();
-				break;
-			default:
-				MoveAwayFromPlayer();
-			}
+			break;
+		case 1:
+			MoveForward();
+			break;
+		default:
+			MoveAwayFromPlayer();
 		}
 	}
 }
@@ -483,9 +467,13 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			}
 
+			last_move_failed = move_failed;
 			if (move_failed) {
-				if (active_route->skippable)
+				if (active_route->skippable) {
+					last_move_failed = false;
 					++active_route_index;
+				}
+
 				break;
 			}
 		}
@@ -567,6 +555,13 @@ void Game_Character::MoveRandom() {
 void Game_Character::MoveTowardsPlayer() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
+
+	// Try in the same direction of the last failed move
+	if (last_move_failed) {
+		MoveForward();
+		if (!move_failed)
+			return;
+	}
 
 	if (sx != 0 || sy != 0) {
 		if ( std::abs(sx) > std::abs(sy) ) {
@@ -808,6 +803,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	SetMoveFrequency(frequency);
 	wait_count = 0;
 	max_stop_count = 0;
+	last_move_failed = false;
 }
 
 void Game_Character::CancelMoveRoute() {
