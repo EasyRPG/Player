@@ -691,10 +691,8 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
-	void UpdateMove();
 	virtual void UpdateSelfMovement();
 	void UpdateJump();
-	void UpdateStop();
 
 	int tile_id;
 	int pattern;

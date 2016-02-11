@@ -189,16 +189,16 @@ int Game_Character::GetScreenZ() const {
 void Game_Character::Update() {
 	if (IsJumping()) {
 		UpdateJump();
-		anime_count += (IsSpinning() ? 1 : 0);
-	} else if (IsContinuous() || IsSpinning()) {
-		UpdateMove();
-		UpdateStop();
+		if (IsSpinning())
+			anime_count++;
+	} else if (IsMoving()) {
+		remaining_step -= 1 << (1 + GetMoveSpeed());
+		if (IsSpinning() || (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation))
+			anime_count++;
 	} else {
-		if (IsMoving()) {
-			UpdateMove();
-		} else {
-			UpdateStop();
-		}
+		stop_count++;
+		if (IsSpinning() || IsContinuous() || pattern != original_pattern)
+			anime_count++;
 	}
 
 	if (anime_count >= GetSteppingSpeed()) {
@@ -243,14 +243,6 @@ void Game_Character::Update() {
 	}
 }
 
-void Game_Character::UpdateMove() {
-	if (remaining_step > 0)
-		remaining_step -= pow(2.0, 1 + GetMoveSpeed());
-
-	anime_count +=
-		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1 : 0;
-}
-
 void Game_Character::UpdateJump() {
 	// 8, 12, 16, 24, 32, 64
 	int move_speed = GetMoveSpeed();
@@ -261,12 +253,6 @@ void Game_Character::UpdateJump() {
 
 void Game_Character::UpdateSelfMovement() {
 	// no-op: Only events can have custom move routes
-}
-
-void Game_Character::UpdateStop() {
-	if (pattern != original_pattern && !IsContinuous())
-		anime_count++;
-	stop_count++;
 }
 
 void Game_Character::MoveTypeRandom() {
