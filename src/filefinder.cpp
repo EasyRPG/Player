@@ -156,7 +156,6 @@ namespace {
 		if (ret != boost::none) { return *ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
-		Output::Debug("RTP name %s(%s)", rtp_name.c_str(), name.c_str());
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
@@ -168,7 +167,8 @@ namespace {
 			if (ret_rtp) { return *ret_rtp; }
 		}
 
-		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
+		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
+						name == rtp_name ? "!" : rtp_name.c_str());
 
 		return std::string();
 	}
@@ -320,6 +320,7 @@ static void add_rtp_path(std::string const& p) {
 	}
 }
 
+#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
 static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
@@ -331,14 +332,10 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 		add_rtp_path(rtp_path);
 	}
 }
+#endif
 
 void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	search_paths.clear();
-
-#ifdef EMSCRIPTEN
-	// No RTP support for emscripten at the moment.
-	return;
-#endif
 
 	std::string const version_str =
 		Player::IsRPG2k() ? "2000" :
@@ -347,9 +344,32 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	assert(!version_str.empty());
 
+#ifdef EMSCRIPTEN
+	// No RTP support for emscripten at the moment.
+	return;
+#elif defined(GEKKO)
+	add_rtp_path("sd:/data/rtp/" + version_str + "/");
+	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif defined(__ANDROID__)
+	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
+	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
+	
+	const char *js = env->GetStringUTFChars(return_string, NULL);
+	std::string cs(js);
+
+	env->ReleaseStringUTFChars(return_string, js);
+	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
+
+	add_rtp_path(cs + "/" + version_str + "/");
+#else
 	if (Player::IsRPG2k()) {
 		// Prefer original 2000 RTP over Kadokawa, because there is no
-		// reliable way to detect these engine and much more 2k games
+		// reliable way to detect this engine and much more 2k games
 		// use the non-English version
 		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
 		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
@@ -367,26 +387,6 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
 	}
 
-#ifdef GEKKO
-	add_rtp_path("sd:/data/rtp/" + version_str + "/");
-	add_rtp_path("usb:/data/rtp/" + version_str + "/");
-#elif __ANDROID__
-	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
-	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
-	
-	const char *js = env->GetStringUTFChars(return_string, NULL);
-	std::string cs(js);
-
-	env->ReleaseStringUTFChars(return_string, js);
-	env->DeleteLocalRef(sdl_activity);
-	env->DeleteLocalRef(cls);
-
-	add_rtp_path(cs + "/" + version_str + "/");
-#else
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
 
@@ -398,6 +398,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
+
 	if (warn_no_rtp_found && search_paths.empty()) {
 		Output::Warning("RTP not found. This may create missing file errors.\n"
 			"Install RTP files or check they are installed fine.\n"

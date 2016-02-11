@@ -19,6 +19,6 @@
 #  include "platform/registry_win.cpp"
 #elif defined(HAVE_WINE)
 #  include "platform/wine_registry.cpp"
-#else
+#elif !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
 #  include "platform/registry_wine.cpp"
 #endif
