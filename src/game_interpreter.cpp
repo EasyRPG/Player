@@ -157,6 +157,9 @@ void Game_Interpreter::Update() {
 		}
 
 		if (main_flag) {
+			if (Main_Data::game_player->IsBoardingOrUnboarding())
+				break;
+
 			if (Game_Message::message_waiting)
 				break;
 		} else {

@@ -523,6 +523,7 @@ void Game_Player::Refresh() {
 bool Game_Player::GetOnOffVehicle() {
 	if (!IsMovable())
 		return false;
+
 	if (InVehicle())
 		return GetOffVehicle();
 	return GetOnVehicle();
@@ -658,4 +659,8 @@ void Game_Player::Unboard() {
 	SetMoveSpeed(location.preboard_move_speed);
 
 	Game_System::BgmPlay(walking_bgm);
+}
+
+bool Game_Player::IsBoardingOrUnboarding() const {
+	return location.boarding || location.unboarding;
 }

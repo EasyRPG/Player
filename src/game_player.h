@@ -106,6 +106,7 @@ public:
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
+	bool IsBoardingOrUnboarding() const;
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 
