@@ -283,10 +283,11 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	bool last_direction_fixed = IsDirectionFixed() || IsFacingLocked();
 	animation_type = page->animation_type;
-	if (from_null || !last_direction_fixed || IsDirectionFixed()) {
-		SetDirection(page->character_direction);
+
+	if (from_null || !(last_direction_fixed || IsMoving()) || IsDirectionFixed())
 		SetSpriteDirection(page->character_direction);
-	}
+	if (!IsMoving())
+		SetDirection(page->character_direction);
 
 	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
