@@ -1,5 +1,6 @@
-#!/usr/bin/ruby -Ku
+#!/usr/bin/env ruby
 # encoding: utf-8
+$KCODE = 'UTF8' unless RUBY_VERSION > "1.9.0"
 
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
