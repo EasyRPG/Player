@@ -65,18 +65,18 @@ AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
-AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/builds/easyrpg-player.6"],
+AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"],
   AC_MSG_WARN([a2x is required to create the manual page]))
-AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/builds/easyrpg-player.6"])
+AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
 
 # Doxygen source documentation
 m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])
 DX_DOXYGEN_FEATURE(OFF)
 DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)
-DX_INIT_DOXYGEN(easyrpg-player, builds/Doxyfile, doc)
+DX_INIT_DOXYGEN(easyrpg-player, resources/Doxyfile, doc)
 
 AC_CONFIG_FILES([Makefile
-                 builds/Doxyfile])
+                 resources/Doxyfile])
 
 AC_OUTPUT

@@ -311,14 +311,14 @@ easyrpg_player_LDADD = libeasyrpg-player.la
 
 # manual page
 if HAVE_A2X
-builds/easyrpg-player.6: builds/easyrpg-player.6.adoc
-	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/builds $(srcdir)/$<
+resources/easyrpg-player.6: resources/easyrpg-player.6.adoc
+	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources $(srcdir)/$<
 
-dist_man6_MANS = builds/easyrpg-player.6
-MOSTLYCLEANFILES += builds/easyrpg-player.6
+dist_man6_MANS = resources/easyrpg-player.6
+MOSTLYCLEANFILES += resources/easyrpg-player.6
 else
 if HAVE_MANUAL
-dist_man6_MANS = builds/easyrpg-player.6
+dist_man6_MANS = resources/easyrpg-player.6
 endif
 endif
 
