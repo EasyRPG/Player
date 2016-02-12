@@ -5,13 +5,13 @@
 #include "main_data.h"
 
 namespace {
-
+/*
 	void CheckIsRPG2kProject() {
 		EASYRPG_SHARED_PTR<FileFinder::ProjectTree> const
 			tree = FileFinder::CreateProjectTree(".");
 		assert(FileFinder::IsRPG2kProject(*tree));
 	}
-
+*/
 	void CheckIsDirectory() {
 		assert(FileFinder::IsDirectory("."));
 	}
@@ -27,11 +27,11 @@ int main(int, char**) {
 	Player::GetEncoding();
 	Player::escape_symbol = ReaderUtil::Recode("\\", Player::encoding);
 	Player::engine = Player::EngineRpg2k;
-	FileFinder::Init();
+//	FileFinder::Init();
 	FileFinder::InitRtpPaths();
 
 	CheckIsDirectory();
-	CheckIsRPG2kProject();
+//	CheckIsRPG2kProject();
 	CheckEnglishFilename();
 
 	FileFinder::Quit();
