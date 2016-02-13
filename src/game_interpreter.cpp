@@ -834,6 +834,7 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 
 std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	std::vector<Game_Actor*> actors;
+	Game_Actor* actor;
 
 	switch (mode) {
 	case 0:
@@ -842,11 +843,15 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		break;
 	case 1:
 		// Hero
-		actors.push_back(Game_Actors::GetActor(id));
+		actor = Game_Actors::GetActor(id);
+		if (actor)
+			actors.push_back(actor);
 		break;
 	case 2:
 		// Var hero
-		actors.push_back(Game_Actors::GetActor(Game_Variables[id]));
+		actor = Game_Actors::GetActor(Game_Variables[id]);
+		if (actor)
+			actors.push_back(actor);
 		break;
 	}
 
