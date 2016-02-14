@@ -563,14 +563,6 @@ void SdlUi::UpdateDisplay() {
 #endif
 }
 
-void SdlUi::BeginScreenCapture() {
-	CleanDisplay();
-}
-
-BitmapRef SdlUi::EndScreenCapture() {
-	return Bitmap::Create(*main_surface, main_surface->GetRect());
-}
-
 void SdlUi::SetTitle(const std::string &title) {
 #if SDL_MAJOR_VERSION==1
 	SDL_WM_SetCaption(title.c_str(), NULL);

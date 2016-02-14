@@ -50,8 +50,13 @@ BaseUi::KeyStatus& BaseUi::GetKeyStates() {
 BitmapRef const& BaseUi::GetDisplaySurface() const {
 	return main_surface;
 }
+
 BitmapRef& BaseUi::GetDisplaySurface() {
 	return main_surface;
+}
+
+BitmapRef BaseUi::CaptureScreen() {
+	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
 long BaseUi::GetWidth() const {
@@ -82,5 +87,9 @@ void BaseUi::SetBackcolor(const Color &color) {
 }
 
 void BaseUi::CleanDisplay() {
-	main_surface->FillRect(main_surface->GetRect(), back_color);
+	main_surface->Clear();
+}
+
+void BaseUi::AddBackground() {
+	main_surface->Fill(back_color);
 }
