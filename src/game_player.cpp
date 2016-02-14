@@ -331,7 +331,6 @@ void Game_Player::UpdateScroll() {
 
 void Game_Player::Update() {
 	bool last_moving = IsMoving() || IsJumping();
-	bool last_overwritten = IsMoveRouteOverwritten();
 
 	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
 		switch (Input::dir4) {
@@ -350,12 +349,16 @@ void Game_Player::Update() {
 	}
 
 	UpdateScroll();
+
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	bool was_blocked = IsBlockedByMoveRoute();
 	Game_Character::Update();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
 
-	if (IsMoving() || last_overwritten) return;
+	if (IsMoving() || was_blocked) return;
 
 	if (last_moving && location.boarding) {
 		// Boarding completed

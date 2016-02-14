@@ -913,10 +913,12 @@ int Game_Character::GetBushDepth() const {
 }
 
 void Game_Character::SetGraphic(const std::string& name, int index) {
-	SetSpriteName(name);
-	SetSpriteIndex(index);
-	tile_id = 0;
-	pattern = RPG::EventPage::Frame_middle;
+	if (GetSpriteName() != name || GetSpriteIndex() != index) {
+		SetSpriteName(name);
+		SetSpriteIndex(index);
+		tile_id = 0;
+		pattern = RPG::EventPage::Frame_middle;
+	}
 }
 
 void Game_Character::Flash(Color color, int duration) {
