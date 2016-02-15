@@ -20,12 +20,12 @@
 #include "async_handler.h"
 #include "bitmap.h"
 #include "filefinder.h"
-#include "graphics.h"
 #include "input.h"
 #include "player.h"
 #include "scene_map.h"
 #include "scene_title.h"
 #include "scene_gamebrowser.h"
+#include "output.h"
 
 static const uint8_t easyrpg_logo[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
@@ -946,6 +946,11 @@ void Scene_Logo::Update() {
 #endif
 
 		EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
+
+		if (!tree) {
+			Output::Error("%s is not a valid path", Main_Data::GetProjectPath().c_str());
+		}
+
 		if (FileFinder::IsValidProject(*tree)) {
 			FileFinder::SetDirectoryTree(FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath()));
 			Player::CreateGameObjects();
