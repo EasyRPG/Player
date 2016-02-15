@@ -222,7 +222,7 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.maxhp[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.maxhp[data.level - 1];
 
@@ -237,7 +237,7 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.maxsp[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.maxsp[data.level - 1];
 
@@ -252,7 +252,7 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.attack[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.attack[data.level - 1];
 
@@ -276,7 +276,7 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.defense[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.defense[data.level - 1];
 
@@ -300,7 +300,7 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.spirit[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.spirit[data.level - 1];
 
@@ -324,7 +324,7 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = data.changed_class
+	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.agility[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.agility[data.level - 1];
 
@@ -350,7 +350,7 @@ int Game_Actor::GetBaseAgi() const {
 int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
-	if (data.changed_class) {
+	if (data.changed_class && data.class_id > 0) {
 		const RPG::Class& klass = Data::classes[data.class_id - 1];
 		base = klass.exp_base;
 		inflation = klass.exp_inflation;
@@ -830,6 +830,7 @@ int Game_Actor::GetClass() const {
 
 void Game_Actor::SetClass(int _class_id) {
 	data.class_id = _class_id;
+	data.changed_class = _class_id > 0;
 	MakeExpList();
 }
 
