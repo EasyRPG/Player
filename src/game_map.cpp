@@ -166,15 +166,8 @@ void Game_Map::SetupFromSave() {
 			pending.push_back(&events.back());
 	}
 
-	common_events.reserve(Data::commonevents.size());
-	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		EASYRPG_SHARED_PTR<Game_CommonEvent> evnt;
-		if (i < Main_Data::game_data.common_events.size()) {
-			common_events.emplace_back(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
-		}
-		else {
-			common_events.emplace_back(Data::commonevents[i].ID, false);
-		}
+	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
+		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].event_data);
 	}
 
 	for (size_t i = 0; i < 3; i++)

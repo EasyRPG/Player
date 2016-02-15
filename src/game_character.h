@@ -458,7 +458,6 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
-	 * Locks character direction.
 	 * Signals a move begin.
 	 */
 	virtual void BeginMove();
@@ -514,7 +513,7 @@ public:
 	/**
 	 * Cancels a previous forced move route.
 	 */
-	void CancelMoveRoute();
+	virtual void CancelMoveRoute();
 
 	/**
 	 * Gets screen x coordinate in pixels.
@@ -691,10 +690,8 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
-	void UpdateMove();
 	virtual void UpdateSelfMovement();
 	void UpdateJump();
-	void UpdateStop();
 
 	int tile_id;
 	int pattern;
@@ -708,6 +705,7 @@ protected:
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;
+	bool last_move_failed;
 	int remaining_step;
 	int move_count;
 	int wait_count;

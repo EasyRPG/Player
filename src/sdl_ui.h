@@ -70,8 +70,6 @@ public:
 	void ToggleFullscreen();
 	void ToggleZoom();
 	void UpdateDisplay();
-	void BeginScreenCapture();
-	BitmapRef EndScreenCapture();
 	void SetTitle(const std::string &title);
 	bool ShowCursor(bool flag);
 

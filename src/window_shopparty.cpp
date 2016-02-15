@@ -49,6 +49,9 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::System();
 
+	if (item_id <= 0 || item_id > Data::items.size())
+		return;
+
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
@@ -56,7 +59,7 @@ void Window_ShopParty::Refresh() {
 		if (phase == 3) {
 			phase = 1;
 		}
-		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
+		bool equippable = actor->IsEquippable(item_id);
 		BitmapRef bm = bitmaps[i][equippable ? phase : 1][equippable ? 1 : 0];
 
 		if (bm) {

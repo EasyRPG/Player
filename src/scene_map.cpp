@@ -119,6 +119,7 @@ void Scene_Map::Update() {
 			// Fade Out not handled here but in StartTeleportPlayer because otherwise
 			// emscripten hangs before fading out when doing async loading...
 			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+			return;
 		}
 	}
 
@@ -128,6 +129,7 @@ void Scene_Map::Update() {
 
 	if (Main_Data::game_player->IsTeleporting()) {
 		FinishTeleportPlayer();
+		return;
 	}
 
 	Main_Data::game_party->UpdateTimers();

@@ -349,16 +349,16 @@ void Game_Player::Update() {
 	}
 
 	UpdateScroll();
+
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	bool was_blocked = IsBlockedByMoveRoute();
 	Game_Character::Update();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
 
-	UpdateNonMoving(last_moving);
-}
-
-void Game_Player::UpdateNonMoving(bool last_moving) {
-	if (IsMoving() || IsMoveRouteOverwritten()) return;
+	if (IsMoving() || was_blocked) return;
 
 	if (last_moving && location.boarding) {
 		// Boarding completed
@@ -526,6 +526,7 @@ void Game_Player::Refresh() {
 bool Game_Player::GetOnOffVehicle() {
 	if (!IsMovable())
 		return false;
+
 	if (InVehicle())
 		return GetOffVehicle();
 	return GetOnVehicle();
@@ -602,7 +603,7 @@ bool Game_Player::IsMovable() const {
 }
 
 bool Game_Player::IsBlockedByMoveRoute() const {
-	if (!IsMoveRouteOverwritten() || GetMoveRouteIndex() > 0)
+	if (!IsMoveRouteOverwritten())
 		return false;
 
 	// Check if it includes a blocking move command
@@ -610,7 +611,7 @@ bool Game_Player::IsBlockedByMoveRoute() const {
 		int code = move_command.command_id;
 		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
 			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
-			(code <= RPG::MoveCommand::Code::end_jump)) // Wait or jump
+			(code == RPG::MoveCommand::Code::wait || code == RPG::MoveCommand::Code::begin_jump)) // Wait or jump
 				return true;
 	}
 
@@ -640,8 +641,20 @@ void Game_Player::BeginMove() {
 		Game_System::SePlay(terrain.footstep);
 	}
 	Main_Data::game_party->ApplyDamage(terrain.damage);
+}
 
-	CheckCollisionEvent();
+void Game_Player::CancelMoveRoute() {
+	if (!IsMoveRouteOverwritten())
+		return;
+
+	// If the last executed command of the move route was a Move command, check touch and collision triggers
+	const RPG::MoveRoute& active_route = GetMoveRoute();
+	if (active_route.move_commands[GetMoveRouteIndex()].command_id <= RPG::MoveCommand::Code::move_forward) {
+		CheckTouchEvent();
+		CheckCollisionEvent();
+	}
+
+	Game_Character::CancelMoveRoute();
 }
 
 void Game_Player::Unboard() {
@@ -649,4 +662,8 @@ void Game_Player::Unboard() {
 	SetMoveSpeed(location.preboard_move_speed);
 
 	Game_System::BgmPlay(walking_bgm);
+}
+
+bool Game_Player::IsBoardingOrUnboarding() const {
+	return location.boarding || location.unboarding;
 }

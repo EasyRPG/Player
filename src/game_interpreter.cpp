@@ -124,10 +124,6 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-void Game_Interpreter::EndMoveRoute(Game_Character*) {
-	// This will only ever be called on Game_Interpreter_Map instances
-}
-
 bool Game_Interpreter::HasRunned() const {
 	return runned;
 }
@@ -161,6 +157,9 @@ void Game_Interpreter::Update() {
 		}
 
 		if (main_flag) {
+			if (Main_Data::game_player->IsBoardingOrUnboarding())
+				break;
+
 			if (Game_Message::message_waiting)
 				break;
 		} else {
@@ -835,6 +834,7 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 
 std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	std::vector<Game_Actor*> actors;
+	Game_Actor* actor;
 
 	switch (mode) {
 	case 0:
@@ -843,11 +843,15 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		break;
 	case 1:
 		// Hero
-		actors.push_back(Game_Actors::GetActor(id));
+		actor = Game_Actors::GetActor(id);
+		if (actor)
+			actors.push_back(actor);
 		break;
 	case 2:
 		// Var hero
-		actors.push_back(Game_Actors::GetActor(Game_Variables[id]));
+		actor = Game_Actors::GetActor(Game_Variables[id]);
+		if (actor)
+			actors.push_back(actor);
 		break;
 	}
 

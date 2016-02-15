@@ -20,21 +20,16 @@
 #include "game_map.h"
 #include "game_switches.h"
 #include "game_interpreter_map.h"
-#include "game_interpreter_battle.h"
 #include "main_data.h"
 
-Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
-	common_event_id(common_event_id),
-	battle(battle) {
+Game_CommonEvent::Game_CommonEvent(int common_event_id) :
+	common_event_id(common_event_id) {
 }
 
-Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data) :
-	common_event_id(common_event_id),
-	battle(battle) {
-
-	if (!data.event_data.commands.empty()) {
+void Game_CommonEvent::SetSaveData(const RPG::SaveEventData& data) {
+	if (!data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, 0);
+		interpreter->SetupFromSave(data.commands, 0);
 	}
 
 	Refresh();
@@ -44,9 +39,7 @@ void Game_CommonEvent::Refresh() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
 			if (!interpreter) {
-				interpreter.reset(battle
-								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
-								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
+				interpreter.reset(new Game_Interpreter_Map());
 			}
 			parallel_running = true;
 		} else {
@@ -108,7 +101,7 @@ RPG::SaveEventData Game_CommonEvent::GetSaveData() {
 	RPG::SaveEventData event_data;
 
 	if (interpreter) {
-		event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+		event_data.commands = interpreter->GetSaveData();
 	}
 
 	return event_data;

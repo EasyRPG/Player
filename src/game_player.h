@@ -77,6 +77,8 @@ public:
 	int GetFlashTimeLeft() const;
 	void SetFlashTimeLeft(int time_left);
 	bool IsPassable(int x, int y, int d) const;
+	void BeginMove();
+	void CancelMoveRoute();
 	/** @} */
 
 	bool IsTeleporting() const;
@@ -104,9 +106,12 @@ public:
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
+	bool IsBoardingOrUnboarding() const;
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
-	void BeginMove();
+
+	/* Workaround used to avoid blocking the player with move routes that are completable in a single frame */
+	bool IsBlockedByMoveRoute() const;
 
 private:
 	RPG::SavePartyLocation& location;
@@ -116,11 +121,7 @@ private:
 	int last_pan_x, last_pan_y;
 	RPG::Music walking_bgm;
 
-	/* Workaround used to avoid blocking the player with move routes that are completable in a single frame */
-	bool IsBlockedByMoveRoute() const;
-
 	void UpdateScroll();
-	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();

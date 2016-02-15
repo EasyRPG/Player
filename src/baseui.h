@@ -95,19 +95,11 @@ public:
 	virtual void UpdateDisplay() = 0;
 
 	/**
-	 * Begins screen capture. While this mode is active
-	 * all drawing to screen will be applied to an internal
-	 * Bitmap, that is returned by the EndScreenCapture
-	 * method.
-	 */
-	virtual void BeginScreenCapture() = 0;
-
-	/**
-	 * Ends screen capture and get the drawn contents.
+	 * Gets a copy of the display surface.
 	 *
-	 * @return bitmap with drawn contents.
+	 * @return bitmap a copy of the display surface.
 	 */
-	virtual BitmapRef EndScreenCapture() = 0;
+	BitmapRef CaptureScreen();
 
 	/**
 	 * Sets display title.
@@ -200,6 +192,11 @@ public:
 	 * @param color new background color.
 	 */
 	void SetBackcolor(const Color &color);
+
+	/**
+	 * Fills the screen with the background color.
+	 */
+	void AddBackground();
 
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();

@@ -57,7 +57,7 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() / 2));
 
-	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
+	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation * 360 / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == 2 ? data.current_effect * 2 : 0);
 	sprite->SetOpacity(

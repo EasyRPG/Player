@@ -173,7 +173,7 @@ void Graphics::DrawFrame() {
 		global_state->zlist_dirty = false;
 	}
 
-	DisplayUi->CleanDisplay();
+	DisplayUi->AddBackground();
 
 	for (Drawable* drawable : state->drawable_list) {
 		drawable->Draw();
@@ -197,7 +197,7 @@ void Graphics::DrawOverlay() {
 }
 
 BitmapRef Graphics::SnapToBitmap() {
-	DisplayUi->BeginScreenCapture();
+	DisplayUi->AddBackground();
 
 	for (Drawable* drawable : state->drawable_list) {
 		drawable->Draw();
@@ -207,7 +207,7 @@ BitmapRef Graphics::SnapToBitmap() {
 		drawable->Draw();
 	}
 
-	return DisplayUi->EndScreenCapture();
+	return DisplayUi->CaptureScreen();
 }
 
 void Graphics::Freeze() {
