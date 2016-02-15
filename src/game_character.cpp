@@ -245,9 +245,8 @@ void Game_Character::Update() {
 }
 
 void Game_Character::UpdateJump() {
-	// 8, 12, 16, 24, 32, 64
-	int move_speed = GetMoveSpeed();
-	remaining_step -= move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
+	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
+	remaining_step -= jump_speed[GetMoveSpeed() - 1];
 	if (remaining_step <= 0)
 		jumping = false;
 }
