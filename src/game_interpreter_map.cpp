@@ -117,8 +117,6 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 
 	save.back().ID = event_id;
 
-	save.back().current_command++;
-
 	return save;
 }
 
@@ -1227,7 +1225,7 @@ bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
 	Game_Temp::save_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
