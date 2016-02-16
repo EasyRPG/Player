@@ -1,5 +1,6 @@
-#!/usr/bin/env ruby -Ku
+#!/usr/bin/env ruby
 # encoding: utf-8
+$KCODE = 'UTF8' unless RUBY_VERSION > "1.9.0"
 
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
@@ -105,7 +106,7 @@ end
 
 def write_all(f, sym, data)
   f.write <<EOS
-#include "shinonome.hxx"
+#include "shinonome.h"
 
 ShinonomeGlyph const #{sym}[#{data.size}] = {
 EOS
@@ -163,18 +164,18 @@ print "done\n"
 print "Generating Gothic..."
 gothic_final = gothic.merge(cyrillic).merge(hankaku) \
 	.merge(korean).merge(chinese).merge(latin).merge(latin_ext_a).merge(extras)
-code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
+code_max = write_all(File.new("../../src/shinonome_gothic.cpp", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
-code_max = [write_all(File.new("./mincho.cxx", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+code_max = [write_all(File.new("../../src/shinonome_mincho.cpp", "w"), "SHINONOME_MINCHO", mincho), code_max].max
 print "done\n"
 
 # header
 print "Generating Header..."
-File.new('./shinonome.hxx', 'w').write <<EOS
-#ifndef _INC_SHINONOME_HXX_
-#define _INC_SHINONOME_HXX_
+File.new('../../src/shinonome.h', 'w').write <<EOS
+#ifndef _INC_SHINONOME_H_
+#define _INC_SHINONOME_H_
 
 #include <stdint.h>
 
@@ -187,6 +188,6 @@ struct ShinonomeGlyph {
 extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
 extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
 
-#endif // _INC_SHINONOME_HXX_
+#endif // _INC_SHINONOME_H_
 EOS
 print "done\n"

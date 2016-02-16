@@ -19,9 +19,9 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	boot
 BUILD		:=	obj
 TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
-SOURCES		:=	src lib/shinonome
+SOURCES		:=	src
 DATA		:=	data  
-INCLUDES	:=	src lib/shinonome
+INCLUDES	:=	src
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -146,13 +146,6 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 $(OUTPUT).dol: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
-
-#---------------------------------------------------------------------------------
-# Custom build rule for shinonome (has .cxx extension)
-#---------------------------------------------------------------------------------
-%.o: %.cxx
-	@echo $(notdir $<)
-	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 #---------------------------------------------------------------------------------
 

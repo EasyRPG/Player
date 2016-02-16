@@ -219,8 +219,6 @@
     <ResourceCompile Include="..\..\resources\player.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\lib\shinonome\gothic.cxx" />
-    <ClCompile Include="..\..\lib\shinonome\mincho.cxx" />
     <ClCompile Include="..\..\src\al_audio.cpp" />
     <ClCompile Include="..\..\src\async_handler.cpp" />
     <ClCompile Include="..\..\src\audio.cpp" />
@@ -303,6 +301,8 @@
     <ClCompile Include="..\..\src\screen.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
+    <ClCompile Include="..\..\src\shinonome_gothic.cpp" />
+    <ClCompile Include="..\..\src\shinonome_mincho.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_battle.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
@@ -355,7 +355,6 @@
     <ClCompile Include="..\..\src\window_varlist.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\lib\shinonome\shinonome.hxx" />
     <ClInclude Include="..\..\src\al_audio.h" />
     <ClInclude Include="..\..\src\async_handler.h" />
     <ClInclude Include="..\..\src\audio.h" />
@@ -446,6 +445,7 @@
     <ClInclude Include="..\..\src\screen.h" />
     <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
+    <ClInclude Include="..\..\src\shinonome.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_battle.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />

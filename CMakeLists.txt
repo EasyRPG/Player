@@ -30,7 +30,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Modules")
+	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 
 add_definitions(
   ${PNG_DEFINITIONS}
@@ -49,14 +49,16 @@ if(EXISTS ${WINE_EXECUTABLE})
 endif()
 
 # shinonome font
-set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
-set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
-include_directories(${SHINONOME_PATH})
+set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/shinonome")
+set(SHINONOME_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(SHINONOME_SRCS "${SHINONOME_SRC_PATH}/shinonome_gothic.cpp"
+  "${SHINONOME_SRC_PATH}/shinonome_mincho.cpp"
+  "${SHINONOME_SRC_PATH}/shinonome.h")
 find_package(Ruby)
 if(RUBY_FOUND)
   set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
   add_custom_command(
-    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
+    OUTPUT ${SHINONOME_SRCS}
     COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
     DEPENDS "${SHINONOME_GENERATOR}"
     WORKING_DIRECTORY "${SHINONOME_PATH}")
@@ -162,21 +164,21 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
-  add_custom_command(OUTPUT builds/${MAN_NAME}
-    COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.0" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/builds ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME}.adoc
-    DEPENDS builds/${MAN_NAME}.adoc
+  add_custom_command(OUTPUT resources/${MAN_NAME}
+    COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.0" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
+    DEPENDS resources/${MAN_NAME}.adoc
     COMMENT "(Re-)building manpage ${MAN_NAME}"
     VERBATIM)
   if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    add_custom_target(man ALL DEPENDS builds/${MAN_NAME})
-    install(FILES builds/${MAN_NAME} DESTINATION share/man/man6)
+    add_custom_target(man ALL DEPENDS resources/${MAN_NAME})
+    install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
   else()
-    add_custom_target(man DEPENDS builds/${MAN_NAME})
+    add_custom_target(man DEPENDS resources/${MAN_NAME})
   endif()
 else()
   # no a2x, distribution archive?
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/builds/${MAN_NAME})
-    install(FILES builds/${MAN_NAME} DESTINATION share/man/man6)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME})
+    install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
   endif()
 endif()
 
@@ -184,19 +186,6 @@ endif()
 set(CPACK_GENERATOR "ZIP" "TGZ")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   list(APPEND CPACK_GENERATOR "NSIS")
-endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  list(APPEND CPACK_GENERATOR "DEB")
-
-  set(CPACK_DEBIAN_PACKAGE_NAME "easyrpg-player")
-  set(CPACK_DEBIAN_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
-  set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
-  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
-  set(CPACK_DEBIAN_PACKAGE_DEPENDS
-    libexpat1 libfreetype6 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
-    libsdl2-mixer-2.0-0 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
-    libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
-    libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
@@ -213,15 +202,15 @@ if(DOXYGEN_FOUND)
   set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
   set(PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
   set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
-  configure_file(builds/Doxyfile.in builds/Doxyfile @ONLY)
+  configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
   unset(DX_DOCDIR)
   unset(PACKAGE_VERSION)
   unset(srcdir)
 
   add_custom_target(player_doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/builds/Doxyfile
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
     DEPENDS ${SRCS} ${MAIN_FILE}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
   add_custom_target(doc)
   add_dependencies(doc player_doc liblcf_doc)

@@ -6,7 +6,6 @@ LOCAL_MODULE := main
 
 PLAYER_PATH := ../../../..
 
-LOCAL_CPP_EXTENSION := .cxx .cpp
 ifeq ($(TARGET_ARCH_ABI),x86)
         EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/x86-toolchain
 else ifeq ($(TARGET_ARCH_ABI),armeabi)
@@ -19,7 +18,6 @@ endif
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/src \
-	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated \
 	$(EASYRPG_TOOLCHAIN_DIR)/include \
@@ -33,8 +31,7 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES := SDL_android_main.c \
 	org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp)) \
-	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c)) \
-	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome/*.cxx))
+	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c))
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer
 

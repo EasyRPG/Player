@@ -46,16 +46,14 @@ endif
 SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 
 # Compiler headers
-INCLUDES = ../../src ../../lib/shinonome ../../lib/liblcf/src ../../lib/liblcf/src/generated
+INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated ../../lib/shinonome
+SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
-OBJS += gothic.o mincho.o
-
 
 # Compiler flags
 CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS)
@@ -74,14 +72,6 @@ $(TARGET): $(OBJS)
 
 .cpp.o:
 	$(HOST)gcc $(INCDIR) $(CXXFLAGS) -c $< -o $@
-
-gothic.o: ../../lib/shinonome/gothic.cxx
-	$(HOST)gcc -c ../../lib/shinonome/gothic.cxx
-
-mincho.o: ../../lib/shinonome/mincho.cxx
-	$(HOST)gcc -c ../../lib/shinonome/mincho.cxx
-
-
 
 # Clean Project
 clean:

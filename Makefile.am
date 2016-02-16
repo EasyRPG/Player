@@ -1,14 +1,14 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
 include builds/autoconf/aminclude/doxygen.am
 
-EXTRA_DIST = builds lib Modules resources CMakeLists.txt src/platform
+EXTRA_DIST = builds lib/README resources CMakeLists.txt src/platform
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
 
 noinst_LTLIBRARIES = libeasyrpg-player.la
 libeasyrpg_player_la_SOURCES = \
- 	src/al_audio.cpp \
+	src/al_audio.cpp \
 	src/al_audio.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
@@ -181,6 +181,9 @@ libeasyrpg_player_la_SOURCES = \
 	src/sdl_audio.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
+	src/shinonome.h \
+	src/shinonome_gothic.cpp \
+	src/shinonome_mincho.cpp \
 	src/sprite_airshipshadow.h \
 	src/sprite_airshipshadow.cpp \
 	src/sprite_battler.cpp \
@@ -282,13 +285,9 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_targetstatus.cpp \
 	src/window_targetstatus.h \
 	src/window_varlist.cpp \
-	src/window_varlist.h \
-	lib/shinonome/shinonome.hxx \
-	lib/shinonome/gothic.cxx \
-	lib/shinonome/mincho.cxx
+	src/window_varlist.h
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
-	-I$(srcdir)/lib/shinonome \
 	-std=c++11 \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
@@ -312,14 +311,14 @@ easyrpg_player_LDADD = libeasyrpg-player.la
 
 # manual page
 if HAVE_A2X
-builds/easyrpg-player.6: builds/easyrpg-player.6.adoc
-	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/builds $(srcdir)/$<
+resources/easyrpg-player.6: resources/easyrpg-player.6.adoc
+	$(AM_V_GEN) $(A2X) -a player_version=$(PACKAGE_VERSION) -f manpage -D $(builddir)/resources $(srcdir)/$<
 
-dist_man6_MANS = builds/easyrpg-player.6
-MOSTLYCLEANFILES += builds/easyrpg-player.6
+dist_man6_MANS = resources/easyrpg-player.6
+MOSTLYCLEANFILES += resources/easyrpg-player.6
 else
 if HAVE_MANUAL
-dist_man6_MANS = builds/easyrpg-player.6
+dist_man6_MANS = resources/easyrpg-player.6
 endif
 endif
 
