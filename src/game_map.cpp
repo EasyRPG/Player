@@ -891,6 +891,10 @@ std::vector<short>& Game_Map::GetMapDataUp() {
 	return map->upper_layer;
 }
 
+int Game_Map::GetChipset() {
+	return map_info.chipset_id;
+}
+
 std::string& Game_Map::GetChipsetName() {
 	return chipset_name;
 }

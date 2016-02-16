@@ -29,7 +29,7 @@
 
 class Game_Event;
 class Game_CommonEvent;
-class FileRequestResult;
+struct FileRequestResult;
 
 /**
  * Game_Interpreter_Map class

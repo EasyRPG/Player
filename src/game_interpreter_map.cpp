@@ -1392,6 +1392,11 @@ bool Game_Interpreter_Map::CommandEraseEvent(RPG::EventCommand const& /* com */)
 
 bool Game_Interpreter_Map::CommandChangeMapTileset(RPG::EventCommand const& com) { // code 11710
 	int chipset_id = com.parameters[0];
+
+	if (chipset_id == Game_Map::GetChipset()) {
+		return true;
+	}
+
 	Game_Map::SetChipset(chipset_id);
 
 	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
