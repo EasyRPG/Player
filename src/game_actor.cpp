@@ -222,6 +222,8 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
+	// The data.class_id check works around a save game corruption in old
+	// versions of the Player because data.changed_class was not set properly.
 	int n = data.changed_class && data.class_id > 0
 		? Data::classes[data.class_id - 1].parameters.maxhp[data.level - 1]
 		: Data::actors[data.ID - 1].parameters.maxhp[data.level - 1];
