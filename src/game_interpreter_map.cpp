@@ -1079,7 +1079,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 		// Skip prompt.
 		Game_Message::choice_result = 0;
 		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
-		return true;
+		return false;
 	}
 
 	Game_Message::message_waiting = true;
@@ -1133,7 +1133,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	Game_Message::choice_result = 4;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
-	return true;
+	return false;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
@@ -1146,10 +1146,9 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 
 	Game_Temp::inn_calling = false;
 
-	if (inn_stay)
+	if (inn_stay) {
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
-	if (inn_stay) {
 		// Full heal
 		std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 		for (Game_Actor* actor : actors) {
@@ -1163,8 +1162,8 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 		return false;
 	}
 
-	if (Game_Temp::inn_handlers && !SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
-		return false;
+	if (Game_Temp::inn_handlers)
+		SkipTo(Cmd::NoStay, Cmd::EndInn);
 	index++;
 	return true;
 }
@@ -1195,6 +1194,9 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 		continuation = NULL;
 		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+
+		if (Game_Temp::inn_handlers)
+			SkipTo(Cmd::Stay, Cmd::EndInn);
 		index++;
 		return false;
 	}
