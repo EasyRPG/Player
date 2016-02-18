@@ -649,9 +649,18 @@ void Game_Player::CancelMoveRoute() {
 
 	// If the last executed command of the move route was a Move command, check touch and collision triggers
 	const RPG::MoveRoute& active_route = GetMoveRoute();
-	if (active_route.move_commands[GetMoveRouteIndex()].command_id <= RPG::MoveCommand::Code::move_forward) {
-		CheckTouchEvent();
-		CheckCollisionEvent();
+
+	int index = GetMoveRouteIndex();
+	if (!active_route.move_commands.empty()) {
+		int move_size = (int)active_route.move_commands.size();
+		if (index >= active_route.move_commands.size()) {
+			index = move_size - 1;
+		}
+
+		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward) {
+			CheckTouchEvent();
+			CheckCollisionEvent();
+		}
 	}
 
 	Game_Character::CancelMoveRoute();
