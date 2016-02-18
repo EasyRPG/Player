@@ -65,7 +65,7 @@ protected:
 	/** Animation rate. */
 	static const int anim_rate = 12;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

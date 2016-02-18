@@ -27,8 +27,8 @@
 #include "main_data.h"
 
 namespace {
-	FileRequestPending music_request_id;
-	FileRequestPending se_request_id;
+	FileRequestBinding music_request_id;
+	FileRequestBinding se_request_id;
 }
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;

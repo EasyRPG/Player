@@ -143,7 +143,7 @@ private:
 
 	static std::vector<Game_Character*> pending;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

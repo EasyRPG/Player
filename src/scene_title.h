@@ -104,7 +104,7 @@ private:
 	/** Contains the state of continue button. */
 	bool continue_enabled;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

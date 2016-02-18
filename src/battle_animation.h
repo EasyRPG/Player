@@ -63,7 +63,7 @@ protected:
 	bool frame_update;
 	bool large;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 // For playing animations against a character on the map.

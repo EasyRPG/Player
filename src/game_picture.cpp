@@ -95,7 +95,7 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 }
 
 void Game_Picture::Erase() {
-	request_id = FileRequestPending();
+	request_id = FileRequestBinding();
 
 	RPG::SavePicture& data = GetData();
 

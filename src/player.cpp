@@ -104,9 +104,9 @@ namespace {
 	// Overwritten by --encoding
 	std::string forced_encoding;
 
-	FileRequestPending system_request_id;
-	FileRequestPending save_request_id;
-	FileRequestPending map_request_id;
+	FileRequestBinding system_request_id;
+	FileRequestBinding save_request_id;
+	FileRequestBinding map_request_id;
 }
 
 void Player::Init(int argc, char *argv[]) {

@@ -101,7 +101,7 @@ protected:
 	// false when a newly set animation didn't loop once
 	bool idling;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

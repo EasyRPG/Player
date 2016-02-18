@@ -45,7 +45,7 @@ namespace {
 		async_requests[path] = request;
 	}
 
-	FileRequestPending CreatePending() {
+	FileRequestBinding CreatePending() {
 		return std::make_shared<int>(next_id++);
 	}
 
@@ -173,18 +173,18 @@ const std::string& FileRequestAsync::GetPath() const {
 	return path;
 }
 
-FileRequestPending FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
-	FileRequestPending pending = CreatePending();
+FileRequestBinding FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
+	FileRequestBinding pending = CreatePending();
 
-	listeners.push_back(std::make_pair(FileRequestPendingWeak(pending), func));
+	listeners.push_back(std::make_pair(FileRequestBindingWeak(pending), func));
 
 	return pending;
 }
 
-FileRequestPending FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
-	FileRequestPending pending = CreatePending();
+FileRequestBinding FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
+	FileRequestBinding pending = CreatePending();
 
-	listeners.push_back(std::make_pair(FileRequestPendingWeak(pending), func));
+	listeners.push_back(std::make_pair(FileRequestBindingWeak(pending), func));
 
 	return pending;
 }

@@ -46,7 +46,7 @@ private:
 
 	BitmapRef frame_bitmap;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

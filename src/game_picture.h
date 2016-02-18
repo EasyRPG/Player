@@ -74,7 +74,7 @@ private:
 	int old_map_x;
 	int old_map_y;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

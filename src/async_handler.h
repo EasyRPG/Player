@@ -63,8 +63,8 @@ namespace AsyncHandler {
 	bool IsImportantFilePending();
 }
 
-using FileRequestPending = std::shared_ptr<int>;
-using FileRequestPendingWeak = std::weak_ptr<int>;
+using FileRequestBinding = std::shared_ptr<int>;
+using FileRequestBindingWeak = std::weak_ptr<int>;
 
 /**
  * Handles a single asynchronous file request.
@@ -131,30 +131,36 @@ public:
 	/**
 	 * Binds a member function as request-finished event handler.
 	 * The event handler is only invoked once (one-shot).
+	 * The caller must hold a reference to the returned object, otherwise the
+	 * handler is unbound.
 	 *
 	 * @param func member function.
 	 * @param that instance of object.
-	 * @return Event ID. 
+	 * @return request binding reference.
 	 */
-	template<typename T> FileRequestPending Bind(void (T::*func)(FileRequestResult*), T* that);
+	template<typename T> FileRequestBinding Bind(void (T::*func)(FileRequestResult*), T* that);
 
 	/**
 	 * Binds a function as request-finished event handler.
 	 * The event handler is only invoked once (one-shot).
+	 * The caller must hold a reference to the returned object, otherwise the
+	 * handler is unbound.
 	 *
 	 * @param func function.
-	 * @return Event ID.
+	 * @return request binding reference.
 	 */
-	FileRequestPending Bind(boost::function<void(FileRequestResult*)> func);
+	FileRequestBinding Bind(boost::function<void(FileRequestResult*)> func);
 
 	/**
 	 * Binds a function as request-finished event handler.
 	 * The event handler is only invoked once (one-shot).
+	 * The caller must hold a reference to the returned object, otherwise the
+	 * handler is unbound.
 	 *
 	 * @param func function.
-	 * @return Event ID.
+	 * @return request binding reference.
 	 */
-	FileRequestPending Bind(void(*func)(FileRequestResult*));
+	FileRequestBinding Bind(void(*func)(FileRequestResult*));
 
 	// don't call these directly
 	void DownloadDone(bool success);
@@ -162,7 +168,7 @@ public:
 private:
 	void CallListeners(bool success);
 
-	std::vector<std::pair<FileRequestPendingWeak, boost::function<void(FileRequestResult*)> > > listeners;
+	std::vector<std::pair<FileRequestBindingWeak, boost::function<void(FileRequestResult*)> > > listeners;
 	std::string directory;
 	std::string file;
 	std::string path;
@@ -183,7 +189,7 @@ struct FileRequestResult {
 };
 
 template<typename T>
-FileRequestPending FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
+FileRequestBinding FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
 	boost::function1<void, FileRequestResult*> f;
 	f = std::bind1st(std::mem_fun(func), that);
 	return Bind(f);

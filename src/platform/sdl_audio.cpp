@@ -146,6 +146,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	}
 
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
+
 #if SDL_MIXER_MAJOR_VERSION>1
 	bgm.reset(Mix_LoadMUS_RW(rw, 1), &Mix_FreeMusic);
 #else

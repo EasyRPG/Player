@@ -59,7 +59,7 @@ private:
 	int fg_x;
 	int fg_y;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

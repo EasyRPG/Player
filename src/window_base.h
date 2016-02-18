@@ -73,7 +73,7 @@ protected:
 	std::string windowskin_name;
 
 private:
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

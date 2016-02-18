@@ -71,7 +71,7 @@ private:
 	void OnTileSpriteReady(FileRequestResult*);
 	void OnCharSpriteReady(FileRequestResult*);
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

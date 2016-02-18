@@ -86,7 +86,7 @@ protected:
 
 	int select_target_flash_count = 0;
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

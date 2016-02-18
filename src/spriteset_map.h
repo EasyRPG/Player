@@ -78,7 +78,7 @@ protected:
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);
 
-	FileRequestPending panorama_request_id;
-	FileRequestPending tilemap_request_id;
+	FileRequestBinding panorama_request_id;
+	FileRequestBinding tilemap_request_id;
 };
 #endif

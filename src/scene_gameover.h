@@ -46,7 +46,7 @@ private:
 	
 	void OnBackgroundReady(FileRequestResult* result);
 
-	FileRequestPending request_id;
+	FileRequestBinding request_id;
 };
 
 #endif
