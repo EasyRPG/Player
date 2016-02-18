@@ -63,6 +63,7 @@ void Game_Battle::Init() {
 
 	Game_Temp::battle_running = true;
 	turn = 0;
+	terminate = false;
 	escape_fail_count = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
