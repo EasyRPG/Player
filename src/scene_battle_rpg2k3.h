@@ -20,7 +20,7 @@
 
 // Headers
 #include "scene_battle.h"
-
+#include "async_handler.h"
 #include <boost/scoped_ptr.hpp>
 
 typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
@@ -85,6 +85,8 @@ protected:
 	std::vector<Game_Battler*> targets;
 
 	int select_target_flash_count = 0;
+
+	FileRequestPending request_id;
 };
 
 #endif

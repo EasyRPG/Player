@@ -17,7 +17,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
-#include "async_handler.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
 #include "output.h"
@@ -135,7 +134,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-	request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
+	request_id = request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
 	request->Start();
 }
 

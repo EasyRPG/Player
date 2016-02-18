@@ -63,6 +63,9 @@ namespace AsyncHandler {
 	bool IsImportantFilePending();
 }
 
+using FileRequestPending = std::shared_ptr<int>;
+using FileRequestPendingWeak = std::weak_ptr<int>;
+
 /**
  * Handles a single asynchronous file request.
  */
@@ -133,7 +136,7 @@ public:
 	 * @param that instance of object.
 	 * @return Event ID. 
 	 */
-	template<typename T> int Bind(void (T::*func)(FileRequestResult*), T* that);
+	template<typename T> FileRequestPending Bind(void (T::*func)(FileRequestResult*), T* that);
 
 	/**
 	 * Binds a function as request-finished event handler.
@@ -142,7 +145,7 @@ public:
 	 * @param func function.
 	 * @return Event ID.
 	 */
-	int Bind(boost::function<void(FileRequestResult*)> func);
+	FileRequestPending Bind(boost::function<void(FileRequestResult*)> func);
 
 	/**
 	 * Binds a function as request-finished event handler.
@@ -151,16 +154,7 @@ public:
 	 * @param func function.
 	 * @return Event ID.
 	 */
-	int Bind(void(*func)(FileRequestResult*));
-
-	/**
-	 * Unbinds a previously binded event handler.
-	 * If the id wasn't binded the call fails.
-	 *
-	 * @param id Event ID returned by bind.
-	 * @return Whether unbind was successful.
-	 */
-	bool Unbind(int id);
+	FileRequestPending Bind(void(*func)(FileRequestResult*));
 
 	// don't call these directly
 	void DownloadDone(bool success);
@@ -168,7 +162,7 @@ public:
 private:
 	void CallListeners(bool success);
 
-	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > > listeners;	
+	std::vector<std::pair<FileRequestPendingWeak, boost::function<void(FileRequestResult*)> > > listeners;
 	std::string directory;
 	std::string file;
 	std::string path;
@@ -189,9 +183,10 @@ struct FileRequestResult {
 };
 
 template<typename T>
-int FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
+FileRequestPending FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
 	boost::function1<void, FileRequestResult*> f;
 	f = std::bind1st(std::mem_fun(func), that);
 	return Bind(f);
 }
+
 #endif

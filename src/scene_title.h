@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "window_command.h"
 #include <boost/scoped_ptr.hpp>
+#include "async_handler.h"
 
 /**
  * Scene Title class.
@@ -102,6 +103,8 @@ private:
 
 	/** Contains the state of continue button. */
 	bool continue_enabled;
+
+	FileRequestPending request_id;
 };
 
 #endif

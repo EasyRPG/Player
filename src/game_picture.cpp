@@ -17,7 +17,6 @@
 
 // Headers
 #include "bitmap.h"
-#include "async_handler.h"
 #include "options.h"
 #include "cache.h"
 #include "game_map.h"
@@ -31,8 +30,7 @@
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
 	old_map_x(0),
-	old_map_y(0),
-	request(NULL)
+	old_map_y(0)
 {
 	SetTransition(0);
 }
@@ -78,10 +76,7 @@ void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	data.transparency = _transparency;
 	data.time_left = 0;
 
-	if (request) {
-		request->Unbind(request_id);
-	}
-	request = AsyncHandler::RequestFile("Picture", data.name);
+	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", data.name);
 	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
 	request->Start();
 
@@ -100,6 +95,8 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 }
 
 void Game_Picture::Erase() {
+	request_id = FileRequestPending();
+
 	RPG::SavePicture& data = GetData();
 
 	data.name.clear();

@@ -23,6 +23,7 @@
 #include "window.h"
 #include "game_actor.h"
 #include "main_data.h"
+#include "async_handler.h"
 
 /**
  * Window Base class.
@@ -70,6 +71,9 @@ protected:
 	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
 
 	std::string windowskin_name;
+
+private:
+	FileRequestPending request_id;
 };
 
 #endif

@@ -26,6 +26,11 @@
 #include "graphics.h"
 #include "main_data.h"
 
+namespace {
+	FileRequestPending music_request_id;
+	FileRequestPending se_request_id;
+}
+
 static RPG::SaveSystem& data = Main_Data::game_data.system;
 
 bool bgm_pending = false;
@@ -65,7 +70,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 			Audio().BGM_Stop();
 			bgm_pending = true;
 			FileRequestAsync* request = AsyncHandler::RequestFile("Music", bgm.name);
-			request->Bind(&Game_System::OnBgmReady);
+			music_request_id = request->Bind(&Game_System::OnBgmReady);
 			request->Start();
 		}
 	} else {
@@ -85,7 +90,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 		// warnings.
 		if (se.volume > 0) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-			request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
+			se_request_id = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
 			request->Start();
 		}
 	}
@@ -275,11 +280,6 @@ void Game_System::SetTransition(int which, int transition) {
 }
 
 void Game_System::OnBgmReady(FileRequestResult* result) {
-	if (data.current_music.name != result->file) {
-		// Not the music we expect, probably changed over time
-		return;
-	}
-
 	// Take from current_music, params could have changed over time
 	Audio().BGM_Play(result->file, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 

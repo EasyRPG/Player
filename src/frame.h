@@ -45,6 +45,8 @@ private:
 	void OnFrameGraphicReady(FileRequestResult* result);
 
 	BitmapRef frame_bitmap;
+
+	FileRequestPending request_id;
 };
 
 #endif

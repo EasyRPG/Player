@@ -17,7 +17,6 @@
 
 // Headers
 #include <boost/bind.hpp>
-#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "game_party.h"
@@ -37,7 +36,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		const std::string& sprite_name = actors[i]->GetSpriteName();
 		FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", sprite_name);
-		request->Bind(boost::bind(&Window_ShopParty::OnCharsetSpriteReady, this, _1, (int)i));
+		request_id = request->Bind(boost::bind(&Window_ShopParty::OnCharsetSpriteReady, this, _1, (int)i));
 		request->Start();
 	}
 

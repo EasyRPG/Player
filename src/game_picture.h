@@ -20,7 +20,7 @@
 
 // Headers
 #include <string>
-#include <vector>
+#include "async_handler.h"
 #include "system.h"
 #include "rpg_save.h"
 #include "sprite.h"
@@ -30,8 +30,6 @@
  * Picture class.
  */
 class Sprite;
-class FileRequestAsync;
-struct FileRequestResult;
 
 class Game_Picture {
 public:
@@ -76,8 +74,7 @@ private:
 	int old_map_x;
 	int old_map_y;
 
-	int request_id;
-	FileRequestAsync* request;
+	FileRequestPending request_id;
 };
 
 #endif

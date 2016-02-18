@@ -19,10 +19,8 @@
 #include <boost/bind.hpp>
 #include "battle_animation.h"
 #include "sprite_battler.h"
-#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
-#include "game_enemy.h"
 #include "main_data.h"
 #include "player.h"
 #include "rpg_battleranimation.h"
@@ -185,7 +183,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 			else {
 				animation.reset();
 				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-				request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+				request_id = request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
 				request->Start();
 			}
 		}
@@ -214,7 +212,7 @@ void Sprite_Battler::CreateSprite() {
 		}
 		else {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Monster", sprite_name);
-			request->Bind(&Sprite_Battler::OnMonsterSpriteReady, this);
+			request_id = request->Bind(&Sprite_Battler::OnMonsterSpriteReady, this);
 			request->Start();
 		}
 	}

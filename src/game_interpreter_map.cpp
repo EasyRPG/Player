@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
-#include "async_handler.h"
 #include "audio.h"
 #include "game_map.h"
 #include "game_battle.h"
@@ -876,7 +875,7 @@ void Game_Interpreter_Map::OnChangeSystemGraphicReady(FileRequestResult* result)
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
-	request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
+	request_id = request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
 	request->Start();
 

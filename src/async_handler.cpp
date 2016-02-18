@@ -38,11 +38,15 @@ namespace {
 		if (it != async_requests.end()) {
 			return &(it->second);
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	void RegisterRequest(const std::string& path, const FileRequestAsync& request) {
 		async_requests[path] = request;
+	}
+
+	FileRequestPending CreatePending() {
+		return std::make_shared<int>(next_id++);
 	}
 
 #ifdef EMSCRIPTEN
@@ -169,29 +173,20 @@ const std::string& FileRequestAsync::GetPath() const {
 	return path;
 }
 
-int FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
-	listeners.push_back(std::make_pair(next_id, func));
+FileRequestPending FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
+	FileRequestPending pending = CreatePending();
 
-	return next_id++;
+	listeners.push_back(std::make_pair(FileRequestPendingWeak(pending), func));
+
+	return pending;
 }
 
-int FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
-	listeners.push_back(std::make_pair(next_id, func));
+FileRequestPending FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
+	FileRequestPending pending = CreatePending();
 
-	return next_id++;
-}
+	listeners.push_back(std::make_pair(FileRequestPendingWeak(pending), func));
 
-bool FileRequestAsync::Unbind(int id) {
-	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > >::iterator it;
-
-	for (it = listeners.begin(); it != listeners.end(); ++it) {
-		if (it->first == id) {
-			listeners.erase(it);
-			return true;
-		}
-	}
-
-	return false;
+	return pending;
 }
 
 void FileRequestAsync::CallListeners(bool success) {
@@ -200,9 +195,12 @@ void FileRequestAsync::CallListeners(bool success) {
 	result.file = file;
 	result.success = success;
 
-	std::vector<std::pair<int, boost::function<void(FileRequestResult*)> > >::iterator it;
-	for (it = listeners.begin(); it != listeners.end(); ++it) {
-		(it->second)(&result);
+	for (auto& listener : listeners) {
+		if (!listener.first.expired()) {
+			(listener.second)(&result);
+		} else {
+			Output::Debug("Request cancelled: %s", GetPath().c_str());
+		}
 	}
 
 	listeners.clear();

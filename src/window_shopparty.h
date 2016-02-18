@@ -20,8 +20,7 @@
 
 // Headers
 #include "window_base.h"
-
-struct FileRequestResult;
+#include "async_handler.h"
 
 /**
  * Window ShopParty Class.
@@ -65,6 +64,8 @@ protected:
 
 	/** Animation rate. */
 	static const int anim_rate = 12;
+
+	FileRequestPending request_id;
 };
 
 #endif

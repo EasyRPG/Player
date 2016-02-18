@@ -26,6 +26,7 @@
 #include "tilemap.h"
 #include "plane.h"
 #include <string>
+#include "async_handler.h"
 
 class Sprite_Character;
 class Game_Character;
@@ -77,9 +78,7 @@ protected:
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);
 
-	FileRequestAsync* panorama_request;
-	FileRequestAsync* tilemap_request;
-	int panorama_request_id;
-	int tilemap_request_id;
+	FileRequestPending panorama_request_id;
+	FileRequestPending tilemap_request_id;
 };
 #endif
