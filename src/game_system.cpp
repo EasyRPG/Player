@@ -25,10 +25,11 @@
 #include "cache.h"
 #include "graphics.h"
 #include "main_data.h"
+#include "scene_save.h"
 
 namespace {
 	FileRequestBinding music_request_id;
-	FileRequestBinding se_request_id;
+	std::map<std::string, FileRequestBinding> se_request_ids;
 }
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -79,6 +80,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 }
 
 void Game_System::BgmStop() {
+	music_request_id = FileRequestBinding();
 	data.current_music.name = "(OFF)";
 	Audio().BGM_Stop();
 }
@@ -90,7 +92,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 		// warnings.
 		if (se.volume > 0) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-			se_request_id = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
+			se_request_ids[se.name] = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
 			request->Start();
 		}
 	}
@@ -287,5 +289,10 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
+	auto item = se_request_ids.find(result->file);
+	if (item != se_request_ids.end()) {
+		se_request_ids.erase(item);
+	}
+
 	Audio().SE_Play(result->file, volume, tempo);
 }
