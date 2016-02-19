@@ -24,6 +24,7 @@
 #include "game_actor.h"
 #include "main_data.h"
 #include "async_handler.h"
+#include <map>
 
 /**
  * Window Base class.
@@ -67,13 +68,18 @@ public:
 	void DrawGauge(Game_Battler* actor, int cx, int cy);
 	/** @} */
 
+	/**
+	 * Cancels async loading of faces.
+	 * Used to prevent rendering faces that are loaded too slow on the wrong page.
+	 */
+	void CancelFace();
+
 protected:
 	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
 
 	std::string windowskin_name;
 
-private:
-	FileRequestBinding request_id;
+	std::vector<FileRequestBinding> face_request_ids;
 };
 
 #endif

@@ -146,6 +146,10 @@ void Window_Message::ShowGoldWindow() {
 }
 
 void Window_Message::InsertNewPage() {
+	// Cancel pending face requests for async
+	// Otherwise they render on the wrong page
+	face_request_ids.clear();
+
 	contents->Clear();
 
 	y = Game_Message::GetRealPosition() * 80;

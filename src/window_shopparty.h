@@ -65,7 +65,7 @@ protected:
 	/** Animation rate. */
 	static const int anim_rate = 12;
 
-	FileRequestBinding request_id;
+	std::vector<FileRequestBinding> request_ids;
 };
 
 #endif
