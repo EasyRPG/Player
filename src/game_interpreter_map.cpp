@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
-#include "async_handler.h"
 #include "audio.h"
 #include "game_map.h"
 #include "game_battle.h"
@@ -116,8 +115,6 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 	}
 
 	save.back().ID = event_id;
-
-	save.back().current_command++;
 
 	return save;
 }
@@ -878,7 +875,7 @@ void Game_Interpreter_Map::OnChangeSystemGraphicReady(FileRequestResult* result)
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
-	request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
+	request_id = request->Bind(&Game_Interpreter_Map::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
 	request->Start();
 
@@ -1227,7 +1224,7 @@ bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
 	Game_Temp::save_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
@@ -1392,6 +1389,11 @@ bool Game_Interpreter_Map::CommandEraseEvent(RPG::EventCommand const& /* com */)
 
 bool Game_Interpreter_Map::CommandChangeMapTileset(RPG::EventCommand const& com) { // code 11710
 	int chipset_id = com.parameters[0];
+
+	if (chipset_id == Game_Map::GetChipset()) {
+		return true;
+	}
+
 	Game_Map::SetChipset(chipset_id);
 
 	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();

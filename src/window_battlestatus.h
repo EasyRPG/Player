@@ -95,6 +95,8 @@ protected:
 
 	// Debug helper
 	bool enemy;
+
+	FileRequestBinding request_id;
 };
 
 #endif

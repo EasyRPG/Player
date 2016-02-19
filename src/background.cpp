@@ -18,7 +18,6 @@
 // Headers
 #include <boost/bind.hpp>
 #include <string>
-#include "async_handler.h"
 #include "data.h"
 #include "rpg_terrain.h"
 #include "baseui.h"
@@ -36,7 +35,7 @@ Background::Background(const std::string& name) :
 
 	if (!name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
-		request->Bind(&Background::OnBackgroundGraphicReady, this);
+		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 	}
 }
@@ -53,13 +52,13 @@ Background::Background(int terrain_id) :
 	if (!terrain.background_name.empty()) {
 		if (terrain.background_type == 0) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
-			request->Bind(&Background::OnBackgroundGraphicReady, this);
+			request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 			request->Start();
 			return;
 		}
 	
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
-		request->Bind(&Background::OnBackgroundGraphicReady, this);
+		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 	}
 
@@ -68,7 +67,7 @@ Background::Background(int terrain_id) :
 
 	if (terrain.background_b) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_b_name);
-		request->Bind(&Background::OnForegroundFrameGraphicReady, this);
+		request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
 		request->Start();
 
 		fg_hscroll = terrain.background_b_scrollh ? terrain.background_b_scrollh_speed : 0;

@@ -22,8 +22,7 @@
 #include <string>
 #include "system.h"
 #include "drawable.h"
-
-struct FileRequestResult;
+#include "async_handler.h"
 
 class Background : public Drawable {
 public:
@@ -59,6 +58,8 @@ private:
 	int fg_vscroll;
 	int fg_x;
 	int fg_y;
+
+	FileRequestBinding request_id;
 };
 
 #endif

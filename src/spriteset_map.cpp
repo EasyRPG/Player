@@ -17,7 +17,6 @@
 
 // Headers
 #include "spriteset_map.h"
-#include "async_handler.h"
 #include "cache.h"
 #include "game_map.h"
 #include "main_data.h"
@@ -29,9 +28,7 @@
 #include "bitmap.h"
 
 // Constructor
-Spriteset_Map::Spriteset_Map() :
-	panorama_request(NULL),
-	tilemap_request(NULL) {
+Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
 	
@@ -43,11 +40,6 @@ Spriteset_Map::Spriteset_Map() :
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(&ev));
 	}
 
-	Game_Vehicle* vehicle;
-	for (int i = 1; i <= 3; ++i) {
-		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
-		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
-	}
 	airship_shadow.reset(new Sprite_AirshipShadow());
 
 	character_sprites.push_back
@@ -70,15 +62,23 @@ void Spriteset_Map::Update() {
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		if (panorama_request) {
-			panorama_request->Unbind(panorama_request_id);
-		}
-		panorama_request = AsyncHandler::RequestFile("Panorama", panorama_name);
-		panorama_request_id = panorama_request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
-		panorama_request->Start();
+		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
+		panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+		request->Start();
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
+
+	Game_Vehicle* vehicle;
+	int map_id = Game_Map::GetMapId();
+	for (int i = 1; i <= 3; ++i) {
+		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
+
+		if (!vehicle_loaded[i - 1] && vehicle->GetMapId() == map_id) {
+			vehicle_loaded[i - 1] = true;
+			character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
+		}
+	}
 
 	airship_shadow->Update();
 
@@ -99,15 +99,11 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	if (tilemap_request) {
-		tilemap_request->Unbind(tilemap_request_id);
-	}
-
 	if (!Game_Map::GetChipsetName().empty()) {
-		tilemap_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
-		tilemap_request_id = tilemap_request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-		tilemap_request->SetImportantFile(true);
-		tilemap_request->Start();
+		FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+		tilemap_request_id = request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
+		request->SetImportantFile(true);
+		request->Start();
 	}
 	else {
 		OnTilemapSpriteReady(NULL);

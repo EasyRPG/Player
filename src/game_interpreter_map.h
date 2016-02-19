@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
+#include "async_handler.h"
 #include "game_character.h"
 #include "rpg_eventcommand.h"
 #include "rpg_saveeventcommands.h"
@@ -29,7 +30,6 @@
 
 class Game_Event;
 class Game_CommonEvent;
-class FileRequestResult;
 
 /**
  * Game_Interpreter_Map class
@@ -142,6 +142,8 @@ private:
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
 
 	static std::vector<Game_Character*> pending;
+
+	FileRequestBinding request_id;
 };
 
 #endif

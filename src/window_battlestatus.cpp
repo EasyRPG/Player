@@ -17,7 +17,6 @@
 
 // Headers
 #include <algorithm>
-#include "async_handler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "input.h"
@@ -75,7 +74,7 @@ void Window_BattleStatus::Refresh() {
 		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
 			if (!request->IsReady()) {
-				request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
+				request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
 				request->Start();
 				break;
 			}
@@ -118,7 +117,7 @@ void Window_BattleStatus::RefreshGauge() {
 			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 				FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
 				if (!request->IsReady()) {
-					request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
+					request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
 					request->Start();
 					break;
 				}

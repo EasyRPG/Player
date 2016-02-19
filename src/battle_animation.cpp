@@ -16,7 +16,6 @@
  */
 
 #include "bitmap.h"
-#include "async_handler.h"
 #include "rpg_animation.h"
 #include "output.h"
 #include "game_battle.h"
@@ -45,17 +44,17 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 	// true on desktop.
 #ifdef EMSCRIPTEN
 	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
-	request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
+	request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 	request->Start();
 #else
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
-		request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
+		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation.animation_name);
-		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
+		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	}
 	else {
@@ -107,7 +106,7 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	else {
 		// Try battle2
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", result->file);
-		request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
+		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	}
 }

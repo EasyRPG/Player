@@ -19,6 +19,7 @@
 #define _SCENE_GAMEOVER_H_
 
 // Headers
+#include "async_handler.h"
 #include "scene.h"
 #include "sprite.h"
 #include <boost/scoped_ptr.hpp>
@@ -44,6 +45,8 @@ private:
 	boost::scoped_ptr<Sprite> background;
 	
 	void OnBackgroundReady(FileRequestResult* result);
+
+	FileRequestBinding request_id;
 };
 
 #endif

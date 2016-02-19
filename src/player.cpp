@@ -103,6 +103,10 @@ namespace {
 
 	// Overwritten by --encoding
 	std::string forced_encoding;
+
+	FileRequestBinding system_request_id;
+	FileRequestBinding save_request_id;
+	FileRequestBinding map_request_id;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -565,7 +569,7 @@ void Player::ResetGameObjects() {
 	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
-		request->Bind(&OnSystemFileReady);
+		system_request_id = request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
 
@@ -658,12 +662,12 @@ void Player::LoadSavegame(const std::string& save_name) {
 	int map_id = save->party_location.map_id;
 
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
-	map->Bind(&OnMapSaveFileReady);
+	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
 
 	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
 	system->SetImportantFile(true);
-	system->Bind(&OnSystemFileReady);
+	system_request_id = system->Bind(&OnSystemFileReady);
 
 	map->Start();
 	system->Start();
@@ -695,7 +699,7 @@ void Player::SetupPlayerSpawn() {
 		Data::treemap.start.party_map_id : Player::start_map_id;
 
 	FileRequestAsync* request = Game_Map::RequestMap(map_id);
-	request->Bind(&OnMapFileReady);
+	map_request_id = request->Bind(&OnMapFileReady);
 	request->SetImportantFile(true);
 	request->Start();
 }

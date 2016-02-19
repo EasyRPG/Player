@@ -19,7 +19,6 @@
 #include <string>
 #include <vector>
 #include "baseui.h"
-#include "async_handler.h"
 #include "cache.h"
 #include "bitmap.h"
 #include "graphics.h"
@@ -29,7 +28,7 @@
 Frame::Frame() {
 	if (!Data::system.frame_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", Data::system.frame_name);
-		request->Bind(&Frame::OnFrameGraphicReady, this);
+		request_id = request->Bind(&Frame::OnFrameGraphicReady, this);
 		request->Start();
 	}
 

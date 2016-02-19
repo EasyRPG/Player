@@ -19,7 +19,6 @@
 #include <fstream>
 #include <vector>
 #include "scene_title.h"
-#include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
 #include "game_screen.h"
@@ -116,7 +115,7 @@ void Scene_Title::CreateTitleGraphic() {
 	{
 		title.reset(new Sprite());
 		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
-		request->Bind(&Scene_Title::OnTitleSpriteReady, this);
+		request_id = request->Bind(&Scene_Title::OnTitleSpriteReady, this);
 		request->Start();
 	}
 }

@@ -20,7 +20,6 @@
 #include <iomanip>
 #include <sstream>
 #include "window_base.h"
-#include "async_handler.h"
 #include "cache.h"
 #include "data.h"
 #include "game_system.h"
@@ -74,7 +73,7 @@ void Window_Base::DrawFace(const std::string& face_name, int face_index, int cx,
 	if (face_name.empty()) { return; }
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
-	request->Bind(boost::bind(&Window_Base::OnFaceReady, this, _1, face_index, cx, cy, flip));
+	face_request_ids.push_back(request->Bind(boost::bind(&Window_Base::OnFaceReady, this, _1, face_index, cx, cy, flip)));
 	request->Start();
 }
 

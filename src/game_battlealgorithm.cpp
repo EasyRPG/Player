@@ -567,62 +567,56 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
-		if (skill.power > 0) {
-			if (this->healing) {
-				this->success = true;
+		if (this->healing) {
+			this->success = true;
 
-				if (skill.affect_hp)
-					this->hp = skill.power;
-				if (skill.affect_sp)
-					this->sp = skill.power;
-				if (skill.affect_attack)
-					this->attack = skill.power;
-				if (skill.affect_defense)
-					this->defense = skill.power;
-				if (skill.affect_spirit)
-					this->spirit = skill.power;
-				if (skill.affect_agility)
-					this->agility = skill.power;
+			if (skill.affect_hp)
+				this->hp = skill.power;
+			if (skill.affect_sp)
+				this->sp = skill.power;
+			if (skill.affect_attack)
+				this->attack = skill.power;
+			if (skill.affect_defense)
+				this->defense = skill.power;
+			if (skill.affect_spirit)
+				this->spirit = skill.power;
+			if (skill.affect_agility)
+				this->agility = skill.power;
 
-			}
-			else if (rand() % 100 < skill.hit) {
-				this->success = true;
-
-				int effect = skill.power +
-					source->GetAtk() * skill.physical_rate / 20 +
-					source->GetSpi() * skill.magical_rate / 40 -
-					(*current_target)->GetDef() * skill.physical_rate / 40 -
-					(*current_target)->GetSpi() * skill.magical_rate / 80;
-
-				// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
-				// see #480
-
-				effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
-
-				if (skill.affect_hp) {
-					this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
-
-					if ((*current_target)->GetHp() - this->hp <= 0) {
-						// Death state
-						killed_by_attack_damage = true;
-						conditions.push_back(Data::states[0]);
-					}
-				}
-				if (skill.affect_sp)
-					this->sp = effect;
-				if (skill.affect_attack)
-					this->attack = effect;
-				if (skill.affect_defense)
-					this->defense = effect;
-				if (skill.affect_spirit)
-					this->spirit = effect;
-				if (skill.affect_agility)
-					this->agility = agility;
-			}
 		}
-		else {
-			// Force a no damage message
-			this->hp = 0;
+		else if (rand() % 100 < skill.hit) {
+			this->success = true;
+
+			int effect = skill.power +
+				source->GetAtk() * skill.physical_rate / 20 +
+				source->GetSpi() * skill.magical_rate / 40 -
+				(*current_target)->GetDef() * skill.physical_rate / 40 -
+				(*current_target)->GetSpi() * skill.magical_rate / 80;
+
+			// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
+			// see #480
+
+			effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
+
+			if (skill.affect_hp) {
+				this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
+
+				if ((*current_target)->GetHp() - this->hp <= 0) {
+					// Death state
+					killed_by_attack_damage = true;
+					conditions.push_back(Data::states[0]);
+				}
+			}
+			if (skill.affect_sp)
+				this->sp = effect;
+			if (skill.affect_attack)
+				this->attack = effect;
+			if (skill.affect_defense)
+				this->defense = effect;
+			if (skill.affect_spirit)
+				this->spirit = effect;
+			if (skill.affect_agility)
+				this->agility = agility;
 		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {

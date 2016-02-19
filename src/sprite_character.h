@@ -21,6 +21,7 @@
 // Headers
 #include "sprite.h"
 #include <string>
+#include "async_handler.h"
 
 class Game_Character;
 class FileRequestAsync;
@@ -70,10 +71,7 @@ private:
 	void OnTileSpriteReady(FileRequestResult*);
 	void OnCharSpriteReady(FileRequestResult*);
 
-	FileRequestAsync* tile_request;
-	FileRequestAsync* char_request;
-	int tile_request_id;
-	int char_request_id;
+	FileRequestBinding request_id;
 };
 
 #endif

@@ -22,8 +22,8 @@
 #include "sprite.h"
 #include "game_battler.h"
 #include <boost/scoped_ptr.hpp>
+#include "async_handler.h"
 
-struct FileRequestResult;
 class BattleAnimation;
 
 /**
@@ -100,6 +100,8 @@ protected:
 	boost::scoped_ptr<BattleAnimation> animation;
 	// false when a newly set animation didn't loop once
 	bool idling;
+
+	FileRequestBinding request_id;
 };
 
 #endif
