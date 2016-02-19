@@ -40,11 +40,6 @@ Spriteset_Map::Spriteset_Map() {
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(&ev));
 	}
 
-	Game_Vehicle* vehicle;
-	for (int i = 1; i <= 3; ++i) {
-		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
-		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
-	}
 	airship_shadow.reset(new Sprite_AirshipShadow());
 
 	character_sprites.push_back
@@ -73,6 +68,17 @@ void Spriteset_Map::Update() {
 	}
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
+
+	Game_Vehicle* vehicle;
+	int map_id = Game_Map::GetMapId();
+	for (int i = 1; i <= 3; ++i) {
+		vehicle = Game_Map::GetVehicle((Game_Vehicle::Type) i);
+
+		if (!vehicle_loaded[i - 1] && vehicle->GetMapId() == map_id) {
+			vehicle_loaded[i - 1] = true;
+			character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
+		}
+	}
 
 	airship_shadow->Update();
 

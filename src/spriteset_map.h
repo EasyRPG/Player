@@ -80,5 +80,7 @@ protected:
 
 	FileRequestBinding panorama_request_id;
 	FileRequestBinding tilemap_request_id;
+
+	bool vehicle_loaded[3] = {};
 };
 #endif
