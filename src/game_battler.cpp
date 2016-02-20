@@ -270,6 +270,22 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 		: skill.sp_cost;
 }
 
+void Game_Battler::SetAtkModifier(int modifier) {
+	atk_modifier = modifier;
+}
+
+void Game_Battler::SetDefModifier(int modifier) {
+	def_modifier = modifier;
+}
+
+void Game_Battler::SetSpiModifier(int modifier) {
+	spi_modifier = modifier;
+}
+
+void Game_Battler::SetAgiModifier(int modifier) {
+	agi_modifier = modifier;
+}
+
 void Game_Battler::AddState(int state_id) {
 	std::vector<int16_t>& states = GetStates();
 	if (state_id > 0 && !HasState(state_id)) {
@@ -381,6 +397,8 @@ int Game_Battler::GetAtk() const {
 		}
 	}
 
+	n += atk_modifier;
+
 	n = min(max(n, 1), 999);
 
 	return n;
@@ -397,6 +415,8 @@ int Game_Battler::GetDef() const {
 			break;
 		}
 	}
+
+	n += def_modifier;
 
 	n = min(max(n, 1), 999);
 
@@ -415,6 +435,8 @@ int Game_Battler::GetSpi() const {
 		}
 	}
 
+	n += spi_modifier;
+
 	n = min(max(n, 1), 999);
 
 	return n;
@@ -431,6 +453,8 @@ int Game_Battler::GetAgi() const {
 			break;
 		}
 	}
+
+	n += agi_modifier;
 
 	n = min(max(n, 1), 999);
 
@@ -518,6 +542,10 @@ void Game_Battler::ResetBattle() {
 	states_turn_count.clear();
 	states_turn_count.resize(Data::states.size());
 	last_battle_action = -1;
+	atk_modifier = 0;
+	def_modifier = 0;
+	spi_modifier = 0;
+	agi_modifier = 0;
 }
 
 int Game_Battler::GetBattleTurn() const {

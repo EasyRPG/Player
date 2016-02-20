@@ -294,6 +294,34 @@ public:
 	int CalculateSkillCost(int skill_id) const;
 
 	/**
+	 * Sets the battler attack modifier.
+	 *
+	 * @param modifier attack modifier
+	 */
+	void SetAtkModifier(int modifier);
+
+	/**
+	 * Sets the battler defense modifier.
+	 *
+	 * @param modifier defense modifier.
+	 */
+	void SetDefModifier(int modifier);
+
+	/**
+	 * Sets the battler spirity modifier.
+	 *
+	 * @param modifier spirity modifier.
+	 */
+	void SetSpiModifier(int modifier);
+
+	/**
+	 * Sets the battler agility modifier.
+	 *
+	 * @param current attack.
+	 */
+	void SetAgiModifier(int modifier);
+
+	/**
 	 * Adds a State.
 	 *
 	 * @param state_id ID of state to add.
@@ -463,6 +491,10 @@ protected:
 
 	bool charged;
 	bool defending;
+	int atk_modifier;
+	int def_modifier;
+	int spi_modifier;
+	int agi_modifier;
 	int battle_turn;
 	std::vector<int16_t> states_turn_count;
 	int last_battle_action;
