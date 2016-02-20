@@ -243,6 +243,6 @@ void Game_Picture::Update() {
 	UpdateSprite();
 }
 
-RPG::SavePicture& Game_Picture::GetData() {
+RPG::SavePicture& Game_Picture::GetData() const {
 	return Main_Data::game_data.pictures[id - 1];
 }

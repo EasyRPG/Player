@@ -106,7 +106,7 @@ protected:
 	 * @param operand operand (number or var ID).
 	 */
 	int OperateValue(int operation, int operand_type, int operand);
-	Game_Character* GetCharacter(int character_id);
+	Game_Character* GetCharacter(int character_id) const;
 
 	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
 	void SetContinuation(ContinuationFunction func);

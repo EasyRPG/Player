@@ -870,12 +870,15 @@ void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global)
 	Main_Data::game_data.screen.battleanim_global = global;
 
 	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	Game_Character& chara = *Game_Character::GetCharacter(target_id, target_id);
-	chara.SetFlashTimeLeft(0); 	// Any flash always ends
-	if (global) {
-		animation.reset(new BattleAnimationGlobal(anim));
-	} else {
-		animation.reset(new BattleAnimationChara(anim, chara));
+	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
+
+	if (chara) {
+		chara->SetFlashTimeLeft(0); 	// Any flash always ends
+		if (global) {
+			animation.reset(new BattleAnimationGlobal(anim));
+		} else {
+			animation.reset(new BattleAnimationChara(anim, *chara));
+		}
 	}
 }
 

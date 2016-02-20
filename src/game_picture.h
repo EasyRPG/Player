@@ -69,7 +69,7 @@ private:
 	 *
 	 * @return Reference to the SavePicture data 
 	 */
-	RPG::SavePicture& GetData();
+	RPG::SavePicture& GetData() const;
 
 	int old_map_x;
 	int old_map_y;
