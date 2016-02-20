@@ -660,12 +660,11 @@ void Game_BattleAlgorithm::Skill::Apply() {
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
-		// TODO: How to handle using_message2?
 		if (item && item->using_message == 0) {
 			// Use item message
 			return Item(source, *item).GetStartMessage();
 		}
-		return source->GetName() + skill.using_message1;
+		return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
 	}
 	else {
 		return source->GetName() + ": " + skill.name;

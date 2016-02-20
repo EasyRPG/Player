@@ -16,14 +16,11 @@
  */
 
 // Headers
-#include <cctype>
+#include <sstream>
 #include "game_message.h"
 #include "window_battlemessage.h"
 #include "bitmap.h"
 #include "font.h"
-#include "graphics.h"
-
-#include <boost/next_prior.hpp>
 
 Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -37,7 +34,11 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 }
 
 void Window_BattleMessage::Push(const std::string& message) {
-	lines.push_back(message);
+	std::stringstream smessage(message);
+	std::string line;
+	while (getline(smessage, line))
+		lines.push_back(line);
+
 	needs_refresh = true;
 }
 
