@@ -16,9 +16,72 @@
  */
 
 #ifdef _WIN32
-#  include "platform/registry_win.cpp"
-#elif defined(HAVE_WINE)
-#  include "platform/wine_registry.cpp"
-#elif !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
-#  include "platform/registry_wine.cpp"
+
+// Headers
+#include <string>
+#include "registry.h"
+#include "utils.h"
+
+/**
+ * Adds Manifest depending on architecture.
+ */
+#ifdef _MSC_VER
+	#if defined _M_IX86
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#elif defined _M_X64
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#else
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#endif
+#endif
+
+std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
+	char value[1024];
+	DWORD size = 1024;
+	DWORD type = REG_SZ;
+	HKEY key_handle;
+
+	Utils::wstring wkey = Utils::ToWideString(key.c_str());
+
+	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
+		return "";
+	}
+
+	Utils::wstring wval = Utils::ToWideString(val.c_str());
+
+	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, (LPBYTE)&value, &size)) {
+		return "";
+	}
+	RegCloseKey(key_handle);
+
+	std::string string_value = "";
+	for (unsigned int i = 0; i < size; i++) {
+		if (value[i] != '\0' ) {
+			string_value += value[i];
+		}
+	}
+	return string_value;
+}
+
+int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin) {
+	DWORD size = 1024;
+	DWORD type = REG_BINARY;
+	HKEY key_handle;
+
+	Utils::wstring wkey = Utils::ToWideString(key.c_str());
+
+	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
+		return 0;
+	}
+
+	Utils::wstring wval = Utils::ToWideString(val.c_str());
+
+	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, bin, &size)) {
+		return 0;
+	}
+	RegCloseKey(key_handle);
+
+	return size;
+}
+
 #endif
