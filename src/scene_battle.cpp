@@ -425,16 +425,16 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 	switch (skill.type) {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
-		case RPG::Skill::Type_switch:
 			// FIXME: Can enemy use this?
 			return;
+		case RPG::Skill::Type_switch:
 		case RPG::Skill::Type_normal:
 		case RPG::Skill::Type_subskill:
 		default:
 			break;
 		}
 
-		switch (skill.scope) {
+	switch (skill.scope) {
 		case RPG::Skill::Scope_enemy:
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), skill));
 			break;
@@ -452,7 +452,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 			break;
 		}
 
-		ActionSelectedCallback(enemy);
+	ActionSelectedCallback(enemy);
 }
 
 void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
