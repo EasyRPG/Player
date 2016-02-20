@@ -640,8 +640,13 @@ public:
 
 	BattlerType GetType() const;
 private:
-	RPG::SaveActor& data;
+	// same reason as for Game_Picture, see comment
+	/**
+	 * @return Reference to the SaveActor data
+	 */
+	RPG::SaveActor& GetData() const;
 
+	int actor_id;
 	std::vector<int> exp_list;
 };
 
