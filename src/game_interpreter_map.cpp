@@ -109,12 +109,11 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 		save_commands.current_command = save_interpreter->index;
 		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
+		save_commands.event_id = event_id;
 		save_commands.actioned = triggered_by_decision_key;
 		save.push_back(save_commands);
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
-
-	save.back().ID = event_id;
 
 	return save;
 }
@@ -1710,6 +1709,10 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	int evt_id = com.parameters[1];
 	waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
+
+	Game_Character* chara = GetCharacter(evt_id);
+	if (chara == NULL)
+		return true;
 
 	if (evt_id == Game_Character::CharThisEvent)
 		evt_id = event_id;
