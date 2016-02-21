@@ -16,35 +16,42 @@
  */
 
 #include "system.h"
+
 #ifdef USE_SDL
 
-// Headers
 #include "sdl_ui.h"
+
 #ifdef _WIN32
-	#define WIN32_LEAN_AND_MEAN
-	#ifndef NOMINMAX
-	#define NOMINMAX
-	#endif
-	#include <windows.h>
-	#include "SDL_syswm.h"
+#  define WIN32_LEAN_AND_MEAN
+#  ifndef NOMINMAX
+#    define NOMINMAX
+#  endif
+#  include <windows.h>
+#  include "SDL_syswm.h"
 #elif GEKKO
-	#include <gccore.h>
-	#include <wiiuse/wpad.h>
+#  include <gccore.h>
+#  include <wiiuse/wpad.h>
 #elif __ANDROID__
-	#include <jni.h>
-	#include <SDL_system.h>
+#  include <jni.h>
+#  include <SDL_system.h>
 #elif EMSCRIPTEN
-	#include <emscripten.h>
+#  include <emscripten.h>
 #endif
+
 #include "color.h"
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
+
 #include "audio.h"
-#include "sdl_audio.h"
-#include "al_audio.h"
+
+#ifdef HAVE_SDL_MIXER
+#  include "audio_sdl.h"
+#elif HAVE_OPENAL
+#  include "audio_al.h"
+#endif
 
 #include <cstdlib>
 #include <cstring>
@@ -156,9 +163,9 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	ShowCursor(false);
 #endif
 
-#if defined(HAVE_SDL_MIXER)
+#ifdef HAVE_SDL_MIXER
 	audio_.reset(new SdlAudio());
-#elif defined(HAVE_OPENAL)
+#elif HAVE_OPENAL
 	audio_.reset(new ALAudio());
 #else
 	audio_.reset(new EmptyAudio());
@@ -1211,4 +1218,4 @@ void GekkoResetCallback() {
 }
 #endif
 
-#endif
+#endif // USE_SDL

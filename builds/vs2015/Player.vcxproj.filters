@@ -61,6 +61,12 @@
     <ClCompile Include="..\..\src\audio.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\audio_al.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\audio_sdl.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\background.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
@@ -138,12 +144,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_ui.cpp">
       <Filter>Source Files\Backend\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\al_audio.cpp">
-      <Filter>Source Files\Backend\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\sdl_audio.cpp">
-      <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_vehicle.cpp">
       <Filter>Source Files\Engine\Game</Filter>
@@ -465,6 +465,12 @@
     <ClInclude Include="..\..\src\audio.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\audio_al.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\audio_sdl.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\background.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
@@ -539,12 +545,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_ui.h">
       <Filter>Source Files\Backend\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\sdl_audio.h">
-      <Filter>Source Files\Backend\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\al_audio.h">
-      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_variables.h">
       <Filter>Source Files\Engine\Game</Filter>

@@ -219,9 +219,10 @@
     <ResourceCompile Include="..\..\resources\player.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\al_audio.cpp" />
     <ClCompile Include="..\..\src\async_handler.cpp" />
     <ClCompile Include="..\..\src\audio.cpp" />
+    <ClCompile Include="..\..\src\audio_al.cpp" />
+    <ClCompile Include="..\..\src\audio_sdl.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
     <ClCompile Include="..\..\src\battle_animation.cpp" />
@@ -263,9 +264,9 @@
     <ClCompile Include="..\..\src\image_xyz.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gph.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
@@ -299,7 +300,6 @@
     <ClCompile Include="..\..\src\scene_status.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\screen.cpp" />
-    <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\shinonome_gothic.cpp" />
     <ClCompile Include="..\..\src\shinonome_mincho.cpp" />
@@ -355,9 +355,10 @@
     <ClCompile Include="..\..\src\window_varlist.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\al_audio.h" />
     <ClInclude Include="..\..\src\async_handler.h" />
     <ClInclude Include="..\..\src\audio.h" />
+    <ClInclude Include="..\..\src\audio_al.h" />
+    <ClInclude Include="..\..\src\audio_sdl.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\battle_animation.h" />
@@ -443,7 +444,6 @@
     <ClInclude Include="..\..\src\scene_status.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\screen.h" />
-    <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\shinonome.h" />
     <ClInclude Include="..\..\src\sprite.h" />

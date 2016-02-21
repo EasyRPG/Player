@@ -15,16 +15,16 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _AL_AUDIO_H_
-#define _AL_AUDIO_H_
+#ifndef _AUDIO_AL_H_
+#define _AUDIO_AL_H_
 
 // Headers
 #if defined(__APPLE__) && defined(__MACH__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
+#  include <OpenAL/al.h>
+#  include <OpenAL/alc.h>
 #else
-#include <AL/al.h>
-#include <AL/alc.h>
+#  include <AL/al.h>
+#  include <AL/alc.h>
 #endif
 
 #include "system.h"
@@ -78,4 +78,4 @@ private:
 	source_list se_src_;
 };  // struct ALAudio
 
-#endif  // _AL_AUDIO_H_
+#endif  // _AUDIO_AL_H_

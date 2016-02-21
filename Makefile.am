@@ -8,10 +8,12 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LTLIBRARIES = libeasyrpg-player.la
 libeasyrpg_player_la_SOURCES = \
-	src/al_audio.cpp \
-	src/al_audio.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
+	src/audio_al.cpp \
+	src/audio_al.h \
+	src/audio_sdl.cpp \
+	src/audio_sdl.h \
 	src/audio.cpp \
 	src/audio.h \
 	src/background.cpp \
@@ -179,8 +181,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/scene_title.h \
 	src/screen.cpp \
 	src/screen.h \
-	src/sdl_audio.cpp \
-	src/sdl_audio.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
 	src/shinonome.h \

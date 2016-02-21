@@ -15,9 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+#include "system.h"
+
+#ifdef HAVE_SDL_MIXER
+
 #include "baseui.h"
-#include "sdl_audio.h"
+#include "audio_sdl.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -389,3 +392,5 @@ void SdlAudio::SE_Stop() {
 
 void SdlAudio::Update() {
 }
+
+#endif

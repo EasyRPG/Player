@@ -15,10 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SDL_AUDIO_H_
-#define _SDL_AUDIO_H_
+#ifndef _AUDIO_SDL_H_
+#define _AUDIO_SDL_H_
 
-// Headers
 #include "system.h"
 #include "audio.h"
 
@@ -71,4 +70,4 @@ private:
 	sounds_type sounds;
 }; // class SdlAudio
 
-#endif // _SDL_AUDIO_H_
+#endif // _AUDIO_SDL_H_
