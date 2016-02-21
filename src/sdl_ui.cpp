@@ -28,13 +28,13 @@
 #  endif
 #  include <windows.h>
 #  include "SDL_syswm.h"
-#elif GEKKO
+#elif defined(GEKKO)
 #  include <gccore.h>
 #  include <wiiuse/wpad.h>
-#elif __ANDROID__
+#elif defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
-#elif EMSCRIPTEN
+#elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
 #endif
 
@@ -49,7 +49,7 @@
 
 #ifdef HAVE_SDL_MIXER
 #  include "audio_sdl.h"
-#elif HAVE_OPENAL
+#elif defined(HAVE_OPENAL)
 #  include "audio_al.h"
 #endif
 
@@ -165,7 +165,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 
 #ifdef HAVE_SDL_MIXER
 	audio_.reset(new SdlAudio());
-#elif HAVE_OPENAL
+#elif defined(HAVE_OPENAL)
 	audio_.reset(new ALAudio());
 #else
 	audio_.reset(new EmptyAudio());

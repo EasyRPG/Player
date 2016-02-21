@@ -58,7 +58,7 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
-#elif EMSCRIPTEN
+#elif defined(EMSCRIPTEN)
 	int const frequency = EM_ASM_INT_V({
 		var context;
 		try {
