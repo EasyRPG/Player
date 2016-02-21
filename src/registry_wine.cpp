@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if !(defined(_WIN32) || defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
+
 #include <cstdlib>
 #include "registry.h"
 #include "filefinder.h"
@@ -92,3 +94,5 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 int Registry::ReadBinValue(HKEY, std::string const&, std::string const&, unsigned char*) {
 	return 0; // not really used yet
 }
+
+#endif

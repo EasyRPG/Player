@@ -15,9 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+#include "system.h"
+
+#ifdef HAVE_SDL_MIXER
+
 #include "baseui.h"
-#include "sdl_audio.h"
+#include "audio_sdl.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -55,7 +58,7 @@ SdlAudio::SdlAudio() :
 	}
 #ifdef GEKKO
 	int const frequency = 32000;
-#elif EMSCRIPTEN
+#elif defined(EMSCRIPTEN)
 	int const frequency = EM_ASM_INT_V({
 		var context;
 		try {
@@ -389,3 +392,5 @@ void SdlAudio::SE_Stop() {
 
 void SdlAudio::Update() {
 }
+
+#endif

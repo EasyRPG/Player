@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_WINE
+
 #include "registry.h"
 #include "output.h"
 #include "filefinder.h"
@@ -354,3 +356,5 @@ int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const&
 	std::copy(bin.begin(), bin.end(), out);
 	return bin.size();
 }
+
+#endif

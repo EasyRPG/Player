@@ -15,14 +15,16 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+#include "system.h"
+
+#ifdef HAVE_OPENAL
+
 #include <cassert>
 #include <boost/assert.hpp>
 #include <boost/circular_buffer.hpp>
 #include <boost/ref.hpp>
 
-#include "system.h"
-#include "al_audio.h"
+#include "audio_al.h"
 #include "filefinder.h"
 #include "output.h"
 #include "sndfile.h"
@@ -605,3 +607,5 @@ void ALAudio::SE_Stop() {
 	}
 	se_src_.clear();
 }
+
+#endif
