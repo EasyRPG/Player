@@ -29,3 +29,15 @@ AudioInterface& Audio() {
 #endif
 	return default_;
 }
+
+void EmptyAudio::BGM_Play(std::string const&, int, int, int) {
+	bgm_starttick = Player::GetFrames();
+};
+
+unsigned EmptyAudio::BGM_GetTicks() {
+	return (Player::GetFrames() - bgm_starttick) * 500; // Arbitrary
+}
+
+bool EmptyAudio::BGM_PlayedOnce() {
+	return BGM_GetTicks() > 5000; // Arbitrary
+}

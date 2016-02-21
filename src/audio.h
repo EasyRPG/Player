@@ -54,6 +54,11 @@ struct AudioInterface : boost::noncopyable {
 	virtual bool BGM_PlayedOnce() = 0;
 
 	/**
+	 * TODO
+	 */
+	virtual unsigned BGM_GetTicks() = 0;
+
+	/**
 	 * Does a fade out of the background music.
 	 *
 	 * @param fade fade out time.
@@ -144,11 +149,12 @@ struct AudioInterface : boost::noncopyable {
 };
 
 struct EmptyAudio : public AudioInterface {
-	void BGM_Play(std::string const&, int, int, int) {}
+	void BGM_Play(std::string const&, int, int, int);
 	void BGM_Pause() {}
 	void BGM_Resume() {}
 	void BGM_Stop() {}
-	bool BGM_PlayedOnce() {return true;};
+	bool BGM_PlayedOnce();
+	unsigned BGM_GetTicks();
 	void BGM_Fade(int) {}
 	void BGM_Volume(int) {}
 	void BGM_Pitch(int) {};
@@ -161,6 +167,8 @@ struct EmptyAudio : public AudioInterface {
 	void SE_Play(std::string const&, int, int) {}
 	void SE_Stop() {}
 	void Update() {}
+
+	unsigned bgm_starttick = 0;
 };
 
 AudioInterface& Audio();

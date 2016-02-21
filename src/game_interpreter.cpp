@@ -716,7 +716,8 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					value = Main_Data::game_party->GetRunCount();
 					break;
 				case 8:
-					// TODO: MIDI play position
+					// MIDI play position
+					value = Audio().BGM_GetTicks();
 					break;
 				case 9:
 					value = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
