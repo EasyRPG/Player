@@ -158,13 +158,17 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
 #endif
 
+#if SDL_MIXER_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	if (bgs_playing) {
+		BGS_Stop();
+	}
+#endif
+
 	if (!bgm) {
 #if SDL_MIXER_MAJOR_VERSION>1
 		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
-			// SDL2_mixer does not support ADPCM playback but SDL2 does
-			if (bgs_playing) {
-				BGS_Stop();
-			}
+			bgm_stop = true;
 			BGS_Play(file, volume, 0, fadein);
 			return;
 		}
@@ -173,10 +177,6 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		return;
 	}
 #if SDL_MAJOR_VERSION>1
-	// SDL2_mixer bug, see above
-	if (bgs_playing) {
-		BGS_Stop();
-	}
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
