@@ -91,6 +91,8 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
+	page_executed.clear();
+
 	Main_Data::game_party->ResetBattle();
 
 	Game_Message::SetPositionFixed(message_is_fixed);

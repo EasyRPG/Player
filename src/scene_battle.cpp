@@ -36,6 +36,7 @@
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
+#include "scene_gameover.h"
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
@@ -157,6 +158,11 @@ void Scene_Battle::Update() {
 	}
 
 	bool events_finished = Game_Battle::UpdateEvents();
+
+	if (Game_Temp::gameover) {
+		Game_Temp::gameover = false;
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+	}
 
 	if (!Game_Message::visible && events_finished) {
 		ProcessActions();
