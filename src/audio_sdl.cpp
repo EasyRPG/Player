@@ -32,6 +32,8 @@
 #  include "util_win.h"
 #endif
 
+#include <cstring>
+
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
@@ -53,7 +55,7 @@ SdlAudio::SdlAudio() :
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-			Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
+			Output::Error("Couldn't initialize audio.\n%s", SDL_GetError());
 		}
 	}
 #ifdef GEKKO
@@ -79,7 +81,7 @@ SdlAudio::SdlAudio() :
 #else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
 #endif
-		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
+		Output::Error("Couldn't initialize audio.\n%s", Mix_GetError());
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 
@@ -151,12 +153,23 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
 
 #if SDL_MIXER_MAJOR_VERSION>1
-	bgm.reset(Mix_LoadMUS_RW(rw, 1), &Mix_FreeMusic);
+	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
 #else
 	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
 #endif
+
 	if (!bgm) {
-		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+#if SDL_MIXER_MAJOR_VERSION>1
+		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
+			// SDL2_mixer does not support ADPCM playback but SDL2 does
+			if (bgs_playing) {
+				BGS_Stop();
+			}
+			BGS_Play(file, volume, 0, fadein);
+			return;
+		}
+#endif
+		Output::Warning("Couldn't load %s BGM.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 #if SDL_MAJOR_VERSION>1
@@ -181,7 +194,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
 		== -1) {
-			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), Mix_GetError());
 			return;
 	}
 
@@ -276,13 +289,13 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 
 	bgs.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
-		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), 0, fadein);
 	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
 	if (bgs_channel == -1) {
-		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	bgs_playing = true;
@@ -340,13 +353,13 @@ void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int
 	}
 	me.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!me) {
-		Output::Warning("Couldn't load %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s ME.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	me_channel = Mix_FadeInChannel(-1, me.get(), 0, fadein);
 	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
 	if (me_channel == -1) {
-		Output::Warning("Couldn't play %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s ME.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
 	me_stopped_bgm = (Mix_PlayingMusic() == 1);
