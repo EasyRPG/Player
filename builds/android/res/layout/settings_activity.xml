@@ -33,7 +33,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:onClick="addAGameFolder"
-            android:text="Add a game folder"
+            android:text="@string/add_game_folder"
             android:textSize="20sp" />
         
         <View

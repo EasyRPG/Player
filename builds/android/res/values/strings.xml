@@ -77,6 +77,7 @@ Please tell us in detail what went wrong.\n
 
 	<!--Settings Activity-->
 	<string name="settings">Settings</string>
+	<string name="add_game_folder">Add a game folder</string>
 	<string name="enable_vibration">Enable vibrations</string>
 	<string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
 	<string name="input_layout_transparency">Input Layout transparency:</string>
