@@ -150,14 +150,15 @@ public class ButtonMappingActivity extends Activity {
 	public void addAButton(String s){
 		int keyCode = -1;
 		char charButton = ' ';
+		Context ctx = getApplicationContext();
 		
-		if(s.equals("Enter")){
+		if(s.equals(ctx.getString(R.string.key_enter))){
 			keyCode = KeyEvent.KEYCODE_SPACE;
 			charButton = 'A';
-		}else if(s.equals("Cancel")){
+		}else if(s.equals(ctx.getString(R.string.key_cancel))){
 			keyCode = KeyEvent.KEYCODE_B;
 			charButton = 'B';
-		}else if(s.equals("Shift")){
+		}else if(s.equals(ctx.getString(R.string.key_shift))){
 			keyCode = KeyEvent.KEYCODE_SHIFT_LEFT;
 			charButton = 'S';
 		}else if(s.equals("0")){
