@@ -608,9 +608,17 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
-	assert(chip_index < Data::data.chipsets[chipset_index].terrain_data.size());
+	
+	auto& terrain_data = Data::data.chipsets[chipset_index].terrain_data;
 
-	return Data::data.chipsets[chipset_index].terrain_data[chip_index];
+	if (terrain_data.empty()) {
+		// RPG_RT optimisation: When the terrain is all 1, no terrain data is stored
+		return 1;
+	}
+
+	assert(chip_index < terrain_data.size());
+
+	return terrain_data[chip_index];
 }
 
 bool Game_Map::AirshipLandOk(int const x, int const y) {
