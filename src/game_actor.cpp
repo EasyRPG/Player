@@ -150,6 +150,7 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 bool Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		GetData().skills.push_back((int16_t)skill_id);
+		GetData().skills_size = GetData().skills.size();
 		std::sort(GetData().skills.begin(), GetData().skills.end());
 		return true;
 	}
@@ -160,6 +161,7 @@ bool Game_Actor::UnlearnSkill(int skill_id) {
 	std::vector<int16_t>::iterator it = std::find(GetData().skills.begin(), GetData().skills.end(), skill_id);
 	if (it != GetData().skills.end()) {
 		GetData().skills.erase(it);
+		GetData().skills_size = GetData().skills.size();
 		return true;
 	}
 	return false;
@@ -211,6 +213,26 @@ const std::vector<int16_t>& Game_Actor::GetStates() const {
 
 std::vector<int16_t>& Game_Actor::GetStates() {
 	return GetData().status;
+}
+
+void Game_Actor::AddState(int state_id) {
+	Game_Battler::AddState(state_id);
+	GetData().status_size = GetData().status.size();
+}
+
+void Game_Actor::RemoveState(int state_id) {
+	Game_Battler::RemoveState(state_id);
+	GetData().status_size = GetData().status.size();
+}
+
+void Game_Actor::RemoveBattleStates() {
+	Game_Battler::RemoveBattleStates();
+	GetData().status_size = GetData().status.size();
+}
+
+void Game_Actor::RemoveAllStates() {
+	Game_Battler::RemoveAllStates();
+	GetData().status_size = GetData().status.size();
 }
 
 int Game_Actor::GetHp() const {

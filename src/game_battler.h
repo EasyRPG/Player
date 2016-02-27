@@ -298,24 +298,24 @@ public:
 	 *
 	 * @param state_id ID of state to add.
 	 */
-	void AddState(int state_id);
+	virtual void AddState(int state_id);
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
 	 */
-	void RemoveState(int state_id);
+	virtual void RemoveState(int state_id);
 
 	/**
 	 * Removes all states which end after battle.
 	 */
-	void RemoveBattleStates();
+	virtual void RemoveBattleStates();
 
 	/**
 	 * Removes all states.
 	 */
-	void RemoveAllStates();
+	virtual void RemoveAllStates();
 	
 	/**
 	 * Gets X position on battlefield

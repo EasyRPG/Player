@@ -39,6 +39,7 @@ Game_Party::Game_Party() {
 	for (it = temp_party.begin(); it != temp_party.end(); ++it)
 		if (Game_Actors::ActorExists(*it))
 			data.party.push_back(*it);
+	data.party_size = data.party.size();
 }
 
 Game_Actor& Game_Party::operator[] (const int index) {
@@ -56,7 +57,7 @@ int Game_Party::GetBattlerCount() const {
 }
 
 void Game_Party::SetupBattleTestMembers() {
-	data.party.clear();
+	Clear();
 	
 	std::vector<RPG::TestBattler>::const_iterator it;
 	for (it = Data::system.battletest_data.begin();
@@ -72,6 +73,7 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 	}
+	data.party_size = data.party.size();
 
 	Main_Data::game_player->Refresh();
 }
@@ -140,6 +142,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 
 		if (total_items <= 0) {
 			data.item_ids.erase(data.item_ids.begin() + i);
+			data.items_size = data.item_ids.size();
 			data.item_counts.erase(data.item_counts.begin() + i);
 			data.item_usage.erase(data.item_usage.begin() + i);
 			return;
@@ -163,6 +166,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 	}
 
 	data.item_ids.push_back((int16_t)item_id);
+	data.items_size = data.item_ids.size();
 	data.item_counts.push_back((uint8_t)std::min(amount, 99));
 	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
 }
@@ -203,6 +207,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 			if (data.item_counts[i] == 1) {
 				// We just used up the last one
 				data.item_ids.erase(data.item_ids.begin() + i);
+				data.items_size = data.item_ids.size();
 				data.item_counts.erase(data.item_counts.begin() + i);
 				data.item_usage.erase(data.item_usage.begin() + i);
 			} else {
@@ -362,6 +367,7 @@ void Game_Party::AddActor(int actor_id) {
 	if (data.party.size() >= 4)
 		return;
 	data.party.push_back((int16_t)actor_id);
+	data.party_size = data.party.size();
 	Main_Data::game_player->Refresh();
 }
 
@@ -369,11 +375,13 @@ void Game_Party::RemoveActor(int actor_id) {
 	if (!IsActorInParty(actor_id))
 		return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
+	data.party_size = data.party.size();
 	Main_Data::game_player->Refresh();
 }
 
 void Game_Party::Clear() {
 	data.party.clear();
+	data.party_size = 0;
 }
 
 bool Game_Party::IsActorInParty(int actor_id) {
