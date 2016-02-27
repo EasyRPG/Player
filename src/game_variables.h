@@ -32,9 +32,9 @@ public:
 
 	std::string GetName(int _id) const;
 
-	bool isValidVar(int variable_id) const;
+	bool IsValid(int variable_id) const;
 
-	int size() const;
+	int GetSize() const;
 
 	void Reset();
 

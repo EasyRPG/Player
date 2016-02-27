@@ -32,9 +32,9 @@ public:
 	
 	std::string GetName(int _id) const;
 
-	bool isValidSwitch(int switch_id) const;
+	bool IsValid(int switch_id) const;
 
-	int size() const;
+	int GetSize() const;
 
 	void Reset();
 

@@ -559,7 +559,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		} else {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
-		if (is_valid && Game_Variables.isValidVar(parameter)) {
+		if (is_valid && Game_Variables.IsValid(parameter)) {
 			std::stringstream ss;
 			ss << Game_Variables[parameter];
 			return ss.str();

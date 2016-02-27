@@ -29,7 +29,7 @@ static std::vector<uint32_t>& variables() {
 }
 
 int& Game_Variables_Class::operator[] (int variable_id) {
-	if (!isValidVar(variable_id)) {
+	if (!IsValid(variable_id)) {
 		if (variable_id > 0 && variable_id <= PLAYER_VAR_LIMIT) {
 			Output::Debug("Resizing variable array to %d elements.", variable_id);
 			variables().resize(variable_id);
@@ -53,11 +53,11 @@ std::string Game_Variables_Class::GetName(int _id) const {
 	}
 }
 
-bool Game_Variables_Class::isValidVar(int variable_id) const {
+bool Game_Variables_Class::IsValid(int variable_id) const {
 	return (variable_id > 0 && variable_id <= (int)variables().size());
 }
 
-int Game_Variables_Class::size() const {
+int Game_Variables_Class::GetSize() const {
 	return (int)variables().size();
 }
 

@@ -29,10 +29,11 @@ static std::vector<bool>& switches() {
 }
 
 std::vector<bool>::reference Game_Switches_Class::operator[](int switch_id) {
-	if (!isValidSwitch(switch_id)) {
+	if (!IsValid(switch_id)) {
 		if (switch_id > 0 && switch_id <= PLAYER_VAR_LIMIT) {
 			Output::Debug("Resizing switch array to %d elements.", switch_id);
 			switches().resize(switch_id);
+			Main_Data::game_data.system.switches_size = switches().size();
 		} else {
 			Output::Debug("Switch index %d is invalid.", switch_id);
 			dummy.resize(1);
@@ -51,11 +52,11 @@ std::string Game_Switches_Class::GetName(int _id) const {
 	}
 }
 
-bool Game_Switches_Class::isValidSwitch(int switch_id) const {
+bool Game_Switches_Class::IsValid(int switch_id) const {
 	return (switch_id > 0 && switch_id <= (int)switches().size());
 }
 
-int Game_Switches_Class::size() const {
+int Game_Switches_Class::GetSize() const {
 	return (int)switches().size();
 }
 

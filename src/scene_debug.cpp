@@ -81,9 +81,9 @@ void Scene_Debug::Update() {
 			range_window->SetActive(false);
 			var_window->SetActive(true);
 		} else if (var_window->GetActive()) {
-			if (current_var_type == TypeSwitch && Game_Switches.isValidSwitch(GetIndex()))
+			if (current_var_type == TypeSwitch && Game_Switches.IsValid(GetIndex()))
 				Game_Switches[GetIndex()] = !Game_Switches[GetIndex()];
-			else if (current_var_type == TypeInt && Game_Variables.isValidVar(GetIndex())) {
+			else if (current_var_type == TypeInt && Game_Variables.IsValid(GetIndex())) {
 				var_window->SetActive(false);
 				numberinput_window->SetNumber(Game_Variables[GetIndex()]);
 				numberinput_window->SetVisible(true);
@@ -100,11 +100,11 @@ void Scene_Debug::Update() {
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	} else if (range_window->GetActive() &&  Input::IsTriggered(Input::RIGHT)) {
 		range_page++;
-		if (current_var_type == TypeSwitch && !Game_Switches.isValidSwitch(range_page*100+1)) {
+		if (current_var_type == TypeSwitch && !Game_Switches.IsValid(range_page*100+1)) {
 			range_page = 0;
 			current_var_type = TypeInt;
 			var_window->SetShowSwitch(false);
-		} else if (current_var_type == TypeInt && !Game_Variables.isValidVar(range_page*100+1)) {
+		} else if (current_var_type == TypeInt && !Game_Variables.IsValid(range_page*100+1)) {
 			range_page = 0;
 			current_var_type = TypeSwitch;
 			var_window->SetShowSwitch(true);
@@ -117,7 +117,7 @@ void Scene_Debug::Update() {
 		if (current_var_type == TypeSwitch && range_page < 0) {
 			range_page = 0;
 			for (;;)
-				if (Game_Variables.isValidVar(range_page*100 + 101))
+				if (Game_Variables.IsValid(range_page*100 + 101))
 					range_page++;
 				else
 					break;
@@ -126,7 +126,7 @@ void Scene_Debug::Update() {
 		} else if (current_var_type == TypeInt && range_page < 0) {
 			range_page = 0;
 			for (;;)
-				if (Game_Switches.isValidSwitch(range_page*100 + 101))
+				if (Game_Switches.IsValid(range_page*100 + 101))
 					range_page++;
 				else
 					break;
