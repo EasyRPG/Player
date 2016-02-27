@@ -22,6 +22,7 @@
 #include <string>
 #include "rpg_music.h"
 #include "rpg_sound.h"
+#include "rpg_system.h"
 
 struct FileRequestResult;
 
@@ -261,6 +262,8 @@ namespace Game_System {
 	void SetAllowSave(bool allow);
 	bool GetAllowMenu();
 	void SetAllowMenu(bool allow);
+	RPG::System::Stretch GetMessageStretch();
+	void SetMessageStretch(RPG::System::Stretch stretch);
 
 	int GetSaveCount();
 

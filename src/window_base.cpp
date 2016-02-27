@@ -39,6 +39,7 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	SetY(y);
 	SetWidth(width);
 	SetHeight(height);
+	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 	SetZ(3000);
 }
 
@@ -49,6 +50,7 @@ void Window_Base::Update() {
 		SetWindowskin(Cache::System(windowskin_name));
 		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
+	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 }
 
 void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip) {

@@ -878,6 +878,8 @@ bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& 
 	request->SetImportantFile(true);
 	request->Start();
 
+	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);
+
 	return true;
 }
 
