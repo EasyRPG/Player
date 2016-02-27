@@ -1222,7 +1222,6 @@ bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
 	Game_Temp::save_calling = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return true;
 }
 
