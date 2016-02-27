@@ -22,11 +22,9 @@
 #include "game_interpreter_battle.h"
 #include "game_party.h"
 #include "game_switches.h"
-#include "game_temp.h"
 #include "game_variables.h"
+#include "output.h"
 #include "player.h"
-#include "sprite_battler.h"
-#include "spriteset_battle.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -87,7 +85,7 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 	const RPG::CommonEvent& event = Data::commonevents[event_id - 1];
 
 	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(event.event_commands, 0, event.ID, -2);
+	child_interpreter->Setup(event.event_commands, 0, false, event.ID, -2);
 
 	return true;
 }

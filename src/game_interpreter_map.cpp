@@ -1419,7 +1419,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	switch (com.parameters[0]) {
 		case 0: // Common Event
 			evt_id = com.parameters[1];
-			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
+			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, false, Data::commonevents[evt_id - 1].ID, -2);
 			return true;
 		case 1: // Map Event
 			evt_id = com.parameters[1];
@@ -1436,7 +1436,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	if (event != NULL) {
 		RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-		child_interpreter->Setup(page.event_commands, event->GetId(), event->GetX(), event->GetY());
+		child_interpreter->Setup(page.event_commands, event->GetId(), false, event->GetX(), event->GetY());
 	}
 
 	return true;
