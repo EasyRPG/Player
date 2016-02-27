@@ -56,6 +56,15 @@ public:
 	 *
 	 * @return vector containing the IDs of all states the battler has.
 	 */
+	std::vector<int16_t> GetInflictedStates() const;
+
+	/**
+	 * Gets battler states.
+	 * This returns the raw state list with not inflected states set to 0 and
+	 * inflected states set to at least 1 (this maps to the turn count).
+	 *
+	 * @return vector containing state list
+	 */
 	virtual const std::vector<int16_t>& GetStates() const = 0;
 	virtual std::vector<int16_t>& GetStates() = 0;
 
@@ -464,7 +473,6 @@ protected:
 	bool charged;
 	bool defending;
 	int battle_turn;
-	std::vector<int16_t> states_turn_count;
 	int last_battle_action;
 };
 

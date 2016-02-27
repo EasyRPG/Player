@@ -22,11 +22,10 @@
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
-#include "game_party_base.h"
-#include "game_party.h"
 #include "game_enemyparty.h"
+#include "game_party.h"
+#include "game_party_base.h"
 #include "game_switches.h"
-#include "game_temp.h"
 #include "util_macro.h"
 #include "main_data.h"
 
@@ -35,11 +34,23 @@ Game_Battler::Game_Battler() {
 }
 
 bool Game_Battler::HasState(int state_id) const {
-	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
+	const std::vector<int16_t> states = GetInflictedStates();
+
+	return (std::find(states.begin(), states.end(), state_id) != states.end());
+}
+
+std::vector<int16_t> Game_Battler::GetInflictedStates() const {
+	std::vector<int16_t> states;
+	for (size_t i = 0; i < GetStates().size(); ++i) {
+		if (GetStates()[i] > 0) {
+			states.push_back(Data::states[i].ID);
+		}
+	}
+	return states;
 }
 
 int Game_Battler::GetSignificantRestriction() {
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int)states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i] - 1];
 		if (state->restriction != RPG::State::Restriction_normal) {
@@ -50,7 +61,7 @@ int Game_Battler::GetSignificantRestriction() {
 }
 
 bool Game_Battler::CanAct() {
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int)states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i] - 1];
 		if (state->restriction == RPG::State::Restriction_do_nothing) {
@@ -72,7 +83,7 @@ const RPG::State* Game_Battler::GetSignificantState() {
 	int priority = 0;
 	const RPG::State* the_state = NULL;
 
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int) states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i] - 1];
 		// Death has highest priority
@@ -124,7 +135,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	int smallest_physical_rate = 11;
 	int smallest_magical_rate = 11;
 
-	const std::vector<int16_t> states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator it = states.begin();
 		it != states.end(); ++it) {
 		const RPG::State& state = Data::states[(*it) - 1];
@@ -271,23 +282,32 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 }
 
 void Game_Battler::AddState(int state_id) {
-	std::vector<int16_t>& states = GetStates();
-	if (state_id > 0 && !HasState(state_id)) {
-		states.push_back((int16_t)state_id);
-		std::sort(states.begin(), states.end());
+	if (state_id <= 0) {
+		return;
 	}
+
+	std::vector<int16_t>& states = GetStates();
+	if (state_id - 1 >= states.size()) {
+		states.resize(state_id);
+	}
+
+	states[state_id - 1] = 1;
 }
 
 void Game_Battler::RemoveState(int state_id) {
-	std::vector<int16_t>& states = GetStates();
-	std::vector<int16_t>::iterator it = std::find(states.begin(), states.end(), state_id);
-	if (it != states.end())
-		states.erase(it);
+	if (state_id <= 0) {
+		return;
+	}
 
-	states_turn_count[state_id - 1] = 0;
+	std::vector<int16_t>& states = GetStates();
+	if (state_id - 1 >= states.size()) {
+		return;
+	}
+
+	states[state_id - 1] = 0;
 }
 
-static bool NonPermanent(int state_id) {
+static bool non_permanent(int state_id) {
 	return Data::states[state_id - 1].type == RPG::State::Persistence_ends;
 }
 
@@ -295,20 +315,19 @@ void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
 
 	// If death is non-permanent change HP to 1
-	if (GetSignificantState() != NULL &&
-		GetSignificantState()->ID == 1 &&
-		NonPermanent(1)) {
+	if (IsDead() &&
+		non_permanent(1)) {
 		ChangeHp(1);
 	}
 
-	std::vector<int16_t>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
-	states.erase(end, states.end());
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (non_permanent(i + 1)) {
+			states[i] = 0;
+		}
+	}
 }
 
 void Game_Battler::RemoveAllStates() {
-	states_turn_count.clear();
-	states_turn_count.resize(Data::states.size());
-
 	std::vector<int16_t>& states = GetStates();
 	states.clear();
 }
@@ -373,7 +392,7 @@ int Game_Battler::GetAtk() const {
 	int base_atk = GetBaseAtk();
 	int n = min(max(base_atk, 1), 999);
 
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i) - 1].affect_attack) {
 			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_atk);
@@ -390,7 +409,7 @@ int Game_Battler::GetDef() const {
 	int base_def = GetBaseDef();
 	int n = min(max(base_def, 1), 999);
 
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i) - 1].affect_defense) {
 			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
@@ -407,7 +426,7 @@ int Game_Battler::GetSpi() const {
 	int base_spi = GetBaseSpi();
 	int n = min(max(base_spi, 1), 999);
 
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i) - 1].affect_spirit) {
 			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_spi);
@@ -424,7 +443,7 @@ int Game_Battler::GetAgi() const {
 	int base_agi = GetBaseAgi();
 	int n = min(max(base_agi, 1), 999);
 
-	const std::vector<int16_t>& states = GetStates();
+	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i) - 1].affect_agility) {
 			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_agi);
@@ -492,15 +511,15 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 	++battle_turn;
 
 	std::vector<int16_t> healed_states;
+	std::vector<int16_t>& states = GetStates();
 
-	for (size_t i = 0; i < states_turn_count.size(); ++i) {
+	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
-			states_turn_count[i] += 1;
+			states[i] += 1;
 
-			if (states_turn_count[i] >= Data::states[i].hold_turn) {
+			if (states[i] >= Data::states[i].hold_turn) {
 				if (rand() % 100 < Data::states[i].auto_release_prob) {
 					healed_states.push_back(i + 1);
-					states_turn_count[i] = 0;
 					RemoveState(i + 1);
 				}
 			}
@@ -515,8 +534,6 @@ void Game_Battler::ResetBattle() {
 	charged = false;
 	defending = false;
 	battle_turn = 0;
-	states_turn_count.clear();
-	states_turn_count.resize(Data::states.size());
 	last_battle_action = -1;
 }
 
