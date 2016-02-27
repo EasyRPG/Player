@@ -36,6 +36,12 @@ class FileRequestAsync;
  * Game_Map namespace
  */
 namespace Game_Map {
+	enum RefreshMode {
+		Refresh_None,
+		Refresh_All,
+		Refresh_Map
+	};
+
 	/**
 	 * Initialize Game_Map.
 	 */
@@ -408,7 +414,7 @@ namespace Game_Map {
 	 *
 	 * @return need refresh flag.
 	 */
-	bool GetNeedRefresh();
+	RefreshMode GetNeedRefresh();
 
 	/**
 	 * Gets the game interpreter.
@@ -429,7 +435,7 @@ namespace Game_Map {
 	 *
 	 * @param need_refresh need refresh state.
 	 */
-	void SetNeedRefresh(bool need_refresh);
+	void SetNeedRefresh(RefreshMode refresh_type);
 
 	/**
 	 * Gets lower passages list.

@@ -50,7 +50,7 @@ namespace {
 
 	std::string chipset_name;
 	std::string battleback_name;
-	bool need_refresh;
+	Game_Map::RefreshMode refresh_type;
 
 	int parallax_x;
 	int parallax_y;
@@ -86,7 +86,7 @@ void Game_Map::Init() {
 
 	map_info.position_x = 0;
 	map_info.position_y = 0;
-	need_refresh = true;
+	refresh_type = Refresh_All;
 
 	location.map_id = 0;
 	scroll_direction = 0;
@@ -219,7 +219,7 @@ void Game_Map::SetupCommon(int _id) {
 	}
 
 	SetChipset(map->chipset_id);
-	need_refresh = true;
+	refresh_type = Refresh_All;
 
 	scroll_direction = 2;
 	scroll_rest = 0;
@@ -301,12 +301,14 @@ void Game_Map::Refresh() {
 			ev.Refresh();
 		}
 
-		for (Game_CommonEvent& ev : common_events) {
-			ev.Refresh();
+		if (refresh_type == Refresh_All) {
+			for (Game_CommonEvent& ev : common_events) {
+				ev.Refresh();
+			}
 		}
 	}
 
-	need_refresh = false;
+	refresh_type = Refresh_None;
 }
 
 Game_Interpreter& Game_Map::GetInterpreter() {
@@ -697,7 +699,7 @@ void Game_Map::UpdateScroll() {
 }
 
 void Game_Map::Update(bool only_parallel) {
-	if (GetNeedRefresh()) Refresh();
+	if (GetNeedRefresh() != Refresh_None) Refresh();
 	UpdateScroll();
 	UpdatePan();
 	UpdateParallax();
@@ -926,11 +928,11 @@ void Game_Map::SetDisplayY(int new_display_y) {
 	map_info.position_y = new_display_y;
 }
 
-bool Game_Map::GetNeedRefresh() {
-	return need_refresh;
+Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
+	return refresh_type;
 }
-void Game_Map::SetNeedRefresh(bool new_need_refresh) {
-	need_refresh = new_need_refresh;
+void Game_Map::SetNeedRefresh(Game_Map::RefreshMode refresh_mode) {
+	refresh_type = refresh_mode;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

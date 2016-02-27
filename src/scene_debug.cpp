@@ -97,7 +97,7 @@ void Scene_Debug::Update() {
 			var_window->SetActive(true);
 			var_window->Refresh();
 		}
-		Game_Map::SetNeedRefresh(true);
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	} else if (range_window->GetActive() &&  Input::IsTriggered(Input::RIGHT)) {
 		range_page++;
 		if (current_var_type == TypeSwitch && !Game_Switches.isValidSwitch(range_page*100+1)) {

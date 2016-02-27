@@ -635,7 +635,7 @@ void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_Variables[Game_Message::num_input_variable_id] = number_input_window->GetNumber();
-		Game_Map::SetNeedRefresh(true);
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		TerminateMessage();
 		number_input_window->SetNumber(0);
 	}

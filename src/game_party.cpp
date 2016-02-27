@@ -436,11 +436,11 @@ void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
 			data.timer1_secs = seconds * DEFAULT_FPS;
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 			break;
 		case Timer2:
 			data.timer2_secs = seconds * DEFAULT_FPS;
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 			break;
 	}
 }
@@ -478,7 +478,7 @@ void Game_Party::UpdateTimers() {
 	if (data.timer1_active && (data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
 		if (data.timer1_secs % DEFAULT_FPS == 0) {
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		}
 		if (data.timer1_secs == 0) {
 			StopTimer(Timer1);
@@ -487,7 +487,7 @@ void Game_Party::UpdateTimers() {
 	if (data.timer2_active && (data.timer2_battle || !battle) && data.timer2_secs > 0) {
 		data.timer2_secs--;
 		if (data.timer2_secs % DEFAULT_FPS == 0) {
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		}
 		if (data.timer2_secs == 0) {
 			StopTimer(Timer2);

@@ -535,7 +535,7 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		default:
 			return false;
 	}
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	return true;
 }
 
@@ -811,7 +811,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			}
 	}
 
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
@@ -915,7 +915,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 			value
 		);
 	}
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	// Continue
 	return true;
 }
@@ -976,7 +976,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 		}
 	}
 
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 
 	// Continue
 	return true;

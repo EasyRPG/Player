@@ -61,7 +61,7 @@ void Scene_Item::Update() {
 				Main_Data::game_party->UseItem(item_id);
 				Game_Switches[Data::items[item_id - 1].switch_id] = true;
 				Scene::PopUntil(Scene::Map);
-				Game_Map::SetNeedRefresh(true);
+				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(item_id, item_window->GetIndex()));
 				item_index = item_window->GetIndex();

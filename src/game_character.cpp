@@ -431,11 +431,11 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 				Game_Switches[move_command.parameter_a] = true;
-				Game_Map::SetNeedRefresh(true);
+				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				break;
 			case RPG::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
 				Game_Switches[move_command.parameter_a] = false;
-				Game_Map::SetNeedRefresh(true);
+				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				break;
 			case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
 				SetGraphic(move_command.parameter_string, move_command.parameter_a);
