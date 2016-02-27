@@ -460,6 +460,12 @@
     <ClCompile Include="..\..\src\frame.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_switches.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_variables.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -873,9 +879,6 @@
     <ClInclude Include="..\..\src\async_handler.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\shinonome\shinonome.h">
-      <Filter>Source Files\Shinonome</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene_gamebrowser.h">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
@@ -890,6 +893,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\frame.h">
       <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shinonome.h">
+      <Filter>Source Files\Shinonome</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

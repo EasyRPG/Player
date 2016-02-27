@@ -24,19 +24,15 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
-#include "game_player.h"
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_temp.h"
-#include "graphics.h"
 #include "input.h"
-#include "reader_util.h"
+#include "output.h"
 #include "player.h"
 #include "util_macro.h"
-#include "utils.h"
 #include "bitmap.h"
 #include "font.h"
-#include "text.h"
 
 #include <boost/next_prior.hpp>
 

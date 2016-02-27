@@ -20,63 +20,27 @@
 
 // Headers
 #include "data.h"
-#include "output.h"
-#include <vector>
-
-#define PLAYER_VAR_LIMIT 1000000
 
 /**
  * Game_Variables class.
  */
 class Game_Variables_Class {
 public:
-	Game_Variables_Class(std::vector<uint32_t>& variables) :
-		variables(variables) {}
+	Game_Variables_Class();
 
-	int& operator[] (int variable_id) {
-		if (!isValidVar(variable_id)) {
-			if (variable_id > 0 && variable_id <= PLAYER_VAR_LIMIT) {
-				Output::Debug("Resizing variable array to %d elements.", variable_id);
-				variables.resize(variable_id);
-			}
-			else {
-				Output::Debug("Variable index %d is invalid.",
-					variable_id);
-				dummy = 0;
-				return dummy;
-			}
-		}
+	int& operator[] (int variable_id);
 
-		return (int&) variables[variable_id - 1];
-	}
+	std::string GetName(int _id) const;
 
-	std::string GetName(int _id) const {
-		if (!(_id > 0 && _id <= (int)Data::variables.size())) {
-			return "";
-		}
-		else {
-			return Data::variables[_id - 1].name;
-		}
-	}
+	bool isValidVar(int variable_id) const;
 
-	bool isValidVar(int variable_id) const {
-		return (variable_id > 0 && variable_id <= (int) variables.size());
-	}
+	int size() const;
 
-	int size () const {
-		return (int)variables.size();
-	}
-
-	void Reset() {
-		variables.assign(Data::variables.size(), 0);
-	}
+	void Reset();
 
 private:
-	std::vector<uint32_t>& variables;
 	int dummy;
 };
-
-#undef PLAYER_VAR_LIMIT
 
 // Global variable
 extern Game_Variables_Class Game_Variables;

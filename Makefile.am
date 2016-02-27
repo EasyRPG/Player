@@ -81,6 +81,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/game_player.h \
 	src/game_screen.cpp \
 	src/game_screen.h \
+	src/game_switches.cpp \
 	src/game_switches.h \
 	src/game_system.cpp \
 	src/game_system.h \
@@ -88,6 +89,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/game_targets.h \
 	src/game_temp.cpp \
 	src/game_temp.h \
+	src/game_variables.cpp \
 	src/game_variables.h \
 	src/game_vehicle.cpp \
 	src/game_vehicle.h \

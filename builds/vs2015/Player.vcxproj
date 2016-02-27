@@ -253,9 +253,11 @@
     <ClCompile Include="..\..\src\game_picture.cpp" />
     <ClCompile Include="..\..\src\game_player.cpp" />
     <ClCompile Include="..\..\src\game_screen.cpp" />
+    <ClCompile Include="..\..\src\game_switches.cpp" />
     <ClCompile Include="..\..\src\game_system.cpp" />
     <ClCompile Include="..\..\src\game_targets.cpp" />
     <ClCompile Include="..\..\src\game_temp.cpp" />
+    <ClCompile Include="..\..\src\game_variables.cpp" />
     <ClCompile Include="..\..\src\game_vehicle.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />

@@ -20,62 +20,27 @@
 
 // Headers
 #include <vector>
-#include "main_data.h"
-#include "output.h"
-
-#define PLAYER_VAR_LIMIT 1000000
 
 /**
  * Game_Switches class
  */
 class Game_Switches_Class {
 public:
-	Game_Switches_Class(std::vector<bool>& switches) :
-		switches(switches) {}
+	Game_Switches_Class();
 
-	std::vector<bool>::reference operator[](int switch_id) {
-		if (!isValidSwitch(switch_id)) {
-			if (switch_id > 0 && switch_id <= PLAYER_VAR_LIMIT) {
-				Output::Debug("Resizing switch array to %d elements.", switch_id);
-				switches.resize(switch_id);
-			}
-			else {
-				Output::Debug("Switch index %d is invalid.", switch_id);
-				dummy.resize(1);
-				return dummy[0];
-			}
-		}
-
-		return switches[switch_id - 1];
-	}
+	std::vector<bool>::reference operator[](int switch_id);
 	
-	std::string GetName(int _id) const {
-		if (!(_id > 0 && _id <= (int)Data::switches.size())) {
-			return "";
-		}
-		else {
-			return Data::switches[_id - 1].name;
-		}
-	}
+	std::string GetName(int _id) const;
 
-	bool isValidSwitch(int switch_id) const {
-		return (switch_id > 0 && switch_id <= (int) switches.size());
-	}
+	bool isValidSwitch(int switch_id) const;
 
-	int size () const {
-		return (int)switches.size();
-	}
+	int size() const;
 
-	void Reset() {
-		switches.assign(Data::switches.size(), false);
-	}
+	void Reset();
 
 private:
-	std::vector<bool>& switches;
 	std::vector<bool> dummy;
 };
-
-#undef PLAYER_VAR_LIMIT
 
 // Global variable
 extern Game_Switches_Class Game_Switches;
