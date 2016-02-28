@@ -40,8 +40,8 @@
 
 // Global variables.
 
-Game_Variables_Class Game_Variables(Main_Data::game_data.system.variables);
-Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
+Game_Variables_Class Game_Variables;
+Game_Switches_Class Game_Switches;
 
 std::string project_path;
 std::string save_path;

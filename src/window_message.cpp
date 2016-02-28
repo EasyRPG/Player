@@ -24,19 +24,15 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
-#include "game_player.h"
 #include "game_system.h"
 #include "game_variables.h"
 #include "game_temp.h"
-#include "graphics.h"
 #include "input.h"
-#include "reader_util.h"
+#include "output.h"
 #include "player.h"
 #include "util_macro.h"
-#include "utils.h"
 #include "bitmap.h"
 #include "font.h"
-#include "text.h"
 
 #include <boost/next_prior.hpp>
 
@@ -109,7 +105,6 @@ void Window_Message::FinishMessageProcessing() {
 		StartNumberInputProcessing();
 	} else if (kill_message) {
 		TerminateMessage();
-		kill_message = false;
 	} else {
 		pause = true;
 	}
@@ -214,6 +209,7 @@ void Window_Message::InsertNewLine() {
 void Window_Message::TerminateMessage() {
 	active = false;
 	pause = false;
+	kill_message = false;
 	index = -1;
 
 	Game_Message::message_waiting = false;
@@ -563,7 +559,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		} else {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
-		if (is_valid && Game_Variables.isValidVar(parameter)) {
+		if (is_valid && Game_Variables.IsValid(parameter)) {
 			std::stringstream ss;
 			ss << Game_Variables[parameter];
 			return ss.str();
@@ -635,7 +631,7 @@ void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_Variables[Game_Message::num_input_variable_id] = number_input_window->GetNumber();
-		Game_Map::SetNeedRefresh(true);
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		TerminateMessage();
 		number_input_window->SetNumber(0);
 	}

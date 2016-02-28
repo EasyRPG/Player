@@ -276,7 +276,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency());
+	max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int)pow(2.0, 8 - GetMoveFrequency());
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
@@ -584,8 +584,11 @@ void Game_Event::UpdateParallel() {
 	}
 }
 
-RPG::Event& Game_Event::GetEvent() {
-	return event;
+const RPG::EventPage* Game_Event::GetPage(int page) const {
+	if (page <= 0 || page - 1 >= event.pages.size()) {
+		return nullptr;
+	}
+	return &event.pages[page - 1];
 }
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {

@@ -195,7 +195,7 @@ void Window::RefreshBackground() {
 	if (stretch) {
 		bitmap->StretchBlit(*windowskin, Rect(0, 0, 32, 32), 255);
 	} else {
-		bitmap->TiledBlit(Rect(0, 0, 16, 16), *windowskin, bitmap->GetRect(), 255);
+		bitmap->TiledBlit(Rect(0, 0, 32, 32), *windowskin, bitmap->GetRect(), 255);
 	}
 
 	background = bitmap;

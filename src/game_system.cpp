@@ -192,6 +192,14 @@ bool Game_System::GetAllowMenu() {
 	return data.menu_allowed;
 }
 
+RPG::System::Stretch Game_System::GetMessageStretch() {
+	return (RPG::System::Stretch)data.message_stretch;
+}
+
+void Game_System::SetMessageStretch(RPG::System::Stretch stretch) {
+	data.message_stretch = stretch;
+}
+
 int Game_System::GetTransition(int which) {
 	int transition = 0;
 

@@ -56,6 +56,15 @@ public:
 	 *
 	 * @return vector containing the IDs of all states the battler has.
 	 */
+	std::vector<int16_t> GetInflictedStates() const;
+
+	/**
+	 * Gets battler states.
+	 * This returns the raw state list with not inflected states set to 0 and
+	 * inflected states set to at least 1 (this maps to the turn count).
+	 *
+	 * @return vector containing state list
+	 */
 	virtual const std::vector<int16_t>& GetStates() const = 0;
 	virtual std::vector<int16_t>& GetStates() = 0;
 
@@ -326,24 +335,24 @@ public:
 	 *
 	 * @param state_id ID of state to add.
 	 */
-	void AddState(int state_id);
+	virtual void AddState(int state_id);
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
 	 */
-	void RemoveState(int state_id);
+	virtual void RemoveState(int state_id);
 
 	/**
 	 * Removes all states which end after battle.
 	 */
-	void RemoveBattleStates();
+	virtual void RemoveBattleStates();
 
 	/**
 	 * Removes all states.
 	 */
-	void RemoveAllStates();
+	virtual void RemoveAllStates();
 	
 	/**
 	 * Gets X position on battlefield
@@ -496,7 +505,6 @@ protected:
 	int spi_modifier;
 	int agi_modifier;
 	int battle_turn;
-	std::vector<int16_t> states_turn_count;
 	int last_battle_action;
 };
 

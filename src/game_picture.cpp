@@ -36,6 +36,12 @@ Game_Picture::Game_Picture(int ID) :
 }
 
 Game_Picture::~Game_Picture() {
+	if (id <= 0 || id -1 >= Main_Data::game_data.pictures.size()) {
+		// Prevent crash on game load when old pictures are destroyed
+		// but the new pictures array is smaller then the old one
+		return;
+	}
+
 	GetData().name = "";
 }
 
@@ -243,6 +249,6 @@ void Game_Picture::Update() {
 	UpdateSprite();
 }
 
-RPG::SavePicture& Game_Picture::GetData() {
+RPG::SavePicture& Game_Picture::GetData() const {
 	return Main_Data::game_data.pictures[id - 1];
 }

@@ -535,7 +535,7 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		default:
 			return false;
 	}
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	return true;
 }
 
@@ -811,7 +811,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			}
 	}
 
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
@@ -859,12 +859,12 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 }
 
 // Get Character.
-Game_Character* Game_Interpreter::GetCharacter(int character_id) {
+Game_Character* Game_Interpreter::GetCharacter(int character_id) const {
 	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
-	if (ch == NULL) {
-		Output::Warning("Unknown event with id %d", event_id);
+	if (!ch) {
+		Output::Warning("Unknown event with id %d", character_id);
 	}
-	return Game_Character::GetCharacter(character_id, event_id);
+	return ch;
 }
 
 // Change Gold.
@@ -915,7 +915,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 			value
 		);
 	}
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	// Continue
 	return true;
 }
@@ -976,7 +976,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 		}
 	}
 
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 
 	// Continue
 	return true;

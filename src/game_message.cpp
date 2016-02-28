@@ -134,7 +134,7 @@ void Game_Message::SetPositionFixed(bool fixed) {
 }
 
 bool Game_Message::GetContinueEvents() {
-	return data.message_continue_events;
+	return !!data.message_continue_events;
 }
 
 void Game_Message::SetContinueEvents(bool continue_events) {

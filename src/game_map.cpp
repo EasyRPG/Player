@@ -50,7 +50,7 @@ namespace {
 
 	std::string chipset_name;
 	std::string battleback_name;
-	bool need_refresh;
+	Game_Map::RefreshMode refresh_type;
 
 	int parallax_x;
 	int parallax_y;
@@ -86,7 +86,7 @@ void Game_Map::Init() {
 
 	map_info.position_x = 0;
 	map_info.position_y = 0;
-	need_refresh = true;
+	refresh_type = Refresh_All;
 
 	location.map_id = 0;
 	scroll_direction = 0;
@@ -219,7 +219,7 @@ void Game_Map::SetupCommon(int _id) {
 	}
 
 	SetChipset(map->chipset_id);
-	need_refresh = true;
+	refresh_type = Refresh_All;
 
 	scroll_direction = 2;
 	scroll_rest = 0;
@@ -301,12 +301,14 @@ void Game_Map::Refresh() {
 			ev.Refresh();
 		}
 
-		for (Game_CommonEvent& ev : common_events) {
-			ev.Refresh();
+		if (refresh_type == Refresh_All) {
+			for (Game_CommonEvent& ev : common_events) {
+				ev.Refresh();
+			}
 		}
 	}
 
-	need_refresh = false;
+	refresh_type = Refresh_None;
 }
 
 Game_Interpreter& Game_Map::GetInterpreter() {
@@ -606,9 +608,17 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
-	assert(chip_index < Data::data.chipsets[chipset_index].terrain_data.size());
+	
+	auto& terrain_data = Data::data.chipsets[chipset_index].terrain_data;
 
-	return Data::data.chipsets[chipset_index].terrain_data[chip_index];
+	if (terrain_data.empty()) {
+		// RPG_RT optimisation: When the terrain is all 1, no terrain data is stored
+		return 1;
+	}
+
+	assert(chip_index < terrain_data.size());
+
+	return terrain_data[chip_index];
 }
 
 bool Game_Map::AirshipLandOk(int const x, int const y) {
@@ -697,7 +707,7 @@ void Game_Map::UpdateScroll() {
 }
 
 void Game_Map::Update(bool only_parallel) {
-	if (GetNeedRefresh()) Refresh();
+	if (GetNeedRefresh() != Refresh_None) Refresh();
 	UpdateScroll();
 	UpdatePan();
 	UpdateParallax();
@@ -870,12 +880,15 @@ void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global)
 	Main_Data::game_data.screen.battleanim_global = global;
 
 	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	Game_Character& chara = *Game_Character::GetCharacter(target_id, target_id);
-	chara.SetFlashTimeLeft(0); 	// Any flash always ends
-	if (global) {
-		animation.reset(new BattleAnimationGlobal(anim));
-	} else {
-		animation.reset(new BattleAnimationChara(anim, chara));
+	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
+
+	if (chara) {
+		chara->SetFlashTimeLeft(0); 	// Any flash always ends
+		if (global) {
+			animation.reset(new BattleAnimationGlobal(anim));
+		} else {
+			animation.reset(new BattleAnimationChara(anim, *chara));
+		}
 	}
 }
 
@@ -923,11 +936,11 @@ void Game_Map::SetDisplayY(int new_display_y) {
 	map_info.position_y = new_display_y;
 }
 
-bool Game_Map::GetNeedRefresh() {
-	return need_refresh;
+Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
+	return refresh_type;
 }
-void Game_Map::SetNeedRefresh(bool new_need_refresh) {
-	need_refresh = new_need_refresh;
+void Game_Map::SetNeedRefresh(Game_Map::RefreshMode refresh_mode) {
+	refresh_type = refresh_mode;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

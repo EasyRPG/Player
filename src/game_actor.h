@@ -383,6 +383,30 @@ public:
 	const std::vector<int16_t>& GetStates() const;
 	std::vector<int16_t>& GetStates();
 
+	/**
+	 * Adds a State.
+	 *
+	 * @param state_id ID of state to add.
+	 */
+	void AddState(int state_id);
+
+	/**
+	 * Removes a State.
+	 *
+	 * @param state_id ID of state to remove.
+	 */
+	void RemoveState(int state_id);
+
+	/**
+	 * Removes all states which end after battle.
+	 */
+	void RemoveBattleStates();
+
+	/**
+	 * Removes all states.
+	 */
+	void RemoveAllStates();
+
 	int GetHp() const;
 	void SetHp(int _hp);
 	void ChangeHp(int hp);
@@ -640,8 +664,13 @@ public:
 
 	BattlerType GetType() const;
 private:
-	RPG::SaveActor& data;
+	// same reason as for Game_Picture, see comment
+	/**
+	 * @return Reference to the SaveActor data
+	 */
+	RPG::SaveActor& GetData() const;
 
+	int actor_id;
 	std::vector<int> exp_list;
 };
 

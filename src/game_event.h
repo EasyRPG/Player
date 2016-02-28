@@ -174,7 +174,14 @@ public:
 	 */
 	bool GetActive() const;
 
-	RPG::Event& GetEvent();
+	/**
+	 * Returns the event page or nullptr is page does not exist.
+	 *
+	 * @param page Page number (starting from 1)
+	 *
+	 * @return page or nullptr
+	 */
+	const RPG::EventPage* GetPage(int page) const;
 
 	const RPG::SaveMapEvent& GetSaveData();
 private:

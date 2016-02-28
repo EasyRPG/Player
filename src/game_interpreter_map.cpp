@@ -109,12 +109,11 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 		save_commands.current_command = save_interpreter->index;
 		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
+		save_commands.event_id = event_id;
 		save_commands.actioned = triggered_by_decision_key;
 		save.push_back(save_commands);
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
-
-	save.back().ID = event_id;
 
 	return save;
 }
@@ -345,7 +344,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::ToggleFullscreen:
 			return CommandToggleFullscreen(com);
 		case Cmd::OpenVideoOptions:
-			// don't care
+			Output::Warning("OpenVideoOptions: Command not supported");
 			return true;
 		default:
 			return Game_Interpreter::ExecuteCommand();
@@ -446,7 +445,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
@@ -485,7 +484,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
@@ -496,7 +495,7 @@ bool Game_Interpreter_Map::CommandStoreEventID(RPG::EventCommand const& com) { /
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 	Game_Variables[var_id] = events.size() > 0 ? events.back()->GetId() : 0;
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
@@ -879,6 +878,8 @@ bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& 
 	request->SetImportantFile(true);
 	request->Start();
 
+	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);
+
 	return true;
 }
 
@@ -1225,7 +1226,6 @@ bool Game_Interpreter_Map::CommandReturnToTitleScreen(RPG::EventCommand const& /
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
 	Game_Temp::save_calling = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return true;
 }
 
@@ -1422,7 +1422,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	switch (com.parameters[0]) {
 		case 0: // Common Event
 			evt_id = com.parameters[1];
-			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
+			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, false, Data::commonevents[evt_id - 1].ID, -2);
 			return true;
 		case 1: // Map Event
 			evt_id = com.parameters[1];
@@ -1437,9 +1437,13 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
-	if (event != NULL) {
-		RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-		child_interpreter->Setup(page.event_commands, event->GetId(), event->GetX(), event->GetY());
+	if (event) {
+		const RPG::EventPage* page = event->GetPage(event_page);
+		if (page) {
+			child_interpreter->Setup(page->event_commands, event->GetId(), false, event->GetX(), event->GetY());
+		} else {
+			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
+		}
 	}
 
 	return true;
@@ -1572,7 +1576,7 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 	}
 
 	Game_Variables[var_id] = result;
-	Game_Map::SetNeedRefresh(true);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 
 	if (!wait)
 		return true;
@@ -1695,7 +1699,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 
 		if (com.parameters[6] != 0) {
 			Game_Variables[com.parameters[7]] = result;
-			Game_Map::SetNeedRefresh(true);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		}
 	}
 
@@ -1712,6 +1716,10 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	int evt_id = com.parameters[1];
 	waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
+
+	Game_Character* chara = GetCharacter(evt_id);
+	if (chara == NULL)
+		return true;
 
 	if (evt_id == Game_Character::CharThisEvent)
 		evt_id = event_id;
