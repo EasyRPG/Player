@@ -1435,9 +1435,13 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
-	if (event != NULL) {
-		RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-		child_interpreter->Setup(page.event_commands, event->GetId(), false, event->GetX(), event->GetY());
+	if (event) {
+		const RPG::EventPage* page = event->GetPage(event_page);
+		if (page) {
+			child_interpreter->Setup(page->event_commands, event->GetId(), false, event->GetX(), event->GetY());
+		} else {
+			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
+		}
 	}
 
 	return true;

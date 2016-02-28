@@ -584,8 +584,11 @@ void Game_Event::UpdateParallel() {
 	}
 }
 
-RPG::Event& Game_Event::GetEvent() {
-	return event;
+const RPG::EventPage* Game_Event::GetPage(int page) const {
+	if (page <= 0 || page - 1 >= event.pages.size()) {
+		return nullptr;
+	}
+	return &event.pages[page - 1];
 }
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {

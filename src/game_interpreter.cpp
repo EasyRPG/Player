@@ -861,10 +861,10 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 // Get Character.
 Game_Character* Game_Interpreter::GetCharacter(int character_id) const {
 	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
-	if (ch == NULL) {
-		Output::Warning("Unknown event with id %d", event_id);
+	if (!ch) {
+		Output::Warning("Unknown event with id %d", character_id);
 	}
-	return Game_Character::GetCharacter(character_id, event_id);
+	return ch;
 }
 
 // Change Gold.
