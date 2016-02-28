@@ -51,10 +51,10 @@ bool MessageOverlay::IsGlobal() const {
 void MessageOverlay::Draw() {
 	std::deque<MessageOverlayItem>::iterator it;
 
-	++counter;
-	if (counter > 150) {
-		counter = 0;
-		if (!messages.empty()) {
+	if (IsAnyMessageVisible()) {
+		++counter;
+		if (counter > 150) {
+			counter = 0;
 			for (it = messages.begin(); it != messages.end(); ++it) {
 				if (!it->hidden) {
 					it->hidden = true;
@@ -63,11 +63,9 @@ void MessageOverlay::Draw() {
 			}
 			dirty = true;
 		}
-	} else {
-		if (!messages.empty()) {
-			DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
-		}
 	}
+
+	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 
 	if (!dirty) return;
 
@@ -83,8 +81,6 @@ void MessageOverlay::Draw() {
 			++i;
 		}
 	}
-
-	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 
 	dirty = false;
 }
@@ -113,6 +109,10 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 void MessageOverlay::SetShowAll(bool show_all) {
 	this->show_all = show_all;
 	dirty = true;
+}
+
+bool MessageOverlay::IsAnyMessageVisible() const {
+	return std::any_of(messages.cbegin(), messages.cend(), [](const MessageOverlayItem& m) { return !m.hidden; });
 }
 
 MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :

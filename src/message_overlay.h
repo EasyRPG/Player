@@ -55,6 +55,8 @@ public:
 	void SetShowAll(bool show_all);
 
 private:
+	bool IsAnyMessageVisible() const;
+
 	DrawableType type;
 
 	BitmapRef bitmap;
