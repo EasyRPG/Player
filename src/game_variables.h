@@ -20,6 +20,7 @@
 
 // Headers
 #include "data.h"
+#include <string>
 
 /**
  * Game_Variables class.
@@ -39,7 +40,7 @@ public:
 	void Reset();
 
 private:
-	int dummy;
+	int dummy = 0;
 };
 
 // Global variable

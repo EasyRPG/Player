@@ -20,6 +20,7 @@
 
 // Headers
 #include <vector>
+#include <string>
 
 /**
  * Game_Switches class
