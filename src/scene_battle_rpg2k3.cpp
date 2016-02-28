@@ -547,19 +547,29 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-			if (action->IsSuccess() && target_sprite) {
+			if (action->IsSuccess() && !action->IsPositive() && target_sprite) {
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
 			action->Apply();
 
 			if (action->GetTarget()) {
-				DrawFloatText(
-					action->GetTarget()->GetBattleX(),
-					action->GetTarget()->GetBattleY(),
-					0,
-					action->IsSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
-					30);
+				if (action->IsSuccess()) {
+					if (action->GetAffectedHp() != -1)
+						DrawFloatText(
+							action->GetTarget()->GetBattleX(),
+							action->GetTarget()->GetBattleY(),
+							0,
+							boost::lexical_cast<std::string>(action->GetAffectedHp()),
+							30);
+				} else {
+					DrawFloatText(
+						action->GetTarget()->GetBattleX(),
+						action->GetTarget()->GetBattleY(),
+						0,
+						Data::terms.miss,
+						30);
+				}
 
 				targets.push_back(action->GetTarget());
 			}

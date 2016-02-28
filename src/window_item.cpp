@@ -22,6 +22,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "game_temp.h"
 
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -53,6 +54,15 @@ void Window_Item::Refresh() {
 
 	data.clear();
 	Main_Data::game_party->GetItems(party_items);
+
+	if (Game_Temp::battle_running) {
+		// Include equipped accesories that invoke skills
+		for (Game_Actor* actor : Main_Data::game_party->GetActors()) {
+			int accessory = actor->GetAccessoryId();
+			if (Data::items[accessory-1].skill_id > 0)
+				data.push_back(accessory);
+		}
+	}
 
 	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {

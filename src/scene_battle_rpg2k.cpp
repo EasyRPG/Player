@@ -759,15 +759,16 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 	battle_message_window->Push((*enemy_iterator)->GetName() + Data::terms.encounter);
 
-	if (battle_message_window->GetLineCount() == 4) {
+	++enemy_iterator;
+
+	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() ||
+		battle_message_window->GetLineCount() == 4) {
 		// Half second sleep
 		encounter_message_sleep_until = Player::GetFrames() + 60 / 2;
 	} else {
 		// 1/10 second sleep
 		encounter_message_sleep_until = Player::GetFrames() + 60 / 10;
 	}
-
-	++enemy_iterator;
 
 	return false;
 }

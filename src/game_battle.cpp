@@ -63,6 +63,7 @@ void Game_Battle::Init() {
 
 	Game_Temp::battle_running = true;
 	turn = 0;
+	terminate = false;
 	escape_fail_count = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
@@ -89,6 +90,8 @@ void Game_Battle::Quit() {
 		(*it)->RemoveBattleStates();
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
+
+	page_executed.clear();
 
 	Main_Data::game_party->ResetBattle();
 
