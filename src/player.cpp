@@ -44,11 +44,13 @@
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "utils.h"
+#include "version.h"
 
 #include <algorithm>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 #ifdef GEKKO
@@ -115,8 +117,19 @@ void Player::Init(int argc, char *argv[]) {
 
 	if (init) return;
 
-	Output::Debug("EasyRPG Player started");
-	Output::Debug("======================");
+	// Display a nice version string
+	std::stringstream header;
+	std::string addtl_ver(PLAYER_ADDTL);
+	header << "EasyRPG Player " << PLAYER_VERSION;
+	if (!addtl_ver.empty())
+		header << " " << addtl_ver;
+	header << " started";
+	Output::Debug(header.str().c_str());
+
+	uint header_width = header.str().length();
+	header.str("");
+	header << std::setfill('=') << std::setw(header_width) << "=";
+	Output::Debug(header.str().c_str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
@@ -730,7 +743,15 @@ std::string Player::GetEncoding() {
 }
 
 void Player::PrintVersion() {
-	std::cout << "EasyRPG Player " << PLAYER_VERSION << std::endl;
+	std::string additional(PLAYER_ADDTL);
+	std::stringstream version;
+
+	version << PLAYER_VERSION;
+
+	if (!additional.empty())
+		version << " " << additional;
+
+	std::cout << "EasyRPG Player " << version.str() << std::endl;
 }
 
 void Player::PrintUsage() {
