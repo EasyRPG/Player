@@ -344,7 +344,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::ToggleFullscreen:
 			return CommandToggleFullscreen(com);
 		case Cmd::OpenVideoOptions:
-			// don't care
+			Output::Warning("OpenVideoOptions: Command not supported");
 			return true;
 		default:
 			return Game_Interpreter::ExecuteCommand();
