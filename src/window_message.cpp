@@ -105,7 +105,6 @@ void Window_Message::FinishMessageProcessing() {
 		StartNumberInputProcessing();
 	} else if (kill_message) {
 		TerminateMessage();
-		kill_message = false;
 	} else {
 		pause = true;
 	}
@@ -210,6 +209,7 @@ void Window_Message::InsertNewLine() {
 void Window_Message::TerminateMessage() {
 	active = false;
 	pause = false;
+	kill_message = false;
 	index = -1;
 
 	Game_Message::message_waiting = false;
