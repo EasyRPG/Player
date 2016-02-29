@@ -563,8 +563,6 @@ void Game_Event::Update() {
 		running = true;
 	}
 
-	Game_Character::Update();
-
 	if (halting) {
 		running = false;
 		halting = false;
@@ -582,6 +580,8 @@ void Game_Event::UpdateParallel() {
 		}
 		interpreter->Update();
 	}
+
+	Game_Character::Update();
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {
