@@ -967,11 +967,7 @@ void Scene_Logo::Update() {
 
 		if (is_valid) {
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>(), true);
-			if (Player::new_game_flag) {
-				Player::SetupPlayerSpawn();
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
-			}
-			else if (Player::load_game_id > 0) {
+			if (Player::load_game_id > 0) {
 				std::stringstream ss;
 				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
 
