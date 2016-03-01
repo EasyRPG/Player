@@ -1179,7 +1179,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	int tenths = com.parameters[4];
 	bool wait = com.parameters[5] != 0;
 
-	if (Player::IsRPG2k()) {
+	if (com.parameters.size() <= 6) {
 		screen->FlashOnce(r, g, b, s, tenths);
 		if (wait)
 			SetupWait(tenths);
