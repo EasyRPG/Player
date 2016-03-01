@@ -109,10 +109,10 @@ void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
 	std::vector<int16_t> states = actor->GetStates();
 
 	// Unit has Normal state if no state is set
-	if (states.size() == 0) {
+	const RPG::State* state = actor->GetSignificantState();
+	if (!state) {
 		contents->TextDraw(cx, cy, Font::ColorDefault, Data::terms.normal_status);
 	} else {
-		const RPG::State* state = actor->GetSignificantState();
 		contents->TextDraw(cx, cy, state->color, state->name);
 	}
 }
