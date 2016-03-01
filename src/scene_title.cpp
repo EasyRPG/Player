@@ -48,8 +48,12 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::Continue() {
-	// Clear the cache when the game returns to title screen
-	// e.g. by pressing F12
+	// Fade out all audio and clear the cache when the game returns to the
+	// title screen e.g. by pressing F12
+	Audio().BGM_Fade(800);
+	Audio().BGS_Fade(800);
+	Audio().ME_Fade(800);
+
 	Cache::Clear();
 
 	Player::ResetGameObjects();
