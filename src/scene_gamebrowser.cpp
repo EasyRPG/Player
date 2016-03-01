@@ -168,7 +168,7 @@ void Scene_GameBrowser::BootGame() {
 
 	if (browser_dir.empty())
 		browser_dir = Main_Data::GetProjectPath();
-	Main_Data::SetProjectPath(gamelist_window->GetGamePath());
+	Main_Data::SetProjectPath(path);
 
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
 	FileFinder::SetDirectoryTree(tree);
