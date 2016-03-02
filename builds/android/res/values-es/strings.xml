@@ -63,6 +63,7 @@ Cuéntanos detalladamente qué fue mal.\n
 [Puedes eliminar este texto de instrucciones]</string>
   <!--Settings Activity-->
   <string name="settings">Configuración</string>
+  <string name="add_game_folder">Añadir una carpeta de juegos</string>
   <string name="enable_vibration">Activar vibración</string>
   <string name="vibrate_when_sliding_direction">Vibrar al desplazarse a otra dirección</string>
   <string name="input_layout_transparency">Transparencia de los botones:</string>
