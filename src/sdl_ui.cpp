@@ -85,7 +85,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static void GekkoResetCallback();
 #endif
 
-SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
+SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	BaseUi(),
 	zoom_available(true),
 	toggle_fs_available(false),
@@ -146,7 +146,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	WII_ChangeSquare(304, 228, 0, 0);
 #endif
 
-	SetTitle(title);
+	SetTitle(GAME_TITLE);
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
@@ -412,7 +412,7 @@ bool SdlUi::RefreshDisplayMode() {
 		#endif
 
 		// Create our window
-		sdl_window = SDL_CreateWindow("EasyRPG Player",
+		sdl_window = SDL_CreateWindow(GAME_TITLE,
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
 			display_width, display_height,

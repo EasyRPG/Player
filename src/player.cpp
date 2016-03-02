@@ -170,7 +170,6 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -551,7 +550,15 @@ void Player::CreateGameObjects() {
 		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 	}
 
-	Output::Debug("Loading game %s", game_title.c_str());
+	std::stringstream title;
+	if (!game_title.empty()) {
+		Output::Debug("Loading game %s", game_title.c_str());
+		title << game_title << " - ";
+	} else {
+		Output::Warning("Could not read game title.");
+	}
+	title << GAME_TITLE;
+	DisplayUi->SetTitle(title.str());
 
 	if (engine == EngineNone) {
 		if (Data::system.ldb_id == 2003) {
