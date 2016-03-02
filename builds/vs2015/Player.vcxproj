@@ -409,6 +409,7 @@
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
     <ClInclude Include="..\..\src\keys.h" />
+    <ClInclude Include="..\..\src\logo.h" />
     <ClInclude Include="..\..\src\main_data.h" />
     <ClInclude Include="..\..\src\map_data.h" />
     <ClInclude Include="..\..\src\matrix.h" />
