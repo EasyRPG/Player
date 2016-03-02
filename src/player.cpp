@@ -126,7 +126,7 @@ void Player::Init(int argc, char *argv[]) {
 	header << " started";
 	Output::Debug(header.str().c_str());
 
-	uint header_width = header.str().length();
+	unsigned int header_width = header.str().length();
 	header.str("");
 	header << std::setfill('=') << std::setw(header_width) << "=";
 	Output::Debug(header.str().c_str());
