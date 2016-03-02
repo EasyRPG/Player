@@ -22,7 +22,6 @@
 #include <string>
 #include "game_battler.h"
 #include "graphics.h"
-#include "rpg_music.h"
 
 /**
  * Game Temp static class.
@@ -75,7 +74,6 @@ public:
 	static int battle_defeat_mode;
 	static bool battle_first_strike;
 	static int battle_result;
-	static bool battle_wait;
 
 	enum BattleResult {
 		BattleVictory,
