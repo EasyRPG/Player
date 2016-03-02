@@ -193,7 +193,7 @@ void Player::Run() {
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
-		Player::MainLoop();
+		MainLoop();
 #endif
 }
 
@@ -205,7 +205,7 @@ void Player::MainLoop() {
 	Scene::old_instances.clear();
 
 	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
-		Player::Exit();
+		Exit();
 	}
 }
 
@@ -551,22 +551,22 @@ void Player::CreateGameObjects() {
 		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 	}
 
-	Output::Debug("Loading game %s", Player::game_title.c_str());
+	Output::Debug("Loading game %s", game_title.c_str());
 
-	if (Player::engine == EngineNone) {
+	if (engine == EngineNone) {
 		if (Data::system.ldb_id == 2003) {
-			Player::engine = EngineRpg2k3;
+			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
 				Output::Debug("Using RPG2k3 Interpreter");
 			}
 			else {
-				Player::engine |= EngineRpg2k3E;
+				engine |= EngineRpg2k3E;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		}
 		else {
-			Player::engine = EngineRpg2k;
+			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
 	}
