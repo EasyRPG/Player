@@ -465,14 +465,15 @@ bool SdlUi::RefreshDisplayMode() {
 					== SDL_WINDOW_FULLSCREEN_DESKTOP) {
 				// Restore to pre-fullscreen size
 				SDL_SetWindowSize(sdl_window, 0, 0);
-			}
-			else {
+			} else {
 				SDL_SetWindowSize(sdl_window, display_width, display_height);
 			}
-			SetAppIcon();
 		}
 #endif
 	}
+	// Need to set up icon again, some platforms recreate the window when
+	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
+	SetAppIcon();
 
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 	const DynamicFormat format(
@@ -909,10 +910,16 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 #endif
 
 void SdlUi::SetAppIcon() {
+#if !defined(_WIN32)
+	/* SDL handles transfering the application icon to new or recreated windows,
+	   if initially set through it (see below). So no need to set again for all
+	   platforms relying on it. Platforms defined above need special treatment.
+	*/
 	static bool icon_set = false;
 
 	if (icon_set)
 		return;
+#endif
 
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
@@ -950,8 +957,8 @@ void SdlUi::SetAppIcon() {
 #else
 	SDL_SetWindowIcon(sdl_window, icon);
 	SDL_FreeSurface(icon);
-#endif
 	icon_set = true;
+#endif
 }
 
 void SdlUi::ResetKeys() {
