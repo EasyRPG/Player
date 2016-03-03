@@ -920,7 +920,8 @@ void SdlUi::SetAppIcon() {
 	if (icon_set)
 		return;
 #endif
-
+	bool load_error = false;
+#ifdef _WIN32
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
 	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
@@ -928,10 +929,12 @@ void SdlUi::SetAppIcon() {
 	if (success < 0)
 		Output::Error("Wrong SDL version");
 
-#ifdef _WIN32
 	HWND window;
 	HINSTANCE handle = GetModuleHandle(NULL);
 	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
+	HICON icon_small = (HICON) LoadImage(handle, MAKEINTRESOURCE(23456), IMAGE_ICON,
+		GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
+	load_error = (icon == NULL || icon_small == NULL);
 #else
 	//Linux, OS X
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
@@ -946,14 +949,15 @@ void SdlUi::SetAppIcon() {
 		uint32_t Amask = 0x000000FF;
 	#endif
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon32, ICON_SIZE, ICON_SIZE, 32, ICON_SIZE*4, Rmask, Gmask, Bmask, Amask);
+	load_error = (icon == NULL);
 #endif
-
-	if (icon == NULL)
-		Output::Error("Couldn't load icon.");
+	if (load_error)
+		Output::Warning("Could not load window icon.");
 
 #ifdef _WIN32
 	window = wminfo.info.win.window;
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
+	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
 #else
 	SDL_SetWindowIcon(sdl_window, icon);
 	SDL_FreeSurface(icon);
