@@ -96,9 +96,9 @@ void Game_System::SePlay(RPG::Sound const& se) {
 	if (se.name.length() >= end.length() &&
 		0 == se.name.compare(se.name.length() - end.length(), end.length(), end)) {
 		if (!ineluki_warning_shown) {
-			Output::Warning("This game seems to use a patch to support additional\n"
-				"keys, mouse or scripts. Such patches are currently\n"
-				"unsupported and this functionality will not work!");
+			Output::Warning("This game seems to use Ineluki's key patch to support\n"
+				"additional keys, mouse or scripts. Such patches are\n"
+				"unsupported, so this functionality will not work!");
 			ineluki_warning_shown = true;
 		}
 		return;
