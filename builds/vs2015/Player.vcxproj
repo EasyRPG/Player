@@ -403,6 +403,7 @@
     <ClInclude Include="..\..\src\game_vehicle.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
+    <ClInclude Include="..\..\src\icon.h" />
     <ClInclude Include="..\..\src\image_bmp.h" />
     <ClInclude Include="..\..\src\image_png.h" />
     <ClInclude Include="..\..\src\image_xyz.h" />

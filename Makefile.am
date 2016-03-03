@@ -97,6 +97,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/graphics.h \
 	src/hslrgb.cpp \
 	src/hslrgb.h \
+	src/icon.h \
 	src/image_bmp.cpp \
 	src/image_bmp.h \
 	src/image_png.cpp \
