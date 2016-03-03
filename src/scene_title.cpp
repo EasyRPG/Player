@@ -54,7 +54,6 @@ void Scene_Title::Continue() {
 	// title screen e.g. by pressing F12
 	Audio().BGM_Fade(800);
 	Audio().BGS_Fade(800);
-	Audio().ME_Fade(800);
 
 	Cache::Clear();
 
