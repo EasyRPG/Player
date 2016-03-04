@@ -85,7 +85,6 @@ SdlAudio::SdlAudio() :
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 
-#if SDL_MIXER_MAJOR_VERSION>1
 	int audio_rate;
 	Uint16 audio_format;
 	int audio_channels;
@@ -98,10 +97,12 @@ SdlAudio::SdlAudio() :
 			case AUDIO_S16LSB: audio_format_str = "S16LSB"; break;
 			case AUDIO_U16MSB: audio_format_str = "U16MSB"; break;
 			case AUDIO_S16MSB: audio_format_str = "S16MSB"; break;
+#if SDL_MIXER_MAJOR_VERSION>1
 			case AUDIO_S32LSB: audio_format_str = "S32LSB"; break;
 			case AUDIO_S32MSB: audio_format_str = "S32MSB"; break;
 			case AUDIO_F32LSB: audio_format_str = "F32LSB"; break;
 			case AUDIO_F32MSB: audio_format_str = "F32MSB"; break;
+#endif
 			default: audio_format_str = "Unknown"; break;
 		}
 		Output::Debug("Opened audio at %d Hz (%s), format: %s",
@@ -111,7 +112,6 @@ SdlAudio::SdlAudio() :
 	} else {
 		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
 	}
-#endif
 }
 
 SdlAudio::~SdlAudio() {

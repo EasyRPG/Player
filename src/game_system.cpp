@@ -23,6 +23,7 @@
 #include "baseui.h"
 #include "bitmap.h"
 #include "cache.h"
+#include "output.h"
 #include "graphics.h"
 #include "main_data.h"
 #include "scene_save.h"
@@ -86,16 +87,31 @@ void Game_System::BgmStop() {
 }
 
 void Game_System::SePlay(RPG::Sound const& se) {
-	if (!se.name.empty() && se.name != "(OFF)" && se.name != "(Brak)") {
-		// Yume Nikki plays hundreds of sound effects at 0% volume on
-		// startup. Probably for caching. This triggers "No free channels"
-		// warnings.
-		if (se.volume > 0) {
-			FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-			se_request_ids[se.name] = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
-			request->Start();
+	static bool ineluki_warning_shown = false;
+
+	if (se.name.empty() || se.name == "(OFF)" || se.name == "(Brak)")
+		return;
+
+	std::string end = ".script";
+	if (se.name.length() >= end.length() &&
+		0 == se.name.compare(se.name.length() - end.length(), end.length(), end)) {
+		if (!ineluki_warning_shown) {
+			Output::Warning("This game seems to use Ineluki's key patch to support\n"
+				"additional keys, mouse or scripts. Such patches are\n"
+				"unsupported, so this functionality will not work!");
+			ineluki_warning_shown = true;
 		}
+		return;
 	}
+
+	// NOTE: Yume Nikki plays hundreds of sound effects at 0% volume on startup,
+	// probably for caching. This avoids "No free channels" warnings.
+	if (se.volume == 0)
+		return;
+
+	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
+	se_request_ids[se.name] = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
+	request->Start();
 }
 
 std::string Game_System::GetSystemName() {

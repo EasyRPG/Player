@@ -25,9 +25,9 @@
 
 EASYRPG_SHARED_PTR<BaseUi> DisplayUi;
 
-EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, const std::string& title, bool fs_flag, bool /* zoom */) {
+EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, bool /* zoom */) {
 #ifdef USE_SDL
-	return EASYRPG_MAKE_SHARED<SdlUi>(width, height, title, fs_flag);
+	return EASYRPG_MAKE_SHARED<SdlUi>(width, height, fs_flag);
 #else
 #error cannot create UI
 #endif

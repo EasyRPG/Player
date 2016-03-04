@@ -93,9 +93,4 @@
 
 //#define USE_FIXED_TIMESTEP_FPS
 
-/** Version of player. Should be redefined by build system. */
-#ifndef PLAYER_VERSION
-#  define PLAYER_VERSION "0.4.0"
-#endif
-
 #endif

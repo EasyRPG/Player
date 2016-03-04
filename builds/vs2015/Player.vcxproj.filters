@@ -510,6 +510,9 @@
     <ClInclude Include="..\..\src\image_xyz.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\logo.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\pixel_format.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>

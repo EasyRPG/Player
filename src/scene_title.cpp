@@ -39,7 +39,9 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	if (Data::system.show_title && !Player::battle_test_flag && !Player::hide_title_flag) {
+	// Skip background image and music if not used
+	if (Data::system.show_title && !Player::new_game_flag &&
+		!Player::battle_test_flag && !Player::hide_title_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
 	}
@@ -48,8 +50,11 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::Continue() {
-	// Clear the cache when the game returns to title screen
-	// e.g. by pressing F12
+	// Fade out all audio and clear the cache when the game returns to the
+	// title screen e.g. by pressing F12
+	Audio().BGM_Fade(800);
+	Audio().BGS_Fade(800);
+
 	Cache::Clear();
 
 	Player::ResetGameObjects();
@@ -58,20 +63,22 @@ void Scene_Title::Continue() {
 }
 
 void Scene_Title::TransitionIn() {
-	if (!Player::battle_test_flag && Data::system.show_title) {
-		Graphics::Transition(Graphics::TransitionErase, 1, true);
-		if (!Player::hide_title_flag) {
-			Graphics::Transition(Graphics::TransitionFadeIn, 32);
-		} else {
-			Graphics::Transition(Graphics::TransitionFadeIn, 6);
-		}
+	if (Player::battle_test_flag || !Data::system.show_title || Player::new_game_flag)
+		return;
+
+	Graphics::Transition(Graphics::TransitionErase, 1, true);
+	if (!Player::hide_title_flag) {
+		Graphics::Transition(Graphics::TransitionFadeIn, 32);
+	} else {
+		Graphics::Transition(Graphics::TransitionFadeIn, 6);
 	}
 }
 
 void Scene_Title::Resume() {
-	if (Data::system.show_title) {
-		command_window->SetVisible(true);
-	}
+	if (!Data::system.show_title || Player::new_game_flag)
+		return;
+
+	command_window->SetVisible(true);
 }
 
 void Scene_Title::Suspend() {
@@ -84,7 +91,7 @@ void Scene_Title::Update() {
 		return;
 	}
 
-	if (!Data::system.show_title) {
+	if (!Data::system.show_title || Player::new_game_flag) {
 		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 		if (Player::debug_flag && Player::hide_title_flag) {

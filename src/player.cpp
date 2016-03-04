@@ -44,11 +44,13 @@
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "utils.h"
+#include "version.h"
 
 #include <algorithm>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 #ifdef GEKKO
@@ -115,8 +117,19 @@ void Player::Init(int argc, char *argv[]) {
 
 	if (init) return;
 
-	Output::Debug("EasyRPG Player started");
-	Output::Debug("======================");
+	// Display a nice version string
+	std::stringstream header;
+	std::string addtl_ver(PLAYER_ADDTL);
+	header << "EasyRPG Player " << PLAYER_VERSION;
+	if (!addtl_ver.empty())
+		header << " " << addtl_ver;
+	header << " started";
+	Output::Debug(header.str().c_str());
+
+	unsigned int header_width = header.str().length();
+	header.str("");
+	header << std::setfill('=') << std::setw(header_width) << "=";
+	Output::Debug(header.str().c_str());
 
 #ifdef GEKKO
 	// Init libfat (Mount SD/USB)
@@ -157,7 +170,6 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -180,7 +192,7 @@ void Player::Run() {
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
-		Player::MainLoop();
+		MainLoop();
 #endif
 }
 
@@ -192,7 +204,7 @@ void Player::MainLoop() {
 	Scene::old_instances.clear();
 
 	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
-		Player::Exit();
+		Exit();
 	}
 }
 
@@ -538,22 +550,30 @@ void Player::CreateGameObjects() {
 		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 	}
 
-	Output::Debug("Loading game %s", Player::game_title.c_str());
+	std::stringstream title;
+	if (!game_title.empty()) {
+		Output::Debug("Loading game %s", game_title.c_str());
+		title << game_title << " - ";
+	} else {
+		Output::Warning("Could not read game title.");
+	}
+	title << GAME_TITLE;
+	DisplayUi->SetTitle(title.str());
 
-	if (Player::engine == EngineNone) {
+	if (engine == EngineNone) {
 		if (Data::system.ldb_id == 2003) {
-			Player::engine = EngineRpg2k3;
+			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
 				Output::Debug("Using RPG2k3 Interpreter");
 			}
 			else {
-				Player::engine |= EngineRpg2k3E;
+				engine |= EngineRpg2k3E;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		}
 		else {
-			Player::engine = EngineRpg2k;
+			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
 	}
@@ -730,7 +750,15 @@ std::string Player::GetEncoding() {
 }
 
 void Player::PrintVersion() {
-	std::cout << "EasyRPG Player " << PLAYER_VERSION << std::endl;
+	std::string additional(PLAYER_ADDTL);
+	std::stringstream version;
+
+	version << PLAYER_VERSION;
+
+	if (!additional.empty())
+		version << " " << additional;
+
+	std::cout << "EasyRPG Player " << version.str() << std::endl;
 }
 
 void Player::PrintUsage() {

@@ -49,7 +49,6 @@ void Scene_End::Update() {
 		case 0: // Yes
 			Audio().BGM_Fade(800);
 			Audio().BGS_Fade(800);
-			Audio().ME_Fade(800);
 			Scene::PopUntil(Scene::Title);
 			break;
 		case 1: // No
