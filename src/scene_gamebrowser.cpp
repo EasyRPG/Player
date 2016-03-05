@@ -23,6 +23,7 @@
 #include "player.h"
 #include "scene_title.h"
 #include "bitmap.h"
+#include "audio.h"
 
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
@@ -46,6 +47,7 @@ void Scene_GameBrowser::Continue() {
 #ifdef _WIN32
 	SetCurrentDirectory(L"..");
 #endif
+	Audio().BGM_Fade(800);
 
 	Main_Data::SetProjectPath(browser_dir);
 

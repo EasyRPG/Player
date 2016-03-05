@@ -53,7 +53,6 @@ void Scene_Title::Continue() {
 	// Fade out all audio and clear the cache when the game returns to the
 	// title screen e.g. by pressing F12
 	Audio().BGM_Fade(800);
-	Audio().BGS_Fade(800);
 
 	Cache::Clear();
 
@@ -200,7 +199,6 @@ void Scene_Title::CommandContinue() {
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-	Audio().BGS_Fade(800);
 	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
 	Scene::Pop();
 }

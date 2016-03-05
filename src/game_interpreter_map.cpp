@@ -1831,7 +1831,11 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandExitGame(RPG::EventCommand const& com) {
-	Player::exit_flag = true;
+	if (Scene::Find(Scene::GameBrowser)) {
+		Scene::PopUntil(Scene::GameBrowser);
+	} else {
+		Player::exit_flag = true;
+	}
 	return true;
 }
 
