@@ -116,16 +116,16 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
 
-	// Set some SDL env. variables before starting
-	// These are platform dependent, so every port
-	// needs to set them manually
-
-	// Set window position to the middle of the
-	// screen
+	// Set some SDL environment variables before starting. These are platform
+	// dependent, so every port needs to set them manually
 #ifndef GEKKO
+	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
-#if defined(PSP)
+#ifdef __LINUX__
+	// Set the application class name
+	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
+#elif defined(PSP)
 	putenv(const_cast<char *>("SDL_ASPECT_RATIO=4:3"));
 #endif
 
