@@ -113,9 +113,14 @@ private:
 	void ProcessFingerDownEvent(SDL_Event & evnt);
 	void ProcessFingerUpEvent(SDL_Event & evnt);
 	void ProcessFingerEvent(SDL_Event & evnt, bool finger_down);
-#endif
 
 	/** @} */
+
+	/**
+	 * Sets app icon.
+	 */
+	void SetAppIcon();
+#endif
 
 	/**
 	 * Blits a bitmap scaled x2 to an SDL surface.
@@ -124,11 +129,6 @@ private:
 	 * @param dst destination surface.
 	 */
 	void Blit2X(Bitmap const& src, SDL_Surface* dst);
-
-	/**
-	 * Sets app icon.
-	 */
-	void SetAppIcon();
 
 	/**
 	 * Resets keys states.
