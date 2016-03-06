@@ -58,7 +58,7 @@ void Scene_Skill::Update() {
 
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
-		if (skill && actor->IsSkillUsable(skill_id)) {
+		if (skill && skill_window->CheckEnable(skill_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
