@@ -907,7 +907,6 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 	(void)finger_down;
 	(void)evnt;
 }
-#endif
 
 void SdlUi::SetAppIcon() {
 #if !defined(_WIN32)
@@ -964,6 +963,7 @@ void SdlUi::SetAppIcon() {
 	icon_set = true;
 #endif
 }
+#endif
 
 void SdlUi::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
