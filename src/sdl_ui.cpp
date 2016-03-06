@@ -27,7 +27,6 @@
 #    define NOMINMAX
 #  endif
 #  include <windows.h>
-#  include "SDL_syswm.h"
 #elif defined(GEKKO)
 #  include <gccore.h>
 #  include <wiiuse/wpad.h>
@@ -36,6 +35,16 @@
 #  include <SDL_system.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#endif
+#if defined(_WIN32) || SDL_MAJOR_VERSION>1
+	#include "icon.h"
+
+	// Prevent some XLib name clashes under Linux
+	#define Font Font_XLib
+	#define Drawable Drawable_XLib
+	#include "SDL_syswm.h"
+	#undef Font
+	#undef Drawable
 #endif
 
 #include "color.h"
@@ -107,16 +116,16 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
 
-	// Set some SDL env. variables before starting
-	// These are platform dependent, so every port
-	// needs to set them manually
-
-	// Set window position to the middle of the
-	// screen
+	// Set some SDL environment variables before starting. These are platform
+	// dependent, so every port needs to set them manually
 #ifndef GEKKO
+	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
-#if defined(PSP)
+#ifdef __LINUX__
+	// Set the application class name
+	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
+#elif defined(PSP)
 	putenv(const_cast<char *>("SDL_ASPECT_RATIO=4:3"));
 #endif
 
@@ -126,8 +135,6 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 #if SDL_MAJOR_VERSION==1
 	sdl_surface = NULL;
-
-	SetAppIcon();
 #else
 	sdl_window = NULL;
 #endif
@@ -458,14 +465,15 @@ bool SdlUi::RefreshDisplayMode() {
 					== SDL_WINDOW_FULLSCREEN_DESKTOP) {
 				// Restore to pre-fullscreen size
 				SDL_SetWindowSize(sdl_window, 0, 0);
-			}
-			else {
+			} else {
 				SDL_SetWindowSize(sdl_window, display_width, display_height);
 			}
-			SetAppIcon();
 		}
 #endif
 	}
+	// Need to set up icon again, some platforms recreate the window when
+	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
+	SetAppIcon();
 
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 	const DynamicFormat format(
@@ -902,37 +910,57 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 #endif
 
 void SdlUi::SetAppIcon() {
-#ifdef _WIN32
+#if !defined(_WIN32)
+	/* SDL handles transfering the application icon to new or recreated windows,
+	   if initially set through it (see below). So no need to set again for all
+	   platforms relying on it. Platforms defined above need special treatment.
+	*/
 	static bool icon_set = false;
+
 	if (icon_set)
 		return;
-
+#endif
+	bool load_error = false;
+#ifdef _WIN32
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
-
-#if SDL_MAJOR_VERSION==1
-	int success = SDL_GetWMInfo(&wminfo);
-#else
 	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
-#endif
 
 	if (success < 0)
 		Output::Error("Wrong SDL version");
 
+	HWND window;
 	HINSTANCE handle = GetModuleHandle(NULL);
 	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
-
-	if (icon == NULL)
-		Output::Error("Couldn't load icon.");
-
-	HWND window;
-#if SDL_MAJOR_VERSION==1
-	window = wminfo.window;
+	HICON icon_small = (HICON) LoadImage(handle, MAKEINTRESOURCE(23456), IMAGE_ICON,
+		GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
+	load_error = (icon == NULL || icon_small == NULL);
 #else
-	window = wminfo.info.win.window;
+	//Linux, OS X
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+		uint32_t Rmask = 0x000000FF;
+		uint32_t Gmask = 0x0000FF00;
+		uint32_t Bmask = 0x00FF0000;
+		uint32_t Amask = 0xFF000000;
+	#else
+		uint32_t Rmask = 0xFF000000;
+		uint32_t Gmask = 0x00FF0000;
+		uint32_t Bmask = 0x0000FF00;
+		uint32_t Amask = 0x000000FF;
+	#endif
+	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon32, ICON_SIZE, ICON_SIZE, 32, ICON_SIZE*4, Rmask, Gmask, Bmask, Amask);
+	load_error = (icon == NULL);
 #endif
-	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
+	if (load_error)
+		Output::Warning("Could not load window icon.");
 
+#ifdef _WIN32
+	window = wminfo.info.win.window;
+	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
+	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
+#else
+	SDL_SetWindowIcon(sdl_window, icon);
+	SDL_FreeSurface(icon);
 	icon_set = true;
 #endif
 }

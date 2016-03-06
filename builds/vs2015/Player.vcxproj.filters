@@ -540,6 +540,9 @@
     <ClInclude Include="..\..\src\window.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\icon.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\input.h">
       <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
