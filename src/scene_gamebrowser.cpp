@@ -23,6 +23,7 @@
 #include "player.h"
 #include "scene_title.h"
 #include "bitmap.h"
+#include "audio.h"
 
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
@@ -46,6 +47,7 @@ void Scene_GameBrowser::Continue() {
 #ifdef _WIN32
 	SetCurrentDirectory(L"..");
 #endif
+	Audio().BGM_Fade(800);
 
 	Main_Data::SetProjectPath(browser_dir);
 
@@ -168,7 +170,7 @@ void Scene_GameBrowser::BootGame() {
 
 	if (browser_dir.empty())
 		browser_dir = Main_Data::GetProjectPath();
-	Main_Data::SetProjectPath(gamelist_window->GetGamePath());
+	Main_Data::SetProjectPath(path);
 
 	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
 	FileFinder::SetDirectoryTree(tree);

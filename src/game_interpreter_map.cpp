@@ -1831,12 +1831,16 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandExitGame(RPG::EventCommand const& com) {
-	Player::exit_flag = true;
+	if (Scene::Find(Scene::GameBrowser)) {
+		Scene::PopUntil(Scene::GameBrowser);
+	} else {
+		Player::exit_flag = true;
+	}
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& com) {
-	Output::Warning("Command Toggle ATB mode not supported");
+	Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
 	return true;
 }
 
@@ -2017,8 +2021,8 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 					result = Player::debug_flag;
 					break;
 				case 2:
-					// Is ATB wait?
-					Output::Warning("Branch: Is ATB wait not implemented");
+					// Is ATB wait on?
+					result = Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait;
 					break;
 				case 3:
 					// Is Fullscreen active?

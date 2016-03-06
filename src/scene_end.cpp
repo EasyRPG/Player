@@ -48,7 +48,6 @@ void Scene_End::Update() {
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
 			Audio().BGM_Fade(800);
-			Audio().BGS_Fade(800);
 			Scene::PopUntil(Scene::Title);
 			break;
 		case 1: // No

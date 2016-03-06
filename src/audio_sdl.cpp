@@ -205,8 +205,7 @@ void SdlAudio::BGM_Pause() {
 	// Midi pause is not supported... (for some systems -.-)
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+	if (bgs_playing) {
 		BGS_Pause();
 		return;
 	}
@@ -217,8 +216,7 @@ void SdlAudio::BGM_Pause() {
 void SdlAudio::BGM_Resume() {
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+	if (bgs_playing) {
 		BGS_Resume();
 		return;
 	}
@@ -229,8 +227,7 @@ void SdlAudio::BGM_Resume() {
 void SdlAudio::BGM_Stop() {
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+	if (bgs_playing) {
 		BGS_Stop();
 		return;
 	}
@@ -269,8 +266,7 @@ void SdlAudio::BGM_Fade(int fade) {
 
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
-	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-	if (mtype == MUS_WAV || mtype == MUS_OGG) {
+	if (bgs_playing) {
 		BGS_Fade(fade);
 		return;
 	}
