@@ -140,7 +140,14 @@ void FileRequestAsync::Start() {
 	state = State_Pending;
 
 #ifdef EMSCRIPTEN
-	std::string request_path = "games/?file=" + path;
+	std::string request_path;
+#  ifdef EM_GAME_URL
+	request_path = EM_GAME_URL;
+#  else
+	request_path = "games/";
+#  endif
+
+	request_path += "?file=" + path;
 	if (!Player::emscripten_game_name.empty()) {
 		request_path += "&game=" + Player::emscripten_game_name;
 	}
@@ -155,6 +162,9 @@ void FileRequestAsync::Start() {
 		download_failure,
 		NULL);
 #else
+#  ifdef EM_GAME_URL
+#    warning EM_GAME_URL set and not an Emscripten build!
+#  endif
 	// add comment for fake download testing
 	DownloadDone(true);
 #endif
