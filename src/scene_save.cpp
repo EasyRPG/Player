@@ -17,6 +17,11 @@
 
 // Headers
 #include <sstream>
+
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
 #include "data.h"
 #include "filefinder.h"
 #include "game_actor.h"
@@ -28,10 +33,6 @@
 #include "scene_save.h"
 #include "scene_file.h"
 #include "reader_util.h"
-
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 
 Scene_Save::Scene_Save() :
 	Scene_File(Data::terms.save_game_message) {

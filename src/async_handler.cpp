@@ -17,16 +17,17 @@
 
 #include <cstdlib>
 #include <map>
+
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
 #include "async_handler.h"
 #include "filefinder.h"
 #include "memory_management.h"
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
-
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;

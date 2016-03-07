@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstring>
+
 #include "system.h"
 
 #ifdef HAVE_SDL_MIXER
@@ -26,13 +28,9 @@
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
-#endif
-
-#ifdef _WIN32
+#elif defined(_WIN32)
 #  include "util_win.h"
 #endif
-
-#include <cstring>
 
 namespace {
 	void bgm_played_once() {
@@ -59,8 +57,10 @@ SdlAudio::SdlAudio() :
 		}
 	}
 #ifdef GEKKO
+	// Wii's DSP works at 32kHz natively
 	int const frequency = 32000;
 #elif defined(EMSCRIPTEN)
+	// Get preferred sample rate from Browser (-> OS)
 	int const frequency = EM_ASM_INT_V({
 		var context;
 		try {
