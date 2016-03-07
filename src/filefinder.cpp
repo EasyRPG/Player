@@ -86,6 +86,14 @@ namespace {
 	{
 		using namespace FileFinder;
 
+#ifdef EMSCRIPTEN
+		// The php filefinder should have given us an useable path
+		std::string em_file = MakePath(dir, name);
+
+		if (Exists(em_file))
+			return em_file;
+#endif
+
 		std::string const lower_dir = Utils::LowerCase(dir);
 		std::string const escape_symbol = Player::escape_symbol;
 		std::string corrected_name = Utils::LowerCase(name);
