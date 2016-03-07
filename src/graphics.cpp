@@ -130,6 +130,9 @@ void Graphics::Update(bool time_left) {
 
 void Graphics::UpdateTitle() {
 	if (DisplayUi->IsFullscreen()) return;
+#ifdef EMSCRIPTEN
+	return;
+#endif
 
 	std::stringstream title;
 	if (!Player::game_title.empty()) {
@@ -189,7 +192,11 @@ void Graphics::DrawFrame() {
 }
 
 void Graphics::DrawOverlay() {
-	if (DisplayUi->IsFullscreen() && Player::fps_flag) {
+	if (
+#ifndef EMSCRIPTEN
+		DisplayUi->IsFullscreen() &&
+#endif
+		Player::fps_flag) {
 		std::stringstream text;
 		text << "FPS: " << real_fps;
 		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
