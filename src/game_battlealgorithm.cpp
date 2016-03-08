@@ -329,7 +329,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		(*current_target)->SetSp((*current_target)->GetSp() + (IsPositive() ? sp : -sp));
 		if (absorb) {
 			int src_sp = std::min(target_sp, IsPositive() ? -sp : sp);
-			source->ChangeHp(src_sp);
+			source->ChangeSp(src_sp);
 		}
 	}
 
