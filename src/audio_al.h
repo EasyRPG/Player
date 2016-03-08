@@ -41,6 +41,7 @@ struct ALAudio : public AudioInterface {
 	void BGM_Resume();
 	void BGM_Stop();
 	bool BGM_PlayedOnce();
+	unsigned BGM_GetTicks();
 	void BGM_Fade(int);
 	void BGM_Volume(int);
 	void BGM_Pitch(int);

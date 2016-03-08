@@ -176,6 +176,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Couldn't load %s BGM.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
+
+	bgm_starttick = SDL_GetTicks();
+
 #if SDL_MAJOR_VERSION>1
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {
@@ -239,6 +242,11 @@ void SdlAudio::BGM_Stop() {
 
 bool SdlAudio::BGM_PlayedOnce() {
 	return played_once;
+}
+
+unsigned SdlAudio::BGM_GetTicks() {
+	// TODO: Implement properly. This is an approximation.
+	return SDL_GetTicks() - bgm_starttick;
 }
 
 void SdlAudio::BGM_Volume(int volume) {

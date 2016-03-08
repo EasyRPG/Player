@@ -522,7 +522,13 @@ void ALAudio::BGM_Stop() {
 }
 
 bool ALAudio::BGM_PlayedOnce() {
+	SET_CONTEXT(ctx_);
 	return bgm_src_->loop_count() > 0;
+}
+
+unsigned ALAudio::BGM_GetTicks() {
+	SET_CONTEXT(ctx_);
+	return bgm_src_->midi_ticks();
 }
 
 void ALAudio::BGM_Fade(int fade) {
