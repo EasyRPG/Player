@@ -621,6 +621,10 @@ bool Game_Actor::IsEquippable(int item_id) const {
 	return IsItemUsable(item_id);
 }
 
+bool Game_Actor::IsEquipmentFixed() const {
+	return GetData().lock_equipment;
+}
+
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return GetData().skills;
 }

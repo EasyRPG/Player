@@ -54,7 +54,7 @@ void Scene_Item::Update() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItem() == NULL ? 0 : item_window->GetItem()->ID;
 
-		if (Main_Data::game_party->IsItemUsable(item_id)) {
+		if (item_id > 0 && item_window->CheckEnable(item_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {

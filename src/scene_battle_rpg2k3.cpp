@@ -324,7 +324,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectItem:
 		item_window->SetActive(true);
-		//item_window->SetActor(Game_Battle::GetActiveActor());
+		item_window->SetActor(active_actor);
 		item_window->Refresh();
 		break;
 	case State_SelectSkill:

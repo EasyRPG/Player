@@ -40,7 +40,7 @@ public:
 	 * @param actor_index actor in the party.
 	 * @param equip_index selected equipment.
 	 */
-	Scene_Equip(int actor_index = 0, int equip_index = 0);
+	Scene_Equip(Game_Actor& actor, int equip_index = 0);
 
 	void Start();
 	void Update();
@@ -72,7 +72,7 @@ public:
 
 private:
 	/** Actor in the party whose equipment is displayed. */
-	int actor_index;
+	Game_Actor& actor;
 	/** Selected equipment on startup. */
 	int equip_index;
 

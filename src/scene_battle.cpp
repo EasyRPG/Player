@@ -264,7 +264,7 @@ void Scene_Battle::ItemSelected() {
 
 	skill_item = nullptr;
 
-	if (!item || !Main_Data::game_party->IsItemUsable(item->ID, active_actor)) {
+	if (!item || !item_window->CheckEnable(item->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}
@@ -307,7 +307,7 @@ void Scene_Battle::SkillSelected() {
 
 	skill_item = NULL;
 
-	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
+	if (!skill || !skill_window->CheckEnable(skill->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
 	}

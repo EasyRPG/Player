@@ -26,24 +26,22 @@
 #include "scene_menu.h"
 #include "rpg_item.h"
 
-Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
-	actor_index(actor_index),
+Scene_Equip::Scene_Equip(Game_Actor& actor, int equip_index) :
+	actor(actor),
 	equip_index(equip_index) {
 	type = Scene::Equip;
 }
 
 void Scene_Equip::Start() {
-	Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
-
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
-	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor->GetId()));
-	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH-124),96, actor->GetId()));
+	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor.GetId()));
+	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH-124),96, actor.GetId()));
 
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(EASYRPG_MAKE_SHARED<Window_EquipItem>(actor->GetId(), i));
+		item_windows.push_back(EASYRPG_MAKE_SHARED<Window_EquipItem>(actor.GetId(), i));
 	}
 
 	// Assign the help windows
@@ -86,18 +84,16 @@ void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
-		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
-
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		int old_item = actor->SetEquipment(equip_window->GetIndex(),
+		int old_item = actor.SetEquipment(equip_window->GetIndex(),
 			current_item_id);
 
 		equipstatus_window->SetNewParameters(
-			actor->GetAtk(), actor->GetDef(), actor->GetSpi(), actor->GetAgi());
+			actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
 
-		actor->SetEquipment(equip_window->GetIndex(), old_item);
+		actor.SetEquipment(equip_window->GetIndex(), old_item);
 
 		equipstatus_window->Refresh();
 	}
@@ -110,18 +106,25 @@ void Scene_Equip::UpdateEquipSelection() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
+		if (actor.IsEquipmentFixed()) {
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			return;
+		}
+
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
 	}
 }
 
@@ -137,7 +140,7 @@ void Scene_Equip::UpdateItemSelection() {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		Main_Data::game_party->GetActors()[actor_index]->ChangeEquipment(
+		actor.ChangeEquipment(
 			equip_window->GetIndex(), current_item_id);
 
 		equip_window->SetActive(true);

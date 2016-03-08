@@ -70,3 +70,7 @@ void Window_MenuStatus::UpdateCursorRect()
 		cursor_rect.Set(48 + 4, index * (48 + 10), 168, 48);
 	}
 }
+
+Game_Actor* Window_MenuStatus::GetActor() const {
+	return &(*Main_Data::game_party)[GetIndex()];
+}

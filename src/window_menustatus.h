@@ -29,6 +29,8 @@ public:
 	Window_MenuStatus(int ix, int iy, int iwidth, int iheight);
 	void Refresh();
 	void UpdateCursorRect();
+
+	Game_Actor* GetActor() const;
 };
 
 #endif
