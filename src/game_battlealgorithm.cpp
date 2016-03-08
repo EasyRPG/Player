@@ -626,8 +626,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					conditions.push_back(Data::states[0]);
 				}
 			}
-			if (skill.affect_sp)
-				this->sp = effect;
+
+			if (skill.affect_sp) {
+				this->sp = std::min<int>(effect, (*current_target)->GetSp());
+			}
+				
 			if (skill.affect_attack)
 				this->attack = effect;
 			if (skill.affect_defense)
@@ -660,6 +663,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 
 	absorb = skill.absorb_damage;
+	if (absorb && sp != -1) {
+		if ((*current_target)->GetSp() == 0) {
+			this->success = false;
+		}
+	}
+
 
 	return this->success;
 }
