@@ -222,7 +222,7 @@ void Scene_Menu::UpdateActorSelection() {
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(*menustatus_window->GetActor()));
 			break;
 		case Status:
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(menustatus_window->GetIndex()));

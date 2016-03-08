@@ -328,6 +328,13 @@ public:
 	bool IsEquippable(int item_id) const;
 
 	/**
+	 * Checks if the actor has a fixed equipped
+	 *
+	 * @return true if fixed
+	 */
+	bool IsEquipmentFixed() const;
+
+	/**
 	 * Sets face graphic of actor.
 	 * @param file_name file containing new face.
 	 * @param index index of face graphic in the file.
