@@ -57,10 +57,13 @@ void Window_Item::Refresh() {
 
 	if (Game_Temp::battle_running) {
 		// Include equipped accesories that invoke skills
-		for (Game_Actor* actor : Main_Data::game_party->GetActors()) {
-			int accessory = actor->GetAccessoryId();
-			if (Data::items[accessory-1].skill_id > 0)
-				data.push_back(accessory);
+		if (actor) {
+			for (int i = 0; i < 5; ++i) {
+				const RPG::Item* item = actor->GetEquipment(i);
+				if (item && item->use_skill && item->skill_id > 0) {
+					data.push_back(item->ID);
+				}
+			}
 		}
 	}
 
@@ -111,4 +114,8 @@ void Window_Item::DrawItem(int index) {
 void Window_Item::UpdateHelp() {
 	help_window->SetText(GetItem() == NULL ? "" :
 		Data::items[GetItem()->ID - 1].description);
+}
+
+void Window_Item::SetActor(Game_Actor * actor) {
+	this->actor = actor;
 }

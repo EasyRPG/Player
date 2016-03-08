@@ -72,8 +72,16 @@ public:
 	 */
 	void UpdateHelp();
 
+	/**
+	 * Assigns an actor to the item list.
+	 * All equipped skill items will be added.
+	 */
+	void SetActor(Game_Actor* actor);
+
 private:
 	std::vector<int> data;
+
+	Game_Actor* actor = nullptr;
 };
 
 #endif
