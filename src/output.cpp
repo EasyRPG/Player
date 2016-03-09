@@ -26,17 +26,13 @@
 #include <exception>
 
 #ifdef GEKKO
-	#include <unistd.h>
-	#include <gccore.h>
-	#include <sys/iosupport.h>
-#endif
-
-#ifdef __ANDROID__
-	#include <android/log.h>
-#endif
-
-#ifdef EMSCRIPTEN
-	#include <emscripten.h>
+#  include <unistd.h>
+#  include <gccore.h>
+#  include <sys/iosupport.h>
+#elif defined(__ANDROID__)
+#  include <android/log.h>
+#elif defined(EMSCRIPTEN)
+#  include <emscripten.h>
 #endif
 
 #include "filefinder.h"
@@ -51,11 +47,11 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef BOOST_NO_EXCEPTIONS
-#include <boost/throw_exception.hpp>
+#  include <boost/throw_exception.hpp>
 
-void boost::throw_exception(std::exception const& exp) {
-	Output::Error("exception: %s", exp.what());
-}
+	void boost::throw_exception(std::exception const& exp) {
+		Output::Error("exception: %s", exp.what());
+	}
 #endif
 
 namespace {
@@ -131,6 +127,8 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
+// Skip logging to file in the browser
+#ifndef EMSCRIPTEN
 	if (!Main_Data::GetSavePath().empty()) {
 		// Only write to file when project path is initialized
 		// (happens after parsing the command line)
@@ -144,6 +142,7 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 		// buffer log messages until file system is ready
 		log_buffer.push_back(type + ": " + msg);
 	}
+#endif
 
 #ifdef __ANDROID__
 	__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
@@ -160,6 +159,7 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 
 static void HandleErrorOutput(const std::string& err) {
 #ifdef EMSCRIPTEN
+	// Do not execute any game logic after an error happened
 	emscripten_cancel_main_loop();
 #endif
 

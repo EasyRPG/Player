@@ -18,6 +18,12 @@ AM_PROG_AR
 AC_PROG_CXX
 LT_INIT([disable-shared])
 
+# Options
+AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
+AS_IF([test "x$EM_GAME_URL" != "x"],[
+	AC_DEFINE_UNQUOTED([EM_GAME_URL], ["$EM_GAME_URL"], [Game URL (Emscripten)])
+])
+
 # Checks for libraries.
 PKG_CHECK_MODULES([LCF],[liblcf])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])

@@ -19,7 +19,6 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
-
 #include <algorithm>
 #include <fstream>
 #include <string>
@@ -27,21 +26,6 @@
 #include <sstream>
 
 #include <boost/optional.hpp>
-
-#include "system.h"
-#include "options.h"
-#include "utils.h"
-#include "filefinder.h"
-#include "output.h"
-#include "player.h"
-#include "registry.h"
-#include "main_data.h"
-
-#ifdef _MSC_VER
-#  include "rtp_table_bom.h"
-#else
-#  include "rtp_table.h"
-#endif
 
 #ifdef __MINGW32__
 #  include <dirent.h>
@@ -62,6 +46,21 @@
 #ifdef __ANDROID__
 #   include <jni.h>
 #   include <SDL_system.h>
+#endif
+
+#include "system.h"
+#include "options.h"
+#include "utils.h"
+#include "filefinder.h"
+#include "output.h"
+#include "player.h"
+#include "registry.h"
+#include "main_data.h"
+
+#ifdef _MSC_VER
+#  include "rtp_table_bom.h"
+#else
+#  include "rtp_table.h"
 #endif
 
 // MinGW shlobj.h does not define this
@@ -85,6 +84,14 @@ namespace {
 										  char const* exts[])
 	{
 		using namespace FileFinder;
+
+#ifdef EMSCRIPTEN
+		// The php filefinder should have given us an useable path
+		std::string em_file = MakePath(dir, name);
+
+		if (Exists(em_file))
+			return em_file;
+#endif
 
 		std::string const lower_dir = Utils::LowerCase(dir);
 		std::string const escape_symbol = Player::escape_symbol;

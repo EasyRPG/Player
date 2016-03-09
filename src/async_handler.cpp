@@ -17,16 +17,17 @@
 
 #include <cstdlib>
 #include <map>
+
+#ifdef EMSCRIPTEN
+#  include <emscripten.h>
+#endif
+
 #include "async_handler.h"
 #include "filefinder.h"
 #include "memory_management.h"
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
-
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
@@ -139,7 +140,14 @@ void FileRequestAsync::Start() {
 	state = State_Pending;
 
 #ifdef EMSCRIPTEN
-	std::string request_path = "games/?file=" + path;
+	std::string request_path;
+#  ifdef EM_GAME_URL
+	request_path = EM_GAME_URL;
+#  else
+	request_path = "games/";
+#  endif
+
+	request_path += "?file=" + path;
 	if (!Player::emscripten_game_name.empty()) {
 		request_path += "&game=" + Player::emscripten_game_name;
 	}
@@ -154,6 +162,9 @@ void FileRequestAsync::Start() {
 		download_failure,
 		NULL);
 #else
+#  ifdef EM_GAME_URL
+#    warning EM_GAME_URL set and not an Emscripten build!
+#  endif
 	// add comment for fake download testing
 	DownloadDone(true);
 #endif

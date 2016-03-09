@@ -16,6 +16,29 @@
  */
 
 // Headers
+
+#include <algorithm>
+#include <cstring>
+#include <cstdlib>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+
+#ifdef _WIN32
+#  define WIN32_LEAN_AND_MEAN
+#  include <Windows.h>
+#  include <Shellapi.h>
+#  ifndef _DEBUG
+#    include <winioctl.h>
+#    include <dbghelp.h>
+     static void InitMiniDumpWriter();
+#  endif
+#elif defined(GEKKO)
+#  include <fat.h>
+#elif defined(EMSCRIPTEN)
+#  include <emscripten.h>
+#endif
+
 #include "async_handler.h"
 #include "audio.h"
 #include "cache.h"
@@ -45,32 +68,6 @@
 #include "scene_logo.h"
 #include "utils.h"
 #include "version.h"
-
-#include <algorithm>
-#include <cstring>
-#include <cstdlib>
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-
-#ifdef GEKKO
-	#include <fat.h>
-#endif
-
-#ifdef _WIN32
-	#define WIN32_LEAN_AND_MEAN
-	#include <Windows.h>
-	#include <Shellapi.h>
-#ifndef _DEBUG
-	#include <winioctl.h>
-	#include <dbghelp.h>
-	static void InitMiniDumpWriter();
-#endif
-#endif
-
-#ifdef EMSCRIPTEN
-	#include <emscripten.h>
-#endif
 
 namespace Player {
 	bool exit_flag;
@@ -149,9 +146,13 @@ void Player::Init(int argc, char *argv[]) {
 #ifdef EMSCRIPTEN
 	Output::IgnorePause(true);
 
-	// Create initial directory structure
+	// Create initial directory structure in our private area
 	// Retrieve save directory from persistent storage
 	EM_ASM(
+
+		FS.mkdir("easyrpg");
+		FS.chdir("easyrpg");
+
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 

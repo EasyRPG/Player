@@ -15,6 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstdlib>
+#include <cstring>
+
 #include "system.h"
 
 #ifdef USE_SDL
@@ -61,9 +64,6 @@
 #elif defined(HAVE_OPENAL)
 #  include "audio_al.h"
 #endif
-
-#include <cstdlib>
-#include <cstring>
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -455,7 +455,7 @@ bool SdlUi::RefreshDisplayMode() {
 		if (!sdl_texture)
 			return false;
 	} else {
-		// Browser handles fast resizing for emscripten
+		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
 #ifndef EMSCRIPTEN
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -693,10 +693,9 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		bool last = ShowCursor(true);
 
-		// Filter SDL events with FilterUntilFocus until focus is
-		// regained
-
 #ifndef EMSCRIPTEN
+		// Filter SDL events until focus is regained
+
 		SDL_Event wait_event;
 
 		while (SDL_WaitEvent(&wait_event)) {
