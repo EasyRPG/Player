@@ -27,15 +27,14 @@
 
 #include <boost/optional.hpp>
 
-#ifdef __MINGW32__
-#  include <dirent.h>
-#elif defined(_MSC_VER)
-#  include "dirent_win.h"
-#endif
-
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
+#  ifdef __MINGW32__
+#    include <dirent.h>
+#  elif defined(_MSC_VER)
+#    include "dirent_win.h"
+#  endif
 #else
 #  include <dirent.h>
 #  include <unistd.h>
