@@ -24,7 +24,6 @@
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Window Message Class.
@@ -197,8 +196,8 @@ protected:
 	static const int speed_table[21];
 
 	/** Used by the number input event. */
-	boost::scoped_ptr<Window_NumberInput> number_input_window;
-	boost::scoped_ptr<Window_Gold> gold_window;
+	std::unique_ptr<Window_NumberInput> number_input_window;
+	std::unique_ptr<Window_Gold> gold_window;
 };
 
 #endif

@@ -24,7 +24,6 @@
 #include "filefinder.h"
 #include "window_help.h"
 #include "window_savefile.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Base class used by the save and load scenes.
@@ -51,7 +50,7 @@ protected:
 
 	unsigned int index;
 	unsigned int top_index;
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 	std::vector<std::shared_ptr<Window_SaveFile> > file_windows;
 	std::string message;
 

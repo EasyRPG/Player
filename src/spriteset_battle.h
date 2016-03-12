@@ -23,7 +23,6 @@
 #include "sprite_battler.h"
 #include "sprite_character.h"
 #include "sprite_timer.h"
-#include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
 /**
@@ -37,11 +36,11 @@ public:
 	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
 protected:
-	boost::scoped_ptr<Background> background;
+	std::unique_ptr<Background> background;
 	std::vector<std::shared_ptr<Sprite_Battler>> sprites;
 
-	boost::scoped_ptr<Sprite_Timer> timer1;
-	boost::scoped_ptr<Sprite_Timer> timer2;
+	std::unique_ptr<Sprite_Timer> timer1;
+	std::unique_ptr<Sprite_Timer> timer2;
 };
 
 #endif

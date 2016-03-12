@@ -24,7 +24,6 @@
 #include "rpg_event.h"
 #include "rpg_savemapevent.h"
 #include "game_interpreter.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Game_Event class.

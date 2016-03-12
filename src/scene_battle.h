@@ -41,8 +41,6 @@
 #include "window_battlestatus.h"
 #include "window_message.h"
 
-#include <boost/scoped_ptr.hpp>
-
 namespace Battle {
 class Action;
 class SpriteAction;
@@ -183,21 +181,21 @@ protected:
 	Game_Actor* active_actor;
 
 	/** Displays Fight, Autobattle, Flee */
-	boost::scoped_ptr<Window_Command> options_window;
+	std::unique_ptr<Window_Command> options_window;
 	/** Displays list of enemies */
-	boost::scoped_ptr<Window_Command> target_window;
+	std::unique_ptr<Window_Command> target_window;
 	/** Displays Attack, Defense, Magic, Item */
-	boost::scoped_ptr<Window_Command> command_window;
-	boost::scoped_ptr<Window_Item> item_window;
-	boost::scoped_ptr<Window_Skill> skill_window;
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Command> command_window;
+	std::unique_ptr<Window_Item> item_window;
+	std::unique_ptr<Window_Skill> skill_window;
+	std::unique_ptr<Window_Help> help_window;
 	/** Displays allies status */
-	boost::scoped_ptr<Window_BattleStatus> status_window;
-	boost::scoped_ptr<Window_Message> message_window;
+	std::unique_ptr<Window_BattleStatus> status_window;
+	std::unique_ptr<Window_Message> message_window;
 
-	boost::scoped_ptr<Background> background;
+	std::unique_ptr<Background> background;
 
-	boost::scoped_ptr<Screen> screen;
+	std::unique_ptr<Screen> screen;
 
 	std::deque<Game_Battler*> battle_actions;
 

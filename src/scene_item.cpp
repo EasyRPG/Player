@@ -27,7 +27,7 @@
 #include "scene_menu.h"
 
 Scene_Item::Scene_Item(int item_index) :
-	help_window(NULL), item_window(NULL), item_index(item_index) {
+	item_index(item_index) {
 	Scene::type = Scene::Item;
 }
 

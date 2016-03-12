@@ -22,7 +22,6 @@
 #include "system.h"
 #include "game_picture.h"
 #include "game_character.h"
-#include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
 class Screen;

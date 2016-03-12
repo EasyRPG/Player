@@ -25,7 +25,6 @@
 #include "window_equip.h"
 #include "window_equipstatus.h"
 #include "window_help.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene Equip class.
@@ -81,11 +80,11 @@ private:
 	/** Current active item window. */
 	std::shared_ptr<Window_EquipItem> item_window;
 	/** Displays stats of the hero/item. */
-	boost::scoped_ptr<Window_EquipStatus> equipstatus_window;
+	std::unique_ptr<Window_EquipStatus> equipstatus_window;
 	/** Displays currently equipped items. */
-	boost::scoped_ptr<Window_Equip> equip_window;
+	std::unique_ptr<Window_Equip> equip_window;
 	/** Displays description about the selected item. */
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 };
 
 #endif

@@ -22,7 +22,6 @@
 #include "system.h"
 #include "scene.h"
 #include "sprite.h"
-#include <boost/scoped_ptr.hpp>
 #include "async_handler.h"
 
 /**
@@ -43,7 +42,7 @@ public:
 	void Update();
 
 private:
-	boost::scoped_ptr<Sprite> logo;
+	std::unique_ptr<Sprite> logo;
 	BitmapRef logo_img;
 	int frame_counter;
 

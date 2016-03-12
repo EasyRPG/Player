@@ -24,7 +24,6 @@
 
 #include "window_command.h"
 #include "window_battlemessage.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene_Battle class.
@@ -74,7 +73,7 @@ protected:
 
 	bool DisplayMonstersInMessageWindow();
 
-	boost::scoped_ptr<Window_BattleMessage> battle_message_window;
+	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator enemy_iterator;

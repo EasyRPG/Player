@@ -42,7 +42,6 @@
 #include "filefinder.h"
 #include "player.h"
 #include "input.h"
-#include <boost/scoped_ptr.hpp>
 
 namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
@@ -69,12 +68,12 @@ namespace {
 	int scroll_rest;
 	int scroll_speed;
 
-	boost::scoped_ptr<Game_Interpreter_Map> interpreter;
+	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	std::vector<std::shared_ptr<Game_Interpreter> > free_interpreters;
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-	boost::scoped_ptr<BattleAnimation> animation;
+	std::unique_ptr<BattleAnimation> animation;
 
 	bool pan_locked;
 	bool pan_wait;

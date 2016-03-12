@@ -19,7 +19,6 @@
 #define _SPRITESET_MAP_H_
 
 // Headers
-#include <boost/scoped_ptr.hpp>
 #include "sprite_airshipshadow.h"
 #include "sprite_timer.h"
 #include "system.h"
@@ -71,9 +70,9 @@ protected:
 	Plane panorama;
 	std::string panorama_name;
 	std::vector<std::shared_ptr<Sprite_Character> > character_sprites;
-	boost::scoped_ptr<Sprite_AirshipShadow> airship_shadow;
-	boost::scoped_ptr<Sprite_Timer> timer1;
-	boost::scoped_ptr<Sprite_Timer> timer2;
+	std::unique_ptr<Sprite_AirshipShadow> airship_shadow;
+	std::unique_ptr<Sprite_Timer> timer1;
+	std::unique_ptr<Sprite_Timer> timer2;
 
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);

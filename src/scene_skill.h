@@ -23,7 +23,6 @@
 #include "window_help.h"
 #include "window_skill.h"
 #include "window_skillstatus.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene_Skill class.
@@ -45,11 +44,11 @@ private:
 	/** Skill to select at startup. */
 	int skill_index;
 	/** Displays available skills. */
-	boost::scoped_ptr<Window_Skill> skill_window;
+	std::unique_ptr<Window_Skill> skill_window;
 	/** Displays information about the actor. */
-	boost::scoped_ptr<Window_SkillStatus> skillstatus_window;
+	std::unique_ptr<Window_SkillStatus> skillstatus_window;
 	/** Displays description about the selected skill. */
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 };
 
 #endif

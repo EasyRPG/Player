@@ -29,7 +29,6 @@
 #include "battle_animation.h"
 #include "game_battle.h"
 #include "spriteset_battle.h"
-#include <boost/scoped_ptr.hpp>
 
 namespace Game_Battle {
 	const RPG::Troop* troop;
@@ -37,11 +36,11 @@ namespace Game_Battle {
 	bool terminate;
 	std::string background_name;
 
-	boost::scoped_ptr<Game_Interpreter> interpreter;
+	std::unique_ptr<Game_Interpreter> interpreter;
 	/** Contains battle related sprites */
-	boost::scoped_ptr<Spriteset_Battle> spriteset;
+	std::unique_ptr<Spriteset_Battle> spriteset;
 
-	boost::scoped_ptr<BattleAnimation> animation;
+	std::unique_ptr<BattleAnimation> animation;
 
 	int escape_fail_count;
 }

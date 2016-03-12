@@ -22,7 +22,6 @@
 #include "scene.h"
 #include "window_command.h"
 #include "window_help.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene End class.
@@ -52,9 +51,9 @@ public:
 
 private:
 	/** Help window showing the confirmation text. */
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 	/** Command window containing the yes and no option. */
-	boost::scoped_ptr<Window_Command> command_window;
+	std::unique_ptr<Window_Command> command_window;
 };
 
 #endif

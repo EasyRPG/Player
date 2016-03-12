@@ -33,7 +33,7 @@
 #include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
-	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
+	message(message), latest_time(0), latest_slot(0) {
 	top_index = 0;
 	index = 0;
 }
