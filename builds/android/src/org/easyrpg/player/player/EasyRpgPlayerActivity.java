@@ -89,7 +89,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		surface = mSurface;
 		mLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mLayout.addView(surface);
-		udpateScreenPosition();
+		updateScreenPosition();
 
 		// Open the proper input_layout
 		bmm = ButtonMappingModel.getButtonMapping(this);
@@ -339,7 +339,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		}
 	}
 
-	public void udpateScreenPosition() {
+	public void updateScreenPosition() {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT);
 		params.leftMargin = 0;
@@ -357,7 +357,16 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
-		udpateScreenPosition();
+		updateScreenPosition();
 		updateButtonsPosition();
 	}
+	
+	/** Called after the activity is being re-displayed */
+	@Override
+	public void onRestart(){
+		super.onRestart() ;
+		updateScreenPosition();
+		updateButtonsPosition();
+	}	
+	
 }
