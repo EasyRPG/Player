@@ -313,6 +313,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 	switch (battle_action_state) {
 		case BattleActionState_Start:
+			if (battle_action_wait--) {
+				return false;
+			}
+			battle_action_wait = 0;
 			battle_message_window->Clear();
 
 			if (!action->IsTargetValid()) {
@@ -358,21 +362,21 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				Game_System::SePlay(*action->GetStartSe());
 			}
 
-			battle_action_state = BattleActionState_ConditionHeal;
+			battle_action_state = BattleActionState_Result;
 
 			break;
-		case BattleActionState_ConditionHeal:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 0;
+		case BattleActionState_ConditionHeal:			
 
 			if (action->IsFirstAttack()) {
-				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
-				if (!states.empty()) {
+				std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
+				std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
+				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
-					for (std::vector<int16_t>::iterator it = states.begin(); it != states.end(); ++it) {
+					for (std::vector<int16_t>::iterator it = states_to_heal.begin(); it != states_to_heal.end(); ++it) {
 						battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+					}
+					for (std::vector<int16_t>::iterator it = states_remaining.begin(); it != states_remaining.end(); ++it) {
+						battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_affected);
 					}
 					battle_action_wait = 30;
 				}
@@ -382,7 +386,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				battle_action_state = BattleActionState_Finished;
 			}
 			else {
-				battle_action_state = BattleActionState_Result;
+				battle_action_state = BattleActionState_Start;
 			}
 
 			break;
@@ -450,12 +454,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			if (action->TargetNext()) {
-				battle_action_state = BattleActionState_Start;
+				battle_action_state = BattleActionState_ConditionHeal;
 				return false;
 			}
 
 			// Reset variables
-			battle_action_state = BattleActionState_Start;
+			battle_action_state = BattleActionState_ConditionHeal;
 
 			return true;
 	}
@@ -792,11 +796,11 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		std::stringstream ss;
 		ss << exp << Data::terms.exp_received;
 		Game_Message::texts.push_back(ss.str());
-
-		ss.str("");
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
-		Game_Message::texts.push_back(ss.str());
-
+		if (money > 0) {
+			ss.str("");
+			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+			Game_Message::texts.push_back(ss.str());
+		}
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			ss.str("");
 			ss << Data::items[*it - 1].name << Data::terms.item_recieved;

@@ -312,6 +312,21 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
+	std::vector<int16_t> inflictedStates = source->GetInflictedStates();
+	if (inflictedStates.size() != 0) {
+		for (int i = 0; i<inflictedStates.size(); ++i) {
+			RPG::State state = Data::states[inflictedStates[i]];
+			int hp = state.hp_change_val;
+			int sp = state.sp_change_val;
+			int source_hp = source->GetHp();
+		    int source_sp = source->GetSp();
+			int src_hp = std::min(source_hp + 1, IsPositive() ? hp : -hp);
+			int src_sp = std::min(source_sp, IsPositive() ? sp : -sp);
+			source->ChangeHp(src_hp);
+			source->ChangeSp(src_sp);		
+		}
+	}
+
 	if (GetAffectedHp() != -1) {
 		int hp = GetAffectedHp();
 		int target_hp = (*current_target)->GetHp();
@@ -644,7 +659,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing || rand() % 100 >= skill.hit)
+			if (!healing && rand() % 100 >= skill.hit)
 				continue;
 
 			this->success = true;

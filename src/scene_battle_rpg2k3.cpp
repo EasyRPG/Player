@@ -834,11 +834,11 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::stringstream ss;
 		ss << exp << Data::terms.exp_received << "\f";
 		Game_Message::texts.push_back(ss.str());
-
-		ss.str("");
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
-		Game_Message::texts.push_back(ss.str());
-
+		if (money > 0) {
+			ss.str("");
+			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
+			Game_Message::texts.push_back(ss.str());
+		}
 		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			ss.str("");
 			ss << Data::items[*it - 1].name << Data::terms.item_recieved << "\f";
