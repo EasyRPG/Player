@@ -330,34 +330,37 @@ static bool non_permanent(int state_id) {
 int Game_Battler::ApplyConditions()
 {
 	int damageTaken = 0;
-	std::vector<int16_t> inflictedStates = this->GetInflictedStates();
-	if (inflictedStates.size() != 0) {
-		for (int i = 0; i<inflictedStates.size(); ++i) {
-			RPG::State state = Data::states[inflictedStates[i]];
-			int hp = state.hp_change_val;
-			int sp = state.sp_change_val;
-			int source_hp = this->GetHp();
-			int source_sp = this->GetSp();
-			int src_hp = 0;
-			int src_sp = 0;
-			if (state.hp_change_type == state.ChangeType_lose) {
-				src_hp = -std::min(source_hp + 1, hp);
-			}
-			else {
-				src_hp = std::min(source_hp, hp);
-			}
-			if (state.sp_change_type == state.ChangeType_lose) {
-				 source_sp = -std::min(source_sp, sp);
-			}
-			else {
-				source_sp = std::min(source_sp, sp);
-			}
-			this->ChangeHp(src_hp);
-			this->ChangeSp(src_sp);
-			damageTaken += src_hp;
+	for (int16_t inflicted : GetInflictedStates()) {
+		RPG::State state = Data::states[inflicted - 1];
+		int hp = state.hp_change_val + (int)(std::ceil(GetMaxHp() * state.hp_change_max / 100.0));
+		int sp = state.sp_change_val + (int)(std::ceil(GetMaxHp() * state.sp_change_max / 100.0));
+		int source_hp = this->GetHp();
+		int source_sp = this->GetSp();
+		int src_hp = 0;
+		int src_sp = 0;
+		if (state.hp_change_type == state.ChangeType_lose) {
+			src_hp = -std::min(source_hp + 1, hp);
 		}
+		else if(state.hp_change_type == state.ChangeType_gain) {
+			src_hp = std::min(source_hp, hp);
+		}
+		else {
+			src_hp = 0;
+		}
+		if (state.sp_change_type == state.ChangeType_lose) {
+			source_sp = -std::min(source_sp, sp);
+		}
+		else if(state.sp_change_type == state.ChangeType_gain) {
+			source_sp = std::min(source_sp, sp);
+		}
+		else {
+			source_sp = 0;
+		}
+		this->ChangeHp(src_hp);
+		this->ChangeSp(src_sp);
+		damageTaken += src_hp;
 	}
-	return damageTaken;
+	return -damageTaken;
 }
 
 

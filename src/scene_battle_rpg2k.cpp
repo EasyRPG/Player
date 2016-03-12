@@ -36,8 +36,8 @@
 #include "scene_gameover.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
-battle_action_wait(30),
-battle_action_state(BattleActionState_Start)
+battle_action_wait(0),
+battle_action_state(BattleActionState_ConditionHeal)
 {
 }
 
@@ -371,20 +371,26 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 				std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
 				action->GetSource()->ApplyConditions();
+				bool message_to_show = false;
 				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
 					for (std::vector<int16_t>::iterator it = states_to_heal.begin(); it != states_to_heal.end(); ++it) {
 						if (!Data::states[(*it) - 1].message_recovery.empty()) {
 							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+							message_to_show = true;
 						}
 					}
 					for (std::vector<int16_t>::iterator it = states_remaining.begin(); it != states_remaining.end(); ++it) {
 						if (!Data::states[(*it) - 1].message_affected.empty()) {
 							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_affected);
+							message_to_show = true;
 						}
 					}
-					if (battle_message_window->GetLineCount() != 0) {
+					if (message_to_show) {
 						battle_action_wait = 30;
+					}
+					else {
+						battle_action_wait = 0;
 					}
 				}
 			}
