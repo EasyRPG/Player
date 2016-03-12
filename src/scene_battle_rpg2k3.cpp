@@ -532,6 +532,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (action->IsFirstAttack() && action->GetStartSe()) {
 			Game_System::SePlay(*action->GetStartSe());
+			int damageTaken = action->GetSource()->ApplyConditions();
+			if (damageTaken != 0) {
+				DrawFloatText(
+					action->GetTarget()->GetBattleX(),
+					action->GetTarget()->GetBattleY(),
+					0,
+					boost::lexical_cast<std::string>(damageTaken),
+					30);
+			}
 		}
 
 		battle_action_state = BattleActionState_Result;

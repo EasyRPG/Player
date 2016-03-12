@@ -370,6 +370,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (action->IsFirstAttack()) {
 				std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 				std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
+				action->GetSource()->ApplyConditions();
 				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
 					for (std::vector<int16_t>::iterator it = states_to_heal.begin(); it != states_to_heal.end(); ++it) {

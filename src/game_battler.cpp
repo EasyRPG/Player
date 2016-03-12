@@ -327,6 +327,40 @@ static bool non_permanent(int state_id) {
 	return Data::states[state_id - 1].type == RPG::State::Persistence_ends;
 }
 
+int Game_Battler::ApplyConditions()
+{
+	int damageTaken = 0;
+	std::vector<int16_t> inflictedStates = this->GetInflictedStates();
+	if (inflictedStates.size() != 0) {
+		for (int i = 0; i<inflictedStates.size(); ++i) {
+			RPG::State state = Data::states[inflictedStates[i]];
+			int hp = state.hp_change_val;
+			int sp = state.sp_change_val;
+			int source_hp = this->GetHp();
+			int source_sp = this->GetSp();
+			int src_hp = 0;
+			int src_sp = 0;
+			if (state.hp_change_type == state.ChangeType_lose) {
+				src_hp = -std::min(source_hp + 1, hp);
+			}
+			else {
+				src_hp = std::min(source_hp, hp);
+			}
+			if (state.sp_change_type == state.ChangeType_lose) {
+				 source_sp = -std::min(source_sp, sp);
+			}
+			else {
+				source_sp = std::min(source_sp, sp);
+			}
+			this->ChangeHp(src_hp);
+			this->ChangeSp(src_sp);
+			damageTaken += src_hp;
+		}
+	}
+	return damageTaken;
+}
+
+
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
 
