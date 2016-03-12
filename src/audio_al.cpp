@@ -19,6 +19,7 @@
 
 #ifdef HAVE_OPENAL
 
+#include <array>
 #include <cassert>
 #include <boost/assert.hpp>
 #include <boost/circular_buffer.hpp>
@@ -103,7 +104,7 @@ namespace {
 	}
 
 	struct set_context {
-		set_context(EASYRPG_SHARED_PTR<ALCcontext> const &ctx) : prev_ctx(alcGetCurrentContext()) {
+		set_context(std::shared_ptr<ALCcontext> const &ctx) : prev_ctx(alcGetCurrentContext()) {
 			BOOST_ASSERT(ctx);
 			BOOST_ASSERT(prev_ctx);
 
@@ -150,7 +151,7 @@ struct ALAudio::buffer_loader {
 };
 
 struct ALAudio::source {
-	source(EASYRPG_SHARED_PTR<ALCcontext> const &c, ALuint const s, bool loop)
+	source(std::shared_ptr<ALCcontext> const &c, ALuint const s, bool loop)
 	    : ctx_(c)
 	    , src_(s)
 	    , fade_count_(0)
@@ -202,21 +203,21 @@ struct ALAudio::source {
 		return src_;
 	}
 
-	EASYRPG_SHARED_PTR<fluid_settings_t> settings;
-	EASYRPG_SHARED_PTR<fluid_synth_t> synth;
-	EASYRPG_SHARED_PTR<fluid_player_t> player;
-	EASYRPG_SHARED_PTR<fluid_sequencer_t> seq;
+	std::shared_ptr<fluid_settings_t> settings;
+	std::shared_ptr<fluid_synth_t> synth;
+	std::shared_ptr<fluid_player_t> player;
+	std::shared_ptr<fluid_sequencer_t> seq;
 	unsigned sample_rate;
 
 private:
-	EASYRPG_SHARED_PTR<ALCcontext> ctx_;
+	std::shared_ptr<ALCcontext> ctx_;
 	ALuint src_;
 	unsigned fade_count_, fade_milli_;
 	ALfloat volume_;
 	bool is_fade_in_;
 	bool loop_play_;
-	EASYRPG_ARRAY<ALuint, BUFFER_NUMBER> buffers_;
-	EASYRPG_SHARED_PTR<buffer_loader> loader_;
+	std::array<ALuint, BUFFER_NUMBER> buffers_;
+	std::shared_ptr<buffer_loader> loader_;
 	boost::circular_buffer<unsigned> ticks_, buf_sizes_;
 
 	unsigned progress_milli() const {
@@ -287,7 +288,7 @@ public:
 		}
 	}
 
-	void set_buffer_loader(EASYRPG_SHARED_PTR<buffer_loader> const &l) {
+	void set_buffer_loader(std::shared_ptr<buffer_loader> const &l) {
 		SET_CONTEXT(ctx_);
 		alSourceStop(src_);
 		alSourcei(src_, AL_BUFFER, AL_NONE);
@@ -332,16 +333,16 @@ public:
 };
 
 struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
-	static EASYRPG_SHARED_PTR<buffer_loader> create(std::string const &filename) {
+	static std::shared_ptr<buffer_loader> create(std::string const &filename) {
 		SF_INFO info;
-		EASYRPG_SHARED_PTR<SNDFILE> f(sf_open(filename.c_str(), SFM_READ, &info), sf_close);
+		std::shared_ptr<SNDFILE> f(sf_open(filename.c_str(), SFM_READ, &info), sf_close);
 		if (!f) {
-			return EASYRPG_SHARED_PTR<buffer_loader>();
+			return std::shared_ptr<buffer_loader>();
 		}
-		return EASYRPG_MAKE_SHARED<sndfile_loader>(filename, f, info);
+		return std::make_shared<sndfile_loader>(filename, f, info);
 	}
 
-	sndfile_loader(std::string const &filename, EASYRPG_SHARED_PTR<SNDFILE> f, SF_INFO const &info)
+	sndfile_loader(std::string const &filename, std::shared_ptr<SNDFILE> f, SF_INFO const &info)
 	    : filename_(filename)
 	    , file_(f)
 	    , info_(info)
@@ -386,7 +387,7 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 
 private:
 	std::string const filename_;
-	EASYRPG_SHARED_PTR<SNDFILE> file_;
+	std::shared_ptr<SNDFILE> file_;
 	SF_INFO info_;
 	ALenum const format_;
 	sf_count_t seek_pos_;
@@ -438,7 +439,7 @@ private:
 	std::vector<int16_t> data_;
 };
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
+std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::create_loader(source &src, std::string const &filename) const {
 	SET_CONTEXT(ctx_);
 
@@ -446,16 +447,16 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 		Output::Error("Failed loading audio file: %s", filename.c_str());
 	}
 
-	EASYRPG_SHARED_PTR<buffer_loader> snd = sndfile_loader::create(filename);
-	return snd ? snd : EASYRPG_MAKE_SHARED<midi_loader>(boost::ref(src), filename);
+	std::shared_ptr<buffer_loader> snd = sndfile_loader::create(filename);
+	return snd ? snd : std::make_shared<midi_loader>(boost::ref(src), filename);
 }
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
+std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getMusic(source &src, std::string const &file) const {
 	return create_loader(src, FileFinder::FindMusic(file));
 }
 
-EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
+std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getSound(source &src, std::string const &file) const {
 	return create_loader(src, FileFinder::FindSound(file));
 }
@@ -496,7 +497,7 @@ ALAudio::ALAudio(char const *const dev_name) {
         }
 }
 
-EASYRPG_SHARED_PTR<ALAudio::source> ALAudio::create_source(bool loop) const {
+std::shared_ptr<ALAudio::source> ALAudio::create_source(bool loop) const {
 	SET_CONTEXT(ctx_);
 
 	ALuint ret = AL_NONE;
@@ -504,7 +505,7 @@ EASYRPG_SHARED_PTR<ALAudio::source> ALAudio::create_source(bool loop) const {
 	print_al_error();
 	BOOST_ASSERT(ret != AL_NONE);
 
-	return EASYRPG_MAKE_SHARED<source>(ctx_, ret, loop);
+	return std::make_shared<source>(ctx_, ret, loop);
 }
 
 void ALAudio::BGM_Play(std::string const &file, int volume, int pitch, int fadein) {
@@ -597,7 +598,7 @@ void ALAudio::ME_Fade(int fade) {
 void ALAudio::SE_Play(std::string const &file, int volume, int pitch) {
 	SET_CONTEXT(ctx_);
 
-	EASYRPG_SHARED_PTR<source> src = create_source(false);
+	std::shared_ptr<source> src = create_source(false);
 
 	alSourcef(src->get(), AL_PITCH, pitch * 0.01f);
 	src->set_volume(volume * 0.01f);

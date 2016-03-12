@@ -172,12 +172,12 @@ void Scene_GameBrowser::BootGame() {
 		browser_dir = Main_Data::GetProjectPath();
 	Main_Data::SetProjectPath(path);
 
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
+	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(path);
 	FileFinder::SetDirectoryTree(tree);
 
 	Player::CreateGameObjects();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>());
+	Scene::Push(std::make_shared<Scene_Title>());
 
 	game_loading = false;
 	load_window->SetVisible(false);

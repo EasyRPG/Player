@@ -55,20 +55,20 @@ struct SdlAudio : public AudioInterface {
 	int BGS_GetChannel() const;
 
 private:
-	EASYRPG_SHARED_PTR<Mix_Music> bgm;
+	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
 	unsigned bgm_starttick = 0;
 	bool bgm_stop = false;
-	EASYRPG_SHARED_PTR<Mix_Chunk> bgs;
+	std::shared_ptr<Mix_Chunk> bgs;
 	int bgs_channel;
 	bool bgs_playing = false;
 	bool bgs_stop = false;
-	EASYRPG_SHARED_PTR<Mix_Chunk> me;
+	std::shared_ptr<Mix_Chunk> me;
 	int me_channel;
 	bool me_stopped_bgm;
 	bool played_once = false;
 
-	typedef std::map<int, EASYRPG_SHARED_PTR<Mix_Chunk> > sounds_type;
+	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
 }; // class SdlAudio
 

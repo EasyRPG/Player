@@ -46,15 +46,15 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 }
 
 BitmapRef Bitmap::Create(const std::string& filename, bool transparent, uint32_t flags) {
-	return EASYRPG_MAKE_SHARED<Bitmap>(filename, transparent, flags);
+	return std::make_shared<Bitmap>(filename, transparent, flags);
 }
 
 BitmapRef Bitmap::Create(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
-	return EASYRPG_MAKE_SHARED<Bitmap>(data, bytes, transparent, flags);
+	return std::make_shared<Bitmap>(data, bytes, transparent, flags);
 }
 
 BitmapRef Bitmap::Create(Bitmap const& source, Rect const& src_rect, bool transparent) {
-	return EASYRPG_MAKE_SHARED<Bitmap>(source, src_rect, transparent);
+	return std::make_shared<Bitmap>(source, src_rect, transparent);
 }
 
 void Bitmap::InitBitmap() {
@@ -76,7 +76,7 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 
 	std::vector<uint32_t> data(width * height);
 
-	EASYRPG_SHARED_PTR<pixman_image_t> dst
+	std::shared_ptr<pixman_image_t> dst
 		(pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, &data.front(), stride),
 		 pixman_image_unref);
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap, NULL, dst.get(),
@@ -182,11 +182,11 @@ uint8_t const* Bitmap::pointer(int x, int y) const {
 }
 
 BitmapRef Bitmap::Create(int width, int height, bool transparent, int /* bpp */) {
-	return EASYRPG_MAKE_SHARED<Bitmap>(width, height, transparent);
+	return std::make_shared<Bitmap>(width, height, transparent);
 }
 
 BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format) {
-	return EASYRPG_MAKE_SHARED<Bitmap>(pixels, width, height, pitch, format);
+	return std::make_shared<Bitmap>(pixels, width, height, pitch, format);
 }
 
 void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double hue_) {

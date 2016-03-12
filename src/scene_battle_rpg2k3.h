@@ -23,7 +23,7 @@
 #include "async_handler.h"
 #include <boost/scoped_ptr.hpp>
 
-typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
+typedef std::pair<std::shared_ptr<Sprite>, int> FloatText;
 
 /**
  * Scene_Battle class.

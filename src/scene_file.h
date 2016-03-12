@@ -52,10 +52,10 @@ protected:
 	unsigned int index;
 	unsigned int top_index;
 	boost::scoped_ptr<Window_Help> help_window;
-	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
+	std::vector<std::shared_ptr<Window_SaveFile> > file_windows;
 	std::string message;
 
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
+	std::shared_ptr<FileFinder::DirectoryTree> tree;
 
 	double latest_time;
 	int latest_slot;

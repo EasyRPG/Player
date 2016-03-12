@@ -41,7 +41,7 @@ void Scene_Equip::Start() {
 	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(EASYRPG_MAKE_SHARED<Window_EquipItem>(actor.GetId(), i));
+		item_windows.push_back(std::make_shared<Window_EquipItem>(actor.GetId(), i));
 	}
 
 	// Assign the help windows
@@ -119,12 +119,12 @@ void Scene_Equip::UpdateEquipSelection() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
+		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
 		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
+		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
 	}
 }
 

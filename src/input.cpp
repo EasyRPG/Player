@@ -21,10 +21,11 @@
 #include "system.h"
 
 #include <algorithm>
+#include <array>
 #include <boost/lambda/lambda.hpp>
 
 namespace Input {
-	EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
+	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
 	int dir4;
 	int dir8;

@@ -428,7 +428,7 @@ namespace Game_Map {
 	 *
 	 * @param interpreter to destroy.
 	 */
-	void ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter);
+	void ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> interpreter);
 
 	/**
 	 * Sets the need refresh flag.

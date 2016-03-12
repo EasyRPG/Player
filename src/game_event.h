@@ -199,7 +199,7 @@ private:
 	RPG::Event event;
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
-	EASYRPG_SHARED_PTR<Game_Interpreter> interpreter;
+	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
 };
 

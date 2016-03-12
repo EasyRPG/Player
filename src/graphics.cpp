@@ -61,9 +61,9 @@ namespace Graphics {
 
 	int real_fps;
 
-	EASYRPG_SHARED_PTR<State> state;
-	std::vector<EASYRPG_SHARED_PTR<State> > stack;
-	EASYRPG_SHARED_PTR<State> global_state;
+	std::shared_ptr<State> state;
+	std::vector<std::shared_ptr<State> > stack;
+	std::shared_ptr<State> global_state;
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
 }

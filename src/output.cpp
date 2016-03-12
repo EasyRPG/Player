@@ -234,7 +234,7 @@ bool Output::TakeScreenshot() {
 }
 
 bool Output::TakeScreenshot(std::string const& file) {
-	EASYRPG_SHARED_PTR<std::fstream> ret =
+	std::shared_ptr<std::fstream> ret =
 		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if(ret) {

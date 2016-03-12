@@ -96,7 +96,7 @@ public:
 	};
 
 private:
-	std::vector<EASYRPG_SHARED_PTR<Game_Picture> > pictures;
+	std::vector<std::shared_ptr<Game_Picture> > pictures;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved

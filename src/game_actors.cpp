@@ -23,7 +23,7 @@
 #include "output.h"
 
 namespace {
-	std::vector<EASYRPG_SHARED_PTR<Game_Actor> > data;
+	std::vector<std::shared_ptr<Game_Actor> > data;
 }
 
 void Game_Actors::Init() {

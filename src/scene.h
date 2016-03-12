@@ -127,7 +127,7 @@ public:
 	 * @param pop_stack_top if the scene that is currently
 	 *                      on the top should be popped.
 	 */
-	static void Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top = false);
+	static void Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top = false);
 
 	/**
 	 * Removes the scene that is on the top of the stack.
@@ -148,7 +148,7 @@ public:
 	 * @param type type of the scene that is searched.
 	 * @return the scene found, or NULL if no such scene exists.
 	 */
-	static EASYRPG_SHARED_PTR<Scene> Find(SceneType type);
+	static std::shared_ptr<Scene> Find(SceneType type);
 
 	// Don't write to the following values directly when you want to change
 	// the scene! Use Push and Pop instead!
@@ -157,17 +157,17 @@ public:
 	SceneType type;
 
 	/** Current scene. */
-	static EASYRPG_SHARED_PTR<Scene> instance;
+	static std::shared_ptr<Scene> instance;
 
 	/** Old scenes, temporary save for deleting. */
-	static std::vector<EASYRPG_SHARED_PTR<Scene> > old_instances;
+	static std::vector<std::shared_ptr<Scene> > old_instances;
 
 	/** Contains name of the Scenes. For debug purposes. */
 	static const char scene_names[SceneMax][12];
 
 private:
 	/** Scene stack. */
-	static std::vector<EASYRPG_SHARED_PTR<Scene> > instances;
+	static std::vector<std::shared_ptr<Scene> > instances;
 
 	static int push_pop_operation;
 

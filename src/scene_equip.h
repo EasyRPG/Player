@@ -77,9 +77,9 @@ private:
 	int equip_index;
 
 	/** Displays available items in a category. */
-	std::vector<EASYRPG_SHARED_PTR<Window_EquipItem> > item_windows;
+	std::vector<std::shared_ptr<Window_EquipItem> > item_windows;
 	/** Current active item window. */
-	EASYRPG_SHARED_PTR<Window_EquipItem> item_window;
+	std::shared_ptr<Window_EquipItem> item_window;
 	/** Displays stats of the hero/item. */
 	boost::scoped_ptr<Window_EquipStatus> equipstatus_window;
 	/** Displays currently equipped items. */

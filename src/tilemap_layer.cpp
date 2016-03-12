@@ -153,10 +153,10 @@ TilemapLayer::TilemapLayer(int ilayer) :
 
 	// SubLayer for the tiles with Wall or Above passability
 	// Its z-value should be between the z of the events in the upper layer and the hero
-	sublayers.push_back(EASYRPG_MAKE_SHARED<TilemapSubLayer>(this, 98+layer));
+	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, 98+layer));
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer
-	sublayers.push_back(EASYRPG_MAKE_SHARED<TilemapSubLayer>(this, -2+layer));
+	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, -2+layer));
 }
 
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile) {

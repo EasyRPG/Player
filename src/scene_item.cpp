@@ -63,7 +63,7 @@ void Scene_Item::Update() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(item_id, item_window->GetIndex()));
+				Scene::Push(std::make_shared<Scene_ActorTarget>(item_id, item_window->GetIndex()));
 				item_index = item_window->GetIndex();
 			}
 		} else {

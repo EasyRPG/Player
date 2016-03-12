@@ -70,7 +70,7 @@ protected:
 	Tilemap tilemap;
 	Plane panorama;
 	std::string panorama_name;
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> > character_sprites;
+	std::vector<std::shared_ptr<Sprite_Character> > character_sprites;
 	boost::scoped_ptr<Sprite_AirshipShadow> airship_shadow;
 	boost::scoped_ptr<Sprite_Timer> timer1;
 	boost::scoped_ptr<Sprite_Timer> timer2;

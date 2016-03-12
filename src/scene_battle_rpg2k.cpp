@@ -294,7 +294,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			Scene::Pop();
 		}
 		else {
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+			Scene::Push(std::make_shared<Scene_Gameover>());
 		}
 		break;
 	case State_Escape:
@@ -691,7 +691,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		}
 	}
 	else {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NoMove>(active_actor));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
 		battle_actions.push_back(active_actor);
 		SelectNextActor();
 		return;
@@ -703,7 +703,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		}
 
 		// ToDo: Auto battle logic is dumb
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
 		battle_actions.push_back(active_actor);
 
 		SelectNextActor();

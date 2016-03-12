@@ -207,7 +207,7 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::stri
 	floating_text->SetY(y);
 	floating_text->SetZ(500 + y);
 
-	FloatText float_text = FloatText(EASYRPG_SHARED_PTR<Sprite>(floating_text), _duration);
+	FloatText float_text = FloatText(std::shared_ptr<Sprite>(floating_text), _duration);
 
 	floating_texts.push_back(float_text);
 }
@@ -479,7 +479,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 				Scene::Pop();
 			}
 			else {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+				Scene::Push(std::make_shared<Scene_Gameover>());
 			}
 			break;
 		case State_Escape:
@@ -826,7 +826,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 void Scene_Battle_Rpg2k3::SpecialSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NoMove>(active_actor));
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
 
 	ActionSelectedCallback(active_actor);
 }
@@ -991,7 +991,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				}
 
 				// ToDo: Auto battle logic is dumb
-				active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
 				battle_actions.push_back(active_actor);
 				active_actor->SetGauge(0);
 

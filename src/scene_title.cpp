@@ -92,9 +92,9 @@ void Scene_Title::Update() {
 
 	if (!Data::system.show_title || Player::new_game_flag) {
 		Player::SetupPlayerSpawn();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		Scene::Push(std::make_shared<Scene_Map>());
 		if (Player::debug_flag && Player::hide_title_flag) {
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
+			Scene::Push(std::make_shared<Scene_Load>());
 		}
 		return;
 	}
@@ -182,7 +182,7 @@ void Scene_Title::CommandNewGame() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
 		Player::SetupPlayerSpawn();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		Scene::Push(std::make_shared<Scene_Map>());
 	}
 }
 
@@ -194,7 +194,7 @@ void Scene_Title::CommandContinue() {
 		return;
 	}
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
+	Scene::Push(std::make_shared<Scene_Load>());
 }
 
 void Scene_Title::CommandShutdown() {

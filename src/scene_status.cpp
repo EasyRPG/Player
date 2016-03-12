@@ -54,10 +54,10 @@ void Scene_Status::Update() {
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
+		Scene::Push(std::make_shared<Scene_Status>(actor_index), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
+		Scene::Push(std::make_shared<Scene_Status>(actor_index), true);
 	}
 }

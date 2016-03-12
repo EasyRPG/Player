@@ -72,8 +72,8 @@ namespace {
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 #endif
 
-	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::DirectoryTree>> search_path_list;
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> game_directory_tree;
+	typedef std::vector<std::shared_ptr<FileFinder::DirectoryTree>> search_path_list;
+	std::shared_ptr<FileFinder::DirectoryTree> game_directory_tree;
 	search_path_list search_paths;
 	std::string fonts_path;
 
@@ -157,7 +157,7 @@ namespace {
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
-		const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
+		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
 		boost::optional<std::string> const ret = FindFile(*tree, dir, name, exts);
 		if (ret != boost::none) { return *ret; }
 
@@ -180,16 +180,16 @@ namespace {
 	}
 } // anonymous namespace
 
-const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
+const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
 	return game_directory_tree;
 }
 
-const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
+const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
 	std::string save_path = Main_Data::GetSavePath();
 
-	if (!(Exists(save_path) && IsDirectory(save_path))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+	if (!(Exists(save_path) && IsDirectory(save_path))) { return std::shared_ptr<DirectoryTree>(); }
 
-	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = save_path;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, FILES);
@@ -201,14 +201,14 @@ const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirect
 	return tree;
 }
 
-void FileFinder::SetDirectoryTree(EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> directory_tree) {
+void FileFinder::SetDirectoryTree(std::shared_ptr<FileFinder::DirectoryTree> directory_tree) {
 	game_directory_tree = directory_tree;
 }
 
-EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
-	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
+	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
 
-	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, ALL);
@@ -319,7 +319,7 @@ std::string FileFinder::FindFont(const std::string& name) {
 
 static void add_rtp_path(std::string const& p) {
 	using namespace FileFinder;
-	EASYRPG_SHARED_PTR<DirectoryTree> tree(CreateDirectoryTree(p));
+	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if(tree) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
 		search_paths.push_back(tree);
@@ -427,17 +427,17 @@ FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
 #endif
 }
 
-EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
+std::shared_ptr<std::fstream> FileFinder::openUTF8(const std::string& name,
 													  std::ios_base::openmode m)
 {
-	EASYRPG_SHARED_PTR<std::fstream> ret(new std::fstream(
+	std::shared_ptr<std::fstream> ret(new std::fstream(
 #ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
 		name.c_str(),
 #endif
 		m));
-	return (*ret)? ret : EASYRPG_SHARED_PTR<std::fstream>();
+	return (*ret)? ret : std::shared_ptr<std::fstream>();
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
@@ -498,7 +498,7 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 }
 
 bool FileFinder::HasSavegame(DirectoryTree const& dir) {
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {
 		std::stringstream ss;
@@ -582,7 +582,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath path
 #endif
 
-	EASYRPG_SHARED_PTR< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
+	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
 	if (!dir) {
 		Output::Debug("Error opening dir %s: %s", path.c_str(),
 					  ::strerror(errno));

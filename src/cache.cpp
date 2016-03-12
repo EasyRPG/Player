@@ -39,10 +39,10 @@ namespace {
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
-	typedef std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_type;
+	typedef std::map<string_pair, std::weak_ptr<Bitmap> > cache_type;
 	cache_type cache;
 
-	typedef std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles_type;
+	typedef std::map<tile_pair, std::weak_ptr<Bitmap> > cache_tiles_type;
 	cache_tiles_type cache_tiles;
 
 	static std::string system_name;

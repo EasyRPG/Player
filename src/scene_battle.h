@@ -57,7 +57,7 @@ class Game_Battler;
 class Scene_Battle : public Scene {
 
 public:
-	static EASYRPG_SHARED_PTR<Scene_Battle> Create();
+	static std::shared_ptr<Scene_Battle> Create();
 
 	virtual ~Scene_Battle();
 
@@ -174,7 +174,7 @@ protected:
 	int attack_state;
 	int message_timer;
 	const RPG::EnemyAction* enemy_action;
-	std::deque<EASYRPG_SHARED_PTR<Battle::Action> > actions;
+	std::deque<std::shared_ptr<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;
 

@@ -31,7 +31,7 @@ namespace Game_BattleAlgorithm {
 	class AlgorithmBase;
 }
 
-typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
+typedef std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
 
 /**
  * Game_Battler class.
