@@ -373,12 +373,18 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
 					for (std::vector<int16_t>::iterator it = states_to_heal.begin(); it != states_to_heal.end(); ++it) {
-						battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+						if (!Data::states[(*it) - 1].message_recovery.empty()) {
+							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+						}
 					}
 					for (std::vector<int16_t>::iterator it = states_remaining.begin(); it != states_remaining.end(); ++it) {
-						battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_affected);
+						if (!Data::states[(*it) - 1].message_affected.empty()) {
+							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_affected);
+						}
 					}
-					battle_action_wait = 30;
+					if (battle_message_window->GetLineCount() != 0) {
+						battle_action_wait = 30;
+					}
 				}
 			}
 
