@@ -43,6 +43,10 @@ PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable 
 ])
 PKG_CHECK_MODULES([PNG],[libpng])
 PKG_CHECK_MODULES([ZLIB],[zlib])
+AC_ARG_ENABLE([libmpg123],[AS_HELP_STRING([--disable-libmpg123],[Disable libmpg123)])])
+AS_IF([test "x$enable_libmpg123" != "xno"],[
+	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Enable libmpg123])])
+])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])

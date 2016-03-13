@@ -308,7 +308,8 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(SDL_CFLAGS) \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
-	$(ZLIB_CFLAGS)
+	$(ZLIB_CFLAGS) \
+	$(MPG123_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
@@ -317,7 +318,8 @@ libeasyrpg_player_la_LIBADD = \
 	$(SDL_LIBS) \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
-	$(ZLIB_LIBS)
+	$(ZLIB_LIBS) \
+	$(MPG123_LIBS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
