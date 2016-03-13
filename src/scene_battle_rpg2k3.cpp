@@ -530,15 +530,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
 
-		if (action->IsFirstAttack() && action->GetStartSe()) {
-			Game_System::SePlay(*action->GetStartSe());
-
+		if (action->IsFirstAttack()) {
 			std::vector<Game_Battler*> battlers;
 			Main_Data::game_party->GetBattlers(battlers);
 			Main_Data::game_enemyparty->GetBattlers(battlers);
 
-			for (auto& b : battlers)
-			{
+			for (auto& b : battlers) {
 				int damageTaken = b->ApplyConditions();
 				if (damageTaken != 0) {
 					DrawFloatText(
@@ -549,6 +546,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						30);
 				}
 			}
+		}
+
+		if (action->IsFirstAttack() && action->GetStartSe()) {
+			Game_System::SePlay(*action->GetStartSe());
 		}
 
 		battle_action_state = BattleActionState_Result;
