@@ -316,7 +316,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (battle_action_wait--) {
 				return false;
 			}
-			battle_action_wait = 0;
+			battle_action_wait = 30;
 			battle_message_window->Clear();
 
 			if (!action->IsTargetValid()) {
@@ -374,24 +374,24 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				bool message_to_show = false;
 				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
-					for (std::vector<int16_t>::iterator it = states_to_heal.begin(); it != states_to_heal.end(); ++it) {
-						if (!Data::states[(*it) - 1].message_recovery.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_recovery);
+					for (auto state : states_to_heal) {
+						if (!Data::states[state - 1].message_recovery.empty()) {
+							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_recovery);
 							message_to_show = true;
 						}
 					}
-					for (std::vector<int16_t>::iterator it = states_remaining.begin(); it != states_remaining.end(); ++it) {
-						if (!Data::states[(*it) - 1].message_affected.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[(*it) - 1].message_affected);
+					for (auto state : states_remaining) {
+						if (!Data::states[state - 1].message_affected.empty()) {
+							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_affected);
 							message_to_show = true;
 						}
 					}
 					if (message_to_show) {
 						battle_action_wait = 30;
 					}
-					else {
-						battle_action_wait = 0;
-					}
+				}
+				else {
+					battle_action_wait = 0;
 				}
 			}
 
