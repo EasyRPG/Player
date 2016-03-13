@@ -32,6 +32,10 @@
 #  include "util_win.h"
 #endif
 
+#ifdef HAVE_MPG123
+#  include <mpg123.h>
+#endif
+
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
@@ -81,7 +85,7 @@ SdlAudio::SdlAudio() :
 #else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
 #endif
-		Output::Error("Couldn't initialize audio.\n%s", Mix_GetError());
+		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 
@@ -110,7 +114,7 @@ SdlAudio::SdlAudio() :
 			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
 			audio_format_str);
 	} else {
-		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
+		Output::Debug("Mix_QuerySpec error: %s", Mix_GetError());
 	}
 }
 
@@ -167,6 +171,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 	if (!bgm) {
 #if SDL_MIXER_MAJOR_VERSION>1
+		// Try unsupported SDL_mixer ADPCM playback with SDL
 		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
 			bgm_stop = true;
 			BGS_Play(file, volume, 0, fadein);
@@ -179,8 +184,51 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 	bgm_starttick = SDL_GetTicks();
 
-#if SDL_MAJOR_VERSION>1
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+
+#ifdef HAVE_MPG123
+	int err = MPG123_OK;
+
+	err = mpg123_init();
+	if (err != MPG123_OK) {
+		Output::Error("Couldn't initialize mpg123.\n%s", mpg123_plain_strerror(err));
+	}
+
+	mpg123_handle *handle = NULL;
+
+	handle = mpg123_new(NULL, &err);
+	if (handle == NULL) {
+		Output::Error("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(err));
+	}
+
+	int audio_rate;
+	Uint16 audio_format, mpg_format;
+	int audio_channels;
+	if (!Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+		Output::Error("Couldn't query mixer spec.\n %s", Mix_GetError());
+	}
+
+	switch (audio_format) {
+		case AUDIO_U8: mpg_format = MPG123_ENC_UNSIGNED_8; break;
+		case AUDIO_S8: mpg_format = MPG123_ENC_SIGNED_8; break;
+		case AUDIO_U16SYS: mpg_format = MPG123_ENC_UNSIGNED_16; break;
+		case AUDIO_S16SYS: mpg_format = MPG123_ENC_SIGNED_16; break;
+#if SDL_MIXER_MAJOR_VERSION>1
+		case AUDIO_S32SYS: mpg_format = MPG123_ENC_SIGNED_32; break;
+		case AUDIO_F32SYS: mpg_format = MPG123_ENC_FLOAT_32; break;
+#endif
+		default: mpg_format = MPG123_ENC_ANY; break;
+	}
+	// Let mpg123 handle the pseudo-resampling, don't trust SDL for this
+	err = mpg123_format(handle, (long)audio_rate, audio_channels, (int)mpg_format);
+	if (err != MPG123_OK) {
+		Output::Error("Couldn't set mpg123 format.\n%s", mpg123_plain_strerror(err));
+	}
+	// TODO
+	Output::Debug("Reachable mpg123 code yet");
+#endif // HAVE_MPG123
+
+#if SDL_MAJOR_VERSION>1
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
 		BGS_Play(file, volume, 0, fadein);
@@ -191,7 +239,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	BGM_Volume(volume);
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
-		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+		(mtype == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
 			? Mix_PlayMusic(bgm.get(), 0) : Mix_FadeInMusic(bgm.get(), 0, fadein))
 #else
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
