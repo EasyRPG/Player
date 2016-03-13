@@ -23,7 +23,7 @@
 
 #include <string>
 #include <ios>
-#include <boost/container/flat_map.hpp>
+#include <unordered_map>
 
 /**
  * FileFinder contains helper methods for finding case
@@ -45,12 +45,12 @@ namespace FileFinder {
 	/*
 	* { case lowered path, real path }
 	*/
-	typedef boost::container::flat_map<std::string, std::string> string_map;
+	typedef std::unordered_map<std::string, std::string> string_map;
 
 	/*
 	* { case lowered directory name, non directory file list }
 	*/
-	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
+	typedef std::unordered_map<std::string, string_map> sub_members_type;
 
 	struct DirectoryTree {
 		std::string directory_path;
