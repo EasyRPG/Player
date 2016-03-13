@@ -329,8 +329,8 @@ endif
 endif
 
 # FIXME make filefinder work without external scripting
-check_PROGRAMS = output utils
-TESTS = output utils
+check_PROGRAMS = output utils directorytree
+TESTS = output utils directorytree
 #filefinder_SOURCES = tests/filefinder.cpp
 #filefinder_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
 #filefinder_LDADD = $(easyrpg_player_LDADD)
@@ -340,6 +340,9 @@ output_LDADD = $(easyrpg_player_LDADD)
 utils_SOURCES = tests/utils.cpp
 utils_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
 utils_LDADD = $(easyrpg_player_LDADD)
+directorytree_SOURCES = tests/directorytree.cpp
+directorytree_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+directorytree_LDADD = $(easyrpg_player_LDADD)
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after runing these tests
