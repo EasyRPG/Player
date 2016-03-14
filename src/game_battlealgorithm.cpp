@@ -457,7 +457,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
 	int to_hit;
-
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
@@ -483,12 +482,13 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 
 		int effect = (source->GetAtk() / 2 - (*current_target)->GetDef() / 4);
-		if (effect < 0)
-			effect = 0;
 		int act_perc = (rand() % 40) - 20;
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
+		if(effect < 0) {
+			effect = 0;
+		}
 		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) / ((*current_target)->IsDefending() ? 2 : 1);
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {

@@ -341,27 +341,45 @@ int Game_Battler::ApplyConditions()
 		int src_sp = 0;
 		if (state.hp_change_type == state.ChangeType_lose) {
 			src_hp = -std::min(source_hp - 1, hp);
+			if(src_hp > 0) {
+				src_hp = 0;
+			}
 		}
 		else if(state.hp_change_type == state.ChangeType_gain) {
 			src_hp = std::min(source_hp, hp);
+			if(src_hp < 0) {
+				src_hp = 0;
+			}
 		}
 		else {
 			src_hp = 0;
 		}
 		if (state.sp_change_type == state.ChangeType_lose) {
-			source_sp = -std::min(source_sp, sp);
+			src_sp = -std::min(source_sp, sp);
+			if(src_sp > 0) {
+				src_sp = 0;
+			}
+
 		}
 		else if(state.sp_change_type == state.ChangeType_gain) {
-			source_sp = std::min(source_sp, sp);
+			src_sp = std::min(source_sp, sp);
+			if(src_sp < 0 ) {
+				src_sp = 0;
+			}
 		}
 		else {
-			source_sp = 0;
+			src_sp = 0;
 		}
 		this->ChangeHp(src_hp);
 		this->ChangeSp(src_sp);
 		damageTaken += src_hp;
 	}
-	return -damageTaken;
+	if(damageTaken < 0) {
+		return -damageTaken;
+	}
+	else {
+		return damageTaken;
+	}
 }
 
 
