@@ -389,6 +389,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					if (message_to_show) {
 						battle_action_wait = 30;
 					}
+					else {
+						battle_action_wait = 0;
+					}
 				}
 				else {
 					battle_action_wait = 0;

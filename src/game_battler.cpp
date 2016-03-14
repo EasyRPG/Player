@@ -18,6 +18,7 @@
 
 // Headers
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include "player.h"
 #include "game_battler.h"
@@ -339,7 +340,7 @@ int Game_Battler::ApplyConditions()
 		int src_hp = 0;
 		int src_sp = 0;
 		if (state.hp_change_type == state.ChangeType_lose) {
-			src_hp = -std::min(source_hp + 1, hp);
+			src_hp = -std::min(source_hp - 1, hp);
 		}
 		else if(state.hp_change_type == state.ChangeType_gain) {
 			src_hp = std::min(source_hp, hp);

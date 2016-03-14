@@ -546,10 +546,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						30);
 				}
 			}
-		}
-
-		if (action->IsFirstAttack() && action->GetStartSe()) {
-			Game_System::SePlay(*action->GetStartSe());
+			if (action->GetStartSe()) {
+				Game_System::SePlay(*action->GetStartSe());
+			}
 		}
 
 		battle_action_state = BattleActionState_Result;
