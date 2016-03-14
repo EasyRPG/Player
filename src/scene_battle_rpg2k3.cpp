@@ -530,8 +530,25 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
 
-		if (action->IsFirstAttack() && action->GetStartSe()) {
-			Game_System::SePlay(*action->GetStartSe());
+		if (action->IsFirstAttack()) {
+			std::vector<Game_Battler*> battlers;
+			Main_Data::game_party->GetActiveBattlers(battlers);
+			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
+
+			for (auto& b : battlers) {
+				int damageTaken = b->ApplyConditions();
+				if (damageTaken != 0) {
+					DrawFloatText(
+						b->GetBattleX(),
+						b->GetBattleY(),
+						0,
+						boost::lexical_cast<std::string>(damageTaken),
+						30);
+				}
+			}
+			if (action->GetStartSe()) {
+				Game_System::SePlay(*action->GetStartSe());
+			}
 		}
 
 		battle_action_state = BattleActionState_Result;
@@ -834,11 +851,11 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::stringstream ss;
 		ss << exp << Data::terms.exp_received << "\f";
 		Game_Message::texts.push_back(ss.str());
-
-		ss.str("");
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
-		Game_Message::texts.push_back(ss.str());
-
+		if (money > 0) {
+			ss.str("");
+			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
+			Game_Message::texts.push_back(ss.str());
+		}
 		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			ss.str("");
 			ss << Data::items[*it - 1].name << Data::terms.item_recieved << "\f";

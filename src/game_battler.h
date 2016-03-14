@@ -59,6 +59,13 @@ public:
 	std::vector<int16_t> GetInflictedStates() const;
 
 	/**
+	 * Apply effects of Conditions to Battler
+	 * 
+	 * @return Damage taken to Battler from conditions
+	 */
+	int ApplyConditions();
+
+	/**
 	 * Gets battler states.
 	 * This returns the raw state list with not inflected states set to 0 and
 	 * inflected states set to at least 1 (this maps to the turn count).

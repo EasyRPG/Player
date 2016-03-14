@@ -18,6 +18,7 @@
 
 // Headers
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include "player.h"
 #include "game_battler.h"
@@ -326,6 +327,61 @@ void Game_Battler::RemoveState(int state_id) {
 static bool non_permanent(int state_id) {
 	return Data::states[state_id - 1].type == RPG::State::Persistence_ends;
 }
+
+int Game_Battler::ApplyConditions()
+{
+	int damageTaken = 0;
+	for (int16_t inflicted : GetInflictedStates()) {
+		RPG::State state = Data::states[inflicted - 1];
+		int hp = state.hp_change_val + (int)(std::ceil(GetMaxHp() * state.hp_change_max / 100.0));
+		int sp = state.sp_change_val + (int)(std::ceil(GetMaxHp() * state.sp_change_max / 100.0));
+		int source_hp = this->GetHp();
+		int source_sp = this->GetSp();
+		int src_hp = 0;
+		int src_sp = 0;
+		if (state.hp_change_type == state.ChangeType_lose) {
+			src_hp = -std::min(source_hp - 1, hp);
+			if(src_hp > 0) {
+				src_hp = 0;
+			}
+		}
+		else if(state.hp_change_type == state.ChangeType_gain) {
+			src_hp = std::min(source_hp, hp);
+			if(src_hp < 0) {
+				src_hp = 0;
+			}
+		}
+		else {
+			src_hp = 0;
+		}
+		if (state.sp_change_type == state.ChangeType_lose) {
+			src_sp = -std::min(source_sp, sp);
+			if(src_sp > 0) {
+				src_sp = 0;
+			}
+
+		}
+		else if(state.sp_change_type == state.ChangeType_gain) {
+			src_sp = std::min(source_sp, sp);
+			if(src_sp < 0 ) {
+				src_sp = 0;
+			}
+		}
+		else {
+			src_sp = 0;
+		}
+		this->ChangeHp(src_hp);
+		this->ChangeSp(src_sp);
+		damageTaken += src_hp;
+	}
+	if(damageTaken < 0) {
+		return -damageTaken;
+	}
+	else {
+		return damageTaken;
+	}
+}
+
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
