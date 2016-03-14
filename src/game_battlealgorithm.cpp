@@ -482,6 +482,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 
 		int effect = (source->GetAtk() / 2 - (*current_target)->GetDef() / 4);
+
+		if (effect < 0)
+			effect = 0;
+
 		int act_perc = (rand() % 40) - 20;
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
@@ -614,8 +618,14 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
 			// see #480
+			if(effect < 0) {
+				effect = 0;
+			}
 
 			effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
+
+			if (effect < 0)
+				effect = 0;
 
 			if (skill.affect_hp) {
 				this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
@@ -977,6 +987,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	// Like a normal attack, but with double damage and always hitting
 	// Never crits, ignores charge
 	int effect = source->GetAtk() - (*current_target)->GetDef() / 2;
+
 	if (effect < 0)
 		effect = 0;
 
@@ -984,6 +995,10 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	int act_perc = (rand() % 40) - 20;
 	int change = (int)(std::ceil(effect * act_perc / 100.0));
 	effect += change;
+
+	if (effect < 0)
+		effect = 0;
+	
 	this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);;
 
 	if ((*current_target)->GetHp() - this->hp <= 0) {
