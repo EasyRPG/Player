@@ -532,8 +532,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (action->IsFirstAttack()) {
 			std::vector<Game_Battler*> battlers;
-			Main_Data::game_party->GetBattlers(battlers);
-			Main_Data::game_enemyparty->GetBattlers(battlers);
+			Main_Data::game_party->GetActiveBattlers(battlers);
+			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
 			for (auto& b : battlers) {
 				int damageTaken = b->ApplyConditions();
