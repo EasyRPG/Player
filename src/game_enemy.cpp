@@ -64,6 +64,10 @@ const std::string& Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
 }
 
+int Game_Enemy::GetId() const {
+	return enemy_id;
+}
+
 int Game_Enemy::GetBaseMaxHp() const {
 	return enemy->max_hp;
 }

@@ -42,6 +42,13 @@ public:
 	int GetStateProbability(int state_id);
 
 	/**
+	* Gets the enemy ID.
+	*
+	* @return Enemy ID
+	*/
+	int GetId() const;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name

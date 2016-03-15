@@ -84,6 +84,13 @@ public:
 	int GetSignificantRestriction();
 
 	/**
+	* Gets the Battler ID.
+	*
+	* @return Battler ID
+	*/
+	virtual int GetId() const;
+
+	/**
 	 * Tests if the battler has a "No Action" condition like sleep.
 	 *
 	 * @return can act 

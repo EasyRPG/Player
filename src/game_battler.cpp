@@ -61,6 +61,10 @@ int Game_Battler::GetSignificantRestriction() {
 	return RPG::State::Restriction_normal;
 }
 
+int Game_Battler::GetId() const {
+	return Game_Battler::GetId();
+}
+
 bool Game_Battler::CanAct() {
 	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int)states.size(); i++) {
