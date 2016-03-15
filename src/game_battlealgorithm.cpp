@@ -612,10 +612,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			int effect = skill.power +
 				source->GetAtk() * skill.physical_rate / 20 +
-				source->GetSpi() * skill.magical_rate / 40 -
-				(*current_target)->GetDef() * skill.physical_rate / 40 -
-				(*current_target)->GetSpi() * skill.magical_rate / 80;
-
+				source->GetSpi() * skill.magical_rate / 40;
+			if (!skill.ignore_defense) {
+				effect -= (*current_target)->GetDef() * skill.physical_rate / 40 -
+					(*current_target)->GetSpi() * skill.magical_rate / 80;
+			}
 			// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
 			// see #480
 			if(effect < 0) {
