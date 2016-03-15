@@ -135,7 +135,7 @@ bool Game_Character::IsLandable(int x, int y) const
 	if (!Game_Map::IsLandable(x, y, this))
 		return false;
 
-	if (Main_Data::game_player->IsInPosition(x, y)) {
+	if (GetLayer() == RPG::EventPage::Layers_same && Main_Data::game_player->IsInPosition(x, y)) {
 		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
 			return false;
 		}
