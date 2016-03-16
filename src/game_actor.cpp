@@ -52,7 +52,7 @@ void Game_Actor::Setup() {
 }
 
 void Game_Actor::Init() {
-	const std::vector<RPG::Learning>& skills = Data::actors[GetData().ID - 1].skills;
+	const std::vector<RPG::Learning>& skills = Data::actors[actor_id - 1].skills;
 	for (int i = 0; i < (int)skills.size(); i++)
 		if (skills[i].level <= GetLevel())
 			LearnSkill(skills[i].skill_id);
@@ -62,11 +62,11 @@ void Game_Actor::Init() {
 }
 
 void Game_Actor::Fixup() {
-	GetData().Fixup();
+	GetData().Fixup(actor_id);
 }
 
 int Game_Actor::GetId() const {
-	return GetData().ID;
+	return actor_id;
 }
 
 bool Game_Actor::UseItem(int item_id) {
@@ -99,10 +99,10 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 
 	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
-	if (item.actor_set.size() <= (unsigned)(GetData().ID - 1)) {
+	if (item.actor_set.size() <= (unsigned)(actor_id - 1)) {
 		return true;
 	} else {
-		return item.actor_set.at(GetData().ID - 1);
+		return item.actor_set.at(actor_id - 1);
 	}
 }
 
@@ -248,7 +248,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	// versions of the Player because GetData().changed_class was not set properly.
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.maxhp[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
 
 	if (mod)
 		n += GetData().hp_mod;
@@ -263,7 +263,7 @@ int Game_Actor::GetBaseMaxHp() const {
 int Game_Actor::GetBaseMaxSp(bool mod) const {
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.maxsp[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
 
 	if (mod)
 		n += GetData().sp_mod;
@@ -278,7 +278,7 @@ int Game_Actor::GetBaseMaxSp() const {
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.attack[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
 
 	if (mod) {
 		n += GetData().attack_mod;
@@ -302,7 +302,7 @@ int Game_Actor::GetBaseAtk() const {
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.defense[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
 
 	if (mod) {
 		n += GetData().defense_mod;
@@ -326,7 +326,7 @@ int Game_Actor::GetBaseDef() const {
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.spirit[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
 
 	if (mod) {
 		n += GetData().spirit_mod;
@@ -350,7 +350,7 @@ int Game_Actor::GetBaseSpi() const {
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
-		: Data::actors[GetData().ID - 1].parameters.agility[GetData().level - 1];
+		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
 
 	if (mod) {
 		n += GetData().agility_mod;
@@ -381,7 +381,7 @@ int Game_Actor::CalculateExp(int level) const
 		correction = klass.exp_correction;
 	}
 	else {
-		const RPG::Actor& actor = Data::actors[GetData().ID - 1];
+		const RPG::Actor& actor = Data::actors[actor_id - 1];
 		base = actor.exp_base;
 		inflation = actor.exp_inflation;
 		correction = actor.exp_correction;
@@ -409,7 +409,7 @@ int Game_Actor::CalculateExp(int level) const
 }
 
 void Game_Actor::MakeExpList() {
-	int final_level = Data::actors[GetData().ID - 1].final_level;
+	int final_level = Data::actors[actor_id - 1].final_level;
 	exp_list.resize(final_level, 0);;
 	for (int i = 1; i < final_level; ++i) {
 		exp_list[i] = CalculateExp(i);
@@ -455,8 +455,8 @@ int Game_Actor::GetNextExp(int level) const {
 int Game_Actor::GetStateProbability(int state_id) {
 	int rate = 3; // C - default
 
-	if (state_id <= (int)Data::actors[GetData().ID - 1].state_ranks.size()) {
-		rate = Data::actors[GetData().ID - 1].state_ranks[state_id - 1];
+	if (state_id <= (int)Data::actors[actor_id - 1].state_ranks.size()) {
+		rate = Data::actors[actor_id - 1].state_ranks[state_id - 1];
 	}
 
 	return GetStateRate(state_id, rate);
@@ -516,7 +516,7 @@ int Game_Actor::GetLevel() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return Data::actors[GetData().ID - 1].final_level;
+	return Data::actors[actor_id - 1].final_level;
 }
 
 int Game_Actor::GetExp() const {
@@ -559,7 +559,7 @@ void Game_Actor::SetLevel(int _level) {
 }
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
-	const std::vector<RPG::Learning>& skills = Data::actors[GetData().ID - 1].skills;
+	const std::vector<RPG::Learning>& skills = Data::actors[actor_id - 1].skills;
 	bool level_up = false;
 
 	int old_level = GetLevel();
@@ -646,9 +646,9 @@ bool Game_Actor::GetAutoBattle() const {
 int Game_Actor::GetBattleX() const {
 	float position = 0.0;
 
-	if (Data::actors[GetData().ID - 1].battle_x == 0 ||
+	if (Data::actors[actor_id - 1].battle_x == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(GetData().ID);
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
 		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
@@ -711,7 +711,7 @@ int Game_Actor::GetBattleX() const {
 	else {
 		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
 
-		position = (Data::actors[GetData().ID - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
+		position = (Data::actors[actor_id - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
 	}
 
 	return position;
@@ -720,9 +720,9 @@ int Game_Actor::GetBattleX() const {
 int Game_Actor::GetBattleY() const {
 	float position = 0.0;
 
-	if (Data::actors[GetData().ID - 1].battle_y == 0 ||
+	if (Data::actors[actor_id - 1].battle_y == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(GetData().ID);
+		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
 		float top = Data::terrains[Game_Battle::GetTerrainId() - 1].grid_a;
@@ -773,14 +773,14 @@ int Game_Actor::GetBattleY() const {
 		position -= 24;
 	}
 	else {
-		position = (Data::actors[GetData().ID - 1].battle_y*SCREEN_TARGET_HEIGHT / 240);
+		position = (Data::actors[actor_id - 1].battle_y*SCREEN_TARGET_HEIGHT / 240);
 	}
 
 	return (int)position;
 }
 
 const std::string& Game_Actor::GetSkillName() const {
-	return Data::actors[GetData().ID - 1].skill_name;
+	return Data::actors[actor_id - 1].skill_name;
 }
 
 void Game_Actor::SetName(const std::string &new_name) {
@@ -933,7 +933,7 @@ int Game_Actor::GetBattleAnimationId() const {
 		return 0;
 	}
 
-	return Data::battleranimations[Data::actors[GetData().ID - 1].battler_animation - 1].ID;
+	return Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
 }
 
 int Game_Actor::GetHitChance() const {
@@ -941,7 +941,7 @@ int Game_Actor::GetHitChance() const {
 }
 
 int Game_Actor::GetCriticalHitChance() const {
-	return Data::actors[GetData().ID - 1].critical_hit ? Data::actors[GetData().ID - 1].critical_hit_chance : 0;
+	return Data::actors[actor_id - 1].critical_hit ? Data::actors[actor_id - 1].critical_hit_chance : 0;
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {
