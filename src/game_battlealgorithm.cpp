@@ -321,6 +321,12 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			int src_hp = std::min(target_hp, IsPositive() ? -hp : hp);
 			source->ChangeHp(src_hp);
 		}
+		if(source->GetType() == Game_Battler::Type_Ally) {
+			int weaponID = (static_cast<Game_Actor*>(source))->GetWeaponId() - 1;
+			if (weaponID != -1) {
+				source->SetSp(source->GetSp() - Data::items[weaponID].sp_cost);
+			}
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -501,6 +507,22 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			// Death state
 			killed_by_attack_damage = true;
 			conditions.push_back(Data::states[0]);
+		}
+		else {
+			if (source->GetType() == Game_Battler::Type_Ally) {
+				int weaponID = static_cast<Game_Actor*>(source)->GetWeaponId() - 1;
+				if (weaponID != -1) {
+					RPG::Item item = Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() - 1];
+					for (int i = 0; i < item.state_set.size(); i++) {
+						if (item.state_set[i] && rand() % 100 < (item.state_chance * (*current_target)->GetStateProbability(Data::states[i].ID) / 100)) {
+							if (item.state_effect) {
+								healing = true;
+							}
+							conditions.push_back(Data::states[i]);
+						}
+					}
+				}
+			}
 		}
 	}
 	else {
