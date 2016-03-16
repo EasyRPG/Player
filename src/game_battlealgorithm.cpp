@@ -457,6 +457,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
 	int to_hit;
+	int crit_chance = source->GetCriticalHitChance();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
@@ -467,6 +468,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		} else {
 			animation = &Data::animations[Data::items[ally->GetWeaponId() - 1].animation_id - 1];
 			hit_chance = Data::items[ally->GetWeaponId() - 1].hit;
+			crit_chance += Data::items[ally->GetWeaponId() - 1].critical_hit;
 		}
 		to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2));
 	} else {
@@ -477,7 +479,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	// Damage calculation
 	if (rand() % 100 < to_hit) {
-		if (!source->IsCharged() && rand() % 100 < source->GetCriticalHitChance()) {
+		if (!source->IsCharged() && rand() % 100 < crit_chance) {
 			critical_hit = true;
 		}
 
