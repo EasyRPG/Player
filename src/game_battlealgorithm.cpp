@@ -467,16 +467,20 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
-		if (ally->GetWeaponId() == 0) {
+		int weaponID = ally->GetWeaponId() - 1;
+		if (weaponID == -1) {
 			// No Weapon
 			// Todo: Two Sword style
 			animation = &Data::animations[Data::actors[ally->GetId() - 1].unarmed_animation - 1];
 		} else {
-			animation = &Data::animations[Data::items[ally->GetWeaponId() - 1].animation_id - 1];
-			hit_chance = Data::items[ally->GetWeaponId() - 1].hit;
-			crit_chance += Data::items[ally->GetWeaponId() - 1].critical_hit;
+			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
+			hit_chance = Data::items[weaponID].hit;
+			crit_chance = crit_chance += Data::items[weaponID].critical_hit;
 		}
-		to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2));
+		to_hit = (int)(100 - (100 - hit_chance));
+		if(weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
+			to_hit *= (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2);
+		}
 	} else {
 		// Source is Enemy
 		int hit = source->GetHitChance();
