@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include <boost/bind.hpp>
+#include <functional>
 #include "game_system.h"
 #include "async_handler.h"
 #include "audio.h"
@@ -110,7 +110,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 		return;
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind(boost::bind(&Game_System::OnSeReady, _1, se.volume, se.tempo));
+	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, se.volume, se.tempo));
 	request->Start();
 }
 

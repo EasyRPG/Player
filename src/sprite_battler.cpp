@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <boost/bind.hpp>
 #include "battle_animation.h"
 #include "sprite_battler.h"
 #include "bitmap.h"
@@ -187,7 +186,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				animation.reset();
 				if (!sprite_file.empty()) {
 					FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-					request_id = request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+					request_id = request->Bind(&Sprite_Battler::OnBattlercharsetReady, this, ext.battler_index);
 					request->Start();
 				}
 			}

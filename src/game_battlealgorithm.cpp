@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <sstream>

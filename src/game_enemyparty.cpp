@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cassert>
 #include <cstdlib>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"

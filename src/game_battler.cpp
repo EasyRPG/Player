@@ -18,6 +18,7 @@
 
 // Headers
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include "player.h"

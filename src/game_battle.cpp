@@ -16,6 +16,7 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include "data.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"

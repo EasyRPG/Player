@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <boost/bind.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>

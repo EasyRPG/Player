@@ -17,6 +17,7 @@
 
 // Headers
 #include <algorithm>
+#include <cassert>
 #include "system.h"
 #include "game_party.h"
 #include "game_actors.h"

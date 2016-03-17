@@ -18,7 +18,8 @@
 #ifndef _EASYRPG_ASYNC_MANAGER_H_
 #define _EASYRPG_ASYNC_MANAGER_H_
 
-#include <boost/function.hpp>
+#include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -142,9 +143,11 @@ public:
 	 *
 	 * @param func member function.
 	 * @param that instance of object.
+	 * @param args arguments passed to func.
 	 * @return request binding reference.
 	 */
-	template<typename T> FileRequestBinding Bind(void (T::*func)(FileRequestResult*), T* that);
+	template<typename T, typename... Args>
+	FileRequestBinding Bind(void (T::*func)(FileRequestResult*, Args...), T* that, Args... args);
 
 	/**
 	 * Binds a function as request-finished event handler.
@@ -155,7 +158,7 @@ public:
 	 * @param func function.
 	 * @return request binding reference.
 	 */
-	FileRequestBinding Bind(boost::function<void(FileRequestResult*)> func);
+	FileRequestBinding Bind(std::function<void(FileRequestResult*)> func);
 
 	/**
 	 * Binds a function as request-finished event handler.
@@ -174,7 +177,7 @@ public:
 private:
 	void CallListeners(bool success);
 
-	std::vector<std::pair<FileRequestBindingWeak, boost::function<void(FileRequestResult*)> > > listeners;
+	std::vector<std::pair<FileRequestBindingWeak, std::function<void(FileRequestResult*)> > > listeners;
 	std::string directory;
 	std::string file;
 	std::string path;
@@ -194,10 +197,9 @@ struct FileRequestResult {
 	bool success;
 };
 
-template<typename T>
-FileRequestBinding FileRequestAsync::Bind(void (T::*func)(FileRequestResult*), T* that) {
-	boost::function1<void, FileRequestResult*> f;
-	f = std::bind1st(std::mem_fun(func), that);
+template<typename T, typename... Args>
+FileRequestBinding FileRequestAsync::Bind(void (T::*func)(FileRequestResult*, Args...), T* that, Args... args) {
+	std::function<void(FileRequestResult*)> f = std::bind(std::mem_fn(func), that, std::placeholders::_1, args...);
 	return Bind(f);
 }
 
