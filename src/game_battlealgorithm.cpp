@@ -359,12 +359,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			int src_hp = std::min(target_hp, IsPositive() ? -hp : hp);
 			source->ChangeHp(src_hp);
 		}
-		if(source->GetType() == Game_Battler::Type_Ally) {
-			int weaponID = (static_cast<Game_Actor*>(source))->GetWeaponId() - 1;
-			if (weaponID != -1) {
-				source->ChangeSp(-Data::items[weaponID].sp_cost);
-			}
-		}
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -518,7 +512,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			hit_chance = weapon.hit;
 			crit_chance = crit_chance += weapon.critical_hit;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
-			source->ChangeSp(source->GetSp() - Data::items[weaponID].sp_cost);
+			sp = - Data::items[weaponID].sp_cost;
 		}
 		to_hit = (int)(100 - (100 - hit_chance));
 		if(weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
@@ -764,7 +758,7 @@ void Game_BattleAlgorithm::Skill::Apply() {
 	}
 	else {
 		if (first_attack) {
-			source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+			source->ChangeSp(- source->CalculateSkillCost(skill.ID));
 		}
 	}
 }
