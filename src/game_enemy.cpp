@@ -113,6 +113,8 @@ void Game_Enemy::ChangeHp(int hp) {
 
 	if (this->hp == 0) {
 		// Death
+		SetDefending(false);
+		SetCharged(false);
 		RemoveAllStates();
 		AddState(1);
 	} else {

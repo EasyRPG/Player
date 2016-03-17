@@ -899,6 +899,8 @@ void Game_Actor::ChangeHp(int hp) {
 	if (GetData().current_hp == 0) {
 		// Death
 		RemoveAllStates();
+		SetDefending(false);
+		SetCharged(false);
 		AddState(1);
 	} else {
 		// Back to life
