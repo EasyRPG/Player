@@ -298,6 +298,44 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
 }
 
+float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(std::vector<bool> attributes_set) const {
+	float multiplier = 0;
+	int attributes_count = 0;
+	 std::vector<uint8_t> targetAttributes = (*current_target)->GetAttributeRanks();
+	for (int i = 0; i <attributes_set.size(); i++) {
+		if (attributes_set[i]) {
+			if (i < targetAttributes.size()) {
+				attributes_count++;
+				int temp;
+				switch (targetAttributes[i]) {
+				case 0:
+					temp = Data::attributes[i].a_rate;
+					break;
+				case 1:
+					temp = Data::attributes[i].b_rate;
+					break;
+				case 2:
+					temp = Data::attributes[i].c_rate;
+					break;
+				case 3:
+					temp = Data::attributes[i].d_rate;
+					break;
+				case 4:
+					temp = Data::attributes[i].e_rate;
+					break;
+				default:
+					temp = 0;
+				}
+				multiplier += temp;
+			}
+		}
+	}
+	if (attributes_count != 0) {
+		multiplier /= (attributes_count * 100);
+	}
+	return multiplier;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	targets.clear();
 
@@ -463,19 +501,23 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
 	int to_hit;
+	float multiplier = 1;
 	int crit_chance = source->GetCriticalHitChance();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
 		int weaponID = ally->GetWeaponId() - 1;
+		
 		if (weaponID == -1) {
 			// No Weapon
 			// Todo: Two Sword style
 			animation = &Data::animations[Data::actors[ally->GetId() - 1].unarmed_animation - 1];
 		} else {
 			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
-			hit_chance = Data::items[weaponID].hit;
-			crit_chance = crit_chance += Data::items[weaponID].critical_hit;
+			RPG::Item weapon = Data::items[weaponID];
+			hit_chance = weapon.hit;
+			crit_chance = crit_chance += weapon.critical_hit;
+			multiplier = GetAttributeMultiplier(weapon.attribute_set);
 		}
 		to_hit = (int)(100 - (100 - hit_chance));
 		if(weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
@@ -502,6 +544,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
+		effect *= multiplier;
 		if(effect < 0) {
 			effect = 0;
 		}
@@ -645,8 +688,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				effect -= (*current_target)->GetDef() * skill.physical_rate / 40 -
 					(*current_target)->GetSpi() * skill.magical_rate / 80;
 			}
-			// TODO: Phys/Magic attribute: Phys.Attribute /100 x Magic.Attribute /100
-			// see #480
+			effect *= GetAttributeMultiplier(skill.attribute_effects);
+
 			if(effect < 0) {
 				effect = 0;
 			}

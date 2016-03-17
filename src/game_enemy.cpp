@@ -68,6 +68,10 @@ int Game_Enemy::GetId() const {
 	return enemy_id;
 }
 
+std::vector<uint8_t> Game_Enemy::GetAttributeRanks() const {
+	return Data::enemies[GetId()-1].attribute_ranks;
+}
+
 int Game_Enemy::GetBaseMaxHp() const {
 	return enemy->max_hp;
 }

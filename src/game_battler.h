@@ -65,6 +65,9 @@ public:
 	 */
 	int ApplyConditions();
 
+
+	virtual std::vector<uint8_t> GetAttributeRanks() const = 0;
+
 	/**
 	 * Gets battler states.
 	 * This returns the raw state list with not inflected states set to 0 and

@@ -71,6 +71,12 @@ public:
 	virtual bool UseItem(int item_id);
 
 	/**
+	 * 
+	 *  
+	 * @return 
+	 */
+	std::vector<uint8_t> GetAttributeRanks() const;
+	/**
 	 * Checks if the actor is permitted to use the item at all.
 	 *
 	 * @param ID of item to test

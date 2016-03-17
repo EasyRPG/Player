@@ -49,6 +49,12 @@ public:
 	int GetId() const;
 
 	/**
+	 *
+	 * @return 
+	 */
+	std::vector<uint8_t> GetAttributeRanks() const;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name
