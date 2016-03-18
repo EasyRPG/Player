@@ -63,6 +63,7 @@
 [この手順のテキストは削除することができます]</string>
   <!--Settings Activity-->
   <string name="settings">設定</string>
+  <string name="add_game_folder">ゲームフォルダーを追加</string>
   <string name="enable_vibration">バイブレーションの使用</string>
   <string name="vibrate_when_sliding_direction">スライドで別方向を押した時に振動させる</string>
   <string name="input_layout_transparency">入力レイアウトの透過:</string>

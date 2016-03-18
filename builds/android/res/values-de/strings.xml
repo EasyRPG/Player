@@ -62,6 +62,7 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
 [Du kannst diesen Anweisungstext löschen]</string>
   <!--Settings Activity-->
   <string name="settings">Einstellungen</string>
+  <string name="add_game_folder">Spielverzeichnis hinzufügen</string>
   <string name="enable_vibration">Vibrationen aktivieren</string>
   <string name="vibrate_when_sliding_direction">Vibrieren, wenn in eine andere Bewegungsrichtung gewischt wird</string>
   <string name="input_layout_transparency">Layout-Transparenz:</string>
