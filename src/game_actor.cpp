@@ -94,6 +94,10 @@ bool Game_Actor::UseItem(int item_id) {
 	return Game_Battler::UseItem(item_id);
 }
 
+std::vector<uint8_t> Game_Actor::GetAttributeRanks() const {
+	return Data::actors[GetId()-1].attribute_ranks;
+}
+
 bool Game_Actor::IsItemUsable(int item_id) const {
 	const RPG::Item& item = Data::items[item_id - 1];
 
@@ -889,6 +893,8 @@ void Game_Actor::ChangeHp(int hp) {
 	if (GetData().current_hp == 0) {
 		// Death
 		RemoveAllStates();
+		SetDefending(false);
+		SetCharged(false);
 		AddState(1);
 	} else {
 		// Back to life

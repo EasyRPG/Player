@@ -42,6 +42,19 @@ public:
 	int GetStateProbability(int state_id);
 
 	/**
+	* Gets the enemy ID.
+	*
+	* @return Enemy ID
+	*/
+	int GetId() const;
+
+	/**
+	 *
+	 * @return 
+	 */
+	std::vector<uint8_t> GetAttributeRanks() const;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name

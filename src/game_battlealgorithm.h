@@ -57,6 +57,8 @@ public:
 	 */
 	Game_Battler* GetTarget() const;
 
+	float GetAttributeMultiplier(std::vector<bool> attributes_set) const;
+
 	/**
 	 * Allows changing of the target.
 	 * Purpose is to allow attacking someone else if the old target is

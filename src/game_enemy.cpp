@@ -64,6 +64,14 @@ const std::string& Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
 }
 
+int Game_Enemy::GetId() const {
+	return enemy_id;
+}
+
+std::vector<uint8_t> Game_Enemy::GetAttributeRanks() const {
+	return Data::enemies[GetId()-1].attribute_ranks;
+}
+
 int Game_Enemy::GetBaseMaxHp() const {
 	return enemy->max_hp;
 }
@@ -105,6 +113,8 @@ void Game_Enemy::ChangeHp(int hp) {
 
 	if (this->hp == 0) {
 		// Death
+		SetDefending(false);
+		SetCharged(false);
 		RemoveAllStates();
 		AddState(1);
 	} else {
@@ -183,6 +193,9 @@ int Game_Enemy::GetDropProbability() const {
 }
 
 bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
+	if(action.kind == action.Kind_skill) {
+		return IsSkillUsable(action.skill_id);
+	}
 	switch (action.condition_type) {
 	case RPG::EnemyAction::ConditionType_always:
 		return true;

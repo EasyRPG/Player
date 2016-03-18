@@ -65,6 +65,9 @@ public:
 	 */
 	int ApplyConditions();
 
+
+	virtual std::vector<uint8_t> GetAttributeRanks() const = 0;
+
 	/**
 	 * Gets battler states.
 	 * This returns the raw state list with not inflected states set to 0 and
@@ -82,6 +85,13 @@ public:
 	 * @return First non-normal restriction or normal if not restricted
 	 */
 	int GetSignificantRestriction();
+
+	/**
+	* Gets the Battler ID.
+	*
+	* @return Battler ID
+	*/
+	virtual int GetId() const = 0;
 
 	/**
 	 * Tests if the battler has a "No Action" condition like sleep.

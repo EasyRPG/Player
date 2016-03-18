@@ -1109,6 +1109,9 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 		if (remove) {
 			actor->RemoveState(state_id);
 		} else {
+			if(state_id == 1) {
+				actor->ChangeHp(-actor->GetHp());
+			}
 			actor->AddState(state_id);
 			CheckGameOver();
 		}
