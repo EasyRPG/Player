@@ -509,6 +509,13 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
+			if (!action->GetTarget()) {
+				// No target but not a target-only action.
+				// Maybe a bug report will help later
+				Output::Warning("Battle: BattleAction without valid target.");
+				return true;
+			}
+
 			action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 
 			if (!action->IsTargetValid()) {

@@ -34,6 +34,7 @@
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"
 #include "scene_gameover.h"
+#include "output.h"
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
 battle_action_wait(0),
@@ -320,6 +321,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_message_window->Clear();
 
 			if (!action->IsTargetValid()) {
+				if (!action->GetTarget()) {
+					// No target but not a target-only action.
+					// Maybe a bug report will help later
+					Output::Warning("Battle: BattleAction without valid target.");
+					return true;
+				}
+
 				action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 
 				if (!action->IsTargetValid()) {
