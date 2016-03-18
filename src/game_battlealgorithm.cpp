@@ -512,7 +512,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			hit_chance = weapon.hit;
 			crit_chance = crit_chance += weapon.critical_hit;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
-			sp = - Data::items[weaponID].sp_cost;
 		}
 		to_hit = (int)(100 - (100 - hit_chance));
 		if(weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
@@ -580,6 +579,9 @@ void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
 	source->SetCharged(false);
+	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetWeaponId() != 0) {
+		source->ChangeSp(-Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() -1].sp_cost);
+	}
 }
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {

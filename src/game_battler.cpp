@@ -132,6 +132,12 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
+	for (int inflictedState : this->GetInflictedStates()) {
+		if ((Data::states[inflictedState - 1].restrict_magic && Data::skills[skill_id - 1].magical_rate > Data::states[inflictedState - 1].restrict_magic_level) || ((Data::states[inflictedState - 1].restrict_skill && Data::skills[skill_id - 1].hit > Data::states[inflictedState - 1].restrict_skill_level))) {
+			return false;
+		}
+	}
+
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
