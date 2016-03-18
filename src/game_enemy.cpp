@@ -193,6 +193,9 @@ int Game_Enemy::GetDropProbability() const {
 }
 
 bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
+	if(action.kind == action.Kind_skill) {
+		return IsSkillUsable(action.skill_id);
+	}
 	switch (action.condition_type) {
 	case RPG::EnemyAction::ConditionType_always:
 		return true;
