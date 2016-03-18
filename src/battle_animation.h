@@ -47,6 +47,8 @@ public:
 	void SetFrame(int);
 	bool IsDone() const;
 
+	Sprite* GetSprite();
+
 protected:
 	virtual void Flash(Color c) = 0;
 	virtual bool ShouldScreenFlash() const = 0;
@@ -57,7 +59,7 @@ protected:
 	void OnBattle2SpriteReady(FileRequestResult* result);
 
 	const RPG::Animation& animation;
-	BitmapRef screen;
+	std::unique_ptr<Sprite> sprite;
 	int frame;
 	int z;
 	bool frame_update;

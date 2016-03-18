@@ -34,8 +34,8 @@ public:
 
 	void Draw();
 
-	void Flash(int duration);
-	void Flash(Color color, int duration);
+	virtual void Flash(int duration);
+	virtual void Flash(Color color, int duration);
 	void Update();
 
 	int GetWidth() const;

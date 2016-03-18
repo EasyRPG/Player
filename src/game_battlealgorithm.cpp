@@ -411,6 +411,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
+			if ((*current_target)->IsDead() && it->ID == 1) {
+				// Was a revive skill with an effect rating of 0
+				(*current_target)->ChangeHp(1);
+			}
+
 			(*current_target)->RemoveState(it->ID);
 		}
 		else {
@@ -633,6 +638,11 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		if (skill.scope == RPG::Skill::Scope_ally ||
 			skill.scope == RPG::Skill::Scope_party) {
+			if ((*current_target)->IsDead()) {
+				// Cures death
+				return !skill.state_effects.empty() && skill.state_effects[0];
+			}
+
 			return true;
 		}
 	}
@@ -846,6 +856,13 @@ bool Game_BattleAlgorithm::Item::IsTargetValid() {
 
 	if (current_target == targets.end()) {
 		return false;
+	}
+
+	if ((*current_target)->IsDead()) {
+		// Medicine curing death
+		return item.type == RPG::Item::Type_medicine &&
+			!item.state_set.empty() &&
+			item.state_set[0];
 	}
 
 	return item.type == RPG::Item::Type_medicine;

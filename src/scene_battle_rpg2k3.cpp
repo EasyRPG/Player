@@ -158,12 +158,16 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			ally_cursor->SetVisible(true);
 			Main_Data::game_party->GetBattlers(actors);
 			const Game_Battler* actor = actors[ally_index];
-			const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
+			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
 			ally_cursor->SetX(actor->GetBattleX());
 			ally_cursor->SetY(actor->GetBattleY() - sprite->GetHeight() / 2);
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
+
+			if (cycle % 60 == 0) {
+				sprite->Flash(Color(255, 255, 255, 100), 15);
+			}
 		}
 
 		if (enemy_index >= 0) {
@@ -505,6 +509,13 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
+			if (!action->GetTarget()) {
+				// No target but not a target-only action.
+				// Maybe a bug report will help later
+				Output::Warning("Battle: BattleAction without valid target.");
+				return true;
+			}
+
 			action->SetTarget(action->GetTarget()->GetParty().GetNextActiveBattler(action->GetTarget()));
 
 			if (!action->IsTargetValid()) {
@@ -610,15 +621,22 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		battle_action_wait = 30;
 
 		for (it = targets.begin(); it != targets.end(); it++) {
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+
 			if ((*it)->IsDead()) {
 				if (action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
 				}
 
-				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
-
 				if (target_sprite) {
 					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
+				}
+			} else {
+				if (target_sprite) {
+					if (!target_sprite->IsIdling()) {
+						// Was revived or some other deadlock situation :/
+						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+					}
 				}
 			}
 		}
@@ -936,7 +954,7 @@ bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
 	std::vector<Game_Battler*> battler;
-	Main_Data::game_party->GetActiveBattlers(battler);
+	Main_Data::game_party->GetBattlers(battler);
 
 	int i = 0;
 	for (std::vector<Game_Battler*>::iterator it = battler.begin();

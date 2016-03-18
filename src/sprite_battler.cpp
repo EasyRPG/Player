@@ -197,6 +197,22 @@ bool Sprite_Battler::IsIdling() {
 	return idling;
 }
 
+void Sprite_Battler::Flash(int duration) {
+	if (animation) {
+		animation->GetSprite()->Flash(duration);
+	} else {
+		Sprite::Flash(duration);
+	}
+}
+
+void Sprite_Battler::Flash(Color color, int duration) {
+	if (animation) {
+		animation->GetSprite()->Flash(color, duration);
+	} else {
+		Sprite::Flash(color, duration);
+	}
+}
+
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();

@@ -81,6 +81,10 @@ void BattleAnimation::Update() {
 		RunTimedSfx();
 	}
 	frame_update = !frame_update;
+
+	if (sprite) {
+		sprite->Update();
+	}
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -99,9 +103,15 @@ bool BattleAnimation::IsDone() const {
 	return GetFrame() >= GetFrames();
 }
 
+Sprite* BattleAnimation::GetSprite() {
+	return sprite.get();
+}
+
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	if (result->success) {
-		screen = Cache::Battle(result->file);
+		sprite.reset(new Sprite());
+		sprite->SetBitmap(Cache::Battle(result->file));
+		sprite->SetVisible(false);
 	}
 	else {
 		// Try battle2
@@ -113,7 +123,9 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 
 void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 	if (result->success) {
-		screen = Cache::Battle2(result->file);
+		sprite.reset(new Sprite());
+		sprite->SetBitmap(Cache::Battle2(result->file));
+		sprite->SetVisible(false);
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
@@ -121,7 +133,7 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 }
 
 void BattleAnimation::DrawAt(int x, int y) {
-	if (!screen) return; // Initialization failed
+	if (!sprite) return; // Initialization failed
 	if (IsDone()) return;
 
 	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
@@ -136,22 +148,23 @@ void BattleAnimation::DrawAt(int x, int y) {
 			continue;
 		}
 
+		sprite->SetVisible(true);
+		sprite->SetX(cell.x + x);
+		sprite->SetY(cell.y + y);
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
-		Rect src_rect(sx * size, sy * size, size, size);
-		Tone tone(cell.tone_red * 128 / 100,
+		sprite->SetSrcRect(Rect(sx * size, sy * size, size, size));
+		sprite->SetOx(size / 2);
+		sprite->SetOy(size / 2);
+		sprite->SetTone(Tone(cell.tone_red * 128 / 100,
 			cell.tone_green * 128 / 100,
 			cell.tone_blue * 128 / 100,
-			cell.tone_gray * 128 / 100);
-		int opacity = 255 * (100 - cell.transparency) / 100;
-		double zoom = cell.zoom / 100.0;
-		DisplayUi->GetDisplaySurface()->EffectsBlit(
-			x + cell.x, y + cell.y,
-			size / 2, size / 2,
-			*screen, src_rect,
-			opacity, tone,
-			zoom, zoom);
+			cell.tone_gray * 128 / 100));
+		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
+		sprite->SetZoomX(cell.zoom / 100.0);
+		sprite->SetZoomY(cell.zoom / 100.0);
+		sprite->Draw();
 	}
 }
 

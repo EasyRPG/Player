@@ -49,8 +49,8 @@ std::vector<int16_t>& Game_Enemy::GetStates() {
 int Game_Enemy::GetStateProbability(int state_id) {
 	int rate = 3; // C - default
 
-	if (state_id <= (int)Data::enemies[enemy_id].state_ranks.size()) {
-		rate = Data::enemies[enemy_id].state_ranks[state_id - 1];
+	if (state_id <= (int)enemy->state_ranks.size()) {
+		rate = enemy->state_ranks[state_id - 1];
 	}
 
 	return GetStateRate(state_id, rate);
@@ -113,6 +113,7 @@ void Game_Enemy::ChangeHp(int hp) {
 
 	if (this->hp == 0) {
 		// Death
+		SetGauge(0);
 		SetDefending(false);
 		SetCharged(false);
 		RemoveAllStates();

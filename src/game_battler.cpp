@@ -568,6 +568,9 @@ bool Game_Battler::IsGaugeFull() const {
 
 void Game_Battler::UpdateGauge(int multiplier) {
 	if (!Exists()) {
+		if (IsDead()) {
+			SetGauge(0);
+		}
 		return;
 	}
 

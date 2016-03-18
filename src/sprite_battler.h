@@ -79,6 +79,9 @@ public:
 	 */
 	bool IsIdling();
 
+	void Flash(int duration) override;
+	void Flash(Color color, int duration) override;
+
 protected:
 	void CreateSprite();
 	void OnMonsterSpriteReady(FileRequestResult* result);
