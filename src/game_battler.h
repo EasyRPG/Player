@@ -91,7 +91,7 @@ public:
 	*
 	* @return Battler ID
 	*/
-	virtual int GetId() const;
+	virtual int GetId() const = 0;
 
 	/**
 	 * Tests if the battler has a "No Action" condition like sleep.
