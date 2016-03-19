@@ -74,7 +74,7 @@ extern "C" {
 
 // to disable the use of localeconv(3), set PICOJSON_USE_LOCALE to 0
 #ifndef PICOJSON_USE_LOCALE
-# define PICOJSON_USE_LOCALE 1
+# define PICOJSON_USE_LOCALE 0
 #endif
 #if PICOJSON_USE_LOCALE
 extern "C" {
@@ -83,7 +83,7 @@ extern "C" {
 #endif
 
 #ifndef PICOJSON_ASSERT
-# define PICOJSON_ASSERT(e) do { if (! (e)) throw std::runtime_error(#e); } while (0)
+# define PICOJSON_ASSERT(e) do { if (! (e)) assert(false && #e); } while (0)
 #endif
 
 #ifdef _MSC_VER
@@ -216,7 +216,7 @@ namespace picojson {
         isnan(n) || isinf(n)
 #endif
         ) {
-      throw std::overflow_error("");
+		u_.number_ = std::numeric_limits<double>::quiet_NaN();
     }
     u_.number_ = n;
   }
