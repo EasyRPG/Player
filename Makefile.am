@@ -218,6 +218,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/utils.h \
 	src/util_win.cpp \
 	src/util_win.h \
+	src/version.h \
 	src/weather.cpp \
 	src/weather.h \
 	src/window_about.cpp \
