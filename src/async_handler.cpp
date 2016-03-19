@@ -28,9 +28,13 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
+#include "picojson.h"
+#include <fstream>
+#include "utils.h"
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
+	std::map<std::string, std::string> file_mapping;
 	int next_id = 0;
 
 	FileRequestAsync* GetRequest(const std::string& path) {
@@ -63,6 +67,16 @@ namespace {
 		req->DownloadDone(false);
 	}
 #endif
+}
+
+void AsyncHandler::CreateRequestMapping(const std::string& file) {
+	std::shared_ptr<std::fstream> f = FileFinder::openUTF8(file, std::ios_base::in | std::ios_base::binary);
+	picojson::value v;
+	picojson::parse(v, *f);
+
+	for (const auto& value : v.get<picojson::object>()) {
+		file_mapping[value.first] = value.second.to_str();
+	}
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
@@ -147,9 +161,16 @@ void FileRequestAsync::Start() {
 	request_path = "games/";
 #  endif
 
-	request_path += "?file=" + path;
 	if (!Player::emscripten_game_name.empty()) {
-		request_path += "&game=" + Player::emscripten_game_name;
+		request_path += Player::emscripten_game_name + "/";
+	}
+
+	auto it = file_mapping.find(Utils::LowerCase(path));
+	if (it != file_mapping.end()) {
+		request_path += it->second;
+	} else {
+		// Fall through if not found, will fail in the ajax request
+		request_path += path;
 	}
 
 	emscripten_async_wget2(

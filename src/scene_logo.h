@@ -23,6 +23,7 @@
 #include "scene.h"
 #include "sprite.h"
 #include <boost/scoped_ptr.hpp>
+#include "async_handler.h"
 
 /**
  * Scene Logo class.
@@ -45,6 +46,10 @@ private:
 	boost::scoped_ptr<Sprite> logo;
 	BitmapRef logo_img;
 	int frame_counter;
+
+	void OnIndexReady(FileRequestResult* result);
+	FileRequestBinding request_id;
+	bool async_ready = false;
 };
 
 #endif

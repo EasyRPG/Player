@@ -124,6 +124,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \
+	src/picojson.h \
 	src/pixel_format.h \
 	src/plane.cpp \
 	src/plane.h \

@@ -418,6 +418,7 @@
     <ClInclude Include="..\..\src\message_overlay.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
+    <ClInclude Include="..\..\src\picojson.h" />
     <ClInclude Include="..\..\src\pixel_format.h" />
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\player.h" />
