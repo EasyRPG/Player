@@ -804,6 +804,9 @@
     <ClInclude Include="..\..\src\utils.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\version.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\system.h">
       <Filter>Source Files\Settings</Filter>
     </ClInclude>

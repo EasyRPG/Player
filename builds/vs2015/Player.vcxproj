@@ -465,6 +465,7 @@
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
+    <ClInclude Include="..\..\src\version.h" />
     <ClInclude Include="..\..\src\weather.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_about.h" />
