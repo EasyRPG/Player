@@ -20,6 +20,9 @@
 #include <list>
 #include "game_party_base.h"
 
+Game_Party_Base::~Game_Party_Base() {
+}
+
 void Game_Party_Base::GetBattlers(std::vector<Game_Battler*>& out) {
 	int count = GetBattlerCount();
 	for (int i = 0; i < count; ++i) {

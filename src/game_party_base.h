@@ -27,6 +27,8 @@
  */
 class Game_Party_Base {
 public:
+	virtual ~Game_Party_Base();
+
 	/**
 	 * Gets a battler from the party by position in the party
 	 *

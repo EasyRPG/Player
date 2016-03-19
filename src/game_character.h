@@ -36,7 +36,12 @@ public:
 	/**
 	 * Destructor.
 	 */
-	virtual ~Game_Character();
+#ifndef EMSCRIPTEN
+	// No idea why but emscripten will complain about a missing destructor when
+	// using virtual here
+	virtual
+#endif
+	~Game_Character();
 
 	/**
 	* Gets x position.

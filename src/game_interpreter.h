@@ -38,6 +38,12 @@ class Game_Interpreter
 {
 public:
 	Game_Interpreter(int _depth = 0, bool _main_flag = false);
+#ifndef EMSCRIPTEN
+	// No idea why but emscripten will complain about a missing destructor when
+	// using virtual here
+	virtual
+#endif
+	~Game_Interpreter();
 
 	void Clear();
 	void Setup(
