@@ -163,6 +163,8 @@ void FileRequestAsync::Start() {
 
 	if (!Player::emscripten_game_name.empty()) {
 		request_path += Player::emscripten_game_name + "/";
+	} else {
+		request_path += "default/";
 	}
 
 	auto it = file_mapping.find(Utils::LowerCase(path));

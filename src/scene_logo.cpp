@@ -52,6 +52,7 @@ void Scene_Logo::Update() {
 			index->SetImportantFile(true);
 			request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
 			once = false;
+			index->Start();
 			return;
 		}
 
