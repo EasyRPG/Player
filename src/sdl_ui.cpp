@@ -375,10 +375,8 @@ void SdlUi::EndDisplayModeChange() {
 
 bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
-	uint32_t rendered_flag;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
-	bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
@@ -432,9 +430,9 @@ bool SdlUi::RefreshDisplayMode() {
 
 		// OS X needs the rendered to be vsync
 		#if defined(__APPLE__) && defined(__MACH__)
-			rendered_flag = SDL_RENDERER_PRESENTVSYNC;
+			uint32_t rendered_flag = SDL_RENDERER_PRESENTVSYNC;
 		#else
-			rendered_flag = 0;
+			uint32_t rendered_flag = 0;
 		#endif
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
@@ -457,6 +455,7 @@ bool SdlUi::RefreshDisplayMode() {
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
 #ifndef EMSCRIPTEN
+		bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		} else {
@@ -772,24 +771,30 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		// Continue if return/enter not handled by fullscreen hotkey
 	default:
 		// Update key state
-#if SDL_MAJOR_VERSION==1
+#  if SDL_MAJOR_VERSION==1
 		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
-#else
+#  else
 		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
 
-#endif
+#  endif
 		return;
 	}
+#else
+	/* unused */
+	(void) evnt;
 #endif
 }
 
 void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-#if SDL_MAJOR_VERSION==1
+#  if SDL_MAJOR_VERSION==1
 	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
-#else
+#  else
 	keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = false;
-#endif
+#  endif
+#else
+	/* unused */
+	(void) evnt;
 #endif
 }
 

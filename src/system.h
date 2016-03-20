@@ -45,6 +45,9 @@
 
 #ifdef GEKKO
 #  include "stdint.h"
+
+#  define HAVE_SDL_MIXER
+#  define WORDS_BIGENDIAN
 #endif
 
 #define SUPPORT_BMP

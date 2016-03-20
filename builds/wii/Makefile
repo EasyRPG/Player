@@ -27,9 +27,9 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DWORDS_BIGENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
-CXXFLAGS	=	$(CFLAGS) -fno-exceptions -std=c++0x
-LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
+CFLAGS		= -g -O2 -Wall -Wextra -DUSE_SDL -DNDEBUG $(MACHDEP) $(INCLUDE)
+CXXFLAGS	= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+LDFLAGS	= -g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
