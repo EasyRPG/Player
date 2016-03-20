@@ -37,6 +37,8 @@
 #  include <fat.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(_3DS)
+#  include <3ds.h>
 #endif
 
 #include "async_handler.h"
@@ -69,9 +71,6 @@
 #include "utils.h"
 #include "version.h"
 
-#ifdef _3DS
-	#include <3ds.h>
-#endif
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -135,6 +134,15 @@ void Player::Init(int argc, char *argv[]) {
 	// Init libfat (Mount SD/USB)
 	if (!fatInitDefault()) {
 		Output::Error("Couldn't mount any storage medium!");
+	}
+#elif defined(_3DS)
+	u8 isN3DS;
+
+	gfxInitDefault();
+	hidInit();
+	APT_CheckNew3DS(&isN3DS);
+	if (isN3DS) {
+		osSetSpeedupEnable(true);
 	}
 #endif
 
