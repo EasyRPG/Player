@@ -38,7 +38,7 @@ public:
 
 protected:
 	boost::scoped_ptr<Background> background;
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> > sprites;
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler>> sprites;
 
 	boost::scoped_ptr<Sprite_Timer> timer1;
 	boost::scoped_ptr<Sprite_Timer> timer2;

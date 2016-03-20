@@ -18,6 +18,7 @@
 // Headers
 #include "spriteset_battle.h"
 #include "cache.h"
+#include "game_actors.h"
 #include "game_battler.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
@@ -34,12 +35,16 @@ Spriteset_Battle::Spriteset_Battle() {
 	std::vector<Game_Battler*> battler;
 	Main_Data::game_enemyparty->GetBattlers(battler);
 	if (Player::IsRPG2k3()) {
-		Main_Data::game_party->GetBattlers(battler);
+		for (int i = 0; i < Data::actors.size(); ++i) {
+			battler.push_back(Game_Actors::GetActor(i + 1));
+		}
 	}
 
-	std::vector<Game_Battler*>::iterator it;
-	for (it = battler.begin(); it != battler.end(); ++it) {
-		sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Battler>(*it));
+	for (Game_Battler* b : battler) {
+		sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Battler>(b));
+		if (b->GetType() == Game_Battler::Type_Ally) {
+			sprites.back()->SetVisible(false);
+		}
 	}
 
 	timer1.reset(new Sprite_Timer(0));
@@ -49,9 +54,13 @@ Spriteset_Battle::Spriteset_Battle() {
 }
 
 void Spriteset_Battle::Update() {
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> >::iterator it;
-	for (it = sprites.begin(); it != sprites.end(); ++it) {
-		(*it)->Update();
+	for (auto sprite : sprites) {
+		Game_Battler* battler = sprite->GetBattler();
+		if (battler->GetType() == Game_Battler::Type_Ally) {
+			sprite->SetVisible(Main_Data::game_party->IsActorInParty(battler->GetId()));
+		}
+
+		sprite->Update();
 	}
 
 	timer1->Update();

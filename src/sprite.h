@@ -46,8 +46,8 @@ public:
 	Rect const& GetSrcRect() const;
 	void SetSrcRect(Rect const& src_rect);
 	void SetSpriteRect(Rect const& sprite_rect);
-	bool GetVisible() const;
-	void SetVisible(bool visible);
+	virtual bool GetVisible() const;
+	virtual void SetVisible(bool visible);
 	int GetX() const;
 	void SetX(int x);
 	int GetY() const;

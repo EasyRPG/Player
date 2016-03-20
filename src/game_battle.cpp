@@ -211,6 +211,21 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 }
 
 bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
+	if (!condition.flags.switch_a &&
+		!condition.flags.switch_b &&
+		!condition.flags.variable &&
+		!condition.flags.turn &&
+		!condition.flags.turn_enemy &&
+		!condition.flags.turn_actor &&
+		!condition.flags.fatigue &&
+		!condition.flags.enemy_hp &&
+		!condition.flags.actor_hp &&
+		!condition.flags.command_actor
+		) {
+		// Pages without trigger are never run
+		return false;
+	}
+
 	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id])
 		return false;
 

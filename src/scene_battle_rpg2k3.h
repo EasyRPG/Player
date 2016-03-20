@@ -65,6 +65,7 @@ protected:
 	void CommandSelected();
 	void AttackSelected();
 	void SubskillSelected();
+	void SpecialSelected();
 
 	void Escape();
 

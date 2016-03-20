@@ -39,20 +39,22 @@ public:
 	 * @param state_id State to test
 	 * @return Probability of state infliction
 	 */
-	int GetStateProbability(int state_id);
+	int GetStateProbability(int state_id) const override;
 
 	/**
-	* Gets the enemy ID.
-	*
-	* @return Enemy ID
-	*/
-	int GetId() const;
-
-	/**
+	 * Gets attribute multiplier when the enemy is damaged.
 	 *
-	 * @return 
+	 * @param attribute_id Attribute to test
+	 * @return Attribute resistence
 	 */
-	std::vector<uint8_t> GetAttributeRanks() const;
+	int GetAttributeModifier(int attribute_id) const override;
+
+	/**
+	 * Gets the enemy ID.
+	 *
+	 * @return Enemy ID
+	 */
+	int GetId() const;
 
 	/**
 	 * Gets the characters name

@@ -185,9 +185,11 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 			}
 			else {
 				animation.reset();
-				FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-				request_id = request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
-				request->Start();
+				if (!sprite_file.empty()) {
+					FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
+					request_id = request->Bind(boost::bind(&Sprite_Battler::OnBattlercharsetReady, this, _1, ext.battler_index));
+					request->Start();
+				}
 			}
 		}
 	}
@@ -211,6 +213,21 @@ void Sprite_Battler::Flash(Color color, int duration) {
 	} else {
 		Sprite::Flash(color, duration);
 	}
+}
+
+bool Sprite_Battler::GetVisible() const {
+	if (animation) {
+		return animation->GetSprite()->GetVisible();
+	} else {
+		return Sprite::GetVisible();
+	}
+}
+
+void Sprite_Battler::SetVisible(bool nvisible) {
+	if (animation) {
+		animation->GetSprite()->SetVisible(nvisible);
+	}
+	Sprite::SetVisible(nvisible);
 }
 
 void Sprite_Battler::CreateSprite() {
