@@ -82,7 +82,7 @@ namespace {
 
 	std::string format_string(char const* fmt, va_list args) {
 		char buf[4096];
-#if __cplusplus > 199711L
+#if __cplusplus > 199711L || defined(_MSC_VER)
 		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
 #else
 #  warning Using (probably insecure) `vsprintf` function!
