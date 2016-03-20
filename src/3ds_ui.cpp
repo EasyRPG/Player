@@ -45,7 +45,7 @@ CtrUi::CtrUi(int width, int height) :
 	sf2d_init();
 	consoleInit(GFX_BOTTOM, NULL);
 #ifndef NO_DEBUG
-	printf("Debug console started...");
+	printf("Debug console started...\n");
 #endif
 	sf2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 	current_display_mode.width = width;
@@ -57,8 +57,8 @@ CtrUi::CtrUi(int width, int height) :
 		0x0000FF00,
 		0x00FF0000,
 		0xFF000000,
-		PF::Alpha);
-	Bitmap::SetFormat(format);
+		PF::NoAlpha);
+	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, false, 32);
 }
 
@@ -106,31 +106,20 @@ bool CtrUi::IsFullscreen() {
 }
 
 void CtrUi::ProcessEvents() {
+	
 	hidScanInput();
-
-	uint32_t kUp = hidKeysUp();
-	if (kUp & KEY_A) keys[Input::Keys::Z] = false;
-	if (kUp & KEY_B) keys[Input::Keys::X] = false;
-	if (kUp & KEY_X) keys[Input::Keys::N8] = false;
-	if (kUp & KEY_SELECT) keys[Input::Keys::F12] = false;
-	if (kUp & KEY_START) Player::exit_flag = false;
-	if (kUp & KEY_DRIGHT) keys[Input::Keys::RIGHT] = false;
-	if (kUp & KEY_DLEFT) keys[Input::Keys::LEFT] = false;
-	if (kUp & KEY_DUP) keys[Input::Keys::UP] = false;
-	if (kUp & KEY_DDOWN) keys[Input::Keys::DOWN] = false;
-	if (kUp & KEY_L) keys[Input::Keys::F2] = false;
-
-	uint32_t kDown = hidKeysDown();
-	if (kDown & KEY_A) keys[Input::Keys::Z] = true;
-	if (kDown & KEY_B) keys[Input::Keys::X] = true;
-	if (kDown & KEY_X) keys[Input::Keys::N8] = true;
-	if (kDown & KEY_SELECT) keys[Input::Keys::F12] = true;
-	if (kDown & KEY_START) Player::exit_flag = true;
-	if (kDown & KEY_DRIGHT) keys[Input::Keys::RIGHT] = true;
-	if (kDown & KEY_DLEFT) keys[Input::Keys::LEFT] = true;
-	if (kDown & KEY_DUP) keys[Input::Keys::UP] = true;
-	if (kDown & KEY_DDOWN) keys[Input::Keys::DOWN] = true;
-	if (kDown & KEY_L) keys[Input::Keys::F2] = true;
+	u32 input = hidKeysHeld();
+	keys[Input::Keys::Z] = (input & KEY_A);
+	keys[Input::Keys::X] = (input & KEY_B);
+	keys[Input::Keys::N8] = (input & KEY_X);
+	keys[Input::Keys::F12] = (input & KEY_SELECT);
+	Player::exit_flag = (input & KEY_START);
+	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
+	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
+	keys[Input::Keys::UP] = (input & KEY_DUP);
+	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
+	keys[Input::Keys::F2] = (input & KEY_L);
+	
 }
 
 void CtrUi::UpdateDisplay() {
