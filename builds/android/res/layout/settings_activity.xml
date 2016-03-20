@@ -154,12 +154,12 @@
         <!-- Sounds -->
 
         <CheckBox
-            android:id="@+id/settings_sounds"
+            android:id="@+id/settings_audio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:onClick="checkboxDisableSounds"
-            android:text="@string/disable_sounds"
+            android:onClick="checkboxEnableAudio"
+            android:text="@string/enable_audio"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
 

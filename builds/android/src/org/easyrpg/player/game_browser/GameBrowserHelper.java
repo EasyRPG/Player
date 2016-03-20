@@ -287,7 +287,7 @@ public class GameBrowserHelper {
 			}
 			
 			// Disable audio depending on user preferences
-			if(SettingsActivity.AUDIO_DISABLED){
+			if(!SettingsActivity.AUDIO_ENABLED){
 				args.add("--disable-audio");
 			}
 
