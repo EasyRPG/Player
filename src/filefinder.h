@@ -22,6 +22,7 @@
 #include "system.h"
 
 #include <string>
+#include <cstdio>
 #include <ios>
 #include <unordered_map>
 

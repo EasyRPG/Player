@@ -82,12 +82,12 @@ namespace {
 
 	std::string format_string(char const* fmt, va_list args) {
 		char buf[4096];
-	// FIXME: devkitppc r27 seems to have broken newlib
-	#if __cplusplus > 199711L && !defined(GEKKO)
+#if __cplusplus > 199711L || defined(_MSC_VER)
 		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
-	#else
+#else
+#  warning Using (probably insecure) `vsprintf` function!
 		int const result = vsprintf(buf, fmt, args);
-	#endif
+#endif
 		assert(0 <= result && result < int(sizeof(buf)));
 		return std::string(buf, result);
 	}
