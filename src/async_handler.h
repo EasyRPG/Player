@@ -31,6 +31,12 @@ struct FileRequestResult;
  */
 namespace AsyncHandler {
 	/**
+	 * Parses the specified JSON file. The file mapping read from this file
+	 * will be used for further ajax requests.
+	 */
+	void CreateRequestMapping(const std::string& file);
+
+	/**
 	 * Creates a request to a file.
 	 * When the same file was already requested this will return an already
 	 * existing request.

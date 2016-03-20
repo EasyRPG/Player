@@ -906,5 +906,8 @@
     <ClInclude Include="..\..\src\shinonome.h">
       <Filter>Source Files\Shinonome</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\picojson.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

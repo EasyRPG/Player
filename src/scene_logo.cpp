@@ -48,18 +48,15 @@ void Scene_Logo::Update() {
 #ifdef EMSCRIPTEN
 		static bool once = true;
 		if (once) {
-			FileRequestAsync* db = AsyncHandler::RequestFile(DATABASE_NAME);
-			db->SetImportantFile(true);
-			FileRequestAsync* tree = AsyncHandler::RequestFile(TREEMAP_NAME);
-			tree->SetImportantFile(true);
-			FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
-			ini->SetImportantFile(true);
-
+			FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
+			index->SetImportantFile(true);
+			request_id = index->Bind(&Scene_Logo::OnIndexReady, this);
 			once = false;
+			index->Start();
+			return;
+		}
 
-			db->Start();
-			tree->Start();
-			ini->Start();
+		if (!async_ready) {
 			return;
 		}
 #endif
@@ -99,4 +96,26 @@ void Scene_Logo::Update() {
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_GameBrowser>(), true);
 		}
 	}
+}
+
+void Scene_Logo::OnIndexReady(FileRequestResult*) {
+	async_ready = true;
+
+	if (!FileFinder::Exists("index.json")) {
+		Output::Debug("index.json not found. The game does not exist or was not correctly deployed.");
+		return;
+	}
+
+	AsyncHandler::CreateRequestMapping("index.json");
+
+	FileRequestAsync* db = AsyncHandler::RequestFile(DATABASE_NAME);
+	db->SetImportantFile(true);
+	FileRequestAsync* tree = AsyncHandler::RequestFile(TREEMAP_NAME);
+	tree->SetImportantFile(true);
+	FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
+	ini->SetImportantFile(true);
+
+	db->Start();
+	tree->Start();
+	ini->Start();
 }
