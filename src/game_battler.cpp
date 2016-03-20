@@ -100,8 +100,29 @@ const RPG::State* Game_Battler::GetSignificantState() {
 	return the_state;
 }
 
-int Game_Battler::GetStateRate(int state_id, int rate) {
+int Game_Battler::GetStateRate(int state_id, int rate) const {
 	const RPG::State& state = Data::states[state_id - 1];
+
+	switch (rate) {
+	case 0:
+		return state.a_rate;
+	case 1:
+		return state.b_rate;
+	case 2:
+		return state.c_rate;
+	case 3:
+		return state.d_rate;
+	case 4:
+		return state.e_rate;
+	default:;
+	}
+
+	assert(false && "bad rate");
+	return 0;
+}
+
+int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
+	const RPG::Attribute& state = Data::attributes[attribute_id - 1];
 
 	switch (rate) {
 	case 0:

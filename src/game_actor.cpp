@@ -94,10 +94,6 @@ bool Game_Actor::UseItem(int item_id) {
 	return Game_Battler::UseItem(item_id);
 }
 
-std::vector<uint8_t> Game_Actor::GetAttributeRanks() const {
-	return Data::actors[GetId()-1].attribute_ranks;
-}
-
 bool Game_Actor::IsItemUsable(int item_id) const {
 	const RPG::Item& item = Data::items[item_id - 1];
 
@@ -456,7 +452,7 @@ int Game_Actor::GetNextExp(int level) const {
 	}
 }
 
-int Game_Actor::GetStateProbability(int state_id) {
+int Game_Actor::GetStateProbability(int state_id) const {
 	int rate = 3; // C - default
 
 	if (state_id <= (int)Data::actors[actor_id - 1].state_ranks.size()) {
@@ -464,6 +460,16 @@ int Game_Actor::GetStateProbability(int state_id) {
 	}
 
 	return GetStateRate(state_id, rate);
+}
+
+int Game_Actor::GetAttributeModifier(int attribute_id) const {
+	int rate = 3; // C - default
+
+	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
+		rate = Data::actors[actor_id - 1].state_ranks[attribute_id - 1];
+	}
+
+	return GetAttributeRate(attribute_id, rate);
 }
 
 const std::string& Game_Actor::GetName() const {

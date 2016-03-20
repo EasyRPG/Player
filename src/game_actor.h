@@ -71,12 +71,6 @@ public:
 	virtual bool UseItem(int item_id);
 
 	/**
-	 * 
-	 *  
-	 * @return 
-	 */
-	std::vector<uint8_t> GetAttributeRanks() const;
-	/**
 	 * Checks if the actor is permitted to use the item at all.
 	 *
 	 * @param ID of item to test
@@ -187,7 +181,15 @@ public:
 	 * @param state_id State to test
 	 * @return Probability of state infliction
 	 */
-	int GetStateProbability(int state_id);
+	int GetStateProbability(int state_id) const override;
+
+	/**
+	 * Gets attribute protection when the actor is damaged.
+	 *
+	 * @param attribute_id Attribute to test
+	 * @return Attribute resistence
+	 */
+	int GetAttributeModifier(int attribute_id) const override;
 
 	/**
 	 * Gets actor name.

@@ -300,40 +300,18 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 
 float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(std::vector<bool> attributes_set) const {
 	float multiplier = 0;
-	int attributes_count = 0;
-	 std::vector<uint8_t> targetAttributes = (*current_target)->GetAttributeRanks();
-	for (int i = 0; i <attributes_set.size(); i++) {
+	for (int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {
-			if (i < targetAttributes.size()) {
-				attributes_count++;
-				int temp;
-				switch (targetAttributes[i]) {
-				case 0:
-					temp = Data::attributes[i].a_rate;
-					break;
-				case 1:
-					temp = Data::attributes[i].b_rate;
-					break;
-				case 2:
-					temp = Data::attributes[i].c_rate;
-					break;
-				case 3:
-					temp = Data::attributes[i].d_rate;
-					break;
-				case 4:
-					temp = Data::attributes[i].e_rate;
-					break;
-				default:
-					temp = 0;
-				}
-				multiplier += temp;
-			}
+			multiplier += (*current_target)->GetAttributeModifier(i + 1);
 		}
 	}
-	if (attributes_count != 0) {
-		multiplier /= (attributes_count * 100);
+
+	if (!attributes_set.empty()) {
+		multiplier /= (attributes_set.size() * 100);
+		return multiplier;
 	}
-	return multiplier;
+
+	return 1.0;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
@@ -515,7 +493,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
 			RPG::Item weapon = Data::items[weaponID];
 			hit_chance = weapon.hit;
-			crit_chance = crit_chance += weapon.critical_hit;
+			crit_chance += weapon.critical_hit;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
 		}
 		to_hit = (int)(100 - (100 - hit_chance));

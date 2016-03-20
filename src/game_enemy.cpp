@@ -46,16 +46,6 @@ std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
 }
 
-int Game_Enemy::GetStateProbability(int state_id) {
-	int rate = 3; // C - default
-
-	if (state_id <= (int)enemy->state_ranks.size()) {
-		rate = enemy->state_ranks[state_id - 1];
-	}
-
-	return GetStateRate(state_id, rate);
-}
-
 const std::string& Game_Enemy::GetName() const {
 	return enemy->name;
 }
@@ -64,12 +54,28 @@ const std::string& Game_Enemy::GetSpriteName() const {
 	return enemy->battler_name;
 }
 
-int Game_Enemy::GetId() const {
-	return enemy_id;
+int Game_Enemy::GetStateProbability(int state_id) const {
+	int rate = 2; // C - default
+
+	if (state_id <= (int)enemy->state_ranks.size()) {
+		rate = enemy->state_ranks[state_id - 1];
+	}
+
+	return GetStateRate(state_id, rate);
 }
 
-std::vector<uint8_t> Game_Enemy::GetAttributeRanks() const {
-	return Data::enemies[GetId()-1].attribute_ranks;
+int Game_Enemy::GetAttributeModifier(int attribute_id) const {
+	int rate = 2; // C - default
+
+	if (attribute_id <= (int)enemy->attribute_ranks.size()) {
+		rate = enemy->attribute_ranks[attribute_id - 1];
+	}
+
+	return GetAttributeRate(attribute_id, rate);
+}
+
+int Game_Enemy::GetId() const {
+	return enemy_id;
 }
 
 int Game_Enemy::GetBaseMaxHp() const {

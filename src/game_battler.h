@@ -65,9 +65,6 @@ public:
 	 */
 	int ApplyConditions();
 
-
-	virtual std::vector<uint8_t> GetAttributeRanks() const = 0;
-
 	/**
 	 * Gets battler states.
 	 * This returns the raw state list with not inflected states set to 0 and
@@ -115,7 +112,16 @@ public:
 	 * @param rate State rate to get
 	 * @return state rate (probability)
 	 */
-	int GetStateRate(int state_id, int rate);
+	int GetStateRate(int state_id, int rate) const;
+
+	/**
+	 * Gets the attribute damage multiplier/protection (A-E).
+	 *
+	 * @param attribute_id Attribute to test
+	 * @param rate Attribute rate to get
+	 * @return Attribute rate
+	 */
+	int GetAttributeRate(int attribute_id, int rate) const;
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
@@ -123,7 +129,15 @@ public:
 	 * @param state_id State to test
 	 * @return Probability of state infliction
 	 */
-	virtual int GetStateProbability(int state_id) = 0;
+	virtual int GetStateProbability(int state_id) const = 0;
+
+	/**
+	 * Gets attribute protection when the actor is damaged.
+	 *
+	 * @param attribute_id Attribute to test
+	 * @return Attribute resistence
+	 */
+	virtual int GetAttributeModifier(int attribute_id) const = 0;
 
 	/**
 	 * Gets the characters name
