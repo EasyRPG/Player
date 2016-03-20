@@ -32,13 +32,16 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.media.MediaPlayer;
 import android.widget.Toast;
+import android.media.AudioManager;
 
 /** Activity where users can change options */
 public class SettingsActivity extends Activity {
 	public static boolean VIBRATION;
 	public static long VIBRATION_DURATION = 20; // ms
 	public static boolean VIBRATE_WHEN_SLIDING_DIRECTION;
+	public static boolean AUDIO_DISABLED ;
 	public static int LAYOUT_TRANSPARENCY;
 	public static boolean IGNORE_LAYOUT_SIZE_SETTINGS;
 	public static int LAYOUT_SIZE;
@@ -81,6 +84,11 @@ public class SettingsActivity extends Activity {
 		cb_vibration_direction.setChecked(pref.getBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false));
 		cb_vibration_direction.setEnabled(cb_vibration.isChecked());
 
+		//sounds 
+		CheckBox cb_sounds = (CheckBox) findViewById(R.id.settings_sounds);
+		cb_sounds.setChecked(pref.getBoolean(getString(R.string.disable_sounds), false));
+
+
 		// ButtonMapping system
 		// Retrieve the Button Mapping Model from the preferences' file
 		mapping_model = ButtonMappingModel.getButtonMapping(this);
@@ -94,6 +102,7 @@ public class SettingsActivity extends Activity {
 	public static void updateUserPreferences(Context context) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		VIBRATION = sharedPref.getBoolean(context.getString(R.string.pref_enable_vibration), true);
+		AUDIO_DISABLED = sharedPref.getBoolean(context.getString(R.string.disable_sounds), false) ; 
 		LAYOUT_TRANSPARENCY = sharedPref.getInt(context.getString(R.string.pref_layout_transparency), 100);
 		VIBRATE_WHEN_SLIDING_DIRECTION = sharedPref
 				.getBoolean(context.getString(R.string.pref_vibrate_when_sliding_direction), false);
@@ -283,6 +292,19 @@ public class SettingsActivity extends Activity {
 			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false);
 
 		editor.commit();
+	}
+
+	//  audio
+	public void checkboxDisableSounds(View v) {
+		CheckBox s = (CheckBox) v; 
+		if(s.isChecked()){
+			editor.putBoolean(getString(R.string.disable_sounds),true);
+		}
+		else{
+			editor.putBoolean(getString(R.string.disable_sounds),false);
+
+		}
+		editor.commit();	
 	}
 
 	/**

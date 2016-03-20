@@ -286,6 +286,11 @@ public class GameBrowserHelper {
 				args.add(project.getEncoding());
 			}
 			
+			// Disable audio depending on user preferences
+			if(SettingsActivity.AUDIO_DISABLED){
+				args.add("--disable-audio");
+			}
+
 			intent.putExtra(EasyRpgPlayerActivity.TAG_SAVE_PATH, project.getSavePath());
 			intent.putExtra(EasyRpgPlayerActivity.TAG_PROJECT_PATH, path);
 			intent.putExtra(EasyRpgPlayerActivity.TAG_COMMAND_LINE, args.toArray(new String[args.size()]));
