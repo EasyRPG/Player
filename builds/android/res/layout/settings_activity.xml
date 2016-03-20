@@ -151,6 +151,27 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/darker_gray" />
 
+        <!-- Sounds -->
+
+        <CheckBox
+            android:id="@+id/settings_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:onClick="checkboxEnableAudio"
+            android:text="@string/enable_audio"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray" />
+
         <!-- Input Layout Managing -->
 
         <TextView

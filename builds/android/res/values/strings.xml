@@ -80,6 +80,7 @@ Please tell us in detail what went wrong.\n
 	<string name="add_game_folder">Add a game folder</string>
 	<string name="enable_vibration">Enable vibrations</string>
 	<string name="vibrate_when_sliding_direction">Vibrate when sliding to another direction</string>
+	<string name="enable_audio">Enable audio</string>
 	<string name="input_layout_transparency">Input Layout transparency:</string>
 	<string name="ignore_size_settings">Ignore buttons\' size settings and use this one for every buttons:</string>
 	<string name="no_read_access_on_dir">No read access on %1$s</string>
