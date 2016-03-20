@@ -44,9 +44,9 @@ CtrUi::CtrUi(int width, int height) :
 	frame = 0;
 	sf2d_init();
 	consoleInit(GFX_BOTTOM, NULL);
-#ifndef NO_DEBUG
+	#ifndef NO_DEBUG
 	printf("Debug console started...\n");
-#endif
+	#endif
 	sf2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -60,27 +60,26 @@ CtrUi::CtrUi(int width, int height) :
 		PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, false, 32);
+	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
+	                                             main_surface->GetWidth(), main_surface->GetHeight(), 
+	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
 }
 
 CtrUi::~CtrUi() {
+	sf2d_free_texture(main_texture);
 	sf2d_fini();
 }
 
 #define TICKS_PER_MSEC 268123.480
 static inline double u64_to_double(u64 value) {
-	return (((double)(u32)(value >> 32)) * 0x100000000ULL + (u32)value);
+	return (((double)(u32)(value >> 32))*0x100000000ULL+(u32)value);
 }
 
 uint32_t CtrUi::GetTicks() const {
 	double ticks = u64_to_double(svcGetSystemTick());
-	u64 usecs = (u64)(ticks / TICKS_PER_MSEC);
+	u64 usecs = (u64)(ticks/TICKS_PER_MSEC);
 	return usecs;
 }
-
-void CtrUi::Sleep(uint32_t time) {
-	//no-op
-}
-
 void CtrUi::BeginDisplayModeChange() {
 	// no-op
 }
@@ -124,14 +123,13 @@ void CtrUi::ProcessEvents() {
 
 void CtrUi::UpdateDisplay() {
 	// There's also sf2d_fill_texture, but it shows garbage after the second frame in citra.
-	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
-		main_surface->GetWidth(), main_surface->GetHeight(),
-		TEXFMT_RGBA8, SF2D_PLACE_RAM);
-
+	main_texture->tiled = 0;
+	sf2d_fill_texture_from_RGBA8(main_texture, main_surface->pixels(),
+	                                             main_surface->GetWidth(), main_surface->GetHeight()
+	                            );
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
 	sf2d_draw_texture(main_texture, 40, 0);
 	sf2d_end_frame();
-	sf2d_free_texture(main_texture);
 	sf2d_swapbuffers();
 }
 
