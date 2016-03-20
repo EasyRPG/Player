@@ -298,7 +298,7 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
 }
 
-float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(std::vector<bool> attributes_set) const {
+float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
 	float multiplier = 0;
 	for (int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {

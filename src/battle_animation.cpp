@@ -111,7 +111,7 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	if (result->success) {
 		sprite.reset(new Sprite());
 		sprite->SetBitmap(Cache::Battle(result->file));
-		sprite->SetVisible(false);
+		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
 		// Try battle2
@@ -125,7 +125,7 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 	if (result->success) {
 		sprite.reset(new Sprite());
 		sprite->SetBitmap(Cache::Battle2(result->file));
-		sprite->SetVisible(false);
+		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
@@ -148,7 +148,6 @@ void BattleAnimation::DrawAt(int x, int y) {
 			continue;
 		}
 
-		sprite->SetVisible(true);
 		sprite->SetX(cell.x + x);
 		sprite->SetY(cell.y + y);
 		int sx = cell.cell_id % 5;
