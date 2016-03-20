@@ -32,7 +32,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.media.MediaPlayer;
 import android.widget.Toast;
 
 /** Activity where users can change options */
