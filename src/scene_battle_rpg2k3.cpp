@@ -784,8 +784,7 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 		break;
 	case RPG::BattleCommand::Type_special:
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Output::Warning("Battle: Event calling unsupported");
-		//SpecialSelected()
+		SpecialSelected();
 		break;
 	case RPG::BattleCommand::Type_subskill:
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -822,6 +821,14 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// skill subset is 4 (Type_subskill) + counted subsets
 	skill_window->SetSubsetFilter(subskill);
 	SetState(State_SelectSkill);
+}
+
+void Scene_Battle_Rpg2k3::SpecialSelected() {
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+
+	active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NoMove>(active_actor));
+
+	ActionSelectedCallback(active_actor);
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
