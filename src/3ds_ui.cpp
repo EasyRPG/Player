@@ -75,6 +75,10 @@ static inline double u64_to_double(u64 value) {
 	return (((double)(u32)(value >> 32))*0x100000000ULL+(u32)value);
 }
 
+void CtrUi::Sleep(uint32_t time) {
+	//no-op
+}
+
 uint32_t CtrUi::GetTicks() const {
 	double ticks = u64_to_double(svcGetSystemTick());
 	u64 usecs = (u64)(ticks/TICKS_PER_MSEC);
@@ -119,10 +123,19 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	
+	//CirclePad support
+	circlePosition circlepad;
+	hidCircleRead(&circlepad);
+	
+	if (circlepad.dy > 25) keys[Input::Keys::UP] = true;
+	else if (circlepad.dy < -25) keys[Input::Keys::DOWN] = true;
+	else if (circlepad.dx > 25) keys[Input::Keys::RIGHT] = true;
+	else if (circlepad.dx < -25) keys[Input::Keys::LEFT] = true;
+	
+	
 }
 
 void CtrUi::UpdateDisplay() {
-	// There's also sf2d_fill_texture, but it shows garbage after the second frame in citra.
 	main_texture->tiled = 0;
 	sf2d_fill_texture_from_RGBA8(main_texture, main_surface->pixels(),
 	                                             main_surface->GetWidth(), main_surface->GetHeight()
