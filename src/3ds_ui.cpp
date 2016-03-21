@@ -34,6 +34,7 @@
 #include <stdio.h>
 
 #ifdef SUPPORT_AUDIO
+#include "audio_3ds.h"
 AudioInterface& CtrUi::GetAudio() {
 	return *audio_;
 }
