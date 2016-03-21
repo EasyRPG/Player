@@ -23,12 +23,11 @@
 #include "game_party_base.h"
 #include "game_actor.h"
 #include "main_data.h"
-#include <boost/noncopyable.hpp>
 
 /**
  * Game_Party class.
  */
-class Game_Party : public Game_Party_Base, boost::noncopyable {
+class Game_Party : public Game_Party_Base {
 public:
 	/**
 	 * Initializes Game_Party.

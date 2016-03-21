@@ -176,8 +176,10 @@ struct ALAudio::source {
 		fluid_settings_setint(settings.get(), "synth.lock-memory", 0);
 
 		synth.reset(new_fluid_synth(settings.get()), &delete_fluid_synth);
-		BOOST_VERIFY(fluid_synth_sfload(synth.get(), getenv("DEFAULT_SOUNDFONT"), 1) !=
-		             FLUID_FAILED);
+		if (fluid_synth_sfload(synth.get(), getenv("DEFAULT_SOUNDFONT"), 1) == FLUID_FAILED) {
+			Output::Error("Couldn't load soundfont\n%s.", getenv("DEFAULT_SOUNDFONT"));
+			return;
+		}
 
 		double sample_rate = 0;
 		fluid_settings_getnum(settings.get(), "synth.sample-rate", &sample_rate);
@@ -185,7 +187,8 @@ struct ALAudio::source {
 		this->sample_rate = sample_rate;
 
 		seq.reset(new_fluid_sequencer2(false), &delete_fluid_sequencer);
-		BOOST_VERIFY(fluid_sequencer_register_fluidsynth(seq.get(), synth.get()) != FLUID_FAILED);
+		if (fluid_sequencer_register_fluidsynth(seq.get(), synth.get()) == FLUID_FAILED)
+			Output::Error("Couldn't initialize MIDI playback.");
 	}
 
 	~source() {
@@ -398,8 +401,10 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 	midi_loader(source &src, std::string const &filename) : source_(src), filename_(filename) {
 		src.init_midi();
 		source_.player.reset(new_fluid_player(source_.synth.get()), &delete_fluid_player);
-		BOOST_VERIFY(fluid_player_add(source_.player.get(), filename.c_str()) != FLUID_FAILED);
-		BOOST_VERIFY(fluid_player_play(source_.player.get()) != FLUID_FAILED);
+		if (fluid_player_add(source_.player.get(), filename.c_str()) == FLUID_FAILED)
+			Output::Warning("Couldn't load %s midi sound.", filename.c_str());
+		if (fluid_player_play(source_.player.get()) == FLUID_FAILED)
+			Output::Warning("Couldn't play %s midi sound.", filename.c_str());
 	}
 
 	bool is_end() const {
@@ -409,17 +414,19 @@ struct ALAudio::midi_loader : public ALAudio::buffer_loader {
 	size_t load_buffer(ALuint buf) {
 		if (is_end()) {
 			source_.seq.reset(new_fluid_sequencer2(false), &delete_fluid_sequencer);
-			BOOST_VERIFY(fluid_sequencer_register_fluidsynth(source_.seq.get(),
-			                                                 source_.synth.get()) != FLUID_FAILED);
+			if (fluid_sequencer_register_fluidsynth(source_.seq.get(), source_.synth.get()) == FLUID_FAILED)
+				Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
 
-			BOOST_VERIFY(fluid_player_add(source_.player.get(), filename_.c_str()) != FLUID_FAILED);
+			if (fluid_player_add(source_.player.get(), filename_.c_str()) == FLUID_FAILED)
+				Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
+
 			loop_count_++;
 		}
 
 		data_.resize(2 * source_.sample_rate * SECOND_PER_BUFFER);
 		if (fluid_synth_write_s16(source_.synth.get(), data_.size() / 2, &data_.front(), 0, 2,
 		                          &data_.front(), 1, 2) == FLUID_FAILED) {
-			Output::Error("synth error: %s", fluid_synth_error(source_.synth.get()));
+			Output::Error("Fluidsynth error: %s", fluid_synth_error(source_.synth.get()));
 		}
 		alBufferData(buf, AL_FORMAT_STEREO16, &data_.front(), sizeof(int16_t) * data_.size(),
 		             source_.sample_rate);

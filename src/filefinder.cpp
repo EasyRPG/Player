@@ -551,9 +551,9 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #else
 	struct stat sb;
 #   ifdef GEKKO
-	BOOST_VERIFY(::stat(dir.c_str(), &sb) != -1);
+	::stat(dir.c_str(), &sb);
 #   else
-	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
+	::lstat(dir.c_str(), &sb);
 #endif
 	return S_ISDIR(sb.st_mode);
 #endif

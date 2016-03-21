@@ -22,12 +22,11 @@
 #include "rpg_troop.h"
 #include "game_enemy.h"
 #include "game_party_base.h"
-#include <boost/noncopyable.hpp>
 
 /**
  * Manages the enemy party during battles.
  */
-class Game_EnemyParty : public Game_Party_Base, boost::noncopyable {
+class Game_EnemyParty : public Game_Party_Base {
 public:
 	/**
 	 * Initializes Game_Enemy_Party.

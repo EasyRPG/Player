@@ -22,8 +22,6 @@
 
 #include <map>
 
-#include <boost/preprocessor/seq/for_each.hpp>
-
 #include "async_handler.h"
 #include "cache.h"
 #include "filefinder.h"
@@ -209,19 +207,27 @@ namespace {
 	}
 }
 
-#define macro(r, data, elem) \
+#define cache(elem) \
 	BitmapRef Cache::elem(const std::string& f) { \
 		bool trans = spec[Material::elem].transparent; \
 		return LoadBitmap<Material::elem>(f, trans); \
 	}
-
-BOOST_PP_SEQ_FOR_EACH(macro, ,
-					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
-					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(System2)(Frame)(Title)(System)
-					  )
-
-#undef macro
+	cache(Backdrop)
+	cache(Battle)
+	cache(Battle2)
+	cache(Battlecharset)
+	cache(Battleweapon)
+	cache(Charset)
+	cache(Chipset)
+	cache(Faceset)
+	cache(Gameover)
+	cache(Monster)
+	cache(Panorama)
+	cache(System2)
+	cache(Frame)
+	cache(Title)
+	cache(System)
+#undef cache
 
 BitmapRef Cache::Picture(const std::string& f, bool trans) {
 	return LoadBitmap<Material::Picture>(f, trans);
