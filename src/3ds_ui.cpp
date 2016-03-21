@@ -44,10 +44,6 @@ CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
 	frame = 0;
 	sf2d_init();
-	consoleInit(GFX_BOTTOM, NULL);
-	#ifndef NO_DEBUG
-	printf("Debug console started...\n");
-	#endif
 	sf2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 	current_display_mode.width = width;
 	current_display_mode.height = height;

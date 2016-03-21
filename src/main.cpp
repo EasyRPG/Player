@@ -18,6 +18,7 @@
 #include "player.h"
 #include "graphics.h"
 #include "input.h"
+#include "output.h"
 #include <cstdlib>
 
 #ifdef USE_SDL
@@ -27,14 +28,37 @@
 #ifdef _3DS
 #include <3ds.h>
 u8 isN3DS;
+extern "C"{
+	#include <libsvchax.h>
+}
+#include <khax.h>
 #endif
 
 extern "C" int main(int argc, char* argv[]) {
 
 	#ifdef _3DS
 	
-	// Basic services init
+	// Starting debug console
 	gfxInitDefault();
+	consoleInit(GFX_BOTTOM, NULL);
+	#ifndef NO_DEBUG
+	Output::Debug("Debug console started...\n");
+	#endif
+	
+	// Performing svchax to gain csnd:SND access
+	#ifdef SUPPORT_AUDIO
+	
+	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
+	Handle csndHandle = 0;
+	srvGetServiceHandleDirect(&csndHandle, "csnd:SND");
+	if(csndHandle) svcCloseHandle(csndHandle);
+	else{
+		if (osGetKernelVersion() <  SYSTEM_VERSION(2,48,3)) khaxInit(); // Executing libkhax just to be sure...
+		else haxInit();
+		consoleClear();
+	}
+	#endif
+	
 	hidInit();
 	aptOpenSession();
 	APT_SetAppCpuTimeLimit(30);

@@ -223,7 +223,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		#endif
 		
 		// To not waste CPU clocks, we use a single audiobuffer for both channels so we put just a stubbed audiobuffer on right channel
-		#ifndef USE_CACHE
+		#ifdef USE_CACHE
 		audiobuffers[z] = audiobuffers[i]; // If we use cache we only need to be sure the audiobuffer is not NULL
 		#else
 		audiobuffers[z] = (u8*)linearAlloc(1);
