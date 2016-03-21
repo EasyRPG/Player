@@ -76,7 +76,7 @@ static inline double u64_to_double(u64 value) {
 }
 
 void CtrUi::Sleep(uint32_t time) {
-	//no-op
+	svcSleepThread(time*1000000);
 }
 
 uint32_t CtrUi::GetTicks() const {
