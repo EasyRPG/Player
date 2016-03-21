@@ -90,6 +90,8 @@ int DecodeWav(std::string const& filename, DecodedSound* Sound){
 			int i = LAST_ENTRY + 1;
 			while (decodedtable[i].audiobuf < (Sound->audiobuf + Sound->audiobuf_size)){
 				sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
+				i++;
+				if (i == ENTRIES) break;
 			}
 			
 		}else{
@@ -115,6 +117,8 @@ int DecodeWav(std::string const& filename, DecodedSound* Sound){
 		int i = 1;
 		while (decodedtable[i].audiobuf < (Sound->audiobuf + Sound->audiobuf_size)){
 			sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
+			i++;
+			if (i == ENTRIES) break;
 		}
 		
 	}
