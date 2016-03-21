@@ -54,13 +54,8 @@
 #include "output.h"
 #include "player.h"
 #include "registry.h"
+#include "rtp_table.h"
 #include "main_data.h"
-
-#ifdef _MSC_VER
-#  include "rtp_table_bom.h"
-#else
-#  include "rtp_table.h"
-#endif
 
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT

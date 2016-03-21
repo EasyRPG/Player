@@ -131,26 +131,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
-# RTP Table
-find_package(Ruby)
-if(RUBY_FOUND)
-  add_custom_command(
-    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
-    COMMAND "${RUBY_EXECUTABLE}"
-    ARGS
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
-    DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb")
-  execute_process(
-    COMMAND "${RUBY_EXECUTABLE}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h")
-endif()
-
 # executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 add_executable(${PROJECT_NAME}_com ${MAIN_FILE})

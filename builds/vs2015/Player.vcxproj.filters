@@ -843,9 +843,6 @@
     <ClInclude Include="..\..\src\memory_management.h">
       <Filter>Source Files\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rtp_table_bom.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\message_overlay.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>

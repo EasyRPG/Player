@@ -140,7 +140,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/registry.cpp \
 	src/registry_wine.cpp \
 	src/registry.h \
-	src/rtp_table_bom.h \
 	src/rtp_table.h \
 	src/scene_actortarget.cpp \
 	src/scene_actortarget.h \
