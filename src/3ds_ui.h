@@ -71,11 +71,13 @@ public:
 	void Sleep(uint32_t time_milli);
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
+	boost::scoped_ptr<AudioInterface> audio_;
 #endif
 
 	/** @} */
 	sf2d_texture* main_texture;
 	int frame;
+	
 };
 
 #endif

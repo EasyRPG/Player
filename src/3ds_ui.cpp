@@ -63,6 +63,10 @@ CtrUi::CtrUi(int width, int height) :
 	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
 	                                             main_surface->GetWidth(), main_surface->GetHeight(), 
 	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
+												 
+	#ifdef SUPPORT_AUDIO
+		audio_.reset(new CtrAudio());
+	#endif
 }
 
 CtrUi::~CtrUi() {
@@ -76,7 +80,8 @@ static inline double u64_to_double(u64 value) {
 }
 
 void CtrUi::Sleep(uint32_t time) {
-	svcSleepThread(time*1000000);
+	u64 nsecs = time*1000000;
+	svcSleepThread(nsecs);
 }
 
 uint32_t CtrUi::GetTicks() const {
