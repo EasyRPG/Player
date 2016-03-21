@@ -17,10 +17,10 @@
  
 #include "system.h"
 #include "audio_3ds.h"
+#include "filefinder.h"
 #include "output.h"
 
 #ifdef _3DS
-#include <3ds.h>
 #include <stdio.h>
 
 CtrAudio::CtrAudio() :
@@ -36,10 +36,13 @@ CtrAudio::CtrAudio() :
 	}
 	
 	#ifndef NO_DEBUG
-		printf("Sound initialized successfully!\n");
+		Output::Debug("Sound initialized successfully!\n");
 	#endif
 	
-	int const frequency = 44100;
+	for (int i=0;i<num_channels;i++){
+		audiobuffers[i] = NULL;
+	}
+	
 }
 
 CtrAudio::~CtrAudio() {
@@ -87,51 +90,96 @@ void CtrAudio::BGM_Fade(int fade) {
 }
 
 void CtrAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-
+	// Deprecated
 }
 
 void CtrAudio::BGS_Pause() {
-
+	// Deprecated
 }
 
 void CtrAudio::BGS_Resume() {
-
+	// Deprecated
 }
 
 void CtrAudio::BGS_Stop() {
-
+	// Deprecated
 }
 
 void CtrAudio::BGS_Fade(int fade) {
-
+	// Deprecated
 }
 
 int CtrAudio::BGS_GetChannel() const {
+	// Deprecated
 	return 1;
 }
 
 void CtrAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-
+	// Deprecated
 }
 
 void CtrAudio::ME_Stop() {
-
+	// Deprecated
 }
 
 void CtrAudio::ME_Fade(int fade) {
-
+	// Deprecated
 }
 
 void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 
+	// Searching for the file
+	std::string const path = FileFinder::FindSound(file);
+	if (path.empty()) {
+		Output::Debug("Sound not found: %s", file.c_str());
+		return;
+	}
+	
+	// Select an available audio channel
+	int i = 0;
+	while (i < num_channels){
+		u8 isPlaying;
+		csndIsPlaying(i+0x08, &isPlaying);
+		if (!isPlaying) break;
+		i++;
+		if (i >= num_channels){
+			Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
+			return;
+		}
+	}
+	if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
+	
+	// Opening and decoding the file (TODO)
+	bool isStereo = false;
+	int audiobuf_size;
+	
+	// Playing the sound (TODO)
+	float vol = volume / 100.0;
+	if (isStereo){
+	}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | SOUND_FORMAT_16BIT, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
+	
 }
 
 void CtrAudio::SE_Stop() {
-
+	for(int i=0;i<num_channels;i++){
+		CSND_SetPlayState(i+0x08, 0);
+		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
+		audiobuffers[i] = NULL;
+	}
+	CSND_UpdateInfo(0);
 }
 
 void CtrAudio::Update() {
-
+	for(int i=0;i<num_channels;i++){
+		if (audiobuffers[i] != NULL){
+			u8 isPlaying;
+			csndIsPlaying(i+0x08, &isPlaying);
+			if (!isPlaying){
+				linearFree(audiobuffers[i]);
+				audiobuffers[i] = NULL;
+			}
+		}
+	}
 }
 
 #endif

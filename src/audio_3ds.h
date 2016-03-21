@@ -19,6 +19,7 @@
 #include "audio.h"
 
 #include <map>
+#include <3ds.h>
 
 struct CtrAudio : public AudioInterface {
 	CtrAudio();
@@ -49,6 +50,9 @@ struct CtrAudio : public AudioInterface {
 	int BGS_GetChannel() const;
 
 private:
+	u8* audiobuffers[24];
+	uint8_t num_channels = 24; // Since 0x00 - 0x07 are DSP reserved
+	uint32_t samplerate = 44100;
 	int bgm_volume;
 	unsigned bgm_starttick = 0;
 	bool bgm_stop = false;
