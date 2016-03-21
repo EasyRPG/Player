@@ -300,14 +300,16 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 
 float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
 	float multiplier = 0;
+	int attributes_applied = 0;
 	for (int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {
 			multiplier += (*current_target)->GetAttributeModifier(i + 1);
+			attributes_applied++;
 		}
 	}
 
 	if (!attributes_set.empty()) {
-		multiplier /= (attributes_set.size() * 100);
+		multiplier /= (attributes_applied * 100);
 		return multiplier;
 	}
 
