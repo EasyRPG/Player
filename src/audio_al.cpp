@@ -21,9 +21,8 @@
 
 #include <array>
 #include <cassert>
-#include <boost/assert.hpp>
 #include <boost/circular_buffer.hpp>
-#include <boost/ref.hpp>
+#include <functional>
 
 #include "audio_al.h"
 #include "filefinder.h"
@@ -105,22 +104,22 @@ namespace {
 
 	struct set_context {
 		set_context(std::shared_ptr<ALCcontext> const &ctx) : prev_ctx(alcGetCurrentContext()) {
-			BOOST_ASSERT(ctx);
-			BOOST_ASSERT(prev_ctx);
+			assert(ctx);
+			assert(prev_ctx);
 
 			if (ctx.get() != prev_ctx) {
 				alcMakeContextCurrent(ctx.get());
-				BOOST_ASSERT(print_alc_error(alcGetContextsDevice(alcGetCurrentContext())));
+				assert(print_alc_error(alcGetContextsDevice(alcGetCurrentContext())));
 			}
 
-			BOOST_ASSERT(print_al_error());
+			assert(print_al_error());
 		}
 		~set_context() {
-			BOOST_ASSERT(print_al_error());
+			assert(print_al_error());
 
 			if (alcGetCurrentContext() != prev_ctx) {
 				alcMakeContextCurrent(prev_ctx);
-				BOOST_ASSERT(print_alc_error(alcGetContextsDevice(alcGetCurrentContext())));
+				assert(print_alc_error(alcGetContextsDevice(alcGetCurrentContext())));
 			}
 		}
 
@@ -162,7 +161,7 @@ struct ALAudio::source {
 	    , ticks_(BUFFER_NUMBER + 1)
 	    , buf_sizes_(BUFFER_NUMBER) {
 		SET_CONTEXT(c);
-		BOOST_ASSERT(alIsSource(s) == AL_TRUE);
+		assert(alIsSource(s) == AL_TRUE);
 
 		alGenBuffers(BUFFER_NUMBER, buffers_.data());
 	}
@@ -182,7 +181,7 @@ struct ALAudio::source {
 
 		double sample_rate = 0;
 		fluid_settings_getnum(settings.get(), "synth.sample-rate", &sample_rate);
-		BOOST_ASSERT(sample_rate != 0);
+		assert(sample_rate != 0);
 		this->sample_rate = sample_rate;
 
 		seq.reset(new_fluid_sequencer2(false), &delete_fluid_sequencer);
@@ -305,7 +304,7 @@ public:
 
 		loader_ = l;
 		int queuing_count = 0;
-		BOOST_ASSERT(!l->is_end());
+		assert(!l->is_end());
 		ticks_.push_back(0);
 		for (; queuing_count < BUFFER_NUMBER; ++queuing_count) {
 			buf_sizes_.push_back(loader_->load_buffer(buffers_[queuing_count]));
@@ -349,8 +348,8 @@ struct ALAudio::sndfile_loader : public ALAudio::buffer_loader {
 	    , format_(info.channels == 1 ? AL_FORMAT_MONO16 : info.channels == 2 ? AL_FORMAT_STEREO16
 	                                                                         : AL_INVALID_VALUE)
 	    , seek_pos_(0) {
-		BOOST_ASSERT(f);
-		BOOST_ASSERT(format_ != AL_INVALID_VALUE);
+		assert(f);
+		assert(format_ != AL_INVALID_VALUE);
 	}
 
 	size_t load_buffer(ALuint buf) {
@@ -448,7 +447,7 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 	}
 
 	std::shared_ptr<buffer_loader> snd = sndfile_loader::create(filename);
-	return snd ? snd : std::make_shared<midi_loader>(boost::ref(src), filename);
+	return snd ? snd : std::make_shared<midi_loader>(std::ref(src), filename);
 }
 
 std::shared_ptr<ALAudio::buffer_loader>
@@ -479,10 +478,10 @@ void ALAudio::Update() {
 
 ALAudio::ALAudio(char const *const dev_name) {
 	dev_.reset(alcOpenDevice(dev_name), &alcCloseDevice);
-	BOOST_ASSERT(dev_);
+	assert(dev_);
 
 	ctx_.reset(alcCreateContext(dev_.get(), NULL), &alcDestroyContext);
-	BOOST_ASSERT(ctx_);
+	assert(ctx_);
 
 	alcMakeContextCurrent(ctx_.get());
 
@@ -503,7 +502,7 @@ std::shared_ptr<ALAudio::source> ALAudio::create_source(bool loop) const {
 	ALuint ret = AL_NONE;
 	alGenSources(1, &ret);
 	print_al_error();
-	BOOST_ASSERT(ret != AL_NONE);
+	assert(ret != AL_NONE);
 
 	return std::make_shared<source>(ctx_, ret, loop);
 }

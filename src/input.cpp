@@ -22,7 +22,6 @@
 
 #include <algorithm>
 #include <array>
-#include <boost/lambda/lambda.hpp>
 
 namespace Input {
 	std::array<int, BUTTON_COUNT> press_time;
@@ -168,7 +167,7 @@ bool Input::IsReleased(InputButton button) {
 bool Input::IsAnyPressed() {
 	WaitInput(true);
 	return std::find_if(press_time.begin(), press_time.end(),
-						boost::lambda::_1 > 0) != press_time.end();
+						[](int t) {return t > 0;}) != press_time.end();
 }
 
 bool Input::IsAnyTriggered() {

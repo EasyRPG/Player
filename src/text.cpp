@@ -26,8 +26,8 @@
 #include "game_system.h"
 
 #include <cctype>
+#include <iterator>
 
-#include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
 
 void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
@@ -70,7 +70,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
+		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = std::next(c);
 		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
@@ -123,7 +123,7 @@ void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text
 	for (boost::u8_to_u32_iterator<std::string::const_iterator>
 			 c(text.begin(), text.begin(), text.end()),
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
-		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
+		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = std::next(c);
 
 		std::string const glyph(c.base(), next_c_it.base());
 		if (*c == '\n') {

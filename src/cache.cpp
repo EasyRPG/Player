@@ -23,7 +23,6 @@
 #include <map>
 
 #include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/static_assert.hpp>
 
 #include "async_handler.h"
 #include "cache.h"
@@ -137,7 +136,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef DrawCheckerboard() {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 
@@ -159,7 +158,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 
@@ -172,7 +171,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 

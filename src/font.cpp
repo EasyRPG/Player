@@ -17,11 +17,10 @@
 
 // Headers
 #include <map>
+#include <type_traits>
 #include <vector>
 
-#include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
-#include <boost/type_traits/remove_pointer.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -44,7 +43,7 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 
 // Static variables.
 namespace {
-	typedef std::map<std::string, std::weak_ptr<boost::remove_pointer<FT_Face>::type> > face_cache_type;
+	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
 	face_cache_type face_cache;
 	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
@@ -105,9 +104,9 @@ namespace {
 		BitmapRef Glyph(unsigned code);
 
 	private:
-		static std::weak_ptr<boost::remove_pointer<FT_Library>::type> library_checker_;
-		std::shared_ptr<boost::remove_pointer<FT_Library>::type> library_;
-		std::shared_ptr<boost::remove_pointer<FT_Face>::type> face_;
+		static std::weak_ptr<std::remove_pointer<FT_Library>::type> library_checker_;
+		std::shared_ptr<std::remove_pointer<FT_Library>::type> library_;
+		std::shared_ptr<std::remove_pointer<FT_Face>::type> face_;
 		std::string face_name_;
 		unsigned current_size_;
 
@@ -155,7 +154,7 @@ BitmapRef ShinonomeFont::Glyph(unsigned code) {
 	return bm;
 }
 
-std::weak_ptr<boost::remove_pointer<FT_Library>::type> FTFont::library_checker_;
+std::weak_ptr<std::remove_pointer<FT_Library>::type> FTFont::library_checker_;
 
 FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
 	: Font(name, size, bold, italic), current_size_(0) {}
