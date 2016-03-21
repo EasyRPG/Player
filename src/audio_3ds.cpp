@@ -22,8 +22,11 @@
 
 #ifdef _3DS
 #include <stdio.h>
+#ifdef USE_CACHE
+#include "3ds_cache.h"
+#else
 #include "3ds_decoder.h"
-
+#endif
 CtrAudio::CtrAudio() :
 	bgm_volume(0),
 	bgs_channel(0),
@@ -37,17 +40,25 @@ CtrAudio::CtrAudio() :
 	}
 	
 	#ifndef NO_DEBUG
-		Output::Debug("Sound initialized successfully!\n");
+	Output::Debug("Sound initialized successfully!\n");
 	#endif
 	
 	for (int i=0;i<num_channels;i++){
 		audiobuffers[i] = NULL;
 	}
 	
+	#ifdef USE_CACHE
+	initCache();
+	#endif
+	
 }
 
 CtrAudio::~CtrAudio() {
-	csndExit();
+	SE_Stop(); // Just to be sure to clean up before exiting
+	csndExit();	
+	#ifdef USE_CACHE
+	freeCache();
+	#endif
 }
 
 void CtrAudio::BGM_OnPlayedOnce() {
@@ -128,13 +139,6 @@ void CtrAudio::ME_Fade(int fade) {
 }
 
 void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
-
-	// Searching for the file
-	std::string const path = FileFinder::FindSound(file);
-	if (path.empty()) {
-		Output::Debug("Sound not found: %s", file.c_str());
-		return;
-	}
 	
 	// Select an available audio channel
 	int i = 0;
@@ -149,16 +153,43 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		}
 	}
 	if (audiobuffers[i] != NULL){
+		#ifndef USE_CACHE
 		linearFree(audiobuffers[i]);
+		#endif
 		audiobuffers[i] = NULL;
 	}
 	
-	// Opening and decoding the file (TODO: Add other containers support like OGG and MIDI files)
+	// Init needed vars
 	bool isStereo = false;
 	int audiobuf_size;
 	int codec;
 	DecodedSound myFile;
-	if (DecodeWav(path, &myFile) < 0) return;
+	
+	#ifdef USE_CACHE
+	// Looking if the sound is in sounds cache
+	int cacheIdx = lookCache(file.c_str());
+	if (cacheIdx < 0){
+	#endif
+	
+		// Searching for the file
+		std::string const path = FileFinder::FindSound(file);
+		if (path.empty()) {
+			Output::Debug("Sound not found: %s", file.c_str());
+			return;
+		}
+	
+		// Opening and decoding the file (TODO: Add other containers support like OGG and MIDI files)
+		int res = DecodeWav(path, &myFile);
+		if (res < 0) return;
+		#ifdef USE_CACHE
+		else sprintf(soundtable[res],"%s",file.c_str());
+		#endif
+		
+	#ifdef USE_CACHE
+	}else myFile = decodedtable[cacheIdx];
+	#endif
+	
+	// Processing sounds info
 	audiobuffers[i] = myFile.audiobuf;
 	samplerate = myFile.samplerate;
 	audiobuf_size = myFile.audiobuf_size;
@@ -166,10 +197,9 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	isStereo = myFile.isStereo;
 	
 	#ifndef NO_DEBUG
-	Output::Debug("Playing sound %s:\n",file.c_str());
-	Output::Debug("Samplerate: %i\n",samplerate);
-	Output::Debug("Audiocodec: %i",codec);
-	Output::Debug("Buffer Size: %i Bytes\n",audiobuf_size);
+	Output::Debug("Playing sound %s:",file.c_str());
+	Output::Debug("Samplerate: %i",samplerate);
+	Output::Debug("Buffer Size: %i bytes",audiobuf_size);
 	#endif
 	
 	// Playing the sound
@@ -187,12 +217,17 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 				Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
 				return;
 			}
-		}		
+		}
+		#ifndef USE_CACHE
 		if (audiobuffers[z] != NULL) linearFree(audiobuffers[z]);
+		#endif
 		
 		// To not waste CPU clocks, we use a single audiobuffer for both channels so we put just a stubbed audiobuffer on right channel
+		#ifndef USE_CACHE
+		audiobuffers[z] = audiobuffers[i]; // If we use cache we only need to be sure the audiobuffer is not NULL
+		#else
 		audiobuffers[z] = (u8*)linearAlloc(1);
-		
+		#endif
 		int chnbuf_size = audiobuf_size>>1;
 		csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, -1.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], chnbuf_size); // Left
 		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), ((u32*)audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
@@ -204,7 +239,9 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 void CtrAudio::SE_Stop() {
 	for(int i=0;i<num_channels;i++){
 		CSND_SetPlayState(i+0x08, 0);
+		#ifndef USE_CACHE
 		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
+		#endif
 		audiobuffers[i] = NULL;
 	}
 	CSND_UpdateInfo(0);
@@ -216,7 +253,9 @@ void CtrAudio::Update() {
 			u8 isPlaying;
 			csndIsPlaying(i+0x08, &isPlaying);
 			if (!isPlaying){
+				#ifndef USE_CACHE
 				linearFree(audiobuffers[i]);
+				#endif
 				audiobuffers[i] = NULL;
 			}
 		}

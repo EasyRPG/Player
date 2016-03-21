@@ -20,7 +20,6 @@
 
 #include <map>
 #include <3ds.h>
-
 struct CtrAudio : public AudioInterface {
 	CtrAudio();
 	~CtrAudio();
