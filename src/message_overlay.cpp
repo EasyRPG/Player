@@ -15,12 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <sstream>
+
 #include "message_overlay.h"
 #include "player.h"
 #include "graphics.h"
 #include "bitmap.h"
-
-#include <boost/algorithm/string.hpp>
 
 MessageOverlay::MessageOverlay() :
 	type(TypeMessageOverlay),
@@ -94,8 +94,11 @@ DrawableType MessageOverlay::GetType() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
+	std::stringstream smessage (message);
 	std::vector<std::string> strs;
-	boost::split(strs, message, boost::is_any_of("\n"));
+	std::string str;
+	while (getline(smessage, str))
+		strs.push_back(str);
 
 	for (size_t i = 0; i < strs.size(); i++)
 		messages.push_back(MessageOverlayItem(strs[i], color));

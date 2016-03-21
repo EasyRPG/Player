@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cassert>
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -25,8 +26,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-
-#include <boost/optional.hpp>
 
 #ifdef _WIN32
 #  include <windows.h>
@@ -78,7 +77,7 @@ namespace {
 	search_path_list search_paths;
 	std::string fonts_path;
 
-	boost::optional<std::string> FindFile(FileFinder::DirectoryTree const& tree,
+	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  std::string const& dir,
 										  std::string const& name,
 										  char const* exts[])
@@ -110,7 +109,7 @@ namespace {
 #endif
 
 		string_map::const_iterator dir_it = tree.directories.find(lower_dir);
-		if(dir_it == tree.directories.end()) { return boost::none; }
+		if(dir_it == tree.directories.end()) { return ""; }
 
 		string_map const& dir_map = tree.sub_members.find(lower_dir)->second;
 
@@ -123,7 +122,7 @@ namespace {
 			}
 		}
 
-		return boost::none;
+		return "";
 	}
 
 	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
@@ -159,19 +158,19 @@ namespace {
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
 		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
-		boost::optional<std::string> const ret = FindFile(*tree, dir, name, exts);
-		if (ret != boost::none) { return *ret; }
+		std::string const ret = FindFile(*tree, dir, name, exts);
+		if (!ret.empty()) { return ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
 
-			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if (ret) { return *ret; }
+			std::string const ret = FindFile(*(*i), dir, name, exts);
+			if (!ret.empty()) { return ret; }
 
-			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if (ret_rtp) { return *ret_rtp; }
+			std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
+			if (!ret_rtp.empty()) { return ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
@@ -462,11 +461,7 @@ std::string FileFinder::FindDefault(std::string const& name) {
 std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name) {
 	static const char* no_exts[] = { "", NULL };
 
-	boost::optional<std::string> file = FindFile(tree, dir, name, no_exts);
-	if (file != boost::none) {
-		return *file;
-	}
-	return "";
+	return FindFile(tree, dir, name, no_exts);
 }
 
 std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& name) {
