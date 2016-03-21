@@ -156,6 +156,28 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	// Playing the sound (TODO)
 	float vol = volume / 100.0;
 	if (isStereo){
+		
+		// We need a second channel where to execute right audiochannel since csnd supports only mono sounds natively
+		int z = i+1;
+		while (z < num_channels){
+			u8 isPlaying;
+			csndIsPlaying(z+0x08, &isPlaying);
+			if (!isPlaying) break;
+			z++;
+			if (z >= num_channels){
+				Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
+				return;
+			}
+		}		
+		if (audiobuffers[z] != NULL) linearFree(audiobuffers[z]);
+		
+		// To not waste CPU clocks, we use a single audiobuffer for both channels so we put just a stubbed audiobuffer on right channel
+		audiobuffers[z] = (u8*)linearAlloc(1);
+		
+		int chnbuf_size = audiobuf_size>>1;
+		csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | SOUND_FORMAT_16BIT, samplerate, vol, -1.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], chnbuf_size); // Left
+		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | SOUND_FORMAT_16BIT, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), ((u32*)audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
+		
 	}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | SOUND_FORMAT_16BIT, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
 	
 }
