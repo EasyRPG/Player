@@ -43,8 +43,7 @@
 #include "bitmap.h"
 #include "main_data.h"
 #include "message_overlay.h"
-
-#include <boost/lexical_cast.hpp>
+#include "utils.h"
 
 #ifdef BOOST_NO_EXCEPTIONS
 #  include <boost/throw_exception.hpp>
@@ -227,7 +226,7 @@ bool Output::TakeScreenshot() {
 	do {
 		p = FileFinder::MakePath(Main_Data::GetSavePath(),
 								 "screenshot_"
-								 + boost::lexical_cast<std::string>(index++)
+								 + Utils::ToString(index++)
 								 + ".png");
 	} while(FileFinder::Exists(p));
 	return TakeScreenshot(p);

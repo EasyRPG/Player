@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
@@ -32,6 +31,7 @@
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
 #include "scene_gameover.h"
+#include "utils.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
 	battle_action_wait(30),
@@ -553,7 +553,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						b->GetBattleX(),
 						b->GetBattleY(),
 						0,
-						boost::lexical_cast<std::string>(damageTaken),
+						Utils::ToString(damageTaken),
 						30);
 				}
 			}
@@ -588,7 +588,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
 							0,
-							boost::lexical_cast<std::string>(action->GetAffectedHp()),
+							Utils::ToString(action->GetAffectedHp()),
 							30);
 				} else {
 					DrawFloatText(

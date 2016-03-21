@@ -19,6 +19,7 @@
 #define _EASYRPG_UTILS_H_
 
 #include <string>
+#include <sstream>
 #include "system.h"
 
 namespace Utils {
@@ -95,6 +96,19 @@ namespace Utils {
 	 */
 	std::string FromWideString(const wstring& str);
 
+
+	/**
+	 * Converts arithmetic types to a string.
+	 *
+	 * @param n arithmetic type to convert.
+	 * @return the converted string
+	 */
+	template<typename T>
+	std::string ToString(const T& n) {
+		std::ostringstream stm ;
+		stm << n ;
+		return stm.str();
+	}
 
 	bool IsBigEndian();
 
