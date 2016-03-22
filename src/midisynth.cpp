@@ -28,6 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // MIDI software synthesizer.
 #include "midisynth.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstring>
