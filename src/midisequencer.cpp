@@ -26,34 +26,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "midisequencer.h"
+#include "output.h"
 
 #include <cassert>
-
 #include <algorithm>
-#include <stdexcept>
 
 namespace midisequencer{
-    namespace{
-        class load_error:public std::runtime_error{
-        public:
-            load_error(const std::string& s):std::runtime_error(s){}
-        };
-        uint_least32_t read_variable_value(void* fp, int(*fgetc)(void*), uint_least32_t* track_length, const char* errtext)
-        {
-            int ret = 0;
-            int d;
-            do{
-                --*track_length;
-                d = fgetc(fp);
-                if(d == EOF){
-                    throw load_error(errtext);
-                }
-                ret <<= 7;
-                ret |= (d & 0x7F);
-            }while(d & 0x80);
-            return ret;
-        }
+    static uint_least32_t read_variable_value(void* fp, int(*fgetc)(void*), uint_least32_t* track_length, const char* errtext)
+    {
+        int ret = 0;
+        int d;
+        do{
+            --*track_length;
+            d = fgetc(fp);
+            if(d == EOF){
+                Output::Warning("Midi sequencer: %s", errtext);
+            }
+            ret <<= 7;
+            ret |= (d & 0x7F);
+        }while(d & 0x80);
+        return ret;
     }
+
     inline bool operator<(const midi_message& a, const midi_message& b)
     {
         return a.time < b.time;
@@ -76,19 +70,16 @@ namespace midisequencer{
     bool sequencer::load(void* fp, int(*fgetc)(void*))
     {
         bool result = false;
-        try{
-            clear();
-            int b0 = fgetc(fp);
-            int b1 = fgetc(fp);
-            int b2 = fgetc(fp);
-            int b3 = fgetc(fp);
-            if(b0 == 0x4D && b1 == 0x54 && b2 == 0x68 && b3 == 0x64){
-                load_smf(fp, fgetc);
-                result = true;
-            }else{
-                throw load_error("unsupported format");
-            }
-        }catch(load_error&){
+        clear();
+        int b0 = fgetc(fp);
+        int b1 = fgetc(fp);
+        int b2 = fgetc(fp);
+        int b3 = fgetc(fp);
+        if(b0 == 0x4D && b1 == 0x54 && b2 == 0x68 && b3 == 0x64){
+            load_smf(fp, fgetc);
+            result = true;
+        }else{
+            Output::Warning("Midi sequencer: unsupported format");
         }
         if(!result){
             clear();
@@ -211,11 +202,11 @@ namespace midisequencer{
         || fgetc(fp) != 0
         || fgetc(fp) != 6
         || fgetc(fp) != 0){
-            throw load_error("invalid file header");
+            Output::Warning("Midi sequencer: invalid file header");
         }
         int format = fgetc(fp);
         if(format != 0 && format != 1){
-            throw load_error("unsupported format type");
+            Output::Warning("Midi sequencer: unsupported format type");
         }
         int t0 = fgetc(fp);
         int t1 = fgetc(fp);
@@ -225,7 +216,7 @@ namespace midisequencer{
         unsigned division = (d0 << 8) | d1;
         for(unsigned track = 0; track < num_tracks; ++track){
             if(fgetc(fp) != 0x4D || fgetc(fp) != 0x54 || fgetc(fp) != 0x72 || fgetc(fp) != 0x6B){
-                throw load_error("invalid track header");
+                Output::Warning("Midi sequencer: invalid track header");
             }
             int l0 = fgetc(fp);
             int l1 = fgetc(fp);
@@ -243,7 +234,7 @@ namespace midisequencer{
             msg.track = track;
             for(;;){
                 if(track_length < 4){
-                    throw load_error("unexpected EOF (track_length)");
+                    Output::Warning("Midi sequencer: unexpected EOF (track_length)");
                 }
                 uint_least32_t delta = read_variable_value(fp, fgetc, &track_length, "unexpected EOF (deltatime)");
                 time += delta;
@@ -266,7 +257,7 @@ namespace midisequencer{
                             s[i] = static_cast<char>(fgetc(fp));
                         }
                         if(s[n] != '\xF7'){
-                            throw load_error("missing sysex terminator");
+                            Output::Warning("Midi sequencer: missing sysex terminator");
                         }
                         track_length -= n;
                         msg.message = 0xF0 | (long_messages.size() << 8);
@@ -314,7 +305,7 @@ namespace midisequencer{
                             goto next_track;
                         case 0x54:
                             if(n != 5){
-                                throw load_error("invalid SMTPE offset metaevent length");
+                                Output::Warning("Midi sequencer: invalid SMTPE offset metaevent length");
                             }
                             if(msg.time == 0 && (division & 0x8000)){
                                 int hour = static_cast<unsigned char>(s[1]);
@@ -365,7 +356,7 @@ namespace midisequencer{
                         --track_length;
                         break;
                     default:
-                        throw load_error("invalid midi message");
+                        Output::Warning("Midi sequencer: invalid midi message");
                     }
                     messages.push_back(msg);
                     break;
@@ -374,7 +365,7 @@ namespace midisequencer{
         next_track:
             while(track_length > 0){
                 if(fgetc(fp) == EOF){
-                    throw load_error("unexpected EOF (tailer padding)");
+                    Output::Warning("Midi sequencer: unexpected EOF (tailer padding)");
                 }
                 --track_length;
             }
