@@ -28,7 +28,6 @@ FreeType for font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
 zlib for XYZ image support.
-boost headers.
 
 SDL and SDL_mixer 1.2 are still supported but deprecated.
 

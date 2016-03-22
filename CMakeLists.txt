@@ -101,11 +101,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Boost
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
-
 foreach(i Expat Freetype Pixman ZLIB PNG SDL2 Iconv)
   find_package(${i} REQUIRED)
 
