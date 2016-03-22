@@ -34,15 +34,13 @@ volatile bool termStream = false;
 DecodedMusic* BGM = NULL;
 Handle updateStream;
 static void streamThread(void* arg){
-
 	
-	while(1) {
+	for(;;) {
 		
-		// A pretty bad way to do mutual exclusion
-		//svcWaitSynchronization(updateStream, U64_MAX);
-		//svcClearEvent(updateStream);
+		// Looks like if we delete this, thread will crash
+		svcSleepThread(10000);
 		
-		// ...and a pretty bad way to close thread too
+		// A pretty bad way to close thread
 		if(termStream){
 			termStream = false;
 			threadExit(0);
@@ -94,7 +92,6 @@ CtrAudio::~CtrAudio() {
 	
 	// Closing BGM streaming thread
 	termStream = true;
-	svcSignalEvent(updateStream);
 	while (termStream){} // Wait for thread exiting...
 	if (BGM != NULL){
 		linearFree(BGM->audiobuf);
@@ -143,10 +140,9 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	if (BGM->isStereo){
 		u32 chnbuf_size = BGM->audiobuf_size>>1;
 		csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
-		csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), ((u32*)BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
+		csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), (u32*)(BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
 	}else csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 0.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, BGM->audiobuf_size);
 	BGM->starttick = osGetTime();
-	svcSignalEvent(updateStream);
 	
 }
 
@@ -313,7 +309,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		#endif
 		int chnbuf_size = audiobuf_size>>1;
 		csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, -1.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], chnbuf_size); // Left
-		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), ((u32*)audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
+		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), (u32*)(audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
 		
 	}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
 	
@@ -331,8 +327,6 @@ void CtrAudio::SE_Stop() {
 }
 
 void CtrAudio::Update() {	
-	
-	if (BGM != NULL) svcSignalEvent(updateStream);
 	
 	// Closing and freeing finished sounds
 	for(int i=0;i<num_channels;i++){

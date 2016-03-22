@@ -34,8 +34,8 @@
 
 /*	
 	+-----------------------------------------------------+
-    |                                                     |
-    |                      SOUNDS                         |
+	|                                                     |
+	|                      SOUNDS                         |
 	|                                                     |
 	+-----------------------------------------------------+
 */
@@ -192,8 +192,8 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 
 /*	
 	+-----------------------------------------------------+
-    |                                                     |
-    |                      MUSICS                         |
+	|                                                     |
+	|                      MUSICS                         |
 	|                                                     |
 	+-----------------------------------------------------+
 */
@@ -266,25 +266,24 @@ void UpdateWavStream(DecodedMusic* Sound){
 	// Mono file
 	if (!Sound->isStereo){
 		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
-		//if (bytesRead != half_buf){
-		//	fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
-		//	fread(Sound->audiobuf+((Sound->block_idx%2)*half_buf), 1, half_buf, Sound->handle);	
-		//}
+		if (bytesRead != half_buf){ // EoF
+			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+			fread(Sound->audiobuf+((Sound->block_idx%2)*half_buf), 1, half_buf, Sound->handle);	
+		}
 	// Stereo file
 	}else{
-		u32 chn_size = half_buf;
-		u32 half_chn_size = chn_size>>1;
+		u8* left_channel = Sound->audiobuf;
+		u8* right_channel = &Sound->audiobuf[half_buf];
+		u32 half_chn_size = half_buf>>1;
 		u16 byteperchannel = Sound->bytepersample>>1;
-		int z = (half_buf>>1)*(half_check);
-		for (u32 i=0;i<half_chn_size;i=i+byteperchannel){
-			bytesRead = fread(&Sound->audiobuf[z], 1, byteperchannel, Sound->handle);
-			fread(&Sound->audiobuf[z+chn_size], 1, byteperchannel, Sound->handle);
-			z=z+byteperchannel;
-			//if (bytesRead != byteperchannel){
-			//	fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
-			//	i=i-byteperchannel;
-			//	z=z-byteperchannel;
-			//}
+		int z = half_chn_size * half_check;
+		for (u32 i=0;i<half_buf;i=i+Sound->bytepersample){
+			bytesRead = fread(&left_channel[z], 1, byteperchannel, Sound->handle);
+			fread(&right_channel[z], 1, byteperchannel, Sound->handle);
+			if (bytesRead != byteperchannel){ // EoF
+				fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+				i=i-Sound->bytepersample;
+			}else z=z+byteperchannel;
 		}
 	}
 	

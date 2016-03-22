@@ -45,8 +45,10 @@ extern "C" int main(int argc, char* argv[]) {
 	Output::Debug("Debug console started...\n");
 	#endif
 	
-	// Performing svchax to gain csnd:SND access
 	#ifdef SUPPORT_AUDIO
+	aptOpenSession();
+	APT_SetAppCpuTimeLimit(30);
+	aptCloseSession();
 	
 	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
 	Handle csndHandle = 0;
@@ -60,9 +62,6 @@ extern "C" int main(int argc, char* argv[]) {
 	#endif
 	
 	hidInit();
-	aptOpenSession();
-	APT_SetAppCpuTimeLimit(30);
-	aptCloseSession();
 	
 	// Enable 804 Mhz mode if on N3DS
 	APT_CheckNew3DS(&isN3DS);
