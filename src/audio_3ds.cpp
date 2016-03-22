@@ -40,7 +40,7 @@ CtrAudio::CtrAudio() :
 	}
 	
 	#ifndef NO_DEBUG
-	Output::Debug("Sound initialized successfully!\n");
+	Output::Debug("Sound initialized successfully!");
 	#endif
 	
 	for (int i=0;i<num_channels;i++){
@@ -179,7 +179,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		}
 	
 		// Opening and decoding the file (TODO: Add other containers support like OGG and MIDI files)
-		int res = DecodeWav(path, &myFile);
+		int res = DecodeSound(path, &myFile);
 		if (res < 0) return;
 		#ifdef USE_CACHE
 		else sprintf(soundtable[res],"%s",file.c_str());

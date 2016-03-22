@@ -23,4 +23,4 @@ struct DecodedSound{
 	u16 format;
 };
 
-int DecodeWav(std::string const& filename, DecodedSound* Sound);
+int DecodeSound(std::string const& filename, DecodedSound* Sound);

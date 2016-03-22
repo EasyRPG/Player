@@ -17,25 +17,138 @@
 #include "system.h"
 #include "output.h"
 #include "filefinder.h"
+#include <ogg/ogg.h>
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
 
 #ifdef _3DS
 #include <3ds.h>
 #include <stdio.h>
 #include <string.h>
+#include <cstdlib>
 #ifdef USE_CACHE
 #include "3ds_cache.h"
 #else
 #include "3ds_decoder.h"
 #endif
 
-int DecodeWav(std::string const& filename, DecodedSound* Sound){
+int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	
-	// Opening file
-	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
-	if (!stream) {
-		Output::Warning("Couldn't open sound file %s", filename.c_str());
+	// Passing filestream to libogg
+	int eof=0;
+	OggVorbis_File* vf = (OggVorbis_File*)malloc(sizeof(OggVorbis_File));
+	static int current_section;
+	fseek(stream, 0, SEEK_SET);
+	if(ov_open(stream, vf, NULL, 0) != 0)
+	{
+		fclose(stream);
+		Output::Warning("Corrupt ogg file");
 		return -1;
 	}
+	
+	// Grabbing info from the header
+	vorbis_info* my_info = ov_info(vf,-1);
+	Sound->samplerate = my_info->rate;
+	Sound->format = CSND_ENCODING_PCM16;
+	u16 audiotype = my_info->channels;
+	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
+	if (audiotype == 2) Sound->isStereo = true;
+	else Sound->isStereo = false;
+	
+	// Preparing PCM16 audiobuffer
+	#ifdef USE_CACHE
+	
+	// Calculate cache offset where to store the sound
+	int offset = FREE_CACHE - Sound->audiobuf_size;
+	if (offset >= 0){
+		
+		// Check if cache had been fulled at least once
+		if (FULLED){
+		
+			// Store the sound in "normal" storage mode
+			LAST_ENTRY++;
+			if (LAST_ENTRY == ENTRIES) ENTRIES++;
+			FREE_CACHE = offset;
+			Sound->audiobuf = soundCache + offset;
+			
+			// Stub all the invalid entries due to offsets differences
+			int i = LAST_ENTRY + 1;
+			while (Sound->audiobuf < (decodedtable[i].audiobuf + decodedtable[i].audiobuf_size)){
+				sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
+				i++;
+				if (i == ENTRIES) break;
+			}
+			
+		}else{
+			
+			// Store the sound in "fast" storage mode
+			Sound->audiobuf = soundCache + offset;
+			LAST_ENTRY++;
+			ENTRIES++;
+			FREE_CACHE = offset;
+			
+		}
+	}else{
+		
+		// Cache is full, so we reset to "normal" storage mode
+		FREE_CACHE = CACHE_DIM;
+		FULLED = true;
+		LAST_ENTRY = 0;
+		offset = FREE_CACHE - Sound->audiobuf_size;
+		FREE_CACHE = offset;
+		Sound->audiobuf = soundCache + offset;
+		
+		// Stub all the invalid entries due to offsets differences
+		int i = 1;
+		while (Sound->audiobuf < (decodedtable[i].audiobuf + decodedtable[i].audiobuf_size)){
+			sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
+			i++;
+			if (i == ENTRIES) break;
+		}
+		
+	}
+	memcpy(&decodedtable[ENTRIES-1],Sound,sizeof(DecodedSound));
+	#else
+	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
+	#endif
+	
+	// Decoding Vorbis buffer
+	int i = 0;
+	if (audiotype == 1){ // Mono file
+		while(!eof){
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],2048,0,2,1,&current_section);
+			if (ret == 0) eof=1;
+			else i = i + ret;
+		}
+	}else{ // Stereo file
+		char pcmout[2048];
+		int z = 0;
+		u32 chn_size = Sound->audiobuf_size>>1;
+		u8* left_channel = Sound->audiobuf;
+		u8* right_channel = &Sound->audiobuf[chn_size];
+		while(!eof){
+			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			if (ret == 0) eof=1;
+			else{
+				for (u32 i=0;i<ret;i=i+4){
+					memcpy(&left_channel[z],&pcmout[i],2);
+					memcpy(&right_channel[z],&pcmout[i+2],2);
+					z = z + 2;
+				}
+			}
+		}
+	}
+	
+	ov_clear(vf);
+	#ifdef USE_CACHE
+	return LAST_ENTRY;
+	#else
+	return 0;
+	#endif
+	
+}
+
+int DecodeWav(FILE* stream, DecodedSound* Sound){
 	
 	// Grabbing info from the header
 	u16 audiotype;
@@ -146,6 +259,27 @@ int DecodeWav(std::string const& filename, DecodedSound* Sound){
 	#else
 	return 0;
 	#endif
+}
+
+int DecodeSound(std::string const& filename, DecodedSound* Sound){
+	
+	// Opening file
+	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
+	if (!stream) {
+		Output::Warning("Couldn't open sound file %s", filename.c_str());
+		return -1;
+	}
+	
+	// Reading and parsing the magic
+	u32 magic;
+	fread(&magic, 4, 1, stream);
+	if (magic == 0x46464952) return DecodeWav(stream, Sound);
+	else if (magic == 0x5367674F) return DecodeOgg(stream, Sound);
+	else{
+		Output::Warning("Unsupported sound format (%s)", filename.c_str());
+		return -1;
+	}
+	
 }
 #endif
  
