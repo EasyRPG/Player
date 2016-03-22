@@ -32,6 +32,14 @@
 #include "3ds_decoder.h"
 #endif
 
+/*	
+	+-----------------------------------------------------+
+    |                                                     |
+    |                      SOUNDS                         |
+	|                                                     |
+	+-----------------------------------------------------+
+*/
+
 int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	
 	// Passing filestream to libogg
@@ -177,6 +185,127 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 	else if (magic == 0x5367674F) return DecodeOgg(stream, Sound);
 	else{
 		Output::Warning("Unsupported sound format (%s)", filename.c_str());
+		return -1;
+	}
+	
+}
+
+/*	
+	+-----------------------------------------------------+
+    |                                                     |
+    |                      MUSICS                         |
+	|                                                     |
+	+-----------------------------------------------------+
+*/
+int OpenWav(FILE* stream, DecodedMusic* Sound){
+	
+	// Grabbing info from the header
+	u16 audiotype;
+	u32 chunk;
+	u32 jump;
+	fseek(stream, 16, SEEK_SET);
+	fread(&jump, 4, 1, stream);
+	fread(&Sound->format, 2, 1, stream);
+	fread(&audiotype, 2, 1, stream);
+	fread(&Sound->samplerate, 4, 1, stream);	
+	if (audiotype == 2) Sound->isStereo = true;
+	else Sound->isStereo = false;
+	fseek(stream, 32, SEEK_SET);
+	fread(&Sound->bytepersample, 2, 1, stream);
+	fseek(stream, 20, SEEK_SET);
+	
+	// Check for file audiocodec
+	if (Sound->format == 0x11) Sound->format = CSND_ENCODING_ADPCM;
+	else if (Sound->bytepersample == 4 || (Sound->bytepersample == 2 && audiotype == 1)) Sound->format = CSND_ENCODING_PCM16;
+	else Sound->format = CSND_ENCODING_PCM8;
+	
+	// Skipping to audiobuffer start
+	while (chunk != 0x61746164){
+		fseek(stream, jump, SEEK_CUR);
+		fread(&chunk, 4, 1, stream);
+		fread(&jump, 4, 1, stream);
+	}
+	
+	// Getting audiobuffer size
+	int start = ftell(stream);
+	fseek(stream, 0, SEEK_END);
+	int end = ftell(stream);
+	Sound->audiobuf_size = end - start;
+	while (Sound->audiobuf_size > BGM_BUFSIZE){
+		Sound->audiobuf_size = Sound->audiobuf_size>>1;
+	}
+	Sound->audiobuf_offs = start;
+	fseek(stream, start, SEEK_SET);
+	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
+	
+	// Mono file
+	if (audiotype == 1) fread(Sound->audiobuf, 1, Sound->audiobuf_size, stream);	
+	
+	// Stereo file
+	else{
+		u32 chn_size = Sound->audiobuf_size>>1;
+		u16 byteperchannel = Sound->bytepersample>>1;
+		for (u32 i=0;i<chn_size;i=i+byteperchannel){
+			fread(&Sound->audiobuf[i], 1, byteperchannel, stream);
+			fread(&Sound->audiobuf[i+chn_size], 1, byteperchannel, stream);
+		}
+	}
+	
+	//Setting default streaming values
+	Sound->block_idx = 1;
+	Sound->handle = stream;
+	
+	return 0;
+}
+
+void UpdateWavStream(DecodedMusic* Sound){	
+	Sound->block_idx++;	
+	u32 half_buf = Sound->audiobuf_size>>1;
+	int bytesRead;
+	int half_check = (Sound->block_idx)%2;
+	// Mono file
+	if (!Sound->isStereo){
+		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
+		//if (bytesRead != half_buf){
+		//	fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+		//	fread(Sound->audiobuf+((Sound->block_idx%2)*half_buf), 1, half_buf, Sound->handle);	
+		//}
+	// Stereo file
+	}else{
+		u32 chn_size = half_buf;
+		u32 half_chn_size = chn_size>>1;
+		u16 byteperchannel = Sound->bytepersample>>1;
+		int z = (half_buf>>1)*(half_check);
+		for (u32 i=0;i<half_chn_size;i=i+byteperchannel){
+			bytesRead = fread(&Sound->audiobuf[z], 1, byteperchannel, Sound->handle);
+			fread(&Sound->audiobuf[z+chn_size], 1, byteperchannel, Sound->handle);
+			z=z+byteperchannel;
+			//if (bytesRead != byteperchannel){
+			//	fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+			//	i=i-byteperchannel;
+			//	z=z-byteperchannel;
+			//}
+		}
+	}
+	
+}
+
+
+int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
+	
+	// Opening file
+	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
+	if (!stream) {
+		Output::Warning("Couldn't open music file %s", filename.c_str());
+		return -1;
+	}
+	
+	// Reading and parsing the magic
+	u32 magic;
+	fread(&magic, 4, 1, stream);
+	if (magic == 0x46464952) return OpenWav(stream, Sound);
+	else{
+		Output::Warning("Unsupported music format (%s)", filename.c_str());
 		return -1;
 	}
 	

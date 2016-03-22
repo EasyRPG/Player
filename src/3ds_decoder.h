@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define BGM_BUFSIZE 524288 // Max dimension of BGM buffer size
+ 
 struct DecodedSound{
 	bool isStereo;
 	u8* audiobuf;
@@ -23,4 +25,19 @@ struct DecodedSound{
 	u16 format;
 };
 
+struct DecodedMusic{
+	bool isStereo;
+	u8* audiobuf;
+	u32 audiobuf_size;
+	u32 samplerate;
+	u16 bytepersample;
+	u16 format;
+	FILE* handle;
+	u32 audiobuf_offs;
+	u64 starttick;
+	u32 block_idx;
+};
+
 int DecodeSound(std::string const& filename, DecodedSound* Sound);
+int DecodeMusic(std::string const& filename, DecodedMusic* Sound);
+void UpdateWavStream(DecodedMusic* Sound);

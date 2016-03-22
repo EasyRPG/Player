@@ -22,17 +22,45 @@
 
 #ifdef _3DS
 #include <stdio.h>
+#include <cstdlib>
 #ifdef USE_CACHE
 #include "3ds_cache.h"
 #else
 #include "3ds_decoder.h"
 #endif
+
+// BGM audio streaming thread
+volatile bool termStream = false;
+DecodedMusic* BGM = NULL;
+Handle updateStream;
+static void streamThread(void* arg){
+
+	
+	while(1) {
+		
+		// A pretty bad way to do mutual exclusion
+		//svcWaitSynchronization(updateStream, U64_MAX);
+		//svcClearEvent(updateStream);
+		
+		// ...and a pretty bad way to close thread too
+		if(termStream){
+			termStream = false;
+			threadExit(0);
+		}
+		
+		
+		if (BGM == NULL) continue; // No BGM detected
+		else if (BGM->starttick == 0) continue; // BGM not started
+		
+		u32 block_mem = BGM->audiobuf_size>>1;
+		u32 curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
+		if (curPos > block_mem * BGM->block_idx) UpdateWavStream(BGM); // TODO: Add other formats support
+			
+	}
+}
+
 CtrAudio::CtrAudio() :
-	bgm_volume(0),
-	bgs_channel(0),
-	bgs_playing(false),
-	me_channel(0),
-	me_stopped_bgm(false)
+	bgm_volume(0)
 {
 	Result res = csndInit();
 	if (res != 0){
@@ -47,6 +75,14 @@ CtrAudio::CtrAudio() :
 		audiobuffers[i] = NULL;
 	}
 	
+	#ifndef NO_DEBUG
+	Output::Debug("Starting BGM stream thread...");
+	#endif
+	
+	// Starting a secondary thread on SYSCORE for BGM streaming
+	svcCreateEvent(&updateStream,0);
+	threadCreate(streamThread, NULL, 8192, 0x18, 1, true);
+	
 	#ifdef USE_CACHE
 	initCache();
 	#endif
@@ -55,6 +91,15 @@ CtrAudio::CtrAudio() :
 
 CtrAudio::~CtrAudio() {
 	SE_Stop(); // Just to be sure to clean up before exiting
+	
+	// Closing BGM streaming thread
+	termStream = true;
+	svcSignalEvent(updateStream);
+	while (termStream){} // Wait for thread exiting...
+	if (BGM != NULL){
+		linearFree(BGM->audiobuf);
+		free(BGM);
+	}
 	csndExit();	
 	#ifdef USE_CACHE
 	freeCache();
@@ -67,6 +112,42 @@ void CtrAudio::BGM_OnPlayedOnce() {
 
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 
+	// Searching for the file
+	std::string const path = FileFinder::FindMusic(file);
+	if (path.empty()) {
+		Output::Debug("Music not found: %s", file.c_str());
+		return;
+	}
+	
+	// Opening and decoding the file
+	DecodedMusic* myFile = (DecodedMusic*)malloc(sizeof(DecodedMusic));
+	int res = DecodeMusic(path, myFile);
+	if (res < 0){
+		free(myFile);
+		return;
+	}else BGM = myFile;
+	BGM->starttick = 0;
+	
+	// Processing music info
+	samplerate = BGM->samplerate;
+	int codec = SOUND_FORMAT(BGM->format);	
+	float vol = volume / 100.0;
+	
+	#ifndef NO_DEBUG
+	Output::Debug("Playing music %s:",file.c_str());
+	Output::Debug("Samplerate: %i",samplerate);
+	Output::Debug("Buffer Size: %i bytes",BGM->audiobuf_size);
+	#endif
+	
+	// Starting BGM
+	if (BGM->isStereo){
+		u32 chnbuf_size = BGM->audiobuf_size>>1;
+		csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
+		csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), ((u32*)BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
+	}else csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 0.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, BGM->audiobuf_size);
+	BGM->starttick = osGetTime();
+	svcSignalEvent(updateStream);
+	
 }
 
 void CtrAudio::BGM_Pause() {
@@ -78,7 +159,9 @@ void CtrAudio::BGM_Resume() {
 }
 
 void CtrAudio::BGM_Stop() {
-
+	CSND_SetPlayState(0x1E, 0);
+	CSND_SetPlayState(0x1F, 0);
+	CSND_UpdateInfo(0);
 }
 
 bool CtrAudio::BGM_PlayedOnce() {
@@ -178,7 +261,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 			return;
 		}
 	
-		// Opening and decoding the file (TODO: Add other containers support like OGG and MIDI files)
+		// Opening and decoding the file
 		int res = DecodeSound(path, &myFile);
 		if (res < 0) return;
 		#ifdef USE_CACHE
@@ -189,7 +272,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	}else myFile = decodedtable[cacheIdx];
 	#endif
 	
-	// Processing sounds info
+	// Processing sound info
 	audiobuffers[i] = myFile.audiobuf;
 	samplerate = myFile.samplerate;
 	audiobuf_size = myFile.audiobuf_size;
@@ -247,7 +330,11 @@ void CtrAudio::SE_Stop() {
 	CSND_UpdateInfo(0);
 }
 
-void CtrAudio::Update() {
+void CtrAudio::Update() {	
+	
+	if (BGM != NULL) svcSignalEvent(updateStream);
+	
+	// Closing and freeing finished sounds
 	for(int i=0;i<num_channels;i++){
 		if (audiobuffers[i] != NULL){
 			u8 isPlaying;
@@ -260,6 +347,7 @@ void CtrAudio::Update() {
 			}
 		}
 	}
+	
 }
 
 #endif
