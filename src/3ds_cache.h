@@ -36,4 +36,5 @@ extern bool FULLED;
 void initCache();
 void freeCache();
 int lookCache(const char* file);
+void allocCache(DecodedSound* Sound);
 #endif

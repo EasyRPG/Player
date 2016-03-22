@@ -57,57 +57,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	
 	// Preparing PCM16 audiobuffer
 	#ifdef USE_CACHE
-	
-	// Calculate cache offset where to store the sound
-	int offset = FREE_CACHE - Sound->audiobuf_size;
-	if (offset >= 0){
-		
-		// Check if cache had been fulled at least once
-		if (FULLED){
-		
-			// Store the sound in "normal" storage mode
-			LAST_ENTRY++;
-			if (LAST_ENTRY == ENTRIES) ENTRIES++;
-			FREE_CACHE = offset;
-			Sound->audiobuf = soundCache + offset;
-			
-			// Stub all the invalid entries due to offsets differences
-			int i = LAST_ENTRY + 1;
-			while (Sound->audiobuf < (decodedtable[i].audiobuf + decodedtable[i].audiobuf_size)){
-				sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
-				i++;
-				if (i == ENTRIES) break;
-			}
-			
-		}else{
-			
-			// Store the sound in "fast" storage mode
-			Sound->audiobuf = soundCache + offset;
-			LAST_ENTRY++;
-			ENTRIES++;
-			FREE_CACHE = offset;
-			
-		}
-	}else{
-		
-		// Cache is full, so we reset to "normal" storage mode
-		FREE_CACHE = CACHE_DIM;
-		FULLED = true;
-		LAST_ENTRY = 0;
-		offset = FREE_CACHE - Sound->audiobuf_size;
-		FREE_CACHE = offset;
-		Sound->audiobuf = soundCache + offset;
-		
-		// Stub all the invalid entries due to offsets differences
-		int i = 1;
-		while (Sound->audiobuf < (decodedtable[i].audiobuf + decodedtable[i].audiobuf_size)){
-			sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
-			i++;
-			if (i == ENTRIES) break;
-		}
-		
-	}
-	memcpy(&decodedtable[ENTRIES-1],Sound,sizeof(DecodedSound));
+	allocCache(Sound);
 	#else
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
@@ -185,57 +135,7 @@ int DecodeWav(FILE* stream, DecodedSound* Sound){
 	Sound->audiobuf_size = end - start;
 	fseek(stream, start, SEEK_SET);
 	#ifdef USE_CACHE
-	
-	// Calculate cache offset where to store the sound
-	int offset = FREE_CACHE - Sound->audiobuf_size;
-	if (offset >= 0){
-		
-		// Check if cache had been fulled at least once
-		if (FULLED){
-		
-			// Store the sound in "normal" storage mode
-			LAST_ENTRY++;
-			if (LAST_ENTRY == ENTRIES) ENTRIES++;
-			FREE_CACHE = offset;
-			Sound->audiobuf = soundCache + offset;
-			
-			// Stub all the invalid entries due to offsets differences
-			int i = LAST_ENTRY + 1;
-			while (decodedtable[i].audiobuf < (Sound->audiobuf + Sound->audiobuf_size)){
-				sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
-				i++;
-				if (i == ENTRIES) break;
-			}
-			
-		}else{
-			
-			// Store the sound in "fast" storage mode
-			Sound->audiobuf = soundCache + offset;
-			LAST_ENTRY++;
-			ENTRIES++;
-			FREE_CACHE = offset;
-			
-		}
-	}else{
-		
-		// Cache is full, so we reset to "normal" storage mode
-		FREE_CACHE = CACHE_DIM;
-		FULLED = true;
-		LAST_ENTRY = 0;
-		offset = FREE_CACHE - Sound->audiobuf_size;
-		FREE_CACHE = offset;
-		Sound->audiobuf = soundCache + offset;
-		
-		// Stub all the invalid entries due to offsets differences
-		int i = 1;
-		while (decodedtable[i].audiobuf < (Sound->audiobuf + Sound->audiobuf_size)){
-			sprintf(soundtable[i],"%s","::::"); // A file with : in filename can't exist so we use that fake filename
-			i++;
-			if (i == ENTRIES) break;
-		}
-		
-	}
-	memcpy(&decodedtable[ENTRIES-1],Sound,sizeof(DecodedSound));
+	allocCache(Sound);
 	#else
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
