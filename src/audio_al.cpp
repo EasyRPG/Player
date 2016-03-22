@@ -20,8 +20,8 @@
 #ifdef HAVE_OPENAL
 
 #include <array>
+#include <deque>
 #include <cassert>
-#include <boost/circular_buffer.hpp>
 #include <functional>
 
 #include "audio_al.h"
@@ -158,8 +158,8 @@ struct ALAudio::source {
 	    , volume_(1.0f)
 	    , is_fade_in_(false)
 	    , loop_play_(loop)
-	    , ticks_(BUFFER_NUMBER + 1)
-	    , buf_sizes_(BUFFER_NUMBER) {
+	    , ticks_(BUFFER_NUMBER + 1, 0)
+	    , buf_sizes_(BUFFER_NUMBER, 0) {
 		SET_CONTEXT(c);
 		assert(alIsSource(s) == AL_TRUE);
 
@@ -220,7 +220,7 @@ private:
 	bool loop_play_;
 	std::array<ALuint, BUFFER_NUMBER> buffers_;
 	std::shared_ptr<buffer_loader> loader_;
-	boost::circular_buffer<unsigned> ticks_, buf_sizes_;
+	std::deque<unsigned> ticks_, buf_sizes_;
 
 	unsigned progress_milli() const {
 		return (1000 * fade_count_ / 60);
@@ -269,9 +269,12 @@ public:
 			}
 
 			if (loader_->is_end()) {
+				ticks_.pop_front();
 				ticks_.push_back(0);
 			}
+			buf_sizes_.pop_front();
 			buf_sizes_.push_back(loader_->load_buffer(unqueued[queuing_count]));
+			ticks_.pop_front();
 			ticks_.push_back(loader_->midi_ticks());
 		}
 		alSourceQueueBuffers(src_, queuing_count, &unqueued.front());
@@ -308,10 +311,10 @@ public:
 		loader_ = l;
 		int queuing_count = 0;
 		assert(!l->is_end());
-		ticks_.push_back(0);
+		ticks_[0] = 0;
 		for (; queuing_count < BUFFER_NUMBER; ++queuing_count) {
-			buf_sizes_.push_back(loader_->load_buffer(buffers_[queuing_count]));
-			ticks_.push_back(loader_->midi_ticks());
+			buf_sizes_[queuing_count] = loader_->load_buffer(buffers_[queuing_count]);
+			ticks_[queuing_count + 1] = loader_->midi_ticks();
 
 			if (loader_->is_end()) {
 				queuing_count++;
