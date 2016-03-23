@@ -36,6 +36,8 @@ struct DecodedMusic{
 	u32 audiobuf_offs;
 	u64 starttick;
 	u32 block_idx;
+	bool playedOnce;
+	bool isPlaying;
 };
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound);

@@ -254,10 +254,12 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	//Setting default streaming values
 	Sound->block_idx = 1;
 	Sound->handle = stream;
+	Sound->playedOnce = false;
 	
 	return 0;
 }
 
+// TODO: In reality playedOnce should be set two blocks after EoF is detected
 void UpdateWavStream(DecodedMusic* Sound){	
 	Sound->block_idx++;	
 	u32 half_buf = Sound->audiobuf_size>>1;
@@ -267,6 +269,7 @@ void UpdateWavStream(DecodedMusic* Sound){
 	if (!Sound->isStereo){
 		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
 		if (bytesRead != half_buf){ // EoF
+			Sound->playedOnce = true;
 			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
 			fread(Sound->audiobuf+((Sound->block_idx%2)*half_buf), 1, half_buf, Sound->handle);	
 		}
@@ -281,6 +284,7 @@ void UpdateWavStream(DecodedMusic* Sound){
 			bytesRead = fread(&left_channel[z], 1, byteperchannel, Sound->handle);
 			fread(&right_channel[z], 1, byteperchannel, Sound->handle);
 			if (bytesRead != byteperchannel){ // EoF
+				Sound->playedOnce = true;
 				fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
 				i=i-Sound->bytepersample;
 			}else z=z+byteperchannel;

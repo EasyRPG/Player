@@ -49,6 +49,7 @@ static void streamThread(void* arg){
 		
 		if (BGM == NULL) continue; // No BGM detected
 		else if (BGM->starttick == 0) continue; // BGM not started
+		else if (!BGM->isPlaying) continue; // BGM paused
 		
 		u32 block_mem = BGM->audiobuf_size>>1;
 		u32 curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
@@ -142,26 +143,43 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
 		csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), (u32*)(BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
 	}else csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 0.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, BGM->audiobuf_size);
+	BGM->isPlaying = true;
 	BGM->starttick = osGetTime();
 	
 }
 
 void CtrAudio::BGM_Pause() {
-
+	if (BGM == NULL) return;
+	if (BGM->isPlaying){
+		CSND_SetPlayState(0x1E, 0);
+		CSND_SetPlayState(0x1F, 0);
+		CSND_UpdateInfo(0);
+		BGM->isPlaying = false;
+		BGM->starttick = osGetTime()-BGM->starttick; // Save current delta
+	}
 }
 
 void CtrAudio::BGM_Resume() {
-
+	if (BGM == NULL) return;
+	if (!BGM->isPlaying){
+		if (BGM->isStereo) CSND_SetPlayState(0x1E, 1);
+		CSND_SetPlayState(0x1F, 1);
+		CSND_UpdateInfo(0);
+		BGM->isPlaying = true;
+		BGM->starttick = osGetTime()-BGM->starttick; // Restore starttick
+	}
 }
 
 void CtrAudio::BGM_Stop() {
+	if (BGM == NULL) return;
 	CSND_SetPlayState(0x1E, 0);
 	CSND_SetPlayState(0x1F, 0);
 	CSND_UpdateInfo(0);
 }
 
 bool CtrAudio::BGM_PlayedOnce() {
-	return true;
+	if (BGM == NULL) return false;
+	return BGM->playedOnce;
 }
 
 unsigned CtrAudio::BGM_GetTicks() {
@@ -169,7 +187,9 @@ unsigned CtrAudio::BGM_GetTicks() {
 }
 
 void CtrAudio::BGM_Volume(int volume) {
-
+	float vol = volume / 100.0;
+	CSND_SetVol(0x1E, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+	CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
 }
 
 void CtrAudio::BGM_Pitch(int /* pitch */) {
