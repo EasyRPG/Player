@@ -232,7 +232,7 @@ void CtrAudio::BGM_Stop() {
 
 bool CtrAudio::BGM_PlayedOnce() {
 	if (BGM == NULL) return false;
-	return BGM->playedOnce;
+	return (BGM->block_idx >= BGM->eof_idx);
 }
 
 unsigned CtrAudio::BGM_GetTicks() {

@@ -36,7 +36,7 @@ struct DecodedMusic{
 	u32 audiobuf_offs;
 	u64 starttick;
 	u32 block_idx;
-	bool playedOnce;
+	u32 eof_idx;
 	bool isPlaying;
 	int fade_val;
 	float vol;
