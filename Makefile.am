@@ -121,6 +121,11 @@ libeasyrpg_player_la_SOURCES = \
 	src/memory_management.h \
 	src/message_overlay.cpp \
 	src/message_overlay.h \
+	src/midiprogram.h \
+	src/midisequencer.cpp \
+	src/midisequencer.h \
+	src/midisynth.cpp \
+	src/midisynth.h \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \

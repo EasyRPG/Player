@@ -67,6 +67,12 @@
     <ClCompile Include="..\..\src\audio_sdl.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\midisequencer.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\midisynth.cpp"
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\background.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
@@ -475,6 +481,15 @@
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio_sdl.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\midiprogram.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\midisequencer.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\midisynth.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\background.h">

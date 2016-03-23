@@ -273,6 +273,9 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
     <ClCompile Include="..\..\src\message_overlay.cpp" />
+    <ClCompile Include="..\..\src\message_overlay.cpp" />
+    <ClCompile Include="..\..\src\midisequencer.cpp" />
+    <ClCompile Include="..\..\src\midisynth.cpp" />
     <ClCompile Include="..\..\src\output.cpp" />
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
@@ -416,6 +419,9 @@
     <ClInclude Include="..\..\src\matrix.h" />
     <ClInclude Include="..\..\src\memory_management.h" />
     <ClInclude Include="..\..\src\message_overlay.h" />
+    <ClInclude Include="..\..\src\midiprogram.h" />
+    <ClInclude Include="..\..\src\midisequencer.h" />
+    <ClInclude Include="..\..\src\midisynth.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
     <ClInclude Include="..\..\src\picojson.h" />
