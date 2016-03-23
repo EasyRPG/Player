@@ -185,6 +185,7 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 	else if (magic == 0x5367674F) return DecodeOgg(stream, Sound);
 	else{
 		Output::Warning("Unsupported sound format (%s)", filename.c_str());
+		fclose(stream);
 		return -1;
 	}
 	
@@ -307,6 +308,7 @@ int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
 	fread(&magic, 4, 1, stream);
 	if (magic == 0x46464952) return OpenWav(stream, Sound);
 	else{
+		fclose(stream);
 		Output::Warning("Unsupported music format (%s)", filename.c_str());
 		return -1;
 	}
