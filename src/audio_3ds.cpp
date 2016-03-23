@@ -51,8 +51,42 @@ static void streamThread(void* arg){
 		else if (BGM->starttick == 0) continue; // BGM not started
 		else if (!BGM->isPlaying) continue; // BGM paused
 		
+		// Calculating delta in milliseconds
+		u64 delta = (osGetTime() - BGM->starttick);
+		
+		// Fade effect feature
+		if (BGM->fade_val != 0){
+		
+			float vol;
+			
+			// Fade In	
+			if (BGM->fade_val > 0){
+				vol = (delta * BGM->vol) / float(BGM->fade_val);	
+				if (vol >= BGM->vol){
+					vol = BGM->vol;
+					BGM->fade_val = 0;
+				}
+			}
+			
+			// Fade Out	
+			else{
+				vol = (delta * BGM->vol) / float(-BGM->fade_val);	
+				if (vol >= BGM->vol){
+					vol = 0.0;
+					BGM->fade_val = 0;
+				}else vol = BGM->vol - vol;
+			}
+			
+			if (BGM->isStereo){
+				CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
+				CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
+			}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+			CSND_UpdateInfo(0);
+		}
+		
+		// Audio streaming feature
 		u32 block_mem = BGM->audiobuf_size>>1;
-		u32 curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
+		u32 curPos = BGM->samplerate * BGM->bytepersample * (delta / 1000);
 		if (curPos > block_mem * BGM->block_idx) UpdateWavStream(BGM); // TODO: Add other formats support
 			
 	}
@@ -89,7 +123,10 @@ CtrAudio::CtrAudio() :
 }
 
 CtrAudio::~CtrAudio() {
-	SE_Stop(); // Just to be sure to clean up before exiting
+	
+	// Just to be sure to clean up before exiting
+	SE_Stop();
+	BGM_Stop();
 	
 	// Closing BGM streaming thread
 	termStream = true;
@@ -110,6 +147,14 @@ void CtrAudio::BGM_OnPlayedOnce() {
 
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 
+	// If a BGM is currently playing, we kill it
+	if (BGM != NULL){
+		DecodedMusic* tmp = BGM;
+		BGM = NULL;
+		linearFree(tmp->audiobuf);
+		free(tmp);
+	}
+	
 	// Searching for the file
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
@@ -128,9 +173,16 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	
 	// Processing music info
 	samplerate = BGM->samplerate;
-	int codec = SOUND_FORMAT(BGM->format);	
-	float vol = volume / 100.0;
+	int codec = SOUND_FORMAT(BGM->format);
 	
+	// Setting music volume
+	BGM->vol = volume / 100.0;
+	float vol = BGM->vol;
+	BGM->fade_val = fadein;
+	if (BGM->fade_val != 0){
+		vol = 0.0;
+	}
+
 	#ifndef NO_DEBUG
 	Output::Debug("Playing music %s:",file.c_str());
 	Output::Debug("Samplerate: %i",samplerate);
@@ -175,6 +227,7 @@ void CtrAudio::BGM_Stop() {
 	CSND_SetPlayState(0x1E, 0);
 	CSND_SetPlayState(0x1F, 0);
 	CSND_UpdateInfo(0);
+	BGM->isPlaying = false;
 }
 
 bool CtrAudio::BGM_PlayedOnce() {
@@ -200,7 +253,7 @@ void CtrAudio::BGM_Pitch(int /* pitch */) {
 }
 
 void CtrAudio::BGM_Fade(int fade) {
-
+	BGM->fade_val = -fade;
 }
 
 void CtrAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {

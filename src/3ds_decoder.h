@@ -38,6 +38,8 @@ struct DecodedMusic{
 	u32 block_idx;
 	bool playedOnce;
 	bool isPlaying;
+	int fade_val;
+	float vol;
 };
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound);
