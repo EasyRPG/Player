@@ -240,6 +240,7 @@ unsigned CtrAudio::BGM_GetTicks() {
 }
 
 void CtrAudio::BGM_Volume(int volume) {
+	if (BGM == NULL) return;
 	float vol = volume / 100.0;
 	if (BGM->isStereo){
 		CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
@@ -253,6 +254,7 @@ void CtrAudio::BGM_Pitch(int /* pitch */) {
 }
 
 void CtrAudio::BGM_Fade(int fade) {
+	if (BGM == NULL) return;
 	BGM->fade_val = -fade;
 }
 
