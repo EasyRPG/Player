@@ -188,8 +188,11 @@ unsigned CtrAudio::BGM_GetTicks() {
 
 void CtrAudio::BGM_Volume(int volume) {
 	float vol = volume / 100.0;
-	CSND_SetVol(0x1E, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
-	CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+	if (BGM->isStereo){
+		CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
+		CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
+	}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+	CSND_UpdateInfo(0);
 }
 
 void CtrAudio::BGM_Pitch(int /* pitch */) {
