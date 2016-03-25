@@ -281,6 +281,14 @@ void UpdateWavStream(){
 	
 }
 
+void CloseWav(){
+	fclose(BGM->handle);
+}
+
+void CloseOgg(){
+	ov_clear((OggVorbis_File*)BGM->handle);
+}
+
 int OpenWav(FILE* stream, DecodedMusic* Sound){
 	
 	// Grabbing info from the header
@@ -340,6 +348,7 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	Sound->handle = stream;
 	Sound->eof_idx = 0xFFFFFFFF;
 	Sound->updateCallback = UpdateWavStream;
+	Sound->closeCallback = CloseWav;
 	
 	return 0;
 }
@@ -406,6 +415,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	Sound->handle = (FILE*)vf; // We pass libogg filestream instead of stdio ones
 	Sound->eof_idx = 0xFFFFFFFF;
 	Sound->updateCallback = UpdateOggStream;
+	Sound->closeCallback = CloseOgg;
 	
 	return 0;
 }

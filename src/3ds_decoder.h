@@ -42,6 +42,7 @@ struct DecodedMusic{
 	int fade_val;
 	float vol;
 	void (*updateCallback)();
+	void (*closeCallback)();
 };
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound);

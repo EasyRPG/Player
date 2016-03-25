@@ -131,8 +131,10 @@ CtrAudio::~CtrAudio() {
 	while (termStream){} // Wait for thread exiting...
 	if (BGM != NULL){
 		linearFree(BGM->audiobuf);
+		BGM->closeCallback();
 		free(BGM);
 	}
+	
 	csndExit();	
 	#ifdef USE_CACHE
 	freeCache();
