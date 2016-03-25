@@ -152,6 +152,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		DecodedMusic* tmp = BGM;
 		BGM = NULL;
 		linearFree(tmp->audiobuf);
+		BGM->closeCallback();
 		free(tmp);
 	}
 	
@@ -309,12 +310,12 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 			return;
 		}
 	}
+	#ifndef USE_CACHE
 	if (audiobuffers[i] != NULL){
-		#ifndef USE_CACHE
 		linearFree(audiobuffers[i]);
-		#endif
 		audiobuffers[i] = NULL;
 	}
+	#endif
 	
 	// Init needed vars
 	bool isStereo = false;
@@ -406,19 +407,19 @@ void CtrAudio::SE_Stop() {
 
 void CtrAudio::Update() {	
 	
-	// Closing and freeing finished sounds
+	#ifndef USE_CACHE
+	// Closing and freeing finished sounds	
 	for(int i=0;i<num_channels;i++){
 		if (audiobuffers[i] != NULL){
 			u8 isPlaying;
 			csndIsPlaying(i+0x08, &isPlaying);
 			if (!isPlaying){
-				#ifndef USE_CACHE
 				linearFree(audiobuffers[i]);
-				#endif
 				audiobuffers[i] = NULL;
 			}
 		}
 	}
+	#endif
 	
 }
 
