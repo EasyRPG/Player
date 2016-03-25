@@ -31,10 +31,14 @@
 
 // BGM audio streaming thread
 volatile bool termStream = false;
+volatile bool criticalPhase = false;
 DecodedMusic* BGM = NULL;
 static void streamThread(void* arg){
 	
 	for(;;) {
+		
+		// A super bad way to do mutual exclusion
+		criticalPhase = false;
 		
 		// Looks like if we delete this, thread will crash
 		svcSleepThread(10000);
@@ -45,10 +49,10 @@ static void streamThread(void* arg){
 			threadExit(0);
 		}
 		
-		
 		if (BGM == NULL) continue; // No BGM detected
 		else if (BGM->starttick == 0) continue; // BGM not started
 		else if (!BGM->isPlaying) continue; // BGM paused
+		criticalPhase = true;
 		
 		// Calculating delta in milliseconds
 		u64 delta = (osGetTime() - BGM->starttick);
@@ -149,11 +153,11 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 	// If a BGM is currently playing, we kill it
 	if (BGM != NULL){
-		DecodedMusic* tmp = BGM;
-		BGM = NULL;
-		linearFree(tmp->audiobuf);
+		while (criticalPhase){} // Wait secondary thread
+		linearFree(BGM->audiobuf);
 		BGM->closeCallback();
-		free(tmp);
+		free(BGM);
+		BGM = NULL;
 	}
 	
 	// Searching for the file
@@ -380,12 +384,11 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		if (audiobuffers[z] != NULL) linearFree(audiobuffers[z]);
 		#endif
 		
+		#ifndef USE_CACHE
 		// To not waste CPU clocks, we use a single audiobuffer for both channels so we put just a stubbed audiobuffer on right channel
-		#ifdef USE_CACHE
-		audiobuffers[z] = audiobuffers[i]; // If we use cache we only need to be sure the audiobuffer is not NULL
-		#else
 		audiobuffers[z] = (u8*)linearAlloc(1);
 		#endif
+		
 		int chnbuf_size = audiobuf_size>>1;
 		csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, -1.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], chnbuf_size); // Left
 		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), (u32*)(audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
@@ -399,8 +402,8 @@ void CtrAudio::SE_Stop() {
 		CSND_SetPlayState(i+0x08, 0);
 		#ifndef USE_CACHE
 		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
-		#endif
 		audiobuffers[i] = NULL;
+		#endif
 	}
 	CSND_UpdateInfo(0);
 }
