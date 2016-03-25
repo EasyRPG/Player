@@ -32,7 +32,6 @@
 // BGM audio streaming thread
 volatile bool termStream = false;
 DecodedMusic* BGM = NULL;
-Handle updateStream;
 static void streamThread(void* arg){
 	
 	for(;;) {
@@ -87,7 +86,7 @@ static void streamThread(void* arg){
 		// Audio streaming feature
 		u32 block_mem = BGM->audiobuf_size>>1;
 		u32 curPos = BGM->samplerate * BGM->bytepersample * (delta / 1000);
-		if (curPos > block_mem * BGM->block_idx) UpdateWavStream(BGM); // TODO: Add other formats support
+		if (curPos > block_mem * BGM->block_idx) BGM->updateCallback();
 			
 	}
 }
@@ -113,8 +112,7 @@ CtrAudio::CtrAudio() :
 	#endif
 	
 	// Starting a secondary thread on SYSCORE for BGM streaming
-	svcCreateEvent(&updateStream,0);
-	threadCreate(streamThread, NULL, 8192, 0x18, 1, true);
+	threadCreate(streamThread, NULL, 32768, 0x18, 1, true);
 	
 	#ifdef USE_CACHE
 	initCache();

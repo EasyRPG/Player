@@ -31,6 +31,7 @@
 #else
 #include "3ds_decoder.h"
 #endif
+extern DecodedMusic* BGM;
 
 /*	
 	+-----------------------------------------------------+
@@ -184,8 +185,8 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 	if (magic == 0x46464952) return DecodeWav(stream, Sound);
 	else if (magic == 0x5367674F) return DecodeOgg(stream, Sound);
 	else{
-		Output::Warning("Unsupported sound format (%s)", filename.c_str());
 		fclose(stream);
+		Output::Warning("Unsupported sound format (%s)", filename.c_str());
 		return -1;
 	}
 	
@@ -198,6 +199,84 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 	|                                                     |
 	+-----------------------------------------------------+
 */
+
+
+void UpdateOggStream(){	
+	DecodedMusic* Sound = BGM;
+	OggVorbis_File* vf = (OggVorbis_File*)Sound->handle;
+	Sound->block_idx++;	
+	u32 half_buf = Sound->audiobuf_size>>1;
+	int bytesRead = 0;
+	int current_section;
+	int half_check = (Sound->block_idx)%2;
+	if (!Sound->isStereo){ // Mono file
+		int i = half_check * half_buf;
+		while(bytesRead < half_buf){
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],2048,0,2,1,&current_section);
+			if (ret == 0){ // EoF
+				Sound->eof_idx = Sound->block_idx + 1;
+				// ov_pcm_seek
+			}else bytesRead = bytesRead + ret;
+		}
+	}else{ // Stereo file
+		char pcmout[2048];
+		u8* left_channel = Sound->audiobuf;
+		u8* right_channel = &Sound->audiobuf[half_buf];
+		int z = half_check * (half_buf>>1);
+		while(bytesRead < half_buf){
+			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			if (ret == 0){ // EoF
+				Sound->eof_idx = Sound->block_idx + 1;
+				// ov_pcm_seek
+			}else{
+				for (u32 i=0;i<ret;i=i+4){
+					memcpy(&left_channel[z],&pcmout[i],2);
+					memcpy(&right_channel[z],&pcmout[i+2],2);
+					z = z + 2;
+				}
+				bytesRead = bytesRead + ret;
+			}
+		}
+	}
+	
+}
+
+void UpdateWavStream(){
+	DecodedMusic* Sound = BGM;
+	Sound->block_idx++;	
+	u32 half_buf = Sound->audiobuf_size>>1;
+	int bytesRead;
+	int half_check = (Sound->block_idx)%2;
+	
+	// Mono file
+	if (!Sound->isStereo){
+		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
+		if (bytesRead != half_buf){ // EoF
+			Sound->eof_idx = Sound->block_idx + 1;
+			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+			fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
+		}
+		
+	// Stereo file
+	}else{
+		u8* left_channel = Sound->audiobuf;
+		u8* right_channel = Sound->audiobuf + half_buf;
+		u32 half_chn_size = half_buf>>1;
+		u16 byteperchannel = Sound->bytepersample>>1;
+		u32 z = half_chn_size * half_check;
+		for (u32 i=0;i<half_buf;i=i+Sound->bytepersample){
+			bytesRead = fread(left_channel + z, 1, byteperchannel, Sound->handle);
+			fread(right_channel + z, 1, byteperchannel, Sound->handle);
+			if (bytesRead != byteperchannel){ // EoF
+				Sound->eof_idx = Sound->block_idx + 1;
+				fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+				i=i-Sound->bytepersample;
+			}else z=z+byteperchannel;
+		}
+	}
+	
+}
+
 int OpenWav(FILE* stream, DecodedMusic* Sound){
 	
 	// Grabbing info from the header
@@ -256,43 +335,76 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	Sound->block_idx = 1;
 	Sound->handle = stream;
 	Sound->eof_idx = 0xFFFFFFFF;
+	Sound->updateCallback = UpdateWavStream;
 	
 	return 0;
 }
 
-void UpdateWavStream(DecodedMusic* Sound){	
-	Sound->block_idx++;	
-	u32 half_buf = Sound->audiobuf_size>>1;
-	int bytesRead;
-	int half_check = (Sound->block_idx)%2;
-	// Mono file
-	if (!Sound->isStereo){
-		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
-		if (bytesRead != half_buf){ // EoF
-			Sound->eof_idx = Sound->block_idx + 1;
-			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
-			fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
+
+int OpenOgg(FILE* stream, DecodedMusic* Sound){
+	
+	// Passing filestream to libogg
+	int eof=0;
+	OggVorbis_File* vf = (OggVorbis_File*)malloc(sizeof(OggVorbis_File));
+	static int current_section;
+	fseek(stream, 0, SEEK_SET);
+	if(ov_open(stream, vf, NULL, 0) != 0)
+	{
+		fclose(stream);
+		Output::Warning("Corrupt ogg file");
+		return -1;
+	}
+	
+	// Grabbing info from the header
+	vorbis_info* my_info = ov_info(vf,-1);
+	Sound->samplerate = my_info->rate;
+	Sound->format = CSND_ENCODING_PCM16;
+	u16 audiotype = my_info->channels;
+	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
+	if (audiotype == 2) Sound->isStereo = true;
+	else Sound->isStereo = false;
+	
+	// Preparing PCM16 audiobuffer
+	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
+	while (Sound->audiobuf_size > BGM_BUFSIZE){
+		Sound->audiobuf_size = Sound->audiobuf_size>>1;
+	}
+	
+	// Decoding Vorbis buffer
+	int i = 0;
+	if (audiotype == 1){ // Mono file
+		while(!eof){
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],2048,0,2,1,&current_section);
+			if (ret == 0) eof=1;
+			else i = i + ret;
 		}
-	// Stereo file
-	}else{
+	}else{ // Stereo file
+		char pcmout[2048];
+		int z = 0;
+		u32 chn_size = Sound->audiobuf_size>>1;
 		u8* left_channel = Sound->audiobuf;
-		u8* right_channel = &Sound->audiobuf[half_buf];
-		u32 half_chn_size = half_buf>>1;
-		u16 byteperchannel = Sound->bytepersample>>1;
-		int z = half_chn_size * half_check;
-		for (u32 i=0;i<half_buf;i=i+Sound->bytepersample){
-			bytesRead = fread(&left_channel[z], 1, byteperchannel, Sound->handle);
-			fread(&right_channel[z], 1, byteperchannel, Sound->handle);
-			if (bytesRead != byteperchannel){ // EoF
-				Sound->eof_idx = Sound->block_idx + 1;
-				fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
-				i=i-Sound->bytepersample;
-			}else z=z+byteperchannel;
+		u8* right_channel = &Sound->audiobuf[chn_size];
+		while(!eof){
+			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			if (ret == 0) eof=1;
+			else{
+				for (u32 i=0;i<ret;i=i+4){
+					memcpy(&left_channel[z],&pcmout[i],2);
+					memcpy(&right_channel[z],&pcmout[i+2],2);
+					z = z + 2;
+				}
+			}
 		}
 	}
 	
+	//Setting default streaming values
+	Sound->block_idx = 1;
+	Sound->handle = (FILE*)vf; // We pass libogg filestream instead of stdio ones
+	Sound->eof_idx = 0xFFFFFFFF;
+	Sound->updateCallback = UpdateOggStream;
+	
+	return 0;
 }
-
 
 int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
 	
@@ -307,6 +419,7 @@ int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
 	u32 magic;
 	fread(&magic, 4, 1, stream);
 	if (magic == 0x46464952) return OpenWav(stream, Sound);
+	else if (magic == 0x5367674F) return OpenOgg(stream, Sound);
 	else{
 		fclose(stream);
 		Output::Warning("Unsupported music format (%s)", filename.c_str());
