@@ -118,7 +118,7 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::X] = (input & KEY_B);
 	keys[Input::Keys::N8] = (input & KEY_X);
 	keys[Input::Keys::F12] = (input & KEY_SELECT);
-	Player::exit_flag = (input & KEY_START);
+	keys[Input::Keys::ESCAPE] = (input & KEY_START);
 	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
 	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
 	keys[Input::Keys::UP] = (input & KEY_DUP);
