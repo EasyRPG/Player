@@ -17,6 +17,7 @@
 
 // Headers
 #include <cstdlib>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include "audio.h"

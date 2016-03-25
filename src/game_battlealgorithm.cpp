@@ -18,6 +18,7 @@
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
+#include <algorithm>
 #include <sstream>
 #include "game_actor.h"
 #include "game_battle.h"
