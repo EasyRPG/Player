@@ -56,7 +56,7 @@ CtrUi::CtrUi(int width, int height) :
 		0xFF000000,
 		PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-	main_surface = Bitmap::Create(width, height, false, 32);
+	main_surface = Bitmap::Create(width, height, true, 32);
 	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
 	                                             main_surface->GetWidth(), main_surface->GetHeight(), 
 	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);

@@ -118,10 +118,6 @@ void Graphics::Update(bool time_left) {
 
 		next_fps_time = current_time + 1000;
 		
-		#ifndef NO_DEBUG
-		Output::Debug("FPS: %i",real_fps);
-		#endif
-		
 		UpdateTitle();
 	}
 
