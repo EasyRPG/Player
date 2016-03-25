@@ -16,7 +16,8 @@
  */
 
 #define BGM_BUFSIZE 524288 // Max dimension of BGM buffer size
- 
+#define OGG_BUFSIZE 2048 // Max dimension of PCM16 decoded block by libogg
+
 struct DecodedSound{
 	bool isStereo;
 	u8* audiobuf;
@@ -45,4 +46,3 @@ struct DecodedMusic{
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound);
 int DecodeMusic(std::string const& filename, DecodedMusic* Sound);
-void UpdateWavStream(DecodedMusic* Sound);

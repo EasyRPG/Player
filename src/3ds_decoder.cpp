@@ -75,18 +75,18 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	int i = 0;
 	if (audiotype == 1){ // Mono file
 		while(!eof){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],2048,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0) eof=1;
 			else i = i + ret;
 		}
 	}else{ // Stereo file
-		char pcmout[2048];
+		char pcmout[OGG_BUFSIZE];
 		int z = 0;
 		u32 chn_size = Sound->audiobuf_size>>1;
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = &Sound->audiobuf[chn_size];
 		while(!eof){
-			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0) eof=1;
 			else{
 				for (u32 i=0;i<ret;i=i+4){
@@ -212,22 +212,22 @@ void UpdateOggStream(){
 	if (!Sound->isStereo){ // Mono file
 		int i = half_check * half_buf;
 		while(bytesRead < half_buf){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],2048,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0){ // EoF
 				Sound->eof_idx = Sound->block_idx + 1;
-				// ov_pcm_seek
+				ov_pcm_seek(vf,0);
 			}else bytesRead = bytesRead + ret;
 		}
 	}else{ // Stereo file
-		char pcmout[2048];
+		char pcmout[OGG_BUFSIZE];
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = &Sound->audiobuf[half_buf];
 		int z = half_check * (half_buf>>1);
 		while(bytesRead < half_buf){
-			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0){ // EoF
 				Sound->eof_idx = Sound->block_idx + 1;
-				// ov_pcm_seek
+				ov_pcm_seek(vf,0);
 			}else{
 				for (u32 i=0;i<ret;i=i+4){
 					memcpy(&left_channel[z],&pcmout[i],2);
@@ -264,15 +264,19 @@ void UpdateWavStream(){
 		u32 half_chn_size = half_buf>>1;
 		u16 byteperchannel = Sound->bytepersample>>1;
 		u32 z = half_chn_size * half_check;
-		for (u32 i=0;i<half_buf;i=i+Sound->bytepersample){
-			bytesRead = fread(left_channel + z, 1, byteperchannel, Sound->handle);
-			fread(right_channel + z, 1, byteperchannel, Sound->handle);
-			if (bytesRead != byteperchannel){ // EoF
-				Sound->eof_idx = Sound->block_idx + 1;
-				fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
-				i=i-Sound->bytepersample;
-			}else z=z+byteperchannel;
+		u8* tmp_buf = (u8*)linearAlloc(half_buf);
+		bytesRead = fread(tmp_buf, 1, half_buf, Sound->handle);
+		if (bytesRead != half_buf){ // EoF
+			Sound->eof_idx = Sound->block_idx + 1;
+			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
+			fread(tmp_buf, 1, half_buf, Sound->handle);
 		}
+		for (u32 i=0;i<half_buf;i=i+Sound->bytepersample){
+			memcpy(&left_channel[z],&tmp_buf[i],2);
+			memcpy(&right_channel[z],&tmp_buf[i+2],2);
+			z = z + 2;	
+		}
+		linearFree(tmp_buf);
 	}
 	
 }
@@ -374,18 +378,18 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	int i = 0;
 	if (audiotype == 1){ // Mono file
 		while(!eof){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],2048,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0) eof=1;
 			else i = i + ret;
 		}
 	}else{ // Stereo file
-		char pcmout[2048];
+		char pcmout[OGG_BUFSIZE];
 		int z = 0;
 		u32 chn_size = Sound->audiobuf_size>>1;
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = &Sound->audiobuf[chn_size];
 		while(!eof){
-			long ret=ov_read(vf,pcmout,2048,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0) eof=1;
 			else{
 				for (u32 i=0;i<ret;i=i+4){
