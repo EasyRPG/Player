@@ -1,4 +1,6 @@
 Thank you for supporting EasyRPG Player.
+Before creating an issue please verify that your bug does still occur in the "continuous builds" of the Player. You can get them at the bottom of our [download section](https://easy-rpg.org/player/downloads/).
+
 Please fill in the fields before submitting an issue:
 
 __Name of the game__:
