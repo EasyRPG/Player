@@ -44,7 +44,6 @@ CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
 	frame = 0;
 	sf2d_init();
-	sf2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
@@ -59,7 +58,7 @@ CtrUi::CtrUi(int width, int height) :
 	main_surface = Bitmap::Create(width, height, true, 32);
 	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
 	                                             main_surface->GetWidth(), main_surface->GetHeight(), 
-	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	                                             TEXFMT_RGBA8, SF2D_PLACE_VRAM);
 												 
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new CtrAudio());
