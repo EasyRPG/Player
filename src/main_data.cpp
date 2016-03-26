@@ -37,6 +37,12 @@
 	#include <unistd.h>
 #endif
 
+#ifdef _3DS
+	#include <3ds.h>
+	#include "output.h"
+	#include <stdio.h>
+#endif
+
 // Global variables.
 
 Game_Variables_Class Game_Variables;
@@ -69,7 +75,18 @@ void Main_Data::Init() {
 			getcwd(gekko_dir, 255);
 			project_path = std::string(gekko_dir);
 #else
-			project_path = ".";
+	
+	#if defined(_3DS) && !defined(CITRA3DS_COMPATIBLE)
+	// Check if romFs has some files inside or not
+	FILE* testfile = fopen("romfs:/Map0001.lmu","r");
+	if (testfile != NULL){
+		Output::Debug("Detected a project on romFs filesystem...");
+		fclose(testfile);
+		project_path = "romfs:/";
+		save_path = "sdmc:/";
+	}else 
+	#endif
+	project_path = ".";
 #endif
 		}
 

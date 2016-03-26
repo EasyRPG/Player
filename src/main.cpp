@@ -59,6 +59,13 @@ extern "C" int main(int argc, char* argv[]) {
 		else haxInit();
 		consoleClear();
 	}
+	
+	fsInit();
+	#ifndef CITRA3DS_COMPATIBLE
+	romfsInit();
+	#endif
+	sdmcInit();
+	
 	#endif
 	
 	hidInit();
@@ -77,8 +84,11 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Run();
 	
 	#ifdef _3DS
-		hidExit();
-		gfxExit();
+	hidExit();
+	gfxExit();
+	sdmcExit();
+	romfsExit();
+	fsExit();
 	#endif
 	
 	return EXIT_SUCCESS;
