@@ -176,10 +176,8 @@ struct ALAudio::source {
 		fluid_settings_setint(settings.get(), "synth.lock-memory", 0);
 
 		synth.reset(new_fluid_synth(settings.get()), &delete_fluid_synth);
-		if (fluid_synth_sfload(synth.get(), getenv("DEFAULT_SOUNDFONT"), 1) == FLUID_FAILED) {
+		if (fluid_synth_sfload(synth.get(), getenv("DEFAULT_SOUNDFONT"), 1) == FLUID_FAILED)
 			Output::Error("Couldn't load soundfont\n%s.", getenv("DEFAULT_SOUNDFONT"));
-			return;
-		}
 
 		double sample_rate = 0;
 		fluid_settings_getnum(settings.get(), "synth.sample-rate", &sample_rate);

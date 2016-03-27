@@ -107,7 +107,7 @@ namespace Output {
 	 *
 	 * @param fmt formatted error to display.
 	 */
-	void Error(const char* fmt, ...);
+	[[noreturn]] void Error(const char* fmt, ...);
 
 	/**
 	 * Display an error message and closes the player
@@ -115,7 +115,7 @@ namespace Output {
 	 *
 	 * @param err error to display.
 	 */
-	void ErrorStr(std::string const& err);
+	[[noreturn]] void ErrorStr(std::string const& err);
 
 	/**
 	 * Prints a debug message to the console.
