@@ -19,7 +19,18 @@
 #include "utils.h"
 #include <algorithm>
 #include <cctype>
+
 #include <boost/regex/pending/unicode_iterator.hpp>
+
+#ifdef BOOST_NO_EXCEPTIONS
+#  include <exception>
+#  include <boost/throw_exception.hpp>
+#  include "output.h"
+
+	void boost::throw_exception(std::exception const& exp) {
+		Output::Error("exception: %s", exp.what());
+	}
+#endif
 
 using boost::u8_to_u32_iterator;
 using boost::u16_to_u32_iterator;
@@ -38,58 +49,58 @@ std::string Utils::UpperCase(const std::string& str) {
 	return result;
 }
 
-Utils::utf16_string Utils::DecodeUTF16(const std::string& str) {
-	utf32_string const tmp = DecodeUTF32(str);
-	return utf16_string(u32_to_u16_iterator<utf32_string::const_iterator>(tmp.begin()),
-						u32_to_u16_iterator<utf32_string::const_iterator>(tmp.end  ()));
+std::u16string Utils::DecodeUTF16(const std::string& str) {
+	std::u32string const tmp = DecodeUTF32(str);
+	return std::u16string(u32_to_u16_iterator<std::u32string::const_iterator>(tmp.begin()),
+						u32_to_u16_iterator<std::u32string::const_iterator>(tmp.end  ()));
 }
 
-Utils::utf32_string Utils::DecodeUTF32(const std::string& str) {
-	return utf32_string(u8_to_u32_iterator<std::string::const_iterator>(str.begin(), str.begin(), str.end()),
+std::u32string Utils::DecodeUTF32(const std::string& str) {
+	return std::u32string(u8_to_u32_iterator<std::string::const_iterator>(str.begin(), str.begin(), str.end()),
 						u8_to_u32_iterator<std::string::const_iterator>(str.end  (), str.begin(), str.end()));
 }
 
-std::string Utils::EncodeUTF(const Utils::utf16_string& str) {
-	utf32_string const tmp(u16_to_u32_iterator<utf16_string::const_iterator>(str.begin(), str.begin(), str.end()),
-						   u16_to_u32_iterator<utf16_string::const_iterator>(str.end  (), str.begin(), str.end()));
-	return std::string(u32_to_u8_iterator<utf32_string::const_iterator>(tmp.begin()),
-					   u32_to_u8_iterator<utf32_string::const_iterator>(tmp.end  ()));
+std::string Utils::EncodeUTF(const std::u16string& str) {
+	std::u32string const tmp(u16_to_u32_iterator<std::u16string::const_iterator>(str.begin(), str.begin(), str.end()),
+						   u16_to_u32_iterator<std::u16string::const_iterator>(str.end  (), str.begin(), str.end()));
+	return std::string(u32_to_u8_iterator<std::u32string::const_iterator>(tmp.begin()),
+					   u32_to_u8_iterator<std::u32string::const_iterator>(tmp.end  ()));
 }
 
-std::string Utils::EncodeUTF(const Utils::utf32_string& str) {
-	return std::string(u32_to_u8_iterator<utf32_string::const_iterator>(str.begin()),
-					   u32_to_u8_iterator<utf32_string::const_iterator>(str.end  ()));
+std::string Utils::EncodeUTF(const std::u32string& str) {
+	return std::string(u32_to_u8_iterator<std::u32string::const_iterator>(str.begin()),
+					   u32_to_u8_iterator<std::u32string::const_iterator>(str.end  ()));
 }
 
 template<size_t WideSize>
-static Utils::wstring ToWideStringImpl(const std::string&);
+static std::wstring ToWideStringImpl(const std::string&);
 template<> // utf16
-Utils::wstring ToWideStringImpl<2>(const std::string& str) {
-	Utils::utf16_string const tmp = Utils::DecodeUTF16(str);
-	return Utils::wstring(tmp.begin(), tmp.end());
+std::wstring ToWideStringImpl<2>(const std::string& str) {
+	std::u16string const tmp = Utils::DecodeUTF16(str);
+	return std::wstring(tmp.begin(), tmp.end());
 }
 template<> // utf32
-Utils::wstring ToWideStringImpl<4>(const std::string& str) {
-	Utils::utf32_string const tmp = Utils::DecodeUTF32(str);
-	return Utils::wstring(tmp.begin(), tmp.end());
+std::wstring ToWideStringImpl<4>(const std::string& str) {
+	std::u32string const tmp = Utils::DecodeUTF32(str);
+	return std::wstring(tmp.begin(), tmp.end());
 }
 
-Utils::wstring Utils::ToWideString(const std::string& str) {
+std::wstring Utils::ToWideString(const std::string& str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
 }
 
 template<size_t WideSize>
-static std::string FromWideStringImpl(const Utils::wstring&);
+static std::string FromWideStringImpl(const std::wstring&);
 template<> // utf16
-std::string FromWideStringImpl<2>(const Utils::wstring& str) {
-	return Utils::EncodeUTF(Utils::utf16_string(str.begin(), str.end()));
+std::string FromWideStringImpl<2>(const std::wstring& str) {
+	return Utils::EncodeUTF(std::u16string(str.begin(), str.end()));
 }
 template<> // utf32
-std::string FromWideStringImpl<4>(const Utils::wstring& str) {
-	return Utils::EncodeUTF(Utils::utf32_string(str.begin(), str.end()));
+std::string FromWideStringImpl<4>(const std::wstring& str) {
+	return Utils::EncodeUTF(std::u32string(str.begin(), str.end()));
 }
 
-std::string Utils::FromWideString(const Utils::wstring& str) {
+std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
 

@@ -28,8 +28,6 @@
 #include <cctype>
 #include <iterator>
 
-#include <boost/regex/pending/unicode_iterator.hpp>
-
 void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
 	if (text.length() == 0) return;
 
@@ -65,13 +63,11 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
-	for (boost::u8_to_u32_iterator<std::string::const_iterator>
-			 c(text.begin(), text.begin(), text.end()),
-			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
+	std::u32string u32text = Utils::DecodeUTF32(text);
+	for (auto c = u32text.begin(), end = u32text.end(); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = std::next(c);
-		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
+		char32_t const next_c = std::distance(c, end) > 1? *std::next(c) : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (*c == '$' && std::isalpha(next_c)) {
@@ -96,8 +92,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			// Skip the next character
 			++c;
 		} else {
-			std::string const glyph(c.base(), next_c_it.base());
-			next_glyph_pos += font->GetSize(glyph).width;
+			next_glyph_pos += font->GetSize(std::u32string(1, *c)).width;
 		}
 	}
 
@@ -120,20 +115,16 @@ void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text
 
 	int next_glyph_pos = 0;
 
-	for (boost::u8_to_u32_iterator<std::string::const_iterator>
-			 c(text.begin(), text.begin(), text.end()),
-			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
-		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = std::next(c);
-
-		std::string const glyph(c.base(), next_c_it.base());
-		if (*c == '\n') {
+	for (char32_t c : Utils::DecodeUTF32(text)) {
+		std::u32string const glyph = std::u32string(1, c);
+		if (c == U'\n') {
 			y += font->GetSize(glyph).height;
 			next_glyph_pos = 0;
 			continue;
 		}
 		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
 
-		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, *c);
+		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, c);
 		
 		next_glyph_pos += font->GetSize(glyph).width;
 	}

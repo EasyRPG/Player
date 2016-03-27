@@ -19,13 +19,6 @@
 #define _MEMORY_MANAGEMENT_H_
 
 // Headers
-#include <stdint.h>
-#include <boost/config.hpp>
-
-#ifdef BOOST_NO_CWCHAR
-typedef uint32_t wchar_t;
-#endif
-
 #include <memory>
 
 class Bitmap;

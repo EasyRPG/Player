@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <exception>
 
 #ifdef GEKKO
 #  include <unistd.h>
@@ -44,14 +43,6 @@
 #include "main_data.h"
 #include "message_overlay.h"
 #include "utils.h"
-
-#ifdef BOOST_NO_EXCEPTIONS
-#  include <boost/throw_exception.hpp>
-
-	void boost::throw_exception(std::exception const& exp) {
-		Output::Error("exception: %s", exp.what());
-	}
-#endif
 
 namespace {
 	std::ofstream LOG_FILE;

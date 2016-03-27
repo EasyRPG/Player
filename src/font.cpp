@@ -20,8 +20,6 @@
 #include <type_traits>
 #include <vector>
 
-#include <boost/regex/pending/unicode_iterator.hpp>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_BITMAP_H
@@ -45,7 +43,7 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 namespace {
 	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
 	face_cache_type face_cache;
-	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
+	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, char32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
 		if(ret != (data + size) && ret->code == code) {
 			return ret;
@@ -56,12 +54,12 @@ namespace {
 		}
 	}
 
-	ShinonomeGlyph const* find_gothic_glyph(uint32_t code) {
+	ShinonomeGlyph const* find_gothic_glyph(char32_t code) {
 		return find_glyph(SHINONOME_GOTHIC,
 						  sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
 	}
 
-	ShinonomeGlyph const* find_mincho_glyph(uint32_t code) {
+	ShinonomeGlyph const* find_mincho_glyph(char32_t code) {
 		ShinonomeGlyph const* const mincho =
 			find_glyph(SHINONOME_MINCHO,
 					   sizeof(SHINONOME_MINCHO) / sizeof(ShinonomeGlyph), code);
@@ -71,13 +69,13 @@ namespace {
 	struct ShinonomeFont : public Font {
 		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2 };
 
-		typedef ShinonomeGlyph const*(*function_type)(uint32_t);
+		using function_type = ShinonomeGlyph const*(*)(char32_t);
 
 		ShinonomeFont(function_type func);
 
-		Rect GetSize(std::string const& txt) const;
+		Rect GetSize(std::u32string const& txt) const;
 
-		BitmapRef Glyph(unsigned code);
+		BitmapRef Glyph(char32_t code);
 
 	private:
 		function_type const func_;
@@ -99,9 +97,9 @@ namespace {
 	struct FTFont : public Font  {
 		FTFont(const std::string& name, int size, bool bold, bool italic);
 
-		Rect GetSize(std::string const& txt) const;
+		Rect GetSize(std::u32string const& txt) const;
 
-		BitmapRef Glyph(unsigned code);
+		BitmapRef Glyph(char32_t code);
 
 	private:
 		static std::weak_ptr<std::remove_pointer<FT_Library>::type> library_checker_;
@@ -118,28 +116,25 @@ namespace {
 
 	struct ExFont : public Font {
 		ExFont();
-		Rect GetSize(std::string const& txt) const;
-		BitmapRef Glyph(unsigned code);
+		Rect GetSize(std::u32string const& txt) const;
+		BitmapRef Glyph(char32_t code);
 	};
 } // anonymous namespace
 
 ShinonomeFont::ShinonomeFont(ShinonomeFont::function_type func)
 	: Font("Shinonome", HEIGHT, false, false), func_(func) {}
 
-Rect ShinonomeFont::GetSize(std::string const& txt) const {
-	typedef boost::u8_to_u32_iterator<std::string::const_iterator> iterator;
+Rect ShinonomeFont::GetSize(std::u32string const& txt) const {
 	size_t units = 0;
-	iterator i(txt.begin(), txt.begin(), txt.end());
-	iterator const end(txt.end(), txt.begin(), txt.end());
-	for(; i != end; ++i) {
-		ShinonomeGlyph const* const glyph = func_(*i);
+	for (char32_t c : txt) {
+		ShinonomeGlyph const* const glyph = func_(c);
 		assert(glyph);
 		units += glyph->is_full? 2 : 1;
 	}
 	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
 }
 
-BitmapRef ShinonomeFont::Glyph(unsigned code) {
+BitmapRef ShinonomeFont::Glyph(char32_t code) {
 	ShinonomeGlyph const* const glyph = func_(code);
 	assert(glyph);
 	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
@@ -159,21 +154,20 @@ std::weak_ptr<std::remove_pointer<FT_Library>::type> FTFont::library_checker_;
 FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
 	: Font(name, size, bold, italic), current_size_(0) {}
 
-Rect FTFont::GetSize(std::string const& txt) const {
-	Utils::wstring tmp = Utils::ToWideString(txt);
+Rect FTFont::GetSize(std::u32string const& txt) const {
 	int const s = Font::Default()->GetSize(txt).width;
 
 	if (s == -1) {
 		Output::Warning("Text contains invalid chars.\n"\
 			"Is the encoding correct?");
 
-		return Rect(0, 0, pixel_size() * txt.size() / 2, pixel_size());
+		return Rect(0, 0, pixel_size() * txt.length() / 2, pixel_size());
 	} else {
 		return Rect(0, 0, s, pixel_size());
 	}
 }
 
-BitmapRef FTFont::Glyph(unsigned glyph) {
+BitmapRef FTFont::Glyph(char32_t glyph) {
 	if(!check_face()) {
 		return Font::Default()->Glyph(glyph);
 	}
@@ -231,6 +225,10 @@ Font::Font(const std::string& name, int size, bool bold, bool italic)
 	, bold(bold)
 	, italic(italic)
 {
+}
+
+Rect Font::GetSize(std::string const& txt) const {
+	return GetSize(Utils::DecodeUTF32(txt));
 }
 
 bool FTFont::check_face() {
@@ -298,7 +296,7 @@ bool FTFont::check_face() {
 	return true;
 }
 
-void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, unsigned code) {
+void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, char32_t code) {
 	if(color != ColorShadow) {
 		BitmapRef system = Cache::System();
 		Render(bmp, x + 1, y + 1, system->GetShadowColor(), code);
@@ -313,7 +311,7 @@ void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int 
 	bmp.MaskedBlit(Rect(x, y, bm->width(), bm->height()), *bm, 0, 0, sys, src_x, src_y);
 }
 
-void Font::Render(Bitmap& bmp, int x, int y, Color const& color, unsigned code) {
+void Font::Render(Bitmap& bmp, int x, int y, Color const& color, char32_t code) {
 	BitmapRef bm = Glyph(code);
 
 	bmp.MaskedBlit(Rect(x, y, bm->width(), bm->height()), *bm, 0, 0, color);
@@ -324,13 +322,12 @@ ExFont::ExFont() : Font("exfont", 12, false, false) {
 
 FontRef Font::exfont = std::make_shared<ExFont>();
 
-BitmapRef ExFont::Glyph(unsigned code) {
+BitmapRef ExFont::Glyph(char32_t code) {
 	BitmapRef exfont = Cache::Exfont();
 	Rect const rect((code % 13) * 12, (code / 13) * 12, 12, 12);
 	return Bitmap::Create(*exfont, rect, true);
 }
 
-Rect ExFont::GetSize(std::string const& /* txt */) const {
+Rect ExFont::GetSize(std::u32string const& /* txt */) const {
 	return Rect(0, 0, 12, 12);
 }
-

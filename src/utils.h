@@ -23,15 +23,6 @@
 #include "system.h"
 
 namespace Utils {
-	typedef std::basic_string<uint16_t> utf16_string;
-	typedef std::basic_string<uint32_t> utf32_string;
-
-#ifdef BOOST_NO_CWCHAR
-	typedef std::basic_string<uint32_t> wstring;
-#else
-	using std::wstring;
-#endif
-
 	/**
 	 * Converts a string to lower case.
 	 *
@@ -54,7 +45,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	utf16_string DecodeUTF16(const std::string& str);
+	std::u16string DecodeUTF16(const std::string& str);
 
 	/**
 	 * Converts UTF-8 to UTF-32.
@@ -62,7 +53,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	utf32_string DecodeUTF32(const std::string& str);
+	std::u32string DecodeUTF32(const std::string& str);
 
 	/**
 	 * Converts UTF-16 to UTF-8.
@@ -70,7 +61,7 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string EncodeUTF(const utf16_string& str);
+	std::string EncodeUTF(const std::u16string& str);
 
 	/**
 	 * Converts UTF-32 to UTF-8.
@@ -78,23 +69,23 @@ namespace Utils {
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string EncodeUTF(const utf32_string& str);
+	std::string EncodeUTF(const std::u32string& str);
 
 	/**
-	 * Converts UTF-8 string to wstring.
+	 * Converts UTF-8 string to std::wstring.
 	 *
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	wstring ToWideString(const std::string& str);
+	std::wstring ToWideString(const std::string& str);
 
 	/**
-	 * Converts wstring to UTF-8 string.
+	 * Converts std::wstring to UTF-8 string.
 	 *
 	 * @param str string to convert.
 	 * @return the converted string.
 	 */
-	std::string FromWideString(const wstring& str);
+	std::string FromWideString(const std::wstring& str);
 
 
 	/**

@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <boost/regex/pending/unicode_iterator.hpp>
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
@@ -172,9 +171,9 @@ protected:
 	/** Current number of lines on this page. */
 	int line_count;
 	/** Index of the next char in text that will be output. */
-	boost::u8_to_u32_iterator<std::string::const_iterator> text_index, end;
+	std::u32string::const_iterator text_index, end;
 	/** text message that will be displayed. */
-	std::string text;
+	std::u32string text;
 	/** Used by Message kill command \^. */
 	bool kill_message;
 	/** Text color. */
