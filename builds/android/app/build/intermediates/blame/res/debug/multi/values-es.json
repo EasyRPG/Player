@@ -1,0 +1,2418 @@
+[
+    {
+        "outputFile": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/values-es/values-es.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 56,
+                    "endOffset": 107
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 82,
+                        "startColumn": 2,
+                        "startOffset": 5181,
+                        "endColumn": 54,
+                        "endOffset": 5233
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 112,
+                    "endColumn": 82,
+                    "endOffset": 190
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 75,
+                        "startColumn": 2,
+                        "startOffset": 4789,
+                        "endColumn": 80,
+                        "endOffset": 4867
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 195,
+                    "endColumn": 72,
+                    "endOffset": 263
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 65,
+                        "startColumn": 2,
+                        "startOffset": 4051,
+                        "endColumn": 70,
+                        "endOffset": 4119
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 268,
+                    "endColumn": 40,
+                    "endOffset": 304
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 2,
+                        "startOffset": 672,
+                        "endColumn": 38,
+                        "endOffset": 708
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 309,
+                    "endColumn": 72,
+                    "endOffset": 377
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 2,
+                        "startOffset": 109,
+                        "endColumn": 70,
+                        "endOffset": 177
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 382,
+                    "endColumn": 42,
+                    "endOffset": 420
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 2,
+                        "startOffset": 711,
+                        "endColumn": 40,
+                        "endOffset": 749
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 425,
+                    "endColumn": 43,
+                    "endOffset": 464
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 2,
+                        "startOffset": 878,
+                        "endColumn": 41,
+                        "endOffset": 917
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 469,
+                    "endColumn": 83,
+                    "endOffset": 548
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 35,
+                        "startColumn": 2,
+                        "startOffset": 1924,
+                        "endColumn": 81,
+                        "endOffset": 2003
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 553,
+                    "endColumn": 84,
+                    "endOffset": 633
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 2,
+                        "startOffset": 1594,
+                        "endColumn": 82,
+                        "endOffset": 1674
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 638,
+                    "endColumn": 63,
+                    "endOffset": 697
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 2,
+                        "startOffset": 425,
+                        "endColumn": 61,
+                        "endOffset": 484
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 702,
+                    "endColumn": 67,
+                    "endOffset": 765
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 2,
+                        "startOffset": 487,
+                        "endColumn": 65,
+                        "endOffset": 550
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 770,
+                    "endColumn": 65,
+                    "endOffset": 831
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 31,
+                        "startColumn": 2,
+                        "startOffset": 1677,
+                        "endColumn": 63,
+                        "endOffset": 1738
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 836,
+                    "endColumn": 85,
+                    "endOffset": 917
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 2,
+                        "startOffset": 1050,
+                        "endColumn": 83,
+                        "endOffset": 1131
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 922,
+                    "endColumn": 45,
+                    "endOffset": 963
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 2,
+                        "startOffset": 300,
+                        "endColumn": 43,
+                        "endOffset": 341
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 968,
+                    "endColumn": 57,
+                    "endOffset": 1021
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 80,
+                        "startColumn": 2,
+                        "startOffset": 5093,
+                        "endColumn": 55,
+                        "endOffset": 5146
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1026,
+                    "endColumn": 41,
+                    "endOffset": 1063
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 79,
+                        "startColumn": 2,
+                        "startOffset": 5053,
+                        "endColumn": 39,
+                        "endOffset": 5090
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1068,
+                    "endColumn": 66,
+                    "endOffset": 1130
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 2,
+                        "startOffset": 920,
+                        "endColumn": 64,
+                        "endOffset": 982
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1135,
+                    "endColumn": 65,
+                    "endOffset": 1196
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 2,
+                        "startOffset": 236,
+                        "endColumn": 63,
+                        "endOffset": 297
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1201,
+                    "endColumn": 61,
+                    "endOffset": 1258
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 71,
+                        "startColumn": 2,
+                        "startOffset": 4560,
+                        "endColumn": 59,
+                        "endOffset": 4617
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 1263,
+                    "endColumn": 62,
+                    "endOffset": 1321
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 78,
+                        "startColumn": 2,
+                        "startOffset": 4992,
+                        "endColumn": 60,
+                        "endOffset": 5050
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1326,
+                    "endColumn": 55,
+                    "endOffset": 1377
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 77,
+                        "startColumn": 2,
+                        "startOffset": 4938,
+                        "endColumn": 53,
+                        "endOffset": 4989
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 1382,
+                    "endColumn": 62,
+                    "endOffset": 1440
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 66,
+                        "startColumn": 2,
+                        "startOffset": 4122,
+                        "endColumn": 60,
+                        "endOffset": 4180
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1445,
+                    "endColumn": 52,
+                    "endOffset": 1493
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 53,
+                        "startColumn": 2,
+                        "startOffset": 3146,
+                        "endColumn": 50,
+                        "endOffset": 3194
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 1498,
+                    "endColumn": 65,
+                    "endOffset": 1559
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 84,
+                        "startColumn": 2,
+                        "startOffset": 5304,
+                        "endColumn": 63,
+                        "endOffset": 5365
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 1564,
+                    "endColumn": 40,
+                    "endOffset": 1600
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 2,
+                        "startOffset": 553,
+                        "endColumn": 38,
+                        "endOffset": 589
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 1605,
+                    "endColumn": 41,
+                    "endOffset": 1642
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 2,
+                        "startOffset": 632,
+                        "endColumn": 39,
+                        "endOffset": 669
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 1647,
+                    "endColumn": 72,
+                    "endOffset": 1715
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 36,
+                        "startColumn": 2,
+                        "startOffset": 2006,
+                        "endColumn": 70,
+                        "endOffset": 2074
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 1720,
+                    "endLine": 41,
+                    "endColumn": 118,
+                    "endOffset": 2656
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 37,
+                        "startColumn": 2,
+                        "startOffset": 2077,
+                        "endLine": 49,
+                        "endColumn": 118,
+                        "endOffset": 3013
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 42,
+                    "startColumn": 4,
+                    "startOffset": 2661,
+                    "endColumn": 119,
+                    "endOffset": 2776
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 69,
+                        "startColumn": 2,
+                        "startOffset": 4361,
+                        "endColumn": 117,
+                        "endOffset": 4476
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 43,
+                    "startColumn": 4,
+                    "startOffset": 2781,
+                    "endColumn": 83,
+                    "endOffset": 2860
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 68,
+                        "startColumn": 2,
+                        "startOffset": 4279,
+                        "endColumn": 81,
+                        "endOffset": 4358
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 44,
+                    "startColumn": 4,
+                    "startOffset": 2865,
+                    "endColumn": 41,
+                    "endOffset": 2902
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 2,
+                        "startOffset": 344,
+                        "endColumn": 39,
+                        "endOffset": 381
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 45,
+                    "startColumn": 4,
+                    "startOffset": 2907,
+                    "endColumn": 57,
+                    "endOffset": 2960
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 87,
+                        "startColumn": 2,
+                        "startOffset": 5470,
+                        "endColumn": 55,
+                        "endOffset": 5523
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 46,
+                    "startColumn": 4,
+                    "startOffset": 2965,
+                    "endColumn": 47,
+                    "endOffset": 3008
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 86,
+                        "startColumn": 2,
+                        "startOffset": 5424,
+                        "endColumn": 45,
+                        "endOffset": 5467
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 47,
+                    "startColumn": 4,
+                    "startOffset": 3013,
+                    "endColumn": 54,
+                    "endOffset": 3063
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 88,
+                        "startColumn": 2,
+                        "startOffset": 5526,
+                        "endColumn": 52,
+                        "endOffset": 5576
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 48,
+                    "startColumn": 4,
+                    "startOffset": 3068,
+                    "endColumn": 42,
+                    "endOffset": 3106
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 2,
+                        "startOffset": 384,
+                        "endColumn": 40,
+                        "endOffset": 422
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 49,
+                    "startColumn": 4,
+                    "startOffset": 3111,
+                    "endColumn": 87,
+                    "endOffset": 3194
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 74,
+                        "startColumn": 2,
+                        "startOffset": 4703,
+                        "endColumn": 85,
+                        "endOffset": 4786
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 50,
+                    "startColumn": 4,
+                    "startOffset": 3199,
+                    "endColumn": 33,
+                    "endOffset": 3228
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 2,
+                        "startOffset": 1018,
+                        "endColumn": 31,
+                        "endOffset": 1047
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 51,
+                    "startColumn": 4,
+                    "startOffset": 3233,
+                    "endColumn": 107,
+                    "endOffset": 3336
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 2,
+                        "startOffset": 1345,
+                        "endColumn": 105,
+                        "endOffset": 1448
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 52,
+                    "startColumn": 4,
+                    "startOffset": 3341,
+                    "endColumn": 148,
+                    "endOffset": 3485
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 2,
+                        "startOffset": 1198,
+                        "endColumn": 146,
+                        "endOffset": 1342
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 53,
+                    "startColumn": 4,
+                    "startOffset": 3490,
+                    "endColumn": 82,
+                    "endOffset": 3568
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 70,
+                        "startColumn": 2,
+                        "startOffset": 4479,
+                        "endColumn": 80,
+                        "endOffset": 4557
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 54,
+                    "startColumn": 4,
+                    "startOffset": 3573,
+                    "endColumn": 70,
+                    "endOffset": 3639
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 2,
+                        "startOffset": 1451,
+                        "endColumn": 68,
+                        "endOffset": 1517
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 55,
+                    "startColumn": 4,
+                    "startOffset": 3644,
+                    "endColumn": 38,
+                    "endOffset": 3678
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 2,
+                        "startOffset": 841,
+                        "endColumn": 36,
+                        "endOffset": 875
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 56,
+                    "startColumn": 4,
+                    "startOffset": 3683,
+                    "endColumn": 65,
+                    "endOffset": 3744
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 2,
+                        "startOffset": 1134,
+                        "endColumn": 63,
+                        "endOffset": 1195
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 57,
+                    "startColumn": 4,
+                    "startOffset": 3749,
+                    "endColumn": 54,
+                    "endOffset": 3799
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 72,
+                        "startColumn": 2,
+                        "startOffset": 4620,
+                        "endColumn": 52,
+                        "endOffset": 4670
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 58,
+                    "startColumn": 4,
+                    "startOffset": 3804,
+                    "endColumn": 45,
+                    "endOffset": 3845
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 2,
+                        "startOffset": 1880,
+                        "endColumn": 43,
+                        "endOffset": 1921
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 59,
+                    "startColumn": 4,
+                    "startOffset": 3850,
+                    "endColumn": 80,
+                    "endOffset": 3926
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 2,
+                        "startOffset": 1801,
+                        "endColumn": 78,
+                        "endOffset": 1877
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 60,
+                    "startColumn": 4,
+                    "startOffset": 3931,
+                    "endColumn": 59,
+                    "endOffset": 3986
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 54,
+                        "startColumn": 2,
+                        "startOffset": 3197,
+                        "endColumn": 57,
+                        "endOffset": 3252
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 61,
+                    "startColumn": 4,
+                    "startOffset": 3991,
+                    "endLine": 66,
+                    "endColumn": 54,
+                    "endOffset": 4397
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 57,
+                        "startColumn": 2,
+                        "startOffset": 3566,
+                        "endLine": 62,
+                        "endColumn": 54,
+                        "endOffset": 3972
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 67,
+                    "startColumn": 4,
+                    "startOffset": 4402,
+                    "endLine": 68,
+                    "endColumn": 165,
+                    "endOffset": 4710
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 55,
+                        "startColumn": 2,
+                        "startOffset": 3255,
+                        "endLine": 56,
+                        "endColumn": 165,
+                        "endOffset": 3563
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 69,
+                    "startColumn": 4,
+                    "startOffset": 4715,
+                    "endColumn": 69,
+                    "endOffset": 4780
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 83,
+                        "startColumn": 2,
+                        "startOffset": 5236,
+                        "endColumn": 67,
+                        "endOffset": 5301
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 70,
+                    "startColumn": 4,
+                    "startOffset": 4785,
+                    "endColumn": 57,
+                    "endOffset": 4838
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 85,
+                        "startColumn": 2,
+                        "startOffset": 5368,
+                        "endColumn": 55,
+                        "endOffset": 5421
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 71,
+                    "startColumn": 4,
+                    "startOffset": 4843,
+                    "endColumn": 75,
+                    "endOffset": 4914
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 2,
+                        "startOffset": 1520,
+                        "endColumn": 73,
+                        "endOffset": 1591
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 72,
+                    "startColumn": 4,
+                    "startOffset": 4919,
+                    "endColumn": 69,
+                    "endOffset": 4984
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 76,
+                        "startColumn": 2,
+                        "startOffset": 4870,
+                        "endColumn": 67,
+                        "endOffset": 4935
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 73,
+                    "startColumn": 4,
+                    "startOffset": 4989,
+                    "endColumn": 50,
+                    "endOffset": 5035
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 64,
+                        "startColumn": 2,
+                        "startOffset": 4002,
+                        "endColumn": 48,
+                        "endOffset": 4048
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 74,
+                    "startColumn": 4,
+                    "startOffset": 5040,
+                    "endColumn": 42,
+                    "endOffset": 5078
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 2,
+                        "startOffset": 752,
+                        "endColumn": 40,
+                        "endOffset": 790
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 75,
+                    "startColumn": 4,
+                    "startOffset": 5083,
+                    "endColumn": 54,
+                    "endOffset": 5133
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 51,
+                        "startColumn": 2,
+                        "startOffset": 3037,
+                        "endColumn": 52,
+                        "endOffset": 3087
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 76,
+                    "startColumn": 4,
+                    "startOffset": 5138,
+                    "endColumn": 57,
+                    "endOffset": 5191
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 52,
+                        "startColumn": 2,
+                        "startOffset": 3090,
+                        "endColumn": 55,
+                        "endOffset": 3143
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 77,
+                    "startColumn": 4,
+                    "startOffset": 5196,
+                    "endColumn": 41,
+                    "endOffset": 5233
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 2,
+                        "startOffset": 592,
+                        "endColumn": 39,
+                        "endOffset": 629
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 78,
+                    "startColumn": 4,
+                    "startOffset": 5238,
+                    "endColumn": 61,
+                    "endOffset": 5295
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 2,
+                        "startOffset": 1741,
+                        "endColumn": 59,
+                        "endOffset": 1798
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 79,
+                    "startColumn": 4,
+                    "startOffset": 5300,
+                    "endColumn": 97,
+                    "endOffset": 5393
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 67,
+                        "startColumn": 2,
+                        "startOffset": 4183,
+                        "endColumn": 95,
+                        "endOffset": 4276
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 80,
+                    "startColumn": 4,
+                    "startOffset": 5398,
+                    "endColumn": 49,
+                    "endOffset": 5443
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 2,
+                        "startOffset": 793,
+                        "endColumn": 47,
+                        "endOffset": 838
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 81,
+                    "startColumn": 4,
+                    "startOffset": 5448,
+                    "endColumn": 57,
+                    "endOffset": 5501
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 2,
+                        "startOffset": 180,
+                        "endColumn": 55,
+                        "endOffset": 233
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 82,
+                    "startColumn": 4,
+                    "startOffset": 5506,
+                    "endColumn": 34,
+                    "endOffset": 5536
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 2,
+                        "startOffset": 985,
+                        "endColumn": 32,
+                        "endOffset": 1015
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/values-es/values-es.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 56,
+                    "endOffset": 107
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 82,
+                        "startColumn": 2,
+                        "startOffset": 5181,
+                        "endColumn": 54,
+                        "endOffset": 5233
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 112,
+                    "endColumn": 82,
+                    "endOffset": 190
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 75,
+                        "startColumn": 2,
+                        "startOffset": 4789,
+                        "endColumn": 80,
+                        "endOffset": 4867
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 195,
+                    "endColumn": 72,
+                    "endOffset": 263
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 65,
+                        "startColumn": 2,
+                        "startOffset": 4051,
+                        "endColumn": 70,
+                        "endOffset": 4119
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 268,
+                    "endColumn": 40,
+                    "endOffset": 304
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 2,
+                        "startOffset": 672,
+                        "endColumn": 38,
+                        "endOffset": 708
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 309,
+                    "endColumn": 72,
+                    "endOffset": 377
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 2,
+                        "startOffset": 109,
+                        "endColumn": 70,
+                        "endOffset": 177
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 382,
+                    "endColumn": 42,
+                    "endOffset": 420
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 2,
+                        "startOffset": 711,
+                        "endColumn": 40,
+                        "endOffset": 749
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 425,
+                    "endColumn": 43,
+                    "endOffset": 464
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 2,
+                        "startOffset": 878,
+                        "endColumn": 41,
+                        "endOffset": 917
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 469,
+                    "endColumn": 83,
+                    "endOffset": 548
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 35,
+                        "startColumn": 2,
+                        "startOffset": 1924,
+                        "endColumn": 81,
+                        "endOffset": 2003
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 553,
+                    "endColumn": 84,
+                    "endOffset": 633
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 2,
+                        "startOffset": 1594,
+                        "endColumn": 82,
+                        "endOffset": 1674
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 638,
+                    "endColumn": 63,
+                    "endOffset": 697
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 2,
+                        "startOffset": 425,
+                        "endColumn": 61,
+                        "endOffset": 484
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 702,
+                    "endColumn": 67,
+                    "endOffset": 765
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 2,
+                        "startOffset": 487,
+                        "endColumn": 65,
+                        "endOffset": 550
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 770,
+                    "endColumn": 65,
+                    "endOffset": 831
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 31,
+                        "startColumn": 2,
+                        "startOffset": 1677,
+                        "endColumn": 63,
+                        "endOffset": 1738
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 836,
+                    "endColumn": 85,
+                    "endOffset": 917
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 2,
+                        "startOffset": 1050,
+                        "endColumn": 83,
+                        "endOffset": 1131
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 922,
+                    "endColumn": 45,
+                    "endOffset": 963
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 2,
+                        "startOffset": 300,
+                        "endColumn": 43,
+                        "endOffset": 341
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 968,
+                    "endColumn": 57,
+                    "endOffset": 1021
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 80,
+                        "startColumn": 2,
+                        "startOffset": 5093,
+                        "endColumn": 55,
+                        "endOffset": 5146
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1026,
+                    "endColumn": 41,
+                    "endOffset": 1063
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 79,
+                        "startColumn": 2,
+                        "startOffset": 5053,
+                        "endColumn": 39,
+                        "endOffset": 5090
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1068,
+                    "endColumn": 66,
+                    "endOffset": 1130
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 2,
+                        "startOffset": 920,
+                        "endColumn": 64,
+                        "endOffset": 982
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1135,
+                    "endColumn": 65,
+                    "endOffset": 1196
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 2,
+                        "startOffset": 236,
+                        "endColumn": 63,
+                        "endOffset": 297
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1201,
+                    "endColumn": 61,
+                    "endOffset": 1258
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 71,
+                        "startColumn": 2,
+                        "startOffset": 4560,
+                        "endColumn": 59,
+                        "endOffset": 4617
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 1263,
+                    "endColumn": 62,
+                    "endOffset": 1321
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 78,
+                        "startColumn": 2,
+                        "startOffset": 4992,
+                        "endColumn": 60,
+                        "endOffset": 5050
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1326,
+                    "endColumn": 55,
+                    "endOffset": 1377
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 77,
+                        "startColumn": 2,
+                        "startOffset": 4938,
+                        "endColumn": 53,
+                        "endOffset": 4989
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 1382,
+                    "endColumn": 62,
+                    "endOffset": 1440
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 66,
+                        "startColumn": 2,
+                        "startOffset": 4122,
+                        "endColumn": 60,
+                        "endOffset": 4180
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1445,
+                    "endColumn": 52,
+                    "endOffset": 1493
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 53,
+                        "startColumn": 2,
+                        "startOffset": 3146,
+                        "endColumn": 50,
+                        "endOffset": 3194
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 1498,
+                    "endColumn": 65,
+                    "endOffset": 1559
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 84,
+                        "startColumn": 2,
+                        "startOffset": 5304,
+                        "endColumn": 63,
+                        "endOffset": 5365
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 1564,
+                    "endColumn": 40,
+                    "endOffset": 1600
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 2,
+                        "startOffset": 553,
+                        "endColumn": 38,
+                        "endOffset": 589
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 1605,
+                    "endColumn": 41,
+                    "endOffset": 1642
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 2,
+                        "startOffset": 632,
+                        "endColumn": 39,
+                        "endOffset": 669
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 1647,
+                    "endColumn": 72,
+                    "endOffset": 1715
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 36,
+                        "startColumn": 2,
+                        "startOffset": 2006,
+                        "endColumn": 70,
+                        "endOffset": 2074
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 1720,
+                    "endLine": 41,
+                    "endColumn": 118,
+                    "endOffset": 2656
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 37,
+                        "startColumn": 2,
+                        "startOffset": 2077,
+                        "endLine": 49,
+                        "endColumn": 118,
+                        "endOffset": 3013
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 42,
+                    "startColumn": 4,
+                    "startOffset": 2661,
+                    "endColumn": 119,
+                    "endOffset": 2776
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 69,
+                        "startColumn": 2,
+                        "startOffset": 4361,
+                        "endColumn": 117,
+                        "endOffset": 4476
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 43,
+                    "startColumn": 4,
+                    "startOffset": 2781,
+                    "endColumn": 83,
+                    "endOffset": 2860
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 68,
+                        "startColumn": 2,
+                        "startOffset": 4279,
+                        "endColumn": 81,
+                        "endOffset": 4358
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 44,
+                    "startColumn": 4,
+                    "startOffset": 2865,
+                    "endColumn": 41,
+                    "endOffset": 2902
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 2,
+                        "startOffset": 344,
+                        "endColumn": 39,
+                        "endOffset": 381
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 45,
+                    "startColumn": 4,
+                    "startOffset": 2907,
+                    "endColumn": 57,
+                    "endOffset": 2960
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 87,
+                        "startColumn": 2,
+                        "startOffset": 5470,
+                        "endColumn": 55,
+                        "endOffset": 5523
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 46,
+                    "startColumn": 4,
+                    "startOffset": 2965,
+                    "endColumn": 47,
+                    "endOffset": 3008
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 86,
+                        "startColumn": 2,
+                        "startOffset": 5424,
+                        "endColumn": 45,
+                        "endOffset": 5467
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 47,
+                    "startColumn": 4,
+                    "startOffset": 3013,
+                    "endColumn": 54,
+                    "endOffset": 3063
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 88,
+                        "startColumn": 2,
+                        "startOffset": 5526,
+                        "endColumn": 52,
+                        "endOffset": 5576
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 48,
+                    "startColumn": 4,
+                    "startOffset": 3068,
+                    "endColumn": 42,
+                    "endOffset": 3106
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 2,
+                        "startOffset": 384,
+                        "endColumn": 40,
+                        "endOffset": 422
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 49,
+                    "startColumn": 4,
+                    "startOffset": 3111,
+                    "endColumn": 87,
+                    "endOffset": 3194
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 74,
+                        "startColumn": 2,
+                        "startOffset": 4703,
+                        "endColumn": 85,
+                        "endOffset": 4786
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 50,
+                    "startColumn": 4,
+                    "startOffset": 3199,
+                    "endColumn": 33,
+                    "endOffset": 3228
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 2,
+                        "startOffset": 1018,
+                        "endColumn": 31,
+                        "endOffset": 1047
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 51,
+                    "startColumn": 4,
+                    "startOffset": 3233,
+                    "endColumn": 107,
+                    "endOffset": 3336
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 2,
+                        "startOffset": 1345,
+                        "endColumn": 105,
+                        "endOffset": 1448
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 52,
+                    "startColumn": 4,
+                    "startOffset": 3341,
+                    "endColumn": 148,
+                    "endOffset": 3485
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 2,
+                        "startOffset": 1198,
+                        "endColumn": 146,
+                        "endOffset": 1342
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 53,
+                    "startColumn": 4,
+                    "startOffset": 3490,
+                    "endColumn": 82,
+                    "endOffset": 3568
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 70,
+                        "startColumn": 2,
+                        "startOffset": 4479,
+                        "endColumn": 80,
+                        "endOffset": 4557
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 54,
+                    "startColumn": 4,
+                    "startOffset": 3573,
+                    "endColumn": 70,
+                    "endOffset": 3639
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 2,
+                        "startOffset": 1451,
+                        "endColumn": 68,
+                        "endOffset": 1517
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 55,
+                    "startColumn": 4,
+                    "startOffset": 3644,
+                    "endColumn": 38,
+                    "endOffset": 3678
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 2,
+                        "startOffset": 841,
+                        "endColumn": 36,
+                        "endOffset": 875
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 56,
+                    "startColumn": 4,
+                    "startOffset": 3683,
+                    "endColumn": 65,
+                    "endOffset": 3744
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 2,
+                        "startOffset": 1134,
+                        "endColumn": 63,
+                        "endOffset": 1195
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 57,
+                    "startColumn": 4,
+                    "startOffset": 3749,
+                    "endColumn": 54,
+                    "endOffset": 3799
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 72,
+                        "startColumn": 2,
+                        "startOffset": 4620,
+                        "endColumn": 52,
+                        "endOffset": 4670
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 58,
+                    "startColumn": 4,
+                    "startOffset": 3804,
+                    "endColumn": 45,
+                    "endOffset": 3845
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 2,
+                        "startOffset": 1880,
+                        "endColumn": 43,
+                        "endOffset": 1921
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 59,
+                    "startColumn": 4,
+                    "startOffset": 3850,
+                    "endColumn": 80,
+                    "endOffset": 3926
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 2,
+                        "startOffset": 1801,
+                        "endColumn": 78,
+                        "endOffset": 1877
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 60,
+                    "startColumn": 4,
+                    "startOffset": 3931,
+                    "endColumn": 59,
+                    "endOffset": 3986
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 54,
+                        "startColumn": 2,
+                        "startOffset": 3197,
+                        "endColumn": 57,
+                        "endOffset": 3252
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 61,
+                    "startColumn": 4,
+                    "startOffset": 3991,
+                    "endLine": 66,
+                    "endColumn": 54,
+                    "endOffset": 4397
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 57,
+                        "startColumn": 2,
+                        "startOffset": 3566,
+                        "endLine": 62,
+                        "endColumn": 54,
+                        "endOffset": 3972
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 67,
+                    "startColumn": 4,
+                    "startOffset": 4402,
+                    "endLine": 68,
+                    "endColumn": 165,
+                    "endOffset": 4710
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 55,
+                        "startColumn": 2,
+                        "startOffset": 3255,
+                        "endLine": 56,
+                        "endColumn": 165,
+                        "endOffset": 3563
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 69,
+                    "startColumn": 4,
+                    "startOffset": 4715,
+                    "endColumn": 69,
+                    "endOffset": 4780
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 83,
+                        "startColumn": 2,
+                        "startOffset": 5236,
+                        "endColumn": 67,
+                        "endOffset": 5301
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 70,
+                    "startColumn": 4,
+                    "startOffset": 4785,
+                    "endColumn": 57,
+                    "endOffset": 4838
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 85,
+                        "startColumn": 2,
+                        "startOffset": 5368,
+                        "endColumn": 55,
+                        "endOffset": 5421
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 71,
+                    "startColumn": 4,
+                    "startOffset": 4843,
+                    "endColumn": 75,
+                    "endOffset": 4914
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 2,
+                        "startOffset": 1520,
+                        "endColumn": 73,
+                        "endOffset": 1591
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 72,
+                    "startColumn": 4,
+                    "startOffset": 4919,
+                    "endColumn": 69,
+                    "endOffset": 4984
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 76,
+                        "startColumn": 2,
+                        "startOffset": 4870,
+                        "endColumn": 67,
+                        "endOffset": 4935
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 73,
+                    "startColumn": 4,
+                    "startOffset": 4989,
+                    "endColumn": 50,
+                    "endOffset": 5035
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 64,
+                        "startColumn": 2,
+                        "startOffset": 4002,
+                        "endColumn": 48,
+                        "endOffset": 4048
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 74,
+                    "startColumn": 4,
+                    "startOffset": 5040,
+                    "endColumn": 42,
+                    "endOffset": 5078
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 2,
+                        "startOffset": 752,
+                        "endColumn": 40,
+                        "endOffset": 790
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 75,
+                    "startColumn": 4,
+                    "startOffset": 5083,
+                    "endColumn": 54,
+                    "endOffset": 5133
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 51,
+                        "startColumn": 2,
+                        "startOffset": 3037,
+                        "endColumn": 52,
+                        "endOffset": 3087
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 76,
+                    "startColumn": 4,
+                    "startOffset": 5138,
+                    "endColumn": 57,
+                    "endOffset": 5191
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 52,
+                        "startColumn": 2,
+                        "startOffset": 3090,
+                        "endColumn": 55,
+                        "endOffset": 3143
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 77,
+                    "startColumn": 4,
+                    "startOffset": 5196,
+                    "endColumn": 41,
+                    "endOffset": 5233
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 2,
+                        "startOffset": 592,
+                        "endColumn": 39,
+                        "endOffset": 629
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 78,
+                    "startColumn": 4,
+                    "startOffset": 5238,
+                    "endColumn": 61,
+                    "endOffset": 5295
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 2,
+                        "startOffset": 1741,
+                        "endColumn": 59,
+                        "endOffset": 1798
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 79,
+                    "startColumn": 4,
+                    "startOffset": 5300,
+                    "endColumn": 97,
+                    "endOffset": 5393
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 67,
+                        "startColumn": 2,
+                        "startOffset": 4183,
+                        "endColumn": 95,
+                        "endOffset": 4276
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 80,
+                    "startColumn": 4,
+                    "startOffset": 5398,
+                    "endColumn": 49,
+                    "endOffset": 5443
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 2,
+                        "startOffset": 793,
+                        "endColumn": 47,
+                        "endOffset": 838
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 81,
+                    "startColumn": 4,
+                    "startOffset": 5448,
+                    "endColumn": 57,
+                    "endOffset": 5501
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 2,
+                        "startOffset": 180,
+                        "endColumn": 55,
+                        "endOffset": 233
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 82,
+                    "startColumn": 4,
+                    "startOffset": 5506,
+                    "endColumn": 34,
+                    "endOffset": 5536
+                },
+                "from": {
+                    "file": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/values-es/strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 2,
+                        "startOffset": 985,
+                        "endColumn": 32,
+                        "endOffset": 1015
+                    }
+                }
+            }
+        ]
+    }
+]

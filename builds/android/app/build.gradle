@@ -1,0 +1,19 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 12
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "org.easyrpg.player"
+        minSdkVersion 10
+        targetSdkVersion 12
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
