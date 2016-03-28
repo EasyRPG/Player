@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/Enter"	android:title="@string/key_enter"/>
+    <item android:id="@+id/Cancel"	android:title="@string/key_cancel"/>
+    <item android:id="@+id/Shift" 	android:title="@string/key_shift"/>
+    <item android:id="@+id/N0" 		android:title="0"/>
+    <item android:id="@+id/N1" 		android:title="1"/>
+    <item android:id="@+id/N2" 		android:title="2"/>
+    <item android:id="@+id/N3" 		android:title="3"/>
+    <item android:id="@+id/N4" 		android:title="4"/>
+    <item android:id="@+id/N5" 		android:title="5"/>
+    <item android:id="@+id/N6" 		android:title="6"/>
+    <item android:id="@+id/N7" 		android:title="7"/>
+    <item android:id="@+id/N8" 		android:title="8"/>
+    <item android:id="@+id/N9" 		android:title="9"/>
+    <item android:id="@+id/Plus" 	android:title="+"/>
+    <item android:id="@+id/Minus" 	android:title="-"/>
+    <item android:id="@+id/Multiply"	android:title="*"/>
+    <item android:id="@+id/Period" 		android:title="/"/>
+    <item android:id="@+id/Toggle_Fps" 	android:title="F2"/>
+    <item android:id="@+id/Debug_Mode" 	android:title="F5"/>    
+</menu>

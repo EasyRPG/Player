@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/game_browser_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/game_browser_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/settings_item_list.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/settings_item_list.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/settings_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/settings_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/game_browser_item_list.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/game_browser_item_list.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/button_mapping_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/button_mapping_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/game_browser_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/game_browser_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/game_browser_item_list.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/game_browser_item_list.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/player_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/player_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/player_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/player_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/settings_item_list.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/settings_item_list.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/build/intermediates/res/merged/debug/layout/settings_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android1/app/src/main/res/layout/settings_activity.xml"
+    },
+    {
+        "merged": "/Users/mehdi/easyrpg/android/Player/builds/android/app/build/intermediates/res/merged/debug/layout/button_mapping_activity.xml",
+        "source": "/Users/mehdi/easyrpg/android/Player/builds/android/app/src/main/res/layout/button_mapping_activity.xml"
+    }
+]

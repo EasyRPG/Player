@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_a_button">Gomb hozzáadása</string>
+    <string name="add_an_input_layout">Beviteli felület hozzáadása</string>
+    <string name="arabic">arab</string>
+    <string name="autodetect">Terület autómatikus megállapítása (ajánlott)</string>
+    <string name="baltic">balti</string>
+    <string name="cancel">Mégse</string>
+    <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
+    <string name="change_the_layout">Felület módosítása</string>
+    <string name="chinese_simple">kínai (egyszerűsített)</string>
+    <string name="chinese_traditional">kínai (hagyományos)</string>
+    <string name="choose_layout">Felület kiválasztása</string>
+    <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt!</string>
+    <string name="cyrillic">cirill</string>
+    <string name="default_layout">alapértelmezett</string>
+    <string name="delete">Törlés</string>
+    <string name="do_want_quit">Biztosan ki szeretnél lépni?</string>
+    <string name="east_europe">közép- vagy kelet-európai</string>
+    <string name="edit_layout">Felület szerkesztése</string>
+    <string name="edit_name">Név szerkesztése</string>
+    <string name="enable_vibration">Rezgés engedélyezése</string>
+    <string name="end_game">Játék befejezése</string>
+    <string name="exit_without_saving">Kilépés mentés nélkül</string>
+    <string name="greek">görög</string>
+    <string name="hebrew">héber</string>
+    <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
+    <string name="how_to_use_easy_rpg_explanation">
+Telepítési útmutató:\n
+\t1) Helyezze a játékok mappáit a /easyrpg/games mappába az adattároló gyökerében.\n
+\t2) Helyezze az RTP mappáit a /easyrpg/rtp/2000 mappába RPG Maker 2000 RTP esetén, a /easyrpg/rtp/2003 mappába RPG Maker 2003 RTP esetén.\n
+\n
+Ha az alkalmazás nem észlel játékokat és az ön készüléke több adattárolóval rendelkezik, próbálja az easyrpg mappát egy másik adattároló gyökerébe mozgatni, majd érintse me a frissítés gombot.\n
+\n
+Megjegyzés: Hogy a játékok biztosan felismerésre kerüljenek, NEM szabad tömörítve lenniük és NEM szabad almappákba helyezni őket vagy bennük almappákat létrehozni.\n
+Például a következő útvonalak HIBÁSAK:\n
+\t/easyrpg/games/MyGame.zip\n
+Így a HELYES:\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb\n
+\n
+Különleges szolgátatások:\n
+\tÉrintse meg a menügombot a képernyő-gombok pozíciójának szerkesztéséhez.\n
+\tAmint azon a felületen van, érintse meg a vissza gombot, hogy elérjen egy újabb menüt, melyben több gombot adhat hozzá a képernyőhöz.</string>
+    <string name="ignore_size_settings">A gombok méretbeállításainak felüldefiniálása a következőre:</string>
+    <string name="input_layout_transparency">Beviteli felület átlátszósága:</string>
+    <string name="japan">japán</string>
+    <string name="korean">koreai</string>
+    <string name="manage_input_layouts">Beviteli felületek kezelése:</string>
+    <string name="no">Nem</string>
+    <string name="no_external_storage">Nem található külső adattárolót (pl: SD kártya)!</string>
+    <string name="not_valid_game">$PATH nem egy érvényes játékot tárol!</string>
+    <string name="ok">OK</string>
+    <string name="path_not_readable">$PATH nem olvasható!</string>
+    <string name="refresh">Frissítés</string>
+    <string name="region_modification_failed">A terület megváltoztatása nem sikerült!</string>
+    <string name="reset_button_mapping">Alapértelmezett pozíció</string>
+    <string name="save_and_quit">Mentés és kilépés</string>
+    <string name="select_game_region">A játék területének kiválasztása</string>
+    <string name="set_as_default">Alapértelmezetté állítás</string>
+    <string name="settings">Beállítások</string>
+    <string name="thai">thai</string>
+    <string name="toggle_fps">FPS ki/be</string>
+    <string name="toggle_ui">Virtuális gombok ki/be</string>
+    <string name="turkish">török</string>
+    <string name="unknown_region">Ismeretlen terület</string>
+    <string name="vibrate_when_sliding_direction">Rezgetés új irányba húzáskor</string>
+    <string name="vietnamese">vietnám</string>
+    <string name="west_europe">nyugat-európai</string>
+    <string name="yes">Igen</string>
+</resources>
