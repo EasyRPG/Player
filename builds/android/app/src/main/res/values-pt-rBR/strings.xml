@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Automático (Recomendado)</string>
+  <string name="west_europe">Europeu Ocidental</string>
+  <string name="east_europe">Europeu Central/Oriental</string>
+  <string name="cyrillic">Cirílico</string>
+  <string name="japan">Japonês</string>
+  <string name="korean">Coreano</string>
+  <string name="chinese_simple">Chinês (Simplificado)</string>
+  <string name="chinese_traditional">Chinês (Tradicional)</string>
+  <string name="greek">Grego</string>
+  <string name="turkish">Turco</string>
+  <string name="hebrew">Hebreu</string>
+  <string name="arabic">Árabe</string>
+  <string name="baltic">Báltico</string>
+  <string name="thai">Tailandês</string>
+  <string name="vietnamese">Vietnamita</string>
+  <string name="ok">Confirmar</string>
+  <string name="cancel">Cancelar</string>
+  <string name="do_want_quit">Deseja realmente sair?</string>
+  <string name="yes">Sim</string>
+  <string name="no">Não</string>
+  <string name="creating_dir_failed">Criação de diretório $PATH falhou</string>
+  <string name="path_not_readable">$PATH não legível</string>
+  <string name="no_external_storage">Mídia externa não encontrada (Ex. cartão SD)</string>
+  <string name="not_valid_game">$PATH não é um jogo válido</string>
+  <string name="select_game_region">Escolha a região do jogo</string>
+  <string name="change_the_layout">Mudar layout</string>
+  <string name="choose_layout">Escolha layout</string>
+  <string name="unknown_region">Região desconhecida</string>
+  <string name="region_modification_failed">Falha ao tentar mudar região</string>
+  <string name="refresh">Recarregar</string>
+  <string name="change_default_mapping">Reconfigurar botões</string>
+  <string name="how_to_use_easy_rpg">Como usar o EasyRPG player</string>
+  <string name="how_to_use_easy_rpg_explanation">
+Instruções de instalação:\n
+\t1. Coloque as pastas dos jogos em /easyrpg/games no armazenamento root do dispositivo.\n
+\t2. Coloque pastas RTP em /easyrpg/rtp/2000 para o RPG Maker 2000 RTP e /easyrpg/rtp/2003 para o RPG Maker 2003 RTP.\n
+\n
+Se os jogos não forem detectados e seu dispositivo tiver mais de um armazenamento disponível, tente mover a pasta easyrpg em outra pasta root de armazenamento e toque no botão de recarregar.\n
+\n
+Dica: para obter jogos corretamente detectados eles devem ser descompactados, por exemplo:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb está CORRETO.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb está CORRETO.\n
+\t/easyrpg/games/MyGame.zip está ERRADO.\n
+\n
+Características especiais:\n
+\tToque no botão menu para editar posição de botões da tela.\n
+\tUma vez lá, toque no botão voltar para adicionar a um menu adicional para colocar mais botões na tela.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Alternar FPS</string>
+  <string name="toggle_ui">Alternar botões virtuais</string>
+  <string name="end_game">Finalizar Jogo</string>
+  <!--Settings Activity-->
+  <string name="settings">Configurações</string>
+  <string name="enable_vibration">Habilitar vibrações</string>
+  <string name="vibrate_when_sliding_direction">Vibrar ao deslizar em outra direção</string>
+  <string name="input_layout_transparency">Transparência do layout de entrada</string>
+  <string name="ignore_size_settings">Ignorar configurações do tamanho dos botões e usar isso para todos botões</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">Gerenciar layouts de entrada</string>
+  <string name="add_an_input_layout">Adicionar layout de entrada</string>
+  <string name="set_as_default">Tornar padrão</string>
+  <string name="edit_name">Editar nome</string>
+  <string name="edit_layout">Editar layout</string>
+  <string name="delete">Deletar</string>
+  <string name="default_layout">Padrão</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">Adicionar botão</string>
+  <string name="reset_button_mapping">Resetar mapeamento de botões</string>
+  <string name="exit_without_saving">Sair sem salvar</string>
+  <string name="save_and_quit">Salvar e sair</string>
+</resources>
