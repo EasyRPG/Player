@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-PLAYER_PATH := ../../../..
+PLAYER_PATH := ../../../../../../../
 
 ifeq ($(TARGET_ARCH_ABI),x86)
         EASYRPG_TOOLCHAIN_DIR = $(EASYDEV_ANDROID)/x86-toolchain
