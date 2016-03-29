@@ -466,7 +466,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	int rate = 3; // C - default
 
 	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
-		rate = Data::actors[actor_id - 1].state_ranks[attribute_id - 1];
+		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
 	}
 
 	return GetAttributeRate(attribute_id, rate);
