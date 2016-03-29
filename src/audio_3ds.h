@@ -53,9 +53,10 @@ struct CtrAudio : public AudioInterface {
 private:
 	u8* audiobuffers[SOUND_CHANNELS]; // We'll use last two available channels for BGM
 	uint8_t num_channels = SOUND_CHANNELS;
-	ndspWaveBuf* dspSounds[SOUND_CHANNELS];
+	ndspWaveBuf dspSounds[SOUND_CHANNELS];
 	int bgm_volume; // Stubbed
 	bool (*isPlayingCallback)(int);
 	void (*clearCallback)(int);
+	u8 last_ch; // Used only with dsp::DSP
 
 }; // class CtrAudio
