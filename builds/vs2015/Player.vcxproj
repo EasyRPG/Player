@@ -273,7 +273,6 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
     <ClCompile Include="..\..\src\message_overlay.cpp" />
-    <ClCompile Include="..\..\src\message_overlay.cpp" />
     <ClCompile Include="..\..\src\midisequencer.cpp" />
     <ClCompile Include="..\..\src\midisynth.cpp" />
     <ClCompile Include="..\..\src\output.cpp" />

@@ -70,7 +70,7 @@
     <ClCompile Include="..\..\src\midisequencer.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\midisynth.cpp"
+    <ClCompile Include="..\..\src\midisynth.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\background.cpp">
@@ -394,9 +394,6 @@
     <ClCompile Include="..\..\src\main_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\message_overlay.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\registry.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -471,6 +468,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game_variables.cpp">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\message_overlay.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
