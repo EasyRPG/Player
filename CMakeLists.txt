@@ -77,6 +77,14 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
   add_definitions(-D _DEBUG=1)
 endif()
 
+# mpg123
+find_package(libmpg123)
+if (libmpg123_FOUND)
+  include_directories(${MPG123_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${MPG123_LIBRARY})
+  add_definitions(-DHAVE_MPG123)
+endif()
+
 # SDL_mixer
 find_package(SDL2_mixer)
 if(SDL2_MIXER_FOUND)
