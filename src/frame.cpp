@@ -26,7 +26,7 @@
 #include "frame.h"
 
 Frame::Frame() {
-	if (!Data::system.frame_name.empty()) {
+	if (!Data::system.frame_name.empty() && Data::system.show_frame) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", Data::system.frame_name);
 		request_id = request->Bind(&Frame::OnFrameGraphicReady, this);
 		request->Start();
@@ -48,10 +48,11 @@ DrawableType Frame::GetType() const {
 }
 
 void Frame::Update() {
+	// no-op
 }
 
 void Frame::Draw() {
-	if (frame_bitmap && Data::system.show_frame) {
+	if (frame_bitmap) {
 		BitmapRef dst = DisplayUi->GetDisplaySurface();
 		dst->Blit(0, 0, *frame_bitmap, frame_bitmap->GetRect(), 255);
 	}
