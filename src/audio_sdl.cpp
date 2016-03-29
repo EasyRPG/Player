@@ -42,12 +42,27 @@ namespace {
 		if (DisplayUi && channel == static_cast<SdlAudio&>(Audio()).BGS_GetChannel())
 			bgm_played_once();
 	}
-}
 
 #ifdef HAVE_MPG123
-mpg123_handle *SdlAudio::mp3_handle = NULL;
-int SdlAudio::mp3_err = MPG123_OK;
+	void mp3_callback(void *udata, Uint8 *stream, int len) {
+		Uint8 *buffer = new Uint8[len];
+		int err;
+		size_t done = 0;
+		mpg123_handle *mp3_handle = static_cast<mpg123_handle*>(udata);
+
+		// Skip invalid frames until getting a valid one
+		do err = mpg123_read(mp3_handle, buffer, len, &done);
+			while (done && err != MPG123_OK);
+		if (err == MPG123_DONE) {
+			Mix_HookMusic(NULL, NULL);
+		} else {
+			SDL_MixAudio(stream, buffer, len, SDL_MIX_MAXVOLUME);
+		}
+
+		delete[] buffer;
+	}
 #endif
+}
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
@@ -142,7 +157,8 @@ void SdlAudio::BGM_OnPlayedOnce() {
 	if (!me_stopped_bgm && !bgm_stop) {
 		played_once = true;
 		// Play indefinitely without fade-in
-		Mix_PlayMusic(bgm.get(), -1);
+		if (Mix_GetMusicType(bgm.get()) != MUS_MP3_MAD)
+			Mix_PlayMusic(bgm.get(), -1);
 	}
 }
 
@@ -188,52 +204,54 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
 
 #ifdef HAVE_MPG123
-	mp3_err = mpg123_init();
-	if (mp3_err != MPG123_OK) {
-		Output::Warning("Couldn't initialize mpg123.\n%s", mpg123_plain_strerror(mp3_err));
-		return;
-	}
+	if (mtype == MUS_MP3_MAD) {
+		mp3_err = mpg123_init();
+		if (mp3_err != MPG123_OK) {
+			Output::Warning("Couldn't initialize mpg123.\n%s", mpg123_plain_strerror(mp3_err));
+			return;
+		}
 
-	mp3_handle = mpg123_new(NULL, &mp3_err);
-	if (mp3_handle == NULL) {
-		Output::Warning("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(mp3_err));
-		return;
-	}
+		mp3_handle = mpg123_new(NULL, &mp3_err);
+		if (mp3_handle == NULL) {
+			Output::Warning("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(mp3_err));
+			return;
+		}
 
-	int audio_rate;
-	Uint16 audio_format, mpg_format;
-	int audio_channels;
-	if (!Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
-		Output::Warning("Couldn't query mixer spec.\n %s", Mix_GetError());
-		return;
-	}
+		int audio_rate;
+		Uint16 audio_format, mpg_format;
+		int audio_channels;
+		if (!Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels)) {
+			Output::Warning("Couldn't query mixer spec.\n %s", Mix_GetError());
+			return;
+		}
 
-	switch (audio_format) {
-		case AUDIO_U8: mpg_format = MPG123_ENC_UNSIGNED_8; break;
-		case AUDIO_S8: mpg_format = MPG123_ENC_SIGNED_8; break;
-		case AUDIO_U16SYS: mpg_format = MPG123_ENC_UNSIGNED_16; break;
-		case AUDIO_S16SYS: mpg_format = MPG123_ENC_SIGNED_16; break;
+		switch (audio_format) {
+			case AUDIO_U8: mpg_format = MPG123_ENC_UNSIGNED_8; break;
+			case AUDIO_S8: mpg_format = MPG123_ENC_SIGNED_8; break;
+			case AUDIO_U16SYS: mpg_format = MPG123_ENC_UNSIGNED_16; break;
+			case AUDIO_S16SYS: mpg_format = MPG123_ENC_SIGNED_16; break;
 #if SDL_MIXER_MAJOR_VERSION>1
-		case AUDIO_S32SYS: mpg_format = MPG123_ENC_SIGNED_32; break;
-		case AUDIO_F32SYS: mpg_format = MPG123_ENC_FLOAT_32; break;
+			case AUDIO_S32SYS: mpg_format = MPG123_ENC_SIGNED_32; break;
+			case AUDIO_F32SYS: mpg_format = MPG123_ENC_FLOAT_32; break;
 #endif
-		default: mpg_format = MPG123_ENC_ANY; break;
-	}
-	// mpg123 has a built-in pseudo-resampler, not needing SDL_ConvertAudio later
-	mpg123_format_none(mp3_handle); // Remove all available conversion formats
-	// Add just one format (SDL_mixer format) to force mpg123 pseudo-resampler work
-	mp3_err = mpg123_format(mp3_handle, (long)audio_rate, audio_channels, (int)mpg_format);
-	if (mp3_err != MPG123_OK) {
-		Output::Warning("Couldn't set mpg123 format.\n%s", mpg123_plain_strerror(mp3_err));
+			default: mpg_format = MPG123_ENC_ANY; break;
+		}
+		// mpg123 has a built-in pseudo-resampler, not needing SDL_ConvertAudio later
+		mpg123_format_none(mp3_handle); // Remove all available conversion formats
+		// Add just one format (SDL_mixer format) to force mpg123 pseudo-resampler work
+		mp3_err = mpg123_format(mp3_handle, (long)audio_rate, audio_channels, (int)mpg_format);
+		if (mp3_err != MPG123_OK) {
+			Output::Warning("Couldn't set mpg123 format.\n%s", mpg123_plain_strerror(mp3_err));
+			return;
+		}
+		mp3_err = mpg123_open(mp3_handle, path.c_str());
+		if (mp3_err != MPG123_OK) {
+			Output::Warning("Couldn't open mpg123 file.\n%s", mpg123_plain_strerror(mp3_err));
+			return;
+		}
+		Mix_HookMusic(mp3_callback, mp3_handle);
 		return;
 	}
-	mp3_err = mpg123_open(mp3_handle, path.c_str());
-	if (mp3_err != MPG123_OK) {
-		Output::Warning("Couldn't open mpg123 file.\n%s", mpg123_plain_strerror(mp3_err));
-		return;
-	}
-	Mix_HookMusic(mp3_callback, NULL);
-
 #endif // HAVE_MPG123
 
 #if SDL_MAJOR_VERSION>1
@@ -465,21 +483,5 @@ void SdlAudio::SE_Stop() {
 
 void SdlAudio::Update() {
 }
-
-#ifdef HAVE_MPG123
-void SdlAudio::mp3_callback(void *udata, Uint8 *stream, int len) {
-	Uint8 *buffer = (Uint8*)malloc(len);
-	size_t done = 0;
-	(void)(udata); /* Unused yet, silence the compiler */
-
-	// Skip invalid frames until getting a valid one
-	do mp3_err = mpg123_read(mp3_handle, buffer, len, &done);
-		while (done && mp3_err != MPG123_OK);
-
-	SDL_MixAudio(stream, buffer, len, SDL_MIX_MAXVOLUME);
-
-	free(buffer);
-}
-#endif
 
 #endif

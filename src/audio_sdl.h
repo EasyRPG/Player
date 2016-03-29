@@ -75,9 +75,8 @@ private:
 	sounds_type sounds;
 
 #ifdef HAVE_MPG123
-	static mpg123_handle *mp3_handle;
-	static int mp3_err;
-	static void mp3_callback(void *udata, Uint8 *stream, int len);
+	mpg123_handle *mp3_handle;
+	int mp3_err;
 #endif
 }; // class SdlAudio
 
