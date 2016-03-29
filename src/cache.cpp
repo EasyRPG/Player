@@ -224,10 +224,13 @@ namespace {
 	cache(Monster)
 	cache(Panorama)
 	cache(System2)
-	cache(Frame)
 	cache(Title)
 	cache(System)
 #undef cache
+
+BitmapRef Cache::Frame(const std::string& f, bool trans) {
+	return LoadBitmap<Material::Frame>(f, trans);
+}
 
 BitmapRef Cache::Picture(const std::string& f, bool trans) {
 	return LoadBitmap<Material::Picture>(f, trans);

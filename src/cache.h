@@ -39,7 +39,7 @@ namespace Cache {
 	BitmapRef Charset(const std::string& filename);
 	BitmapRef Exfont();
 	BitmapRef Faceset(const std::string& filename);
-	BitmapRef Frame(const std::string& filename);
+	BitmapRef Frame(const std::string& filename, bool transparent = true);
 	BitmapRef Gameover(const std::string& filename);
 	BitmapRef Monster(const std::string& filename);
 	BitmapRef Panorama(const std::string& filename);
