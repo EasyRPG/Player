@@ -25,6 +25,10 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#ifdef HAVE_MPG123
+#  include <mpg123.h>
+#endif
+
 struct SdlAudio : public AudioInterface {
 	SdlAudio();
 	~SdlAudio();
@@ -69,6 +73,12 @@ private:
 
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
+
+#ifdef HAVE_MPG123
+	static mpg123_handle *mp3_handle;
+	static int mp3_err;
+	static void mp3_callback(void *udata, Uint8 *stream, int len);
+#endif
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_
