@@ -23,6 +23,7 @@ struct DecodedSound{
 	u8* audiobuf;
 	u32 audiobuf_size;
 	u32 samplerate;
+	u16 bytepersample;
 	u16 format;
 };
 

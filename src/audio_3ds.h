@@ -18,6 +18,8 @@
 #include "system.h"
 #include "audio.h"
 
+#define SOUND_CHANNELS 22 // Number of available sounds channel
+
 #include <map>
 #include <3ds.h>
 struct CtrAudio : public AudioInterface {
@@ -49,11 +51,11 @@ struct CtrAudio : public AudioInterface {
 	int BGS_GetChannel() const;
 
 private:
-	u8* audiobuffers[22]; // We'll use last two available channels for BGM
-	uint8_t num_channels = 22; // Since 0x00 - 0x07 are DSP reserved
-	uint32_t samplerate = 44100;
-	int bgm_volume;
-	bool bgm_stop = false;
-	bool played_once = false;
+	u8* audiobuffers[SOUND_CHANNELS]; // We'll use last two available channels for BGM
+	uint8_t num_channels = SOUND_CHANNELS;
+	ndspWaveBuf* dspSounds[SOUND_CHANNELS];
+	int bgm_volume; // Stubbed
+	bool (*isPlayingCallback)(int);
+	void (*clearCallback)(int);
 
 }; // class CtrAudio

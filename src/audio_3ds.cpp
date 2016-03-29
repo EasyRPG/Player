@@ -33,7 +33,7 @@
 volatile bool termStream = false;
 volatile bool criticalPhase = false;
 DecodedMusic* BGM = NULL;
-static void streamThread(void* arg){
+static void csndStreamThread(void* arg){
 	
 	for(;;) {
 		
@@ -95,12 +95,42 @@ static void streamThread(void* arg){
 	}
 }
 
+// Audio callbacks
+bool csndChnIsPlaying(int ch){
+	u8 res;
+	csndIsPlaying(ch, &res);
+	return res;
+}
+void csndClear(int ch){
+	CSND_SetPlayState(ch, 0);
+}
+
+// createDspBlock: Create a new block for DSP service
+void createDspBlock(ndspWaveBuf* waveBuf, u16 bps, u32 size, bool loop, u32* data){
+	waveBuf->data_vaddr = (void*)data;
+	waveBuf->nsamples = size / bps;
+	waveBuf->looping = loop;
+	waveBuf->offset = 0;	
+	DSP_FlushDataCache(data, size);
+}
+
 CtrAudio::CtrAudio() :
 	bgm_volume(0)
 {
-	Result res = csndInit();
-	if (res != 0){
-		Output::Error("Couldn't initialize audio.\nError code: 0x%X\n", res);
+	if (isDSP){
+		isPlayingCallback = ndspChnIsPlaying;
+		clearCallback = ndspChnWaveBufClear;
+		Result res = ndspInit();
+		if (res != 0){
+			Output::Error("Couldn't initialize audio.\nError code: 0x%X\n", res);
+		}
+	}else{
+		isPlayingCallback = csndChnIsPlaying;
+		clearCallback = csndClear;
+		Result res = csndInit();
+		if (res != 0){
+			Output::Error("Couldn't initialize audio.\nError code: 0x%X\n", res);
+		}
 	}
 	
 	#ifndef NO_DEBUG
@@ -112,11 +142,12 @@ CtrAudio::CtrAudio() :
 	}
 	
 	#ifndef NO_DEBUG
-	Output::Debug("Starting BGM stream thread...");
+	if (!isDSP) Output::Debug("Starting BGM stream thread...");
+	else Output::Warning("BGM playback is unavailable with dsp::DSP audio service");
 	#endif
 	
 	// Starting a secondary thread on SYSCORE for BGM streaming
-	threadCreate(streamThread, NULL, 32768, 0x18, 1, true);
+	if (!isDSP) threadCreate(csndStreamThread, NULL, 32768, 0x18, 1, true);
 	
 	#ifdef USE_CACHE
 	initCache();
@@ -139,7 +170,8 @@ CtrAudio::~CtrAudio() {
 		free(BGM);
 	}
 	
-	csndExit();	
+	if (isDSP) ndspExit();
+	else csndExit();	
 	#ifdef USE_CACHE
 	freeCache();
 	#endif
@@ -150,7 +182,9 @@ void CtrAudio::BGM_OnPlayedOnce() {
 }
 
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-
+	
+	if (isDSP) return;
+	
 	// If a BGM is currently playing, we kill it
 	if (BGM != NULL){
 		while (criticalPhase){} // Wait secondary thread
@@ -177,7 +211,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	BGM->starttick = 0;
 	
 	// Processing music info
-	samplerate = BGM->samplerate;
+	int samplerate = BGM->samplerate;
 	int codec = SOUND_FORMAT(BGM->format);
 	
 	// Setting music volume
@@ -305,21 +339,21 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	// Select an available audio channel
 	int i = 0;
 	while (i < num_channels){
-		u8 isPlaying;
-		csndIsPlaying(i+0x08, &isPlaying);
-		if (!isPlaying) break;
+		if (!isPlayingCallback(i)) break;
 		i++;
 		if (i >= num_channels){
 			Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
 			return;
 		}
 	}
-	#ifndef USE_CACHE
+	
 	if (audiobuffers[i] != NULL){
+		#ifndef USE_CACHE
 		linearFree(audiobuffers[i]);
 		audiobuffers[i] = NULL;
+		#endif
+		if (isDSP) free(dspSounds[i]);
 	}
-	#endif
 	
 	// Init needed vars
 	bool isStereo = false;
@@ -353,9 +387,10 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Processing sound info
 	audiobuffers[i] = myFile.audiobuf;
-	samplerate = myFile.samplerate;
+	int samplerate = myFile.samplerate;
 	audiobuf_size = myFile.audiobuf_size;
-	codec = SOUND_FORMAT(myFile.format);
+	if (isDSP) codec = NDSP_CHANNELS(isStereo + 1) | NDSP_ENCODING(myFile.format);
+	else codec = SOUND_FORMAT(myFile.format);
 	isStereo = myFile.isStereo;
 	
 	#ifndef NO_DEBUG
@@ -366,14 +401,12 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Playing the sound
 	float vol = volume / 100.0;
-	if (isStereo){
+	if (isStereo && (!isDSP)){
 		
 		// We need a second channel where to execute right audiochannel since csnd supports only mono sounds natively
 		int z = i+1;
 		while (z < num_channels){
-			u8 isPlaying;
-			csndIsPlaying(z+0x08, &isPlaying);
-			if (!isPlaying) break;
+			if (!isPlayingCallback(z+0x08)) break;
 			z++;
 			if (z >= num_channels){
 				Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
@@ -382,9 +415,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		}
 		#ifndef USE_CACHE
 		if (audiobuffers[z] != NULL) linearFree(audiobuffers[z]);
-		#endif
-		
-		#ifndef USE_CACHE
+
 		// To not waste CPU clocks, we use a single audiobuffer for both channels so we put just a stubbed audiobuffer on right channel
 		audiobuffers[z] = (u8*)linearAlloc(1);
 		#endif
@@ -393,19 +424,32 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, -1.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], chnbuf_size); // Left
 		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), (u32*)(audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
 		
-	}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
-	
+	}else{
+		if (isDSP){
+			ndspChnReset(i+0x08);
+			ndspChnWaveBufClear(i+0x08);
+			ndspChnSetInterp(i+0x08, NDSP_INTERP_LINEAR);
+			ndspChnSetRate(i+0x08, float(samplerate));
+			ndspChnSetFormat(i+0x08, codec);
+			float vol_table[12] = {vol,vol,vol,vol};
+			ndspChnSetMix(i+0x08, vol_table);
+			dspSounds[i] = (ndspWaveBuf*)calloc(1,sizeof(ndspWaveBuf));
+			createDspBlock(dspSounds[i], myFile.bytepersample, audiobuf_size, false, (u32*)audiobuffers[i]);
+			ndspChnWaveBufAdd(i+0x08, dspSounds[i]);
+		}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
+	}
 }
 
 void CtrAudio::SE_Stop() {
 	for(int i=0;i<num_channels;i++){
-		CSND_SetPlayState(i+0x08, 0);
+		clearCallback(i+0x08);
 		#ifndef USE_CACHE
 		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
 		audiobuffers[i] = NULL;
 		#endif
+		if (isDSP) free(dspSounds[i]);
 	}
-	CSND_UpdateInfo(0);
+	if (!isDSP) CSND_UpdateInfo(0);
 }
 
 void CtrAudio::Update() {	
@@ -414,11 +458,10 @@ void CtrAudio::Update() {
 	// Closing and freeing finished sounds	
 	for(int i=0;i<num_channels;i++){
 		if (audiobuffers[i] != NULL){
-			u8 isPlaying;
-			csndIsPlaying(i+0x08, &isPlaying);
-			if (!isPlaying){
+			if (!isPlayingCallback(i+0x08)){
 				linearFree(audiobuffers[i]);
 				audiobuffers[i] = NULL;
+				if (isDSP) free(dspSounds[i]);
 			}
 		}
 	}

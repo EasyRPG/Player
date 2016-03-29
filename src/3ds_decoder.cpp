@@ -63,6 +63,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
+	Sound->bytepersample = audiotype<<1;
 	
 	// Preparing PCM16 audiobuffer
 	#ifdef USE_CACHE
@@ -70,6 +71,8 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	#else
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
+	
+	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Decoding Vorbis buffer
 	int i = 0;
@@ -123,6 +126,7 @@ int DecodeWav(FILE* stream, DecodedSound* Sound){
 	else Sound->isStereo = false;
 	fseek(stream, 32, SEEK_SET);
 	fread(&bytepersample, 2, 1, stream);
+	Sound->bytepersample = bytepersample;
 	fseek(stream, 20, SEEK_SET);
 	
 	// Check for file audiocodec
@@ -148,6 +152,8 @@ int DecodeWav(FILE* stream, DecodedSound* Sound){
 	#else
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
+	
+	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Mono file
 	if (audiotype == 1) fread(Sound->audiobuf, Sound->audiobuf_size, 1, stream);	
