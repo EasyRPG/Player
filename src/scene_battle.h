@@ -24,7 +24,6 @@
 #include "rpg_actor.h"
 #include "rpg_enemy.h"
 
-#include "background.h"
 #include "battle_animation.h"
 #include "drawable.h"
 #include "game_actor.h"
@@ -131,8 +130,6 @@ protected:
 
 	virtual void NextTurn(Game_Battler* battler);
 
-	virtual void UpdateBackground();
-
 	virtual void EnemySelected();
 	virtual void AllySelected();
 	virtual void AttackSelected();
@@ -192,8 +189,6 @@ protected:
 	/** Displays allies status */
 	std::unique_ptr<Window_BattleStatus> status_window;
 	std::unique_ptr<Window_Message> message_window;
-
-	std::unique_ptr<Background> background;
 
 	std::unique_ptr<Screen> screen;
 

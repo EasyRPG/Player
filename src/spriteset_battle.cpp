@@ -19,6 +19,7 @@
 #include "spriteset_battle.h"
 #include "cache.h"
 #include "game_actors.h"
+#include "game_battle.h"
 #include "game_battler.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
@@ -29,7 +30,13 @@
 #include "sprite_battler.h"
 
 Spriteset_Battle::Spriteset_Battle() {
-	background.reset(new Background(Game_Temp::battle_background));
+	// Create background
+	if (!Game_Temp::battle_background.empty())
+		background.reset(new Background(Game_Temp::battle_background));
+	else
+		background.reset(new Background(Game_Battle::GetTerrainId()));
+	background_name = Game_Temp::battle_background;
+	Game_Battle::ChangeBackground(background_name);
 
 	// Create the sprites
 	std::vector<Game_Battler*> battler;
@@ -54,6 +61,16 @@ Spriteset_Battle::Spriteset_Battle() {
 }
 
 void Spriteset_Battle::Update() {
+	// Handle background change
+	if (background_name != Game_Battle::background_name) {
+		background_name = Game_Battle::background_name;
+		if (!background_name.empty()) {
+			background.reset(new Background(Game_Temp::battle_background));
+		} else {
+			background.reset();
+		}
+	}
+
 	for (auto sprite : sprites) {
 		Game_Battler* battler = sprite->GetBattler();
 		if (battler->GetType() == Game_Battler::Type_Ally) {
