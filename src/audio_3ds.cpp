@@ -163,12 +163,14 @@ CtrAudio::~CtrAudio() {
 	BGM_Stop();
 	
 	// Closing BGM streaming thread
-	termStream = true;
-	while (termStream){} // Wait for thread exiting...
-	if (BGM != NULL){
-		linearFree(BGM->audiobuf);
-		BGM->closeCallback();
-		free(BGM);
+	if (!isDSP){
+		termStream = true;
+		while (termStream){} // Wait for thread exiting...
+		if (BGM != NULL){
+			linearFree(BGM->audiobuf);
+			BGM->closeCallback();
+			free(BGM);
+		}
 	}
 	
 	if (isDSP) ndspExit();
