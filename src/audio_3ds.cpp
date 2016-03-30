@@ -88,10 +88,12 @@ static void csndStreamThread(void* arg){
 		}
 		
 		// Audio streaming feature
-		u32 block_mem = BGM->audiobuf_size>>1;
-		u32 curPos = BGM->samplerate * BGM->bytepersample * (delta / 1000);
-		if (curPos > block_mem * BGM->block_idx) BGM->updateCallback();
-			
+		if (BGM->handle != NULL){
+			u32 block_mem = BGM->audiobuf_size>>1;
+			u32 curPos = BGM->samplerate * BGM->bytepersample * (delta / 1000);
+			if (curPos > block_mem * BGM->block_idx) BGM->updateCallback();
+		}
+		
 	}
 }
 

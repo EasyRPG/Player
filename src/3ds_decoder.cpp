@@ -288,14 +288,17 @@ void UpdateWavStream(){
 }
 
 void CloseWav(){
-	fclose(BGM->handle);
+	if (BGM->handle != NULL) fclose(BGM->handle);
 }
 
 void CloseOgg(){
-	ov_clear((OggVorbis_File*)BGM->handle);
+	if (BGM->handle != NULL) ov_clear((OggVorbis_File*)BGM->handle);
 }
 
 int OpenWav(FILE* stream, DecodedMusic* Sound){
+	
+	// Setting return code (to check if audio streaming is needed or not)
+	u8 res = 0;
 	
 	// Grabbing info from the header
 	u16 audiotype;
@@ -329,8 +332,11 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	fseek(stream, 0, SEEK_END);
 	int end = ftell(stream);
 	Sound->audiobuf_size = end - start;
-	while (Sound->audiobuf_size > BGM_BUFSIZE){
-		Sound->audiobuf_size = Sound->audiobuf_size>>1;
+	if (Sound->audiobuf_size <= BGM_BUFSIZE) res = 1;
+	else{
+		while (Sound->audiobuf_size > BGM_BUFSIZE){
+			Sound->audiobuf_size = Sound->audiobuf_size>>1;
+		}
 	}
 	Sound->audiobuf_offs = start;
 	fseek(stream, start, SEEK_SET);
@@ -351,16 +357,23 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	
 	//Setting default streaming values
 	Sound->block_idx = 1;
-	Sound->handle = stream;
+	if (res == 0) Sound->handle = stream;
+	else{
+		fclose(stream);
+		Sound->handle = NULL;
+	}
 	Sound->eof_idx = 0xFFFFFFFF;
 	Sound->updateCallback = UpdateWavStream;
 	Sound->closeCallback = CloseWav;
 	
-	return 0;
+	return res;
 }
 
 
 int OpenOgg(FILE* stream, DecodedMusic* Sound){
+	
+	// Setting return code (to check if audio streaming is needed or not)
+	u8 res = 0;
 	
 	// Passing filestream to libogg
 	int eof=0;
@@ -384,10 +397,13 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	else Sound->isStereo = false;
 	
 	// Preparing PCM16 audiobuffer
-	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
-	while (Sound->audiobuf_size > BGM_BUFSIZE){
-		Sound->audiobuf_size = Sound->audiobuf_size>>1;
+	if (Sound->audiobuf_size <= BGM_BUFSIZE) res = 1;
+	else{
+		while (Sound->audiobuf_size > BGM_BUFSIZE){
+			Sound->audiobuf_size = Sound->audiobuf_size>>1;
+		}
 	}
+	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	
 	// Decoding Vorbis buffer
 	int i = 0;
@@ -418,12 +434,16 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	
 	//Setting default streaming values
 	Sound->block_idx = 1;
-	Sound->handle = (FILE*)vf; // We pass libogg filestream instead of stdio ones
+	if (res == 0) Sound->handle = (FILE*)vf; // We pass libogg filestream instead of stdio ones
+	else{
+		ov_clear(vf);
+		Sound->handle = NULL;
+	}
 	Sound->eof_idx = 0xFFFFFFFF;
 	Sound->updateCallback = UpdateOggStream;
 	Sound->closeCallback = CloseOgg;
 	
-	return 0;
+	return res;
 }
 
 int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
