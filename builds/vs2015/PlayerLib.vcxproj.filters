@@ -467,6 +467,9 @@
     <ClCompile Include="..\..\src\rtp_table.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\audio_decoder.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -918,6 +921,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rtp_table.h">
       <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\audio_decoder.h">
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

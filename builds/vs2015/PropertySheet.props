@@ -40,7 +40,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PlayerLib$(PlatformSuffix)$(DebugSuffix).lib;freetype.lib;harfbuzz.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;libmodplug.lib;native_midi.lib;sicudt$(DebugSuffix).lib;sicuuc$(DebugSuffix).lib;sicuin$(DebugSuffix).lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlib.lib;pixman.lib;liblcf.lib;winmm.lib;Imm32.lib;Version.lib;Rpcrt4.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PlayerLib$(PlatformSuffix)$(DebugSuffix).lib;freetype.lib;harfbuzz.lib;libexpat.lib;mpg123.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;libmodplug.lib;native_midi.lib;sicudt$(DebugSuffix).lib;sicuuc$(DebugSuffix).lib;sicuin$(DebugSuffix).lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlib.lib;pixman.lib;liblcf.lib;winmm.lib;Imm32.lib;Version.lib;Rpcrt4.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

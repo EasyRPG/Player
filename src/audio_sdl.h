@@ -25,6 +25,9 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#include "audio_decoder.h"
+
+#define HAVE_MPG123
 #ifdef HAVE_MPG123
 #  include <mpg123.h>
 #endif
@@ -74,10 +77,7 @@ private:
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
 
-#ifdef HAVE_MPG123
-	mpg123_handle *mp3_handle;
-	int mp3_err;
-#endif
+	std::unique_ptr<Mpg123Decoder> mpg123_decoder;
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_
