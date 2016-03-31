@@ -28,9 +28,6 @@
 #ifdef _3DS
 #include <3ds.h>
 u8 isN3DS;
-extern "C"{
-	#include <libsvchax.h>
-}
 #include <khax.h>
 #endif
 
@@ -68,14 +65,11 @@ extern "C" int main(int argc, char* argv[]) {
 	#endif
 		srvGetServiceHandleDirect(&csndHandle, "dsp::DSP");
 		if(csndHandle){
-			Output::Warning("dsp::DSP has been selected as audio service.");
+			Output::Debug("dsp::DSP has been selected as audio service.");
 			isDSP = true;
 			svcCloseHandle(csndHandle);
 		}else{
-			Output::Debug("dsp::DSP is unavailable...");
-			Output::Debug("svchax will be performed to access a sound service...");
-			haxInit(); // Performing svchax
-			consoleClear();
+			Output::Error("dsp::DSP is unavailable. Please dump a DSP firmware to use EasyRPG Player. If the problem persists, please report us the issue.");
 		}
 	#ifndef FORCE_DSP
 	}
