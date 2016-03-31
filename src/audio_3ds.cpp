@@ -33,7 +33,7 @@
 volatile bool termStream = false;
 volatile bool criticalPhase = false;
 DecodedMusic* BGM = NULL;
-static void csndStreamThread(void* arg){
+static void streamThread(void* arg){
 	
 	for(;;) {
 		
@@ -80,11 +80,16 @@ static void csndStreamThread(void* arg){
 				}else vol = BGM->vol - vol;
 			}
 			
-			if (BGM->isStereo){
-				CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
-				CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
-			}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
-			CSND_UpdateInfo(0);
+			if (!isDSP){
+				if (BGM->isStereo){
+					CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
+					CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
+				}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+				CSND_UpdateInfo(0);
+			}else{
+				float vol_table[12] = {vol,vol,vol,vol};
+				ndspChnSetMix(0x1F, vol_table);
+			}
 		}
 		
 		// Audio streaming feature
@@ -145,12 +150,11 @@ CtrAudio::CtrAudio() :
 	}
 	
 	#ifndef NO_DEBUG
-	if (!isDSP) Output::Debug("Starting BGM stream thread...");
-	else Output::Warning("BGM playback is unavailable with dsp::DSP audio service");
+	Output::Debug("Starting BGM stream thread...");
 	#endif
 	
 	// Starting a secondary thread on SYSCORE for BGM streaming
-	if (!isDSP) threadCreate(csndStreamThread, NULL, 32768, 0x18, 1, true);
+	threadCreate(streamThread, NULL, 32768, 0x18, 1, true);
 	
 	#ifdef USE_CACHE
 	initCache();
@@ -165,14 +169,12 @@ CtrAudio::~CtrAudio() {
 	BGM_Stop();
 	
 	// Closing BGM streaming thread
-	if (!isDSP){
-		termStream = true;
-		while (termStream){} // Wait for thread exiting...
-		if (BGM != NULL){
-			linearFree(BGM->audiobuf);
-			BGM->closeCallback();
-			free(BGM);
-		}
+	termStream = true;
+	while (termStream){} // Wait for thread exiting...
+	if (BGM != NULL){
+		linearFree(BGM->audiobuf);
+		BGM->closeCallback();
+		free(BGM);
 	}
 	
 	if (isDSP) ndspExit();
@@ -187,8 +189,6 @@ void CtrAudio::BGM_OnPlayedOnce() {
 }
 
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	
-	if (isDSP) return;
 	
 	// If a BGM is currently playing, we kill it
 	if (BGM != NULL){
@@ -217,7 +217,9 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	
 	// Processing music info
 	int samplerate = BGM->samplerate;
-	int codec = SOUND_FORMAT(BGM->format);
+	int codec;
+	if (!isDSP) codec = SOUND_FORMAT(BGM->format);
+	else codec = NDSP_CHANNELS(BGM->isStereo + 1) | NDSP_ENCODING(BGM->format);
 	
 	// Setting music volume
 	BGM->vol = volume / 100.0;
@@ -234,11 +236,23 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	#endif
 	
 	// Starting BGM
-	if (BGM->isStereo){
-		u32 chnbuf_size = BGM->audiobuf_size>>1;
-		csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
-		csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), (u32*)(BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
-	}else csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 0.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, BGM->audiobuf_size);
+	if (!isDSP){
+		if (BGM->isStereo){
+			u32 chnbuf_size = BGM->audiobuf_size>>1;
+			csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
+			csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 1.0, (u32*)(BGM->audiobuf + chnbuf_size), (u32*)(BGM->audiobuf + chnbuf_size), chnbuf_size); // Right		
+		}else csndPlaySound(0x1F, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, 0.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, BGM->audiobuf_size);
+	}else{
+		ndspChnReset(SOUND_CHANNELS);
+		ndspChnWaveBufClear(SOUND_CHANNELS);
+		ndspChnSetInterp(SOUND_CHANNELS, NDSP_INTERP_LINEAR);
+		ndspChnSetRate(SOUND_CHANNELS, float(samplerate));
+		ndspChnSetFormat(SOUND_CHANNELS, codec);
+		float vol_table[12] = {vol,vol,vol,vol};
+		ndspChnSetMix(SOUND_CHANNELS, vol_table);
+		createDspBlock(&dspSounds[SOUND_CHANNELS], BGM->bytepersample, BGM->audiobuf_size, true, (u32*)BGM->audiobuf);
+		ndspChnWaveBufAdd(SOUND_CHANNELS, &dspSounds[SOUND_CHANNELS]);		
+	}
 	BGM->isPlaying = true;
 	BGM->starttick = osGetTime();
 	
@@ -247,9 +261,11 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 void CtrAudio::BGM_Pause() {
 	if (BGM == NULL) return;
 	if (BGM->isPlaying){
-		CSND_SetPlayState(0x1E, 0);
-		CSND_SetPlayState(0x1F, 0);
-		CSND_UpdateInfo(0);
+		if (!isDSP){
+			CSND_SetPlayState(0x1E, 0);
+			CSND_SetPlayState(0x1F, 0);
+			CSND_UpdateInfo(0);
+		}else ndspChnSetPaused(SOUND_CHANNELS, true);
 		BGM->isPlaying = false;
 		BGM->starttick = osGetTime()-BGM->starttick; // Save current delta
 	}
@@ -258,9 +274,11 @@ void CtrAudio::BGM_Pause() {
 void CtrAudio::BGM_Resume() {
 	if (BGM == NULL) return;
 	if (!BGM->isPlaying){
-		if (BGM->isStereo) CSND_SetPlayState(0x1E, 1);
-		CSND_SetPlayState(0x1F, 1);
-		CSND_UpdateInfo(0);
+		if (!isDSP){
+			if (BGM->isStereo) CSND_SetPlayState(0x1E, 1);
+			CSND_SetPlayState(0x1F, 1);
+			CSND_UpdateInfo(0);
+		}else ndspChnSetPaused(SOUND_CHANNELS, false);
 		BGM->isPlaying = true;
 		BGM->starttick = osGetTime()-BGM->starttick; // Restore starttick
 	}
@@ -268,9 +286,11 @@ void CtrAudio::BGM_Resume() {
 
 void CtrAudio::BGM_Stop() {
 	if (BGM == NULL) return;
-	CSND_SetPlayState(0x1E, 0);
-	CSND_SetPlayState(0x1F, 0);
-	CSND_UpdateInfo(0);
+	if (!isDSP){
+		CSND_SetPlayState(0x1E, 0);
+		CSND_SetPlayState(0x1F, 0);
+		CSND_UpdateInfo(0);
+	}else ndspChnWaveBufClear(SOUND_CHANNELS);
 	BGM->isPlaying = false;
 }
 
@@ -286,11 +306,16 @@ unsigned CtrAudio::BGM_GetTicks() {
 void CtrAudio::BGM_Volume(int volume) {
 	if (BGM == NULL) return;
 	float vol = volume / 100.0;
-	if (BGM->isStereo){
-		CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
-		CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
-	}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
-	CSND_UpdateInfo(0);
+	if (isDSP){
+		if (BGM->isStereo){
+			CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
+			CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
+		}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
+		CSND_UpdateInfo(0);
+	}else{
+		float vol_table[12] = {vol,vol,vol,vol};
+		ndspChnSetMix(SOUND_CHANNELS, vol_table);
+	}
 }
 
 void CtrAudio::BGM_Pitch(int /* pitch */) {

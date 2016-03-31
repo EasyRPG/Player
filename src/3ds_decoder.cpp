@@ -220,12 +220,12 @@ void UpdateOggStream(){
 	int bytesRead = 0;
 	int current_section;
 	int half_check = (Sound->block_idx)%2;
-	if (!Sound->isStereo){ // Mono file
+	if ((!Sound->isStereo) || isDSP){ // Mono file
 		int i = half_check * half_buf;
 		while(bytesRead < half_buf){
 			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0){ // EoF
-				if Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+				if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 				ov_pcm_seek(vf,0);
 			}else bytesRead = bytesRead + ret;
 		}
@@ -237,7 +237,7 @@ void UpdateOggStream(){
 		while(bytesRead < half_buf){
 			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
 			if (ret == 0){ // EoF
-				if Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+				if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 				ov_pcm_seek(vf,0);
 			}else{
 				for (u32 i=0;i<ret;i=i+4){
@@ -260,10 +260,10 @@ void UpdateWavStream(){
 	int half_check = (Sound->block_idx)%2;
 	
 	// Mono file
-	if (!Sound->isStereo){
+	if ((!Sound->isStereo) || isDSP){
 		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
 		if (bytesRead != half_buf){ // EoF
-			if Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+			if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
 			fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
 		}
@@ -278,7 +278,7 @@ void UpdateWavStream(){
 		u8* tmp_buf = (u8*)linearAlloc(half_buf);
 		bytesRead = fread(tmp_buf, 1, half_buf, Sound->handle);
 		if (bytesRead != half_buf){ // EoF
-			if Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+			if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 			fseek(Sound->handle, Sound->audiobuf_offs, SEEK_SET);
 			fread(tmp_buf, 1, half_buf, Sound->handle);
 		}
@@ -347,6 +347,8 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	fseek(stream, start, SEEK_SET);
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	
+	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	
 	// Mono file
 	if (audiotype == 1) fread(Sound->audiobuf, 1, Sound->audiobuf_size, stream);	
 	
@@ -400,6 +402,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
+	Sound->bytepersample = audiotype<<1;
 	
 	// Preparing PCM16 audiobuffer
 	if (Sound->audiobuf_size <= BGM_BUFSIZE) res = 1;
@@ -409,6 +412,8 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 		}
 	}
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
+	
+	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Decoding Vorbis buffer
 	int i = 0;

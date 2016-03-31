@@ -53,7 +53,7 @@ struct CtrAudio : public AudioInterface {
 private:
 	u8* audiobuffers[SOUND_CHANNELS]; // We'll use last two available channels for BGM
 	uint8_t num_channels = SOUND_CHANNELS;
-	ndspWaveBuf dspSounds[SOUND_CHANNELS];
+	ndspWaveBuf dspSounds[SOUND_CHANNELS+1]; // We need one more waveBuf for BGM purposes
 	int bgm_volume; // Stubbed
 	bool (*isPlayingCallback)(int);
 	void (*clearCallback)(int);
