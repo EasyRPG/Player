@@ -162,10 +162,15 @@ int DecodeWav(FILE* stream, DecodedSound* Sound){
 	else{
 		u32 chn_size = Sound->audiobuf_size>>1;
 		u16 byteperchannel = bytepersample>>1;
-		for (u32 i=0;i<chn_size;i=i+byteperchannel){
-			fread(&Sound->audiobuf[i], byteperchannel, 1, stream);
-			fread(&Sound->audiobuf[i+chn_size], byteperchannel, 1, stream);
+		u8* tmp_buf = (u8*)linearAlloc(Sound->audiobuf_size);
+		fread(tmp_buf, Sound->audiobuf_size, 1, stream);
+		int z = 0;
+		for (u32 i=0;i<chn_size;i=i+bytepersample){
+			memcpy(&Sound->audiobuf[z], &tmp_buf[i], byteperchannel);
+			memcpy(&Sound->audiobuf[z+chn_size], &tmp_buf[i+2], byteperchannel);
+			z=z+2;
 		}
+		linearFree(tmp_buf);
 	}
 	
 	fclose(stream);

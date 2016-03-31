@@ -342,7 +342,8 @@ void CtrAudio::ME_Fade(int fade) {
 void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Select an available audio channel
-	int i = last_ch;
+	int i = 0;
+	if (isDSP) i = last_ch;
 	for(;;){
 		if (i >= num_channels){
 			if (isDSP) i = -1;
