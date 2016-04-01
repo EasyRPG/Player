@@ -305,7 +305,6 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 
 	if (page == NULL) {
 		tile_id = 0;
-		through = true;
 		trigger = -1;
 		list.clear();
 		interpreter.reset();
