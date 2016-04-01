@@ -475,7 +475,7 @@ void Game_Character::MoveTypeCustom() {
 			if (move_failed) {
 				if (active_route->skippable) {
 					last_move_failed = false;
-					++active_route_index;
+					continue;
 				}
 
 				break;
