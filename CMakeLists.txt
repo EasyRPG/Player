@@ -101,11 +101,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Boost
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
-
 foreach(i Expat Freetype Pixman ZLIB PNG SDL2 Iconv)
   find_package(${i} REQUIRED)
 
@@ -130,26 +125,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
-
-# RTP Table
-find_package(Ruby)
-if(RUBY_FOUND)
-  add_custom_command(
-    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
-    COMMAND "${RUBY_EXECUTABLE}"
-    ARGS
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
-    DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb")
-  execute_process(
-    COMMAND "${RUBY_EXECUTABLE}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h")
-endif()
 
 # executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})

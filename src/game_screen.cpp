@@ -100,7 +100,7 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 
 		pictures.resize(id);
 	}
-	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
+	std::shared_ptr<Game_Picture>& p = pictures[id - 1];
 	if (!p)
 		p.reset(new Game_Picture(id));
 	return p.get();
@@ -260,7 +260,7 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
+	std::vector<std::shared_ptr<Game_Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); ++it) {
 		if (*it) {
 			(*it)->Update();

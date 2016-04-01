@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <boost/scoped_ptr.hpp>
 #include <cstdlib>
 #include "main_data.h"
 #include "game_actors.h"
@@ -48,10 +47,10 @@ std::string save_path;
 
 namespace Main_Data {
 	// Dynamic Game Data
-	boost::scoped_ptr<Game_Screen> game_screen;
-	boost::scoped_ptr<Game_Player> game_player;
-	boost::scoped_ptr<Game_Party> game_party;
-	boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
+	std::unique_ptr<Game_Screen> game_screen;
+	std::unique_ptr<Game_Player> game_player;
+	std::unique_ptr<Game_Party> game_party;
+	std::unique_ptr<Game_EnemyParty> game_enemyparty;
 
 	RPG::Save game_data;
 }

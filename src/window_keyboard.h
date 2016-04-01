@@ -57,9 +57,9 @@ public:
 	static const char* const DONE;
 	static const char* const SPACE;
 
-	static std::string TO_KATAKANA;
-	static std::string TO_HIRAGANA;
-	static std::string DONE_JP;
+	static const char* const TO_KATAKANA;
+	static const char* const TO_HIRAGANA;
+	static const char* const DONE_JP;
 
 protected:
 	static const int border_x = 8;

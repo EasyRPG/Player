@@ -34,8 +34,6 @@
 #include "bitmap.h"
 #include "font.h"
 
-#include <boost/next_prior.hpp>
-
 const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
 
@@ -46,7 +44,7 @@ const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	contents_x(0), contents_y(0), line_count(0), text(""),
+	contents_x(0), contents_y(0), line_count(0),
 	kill_message(false), speed_modifier(0),
 	speed_frame_counter(0), new_page_after_pause(false),
 	number_input_window(new Window_NumberInput(0, 0)),
@@ -63,9 +61,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	visible = false;
 	SetZ(10000);
 
-	escape_char = (Player::escape_symbol == "\xC2\xA5" ? L'\u00A5' :
-		      (Player::escape_symbol == "\xE2\x82\xA9" ? L'\u20A9' :
-		      L'\\'));
+	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
@@ -86,14 +82,14 @@ void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
-		std::string const line = Game_Message::texts[i];
-		text.append(line + "\n");
+		std::u32string const line = Utils::DecodeUTF32(Game_Message::texts[i]);
+		text.append(line + U"\n");
 	}
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
+	text_index = text.begin();
+	end = text.end();
 
 	InsertNewPage();
 }
@@ -110,8 +106,8 @@ void Window_Message::FinishMessageProcessing() {
 	}
 
 	text.clear();
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
+	text_index = text.begin();
+	end = text.end();
 }
 
 void Window_Message::StartChoiceProcessing() {
@@ -400,14 +396,14 @@ void Window_Message::UpdateMessage() {
 			}
 		} else if (*text_index == '$'
 				   && std::distance(text_index, end) > 1
-				   && std::isalpha(*boost::next(text_index))) {
+				   && std::isalpha(*std::next(text_index))) {
 			// ExFont
-			contents->TextDraw(contents_x, contents_y, text_color,
-							   std::string(text_index.base(), boost::next(text_index, 2).base()));
+			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))));
+			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += 12;
 			++text_index;
 		} else {
-			std::string const glyph(text_index.base(), boost::next(text_index).base());
+			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))));
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += contents->GetFont()->GetSize(glyph).width;
@@ -449,7 +445,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		}
 		else if (*text_index >= '1' &&
 			*text_index <= '9') {
-			ss << std::string(text_index.base(), boost::next(text_index).base());
+			ss << std::string(text_index, std::next(text_index));
 		} else if (*text_index == ']') {
 			--call_depth;
 			if (call_depth == 0) {
@@ -498,8 +494,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
 	if (std::distance(text_index, end) > 3 &&
-		*boost::next(text_index, 2) == escape_char &&
-		tolower(*boost::next(text_index, 3)) == 'v') {
+		*std::next(text_index, 2) == escape_char &&
+		tolower(*std::next(text_index, 3)) == 'v') {
 		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case
 		std::stringstream ss;

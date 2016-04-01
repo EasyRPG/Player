@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <exception>
 
 #ifdef GEKKO
 #  include <unistd.h>
@@ -43,16 +42,7 @@
 #include "bitmap.h"
 #include "main_data.h"
 #include "message_overlay.h"
-
-#include <boost/lexical_cast.hpp>
-
-#ifdef BOOST_NO_EXCEPTIONS
-#  include <boost/throw_exception.hpp>
-
-	void boost::throw_exception(std::exception const& exp) {
-		Output::Error("exception: %s", exp.what());
-	}
-#endif
+#include "utils.h"
 
 namespace {
 	std::ofstream LOG_FILE;
@@ -227,14 +217,14 @@ bool Output::TakeScreenshot() {
 	do {
 		p = FileFinder::MakePath(Main_Data::GetSavePath(),
 								 "screenshot_"
-								 + boost::lexical_cast<std::string>(index++)
+								 + Utils::ToString(index++)
 								 + ".png");
 	} while(FileFinder::Exists(p));
 	return TakeScreenshot(p);
 }
 
 bool Output::TakeScreenshot(std::string const& file) {
-	EASYRPG_SHARED_PTR<std::fstream> ret =
+	std::shared_ptr<std::fstream> ret =
 		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if(ret) {

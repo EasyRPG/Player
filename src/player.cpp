@@ -179,9 +179,9 @@ void Player::Init(int argc, char *argv[]) {
 }
 
 void Player::Run() {
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
+	Scene::Push(std::make_shared<Scene>());
 
-	Scene::Push(EASYRPG_SHARED_PTR<Scene>(static_cast<Scene*>(new Scene_Logo())));
+	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
 

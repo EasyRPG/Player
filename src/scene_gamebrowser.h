@@ -24,7 +24,6 @@
 #include "window_command.h"
 #include "window_help.h"
 #include "window_gamelist.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Game browser class.
@@ -71,19 +70,19 @@ public:
 
 private:
 	/** Window displaying settings */
-	boost::scoped_ptr<Window_Command> command_window;
+	std::unique_ptr<Window_Command> command_window;
 
 	/** Window displaying the games. */
-	boost::scoped_ptr<Window_GameList> gamelist_window;
+	std::unique_ptr<Window_GameList> gamelist_window;
 
 	/** Window displaying help text. */
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 
 	/** Window displaying the loading text */
-	boost::scoped_ptr<Window_Help> load_window;
+	std::unique_ptr<Window_Help> load_window;
 
 	/** Window dislaying about text */
-	boost::scoped_ptr<Window_About> about_window;
+	std::unique_ptr<Window_About> about_window;
 
 	bool game_loading = false;
 

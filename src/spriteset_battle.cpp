@@ -41,7 +41,7 @@ Spriteset_Battle::Spriteset_Battle() {
 	}
 
 	for (Game_Battler* b : battler) {
-		sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Battler>(b));
+		sprites.push_back(std::make_shared<Sprite_Battler>(b));
 		if (b->GetType() == Game_Battler::Type_Ally) {
 			sprites.back()->SetVisible(false);
 		}
@@ -69,7 +69,7 @@ void Spriteset_Battle::Update() {
 
 Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
 {
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> >::iterator it;
+	std::vector<std::shared_ptr<Sprite_Battler> >::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); ++it) {
 		if ((*it)->GetBattler() == battler)
 			return it->get();

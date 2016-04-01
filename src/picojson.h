@@ -29,6 +29,7 @@
 #define picojson_h
 
 #include <algorithm>
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

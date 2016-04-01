@@ -140,7 +140,7 @@ namespace Input {
 	std::vector<InputButton> GetAllReleased();
 
 	/** Buttons press time (in frames). */
-	extern EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
+	extern std::array<int, BUTTON_COUNT> press_time;
 
 	/** Buttons trigger state. */
 	extern std::bitset<BUTTON_COUNT> triggered;

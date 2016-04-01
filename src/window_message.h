@@ -20,11 +20,9 @@
 
 // Headers
 #include <string>
-#include <boost/regex/pending/unicode_iterator.hpp>
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Window Message Class.
@@ -173,9 +171,9 @@ protected:
 	/** Current number of lines on this page. */
 	int line_count;
 	/** Index of the next char in text that will be output. */
-	boost::u8_to_u32_iterator<std::string::const_iterator> text_index, end;
+	std::u32string::const_iterator text_index, end;
 	/** text message that will be displayed. */
-	std::string text;
+	std::u32string text;
 	/** Used by Message kill command \^. */
 	bool kill_message;
 	/** Text color. */
@@ -197,8 +195,8 @@ protected:
 	static const int speed_table[21];
 
 	/** Used by the number input event. */
-	boost::scoped_ptr<Window_NumberInput> number_input_window;
-	boost::scoped_ptr<Window_Gold> gold_window;
+	std::unique_ptr<Window_NumberInput> number_input_window;
+	std::unique_ptr<Window_Gold> gold_window;
 };
 
 #endif

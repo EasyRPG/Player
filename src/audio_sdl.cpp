@@ -386,7 +386,7 @@ void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		Output::Debug("Sound not found: %s", file.c_str());
 		return;
 	}
-	EASYRPG_SHARED_PTR<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
+	std::shared_ptr<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!sound) {
 		Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;

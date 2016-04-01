@@ -23,8 +23,6 @@
 #include "data.h"
 #include "game_system.h"
 
-#include <boost/regex/pending/unicode_iterator.hpp>
-
 Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
@@ -64,13 +62,10 @@ void Window_Name::Erase() {
 	if (name.size() < 1)
 		return;
 
-	boost::u8_to_u32_iterator<std::string::const_iterator> name_begin =
-		boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(), name.begin());
-	boost::u8_to_u32_iterator<std::string::const_iterator> name_end =
-		boost::u8_to_u32_iterator<std::string::const_iterator>(name.end(), name.begin(), name.end());
-	--name_end;
+	std::u32string u32name = Utils::DecodeUTF32(name);
+	u32name.pop_back();
+	name = Utils::EncodeUTF(u32name);
 
-	name = std::string(name_begin.base(), name_end.base());
 	Refresh();
 }
 

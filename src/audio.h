@@ -20,12 +20,11 @@
 
 // Headers
 #include <string>
-#include <boost/noncopyable.hpp>
 
 /**
  * Base Audio class.
  */
-struct AudioInterface : boost::noncopyable {
+struct AudioInterface {
 	virtual ~AudioInterface() {}
 
 	/**

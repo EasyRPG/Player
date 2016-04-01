@@ -22,12 +22,11 @@
 #include "rpg_troop.h"
 #include "game_enemy.h"
 #include "game_party_base.h"
-#include <boost/noncopyable.hpp>
 
 /**
  * Manages the enemy party during battles.
  */
-class Game_EnemyParty : public Game_Party_Base, boost::noncopyable {
+class Game_EnemyParty : public Game_Party_Base {
 public:
 	/**
 	 * Initializes Game_Enemy_Party.
@@ -50,7 +49,7 @@ public:
 	 *
 	 * @return list of party members
 	 */
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& GetEnemies();
+	std::vector<std::shared_ptr<Game_Enemy> >& GetEnemies();
 
 	/**
 	 * Sums up the experience points of all enemy party members.
@@ -74,7 +73,7 @@ public:
 	void GenerateDrops(std::vector<int>& out) const;
 
 private:
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> > enemies;
+	std::vector<std::shared_ptr<Game_Enemy> > enemies;
 	RPG::Troop* troop;
 };
 

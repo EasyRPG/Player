@@ -24,7 +24,6 @@
 #include "rpg_event.h"
 #include "rpg_savemapevent.h"
 #include "game_interpreter.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Game_Event class.
@@ -199,7 +198,7 @@ private:
 	RPG::Event event;
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
-	EASYRPG_SHARED_PTR<Game_Interpreter> interpreter;
+	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
 };
 

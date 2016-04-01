@@ -15,8 +15,10 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
+#include <algorithm>
 #include <sstream>
 #include "game_actor.h"
 #include "game_battle.h"

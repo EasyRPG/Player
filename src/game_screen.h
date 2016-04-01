@@ -22,7 +22,6 @@
 #include "system.h"
 #include "game_picture.h"
 #include "game_character.h"
-#include <boost/scoped_ptr.hpp>
 
 class Game_Battler;
 class Screen;
@@ -96,7 +95,7 @@ public:
 	};
 
 private:
-	std::vector<EASYRPG_SHARED_PTR<Game_Picture> > pictures;
+	std::vector<std::shared_ptr<Game_Picture> > pictures;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved

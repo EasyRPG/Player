@@ -22,7 +22,6 @@
 #include "scene.h"
 #include "sprite.h"
 #include "window_command.h"
-#include <boost/scoped_ptr.hpp>
 #include "async_handler.h"
 
 /**
@@ -96,10 +95,10 @@ private:
 	void OnTitleSpriteReady(FileRequestResult* result);
 
 	/** Displays the options of the title scene. */
-	boost::scoped_ptr<Window_Command> command_window;
+	std::unique_ptr<Window_Command> command_window;
 
 	/** Background graphic. */
-	boost::scoped_ptr<Sprite> title;
+	std::unique_ptr<Sprite> title;
 
 	/** Contains the state of continue button. */
 	bool continue_enabled;

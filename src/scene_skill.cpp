@@ -68,7 +68,7 @@ void Scene_Skill::Update() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else if (type == RPG::Skill::Type_normal || type >= RPG::Skill::Type_subskill) {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
+				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
 				skill_index = skill_window->GetIndex();
 			} else if (type == RPG::Skill::Type_teleport) {
 				// TODO: Displays the teleport target scene/window

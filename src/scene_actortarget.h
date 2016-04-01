@@ -23,7 +23,6 @@
 #include "window_actortarget.h"
 #include "window_help.h"
 #include "window_targetstatus.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene ActorTarget class.
@@ -64,11 +63,11 @@ public:
 
 private:
 	/** Contains the actors of the party. */
-	boost::scoped_ptr<Window_ActorTarget> target_window;
+	std::unique_ptr<Window_ActorTarget> target_window;
 	/** Contains the name of the item/skill that will be used. */
-	boost::scoped_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_Help> help_window;
 	/** Contains quantity/cost of item/spell. */
-	boost::scoped_ptr<Window_TargetStatus> status_window;
+	std::unique_ptr<Window_TargetStatus> status_window;
 
 	/** ID of item/skill to use. */
 	int id;

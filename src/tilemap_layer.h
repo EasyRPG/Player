@@ -133,7 +133,7 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
-	std::vector<EASYRPG_SHARED_PTR<TilemapSubLayer> > sublayers;
+	std::vector<std::shared_ptr<TilemapSubLayer> > sublayers;
 };
 
 #endif

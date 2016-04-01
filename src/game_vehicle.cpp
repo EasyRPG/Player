@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cassert>
 #include "data.h"
 #include "main_data.h"
 #include "game_system.h"

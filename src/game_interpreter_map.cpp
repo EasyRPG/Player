@@ -16,8 +16,8 @@
  */
 
 // Headers
-#include <boost/bind.hpp>
 #include <cstdlib>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include "audio.h"

@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cassert>
 #include <cstdlib>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
@@ -41,7 +42,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
 	for (ei = troop->members.begin(); ei != troop->members.end(); ++ei)	{
-		EASYRPG_SHARED_PTR<Game_Enemy> enemy = EASYRPG_MAKE_SHARED<Game_Enemy>(ei->enemy_id);
+		std::shared_ptr<Game_Enemy> enemy = std::make_shared<Game_Enemy>(ei->enemy_id);
 		enemy->SetBattleX(ei->x);
 		enemy->SetBattleY(ei->y);
 		enemy->SetHidden(ei->invisible);
@@ -49,12 +50,12 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 }
 
-std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
+std::vector<std::shared_ptr<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
 int Game_EnemyParty::GetExp() const {
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
+	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
 		if ((*it)->IsDead()) {
@@ -65,7 +66,7 @@ int Game_EnemyParty::GetExp() const {
 }
 
 int Game_EnemyParty::GetMoney() const {
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
+	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
 		if ((*it)->IsDead()) {
@@ -76,7 +77,7 @@ int Game_EnemyParty::GetMoney() const {
 }
 
 void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
-	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
+	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
 		if ((*it)->IsDead()) {
 			// Only roll if the enemy has something to drop

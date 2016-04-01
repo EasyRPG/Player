@@ -33,7 +33,7 @@
 #include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
-	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
+	message(message), latest_time(0), latest_slot(0) {
 	top_index = 0;
 	index = 0;
 }
@@ -47,7 +47,7 @@ void Scene_File::Start() {
 	tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 0; i < 15; i++) {
-		EASYRPG_SHARED_PTR<Window_SaveFile>
+		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
 

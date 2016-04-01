@@ -19,41 +19,12 @@
 #define _MEMORY_MANAGEMENT_H_
 
 // Headers
-#include <stdint.h>
-#include <boost/config.hpp>
-
-#ifdef BOOST_NO_CWCHAR
-typedef uint32_t wchar_t;
-#endif
-
-#if defined(BOOST_NO_CXX11_SMART_PTR)
-#  include <boost/shared_ptr.hpp>
-#  include <boost/weak_ptr.hpp>
-#  include <boost/make_shared.hpp>
-
-#  define EASYRPG_SHARED_PTR boost::shared_ptr
-#  define EASYRPG_WEAK_PTR boost::weak_ptr
-#  define EASYRPG_MAKE_SHARED boost::make_shared
-#else
-#  include <memory>
-
-#  define EASYRPG_SHARED_PTR std::shared_ptr
-#  define EASYRPG_WEAK_PTR std::weak_ptr
-#  define EASYRPG_MAKE_SHARED std::make_shared
-#endif
-
-#ifdef BOOST_NO_CXX11_HDR_ARRAY
-#  include <boost/array.hpp>
-#  define EASYRPG_ARRAY boost::array
-#else
-#  include <array>
-#  define EASYRPG_ARRAY std::array
-#endif
+#include <memory>
 
 class Bitmap;
 class Font;
 
-typedef EASYRPG_SHARED_PTR<Bitmap> BitmapRef;
-typedef EASYRPG_SHARED_PTR<Font> FontRef;
+typedef std::shared_ptr<Bitmap> BitmapRef;
+typedef std::shared_ptr<Font> FontRef;
 
 #endif // _MEMORY_MANAGEMENT_H_

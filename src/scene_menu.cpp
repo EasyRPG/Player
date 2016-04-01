@@ -163,7 +163,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Item>());
+				Scene::Push(std::make_shared<Scene_Item>());
 			}
 			break;
 		case Skill:
@@ -184,7 +184,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
+				Scene::Push(std::make_shared<Scene_Save>());
 			}
 			break;
 		case Order:
@@ -192,7 +192,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Order>());
+				Scene::Push(std::make_shared<Scene_Order>());
 			}
 			break;
 		case Wait:
@@ -203,7 +203,7 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Quit:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+			Scene::Push(std::make_shared<Scene_End>());
 			break;
 		}
 	}
@@ -219,13 +219,13 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));
+			Scene::Push(std::make_shared<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(*menustatus_window->GetActor()));
+			Scene::Push(std::make_shared<Scene_Equip>(*menustatus_window->GetActor()));
 			break;
 		case Status:
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(menustatus_window->GetIndex()));
+			Scene::Push(std::make_shared<Scene_Status>(menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{

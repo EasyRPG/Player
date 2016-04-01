@@ -34,7 +34,7 @@ void Window_GameList::Refresh() {
 
 	// Find valid game diectories
 	for (auto dir : tree.get()->directories) {
-		EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> subtree = FileFinder::CreateDirectoryTree(FileFinder::MakePath(Main_Data::GetProjectPath(), dir.second), false);
+		std::shared_ptr<FileFinder::DirectoryTree> subtree = FileFinder::CreateDirectoryTree(FileFinder::MakePath(Main_Data::GetProjectPath(), dir.second), false);
 		if (FileFinder::IsValidProject(*subtree)) {
 			game_directories.push_back(dir.second);
 		}

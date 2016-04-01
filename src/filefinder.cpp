@@ -16,16 +16,16 @@
  */
 
 // Headers
+#include <cassert>
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
-
-#include <boost/optional.hpp>
 
 #ifdef _WIN32
 #  include <windows.h>
@@ -54,13 +54,8 @@
 #include "output.h"
 #include "player.h"
 #include "registry.h"
+#include "rtp_table.h"
 #include "main_data.h"
-
-#ifdef _MSC_VER
-#  include "rtp_table_bom.h"
-#else
-#  include "rtp_table.h"
-#endif
 
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
@@ -72,12 +67,12 @@ namespace {
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 #endif
 
-	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::DirectoryTree>> search_path_list;
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> game_directory_tree;
+	typedef std::vector<std::shared_ptr<FileFinder::DirectoryTree>> search_path_list;
+	std::shared_ptr<FileFinder::DirectoryTree> game_directory_tree;
 	search_path_list search_paths;
 	std::string fonts_path;
 
-	boost::optional<std::string> FindFile(FileFinder::DirectoryTree const& tree,
+	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  std::string const& dir,
 										  std::string const& name,
 										  char const* exts[])
@@ -109,7 +104,7 @@ namespace {
 #endif
 
 		string_map::const_iterator dir_it = tree.directories.find(lower_dir);
-		if(dir_it == tree.directories.end()) { return boost::none; }
+		if(dir_it == tree.directories.end()) { return ""; }
 
 		string_map const& dir_map = tree.sub_members.find(lower_dir)->second;
 
@@ -122,7 +117,7 @@ namespace {
 			}
 		}
 
-		return boost::none;
+		return "";
 	}
 
 	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
@@ -157,20 +152,20 @@ namespace {
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
-		const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
-		boost::optional<std::string> const ret = FindFile(*tree, dir, name, exts);
-		if (ret != boost::none) { return *ret; }
+		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
+		std::string const ret = FindFile(*tree, dir, name, exts);
+		if (!ret.empty()) { return ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
 
-			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if (ret) { return *ret; }
+			std::string const ret = FindFile(*(*i), dir, name, exts);
+			if (!ret.empty()) { return ret; }
 
-			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if (ret_rtp) { return *ret_rtp; }
+			std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
+			if (!ret_rtp.empty()) { return ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
@@ -180,16 +175,16 @@ namespace {
 	}
 } // anonymous namespace
 
-const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
+const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() {
 	return game_directory_tree;
 }
 
-const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
+const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
 	std::string save_path = Main_Data::GetSavePath();
 
-	if (!(Exists(save_path) && IsDirectory(save_path))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+	if (!(Exists(save_path) && IsDirectory(save_path))) { return std::shared_ptr<DirectoryTree>(); }
 
-	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = save_path;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, FILES);
@@ -201,14 +196,14 @@ const EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateSaveDirect
 	return tree;
 }
 
-void FileFinder::SetDirectoryTree(EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> directory_tree) {
+void FileFinder::SetDirectoryTree(std::shared_ptr<FileFinder::DirectoryTree> directory_tree) {
 	game_directory_tree = directory_tree;
 }
 
-EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
-	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<DirectoryTree>(); }
+std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
+	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
 
-	EASYRPG_SHARED_PTR<DirectoryTree> tree = EASYRPG_MAKE_SHARED<DirectoryTree>();
+	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, ALL);
@@ -319,7 +314,7 @@ std::string FileFinder::FindFont(const std::string& name) {
 
 static void add_rtp_path(std::string const& p) {
 	using namespace FileFinder;
-	EASYRPG_SHARED_PTR<DirectoryTree> tree(CreateDirectoryTree(p));
+	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if(tree) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
 		search_paths.push_back(tree);
@@ -427,17 +422,17 @@ FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
 #endif
 }
 
-EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
+std::shared_ptr<std::fstream> FileFinder::openUTF8(const std::string& name,
 													  std::ios_base::openmode m)
 {
-	EASYRPG_SHARED_PTR<std::fstream> ret(new std::fstream(
+	std::shared_ptr<std::fstream> ret(new std::fstream(
 #ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
 		name.c_str(),
 #endif
 		m));
-	return (*ret)? ret : EASYRPG_SHARED_PTR<std::fstream>();
+	return (*ret)? ret : std::shared_ptr<std::fstream>();
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
@@ -461,11 +456,7 @@ std::string FileFinder::FindDefault(std::string const& name) {
 std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name) {
 	static const char* no_exts[] = { "", NULL };
 
-	boost::optional<std::string> file = FindFile(tree, dir, name, no_exts);
-	if (file != boost::none) {
-		return *file;
-	}
-	return "";
+	return FindFile(tree, dir, name, no_exts);
 }
 
 std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& name) {
@@ -498,7 +489,7 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 }
 
 bool FileFinder::HasSavegame(DirectoryTree const& dir) {
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {
 		std::stringstream ss;
@@ -555,9 +546,9 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #else
 	struct stat sb;
 #   ifdef GEKKO
-	BOOST_VERIFY(::stat(dir.c_str(), &sb) != -1);
+	::stat(dir.c_str(), &sb);
 #   else
-	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
+	::lstat(dir.c_str(), &sb);
 #endif
 	return S_ISDIR(sb.st_mode);
 #endif
@@ -582,7 +573,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath path
 #endif
 
-	EASYRPG_SHARED_PTR< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
+	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
 	if (!dir) {
 		Output::Debug("Error opening dir %s: %s", path.c_str(),
 					  ::strerror(errno));

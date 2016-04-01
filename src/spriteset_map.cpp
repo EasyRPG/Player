@@ -37,13 +37,13 @@ Spriteset_Map::Spriteset_Map() {
 	panorama.SetZ(-1000);
 
 	for (Game_Event& ev : Game_Map::GetEvents()) {
-		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(&ev));
+		character_sprites.push_back(std::make_shared<Sprite_Character>(&ev));
 	}
 
 	airship_shadow.reset(new Sprite_AirshipShadow());
 
 	character_sprites.push_back
-		(EASYRPG_MAKE_SHARED<Sprite_Character>(Main_Data::game_player.get()));
+		(std::make_shared<Sprite_Character>(Main_Data::game_player.get()));
 
 	timer1.reset(new Sprite_Timer(0));
 	timer2.reset(new Sprite_Timer(1));
@@ -76,7 +76,7 @@ void Spriteset_Map::Update() {
 
 		if (!vehicle_loaded[i - 1] && vehicle->GetMapId() == map_id) {
 			vehicle_loaded[i - 1] = true;
-			character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(vehicle));
+			character_sprites.push_back(std::make_shared<Sprite_Character>(vehicle));
 		}
 	}
 
@@ -89,7 +89,7 @@ void Spriteset_Map::Update() {
 // Finds the sprite for a specific character
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 {
-	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> >::const_iterator it;
+	std::vector<std::shared_ptr<Sprite_Character> >::const_iterator it;
 	for (it = character_sprites.begin(); it != character_sprites.end(); ++it) {
 		Sprite_Character* sprite = it->get();
 		if (sprite->GetCharacter() == character)

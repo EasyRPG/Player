@@ -48,7 +48,7 @@ public:
 	 * @param fullscreen start in fullscreen flag.
 	 * @param zoom start with zoom flag.
 	 */
-	static EASYRPG_SHARED_PTR<BaseUi> CreateUi(long width, long height, bool fullscreen, bool zoom);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, bool zoom);
 
 	/**
 	 * Begins a display mode change.
@@ -253,6 +253,6 @@ protected:
 };
 
 /** Global DisplayUi variable. */
-extern EASYRPG_SHARED_PTR<BaseUi> DisplayUi;
+extern std::shared_ptr<BaseUi> DisplayUi;
 
 #endif

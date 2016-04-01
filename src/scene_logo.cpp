@@ -61,7 +61,7 @@ void Scene_Logo::Update() {
 		}
 #endif
 
-		EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
+		std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
 
 		if (!tree) {
 			Output::Error("%s is not a valid path", Main_Data::GetProjectPath().c_str());
@@ -82,18 +82,18 @@ void Scene_Logo::Update() {
 		Input::IsTriggered(Input::CANCEL)) {
 
 		if (is_valid) {
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>(), true);
+			Scene::Push(std::make_shared<Scene_Title>(), true);
 			if (Player::load_game_id > 0) {
 				std::stringstream ss;
 				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
 
 				std::string save_name = FileFinder::FindDefault(ss.str());
 				Player::LoadSavegame(save_name);
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true));
+				Scene::Push(std::make_shared<Scene_Map>(true));
 			}
 		}
 		else {
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_GameBrowser>(), true);
+			Scene::Push(std::make_shared<Scene_GameBrowser>(), true);
 		}
 	}
 }

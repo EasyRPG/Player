@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <boost/bind.hpp>
 #include <string>
 #include "data.h"
 #include "rpg_terrain.h"

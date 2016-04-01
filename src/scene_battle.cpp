@@ -161,7 +161,7 @@ void Scene_Battle::Update() {
 
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+		Scene::Push(std::make_shared<Scene_Gameover>());
 	}
 
 	if (!Game_Message::visible && events_finished) {
@@ -219,11 +219,11 @@ void Scene_Battle::EnemySelected() {
 	Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 
 	if (previous_state == State_SelectCommand) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
 	} else if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 	} else if (previous_state == State_SelectItem) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
 	} else {
 		assert("Invalid previous state for enemy selection" && false);
 	}
@@ -235,9 +235,9 @@ void Scene_Battle::AllySelected() {
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 	} else if (previous_state == State_SelectItem) {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
 	} else {
 		assert("Invalid previous state for ally selection" && false);
 	}
@@ -254,7 +254,7 @@ void Scene_Battle::AttackSelected() {
 void Scene_Battle::DefendSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(active_actor));
+	active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(active_actor));
 
 	ActionSelectedCallback(active_actor);
 }
@@ -288,7 +288,7 @@ void Scene_Battle::ItemSelected() {
 			break;
 		case RPG::Item::Type_medicine:
 			if (item->entire_party) {
-				active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
+				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
 				ActionSelectedCallback(active_actor);
 			} else {
 				SetState(State_SelectAllyTarget);
@@ -296,7 +296,7 @@ void Scene_Battle::ItemSelected() {
 			}
 			break;
 		case RPG::Item::Type_switch:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
 			ActionSelectedCallback(active_actor);
 			break;
 	}
@@ -322,7 +322,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 		case RPG::Skill::Type_switch:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 			ActionSelectedCallback(active_actor);
 			return;
 		case RPG::Skill::Type_normal:
@@ -340,27 +340,27 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
 			break;
 		case RPG::Skill::Scope_enemies:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 			ActionSelectedCallback(active_actor);
 			break;
 		case RPG::Skill::Scope_self:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, active_actor, skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 			ActionSelectedCallback(active_actor);
 			break;
 		case RPG::Skill::Scope_party:
-			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), skill_item ? Data::skills[skill_item->skill_id - 1] : *skill_window->GetSkill(), skill_item));
 			ActionSelectedCallback(active_actor);
 			break;
 	}
 }
 
-EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
+std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 {
 	if (Player::IsRPG2k()) {
-		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k>();
+		return std::make_shared<Scene_Battle_Rpg2k>();
 	}
 	else {
-		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k3>();
+		return std::make_shared<Scene_Battle_Rpg2k3>();
 	}
 }
 
@@ -373,7 +373,7 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 			CreateEnemyActionSkill(enemy, action);
 			break;
 		case RPG::EnemyAction::Kind_transformation:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
 			ActionSelectedCallback(enemy);
 	}
 }
@@ -385,26 +385,26 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 
 	switch (action->basic) {
 		case RPG::EnemyAction::Basic_attack:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
 			// ToDo: Must be NormalDual, not implemented
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_defense:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(enemy));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_observe:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Observe>(enemy));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Observe>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_charge:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Charge>(enemy));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Charge>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_autodestruction:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
 			break;
 		case RPG::EnemyAction::Basic_escape:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Escape>(enemy));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Escape>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_nothing:
 			// no-op
@@ -417,7 +417,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::RemoveCurrentAction() {
-	battle_actions.front()->SetBattleAlgorithm(EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase>());
+	battle_actions.front()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_front();
 }
 
@@ -442,19 +442,19 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 	switch (skill.scope) {
 		case RPG::Skill::Scope_enemy:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), skill));
 			break;
 		case RPG::Skill::Scope_ally:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), skill));
 			break;
 		case RPG::Skill::Scope_enemies:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), skill));
 			break;
 		case RPG::Skill::Scope_self:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
 			break;
 		case RPG::Skill::Scope_party:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
 			break;
 		}
 

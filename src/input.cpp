@@ -21,10 +21,10 @@
 #include "system.h"
 
 #include <algorithm>
-#include <boost/lambda/lambda.hpp>
+#include <array>
 
 namespace Input {
-	EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
+	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
 	int dir4;
 	int dir8;
@@ -167,7 +167,7 @@ bool Input::IsReleased(InputButton button) {
 bool Input::IsAnyPressed() {
 	WaitInput(true);
 	return std::find_if(press_time.begin(), press_time.end(),
-						boost::lambda::_1 > 0) != press_time.end();
+						[](int t) {return t > 0;}) != press_time.end();
 }
 
 bool Input::IsAnyTriggered() {

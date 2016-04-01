@@ -215,7 +215,7 @@ FileRequestBinding FileRequestAsync::Bind(void(*func)(FileRequestResult*)) {
 	return pending;
 }
 
-FileRequestBinding FileRequestAsync::Bind(boost::function<void(FileRequestResult*)> func) {
+FileRequestBinding FileRequestAsync::Bind(std::function<void(FileRequestResult*)> func) {
 	FileRequestBinding pending = CreatePending();
 
 	listeners.push_back(std::make_pair(FileRequestBindingWeak(pending), func));

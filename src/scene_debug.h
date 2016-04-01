@@ -20,7 +20,6 @@
 
 // Headers
 #include <vector>
-#include <boost/scoped_ptr.hpp>
 #include "scene.h"
 
 class Window_Command;
@@ -85,11 +84,11 @@ private:
 	void CreateNumberInputWindow();
 
 	/** Displays a range selection for current var type. */
-	boost::scoped_ptr<Window_Command> range_window;
+	std::unique_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
-	boost::scoped_ptr<Window_VarList> var_window;
+	std::unique_ptr<Window_VarList> var_window;
 	/** Number Editor. */
-	boost::scoped_ptr<Window_NumberInput> numberinput_window;
+	std::unique_ptr<Window_NumberInput> numberinput_window;
 };
 
 #endif

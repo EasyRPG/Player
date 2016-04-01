@@ -39,7 +39,7 @@ void Scene_Load::Action(int index) {
 
 	Player::LoadSavegame(save_name);
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
+	Scene::Push(std::make_shared<Scene_Map>(true), true);
 }
 
 bool Scene_Load::IsSlotValid(int index) {

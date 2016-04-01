@@ -19,6 +19,7 @@
 #define _BITMAP_H_
 
 // Headers
+#include <array>
 #include <string>
 #include <list>
 #include <map>
@@ -32,8 +33,6 @@
 #include "tone.h"
 #include "matrix.h"
 #include "text.h"
-
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Opacity class.
@@ -239,8 +238,8 @@ protected:
 
 	DynamicFormat format;
 
-	typedef EASYRPG_ARRAY<EASYRPG_ARRAY<TileOpacity, 30>, 16> opacity_type;
-	boost::scoped_ptr<opacity_type> opacity;
+	typedef std::array<std::array<TileOpacity, 30>, 16> opacity_type;
+	std::unique_ptr<opacity_type> opacity;
 	Color bg_color, sh_color;
 
 	void InitBitmap();

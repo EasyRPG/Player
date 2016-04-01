@@ -60,7 +60,7 @@ public:
 	std::string GetGamePath();
 
 private:
-	EASYRPG_SHARED_PTR<FileFinder::DirectoryTree> tree;
+	std::shared_ptr<FileFinder::DirectoryTree> tree;
 	std::vector<std::string> game_directories;
 };
 

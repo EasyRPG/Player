@@ -19,12 +19,6 @@
 #include "utils.h"
 #include <algorithm>
 #include <cctype>
-#include <boost/regex/pending/unicode_iterator.hpp>
-
-using boost::u8_to_u32_iterator;
-using boost::u16_to_u32_iterator;
-using boost::u32_to_u16_iterator;
-using boost::u32_to_u8_iterator;
 
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
@@ -38,58 +32,247 @@ std::string Utils::UpperCase(const std::string& str) {
 	return result;
 }
 
-Utils::utf16_string Utils::DecodeUTF16(const std::string& str) {
-	utf32_string const tmp = DecodeUTF32(str);
-	return utf16_string(u32_to_u16_iterator<utf32_string::const_iterator>(tmp.begin()),
-						u32_to_u16_iterator<utf32_string::const_iterator>(tmp.end  ()));
+std::u16string Utils::DecodeUTF16(const std::string& str) {
+	std::u16string result;
+	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
+		uint8_t c1 = *it;
+		if (c1 < 0x80) {
+			result.push_back(static_cast<uint16_t>(c1));
+		}
+		else if (c1 < 0xC2) {
+			continue;
+		}
+		else if (c1 < 0xE0) {
+			if (str_end-it < 2)
+				break;
+			uint8_t c2 = *(++it);
+			if ((c2 & 0xC0) != 0x80)
+				continue;
+			result.push_back(static_cast<uint16_t>(((c1 & 0x1F) << 6) | (c2 & 0x3F)));
+		}
+		else if (c1 < 0xF0) {
+			if (str_end-it < 3)
+				break;
+			uint8_t c2 = *(++it);
+			uint8_t c3 = *(++it);
+			if (c1 == 0xE0) {
+				if ((c2 & 0xE0) != 0xA0)
+					continue;
+			} else if (c1 == 0xED) {
+				if ((c2 & 0xE0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80)
+				continue;
+			result.push_back(static_cast<uint16_t>(((c1 & 0x0F) << 12)
+												 | ((c2 & 0x3F) << 6)
+												 |  (c3 & 0x3F)));
+		}
+		else if (c1 < 0xF5) {
+			if (str_end-it < 4)
+				break;
+			uint8_t c2 = *(++it);
+			uint8_t c3 = *(++it);
+			uint8_t c4 = *(++it);
+			if (c1 == 0xF0) {
+				if (!(0x90 <= c2 && c2 <= 0xBF))
+					continue;
+			} else if (c1 == 0xF4) {
+				if ((c2 & 0xF0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80 || (c4 & 0xC0) != 0x80)
+				continue;
+			if ((((c1 & 7UL) << 18) +
+				((c2 & 0x3FUL) << 12) +
+				((c3 & 0x3FUL) << 6) + (c4 & 0x3F)) > 0x10FFFF)
+				continue;
+			result.push_back(static_cast<uint16_t>(
+					0xD800
+				  | (((((c1 & 0x07) << 2) | ((c2 & 0x30) >> 4)) - 1) << 6)
+				  | ((c2 & 0x0F) << 2)
+				  | ((c3 & 0x30) >> 4)));
+			result.push_back(static_cast<uint16_t>(
+					0xDC00
+				  | ((c3 & 0x0F) << 6)
+				  |  (c4 & 0x3F)));
+		}
+	}
+	return result;
 }
 
-Utils::utf32_string Utils::DecodeUTF32(const std::string& str) {
-	return utf32_string(u8_to_u32_iterator<std::string::const_iterator>(str.begin(), str.begin(), str.end()),
-						u8_to_u32_iterator<std::string::const_iterator>(str.end  (), str.begin(), str.end()));
+std::u32string Utils::DecodeUTF32(const std::string& str) {
+	std::u32string result;
+	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
+		uint8_t c1 = *it;
+		if (c1 < 0x80) {
+			result.push_back(static_cast<uint32_t>(c1));
+		}
+		else if (c1 < 0xC2) {
+			continue;
+		}
+		else if (c1 < 0xE0) {
+			if (str_end-it < 2)
+				break;
+			uint8_t c2 = it[1];
+			if ((c2 & 0xC0) != 0x80)
+				continue;
+			result.push_back(static_cast<uint32_t>(((c1 & 0x1F) << 6)
+												  | (c2 & 0x3F)));
+		}
+		else if (c1 < 0xF0) {
+			if (str_end-it < 3)
+				break;
+			uint8_t c2 = *(++it);
+			uint8_t c3 = *(++it);
+			if (c1 == 0xE0) {
+				if ((c2 & 0xE0) != 0xA0)
+					continue;
+			} else if (c1 == 0xED) {
+				if ((c2 & 0xE0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80)
+				continue;
+			result.push_back(static_cast<uint32_t>(((c1 & 0x0F) << 12)
+												 | ((c2 & 0x3F) << 6)
+												 |  (c3 & 0x3F)));
+		}
+		else if (c1 < 0xF5) {
+			if (str_end-it < 4)
+				break;
+			uint8_t c2 = *(++it);
+			uint8_t c3 = *(++it);
+			uint8_t c4 = *(++it);
+			if (c1 == 0xF0) {
+				if (!(0x90 <= c2 && c2 <= 0xBF))
+					continue;
+			} else if (c1 == 0xF4) {
+				if ((c2 & 0xF0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80 || (c4 & 0xC0) != 0x80)
+				continue;
+			result.push_back(static_cast<uint32_t>(((c1 & 0x07) << 18)
+												 | ((c2 & 0x3F) << 12)
+												 | ((c3 & 0x3F) << 6)
+												 |  (c4 & 0x3F)));
+		}
+	}
+	return result;
 }
 
-std::string Utils::EncodeUTF(const Utils::utf16_string& str) {
-	utf32_string const tmp(u16_to_u32_iterator<utf16_string::const_iterator>(str.begin(), str.begin(), str.end()),
-						   u16_to_u32_iterator<utf16_string::const_iterator>(str.end  (), str.begin(), str.end()));
-	return std::string(u32_to_u8_iterator<utf32_string::const_iterator>(tmp.begin()),
-					   u32_to_u8_iterator<utf32_string::const_iterator>(tmp.end  ()));
+std::string Utils::EncodeUTF(const std::u16string& str) {
+	std::string result;
+	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {
+		uint16_t wc1 = *it;
+		if (wc1 < 0x0080) {
+			result.push_back(static_cast<uint8_t>(wc1));
+		}
+		else if (wc1 < 0x0800) {
+			result.push_back(static_cast<uint8_t>(0xC0 | (wc1 >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 | (wc1 & 0x03F)));
+		}
+		else if (wc1 < 0xD800) {
+			result.push_back(static_cast<uint8_t>(0xE0 |  (wc1 >> 12)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0FC0) >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 |  (wc1 & 0x003F)));
+		}
+		else if (wc1 < 0xDC00) {
+			if (str_end-it < 2)
+				break;
+			uint16_t wc2 = *(++it);
+			if ((wc2 & 0xFC00) != 0xDC00)
+				continue;
+			if (((((wc1 & 0x03C0UL) >> 6) + 1) << 16) +
+				((wc1 & 0x003FUL) << 10) + (wc2 & 0x03FF) > 0x10FFFF)
+				continue;
+			uint8_t z = ((wc1 & 0x03C0) >> 6) + 1;
+			result.push_back(static_cast<uint8_t>(0xF0 | (z >> 2)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((z & 0x03) << 4)     | ((wc1 & 0x003C) >> 2)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0003) << 4) | ((wc2 & 0x03C0) >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 |  (wc2 & 0x003F)));
+		}
+		else if (wc1 < 0xE000) {
+			continue;
+		}
+		else {
+			result.push_back(static_cast<uint8_t>(0xE0 |  (wc1 >> 12)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc1 & 0x0FC0) >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 |  (wc1 & 0x003F)));
+		}
+	}
+	return result;
 }
 
-std::string Utils::EncodeUTF(const Utils::utf32_string& str) {
-	return std::string(u32_to_u8_iterator<utf32_string::const_iterator>(str.begin()),
-					   u32_to_u8_iterator<utf32_string::const_iterator>(str.end  ()));
+std::string Utils::EncodeUTF(const std::u32string& str) {
+	std::string result;
+	for (const char32_t& wc : str) {
+		if ((wc & 0xFFFFF800) == 0x00D800 || wc > 0x10FFFF)
+			break;
+		if (wc < 0x000080) {
+			result.push_back(static_cast<uint8_t>(wc));
+		}
+		else if (wc < 0x000800) {
+			result.push_back(static_cast<uint8_t>(0xC0 | (wc >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 | (wc & 0x03F)));
+		}
+		else if (wc < 0x010000) {
+			result.push_back(static_cast<uint8_t>(0xE0 |  (wc >> 12)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x0FC0) >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 |  (wc & 0x003F)));
+		}
+		else {
+			result.push_back(static_cast<uint8_t>(0xF0 |  (wc >> 18)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x03F000) >> 12)));
+			result.push_back(static_cast<uint8_t>(0x80 | ((wc & 0x000FC0) >> 6)));
+			result.push_back(static_cast<uint8_t>(0x80 |  (wc & 0x00003F)));
+		}
+	}
+	return result;
 }
 
 template<size_t WideSize>
-static Utils::wstring ToWideStringImpl(const std::string&);
+static std::wstring ToWideStringImpl(const std::string&);
 template<> // utf16
-Utils::wstring ToWideStringImpl<2>(const std::string& str) {
-	Utils::utf16_string const tmp = Utils::DecodeUTF16(str);
-	return Utils::wstring(tmp.begin(), tmp.end());
+std::wstring ToWideStringImpl<2>(const std::string& str) {
+	std::u16string const tmp = Utils::DecodeUTF16(str);
+	return std::wstring(tmp.begin(), tmp.end());
 }
 template<> // utf32
-Utils::wstring ToWideStringImpl<4>(const std::string& str) {
-	Utils::utf32_string const tmp = Utils::DecodeUTF32(str);
-	return Utils::wstring(tmp.begin(), tmp.end());
+std::wstring ToWideStringImpl<4>(const std::string& str) {
+	std::u32string const tmp = Utils::DecodeUTF32(str);
+	return std::wstring(tmp.begin(), tmp.end());
 }
 
-Utils::wstring Utils::ToWideString(const std::string& str) {
+std::wstring Utils::ToWideString(const std::string& str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
 }
 
 template<size_t WideSize>
-static std::string FromWideStringImpl(const Utils::wstring&);
+static std::string FromWideStringImpl(const std::wstring&);
 template<> // utf16
-std::string FromWideStringImpl<2>(const Utils::wstring& str) {
-	return Utils::EncodeUTF(Utils::utf16_string(str.begin(), str.end()));
+std::string FromWideStringImpl<2>(const std::wstring& str) {
+	return Utils::EncodeUTF(std::u16string(str.begin(), str.end()));
 }
 template<> // utf32
-std::string FromWideStringImpl<4>(const Utils::wstring& str) {
-	return Utils::EncodeUTF(Utils::utf32_string(str.begin(), str.end()));
+std::string FromWideStringImpl<4>(const std::wstring& str) {
+	return Utils::EncodeUTF(std::u32string(str.begin(), str.end()));
 }
 
-std::string Utils::FromWideString(const Utils::wstring& str) {
+std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
 

@@ -25,7 +25,6 @@
 #include "frame.h"
 #include "window_message.h"
 #include "window_varlist.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene Map class.
@@ -53,17 +52,17 @@ public:
 	void CallLoad();
 	void CallDebug();
 
-	boost::scoped_ptr<Spriteset_Map> spriteset;
+	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
 	void StartTeleportPlayer();
 	void FinishTeleportPlayer();
 
-	boost::scoped_ptr<Window_Message> message_window;
-	boost::scoped_ptr<Sprite> background;
-	boost::scoped_ptr<Screen> screen;
-	boost::scoped_ptr<Weather> weather;
-	boost::scoped_ptr<Frame> frame;
+	std::unique_ptr<Window_Message> message_window;
+	std::unique_ptr<Sprite> background;
+	std::unique_ptr<Screen> screen;
+	std::unique_ptr<Weather> weather;
+	std::unique_ptr<Frame> frame;
 
 	bool from_save;
 	bool auto_transition = false;

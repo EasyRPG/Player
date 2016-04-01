@@ -24,8 +24,7 @@
 
 #include <cassert>
 
-Scene_Name::Scene_Name() :
-	kbd_window(NULL), name_window(NULL), face_window(NULL) {
+Scene_Name::Scene_Name() {
 	Scene::type = Scene::Name;
 }
 

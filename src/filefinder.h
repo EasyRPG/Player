@@ -152,7 +152,7 @@ namespace FileFinder {
 	 * @param m stream mode.
 	 * @return NULL if open failed.
 	 */
-	EASYRPG_SHARED_PTR<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
+	std::shared_ptr<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
 
 	struct Directory {
 		std::string base;
@@ -212,16 +212,16 @@ namespace FileFinder {
 	 *
 	 * @param directory_tree Directory tree to use.
 	 */
-	void SetDirectoryTree(EASYRPG_SHARED_PTR<DirectoryTree> directory_tree);
+	void SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree);
 
 	/**
 	 * Gets the directory tree that is used by the current game.
 	 *
 	 * @return directory tree
 	 */
-	const EASYRPG_SHARED_PTR<DirectoryTree> GetDirectoryTree();
-	const EASYRPG_SHARED_PTR<DirectoryTree> CreateSaveDirectoryTree();
-	EASYRPG_SHARED_PTR<DirectoryTree> CreateDirectoryTree(std::string const& p, bool recursive = true);
+	const std::shared_ptr<DirectoryTree> GetDirectoryTree();
+	const std::shared_ptr<DirectoryTree> CreateSaveDirectoryTree();
+	std::shared_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p, bool recursive = true);
 
 	bool IsValidProject(DirectoryTree const& dir);
 	bool IsRPG2kProject(DirectoryTree const& dir);

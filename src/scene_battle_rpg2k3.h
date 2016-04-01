@@ -21,9 +21,8 @@
 // Headers
 #include "scene_battle.h"
 #include "async_handler.h"
-#include <boost/scoped_ptr.hpp>
 
-typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
+typedef std::pair<std::shared_ptr<Sprite>, int> FloatText;
 
 /**
  * Scene_Battle class.
@@ -75,13 +74,13 @@ protected:
 
 	void ShowNotification(const std::string& text);
 
-	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
+	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 	std::vector<FloatText> floating_texts;
 
 	int battle_action_wait;
 	int battle_action_state;
 
-	boost::scoped_ptr<Window_BattleStatus> enemy_status_window;
+	std::unique_ptr<Window_BattleStatus> enemy_status_window;
 
 	std::vector<Game_Battler*> targets;
 

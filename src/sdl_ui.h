@@ -24,7 +24,6 @@
 #include "rect.h"
 #include "system.h"
 
-#include <boost/scoped_ptr.hpp>
 #include <SDL.h>
 
 extern "C" {
@@ -155,7 +154,7 @@ private:
 	SDL_Renderer* sdl_renderer;
 #endif
 
-	boost::scoped_ptr<AudioInterface> audio_;
+	std::unique_ptr<AudioInterface> audio_;
 };
 
 #endif

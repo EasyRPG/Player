@@ -23,7 +23,6 @@
 #include "window_name.h"
 #include "window_face.h"
 #include "window_keyboard.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene_Item class.
@@ -40,9 +39,9 @@ public:
 	void Update();
 
 private:
-	boost::scoped_ptr<Window_Keyboard> kbd_window;
-	boost::scoped_ptr<Window_Name> name_window;
-	boost::scoped_ptr<Window_Face> face_window;
+	std::unique_ptr<Window_Keyboard> kbd_window;
+	std::unique_ptr<Window_Name> name_window;
+	std::unique_ptr<Window_Face> face_window;
 };
 
 #endif

@@ -32,12 +32,13 @@ class Font {
  public:
 	virtual ~Font() {}
 
-	virtual Rect GetSize(std::string const& txt) const = 0;
+	Rect GetSize(std::string const& txt) const;
+	virtual Rect GetSize(std::u32string const& txt) const = 0;
 
-	virtual BitmapRef Glyph(unsigned code) = 0;
+	virtual BitmapRef Glyph(char32_t code) = 0;
 
-	void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
-	void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
+	void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, char32_t glyph);
+	void Render(Bitmap& bmp, int x, int y, Color const& color, char32_t glyph);
 
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
 	static FontRef Default(bool mincho = false);

@@ -30,7 +30,6 @@
 #include "window_shopstatus.h"
 #include "window_shopsell.h"
 #include "window_shop.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Scene Shop class.
@@ -68,16 +67,16 @@ public:
 
 private:
 	/** Displays available items. */
-	boost::scoped_ptr<Window_Help> help_window;
-	boost::scoped_ptr<Window_ShopBuy> buy_window;
-	boost::scoped_ptr<Window_ShopParty> party_window;
-	boost::scoped_ptr<Window_ShopStatus> status_window;
-	boost::scoped_ptr<Window_Gold> gold_window;
-	boost::scoped_ptr<Window_ShopSell> sell_window;
-	boost::scoped_ptr<Window_ShopNumber> number_window;
-	boost::scoped_ptr<Window_Base> empty_window;
-	boost::scoped_ptr<Window_Base> empty_window2;
-	boost::scoped_ptr<Window_Shop> shop_window;
+	std::unique_ptr<Window_Help> help_window;
+	std::unique_ptr<Window_ShopBuy> buy_window;
+	std::unique_ptr<Window_ShopParty> party_window;
+	std::unique_ptr<Window_ShopStatus> status_window;
+	std::unique_ptr<Window_Gold> gold_window;
+	std::unique_ptr<Window_ShopSell> sell_window;
+	std::unique_ptr<Window_ShopNumber> number_window;
+	std::unique_ptr<Window_Base> empty_window;
+	std::unique_ptr<Window_Base> empty_window2;
+	std::unique_ptr<Window_Shop> shop_window;
 	int mode;
 	int timer;
 };

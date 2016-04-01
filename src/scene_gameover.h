@@ -22,7 +22,6 @@
 #include "async_handler.h"
 #include "scene.h"
 #include "sprite.h"
-#include <boost/scoped_ptr.hpp>
 
 struct FileRequestResult;
 
@@ -42,7 +41,7 @@ public:
 	void Update();
 private:
 	/** Background graphic. */
-	boost::scoped_ptr<Sprite> background;
+	std::unique_ptr<Sprite> background;
 	
 	void OnBackgroundReady(FileRequestResult* result);
 

@@ -25,9 +25,9 @@
 #include "output.h"
 #include "audio.h"
 
-EASYRPG_SHARED_PTR<Scene> Scene::instance;
-std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::old_instances;
-std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::instances;
+std::shared_ptr<Scene> Scene::instance;
+std::vector<std::shared_ptr<Scene> > Scene::old_instances;
+std::vector<std::shared_ptr<Scene> > Scene::instances;
 const char Scene::scene_names[SceneMax][12] =
 {
 	"Null",
@@ -143,7 +143,7 @@ void Scene::TransitionOut() {
 void Scene::Update() {
 }
 
-void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top) {
+void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
 		instances.pop_back();
@@ -165,7 +165,7 @@ void Scene::Pop() {
 	instances.pop_back();
 
 	if (instances.size() == 0) {
-		Push(EASYRPG_MAKE_SHARED<Scene>()); // Null-scene
+		Push(std::make_shared<Scene>()); // Null-scene
 	} else {
 		instance = instances.back();
 	}
@@ -197,13 +197,13 @@ void Scene::PopUntil(SceneType type) {
 	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
 }
 
-EASYRPG_SHARED_PTR<Scene> Scene::Find(SceneType type) {
-	std::vector<EASYRPG_SHARED_PTR<Scene> >::const_reverse_iterator it;
+std::shared_ptr<Scene> Scene::Find(SceneType type) {
+	std::vector<std::shared_ptr<Scene> >::const_reverse_iterator it;
 	for (it = instances.rbegin() ; it != instances.rend(); ++it) {
 		if ((*it)->type == type) {
 			return *it;
 		}
 	}
 
-	return EASYRPG_SHARED_PTR<Scene>();
+	return std::shared_ptr<Scene>();
 }

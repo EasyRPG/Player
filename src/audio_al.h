@@ -64,18 +64,18 @@ private:
 	struct sndfile_loader;
 	struct midi_loader;
 
-	EASYRPG_SHARED_PTR<source> create_source(bool loop) const;
-	EASYRPG_SHARED_PTR<buffer_loader> create_loader(source &src, std::string const &file) const;
+	std::shared_ptr<source> create_source(bool loop) const;
+	std::shared_ptr<buffer_loader> create_loader(source &src, std::string const &file) const;
 
-	EASYRPG_SHARED_PTR<buffer_loader> getMusic(source &src, std::string const &file) const;
-	EASYRPG_SHARED_PTR<buffer_loader> getSound(source &src, std::string const &file) const;
+	std::shared_ptr<buffer_loader> getMusic(source &src, std::string const &file) const;
+	std::shared_ptr<buffer_loader> getSound(source &src, std::string const &file) const;
 
-	EASYRPG_SHARED_PTR<ALCdevice> dev_;
-	EASYRPG_SHARED_PTR<ALCcontext> ctx_;
+	std::shared_ptr<ALCdevice> dev_;
+	std::shared_ptr<ALCcontext> ctx_;
 
-	EASYRPG_SHARED_PTR<source> bgm_src_, bgs_src_, me_src_;
+	std::shared_ptr<source> bgm_src_, bgs_src_, me_src_;
 
-	typedef std::vector<EASYRPG_SHARED_PTR<source> > source_list;
+	typedef std::vector<std::shared_ptr<source> > source_list;
 	source_list se_src_;
 };  // struct ALAudio
 

@@ -42,7 +42,6 @@
 #include "filefinder.h"
 #include "player.h"
 #include "input.h"
-#include <boost/scoped_ptr.hpp>
 
 namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
@@ -69,12 +68,12 @@ namespace {
 	int scroll_rest;
 	int scroll_speed;
 
-	boost::scoped_ptr<Game_Interpreter_Map> interpreter;
-	std::vector<EASYRPG_SHARED_PTR<Game_Interpreter> > free_interpreters;
-	std::vector<EASYRPG_SHARED_PTR<Game_Vehicle> > vehicles;
+	std::unique_ptr<Game_Interpreter_Map> interpreter;
+	std::vector<std::shared_ptr<Game_Interpreter> > free_interpreters;
+	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-	boost::scoped_ptr<BattleAnimation> animation;
+	std::unique_ptr<BattleAnimation> animation;
 
 	bool pan_locked;
 	bool pan_wait;
@@ -103,7 +102,7 @@ void Game_Map::Init() {
 
 	vehicles.clear();
 	for (int i = 0; i < 3; i++)
-		vehicles.push_back(EASYRPG_MAKE_SHARED<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
+		vehicles.push_back(std::make_shared<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
 
 	pan_locked = false;
 	pan_wait = false;
@@ -316,7 +315,7 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 	return *interpreter;
 }
 
-void Game_Map::ReserveInterpreterDeletion(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter) {
+void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> interpreter) {
 	free_interpreters.push_back(interpreter);
 }
 

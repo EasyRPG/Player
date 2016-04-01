@@ -24,7 +24,6 @@
 #include "system.h"
 #include "rpg_save.h"
 #include "sprite.h"
-#include <boost/scoped_ptr.hpp>
 
 /**
  * Picture class.
@@ -55,7 +54,7 @@ private:
 
 	static const int waver_speed = 10;
 
-	boost::scoped_ptr<Sprite> sprite;
+	std::unique_ptr<Sprite> sprite;
 
 	void UpdateSprite();
 

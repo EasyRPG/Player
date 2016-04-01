@@ -143,7 +143,7 @@ void Scene_Map::Update() {
 
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+		Scene::Push(std::make_shared<Scene_Gameover>());
 	}
 
 	if (Game_Temp::to_title) {
@@ -242,13 +242,13 @@ void Scene_Map::CallBattle() {
 void Scene_Map::CallShop() {
 	Game_Temp::shop_calling = false;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Shop>());
+	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
 	Game_Temp::name_calling = false;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Name>());
+	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
@@ -258,31 +258,31 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	Scene::Push(std::make_shared<Scene_Menu>());
 
 	/*
 	FIXME:
 	The intention was that you can still exit the game with ESC when the menu
 	is disabled. But this conflicts with parallel events listening for ESC.
 	else {
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+		Scene::Push(std::make_shared<Scene_End>());
 	}*/
 }
 
 void Scene_Map::CallSave() {
 	Game_Temp::save_calling = false;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
+	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
 	Game_Temp::load_calling = false;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
+	Scene::Push(std::make_shared<Scene_Load>());
 }
 
 void Scene_Map::CallDebug() {
 	if (Player::debug_flag) {
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
+		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }

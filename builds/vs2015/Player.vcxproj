@@ -430,7 +430,6 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry.h" />
-    <ClInclude Include="..\..\src\rtp_table_bom.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />

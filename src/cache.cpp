@@ -22,9 +22,6 @@
 
 #include <map>
 
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/static_assert.hpp>
-
 #include "async_handler.h"
 #include "cache.h"
 #include "filefinder.h"
@@ -39,10 +36,10 @@ namespace {
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
-	typedef std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_type;
+	typedef std::map<string_pair, std::weak_ptr<Bitmap> > cache_type;
 	cache_type cache;
 
-	typedef std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles_type;
+	typedef std::map<tile_pair, std::weak_ptr<Bitmap> > cache_tiles_type;
 	cache_tiles_type cache_tiles;
 
 	static std::string system_name;
@@ -137,7 +134,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef DrawCheckerboard() {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 
@@ -159,7 +156,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 
@@ -172,7 +169,7 @@ namespace {
 
 	template<Material::Type T>
 	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
-		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
 		Spec const& s = spec[T];
 
@@ -210,19 +207,27 @@ namespace {
 	}
 }
 
-#define macro(r, data, elem) \
+#define cache(elem) \
 	BitmapRef Cache::elem(const std::string& f) { \
 		bool trans = spec[Material::elem].transparent; \
 		return LoadBitmap<Material::elem>(f, trans); \
 	}
-
-BOOST_PP_SEQ_FOR_EACH(macro, ,
-					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
-					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(System2)(Frame)(Title)(System)
-					  )
-
-#undef macro
+	cache(Backdrop)
+	cache(Battle)
+	cache(Battle2)
+	cache(Battlecharset)
+	cache(Battleweapon)
+	cache(Charset)
+	cache(Chipset)
+	cache(Faceset)
+	cache(Gameover)
+	cache(Monster)
+	cache(Panorama)
+	cache(System2)
+	cache(Frame)
+	cache(Title)
+	cache(System)
+#undef cache
 
 BitmapRef Cache::Picture(const std::string& f, bool trans) {
 	return LoadBitmap<Material::Picture>(f, trans);
