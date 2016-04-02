@@ -15,13 +15,15 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "system.h"
+
+#if defined (_3DS) && defined(SUPPORT_AUDIO)
 #include "output.h"
 #include "filefinder.h"
+#include "player.h"
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#if defined (_3DS) && defined(SUPPORT_AUDIO)
 #include <3ds.h>
 #include <stdio.h>
 #include <string.h>

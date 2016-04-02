@@ -15,9 +15,10 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _EASYRPG_3DS_CACHE_H_
+#define _EASYRPG_3DS_CACHE_H_ 
+ 
 #ifdef USE_CACHE
-#include "system.h"
-#ifdef _3DS
 #include <3ds.h>
 #include "3ds_decoder.h"
 #endif

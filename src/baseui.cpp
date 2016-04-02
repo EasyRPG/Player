@@ -31,7 +31,7 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 #ifdef USE_SDL
 	return std::make_shared<SdlUi>(width, height, fs_flag);
 #elif _3DS
-	return EASYRPG_MAKE_SHARED<CtrUi>(width, height);
+	return std::make_shared<CtrUi>(width, height);
 #else
 #error cannot create UI
 #endif

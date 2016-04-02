@@ -14,20 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "system.h"
+
+#if defined(_3DS) && defined(SUPPORT_AUDIO)
 #include "audio_3ds.h"
 #include "filefinder.h"
 #include "output.h"
+#include "player.h"
 
-#if defined(_3DS) && defined(SUPPORT_AUDIO)
 #include <stdio.h>
 #include <cstdlib>
 #ifdef USE_CACHE
-#include "3ds_cache.h"
-#else
-#include "3ds_decoder.h"
+#   include "3ds_cache.h"
 #endif
+#include "3ds_decoder.h"
 
 // BGM audio streaming thread
 volatile bool termStream = false;

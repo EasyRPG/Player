@@ -98,7 +98,4 @@
 #  endif
 #endif
 
-#ifdef _3DS
-#  define NO_SDL_MIXER
-#endif
 #endif

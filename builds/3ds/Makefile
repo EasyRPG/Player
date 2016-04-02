@@ -6,12 +6,17 @@ ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
-NO_SMDH=1
+ifeq ($(strip $(TOOLCHAIN_DIR)),)
+$(error "Please point TOOLCHAIN_DIR to your 3ds portlibs directory")
+endif
+
+ifeq ($(strip $(LIBLCF_DIR)),)
+$(warning "LIBLCF_DIR not set. Ignore this warning when liblcf is in TOOLCHAIN_DIR")
+LIBLCF_DIR := $(TOOLCHAIN_DIR)
+endif
 
 TOPDIR ?= $(CURDIR)
 include $(DEVKITARM)/3ds_rules
-
-PORTLIBS := $(EASYRPG_PORTLIBS)
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -32,11 +37,14 @@ PORTLIBS := $(EASYRPG_PORTLIBS)
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES		:=	../../src ../../lib/shinonome
+SOURCES		:=	../../src
 DATA		:=	data
-INCLUDES	:=	../../src ../../../lib ../../lib/shinonome
+INCLUDES	:=	../../src
 
-APP_TITLE   := EasyRPG-Player
+APP_TITLE   	:=	EasyRPG Player
+APP_DESCRIPTION	:=	Play your RPG Maker 2000/2003 games everywhere
+APP_AUTHOR	:=	Rinnegatamante
+ICON		:=	icon.png
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -47,22 +55,23 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DPIXMAN_NO_TLS
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO -DUSE_CACHE
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata -lpixman-arm-neon \
-			-lpixman-1 -lexpat -lpng -lz -lfreetype -lm
+LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata \
+		-lpixman-1 -lpng -lz -lfreetype -lkhax \
+		-lvorbisidec -logg -lm
 
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(CTRULIB) $(PORTLIBS)
+LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR) $(CTRULIB) $(PORTLIBS)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -80,9 +89,7 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-_CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cxx)))
-CPPFILES	:=	$(_CXXFILES) $(_CPPFILES)
+CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
@@ -101,7 +108,7 @@ endif
 #---------------------------------------------------------------------------------
 
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-			$(_CPPFILES:.cpp=.o) $(_CXXFILES:.cxx=.o) \
+			$(CPPFILES:.cpp=.o) \
 			$(CFILES:.c=.o) $(SFILES:.s=.o)
 
 $(info $(PORTLIBS))
@@ -109,9 +116,9 @@ $(info $(PORTLIBS))
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 			-I$(CURDIR)/$(BUILD) \
-			-I$(PORTLIBS)/include/pixman-1 \
-			-I$(PORTLIBS)/include/freetype2 \
-			-I$(PORTLIBS)/include/liblcf
+			$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/pixman-1) \
+			$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/freetype2) \
+			$(foreach dir,$(LIBLCF_DIR),-I$(dir)/include/liblcf)
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
@@ -171,13 +178,9 @@ $(OUTPUT).elf	:	$(OFILES)
 	@echo $(notdir $<)
 	@$(bin2o)
 
-#---------------------------------------------------------------------------------
-# Custom build rule for shinonome (has .cxx extension)
-#---------------------------------------------------------------------------------
-%.o: %.cxx
+%.bmp.o	:	%.bmp
 	@echo $(notdir $<)
-	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
-
+	@$(bin2o)
 
 # WARNING: This is not the right way to do this! TODO: Do it right!
 #---------------------------------------------------------------------------------

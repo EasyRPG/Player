@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
- #ifdef USE_CACHE
+
+#ifdef USE_CACHE
 #ifdef _3DS
 #include <3ds.h>
 #endif

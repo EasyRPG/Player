@@ -15,13 +15,12 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "system.h"
 #include "audio.h"
+#include <map>
+#include <3ds.h>
 
 #define SOUND_CHANNELS 22 // Number of available sounds channel
 
-#include <map>
-#include <3ds.h>
 struct CtrAudio : public AudioInterface {
 	CtrAudio();
 	~CtrAudio();

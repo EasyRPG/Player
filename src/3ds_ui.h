@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SDL_UI_H_
-#define _SDL_UI_H_
+#ifndef _EASYRPG_3DSUI_H_
+#define _EASYRPG_3DSUI_H_
 
 // Headers
 #include "baseui.h"
@@ -24,8 +24,6 @@
 #include "rect.h"
 #include "system.h"
 #include <sf2d.h>
-
-#include <boost/scoped_ptr.hpp>
 
 /**
  * SdlUi class.
@@ -71,7 +69,7 @@ public:
 	void Sleep(uint32_t time_milli);
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
-	boost::scoped_ptr<AudioInterface> audio_;
+	std::unique_ptr<AudioInterface> audio_;
 #endif
 
 	/** @} */

@@ -182,6 +182,7 @@ void Player::Init(int argc, char *argv[]) {
 	hidInit();
 
 	// Enable 804 Mhz mode if on N3DS
+	u8 isN3DS;
 	APT_CheckNew3DS(&isN3DS);
 	if (isN3DS) {
 		osSetSpeedupEnable(true);
