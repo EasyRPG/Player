@@ -892,7 +892,7 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 }
 
 // Hard light lookup table mapping source color to destination color
-static int hard_light_lookup[256][256];
+static uint8_t hard_light_lookup[256][256];
 
 static void make_hard_light_lookup() {
 	for (int i = 0; i < 256; ++i) {
