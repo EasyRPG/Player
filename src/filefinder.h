@@ -156,7 +156,8 @@ namespace FileFinder {
 
 	struct Directory {
 		std::string base;
-		string_map members;
+		string_map files;
+		string_map directories;
 	}; // struct Directory
 
 	/**
