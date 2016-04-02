@@ -25,85 +25,12 @@
 #  include <SDL.h>
 #endif
 
-#ifdef _3DS
-#include <3ds.h>
-u8 isN3DS;
-#include <khax.h>
-#endif
-
-#if defined(SUPPORT_AUDIO) && defined(_3DS)
-	bool isDSP = false;
-#endif
-
-extern "C" int main(int argc, char* argv[]) {
-
-	#ifdef _3DS
-	
-	// Starting debug console
-	gfxInitDefault();
-	consoleInit(GFX_BOTTOM, NULL);
-	#ifndef NO_DEBUG
-	Output::Debug("Debug console started...");
-	#endif
-	
-	#ifdef SUPPORT_AUDIO
-	aptOpenSession();
-	APT_SetAppCpuTimeLimit(30);
-	aptCloseSession();	
-	if (osGetKernelVersion() <  SYSTEM_VERSION(2,48,3)) khaxInit(); // Executing libkhax just to be sure...
-	consoleClear();
-	
-	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
-	Handle csndHandle = 0;
-	#ifndef FORCE_DSP
-	srvGetServiceHandleDirect(&csndHandle, "csnd:SND");
-	if(csndHandle){
-		Output::Debug("csnd:SND has been selected as audio service.");
-		svcCloseHandle(csndHandle);
-	}else{
-		Output::Debug("csnd:SND is unavailable...");
-	#endif
-		srvGetServiceHandleDirect(&csndHandle, "dsp::DSP");
-		if(csndHandle){
-			Output::Debug("dsp::DSP has been selected as audio service.");
-			isDSP = true;
-			svcCloseHandle(csndHandle);
-		}else{
-			Output::Error("dsp::DSP is unavailable. Please dump a DSP firmware to use EasyRPG Player. If the problem persists, please report us the issue.");
-		}
-	#ifndef FORCE_DSP
-	}
-	#endif
-	
-	fsInit();
-	sdmcInit();
-	#ifndef CITRA3DS_COMPATIBLE
-	romfsInit();
-	#endif
-	
-	#endif
-	
-	hidInit();
-	
-	// Enable 804 Mhz mode if on N3DS
-	APT_CheckNew3DS(&isN3DS);
-	if(isN3DS) osSetSpeedupEnable(true);
-		
-	#endif
-	
+extern "C" int main(int argc, char* argv[]) {	
 	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
 
 	Player::Run();
-	
-	#ifdef _3DS
-	hidExit();
-	gfxExit();
-	sdmcExit();
-	romfsExit();
-	fsExit();
-	#endif
-	
+
 	return EXIT_SUCCESS;
 }

@@ -100,9 +100,5 @@
 
 #ifdef _3DS
 #  define NO_SDL_MIXER
-#  undef SUPPORT_ZOOM
-#  ifdef SUPPORT_AUDIO
-      extern bool isDSP;
-#  endif
 #endif
 #endif

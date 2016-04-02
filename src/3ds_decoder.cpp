@@ -72,7 +72,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
 	
-	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	if (Player::use_dsp) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Decoding Vorbis buffer
 	int i = 0;
@@ -153,7 +153,7 @@ int DecodeWav(FILE* stream, DecodedSound* Sound){
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	#endif
 	
-	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	if (Player::use_dsp) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Mono file
 	if (audiotype == 1) fread(Sound->audiobuf, Sound->audiobuf_size, 1, stream);	
@@ -220,7 +220,7 @@ void UpdateOggStream(){
 	int bytesRead = 0;
 	int current_section;
 	int half_check = (Sound->block_idx)%2;
-	if ((!Sound->isStereo) || isDSP){ // Mono file
+	if ((!Sound->isStereo) || Player::use_dsp){ // Mono file
 		int i = half_check * half_buf;
 		while(bytesRead < half_buf){
 			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],OGG_BUFSIZE,0,2,1,&current_section);
@@ -260,7 +260,7 @@ void UpdateWavStream(){
 	int half_check = (Sound->block_idx)%2;
 	
 	// Mono file
-	if ((!Sound->isStereo) || isDSP){
+	if ((!Sound->isStereo) || Player::use_dsp){
 		bytesRead = fread(Sound->audiobuf+(half_check*half_buf), 1, half_buf, Sound->handle);	
 		if (bytesRead != half_buf){ // EoF
 			if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
@@ -347,7 +347,7 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	fseek(stream, start, SEEK_SET);
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	
-	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	if (Player::use_dsp) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Mono file
 	if (audiotype == 1) fread(Sound->audiobuf, 1, Sound->audiobuf_size, stream);	
@@ -413,7 +413,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	}
 	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
 	
-	if (isDSP) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	if (Player::use_dsp) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
 	
 	// Decoding Vorbis buffer
 	int i = 0;

@@ -39,6 +39,7 @@
 #  include <emscripten.h>
 #elif defined(_3DS)
 #  include <3ds.h>
+#  include <khax.h>
 #endif
 
 #include "async_handler.h"
@@ -96,6 +97,9 @@ namespace Player {
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+#ifdef _3DS
+	bool use_dsp;
+#endif
 }
 
 namespace {
@@ -136,10 +140,48 @@ void Player::Init(int argc, char *argv[]) {
 		Output::Error("Couldn't mount any storage medium!");
 	}
 #elif defined(_3DS)
-	u8 isN3DS;
-
+	// Starting debug console
 	gfxInitDefault();
+	consoleInit(GFX_BOTTOM, NULL);
+
+	aptOpenSession();
+	APT_SetAppCpuTimeLimit(30);
+	aptCloseSession();
+	if (osGetKernelVersion() <  SYSTEM_VERSION(2, 48, 3)) khaxInit(); // Executing libkhax just to be sure...
+	consoleClear();
+
+	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
+	Handle csndHandle = 0;
+	use_dsp = false;
+#ifndef FORCE_DSP
+	srvGetServiceHandleDirect(&csndHandle, "csnd:SND");
+	if (csndHandle) {
+		Output::Debug("csnd:SND has been selected as audio service.");
+		svcCloseHandle(csndHandle);
+	} else {
+		Output::Debug("csnd:SND is unavailable...");
+#endif
+		srvGetServiceHandleDirect(&csndHandle, "dsp::DSP");
+		if (csndHandle) {
+			Output::Debug("dsp::DSP has been selected as audio service.");
+			use_dsp = true;
+			svcCloseHandle(csndHandle);
+		} else {
+			Output::Error("dsp::DSP is unavailable. Please dump a DSP firmware to use EasyRPG Player. If the problem persists, please report us the issue.");
+		}
+#ifndef FORCE_DSP
+	}
+#endif
+
+	fsInit();
+	sdmcInit();
+#ifndef CITRA3DS_COMPATIBLE
+	romfsInit();
+#endif
+
 	hidInit();
+
+	// Enable 804 Mhz mode if on N3DS
 	APT_CheckNew3DS(&isN3DS);
 	if (isN3DS) {
 		osSetSpeedupEnable(true);
@@ -334,6 +376,15 @@ void Player::Exit() {
 	// Workaround Segfault under Android
 	exit(0);
 #endif
+
+#ifdef _3DS
+	hidExit();
+	gfxExit();
+	sdmcExit();
+	romfsExit();
+	fsExit();
+#endif
+
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {

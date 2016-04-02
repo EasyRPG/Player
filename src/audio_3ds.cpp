@@ -77,7 +77,7 @@ static void streamThread(void* arg){
 				}else vol = BGM->vol - vol;
 			}
 			
-			if (!isDSP){
+			if (!Player::use_dsp){
 				if (BGM->isStereo){
 					CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
 					CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
@@ -123,7 +123,7 @@ void createDspBlock(ndspWaveBuf* waveBuf, u16 bps, u32 size, bool loop, u32* dat
 CtrAudio::CtrAudio() :
 	bgm_volume(0)
 {
-	if (isDSP){
+	if (Player::use_dsp){
 		last_ch = 0;
 		isPlayingCallback = ndspChnIsPlaying;
 		clearCallback = ndspChnWaveBufClear;
@@ -177,7 +177,7 @@ CtrAudio::~CtrAudio() {
 		free(BGM);
 	}
 	
-	if (isDSP) ndspExit();
+	if (Player::use_dsp) ndspExit();
 	else csndExit();	
 	#ifdef USE_CACHE
 	freeCache();
@@ -221,7 +221,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	int samplerate = BGM->samplerate;
 	BGM->orig_samplerate = BGM->samplerate;
 	int codec;
-	if (!isDSP) codec = SOUND_FORMAT(BGM->format);
+	if (!Player::use_dsp) codec = SOUND_FORMAT(BGM->format);
 	else codec = NDSP_CHANNELS(BGM->isStereo + 1) | NDSP_ENCODING(BGM->format);
 	
 	// Setting music volume
@@ -239,7 +239,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	#endif
 	
 	// Starting BGM
-	if (!isDSP){
+	if (!Player::use_dsp){
 		if (BGM->isStereo){
 			u32 chnbuf_size = BGM->audiobuf_size>>1;
 			csndPlaySound(0x1E, SOUND_LINEAR_INTERP | codec | SOUND_REPEAT, samplerate, vol, -1.0, (u32*)BGM->audiobuf, (u32*)BGM->audiobuf, chnbuf_size); // Left
@@ -264,7 +264,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 void CtrAudio::BGM_Pause() {
 	if (BGM == NULL) return;
 	if (BGM->isPlaying){
-		if (!isDSP){
+		if (!Player::use_dsp){
 			CSND_SetPlayState(0x1E, 0);
 			CSND_SetPlayState(0x1F, 0);
 			CSND_UpdateInfo(true);
@@ -277,7 +277,7 @@ void CtrAudio::BGM_Pause() {
 void CtrAudio::BGM_Resume() {
 	if (BGM == NULL) return;
 	if (!BGM->isPlaying){
-		if (!isDSP){
+		if (!Player::use_dsp){
 			if (BGM->isStereo) CSND_SetPlayState(0x1E, 1);
 			CSND_SetPlayState(0x1F, 1);
 			CSND_UpdateInfo(true);
@@ -289,7 +289,7 @@ void CtrAudio::BGM_Resume() {
 
 void CtrAudio::BGM_Stop() {
 	if (BGM == NULL) return;
-	if (!isDSP){
+	if (!Player::use_dsp){
 		CSND_SetPlayState(0x1E, 0);
 		CSND_SetPlayState(0x1F, 0);
 		CSND_UpdateInfo(true);
@@ -309,7 +309,7 @@ unsigned CtrAudio::BGM_GetTicks() {
 void CtrAudio::BGM_Volume(int volume) {
 	if (BGM == NULL) return;
 	float vol = volume / 100.0;
-	if (isDSP){
+	if (Player::use_dsp){
 		if (BGM->isStereo){
 			CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
 			CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
@@ -327,7 +327,7 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	
 	// Pausing playback to not broke audio streaming
 	if (BGM->handle != NULL) BGM_Pause();
-	if (!isDSP) svcSleepThread(100000000); // Temp patch for csnd:SND
+	if (!Player::use_dsp) svcSleepThread(100000000); // Temp patch for csnd:SND
 	
 	// Calculating new samplerate
 	u32 new_samplerate = (BGM->orig_samplerate * pitch) / 100;
@@ -342,7 +342,7 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	
 	// Setting new samplerate
 	BGM->samplerate = new_samplerate;
-	if (isDSP) ndspChnSetRate(SOUND_CHANNELS, float(BGM->samplerate));
+	if (Player::use_dsp) ndspChnSetRate(SOUND_CHANNELS, float(BGM->samplerate));
 	else{
 		if (BGM->isStereo) CSND_SetTimer(0x1E, CSND_TIMER(BGM->samplerate));
 		CSND_SetTimer(0x1F, CSND_TIMER(BGM->samplerate));
@@ -402,10 +402,10 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Select an available audio channel
 	int i = 0;
-	if (isDSP) i = last_ch;
+	if (Player::use_dsp) i = last_ch;
 	for(;;){
 		if (i >= num_channels){
-			if (isDSP) i = -1;
+			if (Player::use_dsp) i = -1;
 			else{
 				Output::Warning("Cannot execute %s sound: audio-device is busy.\n",file.c_str());
 				return;
@@ -456,7 +456,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	audiobuffers[i] = myFile.audiobuf;
 	int samplerate = myFile.samplerate;
 	audiobuf_size = myFile.audiobuf_size;
-	if (isDSP) codec = NDSP_CHANNELS(isStereo + 1) | NDSP_ENCODING(myFile.format);
+	if (Player::use_dsp) codec = NDSP_CHANNELS(isStereo + 1) | NDSP_ENCODING(myFile.format);
 	else codec = SOUND_FORMAT(myFile.format);
 	isStereo = myFile.isStereo;
 	
@@ -469,7 +469,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Playing the sound
 	float vol = volume / 100.0;
-	if (isStereo && (!isDSP)){
+	if (isStereo && (!Player::use_dsp)){
 		
 		// We need a second channel where to execute right audiochannel since csnd supports only mono sounds natively
 		int z = i+1;
@@ -493,7 +493,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 		csndPlaySound(z+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 1.0, (u32*)(audiobuffers[i] + chnbuf_size), (u32*)(audiobuffers[i] + chnbuf_size), chnbuf_size); // Right
 		
 	}else{
-		if (isDSP){
+		if (Player::use_dsp){
 			ndspChnReset(i);
 			ndspChnWaveBufClear(i);
 			ndspChnSetInterp(i, NDSP_INTERP_LINEAR);
@@ -514,9 +514,8 @@ void CtrAudio::SE_Stop() {
 		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
 		audiobuffers[i] = NULL;
 		#endif
-	}
-	if (!isDSP) CSND_UpdateInfo(true);
-}
+		if (Player::use_dsp) ndspChnWaveBufClear(i);	}
+	if (!Player::use_dsp) CSND_UpdateInfo(true);}
 
 void CtrAudio::Update() {	
 	
@@ -527,7 +526,7 @@ void CtrAudio::Update() {
 			if (!isPlayingCallback(i)){
 				linearFree(audiobuffers[i]);
 				audiobuffers[i] = NULL;
-				if (isDSP) ndspChnWaveBufClear(i);
+				if (Player::use_dsp) ndspChnWaveBufClear(i);
 			}
 		}
 	}

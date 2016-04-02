@@ -218,6 +218,11 @@ namespace Player {
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;
 #endif
+
+#ifdef _3DS
+	/** Use DSP instead of CSND */
+	extern bool use_dsp;
+#endif
 }
 
 #endif
