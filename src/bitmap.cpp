@@ -832,10 +832,16 @@ static pixman_color_t PixmanColor(const Color &color) {
 
 void Bitmap::Fill(const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
-	pixman_rectangle16_t rect = {
-	0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
+	Rect src_rect(0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height()));
 
-	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap, &pcolor, 1, &rect);
+	pixman_image_t* timage = pixman_image_create_solid_fill(&pcolor);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+		timage, (pixman_image_t*)NULL, bitmap,
+		src_rect.x, src_rect.y,
+		0, 0,
+		0, 0,
+		src_rect.width, src_rect.height);
 
 	RefreshCallback();
 }
@@ -846,7 +852,7 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 	static_cast<int16_t>(dst_rect.x),
 	static_cast<int16_t>(dst_rect.y),
 	static_cast<uint16_t>(dst_rect.width),
-	static_cast<uint16_t>(dst_rect.height), };
+	static_cast<uint16_t>(dst_rect.height)};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap, &pcolor, 1, &rect);
 
@@ -859,6 +865,15 @@ void Bitmap::Clear() {
 	0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+
+	pixman_image_composite32(PIXMAN_OP_CLEAR,
+		bitmap, (pixman_image_t*)NULL, bitmap,
+		0, 0,
+		0, 0,
+		0, 0,
+		width(), height());
 
 	RefreshCallback();
 }
