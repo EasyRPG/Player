@@ -79,8 +79,8 @@ namespace midisynth{
             }else{
                 panpot = panpot * (16384 - master_balance) / 8192 + (master_balance - 8192) * 2;
             }
-            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(std::max(0u, panpot - 1) * (M_PI / 2 / 16382)));
-            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(std::max(0u, panpot - 1) * (M_PI / 2 / 16382)));
+            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(std::max((uint_least32_t)0u, panpot - 1) * (M_PI / 2 / 16382)));
+            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(std::max((uint_least32_t)0u, panpot - 1) * (M_PI / 2 / 16382)));
             bool ret = note->synthesize(out, samples, rate, left, right);
             if(ret){
                 ++i;
