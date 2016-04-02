@@ -876,6 +876,22 @@ void Bitmap::ClearRect(Rect const& dst_rect) {
 	RefreshCallback();
 }
 
+// Hard light lookup table mapping source color to destination color
+static int hard_light_lookup[256][256];
+
+static void make_hard_light_lookup() {
+	for (int i = 0; i < 256; ++i) {
+		for (int j = 0; j < 256; ++j) {
+			int res = 0;
+			if (i <= 128)
+				res = (2 * i * j) / 255;
+			else
+				res = 255 - 2 * (255 - i) * (255 - j) / 255;
+			hard_light_lookup[i][j] = res > 255 ? 255 : res < 0 ? 0 : res;
+		}
+	}
+}
+
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
@@ -893,11 +909,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		src_rect.width, src_rect.height);
 
 	if (tone.gray != 128) {
-		DynamicFormat format(32, 8, 24, 8, 16, 8, 8, 8, 0, PF::Alpha);
-		uint32_t* pixels = new uint32_t[src_rect.width * src_rect.height];
-		Bitmap bmp(pixels, src_rect.width, src_rect.height, src_rect.width * 4, format);
-		bmp.Blit(0, 0, src, src_rect, opacity);
-		Rect dst_rect(x, y, 0, 0);
+		uint32_t* pixels = (uint32_t*)this->pixels();
 
 		int sat;
 		if (tone.gray > 128) {
@@ -907,14 +919,22 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			sat = tone.gray * 8;
 		}
 
+		int as = pixel_format.a.shift;
+		int rs = pixel_format.r.shift;
+		int gs = pixel_format.g.shift;
+		int bs = pixel_format.b.shift;
+
 		// Algorithm from OpenPDN (MIT license)
 		// Transformation in Y'CbCr color space
 		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
 			uint32_t pixel = pixels[i];
-			uint8_t r = (pixel >> 24) & 0xFF;
-			uint8_t g = (pixel >> 16) & 0xFF;
-			uint8_t b = (pixel >> 8) & 0xFF;
-			uint8_t a = pixel & 0xFF;
+			uint8_t a = (pixel >> as) & 0xFF;
+			if (a == 0) {
+				continue;
+			}
+			uint8_t r = (pixel >> rs) & 0xFF;
+			uint8_t g = (pixel >> gs) & 0xFF;
+			uint8_t b = (pixel >> bs) & 0xFF;
 			// Y' = 0.299 R' + 0.587 G' + 0.114 B'
 			uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
 			// Scale Cb/Cr by scale factor "sat"
@@ -924,35 +944,39 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			green = green > 255 ? 255 : green < 0 ? 0 : green;
 			int blue = ((lum * 1024 + (b - lum) * sat) >> 10);
 			blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
-			pixels[i] = ((uint32_t)red << 24) | ((uint32_t)green << 16) | ((uint32_t)blue << 8) | (uint32_t)a;
+			pixels[i] = ((uint32_t)red << rs) | ((uint32_t)green << gs) | ((uint32_t)blue << bs) | ((uint32_t)a << as);
 		}
-
-		pixman_image_composite32(PIXMAN_OP_OVER,
-			bmp.bitmap, src.bitmap, bitmap,
-			0, 0,
-			src_rect.x, src_rect.y,
-			x, y,
-			src_rect.width, src_rect.height);
-
-		delete[] pixels;
 	}
 
 	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
-		pixman_color_t tcolor = {
-			static_cast<uint16_t>(tone.red << 8),
-			static_cast<uint16_t>(tone.green << 8),
-			static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
+		static bool index_made = false;
+		if (!index_made) {
+			make_hard_light_lookup();
+			index_made = true;
+		}
 
-		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+		int as = pixel_format.a.shift;
+		int rs = pixel_format.r.shift;
+		int gs = pixel_format.g.shift;
+		int bs = pixel_format.b.shift;
 
-		pixman_image_composite32(PIXMAN_OP_HARD_LIGHT,
-			timage, src.bitmap, bitmap,
-			0, 0,
-			src_rect.x, src_rect.y,
-			x, y,
-			src_rect.width, src_rect.height);
+		uint32_t* pixels = (uint32_t*)this->pixels();
 
-		pixman_image_unref(timage);
+		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
+			uint32_t pixel = pixels[i];
+			uint8_t a = (pixel >> as) & 0xFF;
+			if (a == 0) {
+				continue;
+			}
+			uint8_t r = (pixel >> rs) & 0xFF;
+			uint8_t g = (pixel >> gs) & 0xFF;
+			uint8_t b = (pixel >> bs) & 0xFF;
+
+			int red = hard_light_lookup[tone.red][r];
+			int green = hard_light_lookup[tone.green][g];
+			int blue = hard_light_lookup[tone.blue][b];
+			pixels[i] = ((uint32_t)red << rs) | ((uint32_t)green << gs) | ((uint32_t)blue << bs) | ((uint32_t)a << as);
+		}
 	}
 
 	RefreshCallback();
