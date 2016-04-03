@@ -59,7 +59,6 @@ private:
 	void FinishTeleportPlayer();
 
 	std::unique_ptr<Window_Message> message_window;
-	std::unique_ptr<Sprite> background;
 	std::unique_ptr<Screen> screen;
 	std::unique_ptr<Weather> weather;
 	std::unique_ptr<Frame> frame;

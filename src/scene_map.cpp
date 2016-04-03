@@ -50,11 +50,6 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
-	// Draw background to prevent System graphic shining through
-	background.reset(new Sprite());
-	background->SetBitmap(Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255)));
-	background->SetZ(-10000);
-
 	screen.reset(new Screen());
 	weather.reset(new Weather());
 	frame.reset(new Frame());

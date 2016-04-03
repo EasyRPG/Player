@@ -168,7 +168,7 @@ void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
-	if (op == Bitmap::Opaque) {
+	if (fast_blit || op == Bitmap::Opaque) {
 		dst->BlitFast(x, y, screen, rect, 255);
 	} else {
 		dst->Blit(x, y, screen, rect, 255);
@@ -693,6 +693,10 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 		// Recalculate z values of all tiles
 		CreateTileCache(map_data);
 	}
+}
+
+void TilemapLayer::SetFastBlit(bool fast) {
+	fast_blit = fast;
 }
 
 TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :

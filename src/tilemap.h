@@ -42,8 +42,6 @@ public:
 	void SetPassableUp(std::vector<unsigned char> up);
 	std::vector<unsigned char> GetPassableDown() const;
 	void SetPassableDown(std::vector<unsigned char> down);
-	std::vector<short> GetProperties() const;
-	void SetProperties(std::vector<short> nproperties);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
@@ -60,6 +58,7 @@ public:
 	void SetAnimationType(int type);
 	void SubstituteDown(int old_id, int new_id);
 	void SubstituteUp(int old_id, int new_id);
+	void SetFastBlitDown(bool fast);
 
 private:
 	TilemapLayer layer_down, layer_up;

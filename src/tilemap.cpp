@@ -115,3 +115,7 @@ void Tilemap::SubstituteDown(int old_id, int new_id) {
 void Tilemap::SubstituteUp(int old_id, int new_id) {
 	layer_up.Substitute(old_id, new_id);
 }
+
+void Tilemap::SetFastBlitDown(bool fast) {
+	layer_down.SetFastBlit(fast);
+}

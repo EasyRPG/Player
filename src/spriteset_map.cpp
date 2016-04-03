@@ -26,6 +26,7 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 #include "bitmap.h"
+#include "player.h"
 
 // Constructor
 Spriteset_Map::Spriteset_Map() {
@@ -138,6 +139,8 @@ void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
 	tilemap.SetAnimationType(Game_Map::GetAnimationType());
 	tilemap.SetAnimationSpeed(Game_Map::GetAnimationSpeed());
+
+	tilemap.SetFastBlitDown(!panorama.GetBitmap());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
@@ -145,4 +148,6 @@ void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
 	panorama.SetBitmap(panorama_bmp);
 	Game_Map::InitializeParallax();
+
+	tilemap.SetFastBlitDown(false);
 }
