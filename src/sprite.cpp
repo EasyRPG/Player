@@ -72,10 +72,10 @@ void Sprite::Draw() {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
-	BlitScreen(x, y, ox, oy, src_rect);
+	BlitScreen();
 }
 
-void Sprite::BlitScreen(int x, int y, int ox, int oy, Rect const& src_rect) {
+void Sprite::BlitScreen() {
 	if (!bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -86,13 +86,13 @@ void Sprite::BlitScreen(int x, int y, int ox, int oy, Rect const& src_rect) {
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	if(draw_bitmap) {
-		BlitScreenIntern(*draw_bitmap, x, y, ox, oy, rect, bush_effect);
+	if (draw_bitmap) {
+		BlitScreenIntern(*draw_bitmap, rect, bush_effect);
 	}
 }
 
-void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, int oy,
-								Rect const& src_rect, int opacity_split) {
+void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap,
+								Rect const& src_rect, int opacity_split) const {
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	double zoom_x = zoom_x_effect;
@@ -100,16 +100,20 @@ void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, int ox, i
 
 	dst->EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
 					 Opacity(opacity_top_effect, opacity_bottom_effect, opacity_split),
-					 zoom_x, zoom_y, angle_effect * 3.14159 / 180,
+					 zoom_x, zoom_y, angle_effect != 0.0 ? angle_effect * 3.14159 / 180 : 0.0,
 					 waver_effect_depth, waver_effect_phase);
 }
 
 BitmapRef Sprite::Refresh(Rect& rect) {
+	if (zoom_x_effect != 1.0 && zoom_y_effect != 1.0 && angle_effect != 0.0 && waver_effect_depth != 0) {
+		// TODO: Out of bounds check adjustments for zoom, angle and waver
+		// but even without this will catch most of the cases
+		if (Rect(x - ox, y - ox, GetWidth(), GetHeight()).IsOutOfBounds(Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT))) {
+			return BitmapRef();
+		};
+	}
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
-
-	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
-		return BitmapRef();
 
 	bool no_tone = tone_effect == Tone();
 	bool no_flash = flash_effect.alpha == 0;
