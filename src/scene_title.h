@@ -40,7 +40,6 @@ public:
 	void Suspend() override;
 	void Resume() override;
 	void Update() override;
-	bool DrawBackground() override;
 
 	/**
 	 * Loads all databases.

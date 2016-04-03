@@ -115,10 +115,6 @@ void Scene_Title::Update() {
 	}
 }
 
-bool Scene_Title::DrawBackground() {
-	return false;
-}
-
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title && !Data::system.title_name.empty()) // No need to recreate Title on Resume
