@@ -584,6 +584,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		return result;
 	}
 
+	static bool has_fast_dir_stat = true;
+
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
 #ifdef _WIN32
@@ -591,10 +593,23 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #else
 		std::string const name = ent->d_name;
 #endif
-		if (name == "." || name == "..") { continue; }
+		bool is_directory;
+		if (has_fast_dir_stat) {
+			is_directory = ent->d_type == DT_DIR;
+		} else {
+			is_directory = IsDirectory(MakePath(path, name));
+		}
 
-		bool is_directory = ent->d_type == S_IFDIR;
-
+		if (name == "." || name == "..") {
+			if (has_fast_dir_stat && !is_directory) {
+				Output::Debug("File system does not populate type field (d_type) correctly.");
+				Output::Debug("Directory parsing will be slower.");
+				has_fast_dir_stat = false;
+			}
+			
+			continue;
+		}
+		
 		switch(m) {
 		case FILES:
 			if (is_directory) { continue; }
