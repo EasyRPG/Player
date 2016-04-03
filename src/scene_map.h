@@ -37,12 +37,13 @@ public:
 	Scene_Map(bool from_save = false);
 	~Scene_Map();
 
-	void Start();
-	void Continue();
-	void Update();
-	void Resume();
-	void TransitionIn();
-	void TransitionOut();
+	void Start() override;
+	void Continue() override;
+	void Update() override;
+	void Resume() override;
+	void TransitionIn() override;
+	void TransitionOut() override;
+	bool DrawBackground() override;
 
 	void CallBattle();
 	void CallShop();

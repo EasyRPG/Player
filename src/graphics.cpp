@@ -54,9 +54,10 @@ namespace Graphics {
 	uint32_t next_fps_time;
 
 	struct State {
-		State() : zlist_dirty(false) {}
+		State() {}
 		std::list<Drawable*> drawable_list;
-		bool zlist_dirty;
+		bool zlist_dirty = false;
+		bool draw_background = true;
 	};
 
 	int real_fps;
@@ -176,7 +177,9 @@ void Graphics::DrawFrame() {
 		global_state->zlist_dirty = false;
 	}
 
-	DisplayUi->AddBackground();
+	if (state->draw_background) {
+		DisplayUi->AddBackground();
+	}
 
 	for (Drawable* drawable : state->drawable_list) {
 		drawable->Draw();
@@ -204,7 +207,9 @@ void Graphics::DrawOverlay() {
 }
 
 BitmapRef Graphics::SnapToBitmap() {
-	DisplayUi->AddBackground();
+	if (state->draw_background) {
+		DisplayUi->AddBackground();
+	}
 
 	for (Drawable* drawable : state->drawable_list) {
 		drawable->Draw();
@@ -458,9 +463,10 @@ inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* se
 	return false;
 }
 
-void Graphics::Push() {
+void Graphics::Push(bool draw_background) {
 	stack.push_back(state);
 	state.reset(new State());
+	state->draw_background = draw_background;
 }
 
 void Graphics::Pop() {

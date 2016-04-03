@@ -100,6 +100,10 @@ void Scene_Map::TransitionOut() {
 	}
 }
 
+bool Scene_Map::DrawBackground() {
+	return false;
+}
+
 void Scene_Map::Update() {
 	if (Game_Temp::transition_processing) {
 		Game_Temp::transition_processing = false;

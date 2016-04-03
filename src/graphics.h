@@ -125,7 +125,7 @@ namespace Graphics {
 
 	void UpdateZCallback();
 
-	void Push();
+	void Push(bool draw_background = true);
 	void Pop();
 
 	unsigned SecondToFrame(float second);
