@@ -19,10 +19,9 @@
 #define _BITMAP_H_
 
 // Headers
-#include <array>
 #include <string>
-#include <list>
 #include <map>
+#include <vector>
 #include <cassert>
 #include <pixman.h>
 
@@ -181,8 +180,12 @@ public:
 	 */
 	void SetTransparentColor(Color color);
 
-	static const uint32_t System  = 0x80000000;
-	static const uint32_t Chipset = 0x40000000;
+	enum Flags {
+		Flag_System = 1 << 1,
+		Flag_Chipset = 1 << 2,
+		// Bitmap will not be written to
+		Flag_ReadOnly = 1 << 16
+	};
 
 	enum TileOpacity {
 		Opaque,
@@ -190,7 +193,8 @@ public:
 		Transparent
 	};
 
-	TileOpacity GetTileOpacity(int row, int col);
+	TileOpacity GetOpacity() const;
+	TileOpacity GetTileOpacity(int row, int col) const;
 
 	/**
 	 * Writes PNG converted bitmap to output stream.
@@ -206,7 +210,7 @@ public:
 	 *
 	 * @return background color.
 	 */
-	Color GetBackgroundColor();
+	Color GetBackgroundColor() const;
 
 	/**
 	 * Gets the shadow color
@@ -214,7 +218,9 @@ public:
 	 *
 	 * @return shadow color.
 	 */
-	Color GetShadowColor();
+	Color GetShadowColor() const;
+
+	void CheckPixels(uint32_t flags);
 
 protected:
 	Bitmap();
@@ -234,12 +240,10 @@ protected:
 
 	TileOpacity CheckOpacity(Rect const& rect);
 
-	void CheckPixels(uint32_t flags);
-
 	DynamicFormat format;
 
-	typedef std::array<std::array<TileOpacity, 30>, 16> opacity_type;
-	std::unique_ptr<opacity_type> opacity;
+	std::vector<std::vector<TileOpacity>> tile_opacity;
+	TileOpacity opacity = Partial;
 	Color bg_color, sh_color;
 
 	void InitBitmap();
@@ -267,6 +271,17 @@ public:
 	 * @param opacity opacity for blending with bitmap.
 	 */
 	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
+
+	/**
+	 * Blits source bitmap to this one ignoring alpha (faster)
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rect.
+	 * @param opacity opacity for blending with bitmap.
+	 */
+	void BlitFast(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap in tiles to this one.
@@ -723,6 +738,9 @@ protected:
 	static void initialize_formats();
 	static void add_pair(pixman_format_code_t pcode, const DynamicFormat& format);
 	static pixman_format_code_t find_format(const DynamicFormat& format);
+
+	pixman_op_t GetOperator() const;
+	bool read_only = false;
 };
 
 #endif
