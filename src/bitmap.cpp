@@ -971,7 +971,9 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
 			uint32_t pixel = pixels[i];
 			uint8_t a = (pixel >> as) & 0xFF;
-			if (a == 0) {
+			// &src != this works around a corner case with opacity split (character in a bush)
+			// in that case a == 0 and the effect is not applied
+			if (a == 0 && &src != this) {
 				continue;
 			}
 			uint8_t r = (pixel >> rs) & 0xFF;
@@ -1007,7 +1009,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
 			uint32_t pixel = pixels[i];
 			uint8_t a = (pixel >> as) & 0xFF;
-			if (a == 0) {
+			if (a == 0 && &src != this) {
 				continue;
 			}
 			uint8_t r = (pixel >> rs) & 0xFF;

@@ -79,6 +79,13 @@ public:
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
 	void Substitute(int old_id, int new_id);
+	/**
+	 * Influences how tiles of the tilemap are blitted.
+	 * When enabled the opacity information of the tile is ignored and a opaque
+	 * tile is assumed (Faster).
+	 *
+	 * @param fast true: enable fast blit (ignores alpha)
+	 */
 	void SetFastBlit(bool fast);
 
 private:

@@ -181,19 +181,42 @@ public:
 	void SetTransparentColor(Color color);
 
 	enum Flags {
+		// Special handling for system graphic.
 		Flag_System = 1 << 1,
+		// Special handling for chipset graphic.
+		// Generates a tile opacity list.
 		Flag_Chipset = 1 << 2,
-		// Bitmap will not be written to
+		// Bitmap will not be written to. This allows blit optimisations because the
+		// opacity information will not change.
 		Flag_ReadOnly = 1 << 16
 	};
 
 	enum TileOpacity {
+		// Image is full opaque and can be blitted fast
 		Opaque,
+		// Image has alpha and needs an alpha blit
 		Partial,
+		// Image is complately transparent
 		Transparent
 	};
 
+	/**
+	 * Provides opacity information about the image.
+	 * This influences the selected operator when blitting.
+	 *
+	 * @return opacity information
+	 */
 	TileOpacity GetOpacity() const;
+
+	/**
+	 * Provides opacity information about a tile on a tilemap.
+	 * This influences the selected operator when blitting a tile.
+	 *
+	 * @param row tile row
+	 * @param col tile col
+	 *
+	 * @return opacity information
+	 */
 	TileOpacity GetTileOpacity(int row, int col) const;
 
 	/**
