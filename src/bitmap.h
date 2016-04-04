@@ -739,7 +739,7 @@ protected:
 	static void add_pair(pixman_format_code_t pcode, const DynamicFormat& format);
 	static pixman_format_code_t find_format(const DynamicFormat& format);
 
-	pixman_op_t GetOperator() const;
+	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
 	bool read_only = false;
 };
 

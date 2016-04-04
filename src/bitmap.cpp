@@ -664,7 +664,7 @@ void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect);
 
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(src.GetOperator(mask),
 							 src.bitmap,
 							 mask, bitmap,
 							 src_rect.x, src_rect.y,
@@ -682,18 +682,13 @@ void Bitmap::BlitFast(int x, int y, Bitmap const & src, Rect const & src_rect, O
 	if (opacity.IsTransparent())
 		return;
 
-	pixman_image_t* mask = CreateMask(opacity, src_rect);
-
 	pixman_image_composite32(PIXMAN_OP_SRC,
 		src.bitmap,
-		mask, bitmap,
+		nullptr, bitmap,
 		src_rect.x, src_rect.y,
 		0, 0,
 		x, y,
 		src_rect.width, src_rect.height);
-
-	if (mask != NULL)
-		pixman_image_unref(mask);
 
 	RefreshCallback();
 }
@@ -730,7 +725,7 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(src.GetOperator(mask),
 							 src_bm, mask, bitmap,
 							 0, 0,
 							 0, 0,
@@ -768,7 +763,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(src.GetOperator(mask),
 							 src.bitmap, mask, bitmap,
 							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
@@ -798,7 +793,7 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 
 	pixman_image_t* mask = CreateMask(opacity, src.GetRect(), &xform);
 
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(src.GetOperator(mask),
 							 src.bitmap, mask, bitmap,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.x, dst_rect.y,
@@ -836,7 +831,7 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 		int sy = static_cast<int>(std::floor((i+0.5) / zoom_y));
 		int offset = (int) (2 * zoom_x * depth * sin((phase + (src_rect.y + sy) * 11.2) * 3.14159 / 180));
 
-		pixman_image_composite32(src.GetOperator(),
+		pixman_image_composite32(src.GetOperator(mask),
 								 src.bitmap, mask, bitmap,
 								 src_rect.x, i,
 								 src_rect.x, i,
@@ -1117,7 +1112,7 @@ void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my
 
 	pixman_image_t* source = pixman_image_create_solid_fill(&tcolor);
 
-	pixman_image_composite32(GetOperator(),
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 source, mask.bitmap, bitmap,
 							 0, 0,
 							 mx, my,
@@ -1130,7 +1125,7 @@ void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my
 }
 
 void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Bitmap const& src, int sx, int sy) {
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask.bitmap, bitmap,
 							 sx, sy,
 							 mx, my,
@@ -1181,8 +1176,8 @@ void Bitmap::GetColorComponents(uint32_t color, uint8_t &r, uint8_t &g, uint8_t 
 	DivideAlpha(r, g, b, a);
 }
 
-pixman_op_t Bitmap::GetOperator() const {
-	if (!GetTransparent() || GetOpacity() == Opaque) {
+pixman_op_t Bitmap::GetOperator(pixman_image_t* mask) const {
+	if (!mask && (!GetTransparent() || GetOpacity() == Opaque)) {
 		return PIXMAN_OP_SRC;
 	}
 
