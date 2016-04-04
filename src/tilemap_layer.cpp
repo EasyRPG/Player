@@ -162,7 +162,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile) {
 	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
 
-	if (op == Bitmap::Transparent)
+	if (!fast_blit && op == Bitmap::Transparent)
 		return;
 	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
