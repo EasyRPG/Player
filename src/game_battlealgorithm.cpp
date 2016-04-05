@@ -310,7 +310,7 @@ float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vec
 		}
 	}
 
-	if (!attributes_set.empty()) {
+	if (attributes_applied > 0) {
 		multiplier /= (attributes_applied * 100);
 		return multiplier;
 	}

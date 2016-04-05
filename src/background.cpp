@@ -48,23 +48,25 @@ Background::Background(int terrain_id) :
 
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
-	if (!terrain.background_name.empty()) {
-		if (terrain.background_type == 0) {
-			FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
-			request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
-			request->Start();
-			return;
-		}
-	
+	// Either background or frame
+	if (terrain.background_type == RPG::Terrain::BGAssociation_background && !terrain.background_name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
+		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
+		request->Start();
+		return;
+	}
+
+	// Frame
+	if (!terrain.background_a_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
+	
+		bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
+		bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
 	}
 
-	bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
-	bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
-
-	if (terrain.background_b) {
+	if (terrain.background_b && !terrain.background_b_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_b_name);
 		request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
 		request->Start();
@@ -79,7 +81,7 @@ void Background::OnBackgroundGraphicReady(FileRequestResult* result) {
 		bg_bitmap = Cache::Backdrop(result->file);
 	}
 	else if (result->directory == "Frame") {
-		bg_bitmap = Cache::Frame(result->file);
+		bg_bitmap = Cache::Frame(result->file, false);
 	}
 }
 

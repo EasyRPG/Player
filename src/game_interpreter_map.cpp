@@ -1254,7 +1254,6 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 			break;
 		case 2:
 			Game_Battle::SetTerrainId(com.parameters[8]);
-			Game_Temp::battle_background = Data::terrains[com.parameters[8] - 1].background_name;
 			break;
 		default:
 			return false;

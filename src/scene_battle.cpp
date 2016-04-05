@@ -90,11 +90,6 @@ void Scene_Battle::Start() {
 
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
-	if (!Game_Temp::battle_background.empty())
-		background.reset(new Background(Game_Temp::battle_background));
-	else
-		background.reset(new Background(Game_Battle::GetTerrainId()));
-
 	SetState(State_Start);
 }
 
@@ -169,8 +164,6 @@ void Scene_Battle::Update() {
 		ProcessInput();
 	}
 
-	UpdateBackground();
-
 	Game_Battle::Update();
 
 	Main_Data::game_screen->Update();
@@ -200,15 +193,6 @@ void Scene_Battle::SetAnimationState(Game_Battler* target, int new_state) {
 	Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 	if (target_sprite) {
 		target_sprite->SetAnimationState(new_state);
-	}
-}
-
-void Scene_Battle::UpdateBackground() {
-	if (Game_Temp::battle_background != Game_Battle::background_name) {
-		Game_Temp::battle_background = Game_Battle::background_name;
-		if (!Game_Temp::battle_background.empty()) {
-			background.reset(new Background(Game_Temp::battle_background));
-		}
 	}
 }
 

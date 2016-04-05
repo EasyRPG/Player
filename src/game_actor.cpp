@@ -118,29 +118,23 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	// Actor must have all attributes of the skill equipped as weapons
-	if (!skill.attribute_effects.empty()) {
-		const RPG::Item* item = GetEquipment(0);
-		const RPG::Item* item2 = GetTwoSwordsStyle() ? GetEquipment(1) : nullptr;
+	const RPG::Item* item = GetEquipment(0);
+	const RPG::Item* item2 = GetTwoSwordsStyle() ? GetEquipment(1) : nullptr;
 
-		if (item || item2) {
-			for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
-				bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
-				if (required) {
-					if (item && i < item->attribute_set.size()) {
-						if (!item->attribute_set[i]) {
-							return false;
-						}
-					} else if (item2 && i < item2->attribute_set.size()) {
-						if (!item2->attribute_set[i]) {
-							return false;
-						}
-					} else {
-						return false;
-					}
+	for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
+		bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
+		if (required) {
+			if (item && i < item->attribute_set.size()) {
+				if (!item->attribute_set[i]) {
+					return false;
 				}
+			} else if (item2 && i < item2->attribute_set.size()) {
+				if (!item2->attribute_set[i]) {
+					return false;
+				}
+			} else {
+				return false;
 			}
-		} else {
-			return false;
 		}
 	}
 
@@ -466,7 +460,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	int rate = 3; // C - default
 
 	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
-		rate = Data::actors[actor_id - 1].state_ranks[attribute_id - 1];
+		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
 	}
 
 	return GetAttributeRate(attribute_id, rate);
