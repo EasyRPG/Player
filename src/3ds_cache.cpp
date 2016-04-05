@@ -23,17 +23,18 @@
 #include "3ds_cache.h"
 #include "output.h"
 
-uint32_t FREE_CACHE = CACHE_DIM;
-uint8_t ENTRIES = 0;
-int LAST_ENTRY = -1;
+uint32_t FREE_CACHE = CACHE_DIM; // 4 bytes
+uint8_t ENTRIES = 0; // 1 byte
+int LAST_ENTRY = -1; // 4 bytes
 char soundtable[MAX_SOUNDS][32];
 DecodedSound decodedtable[MAX_SOUNDS];
 uint8_t* soundCache;
-bool FULLED = false;
+bool FULLED = false; // 1 byte
 
 void initCache(){
 	#ifndef NO_DEBUG
-	Output::Debug("Initializing sound cache (Dim: %i bytes)",CACHE_DIM);
+	u32 cache_size = CACHE_DIM + 10 + (MAX_SOUNDS<<5) + sizeof(DecodedSound) * MAX_SOUNDS; 
+	Output::Debug("Initializing sound cache (Dim: %i bytes, Max Sounds: %i)",cache_size,MAX_SOUNDS);
 	#endif
 	#ifdef _3DS
 	soundCache = (uint8_t*)linearAlloc(CACHE_DIM);

@@ -22,8 +22,8 @@
 #include "3ds_decoder.h"
 #endif
 
-#define MAX_SOUNDS 200 // Max number of storable sounds
-#define CACHE_DIM 5242880 // Dimension of the cache
+#define MAX_SOUNDS 32 // Max number of storable sounds
+#define CACHE_DIM 6291456 // Dimension of the cache
 
 extern uint32_t FREE_CACHE;
 extern uint8_t ENTRIES;
