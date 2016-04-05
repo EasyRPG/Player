@@ -76,6 +76,7 @@ public:
 
 	/** @} */
 	sf2d_texture* main_texture;
+	sf2d_texture* keyboard_texture;
 	int frame;
 	bool fullscreen;
 	bool trigger_state;

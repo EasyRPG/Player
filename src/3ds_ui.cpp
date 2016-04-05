@@ -27,6 +27,9 @@
 #include "player.h"
 #include "bitmap.h"
 #include <iostream>
+#include <sys/iosupport.h>
+
+#include "../build/keyboard_bmp.h"
 
 #include <3ds.h>
 #include <sf2d.h>
@@ -40,8 +43,20 @@ AudioInterface& CtrUi::GetAudio() {
 }
 #endif
 
+static const devoptab_t dotab_null = {
+	"null",
+	0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
+};
+
 CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
+	
 	frame = 0;
 	fullscreen = false;
 	trigger_state = false;
@@ -65,10 +80,44 @@ CtrUi::CtrUi(int width, int height) :
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new CtrAudio());
 	#endif
+	
+	// Loading bottom screen keyboard
+	u8* key_buffer = (u8*)&keyboard_bmp[0x36];
+	u32 key_buffer_size = keyboard_bmp_size - 0x36;
+	u8* key_buffer_rgba = (u8*)malloc((key_buffer_size/3)<<2);
+	int z = 0;
+	for(int i=0;i<key_buffer_size;i=i+3){
+		key_buffer_rgba[z+2] = key_buffer[i];
+		key_buffer_rgba[z+1] = key_buffer[i+1];
+		key_buffer_rgba[z] = key_buffer[i+2];
+		key_buffer_rgba[z+3] = 0xFF;
+		z = z + 4;
+	}
+	keyboard_texture = sf2d_create_texture_mem_RGBA8(key_buffer_rgba,
+	                                             320, 240, 
+	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	free(key_buffer_rgba);
+	
+	// Disabling debug console
+	devoptab_list[STD_OUT] = &dotab_null;
+	devoptab_list[STD_ERR] = &dotab_null;
+	consoleGetDefault()->frameBuffer = NULL;
+	gfxSetScreenFormat(GFX_BOTTOM,GSP_BGR8_OES);
+	gfxSetDoubleBuffering(GFX_BOTTOM,true);
+	
+	// Drawing keyboard once then unloading it
+	for (int i=0;i<5;i++){ // If we don't print this a couple of time, image is corrupted
+		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
+		sf2d_draw_texture(keyboard_texture, 0, 0);
+		sf2d_end_frame();
+		sf2d_swapbuffers();
+	}
+	sf2d_free_texture(keyboard_texture);
+	
 }
 
 CtrUi::~CtrUi() {
-	sf2d_free_texture(main_texture);
+	sf2d_free_texture(main_texture);	
 	sf2d_fini();
 }
 
@@ -140,6 +189,36 @@ void CtrUi::ProcessEvents() {
 	else if (circlepad.dx > 25) keys[Input::Keys::RIGHT] = true;
 	else if (circlepad.dx < -25) keys[Input::Keys::LEFT] = true;
 	
+	//Touchscreen support
+	if (input & KEY_TOUCH){
+		touchPosition pos;
+		hidTouchRead(&pos);
+		u8 row = pos.px>>6;
+		u8 col = pos.py / 80;
+		u32 keys_tbl[15] = {Input::Keys::N0, Input::Keys::N1, Input::Keys::N2,
+						Input::Keys::N3, Input::Keys::N4, Input::Keys::N5,
+						Input::Keys::N6, Input::Keys::N7, Input::Keys::N8,
+						Input::Keys::N9, Input::Keys::DIVIDE, Input::Keys::MULTIPLY,
+						Input::Keys::ADD, Input::Keys::SUBTRACT, Input::Keys::PERIOD
+						};
+		keys[keys_tbl[row + (col*5)]] = true;
+	}else{
+		keys[Input::Keys::N0] = false;
+		keys[Input::Keys::N1] = false;
+		keys[Input::Keys::N2] = false;
+		keys[Input::Keys::N3] = false;
+		keys[Input::Keys::N4] = false;
+		keys[Input::Keys::N5] = false;
+		keys[Input::Keys::N6] = false;
+		keys[Input::Keys::N7] = false;
+		keys[Input::Keys::N8] = false;
+		keys[Input::Keys::N9] = false;
+		keys[Input::Keys::DIVIDE] = false;
+		keys[Input::Keys::MULTIPLY] = false;
+		keys[Input::Keys::ADD] = false;
+		keys[Input::Keys::SUBTRACT] = false;
+		keys[Input::Keys::PERIOD] = false;
+	}
 	
 }
 
