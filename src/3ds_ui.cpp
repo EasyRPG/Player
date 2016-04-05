@@ -43,6 +43,8 @@ AudioInterface& CtrUi::GetAudio() {
 CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
 	frame = 0;
+	fullscreen = false;
+	trigger_state = false;
 	sf2d_init();
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -124,6 +126,11 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	
+	//Fullscreen mode support
+	bool old_state = trigger_state;
+	trigger_state = (input & KEY_R);
+	if ((trigger_state != old_state) && trigger_state) fullscreen = !fullscreen;
+	
 	//CirclePad support
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
@@ -142,7 +149,8 @@ void CtrUi::UpdateDisplay() {
 	                                             main_surface->GetWidth(), main_surface->GetHeight()
 	                            );
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
-	sf2d_draw_texture(main_texture, 40, 0);
+	if (!fullscreen) sf2d_draw_texture(main_texture, 40, 0);
+	else sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
 	sf2d_end_frame();
 	sf2d_swapbuffers();
 }

@@ -77,6 +77,8 @@ public:
 	/** @} */
 	sf2d_texture* main_texture;
 	int frame;
+	bool fullscreen;
+	bool trigger_state;
 	
 };
 
