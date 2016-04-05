@@ -160,12 +160,19 @@ TilemapLayer::TilemapLayer(int ilayer) :
 }
 
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile) {
-	if (!autotile && screen.GetTileOpacity(row, col) == Bitmap::Transparent)
+	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
+
+	if (!fast_blit && op == Bitmap::Transparent)
 		return;
 	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	dst->Blit(x, y, screen, rect, 255);
+
+	if (fast_blit || op == Bitmap::Opaque) {
+		dst->BlitFast(x, y, screen, rect, 255);
+	} else {
+		dst->Blit(x, y, screen, rect, 255);
+	}
 }
 
 void TilemapLayer::Draw(int z_order) {
@@ -515,6 +522,10 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, Ti
 		}
 	}
 
+	if (rows > 0) {
+		tiles->CheckPixels(Bitmap::Flag_Chipset | Bitmap::Flag_ReadOnly);
+	}
+
 	return tiles;
 }
 
@@ -682,6 +693,10 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 		// Recalculate z values of all tiles
 		CreateTileCache(map_data);
 	}
+}
+
+void TilemapLayer::SetFastBlit(bool fast) {
+	fast_blit = fast;
 }
 
 TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :

@@ -34,12 +34,12 @@ public:
 	 */
 	Scene_Title();
 
-	void Start();
-	void Continue();
-	void TransitionIn();
-	void Suspend();
-	void Resume();
-	void Update();
+	void Start() override;
+	void Continue() override;
+	void TransitionIn() override;
+	void Suspend() override;
+	void Resume() override;
+	void Update() override;
 
 	/**
 	 * Loads all databases.

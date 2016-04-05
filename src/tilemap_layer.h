@@ -78,8 +78,15 @@ public:
 	void SetAnimationSpeed(int speed);
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
-
 	void Substitute(int old_id, int new_id);
+	/**
+	 * Influences how tiles of the tilemap are blitted.
+	 * When enabled the opacity information of the tile is ignored and a opaque
+	 * tile is assumed (Faster).
+	 *
+	 * @param fast true: enable fast blit (ignores alpha)
+	 */
+	void SetFastBlit(bool fast);
 
 private:
 	BitmapRef chipset;
@@ -97,6 +104,7 @@ private:
 	int animation_speed;
 	int animation_type;
 	int layer;
+	bool fast_blit = false;
 
 	void CreateTileCache(const std::vector<short>& nmap_data);
 	void GenerateAutotileAB(short ID, short animID);

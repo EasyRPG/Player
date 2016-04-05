@@ -165,6 +165,9 @@ public:
 	/** Contains name of the Scenes. For debug purposes. */
 	static const char scene_names[SceneMax][12];
 
+	/** When true tells the graphic system to draw a system color background */
+	virtual bool DrawBackground();
+
 private:
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;

@@ -88,7 +88,7 @@ namespace {
 	template<Material::Type T> BitmapRef DrawCheckerboard();
 
 	BitmapRef DummySystem() {
-		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::System);
+		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::Flag_System | Bitmap::Flag_ReadOnly);
 	}
 
 	std::function<BitmapRef()> backdrop_dummy_func = DrawCheckerboard<Material::Backdrop>;
@@ -185,10 +185,10 @@ namespace {
 			return BitmapRef();
 		}
 
-		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
-										 T == Material::Chipset? Bitmap::Chipset:
-										 T == Material::System? Bitmap::System:
-										 0);
+		BitmapRef ret = LoadBitmap(s.directory, f, transparent, Bitmap::Flag_ReadOnly | (
+										 T == Material::Chipset? Bitmap::Flag_Chipset:
+										 T == Material::System? Bitmap::Flag_System:
+										 0));
 
 		if (!ret) {
 			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());

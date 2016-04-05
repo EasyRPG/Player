@@ -63,6 +63,9 @@ void MessageOverlay::Draw() {
 			}
 			dirty = true;
 		}
+	} else if (!show_all) {
+		// Don't render overlay when no message visible
+		return;
 	}
 
 	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);

@@ -188,9 +188,12 @@ const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectory
 	tree->directory_path = save_path;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, FILES);
-	for (string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
-		(IsDirectory(MakePath(tree->directory_path, i->second)) ?
-			tree->directories : tree->files)[i->first] = i->second;
+
+	for (auto& i : mem.files) {
+		tree->files[i.first] = i.second;
+	}
+	for (auto& i : mem.directories) {
+		tree->directories[i.first] = i.second;
 	}
 
 	return tree;
@@ -207,15 +210,16 @@ std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::
 	tree->directory_path = p;
 
 	Directory mem = GetDirectoryMembers(tree->directory_path, ALL);
-	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
-		(IsDirectory(MakePath(tree->directory_path, i->second))?
-		 tree->directories : tree->files)[i->first] = i->second;
+	for (auto& i : mem.files) {
+		tree->files[i.first] = i.second;
+	}
+	for (auto& i : mem.directories) {
+		tree->directories[i.first] = i.second;
 	}
 
 	if (recursive) {
-		for (string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
-			GetDirectoryMembers(MakePath(tree->directory_path, i->second), RECURSIVE)
-				.members.swap(tree->sub_members[i->first]);
+		for (auto& i : mem.directories) {
+			GetDirectoryMembers(MakePath(tree->directory_path, i.second), RECURSIVE).files.swap(tree->sub_members[i.first]);
 		}
 	}
 
@@ -580,6 +584,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		return result;
 	}
 
+	static bool has_fast_dir_stat = true;
+
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
 #ifdef _WIN32
@@ -587,27 +593,48 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #else
 		std::string const name = ent->d_name;
 #endif
-		if (name == "." || name == "..") { continue; }
+		bool is_directory;
+		if (has_fast_dir_stat) {
+			is_directory = ent->d_type == DT_DIR;
+		} else {
+			is_directory = IsDirectory(MakePath(path, name));
+		}
+
+		if (name == "." || name == "..") {
+			if (has_fast_dir_stat && !is_directory) {
+				Output::Debug("File system does not populate type field (d_type) correctly.");
+				Output::Debug("Directory parsing will be slower.");
+				has_fast_dir_stat = false;
+			}
+			
+			continue;
+		}
+		
 		switch(m) {
 		case FILES:
-			if(IsDirectory(MakePath(path, name))) { continue; }
+			if (is_directory) { continue; }
 		    break;
 		case DIRECTORIES:
-			if(! IsDirectory(MakePath(path, name))) { continue; }
+			if (!is_directory) { continue; }
 			break;
 		case ALL:
 			break;
 		case RECURSIVE:
-			if(IsDirectory(MakePath(path, name))) {
+			if (is_directory) {
 				Directory rdir = GetDirectoryMembers(MakePath(path, name), RECURSIVE, MakePath(parent, name));
-				result.members.insert(rdir.members.begin(), rdir.members.end());
+				result.files.insert(rdir.files.begin(), rdir.files.end());
+				result.directories.insert(rdir.directories.begin(), rdir.directories.end());
 				continue;
 			}
 
-			result.members[Utils::LowerCase(MakePath(parent, name))] = MakePath(parent, name);
+			result.files[Utils::LowerCase(MakePath(parent, name))] = MakePath(parent, name);
 			continue;
 		}
-		result.members[Utils::LowerCase(name)] = name;
+		if (is_directory) {
+			result.directories[Utils::LowerCase(name)] = name;
+		} else {
+			result.files[Utils::LowerCase(name)] = name;
+		}
 	}
 
 #ifdef _WIN32
