@@ -21,7 +21,7 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#ifdef _3DS
+#if defined (_3DS) && defined(SUPPORT_AUDIO)
 #include <3ds.h>
 #include <stdio.h>
 #include <string.h>

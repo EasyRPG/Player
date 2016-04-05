@@ -20,7 +20,7 @@
 #include "filefinder.h"
 #include "output.h"
 
-#ifdef _3DS
+#if defined(_3DS) && defined(SUPPORT_AUDIO)
 #include <stdio.h>
 #include <cstdlib>
 #ifdef USE_CACHE
@@ -88,7 +88,7 @@ static void streamThread(void* arg){
 				CSND_UpdateInfo(0);
 			}else{
 				float vol_table[12] = {vol,vol,vol,vol};
-				ndspChnSetMix(0x1F, vol_table);
+				ndspChnSetMix(SOUND_CHANNELS, vol_table);
 			}
 		}
 		
@@ -469,7 +469,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 			ndspChnSetMix(i, vol_table);
 			createDspBlock(&dspSounds[i], myFile.bytepersample, audiobuf_size, false, (u32*)audiobuffers[i]);
 			ndspChnWaveBufAdd(i, &dspSounds[i]);
-		}else csndPlaySound(i, SOUND_LINEAR_INTERP | codec, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
+		}else csndPlaySound(i+0x08, SOUND_LINEAR_INTERP | codec, samplerate, vol, 0.0, (u32*)audiobuffers[i], (u32*)audiobuffers[i], audiobuf_size);
 	}
 }
 
@@ -480,7 +480,6 @@ void CtrAudio::SE_Stop() {
 		if (audiobuffers[i] != NULL) linearFree(audiobuffers[i]);
 		audiobuffers[i] = NULL;
 		#endif
-		if (isDSP) ndspChnWaveBufClear(i);
 	}
 	if (!isDSP) CSND_UpdateInfo(0);
 }
