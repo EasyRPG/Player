@@ -45,7 +45,7 @@ namespace {
 
 	void callback(void *udata, Uint8 *stream, int len) {
 		AudioDecoder *decoder = static_cast<AudioDecoder*>(udata);
-		const std::vector<char>& buffer = decoder->Decode(stream, len);
+		const std::vector<char>& buffer = decoder->Decode(len);
 
 		if (decoder->IsFinished()) {
 			Mix_HookMusic(NULL, NULL);
@@ -216,16 +216,24 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 		mpg123_decoder->SetFormat(audio_rate, mpg_format, (AudioDecoder::Channel)audio_channels);
 
-		mpg123_decoder->Open(path.c_str());
-		/*mp3_err = mpg123_open(mp3_handle, path.c_str());
-		if (mp3_err != MPG123_OK) {
-			Output::Warning("Couldn't open mpg123 file.\n%s", mpg123_plain_strerror(mp3_err));
-			return;
-		}*/
+		mpg123_decoder->Open(FileFinder::fopenUTF8(path, "rb"));
+
 		Mix_HookMusic(callback, mpg123_decoder.get());
 		return;
 	}
 #endif // HAVE_MPG123
+
+#ifdef HAVE_FMMIDI
+	if (mtype == MUS_MID) {
+		fmmidi_decoder.reset(new FmMidiDecoder());
+
+		fmmidi_decoder->Open(FileFinder::fopenUTF8(path, "rb"));
+
+		Mix_HookMusic(callback, fmmidi_decoder.get());
+
+		return;
+	}
+#endif // HAVE_FMMIDI
 
 #if SDL_MAJOR_VERSION>1
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {

@@ -25,11 +25,13 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "decoder_mpg123.h"
-
-#define HAVE_MPG123
 #ifdef HAVE_MPG123
 #  include <mpg123.h>
+#  include "decoder_mpg123.h"
+#endif
+
+#ifdef HAVE_FMMIDI
+#  include "decoder_fmmidi.h"
 #endif
 
 struct SdlAudio : public AudioInterface {
@@ -77,7 +79,14 @@ private:
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
 
+#ifdef HAVE_MPG123
 	std::unique_ptr<Mpg123Decoder> mpg123_decoder;
+#endif
+
+#ifdef HAVE_FMMIDI
+	std::unique_ptr<FmMidiDecoder> fmmidi_decoder;
+#endif
+
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_

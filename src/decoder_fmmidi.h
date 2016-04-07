@@ -31,14 +31,15 @@
 #include "midisynth.h"
 
 class FmMidiDecoder : public AudioDecoder, midisequencer::output {
+public:
 	FmMidiDecoder();
 
 	~FmMidiDecoder();
 
 	// Audio Decoder interface
-	bool Open(const std::string& file) override;
+	bool Open(FILE* file) override;
 
-	const std::vector<char>& Decode(uint8_t* stream, int length) override;
+	const std::vector<char>& Decode(int length) override;
 
 	bool IsFinished() const override;
 
@@ -50,15 +51,18 @@ class FmMidiDecoder : public AudioDecoder, midisequencer::output {
 
 	// midisequencer::output interface
 protected:
-	int synthesize(int_least16_t* output, std::size_t samples, float rate) { return synth->synthesize(output, samples, rate); }
-	void midi_message(int, uint_least32_t message) { synth->midi_event(message); }
-	void sysex_message(int, const void* data, std::size_t size) { synth->sysex_message(data, size); }
-	void meta_event(int, const void*, std::size_t) {}
-	void set_mode(midisynth::system_mode_t mode) { synth->set_system_mode(mode); }
-	void reset() { synth->reset(); } /* Set here because they are pure virtual */
+	FILE* file;
+	double mtime = 0.0;
 
-	midisynth::synthesizer *synth;
-	midisynth::fm_note_factory *note_factory;
+	int synthesize(int_least16_t* output, std::size_t samples, float rate);
+	void midi_message(int, uint_least32_t message) override;
+	void sysex_message(int, const void* data, std::size_t size) override;
+	void meta_event(int, const void*, std::size_t) override;
+	void reset() override;
+
+	std::unique_ptr<midisequencer::sequencer> seq;
+	std::unique_ptr<midisynth::synthesizer> synth;
+	std::unique_ptr<midisynth::fm_note_factory> note_factory;
 	midisynth::DRUMPARAMETER p;
 	void load_programs();
 };

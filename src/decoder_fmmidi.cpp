@@ -21,7 +21,82 @@
 #include <cassert>
 #include "audio_decoder.h"
 #include "output.h"
+#include "decoder_fmmidi.h"
 
+FmMidiDecoder::FmMidiDecoder() {
+	note_factory.reset(new midisynth::fm_note_factory());
+	synth.reset(new midisynth::synthesizer(note_factory.get()));
+	seq.reset(new midisequencer::sequencer());
+	load_programs();
+}
 
+FmMidiDecoder::~FmMidiDecoder() {
+	fclose(file);
+}
+
+bool FmMidiDecoder::Open(FILE* file) {
+	this->file = file;
+
+	seq->clear();
+	seq->load(file);
+	seq->rewind();
+
+	return true;
+}
+
+const std::vector<char>& FmMidiDecoder::Decode(int length) {
+	static std::vector<char> buffer;
+	static const double delta = (double)2048 / (44100);
+
+	buffer.resize(length);
+
+	seq->play(mtime, this);
+
+	synthesize(reinterpret_cast<int_least16_t*>(buffer.data()), (size_t)length / 4, 44100.0);
+
+	mtime += delta;
+
+	return buffer;
+}
+
+bool FmMidiDecoder::IsFinished() const {
+	return false;
+}
+
+std::string FmMidiDecoder::GetError() const {
+	return std::string();
+}
+
+void FmMidiDecoder::GetFormat(int & frequency, AudioDecoder::Format & format, AudioDecoder::Channel & channels) const {
+}
+
+bool FmMidiDecoder::SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) {
+	return false;
+}
+
+int FmMidiDecoder::synthesize(int_least16_t * output, std::size_t samples, float rate) {
+	return synth->synthesize(output, samples, rate);
+}
+
+void FmMidiDecoder::midi_message(int, uint_least32_t message) {
+	synth->midi_event(message);
+}
+
+void FmMidiDecoder::sysex_message(int, const void * data, std::size_t size) {
+	synth->sysex_message(data, size);
+}
+
+void FmMidiDecoder::meta_event(int, const void *, std::size_t) {
+	// no-op
+}
+
+void FmMidiDecoder::reset() {
+	synth->reset();
+}
+
+void FmMidiDecoder::load_programs() {
+	// beautiful
+	#include "midiprogram.h"
+}
 
 #endif
