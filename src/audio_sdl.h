@@ -25,7 +25,7 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "audio_decoder.h"
+#include "decoder_mpg123.h"
 
 #define HAVE_MPG123
 #ifdef HAVE_MPG123

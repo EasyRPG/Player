@@ -31,6 +31,10 @@ libeasyrpg_player_la_SOURCES = \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/decoder_mpg123.cpp \
+	src/decoder_mpg123.h \
+	src/decoder_fmmidi.cpp \
+	src/decoder_fmmidi.h \
 	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \

@@ -440,6 +440,8 @@
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
+    <ClCompile Include="..\..\src\decoder_fmmidi.cpp" />
+    <ClCompile Include="..\..\src\decoder_mpg123.cpp" />
     <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
@@ -583,6 +585,8 @@
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\default_graphics.h" />
+    <ClInclude Include="..\..\src\decoder_fmmidi.h" />
+    <ClInclude Include="..\..\src\decoder_mpg123.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
     <ClInclude Include="..\..\src\exfont.h" />

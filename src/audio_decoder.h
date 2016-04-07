@@ -20,9 +20,6 @@
 
 // Headers
 #include <string>
-#include <functional>
-
-#include <mpg123.h>
 #include <vector>
 #include <memory>
 
@@ -56,32 +53,8 @@ public:
 	virtual void GetFormat(int& frequency, Format& format, Channel& channels) const = 0;
 
 	virtual bool SetFormat(int frequency, Format format, Channel channels) = 0;
-};
 
-class Mpg123Decoder : public AudioDecoder {
-public:
-	Mpg123Decoder();
-
-	~Mpg123Decoder();
-
-	bool Open(const std::string& file) override;
-
-	const std::vector<char>& Decode(uint8_t* stream, int length) override;
-
-	bool IsFinished() const override;
-
-	std::string GetError() const override;
-
-	void GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const override;
-
-	bool SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) override;
-
-private:
-	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
-	FILE* file_handle;
-	int format = MPG123_ENC_SIGNED_8;
-	int err = 0;
-	bool finished = false;
+	static std::unique_ptr<AudioDecoder> Create(FILE* file);
 };
 
 #endif

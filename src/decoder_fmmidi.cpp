@@ -15,15 +15,13 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_FMMIDI
+
 // Headers
 #include <cassert>
 #include "audio_decoder.h"
 #include "output.h"
 
-AudioDecoder::~AudioDecoder() {
 
-}
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE * file) {
-	return std::unique_ptr<AudioDecoder>();
-}
+#endif
