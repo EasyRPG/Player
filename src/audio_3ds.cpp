@@ -191,6 +191,7 @@ void CtrAudio::BGM_OnPlayedOnce() {
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	
 	// If a BGM is currently playing, we kill it
+	BGM_Stop();
 	if (BGM != NULL){
 		while (criticalPhase){} // Wait secondary thread
 		linearFree(BGM->audiobuf);
