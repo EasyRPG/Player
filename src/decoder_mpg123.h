@@ -33,9 +33,9 @@ public:
 
 	~Mpg123Decoder();
 
-	bool Open(const std::string& file) override;
+	bool Open(FILE* file) override;
 
-	const std::vector<char>& Decode(uint8_t* stream, int length) override;
+	const std::vector<char>& Decode(int length) override;
 
 	bool IsFinished() const override;
 

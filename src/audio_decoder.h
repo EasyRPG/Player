@@ -42,9 +42,9 @@ public:
 
 	virtual ~AudioDecoder();
 
-	virtual bool Open(const std::string& file) = 0;
+	virtual bool Open(FILE* file) = 0;
 
-	virtual const std::vector<char>& Decode(uint8_t* stream, int length) = 0;
+	virtual const std::vector<char>& Decode(int length) = 0;
 
 	virtual bool IsFinished() const = 0;
 

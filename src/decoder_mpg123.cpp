@@ -22,6 +22,22 @@
 #include "decoder_mpg123.h"
 #include "output.h"
 
+static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
+	FILE* f = reinterpret_cast<FILE*>(io);
+	return fread(buffer, 1, nbyte, f);
+}
+
+static off_t custom_seek(void* io, off_t offset, int seek_type) {
+	FILE* f = reinterpret_cast<FILE*>(io);
+	fseek(f, offset, seek_type);
+	return ftell(f);
+}
+
+static void custom_close(void* io) {
+	FILE* f = reinterpret_cast<FILE*>(io);
+	fclose(f);
+}
+
 Mpg123Decoder::Mpg123Decoder() :
 	handle(nullptr, mpg123_delete)
 {
@@ -32,6 +48,8 @@ Mpg123Decoder::Mpg123Decoder() :
 	}
 
 	handle.reset(mpg123_new(nullptr, &err));
+	mpg123_replace_reader_handle(handle.get(), custom_read, custom_seek, custom_close);
+
 	if (!handle) {
 		Output::Warning("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(err));
 		return;
@@ -41,10 +59,10 @@ Mpg123Decoder::Mpg123Decoder() :
 Mpg123Decoder::~Mpg123Decoder() {
 }
 
-bool Mpg123Decoder::Open(const std::string& file) {
+bool Mpg123Decoder::Open(FILE* file) {
 	finished = false;
 
-	err = mpg123_open(handle.get(), file.c_str());
+	err = mpg123_open_handle(handle.get(), file);
 	if (err != MPG123_OK) {
 		Output::Warning("Couldn't open mpg123 file.\n%s", mpg123_plain_strerror(err));
 		return false;
@@ -53,7 +71,7 @@ bool Mpg123Decoder::Open(const std::string& file) {
 	return true;
 }
 
-const std::vector<char>& Mpg123Decoder::Decode(uint8_t* stream, int length) {
+const std::vector<char>& Mpg123Decoder::Decode(int length) {
 	static std::vector<char> buffer;
 
 	buffer.resize(length);
