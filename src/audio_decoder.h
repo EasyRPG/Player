@@ -40,11 +40,27 @@ public:
 		Stereo = 2
 	};
 
-	virtual ~AudioDecoder();
+	enum class Origin {
+		Begin = 0,
+		Current = 1,
+		End = 2
+	};
+
+	int Decode(uint8_t* buffer, int length);
+
+	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename);
+
+	void Update(int delta);
+
+	void SetFade(int begin, int end, int duration);
+	void SetVolume(int volume);
+	int GetVolume() const;
+
+	void Pause();
+	void Resume();
+	bool Rewind();
 
 	virtual bool Open(FILE* file) = 0;
-
-	virtual const std::vector<char>& Decode(int length) = 0;
 
 	virtual bool IsFinished() const = 0;
 
@@ -54,7 +70,19 @@ public:
 
 	virtual bool SetFormat(int frequency, Format format, Channel channels) = 0;
 
-	static std::unique_ptr<AudioDecoder> Create(FILE* file);
+	virtual bool SetPitch(int pitch) = 0;
+
+	virtual bool Seek(size_t offset, Origin origin) = 0;
+protected:
+	virtual int FillBuffer(uint8_t* buffer, int length) = 0;
+	int loop_count = 0;
+
+private:
+	bool paused = false;
+	double volume = 0;
+	double fade_end = 0;
+	double fade_time = -1;
+	double delta_step = 0;
 };
 
 #endif

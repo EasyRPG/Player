@@ -35,7 +35,7 @@ public:
 
 	bool Open(FILE* file) override;
 
-	const std::vector<char>& Decode(int length) override;
+	bool Seek(size_t offset, Origin origin) override;
 
 	bool IsFinished() const override;
 
@@ -45,12 +45,16 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) override;
 
+	void SetPitch(int pitch) override;
 private:
+	int FillBuffer(uint8_t* buffer, int length) override;
+
 	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
 	FILE* file_handle;
-	int format = MPG123_ENC_SIGNED_8;
 	int err = 0;
 	bool finished = false;
+
+	int frequency = 44100;
 };
 
 #endif

@@ -79,14 +79,7 @@ private:
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
 
-#ifdef HAVE_MPG123
-	std::unique_ptr<Mpg123Decoder> mpg123_decoder;
-#endif
-
-#ifdef HAVE_FMMIDI
-	std::unique_ptr<FmMidiDecoder> fmmidi_decoder;
-#endif
-
+	std::unique_ptr<AudioDecoder> audio_decoder;
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_

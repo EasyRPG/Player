@@ -44,19 +44,8 @@ bool FmMidiDecoder::Open(FILE* file) {
 	return true;
 }
 
-const std::vector<char>& FmMidiDecoder::Decode(int length) {
-	static std::vector<char> buffer;
-	static const double delta = (double)2048 / (44100);
-
-	buffer.resize(length);
-
-	seq->play(mtime, this);
-
-	synthesize(reinterpret_cast<int_least16_t*>(buffer.data()), (size_t)length / 4, 44100.0);
-
-	mtime += delta;
-
-	return buffer;
+bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
+	return false;
 }
 
 bool FmMidiDecoder::IsFinished() const {
@@ -67,11 +56,35 @@ std::string FmMidiDecoder::GetError() const {
 	return std::string();
 }
 
-void FmMidiDecoder::GetFormat(int & frequency, AudioDecoder::Format & format, AudioDecoder::Channel & channels) const {
+void FmMidiDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const {
 }
 
-bool FmMidiDecoder::SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) {
-	return false;
+bool FmMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, AudioDecoder::Channel channels) {
+	frequency = freq;
+
+	if (channels != Channel::Stereo || format != Format::S16) {
+		return false;
+	}
+
+	return true;
+}
+
+bool FmMidiDecoder::SetPitch(int pitch) {
+	this->pitch = 100.0 / pitch;
+
+	return true;
+}
+
+int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
+	double delta = (double)2048 / (frequency * pitch);
+
+	seq->play(mtime, this);
+
+	synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch);
+
+	mtime += delta;
+
+	return length;
 }
 
 int FmMidiDecoder::synthesize(int_least16_t * output, std::size_t samples, float rate) {
