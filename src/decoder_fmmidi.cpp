@@ -56,7 +56,10 @@ std::string FmMidiDecoder::GetError() const {
 	return std::string();
 }
 
-void FmMidiDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const {
+void FmMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const {
+	freq = frequency;
+	format = Format::S16;
+	channels = Channel::Stereo;
 }
 
 bool FmMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, AudioDecoder::Channel channels) {

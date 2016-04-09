@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cstring>
 
 #include "system.h"
@@ -47,13 +48,56 @@ namespace {
 		static std::vector<uint8_t> buffer;
 		buffer.resize(len);
 
-		AudioDecoder *decoder = static_cast<AudioDecoder*>(udata);
-		len = decoder->Decode(buffer.data(), len);
+		SdlAudio* audio = static_cast<SdlAudio*>(udata);
+		len = audio->GetDecoder()->Decode(buffer.data(), len);
 
-		if (decoder->IsFinished()) {
-			Mix_HookMusic(NULL, NULL);
+		if (audio->GetDecoder()->IsFinished()) {
+			Mix_HookMusic(nullptr, nullptr);
 		} else {
-			SDL_MixAudio(stream, reinterpret_cast<const Uint8*>(buffer.data()), len, decoder->GetVolume());
+			SDL_AudioCVT& cvt = audio->GetAudioCVT();
+			if (cvt.needed) {
+				static std::vector<uint8_t> cvt_buffer;
+				cvt_buffer.resize(len * cvt.len_mult);
+				cvt.buf = cvt_buffer.data();
+				cvt.len = len;
+				memcpy(cvt.buf, buffer.data(), len);
+				SDL_ConvertAudio(&cvt);
+			} else {
+				cvt.len_cvt = len;
+				cvt.buf = buffer.data();
+			}
+
+			SDL_MixAudio(stream, reinterpret_cast<const Uint8*>(cvt.buf), cvt.len_cvt, audio->GetDecoder()->GetVolume());
+		}
+	}
+
+	int format_to_sdl_format(AudioDecoder::Format format) {
+		switch (format) {
+		case AudioDecoder::Format::U8:
+			return AUDIO_U8;
+		case AudioDecoder::Format::S8:
+			return AUDIO_S8;
+		case AudioDecoder::Format::U16:
+			return AUDIO_U16;
+		case AudioDecoder::Format::S16:
+			return AUDIO_S16;
+		default:
+			assert(false);
+		}
+	}
+
+	AudioDecoder::Format sdl_format_to_format(Uint16 format) {
+		switch (format) {
+		case AUDIO_U8: 
+			return AudioDecoder::Format::U8;
+		case AUDIO_S8:
+			return AudioDecoder::Format::S8;
+		case AUDIO_U16SYS:
+			return AudioDecoder::Format::U16;
+		case AUDIO_S16SYS:
+			return AudioDecoder::Format::S16;
+		default:
+			assert(false);
 		}
 	}
 }
@@ -93,7 +137,7 @@ SdlAudio::SdlAudio() :
 	if (Mix_OpenAudioDevice(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048,
 		NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
 #else
-	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
+	if (Mix_OpenAudio(frequency, AUDIO_U8, MIX_DEFAULT_CHANNELS, 2048) < 0)
 #endif
 		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
 
@@ -174,31 +218,27 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 
 		int audio_rate;
 		Uint16 sdl_format;
-		AudioDecoder::Format audio_format;
 		int audio_channels;
 		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
 			Output::Warning("Couldn't query mixer spec.\n %s", Mix_GetError());
 			return;
 		}
-
-		switch (sdl_format) {
-			case AUDIO_U8: audio_format = AudioDecoder::Format::U8; break;
-			case AUDIO_S8: audio_format = AudioDecoder::Format::S8; break;
-			case AUDIO_U16SYS: audio_format = AudioDecoder::Format::U16; break;
-			case AUDIO_S16SYS: audio_format = AudioDecoder::Format::S16; break;
-			default:
-				Output::Warning("Unsupported audio format %d", sdl_format);
-				return;
-		}
+		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
 
 		audio_decoder->SetFormat(audio_rate, audio_format, (AudioDecoder::Channel)audio_channels);
 
-		// TODO: AudioCVT when SetFormat failed
+		int device_rate;
+		AudioDecoder::Format device_format;
+		AudioDecoder::Channel device_channels;
+		audio_decoder->GetFormat(device_rate, device_format, device_channels);
+
+		// Don't care if successful, always build cvt
+		SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
 
 		audio_decoder->SetFade(0, volume, fadein);
 		audio_decoder->SetPitch(pitch);
 
-		Mix_HookMusic(callback, audio_decoder.get());
+		Mix_HookMusic(callback, this);
 
 		return;
 	}
@@ -416,15 +456,6 @@ void SdlAudio::BGS_Fade(int fade) {
 int SdlAudio::BGS_GetChannel() const {
 	return bgs_channel;
 }
-/*
-void me_finish(int channel) {
-	if (me_channel == channel && me_stopped_bgm) {
-		Mix_VolumeMusic(bgm_volume);
-		Mix_FadeInMusic(bgm.get(), -1, 1000);
-		me_stopped_bgm = false;
-	}
-}
-*/
 
 void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
@@ -490,6 +521,14 @@ void SdlAudio::Update() {
 		audio_decoder->Update(t - bgm_starttick);
 		bgm_starttick = t;
 	}
+}
+
+AudioDecoder* SdlAudio::GetDecoder() {
+	return audio_decoder.get();
+}
+
+SDL_AudioCVT& SdlAudio::GetAudioCVT() {
+	return cvt;
 }
 
 #endif

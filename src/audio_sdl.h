@@ -62,6 +62,8 @@ struct SdlAudio : public AudioInterface {
 	void BGM_OnPlayedOnce();
 	int BGS_GetChannel() const;
 
+	AudioDecoder* GetDecoder();
+	SDL_AudioCVT& GetAudioCVT();
 private:
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
@@ -80,6 +82,7 @@ private:
 	sounds_type sounds;
 
 	std::unique_ptr<AudioDecoder> audio_decoder;
+	SDL_AudioCVT cvt;
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_
