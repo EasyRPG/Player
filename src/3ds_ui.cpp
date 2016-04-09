@@ -194,14 +194,15 @@ void CtrUi::ProcessEvents() {
 		touchPosition pos;
 		hidTouchRead(&pos);
 		u8 row = pos.px>>6;
-		u8 col = pos.py / 80;
-		u32 keys_tbl[15] = {Input::Keys::N0, Input::Keys::N1, Input::Keys::N2,
-						Input::Keys::N3, Input::Keys::N4, Input::Keys::N5,
-						Input::Keys::N6, Input::Keys::N7, Input::Keys::N8,
-						Input::Keys::N9, Input::Keys::DIVIDE, Input::Keys::MULTIPLY,
-						Input::Keys::ADD, Input::Keys::SUBTRACT, Input::Keys::PERIOD
+		u8 col = pos.py / 60;
+		u32 keys_tbl[16] = {Input::Keys::N7, Input::Keys::N8, Input::Keys::N9,
+						Input::Keys::DIVIDE, Input::Keys::N4, Input::Keys::N5,
+						Input::Keys::N6, Input::Keys::MULTIPLY, Input::Keys::N1,
+						Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
+						Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD,
+						Input::Keys::ADD
 						};
-		keys[keys_tbl[row + (col*5)]] = true;
+		keys[keys_tbl[row + (col*4)]] = true;
 	}else{
 		keys[Input::Keys::N0] = false;
 		keys[Input::Keys::N1] = false;
