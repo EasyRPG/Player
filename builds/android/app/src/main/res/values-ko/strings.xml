@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
+  <string name="autodetect">언어 자동인식 (권장)</string>
+  <string name="west_europe">서유럽어</string>
+  <string name="east_europe">중/동유럽어</string>
+  <string name="cyrillic">키릴어</string>
+  <string name="japan">일본어</string>
+  <string name="korean">한국어</string>
+  <string name="chinese_simple">중국어 (간체)</string>
+  <string name="chinese_traditional">중국어 (정체)</string>
+  <string name="greek">그리스어</string>
+  <string name="turkish">터키어</string>
+  <string name="hebrew">히브리어</string>
+  <string name="arabic">아랍어</string>
+  <string name="baltic">발트어</string>
+  <string name="thai">태국어</string>
+  <string name="vietnamese">베트남어</string>
+  <string name="ok">확인</string>
+  <string name="cancel">취소</string>
+  <string name="do_want_quit">정말로 나가시겠습니까?</string>
+  <string name="yes">네</string>
+  <string name="no">아니요</string>
+  <string name="creating_dir_failed">$PATH 디렉토리를 만들 수 없습니다.</string>
+  <string name="path_not_readable">$PATH 디렉토리를 읽을 수 없습니다.</string>
+  <string name="no_games_found_and_explanation">게임이 없습니다.\n설정에서 게임 디렉토리를 추가해보세요.</string>
+  <string name="no_external_storage">외부 저장소(예: SD 카드)가 없습니다.</string>
+  <string name="not_valid_game">$PATH 디렉토리의 게임은 지원하지 않습니다.</string>
+  <string name="select_game_region">게임 언어 고르기</string>
+  <string name="change_the_layout">레이아웃 바꾸기</string>
+  <string name="choose_layout">레이아웃 고르기</string>
+  <string name="unknown_region">알 수 없는 언어</string>
+  <string name="region_modification_failed">언어를 바꾸지 못하였습니다.</string>
+  <string name="refresh">새로고침</string>
+  <string name="change_default_mapping">기본 버튼 맵핑 바꾸기</string>
+  <string name="how_to_use_easy_rpg">EasyRPG 플레이어 사용법</string>
+  <string name="how_to_use_easy_rpg_explanation">
+설치안내:\n
+기본적으로는 /easyrpg/games 아래의 게임 폴더를 찾아줍니다. 설정에서 다른 디렉토리를 추가할 수도 있습니다.\n
+선택: RPG 만들기 2000의 RTP는 /easyrpg/rtp/2000에, RPG 만들기 2003의 RTP는 /easyrpg/rtp/2003 디렉토리에 넣어주세요.\n
+\n
+힌트: 게임을 제대로 인식하려면 압축을 풀어서 /easyrpg/games (기본설정) 아래의 디렉토리에 넣어주어야 합니다. 예를 들어:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 는 괜찮습니다.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb 도 괜찮습니다.\n
+\t/easyrpg/games/MyGame.zip 은 안 됩니다.\n
+\n
+특수기능:\n
+화면에 더 많은 버튼을 넣을 수 있습니다. 먼저 메뉴 버튼을 누르고 레이아웃 바꾸기로 들어갑니다.\n
+여기에서 뒤로가기를 누르면 버튼 추가하기 메뉴로 들어갑니다.
+</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">FPS 표시</string>
+  <string name="toggle_ui">가상버튼 표시</string>
+  <string name="end_game">게임 끝내기</string>
+  <string name="report_bug">오류 보고하기</string>
+  <string name="report_bug_msg">이 기능은 이메일 프로그램(예: Gmail)을 연 다음 개발자에게 오류 보고서를 보내도록 되어 있습니다.\n
+메일로 쓰고 싶지 않거나 메일 프로그램이 설정되어 있지 않다면 https://github.com/EasyRPG/Player/issues 에 이슈를 올려주셔도 됩니다.
+</string>
+  <string name="report_bug_mail">EasyRPG 플레이어를 도와주시는 점 감사드립니다.\n
+이 메일에는 로그화일과 세이브게임이 첨부되었습니다.\n
+로그화일은 지우지 말아주세요! 오류와 가까운 지점의 세이브게임도 필요합니다.\n
+내용은 영어, 독일어, 혹은 스페인어로 보내주시면 됩니다.\n
+잘못된 부분에 대해 자세히 적어주시길 부탁드립니다.\n
+[이 안내문은 지우셔도 상관없습니다]
+</string>
+  <!--Settings Activity-->
+  <string name="settings">설정</string>
+  <string name="add_game_folder">게임 폴더 추가하기</string>
+  <string name="enable_vibration">진동 사용하기</string>
+  <string name="vibrate_when_sliding_direction">다른 방향으로 미끄러지면 진동하기</string>
+  <string name="input_layout_transparency">입력 레이아웃 투명도:</string>
+  <string name="ignore_size_settings">버튼 크기 설정은 무시하고 이 비율로 고정:</string>
+  <string name="no_read_access_on_dir">%1$s의 읽기 권한이 없습니다.</string>
+  <string name="easyrpg_folder">EasyRPG 폴더</string>
+  <string name="quick_access">바로가기</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">입력 레이아웃 바꾸기:</string>
+  <string name="add_an_input_layout">입력 레이아웃 추가하기</string>
+  <string name="set_as_default">기본으로 설정</string>
+  <string name="edit_name">이름 바꾸기</string>
+  <string name="edit_layout">레이아웃 바꾸기</string>
+  <string name="delete">지우기</string>
+  <string name="default_layout">기본</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">버튼 추가하기</string>
+  <string name="reset_button_mapping">버튼 맵핑 초기화</string>
+  <string name="exit_without_saving">저장하지 않고 나가기</string>
+  <string name="save_and_quit">저장하고 나가기</string>
+  <string name="key_enter">확인 (Z)</string>
+  <string name="key_cancel">취소 (ESC 및 X)</string>
+  <string name="key_shift">쉬프트</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/button_mapping_menu_add_button"
+        android:title="@string/add_a_button" />
+    <item android:id="@+id/button_mapping_menu_reset"
+        android:title="@string/reset_button_mapping" />
+    <item android:id="@+id/button_mapping_menu_exit_without_saving"
+        android:title="@string/exit_without_saving" />
+    <item android:id="@+id/button_mapping_menu_save_and_quit"
+        android:title="@string/save_and_quit" />
+</menu>
