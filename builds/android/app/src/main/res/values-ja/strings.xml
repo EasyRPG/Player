@@ -66,6 +66,7 @@
   <string name="add_game_folder">ゲームフォルダーを追加</string>
   <string name="enable_vibration">バイブレーションの使用</string>
   <string name="vibrate_when_sliding_direction">スライドで別方向を押した時に振動させる</string>
+  <string name="enable_audio">オーディオを有効にする</string>
   <string name="input_layout_transparency">入力レイアウトの透過:</string>
   <string name="ignore_size_settings">個々のボタン設定を無視し全てこのボタンサイズを使用する:</string>
   <string name="no_read_access_on_dir">%1$s に読み取りアクセス権限がありません</string>

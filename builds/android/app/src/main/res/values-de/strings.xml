@@ -65,6 +65,7 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
   <string name="add_game_folder">Spielverzeichnis hinzufügen</string>
   <string name="enable_vibration">Vibrationen aktivieren</string>
   <string name="vibrate_when_sliding_direction">Vibrieren, wenn in eine andere Bewegungsrichtung gewischt wird</string>
+  <string name="enable_audio">Ton aktivieren</string>
   <string name="input_layout_transparency">Layout-Transparenz:</string>
   <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
   <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
