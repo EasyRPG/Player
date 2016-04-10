@@ -387,33 +387,6 @@ public:
 	virtual void Update();
 
 	/**
-	 * Moves on a random route.
-	 */
-	void MoveTypeRandom();
-
-	/**
-	 * Moves left to right and switches direction if the
-	 * move failed.
-	 */
-	void MoveTypeCycleLeftRight();
-
-	/**
-	 * Moves up and down and switches direction if the
-	 * move failed.
-	 */
-	void MoveTypeCycleUpDown();
-
-	/**
-	 * Walks to the player.
-	 */
-	void MoveTypeTowardsPlayer();
-
-	/**
-	 * Walks to the player.
-	 */
-	void MoveTypeAwayFromPlayer();
-
-	/**
 	 * Walks around on a custom move route.
 	 */
 	void MoveTypeCustom();

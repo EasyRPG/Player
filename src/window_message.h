@@ -57,12 +57,12 @@ public:
 	 * Starts message processing by reading all
 	 * non-displayed from Game_Message.
 	 */
-	virtual void StartMessageProcessing();
+	void StartMessageProcessing();
 
 	/**
 	 * Ends the message processing.
 	 */
-	virtual void FinishMessageProcessing();
+	void FinishMessageProcessing();
 
 	/**
 	 * Does the initial steps to start a choice selection.
@@ -122,11 +122,9 @@ public:
 	 * encountering ], a non-number or a line break.
 	 *
 	 * @param is_valid contains if a number was read
-	 * @param call_depth how many ] to skip, used for
-	 *                   chained commands.
 	 * @return the read number.
 	 */
-	int ParseParameter(bool& is_valid, int call_depth = 1);
+	int ParseParameter(bool& is_valid);
 
 	/**
 	 * Parses a message command code (\ followed by a char).
@@ -135,12 +133,9 @@ public:
 	 * The text_index must be on the char following \ when
 	 * calling.
 	 *
-	 * @param call_depth directly passed to ParseParameter
-	 *                   and automatically increased by 1
-	 *                   in every recursion.
 	 * @return the final text output of the code.
 	 */
-	std::string ParseCommandCode(int call_depth = 1);
+	std::string ParseCommandCode();
 
 	/**
 	 * Stub. For choice.
@@ -171,7 +166,7 @@ protected:
 	/** Current number of lines on this page. */
 	int line_count;
 	/** Index of the next char in text that will be output. */
-	std::u32string::const_iterator text_index, end;
+	std::u32string::iterator text_index, end;
 	/** text message that will be displayed. */
 	std::u32string text;
 	/** Used by Message kill command \^. */

@@ -856,7 +856,8 @@ bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { /
 bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
-	int strength = com.parameters[1];
+	// Few games use a greater strength value to achieve more intense but glichty weather
+	int strength = std::min(com.parameters[1], 2);
 	screen->SetWeatherEffect(type, strength);
 	return true;
 }

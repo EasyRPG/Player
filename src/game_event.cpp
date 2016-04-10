@@ -30,6 +30,7 @@
 #include "main_data.h"
 #include "player.h"
 #include <cmath>
+#include <cstdlib>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
@@ -305,7 +306,6 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 
 	if (page == NULL) {
 		tile_id = 0;
-		through = true;
 		trigger = -1;
 		list.clear();
 		interpreter.reset();
@@ -549,6 +549,105 @@ void Game_Event::UpdateSelfMovement() {
 	case RPG::EventPage::MoveType_custom:
 		MoveTypeCustom();
 		break;
+	}
+}
+
+
+void Game_Event::MoveTypeRandom() {
+	int last_direction = GetDirection();
+	switch (rand() % 6) {
+	case 0:
+		stop_count -= rand() % stop_count;
+		return;
+	case 1:
+		MoveForward();
+		break;
+	default:
+		MoveRandom();
+	}
+	if (move_failed && !starting) {
+		SetDirection(last_direction);
+		SetSpriteDirection(last_direction);
+	} else {
+		max_stop_count = max_stop_count / 5 * (rand() % 4 + 3);
+	}
+}
+
+void Game_Event::MoveTypeCycleLeftRight() {
+	Move(cycle_stat ? Left : Right);
+
+	if (move_failed && stop_count >= max_stop_count + 20) {
+		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+		stop_count = 0;
+	}
+}
+
+void Game_Event::MoveTypeCycleUpDown() {
+	Move(cycle_stat ? Up : Down);
+
+	if (move_failed && stop_count >= max_stop_count + 20) {
+		cycle_stat = !cycle_stat;
+		stop_count = 0;
+	}
+}
+
+void Game_Event::MoveTypeTowardsPlayer() {
+	int sx = GetX() - Main_Data::game_player->GetX();
+	int sy = GetY() - Main_Data::game_player->GetY();
+	int last_direction = GetDirection();
+
+	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		MoveRandom();
+	} else {
+		switch (rand() % 6) {
+		case 0:
+			MoveRandom();
+			break;
+		case 1:
+			MoveForward();
+			break;
+		default:
+			MoveTowardsPlayer();
+		}
+	}
+
+	if (move_failed && !starting) {
+		if (stop_count >= max_stop_count + 60) {
+			stop_count = 0;
+		} else {
+			SetDirection(last_direction);
+			SetSpriteDirection(last_direction);
+		}
+	}
+}
+
+void Game_Event::MoveTypeAwayFromPlayer() {
+	int sx = GetX() - Main_Data::game_player->GetX();
+	int sy = GetY() - Main_Data::game_player->GetY();
+	int last_direction = GetDirection();
+
+	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+		MoveRandom();
+	} else {
+		switch (rand() % 6) {
+		case 0:
+			MoveRandom();
+			break;
+		case 1:
+			MoveForward();
+			break;
+		default:
+			MoveAwayFromPlayer();
+		}
+	}
+
+	if (move_failed && !starting) {
+		if (stop_count >= max_stop_count + 60) {
+			stop_count = 0;
+		} else {
+			SetDirection(last_direction);
+			SetSpriteDirection(last_direction);
+		}
 	}
 }
 

@@ -82,14 +82,44 @@ void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
-		std::u32string const line = Utils::DecodeUTF32(Game_Message::texts[i]);
-		text.append(line + U"\n");
+		text.append(Utils::DecodeUTF32(Game_Message::texts[i])).append(1, U'\n');
 	}
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
 	text_index = text.begin();
 	end = text.end();
+
+	// Apply commands that insert text
+	while (std::distance(text_index, end) > 1) {
+		if (*text_index++ == escape_char) {
+			switch (tolower(*text_index)) {
+			case 'n':
+			case 'v':
+			{
+				auto start_code = text_index - 1;
+				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode());
+				if (command_result.empty()) {
+					text_index = start_code + 2;
+					continue;
+				}
+				text.replace(start_code, text_index + 1, command_result);
+				// Start from the beginning, the inserted text might add new commands
+				text_index = text.begin();
+				end = text.end();
+				break;
+			}
+			default:
+				if (*text_index == escape_char) {
+					// Do not replace this to avoid parsing \\v[1] as \v[1]
+					++text_index;
+				}
+				break;
+			}
+		}
+	}
+
+	text_index = text.begin();
 
 	InsertNewPage();
 }
@@ -337,17 +367,18 @@ void Window_Message::UpdateMessage() {
 			// Special message codes
 			++text_index;
 
-			std::string command_result;
-
+			int parameter;
+			bool is_valid;
 			switch (tolower(*text_index)) {
 			case 'c':
-			case 'n':
+				// Color
+				parameter = ParseParameter(is_valid);
+				text_color = parameter > 19 ? 0 : parameter;
+				break;
 			case 's':
-			case 'v':
-				// These commands support indirect access via \v[]
-				command_result = ParseCommandCode();
-				contents->TextDraw(contents_x, contents_y, text_color, command_result);
-				contents_x += contents->GetFont()->GetSize(command_result).width;
+				// Speed modifier
+				parameter = ParseParameter(is_valid);
+				speed_modifier = max(0, min(parameter, 20));
 				break;
 			case '_':
 				// Insert half size space
@@ -414,7 +445,7 @@ void Window_Message::UpdateMessage() {
 	loop_count = 0;
 }
 
-int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
+int Window_Message::ParseParameter(bool& is_valid) {
 	++text_index;
 
 	if (text_index == end ||
@@ -447,10 +478,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 			*text_index <= '9') {
 			ss << std::string(text_index, std::next(text_index));
 		} else if (*text_index == ']') {
-			--call_depth;
-			if (call_depth == 0) {
-				break;
-			}
+			break;
 		} else {
 			// End of number
 			// Search for ] or line break
@@ -459,10 +487,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 						--text_index;
 						break;
 					} else if (*text_index == ']') {
-						--call_depth;
-						if (call_depth == 0) {
-							break;
-						}
+						break;
 					}
 					++text_index;
 			}
@@ -486,40 +511,17 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	return num;
 }
 
-std::string Window_Message::ParseCommandCode(int call_depth) {
+std::string Window_Message::ParseCommandCode() {
 	int parameter;
 	bool is_valid;
 	// sub_code is used by chained arguments like \v[\v[1]]
 	// In that case sub_code contains the result from \v[1]
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
-	if (std::distance(text_index, end) > 3 &&
-		*std::next(text_index, 2) == escape_char &&
-		tolower(*std::next(text_index, 3)) == 'v') {
-		++(++(++text_index));
-		// The result is an int value, str-to-int is safe in this case
-		std::stringstream ss;
-		ss << ParseCommandCode(++call_depth);
-		ss >> sub_code;
-	}
 	switch (tolower(cmd_char)) {
-	case 'c':
-		// Color
-		if (sub_code >= 0) {
-			parameter = sub_code;
-		} else {
-			parameter = ParseParameter(is_valid, call_depth);
-		}
-		text_color = parameter > 19 ? 0 : parameter;
-		break;
 	case 'n':
 		// Output Hero name
-		if (sub_code >= 0) {
-			is_valid = true;
-			parameter = sub_code;
-		} else {
-			parameter = ParseParameter(is_valid, call_depth);
-		}
+		parameter = ParseParameter(is_valid);
 		if (is_valid) {
 			Game_Actor* actor = NULL;
 			if (parameter == 0) {
@@ -531,30 +533,11 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			if (actor != NULL) {
 				return actor->GetName();
 			}
-		} else {
-			Output::Warning("Invalid argument for \\n-Command");
 		}
-		break;
-	case 's':
-		// Speed modifier
-		if (sub_code >= 0) {
-			is_valid = true;
-			parameter = sub_code;
-		} else {
-			parameter = ParseParameter(is_valid, call_depth);
-		}
-
-		speed_modifier = min(parameter, 20);
-		speed_modifier = max(0, speed_modifier);
 		break;
 	case 'v':
 		// Show Variable value
-		if (sub_code >= 0) {
-			is_valid = true;
-			parameter = sub_code;
-		} else {
-			parameter = ParseParameter(is_valid, call_depth);
-		}
+		parameter = ParseParameter(is_valid);
 		if (is_valid && Game_Variables.IsValid(parameter)) {
 			std::stringstream ss;
 			ss << Game_Variables[parameter];
