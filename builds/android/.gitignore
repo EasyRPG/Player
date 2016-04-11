@@ -1,7 +1,42 @@
-/libs
-/obj
-.settings
-.project
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
 .classpath
-/bin
-/gen
+.project
+
+# Android Studio
+*.iml
+.idea
+.idea/workspace.xml #- remove # and delete .idea if it better suit your needs.
+build/
+
+# NDK
+obj/
+
+# Gradle
+.gradle
+
+# immediate files and libraries
+app/src/main/assets/timidity
+app/src/main/jniLibs
