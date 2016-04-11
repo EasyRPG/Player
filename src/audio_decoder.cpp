@@ -42,7 +42,14 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 		return length;
 	}
 
-	return FillBuffer(buffer, length);
+	int res = FillBuffer(buffer, length);
+
+	if (IsFinished() && looping) {
+		++loops;
+		Rewind();
+	}
+
+	return res;
 }
 
 static bool ends_with(std::string const& value, std::string const& ending) {
@@ -120,4 +127,40 @@ int AudioDecoder::GetVolume() const {
 
 bool AudioDecoder::Rewind() {
 	return Seek(0, Origin::Begin);
+}
+
+bool AudioDecoder::GetLooping() const {
+	return looping;
+}
+
+void AudioDecoder::SetLooping(bool enable) {
+	looping = enable;
+}
+
+int AudioDecoder::GetLoopCount() const {
+	return loop_count;
+}
+
+bool AudioDecoder::SetFormat(int, Format, Channel) {
+	return false;
+}
+
+int AudioDecoder::GetPitch() const {
+	return 0;
+}
+
+bool AudioDecoder::SetPitch(int) {
+	return false;
+}
+
+bool AudioDecoder::Seek(size_t, Origin) {
+	return false;
+}
+
+size_t AudioDecoder::Tell() {
+	return -1;
+}
+
+int AudioDecoder::GetTicks() {
+	return 0;
 }

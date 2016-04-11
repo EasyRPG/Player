@@ -72,6 +72,7 @@ bool Mpg123Decoder::Open(FILE* file) {
 }
 
 bool Mpg123Decoder::Seek(size_t offset, Origin origin) {
+	finished = false;
 	mpg123_seek_frame(handle.get(), offset, (int)origin);
 
 	return true;
@@ -123,7 +124,7 @@ void Mpg123Decoder::GetFormat(int& frequency, AudioDecoder::Format& format, Audi
 	mpg123_getformat(handle.get(), &freq, &ch, &fmt);
 
 	frequency = (int)freq;
-	channels = (AudioDecoder::Channel)channels;
+	channels = (AudioDecoder::Channel)ch;
 	format = mpg123_format_to_format(fmt);
 }
 
@@ -133,15 +134,17 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, AudioDecoder::
 	// Add just one format to force mpg123 pseudo-resampler work
 	mpg123_format_none(handle.get());
 
-	frequency = freq;
 	err = mpg123_format(handle.get(), (long)frequency, (int)channels, (int)format_to_mpg123_format(fmt));
+	if (err != MPG123_OK) {
+		err = mpg123_format(handle.get(), (long)44100, (int)channels, (int)format_to_mpg123_format(fmt));
+		if (err != MPG123_OK) {
+			mpg123_format(handle.get(), (long)44100, (int)2, (int)MPG123_ENC_SIGNED_16);
+		}
+
+		return false;
+	}
 
 	return err == MPG123_OK;
-}
-
-bool Mpg123Decoder::SetPitch(int) {
-	// not supported
-	return false;
 }
 
 int Mpg123Decoder::FillBuffer(uint8_t* buffer, int length) {

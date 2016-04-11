@@ -60,6 +60,10 @@ public:
 	void Resume();
 	bool Rewind();
 
+	bool GetLooping() const;
+	void SetLooping(bool enable);
+	int GetLoopCount() const;
+
 	virtual bool Open(FILE* file) = 0;
 
 	virtual bool IsFinished() const = 0;
@@ -67,12 +71,15 @@ public:
 	virtual std::string GetError() const = 0;
 
 	virtual void GetFormat(int& frequency, Format& format, Channel& channels) const = 0;
+	virtual bool SetFormat(int frequency, Format format, Channel channels);
 
-	virtual bool SetFormat(int frequency, Format format, Channel channels) = 0;
+	virtual int GetPitch() const;
+	virtual bool SetPitch(int pitch);
 
-	virtual bool SetPitch(int pitch) = 0;
+	virtual bool Seek(size_t offset, Origin origin);
+	virtual size_t Tell();
 
-	virtual bool Seek(size_t offset, Origin origin) = 0;
+	virtual int GetTicks();
 protected:
 	virtual int FillBuffer(uint8_t* buffer, int length) = 0;
 	int loop_count = 0;
@@ -83,6 +90,9 @@ private:
 	double fade_end = 0;
 	double fade_time = -1;
 	double delta_step = 0;
+
+	bool looping = false;
+	int loops = 0;
 };
 
 #endif

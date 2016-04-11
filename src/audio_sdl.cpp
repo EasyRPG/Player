@@ -137,7 +137,7 @@ SdlAudio::SdlAudio() :
 	if (Mix_OpenAudioDevice(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048,
 		NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
 #else
-	if (Mix_OpenAudio(frequency, AUDIO_U8, MIX_DEFAULT_CHANNELS, 2048) < 0)
+	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
 #endif
 		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
 
@@ -214,6 +214,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	audio_decoder = AudioDecoder::Create(filehandle, path);
 	if (audio_decoder) {
 		audio_decoder->Open(filehandle);
+		audio_decoder->SetLooping(true);
 		bgm_starttick = SDL_GetTicks();
 
 		int audio_rate;
@@ -354,6 +355,10 @@ bool SdlAudio::BGM_PlayedOnce() {
 }
 
 unsigned SdlAudio::BGM_GetTicks() {
+	if (audio_decoder) {
+		return audio_decoder->GetTicks();
+	}
+
 	// TODO: Implement properly. This is an approximation.
 	return SDL_GetTicks() - bgm_starttick;
 }

@@ -40,11 +40,18 @@ bool FmMidiDecoder::Open(FILE* file) {
 	seq->clear();
 	seq->load(file);
 	seq->rewind();
+	finished = false;
 
 	return true;
 }
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
+	if (offset == 0 && origin == Origin::Begin) {
+		seq->rewind();
+		finished = false;
+		return true;
+	}
+
 	return false;
 }
 
@@ -78,13 +85,17 @@ bool FmMidiDecoder::SetPitch(int pitch) {
 	return true;
 }
 
+int FmMidiDecoder::GetTicks() {
+	return 0;
+}
+
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	double delta = (double)2048 / (frequency * pitch);
 
 	seq->play(mtime, this);
-
-	synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch);
-
+	if (synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch) == 0) {
+		finished = true;
+	}
 	mtime += delta;
 
 	return length;
