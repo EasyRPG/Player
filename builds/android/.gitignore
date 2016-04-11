@@ -1,4 +1,4 @@
-#built application files
+# built application files
 *.apk
 *.ap_
 
@@ -29,11 +29,14 @@ Thumbs.db
 *.iml
 .idea
 .idea/workspace.xml #- remove # and delete .idea if it better suit your needs.
-.gradle
 build/
 
-#NDK
+# NDK
 obj/
 
-#Gradle
+# Gradle
 .gradle
+
+# immediate files and libraries
+app/src/main/assets/timidity
+app/src/main/jniLibs
