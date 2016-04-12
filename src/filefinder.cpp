@@ -128,7 +128,7 @@ namespace {
 
 	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
 		rtp_table_type const& table =
-			Player::IsRPG2k() ? RTP_TABLE_2000 : RTP_TABLE_2003;
+			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
 		std::string lower_name = Utils::LowerCase(name);
@@ -325,8 +325,9 @@ static void add_rtp_path(std::string const& p) {
 	}
 }
 
-#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
+
 static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
+#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
@@ -336,10 +337,19 @@ static void read_rtp_registry(const std::string& company, const std::string& ver
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
-}
+#else
+	(void)company; (void)version_str; (void)key;
 #endif
+}
 
 void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
+#ifdef EMSCRIPTEN
+	// No RTP support for emscripten at the moment.
+	return;
+#endif
+
+	RTP::Init();
+
 	search_paths.clear();
 
 	std::string const version_str =
@@ -349,10 +359,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	assert(!version_str.empty());
 
-#ifdef EMSCRIPTEN
-	// No RTP support for emscripten at the moment.
-	return;
-#elif defined(GEKKO)
+#ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
 #elif defined(__ANDROID__)

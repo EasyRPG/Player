@@ -15,23 +15,24 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _RTP_TABLE_H_
-#define _RTP_TABLE_H_
+#include "rtp_table.h"
 
-#include <map>
-
-typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_type;
+namespace RTP {
+	rtp_table_type RTP_TABLE_2003;
+	rtp_table_type RTP_TABLE_2000;	
+}
 
 /** Interprets char literals as utf-8 */
 #ifdef _MSC_VER
 #pragma execution_character_set("utf-8")
 #endif
 
-/**
- * { folder: { ASCII, UTF-8 } }
- */
-rtp_table_type const RTP_TABLE_2003 = {
-	{"backdrop", {
+void RTP::Init() {
+	static bool rtp_init = false;
+	if (rtp_init) return;	
+	rtp_init = true;
+	
+	RTP_TABLE_2003["backdrop"] = {
 	 // Official English translation names
 	 {"graveyard", "お墓"},
 	 {"temple1", "お寺"},
@@ -143,9 +144,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"lightspeed", "異空間"},
 	 {"seabeach", "砂浜"},
 	 {"greece", "神殿"}
-	}},
+	};
 
-	{"battle", {
+	RTP_TABLE_2003["battle"] = {
 	 // Official English translation names
 	 {"2003 other1", "2003その他1"},
 	 {"2003 other2", "2003その他2"},
@@ -342,9 +343,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"fang", "爪"},
 	 {"ray", "蘇生"},
 	 {"zip", "雷"}
-	}},
+	};
 
-	{"battlecharset", {
+	RTP_TABLE_2003["battlecharset"] = {
 	 // Official English translation names
 	 {"female elf a", "エルフ女a"},
 	 {"female elf b", "エルフ女b"},
@@ -608,9 +609,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"ljitib", "魔術師女b"},
 	 {"rivraa", "魔術師男a"},
 	 {"rivrab", "魔術師男b"}
-	}},
+	};
 
-	{"battleweapon", {
+	RTP_TABLE_2003["battleweapon"] = {
 	 // Official English translation names
 	 {"weapon", "武器"},
 
@@ -619,9 +620,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 
 	 // Russian RTP translation by Vlad Kovnerov
 	 {"standart", "武器"}
-	}},
+	};
 
-	{"charset", {
+	RTP_TABLE_2003["charset"] = {
 	 // Official English translation names
 	 {"object1", "オブジェクト1"},
 	 {"object2", "オブジェクト2"},
@@ -691,9 +692,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"future3", "一般5"},
 	 {"men1", "一般4"},
 	 {"women1", "一般5"}
-	}},
+	};
 
-	{"chipset", {
+	RTP_TABLE_2003["chipset"] = {
 	 // Official English translation names
 	 {"dungeon", "ダンジョン"},
 	 {"interior", "内装"},
@@ -726,9 +727,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"chipset1", "ダンジョン"},
 	 {"chipset2", "内装"},
 	 {"chipset3", "船"}
-	}},
+	};
 
-	{"faceset", {
+	RTP_TABLE_2003["faceset"] = {
 	 // Official English translation names
 	 {"monster", "モンスター"},
 	 {"people1", "一般1"},
@@ -760,17 +761,17 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"people2", "一般2"},
 	 {"chara1", "主人公1"},
 	 {"chara2", "主人公2"}
-	}},
+	};
 
-	{"gameover", {
+	RTP_TABLE_2003["gameover"] = {
 	 // Official English translation names
 	 {"game over", "ゲームオーバー"},
 
 	 // RPG Advocate English translation names
 	 {"gameover", "ゲームオーバー"}
-	}},
+	};
 
-	{"monster", {
+	RTP_TABLE_2003["monster"] = {
 	 // Official English translation names
 	 {"ahriman", "アーリマン"},
 	 {"asura", "アスラ"},
@@ -1107,9 +1108,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"cloakdemon", "ネクロマンサー"},
 	 {"witch1", "ソーサラー"},
 	 {"witch2", "カーミラ"}
-	}},
+	};
 
-	{"music", {
+	RTP_TABLE_2003["music"] = {
 	 // Official English translation names
 	 {"2003healing spring", "2003いやしの泉"},
 	 {"2003casino indulgence", "2003カジノ三昧"},
@@ -1577,9 +1578,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"ship3", "船3"},
 	 {"dark", "闇市"},
 	 {"devil", "魔王"}
-	}},
+	};
 
-	{"panorama", {
+	RTP_TABLE_2003["panorama"] = {
 	 // Official English translation names
 	 {"sunset1", "夕焼け1"},
 	 {"sunset2", "夕焼け2"},
@@ -1624,9 +1625,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"weird", "異空間"},
 	 {"morning1", "空1"},
 	 {"morning2", "空2"}
-	}},
+	};
 
-	{"sound", {
+	RTP_TABLE_2003["sound"] = {
 	 // Official English translation names
 	 {"item1", "アイテム1"},
 	 {"item2", "アイテム2"},
@@ -2122,9 +2123,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"rebirth3", "蘇生3"},
 	 {"sonic1", "音波1"},
 	 {"sonic2", "音波2"}
-	}},
+	};
 
-	{"system", {
+	RTP_TABLE_2003["system"] = {
 	 // Official English translation names
 	 {"system", "システム"},
 	 {"systema", "システムa"},
@@ -2139,9 +2140,9 @@ rtp_table_type const RTP_TABLE_2003 = {
 
 	 // Orphaned Don Miguel's 2000 RTP extras pointing to nearest match
 	 {"royal", "システム"}
-	}},
+	};
 
-	{"system2", {
+	RTP_TABLE_2003["system2"] = {
 	 // Official English translation names
 	 {"system2a", "システム２a"},
 	 {"system2b", "システム２b"},
@@ -2151,19 +2152,17 @@ rtp_table_type const RTP_TABLE_2003 = {
 	 {"systeméqa", "システム２a"},
 	 {"systeméqb", "システム２b"},
 	 {"systeméqc", "システム２c"},
-	}},
+	};
 
-	{"title", {
+	RTP_TABLE_2003["title"] = {
 	 // Official English translation names
 	 {"title1", "タイトル1"},
 	 {"title2", "タイトル2"},
 	 {"title3", "タイトル3"},
 	 {"title4", "タイトル4"}
-	}}
-};
+	};
 
-rtp_table_type const RTP_TABLE_2000 = {
-	{"backdrop", {
+	RTP_TABLE_2000["backdrop"] = {
 	 {"cave1", "ダンジョン1"},
 	 {"lavacave2", "ダンジョン2"},
 	 {"icecave3", "ダンジョン3"},
@@ -2189,9 +2188,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"wasteland", "荒地"},
 	 {"town", "街中"},
 	 {"snow", "雪原"}
-	}},
+	};
 
-	{"battle", {
+	RTP_TABLE_2000["battle"] = {
 	 {"etc", "その他"},
 	 {"barrier", "バリア"},
 	 {"poison", "ブレス"},
@@ -2220,9 +2219,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"whip", "鞭"},
 	 {"wind", "風"},
 	 {"paralysis", "麻痺"}
-	}},
+	};
 
-	{"charset", {
+	RTP_TABLE_2000["charset"] = {
 	 {"object1", "オブジェクト1"},
 	 {"object2", "オブジェクト2"},
 	 {"monster1", "モンスター1"},
@@ -2254,9 +2253,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"future3", "一般5"},
 	 {"men1", "一般4"},
 	 {"women1", "一般5"}
-	}},
+	};
 
-	{"chipset", {
+	RTP_TABLE_2000["chipset"] = {
 	 {"dungeon", "ダンジョン"},
 	 {"inner", "内装"},
 	 {"basis", "基本"},
@@ -2267,21 +2266,21 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"chipset1", "ダンジョン"},
 	 {"chipset2", "内装"},
 	 {"chipset3", "船"}
-	}},
+	};
 
-	{"faceset", {
+	RTP_TABLE_2000["faceset"] = {
 	 {"monsters", "モンスター"},
 	 {"people1", "一般1"},
 	 {"people2", "一般2"},
 	 {"chara1", "主人公1"},
 	 {"chara2", "主人公2"}
-	}},
+	};
 
-	{"gameover", {
+	RTP_TABLE_2000["gameover"] = {
 	 {"gameover", "ゲームオーバー"}
-	}},
+	};
 
-	{"monster", {
+	RTP_TABLE_2000["monster"] = {
 	 {"vampire", "ヴァンパイア"},
 	 {"hog", "オーク"},
 	 {"gargoyle", "ガーゴイル"},
@@ -2347,9 +2346,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"witch1", "魔術師1"},
 	 {"witch2", "魔術師2"},
 	 {"greendragon2", "龍"}
-	}},
+	};
 
-	{"music", {
+	RTP_TABLE_2000["music"] = {
 	 {"item", "jアイテム"},
 	 {"gag1", "jギャグ1"},
 	 {"gag2", "jギャグ2"},
@@ -2447,9 +2446,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"trial", "試練"},
 	 {"dark", "闇市"},
 	 {"devil", "魔王"}
-	}},
+	};
 
-	{"panorama", {
+	RTP_TABLE_2000["panorama"] = {
 	 {"dawn1", "夕焼け1"},
 	 {"dawn2", "夕焼け2"},
 	 {"evening1", "夜明け1"},
@@ -2463,9 +2462,9 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"weird", "異空間"},
 	 {"morning1", "空1"},
 	 {"morning2", "空2"}
-	}},
+	};
 
-	{"sound", {
+	RTP_TABLE_2000["sound"] = {
 	 {"item1", "アイテム1"},
 	 {"item2", "アイテム2"},
 	 {"success1", "あたり1"},
@@ -2672,21 +2671,19 @@ rtp_table_type const RTP_TABLE_2000 = {
 	 {"wind11", "風11"},
 	 {"wall1", "魔法1"},
 	 {"wall2", "魔法2"}
-	}},
+	};
 
-	{"system", {
+	RTP_TABLE_2000["system"] = {
 	 {"system", "システム"},
 
 	 // Orphaned Don Miguel's 2000 RTP extras pointing to nearest match
 	 {"royal", "システム"}
-	}},
+	};
 
-	{"title", {
+	RTP_TABLE_2000["title"] = {
 	 {"title1", "タイトル1"},
 	 {"title2", "タイトル2"},
 	 {"title3", "タイトル3"},
 	 {"title4", "タイトル4"}
-	}}
-};
-
-#endif
+	};
+}
