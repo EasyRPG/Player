@@ -319,8 +319,25 @@ void CtrAudio::BGM_Volume(int volume) {
 	}
 }
 
-void CtrAudio::BGM_Pitch(int /* pitch */) {
-
+void CtrAudio::BGM_Pitch(int pitch) {
+	if (BGM == NULL) return;
+	
+	// Getting music ptr based on old samplerate
+	u32 curPos;
+	if (BGM->handle != NULL) curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
+	
+	// Calculating and setting new samplerate
+	BGM->samplerate = (BGM->samplerate * pitch) / 100;
+	if (isDSP) ndspChnSetRate(SOUND_CHANNELS, float(BGM->samplerate));
+	else{
+		if (BGM->isStereo) CSND_SetTimer(0x1E, CSND_TIMER(BGM->samplerate));
+		CSND_SetTimer(0x1F, CSND_TIMER(BGM->samplerate));
+		CSND_UpdateInfo(0);
+	}
+	
+	// Patching starting tick to not cause issues with audio streaming
+	if (BGM->handle != NULL) BGM->starttick = osGetTime() - ((1000 * curPos) / (BGM->samplerate * BGM->bytepersample));
+	
 }
 
 void CtrAudio::BGM_Fade(int fade) {
