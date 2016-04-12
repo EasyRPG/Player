@@ -32,6 +32,7 @@ struct DecodedMusic{
 	u8* audiobuf;
 	u32 audiobuf_size;
 	u32 samplerate;
+	u32 orig_samplerate;
 	u16 bytepersample;
 	u16 format;
 	FILE* handle;

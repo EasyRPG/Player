@@ -52,6 +52,7 @@ static void streamThread(void* arg){
 		if (BGM == NULL) continue; // No BGM detected
 		else if (BGM->starttick == 0) continue; // BGM not started
 		else if (!BGM->isPlaying) continue; // BGM paused
+		while (criticalPhase){} // Main thread is working on the file
 		criticalPhase = true;
 		
 		// Calculating delta in milliseconds
@@ -218,6 +219,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	
 	// Processing music info
 	int samplerate = BGM->samplerate;
+	BGM->orig_samplerate = BGM->samplerate;
 	int codec;
 	if (!isDSP) codec = SOUND_FORMAT(BGM->format);
 	else codec = NDSP_CHANNELS(BGM->isStereo + 1) | NDSP_ENCODING(BGM->format);
@@ -320,14 +322,16 @@ void CtrAudio::BGM_Volume(int volume) {
 }
 
 void CtrAudio::BGM_Pitch(int pitch) {
-	if (BGM == NULL) return;
+	if (BGM == NULL) return;	
+	while (criticalPhase){} // Wait secondary thread
+	criticalPhase = true;
 	
 	// Getting music ptr based on old samplerate
 	u32 curPos;
 	if (BGM->handle != NULL) curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
 	
 	// Calculating and setting new samplerate
-	BGM->samplerate = (BGM->samplerate * pitch) / 100;
+	BGM->samplerate = (BGM->orig_samplerate * pitch) / 100;
 	if (isDSP) ndspChnSetRate(SOUND_CHANNELS, float(BGM->samplerate));
 	else{
 		if (BGM->isStereo) CSND_SetTimer(0x1E, CSND_TIMER(BGM->samplerate));
@@ -337,6 +341,7 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	
 	// Patching starting tick to not cause issues with audio streaming
 	if (BGM->handle != NULL) BGM->starttick = osGetTime() - ((1000 * curPos) / (BGM->samplerate * BGM->bytepersample));
+	criticalPhase = false;
 	
 }
 
