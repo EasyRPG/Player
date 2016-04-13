@@ -592,8 +592,8 @@ void Game_Event::MoveTypeCycleUpDown() {
 }
 
 void Game_Event::MoveTypeTowardsPlayer() {
-	int sx = GetX() - Main_Data::game_player->GetX();
-	int sy = GetY() - Main_Data::game_player->GetY();
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
 	int last_direction = GetDirection();
 
 	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
@@ -622,8 +622,8 @@ void Game_Event::MoveTypeTowardsPlayer() {
 }
 
 void Game_Event::MoveTypeAwayFromPlayer() {
-	int sx = GetX() - Main_Data::game_player->GetX();
-	int sy = GetY() - Main_Data::game_player->GetY();
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
 	int last_direction = GetDirection();
 
 	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
