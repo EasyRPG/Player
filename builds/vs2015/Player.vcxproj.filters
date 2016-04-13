@@ -472,6 +472,9 @@
     <ClCompile Include="..\..\src\message_overlay.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rtp_table.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -919,6 +922,9 @@
       <Filter>Source Files\Shinonome</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\picojson.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rtp_table.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>

@@ -280,6 +280,7 @@
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry.cpp" />
+    <ClCompile Include="..\..\src\rtp_table.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
@@ -429,6 +430,7 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry.h" />
+    <ClInclude Include="..\..\src\rtp_table.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />
