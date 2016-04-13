@@ -326,12 +326,21 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	if (BGM == NULL) return;
 	svcLockMutex(BGM_Mutex);
 	
-	// Getting music ptr based on old samplerate
-	u32 curPos;
-	if (BGM->handle != NULL) curPos = BGM->samplerate * BGM->bytepersample * ((osGetTime() - BGM->starttick) / 1000);
+	// Pausing playback to not broke audio streaming
+	if (BGM->handle != NULL) BGM_Pause();
 	
-	// Calculating and setting new samplerate
-	BGM->samplerate = (BGM->orig_samplerate * pitch) / 100;
+	// Calculating new samplerate
+	u32 new_samplerate = (BGM->orig_samplerate * pitch) / 100;
+	
+	// Patching starting tick to not cause issues with audio streaming
+	if (BGM->handle != NULL){		
+		u64 oldDelta = BGM->starttick;
+		u64 newDelta = (BGM->samplerate * oldDelta) / new_samplerate;
+		BGM->starttick = newDelta;
+	}
+	
+	// Setting new samplerate
+	BGM->samplerate = new_samplerate;
 	if (isDSP) ndspChnSetRate(SOUND_CHANNELS, float(BGM->samplerate));
 	else{
 		if (BGM->isStereo) CSND_SetTimer(0x1E, CSND_TIMER(BGM->samplerate));
@@ -339,8 +348,9 @@ void CtrAudio::BGM_Pitch(int pitch) {
 		CSND_UpdateInfo(0);
 	}
 	
-	// Patching starting tick to not cause issues with audio streaming
-	if (BGM->handle != NULL) BGM->starttick = osGetTime() - ((1000 * curPos) / (BGM->samplerate * BGM->bytepersample));
+	// Resuming playback
+	if (BGM->handle != NULL) BGM_Resume();
+	
 	svcReleaseMutex(BGM_Mutex);
 	
 }
