@@ -28,17 +28,16 @@
 #else
 #include "3ds_decoder.h"
 #endif
-
+#define svcLockMutex(handle) svcWaitSynchronization(handle, U64_MAX);
 // BGM audio streaming thread
 volatile bool termStream = false;
-volatile bool criticalPhase = false;
 DecodedMusic* BGM = NULL;
+Handle BGM_Mutex;
 static void streamThread(void* arg){
 	
 	for(;;) {
 		
-		// A super bad way to do mutual exclusion
-		criticalPhase = false;
+		svcReleaseMutex(BGM_Mutex);
 		
 		// Looks like if we delete this, thread will crash
 		svcSleepThread(10000);
@@ -52,8 +51,7 @@ static void streamThread(void* arg){
 		if (BGM == NULL) continue; // No BGM detected
 		else if (BGM->starttick == 0) continue; // BGM not started
 		else if (!BGM->isPlaying) continue; // BGM paused
-		while (criticalPhase){} // Main thread is working on the file
-		criticalPhase = true;
+		svcLockMutex(BGM_Mutex);
 		
 		// Calculating delta in milliseconds
 		u64 delta = (osGetTime() - BGM->starttick);
@@ -155,6 +153,7 @@ CtrAudio::CtrAudio() :
 	#endif
 	
 	// Starting a secondary thread on SYSCORE for BGM streaming
+	svcCreateMutex(&BGM_Mutex, false);
 	threadCreate(streamThread, NULL, 32768, 0x18, 1, true);
 	
 	#ifdef USE_CACHE
@@ -178,6 +177,7 @@ CtrAudio::~CtrAudio() {
 		free(BGM);
 	}
 	
+	svcCloseHandle(BGM_Mutex);
 	if (isDSP) ndspExit();
 	else csndExit();	
 	#ifdef USE_CACHE
@@ -194,11 +194,12 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	// If a BGM is currently playing, we kill it
 	BGM_Stop();
 	if (BGM != NULL){
-		while (criticalPhase){} // Wait secondary thread
+		svcLockMutex(BGM_Mutex);
 		linearFree(BGM->audiobuf);
 		BGM->closeCallback();
 		free(BGM);
 		BGM = NULL;
+		svcReleaseMutex(BGM_Mutex);
 	}
 	
 	// Searching for the file
@@ -322,9 +323,8 @@ void CtrAudio::BGM_Volume(int volume) {
 }
 
 void CtrAudio::BGM_Pitch(int pitch) {
-	if (BGM == NULL) return;	
-	while (criticalPhase){} // Wait secondary thread
-	criticalPhase = true;
+	if (BGM == NULL) return;
+	svcLockMutex(BGM_Mutex);
 	
 	// Getting music ptr based on old samplerate
 	u32 curPos;
@@ -341,7 +341,7 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	
 	// Patching starting tick to not cause issues with audio streaming
 	if (BGM->handle != NULL) BGM->starttick = osGetTime() - ((1000 * curPos) / (BGM->samplerate * BGM->bytepersample));
-	criticalPhase = false;
+	svcReleaseMutex(BGM_Mutex);
 	
 }
 
