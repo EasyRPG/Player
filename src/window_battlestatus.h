@@ -54,7 +54,7 @@ public:
 	/**
 	 * Updates the window state.
 	 */
-	void Update();
+	void Update() override;
 
 	/**
 	 * Selects an active character if one is ready.
@@ -72,7 +72,7 @@ protected:
 	/**
 	 * Updates the cursor rectangle.
 	 */
-	void UpdateCursorRect();
+	void UpdateCursorRect() override;
 
 	/**
 	 * Redraws the characters time gauge.

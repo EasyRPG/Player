@@ -47,7 +47,7 @@ public:
 
 	void UpdateCursorRect();
 	Rect GetItemRect(int row, int col) const;
-	void Update();
+	void Update() override;
 	void Refresh();
 	void SetMode(Mode nmode);
 	std::string const& GetSelected() const;

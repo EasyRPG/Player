@@ -89,12 +89,12 @@ public:
 	/**
 	 * Updates the position of the cursor rectangle.
 	 */
-	void UpdateCursorRect();
+	void UpdateCursorRect() override;
 
 	/**
 	 * Updates number value according to user input.
 	 */
-	void Update();
+	void Update() override;
 
 protected:
 	unsigned number;

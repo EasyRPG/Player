@@ -55,7 +55,7 @@ public:
 	/**
 	 * Updates the help window.
 	 */
-	void UpdateHelp();
+	void UpdateHelp() override;
 
 	/**
 	 * Checks if the item should be enabled.

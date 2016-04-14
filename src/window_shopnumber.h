@@ -46,7 +46,7 @@ public:
 	/**
 	 * Updates number value according to user input.
 	 */
-	void Update();
+	void Update() override;
 	
 	/**
 	 * Returns the number value.

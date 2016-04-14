@@ -61,7 +61,7 @@ public:
 	 */
 	void SetHelpWindow(Window_Help* nhelp_window);
 	virtual void UpdateCursorRect();
-	void Update();
+	void Update() override;
 
 	virtual void UpdateHelp();
 

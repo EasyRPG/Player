@@ -42,7 +42,7 @@ public:
 	void Erase();
 	const std::string& Get();
 
-	void Update();
+	void Update() override;
 
 protected:
 	std::string name;

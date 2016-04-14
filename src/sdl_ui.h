@@ -55,30 +55,30 @@ public:
 	/**
 	 * Destructor.
 	 */
-	~SdlUi();
+	~SdlUi() override;
 
 	/**
 	 * Inherited from BaseUi.
 	 */
 	/** @{ */
 
-	void BeginDisplayModeChange();
-	void EndDisplayModeChange();
-	void Resize(long width, long height);
-	void ToggleFullscreen();
-	void ToggleZoom();
-	void UpdateDisplay();
-	void SetTitle(const std::string &title);
-	bool ShowCursor(bool flag);
+	void BeginDisplayModeChange() override;
+	void EndDisplayModeChange() override;
+	void Resize(long width, long height) override;
+	void ToggleFullscreen() override;
+	void ToggleZoom() override;
+	void UpdateDisplay() override;
+	void SetTitle(const std::string &title) override;
+	bool ShowCursor(bool flag) override;
 
-	void ProcessEvents();
+	void ProcessEvents() override;
 
-	bool IsFullscreen();
+	bool IsFullscreen() override;
 
-	uint32_t GetTicks() const;
-	void Sleep(uint32_t time_milli);
+	uint32_t GetTicks() const override;
+	void Sleep(uint32_t time_milli) override;
 
-	AudioInterface& GetAudio();
+	AudioInterface& GetAudio() override;
 
 	/** @} */
 

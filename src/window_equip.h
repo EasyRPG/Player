@@ -53,7 +53,7 @@ public:
 	/**
 	 * Updates the help text.
 	 */
-	void UpdateHelp();
+	void UpdateHelp() override;
 
 private:
 	int actor_id;

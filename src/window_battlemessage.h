@@ -39,7 +39,7 @@ public:
 
 	void Refresh();
 
-	void Update();
+	void Update() override;
 
 private:
 	std::vector<std::string> lines;

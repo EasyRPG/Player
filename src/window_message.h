@@ -32,7 +32,7 @@
 class Window_Message: public Window_Selectable {
 public:
 	Window_Message(int ix, int iy, int iwidth, int iheight);
-	~Window_Message();
+	~Window_Message() override;
 
 	enum WindowMessageValues {
 		LeftMargin = 8,
@@ -108,7 +108,7 @@ public:
 	 */
 	void ResetWindow();
 
-	void Update();
+	void Update() override;
 
 	/**
 	 * Continues outputting more text. Also handles the
@@ -140,7 +140,7 @@ public:
 	/**
 	 * Stub. For choice.
 	 */
-	void UpdateCursorRect();
+	void UpdateCursorRect() override;
 
 	/**
 	 * Waits for a key press before the text output

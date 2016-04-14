@@ -37,9 +37,9 @@ public:
 	 */
 	Scene_GameBrowser();
 
-	void Start();
-	void Continue();
-	void Update();
+	void Start() override;
+	void Continue() override;
+	void Update() override;
 
 	/**
 	 * Creates the window displaying the options.

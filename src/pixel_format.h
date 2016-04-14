@@ -632,7 +632,7 @@ public:
 		rgba_traits_type::set_rgba(this, p, r, g, b, a);
 	}
 
-	bool Match(const DynamicFormat& ref) const {
+	bool Match(const DynamicFormat& ref) const override {
 		return
 			bits == ref.bits &&
 			(dynamic_alpha || alpha_type() == ref.alpha_type) &&
@@ -643,11 +643,11 @@ public:
 				 (a_mask() == ref.a.mask || alpha_type() != PF::Alpha)));
 	}
 
-	int Bits() const {
+	int Bits() const override {
 		return bits;
 	}
 
-	const DynamicFormat& Format() const {
+	const DynamicFormat& Format() const override {
 		return dynamic_traits.format;
 	}
 
@@ -655,7 +655,7 @@ public:
 		dynamic_traits.set_format(format);
 	}
 
-	bool HasAlpha() const {
+	bool HasAlpha() const override {
 		return has_alpha();
 	}
 };

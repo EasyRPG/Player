@@ -287,12 +287,12 @@ public:
 	Normal(Game_Battler* source, Game_Battler* target);
 	Normal(Game_Battler* source, Game_Party_Base* target);
 
-	bool Execute();
-	void Apply();
+	bool Execute() override;
+	void Apply() override;
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	const RPG::Sound* GetStartSe() const;
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	const RPG::Sound* GetStartSe() const override;
 };
 
 class Skill : public AlgorithmBase {
@@ -301,14 +301,14 @@ public:
 	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
 	Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item = NULL);
 
-	bool IsTargetValid();
-	bool Execute();
-	void Apply();
+	bool IsTargetValid() override;
+	bool Execute() override;
+	void Apply() override;
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	const RPG::Sound* GetStartSe() const;
-	void GetResultMessages(std::vector<std::string>& out) const;
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	const RPG::Sound* GetStartSe() const override;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 
 private:
 	const RPG::Skill& skill;
@@ -321,14 +321,14 @@ public:
 	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
 	Item(Game_Battler* source, const RPG::Item& item);
 
-	bool IsTargetValid();
-	bool Execute();
-	void Apply();
+	bool IsTargetValid() override;
+	bool Execute() override;
+	void Apply() override;
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	const RPG::Sound* GetStartSe() const;
-	void GetResultMessages(std::vector<std::string>& out) const;
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	const RPG::Sound* GetStartSe() const override;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 
 private:
 	const RPG::Item& item;
@@ -338,69 +338,69 @@ class NormalDual : public AlgorithmBase {
 public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
 
-	std::string GetStartMessage() const;
-	const RPG::Sound* GetStartSe() const;
-	bool Execute();
+	std::string GetStartMessage() const override;
+	const RPG::Sound* GetStartSe() const override;
+	bool Execute() override;
 };
 
 class Defend : public AlgorithmBase {
 public:
 	Defend(Game_Battler* source);
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	bool Execute();
-	void Apply();
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	bool Execute() override;
+	void Apply() override;
 };
 
 class Observe : public AlgorithmBase {
 public:
 	Observe(Game_Battler* source);
 
-	std::string GetStartMessage() const;
-	bool Execute();
+	std::string GetStartMessage() const override;
+	bool Execute() override;
 };
 
 class Charge : public AlgorithmBase {
 public:
 	Charge(Game_Battler* source);
 
-	std::string GetStartMessage() const;
-	bool Execute();
-	void Apply();
+	std::string GetStartMessage() const override;
+	bool Execute() override;
+	void Apply() override;
 };
 
 class SelfDestruct : public AlgorithmBase {
 public:
 	SelfDestruct(Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	const RPG::Sound* GetStartSe() const;
-	bool Execute();
-	void Apply();
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	const RPG::Sound* GetStartSe() const override;
+	bool Execute() override;
+	void Apply() override;
 };
 
 class Escape : public AlgorithmBase {
 public:
 	Escape(Game_Battler* source);
 
-	std::string GetStartMessage() const;
-	int GetSourceAnimationState() const;
-	const RPG::Sound* GetStartSe() const;
-	bool Execute();
-	void Apply();
+	std::string GetStartMessage() const override;
+	int GetSourceAnimationState() const override;
+	const RPG::Sound* GetStartSe() const override;
+	bool Execute() override;
+	void Apply() override;
 
-	void GetResultMessages(std::vector<std::string>& out) const;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 };
 
 class Transform : public AlgorithmBase {
 public:
 	Transform(Game_Battler* source, int new_monster_id);
 
-	std::string GetStartMessage() const;
-	bool Execute();
-	void Apply();
+	std::string GetStartMessage() const override;
+	bool Execute() override;
+	void Apply() override;
 
 private:
 	int new_monster_id;
@@ -411,10 +411,10 @@ class NoMove : public AlgorithmBase {
 public:
 	NoMove(Game_Battler* source);
 
-	std::string GetStartMessage() const;
+	std::string GetStartMessage() const override;
 
-	bool Execute();
-	void Apply();
+	bool Execute() override;
+	void Apply() override;
 };
 
 }

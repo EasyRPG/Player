@@ -40,15 +40,15 @@ public:
 class MessageOverlay : public Drawable {
 public:
 	MessageOverlay();
-	virtual ~MessageOverlay();
+	~MessageOverlay() override;
 
-	void Draw();
+	void Draw() override;
 
-	int GetZ() const;
+	int GetZ() const override;
 
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
-	bool IsGlobal() const;
+	bool IsGlobal() const override;
 
 	void AddMessage(const std::string& message, Color color);
 

@@ -70,7 +70,7 @@ public:
 	/**
 	 * Updates the help window.
 	 */
-	void UpdateHelp();
+	void UpdateHelp() override;
 
 	/**
 	 * Assigns an actor to the item list.

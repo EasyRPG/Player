@@ -57,7 +57,7 @@ public:
 	 */
 	Sprite_Battler(Game_Battler* battler);
 
-	~Sprite_Battler();
+	~Sprite_Battler() override;
 
 	/**
 	 * Updates sprite state.

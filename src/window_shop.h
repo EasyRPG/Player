@@ -40,7 +40,7 @@ public:
 	/**
 	 * Updates the window.
 	 */
-	void Update();
+	void Update() override;
 
 	void SetMode(int nmode);
 	int GetChoice() const;

@@ -30,22 +30,22 @@
 class Plane : public Drawable {
 public:
 	Plane();
-	virtual ~Plane();
+	~Plane() override;
 
-	void Draw();
+	void Draw() override;
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
-	int GetZ() const;
+	int GetZ() const override;
 	void SetZ(int z);
 	int GetOx() const;
 	void SetOx(int ox);
 	int GetOy() const;
 	void SetOy(int oy);
 
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
 private:
 	DrawableType type;

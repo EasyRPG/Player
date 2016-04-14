@@ -30,8 +30,8 @@ class Game_Enemy : public Game_Battler
 public:
 	Game_Enemy(int enemy_id);
 
-	const std::vector<int16_t>& GetStates() const;
-	std::vector<int16_t>& GetStates();
+	const std::vector<int16_t>& GetStates() const override;
+	std::vector<int16_t>& GetStates() override;
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
@@ -54,76 +54,76 @@ public:
 	 *
 	 * @return Enemy ID
 	 */
-	int GetId() const;
+	int GetId() const override;
 
 	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name
 	 */
-	const std::string& GetName() const;
+	const std::string& GetName() const override;
 
 	/**
 	 * Gets the filename of the enemy sprite
 	 *
 	 * @return Filename of enemy sprite
 	 */
-	const std::string& GetSpriteName() const;
+	const std::string& GetSpriteName() const override;
 
 	/**
 	 * Gets the maximum HP for the current level.
 	 *
 	 * @return maximum HP.
 	 */
-	int GetBaseMaxHp() const;
+	int GetBaseMaxHp() const override;
 
 	/**
 	 * Gets the maximum SP for the current level.
 	 *
 	 * @return maximum SP.
 	 */
-	int GetBaseMaxSp() const;
+	int GetBaseMaxSp() const override;
 
 	/**
 	 * Gets the attack for the current level.
 	 *
 	 * @return attack.
 	 */
-	int GetBaseAtk() const;
+	int GetBaseAtk() const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 *
 	 * @return defense.
 	 */
-	int GetBaseDef() const;
+	int GetBaseDef() const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 *
 	 * @return spirit.
 	 */
-	int GetBaseSpi() const;
+	int GetBaseSpi() const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 *
 	 * @return agility.
 	 */
-	int GetBaseAgi() const;
+	int GetBaseAgi() const override;
 
 	/**
 	 * Gets enemy X position
 	 *
 	 * @return enemy X position
 	 */
-	int GetBattleX() const;
+	int GetBattleX() const override;
 	/**
 	 * Gets enemy Y position
 	 *
 	 * @return enemy Y position
 	 */
-	int GetBattleY() const;
+	int GetBattleY() const override;
 
 	/**
 	 * Sets enemy X position
@@ -139,22 +139,22 @@ public:
 	 */
 	void SetBattleY(int new_y);
 
-	int GetHue() const;
+	int GetHue() const override;
 
-	int GetHp() const;
-	void SetHp(int _hp);
-	void ChangeHp(int hp);
+	int GetHp() const override;
+	void SetHp(int _hp) override;
+	void ChangeHp(int hp) override;
 
-	int GetSp() const;
-	void SetSp(int _sp);
+	int GetSp() const override;
+	void SetSp(int _sp) override;
 
 	void SetHidden(bool _hidden);
-	bool IsHidden() const;
+	bool IsHidden() const override;
 	void Transform(int new_enemy_id);
 
-	int GetHitChance() const;
-	int GetCriticalHitChance() const;
-	int GetBattleAnimationId() const;
+	int GetHitChance() const override;
+	int GetCriticalHitChance() const override;
+	int GetBattleAnimationId() const override;
 
 	int GetExp() const;
 
@@ -175,7 +175,7 @@ public:
 	 */
 	int GetDropProbability() const;
 
-	BattlerType GetType() const;
+	BattlerType GetType() const override;
 
 	bool IsActionValid(const RPG::EnemyAction& action);
 	const RPG::EnemyAction* ChooseRandomAction();

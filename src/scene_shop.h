@@ -43,7 +43,7 @@ public:
 	 */
 	Scene_Shop();
 
-	void Start();
+	void Start() override;
 
 	enum ShopMode {
 		BuySellLeave,
@@ -59,7 +59,7 @@ public:
 
 	void SetMode(int nmode);
 
-	void Update();
+	void Update() override;
 	void UpdateCommandSelection();
 	void UpdateBuySelection();
 	void UpdateSellSelection();

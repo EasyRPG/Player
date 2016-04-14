@@ -32,13 +32,13 @@ class Scene_Battle_Rpg2k3 : public Scene_Battle {
 
 public:
 	Scene_Battle_Rpg2k3();
-	~Scene_Battle_Rpg2k3();
+	~Scene_Battle_Rpg2k3() override;
 
-	void Update();
+	void Update() override;
 
 protected:
 	void OnSystem2Ready(FileRequestResult* result);
-	void CreateUi();
+	void CreateUi() override;
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
@@ -48,7 +48,7 @@ protected:
 
 	void RefreshCommandWindow();
 
-	void SetState(Scene_Battle::State new_state);
+	void SetState(Scene_Battle::State new_state) override;
 
 	bool CheckWin();
 	bool CheckLose();
@@ -56,13 +56,13 @@ protected:
 	bool CheckFlee();
 	bool CheckResultConditions();
 
-	void ProcessActions();
+	void ProcessActions() override;
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
-	void ProcessInput();
+	void ProcessInput() override;
 
 	void OptionSelected();
 	void CommandSelected();
-	void AttackSelected();
+	void AttackSelected() override;
 	void SubskillSelected();
 	void SpecialSelected();
 
@@ -70,7 +70,7 @@ protected:
 
 	void SelectNextActor();
 
-	void ActionSelectedCallback(Game_Battler* for_battler);
+	void ActionSelectedCallback(Game_Battler* for_battler) override;
 
 	void ShowNotification(const std::string& text);
 

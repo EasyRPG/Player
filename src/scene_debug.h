@@ -38,8 +38,8 @@ public:
 	 */
 	Scene_Debug();
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 	/**
 	 * Updates the range list window.

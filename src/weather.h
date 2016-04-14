@@ -29,13 +29,13 @@
 class Weather : public Drawable {
 public:
 	Weather();
-	~Weather();
+	~Weather() override;
 
-	void Draw();
+	void Draw() override;
 	void Update();
 
-	int GetZ() const;
-	DrawableType GetType() const;
+	int GetZ() const override;
+	DrawableType GetType() const override;
 
 private:
 	void DrawRain();

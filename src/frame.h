@@ -29,13 +29,13 @@
 class Frame : public Drawable {
 public:
 	Frame();
-	~Frame();
+	~Frame() override;
 
-	void Draw();
+	void Draw() override;
 	void Update();
 
-	int GetZ() const;
-	DrawableType GetType() const;
+	int GetZ() const override;
+	DrawableType GetType() const override;
 
 private:
 

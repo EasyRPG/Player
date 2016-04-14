@@ -34,9 +34,9 @@ public:
 	 */
 	Game_Party();
 
-	Game_Actor& operator[] (const int index);
+	Game_Actor& operator[] (const int index) override;
 
-	int GetBattlerCount() const;
+	int GetBattlerCount() const override;
 
 	/**
 	 * Setups initial party.

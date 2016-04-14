@@ -39,7 +39,7 @@ public:
 	 *
 	 * @param item_id item to check.
 	 */
-	virtual bool CheckEnable(int item_id);
+	bool CheckEnable(int item_id) override;
 };
 
 #endif

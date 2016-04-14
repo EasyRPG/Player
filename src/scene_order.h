@@ -33,9 +33,9 @@ public:
 	 */
 	Scene_Order();
 
-	void Start();
+	void Start() override;
 	void Terminate();
-	void Update();
+	void Update() override;
 
 private:
 	/** Contains new actor order or 0 if actor wasnt rearranged yet. */

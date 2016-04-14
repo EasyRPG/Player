@@ -56,13 +56,13 @@ class Scene_Battle : public Scene {
 public:
 	static std::shared_ptr<Scene_Battle> Create();
 
-	virtual ~Scene_Battle();
+	~Scene_Battle() override;
 
-	virtual void Start();
-	virtual void Update();
+	void Start() override;
+	void Update() override;
 
-	void TransitionIn();
-	void TransitionOut();
+	void TransitionIn() override;
+	void TransitionOut() override;
 
 	enum State {
 		/** Battle has started (Display encounter message) */

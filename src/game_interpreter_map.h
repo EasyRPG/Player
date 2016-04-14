@@ -56,7 +56,7 @@ public:
 	 */
 	std::vector<RPG::SaveEventCommands> GetSaveData() const;
 
-	bool ExecuteCommand();
+	bool ExecuteCommand() override;
 
 private:
 	bool CommandMessageOptions(RPG::EventCommand const& com);
@@ -129,11 +129,11 @@ private:
 	bool CommandToggleAtbMode(RPG::EventCommand const& com);
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
-	bool ContinuationOpenShop(RPG::EventCommand const& com);
-	bool ContinuationShowInnStart(RPG::EventCommand const& com);
+	bool ContinuationOpenShop(RPG::EventCommand const& com) override;
+	bool ContinuationShowInnStart(RPG::EventCommand const& com) override;
 	bool ContinuationShowInnContinue(RPG::EventCommand const& com);
-	bool ContinuationShowInnFinish(RPG::EventCommand const& com);
-	bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
+	bool ContinuationShowInnFinish(RPG::EventCommand const& com) override;
+	bool ContinuationEnemyEncounter(RPG::EventCommand const& com) override;
 
 private:
 	void OnChangeSystemGraphicReady(FileRequestResult* result);

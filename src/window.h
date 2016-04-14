@@ -29,9 +29,9 @@
 class Window : public Drawable {
 public:
 	Window();
-	virtual ~Window();
+	~Window() override;
 
-	void Draw();
+	void Draw() override;
 
 	void Update();
 	BitmapRef const& GetWindowskin() const;
@@ -60,7 +60,7 @@ public:
 	void SetWidth(int nwidth);
 	int GetHeight() const;
 	void SetHeight(int nheight);
-	int GetZ() const;
+	int GetZ() const override;
 	void SetZ(int nz);
 	int GetOx() const;
 	void SetOx(int nox);
@@ -79,7 +79,7 @@ public:
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
 
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
 protected:
 	DrawableType type;
