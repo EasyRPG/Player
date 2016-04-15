@@ -382,28 +382,30 @@ bool Game_Interpreter::CommandEnd() { // code 10
 }
 
 // Helper function
-void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
+std::vector<std::string> Game_Interpreter::GetChoices() {
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
-	unsigned int index_temp = index + 1;
 	std::vector<std::string> s_choices;
-	while ( index_temp < list.size() ) {
-		if ( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
+	for (unsigned index_temp = index + 1; index_temp < list.size(); ++index_temp) {
+		if (list[index_temp].indent != current_indent) {
+			continue;
+		}
+
+		if (list[index_temp].code == Cmd::ShowChoiceOption) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
-		// If found end of show choice command
-		if ( ( (list[index_temp].code == Cmd::ShowChoiceEnd) && (list[index_temp].indent == current_indent) ) ||
-			// Or found Cancel branch
-			( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
-			(list[index_temp].string == "") ) ) {
 
+		if (list[index_temp].code == Cmd::ShowChoiceEnd) {
+			// End of choices found
+			if (s_choices.size() > 1 && s_choices.back().empty()) {
+				// Remove cancel branch
+				s_choices.pop_back();
+			}
 			break;
 		}
-		// Move on to the next command
-		index_temp++;
 	}
-	ret_val.swap(s_choices);
+	return s_choices;
 }
 
 // Command Show Message
@@ -420,23 +422,21 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
-	Game_Message::owner_parallel = !main_flag;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
 	line_count++;
 
-	for (;;) {
+	for (; index + 1 < list.size(); index++) {
 		// If next event command is the following parts of the message
-		if ( index < list.size() - 1 && list[index+1].code == Cmd::ShowMessage_2 ) {
+		if (list[index+1].code == Cmd::ShowMessage_2) {
 			// Add second (another) line
 			line_count++;
 			Game_Message::texts.push_back(list[index+1].string);
 		} else {
 			// If next event command is show choices
-			std::vector<std::string> s_choices;
-			if ( (index < list.size() - 1) && (list[index+1].code == Cmd::ShowChoice) ) {
-				GetStrings(s_choices);
+			if (list[index+1].code == Cmd::ShowChoice) {
+				std::vector<std::string> s_choices = GetChoices();
 				// If choices fit on screen
 				if (s_choices.size() <= (4 - line_count)) {
 					index++;
@@ -444,7 +444,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
-			} else if ((index < list.size() - 1) && (list[index+1].code == Cmd::InputNumber) ) {
+			} else if (list[index+1].code == Cmd::InputNumber) {
 				// If next event command is input number
 				// If input number fits on screen
 				if (line_count < 4) {
@@ -455,10 +455,11 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 				}
 			}
 
-			return true;
+			break;
 		}
-		index++;
 	} // End for
+
+	return true;
 }
 
 // Setup Choices
@@ -504,9 +505,8 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	Game_Message::owner_id = event_id;
 
 	// Choices setup
-	std::vector<std::string> choices;
+	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
-	GetStrings(choices);
 	SetupChoices(choices);
 
 	return true;

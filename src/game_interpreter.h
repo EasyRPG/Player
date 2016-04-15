@@ -101,7 +101,7 @@ protected:
 	 * This is just a helper (private) method
 	 * to avoid repeating code.
 	 */
-	void GetStrings(std::vector<std::string>& ret_val);
+	std::vector<std::string> GetChoices();
 
 	/**
 	 * Calculates operated value.
