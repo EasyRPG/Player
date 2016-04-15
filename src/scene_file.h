@@ -38,8 +38,8 @@ public:
 	 */
 	Scene_File(std::string message);
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 	virtual void Action(int index) = 0;
 

@@ -671,7 +671,7 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
+	std::unique_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());

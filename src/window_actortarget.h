@@ -35,7 +35,7 @@ public:
 	Window_ActorTarget(int ix, int iy, int iwidth, int iheight);
 
 	void Refresh();
-	void UpdateCursorRect();
+	void UpdateCursorRect() override;
 
 	Game_Actor* GetActor();
 private:

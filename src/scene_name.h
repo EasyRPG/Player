@@ -35,8 +35,8 @@ public:
 	 */
 	Scene_Name();
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 private:
 	std::unique_ptr<Window_Keyboard> kbd_window;

@@ -36,9 +36,9 @@ public:
 	 */
 	Scene_Item(int item_index = 0);
 
-	void Start();
-	void Continue();
-	void Update();
+	void Start() override;
+	void Continue() override;
+	void Update() override;
 
 private:
 	/** Displays description about the selected item. */

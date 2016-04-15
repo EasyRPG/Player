@@ -33,7 +33,7 @@ public:
 	 */
 	Sprite_Timer(int which);
 
-	~Sprite_Timer();
+	~Sprite_Timer() override;
 
 	/**
 	 * Updates sprite state.
@@ -42,7 +42,7 @@ public:
 
 protected:
 	void CreateSprite();
-	void Draw();
+	void Draw() override;
 
 	int which;
 	int counter;

@@ -37,9 +37,9 @@ class BattleAnimation : public Drawable {
 public:
 	BattleAnimation(const RPG::Animation& anim);
 
-	int GetZ() const;
+	int GetZ() const override;
 	void SetZ(int nz);
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
 	void Update();
 	int GetFrame() const;
@@ -72,11 +72,11 @@ protected:
 class BattleAnimationChara : public BattleAnimation {
 public:
 	BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara);
-	~BattleAnimationChara();
-	void Draw();
+	~BattleAnimationChara() override;
+	void Draw() override;
 protected:
-	void Flash(Color c);
-	bool ShouldScreenFlash() const;
+	void Flash(Color c) override;
+	bool ShouldScreenFlash() const override;
 	Game_Character& character;
 };
 
@@ -85,11 +85,11 @@ class BattleAnimationBattlers : public BattleAnimation {
 public:
 	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true);
 	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true);
-	~BattleAnimationBattlers();
-	void Draw();
+	~BattleAnimationBattlers() override;
+	void Draw() override;
 protected:
-	void Flash(Color c);
-	bool ShouldScreenFlash() const;
+	void Flash(Color c) override;
+	bool ShouldScreenFlash() const override;
 	std::vector<Game_Battler*> battlers;
 	bool should_flash;
 };
@@ -98,11 +98,11 @@ protected:
 class BattleAnimationGlobal : public BattleAnimation {
 public:
 	BattleAnimationGlobal(const RPG::Animation& anim);
-	~BattleAnimationGlobal();
-	void Draw();
+	~BattleAnimationGlobal() override;
+	void Draw() override;
 protected:
-	void Flash(Color c);
-	bool ShouldScreenFlash() const;
+	void Flash(Color c) override;
+	bool ShouldScreenFlash() const override;
 };
 
 #endif

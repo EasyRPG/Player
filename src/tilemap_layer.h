@@ -32,13 +32,13 @@ class TilemapLayer;
 class TilemapSubLayer : public Drawable {
 public:
 	TilemapSubLayer(TilemapLayer* tilemap, int z);
-	~TilemapSubLayer();
+	~TilemapSubLayer() override;
 
-	void Draw();
+	void Draw() override;
 
-	int GetZ() const;
+	int GetZ() const override;
 
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
 private:
 	DrawableType type;

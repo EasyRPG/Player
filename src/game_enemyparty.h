@@ -33,9 +33,9 @@ public:
 	 */
 	Game_EnemyParty();
 
-	Game_Enemy& operator[] (const int index);
+	Game_Enemy& operator[] (const int index) override;
 
-	int GetBattlerCount() const;
+	int GetBattlerCount() const override;
 
 	/**
 	 * Setups initial enemy party.

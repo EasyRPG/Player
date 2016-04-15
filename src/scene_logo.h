@@ -38,8 +38,8 @@ public:
 	 */
 	Scene_Logo();
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 private:
 	std::unique_ptr<Sprite> logo;

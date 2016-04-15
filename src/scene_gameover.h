@@ -37,8 +37,8 @@ public:
 	 */
 	Scene_Gameover();
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 private:
 	/** Background graphic. */
 	std::unique_ptr<Sprite> background;

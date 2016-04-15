@@ -41,7 +41,7 @@ public:
 	/**
 	 * Updates the window state.
 	 */
-	void Update();
+	void Update() override;
 
 	/**
 	 * Sets the reference item.

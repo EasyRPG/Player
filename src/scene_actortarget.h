@@ -48,8 +48,8 @@ public:
 	 */
 	Scene_ActorTarget(int skill_id, int actor_index, int skill_index);
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 	/**
 	 * Update function used when an item will be used.

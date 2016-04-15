@@ -44,8 +44,6 @@ namespace Game_Message {
 
 	/** ID of the event that activated this message */
 	extern unsigned int owner_id;
-	/** Whether the owner is a parallel event */
-	extern bool owner_parallel;
 
 	/**
 	 * Returns name of file that contains the face.

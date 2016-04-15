@@ -30,9 +30,9 @@
 class Sprite : public Drawable {
 public:
 	Sprite();
-	virtual ~Sprite();
+	~Sprite() override;
 
-	void Draw();
+	void Draw() override;
 
 	virtual void Flash(int duration);
 	virtual void Flash(Color color, int duration);
@@ -52,7 +52,7 @@ public:
 	void SetX(int x);
 	int GetY() const;
 	void SetY(int y);
-	int GetZ() const;
+	int GetZ() const override;
 	void SetZ(int z);
 	int GetOx() const;
 	void SetOx(int ox);
@@ -83,7 +83,7 @@ public:
 	double GetWaverPhase() const;
 	void SetWaverPhase(double phase);
 
-	DrawableType GetType() const;
+	DrawableType GetType() const override;
 
 private:
 	DrawableType type;

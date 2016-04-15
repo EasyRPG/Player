@@ -43,7 +43,7 @@ public:
 	/**
 	 * Updates the window state.
 	 */
-	void Update();
+	void Update() override;
 
 	/**
 	 * Enables or disables a command.

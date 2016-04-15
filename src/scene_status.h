@@ -39,8 +39,8 @@ public:
 	 */
 	Scene_Status(int actor_index);
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 private:
 	int actor_index;

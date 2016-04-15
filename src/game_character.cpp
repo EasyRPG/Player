@@ -708,7 +708,10 @@ int Game_Character::DistanceXfromPlayer() const {
 	int sx = GetX() - Main_Data::game_player->GetX();
 	if (Game_Map::LoopHorizontal()) {
 		if (std::abs(sx) > Game_Map::GetWidth() / 2) {
-			sx -= Game_Map::GetWidth();
+			if (sx > 0)
+				sx -= Game_Map::GetWidth();
+			else
+				sx += Game_Map::GetWidth();
 		}
 	}
 	return sx;
@@ -718,7 +721,10 @@ int Game_Character::DistanceYfromPlayer() const {
 	int sy = GetY() - Main_Data::game_player->GetY();
 	if (Game_Map::LoopVertical()) {
 		if (std::abs(sy) > Game_Map::GetHeight() / 2) {
-			sy -= Game_Map::GetHeight();
+			if (sy > 0)
+				sy -= Game_Map::GetHeight();
+			else
+				sy += Game_Map::GetHeight();
 		}
 	}
 	return sy;

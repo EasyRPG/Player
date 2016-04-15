@@ -42,7 +42,7 @@ public:
 	/**
 	 * Updates the window state.
 	 */
-	void Update();
+	void Update() override;
 
 	int GetIndex();
 	void SetIndex(int index);

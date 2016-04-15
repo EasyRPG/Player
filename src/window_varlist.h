@@ -35,7 +35,7 @@ public:
 	 *                 the height is autocalculated.
 	 */
 	Window_VarList(std::vector<std::string> commands);
-	~Window_VarList();
+	~Window_VarList() override;
 
 	/**
 	* UpdateList.

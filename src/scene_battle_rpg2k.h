@@ -33,16 +33,16 @@ class Scene_Battle_Rpg2k : public Scene_Battle {
 
 public:
 	Scene_Battle_Rpg2k();
-	~Scene_Battle_Rpg2k();
+	~Scene_Battle_Rpg2k() override;
 
-	void Update();
+	void Update() override;
 
 protected:
-	void SetState(State new_state);
+	void SetState(State new_state) override;
 
 	void NextTurn();
 
-	void CreateUi();
+	void CreateUi() override;
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();
@@ -55,10 +55,10 @@ protected:
 
 	void RefreshCommandWindow();
 
-	void ProcessActions();
+	void ProcessActions() override;
 
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
-	void ProcessInput();
+	void ProcessInput() override;
 
 	void OptionSelected();
 	void CommandSelected();

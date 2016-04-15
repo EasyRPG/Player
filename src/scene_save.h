@@ -34,10 +34,10 @@ public:
 	 */
 	Scene_Save();
 
-	void Start();
+	void Start() override;
 
-	void Action(int index);
-	bool IsSlotValid(int index);
+	void Action(int index) override;
+	bool IsSlotValid(int index) override;
 };
 
 #endif

@@ -37,48 +37,48 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetX() const;
-	void SetX(int new_x);
-	int GetY() const;
-	void SetY(int new_y);
-	int GetMapId() const;
-	void SetMapId(int new_map_id);
-	int GetDirection() const;
-	void SetDirection(int new_direction);
-	int GetSpriteDirection() const;
-	void SetSpriteDirection(int new_direction);
-	bool IsFacingLocked() const;
-	void SetFacingLocked(bool locked);
-	int GetLayer() const;
-	void SetLayer(int new_layer);
-	int GetMoveSpeed() const;
-	void SetMoveSpeed(int speed);
-	int GetMoveFrequency() const;
-	void SetMoveFrequency(int frequency);
-	const RPG::MoveRoute& GetMoveRoute() const;
-	void SetMoveRoute(const RPG::MoveRoute& move_route);
-	int GetOriginalMoveRouteIndex() const;
-	void SetOriginalMoveRouteIndex(int new_index);
-	int GetMoveRouteIndex() const;
-	void SetMoveRouteIndex(int new_index);
-	bool IsMoveRouteOverwritten() const;
-	void SetMoveRouteOverwritten(bool force);
-	bool IsMoveRouteRepeated() const;
-	void SetMoveRouteRepeated(bool force);
-	const std::string& GetSpriteName() const;
-	void SetSpriteName(const std::string& sprite_name);
-	int GetSpriteIndex() const;
-	void SetSpriteIndex(int index);
-	bool GetVisible() const;
-	Color GetFlashColor() const;
-	void SetFlashColor(const Color& flash_color);
-	double GetFlashLevel() const;
-	void SetFlashLevel(double flash_level);
-	int GetFlashTimeLeft() const;
-	void SetFlashTimeLeft(int time_left);
-	bool IsPassable(int x, int y, int d) const;
-	void BeginMove();
-	void CancelMoveRoute();
+	int GetX() const override;
+	void SetX(int new_x) override;
+	int GetY() const override;
+	void SetY(int new_y) override;
+	int GetMapId() const override;
+	void SetMapId(int new_map_id) override;
+	int GetDirection() const override;
+	void SetDirection(int new_direction) override;
+	int GetSpriteDirection() const override;
+	void SetSpriteDirection(int new_direction) override;
+	bool IsFacingLocked() const override;
+	void SetFacingLocked(bool locked) override;
+	int GetLayer() const override;
+	void SetLayer(int new_layer) override;
+	int GetMoveSpeed() const override;
+	void SetMoveSpeed(int speed) override;
+	int GetMoveFrequency() const override;
+	void SetMoveFrequency(int frequency) override;
+	const RPG::MoveRoute& GetMoveRoute() const override;
+	void SetMoveRoute(const RPG::MoveRoute& move_route) override;
+	int GetOriginalMoveRouteIndex() const override;
+	void SetOriginalMoveRouteIndex(int new_index) override;
+	int GetMoveRouteIndex() const override;
+	void SetMoveRouteIndex(int new_index) override;
+	bool IsMoveRouteOverwritten() const override;
+	void SetMoveRouteOverwritten(bool force) override;
+	bool IsMoveRouteRepeated() const override;
+	void SetMoveRouteRepeated(bool force) override;
+	const std::string& GetSpriteName() const override;
+	void SetSpriteName(const std::string& sprite_name) override;
+	int GetSpriteIndex() const override;
+	void SetSpriteIndex(int index) override;
+	bool GetVisible() const override;
+	Color GetFlashColor() const override;
+	void SetFlashColor(const Color& flash_color) override;
+	double GetFlashLevel() const override;
+	void SetFlashLevel(double flash_level) override;
+	int GetFlashTimeLeft() const override;
+	void SetFlashTimeLeft(int time_left) override;
+	bool IsPassable(int x, int y, int d) const override;
+	void BeginMove() override;
+	void CancelMoveRoute() override;
 	/** @} */
 
 	bool IsTeleporting() const;
@@ -95,12 +95,12 @@ public:
 	void StartTeleport();
 	void PerformTeleport();
 	void Center(int x, int y);
-	void MoveTo(int x, int y);
-	void Update();
+	void MoveTo(int x, int y) override;
+	void Update() override;
 
 	void Refresh();
 
-	bool CheckEventTriggerTouch(int x, int y);
+	bool CheckEventTriggerTouch(int x, int y) override;
 
 	bool GetOnOffVehicle();
 	bool IsMovable() const;

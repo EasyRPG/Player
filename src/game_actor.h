@@ -68,7 +68,7 @@ public:
 	 * @param item_id ID if item to use
 	 * @return true if item affected anything
 	 */
-	virtual bool UseItem(int item_id);
+	bool UseItem(int item_id) override;
 
 	/**
 	 * Checks if the actor is permitted to use the item at all.
@@ -108,14 +108,14 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill can be used.
 	 */
-	bool IsSkillUsable(int skill_id) const;
+	bool IsSkillUsable(int skill_id) const override;
 
 	/**
 	 * Gets the actor ID.
 	 *
 	 * @return Actor ID
 	 */
-	int GetId() const;
+	int GetId() const override;
 
 	/**
 	 * Calculates the Exp needed for a level up.
@@ -196,14 +196,14 @@ public:
 	 *
 	 * @return name.
 	 */
-	const std::string& GetName() const;
+	const std::string& GetName() const override;
 
 	/**
 	 * Gets actor character sprite filename.
 	 *
 	 * @return character sprite filename.
 	 */
-	const std::string& GetSpriteName() const;
+	const std::string& GetSpriteName() const override;
 
 	/**
 	 * Gets actor character sprite index.
@@ -395,39 +395,39 @@ public:
 	 *
 	 * @return vector containing the IDs of all states the actor has.
 	 */
-	const std::vector<int16_t>& GetStates() const;
-	std::vector<int16_t>& GetStates();
+	const std::vector<int16_t>& GetStates() const override;
+	std::vector<int16_t>& GetStates() override;
 
 	/**
 	 * Adds a State.
 	 *
 	 * @param state_id ID of state to add.
 	 */
-	void AddState(int state_id);
+	void AddState(int state_id) override;
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
 	 */
-	void RemoveState(int state_id);
+	void RemoveState(int state_id) override;
 
 	/**
 	 * Removes all states which end after battle.
 	 */
-	void RemoveBattleStates();
+	void RemoveBattleStates() override;
 
 	/**
 	 * Removes all states.
 	 */
-	void RemoveAllStates();
+	void RemoveAllStates() override;
 
-	int GetHp() const;
-	void SetHp(int _hp);
-	void ChangeHp(int hp);
+	int GetHp() const override;
+	void SetHp(int _hp) override;
+	void ChangeHp(int hp) override;
 
-	int GetSp() const;
-	void SetSp(int _sp);
+	int GetSp() const override;
+	void SetSp(int _sp) override;
 
 	/**
 	 * Gets the max HP for the current level.
@@ -479,37 +479,37 @@ public:
 	 * Gets the max HP for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseMaxHp() const;
+	int GetBaseMaxHp() const override;
 
 	/**
 	 * Gets the max SP for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseMaxSp() const;
+	int GetBaseMaxSp() const override;
 
 	/**
 	 * Gets the attack for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAtk() const;
+	int GetBaseAtk() const override;
 
 	/**
 	 * Gets the defense for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseDef() const;
+	int GetBaseDef() const override;
 
 	/**
 	 * Gets the spirit for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseSpi() const;
+	int GetBaseSpi() const override;
 
 	/**
 	 * Gets the agility for the current level.
 	 * Modifier and equipment bonuses are included.
 	 */
-	int GetBaseAgi() const;
+	int GetBaseAgi() const override;
 
 	/**
 	 * Sets the base max HP by adjusting the modifier bonus.
@@ -584,14 +584,14 @@ public:
 	 *
 	 * @return X position in battle scene
 	 */
-	int GetBattleX() const;
+	int GetBattleX() const override;
 
 	/**
 	 * Gets Y position on battlefield
 	 *
 	 * @return Y position in battle scene
 	 */
-	int GetBattleY() const;
+	int GetBattleY() const override;
 
 	/**
 	 * Gets name of skill menu item
@@ -672,12 +672,12 @@ public:
 	 */
 	void SetBattleRow(int battle_row);
 
-	int GetBattleAnimationId() const;
+	int GetBattleAnimationId() const override;
 
-	int GetHitChance() const;
-	int GetCriticalHitChance() const;
+	int GetHitChance() const override;
+	int GetCriticalHitChance() const override;
 
-	BattlerType GetType() const;
+	BattlerType GetType() const override;
 private:
 	// same reason as for Game_Picture, see comment
 	/**

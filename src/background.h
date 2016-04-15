@@ -28,13 +28,13 @@ class Background : public Drawable {
 public:
 	Background(const std::string& name);
 	Background(int terrain_id);
-	~Background();
+	~Background() override;
 
-	void Draw();
+	void Draw() override;
 	void Update();
 
-	int GetZ() const;
-	DrawableType GetType() const;
+	int GetZ() const override;
+	DrawableType GetType() const override;
 
 private:
 	static const int z = -1000;

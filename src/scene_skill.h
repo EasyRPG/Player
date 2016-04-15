@@ -35,8 +35,8 @@ public:
 	 */
 	Scene_Skill(int actor_index, int skill_index = 0);
 
-	void Start();
-	void Update();
+	void Start() override;
+	void Update() override;
 
 private:
 	/** Actor in the party whose skills are displayed. */

@@ -59,7 +59,7 @@ void Scene_File::Start() {
 
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> savegame =
+			std::unique_ptr<RPG::Save> savegame =
 				LSD_Reader::Load(file, Player::encoding);
 
 			if (savegame.get())	{

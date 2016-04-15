@@ -36,9 +36,9 @@ public:
 	 */
 	Scene_Menu(int menu_index = 0);
 
-	void Start();
-	void Continue();
-	void Update();
+	void Start() override;
+	void Continue() override;
+	void Update() override;
 
 	/**
 	 * Creates the window displaying the options.

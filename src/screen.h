@@ -35,13 +35,13 @@
 class Screen : public Drawable {
 public:
 	Screen();
-	~Screen();
+	~Screen() override;
 
-	void Draw();
+	void Draw() override;
 	void Update();
 
-	int GetZ() const;
-	DrawableType GetType() const;
+	int GetZ() const override;
+	DrawableType GetType() const override;
 
 private:
 	static const int z = 1050;

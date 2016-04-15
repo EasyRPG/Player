@@ -38,7 +38,7 @@ class Game_Interpreter_Battle : public Game_Interpreter
 public:
 	Game_Interpreter_Battle(int _depth = 0, bool _main_flag = false);
 
-	bool ExecuteCommand();
+	bool ExecuteCommand() override;
 private:
 	bool CommandCallCommonEvent(RPG::EventCommand const& com);
 	bool CommandForceFlee(RPG::EventCommand const& com);

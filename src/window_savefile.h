@@ -75,7 +75,7 @@ public:
 	 */
 	void SetCorrupted(bool corrupted);
 
-	void Update();
+	void Update() override;
 
 protected:
 	void UpdateCursorRect();

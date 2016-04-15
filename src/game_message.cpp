@@ -26,7 +26,6 @@ namespace Game_Message {
 	std::vector<std::string> texts;
 
 	unsigned int owner_id;
-	bool owner_parallel;
 
 	int choice_start;
 	int num_input_start;

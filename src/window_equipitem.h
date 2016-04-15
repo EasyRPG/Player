@@ -51,14 +51,14 @@ public:
 	 *
 	 * @param item_id item to check.
 	 */
-	bool CheckInclude(int item_id);
+	bool CheckInclude(int item_id) override;
 
 	/**
 	 * Chechs if item should be enabled. Always true.
 	 *
 	 * @param item_id item to check.
 	 */
-	bool CheckEnable(int item_id);
+	bool CheckEnable(int item_id) override;
 
 private:
 	int actor_id;

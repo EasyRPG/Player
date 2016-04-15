@@ -73,9 +73,9 @@ namespace {
 
 		ShinonomeFont(function_type func);
 
-		Rect GetSize(std::u32string const& txt) const;
+		Rect GetSize(std::u32string const& txt) const override;
 
-		BitmapRef Glyph(char32_t code);
+		BitmapRef Glyph(char32_t code) override;
 
 	private:
 		function_type const func_;
@@ -97,9 +97,9 @@ namespace {
 	struct FTFont : public Font  {
 		FTFont(const std::string& name, int size, bool bold, bool italic);
 
-		Rect GetSize(std::u32string const& txt) const;
+		Rect GetSize(std::u32string const& txt) const override;
 
-		BitmapRef Glyph(char32_t code);
+		BitmapRef Glyph(char32_t code) override;
 
 	private:
 		static std::weak_ptr<std::remove_pointer<FT_Library>::type> library_checker_;
@@ -116,8 +116,8 @@ namespace {
 
 	struct ExFont : public Font {
 		ExFont();
-		Rect GetSize(std::u32string const& txt) const;
-		BitmapRef Glyph(char32_t code);
+		Rect GetSize(std::u32string const& txt) const override;
+		BitmapRef Glyph(char32_t code) override;
 	};
 } // anonymous namespace
 
