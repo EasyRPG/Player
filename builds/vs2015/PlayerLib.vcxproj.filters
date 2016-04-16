@@ -53,11 +53,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\resources\player.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\src\audio.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
@@ -387,9 +382,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\player.cpp">
       <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\main_data.cpp">
       <Filter>Source Files</Filter>
