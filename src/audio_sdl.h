@@ -18,7 +18,6 @@
 #ifndef _AUDIO_SDL_H_
 #define _AUDIO_SDL_H_
 
-#include "system.h"
 #include "audio.h"
 
 #include <map>

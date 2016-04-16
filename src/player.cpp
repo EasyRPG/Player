@@ -320,7 +320,7 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__WINRT__)
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
 #endif
 
@@ -350,7 +350,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	std::stringstream ss;
 	for (int i = 1; i < argc; ++i) {
 		ss << argv[i] << " ";
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__WINRT__)
 		args.push_back(Utils::LowerCase(Utils::FromWideString(argv_w[i])));
 #else
 		args.push_back(Utils::LowerCase(argv[i]));

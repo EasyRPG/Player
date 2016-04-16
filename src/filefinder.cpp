@@ -238,6 +238,9 @@ std::string FileFinder::MakePath(const std::string &dir, std::string const& name
 
 #ifdef _WIN32
 std::string GetFontsPath() {
+#ifdef __WINRT__
+	return ".";
+#else
 	static std::string fonts_path = "";
 	static bool init = false;
 
@@ -259,6 +262,7 @@ std::string GetFontsPath() {
 
 		return fonts_path;
 	}
+#endif
 }
 
 std::string GetFontFilename(std::string const& name) {

@@ -586,10 +586,15 @@ void SdlUi::SetTitle(const std::string &title) {
 }
 
 bool SdlUi::ShowCursor(bool flag) {
+#ifdef __WINRT__
+	// Prevent cursor hide in WinRT because it is hidden everywhere while the app runs...
+	return flag;
+#else
 	bool temp_flag = cursor_visible;
 	cursor_visible = flag;
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
+#endif
 }
 
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
@@ -678,14 +683,6 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 	if (state == SDL_APPINPUTFOCUS && !evnt.active.gain) {
 #else
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
-#endif
-#ifdef _WIN32
-		// Prevent the player from hanging when it receives a
-		// focus changed event but actually has focus.
-		// This happens when a MsgBox appears.
-		if (GetActiveWindow() != NULL) {
-			return;
-		}
 #endif
 
 		Player::Pause();
@@ -925,6 +922,7 @@ void SdlUi::SetAppIcon() {
 #endif
 	bool load_error = false;
 #ifdef _WIN32
+#ifndef __WINRT__
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
 	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
@@ -938,6 +936,7 @@ void SdlUi::SetAppIcon() {
 	HICON icon_small = (HICON) LoadImage(handle, MAKEINTRESOURCE(23456), IMAGE_ICON,
 		GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0);
 	load_error = (icon == NULL || icon_small == NULL);
+#endif
 #else
 	//Linux, OS X
 	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
@@ -958,9 +957,11 @@ void SdlUi::SetAppIcon() {
 		Output::Warning("Could not load window icon.");
 
 #ifdef _WIN32
+#ifndef __WINRT__
 	window = wminfo.info.win.window;
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 	SetClassLongPtr(window, GCLP_HICONSM, (LONG_PTR) icon_small);
+#endif
 #else
 	SDL_SetWindowIcon(sdl_window, icon);
 	SDL_FreeSurface(icon);
