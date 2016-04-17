@@ -78,7 +78,7 @@ void Main_Data::Init() {
 	
 	#if defined(_3DS) && !defined(CITRA3DS_COMPATIBLE)
 	// Check if romFs has some files inside or not
-	FILE* testfile = fopen("romfs:/Map0001.lmu","r");
+	FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
 	if (testfile != NULL){
 		Output::Debug("Detected a project on romFs filesystem...");
 		fclose(testfile);

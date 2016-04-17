@@ -544,15 +544,26 @@ bool FileFinder::Exists(std::string const& filename) {
 #elif defined(GEKKO)
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
+#elif defined(_3DS)
+	FILE* tmp = fopen(filename.c_str(),"r");
+	if (tmp == NULL){ 
+		DIR* tmp2 = opendir(filename.c_str());
+		if (tmp2 == NULL) return false;
+		else{
+			closedir(tmp2);
+			return true;
+		}
+		return false;
+	}else{
+		fclose(tmp);
+		return true;
+	}
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
-	if (!Exists(dir)) {
-		return false;
-	}
 
 #ifdef _3DS
 	DIR* d = opendir(dir.c_str());
@@ -561,6 +572,10 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 		return true;
 	}
 	return false;
+#else
+	if (!Exists(dir)) {
+		return false;
+	}
 #endif
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
