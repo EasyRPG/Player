@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BGM_BUFSIZE 524288 // Max dimension of BGM buffer size
+#define BGM_BUFSIZE 786432 // Max dimension of BGM buffer size
 #define OGG_BUFSIZE 2048 // Max dimension of PCM16 decoded block by libogg
 
 struct DecodedSound{
