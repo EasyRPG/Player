@@ -81,6 +81,7 @@ CtrUi::CtrUi(int width, int height) :
 		audio_.reset(new CtrAudio());
 	#endif
 	
+	#ifdef NO_DEBUG
 	// Loading bottom screen keyboard
 	u8* key_buffer = (u8*)&keyboard_bmp[0x36];
 	u32 key_buffer_size = keyboard_bmp_size - 0x36;
@@ -113,6 +114,7 @@ CtrUi::CtrUi(int width, int height) :
 		sf2d_swapbuffers();
 	}
 	sf2d_free_texture(keyboard_texture);
+	#endif
 	
 }
 
@@ -189,6 +191,7 @@ void CtrUi::ProcessEvents() {
 	else if (circlepad.dx > 25) keys[Input::Keys::RIGHT] = true;
 	else if (circlepad.dx < -25) keys[Input::Keys::LEFT] = true;
 	
+	#ifdef NO_DEBUG
 	//Touchscreen support
 	if (input & KEY_TOUCH){
 		touchPosition pos;
@@ -220,6 +223,7 @@ void CtrUi::ProcessEvents() {
 		keys[Input::Keys::SUBTRACT] = false;
 		keys[Input::Keys::PERIOD] = false;
 	}
+	#endif
 	
 }
 

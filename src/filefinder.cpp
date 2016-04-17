@@ -545,7 +545,6 @@ bool FileFinder::Exists(std::string const& filename) {
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
 #elif defined(_3DS)
-	printf("Checking %s\n",filename.c_str());
 	FILE* tmp = fopen(filename.c_str(),"r");
 	if (tmp == NULL){ 
 		DIR* tmp2 = opendir(filename.c_str());
