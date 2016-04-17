@@ -127,11 +127,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/memory_management.h \
 	src/message_overlay.cpp \
 	src/message_overlay.h \
-	src/midiprogram.h \
-	src/midisequencer.cpp \
-	src/midisequencer.h \
-	src/midisynth.cpp \
-	src/midisynth.h \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \
@@ -304,6 +299,16 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_targetstatus.h \
 	src/window_varlist.cpp \
 	src/window_varlist.h
+
+if WANT_FMMIDI
+libeasyrpg_player_la_SOURCES += \
+	src/midiprogram.h \
+	src/midisequencer.cpp \
+	src/midisequencer.h \
+	src/midisynth.cpp \
+	src/midisynth.h
+endif
+
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
 	-std=c++11 \
