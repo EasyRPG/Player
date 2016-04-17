@@ -169,6 +169,7 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::Z] = (input & KEY_A);
 	keys[Input::Keys::X] = (input & KEY_B);
 	keys[Input::Keys::N8] = (input & KEY_X);
+	keys[Input::Keys::SHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F12] = (input & KEY_SELECT);
 	keys[Input::Keys::ESCAPE] = (input & KEY_START);
 	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
