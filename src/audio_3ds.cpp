@@ -327,10 +327,11 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	
 	// Pausing playback to not broke audio streaming
 	if (BGM->handle != NULL) BGM_Pause();
+	if (!isDSP) svcSleepThread(100000000); // Temp patch for csnd:SND
 	
 	// Calculating new samplerate
 	u32 new_samplerate = (BGM->orig_samplerate * pitch) / 100;
-	if (new_samplerate > 48000) new_samplerate = 48000; // 3DS kinda sucks with samplerates higher then 44100 Hz
+	if (new_samplerate > 48000) new_samplerate = 48000; // 3DS kinda sucks with samplerates higher then 48000 Hz
 	
 	// Patching starting tick to not cause issues with audio streaming
 	if (BGM->handle != NULL){		
