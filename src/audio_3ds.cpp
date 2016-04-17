@@ -28,16 +28,14 @@
 #else
 #include "3ds_decoder.h"
 #endif
-#define svcLockMutex(handle) svcWaitSynchronization(handle, U64_MAX);
+
 // BGM audio streaming thread
 volatile bool termStream = false;
 DecodedMusic* BGM = NULL;
-Handle BGM_Mutex;
+LightLock BGM_Mutex;
 static void streamThread(void* arg){
 	
 	for(;;) {
-		
-		svcReleaseMutex(BGM_Mutex);
 		
 		// Looks like if we delete this, thread will crash
 		svcSleepThread(10000);
@@ -51,7 +49,7 @@ static void streamThread(void* arg){
 		if (BGM == NULL) continue; // No BGM detected
 		else if (BGM->starttick == 0) continue; // BGM not started
 		else if (!BGM->isPlaying) continue; // BGM paused
-		svcLockMutex(BGM_Mutex);
+		LightLock_Lock(&BGM_Mutex);
 		
 		// Calculating delta in milliseconds
 		u64 delta = (osGetTime() - BGM->starttick);
@@ -84,7 +82,7 @@ static void streamThread(void* arg){
 					CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
 					CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
 				}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
-				CSND_UpdateInfo(0);
+				CSND_UpdateInfo(true);
 			}else{
 				float vol_table[12] = {vol,vol,vol,vol};
 				ndspChnSetMix(SOUND_CHANNELS, vol_table);
@@ -97,6 +95,8 @@ static void streamThread(void* arg){
 			u32 curPos = BGM->samplerate * BGM->bytepersample * (delta / 1000);
 			if (curPos > block_mem * BGM->block_idx) BGM->updateCallback();
 		}
+		
+		LightLock_Unlock(&BGM_Mutex);
 		
 	}
 }
@@ -153,7 +153,7 @@ CtrAudio::CtrAudio() :
 	#endif
 	
 	// Starting a secondary thread on SYSCORE for BGM streaming
-	svcCreateMutex(&BGM_Mutex, false);
+	LightLock_Init(&BGM_Mutex);
 	threadCreate(streamThread, NULL, 32768, 0x18, 1, true);
 	
 	#ifdef USE_CACHE
@@ -177,7 +177,6 @@ CtrAudio::~CtrAudio() {
 		free(BGM);
 	}
 	
-	svcCloseHandle(BGM_Mutex);
 	if (isDSP) ndspExit();
 	else csndExit();	
 	#ifdef USE_CACHE
@@ -194,12 +193,12 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	// If a BGM is currently playing, we kill it
 	BGM_Stop();
 	if (BGM != NULL){
-		svcLockMutex(BGM_Mutex);
+		LightLock_Lock(&BGM_Mutex);
 		linearFree(BGM->audiobuf);
 		BGM->closeCallback();
 		free(BGM);
 		BGM = NULL;
-		svcReleaseMutex(BGM_Mutex);
+		LightLock_Unlock(&BGM_Mutex);
 	}
 	
 	// Searching for the file
@@ -268,7 +267,7 @@ void CtrAudio::BGM_Pause() {
 		if (!isDSP){
 			CSND_SetPlayState(0x1E, 0);
 			CSND_SetPlayState(0x1F, 0);
-			CSND_UpdateInfo(0);
+			CSND_UpdateInfo(true);
 		}else ndspChnSetPaused(SOUND_CHANNELS, true);
 		BGM->isPlaying = false;
 		BGM->starttick = osGetTime()-BGM->starttick; // Save current delta
@@ -281,7 +280,7 @@ void CtrAudio::BGM_Resume() {
 		if (!isDSP){
 			if (BGM->isStereo) CSND_SetPlayState(0x1E, 1);
 			CSND_SetPlayState(0x1F, 1);
-			CSND_UpdateInfo(0);
+			CSND_UpdateInfo(true);
 		}else ndspChnSetPaused(SOUND_CHANNELS, false);
 		BGM->isPlaying = true;
 		BGM->starttick = osGetTime()-BGM->starttick; // Restore starttick
@@ -293,7 +292,7 @@ void CtrAudio::BGM_Stop() {
 	if (!isDSP){
 		CSND_SetPlayState(0x1E, 0);
 		CSND_SetPlayState(0x1F, 0);
-		CSND_UpdateInfo(0);
+		CSND_UpdateInfo(true);
 	}else ndspChnWaveBufClear(SOUND_CHANNELS);
 	BGM->isPlaying = false;
 }
@@ -315,7 +314,7 @@ void CtrAudio::BGM_Volume(int volume) {
 			CSND_SetVol(0x1E, CSND_VOL(vol, -1.0), CSND_VOL(vol, -1.0));
 			CSND_SetVol(0x1F, CSND_VOL(vol, 1.0), CSND_VOL(vol, 1.0));
 		}else CSND_SetVol(0x1F, CSND_VOL(vol, 0.0), CSND_VOL(vol, 0.0));
-		CSND_UpdateInfo(0);
+		CSND_UpdateInfo(true);
 	}else{
 		float vol_table[12] = {vol,vol,vol,vol};
 		ndspChnSetMix(SOUND_CHANNELS, vol_table);
@@ -324,13 +323,14 @@ void CtrAudio::BGM_Volume(int volume) {
 
 void CtrAudio::BGM_Pitch(int pitch) {
 	if (BGM == NULL) return;
-	svcLockMutex(BGM_Mutex);
+	LightLock_Lock(&BGM_Mutex);
 	
 	// Pausing playback to not broke audio streaming
 	if (BGM->handle != NULL) BGM_Pause();
 	
 	// Calculating new samplerate
 	u32 new_samplerate = (BGM->orig_samplerate * pitch) / 100;
+	if (new_samplerate > 48000) new_samplerate = 48000; // 3DS kinda sucks with samplerates higher then 44100 Hz
 	
 	// Patching starting tick to not cause issues with audio streaming
 	if (BGM->handle != NULL){		
@@ -345,13 +345,13 @@ void CtrAudio::BGM_Pitch(int pitch) {
 	else{
 		if (BGM->isStereo) CSND_SetTimer(0x1E, CSND_TIMER(BGM->samplerate));
 		CSND_SetTimer(0x1F, CSND_TIMER(BGM->samplerate));
-		CSND_UpdateInfo(0);
+		CSND_UpdateInfo(true);
 	}
 	
 	// Resuming playback
 	if (BGM->handle != NULL) BGM_Resume();
 	
-	svcReleaseMutex(BGM_Mutex);
+	LightLock_Unlock(&BGM_Mutex);
 	
 }
 
@@ -514,7 +514,7 @@ void CtrAudio::SE_Stop() {
 		audiobuffers[i] = NULL;
 		#endif
 	}
-	if (!isDSP) CSND_UpdateInfo(0);
+	if (!isDSP) CSND_UpdateInfo(true);
 }
 
 void CtrAudio::Update() {	
