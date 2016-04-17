@@ -76,10 +76,10 @@ extern "C" int main(int argc, char* argv[]) {
 	#endif
 	
 	fsInit();
+	sdmcInit();
 	#ifndef CITRA3DS_COMPATIBLE
 	romfsInit();
 	#endif
-	sdmcInit();
 	
 	#endif
 	

@@ -82,7 +82,7 @@ void Main_Data::Init() {
 	if (testfile != NULL){
 		Output::Debug("Detected a project on romFs filesystem...");
 		fclose(testfile);
-		project_path = "romfs:/";
+		project_path = "romfs:";
 		save_path = "sdmc:/";
 	}else 
 	#endif

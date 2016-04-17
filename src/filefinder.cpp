@@ -545,15 +545,22 @@ bool FileFinder::Exists(std::string const& filename) {
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
 #elif defined(_3DS)
+	printf("Checking %s\n",filename.c_str());
 	FILE* tmp = fopen(filename.c_str(),"r");
 	if (tmp == NULL){ 
 		DIR* tmp2 = opendir(filename.c_str());
-		if (tmp2 == NULL) return false;
-		else{
+		if (tmp2 == NULL){ 
+			std::string tmp_str = filename + "/";
+			tmp2 = opendir(tmp_str.c_str());
+			if (tmp2 == NULL) return false;
+			else{
+				closedir(tmp2);
+				return true;
+			}
+		}else{
 			closedir(tmp2);
 			return true;
 		}
-		return false;
 	}else{
 		fclose(tmp);
 		return true;
@@ -570,6 +577,13 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	if(d) {
 		closedir(d);
 		return true;
+	}else{
+		std::string tmp_str = dir + "/";
+		d = opendir(tmp_str.c_str());
+		if(d) {
+			closedir(d);
+			return true;
+		}
 	}
 	return false;
 #else
@@ -607,6 +621,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath Utils::ToWideString(path)
 #  define dirent _wdirent
 #  define readdir _wreaddir
+#elif _3DS
+	std::string wpath = path + "/";
 #else
 #  define wpath path
 #endif
