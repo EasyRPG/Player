@@ -117,7 +117,7 @@ void Graphics::Update(bool time_left) {
 		fps = 0;
 
 		next_fps_time = current_time + 1000;
-		
+
 		UpdateTitle();
 	}
 

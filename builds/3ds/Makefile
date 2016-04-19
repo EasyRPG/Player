@@ -51,16 +51,19 @@ ICON		:=	icon.png
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard
 
-CFLAGS	:=	-g -Wall -O2 -mword-relocations \
+CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
+			-flto -fdata-sections -ffunction-sections \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO -DUSE_CACHE
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO \
+				-DUSE_CACHE -DNO_DEBUG
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) \
+		-Wl,--gc-sections
 
 LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata \
 		-lpixman-1 -lpng -lz -lfreetype -lkhax \

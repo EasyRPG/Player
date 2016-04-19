@@ -25,7 +25,7 @@
 #  include <SDL.h>
 #endif
 
-extern "C" int main(int argc, char* argv[]) {	
+extern "C" int main(int argc, char* argv[]) {
 	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
