@@ -14,15 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "system.h"
 
 #if defined (_3DS) && defined(SUPPORT_AUDIO)
 #include "output.h"
 #include "filefinder.h"
 #include "player.h"
 #include <ogg/ogg.h>
-#include <vorbis/codec.h>
-#include <vorbis/vorbisfile.h>
+#include <tremor/ivorbiscodec.h>
+#include <tremor/ivorbisfile.h>
 
 #include <3ds.h>
 #include <stdio.h>
@@ -80,7 +79,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	int i = 0;
 	if (audiotype == 1){ // Mono file
 		while(!eof){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,&current_section);
 			if (ret == 0) eof=1;
 			else i = i + ret;
 		}
@@ -91,7 +90,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = &Sound->audiobuf[chn_size];
 		while(!eof){
-			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,&current_section);
 			if (ret == 0) eof=1;
 			else{
 				for (u32 i=0;i<ret;i=i+4){
@@ -225,7 +224,7 @@ void UpdateOggStream(){
 	if ((!Sound->isStereo) || Player::use_dsp){ // Mono file
 		int i = half_check * half_buf;
 		while(bytesRead < half_buf){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i+bytesRead],OGG_BUFSIZE,&current_section);
 			if (ret == 0){ // EoF
 				if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 				ov_pcm_seek(vf,0);
@@ -237,7 +236,7 @@ void UpdateOggStream(){
 		u8* right_channel = &Sound->audiobuf[half_buf];
 		int z = half_check * (half_buf>>1);
 		while(bytesRead < half_buf){
-			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,&current_section);
 			if (ret == 0){ // EoF
 				if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
 				ov_pcm_seek(vf,0);
@@ -421,7 +420,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	int i = 0;
 	if (audiotype == 1){ // Mono file
 		while(!eof){
-			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,(char*)&Sound->audiobuf[i],OGG_BUFSIZE,&current_section);
 			if (ret == 0) eof=1;
 			else i = i + ret;
 		}
@@ -432,7 +431,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = &Sound->audiobuf[chn_size];
 		while(!eof){
-			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,0,2,1,&current_section);
+			long ret=ov_read(vf,pcmout,OGG_BUFSIZE,&current_section);
 			if (ret == 0) eof=1;
 			else{
 				for (u32 i=0;i<ret;i=i+4){
@@ -480,5 +479,4 @@ int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
 	
 }
 #endif
- 
- 
+

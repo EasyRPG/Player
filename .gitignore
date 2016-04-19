@@ -63,7 +63,6 @@ test-driver
 /builds/psp/EBOOT.PBP
 /builds/wii/obj
 /builds/wii/*.dol
-/builds/3ds/build/filefinder
 /output
 /utils
 compile
