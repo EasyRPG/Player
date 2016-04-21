@@ -99,6 +99,7 @@ namespace Player {
 #endif
 #ifdef _3DS
 	bool use_dsp;
+	bool is_3dsx;
 #endif
 }
 
@@ -389,6 +390,9 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+#ifdef _3DS
+	is_3dsx = argc > 0;
+#endif
 #if defined(_WIN32) && !defined(__WINRT__)
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
 #endif

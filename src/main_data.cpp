@@ -27,6 +27,7 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "font.h"
+#include "player.h"
 
 #ifdef __ANDROID__
 	#include <jni.h>
@@ -74,22 +75,44 @@ void Main_Data::Init() {
 			char gekko_dir[256];
 			getcwd(gekko_dir, 255);
 			project_path = std::string(gekko_dir);
+#elif defined(_3DS)
+#   ifndef CITRA3DS_COMPATIBLE
+			// Check if romFs has some files inside or not
+			FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
+			if (testfile != NULL){
+				Output::Debug("Detected a project on romFs filesystem...");
+				fclose(testfile);
+				project_path = "romfs:";
+				save_path = ".";
+			} else {
+				project_path = ".";
+			}
+#   endif
+
+			if (!Player::is_3dsx) {
+				// Create savepath for CIA
+				aptOpenSession();
+
+				// Generating save_path
+				u64 titleID;
+				APT_GetProgramID(&titleID);
+				sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
+				
+				// Creating dirs if they don't exist
+				FS_Archive archive = (FS_Archive){ARCHIVE_SDMC, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
+				FSUSER_OpenArchive( &archive);
+				FS_Path filePath=fsMakePath(PATH_ASCII, "/easyrpg-player");
+				FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
+				FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
+				FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
+				FSUSER_CloseArchive(&archive);
+
+				aptCloseSession();
+			}
 #else
-	
-	#if defined(_3DS) && !defined(CITRA3DS_COMPATIBLE)
-	// Check if romFs has some files inside or not
-	FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
-	if (testfile != NULL){
-		Output::Debug("Detected a project on romFs filesystem...");
-		fclose(testfile);
-		project_path = "romfs:";
-		save_path = "sdmc:/";
-	}else 
-	#endif
-	project_path = ".";
+			project_path = ".";
 #endif
 		}
-
 	}
 }
 

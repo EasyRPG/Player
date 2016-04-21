@@ -222,6 +222,9 @@ namespace Player {
 #ifdef _3DS
 	/** Use DSP instead of CSND */
 	extern bool use_dsp;
+	
+	/** Is executed from a .3dsx (otherwise .cia) */
+	extern bool is_3dsx;
 #endif
 }
 
