@@ -96,6 +96,7 @@ void Main_Data::Init() {
 				// Generating save_path
 				u64 titleID;
 				APT_GetProgramID(&titleID);
+				char mainDir[64];
 				sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
 				
 				// Creating dirs if they don't exist
@@ -108,6 +109,8 @@ void Main_Data::Init() {
 				FSUSER_CloseArchive(&archive);
 
 				aptCloseSession();
+				
+				save_path = mainDir;
 			}
 #else
 			project_path = ".";

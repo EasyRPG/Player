@@ -43,7 +43,7 @@ INCLUDES	:=	../../src
 
 APP_TITLE   	:=	EasyRPG Player
 APP_DESCRIPTION	:=	Play your RPG Maker 2000/2003 games everywhere
-APP_AUTHOR	:=	Rinnegatamante
+APP_AUTHOR	:=	Rinnegatamante & EasyRPG Team
 ICON		:=	icon.png
 
 #---------------------------------------------------------------------------------
