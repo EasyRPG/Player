@@ -32,7 +32,7 @@
     <ClCompile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
-      <PreprocessorDefinitions>UNICODE;_CRT_SECURE_NO_WARNINGS;MSVC;USE_SDL;HAVE_SDL_MIXER;HAVE_FREETYPE;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_FMMIDI;HAVE_MPG123;HAVE_FREETYPE;UNICODE;_CRT_SECURE_NO_WARNINGS;MSVC;USE_SDL;HAVE_SDL_MIXER;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
