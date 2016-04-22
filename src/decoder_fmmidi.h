@@ -60,8 +60,6 @@ private:
 	double pitch = 1.0;
 	int frequency = 44100;
 
-	bool finished = false;
-
 	// midisequencer::output interface
 	int synthesize(int_least16_t* output, std::size_t samples, float rate);
 	void midi_message(int, uint_least32_t message) override;

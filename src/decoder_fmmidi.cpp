@@ -40,15 +40,14 @@ bool FmMidiDecoder::Open(FILE* file) {
 	seq->clear();
 	seq->load(file);
 	seq->rewind();
-	finished = false;
 
 	return true;
 }
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 	if (offset == 0 && origin == Origin::Begin) {
+		mtime = 0;
 		seq->rewind();
-		finished = false;
 		return true;
 	}
 
@@ -56,7 +55,7 @@ bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 }
 
 bool FmMidiDecoder::IsFinished() const {
-	return false;
+	return mtime >= seq->get_total_time();
 }
 
 std::string FmMidiDecoder::GetError() const {
@@ -93,9 +92,7 @@ int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	double delta = (double)2048 / (frequency * pitch);
 
 	seq->play(mtime, this);
-	if (synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch) == 0) {
-		finished = true;
-	}
+	synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch);
 	mtime += delta;
 
 	return length;
