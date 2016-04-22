@@ -84,34 +84,37 @@ void Main_Data::Init() {
 				fclose(testfile);
 				project_path = "romfs:";
 				save_path = ".";
+
+				if (!Player::is_3dsx) {
+					// Create savepath for CIA - unique for any ID
+					aptOpenSession();
+
+					// Generating save_path
+					u64 titleID;
+					APT_GetProgramID(&titleID);
+					char mainDir[64];
+					sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
+					
+					// Creating dirs if they don't exist
+					FS_Archive archive = (FS_Archive){ARCHIVE_SDMC, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
+					FSUSER_OpenArchive(&archive);
+					FS_Path filePath=fsMakePath(PATH_ASCII, "/easyrpg-player");
+					FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
+					FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
+					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
+					FSUSER_CloseArchive(&archive);
+
+					aptCloseSession();
+					
+					save_path = mainDir;
+				}
+			} else if (!Player::is_3dsx) {
+				// No RomFS -> load games from hardcoded path
+				project_path = "sdmc:/3ds/easyrpg-player";
 			} else {
 				project_path = ".";
 			}
 #   endif
-
-			if (!Player::is_3dsx) {
-				// Create savepath for CIA
-				aptOpenSession();
-
-				// Generating save_path
-				u64 titleID;
-				APT_GetProgramID(&titleID);
-				char mainDir[64];
-				sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
-				
-				// Creating dirs if they don't exist
-				FS_Archive archive = (FS_Archive){ARCHIVE_SDMC, (FS_Path){PATH_EMPTY, 1, (u8*)""}};
-				FSUSER_OpenArchive( &archive);
-				FS_Path filePath=fsMakePath(PATH_ASCII, "/easyrpg-player");
-				FSUSER_CreateDirectory(archive,filePath, FS_ATTRIBUTE_DIRECTORY);
-				FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
-				FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
-				FSUSER_CloseArchive(&archive);
-
-				aptCloseSession();
-				
-				save_path = mainDir;
-			}
 #else
 			project_path = ".";
 #endif
