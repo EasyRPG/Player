@@ -17,6 +17,7 @@
 
 // Headers
 #include <cassert>
+#include <cstring>
 #include "audio_decoder.h"
 #include "output.h"
 
