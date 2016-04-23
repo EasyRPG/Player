@@ -20,10 +20,14 @@
 #include <type_traits>
 #include <vector>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_BITMAP_H
-#include FT_MODULE_H
+#include "system.h"
+
+#ifdef HAVE_FREETYPE
+#	include <ft2build.h>
+#	include FT_FREETYPE_H
+#	include FT_BITMAP_H
+#	include FT_MODULE_H
+#endif
 
 #include "reader_util.h"
 #include "shinonome.h"
@@ -41,8 +45,6 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 
 // Static variables.
 namespace {
-	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
-	face_cache_type face_cache;
 	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, char32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
 		if(ret != (data + size) && ret->code == code) {
@@ -81,6 +83,9 @@ namespace {
 		function_type const func_;
 	}; // class ShinonomeFont
 
+#ifdef HAVE_FREETYPE
+	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
+	face_cache_type face_cache;
 
 	void delete_face(FT_Face f) {
 		if(FT_Done_Face(f) != FT_Err_Ok) {
@@ -110,6 +115,7 @@ namespace {
 
 		bool check_face();
 	}; // class FTFont
+#endif
 
 	FontRef const gothic = std::make_shared<ShinonomeFont>(&find_gothic_glyph);
 	FontRef const mincho = std::make_shared<ShinonomeFont>(&find_mincho_glyph);
@@ -149,6 +155,7 @@ BitmapRef ShinonomeFont::Glyph(char32_t code) {
 	return bm;
 }
 
+#ifdef HAVE_FREETYPE
 std::weak_ptr<std::remove_pointer<FT_Library>::type> FTFont::library_checker_;
 
 FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
@@ -202,40 +209,12 @@ BitmapRef FTFont::Glyph(char32_t glyph) {
 	return bm;
 }
 
-FontRef Font::Default(bool const m) {
-	return m? mincho : gothic;
-}
-
-FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {
-	return std::make_shared<FTFont>(name, size, bold, italic);
-}
-
-void Font::Dispose() {
-	for(face_cache_type::const_iterator i = face_cache.begin(); i != face_cache.end(); ++i) {
-		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached font face %s", i->first.c_str());
-	}
-	face_cache.clear();
-}
-
-// Constructor.
-Font::Font(const std::string& name, int size, bool bold, bool italic)
-	: name(name)
-	, size(size)
-	, bold(bold)
-	, italic(italic)
-{
-}
-
-Rect Font::GetSize(std::string const& txt) const {
-	return GetSize(Utils::DecodeUTF32(txt));
-}
 
 bool FTFont::check_face() {
-	if(!library_) {
-		if(library_checker_.expired()) {
+	if (!library_) {
+		if (library_checker_.expired()) {
 			FT_Library lib;
-			if(FT_Init_FreeType(&lib) != FT_Err_Ok) {
+			if (FT_Init_FreeType(&lib) != FT_Err_Ok) {
 				Output::Error("Couldn't initialize FreeType");
 				return false;
 			}
@@ -246,22 +225,22 @@ bool FTFont::check_face() {
 		}
 	}
 
-	if(!face_ || face_name_ != name) {
-	    face_cache_type::const_iterator it = face_cache.find(name);
-		if(it == face_cache.end() || it->second.expired()) {
+	if (!face_ || face_name_ != name) {
+		face_cache_type::const_iterator it = face_cache.find(name);
+		if (it == face_cache.end() || it->second.expired()) {
 			std::string const face_path = FileFinder::FindFont(name);
 			FT_Face face;
-			if(FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
+			if (FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
 				Output::Error("Couldn't initialize FreeType face: %s(%s)",
-							  name.c_str(), face_path.c_str());
+					name.c_str(), face_path.c_str());
 				return false;
 			}
 
 			for (int i = 0; i < face_->num_fixed_sizes; i++) {
 				FT_Bitmap_Size* size = &face_->available_sizes[i];
 				Output::Debug("Font Size %d: %d %d %f %f %f", i,
-							  size->width, size->height, size->size / 64.0,
-							  size->x_ppem / 64.0, size->y_ppem / 64.0);
+					size->width, size->height, size->size / 64.0,
+					size->x_ppem / 64.0, size->y_ppem / 64.0);
 			}
 
 			face_.reset(face, delete_face);
@@ -273,10 +252,10 @@ bool FTFont::check_face() {
 	}
 
 	face_->style_flags =
-		(bold? FT_STYLE_FLAG_BOLD : 0) |
-		(italic? FT_STYLE_FLAG_ITALIC : 0);
+		(bold ? FT_STYLE_FLAG_BOLD : 0) |
+		(italic ? FT_STYLE_FLAG_ITALIC : 0);
 
-	if(current_size_ != size) {
+	if (current_size_ != size) {
 		int sz, dpi;
 		if (face_->num_fixed_sizes == 1) {
 			sz = face_->available_sizes[0].size;
@@ -294,6 +273,43 @@ bool FTFont::check_face() {
 	}
 
 	return true;
+}
+#endif
+
+FontRef Font::Default(bool const m) {
+	return m? mincho : gothic;
+}
+
+FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {
+#ifdef HAVE_FREETYPE
+	return std::make_shared<FTFont>(name, size, bold, italic);
+#else
+	(void)name; (void)size; (void)bold; (void)italic;
+	return Font::Default();
+#endif
+}
+
+void Font::Dispose() {
+#ifdef HAVE_FREETYPE
+	for(face_cache_type::const_iterator i = face_cache.begin(); i != face_cache.end(); ++i) {
+		if(i->second.expired()) { continue; }
+		Output::Debug("possible leak in cached font face %s", i->first.c_str());
+	}
+	face_cache.clear();
+#endif
+}
+
+// Constructor.
+Font::Font(const std::string& name, int size, bool bold, bool italic)
+	: name(name)
+	, size(size)
+	, bold(bold)
+	, italic(italic)
+{
+}
+
+Rect Font::GetSize(std::string const& txt) const {
+	return GetSize(Utils::DecodeUTF32(txt));
 }
 
 void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, char32_t code) {
