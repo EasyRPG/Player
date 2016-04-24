@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "system.h"
+
 #ifdef HAVE_MPG123
 
 // Headers

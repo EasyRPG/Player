@@ -21,6 +21,8 @@
 #include "audio_decoder.h"
 #include "output.h"
 
+#include "system.h"
+
 #ifdef HAVE_FMMIDI
 #include "decoder_fmmidi.h"
 #endif

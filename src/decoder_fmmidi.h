@@ -18,8 +18,6 @@
 #ifndef _EASYRPG_AUDIO_DECODER_FMMIDI_H_
 #define _EASYRPG_AUDIO_DECODER_FMMIDI_H_
 
-#ifdef HAVE_FMMIDI
-
 // Headers
 #include <string>
 #include <functional>
@@ -73,7 +71,5 @@ private:
 	midisynth::DRUMPARAMETER p;
 	void load_programs();
 };
-
-#endif
 
 #endif

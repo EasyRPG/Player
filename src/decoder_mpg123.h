@@ -18,8 +18,6 @@
 #ifndef _EASYRPG_AUDIO_DECODER_MPG123_H_
 #define _EASYRPG_AUDIO_DECODER_MPG123_H_
 
-#ifdef HAVE_MPG123
-
 // Headers
 #include "audio_decoder.h"
 #include <string>
@@ -54,7 +52,5 @@ private:
 
 	int frequency = 44100;
 };
-
-#endif
 
 #endif
