@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Preferences Keys-->
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Rilevamento automatico della Regione (Consigliato)</string>
+  <string name="west_europe">Europa dell\\'Ovest</string>
+  <string name="east_europe">Europa dell\\'Ovest e Centrale</string>
+  <string name="cyrillic">Cirrilico</string>
+  <string name="japan">Giapponese</string>
+  <string name="korean">Coreano</string>
+  <string name="chinese_simple">Cinese (Semplificato)</string>
+  <string name="chinese_traditional">Cinese (Tradizionale)</string>
+  <string name="greek">Greco</string>
+  <string name="turkish">Turco</string>
+  <string name="hebrew">Ebreo</string>
+  <string name="arabic">Arabo</string>
+  <string name="baltic">Baltico</string>
+  <string name="thai">Tailandese</string>
+  <string name="vietnamese">Vietnamita</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Annulla</string>
+  <string name="do_want_quit">Vuoi veramente uscire?</string>
+  <string name="yes">Sì</string>
+  <string name="no">No</string>
+  <string name="creating_dir_failed">Creazione della cartella $PATH fallita</string>
+  <string name="path_not_readable">$PATH non è leggibile</string>
+  <string name="no_games_found_and_explanation">Nessun gioco trovato.\nPuoi aggiungere cartelle di gioco aggiuntive dalle impostazioni.</string>
+  <string name="no_external_storage">Nessun archivio rimovibile (es. SD card) rilevato.</string>
+  <string name="not_valid_game">$PATH non è un gioco valido</string>
+  <string name="select_game_region">Seleziona Regione di Gioco</string>
+  <string name="change_the_layout">Cambia la disposizione</string>
+  <string name="choose_layout">Seleziona una disposizione</string>
+  <string name="unknown_region">Regione sconosciuta</string>
+  <string name="region_modification_failed">Cambio di regione fallito</string>
+  <string name="refresh">Aggiorna</string>
+  <string name="change_default_mapping">Cambia il mapping dei tasti predefinito</string>
+  <string name="how_to_use_easy_rpg">Come utilizzare EasyRPG Player</string>
+  <string name="how_to_use_easy_rpg_explanation">
+Istruzioni per l\'installazione:\n
+Normalmente le cartelle di gioco sono ricercate in /easyrpg/games. Puoi aggiungere cartelle addizionali dalle impostazioni.\n Opzionale: Colloca il RTP di RPG Maker 2000 in /easyrpg/rtp/2000 e il RTP di RPG Maker 2003 in /easyrpg/rtp/2003.\n
+\n
+Nota: i giochi devono essere decompressi in una sotto-cartella di /easyrpg/games (predefinito) per essere correttamente rilevati, ad esempio:\n
+\t/easyrpg/games/MyGame/Data/RPG_RT.ldb è GIUSTO.\n
+\t/easyrpg/games/MyGame/RPG_RT.ldb è GIUSTO.\n
+\t/easyrpg/games/MyGame.zip è SBAGLIATO.\n
+\n
+Funzionalità speciali:\n
+Puoi aggiungere tasti virtuali su schermo aggiuntivi. Tocca il tasto menù per modificare la posizione dei tasti.\n
+Dopodichè tocca il tasto indietro per accedere ad un menù addizionale per l\'aggiunta di nuovi tasti su schermo.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Mostra FPS</string>
+  <string name="toggle_ui">Mostra Tasti Virtuali</string>
+  <string name="end_game">Esci dal Gioco</string>
+  <string name="report_bug">Segnala un bug</string>
+  <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.\n
+Se non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
+  <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.\n
+Un file di log ed i tuoi salvataggi saranno allegati a questa mail.\n
+Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.\n
+Puoi scriverci in Inglese, Tedesco o Spagnolo.\n
+Per favore spiegaci in dettaglio in cosa consiste il bug.\n
+[Puoi rimuovere queste istruzioni]</string>
+  <!--Settings Activity-->
+  <string name="settings">Impostazioni</string>
+  <string name="add_game_folder">Aggiungi una cartella di gioco</string>
+  <string name="enable_vibration">Attiva vibrazione</string>
+  <string name="vibrate_when_sliding_direction">Vibra durante lo scorrimento verso un\'altra direzione</string>
+  <string name="enable_audio">Attiva audio</string>
+  <string name="input_layout_transparency">Opacità Tasti Virtuali:</string>
+  <string name="ignore_size_settings">Ignora la dimensione dei tasti ed usa questo valore per qualsiasi tasto:</string>
+  <string name="no_read_access_on_dir">%1$s non accessibile in lettura</string>
+  <string name="easyrpg_folder">Cartella di EasyRPG</string>
+  <string name="quick_access">Accesso rapido</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">Modifica Tasti Virtuali:</string>
+  <string name="add_an_input_layout">Aggiungi nuova disposizione tasti</string>
+  <string name="set_as_default">Imposta come predefinito</string>
+  <string name="edit_name">Modifica nome</string>
+  <string name="edit_layout">Modifica la disposizione</string>
+  <string name="delete">Elimina</string>
+  <string name="default_layout">Predefinito</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">Aggiungi un tasto</string>
+  <string name="reset_button_mapping">Resetta mapping dei tasti</string>
+  <string name="exit_without_saving">Esci senza salvare</string>
+  <string name="save_and_quit">Salva ed esci</string>
+  <string name="key_enter">Invio (Z)</string>
+  <string name="key_cancel">Annulla (ESC ed X)</string>
+  <string name="key_shift">Shift</string>
+</resources>
