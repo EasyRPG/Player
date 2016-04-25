@@ -33,14 +33,14 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c))
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer
+LOCAL_SHARED_LIBRARIES := SDL2
 
 LOCAL_STATIC_LIBRARIES := cpufeatures
 
 LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../obj/local/$(TARGET_ARCH_ABI) \
 		-L$(EASYRPG_TOOLCHAIN_DIR)/lib -lGLESv1_CM -llog -lz \
-		-llcf -lmad -logg -lvorbisfile -lvorbis -lfreetype \
-		-lpixman-1 -lpng -licui18n -licuuc -licudata -lcpufeatures
+		-llcf -lSDL2_mixer -lmad -lvorbisfile -lvorbis -logg -lmodplug \
+		-lfreetype -lpixman-1 -lpng -licui18n -licuuc -licudata -lcpufeatures
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL \
 		-DHAVE_SDL_MIXER -DLCF_SUPPORT_ICU
