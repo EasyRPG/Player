@@ -48,7 +48,7 @@ public:
 
 	int Decode(uint8_t* buffer, int length);
 
-	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename);
+	static std::unique_ptr<AudioDecoder> Create(FILE** file, const std::string& filename);
 
 	void Update(int delta);
 

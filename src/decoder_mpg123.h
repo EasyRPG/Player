@@ -42,6 +42,8 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const override;
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) override;
+
+	static bool IsMp3(FILE* stream);
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 

@@ -19,6 +19,7 @@
 #include <cassert>
 #include <cstring>
 #include "audio_decoder.h"
+#include "filefinder.h"
 #include "output.h"
 
 #include "system.h"
@@ -60,27 +61,35 @@ static bool ends_with(std::string const& value, std::string const& ending) {
 	 return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string& filename) {
+std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE** file, const std::string& filename) {
 	char magic[4] = { 0 };
-	fread(magic, 4, 1, file);
+	fread(magic, 4, 1, *file);
+	fseek(*file, 0, SEEK_SET);
 
 #ifdef HAVE_FMMIDI
 	if (!strncmp(magic, "MThd", 4)) {
-		fseek(file, 0, SEEK_SET);
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
 	}
 #endif
 
+	// Prevent false positives by checking for common headers
+	if (!strncmp(magic, "RIFF", 4) || // WAV
+		!strncmp(magic, "FORM", 4) || // WAV AIFF
+		!strncmp(magic, "OggS", 4) || // OGG
+		!strncmp(magic, "fLaC", 4) // FLAC
+		) {
+		return std::unique_ptr<AudioDecoder>();
+	}
+
 #ifdef HAVE_MPG123
-	// Copied from SDL with some additions (.mp3 check)
-	if (ends_with(filename, ".mp3") ||
-		strncmp(magic, "ID3", 3) == 0 ||
-		((magic[0] & 0xff) != 0xff) || // No sync bits
-		((magic[1] & 0xf0) != 0xf0) || //
-		((magic[2] & 0xf0) == 0x00) || // Bitrate is 0
-		((magic[2] & 0xf0) == 0xf0) || // Bitrate is 15
-		((magic[2] & 0x0c) == 0x0c) || // Frequency is 3
-		((magic[1] & 0x06) == 0x00)) { // Layer is 4
+	if (strncmp(magic, "ID3", 3) == 0) {
+		return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
+	}
+
+	// Parsing MP3s seems to be the only reliable way to detect them
+	if (Mpg123Decoder::IsMp3(*file)) {
+		// File must be reopened because mpg123 closes it when being destructed
+		*file = FileFinder::fopenUTF8(filename.c_str(), "rb");
 		return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
 	}
 #endif

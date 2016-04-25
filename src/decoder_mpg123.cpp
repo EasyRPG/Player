@@ -149,6 +149,27 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, AudioDecoder::
 	return err == MPG123_OK;
 }
 
+bool Mpg123Decoder::IsMp3(FILE* stream) {
+	Mpg123Decoder decoder;
+	decoder.Open(stream);
+	unsigned char buffer[1024];
+	int err = 0;
+	size_t done = 0;
+	int err_count = 0;
+	
+	for (int i = 0; i < 10; ++i) {
+		err = mpg123_read(decoder.handle.get(), buffer, 1024, &done);
+		if (err != MPG123_OK) {
+			err_count += 1;
+		}
+		if (err_count >= 3) {
+			break;
+		}
+	}
+
+	return err_count < 3;
+}
+
 int Mpg123Decoder::FillBuffer(uint8_t* buffer, int length) {
 	int err;
 	size_t done = 0;
