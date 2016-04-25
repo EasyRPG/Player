@@ -24,6 +24,7 @@
   <string name="no">Não</string>
   <string name="creating_dir_failed">Criação de diretório $PATH falhou</string>
   <string name="path_not_readable">$PATH não legível</string>
+  <string name="no_games_found_and_explanation">Games não encontrados.\nVocê pode adicionar diretório de games nas configurações.</string>
   <string name="no_external_storage">Mídia externa não encontrada (Ex. cartão SD)</string>
   <string name="not_valid_game">$PATH não é um jogo válido</string>
   <string name="select_game_region">Escolha a região do jogo</string>
@@ -53,12 +54,18 @@ Características especiais:\n
   <string name="toggle_fps">Alternar FPS</string>
   <string name="toggle_ui">Alternar botões virtuais</string>
   <string name="end_game">Finalizar Jogo</string>
+  <string name="report_bug">Reportar erro</string>
   <!--Settings Activity-->
   <string name="settings">Configurações</string>
+  <string name="add_game_folder">Adicionar uma pasta contendo game</string>
   <string name="enable_vibration">Habilitar vibrações</string>
   <string name="vibrate_when_sliding_direction">Vibrar ao deslizar em outra direção</string>
+  <string name="enable_audio">Habilitar áudio</string>
   <string name="input_layout_transparency">Transparência do layout de entrada</string>
   <string name="ignore_size_settings">Ignorar configurações do tamanho dos botões e usar isso para todos botões</string>
+  <string name="no_read_access_on_dir">Sem acesso de leitura em %1$s</string>
+  <string name="easyrpg_folder">Pasta EasyRpg</string>
+  <string name="quick_access">Acesso rápido</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Gerenciar layouts de entrada</string>
   <string name="add_an_input_layout">Adicionar layout de entrada</string>
@@ -72,4 +79,5 @@ Características especiais:\n
   <string name="reset_button_mapping">Resetar mapeamento de botões</string>
   <string name="exit_without_saving">Sair sem salvar</string>
   <string name="save_and_quit">Salvar e sair</string>
+  <string name="key_cancel">Cancelar (ESC e X)</string>
 </resources>
