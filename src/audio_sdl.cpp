@@ -67,7 +67,11 @@ namespace {
 				cvt.buf = buffer.data();
 			}
 
+#if SDL_MIXER_MAJOR_VERSION>1
+			SDL_MixAudioFormat(stream, reinterpret_cast<const Uint8*>(cvt.buf), MIX_DEFAULT_FORMAT, cvt.len_cvt, audio->GetDecoder()->GetVolume());
+#else
 			SDL_MixAudio(stream, reinterpret_cast<const Uint8*>(cvt.buf), cvt.len_cvt, audio->GetDecoder()->GetVolume());
+#endif
 		}
 	}
 
