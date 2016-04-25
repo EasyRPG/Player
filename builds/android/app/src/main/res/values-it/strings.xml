@@ -3,8 +3,8 @@
   <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">Rilevamento automatico della Regione (Consigliato)</string>
-  <string name="west_europe">Europa dell\\'Ovest</string>
-  <string name="east_europe">Europa dell\\'Ovest e Centrale</string>
+  <string name="west_europe">Europa dell\'Ovest</string>
+  <string name="east_europe">Europa dell\'Ovest e Centrale</string>
   <string name="cyrillic">Cirrilico</string>
   <string name="japan">Giapponese</string>
   <string name="korean">Coreano</string>
