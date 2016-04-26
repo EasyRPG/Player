@@ -136,7 +136,7 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, AudioDecoder::
 	// Add just one format to force mpg123 pseudo-resampler work
 	mpg123_format_none(handle.get());
 
-	err = mpg123_format(handle.get(), (long)frequency, (int)channels, (int)format_to_mpg123_format(fmt));
+	err = mpg123_format(handle.get(), (long)freq, (int)channels, (int)format_to_mpg123_format(fmt));
 	if (err != MPG123_OK) {
 		err = mpg123_format(handle.get(), (long)44100, (int)channels, (int)format_to_mpg123_format(fmt));
 		if (err != MPG123_OK) {
