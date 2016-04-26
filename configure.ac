@@ -27,7 +27,10 @@ AS_IF([test "x$EM_GAME_URL" != "x"],[
 # Checks for libraries.
 PKG_CHECK_MODULES([LCF],[liblcf])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])
-PKG_CHECK_MODULES([FREETYPE],[freetype2])
+AC_ARG_WITH([freetype], AS_HELP_STRING([--without-freetype], [Disable freetype font rendering @<:@default=auto@:>@]))
+AS_IF([test "x$with_freetype" != "xno"], [
+	PKG_CHECK_MODULES([FREETYPE],[freetype2],[AC_DEFINE(HAVE_FREETYPE,[1],[Enable freetype font rendering])],[auto_freetype=0])
+])
 PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[1],[Enable SDL2])],[
 	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
 ])

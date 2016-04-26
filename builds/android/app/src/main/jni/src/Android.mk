@@ -43,7 +43,7 @@ LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../obj/local/$(TARGET_ARCH_ABI) \
 		-lfreetype -lpixman-1 -lpng -licui18n -licuuc -licudata -lcpufeatures
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL \
-		-DHAVE_SDL_MIXER -DLCF_SUPPORT_ICU
+		-DHAVE_FREETYPE -DHAVE_SDL_MIXER -DLCF_SUPPORT_ICU
 
 		LOCAL_CPPFLAGS	=	$(LOCAL_C_FLAGS) -std=c++11
 

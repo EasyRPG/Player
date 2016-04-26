@@ -35,7 +35,7 @@ LDFLAGS	= -g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	 -llcf -lexpat -lSDL_mixer -lSDL -lpixman-1 -lpng -lfreetype -lmad \
+LIBS	:=	 -llcf -lexpat -lSDL_mixer -lSDL -lpixman-1 -lpng -lmad \
 			-liconv -lvorbisidec -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
@@ -93,7 +93,6 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					-I$(PORTLIBS)/include \
 					-I$(LIBOGC_INC)/SDL \
 					-I$(PORTLIBS)/include/pixman-1 \
-					-I$(PORTLIBS)/include/freetype2 \
 					-I$(PORTLIBS)/include/liblcf
 
 #---------------------------------------------------------------------------------
