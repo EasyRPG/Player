@@ -1,0 +1,2 @@
+// regex: ECMAScript grammar and case insensitive
+.gitkeep

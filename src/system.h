@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !defined(USE_SDL)
+#if !(defined(USE_SDL) || defined(_3DS))
 #  error "This build doesn't target a backend"
 #endif
 

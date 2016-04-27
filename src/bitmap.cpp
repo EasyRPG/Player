@@ -140,10 +140,10 @@ void Bitmap::CheckPixels(uint32_t flags) {
 		Bitmap bmp(reinterpret_cast<void*>(&pixel), 1, 1, 4, format);
 		pixman_image_composite32(PIXMAN_OP_SRC, bitmap, (pixman_image_t*) NULL, bmp.bitmap,
 								 0, 32,  0, 0,  0, 0,  1, 1);
-		bg_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
+		bg_color = Color((int)(pixel>>24)&0xFF, (int)(pixel>>16)&0xFF, (int)(pixel>>8)&0xFF, (int)pixel&0xFF);
 		pixman_image_composite32(PIXMAN_OP_SRC, bitmap, (pixman_image_t*) NULL, bmp.bitmap,
 								 16, 32,  0, 0,  0, 0,  1, 1);
-		sh_color = Color((pixel>>24)&0xFF, (pixel>>16)&0xFF, (pixel>>8)&0xFF, pixel&0xFF);
+		sh_color = Color((int)(pixel>>24)&0xFF, (int)(pixel>>16)&0xFF, (int)(pixel>>8)&0xFF, (int)pixel&0xFF);
 	}
 
 	if (flags & Flag_Chipset) {

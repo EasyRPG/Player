@@ -37,6 +37,9 @@
 #  include <fat.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(_3DS)
+#  include <3ds.h>
+#  include <khax.h>
 #endif
 
 #include "async_handler.h"
@@ -94,6 +97,10 @@ namespace Player {
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
+#ifdef _3DS
+	bool use_dsp;
+	bool is_3dsx;
+#endif
 }
 
 namespace {
@@ -132,6 +139,54 @@ void Player::Init(int argc, char *argv[]) {
 	// Init libfat (Mount SD/USB)
 	if (!fatInitDefault()) {
 		Output::Error("Couldn't mount any storage medium!");
+	}
+#elif defined(_3DS)
+	// Starting debug console
+	gfxInitDefault();
+	consoleInit(GFX_BOTTOM, NULL);
+
+	aptOpenSession();
+	APT_SetAppCpuTimeLimit(30);
+	aptCloseSession();
+	if (osGetKernelVersion() <  SYSTEM_VERSION(2, 48, 3)) khaxInit(); // Executing libkhax just to be sure...
+	consoleClear();
+
+	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
+	Handle csndHandle = 0;
+	use_dsp = false;
+#ifndef FORCE_DSP
+	srvGetServiceHandleDirect(&csndHandle, "csnd:SND");
+	if (csndHandle) {
+		Output::Debug("csnd:SND has been selected as audio service.");
+		svcCloseHandle(csndHandle);
+	} else {
+		Output::Debug("csnd:SND is unavailable...");
+#endif
+		srvGetServiceHandleDirect(&csndHandle, "dsp::DSP");
+		if (csndHandle) {
+			Output::Debug("dsp::DSP has been selected as audio service.");
+			use_dsp = true;
+			svcCloseHandle(csndHandle);
+		} else {
+			Output::Error("dsp::DSP is unavailable. Please dump a DSP firmware to use EasyRPG Player. If the problem persists, please report us the issue.");
+		}
+#ifndef FORCE_DSP
+	}
+#endif
+
+	fsInit();
+	sdmcInit();
+#ifndef CITRA3DS_COMPATIBLE
+	romfsInit();
+#endif
+
+	hidInit();
+
+	// Enable 804 Mhz mode if on N3DS
+	u8 isN3DS;
+	APT_CheckNew3DS(&isN3DS);
+	if (isN3DS) {
+		osSetSpeedupEnable(true);
 	}
 #endif
 
@@ -191,6 +246,12 @@ void Player::Run() {
 	// Main loop
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+#elif defined(_3DS)
+	while (aptMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
+	{
+		hidScanInput();
+		Player::MainLoop();
+	}
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		MainLoop();
@@ -317,9 +378,21 @@ void Player::Exit() {
 	// Workaround Segfault under Android
 	exit(0);
 #endif
+
+#ifdef _3DS
+	hidExit();
+	gfxExit();
+	sdmcExit();
+	romfsExit();
+	fsExit();
+#endif
+
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+#ifdef _3DS
+	is_3dsx = argc > 0;
+#endif
 #if defined(_WIN32) && !defined(__WINRT__)
 	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
 #endif

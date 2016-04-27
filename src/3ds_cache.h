@@ -15,22 +15,27 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "output.h"
-#include <cstdlib>
-
-#ifdef USE_SDL
-#  include <SDL.h>
+#ifndef _EASYRPG_3DS_CACHE_H_
+#define _EASYRPG_3DS_CACHE_H_ 
+ 
+#ifdef USE_CACHE
+#include <3ds.h>
+#include "3ds_decoder.h"
 #endif
 
-extern "C" int main(int argc, char* argv[]) {
-	Player::Init(argc, argv);
-	Graphics::Init();
-	Input::Init();
+#define MAX_SOUNDS 32 // Max number of storable sounds
+#define CACHE_DIM 6291456 // Dimension of the cache
 
-	Player::Run();
+extern uint32_t FREE_CACHE;
+extern uint8_t ENTRIES;
+extern int LAST_ENTRY;
+extern char soundtable[MAX_SOUNDS][32];
+extern DecodedSound decodedtable[MAX_SOUNDS];
+extern uint8_t* soundCache;
+extern bool FULLED;
 
-	return EXIT_SUCCESS;
-}
+void initCache();
+void freeCache();
+int lookCache(const char* file);
+void allocCache(DecodedSound* Sound);
+#endif

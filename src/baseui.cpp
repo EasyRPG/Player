@@ -21,6 +21,8 @@
 
 #ifdef USE_SDL
 #include "sdl_ui.h"
+#elif _3DS
+#include "3ds_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;
@@ -28,6 +30,8 @@ std::shared_ptr<BaseUi> DisplayUi;
 std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, bool /* zoom */) {
 #ifdef USE_SDL
 	return std::make_shared<SdlUi>(width, height, fs_flag);
+#elif _3DS
+	return std::make_shared<CtrUi>(width, height);
 #else
 #error cannot create UI
 #endif

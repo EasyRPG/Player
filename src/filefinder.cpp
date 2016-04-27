@@ -544,23 +544,59 @@ bool FileFinder::Exists(std::string const& filename) {
 #elif defined(GEKKO)
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
+#elif defined(_3DS)
+	FILE* tmp = fopen(filename.c_str(),"r");
+	if (tmp == NULL){ 
+		DIR* tmp2 = opendir(filename.c_str());
+		if (tmp2 == NULL){ 
+			std::string tmp_str = filename + "/";
+			tmp2 = opendir(tmp_str.c_str());
+			if (tmp2 == NULL) return false;
+			else{
+				closedir(tmp2);
+				return true;
+			}
+		}else{
+			closedir(tmp2);
+			return true;
+		}
+	}else{
+		fclose(tmp);
+		return true;
+	}
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
+
+#ifdef _3DS
+	DIR* d = opendir(dir.c_str());
+	if(d) {
+		closedir(d);
+		return true;
+	}else{
+		std::string tmp_str = dir + "/";
+		d = opendir(tmp_str.c_str());
+		if(d) {
+			closedir(d);
+			return true;
+		}
+	}
+	return false;
+#else
 	if (!Exists(dir)) {
 		return false;
 	}
-
+#endif
 #ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
 	      == FILE_ATTRIBUTE_DIRECTORY;
 #else
 	struct stat sb;
-#   ifdef GEKKO
+#   if (defined(GEKKO) || defined(_3DS))
 	::stat(dir.c_str(), &sb);
 #   else
 	::lstat(dir.c_str(), &sb);
@@ -584,6 +620,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath Utils::ToWideString(path)
 #  define dirent _wdirent
 #  define readdir _wreaddir
+#elif _3DS
+	std::string wpath = path + "/";
 #else
 #  define wpath path
 #endif
