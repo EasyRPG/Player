@@ -557,7 +557,10 @@ void Game_Event::MoveTypeRandom() {
 	int last_direction = GetDirection();
 	switch (rand() % 6) {
 	case 0:
-		stop_count -= rand() % stop_count;
+		stop_count -= rand() % (stop_count + 1);
+		if (stop_count < 0) {
+			stop_count = 0;
+		}
 		return;
 	case 1:
 		MoveForward();
