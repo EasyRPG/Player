@@ -304,6 +304,7 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
+	$(HARFBUZZ_CFLAGS) \
 	$(SDL_CFLAGS) \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
@@ -312,6 +313,7 @@ libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
+	$(HARFBUZZ_LIBS) \
 	$(SDL_LIBS) \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
