@@ -56,6 +56,33 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 	return res;
 }
 
+int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
+	int freq; Format format; Channel channels;
+	GetFormat(freq, format, channels);
+
+	if (channels == Channel::Mono) {
+		return Decode(left, size);
+	}
+
+	if (mono_buffer.size() < size * 2) {
+		mono_buffer.resize(size * 2);
+	}
+	
+	int read = Decode(mono_buffer.data(), size * 2);
+	if (read < 0) {
+		return -1;
+	}
+
+	int sample_size = GetSamplesizeForFormat(format);
+
+	for (int i = 0; i < read / 2; i += sample_size) {
+		memcpy(&left[i], &mono_buffer.data()[i * 2], sample_size);
+		memcpy(&right[i], &mono_buffer.data()[i * 2 + sample_size], sample_size);
+	}
+
+	return read / 2;
+}
+
 static bool ends_with(std::string const& value, std::string const& ending) {
 	 if (ending.size() > value.size()) return false;
 	 return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
@@ -175,4 +202,22 @@ size_t AudioDecoder::Tell() {
 
 int AudioDecoder::GetTicks() {
 	return 0;
+}
+
+int AudioDecoder::GetSamplesizeForFormat(AudioDecoder::Format format) {
+	switch (format) {
+		case Format::S8:
+		case Format::U8:
+			return 1;
+		case Format::S16:
+		case Format::U16:
+			return 2;
+		case Format::S32:
+		case Format::U32:
+		case Format::F32:
+			return 4;
+	}
+
+	assert(false && "Bad format");
+	return -1;
 }

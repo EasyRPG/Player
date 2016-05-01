@@ -32,7 +32,10 @@ public:
 		S8,
 		U8,
 		S16,
-		U16
+		U16,
+		S32,
+		U32,
+		F32
 	};
 
 	enum class Channel {
@@ -46,7 +49,29 @@ public:
 		End = 2
 	};
 
-	int Decode(uint8_t* buffer, int length);
+	/**
+	 * Writes 'size' bytes in the specified buffer. The data matches the format
+	 * reported by GetFormat.
+	 * This function will not clear the buffer before (partially) filling it.
+	 *
+	 * @param buffer Output buffer
+	 * @param size Size of the buffer
+	 * @return Number of bytes written to the buffer or -1 on error
+	 */
+	int Decode(uint8_t* buffer, int size);
+
+	/**
+	 * Splits stereo into mono and Writes 'size' bytes in each of the buffers.
+	 * The data matches the format reported by GetFormat, except that both
+	 * buffers will contain Mono audio. When the source format was already mono
+	 * the 'right' buffer is not filled.
+	 *
+	 * @param left Output buffer of the left channel
+	 * @param right Output buffer of the right channel (or nothing if source is mono)
+	 * @param size Size of both buffers.
+	 * @return Number of bytes written in one of the buffers or -1 on error
+	 */
+	int DecodeAsMono(uint8_t* left, uint8_t* right, int size);
 
 	static std::unique_ptr<AudioDecoder> Create(FILE** file, const std::string& filename);
 
@@ -80,6 +105,8 @@ public:
 	virtual size_t Tell();
 
 	virtual int GetTicks();
+
+	static int GetSamplesizeForFormat(AudioDecoder::Format format);
 protected:
 	virtual int FillBuffer(uint8_t* buffer, int length) = 0;
 	int loop_count = 0;
@@ -93,6 +120,8 @@ private:
 
 	bool looping = false;
 	int loops = 0;
+
+	std::vector<uint8_t> mono_buffer;
 };
 
 #endif
