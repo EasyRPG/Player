@@ -51,6 +51,7 @@ Mpg123Decoder::Mpg123Decoder() :
 
 	handle.reset(mpg123_new(nullptr, &err));
 	mpg123_replace_reader_handle(handle.get(), custom_read, custom_seek, custom_close);
+	mpg123_param(handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
 
 	if (!handle) {
 		Output::Warning("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(err));
