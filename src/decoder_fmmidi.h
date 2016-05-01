@@ -20,14 +20,14 @@
 
 // Headers
 #include <string>
-#include <functional>
-
-#include <vector>
 #include <memory>
 #include "audio_decoder.h"
 #include "midisequencer.h"
 #include "midisynth.h"
 
+/**
+ * Audio decoder for MIDI powered by FM MIDI
+ */
 class FmMidiDecoder : public AudioDecoder, midisequencer::output {
 public:
 	FmMidiDecoder();
@@ -43,9 +43,9 @@ public:
 
 	std::string GetError() const override;
 
-	void GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const override;
+	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
-	bool SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) override;
+	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
 	bool SetPitch(int pitch) override;
 

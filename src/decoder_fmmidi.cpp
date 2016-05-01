@@ -64,16 +64,16 @@ std::string FmMidiDecoder::GetError() const {
 	return std::string();
 }
 
-void FmMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const {
+void FmMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& channels) const {
 	freq = frequency;
 	format = Format::S16;
-	channels = Channel::Stereo;
+	channels = 2;
 }
 
-bool FmMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, AudioDecoder::Channel channels) {
+bool FmMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, int channels) {
 	frequency = freq;
 
-	if (channels != Channel::Stereo || format != Format::S16) {
+	if (channels != 2 || format != Format::S16) {
 		return false;
 	}
 

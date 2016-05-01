@@ -24,10 +24,14 @@
 #include <memory>
 
 /**
- * Audio Decoder Namespace
+ * The AudioDecoder class provides an abstraction over the decoding of
+ * common audio formats.
+ * Create will instantitate a proper audio decoder and calling Decode will
+ * fill a buffer with audio data which must be passed to the audio hardware.
  */
 class AudioDecoder {
 public:
+	/** Sample format */
 	enum class Format {
 		S8,
 		U8,
@@ -38,11 +42,7 @@ public:
 		F32
 	};
 
-	enum class Channel {
-		Mono = 1,
-		Stereo = 2
-	};
-
+	/** Seek origin for Seek command */
 	enum class Origin {
 		Begin = 0,
 		Current = 1,
@@ -73,42 +73,211 @@ public:
 	 */
 	int DecodeAsMono(uint8_t* left, uint8_t* right, int size);
 
+	/**
+	 * Parses the specified file handle and open a proper audio decoder to handle
+	 * the audio file.
+	 * Upon success the file handle is owned by the audio decoder and further
+	 * operations on it will be undefined! Upon failure the file handle points at
+	 * the beginning.
+	 * The filename must match the file handle because reopening of the file handle
+	 * is required.
+	 *
+	 * @param file File handle to parse
+	 * @param filename Path to the file handle
+	 * @return An audio decoder instance when the format was detected, otherwise null
+	 */
 	static std::unique_ptr<AudioDecoder> Create(FILE** file, const std::string& filename);
 
+	/**
+	 * Updates the volume for the fade in/out effect.
+	 * Volume changes will not really modify the volume but are only helper
+	 * functions for retrieving the volume information for the audio hardware.
+	 *
+	 * @param delta Time in ms since the last call of this function.
+	 */
 	void Update(int delta);
 
+	/**
+	 * Prepares a volume fade in/out effect.
+	 * To do a fade out begin must be larger then end.
+	 * Call Update to do the fade.
+	 * Volume changes will not really modify the volume but are only helper
+	 * functions for retrieving the volume information for the audio hardware.
+	 *
+	 * @param begin Begin volume (from 0-100)
+	 * @param end End volume (from 0-100)
+	 * @param duration Fade duration in ms
+	 */
 	void SetFade(int begin, int end, int duration);
+
+	/**
+	 * Sets the volume of the audio decoder.
+	 * Volume changes will not really modify the volume but are only helper
+	 * functions for retrieving the volume information for the audio hardware.
+	 *
+	 * @param volume (from 0-100)
+	 */
 	void SetVolume(int volume);
+
+	/**
+	 * Gets the volume of the audio decoder.
+	 * Volume changes will not really modify the volume but are only helper
+	 * functions for retrieving the volume information for the audio hardware.
+	 */
 	int GetVolume() const;
 
+	/**
+	 * Pauses the audio decoding.
+	 * Calling any Decode function will return a 0-buffer.
+	 */
 	void Pause();
+
+	/**
+	 * Resumes the audio decoding.
+	 * The decode function will continue behaving as expected.
+	 */
 	void Resume();
+
+	/**
+	 * Rewinds the audio stream to the beginning.
+	 *
+	 * @return true if rewind was successful
+	 */
 	bool Rewind();
 
+	/**
+	 * Gets if the audio stream will loop when the stream finishes.
+	 *
+	 * @return if looping
+	 */
 	bool GetLooping() const;
+
+	/**
+	 * Enables/Disables audio stream looping.
+	 * When looping is enabled IsFinished will never return true and the stream
+	 * auto-rewinds (assuming Rewind is supported)
+	 *
+	 * @param enable Enable/Disable looping
+	 */
 	void SetLooping(bool enable);
+
+	/**
+	 * Gets the number of loops
+	 *
+	 * @return loop count
+	 */
 	int GetLoopCount() const;
 
+	// Functions to be implemented by the audio decoder
+
+	/**
+	 * Assigns a file handle to the audio decoder.
+	 * Open should be only called once per audio decoder instance.
+	 * Use GetError to get the error reason on failure.
+	 *
+	 * @return true if inititalizing was succesful, false otherwise
+	 */
 	virtual bool Open(FILE* file) = 0;
 
+	/**
+	 * Determines whether the stream is finished.
+	 *
+	 * @return true stream ended
+	 */
 	virtual bool IsFinished() const = 0;
 
+	/**
+	 * Provides an error message when Open or a Decode function fail.
+	 *
+	 * @return Human readable error message
+	 */
 	virtual std::string GetError() const = 0;
 
-	virtual void GetFormat(int& frequency, Format& format, Channel& channels) const = 0;
-	virtual bool SetFormat(int frequency, Format format, Channel channels);
+	/**
+	 * Retrieves the format of the audio decoder.
+	 * It is guaranteed that these settings will stay constant the whole time.
+	 *
+	 * @param frequency Filled with the audio frequency
+	 * @param format Filled with the audio format
+	 * @param channel Filled with the amount of channels
+	 */
+	virtual void GetFormat(int& frequency, Format& format, int& channels) const = 0;
 
+	/**
+	 * Requests a prefered format from the audio decoder. Not all decoders
+	 * support everything and it's recommended to use the audio hardware
+	 * for audio processing.
+	 * When false is returned use GetFormat to get the real format of the
+	 * output data.
+	 *
+	 * @param frequency Audio frequency
+	 * @param format Audio format
+	 * @param channel Number of channels
+	 * @return true when all settings were set, otherwise false (use GetFormat)
+	 */
+	virtual bool SetFormat(int frequency, Format format, int channels);
+
+	/**
+	 * Gets the pitch multiplier.
+	 *
+	 * @return pitch multiplier
+	 */
 	virtual int GetPitch() const;
+
+	/**
+	 * Sets the pitch multiplier.
+	 * 100 = normal speed
+	 * 200 = double speed and so on
+	 * Not all audio decoders support this. Using the audio hardware is
+	 * recommended.
+	 * 
+	 * @param pitch Pitch multiplier to use
+	 * @return true if pitch was set, false otherwise
+	 */
 	virtual bool SetPitch(int pitch);
 
+	/**
+	 * Seeks in the audio stream. The value of offset is implementation
+	 * defined but is guaranteed to match the result of Tell.
+	 *
+	 * @param offset Offset to seek to
+	 * @param origin Position to seek from
+	 * @return Whether seek was successful
+	 */
 	virtual bool Seek(size_t offset, Origin origin);
+
+	/**
+	 * Tells the current stream position. The value is implementation
+	 * defined.
+	 *
+	 * @return Position in the stream
+	 */
 	virtual size_t Tell();
 
+	/**
+	 * Returns amount of executed ticks. Only useful for MIDI format.
+	 *
+	 * @return Amount of MIDI ticks.
+	 */
 	virtual int GetTicks();
 
+	/**
+	 * Returns the amount of bytes per sample.
+	 *
+	 * @param Sample format
+	 * @return Bytes per sample
+	 */
 	static int GetSamplesizeForFormat(AudioDecoder::Format format);
 protected:
-	virtual int FillBuffer(uint8_t* buffer, int length) = 0;
+	/**
+	 * Called by the Decode functions to fill the buffer.
+	 *
+	 * @param buffer Buffer to fill
+	 * @param size Buffer size
+	 * @return number of bytes read or -1 on error
+	 */
+	virtual int FillBuffer(uint8_t* buffer, int size) = 0;
+
 	int loop_count = 0;
 
 private:

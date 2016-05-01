@@ -231,11 +231,11 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		}
 		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
 
-		audio_decoder->SetFormat(audio_rate, audio_format, (AudioDecoder::Channel)audio_channels);
+		audio_decoder->SetFormat(audio_rate, audio_format, audio_channels);
 
 		int device_rate;
 		AudioDecoder::Format device_format;
-		AudioDecoder::Channel device_channels;
+		int device_channels;
 		audio_decoder->GetFormat(device_rate, device_format, device_channels);
 
 		// Don't care if successful, always build cvt

@@ -22,9 +22,11 @@
 #include "audio_decoder.h"
 #include <string>
 #include <mpg123.h>
-#include <vector>
 #include <memory>
 
+/**
+ * Audio decoder for MP3 powered by mpg123
+ */
 class Mpg123Decoder : public AudioDecoder {
 public:
 	Mpg123Decoder();
@@ -39,9 +41,9 @@ public:
 
 	std::string GetError() const override;
 
-	void GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const override;
+	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
-	bool SetFormat(int frequency, AudioDecoder::Format format, AudioDecoder::Channel channels) override;
+	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
 	static bool IsMp3(FILE* stream);
 private:

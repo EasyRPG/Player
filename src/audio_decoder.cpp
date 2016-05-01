@@ -57,10 +57,10 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 }
 
 int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
-	int freq; Format format; Channel channels;
+	int freq; Format format; int channels;
 	GetFormat(freq, format, channels);
 
-	if (channels == Channel::Mono) {
+	if (channels == 1) {
 		return Decode(left, size);
 	}
 
@@ -180,7 +180,7 @@ int AudioDecoder::GetLoopCount() const {
 	return loop_count;
 }
 
-bool AudioDecoder::SetFormat(int, Format, Channel) {
+bool AudioDecoder::SetFormat(int, Format, int) {
 	return false;
 }
 

@@ -118,7 +118,7 @@ static AudioDecoder::Format mpg123_format_to_format(int format) {
 	}
 }
 
-void Mpg123Decoder::GetFormat(int& frequency, AudioDecoder::Format& format, AudioDecoder::Channel& channels) const {
+void Mpg123Decoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	long freq;
 	int ch;
 	int fmt;
@@ -126,11 +126,11 @@ void Mpg123Decoder::GetFormat(int& frequency, AudioDecoder::Format& format, Audi
 	mpg123_getformat(handle.get(), &freq, &ch, &fmt);
 
 	frequency = (int)freq;
-	channels = (AudioDecoder::Channel)ch;
+	channels = ch;
 	format = mpg123_format_to_format(fmt);
 }
 
-bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, AudioDecoder::Channel channels) {
+bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
 	// mpg123 has a built-in pseudo-resampler, not needing SDL_ConvertAudio later
 	// Remove all available conversion formats
 	// Add just one format to force mpg123 pseudo-resampler work
