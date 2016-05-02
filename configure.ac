@@ -23,6 +23,10 @@ AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port
 AS_IF([test "x$EM_GAME_URL" != "x"],[
 	AC_DEFINE_UNQUOTED([EM_GAME_URL], ["$EM_GAME_URL"], [Game URL (Emscripten)])
 ])
+AC_ARG_ENABLE([fmmidi], AS_HELP_STRING([--enable-fmmidi], [Enable built-in FM MIDI synthesizer]))
+AS_IF([test "x$enable_fmmidi" = "xyes"], [
+	AC_DEFINE(HAVE_FMMIDI, [1], [Enable built-in FM MIDI synthesizer])
+])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([LCF],[liblcf])
