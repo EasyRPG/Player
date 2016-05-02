@@ -334,7 +334,7 @@ public class SettingsActivity extends Activity {
 					layout.setButton_list(
 							ButtonMappingModel.InputLayout.getDefaultButtonList(getApplicationContext()));
 					mapping_model.add(layout);
-
+					editInputLayout(layout) ;
 					refreshAndSaveLayoutList();
 				}
 			}
