@@ -101,7 +101,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-foreach(i Expat Freetype Pixman ZLIB PNG SDL2 Iconv)
+foreach(i Expat Freetype Harfbuzz Pixman ZLIB PNG SDL2 Iconv)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
