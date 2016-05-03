@@ -45,7 +45,7 @@ Mpg123Decoder::Mpg123Decoder() :
 {
 	err = mpg123_init();
 	if (err != MPG123_OK) {
-		Output::Warning("Couldn't initialize mpg123.\n%s", mpg123_plain_strerror(err));
+		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
 		return;
 	}
 
@@ -54,20 +54,26 @@ Mpg123Decoder::Mpg123Decoder() :
 	mpg123_param(handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
 
 	if (!handle) {
-		Output::Warning("Couldn't create mpg123 handle.\n%s", mpg123_plain_strerror(err));
+		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
 		return;
 	}
+
+	init = true;
 }
 
 Mpg123Decoder::~Mpg123Decoder() {
 }
 
 bool Mpg123Decoder::Open(FILE* file) {
+	if (!init) {
+		return false;
+	}
+
 	finished = false;
 
 	err = mpg123_open_handle(handle.get(), file);
 	if (err != MPG123_OK) {
-		Output::Warning("Couldn't open mpg123 file.\n%s", mpg123_plain_strerror(err));
+		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
 		return false;
 	}
 
@@ -91,32 +97,48 @@ std::string Mpg123Decoder::GetError() const {
 
 static int format_to_mpg123_format(AudioDecoder::Format format) {
 	switch (format) {
-	case AudioDecoder::Format::U8:
-		return MPG123_ENC_UNSIGNED_8;
-	case AudioDecoder::Format::S8:
-		return MPG123_ENC_SIGNED_8;
-	case AudioDecoder::Format::U16:
-		return MPG123_ENC_UNSIGNED_16;
-	case AudioDecoder::Format::S16:
-		return MPG123_ENC_SIGNED_16;
-	default:
-		assert(false);
+		case AudioDecoder::Format::U8:
+			return MPG123_ENC_UNSIGNED_8;
+		case AudioDecoder::Format::S8:
+			return MPG123_ENC_SIGNED_8;
+		case AudioDecoder::Format::U16:
+			return MPG123_ENC_UNSIGNED_16;
+		case AudioDecoder::Format::S16:
+			return MPG123_ENC_SIGNED_16;
+		case AudioDecoder::Format::U32:
+			return MPG123_ENC_UNSIGNED_32;
+		case AudioDecoder::Format::S32:
+			return MPG123_ENC_SIGNED_32;
+		case AudioDecoder::Format::F32:
+			return MPG123_ENC_FLOAT_32;
+		default:
+			assert(false);
 	}
+
+	return -1;
 }
 
 static AudioDecoder::Format mpg123_format_to_format(int format) {
 	switch (format) {
-	case MPG123_ENC_UNSIGNED_8:
-		return AudioDecoder::Format::U8;
-	case MPG123_ENC_SIGNED_8:
-		return AudioDecoder::Format::S8;
-	case MPG123_ENC_UNSIGNED_16:
-		return AudioDecoder::Format::U16;
-	case MPG123_ENC_SIGNED_16:
-		return AudioDecoder::Format::S16;
-	default:
-		assert(false);
+		case MPG123_ENC_UNSIGNED_8:
+			return AudioDecoder::Format::U8;
+		case MPG123_ENC_SIGNED_8:
+			return AudioDecoder::Format::S8;
+		case MPG123_ENC_UNSIGNED_16:
+			return AudioDecoder::Format::U16;
+		case MPG123_ENC_SIGNED_16:
+			return AudioDecoder::Format::S16;
+		case MPG123_ENC_UNSIGNED_32:
+			return AudioDecoder::Format::U32;
+		case MPG123_ENC_SIGNED_32:
+			return AudioDecoder::Format::S32;
+		case MPG123_ENC_FLOAT_32:
+			return AudioDecoder::Format::F32;
+		default:
+			assert(false);
 	}
+
+	return (AudioDecoder::Format)-1;
 }
 
 void Mpg123Decoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {

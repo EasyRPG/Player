@@ -49,7 +49,7 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 	int res = FillBuffer(buffer, length);
 
 	if (IsFinished() && looping) {
-		++loops;
+		++loop_count;
 		Rewind();
 	}
 
@@ -81,11 +81,6 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	}
 
 	return read / 2;
-}
-
-static bool ends_with(std::string const& value, std::string const& ending) {
-	 if (ending.size() > value.size()) return false;
-	 return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
 
 std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE** file, const std::string& filename) {
@@ -178,6 +173,10 @@ void AudioDecoder::SetLooping(bool enable) {
 
 int AudioDecoder::GetLoopCount() const {
 	return loop_count;
+}
+
+std::string AudioDecoder::GetError() const {
+	return error_message;
 }
 
 bool AudioDecoder::SetFormat(int, Format, int) {

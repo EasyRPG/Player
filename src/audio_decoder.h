@@ -168,8 +168,15 @@ public:
 	 */
 	int GetLoopCount() const;
 
-	// Functions to be implemented by the audio decoder
 
+	/**
+	 * Provides an error message when Open or a Decode function fail.
+	 *
+	 * @return Human readable error message
+	 */
+	virtual std::string GetError() const;
+
+	// Functions to be implemented by the audio decoder
 	/**
 	 * Assigns a file handle to the audio decoder.
 	 * Open should be only called once per audio decoder instance.
@@ -185,13 +192,6 @@ public:
 	 * @return true stream ended
 	 */
 	virtual bool IsFinished() const = 0;
-
-	/**
-	 * Provides an error message when Open or a Decode function fail.
-	 *
-	 * @return Human readable error message
-	 */
-	virtual std::string GetError() const = 0;
 
 	/**
 	 * Retrieves the format of the audio decoder.
@@ -278,8 +278,7 @@ protected:
 	 */
 	virtual int FillBuffer(uint8_t* buffer, int size) = 0;
 
-	int loop_count = 0;
-
+	std::string error_message;
 private:
 	bool paused = false;
 	double volume = 0;
@@ -288,7 +287,7 @@ private:
 	double delta_step = 0;
 
 	bool looping = false;
-	int loops = 0;
+	int loop_count = 0;
 
 	std::vector<uint8_t> mono_buffer;
 };

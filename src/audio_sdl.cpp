@@ -85,9 +85,15 @@ namespace {
 			return AUDIO_U16;
 		case AudioDecoder::Format::S16:
 			return AUDIO_S16;
+		case AudioDecoder::Format::S32:
+			return AUDIO_S32;
+		case AudioDecoder::Format::F32:
+			return AUDIO_F32;
 		default:
 			assert(false);
 		}
+
+		return -1;
 	}
 
 	AudioDecoder::Format sdl_format_to_format(Uint16 format) {
@@ -96,13 +102,19 @@ namespace {
 			return AudioDecoder::Format::U8;
 		case AUDIO_S8:
 			return AudioDecoder::Format::S8;
-		case AUDIO_U16SYS:
+		case AUDIO_U16:
 			return AudioDecoder::Format::U16;
-		case AUDIO_S16SYS:
+		case AUDIO_S16:
 			return AudioDecoder::Format::S16;
+		case AUDIO_S32:
+			return AudioDecoder::Format::S32;
+		case AUDIO_F32:
+			return AudioDecoder::Format::F32;
 		default:
 			assert(false);
 		}
+
+		return (AudioDecoder::Format)-1;
 	}
 }
 

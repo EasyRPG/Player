@@ -40,7 +40,10 @@ bool FmMidiDecoder::Open(FILE* file) {
 	this->file = file;
 
 	seq->clear();
-	seq->load(file);
+	if (!seq->load(file)) {
+		error_message = "FM Midi: Error reading file";
+		return false;
+	}
 	seq->rewind();
 
 	return true;
@@ -58,10 +61,6 @@ bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 
 bool FmMidiDecoder::IsFinished() const {
 	return mtime >= seq->get_total_time();
-}
-
-std::string FmMidiDecoder::GetError() const {
-	return std::string();
 }
 
 void FmMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& channels) const {
