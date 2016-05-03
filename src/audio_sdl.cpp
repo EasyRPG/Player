@@ -50,6 +50,9 @@ namespace {
 
 		SdlAudio* audio = static_cast<SdlAudio*>(udata);
 		len = audio->GetDecoder()->Decode(buffer.data(), len);
+		if (len == -1) {
+			Output::DebugStr(audio->GetDecoder()->GetError());
+		}
 
 		if (audio->GetDecoder()->IsFinished()) {
 			Mix_HookMusic(nullptr, nullptr);
@@ -230,7 +233,11 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	audio_decoder = AudioDecoder::Create(&filehandle, path);
 
 	if (audio_decoder) {
-		audio_decoder->Open(filehandle);
+		if (!audio_decoder->Open(filehandle)) {
+			Output::WarningStr(audio_decoder->GetError());
+			audio_decoder.reset();
+			return;
+		}
 		audio_decoder->SetLooping(true);
 		bgm_starttick = SDL_GetTicks();
 
@@ -238,7 +245,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		Uint16 sdl_format;
 		int audio_channels;
 		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-			Output::Warning("Couldn't query mixer spec.\n %s", Mix_GetError());
+			Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
 			return;
 		}
 		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);

@@ -39,8 +39,6 @@ public:
 
 	bool IsFinished() const override;
 
-	std::string GetError() const override;
-
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;

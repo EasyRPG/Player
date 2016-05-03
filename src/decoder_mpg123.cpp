@@ -91,10 +91,6 @@ bool Mpg123Decoder::IsFinished() const {
 	return finished;
 }
 
-std::string Mpg123Decoder::GetError() const {
-	return std::string(mpg123_plain_strerror(err));
-}
-
 static int format_to_mpg123_format(AudioDecoder::Format format) {
 	switch (format) {
 		case AudioDecoder::Format::U8:

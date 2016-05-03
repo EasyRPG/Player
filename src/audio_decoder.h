@@ -140,10 +140,8 @@ public:
 
 	/**
 	 * Rewinds the audio stream to the beginning.
-	 *
-	 * @return true if rewind was successful
 	 */
-	bool Rewind();
+	void Rewind();
 
 	/**
 	 * Gets if the audio stream will loop when the stream finishes.
@@ -167,7 +165,6 @@ public:
 	 * @return loop count
 	 */
 	int GetLoopCount() const;
-
 
 	/**
 	 * Provides an error message when Open or a Decode function fail.
@@ -239,6 +236,7 @@ public:
 	/**
 	 * Seeks in the audio stream. The value of offset is implementation
 	 * defined but is guaranteed to match the result of Tell.
+	 * Only Rewinding is guaranteed to work.
 	 *
 	 * @param offset Offset to seek to
 	 * @param origin Position to seek from

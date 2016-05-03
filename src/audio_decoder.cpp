@@ -159,8 +159,11 @@ int AudioDecoder::GetVolume() const {
 	return (int)volume;
 }
 
-bool AudioDecoder::Rewind() {
-	return Seek(0, Origin::Begin);
+void AudioDecoder::Rewind() {
+	if (!Seek(0, Origin::Begin)) {
+		// The libs guarantee that Rewind works
+		assert(false && "Rewind");
+	}
 }
 
 bool AudioDecoder::GetLooping() const {
