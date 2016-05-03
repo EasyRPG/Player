@@ -57,7 +57,7 @@ CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO \
-				-DUSE_CACHE -DNO_DEBUG
+				-DUSE_CACHE -DNO_DEBUG -DHAVE_MPG123 -DWANT_FMMIDI=1
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
@@ -67,7 +67,7 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) \
 
 LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata \
 		-lpixman-1 -lpng -lz -lkhax \
-		-lvorbisidec -logg -lm
+		-lvorbisidec -logg -lmpg123 -lm
 
 
 #---------------------------------------------------------------------------------
