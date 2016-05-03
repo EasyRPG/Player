@@ -356,6 +356,10 @@ void SdlAudio::BGM_Stop() {
 }
 
 bool SdlAudio::BGM_PlayedOnce() {
+	if (audio_decoder) {
+		return audio_decoder->GetLoopCount() > 0;
+	}
+
 	return played_once;
 }
 
