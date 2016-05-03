@@ -24,7 +24,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_FMMIDI
+#ifdef WANT_FMMIDI
 #include "decoder_fmmidi.h"
 #endif
 
@@ -88,7 +88,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	fread(magic, 4, 1, file);
 	fseek(file, 0, SEEK_SET);
 
-#ifdef HAVE_FMMIDI
+#if WANT_FMMIDI == 1
 	if (!strncmp(magic, "MThd", 4)) {
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
 	}

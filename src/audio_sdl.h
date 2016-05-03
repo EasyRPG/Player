@@ -19,20 +19,12 @@
 #define _AUDIO_SDL_H_
 
 #include "audio.h"
+#include "audio_decoder.h"
 
 #include <map>
 
 #include <SDL.h>
 #include <SDL_mixer.h>
-
-#ifdef HAVE_MPG123
-#  include <mpg123.h>
-#  include "decoder_mpg123.h"
-#endif
-
-#ifdef HAVE_FMMIDI
-#  include "decoder_fmmidi.h"
-#endif
 
 struct SdlAudio : public AudioInterface {
 	SdlAudio();

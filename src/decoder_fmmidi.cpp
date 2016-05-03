@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_FMMIDI
+#ifdef WANT_FMMIDI
 
 // Headers
 #include <cassert>
