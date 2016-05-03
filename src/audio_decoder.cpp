@@ -83,10 +83,10 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	return read / 2;
 }
 
-std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE** file, const std::string& filename) {
+std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string& filename) {
 	char magic[4] = { 0 };
-	fread(magic, 4, 1, *file);
-	fseek(*file, 0, SEEK_SET);
+	fread(magic, 4, 1, file);
+	fseek(file, 0, SEEK_SET);
 
 #ifdef HAVE_FMMIDI
 	if (!strncmp(magic, "MThd", 4)) {
@@ -109,13 +109,14 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE** file, const std::strin
 	}
 
 	// Parsing MP3s seems to be the only reliable way to detect them
-	if (Mpg123Decoder::IsMp3(*file)) {
-		// File must be reopened because mpg123 closes it when being destructed
-		*file = FileFinder::fopenUTF8(filename.c_str(), "rb");
+	if (Mpg123Decoder::IsMp3(file)) {
+		Output::Debug("MP3 heuristic: %s", filename.c_str());
+		fseek(file, 0, SEEK_SET);
 		return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
 	}
 #endif
 
+	fseek(file, 0, SEEK_SET);
 	return std::unique_ptr<AudioDecoder>();
 }
 

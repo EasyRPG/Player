@@ -79,14 +79,14 @@ public:
 	 * Upon success the file handle is owned by the audio decoder and further
 	 * operations on it will be undefined! Upon failure the file handle points at
 	 * the beginning.
-	 * The filename must match the file handle because reopening of the file handle
-	 * is required.
+	 * The filename is used for debug purposes but should match the FILE handle.
+	 * Upon failure the FILE handle is valid and points at the beginning.
 	 *
 	 * @param file File handle to parse
 	 * @param filename Path to the file handle
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(FILE** file, const std::string& filename);
+	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename);
 
 	/**
 	 * Updates the volume for the fade in/out effect.

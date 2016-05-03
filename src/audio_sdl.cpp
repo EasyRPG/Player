@@ -230,7 +230,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 
 	FILE* filehandle = FileFinder::fopenUTF8(path, "rb");
 
-	audio_decoder = AudioDecoder::Create(&filehandle, path);
+	audio_decoder = AudioDecoder::Create(filehandle, path);
 
 	if (audio_decoder) {
 		if (!audio_decoder->Open(filehandle)) {

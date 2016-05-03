@@ -40,6 +40,8 @@ static void custom_close(void* io) {
 	fclose(f);
 }
 
+static void noop_close(void*) {}
+
 Mpg123Decoder::Mpg123Decoder() :
 	handle(nullptr, mpg123_delete)
 {
@@ -51,7 +53,6 @@ Mpg123Decoder::Mpg123Decoder() :
 
 	handle.reset(mpg123_new(nullptr, &err));
 	mpg123_replace_reader_handle(handle.get(), custom_read, custom_seek, custom_close);
-	mpg123_param(handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
 
 	if (!handle) {
 		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
@@ -170,12 +171,20 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) 
 
 bool Mpg123Decoder::IsMp3(FILE* stream) {
 	Mpg123Decoder decoder;
-	decoder.Open(stream);
+	// Prevent stream handle destruction
+	mpg123_replace_reader_handle(decoder.handle.get(), custom_read, custom_seek, noop_close);
+	// Prevent skipping of too many garbage, breaks heuristic
+	mpg123_param(decoder.handle.get(), MPG123_RESYNC_LIMIT, 64, 0.0);
+	if (!decoder.Open(stream)) {
+		return false;
+	}
+
 	unsigned char buffer[1024];
 	int err = 0;
 	size_t done = 0;
 	int err_count = 0;
 	
+	// Read beginning of assumed MP3 file and count errors as an heuristic to detect MP3
 	for (int i = 0; i < 10; ++i) {
 		err = mpg123_read(decoder.handle.get(), buffer, 1024, &done);
 		if (err != MPG123_OK) {
