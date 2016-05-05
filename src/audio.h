@@ -53,7 +53,8 @@ struct AudioInterface {
 	virtual bool BGM_PlayedOnce() = 0;
 
 	/**
-	 * TODO
+	 * Returns the current MIDI tick of the background music.
+	 * Only useful when the BGM is a MIDI track.
 	 */
 	virtual unsigned BGM_GetTicks() = 0;
 
@@ -104,18 +105,18 @@ struct AudioInterface {
 };
 
 struct EmptyAudio : public AudioInterface {
-	void BGM_Play(std::string const&, int, int, int);
-	void BGM_Pause() {}
-	void BGM_Resume() {}
-	void BGM_Stop() {}
-	bool BGM_PlayedOnce();
-	unsigned BGM_GetTicks();
-	void BGM_Fade(int) {}
-	void BGM_Volume(int) {}
-	void BGM_Pitch(int) {};
-	void SE_Play(std::string const&, int, int) {}
-	void SE_Stop() {}
-	void Update() {}
+	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Pause() override {}
+	void BGM_Resume() override {}
+	void BGM_Stop() override {}
+	bool BGM_PlayedOnce() override;
+	unsigned BGM_GetTicks() override;
+	void BGM_Fade(int) override {}
+	void BGM_Volume(int) override {}
+	void BGM_Pitch(int) override {};
+	void SE_Play(std::string const&, int, int) override {}
+	void SE_Stop() override {}
+	void Update() override {}
 
 	unsigned bgm_starttick = 0;
 };

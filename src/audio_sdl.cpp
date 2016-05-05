@@ -522,37 +522,6 @@ int SdlAudio::BGS_GetChannel() const {
 	return bgs_channel;
 }
 
-void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		Output::Debug("Music not found: %s", file.c_str());
-		return;
-	}
-	me.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
-	if (!me) {
-		Output::Warning("Couldn't load %s ME.\n%s", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_channel = Mix_FadeInChannel(-1, me.get(), 0, fadein);
-	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
-	if (me_channel == -1) {
-		Output::Warning("Couldn't play %s ME.\n%s", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_stopped_bgm = (Mix_PlayingMusic() == 1);
-	// Mix_ChannelFinished(me_finish);
-}
-
-void SdlAudio::ME_Stop() {
-	if (Mix_Playing(me_channel)) {
-		Mix_HaltChannel(me_channel);
-	}
-}
-
-void SdlAudio::ME_Fade(int fade) {
-	Mix_FadeOutChannel(me_channel, fade);
-}
-
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindSound(file);
 	if (path.empty()) {

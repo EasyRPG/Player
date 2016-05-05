@@ -36,24 +36,18 @@
 struct ALAudio : public AudioInterface {
 	ALAudio(char const *dev_name = NULL);
 
-	void BGM_Play(std::string const &, int, int, int);
-	void BGM_Pause();
-	void BGM_Resume();
-	void BGM_Stop();
-	bool BGM_PlayedOnce();
-	unsigned BGM_GetTicks();
-	void BGM_Fade(int);
-	void BGM_Volume(int);
-	void BGM_Pitch(int);
-	void BGS_Play(std::string const &, int, int, int);
-	void BGS_Stop();
-	void BGS_Fade(int);
-	void ME_Play(std::string const &, int, int, int);
-	void ME_Stop();
-	void ME_Fade(int);
-	void SE_Play(std::string const &, int, int);
-	void SE_Stop();
-	void Update();
+	void BGM_Play(std::string const &, int, int, int) override;
+	void BGM_Pause() override;
+	void BGM_Resume() override;
+	void BGM_Stop() override;
+	bool BGM_PlayedOnce() override;
+	unsigned BGM_GetTicks() override;
+	void BGM_Fade(int) override;
+	void BGM_Volume(int) override;
+	void BGM_Pitch(int) override;
+	void SE_Play(std::string const &, int, int) override;
+	void SE_Stop() override;
+	void Update() override;
 
 	static char const WAVE_OUTPUT_DEVICE[];
 	static char const NULL_DEVICE[];
@@ -73,7 +67,7 @@ private:
 	std::shared_ptr<ALCdevice> dev_;
 	std::shared_ptr<ALCcontext> ctx_;
 
-	std::shared_ptr<source> bgm_src_, bgs_src_, me_src_;
+	std::shared_ptr<source> bgm_src_;
 
 	typedef std::vector<std::shared_ptr<source> > source_list;
 	source_list se_src_;
