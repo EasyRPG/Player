@@ -33,6 +33,10 @@
 #  include "util_win.h"
 #endif
 
+#if WANT_FMMIDI == 2
+#  include "decoder_fmmidi.h"
+#endif
+
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
@@ -229,44 +233,17 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	}
 
 	FILE* filehandle = FileFinder::fopenUTF8(path, "rb");
-
-	audio_decoder = AudioDecoder::Create(filehandle, path);
-
-	if (audio_decoder) {
-		if (!audio_decoder->Open(filehandle)) {
-			Output::WarningStr(audio_decoder->GetError());
-			audio_decoder.reset();
-			return;
-		}
-		audio_decoder->SetLooping(true);
-		bgm_starttick = SDL_GetTicks();
-
-		int audio_rate;
-		Uint16 sdl_format;
-		int audio_channels;
-		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-			Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
-			return;
-		}
-		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
-
-		audio_decoder->SetFormat(audio_rate, audio_format, audio_channels);
-
-		int device_rate;
-		AudioDecoder::Format device_format;
-		int device_channels;
-		audio_decoder->GetFormat(device_rate, device_format, device_channels);
-
-		// Don't care if successful, always build cvt
-		SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
-
-		audio_decoder->SetFade(0, volume, fadein);
-		audio_decoder->SetPitch(pitch);
-
-		Mix_HookMusic(callback, this);
-
+	if (!filehandle) {
+		Output::Warning("Music not readable: %s", file.c_str());
 		return;
 	}
+
+	audio_decoder = AudioDecoder::Create(filehandle, path);
+	if (audio_decoder) {
+		SetupAudioDecoder(filehandle, volume, pitch, fadein);
+		return;
+	}
+	fclose(filehandle);
 
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
 
@@ -284,6 +261,24 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 #endif
 
 	if (!bgm) {
+#if WANT_FMMIDI == 2
+		// Fallback to FMMIDI when SDL Midi failed
+		char magic[4] = { 0 };
+		filehandle = FileFinder::fopenUTF8(path, "rb");
+		if (!filehandle) {
+			Output::Warning("Music not readable: %s", file.c_str());
+			return;
+		}
+		fread(magic, 4, 1, filehandle);
+		fseek(filehandle, 0, SEEK_SET);
+		if (!strncmp(magic, "MThd", 4)) {
+			Output::Debug("FmMidi fallback: %s", file.c_str());
+			audio_decoder.reset(new FmMidiDecoder());
+			SetupAudioDecoder(filehandle, volume, pitch, fadein);
+			return;
+		}
+#endif
+
 #if SDL_MIXER_MAJOR_VERSION>1
 		// Try unsupported SDL_mixer ADPCM playback with SDL
 		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
@@ -322,6 +317,43 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	}
 
 	Mix_HookMusicFinished(&bgm_played_once);
+}
+
+void SdlAudio::SetupAudioDecoder(FILE* handle, int volume, int pitch, int fadein) {
+	if (!audio_decoder->Open(handle)) {
+		Output::WarningStr(audio_decoder->GetError());
+		audio_decoder.reset();
+		return;
+	}
+
+	BGM_Stop();
+
+	audio_decoder->SetLooping(true);
+	bgm_starttick = SDL_GetTicks();
+
+	int audio_rate;
+	Uint16 sdl_format;
+	int audio_channels;
+	if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
+		Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
+		return;
+	}
+	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
+
+	audio_decoder->SetFormat(audio_rate, audio_format, audio_channels);
+
+	int device_rate;
+	AudioDecoder::Format device_format;
+	int device_channels;
+	audio_decoder->GetFormat(device_rate, device_format, device_channels);
+
+	// Don't care if successful, always build cvt
+	SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
+
+	audio_decoder->SetFade(0, volume, fadein);
+	audio_decoder->SetPitch(pitch);
+
+	Mix_HookMusic(callback, this);
 }
 
 void SdlAudio::BGM_Pause() {

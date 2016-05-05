@@ -27,7 +27,7 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		= -g -O2 -Wall -Wextra -DUSE_SDL -DNDEBUG $(MACHDEP) $(INCLUDE)
+CFLAGS		= -g -O2 -Wall -Wextra -DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 $(MACHDEP) $(INCLUDE)
 CXXFLAGS	= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 LDFLAGS	= -g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
 

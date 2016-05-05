@@ -88,11 +88,14 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	fread(magic, 4, 1, file);
 	fseek(file, 0, SEEK_SET);
 
-#if WANT_FMMIDI == 1
+
 	if (!strncmp(magic, "MThd", 4)) {
+#if WANT_FMMIDI == 1
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
-	}
+#else
+		return std::unique_ptr<AudioDecoder>();
 #endif
+	}
 
 	// Prevent false positives by checking for common headers
 	if (!strncmp(magic, "RIFF", 4) || // WAV

@@ -57,6 +57,8 @@ struct SdlAudio : public AudioInterface {
 	AudioDecoder* GetDecoder();
 	SDL_AudioCVT& GetAudioCVT();
 private:
+	void SetupAudioDecoder(FILE* handle, int volume, int pitch, int fadein);
+
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
 	unsigned bgm_starttick = 0;
