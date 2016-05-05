@@ -424,6 +424,19 @@ unsigned SdlAudio::BGM_GetTicks() {
 }
 
 void SdlAudio::BGM_Volume(int volume) {
+	if (audio_decoder) {
+		audio_decoder->SetVolume(volume);
+		return;
+	}
+
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	if (bgs_playing) {
+		BGS_Volume(volume);
+		return;
+	}
+#endif
+
 	bgm_volume = volume * MIX_MAX_VOLUME / 100;
 	Mix_VolumeMusic(bgm_volume);
 }
@@ -432,6 +445,8 @@ void SdlAudio::BGM_Pitch(int pitch) {
 	if (audio_decoder) {
 		audio_decoder->SetPitch(pitch);
 	}
+
+	// Not supported by SDL
 }
 
 void SdlAudio::BGM_Fade(int fade) {
@@ -516,6 +531,10 @@ void SdlAudio::BGS_Fade(int fade) {
 	Mix_FadeOutChannel(bgs_channel, fade);
 	bgs_channel = -1;
 	bgs_playing = false;
+}
+
+void SdlAudio::BGS_Volume(int volume) {
+	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
 }
 
 int SdlAudio::BGS_GetChannel() const {

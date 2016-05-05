@@ -44,6 +44,7 @@ struct SdlAudio : public AudioInterface {
 	void BGS_Resume();
 	void BGS_Stop();
 	void BGS_Fade(int);
+	void BGS_Volume(int);
 	void SE_Play(std::string const&, int, int) override;
 	void SE_Stop() override;
 	void Update() override;
