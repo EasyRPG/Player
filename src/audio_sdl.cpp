@@ -37,6 +37,8 @@
 #  include "decoder_fmmidi.h"
 #endif
 
+#define BGS_CHANNEL_NUM 0
+
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
@@ -44,7 +46,7 @@ namespace {
 	}
 
 	void bgs_played_once(int channel) {
-		if (DisplayUi && channel == static_cast<SdlAudio&>(Audio()).BGS_GetChannel())
+		if (DisplayUi && channel == BGS_CHANNEL_NUM)
 			bgm_played_once();
 	}
 
@@ -127,7 +129,6 @@ namespace {
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
-	bgs_channel(0),
 	bgs_playing(false),
 	me_channel(0),
 	me_stopped_bgm(false)
@@ -165,6 +166,9 @@ SdlAudio::SdlAudio() :
 		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
+
+	// Reserve the 1st channel for BGS
+	Mix_ReserveChannels(1);
 
 	int audio_rate;
 	Uint16 audio_format;
@@ -208,8 +212,7 @@ void SdlAudio::BGM_OnPlayedOnce() {
 		if (!bgs_stop) {
 			played_once = true;
 			// Play indefinitely without fade-in
-			Mix_PlayChannel(bgs_channel, bgs.get(), -1);
-			bgs_channel = -1;
+			Mix_PlayChannel(BGS_CHANNEL_NUM, bgs.get(), -1);
 		}
 		return;
 	}
@@ -493,9 +496,10 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), 0, fadein);
-	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
-	if (bgs_channel == -1) {
+
+	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
+	int channel = Mix_FadeInChannel(BGS_CHANNEL_NUM, bgs.get(), 0, fadein);
+	if (channel != 0) {
 		Output::Warning("Couldn't play %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
@@ -508,37 +512,31 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 }
 
 void SdlAudio::BGS_Pause() {
-	if (Mix_Playing(bgs_channel)) {
-		Mix_Pause(bgs_channel);
+	if (Mix_Playing(BGS_CHANNEL_NUM)) {
+		Mix_Pause(BGS_CHANNEL_NUM);
 	}
 }
 
 void SdlAudio::BGS_Resume() {
-	Mix_Resume(bgs_channel);
+	Mix_Resume(BGS_CHANNEL_NUM);
 }
 
 void SdlAudio::BGS_Stop() {
-	if (Mix_Playing(bgs_channel)) {
+	if (Mix_Playing(BGS_CHANNEL_NUM)) {
 		bgs_stop = true;
-		Mix_HaltChannel(bgs_channel);
-		bgs_channel = -1;
+		Mix_HaltChannel(BGS_CHANNEL_NUM);
 		bgs_playing = false;
 	}
 }
 
 void SdlAudio::BGS_Fade(int fade) {
 	bgs_stop = true;
-	Mix_FadeOutChannel(bgs_channel, fade);
-	bgs_channel = -1;
+	Mix_FadeOutChannel(BGS_CHANNEL_NUM, fade);
 	bgs_playing = false;
 }
 
 void SdlAudio::BGS_Volume(int volume) {
-	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
-}
-
-int SdlAudio::BGS_GetChannel() const {
-	return bgs_channel;
+	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {

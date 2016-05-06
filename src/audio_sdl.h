@@ -50,7 +50,6 @@ struct SdlAudio : public AudioInterface {
 	void Update() override;
 
 	void BGM_OnPlayedOnce();
-	int BGS_GetChannel() const;
 
 	AudioDecoder* GetDecoder();
 	SDL_AudioCVT& GetAudioCVT();
@@ -62,7 +61,6 @@ private:
 	unsigned bgm_starttick = 0;
 	bool bgm_stop = false;
 	std::shared_ptr<Mix_Chunk> bgs;
-	int bgs_channel;
 	bool bgs_playing = false;
 	bool bgs_stop = false;
 	std::shared_ptr<Mix_Chunk> me;
