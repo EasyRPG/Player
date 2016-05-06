@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <cmath>
 #include <cstring>
 
 #include "system.h"
@@ -50,30 +51,44 @@ namespace {
 			bgm_played_once();
 	}
 
-	void callback(void *udata, Uint8 *stream, int len) {
+	void callback(void *udata, Uint8 *stream, int stream_size) {
 		static std::vector<uint8_t> buffer;
-		buffer.resize(len);
 
 		SdlAudio* audio = static_cast<SdlAudio*>(udata);
-		len = audio->GetDecoder()->Decode(buffer.data(), len);
-		if (len == -1) {
+
+		SDL_AudioCVT& cvt = audio->GetAudioCVT();
+		int out_len = stream_size;
+		if (cvt.needed) {
+			// Calculate how many data is needed to fill the buffer after converting it
+			double d = out_len / cvt.rate_incr;
+			out_len = (int)std::ceil(d);
+			out_len += out_len & 1;
+		}
+
+		buffer.resize(out_len);
+
+		out_len = audio->GetDecoder()->Decode(buffer.data(), out_len);
+		if (out_len == -1) {
 			Output::DebugStr(audio->GetDecoder()->GetError());
 		}
 
 		if (audio->GetDecoder()->IsFinished()) {
 			Mix_HookMusic(nullptr, nullptr);
 		} else {
-			SDL_AudioCVT& cvt = audio->GetAudioCVT();
 			if (cvt.needed) {
 				static std::vector<uint8_t> cvt_buffer;
-				cvt_buffer.resize(len * cvt.len_mult);
+				cvt_buffer.resize(out_len * cvt.len_mult);
 				cvt.buf = cvt_buffer.data();
-				cvt.len = len;
-				memcpy(cvt.buf, buffer.data(), len);
+				cvt.len = out_len;
+				memcpy(cvt.buf, buffer.data(), out_len);
 				SDL_ConvertAudio(&cvt);
 			} else {
-				cvt.len_cvt = len;
+				cvt.len_cvt = out_len;
 				cvt.buf = buffer.data();
+			}
+
+			if (cvt.len_cvt > stream_size) {
+				cvt.len_cvt = stream_size;
 			}
 
 #if SDL_MIXER_MAJOR_VERSION>1
@@ -151,7 +166,7 @@ SdlAudio::SdlAudio() :
 		return context.sampleRate;
 	});
 #else
-	int const frequency = 48000;
+	int const frequency = 44100;
 #endif
 
 #ifdef EMSCRIPTEN
