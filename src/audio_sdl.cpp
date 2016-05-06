@@ -129,9 +129,7 @@ namespace {
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
-	bgs_playing(false),
-	me_channel(0),
-	me_stopped_bgm(false)
+	bgs_playing(false)
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
@@ -153,7 +151,7 @@ SdlAudio::SdlAudio() :
 		return context.sampleRate;
 	});
 #else
-	int const frequency = 44100;
+	int const frequency = 48000;
 #endif
 
 #ifdef EMSCRIPTEN
@@ -218,7 +216,7 @@ void SdlAudio::BGM_OnPlayedOnce() {
 	}
 #endif
 
-	if (!me_stopped_bgm && !bgm_stop) {
+	if (!bgm_stop) {
 		played_once = true;
 		// Play indefinitely without fade-in
 		if (Mix_GetMusicType(bgm.get()) != MUS_MP3_MAD)
@@ -307,7 +305,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 #endif
 
 	BGM_Volume(volume);
-	if (!me_stopped_bgm &&
+	if (
 #ifdef _WIN32
 		(mtype == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
 			? Mix_PlayMusic(bgm.get(), 0) : Mix_FadeInMusic(bgm.get(), 0, fadein))
@@ -329,7 +327,17 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, int volume, int pitch, int fadein
 		return;
 	}
 
-	BGM_Stop();
+	// Can't use BGM_Stop here because it destroys the audio_decoder
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	if (bgs_playing) {
+		BGS_Stop();
+	} else {
+		Mix_HaltMusic();
+	}
+#else
+	Mix_HaltMusic();
+#endif
 
 	audio_decoder->SetLooping(true);
 	bgm_starttick = SDL_GetTicks();
@@ -406,7 +414,6 @@ void SdlAudio::BGM_Stop() {
 #endif
 	bgm_stop = true;
 	Mix_HaltMusic();
-	me_stopped_bgm = false;
 }
 
 bool SdlAudio::BGM_PlayedOnce() {
@@ -481,7 +488,6 @@ void SdlAudio::BGM_Fade(int fade) {
 #endif
 
 	Mix_FadeOutMusic(fade);
-	me_stopped_bgm = false;
 }
 
 void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {

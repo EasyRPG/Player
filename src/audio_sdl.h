@@ -63,9 +63,6 @@ private:
 	std::shared_ptr<Mix_Chunk> bgs;
 	bool bgs_playing = false;
 	bool bgs_stop = false;
-	std::shared_ptr<Mix_Chunk> me;
-	int me_channel;
-	bool me_stopped_bgm;
 	bool played_once = false;
 
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
