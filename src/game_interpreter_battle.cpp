@@ -64,7 +64,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		case Cmd::TerminateBattle:
 			return CommandTerminateBattle(com);
 		case Cmd::ConditionalBranch_B:
-			return CommandConditionalBranch(com);
+			return CommandConditionalBranchBattle(com);
 		case Cmd::ElseBranch_B:
 			return SkipTo(Cmd::EndBranch_B);
 		case Cmd::EndBranch_B:
@@ -264,7 +264,7 @@ bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /*
 }
 
 // Conditional branch.
-bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;
 
