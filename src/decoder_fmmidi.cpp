@@ -90,10 +90,12 @@ int FmMidiDecoder::GetTicks() {
 }
 
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
-	double delta = (double)2048 / (frequency * pitch);
+	size_t samples = (size_t)length / sizeof(int_least16_t) / 2;
+
+	double delta = (double)samples / (frequency * pitch);
 
 	seq->play(mtime, this);
-	synthesize(reinterpret_cast<int_least16_t*>(buffer), (size_t)length / sizeof(int_least16_t) / 2, frequency * pitch);
+	synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, frequency * pitch);
 	mtime += delta;
 
 	return length;
