@@ -235,10 +235,12 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		return !waiting_battle_anim;
 	}
 	else {
-		Game_Battler* battler_target = NULL;
+		Game_Battler* battler_target = nullptr;
 
 		if (allies) {
-			if (target < Main_Data::game_party->GetBattlerCount()) {
+			// Allies counted from 1
+			target -= 1;
+			if (target >= 0 && target < Main_Data::game_party->GetBattlerCount()) {
 				battler_target = &(*Main_Data::game_party)[target];
 			}
 		}
