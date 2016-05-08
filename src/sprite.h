@@ -38,8 +38,8 @@ public:
 	virtual void Flash(Color color, int duration);
 	void Update();
 
-	int GetWidth() const;
-	int GetHeight() const;
+	virtual int GetWidth() const;
+	virtual int GetHeight() const;
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);

@@ -86,6 +86,9 @@ public:
 	bool GetVisible() const override;
 	void SetVisible(bool visible) override;
 
+	int GetWidth() const override;
+	int GetHeight() const override;
+
 protected:
 	void CreateSprite();
 	void OnMonsterSpriteReady(FileRequestResult* result);

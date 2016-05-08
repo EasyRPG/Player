@@ -241,6 +241,20 @@ void Sprite_Battler::SetVisible(bool nvisible) {
 	Sprite::SetVisible(nvisible);
 }
 
+int Sprite_Battler::GetWidth() const {
+	if (animation) {
+		return animation->GetSprite()->GetWidth();
+	}
+	return Sprite::GetWidth();
+}
+
+int Sprite_Battler::GetHeight() const {
+	if (animation) {
+		return animation->GetSprite()->GetHeight();
+	}
+	return Sprite::GetHeight();
+}
+
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
