@@ -581,7 +581,9 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_LeftHand;
+	// ToDo when it is Dual attack the 2nd call should return LeftHand
+
+	return Sprite_Battler::AnimationState_RightHand;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {

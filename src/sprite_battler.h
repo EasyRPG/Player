@@ -47,7 +47,8 @@ public:
 
 	enum LoopState {
 		LoopState_DefaultAnimationAfterFinish,
-		LoopState_LoopAnimation
+		LoopState_LoopAnimation,
+		LoopState_WaitAfterFinish
 	};
 
 	/**
@@ -69,6 +70,7 @@ public:
 	void SetBattler(Game_Battler* new_battler);
 
 	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
+	void SetAnimationLoop(LoopState loop);
 
 	/**
 	 * Returns true when the actor is in it's default state (Depending on

@@ -538,7 +538,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			source_sprite->SetAnimationState(
 				action->GetSourceAnimationState(),
-				Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
 		if (action->IsFirstAttack()) {
@@ -565,6 +565,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		battle_action_state = BattleActionState_Result;
 		break;
 	case BattleActionState_Result:
+		if (source_sprite) {
+			source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+		}
+
 		do {
 			if (!action->IsFirstAttack()) {
 				action->Execute();

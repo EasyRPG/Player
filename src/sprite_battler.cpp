@@ -115,8 +115,11 @@ void Sprite_Battler::Update() {
 							SetAnimationState(AnimationState_Idle);
 						}
 						idling = true;
+					} else if (loop_state == LoopState_LoopAnimation) {
+						animation->SetFrame(0);
+					} else if (loop_state == LoopState_WaitAfterFinish) {
+						idling = true;
 					}
-					animation->SetFrame(0);
 				}
 
 				return;
@@ -133,10 +136,15 @@ void Sprite_Battler::Update() {
 			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 
 			if (cycle == 40) {
-				cycle = 0;
-
-				if (loop_state == LoopState_DefaultAnimationAfterFinish)
-					idling = true;
+				switch (loop_state) {
+					case LoopState_DefaultAnimationAfterFinish:
+					case LoopState_WaitAfterFinish:
+						idling = true;
+						break;
+					case LoopState_LoopAnimation:
+						cycle = 0;
+						break;
+				}
 			}
 
 			if (idling) {
@@ -192,6 +200,10 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 			}
 		}
 	}
+}
+
+void Sprite_Battler::SetAnimationLoop(LoopState loop) {
+	loop_state = loop;
 }
 
 bool Sprite_Battler::IsIdling() {

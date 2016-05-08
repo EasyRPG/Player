@@ -134,7 +134,12 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 
 void BattleAnimation::DrawAt(int x, int y) {
 	if (!sprite) return; // Initialization failed
-	if (IsDone()) return;
+	if (IsDone()) {
+		return;
+	}
+	if (!sprite->GetVisible()) {
+		return;
+	}
 
 	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
 
@@ -163,6 +168,11 @@ void BattleAnimation::DrawAt(int x, int y) {
 		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
 		sprite->SetZoomX(cell.zoom / 100.0);
 		sprite->SetZoomY(cell.zoom / 100.0);
+	}
+
+	if (anim_frame.cells.empty()) {
+		// Draw an empty sprite when no cell is available in the animation
+		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 		sprite->Draw();
 	}
 }
