@@ -196,16 +196,16 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 
 	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		Flash(Color(timing.flash_red << 3,
-			timing.flash_green << 3,
-			timing.flash_blue << 3,
-			timing.flash_power << 3));
+		Flash(Color(timing.flash_red,
+			timing.flash_green,
+			timing.flash_blue,
+			timing.flash_power));
 	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
 		Main_Data::game_screen->FlashOnce(
-			timing.flash_red << 3,
-			timing.flash_green << 3,
-			timing.flash_blue << 3,
-			timing.flash_power << 3,
+			timing.flash_red,
+			timing.flash_green,
+			timing.flash_blue,
+			timing.flash_power,
 			flash_duration);
 	}
 
