@@ -508,6 +508,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Source is Enemy
 		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
+		if (!Data::animations.empty()) {
+			animation = &Data::animations[0];
+		}
 	}
 
 	// Damage calculation
