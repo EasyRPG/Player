@@ -77,9 +77,16 @@ namespace {
 #else
 #  warning Using (probably insecure) `vsprintf` function!
 		int const result = vsprintf(buf, fmt, args);
+		if (result > int(sizeof(buf))) {
+			assert(false);
+			exit(-1);
+		}
 #endif
-		assert(0 <= result && result < int(sizeof(buf)));
-		return std::string(buf, result);
+		if (result < 0) {
+			return std::string();
+		}
+
+		return std::string(buf, result < sizeof(buf) ? result : sizeof(buf));
 	}
 
 	std::vector<std::string> log_buffer;
