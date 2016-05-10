@@ -57,6 +57,13 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 	if (IsFinished() && looping) {
 		++loop_count;
 		Rewind();
+		if (length - res > 0) {
+			int res2 = Decode(&buffer[res], length - res);
+			if (res2 <= 0) {
+				return res;
+			}
+			return res + res2;
+		}
 	}
 
 	return res;

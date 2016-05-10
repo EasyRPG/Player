@@ -201,18 +201,19 @@ bool Mpg123Decoder::IsMp3(FILE* stream) {
 int Mpg123Decoder::FillBuffer(uint8_t* buffer, int length) {
 	int err;
 	size_t done = 0;
+	size_t decoded = 0;
 
 	// Skip invalid frames until getting a valid one
 	do {
 		err = mpg123_read(handle.get(), reinterpret_cast<unsigned char*>(buffer), length, &done);
+		decoded += done;
 	} while (done && err != MPG123_OK);
 
 	if (err == MPG123_DONE) {
 		finished = true;
-		return 0;
 	}
 
-	return length;
+	return (int)decoded;
 }
 
 #endif
