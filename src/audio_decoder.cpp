@@ -205,6 +205,10 @@ std::string AudioDecoder::GetError() const {
 	return error_message;
 }
 
+std::string AudioDecoder::GetType() const {
+	return music_type;
+}
+
 bool AudioDecoder::SetFormat(int, Format, int) {
 	return false;
 }

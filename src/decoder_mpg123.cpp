@@ -45,6 +45,8 @@ static void noop_close(void*) {}
 Mpg123Decoder::Mpg123Decoder() :
 	handle(nullptr, mpg123_delete)
 {
+	music_type = "mp3";
+
 	err = mpg123_init();
 	if (err != MPG123_OK) {
 		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));

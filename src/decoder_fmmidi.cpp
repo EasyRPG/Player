@@ -29,6 +29,9 @@ FmMidiDecoder::FmMidiDecoder() {
 	note_factory.reset(new midisynth::fm_note_factory());
 	synth.reset(new midisynth::synthesizer(note_factory.get()));
 	seq.reset(new midisequencer::sequencer());
+	
+	music_type = "midi";
+	
 	load_programs();
 }
 

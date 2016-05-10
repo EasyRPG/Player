@@ -178,6 +178,14 @@ public:
 	 */
 	virtual std::string GetError() const;
 
+	/**
+	 * Returns the name of the format the current audio decoder decodes in
+	 * lower case.
+	 *
+	 * @return Format name
+	 */
+	virtual std::string GetType() const;
+
 	// Functions to be implemented by the audio decoder
 	/**
 	 * Assigns a file handle to the audio decoder.
@@ -282,6 +290,7 @@ protected:
 	virtual int FillBuffer(uint8_t* buffer, int size) = 0;
 
 	std::string error_message;
+	std::string music_type;
 private:
 	bool paused = false;
 	double volume = 0;
