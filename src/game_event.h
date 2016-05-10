@@ -19,6 +19,7 @@
 #define _GAME_EVENT_H_
 
 // Headers
+#include <string>
 #include <vector>
 #include "game_character.h"
 #include "rpg_event.h"
@@ -107,6 +108,13 @@ public:
 	 * @return event ID.
 	 */
 	int GetId() const;
+
+	/**
+	 * Gets event name.
+	 *
+	 * @return event name.
+	 */
+	std::string GetName() const;
 
 	/**
 	 * Gets starting flag.
@@ -213,12 +221,11 @@ private:
 	// reference.
 	RPG::SaveMapEvent data;
 
-	unsigned int ID;
-	bool starting, running, halting;
+	bool starting = false, running = false, halting = false;
 	bool started_by_decision_key = false;
-	int trigger;
+	int trigger = -1;
 	RPG::Event event;
-	RPG::EventPage* page;
+	RPG::EventPage* page = nullptr;
 	std::vector<RPG::EventCommand> list;
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
