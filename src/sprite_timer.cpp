@@ -43,7 +43,7 @@ void Sprite_Timer::Draw() {
 	bool timer_visible;
 	bool battle;
 
-	Main_Data::game_party->GetTimer(which, &timer_visible, &battle);
+	Main_Data::game_party->GetTimer(which, timer_visible, battle);
 
 	if (!GetVisible() || !timer_visible) {
 		return;
@@ -78,7 +78,7 @@ void Sprite_Timer::Update() {
 	bool timer_visible;
 	bool battle;
 
-	int time = Main_Data::game_party->GetTimer(which, &timer_visible, &battle);
+	int time = Main_Data::game_party->GetTimer(which, timer_visible, battle);
 
 	if (time <= 0) {
 		SetVisible(false);
@@ -122,7 +122,7 @@ void Sprite_Timer::Update() {
 	if (Game_Temp::battle_running) {
 		SetY(SCREEN_TARGET_HEIGHT / 3 * 2 - 20);
 	}
-	else if (Game_Message::GetRealPosition() == 0) {
+	else if (Game_Message::visible && Game_Message::GetRealPosition() == 0) {
 		SetY(SCREEN_TARGET_HEIGHT - 20);
 	}
 	else {

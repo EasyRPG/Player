@@ -160,43 +160,6 @@ namespace Game_System {
 	void SetSystemSE(int which, RPG::Sound const& sfx);
 
 	/**
-	 * Sets a timer.
-	 *
-	 * @param which which timer to set.
-	 * @param seconds the time in seconds.
-	 */
-	void SetTimer(int which, int seconds);
-
-	/**
-	 * Starts a timer.
-	 *
-	 * @param which which timer to start.
-	 * @param visible whether the timer is visible.
-	 * @param battle whether the timer runs during battle.
-	 */
-	void StartTimer(int which, bool visible, bool battle);
-
-	/**
-	 * Stops a timer.
-	 *
-	 * @param which which timer to stop.
-	 */
-	void StopTimer(int which);
-
-	/**
-	 * Updates all timers.
-	 */
-	void UpdateTimers();
-
-	/**
-	 * Reads a timer.
-	 *
-	 * @param which which timer to read.
-	 * @return number of frames remaining.
-	 */
-	int ReadTimer(int which);
-
-	/**
 	 * Gets the system transitions.
 	 *
 	 * @param which which "context" to get the transition for.

@@ -272,11 +272,52 @@ public:
 		Timer2
 	};
 
+	/**
+	 * Sets a timer.
+	 *
+	 * @param which which timer to set.
+	 * @param seconds the time in seconds.
+	 */
 	void SetTimer(int which, int seconds);
+
+	/**
+	 * Starts a timer.
+	 *
+	 * @param which which timer to start.
+	 * @param visible whether the timer is visible.
+	 * @param battle whether the timer runs during battle.
+	 */
 	void StartTimer(int which, bool visible, bool battle);
+
+	/**
+	 * Stops a timer.
+	 *
+	 * @param which which timer to stop.
+	 */
 	void StopTimer(int which);
+
+	/**
+	 * Updates all timers.
+	 */
 	void UpdateTimers();
-	int GetTimer(int which, bool* visible = NULL, bool* battle = NULL);
+
+	/**
+	 * Get a timer's value.
+	 *
+	 * @param which which timer to read.
+	 * @return number of frames remaining.
+	 */
+	int GetTimer(int which);
+
+	/**
+	 * Get a timer's value.
+	 *
+	 * @param which which timer to read.
+	 * @param[out] visible whether timer is visible
+	 * @param[out] battle whether timer runs in battle
+	 * @return number of frames remaining.
+	 */
+	int GetTimer(int which, bool& visible, bool& battle);
 };
 
 #endif
