@@ -48,6 +48,12 @@ int AudioDecoder::Decode(uint8_t* buffer, int length) {
 
 	int res = FillBuffer(buffer, length);
 
+	if (res < 0) {
+		memset(buffer, '\0', length);
+	} else if (res < length) {
+		memset(&buffer[res], '\0', length - res);
+	}
+
 	if (IsFinished() && looping) {
 		++loop_count;
 		Rewind();
@@ -70,14 +76,21 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	
 	int read = Decode(mono_buffer.data(), size * 2);
 	if (read < 0) {
+		memset(left, '\0', size);
+		memset(right, '\0', size);
 		return -1;
 	}
 
 	int sample_size = GetSamplesizeForFormat(format);
 
-	for (int i = 0; i < read / 2; i += sample_size) {
-		memcpy(&left[i], &mono_buffer.data()[i * 2], sample_size);
-		memcpy(&right[i], &mono_buffer.data()[i * 2 + sample_size], sample_size);
+	for (int i = 0; i <= read / 2; i += sample_size) {
+		memcpy(&left[i], &mono_buffer.data()[i * channels], sample_size);
+		memcpy(&right[i], &mono_buffer.data()[i * channels + sample_size], sample_size);
+	}
+
+	if (read < size / 2) {
+		memset(&left[read / 2], '\0', size);
+		memset(&right[read / 2], '\0', size);
 	}
 
 	return read / 2;
@@ -87,7 +100,6 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	char magic[4] = { 0 };
 	fread(magic, 4, 1, file);
 	fseek(file, 0, SEEK_SET);
-
 
 	if (!strncmp(magic, "MThd", 4)) {
 #if WANT_FMMIDI == 1

@@ -31,6 +31,8 @@
  */
 class AudioDecoder {
 public:
+	virtual ~AudioDecoder() {}
+
 	/** Sample format */
 	enum class Format {
 		S8,
@@ -52,10 +54,11 @@ public:
 	/**
 	 * Writes 'size' bytes in the specified buffer. The data matches the format
 	 * reported by GetFormat.
-	 * This function will not clear the buffer before (partially) filling it.
+	 * When size is is smaller then the amount of written bytes or an error occurs
+	 * the remaining buffer space is cleared.
 	 *
 	 * @param buffer Output buffer
-	 * @param size Size of the buffer
+	 * @param size Size of the buffer in bytes
 	 * @return Number of bytes written to the buffer or -1 on error
 	 */
 	int Decode(uint8_t* buffer, int size);
@@ -64,11 +67,13 @@ public:
 	 * Splits stereo into mono and Writes 'size' bytes in each of the buffers.
 	 * The data matches the format reported by GetFormat, except that both
 	 * buffers will contain Mono audio. When the source format was already mono
-	 * the 'right' buffer is not filled.
+	 * the 'right' buffer is ignored (and not cleared)
+	 * When size is is smaller then the amount of written bytes or an error occurs
+	 * the remaining buffer space is cleared.
 	 *
 	 * @param left Output buffer of the left channel
 	 * @param right Output buffer of the right channel (or nothing if source is mono)
-	 * @param size Size of both buffers.
+	 * @param size Size of each of the buffers
 	 * @return Number of bytes written in one of the buffers or -1 on error
 	 */
 	int DecodeAsMono(uint8_t* left, uint8_t* right, int size);
