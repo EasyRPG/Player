@@ -51,8 +51,10 @@ bool FmMidiDecoder::Open(FILE* file) {
 
 bool FmMidiDecoder::Seek(size_t offset, Origin origin) {
 	if (offset == 0 && origin == Origin::Begin) {
-		mtime = 0;
+		mtime = 0.0f;
 		seq->rewind();
+		begin = true;
+
 		return true;
 	}
 
@@ -80,7 +82,7 @@ bool FmMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, int channel
 }
 
 bool FmMidiDecoder::SetPitch(int pitch) {
-	this->pitch = 100.0 / pitch;
+	this->pitch = 100.0f / pitch;
 
 	return true;
 }
@@ -92,11 +94,18 @@ int FmMidiDecoder::GetTicks() {
 int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	size_t samples = (size_t)length / sizeof(int_least16_t) / 2;
 
-	double delta = (double)samples / (frequency * pitch);
+	float delta = (float)samples / (frequency * pitch);
 
-	seq->play(mtime, this);
-	synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, frequency * pitch);
-	mtime += delta;
+	// FM Midi somehow returns immediately at the beginning when mtime is too small
+	// This increments mtime until FM Midi is happy
+	int notes = 0;
+	do {
+		seq->play(mtime, this);
+		notes = synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, frequency * pitch);
+		mtime += delta;
+	} while (begin && notes == 0 && !IsFinished());
+
+	begin = false;
 
 	return length;
 }

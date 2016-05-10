@@ -77,7 +77,7 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 		return Decode(left, size);
 	}
 
-	if (mono_buffer.size() < size * 2) {
+	if ((int)mono_buffer.size() < size * 2) {
 		mono_buffer.resize(size * 2);
 	}
 	

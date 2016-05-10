@@ -52,9 +52,10 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	FILE* file;
-	double mtime = 0.0;
-	double pitch = 1.0;
+	float mtime = 0.0f;
+	float pitch = 1.0f;
 	int frequency = 44100;
+	bool begin = true;
 
 	// midisequencer::output interface
 	int synthesize(int_least16_t* output, std::size_t samples, float rate);
