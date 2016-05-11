@@ -524,7 +524,7 @@ std::string FileFinder::FindMusic(const std::string& name) {
 #endif
 
 	static const char* MUSIC_TYPES[] = {
-		".wav", ".ogg", ".mid", ".midi", ".mp3", NULL };
+		".ogg", ".wav", ".mid", ".midi", ".mp3", nullptr };
 	return FindFile("Music", name, MUSIC_TYPES);
 }
 
@@ -534,7 +534,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 #endif
 
 	static const char* SOUND_TYPES[] = {
-		".wav", ".ogg", ".mp3", NULL };
+		".ogg", ".wav", ".mp3", nullptr };
 	return FindFile("Sound", name, SOUND_TYPES);
 }
 
