@@ -366,7 +366,13 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, int volume, int pitch, int fadein
 	}
 	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
 
-	audio_decoder->SetFormat(audio_rate, audio_format, audio_channels);
+	int target_rate = audio_rate;
+	if (audio_decoder->GetType() == "midi") {
+		// FM Midi is very CPU heavy and the difference between 44100 and 22050
+		// is not hearable for MIDI
+		target_rate /= 2;
+	}
+	audio_decoder->SetFormat(target_rate, audio_format, audio_channels);
 
 	int device_rate;
 	AudioDecoder::Format device_format;
