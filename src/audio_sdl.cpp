@@ -111,10 +111,12 @@ namespace {
 			return AUDIO_U16;
 		case AudioDecoder::Format::S16:
 			return AUDIO_S16;
+#if SDL_MIXER_MAJOR_VERSION>1
 		case AudioDecoder::Format::S32:
 			return AUDIO_S32;
 		case AudioDecoder::Format::F32:
 			return AUDIO_F32;
+#endif
 		default:
 			assert(false);
 		}
@@ -132,10 +134,12 @@ namespace {
 			return AudioDecoder::Format::U16;
 		case AUDIO_S16:
 			return AudioDecoder::Format::S16;
+#if SDL_MIXER_MAJOR_VERSION>1
 		case AUDIO_S32:
 			return AudioDecoder::Format::S32;
 		case AUDIO_F32:
 			return AudioDecoder::Format::F32;
+#endif
 		default:
 			assert(false);
 		}
@@ -343,6 +347,18 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volu
 		audio_decoder.reset();
 		return;
 	}
+	
+	// Detect bad AudioCVT implementations (SDL Wii)
+	static bool broken_test = false;
+	static bool audiocvt_broken = false;
+	if (!broken_test) {
+		broken_test = true;
+		SDL_BuildAudioCVT(&cvt, AUDIO_S16, 2, 44100, AUDIO_S16, 2, 44100 / 2);
+		if (!cvt.needed || cvt.rate_incr == 0.0) {
+			Output::Debug("SDL_AudioCVT implementation is broken. Resampling will not work.");
+			audiocvt_broken = true;
+		}
+	}
 
 	// Can't use BGM_Stop here because it destroys the audio_decoder
 #if SDL_MAJOR_VERSION>1
@@ -369,7 +385,7 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volu
 	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
 
 	int target_rate = audio_rate;
-	if (audio_decoder->GetType() == "midi") {
+	if (!audiocvt_broken && audio_decoder->GetType() == "midi") {
 		// FM Midi is very CPU heavy and the difference between 44100 and 22050
 		// is not hearable for MIDI
 		target_rate /= 2;
@@ -383,7 +399,10 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volu
 
 	// Don't care if successful, always build cvt
 	SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
-
+	if (audiocvt_broken) {
+		cvt.needed = false;
+	}
+	
 	audio_decoder->SetFade(0, volume, fadein);
 	audio_decoder->SetPitch(pitch);
 

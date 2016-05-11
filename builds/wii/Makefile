@@ -7,6 +7,15 @@ ifeq ($(strip $(DEVKITPPC)),)
 $(error "Please set DEVKITPPC in your environment. export DEVKITPPC=<path to>devkitPPC")
 endif
 
+ifeq ($(strip $(TOOLCHAIN_DIR)),)
+$(error "Please point TOOLCHAIN_DIR to your Wii portlibs directory")
+endif
+
+ifeq ($(strip $(LIBLCF_DIR)),)
+$(warning "LIBLCF_DIR not set. Ignore this warning when liblcf is in TOOLCHAIN_DIR")
+LIBLCF_DIR := $(TOOLCHAIN_DIR)
+endif
+
 include $(DEVKITPPC)/wii_rules
 
 #---------------------------------------------------------------------------------
@@ -27,22 +36,31 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		= -g -O2 -Wall -Wextra -DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 $(MACHDEP) $(INCLUDE)
-CXXFLAGS	= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
-LDFLAGS	= -g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
+CFLAGS		= 	-g0 -O2 -Wall -Wextra \
+				-fomit-frame-pointer -ffast-math \
+				-flto -fdata-sections -ffunction-sections \
+				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
+				$(MACHDEP) $(INCLUDE)
+				
+CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+
+LDFLAGS	= 		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map \
+				-Wl,--gc-sections
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	 -llcf -lexpat -lSDL_mixer -lSDL -lpixman-1 -lpng -lmad \
-			-liconv -lvorbisidec -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
+LIBS	:=	-llcf -liconv -lpixman-1 -lpng -lz \
+			-lSDL_mixer -lSDL -lvorbisidec -lmpg123 \
+			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
+#-licuuc -licui18n -licudata
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS)
+LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR) $(PORTLIBS)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -62,9 +80,7 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.c)))
-_CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cpp)))
-_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cxx)))
-CPPFILES	:=  $(_CXXFILES) $(_CPPFILES)
+CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cpp)))
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
@@ -79,9 +95,8 @@ else
 endif
 
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-					$(_CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
-					$(sFILES:.s=.o) $(SFILES:.S=.o) \
-					$(_CXXFILES:.cxx=.o) 
+					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
+					$(sFILES:.s=.o) $(SFILES:.S=.o)
 
 #---------------------------------------------------------------------------------
 # build a list of include paths
@@ -90,17 +105,15 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
-					-I$(PORTLIBS)/include \
-					-I$(LIBOGC_INC)/SDL \
-					-I$(PORTLIBS)/include/pixman-1 \
-					-I$(PORTLIBS)/include/liblcf
+					$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/SDL) \
+					$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/pixman-1) \
+					$(foreach dir,$(LIBLCF_DIR),-I$(dir)/include/liblcf)
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
 #---------------------------------------------------------------------------------
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
-					-L$(LIBOGC_LIB) \
-					-L$(PORTLIBS)/lib
+					-L$(LIBOGC_LIB)
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 .PHONY: $(BUILD) clean

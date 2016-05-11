@@ -19,6 +19,7 @@
 #define _EASYRPG_AUDIO_DECODER_H_
 
 // Headers
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <memory>
