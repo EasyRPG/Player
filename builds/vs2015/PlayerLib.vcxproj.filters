@@ -467,6 +467,15 @@
     <ClCompile Include="..\..\src\rtp_table.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\audio_decoder.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\decoder_fmmidi.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\decoder_mpg123.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -918,6 +927,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rtp_table.h">
       <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\audio_decoder.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decoder_fmmidi.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decoder_mpg123.h">
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -323,8 +323,9 @@ void Player::Update(bool update_scene) {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		if (Scene::instance->type != Scene::Logo) {
+		if (Scene::Find(Scene::Title) && Scene::instance->type != Scene::Title) {
 			Scene::PopUntil(Scene::Title);
+			Audio().BGM_Fade(800);
 			// Do not update this scene until it's properly set up in the next main loop
 			update_scene = false;
 		}

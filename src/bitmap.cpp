@@ -870,6 +870,8 @@ void Bitmap::Fill(const Color &color) {
 		0, 0,
 		src_rect.width, src_rect.height);
 
+	pixman_image_unref(timage);
+
 	RefreshCallback();
 }
 

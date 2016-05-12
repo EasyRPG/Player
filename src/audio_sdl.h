@@ -19,6 +19,7 @@
 #define _AUDIO_SDL_H_
 
 #include "audio.h"
+#include "audio_decoder.h"
 
 #include <map>
 
@@ -29,46 +30,46 @@ struct SdlAudio : public AudioInterface {
 	SdlAudio();
 	~SdlAudio();
 
-	void BGM_Play(std::string const&, int, int, int);
-	void BGM_Pause();
-	void BGM_Resume();
-	void BGM_Stop();
-	bool BGM_PlayedOnce();
-	unsigned BGM_GetTicks();
-	void BGM_Fade(int);
-	void BGM_Volume(int);
-	void BGM_Pitch(int);
+	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Pause() override;
+	void BGM_Resume() override;
+	void BGM_Stop() override;
+	bool BGM_PlayedOnce() override;
+	unsigned BGM_GetTicks() override;
+	void BGM_Fade(int) override;
+	void BGM_Volume(int) override;
+	void BGM_Pitch(int) override;
 	void BGS_Play(std::string const&, int, int, int);
 	void BGS_Pause();
 	void BGS_Resume();
 	void BGS_Stop();
 	void BGS_Fade(int);
-	void ME_Play(std::string const&, int, int, int);
-	void ME_Stop();
-	void ME_Fade(int /* fade */);
-	void SE_Play(std::string const&, int, int);
-	void SE_Stop();
-	void Update();
+	void BGS_Volume(int);
+	void SE_Play(std::string const&, int, int) override;
+	void SE_Stop() override;
+	void Update() override;
 
 	void BGM_OnPlayedOnce();
-	int BGS_GetChannel() const;
 
+	AudioDecoder* GetDecoder();
+	SDL_AudioCVT& GetAudioCVT();
 private:
+	void SetupAudioDecoder(FILE* handle, const std::string& filename, int volume, int pitch, int fadein);
+
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
 	unsigned bgm_starttick = 0;
 	bool bgm_stop = false;
 	std::shared_ptr<Mix_Chunk> bgs;
-	int bgs_channel;
 	bool bgs_playing = false;
 	bool bgs_stop = false;
-	std::shared_ptr<Mix_Chunk> me;
-	int me_channel;
-	bool me_stopped_bgm;
 	bool played_once = false;
 
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
 	sounds_type sounds;
+
+	std::unique_ptr<AudioDecoder> audio_decoder;
+	SDL_AudioCVT cvt;
 }; // class SdlAudio
 
 #endif // _AUDIO_SDL_H_

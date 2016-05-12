@@ -96,6 +96,19 @@
 #  else
 #    define SUPPORT_AUDIO
 #  endif
+
+#  ifdef WANT_FMMIDI
+#    if WANT_FMMIDI != 1 && WANT_FMMIDI != 2
+#      error "WANT_FMMIDI must be set to 1 (use instead of sdl) or 2 (fallback on sdl error)"
+#    endif
+#  endif
+#else
+// ifndef USE_SDL
+#  ifdef WANT_FMMIDI
+#    if WANT_FMMIDI != 1
+#      error "WANT_FMMIDI must be set to 1 for non-SDL builds"
+#    endif
+#  endif
 #endif
 
 #endif

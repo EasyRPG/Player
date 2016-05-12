@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+#include <cmath>
 #include <cstring>
 
 #include "system.h"
@@ -32,6 +34,12 @@
 #  include "util_win.h"
 #endif
 
+#if WANT_FMMIDI == 2
+#  include "decoder_fmmidi.h"
+#endif
+
+#define BGS_CHANNEL_NUM 0
+
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
@@ -39,17 +47,110 @@ namespace {
 	}
 
 	void bgs_played_once(int channel) {
-		if (DisplayUi && channel == static_cast<SdlAudio&>(Audio()).BGS_GetChannel())
+		if (DisplayUi && channel == BGS_CHANNEL_NUM)
 			bgm_played_once();
+	}
+
+	void callback(void *udata, Uint8 *stream, int stream_size) {
+		static std::vector<uint8_t> buffer;
+
+		SdlAudio* audio = static_cast<SdlAudio*>(udata);
+
+		SDL_AudioCVT& cvt = audio->GetAudioCVT();
+		int out_len = stream_size;
+		if (cvt.needed) {
+			// Calculate how many data is needed to fill the buffer after converting it
+			double d = out_len / cvt.rate_incr;
+			out_len = (int)std::ceil(d);
+			out_len += out_len & 1;
+		}
+
+		buffer.resize(out_len);
+
+		out_len = audio->GetDecoder()->Decode(buffer.data(), out_len);
+		if (out_len == -1) {
+			Output::Warning("Couldn't decode BGM.\n%s", audio->GetDecoder()->GetError().c_str());
+			Mix_HookMusic(nullptr, nullptr);
+			return;
+		}
+
+		if (audio->GetDecoder()->IsFinished()) {
+			Mix_HookMusic(nullptr, nullptr);
+		} else {
+			if (cvt.needed) {
+				static std::vector<uint8_t> cvt_buffer;
+				cvt_buffer.resize(out_len * cvt.len_mult);
+				cvt.buf = cvt_buffer.data();
+				cvt.len = out_len;
+				memcpy(cvt.buf, buffer.data(), out_len);
+				SDL_ConvertAudio(&cvt);
+			} else {
+				cvt.len_cvt = out_len;
+				cvt.buf = buffer.data();
+			}
+
+			if (cvt.len_cvt > stream_size) {
+				cvt.len_cvt = stream_size;
+			}
+
+#if SDL_MIXER_MAJOR_VERSION>1
+			SDL_MixAudioFormat(stream, reinterpret_cast<const Uint8*>(cvt.buf), MIX_DEFAULT_FORMAT, cvt.len_cvt, audio->GetDecoder()->GetVolume());
+#else
+			SDL_MixAudio(stream, reinterpret_cast<const Uint8*>(cvt.buf), cvt.len_cvt, audio->GetDecoder()->GetVolume());
+#endif
+		}
+	}
+
+	int format_to_sdl_format(AudioDecoder::Format format) {
+		switch (format) {
+		case AudioDecoder::Format::U8:
+			return AUDIO_U8;
+		case AudioDecoder::Format::S8:
+			return AUDIO_S8;
+		case AudioDecoder::Format::U16:
+			return AUDIO_U16;
+		case AudioDecoder::Format::S16:
+			return AUDIO_S16;
+#if SDL_MIXER_MAJOR_VERSION>1
+		case AudioDecoder::Format::S32:
+			return AUDIO_S32;
+		case AudioDecoder::Format::F32:
+			return AUDIO_F32;
+#endif
+		default:
+			assert(false);
+		}
+
+		return -1;
+	}
+
+	AudioDecoder::Format sdl_format_to_format(Uint16 format) {
+		switch (format) {
+		case AUDIO_U8: 
+			return AudioDecoder::Format::U8;
+		case AUDIO_S8:
+			return AudioDecoder::Format::S8;
+		case AUDIO_U16:
+			return AudioDecoder::Format::U16;
+		case AUDIO_S16:
+			return AudioDecoder::Format::S16;
+#if SDL_MIXER_MAJOR_VERSION>1
+		case AUDIO_S32:
+			return AudioDecoder::Format::S32;
+		case AUDIO_F32:
+			return AudioDecoder::Format::F32;
+#endif
+		default:
+			assert(false);
+		}
+
+		return (AudioDecoder::Format)-1;
 	}
 }
 
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
-	bgs_channel(0),
-	bgs_playing(false),
-	me_channel(0),
-	me_stopped_bgm(false)
+	bgs_playing(false)
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
@@ -81,9 +182,12 @@ SdlAudio::SdlAudio() :
 #else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
 #endif
-		Output::Error("Couldn't initialize audio.\n%s", Mix_GetError());
+		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
+
+	// Reserve the 1st channel for BGS
+	Mix_ReserveChannels(1);
 
 	int audio_rate;
 	Uint16 audio_format;
@@ -110,7 +214,7 @@ SdlAudio::SdlAudio() :
 			(audio_channels > 2) ? "surround" : (audio_channels > 1) ? "stereo" : "mono",
 			audio_format_str);
 	} else {
-		Output::Debug("Mix_QuerySpec: %s", Mix_GetError());
+		Output::Debug("Mix_QuerySpec error: %s", Mix_GetError());
 	}
 }
 
@@ -127,21 +231,21 @@ void SdlAudio::BGM_OnPlayedOnce() {
 		if (!bgs_stop) {
 			played_once = true;
 			// Play indefinitely without fade-in
-			Mix_PlayChannel(bgs_channel, bgs.get(), -1);
-			bgs_channel = -1;
+			Mix_PlayChannel(BGS_CHANNEL_NUM, bgs.get(), -1);
 		}
 		return;
 	}
 #endif
 
-	if (!me_stopped_bgm && !bgm_stop) {
+	if (!bgm_stop) {
 		played_once = true;
 		// Play indefinitely without fade-in
-		Mix_PlayMusic(bgm.get(), -1);
+		if (Mix_GetMusicType(bgm.get()) != MUS_MP3_MAD)
+			Mix_PlayMusic(bgm.get(), -1);
 	}
 }
 
-void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	bgm_stop = false;
 	played_once = false;
 	std::string const path = FileFinder::FindMusic(file);
@@ -149,6 +253,19 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Debug("Music not found: %s", file.c_str());
 		return;
 	}
+
+	FILE* filehandle = FileFinder::fopenUTF8(path, "rb");
+	if (!filehandle) {
+		Output::Warning("Music not readable: %s", file.c_str());
+		return;
+	}
+
+	audio_decoder = AudioDecoder::Create(filehandle, path);
+	if (audio_decoder) {
+		SetupAudioDecoder(filehandle, path, volume, pitch, fadein);
+		return;
+	}
+	fclose(filehandle);
 
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
 
@@ -166,7 +283,26 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 #endif
 
 	if (!bgm) {
+#if WANT_FMMIDI == 2
+		// Fallback to FMMIDI when SDL Midi failed
+		char magic[4] = { 0 };
+		filehandle = FileFinder::fopenUTF8(path, "rb");
+		if (!filehandle) {
+			Output::Warning("Music not readable: %s", file.c_str());
+			return;
+		}
+		fread(magic, 4, 1, filehandle);
+		fseek(filehandle, 0, SEEK_SET);
+		if (!strncmp(magic, "MThd", 4)) {
+			Output::Debug("FmMidi fallback: %s", file.c_str());
+			audio_decoder.reset(new FmMidiDecoder());
+			SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
+			return;
+		}
+#endif
+
 #if SDL_MIXER_MAJOR_VERSION>1
+		// Try unsupported SDL_mixer ADPCM playback with SDL
 		if (strcmp(Mix_GetError(), "Unknown WAVE data format") == 0) {
 			bgm_stop = true;
 			BGS_Play(file, volume, 0, fadein);
@@ -179,8 +315,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 
 	bgm_starttick = SDL_GetTicks();
 
-#if SDL_MAJOR_VERSION>1
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
+
+#if SDL_MAJOR_VERSION>1
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
 		BGS_Play(file, volume, 0, fadein);
@@ -189,9 +326,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 #endif
 
 	BGM_Volume(volume);
-	if (!me_stopped_bgm &&
+	if (
 #ifdef _WIN32
-		(Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+		(mtype == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
 			? Mix_PlayMusic(bgm.get(), 0) : Mix_FadeInMusic(bgm.get(), 0, fadein))
 #else
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
@@ -204,7 +341,80 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
+void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
+	if (!audio_decoder->Open(handle)) {
+		Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), audio_decoder->GetError().c_str());
+		audio_decoder.reset();
+		return;
+	}
+	
+	// Detect bad AudioCVT implementations (SDL Wii)
+	static bool broken_test = false;
+	static bool audiocvt_broken = false;
+	if (!broken_test) {
+		broken_test = true;
+		SDL_BuildAudioCVT(&cvt, AUDIO_S16, 2, 44100, AUDIO_S16, 2, 44100 / 2);
+		if (!cvt.needed || cvt.rate_incr == 0.0) {
+			Output::Debug("SDL_AudioCVT implementation is broken. Resampling will not work.");
+			audiocvt_broken = true;
+		}
+	}
+
+	// Can't use BGM_Stop here because it destroys the audio_decoder
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	if (bgs_playing) {
+		BGS_Stop();
+	} else {
+		Mix_HaltMusic();
+	}
+#else
+	Mix_HaltMusic();
+#endif
+
+	audio_decoder->SetLooping(true);
+	bgm_starttick = SDL_GetTicks();
+
+	int audio_rate;
+	Uint16 sdl_format;
+	int audio_channels;
+	if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
+		Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
+		return;
+	}
+	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
+
+	int target_rate = audio_rate;
+	if (!audiocvt_broken && audio_decoder->GetType() == "midi") {
+		// FM Midi is very CPU heavy and the difference between 44100 and 22050
+		// is not hearable for MIDI
+		target_rate /= 2;
+	}
+	audio_decoder->SetFormat(target_rate, audio_format, audio_channels);
+
+	int device_rate;
+	AudioDecoder::Format device_format;
+	int device_channels;
+	audio_decoder->GetFormat(device_rate, device_format, device_channels);
+
+	// Don't care if successful, always build cvt
+	SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
+	if (audiocvt_broken) {
+		cvt.needed = false;
+	}
+	
+	audio_decoder->SetFade(0, volume, fadein);
+	audio_decoder->SetPitch(pitch);
+
+	Mix_HookMusic(callback, this);
+}
+
 void SdlAudio::BGM_Pause() {
+	if (audio_decoder) {
+		audio_decoder->Pause();
+		return;
+	}
+
 	// Midi pause is not supported... (for some systems -.-)
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
@@ -217,6 +427,12 @@ void SdlAudio::BGM_Pause() {
 }
 
 void SdlAudio::BGM_Resume() {
+	if (audio_decoder) {
+		bgm_starttick = SDL_GetTicks();
+		audio_decoder->Resume();
+		return;
+	}
+
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
 	if (bgs_playing) {
@@ -228,6 +444,9 @@ void SdlAudio::BGM_Resume() {
 }
 
 void SdlAudio::BGM_Stop() {
+	Mix_HookMusic(nullptr, nullptr);
+	audio_decoder.reset();
+
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
 	if (bgs_playing) {
@@ -237,28 +456,58 @@ void SdlAudio::BGM_Stop() {
 #endif
 	bgm_stop = true;
 	Mix_HaltMusic();
-	me_stopped_bgm = false;
 }
 
 bool SdlAudio::BGM_PlayedOnce() {
+	if (audio_decoder) {
+		return audio_decoder->GetLoopCount() > 0;
+	}
+
 	return played_once;
 }
 
 unsigned SdlAudio::BGM_GetTicks() {
+	if (audio_decoder) {
+		return audio_decoder->GetTicks();
+	}
+
 	// TODO: Implement properly. This is an approximation.
 	return SDL_GetTicks() - bgm_starttick;
 }
 
 void SdlAudio::BGM_Volume(int volume) {
+	if (audio_decoder) {
+		audio_decoder->SetVolume(volume);
+		return;
+	}
+
+#if SDL_MAJOR_VERSION>1
+	// SDL2_mixer bug, see above
+	if (bgs_playing) {
+		BGS_Volume(volume);
+		return;
+	}
+#endif
+
 	bgm_volume = volume * MIX_MAX_VOLUME / 100;
 	Mix_VolumeMusic(bgm_volume);
 }
 
-void SdlAudio::BGM_Pitch(int /* pitch */) {
-	// TODO
+void SdlAudio::BGM_Pitch(int pitch) {
+	if (audio_decoder) {
+		audio_decoder->SetPitch(pitch);
+	}
+
+	// Not supported by SDL
 }
 
 void SdlAudio::BGM_Fade(int fade) {
+	if (audio_decoder) {
+		bgm_starttick = DisplayUi->GetTicks();
+		audio_decoder->SetFade(audio_decoder->GetVolume(), 0, fade);
+		return;
+	}
+
 #ifdef _WIN32
 	// FIXME: Because of design change in Vista and higher reducing Midi volume
 	// alters volume of whole application and mutes it forever when restarted.
@@ -281,7 +530,6 @@ void SdlAudio::BGM_Fade(int fade) {
 #endif
 
 	Mix_FadeOutMusic(fade);
-	me_stopped_bgm = false;
 }
 
 void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
@@ -296,9 +544,10 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), 0, fadein);
-	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
-	if (bgs_channel == -1) {
+
+	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
+	int channel = Mix_FadeInChannel(BGS_CHANNEL_NUM, bgs.get(), 0, fadein);
+	if (channel != 0) {
 		Output::Warning("Couldn't play %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
@@ -311,73 +560,31 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 }
 
 void SdlAudio::BGS_Pause() {
-	if (Mix_Playing(bgs_channel)) {
-		Mix_Pause(bgs_channel);
+	if (Mix_Playing(BGS_CHANNEL_NUM)) {
+		Mix_Pause(BGS_CHANNEL_NUM);
 	}
 }
 
 void SdlAudio::BGS_Resume() {
-	Mix_Resume(bgs_channel);
+	Mix_Resume(BGS_CHANNEL_NUM);
 }
 
 void SdlAudio::BGS_Stop() {
-	if (Mix_Playing(bgs_channel)) {
+	if (Mix_Playing(BGS_CHANNEL_NUM)) {
 		bgs_stop = true;
-		Mix_HaltChannel(bgs_channel);
-		bgs_channel = -1;
+		Mix_HaltChannel(BGS_CHANNEL_NUM);
 		bgs_playing = false;
 	}
 }
 
 void SdlAudio::BGS_Fade(int fade) {
 	bgs_stop = true;
-	Mix_FadeOutChannel(bgs_channel, fade);
-	bgs_channel = -1;
+	Mix_FadeOutChannel(BGS_CHANNEL_NUM, fade);
 	bgs_playing = false;
 }
 
-int SdlAudio::BGS_GetChannel() const {
-	return bgs_channel;
-}
-/*
-void me_finish(int channel) {
-	if (me_channel == channel && me_stopped_bgm) {
-		Mix_VolumeMusic(bgm_volume);
-		Mix_FadeInMusic(bgm.get(), -1, 1000);
-		me_stopped_bgm = false;
-	}
-}
-*/
-
-void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		Output::Debug("Music not found: %s", file.c_str());
-		return;
-	}
-	me.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
-	if (!me) {
-		Output::Warning("Couldn't load %s ME.\n%s", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_channel = Mix_FadeInChannel(-1, me.get(), 0, fadein);
-	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
-	if (me_channel == -1) {
-		Output::Warning("Couldn't play %s ME.\n%s", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_stopped_bgm = (Mix_PlayingMusic() == 1);
-	// Mix_ChannelFinished(me_finish);
-}
-
-void SdlAudio::ME_Stop() {
-	if (Mix_Playing(me_channel)) {
-		Mix_HaltChannel(me_channel);
-	}
-}
-
-void SdlAudio::ME_Fade(int fade) {
-	Mix_FadeOutChannel(me_channel, fade);
+void SdlAudio::BGS_Volume(int volume) {
+	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
@@ -408,6 +615,19 @@ void SdlAudio::SE_Stop() {
 }
 
 void SdlAudio::Update() {
+	if (audio_decoder && bgm_starttick > 0) {
+		int t = DisplayUi->GetTicks();
+		audio_decoder->Update(t - bgm_starttick);
+		bgm_starttick = t;
+	}
+}
+
+AudioDecoder* SdlAudio::GetDecoder() {
+	return audio_decoder.get();
+}
+
+SDL_AudioCVT& SdlAudio::GetAudioCVT() {
+	return cvt;
 }
 
 #endif

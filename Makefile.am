@@ -16,6 +16,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/audio_sdl.h \
 	src/audio.cpp \
 	src/audio.h \
+	src/audio_decoder.cpp \
+	src/audio_decoder.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
@@ -29,6 +31,10 @@ libeasyrpg_player_la_SOURCES = \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/decoder_mpg123.cpp \
+	src/decoder_mpg123.h \
+	src/decoder_fmmidi.cpp \
+	src/decoder_fmmidi.h \
 	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \
@@ -121,11 +127,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/memory_management.h \
 	src/message_overlay.cpp \
 	src/message_overlay.h \
-	src/midiprogram.h \
-	src/midisequencer.cpp \
-	src/midisequencer.h \
-	src/midisynth.cpp \
-	src/midisynth.h \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \
@@ -298,6 +299,16 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_targetstatus.h \
 	src/window_varlist.cpp \
 	src/window_varlist.h
+
+if WANT_FMMIDI
+libeasyrpg_player_la_SOURCES += \
+	src/midiprogram.h \
+	src/midisequencer.cpp \
+	src/midisequencer.h \
+	src/midisynth.cpp \
+	src/midisynth.h
+endif
+
 libeasyrpg_player_la_CXXFLAGS = \
 	-I$(srcdir)/src \
 	-std=c++11 \
@@ -308,7 +319,8 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(SDL_CFLAGS) \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
-	$(ZLIB_CFLAGS)
+	$(ZLIB_CFLAGS) \
+	$(MPG123_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
@@ -317,7 +329,8 @@ libeasyrpg_player_la_LIBADD = \
 	$(SDL_LIBS) \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
-	$(ZLIB_LIBS)
+	$(ZLIB_LIBS) \
+	$(MPG123_LIBS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)

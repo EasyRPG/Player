@@ -23,6 +23,12 @@ AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port
 AS_IF([test "x$EM_GAME_URL" != "x"],[
 	AC_DEFINE_UNQUOTED([EM_GAME_URL], ["$EM_GAME_URL"], [Game URL (Emscripten)])
 ])
+AC_ARG_ENABLE([fmmidi],
+	AS_HELP_STRING([--enable-fmmidi@<:@=fallback@:>@],[use internal MIDI sequencer/as fallback @<:@default=no@:>@]))
+AS_IF([test "x$enable_fmmidi" = "xyes"],[want_fmmidi=1],[test "x$enable_fmmidi" = "xfallback"],[want_fmmidi=2])
+AS_IF([test "x$want_fmmidi" != "x"],
+	AC_DEFINE_UNQUOTED([WANT_FMMIDI],[$want_fmmidi],[Enable internal MIDI sequencer(1)/as fallback(2)]))
+AM_CONDITIONAL([WANT_FMMIDI],[test "x$want_fmmidi" != "x"])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([LCF],[liblcf])
@@ -43,6 +49,11 @@ PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable 
 ])
 PKG_CHECK_MODULES([PNG],[libpng])
 PKG_CHECK_MODULES([ZLIB],[zlib])
+AC_ARG_WITH([libmpg123],[AS_HELP_STRING([--without-libmpg123],
+	[Disable improved MP3 support provided by libmpg123. Uses SDL_mixer instead which results in noise or crashes for some MP3s. @<:@default=auto@:>@])])
+AS_IF([test "x$with_libmpg123" != "xno"],[
+	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Disable improved MP3 support provided by libmpg123])],[auto_mpg123=0])
+])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])

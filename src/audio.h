@@ -53,7 +53,8 @@ struct AudioInterface {
 	virtual bool BGM_PlayedOnce() = 0;
 
 	/**
-	 * TODO
+	 * Returns the current MIDI tick of the background music.
+	 * Only useful when the BGM is a MIDI track.
 	 */
 	virtual unsigned BGM_GetTicks() = 0;
 
@@ -89,50 +90,6 @@ struct AudioInterface {
 	virtual void BGM_Pitch(int pitch) = 0;
 
 	/**
-	 * Plays a background sound.
-	 *
-	 * @param file file to play.
-	 * @param volume volume.
-	 * @param pitch pitch.
-	 * @param fadein fadein.
-	 */
-	virtual void BGS_Play(std::string const& file, int volume, int pitch, int fadein) = 0;
-
-	/**
-	 * Stops the currently playing background sound.
-	 */
-	virtual void BGS_Stop() = 0;
-
-	/**
-	 * Does a fade out of the background sound.
-	 *
-	 * @param fade fade out time.
-	 */
-	virtual void BGS_Fade(int fade) = 0;
-
-	/**
-	 * Plays a music effect.
-	 *
-	 * @param file file to play.
-	 * @param volume volume.
-	 * @param pitch pitch.
-	 * @param fadein fadein.
-	 */
-	virtual void ME_Play(std::string const& file, int volume, int pitch, int fadein) = 0;
-
-	/**
-	 * Stops the currently playing music effect.
-	 */
-	virtual void ME_Stop() = 0;
-
-	/**
-	 * Does a fade out of the music effect.
-	 *
-	 * @param fade Fade out time
-	 */
-	virtual void ME_Fade(int fade) = 0;
-
-	/**
 	 * Plays a sound effect.
 	 *
 	 * @param file file to play.
@@ -148,24 +105,18 @@ struct AudioInterface {
 };
 
 struct EmptyAudio : public AudioInterface {
-	void BGM_Play(std::string const&, int, int, int);
-	void BGM_Pause() {}
-	void BGM_Resume() {}
-	void BGM_Stop() {}
-	bool BGM_PlayedOnce();
-	unsigned BGM_GetTicks();
-	void BGM_Fade(int) {}
-	void BGM_Volume(int) {}
-	void BGM_Pitch(int) {};
-	void BGS_Play(std::string const&, int, int, int) {}
-	void BGS_Stop() {}
-	void BGS_Fade(int) {}
-	void ME_Play(std::string const&, int, int, int) {}
-	void ME_Stop() {}
-	void ME_Fade(int) {}
-	void SE_Play(std::string const&, int, int) {}
-	void SE_Stop() {}
-	void Update() {}
+	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Pause() override {}
+	void BGM_Resume() override {}
+	void BGM_Stop() override {}
+	bool BGM_PlayedOnce() override;
+	unsigned BGM_GetTicks() override;
+	void BGM_Fade(int) override {}
+	void BGM_Volume(int) override {}
+	void BGM_Pitch(int) override {};
+	void SE_Play(std::string const&, int, int) override {}
+	void SE_Stop() override {}
+	void Update() override {}
 
 	unsigned bgm_starttick = 0;
 };

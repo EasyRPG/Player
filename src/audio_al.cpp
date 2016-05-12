@@ -470,8 +470,6 @@ ALAudio::getSound(source &src, std::string const &file) const {
 
 void ALAudio::Update() {
 	bgm_src_->update();
-	bgs_src_->update();
-	me_src_->update();
 
 	for (source_list::iterator i = se_src_.begin(); i < se_src_.end(); ++i) {
 		i->get()->update();
@@ -496,12 +494,10 @@ ALAudio::ALAudio(char const *const dev_name) {
 	SET_CONTEXT(ctx_);
 
 	bgm_src_ = create_source(true);
-	bgs_src_ = create_source(true);
-	me_src_ = create_source(false);
 
-        if (!getenv("DEFAULT_SOUNDFONT")) {
-          Output::Error("Default sound font not found.");
-        }
+	if (!getenv("DEFAULT_SOUNDFONT")) {
+		Output::Error("Default sound font not found.");
+	}
 }
 
 std::shared_ptr<ALAudio::source> ALAudio::create_source(bool loop) const {
@@ -554,25 +550,6 @@ void ALAudio::BGM_Resume() {
 	alSourcePlay(bgm_src_->get());
 }
 
-void ALAudio::BGS_Play(std::string const &file, int volume, int pitch, int fadein) {
-	SET_CONTEXT(ctx_);
-
-	BGM_Pitch(pitch);
-	BGM_Volume(volume);
-	bgm_src_->set_buffer_loader(getSound(*bgm_src_, file));
-	bgm_src_->fade_in(fadein);
-}
-
-void ALAudio::BGS_Stop() {
-	SET_CONTEXT(ctx_);
-	alSourceStop(bgs_src_->get());
-}
-
-void ALAudio::BGS_Fade(int fade) {
-	SET_CONTEXT(ctx_);
-	bgs_src_->fade_out(fade);
-}
-
 void ALAudio::BGM_Volume(int volume) {
 	SET_CONTEXT(ctx_);
 	bgm_src_->set_volume(volume * 0.01f);
@@ -580,26 +557,7 @@ void ALAudio::BGM_Volume(int volume) {
 
 void ALAudio::BGM_Pitch(int pitch) {
 	SET_CONTEXT(ctx_);
-	alSourcef(bgs_src_->get(), AL_PITCH, pitch * 0.01f);
-}
-
-void ALAudio::ME_Play(std::string const &file, int volume, int pitch, int fadein) {
-	SET_CONTEXT(ctx_);
-
-	alSourcef(me_src_->get(), AL_PITCH, pitch * 0.01f);
-	me_src_->set_volume(volume * 0.01f);
-	me_src_->set_buffer_loader(getMusic(*me_src_, file));
-	me_src_->fade_in(fadein);
-}
-
-void ALAudio::ME_Stop() {
-	SET_CONTEXT(ctx_);
-	alSourceStop(me_src_->get());
-}
-
-void ALAudio::ME_Fade(int fade) {
-	SET_CONTEXT(ctx_);
-	me_src_->fade_out(fade);
+	alSourcef(bgm_src_->get(), AL_PITCH, pitch * 0.01f);
 }
 
 void ALAudio::SE_Play(std::string const &file, int volume, int pitch) {

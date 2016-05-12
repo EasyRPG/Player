@@ -25,6 +25,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "system.h"
+
+#ifdef WANT_FMMIDI
+
 #include "midisequencer.h"
 #include "output.h"
 
@@ -394,3 +398,4 @@ namespace midisequencer{
     }
 }
 
+#endif
