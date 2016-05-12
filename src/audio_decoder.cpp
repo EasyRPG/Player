@@ -103,6 +103,20 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	return read / 2;
 }
 
+class WMAUnsupportedFormatDecoder : public AudioDecoder {
+public:
+	WMAUnsupportedFormatDecoder() {
+		error_message = std::string("WMA audio files are not supported. Reinstall the\n") +
+			"game and don't convert them when asked by Windows!\n";
+	}
+	bool Open(FILE*) override { return false; }
+	bool IsFinished() const override { return true; }
+	void GetFormat(int&, Format&, int&) const override {}
+private:
+	int FillBuffer(uint8_t*, int) override { return -1; };
+};
+const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
+
 std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string& filename) {
 	char magic[4] = { 0 };
 	fread(magic, 4, 1, file);
@@ -112,7 +126,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #if WANT_FMMIDI == 1
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
 #else
-		return std::unique_ptr<AudioDecoder>();
+		return nullptr;
 #endif
 	}
 
@@ -122,7 +136,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		!strncmp(magic, "OggS", 4) || // OGG
 		!strncmp(magic, "fLaC", 4) // FLAC
 		) {
-		return std::unique_ptr<AudioDecoder>();
+		return nullptr;
+	}
+
+	// Inform about WMA issue
+	if (!memcmp(magic, wma_magic, 4)) {
+		return std::unique_ptr<AudioDecoder>(new WMAUnsupportedFormatDecoder());
 	}
 
 #ifdef HAVE_MPG123
@@ -139,7 +158,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #endif
 
 	fseek(file, 0, SEEK_SET);
-	return std::unique_ptr<AudioDecoder>();
+	return nullptr;
 }
 
 void AudioDecoder::SetFade(int begin, int end, int duration) {

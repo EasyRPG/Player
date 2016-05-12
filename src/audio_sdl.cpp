@@ -69,7 +69,9 @@ namespace {
 
 		out_len = audio->GetDecoder()->Decode(buffer.data(), out_len);
 		if (out_len == -1) {
-			Output::DebugStr(audio->GetDecoder()->GetError());
+			Output::Warning("Couldn't decode BGM.\n%s", audio->GetDecoder()->GetError().c_str());
+			Mix_HookMusic(nullptr, nullptr);
+			return;
 		}
 
 		if (audio->GetDecoder()->IsFinished()) {
@@ -256,7 +258,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 
 	audio_decoder = AudioDecoder::Create(filehandle, path);
 	if (audio_decoder) {
-		SetupAudioDecoder(filehandle, volume, pitch, fadein);
+		SetupAudioDecoder(filehandle, path, volume, pitch, fadein);
 		return;
 	}
 	fclose(filehandle);
@@ -290,7 +292,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		if (!strncmp(magic, "MThd", 4)) {
 			Output::Debug("FmMidi fallback: %s", file.c_str());
 			audio_decoder.reset(new FmMidiDecoder());
-			SetupAudioDecoder(filehandle, volume, pitch, fadein);
+			SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
 			return;
 		}
 #endif
@@ -335,9 +337,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
-void SdlAudio::SetupAudioDecoder(FILE* handle, int volume, int pitch, int fadein) {
+void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
 	if (!audio_decoder->Open(handle)) {
-		Output::WarningStr(audio_decoder->GetError());
+		Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), audio_decoder->GetError().c_str());
 		audio_decoder.reset();
 		return;
 	}
