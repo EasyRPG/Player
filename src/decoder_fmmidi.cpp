@@ -104,7 +104,7 @@ int FmMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	int notes = 0;
 	do {
 		seq->play(mtime, this);
-		notes = synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, frequency * pitch);
+		notes = synthesize(reinterpret_cast<int_least16_t*>(buffer), samples, frequency);
 		mtime += delta;
 	} while (begin && notes == 0 && !IsFinished());
 
