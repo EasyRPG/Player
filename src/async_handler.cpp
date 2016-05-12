@@ -20,6 +20,7 @@
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
+#  include <regex>
 #endif
 
 #include "async_handler.h"
@@ -174,6 +175,10 @@ void FileRequestAsync::Start() {
 		// Fall through if not found, will fail in the ajax request
 		request_path += path;
 	}
+
+	// URL encode % and #
+	request_path = std::regex_replace(request_path, std::regex("%"), "%25");
+	request_path = std::regex_replace(request_path, std::regex("#"), "%23");
 
 	emscripten_async_wget2(
 		request_path.c_str(),
