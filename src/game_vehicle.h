@@ -81,6 +81,8 @@ public:
 	void SetFlashLevel(double flash_level) override;
 	int GetFlashTimeLeft() const override;
 	void SetFlashTimeLeft(int time_left) override;
+	bool GetThrough() const override;
+	void SetThrough(bool through) override;
 	bool IsPassable(int x, int y, int d) const override;
 	int GetBushDepth() const override;
 	/** @} */

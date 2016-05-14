@@ -84,6 +84,8 @@ public:
 	void SetFlashLevel(double flash_level) override;
 	int GetFlashTimeLeft() const override;
 	void SetFlashTimeLeft(int time_left) override;
+	bool GetThrough() const override;
+	void SetThrough(bool through) override;
 	/** @} */
 
 	/**
@@ -127,13 +129,6 @@ public:
 	 * @return trigger condition.
 	 */
 	int GetTrigger() const;
-
-	/**
-	 * Gets through state.
-	 *
-	 * @return Event has through state or has a null-page.
-	 */
-	bool GetThrough() const override;
 
 	/**
 	 * Gets event commands list.

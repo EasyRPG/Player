@@ -201,6 +201,14 @@ void Game_Player::SetFlashTimeLeft(int time_left) {
 	location.flash_time_left = time_left;
 }
 
+bool Game_Player::GetThrough() const {
+	return location.through;
+}
+
+void Game_Player::SetThrough(bool through) {
+	location.through = through;
+}
+
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
 	new_map_id = map_id;
 	new_x = x;
@@ -550,9 +558,13 @@ bool Game_Player::GetOnVehicle() {
 	location.preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
 		location.boarding = true;
-		through = true;
-		MoveForward();
-		through = false;
+		if (!GetThrough()) {
+			SetThrough(true);
+			MoveForward();
+			SetThrough(false);
+		} else {
+			MoveForward();
+		}
 	} else {
 		location.aboard = true;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
@@ -576,9 +588,13 @@ bool Game_Player::GetOffVehicle() {
 	if (!InAirship()) {
 		location.unboarding = true;
 		Unboard();
-		through = true;
-		MoveForward();
-		through = false;
+		if (!GetThrough()) {
+			SetThrough(true);
+			MoveForward();
+			SetThrough(false);
+		} else {
+			MoveForward();
+		}
 	}
 
 	return true;

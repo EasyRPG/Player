@@ -232,7 +232,11 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 }
 
 bool Game_Event::GetThrough() const {
-	return page == NULL || Game_Character::GetThrough();
+	return page == nullptr || data.through;
+}
+
+void Game_Event::SetThrough(bool through) {
+	data.through = through;
 }
 
 void Game_Event::ClearStarting() {

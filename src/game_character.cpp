@@ -36,7 +36,6 @@ Game_Character::Game_Character() :
 	pattern(RPG::EventPage::Frame_middle),
 	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
-	through(false),
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
 	original_move_frequency(-1),
@@ -384,11 +383,11 @@ void Game_Character::MoveTypeCustom() {
 				}
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_on:
-				through = true;
+				SetThrough(true);
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_off:
-				through = false;
-					break;
+				SetThrough(false);
+				break;
 			case RPG::MoveCommand::Code::stop_animation:
 				walk_animation = false;
 				break;
@@ -793,10 +792,6 @@ int Game_Character::GetRemainingStep() const {
 
 int Game_Character::GetPattern() const {
 	return pattern;
-}
-
-bool Game_Character::GetThrough() const {
-	return through;
 }
 
 int Game_Character::GetAnimationId() const {
