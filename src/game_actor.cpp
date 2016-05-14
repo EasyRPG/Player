@@ -856,21 +856,30 @@ const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() con
 	return commands;
 }
 
-int Game_Actor::GetClass() const {
-	return GetData().class_id;
+const RPG::Class* Game_Actor::GetClass() const {
+	if (GetData().class_id <= 0) {
+		return nullptr;
+	}
+
+	return &Data::classes[GetData().class_id - 1];
 }
 
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
 	GetData().changed_class = _class_id > 0;
+	if (GetData().changed_class) {
+		GetData().battler_animation = GetClass()->battler_animation;
+	} else {
+		GetData().battler_animation = 0;
+	}
 	MakeExpList();
 }
 
 std::string Game_Actor::GetClassName() const {
-    if (GetClass() <= 0) {
+    if (!GetClass()) {
         return "";
     }
-    return Data::classes[GetClass() - 1].name;
+    return GetClass()->name;
 }
 
 void Game_Actor::SetBaseMaxHp(int maxhp) {
@@ -940,7 +949,26 @@ int Game_Actor::GetBattleAnimationId() const {
 		return 0;
 	}
 
-	return Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
+	int anim = 0;
+
+	if (GetData().battler_animation < 0) {
+		// Earlier versions of EasyRPG didn't save this value correctly
+
+		if (GetData().changed_class) {
+			anim = GetClass()->battler_animation;
+		} else {
+			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
+		}
+	} else {
+		anim = GetData().battler_animation;
+	}
+	
+	if (anim == 0) {
+		// Chunk was missing, set to proper default
+		return 1;
+	}
+
+	return anim;
 }
 
 int Game_Actor::GetHitChance() const {
