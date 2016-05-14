@@ -776,6 +776,16 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
+	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
+		if (skill.battler_animation_data.size() > source->GetId() - 1) {
+			int pose = skill.battler_animation_data[source->GetId() - 1].pose;
+
+			if (pose > 0) {
+				return pose + 1;
+			}
+		}
+	}
+
 	return Sprite_Battler::AnimationState_SkillUse;
 }
 
