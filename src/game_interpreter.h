@@ -139,6 +139,7 @@ protected:
 	void CheckGameOver();
 
 	bool CommandShowMessage(RPG::EventCommand const& com);
+	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
 	bool CommandShowChoices(RPG::EventCommand const& com);
 	bool CommandInputNumber(RPG::EventCommand const& com);
@@ -201,7 +202,6 @@ protected:
 	bool CommandChangeSaveAccess(RPG::EventCommand const& com);
 	bool CommandChangeMainMenuAccess(RPG::EventCommand const& com);
 	bool CommandConditionalBranch(RPG::EventCommand const& com);
-	
 	bool CommandJumpToLabel(RPG::EventCommand const& com);
 	bool CommandBreakLoop(RPG::EventCommand const& com);
 	bool CommandEndLoop(RPG::EventCommand const& com);

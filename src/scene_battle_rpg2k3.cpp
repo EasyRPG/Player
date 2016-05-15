@@ -409,7 +409,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_Victory:
 	case State_Defeat:
 		status_window->SetVisible(true);
-		command_window->SetVisible(true);
+		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
+			command_window->SetVisible(true);
+		}
 		status_window->SetX(0);
 		break;
 	case State_Escape:

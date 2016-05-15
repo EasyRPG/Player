@@ -126,8 +126,6 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
-		case Cmd::MessageOptions:
-			return CommandMessageOptions(com);
 		case Cmd::RecallToLocation:
 			return CommandRecallToLocation(com);
 		case Cmd::EnemyEncounter:
@@ -195,14 +193,6 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 /**
  * Commands
  */
-bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
-	Game_Message::SetTransparent(com.parameters[0] != 0);
-	Game_Message::SetPosition(com.parameters[1]);
-	Game_Message::SetPositionFixed(com.parameters[2] == 0);
-	Game_Message::SetContinueEvents(com.parameters[3] != 0);
-	return true;
-}
-
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
 	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];

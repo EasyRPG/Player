@@ -345,6 +345,8 @@ bool Game_Interpreter::ExecuteCommand() {
 	switch (com.code) {
 		case Cmd::ShowMessage:
 			return CommandShowMessage(com);
+		case Cmd::MessageOptions:
+			return CommandMessageOptions(com);
 		case Cmd::ChangeFaceGraphic:
 			return CommandChangeFaceGraphic(com);
 		case Cmd::ShowChoice:
@@ -606,6 +608,14 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 		}
 	} // End for
 
+	return true;
+}
+
+bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
+	Game_Message::SetTransparent(com.parameters[0] != 0);
+	Game_Message::SetPosition(com.parameters[1]);
+	Game_Message::SetPositionFixed(com.parameters[2] == 0);
+	Game_Message::SetContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 

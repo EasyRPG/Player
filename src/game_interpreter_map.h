@@ -58,7 +58,6 @@ public:
 	bool ExecuteCommand() override;
 
 private:
-	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandRecallToLocation(RPG::EventCommand const& com);
 	bool CommandEnemyEncounter(RPG::EventCommand const& com);
 	bool CommandOpenShop(RPG::EventCommand const& com);
