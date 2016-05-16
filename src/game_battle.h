@@ -109,6 +109,20 @@ namespace Game_Battle {
 	void SetBattleMode(int battle_mode_);
 	int GetBattleMode();
 
+	/** 
+	 * Sets the latest targeted enemy. Only used by battle branch "is target"
+	 *
+	 * @param target_enemy id of targeted enemy
+	 */
+	void SetEnemyTargetId(int target_enemy);
+
+	/**
+	 * Gets the latest targeted enemy. Only used by battle branch "is target"
+	 *
+	 * @return targeted enemy
+	 */
+	int GetEnemyTargetId();
+
 	extern int escape_fail_count;
 	extern std::string background_name;
 }

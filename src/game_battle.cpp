@@ -54,6 +54,7 @@ namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
+	int target_enemy_id;
 }
 
 void Game_Battle::Init() {
@@ -65,6 +66,7 @@ void Game_Battle::Init() {
 	turn = 0;
 	terminate = false;
 	escape_fail_count = 0;
+	target_enemy_id = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
@@ -169,6 +171,8 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			}
 		}
 	}
+
+	Game_Battle::SetEnemyTargetId(0);
 
 	++turn;
 }
@@ -335,4 +339,12 @@ void Game_Battle::SetBattleMode(int battle_mode_) {
 
 int Game_Battle::GetBattleMode() {
 	return battle_mode;
+}
+
+void Game_Battle::SetEnemyTargetId(int target_enemy) {
+	target_enemy_id = target_enemy;
+}
+
+int Game_Battle::GetEnemyTargetId() {
+	return target_enemy_id;
 }

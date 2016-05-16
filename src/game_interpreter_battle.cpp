@@ -325,10 +325,8 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			}
 			break;
 		case 4:
-			Output::Warning("Battle: Monster is target not implemented");
 			// Monster is the current target
-			/*result = Game_Battle::HaveTargetEnemy() &&
-				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
+			result = Game_Battle::GetEnemyTargetId() == com.parameters[1];
 			break;
 		case 5:
 			// Hero uses the ... command
