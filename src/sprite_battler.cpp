@@ -138,6 +138,8 @@ void Sprite_Battler::Update() {
 			if (cycle == 40) {
 				switch (loop_state) {
 					case LoopState_DefaultAnimationAfterFinish:
+						cycle = 0;
+						// fallthrough
 					case LoopState_WaitAfterFinish:
 						idling = true;
 						break;
