@@ -22,9 +22,11 @@
 #include "game_interpreter_battle.h"
 #include "game_party.h"
 #include "game_switches.h"
+#include "game_system.h"
 #include "game_variables.h"
 #include "output.h"
 #include "player.h"
+#include "game_temp.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -91,23 +93,39 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 }
 
 bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
-	Output::Warning("Battle: Force Flee not implemented");
-
 	bool check = com.parameters[2] == 0;
-	// TODO
+	bool result = false;
+
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer)
-		//Game_Battle::allies_flee = true;
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer) {
+			Game_Temp::battle_result = Game_Temp::BattleEscape;
+			Game_Battle::Terminate();
+			result = true;
+		}
 	    break;
 	case 1:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
-			//Game_Battle::MonstersFlee();
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
+				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
+				enemy.Kill();
+			}
+			Game_Battle::SetNeedRefresh(true);
+			result = true;
+		}
 	    break;
 	case 2:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
-			//Game_Battle::MonsterFlee(com.parameters[1]);
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
+			enemy.Kill();
+			Game_Battle::SetNeedRefresh(true);
+			result = true;
+		}
 	    break;
+	}
+
+	if (result) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 	}
 
 	return true;

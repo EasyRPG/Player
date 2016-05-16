@@ -77,6 +77,10 @@ bool Game_Battler::IsDead() const {
 	return HasState(1);
 }
 
+void Game_Battler::Kill() {
+	ChangeHp(-GetHp());
+}
+
 bool Game_Battler::Exists() const {
 	return !IsHidden() && !IsDead();
 }

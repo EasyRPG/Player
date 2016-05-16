@@ -456,6 +456,10 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 				return;
 			}
 		}
+	} else {
+		if (CheckResultConditions()) {
+			return;
+		}
 	}
 
 	if (help_window->GetVisible() && message_timer > 0) {
@@ -976,6 +980,10 @@ bool Scene_Battle_Rpg2k3::CheckFlee() {
 }
 
 bool Scene_Battle_Rpg2k3::CheckResultConditions() {
+	if (state == State_Defeat || state == State_Victory) {
+		return false;
+	}
+
 	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
 }
 

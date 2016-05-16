@@ -297,6 +297,11 @@ public:
 	bool IsDead() const;
 
 	/**
+	 * Kills the battler
+	 */
+	void Kill();
+
+	/**
 	 * Checks if the actor can use the skill.
 	 *
 	 * @param skill_id ID of skill to check.
