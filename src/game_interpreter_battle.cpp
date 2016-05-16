@@ -155,6 +155,10 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 
 	enemy.ChangeHp(change);
 
+	if (enemy.IsDead()) {
+		Game_Battle::SetNeedRefresh(true);
+	}
+
 	return true;
 }
 
@@ -188,10 +192,15 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
-	if (remove)
+	if (remove) {
 		enemy.RemoveState(state_id);
-	else
+	} else {
+		if (state_id == 1) {
+			enemy.ChangeHp(-enemy.GetHp());
+			Game_Battle::SetNeedRefresh(true);
+		}
 		enemy.AddState(state_id);
+	}
 	return true;
 }
 

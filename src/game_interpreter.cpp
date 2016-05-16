@@ -47,6 +47,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include "reader_util.h"
+#include "game_battle.h"
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
@@ -1343,6 +1344,10 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 			amount += hp * (-1) + 1;
 		}
 		actor->ChangeHp(amount);
+
+		if (actor->IsDead()) {
+			Game_Battle::SetNeedRefresh(true);
+		}
 	}
 
 	if (lethal) {
@@ -1379,6 +1384,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 		} else {
 			if(state_id == 1) {
 				actor->ChangeHp(-actor->GetHp());
+				Game_Battle::SetNeedRefresh(true);
 			}
 			actor->AddState(state_id);
 			CheckGameOver();

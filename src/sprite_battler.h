@@ -73,6 +73,12 @@ public:
 	void SetAnimationLoop(LoopState loop);
 
 	/**
+	 * Checks if the assigned battler is dead and sets the death state if it
+	 * wasn't set already.
+	 */
+	void DetectDeath();
+
+	/**
 	 * Returns true when the actor is in it's default state (Depending on
 	 * conditions)
 	 *
