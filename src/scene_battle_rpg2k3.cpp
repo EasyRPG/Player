@@ -181,6 +181,22 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 			static const int frames[] = { 0, 1, 2, 1 };
 			int frame = frames[(cycle / 15) % 4];
 			enemy_cursor->SetSrcRect(Rect(frame * 16, 0, 16, 16));
+
+			if (state == State_SelectEnemyTarget) {
+				auto states = actor->GetInflictedStates();
+
+				help_window->SetVisible(!states.empty());
+				BitmapRef contents = help_window->GetContents();
+				contents->Clear();
+
+				int text_width = 0;
+				for (auto state : states) {
+					std::string name = Data::states[state - 1].name;
+					int color = Data::states[state - 1].color;
+					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);
+					text_width += contents->GetFont()->GetSize(name + "  ").width;
+				}
+			}
 		}
 
 		++cycle;
