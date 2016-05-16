@@ -725,7 +725,8 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
-	int i, value = 0;
+	int value = 0;
+	int i = 0;
 	Game_Actor* actor;
 	Game_Character* character;
 
@@ -915,38 +916,38 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			}
 
 			switch (com.parameters[6]) {
-			case 0:
-				// Enemy HP
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetHp();
-				break;
-			case 1:
-				// Enemy SP
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSp();
-				break;
-			case 2:
-				// Enemy MaxHP
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxHp();
-				break;
-			case 3:
-				// Enemy MaxSP
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxSp();
-				break;
-			case 4:
-				// Enemy Attack
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAtk();
-				break;
-			case 5:
-				// Enemy Defense
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetDef();
-				break;
-			case 6:
-				// Enemy Spirit
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSpi();
-				break;
-			case 7:
-				// Enemy Agility
-				value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAgi();
-				break;
+				case 0:
+					// Enemy HP
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetHp();
+					break;
+				case 1:
+					// Enemy SP
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSp();
+					break;
+				case 2:
+					// Enemy MaxHP
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxHp();
+					break;
+				case 3:
+					// Enemy MaxSP
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetMaxSp();
+					break;
+				case 4:
+					// Enemy Attack
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAtk();
+					break;
+				case 5:
+					// Enemy Defense
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetDef();
+					break;
+				case 6:
+					// Enemy Spirit
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetSpi();
+					break;
+				case 7:
+					// Enemy Agility
+					value = (*Main_Data::game_enemyparty)[com.parameters[5]].GetAgi();
+					break;
 			}
 		default:
 			;

@@ -326,7 +326,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			break;
 		case 4:
 			// Monster is the current target
-			result = Game_Battle::GetEnemyTargetId() == com.parameters[1];
+			result = Game_Battle::GetEnemyTargetIndex() == com.parameters[1];
 			break;
 		case 5:
 			// Hero uses the ... command

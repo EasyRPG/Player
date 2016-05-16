@@ -110,18 +110,18 @@ namespace Game_Battle {
 	int GetBattleMode();
 
 	/** 
-	 * Sets the latest targeted enemy. Only used by battle branch "is target"
+	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
 	 *
 	 * @param target_enemy id of targeted enemy
 	 */
-	void SetEnemyTargetId(int target_enemy);
-
+	void SetEnemyTargetIndex(int target_enemy);
+	
 	/**
-	 * Gets the latest targeted enemy. Only used by battle branch "is target"
+	 * Gets the party index of the latest targeted enemy. Only used by battle branch "is target"
 	 *
 	 * @return targeted enemy
 	 */
-	int GetEnemyTargetId();
+	int GetEnemyTargetIndex();
 
 	extern int escape_fail_count;
 	extern std::string background_name;

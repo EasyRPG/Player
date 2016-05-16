@@ -212,6 +212,12 @@ void Scene_Battle::EnemySelected() {
 		assert("Invalid previous state for enemy selection" && false);
 	}
 
+	for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
+		if (&(*Main_Data::game_enemyparty)[i] == target) {
+			Game_Battle::SetEnemyTargetIndex(i);
+		}
+	}
+
 	ActionSelectedCallback(active_actor);
 }
 

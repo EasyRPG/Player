@@ -54,7 +54,7 @@ namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
-	int target_enemy_id;
+	int target_enemy_index;
 }
 
 void Game_Battle::Init() {
@@ -66,7 +66,7 @@ void Game_Battle::Init() {
 	turn = 0;
 	terminate = false;
 	escape_fail_count = 0;
-	target_enemy_id = 0;
+	target_enemy_index = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
@@ -170,9 +170,11 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 				page_executed[(*it).ID - 1] = false;
 			}
 		}
+
+		battler->SetLastBattleAction(-1);
 	}
 
-	Game_Battle::SetEnemyTargetId(0);
+	Game_Battle::SetEnemyTargetIndex(-1);
 
 	++turn;
 }
@@ -341,10 +343,10 @@ int Game_Battle::GetBattleMode() {
 	return battle_mode;
 }
 
-void Game_Battle::SetEnemyTargetId(int target_enemy) {
-	target_enemy_id = target_enemy;
+void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
+	target_enemy_index = target_enemy;
 }
 
-int Game_Battle::GetEnemyTargetId() {
-	return target_enemy_id;
+int Game_Battle::GetEnemyTargetIndex() {
+	return target_enemy_index;
 }

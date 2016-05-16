@@ -759,8 +759,6 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 void Scene_Battle_Rpg2k3::CommandSelected() {
 	const RPG::BattleCommand* command = active_actor->GetBattleCommands()[command_window->GetIndex()];
 
-	active_actor->SetLastBattleAction(command->ID);
-
 	switch (command->type) {
 	case RPG::BattleCommand::Type_attack:
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -1030,6 +1028,8 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	for_battler->SetGauge(0);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
+		const RPG::BattleCommand* command = static_cast<Game_Actor*>(for_battler)->GetBattleCommands()[command_window->GetIndex()];
+		for_battler->SetLastBattleAction(command->ID);
 		status_window->SetIndex(-1);
 	}
 
