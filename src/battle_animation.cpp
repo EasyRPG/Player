@@ -155,6 +155,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 
 		sprite->SetX(cell.x + x);
 		sprite->SetY(cell.y + y);
+		sprite->SetZ(GetZ());
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
