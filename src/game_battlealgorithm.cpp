@@ -74,7 +74,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	killed_by_attack_damage = false;
 	critical_hit = false;
 	absorb = false;
-	animation = NULL;
+	animation = nullptr;
+	conditions.clear();
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
@@ -401,7 +402,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			(*current_target)->RemoveState(it->ID);
 		}
 		else {
-			(*current_target)->AddState(it->ID);
+			if (it->ID == 1) {
+				(*current_target)->ChangeHp(-((*current_target)->GetHp()));
+			} else {
+				(*current_target)->AddState(it->ID);
+			}
 		}
 	}
 
@@ -537,7 +542,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
 			killed_by_attack_damage = true;
-			conditions.push_back(Data::states[0]);
 		}
 		else {
 			if (source->GetType() == Game_Battler::Type_Ally) {
@@ -699,7 +703,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				if ((*current_target)->GetHp() - this->hp <= 0) {
 					// Death state
 					killed_by_attack_damage = true;
-					conditions.push_back(Data::states[0]);
 				}
 			}
 
@@ -1087,7 +1090,6 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	if ((*current_target)->GetHp() - this->hp <= 0) {
 		// Death state
 		killed_by_attack_damage = true;
-		conditions.push_back(Data::states[0]);
 	}
 
 	success = true;
