@@ -238,9 +238,9 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	// The GetData().class_id check works around a save game corruption in old
-	// versions of the Player because GetData().changed_class was not set properly.
-	int n = GetData().changed_class && GetData().class_id > 0
+	// The .changed_class field is not reliable (and the purpose is unknown)
+	// because it is only true when the class was changed by an event
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
 
@@ -255,7 +255,7 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
 
@@ -270,7 +270,7 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
 
@@ -294,7 +294,7 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
 
@@ -318,7 +318,7 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
 
@@ -342,7 +342,7 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
 
@@ -368,7 +368,7 @@ int Game_Actor::GetBaseAgi() const {
 int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
-	if (GetData().changed_class && GetData().class_id > 0) {
+	if (GetData().class_id > 0) {
 		const RPG::Class& klass = Data::classes[GetData().class_id - 1];
 		base = klass.exp_base;
 		inflation = klass.exp_inflation;
@@ -951,10 +951,10 @@ int Game_Actor::GetBattleAnimationId() const {
 
 	int anim = 0;
 
-	if (GetData().battler_animation < 0) {
+	if (GetData().battler_animation <= 0) {
 		// Earlier versions of EasyRPG didn't save this value correctly
 
-		if (GetData().changed_class) {
+		if (GetData().class_id > 0) {
 			anim = GetClass()->battler_animation;
 		} else {
 			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
