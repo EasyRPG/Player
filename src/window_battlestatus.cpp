@@ -101,6 +101,12 @@ void Window_BattleStatus::Refresh() {
 
 void Window_BattleStatus::RefreshGauge() {
 	if (Player::IsRPG2k3()) {
+		if (enemy) {
+			item_max = Main_Data::game_enemyparty->GetBattlerCount();
+		} else {
+			item_max = Main_Data::game_party->GetBattlerCount();
+		}
+
 		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 		}
