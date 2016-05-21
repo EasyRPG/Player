@@ -227,6 +227,11 @@ void Graphics::Freeze() {
 }
 
 void Graphics::Transition(TransitionType type, int duration, bool erase) {
+	if (screen_erased && erase) {
+		// Don't allow another erase when already erased
+		return;
+	}
+
 	if (type != TransitionNone) {
 		transition_type = type;
 		transition_frame = 0;
