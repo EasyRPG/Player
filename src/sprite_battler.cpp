@@ -108,13 +108,7 @@ void Sprite_Battler::Update() {
 
 				if (animation->IsDone()) {
 					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
-						const RPG::State* state = battler->GetSignificantState();
-						if (state) {
-							SetAnimationState(state->battler_animation_id + 1);
-						} else {
-							SetAnimationState(AnimationState_Idle);
-						}
-						idling = true;
+						DoIdleAnimation();
 					} else if (loop_state == LoopState_LoopAnimation) {
 						animation->SetFrame(0);
 					} else if (loop_state == LoopState_WaitAfterFinish) {
@@ -150,14 +144,7 @@ void Sprite_Battler::Update() {
 			}
 
 			if (idling) {
-				const RPG::State* state = battler->GetSignificantState();
-				int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
-				if (idling_anim == 101)
-					idling_anim = 7;
-
-				if (idling_anim != anim_state)
-					SetAnimationState(idling_anim);
-				idling = true;
+				DoIdleAnimation();
 			}
 		}
 	}
@@ -208,9 +195,11 @@ void Sprite_Battler::SetAnimationLoop(LoopState loop) {
 	loop_state = loop;
 }
 
-void Sprite_Battler::DetectDeath() {
+void Sprite_Battler::DetectStateChange() {
 	if (battler->IsDead() && anim_state != AnimationState_Dead) {
 		SetAnimationState(AnimationState_Dead);
+	} else if (idling) {
+		DoIdleAnimation();
 	}
 }
 
@@ -293,6 +282,18 @@ void Sprite_Battler::CreateSprite() {
 	}
 
 	SetVisible(!battler->IsHidden());
+}
+
+void Sprite_Battler::DoIdleAnimation() {
+	const RPG::State* state = battler->GetSignificantState();
+	int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
+	if (idling_anim == 101)
+		idling_anim = 7;
+
+	if (idling_anim != anim_state)
+		SetAnimationState(idling_anim);
+
+	idling = true;
 }
 
 void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {

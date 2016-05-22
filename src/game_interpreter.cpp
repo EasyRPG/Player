@@ -255,7 +255,7 @@ void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
 }
 
 void Game_Interpreter::CheckGameOver() {
-	if (!Main_Data::game_party->IsAnyActive()) {
+	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
 		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
 	}
@@ -1384,9 +1384,9 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 		} else {
 			if(state_id == 1) {
 				actor->ChangeHp(-actor->GetHp());
-				Game_Battle::SetNeedRefresh(true);
 			}
 			actor->AddState(state_id);
+			Game_Battle::SetNeedRefresh(true);
 			CheckGameOver();
 		}
 	}
