@@ -255,17 +255,27 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
-	int total = 0;
+	int highest_rating = 0;
 	for (int i = 0; i < (int) actions.size(); ++i) {
 		const RPG::EnemyAction& action = actions[i];
 		if (IsActionValid(action)) {
 			valid.push_back(i);
-			total += action.rating;
+			highest_rating = std::max(highest_rating, action.rating);
+		}
+	}
+
+	int total = 0;
+	for (auto it = valid.begin(); it != valid.end();) {
+		if (actions[*it].rating < highest_rating - 9) {
+			it = valid.erase(it);
+		} else {
+			total += actions[*it].rating;
+			++it;
 		}
 	}
 
 	if (total == 0) {
-		return NULL;
+		return nullptr;
 	}
 
 	int which = rand() % total;
@@ -279,5 +289,5 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 		return &action;
 	}
 
-	return NULL;
+	return nullptr;
 }

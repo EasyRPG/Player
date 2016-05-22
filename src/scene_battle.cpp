@@ -465,7 +465,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
 	}
 	if (action->switch_off) {
-		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_off_id);
+		enemy->GetBattleAlgorithm()->SetSwitchDisable(action->switch_off_id);
 	}
 
 	ActionSelectedCallback(enemy);
