@@ -453,6 +453,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		if (action->IsDead()) {
 			// No zombies allowed ;)
 			RemoveCurrentAction();
+			battle_action_state = BattleActionState_Start;
 		}
 		else if (ProcessBattleAction(action->GetBattleAlgorithm().get())) {
 			RemoveCurrentAction();
@@ -904,8 +905,10 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		Game_Message::texts.push_back(Data::terms.victory + "\f");
 
+		std::string space = Player::IsRPG2k3E() ? " " : "";
+
 		std::stringstream ss;
-		ss << exp << Data::terms.exp_received << "\f";
+		ss << exp << space << Data::terms.exp_received << "\f";
 		Game_Message::texts.push_back(ss.str());
 		if (money > 0) {
 			ss.str("");
@@ -914,7 +917,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		}
 		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			ss.str("");
-			ss << Data::items[*it - 1].name << Data::terms.item_recieved << "\f";
+			ss << Data::items[*it - 1].name << space << Data::terms.item_recieved << "\f";
 			Game_Message::texts.push_back(ss.str());
 		}
 

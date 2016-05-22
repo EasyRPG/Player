@@ -574,8 +574,13 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		if (level_up_message) {
 			std::stringstream ss;
 			ss << GetData().name << " ";
-			ss << Data::terms.level << " " << new_level;
-			ss << Data::terms.level_up;
+			if (Player::IsRPG2k3E()) {
+				ss << Data::terms.level_up << " ";
+				ss << Data::terms.level << " " << new_level;
+			} else {
+				ss << Data::terms.level << " " << new_level;
+				ss << Data::terms.level_up;
+			}
 			Game_Message::texts.push_back(ss.str());
 			level_up = true;
 		}
@@ -588,7 +593,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 				if (LearnSkill(it->skill_id) && level_up_message) {
 					std::stringstream ss;
 					ss << Data::skills[it->skill_id - 1].name;
-					ss << Data::terms.skill_learned;
+					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
 					Game_Message::texts.push_back(ss.str());
 					level_up = true;
 				}
