@@ -215,11 +215,9 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 		}
 	case RPG::EnemyAction::ConditionType_actors:
 		{
-			int count = 0;
-			/* TODO
-			for (std::vector<Battle::Enemy>::const_iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
-				if (it->game_enemy->Exists())
-					count++;*/
+			std::vector<Game_Battler*> battlers;
+			GetParty().GetActiveBattlers(battlers);
+			int count = (int)battlers.size();
 			return count >= action.condition_param1 && count <= action.condition_param2;
 		}
 	case RPG::EnemyAction::ConditionType_hp:
