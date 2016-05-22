@@ -613,13 +613,16 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			if (action->GetTarget()) {
 				if (action->IsSuccess()) {
-					if (action->GetAffectedHp() != -1)
+					if (action->GetAffectedHp() != -1) {
 						DrawFloatText(
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
 							0,
 							Utils::ToString(action->GetAffectedHp()),
 							30);
+					}
+
+					action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
 				} else {
 					DrawFloatText(
 						action->GetTarget()->GetBattleX(),

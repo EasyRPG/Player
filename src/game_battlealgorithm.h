@@ -263,6 +263,13 @@ public:
 	 */
 	virtual void GetResultMessages(std::vector<std::string>& out) const;
 
+	/**
+	 * Returns the physical rate of the attack.
+	 *
+	 * @return physical rate
+	 */
+	virtual int GetPhysicalDamageRate() const;
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
@@ -311,6 +318,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
+	int GetPhysicalDamageRate() const override;
 };
 
 class Skill : public AlgorithmBase {
@@ -327,6 +335,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
+	int GetPhysicalDamageRate() const override;
 
 private:
 	const RPG::Skill& skill;

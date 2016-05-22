@@ -494,6 +494,10 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 		NULL : &Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
+	return 0;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -621,6 +625,10 @@ const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	else {
 		return NULL;
 	}
+}
+
+int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
+	return 100;
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
@@ -853,6 +861,10 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 	}
 
 	AlgorithmBase::GetResultMessages(out);
+}
+
+int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
+	return skill.physical_rate * 10;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
