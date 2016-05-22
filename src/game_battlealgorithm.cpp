@@ -76,6 +76,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	absorb = false;
 	animation = nullptr;
 	conditions.clear();
+
+	if (!IsFirstAttack()) {
+		switch_on.clear();
+		switch_off.clear();
+	}
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
@@ -411,6 +416,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	source->SetDefending(false);
+
+	for (int s : switch_on) {
+		Game_Switches[s] = true;
+	}
+
+	for (int s : switch_off) {
+		Game_Switches[s] = false;
+	}
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
@@ -443,6 +456,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 		return true;
 	}
 	return false;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
+	switch_on.push_back(switch_id);
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetSwitchDisable(int switch_id) {
+	switch_off.push_back(switch_id);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {

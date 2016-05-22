@@ -76,6 +76,22 @@ public:
 	bool TargetNext();
 
 	/**
+	 * Defines switches that will be switched on after the action is finished.
+	 * Multiple calls to this function will add additional switches to the list.
+	 * 
+	 * @param switch_id Switch to turn on
+	 */
+	void SetSwitchEnable(int switch_id);
+
+	/**
+	 * Defines switches that will be switched off after the action is finished.
+	 * Multiple calls to this function will add additional switches to the list.
+	 *
+	 * @param switch_id Switch to turn off
+	 */
+	void SetSwitchDisable(int switch_id);
+
+	/**
 	 * Gets how many Hp were gained/lost.
 	 *
 	 * @return Hp change or -1 when algorithm didn't affect Hp
@@ -280,6 +296,8 @@ protected:
 	RPG::Animation* animation;
 
 	std::vector<RPG::State> conditions;
+	std::vector<int> switch_on;
+	std::vector<int> switch_off;
 };
 
 class Normal : public AlgorithmBase {

@@ -121,7 +121,7 @@ void Game_Battle::Update() {
 		for (Game_Battler* b : battlers) {
 			Sprite_Battler* spr = spriteset->FindBattler(b);
 			if (spr) {
-				spr->DetectDeath();
+				spr->DetectStateChange();
 			}
 		}
 	}
