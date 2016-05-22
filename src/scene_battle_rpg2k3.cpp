@@ -50,18 +50,22 @@ void Scene_Battle_Rpg2k3::Update() {
 				Game_Battle::UpdateGauges();
 			}
 
+			int old_state = state;
 			SelectNextActor();
 
-			std::vector<Game_Battler*> enemies;
-			Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+			if (old_state == state && battle_actions.empty()) {
+				// No actor got the turn
+				std::vector<Game_Battler*> enemies;
+				Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-			for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-				it != enemies.end(); ++it) {
-				if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-					Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
-					const RPG::EnemyAction* action = enemy->ChooseRandomAction();
-					if (action) {
-						CreateEnemyAction(enemy, action);
+				for (std::vector<Game_Battler*>::iterator it = enemies.begin();
+					it != enemies.end(); ++it) {
+					if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
+						Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
+						const RPG::EnemyAction* action = enemy->ChooseRandomAction();
+						if (action) {
+							CreateEnemyAction(enemy, action);
+						}
 					}
 				}
 			}
@@ -995,7 +999,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 	for (std::vector<Game_Battler*>::iterator it = battler.begin();
 		it != battler.end(); ++it) {
 
-		if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
+		if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm() && battle_actions.empty()) {
 			actor_index = i;
 			active_actor = static_cast<Game_Actor*>(*it);
 
