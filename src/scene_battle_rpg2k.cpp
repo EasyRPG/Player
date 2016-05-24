@@ -48,6 +48,13 @@ Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
 void Scene_Battle_Rpg2k::Update() {
 	battle_message_window->Update();
 
+	if (message_window->GetVisible() && !message_box_got_visible) {
+		battle_message_window->Clear();
+		message_box_got_visible = true;
+	} else if (!message_window->GetVisible() && message_box_got_visible) {
+		message_box_got_visible = false;
+	}
+
 	Scene_Battle::Update();
 }
 
@@ -405,12 +412,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				}
 			}
 
-			if (!action->GetTarget()) {
-				battle_action_state = BattleActionState_Finished;
-			}
-			else {
-				battle_action_state = BattleActionState_Start;
-			}
+			battle_action_state = BattleActionState_Start;
 
 			break;
 		case BattleActionState_Result:

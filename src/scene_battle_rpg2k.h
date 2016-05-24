@@ -87,6 +87,8 @@ protected:
 	bool begin_escape = true;
 	bool escape_success = false;
 	int escape_counter = 0;
+
+	bool message_box_got_visible = false;
 };
 
 #endif
