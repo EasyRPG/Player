@@ -284,11 +284,7 @@ public class SettingsActivity extends Activity {
 	public void checkboxVibrateWhenSlidingToAnotherDirection(View v) {
 		CheckBox c = (CheckBox) v;
 
-		if (c.isChecked())
-			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), true);
-		else
-			editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), false);
-
+		editor.putBoolean(getString(R.string.pref_vibrate_when_sliding_direction), c.isChecked());
 		editor.commit();
 	}
 
