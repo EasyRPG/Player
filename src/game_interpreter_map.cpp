@@ -231,6 +231,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 
 	switch (com.parameters[2]) {
 	case 0:
+		Game_Map::SetupBattle();
 		break;
 	case 1:
 		Game_Temp::battle_background = com.string;
