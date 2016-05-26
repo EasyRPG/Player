@@ -24,10 +24,9 @@
 #include <cstdio>
 
 namespace ImageBMP {
-	void ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	void ReadBMP(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadBMP(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
 #endif // SUPPORT_BMP
-
 #endif
