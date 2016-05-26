@@ -23,6 +23,8 @@
 #  include "sdl2_ui.h"
 #elif USE_SDL==1
 #  include "sdl_ui.h"
+#elif USE_LIBRETRO
+#  include "libretro_ui.h"
 #elif defined(_3DS)
 #  include "3ds_ui.h"
 #elif defined(PSP2)
@@ -42,6 +44,8 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 	return std::make_shared<Sdl2Ui>(width, height, fs_flag, zoom);
 #elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, fs_flag);
+#elif defined(USE_LIBRETRO)
+	return std::make_shared<LibretroUi>(width, height);
 #elif defined(_3DS)
 	return std::make_shared<CtrUi>(width, height);
 #elif defined(PSP2)
