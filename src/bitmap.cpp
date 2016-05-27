@@ -552,12 +552,13 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 		ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
 	else
 #endif
-		Output::Error("Unsupported image file %s", filename.c_str());
+		Output::Warning("Unsupported image file %s", filename.c_str());
 
 	fclose(stream);
 
 	Init(w, h, (void *) NULL);
-	ConvertImage(w, h, pixels, transparent);
+	if (pixels)
+		ConvertImage(w, h, pixels, transparent);
 
 	CheckPixels(flags);
 }
@@ -586,10 +587,11 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
 	else
 #endif
-		Output::Error("Unsupported image");
+		Output::Warning("Unsupported image");
 
 	Init(w, h, (void *) NULL);
-	ConvertImage(w, h, pixels, transparent);
+	if (pixels)
+		ConvertImage(w, h, pixels, transparent);
 
 	CheckPixels(flags);
 }
