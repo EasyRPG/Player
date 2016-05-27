@@ -71,6 +71,7 @@ Bitmap::~Bitmap() {
 }
 
 bool Bitmap::WritePNG(std::ostream& os) const {
+#ifdef SUPPORT_PNG
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 
@@ -83,6 +84,9 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 							 0, 0, 0, 0, 0, 0, width, height);
 
 	return ImagePNG::WritePNG(os, width, height, &data.front());
+#else
+	return false;
+#endif
 }
 
 int Bitmap::GetWidth() const {
@@ -533,13 +537,21 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	size_t bytes = fread(&data, 1, 4, stream);
 	fseek(stream, 0, SEEK_SET);
 
+#ifdef SUPPORT_XYZ
 	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
 		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
+	else
+#endif
+#ifdef SUPPORT_BMP
+	if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
-	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
+	else
+#endif
+#ifdef SUPPORT_PNG
+	if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
 	else
+#endif
 		Output::Error("Unsupported image file %s", filename.c_str());
 
 	fclose(stream);
@@ -559,13 +571,21 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	int w = 0, h = 0;
 	void* pixels;
 
+#ifdef SUPPORT_XYZ
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
 		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
-	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
+	else
+#endif
+#ifdef SUPPORT_BMP
+	if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
-	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
+	else
+#endif
+#ifdef SUPPORT_PNG
+	if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
 	else
+#endif
 		Output::Error("Unsupported image");
 
 	Init(w, h, (void *) NULL);
