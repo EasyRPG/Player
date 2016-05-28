@@ -24,6 +24,14 @@ struct LibretroAudio : public AudioInterface {
 	void SE_Stop() override;
 	void Update() override;
 
+	static void SetOutputSampleRate(unsigned samplerate);
+	static void SetNumberOfSamplesPerFrame(unsigned samples);
+	static void EnableAudio(bool enabled);
+	static void AudioThreadCallback();
+	
+	private:
+		static unsigned output_samplerate;
+		static unsigned samples_per_frame;
 #ifdef USE_LIBRETRO
 	public:
 	static void SetRetroAudioCallback(retro_audio_sample_batch_t cb);
