@@ -204,7 +204,7 @@ void Game_Screen::InitSnowRain() {
 	if (!snowflakes.empty())
 		return;
 
-	static const int num_snowflakes[3] = {100, 200, 300};
+	static const int num_snowflakes[3] = {50, 100, 150};
 
 	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
 		Snowflake f;
