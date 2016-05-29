@@ -54,6 +54,8 @@ namespace {
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
+	int target_enemy_index;
+	bool need_refresh;
 }
 
 void Game_Battle::Init() {
@@ -65,6 +67,8 @@ void Game_Battle::Init() {
 	turn = 0;
 	terminate = false;
 	escape_fail_count = 0;
+	target_enemy_index = 0;
+	need_refresh = false;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
@@ -107,6 +111,18 @@ void Game_Battle::Update() {
 		animation->Update();
 		if (animation->IsDone()) {
 			animation.reset();
+		}
+	}
+	if (need_refresh) {
+		need_refresh = false;
+		std::vector<Game_Battler*> battlers;
+		(*Main_Data::game_party).GetBattlers(battlers);
+		(*Main_Data::game_enemyparty).GetBattlers(battlers);
+		for (Game_Battler* b : battlers) {
+			Sprite_Battler* spr = spriteset->FindBattler(b);
+			if (spr) {
+				spr->DetectStateChange();
+			}
 		}
 	}
 }
@@ -168,7 +184,11 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 				page_executed[(*it).ID - 1] = false;
 			}
 		}
+
+		battler->SetLastBattleAction(-1);
 	}
+
+	Game_Battle::SetEnemyTargetIndex(-1);
 
 	++turn;
 }
@@ -187,7 +207,7 @@ void Game_Battle::UpdateGauges() {
 
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 		it != battlers.end(); ++it) {
-		if (!(*it)->GetBattleAlgorithm()) {
+		if (!(*it)->GetBattleAlgorithm() && (*it)->CanAct()) {
 			(*it)->UpdateGauge(1000 / max_agi);
 		}
 	}
@@ -335,4 +355,16 @@ void Game_Battle::SetBattleMode(int battle_mode_) {
 
 int Game_Battle::GetBattleMode() {
 	return battle_mode;
+}
+
+void Game_Battle::SetEnemyTargetIndex(int target_enemy) {
+	target_enemy_index = target_enemy;
+}
+
+int Game_Battle::GetEnemyTargetIndex() {
+	return target_enemy_index;
+}
+
+void Game_Battle::SetNeedRefresh(bool refresh) {
+	need_refresh = refresh;
 }

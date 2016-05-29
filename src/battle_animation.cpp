@@ -134,7 +134,12 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 
 void BattleAnimation::DrawAt(int x, int y) {
 	if (!sprite) return; // Initialization failed
-	if (IsDone()) return;
+	if (IsDone()) {
+		return;
+	}
+	if (!sprite->GetVisible()) {
+		return;
+	}
 
 	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
 
@@ -150,6 +155,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 
 		sprite->SetX(cell.x + x);
 		sprite->SetY(cell.y + y);
+		sprite->SetZ(GetZ());
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
@@ -163,6 +169,11 @@ void BattleAnimation::DrawAt(int x, int y) {
 		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
 		sprite->SetZoomX(cell.zoom / 100.0);
 		sprite->SetZoomY(cell.zoom / 100.0);
+	}
+
+	if (anim_frame.cells.empty()) {
+		// Draw an empty sprite when no cell is available in the animation
+		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 		sprite->Draw();
 	}
 }
@@ -186,16 +197,16 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 
 	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		Flash(Color(timing.flash_red << 3,
-			timing.flash_green << 3,
-			timing.flash_blue << 3,
-			timing.flash_power << 3));
+		Flash(Color(timing.flash_red,
+			timing.flash_green,
+			timing.flash_blue,
+			timing.flash_power));
 	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
 		Main_Data::game_screen->FlashOnce(
-			timing.flash_red << 3,
-			timing.flash_green << 3,
-			timing.flash_blue << 3,
-			timing.flash_power << 3,
+			timing.flash_red,
+			timing.flash_green,
+			timing.flash_blue,
+			timing.flash_power,
 			flash_duration);
 	}
 
@@ -259,7 +270,7 @@ void BattleAnimationBattlers::Draw() {
 		const Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(&battler);
 		int offset = 0;
 		if (sprite && sprite->GetBitmap()) {
-			offset = CalculateOffset(animation.position, sprite->GetBitmap()->GetHeight());
+			offset = CalculateOffset(animation.position, sprite->GetHeight());
 		}
 		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}

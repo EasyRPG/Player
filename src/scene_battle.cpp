@@ -212,6 +212,12 @@ void Scene_Battle::EnemySelected() {
 		assert("Invalid previous state for enemy selection" && false);
 	}
 
+	for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
+		if (&(*Main_Data::game_enemyparty)[i] == target) {
+			Game_Battle::SetEnemyTargetIndex(i);
+		}
+	}
+
 	ActionSelectedCallback(active_actor);
 }
 
@@ -358,6 +364,12 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 			break;
 		case RPG::EnemyAction::Kind_transformation:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
+			if (action->switch_on) {
+				enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
+			}
+			if (action->switch_off) {
+				enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_off_id);
+			}
 			ActionSelectedCallback(enemy);
 	}
 }
@@ -396,6 +408,13 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 	}
 
 	if (action->basic != RPG::EnemyAction::Basic_nothing) {
+		if (action->switch_on) {
+			enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
+		}
+		if (action->switch_off) {
+			enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_off_id);
+		}
+
 		ActionSelectedCallback(enemy);
 	}
 }
@@ -440,7 +459,14 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		case RPG::Skill::Scope_party:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
 			break;
-		}
+	}
+
+	if (action->switch_on) {
+		enemy->GetBattleAlgorithm()->SetSwitchEnable(action->switch_on_id);
+	}
+	if (action->switch_off) {
+		enemy->GetBattleAlgorithm()->SetSwitchDisable(action->switch_off_id);
+	}
 
 	ActionSelectedCallback(enemy);
 }

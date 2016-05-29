@@ -232,7 +232,11 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 }
 
 bool Game_Event::GetThrough() const {
-	return page == NULL || Game_Character::GetThrough();
+	return page == nullptr || data.through;
+}
+
+void Game_Event::SetThrough(bool through) {
+	data.through = through;
 }
 
 void Game_Event::ClearStarting() {
@@ -513,6 +517,10 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 
 	if (trigger == RPG::EventPage::Trigger_collision && !IsJumping()) {
 		if (Main_Data::game_player->IsInPosition(x, y) && !Main_Data::game_player->IsBlockedByMoveRoute()) {
+			if (Main_Data::game_player->InAirship() && GetLayer() == RPG::EventPage::Layers_same) {
+				return false;
+			}
+
 			Start();
 			return true;
 		}

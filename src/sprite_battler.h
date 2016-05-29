@@ -47,7 +47,8 @@ public:
 
 	enum LoopState {
 		LoopState_DefaultAnimationAfterFinish,
-		LoopState_LoopAnimation
+		LoopState_LoopAnimation,
+		LoopState_WaitAfterFinish
 	};
 
 	/**
@@ -69,6 +70,12 @@ public:
 	void SetBattler(Game_Battler* new_battler);
 
 	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
+	void SetAnimationLoop(LoopState loop);
+
+	/**
+	 * Updates the current animation state of the actor depending on his state.
+	 */
+	void DetectStateChange();
 
 	/**
 	 * Returns true when the actor is in it's default state (Depending on
@@ -84,8 +91,12 @@ public:
 	bool GetVisible() const override;
 	void SetVisible(bool visible) override;
 
+	int GetWidth() const override;
+	int GetHeight() const override;
+
 protected:
 	void CreateSprite();
+	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int battler_index);
 

@@ -109,6 +109,28 @@ namespace Game_Battle {
 	void SetBattleMode(int battle_mode_);
 	int GetBattleMode();
 
+	/** 
+	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
+	 *
+	 * @param target_enemy id of targeted enemy
+	 */
+	void SetEnemyTargetIndex(int target_enemy);
+	
+	/**
+	 * Gets the party index of the latest targeted enemy. Only used by battle branch "is target"
+	 *
+	 * @return targeted enemy
+	 */
+	int GetEnemyTargetIndex();
+
+	/**
+	 * Sets the need refresh flag.
+	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
+	 *
+	 * @param need_refresh need refresh state.
+	 */
+	void SetNeedRefresh(bool refresh);
+
 	extern int escape_fail_count;
 	extern std::string background_name;
 }

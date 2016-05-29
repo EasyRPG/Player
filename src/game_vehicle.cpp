@@ -199,6 +199,14 @@ void Game_Vehicle::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
 }
 
+bool Game_Vehicle::GetThrough() const {
+	return data.through;
+}
+
+void Game_Vehicle::SetThrough(bool through) {
+	data.through = through;
+}
+
 bool Game_Vehicle::IsPassable(int x, int y, int d) const {
 	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
 	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));

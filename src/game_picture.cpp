@@ -208,13 +208,13 @@ void Game_Picture::Update() {
 		// based on map scroll because of savegame compatibility with RPG_RT
 
 		if (old_map_x != Game_Map::GetDisplayX()) {
-			int mx = (old_map_x - Game_Map::GetDisplayX()) / TILE_SIZE;
+			double mx = (old_map_x - Game_Map::GetDisplayX()) / (double)TILE_SIZE;
 
 			data.finish_x += mx;
 			data.current_x += mx;
 		}
 		if (old_map_y != Game_Map::GetDisplayY()) {
-			int my = (old_map_y - Game_Map::GetDisplayY()) / TILE_SIZE;
+			double my = (old_map_y - Game_Map::GetDisplayY()) / (double)TILE_SIZE;
 
 			data.finish_y += my;
 			data.current_y += my;

@@ -220,7 +220,16 @@ void Window_BattleStatus::Update() {
 	// (breaks up/down-logic)
 	Window_Base::Update();
 
-	if (Player::IsRPG2k3()) {
+	int old_item_max = item_max;
+	if (enemy) {
+		item_max = Main_Data::game_enemyparty->GetBattlerCount();
+	} else {
+		item_max = Main_Data::game_party->GetBattlerCount();
+	}
+
+	if (item_max != old_item_max) {
+		Refresh();
+	} else if (Player::IsRPG2k3()) {
 		RefreshGauge();
 	}
 

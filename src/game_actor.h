@@ -28,6 +28,7 @@ namespace RPG {
 	class Skill;
 	class BattleCommand;
 	class Item;
+	class Class;
 }
 
 /**
@@ -636,7 +637,8 @@ public:
 	 *
 	 * @return Rpg2k3 hero class.
 	 */
-	int GetClass() const;
+	const RPG::Class* GetClass() const;
+
 	/**
 	 * Sets new Rpg2k3 hero class.
 	 *

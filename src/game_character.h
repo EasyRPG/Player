@@ -333,6 +333,20 @@ public:
 	virtual void SetFlashTimeLeft(int time_left) = 0;
 
 	/**
+	 * Gets the through flag (walk through everything)
+	 *
+	 * @return through flag
+	 */
+	virtual bool GetThrough() const = 0;
+
+	/**
+	 * Sets the through flag (walk through everything)
+	 *
+	 * @param through through flag
+	 */
+	virtual void SetThrough(bool through) = 0;
+
+	/**
 	 * Gets if character is moving.
 	 *
 	 * @return whether the character is moving.
@@ -550,13 +564,6 @@ public:
 	int GetPattern() const;
 
 	/**
-	 * Gets through flag.
-	 *
-	 * @return through flag.
-	 */
-	virtual bool GetThrough() const;
-
-	/**
 	 * Gets animation ID.
 	 *
 	 * @return animation ID.
@@ -675,7 +682,6 @@ protected:
 	int pattern;
 	int original_pattern;
 	int last_pattern;
-	bool through;
 	int animation_id;
 	int animation_type;
 

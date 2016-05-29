@@ -77,6 +77,10 @@ bool Game_Battler::IsDead() const {
 	return HasState(1);
 }
 
+void Game_Battler::Kill() {
+	ChangeHp(-GetHp());
+}
+
 bool Game_Battler::Exists() const {
 	return !IsHidden() && !IsDead();
 }
@@ -627,6 +631,28 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 					healed_states.push_back(i + 1);
 					RemoveState(i + 1);
 				}
+			}
+		}
+	}
+
+	return healed_states;
+}
+
+std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
+	std::vector<int16_t> healed_states;
+	std::vector<int16_t>& states = GetStates();
+
+	if (physical_rate <= 0) {
+		return healed_states;
+	}
+
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (HasState(i + 1) && Data::states[i].release_by_damage > 0) {
+			int release_chance = (int)(Data::states[i].release_by_damage * physical_rate / 100.0);
+
+			if (rand() % 100 < release_chance) {
+				healed_states.push_back(i + 1);
+				RemoveState(i + 1);
 			}
 		}
 	}

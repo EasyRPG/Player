@@ -22,9 +22,11 @@
 #include "game_interpreter_battle.h"
 #include "game_party.h"
 #include "game_switches.h"
+#include "game_system.h"
 #include "game_variables.h"
 #include "output.h"
 #include "player.h"
+#include "game_temp.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -64,7 +66,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		case Cmd::TerminateBattle:
 			return CommandTerminateBattle(com);
 		case Cmd::ConditionalBranch_B:
-			return CommandConditionalBranch(com);
+			return CommandConditionalBranchBattle(com);
 		case Cmd::ElseBranch_B:
 			return SkipTo(Cmd::EndBranch_B);
 		case Cmd::EndBranch_B:
@@ -91,23 +93,39 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 }
 
 bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
-	Output::Warning("Battle: Force Flee not implemented");
-
 	bool check = com.parameters[2] == 0;
-	// TODO
+	bool result = false;
+
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer)
-		//Game_Battle::allies_flee = true;
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattlePincer) {
+			Game_Temp::battle_result = Game_Temp::BattleEscape;
+			Game_Battle::Terminate();
+			result = true;
+		}
 	    break;
 	case 1:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
-			//Game_Battle::MonstersFlee();
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+			for (int i = 0; i < Main_Data::game_enemyparty->GetBattlerCount(); ++i) {
+				Game_Enemy& enemy = (*Main_Data::game_enemyparty)[i];
+				enemy.Kill();
+			}
+			Game_Battle::SetNeedRefresh(true);
+			result = true;
+		}
 	    break;
 	case 2:
-		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround)
-			//Game_Battle::MonsterFlee(com.parameters[1]);
+		if (!check || Game_Battle::GetBattleMode() != Game_Battle::BattleSurround) {
+			Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[1]];
+			enemy.Kill();
+			Game_Battle::SetNeedRefresh(true);
+			result = true;
+		}
 	    break;
+	}
+
+	if (result) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 	}
 
 	return true;
@@ -155,6 +173,10 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 
 	enemy.ChangeHp(change);
 
+	if (enemy.IsDead()) {
+		Game_Battle::SetNeedRefresh(true);
+	}
+
 	return true;
 }
 
@@ -188,10 +210,15 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
-	if (remove)
+	if (remove) {
 		enemy.RemoveState(state_id);
-	else
+	} else {
+		if (state_id == 1) {
+			enemy.ChangeHp(-enemy.GetHp());
+			Game_Battle::SetNeedRefresh(true);
+		}
 		enemy.AddState(state_id);
+	}
 	return true;
 }
 
@@ -235,10 +262,12 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		return !waiting_battle_anim;
 	}
 	else {
-		Game_Battler* battler_target = NULL;
+		Game_Battler* battler_target = nullptr;
 
 		if (allies) {
-			if (target < Main_Data::game_party->GetBattlerCount()) {
+			// Allies counted from 1
+			target -= 1;
+			if (target >= 0 && target < Main_Data::game_party->GetBattlerCount()) {
 				battler_target = &(*Main_Data::game_party)[target];
 			}
 		}
@@ -264,7 +293,7 @@ bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /*
 }
 
 // Conditional branch.
-bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;
 
@@ -323,10 +352,8 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 			}
 			break;
 		case 4:
-			Output::Warning("Battle: Monster is target not implemented");
 			// Monster is the current target
-			/*result = Game_Battle::HaveTargetEnemy() &&
-				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
+			result = Game_Battle::GetEnemyTargetIndex() == com.parameters[1];
 			break;
 		case 5:
 			// Hero uses the ... command

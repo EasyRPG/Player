@@ -21,6 +21,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "async_handler.h"
 #include "game_character.h"
 #include "game_actor.h"
 #include "rpg_eventcommand.h"
@@ -138,31 +139,79 @@ protected:
 	void CheckGameOver();
 
 	bool CommandShowMessage(RPG::EventCommand const& com);
+	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
 	bool CommandShowChoices(RPG::EventCommand const& com);
 	bool CommandInputNumber(RPG::EventCommand const& com);
 	bool CommandControlSwitches(RPG::EventCommand const& com);
 	bool CommandControlVariables(RPG::EventCommand const& com);
+	bool CommandTimerOperation(RPG::EventCommand const& com);
 	bool CommandChangeGold(RPG::EventCommand const& com);
 	bool CommandChangeItems(RPG::EventCommand const& com);
 	bool CommandChangePartyMember(RPG::EventCommand const& com);
+	bool CommandChangeExp(RPG::EventCommand const& com);
 	bool CommandChangeLevel(RPG::EventCommand const& com);
+	bool CommandChangeParameters(RPG::EventCommand const& com);
 	bool CommandChangeSkills(RPG::EventCommand const& com);
 	bool CommandChangeEquipment(RPG::EventCommand const& com);
 	bool CommandChangeHP(RPG::EventCommand const& com);
 	bool CommandChangeSP(RPG::EventCommand const& com);
 	bool CommandChangeCondition(RPG::EventCommand const& com);
 	bool CommandFullHeal(RPG::EventCommand const& com);
-	bool CommandTintScreen(RPG::EventCommand const& com);
-	bool CommandFlashScreen(RPG::EventCommand const& com);
-	bool CommandShakeScreen(RPG::EventCommand const& com);
+	bool CommandSimulatedAttack(RPG::EventCommand const& com);
 	bool CommandWait(RPG::EventCommand const& com);
 	bool CommandPlayBGM(RPG::EventCommand const& com);
 	bool CommandFadeOutBGM(RPG::EventCommand const& com);
 	bool CommandPlaySound(RPG::EventCommand const& com);
 	bool CommandEndEventProcessing(RPG::EventCommand const& com);
 	bool CommandGameOver(RPG::EventCommand const& com);
-
+	bool CommandChangeHeroName(RPG::EventCommand const& com);
+	bool CommandChangeHeroTitle(RPG::EventCommand const& com);
+	bool CommandChangeSpriteAssociation(RPG::EventCommand const& com);
+	bool CommandChangeActorFace(RPG::EventCommand const& com);
+	bool CommandChangeVehicleGraphic(RPG::EventCommand const& com);
+	bool CommandChangeSystemBGM(RPG::EventCommand const& com);
+	bool CommandChangeSystemSFX(RPG::EventCommand const& com);
+	bool CommandChangeSystemGraphics(RPG::EventCommand const& com);
+	bool CommandChangeScreenTransitions(RPG::EventCommand const& com);
+	bool CommandMemorizeLocation(RPG::EventCommand const& com);
+	bool CommandSetVehicleLocation(RPG::EventCommand const& com);
+	bool CommandChangeEventLocation(RPG::EventCommand const& com);
+	bool CommandTradeEventLocations(RPG::EventCommand const& com);
+	bool CommandStoreTerrainID(RPG::EventCommand const& com);
+	bool CommandStoreEventID(RPG::EventCommand const& com);
+	bool CommandEraseScreen(RPG::EventCommand const& com);
+	bool CommandShowScreen(RPG::EventCommand const& com);
+	bool CommandTintScreen(RPG::EventCommand const& com);
+	bool CommandFlashScreen(RPG::EventCommand const& com);
+	bool CommandShakeScreen(RPG::EventCommand const& com);
+	bool CommandWeatherEffects(RPG::EventCommand const& com);
+	bool CommandSpriteTransparency(RPG::EventCommand const& com);
+	bool CommandMoveEvent(RPG::EventCommand const& com);
+	bool CommandMemorizeBGM(RPG::EventCommand const& com);
+	bool CommandPlayMemorizedBGM(RPG::EventCommand const& com);
+	bool CommandKeyInputProc(RPG::EventCommand const& com);
+	bool CommandChangeMapTileset(RPG::EventCommand const& com);
+	bool CommandChangePBG(RPG::EventCommand const& com);
+	bool CommandChangeEncounterRate(RPG::EventCommand const& com);
+	bool CommandTileSubstitution(RPG::EventCommand const& com);
+	bool CommandTeleportTargets(RPG::EventCommand const& com);
+	bool CommandChangeTeleportAccess(RPG::EventCommand const& com);
+	bool CommandEscapeTarget(RPG::EventCommand const& com);
+	bool CommandChangeEscapeAccess(RPG::EventCommand const& com);
+	bool CommandChangeSaveAccess(RPG::EventCommand const& com);
+	bool CommandChangeMainMenuAccess(RPG::EventCommand const& com);
+	bool CommandConditionalBranch(RPG::EventCommand const& com);
+	bool CommandJumpToLabel(RPG::EventCommand const& com);
+	bool CommandBreakLoop(RPG::EventCommand const& com);
+	bool CommandEndLoop(RPG::EventCommand const& com);
+	bool CommandEraseEvent(RPG::EventCommand const& com);
+	bool CommandCallEvent(RPG::EventCommand const& com);
+	bool CommandReturnToTitleScreen(RPG::EventCommand const& com);
+	bool CommandChangeClass(RPG::EventCommand const& com);
+	bool CommandChangeBattleCommands(RPG::EventCommand const& com);
+	bool CommandExitGame(RPG::EventCommand const& com);
+	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 	bool CommandEnd();
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
@@ -172,8 +221,16 @@ protected:
 	virtual bool ContinuationShowInnFinish(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
+	int DecodeInt(std::vector<int>::const_iterator& it);
+	const std::string DecodeString(std::vector<int>::const_iterator& it);
+	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
+
+	void OnChangeSystemGraphicReady(FileRequestResult* result);
+
 	int debug_x;
 	int debug_y;
+
+	FileRequestBinding request_id;
 };
 
 #endif

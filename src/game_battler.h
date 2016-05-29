@@ -297,6 +297,11 @@ public:
 	bool IsDead() const;
 
 	/**
+	 * Kills the battler
+	 */
+	void Kill();
+
+	/**
 	 * Checks if the actor can use the skill.
 	 *
 	 * @param skill_id ID of skill to check.
@@ -512,6 +517,15 @@ public:
 	 * @return Healed states
 	 */
 	std::vector<int16_t> NextBattleTurn();
+
+	/**
+	 * Heals states based on the passed physical rate.
+	 *
+	 * @param physical_rate Physical rate of the attack
+	 *
+	 * @return Healed states
+	 */
+	std::vector<int16_t> BattlePhysicalStateHeal(int physical_rate);
 
 	void SetLastBattleAction(int battle_action);
 

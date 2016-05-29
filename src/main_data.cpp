@@ -44,6 +44,11 @@
 	#include <stdio.h>
 #endif
 
+#if defined(__APPLE__) && defined(__MACH__)
+	#include <SDL.h>
+	#include <unistd.h>
+#endif
+
 // Global variables.
 
 Game_Variables_Class Game_Variables;
@@ -115,6 +120,24 @@ void Main_Data::Init() {
 				project_path = ".";
 			}
 #   endif
+#elif defined(__APPLE__) && defined(__MACH__)
+#  if SDL_MAJOR_VERSION>1
+			char* home = getenv("HOME");
+			char current_dir[255] = { 0 };
+			getcwd(current_dir, sizeof(current_dir));
+			if (!strcmp(current_dir, home)) {
+				// Apple Finder does not set the working directory
+				// It points to HOME instead. When it is HOME change it to
+				// the application directory instead
+
+				// FIXME: Uses SDL API
+				char* data_dir = SDL_GetBasePath();
+				project_path = data_dir;
+				free(data_dir);
+			}
+#  else
+			project_path = ".";
+#  endif
 #else
 			project_path = ".";
 #endif

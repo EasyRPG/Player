@@ -74,7 +74,13 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	killed_by_attack_damage = false;
 	critical_hit = false;
 	absorb = false;
-	animation = NULL;
+	animation = nullptr;
+	conditions.clear();
+
+	if (!IsFirstAttack()) {
+		switch_on.clear();
+		switch_off.clear();
+	}
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
@@ -401,11 +407,23 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			(*current_target)->RemoveState(it->ID);
 		}
 		else {
-			(*current_target)->AddState(it->ID);
+			if (it->ID == 1) {
+				(*current_target)->ChangeHp(-((*current_target)->GetHp()));
+			} else {
+				(*current_target)->AddState(it->ID);
+			}
 		}
 	}
 
 	source->SetDefending(false);
+
+	for (int s : switch_on) {
+		Game_Switches[s] = true;
+	}
+
+	for (int s : switch_off) {
+		Game_Switches[s] = false;
+	}
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
@@ -440,6 +458,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	return false;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
+	switch_on.push_back(switch_id);
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetSwitchDisable(int switch_id) {
+	switch_off.push_back(switch_id);
+}
+
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 	return NULL;
 }
@@ -466,6 +492,10 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
 	return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
 		NULL : &Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
+}
+
+int Game_BattleAlgorithm::AlgorithmBase::GetPhysicalDamageRate() const {
+	return 0;
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
@@ -508,6 +538,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		// Source is Enemy
 		int hit = source->GetHitChance();
 		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * (*current_target)->GetAgi() / source->GetAgi() - 1) / 2));
+		if (!Data::animations.empty()) {
+			animation = &Data::animations[0];
+		}
 	}
 
 	// Damage calculation
@@ -534,7 +567,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
 			killed_by_attack_damage = true;
-			conditions.push_back(Data::states[0]);
 		}
 		else {
 			if (source->GetType() == Game_Battler::Type_Ally) {
@@ -581,7 +613,9 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_LeftHand;
+	// ToDo when it is Dual attack the 2nd call should return LeftHand
+
+	return Sprite_Battler::AnimationState_RightHand;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
@@ -591,6 +625,10 @@ const RPG::Sound* Game_BattleAlgorithm::Normal::GetStartSe() const {
 	else {
 		return NULL;
 	}
+}
+
+int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
+	return 100;
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
@@ -674,8 +712,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
 			if (!skill.ignore_defense) {
-				effect -= (*current_target)->GetDef() * skill.physical_rate / 40 -
-					(*current_target)->GetSpi() * skill.magical_rate / 80;
+				effect -= (*current_target)->GetDef() * skill.physical_rate / 40;
+				effect -= (*current_target)->GetSpi() * skill.magical_rate / 80;
 			}
 			effect *= GetAttributeMultiplier(skill.attribute_effects);
 
@@ -694,7 +732,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				if ((*current_target)->GetHp() - this->hp <= 0) {
 					// Death state
 					killed_by_attack_damage = true;
-					conditions.push_back(Data::states[0]);
 				}
 			}
 
@@ -771,6 +808,16 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
+	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
+		if (skill.battler_animation_data.size() > source->GetId() - 1) {
+			int pose = skill.battler_animation_data[source->GetId() - 1].pose;
+
+			if (pose > 0) {
+				return pose + 1;
+			}
+		}
+	}
+
 	return Sprite_Battler::AnimationState_SkillUse;
 }
 
@@ -814,6 +861,10 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 	}
 
 	AlgorithmBase::GetResultMessages(out);
+}
+
+int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
+	return skill.physical_rate * 10;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
@@ -1072,7 +1123,6 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	if ((*current_target)->GetHp() - this->hp <= 0) {
 		// Death state
 		killed_by_attack_damage = true;
-		conditions.push_back(Data::states[0]);
 	}
 
 	success = true;

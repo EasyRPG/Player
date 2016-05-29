@@ -108,15 +108,12 @@ void Sprite_Battler::Update() {
 
 				if (animation->IsDone()) {
 					if (loop_state == LoopState_DefaultAnimationAfterFinish) {
-						const RPG::State* state = battler->GetSignificantState();
-						if (state) {
-							SetAnimationState(state->battler_animation_id + 1);
-						} else {
-							SetAnimationState(AnimationState_Idle);
-						}
+						DoIdleAnimation();
+					} else if (loop_state == LoopState_LoopAnimation) {
+						animation->SetFrame(0);
+					} else if (loop_state == LoopState_WaitAfterFinish) {
 						idling = true;
 					}
-					animation->SetFrame(0);
 				}
 
 				return;
@@ -133,21 +130,21 @@ void Sprite_Battler::Update() {
 			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 
 			if (cycle == 40) {
-				cycle = 0;
-
-				if (loop_state == LoopState_DefaultAnimationAfterFinish)
-					idling = true;
+				switch (loop_state) {
+					case LoopState_DefaultAnimationAfterFinish:
+						cycle = 0;
+						// fallthrough
+					case LoopState_WaitAfterFinish:
+						idling = true;
+						break;
+					case LoopState_LoopAnimation:
+						cycle = 0;
+						break;
+				}
 			}
 
 			if (idling) {
-				const RPG::State* state = battler->GetSignificantState();
-				int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
-				if (idling_anim == 101)
-					idling_anim = 7;
-
-				if (idling_anim != anim_state)
-					SetAnimationState(idling_anim);
-				idling = true;
+				DoIdleAnimation();
 			}
 		}
 	}
@@ -194,6 +191,18 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	}
 }
 
+void Sprite_Battler::SetAnimationLoop(LoopState loop) {
+	loop_state = loop;
+}
+
+void Sprite_Battler::DetectStateChange() {
+	if (battler->IsDead() && anim_state != AnimationState_Dead) {
+		SetAnimationState(AnimationState_Dead);
+	} else if (idling) {
+		DoIdleAnimation();
+	}
+}
+
 bool Sprite_Battler::IsIdling() {
 	return idling;
 }
@@ -229,6 +238,20 @@ void Sprite_Battler::SetVisible(bool nvisible) {
 	Sprite::SetVisible(nvisible);
 }
 
+int Sprite_Battler::GetWidth() const {
+	if (animation) {
+		return animation->GetSprite()->GetWidth();
+	}
+	return Sprite::GetWidth();
+}
+
+int Sprite_Battler::GetHeight() const {
+	if (animation) {
+		return animation->GetSprite()->GetHeight();
+	}
+	return Sprite::GetHeight();
+}
+
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
@@ -259,6 +282,18 @@ void Sprite_Battler::CreateSprite() {
 	}
 
 	SetVisible(!battler->IsHidden());
+}
+
+void Sprite_Battler::DoIdleAnimation() {
+	const RPG::State* state = battler->GetSignificantState();
+	int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
+	if (idling_anim == 101)
+		idling_anim = 7;
+
+	if (idling_anim != anim_state)
+		SetAnimationState(idling_anim);
+
+	idling = true;
 }
 
 void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {

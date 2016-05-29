@@ -311,12 +311,17 @@ namespace Game_Map {
 
 	/**
 	 * Updates all battle data based on the current player position and starts
-	 * the battle.
+	 * a random encounter.
 	 *
 	 * @return true if battle starts, false if no monsters are at the current
 	 * map position or encounter rate is 0
 	 */
 	bool PrepareEncounter();
+
+	/**
+	 * Updates all battle data based on the current player position.
+	 */
+	void SetupBattle();
 
 	/**
 	 * Plays the given animation against a character.

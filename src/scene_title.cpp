@@ -75,11 +75,15 @@ void Scene_Title::Resume() {
 	if (!Data::system.show_title || Player::new_game_flag)
 		return;
 
-	command_window->SetVisible(true);
+	if (command_window) {
+		command_window->SetVisible(true);
+	}
 }
 
 void Scene_Title::Suspend() {
-	command_window->SetVisible(false);
+	if (command_window) {
+		command_window->SetVisible(false);
+	}
 }
 
 void Scene_Title::Update() {

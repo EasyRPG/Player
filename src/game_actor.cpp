@@ -238,9 +238,9 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	// The GetData().class_id check works around a save game corruption in old
-	// versions of the Player because GetData().changed_class was not set properly.
-	int n = GetData().changed_class && GetData().class_id > 0
+	// The .changed_class field is not reliable (and the purpose is unknown)
+	// because it is only true when the class was changed by an event
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
 
@@ -255,7 +255,7 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
 
@@ -270,7 +270,7 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
 
@@ -294,7 +294,7 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
 
@@ -318,7 +318,7 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
 
@@ -342,7 +342,7 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
 
@@ -368,7 +368,7 @@ int Game_Actor::GetBaseAgi() const {
 int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
-	if (GetData().changed_class && GetData().class_id > 0) {
+	if (GetData().class_id > 0) {
 		const RPG::Class& klass = Data::classes[GetData().class_id - 1];
 		base = klass.exp_base;
 		inflation = klass.exp_inflation;
@@ -574,8 +574,13 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		if (level_up_message) {
 			std::stringstream ss;
 			ss << GetData().name << " ";
-			ss << Data::terms.level << " " << new_level;
-			ss << Data::terms.level_up;
+			if (Player::IsRPG2k3E()) {
+				ss << Data::terms.level_up << " ";
+				ss << Data::terms.level << " " << new_level;
+			} else {
+				ss << Data::terms.level << " " << new_level;
+				ss << Data::terms.level_up;
+			}
 			Game_Message::texts.push_back(ss.str());
 			level_up = true;
 		}
@@ -588,7 +593,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 				if (LearnSkill(it->skill_id) && level_up_message) {
 					std::stringstream ss;
 					ss << Data::skills[it->skill_id - 1].name;
-					ss << Data::terms.skill_learned;
+					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
 					Game_Message::texts.push_back(ss.str());
 					level_up = true;
 				}
@@ -856,21 +861,30 @@ const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() con
 	return commands;
 }
 
-int Game_Actor::GetClass() const {
-	return GetData().class_id;
+const RPG::Class* Game_Actor::GetClass() const {
+	if (GetData().class_id <= 0) {
+		return nullptr;
+	}
+
+	return &Data::classes[GetData().class_id - 1];
 }
 
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
 	GetData().changed_class = _class_id > 0;
+	if (GetData().changed_class) {
+		GetData().battler_animation = GetClass()->battler_animation;
+	} else {
+		GetData().battler_animation = 0;
+	}
 	MakeExpList();
 }
 
 std::string Game_Actor::GetClassName() const {
-    if (GetClass() <= 0) {
+    if (!GetClass()) {
         return "";
     }
-    return Data::classes[GetClass() - 1].name;
+    return GetClass()->name;
 }
 
 void Game_Actor::SetBaseMaxHp(int maxhp) {
@@ -940,7 +954,26 @@ int Game_Actor::GetBattleAnimationId() const {
 		return 0;
 	}
 
-	return Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
+	int anim = 0;
+
+	if (GetData().battler_animation <= 0) {
+		// Earlier versions of EasyRPG didn't save this value correctly
+
+		if (GetData().class_id > 0) {
+			anim = GetClass()->battler_animation;
+		} else {
+			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
+		}
+	} else {
+		anim = GetData().battler_animation;
+	}
+	
+	if (anim == 0) {
+		// Chunk was missing, set to proper default
+		return 1;
+	}
+
+	return anim;
 }
 
 int Game_Actor::GetHitChance() const {
