@@ -73,10 +73,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
 
     cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_content);
-    #ifdef USE_LIBRETRO_AUDIO
-      //Currently audio is only supported via EasyRPGs own implementation (no control from retro api)
-      cb(RETRO_ENVIRONMENT_SET_AUDIO_CALLBACK, &audio_callback_definition);
-    #endif
+    cb(RETRO_ENVIRONMENT_SET_AUDIO_CALLBACK, &audio_callback_definition);
     cb(RETRO_ENVIRONMENT_SET_FRAME_TIME_CALLBACK, &frame_time_definition);
 
     if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))

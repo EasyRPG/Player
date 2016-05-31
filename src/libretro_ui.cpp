@@ -17,11 +17,6 @@
 #include <stdio.h>
 
 #ifdef SUPPORT_AUDIO
-#ifdef HAVE_SDL_MIXER
-#  include "audio_sdl.h"
-#elif defined(HAVE_OPENAL)
-#  include "audio_al.h"
-#endif
 #include "audio_libretro.h"
 AudioInterface& LibretroUi::GetAudio() {
 	return *audio_;
@@ -62,14 +57,7 @@ retro_usec_t LibretroUi::time_in_microseconds=0;
 											  current_display_mode.bpp);
 											  	
 		#ifdef SUPPORT_AUDIO	
-		#ifdef HAVE_SDL_MIXER
-			audio_.reset(new SdlAudio());
-		#elif defined(HAVE_OPENAL)
-			audio_.reset(new ALAudio());
-		#else		
-			//TODO find a way to route mixer output to libretro audio callback
 			audio_.reset(new LibretroAudio());
-		#endif
 		#endif								  
 											  
 	}

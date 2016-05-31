@@ -120,15 +120,14 @@
 #endif
 
 #ifdef USE_LIBRETRO
-#  ifndef HAVE_SDL_MIXER
-#    define USE_LIBRETRO_AUDIO
-#  endif
 #  define SUPPORT_KEYBOARD
 #  define SUPPORT_AUDIO
-#  ifdef USE_SDL_MIXER
-#    define SUPPORT_WAV
+//#  define SUPPORT_WAV
+#  ifdef WANT_FMMIDI
 #    define SUPPORT_MID
-#    define SUPPORT_OGG
+#  endif
+//#  define SUPPORT_OGG
+#  ifdef HAVE_MPG123
 #    define SUPPORT_MP3
 #  endif
 #endif
