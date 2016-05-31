@@ -107,14 +107,18 @@ RETRO_API void retro_set_input_state(retro_input_state_t cb) {
     LibretroUi::SetRetroInputStateCallback(cb);
 }
 
+static void reinit_easy_rpg(void){
+	Player::Init(0, 0);
+    Graphics::Init();
+    Input::Init();
+}
+
 /* Library global initialization/deinitialization. */
 RETRO_API void retro_init(void) {
     LibretroAudio::SetNumberOfSamplesPerFrame(AUDIO_SAMPLERATE / Graphics::GetDefaultFps());
     LibretroAudio::SetOutputSampleRate(AUDIO_SAMPLERATE);
 
-    Player::Init(0, 0);
-    Graphics::Init();
-    Input::Init();
+	reinit_easy_rpg();
 }
 
 RETRO_API void retro_deinit(void) {
@@ -191,6 +195,10 @@ RETRO_API void retro_run(void) {
 
     if (!Player::exit_flag) {
         Player::MainLoop();
+		if(!DisplayUi){ //Only occurs when the function Player::Exit() was called from within the game
+			Player::exit_flag=true;
+			retro_environment(RETRO_ENVIRONMENT_SHUTDOWN, 0);			
+		}
     }
 }
 
@@ -253,8 +261,12 @@ RETRO_API bool retro_load_game(const struct retro_game_info *game) {
 
     std::string rpg_rt_ini_path = "";
     if (game != 0) { std::string rpg_rt_ini_path = game->path; }
-
     Player::exit_flag = false;
+	
+	if(!DisplayUi){ //If player was exited before -> reiinitialize
+		reinit_easy_rpg();
+	}
+	
     size_t end = rpg_rt_ini_path.find_last_of("/\\");
     if (end != std::string::npos) {
         Main_Data::SetProjectPath(rpg_rt_ini_path.substr(0, end));
@@ -277,8 +289,10 @@ RETRO_API bool retro_load_game_special(
 
 /* Unloads a currently loaded game. */
 RETRO_API void retro_unload_game(void) {
-    Player::exit_flag = true;
-    Player::Update(false);
+	if(Player::exit_flag!=true){
+		Player::exit_flag = true;
+		Player::MainLoop(); //Execute one mainloop to do the exiting
+	}
     Main_Data::Cleanup();
 }
 
@@ -292,9 +306,7 @@ RETRO_API void *retro_get_memory_data(unsigned id) {
     return 0;
 }
 
-RETRO_API size_t
-
-retro_get_memory_size(unsigned id) {
+RETRO_API size_t retro_get_memory_size(unsigned id) {
     return 0;
 }
 #endif
