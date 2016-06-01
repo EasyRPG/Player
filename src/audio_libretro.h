@@ -43,7 +43,7 @@ struct LibretroAudio : public AudioInterface {
 			bool stopped;
 		};
 		
-		static bool PlayOnChannel(Channel & chan,std::string const & file, int volume, int pitch, int fadein);
+		static bool PlayOnChannel(Channel & chan,std::string const & file, int volume, int pitch, int fadein, bool is_soundeffect);
 		
 		static unsigned ggt(unsigned a, unsigned b);
 		
@@ -55,7 +55,6 @@ struct LibretroAudio : public AudioInterface {
 		static const unsigned nr_of_se_channels=31; 
 		static const unsigned nr_of_bgm_channels=2; 
 
-		
 		static Channel BGM_Channels[nr_of_bgm_channels];
 		static Channel SE_Channels[nr_of_se_channels];
 		static bool BGM_PlayedOnceIndicator;
