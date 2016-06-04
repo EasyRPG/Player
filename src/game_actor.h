@@ -112,6 +112,14 @@ public:
 	bool IsSkillUsable(int skill_id) const override;
 
 	/**
+	 * Calculates the Skill costs including all modifiers.
+	 *
+	 * @param skill_id ID of skill to calculate.
+	 * @return needed skill cost.
+	 */
+	int CalculateSkillCost(int skill_id) const override;
+
+	/**
 	 * Gets the actor ID.
 	 *
 	 * @return Actor ID

@@ -601,7 +601,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 
 	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetWeaponId() != 0) {
-		source->ChangeSp(-Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() -1].sp_cost);
+		source->ChangeSp(-source->CalculateSkillCost(static_cast<Game_Actor*>(source)->GetWeaponId()));
 	}
 }
 

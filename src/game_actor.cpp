@@ -141,6 +141,21 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	return Game_Battler::IsSkillUsable(skill_id);
 }
 
+int Game_Actor::CalculateSkillCost(int skill_id) const {
+	int start = GetTwoSwordsStyle() ? 1 : 0;
+	int sp_mod = 1;
+
+	for (int i = start; i < 5; ++i) {
+		const RPG::Item* item = GetEquipment(i);
+		if (item && item->half_sp_cost) {
+			sp_mod = 2;
+			break;
+		}
+	}
+	
+	return Game_Battler::CalculateSkillCost(skill_id) / sp_mod;
+}
+
 bool Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		GetData().skills.push_back((int16_t)skill_id);

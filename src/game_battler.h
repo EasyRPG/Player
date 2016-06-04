@@ -336,7 +336,7 @@ public:
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
-	int CalculateSkillCost(int skill_id) const;
+	virtual int CalculateSkillCost(int skill_id) const;
 
 	/**
 	 * Sets the battler attack modifier.
