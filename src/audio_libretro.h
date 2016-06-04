@@ -33,8 +33,6 @@ struct LibretroAudio : public AudioInterface {
 	private:
 		struct Channel {
 			std::unique_ptr<AudioDecoder> decoder;
-			unsigned upsample;
-			unsigned downsample;
 			AudioDecoder::Format sampleformat;
 			unsigned samplerate;
 			unsigned samplesize;
@@ -44,8 +42,6 @@ struct LibretroAudio : public AudioInterface {
 		};
 		
 		static bool PlayOnChannel(Channel & chan,std::string const & file, int volume, int pitch, int fadein, bool is_soundeffect);
-		
-		static unsigned ggt(unsigned a, unsigned b);
 		
 		static unsigned output_samplerate;
 		static unsigned samples_per_frame;
