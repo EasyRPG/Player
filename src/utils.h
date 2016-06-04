@@ -103,6 +103,22 @@ namespace Utils {
 
 	bool IsBigEndian();
 
+	/**
+	 * Gets a random number in the inclusive range from - to.
+	 *
+	 * @param from Interval start
+	 * @param to Interval end
+	 * @return Random number in inclusive interval
+	 */
+	int32_t GetRandomNumber(int32_t from, int32_t to);
+
+	/**
+	 * Seeds the RNG used by GetRandomNumber
+	 *
+	 * @param seed Seed to use
+	 */
+	void SeedRandomNumberGenerator(int32_t seed);
+
 } // namespace Utils
 
 #endif

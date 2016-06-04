@@ -19,6 +19,11 @@
 #include "utils.h"
 #include <algorithm>
 #include <cctype>
+#include <random>
+
+namespace {
+	std::mt19937 rng;
+}
 
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
@@ -283,4 +288,13 @@ bool Utils::IsBigEndian() {
     } d = {0x01020304};
 
     return(d.c[0] == 1);
+}
+
+int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
+	std::uniform_int_distribution<int32_t> dist(from, to);
+	return dist(rng);
+}
+
+void Utils::SeedRandomNumberGenerator(int32_t seed) {
+	rng.seed(seed);
 }
