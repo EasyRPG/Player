@@ -180,7 +180,6 @@ void BattleAnimation::DrawAt(int x, int y) {
 		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
 		sprite->SetZoomX(cell.zoom / 100.0);
 		sprite->SetZoomY(cell.zoom / 100.0);
-		sprite->Draw();
 	}
 
 	if (anim_frame.cells.empty()) {

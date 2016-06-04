@@ -209,7 +209,7 @@ bool Sprite_Battler::IsIdling() {
 
 void Sprite_Battler::Flash(int duration) {
 	if (animation) {
-		animation->GetSprite()->Flash(duration);
+		animation->Flash(duration);
 	} else {
 		Sprite::Flash(duration);
 	}
@@ -217,7 +217,7 @@ void Sprite_Battler::Flash(int duration) {
 
 void Sprite_Battler::Flash(Color color, int duration) {
 	if (animation) {
-		animation->GetSprite()->Flash(color, duration);
+		animation->Flash(color, duration);
 	} else {
 		Sprite::Flash(color, duration);
 	}
@@ -225,7 +225,7 @@ void Sprite_Battler::Flash(Color color, int duration) {
 
 bool Sprite_Battler::GetVisible() const {
 	if (animation) {
-		return animation->GetSprite()->GetVisible();
+		return animation->GetVisible();
 	} else {
 		return Sprite::GetVisible();
 	}
@@ -233,21 +233,21 @@ bool Sprite_Battler::GetVisible() const {
 
 void Sprite_Battler::SetVisible(bool nvisible) {
 	if (animation) {
-		animation->GetSprite()->SetVisible(nvisible);
+		animation->SetVisible(nvisible);
 	}
 	Sprite::SetVisible(nvisible);
 }
 
 int Sprite_Battler::GetWidth() const {
 	if (animation) {
-		return animation->GetSprite()->GetWidth();
+		return animation->GetWidth();
 	}
 	return Sprite::GetWidth();
 }
 
 int Sprite_Battler::GetHeight() const {
 	if (animation) {
-		return animation->GetSprite()->GetHeight();
+		return animation->GetHeight();
 	}
 	return Sprite::GetHeight();
 }
