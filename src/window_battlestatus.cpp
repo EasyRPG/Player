@@ -82,8 +82,6 @@ void Window_BattleStatus::Refresh() {
 				BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 				DrawActorFace(static_cast<Game_Actor*>(actor), 80 * i, 24);
-
-				contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::opaque);
 			}
 		}
 		else {
@@ -123,6 +121,13 @@ void Window_BattleStatus::RefreshGauge() {
 				}
 				else {
 					BitmapRef system2 = Cache::System2(Data::system.system2_name);
+					
+					// Clear number drawing area
+					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
+					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
+
+					// Background
+					contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::opaque);
 
 					// HP
 					DrawGaugeSystem2(48 + i * 80, 24, actor->GetHp(), actor->GetMaxHp(), 0);
