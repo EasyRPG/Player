@@ -1381,6 +1381,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove) {
 			actor->RemoveState(state_id);
+			Game_Battle::SetNeedRefresh(true);
 		} else {
 			if(state_id == 1) {
 				actor->ChangeHp(-actor->GetHp());

@@ -618,7 +618,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						DrawFloatText(
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
-							0,
+							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							Utils::ToString(action->GetAffectedHp()),
 							30);
 					}
