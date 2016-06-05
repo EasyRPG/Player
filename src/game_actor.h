@@ -685,7 +685,12 @@ public:
 	int GetBattleAnimationId() const override;
 
 	int GetHitChance() const override;
-	int GetCriticalHitChance() const override;
+	float GetCriticalHitChance() const override;
+
+	/**
+	 * Initializes battle related data to there default values.
+	 */
+	virtual void ResetBattle() override;
 
 	BattlerType GetType() const override;
 private:

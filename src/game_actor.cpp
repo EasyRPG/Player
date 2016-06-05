@@ -995,8 +995,25 @@ int Game_Actor::GetHitChance() const {
 	return 90;
 }
 
-int Game_Actor::GetCriticalHitChance() const {
-	return Data::actors[actor_id - 1].critical_hit ? Data::actors[actor_id - 1].critical_hit_chance : 0;
+float Game_Actor::GetCriticalHitChance() const {
+	return Data::actors[actor_id - 1].critical_hit ? (1.0f / Data::actors[actor_id - 1].critical_hit_chance) : 0.0f;
+}
+
+void Game_Actor::ResetBattle() {
+	Game_Battler::ResetBattle();
+
+	const RPG::Item* item = GetEquipment(0);
+	if (item && item->preemptive) {
+		gauge = GetMaxGauge();
+		return;
+	}
+
+	if (GetTwoSwordsStyle()) {
+		item = GetEquipment(1);
+		if (item && item->preemptive) {
+			gauge = GetMaxGauge();
+		}
+	}
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {
