@@ -753,7 +753,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (skill.affect_spirit)
 				this->spirit = effect;
 			if (skill.affect_agility)
-				this->agility = agility;
+				this->agility = effect;
 		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
