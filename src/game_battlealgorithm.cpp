@@ -514,7 +514,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	int to_hit;
 	float multiplier = 1;
-	int crit_chance = source->GetCriticalHitChance();
+	float crit_chance = source->GetCriticalHitChance();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
@@ -528,7 +528,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
 			RPG::Item weapon = Data::items[weaponID];
 			hit_chance = weapon.hit;
-			crit_chance += weapon.critical_hit;
+			crit_chance += crit_chance * weapon.critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
 		}
 		to_hit = (int)(100 - (100 - hit_chance));
@@ -546,7 +546,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	// Damage calculation
 	if (Utils::GetRandomNumber(0, 99) < to_hit) {
-		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < crit_chance) {
+		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < (int)ceil(crit_chance * 100)) {
 			critical_hit = true;
 		}
 
@@ -656,17 +656,15 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() {
 	if (current_target == targets.end()) {
 		return false;
 	}
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		if (skill.scope == RPG::Skill::Scope_ally ||
-			skill.scope == RPG::Skill::Scope_party) {
-			if ((*current_target)->IsDead()) {
-				// Cures death
-				return !skill.state_effects.empty() && skill.state_effects[0];
-			}
-
-			return true;
+	
+	if (skill.scope == RPG::Skill::Scope_ally ||
+		skill.scope == RPG::Skill::Scope_party) {
+		if ((*current_target)->IsDead()) {
+			// Cures death
+			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
+		
+		return true;
 	}
 
 	return (!(*current_target)->IsDead());
