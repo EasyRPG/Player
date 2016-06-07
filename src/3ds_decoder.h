@@ -19,6 +19,7 @@
 #define _EASYRPG_3DS_DECODER_H_
 
 #include <string>
+#include "audio_decoder.h"
 
 #define BGM_BUFSIZE 786432 // Max dimension of BGM buffer size#define OGG_BUFSIZE 2048 // Max dimension of PCM16 decoded block by libogg
 #define OGG_BUFSIZE 2048 // Max dimension of PCM16 decoded block by libogg
@@ -54,5 +55,6 @@ struct DecodedMusic{
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound);
 int DecodeMusic(std::string const& filename, DecodedMusic* Sound);
+extern std::unique_ptr<AudioDecoder> audio_decoder;
 
 #endif
