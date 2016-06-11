@@ -58,7 +58,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Pa
 	source(source), no_target(false), first_attack(true) {
 	Reset();
 
-	target->GetActiveBattlers(targets);
+	target->GetBattlers(targets);
 	current_target = targets.begin();
 }
 
@@ -446,17 +446,28 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Idle;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	if (current_target == targets.end()) {
-		return false;
+void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+	if (current_target == targets.begin() &&
+		current_target != targets.end() &&
+		!IsTargetValid()) {
+		TargetNext();
+		first_attack = true;
 	}
+}
 
-	if (current_target + 1 != targets.end()) {
+bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
+	do {
+		if (current_target == targets.end() ||
+			current_target + 1 == targets.end()) {
+			return false;
+		}
+
 		++current_target;
-		first_attack = false;
-		return true;
-	}
-	return false;
+	} while (!IsTargetValid());
+
+	first_attack = false;
+
+	return true;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {

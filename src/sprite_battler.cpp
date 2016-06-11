@@ -72,6 +72,10 @@ void Sprite_Battler::Update() {
 
 	if (battler->GetBattleAnimationId() <= 0) {
 		// Animations for monster
+		if (anim_state != AnimationState_Dead) {
+			fade_out = 255;
+		}
+
 		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
 			idling = true;

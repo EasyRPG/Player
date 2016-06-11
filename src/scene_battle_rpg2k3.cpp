@@ -533,6 +533,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
+		action->TargetFirst();
+
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
@@ -555,20 +557,14 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->Execute();
 
-		if (action->GetTarget() && action->GetAnimation()) {
-			Game_Battle::ShowBattleAnimation(
-				action->GetAnimation()->ID,
-				action->GetTarget());
-		}
-
 		if (source_sprite) {
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			source_sprite->SetAnimationState(
 				action->GetSourceAnimationState(),
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
-
-		if (action->IsFirstAttack()) {
+		
+		{
 			std::vector<Game_Battler*> battlers;
 			Main_Data::game_party->GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
@@ -584,9 +580,32 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						30);
 				}
 			}
-			if (action->GetStartSe()) {
-				Game_System::SePlay(*action->GetStartSe());
+		}
+
+		if (action->GetStartSe()) {
+			Game_System::SePlay(*action->GetStartSe());
+		}
+
+
+		do {
+			if (!action->IsFirstAttack()) {
+				action->Execute();
+			} else {
+				NextTurn(action->GetSource());
+				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
 			}
+
+			action->Apply();
+
+			if (action->GetTarget()) {
+				targets.push_back(action->GetTarget());
+			}
+		} while (action->TargetNext());
+
+		if (action->GetAnimation() && !targets.empty()) {
+			Game_Battle::ShowBattleAnimation(
+				action->GetAnimation()->ID,
+				targets);
 		}
 
 		battle_action_state = BattleActionState_Result;
@@ -596,48 +615,34 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
 
-		do {
-			if (!action->IsFirstAttack()) {
-				action->Execute();
-			}
-			else {
-				NextTurn(action->GetSource());
-				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
-			}
-
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+		for (it = targets.begin(); it != targets.end(); ++it) {
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 			if (action->IsSuccess() && !action->IsPositive() && target_sprite) {
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
-			action->Apply();
-
-			if (action->GetTarget()) {
-				if (action->IsSuccess()) {
-					if (action->GetAffectedHp() != -1) {
-						DrawFloatText(
-							action->GetTarget()->GetBattleX(),
-							action->GetTarget()->GetBattleY(),
-							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
-							Utils::ToString(action->GetAffectedHp()),
-							30);
-					}
-
-					action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
-				} else {
+			if (action->IsSuccess()) {
+				if (action->GetAffectedHp() != -1) {
 					DrawFloatText(
-						action->GetTarget()->GetBattleX(),
-						action->GetTarget()->GetBattleY(),
-						0,
-						Data::terms.miss,
+						(*it)->GetBattleX(),
+						(*it)->GetBattleY(),
+						action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
+						Utils::ToString(action->GetAffectedHp()),
 						30);
 				}
 
-				targets.push_back(action->GetTarget());
+				(*it)->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
+			} else {
+				DrawFloatText(
+					(*it)->GetBattleX(),
+					(*it)->GetBattleY(),
+					0,
+					Data::terms.miss,
+					30);
 			}
 
 			status_window->Refresh();
-		} while (action->TargetNext());
+		}
 
 		if (action->GetResultSe()) {
 			Game_System::SePlay(*action->GetResultSe());
@@ -654,24 +659,17 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 		battle_action_wait = 30;
 
-		for (it = targets.begin(); it != targets.end(); it++) {
+		for (it = targets.begin(); it != targets.end(); ++it) {
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 
 			if ((*it)->IsDead()) {
 				if (action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
 				}
+			}
 
-				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
-				}
-			} else {
-				if (target_sprite) {
-					if (!target_sprite->IsIdling()) {
-						// Was revived or some other deadlock situation :/
-						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
-					}
-				}
+			if (target_sprite) {
+				target_sprite->DetectStateChange();
 			}
 		}
 

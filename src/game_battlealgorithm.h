@@ -69,6 +69,12 @@ public:
 	void SetTarget(Game_Battler* target);
 
 	/**
+	 * Initializes targetting. Must be called after initialising a multi target
+	 * skill, otherwise will behave incorrectly.
+	 */
+	void TargetFirst();
+
+	/**
 	 * Changes the target reference to the next target.
 	 *
 	 * @return true if there was a next target available
