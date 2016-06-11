@@ -36,6 +36,10 @@
 #include "decoder_libsndfile.h"
 #endif
 
+#ifdef USE_AUDIO_RESAMPLER
+#include "audio_resampler.h"
+#endif
+
 void AudioDecoder::Pause() {
 	paused = true;
  }
@@ -128,7 +132,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 	if (!strncmp(magic, "MThd", 4)) {
 #if WANT_FMMIDI == 1
+	#ifdef USE_AUDIO_RESAMPLER
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new FmMidiDecoder(),true,AudioResampler::Quality::Low));
+	#else
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
+	#endif
 #else
 		return nullptr;
 #endif
@@ -141,7 +149,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		!strncmp(magic, "fLaC", 4) // FLAC
 		) {
 	#ifdef HAVE_LIBSNDFILE
-		return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
+		#ifdef USE_AUDIO_RESAMPLER
+			return std::unique_ptr<AudioDecoder>(new AudioResampler(new LibsndfileDecoder()));
+		#else
+			return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
+		#endif
 	#else
 		return nullptr;
 	#endif
@@ -154,14 +166,22 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 #ifdef HAVE_MPG123
 	if (strncmp(magic, "ID3", 3) == 0) {
-		return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
+		#ifdef USE_AUDIO_RESAMPLER
+			return std::unique_ptr<AudioDecoder>(new AudioResampler(new Mpg123Decoder()));
+		#else
+			return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
+		#endif
 	}
 
 	// Parsing MP3s seems to be the only reliable way to detect them
 	if (Mpg123Decoder::IsMp3(file)) {
 		Output::Debug("MP3 heuristic: %s", filename.c_str());
 		fseek(file, 0, SEEK_SET);
-		return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
+		#ifdef USE_AUDIO_RESAMPLER
+			return std::unique_ptr<AudioDecoder>(new AudioResampler(new Mpg123Decoder()));
+		#else
+			return std::unique_ptr<AudioDecoder>(new Mpg123Decoder());
+		#endif
 	}
 #endif
 
