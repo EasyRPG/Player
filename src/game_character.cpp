@@ -271,7 +271,14 @@ void Game_Character::MoveTypeCustom() {
 	if (IsStopping()) {
 		move_failed = false;
 
-		for (; (size_t)active_route_index < active_route->move_commands.size(); ++active_route_index) {
+		int original_index = active_route_index;
+		bool looped_around = false;
+		while (true) {
+			if (active_route_index == original_index && looped_around) {
+				// We've gone around a full loop; stop here
+				break;
+			}
+
 			if (!IsStopping() || wait_count > 0 || stop_count < max_stop_count)
 				break;
 
@@ -406,10 +413,15 @@ void Game_Character::MoveTypeCustom() {
 			if (move_failed) {
 				if (active_route->skippable) {
 					last_move_failed = false;
-					continue;
+				} else {
+					break;
 				}
+			}
 
-				break;
+			++active_route_index;
+			if ((size_t)active_route_index >= active_route->move_commands.size()) {
+				looped_around = true;
+				active_route_index = 0;
 			}
 		}
 
