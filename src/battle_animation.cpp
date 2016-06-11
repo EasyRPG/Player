@@ -264,6 +264,11 @@ BattleAnimationBattlers::~BattleAnimationBattlers() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationBattlers::Draw() {
+	if (animation.scope == RPG::Animation::Scope_screen) {
+		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
+		return;
+	}
+
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 	     it != battlers.end(); ++it) {
 		const Game_Battler& battler = **it;
