@@ -18,6 +18,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/audio.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
+	src/audio_resampler.cpp \
+	src/audio_resampler.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
@@ -323,7 +325,8 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
 	$(MPG123_CFLAGS) \
-	$(SNDFILE_CFLAGS)
+	$(SNDFILE_CFLAGS) \
+	$(SPEEXDSP_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
@@ -334,7 +337,8 @@ libeasyrpg_player_la_LIBADD = \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
 	$(MPG123_LIBS) \
-	$(SNDFILE_LIBS)
+	$(SNDFILE_LIBS) \
+	$(SPEEXDSP_LIBS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
