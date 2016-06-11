@@ -33,7 +33,7 @@
 #include "3ds_decoder.h"
 #endif
 extern DecodedMusic* BGM;
-
+std::unique_ptr<AudioDecoder> audio_decoder;
 /*	
 	+-----------------------------------------------------+
 	|                                                     |
@@ -274,7 +274,6 @@ void UpdateWavStream(){
 		u8* left_channel = Sound->audiobuf;
 		u8* right_channel = Sound->audiobuf + half_buf;
 		u32 half_chn_size = half_buf>>1;
-		u16 byteperchannel = Sound->bytepersample>>1;
 		u32 z = half_chn_size * half_check;
 		u8* tmp_buf = (u8*)linearAlloc(half_buf);
 		bytesRead = fread(tmp_buf, 1, half_buf, Sound->handle);
@@ -293,7 +292,38 @@ void UpdateWavStream(){
 	
 }
 
+void UpdateAudioDecoderStream(){
+	DecodedMusic* Sound = BGM;
+	Sound->block_idx++;	
+	u32 half_buf = Sound->audiobuf_size>>1;
+	int half_check = (Sound->block_idx)%2;
+	
+	// Mono file
+	if ((!Sound->isStereo) || Player::use_dsp){
+		audio_decoder->Decode(Sound->audiobuf+(half_check*half_buf), half_buf);		
+		if (audio_decoder->GetLoopCount() > 0){ // EoF
+			if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+		}
+		
+	// Stereo file
+	}else{
+		u8* left_channel = Sound->audiobuf;
+		u8* right_channel = Sound->audiobuf + half_buf;
+		u32 half_chn_size = half_buf>>1;
+		u32 z = half_chn_size * half_check;
+		audio_decoder->DecodeAsMono(&left_channel[z],&right_channel[z], half_chn_size);		
+		if (audio_decoder->GetLoopCount() > 0){ // EoF
+			if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+		}
+	}
+	
+}
+
 void CloseWav(){
+	if (BGM->handle != NULL) fclose(BGM->handle);
+}
+
+void CloseAudioDecoder(){
 	if (BGM->handle != NULL) fclose(BGM->handle);
 }
 
@@ -375,6 +405,74 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	Sound->closeCallback = CloseWav;
 	
 	return res;
+}
+
+int OpenAudioDecoder(FILE* stream, DecodedMusic* Sound, std::string const& filename){
+	
+	// Initializing internal audio decoder
+	int audiotype;
+	fseek(stream, 0, SEEK_SET);
+	audio_decoder->Open(stream);
+	audio_decoder->SetLooping(true);
+	AudioDecoder::Format int_format;
+	int samplerate;	
+	audio_decoder->GetFormat(samplerate, int_format, audiotype);
+	if (strstr(filename.c_str(),".mid") != NULL){
+		#ifdef MIDI_DEBUG
+		samplerate = 11025;
+		Output::Warning("MIDI track detected, lowering samplerate to 11025 Hz.", filename.c_str());
+		#else
+		Output::Warning("MIDI tracks currently unsupported.", filename.c_str());
+		return -1;
+		#endif
+		audio_decoder->SetFormat(11025, AudioDecoder::Format::S16, 2);
+	}else if (int_format > AudioDecoder::Format::S16){
+		bool isCompatible = audio_decoder->SetFormat(samplerate, AudioDecoder::Format::S16, audiotype);
+		if (!isCompatible){
+			Output::Warning("Unsupported music audiocodec (%s)", filename.c_str());
+			fclose(stream);
+			return -1;
+		}
+		int_format = AudioDecoder::Format::S16;
+	}
+	Sound->samplerate = samplerate;
+	
+	// Check for file audiocodec
+	if (int_format > AudioDecoder::Format::U8){
+		Sound->format = CSND_ENCODING_PCM16;
+		Sound->bytepersample = audiotype<<1;
+	}else{
+		Sound->format = CSND_ENCODING_PCM8;
+		Sound->bytepersample = audiotype;
+	}
+	if (audiotype == 2) Sound->isStereo = true;
+	else Sound->isStereo = false;
+	
+	// Setting audiobuffer size
+	Sound->audiobuf_size = BGM_BUFSIZE;
+	Sound->audiobuf_offs = 0;
+	Sound->audiobuf = (u8*)linearAlloc(Sound->audiobuf_size);
+	
+	if (Player::use_dsp) audiotype = 1; // We trick the decoder since DSP supports native stereo playback
+	int res;
+	
+	// Mono file
+	if (audiotype == 1) res=audio_decoder->Decode(Sound->audiobuf, Sound->audiobuf_size);	
+	
+	// Stereo file
+	else{
+		u32 chn_size = Sound->audiobuf_size>>1;
+		res=audio_decoder->DecodeAsMono(Sound->audiobuf, &Sound->audiobuf[chn_size], chn_size);
+	}
+	
+	//Setting default streaming values
+	Sound->block_idx = 1;
+	Sound->handle = stream;
+	Sound->eof_idx = 0xFFFFFFFF;
+	Sound->updateCallback = UpdateAudioDecoderStream;
+	Sound->closeCallback = CloseAudioDecoder;
+	
+	return 0;
 }
 
 
@@ -465,6 +563,10 @@ int DecodeMusic(std::string const& filename, DecodedMusic* Sound){
 		Output::Warning("Couldn't open music file %s", filename.c_str());
 		return -1;
 	}
+	
+	// Trying to use internal decoder
+	audio_decoder = AudioDecoder::Create(stream, filename);
+	if (audio_decoder != NULL) return OpenAudioDecoder(stream, Sound, filename);
 	
 	// Reading and parsing the magic
 	u32 magic;
