@@ -116,6 +116,9 @@ void Sprite_Battler::Update() {
 					} else if (loop_state == LoopState_LoopAnimation) {
 						animation->SetFrame(0);
 					} else if (loop_state == LoopState_WaitAfterFinish) {
+						if (animation->GetFrames() > 0) {
+							animation->SetFrame(animation->GetFrames() - 1);
+						}
 						idling = true;
 					}
 				}
@@ -289,6 +292,12 @@ void Sprite_Battler::CreateSprite() {
 }
 
 void Sprite_Battler::DoIdleAnimation() {
+	if (battler->IsDefending()) {
+		SetAnimationState(AnimationState_Defending);
+		idling = true;
+		return;
+	}
+
 	const RPG::State* state = battler->GetSignificantState();
 	int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
 	if (idling_anim == 101)
