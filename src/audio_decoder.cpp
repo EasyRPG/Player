@@ -32,6 +32,10 @@
 #include "decoder_mpg123.h"
 #endif
 
+#ifdef HAVE_LIBSNDFILE
+#include "decoder_libsndfile.h"
+#endif
+
 void AudioDecoder::Pause() {
 	paused = true;
  }
@@ -136,7 +140,11 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		!strncmp(magic, "OggS", 4) || // OGG
 		!strncmp(magic, "fLaC", 4) // FLAC
 		) {
+	#ifdef HAVE_LIBSNDFILE
+		return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
+	#else
 		return nullptr;
+	#endif
 	}
 
 	// Inform about WMA issue
