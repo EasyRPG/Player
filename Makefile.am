@@ -31,6 +31,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/decoder_libsndfile.cpp \
+	src/decoder_libsndfile.h \
 	src/decoder_mpg123.cpp \
 	src/decoder_mpg123.h \
 	src/decoder_fmmidi.cpp \
@@ -320,7 +322,8 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(SDLMIXER_CFLAGS) \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
-	$(MPG123_CFLAGS)
+	$(MPG123_CFLAGS) \
+	$(SNDFILE_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
@@ -330,7 +333,8 @@ libeasyrpg_player_la_LIBADD = \
 	$(SDLMIXER_LIBS) \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
-	$(MPG123_LIBS)
+	$(MPG123_LIBS) \
+	$(SNDFILE_LIBS)
 
 easyrpg_player_SOURCES = src/main.cpp
 easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
