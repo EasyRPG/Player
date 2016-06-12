@@ -1,24 +1,30 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "system.h"
 
 #if defined(HAVE_LIBSPEEXDSP) || defined(HAVE_LIBSAMPLERATE) 
 
-/**************************************************************************************
- * INCLUDES
- **************************************************************************************/
- 
 #include <cassert>
 #include "audio_resampler.h"
 #include "output.h"
-/**************************************************************************************
- * IDEFINITIONS
- **************************************************************************************/
 
 #define ERROR -1
 #define STANDARD_PITCH 100
-
-/**************************************************************************************
- * INTERNAL FUNCTIONS
- **************************************************************************************/
 
 /**
  * Utility function used to convert a buffer of a arbitrary AudioDecoder::Format to a float buffer
@@ -91,8 +97,6 @@ inline static int DecodeAndConvertFloat(AudioDecoder * wrapped_decoder,
 	}
 	return amount_of_samples_read;
 }
-
-//------------------------------------------------------------------------------------//
 
 #if defined(HAVE_LIBSPEEXDSP)
 
@@ -171,10 +175,6 @@ inline static int DecodeAndConvertInt16(AudioDecoder * wrapped_decoder,
 }
 #endif
 
-/**************************************************************************************
- * CLASS IMPLEMENTATION
- **************************************************************************************/
-
 AudioResampler::AudioResampler(AudioDecoder * wrapped, bool pitch_handled, AudioResampler::Quality quality)
 {
 	//There is no need for a standalone resampler decoder
@@ -216,8 +216,6 @@ AudioResampler::AudioResampler(AudioDecoder * wrapped, bool pitch_handled, Audio
 
 }
 
-//------------------------------------------------------------------------------------//
-
 AudioResampler::~AudioResampler() {
 	if (conversion_state != 0) {
 	#if defined(HAVE_LIBSPEEXDSP)
@@ -230,8 +228,6 @@ AudioResampler::~AudioResampler() {
 		delete wrapped_decoder;
 	}
 }
-
-//------------------------------------------------------------------------------------//
 
 bool AudioResampler::Open(FILE* file) {
 	if (wrapped_decoder->Open(file)) {
@@ -272,8 +268,6 @@ bool AudioResampler::Open(FILE* file) {
 	}
 }
 
-//------------------------------------------------------------------------------------//
-
 bool AudioResampler::Seek(size_t offset, Origin origin) {
 	if (wrapped_decoder->Seek(offset, origin)) {
 		//reset conversio data
@@ -291,33 +285,23 @@ bool AudioResampler::Seek(size_t offset, Origin origin) {
 
 }
 
-//------------------------------------------------------------------------------------//
-
 size_t AudioResampler::Tell() {
 	return wrapped_decoder->Tell();
 }
-
-//------------------------------------------------------------------------------------//
 
 int AudioResampler::GetTicks() {
 	return wrapped_decoder->GetTicks();
 }
 
-//------------------------------------------------------------------------------------//
-
 bool AudioResampler::IsFinished() const {
 	return finished;
 }
-
-//------------------------------------------------------------------------------------//
 
 void AudioResampler::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	frequency = output_rate;
 	format = output_format;
 	channels = nr_of_channels;
 }
-
-//------------------------------------------------------------------------------------//
 
 bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
 	if (music_type == "midi") { input_rate = freq / 2; }
@@ -335,8 +319,6 @@ bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels)
 	return (nr_of_channels == channels&&output_format == fmt);
 }
 
-//------------------------------------------------------------------------------------//
-
 int AudioResampler::GetPitch() const {
 	if (pitch_handled_by_decoder) {
 		return wrapped_decoder->GetPitch();
@@ -345,8 +327,6 @@ int AudioResampler::GetPitch() const {
 		return pitch;
 	}
 }
-
-//------------------------------------------------------------------------------------//
 
 bool AudioResampler::SetPitch(int pitch_) {
 	if (pitch_handled_by_decoder) {
@@ -357,8 +337,6 @@ bool AudioResampler::SetPitch(int pitch_) {
 		return true;
 	}
 }
-
-//------------------------------------------------------------------------------------//
 
 int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 	int amount_filled = 0;
@@ -382,8 +360,6 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 	}
 	return amount_filled;
 }
-
-//------------------------------------------------------------------------------------//
 
 int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 	const int input_samplesize = GetSamplesizeForFormat(input_format);
@@ -462,8 +438,6 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 		return decoded*output_samplesize;
 	}
 }
-
-//------------------------------------------------------------------------------------//
 
 int AudioResampler::FillBufferDifferentRate(uint8_t* buffer, int length) {
 	const int input_samplesize = GetSamplesizeForFormat(input_format);
