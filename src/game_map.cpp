@@ -400,31 +400,120 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	uint8_t bit = 0;
+static int EventPageDirToPassableDir(int d) {
 	switch (d)
 	{
 		case RPG::EventPage::Direction_down:
-			bit = Passable::Down;
-			break;
+			return Passable::Down;
 
 		case RPG::EventPage::Direction_up:
-			bit = Passable::Up;
-			break;
+			return Passable::Up;
 
 		case RPG::EventPage::Direction_left:
-			bit = Passable::Left;
-			break;
+			return Passable::Left;
 
 		case RPG::EventPage::Direction_right:
-			bit = Passable::Right;
-			break;
+			return Passable::Right;
 
 		default:
 			assert(false);
 	}
+}
+
+/**
+ * Returns whether a collision occurs with other if self moves from (x,y) to
+ * (new_x,new_y) in direction d.
+ */
+static bool CollideDuringMove(
+	int x,
+	int y,
+	int new_x,
+	int new_y,
+	int d,
+	const Game_Character& self,
+	const Game_Event& other
+) {
+	if (!other.GetActive()) {
+		return false;
+	}
+
+	if (&self == &other) {
+		return false;
+	}
+
+	if (other.GetThrough()) {
+		return false;
+	}
+
+	if (!other.IsInPosition(x, y) && !other.IsInPosition(new_x, new_y)) {
+		return false;
+	}
+
+	if (&self != Main_Data::game_player.get()) {
+		if (self.IsOverlapForbidden() || other.IsOverlapForbidden()) {
+			return true;
+		}
+	}
+
+	if (self.GetLayer() == other.GetLayer()) {
+		return true;
+	}
+	else if (other.GetLayer() == RPG::EventPage::Layers_below) {
+		// Event layer Chipset Tile
+		auto tile_id = other.GetTileId();
+		if ((passages_up[tile_id] & Passable::Above) != 0)
+			return false;
+		// If we can pass out of (x,y) in direction d...
+		if (other.IsInPosition(x,y) && (passages_up[tile_id] & EventPageDirToPassableDir(d)) != 0)
+			return false;
+		// If we can pass into (new_x, new_y) in the opposite direction of d...
+		else if (other.IsInPosition(new_x, new_y) && (passages_up[tile_id] & EventPageDirToPassableDir((d + 2) % 4)) != 0)
+			return false;
+		else
+			return true;
+	}
+
+	return false;
+}
+
+bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
+	int new_x = RoundX(x + (d == Game_Character::Right ? 1 : d == Game_Character::Left ? -1 : 0));
+	int new_y = RoundY(y + (d == Game_Character::Down ? 1 : d == Game_Character::Up ? -1 : 0));
+
+	if (!Game_Map::IsValid(new_x, new_y))
+		return false;
+
+	if (self.GetThrough()) return true;
+
+	for (Game_Event& other : GetEvents()) {
+		if (CollideDuringMove(x, y, new_x, new_y, d, self, other)) {
+			// Try updating the offending event to give it a chance to move out of the
+			// way and recheck.
+			other.UpdateParallel();
+			if (CollideDuringMove(x, y, new_x, new_y, d, self, other)) {
+				return false;
+			}
+		}
+	}
+
+	if (!self.IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
+		return false;
+
+	if (Main_Data::game_player->IsInPosition(new_x, new_y)
+			&& !Main_Data::game_player->GetThrough() && !self.GetSpriteName().empty()
+			&& self.GetLayer() == RPG::EventPage::Layers_same) {
+		return false;
+	}
+
+	return
+		IsPassableTile(EventPageDirToPassableDir(d), x + y * GetWidth())
+		&& IsPassableTile(EventPageDirToPassableDir((d + 2) % 4), new_x + new_y * GetWidth());
+}
+
+bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
+	if (!Game_Map::IsValid(x, y)) return false;
+
+	int bit = EventPageDirToPassableDir(d);
 
 	int tile_id;
 

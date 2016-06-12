@@ -93,35 +93,15 @@ bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-bool Game_Character::IsPassable(int x, int y, int d) const {
+bool Game_Character::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
 		int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
-		return ((IsPassable(x, y, -dx + 2) && IsPassable(x + dx, y, dy + 1)) ||
-			(IsPassable(x, y, dy + 1) && IsPassable(x, y + dy, -dx + 2)));
+		return ((MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)) ||
+			(MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)));
 	}
 
-	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
-	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
-
-	if (!Game_Map::IsValid(new_x, new_y))
-		return false;
-
-	if (GetThrough()) return true;
-
-	if (!Game_Map::IsPassable(x, y, d, this))
-		return false;
-
-	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
-		return false;
-
-	if (Main_Data::game_player->IsInPosition(new_x, new_y)
-		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty()
-		&& GetLayer() == RPG::EventPage::Layers_same) {
-			return false;
-	}
-
-	return true;
+	return Game_Map::MakeWay(x, y, d, *this);
 }
 
 bool Game_Character::IsLandable(int x, int y) const
@@ -476,7 +456,7 @@ void Game_Character::Move(int dir) {
 		return;
 	}
 
-	move_failed = !IsPassable(GetX(), GetY(), dir);
+	move_failed = !MakeWay(GetX(), GetY(), dir);
 	if (move_failed) {
 		if (!CheckEventTriggerTouch(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy)))
 			return;
