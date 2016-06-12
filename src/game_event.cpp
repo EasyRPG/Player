@@ -680,6 +680,12 @@ void Game_Event::Update() {
 }
 
 void Game_Event::UpdateParallel() {
+	auto cur_frame_count = Player::GetFrames();
+	if (cur_frame_count == frame_count_at_last_update_parallel) {
+		return;
+	}
+	frame_count_at_last_update_parallel = cur_frame_count;
+
 	if (!data.active || page == NULL) {
 		return;
 	}
