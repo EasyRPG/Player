@@ -17,6 +17,7 @@
 
 #ifndef _EASYRPG_AUDIO_RESAMPLER_H_
 #define _EASYRPG_AUDIO_RESAMPLER_H_
+#if defined(HAVE_LIBSPEEXDSP) || defined(HAVE_LIBSAMPLERATE) 
 
 // Headers
 #include "audio_decoder.h"
@@ -193,5 +194,5 @@ private:
 	uint8_t internal_buffer[256*sizeof(float)];
 
 };
-
+#endif
 #endif
