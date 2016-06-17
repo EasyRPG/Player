@@ -178,6 +178,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
 		sprite->SetZoomX(cell.zoom / 100.0);
 		sprite->SetZoomY(cell.zoom / 100.0);
+		sprite->Draw();
 	}
 
 	if (anim_frame.cells.empty()) {
@@ -247,6 +248,11 @@ BattleAnimationChara::~BattleAnimationChara() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationChara::Draw() {
+	//If animation is targeted on the screen
+	if (animation.scope == RPG::Animation::Scope_screen) {
+		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2);
+		return;
+	}
 	const int character_height = 24;
 	int vertical_center = character.GetScreenY() - character_height/2;
 	int offset = CalculateOffset(animation.position, character_height);
