@@ -110,7 +110,12 @@ Sprite* BattleAnimation::GetSprite() {
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	if (result->success) {
 		sprite.reset(new Sprite());
-		sprite->SetBitmap(Cache::Battle(result->file));
+		BitmapRef bitmap = Cache::Battle(result->file);
+		if (bitmap->GetWidth() == 640) {
+			large = true;
+		}
+		sprite->SetBitmap(bitmap);
+		
 		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
@@ -124,7 +129,11 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 	if (result->success) {
 		sprite.reset(new Sprite());
-		sprite->SetBitmap(Cache::Battle2(result->file));
+		BitmapRef bitmap = Cache::Battle2(result->file);
+		if (bitmap->GetWidth() == 640) {
+			large = true;
+		}
+		sprite->SetBitmap(bitmap);
 		sprite->SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
