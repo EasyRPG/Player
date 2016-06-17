@@ -161,6 +161,14 @@ public:
 	const RPG::Animation* GetAnimation() const;
 
 	/**
+	 * Plays the battle animation on the targets.
+	 * Takes care of single- and multi-target animations.
+	 * Must be called before calling TargetNext, otherwise the result will
+	 * be incorrect.
+	 */
+	void PlayAnimation();
+
+	/**
 	 * Returns a list of all inflicted/removed conditions.
 	 *
 	 * @return List of all inflicted/removed conditions

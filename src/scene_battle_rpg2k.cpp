@@ -356,12 +356,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (action->IsFirstAttack()) {
 				if (action->GetTarget() &&
-					action->GetTarget()->GetType() == Game_Battler::Type_Enemy &&
-					action->GetAnimation()) {
+					action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 
-					Game_Battle::ShowBattleAnimation(
-						action->GetAnimation()->ID,
-						action->GetTarget());
+					action->PlayAnimation();
 				}
 			}
 

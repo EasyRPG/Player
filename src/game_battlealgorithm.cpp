@@ -124,6 +124,32 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation() {
+	if (!GetTarget() || !GetAnimation()) {
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	if (current_target == targets.end()) {
+		return;
+	}
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNext());
+
+	Game_Battle::ShowBattleAnimation(
+		GetAnimation()->ID,
+		anim_targets);
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
