@@ -222,8 +222,6 @@ private:
 	std::vector<RPG::EventCommand> list;
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
-
-	int frame_count_at_last_update_parallel = -1;
 };
 
 #endif

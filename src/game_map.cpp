@@ -502,7 +502,10 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 	if (Main_Data::game_player->IsInPosition(new_x, new_y)
 			&& !Main_Data::game_player->GetThrough() && !self.GetSpriteName().empty()
 			&& self.GetLayer() == RPG::EventPage::Layers_same) {
-		return false;
+		Main_Data::game_player->Update();
+		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
+			return false;
+		}
 	}
 
 	return
