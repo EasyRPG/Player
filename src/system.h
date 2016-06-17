@@ -111,4 +111,8 @@
 #  endif
 #endif
 
+#if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)
+#  define USE_AUDIO_RESAMPLER
+#endif
+
 #endif

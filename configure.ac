@@ -54,6 +54,16 @@ AC_ARG_WITH([libmpg123],[AS_HELP_STRING([--without-libmpg123],
 AS_IF([test "x$with_libmpg123" != "xno"],[
 	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Disable improved MP3 support provided by libmpg123])],[auto_mpg123=0])
 ])
+AC_ARG_WITH([libsndfile],[AS_HELP_STRING([--without-libsndfile],
+	[Disable improved WAV support provided by libsndfile.  @<:@default=auto@:>@])])
+AS_IF([test "x$with_libsndfile" != "xno"],[
+	PKG_CHECK_MODULES([SNDFILE],[sndfile],[AC_DEFINE(HAVE_LIBSNDFILE,[1],[Disable improved WAV support provided by libsndfile])],[auto_sndfile=0])
+])
+AC_ARG_WITH([libspeexdsp],[AS_HELP_STRING([--without-libspeexdsp],
+	[Disable resampling support provided by libspeexdsp. Uses SDL_mixer instead which results in noise. @<:@default=auto@:>@])])
+AS_IF([test "x$with_libspeexdsp" != "xno"],[
+	PKG_CHECK_MODULES([SPEEXDSP],[speexdsp],[AC_DEFINE(HAVE_LIBSPEEXDSP,[1],[Disable resampling support provided by libspeexdsp])],[auto_speexdsp=0])
+])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
