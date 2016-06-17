@@ -167,6 +167,15 @@ int Game_Character::GetScreenZ() const {
 }
 
 void Game_Character::Update() {
+	if (stop_count >= max_stop_count) {
+		if (IsMoveRouteOverwritten()) {
+			MoveTypeCustom();
+		} else {
+			// Only events
+			UpdateSelfMovement();
+		}
+	}
+
 	if (IsJumping()) {
 		UpdateJump();
 		if (IsSpinning())
@@ -211,15 +220,6 @@ void Game_Character::Update() {
 	if (wait_count > 0) {
 		wait_count -= 1;
 		return;
-	}
-
-	if (stop_count >= max_stop_count) {
-		if (IsMoveRouteOverwritten()) {
-			MoveTypeCustom();
-		} else {
-			// Only events
-			UpdateSelfMovement();
-		}
 	}
 }
 
