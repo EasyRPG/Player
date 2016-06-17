@@ -110,6 +110,8 @@ Sprite* BattleAnimation::GetSprite() {
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	if (result->success) {
 		sprite.reset(new Sprite());
+
+		//Normally only battle2 sprites are "large" sprites - but the check doesn't hurt.
 		BitmapRef bitmap = Cache::Battle(result->file);
 		if (bitmap->GetWidth() == 640) {
 			large = true;
