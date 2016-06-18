@@ -254,8 +254,18 @@ void Game_Character::MoveTypeCustom() {
 		int original_index = active_route_index;
 		bool looped_around = false;
 		while (true) {
+			if ((size_t)active_route_index >= active_route->move_commands.size()) {
+				if (active_route->repeat) {
+					looped_around = true;
+					active_route_index = 0;
+					SetMoveRouteRepeated(true);
+				} else {
+					break;
+				}
+			}
+
 			if (active_route_index == original_index && looped_around) {
-				// We've gone around a full loop; stop here
+				// We've gone around a full loop; stop here for now
 				break;
 			}
 
@@ -399,18 +409,10 @@ void Game_Character::MoveTypeCustom() {
 			}
 
 			++active_route_index;
-			if ((size_t)active_route_index >= active_route->move_commands.size()) {
-				looped_around = true;
-				active_route_index = 0;
-			}
 		}
 
 		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping()) {
-			// End of Move list
-			if (active_route->repeat) {
-				active_route_index = 0;
-				SetMoveRouteRepeated(true);
-			} else if (IsMoveRouteOverwritten()) {
+			if (IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
 				stop_count = 0;
