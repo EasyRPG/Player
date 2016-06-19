@@ -135,14 +135,12 @@ namespace Game_Map {
 	 * that block the way are updated early (by UpdateParallel) to give them a
 	 * chance to move out of the way.
 	 *
-	 * Returns true if the way is clear for a move to the new tile (and that tile
-	 * is passable).
+	 * Returns true if everything is clear to make the move.
 	 *
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @param d direction (0, 2, 4, 6, 8, 10).
-	 *		    0,10 = determine if all directions are impassable.
-	 * @param self_event Current character for doing passability check
+	 * @param d direction
+	 * @param self Character to move.
 	 * @return whether is passable.
 	 */
 	bool MakeWay(int x, int y, int d, const Game_Character& self);

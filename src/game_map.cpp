@@ -436,8 +436,8 @@ enum CollisionResult {
 	 */
 	CanStepOffCurrentTile,
 	/**
-	 * The other event was a tile event beneath the tile below self's
-	 * new position that self could step onto.
+	 * The other event was a tile event beneath self's new position
+	 * that self could step onto.
 	 */
 	CanStepOntoNewTile
 };
@@ -511,7 +511,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 
 	if (self.GetThrough()) return true;
 
-	// An character can move to a position with an impassable tile by
+	// A character can move to a position with an impassable tile by
 	// standing on top of an event below it. These flags track whether
 	// we stepped off an event and therefore don't need to check the
 	// passability of the tile layer below.
