@@ -304,7 +304,6 @@ void AudioResampler::GetFormat(int& frequency, AudioDecoder::Format& format, int
 }
 
 bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
-	if (music_type == "midi") { input_rate = freq / 2; }
 	//Check whether requested format is supported by the resampler
 	switch (fmt) {
 	case Format::F32: output_format = fmt; break;
