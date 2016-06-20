@@ -87,6 +87,7 @@ bool LibsndfileDecoder::Open(FILE* file) {
 }
 
 bool LibsndfileDecoder::Seek(size_t offset, Origin origin) {
+	finished = false;
 	if(soundfile==0) return false;
 	return sf_seek(soundfile,offset,SEEK_SET)!=-1;
 }
