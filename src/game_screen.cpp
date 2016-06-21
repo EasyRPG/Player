@@ -223,9 +223,9 @@ void Game_Screen::UpdateSnowRain(int speed) {
 	for (it = snowflakes.begin(); it != snowflakes.end(); ++it) {
 		Snowflake& f = *it;
 		f.y += (uint8_t)speed;
-		f.life++;
-		if (f.life > snowflake_life)
-			f.life = 0;
+		f.life -= 5;
+		if (f.life < 10)
+			f.life = 255;
 	}
 }
 
