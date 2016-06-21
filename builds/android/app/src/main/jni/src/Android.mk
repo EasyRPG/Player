@@ -40,11 +40,13 @@ LOCAL_STATIC_LIBRARIES := cpufeatures
 LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../obj/local/$(TARGET_ARCH_ABI) \
 		-L$(EASYRPG_TOOLCHAIN_DIR)/lib -lGLESv1_CM -llog -lz \
 		-llcf -lSDL2_mixer -lmad -lvorbisfile -lvorbis -logg -lmodplug \
-		-lmpg123 -lfreetype -lpixman-1 -lpng -licui18n -licuuc -licudata \
+		-lmpg123 -lfreetype -lpixman-1 -lpng -lspeexdsp -lsndfile \
+		-licui18n -licuuc -licudata \
 		-lcpufeatures
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL \
-		-DHAVE_SDL_MIXER -DHAVE_MPG123 -DWANT_FMMIDI=2 -DLCF_SUPPORT_ICU
+		-DHAVE_SDL_MIXER -DHAVE_MPG123 -DWANT_FMMIDI=2 \
+		-DHAVE_LIBSNDFILE -DHAVE_LIBSPEEXDSP
 
 		LOCAL_CPPFLAGS	=	$(LOCAL_C_FLAGS) -std=c++11
 
