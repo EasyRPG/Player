@@ -338,7 +338,7 @@ void Game_Player::UpdateScroll() {
 
 
 void Game_Player::Update() {
-	auto cur_frame_count = Player::GetFrames();
+	int cur_frame_count = Player::GetFrames();
 	if (cur_frame_count == frame_count_at_last_update_parallel) {
 		return;
 	}

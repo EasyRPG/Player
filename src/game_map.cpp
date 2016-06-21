@@ -485,7 +485,7 @@ static CollisionResult TestCollisionDuringMove(
 		return Collision;
 	}
 	else if (other.GetLayer() == RPG::EventPage::Layers_below) {
-		auto tile_id = other.GetTileId();
+		int tile_id = other.GetTileId();
 		if ((passages_up[tile_id] & Passable::Above) != 0) {
 			return NoCollision;
 		}
@@ -519,7 +519,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 	bool stepped_onto_event = false;
 
 	for (Game_Event& other : GetEvents()) {
-		auto result = TestCollisionDuringMove(x, y, new_x, new_y, d, self, other);
+		CollisionResult result = TestCollisionDuringMove(x, y, new_x, new_y, d, self, other);
 		if (result == Collision) {
 			// Try updating the offending event to give it a chance to move out of the
 			// way and recheck.
