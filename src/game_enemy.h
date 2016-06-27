@@ -153,7 +153,7 @@ public:
 	void Transform(int new_enemy_id);
 
 	int GetHitChance() const override;
-	int GetCriticalHitChance() const override;
+	float GetCriticalHitChance() const override;
 	int GetBattleAnimationId() const override;
 
 	int GetExp() const;

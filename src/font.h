@@ -55,7 +55,8 @@ class Font {
 		ColorDefault = 0,
 		ColorDisabled = 3,
 		ColorCritical = 4,
-		ColorKnockout = 5
+		ColorKnockout = 5,
+		ColorHeal = 9
 	};
 
 	std::string name;

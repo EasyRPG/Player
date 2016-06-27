@@ -30,8 +30,10 @@
 #include "spriteset_battle.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
-	animation(anim), frame(0), z(1500), frame_update(false), large(false)
+	animation(anim), frame(0), frame_update(false), large(false)
 {
+	SetZ(1040);
+
 	const std::string& name = animation.animation_name;
 	BitmapRef graphic;
 
@@ -63,28 +65,18 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 #endif
 }
 
-int BattleAnimation::GetZ() const {
-	return z;
-}
-
-void BattleAnimation::SetZ(int nz) {
-	z = nz;
-}
-
 DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
 }
 
 void BattleAnimation::Update() {
+	Sprite::Update();
+
 	if (frame_update) {
 		frame++;
 		RunTimedSfx();
 	}
 	frame_update = !frame_update;
-
-	if (sprite) {
-		sprite->Update();
-	}
 }
 
 void BattleAnimation::SetFrame(int _frame) {
@@ -103,22 +95,16 @@ bool BattleAnimation::IsDone() const {
 	return GetFrame() >= GetFrames();
 }
 
-Sprite* BattleAnimation::GetSprite() {
-	return sprite.get();
-}
-
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 	if (result->success) {
-		sprite.reset(new Sprite());
-
 		//Normally only battle2 sprites are "large" sprites - but the check doesn't hurt.
 		BitmapRef bitmap = Cache::Battle(result->file);
 		if (bitmap->GetWidth() == 640) {
 			large = true;
 		}
-		sprite->SetBitmap(bitmap);
+		SetBitmap(bitmap);
 		
-		sprite->SetSrcRect(Rect(0, 0, 0, 0));
+		SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
 		// Try battle2
@@ -130,13 +116,12 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 
 void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 	if (result->success) {
-		sprite.reset(new Sprite());
 		BitmapRef bitmap = Cache::Battle2(result->file);
 		if (bitmap->GetWidth() == 640) {
 			large = true;
 		}
-		sprite->SetBitmap(bitmap);
-		sprite->SetSrcRect(Rect(0, 0, 0, 0));
+		SetBitmap(bitmap);
+		SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", result->file.c_str());
@@ -144,11 +129,10 @@ void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
 }
 
 void BattleAnimation::DrawAt(int x, int y) {
-	if (!sprite) return; // Initialization failed
 	if (IsDone()) {
 		return;
 	}
-	if (!sprite->GetVisible()) {
+	if (!GetVisible()) {
 		return;
 	}
 
@@ -164,34 +148,33 @@ void BattleAnimation::DrawAt(int x, int y) {
 			continue;
 		}
 
-		sprite->SetX(cell.x + x);
-		sprite->SetY(cell.y + y);
-		sprite->SetZ(GetZ());
+		SetX(cell.x + x);
+		SetY(cell.y + y);
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
-		sprite->SetSrcRect(Rect(sx * size, sy * size, size, size));
-		sprite->SetOx(size / 2);
-		sprite->SetOy(size / 2);
-		sprite->SetTone(Tone(cell.tone_red * 128 / 100,
+		SetSrcRect(Rect(sx * size, sy * size, size, size));
+		SetOx(size / 2);
+		SetOy(size / 2);
+		SetTone(Tone(cell.tone_red * 128 / 100,
 			cell.tone_green * 128 / 100,
 			cell.tone_blue * 128 / 100,
 			cell.tone_gray * 128 / 100));
-		sprite->SetOpacity(255 * (100 - cell.transparency) / 100);
-		sprite->SetZoomX(cell.zoom / 100.0);
-		sprite->SetZoomY(cell.zoom / 100.0);
-		sprite->Draw();
+		SetOpacity(255 * (100 - cell.transparency) / 100);
+		SetZoomX(cell.zoom / 100.0);
+		SetZoomY(cell.zoom / 100.0);
+		Sprite::Draw();
 	}
 
 	if (anim_frame.cells.empty()) {
 		// Draw an empty sprite when no cell is available in the animation
-		sprite->SetSrcRect(Rect(0, 0, 0, 0));
-		sprite->Draw();
+		SetSrcRect(Rect(0, 0, 0, 0));
+		Sprite::Draw();
 	}
 }
 
 // FIXME: looks okay, but needs to be measured
-static int flash_duration = 5;
+static int flash_length = 5;
 
 void BattleAnimation::RunTimedSfx() {
 	// Lookup any timed SFX (SE/flash/shake) data for this frame
@@ -209,17 +192,17 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 
 	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		Flash(Color(timing.flash_red,
-			timing.flash_green,
-			timing.flash_blue,
-			timing.flash_power));
+		SetFlash(Color(timing.flash_red << 3,
+			timing.flash_green << 3,
+			timing.flash_blue << 3,
+			timing.flash_power << 3));
 	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
 		Main_Data::game_screen->FlashOnce(
 			timing.flash_red,
 			timing.flash_green,
 			timing.flash_blue,
 			timing.flash_power,
-			flash_duration);
+			flash_length);
 	}
 
 	// TODO: Shake.
@@ -260,8 +243,8 @@ void BattleAnimationChara::Draw() {
 	int offset = CalculateOffset(animation.position, character_height);
 	DrawAt(character.GetScreenX(), vertical_center + offset);
 }
-void BattleAnimationChara::Flash(Color c) {
-	character.Flash(c, flash_duration);
+void BattleAnimationChara::SetFlash(Color c) {
+	character.Flash(c, flash_length);
 }
 bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
 
@@ -281,6 +264,11 @@ BattleAnimationBattlers::~BattleAnimationBattlers() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationBattlers::Draw() {
+	if (animation.scope == RPG::Animation::Scope_screen) {
+		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
+		return;
+	}
+
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 	     it != battlers.end(); ++it) {
 		const Game_Battler& battler = **it;
@@ -292,12 +280,12 @@ void BattleAnimationBattlers::Draw() {
 		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
 }
-void BattleAnimationBattlers::Flash(Color c) {
+void BattleAnimationBattlers::SetFlash(Color c) {
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 	     it != battlers.end(); ++it) {
 		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 		if (sprite)
-			sprite->Flash(c, flash_duration);
+			sprite->Flash(c, flash_length);
 	}
 }
 bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
@@ -326,7 +314,7 @@ void BattleAnimationGlobal::Draw() {
 		}
 	}
 }
-void BattleAnimationGlobal::Flash(Color) {
+void BattleAnimationGlobal::SetFlash(Color) {
 	// nop
 }
 bool BattleAnimationGlobal::ShouldScreenFlash() const { return true; }

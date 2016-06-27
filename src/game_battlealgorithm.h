@@ -69,6 +69,12 @@ public:
 	void SetTarget(Game_Battler* target);
 
 	/**
+	 * Initializes targetting. Must be called after initialising a multi target
+	 * skill, otherwise will behave incorrectly.
+	 */
+	void TargetFirst();
+
+	/**
 	 * Changes the target reference to the next target.
 	 *
 	 * @return true if there was a next target available
@@ -153,6 +159,14 @@ public:
 	 * @return Battle Animation or NULL if no animation is assigned
 	 */
 	const RPG::Animation* GetAnimation() const;
+
+	/**
+	 * Plays the battle animation on the targets.
+	 * Takes care of single- and multi-target animations.
+	 * Must be called before calling TargetNext, otherwise the result will
+	 * be incorrect.
+	 */
+	void PlayAnimation();
 
 	/**
 	 * Returns a list of all inflicted/removed conditions.

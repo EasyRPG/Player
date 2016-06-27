@@ -33,12 +33,10 @@ struct FileRequestResult;
 // It's an abstract class; there are derived classes below
 // that can be used, depending on what is targeted.
 
-class BattleAnimation : public Drawable {
+class BattleAnimation : public Sprite {
 public:
 	BattleAnimation(const RPG::Animation& anim);
 
-	int GetZ() const override;
-	void SetZ(int nz);
 	DrawableType GetType() const override;
 
 	void Update();
@@ -47,10 +45,8 @@ public:
 	void SetFrame(int);
 	bool IsDone() const;
 
-	Sprite* GetSprite();
-
 protected:
-	virtual void Flash(Color c) = 0;
+	virtual void SetFlash(Color c) = 0;
 	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void RunTimedSfx();
@@ -59,9 +55,7 @@ protected:
 	void OnBattle2SpriteReady(FileRequestResult* result);
 
 	const RPG::Animation& animation;
-	std::unique_ptr<Sprite> sprite;
 	int frame;
-	int z;
 	bool frame_update;
 	bool large;
 
@@ -75,7 +69,7 @@ public:
 	~BattleAnimationChara() override;
 	void Draw() override;
 protected:
-	void Flash(Color c) override;
+	void SetFlash(Color c) override;
 	bool ShouldScreenFlash() const override;
 	Game_Character& character;
 };
@@ -88,7 +82,7 @@ public:
 	~BattleAnimationBattlers() override;
 	void Draw() override;
 protected:
-	void Flash(Color c) override;
+	void SetFlash(Color c) override;
 	bool ShouldScreenFlash() const override;
 	std::vector<Game_Battler*> battlers;
 	bool should_flash;
@@ -101,7 +95,7 @@ public:
 	~BattleAnimationGlobal() override;
 	void Draw() override;
 protected:
-	void Flash(Color c) override;
+	void SetFlash(Color c) override;
 	bool ShouldScreenFlash() const override;
 };
 

@@ -76,7 +76,9 @@ void Window_Skill::DrawItem(int index) {
 	int skill_id = data[index];
 
 	if (skill_id > 0) {
-		int costs = Data::skills[skill_id - 1].sp_cost;
+		const Game_Actor* actor = Game_Actors::GetActor(actor_id);
+		int costs = actor->CalculateSkillCost(skill_id);
+
 		bool enabled = CheckEnable(skill_id);
 		int color = !enabled ? Font::ColorDisabled : Font::ColorDefault;
 

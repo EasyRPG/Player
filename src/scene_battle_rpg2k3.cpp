@@ -529,10 +529,10 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
-	std::vector<Game_Battler*>::const_iterator it;
-
 	switch (battle_action_state) {
 	case BattleActionState_Start:
+		action->TargetFirst();
+
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
@@ -555,12 +555,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->Execute();
 
-		if (action->GetTarget() && action->GetAnimation()) {
-			Game_Battle::ShowBattleAnimation(
-				action->GetAnimation()->ID,
-				action->GetTarget());
-		}
-
 		if (source_sprite) {
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			source_sprite->SetAnimationState(
@@ -568,7 +562,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				Sprite_Battler::LoopState_WaitAfterFinish);
 		}
 
-		if (action->IsFirstAttack()) {
+		action->PlayAnimation();
+
+		{
 			std::vector<Game_Battler*> battlers;
 			Main_Data::game_party->GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
@@ -599,8 +595,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		do {
 			if (!action->IsFirstAttack()) {
 				action->Execute();
-			}
-			else {
+			} else {
 				NextTurn(action->GetSource());
 				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
 			}
@@ -618,7 +613,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						DrawFloatText(
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
-							0,
+							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							Utils::ToString(action->GetAffectedHp()),
 							30);
 					}
@@ -654,23 +649,20 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 		battle_action_wait = 30;
 
-		for (it = targets.begin(); it != targets.end(); it++) {
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+		{
+			std::vector<Game_Battler*>::const_iterator it;
 
-			if ((*it)->IsDead()) {
-				if (action->GetDeathSe()) {
-					Game_System::SePlay(*action->GetDeathSe());
-				}
+			for (it = targets.begin(); it != targets.end(); ++it) {
+				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 
-				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
-				}
-			} else {
-				if (target_sprite) {
-					if (!target_sprite->IsIdling()) {
-						// Was revived or some other deadlock situation :/
-						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+				if ((*it)->IsDead()) {
+					if (action->GetDeathSe()) {
+						Game_System::SePlay(*action->GetDeathSe());
 					}
+				}
+
+				if (target_sprite) {
+					target_sprite->DetectStateChange();
 				}
 			}
 		}

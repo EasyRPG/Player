@@ -175,8 +175,8 @@ int Game_Enemy::GetHitChance() const {
 	return enemy->miss ? 70 : 90;
 }
 
-int Game_Enemy::GetCriticalHitChance() const {
-	return enemy->critical_hit ? enemy->critical_hit_chance : 0;
+float Game_Enemy::GetCriticalHitChance() const {
+	return enemy->critical_hit ? (1.0f / enemy->critical_hit_chance) : 0.0f;
 }
 
 Game_Battler::BattlerType Game_Enemy::GetType() const {

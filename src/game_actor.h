@@ -112,6 +112,14 @@ public:
 	bool IsSkillUsable(int skill_id) const override;
 
 	/**
+	 * Calculates the Skill costs including all modifiers.
+	 *
+	 * @param skill_id ID of skill to calculate.
+	 * @return needed skill cost.
+	 */
+	int CalculateSkillCost(int skill_id) const override;
+
+	/**
 	 * Gets the actor ID.
 	 *
 	 * @return Actor ID
@@ -677,7 +685,12 @@ public:
 	int GetBattleAnimationId() const override;
 
 	int GetHitChance() const override;
-	int GetCriticalHitChance() const override;
+	float GetCriticalHitChance() const override;
+
+	/**
+	 * Initializes battle related data to there default values.
+	 */
+	virtual void ResetBattle() override;
 
 	BattlerType GetType() const override;
 private:

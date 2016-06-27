@@ -336,7 +336,7 @@ public:
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
-	int CalculateSkillCost(int skill_id) const;
+	virtual int CalculateSkillCost(int skill_id) const;
 
 	/**
 	 * Sets the battler attack modifier.
@@ -410,7 +410,7 @@ public:
 
 	virtual int GetHitChance() const = 0;
 
-	virtual int GetCriticalHitChance() const = 0;
+	virtual float GetCriticalHitChance() const = 0;
 
 	/**
 	 * @return If battler is charged (next attack double damages)
@@ -534,7 +534,7 @@ public:
 	/**
 	 * Initializes battle related data to there default values.
 	 */
-	void ResetBattle();
+	virtual void ResetBattle();
 
 protected:
 	/** Gauge for RPG2k3 Battle */

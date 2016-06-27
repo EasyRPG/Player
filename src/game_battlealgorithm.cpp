@@ -38,6 +38,7 @@
 #include "rpg_skill.h"
 #include "rpg_item.h"
 #include "sprite_battler.h"
+#include "utils.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
 	source(source), no_target(true), first_attack(true) {
@@ -57,7 +58,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Pa
 	source(source), no_target(false), first_attack(true) {
 	Reset();
 
-	target->GetActiveBattlers(targets);
+	target->GetBattlers(targets);
 	current_target = targets.begin();
 }
 
@@ -121,6 +122,32 @@ const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedC
 
 const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
 	return animation;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation() {
+	if (!GetTarget() || !GetAnimation()) {
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	if (current_target == targets.end()) {
+		return;
+	}
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNext());
+
+	Game_Battle::ShowBattleAnimation(
+		GetAnimation()->ID,
+		anim_targets);
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
@@ -445,17 +472,28 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Idle;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	if (current_target == targets.end()) {
-		return false;
+void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
+	if (current_target == targets.begin() &&
+		current_target != targets.end() &&
+		!IsTargetValid()) {
+		TargetNext();
+		first_attack = true;
 	}
+}
 
-	if (current_target + 1 != targets.end()) {
+bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
+	do {
+		if (current_target == targets.end() ||
+			current_target + 1 == targets.end()) {
+			return false;
+		}
+
 		++current_target;
-		first_attack = false;
-		return true;
-	}
-	return false;
+	} while (!IsTargetValid());
+
+	first_attack = false;
+
+	return true;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
@@ -513,7 +551,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	int to_hit;
 	float multiplier = 1;
-	int crit_chance = source->GetCriticalHitChance();
+	float crit_chance = source->GetCriticalHitChance();
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
@@ -527,7 +565,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
 			RPG::Item weapon = Data::items[weaponID];
 			hit_chance = weapon.hit;
-			crit_chance += weapon.critical_hit;
+			crit_chance += crit_chance * weapon.critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
 		}
 		to_hit = (int)(100 - (100 - hit_chance));
@@ -544,8 +582,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	}
 
 	// Damage calculation
-	if (rand() % 100 < to_hit) {
-		if (!source->IsCharged() && rand() % 100 < crit_chance) {
+	if (Utils::GetRandomNumber(0, 99) < to_hit) {
+		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < (int)ceil(crit_chance * 100)) {
 			critical_hit = true;
 		}
 
@@ -554,7 +592,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (effect < 0)
 			effect = 0;
 
-		int act_perc = (rand() % 40) - 20;
+		// up to 20% stronger/weaker
+		int act_perc = Utils::GetRandomNumber(-20, 20);
 		// Change rounded up
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
@@ -574,7 +613,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				if (weaponID != -1) {
 					RPG::Item item = Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() - 1];
 					for (int i = 0; i < item.state_set.size(); i++) {
-						if (item.state_set[i] && rand() % 100 < (item.state_chance * (*current_target)->GetStateProbability(Data::states[i].ID) / 100)) {
+						if (item.state_set[i] && Utils::GetRandomNumber(0, 99) < (item.state_chance * (*current_target)->GetStateProbability(Data::states[i].ID) / 100)) {
 							if (item.state_effect) {
 								healing = true;
 							}
@@ -599,7 +638,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 
 	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetWeaponId() != 0) {
-		source->ChangeSp(-Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() -1].sp_cost);
+		source->ChangeSp(-source->CalculateSkillCost(static_cast<Game_Actor*>(source)->GetWeaponId()));
 	}
 }
 
@@ -654,17 +693,15 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() {
 	if (current_target == targets.end()) {
 		return false;
 	}
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		if (skill.scope == RPG::Skill::Scope_ally ||
-			skill.scope == RPG::Skill::Scope_party) {
-			if ((*current_target)->IsDead()) {
-				// Cures death
-				return !skill.state_effects.empty() && skill.state_effects[0];
-			}
-
-			return true;
+	
+	if (skill.scope == RPG::Skill::Scope_ally ||
+		skill.scope == RPG::Skill::Scope_party) {
+		if ((*current_target)->IsDead()) {
+			// Cures death
+			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
+		
+		return true;
 	}
 
 	return (!(*current_target)->IsDead());
@@ -691,21 +728,28 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (this->healing) {
 			this->success = true;
 
-			if (skill.affect_hp)
-				this->hp = skill.power;
-			if (skill.affect_sp)
-				this->sp = skill.power;
-			if (skill.affect_attack)
-				this->attack = skill.power;
-			if (skill.affect_defense)
-				this->defense = skill.power;
-			if (skill.affect_spirit)
-				this->spirit = skill.power;
-			if (skill.affect_agility)
-				this->agility = skill.power;
+			float mul = GetAttributeMultiplier(skill.attribute_effects);
+			if (mul < 0.5f) {
+				// Determined via testing, the heal is always at least 50%
+				mul = 0.5f;
+			}
 
+			int effect = (int)(skill.power * mul);
+
+			if (skill.affect_hp)
+				this->hp = effect;
+			if (skill.affect_sp)
+				this->sp = effect;
+			if (skill.affect_attack)
+				this->attack = effect;
+			if (skill.affect_defense)
+				this->defense = effect;
+			if (skill.affect_spirit)
+				this->spirit = effect;
+			if (skill.affect_agility)
+				this->agility = effect;
 		}
-		else if (rand() % 100 < skill.hit) {
+		else if (Utils::GetRandomNumber(0, 99) < skill.hit) {
 			this->success = true;
 
 			int effect = skill.power +
@@ -721,7 +765,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				effect = 0;
 			}
 
-			effect += rand() % (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20));
+			effect += Utils::GetRandomNumber(0, (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20)) - 1);
 
 			if (effect < 0)
 				effect = 0;
@@ -746,18 +790,18 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (skill.affect_spirit)
 				this->spirit = effect;
 			if (skill.affect_agility)
-				this->agility = agility;
+				this->agility = effect;
 		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing && rand() % 100 >= skill.hit)
+			if (!healing && Utils::GetRandomNumber(0, 99) >= skill.hit)
 				continue;
 
 			this->success = true;
 			
-			if (healing || rand() % 100 <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
+			if (healing || Utils::GetRandomNumber(0, 99) <= (*current_target)->GetStateProbability(Data::states[i].ID)) {
 				conditions.push_back(Data::states[i]);
 			}
 		}
@@ -1111,7 +1155,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		effect = 0;
 
 	// up to 20% stronger/weaker
-	int act_perc = (rand() % 40) - 20;
+	int act_perc = Utils::GetRandomNumber(-20, 20);
 	int change = (int)(std::ceil(effect * act_perc / 100.0));
 	effect += change;
 
@@ -1195,7 +1239,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 		to_hit *= 100;
 
-		this->success = rand() % 100 < (int)to_hit;
+		this->success = Utils::GetRandomNumber(0, 99) < (int)to_hit;
 	}
 
 	return this->success;
