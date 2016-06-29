@@ -81,8 +81,8 @@ Window_Message::~Window_Message() {
 void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
-	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
-		text.append(Utils::DecodeUTF32(Game_Message::texts[i])).append(1, U'\n');
+	for (const std::string& line : Game_Message::texts) {
+		text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
 	}
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
@@ -327,15 +327,17 @@ void Window_Message::UpdateMessage() {
 	int loop_max = speed_table[speed_modifier] == 0 ? 2 : 1;
 
 	while (instant_speed || loop_count < loop_max) {
-		// It's assumed that speed_modifier is between 0 and 20
-		++speed_frame_counter;
+		if (!instant_speed) {
+			// It's assumed that speed_modifier is between 0 and 20
+			++speed_frame_counter;
 
-		if (speed_table[speed_modifier] != 0 &&
-			speed_table[speed_modifier] != speed_frame_counter) {
+			if (speed_table[speed_modifier] != 0 &&
+				speed_table[speed_modifier] != speed_frame_counter) {
 				break;
-		}
+			}
 
-		speed_frame_counter = 0;
+			speed_frame_counter = 0;
+		}
 
 		++loop_count;
 		if (text_index == end) {
@@ -350,7 +352,17 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (*text_index == '\n') {
-			instant_speed = false;
+			if (instant_speed) {
+				// instant_speed stops at the end of the line, unless
+				// there's a /> at the beginning of the next line
+				if (std::distance(text_index, end) > 2 &&
+					*(text_index + 1) == escape_char &&
+					*(text_index + 2) == '>') {
+					text_index += 2;
+				} else {
+					instant_speed = false;
+				}
+			}
 			InsertNewLine();
 		} else if (*text_index == '\f') {
 			instant_speed = false;
@@ -408,12 +420,14 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '.':
 				// 1/4 second sleep
+				if (instant_speed) break;
 				sleep_until = Player::GetFrames() + 60 / 4;
 				++text_index;
 				return;
 				break;
 			case '|':
 				// Second sleep
+				if (instant_speed) break;
 				sleep_until = Player::GetFrames() + 60;
 				++text_index;
 				return;
@@ -442,7 +456,6 @@ void Window_Message::UpdateMessage() {
 
 		++text_index;
 	}
-	loop_count = 0;
 }
 
 int Window_Message::ParseParameter(bool& is_valid) {
