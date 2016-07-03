@@ -32,6 +32,10 @@
 #include "decoder_mpg123.h"
 #endif
 
+#ifdef HAVE_WILDMIDI
+#include "decoder_wildmidi.h"
+#endif
+
 #ifdef HAVE_LIBSNDFILE
 #include "decoder_libsndfile.h"
 #endif
@@ -131,15 +135,22 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	fseek(file, 0, SEEK_SET);
 
 	if (!strncmp(magic, "MThd", 4)) {
-#if WANT_FMMIDI == 1
+		// only use one of the available midi decoders
+#ifdef HAVE_WILDMIDI
+	#ifdef USE_AUDIO_RESAMPLER
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new WildMidiDecoder(filename), false, AudioResampler::Quality::Low));
+	#else
+		return std::unique_ptr<AudioDecoder>(new WildMidiDecoder(filename));
+	#endif
+#elif WANT_FMMIDI == 1
 	#ifdef USE_AUDIO_RESAMPLER
 		return std::unique_ptr<AudioDecoder>(new AudioResampler(new FmMidiDecoder(),true,AudioResampler::Quality::Low));
 	#else
 		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
 	#endif
-#else
-		return nullptr;
 #endif
+		// No Midi decoder available
+		return nullptr;
 	}
 
 	// Prevent false positives by checking for common headers
