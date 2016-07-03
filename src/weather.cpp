@@ -153,11 +153,7 @@ void Weather::DrawSnow() {
 
 	const std::vector<Game_Screen::Snowflake>& snowflakes = Main_Data::game_screen->GetSnowflakes();
 
-	std::vector<Game_Screen::Snowflake>::iterator it;
 	for (const Game_Screen::Snowflake& f : snowflakes) {
-		if (f.life < 0) {
-			continue;
-		}
 		int x = f.x - f.y / 4;
 		int y = f.y;
 		int i = (y / 2) % 18;
