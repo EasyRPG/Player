@@ -32,6 +32,10 @@
 #include "decoder_mpg123.h"
 #endif
 
+#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
+#include "decoder_oggvorbis.h"
+#endif
+
 #ifdef HAVE_WILDMIDI
 #include "decoder_wildmidi.h"
 #endif
@@ -154,6 +158,16 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	}
 
 	// Prevent false positives by checking for common headers
+	if (!strncmp(magic, "OggS", 4)) { // OGG
+#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
+#  ifdef USE_AUDIO_RESAMPLER
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new OggVorbisDecoder()));
+#  else
+		return std::unique_ptr<AudioDecoder>(new OggVorbisDecoder());
+#  endif
+#endif
+	}
+
 	if (!strncmp(magic, "RIFF", 4) || // WAV
 		!strncmp(magic, "FORM", 4) || // WAV AIFF
 		!strncmp(magic, "OggS", 4) || // OGG

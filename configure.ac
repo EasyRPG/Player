@@ -67,6 +67,11 @@ AS_IF([test "x$with_libwildmidi" = "xyes"],[
 		AC_MSG_RESULT([assuming yes])
 	])
 ])
+AC_ARG_WITH([oggvorbis],[AS_HELP_STRING([--without-oggvorbis],
+	[Disable Ogg Vorbis support @<:@default=auto@:>@])])
+AS_IF([test "x$with_oggvorbis" != "xno"],[
+	PKG_CHECK_MODULES([OGGVORBIS],[vorbisfile],[AC_DEFINE(HAVE_OGGVORBIS,[1],[Enable Ogg Vorbis support])],[auto_oggvorbis=0])
+])
 AC_ARG_WITH([libsndfile],[AS_HELP_STRING([--without-libsndfile],
 	[Disable improved WAV support provided by libsndfile.  @<:@default=auto@:>@])])
 AS_IF([test "x$with_libsndfile" != "xno"],[
