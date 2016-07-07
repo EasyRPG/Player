@@ -637,7 +637,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 }
 
 bool Game_Actor::IsEquippable(int item_id) const {
-	if (GetData().two_weapon &&
+	if (GetTwoSwordsStyle() &&
 		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
 			return false;
 	}
@@ -647,6 +647,10 @@ bool Game_Actor::IsEquippable(int item_id) const {
 
 bool Game_Actor::IsEquipmentFixed() const {
 	return GetData().lock_equipment;
+}
+
+bool Game_Actor::HasStrongDefense() const {
+	return GetData().mighty_guard;
 }
 
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
@@ -887,9 +891,24 @@ const RPG::Class* Game_Actor::GetClass() const {
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
 	GetData().changed_class = _class_id > 0;
+	
+	// The class settings are not applied when the actor has a class on startup
+	// but only when the "Change Class" event command is used.
+	
 	if (GetData().changed_class) {
 		GetData().battler_animation = GetClass()->battler_animation;
+		GetData().mighty_guard = GetClass()->super_guard;
+		GetData().lock_equipment = GetClass()->fix_equipment;
+		GetData().two_weapon = GetClass()->two_swords_style;
+		GetData().auto_battle = GetClass()->auto_battle;
 	} else {
+		const RPG::Actor& actor = Data::actors[actor_id - 1];
+		
+		GetData().mighty_guard = actor.super_guard;
+		GetData().lock_equipment = actor.fix_equipment;
+		GetData().two_weapon = actor.two_swords_style;
+		GetData().auto_battle = actor.auto_battle;
+		
 		GetData().battler_animation = 0;
 	}
 	MakeExpList();

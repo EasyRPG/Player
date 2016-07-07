@@ -350,7 +350,14 @@ public:
 	 * @return true if fixed
 	 */
 	bool IsEquipmentFixed() const;
-
+	
+	/**
+	 * Checks if the actors defense skill is stronger the usual.
+	 * 
+	 * @return true if strong defense
+	 */
+	bool HasStrongDefense() const;
+	
 	/**
 	 * Sets face graphic of actor.
 	 * @param file_name file containing new face.
