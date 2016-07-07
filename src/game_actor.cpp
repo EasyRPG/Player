@@ -993,7 +993,9 @@ int Game_Actor::GetBattleAnimationId() const {
 	if (GetData().battler_animation <= 0) {
 		// Earlier versions of EasyRPG didn't save this value correctly
 
-		if (GetData().class_id > 0) {
+		// The battle animation of the class only matters when the class was
+		// changed by event "Change Class"
+		if (GetData().changed_class && GetClass()) {
 			anim = GetClass()->battler_animation;
 		} else {
 			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
