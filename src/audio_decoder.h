@@ -173,6 +173,14 @@ public:
 	int GetLoopCount() const;
 
 	/**
+	 * Gets the status of the newly created audio decoder.
+	 * Used to make sure the underlying library is properly initialized.
+	 *
+	 * @return true if initializing was succesful, false otherwise
+	 */
+	virtual bool WasInited() const;
+
+	/**
 	 * Provides an error message when Open or a Decode function fail.
 	 *
 	 * @return Human readable error message

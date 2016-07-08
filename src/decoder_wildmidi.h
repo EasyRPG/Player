@@ -35,6 +35,8 @@ public:
 
 	~WildMidiDecoder();
 
+	bool WasInited() const override;
+
 	// Audio Decoder interface
 	bool Open(FILE* file) override;
 

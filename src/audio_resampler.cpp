@@ -229,6 +229,10 @@ AudioResampler::~AudioResampler() {
 	}
 }
 
+bool AudioResampler::WasInited() const {
+	return wrapped_decoder->WasInited();
+}
+
 bool AudioResampler::Open(FILE* file) {
 	if (wrapped_decoder->Open(file)) {
 		wrapped_decoder->GetFormat(input_rate, input_format, nr_of_channels);

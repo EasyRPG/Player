@@ -59,6 +59,14 @@ public:
 	~AudioResampler();
 
 	/**
+	 * Wraps the status querying of the contained decoder.
+	 * Used to make sure the underlying library is properly initialized.
+	 *
+	 * @return true if initializing was succesful, false otherwise
+	 */
+	bool WasInited() const;
+
+	/**
 	 * Wraps the opening function of the contained decoder
 	 * 
 	 * @param[in] file Filepointer to a file readable by the wrapped decoder

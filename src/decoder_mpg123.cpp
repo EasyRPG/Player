@@ -67,6 +67,10 @@ Mpg123Decoder::Mpg123Decoder() :
 Mpg123Decoder::~Mpg123Decoder() {
 }
 
+bool Mpg123Decoder::WasInited() const {
+	return init;
+}
+
 bool Mpg123Decoder::Open(FILE* file) {
 	if (!init) {
 		return false;

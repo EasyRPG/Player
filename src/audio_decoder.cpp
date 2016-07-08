@@ -273,6 +273,10 @@ int AudioDecoder::GetLoopCount() const {
 	return loop_count;
 }
 
+bool AudioDecoder::WasInited() const {
+	return true;
+}
+
 std::string AudioDecoder::GetError() const {
 	return error_message;
 }

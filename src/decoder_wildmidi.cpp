@@ -42,6 +42,10 @@ WildMidiDecoder::~WildMidiDecoder() {
 		WildMidi_Shutdown();
 }
 
+bool WildMidiDecoder::WasInited() const {
+	return init;
+}
+
 bool WildMidiDecoder::Open(FILE* file) {
 	if (!init)
 		return false;

@@ -33,6 +33,8 @@ public:
 
 	~Mpg123Decoder();
 
+	bool WasInited() const override;
+
 	bool Open(FILE* file) override;
 
 	bool Seek(size_t offset, Origin origin) override;
