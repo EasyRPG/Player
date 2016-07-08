@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_AUDIO_DECODER_FMMIDI_H_
-#define _EASYRPG_AUDIO_DECODER_FMMIDI_H_
+#ifndef EASYRPG_AUDIO_DECODER_FMMIDI_H
+#define EASYRPG_AUDIO_DECODER_FMMIDI_H
 
 // Headers
 #include <string>

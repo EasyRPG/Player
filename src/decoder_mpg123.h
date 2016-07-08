@@ -15,13 +15,15 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_AUDIO_DECODER_MPG123_H_
-#define _EASYRPG_AUDIO_DECODER_MPG123_H_
+#ifndef EASYRPG_AUDIO_DECODER_MPG123_H
+#define EASYRPG_AUDIO_DECODER_MPG123_H
 
 // Headers
 #include "audio_decoder.h"
 #include <string>
+#ifdef HAVE_MPG123
 #include <mpg123.h>
+#endif
 #include <memory>
 
 /**
@@ -49,7 +51,9 @@ public:
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
+#ifdef HAVE_MPG123
 	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
+#endif
 	FILE* file_handle;
 	int err = 0;
 	bool finished = false;

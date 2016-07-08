@@ -21,36 +21,18 @@
 #include "audio_decoder.h"
 #include "filefinder.h"
 #include "output.h"
-
 #include "system.h"
 
-#ifdef WANT_FMMIDI
 #include "decoder_fmmidi.h"
-#endif
-
-#ifdef HAVE_MPG123
 #include "decoder_mpg123.h"
-#endif
-
-#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
 #include "decoder_oggvorbis.h"
-#endif
-
-#ifdef HAVE_WILDMIDI
 #include "decoder_wildmidi.h"
-#endif
-
-#ifdef HAVE_LIBSNDFILE
 #include "decoder_libsndfile.h"
-#endif
-
-#ifdef USE_AUDIO_RESAMPLER
 #include "audio_resampler.h"
-#endif
 
 void AudioDecoder::Pause() {
 	paused = true;
- }
+}
 
 void AudioDecoder::Resume() {
 	paused = false;

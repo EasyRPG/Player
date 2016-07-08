@@ -15,9 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_AUDIO_RESAMPLER_H_
-#define _EASYRPG_AUDIO_RESAMPLER_H_
-#if defined(HAVE_LIBSPEEXDSP) || defined(HAVE_LIBSAMPLERATE) 
+#ifndef EASYRPG_AUDIO_RESAMPLER_H
+#define EASYRPG_AUDIO_RESAMPLER_H
 
 // Headers
 #include "audio_decoder.h"
@@ -26,7 +25,7 @@
 
 #if defined(HAVE_LIBSPEEXDSP)
 #include <speex/speex_resampler.h>
-#elif  defined(HAVE_LIBSAMPLERATE)
+#elif defined(HAVE_LIBSAMPLERATE)
 #include <samplerate.h>
 #endif
 
@@ -36,7 +35,6 @@
  */
 class AudioResampler : public AudioDecoder {
 public:
-
 	/** Resampling quality */
 	enum class Quality {
 		High,
@@ -51,7 +49,7 @@ public:
 	 * @param[in] pitch_handled Defines whether the decoder handles pitch changes by itself or not. 
 	 * @param[in] quality Sets the quality rting of the resampler - higher quality implies slower filtering
 	 */
-	AudioResampler(AudioDecoder * decoder, bool pitch_handled=false,  Quality quality=Quality::Medium);
+	AudioResampler(AudioDecoder * decoder, bool pitch_handled=false, Quality quality=Quality::Medium);
 	
 	/**
 	 * Destroys the resampler as well as its owned ressources
@@ -164,6 +162,7 @@ private:
 	 * Internally used by the FillBuffer function if the output rate equals the input rate
 	 */
 	int FillBufferSameRate(uint8_t* buffer, int length);
+
 	/**
 	 * Internally used by the FillBuffer function if resampling is necessary
 	 */
@@ -200,7 +199,6 @@ private:
 	 * (In the cpp file sizeof is used therefore it can be adjusted to fit the available memory)
 	 */
 	uint8_t internal_buffer[256*sizeof(float)];
-
 };
-#endif
+
 #endif

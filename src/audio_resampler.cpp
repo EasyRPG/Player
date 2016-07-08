@@ -49,8 +49,7 @@ inline static int DecodeAndConvertFloat(AudioDecoder * wrapped_decoder,
 	int amount_of_samples_read = wrapped_decoder->Decode(buffer, amount_of_samples_to_read*input_samplesize);
 	if (amount_of_samples_read <= 0) {
 		return amount_of_samples_read; //error occured - or nothing read
-	}
-	else {
+	} else {
 		amount_of_samples_read /= input_samplesize;
 	}
 	//Convert the read data (amount_of_data_read is at least one at this moment)
@@ -99,7 +98,6 @@ inline static int DecodeAndConvertFloat(AudioDecoder * wrapped_decoder,
 }
 
 #if defined(HAVE_LIBSPEEXDSP)
-
 /**
  * Utility function used to convert a buffer of a arbitrary AudioDecoder::Format to a int16 buffer
  * 
@@ -123,8 +121,7 @@ inline static int DecodeAndConvertInt16(AudioDecoder * wrapped_decoder,
 	int amount_of_samples_read = wrapped_decoder->Decode(buffer, amount_of_samples_to_read*input_samplesize);
 	if (amount_of_samples_read <= 0) {
 		return amount_of_samples_read; //error occured - or nothing read
-	}
-	else {
+	} else {
 		//Convert the number of bytes to the number of samples
 		amount_of_samples_read /= input_samplesize;
 	}
@@ -266,8 +263,7 @@ bool AudioResampler::Open(FILE* file) {
 		conversion_data.input_frames_used = 0;
 		finished = false;
 		return conversion_state != 0;
-	}
-	else {
+	} else {
 		return false;
 	}
 }
@@ -325,8 +321,7 @@ bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels)
 int AudioResampler::GetPitch() const {
 	if (pitch_handled_by_decoder) {
 		return wrapped_decoder->GetPitch();
-	}
-	else {
+	} else {
 		return pitch;
 	}
 }
@@ -334,8 +329,7 @@ int AudioResampler::GetPitch() const {
 bool AudioResampler::SetPitch(int pitch_) {
 	if (pitch_handled_by_decoder) {
 		return wrapped_decoder->SetPitch(pitch_);
-	}
-	else {
+	} else {
 		pitch = pitch_;
 		return true;
 	}
@@ -346,13 +340,11 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 	if((input_rate == output_rate) && ((pitch == STANDARD_PITCH) || pitch_handled_by_decoder)) {
 		//Do only format conversion
 		amount_filled = FillBufferSameRate(buffer, length);
-	}
-	else {
+	} else {
 		if (conversion_state == 0) {
 			error_message = "internal error: state pointer is a nullptr";
 			amount_filled = ERROR;
-		}
-		else {
+		} else {
 			//Do samplerate conversion
 			amount_filled = FillBufferDifferentRate(buffer, length);
 		}
@@ -415,8 +407,7 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 			}
 
 		}
-	}
-	else {
+	} else {
 		//It is possible to work inplace as length is specified for the output samplesize.
 		switch (output_format) {
 			case AudioDecoder::Format::F32: 
@@ -431,13 +422,11 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 		}
 	}
 
-
 	finished = wrapped_decoder->IsFinished();
 	if (decoded < 0) {
 		error_message = wrapped_decoder->GetError();
 		return decoded;
-	}
-	else {
+	} else {
 		return decoded*output_samplesize;
 	}
 }
