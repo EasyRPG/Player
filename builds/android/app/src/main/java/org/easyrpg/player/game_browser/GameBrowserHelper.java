@@ -14,9 +14,13 @@ import org.easyrpg.player.R;
 import org.easyrpg.player.SettingsActivity;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 public class GameBrowserHelper {
@@ -58,7 +62,8 @@ public class GameBrowserHelper {
 			// 1) The folder must exist
 			if (!dir.exists() && !dir.mkdirs()) {
 				String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
-				error_list.add(msg);
+                Log.e("scanGame( )", msg);
+                error_list.add(msg);
 				
 				continue;
 			}
@@ -66,6 +71,7 @@ public class GameBrowserHelper {
 			// 2) The folder must be readable
 			if (!dir.canRead() || !dir.isDirectory()) {
 				String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
+                Log.e("scanGame( )", msg);
 				error_list.add(msg);
 
 				continue;
@@ -120,7 +126,6 @@ public class GameBrowserHelper {
 	 * Returns Ini File of game at index.
 	 * Optionally creates it.
 	 * 
-	 * @param index list index
 	 * @param create create ini if not found
 	 * @return ini
 	 */
@@ -300,4 +305,39 @@ public class GameBrowserHelper {
 			Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 		}
 	}
+
+    public static void openSettingsActivity(Context context){
+        Intent intent = new Intent(context, org.easyrpg.player.SettingsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void displayHowToMessageOnFirstStartup(Context context) {
+        // First launch : display the "how to use" dialog box
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean first_launch = preferences.getBoolean("FIRST_LAUNCH", true);
+        if(first_launch){
+            // Displaying the "how to use" dialog box
+            displayHowToUseEasyRpgDialog(context);
+
+            // Set FIRST_LAUNCH to false
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("FIRST_LAUNCH", false);
+            editor.commit();
+        }
+    }
+
+    /**
+     * Prepare and display the dialog box explaining how to use EasyRPG
+     */
+    public static void displayHowToUseEasyRpgDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        // Dialog construction
+        builder.setMessage(R.string.how_to_use_easy_rpg_explanation)
+                .setTitle(R.string.how_to_use_easy_rpg)
+                .setNeutralButton(R.string.ok, null);
+
+        builder.create();
+        builder.show();
+    }
 }

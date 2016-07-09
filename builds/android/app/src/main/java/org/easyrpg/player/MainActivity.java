@@ -2,6 +2,7 @@ package org.easyrpg.player;
 
 import java.io.File;
 
+import org.easyrpg.player.game_browser.GameBrowserAPI15;
 import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.game_browser.LegacyGameBrowserActivity;
@@ -90,7 +91,9 @@ public class MainActivity extends Activity {
 
 		//Launch the proper game browser
 		Intent intent;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            intent = new Intent(this, GameBrowserAPI15.class);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
 			intent = new Intent(this, GameBrowserActivity.class);
 		} else {
 			intent = new Intent(this, LegacyGameBrowserActivity.class);

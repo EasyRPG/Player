@@ -67,18 +67,8 @@ public class GameBrowserActivity extends Activity {
 		displayGameList();
 		makeActionOverflowMenuShown();
 		
-		// First launch : display the "how to use" dialog box	
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean first_launch = preferences.getBoolean("FIRST_LAUNCH", true);
-		if(first_launch){
-			// Displaying the "how to use" dialog box	
-			displayHowToUseEasyRpgDialog();
-			
-			// Set FIRST_LAUNCH to false
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("FIRST_LAUNCH", false);
-			editor.commit();
-		}
+		// Display the "How to use EasyRPG" on the first startup
+        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
 	}
 	
 	@Override
@@ -100,7 +90,7 @@ public class GameBrowserActivity extends Activity {
 			startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:
-			displayHowToUseEasyRpgDialog();
+			GameBrowserHelper.displayHowToUseEasyRpgDialog(this);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -132,21 +122,6 @@ public class GameBrowserActivity extends Activity {
 		
 		//Set the view;
 		list_view.setAdapter(adapter);
-	}
-	
-	/**
-	 * Prepare and display the dialog box explaining how to use EasyRPG
-	 */
-	public void displayHowToUseEasyRpgDialog(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		// Dialog construction
-		builder.setMessage(R.string.how_to_use_easy_rpg_explanation)
-			.setTitle(R.string.how_to_use_easy_rpg)
-			.setNeutralButton(R.string.ok, null);
-
-		builder.create();
-		builder.show();
 	}
 	
 	/** This function prevents some Samsung's device to not show the action overflow button

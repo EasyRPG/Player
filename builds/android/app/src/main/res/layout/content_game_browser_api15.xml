@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.mehdi.myapplication.GameBrowserAPI15"
+    tools:context="org.easyrpg.player.game_browser.GameBrowserAPI15"
     tools:showIn="@layout/app_bar_game_browser_api15">
 
     <TextView

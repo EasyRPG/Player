@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -112,7 +113,8 @@ public class DirectoryChooser {
 					displayItemList();
 				}
 				else {
-					Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", newPath), Toast.LENGTH_SHORT).show();
+                    String msg = context.getString(R.string.path_not_readable).replace("$PATH", newPath);
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 				}
 				
 				quickDialog.dismiss();
@@ -175,7 +177,8 @@ public class DirectoryChooser {
 						currentDirPath.add(dir_list.get(pos));
 					}
 					else {
-						Toast.makeText(context, context.getString(R.string.path_not_readable).replace("$PATH", newPath), Toast.LENGTH_SHORT).show();
+                        String msg = context.getString(R.string.path_not_readable).replace("$PATH", newPath);
+						Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 					}
 				}
 				
@@ -201,7 +204,11 @@ public class DirectoryChooser {
 
 	public boolean isReadable(String path) {
 		File file = new File(path);
-		return file.canRead();
+		boolean canRead = file.canRead();
+        if (!canRead) {
+           Log.e("isReadable", "Current context not allowed to read : " + path);
+        }
+        return canRead;
 	}
 	
 	public static String getSelectedPath(){
