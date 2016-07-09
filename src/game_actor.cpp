@@ -650,7 +650,7 @@ bool Game_Actor::IsEquipmentFixed() const {
 }
 
 bool Game_Actor::HasStrongDefense() const {
-	return GetData().mighty_guard;
+	return GetData().super_guard;
 }
 
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
@@ -897,16 +897,16 @@ void Game_Actor::SetClass(int _class_id) {
 	
 	if (GetData().changed_class) {
 		GetData().battler_animation = GetClass()->battler_animation;
-		GetData().mighty_guard = GetClass()->super_guard;
-		GetData().lock_equipment = GetClass()->fix_equipment;
-		GetData().two_weapon = GetClass()->two_swords_style;
+		GetData().super_guard = GetClass()->super_guard;
+		GetData().lock_equipment = GetClass()->lock_equipment;
+		GetData().two_weapon = GetClass()->two_weapon;
 		GetData().auto_battle = GetClass()->auto_battle;
 	} else {
 		const RPG::Actor& actor = Data::actors[actor_id - 1];
 		
-		GetData().mighty_guard = actor.super_guard;
-		GetData().lock_equipment = actor.fix_equipment;
-		GetData().two_weapon = actor.two_swords_style;
+		GetData().super_guard = actor.super_guard;
+		GetData().lock_equipment = actor.lock_equipment;
+		GetData().two_weapon = actor.two_weapon;
 		GetData().auto_battle = actor.auto_battle;
 		
 		GetData().battler_animation = 0;
