@@ -14,11 +14,13 @@
             android:label="@string/app_name"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name="org.easyrpg.player.game_browser.GameBrowserActivity"
@@ -40,6 +42,16 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="org.easyrpg.player.game_browser.GameBrowserAPI15"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
     <!-- Android 2.3.3 -->

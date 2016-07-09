@@ -104,4 +104,8 @@ Please tell us in detail what went wrong.\n
 	<string name="key_enter">Enter (Z)</string>
 	<string name="key_cancel">Cancel (ESC and X)</string>
 	<string name="key_shift">Shift</string>
+
+    <!--GameBrowserAPI15-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
