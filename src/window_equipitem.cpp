@@ -29,7 +29,7 @@ Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
 	}
 
 	if (this->equip_type == Window_EquipItem::shield &&
-		Game_Actors::GetActor(actor_id)->GetTwoSwordsStyle()) {
+		Game_Actors::GetActor(actor_id)->HasTwoWeapons()) {
 
 		this->equip_type = Window_EquipItem::weapon;
 	}

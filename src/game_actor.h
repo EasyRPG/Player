@@ -586,7 +586,7 @@ public:
 	 *
 	 * @return true if actor has two weapons.
 	 */
-	bool GetTwoSwordsStyle() const;
+	bool HasTwoWeapons() const;
 
 	/**
 	 * Gets if actor does auto battle.

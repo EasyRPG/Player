@@ -119,7 +119,7 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 
 	// Actor must have all attributes of the skill equipped as weapons
 	const RPG::Item* item = GetEquipment(0);
-	const RPG::Item* item2 = GetTwoSwordsStyle() ? GetEquipment(1) : nullptr;
+	const RPG::Item* item2 = HasTwoWeapons() ? GetEquipment(1) : nullptr;
 
 	for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
 		bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
@@ -142,7 +142,7 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 }
 
 int Game_Actor::CalculateSkillCost(int skill_id) const {
-	int start = GetTwoSwordsStyle() ? 1 : 0;
+	int start = HasTwoWeapons() ? 1 : 0;
 	int sp_mod = 1;
 
 	for (int i = start; i < 5; ++i) {
@@ -637,7 +637,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 }
 
 bool Game_Actor::IsEquippable(int item_id) const {
-	if (GetTwoSwordsStyle() &&
+	if (HasTwoWeapons() &&
 		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
 			return false;
 	}
@@ -663,7 +663,7 @@ const RPG::Skill& Game_Actor::GetRandomSkill() const {
 	return Data::skills[skills[rand() % (skills.size() + 1)] - 1];
 }
 
-bool Game_Actor::GetTwoSwordsStyle() const {
+bool Game_Actor::HasTwoWeapons() const {
 	return GetData().two_weapon;
 }
 
@@ -1029,7 +1029,7 @@ void Game_Actor::ResetBattle() {
 		return;
 	}
 
-	if (GetTwoSwordsStyle()) {
+	if (HasTwoWeapons()) {
 		item = GetEquipment(1);
 		if (item && item->preemptive) {
 			gauge = GetMaxGauge();
