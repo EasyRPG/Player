@@ -167,7 +167,7 @@ int Game_Character::GetScreenZ() const {
 }
 
 void Game_Character::Update() {
-	if (stop_count >= max_stop_count) {
+	if (wait_count == 0 && stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else {
@@ -219,7 +219,6 @@ void Game_Character::Update() {
 
 	if (wait_count > 0) {
 		wait_count -= 1;
-		return;
 	}
 }
 
@@ -254,8 +253,16 @@ void Game_Character::MoveTypeCustom() {
 		int original_index = active_route_index;
 		bool looped_around = false;
 		while (true) {
+			if (!IsStopping() || wait_count > 0 || stop_count < max_stop_count)
+				break;
+
+			if (active_route_index == original_index && looped_around) {
+				// We've gone around a full loop; stop here for now
+				break;
+			}
+
 			if ((size_t)active_route_index >= active_route->move_commands.size()) {
-				if (active_route->repeat) {
+				if (active_route->repeat && !active_route->move_commands.empty()) {
 					looped_around = true;
 					active_route_index = 0;
 					SetMoveRouteRepeated(true);
@@ -263,14 +270,6 @@ void Game_Character::MoveTypeCustom() {
 					break;
 				}
 			}
-
-			if (active_route_index == original_index && looped_around) {
-				// We've gone around a full loop; stop here for now
-				break;
-			}
-
-			if (!IsStopping() || wait_count > 0 || stop_count < max_stop_count)
-				break;
 
 			const RPG::MoveCommand& move_command = active_route->move_commands[active_route_index];
 
@@ -411,7 +410,7 @@ void Game_Character::MoveTypeCustom() {
 			++active_route_index;
 		}
 
-		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping()) {
+		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping() && wait_count == 0) {
 			if (IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
