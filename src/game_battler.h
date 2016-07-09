@@ -425,9 +425,14 @@ public:
 	void SetCharged(bool charge);
 
 	/**
-	* @return If battler is defending (next turn, defense is doubled)
-	*/
+	 * @return If battler is defending (next turn, defense is doubled)
+	 */
 	bool IsDefending() const;
+	
+	/**
+	 * @return If battler has strong defense (defense is tripled when defending)
+	 */
+	virtual bool HasStrongDefense() const;
 
 	/**
 	 * Sets defence state (next turn, defense is doubled)

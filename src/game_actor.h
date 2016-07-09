@@ -356,7 +356,7 @@ public:
 	 * 
 	 * @return true if strong defense
 	 */
-	bool HasStrongDefense() const;
+	bool HasStrongDefense() const override;
 	
 	/**
 	 * Sets face graphic of actor.
