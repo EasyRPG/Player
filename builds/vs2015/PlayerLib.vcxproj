@@ -433,6 +433,7 @@
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\audio_al.cpp" />
     <ClCompile Include="..\..\src\audio_decoder.cpp" />
+    <ClCompile Include="..\..\src\audio_resampler.cpp" />
     <ClCompile Include="..\..\src\audio_sdl.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
@@ -441,6 +442,7 @@
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\decoder_fmmidi.cpp" />
+    <ClCompile Include="..\..\src\decoder_libsndfile.cpp" />
     <ClCompile Include="..\..\src\decoder_mpg123.cpp" />
     <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
@@ -576,6 +578,7 @@
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\audio_al.h" />
     <ClInclude Include="..\..\src\audio_decoder.h" />
+    <ClInclude Include="..\..\src\audio_resampler.h" />
     <ClInclude Include="..\..\src\audio_sdl.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />
@@ -584,6 +587,7 @@
     <ClInclude Include="..\..\src\bitmap_hslrgb.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
+    <ClInclude Include="..\..\src\decoder_libsndfile.h" />
     <ClInclude Include="..\..\src\default_graphics.h" />
     <ClInclude Include="..\..\src\decoder_fmmidi.h" />
     <ClInclude Include="..\..\src\decoder_mpg123.h" />
