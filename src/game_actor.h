@@ -350,7 +350,14 @@ public:
 	 * @return true if fixed
 	 */
 	bool IsEquipmentFixed() const;
-
+	
+	/**
+	 * Checks if the actors defense skill is stronger the usual.
+	 * 
+	 * @return true if strong defense
+	 */
+	bool HasStrongDefense() const override;
+	
 	/**
 	 * Sets face graphic of actor.
 	 * @param file_name file containing new face.
@@ -579,7 +586,7 @@ public:
 	 *
 	 * @return true if actor has two weapons.
 	 */
-	bool GetTwoSwordsStyle() const;
+	bool HasTwoWeapons() const;
 
 	/**
 	 * Gets if actor does auto battle.

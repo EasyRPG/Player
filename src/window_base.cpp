@@ -237,7 +237,7 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 		name = Data::terms.weapon;
 		break;
 	case 1:
-		if (actor->GetTwoSwordsStyle()) {
+		if (actor->HasTwoWeapons()) {
 			name = Data::terms.weapon;
 		} else {
 			name = Data::terms.shield;

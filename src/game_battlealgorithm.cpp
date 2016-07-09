@@ -601,7 +601,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if(effect < 0) {
 			effect = 0;
 		}
-		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) / ((*current_target)->IsDefending() ? 2 : 1);
+		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) /
+			((*current_target)->IsDefending() ? (*current_target)->HasStrongDefense() ? 3 : 2 : 1);
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
@@ -771,7 +772,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				effect = 0;
 
 			if (skill.affect_hp) {
-				this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);
+				this->hp = effect /
+					((*current_target)->IsDefending() ? (*current_target)->HasStrongDefense() ? 3 : 2 : 1);
 
 				if ((*current_target)->GetHp() - this->hp <= 0) {
 					// Death state
@@ -1162,7 +1164,8 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	if (effect < 0)
 		effect = 0;
 	
-	this->hp = effect / ((*current_target)->IsDefending() ? 2 : 1);;
+	this->hp = effect / (
+		(*current_target)->IsDefending() ? (*current_target)->HasStrongDefense() ? 3 : 2 : 1);
 
 	if ((*current_target)->GetHp() - this->hp <= 0) {
 		// Death state

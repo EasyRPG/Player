@@ -442,6 +442,10 @@ bool Game_Battler::IsDefending() const {
 	return defending;
 }
 
+bool Game_Battler::HasStrongDefense() const {
+	return false;
+}
+
 void Game_Battler::SetDefending(bool defend) {
 	defending = defend;
 }
