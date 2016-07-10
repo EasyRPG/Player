@@ -15,28 +15,31 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EASYRPG_AUDIO_DECODER_MPG123_H
-#define EASYRPG_AUDIO_DECODER_MPG123_H
+#ifndef EASYRPG_AUDIO_DECODER_OGGVORBIS_H
+#define EASYRPG_AUDIO_DECODER_OGGVORBIS_H
 
 // Headers
-#include "audio_decoder.h"
 #include <string>
-#ifdef HAVE_MPG123
-#include <mpg123.h>
-#endif
 #include <memory>
+#ifdef HAVE_TREMOR
+#include <tremor/ivorbiscodec.h>
+#include <tremor/ivorbisfile.h>
+#elif HAVE_OGGVORBIS
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
+#endif
+#include "audio_decoder.h"
 
 /**
- * Audio decoder for MP3 powered by mpg123
+ * Audio decoder for Ogg Vorbis powered by libTremor/libOgg+libVorbis
  */
-class Mpg123Decoder : public AudioDecoder {
+class OggVorbisDecoder : public AudioDecoder {
 public:
-	Mpg123Decoder();
+	OggVorbisDecoder();
 
-	~Mpg123Decoder();
+	~OggVorbisDecoder();
 
-	bool WasInited() const override;
-
+	// Audio Decoder interface
 	bool Open(FILE* file) override;
 
 	bool Seek(size_t offset, Origin origin) override;
@@ -47,20 +50,16 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
-	static bool IsMp3(FILE* stream);
+	bool SetPitch(int pitch) override;
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
-#ifdef HAVE_MPG123
-	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
+#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
+	OggVorbis_File *ovf = NULL;
 #endif
-	FILE* file_handle;
-	int err = 0;
 	bool finished = false;
-
 	int frequency = 44100;
-
-	bool init = false;
+	int channels = 2;
 };
 
 #endif

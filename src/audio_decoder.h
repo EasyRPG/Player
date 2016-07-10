@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_AUDIO_DECODER_H_
-#define _EASYRPG_AUDIO_DECODER_H_
+#ifndef EASYRPG_AUDIO_DECODER_H
+#define EASYRPG_AUDIO_DECODER_H
 
 // Headers
 #include <cstdio>
@@ -171,6 +171,14 @@ public:
 	 * @return loop count
 	 */
 	int GetLoopCount() const;
+
+	/**
+	 * Gets the status of the newly created audio decoder.
+	 * Used to make sure the underlying library is properly initialized.
+	 *
+	 * @return true if initializing was succesful, false otherwise
+	 */
+	virtual bool WasInited() const;
 
 	/**
 	 * Provides an error message when Open or a Decode function fail.

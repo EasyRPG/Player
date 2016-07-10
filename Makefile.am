@@ -35,10 +35,14 @@ libeasyrpg_player_la_SOURCES = \
 	src/color.h \
 	src/decoder_libsndfile.cpp \
 	src/decoder_libsndfile.h \
+	src/decoder_oggvorbis.cpp \
+	src/decoder_oggvorbis.h \
 	src/decoder_mpg123.cpp \
 	src/decoder_mpg123.h \
 	src/decoder_fmmidi.cpp \
 	src/decoder_fmmidi.h \
+	src/decoder_wildmidi.cpp \
+	src/decoder_wildmidi.h \
 	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \
@@ -325,6 +329,8 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS) \
 	$(MPG123_CFLAGS) \
+	$(WILDMIDI_CFLAGS) \
+	$(OGGVORBIS_CFLAGS) \
 	$(SNDFILE_CFLAGS) \
 	$(SPEEXDSP_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
@@ -337,6 +343,8 @@ libeasyrpg_player_la_LIBADD = \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS) \
 	$(MPG123_LIBS) \
+	$(WILDMIDI_LIBS) \
+	$(OGGVORBIS_LIBS) \
 	$(SNDFILE_LIBS) \
 	$(SPEEXDSP_LIBS)
 

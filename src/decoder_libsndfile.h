@@ -15,13 +15,15 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_AUDIO_DECODER_LIBSNDFILE_H_
-#define _EASYRPG_AUDIO_DECODER_LIBSNDFILE_H_
-#ifdef HAVE_LIBSNDFILE
+#ifndef EASYRPG_AUDIO_DECODER_LIBSNDFILE_H
+#define EASYRPG_AUDIO_DECODER_LIBSNDFILE_H
+
 // Headers
 #include "audio_decoder.h"
 #include <string>
+#ifdef HAVE_LIBSNDFILE
 #include <sndfile.h>
+#endif
 #include <memory>
 
 /**
@@ -48,9 +50,10 @@ private:
 	Format output_format;
 	FILE * file_;
 	bool finished;
-
+#ifdef HAVE_LIBSNDFILE
 	SNDFILE *soundfile;
 	SF_INFO soundinfo;
-};
 #endif
+};
+
 #endif
