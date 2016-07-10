@@ -249,14 +249,14 @@ void Game_Player::PerformTeleport() {
 		GetVehicle()->MoveTo(new_x, new_y);
 }
 
-bool Game_Player::IsPassable(int x, int y, int d) const {
+bool Game_Player::MakeWay(int x, int y, int d) const {
 	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH))
 		return true;
 
 	if (location.aboard)
-		return GetVehicle()->IsPassable(x, y, d);
+		return GetVehicle()->MakeWay(x, y, d);
 
-	return Game_Character::IsPassable(x, y, d);
+	return Game_Character::MakeWay(x, y, d);
 }
 
 bool Game_Player::IsTeleporting() const {
@@ -338,6 +338,12 @@ void Game_Player::UpdateScroll() {
 
 
 void Game_Player::Update() {
+	int cur_frame_count = Player::GetFrames();
+	if (cur_frame_count == frame_count_at_last_update_parallel) {
+		return;
+	}
+	frame_count_at_last_update_parallel = cur_frame_count;
+
 	bool last_moving = IsMoving() || IsJumping();
 
 	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {

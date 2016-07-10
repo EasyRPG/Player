@@ -207,7 +207,7 @@ void Game_Vehicle::SetThrough(bool through) {
 	data.through = through;
 }
 
-bool Game_Vehicle::IsPassable(int x, int y, int d) const {
+bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
 	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
 

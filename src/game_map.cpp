@@ -400,31 +400,164 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
-	if (!Game_Map::IsValid(x, y)) return false;
+static int ReverseDir(int d) {
+	assert(0 <= d && d < 4);
+	return (d + 2) & 3;
+}
 
-	uint8_t bit = 0;
+static int DirToMask(int d) {
 	switch (d)
 	{
 		case RPG::EventPage::Direction_down:
-			bit = Passable::Down;
-			break;
+			return Passable::Down;
 
 		case RPG::EventPage::Direction_up:
-			bit = Passable::Up;
-			break;
+			return Passable::Up;
 
 		case RPG::EventPage::Direction_left:
-			bit = Passable::Left;
-			break;
+			return Passable::Left;
 
 		case RPG::EventPage::Direction_right:
-			bit = Passable::Right;
-			break;
+			return Passable::Right;
 
 		default:
 			assert(false);
 	}
+}
+
+enum CollisionResult {
+	/** No collision occured. */
+	NoCollision,
+	/** Collision occured. */
+	Collision,
+	/**
+	 * The other event was a tile event below self that self could
+	 * leave by stepping across.
+	 */
+	CanStepOffCurrentTile,
+	/**
+	 * The other event was a tile event beneath self's new position
+	 * that self could step onto.
+	 */
+	CanStepOntoNewTile
+};
+
+/**
+ * Checks whether a collision occurs between self and other if self
+ * moves from (x,y) to (new_x, new_y) in direction d.
+ *
+ * If other is a tile event, also indicates if the player can use it
+ * as a "bridge" to step across without hitting the underlying tile
+ * layer.
+ */
+static CollisionResult TestCollisionDuringMove(
+	int x,
+	int y,
+	int new_x,
+	int new_y,
+	int d,
+	const Game_Character& self,
+	const Game_Event& other
+) {
+	if (!other.GetActive()) {
+		return NoCollision;
+	}
+
+	if (&self == &other) {
+		return NoCollision;
+	}
+
+	if (other.GetThrough()) {
+		return NoCollision;
+	}
+
+	if (!other.IsInPosition(x, y) && !other.IsInPosition(new_x, new_y)) {
+		return NoCollision;
+	}
+
+	if (&self != Main_Data::game_player.get()) {
+		if (self.IsOverlapForbidden() || other.IsOverlapForbidden()) {
+			return Collision;
+		}
+	}
+
+	if (other.IsInPosition(new_x, new_y) && self.GetLayer() == other.GetLayer()) {
+		return Collision;
+	}
+	else if (other.GetLayer() == RPG::EventPage::Layers_below) {
+		int tile_id = other.GetTileId();
+		if ((passages_up[tile_id] & Passable::Above) != 0) {
+			return NoCollision;
+		}
+		if (other.IsInPosition(x,y) && (passages_up[tile_id] & DirToMask(d)) != 0) {
+			return CanStepOffCurrentTile;
+		}
+		else if (other.IsInPosition(new_x, new_y) && (passages_up[tile_id] & DirToMask(ReverseDir(d))) != 0) {
+			return CanStepOntoNewTile;
+		} else {
+			return Collision;
+		}
+	}
+
+	return NoCollision;
+}
+
+bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
+	int new_x = RoundX(x + (d == Game_Character::Right ? 1 : d == Game_Character::Left ? -1 : 0));
+	int new_y = RoundY(y + (d == Game_Character::Down ? 1 : d == Game_Character::Up ? -1 : 0));
+
+	if (!Game_Map::IsValid(new_x, new_y))
+		return false;
+
+	if (self.GetThrough()) return true;
+
+	// A character can move to a position with an impassable tile by
+	// standing on top of an event below it. These flags track whether
+	// we stepped off an event and therefore don't need to check the
+	// passability of the tile layer below.
+	bool stepped_off_event = false;
+	bool stepped_onto_event = false;
+
+	for (Game_Event& other : GetEvents()) {
+		CollisionResult result = TestCollisionDuringMove(x, y, new_x, new_y, d, self, other);
+		if (result == Collision) {
+			// Try updating the offending event to give it a chance to move out of the
+			// way and recheck.
+			other.UpdateParallel();
+			if (TestCollisionDuringMove(x, y, new_x, new_y, d, self, other) == Collision) {
+				return false;
+			}
+		}
+		else if (result == CanStepOffCurrentTile) {
+			stepped_off_event = true;
+		} else if (result == CanStepOntoNewTile) {
+			stepped_onto_event = true;
+		}
+	}
+
+	if (!self.IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
+		return false;
+
+	if (Main_Data::game_player->IsInPosition(new_x, new_y)
+			&& !Main_Data::game_player->GetThrough() && !self.GetSpriteName().empty()
+			&& self.GetLayer() == RPG::EventPage::Layers_same) {
+		// Update the Player to see if they'll move and recheck.
+		Main_Data::game_player->Update();
+		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
+			return false;
+		}
+	}
+
+	return
+		(stepped_off_event || IsPassableTile(DirToMask(d), x + y * GetWidth()))
+		&& (stepped_onto_event || IsPassableTile(DirToMask(ReverseDir(d)), new_x + new_y * GetWidth()));
+}
+
+bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
+	// TODO: this and MakeWay share a lot of code.
+	if (!Game_Map::IsValid(x, y)) return false;
+
+	int bit = DirToMask(d);
 
 	int tile_id;
 

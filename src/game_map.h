@@ -131,6 +131,21 @@ namespace Game_Map {
 	bool IsValid(int x, int y);
 
 	/**
+	 * Clears the way for a move by self from (x,y) in the direction d. Any events
+	 * that block the way are updated early (by UpdateParallel) to give them a
+	 * chance to move out of the way.
+	 *
+	 * Returns true if everything is clear to make the move.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param d direction
+	 * @param self Character to move.
+	 * @return whether is passable.
+	 */
+	bool MakeWay(int x, int y, int d, const Game_Character& self);
+
+	/**
 	 * Gets if a tile coordinate is passable in a direction.
 	 *
 	 * @param x tile x.
