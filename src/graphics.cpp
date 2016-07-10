@@ -202,6 +202,8 @@ void Graphics::DrawOverlay() {
 		Player::fps_flag) {
 		std::stringstream text;
 		text << "FPS: " << real_fps;
+		Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text.str());
+		DisplayUi->GetDisplaySurface()->Blit(1, 2, *black_screen, Rect(0, 0, rect.width + 1, rect.height - 1), 128);
 		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
 	}
 }
