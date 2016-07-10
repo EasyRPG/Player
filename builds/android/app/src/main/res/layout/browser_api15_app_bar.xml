@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.easyrpg.player.game_browser.GameBrowserAPI15">
+    tools:context=".game_browser.GameBrowserActivityAPI15">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/game_browser_activity"/>
+    <include layout="@layout/browser_api15_games_grid"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

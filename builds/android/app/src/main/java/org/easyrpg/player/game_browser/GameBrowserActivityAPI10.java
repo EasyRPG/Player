@@ -24,51 +24,36 @@
 
 package org.easyrpg.player.game_browser;
 
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 /**
- * Game browser for EasyRPG Player
+ * Game browser for API < 12
  */
-public class GameBrowserActivity extends Activity {
+@TargetApi(10)
+public class GameBrowserActivityAPI10 extends Activity {
 	private String path;
-	
-	ListView list_view;
 	private ListAdapter adapter;
-	LinkedList<ProjectInformation> project_list = new LinkedList<ProjectInformation>();
-	LinkedList<String> error_list = new LinkedList<String>();
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Setting the game list
-		setContentView(R.layout.game_browser_activity);
-		list_view = (ListView)findViewById(R.id.game_browser_list_view);
-		displayGameList();
-		makeActionOverflowMenuShown();
+		//Scan the folder
+		displayGameList(this);
 		
-		// Display the "How to use EasyRPG" on the first startup
-        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
+		// First launch : display the "how to use" dialog box	
+		GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
 	}
 	
 	@Override
@@ -83,7 +68,7 @@ public class GameBrowserActivity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.game_browser_refresh:
-			displayGameList();
+			displayGameList(this);
 			return true;
 		case R.id.game_browser_settings:
 			Intent intent = new Intent(this, org.easyrpg.player.SettingsActivity.class);
@@ -96,48 +81,25 @@ public class GameBrowserActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	@Override
-	protected void onResume() {
-	    super.onResume();
-	    displayGameList();
-	}
-	
-	public void displayGameList(){
-		//Scan the folder
-		SettingsActivity.updateUserPreferences(this);
-		GameBrowserHelper.scanGame(this, project_list, error_list);
-		
-		// Put the result into the proper adapter
-		if (error_list.size() > 0) {
-			//If the game list is empty, we use a simplified adapter
-			adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_2, android.R.id.text1, error_list);
-		} else {
-			//If the game list is not empty, we use the proper adapter
-			adapter = new GameListAdapter(this, project_list);
-		}
-		
-		Log.i("Browser", error_list.size() + " games found");
-		
-		//Set the view;
-		list_view.setAdapter(adapter);
-	}
-	
-	/** This function prevents some Samsung's device to not show the action overflow button
-	 *  in the action bar
-	 */
-	private void makeActionOverflowMenuShown() {
-	    //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
-	    try {
-	        ViewConfiguration config = ViewConfiguration.get(this);
-	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-	        if (menuKeyField != null) {
-	            menuKeyField.setAccessible(true);
-	            menuKeyField.setBoolean(config, false);
-	        }
-	    } catch (Exception e) {
-	        Log.d("TAG", e.getLocalizedMessage());
-	    }
-	}
+
+    public void displayGameList(Activity activity){
+        // Scan games
+        GameScanner gameScanner = GameScanner.getInstance(activity);
+
+        // Populate the list view
+        if (gameScanner.hasError()) {
+            ArrayAdapter<String> a = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_2, android.R.id.text1,
+                    gameScanner.getErrorList());
+            adapter = a;
+        } else {
+            GameListAdapter a = new GameListAdapter(this, gameScanner.getGameList());
+            adapter = a;
+        }
+
+        //Set the view;
+        setContentView(R.layout.game_browser_activity);
+        ListView list_view = (ListView)findViewById(R.id.game_browser_list_view);
+        list_view.setAdapter(adapter);
+    }
 }

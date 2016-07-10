@@ -3,7 +3,6 @@ package org.easyrpg.player.game_browser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -29,12 +28,12 @@ public class GameBrowserHelper {
 	final static String TREEMAP_NAME = "RPG_RT.lmt";
 	final static String INI_FILE = "RPG_RT.ini";
 
-	public static void scanFolder(Context context, File[] list, LinkedList<ProjectInformation> project_list, int depth) {
+	public static void scanFolder(Context context, File[] list, LinkedList<GameInformation> project_list, int depth) {
 		if (list != null) {
 			for (File file : list) {
 				if (!file.getName().startsWith(".")) {
 					if (isRpg2kGame(file)) {
-						project_list.add(new ProjectInformation(file.getName(), file.getAbsolutePath()));
+						project_list.add(new GameInformation(file.getName(), file.getAbsolutePath()));
 					} else if (file.isDirectory() && file.canRead() && depth > 0) {
 						// Not a RPG2k Game but a directory -> recurse
 						scanFolder(context, file.listFiles(), project_list, depth - 1);
@@ -44,7 +43,7 @@ public class GameBrowserHelper {
 		}
 	}
 	
-	public static void scanGame(Context context, LinkedList<ProjectInformation> project_list, LinkedList<String> error_list){
+	public static void scanGame(Context context, LinkedList<GameInformation> project_list, LinkedList<String> error_list){
 		project_list.clear();
 		error_list.clear();
 		
@@ -223,7 +222,7 @@ public class GameBrowserHelper {
 	    }
 	}
 	
-	private static boolean saveDirectoryContainsSave(ProjectInformation project) {
+	private static boolean saveDirectoryContainsSave(GameInformation project) {
 		if (project.getPath().equals(project.getSavePath())) {
 			// Doesn't matter because this is used for the copying logic to the save directory
 			return true;
@@ -233,7 +232,7 @@ public class GameBrowserHelper {
 		return files.length > 0;
 	}
 	
-	private static void copySavesFromGameDirectoryToSaveDirectory(ProjectInformation project) {
+	private static void copySavesFromGameDirectoryToSaveDirectory(GameInformation project) {
 		if (project.getPath().equals(project.getSavePath())) {
 			return;
 		}
@@ -262,7 +261,7 @@ public class GameBrowserHelper {
 		return saveFiles.toArray(new File[saveFiles.size()]);
 	}
 	
-	public static void launchGame(Context context, ProjectInformation project) {
+	public static void launchGame(Context context, GameInformation project) {
 		// Prepare savegames, copy them to the save directory on launch to prevent unwanted side effects
 		// e.g. games copied from PC with savegames, or from internal storage.
 		if (!saveDirectoryContainsSave(project)) {

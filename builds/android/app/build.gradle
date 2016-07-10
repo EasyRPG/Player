@@ -4,7 +4,7 @@ android {
     buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "org.easyrpg.player"
-        minSdkVersion 12
+        minSdkVersion 10
         targetSdkVersion 23
     }
     buildTypes {
@@ -30,4 +30,6 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
 }

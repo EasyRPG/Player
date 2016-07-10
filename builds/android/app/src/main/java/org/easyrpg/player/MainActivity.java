@@ -2,11 +2,11 @@ package org.easyrpg.player;
 
 import java.io.File;
 
-import org.easyrpg.player.game_browser.GameBrowserAPI15;
-import org.easyrpg.player.game_browser.GameBrowserActivity;
+import org.easyrpg.player.game_browser.GameBrowserActivityAPI12;
+import org.easyrpg.player.game_browser.GameBrowserActivityAPI15;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
-import org.easyrpg.player.game_browser.LegacyGameBrowserActivity;
-import org.easyrpg.player.game_browser.ProjectInformation;
+import org.easyrpg.player.game_browser.GameBrowserActivityAPI10;
+import org.easyrpg.player.game_browser.GameInformation;
 import org.easyrpg.player.player.AssetUtils;
 
 import android.app.Activity;
@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 			}
 
 			// Launch the game
-			ProjectInformation project = new ProjectInformation(dataDir + "/game");
+			GameInformation project = new GameInformation(dataDir + "/game");
 			GameBrowserHelper.launchGame(this, project);
 			finish();
 		}
@@ -92,11 +92,11 @@ public class MainActivity extends Activity {
 		//Launch the proper game browser
 		Intent intent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            intent = new Intent(this, GameBrowserAPI15.class);
+            intent = new Intent(this, GameBrowserActivityAPI15.class);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-			intent = new Intent(this, GameBrowserActivity.class);
+			intent = new Intent(this, GameBrowserActivityAPI12.class);
 		} else {
-			intent = new Intent(this, LegacyGameBrowserActivity.class);
+			intent = new Intent(this, GameBrowserActivityAPI10.class);
 		}
 		startActivity(intent);
 	}

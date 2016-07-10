@@ -36,7 +36,7 @@
             android:text="@string/add_game_folder"
             android:textSize="20sp" />
 
-        <include layout = "@layout/generic_separator"/>
+        <include layout = "@layout/settings_separator"/>
 
 
         <!-- InputLayout transparency -->
@@ -105,7 +105,7 @@
                 android:progress="10" />
         </LinearLayout>
 
-        <include layout = "@layout/generic_separator"/>
+        <include layout = "@layout/settings_separator"/>
         <!-- Vibration -->
 
         <CheckBox
@@ -128,7 +128,7 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
 
-        <include layout = "@layout/generic_separator"/>
+        <include layout = "@layout/settings_separator"/>
 
     <!-- Sounds -->
 
@@ -142,7 +142,7 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
 
-        <include layout = "@layout/generic_separator"/>
+        <include layout = "@layout/settings_separator"/>
 
     <!-- Input Layout Managing -->
 
