@@ -482,6 +482,9 @@
     <ClCompile Include="..\..\src\decoder_libsndfile.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\decoder_oggvorbis.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -947,6 +950,9 @@
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\decoder_libsndfile.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decoder_oggvorbis.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
   </ItemGroup>
