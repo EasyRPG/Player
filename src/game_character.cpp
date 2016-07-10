@@ -266,6 +266,9 @@ void Game_Character::MoveTypeCustom() {
 					looped_around = true;
 					active_route_index = 0;
 					SetMoveRouteRepeated(true);
+					if (original_index == 0) {
+						break;
+					}
 				} else {
 					break;
 				}
