@@ -10,7 +10,6 @@ import org.easyrpg.player.R;
 import org.easyrpg.player.SettingsActivity;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class GameScanner {
         GameScanner.instance.context = activity;
 
         // Verify and Ask for permissions
-        // TODO : Ask for permission
+        GameBrowserHelper.askForStoragePermission(activity);
 
         // Load User's settings
         SettingsActivity.updateUserPreferences(activity);

@@ -67,14 +67,14 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Display the "How to use EasyRPG" on the first startup
+        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
+
         /// Display the game list
         recyclerView = (RecyclerView) findViewById(R.id.game_browser_api15_recycleview);
         recyclerView.setHasFixedSize(true);
         setLayoutManager(this.getResources().getConfiguration());
         displayGameList(this);
-
-        // Display the "How to use EasyRPG" on the first startup
-        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
     }
 
     @Override
@@ -127,9 +127,11 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
             GameBrowserHelper.displayHowToUseEasyRpgDialog(this);
         } else if (id == R.id.nav_manage) {
             GameBrowserHelper.openSettingsActivity(this);
-        } else if (id == R.id.nav_share) {
-
         }
+        /*
+        else if (id == R.id.nav_share) {
+        }
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
