@@ -476,7 +476,7 @@ bool Game_Event::GetActive() const {
 
 void Game_Event::Start(bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data.active || running)
+	if (list.empty() || !data.active)
 		return;
 
 	starting = true;
@@ -532,8 +532,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 void Game_Event::UpdateSelfMovement() {
 	if (running)
 		return;
-	if (!Game_Message::GetContinueEvents() &&
-		(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned()))
+	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
 		return;
 	if (!IsStopping())
 		return;
