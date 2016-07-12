@@ -346,7 +346,7 @@ void Game_Player::Update() {
 
 	bool last_moving = IsMoving() || IsJumping();
 
-	if (IsMovable() && !(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
+	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
 				Move(Down);
@@ -401,7 +401,7 @@ void Game_Player::Update() {
 
 	if (last_moving && CheckTouchEvent()) return;
 
-	if (!(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned())) {
+	if (!Game_Map::GetInterpreter().IsRunning()) {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 			if ( GetOnOffVehicle() ) return;
 			if ( CheckActionEvent() ) return;

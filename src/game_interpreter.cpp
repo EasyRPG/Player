@@ -55,7 +55,6 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	index = 0;
 	updating = false;
 	clear_child = false;
-	runned = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -133,14 +132,9 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-bool Game_Interpreter::HasRunned() const {
-	return runned;
-}
-
 // Update
 void Game_Interpreter::Update() {
 	updating = true;
-	runned = false;
 	// 10000 based on: https://gist.github.com/4406621
 	for (loop_count = 0; loop_count < 10000; ++loop_count) {
 		/* If map is different than event startup time
@@ -223,7 +217,6 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
-		runned = true;
 		if (!ExecuteCommand()) {
 			break;
 		}
