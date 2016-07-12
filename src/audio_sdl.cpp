@@ -108,9 +108,9 @@ namespace {
 		case AudioDecoder::Format::S8:
 			return AUDIO_S8;
 		case AudioDecoder::Format::U16:
-			return AUDIO_U16;
+			return AUDIO_U16SYS;
 		case AudioDecoder::Format::S16:
-			return AUDIO_S16;
+			return AUDIO_S16SYS;
 #if SDL_MIXER_MAJOR_VERSION>1
 		case AudioDecoder::Format::S32:
 			return AUDIO_S32;
@@ -130,9 +130,9 @@ namespace {
 			return AudioDecoder::Format::U8;
 		case AUDIO_S8:
 			return AudioDecoder::Format::S8;
-		case AUDIO_U16:
+		case AUDIO_U16SYS:
 			return AudioDecoder::Format::U16;
-		case AUDIO_S16:
+		case AUDIO_S16SYS:
 			return AudioDecoder::Format::S16;
 #if SDL_MIXER_MAJOR_VERSION>1
 		case AUDIO_S32:
