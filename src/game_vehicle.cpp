@@ -398,6 +398,7 @@ bool Game_Vehicle::CanLand() const {
 
 void Game_Vehicle::Update() {
 	Game_Character::Update();
+	SyncWithPlayer();
 
 	if (type == Airship) {
 		if (IsAscending()) {
