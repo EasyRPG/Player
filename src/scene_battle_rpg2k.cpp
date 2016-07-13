@@ -261,8 +261,18 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
 				RemoveCurrentAction();
+				return;
 			}
-			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+			
+			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
+			if (!alg) {
+				Output::Warning("%s has no action but got a turn.", battle_actions.front()->GetName().c_str());
+				Output::Warning("Please report a bug");
+				RemoveCurrentAction();
+				return;
+			}
+			
+			if (ProcessBattleAction(alg)) {
 				RemoveCurrentAction();
 				battle_message_window->Clear();
 
