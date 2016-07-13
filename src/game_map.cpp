@@ -476,7 +476,7 @@ static CollisionResult TestCollisionDuringMove(
 	}
 
 	if (&self != Main_Data::game_player.get()) {
-		if (self.IsOverlapForbidden() || other.IsOverlapForbidden()) {
+		if (other.IsInPosition(new_x, new_y) && (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
 			return Collision;
 		}
 	}
@@ -484,7 +484,8 @@ static CollisionResult TestCollisionDuringMove(
 	if (other.IsInPosition(new_x, new_y) && self.GetLayer() == other.GetLayer()) {
 		return Collision;
 	}
-	else if (other.GetLayer() == RPG::EventPage::Layers_below) {
+
+	if (other.GetLayer() == RPG::EventPage::Layers_below) {
 		int tile_id = other.GetTileId();
 		if ((passages_up[tile_id] & Passable::Above) != 0) {
 			return NoCollision;
