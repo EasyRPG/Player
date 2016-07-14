@@ -389,6 +389,8 @@ bool Game_Vehicle::CanLand() const {
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 	if (!events.empty())
 		return false;
+	if (!Game_Map::IsLandable(GetX(), GetY(), nullptr))
+		return false;
 	if (Game_Map::GetVehicle(Ship)->IsInPosition(GetX(), GetY()))
 		return false;
 	if (Game_Map::GetVehicle(Boat)->IsInPosition(GetX(), GetY()))
@@ -398,6 +400,7 @@ bool Game_Vehicle::CanLand() const {
 
 void Game_Vehicle::Update() {
 	Game_Character::Update();
+	SyncWithPlayer();
 
 	if (type == Airship) {
 		if (IsAscending()) {

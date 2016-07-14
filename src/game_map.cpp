@@ -930,6 +930,10 @@ void Game_Map::UpdateEncounterSteps() {
 			return;
 	}
 
+	if(Main_Data::game_player->InAirship()) {
+		return;
+	}
+
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 	int terrain_id = GetTerrainTag(x, y);

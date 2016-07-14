@@ -186,7 +186,7 @@ void Game_Character::Update() {
 			anime_count++;
 	} else {
 		stop_count++;
-		if (IsSpinning() || IsContinuous() || pattern != original_pattern)
+		if ((walk_animation && (IsSpinning() || IsContinuous())) || pattern != original_pattern)
 			anime_count++;
 	}
 
