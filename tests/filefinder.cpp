@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdlib>
 #include "filefinder.h"
 #include "player.h"
