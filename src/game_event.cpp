@@ -33,15 +33,8 @@
 #include <cstdlib>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	starting(false),
-	running(false),
-	halting(false),
-	trigger(-1),
 	event(event),
-	page(NULL),
 	from_save(false) {
-
-	ID = event.ID;
 
 	SetMapId(map_id);
 	MoveTo(event.x, event.y);
@@ -50,16 +43,12 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 
 Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& data) :
 	// FIXME unused int parameter
-	starting(false),
-	running(false),
-	halting(false),
+	data(data),
 	event(event),
-	page(NULL),
 	from_save(true) {
 
-	ID = data.ID;
+	this->event.ID = data.ID;
 
-	this->data = data;
 	MoveTo(data.position_x, data.position_y);
 
 	if (!data.event_data.commands.empty()) {
@@ -450,7 +439,11 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 }
 
 int Game_Event::GetId() const {
-	return ID;
+	return event.ID;
+}
+
+std::string Game_Event::GetName() const {
+	return event.name;
 }
 
 bool Game_Event::GetStarting() const {
@@ -476,7 +469,7 @@ bool Game_Event::GetActive() const {
 
 void Game_Event::Start(bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data.active || running)
+	if (list.empty() || !data.active)
 		return;
 
 	starting = true;
@@ -532,8 +525,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 void Game_Event::UpdateSelfMovement() {
 	if (running)
 		return;
-	if (!Game_Message::GetContinueEvents() &&
-		(Game_Map::GetInterpreter().IsRunning() || Game_Map::GetInterpreter().HasRunned()))
+	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
 		return;
 	if (!IsStopping())
 		return;
@@ -711,7 +703,7 @@ const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
 		data.event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	}
-	data.ID = ID;
+	data.ID = event.ID;
 
 	return data;
 }

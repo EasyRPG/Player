@@ -504,23 +504,26 @@ void Game_Party::UpdateTimers() {
 	}
 }
 
-int Game_Party::GetTimer(int which, bool* visible, bool* battle) {
+int Game_Party::GetTimer(int which) {
 	switch (which) {
 		case Timer1:
-			if (visible) {
-				*visible = data.timer1_visible;
-			}
-			if (battle) {
-				*battle = data.timer1_battle;
-			}
 			return data.timer1_secs;
 		case Timer2:
-			if (visible) {
-				*visible = data.timer2_visible;
-			}
-			if (battle) {
-				*battle = data.timer2_battle;
-			}
+			return data.timer2_secs;
+		default:
+			return 0;
+	}
+}
+
+int Game_Party::GetTimer(int which, bool& visible, bool& battle) {
+	switch (which) {
+		case Timer1:
+			visible = data.timer1_visible;
+			battle = data.timer1_battle;
+			return data.timer1_secs;
+		case Timer2:
+			visible = data.timer2_visible;
+			battle = data.timer2_battle;
 			return data.timer2_secs;
 		default:
 			return 0;

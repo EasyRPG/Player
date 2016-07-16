@@ -53,7 +53,6 @@ public:
 		int dbg_x = -1, int dbg_y = -1
 	);
 
-	bool HasRunned() const;
 	bool IsRunning() const;
 	void Update();
 
@@ -76,7 +75,6 @@ protected:
 	bool main_flag;
 
 	int loop_count;
-	bool runned;
 
 	unsigned int index;
 	int map_id;

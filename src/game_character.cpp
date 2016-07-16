@@ -126,6 +126,7 @@ bool Game_Character::IsLandable(int x, int y) const
 void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
+	remaining_step = 0;
 }
 
 int Game_Character::GetScreenX() const {
