@@ -40,7 +40,7 @@ CFLAGS		= 	-g0 -O2 -Wall -Wextra \
 				-fomit-frame-pointer -ffast-math \
 				-flto -fdata-sections -ffunction-sections \
 				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
-				-DHAVE_LIBSNDFILE -DHAVE_LIBSPEEXDSP \
+				-DHAVE_LIBSNDFILE -DHAVE_LIBSPEEXDSP -DHAVE_TREMOR \
 				$(MACHDEP) $(INCLUDE)
 				
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
