@@ -638,8 +638,11 @@ void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
 	source->SetCharged(false);
-	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->GetWeaponId() != 0) {
-		source->ChangeSp(-source->CalculateSkillCost(static_cast<Game_Actor*>(source)->GetWeaponId()));
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		Game_Actor* src = static_cast<Game_Actor*>(source);
+		if (src->GetWeaponId() != 0) {
+			source->ChangeSp(-Data::items[src->GetWeaponId() - 1].sp_cost / src->GetSpCostModifier());
+		}
 	}
 }
 

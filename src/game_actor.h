@@ -112,6 +112,13 @@ public:
 	bool IsSkillUsable(int skill_id) const override;
 
 	/**
+	 * Returns the modifier by which skill costs are divided.
+	 *
+	 * @return modifier
+	 */
+	int GetSpCostModifier() const;
+
+	/**
 	 * Calculates the Skill costs including all modifiers.
 	 *
 	 * @param skill_id ID of skill to calculate.
