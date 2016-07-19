@@ -143,10 +143,14 @@ int LibsndfileDecoder::FillBuffer(uint8_t* buffer, int length) {
 			break;
 		case Format::S32:
 			{
-				decoded=sf_read_int(soundfile,(int32_t*)buffer,length/sizeof(int32_t));
+				// Uses int instead of int32_t because the 3ds toolchain typedefs
+				// to long int which is an incompatible pointer type
+				decoded=sf_read_int(soundfile,(int*)buffer,length/sizeof(int));
+
 				if(!decoded)
 					finished=true;
-				decoded*=sizeof(int32_t);
+
+				decoded *= sizeof(int);
 			}
 			break;
 		default:

@@ -26,8 +26,7 @@ void Input::InitButtons() {
 
 	// Remote
 	buttons[TOGGLE_FPS].push_back(Keys::JOY_0); // A
-	//buttons[N1].push_back(Keys::JOY_0); // A
-	buttons[N2].push_back(Keys::JOY_1); // B
+	buttons[SHIFT].push_back(Keys::JOY_1); // B
 	buttons[CANCEL].push_back(Keys::JOY_2); // 1
 	buttons[DECISION].push_back(Keys::JOY_3); // 2
 	buttons[MINUS].push_back(Keys::JOY_4); // -
@@ -41,12 +40,12 @@ void Input::InitButtons() {
 	// Classic Controller
 	buttons[DECISION].push_back(Keys::JOY_9); // A
 	buttons[CANCEL].push_back(Keys::JOY_10); // B
-	buttons[N1].push_back(Keys::JOY_11); // X
-	buttons[N2].push_back(Keys::JOY_12); // Y
-	buttons[SHIFT].push_back(Keys::JOY_13); // L
-	buttons[DEBUG_THROUGH].push_back(Keys::JOY_14); // R
-	buttons[MULTIPLY].push_back(Keys::JOY_15); // Zl
-	buttons[DIVIDE].push_back(Keys::JOY_16); // Zr
+	buttons[SHIFT].push_back(Keys::JOY_11); // X
+	buttons[N1].push_back(Keys::JOY_12); // Y
+	buttons[N3].push_back(Keys::JOY_13); // L
+	buttons[N5].push_back(Keys::JOY_14); // R
+	buttons[N9].push_back(Keys::JOY_15); // Zl
+	buttons[TOGGLE_FPS].push_back(Keys::JOY_16); // Zr
 	buttons[MINUS].push_back(Keys::JOY_17); // -
 	buttons[PLUS].push_back(Keys::JOY_18); // +
 	buttons[CANCEL].push_back(Keys::JOY_19); // Home

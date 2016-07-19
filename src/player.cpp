@@ -145,9 +145,8 @@ void Player::Init(int argc, char *argv[]) {
 	gfxInitDefault();
 	consoleInit(GFX_BOTTOM, NULL);
 
-	aptOpenSession();
 	APT_SetAppCpuTimeLimit(30);
-	aptCloseSession();
+
 	if (osGetKernelVersion() <  SYSTEM_VERSION(2, 48, 3)) khaxInit(); // Executing libkhax just to be sure...
 	consoleClear();
 
@@ -183,7 +182,7 @@ void Player::Init(int argc, char *argv[]) {
 	hidInit();
 
 	// Enable 804 Mhz mode if on N3DS
-	u8 isN3DS;
+	bool isN3DS;
 	APT_CheckNew3DS(&isN3DS);
 	if (isN3DS) {
 		osSetSpeedupEnable(true);
