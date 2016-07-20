@@ -72,7 +72,6 @@ void Game_Interpreter::Clear() {
 	event_id = 0;					// event ID
 	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
-	waiting_pan_screen = false;
 	triggered_by_decision_key = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;

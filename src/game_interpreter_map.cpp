@@ -548,11 +548,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	int direction;
 	int distance;
 	int speed;
-
-	if (waiting_pan_screen) {
-		waiting_pan_screen = Game_Map::IsPanWaiting();
-		return !waiting_pan_screen;
-	}
+	bool waiting_pan_screen = false;
 
 	switch (com.parameters[0]) {
 	case 0: // Lock
@@ -570,12 +566,16 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		break;
 	case 3: // Reset
 		speed = com.parameters[3];
+		distance = std::max(std::abs(Game_Map::GetPanX()), std::abs(Game_Map::GetPanY())) / SCREEN_TILE_WIDTH;
 		waiting_pan_screen = com.parameters[4] != 0;
 		Game_Map::ResetPan(speed, waiting_pan_screen);
 		break;
 	}
 
-	return !waiting_pan_screen;
+	if (waiting_pan_screen)
+		wait_count = distance * (2 << (6 - speed));
+
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110

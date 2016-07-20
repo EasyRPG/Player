@@ -89,7 +89,6 @@ protected:
 
 	int button_timer;
 	bool waiting_battle_anim;
-	bool waiting_pan_screen;
 	bool updating;
 	bool clear_child;
 
