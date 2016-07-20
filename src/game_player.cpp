@@ -368,6 +368,7 @@ void Game_Player::Update() {
 	// which events to start. was_blocked is used to avoid triggering events the usual way.
 	bool was_blocked = IsBlockedByMoveRoute();
 	Game_Character::Update();
+	Game_Character::UpdateSprite();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();

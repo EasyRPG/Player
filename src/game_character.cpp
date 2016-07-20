@@ -177,6 +177,12 @@ void Game_Character::Update() {
 		}
 	}
 
+	if (wait_count > 0) {
+		--wait_count;
+	}
+}
+
+void Game_Character::UpdateSprite() {
 	if (IsJumping()) {
 		UpdateJump();
 		if (IsSpinning())
@@ -216,10 +222,6 @@ void Game_Character::Update() {
 		}
 
 		anime_count = 0;
-	}
-
-	if (wait_count > 0) {
-		wait_count -= 1;
 	}
 }
 

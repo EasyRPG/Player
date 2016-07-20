@@ -401,6 +401,11 @@ public:
 	virtual void Update();
 
 	/**
+	 * Updates character animation and movement.
+	 */
+	void UpdateSprite();
+
+	/**
 	 * Walks around on a custom move route.
 	 */
 	void MoveTypeCustom();
