@@ -332,12 +332,12 @@ static void add_rtp_path(std::string const& p) {
 
 static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
 #if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}

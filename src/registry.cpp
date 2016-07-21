@@ -35,15 +35,28 @@
 	#endif
 #endif
 
-std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
+std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view) {
 	char value[1024];
 	DWORD size = 1024;
 	DWORD type = REG_SZ;
 	HKEY key_handle;
+	REGSAM desired_access = KEY_QUERY_VALUE;
+
+	switch (view) {
+		case KEY32:
+			desired_access |= KEY_WOW64_32KEY;
+			break;
+		case KEY64:
+			desired_access |= KEY_WOW64_64KEY;
+			break;
+		case NATIVE:
+		default:
+			break;
+	}
 
 	std::wstring wkey = Utils::ToWideString(key.c_str());
 
-	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
+	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, desired_access, &key_handle)) {
 		return "";
 	}
 
@@ -63,14 +76,27 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 	return string_value;
 }
 
-int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin) {
+int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin, REGVIEW view) {
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;
 	HKEY key_handle;
+	REGSAM desired_access = KEY_QUERY_VALUE;
+
+	switch (view) {
+		case KEY32:
+			desired_access |= KEY_WOW64_32KEY;
+			break;
+		case KEY64:
+			desired_access |= KEY_WOW64_64KEY;
+			break;
+		case NATIVE:
+		default:
+			break;
+	}
 
 	std::wstring wkey = Utils::ToWideString(key.c_str());
 
-	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
+	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, desired_access, &key_handle)) {
 		return 0;
 	}
 

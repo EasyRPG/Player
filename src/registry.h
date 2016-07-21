@@ -29,6 +29,11 @@ enum HKEY {
 	HKEY_CURRENT_USER
 };
 #endif
+enum REGVIEW {
+	NATIVE,
+	KEY64,
+	KEY32
+};
 
 /**
  * Registry namespace
@@ -37,12 +42,12 @@ namespace Registry {
 	/**
 	 * Reads string value.
 	 */
-	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val);
+	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view = NATIVE);
 
 	/**
 	 * Reads binary value.
 	 */
-	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin);
+	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin, REGVIEW view = NATIVE);
 }
 
 #endif
