@@ -120,7 +120,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/image_xyz.h \
 	src/input_buttons_desktop.cpp \
 	src/input_buttons_gekko.cpp \
-	src/input_buttons_gph.cpp \
 	src/input_buttons.h \
 	src/input_buttons_opendingux.cpp \
 	src/input_buttons_psp.cpp \

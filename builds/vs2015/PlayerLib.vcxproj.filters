@@ -134,9 +134,6 @@
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\input_buttons_gph.cpp">
-      <Filter>Source Files\Backend\Input</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_psp.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
