@@ -23,6 +23,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_system.h"
+#include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
 #include "main_data.h"
@@ -406,6 +407,11 @@ void Game_Player::Update() {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 			if ( GetOnOffVehicle() ) return;
 			if ( CheckActionEvent() ) return;
+		}
+
+		// ESC-Menu calling
+		if (Game_System::GetAllowMenu() && Input::IsTriggered(Input::CANCEL)) {
+			Game_Temp::menu_calling = true;
 		}
 	}
 
