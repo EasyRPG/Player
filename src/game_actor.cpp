@@ -141,7 +141,7 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	return Game_Battler::IsSkillUsable(skill_id);
 }
 
-int Game_Actor::CalculateSkillCost(int skill_id) const {
+int Game_Actor::GetSpCostModifier() const {
 	int start = HasTwoWeapons() ? 1 : 0;
 	int sp_mod = 1;
 
@@ -152,8 +152,12 @@ int Game_Actor::CalculateSkillCost(int skill_id) const {
 			break;
 		}
 	}
-	
-	return Game_Battler::CalculateSkillCost(skill_id) / sp_mod;
+
+	return sp_mod;
+}
+
+int Game_Actor::CalculateSkillCost(int skill_id) const {
+	return Game_Battler::CalculateSkillCost(skill_id) / GetSpCostModifier();
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
