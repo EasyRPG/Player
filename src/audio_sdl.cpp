@@ -387,7 +387,6 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volu
 
 	// Don't care if successful, always build cvt
 	SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
-	cvt.needed = false;
 	
 	audio_decoder->SetFade(0, volume, fadein);
 	audio_decoder->SetPitch(pitch);
