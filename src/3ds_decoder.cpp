@@ -61,7 +61,7 @@ int DecodeOgg(FILE* stream, DecodedSound* Sound){
 	Sound->samplerate = my_info->rate;
 	Sound->format = CSND_ENCODING_PCM16;
 	u16 audiotype = my_info->channels;
-	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
+	Sound->audiobuf_size = ov_time_total(vf,-1) * (my_info->rate<<1);
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
 	Sound->bytepersample = audiotype<<1;
@@ -498,7 +498,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	Sound->samplerate = my_info->rate;
 	Sound->format = CSND_ENCODING_PCM16;
 	u16 audiotype = my_info->channels;
-	Sound->audiobuf_size = ov_pcm_total(vf,-1)<<audiotype;
+	Sound->audiobuf_size = ov_time_total(vf,-1) * (my_info->rate<<1);
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
 	Sound->bytepersample = audiotype<<1;
