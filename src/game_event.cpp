@@ -570,7 +570,8 @@ void Game_Event::MoveTypeRandom() {
 	}
 	if (move_failed && !starting) {
 		SetDirection(last_direction);
-		SetSpriteDirection(last_direction);
+		if (!(IsDirectionFixed() || IsFacingLocked()))
+			SetSpriteDirection(last_direction);
 	} else {
 		max_stop_count = max_stop_count / 5 * (rand() % 4 + 3);
 	}
@@ -619,7 +620,8 @@ void Game_Event::MoveTypeTowardsPlayer() {
 			stop_count = 0;
 		} else {
 			SetDirection(last_direction);
-			SetSpriteDirection(last_direction);
+			if (!(IsDirectionFixed() || IsFacingLocked()))
+				SetSpriteDirection(last_direction);
 		}
 	}
 }
@@ -649,7 +651,8 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 			stop_count = 0;
 		} else {
 			SetDirection(last_direction);
-			SetSpriteDirection(last_direction);
+			if (!(IsDirectionFixed() || IsFacingLocked()))
+				SetSpriteDirection(last_direction);
 		}
 	}
 }
