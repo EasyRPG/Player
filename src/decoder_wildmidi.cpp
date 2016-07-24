@@ -26,20 +26,39 @@
 #include "output.h"
 #include "decoder_wildmidi.h"
 
+#define WILDMIDI_FREQ 44100
+/* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
+ * however, they cause high cpu usage, so not using them for now.
+ */
+#define WILDMIDI_OPTS 0
+
+static bool init = false;
+static void WildMidiDecoder_deinit(void) {
+	WildMidi_Shutdown();
+}
+
 WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	music_type = "midi";
 	filename = file_name;
 
-	init = (WildMidi_Init("wildmidi.cfg", frequency, WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING) == 0);
-	if (!init)
+	// only initialize once
+	if (init)
+		return;
+
+	// FIXME: write some logic to find the configuration file in different paths
+	init = (WildMidi_Init("wildmidi.cfg", WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+	if (!init) {
 		error_message = "Could not initialize libWildMidi";
+		return;
+	}
+
+	// setup deinitialization
+	atexit(WildMidiDecoder_deinit);
 }
 
 WildMidiDecoder::~WildMidiDecoder() {
 	if (handle)
 		WildMidi_Close(handle);
-	if (init)
-		WildMidi_Shutdown();
 }
 
 bool WildMidiDecoder::WasInited() const {
@@ -50,7 +69,11 @@ bool WildMidiDecoder::Open(FILE* file) {
 	if (!init)
 		return false;
 
-	fclose(file);
+	// this should not happen
+	if (handle) {
+		WildMidi_Close(handle);
+		Output::Debug("WildMidi: Previous handle was not closed.");
+	}
 
 	handle = WildMidi_Open(filename.c_str());
 	if (!handle) {
@@ -58,6 +81,7 @@ bool WildMidiDecoder::Open(FILE* file) {
 		return false;
 	}
 
+	fclose(file);
 	return true;
 }
 
@@ -83,22 +107,21 @@ bool WildMidiDecoder::IsFinished() const {
 }
 
 void WildMidiDecoder::GetFormat(int& freq, AudioDecoder::Format& format, int& channels) const {
-	freq = frequency;
+	freq = WILDMIDI_FREQ;
 	format = Format::S16;
 	channels = 2;
 }
 
 bool WildMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, int channels) {
-	if (freq != frequency || channels != 2 || format != Format::S16)
+	if (freq != WILDMIDI_FREQ || channels != 2 || format != Format::S16)
 		return false;
 
 	return true;
 }
 
 bool WildMidiDecoder::SetPitch(int pitch) {
-	if (pitch != 100) {
+	if (pitch != 100)
 		return false;
-	}
 
 	return true;
 }
