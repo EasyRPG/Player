@@ -1430,13 +1430,22 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
+	// Wait a given time
 	if (com.parameters.size() <= 1 ||
 		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
 		SetupWait(com.parameters[0]);
 		return true;
-	} else {
-		return Input::IsAnyTriggered();
 	}
+
+	// Wait until decision key pressed, but skip the first frame so that
+	// it ignores keys that were pressed before this command started.
+	if (button_timer > 0 && Input::IsTriggered(Input::DECISION)) {
+		button_timer = 0;
+		return true;
+	}
+
+	button_timer++;
+	return false;
 }
 
 bool Game_Interpreter::CommandPlayBGM(RPG::EventCommand const& com) { // code 11510

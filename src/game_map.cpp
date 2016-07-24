@@ -1328,18 +1328,18 @@ void Game_Map::UpdateParallax() {
 	if (map_info.parallax_name.empty())
 		return;
 
-	if (map_info.parallax_horz && map_info.parallax_horz_auto) {
-		parallax_x +=
-			map_info.parallax_horz_speed > 0 ? 1 << (map_info.parallax_horz_speed - 1) :
-			map_info.parallax_horz_speed < 0 ? -1 << (-map_info.parallax_horz_speed - 1) :
-			0;
+	if (map_info.parallax_horz &&
+	    map_info.parallax_horz_auto &&
+	    map_info.parallax_horz_speed) {
+		int acc = 1 << (std::abs(map_info.parallax_horz_speed) - 1);
+		parallax_x += (map_info.parallax_horz_speed > 0) ? acc : -acc;
 	}
 
-	if (map_info.parallax_vert && map_info.parallax_vert_auto) {
-		parallax_y +=
-			map_info.parallax_vert_speed > 0 ? 1 << (map_info.parallax_vert_speed - 1) :
-			map_info.parallax_vert_speed < 0 ? -1 << (-map_info.parallax_vert_speed - 1) :
-			0;
+	if (map_info.parallax_vert &&
+	    map_info.parallax_vert_auto &&
+	    map_info.parallax_vert_speed) {
+		int acc = 1 << (std::abs(map_info.parallax_vert_speed) - 1);
+		parallax_y += (map_info.parallax_vert_speed > 0) ? acc : -acc;
 	}
 }
 

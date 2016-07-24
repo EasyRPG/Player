@@ -171,12 +171,17 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 #endif
 
 #ifdef HAVE_SDL_MIXER
-	audio_.reset(new SdlAudio());
+	if (!Player::no_audio_flag) {
+		audio_.reset(new SdlAudio());
+		return;
+	}
 #elif defined(HAVE_OPENAL)
-	audio_.reset(new ALAudio());
-#else
-	audio_.reset(new EmptyAudio());
+	if (!Player::no_audio_flag) {
+		audio_.reset(new ALAudio());
+		return;
+	}
 #endif
+	audio_.reset(new EmptyAudio());
 }
 
 SdlUi::~SdlUi() {

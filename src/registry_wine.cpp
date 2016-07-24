@@ -23,7 +23,7 @@
 #include "output.h"
 #include "inireader.h"
 
-std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
+std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view) {
 	std::string prefix =
 			getenv("WINEPREFIX")? getenv("WINEPREFIX"):
 			getenv("HOME")? std::string(getenv("HOME")).append("/.wine"):
@@ -45,6 +45,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 
 	if(prefix.empty() || !FileFinder::Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
+		return std::string("");
 	}
 
 	switch(hkey) {
@@ -54,6 +55,18 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 		case HKEY_CURRENT_USER:
 			registry_file = prefix + "/user.reg";
 			break;
+	}
+
+	bool is_wine64 = FileFinder::Exists(prefix + "/drive_c/windows/syswow64");
+	bool use_redirect = (view == KEY32 && is_wine64);
+	/* FIXME: Actual registry redirection behaviour on 64 bit Windows is much more complex,
+	 * for reference see: https://msdn.microsoft.com/en-us/library/aa384253(v=vs.85).aspx
+	 * We just care for the simple case where the "Software" Key inside HKLM is redirected
+	 * to the "Software\Wow6432Node" Key in 64 bit wine prefixes.
+	 */
+	if (hkey == HKEY_LOCAL_MACHINE && use_redirect && (formatted_key.rfind("Software\\\\", 0) == 0)) {
+		int pos = formatted_key.find("\\\\", 0);
+		formatted_key.insert(pos, "\\\\Wow6432Node");
 	}
 
 	INIReader registry(registry_file);
@@ -91,7 +104,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 	return path;
 }
 
-int Registry::ReadBinValue(HKEY, std::string const&, std::string const&, unsigned char*) {
+int Registry::ReadBinValue(HKEY, std::string const&, std::string const&, unsigned char*, REGVIEW) {
 	return 0; // not really used yet
 }
 
