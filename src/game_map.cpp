@@ -1205,7 +1205,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 bool Game_Map::IsAnyEventStarting() {
 	for (Game_Event& ev : events)
-		if (ev.GetStarting() && !ev.GetList().empty())
+		if (ev.GetStarting() && !ev.GetList().empty() && ev.GetActive())
 			return true;
 
 	for (Game_CommonEvent& ev : common_events)
