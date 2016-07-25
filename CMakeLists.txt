@@ -35,7 +35,7 @@ endif()
 
 # Adds a library to the liblist if COND is true and the lib is found
 # When REQ is true the lib is required
-function(find_lib LIBNAME COND)
+function(find_lib_int LIBNAME COND REQ)
 	if(${COND})
 		list(APPEND EASYRPG_LIB_LIST ${LIBNAME})
 	
@@ -45,16 +45,30 @@ function(find_lib LIBNAME COND)
 			find_package(${LIBNAME})
 		endif()
 		
-		if(${LIBNAME}_FOUND)
-			string(TOUPPER ${LIBNAME} LIBNAMEUP)
-			include_directories(${${LIBNAMEUP}_INCLUDE_DIR} ${${LIBNAMEUP}_INCLUDE_DIRS})
-			list(APPEND EASYRPG_PLAYER_LIBRARIES ${${LIBNAMEUP}_LIBRARY}  ${${LIBNAMEUP}_LIBRARIES})
-		endif()
+		string(TOUPPER ${LIBNAME} LIBNAMEUP)
+		include_directories(${${LIBNAMEUP}_INCLUDE_DIR} ${${LIBNAMEUP}_INCLUDE_DIRS})
+		set(NEW_LIBS ${${LIBNAMEUP}_LIBRARY} ${${LIBNAMEUP}_LIBRARIES} PARENT_SCOPE)
 	endif()
 
 	set(RETVAL ${${LIBNAME}_FOUND} PARENT_SCOPE)
-	# Export _FOUND variable to global scope
+	# Export _FOUND variable to parent scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
+endfunction()
+
+function(find_lib_req LIBNAME COND)
+	find_lib_int(${LIBNAME} ${COND} ON)
+	
+	# Export _FOUND variable to parent scope which is global scope
+	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
+	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
+endfunction()
+
+function(find_lib LIBNAME COND)
+	find_lib_int(${LIBNAME} ${COND} OFF)
+	
+	# Export _FOUND variable to parent scope which is global scope
+	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
+	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
 endfunction()
 
 # liblcf
@@ -78,41 +92,18 @@ if (PLAYER_BUILD_LIBLCF)
 	link_directories(${ICU_LIBRARY_DIRS})
 else()
 	# Use system package
-	find_package(liblcf REQUIRED)
-	include_directories(${LIBLCF_INCLUDE_DIR})
-	list(APPEND EASYRPG_PLAYER_LIBRARIES ${LIBLCF_LIBRARY})
+	find_lib_req(liblcf ON)
 endif()
 
 # Detect all required libraries
-# TODO: Expat Iconv for liblcf compile case
 foreach(i Pixman ZLIB PNG SDL2)
-	find_lib(${i} ON ON)
+	find_lib_req(${i} ON)
 endforeach()
 
 # Always enable Wine registry support on non-Windows
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 else()
 	add_definitions(-DHAVE_WINE=1)
-endif()
-
-# Shinonome font
-option(PLAYER_BUILD_SHINONOME "Regenerate the shinonome font source files which overwrites the files in the repository. Requires Ruby." OFF)
-
-if (PLAYER_BUILD_SHINONOME)
-	set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/shinonome")
-	set(SHINONOME_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
-	set(SHINONOME_SRCS "${SHINONOME_SRC_PATH}/shinonome_gothic.cpp"
-	"${SHINONOME_SRC_PATH}/shinonome_mincho.cpp"
-	"${SHINONOME_SRC_PATH}/shinonome.h")
-	find_package(Ruby REQUIRED)
-	if(RUBY_FOUND)
-		set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
-		add_custom_command(
-			OUTPUT ${SHINONOME_SRCS}
-			COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
-			DEPENDS "${SHINONOME_GENERATOR}"
-			WORKING_DIRECTORY "${SHINONOME_PATH}")
-	endif()
 endif()
 
 # freetype and harfbuzz
@@ -135,9 +126,7 @@ set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL)
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# SDL2_mixer Audio
-	find_package(SDL2_mixer REQUIRED)
-	include_directories(${SDL2_MIXER_INCLUDE_DIR})
-	list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDL2_MIXER_LIBRARY})
+	find_lib_req(SDL2_mixer ON)
 	add_definitions(-D HAVE_SDL_MIXER=1)
 	
 	# speexdsp
@@ -202,13 +191,17 @@ elseif()
 	message(FATAL_ERROR "Invalid Audio Backend")
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+if(PLAYER_BUILD_LIBLCF)
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+endif()
 
 # library
-set(EASYRPG_PLAYER_LIBRARIES_ALL
-  ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static" liblcf)
+set(EASYRPG_PLAYER_LIBRARIES_ALL ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static")
+if(PLAYER_BUILD_LIBLCF)
+	list(APPEND EASYRPG_PLAYER_LIBRARIES liblcf)
+endif()
 
 # entry point
 set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
@@ -218,7 +211,7 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRCS)
 list(REMOVE_ITEM SRCS ${MAIN_FILE})
 list(APPEND SRCS ${SHINONOME_SRCS})
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
+	list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
@@ -226,8 +219,11 @@ add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 add_executable(${PROJECT_NAME}_com ${MAIN_FILE})
 foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
-  target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-  ### TODO add_dependencies(${i} liblcf ${PROJECT_NAME}_Static)
+	target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
+	add_dependencies(${i} ${PROJECT_NAME}_Static)
+	if(PLAYER_BUILD_LIBLCF)
+		add_dependencies(${i} liblcf)
+	endif()
 endforeach()
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
@@ -237,28 +233,28 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
-  add_custom_command(OUTPUT resources/${MAN_NAME}
-    COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.1" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
-    DEPENDS resources/${MAN_NAME}.adoc
-    COMMENT "(Re-)building manpage ${MAN_NAME}"
-    VERBATIM)
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    add_custom_target(man ALL DEPENDS resources/${MAN_NAME})
-    install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
-  else()
-    add_custom_target(man DEPENDS resources/${MAN_NAME})
-  endif()
+	add_custom_command(OUTPUT resources/${MAN_NAME}
+		COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.1" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
+		DEPENDS resources/${MAN_NAME}.adoc
+		COMMENT "(Re-)building manpage ${MAN_NAME}"
+		VERBATIM)
+	if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+		add_custom_target(man ALL DEPENDS resources/${MAN_NAME})
+		install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
+	else()
+		add_custom_target(man DEPENDS resources/${MAN_NAME})
+	endif()
 else()
-  # no a2x, distribution archive?
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME})
-    install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
-  endif()
+	# no a2x, distribution archive?
+	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME})
+		install(FILES resources/${MAN_NAME} DESTINATION share/man/man6)
+	endif()
 endif()
 
 # CPack
 set(CPACK_GENERATOR "ZIP" "TGZ")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  list(APPEND CPACK_GENERATOR "NSIS")
+	list(APPEND CPACK_GENERATOR "NSIS")
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
