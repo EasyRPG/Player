@@ -20,10 +20,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +35,7 @@ import java.util.List;
 
 public class GameBrowserActivityAPI15 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final int GRID_SIZE_IN_PORTRAIT_MODE = 1, GRID_SIZE_IN_LANDSCAPE_MODE = 2;
+    private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -166,11 +164,13 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     public void setLayoutManager(Configuration configuration) {
         int orientation = configuration.orientation;
 
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, GRID_SIZE_IN_PORTRAIT_MODE));
-        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, GRID_SIZE_IN_LANDSCAPE_MODE));
+        // Determine screen size
+        int nbGamePerRow = configuration.screenWidthDp / THUMBNAIL_HORIZONTAL_SIZE_DPI;
+        if (nbGamePerRow <= 0) {
+            nbGamePerRow = 1;
         }
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, nbGamePerRow));
     }
 
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
