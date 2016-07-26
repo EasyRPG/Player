@@ -1395,6 +1395,8 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 		actor->RemoveAllStates();
 	}
 
+	Game_Battle::SetNeedRefresh(true);
+
 	return true;
 }
 
