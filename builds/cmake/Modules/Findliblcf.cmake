@@ -1,5 +1,8 @@
-find_path(LIBLCF_INCLUDE_DIR liblcf/reader_lcf.h)
+find_path(LIBLCF_INCLUDE_DIR_INTERNAL liblcf/reader_lcf.h)
 find_library(LIBLCF_LIBRARY NAMES lcf liblcf)
+if(EXISTS "${LIBLCF_INCLUDE_DIR_INTERNAL}")
+  set(LIBLCF_INCLUDE_DIR "${LIBLCF_INCLUDE_DIR_INTERNAL}/liblcf")
+endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(LIBLCF DEFAULT_MSG LIBLCF_INCLUDE_DIR LIBLCF_LIBRARY)

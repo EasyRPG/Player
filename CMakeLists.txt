@@ -61,6 +61,7 @@ function(find_lib_req LIBNAME COND)
 	# Export _FOUND variable to parent scope which is global scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
+	set(RETVAL ${RETVAL} PARENT_SCOPE)
 endfunction()
 
 function(find_lib LIBNAME COND)
@@ -69,6 +70,7 @@ function(find_lib LIBNAME COND)
 	# Export _FOUND variable to parent scope which is global scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
+	set(RETVAL ${RETVAL} PARENT_SCOPE)
 endfunction()
 
 # liblcf
@@ -134,6 +136,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
 	if(${RETVAL})
 		add_definitions(-DHAVE_LIBSPEEXDSP)
+		add_definitions(-DUSE_AUDIO_RESAMPLER)
 	endif()
 	
 	# mpg123
