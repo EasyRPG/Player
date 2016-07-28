@@ -248,26 +248,21 @@ void SdlAudio::BGM_OnPlayedOnce() {
 void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	bgm_stop = false;
 	played_once = false;
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		Output::Debug("Music not found: %s", file.c_str());
-		return;
-	}
 
-	FILE* filehandle = FileFinder::fopenUTF8(path, "rb");
+	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
 		Output::Warning("Music not readable: %s", file.c_str());
 		return;
 	}
 
-	audio_decoder = AudioDecoder::Create(filehandle, path);
+	audio_decoder = AudioDecoder::Create(filehandle, file);
 	if (audio_decoder) {
-		SetupAudioDecoder(filehandle, path, volume, pitch, fadein);
+		SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
 		return;
 	}
 	fclose(filehandle);
 
-	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
+	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "rb");
 
 #if SDL_MIXER_MAJOR_VERSION>1
 	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
@@ -286,7 +281,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 #if WANT_FMMIDI == 2
 		// Fallback to FMMIDI when SDL Midi failed
 		char magic[4] = { 0 };
-		filehandle = FileFinder::fopenUTF8(path, "rb");
+		filehandle = FileFinder::fopenUTF8(file, "rb");
 		if (!filehandle) {
 			Output::Warning("Music not readable: %s", file.c_str());
 			return;
@@ -573,12 +568,7 @@ void SdlAudio::BGS_Volume(int volume) {
 }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
-	std::string const path = FileFinder::FindSound(file);
-	if (path.empty()) {
-		Output::Debug("Sound not found: %s", file.c_str());
-		return;
-	}
-	std::shared_ptr<Mix_Chunk> sound(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
+	std::shared_ptr<Mix_Chunk> sound(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 	if (!sound) {
 		Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;

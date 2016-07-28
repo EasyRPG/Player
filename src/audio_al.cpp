@@ -460,12 +460,12 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 
 std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getMusic(source &src, std::string const &file) const {
-	return create_loader(src, FileFinder::FindMusic(file));
+	return create_loader(src, file);
 }
 
 std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getSound(source &src, std::string const &file) const {
-	return create_loader(src, FileFinder::FindSound(file));
+	return create_loader(src, file);
 }
 
 void ALAudio::Update() {
