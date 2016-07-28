@@ -37,6 +37,11 @@ std::string Utils::UpperCase(const std::string& str) {
 	return result;
 }
 
+bool Utils::EndsWith(const std::string &str, const std::string &end) {
+	return str.length() >= end.length() &&
+		0 == str.compare(str.length() - end.length(), end.length(), end);
+}
+
 std::u16string Utils::DecodeUTF16(const std::string& str) {
 	std::u16string result;
 	for (auto it = str.begin(), str_end = str.end(); it < str_end; ++it) {

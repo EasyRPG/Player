@@ -307,15 +307,43 @@ void Game_System::SetTransition(int which, int transition) {
 
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
+	bgm_pending = false;
+
 	std::string const path = FileFinder::FindMusic(result->file);
 	if (path.empty()) {
 		Output::Debug("Music not found: %s", result->file.c_str());
 		return;
 	}
 
-	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	if (Utils::EndsWith(path, ".link")) {
+		Output::Debug("Ineluki link file: %s", path.c_str());
+		
+		// Handle Ineluki's MP3 patch
+		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::out);
+		if (!stream) {
+			Output::Warning("Ineluki link read error: %s", path.c_str());
+			return;
+		}
 
-	bgm_pending = false;
+		// The first line contains the path to the actual audio file to play
+		std::string line;
+		std::getline(*stream.get(), line);
+		
+		Output::Debug("Linking to: %s", line.c_str());		
+
+		// Fixme: Will not work in emscripten because the file was not requested for download
+		std::string ineluki_path = FileFinder::FindDefault(line);
+		if (ineluki_path.empty()) {
+			Output::Debug("Music not found: %s", line);
+			return;
+		}
+		
+		Audio().BGM_Play(ineluki_path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+		
+		return;
+	}
+	
+	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
@@ -323,7 +351,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
 	if (item != se_request_ids.end()) {
 		se_request_ids.erase(item);
 	}
-
+	
 	std::string const path = FileFinder::FindSound(result->file);
 	if (path.empty()) {
 		Output::Debug("Sound not found: %s", result->file.c_str());
