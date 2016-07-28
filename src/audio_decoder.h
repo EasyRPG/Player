@@ -272,14 +272,14 @@ public:
 	 *
 	 * @return Position in the stream
 	 */
-	virtual size_t Tell();
+	virtual size_t Tell() const;
 
 	/**
 	 * Returns amount of executed ticks. Only useful for MIDI format.
 	 *
 	 * @return Amount of MIDI ticks.
 	 */
-	virtual int GetTicks();
+	virtual int GetTicks() const;
 
 	/**
 	 * Returns the amount of bytes per sample.

@@ -285,11 +285,11 @@ bool AudioResampler::Seek(size_t offset, Origin origin) {
 
 }
 
-size_t AudioResampler::Tell() {
+size_t AudioResampler::Tell() const {
 	return wrapped_decoder->Tell();
 }
 
-int AudioResampler::GetTicks() {
+int AudioResampler::GetTicks() const {
 	return wrapped_decoder->GetTicks();
 }
 

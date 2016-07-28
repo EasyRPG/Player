@@ -25,29 +25,19 @@ struct CtrAudio : public AudioInterface {
 	CtrAudio();
 	~CtrAudio();
 
-	void BGM_Play(std::string const&, int, int, int);
-	void BGM_Pause();
-	void BGM_Resume();
-	void BGM_Stop();
-	bool BGM_PlayedOnce();
-	unsigned BGM_GetTicks();
-	void BGM_Fade(int);
-	void BGM_Volume(int);
-	void BGM_Pitch(int);
-	void BGS_Play(std::string const&, int, int, int);
-	void BGS_Pause();
-	void BGS_Resume();
-	void BGS_Stop();
-	void BGS_Fade(int);
-	void ME_Play(std::string const&, int, int, int);
-	void ME_Stop();
-	void ME_Fade(int /* fade */);
-	void SE_Play(std::string const&, int, int);
-	void SE_Stop();
-	void Update();
-
-	void BGM_OnPlayedOnce();
-	int BGS_GetChannel() const;
+	void BGM_Play(std::string const&, int, int, int) override;
+	void BGM_Pause() override;
+	void BGM_Resume() override;
+	void BGM_Stop() override;
+	bool BGM_PlayedOnce() const override;
+    bool BGM_IsPlaying() const override;
+    unsigned BGM_GetTicks() const override;
+	void BGM_Fade(int) override;
+	void BGM_Volume(int) override;
+	void BGM_Pitch(int) override;
+	void SE_Play(std::string const&, int, int) override;
+	void SE_Stop() override;
+	void Update() override;
 
 private:
 	u8* audiobuffers[SOUND_CHANNELS]; // We'll use last two available channels for BGM

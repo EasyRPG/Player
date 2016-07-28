@@ -90,14 +90,14 @@ public:
 	 *
 	 * @return Position in the stream
 	 */
-	size_t Tell() override;
+	size_t Tell() const override;
 
 	/**
 	 * Wraps the GetTicks Function of the contained decoder
 	 *
 	 * @return Amount of MIDI ticks.
 	 */
-	int GetTicks() override;
+	int GetTicks() const override;
 	
 	/**
 	 * Returns wheter the resampled audio stream is finished

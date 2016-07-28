@@ -438,7 +438,7 @@ void SdlAudio::BGM_Stop() {
 	Mix_HaltMusic();
 }
 
-bool SdlAudio::BGM_PlayedOnce() {
+bool SdlAudio::BGM_PlayedOnce() const {
 	if (audio_decoder) {
 		return audio_decoder->GetLoopCount() > 0;
 	}
@@ -446,7 +446,11 @@ bool SdlAudio::BGM_PlayedOnce() {
 	return played_once;
 }
 
-unsigned SdlAudio::BGM_GetTicks() {
+bool SdlAudio::BGM_IsPlaying() const {
+    return audio_decoder || !bgm_stop || !bgs_stop;
+}
+
+unsigned SdlAudio::BGM_GetTicks() const {
 	if (audio_decoder) {
 		return audio_decoder->GetTicks();
 	}

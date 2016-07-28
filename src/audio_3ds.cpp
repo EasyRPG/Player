@@ -183,10 +183,6 @@ CtrAudio::~CtrAudio() {
 	#endif
 }
 
-void CtrAudio::BGM_OnPlayedOnce() {
-	// Deprecated
-}
-
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	
 	// If a BGM is currently playing, we kill it
@@ -289,12 +285,17 @@ void CtrAudio::BGM_Stop() {
 	BGM->isPlaying = false;
 }
 
-bool CtrAudio::BGM_PlayedOnce() {
+bool CtrAudio::BGM_PlayedOnce() const {
 	if (BGM == NULL) return false;
 	return (BGM->block_idx >= BGM->eof_idx);
 }
 
-unsigned CtrAudio::BGM_GetTicks() {
+bool CtrAudio::BGM_IsPlaying() const {
+    return BGM != NULL;
+}
+
+unsigned CtrAudio::BGM_GetTicks() const {
+    // Todo
 	return 0;
 }
 
@@ -351,43 +352,6 @@ void CtrAudio::BGM_Pitch(int pitch) {
 void CtrAudio::BGM_Fade(int fade) {
 	if (BGM == NULL) return;
 	BGM->fade_val = -fade;
-}
-
-void CtrAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Pause() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Resume() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Stop() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Fade(int fade) {
-	// Deprecated
-}
-
-int CtrAudio::BGS_GetChannel() const {
-	// Deprecated
-	return 1;
-}
-
-void CtrAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	// Deprecated
-}
-
-void CtrAudio::ME_Stop() {
-	// Deprecated
-}
-
-void CtrAudio::ME_Fade(int fade) {
-	// Deprecated
 }
 
 void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {

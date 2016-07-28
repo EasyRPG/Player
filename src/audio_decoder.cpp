@@ -315,11 +315,11 @@ bool AudioDecoder::Seek(size_t, Origin) {
 	return false;
 }
 
-size_t AudioDecoder::Tell() {
+size_t AudioDecoder::Tell() const {
 	return -1;
 }
 
-int AudioDecoder::GetTicks() {
+int AudioDecoder::GetTicks() const {
 	return 0;
 }
 

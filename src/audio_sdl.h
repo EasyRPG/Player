@@ -34,8 +34,9 @@ struct SdlAudio : public AudioInterface {
 	void BGM_Pause() override;
 	void BGM_Resume() override;
 	void BGM_Stop() override;
-	bool BGM_PlayedOnce() override;
-	unsigned BGM_GetTicks() override;
+	bool BGM_PlayedOnce() const override;
+	bool BGM_IsPlaying() const override;
+	unsigned BGM_GetTicks() const override;
 	void BGM_Fade(int) override;
 	void BGM_Volume(int) override;
 	void BGM_Pitch(int) override;
@@ -59,10 +60,10 @@ private:
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
 	unsigned bgm_starttick = 0;
-	bool bgm_stop = false;
+	bool bgm_stop = true;
 	std::shared_ptr<Mix_Chunk> bgs;
 	bool bgs_playing = false;
-	bool bgs_stop = false;
+	bool bgs_stop = true;
 	bool played_once = false;
 
 	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
