@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <fstream>
 #include <functional>
 #include "game_system.h"
 #include "async_handler.h"
@@ -315,32 +316,37 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		return;
 	}
 
-	if (Utils::EndsWith(path, ".link")) {
+	if (Utils::EndsWith(result->file, ".link")) {
 		Output::Debug("Ineluki link file: %s", path.c_str());
 		
 		// Handle Ineluki's MP3 patch
-		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::out);
+		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::in);
 		if (!stream) {
 			Output::Warning("Ineluki link read error: %s", path.c_str());
 			return;
 		}
 
 		// The first line contains the path to the actual audio file to play
-		std::string line;
-		std::getline(*stream.get(), line);
+		std::string line = Utils::ReadLine(*stream.get());
 		
 		Output::Debug("Linking to: %s", line.c_str());		
 
-		// Fixme: Will not work in emscripten because the file was not requested for download
-		std::string ineluki_path = FileFinder::FindDefault(line);
+		#ifdef EMSCRIPTEN
+		Output::Warning("Ineluki MP3 patch unsupported in the web player");
+		return;
+		#else
+		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
+		
+		std::string ineluki_path = FileFinder::FindDefault(line_canonical);
 		if (ineluki_path.empty()) {
-			Output::Debug("Music not found: %s", line);
+			Output::Debug("Music not found: %s", line_canonical.c_str());
 			return;
 		}
 		
 		Audio().BGM_Play(ineluki_path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 		
 		return;
+		#endif
 	}
 	
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);

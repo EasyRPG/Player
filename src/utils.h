@@ -20,6 +20,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include "system.h"
 
 namespace Utils {
@@ -127,6 +128,25 @@ namespace Utils {
 	 * @param seed Seed to use
 	 */
 	void SeedRandomNumberGenerator(int32_t seed);
+
+	/**
+	 * Reads a line from a stream and returns it.
+	 * Same as std::getline but handles linebreaks independent of the platform
+	 * correctly.
+	 *
+	 * @param is Input stream to read
+	 * @return Content of the read line
+	 */
+	std::string ReadLine(std::istream& is);
+
+	/**
+	 * Splits a string into tokens specified by a regular expression.
+	 *
+	 * @param str_to_tokenize String that is tokenized
+	 * @param token_re Regular expression specificing the token
+	 * @return vector containing the elements between the tokens
+	 */
+	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::string& token_re);
 
 } // namespace Utils
 

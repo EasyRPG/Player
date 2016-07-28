@@ -18,8 +18,8 @@
 // Headers
 #include "utils.h"
 #include <algorithm>
-#include <cctype>
 #include <random>
+#include <regex>
 
 namespace {
 	std::mt19937 rng;
@@ -302,4 +302,42 @@ int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
 
 void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
+}
+
+// via https://stackoverflow.com/questions/6089231/
+std::string Utils::ReadLine(std::istream &is) {
+	std::string out;
+
+	std::istream::sentry se(is, true);
+	std::streambuf* sb = is.rdbuf();
+
+	for(;;) {
+        	int c = sb->sbumpc();
+		switch (c) {
+			case '\n':
+			return out;
+		case '\r':
+			if (sb->sgetc() == '\n') {
+				sb->sbumpc();
+			}
+			return out;
+		case EOF:
+			// Also handle the case when the last line has no line ending
+			if (out.empty()) {
+				is.setstate(std::ios::eofbit);
+			}
+			return out;
+		default:
+			out += (char)c;
+		}
+	}
+}
+
+std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::string &token_re) {
+	std::regex reg(token_re);
+	std::sregex_token_iterator iter(str_to_tokenize.begin(), str_to_tokenize.end(), reg, -1);
+	std::sregex_token_iterator end;
+	std::vector<std::string> vec(iter, end);
+
+	return vec;
 }

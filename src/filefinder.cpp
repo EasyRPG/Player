@@ -236,6 +236,39 @@ std::string FileFinder::MakePath(const std::string &dir, std::string const& name
 	return str;
 }
 
+std::string FileFinder::MakeCanonical(std::string const& path, int initial_deepness) {
+	std::vector<std::string> path_components = SplitPath(path);
+	std::vector<std::string> path_can;
+	
+	for (std::string path_comp : path_components) {
+		if (path_comp == "..") {
+			if (initial_deepness > 0) {
+				// Ignore
+				--initial_deepness;
+			} else if (path_can.size() > 0) {
+				path_can.pop_back();
+			} else {
+				Output::Debug("Path traversal out of game directory: %s", path.c_str());
+			}
+		} else if (path_comp == ".") {
+			// ignore
+		} else {
+			path_can.push_back(path_comp);
+		}
+	}
+
+	std::string ret;
+	for (std::string s : path_can) {
+		ret = MakePath(ret, s);
+	}
+	
+	return ret;
+}
+
+std::vector<std::string> FileFinder::SplitPath(std::string const& path) {
+	return Utils::Tokenize(path, R"([\\/])");
+}
+
 #ifdef _WIN32
 std::string GetFontsPath() {
 #ifdef __WINRT__
@@ -476,6 +509,20 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 
 std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string& name) {
 	DirectoryTree const& p = tree;
+
+	std::vector<std::string> path_comps = SplitPath(name);
+	if (path_comps.size() > 1) {
+		// When the searched name contains a directory search in this directory
+		// instead of the root
+
+		std::string f;
+		for (auto it = path_comps.begin() + 1; it != path_comps.end(); ++it) {
+			f = MakePath(f, *it);
+		}
+
+		return FindDefault(path_comps[0], f);
+	}
+
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
