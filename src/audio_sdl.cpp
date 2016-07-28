@@ -246,15 +246,11 @@ void SdlAudio::BGM_OnPlayedOnce() {
 }
 
 void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
-	bgm_stop = false;
-	played_once = false;
-
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
 		Output::Warning("Music not readable: %s", file.c_str());
 		return;
 	}
-
 	audio_decoder = AudioDecoder::Create(filehandle, file);
 	if (audio_decoder) {
 		SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
@@ -263,6 +259,9 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	fclose(filehandle);
 
 	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "rb");
+
+    bgm_stop = false;
+    played_once = false;
 
 #if SDL_MIXER_MAJOR_VERSION>1
 	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);

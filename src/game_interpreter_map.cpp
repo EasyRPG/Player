@@ -480,7 +480,12 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 		return false;
 
 	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
-	if (bgm_inn.name.empty() || bgm_inn.name == "(OFF)" || bgm_inn.name == "(Brak)" || Audio().BGM_PlayedOnce()) {
+	if (bgm_inn.name.empty() ||
+		bgm_inn.name == "(OFF)" ||
+		bgm_inn.name == "(Brak)" ||
+		!Audio().BGM_IsPlaying() ||
+		Audio().BGM_PlayedOnce()) {
+
 		Game_System::BgmStop();
 		continuation = NULL;
 		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
