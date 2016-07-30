@@ -126,10 +126,6 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             GameBrowserHelper.openSettingsActivity(this);
         }
-        /*
-        else if (id == R.id.nav_share) {
-        }
-        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

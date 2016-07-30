@@ -28,19 +28,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/screen"
+            android:layout_toLeftOf="@+id/game_browser_thumbnail_option_button"
+            android:layout_alignParentLeft="true"
             android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:textColor="#222"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/game_browser_thumbnail_option_button"
-            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/ic_action_action_settings_black"
+            android:background="@android:color/transparent"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+
             android:layout_below="@+id/screen"
-            android:src="@drawable/ic_action_action_settings_black" />
+            android:padding="4dp"
+            />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
