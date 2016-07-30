@@ -79,8 +79,6 @@ void Window_BattleStatus::Refresh() {
 				break;
 			}
 			else {
-				BitmapRef system2 = Cache::System2(Data::system.system2_name);
-
 				DrawActorFace(static_cast<Game_Actor*>(actor), 80 * i, 24);
 			}
 		}
@@ -125,6 +123,11 @@ void Window_BattleStatus::RefreshGauge() {
 					// Clear number drawing area
 					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
 					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
+
+					// Number clearing removed part of the face, but both, clear and redraw
+					// are needed because some games don't have face graphics that are huge enough
+					// to clear the number area (e.g. Ara Fell)
+					DrawActorFace(static_cast<Game_Actor*>(actor), 80 * i, 24);
 
 					// Background
 					contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::opaque);

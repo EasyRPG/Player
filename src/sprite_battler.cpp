@@ -203,9 +203,7 @@ void Sprite_Battler::SetAnimationLoop(LoopState loop) {
 }
 
 void Sprite_Battler::DetectStateChange() {
-	if (battler->IsDead() && anim_state != AnimationState_Dead) {
-		SetAnimationState(AnimationState_Dead);
-	} else if (idling) {
+	if (idling) {
 		DoIdleAnimation();
 	}
 }
