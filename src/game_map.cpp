@@ -338,7 +338,7 @@ void Game_Map::ScrollDown(int distance) {
 			map_info.position_y += distance;
 			if (map_info.parallax_vert)
 				parallax_y -= distance / 2;
-			else if (!LoopVertical() && GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+			else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
 				parallax_y -=
 					std::min(distance, distance * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15) / (SCREEN_TILE_WIDTH / TILE_SIZE));
 		}
@@ -355,7 +355,7 @@ void Game_Map::ScrollLeft(int distance) {
 			map_info.position_x -= distance;
 			if (map_info.parallax_horz)
 				parallax_x += distance / 2;
-			else if (!LoopHorizontal() && GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+			else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
 				parallax_x +=
 					std::min(distance, distance * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE));
 		}
@@ -372,7 +372,7 @@ void Game_Map::ScrollRight(int distance) {
 			map_info.position_x += distance;
 			if (map_info.parallax_horz)
 				parallax_x -= distance / 2;
-			else if (!LoopHorizontal() && GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+			else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
 				parallax_x -=
 					std::min(distance, distance * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE));
 		}
@@ -389,7 +389,7 @@ void Game_Map::ScrollUp(int distance) {
 			map_info.position_y -= distance;
 			if (map_info.parallax_vert)
 				parallax_y += distance / 2;
-			else if (!LoopVertical() && GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+			else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
 				parallax_y +=
 					std::min(distance, distance * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15) / (SCREEN_TILE_WIDTH / TILE_SIZE));
 		}
