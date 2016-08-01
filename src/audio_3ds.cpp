@@ -291,11 +291,11 @@ bool CtrAudio::BGM_PlayedOnce() const {
 }
 
 bool CtrAudio::BGM_IsPlaying() const {
-    return BGM != NULL;
+	return BGM != NULL;
 }
 
 unsigned CtrAudio::BGM_GetTicks() const {
-    // Todo
+	// Todo
 	return 0;
 }
 

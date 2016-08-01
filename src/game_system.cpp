@@ -307,11 +307,11 @@ void Game_System::SetTransition(int which, int transition) {
 
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
-    std::string const path = FileFinder::FindMusic(result->file);
-    if (path.empty()) {
-        Output::Debug("Music not found: %s", result->file.c_str());
-        return;
-    }
+	std::string const path = FileFinder::FindMusic(result->file);
+	if (path.empty()) {
+		Output::Debug("Music not found: %s", result->file.c_str());
+		return;
+	}
 
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 
@@ -324,11 +324,11 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
 		se_request_ids.erase(item);
 	}
 
-    std::string const path = FileFinder::FindSound(result->file);
-    if (path.empty()) {
-        Output::Debug("Sound not found: %s", result->file.c_str());
-        return;
-    }
+	std::string const path = FileFinder::FindSound(result->file);
+	if (path.empty()) {
+		Output::Debug("Sound not found: %s", result->file.c_str());
+		return;
+	}
 
-    Audio().SE_Play(path, volume, tempo);
+	Audio().SE_Play(path, volume, tempo);
 }

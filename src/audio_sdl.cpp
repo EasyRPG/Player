@@ -60,7 +60,7 @@ namespace {
 		int out_len = stream_size;
 		if (cvt.needed) {
 			// Calculate how many data is needed to fill the buffer after converting it
-			double d = out_len / cvt.rate_incr;
+			double d = out_len / cvt.len_ratio;
 			out_len = (int)std::ceil(d);
 			out_len += out_len & 1;
 		}
@@ -260,8 +260,8 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 
 	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "rb");
 
-    bgm_stop = false;
-    played_once = false;
+	bgm_stop = false;
+	played_once = false;
 
 #if SDL_MIXER_MAJOR_VERSION>1
 	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
@@ -446,7 +446,7 @@ bool SdlAudio::BGM_PlayedOnce() const {
 }
 
 bool SdlAudio::BGM_IsPlaying() const {
-    return audio_decoder || !bgm_stop || !bgs_stop;
+	return audio_decoder || !bgm_stop || !bgs_stop;
 }
 
 unsigned SdlAudio::BGM_GetTicks() const {
