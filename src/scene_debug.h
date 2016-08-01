@@ -21,10 +21,9 @@
 // Headers
 #include <vector>
 #include "scene.h"
-
-class Window_Command;
-class Window_VarList;
-class Window_NumberInput;
+#include "window_command.h"
+#include "window_numberinput.h"
+#include "window_varlist.h"
 
 /**
  * Scene Equip class.
@@ -63,12 +62,14 @@ public:
 
 	enum VarType {
 		TypeInt,
-		TypeSwitch
+		TypeSwitch,
+		TypeGeneral,
+		TypeEnd
 	};
 
 private:
 	/** Current variables being displayed (Switches or Integers). */
-	VarType current_var_type;
+	int current_var_type;
 	/** Current Page being displayed */
 	int range_page;
 	/** Current range being displayed. */
