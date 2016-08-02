@@ -1440,7 +1440,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 
 	// Wait until decision key pressed, but skip the first frame so that
 	// it ignores keys that were pressed before this command started.
-	if (button_timer > 0 && Input::IsTriggered(Input::DECISION)) {
+	if (!Game_Message::visible && button_timer > 0 && Input::IsTriggered(Input::DECISION)) {
 		button_timer = 0;
 		return true;
 	}
