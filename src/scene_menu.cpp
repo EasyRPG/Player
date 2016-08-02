@@ -143,6 +143,7 @@ void Scene_Menu::CreateCommandWindow() {
 			}
 		case Wait:
 		case Quit:
+		case Debug:
 			break;
 		case Order:
 			if (Main_Data::game_party->GetActors().size() <= 1) {
