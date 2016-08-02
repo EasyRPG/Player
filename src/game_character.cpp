@@ -188,7 +188,7 @@ void Game_Character::UpdateSprite() {
 		if (IsSpinning())
 			anime_count++;
 	} else if (IsMoving()) {
-		remaining_step -= 1 << (1 + GetMoveSpeed());
+		remaining_step -= min(1 << (1 + GetMoveSpeed()), remaining_step);
 		if (IsSpinning() || (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation))
 			anime_count++;
 	} else {
@@ -227,7 +227,7 @@ void Game_Character::UpdateSprite() {
 
 void Game_Character::UpdateJump() {
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
-	remaining_step -= jump_speed[GetMoveSpeed() - 1];
+	remaining_step -= min(jump_speed[GetMoveSpeed() - 1], remaining_step);
 	if (remaining_step <= 0)
 		jumping = false;
 }
