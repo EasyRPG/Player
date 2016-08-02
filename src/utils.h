@@ -18,6 +18,7 @@
 #ifndef _EASYRPG_UTILS_H_
 #define _EASYRPG_UTILS_H_
 
+#include <functional>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -140,13 +141,13 @@ namespace Utils {
 	std::string ReadLine(std::istream& is);
 
 	/**
-	 * Splits a string into tokens specified by a regular expression.
+	 * Splits a string into tokens specified by a predicate function.
 	 *
 	 * @param str_to_tokenize String that is tokenized
-	 * @param token_re Regular expression specificing the token
+	 * @param token_re Predicate function, must return true when the character is used for splitting.
 	 * @return vector containing the elements between the tokens
 	 */
-	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::string& token_re);
+	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);
 
 } // namespace Utils
 

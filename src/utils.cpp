@@ -19,7 +19,6 @@
 #include "utils.h"
 #include <algorithm>
 #include <random>
-#include <regex>
 
 namespace {
 	std::mt19937 rng;
@@ -333,11 +332,22 @@ std::string Utils::ReadLine(std::istream &is) {
 	}
 }
 
-std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::string &token_re) {
-	std::regex reg(token_re);
-	std::sregex_token_iterator iter(str_to_tokenize.begin(), str_to_tokenize.end(), reg, -1);
-	std::sregex_token_iterator end;
-	std::vector<std::string> vec(iter, end);
+std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::function<bool(char32_t)> predicate) {
+	std::u32string text = DecodeUTF32(str_to_tokenize);
+	std::vector<std::string> tokens;
+	std::u32string cur_token;	
 
-	return vec;
+	for (char32_t& c : text) {
+		if (predicate(c)) {
+			tokens.push_back(EncodeUTF(cur_token));
+			cur_token.clear();
+			continue;
+		}
+
+		cur_token.push_back(c);
+	}
+
+	tokens.push_back(EncodeUTF(cur_token));
+
+	return tokens;
 }
