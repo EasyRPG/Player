@@ -90,7 +90,7 @@ bool FmMidiDecoder::SetPitch(int pitch) {
 	return true;
 }
 
-int FmMidiDecoder::GetTicks() {
+int FmMidiDecoder::GetTicks() const {
 	return 0;
 }
 

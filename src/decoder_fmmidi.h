@@ -47,7 +47,7 @@ public:
 
 	bool SetPitch(int pitch) override;
 
-	int GetTicks() override;
+	int GetTicks() const override;
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 

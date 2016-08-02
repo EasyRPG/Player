@@ -460,12 +460,12 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 
 std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getMusic(source &src, std::string const &file) const {
-	return create_loader(src, FileFinder::FindMusic(file));
+	return create_loader(src, file);
 }
 
 std::shared_ptr<ALAudio::buffer_loader>
 ALAudio::getSound(source &src, std::string const &file) const {
-	return create_loader(src, FileFinder::FindSound(file));
+	return create_loader(src, file);
 }
 
 void ALAudio::Update() {
@@ -525,12 +525,21 @@ void ALAudio::BGM_Stop() {
 	alSourceStop(bgm_src_->get());
 }
 
-bool ALAudio::BGM_PlayedOnce() {
+bool ALAudio::BGM_PlayedOnce() const {
 	SET_CONTEXT(ctx_);
 	return bgm_src_->loop_count() > 0;
 }
 
-unsigned ALAudio::BGM_GetTicks() {
+bool ALAudio::BGM_IsPlaying() const {
+	SET_CONTEXT(ctx_);
+
+	ALenum state;
+	alGetSourcei(bgm_src_->get(), AL_SOURCE_STATE, &state);
+
+	return (state == AL_PLAYING);
+}
+
+unsigned ALAudio::BGM_GetTicks() const {
 	SET_CONTEXT(ctx_);
 	return bgm_src_->midi_ticks();
 }

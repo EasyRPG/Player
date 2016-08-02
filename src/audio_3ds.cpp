@@ -183,10 +183,6 @@ CtrAudio::~CtrAudio() {
 	#endif
 }
 
-void CtrAudio::BGM_OnPlayedOnce() {
-	// Deprecated
-}
-
 void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	
 	// If a BGM is currently playing, we kill it
@@ -199,17 +195,10 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		BGM = NULL;
 		LightLock_Unlock(&BGM_Mutex);
 	}
-	
-	// Searching for the file
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		Output::Debug("Music not found: %s", file.c_str());
-		return;
-	}
-	
+
 	// Opening and decoding the file
 	DecodedMusic* myFile = (DecodedMusic*)malloc(sizeof(DecodedMusic));
-	int res = DecodeMusic(path, myFile);
+	int res = DecodeMusic(file, myFile);
 	if (res < 0){
 		free(myFile);
 		return;
@@ -296,12 +285,17 @@ void CtrAudio::BGM_Stop() {
 	BGM->isPlaying = false;
 }
 
-bool CtrAudio::BGM_PlayedOnce() {
+bool CtrAudio::BGM_PlayedOnce() const {
 	if (BGM == NULL) return false;
 	return (BGM->block_idx >= BGM->eof_idx);
 }
 
-unsigned CtrAudio::BGM_GetTicks() {
+bool CtrAudio::BGM_IsPlaying() const {
+	return BGM != NULL;
+}
+
+unsigned CtrAudio::BGM_GetTicks() const {
+	// Todo
 	return 0;
 }
 
@@ -360,43 +354,6 @@ void CtrAudio::BGM_Fade(int fade) {
 	BGM->fade_val = -fade;
 }
 
-void CtrAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Pause() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Resume() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Stop() {
-	// Deprecated
-}
-
-void CtrAudio::BGS_Fade(int fade) {
-	// Deprecated
-}
-
-int CtrAudio::BGS_GetChannel() const {
-	// Deprecated
-	return 1;
-}
-
-void CtrAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	// Deprecated
-}
-
-void CtrAudio::ME_Stop() {
-	// Deprecated
-}
-
-void CtrAudio::ME_Fade(int fade) {
-	// Deprecated
-}
-
 void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
 	// Select an available audio channel
@@ -432,20 +389,13 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	int cacheIdx = lookCache(file.c_str());
 	if (cacheIdx < 0){
 	#endif
-	
-		// Searching for the file
-		std::string const path = FileFinder::FindSound(file);
-		if (path.empty()) {
-			Output::Debug("Sound not found: %s", file.c_str());
-			return;
-		}
-	
-		// Opening and decoding the file
-		int res = DecodeSound(path, &myFile);
-		if (res < 0) return;
-		#ifdef USE_CACHE
-		else sprintf(soundtable[res],"%s",file.c_str());
-		#endif
+
+	// Opening and decoding the file
+	int res = DecodeSound(file, &myFile);
+	if (res < 0) return;
+	#ifdef USE_CACHE
+	else sprintf(soundtable[res],"%s",file.c_str());
+	#endif
 		
 	#ifdef USE_CACHE
 	}else myFile = decodedtable[cacheIdx];

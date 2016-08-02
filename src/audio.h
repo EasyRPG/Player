@@ -50,13 +50,20 @@ struct AudioInterface {
 	/**
 	 * Returns whether the background music has played at least once.
 	 */
-	virtual bool BGM_PlayedOnce() = 0;
+	virtual bool BGM_PlayedOnce() const = 0;
+	
+	/**
+	 * Reports if a music file is currently being played.
+	 * 
+	 * @return true when BGM is playing
+	 */
+	virtual bool BGM_IsPlaying() const = 0;
 
 	/**
 	 * Returns the current MIDI tick of the background music.
 	 * Only useful when the BGM is a MIDI track.
 	 */
-	virtual unsigned BGM_GetTicks() = 0;
+	virtual unsigned BGM_GetTicks() const = 0;
 
 	/**
 	 * Does a fade out of the background music.
@@ -109,8 +116,9 @@ struct EmptyAudio : public AudioInterface {
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}
 	void BGM_Stop() override {}
-	bool BGM_PlayedOnce() override;
-	unsigned BGM_GetTicks() override;
+	bool BGM_PlayedOnce() const override;
+	bool BGM_IsPlaying() const override { return false; }
+	unsigned BGM_GetTicks() const override;
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};
