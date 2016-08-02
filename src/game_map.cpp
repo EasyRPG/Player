@@ -138,6 +138,18 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id);
 
+	if (map->parallax_flag) {
+		SetParallaxName(map->parallax_name);
+		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
+			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
+			map->parallax_sx, map->parallax_sy);
+	}
+	else {
+		SetParallaxName("");
+	}
+
+	SetChipset(map->chipset_id);
+
 	events.reserve(map->events.size());
 	for (const RPG::Event& ev : map->events) {
 		events.emplace_back(location.map_id, ev);
@@ -177,6 +189,7 @@ void Game_Map::SetupFromSave() {
 			pending.push_back(vehicles[i].get());
 
 	map_info.Fixup(*map.get());
+	SetChipset(map_info.chipset_id);
 
 	// FIXME: Handle Pan correctly
 	location.pan_current_x = 0;
@@ -210,17 +223,6 @@ void Game_Map::SetupCommon(int _id) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 
-	if (map->parallax_flag) {
-		SetParallaxName(map->parallax_name);
-		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
-			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
-			map->parallax_sx, map->parallax_sy);
-	}
-	else {
-		SetParallaxName("");
-	}
-
-	SetChipset(map->chipset_id);
 	refresh_type = Refresh_All;
 
 	scroll_direction = 2;
