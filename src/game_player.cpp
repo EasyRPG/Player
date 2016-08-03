@@ -350,6 +350,11 @@ void Game_Player::Update() {
 
 	bool last_moving = IsMoving() || IsJumping();
 
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	bool was_blocked = IsBlockedByMoveRoute();
+	Game_Character::Update();
+
 	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
@@ -366,10 +371,6 @@ void Game_Player::Update() {
 		}
 	}
 
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	bool was_blocked = IsBlockedByMoveRoute();
-	Game_Character::Update();
 	Game_Character::UpdateSprite();
 	UpdateScroll();
 
@@ -620,7 +621,7 @@ bool Game_Player::IsMovable() const {
 		return false;
 	if (Graphics::IsTransitionPending())
 		return false;
-	if (IsBlockedByMoveRoute())
+	if (IsMoveRouteOverwritten())
 		return false;
 	if (Game_Map::IsAnyEventStarting())
 		return false;
