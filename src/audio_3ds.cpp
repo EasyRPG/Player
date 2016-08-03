@@ -183,7 +183,7 @@ CtrAudio::~CtrAudio() {
 	#endif
 }
 
-void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	
 	// If a BGM is currently playing, we kill it
 	BGM_Stop();
@@ -244,6 +244,7 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		createDspBlock(&dspSounds[SOUND_CHANNELS], BGM->bytepersample, BGM->audiobuf_size, true, (u32*)BGM->audiobuf);
 		ndspChnWaveBufAdd(SOUND_CHANNELS, &dspSounds[SOUND_CHANNELS]);		
 	}
+	BGM->pitch = pitch;
 	BGM->isPlaying = true;
 	BGM->starttick = osGetTime();
 	
@@ -373,6 +374,8 @@ void CtrAudio::BGM_Pitch(int pitch) {
 		CSND_SetTimer(0x1F, CSND_TIMER(BGM->samplerate));
 		CSND_UpdateInfo(true);
 	}
+	
+	BGM->pitch = pitch;
 	
 	// Resuming playback
 	if (BGM->handle != NULL) {

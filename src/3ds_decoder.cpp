@@ -19,7 +19,6 @@
 #include "output.h"
 #include "filefinder.h"
 #include "player.h"
-#include <ogg/ogg.h>
 #include <tremor/ivorbiscodec.h>
 #include <tremor/ivorbisfile.h>
 
@@ -298,6 +297,10 @@ void UpdateAudioDecoderStream(){
 	u32 half_buf = Sound->audiobuf_size>>1;
 	int half_check = (Sound->block_idx)%2;
 	
+	if (Sound->pitch != audio_decoder->GetPitch()) {
+			audio_decoder->SetPitch(Sound->pitch);
+	}
+	
 	// Mono file
 	if ((!Sound->isStereo) || Player::use_dsp){
 		audio_decoder->Decode(Sound->audiobuf+(half_check*half_buf), half_buf);		
@@ -325,6 +328,7 @@ void CloseWav(){
 
 void CloseAudioDecoder(){
 	if (BGM->handle != NULL) fclose(BGM->handle);
+	audio_decoder.reset();
 }
 
 void CloseOgg(){
@@ -394,6 +398,7 @@ int OpenWav(FILE* stream, DecodedMusic* Sound){
 	}
 	
 	//Setting default streaming values
+	Sound->pitch = 100;
 	Sound->block_idx = 1;
 	if (res == 0) Sound->handle = stream;
 	else{
@@ -420,12 +425,12 @@ int OpenAudioDecoder(FILE* stream, DecodedMusic* Sound, std::string const& filen
 	if (strstr(filename.c_str(),".mid") != NULL){
 		#ifdef MIDI_DEBUG
 		samplerate = 11025;
-		Output::Warning("MIDI track detected, lowering samplerate to 11025 Hz.", filename.c_str());
+		Output::Warning("MIDI track detected, lowering samplerate to 11025 Hz.");
+		audio_decoder->SetFormat(11025, AudioDecoder::Format::S16, 2);
 		#else
-		Output::Warning("MIDI tracks currently unsupported.", filename.c_str());
+		Output::Warning("MIDI tracks currently unsupported (%s)", filename.c_str());
 		return -1;
 		#endif
-		audio_decoder->SetFormat(11025, AudioDecoder::Format::S16, 2);
 	}else if (int_format > AudioDecoder::Format::S16){
 		bool isCompatible = audio_decoder->SetFormat(samplerate, AudioDecoder::Format::S16, audiotype);
 		if (!isCompatible){
@@ -466,6 +471,7 @@ int OpenAudioDecoder(FILE* stream, DecodedMusic* Sound, std::string const& filen
 	}
 	
 	//Setting default streaming values
+	Sound->pitch = 100;
 	Sound->block_idx = 1;
 	Sound->handle = stream;
 	Sound->eof_idx = 0xFFFFFFFF;
@@ -542,6 +548,7 @@ int OpenOgg(FILE* stream, DecodedMusic* Sound){
 	}
 	
 	//Setting default streaming values
+	Sound->pitch = 100;
 	Sound->block_idx = 1;
 	if (res == 0) Sound->handle = (FILE*)vf; // We pass libogg filestream instead of stdio ones
 	else{
