@@ -35,13 +35,9 @@
 SceUID sfx_threads[AUDIO_CHANNELS];
 uint16_t bgm_chn = 0xDEAD;
 
-// osGetTime implementation
-uint64_t osGetTime(void){
-	return (sceKernelGetProcessTimeWide() / 1000);
-}
-
 // BGM audio streaming thread
 volatile bool termStream = false;
+volatile bool mustExit = false;
 DecodedMusic* BGM = NULL;
 SceUID BGM_Mutex;
 SceUID BGM_Thread;
@@ -102,6 +98,15 @@ static int sfxThread(unsigned int args, void* arg){
 	}
 	for (;;){
 		sceKernelWaitSema(SFX_Mutex[id], 1, NULL);
+		
+		// Check if the thread must be closed
+		if (mustExit){
+			if (id < 7) sceKernelSignalSema(SFX_Mutex[id+1], 1);
+			else mustExit = false;
+			sceAudioOutReleasePort(ch);
+			sceKernelExitThread(0);
+		}
+		
 		DecodedSound* sfx = sfx_sounds[output_idx++];
 		if (output_idx > 3) output_idx = 0;
 		
@@ -170,6 +175,11 @@ Psp2Audio::~Psp2Audio() {
 		BGM->closeCallback();
 		free(BGM);
 	}
+	
+	// Starting exit procedure for sfx threads
+	mustExit = true;
+	sceKernelSignalSema(SFX_Mutex[0], 1);
+	while (mustExit){} // Wait for threads exiting...
 	
 	// Deleting mutexs and sfx threads
 	sceKernelDeleteSema(BGM_Mutex);
