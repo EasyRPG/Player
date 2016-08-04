@@ -24,6 +24,11 @@
 #include "decoder_mpg123.h"
 #include "output.h"
 
+static bool init = false;
+static void Mpg123Decoder_deinit(void) {
+	mpg123_exit();
+}
+
 static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
 	FILE* f = reinterpret_cast<FILE*>(io);
 	return fread(buffer, 1, nbyte, f);
@@ -47,10 +52,15 @@ Mpg123Decoder::Mpg123Decoder() :
 {
 	music_type = "mp3";
 
-	err = mpg123_init();
-	if (err != MPG123_OK) {
-		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
-		return;
+	// only initialize library once
+	if (!init) {
+		err = mpg123_init();
+		if (err != MPG123_OK) {
+			error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
+			return;
+		}
+		// setup deinitialization
+		atexit(Mpg123Decoder_deinit);
 	}
 
 	handle.reset(mpg123_new(nullptr, &err));

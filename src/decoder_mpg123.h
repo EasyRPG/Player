@@ -59,8 +59,6 @@ private:
 	bool finished = false;
 
 	int frequency = 44100;
-
-	bool init = false;
 };
 
 #endif

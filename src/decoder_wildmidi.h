@@ -53,8 +53,6 @@ private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 
 	std::string filename;
-	bool init = false;
-	int frequency = 44100;
 #ifdef HAVE_WILDMIDI
 	midi* handle = NULL;
 #endif
