@@ -41,13 +41,9 @@ struct DecodedMusic{
 	uint32_t audiobuf_size;
 	uint32_t samplerate;
 	uint32_t orig_samplerate;
-	uint16_t bytepersample;
-	uint16_t format;
 	FILE* handle;
-	uint32_t audiobuf_offs;
-	uint64_t starttick;
-	uint32_t block_idx;
-	uint32_t eof_idx;
+	bool isNewTrack;
+	bool endedOnce;
 	bool isPlaying;
 	int fade_val;
 	int vol;

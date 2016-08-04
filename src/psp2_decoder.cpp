@@ -110,14 +110,12 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 
 void UpdateAudioDecoderStream(){
 	DecodedMusic* Sound = BGM;
-	Sound->block_idx++;	
-	int half_check = (Sound->block_idx)%2;
 	
 	if (Sound->cur_audiobuf == Sound->audiobuf) Sound->cur_audiobuf = Sound->audiobuf2;
 	else Sound->cur_audiobuf = Sound->audiobuf;
 	audio_decoder->Decode(Sound->cur_audiobuf, Sound->audiobuf_size);	
 	if (audio_decoder->GetLoopCount() > 0){ // EoF
-		if (Sound->eof_idx == 0xFFFFFFFF) Sound->eof_idx = Sound->block_idx + 1;
+		Sound->endedOnce = true;
 	}
 }
 
@@ -134,47 +132,23 @@ int OpenAudioDecoder(FILE* stream, DecodedMusic* Sound, std::string const& filen
 	audio_decoder->SetLooping(true);
 	AudioDecoder::Format int_format;
 	int samplerate;	
+	audio_decoder->SetFormat(48000, AudioDecoder::Format::S16, 2);
 	audio_decoder->GetFormat(samplerate, int_format, audiotype);
-	if (strstr(filename.c_str(),".mid") != NULL){
-		#ifdef MIDI_DEBUG
-		samplerate = 11025;
-		Output::Warning("MIDI track detected, lowering samplerate to 11025 Hz.", filename.c_str());
-		#else
-		Output::Warning("MIDI tracks currently unsupported.", filename.c_str());
-		return -1;
-		#endif
-		audio_decoder->SetFormat(11025, AudioDecoder::Format::S16, 2);
-	}else if (int_format > AudioDecoder::Format::S16){
-		bool isCompatible = audio_decoder->SetFormat(samplerate, AudioDecoder::Format::S16, audiotype);
-		if (!isCompatible){
-			Output::Warning("Unsupported music audiocodec (%s)", filename.c_str());
-			fclose(stream);
-			return -1;
-		}
-		int_format = AudioDecoder::Format::S16;
-	}
 	Sound->samplerate = samplerate;
 	
 	// Check for file audiocodec
-	if (int_format > AudioDecoder::Format::U8){
-		Sound->bytepersample = audiotype<<1;
-	}else{
-		Sound->bytepersample = audiotype;
-	}
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
 	
 	// Setting audiobuffer size
 	Sound->audiobuf_size = BGM_BUFSIZE;
-	Sound->audiobuf_offs = 0;
 	Sound->audiobuf = (uint8_t*)malloc(Sound->audiobuf_size);
 	Sound->audiobuf2 = (uint8_t*)malloc(Sound->audiobuf_size);
 	Sound->cur_audiobuf = Sound->audiobuf;	
 	
 	//Setting default streaming values
-	Sound->block_idx = 1;
 	Sound->handle = stream;
-	Sound->eof_idx = 0xFFFFFFFF;
+	Sound->endedOnce = false;
 	Sound->updateCallback = UpdateAudioDecoderStream;
 	Sound->closeCallback = CloseAudioDecoder;
 	

@@ -48,21 +48,33 @@ static int streamThread(unsigned int args, void* arg){
 		// A pretty bad way to close thread
 		if(termStream){
 			termStream = false;
+			if (bgm_chn != 0xDEAD){
+				sceAudioOutReleasePort(bgm_chn);
+				bgm_chn = 0xDEAD;
+			}
 			sceKernelExitThread(0);
 		}
 		
 		sceKernelWaitSema(BGM_Mutex, 1, NULL);
-		if (BGM == NULL || BGM->starttick == 0 || (!BGM->isPlaying)){
+		if (BGM == NULL || (!BGM->isPlaying)){
 			sceKernelSignalSema(BGM_Mutex, 1);
 			continue;
 		}
 		
 		// Seems like audio ports are thread dependant on PSVITA :/
 		if (bgm_chn == 0xDEAD){
-			bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM, BGM_BUFSIZE, BGM->orig_samplerate, SCE_AUDIO_OUT_MODE_STEREO);
+			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
+			bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM, BGM_BUFSIZE, BGM->orig_samplerate, audio_mode);
 			if (bgm_chn < 0) Output::Error("Cannot open BGM audio port. (0x%lX)", bgm_chn);
 			sceAudioOutSetConfig(bgm_chn, -1, -1, -1);
 			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &BGM->vol);	
+		}
+		
+		// Check if audio port needs a config change
+		if (BGM->isNewTrack){
+			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
+			sceAudioOutSetConfig(bgm_chn, BGM_BUFSIZE, BGM->orig_samplerate, audio_mode);
+			BGM->isNewTrack = false;
 		}
 		
 		// Audio streaming feature
@@ -143,7 +155,6 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 		sceKernelSignalSema(BGM_Mutex, 1);
 		return;
 	}else BGM = myFile;
-	BGM->starttick = 0;
 	
 	// Processing music info
 	int samplerate = BGM->samplerate;
@@ -151,11 +162,6 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 	
 	// Setting music volume
 	BGM->vol = volume * 327;
-	int vol = BGM->vol;
-	BGM->fade_val = fadein;
-	if (BGM->fade_val != 0){
-		vol = 0;
-	}
 
 	#ifndef NO_DEBUG
 	Output::Debug("Playing music %s:",file.c_str());
@@ -164,27 +170,21 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 	#endif
 	
 	// Starting BGM
+	BGM->isNewTrack = true;
 	BGM->isPlaying = true;
-	BGM->starttick = osGetTime();
 	sceKernelSignalSema(BGM_Mutex, 1);
 	
 }
 
 void Psp2Audio::BGM_Pause() {
 	sceKernelWaitSema(BGM_Mutex, 1, NULL);
-	if (BGM != NULL && BGM->isPlaying){
-		BGM->isPlaying = false;
-		BGM->starttick = osGetTime()-BGM->starttick; // Save current delta
-	}
+	if (BGM != NULL && BGM->isPlaying) BGM->isPlaying = false;
 	sceKernelSignalSema(BGM_Mutex, 1);
 }
 
 void Psp2Audio::BGM_Resume() {
 	sceKernelWaitSema(BGM_Mutex, 1, NULL);
-	if (BGM != NULL && (!BGM->isPlaying)){
-		BGM->isPlaying = true;
-		BGM->starttick = osGetTime()-BGM->starttick; // Restore starttick
-	}
+	if (BGM != NULL && (!BGM->isPlaying)) BGM->isPlaying = true;
 	sceKernelSignalSema(BGM_Mutex, 1);
 }
 
@@ -195,8 +195,7 @@ void Psp2Audio::BGM_Stop() {
 }
 
 bool Psp2Audio::BGM_PlayedOnce() const {
-	if (BGM == NULL) return false;
-	return (BGM->block_idx >= BGM->eof_idx);
+	return (BGM == NULL) ? false : BGM->endedOnce;
 }
 
 bool Psp2Audio::BGM_IsPlaying() const {
