@@ -159,7 +159,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, -2+layer));
 }
 
-void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool autotile) {
+void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col) {
 	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
 
 	if (!fast_blit && op == Bitmap::Transparent)
@@ -228,7 +228,7 @@ void TilemapLayer::Draw(int z_order) {
 							row = (id - 96) / 6;
 						}
 
-						DrawTile(*chipset, map_draw_x, map_draw_y, row, col, false);
+						DrawTile(*chipset, map_draw_x, map_draw_y, row, col);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
@@ -237,19 +237,19 @@ void TilemapLayer::Draw(int z_order) {
 						int row = 4 + animation_step_c;
 
 						// Draw the tile
-						DrawTile(*chipset, map_draw_x, map_draw_y, row, col, false);
+						DrawTile(*chipset, map_draw_x, map_draw_y, row, col);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
 						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
-						DrawTile(*autotiles_ab_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
+						DrawTile(*autotiles_ab_screen, map_draw_x, map_draw_y, pos.y, pos.x);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileD(tile.ID);
-						DrawTile(*autotiles_d_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
+						DrawTile(*autotiles_d_screen, map_draw_x, map_draw_y, pos.y, pos.x);
 					}
 				} else {
 					// If upper layer
@@ -271,7 +271,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 
 						// Draw the tile
-						DrawTile(*chipset, map_draw_x, map_draw_y, row, col, false);
+						DrawTile(*chipset, map_draw_x, map_draw_y, row, col);
 					}
 				}
 			}

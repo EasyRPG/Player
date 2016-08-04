@@ -2326,7 +2326,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		switch (com.parameters[1]) {
 		case 0:
 			// Any savestate available
-			result = FileFinder::HasSavegame(*FileFinder::CreateSaveDirectoryTree());
+			result = FileFinder::HasSavegame();
 			break;
 		case 1:
 			// Is Test Play mode?

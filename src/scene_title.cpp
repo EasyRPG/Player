@@ -144,7 +144,7 @@ void Scene_Title::CreateCommandWindow() {
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - command_window->GetHeight() / 2);
 	}
 	// Enable load game if available
-	continue_enabled = FileFinder::HasSavegame(*FileFinder::CreateSaveDirectoryTree());
+	continue_enabled = FileFinder::HasSavegame();
 	if (continue_enabled) {
 		command_window->SetIndex(1);
 	} else {
