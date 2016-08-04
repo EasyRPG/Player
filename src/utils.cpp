@@ -18,7 +18,6 @@
 // Headers
 #include "utils.h"
 #include <algorithm>
-#include <cctype>
 #include <random>
 
 namespace {
@@ -35,6 +34,11 @@ std::string Utils::UpperCase(const std::string& str) {
 	std::string result = str;
 	std::transform(result.begin(), result.end(), result.begin(), toupper);
 	return result;
+}
+
+bool Utils::EndsWith(const std::string &str, const std::string &end) {
+	return str.length() >= end.length() &&
+		0 == str.compare(str.length() - end.length(), end.length(), end);
 }
 
 std::u16string Utils::DecodeUTF16(const std::string& str) {
@@ -297,4 +301,57 @@ int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
 
 void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
+}
+
+#ifdef _3DS
+#  define EOF -1
+#endif
+
+// via https://stackoverflow.com/questions/6089231/
+std::string Utils::ReadLine(std::istream &is) {
+	std::string out;
+
+	std::istream::sentry se(is, true);
+	std::streambuf* sb = is.rdbuf();
+
+	for(;;) {
+        	int c = sb->sbumpc();
+		switch (c) {
+			case '\n':
+			return out;
+		case '\r':
+			if (sb->sgetc() == '\n') {
+				sb->sbumpc();
+			}
+			return out;
+		case EOF:
+			// Also handle the case when the last line has no line ending
+			if (out.empty()) {
+				is.setstate(std::ios::eofbit);
+			}
+			return out;
+		default:
+			out += (char)c;
+		}
+	}
+}
+
+std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::function<bool(char32_t)> predicate) {
+	std::u32string text = DecodeUTF32(str_to_tokenize);
+	std::vector<std::string> tokens;
+	std::u32string cur_token;	
+
+	for (char32_t& c : text) {
+		if (predicate(c)) {
+			tokens.push_back(EncodeUTF(cur_token));
+			cur_token.clear();
+			continue;
+		}
+
+		cur_token.push_back(c);
+	}
+
+	tokens.push_back(EncodeUTF(cur_token));
+
+	return tokens;
 }

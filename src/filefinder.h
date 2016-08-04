@@ -25,6 +25,7 @@
 #include <cstdio>
 #include <ios>
 #include <unordered_map>
+#include <vector>
 
 /**
  * FileFinder contains helper methods for finding case
@@ -43,14 +44,14 @@ namespace FileFinder {
 	 */
 	void Quit();
 
-	/*
-	* { case lowered path, real path }
-	*/
+	/**
+	 * { case lowered path, real path }
+	 */
 	typedef std::unordered_map<std::string, std::string> string_map;
 
-	/*
-	* { case lowered directory name, non directory file list }
-	*/
+	/**
+	 * { case lowered directory name, non directory file list }
+	 */
 	typedef std::unordered_map<std::string, string_map> sub_members_type;
 
 	struct DirectoryTree {
@@ -99,7 +100,7 @@ namespace FileFinder {
 	std::string FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name);
 
 	/**
-	 * Finds a file in the root of a custom project tree.
+	 * Finds a file from the root of a custom project tree.
 	 *
 	 * @param tree Project tree to search
 	 * @param name the path and name
@@ -183,9 +184,27 @@ namespace FileFinder {
 	 *
 	 * @param dir base directory.
 	 * @param name file name to be appended to dir.
-	 * @return normalized path string.
+	 * @return combined path
 	 */
 	std::string MakePath(std::string const& dir, std::string const& name);
+	
+	/**
+	 * Converts a path to the canonical equivalent.
+	 * This generates a path that does not contain ".." or "." directories.
+	 * 
+	 * @param path Path to normalize
+	 * @param initial_deepness How deep the passed path is relative to the game root
+	 * @return canonical path
+	 */
+	std::string MakeCanonical(std::string const& path, int initial_deepness);
+
+	/**
+	 * Splits a path in it's components.
+	 *
+	 * @param path Path to split
+	 * @return Vector containing path components
+	 */
+	std::vector<std::string> SplitPath(std::string const& path);
 
 	/**
 	 * GetDirectoryMembers member listing mode.

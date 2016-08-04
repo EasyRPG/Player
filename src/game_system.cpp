@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <fstream>
 #include <functional>
 #include "game_system.h"
 #include "async_handler.h"
@@ -26,6 +27,8 @@
 #include "output.h"
 #include "graphics.h"
 #include "main_data.h"
+#include "player.h"
+#include "reader_util.h"
 #include "scene_save.h"
 
 namespace {
@@ -307,15 +310,47 @@ void Game_System::SetTransition(int which, int transition) {
 
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
+	bgm_pending = false;
+
 	std::string const path = FileFinder::FindMusic(result->file);
 	if (path.empty()) {
 		Output::Debug("Music not found: %s", result->file.c_str());
 		return;
 	}
 
-	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+	if (Utils::EndsWith(result->file, ".link")) {
+		// Handle Ineluki's MP3 patch
+		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::in);
+		if (!stream) {
+			Output::Warning("Ineluki link read error: %s", path.c_str());
+			return;
+		}
 
-	bgm_pending = false;
+		// The first line contains the path to the actual audio file to play
+		std::string line = Utils::ReadLine(*stream.get());
+		line = ReaderUtil::Recode(line, Player::encoding);
+		
+		Output::Debug("Ineluki link file: %s -> %s", path.c_str(), line.c_str());
+
+		#ifdef EMSCRIPTEN
+		Output::Warning("Ineluki MP3 patch unsupported in the web player");
+		return;
+		#else
+		std::string line_canonical = FileFinder::MakeCanonical(line, 1);
+		
+		std::string ineluki_path = FileFinder::FindDefault(line_canonical);
+		if (ineluki_path.empty()) {
+			Output::Debug("Music not found: %s", line_canonical.c_str());
+			return;
+		}
+		
+		Audio().BGM_Play(ineluki_path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
+		
+		return;
+		#endif
+	}
+	
+	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
 void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
