@@ -11,7 +11,7 @@ CPPFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
 OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
 
-LIBS = -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
+LIBS = -lsndfile -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
 	-lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub	\
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lm -lSceNet_stub \
 	-lSceNetCtl_stub -lScePgf_stub -ljpeg -lfreetype -lc \
@@ -23,7 +23,7 @@ PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
 CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_SPEEXDSP \
-		-DSUPPORT_AUDIO -DUSE_CACHE \
+		-DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
 		-DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
 		-I$(VITASDK)/arm-vita-eabi/include/pixman-1
