@@ -30,6 +30,9 @@
 #endif
 #include "psp2_decoder.h"
 
+// Internal stuffs
+#define AUDIO_CHANNELS 8
+SceUID sfx_threads[AUDIO_CHANNELS];
 uint16_t bgm_chn = 0xDEAD;
 
 // osGetTime implementation
@@ -41,6 +44,7 @@ uint64_t osGetTime(void){
 volatile bool termStream = false;
 DecodedMusic* BGM = NULL;
 SceUID BGM_Mutex;
+SceUID BGM_Thread;
 static int streamThread(unsigned int args, void* arg){
 	
 	for(;;) {
@@ -62,18 +66,12 @@ static int streamThread(unsigned int args, void* arg){
 		}
 		
 		// Seems like audio ports are thread dependant on PSVITA :/
-		if (bgm_chn == 0xDEAD){
-			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
-			bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM, BGM_BUFSIZE, BGM->orig_samplerate, audio_mode);
-			if (bgm_chn < 0) Output::Error("Cannot open BGM audio port. (0x%lX)", bgm_chn);
-			sceAudioOutSetConfig(bgm_chn, -1, -1, -1);
-			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &BGM->vol);	
-		}
-		
-		// Check if audio port needs a config change
 		if (BGM->isNewTrack){
 			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
-			sceAudioOutSetConfig(bgm_chn, BGM_BUFSIZE, BGM->orig_samplerate, audio_mode);
+			int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
+			if (bgm_chn == 0xDEAD) bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM, nsamples, BGM->orig_samplerate, audio_mode);
+			sceAudioOutSetConfig(bgm_chn, nsamples, BGM->orig_samplerate, audio_mode);
+			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &BGM->vol);	
 			BGM->isNewTrack = false;
 		}
 		
@@ -89,24 +87,69 @@ static int streamThread(unsigned int args, void* arg){
 	}
 }
 
+// SFX audio thread
+SceUID SFX_Mutex;
+DecodedSound* sfx_sounds[4];
+uint8_t output_idx = 0;
+uint8_t input_idx = 0;
+static int sfxThread(unsigned int args, void* arg){
+	int ch = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, 64, 48000, SCE_AUDIO_OUT_MODE_STEREO);
+	if (ch < 0){
+		Output::Warning("SFX Thread: Cannot open audio port");
+		sceKernelExitThread(0);
+	}
+	for (;;){
+		sceKernelWaitSema(SFX_Mutex, 1, NULL);
+		DecodedSound* sfx = sfx_sounds[output_idx++];
+		if (output_idx > 3) output_idx = 0;
+		
+		// Preparing audio port
+		uint8_t audio_mode = sfx->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
+		int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
+		sceAudioOutSetConfig(ch, nsamples, sfx->samplerate, audio_mode);
+		sceAudioOutSetVolume(ch, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &sfx->vol);	
+		
+		// Playing sound
+		while (!sfx->endedOnce){
+			sfx->updateCallback(sfx);
+			sceAudioOutOutput(bgm_chn, sfx->cur_audiobuf);
+		}
+		
+		// Freeing sound
+		free(sfx->audiobuf);
+		free(sfx->audiobuf2);
+		sfx->closeCallback(sfx);
+		free(sfx);
+		
+	}
+	
+}
+
 Psp2Audio::Psp2Audio() :
 	bgm_volume(0)
 {
 	
-	// Creating a mutex
+	// Creating mutexs
 	BGM_Mutex = sceKernelCreateSema("BGM Mutex", 0, 1, 1, NULL);
+	SFX_Mutex = sceKernelCreateSema("SFX Mutex", 0, 0, 1, NULL);
 	
 	// Starting audio thread for BGM
-	SceUID audiothread = sceKernelCreateThread("Audio Thread", &streamThread, 0x10000100, 0x10000, 0, 0, NULL);
-	int res = sceKernelStartThread(audiothread, sizeof(audiothread), &audiothread);
+	BGM_Thread = sceKernelCreateThread("BGM Thread", &streamThread, 0x10000100, 0x10000, 0, 0, NULL);
+	int res = sceKernelStartThread(BGM_Thread, sizeof(BGM_Thread), &BGM_Thread);
 	if (res != 0){
 		Output::Error("Failed to init audio thread (0x%x)", res);
 		return;
 	}
 	
-	#ifdef USE_CACHE
-	initCache();
-	#endif
+	// Starting audio threads for SFX
+	for (int i=0;i < AUDIO_CHANNELS; i++){
+		sfx_threads[i] = sceKernelCreateThread("BGM Thread", &sfxThread, 0x10000100, 0x10000, 0, 0, NULL);
+		int res = sceKernelStartThread(sfx_threads[i], sizeof(sfx_threads[i]), &sfx_threads[i]);
+		if (res != 0){
+			Output::Error("Failed to init audio thread (0x%x)", res);
+			return;
+		}
+	}
 	
 }
 
@@ -119,15 +162,12 @@ Psp2Audio::~Psp2Audio() {
 	// Closing BGM streaming thread
 	termStream = true;
 	while (termStream){} // Wait for thread exiting...
+	sceKernelDeleteThread(BGM_Thread);
 	if (BGM != NULL){
 		free(BGM->audiobuf);
 		BGM->closeCallback();
 		free(BGM);
 	}
-	
-	#ifdef USE_CACHE
-	freeCache();
-	#endif
 	
 	// Deleting mutex
 	sceKernelDeleteSema(BGM_Mutex);
@@ -221,54 +261,18 @@ void Psp2Audio::BGM_Fade(int fade) {
 
 void Psp2Audio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	
-	// Init needed vars
-	bool isStereo = false;
-	int audiobuf_size;
-	DecodedSound myFile;
+	// Allocating DecodedSound object
+	DecodedSound* myFile = (DecodedSound*)malloc(sizeof(DecodedSound));
 	
-	#ifdef USE_CACHE
-	// Looking if the sound is in sounds cache
-	int cacheIdx = lookCache(file.c_str());
-	if (cacheIdx < 0){
-	#endif
+	// Opening the file
+	int res = DecodeSound(file, myFile);
+	if (res < 0) return;
 	
-		// Opening and decoding the file
-		int res = DecodeSound(file, &myFile);
-		if (res < 0) return;
-		#ifdef USE_CACHE
-		else sprintf(soundtable[res],"%s",file.c_str());
-		#endif
-		
-	#ifdef USE_CACHE
-	}else myFile = decodedtable[cacheIdx];
-	#endif
+	// Passing sound to an sfx thread
+	sfx_sounds[input_idx++] = myFile;
+	if (input_idx > 3) input_idx = 0;
+	sceKernelSignalSema(SFX_Mutex, 1);
 	
-	// Processing sound info
-	uint8_t* audiobuf = myFile.audiobuf;
-	int samplerate = myFile.samplerate;
-	audiobuf_size = myFile.audiobuf_size;
-	
-	isStereo = myFile.isStereo;
-	
-	#ifndef NO_DEBUG
-	Output::Debug("Playing sound %s:",file.c_str());
-	Output::Debug("Samplerate: %i",samplerate);
-	Output::Debug("Buffer Size: %i bytes",audiobuf_size);
-	#endif
-	
-	// Playing the sound
-	int cur_pos = 0;
-	int vol = volume * 327;
-	int buf_size = SCE_AUDIO_MAX_LEN;
-	if (audiobuf_size < SCE_AUDIO_MAX_LEN) buf_size = audiobuf_size;
-	int chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_VOICE, buf_size, samplerate, SCE_AUDIO_OUT_MODE_STEREO);
-	sceAudioOutSetConfig(chn, -1, -1, -1);
-	sceAudioOutSetVolume(chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &vol);
-	while (cur_pos < audiobuf_size){
-		sceAudioOutOutput(chn, &audiobuf[cur_pos]);
-		cur_pos += buf_size;
-	}
-	sceAudioOutReleasePort(chn);
 }
 
 void Psp2Audio::SE_Stop() {

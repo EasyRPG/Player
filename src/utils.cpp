@@ -303,7 +303,7 @@ void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
 }
 
-#ifdef _3DS
+#if (defined(_3DS) || defined(PSP2))
 #  define EOF -1
 #endif
 

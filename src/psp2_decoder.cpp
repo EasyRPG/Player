@@ -30,53 +30,55 @@
 #endif
 extern DecodedMusic* BGM;
 std::unique_ptr<AudioDecoder> audio_decoder;
+std::unique_ptr<AudioDecoder> sfx_decoder[8];
+uint8_t cur_decoder = 0;
 
-
-int DecodeWav(FILE* stream, DecodedSound* Sound){
+void UpdateSoundDecoderStream(DecodedSound* Sound){
 	
-	// Grabbing info from the header
-	uint16_t audiotype;
-	uint32_t chunk;
-	uint32_t jump;
-	uint16_t bytepersample;
-	fseek(stream, 16, SEEK_SET);
-	fread(&jump, 4, 1, stream);
-	fread(&Sound->format, 2, 1, stream);
-	fread(&audiotype, 2, 1, stream);
-	fread(&Sound->samplerate, 4, 1, stream);	
+	if (Sound->cur_audiobuf == Sound->audiobuf) Sound->cur_audiobuf = Sound->audiobuf2;
+	else Sound->cur_audiobuf = Sound->audiobuf;
+	sfx_decoder[Sound->id]->Decode(Sound->cur_audiobuf, Sound->audiobuf_size);	
+	if (sfx_decoder[Sound->id]->IsFinished()){ // EoF
+		Sound->endedOnce = true;
+	}
+}
+
+void CloseSoundDecoder(DecodedSound* Sound){
+	if (Sound->handle != NULL) fclose(Sound->handle);
+	sfx_decoder[Sound->id].reset();
+}
+
+int OpenSoundDecoder(uint8_t id, FILE* stream, DecodedSound* Sound, std::string const& filename){
+	
+	// Initializing internal audio decoder
+	int audiotype;
+	fseek(stream, 0, SEEK_SET);
+	if (!sfx_decoder[id]->Open(stream)) Output::Error("An error occured in audio decoder (%s)", audio_decoder->GetError().c_str());
+	sfx_decoder[id]->SetLooping(false);
+	AudioDecoder::Format int_format;
+	int samplerate;	
+	sfx_decoder[id]->SetFormat(48000, AudioDecoder::Format::S16, 2);
+	sfx_decoder[id]->GetFormat(samplerate, int_format, audiotype);
+	Sound->samplerate = samplerate;
+	Sound->id = id;
+	
+	// Check for file audiocodec
 	if (audiotype == 2) Sound->isStereo = true;
 	else Sound->isStereo = false;
-	fseek(stream, 32, SEEK_SET);
-	fread(&bytepersample, 2, 1, stream);
-	Sound->bytepersample = bytepersample;
-	fseek(stream, 20, SEEK_SET);
 	
-	// Skipping to audiobuffer start
-	while (chunk != 0x61746164){
-		fseek(stream, jump, SEEK_CUR);
-		fread(&chunk, 4, 1, stream);
-		fread(&jump, 4, 1, stream);
-	}
-	
-	// Getting audiobuffer size
-	int start = ftell(stream);
-	fseek(stream, 0, SEEK_END);
-	int end = ftell(stream);
-	Sound->audiobuf_size = end - start;
-	fseek(stream, start, SEEK_SET);
-	#ifdef USE_CACHE
-	allocCache(Sound);
-	#else
+	// Setting audiobuffer size
+	Sound->audiobuf_size = BGM_BUFSIZE;
 	Sound->audiobuf = (uint8_t*)malloc(Sound->audiobuf_size);
-	#endif
+	Sound->audiobuf2 = (uint8_t*)malloc(Sound->audiobuf_size);
+	Sound->cur_audiobuf = Sound->audiobuf;	
 	
-	fread(Sound->audiobuf, Sound->audiobuf_size, 1, stream);		
-	fclose(stream);
-	#ifdef USE_CACHE
-	return LAST_ENTRY;
-	#else
+	//Setting default streaming values
+	Sound->handle = stream;
+	Sound->endedOnce = false;
+	Sound->updateCallback = UpdateSoundDecoderStream;
+	Sound->closeCallback = CloseSoundDecoder;
+	
 	return 0;
-	#endif
 }
 
 int DecodeSound(std::string const& filename, DecodedSound* Sound){
@@ -88,15 +90,14 @@ int DecodeSound(std::string const& filename, DecodedSound* Sound){
 		return -1;
 	}
 	
-	// Reading and parsing the magic
-	uint32_t magic;
-	fread(&magic, 4, 1, stream);
-	if (magic == 0x46464952) return DecodeWav(stream, Sound);
-	else{
-		fclose(stream);
-		Output::Warning("Unsupported sound format (%s)", filename.c_str());
-		return -1;
-	}
+	// Trying to use internal decoder
+	uint8_t id = cur_decoder++;
+	if (cur_decoder > 7) cur_decoder = 0;
+	sfx_decoder[id] = AudioDecoder::Create(stream, filename);
+	if (sfx_decoder[id] != NULL) return OpenSoundDecoder(id, stream, Sound, filename);
+	fclose(stream);
+	Output::Warning("Unsupported sound format (%s)", filename.c_str());
+	return -1;
 	
 }
 

@@ -21,16 +21,26 @@
 #include <string>
 #include "audio_decoder.h"
 
-#define BGM_BUFSIZE 8192 // Max dimension of BGM buffer size
+#define BGM_BUFSIZE 8192 // Max dimension of BGM/SFX buffer size
 #define OGG_BUFSIZE 2048 // Max dimension of PCM16 decoded block by libogg
 
 struct DecodedSound{
-	bool isStereo;
 	uint8_t* audiobuf;
+	uint8_t* audiobuf2;
+	uint8_t* cur_audiobuf;
 	uint32_t audiobuf_size;
 	uint32_t samplerate;
-	uint16_t bytepersample;
-	uint16_t format;
+	uint32_t orig_samplerate;
+	FILE* handle;
+	bool isNewTrack;
+	bool endedOnce;
+	bool isPlaying;
+	bool isStereo;
+	int fade_val;
+	int vol;
+	void (*updateCallback)(DecodedSound*);
+	void (*closeCallback)(DecodedSound*);
+	uint8_t id;
 };
 
 struct DecodedMusic{
