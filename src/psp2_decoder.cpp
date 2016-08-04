@@ -44,7 +44,6 @@ void UpdateSoundDecoderStream(DecodedSound* Sound){
 }
 
 void CloseSoundDecoder(DecodedSound* Sound){
-	if (Sound->handle != NULL) fclose(Sound->handle);
 	sfx_decoder[Sound->id].reset();
 }
 
@@ -121,7 +120,7 @@ void UpdateAudioDecoderStream(){
 }
 
 void CloseAudioDecoder(){
-	if (BGM->handle != NULL) fclose(BGM->handle);
+	audio_decoder.reset();
 }
 
 int OpenAudioDecoder(FILE* stream, DecodedMusic* Sound, std::string const& filename){
