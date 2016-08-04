@@ -111,6 +111,11 @@ AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"]
   AC_MSG_WARN([a2x is required to create the manual page]))
 AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
 
+# bash completion
+PKG_CHECK_VAR([bashcompinstdir],[bash-completion],[completionsdir])
+AM_CONDITIONAL([HAVE_BASHCOMP], [test "x$bashcompinstdir" != "x"])
+AC_SUBST(bashcompinstdir)
+
 # Doxygen source documentation
 m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])
 DX_DOXYGEN_FEATURE(OFF)

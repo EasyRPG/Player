@@ -365,6 +365,12 @@ dist_man6_MANS = resources/easyrpg-player.6
 endif
 endif
 
+# bash completion
+if HAVE_BASHCOMP
+bashcompdir = @bashcompinstdir@
+dist_bashcomp_DATA = resources/unix/bash-completion/easyrpg-player
+endif
+
 # FIXME make filefinder work without external scripting
 check_PROGRAMS = output utils directorytree
 TESTS = output utils directorytree
