@@ -1,0 +1,81 @@
+# bash completion script for easyrpg-player
+# (c) carstene1ns <dev f4ke de> 2016
+# available under the MIT license
+
+_easyrpg-player ()
+{
+  local cur prev
+
+  # some of this boilerplate is deprecated
+  _init_completion || return
+  COMPREPLY=()
+  cur=${COMP_WORDS[COMP_CWORD]}
+  prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  # all possible options
+  ouropts='--battle-test --disable-audio --disable-rtp --encoding --engine \
+           --fullscreen --show-fps --hide-title --load-game-id --new-game \
+           --project-path --seed --start-map-id --start-position --save-path \
+           --start-party --test-play --window -v --version -h --help'
+  rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay \
+             Window window'
+  engines='rpg2k rpg2k3 rpg2k3e'
+
+  # first list all special cases
+  case $prev in
+    # supported engines
+    --engine)
+      COMPREPLY=($(compgen -W "$engines" -- $cur))
+      return
+      ;;
+    # load map files
+    --start-map-id)
+      # broken, disabled for now
+      #_filedir '@(lmu|emu)'
+      return
+      ;;
+    # load save files
+    --load-game-id)
+      # broken, disabled for now
+      #_filedir '@(lsd|esd)'
+      return
+      ;;
+    # set game directory
+    --@(project-path|save-path))
+      _filedir -d
+      return
+      ;;
+    # argument required but no completions available
+    --@(battle-test|encoding|seed|start-position|start-party)| \
+    BattleTest|battletest)
+      return
+      ;;
+    # these have no argument and shall be used exclusively
+    -@(v|-version|h|-help))
+      return
+      ;;
+    # new option
+    *)
+      COMPREPLY=($(compgen -W "$ouropts $rpgrtopts" -- $cur))
+      return
+      ;;
+  esac
+
+  case $cur in
+    # RPG_RT compatible options
+    B*|b*|H*|h*|T*|t*|W*|w*)
+      COMPREPLY=($(compgen -W "$rpgrtopts" -- $cur))
+      return
+      ;;
+    # catch all single options
+    -*)
+      COMPREPLY=($(compgen -W "$ouropts" -- $cur))
+      return
+      ;;
+  esac
+
+  return
+} &&
+complete -F _easyrpg-player easyrpg-player
+
+# eof
