@@ -140,6 +140,7 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 	int res = DecodeMusic(file, myFile);
 	if (res < 0){
 		free(myFile);
+		sceKernelSignalSema(BGM_Mutex, 1);
 		return;
 	}else BGM = myFile;
 	BGM->starttick = 0;
@@ -171,7 +172,7 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 
 void Psp2Audio::BGM_Pause() {
 	sceKernelWaitSema(BGM_Mutex, 1, NULL);
-	if (BGM->isPlaying && BGM != NULL){
+	if (BGM != NULL && BGM->isPlaying){
 		BGM->isPlaying = false;
 		BGM->starttick = osGetTime()-BGM->starttick; // Save current delta
 	}
@@ -180,7 +181,7 @@ void Psp2Audio::BGM_Pause() {
 
 void Psp2Audio::BGM_Resume() {
 	sceKernelWaitSema(BGM_Mutex, 1, NULL);
-	if (!BGM->isPlaying && BGM != NULL){
+	if (BGM != NULL && (!BGM->isPlaying)){
 		BGM->isPlaying = true;
 		BGM->starttick = osGetTime()-BGM->starttick; // Restore starttick
 	}
