@@ -65,7 +65,9 @@ public:
 		Row,
 		Order,
 		Wait,
-		Quit
+		Quit,
+		// EasyRPG extra
+		Debug = 100
 	};
 
 private:

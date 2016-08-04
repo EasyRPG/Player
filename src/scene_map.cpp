@@ -158,6 +158,17 @@ void Scene_Map::Update() {
 		// Prevent calling when disabled or the main interpreter is running
 		if (Game_System::GetAllowMenu() && !Game_Map::GetInterpreter().IsRunning()) {
 			Game_Temp::menu_calling = true;
+		} else if (Player::debug_flag) {
+			if (Input::IsPressed(Input::SHIFT)) {
+				// Menu can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
+				debug_menuoverwrite_counter++;
+				if (debug_menuoverwrite_counter >= 5) {
+					Game_Temp::menu_calling = true;
+					debug_menuoverwrite_counter = 0;
+				}
+			} else {
+				debug_menuoverwrite_counter = 0;
+			}
 		}
 	}
 

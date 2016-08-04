@@ -78,8 +78,10 @@ void Window_VarList::UpdateList(int first_value){
 }
 
 void Window_VarList::SetShowSwitch(bool _switch) {
-	show_switch = _switch;
-	Refresh();
+	if (show_switch != _switch) {
+		show_switch = _switch;
+		Refresh();
+	}
 }
 
 void Window_VarList::SetActive(bool nactive) {

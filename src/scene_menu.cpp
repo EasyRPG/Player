@@ -26,10 +26,10 @@
 #include "game_temp.h"
 #include "input.h"
 #include "player.h"
+#include "scene_debug.h"
 #include "scene_end.h"
 #include "scene_equip.h"
 #include "scene_item.h"
-#include "scene_map.h"
 #include "scene_skill.h"
 #include "scene_order.h"
 #include "scene_save.h"
@@ -74,16 +74,21 @@ void Scene_Menu::CreateCommandWindow() {
 	std::vector<std::string> options;
 
 	if (Player::IsRPG2k()) {
-		command_options.resize(5);
-		command_options[0] = Item;
-		command_options[1] = Skill;
-		command_options[2] = Equipment;
-		command_options[3] = Save;
-		command_options[4] = Quit;
+		command_options.push_back(Item);
+		command_options.push_back(Skill);
+		command_options.push_back(Equipment);
+		command_options.push_back(Save);
+		if (Player::debug_flag) {
+			command_options.push_back(Debug);
+		}
+		command_options.push_back(Quit);
 	} else {
 		for (std::vector<int16_t>::iterator it = Data::system.menu_commands.begin();
 			it != Data::system.menu_commands.end(); ++it) {
 				command_options.push_back((CommandOptionType)*it);
+		}
+		if (Player::debug_flag) {
+			command_options.push_back(Debug);
 		}
 		command_options.push_back(Quit);
 	}
@@ -116,6 +121,9 @@ void Scene_Menu::CreateCommandWindow() {
 		case Wait:
 			options.push_back(Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
+		case Debug:
+			options.push_back("Debug");
+			break;
 		default:
 			options.push_back(Data::terms.menu_quit);
 			break;
@@ -135,6 +143,7 @@ void Scene_Menu::CreateCommandWindow() {
 			}
 		case Wait:
 		case Quit:
+		case Debug:
 			break;
 		case Order:
 			if (Main_Data::game_party->GetActors().size() <= 1) {
@@ -200,6 +209,10 @@ void Scene_Menu::UpdateCommand() {
 			Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
 			command_window->SetItemText(menu_index,
 				Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
+			break;
+		case Debug:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Scene::Push(std::make_shared<Scene_Debug>());
 			break;
 		case Quit:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));

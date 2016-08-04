@@ -67,6 +67,7 @@ private:
 	bool from_save;
 	bool auto_transition = false;
 	bool auto_transition_erase = false;
+	int debug_menuoverwrite_counter = 0;
 };
 
 #endif
