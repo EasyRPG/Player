@@ -19,8 +19,13 @@
 #define _EASYRPG_3DS_CACHE_H_ 
  
 #ifdef USE_CACHE
+#ifdef _3DS
 #include <3ds.h>
 #include "3ds_decoder.h"
+#endif
+#ifdef PSP2
+#include "psp2_decoder.h"
+#endif
 #endif
 
 #define MAX_SOUNDS 32 // Max number of storable sounds

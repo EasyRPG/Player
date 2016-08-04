@@ -80,6 +80,8 @@ void Main_Data::Init() {
 			char gekko_dir[256];
 			getcwd(gekko_dir, 255);
 			project_path = std::string(gekko_dir);
+#elif defined(PSP2)
+			project_path = "ux0:/data/easyrpg-player";
 #elif defined(_3DS)
 #   ifndef CITRA3DS_COMPATIBLE
 			// Check if romFs has some files inside or not
@@ -107,6 +109,7 @@ void Main_Data::Init() {
 					FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
 					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
 					FSUSER_CloseArchive(archive);
+
 					
 					save_path = mainDir;
 				}
