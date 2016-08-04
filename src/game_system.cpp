@@ -317,8 +317,6 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 	}
 
 	if (Utils::EndsWith(result->file, ".link")) {
-		Output::Debug("Ineluki link file: %s", path.c_str());
-		
 		// Handle Ineluki's MP3 patch
 		std::shared_ptr<std::fstream> stream = FileFinder::openUTF8(path, std::ios_base::in);
 		if (!stream) {
@@ -329,7 +327,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 		// The first line contains the path to the actual audio file to play
 		std::string line = Utils::ReadLine(*stream.get());
 		
-		Output::Debug("Linking to: %s", line.c_str());		
+		Output::Debug("Ineluki link file: %s -> %s", path.c_str(), line.c_str());
 
 		#ifdef EMSCRIPTEN
 		Output::Warning("Ineluki MP3 patch unsupported in the web player");
@@ -357,7 +355,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
 	if (item != se_request_ids.end()) {
 		se_request_ids.erase(item);
 	}
-	
+
 	std::string const path = FileFinder::FindSound(result->file);
 	if (path.empty()) {
 		Output::Debug("Sound not found: %s", result->file.c_str());

@@ -205,7 +205,6 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 		// Parsing MP3s seems to be the only reliable way to detect them
 		if (Mpg123Decoder::IsMp3(file)) {
-			Output::Debug("MP3 heuristic: %s", filename.c_str());
 			fseek(file, 0, SEEK_SET);
 #  ifdef USE_AUDIO_RESAMPLER
 			mp3dec = new AudioResampler(new Mpg123Decoder());
