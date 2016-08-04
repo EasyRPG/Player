@@ -142,7 +142,7 @@ void Psp2Ui::UpdateDisplay() {
 			vita2d_draw_texture_scale(main_texture, 160, 32, 2.0, 2.0);
 			break;
 		case 1: // 725x544
-			vita2d_draw_texture_scale(main_texture, 53, 0, 2.266, 2.266);
+			vita2d_draw_texture_scale(main_texture, 117, 0, 2.266, 2.266);
 			break;
 		case 2: // 960x544
 			vita2d_draw_texture_scale(main_texture, 0, 0, 3, 2.266);
