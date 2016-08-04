@@ -65,6 +65,7 @@ AS_IF([test "x$with_libwildmidi" = "xyes"],[
 	],[
 		AC_MSG_CHECKING([for WILDMIDI])
 		AC_MSG_RESULT([assuming yes])
+		AC_DEFINE(HAVE_WILDMIDI,[1],[Enable Midi support provided by libwildmidi])
 	])
 ])
 AC_ARG_WITH([oggvorbis],[AS_HELP_STRING([--without-oggvorbis],
