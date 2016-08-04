@@ -27,6 +27,8 @@
 #include "output.h"
 #include "graphics.h"
 #include "main_data.h"
+#include "player.h"
+#include "reader_util.h"
 #include "scene_save.h"
 
 namespace {
@@ -326,6 +328,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 
 		// The first line contains the path to the actual audio file to play
 		std::string line = Utils::ReadLine(*stream.get());
+		line = ReaderUtil::Recode(line, Player::encoding);
 		
 		Output::Debug("Ineluki link file: %s -> %s", path.c_str(), line.c_str());
 
