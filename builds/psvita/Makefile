@@ -11,7 +11,8 @@ CPPFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
 OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
 
-LIBS = -lspeexdsp -lsndfile -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
+LIBS = -lvorbisfile -logg -lvorbis -lspeexdsp -lsndfile \
+	-lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
 	-lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub	\
 	-lSceSysmodule_stub -lSceCtrl_stub -lm \
 	-lScePgf_stub -ljpeg -lfreetype -lc \
@@ -24,7 +25,7 @@ CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
 CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
-		-DHAVE_MPG123 -DWANT_FMMIDI=1 \
+		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
 		-I$(VITASDK)/arm-vita-eabi/include/pixman-1
 CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11
