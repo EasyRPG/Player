@@ -31,6 +31,7 @@
 #include <psp2/types.h>
 #include <psp2/display.h>
 #include <psp2/gxm.h>
+#include <psp2/power.h>
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
@@ -73,6 +74,9 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new Psp2Audio());
 	#endif
+	
+	scePowerSetArmClockFrequency(444);
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
 	
 }
 
@@ -133,6 +137,18 @@ void Psp2Ui::ProcessEvents() {
 	bool old_state = trigger_state;
 	trigger_state = (input.buttons & SCE_CTRL_RTRIGGER);
 	if ((trigger_state != old_state) && trigger_state) zoom_state = ((zoom_state + 1) % 3);
+	
+	// Left analog support
+	if (input.ly > 170) keys[Input::Keys::UP] = true;
+	else if (input.ly < 50) keys[Input::Keys::DOWN] = true;
+	else if (input.lx > 170) keys[Input::Keys::RIGHT] = true;
+	else if (input.lx < 50) keys[Input::Keys::LEFT] = true;
+	
+	// Right analog support for extra buttons
+	if (input.ry > 170) keys[Input::Keys::N1] = true;
+	else if (input.ry < 50) keys[Input::Keys::N3] = true;
+	else if (input.rx > 170) keys[Input::Keys::N5] = true;
+	else if (input.rx < 50) keys[Input::Keys::N9] = true;
 	
 }
 
