@@ -44,6 +44,8 @@ AudioInterface& Psp2Ui::GetAudio() {
 }
 #endif
 
+int _newlib_heap_size_user = 192 * 1024 * 1024;
+
 Psp2Ui::Psp2Ui(int width, int height) :
 	BaseUi() {
 	
