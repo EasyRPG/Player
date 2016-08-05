@@ -11,10 +11,10 @@ CPPFILES   := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
 OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
 
-LIBS = -lsndfile -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
+LIBS = -lspeexdsp -lsndfile -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
 	-lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub	\
-	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lm -lSceNet_stub \
-	-lSceNetCtl_stub -lScePgf_stub -ljpeg -lfreetype -lc \
+	-lSceSysmodule_stub -lSceCtrl_stub -lm \
+	-lScePgf_stub -ljpeg -lfreetype -lc \
 	-lScePower_stub -lSceCommonDialog_stub -lpng16 -lz \
 	-lmpg123 -lSceAudio_stub
 
@@ -22,7 +22,7 @@ LIBS = -lsndfile -lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
-CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_SPEEXDSP \
+CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
 		-DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
