@@ -31,14 +31,14 @@
 #include "psp2_decoder.h"
 
 // Internal stuffs
-#define AUDIO_CHANNELS 7
+#define AUDIO_CHANNELS 7 // PSVITA has 8 audio channels but one is used for BGM
+#define SFX_QUEUE_SIZE 8
 SceUID sfx_threads[AUDIO_CHANNELS];
 uint16_t bgm_chn = 0xDEAD;
 extern std::unique_ptr<AudioDecoder> audio_decoder;
 
 // BGM audio streaming thread
 volatile bool termStream = false;
-volatile bool mustExit = false;
 DecodedMusic* BGM = NULL;
 SceUID BGM_Mutex;
 SceUID BGM_Thread;
@@ -81,7 +81,6 @@ static int streamThread(unsigned int args, void* arg){
 		if (dec_vol != vol){
 			vol = dec_vol * 327;
 			int vol_stereo[] = {vol, vol};
-			Output::Post("%ld", vol);
 			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vol_stereo);
 			vol = dec_vol;
 		}
@@ -100,31 +99,32 @@ static int streamThread(unsigned int args, void* arg){
 }
 
 // SFX audio thread
-SceUID SFX_Mutex[AUDIO_CHANNELS];
-DecodedSound* sfx_sounds[4];
-uint8_t thread_idx = 0;
+SceUID SFX_Mutex;
+volatile bool mustExit = false;
+DecodedSound* sfx_sounds[SFX_QUEUE_SIZE];
 uint8_t output_idx = 0;
 uint8_t input_idx = 0;
+uint8_t sfx_exited = 0;
 static int sfxThread(unsigned int args, void* arg){
-	uint8_t id = thread_idx++;
 	int ch = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, 64, 48000, SCE_AUDIO_OUT_MODE_STEREO);
 	if (ch < 0){
 		Output::Warning("SFX Thread: Cannot open audio port");
 		sceKernelExitThread(0);
 	}
 	for (;;){
-		sceKernelWaitSema(SFX_Mutex[id], 1, NULL);
+		sceKernelWaitSema(SFX_Mutex, 1, NULL);
 		
 		// Check if the thread must be closed
 		if (mustExit){
-			if (id < 7) sceKernelSignalSema(SFX_Mutex[id+1], 1);
+			sfx_exited++;
+			if (sfx_exited < AUDIO_CHANNELS) sceKernelSignalSema(SFX_Mutex, 1);
 			else mustExit = false;
 			sceAudioOutReleasePort(ch);
 			sceKernelExitThread(0);
 		}
 		
 		DecodedSound* sfx = sfx_sounds[output_idx++];
-		if (output_idx > 3) output_idx = 0;
+		if (output_idx >= SFX_QUEUE_SIZE) output_idx = 0;
 		
 		// Preparing audio port
 		uint8_t audio_mode = sfx->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
@@ -159,7 +159,7 @@ Psp2Audio::Psp2Audio() :
 	
 	// Creating mutexs
 	BGM_Mutex = sceKernelCreateSema("BGM Mutex", 0, 1, 1, NULL);
-	for (int i=0;i<AUDIO_CHANNELS;i++) SFX_Mutex[i] = sceKernelCreateSema("SFX Mutex", 0, 0, 1, NULL);
+	SFX_Mutex = sceKernelCreateSema("SFX Mutex", 0, 0, 1, NULL);
 	
 	// Starting audio thread for BGM
 	BGM_Thread = sceKernelCreateThread("BGM Thread", &streamThread, 0x10000100, 0x10000, 0, 0, NULL);
@@ -199,15 +199,16 @@ Psp2Audio::~Psp2Audio() {
 	
 	// Starting exit procedure for sfx threads
 	mustExit = true;
-	sceKernelSignalSema(SFX_Mutex[0], 1);
+	sceKernelSignalSema(SFX_Mutex, 1);
 	while (mustExit){} // Wait for threads exiting...
+	sfx_exited = 0;
 	
 	// Deleting mutexs and sfx threads
 	sceKernelDeleteSema(BGM_Mutex);
 	for (int i=0;i<AUDIO_CHANNELS;i++){
 		sceKernelDeleteThread(sfx_threads[i]);
-		sceKernelDeleteSema(SFX_Mutex[i]);
 	}
+	sceKernelDeleteSema(SFX_Mutex);
 	
 }
 
@@ -298,8 +299,6 @@ void Psp2Audio::BGM_Fade(int fade) {
 }
 
 void Psp2Audio::SE_Play(std::string const& file, int volume, int pitch) {
-
-	if (thread_idx >= AUDIO_CHANNELS) thread_idx = 0;
 	
 	// Allocating DecodedSound object
 	DecodedSound* myFile = (DecodedSound*)malloc(sizeof(DecodedSound));
@@ -314,8 +313,8 @@ void Psp2Audio::SE_Play(std::string const& file, int volume, int pitch) {
 	
 	// Passing sound to an sfx thread
 	sfx_sounds[input_idx++] = myFile;
-	if (input_idx > 3) input_idx = 0;
-	sceKernelSignalSema(SFX_Mutex[thread_idx++], 1);
+	if (input_idx >= SFX_QUEUE_SIZE) input_idx = 0;
+	sceKernelSignalSema(SFX_Mutex, 1);
 	
 }
 
