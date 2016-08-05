@@ -34,6 +34,7 @@
 #define AUDIO_CHANNELS 7
 SceUID sfx_threads[AUDIO_CHANNELS];
 uint16_t bgm_chn = 0xDEAD;
+extern std::unique_ptr<AudioDecoder> audio_decoder;
 
 // BGM audio streaming thread
 volatile bool termStream = false;
@@ -42,6 +43,8 @@ DecodedMusic* BGM = NULL;
 SceUID BGM_Mutex;
 SceUID BGM_Thread;
 static int streamThread(unsigned int args, void* arg){
+	
+	int vol, dec_vol;
 	
 	for(;;) {
 		
@@ -65,11 +68,24 @@ static int streamThread(unsigned int args, void* arg){
 		if (BGM->isNewTrack){
 			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
 			int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
-			if (bgm_chn == 0xDEAD) bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, nsamples, BGM->orig_samplerate, audio_mode);
-			sceAudioOutSetConfig(bgm_chn, nsamples, BGM->orig_samplerate, audio_mode);
-			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &BGM->vol);	
+			if (bgm_chn == 0xDEAD) bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, nsamples, 48000, audio_mode);
+			sceAudioOutSetConfig(bgm_chn, nsamples, 48000, audio_mode);
+			vol = BGM->vol * 327;
+			int vol_stereo[] = {vol, vol};
+			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vol_stereo);	
 			BGM->isNewTrack = false;
 		}
+		
+		// Volume changes support
+		dec_vol = audio_decoder->GetVolume();
+		if (dec_vol != vol){
+			vol = dec_vol * 327;
+			int vol_stereo[] = {vol, vol};
+			Output::Post("%ld", vol);
+			sceAudioOutSetVolume(bgm_chn, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vol_stereo);
+			vol = dec_vol;
+		}
+		
 		
 		// Audio streaming feature
 		if (BGM->handle != NULL){
@@ -114,7 +130,12 @@ static int sfxThread(unsigned int args, void* arg){
 		uint8_t audio_mode = sfx->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
 		int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
 		sceAudioOutSetConfig(ch, nsamples, sfx->samplerate, audio_mode);
-		sceAudioOutSetVolume(ch, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, &sfx->vol);	
+		int vol = sfx->vol * 327;
+		int vol_stereo[] = {vol, vol};
+		sceAudioOutSetVolume(ch, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vol_stereo);	
+		
+		// Applying pitch
+		sfx->pitchCallback(sfx);
 		
 		// Playing sound
 		while (!sfx->endedOnce){
@@ -150,7 +171,7 @@ Psp2Audio::Psp2Audio() :
 	
 	// Starting audio threads for SFX
 	for (int i=0;i < AUDIO_CHANNELS; i++){
-		sfx_threads[i] = sceKernelCreateThread("BGM Thread", &sfxThread, 0x10000100, 0x10000, 0, 0, NULL);
+		sfx_threads[i] = sceKernelCreateThread("SFX Thread", &sfxThread, 0x10000100, 0x10000, 0, 0, NULL);
 		int res = sceKernelStartThread(sfx_threads[i], sizeof(sfx_threads[i]), &sfx_threads[i]);
 		if (res != 0){
 			Output::Error("Failed to init audio thread (0x%x)", res);
@@ -190,7 +211,7 @@ Psp2Audio::~Psp2Audio() {
 	
 }
 
-void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+void Psp2Audio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	
 	// If a BGM is currently playing, we kill it
 	BGM_Stop();
@@ -212,16 +233,15 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int /* pitch */, i
 		return;
 	}else BGM = myFile;
 	
-	// Processing music info
-	int samplerate = BGM->samplerate;
-	BGM->orig_samplerate = BGM->samplerate;
-	
-	// Setting music volume
-	BGM->vol = volume * 327;
+	// Music settings
+	audio_decoder->SetFade(0, volume, fadein);
+	audio_decoder->SetPitch(pitch);
+	BGM->tick = DisplayUi->GetTicks();
+	BGM->vol = volume;
 
 	#ifndef NO_DEBUG
 	Output::Debug("Playing music %s:",file.c_str());
-	Output::Debug("Samplerate: %i",samplerate);
+	Output::Debug("Samplerate: %i",BGM->samplerate);
 	Output::Debug("Buffer Size: %i bytes",BGM->audiobuf_size);
 	#endif
 	
@@ -259,23 +279,25 @@ bool Psp2Audio::BGM_IsPlaying() const {
 }
 
 unsigned Psp2Audio::BGM_GetTicks() const {
-	return 0;
+	if (BGM != NULL) return audio_decoder->GetTicks();
+	else return 0;
 }
 
 void Psp2Audio::BGM_Volume(int volume) {
-	if (BGM == NULL) return;
+	audio_decoder->SetVolume(volume);
 }
 
 void Psp2Audio::BGM_Pitch(int pitch) {
-	if (BGM == NULL) return;	
+	audio_decoder->SetPitch(pitch);	
 }
 
 void Psp2Audio::BGM_Fade(int fade) {
 	if (BGM == NULL) return;
-	BGM->fade_val = -fade;
+	audio_decoder->SetFade(audio_decoder->GetVolume(), 0, fade);
+	BGM->tick = DisplayUi->GetTicks();
 }
 
-void Psp2Audio::SE_Play(std::string const& file, int volume, int /* pitch */) {
+void Psp2Audio::SE_Play(std::string const& file, int volume, int pitch) {
 
 	if (thread_idx >= AUDIO_CHANNELS) thread_idx = 0;
 	
@@ -285,6 +307,10 @@ void Psp2Audio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	// Opening the file
 	int res = DecodeSound(file, myFile);
 	if (res < 0) return;
+	
+	// Passing pitch and volume values to the object
+	myFile->pitch = pitch;
+	myFile->vol = volume;
 	
 	// Passing sound to an sfx thread
 	sfx_sounds[input_idx++] = myFile;
@@ -298,7 +324,11 @@ void Psp2Audio::SE_Stop() {
 }
 
 void Psp2Audio::Update() {	
-	
+	if (BGM != NULL && BGM->tick > 0){
+		int t = DisplayUi->GetTicks();
+		audio_decoder->Update(t - BGM->tick);
+		BGM->tick = t;
+	}
 }
 
 #endif

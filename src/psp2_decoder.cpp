@@ -47,6 +47,10 @@ void CloseSoundDecoder(DecodedSound* Sound){
 	sfx_decoder[Sound->id].reset();
 }
 
+void PitchSoundDecoder(DecodedSound* Sound){
+	sfx_decoder[Sound->id]->SetPitch(Sound->pitch);
+}
+
 int OpenSoundDecoder(uint8_t id, FILE* stream, DecodedSound* Sound, std::string const& filename){
 	
 	// Initializing internal audio decoder
@@ -76,6 +80,7 @@ int OpenSoundDecoder(uint8_t id, FILE* stream, DecodedSound* Sound, std::string 
 	Sound->endedOnce = false;
 	Sound->updateCallback = UpdateSoundDecoderStream;
 	Sound->closeCallback = CloseSoundDecoder;
+	Sound->pitchCallback = PitchSoundDecoder;
 	
 	return 0;
 }
