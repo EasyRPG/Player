@@ -43,6 +43,11 @@
  */
 #include "memory_management.h"
 
+#ifdef PSP2
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
+#endif
+
 #ifdef GEKKO
 #  include "stdint.h"
 

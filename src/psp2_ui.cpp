@@ -139,10 +139,10 @@ void Psp2Ui::ProcessEvents() {
 	if ((trigger_state != old_state) && trigger_state) zoom_state = ((zoom_state + 1) % 3);
 	
 	// Left analog support
-	if (input.ly > 170) keys[Input::Keys::UP] = true;
-	else if (input.ly < 50) keys[Input::Keys::DOWN] = true;
-	else if (input.lx > 170) keys[Input::Keys::RIGHT] = true;
-	else if (input.lx < 50) keys[Input::Keys::LEFT] = true;
+	keys[Input::Keys::JOY_AXIS_X_LEFT] = (input.lx < 50);
+    keys[Input::Keys::JOY_AXIS_X_RIGHT] = (input.lx > 170);
+    keys[Input::Keys::JOY_AXIS_Y_DOWN] = (input.ly > 170);
+    keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
 	
 	// Right analog support for extra buttons
 	if (input.ry > 170) keys[Input::Keys::N1] = true;
