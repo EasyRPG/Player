@@ -136,7 +136,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
 	if(${RETVAL})
 		add_definitions(-DHAVE_LIBSPEEXDSP)
-		add_definitions(-DUSE_AUDIO_RESAMPLER)
 	endif()
 	
 	# mpg123
@@ -154,7 +153,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	endif()
 	
 	# libogg
-	option(PLAYER_WITH_LIBOGG "Play OGG audio with libogg or tremor." ON)	
+	option(PLAYER_WITH_LIBOGG "Play OGG audio with libogg." ON)	
 	find_lib("OggVorbis" PLAYER_WITH_SPEEXDSP)
 	if(${RETVAL})
 		add_definitions(-DHAVE_OGGVORBIS)
@@ -162,7 +161,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	
 	# wildmidi (optional, OFF)
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
-	find_lib("wildmidi" PLAYER_WITH_WILDMIDI)
+	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
 	if(${RETVAL})
 		add_definitions(-DHAVE_WILDMIDI)
 	endif()
@@ -382,4 +381,3 @@ endif()
 
 message(STATUS "----------")
 message(STATUS "")
-

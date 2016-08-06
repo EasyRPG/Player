@@ -1,5 +1,5 @@
-find_path(OGGVORBIS_INCLUDE_DIR ogg/ogg.h)
-find_library(OGGVORBIS_LIBRARY NAMES ogg libogg)
+find_path(OGGVORBIS_INCLUDE_DIR vorbis/vorbisfile.h)
+find_library(OGGVORBIS_LIBRARY NAMES vorbisfile libvorbisfile)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(OggVorbis DEFAULT_MSG OGGVORBIS_INCLUDE_DIR OGGVORBIS_LIBRARY)
