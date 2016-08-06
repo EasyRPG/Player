@@ -77,7 +77,7 @@ endfunction()
 option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development")
 set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING "Git repository of liblcf to clone when building liblcf. Requires PLAYER_BUILD_LIBLCF=ON.")
 
-if (PLAYER_BUILD_LIBLCF)
+if(PLAYER_BUILD_LIBLCF)
 	# liblcf is built as part of this cmake file
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
 	find_package(Git REQUIRED)
@@ -196,8 +196,9 @@ endif()
 if(PLAYER_BUILD_LIBLCF)
 	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
-	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 endif()
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static")
@@ -272,13 +273,16 @@ if(DOXYGEN_FOUND)
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
 	add_custom_target(doc)
-	add_dependencies(doc player_doc liblcf_doc)
+	add_dependencies(doc player_doc)
+	if(PLAYER_BUILD_LIBLCF)
+		add_dependencies(doc liblcf_doc)
+	endif()
 endif()
 
 # test
 option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 
-if (PLAYER_ENABLE_TESTS)
+if(PLAYER_ENABLE_TESTS)
 	enable_testing()
 
 	set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/TestGame")
