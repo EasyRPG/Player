@@ -254,19 +254,6 @@ else()
 	endif()
 endif()
 
-# CPack
-set(CPACK_GENERATOR "ZIP" "TGZ")
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	list(APPEND CPACK_GENERATOR "NSIS")
-endif()
-
-set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VERSION "0.4.1")
-set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.ico")
-set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README)
-
-include(CPack)
-
 # Doxygen
 # Handled as extra target "doc"
 
@@ -274,7 +261,6 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
 	# fake autotools variables
 	set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
-	set(PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
 	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 	configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
 	unset(DX_DOCDIR)
