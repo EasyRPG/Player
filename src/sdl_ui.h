@@ -78,7 +78,9 @@ public:
 	uint32_t GetTicks() const override;
 	void Sleep(uint32_t time_milli) override;
 
+#ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
+#endif
 
 	/** @} */
 

@@ -15,10 +15,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	add_definitions(-D_DEBUG=1)
 endif()
 	
-add_definitions(
-  ${PNG_DEFINITIONS}
-
-  -DUSE_SDL=1)
+add_definitions(-DUSE_SDL=1)
 
 if(CMAKE_GENERATOR MATCHES "Makefile")
 	add_definitions(-fno-rtti)
@@ -185,7 +182,7 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	find_package(FluidSynth REQUIRED)
 	include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
 	list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
-	add_definitions(-DHAVE_OPENAL=1)
+	add_definitions(-DHAVE_OPENAL)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
 	add_definitions(-DNO_SDL_MIXER)
 else()

@@ -65,9 +65,11 @@
 #  include "audio_al.h"
 #endif
 
+#ifdef SUPPORT_AUDIO
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
 }
+#endif
 
 // SDL 1.2 compatibility
 #if SDL_MAJOR_VERSION==1
