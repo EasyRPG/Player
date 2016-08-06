@@ -658,6 +658,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #elif defined(PSP2)
 	struct SceIoStat sb;
 	sceIoGetstat(dir.c_str(), &sb);
+	return S_ISDIR(sb.st_mode);
 #else
 	struct stat sb;
 #   if (defined(GEKKO) || defined(_3DS))
@@ -665,8 +666,8 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #   else
 	::lstat(dir.c_str(), &sb);
 #   endif
-#endif
 	return S_ISDIR(sb.st_mode);
+#endif
 }
 
 FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m, const std::string& parent) {
