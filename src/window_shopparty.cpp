@@ -146,7 +146,7 @@ void Window_ShopParty::Update() {
 		Refresh();
 }
 
-void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* result, int party_index) {
+void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int party_index) {
 	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
 	const std::string& sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();

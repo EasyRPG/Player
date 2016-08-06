@@ -527,10 +527,8 @@ int Window_Message::ParseParameter(bool& is_valid) {
 std::string Window_Message::ParseCommandCode() {
 	int parameter;
 	bool is_valid;
-	// sub_code is used by chained arguments like \v[\v[1]]
-	// In that case sub_code contains the result from \v[1]
-	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
+
 	switch (tolower(cmd_char)) {
 	case 'n':
 		// Output Hero name

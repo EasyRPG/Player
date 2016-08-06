@@ -38,7 +38,7 @@ static sf_count_t sf_vio_read_impl(void *ptr, sf_count_t count, void* userdata){
 	return fread(ptr, 1, count, f);
 }
 
-static sf_count_t sf_vio_write_impl(const void *ptr, sf_count_t count, void *user_data){
+static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, void* /* user_data */){
 	//Writing of wav files is not necessary
 	return count;
 }
@@ -84,7 +84,7 @@ bool LibsndfileDecoder::Open(FILE* file) {
 	return soundfile!=0;
 }
 
-bool LibsndfileDecoder::Seek(size_t offset, Origin origin) {
+bool LibsndfileDecoder::Seek(size_t offset, Origin /* origin */) {
 	finished = false;
 	if(soundfile == 0)
 		return false;
