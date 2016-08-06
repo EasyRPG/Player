@@ -91,7 +91,6 @@ if(PLAYER_BUILD_LIBLCF)
 	add_subdirectory(
 		${LIBLCF_PATH}/builds/cmake
 		${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
-	link_directories(${ICU_LIBRARY_DIRS})
 else()
 	# Use system package
 	find_lib_req(liblcf ON)
@@ -203,7 +202,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static")
 if(PLAYER_BUILD_LIBLCF)
-	list(APPEND EASYRPG_PLAYER_LIBRARIES liblcf)
+	list(APPEND EASYRPG_PLAYER_LIBRARIES_ALL liblcf)
 endif()
 
 # entry point
