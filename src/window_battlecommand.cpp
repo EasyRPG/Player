@@ -102,7 +102,7 @@ void Window_BattleCommand::Refresh() {
 	size_t num_commands = commands.size();
 
 	contents->Clear();
-	for (int i = 0; i < num_commands; i++) {
+	for (unsigned int i = 0; i < num_commands; i++) {
 		Font::SystemColor color = disabled[i] ? Font::ColorDisabled : Font::ColorDefault;
 		DrawItem(i, color);
 	}

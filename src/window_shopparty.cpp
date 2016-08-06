@@ -47,7 +47,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::System();
 
-	if (item_id <= 0 || item_id > Data::items.size())
+	if (item_id <= 0 || item_id > static_cast<int>(Data::items.size()))
 		return;
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();

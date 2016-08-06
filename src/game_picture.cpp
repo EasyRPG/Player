@@ -36,7 +36,7 @@ Game_Picture::Game_Picture(int ID) :
 }
 
 Game_Picture::~Game_Picture() {
-	if (id <= 0 || id -1 >= Main_Data::game_data.pictures.size()) {
+	if (id <= 0 || id -1 >= static_cast<int>(Main_Data::game_data.pictures.size())) {
 		// Prevent crash on game load when old pictures are destroyed
 		// but the new pictures array is smaller then the old one
 		return;

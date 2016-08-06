@@ -674,8 +674,8 @@ void Game_Player::CancelMoveRoute() {
 
 	int index = GetMoveRouteIndex();
 	if (!active_route.move_commands.empty()) {
-		int move_size = (int)active_route.move_commands.size();
-		if (index >= active_route.move_commands.size()) {
+		int move_size = static_cast<int>(active_route.move_commands.size());
+		if (index >= move_size) {
 			index = move_size - 1;
 		}
 
