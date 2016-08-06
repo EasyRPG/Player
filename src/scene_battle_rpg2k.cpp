@@ -328,6 +328,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	}
 
 	Sprite_Battler* source_sprite;
+	Sprite_Battler* target_sprite;
 
 	switch (battle_action_state) {
 		case BattleActionState_Start:
@@ -386,6 +387,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			battle_action_state = BattleActionState_Result;
 
+			battle_action_wait = 30;
+
 			break;
 		case BattleActionState_ConditionHeal:			
 			if (action->IsFirstAttack()) {
@@ -434,7 +437,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
-				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
 					if (action->IsSuccess() && target_sprite) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
@@ -463,17 +466,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (battle_result_messages_it == battle_result_messages.end()) {
 				battle_action_state = BattleActionState_Finished;
-
-				if (action->GetTarget() && action->GetTarget()->IsDead()) {
-					if (action->GetDeathSe()) {
-						Game_System::SePlay(*action->GetDeathSe());
-					}
-
-					Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-					if (target_sprite) {
-						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
-					}
-				}
 			}
 
 			break;
@@ -483,10 +475,18 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 			battle_action_wait = 30;
 
-			if (action->GetTarget() && !action->GetTarget()->IsDead()) {
-				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+			if (action->GetTarget()) {
+				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+				if (target_sprite && !target_sprite->IsIdling()) {
+					return false;
+				}
+
+				if (action->GetTarget()->IsDead() && action->GetDeathSe()) {
+					Game_System::SePlay(*action->GetDeathSe());
+				}
+
 				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle);
+					target_sprite->DetectStateChange();
 				}
 			}
 
