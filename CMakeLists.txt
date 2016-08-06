@@ -12,25 +12,25 @@ list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
-	add_definitions(-D _DEBUG=1)
+	add_definitions(-D_DEBUG=1)
 endif()
 	
 add_definitions(
   ${PNG_DEFINITIONS}
 
-  -D USE_SDL=1)
-  
+  -DUSE_SDL=1)
+
 if(CMAKE_GENERATOR MATCHES "Makefile")
-  add_definitions(-fno-rtti)
+	add_definitions(-fno-rtti)
 endif()
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  include(TestBigEndian)
-  test_big_endian(WORDS_BIGENDIAN)
-  if(WORDS_BIGENDIAN)
-    add_definitions(-D WORDS_BIGENDIAN=1)
-  endif()
+	include(TestBigEndian)
+	test_big_endian(WORDS_BIGENDIAN)
+	if(WORDS_BIGENDIAN)
+		add_definitions(-DWORDS_BIGENDIAN=1)
+	endif()
 endif()
 
 # Adds a library to the liblist if COND is true and the lib is found
@@ -129,7 +129,7 @@ set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL)
 if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# SDL2_mixer Audio
 	find_lib_req(SDL2_mixer ON)
-	add_definitions(-D HAVE_SDL_MIXER=1)
+	add_definitions(-DHAVE_SDL_MIXER=1)
 	
 	# speexdsp
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)	
@@ -173,7 +173,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
 		add_definitions(-DWANT_FMMIDI=2)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		add_definitions(-DWAND_FMMIDI=1)
+		add_definitions(-DWANT_FMMIDI=1)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		# noop
 	else()
@@ -187,10 +187,10 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	find_package(FluidSynth REQUIRED)
 	include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
 	list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
-	add_definitions(-D HAVE_OPENAL=1)
+	add_definitions(-DHAVE_OPENAL=1)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
 	add_definitions(-DNO_SDL_MIXER)
-elseif()
+else()
 	message(FATAL_ERROR "Invalid Audio Backend")
 endif()
 
