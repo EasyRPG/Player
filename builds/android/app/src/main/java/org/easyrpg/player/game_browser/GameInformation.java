@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class ProjectInformation {
+public class GameInformation {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";
 	public static final String TAG_ENCODING = "encoding";
 	public static final String preferenceFileName = "easyrpg-pref.txt";
@@ -20,7 +20,7 @@ public class ProjectInformation {
 
 	private String title, path, save_path;
 
-	public ProjectInformation(String path) {
+	public GameInformation(String path) {
 		this.path = path;
 		File f = new File(path);
 		
@@ -35,7 +35,7 @@ public class ProjectInformation {
 		}
 	}
 	
-	public ProjectInformation(String title, String path) {
+	public GameInformation(String title, String path) {
 		this(path);
 		this.title = title;
 	}
@@ -99,7 +99,7 @@ public class ProjectInformation {
 			file.flush();
 			file.close();
 		} catch (Exception e) {
-			Log.e("Writing preference project",
+			Log.e("Write pref project",
 					"Error while writing preference project file : " + e.getLocalizedMessage());
 		}
 
@@ -120,4 +120,9 @@ public class ProjectInformation {
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }

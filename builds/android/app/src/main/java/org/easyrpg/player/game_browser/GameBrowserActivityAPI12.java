@@ -25,17 +25,12 @@
 package org.easyrpg.player.game_browser;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,15 +43,11 @@ import android.widget.ListView;
 /**
  * Game browser for EasyRPG Player
  */
-public class GameBrowserActivity extends Activity {
+public class GameBrowserActivityAPI12 extends Activity {
 	private String path;
-	
 	ListView list_view;
 	private ListAdapter adapter;
-	LinkedList<ProjectInformation> project_list = new LinkedList<ProjectInformation>();
-	LinkedList<String> error_list = new LinkedList<String>();
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,21 +55,11 @@ public class GameBrowserActivity extends Activity {
 		// Setting the game list
 		setContentView(R.layout.game_browser_activity);
 		list_view = (ListView)findViewById(R.id.game_browser_list_view);
-		displayGameList();
+		displayGameList(this);
 		makeActionOverflowMenuShown();
 		
-		// First launch : display the "how to use" dialog box	
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean first_launch = preferences.getBoolean("FIRST_LAUNCH", true);
-		if(first_launch){
-			// Displaying the "how to use" dialog box	
-			displayHowToUseEasyRpgDialog();
-			
-			// Set FIRST_LAUNCH to false
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("FIRST_LAUNCH", false);
-			editor.commit();
-		}
+		// Display the "How to use EasyRPG" on the first startup
+        GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
 	}
 	
 	@Override
@@ -93,14 +74,14 @@ public class GameBrowserActivity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.game_browser_refresh:
-			displayGameList();
+			displayGameList(this);
 			return true;
 		case R.id.game_browser_settings:
 			Intent intent = new Intent(this, org.easyrpg.player.SettingsActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:
-			displayHowToUseEasyRpgDialog();
+			GameBrowserHelper.displayHowToUseEasyRpgDialog(this);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -110,44 +91,24 @@ public class GameBrowserActivity extends Activity {
 	@Override
 	protected void onResume() {
 	    super.onResume();
-	    displayGameList();
+	    displayGameList(this);
 	}
-	
-	public void displayGameList(){
-		//Scan the folder
-		SettingsActivity.updateUserPreferences(this);
-		GameBrowserHelper.scanGame(this, project_list, error_list);
-		
-		// Put the result into the proper adapter
-		if (error_list.size() > 0) {
-			//If the game list is empty, we use a simplified adapter
-			adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_2, android.R.id.text1, error_list);
-		} else {
-			//If the game list is not empty, we use the proper adapter
-			adapter = new GameListAdapter(this, project_list);
-		}
-		
-		Log.i("Browser", error_list.size() + " games found");
-		
-		//Set the view;
-		list_view.setAdapter(adapter);
-	}
-	
-	/**
-	 * Prepare and display the dialog box explaining how to use EasyRPG
-	 */
-	public void displayHowToUseEasyRpgDialog(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
-		// Dialog construction
-		builder.setMessage(R.string.how_to_use_easy_rpg_explanation)
-			.setTitle(R.string.how_to_use_easy_rpg)
-			.setNeutralButton(R.string.ok, null);
 
-		builder.create();
-		builder.show();
-	}
+    public void displayGameList(Activity activity){
+        // Scan games
+        GameScanner gameScanner = GameScanner.getInstance(activity);
+
+        // Populate the list view
+        if (gameScanner.hasError()) {
+            adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_2, android.R.id.text1, gameScanner.getErrorList());
+        } else {
+            adapter = new GameListAdapter(this, gameScanner.getGameList());
+        }
+
+        //Set the view;
+        list_view.setAdapter(adapter);
+    }
 	
 	/** This function prevents some Samsung's device to not show the action overflow button
 	 *  in the action bar

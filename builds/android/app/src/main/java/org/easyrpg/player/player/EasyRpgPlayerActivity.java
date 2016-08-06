@@ -34,7 +34,7 @@ import org.easyrpg.player.button_mapping.ButtonMappingModel;
 import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
-import org.easyrpg.player.game_browser.ProjectInformation;
+import org.easyrpg.player.game_browser.GameInformation;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -95,7 +95,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		bmm = ButtonMappingModel.getButtonMapping(this);
 
 		// Project preferences
-		ProjectInformation project = new ProjectInformation(getProjectPath());
+		GameInformation project = new GameInformation(getProjectPath());
 		project.read_project_preferences_input_layout(bmm);
 
 		// Choose the proper InputLayout

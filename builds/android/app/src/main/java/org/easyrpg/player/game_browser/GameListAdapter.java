@@ -3,7 +3,7 @@ package org.easyrpg.player.game_browser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingModel;
@@ -22,11 +22,11 @@ import android.widget.Toast;
 
 public class GameListAdapter extends BaseAdapter {
 	Context context;
-	LinkedList<ProjectInformation> project_list;
+	List<GameInformation> project_list;
 	LayoutInflater inflater;
 	IniEncodingReader iniReader;
 	
-	public GameListAdapter(Context context, LinkedList<ProjectInformation> project_list){
+	public GameListAdapter(Context context, List<GameInformation> project_list){
 		this.context = context;
 		this.project_list = project_list;
 		
@@ -35,7 +35,7 @@ public class GameListAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		ProjectInformation game = project_list.get(position);
+		GameInformation game = project_list.get(position);
 		
 		if (convertView == null) {
             convertView = inflater.inflate(R.layout.game_browser_item_list, null);
@@ -78,11 +78,11 @@ public class GameListAdapter extends BaseAdapter {
 		convertView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ProjectInformation pi = project_list.get(position);
+				GameInformation pi = project_list.get(position);
 				
 				if (!pi.read_project_preferences_encoding()) {
 					File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
-					
+
 					// Retrieve the current region (to check the correct radio button)
 					if (iniFile != null) {
 						iniReader = null;
@@ -115,7 +115,7 @@ public class GameListAdapter extends BaseAdapter {
 		return position;
 	}
 	
-	public void chooseLayout(final Context context, final ProjectInformation pi){
+	public void chooseLayout(final Context context, final GameInformation pi){
 		final ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(context);
 		String[] layout_name_array = bmm.getLayoutsNames(context);
 		
@@ -153,7 +153,7 @@ public class GameListAdapter extends BaseAdapter {
 		builder.show();
 	}
 	
-	public void chooseRegion(final Context context, final ProjectInformation pi){
+	public void chooseRegion(final Context context, final GameInformation pi){
 		//The list of region choices
 		String[] region_array = {
 			context.getString(R.string.autodetect),
