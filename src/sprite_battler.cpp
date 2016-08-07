@@ -60,8 +60,7 @@ void Sprite_Battler::Update() {
 	if (!battler->IsHidden() && old_hidden != battler->IsHidden()) {
 		SetOpacity(255);
 		SetVisible(true);
-		SetAnimationState(AnimationState_Idle);
-		idling = true;
+		DoIdleAnimation();
 	}
 
 	old_hidden = battler->IsHidden();
@@ -91,16 +90,14 @@ void Sprite_Battler::Update() {
 		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
 			SetOpacity(flash_counter > 5 ? 50 : 255);
-			if (cycle == 60) {
-				SetAnimationState(AnimationState_Idle);
-				idling = true;
+			if (cycle == 30) {
+				DoIdleAnimation();
 				cycle = 0;
 			}
 		}
 		else {
 			if (cycle == 60) {
-				SetAnimationState(AnimationState_Idle);
-				idling = true;
+				DoIdleAnimation();
 				cycle = 0;
 			}
 		}
@@ -297,7 +294,19 @@ void Sprite_Battler::DoIdleAnimation() {
 	}
 
 	const RPG::State* state = battler->GetSignificantState();
-	int idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
+	int idling_anim;
+	if (battler->GetBattleAnimationId() <= 0) {
+		// Monster
+		// Only visually different state is Death
+		if (state && state->ID == 1) {
+			idling_anim = AnimationState_Dead;
+		} else {
+			idling_anim = AnimationState_Idle;
+		}
+	} else {
+		idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
+	}
+
 	if (idling_anim == 101)
 		idling_anim = 7;
 
