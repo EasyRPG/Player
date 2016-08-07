@@ -109,7 +109,6 @@ void Main_Data::Init() {
 					FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
 					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
 					FSUSER_CloseArchive(archive);
-
 					
 					save_path = mainDir;
 				}

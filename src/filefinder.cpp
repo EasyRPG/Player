@@ -40,9 +40,15 @@
 #    include <psp2/io/dirent.h>
 #    include <psp2/io/stat.h>
 #    define S_ISDIR SCE_S_ISDIR
+#    define opendir sceIoDopen
+#    define closedir sceIoDclose
+#    define dirent SceIoDirent
+#    define readdir sceIoDread
+#    define stat SceIoStat
+#    define lstat sceIoGetstat
 #  else
 #    include <dirent.h>
-#	 include <sys/stat.h>
+#    include <sys/stat.h>
 #  endif
 #  include <unistd.h>
 #  include <sys/types.h>
@@ -655,10 +661,6 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
 	      == FILE_ATTRIBUTE_DIRECTORY;
-#elif defined(PSP2)
-	struct SceIoStat sb;
-	sceIoGetstat(dir.c_str(), &sb);
-	return S_ISDIR(sb.st_mode);
 #else
 	struct stat sb;
 #   if (defined(GEKKO) || defined(_3DS))
@@ -687,12 +689,6 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define readdir _wreaddir
 #elif _3DS
 	std::string wpath = path + "/";
-#elif PSP2
-#  define opendir sceIoDopen
-#  define closedir sceIoDclose
-#  define wpath path
-#  define dirent SceIoDirent
-#  define readdir sceIoDread
 #else
 #  define wpath path
 #endif

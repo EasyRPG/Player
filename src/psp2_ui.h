@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_3DSUI_H_
-#define _EASYRPG_3DSUI_H_
+#ifndef _EASYRPG_PSP2UI_H_
+#define _EASYRPG_PSP2UI_H_
 
 // Headers
 #include "baseui.h"
