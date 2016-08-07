@@ -19,7 +19,10 @@ LIBS = -lvorbisfile -logg -lvorbis -lspeexdsp -lsndfile \
 	-lScePower_stub -lSceCommonDialog_stub -lpng16 -lz \
 	-lmpg123 -lSceAudio_stub
 
-		
+ifeq ($(strip $(LIBLCF_DIR)),)
+LIBLCF_DIR := $(TOOLCHAIN_DIR)
+endif
+
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
@@ -28,7 +31,13 @@ CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
 		-I$(VITASDK)/arm-vita-eabi/include/pixman-1
-CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11
+		-I$(TOOLCHAIN_DIR)/include \
+        -I$(LIBLCF_DIR)/include/liblcf \
+        -I$(TOOLCHAIN_DIR)/include/pixman-1 \
+        -L$(TOOLCHAIN_DIR)/lib \
+        -L$(LIBLCF_DIR)/lib
+
+CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11 -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 all: $(TARGET).vpk

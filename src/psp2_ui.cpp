@@ -66,10 +66,10 @@ Psp2Ui::Psp2Ui(int width, int height) :
 		0xFF000000,
 		PF::Alpha);
 	main_texture = vita2d_create_empty_texture_format(
-                                                width, height,
-                                                 SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
+												width, height,
+												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-    main_surface = Bitmap::Create(vita2d_texture_get_datap(main_texture),width, height, vita2d_texture_get_stride(main_texture), format);
+	main_surface = Bitmap::Create(vita2d_texture_get_datap(main_texture),width, height, vita2d_texture_get_stride(main_texture), format);
 	
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new Psp2Audio());
@@ -140,9 +140,9 @@ void Psp2Ui::ProcessEvents() {
 	
 	// Left analog support
 	keys[Input::Keys::JOY_AXIS_X_LEFT] = (input.lx < 50);
-    keys[Input::Keys::JOY_AXIS_X_RIGHT] = (input.lx > 170);
-    keys[Input::Keys::JOY_AXIS_Y_DOWN] = (input.ly > 170);
-    keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
+	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (input.lx > 170);
+	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (input.ly > 170);
+	keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
 	
 	// Right analog support for extra buttons
 	if (input.ry > 170) keys[Input::Keys::N1] = true;
@@ -155,7 +155,7 @@ void Psp2Ui::ProcessEvents() {
 void Psp2Ui::UpdateDisplay() {
 	vita2d_start_drawing();
 	vita2d_clear_screen();
-    switch (zoom_state){
+	switch (zoom_state){
 		case 0: // 640x480
 			vita2d_draw_texture_scale(main_texture, 160, 32, 2.0, 2.0);
 			break;
@@ -166,9 +166,9 @@ void Psp2Ui::UpdateDisplay() {
 			vita2d_draw_texture_scale(main_texture, 0, 0, 3, 2.266);
 			break;
 	}
-    vita2d_end_drawing();
+	vita2d_end_drawing();
 	vita2d_wait_rendering_done();
-    vita2d_swap_buffers();
+	vita2d_swap_buffers();
 }
 
 void Psp2Ui::BeginScreenCapture() {

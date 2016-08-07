@@ -239,12 +239,6 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int pitch, int fad
 	audio_decoder->SetPitch(pitch);
 	BGM->tick = DisplayUi->GetTicks();
 	BGM->vol = volume;
-
-	#ifndef NO_DEBUG
-	Output::Debug("Playing music %s:",file.c_str());
-	Output::Debug("Samplerate: %i",BGM->samplerate);
-	Output::Debug("Buffer Size: %i bytes",BGM->audiobuf_size);
-	#endif
 	
 	// Starting BGM
 	BGM->isNewTrack = true;
