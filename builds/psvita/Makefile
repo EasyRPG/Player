@@ -30,7 +30,7 @@ CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
 		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
-		-I$(VITASDK)/arm-vita-eabi/include/pixman-1
+		-I$(VITASDK)/arm-vita-eabi/include/pixman-1 \
 		-I$(TOOLCHAIN_DIR)/include \
 		-I$(LIBLCF_DIR)/include/liblcf \
 		-I$(TOOLCHAIN_DIR)/include/pixman-1 \
@@ -48,7 +48,7 @@ $(TARGET).vpk: $(TARGET).velf
 	cp -f param.sfo ./release/sce_sys/param.sfo
 	
 	#------------ Comment this if you don't have 7zip ------------------
-	7z a -tzip ./$(TARGET).vpk -r .\release\sce_sys\* .\release\eboot.bin 
+	7za a -tzip ./$(TARGET).vpk -r .\release\sce_sys\* .\release\eboot.bin 
 	#-------------------------------------------------------------------
 	
 %.velf: %.elf
