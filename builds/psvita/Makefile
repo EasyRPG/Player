@@ -32,10 +32,10 @@ CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
 		-I$(VITASDK)/arm-vita-eabi/include/pixman-1
 		-I$(TOOLCHAIN_DIR)/include \
-        -I$(LIBLCF_DIR)/include/liblcf \
-        -I$(TOOLCHAIN_DIR)/include/pixman-1 \
-        -L$(TOOLCHAIN_DIR)/lib \
-        -L$(LIBLCF_DIR)/lib
+		-I$(LIBLCF_DIR)/include/liblcf \
+		-I$(TOOLCHAIN_DIR)/include/pixman-1 \
+		-L$(TOOLCHAIN_DIR)/lib \
+		-L$(LIBLCF_DIR)/lib
 
 CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11 -fno-rtti
 ASFLAGS = $(CFLAGS)
