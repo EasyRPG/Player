@@ -2326,7 +2326,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		switch (com.parameters[1]) {
 		case 0:
 			// Any savestate available
-			result = FileFinder::HasSavegame(*FileFinder::CreateSaveDirectoryTree());
+			result = FileFinder::HasSavegame();
 			break;
 		case 1:
 			// Is Test Play mode?
@@ -2548,7 +2548,7 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 	return true;
 }
 
-bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
 	if (Scene::Find(Scene::GameBrowser)) {
 		Scene::PopUntil(Scene::GameBrowser);
 	} else {
@@ -2557,7 +2557,7 @@ bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& com) {
 	return true;
 }
 
-bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com */) {
 	DisplayUi->BeginDisplayModeChange();
 	DisplayUi->ToggleFullscreen();
 	DisplayUi->EndDisplayModeChange();

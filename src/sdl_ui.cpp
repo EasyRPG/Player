@@ -185,12 +185,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 }
 
 SdlUi::~SdlUi() {
-#if defined(GPH)
-	chdir("/usr/gp2x");
-	execl("./gp2xmenu", "./gp2xmenu", NULL);
-#else
 	SDL_Quit();
-#endif
 }
 
 uint32_t SdlUi::GetTicks() const {

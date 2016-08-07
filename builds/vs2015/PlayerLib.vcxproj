@@ -483,7 +483,6 @@
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_gph.cpp" />
     <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />

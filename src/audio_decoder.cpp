@@ -122,7 +122,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-#ifdef HAVE_WILDMIDI
+#ifndef HAVE_WILDMIDI
+		/* WildMidi is currently the only Audio_Decoder that needs the filename passed
+		 * directly, this avoids a warning about the possibly unused variable
+		 */
+		(void)filename;
+#else
 		static bool wildmidi_works = true;
 		if (wildmidi_works) {
 			AudioDecoder *mididec = nullptr;

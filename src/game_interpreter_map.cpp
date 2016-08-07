@@ -766,12 +766,12 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 	return false;
 }
 
-bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
 	Game_Temp::load_calling = true;
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
 	Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
 	return true;
 }

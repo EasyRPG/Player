@@ -47,7 +47,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::System();
 
-	if (item_id <= 0 || item_id > Data::items.size())
+	if (item_id <= 0 || item_id > static_cast<int>(Data::items.size()))
 		return;
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
@@ -146,7 +146,7 @@ void Window_ShopParty::Update() {
 		Refresh();
 }
 
-void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* result, int party_index) {
+void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int party_index) {
 	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
 	const std::string& sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();

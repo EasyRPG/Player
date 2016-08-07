@@ -86,7 +86,7 @@ namespace {
 			return std::string();
 		}
 
-		return std::string(buf, result < sizeof(buf) ? result : sizeof(buf));
+		return std::string(buf, static_cast<unsigned int>(result) < sizeof(buf) ? result : sizeof(buf));
 	}
 
 	std::vector<std::string> log_buffer;

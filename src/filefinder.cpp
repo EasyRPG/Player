@@ -556,7 +556,7 @@ bool FileFinder::IsEasyRpgProject(DirectoryTree const& dir){
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }
 
-bool FileFinder::HasSavegame(DirectoryTree const& dir) {
+bool FileFinder::HasSavegame() {
 	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
 	for (int i = 1; i <= 15; i++) {

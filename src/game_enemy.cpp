@@ -166,7 +166,7 @@ bool Game_Enemy::IsHidden() const {
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
 
-	if (enemy_id <= 0 || enemy_id > Data::enemies.size()) {
+	if (enemy_id <= 0 || enemy_id > static_cast<int>(Data::enemies.size())) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.
 		// This case will fail in RPG Maker and the game will exit with an error message.
 		// Create a warning instead and continue the battle.

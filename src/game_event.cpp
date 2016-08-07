@@ -696,7 +696,7 @@ void Game_Event::UpdateParallel() {
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {
-	if (page <= 0 || page - 1 >= event.pages.size()) {
+	if (page <= 0 || page - 1 >= static_cast<int>(event.pages.size())) {
 		return nullptr;
 	}
 	return &event.pages[page - 1];

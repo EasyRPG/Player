@@ -501,7 +501,7 @@ int AudioResampler::FillBufferDifferentRate(uint8_t* buffer, int length) {
 				denominator = output_rate;
 			}
 			if (conversion_data.ratio_num != numerator || conversion_data.ratio_denom != denominator) {
-				int err=speex_resampler_set_rate_frac(conversion_state, numerator, denominator, input_rate, output_rate);
+				speex_resampler_set_rate_frac(conversion_state, numerator, denominator, input_rate, output_rate);
 				conversion_data.ratio_num = numerator;
 				conversion_data.ratio_denom = denominator;
 			}

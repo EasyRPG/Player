@@ -330,7 +330,7 @@ void Game_Battler::AddState(int state_id) {
 	}
 
 	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= states.size()) {
+	if (state_id - 1 >= static_cast<int>(states.size())) {
 		states.resize(state_id);
 	}
 
@@ -343,7 +343,7 @@ void Game_Battler::RemoveState(int state_id) {
 	}
 
 	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= states.size()) {
+	if (state_id - 1 >= static_cast<int>(states.size())) {
 		return;
 	}
 

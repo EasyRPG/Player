@@ -336,7 +336,7 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
 	float multiplier = 0;
 	int attributes_applied = 0;
-	for (int i = 0; i < attributes_set.size(); i++) {
+	for (unsigned int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {
 			multiplier += (*current_target)->GetAttributeModifier(i + 1);
 			attributes_applied++;
@@ -613,7 +613,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				int weaponID = static_cast<Game_Actor*>(source)->GetWeaponId() - 1;
 				if (weaponID != -1) {
 					RPG::Item item = Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() - 1];
-					for (int i = 0; i < item.state_set.size(); i++) {
+					for (unsigned int i = 0; i < item.state_set.size(); i++) {
 						if (item.state_set[i] && Utils::GetRandomNumber(0, 99) < (item.state_chance * (*current_target)->GetStateProbability(Data::states[i].ID) / 100)) {
 							if (item.state_effect) {
 								healing = true;
@@ -858,7 +858,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 
 int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
 	if (source->GetType() == Game_Battler::Type_Ally && skill.animation_id > 0) {
-		if (skill.battler_animation_data.size() > source->GetId() - 1) {
+		if (static_cast<int>(skill.battler_animation_data.size()) > source->GetId() - 1) {
 			int pose = skill.battler_animation_data[source->GetId() - 1].pose;
 
 			if (pose > 0) {
