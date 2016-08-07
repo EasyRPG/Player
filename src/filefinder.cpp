@@ -99,9 +99,26 @@ namespace {
 			return em_file;
 #endif
 
-		std::string const lower_dir = Utils::LowerCase(dir);
+		std::string lower_dir = Utils::LowerCase(dir);
 		std::string const escape_symbol = Player::escape_symbol;
 		std::string corrected_name = Utils::LowerCase(name);
+
+		std::string combined_path = MakePath(lower_dir, corrected_name);
+		std::string canon = MakeCanonical(combined_path, 1);
+		if (combined_path != canon) {
+			// Very few games (e.g. Yume2kki) use path traversal (..) in the filenames to point
+			// to files outside of the actual directory.
+			// Fix the path and search the file again with the correct root directory set.
+			Output::Debug("Path adjusted: %s -> %s", combined_path.c_str(), canon.c_str());
+			for (char const** c = exts; *c != NULL; ++c) {
+				std::string res = FileFinder::FindDefault(tree, canon + *c);
+				if (!res.empty()) {
+					return res;
+				}
+			}
+			return "";
+		}
+
 #ifdef _WIN32
 		if (escape_symbol != "\\") {
 #endif
@@ -252,11 +269,11 @@ std::string FileFinder::MakeCanonical(std::string const& path, int initial_deepn
 	
 	for (std::string path_comp : path_components) {
 		if (path_comp == "..") {
-			if (initial_deepness > 0) {
-				// Ignore
-				--initial_deepness;
-			} else if (path_can.size() > 0) {
+			if (path_can.size() > 0) {
 				path_can.pop_back();
+			} else if (initial_deepness > 0) {
+				// Ignore, we are in root
+				--initial_deepness;
 			} else {
 				Output::Debug("Path traversal out of game directory: %s", path.c_str());
 			}
