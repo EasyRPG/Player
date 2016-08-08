@@ -36,10 +36,22 @@
 #    include "dirent_win.h"
 #  endif
 #else
-#  include <dirent.h>
+#  ifdef PSP2
+#    include <psp2/io/dirent.h>
+#    include <psp2/io/stat.h>
+#    define S_ISDIR SCE_S_ISDIR
+#    define opendir sceIoDopen
+#    define closedir sceIoDclose
+#    define dirent SceIoDirent
+#    define readdir sceIoDread
+#    define stat SceIoStat
+#    define lstat sceIoGetstat
+#  else
+#    include <dirent.h>
+#    include <sys/stat.h>
+#  endif
 #  include <unistd.h>
 #  include <sys/types.h>
-#  include <sys/stat.h>
 #endif
 
 #ifdef __ANDROID__
@@ -205,7 +217,6 @@ void FileFinder::SetDirectoryTree(std::shared_ptr<FileFinder::DirectoryTree> dir
 
 std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
-
 	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
 
@@ -222,7 +233,6 @@ std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::
 			GetDirectoryMembers(MakePath(tree->directory_path, i.second), RECURSIVE).files.swap(tree->sub_members[i.first]);
 		}
 	}
-
 	return tree;
 }
 
@@ -405,6 +415,8 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif defined(PSP2)
+	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(__ANDROID__)
 	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
 	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -617,13 +629,15 @@ bool FileFinder::Exists(std::string const& filename) {
 		fclose(tmp);
 		return true;
 	}
+#elif defined(PSP2)
+	struct SceIoStat sb;
+	return (sceIoGetstat(filename.c_str(), &sb) >= 0);
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif
 }
 
 bool FileFinder::IsDirectory(std::string const& dir) {
-
 #ifdef _3DS
 	DIR* d = opendir(dir.c_str());
 	if(d) {
@@ -653,7 +667,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	::stat(dir.c_str(), &sb);
 #   else
 	::lstat(dir.c_str(), &sb);
-#endif
+#   endif
 	return S_ISDIR(sb.st_mode);
 #endif
 }
@@ -678,9 +692,13 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #else
 #  define wpath path
 #endif
-
+	#ifdef PSP2
+	int dir = opendir(wpath.c_str());
+	if (dir < 0) {
+	#else
 	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
 	if (!dir) {
+	#endif
 		Output::Debug("Error opening dir %s: %s", path.c_str(),
 					  ::strerror(errno));
 		return result;
@@ -688,16 +706,29 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 
 	static bool has_fast_dir_stat = true;
 
+#ifdef PSP2
+	struct dirent ent;
+	while (readdir(dir, &ent) > 0) {
+#else
 	struct dirent* ent;
 	while ((ent = ::readdir(dir.get())) != NULL) {
+#endif
 #ifdef _WIN32
 		std::string const name = Utils::FromWideString(ent->d_name);
 #else
+	#ifdef PSP2
+		std::string const name = ent.d_name;
+	#else
 		std::string const name = ent->d_name;
+	#endif
 #endif
 		bool is_directory;
 		if (has_fast_dir_stat) {
+			#ifdef PSP2
+			is_directory = S_ISDIR(ent.d_stat.st_mode);
+			#else
 			is_directory = ent->d_type == DT_DIR;
+			#endif
 		} else {
 			is_directory = IsDirectory(MakePath(path, name));
 		}
@@ -747,6 +778,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  undef readdir
 #endif
 #undef wpath
-
+#ifdef PSP2
+	closedir(dir);
+#endif
 	return result;
 }

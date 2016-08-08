@@ -18,6 +18,10 @@
 #ifdef USE_CACHE
 #ifdef _3DS
 #include <3ds.h>
+#else
+#include <cstdlib>
+#define linearAlloc malloc
+#define linearFree free
 #endif
 #include <string.h>
 #include <stdio.h>
@@ -34,17 +38,13 @@ bool FULLED = false; // 1 byte
 
 void initCache(){
 	#ifndef NO_DEBUG
-	u32 cache_size = CACHE_DIM + 10 + (MAX_SOUNDS<<5) + sizeof(DecodedSound) * MAX_SOUNDS; 
+	uint32_t cache_size = CACHE_DIM + 10 + (MAX_SOUNDS<<5) + sizeof(DecodedSound) * MAX_SOUNDS; 
 	Output::Debug("Initializing sound cache (Dim: %i bytes, Max Sounds: %i)",cache_size,MAX_SOUNDS);
 	#endif
-	#ifdef _3DS
 	soundCache = (uint8_t*)linearAlloc(CACHE_DIM);
-	#endif
 }
 void freeCache(){
-	#ifdef _3DS
 	linearFree(soundCache);
-	#endif
 }
 
 int lookCache(const char* file){

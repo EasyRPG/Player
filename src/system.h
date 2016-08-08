@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !(defined(USE_SDL) || defined(_3DS))
+#if !(defined(USE_SDL) || defined(_3DS) || defined(PSP2))
 #  error "This build doesn't target a backend"
 #endif
 
@@ -42,6 +42,11 @@
  * Smart pointer header.
  */
 #include "memory_management.h"
+
+#ifdef PSP2
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
+#endif
 
 #ifdef GEKKO
 #  include "stdint.h"
