@@ -118,9 +118,10 @@ public:
 private:
 	RPG::SavePartyLocation& location;
 
-	bool teleporting;
-	int new_map_id, new_x, new_y, new_direction;
-	int last_pan_x, last_pan_y;
+	bool teleporting = false;
+	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
+	int last_pan_x = 0, last_pan_y = 0;
+	int last_remaining_move = 0, last_remaining_jump = 0;
 	RPG::Music walking_bgm;
 
 	void UpdateScroll();

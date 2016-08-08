@@ -662,6 +662,8 @@ void Game_Event::Update() {
 		return;
 	}
 
+	Game_Character::UpdateSprite();
+
 	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);
 		Game_Map::GetInterpreter().Update();
@@ -675,15 +677,11 @@ void Game_Event::Update() {
 }
 
 void Game_Event::UpdateParallel() {
-	int cur_frame_count = Player::GetFrames();
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
+	if (!data.active || page == NULL || updating) {
 		return;
 	}
-	frame_count_at_last_update_parallel = cur_frame_count;
 
-	if (!data.active || page == NULL) {
-		return;
-	}
+	updating = true;
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
@@ -691,8 +689,8 @@ void Game_Event::UpdateParallel() {
 		}
 		interpreter->Update();
 	}
-
 	Game_Character::Update();
+	updating = false;
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {

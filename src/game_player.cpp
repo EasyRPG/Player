@@ -23,6 +23,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_system.h"
+#include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
 #include "main_data.h"
@@ -32,13 +33,7 @@
 #include <cmath>
 
 Game_Player::Game_Player():
-	location(Main_Data::game_data.party_location),
-	teleporting(false),
-	new_map_id(0),
-	new_x(0),
-	new_y(0),
-	last_pan_x(0),
-	last_pan_y(0) {
+	location(Main_Data::game_data.party_location) {
 	SetDirection(RPG::EventPage::Direction_down);
 	SetMoveSpeed(4);
 }
@@ -297,24 +292,33 @@ void Game_Player::UpdateScroll() {
 	int dy = 0;
 
 	if (!Game_Map::IsPanLocked()) {
-		if (IsMoving()) {
+		if (IsMoving() || last_remaining_move > 0) {
+			if (last_remaining_move == 0)
+				last_remaining_move = SCREEN_TILE_WIDTH;
+
 			int d = GetDirection();
 			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() >= center_x)
 				dx = 1;
 			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() <= center_x)
 				dx = -1;
-			dx *= 1 << (1 + GetMoveSpeed());
+			dx *= last_remaining_move - remaining_step;
 
 			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() >= center_y)
 				dy = 1;
 			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
 				dy = -1;
-			dy *= 1 << (1 + GetMoveSpeed());
-		} else if (IsJumping()) {
-			int move_speed = GetMoveSpeed();
-			int diff = move_speed < 5 ? 48 / (2 + pow(2.0, 3 - move_speed)) : 64 / (7 - move_speed);
-			dx += (GetX() - jump_x) * diff;
-			dy += (GetY() - jump_y) * diff;
+			dy *= last_remaining_move - remaining_step;
+			last_remaining_move = remaining_step;
+
+		} else if (IsJumping() || last_remaining_jump > 0) {
+			if (last_remaining_jump == 0)
+				last_remaining_jump = SCREEN_TILE_WIDTH;
+
+			if ((GetX() > jump_x && GetScreenX() >= center_x) || (GetX() < jump_x && GetScreenX() <= center_x))
+				dx = (GetX() - jump_x) * (last_remaining_jump - remaining_step);
+			if ((GetY() > jump_y && GetScreenY() >= center_y) || (GetY() < jump_y && GetScreenY() <= center_y))
+				dy = (GetY() - jump_y) * (last_remaining_jump - remaining_step);
+			last_remaining_jump = remaining_step;
 		}
 	}
 
@@ -346,6 +350,11 @@ void Game_Player::Update() {
 
 	bool last_moving = IsMoving() || IsJumping();
 
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	bool was_blocked = IsBlockedByMoveRoute();
+	Game_Character::Update();
+
 	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
 		switch (Input::dir4) {
 			case 2:
@@ -362,12 +371,8 @@ void Game_Player::Update() {
 		}
 	}
 
+	Game_Character::UpdateSprite();
 	UpdateScroll();
-
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	bool was_blocked = IsBlockedByMoveRoute();
-	Game_Character::Update();
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();
@@ -405,6 +410,11 @@ void Game_Player::Update() {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 			if ( GetOnOffVehicle() ) return;
 			if ( CheckActionEvent() ) return;
+		}
+
+		// ESC-Menu calling
+		if (Game_System::GetAllowMenu() && Input::IsTriggered(Input::CANCEL)) {
+			Game_Temp::menu_calling = true;
 		}
 	}
 
@@ -611,7 +621,7 @@ bool Game_Player::IsMovable() const {
 		return false;
 	if (Graphics::IsTransitionPending())
 		return false;
-	if (IsBlockedByMoveRoute())
+	if (IsMoveRouteOverwritten())
 		return false;
 	if (Game_Map::IsAnyEventStarting())
 		return false;

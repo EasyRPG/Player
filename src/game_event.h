@@ -229,6 +229,7 @@ private:
 	std::vector<RPG::EventCommand> list;
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
+	bool updating = false;
 };
 
 #endif
