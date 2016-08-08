@@ -4,8 +4,7 @@ import java.util.LinkedList;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
+import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,9 +24,9 @@ import android.widget.Toast;
 
 public class ButtonMappingActivity extends Activity {
 	ViewGroup layoutManager;
-	LinkedList<VirtualButton> bList;
-	ButtonMappingModel mapping_model;
-	InputLayout input_layout;
+	LinkedList<VirtualButton> layoutList;
+	ButtonMappingManager buttonMappingManager;
+	InputLayout inputLayout;
 	
 	public static final String TAG_ID = "id";
 
@@ -35,26 +34,25 @@ public class ButtonMappingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.button_mapping_activity);
-		SettingsActivity.updateUserPreferences(this);
-		
+
 		layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 
 		//Retrive the InputLayout to work with
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(TAG_ID, 0);
-		mapping_model = ButtonMappingModel.getButtonMapping(this);
-		input_layout = mapping_model.getLayoutById(this, id);
+		buttonMappingManager = ButtonMappingManager.getButtonMapping(this);
+		inputLayout = buttonMappingManager.getLayoutById(this, id);
 		
-		//We does a copy of the input_layout's button list
-		bList = new LinkedList<VirtualButton>();
-		for(VirtualButton b : input_layout.getButton_list()){
+		//We does a copy of the inputLayout's button list
+		layoutList = new LinkedList<VirtualButton>();
+		for(VirtualButton b : inputLayout.getButton_list()){
 			if(b instanceof VirtualCross){
 				VirtualCross v = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
-				bList.add(v);
+				layoutList.add(v);
 			}
 			else{
 				VirtualButton vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
-				bList.add(vb);
+				layoutList.add(vb);
 			}
 		}
 		drawButtons();
@@ -74,7 +72,7 @@ public class ButtonMappingActivity extends Activity {
 			showSupportedButton();
 			return true;
 		case R.id.button_mapping_menu_reset:
-			bList = InputLayout.getDefaultInputLayout(this).getButton_list();
+			layoutList = InputLayout.getDefaultInputLayout(this).getButton_list();
 			drawButtons();
 			return true;
 		case R.id.button_mapping_menu_exit_without_saving:
@@ -115,17 +113,17 @@ public class ButtonMappingActivity extends Activity {
 	}
 	
 	public void save(){
-		//Copy the button from bList to the InputLayout
-		input_layout.getButton_list().clear();
-		for(VirtualButton b : bList){
+		//Copy the button from layoutList to the InputLayout
+		inputLayout.getButton_list().clear();
+		for(VirtualButton b : layoutList){
 			if(b instanceof VirtualCross)
-				input_layout.getButton_list().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
+				inputLayout.getButton_list().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
 			else
-				input_layout.getButton_list().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
+				inputLayout.getButton_list().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
 		}
 		
 		//Save the ButtonMappingModel
-		ButtonMappingModel.writeButtonMappingFile(this, mapping_model);
+		ButtonMappingManager.writeButtonMappingFile(this, buttonMappingManager);
 	}
 	
 	public void showSupportedButton(){
@@ -202,7 +200,7 @@ public class ButtonMappingActivity extends Activity {
 		if(keyCode != -1){
 			VirtualButton vb = new VirtualButton(this, keyCode, 0.5, 0.5, 100);
 			vb.setDebug_mode(true);
-			bList.add(vb);
+			layoutList.add(vb);
 			drawButtons();
 		}else{
 			Toast.makeText(getApplicationContext(), "Button not supported on this API", Toast.LENGTH_SHORT).show();
@@ -214,7 +212,7 @@ public class ButtonMappingActivity extends Activity {
 	 */
 	private void drawButtons() {
 		layoutManager.removeAllViews();
-		for (VirtualButton b : bList) {
+		for (VirtualButton b : layoutList) {
 			b.setDebug_mode(true);
 			Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 			layoutManager.addView(b);
@@ -242,7 +240,6 @@ public class ButtonMappingActivity extends Activity {
 			
 			return;
 		default:
-			return;
 		}
 	}
 	

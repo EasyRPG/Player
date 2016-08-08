@@ -28,15 +28,15 @@
             android:orientation="vertical" />
         
         <Button
+            android:id="@+id/settings_add_game_folder_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:onClick="addAGameFolder"
             android:text="@string/add_game_folder"
             android:textSize="20sp" />
 
-        <include layout = "@layout/settings_separator"/>
+        <include layout = "@layout/separator"/>
 
 
         <!-- InputLayout transparency -->
@@ -105,7 +105,7 @@
                 android:progress="10" />
         </LinearLayout>
 
-        <include layout = "@layout/settings_separator"/>
+        <include layout = "@layout/separator"/>
         <!-- Vibration -->
 
         <CheckBox
@@ -128,7 +128,7 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
 
-        <include layout = "@layout/settings_separator"/>
+        <include layout = "@layout/separator"/>
 
     <!-- Sounds -->
 
@@ -142,7 +142,7 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
 
-        <include layout = "@layout/settings_separator"/>
+        <include layout = "@layout/separator"/>
 
     <!-- Input Layout Managing -->
 

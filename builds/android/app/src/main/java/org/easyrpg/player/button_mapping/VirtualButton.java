@@ -1,7 +1,7 @@
 package org.easyrpg.player.button_mapping;
 
 import org.easyrpg.player.Helper;
-import org.easyrpg.player.SettingsActivity;
+import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
 import android.content.Context;
@@ -22,8 +22,8 @@ public class VirtualButton extends View {
 	private Rect bound, letterBound = new Rect();
 	protected boolean isPressed; // To know when the touch go out the button
 	protected boolean debug_mode;
-	Context context;
-	Vibrator vibrator;
+    protected Context context;
+    protected Vibrator vibrator;
 
 	public static final int DPAD = -1, ENTER = KeyEvent.KEYCODE_SPACE, CANCEL = KeyEvent.KEYCODE_B,
 			SHIFT = KeyEvent.KEYCODE_SHIFT_LEFT, KEY_0 = KeyEvent.KEYCODE_0, KEY_1 = KeyEvent.KEYCODE_1,
@@ -35,6 +35,7 @@ public class VirtualButton extends View {
 	public VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
 		super(context);
 		this.context = context;
+
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
 		this.keyCode = keyCode;
@@ -51,8 +52,8 @@ public class VirtualButton extends View {
 		originalLetterSize = Helper.getPixels(this, 25);
 
 		// Retrieve the size factor
-		if (SettingsActivity.IGNORE_LAYOUT_SIZE_SETTINGS) {
-			this.resizeFactor = SettingsActivity.LAYOUT_SIZE;
+		if (SettingsManager.isIgnoreLayoutSizePreferencesEnabled()) {
+			this.resizeFactor = SettingsManager.getLayoutSize();
 		} else {
 			this.resizeFactor = size;
 		}
@@ -61,7 +62,7 @@ public class VirtualButton extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (!debug_mode) {
-			painter.setAlpha(255 - SettingsActivity.LAYOUT_TRANSPARENCY);
+			painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
 		}
 
 		// Draw
@@ -130,8 +131,8 @@ public class VirtualButton extends View {
 
 				SDLActivity.onNativeKeyDown(this.keyCode);
 				// Vibration
-				if (SettingsActivity.VIBRATION && vibrator != null) {
-					vibrator.vibrate(SettingsActivity.VIBRATION_DURATION);
+				if (SettingsManager.isVibrationEnabled() && vibrator != null) {
+					vibrator.vibrate(SettingsManager.getVibrationDuration());
 				}
 			}
 		}

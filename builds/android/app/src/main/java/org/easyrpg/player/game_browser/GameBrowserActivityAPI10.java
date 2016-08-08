@@ -25,6 +25,7 @@
 package org.easyrpg.player.game_browser;
 
 import org.easyrpg.player.R;
+import org.easyrpg.player.settings.SettingsActivity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -71,7 +72,7 @@ public class GameBrowserActivityAPI10 extends Activity {
 			displayGameList(this);
 			return true;
 		case R.id.game_browser_settings:
-			Intent intent = new Intent(this, org.easyrpg.player.SettingsActivity.class);
+			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.game_browser_how_to_use_easy_rpg:

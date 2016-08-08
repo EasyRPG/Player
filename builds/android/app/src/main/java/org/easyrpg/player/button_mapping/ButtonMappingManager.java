@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-public class ButtonMappingModel {
+public class ButtonMappingManager {
 	private LinkedList<InputLayout> layout_list;
 	private int id_default_layout;
 
@@ -24,7 +24,7 @@ public class ButtonMappingModel {
 			TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
 	public static final String FILE_NAME = "button_mapping.txt";
 
-	public ButtonMappingModel() {
+	private ButtonMappingManager() {
 		layout_list = new LinkedList<InputLayout>();
 	}
 
@@ -79,8 +79,8 @@ public class ButtonMappingModel {
 		return o;
 	}
 
-	public static ButtonMappingModel getDefaultButtonMappingModel(Context context) {
-		ButtonMappingModel m = new ButtonMappingModel();
+	public static ButtonMappingManager getDefaultButtonMappingModel(Context context) {
+		ButtonMappingManager m = new ButtonMappingManager();
 		m.add(InputLayout.getDefaultInputLayout(context));
 		return m;
 	}
@@ -94,12 +94,12 @@ public class ButtonMappingModel {
 		return layout_name_array;
 	}
 
-	public static ButtonMappingModel getButtonMapping(Context context) {
+	public static ButtonMappingManager getButtonMapping(Context context) {
 		return readButtonMappingFile(context);
 	}
 	
-	public static ButtonMappingModel readButtonMappingFile(Context context) {
-		ButtonMappingModel m = new ButtonMappingModel();
+	public static ButtonMappingManager readButtonMappingFile(Context context) {
+		ButtonMappingManager m = new ButtonMappingManager();
 
 		try {
 			// Parse the JSON
@@ -131,7 +131,7 @@ public class ButtonMappingModel {
 		return getDefaultButtonMappingModel(context);
 	}
 
-	public static void writeButtonMappingFile(Context context, ButtonMappingModel m) {
+	public static void writeButtonMappingFile(Context context, ButtonMappingManager m) {
 		try {
 			// FileWriter file = new FileWriter(button_mapping_path);
 			FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
@@ -169,7 +169,7 @@ public class ButtonMappingModel {
 		return id_default_layout;
 	}
 
-	public LinkedList<InputLayout> getLayout_list() {
+	public LinkedList<InputLayout> getLayoutList() {
 		return layout_list;
 	}
 
@@ -264,7 +264,7 @@ public class ButtonMappingModel {
 			return l;
 		}
 
-		public boolean isDefaultInputLayout(ButtonMappingModel bmm) {
+		public boolean isDefaultInputLayout(ButtonMappingManager bmm) {
 			return id == bmm.getId_default_layout();
 		}
 

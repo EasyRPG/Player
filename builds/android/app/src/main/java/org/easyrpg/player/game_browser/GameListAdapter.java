@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.ButtonMappingManager;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -81,7 +81,7 @@ public class GameListAdapter extends BaseAdapter {
 				GameInformation pi = project_list.get(position);
 				
 				if (!pi.read_project_preferences_encoding()) {
-					File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+					File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
 
 					// Retrieve the current region (to check the correct radio button)
 					if (iniFile != null) {
@@ -116,14 +116,14 @@ public class GameListAdapter extends BaseAdapter {
 	}
 	
 	public void chooseLayout(final Context context, final GameInformation pi){
-		final ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(context);
+		final ButtonMappingManager bmm = ButtonMappingManager.getButtonMapping(context);
 		String[] layout_name_array = bmm.getLayoutsNames(context);
 		
 		//Detect default layout
 		pi.read_project_preferences_input_layout(bmm);
 		int id = -1;
-		for(int i = 0; i < bmm.getLayout_list().size(); i++){
-			if(bmm.getLayout_list().get(i).getId() == pi.getId_input_layout()){
+		for(int i = 0; i < bmm.getLayoutList().size(); i++){
+			if(bmm.getLayoutList().get(i).getId() == pi.getId_input_layout()){
 				id = i;
 				break;
 			}
@@ -144,7 +144,7 @@ public class GameListAdapter extends BaseAdapter {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					if(!selected.isEmpty()){
-						pi.setId_input_layout(bmm.getLayout_list().get(selected.get(0)).getId());
+						pi.setId_input_layout(bmm.getLayoutList().get(selected.get(0)).getId());
 						pi.write_project_preferences();
 					}
 				}
@@ -173,7 +173,7 @@ public class GameListAdapter extends BaseAdapter {
 		String encoding = null;
 		
 		if (!pi.read_project_preferences_encoding()) {
-			File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+			File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
 			
 			// Retrieve the current region (to check the correct radio button)
 			if (iniFile != null) {

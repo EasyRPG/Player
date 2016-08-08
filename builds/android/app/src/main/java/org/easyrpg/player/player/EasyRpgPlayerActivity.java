@@ -29,12 +29,12 @@ import java.util.ArrayList;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
-import org.easyrpg.player.button_mapping.ButtonMappingModel.InputLayout;
+import org.easyrpg.player.button_mapping.ButtonMappingManager;
+import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.game_browser.GameInformation;
+import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
 import android.app.AlertDialog;
@@ -66,7 +66,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	public static final String TAG_SAVE_PATH = "save_path";
 	public static final String TAG_COMMAND_LINE = "command_line";
 
-	ButtonMappingModel bmm;
+	ButtonMappingManager bmm;
 	InputLayout input_layout;
 	private boolean uiVisible = true;
 	SurfaceView surface;
@@ -74,7 +74,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SettingsActivity.updateUserPreferences(getContext());
 
 		// Hardware acceleration
 		try {
@@ -92,7 +91,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		updateScreenPosition();
 
 		// Open the proper input_layout
-		bmm = ButtonMappingModel.getButtonMapping(this);
+		bmm = ButtonMappingManager.getButtonMapping(this);
 
 		// Project preferences
 		GameInformation project = new GameInformation(getProjectPath());
@@ -263,7 +262,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 			return s;
 		}
 
-		return SettingsActivity.MAIN_DIRECTORY + "/timidity"; //Shouldn't be called anymore
+		return SettingsManager.getEasyRPGFolder() + "/timidity"; //Shouldn't be called anymore
 	}
 
 	/**
@@ -272,7 +271,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to the RTP
 	 */
 	public String getRtpPath() {
-		String str = SettingsActivity.MAIN_DIRECTORY + "/rtp";
+		String str = SettingsManager.getEasyRPGFolder() + "/rtp";
 		// Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}

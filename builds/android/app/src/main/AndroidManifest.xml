@@ -58,7 +58,7 @@
 
         <!-- Settings' Activity -->
         <activity
-            android:name="org.easyrpg.player.SettingsActivity"
+            android:name="org.easyrpg.player.settings.SettingsActivity"
             android:label="@string/app_name" />
         <activity
             android:name="org.easyrpg.player.button_mapping.ButtonMappingActivity"

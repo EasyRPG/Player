@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
+import org.easyrpg.player.settings.SettingsActivity;
 import org.easyrpg.player.player.EasyRpgPlayerActivity;
+import org.easyrpg.player.settings.SettingsManager;
 
 import android.Manifest;
 import android.app.Activity;
@@ -29,13 +30,10 @@ import android.widget.Toast;
 
 public class GameBrowserHelper {
     //Files' names
-    final static String DATABASE_NAME = "RPG_RT.ldb";
-    final static String TREEMAP_NAME = "RPG_RT.lmt";
-    final static String INI_FILE = "RPG_RT.ini";
+    private final static String DATABASE_NAME = "RPG_RT.ldb", TREEMAP_NAME = "RPG_RT.lmt", INI_FILE = "RPG_RT.ini";
 
-    // Permission
-    final static String REQUESTED_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    static int GRANTED_PERMISSION;
+    private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
+    private static int GRANTED_PERMISSION = 0;
 
     public static void scanFolder(Context context, File[] list, LinkedList<GameInformation> project_list, int depth) {
         if (list != null) {
@@ -64,7 +62,7 @@ public class GameBrowserHelper {
 
         // Scanning all the games folders
         boolean first_directory = true;
-        for (String path : SettingsActivity.GAMES_DIRECTORIES) {
+        for (String path : SettingsManager.getGamesFolderList()) {
             File dir = new File(path);
             // Verification
             // 1) The folder must exist
@@ -233,7 +231,7 @@ public class GameBrowserHelper {
     }
 
     private static boolean saveDirectoryContainsSave(GameInformation project) {
-        if (project.getPath().equals(project.getSavePath())) {
+        if (project.getGameFolderPath().equals(project.getSavePath())) {
             // Doesn't matter because this is used for the copying logic to the save directory
             return true;
         }
@@ -243,11 +241,11 @@ public class GameBrowserHelper {
     }
 
     private static void copySavesFromGameDirectoryToSaveDirectory(GameInformation project) {
-        if (project.getPath().equals(project.getSavePath())) {
+        if (project.getGameFolderPath().equals(project.getSavePath())) {
             return;
         }
 
-        File[] files = getSavegames(new File(project.getPath()));
+        File[] files = getSavegames(new File(project.getGameFolderPath()));
         for (final File fileEntry : files) {
             try {
                 copyFile(fileEntry, new File(project.getSavePath() + "/" + fileEntry.getName()));
@@ -278,7 +276,7 @@ public class GameBrowserHelper {
             copySavesFromGameDirectoryToSaveDirectory(project);
         }
 
-        String path = project.getPath();
+        String path = project.getGameFolderPath();
 
         // Test again in case somebody messed with the file system
         if (GameBrowserHelper.isRpg2kGame(new File(path))) {
@@ -301,7 +299,7 @@ public class GameBrowserHelper {
             }
 
             // Disable audio depending on user preferences
-            if (!SettingsActivity.AUDIO_ENABLED) {
+            if (!SettingsManager.isAudioEnabled()) {
                 args.add("--disable-audio");
             }
 
@@ -316,21 +314,21 @@ public class GameBrowserHelper {
     }
 
     public static void openSettingsActivity(Context context) {
-        Intent intent = new Intent(context, org.easyrpg.player.SettingsActivity.class);
+        Intent intent = new Intent(context, SettingsActivity.class);
         context.startActivity(intent);
     }
 
     public static void displayHowToMessageOnFirstStartup(Context context) {
         // First launch : display the "how to use" dialog box
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean first_launch = preferences.getBoolean("FIRST_LAUNCH", true);
+        boolean first_launch = preferences.getBoolean(TAG_FIRST_LAUNCH, true);
         if (first_launch) {
             // Displaying the "how to use" dialog box
             displayHowToUseEasyRpgDialog(context);
 
             // Set FIRST_LAUNCH to false
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("FIRST_LAUNCH", false);
+            editor.putBoolean(TAG_FIRST_LAUNCH, false);
             editor.commit();
         }
     }
