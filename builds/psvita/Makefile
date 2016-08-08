@@ -40,17 +40,19 @@ CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 CXXFLAGS  = $(CFLAGS) -fno-exceptions -std=gnu++11 -fno-rtti
 ASFLAGS = $(CFLAGS)
 
+HAVE_ZIP := $(shell command -v zip 2> /dev/null)
+
 all: $(TARGET).vpk
 
 $(TARGET).vpk: $(TARGET).velf
-	vita-make-fself $< .\release\eboot.bin
-	vita-mksfoex -s TITLE_ID=$(APP_ID) "$(APP_TITLE)" param.sfo
-	cp -f param.sfo ./release/sce_sys/param.sfo
-	
-	#------------ Comment this if you don't have 7zip ------------------
-	7za a -tzip ./$(TARGET).vpk -r ./release/sce_sys/* ./release/eboot.bin 
-	#-------------------------------------------------------------------
-	
+		vita-make-fself $< release/eboot.bin
+		vita-mksfoex -s TITLE_ID=$(APP_ID) "$(APP_TITLE)" release/sce_sys/param.sfo
+ifdef HAVE_ZIP
+		cd release; zip ../$(TARGET).vpk -r ./sce_sys ./eboot.bin
+else
+		7z a -tzip ./$(TARGET).vpk -r .\release\sce_sys\* .\release\eboot.bin
+endif
+
 %.velf: %.elf
 	$(PREFIX)-strip -g $<
 	vita-elf-create $< $@
