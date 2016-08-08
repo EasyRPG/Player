@@ -714,6 +714,12 @@ private:
 	 */
 	RPG::SaveActor& GetData() const;
 
+	/**
+	 * Removes invalid (wrong type) equipment from the equipment
+	 * slots.
+	 */
+	void RemoveInvalidEquipment();
+
 	int actor_id;
 	std::vector<int> exp_list;
 };
