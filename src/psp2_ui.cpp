@@ -145,10 +145,10 @@ void Psp2Ui::ProcessEvents() {
 	keys[Input::Keys::JOY_AXIS_Y_UP] = (input.ly < 50);
 	
 	// Right analog support for extra buttons
-	if (input.ry > 170) keys[Input::Keys::N1] = true;
-	else if (input.ry < 50) keys[Input::Keys::N3] = true;
-	else if (input.rx > 170) keys[Input::Keys::N5] = true;
-	else if (input.rx < 50) keys[Input::Keys::N9] = true;
+	keys[Input::Keys::N1] = (input.ry > 170);
+	keys[Input::Keys::N3] = (input.ry < 50);
+	keys[Input::Keys::N5] = (input.rx > 170);
+	keys[Input::Keys::N9] = (input.rx < 50);
 	
 }
 
