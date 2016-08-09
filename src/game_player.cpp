@@ -365,19 +365,26 @@ void Game_Player::Update() {
 	bool was_blocked = IsBlockedByMoveRoute();
 	Game_Character::Update();
 
-	if (IsMovable() && !Game_Map::GetInterpreter().IsRunning()) {
-		switch (Input::dir4) {
-			case 2:
-				Move(Down);
-				break;
-			case 4:
-				Move(Left);
-				break;
-			case 6:
-				Move(Right);
-				break;
-			case 8:
-				Move(Up);
+	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
+		if (IsMovable()) {
+			switch (Input::dir4) {
+				case 2:
+					Move(Down);
+					break;
+				case 4:
+					Move(Left);
+					break;
+				case 6:
+					Move(Right);
+					break;
+				case 8:
+					Move(Up);
+			}
+		}
+
+		// ESC-Menu calling
+		if (Game_System::GetAllowMenu() && Input::IsTriggered(Input::CANCEL)) {
+			Game_Temp::menu_calling = true;
 		}
 	}
 
@@ -420,11 +427,6 @@ void Game_Player::Update() {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 			if ( GetOnOffVehicle() ) return;
 			if ( CheckActionEvent() ) return;
-		}
-
-		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && Input::IsTriggered(Input::CANCEL)) {
-			Game_Temp::menu_calling = true;
 		}
 	}
 
@@ -632,8 +634,6 @@ bool Game_Player::IsMovable() const {
 	if (Graphics::IsTransitionPending())
 		return false;
 	if (IsMoveRouteOverwritten())
-		return false;
-	if (Game_Map::IsAnyEventStarting())
 		return false;
 	if (location.boarding || location.unboarding)
 		return false;
