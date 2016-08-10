@@ -24,7 +24,7 @@
 #include <memory>
 
 /**
- * Audio decoder for WAV powered by libsndfile
+ * Standalone basic audio decoder for WAV
  */
 class WavDecoder : public AudioDecoder {
 public:

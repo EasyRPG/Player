@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#ifdef HAVE_SLOW_CPU
+#ifdef WANT_FASTWAV
 
 // Headers
 #include <cassert>
@@ -31,7 +31,7 @@ WavDecoder::WavDecoder()
 }
 
 WavDecoder::~WavDecoder() {
-	if(file_ != NULL){
+	if (file_ != NULL) {
 		fclose(file_);
 	}
 }
@@ -45,29 +45,38 @@ bool WavDecoder::Open(FILE* file) {
 	fread(&samplerate, 1, 4, file_);
 	uint16_t bitspersample;
 	fread(&bitspersample, 1, 2, file_);
-	if (bitspersample == 8) output_format=Format::S8;
-	else output_format=Format::S16;
+	switch (bitspersample) {
+		case 8:
+			output_format=Format::U8;
+			break;
+		case 16:
+			output_format=Format::S16;
+			break;
+		case 32:
+			output_format=Format::S32;
+			break;
+	}
 	fseek(file_, 16, SEEK_SET);
 	fread(&jump, 4, 1, file_);
 	
 	// Skipping to audiobuffer start
-	while (chunk != 0x61746164){
+	while (chunk != 0x61746164) {
 		fseek(file_, jump, SEEK_CUR);
 		fread(&chunk, 4, 1, file_);
 		fread(&jump, 4, 1, file_);
 	}
 	
 	audiobuf_offset = ftell(file_);
-	finished=false;
+	finished = false;
 	return file_!=NULL;
 }
 
 bool WavDecoder::Seek(size_t offset, Origin origin) {
 	finished = false;
-	if(file_ != NULL)
+	if (file_ != NULL)
 		return false;
-	if (offset == 0) offset = audiobuf_offset;
-	return fseek(file_,offset,SEEK_SET)==0;
+	if (origin != End) offset += audiobuf_offset;
+	return fseek(file_,offset,(int)origin) == 0;
 }
 
 bool WavDecoder::IsFinished() const {
@@ -76,7 +85,7 @@ bool WavDecoder::IsFinished() const {
 
 
 void WavDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
-	if(file_ == NULL) return;
+	if (file_ == NULL) return;
 	frequency = samplerate;
 	channels = nchannels;
 	format = output_format;
@@ -87,12 +96,12 @@ bool WavDecoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
 }
 
 int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
-	if(file_ == NULL)
+	if (file_ == NULL)
 		return -1;
 
 	int decoded=fread(buffer,1,length,file_);
 	if(decoded < length)
-		finished=true;
+		finished = true;
 	
 	return decoded;
 }
