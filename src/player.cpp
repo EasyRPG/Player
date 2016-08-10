@@ -37,6 +37,8 @@
 #  include <fat.h>
 #elif defined(EMSCRIPTEN)
 #  include <emscripten.h>
+#elif defined(PSP2)
+#  include <psp2/kernel/processmgr.h>
 #elif defined(_3DS)
 #  include <3ds.h>
 #  include <khax.h>
@@ -378,6 +380,10 @@ void Player::Exit() {
 #ifdef __ANDROID__
 	// Workaround Segfault under Android
 	exit(0);
+#endif
+
+#ifdef PSP2
+	sceKernelExitProcess(0);
 #endif
 
 #ifdef _3DS

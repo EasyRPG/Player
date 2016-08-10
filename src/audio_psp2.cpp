@@ -25,17 +25,45 @@
 #include <psp2/kernel/processmgr.h>
 #include <stdio.h>
 #include <cstdlib>
-#ifdef USE_CACHE
-#   include "3ds_cache.h"
-#endif
-#include "psp2_decoder.h"
+#include "audio_decoder.h"
 
 // Internal stuffs
 #define AUDIO_CHANNELS 7 // PSVITA has 8 audio channels but one is used for BGM
 #define SFX_QUEUE_SIZE 8
+#define AUDIO_BUFSIZE 8192 // Max dimension of BGM/SFX buffer size
 SceUID sfx_threads[AUDIO_CHANNELS];
 uint16_t bgm_chn = 0xDEAD;
-extern std::unique_ptr<AudioDecoder> audio_decoder;
+std::unique_ptr<AudioDecoder> audio_decoder;
+std::unique_ptr<AudioDecoder> sfx_decoder[8];
+uint8_t cur_decoder = 0;
+
+// Sound block struct
+struct DecodedSound{
+	uint8_t* audiobuf;
+	uint8_t* audiobuf2;
+	uint8_t* cur_audiobuf;
+	FILE* handle;
+	bool endedOnce;
+	bool isPlaying;
+	bool isStereo;
+	int pitch;
+	int vol;
+	uint8_t id;
+};
+
+// Music block struct
+struct DecodedMusic{
+	bool isStereo;
+	uint8_t* audiobuf;
+	uint8_t* audiobuf2;
+	uint8_t* cur_audiobuf;
+	FILE* handle;
+	bool isNewTrack;
+	int tick;
+	bool endedOnce;
+	bool isPlaying;
+	int vol;
+};
 
 // BGM audio streaming thread
 volatile bool termStream = false;
@@ -67,7 +95,7 @@ static int streamThread(unsigned int args, void* arg){
 		// Seems like audio ports are thread dependant on PSVITA :/
 		if (BGM->isNewTrack){
 			uint8_t audio_mode = BGM->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
-			int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
+			int nsamples = AUDIO_BUFSIZE / ((audio_mode+1)<<1);
 			if (bgm_chn == 0xDEAD) bgm_chn = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, nsamples, 48000, audio_mode);
 			sceAudioOutSetConfig(bgm_chn, nsamples, 48000, audio_mode);
 			vol = BGM->vol * 327;
@@ -88,7 +116,12 @@ static int streamThread(unsigned int args, void* arg){
 		
 		// Audio streaming feature
 		if (BGM->handle != NULL){
-			BGM->updateCallback();
+			if (BGM->cur_audiobuf == BGM->audiobuf) BGM->cur_audiobuf = BGM->audiobuf2;
+			else BGM->cur_audiobuf = BGM->audiobuf;
+			audio_decoder->Decode(BGM->cur_audiobuf, AUDIO_BUFSIZE);	
+			if (audio_decoder->GetLoopCount() > 0){ // EoF
+				BGM->endedOnce = true;
+			}
 			int res = sceAudioOutOutput(bgm_chn, BGM->cur_audiobuf);
 			if (res < 0) Output::Error("An error occurred in audio thread (0x%lX)", res);
 		}
@@ -128,25 +161,30 @@ static int sfxThread(unsigned int args, void* arg){
 		
 		// Preparing audio port
 		uint8_t audio_mode = sfx->isStereo ? SCE_AUDIO_OUT_MODE_STEREO : SCE_AUDIO_OUT_MODE_MONO;
-		int nsamples = BGM_BUFSIZE / ((audio_mode+1)<<1);
-		sceAudioOutSetConfig(ch, nsamples, sfx->samplerate, audio_mode);
+		int nsamples = AUDIO_BUFSIZE / ((audio_mode+1)<<1);
+		sceAudioOutSetConfig(ch, nsamples, 48000, audio_mode);
 		int vol = sfx->vol * 327;
 		int vol_stereo[] = {vol, vol};
 		sceAudioOutSetVolume(ch, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vol_stereo);	
 		
 		// Applying pitch
-		sfx->pitchCallback(sfx);
+		sfx_decoder[sfx->id]->SetPitch(sfx->pitch);
 		
 		// Playing sound
 		while (!sfx->endedOnce){
-			sfx->updateCallback(sfx);
+			if (sfx->cur_audiobuf == sfx->audiobuf) sfx->cur_audiobuf = sfx->audiobuf2;
+			else sfx->cur_audiobuf = sfx->audiobuf;
+			sfx_decoder[sfx->id]->Decode(sfx->cur_audiobuf, AUDIO_BUFSIZE);	
+			if (sfx_decoder[sfx->id]->IsFinished()){ // EoF
+				sfx->endedOnce = true;
+			}
 			sceAudioOutOutput(ch, sfx->cur_audiobuf);
 		}
 		
 		// Freeing sound
 		free(sfx->audiobuf);
 		free(sfx->audiobuf2);
-		sfx->closeCallback(sfx);
+		sfx_decoder[sfx->id].reset();
 		free(sfx);
 		
 	}
@@ -193,7 +231,7 @@ Psp2Audio::~Psp2Audio() {
 	sceKernelDeleteThread(BGM_Thread);
 	if (BGM != NULL){
 		free(BGM->audiobuf);
-		BGM->closeCallback();
+		audio_decoder.reset();
 		free(BGM);
 	}
 	
@@ -220,19 +258,57 @@ void Psp2Audio::BGM_Play(std::string const& file, int volume, int pitch, int fad
 	if (BGM != NULL){
 		free(BGM->audiobuf);
 		free(BGM->audiobuf2);
-		BGM->closeCallback();
+		audio_decoder.reset();
 		free(BGM);
 		BGM = NULL;
 	}
 	
-	// Opening and decoding the file
-	DecodedMusic* myFile = (DecodedMusic*)malloc(sizeof(DecodedMusic));
-	int res = DecodeMusic(file, myFile);
-	if (res < 0){
-		free(myFile);
+	// Opening file
+	FILE* stream = FileFinder::fopenUTF8(file, "rb");
+	if (!stream) {
+		Output::Warning("Couldn't open music file %s", file.c_str());
 		sceKernelSignalSema(BGM_Mutex, 1);
 		return;
-	}else BGM = myFile;
+	}
+	
+	// Trying to use internal decoder
+	audio_decoder = AudioDecoder::Create(stream, file);
+	if (audio_decoder == NULL){
+		fclose(stream);
+		Output::Warning("Unsupported music format (%s)", file.c_str());
+		sceKernelSignalSema(BGM_Mutex, 1);
+		return;
+	}
+	
+	// Initializing internal audio decoder
+	int audiotype;
+	fseek(stream, 0, SEEK_SET);
+	if (!audio_decoder->Open(stream)) Output::Error("An error occured in audio decoder (%s)", audio_decoder->GetError().c_str());
+	audio_decoder->SetLooping(true);
+	AudioDecoder::Format int_format;
+	int samplerate;	
+	audio_decoder->SetFormat(48000, AudioDecoder::Format::S16, 2);
+	audio_decoder->GetFormat(samplerate, int_format, audiotype);
+	if (samplerate != 48000) Output::Warning("Cannot resample music file. Music will be distorted.");
+	
+	// Initializing music block
+	DecodedMusic* myFile = (DecodedMusic*)malloc(sizeof(DecodedMusic));
+	
+	// Check for file audiocodec
+	if (audiotype == 2) myFile->isStereo = true;
+	else myFile->isStereo = false;
+	
+	// Setting audiobuffer size
+	myFile->audiobuf = (uint8_t*)malloc(AUDIO_BUFSIZE);
+	myFile->audiobuf2 = (uint8_t*)malloc(AUDIO_BUFSIZE);
+	myFile->cur_audiobuf = myFile->audiobuf;	
+	
+	//Setting default streaming values
+	myFile->handle = stream;
+	myFile->endedOnce = false;
+	
+	// Passing new music block to the audio thread
+	BGM = myFile;
 	
 	// Music settings
 	audio_decoder->SetFade(0, volume, fadein);
@@ -297,9 +373,47 @@ void Psp2Audio::SE_Play(std::string const& file, int volume, int pitch) {
 	// Allocating DecodedSound object
 	DecodedSound* myFile = (DecodedSound*)malloc(sizeof(DecodedSound));
 	
-	// Opening the file
-	int res = DecodeSound(file, myFile);
-	if (res < 0) return;
+	// Opening file
+	FILE* stream = FileFinder::fopenUTF8(file, "rb");
+	if (!stream) {
+		Output::Warning("Couldn't open sound file %s", file.c_str());
+		return;
+	}
+	
+	// Trying to use internal decoder
+	uint8_t id = cur_decoder++;
+	if (cur_decoder > 7) cur_decoder = 0;
+	sfx_decoder[id] = AudioDecoder::Create(stream, file);
+	if (sfx_decoder[id] == NULL){
+		fclose(stream);
+		Output::Warning("Unsupported sound format (%s)", file.c_str());
+		return;
+	}
+
+	// Initializing internal audio decoder
+	int audiotype;
+	fseek(stream, 0, SEEK_SET);
+	if (!sfx_decoder[id]->Open(stream)) Output::Error("An error occured in audio decoder (%s)", audio_decoder->GetError().c_str());
+	sfx_decoder[id]->SetLooping(false);
+	AudioDecoder::Format int_format;
+	int samplerate;	
+	sfx_decoder[id]->SetFormat(48000, AudioDecoder::Format::S16, 2);
+	sfx_decoder[id]->GetFormat(samplerate, int_format, audiotype);
+	if (samplerate != 48000) Output::Warning("Cannot resample sound file. Sound will be distorted.");
+	myFile->id = id;
+	
+	// Check for file audiocodec
+	if (audiotype == 2) myFile->isStereo = true;
+	else myFile->isStereo = false;
+	
+	// Setting audiobuffer size
+	myFile->audiobuf = (uint8_t*)malloc(AUDIO_BUFSIZE);
+	myFile->audiobuf2 = (uint8_t*)malloc(AUDIO_BUFSIZE);
+	myFile->cur_audiobuf = myFile->audiobuf;	
+	
+	//Setting default streaming values
+	myFile->handle = stream;
+	myFile->endedOnce = false;
 	
 	// Passing pitch and volume values to the object
 	myFile->pitch = pitch;

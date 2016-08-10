@@ -123,7 +123,7 @@ void Psp2Ui::ProcessEvents() {
 	sceCtrlPeekBufferPositive(0, &input, 1);
 	keys[Input::Keys::Z] = (input.buttons & SCE_CTRL_CROSS);
 	keys[Input::Keys::X] = (input.buttons & SCE_CTRL_CIRCLE);
-	keys[Input::Keys::N8] = (input.buttons & SCE_CTRL_TRIANGLE);
+	keys[Input::Keys::N2] = (input.buttons & SCE_CTRL_TRIANGLE);
 	keys[Input::Keys::LSHIFT] = (input.buttons & SCE_CTRL_SQUARE);
 	keys[Input::Keys::F12] = (input.buttons & SCE_CTRL_SELECT);
 	keys[Input::Keys::ESCAPE] = (input.buttons & SCE_CTRL_START);
