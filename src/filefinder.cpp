@@ -295,7 +295,10 @@ std::string FileFinder::MakeCanonical(std::string const& path, int initial_deepn
 std::vector<std::string> FileFinder::SplitPath(std::string const& path) {
 	// Tokens are patch delimiters ("/" and encoding aware "\")
 	std::function<bool(char32_t)> f = [](char32_t t) {
-		char32_t escape_char_back = Utils::DecodeUTF32(Player::escape_symbol).front();
+		char32_t escape_char_back = '\0';
+		if (!Player::escape_symbol.empty()) {
+			escape_char_back = Utils::DecodeUTF32(Player::escape_symbol).front();
+		}
 		char32_t escape_char_forward = Utils::DecodeUTF32("/").front();
 		return t == escape_char_back || t == escape_char_forward;
 	};
