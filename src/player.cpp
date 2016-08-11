@@ -816,8 +816,35 @@ std::string Player::GetEncoding() {
 	}
 
 	if (encoding.empty() || encoding == "auto") {
+		encoding = "";
+
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-		encoding = ReaderUtil::DetectEncoding(ldb);
+		std::vector<std::string> encodings = ReaderUtil::DetectEncodings(ldb);
+
+		for (std::string& enc : encodings) {
+			// Heuristic: Check if encoded title and system name matches the one on the filesystem
+			// When yes is probably a good encoding
+
+			escape_symbol = ReaderUtil::Recode("\\", enc);
+			if ((Data::system.title_name.empty() ||
+					!FileFinder::FindImage("Title", ReaderUtil::Recode(Data::system.title_name, enc)).empty()) &&
+				(Data::system.system_name.empty() ||
+					!FileFinder::FindImage("System", ReaderUtil::Recode(Data::system.system_name, enc)).empty())) {
+				// Looks like a good encoding
+				encoding = enc;
+				break;
+			} else {
+				Output::Debug("Detected encoding: %s. Files not found. Trying next.", enc.c_str());
+			}
+		}
+
+		if (!encodings.empty() && encoding.empty()) {
+			// No encoding found that matches the files, maybe RTP missing.
+			// Use the first one instead
+			encoding = encodings[0];
+		}
+
+		escape_symbol = "";
 
 		if (!encoding.empty()) {
 			Output::Debug("Detected encoding: %s", encoding.c_str());
@@ -826,7 +853,6 @@ std::string Player::GetEncoding() {
 			encoding = ReaderUtil::GetLocaleEncoding();
 		}
 	}
-
 
 	return encoding;
 }
