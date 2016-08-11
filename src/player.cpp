@@ -647,14 +647,24 @@ void Player::CreateGameObjects() {
 			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-				Output::Debug("Using RPG2k3 Interpreter");
-			}
-			else {
+				// Heuristic: Detect if game was converted from 2000 from 2003 and
+				// no 2003 feature was used at all (breaks .flow e.g.)
+				if (Data::classes.size() == 1 &&
+					Data::classes[0].name.empty() &&
+					Data::system.menu_commands.empty() &&
+					Data::system.system2_name.empty() &&
+					Data::battleranimations.size() == 1 &&
+					Data::battleranimations[0].name.empty()) {
+					engine = EngineRpg2k;
+					Output::Debug("Using RPG2k Interpreter (heuristic)");
+				} else {
+					Output::Debug("Using RPG2k3 Interpreter");
+				}
+			} else {
 				engine |= EngineRpg2k3E;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
-		}
-		else {
+		} else {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
@@ -826,6 +836,12 @@ std::string Player::GetEncoding() {
 			// When yes is probably a good encoding
 
 			escape_symbol = ReaderUtil::Recode("\\", enc);
+			if (escape_symbol.empty()) {
+				// Bad encoding
+				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
+				continue;
+			}
+
 			if ((Data::system.title_name.empty() ||
 					!FileFinder::FindImage("Title", ReaderUtil::Recode(Data::system.title_name, enc)).empty()) &&
 				(Data::system.system_name.empty() ||
