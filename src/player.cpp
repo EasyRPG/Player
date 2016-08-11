@@ -647,8 +647,8 @@ void Player::CreateGameObjects() {
 			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-				// Heuristic: Detect if game was converted from 2000 from 2003 and
-				// no 2003 feature was used at all (breaks .flow e.g.)
+				// Heuristic: Detect if game was converted from 2000 to 2003 and
+				// no typical 2003 feature was used at all (breaks .flow e.g.)
 				if (Data::classes.size() == 1 &&
 					Data::classes[0].name.empty() &&
 					Data::system.menu_commands.empty() &&
@@ -833,7 +833,7 @@ std::string Player::GetEncoding() {
 
 		for (std::string& enc : encodings) {
 			// Heuristic: Check if encoded title and system name matches the one on the filesystem
-			// When yes is probably a good encoding
+			// When yes is a good encoding. Otherwise try the next ones.
 
 			escape_symbol = ReaderUtil::Recode("\\", enc);
 			if (escape_symbol.empty()) {
