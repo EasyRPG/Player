@@ -322,6 +322,13 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 
 	switch (state) {
 	case State_Start:
+		Game_Battle::RefreshEvents([](const RPG::TroopPage& page) {
+			const RPG::TroopPageCondition::Flags& flag = page.condition.flags;
+			return flag.turn || flag.turn_actor || flag.turn_enemy ||
+				   flag.switch_a || flag.switch_b || flag.variable ||
+				   flag.fatigue;
+
+		});
 		break;
 	case State_SelectOption:
 		options_window->SetActive(true);
@@ -533,6 +540,21 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 	case BattleActionState_Start:
 		action->TargetFirst();
 
+		if (battle_action_need_event_refresh) {
+			action->GetSource()->NextBattleTurn();
+			NextTurn(action->GetSource());
+			battle_action_need_event_refresh = false;
+
+			// Next turn events must run before the battle animation is played
+			Game_Battle::RefreshEvents([](const RPG::TroopPage& page) {
+				const RPG::TroopPageCondition::Flags& flag = page.condition.flags;
+				return flag.turn || flag.turn_actor || flag.turn_enemy ||
+					   flag.command_actor;
+			});
+
+			return false;
+		}
+
 		ShowNotification(action->GetStartMessage());
 
 		if (!action->IsTargetValid()) {
@@ -595,9 +617,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		do {
 			if (!action->IsFirstAttack()) {
 				action->Execute();
-			} else {
-				NextTurn(action->GetSource());
-				std::vector<int16_t> states = action->GetSource()->NextBattleTurn();
 			}
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
@@ -644,10 +663,20 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		break;
 	case BattleActionState_Finished:
+		if (battle_action_need_event_refresh) {
+			battle_action_wait = 30;
+			battle_action_need_event_refresh = true;
+
+			// Reset variables
+			battle_action_state = BattleActionState_Start;
+			targets.clear();
+
+			return true;
+		}
+
 		if (battle_action_wait--) {
 			return false;
 		}
-		battle_action_wait = 30;
 
 		{
 			std::vector<Game_Battler*>::const_iterator it;
@@ -667,11 +696,17 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
-		// Reset variables
-		battle_action_state = BattleActionState_Start;
-		targets.clear();
+		// Must loop another time otherwise the event update happens during
+		// SelectActor which updates the gauge
+		battle_action_need_event_refresh = true;
 
-		return true;
+		Game_Battle::RefreshEvents([](const RPG::TroopPage& page) {
+			const RPG::TroopPageCondition::Flags& flag = page.condition.flags;
+			return flag.switch_a || flag.switch_b || flag.variable ||
+				   flag.fatigue || flag.actor_hp || flag.enemy_hp;
+		});
+
+		return false;
 	}
 
 	return false;

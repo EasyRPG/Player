@@ -15,11 +15,15 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <functional>
 #include "rpg_troop.h"
 
 class Game_Battler;
 class Game_Interpreter;
 class Spriteset_Battle;
+namespace RPG {
+	class EventPage;
+};
 
 namespace Game_Battle {
 	/**
@@ -83,7 +87,25 @@ namespace Game_Battle {
 	bool CheckTurns(int turns, int base, int multiple);
 
 	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
+
+	/**
+	 * Runs the current interpreter or starts a new one when pages are pending
+	 *
+	 * @return true when no interpreter needs to run anymore
+	 */
 	bool UpdateEvents();
+
+	/**
+	 * Checks through all pages and marks them as pending when they want to run.
+	 */
+	void RefreshEvents();
+
+	/**
+	 * Checks through pages the match the predicate and marks them as pending when they want to run.
+	 *
+	 * @param predicate Predicate to fulfill
+	 */
+	void RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate);
 
 	bool IsEscapeAllowed();
 	bool IsTerminating();

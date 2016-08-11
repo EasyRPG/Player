@@ -79,6 +79,7 @@ protected:
 
 	int battle_action_wait;
 	int battle_action_state;
+	bool battle_action_need_event_refresh = true;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;
 
