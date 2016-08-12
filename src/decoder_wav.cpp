@@ -75,7 +75,7 @@ bool WavDecoder::Seek(size_t offset, Origin origin) {
 	finished = false;
 	if (file_ != NULL)
 		return false;
-	if (origin != End) offset += audiobuf_offset;
+	if (origin != Origin::End) offset += audiobuf_offset;
 	return fseek(file_,offset,(int)origin) == 0;
 }
 
