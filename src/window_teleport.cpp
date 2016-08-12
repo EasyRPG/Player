@@ -21,6 +21,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "game_map.h"
+#include "game_targets.h"
 
 Window_Teleport::Window_Teleport(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -30,11 +31,13 @@ Window_Teleport::Window_Teleport(int ix, int iy, int iwidth, int iheight) :
 }
 
 const RPG::SaveTarget& Window_Teleport::GetTarget() const {
-	return Main_Data::game_data.targets[GetIndex()];
+	std::vector<RPG::SaveTarget*> targets = Game_Targets::GetTeleportTargets();
+
+	return *targets[GetIndex()];
 }
 
 void Window_Teleport::Refresh() {
-	std::vector<RPG::SaveTarget>& targets = Main_Data::game_data.targets;
+	std::vector<RPG::SaveTarget*> targets = Game_Targets::GetTeleportTargets();
 	item_max = (int)targets.size();
 	CreateContents();
 
@@ -42,6 +45,6 @@ void Window_Teleport::Refresh() {
 		Rect rect = GetItemRect(i);
 		contents->ClearRect(rect);
 
-		contents->TextDraw(rect, Font::ColorDefault, Game_Map::GetMapName(targets[i].map_id));
+		contents->TextDraw(rect, Font::ColorDefault, Game_Map::GetMapName(targets[i]->map_id));
 	}
 }

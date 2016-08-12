@@ -74,6 +74,18 @@ RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) {
 	return target == data.end() ? NULL : &*target;
 }
 
+std::vector<RPG::SaveTarget*> Game_Targets::GetTeleportTargets() {
+	std::vector<RPG::SaveTarget*> targets;
+
+	for (auto& target : data) {
+		if (target.ID != 0) {
+			targets.push_back(&target);
+		}
+	}
+
+	return targets;
+}
+
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, true);
 
