@@ -159,6 +159,27 @@ void Game_Map::Setup(int _id) {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+
+	// Save allowed
+	int current_index = GetMapIndex(location.map_id);
+	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	}
+	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
+
+	// Escape allowed
+	current_index = GetMapIndex(location.map_id);
+	while (Data::treemap.maps[current_index].escape == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	}
+	Game_System::SetAllowEscape(Data::treemap.maps[current_index].escape == 1);
+
+	// Teleport allowed
+	current_index = GetMapIndex(location.map_id);
+	while (Data::treemap.maps[current_index].teleport == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	}
+	Game_System::SetAllowTeleport(Data::treemap.maps[current_index].teleport == 1);
 }
 
 void Game_Map::SetupFromSave() {
@@ -242,11 +263,6 @@ void Game_Map::SetupCommon(int _id) {
 		ss << Data::treemap.maps[cur].name.c_str();
 	}
 	Output::Debug("Tree: %s", ss.str().c_str());
-
-	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
-	}
-	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
 
 	for (size_t i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
