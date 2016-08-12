@@ -83,7 +83,11 @@ void Scene_Map::Resume() {
 }
 
 void Scene_Map::TransitionIn() {
-	if (Game_Temp::battle_calling) {
+	if (Main_Data::game_player->IsTeleporting()) {
+		// Comes from the teleport scene
+		// Teleport will handle fade-in
+		return;
+	} else if (Game_Temp::battle_calling) {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
 	}
 	else {
