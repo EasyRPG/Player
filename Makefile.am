@@ -194,6 +194,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/scene_skill.h \
 	src/scene_status.cpp \
 	src/scene_status.h \
+	src/scene_teleport.cpp \
+	src/scene_teleport.h \
 	src/scene_title.cpp \
 	src/scene_title.h \
 	src/screen.cpp \
@@ -304,6 +306,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_skillstatus.h \
 	src/window_targetstatus.cpp \
 	src/window_targetstatus.h \
+	src/window_teleport.cpp \
+	src/window_teleport.h \
 	src/window_varlist.cpp \
 	src/window_varlist.h
 

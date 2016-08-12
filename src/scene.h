@@ -50,6 +50,7 @@ public:
 		Logo,
 		Order,
 		GameBrowser,
+		Teleport,
 		SceneMax
 	};
 

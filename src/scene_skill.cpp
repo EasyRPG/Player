@@ -19,12 +19,12 @@
 #include "scene_skill.h"
 #include "game_map.h"
 #include "game_party.h"
-#include "game_switches.h"
+#include "game_player.h"
 #include "game_system.h"
+#include "game_targets.h"
 #include "input.h"
 #include "scene_actortarget.h"
-#include "scene_map.h"
-#include "scene_menu.h"
+#include "scene_teleport.h"
 
 Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 	actor_index(actor_index), skill_index(skill_index) {
@@ -64,16 +64,21 @@ void Scene_Skill::Update() {
 			int type = Data::skills[skill_id - 1].type;
 
 			if (type == RPG::Skill::Type_switch) {
-				actor->UseSkill(skill_id);
+				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else if (type == RPG::Skill::Type_normal || type >= RPG::Skill::Type_subskill) {
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
 				skill_index = skill_window->GetIndex();
 			} else if (type == RPG::Skill::Type_teleport) {
-				// TODO: Displays the teleport target scene/window
+				Scene::Push(std::make_shared<Scene_Teleport>(*actor, skill_id));
 			} else if (type == RPG::Skill::Type_escape) {
-				// TODO: Displays the escape target scene/window
+				Main_Data::game_party->UseSkill(skill_id, actor, actor);
+
+				Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
+				Main_Data::game_player->StartTeleport();
+
+				Scene::PopUntil(Scene::Map);
 			}
 		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));

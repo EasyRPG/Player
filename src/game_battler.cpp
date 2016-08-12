@@ -290,8 +290,7 @@ bool Game_Battler::UseSkill(int skill_id) {
 			}
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
-			// ToDo: Show Teleport/Escape target menu
-			break;
+			return true;
 		case RPG::Skill::Type_switch:
 			Game_Switches[skill.switch_id] = true;
 			return true;

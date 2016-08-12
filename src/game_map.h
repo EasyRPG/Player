@@ -542,6 +542,14 @@ namespace Game_Map {
 	int GetMapIndex(int id);
 
 	/**
+	 * Gets the map name from MapInfo vector using map ID.
+	 *
+	 * @param id map ID.
+	 * @return map name from MapInfo vector.
+	 */
+	std::string GetMapName(int id);
+
+	/**
 	 * Sets the chipset.
 	 *
 	 * @param id new chipset ID.

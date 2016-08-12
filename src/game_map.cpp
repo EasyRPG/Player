@@ -1176,8 +1176,18 @@ int Game_Map::GetMapIndex(int id) {
 			return i;
 		}
 	}
-	//nothing found
+	// nothing found
 	return -1;
+}
+
+std::string Game_Map::GetMapName(int id) {
+	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
+		if (Data::treemap.maps[i].ID == id) {
+			return Data::treemap.maps[i].name;
+		}
+	}
+	// nothing found
+	return "";
 }
 
 void Game_Map::SetChipset(int id) {

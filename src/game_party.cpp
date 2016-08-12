@@ -24,9 +24,10 @@
 #include "game_map.h"
 #include "game_player.h"
 #include "game_battle.h"
+#include "game_targets.h"
 #include "game_temp.h"
+#include "game_system.h"
 #include "output.h"
-#include "util_macro.h"
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
@@ -300,14 +301,11 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		return false;
 	}
 
-	// TODO: Escape and Teleport Spells need event SetTeleportPlace and
-	// SetEscapePlace first. Not sure if any game uses this...
-	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
-	//	return is_there_a_teleport_set;
-	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
-	//	return is_there_an_escape_set;
-	//} else
-	if (skill.type == RPG::Skill::Type_normal ||
+	if (skill.type == RPG::Skill::Type_escape) {
+		return !Game_Temp::battle_running && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
+	} else if (skill.type == RPG::Skill::Type_teleport) {
+		return !Game_Temp::battle_running && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
+	} else if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
 		int scope = skill.scope;
 

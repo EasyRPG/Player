@@ -263,6 +263,9 @@
     <ClCompile Include="..\..\src\scene_status.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_teleport.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sprite_character.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\window_targetstatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_teleport.cpp">
+      <Filter>Source Files\Engine\Window</Filter> 
     </ClCompile>
     <ClCompile Include="..\..\src\cache.cpp">
       <Filter>Source Files\Engine</Filter>
@@ -709,6 +715,9 @@
     <ClInclude Include="..\..\src\scene_status.h">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\scene_teleport.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\sprite_character.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
@@ -806,6 +815,9 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_skillstatus.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_teleport.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\cache.h">

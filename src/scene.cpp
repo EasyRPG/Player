@@ -49,7 +49,9 @@ const char Scene::scene_names[SceneMax][12] =
 	"Gameover",
 	"Debug",
 	"Logo",
-	"Order"
+	"Order",
+	"GameBrowser",
+	"Teleport"
 };
 
 enum PushPopOperation {
