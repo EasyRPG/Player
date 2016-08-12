@@ -647,14 +647,24 @@ void Player::CreateGameObjects() {
 			engine = EngineRpg2k3;
 
 			if (FileFinder::FindDefault("ultimate_rt_eb.dll").empty()) {
-				Output::Debug("Using RPG2k3 Interpreter");
-			}
-			else {
+				// Heuristic: Detect if game was converted from 2000 to 2003 and
+				// no typical 2003 feature was used at all (breaks .flow e.g.)
+				if (Data::classes.size() == 1 &&
+					Data::classes[0].name.empty() &&
+					Data::system.menu_commands.empty() &&
+					Data::system.system2_name.empty() &&
+					Data::battleranimations.size() == 1 &&
+					Data::battleranimations[0].name.empty()) {
+					engine = EngineRpg2k;
+					Output::Debug("Using RPG2k Interpreter (heuristic)");
+				} else {
+					Output::Debug("Using RPG2k3 Interpreter");
+				}
+			} else {
 				engine |= EngineRpg2k3E;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
-		}
-		else {
+		} else {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
@@ -816,8 +826,41 @@ std::string Player::GetEncoding() {
 	}
 
 	if (encoding.empty() || encoding == "auto") {
+		encoding = "";
+
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-		encoding = ReaderUtil::DetectEncoding(ldb);
+		std::vector<std::string> encodings = ReaderUtil::DetectEncodings(ldb);
+
+		for (std::string& enc : encodings) {
+			// Heuristic: Check if encoded title and system name matches the one on the filesystem
+			// When yes is a good encoding. Otherwise try the next ones.
+
+			escape_symbol = ReaderUtil::Recode("\\", enc);
+			if (escape_symbol.empty()) {
+				// Bad encoding
+				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
+				continue;
+			}
+
+			if ((Data::system.title_name.empty() ||
+					!FileFinder::FindImage("Title", ReaderUtil::Recode(Data::system.title_name, enc)).empty()) &&
+				(Data::system.system_name.empty() ||
+					!FileFinder::FindImage("System", ReaderUtil::Recode(Data::system.system_name, enc)).empty())) {
+				// Looks like a good encoding
+				encoding = enc;
+				break;
+			} else {
+				Output::Debug("Detected encoding: %s. Files not found. Trying next.", enc.c_str());
+			}
+		}
+
+		if (!encodings.empty() && encoding.empty()) {
+			// No encoding found that matches the files, maybe RTP missing.
+			// Use the first one instead
+			encoding = encodings[0];
+		}
+
+		escape_symbol = "";
 
 		if (!encoding.empty()) {
 			Output::Debug("Detected encoding: %s", encoding.c_str());
@@ -826,7 +869,6 @@ std::string Player::GetEncoding() {
 			encoding = ReaderUtil::GetLocaleEncoding();
 		}
 	}
-
 
 	return encoding;
 }

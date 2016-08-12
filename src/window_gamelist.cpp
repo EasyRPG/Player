@@ -39,7 +39,13 @@ void Window_GameList::Refresh() {
 			game_directories.push_back(dir.second);
 		}
 	}
-
+	
+	// Sort game list in place
+	std::sort(game_directories.begin(), game_directories.end(),
+			  [](const std::string& s, const std::string& s2) {
+				  return strcmp(Utils::LowerCase(s).c_str(), Utils::LowerCase(s2).c_str()) <= 0;
+			  });
+	
 	if (HasValidGames()) {
 		item_max = game_directories.size();
 
