@@ -736,7 +736,7 @@ bool Game_Map::IsCounter(int x, int y) {
 }
 
 int Game_Map::GetTerrainTag(int const x, int const y) {
-	if (!Game_Map::IsValid(x, y)) return 1;
+	if (!Game_Map::IsValid(x, y)) return 9;
 
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned chip_index =
