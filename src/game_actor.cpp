@@ -23,6 +23,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "main_data.h"
+#include "output.h"
 #include "player.h"
 #include "rpg_skill.h"
 #include "util_macro.h"
@@ -59,10 +60,14 @@ void Game_Actor::Init() {
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 	SetExp(exp_list[GetLevel() - 1]);
+
+	RemoveInvalidEquipment();
 }
 
 void Game_Actor::Fixup() {
 	GetData().Fixup(actor_id);
+
+	RemoveInvalidEquipment();
 }
 
 int Game_Actor::GetId() const {
@@ -1047,4 +1052,24 @@ Game_Battler::BattlerType Game_Actor::GetType() const {
 
 RPG::SaveActor & Game_Actor::GetData() const {
 	return Main_Data::game_data.actors[actor_id - 1];
+}
+
+void Game_Actor::RemoveInvalidEquipment() {
+//	return;
+	// Filter out invalid equipment
+	int eq_types[] = { RPG::Item::Type_weapon,
+		HasTwoWeapons() ? RPG::Item::Type_weapon : RPG::Item::Type_shield,
+		RPG::Item::Type_armor,
+		RPG::Item::Type_helmet,
+		RPG::Item::Type_accessory
+	};
+
+	for (int i = 0; i < 5; ++i) {
+		const RPG::Item* item = GetEquipment(i);
+		if (item && item->type != eq_types[i]) {
+			Output::Debug("Actor %d: Removing invalid item %d (of type %d) from equipment slot %d (needs type %d)",
+			GetId(), item->ID, item->type, i, eq_types[i]);
+			SetEquipment(i, 0);
+		}
+	}
 }
