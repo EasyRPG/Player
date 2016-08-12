@@ -39,6 +39,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private int nbOfGamesPerLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,11 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         // Display the "How to use EasyRPG" on the first startup
         GameBrowserHelper.displayHowToMessageOnFirstStartup(this);
@@ -72,12 +78,6 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.game_browser_api15_recycleview);
         recyclerView.setHasFixedSize(true);
         setLayoutManager(this.getResources().getConfiguration());
-        displayGameList(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         displayGameList(this);
     }
@@ -140,6 +140,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
 
         setLayoutManager(newConfig);
+        displayGameList(this);
     }
 
     public void displayGameList(Activity activity) {
@@ -150,7 +151,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         if (gameScanner.hasError()) {
             recyclerView.setAdapter(new ErrorAdapter(gameScanner.getErrorList(), this));
         } else {
-            recyclerView.setAdapter(new MyAdapter(this, gameScanner.getGameList()));
+            recyclerView.setAdapter(new MyAdapter(this, gameScanner.getGameList(), nbOfGamesPerLine));
         }
     }
 
@@ -160,23 +161,23 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     public void setLayoutManager(Configuration configuration) {
         int orientation = configuration.orientation;
 
-        // Determine screen size
-        int nbGamePerRow = configuration.screenWidthDp / THUMBNAIL_HORIZONTAL_SIZE_DPI;
-        if (nbGamePerRow <= 0) {
-            nbGamePerRow = 1;
-        }
+        // Determine the layout template (List or Grid, number of element per line for the grid)
+        this.nbOfGamesPerLine = configuration.screenWidthDp / THUMBNAIL_HORIZONTAL_SIZE_DPI;
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, nbGamePerRow));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
     }
 
     static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private List<GameInformation> movieList;
         private Activity activity;
+        private int nbOfGamesPerLine;
+
         IniEncodingReader iniReader;
 
-        public MyAdapter(Activity activity, List<GameInformation> movieList) {
+        public MyAdapter(Activity activity, List<GameInformation> movieList, int nbOfGamesPerLine) {
             this.movieList = movieList;
             this.activity = activity;
+            this.nbOfGamesPerLine = nbOfGamesPerLine;
         }
 
         @Override
@@ -190,7 +191,12 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
             // On inflate la vue et on la remplie
-            View v = inflater.inflate(R.layout.browser_api15_game_card, parent, false);
+            View v;
+            if (this.nbOfGamesPerLine <= 1) {
+                v = inflater.inflate(R.layout.browser_api15_game_card_vertical, parent, false);
+            } else {
+                v = inflater.inflate(R.layout.browser_api15_game_card, parent, false);
+            }
             return new ViewHolder(v);
         }
 
