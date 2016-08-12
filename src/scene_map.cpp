@@ -159,14 +159,16 @@ void Scene_Map::Update() {
 
 	if (Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
-		if (Input::IsTriggered(Input::CANCEL) && Input::IsPressed(Input::SHIFT)) {
-			debug_menuoverwrite_counter++;
-			if (debug_menuoverwrite_counter >= 5) {
-				Game_Temp::menu_calling = true;
-				debug_menuoverwrite_counter = 0;
-			} else {
-				debug_menuoverwrite_counter = 0;
+		if (Input::IsPressed(Input::SHIFT)) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				debug_menuoverwrite_counter++;
+				if (debug_menuoverwrite_counter >= 5) {
+					Game_Temp::menu_calling = true;
+					debug_menuoverwrite_counter = 0;
+				}
 			}
+		} else {
+			debug_menuoverwrite_counter = 0;
 		}
 
 		if (Input::IsTriggered(Input::DEBUG_MENU)) {
