@@ -55,6 +55,9 @@ bool WavDecoder::Open(FILE* file) {
 		case 32:
 			output_format=Format::S32;
 			break;
+		default:
+			return false;
+			break;
 	}
 	fseek(file_, 16, SEEK_SET);
 	fread(&jump, 4, 1, file_);
