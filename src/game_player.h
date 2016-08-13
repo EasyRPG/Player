@@ -25,6 +25,9 @@
 #include <vector>
 
 class Game_Vehicle;
+namespace RPG {
+	class SaveTarget;
+}
 
 /**
  * Game Player class
@@ -94,6 +97,7 @@ public:
 	 * @param direction New direction after teleport. If -1, the direction isn't changed.
 	 */
 	void ReserveTeleport(int map_id, int x, int y, int direction = -1);
+	void ReserveTeleport(const RPG::SaveTarget& target);
 	void StartTeleport();
 	void PerformTeleport();
 	void Center(int x, int y);

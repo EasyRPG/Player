@@ -15,22 +15,36 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_TARGETS_H_
-#define _GAME_TARGETS_H_
+#ifndef _WINDOW_TELEPORT_H_
+#define _WINDOW_TELEPORT_H_
 
-namespace RPG {
-	class SaveTarget;
-}
+// Headers
+#include <vector>
+#include "window_help.h"
+#include "window_selectable.h"
 
-namespace Game_Targets {
-	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
-	void RemoveTeleportTarget(int map_id);
-	bool HasTeleportTarget();
-	RPG::SaveTarget* GetTeleportTarget(int map_id);
-	std::vector<RPG::SaveTarget*> GetTeleportTargets();
-	void SetEscapeTarget(int map_id, int x, int y, int switch_id);
-	bool HasEscapeTarget();
-	RPG::SaveTarget* GetEscapeTarget();
-}
+/**
+ * Window_Teleport class. Shows teleport locations.
+ */
+class Window_Teleport : public Window_Selectable {
+
+public:
+	/**
+	 * Constructor.
+	 */
+	Window_Teleport(int ix, int iy, int iwidth, int iheight);
+
+	/**
+	 * Gets target.
+	 *
+	 * @return currently selected target.
+	 */
+	const RPG::SaveTarget& GetTarget() const;
+
+	/**
+	 * Refreshes the list.
+	 */
+	void Refresh();
+};
 
 #endif

@@ -55,9 +55,35 @@ void Game_Targets::RemoveTeleportTarget(int map_id) {
 	data.erase(target);
 }
 
+bool Game_Targets::HasTeleportTarget() {
+	// Escape target has ID 0
+
+	if (data.empty()) {
+		return false;
+	}
+
+	if (data.size() > 1) {
+		return true;
+	}
+
+	return data[0].ID != 0;
+}
+
 RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
 	return target == data.end() ? NULL : &*target;
+}
+
+std::vector<RPG::SaveTarget*> Game_Targets::GetTeleportTargets() {
+	std::vector<RPG::SaveTarget*> targets;
+
+	for (auto& target : data) {
+		if (target.ID != 0) {
+			targets.push_back(&target);
+		}
+	}
+
+	return targets;
 }
 
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
@@ -68,6 +94,10 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
 	target->map_y = y;
 	target->switch_on = switch_id > 0;
 	target->switch_id = switch_id;
+}
+
+bool Game_Targets::HasEscapeTarget() {
+	return GetEscapeTarget() != nullptr;
 }
 
 RPG::SaveTarget* Game_Targets::GetEscapeTarget() {

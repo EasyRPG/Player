@@ -83,7 +83,11 @@ void Scene_Map::Resume() {
 }
 
 void Scene_Map::TransitionIn() {
-	if (Game_Temp::battle_calling) {
+	if (Main_Data::game_player->IsTeleporting()) {
+		// Comes from the teleport scene
+		// Teleport will handle fade-in
+		return;
+	} else if (Game_Temp::battle_calling) {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
 	}
 	else {
@@ -155,14 +159,16 @@ void Scene_Map::Update() {
 
 	if (Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
-		if (Input::IsTriggered(Input::CANCEL) && Input::IsPressed(Input::SHIFT)) {
-			debug_menuoverwrite_counter++;
-			if (debug_menuoverwrite_counter >= 5) {
-				Game_Temp::menu_calling = true;
-				debug_menuoverwrite_counter = 0;
-			} else {
-				debug_menuoverwrite_counter = 0;
+		if (Input::IsPressed(Input::SHIFT)) {
+			if (Input::IsTriggered(Input::CANCEL)) {
+				debug_menuoverwrite_counter++;
+				if (debug_menuoverwrite_counter >= 5) {
+					Game_Temp::menu_calling = true;
+					debug_menuoverwrite_counter = 0;
+				}
 			}
+		} else {
+			debug_menuoverwrite_counter = 0;
 		}
 
 		if (Input::IsTriggered(Input::DEBUG_MENU)) {

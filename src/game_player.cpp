@@ -29,6 +29,7 @@
 #include "main_data.h"
 #include "player.h"
 #include "util_macro.h"
+#include "game_switches.h"
 #include <algorithm>
 #include <cmath>
 
@@ -213,6 +214,15 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
 	FileRequestAsync* request = Game_Map::RequestMap(new_map_id);
 	request->SetImportantFile(true);
 	request->Start();
+}
+
+void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
+	ReserveTeleport(target.map_id, target.map_x, target.map_y, Down);
+
+	if (target.switch_on) {
+		Game_Switches[target.switch_id] = true;
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+	}
 }
 
 void Game_Player::StartTeleport() {
