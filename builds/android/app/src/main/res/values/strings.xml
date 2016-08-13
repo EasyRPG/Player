@@ -77,6 +77,7 @@ Please tell us in detail what went wrong.\n
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="easyrpg_folder">EasyRPG folder</string>
     <string name="quick_access">Quick access</string>
+    <string name="force_landscape_mode">Force landscape orientation</string>
 
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage Input Layouts:</string>

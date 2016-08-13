@@ -32,7 +32,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
     private LinearLayout gamesFoldersListLayout, inputLayoutListLayout;
 
     // GUI component
-    private CheckBox vibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox;
+    private CheckBox vibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox, forceLandscapeCheckbox;
     private SeekBar layoutSizeSeekBar, layoutTransparencyLayout;
     private TextView layoutTransparencyTextView, layoutSizeTextView, directoryTextView;
 
@@ -63,6 +63,16 @@ public class SettingsActivity extends Activity implements OnClickListener {
         // Sound
         CheckBox cb_sounds = (CheckBox) findViewById(R.id.settings_audio);
         cb_sounds.setChecked(SettingsManager.isAudioEnabled());
+
+        // Force Landscape
+        forceLandscapeCheckbox = (CheckBox) findViewById(R.id.force_landscape_mode);
+        forceLandscapeCheckbox.setChecked(SettingsManager.isForcedLandscape());
+        forceLandscapeCheckbox.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsManager.setForcedLandscape(((CheckBox)v).isChecked());
+            }
+        });
 
         // InputLayouts list
         inputLayoutListLayout = (LinearLayout) findViewById(R.id.controls_settings_layout_list);

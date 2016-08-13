@@ -144,6 +144,15 @@
 
         <include layout = "@layout/separator"/>
 
+        <CheckBox
+            android:id="@+id/force_landscape_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/force_landscape_mode"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
     <!-- Input Layout Managing -->
 
         <TextView

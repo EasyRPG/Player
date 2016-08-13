@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
+import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
 import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
 import static org.easyrpg.player.settings.SettingsEnum.LAYOUT_SIZE;
@@ -30,10 +31,10 @@ public class SettingsManager {
     private static Context context;
 
     private static boolean vibrationEnabled, vibrateWhenSlidingDirectionEnabled,
-            audioEnabled, ignoreLayoutSizePreferencesEnabled;
+            audioEnabled, ignoreLayoutSizePreferencesEnabled, forcedLandscape;
     private static int layoutTransparency, layoutSize;
     private static String easyRPGFolder;
-    private static List<String> gamesFolderList;
+    private static List<String> gamesFolderList = new ArrayList<>();
 
     private SettingsManager() {
     }
@@ -57,6 +58,7 @@ public class SettingsManager {
         layoutSize = sharedPref.getInt(LAYOUT_SIZE.toString(), 100);
         easyRPGFolder = sharedPref.getString(MAIN_DIRECTORY.toString(),
                 Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
+        forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
 
         // Fetch the games directories :
         gamesFolderList = new ArrayList<>();
@@ -185,6 +187,16 @@ public class SettingsManager {
     public static void setLayoutSize(int i) {
         layoutSize = i;
         editor.putInt(SettingsEnum.LAYOUT_SIZE.toString(), i);
+        editor.commit();
+    }
+
+    public static boolean isForcedLandscape() {
+        return forcedLandscape;
+    }
+
+    public static void setForcedLandscape(boolean b) {
+        forcedLandscape = b;
+        editor.putBoolean(SettingsEnum.FORCED_LANDSCAPE.toString(), b);
         editor.commit();
     }
 }
