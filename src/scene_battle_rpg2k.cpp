@@ -235,6 +235,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
+			Game_Battle::RefreshEvents();
 			SetState(State_SelectOption);
 			CheckResultConditions();
 		}
@@ -275,6 +276,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			if (ProcessBattleAction(alg)) {
 				RemoveCurrentAction();
 				battle_message_window->Clear();
+				Game_Battle::RefreshEvents();
 
 				if (CheckResultConditions()) {
 					return;
@@ -664,6 +666,7 @@ void Scene_Battle_Rpg2k::Escape() {
 				CreateExecutionOrder();
 
 				NextTurn();
+				Game_Battle::RefreshEvents();
 			}
 		}
 	}
@@ -679,6 +682,8 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		CreateExecutionOrder();
 
 		NextTurn();
+		Game_Battle::RefreshEvents();
+
 		return;
 	}
 

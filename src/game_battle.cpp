@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <deque>
 #include "data.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
@@ -56,6 +57,9 @@ namespace {
 	int battle_mode;
 	int target_enemy_index;
 	bool need_refresh;
+	std::vector<bool> page_can_run;
+
+	std::function<bool(const RPG::TroopPage&)> last_event_filter;
 }
 
 void Game_Battle::Init() {
@@ -72,9 +76,14 @@ void Game_Battle::Init() {
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
+	page_can_run.resize(troop->pages.size());
 
 	message_is_fixed = Game_Message::IsPositionFixed();
 	message_position = Game_Message::GetPosition();
+
+	RefreshEvents([](const RPG::TroopPage&) {
+		return false;
+	});
 
 	Main_Data::game_party->ResetBattle();
 }
@@ -96,6 +105,7 @@ void Game_Battle::Quit() {
 	}
 
 	page_executed.clear();
+	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
 
@@ -157,23 +167,22 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 	if (battler == nullptr) {
 		std::fill(page_executed.begin(), page_executed.end(), false);
 	} else {
-		std::vector<RPG::TroopPage>::const_iterator it;
-		for (it = troop->pages.begin(); it != troop->pages.end(); ++it) {
-			const RPG::TroopPage& page = *it;
+		for (const RPG::TroopPage& page : troop->pages) {
 			const RPG::TroopPageCondition& condition = page.condition;
 
 			// Reset pages without actor/enemy condition each turn
 			if (!condition.flags.turn_actor &&
-				!condition.flags.turn_enemy) {
-				page_executed[(*it).ID - 1] = false;
+				!condition.flags.turn_enemy &&
+				!condition.flags.command_actor) {
+				page_executed[page.ID - 1] = false;
 			}
 
 			// Reset pages of specific actor after that actors turn
-			if (page_executed[(*it).ID - 1]) {
+			if (page_executed[page.ID - 1]) {
 				if (battler->GetType() == Game_Battler::Type_Ally &&
-					condition.flags.turn_actor &&
-					Game_Actors::GetActor(condition.turn_actor_id) == battler) {
-					page_executed[(*it).ID - 1] = false;
+						(condition.flags.turn_actor && Game_Actors::GetActor(condition.turn_actor_id) == battler) ||
+						(condition.flags.command_actor && Game_Actors::GetActor(condition.command_actor_id) == battler)) {
+					page_executed[page.ID - 1] = false;
 				}
 			}
 
@@ -181,14 +190,10 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			if (battler->GetType() == Game_Battler::Type_Enemy &&
 				condition.flags.turn_enemy &&
 				(&((*Main_Data::game_enemyparty)[condition.turn_enemy_id]) == battler)) {
-				page_executed[(*it).ID - 1] = false;
+				page_executed[page.ID - 1] = false;
 			}
 		}
-
-		battler->SetLastBattleAction(-1);
 	}
-
-	Game_Battle::SetEnemyTargetIndex(-1);
 
 	++turn;
 }
@@ -302,22 +307,42 @@ bool Game_Battle::UpdateEvents() {
 		return false;
 	}
 
-	const RPG::TroopPage* new_page = NULL;
-	std::vector<RPG::TroopPage>::const_iterator it;
-	for (it = troop->pages.begin(); it != troop->pages.end(); ++it) {
-		const RPG::TroopPage& page = *it;
-		if (!page_executed[(*it).ID - 1] && AreConditionsMet(page.condition)) {
-			new_page = &*it;
-			page_executed[(*it).ID - 1] = true;
-			break;
+	// Check if another page can run now and preempt it
+	RefreshEvents(last_event_filter);
+
+	for (const auto& page : troop->pages) {
+		if (page_can_run[page.ID - 1]) {
+			interpreter->Setup(page.event_commands, 0);
+			page_can_run[page.ID - 1] = false;
+			return false;
 		}
 	}
 
-	if (new_page != NULL) {
-		interpreter->Setup(new_page->event_commands, 0);
+	// No event can run anymore, cancel the interpreter calling until
+	// the battle system wants to run events again.
+	RefreshEvents([](const RPG::TroopPage&) {
+		return false;
+	});
+
+	return true;
+}
+
+void Game_Battle::RefreshEvents() {
+	RefreshEvents([](const RPG::TroopPage&) {
+		return true;
+	});
+}
+
+void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate) {
+	for (const auto& it : troop->pages) {
+		const RPG::TroopPage& page = it;
+		if (predicate(it) && !page_executed[it.ID - 1] && AreConditionsMet(page.condition)) {
+			page_can_run[it.ID - 1] = true;
+			page_executed[it.ID - 1] = true;
+		}
 	}
 
-	return new_page == NULL;
+	last_event_filter = predicate;
 }
 
 bool Game_Battle::IsEscapeAllowed() {
