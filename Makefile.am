@@ -41,6 +41,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/decoder_mpg123.h \
 	src/decoder_fmmidi.cpp \
 	src/decoder_fmmidi.h \
+	src/decoder_wav.cpp \
+	src/decoder_wav.h \
 	src/decoder_wildmidi.cpp \
 	src/decoder_wildmidi.h \
 	src/default_graphics.h \
