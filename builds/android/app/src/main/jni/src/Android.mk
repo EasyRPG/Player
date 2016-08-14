@@ -41,7 +41,7 @@ LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../obj/local/$(TARGET_ARCH_ABI) \
 		-L$(EASYRPG_TOOLCHAIN_DIR)/lib -lGLESv1_CM -llog -lz \
 		-llcf -lSDL2_mixer -lvorbisfile -lvorbis -logg -lmodplug \
 		-lmpg123 -lfreetype -lpixman-1 -lpng -lspeexdsp -lsndfile \
-		-licui18n -licuuc -licudata \
+		-lexpat -licui18n -licuuc -licudata \
 		-lcpufeatures
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL \
