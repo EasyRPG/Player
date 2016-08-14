@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +28,7 @@ import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 /**
  * Activity where users can change options
  */
-public class SettingsActivity extends Activity implements OnClickListener {
+public class SettingsActivity extends AppCompatActivity implements OnClickListener {
     private ButtonMappingManager buttonMappingManager;
     private LinearLayout gamesFoldersListLayout, inputLayoutListLayout;
 
