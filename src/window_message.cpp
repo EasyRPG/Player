@@ -446,12 +446,17 @@ void Window_Message::UpdateMessage() {
 			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))));
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += 12;
+			++loop_count;
 			++text_index;
 		} else {
 			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))));
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			contents_x += contents->GetFont()->GetSize(glyph).width;
+			int glyph_width = contents->GetFont()->GetSize(glyph).width;
+			// Show full-width characters twice as slow as half-width characters
+			if (glyph_width >= 12)
+				loop_count++;
+			contents_x += glyph_width;
 		}
 
 		++text_index;
