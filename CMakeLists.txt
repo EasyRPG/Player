@@ -149,8 +149,8 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	endif()
 	
 	# libogg
-	option(PLAYER_WITH_LIBOGG "Play OGG audio with libogg." ON)	
-	find_lib("OggVorbis" PLAYER_WITH_SPEEXDSP)
+	option(PLAYER_WITH_OGGVORBIS "Play OGG audio with libogg." ON)	
+	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
 	if(${RETVAL})
 		add_definitions(-DHAVE_OGGVORBIS)
 	endif()
