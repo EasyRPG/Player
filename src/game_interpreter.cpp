@@ -1945,11 +1945,11 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
-	if (Game_Message::visible)
-		return false;
-
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
+
+	if (wait && Game_Message::visible)
+		return false;
 
 	// Wait the first frame so that it ignores keys that were pressed before this command started.
 	if (wait && button_timer == 0) {
