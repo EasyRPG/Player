@@ -1,19 +1,5 @@
 package org.easyrpg.player.game_browser;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import org.easyrpg.player.R;
-import org.easyrpg.player.settings.SettingsActivity;
-import org.easyrpg.player.player.EasyRpgPlayerActivity;
-import org.easyrpg.player.settings.SettingsManager;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,6 +13,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.easyrpg.player.R;
+import org.easyrpg.player.player.EasyRpgPlayerActivity;
+import org.easyrpg.player.settings.SettingsMainActivity;
+import org.easyrpg.player.settings.SettingsManager;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GameBrowserHelper {
     //Files' names
@@ -314,7 +314,7 @@ public class GameBrowserHelper {
     }
 
     public static void openSettingsActivity(Context context) {
-        Intent intent = new Intent(context, SettingsActivity.class);
+        Intent intent = new Intent(context, SettingsMainActivity.class);
         context.startActivity(intent);
     }
 

@@ -37,7 +37,6 @@ import org.easyrpg.player.game_browser.GameInformation;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -97,15 +96,13 @@ public class EasyRpgPlayerActivity extends SDLActivity {
         mLayout.addView(surface);
         updateScreenPosition();
 
-        // Open the proper input_layout
-        bmm = ButtonMappingManager.getButtonMapping(this);
-
         // Project preferences
         GameInformation project = new GameInformation(getProjectPath());
         project.read_project_preferences_input_layout(bmm);
 
         // Choose the proper InputLayout
-        input_layout = bmm.getLayoutById(this, project.getId_input_layout());
+        ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(this);
+        input_layout = buttonMappingManager.getLayoutById(project.getId_input_layout());
 
         // Add buttons
         addButtons();
@@ -128,7 +125,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
                 return true;
             case R.id.toggle_ui:
                 if (uiVisible) {
-                    for (VirtualButton v : input_layout.getButton_list()) {
+                    for (VirtualButton v : input_layout.getButtonList()) {
                         mLayout.removeView(v);
                     }
                     updateButtonsPosition();
@@ -310,7 +307,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
      */
     private void addButtons() {
         // Adding the buttons
-        for (VirtualButton b : input_layout.getButton_list()) {
+        for (VirtualButton b : input_layout.getButtonList()) {
             // We add it, if it's not the case already
             if (b.getParent() != mLayout) {
                 mLayout.addView(b);
@@ -326,7 +323,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
         int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
-        for (VirtualButton b : input_layout.getButton_list()) {
+        for (VirtualButton b : input_layout.getButtonList()) {
             Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 
             // We have to adjust the position in portrait configuration

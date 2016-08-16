@@ -116,8 +116,8 @@ public class GameListAdapter extends BaseAdapter {
 	}
 	
 	public void chooseLayout(final Context context, final GameInformation pi){
-		final ButtonMappingManager bmm = ButtonMappingManager.getButtonMapping(context);
-		String[] layout_name_array = bmm.getLayoutsNames(context);
+		final ButtonMappingManager bmm = ButtonMappingManager.getInstance(context);
+		String[] layout_name_array = bmm.getLayoutsNames();
 		
 		//Detect default layout
 		pi.read_project_preferences_input_layout(bmm);

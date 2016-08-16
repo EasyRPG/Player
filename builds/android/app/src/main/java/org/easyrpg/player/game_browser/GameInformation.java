@@ -61,7 +61,7 @@ public class GameInformation {
 		try {
 			id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
 		} catch (JSONException e) {
-			id_input_layout = bmm.getId_default_layout();
+			id_input_layout = bmm.getDefaultLayoutId();
 			return false;
 		}
 		return true;

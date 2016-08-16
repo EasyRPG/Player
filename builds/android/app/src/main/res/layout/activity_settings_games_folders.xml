@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                tools:context="org.easyrpg.player.settings.SettingsGamesFoldersActivity">
+
+    <TextView
+        android:id="@+id/settings_games_folder_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:text="@string/easyrpg_folder"
+        android:textSize="20sp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/settings_add_game_folder_button"
+        android:layout_below="@+id/settings_games_folder_header"
+        android:padding="10dp">
+        <LinearLayout
+            android:id="@+id/games_folders_list"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/settings_add_game_folder_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:text="@string/add_game_folder"
+        android:textSize="20sp"/>
+
+</RelativeLayout>

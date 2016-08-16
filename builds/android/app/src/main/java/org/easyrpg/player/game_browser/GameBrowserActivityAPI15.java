@@ -267,14 +267,14 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         }
 
         public void chooseLayout(final Context context, final GameInformation pi) {
-            final ButtonMappingManager bmm = ButtonMappingManager.getButtonMapping(context);
-            String[] layout_name_array = bmm.getLayoutsNames(context);
+            final ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(context);
+            String[] layout_name_array = buttonMappingManager.getLayoutsNames();
 
             //Detect default layout
-            pi.read_project_preferences_input_layout(bmm);
+            pi.read_project_preferences_input_layout(buttonMappingManager);
             int id = -1;
-            for (int i = 0; i < bmm.getLayoutList().size(); i++) {
-                if (bmm.getLayoutList().get(i).getId() == pi.getId_input_layout()) {
+            for (int i = 0; i < buttonMappingManager.getLayoutList().size(); i++) {
+                if (buttonMappingManager.getLayoutList().get(i).getId() == pi.getId_input_layout()) {
                     id = i;
                     break;
                 }
@@ -295,7 +295,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             if (!selected.isEmpty()) {
-                                pi.setId_input_layout(bmm.getLayoutList().get(selected.get(0)).getId());
+                                pi.setId_input_layout(buttonMappingManager.getLayoutList().get(selected.get(0)).getId());
                                 pi.write_project_preferences();
                             }
                         }

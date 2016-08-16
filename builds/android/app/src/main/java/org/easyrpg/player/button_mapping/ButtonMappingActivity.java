@@ -1,6 +1,7 @@
 package org.easyrpg.player.button_mapping;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
@@ -24,7 +25,7 @@ import android.widget.Toast;
 
 public class ButtonMappingActivity extends Activity {
 	ViewGroup layoutManager;
-	LinkedList<VirtualButton> layoutList;
+	List<VirtualButton> layoutList;
 	ButtonMappingManager buttonMappingManager;
 	InputLayout inputLayout;
 	
@@ -40,12 +41,12 @@ public class ButtonMappingActivity extends Activity {
 		//Retrive the InputLayout to work with
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(TAG_ID, 0);
-		buttonMappingManager = ButtonMappingManager.getButtonMapping(this);
-		inputLayout = buttonMappingManager.getLayoutById(this, id);
+		buttonMappingManager = ButtonMappingManager.getInstance(this);
+		inputLayout = buttonMappingManager.getLayoutById(id);
 		
 		//We does a copy of the inputLayout's button list
 		layoutList = new LinkedList<VirtualButton>();
-		for(VirtualButton b : inputLayout.getButton_list()){
+		for(VirtualButton b : inputLayout.getButtonList()){
 			if(b instanceof VirtualCross){
 				VirtualCross v = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
 				layoutList.add(v);
@@ -72,7 +73,7 @@ public class ButtonMappingActivity extends Activity {
 			showSupportedButton();
 			return true;
 		case R.id.button_mapping_menu_reset:
-			layoutList = InputLayout.getDefaultInputLayout(this).getButton_list();
+			layoutList = InputLayout.getDefaultInputLayout(this).getButtonList();
 			drawButtons();
 			return true;
 		case R.id.button_mapping_menu_exit_without_saving:
@@ -114,16 +115,16 @@ public class ButtonMappingActivity extends Activity {
 	
 	public void save(){
 		//Copy the button from layoutList to the InputLayout
-		inputLayout.getButton_list().clear();
+		inputLayout.getButtonList().clear();
 		for(VirtualButton b : layoutList){
 			if(b instanceof VirtualCross)
-				inputLayout.getButton_list().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
+				inputLayout.getButtonList().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
 			else
-				inputLayout.getButton_list().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
+				inputLayout.getButtonList().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
 		}
 		
 		//Save the ButtonMappingModel
-		ButtonMappingManager.writeButtonMappingFile(this, buttonMappingManager);
+		buttonMappingManager.save();
 	}
 	
 	public void showSupportedButton(){

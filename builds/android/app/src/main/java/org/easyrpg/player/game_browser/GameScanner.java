@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.util.Log;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.settings.SettingsActivity;
 import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.File;

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/settings_main_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/video"
+        android:drawableLeft="@drawable/ic_video_label_black_36dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
+        android:id="@+id/settings_main_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/audio"
+        android:drawableLeft="@drawable/ic_volume_up_black_36dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
+        android:id="@+id/settings_main_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input"
+        android:drawableLeft="@drawable/ic_gamepad_black_36dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <Button
+        android:id="@+id/settings_main_game_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/games_folders"
+        android:drawableLeft="@drawable/ic_folder_open_black_36dp"
+        style="?android:attr/borderlessButtonStyle" />
+
+</LinearLayout>

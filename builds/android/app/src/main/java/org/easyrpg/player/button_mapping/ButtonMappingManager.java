@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.easyrpg.player.Helper;
 import org.json.JSONArray;
@@ -15,18 +17,30 @@ import android.content.Context;
 import android.util.Log;
 
 public class ButtonMappingManager {
-	private LinkedList<InputLayout> layout_list;
-	private int id_default_layout;
-
-	public static final int NUM_VERSION = 1;
+    public static final int NUM_VERSION = 1;
 	public static final String TAG_VERSION = "version", TAG_PRESETS = "presets", TAG_DEFAULT_LAYOUT = "default",
 			DEFAULT_NAME = "RPG Maker 2000", TAG_ID = "id", TAG_NAME = "name", TAG_BUTTONS = "buttons",
 			TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
 	public static final String FILE_NAME = "button_mapping.txt";
 
-	private ButtonMappingManager() {
-		layout_list = new LinkedList<InputLayout>();
-	}
+    private List<InputLayout> layout_list = new ArrayList<>();
+    private int id_default_layout;
+    private Context context;
+
+    // Singleton pattern
+    private static volatile ButtonMappingManager instance = null;
+
+    private ButtonMappingManager() {}
+    public final static ButtonMappingManager getInstance(Context context) {
+        if (ButtonMappingManager.instance == null) {
+            synchronized(ButtonMappingManager.class) {
+                if (ButtonMappingManager.instance == null) {
+                    ButtonMappingManager.instance = readButtonMappingFile(context);
+                }
+            }
+        }
+        return ButtonMappingManager.instance;
+    }
 
 	/** Add an input layout, add it as the default one if the list was empty */
 	public void add(InputLayout p) {
@@ -36,15 +50,14 @@ public class ButtonMappingManager {
 		if (layout_list.size() == 1) {
 			setDefaultLayout(p.getId());
 		}
+
+        save();
 	}
 
 	/**
-	 * Delete safely a layout, handle problems of empty layout list or
-	 * suppresion of default layout
+	 * Delete safely a layout : handle problems of empty layout list and suppression of default layout
 	 */
 	public void delete(Context context, InputLayout p) {
-		int id_p = p.id;
-
 		// Remove p
 		layout_list.remove(p);
 
@@ -53,19 +66,58 @@ public class ButtonMappingManager {
 			add(InputLayout.getDefaultInputLayout(context));
 		}
 
-		// If p was the default layout : the first layout is the new default
-		// layout
-		if (id_p == id_default_layout) {
-			id_default_layout = layout_list.getFirst().getId();
+		// If p was the default layout : the first layout become the new default layout
+		if (p.id == id_default_layout) {
+			id_default_layout = layout_list.get(0).getId();
 		}
+
+        // Save the result
+        save();
 	}
 
-	public JSONObject serialize() {
+    public InputLayout getLayoutById(int id) {
+        // The layout exist : return it
+        for (InputLayout i : layout_list) {
+            if (i.getId() == id)
+                return i;
+        }
+
+        // The layout doesn't exist : return the default one
+        return getLayoutById(id_default_layout);
+    }
+
+    public void setDefaultLayout(int id) {
+        // TODO : Verify if the id is in the input layout's list
+        id_default_layout = id;
+
+        save();
+    }
+
+    public int getDefaultLayoutId() {
+        return id_default_layout;
+    }
+
+    public List<InputLayout> getLayoutList() {
+        return layout_list;
+    }
+
+    /** Return the list of the input layout's name */
+    public String[] getLayoutsNames() {
+        String[] layoutNameArray = new String[layout_list.size()];
+        for (int i = 0; i < layoutNameArray.length; i++) {
+            layoutNameArray[i] = layout_list.get(i).getName();
+        }
+        return layoutNameArray;
+    }
+
+
+    /** Convert the current input layout model in a JSON Object */
+	private JSONObject serialize() {
 		JSONObject o = new JSONObject();
 
 		try {
 			JSONArray presets = new JSONArray();
-			for (InputLayout p : this.layout_list) {
+			for (InputLayout p : layout_list) {
 				presets.put(p.serialize());
 			}
 
@@ -79,59 +131,50 @@ public class ButtonMappingManager {
 		return o;
 	}
 
-	public static ButtonMappingManager getDefaultButtonMappingModel(Context context) {
-		ButtonMappingManager m = new ButtonMappingManager();
-		m.add(InputLayout.getDefaultInputLayout(context));
-		return m;
-	}
+    public void save() {
+        writeButtonMappingFile(this.context, this);
+    }
 
-	public String[] getLayoutsNames(Context context) {
-		// Create the layout array
-		String[] layout_name_array = new String[this.layout_list.size()];
-		for (int i = 0; i < layout_name_array.length; i++) {
-			layout_name_array[i] = this.layout_list.get(i).getName();
-		}
-		return layout_name_array;
-	}
+    /** Return the default Button Mapping model */
+    private static ButtonMappingManager getDefaultButtonMapping(Context context) {
+        ButtonMappingManager m = new ButtonMappingManager();
+        m.add(InputLayout.getDefaultInputLayout(context));
+        return m;
+    }
 
-	public static ButtonMappingManager getButtonMapping(Context context) {
-		return readButtonMappingFile(context);
-	}
-	
-	public static ButtonMappingManager readButtonMappingFile(Context context) {
-		ButtonMappingManager m = new ButtonMappingManager();
+    private static ButtonMappingManager readButtonMappingFile(Context context) {
+        try {
+            // Parse the JSON
+            String text = Helper.readInternalFileContent(context, FILE_NAME);
+            JSONObject jso = Helper.readJSON(text);
 
-		try {
-			// Parse the JSON
-			String text = Helper.readInternalFileContent(context, FILE_NAME);
-			JSONObject jso = Helper.readJSON(text);
+            if (jso == null) {
+                Log.i("Button Mapping Model", "No " + FILE_NAME + " found, loading the default Button Mapping System");
+                return getDefaultButtonMapping(context);
+            }
 
-			if (jso == null) {
-				Log.i("Button Mapping Model", "No " + FILE_NAME + " file, loading the default Button Mapping System");
-				return getDefaultButtonMappingModel(context);
-			}
+            // Extract the input layouts list et construct the button mapping
+            ButtonMappingManager m = new ButtonMappingManager();
+            m.context = context;
+            JSONArray layout_array = jso.getJSONArray("presets");
+            JSONObject p;
+            for (int i = 0; i < layout_array.length(); i++) {
+                p = (JSONObject) layout_array.get(i);
+                m.add(InputLayout.deserialize(context, p));
+            }
 
-			// Presets' extraction
-			JSONArray layout_array = jso.getJSONArray("presets");
-			JSONObject p;
-			for (int i = 0; i < layout_array.length(); i++) {
-				p = (JSONObject) layout_array.get(i);
-				m.add(InputLayout.deserialize(context, p));
-			}
+            // Default layout
+            // TODO : Verify that the default layout exists
+            m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
 
-			// Default layout
-			// TODO : Verify that this default layout exists in the list
-			m.setDefaultLayout(jso.getInt(TAG_DEFAULT_LAYOUT));
+            return m;
+        } catch (JSONException e) {
+            Log.e("Button Mapping Model", "Error parsing de Button Mapping file, loading the default one");
+            return getDefaultButtonMapping(context);
+        }
+    }
 
-			return m;
-		} catch (JSONException e) {
-			Log.e("Button Mapping Model", "Error parsing de JSO file, loading the default one");
-		}
-
-		return getDefaultButtonMappingModel(context);
-	}
-
-	public static void writeButtonMappingFile(Context context, ButtonMappingManager m) {
+	private static void writeButtonMappingFile(Context context, ButtonMappingManager m) {
 		try {
 			// FileWriter file = new FileWriter(button_mapping_path);
 			FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
@@ -149,39 +192,14 @@ public class ButtonMappingManager {
 
 	}
 
-	public InputLayout getLayoutById(Context context, int id) {
-		// The layout exist : return it
-		for (InputLayout i : layout_list) {
-			if (i.getId() == id)
-				return i;
-		}
-
-		// The layout doesn't exist : return the default one
-		return getLayoutById(context, id_default_layout);
-	}
-
-	public void setDefaultLayout(int id) {
-		// TODO : Verify if the id is in the input layout's list
-		this.id_default_layout = id;
-	}
-
-	public int getId_default_layout() {
-		return id_default_layout;
-	}
-
-	public LinkedList<InputLayout> getLayoutList() {
-		return layout_list;
-	}
-
 	public static class InputLayout {
 		private String name;
 		private int id;
-		private LinkedList<VirtualButton> button_list = new LinkedList<VirtualButton>();
+		private List<VirtualButton> buttonList = new ArrayList<>();
 
 		public InputLayout(String name) {
 			this.name = name;
-			// TODO : Verify that id hasn't been already taken (yeah,
-			// 0,00000001% probability)
+			// TODO : Verify that id hasn't been already taken (like 0,00000001% probability)
 			this.id = (int) (Math.random() * 100000000);
 		}
 
@@ -191,7 +209,7 @@ public class ButtonMappingManager {
 		}
 
 		public void add(VirtualButton v) {
-			button_list.add(v);
+			buttonList.add(v);
 		}
 
 		public JSONObject serialize() {
@@ -203,7 +221,7 @@ public class ButtonMappingManager {
 
 				// Circle/Buttons
 				JSONArray layout_array = new JSONArray();
-				for (VirtualButton button : button_list) {
+				for (VirtualButton button : buttonList) {
 					JSONObject jso = new JSONObject();
 					jso.put(TAG_KEYCODE, button.getKeyCode());
 					jso.put(TAG_X, button.getPosX());
@@ -251,7 +269,7 @@ public class ButtonMappingManager {
 		/** Return the default button mapping preset : one cross, two buttons */
 		public static InputLayout getDefaultInputLayout(Context context) {
 			InputLayout b = new InputLayout(DEFAULT_NAME, 0);
-			b.setButton_list(getDefaultButtonList(context));
+			b.setButtonList(getDefaultButtonList(context));
 			return b;
 		}
 
@@ -265,7 +283,7 @@ public class ButtonMappingManager {
 		}
 
 		public boolean isDefaultInputLayout(ButtonMappingManager bmm) {
-			return id == bmm.getId_default_layout();
+			return id == bmm.getDefaultLayoutId();
 		}
 
 		public String getName() {
@@ -280,12 +298,12 @@ public class ButtonMappingManager {
 			return id;
 		}
 
-		public LinkedList<VirtualButton> getButton_list() {
-			return button_list;
+		public List<VirtualButton> getButtonList() {
+			return buttonList;
 		}
 
-		public void setButton_list(LinkedList<VirtualButton> button_list) {
-			this.button_list = button_list;
+		public void setButtonList(LinkedList<VirtualButton> buttonList) {
+			this.buttonList = buttonList;
 		}
 	}
 }
