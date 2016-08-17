@@ -75,6 +75,7 @@ void Game_Interpreter::Clear() {
 	triggered_by_decision_key = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
+	wait_messages = false;			// wait if message window is visible
 	if (child_interpreter) {		// clear child interpreter for called events
 		if (child_interpreter->updating)
 			clear_child = true;
@@ -165,7 +166,7 @@ void Game_Interpreter::Update() {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if ((Game_Message::visible || Game_Message::message_waiting) && Game_Message::owner_id == event_id)
+			if ((Game_Message::visible || Game_Message::message_waiting) && wait_messages)
 				break;
 		}
 
@@ -561,6 +562,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	if (!main_flag && Game_Message::visible)
 		return false;
 
+	wait_messages = true;
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
@@ -663,7 +665,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
-
+	wait_messages = true;
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
@@ -1943,11 +1945,11 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
-	if (Game_Message::visible)
-		return false;
-
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
+
+	if (wait && Game_Message::visible)
+		return false;
 
 	// Wait the first frame so that it ignores keys that were pressed before this command started.
 	if (wait && button_timer == 0) {

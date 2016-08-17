@@ -75,6 +75,7 @@ protected:
 	bool main_flag;
 
 	int loop_count;
+	bool wait_messages;
 
 	unsigned int index;
 	int map_id;
