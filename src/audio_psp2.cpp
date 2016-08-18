@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include "audio_decoder.h"
+#include <atomic>
 
 // Internal stuffs
 #define AUDIO_CHANNELS 7 // PSVITA has 8 audio channels but one is used for BGM
@@ -138,6 +139,7 @@ DecodedSound* sfx_sounds[SFX_QUEUE_SIZE];
 uint8_t output_idx = 0;
 uint8_t input_idx = 0;
 uint8_t sfx_exited = 0;
+std::atomic<std::uint8_t> availThreads(AUDIO_CHANNELS);
 static int sfxThread(unsigned int args, void* arg){
 	int ch = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, 64, 48000, SCE_AUDIO_OUT_MODE_STEREO);
 	if (ch < 0){
@@ -186,6 +188,7 @@ static int sfxThread(unsigned int args, void* arg){
 		free(sfx->audiobuf2);
 		sfx_decoder[sfx->id].reset();
 		free(sfx);
+		availThreads++;
 		
 	}
 	
@@ -380,50 +383,58 @@ void Psp2Audio::SE_Play(std::string const& file, int volume, int pitch) {
 		return;
 	}
 	
-	// Trying to use internal decoder
-	uint8_t id = cur_decoder++;
-	if (cur_decoder > 7) cur_decoder = 0;
-	sfx_decoder[id] = AudioDecoder::Create(stream, file);
-	if (sfx_decoder[id] == NULL){
-		fclose(stream);
-		Output::Warning("Unsupported sound format (%s)", file.c_str());
-		return;
-	}
+	// Check if we have at least an available audio thread
+	if (availThreads > 0){
+		
+		// Trying to use internal decoder
+		availThreads--;
+		uint8_t id = cur_decoder++;
+		if (cur_decoder > 7) cur_decoder = 0;
+		sfx_decoder[id] = AudioDecoder::Create(stream, file);
+		if (sfx_decoder[id] == NULL){
+			fclose(stream);
+			Output::Warning("Unsupported sound format (%s)", file.c_str());
+			return;
+		}
 
-	// Initializing internal audio decoder
-	int audiotype;
-	fseek(stream, 0, SEEK_SET);
-	if (!sfx_decoder[id]->Open(stream)) Output::Error("An error occured in audio decoder (%s)", audio_decoder->GetError().c_str());
-	sfx_decoder[id]->SetLooping(false);
-	AudioDecoder::Format int_format;
-	int samplerate;	
-	sfx_decoder[id]->SetFormat(48000, AudioDecoder::Format::S16, 2);
-	sfx_decoder[id]->GetFormat(samplerate, int_format, audiotype);
-	if (samplerate != 48000) Output::Warning("Cannot resample sound file. Sound will be distorted.");
-	myFile->id = id;
+		// Initializing internal audio decoder
+		int audiotype;
+		fseek(stream, 0, SEEK_SET);
+		if (!sfx_decoder[id]->Open(stream)) Output::Error("An error occured in audio decoder (%s)", audio_decoder->GetError().c_str());
+		sfx_decoder[id]->SetLooping(false);
+		AudioDecoder::Format int_format;
+		int samplerate;	
+		sfx_decoder[id]->SetFormat(48000, AudioDecoder::Format::S16, 2);
+		sfx_decoder[id]->GetFormat(samplerate, int_format, audiotype);
+		if (samplerate != 48000) Output::Warning("Cannot resample sound file. Sound will be distorted.");
+		myFile->id = id;
 	
-	// Check for file audiocodec
-	if (audiotype == 2) myFile->isStereo = true;
-	else myFile->isStereo = false;
+		// Check for file audiocodec
+		if (audiotype == 2) myFile->isStereo = true;
+		else myFile->isStereo = false;
 	
-	// Setting audiobuffer size
-	myFile->audiobuf = (uint8_t*)malloc(AUDIO_BUFSIZE);
-	myFile->audiobuf2 = (uint8_t*)malloc(AUDIO_BUFSIZE);
-	myFile->cur_audiobuf = myFile->audiobuf;	
+		// Setting audiobuffer size
+		myFile->audiobuf = (uint8_t*)malloc(AUDIO_BUFSIZE);
+		myFile->audiobuf2 = (uint8_t*)malloc(AUDIO_BUFSIZE);
+		myFile->cur_audiobuf = myFile->audiobuf;	
 	
-	//Setting default streaming values
-	myFile->handle = stream;
-	myFile->endedOnce = false;
+		//Setting default streaming values
+		myFile->handle = stream;
+		myFile->endedOnce = false;
 	
-	// Passing pitch and volume values to the object
-	myFile->pitch = pitch;
-	myFile->vol = volume;
+		// Passing pitch and volume values to the object
+		myFile->pitch = pitch;
+		myFile->vol = volume;
 	
-	// Passing sound to an sfx thread
-	sfx_sounds[input_idx++] = myFile;
-	if (input_idx >= SFX_QUEUE_SIZE) input_idx = 0;
-	sceKernelSignalSema(SFX_Mutex, 1);
+		// Passing sound to an sfx thread
+		sfx_sounds[input_idx++] = myFile;
+		if (input_idx >= SFX_QUEUE_SIZE) input_idx = 0;
+		sceKernelSignalSema(SFX_Mutex, 1);
 	
+	}else{
+		fclose(stream);
+		Output::Warning("Cannot reproduce audio sound. No channels available.");
+	}
 }
 
 void Psp2Audio::SE_Stop() {
