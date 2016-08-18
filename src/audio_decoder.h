@@ -310,6 +310,8 @@ private:
 	bool looping = false;
 	int loop_count = 0;
 
+	int Decode(uint8_t* buffer, int size, int recursion_depth);
+
 	std::vector<uint8_t> mono_buffer;
 };
 
