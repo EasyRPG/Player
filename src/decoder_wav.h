@@ -50,6 +50,8 @@ private:
 	uint32_t samplerate;
 	uint16_t nchannels;
 	uint32_t audiobuf_offset;
+	uint32_t chunk_size;
+	uint32_t cur_pos;
 };
 
 #endif
