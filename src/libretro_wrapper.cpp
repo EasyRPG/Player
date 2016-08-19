@@ -23,8 +23,8 @@
 
 static const unsigned AUDIO_SAMPLERATE = 44100.0;
 
-static retro_environment_t retro_environment;
-static retro_input_poll_t retro_input_poll;
+retro_environment_t environ_cb;
+static retro_input_poll_t  poll_cb;
 
 
 RETRO_CALLCONV void retro_time_update(retro_usec_t usec) {
@@ -69,7 +69,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
     static struct retro_log_callback logging;
 
-    retro_environment = cb;
+    environ_cb = cb;
 
 
     cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_content);
@@ -97,7 +97,7 @@ RETRO_API void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb) {
 }
 
 RETRO_API void retro_set_input_poll(retro_input_poll_t cb) {
-    retro_input_poll = cb;
+    poll_cb = cb;
 }
 
 RETRO_API void retro_set_input_state(retro_input_state_t cb) {
@@ -134,7 +134,7 @@ RETRO_API unsigned retro_api_version(void) {
 RETRO_API void retro_get_system_info(struct retro_system_info *info) {
     static const char lib_name[] = "EasyRPG";
     static const char lib_version[] = PLAYER_VERSION;
-    static const char lib_extensions[] = "rpg_rt.ini";
+    static const char lib_extensions[] = "ini";
     memset(info, 0, sizeof(*info));
     info->library_name = lib_name;
     info->library_version = lib_version;
@@ -188,13 +188,13 @@ static void check_variables(bool first_time_startup) {
  */
 
 RETRO_API void retro_run(void) {
-    retro_input_poll();
+    poll_cb();
 
     if (!Player::exit_flag) {
         Player::MainLoop();
 		if(!DisplayUi){ //Only occurs when the function Player::Exit() was called from within the game
 			Player::exit_flag=true;
-			retro_environment(RETRO_ENVIRONMENT_SHUTDOWN, 0);			
+			environ_cb(RETRO_ENVIRONMENT_SHUTDOWN, 0);			
 		}
     }
 }
@@ -229,15 +229,31 @@ RETRO_API void retro_cheat_set(unsigned index, bool enabled, const char *code) {
     //not used
 }
 
+static void extract_directory(char *buf, const char *path, size_t size)
+{
+   strncpy(buf, path, size - 1);
+   buf[size - 1] = '\0';
+
+   char *base = strrchr(buf, '/');
+   if (!base)
+      base = strrchr(buf, '\\');
+
+   if (base)
+      *base = '\0';
+   else
+      buf[0] = '\0';
+}
+
 /* Loads a game. */
 RETRO_API bool retro_load_game(const struct retro_game_info *game) {
 
+   char parent_dir[1024];
     enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
 #if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
     glsm_ctx_params_t params = {0};
 #endif
 
-    if (!retro_environment(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt)) {
+    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt)) {
         log_cb(RETRO_LOG_INFO, "XRGB8888 is not supported.\n");
         return false;
     }
@@ -245,7 +261,7 @@ RETRO_API bool retro_load_game(const struct retro_game_info *game) {
 #if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
     params.context_reset         = LibretroUi::ResetRetroGLContext;
     params.context_destroy       = LibretroUi::DestroyRetroGLContext;
-    params.environ_cb        	= retro_environment;
+    params.environ_cb        	   = environ_cb;
     params.stencil               = false;
     params.imm_vbo_draw          = NULL;
     params.imm_vbo_disable       = NULL;
@@ -256,17 +272,18 @@ RETRO_API bool retro_load_game(const struct retro_game_info *game) {
  }
 #endif
 
-    std::string rpg_rt_ini_path = "";
-    if (game != 0) { std::string rpg_rt_ini_path = game->path; }
+    if (game != 0)
+       extract_directory(parent_dir, game->path, sizeof(parent_dir));
     Player::exit_flag = false;
 	
 	if(!DisplayUi){ //If player was exited before -> reiinitialize
 		reinit_easy_rpg();
 	}
+
+   log_cb(RETRO_LOG_INFO, "parent dir is: %s\n", parent_dir );
 	
-    size_t end = rpg_rt_ini_path.find_last_of("/\\");
-    if (end != std::string::npos) {
-        Main_Data::SetProjectPath(rpg_rt_ini_path.substr(0, end));
+    if (parent_dir[0] != '\0') {
+        Main_Data::SetProjectPath(parent_dir);
         Player::Run();
     } else {
         Main_Data::SetProjectPath(".");
