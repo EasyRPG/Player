@@ -39,6 +39,7 @@ public class ButtonMappingManager {
                 }
             }
         }
+		ButtonMappingManager.instance.context = context;
         return ButtonMappingManager.instance;
     }
 
@@ -50,8 +51,6 @@ public class ButtonMappingManager {
 		if (layout_list.size() == 1) {
 			setDefaultLayout(p.getId());
 		}
-
-        save();
 	}
 
 	/**
@@ -89,8 +88,6 @@ public class ButtonMappingManager {
     public void setDefaultLayout(int id) {
         // TODO : Verify if the id is in the input layout's list
         id_default_layout = id;
-
-        save();
     }
 
     public int getDefaultLayoutId() {

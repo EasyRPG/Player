@@ -177,6 +177,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
 
                             // Add it to the input layout list, and open the activity to modify it
                             buttonMappingManager.add(newInputLayout);
+                            buttonMappingManager.save();
                             editInputLayout(newInputLayout);
 
                             refreshInputLayoutList();
@@ -205,6 +206,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
                 switch (which) {
                     case 0:
                         buttonMappingManager.setDefaultLayout(gameLayout.getId());
+                        buttonMappingManager.save();
                         refreshInputLayoutList();
                         break;
                     case 1:
