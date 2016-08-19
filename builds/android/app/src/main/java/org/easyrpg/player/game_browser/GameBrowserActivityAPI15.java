@@ -49,14 +49,6 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GameBrowserHelper.openSettingsActivity(GameBrowserActivityAPI15.this);
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -106,10 +98,13 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.refresh) {
-            displayGameList(this);
-            return true;
+        switch (id) {
+            case R.id.refresh:
+                displayGameList(this);
+                return true;
+            case R.id.menu:
+                GameBrowserHelper.openSettingsActivity(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
