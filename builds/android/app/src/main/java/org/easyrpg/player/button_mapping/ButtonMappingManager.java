@@ -23,7 +23,7 @@ public class ButtonMappingManager {
             TAG_KEYCODE = "keycode", TAG_X = "x", TAG_Y = "y", TAG_SIZE = "size";
     public static final String FILE_NAME = "button_mapping.txt";
 
-    private List<InputLayout> layout_list = new ArrayList<>();
+    private List<InputLayout> layoutList = new ArrayList<>();
     private int id_default_layout;
     private Context context;
 
@@ -49,10 +49,10 @@ public class ButtonMappingManager {
      * Add an input layout, add it as the default one if the list was empty
      */
     public void add(InputLayout p) {
-        layout_list.add(p);
+        layoutList.add(p);
 
         // Set the default layout if there is no one
-        if (layout_list.size() == 1) {
+        if (layoutList.size() == 1) {
             setDefaultLayout(p.getId());
         }
     }
@@ -62,16 +62,16 @@ public class ButtonMappingManager {
      */
     public void delete(Context context, InputLayout p) {
         // Remove p
-        layout_list.remove(p);
+        layoutList.remove(p);
 
         // If p was the last layout : add the default layout
-        if (layout_list.size() <= 0) {
+        if (layoutList.size() <= 0) {
             add(InputLayout.getDefaultInputLayout(context));
         }
 
         // If p was the default layout : the first layout become the new default layout
         if (p.id == id_default_layout) {
-            id_default_layout = layout_list.get(0).getId();
+            id_default_layout = layoutList.get(0).getId();
         }
 
         // Save the result
@@ -80,7 +80,7 @@ public class ButtonMappingManager {
 
     public InputLayout getLayoutById(int id) {
         // The layout exist : return it
-        for (InputLayout i : layout_list) {
+        for (InputLayout i : layoutList) {
             if (i.getId() == id)
                 return i;
         }
@@ -99,16 +99,16 @@ public class ButtonMappingManager {
     }
 
     public List<InputLayout> getLayoutList() {
-        return layout_list;
+        return layoutList;
     }
 
     /**
      * Return the list of the input layout's name
      */
     public String[] getLayoutsNames() {
-        String[] layoutNameArray = new String[layout_list.size()];
+        String[] layoutNameArray = new String[layoutList.size()];
         for (int i = 0; i < layoutNameArray.length; i++) {
-            layoutNameArray[i] = layout_list.get(i).getName();
+            layoutNameArray[i] = layoutList.get(i).getName();
         }
         return layoutNameArray;
     }
@@ -122,7 +122,7 @@ public class ButtonMappingManager {
 
         try {
             JSONArray presets = new JSONArray();
-            for (InputLayout p : layout_list) {
+            for (InputLayout p : layoutList) {
                 presets.put(p.serialize());
             }
 

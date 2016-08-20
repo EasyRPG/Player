@@ -54,6 +54,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
@@ -67,8 +68,8 @@ public class EasyRpgPlayerActivity extends SDLActivity {
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
 
-    ButtonMappingManager bmm;
-    InputLayout input_layout;
+    ButtonMappingManager buttonMappingManager;
+    InputLayout inputLayout;
     private boolean uiVisible = true;
     SurfaceView surface;
 
@@ -98,11 +99,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
         // Project preferences
         GameInformation project = new GameInformation(getProjectPath());
-        project.read_project_preferences_input_layout(bmm);
+        project.read_project_preferences_input_layout(buttonMappingManager);
 
         // Choose the proper InputLayout
         ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(this);
-        input_layout = buttonMappingManager.getLayoutById(project.getId_input_layout());
+        inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
 
         // Add buttons
         addButtons();
@@ -125,7 +126,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
                 return true;
             case R.id.toggle_ui:
                 if (uiVisible) {
-                    for (VirtualButton v : input_layout.getButtonList()) {
+                    for (VirtualButton v : inputLayout.getButtonList()) {
                         mLayout.removeView(v);
                     }
                     updateButtonsPosition();
@@ -307,9 +308,12 @@ public class EasyRpgPlayerActivity extends SDLActivity {
      */
     private void addButtons() {
         // Adding the buttons
-        for (VirtualButton b : input_layout.getButtonList()) {
+        for (VirtualButton b : inputLayout.getButtonList()) {
             // We add it, if it's not the case already
             if (b.getParent() != mLayout) {
+                if (b.getParent() != null) {
+                    ((ViewGroup) b.getParent()).removeAllViews();
+                }
                 mLayout.addView(b);
             }
         }
@@ -323,7 +327,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
         int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
-        for (VirtualButton b : input_layout.getButtonList()) {
+        for (VirtualButton b : inputLayout.getButtonList()) {
             Helper.setLayoutPosition(this, b, b.getPosX(), b.getPosY());
 
             // We have to adjust the position in portrait configuration
