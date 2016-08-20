@@ -46,14 +46,17 @@ public class ButtonMappingActivity extends Activity {
 
         //We does a copy of the inputLayout's button list
         layoutList = new LinkedList<VirtualButton>();
+        VirtualButton vb = null;
         for (VirtualButton b : inputLayout.getButtonList()) {
             if (b instanceof VirtualCross) {
-                VirtualCross v = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
-                layoutList.add(v);
-            } else {
-                VirtualButton vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
-                layoutList.add(vb);
+                vb = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
+            } else if (b.keyCode > 0) {
+                vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
+            } else if (b.keyCode == MenuButton.MENU_BUTTON_KEY) {
+                vb = new MenuButton(this, b.getPosX(), b.getPosY(), b.getSize());
             }
+            vb.setDebug_mode(true);
+            layoutList.add(vb);
         }
         drawButtons();
     }
@@ -117,10 +120,14 @@ public class ButtonMappingActivity extends Activity {
         //Copy the button from layoutList to the InputLayout
         inputLayout.getButtonList().clear();
         for (VirtualButton b : layoutList) {
-            if (b instanceof VirtualCross)
+            if (b instanceof VirtualCross) {
                 inputLayout.getButtonList().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
-            else
+            }
+            else if (b.keyCode > 0) {
                 inputLayout.getButtonList().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
+            } else if (b.keyCode == MenuButton.MENU_BUTTON_KEY) {
+                inputLayout.getButtonList().add(new MenuButton(this, b.getPosX(), b.getPosY(), b.getSize()));
+            }
         }
 
         //Save the ButtonMappingModel
@@ -133,6 +140,7 @@ public class ButtonMappingActivity extends Activity {
                 ctx.getString(R.string.key_enter),
                 ctx.getString(R.string.key_cancel),
                 ctx.getString(R.string.key_shift),
+                ctx.getString(R.string.menu),
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.add_a_button));
@@ -192,20 +200,23 @@ public class ButtonMappingActivity extends Activity {
         } else if (s.equals("/")) {
             // API11: KeyEvent.KEYCODE_NUMPAD_DIVIDE
             keyCode = 154;
+        } else if (s.equals(ctx.getString(R.string.menu))) {
+            keyCode = MenuButton.MENU_BUTTON_KEY;
         }
 
         if (charButton == ' ') {
             charButton = s.charAt(0);
         }
 
-        if (keyCode != -1) {
-            VirtualButton vb = new VirtualButton(this, keyCode, 0.5, 0.5, 100);
-            vb.setDebug_mode(true);
-            layoutList.add(vb);
-            drawButtons();
-        } else {
-            Toast.makeText(getApplicationContext(), "Button not supported on this API", Toast.LENGTH_SHORT).show();
+        VirtualButton vb = null;
+        if (keyCode > 0) {
+            vb = new VirtualButton(this, keyCode, 0.5, 0.5, 100);
+        } else if (keyCode == MenuButton.MENU_BUTTON_KEY){
+            vb = new MenuButton(this, 0.5, 0.5, 100);
         }
+        vb.setDebug_mode(true);
+        layoutList.add(vb);
+        drawButtons();
     }
 
     /**

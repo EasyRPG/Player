@@ -260,6 +260,8 @@ public class ButtonMappingManager {
                     double posY = button.getDouble(TAG_Y);
                     if (keyCode == VirtualButton.DPAD) {
                         layout.add(new VirtualCross(context, posX, posY, size));
+                    } else if (keyCode == MenuButton.MENU_BUTTON_KEY) {
+                        layout.add(new MenuButton(context, posX, posY, size));
                     } else {
                         layout.add(new VirtualButton(context, keyCode, posX, posY, size));
                     }
@@ -287,6 +289,7 @@ public class ButtonMappingManager {
             l.add(new VirtualCross(context, 0.0, 0.5, 100));
             l.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
             l.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
+            l.add(new MenuButton(context, 0, 0, 90));
 
             return l;
         }
@@ -311,7 +314,7 @@ public class ButtonMappingManager {
             return buttonList;
         }
 
-        public void setButtonList(LinkedList<VirtualButton> buttonList) {
+        public void setButtonList(List<VirtualButton> buttonList) {
             this.buttonList = buttonList;
         }
     }

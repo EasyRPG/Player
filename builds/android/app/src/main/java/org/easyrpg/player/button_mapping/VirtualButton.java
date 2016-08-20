@@ -14,12 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class VirtualButton extends View {
-    private int keyCode;
+    protected int keyCode;
     protected double posX, posY; // Relative position on the screen
     protected int originalSize, originalLetterSize, resizeFactor, realSize;
     private char charButton; // The char displayed on the button
     protected Paint painter;
-    private Rect bound, letterBound = new Rect();
+    protected Rect bound, letterBound = new Rect();
     protected boolean isPressed; // To know when the touch go out the button
     protected boolean debug_mode;
     protected Context context;
