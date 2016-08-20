@@ -219,6 +219,9 @@ SdlAudio::SdlAudio() :
 }
 
 SdlAudio::~SdlAudio() {
+	// Must be reset otherwise Player segfaults when SDL is reinitialized (Android)
+	Mix_HookMusic(nullptr, nullptr);
+
 	Mix_CloseAudio();
 }
 

@@ -118,10 +118,7 @@ namespace {
 }
 
 void Player::Init(int argc, char *argv[]) {
-	static bool init = false;
 	frames = 0;
-
-	if (init) return;
 
 	// Display a nice version string
 	std::stringstream header;
@@ -231,8 +228,6 @@ void Player::Init(int argc, char *argv[]) {
 			 !window_flag,
 			 RUN_ZOOM);
 	}
-
-	init = true;
 }
 
 void Player::Run() {
@@ -376,11 +371,6 @@ void Player::Exit() {
 	FileFinder::Quit();
 	Output::Quit();
 	DisplayUi.reset();
-	
-#ifdef __ANDROID__
-	// Workaround Segfault under Android
-	exit(0);
-#endif
 
 #ifdef PSP2
 	sceKernelExitProcess(0);
@@ -393,7 +383,6 @@ void Player::Exit() {
 	romfsExit();
 	fsExit();
 #endif
-
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
