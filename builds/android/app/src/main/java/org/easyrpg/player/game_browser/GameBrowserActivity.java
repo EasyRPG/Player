@@ -8,11 +8,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBrowserActivityAPI15 extends AppCompatActivity
+public class GameBrowserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
 
@@ -44,7 +44,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.browser_api15_activity);
+        setContentView(R.layout.browser_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,7 +87,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.game_browser_api15, menu);
+        getMenuInflater().inflate(R.menu.game_browser, menu);
         return true;
     }
 
@@ -157,7 +157,9 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         int orientation = configuration.orientation;
 
         // Determine the layout template (List or Grid, number of element per line for the grid)
-        this.nbOfGamesPerLine = configuration.screenWidthDp / THUMBNAIL_HORIZONTAL_SIZE_DPI;
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        this.nbOfGamesPerLine = (int)(dpWidth / THUMBNAIL_HORIZONTAL_SIZE_DPI);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
     }
@@ -188,9 +190,9 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
             // On inflate la vue et on la remplie
             View v;
             if (this.nbOfGamesPerLine <= 1) {
-                v = inflater.inflate(R.layout.browser_api15_game_card_vertical, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card_vertical, parent, false);
             } else {
-                v = inflater.inflate(R.layout.browser_api15_game_card, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card, parent, false);
             }
             return new ViewHolder(v);
         }
@@ -434,7 +436,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         @Override
         public ErrorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.browser_api15_error_text, parent, false);
+                    .inflate(R.layout.browser_error_text, parent, false);
             ErrorViewHolder viewHolder = new ErrorViewHolder(v);
             return viewHolder;
         }

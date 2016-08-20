@@ -35,68 +35,6 @@ public class GameBrowserHelper {
     private final static String TAG_FIRST_LAUNCH = "FIRST_LAUNCH";
     private static int GRANTED_PERMISSION = 0;
 
-    public static void scanFolder(Context context, File[] list, LinkedList<GameInformation> project_list, int depth) {
-        if (list != null) {
-            for (File file : list) {
-                if (!file.getName().startsWith(".")) {
-                    if (isRpg2kGame(file)) {
-                        project_list.add(new GameInformation(file.getName(), file.getAbsolutePath()));
-                    } else if (file.isDirectory() && file.canRead() && depth > 0) {
-                        // Not a RPG2k Game but a directory -> recurse
-                        scanFolder(context, file.listFiles(), project_list, depth - 1);
-                    }
-                }
-            }
-        }
-    }
-
-    public static void scanGame(Context context, LinkedList<GameInformation> project_list, LinkedList<String> error_list) {
-        project_list.clear();
-        error_list.clear();
-
-        String state = Environment.getExternalStorageState();
-        if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            error_list.add(context.getString(R.string.no_external_storage));
-            return;
-        }
-
-        // Scanning all the games folders
-        boolean first_directory = true;
-        for (String path : SettingsManager.getGamesFolderList()) {
-            File dir = new File(path);
-            // Verification
-            // 1) The folder must exist
-            if (!dir.exists() && !dir.mkdirs()) {
-                String msg = context.getString(R.string.creating_dir_failed).replace("$PATH", path);
-                Log.e("scanGame( )", msg);
-                error_list.add(msg);
-
-                continue;
-            }
-
-            // 2) The folder must be readable
-            if (!dir.canRead() || !dir.isDirectory()) {
-                String msg = context.getString(R.string.path_not_readable).replace("$PATH", path);
-                Log.e("scanGame( )", msg);
-                error_list.add(msg);
-
-                continue;
-            }
-
-            // Scan the folder
-            File[] list = dir.listFiles();
-            // Go 2 directores deep to find games in /easyrpg/games, otherwise only 1
-            scanFolder(context, list, project_list, first_directory ? 2 : 1);
-            first_directory = false;
-        }
-
-        // If the scan bring nothing in this folder : we notifiate the user
-        if (project_list.size() == 0) {
-            String error = context.getString(R.string.no_games_found_and_explanation);
-            error_list.add(error);
-        }
-    }
-
     /**
      * Tests if a folder is a RPG2k Game.
      * (contains DATABASE_NAME and TREEMAP_NAME)

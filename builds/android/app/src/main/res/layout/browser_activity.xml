@@ -10,7 +10,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/browser_api15_app_bar"
+        layout="@layout/browser_app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/browser_api15_nav_header"
-        app:menu="@menu/activity_game_browser_api15_drawer"/>
+        app:headerLayout="@layout/browser_nav_header"
+        app:menu="@menu/game_browser_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

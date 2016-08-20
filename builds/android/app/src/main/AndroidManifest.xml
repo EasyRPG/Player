@@ -3,7 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:installLocation="auto"
           android:versionCode="1"
-          android:versionName="1.0"> <!-- Android 2.3.3 -->
+          android:versionName="1.0">
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="23"/>
@@ -36,17 +36,11 @@
 
         <!-- GameBrowsers' Activity -->
         <activity
-            android:name=".game_browser.GameBrowserActivityAPI15"
+            android:name=".game_browser.GameBrowserActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".game_browser.GameBrowserActivityAPI12"
-            android:label="@string/app_name"/>
-        <activity
-            android:name=".game_browser.GameBrowserActivityAPI10"
-            android:label="@string/app_name"/>
 
         <!-- Player's Activity -->
         <activity

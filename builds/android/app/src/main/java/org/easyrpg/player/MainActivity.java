@@ -3,13 +3,10 @@ package org.easyrpg.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.easyrpg.player.game_browser.GameBrowserActivityAPI10;
-import org.easyrpg.player.game_browser.GameBrowserActivityAPI12;
-import org.easyrpg.player.game_browser.GameBrowserActivityAPI15;
+import org.easyrpg.player.game_browser.GameBrowserActivity;
 import org.easyrpg.player.game_browser.GameBrowserHelper;
 import org.easyrpg.player.game_browser.GameInformation;
 import org.easyrpg.player.player.AssetUtils;
@@ -93,13 +90,7 @@ public class MainActivity extends Activity {
 
         //Launch the proper game browser
         Intent intent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            intent = new Intent(this, GameBrowserActivityAPI15.class);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            intent = new Intent(this, GameBrowserActivityAPI12.class);
-        } else {
-            intent = new Intent(this, GameBrowserActivityAPI10.class);
-        }
+        intent = new Intent(this, GameBrowserActivity.class);
         startActivity(intent);
     }
 }

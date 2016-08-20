@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/game_browser_refresh"
-        android:icon="@drawable/ic_action_action_autorenew"
-        android:showAsAction="ifRoom"
-        android:title="@string/refresh"/>
+        android:id="@+id/refresh"
+        android:orderInCategory="100"
+        android:title="@string/refresh"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_refresh_white_24dp"/>
     <item
-        android:id="@+id/game_browser_settings"
-        android:title="@string/settings"/>
-    <item
-        android:id="@+id/game_browser_how_to_use_easy_rpg"
-        android:title="@string/how_to_use_easy_rpg"/>
-
+        android:id="@+id/menu"
+        android:orderInCategory="100"
+        android:title="@string/refresh"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings_white_24dp"/>
 </menu>
