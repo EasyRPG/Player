@@ -24,7 +24,7 @@
     <string name="no">No</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
-    <string name="no_games_found_and_explanation">No games found.\nYou can add additional game directories in the settings.</string>
+    <string name="no_games_found_and_explanation">No RPG Maker 2000/2003 games found.\nYou can add additional game directories in the settings.</string>
     <string name="no_external_storage">No external storage (e.g. SD card) found</string>
     <string name="not_valid_game">$PATH is not a valid game</string>
     <string name="select_game_region">Select Game Region</string>
@@ -79,7 +79,7 @@ Please tell us in detail what went wrong.\n
     <string name="input_layout_transparency">Input Layout transparency:</string>
     <string name="ignore_size_settings">Ignore buttons\' size settings and use this one for every buttons:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
-    <string name="easyrpg_folder">EasyRPG folder</string>
+    <string name="game_folders">Game folders</string>
     <string name="quick_access">Quick access</string>
     <string name="force_landscape_mode">Force landscape orientation</string>
 

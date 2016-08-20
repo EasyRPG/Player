@@ -72,7 +72,7 @@
   <string name="input_layout_transparency">입력 레이아웃 투명도:</string>
   <string name="ignore_size_settings">버튼 크기 설정은 무시하고 이 비율로 고정:</string>
   <string name="no_read_access_on_dir">%1$s의 읽기 권한이 없습니다.</string>
-  <string name="easyrpg_folder">EasyRPG 폴더</string>
+  <string name="game_folders">EasyRPG 폴더</string>
   <string name="quick_access">바로가기</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">입력 레이아웃 바꾸기:</string>

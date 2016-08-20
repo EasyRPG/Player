@@ -70,7 +70,7 @@
   <string name="input_layout_transparency">入力レイアウトの透過:</string>
   <string name="ignore_size_settings">個々のボタン設定を無視し全てこのボタンサイズを使用する:</string>
   <string name="no_read_access_on_dir">%1$s に読み取りアクセス権限がありません</string>
-  <string name="easyrpg_folder">EasyRPG フォルダー</string>
+  <string name="game_folders">EasyRPG フォルダー</string>
   <string name="quick_access">クイック アクセス</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">入力レイアウトの管理</string>

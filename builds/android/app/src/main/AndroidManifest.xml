@@ -4,6 +4,7 @@
           android:installLocation="auto"
           android:versionCode="1"
           android:versionName="1.0">
+
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="23"/>
@@ -52,15 +53,49 @@
         <!-- Settings' Activity -->
         <activity
             android:name=".settings.SettingsMainActivity"
-            android:label="@string/settings"/>
+            android:label="@string/settings"
+            android:parentActivityName=".game_browser.GameBrowserActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".game_browser.GameBrowserActivity"/>
+        </activity>
         <activity
-            android:name=".settings.SettingsVideoActivity"/>
+            android:name=".settings.SettingsVideoActivity"
+            android:label="@string/video"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
         <activity
-            android:name=".settings.SettingsAudioActivity"/>
+            android:name=".settings.SettingsAudioActivity"
+            android:label="@string/audio"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
         <activity
-            android:name=".settings.SettingsGamesFoldersActivity"/>
+            android:name=".settings.SettingsGamesFoldersActivity"
+            android:label="@string/games_folders"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
         <activity
-            android:name=".settings.SettingsInputActivity"/>
+            android:name=".settings.SettingsInputActivity"
+            android:label="@string/input"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
 
         <activity
             android:name=".button_mapping.ButtonMappingActivity"

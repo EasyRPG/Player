@@ -75,7 +75,7 @@
 	<string name="input_layout_transparency">ความโปร่งใส่ของเค้าโครงรับค่า:</string>
 	<string name="ignore_size_settings">เพิกเฉยต่อการตั้งค่าขนาดปุ่มและนำทั้งหมดนี้ไปใช้กับปุ่มทั้งหมด:</string>
 	<string name="no_read_access_on_dir">ไม่มีสิทธิ์การอ่านที่ %1$s</string>
-	<string name="easyrpg_folder">โฟลเดอร์ EasyRPG</string>
+	<string name="game_folders">โฟลเดอร์ EasyRPG</string>
 	<string name="quick_access">เข้าถึงอย่างรวดเร็ว</string>
 	
 	<!--InputLayout Managing-->

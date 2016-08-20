@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
-        android:text="@string/easyrpg_folder"
+        android:text="@string/game_folders"
         android:textSize="20sp"/>
 
     <ScrollView

@@ -70,7 +70,7 @@ RTP方面，RPG Maker 2000 RTP 要放在 /easyrpg/rtp/2000 裡面，2003 的則�
   <string name="input_layout_transparency">按鍵透明度：</string>
   <string name="ignore_size_settings">忽略按鍵的大小設定而為所有按鈕使用此項：</string>
   <string name="no_read_access_on_dir">沒有 %1$s 的讀取權限</string>
-  <string name="easyrpg_folder">EasyRPG 資料夾</string>
+  <string name="game_folders">EasyRPG 資料夾</string>
   <string name="quick_access">快速存取</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">按鍵配置管理：</string>
