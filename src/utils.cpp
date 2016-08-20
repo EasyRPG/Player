@@ -286,12 +286,55 @@ std::string Utils::FromWideString(const std::wstring& str) {
 }
 
 bool Utils::IsBigEndian() {
-    union {
-        uint32_t i;
-        char c[4];
-    } d = {0x01020304};
+	static bool ran_once = false;
+	static bool is_big = false;
 
-    return(d.c[0] == 1);
+	if (ran_once) {
+		return is_big;
+	}
+
+	union {
+		uint32_t i;
+		char c[4];
+	} d = {0x01020304};
+
+	ran_once = true;
+	is_big = d.c[0] == 1;
+
+	return is_big;
+}
+
+void Utils::SwapByteOrder(uint16_t& us) {
+	if (!IsBigEndian()) {
+		return;
+	}
+
+	us =	(us >> 8) |
+			(us << 8);
+}
+
+void Utils::SwapByteOrder(uint32_t& ui) {
+	if (!IsBigEndian()) {
+		return;
+	}
+
+	ui =	(ui >> 24) |
+			((ui<<8) & 0x00FF0000) |
+			((ui>>8) & 0x0000FF00) |
+			(ui << 24);
+}
+
+void Utils::SwapByteOrder(double& d) {
+	if (!IsBigEndian()) {
+		return;
+	}
+
+	uint32_t *p = reinterpret_cast<uint32_t *>(&d);
+	SwapByteOrder(p[0]);
+	SwapByteOrder(p[1]);
+	uint32_t tmp = p[0];
+	p[0] = p[1];
+	p[1] = tmp;
 }
 
 int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {

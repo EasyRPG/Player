@@ -20,10 +20,9 @@
 #ifdef WANT_FASTWAV
 
 // Headers
-#include <cassert>
-#include <sys/stat.h>
+#include <cstring>
 #include "decoder_wav.h"
-#include "output.h"
+#include "utils.h"
 
 WavDecoder::WavDecoder() 
 {
@@ -38,13 +37,18 @@ WavDecoder::~WavDecoder() {
 
 bool WavDecoder::Open(FILE* file) {
 	file_=file;
-	uint32_t chunk = 0xDEADBEEF;
-	uint32_t jump;
-	fseek(file_, 22, SEEK_SET);
+	fseek(file_, 16, SEEK_SET);
+	fread(&chunk_size, 1, 4, file_);
+	Utils::SwapByteOrder(chunk_size);
+	fseek(file_, 2, SEEK_CUR);
 	fread(&nchannels, 1, 2, file_);
+	Utils::SwapByteOrder(nchannels);
 	fread(&samplerate, 1, 4, file_);
+	Utils::SwapByteOrder(samplerate);
+	fseek(file_, 6, SEEK_CUR);
 	uint16_t bitspersample;
 	fread(&bitspersample, 1, 2, file_);
+	Utils::SwapByteOrder(bitspersample);
 	switch (bitspersample) {
 		case 8:
 			output_format=Format::U8;
@@ -57,29 +61,54 @@ bool WavDecoder::Open(FILE* file) {
 			break;
 		default:
 			return false;
-			break;
 	}
-	fseek(file_, 16, SEEK_SET);
-	fread(&jump, 4, 1, file_);
-	
+
+	// Skip to next chunk using "fmt" chunk as offset
+	fseek(file_, 12 + 8 + chunk_size, SEEK_SET);
+
+	char chunk_name[4] = {0};
+	fread(chunk_name, 4, 1, file_);
+
 	// Skipping to audiobuffer start
-	while (chunk != 0x61746164) {
-		fseek(file_, jump, SEEK_CUR);
-		fread(&chunk, 4, 1, file_);
-		fread(&jump, 4, 1, file_);
+	while (strncmp(chunk_name, "data", 4)) {
+		fread(&chunk_size, 1, 4, file_);
+		Utils::SwapByteOrder(chunk_size);
+		fseek(file_, chunk_size, SEEK_CUR);
+		fread(chunk_name, 4, 1, file_);
+
+		if (feof(file_) || ferror(file_)) {
+			fclose(file_);
+			return false;
+		}
 	}
-	
+
+	// Get data chunk size
+	fread(&chunk_size, 4, 1, file_);
+	Utils::SwapByteOrder(chunk_size);
+
+	if (feof(file_) || ferror(file_)) {
+		fclose(file_);
+		return false;
+	}
+
+	// Start of data chunk
 	audiobuf_offset = ftell(file_);
+	cur_pos = audiobuf_offset;
 	finished = false;
 	return file_!=NULL;
 }
 
 bool WavDecoder::Seek(size_t offset, Origin origin) {
 	finished = false;
-	if (file_ != NULL)
+	if (file_ == NULL)
 		return false;
-	if (origin != Origin::End) offset += audiobuf_offset;
-	return fseek(file_,offset,(int)origin) == 0;
+	if (origin != Origin::End) {
+		offset += audiobuf_offset;
+	}
+
+	bool success = fseek(file_,offset,(int)origin) == 0;
+	cur_pos = ftell(file_);
+	return success;
 }
 
 bool WavDecoder::IsFinished() const {
@@ -94,7 +123,7 @@ void WavDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& ch
 	format = output_format;
 }
 
-bool WavDecoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
+bool WavDecoder::SetFormat(int, AudioDecoder::Format, int) {
 	return false;
 }
 
@@ -102,8 +131,23 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (file_ == NULL)
 		return -1;
 
-	int decoded=fread(buffer,1,length,file_);
-	if(decoded < length)
+	int real_length;
+	cur_pos = cur_pos + length;
+
+	// Handle case that another chunk is behind "data"
+	if (cur_pos >= audiobuf_offset + chunk_size) {
+		real_length = cur_pos - chunk_size - length - audiobuf_offset;
+	} else {
+		real_length = length;
+	}
+
+	if (real_length == 0) {
+		finished = true;
+		return 0;
+	}
+
+	int decoded = fread(buffer, 1, real_length, file_);
+	if (decoded < length)
 		finished = true;
 	
 	return decoded;

@@ -98,7 +98,6 @@ namespace Utils {
 	 */
 	std::string FromWideString(const std::wstring& str);
 
-
 	/**
 	 * Converts arithmetic types to a string.
 	 *
@@ -112,7 +111,36 @@ namespace Utils {
 		return stm.str();
 	}
 
+	/**
+	 * Checks if the platform is big endian
+	 *
+	 * @return true if big, false if little endian
+	 */
 	bool IsBigEndian();
+
+	/**
+	 * Swaps the byte order of the passed number when on big endian systems.
+	 * Does nothing otherwise.
+	 *
+	 * @param us Number to swap
+	 */
+	void SwapByteOrder(uint16_t& us);
+
+	/**
+	 * Swaps the byte order of the passed number when on big endian systems.
+	 * Does nothing otherwise.
+	 *
+	 * @param ui Number to swap
+	 */
+	void SwapByteOrder(uint32_t& ui);
+
+	/**
+	 * Swaps the byte order of the passed number when on big endian systems.
+	 * Does nothing otherwise.
+	 *
+	 * @param d Number to swap
+	 */
+	void SwapByteOrder(double& d);
 
 	/**
 	 * Gets a random number in the inclusive range from - to.
