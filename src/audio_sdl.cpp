@@ -520,13 +520,7 @@ void SdlAudio::BGM_Fade(int fade) {
 }
 
 void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
-	std::string const path = FileFinder::FindMusic(file);
-	if (path.empty()) {
-		Output::Debug("Music not found: %s", file.c_str());
-		return;
-	}
-
-	bgs.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
+	bgs.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
 		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
 		return;
