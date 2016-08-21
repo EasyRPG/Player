@@ -47,8 +47,7 @@
         <activity
             android:name=".player.EasyRpgPlayerActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+            android:label="@string/app_name"/>
 
         <!-- Settings' Activity -->
         <activity
@@ -101,7 +100,6 @@
             android:name=".button_mapping.ButtonMappingActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+            android:screenOrientation="landscape"/>
     </application>
 </manifest>

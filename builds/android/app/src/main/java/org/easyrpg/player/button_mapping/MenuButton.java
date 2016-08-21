@@ -26,12 +26,21 @@ public class MenuButton extends VirtualButton {
 
     @Override
     public void onPressed() {
+        // Vibration
+        if (!debug_mode) {
+            if (!isPressed) {
+                if (SettingsManager.isVibrationEnabled() && vibrator != null) {
+                    vibrator.vibrate(SettingsManager.getVibrationDuration());
+                }
+            }
+        }
     }
 
     @Override
     public void onReleased() {
+        // Open the menu
         if (!debug_mode) {
-            ((EasyRpgPlayerActivity) context).openOptionsMenu();
+            EasyRpgPlayerActivity.staticOpenOrCloseMenu();
         }
     }
 }

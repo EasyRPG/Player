@@ -24,8 +24,28 @@
 
 package org.easyrpg.player.player;
 
-import java.io.File;
-import java.util.ArrayList;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.util.DisplayMetrics;
+import android.view.MenuItem;
+import android.view.SurfaceView;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
@@ -37,37 +57,21 @@ import org.easyrpg.player.game_browser.GameInformation;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.SurfaceView;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * EasyRPG Player for Android (inheriting from SDLActivity)
  */
 
-public class EasyRpgPlayerActivity extends SDLActivity {
+public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
 
+    private static EasyRpgPlayerActivity instance;
+
+    DrawerLayout drawer;
     ButtonMappingManager buttonMappingManager;
     InputLayout inputLayout;
     private boolean uiVisible = true;
@@ -76,7 +80,15 @@ public class EasyRpgPlayerActivity extends SDLActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EasyRpgPlayerActivity.instance = this;
 
+        // Menu configuration
+        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Screen orientation
         if (SettingsManager.isForcedLandscape()) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
@@ -110,20 +122,12 @@ public class EasyRpgPlayerActivity extends SDLActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.player, menu);
-        Log.v("Player", "onCreateOption");
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.toggle_fps:
                 toggleFps();
-                return true;
+                break;
             case R.id.toggle_ui:
                 if (uiVisible) {
                     for (VirtualButton v : inputLayout.getButtonList()) {
@@ -134,16 +138,36 @@ public class EasyRpgPlayerActivity extends SDLActivity {
                     addButtons();
                 }
                 uiVisible = !uiVisible;
-                return true;
+                break;
             case R.id.report_bug:
                 reportBug();
-                return true;
+                break;
             case R.id.end_game:
                 showEndGameDialog();
-                return true;
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
+        openOrCloseMenu();
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideStatusBar();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        hideStatusBar();
+    }
+
+    public void hideStatusBar() {
+        // Hide the status bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void reportBug() {
@@ -190,26 +214,23 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 
     @Override
     public void onBackPressed() {
-        openOptionsMenu();
+        openOrCloseMenu();
     }
 
     /**
-     * This function prevents some Samsung's device to not show the option menu
+     * This function permit to open the menu, in a static way
      */
-    @Override
-    public void openOptionsMenu() {
+    public static void staticOpenOrCloseMenu() {
+        if (instance != null) {
+            instance.openOrCloseMenu();
+        }
+    }
 
-        Configuration config = getResources().getConfiguration();
-
-        if ((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) > Configuration.SCREENLAYOUT_SIZE_LARGE) {
-
-            int originalScreenLayout = config.screenLayout;
-            config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
-            super.openOptionsMenu();
-            config.screenLayout = originalScreenLayout;
-
+    public void openOrCloseMenu() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.openOptionsMenu();
+            drawer.openDrawer(GravityCompat.START);
         }
     }
 
@@ -379,5 +400,4 @@ public class EasyRpgPlayerActivity extends SDLActivity {
         updateScreenPosition();
         updateButtonsPosition();
     }
-
 }

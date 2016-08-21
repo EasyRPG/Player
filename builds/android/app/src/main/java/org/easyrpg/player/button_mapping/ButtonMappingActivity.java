@@ -1,12 +1,5 @@
 package org.easyrpg.player.button_mapping;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.easyrpg.player.Helper;
-import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,16 +7,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-public class ButtonMappingActivity extends Activity {
+import org.easyrpg.player.Helper;
+import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class ButtonMappingActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
     ViewGroup layoutManager;
     List<VirtualButton> layoutList;
     ButtonMappingManager buttonMappingManager;
@@ -35,6 +37,15 @@ public class ButtonMappingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.button_mapping_activity);
+
+        // Menu configuration
+        this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Hide the status bar
+        hideStatusBar();
 
         layoutManager = (RelativeLayout) findViewById(R.id.button_mapping_activity_layout);
 
@@ -62,58 +73,47 @@ public class ButtonMappingActivity extends Activity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.button_mapping, menu);
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.button_mapping_menu_add_button:
+                showSupportedButton();
+                openOrCloseMenu();
+                break;
+            case R.id.button_mapping_menu_reset:
+                layoutList = InputLayout.getDefaultInputLayout(this).getButtonList();
+                drawButtons();
+                openOrCloseMenu();
+                break;
+            case R.id.button_mapping_menu_exit_without_saving:
+                this.finish();
+                break;
+            case R.id.button_mapping_menu_save_and_quit:
+                save();
+                this.finish();
+                break;
+            default:
+                return false;
+        }
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.button_mapping_menu_add_button:
-                showSupportedButton();
-                return true;
-            case R.id.button_mapping_menu_reset:
-                layoutList = InputLayout.getDefaultInputLayout(this).getButtonList();
-                drawButtons();
-                return true;
-            case R.id.button_mapping_menu_exit_without_saving:
-                this.finish();
-                return true;
-            case R.id.button_mapping_menu_save_and_quit:
-                save();
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
-        openOptionsMenu();
+        openOrCloseMenu();
     }
 
-    /**
-     * This function prevents some Samsung's device to not show the option menu
-     */
-    @Override
-    public void openOptionsMenu() {
-
-        Configuration config = getResources().getConfiguration();
-
-        if ((config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
-                > Configuration.SCREENLAYOUT_SIZE_LARGE) {
-
-            int originalScreenLayout = config.screenLayout;
-            config.screenLayout = Configuration.SCREENLAYOUT_SIZE_LARGE;
-            super.openOptionsMenu();
-            config.screenLayout = originalScreenLayout;
-
+    public void openOrCloseMenu() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.openOptionsMenu();
+            drawer.openDrawer(GravityCompat.START);
         }
+    }
+
+    public void hideStatusBar() {
+        // Hide the status bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public void save() {
