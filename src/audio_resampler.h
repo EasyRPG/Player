@@ -187,10 +187,10 @@ private:
 			spx_uint32_t input_frames_used, output_frames_gen;
 			spx_uint32_t ratio_num, ratio_denom;
 		} conversion_data;
-		SpeexResamplerState * conversion_state;
+		SpeexResamplerState * conversion_state = nullptr;
 	#elif defined(HAVE_LIBSAMPLERATE)
 		SRC_DATA conversion_data;
-		SRC_STATE * conversion_state;
+		SRC_STATE * conversion_state = nullptr;
 	#endif
 
 	/**

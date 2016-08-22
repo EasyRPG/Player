@@ -45,13 +45,18 @@ inline static int DecodeAndConvertFloat(AudioDecoder * wrapped_decoder,
 										const int input_samplesize, 
 										const AudioDecoder::Format input_format){
 	float* bufferAsFloat = (float*)buffer;
-	if (wrapped_decoder->IsFinished()) return 0; //Workaround for decoders which don't detect there own end
+
+	//Workaround for decoders which don't detect their own end
+	if (wrapped_decoder->IsFinished())
+		return 0;
+
 	int amount_of_samples_read = wrapped_decoder->Decode(buffer, amount_of_samples_to_read*input_samplesize);
 	if (amount_of_samples_read <= 0) {
 		return amount_of_samples_read; //error occured - or nothing read
 	} else {
 		amount_of_samples_read /= input_samplesize;
 	}
+
 	//Convert the read data (amount_of_data_read is at least one at this moment)
 	switch (input_format) {
 		case AudioDecoder::Format::S8:
@@ -117,7 +122,11 @@ inline static int DecodeAndConvertInt16(AudioDecoder * wrapped_decoder,
 										const int input_samplesize, 
 										const AudioDecoder::Format input_format){
 	int16_t* bufferAsInt16 = (int16_t*)buffer;
-	if (wrapped_decoder->IsFinished()) return 0; //Workaround for decoders which don't detect there own end
+
+	//Workaround for decoders which don't detect their own end
+	if (wrapped_decoder->IsFinished())
+		return 0;
+
 	int amount_of_samples_read = wrapped_decoder->Decode(buffer, amount_of_samples_to_read*input_samplesize);
 	if (amount_of_samples_read <= 0) {
 		return amount_of_samples_read; //error occured - or nothing read
@@ -214,14 +223,14 @@ AudioResampler::AudioResampler(AudioDecoder * wrapped, bool pitch_handled, Audio
 }
 
 AudioResampler::~AudioResampler() {
-	if (conversion_state != 0) {
+	if (conversion_state) {
 	#if defined(HAVE_LIBSPEEXDSP)
 			speex_resampler_destroy(conversion_state);
 	#elif defined(HAVE_LIBSAMPLERATE)
 			src_delete(conversion_state);
 	#endif
 	}
-	if (wrapped_decoder != 0) {
+	if (wrapped_decoder) {
 		delete wrapped_decoder;
 	}
 }
@@ -262,15 +271,18 @@ bool AudioResampler::Open(FILE* file) {
 		conversion_data.input_frames = 0;
 		conversion_data.input_frames_used = 0;
 		finished = false;
-		return conversion_state != 0;
-	} else {
-		return false;
+
+		if (conversion_state)
+			return true;
 	}
+
+	conversion_state = nullptr;
+	return false;
 }
 
 bool AudioResampler::Seek(size_t offset, Origin origin) {
 	if (wrapped_decoder->Seek(offset, origin)) {
-		//reset conversio data
+		//reset conversion data
 		conversion_data.input_frames = 0;
 		conversion_data.input_frames_used = 0;
 		finished = wrapped_decoder->IsFinished();
@@ -306,16 +318,22 @@ void AudioResampler::GetFormat(int& frequency, AudioDecoder::Format& format, int
 bool AudioResampler::SetFormat(int freq, AudioDecoder::Format fmt, int channels) {
 	//Check whether requested format is supported by the resampler
 	switch (fmt) {
-	case Format::F32: output_format = fmt; break;
+		case Format::F32:
+			output_format = fmt;
+			break;
 	#ifdef HAVE_LIBSPEEXDSP
-		case Format::S16: output_format = fmt; break;
+		case Format::S16:
+			output_format = fmt;
+			break;
 	#endif
-	default: break;
+		default:
+			break;
 	}
 	wrapped_decoder->SetFormat(input_rate, output_format, channels);
 	wrapped_decoder->GetFormat(input_rate, input_format, nr_of_channels);
 	output_rate = freq;
-	return (nr_of_channels == channels&&output_format == fmt);
+
+	return ((nr_of_channels == channels) && (output_format == fmt));
 }
 
 int AudioResampler::GetPitch() const {
@@ -341,7 +359,7 @@ int AudioResampler::FillBuffer(uint8_t* buffer, int length) {
 		//Do only format conversion
 		amount_filled = FillBufferSameRate(buffer, length);
 	} else {
-		if (conversion_state == 0) {
+		if (!conversion_state) {
 			error_message = "internal error: state pointer is a nullptr";
 			amount_filled = ERROR;
 		} else {
@@ -361,7 +379,7 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 	const int output_samplesize = GetSamplesizeForFormat(output_format);
 	//The buffer size has to be a multiple of a frame
 	const int buffer_size=sizeof(internal_buffer) - sizeof(internal_buffer)%(nr_of_channels*input_samplesize);
-	
+
 	int total_output_frames = length / (output_samplesize*nr_of_channels);
 	int amount_of_data_to_read = 0;
 	int amount_of_data_read = total_output_frames*nr_of_channels;
