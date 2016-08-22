@@ -2,24 +2,27 @@ cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
+include(CMakeDependentOption)
 
 project(EasyRPG_Player CXX C)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
+# Include directories
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+# Extra FindModule files
 list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
+
+# Add compile flags
+if(CMAKE_GENERATOR MATCHES "Makefile")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	add_definitions(-D_DEBUG=1)
 endif()
-	
-add_definitions(-DUSE_SDL=1)
 
-if(CMAKE_GENERATOR MATCHES "Makefile")
-	add_definitions(-fno-rtti)
-endif()
+add_definitions(-DUSE_SDL=1)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -47,7 +50,6 @@ function(find_lib_int LIBNAME COND REQ)
 		set(NEW_LIBS ${${LIBNAMEUP}_LIBRARY} ${${LIBNAMEUP}_LIBRARIES} PARENT_SCOPE)
 	endif()
 
-	set(RETVAL ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	# Export _FOUND variable to parent scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 endfunction()
@@ -58,7 +60,6 @@ function(find_lib_req LIBNAME COND)
 	# Export _FOUND variable to parent scope which is global scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
-	set(RETVAL ${RETVAL} PARENT_SCOPE)
 endfunction()
 
 function(find_lib LIBNAME COND)
@@ -67,7 +68,6 @@ function(find_lib LIBNAME COND)
 	# Export _FOUND variable to parent scope which is global scope
 	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
-	set(RETVAL ${RETVAL} PARENT_SCOPE)
 endfunction()
 
 # liblcf
@@ -79,7 +79,7 @@ if(PLAYER_BUILD_LIBLCF)
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
 	find_package(Git REQUIRED)
 	if(NOT EXISTS ${LIBLCF_PATH})
-	execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
+	execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" 
 		"${PLAYER_BUILD_LIBLCF_GIT}"
 		"${LIBLCF_PATH}")
 	endif()
@@ -99,29 +99,27 @@ foreach(i Pixman ZLIB PNG SDL2)
 endforeach()
 
 # Always enable Wine registry support on non-Windows
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-else()
+if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
 	add_definitions(-DHAVE_WINE=1)
 endif()
 
 # freetype and harfbuzz
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
 find_lib("Freetype" PLAYER_WITH_FREETYPE)
-if(${RETVAL})
+if(Freetype_FOUND)
 	add_definitions(-DHAVE_FREETYPE)
-	option(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON)
 	find_lib("Harfbuzz" PLAYER_WITH_HARFBUZZ)
-	if(${RETVAL})
+	if(Harfbuzz_FOUND)
 		add_definitions(-DHAVE_HARFBUZZ)
 	endif()
 endif()
 
 # Sound system to use
 set(PLAYER_AUDIO_BACKEND "SDL2_mixer" CACHE STRING "Audio system to use. The SDL2_mixer audio system provides advanced features required by RPG Maker. Options: SDL2_mixer OpenAL OFF")
-set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL)
+set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL OFF)
 
 # Configure Audio backends
-
 if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# SDL2_mixer Audio
 	find_lib_req(SDL2_mixer ON)
@@ -130,35 +128,35 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# speexdsp
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)	
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
-	if(${RETVAL})
+	if(speexdsp_FOUND)
 		add_definitions(-DHAVE_LIBSPEEXDSP)
 	endif()
 	
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
 	find_lib("mpg123" PLAYER_WITH_MPG123)
-	if(${RETVAL})
+	if(mpg123_FOUND)
 		add_definitions(-DHAVE_MPG123)
 	endif()
 
 	# libsndfile
 	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)	
 	find_lib("SndFile" PLAYER_WITH_LIBSNDFILE)
-	if(${RETVAL})
+	if(SndFile_FOUND)
 		add_definitions(-DHAVE_LIBSNDFILE)
 	endif()
 	
 	# libogg
 	option(PLAYER_WITH_OGGVORBIS "Play OGG audio with libogg." ON)	
 	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
-	if(${RETVAL})
+	if(OggVorbis_FOUND)
 		add_definitions(-DHAVE_OGGVORBIS)
 	endif()
 	
 	# wildmidi (optional, OFF)
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
 	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
-	if(${RETVAL})
+	if(WildMidi_FOUND)
 		add_definitions(-DHAVE_WILDMIDI)
 	endif()
 	
@@ -189,18 +187,21 @@ else()
 	message(FATAL_ERROR "Invalid Audio Backend")
 endif()
 
+# Additional include directories
 if(PLAYER_BUILD_LIBLCF)
 	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
-
-# library
+# Libraries
 set(EASYRPG_PLAYER_LIBRARIES_ALL ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static")
 if(PLAYER_BUILD_LIBLCF)
 	list(APPEND EASYRPG_PLAYER_LIBRARIES_ALL liblcf)
 endif()
+
+# Output path
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 # entry point
 set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
@@ -216,8 +217,7 @@ add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
 # executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
-add_executable(${PROJECT_NAME}_com ${MAIN_FILE})
-foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
+foreach(i ${PROJECT_NAME} ${PROJECT_NAME})
 	target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
 	add_dependencies(${i} ${PROJECT_NAME}_Static)
 	if(PLAYER_BUILD_LIBLCF)
@@ -283,7 +283,7 @@ if(PLAYER_ENABLE_TESTS)
 
 	set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/TestGame")
 	if(NOT EXISTS ${TEST_GAME_REPOSITORY_PATH})
-		execute_process(COMMAND ${GIT_EXECUTABLE} clone
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
 			"https://github.com/EasyRPG/TestGame.git"
 			"${TEST_GAME_REPOSITORY_PATH}")
 	endif()
@@ -313,8 +313,6 @@ endif()
 
 # Print summary
 message(STATUS "")
-message(STATUS "Summary:")
-message(STATUS "----------")
 if(PLAYER_BUILD_LIBLCF)
 	message(STATUS "liblcf: Built from ${PLAYER_BUILD_LIBLCF_GIT}")
 	message(STATUS "")
@@ -337,7 +335,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		message(STATUS "MP3 playback:  mpg123")
 	else()
 		set(SDL_MIXER_USED ON)
-		message(STATUS "MP3 playback:  SDL2_mixer. Some MP3 files will crash or play noise!")
+		message(STATUS "MP3 playback:  SDL2_mixer. Some MP3 files will crash or play noise.")
 	endif()
 	
 	if(OggVorbis_FOUND)
@@ -351,14 +349,14 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		message(STATUS "WAV playback:  libsndfile")
 	else()
 		set(SDL_MIXER_USED ON)
-		message(STATUS "WAV playback:  SDL2_mixer. Some WAV formats are unsupported.")
+		message(STATUS "WAV playback:  SDL2_mixer")
 	endif()
 	
 	if(speexdsp_FOUND)
 		message(STATUS "Resampler:     speexdsp")
 	else()
 		set(SDL_MIXER_USED ON)
-		message(STATUS "Resampler:     SDL2. Resampling will not work correctly!")
+		message(STATUS "Resampler:     SDL2")
 	endif()
 	
 	if(SDL_MIXER_USED)
@@ -379,5 +377,4 @@ else()
 	message(STATUS "Font rendering: built-in (Shinonome)")
 endif()
 
-message(STATUS "----------")
 message(STATUS "")
