@@ -147,6 +147,21 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 	}
 
 	int decoded = fread(buffer, 1, real_length, file_);
+
+	if (Utils::IsBigEndian()) {
+		if (output_format == AudioDecoder::Format::S16) {
+			uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
+			for (int i = 0; i < decoded / 2; ++i) {
+				Utils::SwapByteOrder(buffer_16[i]);
+			}
+		} else if (output_format == AudioDecoder::Format::S32) {
+			uint32_t* buffer_32 = reinterpret_cast<uint32_t*>(buffer);
+			for (int i = 0; i < decoded / 4; ++i) {
+				Utils::SwapByteOrder(buffer_32[i]);
+			}
+		}
+	}
+
 	if (decoded < length)
 		finished = true;
 	
