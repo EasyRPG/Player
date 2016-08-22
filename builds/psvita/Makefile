@@ -26,7 +26,7 @@ endif
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
-CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
+CFLAGS  = -Wl,-q -g -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DWANT_FASTWAV -DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
 		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
@@ -54,6 +54,7 @@ else
 endif
 
 %.velf: %.elf
+	cp $< $<.unstripped.elf
 	$(PREFIX)-strip -g $<
 	vita-elf-create $< $@
 
@@ -61,4 +62,4 @@ $(TARGET).elf: $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $@
 
 clean:
-	@rm -rf $(TARGET).velf $(TARGET).elf $(OBJS) param.sfo eboot.bin
+	@rm -rf $(TARGET).velf $(TARGET).elf $(TARGET).elf.unstripped.elf $(OBJS) param.sfo eboot.bin
