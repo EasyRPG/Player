@@ -945,31 +945,19 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 }
 
 void Bitmap::Clear() {
-	pixman_color_t pcolor = {0, 0, 0, 0};
-	pixman_rectangle16_t rect = {
-	0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
+	memset(pixels(), '\0', height() * pitch());
 
-	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
-
-	RefreshCallback();
-
-	pixman_image_composite32(PIXMAN_OP_CLEAR,
-		bitmap, (pixman_image_t*)NULL, bitmap,
-		0, 0,
-		0, 0,
-		0, 0,
-		width(), height());
-
-	RefreshCallback();
+        RefreshCallback();
 }
 
 void Bitmap::ClearRect(Rect const& dst_rect) {
 	pixman_color_t pcolor = {0, 0, 0, 0};
 	pixman_rectangle16_t rect = {
-    static_cast<int16_t>(dst_rect.x),
-    static_cast<int16_t>(dst_rect.y),
-    static_cast<uint16_t>(dst_rect.width),
-    static_cast<uint16_t>(dst_rect.height), };
+		static_cast<int16_t>(dst_rect.x),
+		static_cast<int16_t>(dst_rect.y),
+		static_cast<uint16_t>(dst_rect.width),
+		static_cast<uint16_t>(dst_rect.height)
+	};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
 
