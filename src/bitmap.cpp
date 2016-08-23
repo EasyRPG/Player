@@ -46,11 +46,23 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 }
 
 BitmapRef Bitmap::Create(const std::string& filename, bool transparent, uint32_t flags) {
-	return std::make_shared<Bitmap>(filename, transparent, flags);
+	BitmapRef bmp = std::make_shared<Bitmap>(filename, transparent, flags);
+
+	if (!bmp->pixels()) {
+		return BitmapRef();
+	}
+
+	return bmp;
 }
 
 BitmapRef Bitmap::Create(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
-	return std::make_shared<Bitmap>(data, bytes, transparent, flags);
+	BitmapRef bmp = std::make_shared<Bitmap>(data, bytes, transparent, flags);
+
+	if (!bmp->pixels()) {
+		return BitmapRef();
+	}
+
+	return bmp;
 }
 
 BitmapRef Bitmap::Create(Bitmap const& source, Rect const& src_rect, bool transparent) {
@@ -67,7 +79,9 @@ Bitmap::Bitmap() {
 }
 
 Bitmap::~Bitmap() {
-	pixman_image_unref(bitmap);
+	if (bitmap) {
+		pixman_image_unref(bitmap);
+	}
 }
 
 bool Bitmap::WritePNG(std::ostream& os) const {
@@ -537,24 +551,34 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	size_t bytes = fread(&data, 1, 4, stream);
 	fseek(stream, 0, SEEK_SET);
 
+	bool img_okay = false;
+
 #ifdef SUPPORT_XYZ
 	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
-		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
+		img_okay = ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
 	else
 #endif
 #ifdef SUPPORT_BMP
 	if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
-		ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
+		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 	else
 #endif
 #ifdef SUPPORT_PNG
 	if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
 	else
 #endif
 		Output::Warning("Unsupported image file %s", filename.c_str());
 
 	fclose(stream);
+
+	if (!img_okay) {
+		free(pixels);
+
+		pixels = nullptr;
+
+		return;
+	}
 
 	Init(w, h, (void *) NULL);
 	if (pixels)
@@ -572,22 +596,28 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	int w = 0, h = 0;
 	void* pixels;
 
+	bool img_okay = false;
+
 #ifdef SUPPORT_XYZ
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
 	else
 #endif
 #ifdef SUPPORT_BMP
 	if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
-		ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
+		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else
 #endif
 #ifdef SUPPORT_PNG
 	if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
-		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
+		img_okay = ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
 	else
 #endif
 		Output::Warning("Unsupported image");
+
+	if (!img_okay) {
+		return;
+	}
 
 	Init(w, h, (void *) NULL);
 	if (pixels)
@@ -608,6 +638,10 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 }
 
 void* Bitmap::pixels() {
+	if (!bitmap) {
+		return nullptr;
+	}
+
 	return (void*) pixman_image_get_data(bitmap);
 }
 void const* Bitmap::pixels() const {
