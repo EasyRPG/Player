@@ -34,23 +34,47 @@
 
 namespace {
 	typedef std::pair<std::string,std::string> string_pair;
+	typedef std::pair<BitmapRef, uint32_t> bitmap_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
-	typedef std::map<string_pair, std::weak_ptr<Bitmap> > cache_type;
+	typedef std::map<string_pair, bitmap_pair> cache_type;
 	cache_type cache;
 
 	typedef std::map<tile_pair, std::weak_ptr<Bitmap> > cache_tiles_type;
 	cache_tiles_type cache_tiles;
 
-	static std::string system_name;
+	std::string system_name;
+
+	int cache_size = 0;
+	const int cache_limit = 1024*1024*10;
+
+	void FreeBitmapMemory() {
+		int32_t cur_ticks = DisplayUi->GetTicks();
+
+		for (auto& i : cache) {
+			if (i.second.first.use_count() != 1) { continue; }
+
+			if (cur_ticks - i.second.second < 5000) {
+				// Last access < 5s
+				continue;
+			}
+
+			//Output::Debug("Freeing memory of %s/%s %d %d",
+			//			  i.first.first.c_str(), i.first.second.c_str(), i.second.second, cur_ticks);
+
+			cache_size -= (i.second.first->pitch() * i.second.first->height());
+
+			i.second.first.reset();
+		}
+	}
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
 						 bool transparent, uint32_t const flags) {
 		string_pair const key(folder_name, filename);
 
-		cache_type::const_iterator const it = cache.find(key);
+		cache_type::iterator const it = cache.find(key);
 
-		if (it == cache.end() || it->second.expired()) {
+		if (it == cache.end() || !it->second.first) {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
@@ -64,8 +88,20 @@ namespace {
 				}
 			}
 
-			return (cache[key] = bmp).lock();
-		} else { return it->second.lock(); }
+			if (bmp) {
+				cache_size += (bmp->pitch() * bmp->height());
+				//Output::Debug("cache size %f", cache_size / 1024.0f / 1024.0f);
+			}
+
+			if (cache_size > cache_limit) {
+				FreeBitmapMemory();
+			}
+
+			return (cache[key] = std::make_pair(bmp, DisplayUi->GetTicks())).first;
+		} else {
+			it->second.second = DisplayUi->GetTicks();
+			return it->second.first;
+		}
 	}
 
 	struct Material {
@@ -171,7 +207,7 @@ namespace {
 
 		BitmapRef bitmap = s.dummy_renderer();
 
-		return (cache[key] = bitmap).lock();
+		return (cache[key] = std::make_pair(bitmap, DisplayUi->GetTicks())).first;
 	}
 
 	template<Material::Type T>
@@ -198,6 +234,8 @@ namespace {
 										 0));
 
 		if (!ret) {
+			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
+
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
@@ -246,9 +284,9 @@ BitmapRef Cache::Exfont() {
 
 	cache_type::const_iterator const it = cache.find(hash);
 
-	if (it == cache.end() || it->second.expired()) {
-		return(cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
-	} else { return it->second.lock(); }
+	if (it == cache.end() || !it->second.first) {
+		return(cache[hash] = std::make_pair(Bitmap::Create(exfont_h, sizeof(exfont_h), true), DisplayUi->GetTicks())).first;
+	} else { return it->second.first; }
 }
 
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
@@ -285,15 +323,12 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 }
 
 void Cache::Clear() {
-	for(cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
-		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached bitmap %s/%s",
-					  i->first.first.c_str(), i->first.second.c_str());
-	}
+	cache_size = 0;
+
 	cache.clear();
 
-	for(cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
-		if(i->second.expired()) { continue; }
+	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
+		if (i->second.expired()) { continue; }
 		Output::Debug("possible leak in cached tilemap %s/%d",
 					  i->first.first.c_str(), i->first.second);
 	}
