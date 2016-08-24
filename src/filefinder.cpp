@@ -672,23 +672,25 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 		}
 	}
 	return false;
+#elif defined(GEKKO)
+	struct stat sb;
+	if (::stat(dir.c_str(), &sb) == 0)
+		return S_ISDIR(sb.st_mode);
+	return false;
 #else
 	if (!Exists(dir)) {
 		return false;
 	}
-#endif
-#ifdef _WIN32
+
+#  ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
 	      == FILE_ATTRIBUTE_DIRECTORY;
-#else
+#  else
 	struct stat sb;
-#   if (defined(GEKKO) || defined(_3DS))
-	::stat(dir.c_str(), &sb);
-#   else
 	::lstat(dir.c_str(), &sb);
-#   endif
 	return S_ISDIR(sb.st_mode);
+#  endif
 #endif
 }
 

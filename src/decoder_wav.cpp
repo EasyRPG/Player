@@ -132,13 +132,14 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 		return -1;
 
 	int real_length;
-	cur_pos = cur_pos + length;
 
-	// Handle case that another chunk is behind "data"
-	if (cur_pos >= audiobuf_offset + chunk_size) {
-		real_length = cur_pos - chunk_size - length - audiobuf_offset;
+	// Handle case that another chunk is behind "data" or file ended
+	if (cur_pos + length >= audiobuf_offset + chunk_size) {
+		real_length = audiobuf_offset + chunk_size - cur_pos;
+		cur_pos = audiobuf_offset + chunk_size;
 	} else {
 		real_length = length;
+		cur_pos += length;
 	}
 
 	if (real_length == 0) {
@@ -147,6 +148,21 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 	}
 
 	int decoded = fread(buffer, 1, real_length, file_);
+
+	if (Utils::IsBigEndian()) {
+		if (output_format == AudioDecoder::Format::S16) {
+			uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
+			for (int i = 0; i < decoded / 2; ++i) {
+				Utils::SwapByteOrder(buffer_16[i]);
+			}
+		} else if (output_format == AudioDecoder::Format::S32) {
+			uint32_t* buffer_32 = reinterpret_cast<uint32_t*>(buffer);
+			for (int i = 0; i < decoded / 4; ++i) {
+				Utils::SwapByteOrder(buffer_32[i]);
+			}
+		}
+	}
+
 	if (decoded < length)
 		finished = true;
 	

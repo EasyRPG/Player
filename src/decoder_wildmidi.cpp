@@ -21,9 +21,12 @@
 
 // Headers
 #include <cassert>
+#include <stdlib.h>
 #include <wildmidi_lib.h>
 #include "audio_decoder.h"
 #include "output.h"
+#include "filefinder.h"
+#include "utils.h"
 #include "decoder_wildmidi.h"
 
 #define WILDMIDI_FREQ 44100
@@ -40,13 +43,59 @@ static void WildMidiDecoder_deinit(void) {
 WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	music_type = "midi";
 	filename = file_name;
+	std::string config_file = "";
+	bool found = false;
 
 	// only initialize once
 	if (init)
 		return;
 
-	// FIXME: write some logic to find the configuration file in different paths
-	init = (WildMidi_Init("wildmidi.cfg", WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
+	/* find the configuration file in different paths on different platforms
+	 * FIXME: move this logic into some configuration class
+	 */
+#ifdef GEKKO
+	// preferred under /data
+	config_file = "usb:/data/wildmidi/wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
+	if (!found) {
+		config_file = "sd:/data/wildmidi/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// app directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// same, but legacy from SDL_mixer's timidity
+	if (!found) {
+		config_file = "usb:/data/timidity/timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+	if (!found) {
+		config_file = "sd:/data/timidity/timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+	if (!found) {
+		config_file = "timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+#else
+	// TODO
+	config_file = "wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
+#endif
+
+	// bail, if nothing found
+	if (!found) {
+		error_message = "WildMidi: Could not find configuration file.";
+		return;
+	}
+
+	Output::Debug("WildMidi: Using %s as configuration file...", config_file.c_str());
+
+	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
 	if (!init) {
 		error_message = "Could not initialize libWildMidi";
 		return;
@@ -130,7 +179,20 @@ int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!handle)
 		return -1;
 
-	return WildMidi_GetOutput(handle, reinterpret_cast<char*>(buffer), length);
+	int res = WildMidi_GetOutput(handle, reinterpret_cast<char*>(buffer), length);
+
+	/* Old wildmidi (< 0.4.0) did output only in little endian, this inverts the buffer.
+	 * The used version macro exists since 0.4.0
+	 */
+#ifndef LIBWILDMIDI_VERSION
+	if (Utils::IsBigEndian() && res > 0) {
+		uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
+		for (int i = 0; i < res / 2; ++i) {
+			Utils::SwapByteOrder(buffer_16[i]);
+		}
+	}
+#endif
+	return res;
 }
 
 #endif

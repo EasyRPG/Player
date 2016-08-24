@@ -36,26 +36,25 @@ INCLUDES	:=	src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		= 	-g0 -O2 -Wall -Wextra \
+CFLAGS		= 	-g -O2 -Wall -Wextra \
 				-fomit-frame-pointer -ffast-math \
 				-flto -fdata-sections -ffunction-sections \
 				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
-				-DHAVE_LIBSNDFILE -DHAVE_LIBSPEEXDSP -DHAVE_TREMOR \
-				-DWANT_FASTWAV \
+				-DHAVE_LIBSNDFILE -DHAVE_TREMOR -DHAVE_WILDMIDI \
+				-DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
 				$(MACHDEP) $(INCLUDE)
 				
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
-LDFLAGS	= 		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map \
-				-Wl,--gc-sections
+LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	-llcf -liconv -lpixman-1 -lpng -lz \
+LIBS	:=	-llcf -liconv -lexpat -lpixman-1 -lpng -lz \
 			-lSDL_mixer -lSDL -lvorbisidec -lmpg123 \
-			-lspeexdsp -lsndfile \
+			-lsndfile -lWildMidi -lspeexdsp \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 #-licuuc -licui18n -licudata
 
@@ -63,7 +62,7 @@ LIBS	:=	-llcf -liconv -lpixman-1 -lpng -lz \
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR) $(PORTLIBS)
+LIBDIRS	:= $(TOOLCHAIN_DIR) $(LIBLCF_DIR)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -108,9 +107,9 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
-					$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/SDL) \
-					$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/pixman-1) \
-					$(foreach dir,$(LIBLCF_DIR),-I$(dir)/include/liblcf)
+					-I$(TOOLCHAIN_DIR)/include/SDL \
+					-I$(TOOLCHAIN_DIR)/include/pixman-1 \
+					-I$(LIBLCF_DIR)/include/liblcf
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
