@@ -62,7 +62,7 @@ public:
 	 *
 	 * @return true if initializing was succesful, false otherwise
 	 */
-	bool WasInited() const;
+	bool WasInited() const override;
 
 	/**
 	 * Wraps the opening function of the contained decoder

@@ -204,9 +204,9 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		!strncmp(magic, "fLaC", 4)) { // FLAC
 #ifdef HAVE_LIBSNDFILE
 #  ifdef USE_AUDIO_RESAMPLER
-			return std::unique_ptr<AudioDecoder>(new AudioResampler(new LibsndfileDecoder()));
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new LibsndfileDecoder()));
 #  else
-			return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
+		return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
 #  endif
 #endif
 		return nullptr;
