@@ -35,11 +35,11 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 static void on_png_warning(png_structp, png_const_charp warn_msg) {
-	Output::Debug("%s", warn_msg);
+	Output::Debug("libpng: %s", warn_msg);
 }
 
 static void on_png_error(png_structp, png_const_charp error_msg) {
-	Output::Warning("%s", error_msg);
+	Output::Warning("libpng: %s", error_msg);
 }
 
 static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);

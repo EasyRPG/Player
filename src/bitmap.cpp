@@ -581,8 +581,8 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	}
 
 	Init(w, h, (void *) NULL);
-	if (pixels)
-		ConvertImage(w, h, pixels, transparent);
+
+	ConvertImage(w, h, pixels, transparent);
 
 	CheckPixels(flags);
 }
@@ -620,8 +620,8 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	}
 
 	Init(w, h, (void *) NULL);
-	if (pixels)
-		ConvertImage(w, h, pixels, transparent);
+
+	ConvertImage(w, h, pixels, transparent);
 
 	CheckPixels(flags);
 }
@@ -947,7 +947,7 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 void Bitmap::Clear() {
 	memset(pixels(), '\0', height() * pitch());
 
-        RefreshCallback();
+	RefreshCallback();
 }
 
 void Bitmap::ClearRect(Rect const& dst_rect) {

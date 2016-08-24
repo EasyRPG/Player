@@ -53,11 +53,18 @@ namespace {
 		if (it == cache.end() || it->second.expired()) {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
+			BitmapRef bmp = BitmapRef();
+
 			if (path.empty()) {
-				return BitmapRef();
+				Output::Warning("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
+			} else {
+				bmp = Bitmap::Create(path, transparent, flags);
+				if (!bmp) {
+					Output::Warning("Invalid image: %s/%s", folder_name.c_str(), filename.c_str());
+				}
 			}
 
-			return (cache[key] = Bitmap::Create(path, transparent, flags)).lock();
+			return (cache[key] = bmp).lock();
 		} else { return it->second.lock(); }
 	}
 
@@ -191,8 +198,6 @@ namespace {
 										 0));
 
 		if (!ret) {
-			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
-
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
