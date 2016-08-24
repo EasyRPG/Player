@@ -132,13 +132,14 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 		return -1;
 
 	int real_length;
-	cur_pos = cur_pos + length;
 
-	// Handle case that another chunk is behind "data"
-	if (cur_pos >= audiobuf_offset + chunk_size) {
-		real_length = cur_pos - chunk_size - length - audiobuf_offset;
+	// Handle case that another chunk is behind "data" or file ended
+	if (cur_pos + length >= audiobuf_offset + chunk_size) {
+		real_length = audiobuf_offset + chunk_size - cur_pos;
+		cur_pos = audiobuf_offset + chunk_size;
 	} else {
 		real_length = length;
+		cur_pos += length;
 	}
 
 	if (real_length == 0) {
