@@ -20,6 +20,7 @@
 
 #include "audio.h"
 #include "audio_decoder.h"
+#include "audio_secache.h"
 
 #include <map>
 
@@ -66,7 +67,7 @@ private:
 	bool bgs_stop = true;
 	bool played_once = false;
 
-	typedef std::map<int, std::shared_ptr<Mix_Chunk> > sounds_type;
+	typedef std::map<int, std::pair<std::shared_ptr<Mix_Chunk>, AudioSeRef>> sounds_type;
 	sounds_type sounds;
 
 	std::unique_ptr<AudioDecoder> audio_decoder;
