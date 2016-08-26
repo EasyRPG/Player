@@ -89,8 +89,6 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 			se.reset();
 			return se;
 		}
-	} else {
-		Output::Debug("Cache hit %s", filename.c_str());
 	}
 
 	return se;
@@ -108,6 +106,10 @@ void AudioSeCache::GetFormat(int& frequency, AudioDecoder::Format& format, int& 
 	}
 
 	audio_decoder->GetFormat(frequency, format, channels);
+
+	if (mono_to_stereo_resample) {
+		channels = 2;
+	}
 }
 
 bool AudioSeCache::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
@@ -177,7 +179,7 @@ public:
 		// no-op
 	}
 
-	bool Open(FILE* file) {
+	bool Open(FILE*) {
 		// No file operations needed
 		return true;
 	}
@@ -207,7 +209,7 @@ private:
 	}
 
 	const AudioSeRef se;
-	int offset = 0;
+	size_t offset = 0;
 };
 
 AudioSeRef AudioSeCache::Decode() {
@@ -245,10 +247,7 @@ AudioSeRef AudioSeCache::Decode() {
 		se.reset(new AudioSeData());
 	}
 
-	audio_decoder->GetFormat(se->frequency, se->format, se->channels);
-	if (mono_to_stereo_resample) {
-		se->channels = 2;
-	}
+	GetFormat(se->frequency, se->format, se->channels);
 
 	if (IsCached()) {
 		audio_decoder->SetPitch(GetPitch());
@@ -301,6 +300,7 @@ AudioSeRef AudioSeCache::Decode() {
 		if (GetPitch() != 100) {
 			// Also handle a requested resampling
 			// Takes the "IsCached" codepath now
+			mono_to_stereo_resample = false;
 			return Decode();
 		}
 	}
