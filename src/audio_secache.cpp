@@ -111,12 +111,12 @@ void AudioSeCache::GetFormat(int& frequency, AudioDecoder::Format& format, int& 
 }
 
 bool AudioSeCache::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
+	int cfrequency;
+	AudioDecoder::Format cformat;
+	int cchannels;
+
 	if (!audio_decoder) {
 		// This file is already cached, don't allow uncached format changes
-		int cfrequency;
-		AudioDecoder::Format cformat;
-		int cchannels;
-
 		if (GetCachedFormat(cfrequency, cformat, cchannels)) {
 			return frequency == cfrequency &&
 					format == cformat &&
@@ -124,7 +124,18 @@ bool AudioSeCache::SetFormat(int frequency, AudioDecoder::Format format, int cha
 		}
 	}
 
-	return audio_decoder->SetFormat(frequency, format, channels);
+	bool success = audio_decoder->SetFormat(frequency, format, channels);
+
+	if (!success) {
+		audio_decoder->GetFormat(cfrequency, cformat, cchannels);
+		// Handle Mono->Stereo conversion, is quite common for SE
+		if (cfrequency == frequency && cformat == format && cchannels == 1 && channels == 2) {
+			mono_to_stereo_resample = true;
+			return true;
+		}
+	}
+
+	return success;
 }
 
 int AudioSeCache::GetPitch() const {
@@ -235,6 +246,9 @@ AudioSeRef AudioSeCache::Decode() {
 	}
 
 	audio_decoder->GetFormat(se->frequency, se->format, se->channels);
+	if (mono_to_stereo_resample) {
+		se->channels = 2;
+	}
 
 	if (IsCached()) {
 		audio_decoder->SetPitch(GetPitch());
@@ -253,6 +267,20 @@ AudioSeRef AudioSeCache::Decode() {
 		}
 
 		se->buffer.resize(se->buffer.size() + buffer_size);
+	}
+
+	if (mono_to_stereo_resample) {
+		se->buffer.resize(se->buffer.size() * 2);
+
+		int sample_size = AudioDecoder::GetSamplesizeForFormat(se->format);
+
+		// Duplicate data from the back, allows writing to the buffer directly
+		for (size_t i = se->buffer.size() / 2 - sample_size; i > 0; i -= sample_size) {
+			// left channel
+			memcpy(&se->buffer[i * 2 - sample_size * 2], &se->buffer[i], sample_size);
+			// right channel
+			memcpy(&se->buffer[i * 2 - sample_size], &se->buffer[i], sample_size);
+		}
 	}
 
 	if (!IsCached()) {

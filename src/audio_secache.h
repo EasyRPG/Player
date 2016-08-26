@@ -137,6 +137,8 @@ private:
 	std::unique_ptr<AudioDecoder> audio_decoder;
 
 	std::string filename;
+
+	bool mono_to_stereo_resample = false;
 };
 
 #endif
