@@ -110,11 +110,11 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         updateScreenPosition();
 
         // Project preferences
+        buttonMappingManager = ButtonMappingManager.getInstance(this);
         GameInformation project = new GameInformation(getProjectPath());
         project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
-        ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(this);
         inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
 
         // Add buttons

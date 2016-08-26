@@ -52,16 +52,18 @@ public class GameInformation {
 		return savePath;
 	}
 
+	/** Set the inputLayout preferences depending on the preferences file */
 	public boolean getProjectInputLayout(ButtonMappingManager bmm) {
+        // Try to obtain the preferences file.
 		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
 		if (jso == null) {
 			return false;
 		}
 		
 		try {
-			id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
+			this.id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
 		} catch (JSONException e) {
-			id_input_layout = bmm.getDefaultLayoutId();
+			this.id_input_layout = bmm.getDefaultLayoutId();
 			return false;
 		}
 		return true;
