@@ -27,8 +27,6 @@
 
 Screen::Screen() {
 	Graphics::RegisterDrawable(this);
-
-	default_tone = Tone(128, 128, 128, 128);
 }
 
 Screen::~Screen() {
@@ -48,12 +46,6 @@ void Screen::Update() {
 
 void Screen::Draw() {
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
-
-	Tone tone = Main_Data::game_screen->GetTone();
-
-	if (tone != default_tone) {
-		disp->ToneBlit(0, 0, *disp, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone, Opacity::opaque);
-	}
 
 	int flash_time_left;
 	int flash_current_level;

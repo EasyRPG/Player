@@ -47,7 +47,6 @@ private:
 	static const int z = 1050;
 	static const DrawableType type = TypeScreen;
 
-	Tone default_tone;
 	BitmapRef flash;
 };
 

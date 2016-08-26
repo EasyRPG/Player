@@ -54,11 +54,16 @@ Spriteset_Map::Spriteset_Map() {
 
 // Update
 void Spriteset_Map::Update() {
+	Tone tone = Main_Data::game_screen->GetTone();
+
 	tilemap.SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap.SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
+	tilemap.SetTone(tone);
 	tilemap.Update();
+
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
+		character_sprites[i]->SetTone(tone);
 	}
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
@@ -67,6 +72,7 @@ void Spriteset_Map::Update() {
 		panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
 		request->Start();
 	}
+
 	panorama.SetOx(Game_Map::GetParallaxX());
 	panorama.SetOy(Game_Map::GetParallaxY());
 

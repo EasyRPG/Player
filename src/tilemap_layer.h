@@ -21,8 +21,10 @@
 // Headers
 #include <vector>
 #include <map>
+#include <set>
 #include "system.h"
 #include "drawable.h"
+#include "tone.h"
 
 class TilemapLayer;
 
@@ -88,8 +90,11 @@ public:
 	 */
 	void SetFastBlit(bool fast);
 
+	void SetTone(Tone tone);
+
 private:
 	BitmapRef chipset;
+	BitmapRef chipset_effect;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	std::vector<uint8_t> substitutions;
@@ -125,10 +130,12 @@ private:
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
 	BitmapRef autotiles_ab_screen;
+	BitmapRef autotiles_ab_screen_effect;
 	BitmapRef autotiles_d_screen;
+	BitmapRef autotiles_d_screen_effect;
 
-	int autotiles_ab_next;
-	int autotiles_d_next;
+	int autotiles_ab_next = -1;
+	int autotiles_d_next = -1;
 
 	TileXY autotiles_ab[3][3][16][47];
 	TileXY autotiles_d[12][50];
@@ -142,6 +149,9 @@ private:
 	};
 	std::vector<std::vector<TileData> > data_cache;
 	std::vector<std::shared_ptr<TilemapSubLayer> > sublayers;
+	std::set<int> tone_changed_tiles;
+
+	Tone tone;
 };
 
 #endif
