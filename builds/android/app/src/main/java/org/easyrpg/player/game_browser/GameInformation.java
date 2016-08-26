@@ -1,7 +1,6 @@
 package org.easyrpg.player.game_browser;
 
-import java.io.File;
-import java.io.FileWriter;
+import android.util.Log;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
@@ -9,7 +8,8 @@ import org.easyrpg.player.settings.SettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import java.io.File;
+import java.io.FileWriter;
 
 public class GameInformation {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";
@@ -52,7 +52,7 @@ public class GameInformation {
 		return savePath;
 	}
 
-	public boolean read_project_preferences_input_layout(ButtonMappingManager bmm) {
+	public boolean getProjectInputLayout(ButtonMappingManager bmm) {
 		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
 		if (jso == null) {
 			return false;

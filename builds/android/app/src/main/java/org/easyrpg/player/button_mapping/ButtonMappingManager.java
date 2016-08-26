@@ -1,5 +1,13 @@
 package org.easyrpg.player.button_mapping;
 
+import android.content.Context;
+import android.util.Log;
+
+import org.easyrpg.player.Helper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,14 +15,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.easyrpg.player.Helper;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
-import android.util.Log;
 
 public class ButtonMappingManager {
     public static final int NUM_VERSION = 1;
@@ -24,7 +24,7 @@ public class ButtonMappingManager {
     public static final String FILE_NAME = "button_mapping.txt";
 
     private List<InputLayout> layoutList = new ArrayList<>();
-    private int id_default_layout;
+    private int idDefaultLayout;
     private Context context;
 
     // Singleton pattern
@@ -70,8 +70,8 @@ public class ButtonMappingManager {
         }
 
         // If p was the default layout : the first layout become the new default layout
-        if (p.id == id_default_layout) {
-            id_default_layout = layoutList.get(0).getId();
+        if (p.id == idDefaultLayout) {
+            idDefaultLayout = layoutList.get(0).getId();
         }
 
         // Save the result
@@ -86,16 +86,16 @@ public class ButtonMappingManager {
         }
 
         // The layout doesn't exist : return the default one
-        return getLayoutById(id_default_layout);
+        return getLayoutById(idDefaultLayout);
     }
 
     public void setDefaultLayout(int id) {
         // TODO : Verify if the id is in the input layout's list
-        id_default_layout = id;
+        idDefaultLayout = id;
     }
 
     public int getDefaultLayoutId() {
-        return id_default_layout;
+        return idDefaultLayout;
     }
 
     public List<InputLayout> getLayoutList() {
@@ -127,7 +127,7 @@ public class ButtonMappingManager {
             }
 
             o.put(TAG_VERSION, NUM_VERSION);
-            o.put(TAG_DEFAULT_LAYOUT, id_default_layout);
+            o.put(TAG_DEFAULT_LAYOUT, idDefaultLayout);
             o.put(TAG_PRESETS, presets);
         } catch (JSONException e) {
             Log.e("Button Maping Model", "Impossible to serialize the button mapping model");
@@ -146,6 +146,7 @@ public class ButtonMappingManager {
     private static ButtonMappingManager getDefaultButtonMapping(Context context) {
         ButtonMappingManager m = new ButtonMappingManager();
         m.add(InputLayout.getDefaultInputLayout(context));
+        m.idDefaultLayout = 0;
         return m;
     }
 

@@ -269,7 +269,7 @@ public class GameBrowserActivity extends AppCompatActivity
             String[] layout_name_array = buttonMappingManager.getLayoutsNames();
 
             //Detect default layout
-            pi.read_project_preferences_input_layout(buttonMappingManager);
+            pi.getProjectInputLayout(buttonMappingManager);
             int id = -1;
             for (int i = 0; i < buttonMappingManager.getLayoutList().size(); i++) {
                 if (buttonMappingManager.getLayoutList().get(i).getId() == pi.getId_input_layout()) {

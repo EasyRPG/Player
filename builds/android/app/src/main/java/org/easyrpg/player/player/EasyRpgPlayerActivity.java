@@ -111,7 +111,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Project preferences
         GameInformation project = new GameInformation(getProjectPath());
-        project.read_project_preferences_input_layout(buttonMappingManager);
+        project.getProjectInputLayout(buttonMappingManager);
 
         // Choose the proper InputLayout
         ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(this);
