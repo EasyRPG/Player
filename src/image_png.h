@@ -23,13 +23,11 @@
 
 #include <cstdio>
 #include <ostream>
-#include "system.h"
 
 namespace ImagePNG {
-	void ReadPNG(FILE* stream, const void* buffer, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadPNG(FILE* stream, const void* buffer, bool transparent, int& width, int& height, void*& pixels);
 	bool WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
 }
 
 #endif // SUPPORT_PNG
-
 #endif

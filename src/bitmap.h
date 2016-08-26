@@ -732,7 +732,7 @@ public:
 
 protected:
 	/** Bitmap data. */
-	pixman_image_t *bitmap;
+	pixman_image_t *bitmap = nullptr;
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);

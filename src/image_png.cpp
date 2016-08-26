@@ -35,11 +35,11 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 static void on_png_warning(png_structp, png_const_charp warn_msg) {
-	Output::Debug("%s", warn_msg);
+	Output::Debug("libpng: %s", warn_msg);
 }
 
 static void on_png_error(png_structp, png_const_charp error_msg) {
-	Output::Error("%s", error_msg);
+	Output::Warning("libpng: %s", error_msg);
 }
 
 static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
@@ -48,20 +48,25 @@ static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, 
 static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 
-void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
-					int& width, int& height, void*& pixels) {
-	pixels = NULL;
+bool ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
+					   int& width, int& height, void*& pixels) {
+	pixels = nullptr;
 
 	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, on_png_error, on_png_warning);
 	if (png_ptr == NULL) {
-		Output::Error("Couldn't allocate PNG structure");
-		return;
+		Output::Warning("Couldn't allocate PNG structure");
+		return false;
 	}
 
 	png_info *info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL) {
-		Output::Error("Couldn't allocate PNG info structure");
-		return;
+		Output::Warning("Couldn't allocate PNG info structure");
+		return false;
+	}
+
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+		return false;
 	}
 
 	if (stream != NULL)
@@ -76,10 +81,11 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	png_get_IHDR(png_ptr, info_ptr, &w, &h,
 				 &bit_depth, &color_type, NULL, NULL, NULL);
 
-	width = w;
-	height = h;
-
 	pixels = malloc(w * h * 4);
+	if (!pixels) {
+		Output::Warning("Error allocating PNG pixel buffer.");
+		return false;
+	}
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
@@ -101,6 +107,10 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	png_read_end(png_ptr, NULL);
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+
+	width = w;
+	height = h;
+	return true;
 }
 
 static void ReadPalettedData(
@@ -117,7 +127,8 @@ static void ReadPalettedData(
 		png_read_update_info(png_ptr, info_ptr);
 
 		if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
-			Output::Error("Palette PNG without PLTE block");
+			Output::Warning("Palette PNG without PLTE block");
+			return;
 		}
 
 		png_colorp palette;

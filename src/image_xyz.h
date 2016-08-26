@@ -20,10 +20,12 @@
 
 #include <cstdio>
 #include "system.h"
+#ifdef SUPPORT_XYZ
 
 namespace ImageXYZ {
-	void ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	void ReadXYZ(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadXYZ(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
+#endif // SUPPORT_XYZ
 #endif
