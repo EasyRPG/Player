@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Preferences Keys-->
-    <string name="pref_enable_vibration" translate="false">PREF_ENABLE_VIBRATION</string>
-    <string name="pref_layout_transparency" translate="false">PREF_LAYOUT_TRANSPARENCY</string>
-    <string name="pref_vibrate_when_sliding_direction" translate="false">PREF_VIBRATE_WHEN_SLIDING</string>
-    <string name="pref_ignore_size_settings" translate="false">PREF_IGNORE_SIZE_SETTINGS</string>
-    <string name="pref_size_every_buttons" translate="false">PREF_SIZE_EVERY_BUTTONS</string>
-    <string name="pref_directory" translate="false">PREF_DIRECTORY</string>
-    <string name="pref_games_directories" translate="false">PREF_GAME_DIRECTORIES</string>
-
     <!--GameBrowser Activity-->
     <string name="app_name" translate="false">EasyRPG Player</string>
     <string name="autodetect">Autodetect Region (Recommended)</string>
@@ -33,7 +24,7 @@
     <string name="no">No</string>
     <string name="creating_dir_failed">Creating $PATH directory failed</string>
     <string name="path_not_readable">$PATH not readable</string>
-    <string name="no_games_found_and_explanation">No games found.\nYou can add additional game directories in the settings.</string>
+    <string name="no_games_found_and_explanation">No RPG Maker 2000/2003 games found.\nYou can add additional game directories in the settings.</string>
     <string name="no_external_storage">No external storage (e.g. SD card) found</string>
     <string name="not_valid_game">$PATH is not a valid game</string>
     <string name="select_game_region">Select Game Region</string>
@@ -75,7 +66,11 @@ Please tell us in detail what went wrong.\n
 [You can remove this instruction text]
 	</string>
 
-    <!--Settings Activity-->
+    <!--Settings Activities-->
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="input">Input</string>
+    <string name="games_folders">Game folders</string>
     <string name="settings">Settings</string>
     <string name="add_game_folder">Add a game folder</string>
     <string name="enable_vibration">Enable vibrations</string>
@@ -84,8 +79,9 @@ Please tell us in detail what went wrong.\n
     <string name="input_layout_transparency">Input Layout transparency:</string>
     <string name="ignore_size_settings">Ignore buttons\' size settings and use this one for every buttons:</string>
     <string name="no_read_access_on_dir">No read access on %1$s</string>
-    <string name="easyrpg_folder">EasyRPG folder</string>
+    <string name="game_folders">Game folders</string>
     <string name="quick_access">Quick access</string>
+    <string name="force_landscape_mode">Force landscape orientation</string>
 
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage Input Layouts:</string>
@@ -108,4 +104,5 @@ Please tell us in detail what went wrong.\n
     <!--GameBrowserAPI15-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu">Open Android Menu</string>
 </resources>

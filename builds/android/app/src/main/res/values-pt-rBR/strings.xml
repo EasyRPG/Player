@@ -64,7 +64,7 @@ Características especiais:\n
   <string name="input_layout_transparency">Transparência do layout de entrada</string>
   <string name="ignore_size_settings">Ignorar configurações do tamanho dos botões e usar isso para todos botões</string>
   <string name="no_read_access_on_dir">Sem acesso de leitura em %1$s</string>
-  <string name="easyrpg_folder">Pasta EasyRpg</string>
+  <string name="game_folders">Pasta EasyRpg</string>
   <string name="quick_access">Acesso rápido</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Gerenciar layouts de entrada</string>

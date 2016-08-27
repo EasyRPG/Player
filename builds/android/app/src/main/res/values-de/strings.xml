@@ -69,7 +69,7 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
   <string name="input_layout_transparency">Layout-Transparenz:</string>
   <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
   <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
-  <string name="easyrpg_folder">EasyRPG-Ordner</string>
+  <string name="game_folders">EasyRPG-Ordner</string>
   <string name="quick_access">Schnellzugriff</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>

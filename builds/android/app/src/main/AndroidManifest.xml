@@ -1,70 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.easyrpg.player"
-    android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<manifest package="org.easyrpg.player"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:installLocation="auto"
+          android:versionCode="1"
+          android:versionName="1.0">
 
-    <!-- Android 2.3.3 -->
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="23"/>
 
     <!-- OpenGL ES 2.0 -->
-    <uses-feature android:glEsVersion="0x00020000" />
+    <uses-feature android:glEsVersion="0x00020000"/>
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
         <!-- Startup Activity -->
         <activity
-            android:name="org.easyrpg.player.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <!-- GameBrowsers' Activity -->
         <activity
-            android:name=".game_browser.GameBrowserActivityAPI15"
+            android:name=".game_browser.GameBrowserActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".game_browser.GameBrowserActivityAPI12"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".game_browser.GameBrowserActivityAPI10"
-            android:label="@string/app_name" />
 
         <!-- Player's Activity -->
         <activity
-            android:name="org.easyrpg.player.player.EasyRpgPlayerActivity"
-            android:label="@string/app_name"
+            android:name=".player.EasyRpgPlayerActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:label="@string/app_name"/>
 
         <!-- Settings' Activity -->
         <activity
-            android:name="org.easyrpg.player.SettingsActivity"
-            android:label="@string/app_name" />
+            android:name=".settings.SettingsMainActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".game_browser.GameBrowserActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".game_browser.GameBrowserActivity"/>
+        </activity>
         <activity
-            android:name="org.easyrpg.player.button_mapping.ButtonMappingActivity"
+            android:name=".settings.SettingsVideoActivity"
+            android:label="@string/video"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
+        <activity
+            android:name=".settings.SettingsAudioActivity"
+            android:label="@string/audio"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
+        <activity
+            android:name=".settings.SettingsGamesFoldersActivity"
+            android:label="@string/games_folders"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
+        <activity
+            android:name=".settings.SettingsInputActivity"
+            android:label="@string/input"
+            android:parentActivityName=".settings.SettingsMainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsMainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".button_mapping.ButtonMappingActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:screenOrientation="landscape"/>
     </application>
 </manifest>

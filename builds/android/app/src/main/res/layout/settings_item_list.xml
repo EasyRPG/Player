@@ -5,20 +5,24 @@
     android:id="@+id/settings_input_layout_item">
     <TextView
         android:id="@+id/controls_settings_preset_name"
+        android:textSize="20sp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:textSize="20sp" 
-        android:layout_marginLeft="30dp"/>
+        android:layout_toLeftOf="@+id/controls_settings_preset_option_button"/>
 
     <ImageButton
         android:id="@+id/controls_settings_preset_option_button"
         style="?android:attr/borderlessButtonStyle"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_action_action_settings" />
+        android:padding="0dp"
+
+        android:src="@drawable/ic_action_action_settings_black" />
 
 </RelativeLayout>

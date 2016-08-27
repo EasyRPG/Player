@@ -6,19 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,14 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.ButtonMappingManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBrowserActivityAPI15 extends AppCompatActivity
+public class GameBrowserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
 
@@ -44,19 +44,12 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.browser_api15_activity);
+        setContentView(R.layout.browser_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GameBrowserHelper.openSettingsActivity(GameBrowserActivityAPI15.this);
-            }
-        });
-
+        // Configure the lateral menu
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,7 +88,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.game_browser_api15, menu);
+        getMenuInflater().inflate(R.menu.game_browser, menu);
         return true;
     }
 
@@ -106,10 +99,13 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.refresh) {
-            displayGameList(this);
-            return true;
+        switch (id) {
+            case R.id.refresh:
+                displayGameList(this);
+                return true;
+            case R.id.menu:
+                GameBrowserHelper.openSettingsActivity(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -162,7 +158,9 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         int orientation = configuration.orientation;
 
         // Determine the layout template (List or Grid, number of element per line for the grid)
-        this.nbOfGamesPerLine = configuration.screenWidthDp / THUMBNAIL_HORIZONTAL_SIZE_DPI;
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        this.nbOfGamesPerLine = (int)(dpWidth / THUMBNAIL_HORIZONTAL_SIZE_DPI);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, nbOfGamesPerLine));
     }
@@ -193,9 +191,9 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
             // On inflate la vue et on la remplie
             View v;
             if (this.nbOfGamesPerLine <= 1) {
-                v = inflater.inflate(R.layout.browser_api15_game_card_vertical, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card_vertical, parent, false);
             } else {
-                v = inflater.inflate(R.layout.browser_api15_game_card, parent, false);
+                v = inflater.inflate(R.layout.browser_game_card, parent, false);
             }
             return new ViewHolder(v);
         }
@@ -220,7 +218,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
                     GameInformation pi = movieList.get(position);
 
                     if (!pi.read_project_preferences_encoding()) {
-                        File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+                        File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
 
                         // Retrieve the current region (to check the correct radio button)
                         if (iniFile != null) {
@@ -267,14 +265,14 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         }
 
         public void chooseLayout(final Context context, final GameInformation pi) {
-            final ButtonMappingModel bmm = ButtonMappingModel.getButtonMapping(context);
-            String[] layout_name_array = bmm.getLayoutsNames(context);
+            final ButtonMappingManager buttonMappingManager = ButtonMappingManager.getInstance(context);
+            String[] layout_name_array = buttonMappingManager.getLayoutsNames();
 
             //Detect default layout
-            pi.read_project_preferences_input_layout(bmm);
+            pi.getProjectInputLayout(buttonMappingManager);
             int id = -1;
-            for (int i = 0; i < bmm.getLayout_list().size(); i++) {
-                if (bmm.getLayout_list().get(i).getId() == pi.getId_input_layout()) {
+            for (int i = 0; i < buttonMappingManager.getLayoutList().size(); i++) {
+                if (buttonMappingManager.getLayoutList().get(i).getId() == pi.getId_input_layout()) {
                     id = i;
                     break;
                 }
@@ -295,7 +293,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             if (!selected.isEmpty()) {
-                                pi.setId_input_layout(bmm.getLayout_list().get(selected.get(0)).getId());
+                                pi.setId_input_layout(buttonMappingManager.getLayoutList().get(selected.get(0)).getId());
                                 pi.write_project_preferences();
                             }
                         }
@@ -324,7 +322,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
             String encoding = null;
 
             if (!pi.read_project_preferences_encoding()) {
-                File iniFile = GameBrowserHelper.getIniOfGame(pi.getPath(), false);
+                File iniFile = GameBrowserHelper.getIniOfGame(pi.getGameFolderPath(), false);
 
                 // Retrieve the current region (to check the correct radio button)
                 if (iniFile != null) {
@@ -439,7 +437,7 @@ public class GameBrowserActivityAPI15 extends AppCompatActivity
         @Override
         public ErrorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.browser_api15_error_text, parent, false);
+                    .inflate(R.layout.browser_error_text, parent, false);
             ErrorViewHolder viewHolder = new ErrorViewHolder(v);
             return viewHolder;
         }

@@ -1,15 +1,15 @@
 package org.easyrpg.player.game_browser;
 
-import java.io.File;
-import java.io.FileWriter;
+import android.util.Log;
 
 import org.easyrpg.player.Helper;
-import org.easyrpg.player.SettingsActivity;
-import org.easyrpg.player.button_mapping.ButtonMappingModel;
+import org.easyrpg.player.button_mapping.ButtonMappingManager;
+import org.easyrpg.player.settings.SettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import java.io.File;
+import java.io.FileWriter;
 
 public class GameInformation {
 	public static final String TAG_ID_INPUT_LAYOUT = "layout_id";
@@ -18,25 +18,25 @@ public class GameInformation {
 	private int id_input_layout = -1;
 	private String encoding = "";
 
-	private String title, path, save_path;
+	private String title, gameFolderPath, savePath;
 
-	public GameInformation(String path) {
-		this.path = path;
-		File f = new File(path);
+	public GameInformation(String gameFolderPath) {
+		this.gameFolderPath = gameFolderPath;
+		File f = new File(gameFolderPath);
 		
 		if (GameBrowserHelper.canWrite(f)) {
-			this.save_path = path;
+			this.savePath = gameFolderPath;
 		} else {
 			// Not writable, redirect to a different path
 			// Try preventing collisions by using the names of the two parent directories
 			String savename = f.getParentFile().getName() + "/" + f.getName();  
-			save_path = SettingsActivity.MAIN_DIRECTORY + "/Save/" + savename;
-			new File(save_path).mkdirs();
+			savePath = SettingsManager.getEasyRPGFolder() + "/Save/" + savename;
+			new File(savePath).mkdirs();
 		}
 	}
 	
-	public GameInformation(String title, String path) {
-		this(path);
+	public GameInformation(String title, String gameFolderPath) {
+		this(gameFolderPath);
 		this.title = title;
 	}
 
@@ -44,31 +44,33 @@ public class GameInformation {
 		return title;
 	}
 
-	public String getPath() {
-		return path;
+	public String getGameFolderPath() {
+		return gameFolderPath;
 	}
 	
 	public String getSavePath() {
-		return save_path;
+		return savePath;
 	}
 
-	public boolean read_project_preferences_input_layout(ButtonMappingModel bmm) {
-		JSONObject jso = Helper.readJSONFile(save_path + "/" + preferenceFileName);
+	/** Set the inputLayout preferences depending on the preferences file */
+	public boolean getProjectInputLayout(ButtonMappingManager bmm) {
+        // Try to obtain the preferences file.
+		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
 		if (jso == null) {
 			return false;
 		}
 		
 		try {
-			id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
+			this.id_input_layout = jso.getInt(TAG_ID_INPUT_LAYOUT);
 		} catch (JSONException e) {
-			id_input_layout = bmm.getId_default_layout();
+			this.id_input_layout = bmm.getDefaultLayoutId();
 			return false;
 		}
 		return true;
 	}
 	
 	public boolean read_project_preferences_encoding() {
-		JSONObject jso = Helper.readJSONFile(save_path + "/" + preferenceFileName);
+		JSONObject jso = Helper.readJSONFile(savePath + "/" + preferenceFileName);
 		if (jso == null) {
 			return false;
 		}
@@ -84,7 +86,7 @@ public class GameInformation {
 
 	public void write_project_preferences() {
 		try {
-			FileWriter file = new FileWriter(save_path + "/" + preferenceFileName);
+			FileWriter file = new FileWriter(savePath + "/" + preferenceFileName);
 			JSONObject o = new JSONObject();
 
 			if (id_input_layout != -1) {

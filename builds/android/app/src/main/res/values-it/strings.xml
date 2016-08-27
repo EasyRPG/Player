@@ -69,7 +69,7 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n
   <string name="input_layout_transparency">Opacità Tasti Virtuali:</string>
   <string name="ignore_size_settings">Ignora la dimensione dei tasti ed usa questo valore per qualsiasi tasto:</string>
   <string name="no_read_access_on_dir">%1$s non accessibile in lettura</string>
-  <string name="easyrpg_folder">Cartella di EasyRPG</string>
+  <string name="game_folders">Cartella di EasyRPG</string>
   <string name="quick_access">Accesso rapido</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Modifica Tasti Virtuali:</string>

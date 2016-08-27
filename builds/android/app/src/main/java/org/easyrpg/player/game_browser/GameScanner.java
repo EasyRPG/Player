@@ -7,7 +7,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import org.easyrpg.player.R;
-import org.easyrpg.player.SettingsActivity;
+import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,9 +47,6 @@ public class GameScanner {
         // Verify and Ask for permissions
         GameBrowserHelper.askForStoragePermission(activity);
 
-        // Load User's settings
-        SettingsActivity.updateUserPreferences(activity);
-
         //Scan the folder
         instance.scanGames();
 
@@ -68,7 +65,7 @@ public class GameScanner {
 
         // Scanning all the games folders
         boolean first_directory = true;
-        for(String path : SettingsActivity.GAMES_DIRECTORIES){
+        for(String path : SettingsManager.getGamesFolderList()){
             File dir = new File(path);
             // Verification
             // 1) The folder must exist
@@ -168,7 +165,7 @@ public class GameScanner {
      */
     public static Bitmap getGameTitleScreen(GameInformation gameInformation) {
         // Search the title folder : the dumb way
-        File dir = new File(gameInformation.getPath() + "/Title");
+        File dir = new File(gameInformation.getGameFolderPath() + "/Title");
         if(dir.isDirectory() && dir.canRead()) {
             File[] files = dir.listFiles();
             for (File f : files) {
