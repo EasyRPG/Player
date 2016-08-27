@@ -87,6 +87,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        hideStatusBar();
 
         // Screen orientation
         if (SettingsManager.isForcedLandscape()) {
@@ -150,18 +151,6 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         }
         openOrCloseMenu();
         return false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        hideStatusBar();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        hideStatusBar();
     }
 
     public void hideStatusBar() {
@@ -231,6 +220,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
             drawer.closeDrawer(GravityCompat.START);
         } else {
             drawer.openDrawer(GravityCompat.START);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         }
     }
 

@@ -3,13 +3,12 @@
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true">
 
     <!-- The main content view -->
     <RelativeLayout
@@ -25,9 +24,9 @@
 
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-
-        android:layout_gravity="start|center_vertical"
+        android:layout_gravity="start"
         android:fitsSystemWindows="true"
+
         app:headerLayout="@layout/browser_nav_header"
         app:menu="@menu/button_mapping"/>
 </android.support.v4.widget.DrawerLayout>
