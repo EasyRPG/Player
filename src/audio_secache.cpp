@@ -307,3 +307,8 @@ AudioSeRef AudioSeCache::Decode() {
 
 	return se;
 }
+
+void AudioSeCache::Clear() {
+	cache_size = 0;
+	cache.clear();
+}

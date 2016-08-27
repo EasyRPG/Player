@@ -131,6 +131,8 @@ public:
 	 * @return Decoded sound effect
 	 */
 	AudioSeRef Decode();
+
+	static void Clear();
 private:
 	int pitch = 100;
 
