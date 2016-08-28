@@ -45,6 +45,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/decoder_wav.h \
 	src/decoder_wildmidi.cpp \
 	src/decoder_wildmidi.h \
+	src/decoder_xmp.cpp \
+	src/decoder_xmp.h \
 	src/default_graphics.h \
 	src/dirent_win.h \
 	src/docmain.h \
@@ -337,6 +339,7 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(WILDMIDI_CFLAGS) \
 	$(OGGVORBIS_CFLAGS) \
 	$(SNDFILE_CFLAGS) \
+	$(XMP_CFLAGS) \
 	$(SPEEXDSP_CFLAGS)
 libeasyrpg_player_la_LIBADD = \
 	$(LCF_LIBS) \
@@ -351,6 +354,7 @@ libeasyrpg_player_la_LIBADD = \
 	$(WILDMIDI_LIBS) \
 	$(OGGVORBIS_LIBS) \
 	$(SNDFILE_LIBS) \
+	$(XMP_LIBS) \
 	$(SPEEXDSP_LIBS)
 
 easyrpg_player_SOURCES = src/main.cpp
