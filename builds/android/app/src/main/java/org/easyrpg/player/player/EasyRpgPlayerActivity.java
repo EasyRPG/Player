@@ -51,6 +51,7 @@ import android.widget.TextView;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
@@ -70,6 +71,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
+    public static final int LAYOUT_EDIT = 12345;
 
     private static EasyRpgPlayerActivity instance;
 
@@ -155,6 +157,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 }
                 uiVisible = !uiVisible;
                 break;
+            case R.id.edit_layout:
+                editLayout();
+                break;
             case R.id.report_bug:
                 reportBug();
                 break;
@@ -174,6 +179,35 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LAYOUT_EDIT) {
+            GameInformation project = new GameInformation(getProjectPath());
+            project.getProjectInputLayout(buttonMappingManager);
+
+            // Choose the proper InputLayout
+            inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
+
+            // Add buttons
+            addButtons();
+        }
+    }
+    
+    private void editLayout() {
+        Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
+        GameInformation project = new GameInformation(getProjectPath());
+        project.getProjectInputLayout(buttonMappingManager);
+
+        // Choose the proper InputLayout
+        intent.putExtra(ButtonMappingActivity.TAG_ID, project.getId_input_layout());
+        
+        for (VirtualButton v : inputLayout.getButtonList()) {
+            mLayout.removeView(v);
+        }
+        
+        startActivityForResult(intent, LAYOUT_EDIT);
+    }
+    
     private void reportBug() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.app_name);
