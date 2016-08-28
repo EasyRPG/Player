@@ -180,8 +180,8 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 			// Reset pages of specific actor after that actors turn
 			if (page_executed[page.ID - 1]) {
 				if (battler->GetType() == Game_Battler::Type_Ally &&
-						(condition.flags.turn_actor && Game_Actors::GetActor(condition.turn_actor_id) == battler) ||
-						(condition.flags.command_actor && Game_Actors::GetActor(condition.command_actor_id) == battler)) {
+						((condition.flags.turn_actor && Game_Actors::GetActor(condition.turn_actor_id) == battler) ||
+						(condition.flags.command_actor && Game_Actors::GetActor(condition.command_actor_id) == battler))) {
 					page_executed[page.ID - 1] = false;
 				}
 			}

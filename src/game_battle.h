@@ -23,7 +23,7 @@ class Game_Interpreter;
 class Spriteset_Battle;
 namespace RPG {
 	class EventPage;
-};
+}
 
 namespace Game_Battle {
 	/**
