@@ -38,10 +38,23 @@ Plane::~Plane() {
 void Plane::Draw() {
 	if (!visible || !bitmap) return;
 
+	if (needs_refresh) {
+		needs_refresh = false;
+
+		if (!tone_bitmap) {
+			tone_bitmap = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight());
+		}
+
+		tone_bitmap->Clear();
+		tone_bitmap->ToneBlit(0, 0, *bitmap, bitmap->GetRect(), tone_effect, Opacity::opaque);
+	}
+
+	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;
+
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
 
-	dst->TiledBlit(-ox, -oy, bitmap->GetRect(), *bitmap, dst_rect, 255);
+	dst->TiledBlit(-ox, -oy, source->GetRect(), *source, dst_rect, 255);
 }
 
 BitmapRef const& Plane::GetBitmap() const {
@@ -49,6 +62,8 @@ BitmapRef const& Plane::GetBitmap() const {
 }
 void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
+
+	needs_refresh = true;
 }
 
 bool Plane::GetVisible() const {
@@ -75,6 +90,17 @@ int Plane::GetOy() const {
 }
 void Plane::SetOy(int noy) {
 	oy = noy;
+}
+
+Tone Plane::GetTone() const {
+	return tone_effect;
+}
+
+void Plane::SetTone(Tone tone) {
+	if (tone_effect != tone) {
+		tone_effect = tone;
+		needs_refresh = true;
+	}
 }
 
 DrawableType Plane::GetType() const {
