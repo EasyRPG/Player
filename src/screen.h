@@ -43,11 +43,16 @@ public:
 	int GetZ() const override;
 	DrawableType GetType() const override;
 
+	Tone GetTone() const;
+	void SetTone(Tone tone);
+
 private:
 	static const int z = 1050;
 	static const DrawableType type = TypeScreen;
 
 	BitmapRef flash;
+
+	Tone tone_effect;
 };
 
 #endif

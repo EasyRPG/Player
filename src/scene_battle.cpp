@@ -86,8 +86,6 @@ void Scene_Battle::Start() {
 
 	CreateUi();
 
-	screen.reset(new Screen());
-
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
 	SetState(State_Start);

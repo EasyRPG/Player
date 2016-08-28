@@ -51,21 +51,39 @@ Spriteset_Map::Spriteset_Map() {
 	timer1.reset(new Sprite_Timer(0));
 	timer2.reset(new Sprite_Timer(1));
 
+	screen.reset(new Screen());
+	weather.reset(new Weather());
+	frame.reset(new Frame());
+
 	Update();
 }
 
 // Update
 void Spriteset_Map::Update() {
-	Tone tone = Main_Data::game_screen->GetTone();
+	Tone new_tone = Main_Data::game_screen->GetTone();
+
+	if (new_tone != last_tone || Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
+		// Could be a gradient change, just updating the display is faster
+		// With weather also have to take this path because weather operations can't be cached
+		screen->SetTone(new_tone);
+		last_tone = new_tone;
+
+		// Normal tone for all graphics
+		new_tone = Tone();
+	} else {
+		// Not a gradient change, use the cached Tone graphics instead of
+		// recalculating the screen tone
+		screen->SetTone(Tone());
+	}
 
 	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
-	tilemap->SetTone(tone);
+	tilemap->SetTone(new_tone);
 	tilemap->Update();
 
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
-		character_sprites[i]->SetTone(tone);
+		character_sprites[i]->SetTone(new_tone);
 	}
 	const std::string& name = Game_Map::GetParallaxName();
 	if (name != panorama_name) {
@@ -77,7 +95,7 @@ void Spriteset_Map::Update() {
 
 	panorama->SetOx(Game_Map::GetParallaxX());
 	panorama->SetOy(Game_Map::GetParallaxY());
-	panorama->SetTone(tone);
+	panorama->SetTone(new_tone);
 
 	Game_Vehicle* vehicle;
 	int map_id = Game_Map::GetMapId();

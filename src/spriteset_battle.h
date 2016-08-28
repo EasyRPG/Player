@@ -20,6 +20,7 @@
 
 // Headers
 #include "background.h"
+#include "screen.h"
 #include "sprite_battler.h"
 #include "sprite_character.h"
 #include "sprite_timer.h"
@@ -39,6 +40,7 @@ protected:
 	std::unique_ptr<Background> background;
 	std::vector<std::shared_ptr<Sprite_Battler>> sprites;
 	std::string background_name;
+	std::unique_ptr<Screen> screen;
 
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
