@@ -32,7 +32,7 @@ AudioInterface& Audio() {
 
 void EmptyAudio::BGM_Play(std::string const&, int, int, int) {
 	bgm_starttick = Player::GetFrames();
-};
+}
 
 unsigned EmptyAudio::BGM_GetTicks() const {
 	return (Player::GetFrames() - bgm_starttick) * 500; // Arbitrary
