@@ -95,6 +95,8 @@ public:
 private:
 	BitmapRef chipset;
 	BitmapRef chipset_effect;
+	std::set<short> chipset_tone_tiles;
+
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	std::vector<uint8_t> substitutions;
@@ -131,8 +133,10 @@ private:
 	TileXY GetCachedAutotileD(short ID);
 	BitmapRef autotiles_ab_screen;
 	BitmapRef autotiles_ab_screen_effect;
+	std::set<short> autotiles_ab_screen_tone_tiles;
 	BitmapRef autotiles_d_screen;
 	BitmapRef autotiles_d_screen_effect;
+	std::set<short> autotiles_d_screen_tone_tiles;
 
 	int autotiles_ab_next = -1;
 	int autotiles_d_next = -1;
@@ -149,7 +153,6 @@ private:
 	};
 	std::vector<std::vector<TileData> > data_cache;
 	std::vector<std::shared_ptr<TilemapSubLayer> > sublayers;
-	std::set<int> tone_changed_tiles;
 
 	Tone tone;
 };
