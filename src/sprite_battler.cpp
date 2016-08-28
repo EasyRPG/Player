@@ -35,8 +35,6 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	flash_counter(0),
 	old_hidden(false),
 	idling(true) {
-
-	CreateSprite();
 }
 
 Sprite_Battler::~Sprite_Battler() {
@@ -51,8 +49,9 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 }
 
 void Sprite_Battler::Update() {
-	if (sprite_name != battler->GetSpriteName() ||
-		hue != battler->GetHue()) {
+	if (GetVisible() &&
+		(sprite_name != battler->GetSpriteName() ||
+		hue != battler->GetHue())) {
 
 		CreateSprite();
 	}
