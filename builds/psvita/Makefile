@@ -26,7 +26,7 @@ endif
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
-CFLAGS  = -Wl,-q -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
+CFLAGS  = -Wl,-q -g -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DWANT_FASTWAV -DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
 		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
@@ -45,7 +45,7 @@ HAVE_ZIP := $(shell command -v zip 2> /dev/null)
 all: $(TARGET).vpk
 
 $(TARGET).vpk: $(TARGET).velf
-		vita-make-fself $< release/eboot.bin
+		vita-make-fself -s $< release/eboot.bin
 		vita-mksfoex -s TITLE_ID=$(APP_ID) "$(APP_TITLE)" release/sce_sys/param.sfo
 ifdef HAVE_ZIP
 		cd release; zip ../$(TARGET).vpk -r ./sce_sys ./eboot.bin
@@ -54,11 +54,11 @@ else
 endif
 
 %.velf: %.elf
-	$(PREFIX)-strip -g $<
-	vita-elf-create $< $@
+	$(PREFIX)-strip -g -o $(basename $<)-stripped.elf $<
+	vita-elf-create $(basename $<)-stripped.elf $@
 
 $(TARGET).elf: $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ $(LIBS) -o $@
 
 clean:
-	@rm -rf $(TARGET).velf $(TARGET).elf $(OBJS) param.sfo eboot.bin
+	@rm -rf $(TARGET).velf $(TARGET).elf $(TARGET)-stripped.elf $(OBJS) param.sfo eboot.bin

@@ -80,7 +80,7 @@ static int streamThread(unsigned int args, void* arg){
 				sceAudioOutReleasePort(bgm_chn);
 				bgm_chn = 0xDEAD;
 			}
-			sceKernelExitThread(0);
+			sceKernelExitDeleteThread(0);
 		}
 
 		sceKernelWaitSema(BGM_Mutex, 1, NULL);
@@ -139,7 +139,7 @@ static int sfxThread(unsigned int args, void* arg){
 	int ch = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, 64, 48000, SCE_AUDIO_OUT_MODE_STEREO);
 	if (ch < 0){
 		Output::Warning("SFX Thread: Cannot open audio port");
-		sceKernelExitThread(0);
+		sceKernelExitDeleteThread(0);
 	}
 
 	for (;;){
@@ -151,7 +151,7 @@ static int sfxThread(unsigned int args, void* arg){
 			if (sfx_exited < AUDIO_CHANNELS) sceKernelSignalSema(SFX_Mutex, 1);
 			else mustExit = false;
 			sceAudioOutReleasePort(ch);
-			sceKernelExitThread(0);
+			sceKernelExitDeleteThread(0);
 		}
 
 		// Pick the next SE that wants to be played
@@ -237,8 +237,7 @@ Psp2Audio::~Psp2Audio() {
 
 	// Closing BGM streaming thread
 	termStream = true;
-	while (termStream){} // Wait for thread exiting...
-	sceKernelDeleteThread(BGM_Thread);
+	sceKernelWaitThreadEnd(BGM_Thread, NULL, NULL);
 	if (BGM != NULL){
 		free(BGM->audiobuf);
 		audio_decoder.reset();
@@ -248,14 +247,13 @@ Psp2Audio::~Psp2Audio() {
 	// Starting exit procedure for sfx threads
 	mustExit = true;
 	sceKernelSignalSema(SFX_Mutex, 1);
-	while (mustExit){} // Wait for threads exiting...
+	for (int i=0;i<AUDIO_CHANNELS;i++){
+		sceKernelWaitThreadEnd(sfx_threads[i], NULL, NULL);
+	}
 	sfx_exited = 0;
 
-	// Deleting mutexs and sfx threads
+	// Deleting mutexs
 	sceKernelDeleteSema(BGM_Mutex);
-	for (int i=0;i<AUDIO_CHANNELS;i++){
-		sceKernelDeleteThread(sfx_threads[i]);
-	}
 	sceKernelDeleteSema(SFX_Mutex);
 	sceKernelDeleteSema(SFX_Mutex_ID);
 }

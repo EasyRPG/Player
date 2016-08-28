@@ -44,6 +44,11 @@
 	#include <stdio.h>
 #endif
 
+#ifdef PSP2
+	#include <stdio.h>
+	#include <psp2/io/stat.h>
+#endif
+
 #if defined(__APPLE__) && defined(__MACH__)
 	#include <SDL.h>
 	#include <unistd.h>
@@ -81,7 +86,23 @@ void Main_Data::Init() {
 			getcwd(gekko_dir, 255);
 			project_path = std::string(gekko_dir);
 #elif defined(PSP2)
-			project_path = "ux0:/data/easyrpg-player";
+			// Check if app0 filesystem contains the title id reference file
+			FILE* f = fopen("app0:/titleid.txt","r");
+			if (f == NULL) project_path = "ux0:/data/easyrpg-player";
+			else{
+				char titleID[10];
+				char psp2_dir[256];
+				fread(titleID, 1, 9, f);
+				titleID[9] = 0;
+				sprintf(psp2_dir, "ux0:/data/%s",titleID);
+				fclose(f);
+				project_path = "app0:";
+				save_path = psp2_dir;
+				
+				// Creating saves dir if it doesn't exist
+				sceIoMkdir(psp2_dir, 0777);
+				
+			}
 #elif defined(_3DS)
 #   ifndef CITRA3DS_COMPATIBLE
 			// Check if romFs has some files inside or not

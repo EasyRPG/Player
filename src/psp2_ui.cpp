@@ -55,6 +55,7 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	zoom_state = 0;
 	trigger_state = false;
 	vita2d_init();
+	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
