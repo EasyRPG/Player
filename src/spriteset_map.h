@@ -23,9 +23,9 @@
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
-#include "plane.h"
 #include <string>
 #include "async_handler.h"
+#include "plane.h"
 
 class Sprite_Character;
 class Game_Character;
@@ -66,8 +66,8 @@ public:
 	void SubstituteUp(int old_id, int new_id);
 
 protected:
-	Tilemap tilemap;
-	Plane panorama;
+	std::unique_ptr<Tilemap> tilemap;
+	std::unique_ptr<Plane> panorama;
 	std::string panorama_name;
 	std::vector<std::shared_ptr<Sprite_Character> > character_sprites;
 	std::unique_ptr<Sprite_AirshipShadow> airship_shadow;

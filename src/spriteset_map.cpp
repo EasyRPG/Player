@@ -30,12 +30,14 @@
 
 // Constructor
 Spriteset_Map::Spriteset_Map() {
-	tilemap.SetWidth(Game_Map::GetWidth());
-	tilemap.SetHeight(Game_Map::GetHeight());
-	
-	ChipsetUpdated();
+	tilemap.reset(new Tilemap());
+	tilemap->SetWidth(Game_Map::GetWidth());
+	tilemap->SetHeight(Game_Map::GetHeight());
 
-	panorama.SetZ(-1000);
+	panorama.reset(new Plane());
+	panorama->SetZ(-1000);
+
+	ChipsetUpdated();
 
 	for (Game_Event& ev : Game_Map::GetEvents()) {
 		character_sprites.push_back(std::make_shared<Sprite_Character>(&ev));
@@ -56,10 +58,10 @@ Spriteset_Map::Spriteset_Map() {
 void Spriteset_Map::Update() {
 	Tone tone = Main_Data::game_screen->GetTone();
 
-	tilemap.SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
-	tilemap.SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
-	tilemap.SetTone(tone);
-	tilemap.Update();
+	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
+	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
+	tilemap->SetTone(tone);
+	tilemap->Update();
 
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
@@ -73,8 +75,9 @@ void Spriteset_Map::Update() {
 		request->Start();
 	}
 
-	panorama.SetOx(Game_Map::GetParallaxX());
-	panorama.SetOy(Game_Map::GetParallaxY());
+	panorama->SetOx(Game_Map::GetParallaxX());
+	panorama->SetOy(Game_Map::GetParallaxY());
+	panorama->SetTone(tone);
 
 	Game_Vehicle* vehicle;
 	int map_id = Game_Map::GetMapId();
@@ -123,37 +126,37 @@ void Spriteset_Map::SystemGraphicUpdated() {
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {
 	Game_Map::SubstituteDown(old_id, new_id);
-	tilemap.SubstituteDown(old_id, new_id);
+	tilemap->SubstituteDown(old_id, new_id);
 }
 
 void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	Game_Map::SubstituteUp(old_id, new_id);
-	tilemap.SubstituteUp(old_id, new_id);
+	tilemap->SubstituteUp(old_id, new_id);
 }
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	if (!Game_Map::GetChipsetName().empty()) {
-		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+		tilemap->SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
 	}
 	else {
-		tilemap.SetChipset(Bitmap::Create(480, 256));
+		tilemap->SetChipset(Bitmap::Create(480, 256));
 	}
 
-	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
-	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
-	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
-	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
-	tilemap.SetAnimationType(Game_Map::GetAnimationType());
-	tilemap.SetAnimationSpeed(Game_Map::GetAnimationSpeed());
+	tilemap->SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap->SetMapDataUp(Game_Map::GetMapDataUp());
+	tilemap->SetPassableDown(Game_Map::GetPassagesDown());
+	tilemap->SetPassableUp(Game_Map::GetPassagesUp());
+	tilemap->SetAnimationType(Game_Map::GetAnimationType());
+	tilemap->SetAnimationSpeed(Game_Map::GetAnimationSpeed());
 
-	tilemap.SetFastBlitDown(!panorama.GetBitmap());
+	tilemap->SetFastBlitDown(!panorama->GetBitmap());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	BitmapRef panorama_bmp = Cache::Panorama(result->file);
 	Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
-	panorama.SetBitmap(panorama_bmp);
+	panorama->SetBitmap(panorama_bmp);
 	Game_Map::InitializeParallax();
 
-	tilemap.SetFastBlitDown(false);
+	tilemap->SetFastBlitDown(false);
 }
