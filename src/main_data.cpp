@@ -46,6 +46,7 @@
 
 #ifdef PSP2
 	#include <stdio.h>
+	#include <psp2/io/stat.h>
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
@@ -89,12 +90,18 @@ void Main_Data::Init() {
 			FILE* f = fopen("app0:/titleid.txt","r");
 			if (f == NULL) project_path = "ux0:/data/easyrpg-player";
 			else{
+				char titleID[10];
 				char psp2_dir[256];
-				fread(psp2_dir, 1, 256, f);
-				sprintf(psp2_dir, "ux0:/data/%s",psp2_dir);
+				fread(titleID, 1, 9, f);
+				titleID[9] = 0;
+				sprintf(psp2_dir, "ux0:/data/%s",titleID);
 				fclose(f);
 				project_path = "app0:";
 				save_path = psp2_dir;
+				
+				// Creating saves dir if it doesn't exist
+				sceIoMkdir(psp2_dir, 0777);
+				
 			}
 #elif defined(_3DS)
 #   ifndef CITRA3DS_COMPATIBLE
