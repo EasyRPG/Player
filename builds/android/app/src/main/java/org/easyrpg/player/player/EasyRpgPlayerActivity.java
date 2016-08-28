@@ -35,12 +35,14 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -85,6 +87,19 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         // Menu configuration
         this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        drawer.setDrawerListener(new DrawerListener() {
+            @Override
+            public void onDrawerSlide(View view, float arg1) {
+                drawer.bringChildToFront(view);
+                drawer.requestLayout();
+            }
+
+            @Override public void onDrawerStateChanged(int arg0) {}
+            @Override public void onDrawerOpened(View arg0) {}
+            @Override public void onDrawerClosed(View arg0) {}
+        });
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         hideStatusBar();
