@@ -37,6 +37,9 @@ public:
 	int GetZ() const override;
 	DrawableType GetType() const override;
 
+	Tone GetTone() const;
+	void SetTone(Tone tone);
+
 private:
 	void DrawRain();
 	void DrawSnow();
@@ -49,6 +52,8 @@ private:
 	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
+
+	Tone tone_effect;
 
 	bool dirty;
 };

@@ -62,9 +62,8 @@ Spriteset_Map::Spriteset_Map() {
 void Spriteset_Map::Update() {
 	Tone new_tone = Main_Data::game_screen->GetTone();
 
-	if (new_tone != last_tone || Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
+	if (new_tone != last_tone) {
 		// Could be a gradient change, just updating the display is faster
-		// With weather also have to take this path because weather operations can't be cached
 		screen->SetTone(new_tone);
 		last_tone = new_tone;
 
@@ -112,6 +111,8 @@ void Spriteset_Map::Update() {
 
 	timer1->Update();
 	timer2->Update();
+
+	weather->SetTone(new_tone);
 }
 
 // Finds the sprite for a specific character
