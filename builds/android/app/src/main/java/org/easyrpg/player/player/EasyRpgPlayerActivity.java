@@ -35,12 +35,14 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -49,6 +51,7 @@ import android.widget.TextView;
 
 import org.easyrpg.player.Helper;
 import org.easyrpg.player.R;
+import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.button_mapping.ButtonMappingManager.InputLayout;
 import org.easyrpg.player.button_mapping.VirtualButton;
@@ -68,6 +71,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public static final String TAG_PROJECT_PATH = "project_path";
     public static final String TAG_SAVE_PATH = "save_path";
     public static final String TAG_COMMAND_LINE = "command_line";
+    public static final int LAYOUT_EDIT = 12345;
 
     private static EasyRpgPlayerActivity instance;
 
@@ -85,6 +89,19 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         // Menu configuration
         this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        drawer.setDrawerListener(new DrawerListener() {
+            @Override
+            public void onDrawerSlide(View view, float arg1) {
+                drawer.bringChildToFront(view);
+                drawer.requestLayout();
+            }
+
+            @Override public void onDrawerStateChanged(int arg0) {}
+            @Override public void onDrawerOpened(View arg0) {}
+            @Override public void onDrawerClosed(View arg0) {}
+        });
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         hideStatusBar();
@@ -140,6 +157,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 }
                 uiVisible = !uiVisible;
                 break;
+            case R.id.edit_layout:
+                editLayout();
+                break;
             case R.id.report_bug:
                 reportBug();
                 break;
@@ -159,6 +179,35 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LAYOUT_EDIT) {
+            GameInformation project = new GameInformation(getProjectPath());
+            project.getProjectInputLayout(buttonMappingManager);
+
+            // Choose the proper InputLayout
+            inputLayout = buttonMappingManager.getLayoutById(project.getId_input_layout());
+
+            // Add buttons
+            addButtons();
+        }
+    }
+    
+    private void editLayout() {
+        Intent intent = new Intent(this, org.easyrpg.player.button_mapping.ButtonMappingActivity.class);
+        GameInformation project = new GameInformation(getProjectPath());
+        project.getProjectInputLayout(buttonMappingManager);
+
+        // Choose the proper InputLayout
+        intent.putExtra(ButtonMappingActivity.TAG_ID, project.getId_input_layout());
+        
+        for (VirtualButton v : inputLayout.getButtonList()) {
+            mLayout.removeView(v);
+        }
+        
+        startActivityForResult(intent, LAYOUT_EDIT);
+    }
+    
     private void reportBug() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.app_name);

@@ -79,7 +79,7 @@
         </activity>
         <activity
             android:name=".settings.SettingsGamesFoldersActivity"
-            android:label="@string/games_folders"
+            android:label="@string/game_folders"
             android:parentActivityName=".settings.SettingsMainActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
