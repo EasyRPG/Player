@@ -948,11 +948,13 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			;
 	}
 
+	int last = com.parameters[0] == 0 ? com.parameters[1] : com.parameters[2];
+
 	switch (com.parameters[0]) {
 		case 0:
 		case 1:
 			// Single and Var range
-			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
+			for (i = com.parameters[1]; i <= last; i++) {
 				switch (com.parameters[3]) {
 					case 0:
 						// Assignement
