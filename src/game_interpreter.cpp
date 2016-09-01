@@ -948,93 +948,57 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			;
 	}
 
-	int last = com.parameters[0] == 0 ? com.parameters[1] : com.parameters[2];
+	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
+		// Param0: 0: Single, 1: Range, 2: Indirect
+		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-	switch (com.parameters[0]) {
-		case 0:
-		case 1:
-			// Single and Var range
-			for (i = com.parameters[1]; i <= last; i++) {
-				switch (com.parameters[3]) {
-					case 0:
-						// Assignement
-						Game_Variables[i] = value;
-						break;
-					case 1:
-						// Addition
-						Game_Variables[i] += value;
-						break;
-					case 2:
-						// Subtraction
-						Game_Variables[i] -= value;
-						break;
-					case 3:
-						// Multiplication
-						Game_Variables[i] *= value;
-						break;
-					case 4:
-						// Division
-						if (value != 0) {
-							Game_Variables[i] /= value;
-						}
-						break;
-					case 5:
-						// Module
-						if (value != 0) {
-							Game_Variables[i] %= value;
-						} else {
-							Game_Variables[i] = 0;
-						}
-				}
-				if (Game_Variables[i] > MaxSize) {
-					Game_Variables[i] = MaxSize;
-				}
-				if (Game_Variables[i] < MinSize) {
-					Game_Variables[i] = MinSize;
-				}
-			}
-			break;
+		int start = com.parameters[0] == 2 ? Game_Variables[com.parameters[1]] : com.parameters[1];
+		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
-		case 2:
-			int var_index = Game_Variables[com.parameters[1]];
+		for (i = start; i <= end; ++i) {
 			switch (com.parameters[3]) {
 				case 0:
 					// Assignement
-					Game_Variables[var_index] = value;
+					Game_Variables[i] = value;
 					break;
 				case 1:
 					// Addition
-					Game_Variables[var_index] += value;
+					Game_Variables[i] += value;
 					break;
 				case 2:
 					// Subtraction
-					Game_Variables[var_index] -= value;
+					Game_Variables[i] -= value;
 					break;
 				case 3:
 					// Multiplication
-					Game_Variables[var_index] *= value;
+					Game_Variables[i] *= value;
 					break;
 				case 4:
 					// Division
 					if (value != 0) {
-						Game_Variables[var_index] /= value;
+						Game_Variables[i] /= value;
 					}
 					break;
 				case 5:
 					// Module
 					if (value != 0) {
-						Game_Variables[var_index] %= value;
+						Game_Variables[i] %= value;
+					} else {
+						Game_Variables[i] = 0;
 					}
 			}
-			if (Game_Variables[var_index] > MaxSize) {
-				Game_Variables[var_index] = MaxSize;
+
+			if (Game_Variables[i] > MaxSize) {
+				Game_Variables[i] = MaxSize;
 			}
-			if (Game_Variables[var_index] < MinSize) {
-				Game_Variables[var_index] = MinSize;
+			if (Game_Variables[i] < MinSize) {
+				Game_Variables[i] = MinSize;
 			}
+		}
+
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
