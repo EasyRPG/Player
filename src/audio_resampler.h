@@ -19,7 +19,9 @@
 #define EASYRPG_AUDIO_RESAMPLER_H
 
 // Headers
+// Don't remove the system.h include, prevents heap corruption for automake (preprocessor defines)
 #include "audio_decoder.h"
+#include "system.h"
 #include <string>
 #include <memory>
 

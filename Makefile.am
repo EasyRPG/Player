@@ -20,6 +20,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/audio_decoder.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
+	src/audio_secache.cpp \
+	src/audio_secache.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \

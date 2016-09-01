@@ -23,6 +23,7 @@
 
 #ifdef HAVE_SDL_MIXER
 
+#include "audio_secache.h"
 #include "baseui.h"
 #include "audio_sdl.h"
 #include "filefinder.h"
@@ -573,19 +574,51 @@ void SdlAudio::BGS_Volume(int volume) {
 	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 }
 
-void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
-	std::shared_ptr<Mix_Chunk> sound(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
-	if (!sound) {
-		Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
-		return;
+void SdlAudio::SE_Play(std::string const& file, int volume, int pitch) {
+	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
+	std::shared_ptr<Mix_Chunk> sound;
+	AudioSeRef se_ref = nullptr;
+
+	if (cache) {
+		int audio_rate;
+		Uint16 sdl_format;
+		int audio_channels;
+		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
+			Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
+			return;
+		}
+		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
+
+		// When this fails the resampler is probably not compiled in and output will be garbage, just use SDL
+		if (cache->SetFormat(audio_rate, audio_format, audio_channels)) {
+			cache->SetPitch(pitch);
+
+			se_ref = cache->Decode();
+
+			sound.reset(Mix_QuickLoad_RAW(se_ref->buffer.data(), se_ref->buffer.size()), &Mix_FreeChunk);
+
+			if (!sound) {
+				Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
+			}
+		}
 	}
+
+	if (!sound) {
+		sound.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
+		if (!sound) {
+			Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
+			return;
+		}
+	}
+
 	int channel = Mix_PlayChannel(-1, sound.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
 		Output::Warning("Couldn't play %s SE.\n%s", file.c_str(), Mix_GetError());
 		return;
 	}
-	sounds[channel] = sound;
+	sounds[channel].first = sound;
+	sounds[channel].second = se_ref;
 }
 
 void SdlAudio::SE_Stop() {

@@ -20,13 +20,13 @@
 #include <vector>
 #include "scene_title.h"
 #include "audio.h"
+#include "audio_secache.h"
 #include "cache.h"
 #include "game_screen.h"
 #include "game_system.h"
 #include "graphics.h"
 #include "input.h"
 #include "main_data.h"
-#include "options.h"
 #include "output.h"
 #include "player.h"
 #include "scene_battle.h"
@@ -53,6 +53,7 @@ void Scene_Title::Continue() {
 	// Clear the cache when the game returns to the
 	// title screen e.g. by pressing F12
 	Cache::Clear();
+	AudioSeCache::Clear();
 
 	Player::ResetGameObjects();
 
