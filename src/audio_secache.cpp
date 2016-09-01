@@ -31,7 +31,7 @@ namespace {
 
 	cache_type cache;
 
-	const int cache_limit = 5 * 1024 * 1024;
+	const int cache_limit = 1 * 1024 * 1024;
 	int cache_size = 0;
 
 	void FreeCacheMemory() {
