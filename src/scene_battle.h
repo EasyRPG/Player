@@ -29,7 +29,6 @@
 #include "game_actor.h"
 #include "game_enemy.h"
 #include "scene.h"
-#include "screen.h"
 #include "spriteset_battle.h"
 #include "window_help.h"
 #include "window_item.h"
@@ -173,7 +172,6 @@ protected:
 	int skill_id;
 	int pending_command;
 
-
 	int actor_index;
 	Game_Actor* active_actor;
 
@@ -189,8 +187,6 @@ protected:
 	/** Displays allies status */
 	std::unique_ptr<Window_BattleStatus> status_window;
 	std::unique_ptr<Window_Message> message_window;
-
-	std::unique_ptr<Screen> screen;
 
 	std::deque<Game_Battler*> battle_actions;
 

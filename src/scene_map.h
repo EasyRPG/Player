@@ -21,8 +21,6 @@
 // Headers
 #include "scene.h"
 #include "spriteset_map.h"
-#include "weather.h"
-#include "frame.h"
 #include "window_message.h"
 #include "window_varlist.h"
 
@@ -60,9 +58,6 @@ private:
 	void FinishTeleportPlayer();
 
 	std::unique_ptr<Window_Message> message_window;
-	std::unique_ptr<Screen> screen;
-	std::unique_ptr<Weather> weather;
-	std::unique_ptr<Frame> frame;
 
 	bool from_save;
 	bool auto_transition = false;

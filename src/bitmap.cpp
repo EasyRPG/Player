@@ -1012,29 +1012,38 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		int gs = pixel_format.g.shift;
 		int bs = pixel_format.b.shift;
 
+		// Move according to x/y value
+		pixels = pixels + (y * pitch() / sizeof(uint32_t) + x) - (pitch() / sizeof(uint32_t));
+
 		// Algorithm from OpenPDN (MIT license)
 		// Transformation in Y'CbCr color space
-		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
-			uint32_t pixel = pixels[i];
-			uint8_t a = (pixel >> as) & 0xFF;
-			// &src != this works around a corner case with opacity split (character in a bush)
-			// in that case a == 0 and the effect is not applied
-			if (a == 0 && &src != this) {
-				continue;
+		for (int i = 0; i < src_rect.height; ++i) {
+			// Advance one pixel row
+			pixels += pitch() / sizeof(uint32_t);
+
+			for (int j = 0; j < src_rect.width; ++j) {
+				uint32_t pixel = pixels[j];
+				uint8_t a = (pixel >> as) & 0xFF;
+				// &src != this works around a corner case with opacity split (character in a bush)
+				// in that case a == 0 and the effect is not applied
+				if (a == 0 && &src != this) {
+					continue;
+				}
+				uint8_t r = (pixel >> rs) & 0xFF;
+				uint8_t g = (pixel >> gs) & 0xFF;
+				uint8_t b = (pixel >> bs) & 0xFF;
+				// Y' = 0.299 R' + 0.587 G' + 0.114 B'
+				uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
+				// Scale Cb/Cr by scale factor "sat"
+				int red = ((lum * 1024 + (r - lum) * sat) >> 10);
+				red = red > 255 ? 255 : red < 0 ? 0 : red;
+				int green = ((lum * 1024 + (g - lum) * sat) >> 10);
+				green = green > 255 ? 255 : green < 0 ? 0 : green;
+				int blue = ((lum * 1024 + (b - lum) * sat) >> 10);
+				blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+				pixels[j] = ((uint32_t) red << rs) | ((uint32_t) green << gs) | ((uint32_t) blue << bs) |
+							((uint32_t) a << as);
 			}
-			uint8_t r = (pixel >> rs) & 0xFF;
-			uint8_t g = (pixel >> gs) & 0xFF;
-			uint8_t b = (pixel >> bs) & 0xFF;
-			// Y' = 0.299 R' + 0.587 G' + 0.114 B'
-			uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
-			// Scale Cb/Cr by scale factor "sat"
-			int red = ((lum * 1024 + (r - lum) * sat) >> 10);
-			red = red > 255 ? 255 : red < 0 ? 0 : red;
-			int green = ((lum * 1024 + (g - lum) * sat) >> 10);
-			green = green > 255 ? 255 : green < 0 ? 0 : green;
-			int blue = ((lum * 1024 + (b - lum) * sat) >> 10);
-			blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
-			pixels[i] = ((uint32_t)red << rs) | ((uint32_t)green << gs) | ((uint32_t)blue << bs) | ((uint32_t)a << as);
 		}
 	}
 
@@ -1051,21 +1060,29 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		int bs = pixel_format.b.shift;
 
 		uint32_t* pixels = (uint32_t*)this->pixels();
+		// Move according to x/y value
+		pixels = pixels + (y * pitch() / sizeof(uint32_t) + x) - (pitch() / sizeof(uint32_t));
 
-		for (int i = 0; i < src_rect.width * src_rect.height; ++i) {
-			uint32_t pixel = pixels[i];
-			uint8_t a = (pixel >> as) & 0xFF;
-			if (a == 0 && &src != this) {
-				continue;
+		for (int i = 0; i < src_rect.height; ++i) {
+			// Advance one pixel row
+			pixels += pitch() / sizeof(uint32_t);
+
+			for (int j = 0; j < src_rect.width; ++j) {
+				uint32_t pixel = pixels[j];
+				uint8_t a = (pixel >> as) & 0xFF;
+				if (a == 0 && &src != this) {
+					continue;
+				}
+				uint8_t r = (pixel >> rs) & 0xFF;
+				uint8_t g = (pixel >> gs) & 0xFF;
+				uint8_t b = (pixel >> bs) & 0xFF;
+
+				int red = hard_light_lookup[tone.red][r];
+				int green = hard_light_lookup[tone.green][g];
+				int blue = hard_light_lookup[tone.blue][b];
+				pixels[j] = ((uint32_t) red << rs) | ((uint32_t) green << gs) | ((uint32_t) blue << bs) |
+							((uint32_t) a << as);
 			}
-			uint8_t r = (pixel >> rs) & 0xFF;
-			uint8_t g = (pixel >> gs) & 0xFF;
-			uint8_t b = (pixel >> bs) & 0xFF;
-
-			int red = hard_light_lookup[tone.red][r];
-			int green = hard_light_lookup[tone.green][g];
-			int blue = hard_light_lookup[tone.blue][b];
-			pixels[i] = ((uint32_t)red << rs) | ((uint32_t)green << gs) | ((uint32_t)blue << bs) | ((uint32_t)a << as);
 		}
 	}
 

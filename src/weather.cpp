@@ -122,6 +122,9 @@ static const int snowflake_visible = 150;
 void Weather::DrawRain() {
 	if (!rain_bitmap) {
 		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
+		if (tone_effect != Tone()) {
+			rain_bitmap->ToneBlit(0, 0, *rain_bitmap, rain_bitmap->GetRect(), tone_effect, Opacity::opaque);
+		}
 	}
 
 	Rect rect = rain_bitmap->GetRect();
@@ -142,7 +145,11 @@ void Weather::DrawRain() {
 void Weather::DrawSnow() {
 	if (!snow_bitmap) {
 		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
+		if (tone_effect != Tone()) {
+			snow_bitmap->ToneBlit(0, 0, *snow_bitmap, snow_bitmap->GetRect(), tone_effect, Opacity::opaque);
+		}
 	}
+
 
 	static const int wobble[2][18] = {
 		{-1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -183,4 +190,16 @@ void Weather::DrawSandstorm() {
 	// TODO
 
 	dirty = true;
+}
+
+Tone Weather::GetTone() const {
+	return tone_effect;
+}
+
+void Weather::SetTone(Tone tone) {
+	if (tone != tone_effect) {
+		tone_effect = tone;
+		rain_bitmap.reset();
+		snow_bitmap.reset();
+	}
 }

@@ -44,6 +44,8 @@ public:
 	void SetOx(int ox);
 	int GetOy() const;
 	void SetOy(int oy);
+	Tone GetTone() const;
+	void SetTone(Tone tone);
 
 	DrawableType GetType() const override;
 
@@ -51,11 +53,16 @@ private:
 	DrawableType type;
 
 	BitmapRef bitmap;
+	BitmapRef tone_bitmap;
+
+	Tone tone_effect;
 
 	bool visible;
 	int z;
 	int ox;
 	int oy;
+
+	bool needs_refresh = false;
 };
 
 #endif

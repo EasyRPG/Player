@@ -19,13 +19,16 @@
 #define _SPRITESET_MAP_H_
 
 // Headers
+#include <string>
+#include "async_handler.h"
+#include "frame.h"
+#include "plane.h"
+#include "screen.h"
 #include "sprite_airshipshadow.h"
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
-#include "plane.h"
-#include <string>
-#include "async_handler.h"
+#include "weather.h"
 
 class Sprite_Character;
 class Game_Character;
@@ -66,13 +69,16 @@ public:
 	void SubstituteUp(int old_id, int new_id);
 
 protected:
-	Tilemap tilemap;
-	Plane panorama;
+	std::unique_ptr<Tilemap> tilemap;
+	std::unique_ptr<Plane> panorama;
 	std::string panorama_name;
 	std::vector<std::shared_ptr<Sprite_Character> > character_sprites;
 	std::unique_ptr<Sprite_AirshipShadow> airship_shadow;
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
+	std::unique_ptr<Screen> screen;
+	std::unique_ptr<Weather> weather;
+	std::unique_ptr<Frame> frame;
 
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);
@@ -81,5 +87,7 @@ protected:
 	FileRequestBinding tilemap_request_id;
 
 	bool vehicle_loaded[3] = {};
+
+	Tone last_tone;
 };
 #endif

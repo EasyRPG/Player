@@ -37,6 +37,9 @@ public:
 	int GetZ() const override;
 	DrawableType GetType() const override;
 
+	Tone GetTone() const;
+	void SetTone(Tone tone);
+
 private:
 	void DrawRain();
 	void DrawSnow();
@@ -46,10 +49,11 @@ private:
 	static const int z = 1001;
 	static const DrawableType type = TypeWeather;
 
-	//std::unique_ptr<Plane> weather_plane;
 	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
+
+	Tone tone_effect;
 
 	bool dirty;
 };

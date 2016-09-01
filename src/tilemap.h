@@ -22,6 +22,7 @@
 #include <vector>
 #include "system.h"
 #include "tilemap_layer.h"
+#include "tone.h"
 
 /**
  * Tilemap class
@@ -59,6 +60,7 @@ public:
 	void SubstituteDown(int old_id, int new_id);
 	void SubstituteUp(int old_id, int new_id);
 	void SetFastBlitDown(bool fast);
+	void SetTone(Tone tone);
 
 private:
 	TilemapLayer layer_down, layer_up;
