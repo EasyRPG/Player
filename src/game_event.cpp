@@ -235,6 +235,8 @@ void Game_Event::ClearStarting() {
 
 void Game_Event::Setup(RPG::EventPage* new_page) {
 	bool from_null = page == NULL;
+
+	RPG::EventPage* old_page = page;
 	page = new_page;
 
 	// Free resources if needed
@@ -275,13 +277,13 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
 
-	bool last_direction_fixed = IsDirectionFixed() || IsFacingLocked();
+	bool last_direction_fixed = IsDirectionFixed() || IsFacingLocked() || (old_page && old_page->character_direction != GetSpriteDirection());
 	animation_type = page->animation_type;
 
-	if (from_null || !(last_direction_fixed || IsMoving()) || IsDirectionFixed())
+	if (from_null || !(last_direction_fixed || IsMoving()) || IsDirectionFixed()) {
 		SetSpriteDirection(page->character_direction);
-	if (!IsMoving())
 		SetDirection(page->character_direction);
+	}
 
 	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);

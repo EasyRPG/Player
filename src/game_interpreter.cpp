@@ -691,31 +691,24 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // code 10210
-	int i;
-	switch (com.parameters[0]) {
-		case 0:
-		case 1:
-			// Single and switch range
-			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
-				if (com.parameters[3] != 2) {
-					Game_Switches[i] = com.parameters[3] == 0;
-				} else {
-					Game_Switches[i] = !Game_Switches[i];
-				}
-			}
-			break;
-		case 2:
-			// Switch from variable
+	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
+		// Param0: 0: Single, 1: Range, 2: Indirect
+		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
+
+		int start = com.parameters[0] == 2 ? Game_Variables[com.parameters[1]] : com.parameters[1];
+		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
+
+		for (int i = start; i <= end; ++i) {
 			if (com.parameters[3] != 2) {
-				Game_Switches[Game_Variables[com.parameters[1]]] = com.parameters[3] == 0;
+				Game_Switches[i] = com.parameters[3] == 0;
 			} else {
-				Game_Switches[Game_Variables[com.parameters[1]]] = !Game_Switches[Game_Variables[com.parameters[1]]];
+				Game_Switches[i] = !Game_Switches[i];
 			}
-			break;
-		default:
-			return false;
+		}
+
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	}
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+
 	return true;
 }
 
@@ -948,91 +941,57 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			;
 	}
 
-	switch (com.parameters[0]) {
-		case 0:
-		case 1:
-			// Single and Var range
-			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
-				switch (com.parameters[3]) {
-					case 0:
-						// Assignement
-						Game_Variables[i] = value;
-						break;
-					case 1:
-						// Addition
-						Game_Variables[i] += value;
-						break;
-					case 2:
-						// Subtraction
-						Game_Variables[i] -= value;
-						break;
-					case 3:
-						// Multiplication
-						Game_Variables[i] *= value;
-						break;
-					case 4:
-						// Division
-						if (value != 0) {
-							Game_Variables[i] /= value;
-						}
-						break;
-					case 5:
-						// Module
-						if (value != 0) {
-							Game_Variables[i] %= value;
-						} else {
-							Game_Variables[i] = 0;
-						}
-				}
-				if (Game_Variables[i] > MaxSize) {
-					Game_Variables[i] = MaxSize;
-				}
-				if (Game_Variables[i] < MinSize) {
-					Game_Variables[i] = MinSize;
-				}
-			}
-			break;
+	if (com.parameters[0] >= 0 && com.parameters[0] <= 2) {
+		// Param0: 0: Single, 1: Range, 2: Indirect
+		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-		case 2:
-			int var_index = Game_Variables[com.parameters[1]];
+		int start = com.parameters[0] == 2 ? Game_Variables[com.parameters[1]] : com.parameters[1];
+		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
+
+		for (i = start; i <= end; ++i) {
 			switch (com.parameters[3]) {
 				case 0:
 					// Assignement
-					Game_Variables[var_index] = value;
+					Game_Variables[i] = value;
 					break;
 				case 1:
 					// Addition
-					Game_Variables[var_index] += value;
+					Game_Variables[i] += value;
 					break;
 				case 2:
 					// Subtraction
-					Game_Variables[var_index] -= value;
+					Game_Variables[i] -= value;
 					break;
 				case 3:
 					// Multiplication
-					Game_Variables[var_index] *= value;
+					Game_Variables[i] *= value;
 					break;
 				case 4:
 					// Division
 					if (value != 0) {
-						Game_Variables[var_index] /= value;
+						Game_Variables[i] /= value;
 					}
 					break;
 				case 5:
 					// Module
 					if (value != 0) {
-						Game_Variables[var_index] %= value;
+						Game_Variables[i] %= value;
+					} else {
+						Game_Variables[i] = 0;
 					}
 			}
-			if (Game_Variables[var_index] > MaxSize) {
-				Game_Variables[var_index] = MaxSize;
+
+			if (Game_Variables[i] > MaxSize) {
+				Game_Variables[i] = MaxSize;
 			}
-			if (Game_Variables[var_index] < MinSize) {
-				Game_Variables[var_index] = MinSize;
+			if (Game_Variables[i] < MinSize) {
+				Game_Variables[i] = MinSize;
 			}
+		}
+
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
 
