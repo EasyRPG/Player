@@ -41,7 +41,7 @@ CFLAGS		= 	-g -O2 -Wall -Wextra \
 				-flto -fdata-sections -ffunction-sections \
 				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
 				-DHAVE_LIBSNDFILE -DHAVE_TREMOR -DHAVE_WILDMIDI \
-				-DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
+				-DHAVE_XMP -DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
 				$(MACHDEP) $(INCLUDE)
 				
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
@@ -54,7 +54,7 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
 
 LIBS	:=	-llcf -liconv -lexpat -lpixman-1 -lpng -lz \
 			-lSDL_mixer -lSDL -lvorbisidec -lmpg123 \
-			-lsndfile -lWildMidi -lspeexdsp \
+			-lsndfile -lWildMidi -lxmp-lite -lspeexdsp \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 #-licuuc -licui18n -licudata
 
@@ -109,6 +109,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					-I$(LIBOGC_INC) \
 					-I$(TOOLCHAIN_DIR)/include/SDL \
 					-I$(TOOLCHAIN_DIR)/include/pixman-1 \
+					-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
 					-I$(LIBLCF_DIR)/include/liblcf
 
 #---------------------------------------------------------------------------------

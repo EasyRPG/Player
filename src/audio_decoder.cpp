@@ -30,6 +30,7 @@
 #include "decoder_wildmidi.h"
 #include "decoder_libsndfile.h"
 #include "decoder_wav.h"
+#include "decoder_xmp.h"
 #include "audio_resampler.h"
 
 void AudioDecoder::Pause() {
@@ -131,14 +132,16 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	fread(magic, 4, 1, file);
 	fseek(file, 0, SEEK_SET);
 
+#if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
+	/* WildMidi and XMP are the only audio decoders that need the filename passed
+	 * directly, this avoids a warning about the possibly unused variable
+	 */
+	(void)filename;
+#endif
+
 	// Try to use MIDI decoder, use fallback(s) if available
 	if (!strncmp(magic, "MThd", 4)) {
-#ifndef HAVE_WILDMIDI
-		/* WildMidi is currently the only Audio_Decoder that needs the filename passed
-		 * directly, this avoids a warning about the possibly unused variable
-		 */
-		(void)filename;
-#else
+#ifdef HAVE_WILDMIDI
 		static bool wildmidi_works = true;
 		if (wildmidi_works) {
 			AudioDecoder *mididec = nullptr;
@@ -204,9 +207,9 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 		!strncmp(magic, "fLaC", 4)) { // FLAC
 #ifdef HAVE_LIBSNDFILE
 #  ifdef USE_AUDIO_RESAMPLER
-			return std::unique_ptr<AudioDecoder>(new AudioResampler(new LibsndfileDecoder()));
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new LibsndfileDecoder()));
 #  else
-			return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
+		return std::unique_ptr<AudioDecoder>(new LibsndfileDecoder());
 #  endif
 #endif
 		return nullptr;
@@ -216,6 +219,17 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	if (!memcmp(magic, wma_magic, 4)) {
 		return std::unique_ptr<AudioDecoder>(new WMAUnsupportedFormatDecoder());
 	}
+
+	// Test for tracker modules
+#ifdef HAVE_XMP
+	if (XMPDecoder::IsModule(filename)) {
+#  ifdef USE_AUDIO_RESAMPLER
+		return std::unique_ptr<AudioDecoder>(new AudioResampler(new XMPDecoder()));
+#  else
+		return std::unique_ptr<AudioDecoder>(new XMPDecoder());
+#  endif
+	}
+#endif
 
 	// False positive MP3s should be prevented before by checking for common headers
 #ifdef HAVE_MPG123

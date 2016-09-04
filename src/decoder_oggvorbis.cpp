@@ -107,14 +107,6 @@ bool OggVorbisDecoder::SetFormat(int freq, AudioDecoder::Format format, int chan
 	return true;
 }
 
-bool OggVorbisDecoder::SetPitch(int pitch) {
-	if (pitch != 100) {
-		return false;
-	}
-
-	return true;
-}
-
 int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!ovf)
 		return -1;

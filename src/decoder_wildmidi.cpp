@@ -168,13 +168,6 @@ bool WildMidiDecoder::SetFormat(int freq, AudioDecoder::Format format, int chann
 	return true;
 }
 
-bool WildMidiDecoder::SetPitch(int pitch) {
-	if (pitch != 100)
-		return false;
-
-	return true;
-}
-
 int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!handle)
 		return -1;

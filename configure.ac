@@ -78,6 +78,11 @@ AC_ARG_WITH([libsndfile],[AS_HELP_STRING([--without-libsndfile],
 AS_IF([test "x$with_libsndfile" != "xno"],[
 	PKG_CHECK_MODULES([SNDFILE],[sndfile],[AC_DEFINE(HAVE_LIBSNDFILE,[1],[Disable improved WAV support provided by libsndfile])],[auto_sndfile=0])
 ])
+AC_ARG_WITH([libxmp],[AS_HELP_STRING([--without-libxmp],
+	[Disable tracker module support provided by libxmp. @<:@default=auto@:>@])])
+AS_IF([test "x$with_libxmp" != "xno"],[
+	PKG_CHECK_MODULES([XMP],[libxmp],[AC_DEFINE(HAVE_XMP,[1],[Enable tracker module support provided by libxmp])],[auto_xmp=0])
+])
 AC_ARG_WITH([libspeexdsp],[AS_HELP_STRING([--without-libspeexdsp],
 	[Disable resampling support provided by libspeexdsp. Uses SDL_mixer instead which results in noise. @<:@default=auto@:>@])])
 AS_IF([test "x$with_libspeexdsp" != "xno"],[
