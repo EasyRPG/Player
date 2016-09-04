@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.lang.reflect.Method;
 
+// EasyRPG addition
 import org.easyrpg.player.R;
 
 import android.app.*;
@@ -122,9 +123,10 @@ public class SDLActivity extends Activity {
         Log.v(TAG, "Model: " + android.os.Build.MODEL);
         Log.v(TAG, "onCreate(): " + mSingleton);
         super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.player_activity);
-		        
+
+        // EasyRPG modification: overwrite layout
+        setContentView(R.layout.player_activity);
+
         SDLActivity.initialize();
         // So we can call stuff from static callbacks
         mSingleton = this;
@@ -175,12 +177,12 @@ public class SDLActivity extends Activity {
             mJoystickHandler = new SDLJoystickHandler();
         }
 
-		/* OVERWRITTEN by EASYRPG Activity
-        // mLayout = new AbsoluteLayout(this);
-        // mLayout.addView(mSurface);
+        /* EasyRPG modification: overwrite layout
+        mLayout = new AbsoluteLayout(this);
+        mLayout.addView(mSurface);
 
-        // setContentView(mLayout);
-		*/
+        setContentView(mLayout);
+        */
         
         // Get filename from "Open with" of another application
         Intent intent = getIntent();
@@ -972,9 +974,11 @@ class SDLMain implements Runnable {
     in order to do anything useful.
 
     Because of this, that's where we set up the SDL thread
+
+    EasyRPG modification: disable touch input
 */
 class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
-    View.OnKeyListener, SensorEventListener  {
+    View.OnKeyListener, /*View.OnTouchListener,*/ SensorEventListener  {
 
     // Sensors
     protected static SensorManager mSensorManager;
@@ -992,7 +996,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setFocusableInTouchMode(true);
         requestFocus();
         setOnKeyListener(this);
-        // setOnTouchListener(this); EASYRPG TOUCH DISABLED
+        /* EasyRPG modification: disable touch input
+        setOnTouchListener(this);
+        */
 
         mDisplay = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         mSensorManager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
@@ -1015,7 +1021,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setFocusableInTouchMode(true);
         requestFocus();
         setOnKeyListener(this);
-        // setOnTouchListener(this); EASYRPG TOUCH DISABLED
+        /* EasyRPG modification: disable touch input
+        setOnTouchListener(this);
+        */
         enableSensor(Sensor.TYPE_ACCELEROMETER, true);
     }
 
@@ -1172,13 +1180,13 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     @Override
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
-         // EASYRPG: Handle back button on Xperia
-	     if (event.getKeyCode() == KeyEvent.KEYCODE_MENU ||
-        		((keyCode == KeyEvent.KEYCODE_BACK )&&(!event.isAltPressed())) ) {
-        	return false;
+        // EasyRPG addition: handle back button on Xperia
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU ||
+            ((keyCode == KeyEvent.KEYCODE_BACK )&&(!event.isAltPressed())) ) {
+            return false;
         }
-        // END EASYRPG
-	
+        // End of EasyRPG addition
+
         // Dispatch the different events depending on where they come from
         // Some SOURCE_DPAD or SOURCE_GAMEPAD are also SOURCE_KEYBOARD
         // So, we try to process them as DPAD or GAMEPAD events first, if that fails we try them as KEYBOARD
@@ -1213,7 +1221,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     // Touch events
-    /* EASYRPG: TOUCH DISABLED
+    /* EasyRPG modification: disable touch input
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // Ref: http://developer.android.com/training/gestures/multi.html
@@ -1298,8 +1306,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         }
 
         return true;
-   }
-     */
+    }
+    */
     // Sensor events
     public void enableSensor(int sensortype, boolean enabled) {
         // TODO: This uses getDefaultSensor - what if we have >1 accels?
@@ -1340,10 +1348,11 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                     y = event.values[1];
                     break;
             }
-            // EASYRPG: Prevent movement to be input
-            /*SDLActivity.onNativeAccel(-x / SensorManager.GRAVITY_EARTH,
+            /* EasyRPG modification: prevent movement to be input
+            SDLActivity.onNativeAccel(-x / SensorManager.GRAVITY_EARTH,
                                       y / SensorManager.GRAVITY_EARTH,
-                                      event.values[2] / SensorManager.GRAVITY_EARTH - 1);*/
+                                      event.values[2] / SensorManager.GRAVITY_EARTH - 1);
+            */
         }
     }
 }
