@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
+import org.easyrpg.player.settings.SettingsManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +64,9 @@ public class GameBrowserActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+
+        // Retrieve user's preferences (for application's folder)
+        SettingsManager.init(getApplicationContext());
 
         // Display the "How to use EasyRPG" on the first startup
         GameBrowserHelper.displayHowToMessageOnFirstStartup(this);

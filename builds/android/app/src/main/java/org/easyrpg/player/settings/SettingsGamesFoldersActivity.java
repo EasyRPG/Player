@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.easyrpg.player.DirectoryChooser;
 import org.easyrpg.player.R;
+import org.easyrpg.player.settings.SettingsManager;
 
 public class SettingsGamesFoldersActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout gamesFoldersListLayout;
@@ -21,6 +22,8 @@ public class SettingsGamesFoldersActivity extends AppCompatActivity implements V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_games_folders);
+
+        SettingsManager.init(getApplicationContext());
 
         // Setting UI components
         gamesFoldersListLayout = (LinearLayout) findViewById(R.id.games_folders_list);

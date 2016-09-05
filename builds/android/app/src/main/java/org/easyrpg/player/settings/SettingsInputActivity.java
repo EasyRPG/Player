@@ -20,6 +20,7 @@ import android.widget.TextView;
 import org.easyrpg.player.R;
 import org.easyrpg.player.button_mapping.ButtonMappingActivity;
 import org.easyrpg.player.button_mapping.ButtonMappingManager;
+import org.easyrpg.player.settings.SettingsManager;
 
 public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
     private CheckBox enableVibrationCheckBox, enableVibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox;
@@ -33,6 +34,8 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_inputs);
+
+        SettingsManager.init(getApplicationContext());
 
         this.buttonMappingManager = ButtonMappingManager.getInstance(this);
 

@@ -86,6 +86,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
         super.onCreate(savedInstanceState);
         EasyRpgPlayerActivity.instance = this;
 
+        SettingsManager.init(getApplicationContext());
+
         // Menu configuration
         this.drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
