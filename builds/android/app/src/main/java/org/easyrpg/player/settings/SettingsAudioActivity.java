@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
+import org.easyrpg.player.settings.SettingsManager;
 
 import org.easyrpg.player.R;
 
@@ -15,6 +16,8 @@ public class SettingsAudioActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_audio);
+
+        SettingsManager.init(getApplicationContext());
 
         // Setting UI components
         this.enableAudioCheckbox = (CheckBox) findViewById(R.id.settings_audio);

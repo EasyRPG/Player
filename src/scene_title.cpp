@@ -165,7 +165,9 @@ void Scene_Title::CreateCommandWindow() {
 }
 
 void Scene_Title::PlayTitleMusic() {
-	// Play music
+	// Workaround Android problem: BGM doesn't start when game is started again
+	Game_System::BgmStop();
+	// Play BGM
 	Game_System::BgmPlay(Data::system.title_music);
 }
 
