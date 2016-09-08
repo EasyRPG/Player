@@ -27,8 +27,8 @@
  * FIXME: Make this a proper, generated version header redefined by the build system.
  */
 #define PLAYER_MAJOR 0
-#define PLAYER_MINOR 4
-#define PLAYER_PATCH 1
+#define PLAYER_MINOR 5
+#define PLAYER_PATCH 0
 #define PLAYER_ADDTL ""
 #define PLAYER_VERSION TO_STRING(PLAYER_MAJOR) "." TO_STRING(PLAYER_MINOR) "." TO_STRING(PLAYER_PATCH)
 

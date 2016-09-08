@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 include(CMakeDependentOption)
 
 project(EasyRPG_Player CXX C)
+set(PACKAGE_VERSION "0.5.0")
 
 # Source Files
 set(PLAYER_SRCS
@@ -397,7 +398,7 @@ set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
 	add_custom_command(OUTPUT resources/${MAN_NAME}
-		COMMAND ${A2X_EXECUTABLE} -a player_version="0.4.1" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
+		COMMAND ${A2X_EXECUTABLE} -a player_version="${PACKAGE_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
 		DEPENDS resources/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
@@ -423,7 +424,6 @@ if(DOXYGEN_FOUND)
 	set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 	configure_file(resources/Doxyfile.in resources/Doxyfile @ONLY)
 	unset(DX_DOCDIR)
-	unset(PACKAGE_VERSION)
 	unset(srcdir)
 
 	add_custom_target(player_doc

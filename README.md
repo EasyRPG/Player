@@ -23,7 +23,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - libpng for PNG image support.
 - zlib for XYZ image support.
 
-SDL and SDL_mixer 1.2 are still supported but deprecated.
+SDL and SDL_mixer 1.2 are still supported, but deprecated.
 
 ### extended / recommended
 
@@ -66,8 +66,8 @@ Building requirements:
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.4.1.tar.xz # unpack the tarball 
-    cd easyrpg-player-0.4.1            # enter in the package directory
+    tar xf easyrpg-player-0.5.0.tar.xz # unpack the tarball
+    cd easyrpg-player-0.5.0            # enter in the package directory
     ./configure                        # find libraries, set options
     make                               # compile the executable
 
