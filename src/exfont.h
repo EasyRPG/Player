@@ -16,7 +16,7 @@
  */
 
 // The default EXFONT, composed by filosofiamanga
-// https://easy-rpg.org/forums/viewtopic.php?t=36
+// https://community.easyrpg.org/t/volunteer-for-exfont-replacement/56
 
 #ifndef _EXFONT_H_
 #define _EXFONT_H_
