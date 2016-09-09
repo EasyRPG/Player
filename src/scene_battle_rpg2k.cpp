@@ -154,7 +154,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		// no-op
+		battle_message_window->Clear();
+		break;
 	case State_Escape:
 		battle_message_window->SetActive(true);
 		break;
@@ -217,7 +218,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		// no-op
+		battle_message_window->SetVisible(true);
 		break;
 	case State_Escape:
 		battle_message_window->SetVisible(true);
