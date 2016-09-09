@@ -930,21 +930,21 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		Game_Message::texts.push_back(Data::terms.victory + "\f");
+		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
 		std::stringstream ss;
-		ss << exp << space << Data::terms.exp_received << "\f";
+		ss << exp << space << Data::terms.exp_received;
 		Game_Message::texts.push_back(ss.str());
 		if (money > 0) {
 			ss.str("");
-			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
+			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
 			Game_Message::texts.push_back(ss.str());
 		}
 		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			ss.str("");
-			ss << Data::items[*it - 1].name << space << Data::terms.item_recieved << "\f";
+			ss << Data::items[*it - 1].name << space << Data::terms.item_recieved;
 			Game_Message::texts.push_back(ss.str());
 		}
 
@@ -962,6 +962,15 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 				Game_Actor* actor = static_cast<Game_Actor*>(*it);
 				actor->ChangeExp(actor->GetExp() + exp, true);
 		}
+
+		for (std::string& str : Game_Message::texts) {
+			// FIXME: We really need a more sane API for injecting breaks after each line
+
+			if (!str.empty() && str[str.size() - 1] != '\f') {
+				str += '\f';
+			}
+		}
+
 		Main_Data::game_party->GainGold(money);
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			Main_Data::game_party->AddItem(*it, 1);
