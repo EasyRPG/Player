@@ -424,13 +424,16 @@ void Window_Message::UpdateMessage() {
 				sleep_until = Player::GetFrames() + 60 / 4;
 				++text_index;
 				return;
-				break;
 			case '|':
 				// Second sleep
 				if (instant_speed) break;
 				sleep_until = Player::GetFrames() + 60;
 				++text_index;
 				return;
+			case '\n':
+			case '\f':
+				// \ followed by linebreak, don't skip them
+				--text_index;
 				break;
 			default:
 				if (*text_index == escape_char) {
