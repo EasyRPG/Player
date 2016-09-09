@@ -1,98 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!--Preferences Keys-->
-	<!--GameBrowser Activity-->
-	<string name="autodetect">เลือกภูมิภาคอัตโนมัติ (Recommended)</string>
-	<string name="west_europe">ยุโรปตะวันตก</string>
-	<string name="east_europe">ยุโรปกลาง/ตะวันออก</string>
-	<string name="cyrillic">ซีริลลิก</string>
-	<string name="japan">ญี่ปุ่น</string>
-	<string name="korean">เกาหลี</string>
-	<string name="chinese_simple">จีนตัวย่อ</string>
-	<string name="chinese_traditional">จีนตัวเต็ม</string>
-	<string name="greek">กรีก</string>
-	<string name="turkish">ตุรกี</string>
-	<string name="hebrew">ฮีบรู</string>
-	<string name="arabic">อาราบิก</string>
-	<string name="baltic">บอลติก</string>
-	<string name="thai">ไทย</string>
-	<string name="vietnamese">เวียดนาม</string>
-	<string name="ok">ตกลง</string>
-	<string name="cancel">ยกเลิก</string>
-	<string name="do_want_quit">คุณต้องการที่จะออกหรือไม่?</string>
-	<string name="yes">ใช่</string>
-	<string name="no">ไม่</string>
-	<string name="creating_dir_failed">สร้างโฟลเดอร์ $PATH ล้มเหลว</string>
-	<string name="path_not_readable">$PATH ไม่สามารถอ่านได้</string>
-	<string name="no_games_found_and_explanation">ไม่พบเกม\nคุณสามารถเพิ่มโฟลเดอร์เกมส์ได้ในการตั้งค่า</string>
-	<string name="no_external_storage">ไม่พบที่เก็บข้อมูลภายนอก (เช่น การ์ด SD)</string>
-	<string name="not_valid_game">$PATH ไม่ใช่เกมที่ถูกต้อง</string>
-	<string name="select_game_region">เลือกภูมิภาคของเกม</string>
-	<string name="change_the_layout">เปลี่ยนเค้าโครง</string>
-	<string name="choose_layout">เลือกเค้าโครง</string>
-	<string name="unknown_region">ภูมิภาคไม่รู้จัก</string>
-	<string name="region_modification_failed">เปลี่ยนภูมิภาคล้มเหลว</string>
-	<string name="refresh">รีเฟรช</string>
-	<string name="change_default_mapping">เปลี่ยนค่าเริ่มต้นการทำงานปุ่ม</string>
-	<string name="how_to_use_easy_rpg">วิธีการใช้งาน EasyRPG Player</string>
-	<string name="how_to_use_easy_rpg_explanation">
-วิธีการติดตั้ง:\n
-โดยเริ่มต้นแล้วโฟลเดอร์เกมจะอยู่ที่ /easyrpg/games คุณสามารเพิ่มโฟลเดอร์เกมได้ที่หน้าตั้งค่า\n
-เพิ่มเติม: วาง RTP ไว้ที่ /easyrpg/rtp/2000 สำหรับ RPG Maker 2000 RTP และใน /easyrpg/rtp/2003 สำหรับ RPG Maker 2003 RTP.\n
-\n
-แนะนำ: เกมที่จะตรวจพบควรจะเป็นรูปแบบที่ไม่ถูกบีบอัดในโฟลเดอร์ย่อยของ /easyrpg/games (โดยเริ่มต้น) ตัวอย่างเช่น:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb ใช้ได้\n
-\t/easyrpg/games/MyGame/RPG_RT.ldb ใช้ได้\n
-\t/easyrpg/games/MyGame.zip is ผิด\n
-\n
-ความสามารถเพิ่มเติม:\n
-คุณสามารถเพิ่มปุ่มบนหน้าจอได้โดยการแตะที่ปุ่มแก้ไขตำแหน่งปุ่มบนหน้าจอ\n
-หลังจากนั้นแตตะปุ่มกลับเพื่อเลือกปุ่มเพิ่มเติมสำหรับเพิ่มปุ่มไปยังหน้าจอ
-	</string>
-	
-	<!--Ingame menu-->
-	<string name="toggle_fps">เปลี่ยน FPS</string>
-	<string name="toggle_ui">สลับปุ่มบนหน้าจอ</string>
-	<string name="end_game">ปิดเกม</string>
-	<string name="report_bug">รายงานปัญหา</string>
-	<string name="report_bug_msg">ความสามารถนี้จะโปรแกรมอีเมลของคุณ (เช่น Gmail) เพื่อส่งรายงานปัญหา\n
-ถ้าคุณไม่ต้องการส่งอีเมลหรือไม่มีโปรแกรมที่ใช้อีเมลคุณยังสามารถรายงานปัญหาได้ที่ https://github.com/EasyRPG/Player/issues
-	</string>
-	<string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player.\n
+  <!--GameBrowser Activity-->
+  <string name="autodetect">เลือกภูมิภาคอัตโนมัติ (Recommended)</string>
+  <string name="west_europe">ยุโรปตะวันตก</string>
+  <string name="east_europe">ยุโรปกลาง/ตะวันออก</string>
+  <string name="cyrillic">ซีริลลิก</string>
+  <string name="japan">ญี่ปุ่น</string>
+  <string name="korean">เกาหลี</string>
+  <string name="chinese_simple">จีนตัวย่อ</string>
+  <string name="chinese_traditional">จีนตัวเต็ม</string>
+  <string name="greek">กรีก</string>
+  <string name="turkish">ตุรกี</string>
+  <string name="hebrew">ฮีบรู</string>
+  <string name="arabic">อาราบิก</string>
+  <string name="baltic">บอลติก</string>
+  <string name="thai">ไทย</string>
+  <string name="vietnamese">เวียดนาม</string>
+  <string name="ok">ตกลง</string>
+  <string name="cancel">ยกเลิก</string>
+  <string name="do_want_quit">คุณต้องการที่จะออกหรือไม่?</string>
+  <string name="yes">ใช่</string>
+  <string name="no">ไม่</string>
+  <string name="creating_dir_failed">สร้างโฟลเดอร์ $PATH ล้มเหลว</string>
+  <string name="path_not_readable">$PATH ไม่สามารถอ่านได้</string>
+  <string name="no_external_storage">ไม่พบที่เก็บข้อมูลภายนอก (เช่น การ์ด SD)</string>
+  <string name="not_valid_game">$PATH ไม่ใช่เกมที่ถูกต้อง</string>
+  <string name="select_game_region">เลือกภูมิภาคของเกม</string>
+  <string name="change_the_layout">เปลี่ยนเค้าโครง</string>
+  <string name="choose_layout">เลือกเค้าโครง</string>
+  <string name="unknown_region">ภูมิภาคไม่รู้จัก</string>
+  <string name="region_modification_failed">เปลี่ยนภูมิภาคล้มเหลว</string>
+  <string name="refresh">รีเฟรช</string>
+  <string name="change_default_mapping">เปลี่ยนค่าเริ่มต้นการทำงานปุ่ม</string>
+  <string name="how_to_use_easy_rpg">วิธีการใช้งาน EasyRPG Player</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">เปลี่ยน FPS</string>
+  <string name="toggle_ui">สลับปุ่มบนหน้าจอ</string>
+  <string name="end_game">ปิดเกม</string>
+  <string name="report_bug">รายงานปัญหา</string>
+  <string name="report_bug_msg">ความสามารถนี้จะโปรแกรมอีเมลของคุณ (เช่น Gmail) เพื่อส่งรายงานปัญหา\n\nถ้าคุณไม่ต้องการส่งอีเมลหรือไม่มีโปรแกรมที่ใช้อีเมลคุณยังสามารถรายงานปัญหาได้ที่ https://github.com/EasyRPG/Player/issues</string>
+  <string name="report_bug_mail">ขอบคุณที่สนับสนุน EasyRPG Player.\n
 ไฟล์ประวัติการทำงานและบันทึกเกมของคุณจะถูกแนบไปกับอีเมลนี้\n
 ได้โปรดอย่านำไฟล์ประวัติออก พวกเราต้องการข้อมูลเหล่านี้ในการหาข้อผอดพลาด\n
-พวกเราพูดภาษาอังกฤษ เยอรมันและสเปน\n
-กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย\n
-[คุณสามารถนำข้อความแนะนำนี้ออกได้]
-	</string>
-
-	<!--Settings Activity-->
-	<string name="settings">การตั้งค่า</string>
-	<string name="add_game_folder">เพิ่มโฟลเดอร์เกม</string>
-	<string name="enable_vibration">เปิดการสั่น</string>
-	<string name="vibrate_when_sliding_direction">สั่นเมื่อเลื่อนไปอีกทาง</string>
-	<string name="enable_audio">เปิดเสียง</string>
-	<string name="input_layout_transparency">ความโปร่งใส่ของเค้าโครงรับค่า:</string>
-	<string name="ignore_size_settings">เพิกเฉยต่อการตั้งค่าขนาดปุ่มและนำทั้งหมดนี้ไปใช้กับปุ่มทั้งหมด:</string>
-	<string name="no_read_access_on_dir">ไม่มีสิทธิ์การอ่านที่ %1$s</string>
-	<string name="game_folders">โฟลเดอร์ EasyRPG</string>
-	<string name="quick_access">เข้าถึงอย่างรวดเร็ว</string>
-	
-	<!--InputLayout Managing-->
-	<string name="manage_input_layouts">จัดการเค้าโครงรับค่า:</string>
-	<string name="add_an_input_layout">เพิ่มเค้าโครงรับค่า</string>
-	<string name="set_as_default">ตั้งเป็นค่าเริ่มต้น</string>
-	<string name="edit_name">แก้ไขชื่อ</string>
-	<string name="edit_layout">แก้ไขเค้าโครง</string>
-	<string name="delete">ลบ</string>
-	<string name="default_layout">ค่าเริ่มต้น</string>
-
-	<!--ButtonMapping Activity-->
-	<string name="add_a_button">เพิ่มปุ่ม</string>
-	<string name="reset_button_mapping">รีเซ็ตการตั้งค่าปุ่ม</string>
-	<string name="exit_without_saving">ออกโดยไม่บันทึก</string>
-	<string name="save_and_quit">บันทึกและออก</string>
-	<string name="key_enter">Enter (Z)</string>
-	<string name="key_cancel">Cancel (ESC and X)</string>
-	<string name="key_shift">Shift</string>
+กรุณาบอกพวกเราเกีี่ยวกับข้อผิดพลาดเพิ่มเติมด้วย\n\n
+</string>
+  <!--Settings Activities-->
+  <string name="settings">การตั้งค่า</string>
+  <string name="add_game_folder">เพิ่มโฟลเดอร์เกม</string>
+  <string name="enable_vibration">เปิดการสั่น</string>
+  <string name="vibrate_when_sliding_direction">สั่นเมื่อเลื่อนไปอีกทาง</string>
+  <string name="enable_audio">เปิดเสียง</string>
+  <string name="input_layout_transparency">ความโปร่งใส่ของเค้าโครงรับค่า:</string>
+  <string name="ignore_size_settings">เพิกเฉยต่อการตั้งค่าขนาดปุ่มและนำทั้งหมดนี้ไปใช้กับปุ่มทั้งหมด:</string>
+  <string name="no_read_access_on_dir">ไม่มีสิทธิ์การอ่านที่ %1$s</string>
+  <string name="quick_access">เข้าถึงอย่างรวดเร็ว</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">จัดการเค้าโครงรับค่า:</string>
+  <string name="add_an_input_layout">เพิ่มเค้าโครงรับค่า</string>
+  <string name="set_as_default">ตั้งเป็นค่าเริ่มต้น</string>
+  <string name="edit_name">แก้ไขชื่อ</string>
+  <string name="edit_layout">แก้ไขเค้าโครง</string>
+  <string name="delete">ลบ</string>
+  <string name="default_layout">ค่าเริ่มต้น</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">เพิ่มปุ่ม</string>
+  <string name="reset_button_mapping">รีเซ็ตการตั้งค่าปุ่ม</string>
+  <string name="exit_without_saving">ออกโดยไม่บันทึก</string>
+  <string name="save_and_quit">บันทึกและออก</string>
+  <string name="key_enter">Enter (Z)</string>
+  <string name="key_cancel">Cancel (ESC and X)</string>
+  <string name="key_shift">Shift</string>
+  <!--GameBrowserAPI15-->
 </resources>
