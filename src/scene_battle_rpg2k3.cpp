@@ -949,9 +949,6 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		}
 
 		message_window->SetHeight(32);
-		Game_Message::SetPositionFixed(true);
-		Game_Message::SetPosition(0);
-		Game_Message::SetTransparent(false);
 		Game_Message::message_waiting = true;
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));

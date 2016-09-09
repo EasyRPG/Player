@@ -37,8 +37,6 @@ namespace Game_Message {
 	 */
 	void FullClear();
 
-	bool Busy();
-
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;
 
