@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Автовибір регіону (рекомендовано)</string>
+  <string name="west_europe">Західноєвропейський</string>
+  <string name="east_europe">Центрально- і східноєвропейський</string>
+  <string name="cyrillic">Кіриличний</string>
+  <string name="japan">Японський</string>
+  <string name="korean">Корейський</string>
+  <string name="chinese_simple">Китайський (спрощені форми)</string>
+  <string name="chinese_traditional">Китайський (традиційні форми)</string>
+  <string name="greek">Грецький</string>
+  <string name="turkish">Турецький</string>
+  <string name="hebrew">Іврит</string>
+  <string name="arabic">Арабський</string>
+  <string name="baltic">Балтійський</string>
+  <string name="thai">Тайський</string>
+  <string name="vietnamese">В’єтнамський</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Відміна</string>
+  <string name="do_want_quit">Ви справді бажаєте вийти?</string>
+  <string name="yes">Так</string>
+  <string name="no">Ні</string>
+  <string name="creating_dir_failed">Не вийшло створити директорію $PATH</string>
+  <string name="path_not_readable">Неможливо прочитать $PATH</string>
+  <string name="no_games_found_and_explanation">Не знайдено ігор для RPG Maker 2000/2003.
+Додаткові директорії для ігор можна вказати в налаштуваннях.</string>
+  <string name="no_external_storage">Не знайдено зовнішнього диску (напр., SD-картки)</string>
+  <string name="not_valid_game">$PATH не є правильною грою</string>
+  <string name="select_game_region">Вибрати регіон гри</string>
+  <string name="change_the_layout">Змінити інтерфейс</string>
+  <string name="choose_layout">Вибрати інтерфейс</string>
+  <string name="unknown_region">Невідомий регіон</string>
+  <string name="region_modification_failed">Не вийшло змінити регіон</string>
+  <string name="refresh">Обновити</string>
+  <string name="change_default_mapping">Змінити стандартні значення кнопок</string>
+  <string name="how_to_use_easy_rpg">Як використовувати EasyRPG Player</string>
+  <string name="how_to_use_easy_rpg_explanation">Інструкції для встановлення:\n\nТипово ігри шукаються в /easyrpg/games. Ви можете вказати додаткові директорії з іграми в налаштуваннях.\n\nНеобовʼязково: Перенесіть RTP в /easyrpg/rtp/2000, (RPG Maker 2000 RTP) і в /easyrpg/rtp/2003 (RPG Maker 2003 RTP).\n\nЩоб програма могла знайти ігри, їх треба розмістити в піддиректорії всередені /easyrpg/games (типово), напр.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame/RPG_RT.ldb — правильно.\n\t/easyrpg/games/MyGame.zip — НЕПРАВИЛЬНО. Файли ZIP і EXE не підтримуються.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Показ FPS</string>
+  <string name="toggle_ui">Показ віртуальних кнопок</string>
+  <string name="end_game">Закінчити гру</string>
+  <string name="report_bug">Повідомити про помилку</string>
+  <string name="report_bug_msg">Ця функція відкриє вашу поштову програму (напр. Gmail), щоб дослати повідомлення про помилку.\n\nЯкщо ви не хочете досилати повідомлення поштою, або ваша поштова програма не налаштована, можна додати новий опис проблеми на https://github.com/EasyRPG/Player/issues</string>
+  <string name="report_bug_mail">Дякую за падтримку EasyRPG Player!\n
+До цього листа було додано лог-файл та збережені ігри.\n
+Будь ласка, не видаляйте лог-файл! Нам потрібне збереження недалеко від місця, де відбувається помилка.\n
+Будь ласка, детально опишіть, що саме не працює.\n\n</string>
+  <!--Settings Activities-->
+  <string name="video">Відео</string>
+  <string name="audio">Аудіо</string>
+  <string name="input">Увід</string>
+  <string name="game_folders">Директорії з іграми</string>
+  <string name="settings">Налаштування</string>
+  <string name="add_game_folder">Додати директорію з іграми</string>
+  <string name="enable_vibration">Дозволити вібрацію</string>
+  <string name="vibrate_when_sliding_direction">Вібрувати підчас переходу в іншому напрямку за один дотик</string>
+  <string name="enable_audio">Увімкнути аудіо</string>
+  <string name="input_layout_transparency">Прозорість інтерфейсу вводу:</string>
+  <string name="ignore_size_settings">Ігнорувати розміри кнопок і встановити їх всіх такими:</string>
+  <string name="no_read_access_on_dir">Немає доступу для читання до %1$s</string>
+  <string name="quick_access">Швидкий доступ</string>
+  <string name="force_landscape_mode">Зафіксувати горизонтальну орієнтацію</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">Керування інтерфейсами вводу:</string>
+  <string name="add_an_input_layout">Додати інтерфейс вводу</string>
+  <string name="set_as_default">Встановити стандартним</string>
+  <string name="edit_name">Змінити назву</string>
+  <string name="edit_layout">Змінити інтерфейс</string>
+  <string name="delete">Видалити</string>
+  <string name="default_layout">Стандартний</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">Додати кнопку</string>
+  <string name="reset_button_mapping">Відкинути значення кнопок</string>
+  <string name="exit_without_saving">Вийти без збереження</string>
+  <string name="save_and_quit">Зберегти й вийти</string>
+  <string name="key_enter">Enter (Z)</string>
+  <string name="key_cancel">Відміна (ESC і X)</string>
+  <string name="key_shift">Shift</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Відкрити бокове меню</string>
+  <string name="navigation_drawer_close">Закрити бокове меню</string>
+  <string name="menu">Відкрити меню Android</string>
+</resources>
