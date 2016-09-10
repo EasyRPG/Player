@@ -450,7 +450,7 @@ void Game_Character::Move(int dir) {
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
 
 	SetDirection(dir);
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		if (dir > 3) // Diagonal
 			SetSpriteDirection(GetSpriteDirection() % 2 ? -dx + 2 : dy + 1);
 		else
