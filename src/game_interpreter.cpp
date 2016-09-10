@@ -2354,8 +2354,13 @@ bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { /
 		return true;
 
 	Game_Event* evnt = Game_Map::GetEvent(event_id);
-	if (evnt)
+	if (evnt) {
 		evnt->SetActive(false);
+
+		// Parallel map events shall stop immediately
+		if (!main_flag)
+			return false;
+	}
 
 	return true;
 }

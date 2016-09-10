@@ -97,8 +97,8 @@ bool Game_Character::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
 		int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
-		return ((MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)) ||
-			(MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)));
+		return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
+			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
 	}
 
 	return Game_Map::MakeWay(x, y, d, *this);
@@ -450,7 +450,7 @@ void Game_Character::Move(int dir) {
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
 
 	SetDirection(dir);
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		if (dir > 3) // Diagonal
 			SetSpriteDirection(GetSpriteDirection() % 2 ? -dx + 2 : dy + 1);
 		else

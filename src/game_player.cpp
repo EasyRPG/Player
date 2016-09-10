@@ -386,7 +386,7 @@ void Game_Player::Update() {
 		}
 
 		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && Input::IsTriggered(Input::CANCEL)) {
+		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && Input::IsTriggered(Input::CANCEL)) {
 			Game_Temp::menu_calling = true;
 		}
 	}
