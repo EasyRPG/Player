@@ -6,6 +6,158 @@ include(CMakeDependentOption)
 
 project(EasyRPG_Player CXX C)
 
+# Source Files
+set(PLAYER_SRCS
+	src/async_handler.cpp
+	src/audio_al.cpp
+	src/audio.cpp
+	src/audio_decoder.cpp
+	src/audio_resampler.cpp
+	src/audio_sdl.cpp
+	src/audio_secache.cpp
+	src/background.cpp
+	src/baseui.cpp
+	src/battle_animation.cpp
+	src/bitmap.cpp
+	src/cache.cpp
+	src/color.cpp
+	src/decoder_fmmidi.cpp
+	src/decoder_libsndfile.cpp
+	src/decoder_mpg123.cpp
+	src/decoder_oggvorbis.cpp
+	src/decoder_wav.cpp
+	src/decoder_wildmidi.cpp
+	src/decoder_xmp.cpp
+	src/effects.cpp
+	src/filefinder.cpp
+	src/font.cpp
+	src/frame.cpp
+	src/game_actor.cpp
+	src/game_actors.cpp
+	src/game_battlealgorithm.cpp
+	src/game_battle.cpp
+	src/game_battler.cpp
+	src/game_character.cpp
+	src/game_commonevent.cpp
+	src/game_enemy.cpp
+	src/game_enemyparty.cpp
+	src/game_event.cpp
+	src/game_interpreter_battle.cpp
+	src/game_interpreter.cpp
+	src/game_interpreter_map.cpp
+	src/game_map.cpp
+	src/game_message.cpp
+	src/game_party_base.cpp
+	src/game_party.cpp
+	src/game_picture.cpp
+	src/game_player.cpp
+	src/game_screen.cpp
+	src/game_switches.cpp
+	src/game_system.cpp
+	src/game_targets.cpp
+	src/game_temp.cpp
+	src/game_variables.cpp
+	src/game_vehicle.cpp
+	src/graphics.cpp
+	src/hslrgb.cpp
+	src/image_bmp.cpp
+	src/image_png.cpp
+	src/image_xyz.cpp
+	src/input_buttons_desktop.cpp
+	src/input_buttons_gekko.cpp
+	src/input_buttons_opendingux.cpp
+	src/input_buttons_psp.cpp
+	src/input.cpp
+	src/main_data.cpp
+	src/message_overlay.cpp
+	src/output.cpp
+	src/plane.cpp
+	src/player.cpp
+	src/rect.cpp
+	src/registry.cpp
+	src/registry_wine.cpp
+	src/rtp_table.cpp
+	src/scene_actortarget.cpp
+	src/scene_battle.cpp
+	src/scene_battle_rpg2k3.cpp
+	src/scene_battle_rpg2k.cpp
+	src/scene.cpp
+	src/scene_debug.cpp
+	src/scene_end.cpp
+	src/scene_equip.cpp
+	src/scene_file.cpp
+	src/scene_gamebrowser.cpp
+	src/scene_gameover.cpp
+	src/scene_item.cpp
+	src/scene_load.cpp
+	src/scene_logo.cpp
+	src/scene_map.cpp
+	src/scene_menu.cpp
+	src/scene_name.cpp
+	src/scene_order.cpp
+	src/scene_save.cpp
+	src/scene_shop.cpp
+	src/scene_skill.cpp
+	src/scene_status.cpp
+	src/scene_teleport.cpp
+	src/scene_title.cpp
+	src/screen.cpp
+	src/sdl_ui.cpp
+	src/shinonome_gothic.cpp
+	src/shinonome_mincho.cpp
+	src/sprite_airshipshadow.cpp
+	src/sprite_battler.cpp
+	src/sprite_character.cpp
+	src/sprite.cpp
+	src/spriteset_battle.cpp
+	src/spriteset_map.cpp
+	src/sprite_timer.cpp
+	src/text.cpp
+	src/tilemap.cpp
+	src/tilemap_layer.cpp
+	src/tone.cpp
+	src/utils.cpp
+	src/util_win.cpp
+	src/weather.cpp
+	src/window_about.cpp
+	src/window_actorinfo.cpp
+	src/window_actorstatus.cpp
+	src/window_actortarget.cpp
+	src/window_base.cpp
+	src/window_battlecommand.cpp
+	src/window_battlemessage.cpp
+	src/window_battleoption.cpp
+	src/window_battlestatus.cpp
+	src/window_command.cpp
+	src/window.cpp
+	src/window_equip.cpp
+	src/window_equipitem.cpp
+	src/window_equipstatus.cpp
+	src/window_face.cpp
+	src/window_gamelist.cpp
+	src/window_gold.cpp
+	src/window_help.cpp
+	src/window_item.cpp
+	src/window_keyboard.cpp
+	src/window_menustatus.cpp
+	src/window_message.cpp
+	src/window_name.cpp
+	src/window_numberinput.cpp
+	src/window_savefile.cpp
+	src/window_selectable.cpp
+	src/window_shopbuy.cpp
+	src/window_shop.cpp
+	src/window_shopnumber.cpp
+	src/window_shopparty.cpp
+	src/window_shopsell.cpp
+	src/window_shopstatus.cpp
+	src/window_skill.cpp
+	src/window_skillstatus.cpp
+	src/window_targetstatus.cpp
+	src/window_teleport.cpp
+	src/window_varlist.cpp
+)
+
 # Include directories
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
@@ -71,7 +223,7 @@ function(find_lib LIBNAME COND)
 endfunction()
 
 # liblcf
-option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development")
+option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development" OFF)
 set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING "Git repository of liblcf to clone when building liblcf. Requires PLAYER_BUILD_LIBLCF=ON.")
 
 if(PLAYER_BUILD_LIBLCF)
@@ -173,6 +325,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		message(FATAL_ERROR "Bad FmMidi setting")
 	endif()
 	
+	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+		list(APPEND PLAYER_SRCS
+			src/midisequencer.cpp
+			src/midisynth.cpp
+		)
+	endif()
+	
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
 	find_lib("XMP" PLAYER_WITH_XMP)
@@ -211,20 +370,29 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
-# entry point
-set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+# Entry point
+set(EXE_FILES "src/main.cpp")
 
-# static library
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRCS)
-list(REMOVE_ITEM SRCS ${MAIN_FILE})
-list(APPEND SRCS ${SHINONOME_SRCS})
+# Add prefix (CMAKE_CURRENT_SOURCE_DIR) to list elements
+FUNCTION(PREPEND var prefix)
+   SET(listVar "")
+   FOREACH(f ${ARGN})
+      LIST(APPEND listVar "${prefix}/${f}")
+   ENDFOREACH(f)
+   SET(${var} "${listVar}" PARENT_SCOPE)
+ENDFUNCTION(PREPEND)
+
+PREPEND(PLAYER_SRCS ${CMAKE_CURRENT_SOURCE_DIR} ${PLAYER_SRCS})
+PREPEND(EXE_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${EXE_FILES})
+
+# Static library
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
+	list(APPEND PLAYER_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
 endif()
-add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
+add_library(${PROJECT_NAME}_Static STATIC ${PLAYER_SRCS})
 
-# executable
-add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
+# Executable
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${EXE_FILES})
 foreach(i ${PROJECT_NAME} ${PROJECT_NAME})
 	target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
 	add_dependencies(${i} ${PROJECT_NAME}_Static)
@@ -236,7 +404,6 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
 # manpage
 # Handled as extra target "man"
-
 set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
@@ -260,7 +427,6 @@ endif()
 
 # Doxygen
 # Handled as extra target "doc"
-
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
 	# fake autotools variables
@@ -273,7 +439,7 @@ if(DOXYGEN_FOUND)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
-		DEPENDS ${SRCS} ${MAIN_FILE}
+		DEPENDS ${PLAYER_SRCS} ${EXE_FILES}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
 	add_custom_target(doc)
@@ -283,7 +449,7 @@ if(DOXYGEN_FOUND)
 	endif()
 endif()
 
-# test
+# Unit tests
 option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 
 if(PLAYER_ENABLE_TESTS)
