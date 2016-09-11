@@ -820,6 +820,7 @@ std::string Player::GetEncoding() {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::vector<std::string> encodings = ReaderUtil::DetectEncodings(ldb);
 
+#ifndef EMSCRIPTEN
 		for (std::string& enc : encodings) {
 			// Heuristic: Check if encoded title and system name matches the one on the filesystem
 			// When yes is a good encoding. Otherwise try the next ones.
@@ -842,6 +843,7 @@ std::string Player::GetEncoding() {
 				Output::Debug("Detected encoding: %s. Files not found. Trying next.", enc.c_str());
 			}
 		}
+#endif
 
 		if (!encodings.empty() && encoding.empty()) {
 			// No encoding found that matches the files, maybe RTP missing.

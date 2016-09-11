@@ -569,8 +569,7 @@ void Game_Character::TurnTowardHero() {
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		Turn((sx > 0) ? Left : Right);
-	}
-	else if ( std::abs(sx) < std::abs(sy) ) {
+	} else {
 		Turn((sy > 0) ? Up : Down);
 	}
 }
@@ -581,8 +580,7 @@ void Game_Character::TurnAwayFromHero() {
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		Turn((sx > 0) ? Right : Left);
-	}
-	else if ( std::abs(sx) < std::abs(sy) ) {
+	} else {
 		Turn((sy > 0) ? Down : Up);
 	}
 }

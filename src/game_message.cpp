@@ -65,15 +65,6 @@ void Game_Message::FullClear() {
 	SemiClear();
 	SetFaceName("");
 	SetFaceIndex(0);
-
-	/*background = true;
-	position = 2;
-	fixed_position = false;
-	dont_halt = false;*/
-}
-
-bool Game_Message::Busy() {
-	return texts.size() > 0;
 }
 
 std::string Game_Message::GetFaceName() {
@@ -109,6 +100,10 @@ void Game_Message::SetFaceRightPosition(bool right) {
 }
 
 bool Game_Message::IsTransparent() {
+	if (Player::IsRPG2k() && Game_Temp::battle_running) {
+		return false;
+	}
+
 	return data.message_transparent != 0;
 }
 
@@ -170,7 +165,6 @@ int Game_Message::GetRealPosition() {
 			else {
 				return 1;
 			}
-			break;
 		default: // Down
 			return disp >= (16 * 10) ? 0 : 2;
 		};

@@ -52,6 +52,25 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	RPG::Music previous_music = data.current_music;
 	data.current_music = bgm;
 
+	// Validate
+	if (bgm.volume < 0 || bgm.volume > 100) {
+		data.current_music.volume = 100;
+
+		Output::Debug("BGM %s has invalid volume %d", bgm.name.c_str(), bgm.volume);
+	}
+
+	if (bgm.fadein < 0 || bgm.fadein > 10000) {
+		data.current_music.fadein = 0;
+
+		Output::Debug("BGM %s has invalid fadein %d", bgm.name.c_str(), bgm.fadein);
+	}
+
+	if (bgm.tempo < 50 || bgm.tempo > 200) {
+		data.current_music.tempo = 100;
+
+		Output::Debug("BGM %s has invalid tempo %d", bgm.name.c_str(), bgm.tempo);
+	}
+
 	// (OFF) means play nothing
 	// A Polish RPG Maker translation overtranslated the (OFF) reserved string.
 	// This particular translation uses (Brak) in editor for these cases.
@@ -61,14 +80,14 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	if (!bgm.name.empty() && bgm.name != "(OFF)" && bgm.name != "(Brak)") {
 		// Same music: Only adjust volume and speed
 		if (previous_music.name == bgm.name) {
-			if (previous_music.volume != bgm.volume) {
+			if (previous_music.volume != data.current_music.volume) {
 				if (!bgm_pending) { // Delay if not ready
-					Audio().BGM_Volume(bgm.volume);
+					Audio().BGM_Volume(data.current_music.volume);
 				}
 			}
-			if (previous_music.tempo != bgm.tempo) {
+			if (previous_music.tempo != data.current_music.tempo) {
 				if (!bgm_pending) { // Delay if not ready
-					Audio().BGM_Pitch(bgm.tempo);
+					Audio().BGM_Pitch(data.current_music.tempo);
 				}
 			}
 		} else {
@@ -112,8 +131,22 @@ void Game_System::SePlay(RPG::Sound const& se) {
 	if (se.volume == 0)
 		return;
 
+	int volume = se.volume;
+	int tempo = se.tempo;
+
+	// Validate
+	if (se.volume < 0 || se.volume > 100) {
+		Output::Debug("SE %s has invalid volume %d", se.name.c_str(), se.volume);
+		volume = 100;
+	}
+
+	if (se.tempo < 50 || se.tempo > 200) {
+		Output::Debug("SE %s has invalid tempo %d", se.name.c_str(), se.tempo);
+		tempo = 100;
+	}
+
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, se.volume, se.tempo));
+	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, volume, tempo));
 	request->Start();
 }
 
@@ -311,7 +344,6 @@ void Game_System::SetTransition(int which, int transition) {
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
 	bgm_pending = false;
-
 	std::string const path = FileFinder::FindMusic(result->file);
 	if (path.empty()) {
 		Output::Debug("Music not found: %s", result->file.c_str());

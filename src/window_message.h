@@ -121,9 +121,10 @@ public:
 	 * The text_index must be on the char following \ when
 	 * calling.
 	 *
+	 * @param success Parsing was successful.
 	 * @return the final text output of the code.
 	 */
-	std::string ParseCommandCode();
+	std::string ParseCommandCode(bool& success);
 
 	/**
 	 * Stub. For choice.

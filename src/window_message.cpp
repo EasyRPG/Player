@@ -87,35 +87,35 @@ void Window_Message::StartMessageProcessing() {
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
-	text_index = text.begin();
+	text_index = text.end();
 	end = text.end();
 
 	// Apply commands that insert text
-	while (std::distance(text_index, end) > 1) {
-		if (*text_index++ == escape_char) {
-			switch (tolower(*text_index)) {
+	while (std::distance(text_index, text.begin()) <= -1) {
+		switch (tolower(*text_index--)) {
 			case 'n':
 			case 'v':
 			{
+				if (*text_index != escape_char) {
+					continue;
+				}
+				++text_index;
+
 				auto start_code = text_index - 1;
-				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode());
-				if (command_result.empty()) {
-					text_index = start_code + 2;
+				bool success;
+				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success));
+				if (!success) {
+					text_index = start_code - 2;
 					continue;
 				}
 				text.replace(start_code, text_index + 1, command_result);
 				// Start from the beginning, the inserted text might add new commands
-				text_index = text.begin();
+				text_index = text.end();
 				end = text.end();
 				break;
 			}
 			default:
-				if (*text_index == escape_char) {
-					// Do not replace this to avoid parsing \\v[1] as \v[1]
-					++text_index;
-				}
 				break;
-			}
 		}
 	}
 
@@ -424,13 +424,16 @@ void Window_Message::UpdateMessage() {
 				sleep_until = Player::GetFrames() + 60 / 4;
 				++text_index;
 				return;
-				break;
 			case '|':
 				// Second sleep
 				if (instant_speed) break;
 				sleep_until = Player::GetFrames() + 60;
 				++text_index;
 				return;
+			case '\n':
+			case '\f':
+				// \ followed by linebreak, don't skip them
+				--text_index;
 				break;
 			default:
 				if (*text_index == escape_char) {
@@ -529,10 +532,11 @@ int Window_Message::ParseParameter(bool& is_valid) {
 	return num;
 }
 
-std::string Window_Message::ParseCommandCode() {
+std::string Window_Message::ParseCommandCode(bool& success) {
 	int parameter;
 	bool is_valid;
 	uint32_t cmd_char = *text_index;
+	success = true;
 
 	switch (tolower(cmd_char)) {
 	case 'n':
@@ -565,6 +569,7 @@ std::string Window_Message::ParseCommandCode() {
 	default:;
 		// When this happens text_index was not on a \ during calling
 	}
+	success = false;
 	return "";
 }
 

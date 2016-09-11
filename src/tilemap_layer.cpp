@@ -473,8 +473,10 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	// Calculate the D block combination
 	short subtile = ID - 4000 - block * 50;
 
-	if (block >= 12 || subtile >= 50 || block < 0 || subtile < 0)
-		Output::Error("Index out of range: %d %d", block, subtile);
+	if (block >= 12 || subtile >= 50 || block < 0 || subtile < 0) {
+		Output::Warning("Tilemap index out of range: %d %d", block, subtile);
+		return;
+	}
 
 	if (autotiles_d[block][subtile].valid)
 		return;
@@ -600,7 +602,7 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	chipset_effect = Bitmap::Create(chipset->width(), chipset->height());
 	chipset_tone_tiles.clear();
 
-	if (autotiles_ab_next != 0 && autotiles_d_screen != 0 && layer == 0) {
+	if (autotiles_ab_next != 0 && autotiles_d_screen != nullptr && layer == 0) {
 		autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
 		autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
 

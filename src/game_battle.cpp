@@ -49,9 +49,6 @@ namespace Game_Battle {
 
 namespace {
 	int turn;
-	bool message_is_fixed;
-	int message_position;
-	bool message_is_transparent;
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
@@ -77,9 +74,6 @@ void Game_Battle::Init() {
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 	page_executed.resize(troop->pages.size());
 	page_can_run.resize(troop->pages.size());
-
-	message_is_fixed = Game_Message::IsPositionFixed();
-	message_position = Game_Message::GetPosition();
 
 	RefreshEvents([](const RPG::TroopPage&) {
 		return false;
@@ -108,10 +102,6 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
-
-	Game_Message::SetPositionFixed(message_is_fixed);
-	Game_Message::SetPosition(message_position);
-	Game_Message::SetTransparent(message_is_transparent);
 }
 
 void Game_Battle::Update() {

@@ -852,7 +852,7 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 		return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
 	}
 	else {
-		return source->GetName() + ": " + skill.name;
+		return skill.name;
 	}
 }
 
@@ -1006,7 +1006,7 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 		return source->GetName() + " " + item.name + Data::terms.use_item;
 	}
 	else {
-		return source->GetName() + ": " + item.name;
+		return item.name;
 	}
 }
 

@@ -154,7 +154,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		// no-op
+		battle_message_window->Clear();
+		break;
 	case State_Escape:
 		battle_message_window->SetActive(true);
 		break;
@@ -217,7 +218,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		// no-op
+		battle_message_window->SetVisible(true);
 		break;
 	case State_Escape:
 		battle_message_window->SetVisible(true);
@@ -828,10 +829,6 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		int money = Main_Data::game_enemyparty->GetMoney();
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
-
-		Game_Message::SetPositionFixed(true);
-		Game_Message::SetPosition(2);
-		Game_Message::SetTransparent(false);
 
 		Game_Message::texts.push_back(Data::terms.victory);
 

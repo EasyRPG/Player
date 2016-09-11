@@ -106,7 +106,7 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	for (size_t i = 0; i < strs.size(); i++)
 		messages.push_back(MessageOverlayItem(strs[i], color));
 
-	if (messages.size() > (unsigned)message_max) {
+	while (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
 	dirty = true;

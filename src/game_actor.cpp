@@ -262,9 +262,10 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	// The .changed_class field is not reliable (and the purpose is unknown)
-	// because it is only true when the class was changed by an event
-	int n = GetData().class_id > 0
+	// Looks like RPG_RT only applies Class changes (changed_class == true)
+	// when the class was changed by the ChangeClass event, otherwise it uses
+	// the normal actor attributes.
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
 
@@ -279,7 +280,7 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = GetData().class_id > 0
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
 
@@ -294,7 +295,7 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
 
@@ -318,7 +319,7 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
 
@@ -342,7 +343,7 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
 
@@ -366,7 +367,7 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
+	int n = GetData().changed_class && GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
 
@@ -392,7 +393,7 @@ int Game_Actor::GetBaseAgi() const {
 int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
-	if (GetData().class_id > 0) {
+	if (GetData().changed_class && GetData().class_id > 0) {
 		const RPG::Class& klass = Data::classes[GetData().class_id - 1];
 		base = klass.exp_base;
 		inflation = klass.exp_inflation;
@@ -921,6 +922,11 @@ void Game_Actor::SetClass(int _class_id) {
 		GetData().battler_animation = 0;
 	}
 	MakeExpList();
+
+	// Set EXP to at least minimum value
+	if (GetExp() < GetBaseExp()) {
+		SetExp(GetBaseExp());
+	}
 }
 
 std::string Game_Actor::GetClassName() const {
