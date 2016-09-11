@@ -41,10 +41,11 @@ void Plane::Draw() {
 	if (needs_refresh) {
 		needs_refresh = false;
 
-		if (!tone_bitmap) {
+		if (!tone_bitmap ||
+			bitmap->GetWidth() != tone_bitmap->GetWidth() ||
+			bitmap->GetHeight() != tone_bitmap->GetHeight()) {
 			tone_bitmap = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight());
 		}
-
 		tone_bitmap->Clear();
 		tone_bitmap->ToneBlit(0, 0, *bitmap, bitmap->GetRect(), tone_effect, Opacity::opaque);
 	}
