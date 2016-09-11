@@ -139,9 +139,10 @@ void Scene_File::Update() {
 
 	unsigned int old_top_index = top_index;
 	unsigned int old_index = index;
+	unsigned int max_index = file_windows.size() - 1;
 
 	if (Input::IsRepeated(Input::DOWN)) {
-		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {
+		if (Input::IsTriggered(Input::DOWN) || index < max_index) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			index = (index + 1) % file_windows.size();
 		}
@@ -151,10 +152,19 @@ void Scene_File::Update() {
 	if (Input::IsRepeated(Input::UP)) {
 		if (Input::IsTriggered(Input::UP) || index >= 1) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
-			index = (index + file_windows.size() - 1) % file_windows.size();
+			index = (index + max_index) % file_windows.size();
 		}
 
 		//top_index = std::min(top_index, index);
+	}
+
+	if (Input::IsRepeated(Input::PAGE_DOWN) && index < max_index) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		index = (index + 3 <= max_index) ? index + 3 : max_index;
+	}
+	if (Input::IsRepeated(Input::PAGE_UP) && index >= 1) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+		index = (index > 3) ? index - 3 : 0;
 	}
 
 	if (index > top_index + 2) {
