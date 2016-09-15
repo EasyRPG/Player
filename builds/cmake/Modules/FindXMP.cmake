@@ -17,3 +17,8 @@ else()
 endif()
 
 find_package_handle_standard_args(XMP REQUIRED_VARS XMP_INCLUDE_DIR XMP_LIBRARY)
+
+set(XMP_INCLUDE_DIRS ${XMP_INCLUDE_DIR})
+set(XMP_LIBRARIES ${XMP_LIBRARY})
+
+mark_as_advanced(XMP_INCLUDE_DIR XMP_LIBRARY)

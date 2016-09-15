@@ -5,7 +5,7 @@ if(EXISTS "${LIBLCF_INCLUDE_DIR_INTERNAL}")
 endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(LIBLCF DEFAULT_MSG LIBLCF_INCLUDE_DIR LIBLCF_LIBRARY)
+find_package_handle_standard_args(liblcf DEFAULT_MSG LIBLCF_INCLUDE_DIR LIBLCF_LIBRARY)
 
 set(LIBLCF_INCLUDE_DIRS ${LIBLCF_INCLUDE_DIR})
 set(LIBLCF_LIBRARIES ${LIBLCF_LIBRARY})

@@ -186,40 +186,29 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 endif()
 
 # Adds a library to the liblist if COND is true and the lib is found
-# When REQ is true the lib is required
-function(find_lib_int LIBNAME COND REQ)
+# When COND is REQUIRED the lib is required
+function(find_lib LIBNAME COND)
+	set(REQ OFF)
+	if(${COND} MATCHES "REQUIRED")
+		set(COND ON)
+		set(REQ ON)
+	endif()
+
 	if(${COND})
-		list(APPEND EASYRPG_LIB_LIST ${LIBNAME})
-	
 		if(${REQ})
 			find_package(${LIBNAME} REQUIRED)
 		else()
 			find_package(${LIBNAME})
 		endif()
 		
-		string(TOUPPER ${LIBNAME} LIBNAMEUP)
-		include_directories(${${LIBNAMEUP}_INCLUDE_DIR} ${${LIBNAMEUP}_INCLUDE_DIRS})
-		set(NEW_LIBS ${${LIBNAMEUP}_LIBRARY} ${${LIBNAMEUP}_LIBRARIES} PARENT_SCOPE)
+		if(${${LIBNAME}_FOUND})
+			string(TOUPPER ${LIBNAME} LIBNAMEUP)
+			include_directories(${${LIBNAMEUP}_INCLUDE_DIRS})
+			set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${${LIBNAMEUP}_LIBRARIES} PARENT_SCOPE)
+		endif()
+
+		set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
 	endif()
-
-	# Export _FOUND variable to parent scope
-	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
-endfunction()
-
-function(find_lib_req LIBNAME COND)
-	find_lib_int(${LIBNAME} ${COND} ON)
-	
-	# Export _FOUND variable to parent scope which is global scope
-	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
-	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
-endfunction()
-
-function(find_lib LIBNAME COND)
-	find_lib_int(${LIBNAME} ${COND} OFF)
-	
-	# Export _FOUND variable to parent scope which is global scope
-	set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
-	set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${NEW_LIBS} PARENT_SCOPE)
 endfunction()
 
 # liblcf
@@ -242,12 +231,12 @@ if(PLAYER_BUILD_LIBLCF)
 		${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
 else()
 	# Use system package
-	find_lib_req(liblcf ON)
+	find_lib(liblcf REQUIRED)
 endif()
 
 # Detect all required libraries
 foreach(i Pixman ZLIB PNG SDL2)
-	find_lib_req(${i} ON)
+	find_lib(${i} REQUIRED)
 endforeach()
 
 # Always enable Wine registry support on non-Windows
@@ -274,7 +263,7 @@ set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL OFF)
 # Configure Audio backends
 if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# SDL2_mixer Audio
-	find_lib_req(SDL2_mixer ON)
+	find_lib(SDL2_mixer REQUIRED)
 	add_definitions(-DHAVE_SDL_MIXER=1)
 	
 	# speexdsp
