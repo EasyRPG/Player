@@ -23,10 +23,9 @@
 #include "game_battler.h"
 #include "game_screen.h"
 #include "game_system.h"
+#include "game_variables.h"
 #include "main_data.h"
-#include "options.h"
-#include "sprite_battler.h"
-#include "spriteset_battle.h"
+#include "output.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -87,9 +86,26 @@ void Game_Screen::Reset()
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
+	// PicPointer Patch handling
+	if (id > 10000) {
+		// Picture to point at
+		int new_id;
+		if (id > 50000) {
+			new_id = Game_Variables[id - 50000];
+		} else {
+			new_id = Game_Variables[id - 10000];
+		}
+
+		if (new_id > 0) {
+			Output::Debug("PicPointer: ID %d replaced with ID %d", id, new_id);
+			id = new_id;
+		}
+	}
+
 	if (id <= 0) {
 		return NULL;
 	}
+
 	if (id > (int)pictures.size()) {
 		// Some games use more pictures then RPG_RT officially supported
 		Main_Data::game_data.pictures.resize(id);
