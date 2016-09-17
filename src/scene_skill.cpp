@@ -61,18 +61,16 @@ void Scene_Skill::Update() {
 		if (skill && skill_window->CheckEnable(skill_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-			int type = Data::skills[skill_id - 1].type;
-
-			if (type == RPG::Skill::Type_switch) {
+			if (skill->type == RPG::Skill::Type_switch) {
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
-			} else if (type == RPG::Skill::Type_normal || type >= RPG::Skill::Type_subskill) {
+			} else if (skill->type == RPG::Skill::Type_normal || skill->type >= RPG::Skill::Type_subskill) {
 				Scene::Push(std::make_shared<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
 				skill_index = skill_window->GetIndex();
-			} else if (type == RPG::Skill::Type_teleport) {
-				Scene::Push(std::make_shared<Scene_Teleport>(*actor, skill_id));
-			} else if (type == RPG::Skill::Type_escape) {
+			} else if (skill->type == RPG::Skill::Type_teleport) {
+				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
+			} else if (skill->type == RPG::Skill::Type_escape) {
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 
 				Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
