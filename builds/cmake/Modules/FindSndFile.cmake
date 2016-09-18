@@ -1,27 +1,10 @@
-# SNDFILE_LIBRARIES
-# SNDFILE_INCLUDE_DIR
-# SndFile_FOUND
+find_path(SNDFILE_INCLUDE_DIR sndfile.h)
+find_library(SNDFILE_LIBRARY NAMES sndfile libsndfile)
 
 include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(SndFile DEFAULT_MSG SNDFILE_INCLUDE_DIR SNDFILE_LIBRARY)
 
-find_library(OGG_LIBRARY ogg)
-find_library(FLAC_LIBRARY FLAC)
-find_library(VORBIS_LIBRARY vorbis)
-find_library(VORBISENC_LIBRARY vorbisenc)
+set(SNDFILE_INCLUDE_DIRS ${SNDFILE_INCLUDE_DIR})
+set(SNDFILE_LIBRARIES ${SNDFILE_LIBRARY})
 
-find_library(SNDFILE_LIBRARY sndfile)
-find_path(SNDFILE_INCLUDE_DIR sndfile.h)
-
-if((EXISTS ${SNDFILE_LIBRARY}) AND (EXISTS ${SNDFILE_INCLUDE_DIR}))
-  foreach(i OGG_LIBRARY FLAC_LIBRARY VORBIS_LIBRARY VORBISENC_LIBRARY)
-    if(EXISTS ${${i}})
-      list(APPEND SNDFILE_LIBRARIES "${${i}}")
-    endif()
-  endforeach()
-
-  list(APPEND SNDFILE_LIBRARIES "${SNDFILE_LIBRARY}")
-  message(STATUS "sndfile dependencies: ${SNDFILE_LIBRARIES}")
-endif()
-
-find_package_handle_standard_args(SndFile
-	REQUIRED_VARS SNDFILE_INCLUDE_DIR SNDFILE_LIBRARIES)
+mark_as_advanced(SNDFILE_INCLUDE_DIR SNDFILE_LIBRARY)
