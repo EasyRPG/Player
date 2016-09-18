@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">Terület autómatikus megállapítása (ajánlott)</string>
   <string name="west_europe">nyugat-európai</string>
@@ -34,28 +33,11 @@
   <string name="refresh">Frissítés</string>
   <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
   <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
-  <string name="how_to_use_easy_rpg_explanation">
-Telepítési útmutató:\n
-\t1) Helyezze a játékok mappáit a /easyrpg/games mappába az adattároló gyökerében.\n
-\t2) Helyezze az RTP mappáit a /easyrpg/rtp/2000 mappába RPG Maker 2000 RTP esetén, a /easyrpg/rtp/2003 mappába RPG Maker 2003 RTP esetén.\n
-\n
-Ha az alkalmazás nem észlel játékokat és az ön készüléke több adattárolóval rendelkezik, próbálja az easyrpg mappát egy másik adattároló gyökerébe mozgatni, majd érintse me a frissítés gombot.\n
-\n
-Megjegyzés: Hogy a játékok biztosan felismerésre kerüljenek, NEM szabad tömörítve lenniük és NEM szabad almappákba helyezni őket vagy bennük almappákat létrehozni.\n
-Például a következő útvonalak HIBÁSAK:\n
-\t/easyrpg/games/MyGame.zip\n
-Így a HELYES:\n
-\t/easyrpg/games/MyGame/RPG_RT.ldb\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb\n
-\n
-Különleges szolgátatások:\n
-\tÉrintse meg a menügombot a képernyő-gombok pozíciójának szerkesztéséhez.\n
-\tAmint azon a felületen van, érintse meg a vissza gombot, hogy elérjen egy újabb menüt, melyben több gombot adhat hozzá a képernyőhöz.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPS ki/be</string>
   <string name="toggle_ui">Virtuális gombok ki/be</string>
   <string name="end_game">Játék befejezése</string>
-  <!--Settings Activity-->
+  <!--Settings Activities-->
   <string name="settings">Beállítások</string>
   <string name="enable_vibration">Rezgés engedélyezése</string>
   <string name="vibrate_when_sliding_direction">Rezgetés új irányba húzáskor</string>
@@ -74,4 +56,5 @@ Különleges szolgátatások:\n
   <string name="reset_button_mapping">Alapértelmezett pozíció</string>
   <string name="exit_without_saving">Kilépés mentés nélkül</string>
   <string name="save_and_quit">Mentés és kilépés</string>
+  <!--GameBrowserAPI15-->
 </resources>

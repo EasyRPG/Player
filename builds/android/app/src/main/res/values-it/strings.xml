@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">Rilevamento automatico della Regione (Consigliato)</string>
   <string name="west_europe">Europa dell\'Ovest</string>
@@ -24,7 +23,8 @@
   <string name="no">No</string>
   <string name="creating_dir_failed">Creazione della cartella $PATH fallita</string>
   <string name="path_not_readable">$PATH non è leggibile</string>
-  <string name="no_games_found_and_explanation">Nessun gioco trovato.\nPuoi aggiungere cartelle di gioco aggiuntive dalle impostazioni.</string>
+  <string name="no_games_found_and_explanation">Nessun gioco per RPG Maker 2000/2003 rilevato.
+Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.</string>
   <string name="no_external_storage">Nessun archivio rimovibile (es. SD card) rilevato.</string>
   <string name="not_valid_game">$PATH non è un gioco valido</string>
   <string name="select_game_region">Seleziona Regione di Gioco</string>
@@ -35,48 +35,39 @@
   <string name="refresh">Aggiorna</string>
   <string name="change_default_mapping">Cambia il mapping dei tasti predefinito</string>
   <string name="how_to_use_easy_rpg">Come utilizzare EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">
-Istruzioni per l\'installazione:\n
-Normalmente le cartelle di gioco sono ricercate in /easyrpg/games. Puoi aggiungere cartelle addizionali dalle impostazioni.\n Opzionale: Colloca il RTP di RPG Maker 2000 in /easyrpg/rtp/2000 e il RTP di RPG Maker 2003 in /easyrpg/rtp/2003.\n
-\n
-Nota: i giochi devono essere decompressi in una sotto-cartella di /easyrpg/games (predefinito) per essere correttamente rilevati, ad esempio:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb è GIUSTO.\n
-\t/easyrpg/games/MyGame/RPG_RT.ldb è GIUSTO.\n
-\t/easyrpg/games/MyGame.zip è SBAGLIATO.\n
-\n
-Funzionalità speciali:\n
-Puoi aggiungere tasti virtuali su schermo aggiuntivi. Tocca il tasto menù per modificare la posizione dei tasti.\n
-Dopodichè tocca il tasto indietro per accedere ad un menù addizionale per l\'aggiunta di nuovi tasti su schermo.</string>
+  <string name="how_to_use_easy_rpg_explanation">Istruzioni per l\'installazione:\n\nNormalmente i giochi vengono ricercati in /easyrpg/games. Puoi aggiungere cartelle di gioco addizionali nelle impostazioni.\n\nOpzionale: Posiziona i RTP in /easyrpg/rtp/2000 per RPG Maker 2000 e in /easyrpg/rtp/2003 per RPG Maker 2003.\n\nPer far si che i gichi siano rilevati correttamente, devono essere posizionati in sottocartelle di /easyrpg/games, es.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb va bene.\n\t/easyrpg/games/MyGame/RPG_RT.ldb va bene\n\t/easyrpg/games/MyGame.zip è SBAGLIATO. ZIP ed EXE non sono supportati.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Mostra FPS</string>
   <string name="toggle_ui">Mostra Tasti Virtuali</string>
   <string name="end_game">Esci dal Gioco</string>
   <string name="report_bug">Segnala un bug</string>
-  <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.\n
-Se non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
+  <string name="report_bug_msg">Questa funzione aprirà il tuo client di posta elettronica (es. Gmail) per inviarci una segnalazione.\n\nSe non vuoi inviarci una mail o non possiedi un client di posta elettronica configurato opportunamente, puoi aprire una nuova issue al link https://github.com/EasyRPG/Player/issues .</string>
   <string name="report_bug_mail">Grazie per aver aiutato lo sviluppo di EasyRPG Player.\n
 Un file di log ed i tuoi salvataggi saranno allegati a questa mail.\n
 Per favore non rimuovere il file di log! Abbiamo bisogno inoltre di un salvataggio relativamente vicino al luogo nel quale si è verificato il bug.\n
-Puoi scriverci in Inglese, Tedesco o Spagnolo.\n
-Per favore spiegaci in dettaglio in cosa consiste il bug.\n
-[Puoi rimuovere queste istruzioni]</string>
-  <!--Settings Activity-->
+Per favore spiegaci in dettaglio in cosa consiste il bug.\n\n
+</string>
+  <!--Settings Activities-->
+  <string name="video">Video</string>
+  <string name="audio">Audio</string>
+  <string name="input">Input</string>
+  <string name="game_folders">Cartelle di gioco</string>
   <string name="settings">Impostazioni</string>
   <string name="add_game_folder">Aggiungi una cartella di gioco</string>
   <string name="enable_vibration">Attiva vibrazione</string>
   <string name="vibrate_when_sliding_direction">Vibra durante lo scorrimento verso un\'altra direzione</string>
   <string name="enable_audio">Attiva audio</string>
-  <string name="input_layout_transparency">Opacità Tasti Virtuali:</string>
-  <string name="ignore_size_settings">Ignora la dimensione dei tasti ed usa questo valore per qualsiasi tasto:</string>
+  <string name="input_layout_transparency">Trasparenza del layout di input:</string>
+  <string name="ignore_size_settings">Ignora impostazione per la dimensione dei tasti ed usa invece:</string>
   <string name="no_read_access_on_dir">%1$s non accessibile in lettura</string>
-  <string name="game_folders">Cartella di EasyRPG</string>
   <string name="quick_access">Accesso rapido</string>
+  <string name="force_landscape_mode">Forza orientamento del paesaggio</string>
   <!--InputLayout Managing-->
-  <string name="manage_input_layouts">Modifica Tasti Virtuali:</string>
-  <string name="add_an_input_layout">Aggiungi nuova disposizione tasti</string>
+  <string name="manage_input_layouts">Gestisci i layout di input:</string>
+  <string name="add_an_input_layout">Aggiungi un layout di input</string>
   <string name="set_as_default">Imposta come predefinito</string>
   <string name="edit_name">Modifica nome</string>
-  <string name="edit_layout">Modifica la disposizione</string>
+  <string name="edit_layout">Modifica layout</string>
   <string name="delete">Elimina</string>
   <string name="default_layout">Predefinito</string>
   <!--ButtonMapping Activity-->
@@ -87,4 +78,8 @@ Per favore spiegaci in dettaglio in cosa consiste il bug.\n
   <string name="key_enter">Invio (Z)</string>
   <string name="key_cancel">Annulla (ESC ed X)</string>
   <string name="key_shift">Shift</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Apri menù di navigazione</string>
+  <string name="navigation_drawer_close">Chiudi menù di navigazione</string>
+  <string name="menu">Apri Menù Android</string>
 </resources>

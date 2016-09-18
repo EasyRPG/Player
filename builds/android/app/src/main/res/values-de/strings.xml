@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">Region automatisch erkennen (Empfohlen)</string>
   <string name="west_europe">Westeuropa</string>
@@ -24,7 +23,8 @@
   <string name="no">Nein</string>
   <string name="creating_dir_failed">Der Ordner $PATH konnte nicht erstellt werden.</string>
   <string name="path_not_readable">$PATH ist nicht lesbar</string>
-  <string name="no_games_found_and_explanation">Keine Spiele gefunden.\nDu kannst in den Einstellungen Verzeichnisse hinzufügen.</string>
+  <string name="no_games_found_and_explanation">Keine RPG Maker 2000/2003-Spiele gefunden.
+Du kannst in den Einstellungen Spielverzeichnisse hinzufügen.</string>
   <string name="no_external_storage">Kein externer Speicher (z.B. SD-Karte) gefunden.</string>
   <string name="not_valid_game">$PATH ist kein gültiges Spiel</string>
   <string name="select_game_region">Spielregion auswählen</string>
@@ -35,32 +35,23 @@
   <string name="refresh">Aktualisieren</string>
   <string name="change_default_mapping">Standard-Tastenlayout ändern</string>
   <string name="how_to_use_easy_rpg">Wie verwende ich EasyRPG Player</string>
-  <string name="how_to_use_easy_rpg_explanation">
-Installationsanleitung:\n
-Standardmäßig werden Spiele in /easyrpg/games gesucht. Du kannst weitere Spieleordner in den Einstellungen hinzufügen.\n
-Optional: Platziere das RTP in /easyrpg/rtp/2000 für das RPG Maker 2000 RTP bzw. in /easyrpg/rtp/2003 für das RPG Maker 2003 RTP.\n
-\n
-Tipp: Damit Spiele korrekt erkannt werden, müssen sie in ein Unterverzeichnis von /easyrpg/games (Standardverzeichnis) extrahiert werden, z.B.:\n
-\t/easyrpg/games/MeinSpiel/Data/RPG_RT.ldb ist OK.\n
-\t/easyrpg/games/MeinSpiel/RPG_RT.ldb ist OK.\n
-\t/easyrpg/games/MeinSpiel.zip ist FALSCH.\n
-\n
-Spezielle Funktionen:\n
-Im Einstellungsmenü kannst du Tasten verschieben und neue hinzufügen. Drücke im Layout-Editor die Zurück-Taste deines Gerätes, um ein Menü zu öffnen.</string>
+  <string name="how_to_use_easy_rpg_explanation">Installationsanleitung:\n\nStandardmäßig werden Spiele in /easyrpg/games gesucht. Du kannst weitere Spieleordner in den Einstellungen hinzufügen.\n\nOptional: Platziere das RTP in /easyrpg/rtp/2000 für das RPG Maker 2000 RTP bzw. in /easyrpg/rtp/2003 für das RPG Maker 2003 RTP.\n\nDamit Spiele korrekt erkannt werden, müssen sie in ein Unterverzeichnis von /easyrpg/games (Standardverzeichnis) extrahiert werden, z.B.:\n\n\t/easyrpg/games/MeinSpiel/Data/RPG_RT.ldb ist OK.\n\t/easyrpg/games/MeinSpiel/RPG_RT.ldb ist OK.\n\t/easyrpg/games/MeinSpiel.zip ist FALSCH. ZIP und EXE werden nicht unterstützt.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPS ein-/ausblenden</string>
   <string name="toggle_ui">Virtuelle Tasten ein-/ausblenden</string>
   <string name="end_game">Spiel beenden</string>
   <string name="report_bug">Fehler melden</string>
-  <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n
-Wenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
+  <string name="report_bug_msg">Diese Funktion öffnet dein E-Mail-Programm (z.B. Gmail), damit du uns einen Fehlerbericht zusenden kannst.\n\nWenn du uns keine Mails senden möchtest oder kein Mail-Programm besitzt, kannst du auch einen neuen Bug unter https://github.com/EasyRPG/Player/issues melden.</string>
   <string name="report_bug_mail">Vielen Dank für die Verwendung von EasyRPG Player.\n
 Es wurden ein Protokoll (Log) und deine Spielstände an diese E-Mail angehangen.\n
 Bitte entferne nicht das Protokoll! Einer der Spielstände sollte in der Nähe der Fehlerursache sein.\n
-Du kannst uns auf Deutsch schreiben.\n
-Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
-[Du kannst diesen Anweisungstext löschen]</string>
-  <!--Settings Activity-->
+Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
+</string>
+  <!--Settings Activities-->
+  <string name="video">Anzeige</string>
+  <string name="audio">Audio</string>
+  <string name="input">Steuerung</string>
+  <string name="game_folders">Spielverzeichnisse</string>
   <string name="settings">Einstellungen</string>
   <string name="add_game_folder">Spielverzeichnis hinzufügen</string>
   <string name="enable_vibration">Vibrationen aktivieren</string>
@@ -69,8 +60,8 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
   <string name="input_layout_transparency">Layout-Transparenz:</string>
   <string name="ignore_size_settings">Verwende folgende Tastengröße anstatt der Standardgröße:</string>
   <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
-  <string name="game_folders">EasyRPG-Ordner</string>
   <string name="quick_access">Schnellzugriff</string>
+  <string name="force_landscape_mode">Querformat erzwingen</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
   <string name="add_an_input_layout">Eingabe-Layout hinzufügen</string>
@@ -87,4 +78,8 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n
   <string name="key_enter">Bestätigen (Z)</string>
   <string name="key_cancel">Abbrechen (ESC und X)</string>
   <string name="key_shift">Umschalttaste</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Navigation einblenden</string>
+  <string name="navigation_drawer_close">Navigation ausblenden</string>
+  <string name="menu">Android-Menü öffnen</string>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">自动选择语言(推荐)</string>
   <string name="west_europe">西欧语区</string>
@@ -34,29 +33,11 @@
   <string name="refresh">刷新</string>
   <string name="change_default_mapping">更改默认按键映射</string>
   <string name="how_to_use_easy_rpg">EasyRPG模拟器使用教程</string>
-  <string name="how_to_use_easy_rpg_explanation">
-安装说明：\n
-1. 把game文件夹创建在/easyrpg的根目录里如/easyrpg/game。\n
-\n
-2.把游戏RTP放入到/easyrpg/rtp/2000和/easyrpg/rtp/2003文件里。\n
-\n
-如果模拟器不能检测到游戏的话，也许需要放在另一个储存卡里(内部存储卡/SD卡)\n
-尝试把easyrpg文件夹移动到另一个储存卡根目录里并点击“刷新”按钮。\n
-\n
-提示：为了保证模拟器检测到这个游戏，所以游戏文件不能是压缩的，\n
-并且不能被放在子文件夹里。\n
-例如:/easyrpg/games/MyGame/Data/RPG_RT.ldb 这样是正确的。\n
-/easyrpg/games/MyGame/RPG_RT.ldb 这样是正确的。\n
-/easyrpg/games/MyGame.zip 这样是错误的。\n
-\n
-特殊功能：\n
-在设置游戏按键的时候，点击手机菜单按钮可以设置游戏按键，\n
-在这个界面的时候，点击手机返回键也可以设置游戏按键。</string>
   <!--Ingame menu-->
   <string name="toggle_fps">切换FPS</string>
   <string name="toggle_ui">设置虚拟按钮</string>
   <string name="end_game">结束游戏</string>
-  <!--Settings Activity-->
+  <!--Settings Activities-->
   <string name="settings">设置</string>
   <string name="enable_vibration">开启震动</string>
   <string name="vibrate_when_sliding_direction">在往另一个方向滑动时震动</string>
@@ -75,4 +56,5 @@
   <string name="reset_button_mapping">重置按钮</string>
   <string name="exit_without_saving">不保存并退出</string>
   <string name="save_and_quit">保存并退出</string>
+  <!--GameBrowserAPI15-->
 </resources>

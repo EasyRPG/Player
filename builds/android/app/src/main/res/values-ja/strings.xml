@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">自動検出(推奨設定)</string>
   <string name="west_europe">西ヨーロッパ</string>
@@ -24,10 +23,11 @@
   <string name="no">いいえ</string>
   <string name="creating_dir_failed">ディレクトリ $PATH の作成に失敗しました。</string>
   <string name="path_not_readable">$PATH が読み込めませんでした。</string>
-  <string name="no_games_found_and_explanation">ゲームが見つかりません。\n設定で、追加のゲームディレクトリを追加することができます。</string>
+  <string name="no_games_found_and_explanation">RPG ツクール 2000/2003 ゲームが見つかりません。
+設定で、追加のゲームディレクトリを追加することができます。</string>
   <string name="no_external_storage">外部ストレージ(SDカードなど)が見つかりませんでした。</string>
   <string name="not_valid_game">$PATHのゲームは対応していません。</string>
-  <string name="select_game_region">ゲームの言語地域を選択</string>
+  <string name="select_game_region">ゲームの地域を選択</string>
   <string name="change_the_layout">レイアウトの変更</string>
   <string name="choose_layout">レイアウトの選択</string>
   <string name="unknown_region">不明な言語地域</string>
@@ -35,49 +35,38 @@
   <string name="refresh">リフレッシュ</string>
   <string name="change_default_mapping">デフォルトのボタン配置に変更</string>
   <string name="how_to_use_easy_rpg">EasyRPG Playerの使い方</string>
-  <string name="how_to_use_easy_rpg_explanation">
-インストール方法:\n
-デフォルトでは、ゲームフォルダーは /easyrpg/games 内で検索されます。設定で、追加のゲームディレクトリを追加することができます。\n
-オプション: RPGツクール2000 RTP 用の /easyrpg/rtp/2000 および RPGツクール2003 RTP用の /easyrpg/rtp/2003 に RTP を入れてください。\n
-\n
-ヒント: ゲームを正しく検出するためには、それらを (デフォルトで) /easyrpg/games のサブディレクトリに解凍する必要があります。例:\n
-\t/easyrpg/games/MyGame/Data/RPG_RT.ldb は OK。\n
-\t/easyrpg/games/MyGame/RPG_RT.ldb は OK。\n
-\t/easyrpg/games/MyGame.zip は間違い。\n
-\n
-特別な機能:\n
-追加の画面ボタンを追加することができます。画面ボタンの位置を編集するには、メニューボタンをタップしてください。\n
-そこから、さらにボタンを追加するために、追加メニューにアクセスするには、戻るボタンをタップしてください。</string>
+  <string name="how_to_use_easy_rpg_explanation">インストール手順:\n\nデフォルトでは、ゲームは /easyrpg/games 内で検索されます。設定で、追加のゲームディレクトリを追加することができます。\n\nオプション: RPGツクール2000 RTP 用の /easyrpg/rtp/2000 および RPGツクール2003 RTP用の /easyrpg/rtp/2003 に RTP を入れてください。\n\nゲームを正しく検出するために、(デフォルトでは) /easyrpg/games のサブディレクトリに入れる必要があります。例:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb は OK。\n\t/easyrpg/games/MyGame/RPG_RT.ldb は OK。\n\t/easyrpg/games/MyGame.zip は間違い。EXE はサポートしていません。</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPSの表示</string>
-  <string name="toggle_ui">仮想ボタンの表示</string>
-  <string name="end_game">終了</string>
+  <string name="toggle_ui">仮想ボタンの切り替え</string>
+  <string name="end_game">ゲームを終了</string>
   <string name="report_bug">バグを報告</string>
-  <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。\n
-メールを送信したくないか、メールプログラムを持っていない場合は https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
+  <string name="report_bug_msg">この機能は、私たちにバグ報告を送信するためにメールプログラム (例えば Gmail) を開きます。\n\nメールを送信したくないか、メールプログラムを持っていない場合は、代わりに https://github.com/EasyRPG/Player/issues instead で新しい問題を開くことができます。</string>
   <string name="report_bug_mail">EasyRPG プレーヤーをご支援いただきありがとうございます。\n
 ログファイルとセーブしたゲームが、このメールに添付されました。\n
 ログファイルを削除しないでください! 私たちが、バグの箇所に近づくためにセーブデータが必要です。\n
-私たちは、英語、ドイツ語、スペイン語を話します。\n
-何の問題があったのかを詳細に教えてください。\n
-[この手順のテキストは削除することができます]</string>
-  <!--Settings Activity-->
+何の問題があったのかを詳細に教えてください。\n\n</string>
+  <!--Settings Activities-->
+  <string name="video">ビデオ</string>
+  <string name="audio">オーディオ</string>
+  <string name="input">入力</string>
+  <string name="game_folders">ゲームフォルダー</string>
   <string name="settings">設定</string>
   <string name="add_game_folder">ゲームフォルダーを追加</string>
   <string name="enable_vibration">バイブレーションの使用</string>
   <string name="vibrate_when_sliding_direction">スライドで別方向を押した時に振動させる</string>
   <string name="enable_audio">オーディオを有効にする</string>
   <string name="input_layout_transparency">入力レイアウトの透過:</string>
-  <string name="ignore_size_settings">個々のボタン設定を無視し全てこのボタンサイズを使用する:</string>
+  <string name="ignore_size_settings">ボタンサイズの設定を無視して、代わりに使用:</string>
   <string name="no_read_access_on_dir">%1$s に読み取りアクセス権限がありません</string>
-  <string name="game_folders">EasyRPG フォルダー</string>
   <string name="quick_access">クイック アクセス</string>
+  <string name="force_landscape_mode">強制的に横置きにする</string>
   <!--InputLayout Managing-->
-  <string name="manage_input_layouts">入力レイアウトの管理</string>
+  <string name="manage_input_layouts">入力レイアウトの管理:</string>
   <string name="add_an_input_layout">入力レイアウトの追加</string>
   <string name="set_as_default">デフォルトに設定</string>
   <string name="edit_name">名前の変更</string>
-  <string name="edit_layout">レイアウトの作成</string>
+  <string name="edit_layout">レイアウトの編集</string>
   <string name="delete">削除</string>
   <string name="default_layout">デフォルト</string>
   <!--ButtonMapping Activity-->
@@ -88,4 +77,8 @@
   <string name="key_enter">入力 (Z)</string>
   <string name="key_cancel">キャンセル (ESC および X)</string>
   <string name="key_shift">Shift</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+  <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
+  <string name="menu">Android メニューを開く</string>
 </resources>

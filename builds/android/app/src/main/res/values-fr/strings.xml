@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Preferences Keys-->
   <!--GameBrowser Activity-->
   <string name="autodetect">Detection automatique de la région (Recommandé)</string>
   <string name="west_europe">Europe de l\'Ouest</string>
@@ -24,36 +23,42 @@
   <string name="no">Non</string>
   <string name="creating_dir_failed">La création du dossier $PATH a échoué</string>
   <string name="path_not_readable">$PATH non lisible</string>
+  <string name="no_games_found_and_explanation">Pas de jeu RPG Maker 2000/2003 trouvé.\nVous pouvez ajouter des dossiers de jeux dans les paramètres.</string>
   <string name="no_external_storage">Pas de stockage externe trouvé</string>
   <string name="not_valid_game">$PATH n\'est pas un jeu valide</string>
   <string name="select_game_region">Changer la région du jeu</string>
   <string name="change_the_layout">Changer les contrôles virtuels</string>
-  <string name="choose_layout">Choisir un schéma de contrôles virtuels</string>
+  <string name="choose_layout">Choisir les contrôles virtuels</string>
   <string name="unknown_region">Région inconnue</string>
   <string name="region_modification_failed">Le changement de la région a échoué</string>
   <string name="refresh">Raffraichir</string>
   <string name="change_default_mapping">Changer les boutons virtuels</string>
   <string name="how_to_use_easy_rpg">Aide</string>
-  <string name="how_to_use_easy_rpg_explanation">
-Instructions :\n
-\t1. Placer les dossiers de jeux dans le dossier /easyrpg/games créé au lancement de l\'application.\n
-\t2. Placer les dossiers de RTP de RPG Maker 2000 et 2003 dans les dossiers /easyrpg/rtp/2000 et /easyrpg/rtp/2003.\n
-\n
-Si vous ne trouvez pas le dossier /easyrpg, alors celui-ci se trouve sur un autre support (carte SD ou mémoire interne).\n
-\n
-Les dossiers de jeux doivent être décompressés et non placés dans un sous dossier afin d\'être détéctés.</string>
+  <string name="how_to_use_easy_rpg_explanation">Instruction :\n\nPar défaut les jeux sont scannés dans le dossier /easyrpg/games de l\'application.\nVous pouvez définir de nouveaux dossiers de jeux dans les paramètres.\nAttention, vos jeux doivent être sous forme de dossiers décompressés, les .zip et .exe ne sont pas supportés.\n\nOptionnel :\nPlacez les RTP dans les dossiers /easyrpg/rtp/2000 et /easyrpg/rtp/2003.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">Afficher les FPS</string>
   <string name="toggle_ui">Afficher les boutons virtuels</string>
   <string name="end_game">Quitter le jeu</string>
-  <!--Settings Activity-->
+  <string name="report_bug">Rapporter un bug</string>
+  <string name="report_bug_msg">Cette fonctionnalité va ouvrir votre application d\'e-mail pour nous envoyer une rapport de bug.\nSi vous ne voulez pas nous envoyer un e-mail ou que vous n\'avez pas d\'application d\'e-mail, veuillez reporter votre bug à l\'adresse : https://github.com/EasyRPG/Player/issues</string>
+  <string name="report_bug_mail">Veuillez décrire précisément votre bug.\n\nMerci d\'aider EasyRPG !\nUn fichier de log et votre sauvegarde ont été placé en pièce jointe de cet e-mail.\nVeuillez ne pas supprimer le fichier de sauvegarde. La sauvegarde nous permet de reproduire facilement votre bug.</string>
+  <!--Settings Activities-->
+  <string name="video">Video</string>
+  <string name="audio">Audio</string>
+  <string name="input">Contrôles</string>
+  <string name="game_folders">Dossiers de jeux</string>
   <string name="settings">Préférences</string>
+  <string name="add_game_folder">Ajouter un dossier de jeu</string>
   <string name="enable_vibration">Activer les vibrations</string>
   <string name="vibrate_when_sliding_direction">Vibrer lors du glissement vers une autre direction</string>
+  <string name="enable_audio">Activer l\'audio</string>
   <string name="input_layout_transparency">Transparence des boutons virtuels :</string>
-  <string name="ignore_size_settings">Ignorer préférences individuelles et forcer la taille des boutons virtuels :</string>
+  <string name="ignore_size_settings">Ignorer les préférences et forcer la taille des boutons :</string>
+  <string name="no_read_access_on_dir">Pas de droit de lecture pour %1$s</string>
+  <string name="quick_access">Accès rapide</string>
+  <string name="force_landscape_mode">Forcer le mode paysage</string>
   <!--InputLayout Managing-->
-  <string name="manage_input_layouts">Gérer les agencements de boutons virtuels :</string>
+  <string name="manage_input_layouts">Modifier les contrôles de boutons virtuels :</string>
   <string name="add_an_input_layout">Ajouter un agencement de boutons</string>
   <string name="set_as_default">Définir par défaut</string>
   <string name="edit_name">Changer le nom</string>
@@ -65,4 +70,11 @@ Les dossiers de jeux doivent être décompressés et non placés dans un sous do
   <string name="reset_button_mapping">Réinitialiser l\'agencement</string>
   <string name="exit_without_saving">Quitter sans sauvegarder</string>
   <string name="save_and_quit">Sauvegarder et quitter</string>
+  <string name="key_enter">Entrer (A)</string>
+  <string name="key_cancel">Echap (B)</string>
+  <string name="key_shift">Shift</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Ouvrir le menu</string>
+  <string name="navigation_drawer_close">Fermer le menu</string>
+  <string name="menu">Ouvrir le menu</string>
 </resources>
