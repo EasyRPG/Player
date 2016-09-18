@@ -67,7 +67,7 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) \
 		-Wl,--gc-sections
 
 LIBS	:= -lsf2d -lctru -llcf -licuuc -licui18n -licudata \
-		-lpixman-1 -lpng -lz -lkhax -lmpg123 -lspeexdsp \
+		-lpixman-1 -lpng -lz -lmpg123 -lspeexdsp \
 		-lsndfile -lvorbisidec -logg -lmpg123 -lm
 
 

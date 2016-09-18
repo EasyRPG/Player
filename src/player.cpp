@@ -41,7 +41,6 @@
 #  include <psp2/kernel/processmgr.h>
 #elif defined(_3DS)
 #  include <3ds.h>
-#  include <khax.h>
 #endif
 
 #include "async_handler.h"
@@ -146,7 +145,6 @@ void Player::Init(int argc, char *argv[]) {
 
 	APT_SetAppCpuTimeLimit(30);
 
-	if (osGetKernelVersion() <  SYSTEM_VERSION(2, 48, 3)) khaxInit(); // Executing libkhax just to be sure...
 	consoleClear();
 
 	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
