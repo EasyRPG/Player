@@ -90,6 +90,21 @@ AS_IF([test "x$with_libspeexdsp" != "xno"],[
 	PKG_CHECK_MODULES([SPEEXDSP],[speexdsp],[AC_DEFINE(HAVE_LIBSPEEXDSP,[1],[Disable resampling support provided by libspeexdsp])],[auto_speexdsp=0])
 ])
 
+# bash completion
+AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
+	[Install the parameter auto-completion script for bash in DIR. @<:@default=auto@:>@])],
+	[],[with_bash_completion_dir=yes])
+AS_IF([test "x$with_bash_completion_dir" = "xyes"],[
+	BASHCOMPLETION_DIR="`$PKG_CONFIG --silence-errors --define-variable=prefix="\${prefix}" --variable=completionsdir bash-completion`"
+],[
+	BASHCOMPLETION_DIR=$with_bash_completion_dir
+])
+AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
+	BASHCOMPLETION_DIR="${datadir}/bash-completion/completions"
+])
+AC_SUBST([BASHCOMPLETION_DIR])
+AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
+
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
 
@@ -116,11 +131,6 @@ AC_SUBST([A2X])
 AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"],
   AC_MSG_WARN([a2x is required to create the manual page]))
 AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
-
-# bash completion
-PKG_CHECK_VAR([bashcompinstdir],[bash-completion],[completionsdir])
-AM_CONDITIONAL([HAVE_BASHCOMP], [test "x$bashcompinstdir" != "x"])
-AC_SUBST(bashcompinstdir)
 
 # Doxygen source documentation
 m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])

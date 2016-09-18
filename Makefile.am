@@ -377,9 +377,9 @@ endif
 endif
 
 # bash completion
-if HAVE_BASHCOMP
-bashcompdir = @bashcompinstdir@
-dist_bashcomp_DATA = resources/unix/bash-completion/easyrpg-player
+if HAVE_BASHCOMPLETION
+bashcompletiondir = $(BASHCOMPLETION_DIR)
+dist_bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
 endif
 
 # FIXME make filefinder work without external scripting
