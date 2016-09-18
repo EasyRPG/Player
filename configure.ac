@@ -17,6 +17,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_PROG_AR
 AC_PROG_CXX
 LT_INIT([disable-shared])
+PKG_PROG_PKG_CONFIG
 
 # Options
 AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
