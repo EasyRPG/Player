@@ -19,12 +19,14 @@
 #include "scene_item.h"
 #include "game_map.h"
 #include "game_party.h"
+#include "game_player.h"
 #include "game_switches.h"
 #include "game_system.h"
+#include "game_targets.h"
 #include "input.h"
 #include "scene_actortarget.h"
 #include "scene_map.h"
-#include "scene_menu.h"
+#include "scene_teleport.h"
 
 Scene_Item::Scene_Item(int item_index) :
 	item_index(item_index) {
@@ -57,11 +59,32 @@ void Scene_Item::Update() {
 		if (item_id > 0 && item_window->CheckEnable(item_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-				Main_Data::game_party->UseItem(item_id);
+			const RPG::Item& item = *item_window->GetItem();
+
+			if (item.type == RPG::Item::Type_switch) {
+				Main_Data::game_party->ConsumeItemUse(item_id);
 				Game_Switches[Data::items[item_id - 1].switch_id] = true;
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
+				if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_teleport) {
+					Scene::Push(std::make_shared<Scene_Teleport>(item));
+				} else if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_escape) {
+					Main_Data::game_party->ConsumeItemUse(item_id);
+
+					Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
+					Main_Data::game_player->StartTeleport();
+
+					Scene::PopUntil(Scene::Map);
+				} else if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_switch) {
+					Main_Data::game_party->ConsumeItemUse(item_id);
+					Game_Switches[Data::items[item_id - 1].switch_id] = true;
+					Scene::PopUntil(Scene::Map);
+					Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+				} else {
+					Scene::Push(std::make_shared<Scene_ActorTarget>(item_id, item_window->GetIndex()));
+					item_index = item_window->GetIndex();
+				}
 			} else {
 				Scene::Push(std::make_shared<Scene_ActorTarget>(item_id, item_window->GetIndex()));
 				item_index = item_window->GetIndex();

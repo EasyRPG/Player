@@ -22,8 +22,13 @@
 #include "game_system.h"
 #include "input.h"
 
-Scene_Teleport::Scene_Teleport(Game_Actor& actor, int skill_id)
-		: actor(actor), skill_id(skill_id) {
+Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
+		: actor(&actor), skill(&skill) {
+	type = Scene::Teleport;
+}
+
+Scene_Teleport::Scene_Teleport(const RPG::Item& item)
+		: item(&item) {
 	type = Scene::Teleport;
 }
 
@@ -39,7 +44,11 @@ void Scene_Teleport::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
 
-		Main_Data::game_party->UseSkill(skill_id, &actor, &actor);
+		if (skill) {
+			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
+		} else if (item) {
+			Main_Data::game_party->ConsumeItemUse(item->ID);
+		}
 
 		const RPG::SaveTarget& target = teleport_window->GetTarget();
 
