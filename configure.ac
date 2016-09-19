@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([easyrpg-player],[0.4.1],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easy-rpg.org/])
+AC_INIT([easyrpg-player],[0.5.0],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
 AC_CONFIG_AUX_DIR([builds/autoconf])
 AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall -Werror])
@@ -17,6 +17,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_PROG_AR
 AC_PROG_CXX
 LT_INIT([disable-shared])
+PKG_PROG_PKG_CONFIG
 
 # Options
 AC_ARG_VAR([EM_GAME_URL], [Game URL/directory (only used for the Emscripten port)])
@@ -89,6 +90,21 @@ AS_IF([test "x$with_libspeexdsp" != "xno"],[
 	PKG_CHECK_MODULES([SPEEXDSP],[speexdsp],[AC_DEFINE(HAVE_LIBSPEEXDSP,[1],[Disable resampling support provided by libspeexdsp])],[auto_speexdsp=0])
 ])
 
+# bash completion
+AC_ARG_WITH([bash-completion-dir],[AS_HELP_STRING([--with-bash-completion-dir@<:@=DIR@:>@],
+	[Install the parameter auto-completion script for bash in DIR. @<:@default=auto@:>@])],
+	[],[with_bash_completion_dir=yes])
+AS_IF([test "x$with_bash_completion_dir" = "xyes"],[
+	BASHCOMPLETION_DIR="`$PKG_CONFIG --silence-errors --define-variable=prefix="\${prefix}" --variable=completionsdir bash-completion`"
+],[
+	BASHCOMPLETION_DIR=$with_bash_completion_dir
+])
+AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
+	BASHCOMPLETION_DIR="${datadir}/bash-completion/completions"
+])
+AC_SUBST([BASHCOMPLETION_DIR])
+AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
+
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
 
@@ -106,8 +122,7 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_ERROR_AT_LINE
-AC_FUNC_MALLOC
-AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
+AC_CHECK_FUNCS([malloc floor getcwd memset putenv strerror])
 
 # manual page
 AC_CHECK_PROGS([A2X], [a2x a2x.py], [no])
@@ -116,11 +131,6 @@ AC_SUBST([A2X])
 AS_IF([test x"$A2X" = "xno" && test ! -f "${srcdir}/resources/easyrpg-player.6"],
   AC_MSG_WARN([a2x is required to create the manual page]))
 AM_CONDITIONAL([HAVE_MANUAL], [test -f "${srcdir}/resources/easyrpg-player.6"])
-
-# bash completion
-PKG_CHECK_VAR([bashcompinstdir],[bash-completion],[completionsdir])
-AM_CONDITIONAL([HAVE_BASHCOMP], [test "x$bashcompinstdir" != "x"])
-AC_SUBST(bashcompinstdir)
 
 # Doxygen source documentation
 m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])

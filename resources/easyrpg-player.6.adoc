@@ -146,8 +146,8 @@ https://github.com/EasyRPG/Player/issues
 
 
 == COPYRIGHT / AUTHORS
-EasyRPG Player is Copyright (C) 2007-2016 the EasyRPG authors, see file AUTHORS
-for details.
+EasyRPG Player is Copyright (C) 2007-2016 the EasyRPG authors, see file
+AUTHORS.md for details.
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU GPL version 3.
@@ -159,5 +159,5 @@ mkxp - An open source RGSS (Ruby Game Scripting System) interface
 implementation that aims to support games created by "RPG Maker XP",
 "RPG Maker VX" and "RPG Maker VX Ace"
 
-For additional information aubout EasyRPG software and related projects there
-is a wiki: https://easy-rpg.org/wiki/
+For additional information about EasyRPG software and related projects there
+is a wiki: https://wiki.easyrpg.org

@@ -31,18 +31,18 @@ Window_About::Window_About(int ix, int iy, int iwidth, int iheight) :
 
 void Window_About::Refresh() {
 	std::vector<std::string> about_msg = {
-		"EasyRPG is a RPG Maker 2000/2003",
+		"EasyRPG Player is a RPG Maker 2000/2003",
 		"interpreter.",
 		"Licensed under the GPLv3",
 		"",
-		"Website: easy-rpg.org",
+		"Website: easyrpg.org",
 		"",
 		"Contact us:",
-		"Via Mail: easyrpg@easy-rpg.org",
+		"Via Mail: easyrpg@easyrpg.org",
 		"Via Chat: #easyrpg @ freenode",
 		"",
 		"Bugs: github.com/EasyRPG/Player/issues",
-		"Contribute: easy-rpg.org/contribute",
+		"Contribute: easyrpg.org/contribute",
 	};
 
 	for (size_t i = 0; i < about_msg.size(); ++i) {

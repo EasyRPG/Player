@@ -7,7 +7,7 @@
     <string>EasyRPG Player</string>
 
     <key>CFBundleGetInfoString</key>
-    <string>https://easy-rpg.org/</string>
+    <string>https://easyrpg.org</string>
 
     <key>CFBundleIconFile</key>
     <string>Player.icns</string>
@@ -31,7 +31,7 @@
     <string>APPL</string>
 
     <key>CFBundleShortVersionString</key>
-    <string>0.4.1</string>
+    <string>0.5.0</string>
 
 </dict>
 </plist>

@@ -172,18 +172,19 @@ int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!handle)
 		return -1;
 
-	int res = WildMidi_GetOutput(handle, reinterpret_cast<char*>(buffer), length);
-
-	/* Old wildmidi (< 0.4.0) did output only in little endian, this inverts the buffer.
-	 * The used version macro exists since 0.4.0
+	/* Old wildmidi (< 0.4.0) did output only in little endian and had a different API,
+	 * this inverts the buffer. The used version macro exists since 0.4.0.
 	 */
 #ifndef LIBWILDMIDI_VERSION
+	int res = WildMidi_GetOutput(handle, reinterpret_cast<char*>(buffer), length);
 	if (Utils::IsBigEndian() && res > 0) {
 		uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
 		for (int i = 0; i < res / 2; ++i) {
 			Utils::SwapByteOrder(buffer_16[i]);
 		}
 	}
+#else
+	int res = WildMidi_GetOutput(handle, reinterpret_cast<int8_t*>(buffer), length);
 #endif
 	return res;
 }

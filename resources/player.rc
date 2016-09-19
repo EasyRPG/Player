@@ -3,23 +3,23 @@
 1 24 "player.xml"
 #endif
 1 VERSIONINFO
-FILEVERSION 0,4,1,0
-PRODUCTVERSION 0,4,1,0
+FILEVERSION 0,5,0,0
+PRODUCTVERSION 0,5,0,0
 FILETYPE 0x00000001L
 {
 	BLOCK "StringFileInfo"
 	{
 		BLOCK "000004E4"
 		{
-			VALUE "Comments", "https://easy-rpg.org/"
+			VALUE "Comments", "https://easyrpg.org"
 			VALUE "CompanyName", "EasyRPG Project"
-			VALUE "FileVersion", "0.4.1.0"
+			VALUE "FileVersion", "0.5.0.0"
 			VALUE "FileDescription", "EasyRPG Player"
 			VALUE "InternalName", "easyrpg-player"
 			VALUE "LegalCopyright", "2005-2016 EasyRPG Project"
 			VALUE "OriginalFilename", "Player.exe"
 			VALUE "ProductName", "EasyRPG Player"
-			VALUE "ProductVersion", "0.4.1.0"
+			VALUE "ProductVersion", "0.5.0.0"
 		}
 	}
 	BLOCK "VarFileInfo"

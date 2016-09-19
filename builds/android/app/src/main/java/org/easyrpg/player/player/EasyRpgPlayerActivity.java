@@ -231,7 +231,7 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
                         intent.setData(Uri.parse("mailto:"));
                         intent.setType("*/*");
-                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"easyrpg@easy-rpg.org"});
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"easyrpg@easyrpg.org"});
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Bug report");
                         intent.putExtra(Intent.EXTRA_TEXT, getApplicationContext().getString(R.string.report_bug_mail));
                         intent.putExtra(Intent.EXTRA_STREAM, files);
