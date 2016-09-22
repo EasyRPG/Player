@@ -34,7 +34,6 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	plus = true;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	cursor_width = 14;
 	SetZ(10001);
 	opacity = 0;

@@ -50,7 +50,6 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 
 	BitmapRef text_surface; // Complete text will be on this surface
 	text_surface = Bitmap::Create(dst_rect.width, dst_rect.height, true);
-	text_surface->SetTransparentColor(dest.GetTransparentColor());
 	text_surface->Clear();
 
 	BitmapRef system = Cache::System();

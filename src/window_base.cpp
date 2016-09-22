@@ -47,7 +47,6 @@ void Window_Base::Update() {
 	if (Game_System::GetSystemName() != windowskin_name) {
 		windowskin_name = Game_System::GetSystemName();
 		SetWindowskin(Cache::System(windowskin_name));
-		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 }

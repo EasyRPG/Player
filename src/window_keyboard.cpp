@@ -100,7 +100,6 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight)
 	col = 0;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
 
 	row_spacing = 16;
