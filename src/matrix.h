@@ -76,7 +76,13 @@ struct Matrix {
 	static Matrix Setup(double angle,
 						double scale_x, double scale_y,
 						int src_pos_x, int src_pos_y,
-						int dst_pos_x, int dst_pos_y);
+						int dst_pos_x, int dst_pos_y) {
+		Matrix m = Translation(-src_pos_x, -src_pos_y);
+		m = m.PreMultiply(Scale(scale_x, scale_y));
+		m = m.PreMultiply(Rotation(angle));
+		m = m.PreMultiply(Translation(dst_pos_x, dst_pos_y));
+		return m;
+	}
 };
 
 #endif

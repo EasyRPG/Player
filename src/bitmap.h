@@ -30,8 +30,9 @@
 #include "rect.h"
 #include "pixel_format.h"
 #include "tone.h"
-#include "matrix.h"
 #include "text.h"
+
+class Matrix;
 
 /**
  * Opacity class.

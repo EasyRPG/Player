@@ -32,6 +32,7 @@
 #include "image_xyz.h"
 #include "image_bmp.h"
 #include "image_png.h"
+#include "matrix.h"
 #include "font.h"
 #include "output.h"
 #include "util_macro.h"
@@ -343,17 +344,6 @@ Rect Bitmap::TransformRectangle(const Matrix& m, const Rect& rect) {
 	int dy1 = (int) ceil(ymax);
 
 	return Rect(dx0, dy0, dx1 - dx0, dy1 - dy0);
-}
-
-Matrix Matrix::Setup(double angle,
-					 double scale_x, double scale_y,
-					 int src_pos_x, int src_pos_y,
-					 int dst_pos_x, int dst_pos_y) {
-	Matrix m = Matrix::Translation(-src_pos_x, -src_pos_y);
-	m = m.PreMultiply(Matrix::Scale(scale_x, scale_y));
-	m = m.PreMultiply(Matrix::Rotation(angle));
-	m = m.PreMultiply(Matrix::Translation(dst_pos_x, dst_pos_y));
-	return m;
 }
 
 bool Bitmap::formats_initialized = false;
