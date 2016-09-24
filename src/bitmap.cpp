@@ -1123,6 +1123,78 @@ void Bitmap::Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rec
 	pixman_image_set_transform(src.bitmap, &xform);
 }
 
+void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
+						 Bitmap const& src, Rect const& src_rect,
+						 Opacity const& opacity,
+						 double zoom_x, double zoom_y, double angle,
+						 int waver_depth, double waver_phase) {
+	bool rotate = angle != 0.0;
+	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
+	bool waver = waver_depth != 0;
+
+	if (waver) {
+		WaverZoomOpacityBlit(x, y, ox, oy, src, src_rect,
+							opacity,
+							zoom_x, zoom_y,
+							waver_depth, waver_phase);
+	}
+	else if (rotate) {
+		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y, ox, oy, x, y);
+		RotateZoomOpacityBlit(fwd, src, src_rect, opacity);
+	}
+	else if (scale) {
+		ZoomOpacityBlit(x, y, ox, oy, src, src_rect, zoom_x, zoom_y, opacity);
+	}
+	else {
+		OpacityBlit(x, y, ox, oy, src, src_rect, opacity);
+	}
+}
+
+void Bitmap::RotateZoomOpacityBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
+	if (opacity.IsTransparent())
+		return;
+
+	Rect dst_rect = TransformRectangle(fwd, src_rect);
+	dst_rect.Adjust(GetRect());
+	if (dst_rect.IsEmpty())
+		return;
+
+	Matrix inv = fwd.Inverse();
+
+	TransformBlit(dst_rect, src, src_rect, inv, opacity);
+}
+
+void Bitmap::WaverZoomOpacityBlit(int x, int y, int ox, int oy,
+								  Bitmap const& src, Rect const& src_rect,
+								  Opacity const& opacity,
+								  double zoom_x, double zoom_y,
+								   int waver_depth, double waver_phase) {
+	WaverBlit(x - ox * zoom_x, y - oy * zoom_y, zoom_x, zoom_y, src, src_rect,
+				waver_depth, waver_phase, opacity);
+}
+
+void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
+							 Bitmap const& src, Rect const& src_rect,
+							 double zoom_x, double zoom_y,
+							 Opacity const& opacity) {
+	if (zoom_x != 1.0 || zoom_y != 1.0) {
+		Rect dst_rect(
+			x - static_cast<int>(std::floor(ox * zoom_x)),
+			y - static_cast<int>(std::floor(oy * zoom_y)),
+			static_cast<int>(std::floor(src_rect.width * zoom_x)),
+			static_cast<int>(std::floor(src_rect.height * zoom_y)));
+		StretchBlit(dst_rect, src, src_rect, opacity);
+	}
+	else
+		Blit(x - ox, y - oy, src, src_rect, opacity);
+}
+
+void Bitmap::OpacityBlit(int x, int y, int ox, int oy,
+						 Bitmap const& src, Rect const& src_rect,
+						 Opacity const& opacity) {
+	Blit(x - ox, y - oy, src, src_rect, opacity);
+}
+
 pixman_op_t Bitmap::GetOperator(pixman_image_t* mask) const {
 	if (!mask && (!GetTransparent() || GetOpacity() == Opaque)) {
 		return PIXMAN_OP_SRC;

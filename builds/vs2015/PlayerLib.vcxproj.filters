@@ -80,9 +80,6 @@
     <ClCompile Include="..\..\src\color.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\effects.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\font.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>

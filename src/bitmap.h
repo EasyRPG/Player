@@ -560,29 +560,10 @@ public:
 	 * @param waver_phase wave phase.
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity,
-							 double zoom_x, double zoom_y, double angle,
-							 int waver_depth, double waver_phase);
-
-	/**
-	 * Blits source bitmap with tone, opacity and scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 * @param tone tone.
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-						   Bitmap const& src, Rect const& src_rect_,
-						   Opacity const& opacity, const Tone& tone,
-						   double zoom_x, double zoom_y);
+					 Bitmap const& src, Rect const& src_rect,
+					 Opacity const& opacity,
+					 double zoom_x, double zoom_y, double angle,
+					 int waver_depth, double waver_phase);
 
 	static DynamicFormat ChooseFormat(const DynamicFormat& format);
 	static void SetFormat(const DynamicFormat& format);
@@ -653,17 +634,6 @@ protected:
 
 private:
 	/**
-	 * Blits source bitmap with transformation and opacity scaling.
-	 *
-	 * @param fwd forward (src->dst) transformation matrix.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 */
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity);
-
-	/**
 	 * Blits source bitmap with waver, zoom and opacity scaling.
 	 *
 	 * @param x x position.
@@ -678,11 +648,22 @@ private:
 	 * @param waver_depth wave magnitude.
 	 * @param waver_phase wave phase.
 	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity,
-							 double zoom_x, double zoom_y,
-							 int waver_depth, double waver_phase);
+	void WaverZoomOpacityBlit(int x, int y, int ox, int oy,
+							  Bitmap const& src, Rect const& src_rect,
+							  Opacity const& opacity,
+							  double zoom_x, double zoom_y,
+							  int waver_depth, double waver_phase);
+
+	/**
+	 * Blits source bitmap with transformation and opacity scaling.
+	 *
+	 * @param fwd forward (src->dst) transformation matrix.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param opacity opacity.
+	 */
+	void RotateZoomOpacityBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
+							   Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with zoom and opacity scaling.
@@ -697,10 +678,10 @@ private:
 	 * @param zoom_y y scale factor.
 	 * @param opacity opacity.
 	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 double zoom_x, double zoom_y,
-							 Opacity const& opacity);
+	void ZoomOpacityBlit(int x, int y, int ox, int oy,
+						 Bitmap const& src, Rect const& src_rect,
+						 double zoom_x, double zoom_y,
+						 Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with opacity scaling.
@@ -713,9 +694,9 @@ private:
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
 	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-						   Bitmap const& src, Rect const& src_rect,
-						   Opacity const& opacity);
+	void OpacityBlit(int x, int y, int ox, int oy,
+					 Bitmap const& src, Rect const& src_rect,
+					 Opacity const& opacity);
 };
 
 #endif
