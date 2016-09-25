@@ -404,28 +404,15 @@ void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
 }
 
 Rect Bitmap::TransformRectangle(const Matrix& m, const Rect& rect) {
-	int sx0 = rect.x;
-	int sy0 = rect.y;
-	int sx1 = rect.x + rect.width;
-	int sy1 = rect.y + rect.height;
+	pixman_box16 bounds = {
+		static_cast<int16_t>(rect.x),
+		static_cast<int16_t>(rect.y),
+		static_cast<int16_t>(rect.x + rect.width),
+		static_cast<int16_t>(rect.y + rect.height)
+	};
 
-	double x0, y0, x1, y1, x2, y2, x3, y3;
-	m.Transform(sx0, sy0, x0, y0);
-	m.Transform(sx1, sy0, x1, y1);
-	m.Transform(sx1, sy1, x2, y2);
-	m.Transform(sx0, sy1, x3, y3);
-
-	double xmin = std::min(std::min(x0, x1), std::min(x2, x3));
-	double ymin = std::min(std::min(y0, y1), std::min(y2, y3));
-	double xmax = std::max(std::max(x0, x1), std::max(x2, x3));
-	double ymax = std::max(std::max(y0, y1), std::max(y2, y3));
-
-	int dx0 = (int) floor(xmin);
-	int dy0 = (int) floor(ymin);
-	int dx1 = (int) ceil(xmax);
-	int dy1 = (int) ceil(ymax);
-
-	return Rect(dx0, dy0, dx1 - dx0, dy1 - dy0);
+	pixman_transform_bounds(&m.matrix, &bounds);
+	return Rect(bounds.x1, bounds.y1, bounds.x2 - bounds.x1, bounds.y2 - bounds.y1);
 }
 
 bool Bitmap::formats_initialized = false;
@@ -615,7 +602,7 @@ int Bitmap::pitch() const {
 }
 
 namespace {
-	pixman_image_t *CreateMask(Opacity const& opacity, Rect const& src_rect, pixman_transform_t const* pxform = NULL) {
+	pixman_image_t *CreateMask(Opacity const& opacity, Rect const& src_rect, Matrix const* pxform = nullptr) {
 		if (opacity.IsOpaque())
 			return (pixman_image_t*) NULL;
 
@@ -629,18 +616,13 @@ namespace {
 		*reinterpret_cast<uint8_t*>(&pixels[0]) = (opacity.top & 0xFF);
 		*reinterpret_cast<uint8_t*>(&pixels[1]) = (opacity.bottom & 0xFF);
 
-		pixman_transform_t xform;
-		pixman_transform_init_scale(&xform,
-									pixman_double_to_fixed(1.0 / src_rect.width),
-									pixman_double_to_fixed(1.0 / src_rect.height));
+		Matrix xform = Matrix::Scale(1.0 / src_rect.width, 1.0 / src_rect.height);
+		xform *= Matrix::Translation(0, opacity.split);
 
-		pixman_transform_translate(nullptr, &xform,
-								   pixman_int_to_fixed(0),
-								   pixman_int_to_fixed(-opacity.split));
 		if (pxform)
-			pixman_transform_multiply(&xform, &xform, pxform);
+			xform *= *pxform;
 
-		pixman_image_set_transform(mask, &xform);
+		pixman_image_set_transform(mask, &xform.matrix);
 
 		return mask;
 	}
@@ -700,12 +682,9 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 
 	pixman_image_set_repeat(src_bm, PIXMAN_REPEAT_NORMAL);
 
-	pixman_transform_t xform;
-	pixman_transform_init_translate(&xform,
-									pixman_int_to_fixed(ox),
-									pixman_int_to_fixed(oy));
+	Matrix xform = Matrix::Translation(ox, oy);
 
-	pixman_image_set_transform(src_bm, &xform);
+	pixman_image_set_transform(src_bm, &xform.matrix);
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
@@ -733,14 +712,10 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	double zoom_x = (double)src_rect.width  / dst_rect.width;
 	double zoom_y = (double)src_rect.height / dst_rect.height;
 
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_double_to_fixed(zoom_x),
-								pixman_double_to_fixed(zoom_y));
+	Matrix xform = Matrix::Scale(zoom_x, zoom_y);
+	xform *= Matrix::Translation(-src_rect.x, -src_rect.y);
 
-	pixman_transform_translate((pixman_transform_t *) NULL, &xform, src_rect.x, src_rect.y);
-
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
@@ -757,17 +732,11 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 		pixman_image_unref(mask);
 }
 
-void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, Opacity const& opacity) {
+void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& xform, Opacity const& opacity) {
 	if (opacity.IsTransparent())
 		return;
 
-	pixman_transform_t xform = {{
-		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
-		{ pixman_double_to_fixed(inv.yx), pixman_double_to_fixed(inv.yy), pixman_double_to_fixed(inv.y0) },
-		{ pixman_double_to_fixed(0.0),    pixman_double_to_fixed(0.0),    pixman_double_to_fixed(1.0) }
-		}};
-
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
 	pixman_image_t* mask = CreateMask(opacity, src.GetRect(), &xform);
 
@@ -788,12 +757,9 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 	if (opacity.IsTransparent())
 		return;
 
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_double_to_fixed(1.0 / zoom_x),
-								pixman_double_to_fixed(1.0 / zoom_y));
+	Matrix xform = Matrix::Scale(1.0 / zoom_x, 1.0 / zoom_y);
 
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
 	pixman_image_t* mask = CreateMask(opacity, src_rect, &xform);
 
@@ -1031,16 +997,10 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 		return;
 	}
 
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_int_to_fixed(horizontal ? -1 : 1),
-								pixman_int_to_fixed(vertical ? -1 : 1));
+	Matrix xform = Matrix::Scale(horizontal ? -1 : 1, vertical ? -1 : 1);
+	xform *= Matrix::Translation(horizontal ? -src.GetWidth() : 0, vertical ? -src.GetHeight() : 0);
 
-	pixman_transform_translate((pixman_transform_t*) NULL, &xform,
-							   pixman_int_to_fixed(horizontal ? src.GetWidth() : 0),
-							   pixman_int_to_fixed(vertical ? src.GetHeight() : 0));
-
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
 	pixman_image_composite32(src.GetOperator(),
 							 src.bitmap, (pixman_image_t*) NULL, bitmap,
@@ -1098,12 +1058,9 @@ void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my
 }
 
 void Bitmap::Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect) {
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_double_to_fixed(0.5),
-								pixman_double_to_fixed(0.5));
+	Matrix xform = Matrix::Scale(0.5, 0.5);
 
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 src.bitmap, (pixman_image_t*) NULL, bitmap,
@@ -1131,7 +1088,11 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 							waver_depth, waver_phase);
 	}
 	else if (rotate) {
-		Matrix fwd = Matrix::Setup(-angle, zoom_x, zoom_y, ox, oy, x, y);
+		Matrix fwd = Matrix::Translation(x, y);
+		fwd *= Matrix::Rotation(angle);
+		fwd *= Matrix::Scale(zoom_x, zoom_y);
+		fwd *= Matrix::Translation(-ox, -oy);
+
 		RotateZoomOpacityBlit(fwd, src, src_rect, opacity);
 	}
 	else if (scale) {

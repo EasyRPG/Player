@@ -20,68 +20,55 @@
 
 // Headers
 #include <cmath>
+#include <pixman.h>
 
 // 2D Matrix class
 
 struct Matrix {
-	double xx, xy, x0;
-	double yx, yy, y0;
+	pixman_transform_t matrix;
 
-	Matrix(double xx, double xy, double x0,
-		   double yx, double yy, double y0) :
-		xx(xx), xy(xy), x0(x0), yx(yx), yy(yy), y0(y0) {}
+	Matrix(const pixman_transform_t& m) : matrix(m) {}
 
 	static inline Matrix Rotation(double angle) {
-		double c = cos(angle);
-		double s = sin(angle);
-		return Matrix( c, s, 0,
-					  -s, c, 0);
+		pixman_transform_t rotation;
+		pixman_transform_init_rotate(&rotation,
+			pixman_double_to_fixed(cos(angle)),
+			pixman_double_to_fixed(sin(angle)));
+		return rotation;
 	}
 
 	static inline Matrix Scale(double sx, double sy) {
-		return Matrix(sx, 0, 0,
-					  0, sy, 0);
+		pixman_transform_t scale;
+		pixman_transform_init_scale(&scale,
+			pixman_double_to_fixed(sx),
+			pixman_double_to_fixed(sy));
+		return scale;
 	}
 
-	static inline Matrix Translation(double x, double y) {
-		return Matrix(1, 0, x,
-					  0, 1, y);
+	static inline Matrix Scale(int sx, int sy) {
+		pixman_transform_t scale;
+		pixman_transform_init_scale(&scale,
+			pixman_int_to_fixed(sx),
+			pixman_int_to_fixed(sy));
+		return scale;
 	}
 
-	static inline Matrix Multiply(const Matrix& a, const Matrix& b) {
-		return Matrix(a.xy*b.yx + a.xx*b.xx, a.xy*b.yy + a.xx*b.xy, a.xy*b.y0 + a.xx*b.x0 + a.x0,
-					  a.yy*b.yx + a.yx*b.xx, a.yy*b.yy + a.yx*b.xy, a.yy*b.y0 + a.yx*b.x0 + a.y0);
+	static inline Matrix Translation(int x, int y) {
+		pixman_transform_t translation;
+		pixman_transform_init_translate(&translation,
+			pixman_int_to_fixed(x),
+			pixman_int_to_fixed(y));
+		return translation;
 	}
 
-	inline Matrix PreMultiply(const Matrix& a) const {
-		return Multiply(a, *this);
-	}
-
-	inline Matrix PostMultiply(const Matrix& b) const {
-		return Multiply(*this, b);
+	Matrix operator*=(const Matrix& rhs) {
+		pixman_transform_multiply(&matrix, &matrix, &rhs.matrix);
 	}
 
 	inline Matrix Inverse() const {
-		double det = xx*yy - xy*yx;
-		return Matrix( yy/det, -xy/det, (y0*xy - x0*yy)/det,
-					  -yx/det,  xx/det, (x0*yx - y0*xx)/det);
-	}
-
-	inline void Transform(double x, double y, double& rx, double& ry) const {
-		rx = xx*x + xy*y + x0;
-		ry = yx*x + yy*y + y0;
-	}
-
-	// in bitmap.cpp
-	static Matrix Setup(double angle,
-						double scale_x, double scale_y,
-						int src_pos_x, int src_pos_y,
-						int dst_pos_x, int dst_pos_y) {
-		Matrix m = Translation(-src_pos_x, -src_pos_y);
-		m = m.PreMultiply(Scale(scale_x, scale_y));
-		m = m.PreMultiply(Rotation(angle));
-		m = m.PreMultiply(Translation(dst_pos_x, dst_pos_y));
-		return m;
+		pixman_transform_t inverse;
+		pixman_transform_invert(&inverse, &matrix);
+		return inverse;
 	}
 };
 
