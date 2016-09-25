@@ -630,15 +630,13 @@ namespace {
 		*reinterpret_cast<uint8_t*>(&pixels[1]) = (opacity.bottom & 0xFF);
 
 		pixman_transform_t xform;
-		pixman_transform_init_identity(&xform);
+		pixman_transform_init_scale(&xform,
+									pixman_double_to_fixed(1.0 / src_rect.width),
+									pixman_double_to_fixed(1.0 / src_rect.height));
 
-		pixman_transform_scale((pixman_transform_t*) NULL, &xform, 
-								pixman_int_to_fixed(src_rect.width),
-								pixman_int_to_fixed(src_rect.height));
-
-		pixman_transform_translate((pixman_transform_t*) NULL, &xform,
-									   pixman_int_to_fixed(0),
-									   pixman_int_to_fixed(-opacity.split));
+		pixman_transform_translate(nullptr, &xform,
+								   pixman_int_to_fixed(0),
+								   pixman_int_to_fixed(-opacity.split));
 		if (pxform)
 			pixman_transform_multiply(&xform, &xform, pxform);
 
@@ -736,7 +734,6 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	double zoom_y = (double)src_rect.height / dst_rect.height;
 
 	pixman_transform_t xform;
-
 	pixman_transform_init_scale(&xform,
 								pixman_double_to_fixed(zoom_x),
 								pixman_double_to_fixed(zoom_y));
@@ -754,8 +751,7 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
 
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, nullptr);
 
 	if (mask != NULL)
 		pixman_image_unref(mask);
@@ -782,8 +778,7 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
 
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, nullptr);
 
 	if (mask != NULL)
 		pixman_image_unref(mask);
@@ -821,8 +816,7 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 								 width, 1);
 	}
 
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, nullptr);
 
 	if (mask != NULL)
 		pixman_image_unref(mask);
@@ -1056,8 +1050,7 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 							 x, y,
 							 src_rect.width, src_rect.height);
 
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, nullptr);
 }
 
 void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
@@ -1119,8 +1112,7 @@ void Bitmap::Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rec
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
 
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(src.bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, nullptr);
 }
 
 void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
