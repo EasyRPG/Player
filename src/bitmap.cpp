@@ -988,6 +988,11 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		return;
 	}
 
+	// Only needed here, other codepaths are sanity checked by pixman
+	if (x < 0 || y < 0 || x > width() || y > height()) {
+		return;
+	}
+
 	if (&src != this)
 		pixman_image_composite32(src.GetOperator(),
 		src.bitmap, (pixman_image_t*)NULL, bitmap,
@@ -1017,11 +1022,11 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 		// Algorithm from OpenPDN (MIT license)
 		// Transformation in Y'CbCr color space
-		for (int i = 0; i < src_rect.height; ++i) {
+		for (int i = 0; i < src_rect.height && i < height(); ++i) {
 			// Advance one pixel row
 			pixels += pitch() / sizeof(uint32_t);
 
-			for (int j = 0; j < src_rect.width; ++j) {
+			for (int j = 0; j < src_rect.width && j < width(); ++j) {
 				uint32_t pixel = pixels[j];
 				uint8_t a = (pixel >> as) & 0xFF;
 				// &src != this works around a corner case with opacity split (character in a bush)
@@ -1063,11 +1068,11 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		// Move according to x/y value
 		pixels = pixels + (y * pitch() / sizeof(uint32_t) + x) - (pitch() / sizeof(uint32_t));
 
-		for (int i = 0; i < src_rect.height; ++i) {
+		for (int i = 0; i < src_rect.height && i < height(); ++i) {
 			// Advance one pixel row
 			pixels += pitch() / sizeof(uint32_t);
 
-			for (int j = 0; j < src_rect.width; ++j) {
+			for (int j = 0; j < src_rect.width && j < width(); ++j) {
 				uint32_t pixel = pixels[j];
 				uint8_t a = (pixel >> as) & 0xFF;
 				if (a == 0 && &src != this) {
