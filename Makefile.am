@@ -135,7 +135,6 @@ libeasyrpg_player_la_SOURCES = \
 	src/main_data.cpp \
 	src/main_data.h \
 	src/map_data.h \
-	src/matrix.h \
 	src/memory_management.h \
 	src/message_overlay.cpp \
 	src/message_overlay.h \
@@ -233,6 +232,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/tilemap_layer.h \
 	src/tone.cpp \
 	src/tone.h \
+	src/transform.h \
 	src/util_macro.h \
 	src/utils.cpp \
 	src/utils.h \

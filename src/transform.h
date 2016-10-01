@@ -22,14 +22,14 @@
 #include <cmath>
 #include <pixman.h>
 
-// 2D Matrix class
+// pixman_transform interface class
 
-struct Matrix {
+struct Transform {
 	pixman_transform_t matrix;
 
-	Matrix(const pixman_transform_t& m) : matrix(m) {}
+	Transform(const pixman_transform_t& m) : matrix(m) {}
 
-	static inline Matrix Rotation(double angle) {
+	static inline Transform Rotation(double angle) {
 		pixman_transform_t rotation;
 		pixman_transform_init_rotate(&rotation,
 			pixman_double_to_fixed(cos(angle)),
@@ -37,7 +37,7 @@ struct Matrix {
 		return rotation;
 	}
 
-	static inline Matrix Scale(double sx, double sy) {
+	static inline Transform Scale(double sx, double sy) {
 		pixman_transform_t scale;
 		pixman_transform_init_scale(&scale,
 			pixman_double_to_fixed(sx),
@@ -45,7 +45,7 @@ struct Matrix {
 		return scale;
 	}
 
-	static inline Matrix Scale(int sx, int sy) {
+	static inline Transform Scale(int sx, int sy) {
 		pixman_transform_t scale;
 		pixman_transform_init_scale(&scale,
 			pixman_int_to_fixed(sx),
@@ -53,7 +53,7 @@ struct Matrix {
 		return scale;
 	}
 
-	static inline Matrix Translation(int x, int y) {
+	static inline Transform Translation(int x, int y) {
 		pixman_transform_t translation;
 		pixman_transform_init_translate(&translation,
 			pixman_int_to_fixed(x),
@@ -61,11 +61,11 @@ struct Matrix {
 		return translation;
 	}
 
-	Matrix operator*=(const Matrix& rhs) {
+	Transform operator*=(const Transform& rhs) {
 		pixman_transform_multiply(&matrix, &matrix, &rhs.matrix);
 	}
 
-	inline Matrix Inverse() const {
+	inline Transform Inverse() const {
 		pixman_transform_t inverse;
 		pixman_transform_invert(&inverse, &matrix);
 		return inverse;

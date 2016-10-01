@@ -32,7 +32,7 @@
 #include "tone.h"
 #include "text.h"
 
-class Matrix;
+struct Transform;
 
 /**
  * Opacity class.
@@ -405,7 +405,7 @@ public:
 	 *            to source coordinates.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, Opacity const& opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Transform& inv, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with waver effect.
@@ -531,7 +531,7 @@ public:
 	 * @param rect source rectangle.
 	 * @return the bounding rectangle.
 	 */
-	static Rect TransformRectangle(const Matrix& m, const Rect& rect);
+	static Rect TransformRectangle(const Transform& m, const Rect& rect);
 
 	/**
 	 * Blits source bitmap with effects.
@@ -636,7 +636,7 @@ private:
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
 	 */
-	void RotateZoomOpacityBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
+	void RotateZoomOpacityBlit(const Transform &fwd, Bitmap const& src, Rect const& src_rect,
 							   Opacity const& opacity);
 
 	/**

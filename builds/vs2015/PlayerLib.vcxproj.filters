@@ -865,7 +865,7 @@
     <ClInclude Include="..\..\src\main_data.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\matrix.h">
+    <ClInclude Include="..\..\src\transform.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\memory_management.h">
