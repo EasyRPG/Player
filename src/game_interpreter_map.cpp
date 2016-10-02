@@ -18,6 +18,7 @@
 // Headers
 #include <cstdlib>
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include "audio.h"
@@ -581,7 +582,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
 	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	std::string const& pic_name = com.string;
+	std::string pic_name = com.string;
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	bool scrolls = com.parameters[4] > 0;
@@ -596,6 +597,37 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	int speed = com.parameters[13];
 	int bottom_trans;
 
+	// PicPointer Patch handling
+	if (pic_id >= 50000) {
+		// Name substitution is pic_id + 1
+		int pic_num = Game_Variables[pic_id - 50000 + 1];
+
+		if (pic_num >= 0 && pic_name.size() >= 4) {
+			// Replace last 4 characters with 0-padded pic_num
+			std::u32string u_pic_name = Utils::DecodeUTF32(pic_name);
+			std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - 4));
+			std::stringstream ss;
+			ss << new_pic_name << std::setfill('0') << std::setw(4) << pic_num;
+			new_pic_name = ss.str();
+
+			Output::Debug("PicPointer: File %s replaced with %s", pic_name.c_str(), new_pic_name.c_str());
+			pic_name = new_pic_name;
+		}
+	}
+
+	if (magnify > 10000) {
+		int new_magnify = Game_Variables[magnify - 10000];
+		Output::Debug("PicPointer: Zoom %d replaced with %d", magnify, new_magnify);
+		magnify = new_magnify;
+	}
+
+	if (top_trans > 10000) {
+		int new_top_trans = Game_Variables[top_trans - 10000];
+		Output::Debug("PicPointer: Top transparency %d replaced with %d", top_trans, new_top_trans);
+		top_trans = new_top_trans;
+	}
+	// End of PicPointer handling (except bottom transparency)
+
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
 		// RKG2k and RPG2k3 1.10 do not support this option
 		bottom_trans = top_trans;
@@ -603,7 +635,18 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
 		bottom_trans = param_size > 14 ? com.parameters[14] : top_trans;
+
+		if (bottom_trans > 10000) {
+			int new_bottom_trans = Game_Variables[bottom_trans - 10000];
+			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", bottom_trans, new_bottom_trans);
+			bottom_trans = Game_Variables[top_trans - 10000];
+		}
 	}
+
+	// Sanitize input
+	magnify = std::max(0, std::min(magnify, 2000));
+	top_trans = std::max(0, std::min(top_trans, 100));
+	bottom_trans = std::max(0, std::min(bottom_trans, 100));
 
 	picture->Show(pic_name, use_trans);
 	picture->SetFixedToMap(scrolls);
@@ -647,6 +690,20 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	int tenths = com.parameters[14];
 	bool wait = com.parameters[15] != 0;
 
+	// PicPointer Patch handling
+	if (magnify > 10000) {
+		int new_magnify = Game_Variables[magnify - 10000];
+		Output::Debug("PicPointer: Zoom %d replaced with %d", magnify, new_magnify);
+		magnify = new_magnify;
+	}
+
+	if (top_trans > 10000) {
+		int new_top_trans = Game_Variables[top_trans - 10000];
+		Output::Debug("PicPointer: Top transparency %d replaced with %d", top_trans, new_top_trans);
+		top_trans = new_top_trans;
+	}
+	// End of PicPointer handling (except bottom transparency)
+
 	int bottom_trans;
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
 		// RPG2k and RPG2k3 1.10 do not support this option
@@ -655,7 +712,19 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
 		bottom_trans = param_size > 16 ? com.parameters[16] : top_trans;
+
+		if (bottom_trans > 10000) {
+			int new_bottom_trans = Game_Variables[bottom_trans - 10000];
+			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", bottom_trans, new_bottom_trans);
+			bottom_trans = Game_Variables[top_trans - 10000];
+		}
 	}
+
+	// Sanitize input
+	magnify = std::max(0, std::min(magnify, 2000));
+	top_trans = std::max(0, std::min(top_trans, 100));
+	bottom_trans = std::max(0, std::min(bottom_trans, 100));
+	tenths = std::max(0, std::min(tenths, 10000));
 
 	picture->SetMovementEffect(x, y);
 	picture->SetColorEffect(red, green, blue, saturation);
