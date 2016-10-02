@@ -50,9 +50,9 @@ namespace {
 		if(ret != (data + size) && ret->code == code) {
 			return ret;
 		} else {
-			static ShinonomeGlyph const empty_glyph = { 0, true, {0} };
+			static ShinonomeGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
 			Output::Debug("glyph not found: 0x%04x", code);
-			return &empty_glyph;
+			return &replacement_glyph;
 		}
 	}
 
