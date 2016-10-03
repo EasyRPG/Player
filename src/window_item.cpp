@@ -58,7 +58,7 @@ void Window_Item::Refresh() {
 	if (Game_Temp::battle_running) {
 		// Include equipped accesories that invoke skills
 		if (actor) {
-			for (int i = 0; i < 5; ++i) {
+			for (int i = 1; i <= 5; ++i) {
 				const RPG::Item* item = actor->GetEquipment(i);
 				if (item && item->use_skill && item->skill_id > 0) {
 					data.push_back(item->ID);

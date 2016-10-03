@@ -1261,7 +1261,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				case RPG::Item::Type_armor:
 				case RPG::Item::Type_helmet:
 				case RPG::Item::Type_accessory:
-					slot = type - 1;
+					slot = type;
 					break;
 				default:
 					return true;
@@ -1269,14 +1269,20 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 			break;
 		case 1:
 			item_id = 0;
-			slot = com.parameters[3];
+			slot = com.parameters[3] + 1;
 			break;
 		default:
 			return false;
 	}
 
-	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		actor->ChangeEquipment(slot, item_id);
+	if (slot == 6) {
+		for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
+			actor->RemoveAllEquipment();
+		}
+	} else {
+		for (const auto &actor : GetActors(com.parameters[0], com.parameters[1])) {
+			actor->ChangeEquipment(slot, item_id);
+		}
 	}
 
 	return true;

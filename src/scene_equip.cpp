@@ -87,13 +87,13 @@ void Scene_Equip::UpdateStatusWindow() {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		int old_item = actor.SetEquipment(equip_window->GetIndex(),
+		int old_item = actor.SetEquipment(equip_window->GetIndex() + 1,
 			current_item_id);
 
 		equipstatus_window->SetNewParameters(
 			actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
 
-		actor.SetEquipment(equip_window->GetIndex(), old_item);
+		actor.SetEquipment(equip_window->GetIndex() + 1, old_item);
 
 		equipstatus_window->Refresh();
 	}
@@ -141,7 +141,7 @@ void Scene_Equip::UpdateItemSelection() {
 		int current_item_id = current_item ? current_item->ID : 0;
 
 		actor.ChangeEquipment(
-			equip_window->GetIndex(), current_item_id);
+			equip_window->GetIndex() + 1, current_item_id);
 
 		equip_window->SetActive(true);
 		item_window->SetActive(false);

@@ -66,7 +66,7 @@ void Window_ShopParty::Refresh() {
 		if (equippable) {
 			//check if item is equipped by each member
 			bool is_equipped = false;
-			for (int j = 0; j < 5; ++j) {
+			for (int j = 1; j <= 5; ++j) {
 				const RPG::Item* item = actor->GetEquipment(j);
 				if (item) {
 					is_equipped |= (item->ID == item_id);

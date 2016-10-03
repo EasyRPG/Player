@@ -41,7 +41,7 @@ void Window_Equip::Refresh() {
 	// Add the equipment of the actor to data
 	data.clear();
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 1; i <= 5; ++i) {
 		const RPG::Item* item = actor->GetEquipment(i);
 		data.push_back(item ? item->ID : 0);
 	}
