@@ -989,7 +989,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 	}
 
 	// Only needed here, other codepaths are sanity checked by pixman
-	if (x < 0 || y < 0 || x > width() || y > height()) {
+	if (x < 0 || y < 0 || x >= width() || y >= height()) {
 		return;
 	}
 
