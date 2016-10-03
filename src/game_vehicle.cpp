@@ -400,6 +400,7 @@ bool Game_Vehicle::CanLand() const {
 
 void Game_Vehicle::Update() {
 	Game_Character::Update();
+	Game_Character::UpdateSprite();
 	SyncWithPlayer();
 
 	if (type == Airship) {
