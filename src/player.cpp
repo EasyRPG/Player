@@ -337,12 +337,27 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+
 	if (update_scene) {
-		Scene::instance->Update();
+		std::shared_ptr<Scene> old_instance = Scene::instance;
+
+		int speed_modifier = 1;
+		if (Input::IsPressed(Input::FAST_FORWARD)) {
+			speed_modifier = (5 + (Input::IsPressed(Input::PLUS) ? 5 : 0));
+		}
+
+		for (int i = 0; i < speed_modifier; ++i) {
+			Graphics::Update(false);
+			Scene::instance->Update();
+			++frames;
+			// Scene changed, not save to Update again, setup code must run
+			if (&*old_instance != &*Scene::instance) {
+				break;
+			}
+		}
 	}
 
 	start_time = next_frame;
-	++frames;
 }
 
 void Player::FrameReset() {
