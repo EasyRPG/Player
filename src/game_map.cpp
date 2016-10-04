@@ -352,7 +352,7 @@ void Game_Map::ScrollDown(int distance) {
 		map_info.position_y = (map_info.position_y + distance + height) % height;
 		parallax_y -= map_info.parallax_vert ? distance / 2 : 0;
 	} else {
-		if (map_info.position_y + distance <= (GetHeight() - 15) * SCREEN_TILE_WIDTH) {
+		if (map_info.position_y + distance < (GetHeight() - 15) * SCREEN_TILE_WIDTH) {
 			map_info.position_y += distance;
 			if (map_info.parallax_vert)
 				parallax_y -= distance / 2;
@@ -386,7 +386,7 @@ void Game_Map::ScrollRight(int distance) {
 		map_info.position_x = (map_info.position_x + distance + width) % width;
 		parallax_x -= map_info.parallax_horz ? distance / 2 : 0;
 	} else {
-		if (map_info.position_x + distance <= (GetWidth() - 20) * SCREEN_TILE_WIDTH) {
+		if (map_info.position_x + distance < (GetWidth() - 20) * SCREEN_TILE_WIDTH) {
 			map_info.position_x += distance;
 			if (map_info.parallax_horz)
 				parallax_x -= distance / 2;

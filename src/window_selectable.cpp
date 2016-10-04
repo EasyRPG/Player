@@ -137,6 +137,19 @@ void Window_Selectable::Update() {
 				index = (index - column_max + item_max) % item_max;
 			}
 		}
+		// page up/down is limited to selectables with one column
+		if (column_max == 1) {
+			if (Input::IsRepeated(Input::PAGE_DOWN) && index < item_max - 1) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+				int new_pos = index + GetPageRowMax();
+				index = (new_pos <= item_max - 1) ? new_pos : item_max - 1;
+			}
+			if (Input::IsRepeated(Input::PAGE_UP) && index > 0) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
+				int new_pos = index - GetPageRowMax();
+				index = (new_pos >= 0) ? new_pos : 0;
+			}
+		}
 		if (Input::IsRepeated(Input::RIGHT)) {
 			if (column_max >= 2 && index < item_max - 1) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
