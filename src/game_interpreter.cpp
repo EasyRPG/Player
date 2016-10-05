@@ -63,8 +63,8 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	Clear();
 }
 
- Game_Interpreter::~Game_Interpreter() {
- }
+Game_Interpreter::~Game_Interpreter() {
+}
 
 // Clear.
 void Game_Interpreter::Clear() {

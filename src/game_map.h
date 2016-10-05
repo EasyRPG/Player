@@ -167,15 +167,15 @@ namespace Game_Map {
 	 */
 	bool IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type);
 
-    /**
-     * Gets if a tile coordinate can be jumped to.
-     *
-     * @param x tile x.
-     * @param y tile y.
-     * @param self_event Current character attemping to jump.
-     * @return whether is posible to jump.
-     */
-    bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
+	/**
+	 * Gets if a tile coordinate can be jumped to.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param self_event Current character attemping to jump.
+	 * @return whether is posible to jump.
+	 */
+	bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
 
 	/**
 	 * Gets the bush depth at a certain tile.
