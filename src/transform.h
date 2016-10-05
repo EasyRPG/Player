@@ -61,8 +61,9 @@ struct Transform {
 		return translation;
 	}
 
-	Transform operator*=(const Transform& rhs) {
+	Transform& operator*=(const Transform& rhs) {
 		pixman_transform_multiply(&matrix, &matrix, &rhs.matrix);
+		return *this;
 	}
 
 	inline Transform Inverse() const {
