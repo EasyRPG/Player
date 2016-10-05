@@ -599,6 +599,23 @@ namespace Game_Map {
 	int GetParallaxY();
 	const std::string& GetParallaxName();
 
+	/**
+	 * Gets if pending teleportations will be ignored.
+	 *
+	 * @return true: teleport ignored, false: teleport processed normally
+	 */
+	bool IsTeleportDelayed();
+
+	/**
+	 * Enables/Disables the processing of teleports.
+	 * This is used by Show/EraseScreen in Parallel processes to prevent
+	 * too early execution of teleports (Show/EraseScreen don't yield the
+	 * interpreter in RPG_RT).
+	 *
+	 * @param delay enable/disable delay
+	 */
+	void SetTeleportDelayed(bool delay);
+
 	FileRequestAsync* RequestMap(int map_id);
 }
 

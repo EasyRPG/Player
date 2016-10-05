@@ -126,10 +126,13 @@ void Scene_Map::Update() {
 	// Fade In must be done before finish teleport, otherwise chipset is not
 	// loaded and renders black while fading -> ugly
 
-	if (Main_Data::game_player->IsTeleporting()) {
+	if (!Game_Map::IsTeleportDelayed() && Main_Data::game_player->IsTeleporting()) {
 		FinishTeleportPlayer();
 		return;
 	}
+	// The delay is only needed for one frame to execute pending transitions,
+	// the interpreters continue on the old map afterwards
+	Game_Map::SetTeleportDelayed(false);
 
 	Main_Data::game_party->UpdateTimers();
 
