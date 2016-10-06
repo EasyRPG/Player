@@ -568,9 +568,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			crit_chance += crit_chance * weapon.critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon.attribute_set);
 		}
-		to_hit = (int)(100 - (100 - hit_chance));
-		if(weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
-			to_hit *= (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2);
+
+		if (weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
+			to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * (*current_target)->GetAgi() / ally->GetAgi() - 1) / 2));
+		} else {
+			to_hit = (int)(100 - (100 - hit_chance));
 		}
 	} else {
 		// Source is Enemy
