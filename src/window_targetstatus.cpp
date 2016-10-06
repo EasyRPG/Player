@@ -26,7 +26,6 @@ Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight
 	Window_Base(ix, iy, iwidth, iheight), id(-1), use_item(false) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 }
 
 void Window_TargetStatus::Refresh() {

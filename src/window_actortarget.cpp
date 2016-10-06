@@ -26,7 +26,6 @@ Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) 
 	Window_Selectable(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
 }

@@ -30,7 +30,6 @@ Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	switch (Game_Temp::shop_type) {
 		case 0:

@@ -447,7 +447,6 @@
     <ClCompile Include="..\..\src\decoder_mpg123.cpp" />
     <ClCompile Include="..\..\src\decoder_wav.cpp" />
     <ClCompile Include="..\..\src\decoder_oggvorbis.cpp" />
-    <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\frame.cpp" />
@@ -642,7 +641,6 @@
     <ClInclude Include="..\..\src\logo.h" />
     <ClInclude Include="..\..\src\main_data.h" />
     <ClInclude Include="..\..\src\map_data.h" />
-    <ClInclude Include="..\..\src\matrix.h" />
     <ClInclude Include="..\..\src\memory_management.h" />
     <ClInclude Include="..\..\src\message_overlay.h" />
     <ClInclude Include="..\..\src\midiprogram.h" />
@@ -695,6 +693,7 @@
     <ClInclude Include="..\..\src\text.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
+    <ClInclude Include="..\..\src\transform.h" />
     <ClInclude Include="..\..\src\tone.h" />
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />

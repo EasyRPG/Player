@@ -51,7 +51,6 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	gold_window(new Window_Gold(232, 0, 88, 32))
 {
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional &&
 		Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {

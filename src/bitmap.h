@@ -30,8 +30,9 @@
 #include "rect.h"
 #include "pixel_format.h"
 #include "tone.h"
-#include "matrix.h"
 #include "text.h"
+
+struct Transform;
 
 /**
  * Opacity class.
@@ -70,7 +71,6 @@ public:
 		return IsSplit() ? top >= 255 && bottom >= 255 : top >= 255;
 	}
 };
-
 
 /**
  * Base Bitmap class.
@@ -125,13 +125,21 @@ public:
 	static BitmapRef Create(int width, int height, bool transparent = true, int bpp = 0);
 
 	/**
-	 * Creates a copy of an existing bitmap.
+	 * Creates a surface wrapper around existing pixel data.
 	 *
-	 * @//param source : source bitmap
-	 * @//param src_rect : rect to copy from source bitmap
-	 * @//param transparent : allow transparency on bitmap
-	 */
-	// static BitmapRef Create(Bitmap const& source, Rect const& src_rect, bool transparent = true);
+	 * @param pixels pointer to pixel data.
+	 * @param width surface width.
+	 * @param height surface height.
+	 * @param pitch surface pitch.
+	 * @param format pixel format.
+	*/
+	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+
+	Bitmap(int width, int height, bool transparent);
+	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
+	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
+	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
+	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	/**
 	 * Destructor.
@@ -165,20 +173,6 @@ public:
 	 * @return if bitmap allows transparency.
 	 */
 	bool GetTransparent() const;
-
-	/**
-	 * Gets current transparent color.
-	 *
-	 * @return current transparent color.
-	 */
-	Color GetTransparentColor() const;
-
-	/**
-	 * Sets transparent color.
-	 *
-	 * @param color new transparent color.
-	 */
-	void SetTransparentColor(Color color);
 
 	enum Flags {
 		// Special handling for system graphic.
@@ -245,44 +239,86 @@ public:
 
 	void CheckPixels(uint32_t flags);
 
-protected:
-	Bitmap();
-
-	int bytes() const;
-	uint32_t rmask() const;
-	uint32_t gmask() const;
-	uint32_t bmask() const;
-	uint32_t amask() const;
-	uint8_t const* pointer(int x, int y) const;
-	uint8_t* pointer(int x, int y);
-
-	Color GetColor(uint32_t color) const;
-	uint32_t GetUint32Color(const Color &color) const;
-	uint32_t GetUint32Color(uint8_t r, uint8_t  g, uint8_t b, uint8_t a) const;
-	void GetColorComponents(uint32_t color, uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &a) const;
-
-	TileOpacity CheckOpacity(Rect const& rect);
-
-	DynamicFormat format;
-
-	std::vector<std::vector<TileOpacity>> tile_opacity;
-	TileOpacity opacity = Partial;
-	Color bg_color, sh_color;
-
-	void InitBitmap();
-
-public:
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param x x coordinate where text rendering starts.
+	 * @param y y coordinate where text rendering starts.
+	 * @param color system color index.
+	 * @param text text to draw.
+	 * @param align text alignment.
+	 */
+	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Creates a surface wrapper around existing pixel data.
+	 * Draws text to bitmap.
 	 *
-	 * @param pixels pointer to pixel data.
-	 * @param width surface width.
-	 * @param height surface height.
-	 * @param pitch surface pitch.
-	 * @param format pixel format.
-	*/
-	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+	 * @param x x coordinate of bounding rectangle.
+	 * @param y y coordinate of bounding rectangle.
+	 * @param width width of bounding rectangle.
+	 * @param height height of bounding rectangle.
+	 * @param color system color index.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param rect bounding rectangle.
+	 * @param color system color index.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param x x coordinate where text rendering starts.
+	 * @param y y coordinate where text rendering starts.
+	 * @param color text color.
+	 * @param text text to draw.
+	 */
+	void TextDraw(int x, int y, Color color, std::string const& text);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param x x coordinate of bounding rectangle.
+	 * @param y y coordinate of bounding rectangle.
+	 * @param width width of bounding rectangle.
+	 * @param height height of bounding rectangle.
+	 * @param color text color.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param rect bounding rectangle.
+	 * @param color text color.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Gets text drawing font.
+	 *
+	 * @return text drawing font.
+	 */
+	FontRef const& GetFont() const;
+
+	/**
+	 * Sets text drawing font.
+	 *
+	 * @param font drawing font.
+	 */
+	void SetFont(FontRef const& font);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -369,7 +405,7 @@ public:
 	 *            to source coordinates.
 	 * @param opacity opacity for blending with bitmap.
 	 */
-	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, Opacity const& opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Transform& inv, Opacity const& opacity);
 
 	/**
 	 * Blits source bitmap with waver effect.
@@ -495,12 +531,7 @@ public:
 	 * @param rect source rectangle.
 	 * @return the bounding rectangle.
 	 */
-	static Rect TransformRectangle(const Matrix& m, const Rect& rect);
-
-	// Multiple Effects functions.
-	// Note: these are in effects.cpp, not surface.cpp.
-	// Note: all perform rendering using existing functions,
-	//       so it is not necessary for back-ends to implement them.
+	static Rect TransformRectangle(const Transform& m, const Rect& rect);
 
 	/**
 	 * Blits source bitmap with effects.
@@ -524,196 +555,10 @@ public:
 	 * @param waver_phase wave phase.
 	 */
 	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity,
-							 double zoom_x, double zoom_y, double angle,
-							 int waver_depth, double waver_phase);
-
-	/**
-	 * Blits source bitmap with tone, opacity and scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 * @param tone tone.
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-						   Bitmap const& src, Rect const& src_rect_,
-						   Opacity const& opacity, const Tone& tone,
-						   double zoom_x, double zoom_y);
-
-private:
-	/**
-	 * Blits source bitmap with transformation and opacity scaling.
-	 *
-	 * @param fwd forward (src->dst) transformation matrix.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 */
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity);
-
-	/**
-	 * Blits source bitmap with waver, zoom and opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 * @param opacity opacity.
-	 * @param waver_depth wave magnitude.
-	 * @param waver_phase wave phase.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 Opacity const& opacity,
-							 double zoom_x, double zoom_y,
-							 int waver_depth, double waver_phase);
-
-	/**
-	 * Blits source bitmap with zoom and opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 * @param opacity opacity.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-							 Bitmap const& src, Rect const& src_rect,
-							 double zoom_x, double zoom_y,
-							 Opacity const& opacity);
-
-	/**
-	 * Blits source bitmap with opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 */
-	void EffectsBlit(int x, int y, int ox, int oy,
-						   Bitmap const& src, Rect const& src_rect,
-						   Opacity const& opacity);
-
-public:
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate where text rendering starts.
-	 * @param y y coordinate where text rendering starts.
-	 * @param color system color index.
-	 * @param text text to draw.
-	 * @param align text alignment.
-	 */
-	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color system color index.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param rect bounding rectangle.
-	 * @param color system color index.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate where text rendering starts.
-	 * @param y y coordinate where text rendering starts.
-	 * @param color text color.
-	 * @param text text to draw.
-	 */
-	void TextDraw(int x, int y, Color color, std::string const& text);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color text color.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param rect bounding rectangle.
-	 * @param color text color.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Gets text drawing font.
-	 *
-	 * @return text drawing font.
-	 */
-	FontRef const& GetFont() const;
-
-	/**
-	 * Sets text drawing font.
-	 *
-	 * @param font drawing font.
-	 */
-	void SetFont(FontRef const& font);
-
-protected:
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-
-#ifdef USE_SDL
-	friend class SdlUi;
-#endif
-
-	/** Font for text drawing. */
-	FontRef font;
-
-	void RefreshCallback();
-	bool editing;
-public:
-	Bitmap(int width, int height, bool transparent);
-	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
-	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
-	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
-	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
+					 Bitmap const& src, Rect const& src_rect,
+					 Opacity const& opacity,
+					 double zoom_x, double zoom_y, double angle,
+					 int waver_depth, double waver_phase);
 
 	static DynamicFormat ChooseFormat(const DynamicFormat& format);
 	static void SetFormat(const DynamicFormat& format);
@@ -731,6 +576,23 @@ public:
 	int pitch() const;
 
 protected:
+	TileOpacity CheckOpacity(Rect const& rect);
+
+	DynamicFormat format;
+
+	std::vector<std::vector<TileOpacity>> tile_opacity;
+	TileOpacity opacity = Partial;
+	Color bg_color, sh_color;
+
+	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
+
+#ifdef USE_SDL
+	friend class SdlUi;
+#endif
+
+	/** Font for text drawing. */
+	FontRef font;
+
 	/** Bitmap data. */
 	pixman_image_t *bitmap = nullptr;
 	pixman_format_code_t pixman_format;
@@ -764,6 +626,36 @@ protected:
 
 	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
 	bool read_only = false;
+
+private:
+	/**
+	 * Blits source bitmap with transformation and opacity scaling.
+	 *
+	 * @param fwd forward (src->dst) transformation matrix.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param opacity opacity.
+	 */
+	void RotateZoomOpacityBlit(const Transform &fwd, Bitmap const& src, Rect const& src_rect,
+							   Opacity const& opacity);
+
+	/**
+	 * Blits source bitmap with zoom and opacity scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 * @param opacity opacity.
+	 */
+	void ZoomOpacityBlit(int x, int y, int ox, int oy,
+						 Bitmap const& src, Rect const& src_rect,
+						 double zoom_x, double zoom_y,
+						 Opacity const& opacity);
 };
 
 #endif

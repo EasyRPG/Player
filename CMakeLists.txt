@@ -29,7 +29,6 @@ set(PLAYER_SRCS
 	src/decoder_wav.cpp
 	src/decoder_wildmidi.cpp
 	src/decoder_xmp.cpp
-	src/effects.cpp
 	src/filefinder.cpp
 	src/font.cpp
 	src/frame.cpp

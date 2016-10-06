@@ -37,7 +37,6 @@ Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) 
 	cycle = 0;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	num_rows = contents->GetHeight() / 16;
 

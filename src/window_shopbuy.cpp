@@ -47,7 +47,6 @@ void Window_ShopBuy::Refresh() {
 
 	contents->Clear();
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 
 	for (size_t i = 0; i < data.size(); ++i) {
@@ -59,7 +58,6 @@ void Window_ShopBuy::DrawItem(int index) {
 	int item_id = data[index];
 	bool enabled = Data::items[item_id - 1].price <= Main_Data::game_party->GetGold();
 	Rect rect = GetItemRect(index);
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->ClearRect(rect);
 	DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 
