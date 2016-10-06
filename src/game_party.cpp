@@ -18,6 +18,7 @@
 // Headers
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include "system.h"
 #include "game_party.h"
 #include "game_actors.h"
@@ -546,7 +547,6 @@ int Game_Party::GetAverageLevel() {
 }
 
 int Game_Party::GetFatigue() {
-	int party_exh = 0;
 	std::vector<Game_Actor*> actors = GetActors();
 	std::vector<Game_Actor*>::iterator it;
 
@@ -554,11 +554,21 @@ int Game_Party::GetFatigue() {
 		return 0;
 	}
 
-	for (it = actors.begin(); it != actors.end(); ++it) {
-		// FIXME: this is what the help file says, but it looks wrong
-		party_exh += 100 - (200 * (*it)->GetHp() / (*it)->GetMaxHp() -
-			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
+	int hp = 0;
+	int total_hp = 0;
+	int sp = 0;
+	int total_sp = 0; 
+	for (Game_Actor* a : actors) {
+		hp += a->GetHp();
+		total_hp += a->GetMaxHp();
+		sp += a->GetSp();
+		total_sp += a->GetMaxSp();
 	}
 
-	return party_exh / (int)actors.size();
+	// SP is always 33.3% of fatigue, which means a 0 SP actor is never above 66%
+	if (total_sp == 0) {
+		total_sp = 1;
+	}
+
+	return (int)std::ceil(100 - 100.0f * (((float)hp / total_hp * 2.0f + (float)sp / total_sp) / 3.0f));
 }
