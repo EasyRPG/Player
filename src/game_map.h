@@ -167,15 +167,15 @@ namespace Game_Map {
 	 */
 	bool IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type);
 
-    /**
-     * Gets if a tile coordinate can be jumped to.
-     *
-     * @param x tile x.
-     * @param y tile y.
-     * @param self_event Current character attemping to jump.
-     * @return whether is posible to jump.
-     */
-    bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
+	/**
+	 * Gets if a tile coordinate can be jumped to.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param self_event Current character attemping to jump.
+	 * @return whether is posible to jump.
+	 */
+	bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
 
 	/**
 	 * Gets the bush depth at a certain tile.
@@ -598,6 +598,23 @@ namespace Game_Map {
 	int GetParallaxX();
 	int GetParallaxY();
 	const std::string& GetParallaxName();
+
+	/**
+	 * Gets if pending teleportations will be ignored.
+	 *
+	 * @return true: teleport ignored, false: teleport processed normally
+	 */
+	bool IsTeleportDelayed();
+
+	/**
+	 * Enables/Disables the processing of teleports.
+	 * This is used by Show/EraseScreen in Parallel processes to prevent
+	 * too early execution of teleports (Show/EraseScreen don't yield the
+	 * interpreter in RPG_RT).
+	 *
+	 * @param delay enable/disable delay
+	 */
+	void SetTeleportDelayed(bool delay);
 
 	FileRequestAsync* RequestMap(int map_id);
 }

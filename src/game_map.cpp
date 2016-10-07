@@ -80,6 +80,8 @@ namespace {
 	int pan_speed;
 
 	int last_map_id;
+
+	bool teleport_delay;
 }
 
 void Game_Map::Init() {
@@ -114,6 +116,8 @@ void Game_Map::Init() {
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
 	last_map_id = -1;
+
+	teleport_delay = false;
 }
 
 void Game_Map::Dispose() {
@@ -1381,6 +1385,14 @@ int Game_Map::GetParallaxY() {
 
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
+}
+
+bool Game_Map::IsTeleportDelayed() {
+	return teleport_delay;
+}
+
+void Game_Map::SetTeleportDelayed(bool delay) {
+	teleport_delay = delay;
 }
 
 FileRequestAsync* Game_Map::RequestMap(int map_id) {

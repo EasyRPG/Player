@@ -63,8 +63,8 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	Clear();
 }
 
- Game_Interpreter::~Game_Interpreter() {
- }
+Game_Interpreter::~Game_Interpreter() {
+}
 
 // Clear.
 void Game_Interpreter::Clear() {
@@ -1620,6 +1620,10 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
+	if (!main_flag) {
+		Game_Map::SetTeleportDelayed(true);
+	}
+
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
 
@@ -1697,6 +1701,10 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
+
+	if (!main_flag) {
+		Game_Map::SetTeleportDelayed(true);
+	}
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
