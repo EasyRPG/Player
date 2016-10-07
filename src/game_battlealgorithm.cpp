@@ -260,7 +260,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedAttack() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << GetAffectedSp();
+		ss << " " << Data::terms.attack << " " << GetAffectedAttack();
 		out.push_back(ss.str());
 	}
 
