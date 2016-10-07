@@ -85,6 +85,8 @@ void Input::InitButtons() {
 	buttons[DECISION].push_back(Keys::MOUSE_LEFT);
 	buttons[CANCEL].push_back(Keys::MOUSE_RIGHT);
 	buttons[SHIFT].push_back(Keys::MOUSE_MIDDLE);
+	buttons[SCROLL_UP].push_back(Keys::MOUSE_SCROLLUP);
+	buttons[SCROLL_DOWN].push_back(Keys::MOUSE_SCROLLDOWN);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)

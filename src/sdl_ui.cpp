@@ -555,6 +555,12 @@ void SdlUi::ToggleZoom() {
 void SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
+	// Reset Mouse scroll
+	if (Player::mouse_flag) {
+		keys[Input::Keys::MOUSE_SCROLLUP] = false;
+		keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
+	}
+
 	// Poll SDL events and process them
 	while (SDL_PollEvent(&evnt)) {
 		ProcessEvent(evnt);
@@ -642,6 +648,12 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			ProcessMouseMotionEvent(evnt);
 			return;
 
+#if SDL_MAJOR_VERSION>1
+		case SDL_MOUSEWHEEL:
+			ProcessMouseWheelEvent(evnt);
+			return;
+#endif
+
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			ProcessMouseButtonEvent(evnt);
@@ -681,11 +693,13 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 	state = evnt.window.event;
 #endif
 
+	if (
 #if SDL_MAJOR_VERSION==1
-	if (state == SDL_APPINPUTFOCUS && !evnt.active.gain) {
+	(state == SDL_APPINPUTFOCUS && !evnt.active.gain)
 #else
-	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
+	state == SDL_WINDOWEVENT_FOCUS_LOST
 #endif
+	) {
 
 		Player::Pause();
 
@@ -792,16 +806,50 @@ void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 #endif
 }
 
-void SdlUi::ProcessMouseMotionEvent(SDL_Event& /* evnt */) {
+void SdlUi::ProcessMouseMotionEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
 	mouse_x = evnt.motion.x;
 	mouse_y = evnt.motion.y;
+#else
+	/* unused */
+	(void) evnt;
 #endif
 }
 
-void SdlUi::ProcessMouseButtonEvent(SDL_Event& /* evnt */) {
+#if SDL_MAJOR_VERSION>1
+void SdlUi::ProcessMouseWheelEvent(SDL_Event& evnt) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	if (!Player::mouse_flag)
+		return;
+
+	// Ignore Finger (touch) events here
+	if (evnt.wheel.which == SDL_TOUCH_MOUSEID)
+		return;
+
+	int amount = evnt.wheel.y;
+	// translate direction
+	if (evnt.wheel.direction == SDL_MOUSEWHEEL_FLIPPED)
+		amount *= -1;
+
+	keys[Input::Keys::MOUSE_SCROLLUP] = amount > 0;
+	keys[Input::Keys::MOUSE_SCROLLDOWN] = amount < 0;
+#else
+	/* unused */
+	(void) evnt;
+#endif
+}
+#endif
+
+void SdlUi::ProcessMouseButtonEvent(SDL_Event& evnt) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	if (!Player::mouse_flag)
+		return;
+
+	// Ignore Finger (touch) events here
+	if (evnt.button.which == SDL_TOUCH_MOUSEID)
+		return;
+
 	switch (evnt.button.button) {
 	case SDL_BUTTON_LEFT:
 		keys[Input::Keys::MOUSE_LEFT] = evnt.button.state == SDL_PRESSED;
@@ -813,6 +861,9 @@ void SdlUi::ProcessMouseButtonEvent(SDL_Event& /* evnt */) {
 		keys[Input::Keys::MOUSE_RIGHT] = evnt.button.state == SDL_PRESSED;
 		break;
 	}
+#else
+	/* unused */
+	(void) evnt;
 #endif
 }
 

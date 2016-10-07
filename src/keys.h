@@ -134,6 +134,8 @@ namespace Input {
 			MOUSE_MIDDLE,
 			MOUSE_XBUTTON1,
 			MOUSE_XBUTTON2,
+			MOUSE_SCROLLUP,
+			MOUSE_SCROLLDOWN,
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
