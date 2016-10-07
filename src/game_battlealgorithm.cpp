@@ -251,7 +251,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 					Data::terms.enemy_hp_absorbed);
 			}
 			else {
-				ss << " " << Data::terms.attack << " " << GetAffectedSp();
+				ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
 			}
 		}
 		out.push_back(ss.str());
