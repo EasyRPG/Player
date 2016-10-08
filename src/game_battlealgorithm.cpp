@@ -40,6 +40,11 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
+/** Interprets char literals as utf-8 */
+#ifdef _MSC_VER
+#pragma execution_character_set("utf-8")
+#endif
+
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
 	source(source), no_target(true), first_attack(true) {
 	Reset();
@@ -199,8 +204,10 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		if (IsPositive()) {
 			if (!(*current_target)->IsDead()) {
-				ss << " ";
-				ss << Data::terms.health_points << " " << GetAffectedHp();
+				if (Player::IsCP932())
+					ss << "の" << Data::terms.health_points << "が " << GetAffectedHp() << " ";
+				else
+					ss << " " << Data::terms.health_points << " " << GetAffectedHp();
 				ss << Data::terms.hp_recovery;
 				out.push_back(ss.str());
 			}
@@ -219,13 +226,20 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 			else {
 				if (absorb) {
-					ss << " " << Data::terms.health_points << " " << GetAffectedHp();
+					if (Player::IsCP932())
+						ss << (target_is_ally ? "は" : "の") << Data::terms.health_points << "を " << GetAffectedHp() << " ";
+					else
+						ss << " " << Data::terms.health_points << " " << GetAffectedHp();
 					ss << (target_is_ally ?
 						Data::terms.actor_hp_absorbed :
 						Data::terms.enemy_hp_absorbed);
 				}
 				else {
-					ss << " " << GetAffectedHp() << (target_is_ally ?
+					if (Player::IsCP932())
+						ss << (target_is_ally ? "は" : "に") << " " << GetAffectedHp() << " ";
+					else
+						ss << " " << GetAffectedHp();
+					ss << (target_is_ally ?
 						Data::terms.actor_damaged :
 						Data::terms.enemy_damaged);
 				}
@@ -239,19 +253,27 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		ss << (*current_target)->GetName();
 
 		if (IsPositive()) {
-			ss << " ";
-			ss << Data::terms.spirit_points << " " << GetAffectedSp();
+			if (Player::IsCP932())
+				ss << "の" << Data::terms.spirit_points << "が " << GetAffectedSp() << " ";
+			else
+				ss << " " << Data::terms.spirit_points << GetAffectedSp();
 			ss << Data::terms.hp_recovery;
 		}
 		else {
 			if (absorb) {
-				ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
+				if (Player::IsCP932())
+					ss << (target_is_ally ? "は" : "の") << Data::terms.spirit_points << "を " << GetAffectedSp() << " ";
+				else
+					ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
 				ss << (target_is_ally ?
 					Data::terms.actor_hp_absorbed :
 					Data::terms.enemy_hp_absorbed);
 			}
 			else {
-				ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
+				if (Player::IsCP932())
+					ss << "の" << Data::terms.spirit_points << "が " << GetAffectedSp() << " " << Data::terms.parameter_decrease;
+				else
+					ss << " " << Data::terms.spirit_points << " " << GetAffectedSp();
 			}
 		}
 		out.push_back(ss.str());
@@ -260,28 +282,52 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedAttack() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << GetAffectedAttack();
+		if (Player::IsCP932())
+		{
+			ss << "の" << Data::terms.attack << "が " << GetAffectedAttack();
+			ss << " " << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
+		}
+		else
+			ss << " " << Data::terms.attack << " " << GetAffectedAttack();
 		out.push_back(ss.str());
 	}
 
 	if (GetAffectedDefense() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.defense << " " << GetAffectedDefense();
+		if (Player::IsCP932())
+		{
+			ss << "の" << Data::terms.defense << "が " << GetAffectedDefense();
+			ss << " " << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
+		}
+		else
+			ss << " " << Data::terms.defense << " " << GetAffectedDefense();
 		out.push_back(ss.str());
 	}
 
 	if (GetAffectedSpirit() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.spirit << " " << GetAffectedSpirit();
+		if (Player::IsCP932())
+		{
+			ss << "の" << Data::terms.spirit << "が " << GetAffectedSpirit();
+			ss << " " << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
+		}
+		else
+			ss << " " << Data::terms.spirit << " " << GetAffectedSpirit();
 		out.push_back(ss.str());
 	}
 
 	if (GetAffectedAgility() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.agility << " " << GetAffectedAgility();
+		if (Player::IsCP932())
+		{
+			ss << "の" << Data::terms.agility << "が " << GetAffectedAgility();
+			ss << " " << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
+		}
+		else
+			ss << " " << Data::terms.agility << " " << GetAffectedAgility();
 		out.push_back(ss.str());
 	}
 
@@ -1003,7 +1049,10 @@ void Game_BattleAlgorithm::Item::Apply() {
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
-		return source->GetName() + " " + item.name + Data::terms.use_item;
+		if (Player::IsCP932())
+			return source->GetName() + "は" + item.name + Data::terms.use_item;
+		else
+			return source->GetName() + " " + item.name + Data::terms.use_item;
 	}
 	else {
 		return item.name;
