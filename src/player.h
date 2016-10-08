@@ -148,6 +148,11 @@ namespace Player {
 	 */
 	bool IsRPG2k3E();
 
+	/**
+         * @return if encoding is CP932 or not
+	 */
+	bool IsCP932();
+
 	/** Output program version on stdout */
 	void PrintVersion();
 
