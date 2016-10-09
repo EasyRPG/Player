@@ -191,6 +191,11 @@ namespace Input {
 			JOY_AXIS_Y_UP,
 #endif
 
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+			ONE_FINGER,
+			TWO_FINGERS,
+#endif
+
 			KEYS_COUNT
 		};
 	}

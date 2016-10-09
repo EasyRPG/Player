@@ -13,11 +13,11 @@ _easyrpg-player ()
   prev=${COMP_WORDS[COMP_CWORD-1]}
 
   # all possible options
-  ouropts='--battle-test --disable-audio --disable-rtp --enable-mouse --encoding \
-           --engine --fullscreen -h --help --hide-title --load-game-id --new-game \
-           --project-path --record-input --replay-input --save-path --seed --show-fps \
-           --start-map-id --start-party --start-position --test-play --window -v \
-           --version'
+  ouropts='--battle-test --disable-audio --disable-rtp --enable-mouse --enable-touch \
+           --encoding --engine --fullscreen -h --help --hide-title --load-game-id \
+           --new-game --project-path --record-input --replay-input --save-path --seed \
+           --show-fps --start-map-id --start-party --start-position --test-play \
+           --window -v --version'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay Window window'
   engines='rpg2k rpg2kv150 rpg2k3 rpg2k3v105 rpg2k3e'
 

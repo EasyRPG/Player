@@ -51,6 +51,9 @@ for some additional binary patches.
 *--enable-mouse*::
   Use mouse click for decision and scroll wheel for lists.
 
+*--enable-touch*::
+  Use one/two finger tap for decision/cancel.
+
 *--hide-title*::
   Hide the title background image and center the command menu.
 

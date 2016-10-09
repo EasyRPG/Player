@@ -132,6 +132,11 @@ void Input::InitButtons() {
 	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
 #endif
 
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+	buttons[DECISION].push_back(Keys::ONE_FINGER);
+	buttons[CANCEL].push_back(Keys::TWO_FINGERS);
+#endif
+
 	dir_buttons.resize(10);
 	dir_buttons[2].push_back(DOWN);
 	dir_buttons[4].push_back(LEFT);

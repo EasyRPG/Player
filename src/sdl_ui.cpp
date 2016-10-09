@@ -674,11 +674,9 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 
 #if SDL_MAJOR_VERSION>1
 		case SDL_FINGERDOWN:
-			ProcessFingerDownEvent(evnt);
-			return;
-
 		case SDL_FINGERUP:
-			ProcessFingerUpEvent(evnt);
+		case SDL_FINGERMOTION:
+			ProcessFingerEvent(evnt);
 			return;
 #endif
 	}
@@ -944,17 +942,32 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 }
 
 #if SDL_MAJOR_VERSION>1
-void SdlUi::ProcessFingerDownEvent(SDL_Event& evnt) {
-	ProcessFingerEvent(evnt, true);
-}
+void SdlUi::ProcessFingerEvent(SDL_Event& evnt) {
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+	SDL_TouchID touchid;
+	int fingers = 0;
 
-void SdlUi::ProcessFingerUpEvent(SDL_Event& evnt) {
-	ProcessFingerEvent(evnt, false);
-}
+	if (!Player::touch_flag)
+		return;
 
-void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
-	(void)finger_down;
-	(void)evnt;
+	// We currently ignore swipe gestures
+	if (evnt.type != SDL_FINGERMOTION) {
+		/* FIXME: To simplify things, we lazily only get the current number of
+		   fingers touching the first device (hoping nobody actually uses
+		   multiple devices). This way we do not need to keep track on finger
+		   IDs and deal with the timing.
+		*/
+		touchid = SDL_GetTouchDevice(0);
+		if (touchid != 0)
+			fingers = SDL_GetNumTouchFingers(touchid);
+
+		keys[Input::Keys::ONE_FINGER] = fingers == 1;
+		keys[Input::Keys::TWO_FINGERS] = fingers == 2;
+	}
+#else
+	/* unused */
+	(void) evnt;
+#endif
 }
 
 void SdlUi::SetAppIcon() {
