@@ -608,11 +608,16 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 				ss << " " << Data::terms.level_up << " ";
 				ss << " " << Data::terms.level << " " << new_level;
 			} else {
-				if (Player::IsCP932())
-					ss << "は" << Data::terms.level << " " << new_level << " ";
-				else
-					ss << " " << Data::terms.level << " " << new_level;
-				ss << Data::terms.level_up;
+				std::string particle, space = "";
+				if (Player::IsCP932()) {
+					particle = "は";
+					space += " ";
+				}
+				else {
+					particle = " ";
+				}
+				ss << particle << Data::terms.level << " ";
+				ss << new_level << space << Data::terms.level_up;
 			}
 			Game_Message::texts.push_back(ss.str());
 			level_up = true;
