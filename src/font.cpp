@@ -56,9 +56,16 @@ namespace {
 		}
 	}
 
+	ShinonomeGlyph const* find_fallback_glyph(char32_t code) {
+		return find_glyph(SHINONOME_WQY,
+					   sizeof(SHINONOME_WQY) / sizeof(ShinonomeGlyph), code);
+	}
+
 	ShinonomeGlyph const* find_gothic_glyph(char32_t code) {
-		return find_glyph(SHINONOME_GOTHIC,
-						  sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
+		ShinonomeGlyph const* const gothic =
+			find_glyph(SHINONOME_GOTHIC,
+					   sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
+		return (gothic != NULL && gothic->code == code)? gothic : find_fallback_glyph(code);
 	}
 
 	ShinonomeGlyph const* find_mincho_glyph(char32_t code) {
