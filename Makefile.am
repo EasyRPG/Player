@@ -209,6 +209,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/shinonome.h \
 	src/shinonome_gothic.cpp \
 	src/shinonome_mincho.cpp \
+	src/shinonome_wqy.cpp \
 	src/sprite_airshipshadow.h \
 	src/sprite_airshipshadow.cpp \
 	src/sprite_battler.cpp \
