@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of EasyRPG Player.
  *
  * EasyRPG Player is free software: you can redistribute it and/or modify
@@ -23,11 +23,6 @@
 #include "input.h"
 #include "bitmap.h"
 #include "font.h"
-
-/** Interprets char literals as utf-8 */
-#ifdef _MSC_VER
-#pragma execution_character_set("utf-8")
-#endif
 
 const char* const Window_Keyboard::TO_SYMBOL = "Symbol";
 const char* const Window_Keyboard::TO_LETTER = "Letter";

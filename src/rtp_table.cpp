@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of EasyRPG Player.
  *
  * EasyRPG Player is free software: you can redistribute it and/or modify
@@ -21,11 +21,6 @@ namespace RTP {
 	rtp_table_type RTP_TABLE_2003;
 	rtp_table_type RTP_TABLE_2000;	
 }
-
-/** Interprets char literals as utf-8 */
-#ifdef _MSC_VER
-#pragma execution_character_set("utf-8")
-#endif
 
 void RTP::Init() {
 	static bool rtp_init = false;

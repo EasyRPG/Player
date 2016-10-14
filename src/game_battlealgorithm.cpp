@@ -40,11 +40,6 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
-/** Interprets char literals as utf-8 */
-#ifdef _MSC_VER
-#pragma execution_character_set("utf-8")
-#endif
-
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
 	source(source), no_target(true), first_attack(true) {
 	Reset();
