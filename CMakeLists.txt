@@ -105,6 +105,7 @@ set(PLAYER_SRCS
 	src/sdl_ui.cpp
 	src/shinonome_gothic.cpp
 	src/shinonome_mincho.cpp
+	src/shinonome_wqy.cpp
 	src/sprite_airshipshadow.cpp
 	src/sprite_battler.cpp
 	src/sprite_character.cpp
