@@ -948,6 +948,10 @@ bool Player::IsRPG2k3E() {
 	return (engine & EngineRpg2k3E) == EngineRpg2k3E;
 }
 
+bool Player::IsCP932() {
+	return (encoding == "ibm-943_P15A-2003" || encoding == "932");
+}
+
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
