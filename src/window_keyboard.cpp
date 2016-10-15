@@ -122,7 +122,6 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight)
 	col = 0;
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
-	SetZ(PriorityWindow + 9999);
 
 	row_spacing = 16;
 	col_spacing = (contents->GetWidth() - 2 * border_x) / col_max;

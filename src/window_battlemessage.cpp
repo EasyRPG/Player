@@ -32,7 +32,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
 	visible = false;
-	SetZ(PriorityWindow + 3001);
+	SetZ(PriorityWindow + 10);
 }
 
 void Window_BattleMessage::Push(const std::string& message) {

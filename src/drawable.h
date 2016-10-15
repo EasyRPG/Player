@@ -37,6 +37,7 @@ enum Priority {
 	PriorityPanorama = 15 << 24,
 	PriorityMap = 20 << 24, // Map and Battle are two different scenes...
 	PriorityBattle = 20 << 24, // ...will never conflict
+	PriorityBattleUi = 25 << 24,
 	PriorityAirshipShadow = 25 << 24,
 	PriorityPictureNew = 30 << 24, // Pictures in RPG2k Value! and RPG2k3 >=1.05
 	PriorityBattleAnimation = 35 << 24,

@@ -35,7 +35,7 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	cursor_width = 14;
-	SetZ(PriorityWindow + 10001);
+	SetZ(PriorityWindow + 20);
 	opacity = 0;
 	index = 0;
 	active = false;

@@ -39,7 +39,7 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	SetWidth(width);
 	SetHeight(height);
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
-	SetZ(PriorityWindow + 3000);
+	SetZ(PriorityWindow);
 }
 
 void Window_Base::Update() {
