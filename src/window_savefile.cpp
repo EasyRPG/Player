@@ -30,7 +30,7 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	index(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
-	SetZ(9999);
+	SetZ(PriorityWindow + 9999);
 
 	Refresh();
 	UpdateCursorRect();

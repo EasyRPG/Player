@@ -34,7 +34,7 @@
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 	animation(anim), frame(0), frame_update(false), large(false)
 {
-	SetZ(Player::IsMajorUpdatedVersion() ? 2400 : 1040);
+	SetZ(PriorityBattleAnimation);
 
 	const std::string& name = animation.animation_name;
 	BitmapRef graphic;

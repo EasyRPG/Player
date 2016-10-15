@@ -58,7 +58,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	}
 
 	visible = false;
-	SetZ(10000);
+	SetZ(PriorityWindow + 10000);
 
 	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	active = false;

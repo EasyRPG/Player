@@ -129,7 +129,7 @@ void Sprite_Timer::Update() {
 		SetY(4);
 	}
 
-	SetZ(10000);
+	SetZ(PriorityTimer);
 }
 
 void Sprite_Timer::CreateSprite() {

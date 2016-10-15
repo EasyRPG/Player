@@ -160,7 +160,7 @@ int Game_Character::GetScreenY() const {
 }
 
 int Game_Character::GetScreenZ() const {
-	int z = this == Main_Data::game_player.get() ? 1 : 0;
+	int z = PriorityMap + this == Main_Data::game_player.get() ? 1 : 0;
 
 	// For events on the screen, this should be inside a 0-40 range
 	z += GetScreenY() >> 3;

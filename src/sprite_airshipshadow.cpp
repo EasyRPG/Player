@@ -71,5 +71,5 @@ void Sprite_AirshipShadow::Update() {
 	SetX(Main_Data::game_player->GetScreenX());
 	SetY(Main_Data::game_player->GetScreenY());
 	// Higher than the events in the upper layer
-	SetZ(151);
+	SetZ(PriorityMap + 151);
 }

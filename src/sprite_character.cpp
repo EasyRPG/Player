@@ -73,7 +73,7 @@ void Sprite_Character::Update() {
 
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());
-	SetZ(character->GetScreenZ());
+	SetZ(PriorityMap + character->GetScreenZ());
 
 	//SetBlendType(character->GetBlendType());
 	int bush_split = 4 - character->GetBushDepth();

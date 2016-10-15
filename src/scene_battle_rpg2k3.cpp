@@ -106,11 +106,11 @@ void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
 	BitmapRef system2 = Cache::System2(result->file);
 
 	ally_cursor->SetBitmap(system2);
-	ally_cursor->SetZ(999);
+	ally_cursor->SetZ(PriorityBattle + 999);
 	ally_cursor->SetVisible(false);
 
 	enemy_cursor->SetBitmap(system2);
-	enemy_cursor->SetZ(999);
+	enemy_cursor->SetZ(PriorityBattle + 999);
 	enemy_cursor->SetVisible(false);
 }
 
@@ -237,7 +237,7 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::stri
 	floating_text->SetX(x);
 	// Move 5 pixel down because the number "jumps" with the intended y as the peak
 	floating_text->SetY(y + 5);
-	floating_text->SetZ(500 + y);
+	floating_text->SetZ(PriorityBattle + 500 + y);
 
 	FloatText float_text;
 	float_text.sprite = floating_text;
@@ -259,7 +259,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
-	target_window->SetZ(3001);
+	target_window->SetZ(PriorityWindow + 3001);
 
 	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 		int transp = Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent ? 128 : 255;

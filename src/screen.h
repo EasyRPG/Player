@@ -47,7 +47,7 @@ public:
 	void SetTone(Tone tone);
 
 private:
-	static const int z = 2500;
+	static const int z = PriorityScreen;
 	static const DrawableType type = TypeScreen;
 
 	BitmapRef flash;
