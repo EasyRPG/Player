@@ -51,7 +51,15 @@ void Game_Picture::UpdateSprite() {
 
 	sprite->SetX((int)data.current_x);
 	sprite->SetY((int)data.current_y);
-	sprite->SetZ(1100 + data.ID);
+	if (Player::IsRPG2k3()) { // TODO: Including new RPG2k
+		// Battle Animations are above pictures
+		// ToDo: Include RPG Maker 2000 1.5 Value! and newer (How to detect?)
+		// ToDo: Exclude RPG Maker 2003 <1.05 (How to detect?)
+		sprite->SetZ(PriorityPictureNew + data.ID);
+	} else {
+		// Battle Animations are below pictures
+		sprite->SetZ(PriorityPictureOld + data.ID);
+	}
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
