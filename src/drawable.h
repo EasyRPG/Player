@@ -35,17 +35,18 @@ enum DrawableType {
 enum Priority {
 	PriorityBackground = 10 << 24,
 	PriorityPanorama = 15 << 24,
-	PriorityMap = 25 << 24,
-	PriorityBattle = 26 << 24,
+	PriorityMap = 20 << 24, // Map and Battle are two different scenes...
+	PriorityBattle = 20 << 24, // ...will never conflict
+	PriorityAirshipShadow = 25 << 24,
 	PriorityPictureNew = 30 << 24, // Pictures in RPG2k Value! and RPG2k3 >=1.05
 	PriorityBattleAnimation = 35 << 24,
 	PriorityPictureOld = 40 << 24, // Picture in RPG2k <1.5 and RPG2k3 <1.05
-	PriorityWeather = 25 << 24,
-	PriorityScreen = 30 << 24,
-	PriorityTimer = 35 << 24,
-	PriorityWindow = 40 << 24,
-	PriorityFrame = 45 << 24,
-	PriorityMessageOverlay = 50 << 24
+	PriorityWeather = 45 << 24,
+	PriorityScreen = 50 << 24,
+	PriorityTimer = 55 << 24,
+	PriorityWindow = 60 << 24,
+	PriorityFrame = 65 << 24,
+	PriorityMessageOverlay = 70 << 24
 };
 
 /**
