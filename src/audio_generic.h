@@ -20,6 +20,7 @@
 
 #include "audio.h"
 #include "audio_decoder.h"
+#include "audio_secache.h"
 
 struct GenericAudio : public AudioInterface {
 public:
@@ -46,14 +47,18 @@ public:
 	static void AudioThreadCallback(GenericAudio* audio, uint8_t* output_buffer, int buffer_length);
 
 private:
-	struct Channel {
+	struct BgmChannel {
 		std::unique_ptr<AudioDecoder> decoder;
-		AudioDecoder::Format sampleformat;
-		int samplerate;
-		int samplesize;
-		int channels;
 		bool paused;
 		bool stopped;
+	};
+	struct SeChannel {
+		AudioSeRef se;
+		size_t buffer_pos;
+		int volume;
+		bool paused;
+		bool stopped;
+		bool finished;
 	};
 	struct Format {
 		int frequency;
@@ -62,13 +67,14 @@ private:
 	};
 
 	static Format output_format;
-	static bool PlayOnChannel(Channel& chan,std::string const & file, int volume, int pitch, int fadein, bool is_soundeffect);
+	static bool PlayOnChannel(BgmChannel& chan,std::string const& file, int volume, int pitch, int fadein);
+	static bool PlayOnChannel(SeChannel& chan,std::string const& file, int volume, int pitch);
 
 	static const unsigned nr_of_se_channels=31;
 	static const unsigned nr_of_bgm_channels=2;
 
-	static Channel BGM_Channels[nr_of_bgm_channels];
-	static Channel SE_Channels[nr_of_se_channels];
+	static BgmChannel BGM_Channels[nr_of_bgm_channels];
+	static SeChannel SE_Channels[nr_of_se_channels];
 	static bool BGM_PlayedOnceIndicator;
 	static bool Muted;
 
