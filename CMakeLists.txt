@@ -13,6 +13,7 @@ set(PLAYER_SRCS
 	src/audio_al.cpp
 	src/audio.cpp
 	src/audio_decoder.cpp
+	src/audio_generic.cpp
 	src/audio_resampler.cpp
 	src/audio_sdl.cpp
 	src/audio_secache.cpp
