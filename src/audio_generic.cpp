@@ -219,6 +219,8 @@ void GenericAudio::AudioThreadCallback(GenericAudio* audio, uint8_t* output_buff
 		mixer_buffer.resize(samples_per_frame*output_channels);
 	}
 
+	memset(mixer_buffer.data(), '\0', mixer_buffer.size() * sizeof(float));
+
 	for (unsigned i = 0; i < nr_of_bgm_channels+nr_of_se_channels; i++) {
 		//Mix BGM and SE together;
 		bool is_bgm_channel = i < nr_of_bgm_channels;
@@ -361,7 +363,7 @@ void GenericAudio::AudioThreadCallback(GenericAudio* audio, uint8_t* output_buff
 
 	if (channel_active) {
 
-		if (total_volume>1.0) {
+		if (total_volume > 1.0) {
 			float threshold=0.8;
 			for (unsigned i=0; i < samples_per_frame*2; i++) {
 				float sample=mixer_buffer.data()[i];
@@ -370,7 +372,7 @@ void GenericAudio::AudioThreadCallback(GenericAudio* audio, uint8_t* output_buff
 				//dynamic range compression
 				if (sample>threshold) {
 					sample_buffer.data()[i]=sign*32768.0*(threshold+(1.0-threshold)*(sample-threshold)/(total_volume-threshold));
-				} else{
+				} else {
 					sample_buffer.data()[i]=sign*sample*32768.0;
 				}
 			}
