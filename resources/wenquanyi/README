@@ -1,0 +1,71 @@
+README by DBLobster
+
+May the Font be with you, forever!
+
+1)
+wenquanyi_9pt.bdf
+GPLv2+FE
+
+bdfmerge.pl
+PD
+
+doc/*
+
+http://wenq.org/
+https://sourceforge.net/projects/wqy/files/wqy-bitmapfont/1.0.0-RC1/
+from wqy-bitmapsong-bdf-1.0.0-RC1.tar.gz
+
+
+2)
+wenquanyi_cjk_basic_9pt.bdf
+GPLv2+FE
+
+# ./bdfmerge.pl 0x4E00--0x9FCB wenquanyi_9pt.bdf > wenquanyi_cjk_basic_9pt.bdf
+
+
+3)
+gen_wqy_font_cpp.py
+
+# ./gen_wqy_font_cpp.py
+
+update src/shinonome_wqy.cpp
+
+
+4) change shinonome.h
+
+extern ShinonomeGlyph const SHINONOME_WQY[20941];
+
+
+======== Chinese ========
+1)
+wenquanyi_9pt.bdf
+GPLv2+字体嵌入例外
+
+bdfmerge.pl
+公共域
+
+http://wenq.org/
+https://sourceforge.net/projects/wqy/files/wqy-bitmapfont/1.0.0-RC1/
+从 wqy-bitmapsong-bdf-1.0.0-RC1.tar.gz 提取.
+
+
+2)
+wenquanyi_cjk_basic_9pt.bdf
+GPLv2+FE
+
+由下列命令生成.
+# ./bdfmerge.pl 0x4E00--0x9FCB wenquanyi_9pt.bdf > wenquanyi_cjk_basic_9pt.bdf
+
+
+3)
+gen_wqy_font_cpp.py
+
+执行
+# ./gen_wqy_font_cpp.py
+
+更新 src/shinonome_wqy.cpp
+
+
+4) 修改 shinonome.h
+
+extern ShinonomeGlyph const SHINONOME_WQY[20941];
