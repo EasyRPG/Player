@@ -23,54 +23,54 @@
 
 struct GenericAudio : public AudioInterface {
 public:
-    GenericAudio();
-    ~GenericAudio();
+	GenericAudio();
+	~GenericAudio();
 
-    void BGM_Play(std::string const &, int, int, int) override;
-    void BGM_Pause() override;
-    void BGM_Resume() override;
-    void BGM_Stop() override;
-    bool BGM_PlayedOnce() const override;
-    bool BGM_IsPlaying() const override;
-    unsigned BGM_GetTicks() const override;
-    void BGM_Fade(int) override;
-    void BGM_Volume(int) override;
-    void BGM_Pitch(int) override;
-    void SE_Play(std::string const &, int, int) override;
-    void SE_Stop() override;
-    void Update() override;
+	void BGM_Play(std::string const &, int, int, int) override;
+	void BGM_Pause() override;
+	void BGM_Resume() override;
+	void BGM_Stop() override;
+	bool BGM_PlayedOnce() const override;
+	bool BGM_IsPlaying() const override;
+	unsigned BGM_GetTicks() const override;
+	void BGM_Fade(int) override;
+	void BGM_Volume(int) override;
+	void BGM_Pitch(int) override;
+	void SE_Play(std::string const &, int, int) override;
+	void SE_Stop() override;
+	void Update() override;
 
-    bool LockMutex() const;
-    bool UnlockMutex() const;
+	bool LockMutex() const;
+	bool UnlockMutex() const;
 
-    static void AudioThreadCallback(GenericAudio* audio, uint8_t* output_buffer, int buffer_length);
+	static void AudioThreadCallback(GenericAudio* audio, uint8_t* output_buffer, int buffer_length);
 
 private:
-    struct Channel {
-        std::unique_ptr<AudioDecoder> decoder;
-        AudioDecoder::Format sampleformat;
-        int samplerate;
-        int samplesize;
-        int channels;
-        bool paused;
-        bool stopped;
-    };
-    struct Format {
-        int frequency;
-        AudioDecoder::Format format;
-        int channels;
-    };
+	struct Channel {
+		std::unique_ptr<AudioDecoder> decoder;
+		AudioDecoder::Format sampleformat;
+		int samplerate;
+		int samplesize;
+		int channels;
+		bool paused;
+		bool stopped;
+	};
+	struct Format {
+		int frequency;
+		AudioDecoder::Format format;
+		int channels;
+	};
 
-    static Format output_format;
-    static bool PlayOnChannel(Channel& chan,std::string const & file, int volume, int pitch, int fadein, bool is_soundeffect);
+	static Format output_format;
+	static bool PlayOnChannel(Channel& chan,std::string const & file, int volume, int pitch, int fadein, bool is_soundeffect);
 
-    static const unsigned nr_of_se_channels=31;
-    static const unsigned nr_of_bgm_channels=2;
+	static const unsigned nr_of_se_channels=31;
+	static const unsigned nr_of_bgm_channels=2;
 
-    static Channel BGM_Channels[nr_of_bgm_channels];
-    static Channel SE_Channels[nr_of_se_channels];
-    static bool BGM_PlayedOnceIndicator;
-    static bool Muted;
+	static Channel BGM_Channels[nr_of_bgm_channels];
+	static Channel SE_Channels[nr_of_se_channels];
+	static bool BGM_PlayedOnceIndicator;
+	static bool Muted;
 
 };
 
