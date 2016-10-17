@@ -39,11 +39,27 @@ FmMidiDecoder::~FmMidiDecoder() {
 	fclose(file);
 }
 
+int read_func(void* instance) {
+	FmMidiDecoder* fmmidi = reinterpret_cast<FmMidiDecoder*>(instance);
+
+	if (fmmidi->file_buffer_pos >= fmmidi->file_buffer.size()) {
+		return EOF;
+	}
+
+	return fmmidi->file_buffer[fmmidi->file_buffer_pos++];
+}
+
 bool FmMidiDecoder::Open(FILE* file) {
 	this->file = file;
 
 	seq->clear();
-	if (!seq->load(file)) {
+	off_t old_pos = ftell(file);
+	fseek(file, 0, SEEK_END);
+	file_buffer.resize(ftell(file) - old_pos);
+	fseek(file, old_pos, SEEK_SET);
+	fread(file_buffer.data(), file_buffer.size(), 1, file);
+
+	if (!seq->load(this, read_func)) {
 		error_message = "FM Midi: Error reading file";
 		return false;
 	}
