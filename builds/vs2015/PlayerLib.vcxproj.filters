@@ -62,6 +62,9 @@
     <ClCompile Include="..\..\src\audio_sdl.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\audio_sdl_only.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\audio_secache.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
@@ -509,6 +512,9 @@
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio_sdl.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\src\audio_sdl_only.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio_secache.h">

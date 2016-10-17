@@ -22,20 +22,10 @@
 #include "filefinder.h"
 #include "output.h"
 
-#ifdef USE_SDL
-#include <SDL_audio.h>
-#endif
-
 GenericAudio::BgmChannel GenericAudio::BGM_Channels[nr_of_bgm_channels];
 GenericAudio::SeChannel GenericAudio::SE_Channels[nr_of_se_channels];
 bool GenericAudio::BGM_PlayedOnceIndicator;
 bool GenericAudio::Muted = false;
-
-#ifdef USE_SDL
-void sdl_audio_callback(GenericAudio* userdata, uint8_t* stream, int length) {
-	userdata->Decode(stream, length);
-}
-#endif
 
 GenericAudio::GenericAudio() {
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
@@ -45,25 +35,6 @@ GenericAudio::GenericAudio() {
 		SE_Channels[i].se.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
-
-#ifdef USE_SDL
-	SDL_AudioSpec want = {0};
-	SDL_AudioSpec have = {0};
-	want.freq = 44100;
-	want.format = AUDIO_S16;
-	want.channels = 2;
-	want.samples = 4096;
-	want.callback = sdl_audio_callback;
-	want.userdata = this;
-
-	SDL_OpenAudio(&want, &have);
-
-	output_format.frequency = have.freq;
-	output_format.channels = have.channels;
-	output_format.format = AudioDecoder::Format::S16;
-
-	SDL_PauseAudio(0);
-#endif
 }
 
 GenericAudio::~GenericAudio() {
@@ -452,17 +423,3 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 		memset(output_buffer, '\0', mixer_buffer.size());
 	}
 }
-
-/*
-bool GenericAudio::LockMutex() {
-#ifdef USE_SDL
-	SDL_LockAudio();
-#endif
-}
-
-bool GenericAudio::UnlockMutex() {
-#ifdef USE_SDL
-	SDL_UnlockAudio();
-#endif
-}
-*/
