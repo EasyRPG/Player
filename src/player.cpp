@@ -152,29 +152,6 @@ void Player::Init(int argc, char *argv[]) {
 
 	consoleClear();
 
-	// Check if we already have access to csnd:SND, if not, we will perform a kernel privilege escalation
-	Handle csndHandle = 0;
-	use_dsp = false;
-#ifndef FORCE_DSP
-	srvGetServiceHandleDirect(&csndHandle, "csnd:SND");
-	if (csndHandle) {
-		Output::Debug("csnd:SND has been selected as audio service.");
-		svcCloseHandle(csndHandle);
-	} else {
-		Output::Debug("csnd:SND is unavailable...");
-#endif
-		srvGetServiceHandleDirect(&csndHandle, "dsp::DSP");
-		if (csndHandle) {
-			Output::Debug("dsp::DSP has been selected as audio service.");
-			use_dsp = true;
-			svcCloseHandle(csndHandle);
-		} else {
-			Output::Error("dsp::DSP is unavailable. Please dump a DSP firmware to use EasyRPG Player. If the problem persists, please report us the issue.");
-		}
-#ifndef FORCE_DSP
-	}
-#endif
-
 	fsInit();
 	sdmcInit();
 #ifndef CITRA3DS_COMPATIBLE

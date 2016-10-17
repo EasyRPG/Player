@@ -15,37 +15,30 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "audio.h"
-#include <map>
+#include "audio_generic.h"
+
+#ifndef CTRAUDIO_H
+#define CTRAUDIO_H
+
+#ifdef _3DS
 #include <3ds.h>
 
-#define SOUND_CHANNELS 22 // Number of available sounds channel
-
-struct CtrAudio : public AudioInterface {
+class CtrAudio : public GenericAudio {
+public:
 	CtrAudio();
 	~CtrAudio();
 
-	void BGM_Play(std::string const&, int, int, int) override;
-	void BGM_Pause() override;
-	void BGM_Resume() override;
-	void BGM_Stop() override;
-	bool BGM_PlayedOnce() const override;
-	bool BGM_IsPlaying() const override;
-	unsigned BGM_GetTicks() const override;
-	void BGM_Fade(int) override;
-	void BGM_Volume(int) override;
-	void BGM_Pitch(int) override;
-	void SE_Play(std::string const&, int, int) override;
-	void SE_Stop() override;
-	void Update() override;
+	void LockMutex() const override;
+	void UnlockMutex() const override;
+
+	volatile bool termStream = false;
+	mutable LightLock BGM_Mutex;
+	ndspWaveBuf waveBuf[2];
 
 private:
-	u8* audiobuffers[SOUND_CHANNELS]; // We'll use last two available channels for BGM
-	uint8_t num_channels = SOUND_CHANNELS;
-	ndspWaveBuf dspSounds[SOUND_CHANNELS+1]; // We need one more waveBuf for BGM purposes
-	int bgm_volume; // Stubbed
-	bool (*isPlayingCallback)(int);
-	void (*clearCallback)(int);
-	u8 last_ch; // Used only with dsp::DSP
-
+	uint32_t* audio_buffer;
 }; // class CtrAudio
+
+#endif
+
+#endif

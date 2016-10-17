@@ -1,24 +1,41 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "system.h"
+
+#include <cstring>
 #include "audio_generic.h"
 #include "filefinder.h"
 #include "output.h"
 
-#include "system.h"
-
 #ifdef USE_SDL
 #include <SDL_audio.h>
-
-void sdl_audio_callback(void* userdata, uint8_t* stream, int length) {
-	memset(stream, '\0', length);
-
-	GenericAudio::AudioThreadCallback(static_cast<GenericAudio*>(userdata), stream, length);
-}
 #endif
 
 GenericAudio::BgmChannel GenericAudio::BGM_Channels[nr_of_bgm_channels];
 GenericAudio::SeChannel GenericAudio::SE_Channels[nr_of_se_channels];
 bool GenericAudio::BGM_PlayedOnceIndicator;
 bool GenericAudio::Muted = false;
-GenericAudio::Format GenericAudio::output_format;
+
+#ifdef USE_SDL
+void sdl_audio_callback(GenericAudio* userdata, uint8_t* stream, int length) {
+	userdata->Decode(stream, length);
+}
+#endif
 
 GenericAudio::GenericAudio() {
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
@@ -165,7 +182,13 @@ void GenericAudio::SE_Stop() {
 }
 
 void GenericAudio::Update() {
-	//The update is handled in its own thread
+	// no-op, handled by the Decode function called through a thread
+}
+
+void GenericAudio::SetFormat(int frequency, AudioDecoder::Format format, int channels) {
+	output_format.frequency = frequency;
+	output_format.format = format;
+	output_format.channels = channels;
 }
 
 bool GenericAudio::PlayOnChannel(BgmChannel& chan, std::string const& file, int volume, int pitch, int fadein) {
@@ -218,7 +241,7 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, std::string const& file, int v
 	return false;
 }
 
-void GenericAudio::AudioThreadCallback(GenericAudio* audio, uint8_t* output_buffer, int buffer_length) {
+void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	static std::vector<int16_t> sample_buffer;
 	static std::vector<uint8_t> scrap_buffer;
 	static unsigned scrap_buffer_size=0;
@@ -425,19 +448,21 @@ void GenericAudio::AudioThreadCallback(GenericAudio* audio, uint8_t* output_buff
 		}
 
 		memcpy(output_buffer, sample_buffer.data(), buffer_length);
+	} else {
+		memset(output_buffer, '\0', mixer_buffer.size());
 	}
 }
 
-bool GenericAudio::LockMutex() const {
+/*
+bool GenericAudio::LockMutex() {
 #ifdef USE_SDL
 	SDL_LockAudio();
 #endif
-	return true;
 }
 
-bool GenericAudio::UnlockMutex() const {
+bool GenericAudio::UnlockMutex() {
 #ifdef USE_SDL
 	SDL_UnlockAudio();
 #endif
-	return true;
 }
+*/

@@ -22,10 +22,24 @@
 #include "audio_decoder.h"
 #include "audio_secache.h"
 
+/**
+ * A software implementation for handling EasyRPG Audio utilizing the
+ * AudioDecoder for BGM and AudioSeCache for fast SE playback.
+ *
+ * Inheriting implementations have to:
+ * 1. Init the audio system in the constructor (and deinit in destructor)
+ * 2. Start a thread (or a callback) which invokes the Decode function to
+ *    fill the output buffer and controls access to the audio api of the
+ *    target platform.
+ * 3. Initialize the "output_format" (must match the format of the hardware)
+ * 4. Implement LockMutex and UnlockMutex. Locking and Unlocking when
+ *    calling Decode must be done manually.
+ * 5. Implement update function (optional)
+ */
 struct GenericAudio : public AudioInterface {
 public:
 	GenericAudio();
-	~GenericAudio();
+	virtual ~GenericAudio();
 
 	void BGM_Play(std::string const &, int, int, int) override;
 	void BGM_Pause() override;
@@ -39,12 +53,14 @@ public:
 	void BGM_Pitch(int) override;
 	void SE_Play(std::string const &, int, int) override;
 	void SE_Stop() override;
-	void Update() override;
+	virtual void Update() override;
 
-	bool LockMutex() const;
-	bool UnlockMutex() const;
+	void SetFormat(int frequency, AudioDecoder::Format format, int channels);
 
-	static void AudioThreadCallback(GenericAudio* audio, uint8_t* output_buffer, int buffer_length);
+	virtual void LockMutex() const = 0;
+	virtual void UnlockMutex() const = 0;
+
+	void Decode(uint8_t* output_buffer, int buffer_length);
 
 private:
 	struct BgmChannel {
@@ -65,10 +81,10 @@ private:
 		AudioDecoder::Format format;
 		int channels;
 	};
+	Format output_format;
 
-	static Format output_format;
-	static bool PlayOnChannel(BgmChannel& chan,std::string const& file, int volume, int pitch, int fadein);
-	static bool PlayOnChannel(SeChannel& chan,std::string const& file, int volume, int pitch);
+	bool PlayOnChannel(BgmChannel& chan,std::string const& file, int volume, int pitch, int fadein);
+	bool PlayOnChannel(SeChannel& chan,std::string const& file, int volume, int pitch);
 
 	static const unsigned nr_of_se_channels=31;
 	static const unsigned nr_of_bgm_channels=2;
@@ -77,7 +93,6 @@ private:
 	static SeChannel SE_Channels[nr_of_se_channels];
 	static bool BGM_PlayedOnceIndicator;
 	static bool Muted;
-
 };
 
 #endif //EASYRPG_AUDIOGENERIC_H_
