@@ -16,34 +16,27 @@
  */
 #ifndef AUDIOPSP_H
 #define AUDIOPSP_H
-#include "audio.h"
-#include <map>
 
-#define SOUND_CHANNELS 22
+#if defined(PSP2)
 
-struct Psp2Audio : public AudioInterface {
+#include <psp2/types.h>
+
+#include "audio_generic.h"
+
+class Psp2Audio : public GenericAudio {
+public:
 	Psp2Audio();
 	~Psp2Audio();
 
-	void BGM_Play(std::string const&, int, int, int) override;
-	void BGM_Pause() override;
-	void BGM_Resume() override;
-	void BGM_Stop() override;
-	bool BGM_PlayedOnce() const override;
-	bool BGM_IsPlaying() const override;
-	unsigned BGM_GetTicks() const override;
-	void BGM_Fade(int) override;
-	void BGM_Volume(int) override;
-	void BGM_Pitch(int) override;
-	void SE_Play(std::string const&, int, int) override;
-	void SE_Stop() override;
-	void Update() override;
+	void LockMutex() const override;
+	void UnlockMutex() const override;
+
+	volatile bool termStream = false;
 
 private:
-	uint8_t num_channels = SOUND_CHANNELS;
-	int bgm_volume; // Stubbed
-	bool (*isPlayingCallback)(int);
-	void (*clearCallback)(int);
-
+	SceUID audio_mutex;
+	SceUID audio_thread;
 }; // class Psp2Audio
+
+#endif
 #endif
