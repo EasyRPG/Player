@@ -33,8 +33,10 @@ namespace Player {
 		EngineRpg2k = 1,
 		/** All versions of RPG Maker 2003 */
 		EngineRpg2k3 = 2,
+		/** RPG Maker 2000 v1.50 or newer, 2003 v1.05 or newer */
+		EngineMajorUpdated = 4,
 		/** RPG Maker 2003 v1.10 or newer (Official English translation) */
-		EngineRpg2k3E = 4
+		EngineRpg2k3E = 8
 	};
 
 	/**
@@ -134,14 +136,19 @@ namespace Player {
 	bool IsRPG2k();
 
 	/**
-	 * @return If engine is RPG2k3 v1.09 or older
+	 * @return If engine is RPG2k3 v1.09a or older
 	 */
 	bool IsRPG2k3Legacy();
 
 	/**
-	 * @return If engine is RPG2k3 or newer
+	 * @return If engine is RPG2k3
 	 */
 	bool IsRPG2k3();
+
+	/**
+	 * @return If engine is RPG2k v1.50 or newer, or RPG2k3 v1.05 or newer
+	 */
+	bool IsMajorUpdatedVersion();
 
 	/**
 	 * @return If engine is the official English release (v1.10) or newer.
