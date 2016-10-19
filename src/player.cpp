@@ -661,7 +661,14 @@ void Player::CreateGameObjects() {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
+		if (FileFinder::IsMajorUpdatedTree()) {
+			engine |= EngineMajorUpdated;
+			Output::Debug("RPG2k >= v1.50 / RPG2k3 >= v1.05 detected");
+		} else {
+			Output::Debug("RPG2k < v1.50 / RPG2k3 < v1.05 detected");
+		}
 	}
+	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d 2k3E=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsRPG2k3E());
 
 	if (!no_rtp_flag) {
 		FileFinder::InitRtpPaths();
