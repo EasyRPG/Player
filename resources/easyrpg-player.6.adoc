@@ -36,9 +36,11 @@ for some additional binary patches.
 
 *--engine* 'ENGINE'::
   Disable auto detection of the simulated engine. Possible options:
-   - 'rpg2k'   - RPG Maker 2000 engine
-   - 'rpg2k3'  - RPG Maker 2003 engine
-   - 'rpg2k3e' - RPG Maker 2003 (English release) engine
+   - 'rpg2k'      - RPG Maker 2000 engine (v1.00 - v1.10)
+   - 'rpg2kv150'  - RPG Maker 2000 engine (v1.50 - v1.51)
+   - 'rpg2k3'     - RPG Maker 2003 engine (v1.00 - v1.04)
+   - 'rpg2k3v105' - RPG Maker 2003 engine (v1.05 - v1.09a)
+   - 'rpg2k3e'    - RPG Maker 2003 (English release) engine
 
 *--fullscreen*::
   Start in fullscreen mode.

@@ -19,7 +19,7 @@ _easyrpg-player ()
            --start-party --test-play --window -v --version -h --help'
   rpgrtopts='BattleTest battletest HideTitle hidetitle TestPlay testplay \
              Window window'
-  engines='rpg2k rpg2k3 rpg2k3e'
+  engines='rpg2k rpg2kv150 rpg2k3 rpg2k3v105 rpg2k3e'
 
   # first list all special cases
   case $prev in
