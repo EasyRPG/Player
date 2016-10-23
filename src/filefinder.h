@@ -261,6 +261,13 @@ namespace FileFinder {
 	 * @return If directory tree contains a savegame
 	 */
 	bool HasSavegame();
+
+	/** Get the size of a file
+         *
+         * @param file the path to a file
+         * @return the filesize, or -1 on error
+         */
+	Offset GetFileSize(std::string const& file);
 } // namespace FileFinder
 
 #endif

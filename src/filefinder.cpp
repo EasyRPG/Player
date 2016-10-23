@@ -813,3 +813,9 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #endif
 	return result;
 }
+
+Offset FileFinder::GetFileSize(std::string const& file) {
+	StatBuf sb;
+	int result = GetStat(file.c_str(), &sb);
+	return (result == 0) ? sb.st_size : -1;
+}
