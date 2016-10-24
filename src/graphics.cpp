@@ -26,6 +26,7 @@
 #include "cache.h"
 #include "baseui.h"
 #include "drawable.h"
+#include "input.h"
 #include "util_macro.h"
 #include "output.h"
 #include "player.h"
@@ -34,8 +35,12 @@ namespace Graphics {
 	void UpdateTitle();
 	void DrawFrame();
 	void DrawOverlay();
+	std::string GetFpsString();
 
+	/** Frames per second */
 	int fps;
+	/** Logic updates per second */
+	int ups;
 	int framerate;
 
 	void UpdateTransition();
@@ -61,6 +66,7 @@ namespace Graphics {
 	};
 
 	int real_fps;
+	int real_ups;
 
 	std::shared_ptr<State> state;
 	std::vector<std::shared_ptr<State> > stack;
@@ -75,6 +81,7 @@ unsigned SecondToFrame(float const second) {
 
 void Graphics::Init() {
 	fps = 0;
+	ups = 0;
 	frozen_screen = BitmapRef();
 	screen_erased = false;
 	transition_frames_left = 0;
@@ -108,6 +115,7 @@ void Graphics::Update(bool time_left) {
 		// 1 sec over
 		next_fps_time += 1000;
 		real_fps = fps;
+		real_ups = ups;
 
 		if (fps == 0) {
 			Output::Debug("Framerate is 0 FPS!");
@@ -115,6 +123,7 @@ void Graphics::Update(bool time_left) {
 		}
 
 		fps = 0;
+		ups = 0;
 
 		next_fps_time = current_time + 1000;
 
@@ -127,6 +136,8 @@ void Graphics::Update(bool time_left) {
 
 		DrawFrame();
 	}
+
+	ups++;
 }
 
 void Graphics::UpdateTitle() {
@@ -142,7 +153,7 @@ void Graphics::UpdateTitle() {
 	title << GAME_TITLE;
 
 	if (Player::fps_flag) {
-		title << " - FPS " << real_fps;
+		title << " - " << GetFpsString();
 	}
 
 	DisplayUi->SetTitle(title.str());
@@ -200,11 +211,10 @@ void Graphics::DrawOverlay() {
 		DisplayUi->IsFullscreen() &&
 #endif
 		Player::fps_flag) {
-		std::stringstream text;
-		text << "FPS: " << real_fps;
-		Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text.str());
+		std::string text = GetFpsString();
+		Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text);
 		DisplayUi->GetDisplaySurface()->Blit(1, 2, *black_screen, Rect(0, 0, rect.width + 1, rect.height - 1), 128);
-		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
+		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text);
 	}
 }
 
@@ -485,4 +495,18 @@ void Graphics::Pop() {
 
 int Graphics::GetDefaultFps() {
 	return DEFAULT_FPS;
+}
+
+std::string Graphics::GetFpsString() {
+	std::stringstream text;
+	text << "FPS: " << real_fps;
+
+	if (Input::IsPressed(Input::FAST_FORWARD)) {
+		text << " >";
+		if (Input::IsPressed(Input::PLUS)) {
+			text << ">";
+		}
+		text << " " << real_ups;
+	}
+        return text.str();
 }
