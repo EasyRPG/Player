@@ -30,6 +30,10 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#  define StatBuf struct _stat
+#  define GetStat _stat
 #  ifdef __MINGW32__
 #    include <dirent.h>
 #  elif defined(_MSC_VER)
@@ -46,9 +50,13 @@
 #    define readdir sceIoDread
 #    define stat SceIoStat
 #    define lstat sceIoGetstat
+#    define StatBuf SceIoStat
+#    define GetStat sceIoGetstat
 #  else
 #    include <dirent.h>
 #    include <sys/stat.h>
+#    define StatBuf struct stat
+#    define GetStat stat
 #  endif
 #  include <unistd.h>
 #  include <sys/types.h>

@@ -27,6 +27,13 @@
 #include <unordered_map>
 #include <vector>
 
+#ifdef PSP2
+#  include <psp2/types.h>
+#  define Offset SceOff
+#else
+#  define Offset off_t
+#endif
+
 /**
  * FileFinder contains helper methods for finding case
  * insensitive files paths.
