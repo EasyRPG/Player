@@ -17,6 +17,7 @@
 
 // Headers
 #include "utils.h"
+#include <stdio.h>
 #include <algorithm>
 #include <random>
 
