@@ -88,10 +88,28 @@ Read more detailed instructions at:
 
 ### Visual Studio method:
 
+Building requirements:
+
+- Visual Studio 2015 Update 2 or newer
+
+Compile the dependencies in a Visual Studio command prompt:
+
+    git clone https://github.com/EasyRPG/buildscripts
+    cd buildscripts/windows
+    powershell .\setup.ps1             # Requires policy "RemoteSigned"
+    build v140                         # Compile all dependencies
+
+Create an environment variable EASYDEV_MSVC pointing to buildscripts/windows/build
+
+Compile the Player:
+
+- Put/Clone liblcf in the ''lib'' directory
+- Open ''builds/vs2015/Player.sln'' in Visual Studio
+- The executable is created in the ''bin'' directory
+
 Read detailed instructions at:
 
 * https://wiki.easyrpg.org/development/compiling/player/windows/visual-studio
-
 
 ## Running EasyRPG Player
 
