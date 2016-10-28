@@ -30,6 +30,10 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#  define StatBuf struct _stat
+#  define GetStat _stat
 #  ifdef __MINGW32__
 #    include <dirent.h>
 #  elif defined(_MSC_VER)
@@ -46,9 +50,13 @@
 #    define readdir sceIoDread
 #    define stat SceIoStat
 #    define lstat sceIoGetstat
+#    define StatBuf SceIoStat
+#    define GetStat sceIoGetstat
 #  else
 #    include <dirent.h>
 #    include <sys/stat.h>
+#    define StatBuf struct stat
+#    define GetStat stat
 #  endif
 #  include <unistd.h>
 #  include <sys/types.h>
@@ -804,4 +812,59 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 	closedir(dir);
 #endif
 	return result;
+}
+
+Offset FileFinder::GetFileSize(std::string const& file) {
+	StatBuf sb;
+	int result = GetStat(file.c_str(), &sb);
+	return (result == 0) ? sb.st_size : -1;
+}
+
+bool FileFinder::IsMajorUpdatedTree() {
+	Offset size;
+
+	// Find an MP3 music file only when official Harmony.dll exists
+	// in the gamedir or the file doesn't exist because
+	// the detection doesn't return reliable results for games created with
+	// "RPG2k non-official English translation (older engine) + MP3 patch"
+	bool find_mp3 = true;
+	std::string harmony = FindDefault("Harmony.dll");
+	if (!harmony.empty()) {
+		size = GetFileSize(harmony);
+		if (size != -1 && size != KnownFileSize::OFFICIAL_HARMONY_DLL) {
+			Output::Debug("Non-official Harmony.dll found, skipping MP3 test");
+			find_mp3 = false;
+		}
+	}
+	if (find_mp3) {
+		const std::shared_ptr<DirectoryTree> tree = GetDirectoryTree();
+		string_map::const_iterator const music_it = tree->directories.find("music");
+		if (music_it != tree->directories.end()) {
+			string_map mem = tree->sub_members["music"];
+			for (auto& i : mem) {
+				std::string file = mem[i.first];
+				if (Utils::EndsWith(Utils::LowerCase(file), ".mp3")) {
+					Output::Debug("MP3 file (%s) found", file.c_str());
+					return true;
+				}
+			}
+		}
+	}
+
+	// Compare the size of RPG_RT.exe with threshold
+	std::string rpg_rt = FindDefault("RPG_RT.exe");
+	if (!rpg_rt.empty()) {
+		size = GetFileSize(rpg_rt);
+		if (size != -1) {
+			return size > (Player::IsRPG2k() ? RpgrtMajorUpdateThreshold::RPG2K : RpgrtMajorUpdateThreshold::RPG2K3);
+		}
+	}
+	Output::Debug("Could not get the size of RPG_RT.exe");
+
+	// Assume the most popular version
+	// Japanese or RPG2k3 games: newer engine
+	// non-Japanese RPG2k games: older engine
+	bool assume_newer = Player::IsCP932() || Player::IsRPG2k3();
+	Output::Debug("Assuming %s engine", assume_newer ? "newer" : "older");
+	return assume_newer;
 }

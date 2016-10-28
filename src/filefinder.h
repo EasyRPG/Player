@@ -27,6 +27,13 @@
 #include <unordered_map>
 #include <vector>
 
+#ifdef PSP2
+#  include <psp2/types.h>
+#  define Offset SceOff
+#else
+#  define Offset off_t
+#endif
+
 /**
  * FileFinder contains helper methods for finding case
  * insensitive files paths.
@@ -254,6 +261,45 @@ namespace FileFinder {
 	 * @return If directory tree contains a savegame
 	 */
 	bool HasSavegame();
+
+	/** Get the size of a file
+         *
+         * @param file the path to a file
+         * @return the filesize, or -1 on error
+         */
+	Offset GetFileSize(std::string const& file);
+
+	/**
+         * Known file sizes
+         */
+	enum KnownFileSize {
+		OFFICIAL_HARMONY_DLL = 473600,
+	};
+
+	/**
+	 * Checks whether the game is created with RPG2k >= 1.50 or RPG2k3 >= 1.05.
+	 *
+	 * @return true if RPG2k >= 1.50 or RPG2k3 >= 1.05, otherwise false.
+	 */
+	bool IsMajorUpdatedTree();
+
+	/** RPG_RT.exe file size thresholds
+         *
+         * 2k v1.51 (Japanese)    : 746496
+         * 2k v1.50 (Japanese)    : 745984
+         *  -- threshold (2k) --  : 735000
+         * 2k v1.10 (Japanese)    : 726016
+         *
+         * 2k3 v1.09a (Japanese)  : 950784
+         * 2k3 v1.06 (Japanese)   : 949248
+         * 2k3 v1.05 (Japanese)   : unknown
+         *  -- threshold (2k3) -- : 927000
+         * 2k3 v1.04 (Japanese)   : 913408
+         */
+	enum RpgrtMajorUpdateThreshold {
+		RPG2K = 735000,
+		RPG2K3 = 927000,
+	};
 } // namespace FileFinder
 
 #endif

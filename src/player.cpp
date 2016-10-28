@@ -548,11 +548,17 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (*it == "rpg2k" || *it == "2000") {
 				engine = EngineRpg2k;
 			}
+			else if (*it == "rpg2kv150" || *it == "2000v150") {
+				engine = EngineRpg2k | EngineMajorUpdated;
+			}
 			else if (*it == "rpg2k3" || *it == "2003") {
 				engine = EngineRpg2k3;
 			}
+			else if (*it == "rpg2k3v105" || *it == "2003v105") {
+				engine = EngineRpg2k3 | EngineMajorUpdated;
+			}
 			else if (*it == "rpg2k3e") {
-				engine = EngineRpg2k3 | EngineRpg2k3E;
+				engine = EngineRpg2k3 | EngineMajorUpdated | EngineRpg2k3E;
 			}
 		}
 		else if (*it == "--encoding") {
@@ -655,7 +661,14 @@ void Player::CreateGameObjects() {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 		}
+		if (FileFinder::IsMajorUpdatedTree()) {
+			engine |= EngineMajorUpdated;
+			Output::Debug("RPG2k >= v1.50 / RPG2k3 >= v1.05 detected");
+		} else {
+			Output::Debug("RPG2k < v1.50 / RPG2k3 < v1.05 detected");
+		}
 	}
+	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d 2k3E=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsRPG2k3E());
 
 	if (!no_rtp_flag) {
 		FileFinder::InitRtpPaths();
@@ -886,9 +899,11 @@ Options:
                            Use "auto" for automatic detection.
       --engine ENGINE      Disable auto detection of the simulated engine.
                            Possible options:
-                            rpg2k   - RPG Maker 2000 engine
-                            rpg2k3  - RPG Maker 2003 engine
-                            rpg2k3e - RPG Maker 2003 (English release) engine
+                            rpg2k      - RPG Maker 2000 engine (v1.00 - v1.10)
+                            rpg2kv150  - RPG Maker 2000 engine (v1.50 - v1.51)
+                            rpg2k3     - RPG Maker 2003 engine (v1.00 - v1.04)
+                            rpg2k3v105 - RPG Maker 2003 engine (v1.05 - v1.09a)
+                            rpg2k3e    - RPG Maker 2003 (English release) engine
       --fullscreen         Start in fullscreen mode.
       --show-fps           Enable frames per second counter.
       --hide-title         Hide the title background image and center the
@@ -932,16 +947,20 @@ Alex, EV0001 and the EasyRPG authors wish you a lot of fun!)" << std::endl;
 }
 
 bool Player::IsRPG2k() {
-	return engine == EngineRpg2k;
+	return (engine & EngineRpg2k) == EngineRpg2k;
 }
 
 
 bool Player::IsRPG2k3Legacy() {
-	return engine == EngineRpg2k3;
+	return (engine == EngineRpg2k3 || engine == (EngineRpg2k3 | EngineMajorUpdated));
 }
 
 bool Player::IsRPG2k3() {
 	return (engine & EngineRpg2k3) == EngineRpg2k3;
+}
+
+bool Player::IsMajorUpdatedVersion() {
+	return (engine & EngineMajorUpdated) == EngineMajorUpdated;
 }
 
 bool Player::IsRPG2k3E() {
