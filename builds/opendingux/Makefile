@@ -21,15 +21,22 @@ ifeq ($(BUILD_TARGET), dingoo)
 	FREETYPE_CFLAGS := -I$(SYSROOT)/usr/include/freetype2
 	ICU_CFLAGS := 
 	ICU_LIBS := 
+	LIBMPG123_CFLAGS := 
+	LIBMPG123_LIBS := 
+	LIBSNDFILE_CFLAGS :=
+	LIBSNDFILE_LIBS :=
 	CXXFLAGS = 
+	SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
+	LIBSDLMIXER_LIBS = -lSDL_mixer
 else
 ifeq ($(BUILD_TARGET), gcwzero)
 	TARGET = gcw-zero/EasyRPG
 	TOOLCHAINDIR ?= /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	BINDIR = $(TOOLCHAINDIR)/usr/bin
-	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11 -DLCF_SUPPORT_ICU
-	LDFLAGS = -Wl,--gc-sections
+	CFLAGS = -Ofast -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 -mmxu -std=gnu++11 -DLCF_SUPPORT_ICU 
+	CFLAGS += -DGCW_ZERO -DWANT_FMMIDI=2 -DHAVE_MPG123 -DHAVE_LIBSNDFILE -DWANT_FASTWAV
+	LDFLAGS = -Wl,--as-needed,--gc-sections -flto
 	PKG_CONFIG := $(BINDIR)/pkg-config
 	PNG_LIBS := $(shell $(PKG_CONFIG) --libs libpng)
 	PIXMAN_CFLAGS := $(shell $(PKG_CONFIG) --static --cflags pixman-1)
@@ -37,13 +44,17 @@ ifeq ($(BUILD_TARGET), gcwzero)
 	FREETYPE_CFLAGS := $(shell $(PKG_CONFIG) --cflags freetype2)
 	ICU_CFLAGS := $(shell $(PKG_CONFIG) --cflags icu-uc icu-i18n)
 	ICU_LIBS := $(shell $(PKG_CONFIG) --libs icu-uc icu-i18n) -Wl,-Bdynamic
+	LIBMPG123_CFLAGS := $(shell $(PKG_CONFIG) --cflags libmpg123)
+	LIBMPG123_LIBS :=  $(shell $(PKG_CONFIG) --static --libs libmpg123)
+	LIBSNDFILE_CFLAGS := $(shell $(PKG_CONFIG) --cflags sndfile)
+	LIBSNDFILE_LIBS := $(shell $(PKG_CONFIG) --static --libs sndfile)
 	CXXFLAGS = 
+	SDL_CONFIG = $(SYSROOT)/usr/bin/sdl2-config
+	LIBSDLMIXER_LIBS = -lSDL2_mixer
 else
 $(error Unknown device $(BUILD_TARGET)! Valid choices: dingoo, gcwzero)
 endif
 endif
-
-SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 
 # Compiler headers
 INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
@@ -56,10 +67,10 @@ BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 
 # Compiler flags
-CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS)
-CXXFLAGS += $(CFLAGS) -fexceptions -fno-rtti
-LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_mixer -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
-           -ldl `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS)
+CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
+CXXFLAGS += $(CFLAGS) -fno-rtti -fno-exceptions
+LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
+           -ldl `$(SDL_CONFIG) --libs` $(LIBSDLMIXER_LIBS) $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS) $(LIBMPG123_LIBS) $(LIBSNDFILE_LIBS)
 
 # Host compiler and extra flags
 HOST = $(BINDIR)/mipsel-linux-
