@@ -89,9 +89,13 @@ void Window_Message::StartMessageProcessing() {
 	text_index = text.end();
 	end = text.end();
 
-	// Apply commands that insert text
-	while (std::distance(text_index, text.begin()) <= -1) {
-		switch (tolower(*text_index--)) {
+	if (!text.empty()) {
+		// Move on first valid char
+		--text_index;
+
+		// Apply commands that insert text
+		while (std::distance(text_index, text.begin()) <= -1) {
+			switch (tolower(*text_index--)) {
 			case 'n':
 			case 'v':
 			{
@@ -111,10 +115,15 @@ void Window_Message::StartMessageProcessing() {
 				// Start from the beginning, the inserted text might add new commands
 				text_index = text.end();
 				end = text.end();
+
+				// Move on first valid char
+				--text_index;
+
 				break;
 			}
 			default:
 				break;
+			}
 		}
 	}
 

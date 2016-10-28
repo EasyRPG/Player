@@ -84,9 +84,47 @@ To generate the "configure" script, run before following the above section:
 Read more detailed instructions at:
 
 * https://wiki.easyrpg.org/development/compiling/player/autotools
+
+
+### CMake method:
+
+Building requirements:
+
+- pkg-config
+- CMake
+
+Step-by-step instructions:
+
+    tar xf easyrpg-player-0.5.0.tar.xz # unpack the tarball
+    cd easyrpg-player-0.5.0            # enter in the package directory
+    cmake .                            # generate Makefile
+    make                               # compile the executable
+
+Read more detailed instructions at:
+
 * https://wiki.easyrpg.org/development/compiling/player/cmake
 
+
 ### Visual Studio method:
+
+Building requirements:
+
+- Visual Studio 2015 Update 2 or newer
+
+Compile the dependencies in a Visual Studio command prompt:
+
+    git clone https://github.com/EasyRPG/buildscripts
+    cd buildscripts/windows
+    powershell .\setup.ps1             # requires policy "RemoteSigned"
+    build v140                         # compile all dependencies
+
+Create an environment variable EASYDEV_MSVC pointing to buildscripts/windows/build
+
+Compile the Player:
+
+- liblcf is compiled as part of the Player. Extract/Clone liblcf in the ''lib'' directory
+- Open ''builds/vs2015/Player.sln'' in Visual Studio
+- The executable is created in the ''bin'' directory
 
 Read detailed instructions at:
 

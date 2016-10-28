@@ -28,11 +28,6 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 
-/** Interprets char literals as utf-8 */
-#ifdef _MSC_VER
-#pragma execution_character_set("utf-8")
-#endif
-
 static int max_hp_value() {
 	return Player::IsRPG2k() ? 999 : 9999;
 }
