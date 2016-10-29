@@ -477,11 +477,10 @@ bool Game_Battler::HasFullSp() const {
 	return GetMaxSp() == GetSp();
 }
 
-static int AffectParameter(int const type, int const val) {
+static int AffectParameter(const int type, const int val) {
 	return
 		type == 0? val / 2 :
 		type == 1? val * 2 :
-		type == 2? val :
 		val;
 }
 
@@ -489,10 +488,9 @@ int Game_Battler::GetAtk() const {
 	int base_atk = GetBaseAtk();
 	int n = min(max(base_atk, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_attack) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_atk);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_attack) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_atk);
 			break;
 		}
 	}
@@ -508,10 +506,9 @@ int Game_Battler::GetDef() const {
 	int base_def = GetBaseDef();
 	int n = min(max(base_def, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_defense) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
+	for (int16_t i : GetInflictedStates()) {
+		if (Data::states[i - 1].affect_defense) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_def);
 			break;
 		}
 	}
@@ -527,10 +524,9 @@ int Game_Battler::GetSpi() const {
 	int base_spi = GetBaseSpi();
 	int n = min(max(base_spi, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_spirit) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_spi);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_spirit) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_spi);
 			break;
 		}
 	}
@@ -546,10 +542,9 @@ int Game_Battler::GetAgi() const {
 	int base_agi = GetBaseAgi();
 	int n = min(max(base_agi, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_agility) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_agi);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_agility) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_agi);
 			break;
 		}
 	}
