@@ -538,8 +538,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
-		action->TargetFirst();
-
 		if (battle_action_need_event_refresh) {
 			action->GetSource()->NextBattleTurn();
 			NextTurn(action->GetSource());
@@ -554,6 +552,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			return false;
 		}
+
+		action->TargetFirst();
 
 		ShowNotification(action->GetStartMessage());
 
@@ -694,6 +694,21 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					target_sprite->DetectStateChange();
 				}
 			}
+		}
+
+		// Check if a combo is enabled and redo the whole action in that case
+		int combo_command_id;
+		int combo_times;
+
+		action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
+		if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
+			combo_times > 1) {
+			// TODO: Prevent combo when the combo is a skill and needs more SP
+			// then available
+
+			action->GetSource()->SetBattleCombo(combo_command_id, combo_times - 1);
+			battle_action_state = BattleActionState_Start;
+			return false;
 		}
 
 		// Must loop another time otherwise the event update happens during

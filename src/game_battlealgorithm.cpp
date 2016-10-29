@@ -560,12 +560,13 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
-	if (current_target == targets.begin() &&
-		current_target != targets.end() &&
-		!IsTargetValid()) {
+	current_target = targets.begin();
+
+	if (!IsTargetValid()) {
 		TargetNext();
-		first_attack = true;
 	}
+
+	first_attack = true;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {

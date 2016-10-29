@@ -536,6 +536,9 @@ public:
 
 	int GetLastBattleAction() const;
 
+	void SetBattleCombo(int command_id, int times);
+	void GetBattleCombo(int& command_id, int& times) const;
+
 	/**
 	 * Initializes battle related data to there default values.
 	 */
@@ -556,6 +559,8 @@ protected:
 	int agi_modifier;
 	int battle_turn;
 	int last_battle_action;
+	int battle_combo_command_id;
+	int battle_combo_times;
 };
 
 #endif

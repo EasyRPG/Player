@@ -673,6 +673,8 @@ void Game_Battler::ResetBattle() {
 	def_modifier = 0;
 	spi_modifier = 0;
 	agi_modifier = 0;
+	battle_combo_command_id = -1;
+	battle_combo_times = -1;
 }
 
 int Game_Battler::GetBattleTurn() const {
@@ -685,4 +687,14 @@ void Game_Battler::SetLastBattleAction(int battle_action) {
 
 int Game_Battler::GetLastBattleAction() const {
 	return last_battle_action;
+}
+
+void Game_Battler::SetBattleCombo(int command_id, int times) {
+	battle_combo_command_id = command_id;
+	battle_combo_times = times;
+}
+
+void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
+	command_id = battle_combo_command_id;
+	times = battle_combo_times;
 }
