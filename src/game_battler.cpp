@@ -659,6 +659,16 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 	return healed_states;
 }
 
+bool Game_Battler::HasReflectState() {
+	for (int16_t i : GetInflictedStates()) {
+		if (Data::states[i - 1].reflect_magic) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Game_Battler::ResetBattle() {
 	gauge = GetMaxGauge() / 2;
 	charged = false;
@@ -694,3 +704,4 @@ void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
 	command_id = battle_combo_command_id;
 	times = battle_combo_times;
 }
+

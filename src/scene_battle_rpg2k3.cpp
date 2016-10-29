@@ -529,6 +529,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	if (play_reflected_anim) {
+		action->PlayAnimation(true);
+		play_reflected_anim = false;
+		return false;
+	}
+
 	Sprite_Battler* source_sprite;
 	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 
@@ -585,6 +591,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 
 		action->PlayAnimation();
+		play_reflected_anim = action->IsReflected();
 
 		{
 			std::vector<Game_Battler*> battlers;

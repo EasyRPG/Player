@@ -389,6 +389,14 @@ public:
 	 * Removes all states.
 	 */
 	virtual void RemoveAllStates();
+
+	/**
+	 * Tests if the battler has a state that provides reflect.
+	 * Attack skills targeted at this battler will be reflected to the source.
+	 *
+	 * @return Reflect is enabled.
+	 */
+	bool HasReflectState();
 	
 	/**
 	 * Gets X position on battlefield

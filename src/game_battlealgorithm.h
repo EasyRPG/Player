@@ -165,8 +165,11 @@ public:
 	 * Takes care of single- and multi-target animations.
 	 * Must be called before calling TargetNext, otherwise the result will
 	 * be incorrect.
+	 *
+	 * @param on_source Renders the animation on the source instead of the
+	 *                  targets (required for reflect)
 	 */
-	void PlayAnimation();
+	void PlayAnimation(bool on_source = false);
 
 	/**
 	 * Returns a list of all inflicted/removed conditions.
@@ -220,7 +223,7 @@ public:
 	 *
 	 * @return true if valid, in case of false another target should be selected.
 	 */
-	virtual bool IsTargetValid();
+	virtual bool IsTargetValid() const;
 
 	/**
 	 * Gets the message that is displayed when the action is invoked.
@@ -284,6 +287,18 @@ public:
 	 */
 	virtual int GetPhysicalDamageRate() const;
 
+	/**
+	 * Returns whether the attack is reflected to the source.
+	 * This is automatically handled by the battle algorithm class and
+	 * GetTarget will return the source instead.
+	 * The only exception is PlayAnimation which must be controlled through
+	 * an extra argument because a reflected skill renders both animations:
+	 * First time on target, then second time on source.
+	 *
+	 * @return true when reflected
+	 */
+	virtual bool IsReflected() const;
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
@@ -293,9 +308,19 @@ protected:
 
 	void Reset();
 
+	/**
+	 * Implements logic of TargetNext but ignores reflect.
+	 * Used by const-functions that restore the old state afterwards.
+	 * So technically this function is non-const but due to the help of the
+	 * other functions the behaviour to the callee is const...
+	 *
+	 * @return true if there was a next target available
+	 */
+	bool TargetNextInternal() const;
+
 	Game_Battler* source;
 	std::vector<Game_Battler*> targets;
-	std::vector<Game_Battler*>::iterator current_target;
+	mutable std::vector<Game_Battler*>::iterator current_target;
 
 	bool no_target;
 
@@ -307,7 +332,7 @@ protected:
 	int agility;
 	int switch_id;
 
-	bool first_attack;
+	mutable bool first_attack;
 	bool healing;
 	bool success;
 	bool killed_by_attack_damage;
@@ -341,7 +366,7 @@ public:
 	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
 	Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item = NULL);
 
-	bool IsTargetValid() override;
+	bool IsTargetValid() const override;
 	bool Execute() override;
 	void Apply() override;
 
@@ -350,6 +375,7 @@ public:
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
+	bool IsReflected() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -362,7 +388,7 @@ public:
 	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
 	Item(Game_Battler* source, const RPG::Item& item);
 
-	bool IsTargetValid() override;
+	bool IsTargetValid() const override;
 	bool Execute() override;
 	void Apply() override;
 
