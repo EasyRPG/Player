@@ -591,17 +591,21 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			Main_Data::game_party->GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
-			for (auto& b : battlers) {
-				int damageTaken = b->ApplyConditions();
-				if (damageTaken != 0) {
-					DrawFloatText(
-						b->GetBattleX(),
-						b->GetBattleY(),
-						damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-						Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken),
-						30);
+			if (!is_combo) {
+				for (auto &b : battlers) {
+					int damageTaken = b->ApplyConditions();
+					if (damageTaken != 0) {
+						DrawFloatText(
+								b->GetBattleX(),
+								b->GetBattleY(),
+								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
+								Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken),
+								30);
+					}
 				}
 			}
+			is_combo = false;
+
 			if (action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
 			}
@@ -708,6 +712,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			action->GetSource()->SetBattleCombo(combo_command_id, combo_times - 1);
 			battle_action_state = BattleActionState_Start;
+			// Necessary to track this because state damage/heal is only applied once
+			is_combo = true;
 			return false;
 		}
 
