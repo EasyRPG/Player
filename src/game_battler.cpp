@@ -399,12 +399,8 @@ int Game_Battler::ApplyConditions()
 		this->ChangeSp(src_sp);
 		damageTaken += src_hp;
 	}
-	if(damageTaken < 0) {
-		return -damageTaken;
-	}
-	else {
-		return damageTaken;
-	}
+
+	return damageTaken;
 }
 
 
