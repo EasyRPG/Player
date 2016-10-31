@@ -28,11 +28,12 @@
 #include "battle_animation.h"
 #include "baseui.h"
 #include "spriteset_battle.h"
+#include "player.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 	animation(anim), frame(0), frame_update(false), large(false)
 {
-	SetZ(1040);
+	SetZ(Player::IsMajorUpdatedVersion() ? 2400 : 1040);
 
 	const std::string& name = animation.animation_name;
 	BitmapRef graphic;

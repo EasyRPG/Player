@@ -713,7 +713,6 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 	double zoom_y = (double)src_rect.height / dst_rect.height;
 
 	Transform xform = Transform::Scale(zoom_x, zoom_y);
-	xform *= Transform::Translation(-src_rect.x, -src_rect.y);
 
 	pixman_image_set_transform(src.bitmap, &xform.matrix);
 
