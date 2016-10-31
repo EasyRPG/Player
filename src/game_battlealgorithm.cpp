@@ -947,7 +947,7 @@ void Game_BattleAlgorithm::Skill::Apply() {
 	}
 	else {
 		if (first_attack) {
-			source->ChangeSp(- source->CalculateSkillCost(skill.ID));
+			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
 }

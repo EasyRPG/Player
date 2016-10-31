@@ -654,7 +654,7 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 	return healed_states;
 }
 
-bool Game_Battler::HasReflectState() {
+bool Game_Battler::HasReflectState() const {
 	for (int16_t i : GetInflictedStates()) {
 		if (Data::states[i - 1].reflect_magic) {
 			return true;

@@ -396,7 +396,7 @@ public:
 	 *
 	 * @return Reflect is enabled.
 	 */
-	bool HasReflectState();
+	bool HasReflectState() const;
 	
 	/**
 	 * Gets X position on battlefield

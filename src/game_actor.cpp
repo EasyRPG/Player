@@ -479,7 +479,7 @@ int Game_Actor::GetNextExp(int level) const {
 }
 
 int Game_Actor::GetStateProbability(int state_id) const {
-	int rate = 3; // C - default
+	int rate = 2; // C - default
 
 	if (state_id <= (int)Data::actors[actor_id - 1].state_ranks.size()) {
 		rate = Data::actors[actor_id - 1].state_ranks[state_id - 1];
@@ -489,7 +489,7 @@ int Game_Actor::GetStateProbability(int state_id) const {
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
-	int rate = 3; // C - default
+	int rate = 2; // C - default
 
 	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
 		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
