@@ -80,7 +80,7 @@ protected:
 	int battle_action_wait;
 	int battle_action_state;
 	bool battle_action_need_event_refresh = true;
-	bool is_combo = false;
+	int combo_repeat = 1;
 	bool play_reflected_anim = false;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;

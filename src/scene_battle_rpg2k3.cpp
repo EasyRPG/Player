@@ -561,7 +561,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->TargetFirst();
 
-		ShowNotification(action->GetStartMessage());
+		if (combo_repeat == 1) {
+			ShowNotification(action->GetStartMessage());
+		}
 
 		if (!action->IsTargetValid()) {
 			if (!action->GetTarget()) {
@@ -598,7 +600,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			Main_Data::game_party->GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
-			if (!is_combo) {
+			if (combo_repeat == 1) {
 				for (auto &b : battlers) {
 					int damageTaken = b->ApplyConditions();
 					if (damageTaken != 0) {
@@ -611,7 +613,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					}
 				}
 			}
-			is_combo = false;
 
 			if (action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
@@ -681,6 +682,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			// Reset variables
 			battle_action_state = BattleActionState_Start;
 			targets.clear();
+			combo_repeat = 1;
 
 			return true;
 		}
@@ -713,14 +715,13 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
 		if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
-			combo_times > 1) {
+			combo_times > combo_repeat) {
 			// TODO: Prevent combo when the combo is a skill and needs more SP
 			// then available
 
-			action->GetSource()->SetBattleCombo(combo_command_id, combo_times - 1);
 			battle_action_state = BattleActionState_Start;
-			// Necessary to track this because state damage/heal is only applied once
-			is_combo = true;
+			// Count how often we have to repeat
+			++combo_repeat;
 			return false;
 		}
 
