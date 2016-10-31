@@ -22,8 +22,6 @@
 #include "scene_battle.h"
 #include "async_handler.h"
 
-typedef std::pair<std::shared_ptr<Sprite>, int> FloatText;
-
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -44,7 +42,7 @@ protected:
 	void CreateBattleCommandWindow();
 
 	void UpdateCursors();
-	void DrawFloatText(int x, int y, int color, const std::string& text, int _duration);
+	void DrawFloatText(int x, int y, int color, const std::string& text, bool jump);
 
 	void RefreshCommandWindow();
 
@@ -75,6 +73,13 @@ protected:
 	void ShowNotification(const std::string& text);
 
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
+
+	struct FloatText {
+		std::shared_ptr<Sprite> sprite;
+		bool jumps;
+		int remaining_time = 30;
+	};
+
 	std::vector<FloatText> floating_texts;
 
 	int battle_action_wait;
