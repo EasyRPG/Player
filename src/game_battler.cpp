@@ -676,6 +676,8 @@ void Game_Battler::ResetBattle() {
 	agi_modifier = 0;
 	battle_combo_command_id = -1;
 	battle_combo_times = -1;
+	attribute_shift.clear();
+	attribute_shift.resize(Data::attributes.size());
 }
 
 int Game_Battler::GetBattleTurn() const {
@@ -698,5 +700,26 @@ void Game_Battler::SetBattleCombo(int command_id, int times) {
 void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
 	command_id = battle_combo_command_id;
 	times = battle_combo_times;
+}
+
+void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
+	if (attribute_id < 1 || attribute_id > Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+
+	if (shift < -1 || shift > 1) {
+		assert(false && "Invalid shift");
+	}
+
+	if (shift == 0) {
+		return;
+	}
+
+	int& old_shift = attribute_shift[attribute_id - 1];
+	if ((old_shift == -1 || old_shift == 0) && shift == 1) {
+		++old_shift;
+	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
+		--old_shift;
+	}
 }
 

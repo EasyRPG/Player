@@ -950,6 +950,18 @@ void Game_BattleAlgorithm::Skill::Apply() {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
+
+	if (success && skill.affect_attr_defence) {
+		// Todo: When the only effect of the skill is a (de)buff and the buff
+		// did not alter anything (because was already buffed) then the attack
+		// failed (display a miss)
+
+		for (int i = 0; i < (int)skill.attribute_effects.size(); ++i) {
+			if (skill.attribute_effects[i]) {
+				GetTarget()->ShiftAttributeRate(i + 1, healing ? 1 : -1);
+			}
+		}
+	}
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {

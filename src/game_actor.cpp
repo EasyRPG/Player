@@ -495,6 +495,13 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
 	}
 
+	rate += attribute_shift[attribute_id - 1];
+	if (rate < 0) {
+		rate = 0;
+	} else if (rate > 4) {
+		rate = 4;
+	}
+
 	return GetAttributeRate(attribute_id, rate);
 }
 

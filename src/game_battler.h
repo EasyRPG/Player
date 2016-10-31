@@ -124,6 +124,19 @@ public:
 	int GetAttributeRate(int attribute_id, int rate) const;
 
 	/**
+	 * Applies a modifier (buff/debuff) to an attribute rate.
+	 * GetAttributeModifier will use this shift in the rate lookup.
+	 * A shift of +1 changed a C to D and a -1 a C to B.
+	 * The maximum shift value is +-1.
+	 * Calling this function again applies the new shift to the previous shifts.
+	 * The shift is cleared after the battle ended.
+	 *
+	 * @param attribute_id Attribute to modify
+	 * @param shift Shift to apply.
+	 */
+	void ShiftAttributeRate(int attribute_id, int shift);
+
+	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 * 
 	 * @param state_id State to test
@@ -569,6 +582,8 @@ protected:
 	int last_battle_action;
 	int battle_combo_command_id;
 	int battle_combo_times;
+
+	std::vector<int> attribute_shift;
 };
 
 #endif
