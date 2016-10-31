@@ -42,7 +42,7 @@ protected:
 	void CreateBattleCommandWindow();
 
 	void UpdateCursors();
-	void DrawFloatText(int x, int y, int color, const std::string& text, bool jump);
+	void DrawFloatText(int x, int y, int color, const std::string& text);
 
 	void RefreshCommandWindow();
 
@@ -76,7 +76,6 @@ protected:
 
 	struct FloatText {
 		std::shared_ptr<Sprite> sprite;
-		bool jumps;
 		int remaining_time = 30;
 	};
 

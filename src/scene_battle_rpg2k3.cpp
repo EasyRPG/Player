@@ -79,13 +79,11 @@ void Scene_Battle_Rpg2k3::Update() {
 		it != floating_texts.end();) {
 		int &time = (*it).remaining_time;
 
-		if ((*it).jumps) {
-			if (time % 2 == 0) {
-				int modifier = time <= 10 ? 1 :
-							   time < 20 ? 0 :
-							   -1;
-				(*it).sprite->SetY((*it).sprite->GetY() + modifier);
-			}
+		if (time % 2 == 0) {
+			int modifier = time <= 10 ? 1 :
+						   time < 20 ? 0 :
+						   -1;
+			(*it).sprite->SetY((*it).sprite->GetY() + modifier);
 		}
 
 		--time;
@@ -223,7 +221,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text, bool jump) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text) {
 	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
@@ -236,12 +234,11 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::stri
 	floating_text->SetOy(rect.height + 5);
 	floating_text->SetX(x);
 	// Move 5 pixel down because the number "jumps" with the intended y as the peak
-	floating_text->SetY(jump ? y + 5 : y);
+	floating_text->SetY(y + 5);
 	floating_text->SetZ(500 + y);
 
 	FloatText float_text;
 	float_text.sprite = floating_text;
-	float_text.jumps = jump;
 
 	floating_texts.push_back(float_text);
 }
@@ -622,8 +619,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 								b->GetBattleX(),
 								b->GetBattleY(),
 								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-								Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken),
-								true);
+								Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken));
 					}
 				}
 			}
@@ -650,6 +646,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
+			Game_Battler* target = action->GetTarget();
+
 			action->Apply();
 
 			if (action->GetTarget()) {
@@ -659,8 +657,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
-							Utils::ToString(action->GetAffectedHp()),
-							true);
+							Utils::ToString(action->GetAffectedHp()));
 					}
 
 					action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
@@ -669,8 +666,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						action->GetTarget()->GetBattleX(),
 						action->GetTarget()->GetBattleY(),
 						0,
-						Data::terms.miss,
-						false);
+						Data::terms.miss);
 				}
 
 				targets.push_back(action->GetTarget());
