@@ -335,6 +335,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_action_wait = 30;
 			battle_message_window->Clear();
 
+			if (action->IsFirstAttack()) {
+				action->TargetFirst();
+			}
+
 			if (!action->IsTargetValid()) {
 				if (!action->GetTarget()) {
 					// No target but not a target-only action.
@@ -387,7 +391,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_action_wait = 30;
 
 			break;
-		case BattleActionState_ConditionHeal:			
+		case BattleActionState_ConditionHeal:
 			if (action->IsFirstAttack()) {
 				std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 				std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
