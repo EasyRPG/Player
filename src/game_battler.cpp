@@ -441,6 +441,10 @@ bool Game_Battler::HasStrongDefense() const {
 	return false;
 }
 
+bool Game_Battler::HasPreemptiveAttack() const {
+	return false;
+}
+
 void Game_Battler::SetDefending(bool defend) {
 	defending = defend;
 }
@@ -665,7 +669,10 @@ bool Game_Battler::HasReflectState() const {
 }
 
 void Game_Battler::ResetBattle() {
-	gauge = GetMaxGauge() / 2;
+	gauge = GetMaxGauge();
+	if (!HasPreemptiveAttack()) {
+		gauge /= 2;
+	}
 	charged = false;
 	defending = false;
 	battle_turn = 0;
@@ -722,4 +729,3 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 		--old_shift;
 	}
 }
-

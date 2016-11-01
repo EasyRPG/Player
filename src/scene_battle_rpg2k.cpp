@@ -759,6 +759,18 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 }
 
 static bool BattlerSort(Game_Battler* first, Game_Battler* second) {
+	if (first->HasPreemptiveAttack() && second->HasPreemptiveAttack()) {
+		return first->GetAgi() > second->GetAgi();
+	}
+
+	if (first->HasPreemptiveAttack()) {
+		return true;
+	}
+
+	if (second->HasPreemptiveAttack()) {
+		return false;
+	}
+
 	return first->GetAgi() > second->GetAgi();
 }
 

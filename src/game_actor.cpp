@@ -685,6 +685,20 @@ bool Game_Actor::HasStrongDefense() const {
 	return GetData().super_guard;
 }
 
+bool Game_Actor::HasPreemptiveAttack() const {
+	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
+	if (item && item->preemptive) {
+		return true;
+	}
+	if (HasTwoWeapons()) {
+		item = GetEquipment(RPG::Item::Type_weapon + 1);
+		if (item && item->preemptive) {
+			return true;
+		}
+	}
+	return false;
+}
+
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return GetData().skills;
 }
@@ -1057,23 +1071,6 @@ float Game_Actor::GetCriticalHitChance() const {
 	return Data::actors[actor_id - 1].critical_hit ? (1.0f / Data::actors[actor_id - 1].critical_hit_chance) : 0.0f;
 }
 
-void Game_Actor::ResetBattle() {
-	Game_Battler::ResetBattle();
-
-	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->preemptive) {
-		gauge = GetMaxGauge();
-		return;
-	}
-
-	if (HasTwoWeapons()) {
-		item = GetEquipment(RPG::Item::Type_weapon + 1);
-		if (item && item->preemptive) {
-			gauge = GetMaxGauge();
-		}
-	}
-}
-
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }
@@ -1100,4 +1097,3 @@ void Game_Actor::RemoveInvalidEquipment() {
 		}
 	}
 }
-

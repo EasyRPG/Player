@@ -456,6 +456,13 @@ public:
 	virtual bool HasStrongDefense() const;
 
 	/**
+	 * Tests if the battler has a weapon that grants preemption.
+	 *
+	 * @return true if a weapon is having preempt attribute
+	 */
+	virtual bool HasPreemptiveAttack() const;
+
+	/**
 	 * Sets defence state (next turn, defense is doubled)
 	 *
 	 * @param charge new charge state

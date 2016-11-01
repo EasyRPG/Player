@@ -364,6 +364,13 @@ public:
 	 * @return true if strong defense
 	 */
 	bool HasStrongDefense() const override;
+
+	/**
+	 * Tests if the battler has a weapon that grants preemption.
+	 *
+	 * @return true if a weapon is having preempt attribute
+	 */
+	bool HasPreemptiveAttack() const override;
 	
 	/**
 	 * Sets face graphic of actor.
@@ -706,11 +713,6 @@ public:
 
 	int GetHitChance() const override;
 	float GetCriticalHitChance() const override;
-
-	/**
-	 * Initializes battle related data to there default values.
-	 */
-	virtual void ResetBattle() override;
 
 	BattlerType GetType() const override;
 private:
