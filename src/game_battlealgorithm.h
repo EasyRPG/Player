@@ -338,6 +338,7 @@ protected:
 	bool killed_by_attack_damage;
 	bool critical_hit;
 	bool absorb;
+	mutable int reflect;
 
 	RPG::Animation* animation;
 

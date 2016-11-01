@@ -75,6 +75,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	killed_by_attack_damage = false;
 	critical_hit = false;
 	absorb = false;
+	reflect = -1;
 	animation = nullptr;
 	conditions.clear();
 
@@ -1038,7 +1039,14 @@ int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
 }
 
 bool Game_BattleAlgorithm::Skill::IsReflected() const {
+	// Reflect must be stored because after "Apply" the return value for
+	// reflect can be incorrect when states are added.
+	if (reflect != -1) {
+		return !!reflect;
+	}
+
 	if (current_target == targets.end()) {
+		reflect = 0;
 		return false;
 	}
 
@@ -1047,6 +1055,7 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 	// Only negative skills are reflected
 	if (GetSource()->GetType() == (*current_target)->GetType()) {
+		reflect = 0;
 		return false;
 	}
 
@@ -1061,6 +1070,7 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 	current_target = old_current_target;
 	first_attack = old_first_attack;
 
+	reflect = has_reflect ? 1 : 0;
 	return has_reflect;
 }
 
