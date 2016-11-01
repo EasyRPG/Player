@@ -171,10 +171,21 @@ public class GameScanner {
             for (File f : files) {
                 String name = f.getName().toLowerCase().trim();
                 if (!f.getName().startsWith(".") && (name.endsWith("png") || name.endsWith("bmp") || name.endsWith("xyz"))) {
-                    return BitmapFactory.decodeFile(f.getAbsolutePath());
+                    Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath());
+                    if (b == null) {
+                        // Check for XYZ
+                        byte[] xyz = decodeXYZ(f.getAbsolutePath());
+                        if (xyz == null) {
+                            return null;
+                        }
+                        return BitmapFactory.decodeByteArray(xyz, 0, xyz.length);
+                    }
+                    return b;
                 }
             }
         }
         return null;
     }
+    
+    private static native byte[] decodeXYZ(String path);
 }

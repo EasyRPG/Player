@@ -45,6 +45,9 @@ public class GameBrowserActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        System.loadLibrary("gamebrowser");
+        
         setContentView(R.layout.browser_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
