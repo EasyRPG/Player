@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,8 @@ import java.util.List;
 
 public class GameBrowserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static Boolean libraryLoaded = false;
+
     private static final int THUMBNAIL_HORIZONTAL_SIZE_DPI = 200;
 
     private RecyclerView recyclerView;
@@ -46,8 +49,15 @@ public class GameBrowserActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        System.loadLibrary("gamebrowser");
-        
+        if (!libraryLoaded) {
+            try {
+                System.loadLibrary("gamebrowser");
+                libraryLoaded = true;
+            } catch (UnsatisfiedLinkError e) { 
+                Log.e("EasyRPG Player", "Couldn't load libgamebrowser. XYZ parsing will be unavailable: " + e.getMessage());
+            }
+        }
+
         setContentView(R.layout.browser_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -172,7 +172,7 @@ public class GameScanner {
                 String name = f.getName().toLowerCase().trim();
                 if (!f.getName().startsWith(".") && (name.endsWith("png") || name.endsWith("bmp") || name.endsWith("xyz"))) {
                     Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath());
-                    if (b == null) {
+                    if (b == null && GameBrowserActivity.libraryLoaded) {
                         // Check for XYZ
                         byte[] xyz = decodeXYZ(f.getAbsolutePath());
                         if (xyz == null) {
