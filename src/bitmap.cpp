@@ -739,7 +739,7 @@ void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& 
 
 	pixman_image_t* mask = CreateMask(opacity, src.GetRect(), &xform);
 
-	pixman_image_composite32(src.GetOperator(mask),
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src.bitmap, mask, bitmap,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.x, dst_rect.y,
