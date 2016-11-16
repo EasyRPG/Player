@@ -32,11 +32,22 @@
 #include <psp2/display.h>
 #include <psp2/gxm.h>
 #include <psp2/power.h>
+#include <psp2/touch.h>
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
 #include <cstring>
 #include <stdio.h>
+extern "C"{
+	#include <sharp_bilinear_f.h>
+	#include <sharp_bilinear_v.h>
+	#include <texture_f.h>
+	#include <opaque_v.h>
+	#include <xbr_2x_fast_f.h>
+	#include <xbr_2x_fast_v.h>
+	#include <lcd3x_f.h>
+	#include <lcd3x_v.h>
+}
 
 #ifdef SUPPORT_AUDIO
 #include "audio_psp2.h"
@@ -47,14 +58,31 @@ AudioInterface& Psp2Ui::GetAudio() {
 
 int _newlib_heap_size_user = 192 * 1024 * 1024;
 
+#define SHADERS_NUM 4
+vita2d_shader* shaders[SHADERS_NUM];
+char* shader_names[] = {
+	"None",
+	"Sharp Bilinear",
+	"LCD 3x",
+	"xBR"
+};
+
 Psp2Ui::Psp2Ui(int width, int height) :
 	BaseUi() {
 	
 	starttick = sceKernelGetProcessTimeWide() / 1000;
 	frame = 0;
 	zoom_state = 0;
+	in_use_shader = 0;
+	touch_x_start = -1;
 	trigger_state = false;
+	set_shader = true;
 	vita2d_init();
+	vita2d_set_vblank_wait(0);
+	shaders[0] = vita2d_create_shader((SceGxmProgram*) opaque_v, (SceGxmProgram*) texture_f);
+	shaders[1] = vita2d_create_shader((SceGxmProgram*) sharp_bilinear_v, (SceGxmProgram*) sharp_bilinear_f);
+	shaders[2] = vita2d_create_shader((SceGxmProgram*) lcd3x_v, (SceGxmProgram*) lcd3x_f);
+	shaders[3] = vita2d_create_shader((SceGxmProgram*) xbr_2x_fast_v, (SceGxmProgram*) xbr_2x_fast_f);
 	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -77,11 +105,19 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	#endif
 	
 	scePowerSetArmClockFrequency(444);
+	scePowerSetBusClockFrequency(222);
+	scePowerSetGpuClockFrequency(222);
+	scePowerSetGpuXbarClockFrequency(222);
+	
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	
 }
 
 Psp2Ui::~Psp2Ui() {
+	for (int i = 0; i < SHADERS_NUM; i++){
+		vita2d_free_shader(shaders[i]);
+	}
 	vita2d_free_texture(main_texture);
 	vita2d_fini();
 }
@@ -151,10 +187,40 @@ void Psp2Ui::ProcessEvents() {
 	keys[Input::Keys::N5] = (input.rx > 170);
 	keys[Input::Keys::N9] = (input.rx < 50);
 	
+	// Touchpad support for shaders changes
+	SceTouchData data;
+	sceTouchPeek(SCE_TOUCH_PORT_FRONT, &data, 1);
+	if (data.reportNum > 0){
+		if (touch_x_start == -1) touch_x_start = data.report[0].x;
+		}else if (touch_x_start > 0){
+			int xdiff = data.report[0].x - touch_x_start;
+			if (xdiff > 400){
+				set_shader = true;
+				touch_x_start = -2;
+				in_use_shader++;
+				if (in_use_shader >= SHADERS_NUM) in_use_shader = 0;
+			}else if (xdiff < -400){
+				set_shader = true;
+				touch_x_start = -2;
+				in_use_shader--;
+				if (in_use_shader < 0) in_use_shader = SHADERS_NUM - 1;
+			}
+	}else touch_x_start = -1;
+	
 }
 
 void Psp2Ui::UpdateDisplay() {
 	vita2d_start_drawing();
+	
+	if (set_shader){
+		Output::Post("Shader set to %s.",shader_names[in_use_shader]);
+		set_shader = false;
+		vita2d_texture_set_program(shaders[in_use_shader]->vertexProgram, shaders[in_use_shader]->fragmentProgram);
+		vita2d_texture_set_wvp(shaders[in_use_shader]->wvpParam);
+		vita2d_texture_set_vertexInput(&shaders[in_use_shader]->vertexInput);
+		vita2d_texture_set_fragmentInput(&shaders[in_use_shader]->fragmentInput);
+	}
+	
 	vita2d_clear_screen();
 	switch (zoom_state){
 		case 0: // 640x480
