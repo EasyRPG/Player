@@ -267,13 +267,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			}
 			
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
-			if (!alg) {
-				Output::Warning("%s has no action but got a turn.", battle_actions.front()->GetName().c_str());
-				Output::Warning("Please report a bug");
-				RemoveCurrentAction();
-				return;
-			}
-			
+
 			if (ProcessBattleAction(alg)) {
 				RemoveCurrentAction();
 				battle_message_window->Clear();
@@ -742,13 +736,15 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	}
 
 	actor_index--;
-	RemoveCurrentAction();
 	active_actor = allies[actor_index];
 
 	if (active_actor->IsDead()) {
 		SelectPreviousActor();
 		return;
 	}
+
+	battle_actions.back()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
+	battle_actions.pop_back();
 
 	if (active_actor->GetAutoBattle()) {
 		SelectPreviousActor();
