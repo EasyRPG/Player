@@ -234,6 +234,15 @@ void Game_Player::PerformTeleport() {
 
 	teleporting = false;
 
+	// Finish (un)boarding process
+	if (location.boarding) {
+		location.boarding = false;
+		location.aboard = true;
+	} else if (location.unboarding) {
+		location.unboarding = false;
+		location.aboard = false;
+	}
+
 	if (Game_Map::GetMapId() != new_map_id) {
 		Refresh(); // Reset sprite if it was changed by a move
 		pattern = RPG::EventPage::Frame_middle;

@@ -390,14 +390,20 @@ public:
 
 	/**
 	 * Changes the equipment of the actor.
-	 * Removes one instance of that item from the Inventory.
-	 * and adds the old one of the actor to it.
-	 * If you don't want this use SetEquipment instead.
+	 * Unequips the current inventory item and adds it to the inventory.
+	 * The new equipment is taken from the inventory (if available),
+	 * otherwise a new item is equipped.
+	 * If you don't want this behaviour use SetEquipment instead.
 	 *
 	 * @param equip_type type of equipment.
 	 * @param item_id item to equip.
 	 */
 	void ChangeEquipment(int equip_type, int item_id);
+
+	/**
+	 * Unequips the whole equipment and adds it to the inventory.
+	 */
+	void RemoveAllEquipment();
 
 	/**
 	 * Gets learned skills list.

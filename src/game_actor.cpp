@@ -123,8 +123,8 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	// Actor must have all attributes of the skill equipped as weapons
-	const RPG::Item* item = GetEquipment(0);
-	const RPG::Item* item2 = HasTwoWeapons() ? GetEquipment(1) : nullptr;
+	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
+	const RPG::Item* item2 = HasTwoWeapons() ? GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
 
 	for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
 		bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
@@ -147,10 +147,11 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 }
 
 int Game_Actor::GetSpCostModifier() const {
-	int start = HasTwoWeapons() ? 1 : 0;
+	// Only non-weapons have this modifier
+	int start = HasTwoWeapons() ? RPG::Item::Type_armor : RPG::Item::Type_shield;
 	int sp_mod = 1;
 
-	for (int i = start; i < 5; ++i) {
+	for (int i = start; i <= 5; ++i) {
 		const RPG::Item* item = GetEquipment(i);
 		if (item && item->half_sp_cost) {
 			sp_mod = 2;
@@ -191,9 +192,9 @@ void Game_Actor::SetFace(const std::string& file_name, int index) {
 }
 
 const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
-	if (equip_type < 0 || equip_type >= (int)GetData().equipped.size())
+	if (equip_type <= 0 || equip_type > (int)GetData().equipped.size())
 		return nullptr;
-	int item_id = GetData().equipped[equip_type];
+	int item_id = GetData().equipped[equip_type - 1];
 
 	if (item_id <= 0 || item_id >(int)Data::items.size()) {
 		return nullptr;
@@ -203,14 +204,14 @@ const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
 }
 
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
-	if (equip_type < 0 || equip_type >= (int) GetData().equipped.size())
+	if (equip_type <= 0 || equip_type > (int) GetData().equipped.size())
 		return -1;
 
-	int old_item_id = GetData().equipped[equip_type];
+	int old_item_id = GetData().equipped[equip_type - 1];
 	if (old_item_id > (int)Data::items.size())
 		old_item_id = 0;
 	
-	GetData().equipped[equip_type] = (short)new_item_id;
+	GetData().equipped[equip_type - 1] = (short)new_item_id;
 	return old_item_id;
 }
 
@@ -222,6 +223,12 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	}
 	if (item_id != 0) {
 		Main_Data::game_party->RemoveItem(item_id, 1);
+	}
+}
+
+void Game_Actor::RemoveAllEquipment() {
+	for (int i = 1; i <= 5; ++i) {
+		ChangeEquipment(i, 0);
 	}
 }
 
@@ -1046,14 +1053,14 @@ float Game_Actor::GetCriticalHitChance() const {
 void Game_Actor::ResetBattle() {
 	Game_Battler::ResetBattle();
 
-	const RPG::Item* item = GetEquipment(0);
+	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
 	if (item && item->preemptive) {
 		gauge = GetMaxGauge();
 		return;
 	}
 
 	if (HasTwoWeapons()) {
-		item = GetEquipment(1);
+		item = GetEquipment(RPG::Item::Type_weapon + 1);
 		if (item && item->preemptive) {
 			gauge = GetMaxGauge();
 		}
@@ -1069,7 +1076,6 @@ RPG::SaveActor & Game_Actor::GetData() const {
 }
 
 void Game_Actor::RemoveInvalidEquipment() {
-//	return;
 	// Filter out invalid equipment
 	int eq_types[] = { RPG::Item::Type_weapon,
 		HasTwoWeapons() ? RPG::Item::Type_weapon : RPG::Item::Type_shield,
@@ -1078,12 +1084,13 @@ void Game_Actor::RemoveInvalidEquipment() {
 		RPG::Item::Type_accessory
 	};
 
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 1; i <= 5; ++i) {
 		const RPG::Item* item = GetEquipment(i);
-		if (item && item->type != eq_types[i]) {
+		if (item && item->type != eq_types[i - 1]) {
 			Output::Debug("Actor %d: Removing invalid item %d (of type %d) from equipment slot %d (needs type %d)",
-			GetId(), item->ID, item->type, i, eq_types[i]);
+			GetId(), item->ID, item->type, i, eq_types[i - 1]);
 			SetEquipment(i, 0);
 		}
 	}
 }
+
