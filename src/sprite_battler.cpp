@@ -22,6 +22,7 @@
 #include "cache.h"
 #include "main_data.h"
 #include "player.h"
+#include "output.h"
 #include "rpg_battleranimation.h"
 #include "rpg_battleranimationextension.h"
 
@@ -179,8 +180,13 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				animation.reset(new BattleAnimationBattlers(Data::animations[ext.animation_id - 1], *battler));
-				animation->SetZ(GetZ());
+				if (ext.animation_id < 1 || ext.animation_id > Data::animations.size()) {
+					Output::Warning("Invalid battle animation: %d", ext.animation_id);
+					animation.reset();
+				} else {
+					animation.reset(new BattleAnimationBattlers(Data::animations[ext.animation_id - 1], *battler));
+					animation->SetZ(GetZ());
+				}
 			}
 			else {
 				animation.reset();

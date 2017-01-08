@@ -124,6 +124,19 @@ public:
 	int GetAttributeRate(int attribute_id, int rate) const;
 
 	/**
+	 * Applies a modifier (buff/debuff) to an attribute rate.
+	 * GetAttributeModifier will use this shift in the rate lookup.
+	 * A shift of +1 changed a C to D and a -1 a C to B.
+	 * The maximum shift value is +-1.
+	 * Calling this function again applies the new shift to the previous shifts.
+	 * The shift is cleared after the battle ended.
+	 *
+	 * @param attribute_id Attribute to modify
+	 * @param shift Shift to apply.
+	 */
+	void ShiftAttributeRate(int attribute_id, int shift);
+
+	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 * 
 	 * @param state_id State to test
@@ -389,6 +402,14 @@ public:
 	 * Removes all states.
 	 */
 	virtual void RemoveAllStates();
+
+	/**
+	 * Tests if the battler has a state that provides reflect.
+	 * Attack skills targeted at this battler will be reflected to the source.
+	 *
+	 * @return Reflect is enabled.
+	 */
+	bool HasReflectState() const;
 	
 	/**
 	 * Gets X position on battlefield
@@ -433,6 +454,13 @@ public:
 	 * @return If battler has strong defense (defense is tripled when defending)
 	 */
 	virtual bool HasStrongDefense() const;
+
+	/**
+	 * Tests if the battler has a weapon that grants preemption.
+	 *
+	 * @return true if a weapon is having preempt attribute
+	 */
+	virtual bool HasPreemptiveAttack() const;
 
 	/**
 	 * Sets defence state (next turn, defense is doubled)
@@ -536,6 +564,9 @@ public:
 
 	int GetLastBattleAction() const;
 
+	void SetBattleCombo(int command_id, int times);
+	void GetBattleCombo(int& command_id, int& times) const;
+
 	/**
 	 * Initializes battle related data to there default values.
 	 */
@@ -556,6 +587,10 @@ protected:
 	int agi_modifier;
 	int battle_turn;
 	int last_battle_action;
+	int battle_combo_command_id;
+	int battle_combo_times;
+
+	std::vector<int> attribute_shift;
 };
 
 #endif

@@ -399,12 +399,8 @@ int Game_Battler::ApplyConditions()
 		this->ChangeSp(src_sp);
 		damageTaken += src_hp;
 	}
-	if(damageTaken < 0) {
-		return -damageTaken;
-	}
-	else {
-		return damageTaken;
-	}
+
+	return damageTaken;
 }
 
 
@@ -445,6 +441,10 @@ bool Game_Battler::HasStrongDefense() const {
 	return false;
 }
 
+bool Game_Battler::HasPreemptiveAttack() const {
+	return false;
+}
+
 void Game_Battler::SetDefending(bool defend) {
 	defending = defend;
 }
@@ -481,11 +481,10 @@ bool Game_Battler::HasFullSp() const {
 	return GetMaxSp() == GetSp();
 }
 
-static int AffectParameter(int const type, int const val) {
+static int AffectParameter(const int type, const int val) {
 	return
 		type == 0? val / 2 :
 		type == 1? val * 2 :
-		type == 2? val :
 		val;
 }
 
@@ -493,10 +492,9 @@ int Game_Battler::GetAtk() const {
 	int base_atk = GetBaseAtk();
 	int n = min(max(base_atk, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_attack) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_atk);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_attack) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_atk);
 			break;
 		}
 	}
@@ -512,10 +510,9 @@ int Game_Battler::GetDef() const {
 	int base_def = GetBaseDef();
 	int n = min(max(base_def, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_defense) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_def);
+	for (int16_t i : GetInflictedStates()) {
+		if (Data::states[i - 1].affect_defense) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_def);
 			break;
 		}
 	}
@@ -531,10 +528,9 @@ int Game_Battler::GetSpi() const {
 	int base_spi = GetBaseSpi();
 	int n = min(max(base_spi, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_spirit) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_spi);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_spirit) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_spi);
 			break;
 		}
 	}
@@ -550,10 +546,9 @@ int Game_Battler::GetAgi() const {
 	int base_agi = GetBaseAgi();
 	int n = min(max(base_agi, 1), 999);
 
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
-		if(Data::states[(*i) - 1].affect_agility) {
-			n = AffectParameter(Data::states[(*i) - 1].affect_type, base_agi);
+	for (int16_t i : GetInflictedStates()) {
+		if(Data::states[i - 1].affect_agility) {
+			n = AffectParameter(Data::states[i - 1].affect_type, base_agi);
 			break;
 		}
 	}
@@ -663,8 +658,21 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 	return healed_states;
 }
 
+bool Game_Battler::HasReflectState() const {
+	for (int16_t i : GetInflictedStates()) {
+		if (Data::states[i - 1].reflect_magic) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Game_Battler::ResetBattle() {
-	gauge = GetMaxGauge() / 2;
+	gauge = GetMaxGauge();
+	if (!HasPreemptiveAttack()) {
+		gauge /= 2;
+	}
 	charged = false;
 	defending = false;
 	battle_turn = 0;
@@ -673,6 +681,10 @@ void Game_Battler::ResetBattle() {
 	def_modifier = 0;
 	spi_modifier = 0;
 	agi_modifier = 0;
+	battle_combo_command_id = -1;
+	battle_combo_times = -1;
+	attribute_shift.clear();
+	attribute_shift.resize(Data::attributes.size());
 }
 
 int Game_Battler::GetBattleTurn() const {
@@ -685,4 +697,35 @@ void Game_Battler::SetLastBattleAction(int battle_action) {
 
 int Game_Battler::GetLastBattleAction() const {
 	return last_battle_action;
+}
+
+void Game_Battler::SetBattleCombo(int command_id, int times) {
+	battle_combo_command_id = command_id;
+	battle_combo_times = times;
+}
+
+void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
+	command_id = battle_combo_command_id;
+	times = battle_combo_times;
+}
+
+void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
+	if (attribute_id < 1 || attribute_id > Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+
+	if (shift < -1 || shift > 1) {
+		assert(false && "Invalid shift");
+	}
+
+	if (shift == 0) {
+		return;
+	}
+
+	int& old_shift = attribute_shift[attribute_id - 1];
+	if ((old_shift == -1 || old_shift == 0) && shift == 1) {
+		++old_shift;
+	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
+		--old_shift;
+	}
 }

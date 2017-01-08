@@ -236,7 +236,13 @@ void Scene_Battle::AllySelected() {
 void Scene_Battle::AttackSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	SetState(State_SelectEnemyTarget);
+	const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
+	if (item && item->attack_all) {
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
+		ActionSelectedCallback(active_actor);
+	} else {
+		SetState(State_SelectEnemyTarget);
+	}
 }
 
 void Scene_Battle::DefendSelected() {

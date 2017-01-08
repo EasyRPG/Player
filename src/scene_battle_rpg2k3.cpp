@@ -77,8 +77,17 @@ void Scene_Battle_Rpg2k3::Update() {
 
 	for (std::vector<FloatText>::iterator it = floating_texts.begin();
 		it != floating_texts.end();) {
-		(*it).second -= 1;
-		if ((*it).second <= 0) {
+		int &time = (*it).remaining_time;
+
+		if (time % 2 == 0) {
+			int modifier = time <= 10 ? 1 :
+						   time < 20 ? 0 :
+						   -1;
+			(*it).sprite->SetY((*it).sprite->GetY() + modifier);
+		}
+
+		--time;
+		if (time <= 0) {
 			it = floating_texts.erase(it);
 		}
 		else {
@@ -212,22 +221,24 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 	}
 }
 
-void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text, int _duration) {
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text) {
 	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
 	graphic->TextDraw(-rect.x, -rect.y, color, text);
 
-	Sprite* floating_text = new Sprite();
+	std::shared_ptr<Sprite> floating_text = std::make_shared<Sprite>();
 	floating_text->SetBitmap(graphic);
 	floating_text->SetOx(rect.width / 2);
 	floating_text->SetOy(rect.height + 5);
 	floating_text->SetX(x);
-	floating_text->SetY(y);
+	// Move 5 pixel down because the number "jumps" with the intended y as the peak
+	floating_text->SetY(y + 5);
 	floating_text->SetZ(500 + y);
 
-	FloatText float_text = FloatText(std::shared_ptr<Sprite>(floating_text), _duration);
+	FloatText float_text;
+	float_text.sprite = floating_text;
 
 	floating_texts.push_back(float_text);
 }
@@ -529,6 +540,12 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		return false;
 	}
 
+	if (play_reflected_anim) {
+		action->PlayAnimation(true);
+		play_reflected_anim = false;
+		return false;
+	}
+
 	Sprite_Battler* source_sprite;
 	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 
@@ -538,8 +555,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
-		action->TargetFirst();
-
 		if (battle_action_need_event_refresh) {
 			action->GetSource()->NextBattleTurn();
 			NextTurn(action->GetSource());
@@ -555,7 +570,11 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			return false;
 		}
 
-		ShowNotification(action->GetStartMessage());
+		action->TargetFirst();
+
+		if (combo_repeat == 1) {
+			ShowNotification(action->GetStartMessage());
+		}
 
 		if (!action->IsTargetValid()) {
 			if (!action->GetTarget()) {
@@ -585,23 +604,26 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 
 		action->PlayAnimation();
+		play_reflected_anim = action->IsReflected();
 
 		{
 			std::vector<Game_Battler*> battlers;
 			Main_Data::game_party->GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
-			for (auto& b : battlers) {
-				int damageTaken = b->ApplyConditions();
-				if (damageTaken != 0) {
-					DrawFloatText(
-						b->GetBattleX(),
-						b->GetBattleY(),
-						0,
-						Utils::ToString(damageTaken),
-						30);
+			if (combo_repeat == 1) {
+				for (auto &b : battlers) {
+					int damageTaken = b->ApplyConditions();
+					if (damageTaken != 0) {
+						DrawFloatText(
+								b->GetBattleX(),
+								b->GetBattleY(),
+								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
+								Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken));
+					}
 				}
 			}
+
 			if (action->GetStartSe()) {
 				Game_System::SePlay(*action->GetStartSe());
 			}
@@ -624,6 +646,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
+			Game_Battler* target = action->GetTarget();
+
 			action->Apply();
 
 			if (action->GetTarget()) {
@@ -633,8 +657,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 							action->GetTarget()->GetBattleX(),
 							action->GetTarget()->GetBattleY(),
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
-							Utils::ToString(action->GetAffectedHp()),
-							30);
+							Utils::ToString(action->GetAffectedHp()));
 					}
 
 					action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
@@ -643,8 +666,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 						action->GetTarget()->GetBattleX(),
 						action->GetTarget()->GetBattleY(),
 						0,
-						Data::terms.miss,
-						30);
+						Data::terms.miss);
 				}
 
 				targets.push_back(action->GetTarget());
@@ -670,6 +692,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			// Reset variables
 			battle_action_state = BattleActionState_Start;
 			targets.clear();
+			combo_repeat = 1;
 
 			return true;
 		}
@@ -694,6 +717,22 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 					target_sprite->DetectStateChange();
 				}
 			}
+		}
+
+		// Check if a combo is enabled and redo the whole action in that case
+		int combo_command_id;
+		int combo_times;
+
+		action->GetSource()->GetBattleCombo(combo_command_id, combo_times);
+		if (action->GetSource()->GetLastBattleAction() == combo_command_id &&
+			combo_times > combo_repeat) {
+			// TODO: Prevent combo when the combo is a skill and needs more SP
+			// then available
+
+			battle_action_state = BattleActionState_Start;
+			// Count how often we have to repeat
+			++combo_repeat;
+			return false;
 		}
 
 		// Must loop another time otherwise the event update happens during

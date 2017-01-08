@@ -479,7 +479,7 @@ int Game_Actor::GetNextExp(int level) const {
 }
 
 int Game_Actor::GetStateProbability(int state_id) const {
-	int rate = 3; // C - default
+	int rate = 2; // C - default
 
 	if (state_id <= (int)Data::actors[actor_id - 1].state_ranks.size()) {
 		rate = Data::actors[actor_id - 1].state_ranks[state_id - 1];
@@ -489,10 +489,17 @@ int Game_Actor::GetStateProbability(int state_id) const {
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
-	int rate = 3; // C - default
+	int rate = 2; // C - default
 
 	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
 		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
+	}
+
+	rate += attribute_shift[attribute_id - 1];
+	if (rate < 0) {
+		rate = 0;
+	} else if (rate > 4) {
+		rate = 4;
 	}
 
 	return GetAttributeRate(attribute_id, rate);
@@ -676,6 +683,20 @@ bool Game_Actor::IsEquipmentFixed() const {
 
 bool Game_Actor::HasStrongDefense() const {
 	return GetData().super_guard;
+}
+
+bool Game_Actor::HasPreemptiveAttack() const {
+	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
+	if (item && item->preemptive) {
+		return true;
+	}
+	if (HasTwoWeapons()) {
+		item = GetEquipment(RPG::Item::Type_weapon + 1);
+		if (item && item->preemptive) {
+			return true;
+		}
+	}
+	return false;
 }
 
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
@@ -1050,23 +1071,6 @@ float Game_Actor::GetCriticalHitChance() const {
 	return Data::actors[actor_id - 1].critical_hit ? (1.0f / Data::actors[actor_id - 1].critical_hit_chance) : 0.0f;
 }
 
-void Game_Actor::ResetBattle() {
-	Game_Battler::ResetBattle();
-
-	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->preemptive) {
-		gauge = GetMaxGauge();
-		return;
-	}
-
-	if (HasTwoWeapons()) {
-		item = GetEquipment(RPG::Item::Type_weapon + 1);
-		if (item && item->preemptive) {
-			gauge = GetMaxGauge();
-		}
-	}
-}
-
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }
@@ -1093,4 +1097,3 @@ void Game_Actor::RemoveInvalidEquipment() {
 		}
 	}
 }
-
