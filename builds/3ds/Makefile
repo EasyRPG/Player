@@ -43,7 +43,7 @@ INCLUDES	:=	../../src
 
 APP_TITLE   	:=	EasyRPG Player
 APP_DESCRIPTION	:=	Play your RPG Maker 2000/2003 games everywhere
-APP_AUTHOR	:=	Rinnegatamante & EasyRPG Team
+APP_AUTHOR	:=	EasyRPG Team & Rinnegatamante
 ICON		:=	icon.png
 
 #---------------------------------------------------------------------------------
@@ -57,8 +57,10 @@ CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO \
-				-DUSE_CACHE -DNO_DEBUG -DHAVE_MPG123 -DWANT_FASTWAV \
-				-DHAVE_LIBSPEEXDSP -DHAVE_LIBSNDFILE -DHAVE_TREMOR -DWANT_FMMIDI
+			-DNO_DEBUG -DHAVE_MPG123 -DWANT_FASTWAV \
+			-DHAVE_LIBSPEEXDSP -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
+			-DHAVE_WILDMIDI
+#-DCITRA3DS_COMPATIBLE
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
@@ -70,7 +72,7 @@ LIBS	:= -lsf2d -lcitro3d -lctru \
 		-llcf -licuuc -licui18n -licudata \
 		-lpixman-1 -lpng -lz -lspeexdsp \
 		-lsndfile -lvorbisidec -logg -lmpg123 \
-		-lmpg123 -lWildMidi -lm
+		-lWildMidi -lm
 
 
 #---------------------------------------------------------------------------------

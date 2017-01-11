@@ -104,7 +104,6 @@ namespace Player {
 	std::string emscripten_game_name;
 #endif
 #ifdef _3DS
-	bool use_dsp;
 	bool is_3dsx;
 #endif
 }
@@ -144,28 +143,9 @@ void Player::Init(int argc, char *argv[]) {
 		Output::Error("Couldn't mount any storage medium!");
 	}
 #elif defined(_3DS)
-	// Starting debug console
-	gfxInitDefault();
-	consoleInit(GFX_BOTTOM, NULL);
-
-	APT_SetAppCpuTimeLimit(30);
-
-	consoleClear();
-
-	fsInit();
-	sdmcInit();
-#ifndef CITRA3DS_COMPATIBLE
+#  ifndef CITRA3DS_COMPATIBLE
 	romfsInit();
-#endif
-
-	hidInit();
-
-	// Enable 804 Mhz mode if on N3DS
-	bool isN3DS;
-	APT_CheckNew3DS(&isN3DS);
-	if (isN3DS) {
-		osSetSpeedupEnable(true);
-	}
+#  endif
 #endif
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
@@ -374,11 +354,7 @@ void Player::Exit() {
 #endif
 
 #ifdef _3DS
-	hidExit();
-	gfxExit();
-	sdmcExit();
 	romfsExit();
-	fsExit();
 #endif
 }
 

@@ -143,6 +143,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	if (!strncmp(magic, "MThd", 4)) {
 #ifdef HAVE_WILDMIDI
 		static bool wildmidi_works = true;
+		printf("MIDI\n");
 		if (wildmidi_works) {
 			AudioDecoder *mididec = nullptr;
 #  ifdef USE_AUDIO_RESAMPLER

@@ -139,6 +139,8 @@ void Main_Data::Init() {
 			} else {
 				project_path = ".";
 			}
+#   else
+			project_path = ".";
 #   endif
 #elif defined(__APPLE__) && defined(__MACH__)
 #  if SDL_MAJOR_VERSION>1
@@ -153,6 +155,7 @@ void Main_Data::Init() {
 				// FIXME: Uses SDL API
 				char* data_dir = SDL_GetBasePath();
 				project_path = data_dir;
+				
 				free(data_dir);
 			}
 #  else

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of EasyRPG Player.
  *
  * EasyRPG Player is free software: you can redistribute it and/or modify
@@ -55,11 +55,21 @@ static const devoptab_t dotab_null = {
 
 CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
+		
+	APT_SetAppCpuTimeLimit(30);
 	
+	// Enable 804 Mhz mode if on N3DS
+	bool isN3DS;
+	APT_CheckNew3DS(&isN3DS);
+	if (isN3DS) {
+		osSetSpeedupEnable(true);
+	}
+		
 	frame = 0;
 	fullscreen = false;
 	trigger_state = false;
 	sf2d_init();
+
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
@@ -79,7 +89,7 @@ CtrUi::CtrUi(int width, int height) :
 	#ifdef SUPPORT_AUDIO
 		audio_.reset(new CtrAudio());
 	#endif
-	
+
 	#ifdef NO_DEBUG
 	// Loading bottom screen keyboard
 	u8* key_buffer = (u8*)&keyboard_bmp[0x36];
@@ -113,12 +123,14 @@ CtrUi::CtrUi(int width, int height) :
 		sf2d_swapbuffers();
 	}
 	sf2d_free_texture(keyboard_texture);
+	#else
+	consoleInit(GFX_BOTTOM, nullptr);
 	#endif
-	
 }
 
 CtrUi::~CtrUi() {
 	sf2d_free_texture(main_texture);	
+	sf2d_free_texture(keyboard_texture);
 	sf2d_fini();
 }
 
@@ -236,6 +248,7 @@ void CtrUi::UpdateDisplay() {
 	if (!fullscreen) sf2d_draw_texture(main_texture, 40, 0);
 	else sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
 	sf2d_end_frame();
+
 	sf2d_swapbuffers();
 }
 

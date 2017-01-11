@@ -29,7 +29,7 @@
 #include "utils.h"
 #include "decoder_wildmidi.h"
 
-#define WILDMIDI_FREQ 44100
+#define WILDMIDI_FREQ 22050
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
  * however, they cause high cpu usage, so not using them for now.
  */
@@ -81,6 +81,25 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
+#elif _3DS
+	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
+	
+	// Shipped in a romfs (for CIA files)
+	config_file = "romfs:/wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
+
+	// preferred SD card directory
+	if (!found) {
+		config_file = "sdmc:/3ds/easyrpg-player/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
 #else
 	// TODO
 	config_file = "wildmidi.cfg";
