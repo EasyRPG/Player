@@ -43,7 +43,7 @@ namespace {
 	bool Oput(dyn_arg_list args) {
 		DYNRPG_FUNCTION("output")
 
-		DYNRPG_CHECK_ARG_LENGTH_MIN(2);
+		DYNRPG_CHECK_ARG_LENGTH(2);
 
 		DYNRPG_GET_STR_ARG(0, mode);
 		DYNRPG_GET_VAR_ARG(1, msg);
@@ -71,12 +71,20 @@ void DynRpg::RegisterFunction(const std::string& name, dynfunc func) {
 }
 
 float DynRpg::GetFloat(const std::string& str, bool* valid) {
+	if (str.empty()) {
+		if (valid) {
+			*valid = true;
+		}
+
+		return 0.0f;
+	}
+
 	std::istringstream iss(str);
 	float f;
 	iss >> f;
 
 	if (valid) {
-		*valid = iss.eof() && !iss.fail();
+		*valid = !iss.fail();
 	}
 
 	return f;
@@ -148,7 +156,7 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 
 	for (;;) {
 		if (text_index != end) {
-			chr = *std::next(text_index, 1);
+			chr = *text_index;
 		}
 
 		if (text_index == end) {
@@ -251,6 +259,8 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 	dyn_arg_list args;
 	std::stringstream token;
 
+	++text_index;
+
 	// Parameters can be of type Token, Number or String
 	// Strings are in "", a "-literal is represented by ""
 	// Number is a valid float number
@@ -262,7 +272,7 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 
 	for (;;) {
 		if (text_index != end) {
-			chr = *std::next(text_index, 1);
+			chr = *text_index;
 		}
 
 		if (text_index == end) {
