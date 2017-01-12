@@ -249,6 +249,8 @@ void Scene_Map::vUpdate() {
 		UpdateInn();
 		return;
 	}
+
+	DynRpg::Update();
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
 }

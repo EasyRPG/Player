@@ -105,6 +105,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/dynrpg.h
 	src/dynrpg_easyrpg.cpp
 	src/dynrpg_easyrpg.h
+	src/dynrpg_textplugin.cpp
+	src/dynrpg_textplugin.h
 	src/enemyai.cpp
 	src/enemyai.h
 	src/exe_reader.cpp
