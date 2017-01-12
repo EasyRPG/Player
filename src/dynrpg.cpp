@@ -28,7 +28,14 @@
 
 #include <cstring>
 #include <fstream>
+
+#include "dynrpg_textplugin.h"
+
+#include <cstring>
+#include <fstream>
 #include <map>
+
+#include "dynrpg_textplugin.h"
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -185,6 +192,8 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 void create_all_plugins() {
 	plugins.emplace_back(new DynRpg::EasyRpgPlugin());
 
+	plugins.emplace_back(new DynRpg::TextPlugin());
+	
 	for (auto& plugin : plugins) {
 		plugin->RegisterFunctions();
 	}
