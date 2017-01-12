@@ -18,6 +18,12 @@
 #ifndef EP_DYNRPG_H
 #define EP_DYNRPG_H
 
+#include <vector>
+#include <sstream>
+#include <string>
+#include "output.h"
+#include "utils.h"
+
 // Headers
 namespace lcf {
 namespace rpg {
@@ -25,10 +31,55 @@ namespace rpg {
 }
 }
 
+typedef std::vector<std::string> dyn_arg_list;
+typedef bool(*dynfunc)(dyn_arg_list);
+
+// Macros
+
+#define DYNRPG_FUNCTION(var) \
+	std::string func_name = var;
+
+#define DYNRPG_CHECK_ARG_LENGTH(len) \
+	if (args.size() != len) {\
+	Output::Warning("{}: Got {} args (needs {})", func_name, args.size(), len); \
+	return true; \
+	}
+
+#define DYNRPG_CHECK_ARG_LENGTH_MIN(len) \
+	if (args.size() < len) { \
+		Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), len); \
+		return true; \
+	}
+
+#define DYNRPG_GET_FLOAT_ARG(i, var) \
+	float var; \
+	bool valid_float##var; \
+	var = DynRpg::GetFloat(args[i], &valid_float##var); \
+	if (!valid_float##var) { \
+	Output::Warning("{}: Arg {} ({}) is not numeric", func_name, i, args[i]); \
+	return true; \
+	}
+
+#define DYNRPG_GET_INT_ARG(i, var) \
+	DYNRPG_GET_FLOAT_ARG(i, var##_float_arg) \
+	int var = (int)var##_float_arg;
+
+#define DYNRPG_GET_STR_ARG(i, var) \
+	std::string& var = args[i];
+
+#define DYNRPG_GET_VAR_ARG(i, var) \
+	std::string var = DynRpg::ParseVarArg(args, i); \
+	if (var.empty()) { \
+	Output::Warning("{}: Vararg {} out of range", func_name, i); \
+	}
+
 /**
  * DynRPG namespace
  */
 namespace DynRpg {
+	void RegisterFunction(const std::string& name, dynfunc function);
+	float GetFloat(const std::string& str, bool* valid = nullptr);
+	std::string ParseVarArg(const dyn_arg_list &args, int index);
 	bool Invoke(const lcf::rpg::EventCommand& com);
 }
 
