@@ -254,46 +254,43 @@ bool Game_Battler::UseSkill(int skill_id) {
 
 	bool was_used = false;
 
-	switch (skill.type) {
-		case RPG::Skill::Type_normal:
-		case RPG::Skill::Type_subskill:
-			// Only takes care of healing skills outside of battle,
-			// the other skill logic is in Game_BattleAlgorithm
+	if (skill.type == RPG::Skill::Type_normal || skill.type >= RPG::Skill::Type_subskill) {
+		// Only takes care of healing skills outside of battle,
+		// the other skill logic is in Game_BattleAlgorithm
 
-			if (!(skill.scope == RPG::Skill::Scope_ally ||
-				skill.scope == RPG::Skill::Scope_party ||
-				skill.scope == RPG::Skill::Scope_self)) {
-				return false;
-			}
+		if (!(skill.scope == RPG::Skill::Scope_ally ||
+			  skill.scope == RPG::Skill::Scope_party ||
+			  skill.scope == RPG::Skill::Scope_self)) {
+			return false;
+		}
 
-			// Skills only increase hp and sp outside of battle
-			if (skill.power > 0 && skill.affect_hp && !HasFullHp()) {
-				was_used = true;
-				ChangeHp(skill.power);
-			}
+		// Skills only increase hp and sp outside of battle
+		if (skill.power > 0 && skill.affect_hp && !HasFullHp()) {
+			was_used = true;
+			ChangeHp(skill.power);
+		}
 
-			if (skill.power > 0 && skill.affect_sp && !HasFullSp()) {
-				was_used = true;
-				ChangeSp(skill.power);
-			}
+		if (skill.power > 0 && skill.affect_sp && !HasFullSp()) {
+			was_used = true;
+			ChangeSp(skill.power);
+		}
 
-			for (int i = 0; i < (int)skill.state_effects.size(); i++) {
-				if (skill.state_effects[i]) {
-					if (skill.state_effect) {
-						was_used |= !HasState(Data::states[i].ID);
-						AddState(Data::states[i].ID);
-					} else {
-						was_used |= HasState(Data::states[i].ID);
-						RemoveState(Data::states[i].ID);
-					}
+		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
+			if (skill.state_effects[i]) {
+				if (skill.state_effect) {
+					was_used |= !HasState(Data::states[i].ID);
+					AddState(Data::states[i].ID);
+				} else {
+					was_used |= HasState(Data::states[i].ID);
+					RemoveState(Data::states[i].ID);
 				}
 			}
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-			return true;
-		case RPG::Skill::Type_switch:
-			Game_Switches[skill.switch_id] = true;
-			return true;
+		}
+	} else if (skill.type == RPG::Skill::Type_teleport || skill.type == RPG::Skill::Type_escape) {
+		was_used = true;
+	} else if (skill.type == RPG::Skill::Type_switch) {
+		Game_Switches[skill.switch_id] = true;
+		was_used = true;
 	}
 
 	return was_used;

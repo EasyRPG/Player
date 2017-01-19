@@ -100,7 +100,7 @@ void Scene_ActorTarget::UpdateItem() {
 
 void Scene_ActorTarget::UpdateSkill() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_Actor* actor = static_cast<Game_Actor*>(&(*Main_Data::game_party)[actor_index]);
+		Game_Actor* actor = &(*Main_Data::game_party)[actor_index];
 
 		if (actor->GetSp() < actor->CalculateSkillCost(id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
