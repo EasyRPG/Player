@@ -156,7 +156,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 		// (Adding an item never changes the number of uses, even when
 		// you already have x99 of them.)
 		if (amount < 0) {
-			data.item_usage[i] = (uint8_t)Data::items[item_id - 1].uses;
+			data.item_usage[i] = 0;
 		}
 
 		return;
@@ -171,7 +171,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 	data.item_ids.push_back((int16_t)item_id);
 	data.items_size = data.item_ids.size();
 	data.item_counts.push_back((uint8_t)std::min(amount, 99));
-	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
+	data.item_usage.push_back(0);
 }
 
 void Game_Party::RemoveItem(int item_id, int amount) {
@@ -199,14 +199,14 @@ void Game_Party::ConsumeItemUse(int item_id) {
 		if (data.item_ids[i] != item_id)
 			continue;
 
-		if (data.item_usage[i] == 0) {
-			// Limitless uses
+		if (Data::items[i].uses == 0) {
+			// Unlimited uses
 			return;
 		}
 
-		data.item_usage[i]--;
+		data.item_usage[i]++;
 
-		if (data.item_usage[i] == 0) {
+		if (data.item_usage[i] >= Data::items[i].uses) {
 			if (data.item_counts[i] == 1) {
 				// We just used up the last one
 				data.item_ids.erase(data.item_ids.begin() + i);
@@ -215,7 +215,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 				data.item_usage.erase(data.item_usage.begin() + i);
 			} else {
 				data.item_counts[i]--;
-				data.item_usage[i] = (uint8_t)Data::items[item_id - 1].uses;
+				data.item_usage[i] = 0;
 			}
 		}
 		return;

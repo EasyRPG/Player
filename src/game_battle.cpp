@@ -286,7 +286,7 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	}
 
 	if (condition.flags.command_actor &&
-		condition.command_id != Game_Actors::GetActor(condition.turn_actor_id)->GetLastBattleAction())
+		condition.command_id != Game_Actors::GetActor(condition.command_actor_id)->GetLastBattleAction())
 		return false;
 
 	return true;
