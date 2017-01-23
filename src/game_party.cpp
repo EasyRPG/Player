@@ -199,14 +199,14 @@ void Game_Party::ConsumeItemUse(int item_id) {
 		if (data.item_ids[i] != item_id)
 			continue;
 
-		if (Data::items[i].uses == 0) {
+		if (Data::items[item_id - 1].uses == 0) {
 			// Unlimited uses
 			return;
 		}
 
 		data.item_usage[i]++;
 
-		if (data.item_usage[i] >= Data::items[i].uses) {
+		if (data.item_usage[i] >= Data::items[item_id - 1].uses) {
 			if (data.item_counts[i] == 1) {
 				// We just used up the last one
 				data.item_ids.erase(data.item_ids.begin() + i);
