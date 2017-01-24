@@ -245,13 +245,16 @@ static void extract_directory(char *buf, const char *path, size_t size)
 }
 
 /* Loads a game. */
-RETRO_API bool retro_load_game(const struct retro_game_info *game) {
-
+RETRO_API bool retro_load_game(const struct retro_game_info *game)
+{
    char parent_dir[1024];
     enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
 #if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
     glsm_ctx_params_t params = {0};
 #endif
+
+    if (!game)
+       return false;
 
     if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt)) {
         log_cb(RETRO_LOG_INFO, "XRGB8888 is not supported.\n");
