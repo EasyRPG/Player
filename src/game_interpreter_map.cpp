@@ -77,8 +77,10 @@ static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
 	for (it = commands.begin(); it != commands.end(); ++it) {
 		result += LcfReader::IntSize(it->code);
 		result += LcfReader::IntSize(it->indent);
-		result += LcfReader::IntSize(it->string.size());
-		result += ReaderUtil::Recode(it->string, Player::encoding).size();
+		// Convert string to LDB encoding
+		std::string orig_string = ReaderUtil::Recode(it->string, "UTF-8", Player::encoding);
+		result += LcfReader::IntSize(orig_string.size());
+		result += orig_string.size();
 
 		int count = it->parameters.size();
 		result += LcfReader::IntSize(count);
