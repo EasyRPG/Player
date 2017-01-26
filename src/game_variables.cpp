@@ -28,10 +28,16 @@ static std::vector<uint32_t>& variables() {
 	return Main_Data::game_data.system.variables;
 }
 
+static int resize_report_limit = 10;
+
 int& Game_Variables_Class::operator[] (int variable_id) {
 	if (!IsValid(variable_id)) {
 		if (variable_id > 0 && variable_id <= PLAYER_VAR_LIMIT) {
-			Output::Debug("Resizing variable array to %d elements.", variable_id);
+			if (resize_report_limit > 0) {
+				Output::Debug("Resizing variable array to %d elements.", variable_id);
+				--resize_report_limit;
+			}
+			variables().reserve(variable_id + 1000);
 			variables().resize(variable_id);
 			Main_Data::game_data.system.variables_size = variables().size();
 		} else {
@@ -62,5 +68,6 @@ int Game_Variables_Class::GetSize() const {
 }
 
 void Game_Variables_Class::Reset() {
+	resize_report_limit = 10;
 	variables().assign(Data::variables.size(), 0);
 }
