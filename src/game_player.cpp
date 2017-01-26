@@ -365,6 +365,7 @@ void Game_Player::UpdateScroll() {
 
 void Game_Player::Update() {
 	int cur_frame_count = Player::GetFrames();
+	// Only update the event once per frame
 	if (cur_frame_count == frame_count_at_last_update_parallel) {
 		return;
 	}

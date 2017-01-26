@@ -691,6 +691,18 @@ void Game_Event::UpdateParallel() {
 		}
 		interpreter->Update();
 	}
+
+	// Placed after the interpreter update because multiple updates per frame are allowed.
+	// This results in waits to finish quicker when an event collides with this event and
+	// emulates a RPG Maker bug)
+	int cur_frame_count = Player::GetFrames();
+	// Only update the event once per frame
+	if (cur_frame_count == frame_count_at_last_update_parallel) {
+		updating = false;
+		return;
+	}
+	frame_count_at_last_update_parallel = cur_frame_count;
+
 	Game_Character::Update();
 	updating = false;
 }
