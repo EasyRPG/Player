@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include <vector>
+#include <stdint.h>
 #include "rpg_saveactor.h"
 #include "game_battler.h"
 
@@ -408,9 +409,24 @@ public:
 	void ChangeEquipment(int equip_type, int item_id);
 
 	/**
+	 * Returns an array of all equipped item IDs (or 0 for none).
+	 *
+	 * @return equipped item array
+	 */
+	const std::vector<int16_t>& GetWholeEquipment() const;
+
+	/**
 	 * Unequips the whole equipment and adds it to the inventory.
 	 */
-	void RemoveAllEquipment();
+	void RemoveWholeEquipment();
+
+	/**
+	 * Gets how often the item with the corresponding id is equipped.
+	 *
+	 * @param item_id database item ID.
+	 * @return number of items.
+	 */
+	int GetItemCount(int item_id);
 
 	/**
 	 * Gets learned skills list.

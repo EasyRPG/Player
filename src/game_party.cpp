@@ -94,21 +94,7 @@ int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 		int number = 0;
 		for (int i = 0; i < (int) data.party.size(); i++) {
 			Game_Actor* actor = Game_Actors::GetActor(data.party[i]);
-			if (actor->GetWeaponId() == item_id) {
-				++number;
-			}
-			if (actor->GetShieldId() == item_id) {
-				++number;
-			}
-			if (actor->GetArmorId() == item_id) {
-				++number;
-			}
-			if (actor->GetHelmetId() == item_id) {
-				++number;
-			}
-			if (actor->GetAccessoryId() == item_id) {
-				++number;
-			}
+			number += actor->GetItemCount(item_id);
 		}
 		return number;
 	} else {

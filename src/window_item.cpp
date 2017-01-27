@@ -55,21 +55,22 @@ void Window_Item::Refresh() {
 	data.clear();
 	Main_Data::game_party->GetItems(party_items);
 
-	if (Game_Temp::battle_running) {
-		// Include equipped accesories that invoke skills
-		if (actor) {
-			for (int i = 1; i <= 5; ++i) {
-				const RPG::Item* item = actor->GetEquipment(i);
-				if (item && item->use_skill && item->skill_id > 0) {
-					data.push_back(item->ID);
-				}
-			}
-		}
-	}
-
 	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
 			data.push_back(party_items[i]);
+		}
+	}
+
+	if (Game_Temp::battle_running) {
+		// Include equipped accessories that invoke skills
+		if (actor) {
+			for (int i = 1; i <= 5; ++i) {
+				const RPG::Item* item = actor->GetEquipment(i);
+				if (item && item->use_skill && item->skill_id > 0 &&
+						std::find(data.begin(), data.end(), item->ID) == data.end()) {
+					data.push_back(item->ID);
+				}
+			}
 		}
 	}
 
@@ -100,6 +101,14 @@ void Window_Item::DrawItem(int index) {
 
 	if (item_id > 0) {
 		int number = Main_Data::game_party->GetItemCount(item_id);
+
+		if (actor) {
+			const RPG::Item &item = Data::items[item_id - 1];
+			if (item.use_skill) {
+				number += actor->GetItemCount(item_id);
+			}
+		}
+
 		bool enabled = CheckEnable(item_id);
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 

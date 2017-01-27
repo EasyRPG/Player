@@ -1277,7 +1277,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 
 	if (slot == 6) {
 		for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-			actor->RemoveAllEquipment();
+			actor->RemoveWholeEquipment();
 		}
 	} else {
 		for (const auto &actor : GetActors(com.parameters[0], com.parameters[1])) {

@@ -108,8 +108,7 @@ public:
 	 * Gets number of possessed or equipped items.
 	 *
 	 * @param item_id database item ID.
-	 * @param get_equipped if true this returns the number
-	 *                     of equipped items.
+	 * @param get_equipped if true equipped items are counted instead
 	 * @return number of items.
 	 */
 	int GetItemCount(int item_id, bool get_equipped = false);
