@@ -39,26 +39,9 @@ public:
 	int GetBattlerCount() const override;
 
 	/**
-	 * Setups initial party.
-	 */
-	void SetupStartingMembers();
-
-	/**
 	 * Setups battle test party.
 	 */
 	void SetupBattleTestMembers();
-
-	/**
-	 * Refreshes party members.
-	 */
-	//void Refresh();
-
-	/**
-	 * Gets maximum level.
-	 *
-	 * @return max party level.
-	 */
-	//int MaxLevel();
 
 	/**
 	 * Adds an actor to the party.
