@@ -53,7 +53,14 @@ void Scene_Order::Update() {
 void Scene_Order::UpdateOrder() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		Scene::Pop();
+		if (actor_counter == 0) {
+			Scene::Pop();
+		} else {
+			--actor_counter;
+			window_left->SetItemText(actors[actor_counter] - 1, Main_Data::game_party->GetActors()[actors[actor_counter] - 1]->GetName());
+			window_right->SetItemText(actor_counter, "");
+			actors[actor_counter] = 0;
+		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (std::find(actors.begin(), actors.end(), window_left->GetIndex() + 1) != actors.end()) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
@@ -126,6 +133,9 @@ void Scene_Order::CreateCommandWindow() {
 
 void Scene_Order::Redo() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
+
+	actors.clear();
+	actors.resize(Main_Data::game_party->GetActors().size());
 
 	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();

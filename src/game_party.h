@@ -39,26 +39,9 @@ public:
 	int GetBattlerCount() const override;
 
 	/**
-	 * Setups initial party.
-	 */
-	void SetupStartingMembers();
-
-	/**
 	 * Setups battle test party.
 	 */
 	void SetupBattleTestMembers();
-
-	/**
-	 * Refreshes party members.
-	 */
-	//void Refresh();
-
-	/**
-	 * Gets maximum level.
-	 *
-	 * @return max party level.
-	 */
-	//int MaxLevel();
 
 	/**
 	 * Adds an actor to the party.
@@ -125,8 +108,7 @@ public:
 	 * Gets number of possessed or equipped items.
 	 *
 	 * @param item_id database item ID.
-	 * @param get_equipped if true this returns the number
-	 *                     of equipped items.
+	 * @param get_equipped if true equipped items are counted instead
 	 * @return number of items.
 	 */
 	int GetItemCount(int item_id, bool get_equipped = false);

@@ -226,10 +226,28 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	}
 }
 
-void Game_Actor::RemoveAllEquipment() {
+const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
+	return GetData().equipped;
+}
+
+void Game_Actor::RemoveWholeEquipment() {
 	for (int i = 1; i <= 5; ++i) {
 		ChangeEquipment(i, 0);
 	}
+}
+
+int Game_Actor::GetItemCount(int item_id) {
+	int number = 0;
+
+	if (item_id > 0) {
+		for (int16_t i : GetWholeEquipment()) {
+			if (item_id == i) {
+				++number;
+			}
+		}
+	}
+
+	return number;
 }
 
 const std::vector<int16_t>& Game_Actor::GetStates() const {
@@ -1097,3 +1115,4 @@ void Game_Actor::RemoveInvalidEquipment() {
 		}
 	}
 }
+

@@ -28,10 +28,16 @@ static std::vector<bool>& switches() {
 	return Main_Data::game_data.system.switches;
 }
 
+static int resize_report_limit = 10;
+
 std::vector<bool>::reference Game_Switches_Class::operator[](int switch_id) {
 	if (!IsValid(switch_id)) {
 		if (switch_id > 0 && switch_id <= PLAYER_VAR_LIMIT) {
-			Output::Debug("Resizing switch array to %d elements.", switch_id);
+			if (resize_report_limit > 0) {
+				Output::Debug("Resizing switch array to %d elements.", switch_id);
+				--resize_report_limit;
+			}
+			switches().reserve(switch_id + 1000);
 			switches().resize(switch_id);
 			Main_Data::game_data.system.switches_size = switches().size();
 		} else {
@@ -61,5 +67,6 @@ int Game_Switches_Class::GetSize() const {
 }
 
 void Game_Switches_Class::Reset() {
+	resize_report_limit = 10;
 	switches().assign(Data::switches.size(), false);
 }
