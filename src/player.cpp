@@ -712,13 +712,15 @@ void Player::CreateGameObjects() {
 	meta.reset(new Meta(meta_file));
 
 	bool no_rtp_warning_flag = false;
-	std::string ini_file = FileFinder::FindDefault(INI_NAME);
-
-	lcf::INIReader ini(ini_file);
-	if (ini.ParseError() != -1) {
-		std::string title = ini.GetString("RPG_RT", "GameTitle", "");
-		game_title = lcf::ReaderUtil::Recode(title, encoding);
-		no_rtp_warning_flag = ini.GetBoolean("RPG_RT", "FullPackageFlag", false);
+	{ // Scope lifetime of variables for ini parsing
+		std::string ini_file = FileFinder::FindDefault(INI_NAME);
+		auto ini_stream = FileFinder::openUTF8Input(ini_file, std::ios::ios_base::in);
+		lcf::INIReader ini(*ini_stream);
+		if (ini.ParseError() != -1) {
+			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+			game_title = lcf::ReaderUtil::Recode(title, encoding);
+			no_rtp_warning_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1" ? true : no_rtp_flag;
+		}
 	}
 
 	std::stringstream title;
@@ -870,10 +872,13 @@ void Player::LoadDatabase() {
 	bool easyrpg_project = !edb.empty() && !emt.empty();
 
 	if (easyrpg_project) {
-		if (!lcf::LDB_Reader::LoadXml(edb)) {
+		auto edb_stream = FileFinder::openUTF8Input(edb, std::ios::ios_base::in );
+		if (!lcf::LDB_Reader::LoadXml(*edb_stream)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
-		if (!lcf::LMT_Reader::LoadXml(emt)) {
+
+		auto emt_stream = FileFinder::openUTF8Input(emt, std::ios::ios_base::in);
+		if (!lcf::LMT_Reader::LoadXml(*emt_stream)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 	}
@@ -881,10 +886,13 @@ void Player::LoadDatabase() {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
 
-		if (!lcf::LDB_Reader::Load(ldb, encoding)) {
+		auto ldb_stream = FileFinder::openUTF8Input(ldb, std::ios::ios_base::in| std::ios::ios_base::binary);
+		if (!lcf::LDB_Reader::Load(*ldb_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
-		if (!lcf::LMT_Reader::Load(lmt, encoding)) {
+
+		auto lmt_stream = FileFinder::openUTF8Input(lmt, std::ios::ios_base::in | std::ios::ios_base::binary);
+		if (!lcf::LMT_Reader::Load(*lmt_stream, encoding)) {
 			Output::ErrorStr(lcf::LcfReader::GetError());
 		}
 	}
@@ -930,7 +938,8 @@ void Player::LoadSavegame(const std::string& save_name) {
 		static_cast<Scene_Title*>(title_scene.get())->OnGameStart();
 	}
 
-	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(save_name, encoding);
+	auto save_stream = FileFinder::openUTF8Input(save_name, std::ios::ios_base::in | std::ios::ios_base::binary);
+	std::unique_ptr<lcf::rpg::Save> save = lcf::LSD_Reader::Load(*save_stream, encoding);
 
 	if (!save.get()) {
 		Output::Error("{}", lcf::LcfReader::GetError());
@@ -1034,21 +1043,16 @@ std::string Player::GetEncoding() {
 	// command line > ini > detection > current locale
 	if (encoding.empty()) {
 		std::string ini = FileFinder::FindDefault(INI_NAME);
-		encoding = lcf::ReaderUtil::GetEncoding(ini);
+		auto ini_stream = FileFinder::openUTF8Input(ini, std::ios::ios_base::in );
+		encoding = lcf::ReaderUtil::GetEncoding(*ini_stream);
 	}
 
 	if (encoding.empty() || encoding == "auto") {
 		encoding = "";
 
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-
-		std::vector<std::string> encodings;
-		std::ifstream is(ldb, std::ios::binary);
-		// Stream required due to a liblcf api change:
-		// When a string is passed the encoding of the string is detected
-		if (is) {
-			encodings = lcf::ReaderUtil::DetectEncodings(is);
-		}
+		auto ldb_stream = FileFinder::openUTF8Input(ldb, std::ios::ios_base::in | std::ios::ios_base::binary);
+		std::vector<std::string> encodings = lcf::ReaderUtil::DetectEncodings(*ldb_stream);
 
 #ifndef EMSCRIPTEN
 		for (std::string& enc : encodings) {
