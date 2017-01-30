@@ -655,7 +655,7 @@ FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
 #endif
 }
 
-std::shared_ptr<std::fstream> FileFinder::openUTF8(const std::string& name,
+std::shared_ptr<std::iostream> FileFinder::openUTF8(const std::string& name,
 													  std::ios_base::openmode m)
 {
 	std::shared_ptr<std::fstream> ret(new std::fstream(
@@ -666,6 +666,32 @@ std::shared_ptr<std::fstream> FileFinder::openUTF8(const std::string& name,
 #endif
 		m));
 	return (*ret)? ret : std::shared_ptr<std::fstream>();
+}
+
+std::shared_ptr<std::istream> FileFinder::openUTF8Input(const std::string& name,
+	std::ios_base::openmode m)
+{
+	std::shared_ptr<std::ifstream> ret(new std::ifstream(
+#ifdef _MSC_VER
+		Utils::ToWideString(name).c_str(),
+#else
+		name.c_str(),
+#endif
+		m));
+	return (*ret) ? ret : std::shared_ptr<std::ifstream>();
+}
+
+std::shared_ptr<std::ostream> FileFinder::openUTF8Output(const std::string& name,
+	std::ios_base::openmode m)
+{
+	std::shared_ptr<std::ofstream> ret(new std::ofstream(
+#ifdef _MSC_VER
+		Utils::ToWideString(name).c_str(),
+#else
+		name.c_str(),
+#endif
+		m));
+	return (*ret) ? ret : std::shared_ptr<std::ofstream>();
 }
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {

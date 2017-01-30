@@ -248,8 +248,8 @@ bool Output::TakeScreenshot() {
 }
 
 bool Output::TakeScreenshot(std::string const& file) {
-	std::shared_ptr<std::fstream> ret =
-		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+	std::shared_ptr<std::ostream> ret =
+		FileFinder::openUTF8Output(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
 	if (ret) {
 		Output::Debug("Saving Screenshot {}", file);

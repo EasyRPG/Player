@@ -31,6 +31,13 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 	*bufp += length;
 }
 
+static void read_data_istream(png_structp png_ptr, png_bytep data, png_size_t length) {
+	std::istream* bufp = (std::istream*)png_get_io_ptr(png_ptr);
+	if (bufp != NULL&&*bufp) {
+		bufp->read(reinterpret_cast<char*>(data), length);
+	}
+}
+
 static void on_png_warning(png_structp, png_const_charp warn_msg) {
 	Output::Debug("libpng: {}", warn_msg);
 }
@@ -39,13 +46,24 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Warning("libpng: {}", error_msg);
 }
 
+static bool ReadPNGWithReadFunction(png_voidp,png_rw_ptr, bool, int&, int&, void*&);
 static void ReadPalettedData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
 static void ReadGrayData(png_struct*, png_info*, png_uint_32, png_uint_32, bool, uint32_t*);
 static void ReadGrayAlphaData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 static void ReadRGBData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 static void ReadRGBAData(png_struct*, png_info*, png_uint_32, png_uint_32, uint32_t*);
 
-bool ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
+bool ImagePNG::ReadPNG(const void* buffer, bool transparent,
+	int& width, int& height, void*& pixels) {
+	return ReadPNGWithReadFunction((png_voidp)&buffer, read_data, transparent, width, height, pixels);
+}
+
+bool ImagePNG::ReadPNG(std::istream& stream, bool transparent,
+	int& width, int& height, void*& pixels) {
+	return ReadPNGWithReadFunction(&stream, read_data_istream, transparent, width, height, pixels);
+}
+
+static bool ReadPNGWithReadFunction(png_voidp user_data, png_rw_ptr fn, bool transparent,
 					   int& width, int& height, void*& pixels) {
 	pixels = nullptr;
 
@@ -66,10 +84,7 @@ bool ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 		return false;
 	}
 
-	if (stream != NULL)
-		png_init_io(png_ptr, stream);
-	else
-		png_set_read_fn(png_ptr, (png_voidp) &buffer, read_data);
+	png_set_read_fn(png_ptr, user_data, fn);
 
 	png_read_info(png_ptr, info_ptr);
 

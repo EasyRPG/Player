@@ -165,7 +165,25 @@ namespace FileFinder {
 	 * @param m stream mode.
 	 * @return NULL if open failed.
 	 */
-	std::shared_ptr<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
+	std::shared_ptr<std::iostream> openUTF8(const std::string& name, std::ios_base::openmode m);
+
+	/**
+	* Creates stream from UTF-8 file name.
+	*
+	* @param name UTF-8 string file name.
+	* @param m stream mode.
+	* @return NULL if open failed.
+	*/
+	std::shared_ptr<std::istream> openUTF8Input(const std::string& name, std::ios_base::openmode m);
+
+	/**
+	* Creates stream from UTF-8 file name.
+	*
+	* @param name UTF-8 string file name.
+	* @param m stream mode.
+	* @return NULL if open failed.
+	*/
+	std::shared_ptr<std::ostream> openUTF8Output(const std::string& name, std::ios_base::openmode m);
 
 	struct Directory {
 		std::string base;

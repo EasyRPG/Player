@@ -22,7 +22,7 @@
 
 namespace ImageXYZ {
 	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadXYZ(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadXYZ(std::istream & stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
 #endif
