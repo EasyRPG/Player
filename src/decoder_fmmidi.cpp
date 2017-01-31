@@ -40,7 +40,6 @@ FmMidiDecoder::FmMidiDecoder() {
 }
 
 FmMidiDecoder::~FmMidiDecoder() {
-	fclose(file);
 }
 
 int read_func(void* instance) {
@@ -53,15 +52,12 @@ int read_func(void* instance) {
 	return fmmidi->file_buffer[fmmidi->file_buffer_pos++];
 }
 
-bool FmMidiDecoder::Open(FILE* file) {
-	this->file = file;
+bool FmMidiDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 
 	seq->clear();
-	off_t old_pos = ftell(file);
-	fseek(file, 0, SEEK_END);
-	file_buffer.resize(ftell(file) - old_pos);
-	fseek(file, old_pos, SEEK_SET);
-	size_t bytes_read = fread(file_buffer.data(), 1, file_buffer.size(), file);
+	Output::Error("MIDI Size: %d\n", stream->get_size());
+	file_buffer.resize(stream->get_size());
+	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
 
 	if ((bytes_read != file_buffer.size()) || (!seq->load(this, read_func))) {
 		error_message = "FM Midi: Error reading file";

@@ -190,11 +190,9 @@ bool ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	return true;
 }
 
-bool ImageBMP::ReadBMP(std::istream& stream, bool transparent,
+bool ImageBMP::ReadBMP(FileFinder::istream & stream, bool transparent,
 					int& width, int& height, void*& pixels) {
-	stream.seekg(0, std::ios::ios_base::end);
-	long size = stream.tellg();
-	stream.seekg(0, std::ios::ios_base::beg);
+	long size =stream.get_size();
 	std::vector<uint8_t> buffer(size);
 	long size_read = stream.read(reinterpret_cast<char*>(&buffer.front()), size).gcount();
 	if (size_read != size) {

@@ -95,7 +95,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
-	std::shared_ptr<std::istream> stream = FileFinder::openUTF8Input(filename, std::ios::ios_base::binary | std::ios::ios_base::in);
+	auto stream = FileFinder::openUTF8Input(filename, std::ios::ios_base::binary | std::ios::ios_base::in);
 	if (!stream) {
 		Output::Error("Couldn't open image file {}", filename);
 		return;

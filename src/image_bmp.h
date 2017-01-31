@@ -18,11 +18,14 @@
 #ifndef EP_IMAGE_BMP_H
 #define EP_IMAGE_BMP_H
 
+#include "system.h"
+#include "filefinder.h"
+
 #include <istream>
 
 namespace ImageBMP {
 	bool ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadBMP(std::istream& stream, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadBMP(FileFinder::istream & stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
 #endif

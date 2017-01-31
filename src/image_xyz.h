@@ -19,10 +19,12 @@
 #define EP_IMAGE_XYZ_H
 
 #include <cstdio>
+#include "filefinder.h"
+#include "system.h"
 
 namespace ImageXYZ {
 	bool ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
-	bool ReadXYZ(std::istream & stream, bool transparent, int& width, int& height, void*& pixels);
+	bool ReadXYZ(FileFinder::istream & stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
 #endif

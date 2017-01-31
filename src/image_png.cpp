@@ -58,7 +58,7 @@ bool ImagePNG::ReadPNG(const void* buffer, bool transparent,
 	return ReadPNGWithReadFunction((png_voidp)&buffer, read_data, transparent, width, height, pixels);
 }
 
-bool ImagePNG::ReadPNG(std::istream& stream, bool transparent,
+bool ImagePNG::ReadPNG(FileFinder::istream & stream, bool transparent,
 	int& width, int& height, void*& pixels) {
 	return ReadPNGWithReadFunction(&stream, read_data_istream, transparent, width, height, pixels);
 }

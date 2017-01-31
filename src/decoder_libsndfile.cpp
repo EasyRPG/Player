@@ -26,16 +26,13 @@
 #include "output.h"
 
 static sf_count_t sf_vio_get_filelen_impl(void* userdata) {
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	int fd=fileno(f); //Posix complient - should work on windows as well
-	struct stat stat_buf;
-	int rc = fstat(fd, &stat_buf);
-	return rc == 0 ? stat_buf.st_size : 0;
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	return f->get_size();
 }
 
 static sf_count_t sf_vio_read_impl(void *ptr, sf_count_t count, void* userdata){
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	return fread(ptr, 1, count, f);
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	return f->read(reinterpret_cast<char*>(ptr), count).gcount();
 }
 
 static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, void* /* user_data */){
@@ -44,14 +41,25 @@ static sf_count_t sf_vio_write_impl(const void* /* ptr */, sf_count_t count, voi
 }
 
 static sf_count_t sf_vio_seek_impl(sf_count_t offset, int seek_type, void *userdata) {
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	fseek(f, offset, seek_type);
-	return ftell(f);
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	if (f->eof()) f->clear(); //emulate behaviour of fseek
+	switch (seek_type) {
+	case SEEK_CUR:
+		f->seekg(offset, std::ios::ios_base::cur);
+		break;
+	case SEEK_SET:
+		f->seekg(offset, std::ios::ios_base::beg);
+		break;
+	case SEEK_END:
+		f->seekg(offset, std::ios::ios_base::end);
+		break;
+	}
+	return f->tellg();
 }
 
 static sf_count_t sf_vio_tell_impl(void* userdata){
-	FILE* f = reinterpret_cast<FILE*>(userdata);
-	return ftell(f);
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(userdata);
+	return f->tellg();
 }
 
 static SF_VIRTUAL_IO vio = {
@@ -71,13 +79,12 @@ LibsndfileDecoder::LibsndfileDecoder()
 LibsndfileDecoder::~LibsndfileDecoder() {
 	if(soundfile != 0){
 		sf_close(soundfile);
-		fclose(file_);
 	}
 }
 
-bool LibsndfileDecoder::Open(FILE* file) {
-	file_=file;
-	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,file);
+bool LibsndfileDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+	this->stream=stream;
+	soundfile=sf_open_virtual(&vio,SFM_READ,&soundinfo,stream.get());
 	sf_command(soundfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
 	output_format=Format::S16;
 	finished=false;

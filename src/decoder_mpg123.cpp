@@ -30,19 +30,30 @@ static void Mpg123Decoder_deinit(void) {
 }
 
 static ssize_t custom_read(void* io, void* buffer, size_t nbyte) {
-	FILE* f = reinterpret_cast<FILE*>(io);
-	return fread(buffer, 1, nbyte, f);
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(io);
+	return f->read(reinterpret_cast<char*>(buffer), nbyte).gcount();
 }
 
 static off_t custom_seek(void* io, off_t offset, int seek_type) {
-	FILE* f = reinterpret_cast<FILE*>(io);
-	fseek(f, offset, seek_type);
-	return ftell(f);
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(io);
+	if (f->eof()) f->clear(); //emulate behaviour of fseek
+	switch (seek_type) {
+	case SEEK_CUR:
+		f->seekg(offset, std::ios::ios_base::cur);
+		break;
+	case SEEK_SET:
+		f->seekg(offset, std::ios::ios_base::beg);
+		break;
+	case SEEK_END:
+		f->seekg(offset, std::ios::ios_base::end);
+		break;
+	}
+
+	return f->tellg();
 }
 
 static void custom_close(void* io) {
-	FILE* f = reinterpret_cast<FILE*>(io);
-	fclose(f);
+	//do nothing
 }
 
 static void noop_close(void*) {}
@@ -81,19 +92,19 @@ bool Mpg123Decoder::WasInited() const {
 	return init;
 }
 
-bool Mpg123Decoder::Open(FILE* file) {
+bool Mpg123Decoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 	if (!init) {
 		return false;
 	}
-
+	
 	finished = false;
 
-	err = mpg123_open_handle(handle.get(), file);
+	err = mpg123_open_handle(handle.get(), stream.get());
 	if (err != MPG123_OK) {
 		error_message = "mpg123: " + std::string(mpg123_plain_strerror(err));
 		return false;
 	}
-
+	this->stream = stream;
 	// Samplerate cached, regularly needed for Ticks function
 	int ch;
 	int fmt;
@@ -199,7 +210,8 @@ int Mpg123Decoder::GetTicks() const {
 	return pos / samplerate;
 }
 
-bool Mpg123Decoder::IsMp3(FILE* stream) {
+
+bool Mpg123Decoder::IsMp3(std::shared_ptr<FileFinder::istream> stream) {
 	Mpg123Decoder decoder;
 	// Prevent stream handle destruction
 	mpg123_replace_reader_handle(decoder.handle.get(), custom_read, custom_seek, noop_close);

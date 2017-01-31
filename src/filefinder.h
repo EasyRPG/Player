@@ -26,6 +26,7 @@
 #include <ios>
 #include <unordered_map>
 #include <vector>
+#include <istream>
 
 /**
  * FileFinder contains helper methods for finding case
@@ -156,7 +157,7 @@ namespace FileFinder {
 	 * @param mode ("r", "w", etc).
 	 * @return FILE*.
 	 */
-	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
+	/*FILE* fopenUTF8(const std::string& name_utf8, char const* mode);*/
 
 	/**
 	 * Creates stream from UTF-8 file name.
@@ -168,13 +169,27 @@ namespace FileFinder {
 	std::shared_ptr<std::iostream> openUTF8(const std::string& name, std::ios_base::openmode m);
 
 	/**
+	 * A input stream anotated with the size of the connected file
+	 */
+	class istream : public std::istream {
+	public:
+		inline istream(std::streambuf * buf, std::streamsize size):
+			std::istream(buf),size(size),buffer(buf){}
+		~istream() { delete buffer; }
+		inline std::streamsize get_size() { return size; }
+	private:
+		std::streamsize size;
+		std::streambuf* buffer;
+	};
+
+	/**
 	* Creates stream from UTF-8 file name.
 	*
 	* @param name UTF-8 string file name.
 	* @param m stream mode.
 	* @return NULL if open failed.
 	*/
-	std::shared_ptr<std::istream> openUTF8Input(const std::string& name, std::ios_base::openmode m);
+	std::shared_ptr<istream> openUTF8Input(const std::string& name, std::ios_base::openmode m);
 
 	/**
 	* Creates stream from UTF-8 file name.

@@ -44,6 +44,61 @@
 using namespace std::chrono_literals;
 
 namespace {
+
+	static Sint64 SDLCALL vio_size(struct SDL_RWops * context) {
+		FileFinder::istream* stream = (*reinterpret_cast<std::shared_ptr<FileFinder::istream>*>(context->hidden.unknown.data1)).get();
+		return stream->get_size();
+	}
+
+	static Sint64 SDLCALL vio_seek(struct SDL_RWops * context, Sint64 offset, int whence) {
+		FileFinder::istream* stream = (*reinterpret_cast<std::shared_ptr<FileFinder::istream>*>(context->hidden.unknown.data1)).get();
+		switch (whence) {
+		case RW_SEEK_CUR:
+			stream->seekg(offset, std::ios::ios_base::cur);
+			break;
+		case RW_SEEK_SET:
+			stream->seekg(offset, std::ios::ios_base::beg);
+			break;
+		case RW_SEEK_END:
+			stream->seekg(offset, std::ios::ios_base::end);
+			break;
+		default:
+			return -1;
+		}
+
+		return stream->tellg();
+	}
+
+	static size_t SDLCALL vio_read(struct SDL_RWops * context, void *ptr, size_t size, size_t maxnum) {
+		FileFinder::istream* stream = (*reinterpret_cast<std::shared_ptr<FileFinder::istream>*>(context->hidden.unknown.data1)).get();
+		if (size == 0) return 0;
+		return stream->read(reinterpret_cast<char*>(ptr), size*maxnum).gcount() / size;
+	}
+
+	static size_t SDLCALL vio_write(struct SDL_RWops * context, const void *ptr, size_t size, size_t num) {
+		//Not supported
+		return 0;
+	}
+
+	static int SDLCALL vio_close(struct SDL_RWops * context) {
+		//If this is the last shared pointer, the stream get's closed now
+		delete reinterpret_cast<std::shared_ptr<FileFinder::istream>*>(context->hidden.unknown.data1);
+		context->hidden.unknown.data1 = NULL;
+		return 0;
+	}
+
+	SDL_RWops * create_StreamRWOps(std::shared_ptr<FileFinder::istream> stream){
+		SDL_RWops * ret = SDL_AllocRW();
+		//create a new shared pointer to avoid deletion of the content when the scope of this function ends
+		ret->hidden.unknown.data1 = new std::shared_ptr<FileFinder::istream>(stream);
+		ret->close = vio_close;
+		ret->read = vio_read;
+		ret->write = vio_write;
+		ret->seek = vio_seek;
+
+		return ret;
+	}
+
 	void bgm_played_once() {
 		// FIXME: Can we break this reference to DisplayUi?
 		if (DisplayUi)
@@ -259,27 +314,27 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 }
 
 void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
-	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
-	if (!filehandle) {
+	auto filestream = FileFinder::openUTF8Input(file, std::ios::ios_base::in| std::ios::ios_base::binary);
+	if (!filestream) {
 		Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 		return;
 	}
-	audio_decoder = AudioDecoder::Create(filehandle, file);
+	audio_decoder = AudioDecoder::Create(filestream, file);
 	if (audio_decoder) {
-		SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
+		SetupAudioDecoder(filestream, file, volume, pitch, fadein);
 		return;
 	}
-	fclose(filehandle);
 
-	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "rb");
+	filestream = FileFinder::openUTF8Input(file, std::ios::ios_base::in | std::ios::ios_base::binary);
+	SDL_RWops *rw = create_StreamRWOps(filestream); //SDL_RWFromFile(file.c_str(), "rb");
 
 	bgm_stop = false;
 	played_once = false;
 
 #if SDL_MIXER_MAJOR_VERSION>1
-	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic);
+	bgm.reset(Mix_LoadMUS_RW(rw, 0), &Mix_FreeMusic); //rw will be freed on MIX_FreeMusic
 #else
-	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
+	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic); //rw will be freed on MIX_FreeMusic
 #endif
 
 #if SDL_MIXER_MAJOR_VERSION>1
@@ -293,18 +348,17 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 #if WANT_FMMIDI == 2
 		// Fallback to FMMIDI when SDL Midi failed
 		char magic[4] = { 0 };
-		filehandle = FileFinder::fopenUTF8(file, "rb");
-		if (!filehandle) {
+		auto filestream = FileFinder::openUTF8Input(file, std::ios::ios_base::in | std::ios::ios_base::binary);
+		if (!filestream) {
 			Output::Warning("Music not readable: {}", FileFinder::GetPathInsideGamePath(file));
 			return;
 		}
-		if (fread(magic, 4, 1, filehandle) != 1)
-			return;
-		fseek(filehandle, 0, SEEK_SET);
+		filestream->read(magic, sizeof(magic));
+		filestream->seekg(0, std::ios::ios_base::beg);
 		if (!strncmp(magic, "MThd", 4)) {
 			Output::Debug("FmMidi fallback: {}", file);
 			audio_decoder.reset(new FmMidiDecoder());
-			SetupAudioDecoder(filehandle, file, volume, pitch, fadein);
+			SetupAudioDecoder(filestream, file, volume, pitch, fadein);
 			return;
 		}
 #endif
@@ -348,8 +402,8 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
-void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
-	if (!audio_decoder->Open(handle)) {
+void SdlMixerAudio::SetupAudioDecoder(std::shared_ptr<FileFinder::istream> stream, const std::string& file, int volume, int pitch, int fadein) {
+	if (!audio_decoder->Open(stream)) {
 		Output::Warning("Couldn't play {} BGM. {}", FileFinder::GetPathInsideGamePath(file), audio_decoder->GetError());
 		audio_decoder.reset();
 		return;

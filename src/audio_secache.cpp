@@ -78,7 +78,7 @@ std::unique_ptr<AudioSeCache> AudioSeCache::Create(const std::string& filename) 
 	if (it == cache.end()) {
 		// Not in cache
 
-		FILE *f = FileFinder::fopenUTF8(filename, "rb");
+		auto f = FileFinder::openUTF8Input(filename, std::ios::ios_base::in | std::ios::ios_base::binary);
 
 		if (!f) {
 			se.reset();

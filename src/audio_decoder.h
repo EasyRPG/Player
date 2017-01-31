@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "filefinder.h"
 
 /**
  * The AudioDecoder class provides an abstraction over the decoding of
@@ -73,20 +74,20 @@ public:
 	std::vector<uint8_t> DecodeAll();
 
 	/**
-	 * Parses the specified file handle and open a proper audio decoder to handle
+	 * Parses the specified stream and open a proper audio decoder to handle
 	 * the audio file.
-	 * Upon success the file handle is owned by the audio decoder and further
-	 * operations on it will be undefined! Upon failure the file handle points at
+	 * Upon success the stream is owned by the audio decoder and further
+	 * operations on it will be undefined! Upon failure the stream points at
 	 * the beginning.
 	 * The filename is used for debug purposes but should match the FILE handle.
 	 * Upon failure the FILE handle is valid and points at the beginning.
 	 *
-	 * @param file File handle to parse
+	 * @param stream File handle to parse
 	 * @param filename Path to the file handle
 	 * @param resample Whether the decoder shall be wrapped into a resampler (if supported)
 	 * @return An audio decoder instance when the format was detected, otherwise null
 	 */
-	static std::unique_ptr<AudioDecoder> Create(FILE* file, const std::string& filename, bool resample = true);
+	static std::unique_ptr<AudioDecoder> Create(std::shared_ptr<FileFinder::istream> stream, const std::string& filename, bool resample = true);
 
 	/**
 	 * Updates the volume for the fade in/out effect.
@@ -191,13 +192,13 @@ public:
 
 	// Functions to be implemented by the audio decoder
 	/**
-	 * Assigns a file handle to the audio decoder.
+	 * Assigns a stream to the audio decoder.
 	 * Open should be only called once per audio decoder instance.
 	 * Use GetError to get the error reason on failure.
 	 *
 	 * @return true if inititalizing was succesful, false otherwise
 	 */
-	virtual bool Open(FILE* file) = 0;
+	virtual bool Open(std::shared_ptr<FileFinder::istream> stream) = 0;
 
 	/**
 	 * Determines whether the stream is finished.

@@ -237,8 +237,8 @@ bool AudioResampler::WasInited() const {
 	return wrapped_decoder->WasInited();
 }
 
-bool AudioResampler::Open(FILE* file) {
-	if (wrapped_decoder->Open(file)) {
+bool AudioResampler::Open(std::shared_ptr<FileFinder::istream> stream) {
+	if (wrapped_decoder->Open(stream)) {
 		wrapped_decoder->GetFormat(input_rate, input_format, nr_of_channels);
 
 		//determine if the input format is supported by the resampler

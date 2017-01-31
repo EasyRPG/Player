@@ -61,7 +61,7 @@ public:
 	AudioDecoder* GetDecoder();
 	SDL_AudioCVT& GetAudioCVT();
 private:
-	void SetupAudioDecoder(FILE* handle, const std::string& filename, int volume, int pitch, int fadein);
+	void SetupAudioDecoder(std::shared_ptr<FileFinder::istream> stream, const std::string& filename, int volume, int pitch, int fadein);
 
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
