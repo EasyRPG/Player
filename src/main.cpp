@@ -16,20 +16,15 @@
  */
 
 #include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "output.h"
 #include <cstdlib>
 
+// This is needed on Windows
 #ifdef USE_SDL
 #  include <SDL.h>
 #endif
 
 extern "C" int main(int argc, char* argv[]) {
 	Player::Init(argc, argv);
-	Graphics::Init();
-	Input::Init();
-
 	Player::Run();
 
 	return EXIT_SUCCESS;

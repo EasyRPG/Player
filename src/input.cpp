@@ -18,11 +18,13 @@
 // Headers
 #include "input.h"
 #include "input_source.h"
+#include "output.h"
 #include "player.h"
 #include "system.h"
 
 #include <algorithm>
 #include <array>
+#include <fstream>
 
 namespace Input {
 	std::array<int, BUTTON_COUNT> press_time;
@@ -38,10 +40,29 @@ namespace Input {
 	bool wait_input = false;
 }
 
+namespace {
+	bool recording_input;
+	std::ofstream record_log;
+}
+
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
-void Input::Init() {
+static bool InitRecording(const std::string& record_to_path) {
+	if (!record_to_path.empty()) {
+		auto path = record_to_path.c_str();
+
+		record_log.open(path, std::ios::out|std::ios::trunc);
+
+		if (!record_log) {
+			Output::Warning("Failed to open file for input recording: %s", path);
+			return false;
+		}
+	}
+	return true;
+}
+
+void Input::Init(const std::string& record_to_path) {
 	InitButtons();
 
 	std::fill(press_time.begin(), press_time.end(), 0);
@@ -53,6 +74,8 @@ void Input::Init() {
 	repeat_time = 5;
 
 	source = std::unique_ptr<Source>(new UiSource);
+
+	recording_input = InitRecording(record_to_path);
 }
 
 void Input::Update() {
@@ -60,6 +83,10 @@ void Input::Update() {
 
 	source->Update();
 	auto& pressed_buttons = source->GetPressedButtons();
+
+	if (recording_input) {
+		record_log << pressed_buttons << '\n';
+	}
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {

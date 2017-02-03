@@ -95,6 +95,7 @@ namespace Player {
 	int engine;
 	std::string game_title;
 	int frames;
+	std::string record_input_path;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -226,6 +227,9 @@ void Player::Init(int argc, char *argv[]) {
 			 !window_flag,
 			 RUN_ZOOM);
 	}
+
+	Graphics::Init();
+	Input::Init(record_input_path);
 }
 
 void Player::Run() {
@@ -560,6 +564,13 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			else if (*it == "rpg2k3e") {
 				engine = EngineRpg2k3 | EngineMajorUpdated | EngineRpg2k3E;
 			}
+		}
+		else if (*it == "--record-input") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			record_input_path = *it;
 		}
 		else if (*it == "--encoding") {
 			++it;
@@ -913,6 +924,7 @@ Options:
       --new-game           Skip the title scene and start a new game directly.
       --project-path PATH  Instead of using the working directory the game in
                            PATH is used.
+      --record-input PATH  Record all button input to a log file at PATH.
       --save-path PATH     Instead of storing save files in the game directory
                            they are stored in PATH. The directory must exist.
                            When using the game browser all games will share

@@ -35,8 +35,11 @@
 namespace Input {
 	/**
 	 * Initializes Input.
+	 *
+	 * @param record_to_path path to a file to record
+	 *  input to, or the empty string if not recording
 	 */
-	void Init();
+	void Init(const std::string& record_to_path);
 
 	/**
 	 * Updates Input state.
