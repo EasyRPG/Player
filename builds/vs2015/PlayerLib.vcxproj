@@ -486,6 +486,7 @@
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
     <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
+    <ClCompile Include="..\..\src\input_source.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
     <ClCompile Include="..\..\src\message_overlay.cpp" />
     <ClCompile Include="..\..\src\midisequencer.cpp" />
@@ -638,6 +639,7 @@
     <ClInclude Include="..\..\src\image_xyz.h" />
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
+    <ClInclude Include="..\..\src\input_source.h" />
     <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\logo.h" />
     <ClInclude Include="..\..\src\main_data.h" />

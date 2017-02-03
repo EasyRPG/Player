@@ -17,6 +17,7 @@
 
 // Headers
 #include "input.h"
+#include "input_source.h"
 #include "player.h"
 #include "system.h"
 
@@ -32,6 +33,7 @@ namespace Input {
 	int repeat_time;
 	std::vector<std::vector<int> > buttons;
 	std::vector<std::vector<int> > dir_buttons;
+	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
 }
@@ -49,24 +51,19 @@ void Input::Init() {
 
 	start_repeat_time = 20;
 	repeat_time = 5;
+
+	source = std::unique_ptr<Source>(new UiSource);
 }
 
 void Input::Update() {
 	wait_input = false; // clear each frame
 
-	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
+	source->Update();
+	auto& pressed_buttons = source->GetPressedButtons();
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
-		bool pressed = false;
-
-		// Check state of keys assigned to button
-		for (unsigned e = 0; e < buttons[i].size(); e++) {
-			if (keystates[buttons[i][e]]) {
-				pressed = true;
-				break;
-			}
-		}
+		bool pressed = pressed_buttons[i];
 
 		if (pressed) {
 			released[i] = false;
@@ -141,6 +138,9 @@ void Input::ResetKeys() {
 	dir4 = 0;
 	dir8 = 0;
 
+	// TODO: we want Input to be agnostic to where the button
+	// presses are coming from, and if there's a UI at all.
+	// Move this into the callers?
 	DisplayUi->GetKeyStates().reset();
 }
 

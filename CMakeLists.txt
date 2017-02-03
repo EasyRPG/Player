@@ -67,6 +67,7 @@ set(PLAYER_SRCS
 	src/input_buttons_gekko.cpp
 	src/input_buttons_opendingux.cpp
 	src/input_buttons_psp.cpp
+	src/input_source.cpp
 	src/input.cpp
 	src/main_data.cpp
 	src/message_overlay.cpp

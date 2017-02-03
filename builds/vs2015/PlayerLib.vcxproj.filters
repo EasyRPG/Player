@@ -137,6 +137,9 @@
     <ClCompile Include="..\..\src\input_buttons_psp.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\input_source.cpp">
+      <Filter>Source Files\Backend\Input</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\baseui.cpp">
       <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
@@ -587,6 +590,9 @@
       <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\input_buttons.h">
+      <Filter>Source Files\Backend\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\input_source.h">
       <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\keys.h">
