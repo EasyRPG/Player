@@ -30,25 +30,22 @@ WavDecoder::WavDecoder()
 }
 
 WavDecoder::~WavDecoder() {
-	if (file_ != NULL) {
-		fclose(file_);
-	}
 }
 
 bool WavDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 	decoded_samples = 0;
-	file_=file;
-	fseek(file_, 16, SEEK_SET);
-	fread(&chunk_size, 1, 4, file_);
+	this->stream = stream;
+	stream->seekg(16, std::ios::ios_base::beg);
+	stream->read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 	Utils::SwapByteOrder(chunk_size);
-	fseek(file_, 2, SEEK_CUR);
-	fread(&nchannels, 1, 2, file_);
+	stream->seekg(2, std::ios::ios_base::cur);
+	stream->read(reinterpret_cast<char*>(&nchannels), sizeof(nchannels));
 	Utils::SwapByteOrder(nchannels);
-	fread(&samplerate, 1, 4, file_);
+	stream->read(reinterpret_cast<char*>(&samplerate), sizeof(samplerate));
 	Utils::SwapByteOrder(samplerate);
-	fseek(file_, 6, SEEK_CUR);
+	stream->seekg(6, std::ios::ios_base::cur);
 	uint16_t bitspersample;
-	fread(&bitspersample, 1, 2, file_);
+	stream->read(reinterpret_cast<char*>(&bitspersample), sizeof(bitspersample));
 	Utils::SwapByteOrder(bitspersample);
 	switch (bitspersample) {
 		case 8:
@@ -65,52 +62,62 @@ bool WavDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 	}
 
 	// Skip to next chunk using "fmt" chunk as offset
-	fseek(file_, 12 + 8 + chunk_size, SEEK_SET);
+	stream->seekg(12 + 8 + chunk_size, std::ios::ios_base::beg);
 
 	char chunk_name[4] = {0};
-	fread(chunk_name, 4, 1, file_);
+	stream->read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
 
 	// Skipping to audiobuffer start
 	while (strncmp(chunk_name, "data", 4)) {
-		fread(&chunk_size, 1, 4, file_);
+		stream->read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 		Utils::SwapByteOrder(chunk_size);
-		fseek(file_, chunk_size, SEEK_CUR);
-		fread(chunk_name, 4, 1, file_);
+		stream->seekg(chunk_size, std::ios::ios_base::beg);
+		stream->read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
 
-		if (feof(file_) || ferror(file_)) {
-			fclose(file_);
+		if (!stream->good()) {
 			return false;
 		}
 	}
 
 	// Get data chunk size
-	fread(&chunk_size, 4, 1, file_);
+	stream->read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 	Utils::SwapByteOrder(chunk_size);
 
-	if (feof(file_) || ferror(file_)) {
-		fclose(file_);
+	if (!stream->good()) {
 		return false;
 	}
 
 	// Start of data chunk
-	audiobuf_offset = ftell(file_);
+	audiobuf_offset = stream->tellg();
 	cur_pos = audiobuf_offset;
 	finished = false;
-	return file_!=NULL;
+	return stream->good();
 }
 
 bool WavDecoder::Seek(size_t offset, Origin origin) {
 	finished = false;
-	if (file_ == NULL)
+	if (!stream)
 		return false;
-	if (origin != Origin::End) {
+	if (origin == Origin::Begin) {
 		offset += audiobuf_offset;
 	}
 	// FIXME: Proper sample count for seek
 	decoded_samples = 0;
 
-	bool success = fseek(file_,offset,(int)origin) == 0;
-	cur_pos = ftell(file_);
+	bool success = false;
+	switch (origin) {
+	case Origin::Begin:
+		success = stream->seekg(offset, std::ios::ios_base::beg).good();
+		break;
+	case Origin::Current:
+		success = stream->seekg(offset, std::ios::ios_base::cur).good();
+		break;
+	case Origin::End:
+		success = stream->seekg(offset, std::ios::ios_base::end).good();
+		break;
+	}
+	if (!success) { stream->clear(); }
+	cur_pos = stream->tellg();
 	return success;
 }
 
@@ -119,7 +126,7 @@ bool WavDecoder::IsFinished() const {
 }
 
 void WavDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
-	if (file_ == NULL) return;
+	if (!stream) return;
 	frequency = samplerate;
 	channels = nchannels;
 	format = output_format;
@@ -130,7 +137,7 @@ bool WavDecoder::SetFormat(int, AudioDecoder::Format, int) {
 }
 
 int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
-	if (file_ == NULL)
+	if (!stream)
 		return -1;
 
 	int real_length;
@@ -149,7 +156,7 @@ int WavDecoder::FillBuffer(uint8_t* buffer, int length) {
 		return 0;
 	}
 
-	int decoded = fread(buffer, 1, real_length, file_);
+	int decoded = stream->read(reinterpret_cast<char*>(buffer), real_length).gcount();
 
 	if (output_format == AudioDecoder::Format::S16) {
 		if (Utils::IsBigEndian()) {

@@ -296,7 +296,7 @@ bool WildMidiDecoder::WasInited() const {
 	return init;
 }
 
-bool WildMidiDecoder::Open(FILE* file) {
+bool WildMidiDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 	if (!init)
 		return false;
 
@@ -328,7 +328,6 @@ bool WildMidiDecoder::Open(FILE* file) {
 		division = 96;
 	}
 
-	fclose(file);
 	return true;
 }
 

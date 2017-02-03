@@ -49,7 +49,8 @@ public:
 	static bool IsModule(std::string filename);
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
-
+	
+	std::vector<uint8_t> file_buffer;
 #ifdef HAVE_XMP
 	xmp_context ctx = nullptr;
 #endif

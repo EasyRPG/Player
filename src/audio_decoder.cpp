@@ -196,12 +196,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(std::shared_ptr<FileFinder::i
 #ifdef WANT_FASTWAV
 	// Try to use a basic decoder for faster wav decoding if not ADPCM
 	if (!strncmp(magic, "RIFF", 4)) {
-		fseek(file, 20, SEEK_SET);
+		stream->seekg(20, std::ios::ios_base::beg);
 		uint16_t raw_enc;
-		if (fread(&raw_enc, 2, 1, file) != 1)
-			return nullptr;
+		stream->read(reinterpret_cast<char*>(&raw_enc), 2);
+
 		Utils::SwapByteOrder(raw_enc);
-		fseek(file, 0, SEEK_SET);
+		stream->seekg(0, std::ios::ios_base::beg);
 		if (raw_enc == 0x01) { // Codec is normal PCM
 			if (resample) {
 				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new WavDecoder())));

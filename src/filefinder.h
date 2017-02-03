@@ -24,6 +24,7 @@
 #include <string>
 #include <cstdio>
 #include <ios>
+#include <istream>
 #include <unordered_map>
 #include <vector>
 #include <istream>
