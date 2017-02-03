@@ -16,9 +16,11 @@
  */
 
 #include <algorithm>
+#include <utility>
 
-#include "input_source.h"
 #include "baseui.h"
+#include "input_source.h"
+#include "player.h"
 
 void Input::UiSource::Update() {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
@@ -29,5 +31,17 @@ void Input::UiSource::Update() {
 			[&](int key) { return keystates[key]; }
 		);
 		pressed_buttons[i] = pressed;
+	}
+}
+
+Input::LogSource::LogSource(std::ifstream f) :
+	log_file(std::move(f))
+{}
+
+void Input::LogSource::Update() {
+	log_file >> pressed_buttons;
+
+	if (!log_file) {
+		Player::exit_flag = true;
 	}
 }

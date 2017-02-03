@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <array>
 #include <fstream>
+#include <utility>
 
 namespace Input {
 	std::array<int, BUTTON_COUNT> press_time;
@@ -62,7 +63,30 @@ static bool InitRecording(const std::string& record_to_path) {
 	return true;
 }
 
-void Input::Init(const std::string& record_to_path) {
+static std::unique_ptr<Input::Source> InitSource(const std::string& replay_from_path) {
+	std::ifstream replay_log;
+
+	if (!replay_from_path.empty()) {
+		auto path = replay_from_path.c_str();
+
+		replay_log.open(path, std::ios::in);
+
+		if (!replay_log) {
+			Output::Warning("Failed to open file for input replaying: %s", path);
+		}
+	}
+
+	if (replay_log.is_open()) {
+		return std::unique_ptr<Input::LogSource>(new Input::LogSource(std::move(replay_log)));
+	} else {
+		return std::unique_ptr<Input::UiSource>(new Input::UiSource);
+	}
+}
+
+void Input::Init(
+	const std::string& replay_from_path,
+	const std::string& record_to_path
+) {
 	InitButtons();
 
 	std::fill(press_time.begin(), press_time.end(), 0);
@@ -73,8 +97,7 @@ void Input::Init(const std::string& record_to_path) {
 	start_repeat_time = 20;
 	repeat_time = 5;
 
-	source = std::unique_ptr<Source>(new UiSource);
-
+	source = InitSource(replay_from_path);
 	recording_input = InitRecording(record_to_path);
 }
 

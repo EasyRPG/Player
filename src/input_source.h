@@ -19,6 +19,7 @@
 #define _INPUT_SOURCE_H_
 
 #include <bitset>
+#include <fstream>
 #include <memory>
 #include "input_buttons.h"
 
@@ -55,6 +56,18 @@ namespace Input {
 		~UiSource() override = default;
 		void Update() override;
 		// NOTE: buttons/dir_buttons/InitButtons could be moved here
+	};
+
+	/**
+	 * Source that replays button presses from a log file.
+	 */
+	class LogSource : public Source {
+	public:
+		LogSource(std::ifstream f);
+		~LogSource() override = default;
+		void Update() override;
+	private:
+		std::ifstream log_file;
 	};
 
 	extern std::unique_ptr<Source> source;

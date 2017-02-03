@@ -223,6 +223,9 @@ namespace Player {
 	/** Currently interpreted engine. */
 	extern int engine;
 
+	/** Path to replay input log from */
+	extern std::string replay_input_path;
+
 	/** Path to record input log to */
 	extern std::string record_input_path;
 
