@@ -25,7 +25,7 @@
 
 #include "audio_secache.h"
 #include "baseui.h"
-#include "audio_sdl.h"
+#include "audio_sdl_mixer.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -44,7 +44,7 @@
 namespace {
 	void bgm_played_once() {
 		if (DisplayUi)
-			static_cast<SdlAudio&>(Audio()).BGM_OnPlayedOnce();
+			static_cast<SdlMixerAudio&>(Audio()).BGM_OnPlayedOnce();
 	}
 
 	void bgs_played_once(int channel) {
@@ -55,7 +55,7 @@ namespace {
 	void callback(void *udata, Uint8 *stream, int stream_size) {
 		static std::vector<uint8_t> buffer;
 
-		SdlAudio* audio = static_cast<SdlAudio*>(udata);
+		SdlMixerAudio* audio = static_cast<SdlMixerAudio*>(udata);
 
 		SDL_AudioCVT& cvt = audio->GetAudioCVT();
 		int out_len = stream_size;
@@ -149,7 +149,7 @@ namespace {
 	}
 }
 
-SdlAudio::SdlAudio() :
+SdlMixerAudio::SdlMixerAudio() :
 	bgm_volume(0),
 	bgs_playing(false)
 {
@@ -219,14 +219,14 @@ SdlAudio::SdlAudio() :
 	}
 }
 
-SdlAudio::~SdlAudio() {
+SdlMixerAudio::~SdlMixerAudio() {
 	// Must be reset otherwise Player segfaults when SDL is reinitialized (Android)
 	Mix_HookMusic(nullptr, nullptr);
 
 	Mix_CloseAudio();
 }
 
-void SdlAudio::BGM_OnPlayedOnce() {
+void SdlMixerAudio::BGM_OnPlayedOnce() {
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer produces noise when playing wav.
 	// Workaround: Use Mix_LoadWAV
@@ -249,7 +249,7 @@ void SdlAudio::BGM_OnPlayedOnce() {
 	}
 }
 
-void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
+void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
 		Output::Warning("Music not readable: %s", file.c_str());
@@ -339,7 +339,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 	Mix_HookMusicFinished(&bgm_played_once);
 }
 
-void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
+void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
 	if (!audio_decoder->Open(handle)) {
 		Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), audio_decoder->GetError().c_str());
 		audio_decoder.reset();
@@ -392,7 +392,7 @@ void SdlAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volu
 	Mix_HookMusic(callback, this);
 }
 
-void SdlAudio::BGM_Pause() {
+void SdlMixerAudio::BGM_Pause() {
 	if (audio_decoder) {
 		audio_decoder->Pause();
 		return;
@@ -409,7 +409,7 @@ void SdlAudio::BGM_Pause() {
 	Mix_PauseMusic();
 }
 
-void SdlAudio::BGM_Resume() {
+void SdlMixerAudio::BGM_Resume() {
 	if (audio_decoder) {
 		bgm_starttick = SDL_GetTicks();
 		audio_decoder->Resume();
@@ -426,7 +426,7 @@ void SdlAudio::BGM_Resume() {
 	Mix_ResumeMusic();
 }
 
-void SdlAudio::BGM_Stop() {
+void SdlMixerAudio::BGM_Stop() {
 	Mix_HookMusic(nullptr, nullptr);
 	audio_decoder.reset();
 
@@ -441,7 +441,7 @@ void SdlAudio::BGM_Stop() {
 	Mix_HaltMusic();
 }
 
-bool SdlAudio::BGM_PlayedOnce() const {
+bool SdlMixerAudio::BGM_PlayedOnce() const {
 	if (audio_decoder) {
 		return audio_decoder->GetLoopCount() > 0;
 	}
@@ -449,11 +449,11 @@ bool SdlAudio::BGM_PlayedOnce() const {
 	return played_once;
 }
 
-bool SdlAudio::BGM_IsPlaying() const {
+bool SdlMixerAudio::BGM_IsPlaying() const {
 	return audio_decoder || !bgm_stop || !bgs_stop;
 }
 
-unsigned SdlAudio::BGM_GetTicks() const {
+unsigned SdlMixerAudio::BGM_GetTicks() const {
 	if (audio_decoder) {
 		return audio_decoder->GetTicks();
 	}
@@ -462,7 +462,7 @@ unsigned SdlAudio::BGM_GetTicks() const {
 	return SDL_GetTicks() - bgm_starttick;
 }
 
-void SdlAudio::BGM_Volume(int volume) {
+void SdlMixerAudio::BGM_Volume(int volume) {
 	if (audio_decoder) {
 		audio_decoder->SetVolume(volume);
 		return;
@@ -480,7 +480,7 @@ void SdlAudio::BGM_Volume(int volume) {
 	Mix_VolumeMusic(bgm_volume);
 }
 
-void SdlAudio::BGM_Pitch(int pitch) {
+void SdlMixerAudio::BGM_Pitch(int pitch) {
 	if (audio_decoder) {
 		audio_decoder->SetPitch(pitch);
 	}
@@ -488,7 +488,7 @@ void SdlAudio::BGM_Pitch(int pitch) {
 	// Not supported by SDL
 }
 
-void SdlAudio::BGM_Fade(int fade) {
+void SdlMixerAudio::BGM_Fade(int fade) {
 	if (audio_decoder) {
 		bgm_starttick = DisplayUi->GetTicks();
 		audio_decoder->SetFade(audio_decoder->GetVolume(), 0, fade);
@@ -519,7 +519,7 @@ void SdlAudio::BGM_Fade(int fade) {
 	Mix_FadeOutMusic(fade);
 }
 
-void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
+void SdlMixerAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	bgs.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
 		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
@@ -540,17 +540,17 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 #endif
 }
 
-void SdlAudio::BGS_Pause() {
+void SdlMixerAudio::BGS_Pause() {
 	if (Mix_Playing(BGS_CHANNEL_NUM)) {
 		Mix_Pause(BGS_CHANNEL_NUM);
 	}
 }
 
-void SdlAudio::BGS_Resume() {
+void SdlMixerAudio::BGS_Resume() {
 	Mix_Resume(BGS_CHANNEL_NUM);
 }
 
-void SdlAudio::BGS_Stop() {
+void SdlMixerAudio::BGS_Stop() {
 	if (Mix_Playing(BGS_CHANNEL_NUM)) {
 		bgs_stop = true;
 		Mix_HaltChannel(BGS_CHANNEL_NUM);
@@ -558,17 +558,17 @@ void SdlAudio::BGS_Stop() {
 	}
 }
 
-void SdlAudio::BGS_Fade(int fade) {
+void SdlMixerAudio::BGS_Fade(int fade) {
 	bgs_stop = true;
 	Mix_FadeOutChannel(BGS_CHANNEL_NUM, fade);
 	bgs_playing = false;
 }
 
-void SdlAudio::BGS_Volume(int volume) {
+void SdlMixerAudio::BGS_Volume(int volume) {
 	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 }
 
-void SdlAudio::SE_Play(std::string const& file, int volume, int pitch) {
+void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
 	std::shared_ptr<Mix_Chunk> sound;
 	AudioSeRef se_ref = nullptr;
@@ -615,14 +615,14 @@ void SdlAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	sounds[channel].second = se_ref;
 }
 
-void SdlAudio::SE_Stop() {
+void SdlMixerAudio::SE_Stop() {
 	for (sounds_type::iterator i = sounds.begin(); i != sounds.end(); ++i) {
 		if (Mix_Playing(i->first)) Mix_HaltChannel(i->first);
 	}
 	sounds.clear();
 }
 
-void SdlAudio::Update() {
+void SdlMixerAudio::Update() {
 	if (audio_decoder && bgm_starttick > 0) {
 		int t = DisplayUi->GetTicks();
 		audio_decoder->Update(t - bgm_starttick);
@@ -630,11 +630,11 @@ void SdlAudio::Update() {
 	}
 }
 
-AudioDecoder* SdlAudio::GetDecoder() {
+AudioDecoder* SdlMixerAudio::GetDecoder() {
 	return audio_decoder.get();
 }
 
-SDL_AudioCVT& SdlAudio::GetAudioCVT() {
+SDL_AudioCVT& SdlMixerAudio::GetAudioCVT() {
 	return cvt;
 }
 

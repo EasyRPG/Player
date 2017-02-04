@@ -59,8 +59,10 @@
 
 #include "audio.h"
 
-#ifdef HAVE_SDL_MIXER
-#  include "audio_sdl.h"
+#ifdef WANT_SDL_AUDIO
+#  include "audio_sdl_only.h"
+#elif HAVE_SDL_MIXER
+#  include "audio_sdl_mixer.h"
 #elif defined(HAVE_OPENAL)
 #  include "audio_al.h"
 #endif
@@ -174,7 +176,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 #ifdef HAVE_SDL_MIXER
 	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlAudio());
+		audio_.reset(new SdlMixerAudio());
 		return;
 	}
 #elif defined(HAVE_OPENAL)

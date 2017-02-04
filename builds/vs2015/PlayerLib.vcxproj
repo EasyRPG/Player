@@ -434,7 +434,7 @@
     <ClCompile Include="..\..\src\audio_al.cpp" />
     <ClCompile Include="..\..\src\audio_decoder.cpp" />
     <ClCompile Include="..\..\src\audio_resampler.cpp" />
-    <ClCompile Include="..\..\src\audio_sdl.cpp" />
+    <ClCompile Include="..\..\src\audio_sdl_mixer.cpp" />
     <ClCompile Include="..\..\src\audio_sdl_only.cpp" />
     <ClCompile Include="..\..\src\audio_secache.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
@@ -586,8 +586,8 @@
     <ClInclude Include="..\..\src\audio_al.h" />
     <ClInclude Include="..\..\src\audio_decoder.h" />
     <ClInclude Include="..\..\src\audio_resampler.h" />
-    <ClInclude Include="..\..\src\audio_sdl.h" />
-	<ClInclude Include="..\..\src\audio_sdl_only.h" />
+    <ClInclude Include="..\..\src\audio_sdl_mixer.h" />
+    <ClInclude Include="..\..\src\audio_sdl_only.h" />
     <ClInclude Include="..\..\src\audio_secache.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />

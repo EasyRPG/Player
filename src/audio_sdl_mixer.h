@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _AUDIO_SDL_H_
-#define _AUDIO_SDL_H_
+#ifndef _AUDIO_SDL_MIXER_H_
+#define _AUDIO_SDL_MIXER_H_
 
 #include "audio.h"
 #include "audio_decoder.h"
@@ -27,9 +27,9 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-struct SdlAudio : public AudioInterface {
-	SdlAudio();
-	~SdlAudio();
+struct SdlMixerAudio : public AudioInterface {
+	SdlMixerAudio();
+	~SdlMixerAudio();
 
 	void BGM_Play(std::string const&, int, int, int) override;
 	void BGM_Pause() override;
@@ -74,4 +74,4 @@ private:
 	SDL_AudioCVT cvt;
 }; // class SdlAudio
 
-#endif // _AUDIO_SDL_H_
+#endif // _AUDIO_SDL_MIXER_H_
