@@ -54,7 +54,9 @@ namespace Input {
 	public:
 		UiSource() = default;
 		~UiSource() override = default;
+
 		void Update() override;
+
 		// NOTE: buttons/dir_buttons/InitButtons could be moved here
 	};
 
@@ -63,9 +65,12 @@ namespace Input {
 	 */
 	class LogSource : public Source {
 	public:
-		LogSource(std::ifstream f);
+		LogSource(const char* log_path);
 		~LogSource() override = default;
+
 		void Update() override;
+
+		operator bool() const { return bool(log_file); }
 	private:
 		std::ifstream log_file;
 	};

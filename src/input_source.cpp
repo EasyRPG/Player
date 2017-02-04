@@ -16,7 +16,6 @@
  */
 
 #include <algorithm>
-#include <utility>
 
 #include "baseui.h"
 #include "input_source.h"
@@ -34,8 +33,8 @@ void Input::UiSource::Update() {
 	}
 }
 
-Input::LogSource::LogSource(std::ifstream f) :
-	log_file(std::move(f))
+Input::LogSource::LogSource(const char* log_path) :
+	log_file(log_path, std::ios::in)
 {}
 
 void Input::LogSource::Update() {

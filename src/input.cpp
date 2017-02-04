@@ -64,23 +64,25 @@ static bool InitRecording(const std::string& record_to_path) {
 }
 
 static std::unique_ptr<Input::Source> InitSource(const std::string& replay_from_path) {
-	std::ifstream replay_log;
+	std::unique_ptr<Input::Source> src;
 
 	if (!replay_from_path.empty()) {
 		auto path = replay_from_path.c_str();
 
-		replay_log.open(path, std::ios::in);
+		std::unique_ptr<Input::LogSource> log_src(new Input::LogSource(path));
 
-		if (!replay_log) {
+		if (!*log_src) {
 			Output::Warning("Failed to open file for input replaying: %s", path);
+		} else {
+			src = std::move(log_src);
 		}
 	}
 
-	if (replay_log.is_open()) {
-		return std::unique_ptr<Input::LogSource>(new Input::LogSource(std::move(replay_log)));
-	} else {
-		return std::unique_ptr<Input::UiSource>(new Input::UiSource);
+	if (!src) {
+		src.reset(new Input::UiSource);
 	}
+
+	return src;
 }
 
 void Input::Init(
