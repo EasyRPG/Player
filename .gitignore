@@ -65,6 +65,7 @@ test-driver
 /builds/wii/*.dol
 /output
 /utils
+.buildconfig
 compile
 CPackConfig.cmake
 CPackSourceConfig.cmake
