@@ -15,13 +15,18 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _AUDIO_SDL_H_
+#define _AUDIO_SDL_H_
+
 #include "audio_generic.h"
 
-class SdlOnlyAudio : public GenericAudio {
+class SdlAudio : public GenericAudio {
 public:
-	SdlOnlyAudio();
-	~SdlOnlyAudio();
+	SdlAudio();
+	~SdlAudio();
 
 	void LockMutex() const override;
 	void UnlockMutex() const override;
-}; // class CtrAudio
+}; // class SdlAudio
+
+#endif

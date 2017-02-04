@@ -17,13 +17,13 @@
 
 #include "system.h"
 
-#if defined(USE_SDL_AUDIO) && defined(SUPPORT_AUDIO)
+#if defined(WANT_SDL_AUDIO) && defined(SUPPORT_AUDIO)
 
 #include <cassert>
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
-#include "audio_sdl_only.h"
+#include "audio_sdl.h"
 #include "output.h"
 
 void sdl_audio_callback(void* userdata, uint8_t* stream, int length) {
@@ -55,7 +55,7 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 	return (AudioDecoder::Format)-1;
 }
 
-SdlOnlyAudio::SdlOnlyAudio() :
+SdlAudio::SdlAudio() :
 	GenericAudio()
 {
 	SDL_AudioSpec want = {0};
@@ -82,7 +82,7 @@ SdlOnlyAudio::SdlOnlyAudio() :
 	SDL_PauseAudio(0);
 }
 
-SdlOnlyAudio::~SdlOnlyAudio() {
+SdlAudio::~SdlAudio() {
 #ifdef EMSCRIPTEN
 	SDL_CloseAudioDevice(NULL);
 #else
@@ -90,11 +90,11 @@ SdlOnlyAudio::~SdlOnlyAudio() {
 #endif
 }
 
-void SdlOnlyAudio::LockMutex() const {
+void SdlAudio::LockMutex() const {
 	SDL_LockAudio();
 }
 
-void SdlOnlyAudio::UnlockMutex() const {
+void SdlAudio::UnlockMutex() const {
 	SDL_UnlockAudio();
 }
 

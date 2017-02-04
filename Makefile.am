@@ -14,8 +14,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/audio_al.h \
 	src/audio_sdl_mixer.cpp \
 	src/audio_sdl_mixer.h \
-	src/audio_sdl_only.cpp \
-	src/audio_sdl_only.h \
+	src/audio_sdl.cpp \
+	src/audio_sdl.h \
 	src/audio.cpp \
 	src/audio.h \
 	src/audio_decoder.cpp \
