@@ -57,6 +57,7 @@ namespace Input {
 		SHOW_LOG,
 		PAGE_UP,
 		PAGE_DOWN,
+		RESET,
 		BUTTON_COUNT
 	};
 

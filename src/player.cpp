@@ -316,6 +316,9 @@ void Player::Update(bool update_scene) {
 	if (Input::IsTriggered(Input::SHOW_LOG)) {
 		Output::ToggleLog();
 	}
+	if (Input::IsTriggered(Input::RESET)) {
+		reset_flag = true;
+	}
 
 	DisplayUi->ProcessEvents();
 
