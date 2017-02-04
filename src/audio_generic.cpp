@@ -177,14 +177,14 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 	chan.paused = true; // Pause channel so the audio thread doesn't work on it
 	chan.stopped = false; // Unstop channel so the audio thread doesn't delete it
 
-	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
-	if (!filehandle) {
+	auto filestream = FileFinder::openUTF8Input(file, std::ios::ios_base::in | std::ios::ios_base::binary);
+	if (!filestream) {
 		Output::Warning("BGM file not readable: {}", FileFinder::GetPathInsideGamePath(file));
 		return false;
 	}
 
-	chan.decoder = AudioDecoder::Create(filehandle, file);
-	if (chan.decoder && chan.decoder->Open(filehandle)) {
+	chan.decoder = AudioDecoder::Create(filestream, file);
+	if (chan.decoder && chan.decoder->Open(filestream)) {
 		chan.decoder->SetPitch(pitch);
 		chan.decoder->SetFormat(output_format.frequency, output_format.format, output_format.channels);
 		chan.decoder->SetFade(0, volume, fadein);
@@ -194,8 +194,6 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 		return true;
 	} else {
 		Output::Warning("Couldn't play BGM {}. Format not supported", FileFinder::GetPathInsideGamePath(file));
-		chan.decoder.reset();
-		fclose(filehandle);
 	}
 
 	return false;

@@ -72,12 +72,12 @@ namespace {
 		return log_prefix[static_cast<int>(lvl)];
 	}
 
-	std::ofstream LOG_FILE;
+	std::shared_ptr<std::ostream> LOG_FILE;
 	bool init = false;
 
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE=FileFinder::openUTF8Output(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);

@@ -81,7 +81,7 @@ namespace {
 
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
 #ifdef EMSCRIPTEN
-	std::shared_ptr<std::iostream> f = FileFinder::openUTF8(file, std::ios_base::in | std::ios_base::binary);
+	std::shared_ptr<FileFinder::istream> f = FileFinder::openUTF8Input(file, std::ios_base::in | std::ios_base::binary);
 	picojson::value v;
 	picojson::parse(v, *f);
 
