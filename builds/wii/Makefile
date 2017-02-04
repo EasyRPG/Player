@@ -42,6 +42,7 @@ CFLAGS		= 	-g -O2 -Wall -Wextra \
 				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
 				-DHAVE_LIBSNDFILE -DHAVE_TREMOR -DHAVE_WILDMIDI \
 				-DHAVE_XMP -DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
+				-DSUPPORT_AUDIO \
 				$(MACHDEP) $(INCLUDE)
 				
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
@@ -54,7 +55,7 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
 
 LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz \
 			-licuuc -licui18n -licudata \
-			-lSDL_mixer -lSDL -lvorbisidec -lmpg123 \
+			-lSDL -lvorbisidec -lmpg123 \
 			-lsndfile -lWildMidi -lxmp-lite -lspeexdsp \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 

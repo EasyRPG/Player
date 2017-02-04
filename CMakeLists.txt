@@ -176,17 +176,17 @@ if(CMAKE_GENERATOR MATCHES "Makefile")
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
-	add_definitions(-D_DEBUG=1)
+	add_definitions(-D_DEBUG)
 endif()
 
-add_definitions(-DUSE_SDL=1)
+add_definitions(-DUSE_SDL)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	include(TestBigEndian)
 	test_big_endian(WORDS_BIGENDIAN)
 	if(WORDS_BIGENDIAN)
-		add_definitions(-DWORDS_BIGENDIAN=1)
+		add_definitions(-DWORDS_BIGENDIAN)
 	endif()
 endif()
 
@@ -246,7 +246,7 @@ endforeach()
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
-	add_definitions(-DHAVE_WINE=1)
+	add_definitions(-DHAVE_WINE)
 endif()
 
 # freetype and harfbuzz
@@ -262,15 +262,78 @@ if(Freetype_FOUND)
 endif()
 
 # Sound system to use
-set(PLAYER_AUDIO_BACKEND "SDL2_mixer" CACHE STRING "Audio system to use. The SDL2_mixer audio system provides advanced features required by RPG Maker. Options: SDL2_mixer OpenAL OFF")
-set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS SDL2 OpenAL OFF)
+set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2_mixer SDL2 OpenAL OFF")
+set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer OpenAL OFF)
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
+	option(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available." ON)
+	find_lib("SDL2_mixer" PLAYER_WITH_SDL2_MIXER)
+	if(SDL2_mixer_FOUND)
+		set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
+	else()
+		set(PLAYER_AUDIO_BACKEND "SDL2")
+	endif()
+endif()
+
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
+	add_definitions(-DSUPPORT_AUDIO)
+
+	# wildmidi (on for non-mixer)
+	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
+	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
+	if(WildMidi_FOUND)
+		add_definitions(-DHAVE_WILDMIDI)
+	endif()
+	
+	# Provide fmmidi options
+	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
+	if(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
+		add_definitions(-DWANT_FMMIDI)
+	endif()	
+elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
+	add_definitions(-DSUPPORT_AUDIO)
+
 	# SDL2_mixer Audio
 	find_lib(SDL2_mixer REQUIRED)
-	add_definitions(-DHAVE_SDL_MIXER=1)
+	add_definitions(-DHAVE_SDL_MIXER)
 	
+	# wildmidi (optional, OFF)
+	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
+	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
+	if(WildMidi_FOUND)
+		add_definitions(-DHAVE_WILDMIDI)
+	endif()
+	
+	# Provide fmmidi options
+	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
+	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
+	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
+		add_definitions(-DWANT_FMMIDI=2)
+	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
+		add_definitions(-DWANT_FMMIDI=1)
+	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+		# noop
+	else()
+		message(FATAL_ERROR "Bad FmMidi setting")
+	endif()
+elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
+	# OpenAL Audio
+	add_definitions(-DSUPPORT_AUDIO)
+	
+	find_package(OpenAL REQUIRED)
+	find_package(SndFile REQUIRED)
+	find_package(FluidSynth REQUIRED)
+	include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
+	list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
+	add_definitions(-DHAVE_OPENAL)
+elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
+
+else()
+	message(FATAL_ERROR "Invalid Audio Backend")
+endif()
+
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	# speexdsp
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)	
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
@@ -299,33 +362,6 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		add_definitions(-DHAVE_OGGVORBIS)
 	endif()
 	
-	# wildmidi (optional, OFF)
-	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
-	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
-	if(WildMidi_FOUND)
-		add_definitions(-DHAVE_WILDMIDI)
-	endif()
-	
-	# Provide fmmidi options
-	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
-	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
-	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
-		add_definitions(-DWANT_FMMIDI=2)
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		add_definitions(-DWANT_FMMIDI=1)
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
-		# noop
-	else()
-		message(FATAL_ERROR "Bad FmMidi setting")
-	endif()
-	
-	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
-		list(APPEND PLAYER_SRCS
-			src/midisequencer.cpp
-			src/midisynth.cpp
-		)
-	endif()
-	
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
 	find_lib("XMP" PLAYER_WITH_XMP)
@@ -333,19 +369,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		add_definitions(-DHAVE_XMP)
 	endif()
 	
-elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
-	# OpenAL Audio
-	add_definitions(-DNO_SDL_MIXER)
-	find_package(OpenAL REQUIRED)
-	find_package(SndFile REQUIRED)
-	find_package(FluidSynth REQUIRED)
-	include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
-	list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
-	add_definitions(-DHAVE_OPENAL)
-elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
-	add_definitions(-DNO_SDL_MIXER)
-else()
-	message(FATAL_ERROR "Invalid Audio Backend")
+	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+		list(APPEND PLAYER_SRCS
+			src/midisequencer.cpp
+			src/midisynth.cpp
+		)
+	endif()	
 endif()
 
 # Additional include directories
@@ -485,7 +514,7 @@ if(PLAYER_BUILD_LIBLCF)
 	message(STATUS "")
 endif()
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	message(STATUS "")
 	
 	if(SndFile_FOUND)
@@ -495,42 +524,58 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		message(STATUS "WAV playback:  SDL2_mixer")
 	endif()
 
-	if(wildmidi_FOUND)
-		message(STATUS "MIDI playback: WildMidi")
+	if(WildMidi_FOUND)
+		if(${PLAYER_ENABLE_FMMIDI} MATCHES "(Fallback|ON)")
+			message(STATUS "MIDI playback: WildMidi. Fallback to built-in (FmMidi)")
+		else()
+			message(STATUS "MIDI playback: WildMidi")
+		endif()
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
 		message(STATUS "MIDI playback: built-in (FmMidi)")
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
 		message(STATUS "MIDI playback: SDL2_mixer. Fallback to built-in (FmMidi)")
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
-		message(STATUS "MIDI playback: SDL2_mixer.")
+		if(SDL2_mixer_FOUND)
+			message(STATUS "MIDI playback: SDL2_mixer.")
+		else()
+			message(STATUS "MIDI playback: None")
+		endif()
 	endif()
 	
 	if(mpg123_FOUND)
 		message(STATUS "MP3 playback:  mpg123")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "MP3 playback:  SDL2_mixer. Some MP3 files will crash or play noise.")
+	else()
+		message(STATUS "MP3 playback:  None")
 	endif()
 	
 	if(OggVorbis_FOUND)
 		message(STATUS "OGG playback:  libogg")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "OGG playback:  SDL2_mixer")
+	else()
+		message(STATUS "OGG playback:  None")
 	endif()
 	
 	if(XMP_FOUND)
 		message(STATUS "MOD playback:  libxmp")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "MOD playback:  SDL2_mixer")
+	else()
+		message(STATUS "MOD playback:  None")
 	endif()
 	
 	if(speexdsp_FOUND)
 		message(STATUS "Resampler:     speexdsp")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "Resampler:     SDL2")
+	else()
+		message(STATUS "Resampler:     None")
 	endif()
 	
 	if(SDL_MIXER_USED)

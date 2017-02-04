@@ -433,6 +433,7 @@
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\audio_al.cpp" />
     <ClCompile Include="..\..\src\audio_decoder.cpp" />
+    <ClCompile Include="..\..\src\audio_generic.cpp" />
     <ClCompile Include="..\..\src\audio_resampler.cpp" />
     <ClCompile Include="..\..\src\audio_sdl_mixer.cpp" />
     <ClCompile Include="..\..\src\audio_sdl.cpp" />
@@ -585,6 +586,7 @@
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\audio_al.h" />
     <ClInclude Include="..\..\src\audio_decoder.h" />
+    <ClInclude Include="..\..\src\audio_generic.h" />
     <ClInclude Include="..\..\src\audio_resampler.h" />
     <ClInclude Include="..\..\src\audio_sdl_mixer.h" />
     <ClInclude Include="..\..\src\audio_sdl.h" />

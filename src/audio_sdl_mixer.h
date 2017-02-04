@@ -18,6 +18,9 @@
 #ifndef _AUDIO_SDL_MIXER_H_
 #define _AUDIO_SDL_MIXER_H_
 
+#include "system.h"
+#if defined(HAVE_SDL_MIXER) && defined(SUPPORT_AUDIO)
+
 #include "audio.h"
 #include "audio_decoder.h"
 #include "audio_secache.h"
@@ -27,7 +30,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-struct SdlMixerAudio : public AudioInterface {
+class SdlMixerAudio : public AudioInterface {
+public:
 	SdlMixerAudio();
 	~SdlMixerAudio();
 
@@ -72,6 +76,7 @@ private:
 
 	std::unique_ptr<AudioDecoder> audio_decoder;
 	SDL_AudioCVT cvt;
-}; // class SdlAudio
+}; // class SdlMixerAudio
 
+#endif
 #endif // _AUDIO_SDL_MIXER_H_

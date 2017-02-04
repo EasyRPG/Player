@@ -19,13 +19,12 @@
 #include <cmath>
 #include <cstring>
 
-#include "system.h"
+#include "audio_sdl_mixer.h"
 
-#ifdef HAVE_SDL_MIXER
+#if defined(HAVE_SDL_MIXER) && defined(SUPPORT_AUDIO)
 
 #include "audio_secache.h"
 #include "baseui.h"
-#include "audio_sdl_mixer.h"
 #include "filefinder.h"
 #include "output.h"
 

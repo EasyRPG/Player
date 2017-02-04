@@ -45,8 +45,16 @@ AS_IF([test "x$with_freetype" != "xno"], [
 PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[1],[Enable SDL2])],[
 	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
 ])
-PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL2_Mixer])],[
-	PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])])
+AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
+AS_IF([test "x$with_audio" != "xno"],[
+	AC_DEFINE(SUPPORT_AUDIO,[1],[Enable Audio Support])
+	AC_ARG_WITH([sdlmixer],[AS_HELP_STRING([--without-sdlmixer],
+		[Disable audio playback through SDL2 mixer. Audio is passed through SDL2 mixer when none of the provided audio libraries support the format. @<:@default=auto@:>@])])
+	AS_IF([test "x$with_sdlmixer" != "xno"],[
+		PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL2_Mixer])],[
+			PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])],[auto_sdlmixer=0])
+		])
+	])
 ])
 PKG_CHECK_MODULES([PNG],[libpng])
 PKG_CHECK_MODULES([ZLIB],[zlib])

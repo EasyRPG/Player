@@ -17,7 +17,7 @@
 
 #include "system.h"
 
-#if defined(WANT_SDL_AUDIO) && defined(SUPPORT_AUDIO)
+#if defined(USE_SDL) && !defined(HAVE_SDL_MIXER) && defined(SUPPORT_AUDIO)
 
 #include <cassert>
 #include <SDL_audio.h>
