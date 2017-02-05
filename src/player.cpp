@@ -46,6 +46,7 @@
 #include "cache.h"
 #include "rand.h"
 #include "cmdline_parser.h"
+#include "dynrpg.h"
 #include "filefinder.h"
 #include "fileext_guesser.h"
 #include "game_actors.h"
@@ -821,6 +822,8 @@ void Player::ResetGameObjects() {
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
+
+	DynRpg::Reset();
 
 	Game_Clock::ResetFrame(Game_Clock::now());
 

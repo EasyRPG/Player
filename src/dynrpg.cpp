@@ -439,3 +439,11 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 	}
 	return true;
 }
+
+void DynRpg::Update() {
+
+}
+
+void DynRpg::Reset() {
+
+}
