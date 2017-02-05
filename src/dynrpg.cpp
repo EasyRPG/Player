@@ -61,9 +61,36 @@ namespace {
 		return true;
 	}
 
+	bool Call(dyn_arg_list args);
+
 	// Function table
 	dyn_rpg_func dyn_rpg_functions = {
-			{"easyrpg_output", Oput}};
+			{"easyrpg_output", Oput},
+			{"call", Call}
+	};
+
+	bool Call(dyn_arg_list args) {
+		DYNRPG_FUNCTION("call")
+
+		DYNRPG_CHECK_ARG_LENGTH(1)
+
+		DYNRPG_GET_STR_ARG(0, token)
+
+		if (token.empty()) {
+			// empty function name
+			Output::Warning("call: Empty RPGSS function name");
+
+			return true;
+		}
+
+		if (dyn_rpg_functions.find(token) == dyn_rpg_functions.end()) {
+			// Not a supported function
+			Output::Warning("Unsupported RPGSS function: {}", token);
+			return true;
+		}
+
+		return true;
+	}
 }
 
 void DynRpg::RegisterFunction(const std::string& name, dynfunc func) {
