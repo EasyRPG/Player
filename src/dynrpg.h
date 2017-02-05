@@ -32,7 +32,7 @@ namespace rpg {
 }
 
 typedef std::vector<std::string> dyn_arg_list;
-typedef bool(*dynfunc)(dyn_arg_list);
+typedef bool(*dynfunc)(const dyn_arg_list&);
 
 // Macros
 
@@ -59,7 +59,7 @@ typedef bool(*dynfunc)(dyn_arg_list);
 	int var = (int)var##_float_arg;
 
 #define DYNRPG_GET_STR_ARG(i, var) \
-	std::string& var = args[i];
+	const std::string& var = args[i];
 
 #define DYNRPG_GET_VAR_ARG(i, var) \
 	std::string var = DynRpg::ParseVarArg(args, i); \
