@@ -17,7 +17,6 @@
 
 // Headers
 #include <cassert>
-#include <cstdlib>
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
@@ -42,6 +41,7 @@
 #include "filefinder.h"
 #include "player.h"
 #include "input.h"
+#include "utils.h"
 
 namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
@@ -772,7 +772,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
-	
+
 	auto& terrain_data = Data::data.chipsets[chipset_index].terrain_data;
 
 	if (terrain_data.empty()) {
@@ -973,8 +973,8 @@ void Game_Map::UpdateEncounterSteps() {
 void Game_Map::ResetEncounterSteps() {
 	int rate = GetEncounterRate();
 	if (rate > 0) {
-		int throw_one = rand() / (RAND_MAX / rate + 1);
-		int throw_two = rand() / (RAND_MAX / rate + 1);
+		int throw_one = Utils::GetRandomNumber(0, rate - 1);
+		int throw_two = Utils::GetRandomNumber(0, rate - 1);
 
 		// *100 to handle terrain rate better
 		location.encounter_steps = (throw_one + throw_two + 1) * 100;
@@ -1023,7 +1023,7 @@ bool Game_Map::PrepareEncounter() {
 		return false;
 	}
 
-	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+	Game_Temp::battle_troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
 	Game_Temp::battle_calling = true;
 
 	SetupBattle();

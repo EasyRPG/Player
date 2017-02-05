@@ -26,10 +26,10 @@
 #include "main_data.h"
 #include "game_message.h"
 #include "player.h"
+#include "utils.h"
 #include "util_macro.h"
 #include <cmath>
 #include <cassert>
-#include <cstdlib>
 
 Game_Character::Game_Character() :
 	tile_id(0),
@@ -487,7 +487,7 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveRandom() {
-	Move(rand() % 4);
+	Move(Utils::GetRandomNumber(0, 3));
 }
 
 void Game_Character::MoveTowardsPlayer() {
@@ -553,9 +553,7 @@ void Game_Character::Turn180Degree() {
 }
 
 void Game_Character::Turn90DegreeLeftOrRight() {
-	int value = rand() % 2;
-
-	if (value == 0) {
+	if (Utils::ChanceOf(1,2)) {
 		Turn90DegreeLeft();
 	} else {
 		Turn90DegreeRight();
@@ -590,7 +588,7 @@ void Game_Character::TurnAwayFromHero() {
 }
 
 void Game_Character::FaceRandomDirection() {
-	Turn(rand() % 4);
+	Turn(Utils::GetRandomNumber(0, 3));
 }
 
 void Game_Character::Wait() {

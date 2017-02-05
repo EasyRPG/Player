@@ -202,7 +202,7 @@ void FileRequestAsync::UpdateProgress() {
 #ifndef EMSCRIPTEN
 	// Fake download for testing event handlers
 
-	if (!IsReady() && rand() % 100 == 0) {
+	if (!IsReady() && Utils::ChanceOf(1, 100)) {
 		DownloadDone(true);
 	}
 #endif

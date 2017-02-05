@@ -17,7 +17,6 @@
 
 // Headers
 #include <algorithm>
-#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include "game_interpreter.h"
@@ -48,6 +47,7 @@
 #include "util_macro.h"
 #include "reader_util.h"
 #include "game_battle.h"
+#include "utils.h"
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
@@ -736,7 +736,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			int a, b;
 			a = max(com.parameters[5], com.parameters[6]);
 			b = min(com.parameters[5], com.parameters[6]);
-			value = rand() % (a-b+1)+b;
+			value = Utils::GetRandomNumber(b, a);
 			break;
 		case 4:
 			// Items
@@ -1379,7 +1379,7 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 		result -= (actor->GetSpi() * spi) / 800;
 		if (var != 0) {
 			int rperc = var * 5;
-			int rval = rand() % (2 * rperc) - rperc;
+			int rval = Utils::GetRandomNumber(-rperc, rperc - 1);
 			result += result * rval / 100;
 		}
 

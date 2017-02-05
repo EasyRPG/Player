@@ -17,7 +17,6 @@
 
 // Headers
 #include <algorithm>
-#include <cstdlib>
 #include "data.h"
 #include "rpg_enemy.h"
 #include "game_battle.h"
@@ -25,6 +24,7 @@
 #include "game_party.h"
 #include "game_switches.h"
 #include "output.h"
+#include "utils.h"
 
 Game_Enemy::Game_Enemy(int enemy_id) : Game_Battler() {
 	Setup(enemy_id);
@@ -297,7 +297,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 		return nullptr;
 	}
 
-	int which = rand() % total;
+	int which = Utils::GetRandomNumber(0, total - 1);
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
 		const RPG::EnemyAction& action = actions[*it];
 		if (which >= action.rating) {

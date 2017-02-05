@@ -20,7 +20,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <cstdlib>
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
@@ -30,6 +29,7 @@
 #include "game_switches.h"
 #include "util_macro.h"
 #include "main_data.h"
+#include "utils.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -157,7 +157,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
-	
+
 	// > 10 makes any skill usable
 	int smallest_physical_rate = 11;
 	int smallest_magical_rate = 11;
@@ -230,11 +230,11 @@ bool Game_Battler::UseItem(int item_id) {
 
 		return was_used;
 	}
-	
+
 	if (item.type == RPG::Item::Type_switch) {
 		return true;
 	}
-	
+
 	switch (item.type) {
 		case RPG::Item::Type_weapon:
 		case RPG::Item::Type_shield:
@@ -622,7 +622,7 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 			states[i] += 1;
 
 			if (states[i] >= Data::states[i].hold_turn) {
-				if (rand() % 100 < Data::states[i].auto_release_prob) {
+				if (Utils::ChanceOf(Data::states[i].auto_release_prob, 100)) {
 					healed_states.push_back(i + 1);
 					RemoveState(i + 1);
 				}
@@ -645,7 +645,7 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 		if (HasState(i + 1) && Data::states[i].release_by_damage > 0) {
 			int release_chance = (int)(Data::states[i].release_by_damage * physical_rate / 100.0);
 
-			if (rand() % 100 < release_chance) {
+			if (Utils::ChanceOf(release_chance, 100)) {
 				healed_states.push_back(i + 1);
 				RemoveState(i + 1);
 			}

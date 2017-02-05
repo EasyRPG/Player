@@ -17,6 +17,7 @@
 
 // Headers
 #include "utils.h"
+#include <cassert>
 #include <stdio.h>
 #include <algorithm>
 #include <random>
@@ -343,6 +344,11 @@ int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
 	return dist(rng);
 }
 
+bool Utils::ChanceOf(int32_t n, int32_t m) {
+	assert(n >= 0 && m > 0);
+	return GetRandomNumber(1, m) <= n;
+}
+
 void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
 }
@@ -383,7 +389,7 @@ std::string Utils::ReadLine(std::istream &is) {
 std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, const std::function<bool(char32_t)> predicate) {
 	std::u32string text = DecodeUTF32(str_to_tokenize);
 	std::vector<std::string> tokens;
-	std::u32string cur_token;	
+	std::u32string cur_token;
 
 	for (char32_t& c : text) {
 		if (predicate(c)) {

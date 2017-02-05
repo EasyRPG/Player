@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <cstdlib>
 #include "bitmap.h"
 #include "data.h"
 #include "game_battle.h"
@@ -26,6 +25,7 @@
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
+#include "utils.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -224,9 +224,9 @@ void Game_Screen::InitSnowRain() {
 
 	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
 		Snowflake f;
-		f.x = (short) (rand() * 440.0 / RAND_MAX);
-		f.y = (uint8_t) rand();
-		f.life = (uint8_t) rand();
+		f.x = (short) Utils::GetRandomNumber(0, 440);
+		f.y = (uint8_t) Utils::GetRandomNumber(0, 255);
+		f.life = (uint8_t) Utils::GetRandomNumber(0, 255);
 		snowflakes.push_back(f);
 	}
 }

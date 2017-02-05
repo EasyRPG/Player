@@ -16,9 +16,9 @@
  */
 
 #include <algorithm>
-#include <cstdlib>
 #include <list>
 #include "game_party_base.h"
+#include "utils.h"
 
 Game_Party_Base::~Game_Party_Base() {
 }
@@ -86,8 +86,7 @@ Game_Battler* Game_Party_Base::GetRandomActiveBattler() {
 	if (battlers.empty()) {
 		return NULL;
 	}
-	int ra = rand() / (RAND_MAX / battlers.size() + 1);
-	return battlers[ra];
+	return battlers[Utils::GetRandomNumber(0, battlers.size() - 1)];
 }
 
 Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
@@ -97,7 +96,7 @@ Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
 		return NULL;
 	}
 
-	return battlers[rand() / (RAND_MAX / battlers.size() + 1)];
+	return battlers[Utils::GetRandomNumber(0, battlers.size() - 1)];
 }
 
 bool Game_Party_Base::IsAnyActive() {
