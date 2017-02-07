@@ -339,9 +339,39 @@ void Utils::SwapByteOrder(double& d) {
 	p[1] = tmp;
 }
 
+/** Generate a random number in the range [0,max] */
+static uint32_t GetRandomUnsigned(uint32_t max)
+{
+	if (max == 0xffffffffull) return rng();
+
+	// Rejection sampling:
+	// 1. Divide the range of uint32 into blocks of max+1
+	//    numbers each, with rem numbers left over.
+	// 2. Generate a random u32. If it belongs to a block,
+	//    mod it into the range [0,max] and accept it.
+	// 3. If it fell into the range of rem leftover numbers,
+	//    reject it and go back to step 2.
+	uint32_t m = max + 1;
+	uint32_t rem = -m % m; // = 2^32 mod m
+	while (true) {
+		uint32_t n = rng();
+		if (n >= rem)
+			return n % m;
+	}
+}
+
 int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
-	std::uniform_int_distribution<int32_t> dist(from, to);
-	return dist(rng);
+	assert(from <= to);
+	// Don't use uniform_int_distribution--the algorithm used isn't
+	// portable between stdlibs.
+	// We do from + (rand int in [0, to-from]). The miracle of two's
+	// complement let's us do this all in unsigned and then just cast
+	// back.
+	uint32_t ufrom = uint32_t(from);
+	uint32_t uto = uint32_t(to);
+	uint32_t urange = uto - ufrom;
+	uint32_t ures = ufrom + GetRandomUnsigned(urange);
+	return int32_t(ures);
 }
 
 bool Utils::ChanceOf(int32_t n, int32_t m) {
