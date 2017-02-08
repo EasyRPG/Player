@@ -71,7 +71,7 @@ bool WavDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
 	while (strncmp(chunk_name, "data", 4)) {
 		stream->read(reinterpret_cast<char*>(&chunk_size), sizeof(chunk_size));
 		Utils::SwapByteOrder(chunk_size);
-		stream->seekg(chunk_size, std::ios::ios_base::beg);
+		stream->seekg(chunk_size, std::ios::ios_base::cur);
 		stream->read(reinterpret_cast<char*>(chunk_name), sizeof(chunk_name));
 
 		if (!stream->good()) {
