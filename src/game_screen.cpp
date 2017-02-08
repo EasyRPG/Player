@@ -76,7 +76,7 @@ void Game_Screen::Reset()
 	data.shake_time_left = 0;
 	data.shake_position = 0;
 	data.shake_continuous = false;
-	shake_direction = 0;
+	shake_direction = 1;
 
 	movie_filename = "";
 	movie_pos_x = 0;

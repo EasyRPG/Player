@@ -772,7 +772,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
 	assert(chipset_index < Data::data.chipsets.size());
-	
+
 	auto& terrain_data = Data::data.chipsets[chipset_index].terrain_data;
 
 	if (terrain_data.empty()) {
@@ -1098,17 +1098,18 @@ void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 }
 
 int Game_Map::GetDisplayX() {
-	return map_info.position_x;
+	int shake_in_pixels = Main_Data::game_data.screen.shake_position;
+	return map_info.position_x + shake_in_pixels * 16;
 }
-void Game_Map::SetDisplayX(int new_display_x) {
-	map_info.position_x = new_display_x;
+void Game_Map::SetPositionX(int new_position_x) {
+	map_info.position_x = new_position_x;
 }
 
 int Game_Map::GetDisplayY() {
 	return map_info.position_y;
 }
-void Game_Map::SetDisplayY(int new_display_y) {
-	map_info.position_y = new_display_y;
+void Game_Map::SetPositionY(int new_position_y) {
+	map_info.position_y = new_position_y;
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
