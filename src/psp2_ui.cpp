@@ -67,6 +67,62 @@ char* shader_names[] = {
 	"xBR"
 };
 
+namespace {
+	vita2d_texture* gpu_texture;
+	vita2d_texture* next_texture;
+	vita2d_texture* main_texture;
+	uint8_t zoom_state;
+	int in_use_shader;
+	bool set_shader;
+	SceUID GPU_Mutex, GPU_Cleanup_Mutex;
+}
+
+static int renderThread(unsigned int args, void* arg){
+	
+	for (;;){
+	
+		sceKernelWaitSema(GPU_Mutex, 1, NULL);
+		memcpy(vita2d_texture_get_datap(gpu_texture), vita2d_texture_get_datap(next_texture), vita2d_texture_get_stride(gpu_texture)*240);
+		sceKernelSignalSema(GPU_Mutex, 1);
+		
+		sceKernelWaitSema(GPU_Cleanup_Mutex, 1, NULL);
+		
+		if (main_texture == NULL) sceKernelExitDeleteThread(0); // Exit procedure
+		
+		vita2d_start_drawing();
+   
+		if (set_shader){
+			Output::Post("Shader set to %s.",shader_names[in_use_shader]);
+			set_shader = false;
+			vita2d_texture_set_program(shaders[in_use_shader]->vertexProgram, shaders[in_use_shader]->fragmentProgram);
+			vita2d_texture_set_wvp(shaders[in_use_shader]->wvpParam);
+			vita2d_texture_set_vertexInput(&shaders[in_use_shader]->vertexInput);
+			vita2d_texture_set_fragmentInput(&shaders[in_use_shader]->fragmentInput);
+		}
+   
+		vita2d_clear_screen();
+		switch (zoom_state){
+			case 0: // 640x480
+				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
+				break;
+			case 1: // 725x544
+				vita2d_draw_texture_scale(gpu_texture, 117, 0, 2.266, 2.266);
+				break;
+			case 2: // 960x544
+				vita2d_draw_texture_scale(gpu_texture, 0, 0, 3, 2.266);
+				break;
+		}
+		vita2d_end_drawing();
+		vita2d_wait_rendering_done();
+		vita2d_swap_buffers();
+		sceKernelSignalSema(GPU_Cleanup_Mutex, 1);
+		
+		sceKernelDelayThread(1000);
+	
+	}
+	
+}
+
 Psp2Ui::Psp2Ui(int width, int height) :
 	BaseUi() {
 	
@@ -83,6 +139,9 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	shaders[1] = vita2d_create_shader((SceGxmProgram*) sharp_bilinear_v, (SceGxmProgram*) sharp_bilinear_f);
 	shaders[2] = vita2d_create_shader((SceGxmProgram*) lcd3x_v, (SceGxmProgram*) lcd3x_f);
 	shaders[3] = vita2d_create_shader((SceGxmProgram*) xbr_2x_fast_v, (SceGxmProgram*) xbr_2x_fast_f);
+	gpu_texture = vita2d_create_empty_texture_format(
+												width, height,
+												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -95,6 +154,9 @@ Psp2Ui::Psp2Ui(int width, int height) :
 		0xFF000000,
 		PF::Alpha);
 	main_texture = vita2d_create_empty_texture_format(
+												width, height,
+												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
+	next_texture = vita2d_create_empty_texture_format(
 												width, height,
 												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
@@ -112,13 +174,26 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	
+	GPU_Mutex = sceKernelCreateSema("GPU Mutex", 0, 1, 1, NULL);
+	GPU_Cleanup_Mutex = sceKernelCreateSema("GPU Cleanup Mutex", 0, 1, 1, NULL);
+	GPU_Thread = sceKernelCreateThread("GPU Thread", &renderThread, 0x10000100, 0x10000, 0, 0, NULL);
+	sceKernelStartThread(GPU_Thread, sizeof(GPU_Thread), &GPU_Thread);
+	
 }
 
 Psp2Ui::~Psp2Ui() {
+	sceKernelWaitSema(GPU_Cleanup_Mutex, 1, NULL);
 	for (int i = 0; i < SHADERS_NUM; i++){
 		vita2d_free_shader(shaders[i]);
 	}
 	vita2d_free_texture(main_texture);
+	main_texture = NULL;
+	sceKernelSignalSema(GPU_Cleanup_Mutex, 1);
+	sceKernelWaitThreadEnd(GPU_Thread, NULL, NULL);
+	vita2d_free_texture(next_texture);
+	vita2d_free_texture(gpu_texture);
+	sceKernelDeleteSema(GPU_Mutex);
+	sceKernelDeleteSema(GPU_Cleanup_Mutex);
 	vita2d_fini();
 }
 
@@ -210,32 +285,9 @@ void Psp2Ui::ProcessEvents() {
 }
 
 void Psp2Ui::UpdateDisplay() {
-	vita2d_start_drawing();
-	
-	if (set_shader){
-		Output::Post("Shader set to %s.",shader_names[in_use_shader]);
-		set_shader = false;
-		vita2d_texture_set_program(shaders[in_use_shader]->vertexProgram, shaders[in_use_shader]->fragmentProgram);
-		vita2d_texture_set_wvp(shaders[in_use_shader]->wvpParam);
-		vita2d_texture_set_vertexInput(&shaders[in_use_shader]->vertexInput);
-		vita2d_texture_set_fragmentInput(&shaders[in_use_shader]->fragmentInput);
-	}
-	
-	vita2d_clear_screen();
-	switch (zoom_state){
-		case 0: // 640x480
-			vita2d_draw_texture_scale(main_texture, 160, 32, 2.0, 2.0);
-			break;
-		case 1: // 725x544
-			vita2d_draw_texture_scale(main_texture, 117, 0, 2.266, 2.266);
-			break;
-		case 2: // 960x544
-			vita2d_draw_texture_scale(main_texture, 0, 0, 3, 2.266);
-			break;
-	}
-	vita2d_end_drawing();
-	vita2d_wait_rendering_done();
-	vita2d_swap_buffers();
+	sceKernelWaitSema(GPU_Mutex, 1, NULL);
+	memcpy(vita2d_texture_get_datap(next_texture), vita2d_texture_get_datap(main_texture), vita2d_texture_get_stride(main_texture)*240);
+	sceKernelSignalSema(GPU_Mutex, 1);
 }
 
 void Psp2Ui::BeginScreenCapture() {
