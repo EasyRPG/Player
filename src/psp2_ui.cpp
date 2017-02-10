@@ -32,11 +32,22 @@
 #include <psp2/display.h>
 #include <psp2/gxm.h>
 #include <psp2/power.h>
+#include <psp2/touch.h>
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/threadmgr.h>
 #include <cstring>
 #include <stdio.h>
+extern "C"{
+	#include <sharp_bilinear_f.h>
+	#include <sharp_bilinear_v.h>
+	#include <texture_f.h>
+	#include <opaque_v.h>
+	#include <xbr_2x_fast_f.h>
+	#include <xbr_2x_fast_v.h>
+	#include <lcd3x_f.h>
+	#include <lcd3x_v.h>
+}
 
 #ifdef SUPPORT_AUDIO
 #include "audio_psp2.h"
@@ -47,14 +58,90 @@ AudioInterface& Psp2Ui::GetAudio() {
 
 int _newlib_heap_size_user = 192 * 1024 * 1024;
 
+#define SHADERS_NUM 4
+vita2d_shader* shaders[SHADERS_NUM];
+char* shader_names[] = {
+	"None",
+	"Sharp Bilinear",
+	"LCD 3x",
+	"xBR"
+};
+
+namespace {
+	vita2d_texture* gpu_texture;
+	vita2d_texture* next_texture;
+	vita2d_texture* main_texture;
+	uint8_t zoom_state;
+	int in_use_shader;
+	bool set_shader;
+	SceUID GPU_Mutex, GPU_Cleanup_Mutex;
+}
+
+static int renderThread(unsigned int args, void* arg){
+	
+	for (;;){
+	
+		sceKernelWaitSema(GPU_Mutex, 1, NULL);
+		memcpy(vita2d_texture_get_datap(gpu_texture), vita2d_texture_get_datap(next_texture), vita2d_texture_get_stride(gpu_texture)*240);
+		sceKernelSignalSema(GPU_Mutex, 1);
+		
+		sceKernelWaitSema(GPU_Cleanup_Mutex, 1, NULL);
+		
+		if (main_texture == NULL) sceKernelExitDeleteThread(0); // Exit procedure
+		
+		vita2d_start_drawing();
+   
+		if (set_shader){
+			Output::Post("Shader set to %s.",shader_names[in_use_shader]);
+			set_shader = false;
+			vita2d_texture_set_program(shaders[in_use_shader]->vertexProgram, shaders[in_use_shader]->fragmentProgram);
+			vita2d_texture_set_wvp(shaders[in_use_shader]->wvpParam);
+			vita2d_texture_set_vertexInput(&shaders[in_use_shader]->vertexInput);
+			vita2d_texture_set_fragmentInput(&shaders[in_use_shader]->fragmentInput);
+		}
+   
+		vita2d_clear_screen();
+		switch (zoom_state){
+			case 0: // 640x480
+				vita2d_draw_texture_scale(gpu_texture, 160, 32, 2.0, 2.0);
+				break;
+			case 1: // 725x544
+				vita2d_draw_texture_scale(gpu_texture, 117, 0, 2.266, 2.266);
+				break;
+			case 2: // 960x544
+				vita2d_draw_texture_scale(gpu_texture, 0, 0, 3, 2.266);
+				break;
+		}
+		vita2d_end_drawing();
+		vita2d_wait_rendering_done();
+		vita2d_swap_buffers();
+		sceKernelSignalSema(GPU_Cleanup_Mutex, 1);
+		
+		sceKernelDelayThread(1000);
+	
+	}
+	
+}
+
 Psp2Ui::Psp2Ui(int width, int height) :
 	BaseUi() {
 	
 	starttick = sceKernelGetProcessTimeWide() / 1000;
 	frame = 0;
 	zoom_state = 0;
+	in_use_shader = 0;
+	touch_x_start = -1;
 	trigger_state = false;
+	set_shader = true;
 	vita2d_init();
+	vita2d_set_vblank_wait(0);
+	shaders[0] = vita2d_create_shader((SceGxmProgram*) opaque_v, (SceGxmProgram*) texture_f);
+	shaders[1] = vita2d_create_shader((SceGxmProgram*) sharp_bilinear_v, (SceGxmProgram*) sharp_bilinear_f);
+	shaders[2] = vita2d_create_shader((SceGxmProgram*) lcd3x_v, (SceGxmProgram*) lcd3x_f);
+	shaders[3] = vita2d_create_shader((SceGxmProgram*) xbr_2x_fast_v, (SceGxmProgram*) xbr_2x_fast_f);
+	gpu_texture = vita2d_create_empty_texture_format(
+												width, height,
+												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	vita2d_texture_set_alloc_memblock_type(SCE_KERNEL_MEMBLOCK_TYPE_USER_RW);
 	current_display_mode.width = width;
 	current_display_mode.height = height;
@@ -69,6 +156,9 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	main_texture = vita2d_create_empty_texture_format(
 												width, height,
 												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
+	next_texture = vita2d_create_empty_texture_format(
+												width, height,
+												SCE_GXM_TEXTURE_FORMAT_A8B8G8R8);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(vita2d_texture_get_datap(main_texture),width, height, vita2d_texture_get_stride(main_texture), format);
 	
@@ -77,12 +167,33 @@ Psp2Ui::Psp2Ui(int width, int height) :
 	#endif
 	
 	scePowerSetArmClockFrequency(444);
+	scePowerSetBusClockFrequency(222);
+	scePowerSetGpuClockFrequency(222);
+	scePowerSetGpuXbarClockFrequency(222);
+	
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
+	
+	GPU_Mutex = sceKernelCreateSema("GPU Mutex", 0, 1, 1, NULL);
+	GPU_Cleanup_Mutex = sceKernelCreateSema("GPU Cleanup Mutex", 0, 1, 1, NULL);
+	GPU_Thread = sceKernelCreateThread("GPU Thread", &renderThread, 0x10000100, 0x10000, 0, 0, NULL);
+	sceKernelStartThread(GPU_Thread, sizeof(GPU_Thread), &GPU_Thread);
 	
 }
 
 Psp2Ui::~Psp2Ui() {
+	sceKernelWaitSema(GPU_Cleanup_Mutex, 1, NULL);
+	for (int i = 0; i < SHADERS_NUM; i++){
+		vita2d_free_shader(shaders[i]);
+	}
 	vita2d_free_texture(main_texture);
+	main_texture = NULL;
+	sceKernelSignalSema(GPU_Cleanup_Mutex, 1);
+	sceKernelWaitThreadEnd(GPU_Thread, NULL, NULL);
+	vita2d_free_texture(next_texture);
+	vita2d_free_texture(gpu_texture);
+	sceKernelDeleteSema(GPU_Mutex);
+	sceKernelDeleteSema(GPU_Cleanup_Mutex);
 	vita2d_fini();
 }
 
@@ -151,25 +262,32 @@ void Psp2Ui::ProcessEvents() {
 	keys[Input::Keys::N5] = (input.rx > 170);
 	keys[Input::Keys::N9] = (input.rx < 50);
 	
+	// Touchpad support for shaders changes
+	SceTouchData data;
+	sceTouchPeek(SCE_TOUCH_PORT_FRONT, &data, 1);
+	if (data.reportNum > 0){
+		if (touch_x_start == -1) touch_x_start = data.report[0].x;
+		}else if (touch_x_start > 0){
+			int xdiff = data.report[0].x - touch_x_start;
+			if (xdiff > 400){
+				set_shader = true;
+				touch_x_start = -2;
+				in_use_shader++;
+				if (in_use_shader >= SHADERS_NUM) in_use_shader = 0;
+			}else if (xdiff < -400){
+				set_shader = true;
+				touch_x_start = -2;
+				in_use_shader--;
+				if (in_use_shader < 0) in_use_shader = SHADERS_NUM - 1;
+			}
+	}else touch_x_start = -1;
+	
 }
 
 void Psp2Ui::UpdateDisplay() {
-	vita2d_start_drawing();
-	vita2d_clear_screen();
-	switch (zoom_state){
-		case 0: // 640x480
-			vita2d_draw_texture_scale(main_texture, 160, 32, 2.0, 2.0);
-			break;
-		case 1: // 725x544
-			vita2d_draw_texture_scale(main_texture, 117, 0, 2.266, 2.266);
-			break;
-		case 2: // 960x544
-			vita2d_draw_texture_scale(main_texture, 0, 0, 3, 2.266);
-			break;
-	}
-	vita2d_end_drawing();
-	vita2d_wait_rendering_done();
-	vita2d_swap_buffers();
+	sceKernelWaitSema(GPU_Mutex, 1, NULL);
+	memcpy(vita2d_texture_get_datap(next_texture), vita2d_texture_get_datap(main_texture), vita2d_texture_get_stride(main_texture)*240);
+	sceKernelSignalSema(GPU_Mutex, 1);
 }
 
 void Psp2Ui::BeginScreenCapture() {

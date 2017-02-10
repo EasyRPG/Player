@@ -24,9 +24,10 @@
 #include "rect.h"
 #include "system.h"
 #include <vita2d.h>
+#include <vector>
 
 /**
- * SdlUi class.
+ * Psp2Ui class.
  */
 class Psp2Ui : public BaseUi {
 public:
@@ -73,11 +74,11 @@ public:
 #endif
 
 	/** @} */
-	vita2d_texture* main_texture;
 	int frame;
-	uint8_t zoom_state;
 	bool trigger_state;
 	uint64_t starttick;
+	int touch_x_start;
+	SceUID GPU_Thread;
 	
 };
 

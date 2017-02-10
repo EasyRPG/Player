@@ -12,10 +12,10 @@ BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
 OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
 
 LIBS = -lvorbisfile -logg -lvorbis -lspeexdsp -lsndfile \
-	-lvita2d -llcf -licuuc -licui18n -licudata -lpixman-1 \
-	-lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub	\
-	-lSceSysmodule_stub -lSceCtrl_stub -lm \
-	-lScePgf_stub -ljpeg -lfreetype -lc \
+	-lvita2d -llcf -licuuc -licui18n -licudata -lpthread -lpixman-1 \
+	-lSceLibKernel_stub -lSceDisplay_stub -lSceGxm_stub	\
+	-lvitashaders -lSceSysmodule_stub -lSceCtrl_stub -lm \
+	-lSceTouch_stub -lScePgf_stub -ljpeg -lfreetype -lc \
 	-lScePower_stub -lSceCommonDialog_stub -lpng16 -lz \
 	-lmpg123 -lSceAudio_stub
 
