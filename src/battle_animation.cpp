@@ -29,6 +29,7 @@
 #include "baseui.h"
 #include "spriteset_battle.h"
 #include "player.h"
+#include "game_temp.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 	animation(anim), frame(0), frame_update(false), large(false)
@@ -104,7 +105,7 @@ void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
 			large = true;
 		}
 		SetBitmap(bitmap);
-		
+
 		SetSrcRect(Rect(0, 0, 0, 0));
 	}
 	else {
@@ -206,7 +207,22 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 			flash_length);
 	}
 
-	// TODO: Shake.
+	// Shake (only happens in battle).
+	if (Game_Temp::battle_running) {
+		switch (timing.screen_shake) {
+		case RPG::AnimationTiming::ScreenShake_nothing:
+			break;
+		case RPG::AnimationTiming::ScreenShake_target:
+			// TODO: shake the targets
+			break;
+		case RPG::AnimationTiming::ScreenShake_screen:
+			Game_Screen* screen = Main_Data::game_screen.get();
+			// FIXME: 8,7,3 are made up
+			screen->ShakeOnce(8, 7, 3);
+			break;
+		}
+	}
+
 }
 
 // For handling the vertical position.
