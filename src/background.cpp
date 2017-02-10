@@ -24,6 +24,7 @@
 #include "cache.h"
 #include "background.h"
 #include "bitmap.h"
+#include "main_data.h"
 
 Background::Background(const std::string& name) :
 	visible(true),
@@ -61,7 +62,7 @@ Background::Background(int terrain_id) :
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
-	
+
 		bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
 		bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
 	}
@@ -125,10 +126,14 @@ void Background::Draw() {
 		return;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
+	Rect dst_rect = dst->GetRect();
+
+	int shake_pos = Main_Data::game_data.screen.shake_position;
+	dst_rect.x += shake_pos;
 
 	if (bg_bitmap)
-		dst->TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst->GetRect(), 255);
+		dst->TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);
 
 	if (fg_bitmap)
-		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst->GetRect(), 255);
+		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
 }

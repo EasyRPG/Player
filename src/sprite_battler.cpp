@@ -152,6 +152,10 @@ void Sprite_Battler::Update() {
 			}
 		}
 	}
+
+	SetX(battler->GetDisplayX());
+	SetY(battler->GetDisplayY());
+	SetZ(battler->GetBattleY());
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
@@ -263,8 +267,8 @@ void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
 
-	SetX(battler->GetBattleX());
-	SetY(battler->GetBattleY());
+	SetX(battler->GetDisplayX());
+	SetY(battler->GetDisplayY());
 	SetZ(battler->GetBattleY()); // Not a typo
 
 	// Not animated -> Monster

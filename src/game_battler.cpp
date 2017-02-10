@@ -157,7 +157,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
-	
+
 	// > 10 makes any skill usable
 	int smallest_physical_rate = 11;
 	int smallest_magical_rate = 11;
@@ -230,11 +230,11 @@ bool Game_Battler::UseItem(int item_id) {
 
 		return was_used;
 	}
-	
+
 	if (item.type == RPG::Item::Type_switch) {
 		return true;
 	}
-	
+
 	switch (item.type) {
 		case RPG::Item::Type_weapon:
 		case RPG::Item::Type_shield:
@@ -555,6 +555,15 @@ int Game_Battler::GetAgi() const {
 	n = min(max(n, 1), 999);
 
 	return n;
+}
+
+int Game_Battler::GetDisplayX() const {
+	int shake_pos = Main_Data::game_data.screen.shake_position;
+	return GetBattleX() + shake_pos;
+}
+
+int Game_Battler::GetDisplayY() const {
+	return GetBattleY();
 }
 
 int Game_Battler::GetHue() const {
