@@ -52,11 +52,11 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	-llcf -liconv -lexpat -lpixman-1 -lpng -lz \
+LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz \
+			-licuuc -licui18n -licudata \
 			-lSDL_mixer -lSDL -lvorbisidec -lmpg123 \
 			-lsndfile -lWildMidi -lxmp-lite -lspeexdsp \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
-#-licuuc -licui18n -licudata
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

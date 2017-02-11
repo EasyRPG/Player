@@ -96,7 +96,7 @@ namespace {
 	bool usbgecko = false;
 	mutex_t usbgecko_mutex = 0;
 
-	static ssize_t __usbgecko_write(struct _reent * /* r */, int /* fd */, const char *ptr, size_t len) {
+	static ssize_t __usbgecko_write(struct _reent * /* r */, void* /* fd */, const char *ptr, size_t len) {
 		uint32_t level;
 
 		if (!ptr || !len || !usbgecko)
@@ -113,7 +113,8 @@ namespace {
 
 	const devoptab_t dotab_geckoout = {
 		"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+		NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+		NULL
 	};
 #endif
 
