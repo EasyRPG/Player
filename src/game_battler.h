@@ -60,7 +60,7 @@ public:
 
 	/**
 	 * Apply effects of Conditions to Battler
-	 * 
+	 *
 	 * @return Damage taken to Battler from conditions
 	 */
 	int ApplyConditions();
@@ -93,7 +93,7 @@ public:
 	/**
 	 * Tests if the battler has a "No Action" condition like sleep.
 	 *
-	 * @return can act 
+	 * @return can act
 	 */
 	bool CanAct();
 
@@ -138,7 +138,7 @@ public:
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
-	 * 
+	 *
 	 * @param state_id State to test
 	 * @return Probability of state infliction
 	 */
@@ -410,20 +410,33 @@ public:
 	 * @return Reflect is enabled.
 	 */
 	bool HasReflectState() const;
-	
+
 	/**
-	 * Gets X position on battlefield
+	 * Gets X position against the battle background.
 	 *
 	 * @return X position in battle scene
 	 */
 	virtual int GetBattleX() const = 0;
 
 	/**
-	 * Gets Y position on battlefield
+	 * Gets Y position against the battle background.
 	 *
 	 * @return Y position in battle scene
 	 */
 	virtual int GetBattleY() const = 0;
+
+	/**
+	 * Gets X position on the screen.
+	 *
+	 * This is equal to GetBattleX, plus a displacement for
+	 * any screen shaking.
+	 */
+	int GetDisplayX() const;
+
+	/**
+	 * Gets Y position on the screen.
+	 */
+	int GetDisplayY() const;
 
 	virtual int GetHue() const;
 
@@ -449,7 +462,7 @@ public:
 	 * @return If battler is defending (next turn, defense is doubled)
 	 */
 	bool IsDefending() const;
-	
+
 	/**
 	 * @return If battler has strong defense (defense is tripled when defending)
 	 */
@@ -480,7 +493,7 @@ public:
 	 * Convenience function to access the party based on the type of this
 	 * battler. This function does not ensure that the battler is in the
 	 * party.
-	 * @return Party this member probably belongs to. 
+	 * @return Party this member probably belongs to.
 	 */
 	Game_Party_Base& GetParty() const;
 
@@ -538,7 +551,7 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
-	/** 
+	/**
 	 * @return Current turn in battle
 	 */
 	int GetBattleTurn() const;

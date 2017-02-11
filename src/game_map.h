@@ -402,18 +402,26 @@ namespace Game_Map {
 	void SetBattlebackName(std::string battleback_name);
 
 	/**
-	 * Gets display x.
+	 * Gets the offset of the screen from the left edge
+	 * of the map.
+	 *
+	 * If the screen is shaking, this is not necessarily
+	 * the same value that SetPositionX returns.
 	 *
 	 * @return display x.
 	 */
 	int GetDisplayX();
 
 	/**
-	 * Sets the display x.
+	 * Sets the offset of the screen from the left edge
+	 * of the map.
 	 *
-	 * @param display_x new display x.
+	 * If the screen is shaking, this is not necessarily
+	 * the same value that GetDisplayX returns.
+	 *
+	 * @param new_position_x new position x.
 	 */
-	void SetDisplayX(int display_x);
+	void SetPositionX(int new_position_x);
 
 	/**
 	 * Gets display y.
@@ -423,11 +431,12 @@ namespace Game_Map {
 	int GetDisplayY();
 
 	/**
-	 * Sets the display y.
+	 * Sets the offset of the screen from the top edge
+	 * of the map.
 	 *
-	 * @param display_y new display y.
+	 * @param new_position_y new position y.
 	 */
-	void SetDisplayY(int display_y);
+	void SetPositionY(int new_position_y);
 
 	/**
 	 * Gets need refresh flag.

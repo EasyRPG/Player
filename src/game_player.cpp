@@ -282,17 +282,17 @@ void Game_Player::Center(int x, int y) {
 	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE / 16) - TILE_SIZE) * 8 - Game_Map::GetPanY();
 
 	if (Game_Map::LoopHorizontal()) {
-		Game_Map::SetDisplayX(x*SCREEN_TILE_WIDTH - center_x);
+		Game_Map::SetPositionX(x*SCREEN_TILE_WIDTH - center_x);
 	} else {
 		int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * SCREEN_TILE_WIDTH;
-		Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
+		Game_Map::SetPositionX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
 	}
 
 	if (Game_Map::LoopVertical()) {
-		Game_Map::SetDisplayY(y * SCREEN_TILE_WIDTH - center_y);
+		Game_Map::SetPositionY(y * SCREEN_TILE_WIDTH - center_y);
 	} else {
 		int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * SCREEN_TILE_WIDTH;
-		Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
+		Game_Map::SetPositionY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
 	}
 
 	Game_Map::InitializeParallax();
