@@ -29,7 +29,12 @@
 #include "utils.h"
 #include "decoder_wildmidi.h"
 
-#define WILDMIDI_FREQ 22050
+#if defined(GEKKO) || defined(_3DS)
+#  define WILDMIDI_FREQ 22050
+#else
+#  define WILDMIDI_FREQ 44100
+#endif
+
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
  * however, they cause high cpu usage, so not using them for now.
  */
