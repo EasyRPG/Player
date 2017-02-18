@@ -943,6 +943,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 		ShowNotification(battle_result_messages[0]);
 	}
 	else {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 		Game_Temp::battle_result = Game_Temp::BattleEscape;
 
 		// ToDo: Run away animation

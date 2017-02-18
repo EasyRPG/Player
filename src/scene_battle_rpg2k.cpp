@@ -641,6 +641,9 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_success = escape_alg.Execute();
 		escape_alg.Apply();
 
+		if (escape_success)
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
+
 		battle_result_messages.clear();
 		escape_alg.GetResultMessages(battle_result_messages);
 
