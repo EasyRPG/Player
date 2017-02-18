@@ -674,7 +674,7 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 		return;
 
 	if (ox >= src_rect.width)	ox %= src_rect.width;
-	if (oy >= src_rect.height)	ox %= src_rect.height;
+	if (oy >= src_rect.height)	oy %= src_rect.height;
 	if (ox < 0) ox += src_rect.width  * ((-ox + src_rect.width  - 1) / src_rect.width);
 	if (oy < 0) oy += src_rect.height * ((-oy + src_rect.height - 1) / src_rect.height);
 
