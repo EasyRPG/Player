@@ -24,6 +24,9 @@
 
 namespace {
 	std::mt19937 rng;
+
+	/** Gets a random number uniformly distributed in [0, U32_MAX] */
+	uint32_t GetRandomU32() { return rng(); }
 }
 
 std::string Utils::LowerCase(const std::string& str) {
@@ -342,7 +345,7 @@ void Utils::SwapByteOrder(double& d) {
 /** Generate a random number in the range [0,max] */
 static uint32_t GetRandomUnsigned(uint32_t max)
 {
-	if (max == 0xffffffffull) return rng();
+	if (max == 0xffffffffull) return GetRandomU32();
 
 	// Rejection sampling:
 	// 1. Divide the range of uint32 into blocks of max+1
@@ -354,7 +357,7 @@ static uint32_t GetRandomUnsigned(uint32_t max)
 	uint32_t m = max + 1;
 	uint32_t rem = -m % m; // = 2^32 mod m
 	while (true) {
-		uint32_t n = rng();
+		uint32_t n = GetRandomU32();
 		if (n >= rem)
 			return n % m;
 	}
