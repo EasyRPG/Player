@@ -200,6 +200,7 @@ protected:
 	bool CommandFadeOutBGM(lcf::rpg::EventCommand const& com);
 	bool CommandPlaySound(lcf::rpg::EventCommand const& com);
 	bool CommandEndEventProcessing(lcf::rpg::EventCommand const& com);
+	bool CommandComment(lcf::rpg::EventCommand const& com);
 	bool CommandGameOver(lcf::rpg::EventCommand const& com);
 	bool CommandChangeHeroName(lcf::rpg::EventCommand const& com);
 	bool CommandChangeHeroTitle(lcf::rpg::EventCommand const& com);

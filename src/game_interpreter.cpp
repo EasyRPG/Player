@@ -598,10 +598,7 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEndEventProcessing(com);
 		case Cmd::Comment:
 		case Cmd::Comment_2:
-			if (Player::IsPatchDynRpg()) {
-				return DynRpg::Invoke(com);
-			}
-			return true;
+			return CommandComment(com);
 		case Cmd::GameOver:
 			return CommandGameOver(com);
 		case Cmd::ChangeHeroName:
@@ -1868,6 +1865,34 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 
 bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /* com */) { // code 12310
 	EndEventProcessing();
+	return true;
+}
+
+bool Game_Interpreter::CommandComment(const lcf::rpg::EventCommand &com) {
+	if (Player::IsPatchDynRpg()) {
+		if (com.string.empty() || com.string[0] != '@') {
+			// Not a DynRPG command
+			return true;
+		}
+
+		auto& frame = GetFrame();
+		const auto& list = frame.commands;
+		auto& index = frame.current_command;
+
+		std::string command = ToString(com.string);
+		// Concat everything that is not another command or a new comment block
+		for (size_t i = index + 1; i < list.size(); ++i) {
+			const auto& cmd = list[i];
+			if (cmd.code == static_cast<uint32_t>(Cmd::Comment_2) &&
+					!cmd.string.empty() && cmd.string[0] != '@') {
+				command += ToString(cmd.string);
+			} else {
+				break;
+			}
+		}
+
+		return DynRpg::Invoke(command);
+	}
 	return true;
 }
 
@@ -3403,4 +3428,3 @@ Game_Interpreter& Game_Interpreter::GetForegroundInterpreter() {
 		? Game_Battle::GetInterpreter()
 		: Game_Map::GetInterpreter();
 }
-

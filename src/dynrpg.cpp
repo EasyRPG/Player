@@ -89,7 +89,9 @@ namespace {
 			return true;
 		}
 
-		return true;
+		dyn_arg_list new_args(args.begin() + 1, args.end());
+
+		return dyn_rpg_functions[token](new_args);
 	}
 }
 
@@ -131,12 +133,12 @@ std::string DynRpg::ParseVarArg(const dyn_arg_list& args, int index) {
 	std::stringstream msg;
 
 	for (; text_index != end; ++text_index) {
-		char32_t chr = *text_index;
+		char chr = *text_index;
 
 		// Test for "" -> append "
 		// otherwise end of string
 		if (chr == '$' && std::distance(text_index, end) > 1) {
-			char32_t n = *std::next(text_index, 1);
+			char n = *std::next(text_index, 1);
 
 			if (n == '$') {
 				// $$ = $
@@ -172,7 +174,7 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 	text_index = text.begin();
 	end = text.end();
 
-	char32_t chr = *text_index;
+	char chr = *text_index;
 
 	bool first = true;
 
@@ -201,7 +203,7 @@ static std::string ParseToken(const std::string& token, const std::string& funct
 					}
 
 					// N is last
-					return Game_Actors::GetActor(number)->GetName();
+					return ToString(Game_Actors::GetActor(number)->GetName());
 				} else {
 					// Variable
 					if (!Main_Data::game_variables->IsValid(number)) {
@@ -257,18 +259,18 @@ static bool ValidFunction(const std::string& token) {
 	return true;
 }
 
-bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
-	if (com.string.empty()) {
+bool DynRpg::Invoke(const std::string& command) {
+	if (command.empty()) {
 		// Not a DynRPG function (empty comment)
 		return true;
 	}
 
 	std::string::iterator text_index, end;
-	std::string text = com.string;
+	std::string text = command;
 	text_index = text.begin();
 	end = text.end();
 
-	char32_t chr = *text_index;
+	char chr = *text_index;
 
 	if (chr != '@') {
 		// Not a DynRPG function, normal comment
@@ -316,7 +318,7 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 				// no-op
 				break;
 			case ParseMode_WaitForArg:
-				if (args.size() > 0) {
+				if (!args.empty()) {
 					// Found , but no token -> empty arg
 					args.push_back("");
 				}
@@ -407,7 +409,7 @@ bool DynRpg::Invoke(const lcf::rpg::EventCommand& com) {
 				if (chr == '"') {
 					// Test for "" -> append "
 					// otherwise end of string
-					if (std::distance(text_index, end) > 1 && *std::next(text_index, 2) == '"') {
+					if (std::distance(text_index, end) > 1 && *std::next(text_index, 1) == '"') {
 						token << '"';
 						++text_index;
 					}
