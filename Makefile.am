@@ -128,6 +128,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/input_buttons.h \
 	src/input_buttons_opendingux.cpp \
 	src/input_buttons_psp.cpp \
+	src/input_source.cpp \
+	src/input_source.h \
 	src/input.cpp \
 	src/input.h \
 	src/keys.h \

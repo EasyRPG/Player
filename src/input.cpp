@@ -17,11 +17,15 @@
 
 // Headers
 #include "input.h"
+#include "input_source.h"
+#include "output.h"
 #include "player.h"
 #include "system.h"
 
 #include <algorithm>
 #include <array>
+#include <fstream>
+#include <utility>
 
 namespace Input {
 	std::array<int, BUTTON_COUNT> press_time;
@@ -32,14 +36,59 @@ namespace Input {
 	int repeat_time;
 	std::vector<std::vector<int> > buttons;
 	std::vector<std::vector<int> > dir_buttons;
+	std::unique_ptr<Source> source;
 
 	bool wait_input = false;
+}
+
+namespace {
+	bool recording_input;
+	std::ofstream record_log;
 }
 
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
-void Input::Init() {
+static bool InitRecording(const std::string& record_to_path) {
+	if (!record_to_path.empty()) {
+		auto path = record_to_path.c_str();
+
+		record_log.open(path, std::ios::out|std::ios::trunc);
+
+		if (!record_log) {
+			Output::Warning("Failed to open file for input recording: %s", path);
+			return false;
+		}
+	}
+	return true;
+}
+
+static std::unique_ptr<Input::Source> InitSource(const std::string& replay_from_path) {
+	std::unique_ptr<Input::Source> src;
+
+	if (!replay_from_path.empty()) {
+		auto path = replay_from_path.c_str();
+
+		std::unique_ptr<Input::LogSource> log_src(new Input::LogSource(path));
+
+		if (!*log_src) {
+			Output::Warning("Failed to open file for input replaying: %s", path);
+		} else {
+			src = std::move(log_src);
+		}
+	}
+
+	if (!src) {
+		src.reset(new Input::UiSource);
+	}
+
+	return src;
+}
+
+void Input::Init(
+	const std::string& replay_from_path,
+	const std::string& record_to_path
+) {
 	InitButtons();
 
 	std::fill(press_time.begin(), press_time.end(), 0);
@@ -49,24 +98,24 @@ void Input::Init() {
 
 	start_repeat_time = 20;
 	repeat_time = 5;
+
+	source = InitSource(replay_from_path);
+	recording_input = InitRecording(record_to_path);
 }
 
 void Input::Update() {
 	wait_input = false; // clear each frame
 
-	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
+	source->Update();
+	auto& pressed_buttons = source->GetPressedButtons();
+
+	if (recording_input) {
+		record_log << pressed_buttons << '\n';
+	}
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
-		bool pressed = false;
-
-		// Check state of keys assigned to button
-		for (unsigned e = 0; e < buttons[i].size(); e++) {
-			if (keystates[buttons[i][e]]) {
-				pressed = true;
-				break;
-			}
-		}
+		bool pressed = pressed_buttons[i];
 
 		if (pressed) {
 			released[i] = false;
@@ -141,6 +190,9 @@ void Input::ResetKeys() {
 	dir4 = 0;
 	dir8 = 0;
 
+	// TODO: we want Input to be agnostic to where the button
+	// presses are coming from, and if there's a UI at all.
+	// Move this into the callers?
 	DisplayUi->GetKeyStates().reset();
 }
 

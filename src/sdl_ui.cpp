@@ -74,7 +74,7 @@ AudioInterface& SdlUi::GetAudio() {
 // SDL 1.2 compatibility
 #if SDL_MAJOR_VERSION==1
 	#define SDL_Keycode SDLKey
-	#define SDL_WINDOW_FULLSCREEN_DESKTOP SDL_FULLSCREEN 
+	#define SDL_WINDOW_FULLSCREEN_DESKTOP SDL_FULLSCREEN
 	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
 #endif
 
@@ -109,7 +109,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 #endif
 
 	uint32_t flags = SDL_INIT_VIDEO;
-	
+
 #ifndef EMSCRIPTEN
 	flags |= SDL_INIT_TIMER;
 #endif
@@ -329,7 +329,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 	toggle_fs_available = true;
-	
+
 	current_display_mode.zoom = true;
 #ifdef SUPPORT_ZOOM
 	zoom_available = true;
@@ -659,7 +659,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 		case SDL_JOYAXISMOTION:
 			ProcessJoystickAxisEvent(evnt);
 			return;
-		
+
 #if SDL_MAJOR_VERSION>1
 		case SDL_FINGERDOWN:
 			ProcessFingerDownEvent(evnt);
@@ -702,7 +702,7 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 			}
 		}
 #endif
-		
+
 		ShowCursor(last);
 
 		Player::Resume();
@@ -750,11 +750,6 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		BeginDisplayModeChange();
 			ToggleZoom();
 		EndDisplayModeChange();
-		return;
-
-	case SDLK_F12:
-		// Reset the game engine on F12
-		Player::reset_flag = true;
 		return;
 
 	case SDLK_RETURN:
@@ -1225,7 +1220,7 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 int FilterUntilFocus(const SDL_Event* evnt) {
 	// Prevent throwing events away received after focus gained but filter
 	// not detached.
-	
+
 	bool filtering_done = false;
 
 	switch (evnt->type) {

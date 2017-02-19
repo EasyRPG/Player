@@ -79,6 +79,7 @@ void Input::InitButtons() {
 	buttons[SHOW_LOG].push_back(Keys::F3);
 	buttons[PAGE_UP].push_back(Keys::PGUP);
 	buttons[PAGE_DOWN].push_back(Keys::PGDN);
+	buttons[RESET].push_back(Keys::F12);
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	buttons[DECISION].push_back(Keys::MOUSE_LEFT);

@@ -23,6 +23,7 @@
 #include <bitset>
 #include "system.h"
 #include "input_buttons.h"
+#include "input_source.h"
 
 /**
  * Input namespace.
@@ -35,8 +36,16 @@
 namespace Input {
 	/**
 	 * Initializes Input.
+	 *
+	 * @param replay_from_path path to a log file to
+	 *  replay from, or the empty string if not replaying
+	 * @param record_to_path path to a file to record
+	 *  input to, or the empty string if not recording
 	 */
-	void Init();
+	void Init(
+		const std::string& replay_from_path,
+		const std::string& record_to_path
+	);
 
 	/**
 	 * Updates Input state.

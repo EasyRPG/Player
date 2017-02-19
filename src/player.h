@@ -223,6 +223,12 @@ namespace Player {
 	/** Currently interpreted engine. */
 	extern int engine;
 
+	/** Path to replay input log from */
+	extern std::string replay_input_path;
+
+	/** Path to record input log to */
+	extern std::string record_input_path;
+
 	/** Game title. */
 	extern std::string game_title;
 
@@ -234,7 +240,7 @@ namespace Player {
 #ifdef _3DS
 	/** Use DSP instead of CSND */
 	extern bool use_dsp;
-	
+
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif
