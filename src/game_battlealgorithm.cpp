@@ -1399,15 +1399,14 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		int ally_agi = Main_Data::game_party->GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 
-		double to_hit = 1.5 * ((float)ally_agi / enemy_agi);
+		// flee chance is 0% when ally has less than 70% of enemy agi
+		// 100% -> 50% flee, 200% -> 100% flee
+		float to_hit = std::max(0.0f, 1.5f - ((float)enemy_agi / ally_agi));
 
-		// Every failed escape is worth 10% higher escape chance (see help file)
-		for (int i = 0; i < Game_Battle::escape_fail_count; ++i) {
-			to_hit += (to_hit * 0.1);
-		}
+		// Every failed escape is worth 10% higher escape chance
+		to_hit += to_hit * Game_Battle::escape_fail_count * 0.1f;
 
 		to_hit *= 100;
-
 		this->success = Utils::GetRandomNumber(0, 99) < (int)to_hit;
 	}
 
