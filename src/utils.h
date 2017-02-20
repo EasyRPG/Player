@@ -161,7 +161,7 @@ namespace Utils {
 	bool ChanceOf(int32_t n, int32_t m);
 
 	/**
-	 * Seeds the RNG used by GetRandomNumber
+	 * Seeds the RNG used by GetRandomNumber and ChanceOf.
 	 *
 	 * @param seed Seed to use
 	 */
