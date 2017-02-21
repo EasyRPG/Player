@@ -27,6 +27,7 @@
 #include "player.h"
 #include "rpg_skill.h"
 #include "util_macro.h"
+#include "utils.h"
 
 static int max_hp_value() {
 	return Player::IsRPG2k() ? 999 : 9999;
@@ -210,7 +211,7 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 	int old_item_id = GetData().equipped[equip_type - 1];
 	if (old_item_id > (int)Data::items.size())
 		old_item_id = 0;
-	
+
 	GetData().equipped[equip_type - 1] = (short)new_item_id;
 	return old_item_id;
 }
@@ -724,7 +725,7 @@ const std::vector<int16_t>& Game_Actor::GetSkills() const {
 const RPG::Skill& Game_Actor::GetRandomSkill() const {
 	const std::vector<int16_t>& skills = GetSkills();
 
-	return Data::skills[skills[rand() % (skills.size() + 1)] - 1];
+	return Data::skills[skills[Utils::GetRandomNumber(0, skills.size() - 1)] - 1];
 }
 
 bool Game_Actor::HasTwoWeapons() const {
@@ -955,10 +956,10 @@ const RPG::Class* Game_Actor::GetClass() const {
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
 	GetData().changed_class = _class_id > 0;
-	
+
 	// The class settings are not applied when the actor has a class on startup
 	// but only when the "Change Class" event command is used.
-	
+
 	if (GetData().changed_class) {
 		GetData().battler_animation = GetClass()->battler_animation;
 		GetData().super_guard = GetClass()->super_guard;
@@ -967,12 +968,12 @@ void Game_Actor::SetClass(int _class_id) {
 		GetData().auto_battle = GetClass()->auto_battle;
 	} else {
 		const RPG::Actor& actor = Data::actors[actor_id - 1];
-		
+
 		GetData().super_guard = actor.super_guard;
 		GetData().lock_equipment = actor.lock_equipment;
 		GetData().two_weapon = actor.two_weapon;
 		GetData().auto_battle = actor.auto_battle;
-		
+
 		GetData().battler_animation = 0;
 	}
 	MakeExpList();
@@ -1072,7 +1073,7 @@ int Game_Actor::GetBattleAnimationId() const {
 	} else {
 		anim = GetData().battler_animation;
 	}
-	
+
 	if (anim == 0) {
 		// Chunk was missing, set to proper default
 		return 1;

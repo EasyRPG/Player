@@ -17,10 +17,10 @@
 
 // Headers
 #include <cassert>
-#include <cstdlib>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "main_data.h"
+#include "utils.h"
 
 Game_EnemyParty::Game_EnemyParty() {
 }
@@ -82,8 +82,7 @@ void Game_EnemyParty::GenerateDrops(std::vector<int>& out) const {
 		if ((*it)->IsDead()) {
 			// Only roll if the enemy has something to drop
 			if ((*it)->GetDropId() != 0) {
-				bool dropped = (rand() % 100) < (*it)->GetDropProbability();
-				if (dropped) {
+				if (Utils::ChanceOf((*it)->GetDropProbability(), 100)) {
 					out.push_back((*it)->GetDropId());
 				}
 			}

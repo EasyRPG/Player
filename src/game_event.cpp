@@ -29,8 +29,8 @@
 #include "game_interpreter_map.h"
 #include "main_data.h"
 #include "player.h"
+#include "utils.h"
 #include <cmath>
-#include <cstdlib>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	event(event),
@@ -557,9 +557,9 @@ void Game_Event::UpdateSelfMovement() {
 
 void Game_Event::MoveTypeRandom() {
 	int last_direction = GetDirection();
-	switch (rand() % 6) {
+	switch (Utils::GetRandomNumber(0, 5)) {
 	case 0:
-		stop_count -= rand() % (stop_count + 1);
+		stop_count -= Utils::GetRandomNumber(0, stop_count);
 		if (stop_count < 0) {
 			stop_count = 0;
 		}
@@ -575,7 +575,7 @@ void Game_Event::MoveTypeRandom() {
 		if (!(IsDirectionFixed() || IsFacingLocked()))
 			SetSpriteDirection(last_direction);
 	} else {
-		max_stop_count = max_stop_count / 5 * (rand() % 4 + 3);
+		max_stop_count = max_stop_count / 5 * Utils::GetRandomNumber(3, 6);
 	}
 }
 
@@ -605,7 +605,7 @@ void Game_Event::MoveTypeTowardsPlayer() {
 	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
 		MoveRandom();
 	} else {
-		switch (rand() % 6) {
+		switch (Utils::GetRandomNumber(0, 5)) {
 		case 0:
 			MoveRandom();
 			break;
@@ -636,7 +636,7 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
 		MoveRandom();
 	} else {
-		switch (rand() % 6) {
+		switch (Utils::GetRandomNumber(0, 5)) {
 		case 0:
 			MoveRandom();
 			break;

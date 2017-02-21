@@ -152,7 +152,16 @@ namespace Utils {
 	int32_t GetRandomNumber(int32_t from, int32_t to);
 
 	/**
-	 * Seeds the RNG used by GetRandomNumber
+	 * Has an n/m chance of returning true. If n>m, always returns true.
+	 *
+	 * @param n number of times out of m to return true (non-negative)
+	 * @param m denominator of the probability (positive)
+	 * @return true with probability n/m, false with probability 1-n/m
+	 */
+	bool ChanceOf(int32_t n, int32_t m);
+
+	/**
+	 * Seeds the RNG used by GetRandomNumber and ChanceOf.
 	 *
 	 * @param seed Seed to use
 	 */

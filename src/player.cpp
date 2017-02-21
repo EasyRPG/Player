@@ -192,7 +192,6 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
-	srand(time(NULL));
 	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	ParseCommandLine(argc, argv);
@@ -523,7 +522,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			srand(atoi((*it).c_str()));
 			Utils::SeedRandomNumberGenerator(atoi((*it).c_str()));
 		}
 		else if (*it == "--start-map-id") {
