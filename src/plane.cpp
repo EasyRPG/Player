@@ -20,6 +20,8 @@
 #include "graphics.h"
 #include "player.h"
 #include "bitmap.h"
+#include "main_data.h"
+#include "game_map.h"
 
 Plane::Plane() :
 	type(TypePlane),
@@ -54,8 +56,37 @@ void Plane::Draw() {
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
+	int src_x = -ox;
+	int src_y = -oy;
 
-	dst->TiledBlit(-ox, -oy, source->GetRect(), *source, dst_rect, 255);
+	// Apply screen shaking
+	int shake_pos = Main_Data::game_data.screen.shake_position;
+	if (Game_Map::LoopHorizontal()) {
+		src_x += shake_pos;
+	} else {
+		// The panorama occupies the same rectangle as the whole map.
+		int map_width = Game_Map::GetWidth() * TILE_SIZE;
+		int map_height = Game_Map::GetHeight() * TILE_SIZE;
+		Rect panorama_rect(0, 0, map_width, map_height);
+
+		// Change into coordinate where the top-left of the screen is
+		// the origin.
+		panorama_rect.x -= Game_Map::GetDisplayX() / TILE_SIZE - shake_pos;
+		panorama_rect.y -= Game_Map::GetDisplayY() / TILE_SIZE;
+
+		panorama_rect.Adjust(dst_rect);
+		dst_rect = panorama_rect;
+
+		if (panorama_rect.IsEmpty()) {
+			// The map is completely off-screen (probably won't happen)
+			return;
+		}
+
+		// Correct the offset if the top-left corner moved.
+		src_x += shake_pos + dst_rect.x;
+	}
+
+	dst->TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
 }
 
 BitmapRef const& Plane::GetBitmap() const {
