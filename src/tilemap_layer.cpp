@@ -24,6 +24,7 @@
 #include "player.h"
 #include "map_data.h"
 #include "bitmap.h"
+#include "game_map.h"
 
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
@@ -159,6 +160,14 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, -2+layer));
 }
 
+/** Draws a black tile at (x,y) (for OOB tiles) */
+static void DrawEmptyTile(int x, int y) {
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
+	Rect rect(x, y, TILE_SIZE, TILE_SIZE);
+	Color black(0, 0, 0, 255);
+	dst->FillRect(rect, black);
+}
+
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col) {
 	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
 
@@ -194,14 +203,34 @@ void TilemapLayer::Draw(int z_order) {
 	for (int x = 0; x < tiles_x; x++) {
 		for (int y = 0; y < tiles_y; y++) {
 
+			auto div_rounding_down = [](int n, int m) {
+				if (n >= 0) return n / m;
+				return (n - m + 1) / m;
+			};
+			auto mod = [](int n, int m) {
+				int rem = n % m;
+				return rem >= 0 ? rem : m + rem;
+			};
+
 			// Get the real maps tile coordinates
-			int map_x = (ox / TILE_SIZE + x + width) % width;
-			int map_y = (oy / TILE_SIZE + y + height) % height;
+			int map_x = div_rounding_down(ox, TILE_SIZE) + x;
+			int map_y = div_rounding_down(oy, TILE_SIZE) + y;
+			if (Game_Map::LoopHorizontal()) map_x = mod(map_x, width);
+			if (Game_Map::LoopVertical()) map_y = mod(map_y, height);
 
-			if (width <= map_x || height <= map_y) continue;
+			int map_draw_x = x * TILE_SIZE - mod(ox, TILE_SIZE);
+			int map_draw_y = y * TILE_SIZE - mod(oy, TILE_SIZE);
 
-			int map_draw_x = x * TILE_SIZE - ox % TILE_SIZE;
-			int map_draw_y = y * TILE_SIZE - oy % TILE_SIZE;
+			bool out_of_bounds =
+				map_x < 0 || map_x >= width ||
+				map_y < 0 || map_y >= height;
+
+			if (out_of_bounds) {
+				if (layer == 0) {
+					DrawEmptyTile(map_draw_x, map_draw_y);
+				}
+				continue;
+			}
 
 			// Get the tile data
 			TileData &tile = data_cache[map_x][map_y];
@@ -548,10 +577,10 @@ BitmapRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, Ti
 			for (int i = 0; i < 2; i++) {
 				int x = quarters_hash >> 28;
 				quarters_hash <<= 4;
-				
+
 				int y = quarters_hash >> 28;
 				quarters_hash <<= 4;
-				
+
 				rect.x = (x * 2 + i) * (TILE_SIZE/2);
 				rect.y = (y * 2 + j) * (TILE_SIZE/2);
 
