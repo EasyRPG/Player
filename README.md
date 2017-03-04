@@ -22,8 +22,6 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - libpng for PNG image support.
 - zlib for XYZ image support.
 
-SDL and SDL_mixer 1.2 are still supported, but deprecated.
-
 ### extended / recommended
 
 - FreeType2 for external font support (+ HarfBuzz for Unicode text shaping)
@@ -35,6 +33,8 @@ SDL and SDL_mixer 1.2 are still supported, but deprecated.
 - SDL2_mixer for audio mixing. Used as a fallback when none of the provided
   audio libraries support the format. Due to API limitations not all audio
   effects are possible through SDL2_mixer audio.
+
+SDL and SDL_mixer 1.2 are still supported, but deprecated.
 
 ## Daily builds
 

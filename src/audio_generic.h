@@ -93,6 +93,11 @@ private:
 	static SeChannel SE_Channels[nr_of_se_channels];
 	static bool BGM_PlayedOnceIndicator;
 	static bool Muted;
+
+	static std::vector<int16_t> sample_buffer;
+	static std::vector<uint8_t> scrap_buffer;
+	static unsigned scrap_buffer_size;
+	static std::vector<float> mixer_buffer;
 };
 
 #endif //EASYRPG_AUDIOGENERIC_H_

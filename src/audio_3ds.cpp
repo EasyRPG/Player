@@ -39,7 +39,7 @@ namespace {
 bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, AudioDecoder::Format &out_format) {
 	// false case tries to set to a close format
 	out_format = format;
-	
+
 	switch (format) {
 		case AudioDecoder::Format::U8:
 			ndspChnSetFormat(dsp_chn, channels == 1 ? NDSP_FORMAT_MONO_PCM8 : NDSP_FORMAT_STEREO_PCM8);
@@ -59,7 +59,7 @@ bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, 
 			ndspChnSetFormat(dsp_chn, channels == 1 ? NDSP_FORMAT_MONO_PCM16 : NDSP_FORMAT_STEREO_PCM16);
 			return true;
 	}
-	
+
 	return false;
 }
 
@@ -76,23 +76,23 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 		int frequency;
 		AudioDecoder::Format format, out_format;
 		int channels;
-		
+
 		bgm_decoder->SetPitch(is_new_3ds ? pitch : 100);
 		bgm_decoder->GetFormat(frequency, format, channels);
 		bgm_decoder->SetFade(0,volume,fadein);
 		bgm_decoder->SetLooping(true);
-		
+
 		if (!set_channel_format(bgm_channel, format, channels, out_format)) {
 			bgm_decoder->SetFormat(frequency, out_format, channels);
 		}
 		ndspChnSetRate(bgm_channel, frequency);
-		
+
 		Output::Debug("Audio started: %s, samplerate: %u, pitch: %u", file.c_str(),frequency,pitch);
 	} else {
 		Output::Debug("Audioformat of %s not supported: %s", file.c_str(),file.c_str());
 		fclose(filehandle);
 	}
-	
+
 	UnlockMutex();
 	return;
 }
@@ -116,7 +116,7 @@ bool CtrAudio::BGM_PlayedOnce() const {
 	if (!bgm_decoder) {
 		return true;
 	}
-	
+
 	return bgm_decoder->GetLoopCount() > 0;
 }
 
@@ -130,7 +130,7 @@ unsigned CtrAudio::BGM_GetTicks() const {
 	if (bgm_decoder) {
 		return bgm_decoder->GetTicks();
 	}
-	
+
 	return 0;
 }
 
@@ -143,42 +143,42 @@ void CtrAudio::BGM_Fade(int fade) {
 
 void CtrAudio::BGM_Volume(int volume) {
 	if (bgm_decoder) {
-		bgm_decoder->SetVolume(volume);		
+		bgm_decoder->SetVolume(volume);
 	}
 }
 
 void CtrAudio::BGM_Pitch(int pitch) {
 	if (is_new_3ds && bgm_decoder) {
-		bgm_decoder->SetPitch(pitch);		
+		bgm_decoder->SetPitch(pitch);
 	}
 }
 
 void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	int se_channel = -1;
-	
+
 	for (int i = se_channel_begin; i <= se_channel_end; ++i) {
 		if (!ndspChnIsPlaying(i)) {
 			se_channel = i - 1;
 			break;
 		}
 	}
-	
+
 	if (se_channel == -1) {
 		Output::Warning("Couldn't play %s SE.\nNo free channel available.", file.c_str());
 		return;
 	}
-		
+
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
 	if (cache) {
 		cache->SetPitch(pitch);
 		cache->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
 
 		AudioSeRef se_ref = cache->Decode();
-		
+
 		if (se_buf[se_channel].data_pcm16 != nullptr) {
 			linearFree(se_buf[se_channel].data_pcm16);
 		}
-		
+
 		size_t bsize = se_ref->buffer.size();
 		size_t aligned_bsize = 8192;
 		// Buffer must be correctly aligned to prevent audio glitches
@@ -191,19 +191,19 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		}
 
 		se_buf[se_channel].nsamples = bsize / 4;
-		
+
 		memcpy(se_buf[se_channel].data_pcm16, se_ref->buffer.data(), se_ref->buffer.size());
-		
+
 		DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
-		
+
 		float mix[12] = {0};
 		mix[0] = volume / 100.0f;
 		mix[1] = mix[0];
 		ndspChnSetMix(0, mix);
-		
+
 		ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
 	} else {
-		Output::Debug("Audioformat of %s not supported: %s", file.c_str(),file.c_str());
+		Output::Debug("%s: Format not supported", file.c_str());
 	}
 }
 
@@ -223,7 +223,7 @@ void CtrAudio::Update() {
 
 void n3ds_dsp_callback(void* userdata) {
 	CtrAudio* audio = static_cast<CtrAudio*>(userdata);
-	
+
 	if (audio->bgm_buf[fill_block].status == NDSP_WBUF_DONE) {
 		audio->bgm_buf[fill_block].status = NDSP_WBUF_FREE;
 		LightEvent_Signal(&audio->audio_event);
@@ -233,19 +233,16 @@ void n3ds_dsp_callback(void* userdata) {
 void n3ds_end_audio_thread(CtrAudio* audio) {
 	if (audio->term_stream) {
 		audio->term_stream = false;
-		printf("bye!\n");
 		threadExit(0);
 	}
 }
 
 void n3ds_audio_thread(void* userdata) {
 	CtrAudio* audio = static_cast<CtrAudio*>(userdata);
-	
-	float mix[12] = {0};
-	
-	for (;;) {
-		//svcSleepThread(10000);
 
+	float mix[12] = {0};
+
+	for (;;) {
 		n3ds_end_audio_thread(audio);
 
 		LightEvent_Wait(&audio->audio_event);
@@ -253,8 +250,8 @@ void n3ds_audio_thread(void* userdata) {
 		n3ds_end_audio_thread(audio);
 
 		int target_block = fill_block;
-		
-		
+
+
 		++fill_block;
 		fill_block %= 2;
 
@@ -264,17 +261,17 @@ void n3ds_audio_thread(void* userdata) {
 			audio->bgm_buf[target_block].status = NDSP_WBUF_DONE;
 			continue;
 		}
-		
+
 		audio->bgm_decoder->Decode(reinterpret_cast<uint8_t*>(
 			audio->bgm_buf[target_block].data_pcm16),
 			samples_per_buf * bytes_per_sample
 		);
 		DSP_FlushDataCache(audio->bgm_buf[target_block].data_pcm16,samples_per_buf);
-		
+
 		mix[0] = audio->bgm_decoder->GetVolume() / 100.0f;
 		mix[1] = mix[0];
 		ndspChnSetMix(bgm_channel, mix);
-		
+
 		ndspChnWaveBufAdd(bgm_channel, &audio->bgm_buf[target_block]);
 		audio->UnlockMutex();
 	}
@@ -292,12 +289,12 @@ CtrAudio::CtrAudio() {
 	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(samples_per_buf * bytes_per_sample * 2));
 	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
 
-	for (int i = 0; i <= se_channel_end; ++i) { 
+	for (int i = 0; i <= se_channel_end; ++i) {
 		ndspChnSetInterp(i, NDSP_INTERP_LINEAR);
 		ndspChnSetRate(i, samplerate);
 		ndspChnSetFormat(i, NDSP_FORMAT_STEREO_PCM16);
 	}
-	
+
 	memset(bgm_buf, '\0', sizeof(bgm_buf));
 	memset(se_buf, '\0', sizeof(se_buf));
 	bgm_buf[0].data_vaddr = &bgm_audio_buffer[0];
@@ -306,7 +303,7 @@ CtrAudio::CtrAudio() {
 	bgm_buf[1].data_vaddr = &bgm_audio_buffer[samples_per_buf];
 	bgm_buf[1].nsamples = samples_per_buf;
 	bgm_buf[1].status = NDSP_WBUF_DONE;
-	
+
 	LightEvent_Init(&audio_event, RESET_ONESHOT);
 
         APT_CheckNew3DS(&is_new_3ds);
@@ -319,7 +316,7 @@ CtrAudio::~CtrAudio() {
 	term_stream = true;
 
 	LightEvent_Signal(&audio_event);
-	
+
 	while (term_stream) {}
 
 	LightEvent_Clear(&audio_event);
@@ -327,7 +324,7 @@ CtrAudio::~CtrAudio() {
 	ndspExit();
 
 	linearFree(bgm_audio_buffer);
-	
+
 	for (int i = 0; i < se_channel_end; ++i) {
 		if (se_buf[i].data_pcm16 != nullptr) {
 			linearFree(se_buf[i].data_pcm16);
