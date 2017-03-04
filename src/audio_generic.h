@@ -81,7 +81,7 @@ private:
 		AudioDecoder::Format format;
 		int channels;
 	};
-	Format output_format;
+	Format output_format = {0};
 
 	bool PlayOnChannel(BgmChannel& chan,std::string const& file, int volume, int pitch, int fadein);
 	bool PlayOnChannel(SeChannel& chan,std::string const& file, int volume, int pitch);

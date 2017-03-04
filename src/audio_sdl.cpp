@@ -20,11 +20,18 @@
 #if defined(USE_SDL) && !defined(HAVE_SDL_MIXER) && defined(SUPPORT_AUDIO)
 
 #include <cassert>
+#include <SDL.h>
 #include <SDL_audio.h>
 #include <SDL_version.h>
 
 #include "audio_sdl.h"
 #include "output.h"
+
+namespace {
+#ifdef EMSCRIPTEN
+	SDL_AudioDeviceID audio_dev_id = 0;
+#endif
+}
 
 void sdl_audio_callback(void* userdata, uint8_t* stream, int length) {
 	// no mutex locking required, SDL does this before calling
@@ -58,6 +65,11 @@ AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 SdlAudio::SdlAudio() :
 	GenericAudio()
 {
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+		Output::Warning("Couldn't init audio: %s", SDL_GetError());
+		return;
+	}
+
 	SDL_AudioSpec want = {0};
 	SDL_AudioSpec have = {0};
 	want.freq = 44100;
@@ -68,7 +80,8 @@ SdlAudio::SdlAudio() :
 	want.userdata = this;
 
 #ifdef EMSCRIPTEN
-	if (SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0) {
+	audio_dev_id = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
+	if (audio_dev_id == 0) {
 #else
 	if (SDL_OpenAudio(&want, &have) < 0) {
 #endif
@@ -79,12 +92,16 @@ SdlAudio::SdlAudio() :
 	SetFormat(have.freq, sdl_format_to_format(have.format), have.channels);
 
 	// Start Audio
+#ifdef EMSCRIPTEN
+	SDL_PauseAudioDevice(audio_dev_id, 0);
+#else
 	SDL_PauseAudio(0);
+#endif
 }
 
 SdlAudio::~SdlAudio() {
 #ifdef EMSCRIPTEN
-	SDL_CloseAudioDevice(NULL);
+	SDL_CloseAudioDevice(audio_dev_id);
 #else
 	SDL_CloseAudio();
 #endif

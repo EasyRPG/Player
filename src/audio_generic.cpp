@@ -40,6 +40,10 @@ GenericAudio::GenericAudio() {
 		SE_Channels[i].se.reset();
 	}
 	BGM_PlayedOnceIndicator = false;
+
+	// Initialize to some arbitrary (low-quality) format to prevent crashes
+	// when the inheriting class doesn't call SetFormat
+	SetFormat(12345, AudioDecoder::Format::S8, 1);
 }
 
 GenericAudio::~GenericAudio() {
