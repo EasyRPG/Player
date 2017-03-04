@@ -511,6 +511,10 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 		return false;
 
 	if (trigger == RPG::EventPage::Trigger_collision && !IsJumping()) {
+		if (Main_Data::game_player->IsInPosition(GetX(), GetY()) && GetLayer() == RPG::EventPage::Layers_same) {
+			return false;
+		}
+
 		if (Main_Data::game_player->IsInPosition(x, y) && !Main_Data::game_player->IsBlockedByMoveRoute()) {
 			if (Main_Data::game_player->InAirship() && GetLayer() == RPG::EventPage::Layers_same) {
 				return false;

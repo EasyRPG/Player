@@ -562,7 +562,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 		return false;
 
 	if (Main_Data::game_player->IsInPosition(new_x, new_y)
-			&& !Main_Data::game_player->GetThrough() && !self.GetSpriteName().empty()
+			&& !Main_Data::game_player->GetThrough()
 			&& self.GetLayer() == RPG::EventPage::Layers_same) {
 		// Update the Player to see if they'll move and recheck.
 		Main_Data::game_player->Update();
