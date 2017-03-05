@@ -224,27 +224,23 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	bool channel_active = false;
 	float total_volume = 0;
 	int samples_per_frame = buffer_length / output_format.channels / 2;
-	int output_channels = 2;
-	int required_buf_size = samples_per_frame * output_channels;
 
-	if (sample_buffer.size() != required_buf_size) {
-		sample_buffer.resize(required_buf_size);
+	if (sample_buffer.size() != buffer_length) {
+		sample_buffer.resize(buffer_length);
 	}
-	if (mixer_buffer.size() != required_buf_size) {
-		mixer_buffer.resize(required_buf_size);
+	if (mixer_buffer.size() != buffer_length) {
+		mixer_buffer.resize(buffer_length);
 	}
-	scrap_buffer_size = required_buf_size * sizeof(uint32_t);
+	scrap_buffer_size = samples_per_frame * output_format.channels * sizeof(uint32_t);
 	if (scrap_buffer.size() != scrap_buffer_size) {
 		scrap_buffer.resize(scrap_buffer_size);
 	}
 
-	memset(mixer_buffer.data(), '\0', mixer_buffer.size() * sizeof(float));
-
 	for (unsigned i = 0; i < nr_of_bgm_channels + nr_of_se_channels; i++) {
 		int read_bytes;
-		int channels;
-		int samplesize;
-		int frequency;
+		int channels = 0;
+		int samplesize = 0;
+		int frequency = 0;
 		AudioDecoder::Format sampleformat;
 		float volume;
 
@@ -380,18 +376,18 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 				if (!channel_active) {
 					// first channel
-					mixer_buffer[ii * output_channels] = vall;
+					mixer_buffer[ii * output_format.channels] = vall;
 					if (channels > 1) {
-						mixer_buffer[ii * output_channels + 1] = valr;
+						mixer_buffer[ii * output_format.channels + 1] = valr;
 					} else {
-						mixer_buffer[ii * output_channels + 1] = mixer_buffer[ii * output_channels];
+						mixer_buffer[ii * output_format.channels + 1] = mixer_buffer[ii * output_format.channels];
 					}
 				} else {
-					mixer_buffer[ii * output_channels] += vall;
+					mixer_buffer[ii * output_format.channels] += vall;
 					if (channels > 1) {
-						mixer_buffer[ii * output_channels + 1] += valr;
+						mixer_buffer[ii * output_format.channels + 1] += valr;
 					} else {
-						mixer_buffer[ii * output_channels + 1] = mixer_buffer[ii * output_channels];
+						mixer_buffer[ii * output_format.channels + 1] = mixer_buffer[ii * output_format.channels];
 					}
 				}
 
@@ -425,6 +421,6 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 
 		memcpy(output_buffer, sample_buffer.data(), buffer_length);
 	} else {
-		memset(output_buffer, '\0', mixer_buffer.size());
+		memset(output_buffer, '\0', buffer_length);
 	}
 }
