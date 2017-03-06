@@ -142,6 +142,10 @@ print "Loading Extras..."
 extras = read_file(File.new('./extras/font_src.bit', 'r'), "UTF-32LE", true)
 print "done\n"
 
+print "Loading Extras (Fullwidth)..."
+extras_fullwidth = read_file(File.new('./extras-fullwidth/font_src.bit', 'r'), "UTF-32LE", false)
+print "done\n"
+
 print "Loading Hankaku..."
 hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "CP932", true)
 print "done\n"
@@ -173,7 +177,7 @@ print "done\n"
 # generating
 print "Generating Gothic..."
 gothic_final = gothic.merge(cyrillic).merge(hankaku) \
-	.merge(korean).merge(chinese).merge(latin).merge(latin_ext_a).merge(extras)
+	.merge(korean).merge(chinese).merge(latin).merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
 code_max = write_all(File.new("../../src/shinonome_gothic.cpp", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 

@@ -9,7 +9,7 @@ struct ShinonomeGlyph {
 	uint16_t data[12];
 };
 
-extern ShinonomeGlyph const SHINONOME_GOTHIC[11217];
+extern ShinonomeGlyph const SHINONOME_GOTHIC[11218];
 extern ShinonomeGlyph const SHINONOME_MINCHO[488];
 extern ShinonomeGlyph const SHINONOME_WQY[20941];
 
