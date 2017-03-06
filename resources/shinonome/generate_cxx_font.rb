@@ -123,6 +123,12 @@ EOS
   code_max
 end
 
+def read_bdf_chars(f)
+  code = skip_until(f, /CHARS\s+(\d+)/)
+  raise "assert" unless code
+  return code[1]
+end
+
 # loading
 print "Loading Latin-1..."
 latin = read_file(File.new('./latin1/font_src.bit', 'r'), "ISO-8859-1", true)
@@ -160,6 +166,10 @@ print "Loading Chinese..."
 chinese = read_file(File.new('./chinese/font_src_diff.bit', 'r'), "UTF-32LE", false)
 print "done\n"
 
+print "Loading WenQuanYi..."
+wenquanyi_chars = read_bdf_chars(File.new('../wenquanyi/wenquanyi_cjk_basic_9pt.bdf', 'r'))
+print "done\n"
+
 # generating
 print "Generating Gothic..."
 gothic_final = gothic.merge(cyrillic).merge(hankaku) \
@@ -187,6 +197,7 @@ struct ShinonomeGlyph {
 
 extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
 extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
+extern ShinonomeGlyph const SHINONOME_WQY[#{wenquanyi_chars}];
 
 #endif // _INC_SHINONOME_H_
 EOS
