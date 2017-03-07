@@ -46,10 +46,6 @@ void Scene_Save::Start() {
 		file_windows[i]->SetHasSave(true);
 		file_windows[i]->Refresh();
 	}
-
-	index = 0;
-
-	Refresh();
 }
 
 void Scene_Save::Action(int index) {
