@@ -1,0 +1,72 @@
+STARTFONT 2.1
+COMMENT 
+COMMENT Shinonome 12dot Kanji font: Miscellaneous Full-width Characters
+COMMENT 	for Unicode
+COMMENT
+COMMENT Original design by Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>, 2000
+COMMENT Edited by kakurasan for EasyRPG project. CC0/public domain.
+COMMENT 
+FONT -@FOUNDRY@-@FAMILY@-Medium-R-Normal--12-110-75-75-C-120-JISX0208.1990-0
+SIZE 12 75 75
+FONTBOUNDINGBOX 12 12 0 -2
+STARTPROPERTIES 19
+FONTNAME_REGISTRY ""
+FOUNDRY "@FOUNDRY@"
+FAMILY_NAME "@FAMILY@"
+WEIGHT_NAME "Medium"
+SLANT "R"
+SETWIDTH_NAME "Normal"
+ADD_STYLE_NAME ""
+PIXEL_SIZE 12
+POINT_SIZE 110
+RESOLUTION_X 75
+RESOLUTION_Y 75
+SPACING "C"
+AVERAGE_WIDTH 120
+CHARSET_REGISTRY "UTF-32LE"
+CHARSET_ENCODING "0"
+COPYRIGHT "Public Domain"
+DEFAULT_CHAR 1
+FONT_ASCENT 10
+FONT_DESCENT 2
+ENDPROPERTIES
+CHARS 2
+STARTCHAR 2212
+ENCODING 8722
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+............
+............
+............
+............
+............
+..@@@@@@@@..
+............
+............
+............
+............
+............
+............
+ENDCHAR # ¡Ý
+STARTCHAR 301c
+ENCODING 12316
+SWIDTH 960 0
+DWIDTH 12 0
+BBX 12 12 0 -2
+BITMAP
+............
+............
+............
+............
+..@@@.......
+.@...@......
+......@...@.
+.......@@@..
+............
+............
+............
+............
+ENDCHAR # ¡Á
+ENDFONT
