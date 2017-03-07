@@ -242,7 +242,7 @@ void Window_BattleStatus::Update() {
 	}
 
 	if (active && index >= 0) {
-		if (Input::IsRepeated(Input::DOWN)) {
+		if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			for (int i = 1; i < item_max; i++) {
 				int new_index = (index + i) % item_max;
@@ -252,7 +252,7 @@ void Window_BattleStatus::Update() {
 				}
 			}
 		}
-		if (Input::IsRepeated(Input::UP)) {
+		if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			for (int i = item_max - 1; i > 0; i--) {
 				int new_index = (index + i) % item_max;

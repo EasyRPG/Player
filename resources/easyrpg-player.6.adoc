@@ -48,6 +48,12 @@ for some additional binary patches.
 *--show-fps*::
   Enable frames per second counter.
 
+*--enable-mouse*::
+  Use mouse click for decision and scroll wheel for lists.
+
+*--enable-touch*::
+  Use one/two finger tap for decision/cancel.
+
 *--hide-title*::
   Hide the title background image and center the command menu.
 

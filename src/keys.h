@@ -134,6 +134,8 @@ namespace Input {
 			MOUSE_MIDDLE,
 			MOUSE_XBUTTON1,
 			MOUSE_XBUTTON2,
+			MOUSE_SCROLLUP,
+			MOUSE_SCROLLDOWN,
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
@@ -187,6 +189,11 @@ namespace Input {
 			JOY_AXIS_X_RIGHT,
 			JOY_AXIS_Y_DOWN,
 			JOY_AXIS_Y_UP,
+#endif
+
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+			ONE_FINGER,
+			TWO_FINGERS,
 #endif
 
 			KEYS_COUNT

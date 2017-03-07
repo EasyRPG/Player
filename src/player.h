@@ -184,6 +184,12 @@ namespace Player {
 	/** FPS flag, if true will display frames per second counter. */
 	extern bool fps_flag;
 
+	/** Mouse flag, if true enables mouse click and scroll wheel */
+	extern bool mouse_flag;
+
+	/** Touch flag, if true enables finger taps */
+	extern bool touch_flag;
+
 	/** Battle Test flag, if true will run battle test. */
 	extern bool battle_test_flag;
 

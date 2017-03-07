@@ -68,9 +68,11 @@ void Window_ShopNumber::Update() {
 			number++;
 		} else if (Input::IsRepeated(Input::LEFT) && number > 1) {
 			number--;
-		} else if (Input::IsRepeated(Input::UP) && number < item_max) {
+		} else if ((Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP))
+			&& number < item_max) {
 			number = min(number + 10, item_max);
-		} else if (Input::IsRepeated(Input::DOWN) && number > 1) {
+		} else if ((Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN))
+			&& number > 1) {
 			number = max(number - 10, 1);
 		}
 

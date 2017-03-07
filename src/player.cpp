@@ -90,6 +90,8 @@ namespace Player {
 	int start_map_id;
 	bool no_rtp_flag;
 	bool no_audio_flag;
+	bool mouse_flag;
+	bool touch_flag;
 	std::string encoding;
 	std::string escape_symbol;
 	int engine;
@@ -418,6 +420,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	start_map_id = -1;
 	no_rtp_flag = false;
 	no_audio_flag = false;
+	mouse_flag = false;
+	touch_flag = false;
 
 	std::vector<std::string> args;
 
@@ -444,6 +448,12 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "--show-fps") {
 			fps_flag = true;
+		}
+		else if (*it == "--enable-mouse") {
+			mouse_flag = true;
+		}
+		else if (*it == "--enable-touch") {
+			touch_flag = true;
 		}
 		else if (*it == "testplay" || *it == "--test-play") {
 			debug_flag = true;
@@ -926,6 +936,8 @@ Options:
                             rpg2k3e    - RPG Maker 2003 (English release) engine
       --fullscreen         Start in fullscreen mode.
       --show-fps           Enable frames per second counter.
+      --enable-mouse       Use mouse click for decision and scroll wheel for lists
+      --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the
                            command menu.
       --load-game-id N     Skip the title scene and load SaveN.lsd

@@ -157,7 +157,7 @@ void Window_Shop::Update() {
 		switch (mode) {
 			case Scene_Shop::BuySellLeave:
 			case Scene_Shop::BuySellLeave2:
-				if (Input::IsRepeated(Input::DOWN)) {
+				if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 					if (index < leave_index) {
 						index++;
 					}
@@ -166,7 +166,7 @@ void Window_Shop::Update() {
 					}
 					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 				}
-				if (Input::IsRepeated(Input::UP)) {
+				if (Input::IsRepeated(Input::UP) || Input::IsTriggered(Input::SCROLL_UP)) {
 					if (index > 1) {
 						index--;
 					}

@@ -86,10 +86,11 @@
 #endif
 
 #define USE_KEYBOARD
-//#define USE_MOUSE
+#define USE_MOUSE
 #define USE_JOYSTICK
 #define USE_JOYSTICK_HAT
 #define USE_JOYSTICK_AXIS
+#define USE_TOUCH
 
 //#define USE_FIXED_TIMESTEP_FPS
 

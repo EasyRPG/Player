@@ -85,6 +85,8 @@ void Input::InitButtons() {
 	buttons[DECISION].push_back(Keys::MOUSE_LEFT);
 	buttons[CANCEL].push_back(Keys::MOUSE_RIGHT);
 	buttons[SHIFT].push_back(Keys::MOUSE_MIDDLE);
+	buttons[SCROLL_UP].push_back(Keys::MOUSE_SCROLLUP);
+	buttons[SCROLL_DOWN].push_back(Keys::MOUSE_SCROLLDOWN);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
@@ -128,6 +130,11 @@ void Input::InitButtons() {
 	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
 	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);
 	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
+#endif
+
+#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
+	buttons[DECISION].push_back(Keys::ONE_FINGER);
+	buttons[CANCEL].push_back(Keys::TWO_FINGERS);
 #endif
 
 	dir_buttons.resize(10);

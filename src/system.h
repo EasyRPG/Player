@@ -79,6 +79,11 @@
 #  if !defined(OPENDINGUX) && !defined(GEKKO)
 #    define SUPPORT_KEYBOARD
 #    define SUPPORT_MOUSE
+
+     // We have our own touch input solution on Android
+#    if !defined(__ANDROID__)
+#      define SUPPORT_TOUCH
+#    endif
 #  endif
 
 #  if !defined(OPENDINGUX)

@@ -55,9 +55,11 @@ namespace Input {
 		TOGGLE_FPS,
 		TAKE_SCREENSHOT,
 		SHOW_LOG,
+		RESET,
 		PAGE_UP,
 		PAGE_DOWN,
-		RESET,
+		SCROLL_UP,
+		SCROLL_DOWN,
 		BUTTON_COUNT
 	};
 
