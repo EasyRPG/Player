@@ -84,5 +84,5 @@ void Window_ShopNumber::Update() {
 }
 
 int Window_ShopNumber::GetTotal() const {
-	return Data::items[item_id - 1].price * number;
+	return price * number;
 }
