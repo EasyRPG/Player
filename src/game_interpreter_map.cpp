@@ -581,6 +581,82 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	return true;
 }
 
+// PicPointerPatch handling.
+// See http://cherrytree.at/cms/download/?did=19
+namespace PicPointerPatch {
+
+static void AdjustId(int& pic_id) {
+	if (pic_id > 10000) {
+		int new_id;
+		if (pic_id > 50000) {
+			new_id = Game_Variables[pic_id - 50000];
+		} else {
+			new_id = Game_Variables[pic_id - 10000];
+		}
+
+		if (new_id > 0) {
+			Output::Debug("PicPointer: ID %d replaced with ID %d", pic_id, new_id);
+			pic_id = new_id;
+		}
+	}
+}
+
+static void AdjustParams(Game_Picture::Params& params) {
+	if (params.magnify > 10000) {
+		int new_magnify = Game_Variables[params.magnify - 10000];
+		Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+		params.magnify = new_magnify;
+	}
+
+	if (params.top_trans > 10000) {
+		int new_top_trans = Game_Variables[params.top_trans - 10000];
+		Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+		params.top_trans = new_top_trans;
+	}
+
+	if (params.bottom_trans > 10000) {
+		int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
+		Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+		params.bottom_trans = new_bottom_trans;
+	}
+}
+
+static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
+	AdjustId(pic_id);
+	AdjustParams(params);
+
+	// Adjust name
+	if (pic_id >= 50000) {
+		// Name substitution is pic_id + 1
+		int pic_num = Game_Variables[pic_id - 50000 + 1];
+
+		if (pic_num >= 0 && params.name.size() >= 4) {
+			// Replace last 4 characters with 0-padded pic_num
+			std::u32string u_pic_name = Utils::DecodeUTF32(params.name);
+			std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - 4));
+			std::stringstream ss;
+			ss << new_pic_name << std::setfill('0') << std::setw(4) << pic_num;
+			new_pic_name = ss.str();
+
+			Output::Debug("PicPointer: File %s replaced with %s", params.name.c_str(), new_pic_name.c_str());
+			params.name = new_pic_name;
+		}
+	}
+}
+
+static void AdjustMoveParams(int& pic_id, Game_Picture::MoveParams& params) {
+	AdjustId(pic_id);
+	AdjustParams(params);
+
+	if (params.duration > 10000) {
+		int new_duration = Game_Variables[params.duration - 10000];
+		Output::Debug("PicPointer: Move duration %d replaced with %d", params.duration, new_duration);
+		params.duration = new_duration;
+	}
+}
+
+}
+
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
 
@@ -599,51 +675,16 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	params.effect_mode = com.parameters[12];
 	params.effect_power = com.parameters[13];
 
-	// PicPointer Patch handling
-	if (pic_id >= 50000) {
-		// Name substitution is pic_id + 1
-		int pic_num = Game_Variables[pic_id - 50000 + 1];
-
-		if (pic_num >= 0 && params.name.size() >= 4) {
-			// Replace last 4 characters with 0-padded pic_num
-			std::u32string u_pic_name = Utils::DecodeUTF32(params.name);
-			std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - 4));
-			std::stringstream ss;
-			ss << new_pic_name << std::setfill('0') << std::setw(4) << pic_num;
-			new_pic_name = ss.str();
-
-			Output::Debug("PicPointer: File %s replaced with %s", params.name.c_str(), new_pic_name.c_str());
-			params.name = new_pic_name;
-		}
-	}
-
-	if (params.magnify > 10000) {
-		int new_magnify = Game_Variables[params.magnify - 10000];
-		Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
-		params.magnify = new_magnify;
-	}
-
-	if (params.top_trans > 10000) {
-		int new_top_trans = Game_Variables[params.top_trans - 10000];
-		Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
-		params.top_trans = new_top_trans;
-	}
-	// End of PicPointer handling (except bottom transparency)
-
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
-		// RKG2k and RPG2k3 1.10 do not support this option
+		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
 		params.bottom_trans = param_size > 14 ? com.parameters[14] : params.top_trans;
-
-		if (params.bottom_trans > 10000) {
-			int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
-			params.bottom_trans = new_bottom_trans;
-		}
 	}
+
+	PicPointerPatch::AdjustShowParams(pic_id, params);
 
 	// Sanitize input
 	params.magnify = std::max(0, std::min(params.magnify, 2000));
@@ -674,20 +715,6 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 
 	bool wait = com.parameters[15] != 0;
 
-	// PicPointer Patch handling
-	if (params.magnify > 10000) {
-		int new_magnify = Game_Variables[params.magnify - 10000];
-		Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
-		params.magnify = new_magnify;
-	}
-
-	if (params.top_trans > 10000) {
-		int new_top_trans = Game_Variables[params.top_trans - 10000];
-		Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
-		params.top_trans = new_top_trans;
-	}
-	// End of PicPointer handling (except bottom transparency)
-
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
@@ -695,13 +722,9 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
 		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
-
-		if (params.bottom_trans > 10000) {
-			int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
-			params.bottom_trans = new_bottom_trans;
-		}
 	}
+
+	PicPointerPatch::AdjustMoveParams(pic_id, params);
 
 	// Sanitize input
 	params.magnify = std::max(0, std::min(params.magnify, 2000));
@@ -720,6 +743,8 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
+
+	PicPointerPatch::AdjustId(pic_id);
 
 	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture->Erase();

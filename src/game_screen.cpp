@@ -83,22 +83,6 @@ void Game_Screen::Reset()
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
-	// PicPointer Patch handling
-	if (id > 10000) {
-		// Picture to point at
-		int new_id;
-		if (id > 50000) {
-			new_id = Game_Variables[id - 50000];
-		} else {
-			new_id = Game_Variables[id - 10000];
-		}
-
-		if (new_id > 0) {
-			Output::Debug("PicPointer: ID %d replaced with ID %d", id, new_id);
-			id = new_id;
-		}
-	}
-
 	if (id <= 0) {
 		return NULL;
 	}
