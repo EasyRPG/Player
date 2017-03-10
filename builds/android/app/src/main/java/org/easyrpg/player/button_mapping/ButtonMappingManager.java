@@ -264,7 +264,7 @@ public class ButtonMappingManager {
                     } else if (keyCode == MenuButton.MENU_BUTTON_KEY) {
                         layout.add(new MenuButton(context, posX, posY, size));
                     } else {
-                        layout.add(new VirtualButton(context, keyCode, posX, posY, size));
+                        layout.add(VirtualButton.Create(context, keyCode, posX, posY, size));
                     }
                 }
 
@@ -288,8 +288,8 @@ public class ButtonMappingManager {
         public static LinkedList<VirtualButton> getDefaultButtonList(Context context) {
             LinkedList<VirtualButton> l = new LinkedList<VirtualButton>();
             l.add(new VirtualCross(context, 0.0, 0.5, 100));
-            l.add(new VirtualButton(context, VirtualButton.ENTER, 0.80, 0.7, 100));
-            l.add(new VirtualButton(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
+            l.add(VirtualButton.Create(context, VirtualButton.ENTER, 0.80, 0.7, 100));
+            l.add(VirtualButton.Create(context, VirtualButton.CANCEL, 0.90, 0.6, 100));
             l.add(new MenuButton(context, 0, 0, 90));
 
             return l;

@@ -17,7 +17,7 @@ public class VirtualButton extends View {
     protected int keyCode;
     protected double posX, posY; // Relative position on the screen
     protected int originalSize, originalLetterSize, resizeFactor, realSize;
-    private char charButton; // The char displayed on the button
+    protected char charButton; // The char displayed on the button
     protected Paint painter;
     protected Rect bound, letterBound = new Rect();
     protected boolean isPressed; // To know when the touch go out the button
@@ -30,9 +30,17 @@ public class VirtualButton extends View {
             KEY_2 = KeyEvent.KEYCODE_2, KEY_3 = KeyEvent.KEYCODE_3, KEY_4 = KeyEvent.KEYCODE_4,
             KEY_5 = KeyEvent.KEYCODE_5, KEY_6 = KeyEvent.KEYCODE_6, KEY_7 = KeyEvent.KEYCODE_7,
             KEY_8 = KeyEvent.KEYCODE_8, KEY_9 = KeyEvent.KEYCODE_9, KEY_PLUS = 157, KEY_MINUS = 156, KEY_MULTIPLY = 155,
-            KEY_DIVIDE = 154;
+            KEY_DIVIDE = 154, KEY_FAST_FORWARD = KeyEvent.KEYCODE_F;
 
-    public VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
+    public static VirtualButton Create(Context context, int keyCode, double posX, double posY, int size) {
+        if (keyCode == KEY_FAST_FORWARD) {
+            return new VirtualButtonRectangle(context, keyCode, posX, posY, size);
+        }
+
+        return new VirtualButton(context, keyCode, posX, posY, size);
+    }
+
+    protected VirtualButton(Context context, int keyCode, double posX, double posY, int size) {
         super(context);
         this.context = context;
 
@@ -187,6 +195,8 @@ public class VirtualButton extends View {
             charButton = '/';
         } else if (keyCode == KEY_PLUS) {
             charButton = '+';
+        } else if (keyCode == KEY_FAST_FORWARD) {
+            charButton = '⏩';
         } else {
             charButton = '?';
         }
