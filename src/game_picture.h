@@ -21,59 +21,68 @@
 // Headers
 #include <string>
 #include "async_handler.h"
-#include "system.h"
 #include "rpg_save.h"
 #include "sprite.h"
+
+class Sprite;
 
 /**
  * Picture class.
  */
-class Sprite;
-
 class Game_Picture {
 public:
-	Game_Picture(int ID);
+	explicit Game_Picture(int ID);
 	~Game_Picture();
 
-	void Show(const std::string& name, bool transparency);
+	struct Params {
+		int position_x;
+		int position_y;
+		int magnify;
+		int top_trans;
+		int bottom_trans;
+		int red;
+		int green;
+		int blue;
+		int saturation;
+		int effect_mode;
+		int effect_power;
+	};
+	struct ShowParams : Params {
+		std::string name;
+		bool transparency;
+		bool fixed_to_map;
+	};
+	struct MoveParams : Params {
+		int duration;
+	};
+
+	void Show(const ShowParams& params);
+	void Move(const MoveParams& params);
 	void Erase();
-	void SetFixedToMap(bool flag);
-	void SetMovementEffect(int x, int y);
-	void SetColorEffect(int r, int g, int b, int s);
-	void SetZoomEffect(int scale);
-	void SetTransparencyEffect(int top, int bottom);
-	void SetRotationEffect(int speed);
-	void SetWaverEffect(int depth);
-	void StopEffects();
-	void SetTransition(int tenths);
 
 	void Update();
 
 private:
 	int id;
-
-	static const int waver_speed = 10;
-
 	std::unique_ptr<Sprite> sprite;
+	FileRequestBinding request_id;
+	int old_map_x;
+	int old_map_y;
 
 	void UpdateSprite();
-
+	void SetNonEffectParams(const Params& params);
+	void SyncCurrentToFinish();
+	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
-
 	/**
 	 * Compared to other classes picture doesn't hold a direct reference.
 	 * Resizing the picture vector when the ID is larger then the vector can
 	 * result in a memmove on resize, resulting in data pointers pointing into
 	 * garbage.
 	 *
-	 * @return Reference to the SavePicture data 
+	 * @return Reference to the SavePicture data
 	 */
 	RPG::SavePicture& GetData() const;
-
-	int old_map_x;
-	int old_map_y;
-
-	FileRequestBinding request_id;
 };
 
 #endif

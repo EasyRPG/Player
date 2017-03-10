@@ -583,177 +583,144 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
-	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	std::string pic_name = com.string;
-	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
-	bool scrolls = com.parameters[4] > 0;
-	int magnify = com.parameters[5];
-	int top_trans = com.parameters[6];
-	bool use_trans = com.parameters[7] > 0;
-	int red = com.parameters[8];
-	int green = com.parameters[9];
-	int blue = com.parameters[10];
-	int saturation = com.parameters[11];
-	int effect = com.parameters[12];
-	int speed = com.parameters[13];
-	int bottom_trans;
+
+	Game_Picture::ShowParams params;
+	params.name = com.string;
+	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	params.fixed_to_map = com.parameters[4] > 0;
+	params.magnify = com.parameters[5];
+	params.transparency = com.parameters[7] > 0;
+	params.top_trans = com.parameters[6];
+	params.red = com.parameters[8];
+	params.green = com.parameters[9];
+	params.blue = com.parameters[10];
+	params.saturation = com.parameters[11];
+	params.effect_mode = com.parameters[12];
+	params.effect_power = com.parameters[13];
 
 	// PicPointer Patch handling
 	if (pic_id >= 50000) {
 		// Name substitution is pic_id + 1
 		int pic_num = Game_Variables[pic_id - 50000 + 1];
 
-		if (pic_num >= 0 && pic_name.size() >= 4) {
+		if (pic_num >= 0 && params.name.size() >= 4) {
 			// Replace last 4 characters with 0-padded pic_num
-			std::u32string u_pic_name = Utils::DecodeUTF32(pic_name);
+			std::u32string u_pic_name = Utils::DecodeUTF32(params.name);
 			std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - 4));
 			std::stringstream ss;
 			ss << new_pic_name << std::setfill('0') << std::setw(4) << pic_num;
 			new_pic_name = ss.str();
 
-			Output::Debug("PicPointer: File %s replaced with %s", pic_name.c_str(), new_pic_name.c_str());
-			pic_name = new_pic_name;
+			Output::Debug("PicPointer: File %s replaced with %s", params.name.c_str(), new_pic_name.c_str());
+			params.name = new_pic_name;
 		}
 	}
 
-	if (magnify > 10000) {
-		int new_magnify = Game_Variables[magnify - 10000];
-		Output::Debug("PicPointer: Zoom %d replaced with %d", magnify, new_magnify);
-		magnify = new_magnify;
+	if (params.magnify > 10000) {
+		int new_magnify = Game_Variables[params.magnify - 10000];
+		Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+		params.magnify = new_magnify;
 	}
 
-	if (top_trans > 10000) {
-		int new_top_trans = Game_Variables[top_trans - 10000];
-		Output::Debug("PicPointer: Top transparency %d replaced with %d", top_trans, new_top_trans);
-		top_trans = new_top_trans;
+	if (params.top_trans > 10000) {
+		int new_top_trans = Game_Variables[params.top_trans - 10000];
+		Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+		params.top_trans = new_top_trans;
 	}
 	// End of PicPointer handling (except bottom transparency)
 
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
 		// RKG2k and RPG2k3 1.10 do not support this option
-		bottom_trans = top_trans;
+		params.bottom_trans = params.top_trans;
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
-		bottom_trans = param_size > 14 ? com.parameters[14] : top_trans;
+		params.bottom_trans = param_size > 14 ? com.parameters[14] : params.top_trans;
 
-		if (bottom_trans > 10000) {
-			int new_bottom_trans = Game_Variables[bottom_trans - 10000];
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", bottom_trans, new_bottom_trans);
-			bottom_trans = Game_Variables[top_trans - 10000];
+		if (params.bottom_trans > 10000) {
+			int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
+			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+			params.bottom_trans = new_bottom_trans;
 		}
 	}
 
 	// Sanitize input
-	magnify = std::max(0, std::min(magnify, 2000));
-	top_trans = std::max(0, std::min(top_trans, 100));
-	bottom_trans = std::max(0, std::min(bottom_trans, 100));
+	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.top_trans = std::max(0, std::min(params.top_trans, 100));
+	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 
-	picture->Show(pic_name, use_trans);
-	picture->SetFixedToMap(scrolls);
-
-	picture->SetMovementEffect(x, y);
-	picture->SetColorEffect(red, green, blue, saturation);
-	picture->SetZoomEffect(magnify);
-	picture->SetTransparencyEffect(top_trans, bottom_trans);
-	picture->SetTransition(0);
-
-	switch (effect) {
-	case 0:
-		picture->StopEffects();
-		break;
-	case 1:
-		picture->SetRotationEffect(speed);
-		break;
-	case 2:
-		picture->SetWaverEffect(speed);
-		break;
-	}
-
-	picture->SetTransition(0);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture->Show(params);
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
 	int pic_id = com.parameters[0];
-	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
-	int magnify = com.parameters[5];
-	int top_trans = com.parameters[6];
-	int red = com.parameters[8];
-	int green = com.parameters[9];
-	int blue = com.parameters[10];
-	int saturation = com.parameters[11];
-	int effect = com.parameters[12];
-	int speed = com.parameters[13];
-	int tenths = com.parameters[14];
+
+	Game_Picture::MoveParams params;
+	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	params.magnify = com.parameters[5];
+	params.top_trans = com.parameters[6];
+	params.red = com.parameters[8];
+	params.green = com.parameters[9];
+	params.blue = com.parameters[10];
+	params.saturation = com.parameters[11];
+	params.effect_mode = com.parameters[12];
+	params.effect_power = com.parameters[13];
+	params.duration = com.parameters[14];
+
 	bool wait = com.parameters[15] != 0;
 
 	// PicPointer Patch handling
-	if (magnify > 10000) {
-		int new_magnify = Game_Variables[magnify - 10000];
-		Output::Debug("PicPointer: Zoom %d replaced with %d", magnify, new_magnify);
-		magnify = new_magnify;
+	if (params.magnify > 10000) {
+		int new_magnify = Game_Variables[params.magnify - 10000];
+		Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+		params.magnify = new_magnify;
 	}
 
-	if (top_trans > 10000) {
-		int new_top_trans = Game_Variables[top_trans - 10000];
-		Output::Debug("PicPointer: Top transparency %d replaced with %d", top_trans, new_top_trans);
-		top_trans = new_top_trans;
+	if (params.top_trans > 10000) {
+		int new_top_trans = Game_Variables[params.top_trans - 10000];
+		Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+		params.top_trans = new_top_trans;
 	}
 	// End of PicPointer handling (except bottom transparency)
 
-	int bottom_trans;
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
 		// RPG2k and RPG2k3 1.10 do not support this option
-		bottom_trans = top_trans;
+		params.bottom_trans = params.top_trans;
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
 		size_t param_size = com.parameters.size();
-		bottom_trans = param_size > 16 ? com.parameters[16] : top_trans;
+		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
 
-		if (bottom_trans > 10000) {
-			int new_bottom_trans = Game_Variables[bottom_trans - 10000];
-			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", bottom_trans, new_bottom_trans);
-			bottom_trans = Game_Variables[top_trans - 10000];
+		if (params.bottom_trans > 10000) {
+			int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
+			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+			params.bottom_trans = new_bottom_trans;
 		}
 	}
 
 	// Sanitize input
-	magnify = std::max(0, std::min(magnify, 2000));
-	top_trans = std::max(0, std::min(top_trans, 100));
-	bottom_trans = std::max(0, std::min(bottom_trans, 100));
-	tenths = std::max(0, std::min(tenths, 10000));
+	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.top_trans = std::max(0, std::min(params.top_trans, 100));
+	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
+	params.duration = std::max(0, std::min(params.duration, 10000));
 
-	picture->SetMovementEffect(x, y);
-	picture->SetColorEffect(red, green, blue, saturation);
-	picture->SetZoomEffect(magnify);
-	picture->SetTransparencyEffect(top_trans, bottom_trans);
-	picture->SetTransition(tenths);
-
-	switch (effect) {
-	case 0:
-		picture->StopEffects();
-		break;
-	case 1:
-		picture->SetRotationEffect(speed);
-		break;
-	case 2:
-		picture->SetWaverEffect(speed);
-		break;
-	}
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture->Move(params);
 
 	if (wait)
-		SetupWait(tenths);
+		SetupWait(params.duration);
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
+
 	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture->Erase();
 

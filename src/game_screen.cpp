@@ -41,9 +41,6 @@ void Game_Screen::CreatePicturesFromSave() {
 	for (int id = 1; id < (int)save_pics.size(); ++id) {
 		if (!save_pics[id - 1].name.empty()) {
 			pictures[id - 1].reset(new Game_Picture(id));
-			int time_left = save_pics[id - 1].time_left;
-			pictures[id - 1]->Show(save_pics[id - 1].name, save_pics[id - 1].transparency);
-			pictures[id - 1]->SetTransition(time_left * DEFAULT_FPS / 10);
 		}
 	}
 }
