@@ -243,6 +243,13 @@ namespace Player {
 	/** Game title. */
 	extern std::string game_title;
 
+	/**
+	 * The default speed modifier applied when the speed up button is pressed
+	 *  Only used for configuring the speedup, don't read this var directly use
+	 *  GetSpeedModifier() instead.
+	 */
+	extern int speed_modifier;
+
 #ifdef EMSCRIPTEN
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;

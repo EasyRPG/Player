@@ -99,6 +99,7 @@ namespace Player {
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
+	int speed_modifier = 3;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -919,7 +920,7 @@ std::string Player::GetEncoding() {
 
 int Player::GetSpeedModifier() {
 	if (Input::IsPressed(Input::FAST_FORWARD)) {
-		return 5 + (Input::IsPressed(Input::PLUS) ? 5 : 0);
+		return Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
 	}
 
 	return 1;

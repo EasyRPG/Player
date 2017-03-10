@@ -35,7 +35,6 @@
 namespace Graphics {
 	void UpdateTitle();
 	void DrawFrame();
-	void DrawOverlay();
 
 	int framerate;
 
@@ -45,7 +44,6 @@ namespace Graphics {
 	BitmapRef black_screen;
 	BitmapRef screen1;
 	BitmapRef screen2;
-	bool frozen;
 	TransitionType transition_type;
 	int transition_duration;
 	int transition_frames_left;
@@ -192,8 +190,6 @@ void Graphics::DrawFrame() {
 	for (Drawable* drawable : global_state->drawable_list) {
 		drawable->Draw();
 	}
-
-	//DrawOverlay();
 
 	DisplayUi->UpdateDisplay();
 }
