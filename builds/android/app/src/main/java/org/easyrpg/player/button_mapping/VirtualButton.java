@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -196,7 +197,11 @@ public class VirtualButton extends View {
         } else if (keyCode == KEY_PLUS) {
             charButton = '+';
         } else if (keyCode == KEY_FAST_FORWARD) {
-            charButton = '⏩';
+            if (Build.VERSION.SDK_INT >= 16) { // Android 4.1
+                charButton = '⏩';
+            } else {
+                charButton = '>';
+            }
         } else {
             charButton = '?';
         }

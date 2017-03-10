@@ -158,18 +158,14 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
     public void addAButton(String s) {
         int keyCode = -1;
-        char charButton = ' ';
         Context ctx = getApplicationContext();
 
         if (s.equals(ctx.getString(R.string.key_enter))) {
             keyCode = KeyEvent.KEYCODE_SPACE;
-            charButton = 'A';
         } else if (s.equals(ctx.getString(R.string.key_cancel))) {
             keyCode = KeyEvent.KEYCODE_B;
-            charButton = 'B';
         } else if (s.equals(ctx.getString(R.string.key_shift))) {
             keyCode = KeyEvent.KEYCODE_SHIFT_LEFT;
-            charButton = 'S';
         } else if (s.equals("0")) {
             keyCode = KeyEvent.KEYCODE_0;
         } else if (s.equals("1")) {
@@ -206,10 +202,6 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             keyCode = MenuButton.MENU_BUTTON_KEY;
         } else if (s.equals(ctx.getString(R.string.key_fast_forward))) {
             keyCode = KeyEvent.KEYCODE_F;
-        }
-
-        if (charButton == ' ') {
-            charButton = s.charAt(0);
         }
 
         VirtualButton vb = null;
