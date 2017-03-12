@@ -460,6 +460,10 @@ bool Game_Player::CheckActionEvent() {
 bool Game_Player::CheckTouchEvent() {
 	if (InAirship())
 		return false;
+
+	if (IsMoveRouteOverwritten())
+		return false;
+
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
 }
 

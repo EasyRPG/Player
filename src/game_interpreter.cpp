@@ -1577,6 +1577,15 @@ bool Game_Interpreter::CommandChangeEventLocation(RPG::EventCommand const& com) 
 		int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 		int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 		event->MoveTo(x, y);
+
+		// RPG2k3 feature
+		int direction = com.parameters.size() > 4 ? com.parameters[4] - 1 : -1;
+		// Only for the constant case, not for variables
+		if (com.parameters[1] == 0 && direction != -1) {
+			event->SetDirection(direction);
+			if (!(event->IsDirectionFixed() || event->IsFacingLocked()))
+				event->SetSpriteDirection(direction);
+		}
 	}
 	return true;
 }

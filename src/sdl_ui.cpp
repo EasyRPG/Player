@@ -555,11 +555,13 @@ void SdlUi::ToggleZoom() {
 void SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	// Reset Mouse scroll
 	if (Player::mouse_flag) {
 		keys[Input::Keys::MOUSE_SCROLLUP] = false;
 		keys[Input::Keys::MOUSE_SCROLLDOWN] = false;
 	}
+#endif
 
 	// Poll SDL events and process them
 	while (SDL_PollEvent(&evnt)) {
