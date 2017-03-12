@@ -23,7 +23,7 @@
 #include "bitmap.h"
 
 MessageOverlay::MessageOverlay() :
-	type(TypeMessageOverlay),
+	type(TypeOverlay),
 	z(100),
 	ox(0),
 	oy(0),

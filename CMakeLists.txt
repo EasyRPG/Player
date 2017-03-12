@@ -31,6 +31,7 @@ set(PLAYER_SRCS
 	src/decoder_xmp.cpp
 	src/filefinder.cpp
 	src/font.cpp
+	src/fps_overlay.cpp
 	src/frame.cpp
 	src/game_actor.cpp
 	src/game_actors.cpp

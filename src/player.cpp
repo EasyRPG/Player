@@ -341,10 +341,7 @@ void Player::Update(bool update_scene) {
 	if (update_scene) {
 		std::shared_ptr<Scene> old_instance = Scene::instance;
 
-		int speed_modifier = 1;
-		if (Input::IsPressed(Input::FAST_FORWARD)) {
-			speed_modifier = (5 + (Input::IsPressed(Input::PLUS) ? 5 : 0));
-		}
+		int speed_modifier = GetSpeedModifier();
 
 		for (int i = 0; i < speed_modifier; ++i) {
 			Graphics::Update(false);
@@ -918,6 +915,14 @@ std::string Player::GetEncoding() {
 	}
 
 	return encoding;
+}
+
+int Player::GetSpeedModifier() {
+	if (Input::IsPressed(Input::FAST_FORWARD)) {
+		return 5 + (Input::IsPressed(Input::PLUS) ? 5 : 0);
+	}
+
+	return 1;
 }
 
 void Player::PrintVersion() {

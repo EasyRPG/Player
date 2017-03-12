@@ -30,17 +30,13 @@
 #include "util_macro.h"
 #include "output.h"
 #include "player.h"
+#include "fps_overlay.h"
 
 namespace Graphics {
 	void UpdateTitle();
 	void DrawFrame();
 	void DrawOverlay();
-	std::string GetFpsString();
 
-	/** Frames per second */
-	int fps;
-	/** Logic updates per second */
-	int ups;
 	int framerate;
 
 	void UpdateTransition();
@@ -65,14 +61,13 @@ namespace Graphics {
 		bool draw_background = true;
 	};
 
-	int real_fps;
-	int real_ups;
-
 	std::shared_ptr<State> state;
 	std::vector<std::shared_ptr<State> > stack;
 	std::shared_ptr<State> global_state;
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
+
+	std::unique_ptr<FpsOverlay> fps_overlay;
 }
 
 unsigned SecondToFrame(float const second) {
@@ -80,8 +75,6 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
-	fps = 0;
-	ups = 0;
 	frozen_screen = BitmapRef();
 	screen_erased = false;
 	transition_frames_left = 0;
@@ -90,6 +83,9 @@ void Graphics::Init() {
 
 	state.reset(new State());
 	global_state.reset(new State());
+
+	// Is a drawable, must be init after state
+	fps_overlay.reset(new FpsOverlay());
 
 	next_fps_time = 0;
 }
@@ -100,6 +96,7 @@ void Graphics::Quit() {
 
 	frozen_screen.reset();
 	black_screen.reset();
+	fps_overlay.reset();
 
 	Cache::Clear();
 }
@@ -114,30 +111,28 @@ void Graphics::Update(bool time_left) {
 	if (current_time >= next_fps_time) {
 		// 1 sec over
 		next_fps_time += 1000;
-		real_fps = fps;
-		real_ups = ups;
 
-		if (fps == 0) {
+		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
 			DrawFrame();
 		}
 
-		fps = 0;
-		ups = 0;
-
 		next_fps_time = current_time + 1000;
+
+		fps_overlay->ResetCounter();
 
 		UpdateTitle();
 	}
 
 	// Render next frame
 	if (time_left) {
-		fps++;
+		fps_overlay->AddFrame();
 
 		DrawFrame();
 	}
 
-	ups++;
+	fps_overlay->Update();
+	fps_overlay->AddUpdate();
 }
 
 void Graphics::UpdateTitle() {
@@ -153,7 +148,7 @@ void Graphics::UpdateTitle() {
 	title << GAME_TITLE;
 
 	if (Player::fps_flag) {
-		title << " - " << GetFpsString();
+		title << " - " << fps_overlay->GetFpsString();
 	}
 
 	DisplayUi->SetTitle(title.str());
@@ -166,8 +161,6 @@ void Graphics::DrawFrame() {
 		for (Drawable* drawable : global_state->drawable_list) {
 			drawable->Draw();
 		}
-
-		DrawOverlay();
 
 		DisplayUi->UpdateDisplay();
 		return;
@@ -200,22 +193,9 @@ void Graphics::DrawFrame() {
 		drawable->Draw();
 	}
 
-	DrawOverlay();
+	//DrawOverlay();
 
 	DisplayUi->UpdateDisplay();
-}
-
-void Graphics::DrawOverlay() {
-	if (
-#ifndef EMSCRIPTEN
-		DisplayUi->IsFullscreen() &&
-#endif
-		Player::fps_flag) {
-		std::string text = GetFpsString();
-		Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text);
-		DisplayUi->GetDisplaySurface()->Blit(1, 2, *black_screen, Rect(0, 0, rect.width + 1, rect.height - 1), 128);
-		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text);
-	}
 }
 
 BitmapRef Graphics::SnapToBitmap() {
@@ -447,7 +427,7 @@ void Graphics::UpdateTransition() {
 
 void Graphics::FrameReset() {
 	next_fps_time = (uint32_t)DisplayUi->GetTicks() + 1000;
-	fps = 0;
+	fps_overlay->ResetCounter();
 }
 
 void Graphics::RegisterDrawable(Drawable* drawable) {
@@ -495,18 +475,4 @@ void Graphics::Pop() {
 
 int Graphics::GetDefaultFps() {
 	return DEFAULT_FPS;
-}
-
-std::string Graphics::GetFpsString() {
-	std::stringstream text;
-	text << "FPS: " << real_fps;
-
-	if (Input::IsPressed(Input::FAST_FORWARD)) {
-		text << " >";
-		if (Input::IsPressed(Input::PLUS)) {
-			text << ">";
-		}
-		text << " " << real_ups;
-	}
-        return text.str();
 }

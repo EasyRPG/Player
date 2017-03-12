@@ -28,7 +28,7 @@ enum DrawableType {
 	TypeScreen,
 	TypeFrame,
 	TypeWeather,
-	TypeMessageOverlay,
+	TypeOverlay,
 	TypeDefault};
 
 /**

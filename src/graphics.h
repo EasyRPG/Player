@@ -128,8 +128,6 @@ namespace Graphics {
 	void Push(bool draw_background = true);
 	void Pop();
 
-	unsigned SecondToFrame(float second);
-
 	/**
 	 * Gets target frame rate.
 	 *
