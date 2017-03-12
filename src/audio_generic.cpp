@@ -153,6 +153,8 @@ void GenericAudio::SE_Play(std::string const &file, int volume, int pitch) {
 			return;
 		}
 	}
+
+	Output::Warning("Couldn't play %s SE: No free channel available", file.c_str());
 }
 
 void GenericAudio::SE_Stop() {
@@ -177,7 +179,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("Audio not readable: %s", file.c_str());
+		Output::Warning("BGM file not readable: %s", file.c_str());
 		return false;
 	}
 
@@ -188,10 +190,10 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 		chan.decoder->SetFade(0, volume, fadein);
 		chan.decoder->SetLooping(true);
 		chan.paused = false; // Unpause channel -> Play it.
-		//Output::Debug("Audio started: %s, samplerate: %u, pitch: %u", file.c_str(),chan.samplerate, pitch);
+
 		return true;
 	} else {
-		Output::Debug("Audioformat of %s not supported: %s", file.c_str(), file.c_str());
+		Output::Warning("Couldn't play BGM %s: Format not supported", file.c_str());
 		fclose(filehandle);
 	}
 
@@ -211,10 +213,10 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, const std::string& file, int v
 		chan.buffer_pos = 0;
 		chan.volume = volume;
 		chan.paused = false; // Unpause channel -> Play it.
-		//Output::Debug("Audio started: %s, samplerate: %u, pitch: %u", file.c_str(),chan.samplerate, pitch);
+
 		return true;
 	} else {
-		Output::Debug("Audioformat of %s not supported: %s", file.c_str(), file.c_str());
+		Output::Warning("Couldn't play SE %s: Format not supported", file.c_str());
 	}
 
 	return false;
@@ -396,9 +398,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 		}
 	}
 
-
 	if (channel_active) {
-
 		if (total_volume > 1.0) {
 			float threshold = 0.8;
 			for (unsigned i = 0; i < samples_per_frame * 2; i++) {

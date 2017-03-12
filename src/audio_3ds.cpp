@@ -86,10 +86,8 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 			bgm_decoder->SetFormat(frequency, out_format, channels);
 		}
 		ndspChnSetRate(bgm_channel, frequency);
-
-		Output::Debug("Audio started: %s, samplerate: %u, pitch: %u", file.c_str(),frequency,pitch);
 	} else {
-		Output::Debug("Audioformat of %s not supported: %s", file.c_str(),file.c_str());
+		Output::Warning("Couldn't play BGM %s: Format not supported", file.c_str());
 		fclose(filehandle);
 	}
 
@@ -164,7 +162,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (se_channel == -1) {
-		Output::Warning("Couldn't play %s SE.\nNo free channel available.", file.c_str());
+		Output::Warning("Couldn't play %s SE: No free channel available", file.c_str());
 		return;
 	}
 
@@ -203,7 +201,7 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 
 		ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
 	} else {
-		Output::Debug("%s: Format not supported", file.c_str());
+		Output::Warning("Couldn't play SE %s: Format not supported", file.c_str());
 	}
 }
 
