@@ -57,7 +57,7 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() / 2));
 
-	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation * 360 / 256 : 0.0);
+	sprite->SetAngle(data.effect_mode != 2 ? data.current_rotation * 360 / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == 2 ? data.current_effect * 2 : 0);
 	sprite->SetOpacity(
@@ -80,6 +80,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	SetNonEffectParams(params);
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == 0) {
+		// params.effect_power seems to contain garbage here
 		data.finish_effect = 0.0;
 	} else {
 		data.finish_effect = params.effect_power;
@@ -102,7 +103,35 @@ void Game_Picture::Move(const MoveParams& params) {
 	SetNonEffectParams(params);
 	data.time_left = params.duration * DEFAULT_FPS / 10;
 
-	// PLACEHOLDER
+	// TODO: Do something special for RM2k here
+
+	// Note that data.effect_mode doesn't necessarily reflect the
+	// last effect set. Possible states are:
+	//
+	// * effect_mode == 0 && finish_effect == 0
+	//   Picture has not had an effect set since Show.
+	// * effect_mode == 0 && finish_effect != 0
+	//   Picture was set to no effect; previously, it was rotating.
+	// * effect_mode == 2 && finish_effect == 0
+	//   Picture was set to no effect; previously, it was wavering.
+	// * effect_mode == 1
+	//   Picture was set to rotate.
+	// * effect_mode == 2 && finish_effect != 0
+	//   Picture was set to waver.
+
+	if (data.effect_mode == 0 && params.effect_mode == 0) {
+		// Nothing to do
+	} else if (data.effect_mode == params.effect_mode) {
+		data.finish_effect = params.effect_power;
+	} else if (data.effect_mode == 1 && params.effect_mode == 0) {
+		data.effect_mode = 0;
+	} else if (data.effect_mode == 2 && params.effect_mode == 0) {
+		data.finish_effect = 0;
+	} else {
+		data.effect_mode = params.effect_mode;
+		data.current_effect = params.effect_power;
+		data.finish_effect = params.effect_power;
+	}
 }
 
 void Game_Picture::Erase() {
@@ -160,11 +189,6 @@ void Game_Picture::Update() {
 		old_map_y = Game_Map::GetDisplayY();
 	}
 
-	if (data.effect_mode == 1)
-		data.current_rotation += data.current_effect;
-	if (data.effect_mode == 2)
-		data.current_waver += 10;
-
 	if (data.time_left == 0) {
 		SyncCurrentToFinish();
 	} else {
@@ -182,9 +206,35 @@ void Game_Picture::Update() {
 		interpolate(data.current_magnify, data.finish_magnify);
 		interpolate(data.current_top_trans, data.finish_top_trans);
 		interpolate(data.current_bot_trans, data.finish_bot_trans);
-		interpolate(data.current_effect, data.finish_effect);
+		if (data.effect_mode != 0) {
+			interpolate(data.current_effect, data.finish_effect);
+		}
 
 		data.time_left--;
+	}
+
+	// Update rotation
+	if (data.current_rotation >= 256.0) {
+		data.current_rotation -= 256.0;
+	}
+	bool is_rotating_but_stopping =
+		data.effect_mode == 0 && (
+			data.current_rotation != 0.0 ||
+			data.current_effect * data.time_left >= 256.0
+		);
+	bool is_rotating =
+		data.effect_mode == 1 ||
+		is_rotating_but_stopping;
+	if (is_rotating) {
+		data.current_rotation += data.current_effect;
+		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
+			data.current_rotation = 0.0;
+		}
+	}
+
+	// Update waver phase
+	if (data.effect_mode == 2) {
+		data.current_waver += 10;
 	}
 
 	UpdateSprite();
