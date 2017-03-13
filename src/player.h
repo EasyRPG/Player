@@ -156,9 +156,14 @@ namespace Player {
 	bool IsRPG2k3E();
 
 	/**
-         * @return if encoding is CP932 or not
+	 * @return if encoding is CP932 or not
 	 */
 	bool IsCP932();
+
+	/**
+	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
+	 */
+	int GetSpeedModifier();
 
 	/** Output program version on stdout */
 	void PrintVersion();
@@ -237,6 +242,13 @@ namespace Player {
 
 	/** Game title. */
 	extern std::string game_title;
+
+	/**
+	 * The default speed modifier applied when the speed up button is pressed
+	 *  Only used for configuring the speedup, don't read this var directly use
+	 *  GetSpeedModifier() instead.
+	 */
+	extern int speed_modifier;
 
 #ifdef EMSCRIPTEN
 	/** Name of game emscripten uses */

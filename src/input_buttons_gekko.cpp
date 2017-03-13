@@ -29,7 +29,7 @@ void Input::InitButtons() {
 	buttons[SHIFT].push_back(Keys::JOY_1); // B
 	buttons[CANCEL].push_back(Keys::JOY_2); // 1
 	buttons[DECISION].push_back(Keys::JOY_3); // 2
-	buttons[MINUS].push_back(Keys::JOY_4); // -
+	buttons[FAST_FORWARD].push_back(Keys::JOY_4); // -
 	buttons[PLUS].push_back(Keys::JOY_5); // +
 	buttons[CANCEL].push_back(Keys::JOY_6); // Home
 
@@ -46,7 +46,7 @@ void Input::InitButtons() {
 	buttons[N5].push_back(Keys::JOY_14); // R
 	buttons[N9].push_back(Keys::JOY_15); // Zl
 	buttons[TOGGLE_FPS].push_back(Keys::JOY_16); // Zr
-	buttons[MINUS].push_back(Keys::JOY_17); // -
+	buttons[FAST_FORWARD].push_back(Keys::JOY_17); // -
 	buttons[PLUS].push_back(Keys::JOY_18); // +
 	buttons[CANCEL].push_back(Keys::JOY_19); // Home
 

@@ -60,6 +60,7 @@ namespace Input {
 		PAGE_DOWN,
 		SCROLL_UP,
 		SCROLL_DOWN,
+		FAST_FORWARD,
 		BUTTON_COUNT
 	};
 

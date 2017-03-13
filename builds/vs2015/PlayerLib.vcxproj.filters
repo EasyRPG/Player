@@ -369,7 +369,7 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window_teleport.cpp">
-      <Filter>Source Files\Engine\Window</Filter> 
+      <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\cache.cpp">
       <Filter>Source Files\Engine</Filter>
@@ -496,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\decoder_wav.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fps_overlay.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -981,6 +984,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\decoder_oggvorbis.h">
       <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\fps_overlay.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

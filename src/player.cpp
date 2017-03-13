@@ -99,6 +99,7 @@ namespace Player {
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
+	int speed_modifier = 3;
 #ifdef EMSCRIPTEN
 	std::string emscripten_game_name;
 #endif
@@ -337,12 +338,24 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+
 	if (update_scene) {
-		Scene::instance->Update();
+		std::shared_ptr<Scene> old_instance = Scene::instance;
+
+		int speed_modifier = GetSpeedModifier();
+
+		for (int i = 0; i < speed_modifier; ++i) {
+			Graphics::Update(false);
+			Scene::instance->Update();
+			++frames;
+			// Scene changed, not save to Update again, setup code must run
+			if (&*old_instance != &*Scene::instance) {
+				break;
+			}
+		}
 	}
 
 	start_time = next_frame;
-	++frames;
 }
 
 void Player::FrameReset() {
@@ -903,6 +916,14 @@ std::string Player::GetEncoding() {
 	}
 
 	return encoding;
+}
+
+int Player::GetSpeedModifier() {
+	if (Input::IsPressed(Input::FAST_FORWARD)) {
+		return Input::IsPressed(Input::PLUS) ? 10 : speed_modifier;
+	}
+
+	return 1;
 }
 
 void Player::PrintVersion() {

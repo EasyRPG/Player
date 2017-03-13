@@ -42,6 +42,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 void Scene_GameBrowser::Start() {
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
 	CreateWindows();
+	Player::FrameReset();
 }
 
 void Scene_GameBrowser::Continue() {

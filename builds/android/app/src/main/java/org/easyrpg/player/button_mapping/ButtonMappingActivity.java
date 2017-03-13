@@ -62,7 +62,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             if (b instanceof VirtualCross) {
                 vb = new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize());
             } else if (b.keyCode > 0) {
-                vb = new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
+                vb = VirtualButton.Create(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize());
             } else if (b.keyCode == MenuButton.MENU_BUTTON_KEY) {
                 vb = new MenuButton(this, b.getPosX(), b.getPosY(), b.getSize());
             }
@@ -124,7 +124,7 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
                 inputLayout.getButtonList().add(new VirtualCross(this, b.getPosX(), b.getPosY(), b.getSize()));
             }
             else if (b.keyCode > 0) {
-                inputLayout.getButtonList().add(new VirtualButton(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
+                inputLayout.getButtonList().add(VirtualButton.Create(this, b.getKeyCode(), b.getPosX(), b.getPosY(), b.getSize()));
             } else if (b.keyCode == MenuButton.MENU_BUTTON_KEY) {
                 inputLayout.getButtonList().add(new MenuButton(this, b.getPosX(), b.getPosY(), b.getSize()));
             }
@@ -140,8 +140,10 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
                 ctx.getString(R.string.key_enter),
                 ctx.getString(R.string.key_cancel),
                 ctx.getString(R.string.key_shift),
+                "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/",
                 ctx.getString(R.string.menu),
-                "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "*", "/"};
+                ctx.getString(R.string.key_fast_forward)
+        };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.add_a_button));
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -156,18 +158,14 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
 
     public void addAButton(String s) {
         int keyCode = -1;
-        char charButton = ' ';
         Context ctx = getApplicationContext();
 
         if (s.equals(ctx.getString(R.string.key_enter))) {
             keyCode = KeyEvent.KEYCODE_SPACE;
-            charButton = 'A';
         } else if (s.equals(ctx.getString(R.string.key_cancel))) {
             keyCode = KeyEvent.KEYCODE_B;
-            charButton = 'B';
         } else if (s.equals(ctx.getString(R.string.key_shift))) {
             keyCode = KeyEvent.KEYCODE_SHIFT_LEFT;
-            charButton = 'S';
         } else if (s.equals("0")) {
             keyCode = KeyEvent.KEYCODE_0;
         } else if (s.equals("1")) {
@@ -202,15 +200,13 @@ public class ButtonMappingActivity extends Activity implements NavigationView.On
             keyCode = 154;
         } else if (s.equals(ctx.getString(R.string.menu))) {
             keyCode = MenuButton.MENU_BUTTON_KEY;
-        }
-
-        if (charButton == ' ') {
-            charButton = s.charAt(0);
+        } else if (s.equals(ctx.getString(R.string.key_fast_forward))) {
+            keyCode = KeyEvent.KEYCODE_F;
         }
 
         VirtualButton vb = null;
         if (keyCode > 0) {
-            vb = new VirtualButton(this, keyCode, 0.5, 0.5, 100);
+            vb = VirtualButton.Create(this, keyCode, 0.5, 0.5, 100);
         } else if (keyCode == MenuButton.MENU_BUTTON_KEY){
             vb = new MenuButton(this, 0.5, 0.5, 100);
         }

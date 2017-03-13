@@ -83,6 +83,7 @@ Please tell us in detail what went wrong.\n\n
     <string name="key_enter">Enter (Z)</string>
     <string name="key_cancel">Cancel (ESC and X)</string>
     <string name="key_shift">Shift</string>
+    <string name="key_fast_forward">Fast forward</string>
 
     <!--GameBrowserAPI15-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
