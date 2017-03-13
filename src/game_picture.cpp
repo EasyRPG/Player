@@ -103,8 +103,6 @@ void Game_Picture::Move(const MoveParams& params) {
 	SetNonEffectParams(params);
 	data.time_left = params.duration * DEFAULT_FPS / 10;
 
-	// TODO: Do something special for RM2k here
-
 	// Note that data.effect_mode doesn't necessarily reflect the
 	// last effect set. Possible states are:
 	//
@@ -118,6 +116,14 @@ void Game_Picture::Move(const MoveParams& params) {
 	//   Picture was set to rotate.
 	// * effect_mode == 2 && finish_effect != 0
 	//   Picture was set to waver.
+
+	bool started_with_no_effect =
+		data.effect_mode == 0 && data.finish_effect == 0.0;
+	if (Player::IsRPG2k() && started_with_no_effect) {
+		// Possibly a bug(?) in RM2k: if Show Picture command has no
+		// effect, a Move Picture command cannot add one
+		return;
+	}
 
 	if (data.effect_mode == 0 && params.effect_mode == 0) {
 		// Nothing to do
