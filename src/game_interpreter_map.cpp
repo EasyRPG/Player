@@ -622,9 +622,6 @@ static void AdjustParams(Game_Picture::Params& params) {
 }
 
 static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
-	AdjustId(pic_id);
-	AdjustParams(params);
-
 	// Adjust name
 	if (pic_id >= 50000) {
 		// Name substitution is pic_id + 1
@@ -642,6 +639,9 @@ static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
 			params.name = new_pic_name;
 		}
 	}
+
+	AdjustId(pic_id);
+	AdjustParams(params);
 }
 
 static void AdjustMoveParams(int& pic_id, Game_Picture::MoveParams& params) {
