@@ -41,9 +41,6 @@ void Game_Screen::CreatePicturesFromSave() {
 	for (int id = 1; id < (int)save_pics.size(); ++id) {
 		if (!save_pics[id - 1].name.empty()) {
 			pictures[id - 1].reset(new Game_Picture(id));
-			int time_left = save_pics[id - 1].time_left;
-			pictures[id - 1]->Show(save_pics[id - 1].name, save_pics[id - 1].transparency);
-			pictures[id - 1]->SetTransition(time_left * DEFAULT_FPS / 10);
 		}
 	}
 }
@@ -86,22 +83,6 @@ void Game_Screen::Reset()
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
-	// PicPointer Patch handling
-	if (id > 10000) {
-		// Picture to point at
-		int new_id;
-		if (id > 50000) {
-			new_id = Game_Variables[id - 50000];
-		} else {
-			new_id = Game_Variables[id - 10000];
-		}
-
-		if (new_id > 0) {
-			Output::Debug("PicPointer: ID %d replaced with ID %d", id, new_id);
-			id = new_id;
-		}
-	}
-
 	if (id <= 0) {
 		return NULL;
 	}
@@ -116,7 +97,7 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 
 		pictures.resize(id);
 	}
-	std::shared_ptr<Game_Picture>& p = pictures[id - 1];
+	std::unique_ptr<Game_Picture>& p = pictures[id - 1];
 	if (!p)
 		p.reset(new Game_Picture(id));
 	return p.get();
@@ -276,10 +257,9 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<std::shared_ptr<Game_Picture> >::const_iterator it;
-	for (it = pictures.begin(); it != pictures.end(); ++it) {
-		if (*it) {
-			(*it)->Update();
+	for (const auto& picture : pictures) {
+		if (picture) {
+			picture->Update();
 		}
 	}
 

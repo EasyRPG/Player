@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
@@ -24,15 +23,12 @@
 #include "player.h"
 #include "main_data.h"
 
-/**
- * Picture class.
- */
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
 	old_map_x(0),
 	old_map_y(0)
 {
-	SetTransition(0);
+	RequestPictureSprite();
 }
 
 Game_Picture::~Game_Picture() {
@@ -42,7 +38,7 @@ Game_Picture::~Game_Picture() {
 		return;
 	}
 
-	GetData().name = "";
+	GetData().name.clear();
 }
 
 void Game_Picture::UpdateSprite() {
@@ -61,7 +57,7 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() / 2));
 
-	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation * 360 / 256 : 0.0);
+	sprite->SetAngle(data.effect_mode != 2 ? data.current_rotation * 360 / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == 2 ? data.current_effect * 2 : 0);
 	sprite->SetOpacity(
@@ -75,29 +71,73 @@ void Game_Picture::UpdateSprite() {
 						 (int) (data.current_sat * 128 / 100)));
 }
 
-void Game_Picture::Show(const std::string& _name, bool _transparency) {
+void Game_Picture::Show(const ShowParams& params) {
 	RPG::SavePicture& data = GetData();
 
-	data.name = _name;
-	data.transparency = _transparency;
+	data.name = params.name;
+	data.transparency = params.transparency;
+	data.fixed_to_map = params.fixed_to_map;
+	SetNonEffectParams(params);
+	data.effect_mode = params.effect_mode;
+	if (data.effect_mode == 0) {
+		// params.effect_power seems to contain garbage here
+		data.finish_effect = 0.0;
+	} else {
+		data.finish_effect = params.effect_power;
+	}
+	SyncCurrentToFinish();
+	data.current_rotation = 0.0;
+	data.current_waver = 0;
 	data.time_left = 0;
 
-	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", data.name);
-	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
-	request->Start();
+	RequestPictureSprite();
+	UpdateSprite();
 
 	old_map_x = Game_Map::GetDisplayX();
 	old_map_y = Game_Map::GetDisplayY();
 }
 
-void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
+void Game_Picture::Move(const MoveParams& params) {
 	RPG::SavePicture& data = GetData();
 
-	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
+	SetNonEffectParams(params);
+	data.time_left = params.duration * DEFAULT_FPS / 10;
 
-	sprite.reset(new Sprite());
-	sprite->SetBitmap(bitmap);
-	UpdateSprite();
+	// Note that data.effect_mode doesn't necessarily reflect the
+	// last effect set. Possible states are:
+	//
+	// * effect_mode == 0 && finish_effect == 0
+	//   Picture has not had an effect set since Show.
+	// * effect_mode == 0 && finish_effect != 0
+	//   Picture was set to no effect; previously, it was rotating.
+	// * effect_mode == 2 && finish_effect == 0
+	//   Picture was set to no effect; previously, it was wavering.
+	// * effect_mode == 1
+	//   Picture was set to rotate.
+	// * effect_mode == 2 && finish_effect != 0
+	//   Picture was set to waver.
+
+	bool started_with_no_effect =
+		data.effect_mode == 0 && data.finish_effect == 0.0;
+	if (Player::IsRPG2k() && started_with_no_effect) {
+		// Possibly a bug(?) in RM2k: if Show Picture command has no
+		// effect, a Move Picture command cannot add one
+		return;
+	}
+
+	if (data.effect_mode == 0 && params.effect_mode == 0) {
+		// Nothing to do
+	} else if (data.effect_mode == params.effect_mode) {
+		data.finish_effect = params.effect_power;
+	} else if (data.effect_mode == 1 && params.effect_mode == 0) {
+		data.effect_mode = 0;
+	} else if (data.effect_mode == 2 && params.effect_mode == 0) {
+		data.finish_effect = 0;
+	} else {
+		data.effect_mode = params.effect_mode;
+		data.current_effect = params.effect_power;
+		data.finish_effect = params.effect_power;
+	}
 }
 
 void Game_Picture::Erase() {
@@ -109,92 +149,23 @@ void Game_Picture::Erase() {
 	sprite.reset();
 }
 
-void Game_Picture::SetFixedToMap(bool flag) {
-	RPG::SavePicture& data = GetData();
+void Game_Picture::RequestPictureSprite() {
+	const std::string& name = GetData().name;
+	if (name.empty()) return;
 
-	data.fixed_to_map = flag;
+	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
+	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
+	request->Start();
 }
 
-void Game_Picture::SetMovementEffect(int x, int y) {
+void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	RPG::SavePicture& data = GetData();
 
-	data.finish_x = x;
-	data.finish_y = y;
-}
+	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
 
-void Game_Picture::SetColorEffect(int r, int g, int b, int s) {
-	RPG::SavePicture& data = GetData();
-
-	data.finish_red = r;
-	data.finish_green = g;
-	data.finish_blue = b;
-	data.finish_sat = s;
-}
-
-void Game_Picture::SetZoomEffect(int scale) {
-	RPG::SavePicture& data = GetData();
-
-	data.finish_magnify = scale;
-}
-
-void Game_Picture::SetTransparencyEffect(int top, int bottom) {
-	RPG::SavePicture& data = GetData();
-
-	data.finish_top_trans = top;
-	data.finish_bot_trans = bottom;
-}
-
-void Game_Picture::SetRotationEffect(int speed) {
-	RPG::SavePicture& data = GetData();
-
-	if (!data.time_left || Player::IsRPG2k3()) {
-		if (data.effect_mode != 1)
-			data.current_rotation = 0;
-		data.effect_mode = 1;
-	}
-	data.finish_effect = speed;
-}
-
-void Game_Picture::SetWaverEffect(int depth) {
-	RPG::SavePicture& data = GetData();
-
-	if (!data.time_left || Player::IsRPG2k3()) {
-		if (data.effect_mode != 2)
-			data.current_waver = 0;
-		data.effect_mode = 2;
-	}
-	data.finish_effect = depth;
-}
-
-void Game_Picture::StopEffects() {
-	RPG::SavePicture& data = GetData();
-
-	if (!data.time_left || Player::IsRPG2k3())
-		data.effect_mode = 0;
-}
-
-void Game_Picture::SetTransition(int tenths) {
-	RPG::SavePicture& data = GetData();
-
-	data.time_left = tenths * DEFAULT_FPS / 10;
-
-	if (tenths == 0) {
-		data.current_x			= data.finish_x;
-		data.current_y			= data.finish_y;
-		data.current_red		= data.finish_red;
-		data.current_green		= data.finish_green;
-		data.current_blue		= data.finish_blue;
-		data.current_sat		= data.finish_sat;
-		data.current_magnify	= data.finish_magnify;
-		data.current_top_trans	= data.finish_top_trans;
-		data.current_bot_trans	= data.finish_bot_trans;
-		data.current_effect		= data.finish_effect;
-		UpdateSprite();
-	}
-}
-
-static double interpolate(double d, double x0, double x1) {
-	return (x0 * (d - 1) + x1) / d;
+	sprite.reset(new Sprite());
+	sprite->SetBitmap(bitmap);
+	UpdateSprite();
 }
 
 void Game_Picture::Update() {
@@ -224,29 +195,84 @@ void Game_Picture::Update() {
 		old_map_y = Game_Map::GetDisplayY();
 	}
 
-	if (data.effect_mode == 1)
-		data.current_rotation += data.current_effect;
-	if (data.effect_mode == 2)
-		data.current_waver += 10;
+	if (data.time_left == 0) {
+		SyncCurrentToFinish();
+	} else {
+		auto interpolate = [=](double& current, double finish) {
+			double d = data.time_left;
+			current = (current * (d - 1) + finish) / d;
+		};
 
-	if (data.time_left > 0) {
-		double k = data.time_left;
-
-		data.current_x			= interpolate(k, data.current_x,			data.finish_x);
-		data.current_y			= interpolate(k, data.current_y,			data.finish_y);
-		data.current_red		= interpolate(k, data.current_red,			data.finish_red);
-		data.current_green		= interpolate(k, data.current_green,		data.finish_green);
-		data.current_blue		= interpolate(k, data.current_blue,			data.finish_blue);
-		data.current_sat		= interpolate(k, data.current_sat,			data.finish_sat);
-		data.current_magnify	= interpolate(k, data.current_magnify,		data.finish_magnify);
-		data.current_top_trans	= interpolate(k, data.current_top_trans,	data.finish_top_trans);
-		data.current_bot_trans	= interpolate(k, data.current_bot_trans,	data.finish_bot_trans);
-		data.current_effect		= interpolate(k, data.current_effect,		data.finish_effect);
+		interpolate(data.current_x, data.finish_x);
+		interpolate(data.current_y, data.finish_y);
+		interpolate(data.current_red, data.finish_red);
+		interpolate(data.current_green, data.finish_green);
+		interpolate(data.current_blue, data.finish_blue);
+		interpolate(data.current_sat, data.finish_sat);
+		interpolate(data.current_magnify, data.finish_magnify);
+		interpolate(data.current_top_trans, data.finish_top_trans);
+		interpolate(data.current_bot_trans, data.finish_bot_trans);
+		if (data.effect_mode != 0) {
+			interpolate(data.current_effect, data.finish_effect);
+		}
 
 		data.time_left--;
 	}
 
+	// Update rotation
+	if (data.current_rotation >= 256.0) {
+		data.current_rotation -= 256.0;
+	}
+	bool is_rotating_but_stopping =
+		data.effect_mode == 0 && (
+			data.current_rotation != 0.0 ||
+			data.current_effect * data.time_left >= 256.0
+		);
+	bool is_rotating =
+		data.effect_mode == 1 ||
+		is_rotating_but_stopping;
+	if (is_rotating) {
+		data.current_rotation += data.current_effect;
+		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
+			data.current_rotation = 0.0;
+		}
+	}
+
+	// Update waver phase
+	if (data.effect_mode == 2) {
+		data.current_waver += 10;
+	}
+
 	UpdateSprite();
+}
+
+void Game_Picture::SetNonEffectParams(const Params& params) {
+	RPG::SavePicture& data = GetData();
+
+	data.finish_x = params.position_x;
+	data.finish_y = params.position_y;
+	data.finish_magnify = params.magnify;
+	data.finish_top_trans = params.top_trans;
+	data.finish_bot_trans = params.bottom_trans;
+	data.finish_red = params.red;
+	data.finish_green = params.green;
+	data.finish_blue = params.blue;
+	data.finish_sat = params.saturation;
+}
+
+void Game_Picture::SyncCurrentToFinish() {
+	RPG::SavePicture& data = GetData();
+
+	data.current_x = data.finish_x;
+	data.current_y = data.finish_y;
+	data.current_red = data.finish_red;
+	data.current_green = data.finish_green;
+	data.current_blue = data.finish_blue;
+	data.current_sat = data.finish_sat;
+	data.current_magnify = data.finish_magnify;
+	data.current_top_trans = data.finish_top_trans;
+	data.current_bot_trans = data.finish_bot_trans;
+	data.current_effect = data.finish_effect;
 }
 
 RPG::SavePicture& Game_Picture::GetData() const {
