@@ -534,14 +534,6 @@ namespace Game_Map {
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
 
-
-	void SetParallaxName(const std::string& name);
-	void SetParallaxScroll(bool horz, bool vert,
-						   bool horz_auto, bool vert_auto,
-						   int horz_speed, int vert_speed);
-	void SetParallaxSize(int width, int height);
-	void InitializeParallax();
-
 	/**
 	 * Gets the map index from MapInfo vector using map ID.
 	 *
@@ -603,11 +595,6 @@ namespace Game_Map {
 	int GetPanX();
 	int GetPanY();
 
-	void UpdateParallax();
-	int GetParallaxX();
-	int GetParallaxY();
-	const std::string& GetParallaxName();
-
 	/**
 	 * Gets if pending teleportations will be ignored.
 	 *
@@ -626,6 +613,28 @@ namespace Game_Map {
 	void SetTeleportDelayed(bool delay);
 
 	FileRequestAsync* RequestMap(int map_id);
+
+	namespace Parallax {
+		std::string GetName();
+		int GetX();
+		int GetY();
+
+		void Initialize(int width, int height);
+		void ResetPosition();
+		void Update();
+
+		struct Params {
+			std::string name;
+			bool scroll_horz;
+			bool scroll_horz_auto;
+			int scroll_horz_speed;
+			bool scroll_vert;
+			bool scroll_vert_auto;
+			int scroll_vert_speed;
+		};
+		void ChangeBG(const Params& params);
+		void ClearChangedBG();
+	}
 }
 
 #endif

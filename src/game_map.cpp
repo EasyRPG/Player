@@ -142,15 +142,7 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id);
 
-	if (map->parallax_flag) {
-		SetParallaxName(map->parallax_name);
-		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
-			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
-			map->parallax_sx, map->parallax_sy);
-	}
-	else {
-		SetParallaxName("");
-	}
+	Parallax::ClearChangedBG();
 
 	SetChipset(map->chipset_id);
 
@@ -874,7 +866,7 @@ void Game_Map::Update(bool only_parallel) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 	UpdateScroll();
 	UpdatePan();
-	UpdateParallax();
+	Parallax::Update();
 	if (animation) {
 		animation->Update();
 		if (animation->IsDone()) {
@@ -1153,44 +1145,6 @@ std::vector<Game_CommonEvent>& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 
-void Game_Map::SetParallaxName(const std::string& name) {
-	map_info.parallax_name = name;
-}
-
-void Game_Map::SetParallaxScroll(bool horz, bool vert,
-								 bool horz_auto, bool vert_auto,
-								 int horz_speed, int vert_speed) {
-	map_info.parallax_horz = horz;
-	map_info.parallax_vert = vert;
-	map_info.parallax_horz_auto = horz_auto;
-	map_info.parallax_vert_auto = vert_auto;
-	map_info.parallax_horz_speed = horz_speed;
-	map_info.parallax_vert_speed = vert_speed;
-}
-
-void Game_Map::SetParallaxSize(int width, int height) {
-	parallax_width = width;
-	parallax_height = height;
-}
-
-void Game_Map::InitializeParallax() {
-	if (map_info.parallax_horz)
-		parallax_x = -map_info.position_x / 2;
-	else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
-		parallax_x = -std::min(map_info.position_x,
-			(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
-	else
-		parallax_x = 0;
-
-	if (map_info.parallax_vert)
-		parallax_y = -map_info.position_y / 2;
-	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
-		parallax_y = -std::min(map_info.position_y,
-			(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
-	else
-		parallax_y = 0;
-}
-
 int Game_Map::GetMapIndex(int id) {
 	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
 		if (Data::treemap.maps[i].ID == id) {
@@ -1357,37 +1311,6 @@ int Game_Map::GetPanY() {
 	return location.pan_current_y;
 }
 
-void Game_Map::UpdateParallax() {
-	if (map_info.parallax_name.empty())
-		return;
-
-	if (map_info.parallax_horz &&
-	    map_info.parallax_horz_auto &&
-	    map_info.parallax_horz_speed) {
-		int acc = 1 << (std::abs(map_info.parallax_horz_speed) - 1);
-		parallax_x += (map_info.parallax_horz_speed > 0) ? acc : -acc;
-	}
-
-	if (map_info.parallax_vert &&
-	    map_info.parallax_vert_auto &&
-	    map_info.parallax_vert_speed) {
-		int acc = 1 << (std::abs(map_info.parallax_vert_speed) - 1);
-		parallax_y += (map_info.parallax_vert_speed > 0) ? acc : -acc;
-	}
-}
-
-int Game_Map::GetParallaxX() {
-	return parallax_x / TILE_SIZE;
-}
-
-int Game_Map::GetParallaxY() {
-	return parallax_y / TILE_SIZE;
-}
-
-const std::string& Game_Map::GetParallaxName() {
-	return map_info.parallax_name;
-}
-
 bool Game_Map::IsTeleportDelayed() {
 	return teleport_delay;
 }
@@ -1401,4 +1324,112 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 	ss << "Map" << std::setfill('0') << std::setw(4) << map_id << ".lmu";
 
 	return AsyncHandler::RequestFile(ss.str());
+}
+
+// Parallax
+/////////////
+
+/* Helper function to get the current parallax parameters. If the default
+ * parallax for the current map was overridden by a "Change Parallax BG"
+ * command, the result is filled out from those values in the SaveMapInfo.
+ * Otherwise, the result is filled out from the default for the current map.
+ */
+static Game_Map::Parallax::Params GetParallaxParams() {
+	Game_Map::Parallax::Params params;
+
+	if (!map_info.parallax_name.empty()) {
+		params.name = map_info.parallax_name;
+		params.scroll_horz = map_info.parallax_horz;
+		params.scroll_horz_auto = map_info.parallax_horz_auto;
+		params.scroll_horz_speed = map_info.parallax_horz_speed;
+		params.scroll_vert = map_info.parallax_vert;
+		params.scroll_vert_auto = map_info.parallax_vert_auto;
+		params.scroll_vert_speed = map_info.parallax_vert_speed;
+	} else if (map->parallax_flag) {
+		params.name = map->parallax_name;
+		params.scroll_horz = map->parallax_loop_x;
+		params.scroll_horz_auto = map->parallax_auto_loop_x;
+		params.scroll_horz_speed = map->parallax_sx;
+		params.scroll_vert = map->parallax_loop_y;
+		params.scroll_vert_auto = map->parallax_auto_loop_y;
+		params.scroll_vert_speed = map->parallax_sy;
+	} else {
+		// No BG; use default-constructed Param
+	}
+
+	return params;
+}
+
+std::string Game_Map::Parallax::GetName() {
+	return GetParallaxParams().name;
+}
+
+int Game_Map::Parallax::GetX() {
+	return parallax_x / TILE_SIZE;
+}
+
+int Game_Map::Parallax::GetY() {
+	return parallax_y / TILE_SIZE;
+}
+
+void Game_Map::Parallax::Initialize(int width, int height) {
+	parallax_width = width;
+	parallax_height = height;
+
+	ResetPosition();
+}
+
+void Game_Map::Parallax::ResetPosition() {
+	Params params = GetParallaxParams();
+
+	if (params.scroll_horz)
+		parallax_x = -map_info.position_x / 2;
+	else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+		parallax_x = -std::min(map_info.position_x,
+			(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
+	else
+		parallax_x = 0;
+
+	if (params.scroll_vert)
+		parallax_y = -map_info.position_y / 2;
+	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+		parallax_y = -std::min(map_info.position_y,
+			(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
+	else
+		parallax_y = 0;
+}
+
+void Game_Map::Parallax::Update() {
+	Params params = GetParallaxParams();
+
+	if (params.name.empty())
+		return;
+
+	auto scroll_amt = [](int speed) {
+		if (speed > 0) return 1 << (speed - 1);
+		if (speed < 0) return -(1 << (-speed - 1));
+		return 0;
+	};
+
+	if (params.scroll_horz && params.scroll_horz_auto) {
+		parallax_x += scroll_amt(params.scroll_horz_speed);
+	}
+	if (params.scroll_vert && params.scroll_vert_auto) {
+		parallax_y += scroll_amt(params.scroll_vert_speed);
+	}
+}
+
+void Game_Map::Parallax::ChangeBG(const Params& params) {
+	map_info.parallax_name = params.name;
+	map_info.parallax_horz = params.scroll_horz;
+	map_info.parallax_horz_auto = params.scroll_horz_auto;
+	map_info.parallax_horz_speed = params.scroll_horz_speed;
+	map_info.parallax_vert = params.scroll_vert;
+	map_info.parallax_vert_auto = params.scroll_vert_auto;
+	map_info.parallax_vert_speed = params.scroll_vert_speed;
+}
+
+void Game_Map::Parallax::ClearChangedBG() {
+	Params params; // default Param indicates no override
+	ChangeBG(params);
 }

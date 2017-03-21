@@ -84,16 +84,16 @@ void Spriteset_Map::Update() {
 		character_sprites[i]->Update();
 		character_sprites[i]->SetTone(new_tone);
 	}
-	const std::string& name = Game_Map::GetParallaxName();
+
+	std::string name = Game_Map::Parallax::GetName();
 	if (name != panorama_name) {
 		panorama_name = name;
 		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
 		panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
 		request->Start();
 	}
-
-	panorama->SetOx(Game_Map::GetParallaxX());
-	panorama->SetOy(Game_Map::GetParallaxY());
+	panorama->SetOx(Game_Map::Parallax::GetX());
+	panorama->SetOy(Game_Map::Parallax::GetY());
 	panorama->SetTone(new_tone);
 
 	Game_Vehicle* vehicle;
@@ -173,9 +173,8 @@ void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	BitmapRef panorama_bmp = Cache::Panorama(result->file);
-	Game_Map::SetParallaxSize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
 	panorama->SetBitmap(panorama_bmp);
-	Game_Map::InitializeParallax();
+	Game_Map::Parallax::Initialize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
 
 	tilemap->SetFastBlitDown(false);
 }
