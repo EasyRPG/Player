@@ -1043,31 +1043,12 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 	return false;
 }
 
-bool Scene_Battle_Rpg2k3::CheckAbort() {
-	/*if (!Game_Battle::terminate)
-		return;
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
-	Scene::Pop();*/
-
-	return false;
-}
-
-bool Scene_Battle_Rpg2k3::CheckFlee() {
-	/*if (!Game_Battle::allies_flee)
-		return;
-	Game_Battle::allies_flee = false;
-	Game_Temp::battle_result = Game_Temp::BattleEscape;
-	Scene::Pop();*/
-
-	return false;
-}
-
 bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 	if (state == State_Defeat || state == State_Victory) {
 		return false;
 	}
 
-	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
+	return CheckLose() || CheckWin();
 }
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
