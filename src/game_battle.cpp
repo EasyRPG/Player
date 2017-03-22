@@ -132,6 +132,14 @@ void Game_Battle::Terminate() {
 	terminate = true;
 }
 
+bool Game_Battle::CheckWin() {
+	return !Main_Data::game_enemyparty->IsAnyActive();
+}
+
+bool Game_Battle::CheckLose() {
+	return !Main_Data::game_party->IsAnyActive();
+}
+
 Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
@@ -294,6 +302,10 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 }
 
 bool Game_Battle::UpdateEvents() {
+	if (Game_Battle::CheckWin() || Game_Battle::CheckLose()) {
+		return true;
+	}
+
 	if (interpreter->IsRunning()) {
 		return false;
 	}

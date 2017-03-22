@@ -836,7 +836,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 }
 
 bool Scene_Battle_Rpg2k::CheckWin() {
-	if (!Main_Data::game_enemyparty->IsAnyActive()) {
+	if (Game_Battle::CheckWin()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
@@ -884,7 +884,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 }
 
 bool Scene_Battle_Rpg2k::CheckLose() {
-	if (!Main_Data::game_party->IsAnyActive()) {
+	if (Game_Battle::CheckLose()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
