@@ -55,7 +55,7 @@ void Plane::Draw() {
 	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
+	Rect dst_rect = dst->GetRect();
 	int src_x = -ox;
 	int src_y = -oy;
 
@@ -65,25 +65,32 @@ void Plane::Draw() {
 		src_x += shake_pos;
 	} else {
 		// The panorama occupies the same rectangle as the whole map.
-		int map_width = Game_Map::GetWidth() * TILE_SIZE;
-		int map_height = Game_Map::GetHeight() * TILE_SIZE;
-		Rect panorama_rect(0, 0, map_width, map_height);
+		// Using coordinates where the top-left of the screen is the origin...
+		int bg_x = -Game_Map::GetDisplayX() / TILE_SIZE + shake_pos;
+		int bg_width = Game_Map::GetWidth() * TILE_SIZE;
 
-		// Change into coordinate where the top-left of the screen is
-		// the origin.
-		panorama_rect.x -= Game_Map::GetDisplayX() / TILE_SIZE - shake_pos;
-		panorama_rect.y -= Game_Map::GetDisplayY() / TILE_SIZE;
+		// Clip the panorama to the screen
+		if (bg_x < 0) {
+			bg_width += bg_x;
+			bg_x = 0;
+		}
+		if (dst_rect.width < bg_x + bg_width) {
+			bg_width = dst_rect.width - bg_x;
+		}
 
-		panorama_rect.Adjust(dst_rect);
-		dst_rect = panorama_rect;
-
-		if (panorama_rect.IsEmpty()) {
-			// The map is completely off-screen (probably won't happen)
+		bool off_screen =
+			bg_x >= dst_rect.width ||
+			bg_x + bg_width <= 0;
+		if (off_screen) {
+			// This probably won't happen...
 			return;
 		}
 
+		dst_rect.x = bg_x;
+		dst_rect.width = bg_width;
+
 		// Correct the offset if the top-left corner moved.
-		src_x += shake_pos + dst_rect.x;
+		src_x += shake_pos + bg_x;
 	}
 
 	dst->TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
