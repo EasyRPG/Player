@@ -51,16 +51,19 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
-bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int _index) {
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _index) {
 	if (_index < (int)save.size()) {
-		map_id = Game_Map::GetMapId();
-		event_id = _event_id;
+		event_id = save[_index].event_id;
+		if (event_id != 0) {
+			// When 0 the event is from a different map
+			map_id = Game_Map::GetMapId();
+		}
 		list = save[_index].commands;
 		index = save[_index].current_command;
 		triggered_by_decision_key = save[_index].actioned;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
-		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, _index + 1);
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _index + 1);
 		if (!result) {
 			child_interpreter.reset();
 		}

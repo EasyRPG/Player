@@ -53,7 +53,7 @@ Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::Sav
 
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, event.ID);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands);
 	}
 
 	Refresh();
