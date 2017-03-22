@@ -128,6 +128,7 @@ void Game_Battle::Update() {
 }
 
 void Game_Battle::Terminate() {
+	Game_Temp::battle_result = Game_Temp::BattleAbort;
 	terminate = true;
 }
 

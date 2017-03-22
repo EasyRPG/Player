@@ -286,7 +286,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
 	Game_Battle::Terminate();
-	return true;
+	return false;
 }
 
 // Conditional branch.
