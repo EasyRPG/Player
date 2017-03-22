@@ -239,7 +239,7 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	}
 
 	for (unsigned i = 0; i < nr_of_bgm_channels + nr_of_se_channels; i++) {
-		int read_bytes;
+		int read_bytes = 0;
 		int channels = 0;
 		int samplesize = 0;
 		int frequency = 0;
@@ -263,26 +263,22 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					currently_mixed_channel.decoder->GetFormat(frequency, sampleformat, channels);
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
-					if (volume <= 0) {
-						// No volume -> no sound -> do nothing
-					} else {
-						total_volume += volume;
+					total_volume += volume;
 
-						// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
-						unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
-						bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
+					// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
+					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
+					bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
 
-						read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
+					read_bytes = currently_mixed_channel.decoder->Decode(scrap_buffer.data(), bytes_to_read);
 
-						if (read_bytes < 0) {
-							// An error occured when reading - the channel is faulty - discard
-							currently_mixed_channel.decoder.reset();
-							continue; // skip this loop run - there is nothing to mix
-						}
+					if (read_bytes < 0) {
+						// An error occured when reading - the channel is faulty - discard
+						currently_mixed_channel.decoder.reset();
+						continue; // skip this loop run - there is nothing to mix
+					}
 
-						if (!currently_mixed_channel.stopped) {
-							BGM_PlayedOnceIndicator = currently_mixed_channel.decoder->GetLoopCount() > 0;
-						}
+					if (!currently_mixed_channel.stopped) {
+						BGM_PlayedOnceIndicator = currently_mixed_channel.decoder->GetLoopCount() > 0;
 					}
 
 					channel_used = true;
@@ -301,34 +297,31 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 					sampleformat = currently_mixed_channel.se->format;
 					samplesize = AudioDecoder::GetSamplesizeForFormat(sampleformat);
 
-					if (volume <= 0) {
-						// No volume -> no sound ->do nothing
-					} else {
-						total_volume += volume;
+					total_volume += volume;
 
-						// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
-						unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
-						bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
+					// determine how much data has to be read from this channel (but cap at the bounds of the scrap buffer)
+					unsigned bytes_to_read = (samplesize * channels * samples_per_frame);
+					bytes_to_read = (bytes_to_read < scrap_buffer_size) ? bytes_to_read : scrap_buffer_size;
 
-						if (currently_mixed_channel.buffer_pos + bytes_to_read >
-							currently_mixed_channel.se->buffer.size()) {
-							bytes_to_read = currently_mixed_channel.se->buffer.size() - currently_mixed_channel.buffer_pos;
-						}
-
-						memcpy(scrap_buffer.data(),
-							   &currently_mixed_channel.se->buffer[currently_mixed_channel.buffer_pos],
-							   bytes_to_read);
-
-						currently_mixed_channel.buffer_pos += bytes_to_read;
-
-						read_bytes = bytes_to_read;
-
-						// Now decide what to do when a channel has reached its end
-						if (currently_mixed_channel.buffer_pos >= currently_mixed_channel.se->buffer.size()) {
-							// SE are only played once so free the se if finished
-							currently_mixed_channel.se.reset();
-						}
+					if (currently_mixed_channel.buffer_pos + bytes_to_read >
+						currently_mixed_channel.se->buffer.size()) {
+						bytes_to_read = currently_mixed_channel.se->buffer.size() - currently_mixed_channel.buffer_pos;
 					}
+
+					memcpy(scrap_buffer.data(),
+						   &currently_mixed_channel.se->buffer[currently_mixed_channel.buffer_pos],
+						   bytes_to_read);
+
+					currently_mixed_channel.buffer_pos += bytes_to_read;
+
+					read_bytes = bytes_to_read;
+
+					// Now decide what to do when a channel has reached its end
+					if (currently_mixed_channel.buffer_pos >= currently_mixed_channel.se->buffer.size()) {
+						// SE are only played once so free the se if finished
+						currently_mixed_channel.se.reset();
+					}
+
 					channel_used = true;
 				}
 			}
