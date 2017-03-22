@@ -117,15 +117,19 @@ namespace midisynth{
     void channel::reset_all_controller()
     {
         expression = 16383;
+        pressure = 0;
         channel_pressure(0);
         pitch_bend = 8192;
         pitch_bend_sensitivity = 256;
+        frequency_multiplier = 0.0f;
         update_frequency_multiplier();
         modulation_depth = 0;
         modulation_depth_range = 64;
         update_modulation();
+        damper = 0;
         set_damper(0);
         set_sostenute(0);
+        freeze = 0;
         set_freeze(0);
         RPN = 0x3FFF;
         NRPN = 0x3FFF;
@@ -700,7 +704,7 @@ namespace midisynth{
         class log_table{
         public:
             log_table();
-            uint_least16_t get(int x)const{ return data[x]; }
+            uint_least16_t get(int x)const{ return x >= LOGTABLE_SIZE ? data[LOGTABLE_SIZE - 1] : data[x]; }
         private:
             uint_least16_t data[LOGTABLE_SIZE];
         }log_table;
@@ -754,7 +758,7 @@ namespace midisynth{
     envelope_generator::envelope_generator(int AR_, int DR_, int SR_, int RR_, int SL, int TL_):
         state(ATTACK), AR(AR_), DR(DR_), SR(SR_), RR(RR_), TL(TL_),
         current(0), rate(1), hold(0), freeze(0)
-    {	    
+    {
         if(AR >= 63) AR = 63;
         if(DR >= 63) DR = 63;
         if(SR >= 63) SR = 63;
@@ -1120,7 +1124,7 @@ namespace midisynth{
             }
         }
     }
-    
+
     // FM sound generator constructor.
     fm_sound_generator::fm_sound_generator(const FMPARAMETER& params, int note, float frequency_multiplier):
         op1(params.op1.AR, params.op1.DR, params.op1.SR, params.op1.RR, params.op1.SL, params.op1.TL, params.op1.KS, params.op1.ML, params.op1.DT, params.op1.AMS, note),
