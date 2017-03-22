@@ -161,22 +161,17 @@ namespace midisequencer{
     void sequencer::play(float time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){
-//		printf("IF #1\n");
             position = messages.begin();
         }
         if(position == messages.begin() && position != messages.end() && position->time < time){
-//		printf("IF #2\n");
             out->reset();
         }
-	
-//	printf("position->time = %f\n", position->time);
-	
+
         while(position != messages.end() && position->time < time){
             uint_least32_t message = position->message;
             int port = position->port;
             ++position;
-		//printf("WHILE #1\n");
-		//printf("NJDJKSD\n");
+
             switch(message & 0xFF){
             case 0xF0:
                 {
@@ -199,6 +194,55 @@ namespace midisequencer{
             }
         }
     }
+
+
+    void sequencer::set_time(float time, output* out)
+    {
+        if(position != messages.begin() && (position - 1)->time >= time){
+            position = messages.begin();
+        }
+        if(position == messages.begin() && position != messages.end() && position->time < time){
+            out->reset();
+        }
+
+        if(position->time > time)
+            position = messages.begin();
+
+        while(position != messages.end() && position->time < time){
+            uint_least32_t message = position->message;
+            int port = position->port;
+            ++position;
+
+            switch(message & 0xFF){
+                case 0xF0:
+                {
+                    assert((message >> 8) < long_messages.size());
+                    const std::string& s = long_messages[static_cast<int>(message >> 8)];
+                    out->sysex_message(port, s.data(), s.size());
+                }
+                    break;
+                case 0xFF:
+                {
+                    assert((message >> 8) < long_messages.size());
+                    const std::string& s = long_messages[static_cast<int>(message >> 8)];
+                    assert(s.size() >= 1);
+                    out->meta_event(static_cast<unsigned char>(s[0]), s.data() + 1, s.size() - 1);
+                }
+                    break;
+                default:
+
+                    if((message & 0xF0) == 0x80 || (message & 0xF0) == 0x90)
+                    {
+                        out->meta_event(META_EVENT_ALL_NOTE_OFF, NULL, 0);
+                        break;
+                    }
+
+                    out->midi_message(port, message);
+                    break;
+            }
+        }
+    }
+
     void sequencer::load_smf(void* fp, int(*fgetc)(void*))
     {
         if(fgetc(fp) != 0
@@ -380,7 +424,7 @@ namespace midisequencer{
             double time_offset = 0;
             double base = 0;
             for(std::vector<midi_message>::iterator i = messages.begin(); i != messages.end(); ++i){
-                float org_time = i->time;            
+                float org_time = i->time;
                 i->time = (i->time - base) * tempo / 1000000.0 / division + time_offset;
                 if((i->message & 0xFF) == 0xFF){
                     assert((i->message >> 8) < long_messages.size());

@@ -33,6 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <vector>
 
+#define META_EVENT_ALL_NOTE_OFF		0x8888
+
 namespace midisequencer{
     /*
     typedef unsigned long uint_least32_t;
@@ -75,6 +77,7 @@ namespace midisequencer{
         std::string get_copyright()const;
         std::string get_song()const;
         void play(float time, output* out);
+        void set_time(float time, output* out);
     private:
         std::vector<midi_message> messages;
         std::vector<midi_message>::iterator position;
