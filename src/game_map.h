@@ -622,6 +622,7 @@ namespace Game_Map {
 		void Initialize(int width, int height);
 		void ResetPosition();
 		void Update();
+		void Scroll(int distance_right, int distance_down);
 
 		struct Params {
 			std::string name;
