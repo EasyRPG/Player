@@ -615,15 +615,6 @@ namespace Game_Map {
 	FileRequestAsync* RequestMap(int map_id);
 
 	namespace Parallax {
-		std::string GetName();
-		int GetX();
-		int GetY();
-
-		void Initialize(int width, int height);
-		void ResetPosition();
-		void Update();
-		void Scroll(int distance_right, int distance_down);
-
 		struct Params {
 			std::string name;
 			bool scroll_horz;
@@ -633,7 +624,45 @@ namespace Game_Map {
 			bool scroll_vert_auto;
 			int scroll_vert_speed;
 		};
+
+		/**
+		 * The name of the current parallax graphic (or the empty string
+		 * if none).
+		 */
+		std::string GetName();
+
+		/**
+		 * Offset in pixels of the bitmap at the top-left of the screen.
+		 * (If the screen is shaking, at the top-left of where the screen
+		 * would be if it weren't.)
+		 */
+		int GetX();
+
+		/** Same a GetX(), but in the y-direction. */
+		int GetY();
+
+		/** Call this when you find out the width and height of the BG. */
+		void Initialize(int width, int height);
+
+		/** Reset the x- and y- position of the BG (eg. after a teleport). */
+		void ResetPosition();
+
+		/** Update autoscrolling BG (call every frame). */
+		void Update();
+
+		/**
+		 * Scrolls the BG by the correct amount when the screen scrolls
+		 * by the given distances.
+		 */
+		void Scroll(int distance_right, int distance_down);
+
+		/** Change BG (eg. with a "Change Parallax BG" command). */
 		void ChangeBG(const Params& params);
+
+		/**
+		 * Remove any changed BG. The BG goes back to what was set in
+		 * the map properties.
+		 */
 		void ClearChangedBG();
 	}
 }
