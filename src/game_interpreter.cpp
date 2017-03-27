@@ -2447,6 +2447,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 
 	int cur_lvl = actor->GetLevel();
 	int cur_exp = actor->GetExp();
+	int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
 
 	switch (stats_mode) {
 	case 2:
@@ -2495,31 +2496,57 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 
 	int level = actor->GetLevel();
 
-	switch (skill_mode) {
-	case 0:
-		break;
-	case 1:
-		while (!actor->GetSkills().empty())
-			actor->UnlearnSkill(actor->GetSkills()[0]);
-		break;
-	case 2:
-	{
-		const RPG::Class& klass = Data::classes[class_id - 1];
-		while (!actor->GetSkills().empty())
-			actor->UnlearnSkill(actor->GetSkills()[0]);
-		std::vector<RPG::Learning>::const_iterator it;
-		for (it = klass.skills.begin(); it != klass.skills.end(); ++it) {
-			const RPG::Learning& learn = *it;
-			if (level >= learn.level)
-				actor->LearnSkill(learn.skill_id);
+	// same class, not doing skill processing
+	if (class_id == cur_cid)
+		return true;
+
+	bool level_up = false;
+
+	if (show && !level1) {
+		std::stringstream ss;
+		ss << actor->GetName();
+		if (Player::IsRPG2k3E()) {
+			ss << " " << Data::terms.level_up << " ";
+			ss << " " << Data::terms.level << " " << level;
+		} else {
+			std::string particle, space = "";
+			if (Player::IsCP932()) {
+				particle = "は";
+				space += " ";
+			}
+			else {
+				particle = " ";
+			}
+			ss << particle << Data::terms.level << " ";
+			ss << level << space << Data::terms.level_up;
 		}
-		break;
-	}
+		Game_Message::texts.push_back(ss.str());
+		level_up = true;
 	}
 
-	if (show && level > cur_lvl) {
-		// TODO
-		// Show message increase level
+	if (skill_mode == 1) {
+		// Learn based on level (replace)
+		actor->UnlearnAllSkills();
+	}
+	if (skill_mode > 0) {
+		// Learn additionally
+		for (const RPG::Learning& learn : Data::classes[class_id - 1].skills) {
+			if (level >= learn.level) {
+				actor->LearnSkill(learn.skill_id);
+				if (show) {
+					std::stringstream ss;
+					ss << Data::skills[learn.skill_id - 1].name;
+					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
+					Game_Message::texts.push_back(ss.str());
+					level_up = true;
+				}
+			}
+		}
+	}
+
+	if (level_up) {
+		Game_Message::texts.back().append("\f");
+		Game_Message::message_waiting = true;
 	}
 
 	return true;

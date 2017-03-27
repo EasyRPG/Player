@@ -97,6 +97,12 @@ public:
 	bool UnlearnSkill(int skill_id);
 
 	/**
+	 * Unlearns all skills.
+	 *
+	 */
+	void UnlearnAllSkills();
+
+	/**
 	 * Checks if the actor has the skill learned.
 	 *
 	 * @param skill_id ID of skill to check.

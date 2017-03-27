@@ -46,7 +46,7 @@ public:
 	*
 	* @return If the setup was successful (fails when index out of range)
 	*/
-	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index = 0);
+	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int index = 0);
 
 	/**
 	 * Generates a SaveEventCommands vector needed for the savefile.

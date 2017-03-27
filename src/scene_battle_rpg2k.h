@@ -49,8 +49,6 @@ protected:
 
 	bool CheckWin();
 	bool CheckLose();
-	bool CheckAbort();
-	bool CheckFlee();
 	bool CheckResultConditions();
 
 	void RefreshCommandWindow();

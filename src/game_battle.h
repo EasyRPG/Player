@@ -43,6 +43,20 @@ namespace Game_Battle {
 
 	void Terminate();
 
+	/**
+	 * Checks if a victory condition for the player party (enemy dead) is fulfilled.
+	 *
+	 * @return True on victory
+	 */
+	bool CheckWin();
+
+	/**
+	 * Check if a lose condition for the player party (party dead) is fulfilled.
+	 *
+	 * @return True on lose
+	 */
+	bool CheckLose();
+
 	Spriteset_Battle& GetSpriteset();
 
 	/**
@@ -131,13 +145,13 @@ namespace Game_Battle {
 	void SetBattleMode(int battle_mode_);
 	int GetBattleMode();
 
-	/** 
+	/**
 	 * Sets the party index of the latest targeted enemy. Only used by battle branch "is target"
 	 *
 	 * @param target_enemy id of targeted enemy
 	 */
 	void SetEnemyTargetIndex(int target_enemy);
-	
+
 	/**
 	 * Gets the party index of the latest targeted enemy. Only used by battle branch "is target"
 	 *

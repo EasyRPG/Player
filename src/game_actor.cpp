@@ -187,6 +187,11 @@ bool Game_Actor::UnlearnSkill(int skill_id) {
 	return false;
 }
 
+void Game_Actor::UnlearnAllSkills() {
+	GetData().skills.clear();
+	GetData().skills_size = 0;
+}
+
 void Game_Actor::SetFace(const std::string& file_name, int index) {
 	GetData().face_name.assign(file_name);
 	GetData().face_id = index;
@@ -621,7 +626,8 @@ void Game_Actor::SetLevel(int _level) {
 }
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
-	const std::vector<RPG::Learning>& skills = Data::actors[actor_id - 1].skills;
+	const std::vector<RPG::Learning>& actor_skills = Data::actors[actor_id - 1].skills;
+	const std::vector<RPG::Learning>& class_skills = Data::classes[GetData().class_id - 1].skills;
 	bool level_up = false;
 
 	int old_level = GetLevel();
@@ -652,13 +658,13 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		}
 
 		// Learn new skills
-		for (std::vector<RPG::Learning>::const_iterator it = skills.begin();
-			it != skills.end(); ++it) {
+		for (const RPG::Learning& learn : GetData().changed_class ? class_skills : actor_skills) {
 			// Skill learning, up to current level
-			if (it->level > old_level && it->level <= new_level) {
-				if (LearnSkill(it->skill_id) && level_up_message) {
+			if (learn.level > old_level && learn.level <= new_level) {
+				LearnSkill(learn.skill_id);
+				if (level_up_message) {
 					std::stringstream ss;
-					ss << Data::skills[it->skill_id - 1].name;
+					ss << Data::skills[learn.skill_id - 1].name;
 					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
 					Game_Message::texts.push_back(ss.str());
 					level_up = true;

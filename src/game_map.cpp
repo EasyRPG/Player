@@ -190,7 +190,7 @@ void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetupFromSave(Main_Data::game_data.events.commands, 0);
+	interpreter->SetupFromSave(Main_Data::game_data.events.commands);
 
 	events.reserve(map->events.size());
 	for (size_t i = 0; i < map->events.size(); ++i) {

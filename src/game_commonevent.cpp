@@ -29,7 +29,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 void Game_CommonEvent::SetSaveData(const RPG::SaveEventData& data) {
 	if (!data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		interpreter->SetupFromSave(data.commands, 0);
+		interpreter->SetupFromSave(data.commands);
 	}
 
 	Refresh();

@@ -34,6 +34,11 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
+	if (Game_Battle::CheckWin() || Game_Battle::CheckLose()) {
+		// Interpreter is cancelled when a win/lose condition is fulfilled
+		return false;
+	}
+
 	if (index >= list.size()) {
 		return CommandEnd();
 	}
@@ -286,7 +291,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
 	Game_Battle::Terminate();
-	return true;
+	return false;
 }
 
 // Conditional branch.

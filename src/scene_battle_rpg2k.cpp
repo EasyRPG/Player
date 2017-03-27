@@ -265,7 +265,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				RemoveCurrentAction();
 				return;
 			}
-			
+
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
 			if (ProcessBattleAction(alg)) {
@@ -836,7 +836,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 }
 
 bool Scene_Battle_Rpg2k::CheckWin() {
-	if (!Main_Data::game_enemyparty->IsAnyActive()) {
+	if (Game_Battle::CheckWin()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
@@ -884,7 +884,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 }
 
 bool Scene_Battle_Rpg2k::CheckLose() {
-	if (!Main_Data::game_party->IsAnyActive()) {
+	if (Game_Battle::CheckLose()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
@@ -902,25 +902,6 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 	return false;
 }
 
-bool Scene_Battle_Rpg2k::CheckAbort() {
-	/*if (!Game_Battle::terminate)
-		return;
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
-	Scene::Pop();*/
-
-	return false;
-}
-
-bool Scene_Battle_Rpg2k::CheckFlee() {
-	/*if (!Game_Battle::allies_flee)
-		return;
-	Game_Battle::allies_flee = false;
-	Game_Temp::battle_result = Game_Temp::BattleEscape;
-	Scene::Pop();*/
-
-	return false;
-}
-
 bool Scene_Battle_Rpg2k::CheckResultConditions() {
-	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
+	return CheckLose() || CheckWin();
 }

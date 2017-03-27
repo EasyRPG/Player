@@ -952,7 +952,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
-	if (!Main_Data::game_enemyparty->IsAnyActive()) {
+	if (Game_Battle::CheckWin()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
@@ -1023,7 +1023,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 }
 
 bool Scene_Battle_Rpg2k3::CheckLose() {
-	if (!Main_Data::game_party->IsAnyActive()) {
+	if (Game_Battle::CheckLose()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
 
@@ -1043,31 +1043,12 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 	return false;
 }
 
-bool Scene_Battle_Rpg2k3::CheckAbort() {
-	/*if (!Game_Battle::terminate)
-		return;
-	Game_Temp::battle_result = Game_Temp::BattleAbort;
-	Scene::Pop();*/
-
-	return false;
-}
-
-bool Scene_Battle_Rpg2k3::CheckFlee() {
-	/*if (!Game_Battle::allies_flee)
-		return;
-	Game_Battle::allies_flee = false;
-	Game_Temp::battle_result = Game_Temp::BattleEscape;
-	Scene::Pop();*/
-
-	return false;
-}
-
 bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 	if (state == State_Defeat || state == State_Victory) {
 		return false;
 	}
 
-	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
+	return CheckLose() || CheckWin();
 }
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
