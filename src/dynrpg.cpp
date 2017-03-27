@@ -38,6 +38,9 @@ typedef std::map<std::string, dynfunc> dyn_rpg_func;
 namespace {
 	bool init = false;
 
+	// Registered DynRpg Plugins
+	std::vector<std::unique_ptr<DynRpgPlugin>> plugins;
+
 	// DynRpg Functions
 
 	bool Oput(const dyn_arg_list& args) {
@@ -259,6 +262,12 @@ static bool ValidFunction(const std::string& token) {
 	return true;
 }
 
+void create_all_plugins() {
+	for (auto& plugin : plugins) {
+		plugin->RegisterFunctions();
+	}
+}
+
 bool DynRpg::Invoke(const std::string& command) {
 	if (command.empty()) {
 		// Not a DynRPG function (empty comment)
@@ -279,7 +288,7 @@ bool DynRpg::Invoke(const std::string& command) {
 
 	if (!init) {
 		init = true;
-		// Register functions here
+		create_all_plugins();
 	}
 
 	DynRpg_ParseMode mode = ParseMode_Function;
@@ -442,10 +451,29 @@ bool DynRpg::Invoke(const std::string& command) {
 	return true;
 }
 
-void DynRpg::Update() {
+void DynRpg::Load(std::vector<uint8_t>& save_data) {
+	// ToDo: Processing
 
+	for (auto& plugin : plugins) {
+		plugin->Load(save_data);
+	}
+}
+
+std::vector<uint8_t> DynRpg::Save() {
+	// ToDo: Processing
+
+	for (auto &plugin : plugins) {
+		std::vector<uint8_t> save_data = plugin->Save();
+	}
+}
+
+void DynRpg::Update() {
+	for (auto& plugin : plugins) {
+		plugin->Update();
+	}
 }
 
 void DynRpg::Reset() {
-
+	dyn_rpg_functions.clear();
+	plugins.clear();
 }

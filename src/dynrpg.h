@@ -77,6 +77,21 @@ namespace DynRpg {
 	bool Invoke(const std::string& command);
 	void Update();
 	void Reset();
+	void Load(std::vector<uint8_t> &save_data);
+	std::vector<uint8_t> Save();
 }
+
+class DynRpgPlugin {
+public:
+	virtual ~DynRpgPlugin() {}
+
+	virtual void RegisterFunctions() {}
+	virtual void Update() {}
+	virtual void Load(std::vector<uint8_t>&) {}
+	virtual std::vector<uint8_t> Save() { return {}; }
+
+protected:
+	DynRpgPlugin() {}
+};
 
 #endif
