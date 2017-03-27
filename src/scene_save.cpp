@@ -23,6 +23,7 @@
 #endif
 
 #include <lcf/data.h>
+#include "dynrpg.h"
 #include "filefinder.h"
 #include "game_actor.h"
 #include "game_map.h"
@@ -39,8 +40,6 @@
 #include "output.h"
 #include "player.h"
 #include "scene_save.h"
-#include "scene_file.h"
-#include <lcf/reader_util.h>
 #include "version.h"
 
 Scene_Save::Scene_Save() :
@@ -143,6 +142,8 @@ void Scene_Save::Save(std::ostream& os, int slot_id, bool prepare_save) {
 	}
 	save = lcf::LSD_Reader::ClearDefaults(save, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	lcf::LSD_Reader::Save(os, save, Player::encoding);
+
+	DynRpg::Save(slot_id);
 
 #ifdef EMSCRIPTEN
 	// Save changed file system

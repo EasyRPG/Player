@@ -37,6 +37,7 @@
 #include "screen.h"
 #include "scene_load.h"
 #include "output.h"
+#include "dynrpg.h"
 
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
@@ -50,8 +51,8 @@ static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	return false;
 }
 
-Scene_Map::Scene_Map(bool from_save)
-	: from_save(from_save)
+Scene_Map::Scene_Map(int from_save_id)
+	: from_save_id(from_save_id)
 {
 	type = Scene::Map;
 
@@ -73,10 +74,11 @@ void Scene_Map::Start() {
 
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
-	if (from_save) {
+	if (from_save_id > 0) {
 		auto current_music = Main_Data::game_system->GetCurrentBGM();
 		Main_Data::game_system->BgmStop();
 		Main_Data::game_system->BgmPlay(current_music);
+		DynRpg::Load(from_save_id);
 	} else {
 		Game_Map::PlayBgm();
 	}

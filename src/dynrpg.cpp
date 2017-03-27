@@ -17,12 +17,15 @@
 
 // Headers
 #include "dynrpg.h"
+#include "filefinder.h"
 #include "game_actors.h"
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
 
+#include <cstring>
+#include <fstream>
 #include <map>
 
 enum DynRpg_ParseMode {
@@ -451,19 +454,126 @@ bool DynRpg::Invoke(const std::string& command) {
 	return true;
 }
 
-void DynRpg::Load(std::vector<uint8_t>& save_data) {
-	// ToDo: Processing
+std::string get_filename(int slot) {
+	std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
 
-	for (auto& plugin : plugins) {
-		plugin->Load(save_data);
+	std::string filename = std::string("Save") + (slot <= 9 ? "0" : "") + std::to_string(slot) + ".dyn";
+
+	std::string found = FileFinder::FindDefault(*tree, filename);
+
+	if (found.empty()) {
+		found = FileFinder::MakePath((*tree).directory_path, filename);
+	}
+
+	return found;
+}
+
+void DynRpg::Load(int slot) {
+	if (!Player::IsPatchDynRpg()) {
+		return;
+	}
+
+	if (!init) {
+		init = true;
+		create_all_plugins();
+	}
+
+	std::string filename = get_filename(slot);
+
+	if (!FileFinder::Exists(filename)) {
+		return;
+	}
+
+	auto in = FileFinder::OpenInputStream(filename);
+
+	if (!in) {
+		Output::Warning("Couldn't read DynRPG save: {}", filename);
+	}
+
+	std::vector<uint8_t> in_buffer;
+	in_buffer.resize(8);
+
+	in.read((char*)in_buffer.data(), 8);
+
+	if (strncmp((char*)in_buffer.data(), "DYNSAVE1", 8) != 0) {
+		Output::Warning("Corrupted DynRPG save: {}", filename);
+		return;
+	}
+
+	while (!(in.eof() || in.fail())) {
+		// Read header length followed by header (Plugin Identifier)
+
+		uint32_t len;
+		in.read((char *) &len, 4);
+		Utils::SwapByteOrder(len);
+
+		in_buffer.resize(len);
+		in.read((char*)in_buffer.data(), len);
+
+		// Find a plugin that feels responsible
+		bool have_one = false;
+
+		for (auto &plugin : plugins) {
+			if (strncmp((char*)in_buffer.data(), plugin->GetIdentifier().c_str(), len) == 0) {
+				// Chunk length
+				in.read((char *) &len, 4);
+				Utils::SwapByteOrder(len);
+
+				if (len > 0) {
+					// Read chunk
+					in_buffer.resize(len);
+					in.read((char*)in_buffer.data(), len);
+
+					plugin->Load(in_buffer);
+				}
+
+				have_one = true;
+				break;
+			}
+		}
+
+		if (!have_one) {
+			// Skip this chunk, no plugin found
+			in.read((char *) &len, 4);
+			Utils::SwapByteOrder(len);
+
+			in.seekg(len, std::ios::cur);
+		}
 	}
 }
 
-std::vector<uint8_t> DynRpg::Save() {
-	// ToDo: Processing
+void DynRpg::Save(int slot) {
+	if (!Player::IsPatchDynRpg()) {
+		return;
+	}
+
+	std::string filename = get_filename(slot);
+
+	auto out = FileFinder::OpenOutputStream(filename);
+
+	if (!out) {
+		Output::Warning("Couldn't write DynRPG save: {}", filename);
+		return;
+	}
+
+	std::string header = "DYNSAVE1";
+
+	out.write(header.c_str(), 8);
 
 	for (auto &plugin : plugins) {
-		std::vector<uint8_t> save_data = plugin->Save();
+		uint32_t len = plugin->GetIdentifier().size();
+		Utils::SwapByteOrder(len);
+
+		out.write((char*)&len, 4);
+		out.write(plugin->GetIdentifier().c_str(), len);
+
+		std::vector<uint8_t> data = plugin->Save();
+
+		len = data.size();
+		Utils::SwapByteOrder(len);
+
+		out.write((char*)&len, 4);
+		out.write((char*)data.data(), data.size());
 	}
 }
 
@@ -474,6 +584,7 @@ void DynRpg::Update() {
 }
 
 void DynRpg::Reset() {
+	init = false;
 	dyn_rpg_functions.clear();
 	plugins.clear();
 }

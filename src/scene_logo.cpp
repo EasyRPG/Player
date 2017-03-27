@@ -93,7 +93,7 @@ void Scene_Logo::Update() {
 				Output::Debug("Loading Save {}", ss.str());
 
 				std::string save_name = FileFinder::FindDefault(*tree, ss.str());
-				Player::LoadSavegame(save_name);
+				Player::LoadSavegame(save_name, Player::load_game_id);
 			}
 		}
 		else {
