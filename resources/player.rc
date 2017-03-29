@@ -16,7 +16,7 @@ FILETYPE 0x00000001L
 			VALUE "FileVersion", "0.5.0.0"
 			VALUE "FileDescription", "EasyRPG Player"
 			VALUE "InternalName", "easyrpg-player"
-			VALUE "LegalCopyright", "2005-2016 EasyRPG Project"
+			VALUE "LegalCopyright", "2007-2017 EasyRPG Project"
 			VALUE "OriginalFilename", "Player.exe"
 			VALUE "ProductName", "EasyRPG Player"
 			VALUE "ProductVersion", "0.5.0.0"

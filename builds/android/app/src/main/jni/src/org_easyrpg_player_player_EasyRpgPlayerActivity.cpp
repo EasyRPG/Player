@@ -1,7 +1,7 @@
 /*
  * This file is part of EasyRPG Player
  *
- * Copyright (c) 2016 EasyRPG Project. All rights reserved.
+ * Copyright (c) 2017 EasyRPG Project. All rights reserved.
  *  
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"), 
