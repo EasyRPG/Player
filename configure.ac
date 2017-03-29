@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([easyrpg-player],[0.5.0],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
+AC_INIT([easyrpg-player],[0.5.1],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
 AC_CONFIG_AUX_DIR([builds/autoconf])
 AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall -Werror])
