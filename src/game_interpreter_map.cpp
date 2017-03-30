@@ -287,8 +287,10 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 		case 1:
 			return CommandEndEventProcessing(com);
 		case 2:
-			if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle))
+			if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle)) {
+				index++;
 				return false;
+			}
 			index++;
 			return true;
 		default:
@@ -299,16 +301,20 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 		case 0:
 			return CommandGameOver(com);
 		case 1:
-			if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle))
+			if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle)) {
+				index++;
 				return false;
+			}
 			index++;
 			return true;
 		default:
 			return false;
 		}
 	case Game_Temp::BattleAbort:
-		if (!SkipTo(Cmd::EndBattle))
+		if (!SkipTo(Cmd::EndBattle)) {
+			index++;
 			return false;
+		}
 		index++;
 		return true;
 	default:
