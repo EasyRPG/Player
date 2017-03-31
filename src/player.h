@@ -36,7 +36,9 @@ namespace Player {
 		/** RPG Maker 2000 v1.50 or newer, 2003 v1.05 or newer */
 		EngineMajorUpdated = 4,
 		/** RPG Maker 2003 v1.10 or newer (Official English translation) */
-		EngineRpg2k3E = 8
+		EngineRpg2k3E = 8,
+		/** RPG Maker 2000 v1.61 or newer (Official English translation) */
+		EngineMessagePlaceholders = 16
 	};
 
 	/**
@@ -154,6 +156,13 @@ namespace Player {
 	 * @return If engine is the official English release (v1.10) or newer.
 	 */
 	bool IsRPG2k3E();
+
+
+	/**
+	 * @return If engine supports placeholders in the glossary messages, i.e.
+	 * if it is RPG2k v.1.61 or newer.
+	 */
+	bool SupportsMessagePlaceholders();
 
 	/**
 	 * @return true if encoding is CP932 (Shift-JIS, used for Japanese),
