@@ -295,7 +295,7 @@ void Game_Player::Center(int x, int y) {
 		Game_Map::SetPositionY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
 	}
 
-	Game_Map::InitializeParallax();
+	Game_Map::Parallax::ResetPosition();
 }
 
 void Game_Player::MoveTo(int x, int y) {

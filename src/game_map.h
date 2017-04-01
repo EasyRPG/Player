@@ -534,14 +534,6 @@ namespace Game_Map {
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
 
-
-	void SetParallaxName(const std::string& name);
-	void SetParallaxScroll(bool horz, bool vert,
-						   bool horz_auto, bool vert_auto,
-						   int horz_speed, int vert_speed);
-	void SetParallaxSize(int width, int height);
-	void InitializeParallax();
-
 	/**
 	 * Gets the map index from MapInfo vector using map ID.
 	 *
@@ -603,11 +595,6 @@ namespace Game_Map {
 	int GetPanX();
 	int GetPanY();
 
-	void UpdateParallax();
-	int GetParallaxX();
-	int GetParallaxY();
-	const std::string& GetParallaxName();
-
 	/**
 	 * Gets if pending teleportations will be ignored.
 	 *
@@ -626,6 +613,58 @@ namespace Game_Map {
 	void SetTeleportDelayed(bool delay);
 
 	FileRequestAsync* RequestMap(int map_id);
+
+	namespace Parallax {
+		struct Params {
+			std::string name;
+			bool scroll_horz;
+			bool scroll_horz_auto;
+			int scroll_horz_speed;
+			bool scroll_vert;
+			bool scroll_vert_auto;
+			int scroll_vert_speed;
+		};
+
+		/**
+		 * The name of the current parallax graphic (or the empty string
+		 * if none).
+		 */
+		std::string GetName();
+
+		/**
+		 * Offset in pixels of the bitmap at the top-left of the screen.
+		 * (If the screen is shaking, at the top-left of where the screen
+		 * would be if it weren't.)
+		 */
+		int GetX();
+
+		/** Same a GetX(), but in the y-direction. */
+		int GetY();
+
+		/** Call this when you find out the width and height of the BG. */
+		void Initialize(int width, int height);
+
+		/** Reset the x- and y- position of the BG (eg. after a teleport). */
+		void ResetPosition();
+
+		/** Update autoscrolling BG (call every frame). */
+		void Update();
+
+		/**
+		 * Scrolls the BG by the correct amount when the screen scrolls
+		 * by the given distances.
+		 */
+		void Scroll(int distance_right, int distance_down);
+
+		/** Change BG (eg. with a "Change Parallax BG" command). */
+		void ChangeBG(const Params& params);
+
+		/**
+		 * Remove any changed BG. The BG goes back to what was set in
+		 * the map properties.
+		 */
+		void ClearChangedBG();
+	}
 }
 
 #endif

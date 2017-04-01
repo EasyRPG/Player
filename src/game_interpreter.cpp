@@ -2062,18 +2062,17 @@ bool Game_Interpreter::CommandChangeMapTileset(RPG::EventCommand const& com) { /
 
 
 bool Game_Interpreter::CommandChangePBG(RPG::EventCommand const& com) { // code 11720
-	const std::string& name = com.string;
-	Game_Map::SetParallaxName(name);
+	Game_Map::Parallax::Params params;
+	params.name = com.string;
+	params.scroll_horz = com.parameters[0] != 0;
+	params.scroll_vert = com.parameters[1] != 0;
+	params.scroll_horz_auto = com.parameters[2] != 0;
+	params.scroll_horz_speed = com.parameters[3];
+	params.scroll_vert_auto = com.parameters[4] != 0;
+	params.scroll_vert_speed = com.parameters[5];
 
-	bool horz = com.parameters[0] != 0;
-	bool vert = com.parameters[1] != 0;
-	bool horz_auto = com.parameters[2] != 0;
-	int horz_speed = com.parameters[3];
-	bool vert_auto = com.parameters[4] != 0;
-	int vert_speed = com.parameters[5];
-	Game_Map::SetParallaxScroll(horz, vert,
-		horz_auto, vert_auto,
-		horz_speed, vert_speed);
+	Game_Map::Parallax::ChangeBG(params);
+
 	return true;
 }
 
