@@ -509,7 +509,8 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
-			// no-op
+			// Skip current message
+			encounter_message_sleep_until = Player::GetFrames();
 			break;
 		case State_SelectOption:
 			// Interpreter message boxes pop up in this state
@@ -680,7 +681,9 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	if ((size_t)actor_index == allies.size()) {
 		// All actor actions decided, player turn ends
 		SetState(State_Battle);
-		CreateEnemyActions();
+		if (!Game_Temp::battle_first_strike || Game_Battle::GetTurn() > 0) {
+			CreateEnemyActions();
+		}
 		CreateExecutionOrder();
 
 		NextTurn();
@@ -811,8 +814,18 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end()) {
 		battle_message_window->Clear();
-		encounter_message_first_monster = true; // reset static var
-		return true;
+		if (Game_Temp::battle_first_strike && !encounter_message_first_strike) {
+			battle_message_window->Push(Data::terms.special_combat);
+			encounter_message_sleep_until = Player::GetFrames() + 60;
+			encounter_message_first_strike = true;
+			return false;
+		}
+		else {
+			//reset static vars
+			encounter_message_first_strike = false;
+			encounter_message_first_monster = true;
+			return true;
+		}
 	}
 
 	if (battle_message_window->GetLineCount() == 4) {
