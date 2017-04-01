@@ -18,12 +18,9 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 
 - liblcf for RPG Maker data reading. https://github.com/EasyRPG/liblcf
 - SDL2 for screen backend support.
-- SDL2_mixer for audio mixing.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
 - zlib for XYZ image support.
-
-SDL and SDL_mixer 1.2 are still supported, but deprecated.
 
 ### extended / recommended
 
@@ -33,7 +30,11 @@ SDL and SDL_mixer 1.2 are still supported, but deprecated.
 - Ogg+Vorbis/Tremor for OGG audio support
 - libsndfile for better WAVE audio support
 - SpeexDSP for proper audio resampling
+- SDL2_mixer for audio mixing. Used as a fallback when none of the provided
+  audio libraries support the format. Due to API limitations not all audio
+  effects are possible through SDL2_mixer audio.
 
+SDL and SDL_mixer 1.2 are still supported, but deprecated.
 
 ## Daily builds
 

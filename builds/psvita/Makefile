@@ -28,7 +28,7 @@ CC      = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
 CFLAGS  = -Wl,-q -g -O3 -DPSP2 -DHAVE_LIBSPEEXDSP \
 		-DWANT_FASTWAV -DSUPPORT_AUDIO -DHAVE_LIBSNDFILE \
-		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI=1 \
+		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DWANT_FMMIDI \
 		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
 		-I$(VITASDK)/arm-vita-eabi/include/pixman-1 \
 		-I$(TOOLCHAIN_DIR)/include \

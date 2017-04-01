@@ -59,13 +59,16 @@
 
 #include "audio.h"
 
-#ifdef HAVE_SDL_MIXER
-#  include "audio_sdl.h"
-#elif defined(HAVE_OPENAL)
-#  include "audio_al.h"
-#endif
-
 #ifdef SUPPORT_AUDIO
+
+#  ifdef HAVE_SDL_MIXER
+#    include "audio_sdl_mixer.h"
+#  elif defined(HAVE_OPENAL)
+#    include "audio_al.h"
+#  else
+#    include "audio_sdl.h"
+#  endif
+
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
 }
@@ -172,18 +175,26 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 	ShowCursor(false);
 #endif
 
-#ifdef HAVE_SDL_MIXER
+#ifdef SUPPORT_AUDIO
+#  ifdef HAVE_SDL_MIXER
 	if (!Player::no_audio_flag) {
-		audio_.reset(new SdlAudio());
+		audio_.reset(new SdlMixerAudio());
 		return;
 	}
-#elif defined(HAVE_OPENAL)
+#  elif defined(HAVE_OPENAL)
 	if (!Player::no_audio_flag) {
 		audio_.reset(new ALAudio());
 		return;
 	}
-#endif
+#  else
+	if (!Player::no_audio_flag) {
+		audio_.reset(new SdlAudio());
+		return;
+	}
+#  endif
+#else
 	audio_.reset(new EmptyAudio());
+#endif
 }
 
 SdlUi::~SdlUi() {

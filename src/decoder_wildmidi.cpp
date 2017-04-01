@@ -29,7 +29,12 @@
 #include "utils.h"
 #include "decoder_wildmidi.h"
 
-#define WILDMIDI_FREQ 44100
+#if defined(GEKKO) || defined(_3DS)
+#  define WILDMIDI_FREQ 22050
+#else
+#  define WILDMIDI_FREQ 44100
+#endif
+
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
  * however, they cause high cpu usage, so not using them for now.
  */
@@ -81,10 +86,84 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
+#elif _3DS
+	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
+
+	// Shipped in a romfs (for CIA files)
+	config_file = "romfs:/wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
+
+	// preferred SD card directory
+	if (!found) {
+		config_file = "sdmc:/3ds/easyrpg-player/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
 #else
-	// TODO
+	// Prefer wildmidi in current directory
 	config_file = "wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
+
+	// Use Timidity strategy used in SDL mixer
+
+	// Environment variable
+	const char *env = getenv("TIMIDITY_CFG");
+	if (env) {
+		config_file = env;
+		found = FileFinder::Exists(config_file);
+	}
+
+	if (!found) {
+		config_file = "timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+#	ifdef _WIN32
+	// Probably not too useful
+	if (!found) {
+		config_file = "C:\\TIMIDITY\\timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// TODO: We need some installer which creates registry keys for wildmidi
+#	else
+	if (!found) {
+		config_file = "/etc/timidity.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	if (!found) {
+		// Folders used in timidity code
+		const std::vector<std::string> folders = {
+			"/etc/timidity",
+			"/usr/share/timidity",
+			"/usr/local/share/timidity",
+			"/usr/local/lib/timidity"
+		};
+
+		for (const std::string& s : folders) {
+			config_file = s + "/timidity.cfg";
+			found = FileFinder::Exists(config_file);
+
+			if (found) {
+				break;
+			}
+
+			// Some distributions have it in timidity++
+			config_file = s + "++/timidity.cfg";
+			found = FileFinder::Exists(config_file);
+
+			if (found) {
+				break;
+			}
+		}
+	}
+#	endif
 #endif
 
 	// bail, if nothing found
@@ -92,7 +171,6 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		error_message = "WildMidi: Could not find configuration file.";
 		return;
 	}
-
 	Output::Debug("WildMidi: Using %s as configuration file...", config_file.c_str());
 
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);

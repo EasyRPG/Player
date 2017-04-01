@@ -18,60 +18,15 @@
 #ifndef _AUDIO_SDL_H_
 #define _AUDIO_SDL_H_
 
-#include "audio.h"
-#include "audio_decoder.h"
-#include "audio_secache.h"
+#include "audio_generic.h"
 
-#include <map>
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
-struct SdlAudio : public AudioInterface {
+class SdlAudio : public GenericAudio {
+public:
 	SdlAudio();
 	~SdlAudio();
 
-	void BGM_Play(std::string const&, int, int, int) override;
-	void BGM_Pause() override;
-	void BGM_Resume() override;
-	void BGM_Stop() override;
-	bool BGM_PlayedOnce() const override;
-	bool BGM_IsPlaying() const override;
-	unsigned BGM_GetTicks() const override;
-	void BGM_Fade(int) override;
-	void BGM_Volume(int) override;
-	void BGM_Pitch(int) override;
-	void BGS_Play(std::string const&, int, int, int);
-	void BGS_Pause();
-	void BGS_Resume();
-	void BGS_Stop();
-	void BGS_Fade(int);
-	void BGS_Volume(int);
-	void SE_Play(std::string const&, int, int) override;
-	void SE_Stop() override;
-	void Update() override;
-
-	void BGM_OnPlayedOnce();
-
-	AudioDecoder* GetDecoder();
-	SDL_AudioCVT& GetAudioCVT();
-private:
-	void SetupAudioDecoder(FILE* handle, const std::string& filename, int volume, int pitch, int fadein);
-
-	std::shared_ptr<Mix_Music> bgm;
-	int bgm_volume;
-	unsigned bgm_starttick = 0;
-	bool bgm_stop = true;
-	std::shared_ptr<Mix_Chunk> bgs;
-	bool bgs_playing = false;
-	bool bgs_stop = true;
-	bool played_once = false;
-
-	typedef std::map<int, std::pair<std::shared_ptr<Mix_Chunk>, AudioSeRef>> sounds_type;
-	sounds_type sounds;
-
-	std::unique_ptr<AudioDecoder> audio_decoder;
-	SDL_AudioCVT cvt;
+	void LockMutex() const override;
+	void UnlockMutex() const override;
 }; // class SdlAudio
 
-#endif // _AUDIO_SDL_H_
+#endif

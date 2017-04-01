@@ -67,7 +67,7 @@ BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 
 # Compiler flags
-CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
+CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fno-rtti -fno-exceptions
 LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
            -ldl `$(SDL_CONFIG) --libs` $(LIBSDLMIXER_LIBS) $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS) $(LIBMPG123_LIBS) $(LIBSNDFILE_LIBS)

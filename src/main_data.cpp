@@ -98,10 +98,10 @@ void Main_Data::Init() {
 				fclose(f);
 				project_path = "app0:";
 				save_path = psp2_dir;
-				
+
 				// Creating saves dir if it doesn't exist
 				sceIoMkdir(psp2_dir, 0777);
-				
+
 			}
 #elif defined(_3DS)
 #   ifndef CITRA3DS_COMPATIBLE
@@ -121,7 +121,7 @@ void Main_Data::Init() {
 					APT_GetProgramID(&titleID);
 					char mainDir[64];
 					sprintf(mainDir,"sdmc:/easyrpg-player/%016llX",titleID);
-					
+
 					// Creating dirs if they don't exist
 					FS_Archive archive;
 					FSUSER_OpenArchive(&archive, ARCHIVE_SDMC, {PATH_EMPTY, 1, (u8*)""});
@@ -130,7 +130,7 @@ void Main_Data::Init() {
 					FS_Path filePath2=fsMakePath(PATH_ASCII, &mainDir[5]);
 					FSUSER_CreateDirectory(archive,filePath2, FS_ATTRIBUTE_DIRECTORY);
 					FSUSER_CloseArchive(archive);
-					
+
 					save_path = mainDir;
 				}
 			} else if (!Player::is_3dsx) {
@@ -139,6 +139,8 @@ void Main_Data::Init() {
 			} else {
 				project_path = ".";
 			}
+#   else
+			project_path = ".";
 #   endif
 #elif defined(__APPLE__) && defined(__MACH__)
 #  if SDL_MAJOR_VERSION>1
@@ -153,6 +155,7 @@ void Main_Data::Init() {
 				// FIXME: Uses SDL API
 				char* data_dir = SDL_GetBasePath();
 				project_path = data_dir;
+
 				free(data_dir);
 			}
 #  else
@@ -177,19 +180,19 @@ void Main_Data::Cleanup() {
 	game_data = RPG::Save();
 }
 
-const std::string& Main_Data::GetProjectPath() {	
+const std::string& Main_Data::GetProjectPath() {
 	return project_path;
 }
 
 void Main_Data::SetProjectPath(const std::string& path) {
 	project_path = path;
 }
-	
+
 const std::string& Main_Data::GetSavePath() {
 	if (save_path.empty()) {
 		return GetProjectPath();
 	}
-	
+
 	return save_path;
 }
 

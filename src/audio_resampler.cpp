@@ -194,7 +194,7 @@ AudioResampler::AudioResampler(AudioDecoder * wrapped, bool pitch_handled, Audio
 	#if defined(HAVE_LIBSPEEXDSP)
 		switch (quality) {
 			case Quality::Low:
-				sampling_quality = 1;
+				sampling_quality = 0;
 				break;
 			case Quality::Medium:
 				sampling_quality = 3;

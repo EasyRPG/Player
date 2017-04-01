@@ -12,12 +12,16 @@ libeasyrpg_player_la_SOURCES = \
 	src/async_handler.h \
 	src/audio_al.cpp \
 	src/audio_al.h \
+	src/audio_sdl_mixer.cpp \
+	src/audio_sdl_mixer.h \
 	src/audio_sdl.cpp \
 	src/audio_sdl.h \
 	src/audio.cpp \
 	src/audio.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
+	src/audio_generic.cpp \
+	src/audio_generic.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_secache.cpp \

@@ -51,7 +51,6 @@
 #ifdef GEKKO
 #  include "stdint.h"
 
-#  define HAVE_SDL_MIXER
 #  define WORDS_BIGENDIAN
 #endif
 
@@ -64,14 +63,6 @@
 #define SUPPORT_ZOOM
 
 #ifdef USE_SDL
-#  define USE_SDL_MIXER
-#  define SUPPORT_AUDIO
-#
-#  ifdef PSP
-#    undef USE_SDL_MIXER
-#    define NO_SDL_MIXER
-#  endif
-
 #  if defined(GEKKO) || defined(OPENDINGUX) || defined(EMSCRIPTEN)
 #    undef SUPPORT_ZOOM
 #  endif
@@ -100,12 +91,6 @@
 #    define SUPPORT_MID
 #    define SUPPORT_OGG
 #    define SUPPORT_MP3
-#  endif
-
-#  ifdef NO_SDL_MIXER
-#    if !defined(HAVE_OPENAL)
-#      undef SUPPORT_AUDIO
-#    endif
 #  endif
 
 #  ifdef WANT_FMMIDI

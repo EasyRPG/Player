@@ -48,6 +48,9 @@ public:
 	bool SetPitch(int pitch) override;
 
 	int GetTicks() const override;
+
+	std::vector<uint8_t> file_buffer;
+	size_t file_buffer_pos = 0;
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 

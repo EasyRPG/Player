@@ -59,6 +59,12 @@
     <ClCompile Include="..\..\src\audio_al.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\audio_generic.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\audio_sdl_mixer.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\audio_sdl.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
@@ -506,6 +512,12 @@
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio_al.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\audio_generic.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\audio_sdl_mixer.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio_sdl.h">
