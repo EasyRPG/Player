@@ -407,19 +407,19 @@ static void add_rtp_path(std::string const& p) {
 }
 
 
-static void read_rtp_registry(const std::string& company, const std::string& version_str, const std::string& key) {
+static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
 #if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key, KEY32);
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key, KEY32);
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
 #else
-	(void)company; (void)version_str; (void)key;
+	(void)company; (void)product; (void)key;
 #endif
 }
 
@@ -462,25 +462,30 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	add_rtp_path(cs + "/" + version_str + "/");
 #else
+	// Windows/Wine
+	std::string const product = "RPG" + version_str;
 	if (Player::IsRPG2k()) {
 		// Prefer original 2000 RTP over Kadokawa, because there is no
 		// reliable way to detect this engine and much more 2k games
 		// use the non-English version
-		read_rtp_registry("ASCII", version_str, "RuntimePackagePath");
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+		read_rtp_registry("ASCII", product, "RuntimePackagePath");
+		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
 	}
 	else if (Player::IsRPG2k3Legacy()) {
 		// Original 2003 RTP installer registry key is upper case
 		// and Wine registry is case insensitive but new 2k3v1.10 installer is not
 		// Prefer Enterbrain RTP over Kadokawa for old RPG2k3 (search order)
-		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
+		read_rtp_registry("Enterbrain", product, "RUNTIMEPACKAGEPATH");
+		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
 	}
 	else if (Player::IsRPG2k3E()) {
 		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
-		read_rtp_registry("KADOKAWA", version_str, "RuntimePackagePath");
-		read_rtp_registry("Enterbrain", version_str, "RUNTIMEPACKAGEPATH");
+		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
+		read_rtp_registry("Enterbrain", product, "RUNTIMEPACKAGEPATH");
 	}
+
+	// Our RTP is for all engines
+	read_rtp_registry("EasyRPG", "RTP", "path");
 
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
