@@ -41,6 +41,12 @@ Você pode adicionar novos diretórios de jogos nas configurações.</string>
   <string name="toggle_ui">Alternar botões virtuais</string>
   <string name="end_game">Finalizar Jogo</string>
   <string name="report_bug">Reportar erro</string>
+  <string name="report_bug_msg">Esta função irá abrir seu programa de e-mail (ex. Gmail) para nos enviar um relatório de bug.\n\nSe você não quiser enviar um e-mail ou não tem um programa de e-mail configurado você pode abrir um novo relatório em https://github.com/EasyRPG/Player/issues .</string>
+  <string name="report_bug_mail">Obrigado por ajudar o EasyRPG Player.\n
+Um arquivo de log e seus salvamentos do jogo foram anexados neste e-mail.\n
+Por favor não remova o arquivo de log! Nós precisamos de um salvamento do jogo que esteja próximo do bug.\n
+Por favor nos diga em detalhes o que deu errado.\n\n
+</string>
   <!--Settings Activities-->
   <string name="video">Vídeo</string>
   <string name="audio">Audio</string>
@@ -69,6 +75,11 @@ Você pode adicionar novos diretórios de jogos nas configurações.</string>
   <string name="reset_button_mapping">Resetar mapeamento de botões</string>
   <string name="exit_without_saving">Sair sem salvar</string>
   <string name="save_and_quit">Salvar e sair</string>
+  <string name="key_enter">Enter (Z)</string>
   <string name="key_cancel">Cancelar (ESC e X)</string>
+  <string name="key_shift">Shift</string>
   <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Abrir menu</string>
+  <string name="navigation_drawer_close">Fechar menu</string>
+  <string name="menu">Abrir menu Android</string>
 </resources>

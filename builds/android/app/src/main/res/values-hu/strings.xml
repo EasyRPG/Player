@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!--GameBrowser Activity-->
-  <string name="autodetect">Terület autómatikus megállapítása (ajánlott)</string>
+  <string name="autodetect">Terület automatikus megállapítása (ajánlott)</string>
   <string name="west_europe">nyugat-európai</string>
   <string name="east_europe">közép- vagy kelet-európai</string>
   <string name="cyrillic">cirill</string>
@@ -23,6 +23,8 @@
   <string name="no">Nem</string>
   <string name="creating_dir_failed">A $PATH mappa létrehozása sikertelen volt!</string>
   <string name="path_not_readable">$PATH nem olvasható!</string>
+  <string name="no_games_found_and_explanation">Nem találhatók RPG Maker 2000/2003 játékok.
+A beállítások közt tud további játékkönyvtárakat felvenni.</string>
   <string name="no_external_storage">Nem található külső adattárolót (pl: SD kártya)!</string>
   <string name="not_valid_game">$PATH nem egy érvényes játékot tárol!</string>
   <string name="select_game_region">A játék területének kiválasztása</string>
@@ -33,16 +35,33 @@
   <string name="refresh">Frissítés</string>
   <string name="change_default_mapping">Alap irányítógombok megváltoztatása</string>
   <string name="how_to_use_easy_rpg">Az EasyRPG Player használata</string>
+  <string name="how_to_use_easy_rpg_explanation">Telepítési útmutató:\n\nAlapértelmezett beállításként a /easyrpg/games mappába keresi a program a játékokat. A beállítások közt hozzáadhat további játékkönyvtárakat.\n\nOpcionális: Helyezze az RTP mappáit a /easyrpg/rtp/2000 mappába RPG Maker 2000 RTP esetén, a /easyrpg/rtp/2003 mappába RPG Maker 2003 RTP esetén.\n\nA játékok megfelelő felismeréséhez alkönyvtárakba kell őket tenni a  /easyrpg/games-en belül (alapértelmezett könyvtár), pl.:\n\n\tez HELYES: /easyrpg/games/Amnezia\RPG_RT.ldb\n\tez HIBÁS: /easyrpg/games/Amnezia.zip A telepítők, tömörített állományok (EXE vagy ZIP) nem támogatottak.</string>
   <!--Ingame menu-->
   <string name="toggle_fps">FPS ki/be</string>
   <string name="toggle_ui">Virtuális gombok ki/be</string>
   <string name="end_game">Játék befejezése</string>
+  <string name="report_bug">Hibajelentés</string>
+  <string name="report_bug_msg">Meg fog nyílni a levelezője (pl. Gmail), hogy egy hibajelentést küldjön nekünk.\n\nHa nem szeretne e-mailt küldeni, vagy nincsen beállítva levelezője, bejelentheti a hibát a https://github.com/EasyRPG/Player/issues oldalon is.</string>
+  <string name="report_bug_mail">Köszönjük, hogy támogatja az EasyRPG Player-t.\n
+Egy naplófájl és a játékmentései mellékelve lettek a levélhez.\n
+Kérjük ne távolítsa el a naplófájlt! Szükségünk van egy mentésre, ami közel van a hiba helyéhez.\n
+Kérjük írja le a hiba részleteit!\n\n
+</string>
   <!--Settings Activities-->
+  <string name="video">Videó</string>
+  <string name="audio">Hang</string>
+  <string name="input">Bevitel</string>
+  <string name="game_folders">Játékkönyvtárak</string>
   <string name="settings">Beállítások</string>
+  <string name="add_game_folder">Játékkönyvtár hozzáadása</string>
   <string name="enable_vibration">Rezgés engedélyezése</string>
   <string name="vibrate_when_sliding_direction">Rezgetés új irányba húzáskor</string>
+  <string name="enable_audio">Hang engedélyezése</string>
   <string name="input_layout_transparency">Beviteli felület átlátszósága:</string>
   <string name="ignore_size_settings">A gombok méretbeállításainak felüldefiniálása a következőre:</string>
+  <string name="no_read_access_on_dir">Nincs olvasási joga ehhez: %1$s</string>
+  <string name="quick_access">Gyors hozzáférés</string>
+  <string name="force_landscape_mode">Fekvő nézet kényszerítése</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Beviteli felületek kezelése:</string>
   <string name="add_an_input_layout">Beviteli felület hozzáadása</string>
@@ -53,8 +72,15 @@
   <string name="default_layout">alapértelmezett</string>
   <!--ButtonMapping Activity-->
   <string name="add_a_button">Gomb hozzáadása</string>
-  <string name="reset_button_mapping">Alapértelmezett pozíció</string>
+  <string name="reset_button_mapping">Alapértelmezett billentyűzet-kiosztás visszaállítása</string>
   <string name="exit_without_saving">Kilépés mentés nélkül</string>
   <string name="save_and_quit">Mentés és kilépés</string>
+  <string name="key_enter">Enter (Z)</string>
+  <string name="key_cancel">Mégse (ESC vagy X)</string>
+  <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">Gyors előre</string>
   <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Navigációs menü megnyitása</string>
+  <string name="navigation_drawer_close">Navigációs menü bezárása</string>
+  <string name="menu">Android menü megnyitása</string>
 </resources>
