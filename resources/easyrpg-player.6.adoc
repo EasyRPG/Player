@@ -132,15 +132,18 @@ arguments are supported:
 
 == ENVIRONMENT
 'RPG2K_RTP_PATH'::
-  Full path to a folder containing the extracted RPG Maker 2000
+  Full path to a directory containing an extracted RPG Maker 2000
   Run-Time-Package(RTP).
 
 'RPG2K3_RTP_PATH'::
-  Full path to a folder containing the extracted RPG Maker 2003
-  Run-Time-Package(RTP).
+  Full path to a directory containing an extracted RPG Maker 2003 RTP.
 
 'RPG_RTP_PATH'::
-  Full path to a folder containing both RTPs.
+  Full path to a directory containing a combined RTP.
+
+NOTE: All '*_RTP_PATH' variables support directory lists, using colon (':') or
+semicolon (';') as separator. Useful when you have multiple translated RTP
+versions or directories with extra files.
 
 
 == FILES

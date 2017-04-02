@@ -489,14 +489,25 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
+	std::vector<std::string> env_paths;
+
+	// Windows paths are split by semicolon, Unix paths by colon
+	std::function<bool(char32_t)> f = [](char32_t t) {
+		return t == ';' || t == ':';
+	};
 
 	if (Player::IsRPG2k() && getenv("RPG2K_RTP_PATH"))
-		add_rtp_path(getenv("RPG2K_RTP_PATH"));
+		env_paths = Utils::Tokenize(getenv("RPG2K_RTP_PATH"), f);
 	else if (Player::IsRPG2k3() && getenv("RPG2K3_RTP_PATH"))
-		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
+		env_paths = Utils::Tokenize(getenv("RPG2K3_RTP_PATH"), f);
 
 	if (getenv("RPG_RTP_PATH")) {
-		add_rtp_path(getenv("RPG_RTP_PATH"));
+		std::vector<std::string> tmp = Utils::Tokenize(getenv("RPG_RTP_PATH"), f);
+		env_paths.insert(env_paths.end(), tmp.begin(), tmp.end());
+	}
+
+	for (const std::string p : env_paths) {
+		add_rtp_path(p);
 	}
 
 	if (warn_no_rtp_found && search_paths.empty()) {
