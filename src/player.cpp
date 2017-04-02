@@ -533,8 +533,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			else if (*it == "rpg2kv150" || *it == "2000v150") {
 				engine = EngineRpg2k | EngineMajorUpdated;
 			}
-			else if (*it == "rpg2kv161" || *it == "2000v161") {
-				engine = EngineRpg2k | EngineMajorUpdated | EngineMessagePlaceholders;
+			else if (*it == "rpg2ke" || *it == "2000e") {
+				engine = EngineRpg2k | EngineMajorUpdated | EngineEnglish;
 			}
 			else if (*it == "rpg2k3" || *it == "2003") {
 				engine = EngineRpg2k3;
@@ -543,7 +543,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				engine = EngineRpg2k3 | EngineMajorUpdated;
 			}
 			else if (*it == "rpg2k3e") {
-				engine = EngineRpg2k3 | EngineMajorUpdated | EngineRpg2k3E;
+				engine = EngineRpg2k3 | EngineMajorUpdated | EngineEnglish;
 			}
 		}
 		else if (*it == "--record-input") {
@@ -653,25 +653,27 @@ void Player::CreateGameObjects() {
 					Output::Debug("Using RPG2k3 Interpreter");
 				}
 			} else {
-				engine |= EngineRpg2k3E;
+				engine |= EngineEnglish;
 				Output::Debug("Using RPG2k3 (English release, v1.11) Interpreter");
 			}
 		} else {
 			engine = EngineRpg2k;
 			Output::Debug("Using RPG2k Interpreter");
 			if (Data::data.version >= 1) {
-				engine |= EngineMessagePlaceholders;
+				engine |= EngineEnglish | EngineMajorUpdated;
 				Output::Debug("RM2k >= v.1.61 (English release) detected");
 			}
 		}
-		if (FileFinder::IsMajorUpdatedTree()) {
-			engine |= EngineMajorUpdated;
-			Output::Debug("RPG2k >= v1.50 / RPG2k3 >= v1.05 detected");
-		} else {
-			Output::Debug("RPG2k < v1.50 / RPG2k3 < v1.05 detected");
+		if (!(engine & EngineMajorUpdated)) {
+			if (FileFinder::IsMajorUpdatedTree()) {
+				engine |= EngineMajorUpdated;
+				Output::Debug("RPG2k >= v1.50 / RPG2k3 >= v1.05 detected");
+			} else {
+				Output::Debug("RPG2k < v1.50 / RPG2k3 < v1.05 detected");
+			}
 		}
 	}
-	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d 2k3E=%d MsgPlaceholders=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsRPG2k3E(), Player::SupportsMessagePlaceholders());
+	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	if (!no_rtp_flag) {
 		FileFinder::InitRtpPaths();
@@ -912,7 +914,7 @@ Options:
                            Possible options:
                             rpg2k      - RPG Maker 2000 engine (v1.00 - v1.10)
                             rpg2kv150  - RPG Maker 2000 engine (v1.50 - v1.51)
-                            rpg2kv161  - RPG Maker 2000 (English release) engine (v1.61)
+                            rpg2ke     - RPG Maker 2000 (English release) engine (v1.61)
                             rpg2k3     - RPG Maker 2003 engine (v1.00 - v1.04)
                             rpg2k3v105 - RPG Maker 2003 engine (v1.05 - v1.09a)
                             rpg2k3e    - RPG Maker 2003 (English release) engine
@@ -981,11 +983,17 @@ bool Player::IsMajorUpdatedVersion() {
 }
 
 bool Player::IsRPG2k3E() {
-	return (engine & EngineRpg2k3E) == EngineRpg2k3E;
+	return ((engine & EngineRpg2k3) == EngineRpg2k3)
+		&& ((engine & EngineEnglish) == EngineEnglish);
 }
 
-bool Player::SupportsMessagePlaceholders() {
-	return (engine & EngineMessagePlaceholders) == EngineMessagePlaceholders;
+bool Player::IsRPG2kE() {
+	return ((engine & EngineRpg2k) == EngineRpg2k)
+		&& ((engine & EngineEnglish) == EngineEnglish);
+}
+
+bool Player::IsEnglish() {
+	return (engine & EngineEnglish) == EngineEnglish;
 }
 
 bool Player::IsCP932() {
