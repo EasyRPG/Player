@@ -493,7 +493,11 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	// Windows paths are split by semicolon, Unix paths by colon
 	std::function<bool(char32_t)> f = [](char32_t t) {
-		return t == ';' || t == ':';
+#ifdef _WIN32
+		return t == ';';
+#else
+		return t == ':';
+#endif
 	};
 
 	if (Player::IsRPG2k() && getenv("RPG2K_RTP_PATH"))
