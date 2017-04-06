@@ -35,16 +35,46 @@ public:
 
 	void Clear();
 
+	/**
+	 * Remove 4 lines (determined by linesPerPage) of the battle
+	 * messages, thus proceeding to the next page.
+	 *
+	 * @return True if there is something left to show, false is the
+	 * previous page was the last one.
+	 */
+	bool NextPage();
+
 	int GetLineCount();
 
 	void Refresh();
 
 	void Update() override;
 
+	/**
+	 * @return true is the message window is filled, false if there
+	 * is space for at least one line on the first page.
+	 */
+	bool IsPageFilled();
+
+	/**
+	 * How much lines would fit into a window of battle messages.
+	 */
+	static const int linesPerPage = 4;
+
 private:
 	std::vector<std::string> lines;
 
 	bool needs_refresh;
+
+	/**
+	 * Adds a line to the lines vector. If the line is too long to
+	 * be displayed in the message and contains space characters, then
+	 * it will be broken into several lines.
+	 *
+	 * @param line String without newline characters.
+	 * @return Number of lines added after word-wrapping.
+	 **/
+	int PushWordWrappedLine(const std::string& line);
 };
 
 #endif

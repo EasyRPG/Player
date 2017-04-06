@@ -18,6 +18,7 @@
 // Headers
 #include <sstream>
 #include "game_message.h"
+#include "player.h"
 #include "window_battlemessage.h"
 #include "bitmap.h"
 #include "font.h"
@@ -35,10 +36,49 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 void Window_BattleMessage::Push(const std::string& message) {
 	std::stringstream smessage(message);
 	std::string line;
-	while (getline(smessage, line))
-		lines.push_back(line);
+	while (getline(smessage, line)) {
+		if (Player::IsRPG2kE()) {
+			PushWordWrappedLine(line);
+		}
+		else {
+			lines.push_back(line);
+		}
+	}
 
 	needs_refresh = true;
+}
+
+int Window_BattleMessage::PushWordWrappedLine(const std::string& line) {
+	FontRef font = Font::Default();
+
+	int start = 0, lastfound = 0;
+	int limit = GetWidth() - 24;
+	int lineCount = 0;
+	Rect size;
+
+	do {
+		lineCount++;
+		int found = line.find(" ", start);
+		std::string wrapped = line.substr(start, found - start);
+		size = font->GetSize(wrapped);
+		do {
+			lastfound = found;
+			found = line.find(" ", lastfound + 1);
+			if (found == std::string::npos) {
+				found = line.size();
+			}
+			wrapped = line.substr(start, found - start);
+			size = font->GetSize(wrapped);
+		} while (found < line.size() - 1 && size.width < limit);
+		if (size.width < limit) {
+			// It's end of the string, not a word-break
+			lastfound = found;
+		}
+		lines.push_back(line.substr(start, lastfound - start));
+		start = lastfound + 1;
+	} while (start < line.size() && size.width >= limit);
+
+	return lineCount;
 }
 
 void Window_BattleMessage::Pop() {
@@ -49,6 +89,24 @@ void Window_BattleMessage::Pop() {
 void Window_BattleMessage::Clear() {
 	lines.clear();
 	needs_refresh = true;
+}
+
+bool Window_BattleMessage::NextPage() {
+	int count = (int)lines.size();
+
+	if (!count) {
+		return false;
+	}
+	else if (count <= linesPerPage) {
+		lines.clear();
+		needs_refresh = true;
+		return false;
+	}
+	else {
+		lines.erase(lines.begin(), lines.begin() + linesPerPage);
+		needs_refresh = true;
+		return true;
+	}
 }
 
 void Window_BattleMessage::Refresh() {
@@ -79,4 +137,8 @@ void Window_BattleMessage::Update() {
 
 int Window_BattleMessage::GetLineCount() {
 	return (int)lines.size();
+}
+
+bool Window_BattleMessage::IsPageFilled() {
+	return (int)lines.size() >= linesPerPage;
 }
