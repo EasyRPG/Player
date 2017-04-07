@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <random>
+#include <cctype>
 
 namespace {
 	std::mt19937 rng;
@@ -437,4 +438,34 @@ std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, con
 	tokens.push_back(EncodeUTF(cur_token));
 
 	return tokens;
+}
+
+
+std::string Utils::ReplacePlaceholders(std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
+	std::string str = text_template;
+	size_t index = str.find("%");
+	while (index != std::string::npos) {
+		if (index + 1 < str.length()) {
+			char type = str[index + 1];
+			if (type == '%') {
+				++index;
+			}
+			else {
+				auto v_it = values.begin();
+				for (auto t_it = types.begin();
+					t_it != types.end(), v_it != values.end();
+					++t_it, ++v_it) {
+					if (std::toupper(type) == *t_it) {
+						str.replace(index, 2, *v_it);
+						index += (*v_it).length() - 2;
+						break;
+					}
+				}
+			}
+		}
+
+		index = str.find("%", index + 1);
+	}
+
+	return str;
 }

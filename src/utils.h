@@ -186,6 +186,19 @@ namespace Utils {
 	 */
 	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);
 
+	/**
+	 * Replaces placeholders (like %S, %O, %V, %U) in strings.
+	 *
+	 * @param text_template String with placeholders to replace.
+	 * @param types Vector of uppercase characters like 'S',
+	 * 'O', 'V', 'U'. Should have the same number of elements
+	 * as the values param.
+	 * @param values Vector of replacements strings,
+	 * should match types in number of elements and order.
+	 * @return A new string with placeholders replaced.
+	 */
+	std::string ReplacePlaceholders(std::string& text_template, std::vector<char> types, std::vector<std::string> values);
+
 } // namespace Utils
 
 #endif

@@ -834,7 +834,13 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		battle_message_window->NextPage();
 	}
 
-	battle_message_window->Push((*enemy_iterator)->GetName() + Data::terms.encounter);
+	std::string enemy_name = (*enemy_iterator)->GetName();
+	if (Player::IsRPG2kE()) {
+		battle_message_window->Push(Utils::ReplacePlaceholders(Data::terms.encounter, {'S'}, {enemy_name}));
+	}
+	else {
+		battle_message_window->Push(enemy_name + Data::terms.encounter);
+	}
 
 	++enemy_iterator;
 
