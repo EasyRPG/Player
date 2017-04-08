@@ -35,6 +35,7 @@
   <string name="refresh">重新整理</string>
   <string name="change_default_mapping">修改預設的按鍵配置</string>
   <string name="how_to_use_easy_rpg">EasyRPG Player 使用方式</string>
+  <string name="how_to_use_easy_rpg_explanation">遊戲安裝說明：\n\n預設情況下，EasyRPG Player 會在 /easyrpg/games 裡面尋找遊戲。在設定裡面可以加入其他遊戲儲存位置。\n\nRTP方面，RPG Maker 2000 RTP 要放在 /easyrpg/rtp/2000 裡面，2003 的則要放在 /easyrpg/rtp/2003 裡面。\n\n遊戲必須要被解壓縮後放進遊戲儲存位置中 (預設為 /easyrpg/games)，例如：\n\n\t/easyrpg/games/遊戲名/Data/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名.zip (X) ZIP 與 EXE 檔是不被支援的。\n</string>
   <!--Ingame menu-->
   <string name="toggle_fps">開關 FPS 顯示</string>
   <string name="toggle_ui">隱藏 / 顯示虛擬按鈕</string>

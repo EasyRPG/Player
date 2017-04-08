@@ -77,6 +77,7 @@
   <string name="key_enter">Enter (Z)</string>
   <string name="key_cancel">Відміна (ESC і X)</string>
   <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">Прискорення</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">Відкрити бокове меню</string>
   <string name="navigation_drawer_close">Закрити бокове меню</string>

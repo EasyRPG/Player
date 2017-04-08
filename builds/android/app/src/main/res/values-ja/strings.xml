@@ -75,8 +75,9 @@
   <string name="exit_without_saving">保存しないで閉じる</string>
   <string name="save_and_quit">保存して閉じる</string>
   <string name="key_enter">入力 (Z)</string>
-  <string name="key_cancel">キャンセル (ESC および X)</string>
+  <string name="key_cancel">キャンセル (ESC と X)</string>
   <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">早送り</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
   <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>

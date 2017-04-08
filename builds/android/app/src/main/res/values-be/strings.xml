@@ -78,6 +78,7 @@
   <string name="key_enter">Enter (Z)</string>
   <string name="key_cancel">Адмена (ESC і X)</string>
   <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">Паскарэнне</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">Адкрыць бакавое меню</string>
   <string name="navigation_drawer_close">Закрыць бакавое меню</string>
