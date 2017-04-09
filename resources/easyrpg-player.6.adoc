@@ -166,7 +166,7 @@ https://github.com/EasyRPG/Player/issues
 
 
 == COPYRIGHT / AUTHORS
-EasyRPG Player is Copyright (C) 2007-2016 the EasyRPG authors, see file
+EasyRPG Player is Copyright (C) 2007-2017 the EasyRPG authors, see file
 AUTHORS.md for details.
 
 This program is free software; you can redistribute it and/or modify it under
