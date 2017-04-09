@@ -112,9 +112,6 @@ static void reinit_easy_rpg(void){
 
 /* Library global initialization/deinitialization. */
 RETRO_API void retro_init(void) {
-    LibretroAudio::SetNumberOfSamplesPerFrame(AUDIO_SAMPLERATE / Graphics::GetDefaultFps());
-    LibretroAudio::SetOutputSampleRate(AUDIO_SAMPLERATE);
-
 	reinit_easy_rpg();
 }
 

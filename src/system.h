@@ -119,17 +119,4 @@
 #  define USE_AUDIO_RESAMPLER
 #endif
 
-#ifdef USE_LIBRETRO
-#  define SUPPORT_KEYBOARD
-#  define SUPPORT_AUDIO
-//#  define SUPPORT_WAV
-#  ifdef WANT_FMMIDI
-#    define SUPPORT_MID
-#  endif
-//#  define SUPPORT_OGG
-#  ifdef HAVE_MPG123
-#    define SUPPORT_MP3
-#  endif
-#endif
-
 #endif
