@@ -528,6 +528,8 @@
     <ClCompile Include="..\..\src\shinonome_gothic.cpp" />
     <ClCompile Include="..\..\src\shinonome_mincho.cpp" />
     <ClCompile Include="..\..\src\shinonome_wqy.cpp" />
+    <ClCompile Include="..\..\src\bitmapfont_rm2000.cpp" />
+    <ClCompile Include="..\..\src\bitmapfont_rmg2000.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_battle.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />

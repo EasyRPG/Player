@@ -339,7 +339,7 @@ void Player::Exit() {
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
 	std::string error = "You can turn off your browser now.";
 
-	Text::Draw(*surface, 55, DisplayUi->GetHeight() / 2 - 6, Color(255, 255, 255, 255), error);
+	Text::Draw(*surface, 55, DisplayUi->GetHeight() / 2 - 6, Color(255, 255, 255, 255), Font::Default(), error);
 	DisplayUi->UpdateDisplay();
 #endif
 
