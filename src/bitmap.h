@@ -253,19 +253,6 @@ public:
 	/**
 	 * Draws text to bitmap.
 	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color system color index.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
-	 *
 	 * @param rect bounding rectangle.
 	 * @param color system color index.
 	 * @param text text to draw.
@@ -282,19 +269,6 @@ public:
 	 * @param text text to draw.
 	 */
 	void TextDraw(int x, int y, Color color, std::string const& text);
-
-	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color text color.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.

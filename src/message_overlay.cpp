@@ -79,7 +79,10 @@ void MessageOverlay::Draw() {
 	for (it = messages.begin(); it != messages.end(); ++it) {
 		if (!it->hidden || show_all) {
 			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
-			bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
+			bitmap->TextDraw(Rect(2,
+						i * text_height,
+						bitmap->GetWidth(),
+						text_height),
 				it->color, it->text);
 			++i;
 		}
