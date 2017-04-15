@@ -38,6 +38,7 @@
 #include "bitmap.h"
 #include "utils.h"
 #include "cache.h"
+#include "player.h"
 
 bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
@@ -67,12 +68,26 @@ namespace {
 					   sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
 		return (gothic != NULL && gothic->code == code)? gothic : find_fallback_glyph(code);
 	}
+    
+	ShinonomeGlyph const* find_rmg2000_glyph(char32_t code) {
+		ShinonomeGlyph const* const rmg2000 =
+			find_glyph(BITMAPFONT_RMG2000,
+					   sizeof(BITMAPFONT_RMG2000) / sizeof(ShinonomeGlyph), code);
+		return (rmg2000 != NULL && rmg2000->code == code)? rmg2000 : find_gothic_glyph(code);
+	}
 
 	ShinonomeGlyph const* find_mincho_glyph(char32_t code) {
 		ShinonomeGlyph const* const mincho =
 			find_glyph(SHINONOME_MINCHO,
 					   sizeof(SHINONOME_MINCHO) / sizeof(ShinonomeGlyph), code);
 		return mincho == NULL? find_gothic_glyph(code) : mincho;
+	}
+
+	ShinonomeGlyph const* find_rm2000_glyph(char32_t code) {
+		ShinonomeGlyph const* const rm2000 =
+			find_glyph(BITMAPFONT_RM2000,
+					   sizeof(BITMAPFONT_RM2000) / sizeof(ShinonomeGlyph), code);
+		return (rm2000 != NULL && rm2000->code == code)? rm2000 : find_mincho_glyph(code);
 	}
 
 	struct ShinonomeFont : public Font {
@@ -124,8 +139,26 @@ namespace {
 	}; // class FTFont
 #endif
 
+    /* Bitmap fonts used for the official Japanese version and in the
+     * official English translation.
+     *
+     * Compatible with MS Gothic and MS Mincho.
+     *
+     * Feature a closing quote in place of straight quote, double-width
+     * Cyrillic letters (unusable for Russian, only useful for smileys
+     * and things like that) and ellipsis in the middle of the line. */
 	FontRef const gothic = std::make_shared<ShinonomeFont>(&find_gothic_glyph);
 	FontRef const mincho = std::make_shared<ShinonomeFont>(&find_mincho_glyph);
+
+    /* Bitmap fonts used for non-Japanese games.
+     *
+     * Compatible with RMG2000 and RM2000 shipped with Don Miguel’s
+     * unofficial translation.
+     *
+     * Feature a half-width Cyrillic and half-width ellipsis at the bottom
+     * of the line. */
+    FontRef const rmg2000 = std::make_shared<ShinonomeFont>(&find_rmg2000_glyph);
+    FontRef const rm2000 = std::make_shared<ShinonomeFont>(&find_rm2000_glyph);
 
 	struct ExFont : public Font {
 		ExFont();
@@ -284,7 +317,12 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default(bool const m) {
-	return m? mincho : gothic;
+    if (Player::IsOfficialTranslation()) {
+	    return m ? mincho : gothic;
+    }
+    else {
+        return m ? rm2000 : rmg2000;
+    }
 }
 
 FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {

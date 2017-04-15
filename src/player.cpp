@@ -980,6 +980,23 @@ bool Player::IsCP932() {
 	return (encoding == "ibm-943_P15A-2003" || encoding == "932");
 }
 
+bool Player::IsOfficialTranslation() {
+    if (IsRPG2k3E()) {
+        /* The official English translation bundles fonts in cp1251.
+         * Hacks of this engine exist (e.g. hack to Russify it), but
+         * they are hard to detect since many English games would be
+         * written in pure ASCII, which makes encoding detection hard.
+         *
+         * It might make sense to check for encodings for which hacks
+         * are known to exist.
+         */
+        return true;
+    }
+    else {
+        return IsCP932();
+    }
+}
+
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)

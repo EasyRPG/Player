@@ -150,10 +150,6 @@ print "Loading Hankaku..."
 hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "CP932", true)
 print "done\n"
 
-print "Loading Cyrillic..."
-cyrillic = read_file(File.new('./cyrillic/font_src.bit', 'r'), "UTF-32LE", true)
-print "done\n"
-
 print "Loading Gothic..."
 gothic = read_file(File.new('./kanjic/font_src.bit', 'r'), "JIS_X0208", false)
 print "done\n"
@@ -170,19 +166,36 @@ print "Loading Chinese..."
 chinese = read_file(File.new('./chinese/font_src_diff.bit', 'r'), "UTF-32LE", false)
 print "done\n"
 
+print "Loading RMG2000..."
+rmg2000 = read_file(File.new('./rmg2000/font_src.bit', 'r'), "UTF-32LE", true)
+print "done\n"
+
+print "Loading RM2000..."
+rm2000 = read_file(File.new('./rm2000/font_src.bit', 'r'), "UTF-32LE", true)
+print "done\n"
+
 print "Loading WenQuanYi..."
 wenquanyi_chars = read_bdf_chars(File.new('../wenquanyi/wenquanyi_cjk_basic_9pt.bdf', 'r'))
 print "done\n"
 
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(cyrillic).merge(hankaku) \
-	.merge(korean).merge(chinese).merge(latin).merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
+gothic_final = gothic.merge(hankaku) \
+	.merge(korean).merge(chinese).merge(latin) \
+    .merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
 code_max = write_all(File.new("../../src/shinonome_gothic.cpp", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
 code_max = [write_all(File.new("../../src/shinonome_mincho.cpp", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+print "done\n"
+
+print "Generating RMG2000..."
+code_max = [write_all(File.new("../../src/bitmapfont_rmg2000.cpp", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
+print "done\n"
+
+print "Generating RM2000..."
+code_max = [write_all(File.new("../../src/bitmapfont_rm2000.cpp", "w"), "BITMAPFONT_RM2000", rm2000), code_max].max
 print "done\n"
 
 # header
@@ -202,6 +215,8 @@ struct ShinonomeGlyph {
 extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
 extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
 extern ShinonomeGlyph const SHINONOME_WQY[#{wenquanyi_chars}];
+extern ShinonomeGlyph const BITMAPFONT_RMG2000[#{rmg2000.size}];
+extern ShinonomeGlyph const BITMAPFONT_RM2000[#{rm2000.size}];
 
 #endif // _INC_SHINONOME_H_
 EOS
