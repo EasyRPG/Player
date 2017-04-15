@@ -120,7 +120,7 @@ Rect Window_Keyboard::GetItemRect(int row, int col) const {
 	std::string const& str = items[mode][row][col];
 	return Rect(col * col_spacing + border_x,
 				row * row_spacing + border_y,
-				contents->GetFont()->GetSize(str).width + 8,
+				Font::Default()->GetSize(str).width + 8,
 				row_spacing);
 }
 
@@ -136,7 +136,7 @@ void Window_Keyboard::Refresh() {
 	for (int j = 0; j < row_max; j++) {
 		for (int i = 0; i < col_max; i++) {
 			Rect r = GetItemRect(j, i);
-			contents->TextDraw(r.x + 4, r.y, Font::ColorDefault, items[mode][j][i]);
+			contents->TextDraw(r.x + 4, r.y, Font::ColorDefault, Font::Default(), items[mode][j][i]);
 		}
 	}
 }

@@ -82,25 +82,25 @@ void Window_Base::DrawActorFace(Game_Actor* actor, int cx, int cy) {
 }
 
 void Window_Base::DrawActorName(Game_Battler* actor, int cx, int cy) {
-	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetName());
+	contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), actor->GetName());
 }
 
 void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
-	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetTitle());
+	contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), actor->GetTitle());
 }
 
 void Window_Base::DrawActorClass(Game_Actor* actor, int cx, int cy) {
-	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetClassName());
+	contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), actor->GetClassName());
 }
 
 void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	// Draw LV-String
-	contents->TextDraw(cx, cy, 1, Data::terms.lvl_short);
+	contents->TextDraw(cx, cy, 1, Font::Default(), Data::terms.lvl_short);
 
 	// Draw Level of the Actor
 	std::stringstream ss;
 	ss << actor->GetLevel();
-	contents->TextDraw(cx + 24, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 24, cy, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
@@ -109,16 +109,16 @@ void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
 	// Unit has Normal state if no state is set
 	const RPG::State* state = actor->GetSignificantState();
 	if (!state) {
-		contents->TextDraw(cx, cy, Font::ColorDefault, Data::terms.normal_status);
+		contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), Data::terms.normal_status);
 	} else {
-		contents->TextDraw(cx, cy, state->color, state->name);
+		contents->TextDraw(cx, cy, state->color, Font::Default(), state->name);
 	}
 }
 
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw EXP-String
 	if (Player::IsRPG2k()) {
-		contents->TextDraw(cx, cy, 1, Data::terms.exp_short);
+		contents->TextDraw(cx, cy, 1, Font::Default(), Data::terms.exp_short);
 	}
 
 	// Current Exp of the Actor
@@ -131,12 +131,12 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
-	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 12 : 0), cy, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignLeft);
 }
 
 void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max) {
 	// Draw HP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.hp_short);
+	contents->TextDraw(cx, cy, 1, Font::Default(), Data::terms.hp_short);
 
 	// Draw Current HP of the Actor
 	cx += 12;
@@ -149,25 +149,25 @@ void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max
 	}
 	std::stringstream ss;
 	ss << actor->GetHp();
-	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, color, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, color, Font::Default(), ss.str(), Text::AlignRight);
 
 	if (!draw_max)
 		return;
 
 	// Draw the /
 	cx += (Player::IsRPG2k() ? 3 : 4) * 6;
-	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
+	contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), "/");
 
 	// Draw Max Hp
 	cx += 6;
 	ss.str("");
 	ss << actor->GetMaxHp();
-	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + (Player::IsRPG2k() ? 3 : 4) * 6, cy, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max) {
 	// Draw SP-String
-	contents->TextDraw(cx, cy, 1, Data::terms.sp_short);
+	contents->TextDraw(cx, cy, 1, Font::Default(), Data::terms.sp_short);
 
 	// Draw Current SP of the Actor
 	cx += 12;
@@ -178,20 +178,20 @@ void Window_Base::DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max
 	}
 	std::stringstream ss;
 	ss << actor->GetSp();
-	contents->TextDraw(cx + 18, cy, color, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 18, cy, color, Font::Default(), ss.str(), Text::AlignRight);
 
 	if (!draw_max)
 		return;
 
 	// Draw the /
 	cx += 3 * 6;
-	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
+	contents->TextDraw(cx, cy, Font::ColorDefault, Font::Default(), "/");
 
 	// Draw Max Sp
 	cx += 6;
 	ss.str("");
 	ss << actor->GetMaxSp();
-	contents->TextDraw(cx + 18, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 18, cy, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawActorParameter(Game_Battler* actor, int cx, int cy, int type) {
@@ -220,12 +220,12 @@ void Window_Base::DrawActorParameter(Game_Battler* actor, int cx, int cy, int ty
 	}
 
 	// Draw Term
-	contents->TextDraw(cx, cy, 1, name);
+	contents->TextDraw(cx, cy, 1, Font::Default(), name);
 
 	// Draw Value
 	std::stringstream ss;
 	ss << value;
-	contents->TextDraw(cx + 78, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 78, cy, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
@@ -255,17 +255,17 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 		return;
 	}
 
-	contents->TextDraw(cx, cy, 1, name);
+	contents->TextDraw(cx, cy, 1, Font::Default(), name);
 }
 
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
 	int color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-	contents->TextDraw(cx, cy, color, item->name);
+	contents->TextDraw(cx, cy, color, Font::Default(), item->name);
 }
 
 void Window_Base::DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled) {
 	int color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-	contents->TextDraw(cx, cy, color, skill->name);
+	contents->TextDraw(cx, cy, color, Font::Default(), skill->name);
 }
 
 void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
@@ -274,10 +274,10 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 	std::stringstream gold;
 	gold << money;
 
-	Rect gold_text_size = contents->GetFont()->GetSize(Data::terms.gold);
-	contents->TextDraw(cx, cy, 1, Data::terms.gold, Text::AlignRight);
+	Rect gold_text_size = Font::Default()->GetSize(Data::terms.gold);
+	contents->TextDraw(cx, cy, 1, Font::Default(), Data::terms.gold, Text::AlignRight);
 
-	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
+	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, Font::Default(), gold.str(), Text::AlignRight);
 }
 
 void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {

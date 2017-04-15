@@ -45,6 +45,6 @@ void Window_Teleport::Refresh() {
 		Rect rect = GetItemRect(i);
 		contents->ClearRect(rect);
 
-		contents->TextDraw(rect, Font::ColorDefault, Game_Map::GetMapName(targets[i]->map_id));
+		contents->TextDraw(rect, Font::ColorDefault, Font::Default(), Game_Map::GetMapName(targets[i]->map_id));
 	}
 }

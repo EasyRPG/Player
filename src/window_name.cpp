@@ -35,7 +35,7 @@ Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 
 void Window_Name::Refresh() {
 	contents->Clear();
-	contents->TextDraw(2, 2, Font::ColorDefault, name);
+	contents->TextDraw(2, 2, Font::ColorDefault, Font::Default(), name);
 }
 
 void Window_Name::Set(const std::string& text) {
@@ -44,7 +44,7 @@ void Window_Name::Set(const std::string& text) {
 }
 
 void Window_Name::Append(const std::string& text) {
-	if(contents->GetFont()->GetSize(name + text).width <= (12 * 6)) {
+	if(Font::Default()->GetSize(name + text).width <= (12 * 6)) {
 		name += text;
 		Refresh();
 	} else {
@@ -53,7 +53,7 @@ void Window_Name::Append(const std::string& text) {
 }
 
 void Window_Name::Update() {
-	Rect const name_size = contents->GetFont()->GetSize(name);
+	Rect const name_size = Font::Default()->GetSize(name);
 	SetCursorRect(Rect(name_size.width + 2, 0, 16, 16));
 }
 

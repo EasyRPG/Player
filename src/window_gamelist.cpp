@@ -74,7 +74,7 @@ void Window_GameList::DrawItem(int index) {
 		text = game_directories[index];
 	}
 
-	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, game_directories[index]);
+	contents->TextDraw(rect.x, rect.y, Font::ColorDefault, Font::Default(), game_directories[index]);
 }
 
 void Window_GameList::DrawErrorText() {
@@ -98,13 +98,13 @@ void Window_GameList::DrawErrorText() {
 	};
 
 #ifdef EMSCRIPTEN
-	contents->TextDraw(0, 0, Font::ColorKnockout, "The game was not found.");
+	contents->TextDraw(0, 0, Font::ColorKnockout, Font::Default(), "The game was not found.");
 #else
-	contents->TextDraw(0, 0, Font::ColorKnockout, "No games found in the current directory.");
+	contents->TextDraw(0, 0, Font::ColorKnockout, Font::Default(), "No games found in the current directory.");
 #endif
 
 	for (size_t i = 0; i < error_msg.size(); ++i) {
-		contents->TextDraw(0, 2 + 14 * (i + 2), Font::ColorCritical, error_msg[i]);
+		contents->TextDraw(0, 2 + 14 * (i + 2), Font::ColorCritical, Font::Default(), error_msg[i]);
 	}
 }
 

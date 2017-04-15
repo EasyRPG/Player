@@ -62,7 +62,7 @@ void Window_NumberInput::Refresh() {
 	for (int i = 0; i < digits_max + (int)show_operator; ++i) {
 		char c[2] = {s[i], '\0'};
 		int x = i * (cursor_width - 2) + (show_operator ? 2 : 12);
-		contents->TextDraw(x, 2, Font::ColorDefault, c);
+		contents->TextDraw(x, 2, Font::ColorDefault, Font::Default(), c);
 	}
 }
 

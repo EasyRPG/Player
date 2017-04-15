@@ -343,56 +343,48 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::opaque);
 }
 
-FontRef const& Bitmap::GetFont() const {
-	return font;
-}
-
-void Bitmap::SetFont(FontRef const& new_font) {
-	font = new_font;
-}
-
-void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
-	Rect text_rect = GetFont()->GetSize(text);
+void Bitmap::TextDraw(Rect const& rect, int color, FontRef font, std::string const& text, Text::Alignment align) {
+	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(rect.x, rect.y, color, text);
+		TextDraw(rect.x, rect.y, color, font, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(rect.x + dx / 2, rect.y, color, text);
+		TextDraw(rect.x + dx / 2, rect.y, color, font, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(rect.x + dx, rect.y, color, text);
+		TextDraw(rect.x + dx, rect.y, color, font, text);
 		break;
 	default: assert(false);
 	}
 }
 
-void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align) {
-	Text::Draw(*this, x, y, color, text, align);
+void Bitmap::TextDraw(int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align) {
+	Text::Draw(*this, x, y, color, font, text, align);
 }
 
-void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
-	Rect text_rect = GetFont()->GetSize(text);
+void Bitmap::TextDraw(Rect const& rect, Color color, FontRef font, std::string const& text, Text::Alignment align) {
+	Rect text_rect = font->GetSize(text);
 	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(rect.x, rect.y, color, text);
+		TextDraw(rect.x, rect.y, color, font, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(rect.x + dx / 2, rect.y, color, text);
+		TextDraw(rect.x + dx / 2, rect.y, color, font, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(rect.x + dx, rect.y, color, text);
+		TextDraw(rect.x + dx, rect.y, color, font, text);
 		break;
 	default: assert(false);
 	}
 }
 
-void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
-	Text::Draw(*this, x, y, color, text);
+void Bitmap::TextDraw(int x, int y, Color color, FontRef font, std::string const& text) {
+	Text::Draw(*this, x, y, color, font, text);
 }
 
 Rect Bitmap::TransformRectangle(const Transform& xform, const Rect& rect) {

@@ -37,17 +37,17 @@ void Window_ShopStatus::Refresh() {
 	if (item_id != 0) {
 		int number = Main_Data::game_party->GetItemCount(item_id);
 
-		contents->TextDraw(0, 2, 1, Data::terms.possessed_items);
-		contents->TextDraw(0, 18, 1, Data::terms.equipped_items);
+		contents->TextDraw(0, 2, 1, Font::Default(), Data::terms.possessed_items);
+		contents->TextDraw(0, 18, 1, Font::Default(), Data::terms.equipped_items);
 
 		std::stringstream ss;
 		ss << number;
 
-		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Text::AlignRight);
+		contents->TextDraw(120, 2, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 
 		ss.str("");
 		ss << Main_Data::game_party->GetItemCount(item_id, true);
-		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Text::AlignRight);
+		contents->TextDraw(120, 18, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 	}
 }
 

@@ -21,6 +21,7 @@
 #include "player.h"
 #include "graphics.h"
 #include "bitmap.h"
+#include "font.h"
 
 MessageOverlay::MessageOverlay() :
 	type(TypeOverlay),
@@ -83,7 +84,9 @@ void MessageOverlay::Draw() {
 						i * text_height,
 						bitmap->GetWidth(),
 						text_height),
-				it->color, it->text);
+				it->color,
+				Font::Default(),
+				it->text);
 			++i;
 		}
 	}

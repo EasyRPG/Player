@@ -54,7 +54,7 @@ void Window_VarList::DrawItemValue(int index){
 		if (!Game_Switches.IsValid(first_var+index))
 			return;
 		DrawItem(index, Font::ColorDefault);
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Font::Default(), Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
 	}
 	else {
 		if (!Game_Variables.IsValid(first_var+index))
@@ -62,7 +62,7 @@ void Window_VarList::DrawItemValue(int index){
 		DrawItem(index, Font::ColorDefault);
 		std::stringstream ss;
 		ss  << Game_Variables[first_var+index];
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, ss.str(), Text::AlignRight);
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
 	}
 }
 

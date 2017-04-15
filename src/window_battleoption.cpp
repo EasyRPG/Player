@@ -111,7 +111,7 @@ void Window_BattleOption::DrawItem(int index, Font::SystemColor color) {
 	if (y < 0 || y + 16 > contents->GetHeight())
 		return;
 	contents->ClearRect(Rect(0, y, contents->GetWidth(), 16));
-	contents->TextDraw(2, y + 2, color, commands[index]);
+	contents->TextDraw(2, y + 2, color, Font::Default(), commands[index]);
 }
 
 int Window_BattleOption::GetIndex() {

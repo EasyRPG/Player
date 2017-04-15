@@ -245,20 +245,22 @@ public:
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
 	 * @param color system color index.
+	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment.
 	 */
-	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color system color index.
+	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text to bitmap.
@@ -266,33 +268,21 @@ public:
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
 	 * @param color text color.
+	 * @param font font of the text.
 	 * @param text text to draw.
 	 */
-	void TextDraw(int x, int y, Color color, std::string const& text);
+	void TextDraw(int x, int y, Color color, FontRef font, std::string const& text);
 
 	/**
 	 * Draws text to bitmap.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color text color.
+	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Gets text drawing font.
-	 *
-	 * @return text drawing font.
-	 */
-	FontRef const& GetFont() const;
-
-	/**
-	 * Sets text drawing font.
-	 *
-	 * @param font drawing font.
-	 */
-	void SetFont(FontRef const& font);
+	void TextDraw(Rect const& rect, Color color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -558,7 +548,7 @@ protected:
 	TileOpacity opacity = Partial;
 	Color bg_color, sh_color;
 
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
+	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
 
 #ifdef USE_SDL
 	friend class SdlUi;

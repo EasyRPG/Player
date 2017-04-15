@@ -43,6 +43,7 @@
 #include "main_data.h"
 #include "message_overlay.h"
 #include "utils.h"
+#include "font.h"
 
 namespace {
 	std::ofstream LOG_FILE;
@@ -171,8 +172,8 @@ static void HandleErrorOutput(const std::string& err) {
 
 	error += "\n\nEasyRPG Player will close now.\nPress [ENTER] key to exit...";
 
-	Text::Draw(*surface, 11, 11, Color(0, 0, 0, 255), error);
-	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), error);
+	Text::Draw(*surface, 11, 11, Color(0, 0, 0, 255), Font::Default(), error);
+	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), Font::Default(), error);
 	DisplayUi->UpdateDisplay();
 
 	if (ignore_pause) { return; }
