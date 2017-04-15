@@ -1,6 +1,6 @@
 #include "shinonome.h"
 
-ShinonomeGlyph const BITMAPFONT_RMG2000[469] = {
+ShinonomeGlyph const BITMAPFONT_RMG2000[470] = {
   { 1, false, { 0, 4, 4, 14, 14, 31, 31, 14, 14, 4, 4, 0 } },
   { 2, false, { 42, 21, 42, 21, 42, 21, 42, 21, 42, 21, 42, 21 } },
   { 3, false, { 0, 5, 5, 7, 5, 5, 28, 8, 8, 8, 8, 0 } },
@@ -470,4 +470,5 @@ ShinonomeGlyph const BITMAPFONT_RMG2000[469] = {
   { 1277, false, { 0, 0, 0, 0, 9, 9, 6, 6, 9, 25, 16, 8 } },
   { 1278, false, { 0, 0, 17, 10, 4, 31, 4, 10, 17, 17, 0, 0 } },
   { 1279, false, { 0, 0, 0, 0, 17, 10, 31, 4, 10, 17, 0, 0 } },
+  { 8230, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0, 0 } },
 };

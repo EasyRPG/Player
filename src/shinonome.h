@@ -12,7 +12,7 @@ struct ShinonomeGlyph {
 extern ShinonomeGlyph const SHINONOME_GOTHIC[11071];
 extern ShinonomeGlyph const SHINONOME_MINCHO[488];
 extern ShinonomeGlyph const SHINONOME_WQY[20941];
-extern ShinonomeGlyph const BITMAPFONT_RMG2000[469];
-extern ShinonomeGlyph const BITMAPFONT_RM2000[470];
+extern ShinonomeGlyph const BITMAPFONT_RMG2000[470];
+extern ShinonomeGlyph const BITMAPFONT_RM2000[471];
 
 #endif // _INC_SHINONOME_H_
