@@ -1537,6 +1537,8 @@ bool Game_Interpreter::CommandChangeSystemGraphics(RPG::EventCommand const& com)
 	request->Start();
 
 	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);
+	Game_System::SetFontId(com.parameters[1]);
+
 
 	return true;
 }

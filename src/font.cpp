@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "system.h"
+#include "game_system.h"
 
 #ifdef HAVE_FREETYPE
 #	include <ft2build.h>
@@ -315,6 +316,10 @@ bool FTFont::check_face() {
 	return true;
 }
 #endif
+
+FontRef Font::Default() {
+	return Default(Game_System::GetFontId() != 1);
+}
 
 FontRef Font::Default(bool const m) {
 	if (Player::IsOfficialTranslation()) {
