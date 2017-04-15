@@ -68,7 +68,7 @@ namespace {
 					   sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
 		return (gothic != NULL && gothic->code == code)? gothic : find_fallback_glyph(code);
 	}
-    
+
 	ShinonomeGlyph const* find_rmg2000_glyph(char32_t code) {
 		ShinonomeGlyph const* const rmg2000 =
 			find_glyph(BITMAPFONT_RMG2000,
@@ -139,26 +139,26 @@ namespace {
 	}; // class FTFont
 #endif
 
-    /* Bitmap fonts used for the official Japanese version and in the
-     * official English translation.
-     *
-     * Compatible with MS Gothic and MS Mincho.
-     *
-     * Feature a closing quote in place of straight quote, double-width
-     * Cyrillic letters (unusable for Russian, only useful for smileys
-     * and things like that) and ellipsis in the middle of the line. */
+	/* Bitmap fonts used for the official Japanese version and in the
+	* official English translation.
+	*
+	* Compatible with MS Gothic and MS Mincho.
+	*
+	* Feature a closing quote in place of straight quote, double-width
+	* Cyrillic letters (unusable for Russian, only useful for smileys
+	* and things like that) and ellipsis in the middle of the line. */
 	FontRef const gothic = std::make_shared<ShinonomeFont>(&find_gothic_glyph);
 	FontRef const mincho = std::make_shared<ShinonomeFont>(&find_mincho_glyph);
 
-    /* Bitmap fonts used for non-Japanese games.
-     *
-     * Compatible with RMG2000 and RM2000 shipped with Don Miguel’s
-     * unofficial translation.
-     *
-     * Feature a half-width Cyrillic and half-width ellipsis at the bottom
-     * of the line. */
-    FontRef const rmg2000 = std::make_shared<ShinonomeFont>(&find_rmg2000_glyph);
-    FontRef const rm2000 = std::make_shared<ShinonomeFont>(&find_rm2000_glyph);
+	/* Bitmap fonts used for non-Japanese games.
+	 *
+	 * Compatible with RMG2000 and RM2000 shipped with Don Miguel’s
+	 * unofficial translation.
+	 *
+	 * Feature a half-width Cyrillic and half-width ellipsis at the bottom
+	 * of the line. */
+	FontRef const rmg2000 = std::make_shared<ShinonomeFont>(&find_rmg2000_glyph);
+	FontRef const rm2000 = std::make_shared<ShinonomeFont>(&find_rm2000_glyph);
 
 	struct ExFont : public Font {
 		ExFont();
@@ -223,7 +223,7 @@ BitmapRef FTFont::Glyph(char32_t glyph) {
 		Output::Error("Couldn't load FreeType character %d", glyph);
 	}
 
-    if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
+	if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
 		Output::Error("Couldn't render FreeType character %d", glyph);
 	}
 
@@ -317,12 +317,12 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default(bool const m) {
-    if (Player::IsOfficialTranslation()) {
-	    return m ? mincho : gothic;
-    }
-    else {
-        return m ? rm2000 : rmg2000;
-    }
+	if (Player::IsOfficialTranslation()) {
+		return m ? mincho : gothic;
+	}
+	else {
+		return m ? rm2000 : rmg2000;
+	}
 }
 
 FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {
