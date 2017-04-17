@@ -32,7 +32,7 @@ AS_IF([test "x$want_fmmidi" != "x"],
 AM_CONDITIONAL([WANT_FMMIDI],[test "x$want_fmmidi" != "x"])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([LCF],[liblcf])
+PKG_CHECK_MODULES([LCF],[liblcf = 0.4.0])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])
 AC_ARG_WITH([freetype], AS_HELP_STRING([--without-freetype], [Disable FreeType font rendering @<:@default=auto@:>@]))
 AS_IF([test "x$with_freetype" != "xno"], [
