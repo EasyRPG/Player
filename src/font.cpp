@@ -74,7 +74,14 @@ namespace {
 		ShinonomeGlyph const* const rmg2000 =
 			find_glyph(BITMAPFONT_RMG2000,
 					   sizeof(BITMAPFONT_RMG2000) / sizeof(ShinonomeGlyph), code);
-		return (rmg2000 != NULL && rmg2000->code == code)? rmg2000 : find_gothic_glyph(code);
+		if (rmg2000 != NULL && rmg2000->code == code) {
+			return rmg2000;
+		}
+
+		ShinonomeGlyph const* const ttyp0 =
+			find_glyph(BITMAPFONT_TTYP0,
+					   sizeof(BITMAPFONT_TTYP0) / sizeof(ShinonomeGlyph), code);
+		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_gothic_glyph(code);
 	}
 
 	ShinonomeGlyph const* find_mincho_glyph(char32_t code) {
@@ -84,11 +91,11 @@ namespace {
 		return mincho == NULL? find_gothic_glyph(code) : mincho;
 	}
 
-	ShinonomeGlyph const* find_rm2000_glyph(char32_t code) {
-		ShinonomeGlyph const* const rm2000 =
-			find_glyph(BITMAPFONT_RM2000,
-					   sizeof(BITMAPFONT_RM2000) / sizeof(ShinonomeGlyph), code);
-		return (rm2000 != NULL && rm2000->code == code)? rm2000 : find_mincho_glyph(code);
+	ShinonomeGlyph const* find_ttyp0_glyph(char32_t code) {
+		ShinonomeGlyph const* const ttyp0 =
+			find_glyph(BITMAPFONT_TTYP0,
+					   sizeof(BITMAPFONT_TTYP0) / sizeof(ShinonomeGlyph), code);
+		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_mincho_glyph(code);
 	}
 
 	struct ShinonomeFont : public Font {
@@ -159,7 +166,7 @@ namespace {
 	 * Feature a half-width Cyrillic and half-width ellipsis at the bottom
 	 * of the line. */
 	FontRef const rmg2000 = std::make_shared<ShinonomeFont>(&find_rmg2000_glyph);
-	FontRef const rm2000 = std::make_shared<ShinonomeFont>(&find_rm2000_glyph);
+	FontRef const ttyp0 = std::make_shared<ShinonomeFont>(&find_ttyp0_glyph);
 
 	struct ExFont : public Font {
 		ExFont();
@@ -326,7 +333,7 @@ FontRef Font::Default(bool const m) {
 		return m ? mincho : gothic;
 	}
 	else {
-		return m ? rm2000 : rmg2000;
+		return m ? ttyp0 : rmg2000;
 	}
 }
 

@@ -170,8 +170,8 @@ print "Loading RMG2000..."
 rmg2000 = read_file(File.new('./rmg2000/font_src.bit', 'r'), "UTF-32LE", true)
 print "done\n"
 
-print "Loading RM2000..."
-rm2000 = read_file(File.new('./rm2000/font_src.bit', 'r'), "UTF-32LE", true)
+print "Loading ttyp0 (RM2000 replacement)..."
+ttyp0 = read_file(File.new('../ttyp0/font.bit', 'r'), "UTF-32LE", true)
 print "done\n"
 
 print "Loading WenQuanYi..."
@@ -194,8 +194,8 @@ print "Generating RMG2000..."
 code_max = [write_all(File.new("../../src/bitmapfont_rmg2000.cpp", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
 print "done\n"
 
-print "Generating RM2000..."
-code_max = [write_all(File.new("../../src/bitmapfont_rm2000.cpp", "w"), "BITMAPFONT_RM2000", rm2000), code_max].max
+print "Generating ttyp0..."
+code_max = [write_all(File.new("../../src/bitmapfont_ttyp0.cpp", "w"), "BITMAPFONT_TTYP0", ttyp0), code_max].max
 print "done\n"
 
 # header
@@ -216,7 +216,7 @@ extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
 extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
 extern ShinonomeGlyph const SHINONOME_WQY[#{wenquanyi_chars}];
 extern ShinonomeGlyph const BITMAPFONT_RMG2000[#{rmg2000.size}];
-extern ShinonomeGlyph const BITMAPFONT_RM2000[#{rm2000.size}];
+extern ShinonomeGlyph const BITMAPFONT_TTYP0[#{ttyp0.size}];
 
 #endif // _INC_SHINONOME_H_
 EOS

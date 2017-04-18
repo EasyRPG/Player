@@ -458,7 +458,7 @@
     <ClCompile Include="..\..\src\shinonome_wqy.cpp">
       <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\bitmapfont_rm2000.cpp">
+    <ClCompile Include="..\..\src\bitmapfont_ttyp0.cpp">
       <Filter>Source Files\Shinonome</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmapfont_rmg2000.cpp">
