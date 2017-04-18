@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Vibrator;
 import android.view.KeyEvent;
@@ -74,22 +75,31 @@ public class VirtualButton extends View {
             painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
         }
 
-        // Draw
-        // The circle
-        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
+        // Draw the circle surrounding the button's letter
+        int border = 5;
+        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - border, painter);
 
-        // The letter
-        // Anticipate the size of the letter
+        // Set the text size
         painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
-        painter.getTextBounds("" + charButton, 0, 1, letterBound);
 
         // Draw the letter, centered in the circle
-        canvas.drawText("" + charButton, (realSize - letterBound.width()) / 2,
-                letterBound.height() + (realSize - letterBound.height()) / 2, painter);
+        drawCenter(canvas, painter, String.valueOf(charButton));
+    }
+
+    /** Draw "text" centered in "canvas" */
+    private void drawCenter(Canvas canvas, Paint paint, String text) {
+        Rect bound = new Rect();
+        canvas.getClipBounds(bound);
+        int cHeight = bound.height();
+        int cWidth = bound.width();
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.getTextBounds(text, 0, text.length(), bound);
+        float x = cWidth / 2f - bound.width() / 2f - bound.left;
+        float y = cHeight / 2f + bound.height() / 2f - bound.bottom;
+        canvas.drawText(text, x, y, paint);
     }
 
     public int getFuturSize() {
-        // Resize
         realSize = (int) ((float) originalSize * resizeFactor / 100);
 
         return realSize;
@@ -197,11 +207,7 @@ public class VirtualButton extends View {
         } else if (keyCode == KEY_PLUS) {
             charButton = '+';
         } else if (keyCode == KEY_FAST_FORWARD) {
-            if (Build.VERSION.SDK_INT >= 16) { // Android 4.1
-                charButton = '⏩';
-            } else {
-                charButton = '>';
-            }
+            charButton = '»';
         } else {
             charButton = '?';
         }
