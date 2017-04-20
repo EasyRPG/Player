@@ -16,6 +16,8 @@
  */
 
 
+#include <iostream>
+//^^removeme
 #include <algorithm>
 #include <sstream>
 #include "input.h"
@@ -799,6 +801,27 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	}
 }
 
+void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
+	if ((enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() &&
+			!battle_message_window->GetHiddenLineCount()) ||
+		battle_message_window->IsPageFilled()) {
+		if (Player::IsRPG2kE()) {
+			encounter_message_sleep_until = Player::GetFrames() + 60;
+		}
+		else {
+			encounter_message_sleep_until = Player::GetFrames() + 60 / 2;
+		}
+	}
+	else {
+		if (Player::IsRPG2kE()) {
+			encounter_message_sleep_until = Player::GetFrames() + 60 / 10;
+		}
+		else {
+			encounter_message_sleep_until = Player::GetFrames() + 60 / 5;
+		}
+	}
+}
+
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (encounter_message_first_monster) {
 		enemy_iterator = Main_Data::game_enemyparty->GetEnemies().begin();
@@ -812,6 +835,15 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		} else {
 			return false;
 		}
+	}
+
+	if (battle_message_window->GetHiddenLineCount() > 0) {
+		if (battle_message_window->IsPageFilled()) {
+			battle_message_window->NextPage();
+		}
+		battle_message_window->ShowHiddenLines(1);
+		SetWaitForEnemyAppearanceMessages();
+		return false;
 	}
 
 	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end()) {
@@ -830,30 +862,75 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		}
 	}
 
+
 	if (battle_message_window->IsPageFilled()) {
 		battle_message_window->NextPage();
 	}
-
-	std::string enemy_name = (*enemy_iterator)->GetName();
-	if (Player::IsRPG2kE()) {
-		battle_message_window->Push(Utils::ReplacePlaceholders(Data::terms.encounter, {'S'}, {enemy_name}));
-	}
-	else {
-		battle_message_window->Push(enemy_name + Data::terms.encounter);
-	}
-
+	battle_message_window->EnemyAppeared((*enemy_iterator)->GetName());
 	++enemy_iterator;
 
-	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() ||
-		battle_message_window->IsPageFilled()) {
-		// Half second sleep
-		encounter_message_sleep_until = Player::GetFrames() + 60 / 2;
-	} else {
-		// 1/10 second sleep
-		encounter_message_sleep_until = Player::GetFrames() + 60 / 10;
-	}
+	SetWaitForEnemyAppearanceMessages();
 
 	return false;
+}
+
+void Scene_Battle_Rpg2k::PushExperienceGainedMessage(int exp) {
+	std::stringstream ss;
+	if (Player::IsRPG2kE()) {
+		ss << exp;
+		Game_Message::texts.push_back(
+			Utils::ReplacePlaceholders(
+				Data::terms.exp_received,
+				{'V', 'U'},
+				{ss.str(), Data::terms.exp_short}
+			)
+		);
+	}
+	else {
+		ss << exp << Data::terms.exp_received;
+		Game_Message::texts.push_back(ss.str());
+	}
+}
+
+void Scene_Battle_Rpg2k::PushGoldReceivedMessage(int money) {
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << money;
+		Game_Message::texts.push_back(
+			Utils::ReplacePlaceholders(
+				Data::terms.gold_recieved_a,
+				{'V', 'U'},
+				{ss.str(), Data::terms.gold}
+			)
+		);
+	}
+	else {
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+		Game_Message::texts.push_back(ss.str());
+	}
+}
+
+void Scene_Battle_Rpg2k::PushItemRecievedMessages(std::vector<int> drops) {
+	std::stringstream ss;
+
+	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+		std::string item_name = Data::items[*it - 1].name;
+		if (Player::IsRPG2kE()) {
+			Game_Message::texts.push_back(
+				Utils::ReplacePlaceholders(
+					Data::terms.item_recieved,
+					{'S'},
+					{item_name}
+				)
+			);
+		}
+		else {
+			ss.str("");
+			ss << item_name << Data::terms.item_recieved;
+			Game_Message::texts.push_back(ss.str());
+		}
+	}
 }
 
 bool Scene_Battle_Rpg2k::CheckWin() {
@@ -869,18 +946,11 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::stringstream ss;
-		ss << exp << Data::terms.exp_received;
-		Game_Message::texts.push_back(ss.str());
+		PushExperienceGainedMessage(exp);
 		if (money > 0) {
-			ss.str("");
-			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
-			Game_Message::texts.push_back(ss.str());
+			PushGoldReceivedMessage(money);
 		}
-		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			ss.str("");
-			ss << Data::items[*it - 1].name << Data::terms.item_recieved;
-			Game_Message::texts.push_back(ss.str());
-		}
+		PushItemRecievedMessages(drops);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));
 

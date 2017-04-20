@@ -191,7 +191,19 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (!success) {
-		out.push_back(GetTarget()->GetName() + Data::terms.dodge);
+		if (Player::IsRPG2kE()) {
+			//TODO: check if this is word-wrapped
+			out.push_back(
+				Utils::ReplacePlaceholders(
+					Data::terms.dodge,
+					{'S', 'O'},
+					{GetSource()->GetName(), GetTarget()->GetName()}
+				)
+			);
+		}
+		else {
+			out.push_back(GetTarget()->GetName() + Data::terms.dodge);
+		}
 	}
 
 	bool target_is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
@@ -758,7 +770,16 @@ void Game_BattleAlgorithm::Normal::Apply() {
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.attacking;
+		if (Player::IsRPG2kE()) {
+			return Utils::ReplacePlaceholders(
+				Data::terms.attacking,
+				{'S'},
+				{source->GetName()}
+			);
+		}
+		else {
+			return source->GetName() + Data::terms.attacking;
+		}
 	}
 	else {
 		return "";

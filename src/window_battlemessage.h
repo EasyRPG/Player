@@ -29,7 +29,25 @@ class Window_BattleMessage : public Window_Base {
 public:
 	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
 
+	/**
+	 * Adds message to be displayed.
+	 *
+	 * If hidden lines exist prior to pushing the message, they
+	 * are shown. However, the newly-added lines message might
+	 * be initially hidden if the engine supports word-wrapping
+	 * and the line is long, only the first line is shown, and
+	 * other lines are hidden unless ShowHiddenLines is called.
+	 *
+	 * @param message The text to be displayed.
+	 */
 	void Push(const std::string& message);
+
+	/**
+	 * Pushes an 'Enemy appeared' message into the message list.
+	 *
+	 * @param string Enemy name that will be displayed in the message.
+	 */
+	void EnemyAppeared(const std::string& enemy_name);
 
 	void Pop();
 
@@ -57,6 +75,28 @@ public:
 	bool IsPageFilled();
 
 	/**
+	 * Number of lines that are hidden right now.
+	 *
+	 * Hidden lines are added when the text is word-wrapped:
+	 * only the first line is shown, and others are hidden.
+	 *
+	 * @return number of hidden lines
+	 */
+	int GetHiddenLineCount();
+
+	/**
+	 * Displays the given number of hidden lines.
+	 *
+	 * Hidden lines are added when a word-wrapped line is pushed:
+	 * then, only the first line is displayed, and others are
+	 * considered hidden.
+	 *
+	 * @param Number of lines to display. If -1
+	 * is passed, all the hidden lines are displayed.
+	 */
+	void ShowHiddenLines(int count);
+
+	/**
 	 * How much lines would fit into a window of battle messages.
 	 */
 	static const int linesPerPage = 4;
@@ -64,12 +104,26 @@ public:
 private:
 	std::vector<std::string> lines;
 
+	/**
+	 * How much lines are hidden right now.
+	 *
+	 * Hidden lines are added by PushWordWrappedLine when
+	 * the pushed line doesn't fit one line. Such lines are
+	 * hidden until ShowHiddenLines is called.
+	 */
+	int hidden_lines;
+
 	bool needs_refresh;
 
 	/**
 	 * Adds a line to the lines vector. If the line is too long to
 	 * be displayed in the message and contains space characters, then
 	 * it will be broken into several lines.
+	 *
+	 * When the line is word-wrapped, only the first line is shown. The
+	 * other lines are initially hidden. The number of hidden lines can
+	 * be retrieved wih GetHiddenLineCount, and shown usign 
+	 * ShowHiddenLines.
 	 *
 	 * @param line String without newline characters.
 	 * @return Number of lines added after word-wrapping.

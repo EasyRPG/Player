@@ -58,6 +58,31 @@ protected:
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void ProcessInput() override;
 
+	/**
+	 * Adds a message about the gold received into
+	 * Game_Message::texts.
+	 *
+	 * @param Number of gold to display.
+	 */
+	void PushGoldReceivedMessage(int money);
+
+	/**
+	 * Adds a message about the experience received into
+	 * Game_Message::texts.
+	 *
+	 * @param Number of experience to display.
+	 */
+	void PushExperienceGainedMessage(int exp);
+
+
+	/**
+	 * Adds messages about the items obtained after the battle
+	 * into Game_Message::texts.
+	 *
+	 * @param Vector of item IDs
+	 */
+	void PushItemRecievedMessages(std::vector<int> drops);
+
 	void OptionSelected();
 	void CommandSelected();
 
@@ -65,6 +90,13 @@ protected:
 
 	void SelectNextActor();
 	void SelectPreviousActor();
+
+	/**
+	 * Sets the encounter message sleep time (encounter_message_sleep_until)
+	 * depending on whether the last character is shown or not, whether
+	 * the page is filled or not.
+	 */
+	void SetWaitForEnemyAppearanceMessages();
 
 	void CreateExecutionOrder();
 	void CreateEnemyActions();

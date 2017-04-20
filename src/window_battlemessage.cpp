@@ -22,10 +22,12 @@
 #include "window_battlemessage.h"
 #include "bitmap.h"
 #include "font.h"
+#include "utils.h"
 
 Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
-	needs_refresh(true) {
+	needs_refresh(true),
+	hidden_lines(0) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 
@@ -36,6 +38,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 void Window_BattleMessage::Push(const std::string& message) {
 	std::stringstream smessage(message);
 	std::string line;
+	hidden_lines = 0;
 	while (getline(smessage, line)) {
 		if (Player::IsRPG2kE()) {
 			PushWordWrappedLine(line);
@@ -53,11 +56,11 @@ int Window_BattleMessage::PushWordWrappedLine(const std::string& line) {
 
 	int start = 0, lastfound = 0;
 	int limit = GetWidth() - 24;
-	int lineCount = 0;
+	int line_count = 0;
 	Rect size;
 
 	do {
-		lineCount++;
+		line_count++;
 		int found = line.find(" ", start);
 		std::string wrapped = line.substr(start, found - start);
 		size = font->GetSize(wrapped);
@@ -77,9 +80,25 @@ int Window_BattleMessage::PushWordWrappedLine(const std::string& line) {
 		lines.push_back(line.substr(start, lastfound - start));
 		start = lastfound + 1;
 	} while (start < line.size() && size.width >= limit);
+	hidden_lines = line_count - 1;
 
-	return lineCount;
+	return line_count;
 }
+
+void Window_BattleMessage::EnemyAppeared(const std::string& enemy_name) {
+	if (Player::IsRPG2kE()) {
+		Push(Utils::ReplacePlaceholders(
+			Data::terms.encounter,
+			{'S'},
+			{enemy_name}
+		));
+	}
+	else {
+		Push(enemy_name + Data::terms.encounter);
+	}
+}
+
+
 
 void Window_BattleMessage::Pop() {
 	lines.pop_back();
@@ -116,7 +135,7 @@ void Window_BattleMessage::Refresh() {
 
 	std::vector<std::string>::const_iterator it;
 	int i = 0;
-	for (it = lines.begin(); it != lines.end(); ++it) {
+	for (it = lines.begin(); it != lines.end() - hidden_lines; ++it) {
 		contents->TextDraw(0, contents_y, Font::ColorDefault, *it);
 		contents_y += 16;
 
@@ -139,6 +158,24 @@ int Window_BattleMessage::GetLineCount() {
 	return (int)lines.size();
 }
 
+int Window_BattleMessage::GetHiddenLineCount() {
+	return hidden_lines;
+}
+
+void Window_BattleMessage::ShowHiddenLines(int count) {
+	if (count == -1) {
+		hidden_lines = 0;
+	}
+	else {
+		hidden_lines -= count;
+		if (hidden_lines < 0) {
+			hidden_lines = 0;
+		}
+	}
+
+	needs_refresh = true;
+}
+
 bool Window_BattleMessage::IsPageFilled() {
-	return (int)lines.size() >= linesPerPage;
+	return (lines.size() - hidden_lines) >= linesPerPage;
 }
