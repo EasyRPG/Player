@@ -88,7 +88,7 @@ namespace {
 		BitmapFontGlyph const* const mincho =
 			find_glyph(SHINONOME_MINCHO,
 					   sizeof(SHINONOME_MINCHO) / sizeof(BitmapFontGlyph), code);
-		return mincho == NULL? find_gothic_glyph(code) : mincho;
+		return (mincho == NULL || mincho->code != code) ? find_gothic_glyph(code) : mincho;
 	}
 
 	BitmapFontGlyph const* find_ttyp0_glyph(char32_t code) {
