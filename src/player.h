@@ -160,12 +160,6 @@ namespace Player {
 	 */
 	bool IsCP932();
 
-    /**
-     * @return if encoding corresponds to the official encoding in which
-     * this engine is available.
-     */
-    bool IsOfficialTranslation();
-
 	/**
 	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
 	 */
