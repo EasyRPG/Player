@@ -36,9 +36,9 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	if (use_item) {
-		contents->TextDraw(0, 0, 1, Font::Default(), Data::terms.possessed_items);
+		contents->TextDraw(0, 0, 1, Data::terms.possessed_items);
 	} else {
-		contents->TextDraw(0, 0, 1, Font::Default(), Data::terms.sp_cost);
+		contents->TextDraw(0, 0, 1, Data::terms.sp_cost);
 	}
 
 	std::stringstream ss;
@@ -49,7 +49,7 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	FontRef font = Font::Default();
-	contents->TextDraw(contents->GetWidth() - font->GetSize(ss.str()).width, 0, Font::ColorDefault, font, ss.str(), Text::AlignRight);
+	contents->TextDraw(contents->GetWidth() - font->GetSize(ss.str()).width, 0, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
 void Window_TargetStatus::SetData(int id, bool is_item) {

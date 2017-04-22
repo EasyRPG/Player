@@ -85,7 +85,6 @@ void MessageOverlay::Draw() {
 						bitmap->GetWidth(),
 						text_height),
 				it->color,
-				Font::Default(),
 				it->text);
 			++i;
 		}

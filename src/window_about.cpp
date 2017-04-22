@@ -46,6 +46,6 @@ void Window_About::Refresh() {
 	};
 
 	for (size_t i = 0; i < about_msg.size(); ++i) {
-		contents->TextDraw(0, 2 + 14 * i, Font::ColorDefault, Font::Default(), about_msg[i]);
+		contents->TextDraw(0, 2 + 14 * i, Font::ColorDefault, about_msg[i]);
 	}
 }

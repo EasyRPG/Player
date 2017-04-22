@@ -115,8 +115,8 @@ void Window_Item::DrawItem(int index) {
 		std::stringstream ss;
 		ss << number;
 		Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, Font::Default(), "x");
-		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, Font::Default(), ss.str(), Text::AlignRight);
+		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "x");
+		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
 	}
 }
 

@@ -43,31 +43,31 @@ void Window_ActorInfo::DrawInfo() {
 
 	// Draw Row formation.
 	std::string battle_row = Game_Actors::GetActor(actor_id)->GetBattleRow() == 1 ? "Back" : "Front";
-	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, Font::Default(), battle_row, Text::AlignRight);
+	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, battle_row, Text::AlignRight);
 
 	// Draw Face
 	DrawActorFace(Game_Actors::GetActor(actor_id), 0, 0);
 	
 	// Draw Name
-	contents->TextDraw(3, 50, 1, Font::Default(), "Name");
+	contents->TextDraw(3, 50, 1, "Name");
 	DrawActorName(Game_Actors::GetActor(actor_id), 36, 65);
 	
 	// Draw Profession
-	contents->TextDraw(3, 80, 1, Font::Default(), "Profession");
+	contents->TextDraw(3, 80, 1, "Profession");
 	DrawActorClass(Game_Actors::GetActor(actor_id), 36, 95);
 
 	// Draw Rank
-	contents->TextDraw(3, 110, 1, Font::Default(), "Title");
+	contents->TextDraw(3, 110, 1, "Title");
 	DrawActorTitle(Game_Actors::GetActor(actor_id), 36, 125);
 
 	// Draw Status
-	contents->TextDraw(3, 140, 1, Font::Default(), "Status");
+	contents->TextDraw(3, 140, 1, "Status");
 	DrawActorState(Game_Actors::GetActor(actor_id), 36, 155);
 
 	//Draw Level
-	contents->TextDraw(3, 170, 1, Font::Default(), Data::terms.lvl_short);
+	contents->TextDraw(3, 170, 1, Data::terms.lvl_short);
 	std::stringstream ss;
 	ss << Game_Actors::GetActor(actor_id)->GetLevel();
-	contents->TextDraw(79, 170, Font::ColorDefault, Font::Default(), ss.str(), Text::AlignRight);
+	contents->TextDraw(79, 170, Font::ColorDefault, ss.str(), Text::AlignRight);
 
 }

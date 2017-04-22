@@ -136,7 +136,7 @@ void Window_Keyboard::Refresh() {
 	for (int j = 0; j < row_max; j++) {
 		for (int i = 0; i < col_max; i++) {
 			Rect r = GetItemRect(j, i);
-			contents->TextDraw(r.x + 4, r.y, Font::ColorDefault, Font::Default(), items[mode][j][i]);
+			contents->TextDraw(r.x + 4, r.y, Font::ColorDefault, items[mode][j][i]);
 		}
 	}
 }

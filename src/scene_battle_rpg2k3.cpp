@@ -208,7 +208,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 					std::string name = Data::states[state - 1].name;
 					int color = Data::states[state - 1].color;
 					FontRef font = Font::Default();
-					contents->TextDraw(text_width, 2, color, font, name, Text::AlignLeft);
+					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);
 					text_width += font->GetSize(name + "  ").width;
 				}
 			}
@@ -228,7 +228,7 @@ void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::stri
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
-	graphic->TextDraw(-rect.x, -rect.y, color, Font::Default(), text);
+	graphic->TextDraw(-rect.x, -rect.y, color, text);
 
 	std::shared_ptr<Sprite> floating_text = std::make_shared<Sprite>();
 	floating_text->SetBitmap(graphic);

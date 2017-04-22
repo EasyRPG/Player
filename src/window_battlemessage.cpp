@@ -59,7 +59,7 @@ void Window_BattleMessage::Refresh() {
 	std::vector<std::string>::const_iterator it;
 	int i = 0;
 	for (it = lines.begin(); it != lines.end(); ++it) {
-		contents->TextDraw(0, contents_y, Font::ColorDefault, Font::Default(), *it);
+		contents->TextDraw(0, contents_y, Font::ColorDefault, *it);
 		contents_y += 16;
 
 		++i;

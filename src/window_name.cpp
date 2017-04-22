@@ -35,7 +35,7 @@ Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 
 void Window_Name::Refresh() {
 	contents->Clear();
-	contents->TextDraw(2, 2, Font::ColorDefault, Font::Default(), name);
+	contents->TextDraw(2, 2, Font::ColorDefault, name);
 }
 
 void Window_Name::Set(const std::string& text) {

@@ -446,7 +446,7 @@ void Window_Message::UpdateMessage() {
 			default:
 				if (*text_index == escape_char) {
 					// Show Escape Symbol
-					contents->TextDraw(contents_x, contents_y, text_color, Font::Default(), Player::escape_symbol);
+					contents->TextDraw(contents_x, contents_y, text_color, Player::escape_symbol);
 					contents_x += Font::Default()->GetSize(Player::escape_symbol).width;
 				}
 			}
@@ -455,14 +455,14 @@ void Window_Message::UpdateMessage() {
 				   && std::isalpha(*std::next(text_index))) {
 			// ExFont
 			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))));
-			contents->TextDraw(contents_x, contents_y, text_color, Font::Default(), glyph);
+			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += 12;
 			++loop_count;
 			++text_index;
 		} else {
 			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))));
 
-			contents->TextDraw(contents_x, contents_y, text_color, Font::Default(), glyph);
+			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			int glyph_width = Font::Default()->GetSize(glyph).width;
 			// Show full-width characters twice as slow as half-width characters
 			if (glyph_width >= 12)

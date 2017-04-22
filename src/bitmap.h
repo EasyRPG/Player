@@ -240,49 +240,45 @@ public:
 	void CheckPixels(uint32_t flags);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
 	 * @param color system color index.
-	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment.
 	 */
-	void TextDraw(int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color system color index.
-	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
 	 * @param color text color.
-	 * @param font font of the text.
 	 * @param text text to draw.
 	 */
-	void TextDraw(int x, int y, Color color, FontRef font, std::string const& text);
+	void TextDraw(int x, int y, Color color, std::string const& text);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color text color.
-	 * @param font font of the text.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
-	void TextDraw(Rect const& rect, Color color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -553,9 +549,6 @@ protected:
 #ifdef USE_SDL
 	friend class SdlUi;
 #endif
-
-	/** Font for text drawing. */
-	FontRef font;
 
 	/** Bitmap data. */
 	pixman_image_t *bitmap = nullptr;
