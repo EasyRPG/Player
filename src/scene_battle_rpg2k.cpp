@@ -16,8 +16,6 @@
  */
 
 
-#include <iostream>
-//^^removeme
 #include <algorithm>
 #include <sstream>
 #include "input.h"
