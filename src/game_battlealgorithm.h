@@ -304,6 +304,9 @@ protected:
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Game_Battler* source, Game_Party_Base* target);
 
+	std::string GetDodgeMessage() const;
+	std::string GetHPMPRecoveredMessage(int value, const std::string& points) const;
+
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
 	void Reset();

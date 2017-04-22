@@ -441,7 +441,7 @@ std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, con
 }
 
 
-std::string Utils::ReplacePlaceholders(std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
+std::string Utils::ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
 	std::string str = text_template;
 	size_t index = str.find("%");
 	while (index != std::string::npos) {

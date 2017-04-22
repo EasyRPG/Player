@@ -197,7 +197,7 @@ namespace Utils {
 	 * should match types in number of elements and order.
 	 * @return A new string with placeholders replaced.
 	 */
-	std::string ReplacePlaceholders(std::string& text_template, std::vector<char> types, std::vector<std::string> values);
+	std::string ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values);
 
 } // namespace Utils
 
