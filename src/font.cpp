@@ -147,9 +147,7 @@ namespace {
 	}; // class FTFont
 #endif
 
-	/* Bitmap fonts used for the official Japanese version and in the
-	* official English translation.
-	*
+	/* Bitmap fonts used for the official Japanese version.
 	* Compatible with MS Gothic and MS Mincho.
 	*
 	* Feature a closing quote in place of straight quote, double-width
