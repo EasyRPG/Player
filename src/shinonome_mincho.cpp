@@ -1,6 +1,6 @@
-#include "shinonome.h"
+#include "bitmapfont.h"
 
-ShinonomeGlyph const SHINONOME_MINCHO[488] = {
+BitmapFontGlyph const SHINONOME_MINCHO[488] = {
   { 12354, true, { 8, 208, 62, 72, 248, 328, 556, 554, 530, 266, 196, 0 } },
   { 12356, true, { 0, 0, 1, 194, 258, 514, 530, 778, 524, 8, 0, 0 } },
   { 12357, true, { 0, 0, 0, 0, 8, 48, 56, 68, 64, 32, 16, 0 } },

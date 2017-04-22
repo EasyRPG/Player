@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 
 bdf = 'wenquanyi_cjk_basic_9pt.bdf'
-cpp = '../../src/shinonome_wqy.cpp'
-##cpp = 'shinonome_wqy.cpp'
+cpp = '../../src/bitmapfont_wqy.cpp'
+##cpp = 'bitmapfont_wqy.cpp'
 
 # FONTBOUNDINGBOX 12 14 0 -3
 control_point = 14 - 3
@@ -90,14 +90,14 @@ if __name__ == '__main__':
     glyphs.sort(key=getKey)
 
     fw = open(cpp, 'w')
-    fw.write('''#include "shinonome.h"
+    fw.write('''#include "bitmapfont.h"
 
-ShinonomeGlyph const SHINONOME_WQY[%s] = {
+BitmapFontGlyph const BITMAPFONT_WQY[%s] = {
 ''' % len(glyphs))
     for x in glyphs:
         #print(x[0])
         #print(', '.join(x[2]))
-        s = '    { %s, %s, { %s } },\n' % (x[0], x[1], ', '.join(x[2]))
+        s = '\t{ %s, %s, { %s } },\n' % (x[0], x[1], ', '.join(x[2]))
         #print(s)
         fw.write(s)
 

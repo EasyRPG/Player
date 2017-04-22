@@ -214,10 +214,10 @@ libeasyrpg_player_la_SOURCES = \
 	src/screen.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
-	src/shinonome.h \
+	src/bitmapfont.h \
 	src/shinonome_gothic.cpp \
 	src/shinonome_mincho.cpp \
-	src/shinonome_wqy.cpp \
+	src/bitmapfont_wqy.cpp \
 	src/bitmapfont_ttyp0.cpp \
 	src/bitmapfont_rmg2000.cpp \
 	src/sprite_airshipshadow.h \

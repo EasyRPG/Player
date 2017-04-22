@@ -106,9 +106,9 @@ end
 
 def write_all(f, sym, data)
   f.write <<EOS
-#include "shinonome.h"
+#include "bitmapfont.h"
 
-ShinonomeGlyph const #{sym}[#{data.size}] = {
+BitmapFontGlyph const #{sym}[#{data.size}] = {
 EOS
 
   code_max = 0
@@ -200,24 +200,24 @@ print "done\n"
 
 # header
 print "Generating Header..."
-File.new('../../src/shinonome.h', 'w').write <<EOS
-#ifndef _INC_SHINONOME_H_
-#define _INC_SHINONOME_H_
+File.new('../../src/bitmapfont.h', 'w').write <<EOS
+#ifndef _INC_BITMAPFONT_H_
+#define _INC_BITMAPFONT_H_
 
 #include <stdint.h>
 
-struct ShinonomeGlyph {
+struct BitmapFontGlyph {
 	uint#{code_max < 0x10000 ? 16 : 32}_t code;
 	bool is_full;
 	uint16_t data[#{FONT_SIZE}];
 };
 
-extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
-extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
-extern ShinonomeGlyph const SHINONOME_WQY[#{wenquanyi_chars}];
-extern ShinonomeGlyph const BITMAPFONT_RMG2000[#{rmg2000.size}];
-extern ShinonomeGlyph const BITMAPFONT_TTYP0[#{ttyp0.size}];
+extern BitmapFontGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
+extern BitmapFontGlyph const SHINONOME_MINCHO[#{mincho.size}];
+extern BitmapFontGlyph const BITMAPFONT_WQY[#{wenquanyi_chars}];
+extern BitmapFontGlyph const BITMAPFONT_RMG2000[#{rmg2000.size}];
+extern BitmapFontGlyph const BITMAPFONT_TTYP0[#{ttyp0.size}];
 
-#endif // _INC_SHINONOME_H_
+#endif // _INC_BITMAPFONT_H_
 EOS
 print "done\n"

@@ -109,7 +109,7 @@ set(PLAYER_SRCS
 	src/sdl_ui.cpp
 	src/shinonome_gothic.cpp
 	src/shinonome_mincho.cpp
-	src/shinonome_wqy.cpp
+	src/bitmapfont_wqy.cpp
 	src/bitmapfont_ttyp0.cpp
 	src/bitmapfont_rmg2000.cpp
 	src/sprite_airshipshadow.cpp

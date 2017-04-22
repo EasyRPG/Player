@@ -1,6 +1,6 @@
-#include "shinonome.h"
+#include "bitmapfont.h"
 
-ShinonomeGlyph const SHINONOME_GOTHIC[11071] = {
+BitmapFontGlyph const SHINONOME_GOTHIC[11071] = {
   { 0, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   { 1, false, { 0, 4, 4, 14, 14, 31, 31, 14, 14, 4, 4, 0 } },
   { 2, false, { 42, 21, 42, 21, 42, 21, 42, 21, 42, 21, 42, 21 } },

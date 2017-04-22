@@ -1,6 +1,6 @@
-#include "shinonome.h"
+#include "bitmapfont.h"
 
-ShinonomeGlyph const BITMAPFONT_TTYP0[3074] = {
+BitmapFontGlyph const BITMAPFONT_TTYP0[3074] = {
   { 0, false, { 0, 22, 16, 2, 18, 18, 16, 2, 26, 0, 0, 0 } },
   { 32, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   { 33, false, { 0, 8, 8, 8, 8, 8, 0, 8, 8, 0, 0, 0 } },
