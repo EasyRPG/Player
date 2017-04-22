@@ -1432,7 +1432,7 @@ void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
 		parallax_x -=
 			std::min(
 				distance_right,
-				distance_right * (parallax_width - SCREEN_TARGET_HEIGHT) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE)
+				distance_right * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE)
 			);
 	}
 }
