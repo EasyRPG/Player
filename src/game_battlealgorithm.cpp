@@ -226,6 +226,45 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHPMPRecoveredMessage(int val
 	}
 }
 
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_undamaged :
+		Data::terms.enemy_undamaged;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_critical :
+		Data::terms.enemy_critical;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
@@ -250,15 +289,11 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 			ss << GetTarget()->GetName();
 			if (critical_hit) {
-				out.push_back(target_is_ally ?
-					Data::terms.actor_critical :
-					Data::terms.enemy_critical);
+				out.push_back(GetCriticalHitMessage());
 			}
 
 			if (GetAffectedHp() == 0) {
-				ss << (target_is_ally ?
-					Data::terms.actor_undamaged :
-					Data::terms.enemy_undamaged);
+				out.push_back(GetUndamagedMessage());
 			}
 			else {
 				if (absorb) {
@@ -286,8 +321,8 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 						Data::terms.actor_damaged :
 						Data::terms.enemy_damaged);
 				}
-			}
 			out.push_back(ss.str());
+			}
 		}
 	}
 

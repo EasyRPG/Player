@@ -306,6 +306,8 @@ protected:
 
 	std::string GetDodgeMessage() const;
 	std::string GetHPMPRecoveredMessage(int value, const std::string& points) const;
+	std::string GetUndamagedMessage() const;
+	std::string GetCriticalHitMessage() const;
 
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
