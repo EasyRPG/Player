@@ -173,17 +173,17 @@ bool CtrUi::IsFullscreen() {
 void CtrUi::ProcessEvents() {
 	hidScanInput();
 	u32 input = hidKeysHeld();
+	keys[Input::Keys::UP] = (input & KEY_DUP);
+	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
+	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
+	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
 	keys[Input::Keys::Z] = (input & KEY_A);
 	keys[Input::Keys::X] = (input & KEY_B);
 	keys[Input::Keys::N8] = (input & KEY_X);
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
+	keys[Input::Keys::F2] = (input & KEY_L);
 	keys[Input::Keys::F12] = (input & KEY_SELECT);
 	keys[Input::Keys::ESCAPE] = (input & KEY_START);
-	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
-	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
-	keys[Input::Keys::UP] = (input & KEY_DUP);
-	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
-	keys[Input::Keys::F2] = (input & KEY_L);
 
 	// Fullscreen mode support
 	bool old_state = trigger_state;
@@ -191,14 +191,16 @@ void CtrUi::ProcessEvents() {
 	if ((trigger_state != old_state) && trigger_state)
 		fullscreen = !fullscreen;
 
+#if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	// CirclePad support
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
-	if (circlepad.dy > 25) keys[Input::Keys::UP] = true;
-	else if (circlepad.dy < -25) keys[Input::Keys::DOWN] = true;
-	else if (circlepad.dx > 25) keys[Input::Keys::RIGHT] = true;
-	else if (circlepad.dx < -25) keys[Input::Keys::LEFT] = true;
+	keys[Input::Keys::JOY_AXIS_Y_UP] = (circlepad.dy > 25);
+	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (circlepad.dy < -25);
+	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (circlepad.dx > 25);
+	keys[Input::Keys::JOY_AXIS_X_LEFT] = (circlepad.dx < -25);
+#endif
 
 #ifdef NO_DEBUG
 	// Touchscreen support
