@@ -28,12 +28,12 @@
 #include <iostream>
 #include <sys/iosupport.h>
 
-#include "../build/keyboard_bmp.h"
-
 #include <3ds.h>
 #include <sf2d.h>
 #include <cstring>
 #include <stdio.h>
+
+#include "../build/keyboard_bmp.h"
 
 #ifdef SUPPORT_AUDIO
 #include "audio_3ds.h"
@@ -42,19 +42,19 @@ AudioInterface& CtrUi::GetAudio() {
 }
 #endif
 
+namespace {
+	const double ticks_per_msec = 268123.480;
+}
+
 static const devoptab_t dotab_null = {
-	"null",
-	0,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL
+	"null", 0, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
+
+	fullscreen = false;
+	trigger_state = false;
 
 	APT_SetAppCpuTimeLimit(30);
 
@@ -65,9 +65,6 @@ CtrUi::CtrUi(int width, int height) :
 		osSetSpeedupEnable(true);
 	}
 
-	frame = 0;
-	fullscreen = false;
-	trigger_state = false;
 	sf2d_init();
 
 #ifndef NO_DEBUG
@@ -87,46 +84,46 @@ CtrUi::CtrUi(int width, int height) :
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, true, 32);
 	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
-	                                             main_surface->GetWidth(), main_surface->GetHeight(),
+	                                             main_surface->GetWidth(),
+	                                             main_surface->GetHeight(),
 	                                             TEXFMT_RGBA8, SF2D_PLACE_VRAM);
 
-#	ifdef SUPPORT_AUDIO
+#ifdef SUPPORT_AUDIO
 	audio_.reset(new CtrAudio());
-#	endif
+#endif
 
-#	ifdef NO_DEBUG
+#ifdef NO_DEBUG
 	// Loading bottom screen keyboard
 	u8* key_buffer = (u8*)&keyboard_bmp[0x36];
 	u32 key_buffer_size = keyboard_bmp_size - 0x36;
-	u8* key_buffer_rgba = (u8*)malloc((key_buffer_size/3)<<2);
-	int z = 0;
-	for(int i=0;i<key_buffer_size;i=i+3){
-		key_buffer_rgba[z+2] = key_buffer[i];
-		key_buffer_rgba[z+1] = key_buffer[i+1];
-		key_buffer_rgba[z] = key_buffer[i+2];
-		key_buffer_rgba[z+3] = 0xFF;
-		z = z + 4;
+	u8* key_buffer_rgba = (u8*)malloc((key_buffer_size / 3) << 2);
+	for(size_t i = 0, z = 0; i < key_buffer_size; i = i + 3, z = z + 4) {
+		key_buffer_rgba[z + 3] = 0xFF;              // A
+		key_buffer_rgba[z + 2] = key_buffer[i];     // B
+		key_buffer_rgba[z + 1] = key_buffer[i + 1]; // G
+		key_buffer_rgba[z] = key_buffer[i + 2];     // R
 	}
 	keyboard_texture = sf2d_create_texture_mem_RGBA8(key_buffer_rgba,
-	                                             320, 240,
-	                                             TEXFMT_RGBA8, SF2D_PLACE_RAM);
+	                                                 320, 240,
+	                                                 TEXFMT_RGBA8, SF2D_PLACE_RAM);
 	free(key_buffer_rgba);
 
 	// Disabling debug console
 	devoptab_list[STD_OUT] = &dotab_null;
 	devoptab_list[STD_ERR] = &dotab_null;
 	consoleGetDefault()->frameBuffer = NULL;
-	gfxSetScreenFormat(GFX_BOTTOM,GSP_BGR8_OES);
-	gfxSetDoubleBuffering(GFX_BOTTOM,true);
+	gfxSetScreenFormat(GFX_BOTTOM, GSP_BGR8_OES);
+	gfxSetDoubleBuffering(GFX_BOTTOM, true);
 
 	// Drawing keyboard once then unloading it
-	for (int i=0; i < 5; i++) { // If we don't print this a couple of time, image is corrupted
+	for (int i = 0; i < 5; i++) {
+		// If we don't print this a couple of times, image is corrupted
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
 		sf2d_draw_texture(keyboard_texture, 0, 0);
 		sf2d_end_frame();
 		sf2d_swapbuffers();
 	}
-#	endif
+#endif
 }
 
 CtrUi::~CtrUi() {
@@ -135,19 +132,18 @@ CtrUi::~CtrUi() {
 	sf2d_fini();
 }
 
-#define TICKS_PER_MSEC 268123.480
-static inline double u64_to_double(u64 value) {
-	return (((double)(u32)(value >> 32))*0x100000000ULL+(u32)value);
+void CtrUi::Sleep(uint32_t time) {
+	u64 nsecs = time * 1000000;
+	svcSleepThread(nsecs);
 }
 
-void CtrUi::Sleep(uint32_t time) {
-	u64 nsecs = time*1000000;
-	svcSleepThread(nsecs);
+static inline double u64_to_double(u64 value) {
+	return (((double)(u32)(value >> 32)) * 0x100000000ULL + (u32)value);
 }
 
 uint32_t CtrUi::GetTicks() const {
 	double ticks = u64_to_double(svcGetSystemTick());
-	u64 usecs = (u64)(ticks/TICKS_PER_MSEC);
+	u64 usecs = (u64)(ticks / ticks_per_msec);
 	return usecs;
 }
 void CtrUi::BeginDisplayModeChange() {
@@ -175,7 +171,6 @@ bool CtrUi::IsFullscreen() {
 }
 
 void CtrUi::ProcessEvents() {
-
 	hidScanInput();
 	u32 input = hidKeysHeld();
 	keys[Input::Keys::Z] = (input & KEY_A);
@@ -190,12 +185,13 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
 	keys[Input::Keys::F2] = (input & KEY_L);
 
-	//Fullscreen mode support
+	// Fullscreen mode support
 	bool old_state = trigger_state;
 	trigger_state = (input & KEY_R);
-	if ((trigger_state != old_state) && trigger_state) fullscreen = !fullscreen;
+	if ((trigger_state != old_state) && trigger_state)
+		fullscreen = !fullscreen;
 
-	//CirclePad support
+	// CirclePad support
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
@@ -204,8 +200,8 @@ void CtrUi::ProcessEvents() {
 	else if (circlepad.dx > 25) keys[Input::Keys::RIGHT] = true;
 	else if (circlepad.dx < -25) keys[Input::Keys::LEFT] = true;
 
-#	ifdef NO_DEBUG
-	//Touchscreen support
+#ifdef NO_DEBUG
+	// Touchscreen support
 	if (input & KEY_TOUCH){
 		touchPosition pos;
 		hidTouchRead(&pos);
@@ -236,17 +232,19 @@ void CtrUi::ProcessEvents() {
 		keys[Input::Keys::SUBTRACT] = false;
 		keys[Input::Keys::PERIOD] = false;
 	}
-#	endif
+#endif
 }
 
 void CtrUi::UpdateDisplay() {
 	main_texture->tiled = 0;
 	sf2d_fill_texture_from_RGBA8(main_texture, main_surface->pixels(),
-	                                             main_surface->GetWidth(), main_surface->GetHeight()
-	                            );
+	                             main_surface->GetWidth(),
+	                             main_surface->GetHeight());
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
-	if (!fullscreen) sf2d_draw_texture(main_texture, 40, 0);
-	else sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
+	if (fullscreen)
+		sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
+	else
+		sf2d_draw_texture(main_texture, 40, 0);
 	sf2d_end_frame();
 
 	sf2d_swapbuffers();
