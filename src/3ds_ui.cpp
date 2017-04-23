@@ -44,6 +44,8 @@ AudioInterface& CtrUi::GetAudio() {
 
 namespace {
 	const double ticks_per_msec = 268123.480;
+	int touch_x, touch_y;
+	bool has_touched = false;
 }
 
 static const devoptab_t dotab_null = {
@@ -114,15 +116,6 @@ CtrUi::CtrUi(int width, int height) :
 	consoleGetDefault()->frameBuffer = NULL;
 	gfxSetScreenFormat(GFX_BOTTOM, GSP_BGR8_OES);
 	gfxSetDoubleBuffering(GFX_BOTTOM, true);
-
-	// Drawing keyboard once then unloading it
-	for (int i = 0; i < 5; i++) {
-		// If we don't print this a couple of times, image is corrupted
-		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
-		sf2d_draw_texture(keyboard_texture, 0, 0);
-		sf2d_end_frame();
-		sf2d_swapbuffers();
-	}
 #endif
 }
 
@@ -204,35 +197,28 @@ void CtrUi::ProcessEvents() {
 
 #ifdef NO_DEBUG
 	// Touchscreen support
-	if (input & KEY_TOUCH){
+	u32 keys_tbl[16] = {
+		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
+		Input::Keys::N4, Input::Keys::N5, Input::Keys::N6, Input::Keys::MULTIPLY,
+		Input::Keys::N1, Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
+		Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
+	};
+
+	for (int i = 0; i < 16; i++)
+		keys[keys_tbl[i]] = false;
+
+	has_touched = false;
+
+	if (input & KEY_TOUCH) {
+		has_touched = true;
 		touchPosition pos;
 		hidTouchRead(&pos);
-		u8 row = pos.px>>6;
-		u8 col = pos.py / 60;
-		u32 keys_tbl[16] = {Input::Keys::N7, Input::Keys::N8, Input::Keys::N9,
-						Input::Keys::DIVIDE, Input::Keys::N4, Input::Keys::N5,
-						Input::Keys::N6, Input::Keys::MULTIPLY, Input::Keys::N1,
-						Input::Keys::N2, Input::Keys::N3, Input::Keys::SUBTRACT,
-						Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD,
-						Input::Keys::ADD
-						};
-		keys[keys_tbl[row + (col*4)]] = true;
-	} else {
-		keys[Input::Keys::N0] = false;
-		keys[Input::Keys::N1] = false;
-		keys[Input::Keys::N2] = false;
-		keys[Input::Keys::N3] = false;
-		keys[Input::Keys::N4] = false;
-		keys[Input::Keys::N5] = false;
-		keys[Input::Keys::N6] = false;
-		keys[Input::Keys::N7] = false;
-		keys[Input::Keys::N8] = false;
-		keys[Input::Keys::N9] = false;
-		keys[Input::Keys::DIVIDE] = false;
-		keys[Input::Keys::MULTIPLY] = false;
-		keys[Input::Keys::ADD] = false;
-		keys[Input::Keys::SUBTRACT] = false;
-		keys[Input::Keys::PERIOD] = false;
+		u8 col = pos.px / 80;
+		u8 row = pos.py / 60;
+		touch_x = pos.px;
+		touch_y = pos.py;
+
+		keys[keys_tbl[col + (row * 4)]] = true;
 	}
 #endif
 }
@@ -247,6 +233,38 @@ void CtrUi::UpdateDisplay() {
 		sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
 	else
 		sf2d_draw_texture(main_texture, 40, 0);
+	sf2d_end_frame();
+
+	sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
+	sf2d_draw_texture(keyboard_texture, 0, 0);
+	if (has_touched) {
+		// cursor
+		sf2d_draw_fill_circle(touch_x, touch_y, 5, RGBA8(0xCC, 0xCC, 0xCC, 0xAA));
+
+		u32 color = RGBA8(0xFF, 0xFF, 0xFF, 0xFF);
+		u8 width = 80;
+		u8 height = 60;
+
+		// selected button
+		u8 col = touch_x / width;
+		u8 row = touch_y / height;
+
+		// button position
+		u8 pos_x = col * width;
+		u8 pos_y = row * height;
+
+		// 0 is handled specially
+		if (col < 2 && row == 3) {
+			width *= 2;
+			if (col == 1)
+				pos_x = 0;
+		}
+
+		sf2d_draw_line(pos_x, pos_y + 1, pos_x + width, pos_y + 1, 2, color); // top border
+		sf2d_draw_line(pos_x, pos_y + height - 1, pos_x + width, pos_y + height - 1, 2, color); // bottom border
+		sf2d_draw_line(pos_x + 1, pos_y, pos_x + 1, pos_y + height, 2, color); // left border
+		sf2d_draw_line(pos_x + width - 1, pos_y, pos_x + width - 1, pos_y + height, 2, color); // right border
+	}
 	sf2d_end_frame();
 
 	sf2d_swapbuffers();
