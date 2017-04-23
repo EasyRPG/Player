@@ -34,6 +34,7 @@ namespace {
 	const int samplerate = 22050;
 	int fill_block = 0;
 	bool is_new_3ds;
+	bool dsp_inited = false;
 }
 
 bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, AudioDecoder::Format &out_format) {
@@ -64,9 +65,12 @@ bool set_channel_format(int dsp_chn, AudioDecoder::Format format, int channels, 
 }
 
 void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
+	if (!dsp_inited)
+		return;
+
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("Audio not readable: %s", file.c_str());
+		Output::Warning("Couldn't play BGM %s: File not readable", file.c_str());
 		return;
 	}
 
@@ -96,15 +100,24 @@ void CtrAudio::BGM_Play(std::string const& file, int volume, int pitch, int fade
 }
 
 void CtrAudio::BGM_Pause()  {
+	if (!dsp_inited)
+		return;
+
 	ndspChnSetPaused(bgm_channel, true);
 }
 
 void CtrAudio::BGM_Resume()  {
+	if (!dsp_inited)
+		return;
+
 	bgm_starttick = DisplayUi->GetTicks();
 	ndspChnSetPaused(bgm_channel, false);
 }
 
 void CtrAudio::BGM_Stop() {
+	if (!dsp_inited)
+		return;
+
 	LockMutex();
 	bgm_decoder.reset();
 	UnlockMutex();
@@ -152,6 +165,9 @@ void CtrAudio::BGM_Pitch(int pitch) {
 }
 
 void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
+	if (!dsp_inited)
+		return;
+
 	int se_channel = -1;
 
 	for (int i = se_channel_begin; i <= se_channel_end; ++i) {
@@ -162,50 +178,54 @@ void CtrAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	}
 
 	if (se_channel == -1) {
-		Output::Warning("Couldn't play %s SE: No free channel available", file.c_str());
+		Output::Warning("Couldn't play SE %s: No free channel available", file.c_str());
 		return;
 	}
 
 	std::unique_ptr<AudioSeCache> cache = AudioSeCache::Create(file);
-	if (cache) {
-		cache->SetPitch(pitch);
-		cache->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
-
-		AudioSeRef se_ref = cache->Decode();
-
-		if (se_buf[se_channel].data_pcm16 != nullptr) {
-			linearFree(se_buf[se_channel].data_pcm16);
-		}
-
-		size_t bsize = se_ref->buffer.size();
-		size_t aligned_bsize = 8192;
-		// Buffer must be correctly aligned to prevent audio glitches
-		for (; ; aligned_bsize *= 2) {
-			if (aligned_bsize > bsize) {
-				se_buf[se_channel].data_pcm16 = reinterpret_cast<s16*>(linearAlloc(aligned_bsize));
-				memset(se_buf[se_channel].data_pcm16, '\0', aligned_bsize);
-				break;
-			}
-		}
-
-		se_buf[se_channel].nsamples = bsize / 4;
-
-		memcpy(se_buf[se_channel].data_pcm16, se_ref->buffer.data(), se_ref->buffer.size());
-
-		DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
-
-		float mix[12] = {0};
-		mix[0] = volume / 100.0f;
-		mix[1] = mix[0];
-		ndspChnSetMix(0, mix);
-
-		ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
-	} else {
+	if (!cache) {
 		Output::Warning("Couldn't play SE %s: Format not supported", file.c_str());
+		return;
 	}
+
+	cache->SetPitch(pitch);
+	cache->SetFormat(samplerate, AudioDecoder::Format::S16, 2);
+
+	AudioSeRef se_ref = cache->Decode();
+
+	if (se_buf[se_channel].data_pcm16 != nullptr) {
+		linearFree(se_buf[se_channel].data_pcm16);
+	}
+
+	size_t bsize = se_ref->buffer.size();
+	size_t aligned_bsize = 8192;
+	// Buffer must be correctly aligned to prevent audio glitches
+	for (; ; aligned_bsize *= 2) {
+		if (aligned_bsize > bsize) {
+			se_buf[se_channel].data_pcm16 = reinterpret_cast<s16*>(linearAlloc(aligned_bsize));
+			memset(se_buf[se_channel].data_pcm16, '\0', aligned_bsize);
+			break;
+		}
+	}
+
+	se_buf[se_channel].nsamples = bsize / 4;
+
+	memcpy(se_buf[se_channel].data_pcm16, se_ref->buffer.data(), se_ref->buffer.size());
+
+	DSP_FlushDataCache(se_buf[se_channel].data_pcm16, aligned_bsize);
+
+	float mix[12] = {0};
+	mix[0] = volume / 100.0f;
+	mix[1] = mix[0];
+	ndspChnSetMix(0, mix);
+
+	ndspChnWaveBufAdd(se_channel + 1, &se_buf[se_channel]);
 }
 
 void CtrAudio::SE_Stop() {
+	if (!dsp_inited)
+		return;
+
 	for (int i = se_channel_begin; i <= se_channel_end; ++i) {
 		ndspChnWaveBufClear(i);
 	}
@@ -249,7 +269,6 @@ void n3ds_audio_thread(void* userdata) {
 
 		int target_block = fill_block;
 
-
 		++fill_block;
 		fill_block %= 2;
 
@@ -276,14 +295,20 @@ void n3ds_audio_thread(void* userdata) {
 }
 
 CtrAudio::CtrAudio() {
-	Result res = ndspInit();
-
-	if (res != 0){
-		Output::Error("Couldn't initialize audio.\nError code: 0x%X\n", res);
-	}
-
 	LightLock_Init(&audio_mutex);
 
+	Result res = ndspInit();
+	if (R_FAILED(res)) {
+		Output::Warning("Couldn't initialize audio");
+		if ((R_SUMMARY(res) == RS_NOTFOUND) && (R_MODULE(res) == RM_DSP))
+			Output::Warning("This needs a dumped DSP firmware to work!");
+		else
+			Output::Warning("Error code: 0x%X", res);
+
+		return;
+	}
+
+	dsp_inited = true;
 	bgm_audio_buffer = reinterpret_cast<uint32_t*>(linearAlloc(samples_per_buf * bytes_per_sample * 2));
 	ndspSetOutputMode(NDSP_OUTPUT_STEREO);
 
@@ -304,25 +329,24 @@ CtrAudio::CtrAudio() {
 
 	LightEvent_Init(&audio_event, RESET_ONESHOT);
 
-        APT_CheckNew3DS(&is_new_3ds);
+	APT_CheckNew3DS(&is_new_3ds);
 
 	ndspSetCallback(n3ds_dsp_callback, this);
 	threadCreate(n3ds_audio_thread, this, 32768, 0x18, 1, true);
 }
 
 CtrAudio::~CtrAudio() {
+	if (!dsp_inited)
+		return;
+
 	term_stream = true;
-
 	LightEvent_Signal(&audio_event);
-
 	while (term_stream) {}
-
 	LightEvent_Clear(&audio_event);
 
 	ndspExit();
 
 	linearFree(bgm_audio_buffer);
-
 	for (int i = 0; i < se_channel_end; ++i) {
 		if (se_buf[i].data_pcm16 != nullptr) {
 			linearFree(se_buf[i].data_pcm16);

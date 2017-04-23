@@ -70,6 +70,10 @@ CtrUi::CtrUi(int width, int height) :
 	trigger_state = false;
 	sf2d_init();
 
+#ifndef NO_DEBUG
+	consoleInit(GFX_BOTTOM, nullptr);
+#endif
+
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
@@ -122,8 +126,6 @@ CtrUi::CtrUi(int width, int height) :
 		sf2d_end_frame();
 		sf2d_swapbuffers();
 	}
-#	else
-	consoleInit(GFX_BOTTOM, nullptr);
 #	endif
 }
 

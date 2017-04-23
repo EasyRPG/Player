@@ -47,20 +47,19 @@ public:
 	virtual void Update() override;
 
 	volatile bool term_stream = false;
-	
+
 	void LockMutex() const;
 	void UnlockMutex() const;
-	
+
 	ndspWaveBuf bgm_buf[2];
 	std::unique_ptr<AudioDecoder> bgm_decoder;
 	LightEvent audio_event;
 
 private:
 	mutable LightLock audio_mutex;
-	
+
 	ndspWaveBuf se_buf[23];
 	unsigned bgm_starttick = 0;
-	
 	uint32_t* bgm_audio_buffer;
 }; // class CtrAudio
 
