@@ -408,7 +408,7 @@ static void add_rtp_path(std::string const& p) {
 
 
 static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
-#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN))
+#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS))
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
@@ -443,6 +443,9 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif defined(_3DS)
+	add_rtp_path("romfs:/data/rtp/" + version_str + "/");
+	add_rtp_path("sdmc:/data/rtp/" + version_str + "/");
 #elif defined(PSP2)
 	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(__ANDROID__)
