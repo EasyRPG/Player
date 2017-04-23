@@ -70,6 +70,13 @@ namespace {
 		return (gothic != NULL && gothic->code == code)? gothic : find_fallback_glyph(code);
 	}
 
+	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
+		BitmapFontGlyph const* const mincho =
+			find_glyph(SHINONOME_MINCHO,
+					   sizeof(SHINONOME_MINCHO) / sizeof(BitmapFontGlyph), code);
+		return (mincho == NULL || mincho->code != code) ? find_gothic_glyph(code) : mincho;
+	}
+
 	BitmapFontGlyph const* find_rmg2000_glyph(char32_t code) {
 		BitmapFontGlyph const* const rmg2000 =
 			find_glyph(BITMAPFONT_RMG2000,
@@ -81,21 +88,14 @@ namespace {
 		BitmapFontGlyph const* const ttyp0 =
 			find_glyph(BITMAPFONT_TTYP0,
 					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
-		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_gothic_glyph(code);
-	}
-
-	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
-		BitmapFontGlyph const* const mincho =
-			find_glyph(SHINONOME_MINCHO,
-					   sizeof(SHINONOME_MINCHO) / sizeof(BitmapFontGlyph), code);
-		return (mincho == NULL || mincho->code != code) ? find_gothic_glyph(code) : mincho;
+		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_mincho_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_ttyp0_glyph(char32_t code) {
 		BitmapFontGlyph const* const ttyp0 =
 			find_glyph(BITMAPFONT_TTYP0,
 					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
-		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_mincho_glyph(code);
+		return (ttyp0 != NULL && ttyp0->code == code)? ttyp0 : find_gothic_glyph(code);
 	}
 
 	struct BitmapFont : public Font {
@@ -323,7 +323,7 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
-	return Default(Game_System::GetFontId() != 1);
+	return Default(Game_System::GetFontId() == 1);
 }
 
 FontRef Font::Default(bool const m) {
@@ -331,7 +331,7 @@ FontRef Font::Default(bool const m) {
 		return m ? mincho : gothic;
 	}
 	else {
-		return m ? ttyp0 : rmg2000;
+		return m ? rmg2000 : ttyp0;
 	}
 }
 
