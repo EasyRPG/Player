@@ -341,7 +341,7 @@ FontRef Font::Default() {
 }
 
 FontRef Font::Default(bool const m) {
-	if (Player::IsCP932()) {
+	if (Player::IsCJK()) {
 		return m ? mincho : gothic;
 	}
 	else {

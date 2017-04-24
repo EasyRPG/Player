@@ -980,6 +980,25 @@ bool Player::IsCP932() {
 	return (encoding == "ibm-943_P15A-2003" || encoding == "932");
 }
 
+bool Player::IsCP949() {
+	return (encoding == "windows-949-2000" ||
+			encoding == "949");
+}
+
+bool Player::IsBig5() {
+	return (encoding == "Big5" || encoding == "950");
+}
+
+bool Player::IsCP936() {
+	return (encoding == "windows-936-2000" ||
+			encoding == "932");
+}
+
+bool Player::IsCJK() {
+	return (IsCP932() || IsCP949() ||
+			IsBig5() || IsCP936());
+}
+
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
