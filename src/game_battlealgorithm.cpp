@@ -265,6 +265,42 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 	}
 }
 
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetHPMPAbsorbedMessage(int value, const std::string& points) const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_hp_absorbed :
+		Data::terms.enemy_hp_absorbed;
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'O', 'V', 'U'},
+			{GetSource()->GetName(), GetTarget()->GetName(), ss.str(), points}
+		);
+	}
+	else {
+		std::string particle, particle2, space = "";
+
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = (target_is_ally ? "は" : "の");
+			particle2 = "を ";
+			space += " ";
+		} else {
+			particle = particle2 = " ";
+		}
+		ss << particle << Data::terms.health_points << particle2;
+		ss << value << space << message;
+
+		return ss.str();
+	}
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
@@ -284,10 +320,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 		}
 		else {
-			std::stringstream ss;
-			std::string particle, particle2, space = "";
-
-			ss << GetTarget()->GetName();
 			if (critical_hit) {
 				out.push_back(GetCriticalHitMessage());
 			}
@@ -297,19 +329,14 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 			else {
 				if (absorb) {
-					if (Player::IsCP932()) {
-						particle = (target_is_ally ? "は" : "の");
-						particle2 = "を ";
-						space += " ";
-					} else {
-						particle = particle2 = " ";
-					}
-					ss << particle << Data::terms.health_points << particle2;
-					ss << GetAffectedHp() << space << (target_is_ally ?
-						Data::terms.actor_hp_absorbed :
-						Data::terms.enemy_hp_absorbed);
+					out.push_back(GetHPMPAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
 				}
 				else {
+					std::stringstream ss;
+					std::string particle, particle2, space = "";
+
+					ss << GetTarget()->GetName();
+
 					if (Player::IsCP932()) {
 						particle = (target_is_ally ? "は " : "に ");
 						space += " ";
@@ -320,8 +347,8 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 					ss << (target_is_ally ?
 						Data::terms.actor_damaged :
 						Data::terms.enemy_damaged);
+					out.push_back(ss.str());
 				}
-			out.push_back(ss.str());
 			}
 		}
 	}
@@ -331,25 +358,14 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			out.push_back(GetHPMPRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
 		else {
-			std::string particle, particle2, space = "";
-			std::stringstream ss;
-			ss << GetTarget()->GetName();
-
 			if (absorb) {
-				if (Player::IsCP932()) {
-					particle = (target_is_ally ? "は" : "の");
-					particle2 = "を ";
-					space += " ";
-				}
-				else {
-					particle = particle2 = " ";
-				}
-				ss << particle << Data::terms.spirit_points << particle2;
-				ss << GetAffectedSp() << space << (target_is_ally ?
-					Data::terms.actor_hp_absorbed :
-					Data::terms.enemy_hp_absorbed);
+				out.push_back(GetHPMPAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
 			else {
+				std::string particle, particle2, space = "";
+				std::stringstream ss;
+				ss << GetTarget()->GetName();
+
 				if (Player::IsCP932()) {
 					particle = "の";
 					particle2 = "が ";
@@ -360,8 +376,9 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				}
 				ss << particle << Data::terms.spirit_points << particle2;
 				ss << GetAffectedSp() << space << Data::terms.parameter_decrease;
+
+				out.push_back(ss.str());
 			}
-			out.push_back(ss.str());
 		}
 	}
 

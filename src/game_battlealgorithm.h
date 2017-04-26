@@ -308,6 +308,7 @@ protected:
 	std::string GetHPMPRecoveredMessage(int value, const std::string& points) const;
 	std::string GetUndamagedMessage() const;
 	std::string GetCriticalHitMessage() const;
+	std::string GetHPMPAbsorbedMessage(int value, const std::string& points) const;
 
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
