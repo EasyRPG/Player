@@ -198,8 +198,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDodgeMessage() const {
 	}
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetHPMPRecoveredMessage(int value, const std::string& points) const {
-	std::string particle, particle2, space = "";
+std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int value, const std::string& points) const {
 	std::stringstream ss;
 
 	if (Player::IsRPG2kE()) {
@@ -211,6 +210,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHPMPRecoveredMessage(int val
 		);
 	}
 	else {
+		std::string particle, particle2, space = "";
+
 		ss << GetTarget()->GetName();
 		if (Player::IsCP932()) {
 			particle = "の";
@@ -266,7 +267,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 }
 
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetHPMPAbsorbedMessage(int value, const std::string& points) const {
+std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int value, const std::string& points) const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
 	const std::string& message = target_is_ally ?
@@ -316,7 +317,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		if (IsPositive()) {
 			if (!GetTarget()->IsDead()) {
-				out.push_back(GetHPMPRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
+				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
 		}
 		else {
@@ -329,7 +330,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 			else {
 				if (absorb) {
-					out.push_back(GetHPMPAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
+					out.push_back(GetHpSpAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
 				}
 				else {
 					std::stringstream ss;
@@ -355,11 +356,11 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 	if (GetAffectedSp() != -1) {
 		if (IsPositive()) {
-			out.push_back(GetHPMPRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
+			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
 		else {
 			if (absorb) {
-				out.push_back(GetHPMPAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
+				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
 			else {
 				std::string particle, particle2, space = "";

@@ -305,10 +305,10 @@ protected:
 	AlgorithmBase(Game_Battler* source, Game_Party_Base* target);
 
 	std::string GetDodgeMessage() const;
-	std::string GetHPMPRecoveredMessage(int value, const std::string& points) const;
+	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
 	std::string GetUndamagedMessage() const;
 	std::string GetCriticalHitMessage() const;
-	std::string GetHPMPAbsorbedMessage(int value, const std::string& points) const;
+	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
 
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
