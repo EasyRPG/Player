@@ -15,14 +15,14 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+#include <cassert>
+
 #include "scene_name.h"
 #include "game_actors.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "input.h"
-
-#include <cassert>
+#include "player.h"
 
 Scene_Name::Scene_Name() {
 	Scene::type = Scene::Name;
@@ -40,7 +40,11 @@ void Scene_Name::Start() {
 	face_window->Refresh();
 
 	kbd_window.reset(new Window_Keyboard(32, 72, 256, (SCREEN_TARGET_WIDTH/2)));
-	kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
+	if (Player::IsCP932()) {
+		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
+	} else {
+		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Letter));
+	}
 	kbd_window->Refresh();
 	kbd_window->UpdateCursorRect();
 }

@@ -33,7 +33,7 @@ const char* const Window_Keyboard::TO_HIRAGANA = "<かな>";
 const char* const Window_Keyboard::DONE_JP = "<決定>";
 
 /*
- * hiragana -> katakana -> letter -> symbol -> hiragana -> ...
+ * hiragana <-> katakana; letter <-> symbol
  */
 
 std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
@@ -58,7 +58,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"ハ", "ヒ", "フ", "ヘ", "ホ", "ァ", "ィ", "ゥ", "ェ", "ォ"},
 		{"マ", "ミ", "ム", "メ", "モ", "ッ", "ャ", "ュ", "ョ", "ヮ"},
 		{"ヤ", "ユ", "ヨ", "ワ", "ン", "ー", "～", "・", "＝", "☆"},
-		{"ラ", "リ", "ル", "レ", "ロ", "ヲ", Window_Keyboard::TO_LETTER, "", Window_Keyboard::DONE_JP}
+		{"ラ", "リ", "ル", "レ", "ロ", "ヲ", Window_Keyboard::TO_HIRAGANA, "", Window_Keyboard::DONE_JP}
 	},
 
 	{ // Letter
@@ -82,7 +82,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"$Z",  "" ,  "" ,  "" ,  "" , "$z"},
 		{},
 		{},
-		{ "" ,  "" ,  "" ,  "" ,  "" ,  "" , Window_Keyboard::TO_HIRAGANA, "", Window_Keyboard::DONE},
+		{ "" ,  "" ,  "" ,  "" ,  "" ,  "" , Window_Keyboard::TO_LETTER, "", Window_Keyboard::DONE},
 	},
 };
 
