@@ -53,16 +53,16 @@ void Scene_Name::Update() {
 		if (name_window->Get().size() > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			name_window->Erase();
-		}
-		else
+		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		std::string const& s = kbd_window->GetSelected();
 
 		assert(!s.empty());
 
-		if(s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
+		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
@@ -74,15 +74,15 @@ void Scene_Name::Update() {
 					Scene::Pop();
 				}
 			}
-		} else if(s == Window_Keyboard::TO_SYMBOL) {
+		} else if (s == Window_Keyboard::TO_SYMBOL) {
 			kbd_window->SetMode(Window_Keyboard::Symbol);
-		} else if(s == Window_Keyboard::TO_LETTER) {
+		} else if (s == Window_Keyboard::TO_LETTER) {
 			kbd_window->SetMode(Window_Keyboard::Letter);
-		} else if(s == Window_Keyboard::TO_HIRAGANA) {
+		} else if (s == Window_Keyboard::TO_HIRAGANA) {
 			kbd_window->SetMode(Window_Keyboard::Hiragana);
-		} else if(s == Window_Keyboard::TO_KATAKANA) {
+		} else if (s == Window_Keyboard::TO_KATAKANA) {
 			kbd_window->SetMode(Window_Keyboard::Katakana);
-		} else if(s == Window_Keyboard::SPACE) {
+		} else if (s == Window_Keyboard::SPACE) {
 			name_window->Append(" ");
 		} else { name_window->Append(s); }
 	}

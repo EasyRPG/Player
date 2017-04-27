@@ -18,7 +18,6 @@
 #ifndef _WINDOW_KEYBOARD_H_
 #define _WINDOW_KEYBOARD_H_
 
-// Headers
 #include "window_base.h"
 
 /**
