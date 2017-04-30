@@ -69,23 +69,28 @@ public class VirtualButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (!debug_mode) {
-            painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
-        }
+        setProperTransparency(canvas);
 
         // Draw the circle surrounding the button's letter
         int border = 5;
         canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - border, painter);
 
-        // Set the text size
-        painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
-
         // Draw the letter, centered in the circle
         drawCenter(canvas, painter, String.valueOf(charButton));
     }
 
+    protected void setProperTransparency(Canvas canvas) {
+        if (!debug_mode) {
+            painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
+        }
+    }
+
     /** Draw "text" centered in "canvas" */
-    private void drawCenter(Canvas canvas, Paint paint, String text) {
+    protected void drawCenter(Canvas canvas, Paint paint, String text) {
+        // Set the text size
+        painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
+
+        // Draw the text
         Rect bound = new Rect();
         canvas.getClipBounds(bound);
         int cHeight = bound.height();

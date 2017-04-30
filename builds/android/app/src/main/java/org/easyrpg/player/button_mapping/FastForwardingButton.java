@@ -2,10 +2,7 @@ package org.easyrpg.player.button_mapping;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.view.MotionEvent;
 
-import org.easyrpg.player.Helper;
 import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
@@ -49,7 +46,19 @@ public class FastForwardingButton extends VirtualButton {
 
     }
 
-    private boolean isPressAndReleaseBehaviorEnabled(){
+    @Override
+    protected void onDraw(Canvas canvas) {
+        setProperTransparency(canvas);
+
+        // Draw the rectangle surrounding the button's letter
+        int border = 5;
+        canvas.drawRect(border, border, realSize - border, realSize - border, painter);
+
+        // Draw the symbol, centered in the rectangle
+        drawCenter(canvas, painter, String.valueOf(charButton));
+    }
+
+        private boolean isPressAndReleaseBehaviorEnabled(){
         return SettingsManager.isPressAndReleaseForFastForwardingEnabled();
     }
 }
