@@ -8,8 +8,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -36,7 +34,7 @@ public class VirtualButton extends View {
 
     public static VirtualButton Create(Context context, int keyCode, double posX, double posY, int size) {
         if (keyCode == KEY_FAST_FORWARD) {
-            return new VirtualButtonRectangle(context, keyCode, posX, posY, size);
+            return new FastForwardingButton(context, keyCode, posX, posY, size);
         }
 
         return new VirtualButton(context, keyCode, posX, posY, size);

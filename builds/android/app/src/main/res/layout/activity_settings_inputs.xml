@@ -29,6 +29,16 @@
 
         <include layout="@layout/separator"/>
 
+        <CheckBox
+            android:id="@+id/fast_forwarding_press_and_release"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/enable_press_and_release_for_fast_forwarding"
+            android:textSize="20sp"/>
+
+        <include layout="@layout/separator"/>
+
         <!-- InputLayout transparency -->
         <TextView
             android:layout_width="match_parent"

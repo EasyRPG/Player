@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +24,7 @@ import org.easyrpg.player.button_mapping.ButtonMappingManager;
 import org.easyrpg.player.settings.SettingsManager;
 
 public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
-    private CheckBox enableVibrationCheckBox, enableVibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox;
+    private CheckBox enableVibrationCheckBox, enableVibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox, pressAndReleaseFastForwardCheckbox;
     private ButtonMappingManager buttonMappingManager;
     private Button addInputLayoutButton;
     private LinearLayout inputLayoutList;
@@ -48,6 +49,10 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         enableVibrateWhenSlidingCheckbox.setChecked(SettingsManager.isVibrateWhenSlidingDirectionEnabled());
         enableVibrateWhenSlidingCheckbox.setOnClickListener(this);
 
+        pressAndReleaseFastForwardCheckbox = (CheckBox) findViewById(R.id.fast_forwarding_press_and_release);
+        pressAndReleaseFastForwardCheckbox.setChecked(SettingsManager.isPressAndReleaseForFastForwardingEnabled());
+        pressAndReleaseFastForwardCheckbox.setOnClickListener(this);
+
         configureLayoutTransparencySystem();
         configureLayoutSizeSystem();
         updateInputLayoutList();
@@ -66,6 +71,9 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.settings_vibrate_when_sliding:
                 SettingsManager.setVibrateWhenSlidingDirectionEnabled(((CheckBox) v).isChecked());
+                break;
+            case R.id.fast_forwarding_press_and_release:
+                SettingsManager.setPressAndReleaseForFastForwardingEnabled(((CheckBox) v).isChecked());
                 break;
             case R.id.settings_add_input_layout_button:
                 addAnInputLayout();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
+import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_PRESS_AND_RELEASE;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
 import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
@@ -30,8 +31,13 @@ public class SettingsManager {
     private static SharedPreferences.Editor editor;
     private static Context context;
 
-    private static boolean vibrationEnabled, vibrateWhenSlidingDirectionEnabled,
-            audioEnabled, ignoreLayoutSizePreferencesEnabled, forcedLandscape;
+    private static boolean vibrationEnabled;
+    private static boolean vibrateWhenSlidingDirectionEnabled;
+    private static boolean audioEnabled;
+    private static boolean ignoreLayoutSizePreferencesEnabled;
+    private static boolean forcedLandscape;
+
+    private static boolean pressAndReleaseForFastForwardingEnabled;
     private static int layoutTransparency, layoutSize;
     private static String easyRPGFolder;
     private static List<String> gamesFolderList = new ArrayList<>();
@@ -59,6 +65,7 @@ public class SettingsManager {
         easyRPGFolder = sharedPref.getString(MAIN_DIRECTORY.toString(),
                 Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
+        pressAndReleaseForFastForwardingEnabled = sharedPref.getBoolean(FAST_FORWARD_PRESS_AND_RELEASE.toString(), true);
 
         // Fetch the games directories :
         gamesFolderList = new ArrayList<>();
@@ -136,6 +143,16 @@ public class SettingsManager {
     public static void setVibrationEnabled(boolean b) {
         vibrationEnabled = b;
         editor.putBoolean(SettingsEnum.VIBRATION_ENABLED.toString(), b);
+        editor.commit();
+    }
+
+    public static boolean isPressAndReleaseForFastForwardingEnabled() {
+        return pressAndReleaseForFastForwardingEnabled;
+    }
+
+    public static void setPressAndReleaseForFastForwardingEnabled(boolean b) {
+        pressAndReleaseForFastForwardingEnabled = b;
+        editor.putBoolean(SettingsEnum.FAST_FORWARD_PRESS_AND_RELEASE.toString(), b);
         editor.commit();
     }
 

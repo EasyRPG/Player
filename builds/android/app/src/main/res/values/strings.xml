@@ -89,4 +89,5 @@ Please tell us in detail what went wrong.\n\n
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu">Open Android menu</string>
+    <string name="enable_press_and_release_for_fast_forwarding">Enable the press-and-release behavior for Fast Forwarding button</string>
 </resources>
