@@ -185,16 +185,16 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	}
 }
 
-std::string Game_BattleAlgorithm::AlgorithmBase::GetDodgeMessage() const {
+std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const std::string& message) const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
-			Data::terms.dodge,
+			message,
 			{'S', 'O'},
 			{GetSource()->GetName(), GetTarget()->GetName()}
 		);
 	}
 	else {
-		return GetTarget()->GetName() + Data::terms.dodge;
+		return GetTarget()->GetName() + message;
 	}
 }
 
@@ -375,7 +375,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (!success) {
-		out.push_back(GetDodgeMessage());
+		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 	}
 
 	bool target_is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
@@ -1078,26 +1078,22 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-
 		switch (skill.failure_message) {
 			case 0:
-				ss << Data::terms.skill_failure_a;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a));
 				break;
 			case 1:
-				ss << Data::terms.skill_failure_b;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_b));
 				break;
 			case 2:
-				ss << Data::terms.skill_failure_c;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_c));
 				break;
 			case 3:
-				ss << Data::terms.dodge;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.dodge));
 				break;
 			default:
-				ss << " BUG: INVALID SKILL FAIL MSG";
+				out.push_back("BUG: INVALID SKILL FAIL MSG");
 		}
-		out.push_back(ss.str());
 		return;
 	}
 

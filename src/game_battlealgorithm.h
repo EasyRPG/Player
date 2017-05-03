@@ -304,7 +304,7 @@ protected:
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetDodgeMessage() const;
+	std::string GetAttackFailureMessage(const std::string& points) const;
 	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
 	std::string GetUndamagedMessage() const;
 	std::string GetCriticalHitMessage() const;
