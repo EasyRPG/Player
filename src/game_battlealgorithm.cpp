@@ -335,6 +335,40 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 	}
 }
 
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const {
+	const std::string& message = is_positive ?
+		Data::terms.parameter_increase :
+		Data::terms.parameter_decrease;
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'V', 'U'},
+			{GetTarget()->GetName(), ss.str(), points}
+		);
+	}
+	else {
+		std::string particle, particle2, space = "";
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = "の";
+			particle2 = "が ";
+			space += " ";
+		}
+		else {
+			particle = particle2 = " ";
+		}
+		ss << particle << points << particle2 << value << space;
+		ss << message;
+
+		return ss.str();
+	}
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
@@ -381,92 +415,25 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
 			else {
-				std::string particle, particle2, space = "";
-				std::stringstream ss;
-				ss << GetTarget()->GetName();
-
-				if (Player::IsCP932()) {
-					particle = "の";
-					particle2 = "が ";
-					space += " ";
-				}
-				else {
-					particle = particle2 = " ";
-				}
-				ss << particle << Data::terms.spirit_points << particle2;
-				ss << GetAffectedSp() << space << Data::terms.parameter_decrease;
-
-				out.push_back(ss.str());
+				out.push_back(GetParameterChangeMessage(false, GetAffectedSp(), Data::terms.spirit_points));
 			}
 		}
 	}
 
 	if (GetAffectedAttack() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.attack << particle2 << GetAffectedAttack() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
 	}
 
 	if (GetAffectedDefense() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.defense << particle2 << GetAffectedDefense() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
 	}
 
 	if (GetAffectedSpirit() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.spirit << particle2 << GetAffectedSpirit() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
 	}
 
 	if (GetAffectedAgility() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.agility << particle2 << GetAffectedAgility() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();

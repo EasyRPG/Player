@@ -310,6 +310,7 @@ protected:
 	std::string GetCriticalHitMessage() const;
 	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
 	std::string GetDamagedMessage() const;
+	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
