@@ -302,6 +302,39 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 	}
 }
 
+std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_damaged :
+		Data::terms.enemy_damaged;
+	int value = GetAffectedHp();
+
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'V', 'U'},
+			{GetTarget()->GetName(), ss.str(), Data::terms.health_points}
+		);
+	}
+	else {
+		std::string particle, space = "";
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = (target_is_ally ? "は " : "に ");
+			space += " ";
+		} else {
+			particle = " ";
+		}
+		ss << particle << value << space << message;
+		return ss.str();
+	}
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
@@ -333,22 +366,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 					out.push_back(GetHpSpAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
 				}
 				else {
-					std::stringstream ss;
-					std::string particle, particle2, space = "";
-
-					ss << GetTarget()->GetName();
-
-					if (Player::IsCP932()) {
-						particle = (target_is_ally ? "は " : "に ");
-						space += " ";
-					} else {
-						particle = " ";
-					}
-					ss << particle << GetAffectedHp() << space;
-					ss << (target_is_ally ?
-						Data::terms.actor_damaged :
-						Data::terms.enemy_damaged);
-					out.push_back(ss.str());
+					out.push_back(GetDamagedMessage());
 				}
 			}
 		}
