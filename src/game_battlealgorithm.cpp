@@ -1302,7 +1302,14 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.defending,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.defending;
 	}
 	else {
@@ -1328,7 +1335,14 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.observing,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.observing;
 	}
 	else {
@@ -1347,7 +1361,14 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.focus,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.focus;
 	}
 	else {
@@ -1369,7 +1390,14 @@ AlgorithmBase(source, target) {
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.autodestruction,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.autodestruction;
 	}
 	else {
@@ -1431,9 +1459,15 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
-		// Only monsters can escape during a battle phase
-
+	// Only monsters can escape during a battle phase
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.enemy_escape,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
 			return source->GetName() + Data::terms.enemy_escape;
 		}
@@ -1513,7 +1547,14 @@ AlgorithmBase(source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.enemy_transform,
+			{'S', 'O'},
+			{source->GetName(), Data::enemies[new_monster_id - 1].name}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.enemy_transform;
 	}
 	else {
