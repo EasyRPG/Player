@@ -1230,7 +1230,14 @@ void Game_BattleAlgorithm::Item::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.use_item,
+			{'S', 'O'},
+			{source->GetName(), item.name}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		std::string particle;
 		if (Player::IsCP932())
 			particle = "は";
