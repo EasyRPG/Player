@@ -327,16 +327,36 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
+	if (battle_action_wait) {
+		if (--battle_action_wait) {
+			return false;
+		}
+		else if (battle_message_window->GetHiddenLineCount()) {
+			if (battle_message_window->IsPageFilled()) {
+				if (battle_message_window->NextPage()) {
+					battle_action_wait = GetDelayForLine();
+					battle_message_window->ShowHiddenLines(1);
+				}
+			}
+			else {
+				if (battle_message_window->GetLineCount()) {
+					battle_message_window->ShowHiddenLines(1);
+					if (battle_message_window->IsPageFilled() &&
+							battle_message_window->GetHiddenLineCount()) {
+						battle_action_wait = GetDelayForLine();
+					}
+					else {
+						battle_action_wait = GetDelayForWindow();
+					}
+				}
+			}
+			return false;
+		}
+	}
+
 	switch (battle_action_state) {
 		case BattleActionState_Start:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
-			if (battle_message_window->NextPage()) {
-				return false;
-			}
-
+			battle_action_wait = GetDelayForWindow();
 			if (action->IsFirstAttack()) {
 				action->TargetFirst();
 			}
@@ -390,7 +410,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			battle_action_state = BattleActionState_Result;
 
-			battle_action_wait = 30;
+			battle_action_wait = GetDelayForWindow();
 
 			break;
 		case BattleActionState_ConditionHeal:
@@ -414,7 +434,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 						}
 					}
 					if (message_to_show) {
-						battle_action_wait = 30;
+						battle_action_wait = GetDelayForWindow();
 					}
 					else {
 						battle_action_wait = 0;
@@ -429,10 +449,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			break;
 		case BattleActionState_Result:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
+			battle_action_wait = GetDelayForWindow();
 
 			if (action->GetTarget() && action->IsSuccess()) {
 				// FIXME: Physical damage state heal needs a message
@@ -456,7 +473,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				}
 
 				if (battle_result_messages_it != battle_result_messages.begin()) {
-					battle_message_window->Pop();
+					battle_message_window->Clear();
+					battle_message_window->Push(action->GetStartMessage());
 				}
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
@@ -473,11 +491,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			break;
 		case BattleActionState_Finished:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
-
 			if (action->GetTarget()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (target_sprite && !target_sprite->IsIdling()) {
@@ -799,24 +812,32 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	}
 }
 
+int Scene_Battle_Rpg2k::GetDelayForWindow() {
+	if (Player::IsRPG2kE()) {
+		return 40;
+	}
+	else {
+		return 60 / 2;
+	}
+}
+
+int Scene_Battle_Rpg2k::GetDelayForLine() {
+	if (Player::IsRPG2kE()) {
+		return 60 / 10;
+	}
+	else {
+		return 60 / 7;
+	}
+}
+
 void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
 	if ((enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() &&
 			!battle_message_window->GetHiddenLineCount()) ||
-		battle_message_window->IsPageFilled()) {
-		if (Player::IsRPG2kE()) {
-			encounter_message_sleep_until = Player::GetFrames() + 60;
-		}
-		else {
-			encounter_message_sleep_until = Player::GetFrames() + 60 / 2;
-		}
+			battle_message_window->IsPageFilled()) {
+		encounter_message_sleep_until = Player::GetFrames() + GetDelayForWindow();
 	}
 	else {
-		if (Player::IsRPG2kE()) {
-			encounter_message_sleep_until = Player::GetFrames() + 60 / 10;
-		}
-		else {
-			encounter_message_sleep_until = Player::GetFrames() + 60 / 5;
-		}
+		encounter_message_sleep_until = Player::GetFrames() + GetDelayForLine();
 	}
 }
 

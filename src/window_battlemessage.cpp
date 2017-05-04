@@ -122,7 +122,7 @@ bool Window_BattleMessage::NextPage() {
 		return false;
 	}
 	else {
-		lines.erase(lines.begin(), lines.begin() + linesPerPage);
+		lines.erase(lines.begin(), lines.begin() + linesPerPage - 1);
 		needs_refresh = true;
 		return true;
 	}
@@ -135,7 +135,7 @@ void Window_BattleMessage::Refresh() {
 
 	std::vector<std::string>::const_iterator it;
 	int i = 0;
-	for (it = lines.begin(); it != lines.end() - hidden_lines; ++it) {
+	for (it = lines.begin(); it < lines.end() - hidden_lines; ++it) {
 		contents->TextDraw(0, contents_y, Font::ColorDefault, *it);
 		contents_y += 16;
 
