@@ -116,8 +116,6 @@ static int renderThread(unsigned int args, void* arg){
 		vita2d_wait_rendering_done();
 		vita2d_swap_buffers();
 		sceKernelSignalSema(GPU_Cleanup_Mutex, 1);
-		
-		sceKernelDelayThread(1000);
 	
 	}
 	
