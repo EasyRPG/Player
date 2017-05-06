@@ -97,7 +97,7 @@ public:
 	void ShowHiddenLines(int count);
 
 	/**
-	 * How much lines would fit into a window of battle messages.
+	 * How many lines would fit into a window of battle messages.
 	 */
 	static const int linesPerPage = 4;
 
@@ -105,7 +105,7 @@ private:
 	std::vector<std::string> lines;
 
 	/**
-	 * How much lines are hidden right now.
+	 * How many lines are hidden right now.
 	 *
 	 * Hidden lines are added by PushWordWrappedLine when
 	 * the pushed line doesn't fit one line. Such lines are
