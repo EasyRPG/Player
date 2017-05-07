@@ -120,7 +120,7 @@ Rect Window_Keyboard::GetItemRect(int row, int col) const {
 	std::string const& str = items[mode][row][col];
 	return Rect(col * col_spacing + border_x,
 				row * row_spacing + border_y,
-				contents->GetFont()->GetSize(str).width + 8,
+				Font::Default()->GetSize(str).width + 8,
 				row_spacing);
 }
 

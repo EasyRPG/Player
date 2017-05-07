@@ -28,10 +28,9 @@
 #include <cctype>
 #include <iterator>
 
-void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
+void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align) {
 	if (text.length() == 0) return;
 
-	FontRef font = dest.GetFont();
 	Rect dst_rect = font->GetSize(text);
 
 	switch (align) {
@@ -107,10 +106,8 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	dest.Blit(ix, iy, *text_bmp, src_rect, 255);
 }
 
-void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text) {
+void Text::Draw(Bitmap& dest, int x, int y, Color color, FontRef font, std::string const& text) {
 	if (text.length() == 0) return;
-
-	FontRef font = dest.GetFont();
 
 	int next_glyph_pos = 0;
 

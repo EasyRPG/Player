@@ -32,6 +32,7 @@
 #include "game_battlealgorithm.h"
 #include "scene_gameover.h"
 #include "utils.h"
+#include "font.h"
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
 	battle_action_wait(30),
@@ -206,8 +207,9 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				for (auto state : states) {
 					std::string name = Data::states[state - 1].name;
 					int color = Data::states[state - 1].color;
+					FontRef font = Font::Default();
 					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);
-					text_width += contents->GetFont()->GetSize(name + "  ").width;
+					text_width += font->GetSize(name + "  ").width;
 				}
 			}
 		}

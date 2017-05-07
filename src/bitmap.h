@@ -240,7 +240,7 @@ public:
 	void CheckPixels(uint32_t flags);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
@@ -251,20 +251,7 @@ public:
 	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color system color index.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color system color index.
@@ -274,7 +261,7 @@ public:
 	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
@@ -284,20 +271,7 @@ public:
 	void TextDraw(int x, int y, Color color, std::string const& text);
 
 	/**
-	 * Draws text to bitmap.
-	 *
-	 * @param x x coordinate of bounding rectangle.
-	 * @param y y coordinate of bounding rectangle.
-	 * @param width width of bounding rectangle.
-	 * @param height height of bounding rectangle.
-	 * @param color text color.
-	 * @param text text to draw.
-	 * @param align text alignment inside bounding rectangle.
-	 */
-	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Draws text to bitmap.
+	 * Draws text to bitmap using the Font::Default() font.
 	 *
 	 * @param rect bounding rectangle.
 	 * @param color text color.
@@ -305,20 +279,6 @@ public:
 	 * @param align text alignment inside bounding rectangle.
 	 */
 	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Gets text drawing font.
-	 *
-	 * @return text drawing font.
-	 */
-	FontRef const& GetFont() const;
-
-	/**
-	 * Sets text drawing font.
-	 *
-	 * @param font drawing font.
-	 */
-	void SetFont(FontRef const& font);
 
 	/**
 	 * Blits source bitmap to this one.
@@ -584,14 +544,11 @@ protected:
 	TileOpacity opacity = Partial;
 	Color bg_color, sh_color;
 
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
+	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
 
 #ifdef USE_SDL
 	friend class SdlUi;
 #endif
-
-	/** Font for text drawing. */
-	FontRef font;
 
 	/** Bitmap data. */
 	pixman_image_t *bitmap = nullptr;

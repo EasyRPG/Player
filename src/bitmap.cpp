@@ -79,21 +79,18 @@ BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const D
 }
 
 Bitmap::Bitmap(int width, int height, bool transparent) {
-	font = Font::Default();
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 	Init(width, height, (void *) NULL);
 }
 
 Bitmap::Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& _format) {
-	font = Font::Default();
 	format = _format;
 	pixman_format = find_format(format);
 	Init(width, height, pixels, pitch, false);
 }
 
 Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
-	font = Font::Default();
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -148,7 +145,6 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 }
 
 Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
-	font = Font::Default();
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -186,7 +182,6 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 }
 
 Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
-	font = Font::Default();
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -343,64 +338,50 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::opaque);
 }
 
-FontRef const& Bitmap::GetFont() const {
-	return font;
-}
-
-void Bitmap::SetFont(FontRef const& new_font) {
-	font = new_font;
-}
-
-void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std::string const& text, Text::Alignment align) {
-	Rect rect = GetFont()->GetSize(text);
-	int dx = rect.width - width;
+void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
+	FontRef font = Font::Default();
+	Rect text_rect = font->GetSize(text);
+	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(x, y, color, text);
+		TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(x + dx / 2, y, color, text);
+		TextDraw(rect.x + dx / 2, rect.y, color, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(x + dx, y, color, text);
+		TextDraw(rect.x + dx, rect.y, color, text);
 		break;
 	default: assert(false);
 	}
-}
-
-void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
-	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
 }
 
 void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align) {
-	Text::Draw(*this, x, y, color, text, align);
+	Text::Draw(*this, x, y, color, Font::Default(), text, align);
 }
 
-void Bitmap::TextDraw(int x, int y, int width, int /* height */, Color color, std::string const& text, Text::Alignment align) {
-	Rect rect = GetFont()->GetSize(text);
-	int dx = rect.width - width;
+void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
+	FontRef font = Font::Default();
+	Rect text_rect = font->GetSize(text);
+	int dx = text_rect.width - rect.width;
 
 	switch (align) {
 	case Text::AlignLeft:
-		TextDraw(x, y, color, text);
+		TextDraw(rect.x, rect.y, color, text);
 		break;
 	case Text::AlignCenter:
-		TextDraw(x + dx / 2, y, color, text);
+		TextDraw(rect.x + dx / 2, rect.y, color, text);
 		break;
 	case Text::AlignRight:
-		TextDraw(x + dx, y, color, text);
+		TextDraw(rect.x + dx, rect.y, color, text);
 		break;
 	default: assert(false);
 	}
 }
 
-void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
-	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
-}
-
 void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
-	Text::Draw(*this, x, y, color, text);
+	Text::Draw(*this, x, y, color, Font::Default(), text);
 }
 
 Rect Bitmap::TransformRectangle(const Transform& xform, const Rect& rect) {

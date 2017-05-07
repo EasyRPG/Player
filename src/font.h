@@ -41,7 +41,8 @@ class Font {
 	void Render(Bitmap& bmp, int x, int y, Color const& color, char32_t glyph);
 
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
-	static FontRef Default(bool mincho = false);
+	static FontRef Default();
+	static FontRef Default(bool mincho);
 	static void Dispose();
 
 	static FontRef exfont;

@@ -402,7 +402,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '_':
 				// Insert half size space
-				contents_x += contents->GetFont()->GetSize(" ").width / 2;
+				contents_x += Font::Default()->GetSize(" ").width / 2;
 				break;
 			case '$':
 				// Show Gold Window
@@ -447,7 +447,7 @@ void Window_Message::UpdateMessage() {
 				if (*text_index == escape_char) {
 					// Show Escape Symbol
 					contents->TextDraw(contents_x, contents_y, text_color, Player::escape_symbol);
-					contents_x += contents->GetFont()->GetSize(Player::escape_symbol).width;
+					contents_x += Font::Default()->GetSize(Player::escape_symbol).width;
 				}
 			}
 		} else if (*text_index == '$'
@@ -463,7 +463,7 @@ void Window_Message::UpdateMessage() {
 			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))));
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			int glyph_width = contents->GetFont()->GetSize(glyph).width;
+			int glyph_width = Font::Default()->GetSize(glyph).width;
 			// Show full-width characters twice as slow as half-width characters
 			if (glyph_width >= 12)
 				loop_count++;

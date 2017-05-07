@@ -227,6 +227,8 @@ namespace Game_System {
 	void SetAllowMenu(bool allow);
 	RPG::System::Stretch GetMessageStretch();
 	void SetMessageStretch(RPG::System::Stretch stretch);
+	int GetFontId();
+	void SetFontId(int id);
 
 	int GetSaveCount();
 

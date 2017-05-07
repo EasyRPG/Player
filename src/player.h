@@ -156,9 +156,34 @@ namespace Player {
 	bool IsRPG2k3E();
 
 	/**
-	 * @return if encoding is CP932 or not
+	 * @return true if encoding is CP932 (Shift-JIS, used for Japanese),
+	 * false if not
 	 */
 	bool IsCP932();
+
+	/**
+	 * @return true if encoding is CP949 (used for Korean), false if
+	 * not
+	 */
+	bool IsCP949();
+
+	/**
+	 * @return true if encoding is Big5 (CP950, used for Traditional
+	 * Chinese), false if not
+	 */
+	bool IsBig5();
+
+	/**
+	 * @return true if encoding is CP936 (used for Simplified Chinese)
+	 * or false if not
+	 */
+	bool IsCP936();
+
+	/**
+	 * @return true if game is in Chinese, Japanese, or Korean
+	 * (based on the encoding), false otherwise
+	 */
+	bool IsCJK();
 
 	/**
 	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)

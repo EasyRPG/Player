@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "system.h"
+#include "game_system.h"
 
 #ifdef HAVE_FREETYPE
 #	include <ft2build.h>
@@ -30,7 +31,7 @@
 #endif
 
 #include "reader_util.h"
-#include "shinonome.h"
+#include "bitmapfont.h"
 
 #include "filefinder.h"
 #include "output.h"
@@ -38,49 +39,85 @@
 #include "bitmap.h"
 #include "utils.h"
 #include "cache.h"
+#include "player.h"
 
-bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
+bool operator<(BitmapFontGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
 }
 
 // Static variables.
 namespace {
-	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, char32_t code) {
-		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
+	BitmapFontGlyph const* find_glyph(BitmapFontGlyph const* data, size_t size, char32_t code) {
+		BitmapFontGlyph const* ret = std::lower_bound(data, data + size, code);
 		if(ret != (data + size) && ret->code == code) {
 			return ret;
 		} else {
-			static ShinonomeGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
+			return NULL;
+		}
+	}
+
+	/**
+	 * This is the last-resort function for finding a glyph,
+	 * all the other fonts should fallback on it.
+	 *
+	 * It tries to display a WenQuanYi glyph, and if it’s not
+	 * found, returns a replacement glyph.
+	 */
+	BitmapFontGlyph const* find_fallback_glyph(char32_t code) {
+		BitmapFontGlyph const* const wqy =
+			find_glyph(BITMAPFONT_WQY,
+					sizeof(BITMAPFONT_WQY) / sizeof(BitmapFontGlyph), code);
+		if (wqy != NULL) {
+			return wqy;
+		}
+		else {
+			static BitmapFontGlyph const replacement_glyph = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
 			Output::Debug("glyph not found: 0x%04x", code);
 			return &replacement_glyph;
 		}
 	}
 
-	ShinonomeGlyph const* find_fallback_glyph(char32_t code) {
-		return find_glyph(SHINONOME_WQY,
-					   sizeof(SHINONOME_WQY) / sizeof(ShinonomeGlyph), code);
-	}
-
-	ShinonomeGlyph const* find_gothic_glyph(char32_t code) {
-		ShinonomeGlyph const* const gothic =
+	BitmapFontGlyph const* find_gothic_glyph(char32_t code) {
+		BitmapFontGlyph const* const gothic =
 			find_glyph(SHINONOME_GOTHIC,
-					   sizeof(SHINONOME_GOTHIC) / sizeof(ShinonomeGlyph), code);
-		return (gothic != NULL && gothic->code == code)? gothic : find_fallback_glyph(code);
+					   sizeof(SHINONOME_GOTHIC) / sizeof(BitmapFontGlyph), code);
+		return gothic != NULL ? gothic : find_fallback_glyph(code);
 	}
 
-	ShinonomeGlyph const* find_mincho_glyph(char32_t code) {
-		ShinonomeGlyph const* const mincho =
+	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
+		BitmapFontGlyph const* const mincho =
 			find_glyph(SHINONOME_MINCHO,
-					   sizeof(SHINONOME_MINCHO) / sizeof(ShinonomeGlyph), code);
-		return mincho == NULL? find_gothic_glyph(code) : mincho;
+					   sizeof(SHINONOME_MINCHO) / sizeof(BitmapFontGlyph), code);
+		return mincho == NULL ? find_gothic_glyph(code) : mincho;
 	}
 
-	struct ShinonomeFont : public Font {
+	BitmapFontGlyph const* find_rmg2000_glyph(char32_t code) {
+		BitmapFontGlyph const* const rmg2000 =
+			find_glyph(BITMAPFONT_RMG2000,
+					   sizeof(BITMAPFONT_RMG2000) / sizeof(BitmapFontGlyph), code);
+		if (rmg2000 != NULL) {
+			return rmg2000;
+		}
+
+		BitmapFontGlyph const* const ttyp0 =
+			find_glyph(BITMAPFONT_TTYP0,
+					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
+		return ttyp0 != NULL ? ttyp0 : find_mincho_glyph(code);
+	}
+
+	BitmapFontGlyph const* find_ttyp0_glyph(char32_t code) {
+		BitmapFontGlyph const* const ttyp0 =
+			find_glyph(BITMAPFONT_TTYP0,
+					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
+		return ttyp0 != NULL ? ttyp0 : find_gothic_glyph(code);
+	}
+
+	struct BitmapFont : public Font {
 		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2 };
 
-		using function_type = ShinonomeGlyph const*(*)(char32_t);
+		using function_type = BitmapFontGlyph const*(*)(char32_t);
 
-		ShinonomeFont(function_type func);
+		BitmapFont(const std::string& name, function_type func);
 
 		Rect GetSize(std::u32string const& txt) const override;
 
@@ -88,7 +125,7 @@ namespace {
 
 	private:
 		function_type const func_;
-	}; // class ShinonomeFont
+	}; // class BitmapFont
 
 #ifdef HAVE_FREETYPE
 	typedef std::map<std::string, std::weak_ptr<std::remove_pointer<FT_Face>::type>> face_cache_type;
@@ -124,8 +161,24 @@ namespace {
 	}; // class FTFont
 #endif
 
-	FontRef const gothic = std::make_shared<ShinonomeFont>(&find_gothic_glyph);
-	FontRef const mincho = std::make_shared<ShinonomeFont>(&find_mincho_glyph);
+	/* Bitmap fonts used for the official Japanese version.
+	* Compatible with MS Gothic and MS Mincho.
+	*
+	* Feature a closing quote in place of straight quote, double-width
+	* Cyrillic letters (unusable for Russian, only useful for smileys
+	* and things like that) and ellipsis in the middle of the line. */
+	FontRef const gothic = std::make_shared<BitmapFont>("Shinonome Gothic", &find_gothic_glyph);
+	FontRef const mincho = std::make_shared<BitmapFont>("Shinonome Mincho", &find_mincho_glyph);
+
+	/* Bitmap fonts used for non-Japanese games.
+	 *
+	 * Compatible with RMG2000 and RM2000 shipped with Don Miguel’s
+	 * unofficial translation.
+	 *
+	 * Feature a half-width Cyrillic and half-width ellipsis at the bottom
+	 * of the line. */
+	FontRef const rmg2000 = std::make_shared<BitmapFont>("RMG2000-compatible", &find_rmg2000_glyph);
+	FontRef const ttyp0 = std::make_shared<BitmapFont>("ttyp0", &find_ttyp0_glyph);
 
 	struct ExFont : public Font {
 		ExFont();
@@ -134,21 +187,21 @@ namespace {
 	};
 } // anonymous namespace
 
-ShinonomeFont::ShinonomeFont(ShinonomeFont::function_type func)
-	: Font("Shinonome", HEIGHT, false, false), func_(func) {}
+BitmapFont::BitmapFont(const std::string& name, BitmapFont::function_type func)
+	: Font(name, HEIGHT, false, false), func_(func) {}
 
-Rect ShinonomeFont::GetSize(std::u32string const& txt) const {
+Rect BitmapFont::GetSize(std::u32string const& txt) const {
 	size_t units = 0;
 	for (char32_t c : txt) {
-		ShinonomeGlyph const* const glyph = func_(c);
+		BitmapFontGlyph const* const glyph = func_(c);
 		assert(glyph);
 		units += glyph->is_full? 2 : 1;
 	}
 	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
 }
 
-BitmapRef ShinonomeFont::Glyph(char32_t code) {
-	ShinonomeGlyph const* const glyph = func_(code);
+BitmapRef BitmapFont::Glyph(char32_t code) {
+	BitmapFontGlyph const* const glyph = func_(code);
 	assert(glyph);
 	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
 
@@ -190,7 +243,7 @@ BitmapRef FTFont::Glyph(char32_t glyph) {
 		Output::Error("Couldn't load FreeType character %d", glyph);
 	}
 
-    if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
+	if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
 		Output::Error("Couldn't render FreeType character %d", glyph);
 	}
 
@@ -283,8 +336,17 @@ bool FTFont::check_face() {
 }
 #endif
 
+FontRef Font::Default() {
+	return Default(Game_System::GetFontId() == 1);
+}
+
 FontRef Font::Default(bool const m) {
-	return m? mincho : gothic;
+	if (Player::IsCJK()) {
+		return m ? mincho : gothic;
+	}
+	else {
+		return m ? rmg2000 : ttyp0;
+	}
 }
 
 FontRef Font::Create(const std::string& name, int size, bool bold, bool italic) {

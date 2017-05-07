@@ -1,0 +1,16 @@
+This font is EasyRPG ttyp0, a font based on UW ttyp0, version 1.3.
+
+It covers most of the Latin and Cyrillic alphabet, Greek, Armenian,
+Georgian (only Mkhedruli), Hebrew (without cantillation marks),
+Thai, most of IPA (but no UPA), standard punctuation, common
+symbols, some mathematics, line graphics and a few dingbats (about
+3000 Unicode characters).
+
+You can download the original font here:
+https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0/
+
+EasyRPG’s ttyp0 only has a regular 6x12 version.
+
+To compile ttyp0 into C++ files, a generate_cxx_font.rb inside ../shinonome/
+is used. This is due to historical reasons (Shinonome was the first font
+added to EasyRPG) and should be changed in the future.

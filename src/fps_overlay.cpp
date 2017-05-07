@@ -22,6 +22,7 @@
 #include "graphics.h"
 #include "bitmap.h"
 #include "input.h"
+#include "font.h"
 
 FpsOverlay::FpsOverlay() :
 	type(TypeOverlay),
@@ -57,7 +58,7 @@ void FpsOverlay::Draw() {
 	if (fps_draw) {
 		if (fps_dirty) {
 			std::string text = GetFpsString();
-			Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text);
+			Rect rect = Font::Default()->GetSize(text);
 
 			if (!fps_bitmap || fps_bitmap->GetWidth() < rect.width + 1) {
 				// Height never changes
@@ -80,7 +81,7 @@ void FpsOverlay::Draw() {
 		if (speedup_dirty) {
 			std::string text = "> x" + Utils::ToString(last_speed_mod);
 
-			Rect rect = DisplayUi->GetDisplaySurface()->GetFont()->GetSize(text);
+			Rect rect = Font::Default()->GetSize(text);
 
 			if (!speedup_bitmap || speedup_bitmap->GetWidth() < rect.width + 1) {
 				// Height never changes

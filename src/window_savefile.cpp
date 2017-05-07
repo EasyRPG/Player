@@ -42,7 +42,7 @@ void Window_SaveFile::UpdateCursorRect() {
 	if (GetActive()) {
 		std::ostringstream out;
 		out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
-		rect = Rect(0, 0, contents->GetFont()->GetSize(out.str()).width + 6, 16);
+		rect = Rect(0, 0, Font::Default()->GetSize(out.str()).width + 6, 16);
 	}
 
 	SetCursorRect(rect);

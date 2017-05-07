@@ -19,6 +19,7 @@
 #define _EASYRPG_TEXT_H_
 
 #include "system.h"
+#include "font.h"
 #include <string>
 
 namespace Text {
@@ -29,11 +30,11 @@ namespace Text {
 		AlignRight
 	};
 
-	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Draws text using the specified color on dest
 	 */
-	void Draw(Bitmap& dest, int x, int y, Color color, std::string const& text);
+	void Draw(Bitmap& dest, int x, int y, Color color, FontRef font, std::string const& text);
 }
 #endif
