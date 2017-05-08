@@ -168,6 +168,27 @@ namespace Game_Message {
 	int GetRealPosition();
 
 	/**
+	 * Breaks the line into lines, each of which is equal 
+	 * or less than a specified limit in pixels in the
+	 * given font (except in cases when breaking by spaces
+	 * can't produce a short line), and pushes the result
+	 * into a specified vector of strings.
+	 * 
+	 * Font::Default() will be used to determine the word breaking.
+	 * The caller is responsible for ensuring that Font::Default()
+	 * either does not change between calling this function and
+	 * displaying the results, or at least that the changed font
+	 * has same metrics as the font used to calculate the line sizes.
+	 *
+	 * @param[in] line The line that will be broken into lines
+	 * and added into the lines vector.
+	 * @param[in] limit maximum size of each line after word-breaking.
+	 * @param[out] lines A vector of lines, into which the resulting
+	 * lines will be added using the push_back method.
+	 */
+	int PushWordWrappedLine(const std::string& line, int limit, std::vector<std::string>& lines);
+
+	/**
 	 * Number of lines before the start
 	 * of selection options.
 	 * +-----------------------------------+

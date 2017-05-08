@@ -20,6 +20,7 @@
 #include "game_player.h"
 #include "game_temp.h"
 #include "main_data.h"
+#include "font.h"
 #include "player.h"
 
 namespace Game_Message {
@@ -169,4 +170,35 @@ int Game_Message::GetRealPosition() {
 			return disp >= (16 * 10) ? 0 : 2;
 		};
 	}
+}
+
+int Game_Message::PushWordWrappedLine(const std::string& line, int limit, std::vector<std::string>& lines) {
+	int start = 0, lastfound = 0;
+	int line_count = 0;
+	FontRef font = Font::Default();
+	Rect size;
+
+	do {
+		line_count++;
+		int found = line.find(" ", start);
+		std::string wrapped = line.substr(start, found - start);
+		size = font->GetSize(wrapped);
+		do {
+			lastfound = found;
+			found = line.find(" ", lastfound + 1);
+			if (found == std::string::npos) {
+				found = line.size();
+			}
+			wrapped = line.substr(start, found - start);
+			size = font->GetSize(wrapped);
+		} while (found < line.size() - 1 && size.width < limit);
+		if (size.width < limit) {
+			// It's end of the string, not a word-break
+			lastfound = found;
+		}
+		lines.push_back(line.substr(start, lastfound - start));
+		start = lastfound + 1;
+	} while (start < line.size() && size.width >= limit);
+
+	return line_count;
 }

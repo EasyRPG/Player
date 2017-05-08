@@ -41,7 +41,8 @@ void Window_BattleMessage::Push(const std::string& message) {
 	hidden_lines = 0;
 	while (getline(smessage, line)) {
 		if (Player::IsRPG2kE()) {
-			PushWordWrappedLine(line);
+			int line_count = Game_Message::PushWordWrappedLine(line, GetWidth() - 24, lines);
+			hidden_lines = line_count - 1;
 		}
 		else {
 			lines.push_back(line);
@@ -49,40 +50,6 @@ void Window_BattleMessage::Push(const std::string& message) {
 	}
 
 	needs_refresh = true;
-}
-
-int Window_BattleMessage::PushWordWrappedLine(const std::string& line) {
-	FontRef font = Font::Default();
-
-	int start = 0, lastfound = 0;
-	int limit = GetWidth() - 24;
-	int line_count = 0;
-	Rect size;
-
-	do {
-		line_count++;
-		int found = line.find(" ", start);
-		std::string wrapped = line.substr(start, found - start);
-		size = font->GetSize(wrapped);
-		do {
-			lastfound = found;
-			found = line.find(" ", lastfound + 1);
-			if (found == std::string::npos) {
-				found = line.size();
-			}
-			wrapped = line.substr(start, found - start);
-			size = font->GetSize(wrapped);
-		} while (found < line.size() - 1 && size.width < limit);
-		if (size.width < limit) {
-			// It's end of the string, not a word-break
-			lastfound = found;
-		}
-		lines.push_back(line.substr(start, lastfound - start));
-		start = lastfound + 1;
-	} while (start < line.size() && size.width >= limit);
-	hidden_lines = line_count - 1;
-
-	return line_count;
 }
 
 void Window_BattleMessage::EnemyAppeared(const std::string& enemy_name) {

@@ -114,21 +114,6 @@ private:
 	int hidden_lines;
 
 	bool needs_refresh;
-
-	/**
-	 * Adds a line to the lines vector. If the line is too long to
-	 * be displayed in the message and contains space characters, then
-	 * it will be broken into several lines.
-	 *
-	 * When the line is word-wrapped, only the first line is shown. The
-	 * other lines are initially hidden. The number of hidden lines can
-	 * be retrieved wih GetHiddenLineCount, and shown usign 
-	 * ShowHiddenLines.
-	 *
-	 * @param line String without newline characters.
-	 * @return Number of lines added after word-wrapping.
-	 **/
-	int PushWordWrappedLine(const std::string& line);
 };
 
 #endif
