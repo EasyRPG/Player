@@ -1041,7 +1041,16 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 			// Use item message
 			return Item(source, *item).GetStartMessage();
 		}
-		return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+		if (Player::IsRPG2kE()) {
+			return Utils::ReplacePlaceholders(
+				skill.using_message1 + '\n' + skill.using_message2,
+				{'S', 'O', 'U'},
+				{GetSource()->GetName(), GetTarget()->GetName(), skill.name}
+			);
+		}
+		else {
+			return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+		}
 	}
 	else {
 		return skill.name;
