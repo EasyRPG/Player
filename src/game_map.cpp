@@ -1405,6 +1405,11 @@ void Game_Map::Parallax::Update() {
 	}
 }
 
+/** Return the argument that is closer to zero. */
+static int closer_to_zero(int x, int y) {
+	return (std::abs(x) < std::abs(y)) ? x : y;
+}
+
 void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
 	Params params = GetParallaxParams();
 
@@ -1417,7 +1422,7 @@ void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
 		GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT
 	) {
 		parallax_y -=
-			std::min(
+			closer_to_zero(
 				distance_down,
 				distance_down * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15) / (SCREEN_TILE_WIDTH / TILE_SIZE)
 			);
@@ -1430,7 +1435,7 @@ void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
 		GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH
 	) {
 		parallax_x -=
-			std::min(
+			closer_to_zero(
 				distance_right,
 				distance_right * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE)
 			);
