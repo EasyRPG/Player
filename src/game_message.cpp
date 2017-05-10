@@ -25,6 +25,7 @@
 
 namespace Game_Message {
 	std::vector<std::string> texts;
+	bool is_word_wrapped;
 
 	unsigned int owner_id;
 
@@ -60,6 +61,7 @@ void Game_Message::SemiClear() {
 	num_input_start = -1;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
+	is_word_wrapped = false;
 }
 
 void Game_Message::FullClear() {
@@ -172,7 +174,7 @@ int Game_Message::GetRealPosition() {
 	}
 }
 
-int Game_Message::PushWordWrappedLine(const std::string& line, int limit, std::vector<std::string>& lines) {
+int Game_Message::WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback) {
 	int start = 0, lastfound = 0;
 	int line_count = 0;
 	FontRef font = Font::Default();
@@ -196,7 +198,8 @@ int Game_Message::PushWordWrappedLine(const std::string& line, int limit, std::v
 			// It's end of the string, not a word-break
 			lastfound = found;
 		}
-		lines.push_back(line.substr(start, lastfound - start));
+		wrapped = line.substr(start, lastfound - start);
+		callback(wrapped);
 		start = lastfound + 1;
 	} while (start < line.size() && size.width >= limit);
 

@@ -962,6 +962,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
+		Game_Message::is_word_wrapped = Player::IsRPG2kE();
 		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::stringstream ss;
@@ -1002,6 +1003,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 		Game_Message::SetPosition(2);
 		Game_Message::SetTransparent(false);
 
+		Game_Message::is_word_wrapped = Player::IsRPG2kE();
 		Game_Message::texts.push_back(Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));

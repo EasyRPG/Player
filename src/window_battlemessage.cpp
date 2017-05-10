@@ -41,7 +41,14 @@ void Window_BattleMessage::Push(const std::string& message) {
 	hidden_lines = 0;
 	while (getline(smessage, line)) {
 		if (Player::IsRPG2kE()) {
-			int line_count = Game_Message::PushWordWrappedLine(line, GetWidth() - 24, lines);
+			std::vector<std::string>& wrapped_lines = lines;
+			int line_count = Game_Message::WordWrap(
+								line,
+								GetWidth() - 24,
+								[&wrapped_lines](const std::string& line) {
+									wrapped_lines.push_back(line);
+								}
+							);
 			hidden_lines = line_count - 1;
 		}
 		else {

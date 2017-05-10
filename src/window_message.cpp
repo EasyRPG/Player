@@ -81,7 +81,22 @@ void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
 	for (const std::string& line : Game_Message::texts) {
-		text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
+		/* TODO: do \n[x] \v[x] replacement before word-wrapping */
+		/* TODO: don't take commands like \> \< into account when word-wrapping */
+		if (Game_Message::is_word_wrapped) {
+			std::vector<std::string> wrapped_lines;
+			std::u32string& wrapped_text = text;
+			Game_Message::WordWrap(
+					line,
+					width - 24,
+					[&wrapped_text](const std::string& wrapped_line) {
+						wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
+					}
+			);
+		}
+		else {
+			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
+		}
 	}
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
