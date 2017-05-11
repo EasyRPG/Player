@@ -23,6 +23,7 @@
 #include <vector>
 #include <stdint.h>
 #include "rpg_saveactor.h"
+#include "rpg_learning.h"
 #include "game_battler.h"
 
 namespace RPG {
@@ -735,6 +736,9 @@ public:
 
 	int GetHitChance() const override;
 	float GetCriticalHitChance() const override;
+
+	std::string GetLevelUpMessage(int new_level) const;
+	std::string GetLearningMessage(const RPG::Learning& learn) const;
 
 	BattlerType GetType() const override;
 private:
