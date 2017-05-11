@@ -27,14 +27,17 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 - FreeType2 for external font support (+ HarfBuzz for Unicode text shaping)
 - mpg123 for better MP3 audio support
 - WildMIDI for better MIDI audio support
-- Ogg+Vorbis/Tremor for OGG audio support
+- Libvorbis / Tremor for Ogg Vorbis audio support
+- opusfile for Opus audio support
 - libsndfile for better WAVE audio support
+- libxmp for better tracker music support
 - SpeexDSP for proper audio resampling
 - SDL2_mixer for audio mixing. Used as a fallback when none of the provided
   audio libraries support the format. Due to API limitations not all audio
   effects are possible through SDL2_mixer audio.
 
-SDL and SDL_mixer 1.2 are still supported, but deprecated.
+SDL 1.2 and SDL_mixer 1.2 are still supported, but deprecated.
+
 
 ## Daily builds
 
@@ -151,6 +154,7 @@ Available options:
 
 EasyRPG Player is free software available under the GPLv3 license. See the file
 COPYING for license conditions.
+
 
 ### 3rd party software
 

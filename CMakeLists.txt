@@ -28,6 +28,7 @@ set(PLAYER_SRCS
 	src/decoder_libsndfile.cpp
 	src/decoder_mpg123.cpp
 	src/decoder_oggvorbis.cpp
+	src/decoder_opus.cpp
 	src/decoder_wav.cpp
 	src/decoder_wildmidi.cpp
 	src/decoder_xmp.cpp
@@ -227,7 +228,7 @@ if(PLAYER_BUILD_LIBLCF)
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
 	find_package(Git REQUIRED)
 	if(NOT EXISTS ${LIBLCF_PATH})
-	execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" 
+	execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
 		"${PLAYER_BUILD_LIBLCF_GIT}"
 		"${LIBLCF_PATH}")
 	endif()
@@ -357,13 +358,20 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		add_definitions(-DHAVE_LIBSNDFILE)
 	endif()
 	
-	# libogg
-	option(PLAYER_WITH_OGGVORBIS "Play OGG audio with libogg." ON)	
+	# libvorbis
+	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
 	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
 	if(OggVorbis_FOUND)
 		add_definitions(-DHAVE_OGGVORBIS)
 	endif()
-	
+
+	# opusfile
+	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
+	find_lib("Opus" PLAYER_WITH_OPUS)
+	if(Opus_FOUND)
+		add_definitions(-DHAVE_OPUS)
+	endif()
+
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
 	find_lib("XMP" PLAYER_WITH_XMP)
@@ -400,11 +408,11 @@ set(EXE_FILES "src/main.cpp")
 
 # Add prefix (CMAKE_CURRENT_SOURCE_DIR) to list elements
 FUNCTION(PREPEND var prefix)
-   SET(listVar "")
-   FOREACH(f ${ARGN})
-      LIST(APPEND listVar "${prefix}/${f}")
-   ENDFOREACH(f)
-   SET(${var} "${listVar}" PARENT_SCOPE)
+	SET(listVar "")
+	FOREACH(f ${ARGN})
+		LIST(APPEND listVar "${prefix}/${f}")
+	ENDFOREACH(f)
+	SET(${var} "${listVar}" PARENT_SCOPE)
 ENDFUNCTION(PREPEND)
 
 PREPEND(PLAYER_SRCS ${CMAKE_CURRENT_SOURCE_DIR} ${PLAYER_SRCS})
@@ -518,7 +526,7 @@ endif()
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	message(STATUS "")
-	
+
 	if(SndFile_FOUND)
 		message(STATUS "WAV playback:  libsndfile")
 	else()
@@ -543,7 +551,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 			message(STATUS "MIDI playback: None")
 		endif()
 	endif()
-	
+
 	if(mpg123_FOUND)
 		message(STATUS "MP3 playback:  mpg123")
 	elseif(SDL2_mixer_FOUND)
@@ -552,16 +560,16 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	else()
 		message(STATUS "MP3 playback:  None")
 	endif()
-	
+
 	if(OggVorbis_FOUND)
-		message(STATUS "OGG playback:  libogg")
+		message(STATUS "Ogg Vorbis playback: libvorbis")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "OGG playback:  SDL2_mixer")
+		message(STATUS "Ogg Vorbis playback: SDL2_mixer")
 	else()
-		message(STATUS "OGG playback:  None")
+		message(STATUS "Ogg Vorbis playback: None")
 	endif()
-	
+
 	if(XMP_FOUND)
 		message(STATUS "MOD playback:  libxmp")
 	elseif(SDL2_mixer_FOUND)
@@ -570,7 +578,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	else()
 		message(STATUS "MOD playback:  None")
 	endif()
-	
+
+	if(Opus_FOUND)
+		message(STATUS "Opus playback: opusfile")
+	else()
+		message(STATUS "Opus playback: None")
+	endif()
+
 	if(speexdsp_FOUND)
 		message(STATUS "Resampler:     speexdsp")
 	elseif(SDL2_mixer_FOUND)
@@ -579,7 +593,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	else()
 		message(STATUS "Resampler:     None")
 	endif()
-	
+
 	if(SDL_MIXER_USED)
 		message(STATUS "")
 		message(STATUS "WARNING:")

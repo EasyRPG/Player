@@ -27,6 +27,7 @@
 #include "decoder_fmmidi.h"
 #include "decoder_mpg123.h"
 #include "decoder_oggvorbis.h"
+#include "decoder_opus.h"
 #include "decoder_wildmidi.h"
 #include "decoder_libsndfile.h"
 #include "decoder_wav.h"
@@ -90,7 +91,7 @@ int AudioDecoder::DecodeAsMono(uint8_t* left, uint8_t* right, int size) {
 	if ((int)mono_buffer.size() < size * 2) {
 		mono_buffer.resize(size * 2);
 	}
-	
+
 	int read = Decode(mono_buffer.data(), size * 2);
 	if (read < 0) {
 		memset(left, '\0', size);
@@ -172,15 +173,34 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 	// Try to use internal OGG decoder
 	if (!strncmp(magic, "OggS", 4)) { // OGG
-#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
+#ifdef HAVE_OPUS
+		fseek(file, 28, SEEK_SET);
+		fread(magic, 4, 1, file);
+		fseek(file, 0, SEEK_SET);
+		if (!strncmp(magic, "Opus", 4)) {
 #  ifdef USE_AUDIO_RESAMPLER
-		return std::unique_ptr<AudioDecoder>(new AudioResampler(new OggVorbisDecoder()));
+			return std::unique_ptr<AudioDecoder>(new AudioResampler(new OpusDecoder()));
 #  else
-		return std::unique_ptr<AudioDecoder>(new OggVorbisDecoder());
+			return std::unique_ptr<AudioDecoder>(new OpusDecoder());
 #  endif
+		}
+#endif
+
+#if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
+		fseek(file, 29, SEEK_SET);
+		fread(magic, 4, 1, file);
+		fseek(file, 0, SEEK_SET);
+
+		if (!strncmp(magic, "vorb", 4)) {
+#  ifdef USE_AUDIO_RESAMPLER
+			return std::unique_ptr<AudioDecoder>(new AudioResampler(new OggVorbisDecoder()));
+#  else
+			return std::unique_ptr<AudioDecoder>(new OggVorbisDecoder());
+#  endif
+		}
 #endif
 	}
-	
+
 #ifdef WANT_FASTWAV
 	// Try to use a basic decoder for faster wav decoding if not ADPCM
 	if (!strncmp(magic, "RIFF", 4)) {
@@ -199,7 +219,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	}
 
 #endif
-	
+
 	// Try to use libsndfile for common formats
 	if (!strncmp(magic, "RIFF", 4) || // WAV
 		!strncmp(magic, "FORM", 4) || // WAV AIFF
@@ -299,7 +319,7 @@ void AudioDecoder::Update(int delta) {
 	if (fade_time <= 0.0) {
 		return;
 	}
-	
+
 	fade_time -= delta;
 	volume += delta * delta_step;
 
