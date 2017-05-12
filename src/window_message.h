@@ -126,6 +126,16 @@ public:
 	 */
 	std::string ParseCommandCode(bool& success);
 
+
+	/**
+	 * Updates the text variable, replacing the commands
+	 * \N[x] and \V[x] in it.
+	 *
+	 * Doesn't return anything. The result is stored into
+	 * the text variable.
+	 */
+	void ApplyTextInseringCommands();
+
 	/**
 	 * Stub. For choice.
 	 */

@@ -77,30 +77,7 @@ Window_Message::~Window_Message() {
 	Game_Message::visible = false;
 }
 
-void Window_Message::StartMessageProcessing() {
-	contents->Clear();
-	text.clear();
-	for (const std::string& line : Game_Message::texts) {
-		/* TODO: do \n[x] \v[x] replacement before word-wrapping */
-		/* TODO: don't take commands like \> \< into account when word-wrapping */
-		if (Game_Message::is_word_wrapped) {
-			std::vector<std::string> wrapped_lines;
-			std::u32string& wrapped_text = text;
-			Game_Message::WordWrap(
-					line,
-					width - 24,
-					[&wrapped_text](const std::string& wrapped_line) {
-						wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
-					}
-			);
-		}
-		else {
-			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
-		}
-	}
-	Game_Message::texts.clear();
-	item_max = min(4, Game_Message::choice_max);
-
+void Window_Message::ApplyTextInseringCommands() {
 	text_index = text.end();
 	end = text.end();
 
@@ -141,7 +118,41 @@ void Window_Message::StartMessageProcessing() {
 			}
 		}
 	}
+}
 
+void Window_Message::StartMessageProcessing() {
+	contents->Clear();
+
+	if (Game_Message::is_word_wrapped) {
+		std::u32string wrapped_text;
+		for (const std::string& line : Game_Message::texts) {
+			/* TODO: don't take commands like \> \< into account when word-wrapping */
+			if (Game_Message::is_word_wrapped) {
+				// since ApplyTextInseringCommands works for the text variable,
+				// we store line into text and use wrapped_text for the real 'text'
+				text = Utils::DecodeUTF32(line);
+				ApplyTextInseringCommands();
+				Game_Message::WordWrap(
+						Utils::EncodeUTF(text),
+						width - 24,
+						[&wrapped_text](const std::string& wrapped_line) {
+							wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
+						}
+				);
+				text = wrapped_text;
+			}
+		}
+	}
+	else {
+		text.clear();
+		for (const std::string& line : Game_Message::texts) {
+			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
+		}
+	}
+	Game_Message::texts.clear();
+	item_max = min(4, Game_Message::choice_max);
+
+	ApplyTextInseringCommands();
 	text_index = text.begin();
 
 	InsertNewPage();
