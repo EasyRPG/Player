@@ -59,16 +59,16 @@ void Window_BattleMessage::Push(const std::string& message) {
 	needs_refresh = true;
 }
 
-void Window_BattleMessage::EnemyAppeared(const std::string& enemy_name) {
+void Window_BattleMessage::PushWithSubject(const std::string& message, const std::string& subject) {
 	if (Player::IsRPG2kE()) {
 		Push(Utils::ReplacePlaceholders(
-			Data::terms.encounter,
+			message,
 			{'S'},
-			{enemy_name}
+			{subject}
 		));
 	}
 	else {
-		Push(enemy_name + Data::terms.encounter);
+		Push(subject + message);
 	}
 }
 

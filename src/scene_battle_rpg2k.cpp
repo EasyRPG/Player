@@ -423,13 +423,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					battle_message_window->Clear();
 					for (auto state : states_to_heal) {
 						if (!Data::states[state - 1].message_recovery.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_recovery);
+							battle_message_window->PushWithSubject(Data::states[state- 1].message_recovery, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
 					for (auto state : states_remaining) {
 						if (!Data::states[state - 1].message_affected.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_affected);
+							battle_message_window->PushWithSubject(Data::states[state- 1].message_affected, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
@@ -885,7 +885,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (battle_message_window->IsPageFilled()) {
 		battle_message_window->NextPage();
 	}
-	battle_message_window->EnemyAppeared((*enemy_iterator)->GetName());
+	battle_message_window->PushWithSubject(Data::terms.encounter, (*enemy_iterator)->GetName());
 	++enemy_iterator;
 
 	SetWaitForEnemyAppearanceMessages();

@@ -43,11 +43,14 @@ public:
 	void Push(const std::string& message);
 
 	/**
-	 * Pushes an 'Enemy appeared' message into the message list.
+	 * Pushes a message, either prepending the subject to it,
+	 * or replacing all the occurences of %S with subject, depending
+	 * on the engine version.
 	 *
-	 * @param string Enemy name that will be displayed in the message.
+	 * @param string Message to be displayed.
+	 * @param string Subject that will be displayed in the message.
 	 */
-	void EnemyAppeared(const std::string& enemy_name);
+	void PushWithSubject(const std::string& message, const std::string& subject);
 
 	void Pop();
 

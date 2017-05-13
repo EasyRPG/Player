@@ -178,10 +178,20 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 		return "";
 	}
 
-	if (GetTarget()->GetType() == Game_Battler::Type_Ally) {
-		return GetTarget()->GetName() + GetTarget()->GetSignificantState()->message_actor;
-	} else {
-		return GetTarget()->GetName() + GetTarget()->GetSignificantState()->message_enemy;
+	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
+	const RPG::State* state = GetTarget()->GetSignificantState(); 
+	const std::string& message = is_ally ? state->message_actor
+										: state->message_enemy;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
 	}
 }
 
@@ -369,6 +379,20 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool 
 	}
 }
 
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::string& message) const {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
@@ -439,17 +463,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
 	for (; it != conditions.end(); ++it) {
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-
 		if (GetTarget()->HasState(it->ID)) {
 			if (IsPositive()) {
-				ss << it->message_recovery;
-				out.push_back(ss.str());
+				out.push_back(GetStateMessage(it->message_recovery));
 			}
 			if (!it->message_already.empty()) {
-				ss << it->message_already;
-				out.push_back(ss.str());
+				out.push_back(GetStateMessage(it->message_already));
 			}
 		} else {
 			// Positive case doesn't report anything in case of uselessness
@@ -457,12 +476,8 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				continue;
 			}
 
-			if (GetTarget()->GetType() == Game_Battler::Type_Ally) {
-				ss << it->message_actor;
-			} else {
-				ss << it->message_enemy;
-			}
-			out.push_back(ss.str());
+			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
+			out.push_back(GetStateMessage(is_actor ? it->message_actor : it->message_enemy));
 
 			// Reporting ends with death state
 			if (it->ID == 1) {
