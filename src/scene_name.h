@@ -18,7 +18,6 @@
 #ifndef _SCENE_NAME_H_
 #define _SCENE_NAME_H_
 
-// Headers
 #include "scene.h"
 #include "window_name.h"
 #include "window_face.h"

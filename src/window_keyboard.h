@@ -18,7 +18,6 @@
 #ifndef _WINDOW_KEYBOARD_H_
 #define _WINDOW_KEYBOARD_H_
 
-// Headers
 #include "window_base.h"
 
 /**
@@ -40,9 +39,11 @@ public:
 	enum Mode {
 		Hiragana = 0,
 		Katakana = 1,
-		Letter = 2,
-		Symbol = 3,
-		MODE_END = 4
+		Hangul1 = 2,
+		Hangul2 = 3,
+		Letter = 4,
+		Symbol = 5,
+		MODE_END = 6
 	};
 
 	void UpdateCursorRect();
@@ -60,6 +61,10 @@ public:
 	static const char* const TO_KATAKANA;
 	static const char* const TO_HIRAGANA;
 	static const char* const DONE_JP;
+
+	static const char* const TO_HANGUL_1;
+	static const char* const TO_HANGUL_2;
+	static const char* const DONE_KO;
 
 protected:
 	static const int border_x = 8;
