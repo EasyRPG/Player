@@ -32,8 +32,12 @@ const char* const Window_Keyboard::TO_KATAKANA = "<カナ>";
 const char* const Window_Keyboard::TO_HIRAGANA = "<かな>";
 const char* const Window_Keyboard::DONE_JP = "<決定>";
 
+const char* const Window_Keyboard::TO_HANGUL_1 = "<앞P>";
+const char* const Window_Keyboard::TO_HANGUL_2 = "<뒤P>";
+const char* const Window_Keyboard::DONE_KO = "<결정>";
+
 /*
- * hiragana <-> katakana; letter <-> symbol
+ * hiragana <-> katakana; hangul 1 <-> hangul 2; letter <-> symbol
  */
 
 std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
@@ -59,6 +63,30 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"マ", "ミ", "ム", "メ", "モ", "ッ", "ャ", "ュ", "ョ", "ヮ"},
 		{"ヤ", "ユ", "ヨ", "ワ", "ン", "ー", "～", "・", "＝", "☆"},
 		{"ラ", "リ", "ル", "レ", "ロ", "ヲ", Window_Keyboard::TO_HIRAGANA, "", Window_Keyboard::DONE_JP}
+	},
+
+	{ // Hangul 1
+		{"가", "갸", "거", "겨", "고", "교", "구", "계", "그", "기"},
+		{"나", "냐", "너", "녀", "노", "뇨", "누", "뉴", "느", "녹"},
+		{"다", "댜", "더", "뎌", "도", "됴", "두", "듀", "드", "디"},
+		{"라", "랴", "러", "려", "로", "료", "루", "류", "르", "리"},
+		{"마", "먀", "머", "며", "모", "묘", "무", "물", "므", "미"},
+		{"바", "뱌", "버", "벼", "보", "뵤", "부", "뷰", "비", "밤"},
+		{"사", "색", "서", "세", "소", "쇼", "수", "슈", "신", "심"},
+		{"아", "야", "어", "여", "오", "요", "우", "유", "으", "이"},
+		{"〜", "·", ".", "☆", Window_Keyboard::SPACE, "", Window_Keyboard::TO_HANGUL_2, "", Window_Keyboard::DONE_KO}
+	},
+
+	{ // Hangul 2
+		{"자", "쟈", "저", "져", "조", "죠", "주", "쥬", "즈", "지"},
+		{"차", "챠", "처", "쳐", "초", "쵸", "추", "츄", "츠", "치"},
+		{"카", "캬", "커", "켜", "코", "쿄", "쿠", "큐", "크", "키"},
+		{"타", "탸", "터", "텨", "토", "툐", "투", "튜", "트", "티"},
+		{"파", "퍄", "퍼", "펴", "포", "표", "푸", "퓨", "프", "피"},
+		{"하", "햐", "허", "혀", "호", "효", "후", "휴", "흐", "해"},
+		{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"},
+		{"진", "녘", "의", "민", "예", "건", "현", "운", "걔", "임"},
+		{"영", "은", "성", "준", Window_Keyboard::SPACE, "", Window_Keyboard::TO_HANGUL_1, "", Window_Keyboard::DONE_KO}
 	},
 
 	{ // Letter

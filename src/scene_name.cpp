@@ -40,8 +40,13 @@ void Scene_Name::Start() {
 	face_window->Refresh();
 
 	kbd_window.reset(new Window_Keyboard(32, 72, 256, (SCREEN_TARGET_WIDTH/2)));
+	// Japanese pages
 	if (Player::IsCP932()) {
 		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
+	// Korean pages
+	} else if (Player::IsCP949()) {
+		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Hangul1));
+	// ASCII pages
 	} else {
 		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Letter));
 	}
@@ -66,7 +71,8 @@ void Scene_Name::Update() {
 
 		assert(!s.empty());
 
-		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
+		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP
+			|| s == Window_Keyboard::DONE_KO) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
@@ -86,6 +92,10 @@ void Scene_Name::Update() {
 			kbd_window->SetMode(Window_Keyboard::Hiragana);
 		} else if (s == Window_Keyboard::TO_KATAKANA) {
 			kbd_window->SetMode(Window_Keyboard::Katakana);
+		} else if (s == Window_Keyboard::TO_HANGUL_1) {
+			kbd_window->SetMode(Window_Keyboard::Hangul1);
+		} else if (s == Window_Keyboard::TO_HANGUL_2) {
+			kbd_window->SetMode(Window_Keyboard::Hangul2);
 		} else if (s == Window_Keyboard::SPACE) {
 			name_window->Append(" ");
 		} else { name_window->Append(s); }
