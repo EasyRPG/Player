@@ -393,11 +393,6 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-static int ReverseDir(int d) {
-	assert(0 <= d && d < 4);
-	return (d + 2) & 3;
-}
-
 static int DirToMask(int d) {
 	switch (d)
 	{
@@ -486,7 +481,7 @@ static CollisionResult TestCollisionDuringMove(
 		if (other.IsInPosition(x,y) && (passages_up[tile_id] & DirToMask(d)) != 0) {
 			return CanStepOffCurrentTile;
 		}
-		else if (other.IsInPosition(new_x, new_y) && (passages_up[tile_id] & DirToMask(ReverseDir(d))) != 0) {
+		else if (other.IsInPosition(new_x, new_y) && (passages_up[tile_id] & DirToMask(Game_Character::ReverseDir(d))) != 0) {
 			return CanStepOntoNewTile;
 		} else {
 			return Collision;
@@ -544,7 +539,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 
 	return
 		(stepped_off_event || IsPassableTile(DirToMask(d), x + y * GetWidth()))
-		&& (stepped_onto_event || IsPassableTile(DirToMask(ReverseDir(d)), new_x + new_y * GetWidth()));
+		&& (stepped_onto_event || IsPassableTile(DirToMask(Game_Character::ReverseDir(d)), new_x + new_y * GetWidth()));
 }
 
 bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {

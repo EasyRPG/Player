@@ -882,3 +882,9 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetEvent(character_id);
 	}
 }
+
+int Game_Character::ReverseDir(int dir) {
+	constexpr static char reversed[] =
+		{ Down, Left, Up, Right, DownLeft, UpLeft, UpRight, DownRight };
+	return reversed[dir];
+}
