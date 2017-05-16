@@ -411,17 +411,23 @@ public:
 	void MoveTypeCustom();
 
 	void Turn(int dir);
-	void Move(int dir);
+
+	enum class MoveOption { Normal, IgnoreIfCantMove };
+
+	/**
+	 * Move in the direction dir.
+	 */
+	void Move(int dir, MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Moves the character forward.
 	 */
-	void MoveForward();
+	void MoveForward(MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Does a random movement.
 	 */
-	void MoveRandom();
+	void MoveRandom(MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Does a move to the player hero.
