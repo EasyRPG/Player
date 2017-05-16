@@ -284,7 +284,7 @@ public:
 	void UpdateTimers();
 
 	/**
-	 * Get a timer's value.
+	 * Get a timer's value in seconds.
 	 *
 	 * @param which which timer to read.
 	 * @return number of frames remaining.
@@ -292,14 +292,14 @@ public:
 	int GetTimer(int which);
 
 	/**
-	 * Get a timer's value.
+	 * Get a timer's value in frames.
 	 *
 	 * @param which which timer to read.
 	 * @param[out] visible whether timer is visible
 	 * @param[out] battle whether timer runs in battle
 	 * @return number of frames remaining.
 	 */
-	int GetTimer(int which, bool& visible, bool& battle);
+	int GetTimerFrames(int which, bool& visible, bool& battle);
 };
 
 #endif

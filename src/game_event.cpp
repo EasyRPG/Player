@@ -424,15 +424,15 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 
 	// Timer
 	if (page.condition.flags.timer) {
-		int frames = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
-		if (frames > page.condition.timer_sec * DEFAULT_FPS)
+		int secs = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
+		if (secs > page.condition.timer_sec)
 			return false;
 	}
 
 	// Timer2
 	if (page.condition.flags.timer2) {
-		int frames = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
-		if (frames > page.condition.timer2_sec * DEFAULT_FPS)
+		int secs = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
+		if (secs > page.condition.timer2_sec)
 			return false;
 	}
 

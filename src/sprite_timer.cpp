@@ -43,7 +43,7 @@ void Sprite_Timer::Draw() {
 	bool timer_visible;
 	bool battle;
 
-	Main_Data::game_party->GetTimer(which, timer_visible, battle);
+	Main_Data::game_party->GetTimerFrames(which, timer_visible, battle);
 
 	if (!GetVisible() || !timer_visible) {
 		return;
@@ -78,7 +78,7 @@ void Sprite_Timer::Update() {
 	bool timer_visible;
 	bool battle;
 
-	int time = Main_Data::game_party->GetTimer(which, timer_visible, battle);
+	int time = Main_Data::game_party->GetTimerFrames(which, timer_visible, battle);
 
 	if (time <= 0) {
 		SetVisible(false);
