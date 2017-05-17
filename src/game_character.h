@@ -719,9 +719,6 @@ protected:
 	int max_stop_count;
 	bool walk_animation;
 
-	/** used by cycle left-right, up-down */
-	bool cycle_stat;
-
 	int opacity;
 	bool visible;
 

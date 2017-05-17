@@ -54,7 +54,6 @@ Game_Character::Game_Character() :
 	stop_count(0),
 	max_stop_count(0),
 	walk_animation(true),
-	cycle_stat(false),
 	opacity(255),
 	visible(true) {
 }
