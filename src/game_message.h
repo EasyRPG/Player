@@ -169,7 +169,7 @@ namespace Game_Message {
 	int GetRealPosition();
 
 	/**
-	 * Breaks the line into lines, each of which is equal 
+	 * Breaks the line into lines, each of which is equal
 	 * or less than a specified limit in pixels in the
 	 * given font (except in cases when breaking by spaces
 	 * can't produce a short line), and calls the callback

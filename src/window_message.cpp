@@ -77,7 +77,7 @@ Window_Message::~Window_Message() {
 	Game_Message::visible = false;
 }
 
-void Window_Message::ApplyTextInseringCommands() {
+void Window_Message::ApplyTextInsertingCommands() {
 	text_index = text.end();
 	end = text.end();
 
@@ -128,10 +128,10 @@ void Window_Message::StartMessageProcessing() {
 		for (const std::string& line : Game_Message::texts) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
 			if (Game_Message::is_word_wrapped) {
-				// since ApplyTextInseringCommands works for the text variable,
+				// since ApplyTextInsertingCommands works for the text variable,
 				// we store line into text and use wrapped_text for the real 'text'
 				text = Utils::DecodeUTF32(line);
-				ApplyTextInseringCommands();
+				ApplyTextInsertingCommands();
 				Game_Message::WordWrap(
 						Utils::EncodeUTF(text),
 						width - 24,
@@ -152,7 +152,7 @@ void Window_Message::StartMessageProcessing() {
 	Game_Message::texts.clear();
 	item_max = min(4, Game_Message::choice_max);
 
-	ApplyTextInseringCommands();
+	ApplyTextInsertingCommands();
 	text_index = text.begin();
 
 	InsertNewPage();

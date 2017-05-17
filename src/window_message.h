@@ -134,7 +134,7 @@ public:
 	 * Doesn't return anything. The result is stored into
 	 * the text variable.
 	 */
-	void ApplyTextInseringCommands();
+	void ApplyTextInsertingCommands();
 
 	/**
 	 * Stub. For choice.

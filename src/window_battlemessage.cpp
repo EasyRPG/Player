@@ -72,8 +72,6 @@ void Window_BattleMessage::PushWithSubject(const std::string& message, const std
 	}
 }
 
-
-
 void Window_BattleMessage::Pop() {
 	lines.pop_back();
 	needs_refresh = true;
