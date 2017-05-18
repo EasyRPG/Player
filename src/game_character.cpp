@@ -629,6 +629,40 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 			case RPG::MoveCommand::Code::move_forward:
 				MoveForward();
 				break;
+			case RPG::MoveCommand::Code::face_up:
+				Turn(Up);
+				break;
+			case RPG::MoveCommand::Code::face_right:
+				Turn(Right);
+				break;
+			case RPG::MoveCommand::Code::face_down:
+				Turn(Down);
+				break;
+			case RPG::MoveCommand::Code::face_left:
+				Turn(Left);
+				break;
+			case RPG::MoveCommand::Code::turn_90_degree_right:
+				Turn90DegreeRight();
+				break;
+			case RPG::MoveCommand::Code::turn_90_degree_left:
+				Turn90DegreeLeft();
+				break;
+			case RPG::MoveCommand::Code::turn_180_degree:
+				Turn180Degree();
+				break;
+			case RPG::MoveCommand::Code::turn_90_degree_random:
+				Turn90DegreeLeftOrRight();
+				break;
+			case RPG::MoveCommand::Code::face_random_direction:
+				FaceRandomDirection();
+				break;
+			case RPG::MoveCommand::Code::face_hero:
+				TurnTowardHero();
+				break;
+			case RPG::MoveCommand::Code::face_away_from_hero:
+				TurnAwayFromHero();
+				break;
+
 			default:
 				break;
 		}
