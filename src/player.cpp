@@ -169,7 +169,7 @@ void Player::Init(int argc, char *argv[]) {
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
-		FS.mount(IDBFS, {}, 'Save');
+		FS.mount(Module.EASYRPG_FS, {}, 'Save');
 
 		FS.syncfs(true, function(err) {
 		});
