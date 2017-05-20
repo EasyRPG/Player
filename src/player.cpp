@@ -305,8 +305,9 @@ void Player::Update(bool update_scene) {
 			Graphics::Update(false);
 			Scene::instance->Update();
 			++frames;
-			// Scene changed, not save to Update again, setup code must run
-			if (&*old_instance != &*Scene::instance) {
+			// Scene changed or webplayer waits for files.
+			// Not save to Update again, setup code must run
+			if (&*old_instance != &*Scene::instance || AsyncHandler::IsImportantFilePending()) {
 				break;
 			}
 		}
