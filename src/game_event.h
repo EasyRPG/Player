@@ -196,7 +196,7 @@ private:
 
 	/**
 	 * Cycles between moving in default_dir and its opposite.
-	 * Tries to move the the event's movement direction, or
+	 * Tries to move in the event's movement direction, or
 	 * default_dir if this is along the wrong axis. Reverses
 	 * directions when encountering an obstacle.
 	 */

@@ -683,7 +683,7 @@ public:
 		UpLeft
 	};
 
-	/** Reverses a direction, ex: RevereseDir(Up) == Down. */
+	/** Reverses a direction, ex: ReverseDir(Up) == Down. */
 	static int ReverseDir(int dir);
 
 	static Game_Character* GetCharacter(int character_id, int event_id);
