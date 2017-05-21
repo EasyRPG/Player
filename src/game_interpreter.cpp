@@ -2199,7 +2199,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		break;
 	case 2:
 		value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
-		value2 = com.parameters[1] * DEFAULT_FPS;
+		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:
 			result = (value1 >= value2);
@@ -2295,7 +2295,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		break;
 	case 10:
 		value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
-		value2 = com.parameters[1] * DEFAULT_FPS;
+		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:
 			result = (value1 >= value2);
