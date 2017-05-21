@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_3DSUI_H_
-#define _EASYRPG_3DSUI_H_
+#ifndef CTRUI_H
+#define CTRUI_H
 
 // Headers
 #include "baseui.h"
@@ -26,7 +26,7 @@
 #include <sf2d.h>
 
 /**
- * SdlUi class.
+ * CtrUi class.
  */
 class CtrUi : public BaseUi {
 public:
@@ -35,8 +35,6 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param title window title.
-	 * @param fullscreen start in fullscreen flag.
 	 */
 	CtrUi(int width, int height);
 
@@ -67,17 +65,22 @@ public:
 
 	uint32_t GetTicks() const;
 	void Sleep(uint32_t time_milli);
+
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
-	std::unique_ptr<AudioInterface> audio_;
 #endif
 
 	/** @} */
+
+private:
 	sf2d_texture* main_texture;
 	sf2d_texture* keyboard_texture;
-	int frame;
 	bool fullscreen;
 	bool trigger_state;
+
+#ifdef SUPPORT_AUDIO
+	std::unique_ptr<AudioInterface> audio_;
+#endif
 	
 };
 

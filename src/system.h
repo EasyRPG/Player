@@ -43,6 +43,10 @@
  */
 #include "memory_management.h"
 
+#ifdef _3DS
+#  define SUPPORT_JOYSTICK_AXIS
+#endif
+
 #ifdef PSP2
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
