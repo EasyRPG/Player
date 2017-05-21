@@ -169,7 +169,7 @@ void Player::Init(int argc, char *argv[]) {
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
-		FS.mount(IDBFS, {}, 'Save');
+		FS.mount(Module.EASYRPG_FS, {}, 'Save');
 
 		FS.syncfs(true, function(err) {
 		});
@@ -305,8 +305,9 @@ void Player::Update(bool update_scene) {
 			Graphics::Update(false);
 			Scene::instance->Update();
 			++frames;
-			// Scene changed, not save to Update again, setup code must run
-			if (&*old_instance != &*Scene::instance) {
+			// Scene changed or webplayer waits for files.
+			// Not save to Update again, setup code must run
+			if (&*old_instance != &*Scene::instance || AsyncHandler::IsImportantFilePending()) {
 				break;
 			}
 		}
