@@ -447,10 +447,7 @@ std::string Utils::ReplacePlaceholders(const std::string& text_template, std::ve
 	while (index != std::string::npos) {
 		if (index + 1 < str.length()) {
 			char type = str[index + 1];
-			if (type == '%') {
-				++index;
-			}
-			else {
+			if (type != '%') {
 				auto v_it = values.begin();
 				for (auto t_it = types.begin();
 					t_it != types.end(), v_it != values.end();
