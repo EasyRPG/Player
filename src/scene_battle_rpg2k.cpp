@@ -860,7 +860,9 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		if (battle_message_window->IsPageFilled()) {
 			battle_message_window->NextPage();
 		}
-		battle_message_window->ShowHiddenLines(1);
+		else {
+			battle_message_window->ShowHiddenLines(1);
+		}
 		SetWaitForEnemyAppearanceMessages();
 		return false;
 	}
