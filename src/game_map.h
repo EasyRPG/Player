@@ -223,32 +223,11 @@ namespace Game_Map {
 	int CheckEvent(int x, int y);
 
 	/**
-	 * Starts map scrolling.
-	 *
-	 * @param direction scroll direction.
-	 * @param distance scroll distance in tiles.
-	 * @param speed scroll speed.
-	 */
-	void StartScroll(int direction, int distance, int speed);
-
-	/**
-	 * Gets if the map is currently scrolling.
-	 *
-	 * @return whether the map view is scrolling.
-	 */
-	bool IsScrolling();
-
-	/**
 	 * Updates the map state.
 	 *
 	 * @param only_parallel Update only parallel interpreters
 	 */
 	void Update(bool only_parallel = false);
-
-	/**
-	 * Updates the scroll state.
-	 */
-	void UpdateScroll();
 
 	/**
 	 * Gets current map.

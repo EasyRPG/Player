@@ -60,9 +60,6 @@ namespace {
 	std::vector<Game_CommonEvent> common_events;
 
 	std::unique_ptr<RPG::Map> map;
-	int scroll_direction;
-	int scroll_rest;
-	int scroll_speed;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	std::vector<std::shared_ptr<Game_Interpreter> > free_interpreters;
@@ -88,9 +85,6 @@ void Game_Map::Init() {
 	refresh_type = Refresh_All;
 
 	location.map_id = 0;
-	scroll_direction = 0;
-	scroll_rest = 0;
-	scroll_speed = 0;
 	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
@@ -237,10 +231,6 @@ void Game_Map::SetupCommon(int _id) {
 	}
 
 	refresh_type = Refresh_All;
-
-	scroll_direction = 2;
-	scroll_rest = 0;
-	scroll_speed = 4;
 
 	int current_index = GetMapIndex(location.map_id);
 	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
@@ -810,40 +800,8 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::StartScroll(int direction, int distance, int speed) {
-	scroll_direction = direction;
-	scroll_rest = distance * SCREEN_TILE_WIDTH;
-	scroll_speed = speed;
-}
-
-bool Game_Map::IsScrolling() {
-	return scroll_rest > 0;
-}
-
-void Game_Map::UpdateScroll() {
-	if (scroll_rest > 0) {
-		int distance = (1 << scroll_speed) / 2;
-		switch (scroll_direction) {
-			case 2:
-				ScrollDown(distance);
-				break;
-			case 4:
-				ScrollLeft(distance);
-				break;
-			case 6:
-				ScrollRight(distance);
-				break;
-			case 8:
-				ScrollUp(distance);
-				break;
-		}
-		scroll_rest -= distance;
-	}
-}
-
 void Game_Map::Update(bool only_parallel) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
-	UpdateScroll();
 	UpdatePan();
 	Parallax::Update();
 	if (animation) {
