@@ -22,6 +22,7 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
+#include "game_player.h"
 
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
@@ -155,6 +156,7 @@ void Game_Picture::RequestPictureSprite() {
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
 	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
+	request->SetImportantFile(Main_Data::game_player->IsTeleporting());
 	request->Start();
 }
 

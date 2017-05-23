@@ -20,6 +20,8 @@
 #include "cache.h"
 #include "game_map.h"
 #include "bitmap.h"
+#include "game_player.h"
+#include "main_data.h"
 
 Sprite_Character::Sprite_Character(Game_Character* character) :
 	character(character),
@@ -42,6 +44,7 @@ void Sprite_Character::Update() {
 		if (tile_id > 0) {
 			FileRequestAsync* tile_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 			request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
+			tile_request->SetImportantFile(Main_Data::game_player->IsTeleporting());
 			tile_request->Start();
 		} else {
 			if (character_name.empty()) {
@@ -49,6 +52,7 @@ void Sprite_Character::Update() {
 			} else {
 				FileRequestAsync* char_request = AsyncHandler::RequestFile("CharSet", character_name);
 				request_id = char_request->Bind(&Sprite_Character::OnCharSpriteReady, this);
+				char_request->SetImportantFile(Main_Data::game_player->IsTeleporting());
 				char_request->Start();
 			}
 		}
