@@ -90,6 +90,7 @@ void Spriteset_Map::Update() {
 		panorama_name = name;
 		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
 		panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+		request->SetImportantFile(Main_Data::game_player->IsTeleporting());
 		request->Start();
 	}
 	panorama->SetOx(Game_Map::Parallax::GetX());
@@ -130,8 +131,8 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 void Spriteset_Map::ChipsetUpdated() {
 	if (!Game_Map::GetChipsetName().empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+		request->SetImportantFile(Main_Data::game_player->IsTeleporting());
 		tilemap_request_id = request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
-		request->SetImportantFile(true);
 		request->Start();
 	}
 	else {
