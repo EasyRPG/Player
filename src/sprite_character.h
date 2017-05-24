@@ -68,6 +68,9 @@ private:
 	int chara_width;
 	int chara_height;
 
+	/** Returns true for charset sprites; false for tiles. */
+	bool UsesCharset() const;
+
 	void OnTileSpriteReady(FileRequestResult*);
 	void OnCharSpriteReady(FileRequestResult*);
 

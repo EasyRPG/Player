@@ -23,7 +23,7 @@
 
 Sprite_Character::Sprite_Character(Game_Character* character) :
 	character(character),
-	tile_id(0),
+	tile_id(-1),
 	character_index(0),
 	chara_width(0),
 	chara_height(0) {
@@ -35,26 +35,24 @@ void Sprite_Character::Update() {
 	Rect r;
 	if (tile_id != character->GetTileId() ||
 		character_name != character->GetSpriteName() ||
-		character_index != character->GetSpriteIndex()) {
+		character_index != character->GetSpriteIndex()
+	) {
 		tile_id = character->GetTileId();
 		character_name = character->GetSpriteName();
 		character_index = character->GetSpriteIndex();
-		if (tile_id > 0) {
+
+		if (UsesCharset()) {
+			FileRequestAsync* char_request = AsyncHandler::RequestFile("CharSet", character_name);
+			request_id = char_request->Bind(&Sprite_Character::OnCharSpriteReady, this);
+			char_request->Start();
+		} else {
 			FileRequestAsync* tile_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 			request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
 			tile_request->Start();
-		} else {
-			if (character_name.empty()) {
-				SetBitmap(BitmapRef());
-			} else {
-				FileRequestAsync* char_request = AsyncHandler::RequestFile("CharSet", character_name);
-				request_id = char_request->Bind(&Sprite_Character::OnCharSpriteReady, this);
-				char_request->Start();
-			}
 		}
 	}
 
-	if (tile_id == 0) {
+	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
@@ -87,6 +85,10 @@ Game_Character* Sprite_Character::GetCharacter() {
 }
 void Sprite_Character::SetCharacter(Game_Character* new_character) {
 	character = new_character;
+}
+
+bool Sprite_Character::UsesCharset() const {
+	return !character_name.empty();
 }
 
 void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
