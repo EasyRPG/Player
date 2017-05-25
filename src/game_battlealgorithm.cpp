@@ -178,10 +178,218 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 		return "";
 	}
 
-	if (GetTarget()->GetType() == Game_Battler::Type_Ally) {
-		return GetTarget()->GetName() + GetTarget()->GetSignificantState()->message_actor;
-	} else {
-		return GetTarget()->GetName() + GetTarget()->GetSignificantState()->message_enemy;
+	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
+	const RPG::State* state = GetTarget()->GetSignificantState(); 
+	const std::string& message = is_ally ? state->message_actor
+										: state->message_enemy;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const std::string& message) const {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'O'},
+			{GetSource()->GetName(), GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int value, const std::string& points) const {
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			Data::terms.hp_recovery,
+			{'S', 'V', 'U'},
+			{GetTarget()->GetName(), ss.str(), points}
+		);
+	}
+	else {
+		std::string particle, particle2, space = "";
+
+		ss << GetTarget()->GetName();
+		if (Player::IsCP932()) {
+			particle = "の";
+			particle2 = "が ";
+			space += " ";
+		}
+		else {
+			particle = particle2 = " ";
+		}
+		ss << particle << points << particle2;
+		ss << GetAffectedHp() << space << Data::terms.hp_recovery;
+		return ss.str();
+	}
+}
+
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_undamaged :
+		Data::terms.enemy_undamaged;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_critical :
+		Data::terms.enemy_critical;
+
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
+	}
+}
+
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int value, const std::string& points) const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_hp_absorbed :
+		Data::terms.enemy_hp_absorbed;
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'O', 'V', 'U'},
+			{GetSource()->GetName(), GetTarget()->GetName(), ss.str(), points}
+		);
+	}
+	else {
+		std::string particle, particle2, space = "";
+
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = (target_is_ally ? "は" : "の");
+			particle2 = "を ";
+			space += " ";
+		} else {
+			particle = particle2 = " ";
+		}
+		ss << particle << Data::terms.health_points << particle2;
+		ss << value << space << message;
+
+		return ss.str();
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
+	bool target_is_ally = (GetTarget()->GetType() ==
+			Game_Battler::Type_Ally);
+	const std::string& message = target_is_ally ?
+		Data::terms.actor_damaged :
+		Data::terms.enemy_damaged;
+	int value = GetAffectedHp();
+
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'V', 'U'},
+			{GetTarget()->GetName(), ss.str(), Data::terms.health_points}
+		);
+	}
+	else {
+		std::string particle, space = "";
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = (target_is_ally ? "は " : "に ");
+			space += " ";
+		} else {
+			particle = " ";
+		}
+		ss << particle << value << space << message;
+		return ss.str();
+	}
+}
+
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const {
+	const std::string& message = is_positive ?
+		Data::terms.parameter_increase :
+		Data::terms.parameter_decrease;
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << value;
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S', 'V', 'U'},
+			{GetTarget()->GetName(), ss.str(), points}
+		);
+	}
+	else {
+		std::string particle, particle2, space = "";
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = "の";
+			particle2 = "が ";
+			space += " ";
+		}
+		else {
+			particle = particle2 = " ";
+		}
+		ss << particle << points << particle2 << value << space;
+		ss << message;
+
+		return ss.str();
+	}
+}
+
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::string& message) const {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			message,
+			{'S'},
+			{GetTarget()->GetName()}
+		);
+	}
+	else {
+		return GetTarget()->GetName() + message;
 	}
 }
 
@@ -191,204 +399,76 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (!success) {
-		out.push_back(GetTarget()->GetName() + Data::terms.dodge);
+		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 	}
 
 	bool target_is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
 
 	if (GetAffectedHp() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
 
 		if (IsPositive()) {
 			if (!GetTarget()->IsDead()) {
-				if (Player::IsCP932()) {
-					particle = "の";
-					particle2 = "が ";
-					space += " ";
-				}
-				else {
-					particle = particle2 = " ";
-				}
-				ss << particle << Data::terms.health_points << particle2;
-				ss << GetAffectedHp() << space << Data::terms.hp_recovery;
-				out.push_back(ss.str());
+				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
 		}
 		else {
 			if (critical_hit) {
-				out.push_back(target_is_ally ?
-					Data::terms.actor_critical :
-					Data::terms.enemy_critical);
+				out.push_back(GetCriticalHitMessage());
 			}
 
 			if (GetAffectedHp() == 0) {
-				ss << (target_is_ally ?
-					Data::terms.actor_undamaged :
-					Data::terms.enemy_undamaged);
+				out.push_back(GetUndamagedMessage());
 			}
 			else {
 				if (absorb) {
-					if (Player::IsCP932()) {
-						particle = (target_is_ally ? "は" : "の");
-						particle2 = "を ";
-						space += " ";
-					} else {
-						particle = particle2 = " ";
-					}
-					ss << particle << Data::terms.health_points << particle2;
-					ss << GetAffectedHp() << space << (target_is_ally ?
-						Data::terms.actor_hp_absorbed :
-						Data::terms.enemy_hp_absorbed);
+					out.push_back(GetHpSpAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
 				}
 				else {
-					if (Player::IsCP932()) {
-						particle = (target_is_ally ? "は " : "に ");
-						space += " ";
-					} else {
-						particle = " ";
-					}
-					ss << particle << GetAffectedHp() << space;
-					ss << (target_is_ally ?
-						Data::terms.actor_damaged :
-						Data::terms.enemy_damaged);
+					out.push_back(GetDamagedMessage());
 				}
 			}
-			out.push_back(ss.str());
 		}
 	}
 
 	if (GetAffectedSp() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-
 		if (IsPositive()) {
-			if (Player::IsCP932()) {
-				particle = "の";
-				particle2 = "が ";
-				space += " ";
-			}
-			else {
-				particle = particle2 = " ";
-			}
-			ss << particle << Data::terms.spirit_points << particle2;
-			ss << GetAffectedSp() << space << Data::terms.hp_recovery;
+			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
 		else {
 			if (absorb) {
-				if (Player::IsCP932()) {
-					particle = (target_is_ally ? "は" : "の");
-					particle2 = "を ";
-					space += " ";
-				}
-				else {
-					particle = particle2 = " ";
-				}
-				ss << particle << Data::terms.spirit_points << particle2;
-				ss << GetAffectedSp() << space << (target_is_ally ?
-					Data::terms.actor_hp_absorbed :
-					Data::terms.enemy_hp_absorbed);
+				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
 			else {
-				if (Player::IsCP932()) {
-					particle = "の";
-					particle2 = "が ";
-					space += " ";
-				}
-				else {
-					particle = particle2 = " ";
-				}
-				ss << particle << Data::terms.spirit_points << particle2;
-				ss << GetAffectedSp() << space << Data::terms.parameter_decrease;
+				out.push_back(GetParameterChangeMessage(false, GetAffectedSp(), Data::terms.spirit_points));
 			}
 		}
-		out.push_back(ss.str());
 	}
 
 	if (GetAffectedAttack() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.attack << particle2 << GetAffectedAttack() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
 	}
 
 	if (GetAffectedDefense() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.defense << particle2 << GetAffectedDefense() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
 	}
 
 	if (GetAffectedSpirit() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.spirit << particle2 << GetAffectedSpirit() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
 	}
 
 	if (GetAffectedAgility() != -1) {
-		std::string particle, particle2, space = "";
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-		if (Player::IsCP932()) {
-			particle = "の";
-			particle2 = "が ";
-			space += " ";
-		}
-		else {
-			particle = particle2 = " ";
-		}
-		ss << particle << Data::terms.agility << particle2 << GetAffectedAgility() << space;
-		ss << (IsPositive() ? Data::terms.parameter_increase : Data::terms.parameter_decrease);
-		out.push_back(ss.str());
+		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
 	for (; it != conditions.end(); ++it) {
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-
 		if (GetTarget()->HasState(it->ID)) {
 			if (IsPositive()) {
-				ss << it->message_recovery;
-				out.push_back(ss.str());
+				out.push_back(GetStateMessage(it->message_recovery));
 			}
 			if (!it->message_already.empty()) {
-				ss << it->message_already;
-				out.push_back(ss.str());
+				out.push_back(GetStateMessage(it->message_already));
 			}
 		} else {
 			// Positive case doesn't report anything in case of uselessness
@@ -396,12 +476,8 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				continue;
 			}
 
-			if (GetTarget()->GetType() == Game_Battler::Type_Ally) {
-				ss << it->message_actor;
-			} else {
-				ss << it->message_enemy;
-			}
-			out.push_back(ss.str());
+			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
+			out.push_back(GetStateMessage(is_actor ? it->message_actor : it->message_enemy));
 
 			// Reporting ends with death state
 			if (it->ID == 1) {
@@ -758,7 +834,16 @@ void Game_BattleAlgorithm::Normal::Apply() {
 
 std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	if (Player::IsRPG2k()) {
-		return source->GetName() + Data::terms.attacking;
+		if (Player::IsRPG2kE()) {
+			return Utils::ReplacePlaceholders(
+				Data::terms.attacking,
+				{'S'},
+				{source->GetName()}
+			);
+		}
+		else {
+			return source->GetName() + Data::terms.attacking;
+		}
 	}
 	else {
 		return "";
@@ -971,7 +1056,16 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 			// Use item message
 			return Item(source, *item).GetStartMessage();
 		}
-		return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+		if (Player::IsRPG2kE()) {
+			return Utils::ReplacePlaceholders(
+				skill.using_message1 + '\n' + skill.using_message2,
+				{'S', 'O', 'U'},
+				{GetSource()->GetName(), GetTarget()->GetName(), skill.name}
+			);
+		}
+		else {
+			return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+		}
 	}
 	else {
 		return skill.name;
@@ -1008,26 +1102,22 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
-		std::stringstream ss;
-		ss << GetTarget()->GetName();
-
 		switch (skill.failure_message) {
 			case 0:
-				ss << Data::terms.skill_failure_a;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a));
 				break;
 			case 1:
-				ss << Data::terms.skill_failure_b;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_b));
 				break;
 			case 2:
-				ss << Data::terms.skill_failure_c;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_c));
 				break;
 			case 3:
-				ss << Data::terms.dodge;
+				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.dodge));
 				break;
 			default:
-				ss << " BUG: INVALID SKILL FAIL MSG";
+				out.push_back("BUG: INVALID SKILL FAIL MSG");
 		}
-		out.push_back(ss.str());
 		return;
 	}
 
@@ -1160,7 +1250,14 @@ void Game_BattleAlgorithm::Item::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.use_item,
+			{'S', 'O'},
+			{source->GetName(), item.name}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		std::string particle;
 		if (Player::IsCP932())
 			particle = "は";
@@ -1229,7 +1326,14 @@ Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.defending,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.defending;
 	}
 	else {
@@ -1255,7 +1359,14 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.observing,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.observing;
 	}
 	else {
@@ -1274,7 +1385,14 @@ AlgorithmBase(source) {
 }
 
 std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.focus,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.focus;
 	}
 	else {
@@ -1296,7 +1414,14 @@ AlgorithmBase(source, target) {
 }
 
 std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.autodestruction,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.autodestruction;
 	}
 	else {
@@ -1358,9 +1483,15 @@ Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 }
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
-		// Only monsters can escape during a battle phase
-
+	// Only monsters can escape during a battle phase
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.enemy_escape,
+			{'S'},
+			{source->GetName()}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		if (source->GetType() == Game_Battler::Type_Enemy) {
 			return source->GetName() + Data::terms.enemy_escape;
 		}
@@ -1440,7 +1571,14 @@ AlgorithmBase(source), new_monster_id(new_monster_id) {
 }
 
 std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.enemy_transform,
+			{'S', 'O'},
+			{source->GetName(), Data::enemies[new_monster_id - 1].name}
+		);
+	}
+	else if (Player::IsRPG2k()) {
 		return source->GetName() + Data::terms.enemy_transform;
 	}
 	else {

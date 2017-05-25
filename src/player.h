@@ -35,8 +35,9 @@ namespace Player {
 		EngineRpg2k3 = 2,
 		/** RPG Maker 2000 v1.50 or newer, 2003 v1.05 or newer */
 		EngineMajorUpdated = 4,
-		/** RPG Maker 2003 v1.10 or newer (Official English translation) */
-		EngineRpg2k3E = 8
+		/** Official English translation (RPG Maker 2003 v1.10 or newer,
+		 * or RPG Maker 2000 v.1.61 or newer) */
+		EngineEnglish = 8
 	};
 
 	/**
@@ -151,9 +152,22 @@ namespace Player {
 	bool IsMajorUpdatedVersion();
 
 	/**
-	 * @return If engine is the official English release (v1.10) or newer.
+	 * @return If engine is the official English RM2k3 release (v1.10) or newer.
 	 */
 	bool IsRPG2k3E();
+
+
+	/**
+	 * @return If engine is the official English RM2k release v.1.61 or newer.
+	 * False if engine is RM2k3, Japanese, unofficial or v.1.60.
+	 */
+	bool IsRPG2kE();
+
+	/**
+	 * @return If engine is the official English release (and not RM2k v.1.60,
+	 * which is hard to detect).
+	 */
+	bool IsEnglish();
 
 	/**
 	 * @return true if encoding is CP932 (Shift-JIS, used for Japanese),

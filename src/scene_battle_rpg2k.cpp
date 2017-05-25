@@ -327,14 +327,36 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
+	if (battle_action_wait) {
+		if (--battle_action_wait) {
+			return false;
+		}
+		else if (battle_message_window->GetHiddenLineCount()) {
+			if (battle_message_window->IsPageFilled()) {
+				if (battle_message_window->NextPage()) {
+					battle_action_wait = GetDelayForLine();
+					battle_message_window->ShowHiddenLines(1);
+				}
+			}
+			else {
+				if (battle_message_window->GetLineCount()) {
+					battle_message_window->ShowHiddenLines(1);
+					if (battle_message_window->IsPageFilled() &&
+							battle_message_window->GetHiddenLineCount()) {
+						battle_action_wait = GetDelayForLine();
+					}
+					else {
+						battle_action_wait = GetDelayForWindow();
+					}
+				}
+			}
+			return false;
+		}
+	}
+
 	switch (battle_action_state) {
 		case BattleActionState_Start:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
-			battle_message_window->Clear();
-
+			battle_action_wait = GetDelayForWindow();
 			if (action->IsFirstAttack()) {
 				action->TargetFirst();
 			}
@@ -388,7 +410,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			battle_action_state = BattleActionState_Result;
 
-			battle_action_wait = 30;
+			battle_action_wait = GetDelayForWindow();
 
 			break;
 		case BattleActionState_ConditionHeal:
@@ -401,18 +423,18 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					battle_message_window->Clear();
 					for (auto state : states_to_heal) {
 						if (!Data::states[state - 1].message_recovery.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_recovery);
+							battle_message_window->PushWithSubject(Data::states[state- 1].message_recovery, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
 					for (auto state : states_remaining) {
 						if (!Data::states[state - 1].message_affected.empty()) {
-							battle_message_window->Push(action->GetSource()->GetName() + Data::states[state- 1].message_affected);
+							battle_message_window->PushWithSubject(Data::states[state- 1].message_affected, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
 					if (message_to_show) {
-						battle_action_wait = 30;
+						battle_action_wait = GetDelayForWindow();
 					}
 					else {
 						battle_action_wait = 0;
@@ -427,10 +449,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			break;
 		case BattleActionState_Result:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
+			battle_action_wait = GetDelayForWindow();
 
 			if (action->GetTarget() && action->IsSuccess()) {
 				// FIXME: Physical damage state heal needs a message
@@ -454,7 +473,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				}
 
 				if (battle_result_messages_it != battle_result_messages.begin()) {
-					battle_message_window->Pop();
+					battle_message_window->Clear();
+					battle_message_window->Push(action->GetStartMessage());
 				}
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
@@ -471,11 +491,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			break;
 		case BattleActionState_Finished:
-			if (battle_action_wait--) {
-				return false;
-			}
-			battle_action_wait = 30;
-
 			if (action->GetTarget()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (target_sprite && !target_sprite->IsIdling()) {
@@ -797,6 +812,35 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	}
 }
 
+int Scene_Battle_Rpg2k::GetDelayForWindow() {
+	if (Player::IsRPG2kE()) {
+		return 40;
+	}
+	else {
+		return 60 / 2;
+	}
+}
+
+int Scene_Battle_Rpg2k::GetDelayForLine() {
+	if (Player::IsRPG2kE()) {
+		return 60 / 10;
+	}
+	else {
+		return 60 / 7;
+	}
+}
+
+void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
+	if ((enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() &&
+			!battle_message_window->GetHiddenLineCount()) ||
+			battle_message_window->IsPageFilled()) {
+		encounter_message_sleep_until = Player::GetFrames() + GetDelayForWindow();
+	}
+	else {
+		encounter_message_sleep_until = Player::GetFrames() + GetDelayForLine();
+	}
+}
+
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (encounter_message_first_monster) {
 		enemy_iterator = Main_Data::game_enemyparty->GetEnemies().begin();
@@ -810,6 +854,17 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		} else {
 			return false;
 		}
+	}
+
+	if (battle_message_window->GetHiddenLineCount() > 0) {
+		if (battle_message_window->IsPageFilled()) {
+			battle_message_window->NextPage();
+		}
+		else {
+			battle_message_window->ShowHiddenLines(1);
+		}
+		SetWaitForEnemyAppearanceMessages();
+		return false;
 	}
 
 	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end()) {
@@ -828,24 +883,75 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		}
 	}
 
-	if (battle_message_window->GetLineCount() == 4) {
-		battle_message_window->Clear();
+
+	if (battle_message_window->IsPageFilled()) {
+		battle_message_window->NextPage();
 	}
-
-	battle_message_window->Push((*enemy_iterator)->GetName() + Data::terms.encounter);
-
+	battle_message_window->PushWithSubject(Data::terms.encounter, (*enemy_iterator)->GetName());
 	++enemy_iterator;
 
-	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() ||
-		battle_message_window->GetLineCount() == 4) {
-		// Half second sleep
-		encounter_message_sleep_until = Player::GetFrames() + 60 / 2;
-	} else {
-		// 1/10 second sleep
-		encounter_message_sleep_until = Player::GetFrames() + 60 / 10;
-	}
+	SetWaitForEnemyAppearanceMessages();
 
 	return false;
+}
+
+void Scene_Battle_Rpg2k::PushExperienceGainedMessage(int exp) {
+	std::stringstream ss;
+	if (Player::IsRPG2kE()) {
+		ss << exp;
+		Game_Message::texts.push_back(
+			Utils::ReplacePlaceholders(
+				Data::terms.exp_received,
+				{'V', 'U'},
+				{ss.str(), Data::terms.exp_short}
+			)
+		);
+	}
+	else {
+		ss << exp << Data::terms.exp_received;
+		Game_Message::texts.push_back(ss.str());
+	}
+}
+
+void Scene_Battle_Rpg2k::PushGoldReceivedMessage(int money) {
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << money;
+		Game_Message::texts.push_back(
+			Utils::ReplacePlaceholders(
+				Data::terms.gold_recieved_a,
+				{'V', 'U'},
+				{ss.str(), Data::terms.gold}
+			)
+		);
+	}
+	else {
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+		Game_Message::texts.push_back(ss.str());
+	}
+}
+
+void Scene_Battle_Rpg2k::PushItemRecievedMessages(std::vector<int> drops) {
+	std::stringstream ss;
+
+	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+		std::string item_name = Data::items[*it - 1].name;
+		if (Player::IsRPG2kE()) {
+			Game_Message::texts.push_back(
+				Utils::ReplacePlaceholders(
+					Data::terms.item_recieved,
+					{'S'},
+					{item_name}
+				)
+			);
+		}
+		else {
+			ss.str("");
+			ss << item_name << Data::terms.item_recieved;
+			Game_Message::texts.push_back(ss.str());
+		}
+	}
 }
 
 bool Scene_Battle_Rpg2k::CheckWin() {
@@ -858,21 +964,15 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
+		Game_Message::is_word_wrapped = Player::IsRPG2kE();
 		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::stringstream ss;
-		ss << exp << Data::terms.exp_received;
-		Game_Message::texts.push_back(ss.str());
+		PushExperienceGainedMessage(exp);
 		if (money > 0) {
-			ss.str("");
-			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
-			Game_Message::texts.push_back(ss.str());
+			PushGoldReceivedMessage(money);
 		}
-		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			ss.str("");
-			ss << Data::items[*it - 1].name << Data::terms.item_recieved;
-			Game_Message::texts.push_back(ss.str());
-		}
+		PushItemRecievedMessages(drops);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));
 
@@ -905,6 +1005,7 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 		Game_Message::SetPosition(2);
 		Game_Message::SetTransparent(false);
 
+		Game_Message::is_word_wrapped = Player::IsRPG2kE();
 		Game_Message::texts.push_back(Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));

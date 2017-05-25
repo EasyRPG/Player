@@ -21,6 +21,7 @@
 #include <vector>
 #include <bitset>
 #include <string>
+#include <functional>
 
 namespace Game_Message {
 
@@ -166,6 +167,31 @@ namespace Game_Message {
 	 * @return Best message box position
 	 */
 	int GetRealPosition();
+
+	/**
+	 * Breaks the line into lines, each of which is equal
+	 * or less than a specified limit in pixels in the
+	 * given font (except in cases when breaking by spaces
+	 * can't produce a short line), and calls the callback
+	 * for each resulting line.
+	 * 
+	 * Font::Default() will be used to determine the word breaking.
+	 * The caller is responsible for ensuring that Font::Default()
+	 * either does not change between calling this function and
+	 * displaying the results, or at least that the changed font
+	 * has same metrics as the font used to calculate the line sizes.
+	 *
+	 * @param[in] line The line that will be broken into lines
+	 * and added into the lines vector.
+	 * @param[in] limit maximum size of each line after word-breaking.
+	 * @param callback a function to be called for each word-wrapped line
+	 */
+	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
+
+	/**
+	 * @var whether the texts are word-wrapped;
+	 */
+	extern bool is_word_wrapped;
 
 	/**
 	 * Number of lines before the start

@@ -625,6 +625,53 @@ void Game_Actor::SetLevel(int _level) {
 	GetData().level = min(max(_level, 1), GetMaxLevel());
 }
 
+std::string Game_Actor::GetLevelUpMessage(int new_level) const {
+	std::stringstream ss;
+	if (Player::IsRPG2k3E()) {
+		ss << GetData().name;
+		ss << " " << Data::terms.level_up << " ";
+		ss << " " << Data::terms.level << " " << new_level;
+		return ss.str();
+	} else if (Player::IsRPG2kE()) {
+		ss << new_level;
+		return Utils::ReplacePlaceholders(
+			Data::terms.level_up,
+			{'S', 'V', 'U'},
+			{GetData().name, ss.str(), Data::terms.level}
+		);
+	} else {
+		std::string particle, space = "";
+		if (Player::IsCP932()) {
+			particle = "は";
+			space += " ";
+		}
+		else {
+			particle = " ";
+		}
+		ss << GetData().name;
+		ss << particle << Data::terms.level << " ";
+		ss << new_level << space << Data::terms.level_up;
+		return ss.str();
+	}
+}
+
+std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
+	std::stringstream ss;
+	std::string& skill_name = Data::skills[learn.skill_id - 1].name;
+	if (Player::IsRPG2kE()) {
+		return Utils::ReplacePlaceholders(
+			Data::terms.skill_learned,
+			{'S', 'O'},
+			{GetData().name, skill_name}
+		);
+	}
+	else {
+		ss << skill_name;
+		ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
+		return ss.str();
+	}
+}
+
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>& actor_skills = Data::actors[actor_id - 1].skills;
 	const std::vector<RPG::Learning>& class_skills = Data::classes[GetData().class_id - 1].skills;
@@ -636,24 +683,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 
 	if (new_level > old_level) {
 		if (level_up_message) {
-			std::stringstream ss;
-			ss << GetData().name;
-			if (Player::IsRPG2k3E()) {
-				ss << " " << Data::terms.level_up << " ";
-				ss << " " << Data::terms.level << " " << new_level;
-			} else {
-				std::string particle, space = "";
-				if (Player::IsCP932()) {
-					particle = "は";
-					space += " ";
-				}
-				else {
-					particle = " ";
-				}
-				ss << particle << Data::terms.level << " ";
-				ss << new_level << space << Data::terms.level_up;
-			}
-			Game_Message::texts.push_back(ss.str());
+			Game_Message::texts.push_back(GetLevelUpMessage(new_level));
 			level_up = true;
 		}
 
@@ -663,10 +693,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 			if (learn.level > old_level && learn.level <= new_level) {
 				LearnSkill(learn.skill_id);
 				if (level_up_message) {
-					std::stringstream ss;
-					ss << Data::skills[learn.skill_id - 1].name;
-					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-					Game_Message::texts.push_back(ss.str());
+					Game_Message::texts.push_back(GetLearningMessage(learn));
 					level_up = true;
 				}
 			}

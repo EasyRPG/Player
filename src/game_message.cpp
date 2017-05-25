@@ -20,10 +20,12 @@
 #include "game_player.h"
 #include "game_temp.h"
 #include "main_data.h"
+#include "font.h"
 #include "player.h"
 
 namespace Game_Message {
 	std::vector<std::string> texts;
+	bool is_word_wrapped;
 
 	unsigned int owner_id;
 
@@ -59,6 +61,7 @@ void Game_Message::SemiClear() {
 	num_input_start = -1;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
+	is_word_wrapped = false;
 }
 
 void Game_Message::FullClear() {
@@ -169,4 +172,39 @@ int Game_Message::GetRealPosition() {
 			return disp >= (16 * 10) ? 0 : 2;
 		};
 	}
+}
+
+int Game_Message::WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback) {
+	int start = 0, lastfound = 0;
+	int line_count = 0;
+	bool end_of_string = false;
+	FontRef font = Font::Default();
+	Rect size;
+
+	do {
+		line_count++;
+		int found = line.find(" ", start);
+		std::string wrapped = line.substr(start, found - start);
+		size = font->GetSize(wrapped);
+		end_of_string = false;
+		do {
+			lastfound = found;
+			found = line.find(" ", lastfound + 1);
+			if (found == std::string::npos) {
+				found = line.size();
+			}
+			wrapped = line.substr(start, found - start);
+			size = font->GetSize(wrapped);
+		} while (found < line.size() - 1 && size.width < limit);
+		if (found >= line.size() - 1) {
+			// It's end of the string, not a word-break
+			lastfound = found;
+			end_of_string = true;
+		}
+		wrapped = line.substr(start, lastfound - start);
+		callback(wrapped);
+		start = lastfound + 1;
+	} while (start < line.size() && !end_of_string);
+
+	return line_count;
 }

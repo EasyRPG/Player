@@ -29,11 +29,41 @@ class Window_BattleMessage : public Window_Base {
 public:
 	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
 
+	/**
+	 * Adds message to be displayed.
+	 *
+	 * If hidden lines exist prior to pushing the message, they
+	 * are shown. However, the newly-added lines message might
+	 * be initially hidden if the engine supports word-wrapping
+	 * and the line is long, only the first line is shown, and
+	 * other lines are hidden unless ShowHiddenLines is called.
+	 *
+	 * @param message The text to be displayed.
+	 */
 	void Push(const std::string& message);
+
+	/**
+	 * Pushes a message, either prepending the subject to it,
+	 * or replacing all the occurences of %S with subject, depending
+	 * on the engine version.
+	 *
+	 * @param string Message to be displayed.
+	 * @param string Subject that will be displayed in the message.
+	 */
+	void PushWithSubject(const std::string& message, const std::string& subject);
 
 	void Pop();
 
 	void Clear();
+
+	/**
+	 * Remove 4 lines (determined by linesPerPage) of the battle
+	 * messages, thus proceeding to the next page.
+	 *
+	 * @return True if there is something left to show, false is the
+	 * previous page was the last one.
+	 */
+	bool NextPage();
 
 	int GetLineCount();
 
@@ -41,8 +71,50 @@ public:
 
 	void Update() override;
 
+	/**
+	 * @return true is the message window is filled, false if there
+	 * is space for at least one line on the first page.
+	 */
+	bool IsPageFilled();
+
+	/**
+	 * Number of lines that are hidden right now.
+	 *
+	 * Hidden lines are added when the text is word-wrapped:
+	 * only the first line is shown, and others are hidden.
+	 *
+	 * @return number of hidden lines
+	 */
+	int GetHiddenLineCount();
+
+	/**
+	 * Displays the given number of hidden lines.
+	 *
+	 * Hidden lines are added when a word-wrapped line is pushed:
+	 * then, only the first line is displayed, and others are
+	 * considered hidden.
+	 *
+	 * @param Number of lines to display. If -1
+	 * is passed, all the hidden lines are displayed.
+	 */
+	void ShowHiddenLines(int count);
+
+	/**
+	 * How many lines would fit into a window of battle messages.
+	 */
+	static const int linesPerPage = 4;
+
 private:
 	std::vector<std::string> lines;
+
+	/**
+	 * How many lines are hidden right now.
+	 *
+	 * Hidden lines are added by PushWordWrappedLine when
+	 * the pushed line doesn't fit one line. Such lines are
+	 * hidden until ShowHiddenLines is called.
+	 */
+	int hidden_lines;
 
 	bool needs_refresh;
 };
