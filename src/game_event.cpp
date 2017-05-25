@@ -583,22 +583,34 @@ void Game_Event::MoveTypeRandom() {
 	}
 }
 
-void Game_Event::MoveTypeCycleLeftRight() {
-	Move(cycle_stat ? Left : Right);
+void Game_Event::MoveTypeCycle(int default_dir) {
+	max_stop_count = (GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency()));
+	if (stop_count < max_stop_count) return;
+
+	int non_default_dir = ReverseDir(default_dir);
+	int move_dir = GetDirection();
+	if (!(move_dir == default_dir || move_dir == non_default_dir)) {
+		move_dir = default_dir;
+	}
+
+	Move(move_dir, MoveOption::IgnoreIfCantMove);
 
 	if (move_failed && stop_count >= max_stop_count + 20) {
-		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
-		stop_count = 0;
+		if (stop_count >= max_stop_count + 60) {
+			Move(ReverseDir(move_dir));
+			stop_count = 0;
+		} else {
+			Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
+		}
 	}
 }
 
-void Game_Event::MoveTypeCycleUpDown() {
-	Move(cycle_stat ? Up : Down);
+void Game_Event::MoveTypeCycleLeftRight() {
+	MoveTypeCycle(Right);
+}
 
-	if (move_failed && stop_count >= max_stop_count + 20) {
-		cycle_stat = !cycle_stat;
-		stop_count = 0;
-	}
+void Game_Event::MoveTypeCycleUpDown() {
+	MoveTypeCycle(Down);
 }
 
 void Game_Event::MoveTypeTowardsPlayer() {

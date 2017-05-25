@@ -411,17 +411,23 @@ public:
 	void MoveTypeCustom();
 
 	void Turn(int dir);
-	void Move(int dir);
+
+	enum class MoveOption { Normal, IgnoreIfCantMove };
+
+	/**
+	 * Move in the direction dir.
+	 */
+	void Move(int dir, MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Moves the character forward.
 	 */
-	void MoveForward();
+	void MoveForward(MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Does a random movement.
 	 */
-	void MoveRandom();
+	void MoveRandom(MoveOption option = MoveOption::Normal);
 
 	/**
 	 * Does a move to the player hero.
@@ -677,6 +683,9 @@ public:
 		UpLeft
 	};
 
+	/** Reverses a direction, ex: ReverseDir(Up) == Down. */
+	static int ReverseDir(int dir);
+
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
@@ -709,9 +718,6 @@ protected:
 	int stop_count;
 	int max_stop_count;
 	bool walk_animation;
-
-	/** used by cycle left-right, up-down */
-	bool cycle_stat;
 
 	int opacity;
 	bool visible;

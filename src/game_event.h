@@ -195,14 +195,20 @@ private:
 	void MoveTypeRandom();
 
 	/**
-	 * Moves left to right and switches direction if the
-	 * move failed.
+	 * Cycles between moving in default_dir and its opposite.
+	 * Tries to move in the event's movement direction, or
+	 * default_dir if this is along the wrong axis. Reverses
+	 * directions when encountering an obstacle.
+	 */
+	void MoveTypeCycle(int default_dir);
+
+	/**
+	 * Cycles left and right.
 	 */
 	void MoveTypeCycleLeftRight();
 
 	/**
-	 * Moves up and down and switches direction if the
-	 * move failed.
+	 * Cycles up and down.
 	 */
 	void MoveTypeCycleUpDown();
 
