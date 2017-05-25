@@ -81,5 +81,14 @@
       };
     </script>
     {{{ SCRIPT }}}
+    <script>
+      //prevents scrolling on arrow key press
+      window.addEventListener("keydown", function(e) {
+          // space and arrow keys, from 112 to 123 for function keys (only works in some browsers)
+          if([32, 37, 38, 39, 40, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123].indexOf(e.keyCode) > -1) {
+              e.preventDefault();
+          }
+      }, false);
+    </script>
   </body>
 </html>
