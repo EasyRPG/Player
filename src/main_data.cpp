@@ -80,6 +80,9 @@ void Main_Data::Init() {
 			"";
 
 		if (project_path.empty()) {
+			// first set to current directory for all platforms
+			project_path = ".";
+
 #ifdef GEKKO
 			// Working directory not correctly handled under Wii
 			char gekko_dir[256];
@@ -88,8 +91,9 @@ void Main_Data::Init() {
 #elif defined(PSP2)
 			// Check if app0 filesystem contains the title id reference file
 			FILE* f = fopen("app0:/titleid.txt","r");
-			if (f == NULL) project_path = "ux0:/data/easyrpg-player";
-			else{
+			if (f == NULL)
+				project_path = "ux0:/data/easyrpg-player";
+			else {
 				char titleID[10];
 				char psp2_dir[256];
 				fread(titleID, 1, 9, f);
@@ -104,10 +108,10 @@ void Main_Data::Init() {
 
 			}
 #elif defined(_3DS)
-#   ifndef CITRA3DS_COMPATIBLE
+#  ifndef CITRA3DS_COMPATIBLE
 			// Check if romFs has some files inside or not
 			FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
-			if (testfile != NULL){
+			if (testfile != NULL) {
 				Output::Debug("Detected a project on romFs filesystem...");
 				fclose(testfile);
 				project_path = "romfs:";
@@ -136,33 +140,24 @@ void Main_Data::Init() {
 			} else if (!Player::is_3dsx) {
 				// No RomFS -> load games from hardcoded path
 				project_path = "sdmc:/3ds/easyrpg-player";
-			} else {
-				project_path = ".";
 			}
-#   else
-			project_path = ".";
-#   endif
+#  endif
 #elif defined(__APPLE__) && defined(__MACH__)
 #  if SDL_MAJOR_VERSION>1
+			// Apple Finder does not set the working directory
+			// It points to HOME instead. When it is HOME change it to
+			// the application directory instead
 			char* home = getenv("HOME");
 			char current_dir[255] = { 0 };
 			getcwd(current_dir, sizeof(current_dir));
 			if (!strcmp(current_dir, home)) {
-				// Apple Finder does not set the working directory
-				// It points to HOME instead. When it is HOME change it to
-				// the application directory instead
-
 				// FIXME: Uses SDL API
 				char* data_dir = SDL_GetBasePath();
 				project_path = data_dir;
 
 				free(data_dir);
 			}
-#  else
-			project_path = ".";
 #  endif
-#else
-			project_path = ".";
 #endif
 		}
 	}
