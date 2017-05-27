@@ -32,6 +32,7 @@ set(PLAYER_SRCS
 	src/decoder_wav.cpp
 	src/decoder_wildmidi.cpp
 	src/decoder_xmp.cpp
+	src/drawable.cpp
 	src/filefinder.cpp
 	src/font.cpp
 	src/fps_overlay.cpp
@@ -208,7 +209,7 @@ function(find_lib LIBNAME COND)
 		else()
 			find_package(${LIBNAME})
 		endif()
-		
+
 		if(${${LIBNAME}_FOUND})
 			string(TOUPPER ${LIBNAME} LIBNAMEUP)
 			include_directories(${${LIBNAMEUP}_INCLUDE_DIRS})
@@ -288,26 +289,26 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
 	if(WildMidi_FOUND)
 		add_definitions(-DHAVE_WILDMIDI)
 	endif()
-	
+
 	# Provide fmmidi options
 	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
 		add_definitions(-DWANT_FMMIDI)
-	endif()	
+	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	add_definitions(-DSUPPORT_AUDIO)
 
 	# SDL2_mixer Audio
 	find_lib(SDL2_mixer REQUIRED)
 	add_definitions(-DHAVE_SDL_MIXER)
-	
+
 	# wildmidi (optional, OFF)
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
 	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
 	if(WildMidi_FOUND)
 		add_definitions(-DHAVE_WILDMIDI)
 	endif()
-	
+
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
 	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
@@ -323,7 +324,7 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	# OpenAL Audio
 	add_definitions(-DSUPPORT_AUDIO)
-	
+
 	find_package(OpenAL REQUIRED)
 	find_package(SndFile REQUIRED)
 	find_package(FluidSynth REQUIRED)
@@ -338,12 +339,12 @@ endif()
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	# speexdsp
-	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)	
+	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
 	if(speexdsp_FOUND)
 		add_definitions(-DHAVE_LIBSPEEXDSP)
 	endif()
-	
+
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
 	find_lib("mpg123" PLAYER_WITH_MPG123)
@@ -352,12 +353,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	endif()
 
 	# libsndfile
-	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)	
+	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
 	find_lib("SndFile" PLAYER_WITH_LIBSNDFILE)
 	if(SndFile_FOUND)
 		add_definitions(-DHAVE_LIBSNDFILE)
 	endif()
-	
+
 	# libvorbis
 	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
 	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
@@ -378,13 +379,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	if(XMP_FOUND)
 		add_definitions(-DHAVE_XMP)
 	endif()
-	
+
 	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		list(APPEND PLAYER_SRCS
 			src/midisequencer.cpp
 			src/midisynth.cpp
 		)
-	endif()	
+	endif()
 endif()
 
 # Additional include directories
