@@ -51,6 +51,16 @@ public:
 		std::string name;
 		bool transparency;
 		bool fixed_to_map;
+		// RPG Maker 2k3 1.12
+		int sheet_x;
+		int sheet_y;
+		bool sheet_loop;
+		int sheet_index;
+		int sheet_animate;
+		int map_layer = 7;
+		int battle_layer;
+		bool persistent;
+
 	};
 	struct MoveParams : Params {
 		int duration;

@@ -17,6 +17,7 @@
 
 // Headers
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include "game_interpreter.h"
@@ -1986,22 +1987,31 @@ namespace PicPointerPatch {
 		}
 	}
 
+	static std::string ReplaceName(const std::string& str, int value, int digits) {
+		// Replace last 4 characters with 0-padded pic_num
+		std::u32string u_pic_name = Utils::DecodeUTF32(str);
+
+		if (u_pic_name.length() < digits) {
+			return str;
+		}
+
+		std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - digits));
+		std::stringstream ss;
+		ss << new_pic_name << std::setfill('0') << std::setw(digits) << value;
+		new_pic_name = ss.str();
+
+		Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+		return new_pic_name;
+	}
+
 	static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
 		// Adjust name
 		if (pic_id >= 50000) {
 			// Name substitution is pic_id + 1
 			int pic_num = Game_Variables[pic_id - 50000 + 1];
 
-			if (pic_num >= 0 && params.name.size() >= 4) {
-				// Replace last 4 characters with 0-padded pic_num
-				std::u32string u_pic_name = Utils::DecodeUTF32(params.name);
-				std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - 4));
-				std::stringstream ss;
-				ss << new_pic_name << std::setfill('0') << std::setw(4) << pic_num;
-				new_pic_name = ss.str();
-
-				Output::Debug("PicPointer: File %s replaced with %s", params.name.c_str(), new_pic_name.c_str());
-				params.name = new_pic_name;
+			if (pic_num >= 0) {
+				params.name = ReplaceName(params.name, pic_num, 4);
 			}
 		}
 
@@ -2025,7 +2035,7 @@ namespace PicPointerPatch {
 bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
 
-	Game_Picture::ShowParams params;
+	Game_Picture::ShowParams params = {};
 	params.name = com.string;
 	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -2040,12 +2050,35 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	params.effect_mode = com.parameters[12];
 	params.effect_power = com.parameters[13];
 
+	size_t param_size = com.parameters.size();
+
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		if (param_size > 15) {
+			// Handling of RPG2k3 1.12 chunks
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+			params.name = PicPointerPatch::ReplaceName(params.name, Game_Variables[com.parameters[19]], com.parameters[18]);
+			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
+			params.sheet_x = com.parameters[22];
+			params.sheet_y = com.parameters[23];
+
+			// Animate and index selection are exclusive
+			if (com.parameters[24] == 2) {
+				params.sheet_animate = com.parameters[25];
+			} else {
+				params.sheet_index = ValueOrVariable(com.parameters[24], com.parameters[25]);
+			}
+
+			params.sheet_loop = !com.parameters[26];
+			params.map_layer = com.parameters[27];
+			params.battle_layer = com.parameters[28];
+			params.persistent = !!com.parameters[29];
+		}
+
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
-		size_t param_size = com.parameters.size();
 		params.bottom_trans = param_size > 14 ? com.parameters[14] : params.top_trans;
 	}
 
@@ -2080,12 +2113,23 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 
 	bool wait = com.parameters[15] != 0;
 
+	size_t param_size = com.parameters.size();
+
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		if (param_size > 16) {
+			// Handling of RPG2k3 1.12 chunks
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+			// TODO ???
+			int chars_to_replace = com.parameters[18];
+			int replace_with = com.parameters[19];
+			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
+		}
+
 		// RPG2k and RPG2k3 1.10 do not support this option
 		params.bottom_trans = params.top_trans;
 	} else {
 		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
-		size_t param_size = com.parameters.size();
 		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
 	}
 
@@ -2109,10 +2153,28 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
 
-	PicPointerPatch::AdjustId(pic_id);
+	if (com.parameters.size() > 1) {
+		// Handling of RPG2k3 1.12 chunks
+		int id_type = com.parameters[1];
 
-	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture->Erase();
+		int max;
+		if (id_type < 2) {
+			pic_id = ValueOrVariable(id_type, pic_id);
+			max = pic_id;
+		} else {
+			max = com.parameters[2];
+		}
+
+		for (int i = pic_id; i <= max; ++i) {
+			Game_Picture *picture = Main_Data::game_screen->GetPicture(i);
+			picture->Erase();
+		}
+	} else {
+		PicPointerPatch::AdjustId(pic_id);
+
+		Game_Picture *picture = Main_Data::game_screen->GetPicture(pic_id);
+		picture->Erase();
+	}
 
 	return true;
 }
