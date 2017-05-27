@@ -44,6 +44,7 @@ public:
 	void SetX(int new_x) override;
 	int GetY() const override;
 	void SetY(int new_y) override;
+	int GetScreenZ() const override;
 	int GetMapId() const override;
 	void SetMapId(int new_map_id) override;
 	int GetDirection() const override;

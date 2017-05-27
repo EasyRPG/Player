@@ -35,7 +35,7 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	cursor_width = 14;
-	SetZ(PriorityWindow + 20);
+	SetZ(Priority_Window + 20);
 	opacity = 0;
 	index = 0;
 	active = false;
@@ -91,7 +91,7 @@ int Window_NumberInput::GetMaxDigits() {
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	// Only accepts values between 1 and 6 (or 7) as RPG2K (or RPG2k3)
 	int top = Player::IsRPG2k() ? 6 : 7;
-	digits_max = 
+	digits_max =
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
 		idigits_max;

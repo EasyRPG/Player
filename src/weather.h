@@ -46,7 +46,7 @@ private:
 	void DrawFog();
 	void DrawSandstorm();
 
-	static const int z = PriorityWeather;
+	static const int z = Priority_Weather;
 	static const DrawableType type = TypeWeather;
 
 	BitmapRef weather_surface;

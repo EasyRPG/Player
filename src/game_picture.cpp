@@ -51,19 +51,17 @@ void Game_Picture::UpdateSprite() {
 
 	sprite->SetX((int)data.current_x);
 	sprite->SetY((int)data.current_y);
-	if (Player::IsRPG2k3()) { // TODO: Including new RPG2k
+	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
-		// ToDo: Include RPG Maker 2000 1.5 Value! and newer (How to detect?)
-		// ToDo: Exclude RPG Maker 2003 <1.05 (How to detect?)
-		sprite->SetZ(PriorityPictureNew + data.ID);
+		sprite->SetZ(Priority_PictureNew + data.ID);
 	} else {
 		// Battle Animations are below pictures
-		sprite->SetZ(PriorityPictureOld + data.ID);
+		sprite->SetZ(Priority_PictureOld + data.ID);
 	}
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
-	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() / 2));
-	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() / 2));
+	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
+	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
 
 	sprite->SetAngle(data.effect_mode != 2 ? data.current_rotation * 360 / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
