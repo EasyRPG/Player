@@ -259,6 +259,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
 
 	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {

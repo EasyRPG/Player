@@ -84,6 +84,7 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
+	// Above other windows
 	target_window->SetZ(Priority_Window + 10);
 }
 

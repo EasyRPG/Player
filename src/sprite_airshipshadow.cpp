@@ -70,5 +70,6 @@ void Sprite_AirshipShadow::Update() {
 
 	SetX(Main_Data::game_player->GetScreenX());
 	SetY(Main_Data::game_player->GetScreenY());
+	// Synchronized with airship priority
 	SetZ(airship->GetScreenZ());
 }

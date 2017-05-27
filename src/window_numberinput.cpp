@@ -35,7 +35,8 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	cursor_width = 14;
-	SetZ(Priority_Window + 20);
+	// Above the message window
+	SetZ(Priority_Window + 150);
 	opacity = 0;
 	index = 0;
 	active = false;
