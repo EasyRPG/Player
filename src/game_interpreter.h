@@ -183,6 +183,9 @@ protected:
 	bool CommandFlashScreen(RPG::EventCommand const& com);
 	bool CommandShakeScreen(RPG::EventCommand const& com);
 	bool CommandWeatherEffects(RPG::EventCommand const& com);
+	bool CommandShowPicture(RPG::EventCommand const& com);
+	bool CommandMovePicture(RPG::EventCommand const& com);
+	bool CommandErasePicture(RPG::EventCommand const& com);
 	bool CommandSpriteTransparency(RPG::EventCommand const& com);
 	bool CommandMoveEvent(RPG::EventCommand const& com);
 	bool CommandMemorizeBGM(RPG::EventCommand const& com);

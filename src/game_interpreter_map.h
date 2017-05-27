@@ -66,9 +66,6 @@ private:
 	bool CommandTeleport(RPG::EventCommand const& com);
 	bool CommandEnterExitVehicle(RPG::EventCommand const& com);
 	bool CommandPanScreen(RPG::EventCommand const& com);
-	bool CommandShowPicture(RPG::EventCommand const& com);
-	bool CommandMovePicture(RPG::EventCommand const& com);
-	bool CommandErasePicture(RPG::EventCommand const& com);
 	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
 	bool CommandFlashSprite(RPG::EventCommand const& com);
 	bool CommandProceedWithMovement(RPG::EventCommand const& com);
