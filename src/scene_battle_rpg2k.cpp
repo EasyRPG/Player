@@ -801,14 +801,17 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
-	std::vector<Game_Battler*> active_enemies;
-	Main_Data::game_enemyparty->GetActiveBattlers(active_enemies);
+	std::vector<Game_Battler*> enemies;
+	Main_Data::game_enemyparty->GetBattlers(enemies);
 
-	std::vector<Game_Battler*>::const_iterator it;
-	for (it = active_enemies.begin(); it != active_enemies.end(); ++it) {
-		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(*it)->ChooseRandomAction();
+	for (Game_Battler* battler : enemies) {
+		if (!battler->CanAct()) {
+			continue;
+		}
+
+		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
-			CreateEnemyAction(static_cast<Game_Enemy*>(*it), action);
+			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
 		}
 	}
 }
