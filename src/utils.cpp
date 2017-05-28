@@ -291,6 +291,10 @@ std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
 
+int Utils::PositiveModulo(int i, int m) {
+	return (i % m + m) % m;
+}
+
 bool Utils::IsBigEndian() {
 	union {
 		uint32_t i;

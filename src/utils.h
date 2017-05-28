@@ -112,6 +112,18 @@ namespace Utils {
 	}
 
 	/**
+	 * Calculates the modulo of number i ensuring the result is non-negative
+	 * for all values of i when m > 0.
+	 *
+	 * via: https://stackoverflow.com/q/14997165
+	 *
+	 * @param i Number
+	 * @param m Modulo
+	 * @return positive modulo of i % m
+	 */
+	int PositiveModulo(int i, int m);
+
+	/**
 	 * Checks if the platform is big endian
 	 *
 	 * @return true if big, false if little endian

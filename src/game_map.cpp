@@ -338,13 +338,6 @@ void Game_Map::ScrollDown(int distance) {
 	Parallax::Scroll(0, distance);
 }
 
-// Non-negative modulus (x mod m).
-static int mod(int x, int m) {
-	assert(m > 0);
-	int r = x % m;
-	return (r < 0) ? (m + r) : r;
-}
-
 // Add inc to acc, clamping the result into the range [low, high].
 // If the result is clamped, inc is also modified to be actual amount
 // that acc changed by.
@@ -357,7 +350,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
 	int map_width = GetWidth() * SCREEN_TILE_WIDTH;
 	if (LoopHorizontal()) {
-		screen_x = mod(screen_x + inc, map_width);
+		screen_x = Utils::PositiveModulo(screen_x + inc, map_width);
 	} else {
 		ClampingAdd(0, map_width - SCREEN_WIDTH, screen_x, inc);
 	}
@@ -366,7 +359,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	int map_height = GetHeight() * SCREEN_TILE_WIDTH;
 	if (LoopVertical()) {
-		screen_y = mod(screen_y + inc, map_height);
+		screen_y = Utils::PositiveModulo(screen_y + inc, map_height);
 	} else {
 		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
 	}
@@ -704,7 +697,11 @@ bool Game_Map::IsCounter(int x, int y) {
 	return !!(passages_up[index] & Passable::Counter);
 }
 
-int Game_Map::GetTerrainTag(int const x, int const y) {
+int Game_Map::GetTerrainTag(int x, int y) {
+	// Terrain tag wraps on looping maps
+	x = RoundX(x);
+	y = RoundY(y);
+
 	if (!Game_Map::IsValid(x, y)) return 9;
 
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
@@ -755,16 +752,16 @@ bool Game_Map::LoopVertical() {
 }
 
 int Game_Map::RoundX(int x) {
-	if ( LoopHorizontal() ) {
-		return (x + GetWidth()) % GetWidth();
+	if (LoopHorizontal()) {
+		return Utils::PositiveModulo(x, GetWidth());
 	} else {
 		return x;
 	}
 }
 
 int Game_Map::RoundY(int y) {
-	if ( LoopVertical() ) {
-		return (y + GetHeight()) % GetHeight();
+	if (LoopVertical()) {
+		return Utils::PositiveModulo(y, GetHeight());
 	} else {
 		return y;
 	}
