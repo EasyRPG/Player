@@ -292,22 +292,12 @@ std::string Utils::FromWideString(const std::wstring& str) {
 }
 
 bool Utils::IsBigEndian() {
-	static bool ran_once = false;
-	static bool is_big = false;
-
-	if (ran_once) {
-		return is_big;
-	}
-
 	union {
 		uint32_t i;
 		char c[4];
 	} d = {0x01020304};
 
-	ran_once = true;
-	is_big = d.c[0] == 1;
-
-	return is_big;
+	return d.c[0] == 1;
 }
 
 void Utils::SwapByteOrder(uint16_t& us) {
