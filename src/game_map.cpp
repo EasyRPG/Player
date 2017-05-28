@@ -899,14 +899,24 @@ void Game_Map::ResetEncounterSteps() {
 }
 
 void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
+	int terrain_tag = GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+
+	std::function<bool(int)> is_acceptable = [=](int troop_id) {
+		std::vector<bool>& terrain_set = Data::troops[troop_id - 1].terrain_set;
+
+		// RPG_RT optimisation: Omitted entries are the default value (false)
+		return (terrain_set.size() > (unsigned)(terrain_tag - 1) &&
+				terrain_set[terrain_tag - 1]);
+	};
+
 	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
 		RPG::MapInfo& map = Data::treemap.maps[i];
 
 		if (map.ID == location.map_id) {
-			std::vector<RPG::Encounter>& encounters = map.encounters;
-			for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
-				it != encounters.end(); ++it) {
-					out.push_back((*it).troop_id);
+			for (const RPG::Encounter& enc : map.encounters) {
+				if (is_acceptable(enc.troop_id)) {
+					out.push_back(enc.troop_id);
+				}
 			}
 		} else if (map.parent_map == location.map_id && map.type == 2) {
 			// Area
@@ -914,10 +924,10 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 			Rect player_rect(x, y, 1, 1);
 
 			if (!player_rect.IsOutOfBounds(area_rect)) {
-				std::vector<RPG::Encounter>& encounters = map.encounters;
-				for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
-					it != encounters.end(); ++it) {
-						out.push_back((*it).troop_id);
+				for (const RPG::Encounter& enc : map.encounters) {
+					if (is_acceptable(enc.troop_id)) {
+						out.push_back(enc.troop_id);
+					}
 				}
 			}
 		}
