@@ -35,6 +35,7 @@ test-driver
 *.lo
 /*.trs
 *~
+*.orig
 /resources/Doxyfile
 /resources/easyrpg-player.6
 /resources/player.aps
