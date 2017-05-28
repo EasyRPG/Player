@@ -23,19 +23,9 @@
 #include "main_data.h"
 #include "player.h"
 #include "output.h"
-#include "rpg_battleranimation.h"
-#include "rpg_battleranimationextension.h"
 
 Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
-	battler(battler),
-	anim_state(AnimationState_Idle),
-	cycle(0),
-	sprite_file(""),
-	sprite_frame(-1),
-	fade_out(255),
-	flash_counter(0),
-	old_hidden(false),
-	idling(true) {
+	battler(battler) {
 }
 
 Sprite_Battler::~Sprite_Battler() {
@@ -144,6 +134,8 @@ void Sprite_Battler::Update() {
 					case LoopState_LoopAnimation:
 						cycle = 0;
 						break;
+					default:
+						assert(false && "Bad loop state");
 				}
 			}
 

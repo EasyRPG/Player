@@ -101,21 +101,20 @@ protected:
 	void OnBattlercharsetReady(FileRequestResult* result, int battler_index);
 
 	std::string sprite_name;
-	int hue;
-
+	int hue = 0;
 	Game_Battler* battler;
 	BitmapRef graphic;
-	int anim_state;
-	int cycle;
+	int anim_state = AnimationState_Idle;
+	int cycle = 0;
 	std::string sprite_file;
-	int sprite_frame;
-	int fade_out;
-	int flash_counter;
-	LoopState loop_state;
-	bool old_hidden;
+	int sprite_frame = -1;
+	int fade_out = 255;
+	int flash_counter = 0;
+	LoopState loop_state = LoopState_DefaultAnimationAfterFinish;
+	bool old_hidden = false;
 	std::unique_ptr<BattleAnimation> animation;
 	// false when a newly set animation didn't loop once
-	bool idling;
+	bool idling = true;
 
 	FileRequestBinding request_id;
 };
