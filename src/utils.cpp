@@ -450,7 +450,7 @@ std::string Utils::ReplacePlaceholders(const std::string& text_template, std::ve
 			if (type != '%') {
 				auto v_it = values.begin();
 				for (auto t_it = types.begin();
-					t_it != types.end(), v_it != values.end();
+					t_it != types.end() && v_it != values.end();
 					++t_it, ++v_it) {
 					if (std::toupper(type) == *t_it) {
 						str.replace(index, 2, *v_it);
