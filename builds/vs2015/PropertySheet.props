@@ -32,7 +32,7 @@
     <ClCompile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
-      <PreprocessorDefinitions>WANT_FMMIDI=2;HAVE_MPG123;HAVE_FREETYPE;HAVE_LIBSNDFILE;HAVE_LIBSPEEXDSP;HAVE_OGGVORBIS;UNICODE;_CRT_SECURE_NO_WARNINGS;MSVC;SUPPORT_AUDIO;USE_SDL;HAVE_SDL_MIXER;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WANT_FMMIDI=2;HAVE_MPG123;HAVE_FREETYPE;HAVE_LIBSNDFILE;HAVE_LIBSPEEXDSP;HAVE_OGGVORBIS;HAVE_WILDMIDI;WILDMIDI_STATIC;HAVE_XMP;BUILDING_STATIC;SUPPORT_AUDIO;USE_SDL;HAVE_SDL_MIXER;UNICODE;_CRT_SECURE_NO_WARNINGS;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -41,7 +41,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PlayerLib$(PlatformSuffix)$(DebugSuffix).lib;freetype.lib;harfbuzz.lib;libexpat.lib;mpg123.lib;libsndfile.lib;libspeexdsp.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;libmodplug.lib;native_midi.lib;sicudt$(DebugSuffix).lib;sicuuc$(DebugSuffix).lib;sicuin$(DebugSuffix).lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlib.lib;pixman.lib;liblcf.lib;winmm.lib;Imm32.lib;Version.lib;Rpcrt4.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PlayerLib$(PlatformSuffix)$(DebugSuffix).lib;freetype.lib;harfbuzz.lib;libexpat.lib;mpg123.lib;libsndfile.lib;libspeexdsp.lib;libogg.lib;libxmp-lite.lib;libwildmidi.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;libmodplug.lib;native_midi.lib;sicudt$(DebugSuffix).lib;sicuuc$(DebugSuffix).lib;sicuin$(DebugSuffix).lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;zlib.lib;pixman.lib;liblcf.lib;winmm.lib;Imm32.lib;Version.lib;Rpcrt4.lib;Usp10.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

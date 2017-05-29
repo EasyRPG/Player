@@ -512,6 +512,12 @@
     <ClCompile Include="..\..\src\fps_overlay.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\decoder_wildmidi.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\decoder_xmp.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -1005,6 +1011,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\fps_overlay.h">
       <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decoder_wildmidi.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\decoder_xmp.h">
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
