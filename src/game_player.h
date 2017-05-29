@@ -116,7 +116,7 @@ public:
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 
-	/* Workaround used to avoid blocking the player with move routes that are completable in a single frame */
+	/* Workaround used to avoid blocking the player with move routes that are completeable in a single frame */
 	bool IsBlockedByMoveRoute() const;
 
 private:
@@ -124,8 +124,13 @@ private:
 
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
+
 	int last_pan_x = 0, last_pan_y = 0;
 	int last_remaining_move = 0, last_remaining_jump = 0;
+	// These track how much of the pan has actually occurred, which
+	// may be less than the pan values if the pan went off the map.
+	int actual_pan_x = 0, actual_pan_y = 0;
+
 	RPG::Music walking_bgm;
 
 	void UpdateScroll();

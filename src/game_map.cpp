@@ -1251,6 +1251,14 @@ int Game_Map::GetPanY() {
 	return location.pan_current_y;
 }
 
+int Game_Map::GetTargetPanX() {
+	return location.pan_finish_x;
+}
+
+int Game_Map::GetTargetPanY() {
+	return location.pan_finish_y;
+}
+
 bool Game_Map::IsTeleportDelayed() {
 	return teleport_delay;
 }

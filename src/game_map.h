@@ -573,6 +573,8 @@ namespace Game_Map {
 	bool IsPanLocked();
 	int GetPanX();
 	int GetPanY();
+	int GetTargetPanX();
+	int GetTargetPanY();
 
 	/**
 	 * Gets if pending teleportations will be ignored.

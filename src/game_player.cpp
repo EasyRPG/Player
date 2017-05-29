@@ -287,8 +287,8 @@ void Game_Player::Center() {
 	Game_Map::AddScreenX(x, dist_to_screen_left);
 	Game_Map::AddScreenY(y, dist_to_screen_top);
 
-	int actual_pan_x = Game_Map::GetPanX();
-	int actual_pan_y = Game_Map::GetPanY();
+	actual_pan_x = Game_Map::GetPanX();
+	actual_pan_y = Game_Map::GetPanY();
 
 	Game_Map::AddScreenX(x, actual_pan_x);
 	Game_Map::AddScreenY(y, actual_pan_y);
@@ -307,6 +307,8 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 void Game_Player::UpdateScroll() {
+	// First, update for the player's movement...
+
 	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - Game_Map::GetPanX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
 	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - Game_Map::GetPanY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
 
@@ -344,15 +346,33 @@ void Game_Player::UpdateScroll() {
 		}
 	}
 
+	Game_Map::ScrollRight(dx);
+	Game_Map::ScrollDown(dy);
+
+	// Second, update for the change in pan...
+
 	int pan_x = Game_Map::GetPanX();
 	int pan_y = Game_Map::GetPanY();
-	dx += pan_x - last_pan_x;
-	dy += pan_y - last_pan_y;
+	int pan_dx = pan_x - last_pan_x;
+	int pan_dy = pan_y - last_pan_y;
 	last_pan_x = pan_x;
 	last_pan_y = pan_y;
 
-	Game_Map::ScrollRight(dx);
-	Game_Map::ScrollDown(dy);
+	// Change pan_dx/pan_dy to account for hitting the edges
+	int screen_x = Game_Map::GetPositionX();
+	int screen_y = Game_Map::GetPositionY();
+	Game_Map::AddScreenX(screen_x, pan_dx);
+	Game_Map::AddScreenY(screen_y, pan_dy);
+
+	// Only move for the pan if we're closer to the target pan than we were before.
+	if (std::abs(actual_pan_x + pan_dx - Game_Map::GetTargetPanX()) < std::abs(actual_pan_x - Game_Map::GetTargetPanX())) {
+		Game_Map::ScrollRight(pan_dx);
+		actual_pan_x += pan_dx;
+	}
+	if (std::abs(actual_pan_y + pan_dy - Game_Map::GetTargetPanY()) < std::abs(actual_pan_y - Game_Map::GetTargetPanY())) {
+		Game_Map::ScrollDown(pan_dy);
+		actual_pan_y += pan_dy;
+	}
 }
 
 
