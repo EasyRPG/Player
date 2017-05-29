@@ -100,7 +100,7 @@ public:
 	void ReserveTeleport(const RPG::SaveTarget& target);
 	void StartTeleport();
 	void PerformTeleport();
-	void Center(int x, int y);
+	void Center();
 	void MoveTo(int x, int y) override;
 	void Update() override;
 

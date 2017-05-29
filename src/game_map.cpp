@@ -328,55 +328,48 @@ void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> inte
 	free_interpreters.push_back(interpreter);
 }
 
-void Game_Map::ScrollDown(int distance) {
-	int map_height = GetHeight() * SCREEN_TILE_WIDTH;
-	int screen_height = 15 * SCREEN_TILE_WIDTH;
-
-	if (LoopVertical()) {
-		map_info.position_y =
-			(map_info.position_y + distance + map_height) % map_height;
-	} else {
-		int new_pos = map_info.position_y + distance;
-
-		bool in_bounds =
-			0 <= new_pos &&
-			new_pos + screen_height <= map_height;
-		if (!in_bounds) return;
-
-		map_info.position_y = new_pos;
-	}
-
-	Parallax::Scroll(0, distance);
-}
-
-
 void Game_Map::ScrollRight(int distance) {
-	int map_width = GetWidth() * SCREEN_TILE_WIDTH;
-	int screen_width = 20 * SCREEN_TILE_WIDTH;
-
-	if (LoopHorizontal()) {
-		map_info.position_x =
-			(map_info.position_x + distance + map_width) % map_width;
-	} else {
-		int new_pos = map_info.position_x + distance;
-
-		bool in_bounds =
-			0 <= new_pos &&
-			new_pos + screen_width <= map_width;
-		if (!in_bounds) return;
-
-		map_info.position_x = new_pos;
-	}
-
+	AddScreenX(map_info.position_x, distance);
 	Parallax::Scroll(distance, 0);
 }
 
-void Game_Map::ScrollLeft(int distance) {
-	ScrollRight(-distance);
+void Game_Map::ScrollDown(int distance) {
+	AddScreenY(map_info.position_y, distance);
+	Parallax::Scroll(0, distance);
 }
 
-void Game_Map::ScrollUp(int distance) {
-	ScrollDown(-distance);
+// Non-negative modulus (x mod m).
+static int mod(int x, int m) {
+	assert(m > 0);
+	int r = x % m;
+	return (r < 0) ? (m + r) : r;
+}
+
+// Add inc to acc, clamping the result into the range [low, high].
+// If the result is clamped, inc is also modified to be actual amount
+// that acc changed by.
+static void ClampingAdd(int low, int high, int& acc, int& inc) {
+	int original_acc = acc;
+	acc = std::max(low, std::min(high, acc + inc));
+	inc = acc - original_acc;
+}
+
+void Game_Map::AddScreenX(int& screen_x, int& inc) {
+	int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	if (LoopHorizontal()) {
+		screen_x = mod(screen_x + inc, map_width);
+	} else {
+		ClampingAdd(0, map_width - SCREEN_WIDTH, screen_x, inc);
+	}
+}
+
+void Game_Map::AddScreenY(int& screen_y, int& inc) {
+	int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	if (LoopVertical()) {
+		screen_y = mod(screen_y + inc, map_height);
+	} else {
+		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
+	}
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -1026,17 +1019,27 @@ void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 	battleback_name = new_battleback_name;
 }
 
+int Game_Map::GetPositionX() {
+	return map_info.position_x;
+}
+
 int Game_Map::GetDisplayX() {
 	int shake_in_pixels = Main_Data::game_data.screen.shake_position;
 	return map_info.position_x + shake_in_pixels * 16;
 }
+
 void Game_Map::SetPositionX(int new_position_x) {
 	map_info.position_x = new_position_x;
+}
+
+int Game_Map::GetPositionY() {
+	return map_info.position_y;
 }
 
 int Game_Map::GetDisplayY() {
 	return map_info.position_y;
 }
+
 void Game_Map::SetPositionY(int new_position_y) {
 	map_info.position_y = new_position_y;
 }
