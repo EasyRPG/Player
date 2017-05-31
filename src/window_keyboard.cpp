@@ -50,7 +50,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"は", "ひ", "ふ", "へ", "ほ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"},
 		{"ま", "み", "む", "め", "も", "っ", "ゃ", "ゅ", "ょ", "ゎ"},
 		{"や", "ゆ", "よ", "わ", "ん", "ー", "～", "・", "＝", "☆"},
-		{"ら", "り", "る", "れ", "ろ", "を", Window_Keyboard::TO_KATAKANA, "", Window_Keyboard::DONE_JP}
+		{"ら", "り", "る", "れ", "ろ", "ヴ", Window_Keyboard::TO_KATAKANA, "", Window_Keyboard::DONE_JP}
 	},
 
 	{ // Katakana
@@ -62,7 +62,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"ハ", "ヒ", "フ", "ヘ", "ホ", "ァ", "ィ", "ゥ", "ェ", "ォ"},
 		{"マ", "ミ", "ム", "メ", "モ", "ッ", "ャ", "ュ", "ョ", "ヮ"},
 		{"ヤ", "ユ", "ヨ", "ワ", "ン", "ー", "～", "・", "＝", "☆"},
-		{"ラ", "リ", "ル", "レ", "ロ", "ヲ", Window_Keyboard::TO_HIRAGANA, "", Window_Keyboard::DONE_JP}
+		{"ラ", "リ", "ル", "レ", "ロ", "ヴ", Window_Keyboard::TO_HIRAGANA, "", Window_Keyboard::DONE_JP}
 	},
 
 	{ // Hangul 1
