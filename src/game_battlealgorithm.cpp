@@ -267,8 +267,8 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			message,
-			{'S'},
-			{GetTarget()->GetName()}
+			{'S', 'O'},
+			{GetSource()->GetName(), GetTarget()->GetName()}
 		);
 	}
 	else {
