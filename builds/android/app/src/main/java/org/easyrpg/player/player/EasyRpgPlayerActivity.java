@@ -139,6 +139,9 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
 
         // Add buttons
         addButtons();
+
+        // Set speed multiplier
+        setFastForwardMultiplier(SettingsManager.getFastForwardMultiplier());
     }
 
     @Override
@@ -300,6 +303,8 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
     public static native void toggleFps();
 
     public static native void endGame();
+
+    public static native void setFastForwardMultiplier(int m);
 
     protected String[] getArguments() {
         return getIntent().getStringArrayExtra(TAG_COMMAND_LINE);

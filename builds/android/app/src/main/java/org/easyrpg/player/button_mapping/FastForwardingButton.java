@@ -28,14 +28,13 @@ public class FastForwardingButton extends VirtualButton {
         }
     }
 
-
     @Override
     public void onReleased() {
         if (!debug_mode) {
             if (isPressed) {
                 isPressed = false;
 
-                if (!isPressAndReleaseBehaviorEnabled() || (isPressAndReleaseBehaviorEnabled() && alreadyActivated)) {
+                if (!isTapMode() || (isTapMode() && alreadyActivated)) {
                     SDLActivity.onNativeKeyUp(this.keyCode);
                     alreadyActivated = false;
                 } else {
@@ -58,7 +57,7 @@ public class FastForwardingButton extends VirtualButton {
         drawCenter(canvas, painter, String.valueOf(charButton));
     }
 
-        private boolean isPressAndReleaseBehaviorEnabled(){
-        return SettingsManager.isPressAndReleaseForFastForwardingEnabled();
+    private boolean isTapMode() {
+        return (SettingsManager.getFastForwardMode() == 1);
     }
 }

@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easyrpg.player.settings.SettingsEnum.AUDIO_ENABLED;
-import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_PRESS_AND_RELEASE;
+import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MODE;
+import static org.easyrpg.player.settings.SettingsEnum.FAST_FORWARD_MULTIPLIER;
 import static org.easyrpg.player.settings.SettingsEnum.FORCED_LANDSCAPE;
 import static org.easyrpg.player.settings.SettingsEnum.GAMES_DIRECTORY;
 import static org.easyrpg.player.settings.SettingsEnum.IGNORE_LAYOUT_SIZE_SETTINGS;
@@ -36,9 +37,7 @@ public class SettingsManager {
     private static boolean audioEnabled;
     private static boolean ignoreLayoutSizePreferencesEnabled;
     private static boolean forcedLandscape;
-
-    private static boolean pressAndReleaseForFastForwardingEnabled;
-    private static int layoutTransparency, layoutSize;
+    private static int layoutTransparency, layoutSize, fastForwardMode, fastForwardMultiplier;
     private static String easyRPGFolder;
     private static List<String> gamesFolderList = new ArrayList<>();
 
@@ -65,7 +64,8 @@ public class SettingsManager {
         easyRPGFolder = sharedPref.getString(MAIN_DIRECTORY.toString(),
                 Environment.getExternalStorageDirectory().getPath() + "/easyrpg");
         forcedLandscape = sharedPref.getBoolean(FORCED_LANDSCAPE.toString(), false);
-        pressAndReleaseForFastForwardingEnabled = sharedPref.getBoolean(FAST_FORWARD_PRESS_AND_RELEASE.toString(), true);
+        fastForwardMode = sharedPref.getInt(FAST_FORWARD_MODE.toString(), 0);
+        fastForwardMultiplier = sharedPref.getInt(FAST_FORWARD_MULTIPLIER.toString(), 3);
 
         // Fetch the games directories :
         gamesFolderList = new ArrayList<>();
@@ -146,13 +146,23 @@ public class SettingsManager {
         editor.commit();
     }
 
-    public static boolean isPressAndReleaseForFastForwardingEnabled() {
-        return pressAndReleaseForFastForwardingEnabled;
+    public static int getFastForwardMode() {
+        return fastForwardMode;
     }
 
-    public static void setPressAndReleaseForFastForwardingEnabled(boolean b) {
-        pressAndReleaseForFastForwardingEnabled = b;
-        editor.putBoolean(SettingsEnum.FAST_FORWARD_PRESS_AND_RELEASE.toString(), b);
+    public static void setFastForwardMode(int i) {
+        fastForwardMode = i;
+        editor.putInt(SettingsEnum.FAST_FORWARD_MODE.toString(), i);
+        editor.commit();
+    }
+
+    public static int getFastForwardMultiplier() {
+        return fastForwardMultiplier;
+    }
+
+    public static void setFastForwardMultiplier(int i) {
+        fastForwardMultiplier = i;
+        editor.putInt(SettingsEnum.FAST_FORWARD_MULTIPLIER.toString(), i);
         editor.commit();
     }
 

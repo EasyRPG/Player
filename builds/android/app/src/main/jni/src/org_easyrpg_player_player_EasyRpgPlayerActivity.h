@@ -31,6 +31,14 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_togg
 JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame
   (JNIEnv *, jclass);
 
+/*
+ * Class:     org_easyrpg_player_EasyRpgPlayerActivity
+ * Method:    setFastForwardMultiplier
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_setFastForwardMultiplier
+  (JNIEnv *, jclass, jint);
+
 #ifdef __cplusplus
 }
 #endif
