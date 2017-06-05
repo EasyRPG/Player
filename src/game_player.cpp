@@ -309,8 +309,8 @@ void Game_Player::MoveTo(int x, int y) {
 void Game_Player::UpdateScroll() {
 	// First, update for the player's movement...
 
-	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - Game_Map::GetPanX() / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
-	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - Game_Map::GetPanY() / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
+	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - actual_pan_x / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
+	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - actual_pan_y / (SCREEN_TILE_WIDTH / TILE_SIZE) + 2;
 
 	int dx = 0;
 	int dy = 0;
