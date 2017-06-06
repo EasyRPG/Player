@@ -94,8 +94,8 @@ namespace {
 	std::string fonts_path;
 
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
-										  std::string const& dir,
-										  std::string const& name,
+										  const std::string& dir,
+										  const std::string& name,
 										  char const* exts[])
 	{
 		using namespace FileFinder;
@@ -160,11 +160,11 @@ namespace {
 
 	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
 
-	bool is_not_ascii_filename(std::string const& n) {
+	bool is_not_ascii_filename(const std::string& n) {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
 	}
 
-	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
+	const std::string& translate_rtp(const std::string& dir, const std::string& name) {
 		rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
@@ -194,7 +194,7 @@ namespace {
 		std::string const ret = FindFile(*tree, dir, name, exts);
 		if (!ret.empty()) { return ret; }
 
-		std::string const& rtp_name = translate_rtp(dir, name);
+		const std::string& rtp_name = translate_rtp(dir, name);
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
@@ -241,7 +241,7 @@ void FileFinder::SetDirectoryTree(std::shared_ptr<FileFinder::DirectoryTree> dir
 	game_directory_tree = directory_tree;
 }
 
-std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::string const& p, bool recursive) {
+std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
 	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
@@ -262,7 +262,7 @@ std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(std::
 	return tree;
 }
 
-std::string FileFinder::MakePath(const std::string &dir, std::string const& name) {
+std::string FileFinder::MakePath(const std::string& dir, const std::string& name) {
 	std::string str = dir.empty()? name : dir + "/" + name;
 #ifdef _WIN32
 	std::replace(str.begin(), str.end(), '/', '\\');
@@ -272,10 +272,10 @@ std::string FileFinder::MakePath(const std::string &dir, std::string const& name
 	return str;
 }
 
-std::string FileFinder::MakeCanonical(std::string const& path, int initial_deepness) {
+std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepness) {
 	std::vector<std::string> path_components = SplitPath(path);
 	std::vector<std::string> path_can;
-	
+
 	for (std::string path_comp : path_components) {
 		if (path_comp == "..") {
 			if (path_can.size() > 0) {
@@ -297,11 +297,11 @@ std::string FileFinder::MakeCanonical(std::string const& path, int initial_deepn
 	for (std::string s : path_can) {
 		ret = MakePath(ret, s);
 	}
-	
+
 	return ret;
 }
 
-std::vector<std::string> FileFinder::SplitPath(std::string const& path) {
+std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
 	// Tokens are patch delimiters ("/" and encoding aware "\")
 	std::function<bool(char32_t)> f = [](char32_t t) {
 		char32_t escape_char_back = '\0';
@@ -339,7 +339,7 @@ std::string GetFontsPath() {
 	}
 }
 
-std::string GetFontFilename(std::string const& name) {
+std::string GetFontFilename(const std::string& name) {
 	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
 	if (real_name.length() > 0) {
 		if (FileFinder::Exists(real_name))
@@ -394,7 +394,7 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-static void add_rtp_path(std::string const& p) {
+static void add_rtp_path(const std::string& p) {
 	using namespace FileFinder;
 	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if(tree) {
@@ -452,7 +452,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	jclass cls = env->GetObjectClass(sdl_activity);
 	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
 	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
-	
+
 	const char *js = env->GetStringUTFChars(return_string, NULL);
 	std::string cs(js);
 
@@ -563,7 +563,7 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 	return FindFile(dir, name, no_exts);
 }
 
-std::string FileFinder::FindDefault(std::string const& name) {
+std::string FileFinder::FindDefault(const std::string& name) {
 	return FindDefault(*GetDirectoryTree(), name);
 }
 
@@ -651,7 +651,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 	return FindFile("Sound", name, SOUND_TYPES);
 }
 
-bool FileFinder::Exists(std::string const& filename) {
+bool FileFinder::Exists(const std::string& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
 #elif defined(GEKKO)
@@ -659,9 +659,9 @@ bool FileFinder::Exists(std::string const& filename) {
 	return ::stat(filename.c_str(), &sb) == 0;
 #elif defined(_3DS)
 	FILE* tmp = fopen(filename.c_str(),"r");
-	if (tmp == NULL){ 
+	if (tmp == NULL){
 		DIR* tmp2 = opendir(filename.c_str());
-		if (tmp2 == NULL){ 
+		if (tmp2 == NULL){
 			std::string tmp_str = filename + "/";
 			tmp2 = opendir(tmp_str.c_str());
 			if (tmp2 == NULL) return false;
@@ -685,7 +685,7 @@ bool FileFinder::Exists(std::string const& filename) {
 #endif
 }
 
-bool FileFinder::IsDirectory(std::string const& dir) {
+bool FileFinder::IsDirectory(const std::string& dir) {
 #ifdef _3DS
 	DIR* d = opendir(dir.c_str());
 	if(d) {
@@ -789,10 +789,10 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 				Output::Debug("Directory parsing will be slower.");
 				has_fast_dir_stat = false;
 			}
-			
+
 			continue;
 		}
-		
+
 		switch(m) {
 		case FILES:
 			if (is_directory) { continue; }
@@ -834,7 +834,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 	return result;
 }
 
-Offset FileFinder::GetFileSize(std::string const& file) {
+Offset FileFinder::GetFileSize(const std::string& file) {
 	StatBuf sb;
 	int result = GetStat(file.c_str(), &sb);
 	return (result == 0) ? sb.st_size : -1;
