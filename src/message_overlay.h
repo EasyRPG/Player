@@ -50,6 +50,8 @@ public:
 
 	bool IsGlobal() const override;
 
+	void Update();
+
 	void AddMessage(const std::string& message, Color color);
 
 	void SetShowAll(bool show_all);

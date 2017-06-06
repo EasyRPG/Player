@@ -136,6 +136,8 @@ void Graphics::Update(bool time_left) {
 
 	fps_overlay->Update();
 	fps_overlay->AddUpdate();
+
+	message_overlay->Update();
 }
 
 void Graphics::UpdateTitle() {

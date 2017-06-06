@@ -52,19 +52,7 @@ bool MessageOverlay::IsGlobal() const {
 void MessageOverlay::Draw() {
 	std::deque<MessageOverlayItem>::iterator it;
 
-	if (IsAnyMessageVisible()) {
-		++counter;
-		if (counter > 150) {
-			counter = 0;
-			for (it = messages.begin(); it != messages.end(); ++it) {
-				if (!it->hidden) {
-					it->hidden = true;
-					break;
-				}
-			}
-			dirty = true;
-		}
-	} else if (!show_all) {
+	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible
 		return;
 	}
@@ -77,15 +65,15 @@ void MessageOverlay::Draw() {
 
 	int i = 0;
 
-	for (it = messages.begin(); it != messages.end(); ++it) {
-		if (!it->hidden || show_all) {
+	for (auto& message : messages) {
+		if (!message.hidden || show_all) {
 			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
 			bitmap->TextDraw(Rect(2,
 						i * text_height,
 						bitmap->GetWidth(),
 						text_height),
-				it->color,
-				it->text);
+				message.color,
+				message.text);
 			++i;
 		}
 	}
@@ -115,6 +103,22 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 		messages.pop_front();
 	}
 	dirty = true;
+}
+
+void MessageOverlay::Update() {
+	if (IsAnyMessageVisible()) {
+		++counter;
+		if (counter > 150) {
+			counter = 0;
+			for (auto& message : messages) {
+				if (!message.hidden) {
+					message.hidden = true;
+					break;
+				}
+			}
+			dirty = true;
+		}
+	}
 }
 
 void MessageOverlay::SetShowAll(bool show_all) {
