@@ -31,6 +31,7 @@ public:
 	std::string text;
 	Color color;
 	bool hidden;
+	int repeat_count;
 };
 
 /**

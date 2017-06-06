@@ -61,12 +61,18 @@ void MessageOverlay::Draw() {
 	for (auto& message : messages) {
 		if (!message.hidden || show_all) {
 			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
+
+			std::string text = message.text;
+			if (message.repeat_count > 0) {
+				text += " [" + Utils::ToString(message.repeat_count + 1) + "x]";
+			}
+
 			bitmap->TextDraw(Rect(2,
 						i * text_height,
 						bitmap->GetWidth(),
 						text_height),
 				message.color,
-				message.text);
+				text);
 			++i;
 		}
 	}
@@ -84,17 +90,40 @@ DrawableType MessageOverlay::GetType() const {
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	std::stringstream smessage (message);
-	std::vector<std::string> strs;
-	std::string str;
-	while (getline(smessage, str))
-		strs.push_back(str);
+	std::string new_message;
 
-	for (size_t i = 0; i < strs.size(); i++)
-		messages.emplace_back(strs[i], color);
+	int new_lines = 0;
+
+	while (getline(smessage, new_message)) {
+		++new_lines;
+	}
+
+	smessage.clear();
+	smessage.str(message);
+
+	while (getline(smessage, new_message)) {
+		if (messages.size() >= new_lines) {
+			MessageOverlayItem &last_message = messages[messages.size() - new_lines];
+			--new_lines;
+
+			if (last_message.text == new_message) {
+				// The message matches the previous message -> increase counter
+				last_message.repeat_count++;
+				// Keep the old message (with a new counter) on the screen
+				counter = 0;
+			} else {
+				// Is a new message
+				messages.emplace_back(new_message, color);
+			}
+		} else {
+			messages.emplace_back(new_message, color);
+		}
+	}
 
 	while (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
+
 	dirty = true;
 }
 
@@ -135,6 +164,6 @@ bool MessageOverlay::IsAnyMessageVisible() const {
 }
 
 MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :
-	text(text), color(color), hidden(false) {
+	text(text), color(color), hidden(false), repeat_count(0) {
 	// no-op
 }
