@@ -314,6 +314,24 @@ std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
 	return Utils::Tokenize(path, f);
 }
 
+std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std::string& path_in) {
+	if (!Utils::StartsWith(path_in, path_to)) {
+		return "";
+	}
+
+	std::string path_out = path_in.substr(path_to.size());
+	if (!path_out.empty() && (path_out[0] == '/' || path_out[0] == '\\')) {
+		path_out = path_out.substr(1);
+	}
+
+	return path_out;
+}
+
+std::string FileFinder::GetPathInsideGamePath(const std::string& path_in) {
+	return FileFinder::GetPathInsidePath(GetDirectoryTree()->directory_path, path_in);
+}
+
+
 #if defined(_WIN32) && !defined(_ARM_)
 std::string GetFontsPath() {
 	static std::string fonts_path = "";

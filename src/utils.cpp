@@ -42,7 +42,13 @@ std::string Utils::UpperCase(const std::string& str) {
 	return result;
 }
 
-bool Utils::EndsWith(const std::string &str, const std::string &end) {
+
+bool Utils::StartsWith(const std::string& str, const std::string& start) {
+	return str.length() >= start.length() &&
+		   0 == str.compare(0, start.length(), start);
+}
+
+bool Utils::EndsWith(const std::string& str, const std::string& end) {
 	return str.length() >= end.length() &&
 		0 == str.compare(str.length() - end.length(), end.length(), end);
 }

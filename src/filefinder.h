@@ -214,6 +214,26 @@ namespace FileFinder {
 	std::vector<std::string> SplitPath(const std::string& path);
 
 	/**
+	 * Returns the part of "path_in" that is inside "path_to".
+	 * e.g. Input: /h/e/game, /h/e/game/Music/a.wav; Output: Music/a.wav
+	 *
+	 * @param path_to Path to a primary folder of path_in
+	 * @param path_in Absolute path to the file, must start with path_to
+	 *
+	 * @return The part of path_in that is inside path_to. path_in when the path is not in path_to
+	 */
+	std::string GetPathInsidePath(const std::string& path_to, const std::string& path_in);
+
+	/**
+	 * Return the part of "path_in" that is inside the current games directory.
+	 *
+	 * @see GetPathInsidePath
+	 * @param path_in An absolute path inside the game directory
+	 * @return The part of path_in that is inside the game directory, path_in when it's not in the directory
+	 */
+	std::string GetPathInsideGamePath(const std::string& path_in);
+
+	/**
 	 * GetDirectoryMembers member listing mode.
 	 */
 	enum Mode {
