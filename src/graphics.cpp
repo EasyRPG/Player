@@ -31,6 +31,7 @@
 #include "output.h"
 #include "player.h"
 #include "fps_overlay.h"
+#include "message_overlay.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -65,6 +66,7 @@ namespace Graphics {
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
 
+	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
 }
 
@@ -83,6 +85,7 @@ void Graphics::Init() {
 	global_state.reset(new State());
 
 	// Is a drawable, must be init after state
+	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
 
 	next_fps_time = 0;
@@ -94,7 +97,9 @@ void Graphics::Quit() {
 
 	frozen_screen.reset();
 	black_screen.reset();
+
 	fps_overlay.reset();
+	message_overlay.reset();
 
 	Cache::Clear();
 }
@@ -471,4 +476,8 @@ void Graphics::Pop() {
 
 int Graphics::GetDefaultFps() {
 	return DEFAULT_FPS;
+}
+
+MessageOverlay& Graphics::GetMessageOverlay() {
+	return *message_overlay;
 }

@@ -24,6 +24,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "graphics.h"
+
 #ifdef GEKKO
 #  include <unistd.h>
 #  include <gccore.h>
@@ -48,7 +50,7 @@
 namespace {
 	std::ofstream LOG_FILE;
 	bool init = false;
-	
+
 	std::ostream& output_time() {
 		if (!init) {
 			LOG_FILE.open(FileFinder::MakePath(Main_Data::GetSavePath(), OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
@@ -61,15 +63,6 @@ namespace {
 	}
 
 	bool ignore_pause = false;
-
-	MessageOverlay& message_overlay() {
-		static std::unique_ptr<MessageOverlay> overlay;
-		assert(DisplayUi);
-		if (!overlay) {
-			overlay.reset(new MessageOverlay());
-		}
-		return *overlay;
-	}
 
 	std::string format_string(char const* fmt, va_list args) {
 		char buf[4096];
@@ -151,7 +144,7 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 
 	if (type != "Debug") {
 		if (DisplayUi) {
-			message_overlay().AddMessage(msg, c);
+			Graphics::GetMessageOverlay().AddMessage(msg, c);
 		}
 	}
 }
@@ -249,7 +242,7 @@ bool Output::TakeScreenshot(std::ostream& os) {
 
 void Output::ToggleLog() {
 	static bool show_log = true;
-	message_overlay().SetShowAll(show_log);
+	Graphics::GetMessageOverlay().SetShowAll(show_log);
 	show_log = !show_log;
 }
 

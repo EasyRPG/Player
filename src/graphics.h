@@ -24,6 +24,8 @@
 #include "system.h"
 #include "drawable.h"
 
+class MessageOverlay;
+
 /**
  * Graphics namespace.
  * Handles screen drawing.
@@ -134,6 +136,14 @@ namespace Graphics {
 	 * @return target frame rate
 	 */
 	int GetDefaultFps();
+
+	/**
+	 * Returns a handle to the message overlay.
+	 * Only used by Output to put messages.
+	 *
+	 * @return message overlay
+	 */
+	MessageOverlay& GetMessageOverlay();
 }
 
 #endif
