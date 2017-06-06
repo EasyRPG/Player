@@ -123,6 +123,9 @@ namespace {
 void Player::Init(int argc, char *argv[]) {
 	frames = 0;
 
+	// Must be called before the first call to Output
+	Graphics::Init();
+
 	// Display a nice version string
 	std::stringstream header;
 	std::string addtl_ver(PLAYER_ADDTL);
@@ -188,7 +191,6 @@ void Player::Init(int argc, char *argv[]) {
 			 RUN_ZOOM);
 	}
 
-	Graphics::Init();
 	Input::Init(replay_input_path, record_input_path);
 }
 

@@ -79,8 +79,6 @@ void Graphics::Init() {
 	screen_erased = false;
 	transition_frames_left = 0;
 
-	black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
-
 	state.reset(new State());
 	global_state.reset(new State());
 
@@ -222,6 +220,10 @@ void Graphics::Freeze() {
 }
 
 void Graphics::Transition(TransitionType type, int duration, bool erase) {
+	if (!black_screen) {
+		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	}
+
 	if (screen_erased && erase) {
 		// Don't allow another erase when already erased
 		return;

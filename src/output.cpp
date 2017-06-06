@@ -143,9 +143,7 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 #endif
 
 	if (type != "Debug") {
-		if (DisplayUi) {
-			Graphics::GetMessageOverlay().AddMessage(msg, c);
-		}
+		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}
 }
 
@@ -229,7 +227,7 @@ bool Output::TakeScreenshot(std::string const& file) {
 	std::shared_ptr<std::fstream> ret =
 		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
 
-	if(ret) {
+	if (ret) {
 		Output::Debug("Saving Screenshot %s", file.c_str());
 		return Output::TakeScreenshot(*ret);
 	}
@@ -307,8 +305,9 @@ void Output::Debug(const char* fmt, ...) {
 	Output::DebugStr(format_string(fmt, args));
 	va_end(args);
 }
+
 void Output::DebugStr(std::string const& msg) {
-	WriteLog("Debug", msg);
+	WriteLog("Debug", msg, Color(128, 128, 128, 255));
 }
 
 #ifdef GEKKO

@@ -33,12 +33,7 @@ MessageOverlay::MessageOverlay() :
 	dirty(false),
 	counter(0),
 	show_all(false) {
-
-	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
-
-	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
-
-	Graphics::RegisterDrawable(this);
+	// Graphics::RegisterDrawable is in the Update function
 }
 
 MessageOverlay::~MessageOverlay() {
@@ -50,8 +45,6 @@ bool MessageOverlay::IsGlobal() const {
 }
 
 void MessageOverlay::Draw() {
-	std::deque<MessageOverlayItem>::iterator it;
-
 	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible
 		return;
@@ -97,7 +90,7 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 		strs.push_back(str);
 
 	for (size_t i = 0; i < strs.size(); i++)
-		messages.push_back(MessageOverlayItem(strs[i], color));
+		messages.emplace_back(strs[i], color);
 
 	while (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
@@ -106,6 +99,17 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 }
 
 void MessageOverlay::Update() {
+	if (!DisplayUi) {
+		return;
+	}
+
+	if (!bitmap) {
+		// Initialisation is delayed because the display is not ready on startup
+		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
+		bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
+		Graphics::RegisterDrawable(this);
+	}
+
 	if (IsAnyMessageVisible()) {
 		++counter;
 		if (counter > 150) {
