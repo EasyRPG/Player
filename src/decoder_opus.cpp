@@ -19,10 +19,10 @@
 
 #ifdef HAVE_OPUS
 
+#include <cstring>
 #include <opus/opusfile.h>
 #include "audio_decoder.h"
 #include "decoder_opus.h"
-#include "output.h"
 
 static int custom_read(void *stream, unsigned char *ptr, int nbytes) {
 	FILE* f = reinterpret_cast<FILE*>(stream);
@@ -92,12 +92,36 @@ int OpusDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!oof)
 		return -1;
 
-	int ret = op_read_stereo(oof, reinterpret_cast<opus_int16*>(buffer), length / 2);
+	// op_read_stereo doesn't overwrite the buffer completely, must be cleared to prevent noise
+	memset(buffer, '\0', length);
 
-	if (ret < 0)
-		return ret;
+	// Use a 16bit buffer because op_read_stereo works on one
+	int length_16 = length / 2;
+	opus_int16* buffer_16 = reinterpret_cast<opus_int16*>(buffer);
 
-	return ret * 4;
+	int read = 0;
+	int to_read = length_16;
+
+	do {
+		read = op_read_stereo(oof, buffer_16 + (length_16 - to_read), to_read);
+
+		// stop decoding when error or end of file
+		if (read <= 0)
+			break;
+
+		// "read" contains number of samples per channel and the function filled 2 channels
+		to_read -= read * 2;
+	} while (to_read > 0);
+
+	if (read == 0)
+		finished = true;
+
+	if (read < 0) {
+		return -1;
+	}
+
+	// Return amount of read bytes in the 8 bit what the audio decoder expects
+	return (length_16 - to_read) * 2;
 }
 
 #endif
