@@ -21,7 +21,7 @@
 #include "player.h"
 #include "graphics.h"
 #include "bitmap.h"
-#include "font.h"
+#include "game_message.h"
 
 MessageOverlay::MessageOverlay() :
 	type(TypeOverlay),
@@ -89,36 +89,25 @@ DrawableType MessageOverlay::GetType() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
-	std::stringstream smessage (message);
-	std::string new_message;
+	if (message == last_message) {
+		// The message matches the previous message -> increase counter
+		messages.back().repeat_count++;
+		// Keep the old message (with a new counter) on the screen
+		counter = 0;
 
-	int new_lines = 0;
-
-	while (getline(smessage, new_message)) {
-		++new_lines;
+		dirty = true;
+		return;
 	}
 
-	smessage.clear();
-	smessage.str(message);
+	last_message = message;
 
-	while (getline(smessage, new_message)) {
-		if (messages.size() >= new_lines) {
-			MessageOverlayItem &last_message = messages[messages.size() - new_lines];
-			--new_lines;
-
-			if (last_message.text == new_message) {
-				// The message matches the previous message -> increase counter
-				last_message.repeat_count++;
-				// Keep the old message (with a new counter) on the screen
-				counter = 0;
-			} else {
-				// Is a new message
-				messages.emplace_back(new_message, color);
+	Game_Message::WordWrap(
+			message,
+			SCREEN_TARGET_WIDTH - 6, // hardcoded to screen width because the bitmap is not initialized early enough
+			[&](const std::string& line) {
+				messages.emplace_back(line, color);
 			}
-		} else {
-			messages.emplace_back(new_message, color);
-		}
-	}
+	);
 
 	while (messages.size() > (unsigned)message_max) {
 		messages.pop_front();

@@ -73,6 +73,8 @@ private:
 	int message_max;
 
 	std::deque<MessageOverlayItem> messages;
+	/** Last message added to the console before linebreak processing */
+	std::string last_message;
 
 	bool dirty;
 

@@ -176,7 +176,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 	}
 
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
-		Output::Warning("Can't use up item.\n%04d is not a valid item ID.",
+		Output::Warning("Can't use up item. %04d is not a valid item ID.",
 						item_id);
 		return;
 	}
