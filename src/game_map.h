@@ -30,7 +30,10 @@
 
 class FileRequestAsync;
 
-#define SCREEN_TILE_WIDTH 256
+// These are in sixteenths of a pixel.
+constexpr int SCREEN_TILE_WIDTH = 256;
+constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_WIDTH;
+constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_WIDTH;
 
 /**
  * Game_Map namespace
@@ -94,32 +97,30 @@ namespace Game_Map {
 	void Refresh();
 
 	/**
-	 * Scrolls the map view down.
-	 *
-	 * @param distance number of tiles to scroll.
-	 */
-	void ScrollDown(int distance);
-
-	/**
-	 * Scrolls the map view left.
-	 *
-	 * @param distance number of tiles to scroll.
-	 */
-	void ScrollLeft(int distance);
-
-	/**
 	 * Scrolls the map view right.
 	 *
-	 * @param distance number of tiles to scroll.
+	 * @param distance scroll amount in sixteenths of a pixel
 	 */
 	void ScrollRight(int distance);
 
 	/**
-	 * Scrolls the map view up.
+	 * Scrolls the map view down.
 	 *
-	 * @param distance number of tiles to scroll.
+	 * @param distance scroll amount in sixteenths of a pixel
 	 */
-	void ScrollUp(int distance);
+	void ScrollDown(int distance);
+
+	/**
+	 * Adds inc, a distance in sixteenths of a pixel, to screen_x, the
+	 * x-position of a screen. The sum is clamped (for non-looping maps)
+	 * and wrapped (for looping maps) to fit in the map range. If the
+	 * sum is clamped, inc is updated to be actual amount that it
+	 * changed by.
+	 */
+	void AddScreenX(int& screen_x, int& inc);
+
+	/** Same as AddScreenX, but for the Y-direction. */
+	void AddScreenY(int& screen_y, int& inc);
 
 	/**
 	 * Gets if a tile coordinate is valid.
@@ -223,32 +224,11 @@ namespace Game_Map {
 	int CheckEvent(int x, int y);
 
 	/**
-	 * Starts map scrolling.
-	 *
-	 * @param direction scroll direction.
-	 * @param distance scroll distance in tiles.
-	 * @param speed scroll speed.
-	 */
-	void StartScroll(int direction, int distance, int speed);
-
-	/**
-	 * Gets if the map is currently scrolling.
-	 *
-	 * @return whether the map view is scrolling.
-	 */
-	bool IsScrolling();
-
-	/**
 	 * Updates the map state.
 	 *
 	 * @param only_parallel Update only parallel interpreters
 	 */
 	void Update(bool only_parallel = false);
-
-	/**
-	 * Updates the scroll state.
-	 */
-	void UpdateScroll();
 
 	/**
 	 * Gets current map.
@@ -403,30 +383,29 @@ namespace Game_Map {
 
 	/**
 	 * Gets the offset of the screen from the left edge
-	 * of the map.
-	 *
-	 * If the screen is shaking, this is not necessarily
-	 * the same value that SetPositionX returns.
-	 *
-	 * @return display x.
+	 * of the map, ignoring screen shaking.
+	 */
+	int GetPositionX();
+
+	/**
+	 * Gets the offset of the screen from the left edge
+	 * of the map, taking shaking into account.
 	 */
 	int GetDisplayX();
 
 	/**
 	 * Sets the offset of the screen from the left edge
-	 * of the map.
-	 *
-	 * If the screen is shaking, this is not necessarily
-	 * the same value that GetDisplayX returns.
-	 *
-	 * @param new_position_x new position x.
+	 * of the map, as given by GetPositionX.
 	 */
 	void SetPositionX(int new_position_x);
 
 	/**
 	 * Gets display y.
-	 *
-	 * @return display y.
+	 */
+	int GetPositionY();
+
+	/**
+	 * Gets display y.
 	 */
 	int GetDisplayY();
 
@@ -594,6 +573,8 @@ namespace Game_Map {
 	bool IsPanLocked();
 	int GetPanX();
 	int GetPanY();
+	int GetTargetPanX();
+	int GetTargetPanY();
 
 	/**
 	 * Gets if pending teleportations will be ignored.
