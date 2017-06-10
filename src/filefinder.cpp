@@ -28,6 +28,7 @@
 #include <sstream>
 
 #ifdef _WIN32
+#  define WIN32_LEAN_AND_MEAN
 #  include <windows.h>
 #  include <shlobj.h>
 #  include <sys/types.h>
@@ -313,11 +314,8 @@ std::vector<std::string> FileFinder::SplitPath(std::string const& path) {
 	return Utils::Tokenize(path, f);
 }
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_ARM_)
 std::string GetFontsPath() {
-#ifdef __WINRT__
-	return ".";
-#else
 	static std::string fonts_path = "";
 	static bool init = false;
 
@@ -339,7 +337,6 @@ std::string GetFontsPath() {
 
 		return fonts_path;
 	}
-#endif
 }
 
 std::string GetFontFilename(std::string const& name) {
@@ -368,7 +365,7 @@ std::string FileFinder::FindFont(const std::string& name) {
 		".ttf", ".ttc", ".otf", ".fon", NULL, };
 	std::string path = FindFile("Font", name, FONTS_TYPES);
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_ARM_)
 	if (!path.empty()) {
 		return path;
 	}
@@ -408,7 +405,7 @@ static void add_rtp_path(std::string const& p) {
 
 
 static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
-#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS))
+#if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS)) && !(defined(_WIN32) && defined(_ARM_))
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);

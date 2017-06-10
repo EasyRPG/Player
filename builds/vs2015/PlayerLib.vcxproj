@@ -449,6 +449,8 @@
     <ClCompile Include="..\..\src\decoder_mpg123.cpp" />
     <ClCompile Include="..\..\src\decoder_wav.cpp" />
     <ClCompile Include="..\..\src\decoder_oggvorbis.cpp" />
+    <ClCompile Include="..\..\src\decoder_wildmidi.cpp" />
+    <ClCompile Include="..\..\src\decoder_xmp.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\frame.cpp" />
@@ -602,6 +604,8 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\decoder_libsndfile.h" />
     <ClInclude Include="..\..\src\decoder_oggvorbis.h" />
+    <ClInclude Include="..\..\src\decoder_wildmidi.h" />
+    <ClInclude Include="..\..\src\decoder_xmp.h" />
     <ClInclude Include="..\..\src\default_graphics.h" />
     <ClInclude Include="..\..\src\decoder_fmmidi.h" />
     <ClInclude Include="..\..\src\decoder_wav.h" />
