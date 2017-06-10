@@ -38,7 +38,7 @@ Window::Window():
 	y(0),
 	width(0),
 	height(0),
-	z(0),
+	z(Priority_Window),
 	ox(0),
 	oy(0),
 	border_x(8),

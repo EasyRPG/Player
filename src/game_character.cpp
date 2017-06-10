@@ -160,12 +160,18 @@ int Game_Character::GetScreenY() const {
 }
 
 int Game_Character::GetScreenZ() const {
-	int z = this == Main_Data::game_player.get() ? 1 : 0;
+	int z = 0;
+
+	if (GetLayer() == RPG::EventPage::Layers_same) {
+		z = Priority_Player;
+	} else if (GetLayer() == RPG::EventPage::Layers_below) {
+		z = Priority_EventsBelow;
+	} else if (GetLayer() == RPG::EventPage::Layers_above) {
+		z = Priority_EventsAbove;
+	}
 
 	// For events on the screen, this should be inside a 0-40 range
 	z += GetScreenY() >> 3;
-
-	z += GetLayer() * 50;
 
 	return z;
 }

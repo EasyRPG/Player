@@ -37,7 +37,7 @@ public:
 	DrawableType GetType() const override;
 
 private:
-	static const int z = -1000;
+	static const int z = Priority_Background;
 	static const DrawableType type = TypeBackground;
 
 	static void Update(int& rate, int& value);

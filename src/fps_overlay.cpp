@@ -26,7 +26,7 @@
 
 FpsOverlay::FpsOverlay() :
 	type(TypeOverlay),
-	z(200) {
+	z(Priority_Overlay + 100) {
 
 	Graphics::RegisterDrawable(this);
 }

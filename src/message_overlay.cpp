@@ -25,7 +25,7 @@
 
 MessageOverlay::MessageOverlay() :
 	type(TypeOverlay),
-	z(100),
+	z(Priority_Overlay),
 	ox(0),
 	oy(0),
 	text_height(12),
@@ -33,7 +33,7 @@ MessageOverlay::MessageOverlay() :
 	dirty(false),
 	counter(0),
 	show_all(false) {
-	
+
 	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
 
 	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);

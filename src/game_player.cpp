@@ -55,6 +55,12 @@ void Game_Player::SetY(int new_y) {
 	location.position_y = new_y;
 }
 
+int Game_Player::GetScreenZ() const {
+	// Player is always slightly above events
+	// (and always on "same layer as hero" obviously)
+	return Game_Character::GetScreenZ() + 1;
+}
+
 int Game_Player::GetMapId() const {
 	return location.map_id;
 }

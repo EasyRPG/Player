@@ -35,7 +35,7 @@ Spriteset_Map::Spriteset_Map() {
 	tilemap->SetHeight(Game_Map::GetHeight());
 
 	panorama.reset(new Plane());
-	panorama->SetZ(-1000);
+	panorama->SetZ(Priority_Background);
 
 	ChipsetUpdated();
 

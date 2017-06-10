@@ -269,7 +269,8 @@ void Sprite_Battler::CreateSprite() {
 
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
-	SetZ(battler->GetBattleY()); // Not a typo
+	// Battlers at the bottom appear above battlers at the top
+	SetZ(Priority_Battler + battler->GetBattleY());
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {

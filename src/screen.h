@@ -28,7 +28,7 @@
  * A special drawable for handling screen effects.
  * This basically works by taking the screen surface and drawing on itself.
  * Sounds a bit dirty, but works.
- * 
+ *
  * The z index is chosen in a way that battle animations and message boxes
  * are not colorized.
  */
@@ -47,7 +47,7 @@ public:
 	void SetTone(Tone tone);
 
 private:
-	static const int z = 2500;
+	static const int z = Priority_Screen;
 	static const DrawableType type = TypeScreen;
 
 	BitmapRef flash;

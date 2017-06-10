@@ -127,7 +127,6 @@ void Scene_Battle::CreateUi() {
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
 
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
-	message_window->SetZ(3002);
 }
 
 void Scene_Battle::Update() {
