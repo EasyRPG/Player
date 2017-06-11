@@ -24,9 +24,24 @@
 #include "audio_decoder.h"
 #include "decoder_opus.h"
 
-static int custom_read(void *stream, unsigned char *ptr, int nbytes) {
+static int custom_read(void* stream, unsigned char* ptr, int nbytes) {
 	FILE* f = reinterpret_cast<FILE*>(stream);
 	return fread(ptr, 1, nbytes, f);
+}
+
+static int custom_seek(void* stream, opus_int64 offset, int whence) {
+	FILE* f = reinterpret_cast<FILE*>(stream);
+	return fseek(f, offset, whence);
+}
+
+static opus_int64 custom_tell(void* stream) {
+	FILE* f = reinterpret_cast<FILE*>(stream);
+	return ftell(f);
+}
+
+static int custom_close(void* stream) {
+	FILE* f = reinterpret_cast<FILE*>(stream);
+	return fclose(f);
 }
 
 OpusDecoder::OpusDecoder() {
@@ -43,7 +58,7 @@ bool OpusDecoder::Open(FILE* file) {
 	finished = false;
 
 	int res;
-	OpusFileCallbacks callbacks = {custom_read, nullptr, nullptr, nullptr};
+	OpusFileCallbacks callbacks = {custom_read, custom_seek, custom_tell, custom_close};
 
 	oof = op_open_callbacks(file, &callbacks, nullptr, 0, &res);
 	if (res != 0) {
