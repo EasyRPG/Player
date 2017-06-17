@@ -144,10 +144,6 @@ void Sprite_Battler::Update() {
 			}
 		}
 	}
-
-	SetX(battler->GetDisplayX());
-	SetY(battler->GetDisplayY());
-	SetZ(battler->GetBattleY());
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
