@@ -243,6 +243,14 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		}
 		break;
 	case State_SelectOption:
+		if (last_turn_check < Game_Battle::GetTurn()) {
+			// Handle end of a battle caused by an event that ran on battle
+			// start or at the end of a turn.
+			CheckResultConditions();
+
+			last_turn_check = Game_Battle::GetTurn();
+		}
+
 		// No Auto battle/Escape when all actors are sleeping or similar
 		if (!Main_Data::game_party->IsAnyControllable()) {
 			SelectNextActor();

@@ -136,6 +136,8 @@ protected:
 	int escape_counter = 0;
 
 	bool message_box_got_visible = false;
+
+	int last_turn_check = -1;
 };
 
 #endif
