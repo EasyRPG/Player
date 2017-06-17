@@ -533,9 +533,9 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	}
 
 	if (warn_no_rtp_found && search_paths.empty()) {
-		Output::Warning("RTP not found. This may create missing file errors.\n"
-			"Install RTP files or check they are installed fine.\n"
-			"If this game really does not require RTP, then add\n"
+		Output::Warning("RTP not found. This may create missing file errors. "
+			"Install RTP files or check they are installed fine. "
+			"If this game really does not require RTP, then add "
 			"FullPackageFlag=1 line to the RPG_RT.ini game file.");
 	}
 }

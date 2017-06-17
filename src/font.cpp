@@ -225,8 +225,7 @@ Rect FTFont::GetSize(std::u32string const& txt) const {
 	int const s = Font::Default()->GetSize(txt).width;
 
 	if (s == -1) {
-		Output::Warning("Text contains invalid chars.\n"\
-			"Is the encoding correct?");
+		Output::Warning("Text contains invalid chars. Is the encoding correct?");
 
 		return Rect(0, 0, pixel_size() * txt.length() / 2, pixel_size());
 	} else {
