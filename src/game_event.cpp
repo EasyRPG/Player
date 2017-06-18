@@ -343,9 +343,14 @@ void Game_Event::Refresh() {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
 			new_page = &(*i);
+			SetVisible(true);
 			// Stop looking for more...
 			break;
 		}
+	}
+
+	if (!new_page) {
+		SetVisible(false);
 	}
 
 	// Only update the page pointer when game is loaded,
