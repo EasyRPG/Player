@@ -84,10 +84,14 @@ void Scene_Logo::Update() {
 		if (is_valid) {
 			Scene::Push(std::make_shared<Scene_Title>(), true);
 			if (Player::load_game_id > 0) {
+				std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateSaveDirectoryTree();
+
 				std::stringstream ss;
 				ss << "Save" << (Player::load_game_id <= 9 ? "0" : "") << Player::load_game_id << ".lsd";
 
-				std::string save_name = FileFinder::FindDefault(ss.str());
+				Output::Debug("Loading Save %s", ss.str().c_str());
+
+				std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 				Player::LoadSavegame(save_name);
 				Scene::Push(std::make_shared<Scene_Map>(true));
 			}

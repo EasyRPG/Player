@@ -264,10 +264,8 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (original_pattern != page->character_pattern) {
-		pattern = page->character_pattern;
-		original_pattern = pattern;
-	}
+	pattern = page->character_pattern;
+	original_pattern = pattern;
 
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
@@ -345,9 +343,14 @@ void Game_Event::Refresh() {
 		// Loop in reverse order to see whether any page meets conditions...
 		if (AreConditionsMet(*i)) {
 			new_page = &(*i);
+			SetVisible(true);
 			// Stop looking for more...
 			break;
 		}
+	}
+
+	if (!new_page) {
+		SetVisible(false);
 	}
 
 	// Only update the page pointer when game is loaded,

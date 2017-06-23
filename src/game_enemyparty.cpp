@@ -40,12 +40,32 @@ int Game_EnemyParty::GetBattlerCount() const {
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
 	troop = &Data::troops[battle_troop_id - 1];
-	std::vector<RPG::TroopMember>::const_iterator ei;
-	for (ei = troop->members.begin(); ei != troop->members.end(); ++ei)	{
-		std::shared_ptr<Game_Enemy> enemy = std::make_shared<Game_Enemy>(ei->enemy_id);
-		enemy->SetBattleX(ei->x);
-		enemy->SetBattleY(ei->y);
-		enemy->SetHidden(ei->invisible);
+
+	int non_hidden = 0;
+	for (const RPG::TroopMember& mem : troop->members) {
+		non_hidden += (!mem.invisible ? 1 : 0);
+	}
+
+	for (const RPG::TroopMember& mem : troop->members) {
+		std::shared_ptr<Game_Enemy> enemy = std::make_shared<Game_Enemy>(mem.enemy_id);
+		enemy->SetBattleX(mem.x);
+		enemy->SetBattleY(mem.y);
+
+		if (!mem.invisible) {
+			if (troop->appear_randomly) {
+				// At least one party member must be visible
+				if (non_hidden > 1) {
+					bool hide = Utils::ChanceOf(1, 2);
+					enemy->SetHidden(hide);
+					non_hidden -= (hide ? 1 : 0);
+				}
+			} else {
+				enemy->SetHidden(false);
+			}
+		} else {
+			enemy->SetHidden(true);
+		}
+
 		enemies.push_back(enemy);
 	}
 }

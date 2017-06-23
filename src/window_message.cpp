@@ -82,13 +82,17 @@ void Window_Message::ApplyTextInsertingCommands() {
 	text_index = text.end();
 	end = text.end();
 
+	// Contains already substitued \N actors to prevent endless recursion
+	std::vector<int> replaced_actors;
+
 	if (!text.empty()) {
 		// Move on first valid char
 		--text_index;
 
 		// Apply commands that insert text
 		while (std::distance(text_index, text.begin()) <= -1) {
-			switch (tolower(*text_index--)) {
+			char ch = tolower(*text_index--);
+			switch (ch) {
 			case 'n':
 			case 'v':
 			{
@@ -99,11 +103,17 @@ void Window_Message::ApplyTextInsertingCommands() {
 
 				auto start_code = text_index - 1;
 				bool success;
-				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success));
-				if (!success) {
+				int parsed_num;
+				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, parsed_num));
+				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
 					text_index = start_code - 2;
 					continue;
 				}
+
+				if (ch == 'n') {
+					replaced_actors.push_back(parsed_num);
+				}
+
 				text.replace(start_code, text_index + 1, command_result);
 				// Start from the beginning, the inserted text might add new commands
 				text_index = text.end();
@@ -567,11 +577,11 @@ int Window_Message::ParseParameter(bool& is_valid) {
 	return num;
 }
 
-std::string Window_Message::ParseCommandCode(bool& success) {
-	int parameter;
+std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
 	bool is_valid;
 	uint32_t cmd_char = *text_index;
 	success = true;
+	parameter = -1;
 
 	switch (tolower(cmd_char)) {
 	case 'n':
@@ -581,7 +591,9 @@ std::string Window_Message::ParseCommandCode(bool& success) {
 			Game_Actor* actor = NULL;
 			if (parameter == 0) {
 				// Party hero
-				actor = Main_Data::game_party->GetActors()[0];
+				if (Main_Data::game_party->GetBattlerCount() > 0) {
+					actor = Main_Data::game_party->GetActors()[0];
+				}
 			} else {
 				actor = Game_Actors::GetActor(parameter);
 			}

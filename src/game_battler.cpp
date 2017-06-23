@@ -62,7 +62,7 @@ int Game_Battler::GetSignificantRestriction() {
 	return RPG::State::Restriction_normal;
 }
 
-bool Game_Battler::CanAct() {
+bool Game_Battler::CanAct() const {
 	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int)states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i] - 1];
@@ -85,7 +85,7 @@ bool Game_Battler::Exists() const {
 	return !IsHidden() && !IsDead();
 }
 
-const RPG::State* Game_Battler::GetSignificantState() {
+const RPG::State* Game_Battler::GetSignificantState() const {
 	int priority = 0;
 	const RPG::State* the_state = NULL;
 

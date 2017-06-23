@@ -673,8 +673,13 @@ std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
 }
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
-	const std::vector<RPG::Learning>& actor_skills = Data::actors[actor_id - 1].skills;
-	const std::vector<RPG::Learning>& class_skills = Data::classes[GetData().class_id - 1].skills;
+	const std::vector<RPG::Learning>* skills;
+	if (GetData().changed_class && GetData().class_id > 0) {
+		skills = &Data::classes[GetData().class_id - 1].skills;
+	} else {
+		skills = &Data::actors[actor_id - 1].skills;
+	}
+
 	bool level_up = false;
 
 	int old_level = GetLevel();
@@ -688,7 +693,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		}
 
 		// Learn new skills
-		for (const RPG::Learning& learn : GetData().changed_class ? class_skills : actor_skills) {
+		for (const RPG::Learning& learn : *skills) {
 			// Skill learning, up to current level
 			if (learn.level > old_level && learn.level <= new_level) {
 				LearnSkill(learn.skill_id);

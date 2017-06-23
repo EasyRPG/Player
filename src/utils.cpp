@@ -297,23 +297,17 @@ std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
 
+int Utils::PositiveModulo(int i, int m) {
+	return (i % m + m) % m;
+}
+
 bool Utils::IsBigEndian() {
-	static bool ran_once = false;
-	static bool is_big = false;
-
-	if (ran_once) {
-		return is_big;
-	}
-
 	union {
 		uint32_t i;
 		char c[4];
 	} d = {0x01020304};
 
-	ran_once = true;
-	is_big = d.c[0] == 1;
-
-	return is_big;
+	return d.c[0] == 1;
 }
 
 void Utils::SwapByteOrder(uint16_t& us) {
@@ -456,7 +450,7 @@ std::string Utils::ReplacePlaceholders(const std::string& text_template, std::ve
 			if (type != '%') {
 				auto v_it = values.begin();
 				for (auto t_it = types.begin();
-					t_it != types.end(), v_it != values.end();
+					t_it != types.end() && v_it != values.end();
 					++t_it, ++v_it) {
 					if (std::toupper(type) == *t_it) {
 						str.replace(index, 2, *v_it);

@@ -63,7 +63,7 @@ public:
 	void StartNumberInputProcessing();
 
 	/**
-	 * Shows the Gold Window 
+	 * Shows the Gold Window
 	 */
 	void ShowGoldWindow();
 
@@ -121,11 +121,11 @@ public:
 	 * The text_index must be on the char following \ when
 	 * calling.
 	 *
-	 * @param success Parsing was successful.
+	 * @param success[out] If parsing was successful.
+	 * @param value[out] The extracted value if parsing was successful
 	 * @return the final text output of the code.
 	 */
-	std::string ParseCommandCode(bool& success);
-
+	std::string ParseCommandCode(bool& success, int& value);
 
 	/**
 	 * Updates the text variable, replacing the commands

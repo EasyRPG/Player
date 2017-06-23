@@ -95,7 +95,7 @@ public:
 	 *
 	 * @return can act
 	 */
-	bool CanAct();
+	bool CanAct() const;
 
 	/**
 	 * Gets current battler state with highest priority.
@@ -103,7 +103,7 @@ public:
 	 * @return the highest priority state affecting the battler.
 	 *         Returns NULL if no states.
 	 */
-	const RPG::State* GetSignificantState();
+	const RPG::State* GetSignificantState() const;
 
 	/**
 	 * Gets the state probability by rate (A-E).

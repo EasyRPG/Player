@@ -221,6 +221,11 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
+		if (Game_Temp::battle_running && Player::IsRPG2k3() && Game_Battle::CheckWin()) {
+			// Interpreter is cancelled when a win condition is fulfilled in RPG2k3 battle
+			break;
+		}
+
 		// FIXME?
 		// After calling SkipTo this index++ will skip execution of e.g. END.
 		// This causes a different timing because loop_count reaches 10000
