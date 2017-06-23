@@ -42,6 +42,15 @@ namespace Utils {
 	std::string UpperCase(const std::string& str);
 
 	/**
+	 * Tests if a string starts with a substring.
+	 *
+	 * @param str String to search in
+	 * @param end Substring to check at the start of str
+	 * @return true when the start matches
+	 */
+	bool StartsWith(const std::string& str, const std::string& end);
+
+	/**
 	 * Tests if a string ends with a substring.
 	 *
 	 * @param str String to search in

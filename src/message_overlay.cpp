@@ -21,7 +21,7 @@
 #include "player.h"
 #include "graphics.h"
 #include "bitmap.h"
-#include "font.h"
+#include "game_message.h"
 
 MessageOverlay::MessageOverlay() :
 	type(TypeOverlay),
@@ -33,12 +33,7 @@ MessageOverlay::MessageOverlay() :
 	dirty(false),
 	counter(0),
 	show_all(false) {
-
-	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
-
-	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
-
-	Graphics::RegisterDrawable(this);
+	// Graphics::RegisterDrawable is in the Update function
 }
 
 MessageOverlay::~MessageOverlay() {
@@ -50,21 +45,7 @@ bool MessageOverlay::IsGlobal() const {
 }
 
 void MessageOverlay::Draw() {
-	std::deque<MessageOverlayItem>::iterator it;
-
-	if (IsAnyMessageVisible()) {
-		++counter;
-		if (counter > 150) {
-			counter = 0;
-			for (it = messages.begin(); it != messages.end(); ++it) {
-				if (!it->hidden) {
-					it->hidden = true;
-					break;
-				}
-			}
-			dirty = true;
-		}
-	} else if (!show_all) {
+	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible
 		return;
 	}
@@ -77,15 +58,21 @@ void MessageOverlay::Draw() {
 
 	int i = 0;
 
-	for (it = messages.begin(); it != messages.end(); ++it) {
-		if (!it->hidden || show_all) {
+	for (auto& message : messages) {
+		if (!message.hidden || show_all) {
 			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
+
+			std::string text = message.text;
+			if (message.repeat_count > 0) {
+				text += " [" + Utils::ToString(message.repeat_count + 1) + "x]";
+			}
+
 			bitmap->TextDraw(Rect(2,
 						i * text_height,
 						bitmap->GetWidth(),
 						text_height),
-				it->color,
-				it->text);
+				message.color,
+				text);
 			++i;
 		}
 	}
@@ -102,19 +89,58 @@ DrawableType MessageOverlay::GetType() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
-	std::stringstream smessage (message);
-	std::vector<std::string> strs;
-	std::string str;
-	while (getline(smessage, str))
-		strs.push_back(str);
+	if (message == last_message) {
+		// The message matches the previous message -> increase counter
+		messages.back().repeat_count++;
+		// Keep the old message (with a new counter) on the screen
+		counter = 0;
 
-	for (size_t i = 0; i < strs.size(); i++)
-		messages.push_back(MessageOverlayItem(strs[i], color));
+		dirty = true;
+		return;
+	}
+
+	last_message = message;
+
+	Game_Message::WordWrap(
+			message,
+			SCREEN_TARGET_WIDTH - 6, // hardcoded to screen width because the bitmap is not initialized early enough
+			[&](const std::string& line) {
+				messages.emplace_back(line, color);
+			}
+	);
 
 	while (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
+
 	dirty = true;
+}
+
+void MessageOverlay::Update() {
+	if (!DisplayUi) {
+		return;
+	}
+
+	if (!bitmap) {
+		// Initialisation is delayed because the display is not ready on startup
+		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
+		bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
+		Graphics::RegisterDrawable(this);
+	}
+
+	if (IsAnyMessageVisible()) {
+		++counter;
+		if (counter > 150) {
+			counter = 0;
+			for (auto& message : messages) {
+				if (!message.hidden) {
+					message.hidden = true;
+					break;
+				}
+			}
+			dirty = true;
+		}
+	}
 }
 
 void MessageOverlay::SetShowAll(bool show_all) {
@@ -127,6 +153,6 @@ bool MessageOverlay::IsAnyMessageVisible() const {
 }
 
 MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :
-	text(text), color(color), hidden(false) {
+	text(text), color(color), hidden(false), repeat_count(0) {
 	// no-op
 }

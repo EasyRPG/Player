@@ -175,7 +175,7 @@ namespace FileFinder {
 	 * @param file file to check.
 	 * @return true if file is directory, otherwise false.
 	 */
-	bool IsDirectory(std::string const& file);
+	bool IsDirectory(const std::string& file);
 
 	/**
 	 * Checks whether passed file exists.
@@ -184,7 +184,7 @@ namespace FileFinder {
 	 * @param file file to check
 	 * @return true if file exists, otherwise false.
 	 */
-	bool Exists(std::string const& file);
+	bool Exists(const std::string& file);
 
 	/**
 	 * Appends name to directory.
@@ -193,17 +193,17 @@ namespace FileFinder {
 	 * @param name file name to be appended to dir.
 	 * @return combined path
 	 */
-	std::string MakePath(std::string const& dir, std::string const& name);
-	
+	std::string MakePath(const std::string& dir, const std::string& name);
+
 	/**
 	 * Converts a path to the canonical equivalent.
 	 * This generates a path that does not contain ".." or "." directories.
-	 * 
+	 *
 	 * @param path Path to normalize
 	 * @param initial_deepness How deep the passed path is relative to the game root
 	 * @return canonical path
 	 */
-	std::string MakeCanonical(std::string const& path, int initial_deepness);
+	std::string MakeCanonical(const std::string& path, int initial_deepness);
 
 	/**
 	 * Splits a path in it's components.
@@ -211,7 +211,27 @@ namespace FileFinder {
 	 * @param path Path to split
 	 * @return Vector containing path components
 	 */
-	std::vector<std::string> SplitPath(std::string const& path);
+	std::vector<std::string> SplitPath(const std::string& path);
+
+	/**
+	 * Returns the part of "path_in" that is inside "path_to".
+	 * e.g. Input: /h/e/game, /h/e/game/Music/a.wav; Output: Music/a.wav
+	 *
+	 * @param path_to Path to a primary folder of path_in
+	 * @param path_in Absolute path to the file, must start with path_to
+	 *
+	 * @return The part of path_in that is inside path_to. path_in when the path is not in path_to
+	 */
+	std::string GetPathInsidePath(const std::string& path_to, const std::string& path_in);
+
+	/**
+	 * Return the part of "path_in" that is inside the current games directory.
+	 *
+	 * @see GetPathInsidePath
+	 * @param path_in An absolute path inside the game directory
+	 * @return The part of path_in that is inside the game directory, path_in when it's not in the directory
+	 */
+	std::string GetPathInsideGamePath(const std::string& path_in);
 
 	/**
 	 * GetDirectoryMembers member listing mode.
@@ -231,7 +251,7 @@ namespace FileFinder {
 	 * @param parent name of current relative folder (used if m is RECURSIVE)
 	 * @return member list.
 	 */
-	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL, std::string const& parent = "");
+	Directory GetDirectoryMembers(const std::string& dir, Mode m = ALL, const std::string& parent = "");
 
 	/**
 	 * Sets the directory tree that is used for executing the current RPG Maker
@@ -263,15 +283,15 @@ namespace FileFinder {
 	bool HasSavegame();
 
 	/** Get the size of a file
-         *
-         * @param file the path to a file
-         * @return the filesize, or -1 on error
-         */
-	Offset GetFileSize(std::string const& file);
+	 *
+	 * @param file the path to a file
+	 * @return the filesize, or -1 on error
+	 */
+	Offset GetFileSize(const std::string& file);
 
 	/**
-         * Known file sizes
-         */
+	 * Known file sizes
+	 */
 	enum KnownFileSize {
 		OFFICIAL_HARMONY_DLL = 473600,
 	};

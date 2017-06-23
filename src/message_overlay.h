@@ -31,6 +31,7 @@ public:
 	std::string text;
 	Color color;
 	bool hidden;
+	int repeat_count;
 };
 
 /**
@@ -49,6 +50,8 @@ public:
 	DrawableType GetType() const override;
 
 	bool IsGlobal() const override;
+
+	void Update();
 
 	void AddMessage(const std::string& message, Color color);
 
@@ -70,6 +73,8 @@ private:
 	int message_max;
 
 	std::deque<MessageOverlayItem> messages;
+	/** Last message added to the console before linebreak processing */
+	std::string last_message;
 
 	bool dirty;
 

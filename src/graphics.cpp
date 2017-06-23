@@ -31,6 +31,7 @@
 #include "output.h"
 #include "player.h"
 #include "fps_overlay.h"
+#include "message_overlay.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -65,6 +66,7 @@ namespace Graphics {
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
 
+	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
 }
 
@@ -77,12 +79,11 @@ void Graphics::Init() {
 	screen_erased = false;
 	transition_frames_left = 0;
 
-	black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
-
 	state.reset(new State());
 	global_state.reset(new State());
 
 	// Is a drawable, must be init after state
+	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
 
 	next_fps_time = 0;
@@ -94,7 +95,9 @@ void Graphics::Quit() {
 
 	frozen_screen.reset();
 	black_screen.reset();
+
 	fps_overlay.reset();
+	message_overlay.reset();
 
 	Cache::Clear();
 }
@@ -131,6 +134,8 @@ void Graphics::Update(bool time_left) {
 
 	fps_overlay->Update();
 	fps_overlay->AddUpdate();
+
+	message_overlay->Update();
 }
 
 void Graphics::UpdateTitle() {
@@ -215,6 +220,10 @@ void Graphics::Freeze() {
 }
 
 void Graphics::Transition(TransitionType type, int duration, bool erase) {
+	if (!black_screen) {
+		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
+	}
+
 	if (screen_erased && erase) {
 		// Don't allow another erase when already erased
 		return;
@@ -471,4 +480,8 @@ void Graphics::Pop() {
 
 int Graphics::GetDefaultFps() {
 	return DEFAULT_FPS;
+}
+
+MessageOverlay& Graphics::GetMessageOverlay() {
+	return *message_overlay;
 }

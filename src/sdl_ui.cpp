@@ -162,7 +162,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 #if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-		Output::Warning("Couldn't initialize joystick.\n%s", SDL_GetError());
+		Output::Warning("Couldn't initialize joystick. %s", SDL_GetError());
 	}
 
 	SDL_JoystickEventState(1);

@@ -69,7 +69,7 @@ namespace {
 
 		out_len = audio->GetDecoder()->Decode(buffer.data(), out_len);
 		if (out_len == -1) {
-			Output::Warning("Couldn't decode BGM.\n%s", audio->GetDecoder()->GetError().c_str());
+			Output::Warning("Couldn't decode BGM. %s", audio->GetDecoder()->GetError().c_str());
 			Mix_HookMusic(nullptr, nullptr);
 			return;
 		}
@@ -126,7 +126,7 @@ namespace {
 
 	AudioDecoder::Format sdl_format_to_format(Uint16 format) {
 		switch (format) {
-		case AUDIO_U8: 
+		case AUDIO_U8:
 			return AudioDecoder::Format::U8;
 		case AUDIO_S8:
 			return AudioDecoder::Format::S8;
@@ -251,7 +251,7 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	FILE* filehandle = FileFinder::fopenUTF8(file, "rb");
 	if (!filehandle) {
-		Output::Warning("Music not readable: %s", file.c_str());
+		Output::Warning("Music not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
 		return;
 	}
 	audio_decoder = AudioDecoder::Create(filehandle, file);
@@ -285,7 +285,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		char magic[4] = { 0 };
 		filehandle = FileFinder::fopenUTF8(file, "rb");
 		if (!filehandle) {
-			Output::Warning("Music not readable: %s", file.c_str());
+			Output::Warning("Music not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
 			return;
 		}
 		fread(magic, 4, 1, filehandle);
@@ -306,7 +306,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 			return;
 		}
 #endif
-		Output::Warning("Couldn't load %s BGM.\n%s", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
 
@@ -331,7 +331,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		Mix_FadeInMusic(bgm.get(), 0, fadein)
 #endif
 		== -1) {
-			Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), Mix_GetError());
+			Output::Warning("Couldn't play %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 			return;
 	}
 
@@ -340,11 +340,11 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 
 void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int volume, int pitch, int fadein) {
 	if (!audio_decoder->Open(handle)) {
-		Output::Warning("Couldn't play %s BGM.\n%s", file.c_str(), audio_decoder->GetError().c_str());
+		Output::Warning("Couldn't play %s BGM. %s", FileFinder::GetPathInsideGamePath(file).c_str(), audio_decoder->GetError().c_str());
 		audio_decoder.reset();
 		return;
 	}
-	
+
 	// Can't use BGM_Stop here because it destroys the audio_decoder
 #if SDL_MAJOR_VERSION>1
 	// SDL2_mixer bug, see above
@@ -364,7 +364,7 @@ void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int
 	Uint16 sdl_format;
 	int audio_channels;
 	if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-		Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
+		Output::Warning("Couldn't query mixer spec. %s", Mix_GetError());
 		return;
 	}
 	AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
@@ -384,7 +384,7 @@ void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int
 
 	// Don't care if successful, always build cvt
 	SDL_BuildAudioCVT(&cvt, format_to_sdl_format(device_format), (int)device_channels, device_rate, sdl_format, audio_channels, audio_rate);
-	
+
 	audio_decoder->SetFade(0, volume, fadein);
 	audio_decoder->SetPitch(pitch);
 
@@ -521,14 +521,14 @@ void SdlMixerAudio::BGM_Fade(int fade) {
 void SdlMixerAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	bgs.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
-		Output::Warning("Couldn't load %s BGS.\n%s", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s BGS. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
 
 	Mix_Volume(BGS_CHANNEL_NUM, volume * MIX_MAX_VOLUME / 100);
 	int channel = Mix_FadeInChannel(BGS_CHANNEL_NUM, bgs.get(), 0, fadein);
 	if (channel != 0) {
-		Output::Warning("Couldn't play %s BGS.\n%s", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s BGS. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
 	bgs_playing = true;
@@ -577,7 +577,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 		Uint16 sdl_format;
 		int audio_channels;
 		if (!Mix_QuerySpec(&audio_rate, &sdl_format, &audio_channels)) {
-			Output::Warning("Couldn't query mixer spec.\n%s", Mix_GetError());
+			Output::Warning("Couldn't query mixer spec. %s", Mix_GetError());
 			return;
 		}
 		AudioDecoder::Format audio_format = sdl_format_to_format(sdl_format);
@@ -591,7 +591,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 			sound.reset(Mix_QuickLoad_RAW(se_ref->buffer.data(), se_ref->buffer.size()), &Mix_FreeChunk);
 
 			if (!sound) {
-				Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
+				Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 			}
 		}
 	}
@@ -599,7 +599,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	if (!sound) {
 		sound.reset(Mix_LoadWAV(file.c_str()), &Mix_FreeChunk);
 		if (!sound) {
-			Output::Warning("Couldn't load %s SE.\n%s", file.c_str(), Mix_GetError());
+			Output::Warning("Couldn't load %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 			return;
 		}
 	}
@@ -607,7 +607,7 @@ void SdlMixerAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	int channel = Mix_PlayChannel(-1, sound.get(), 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Warning("Couldn't play %s SE.\n%s", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s SE. %s", FileFinder::GetPathInsideGamePath(file).c_str(), Mix_GetError());
 		return;
 	}
 	sounds[channel].first = sound;
