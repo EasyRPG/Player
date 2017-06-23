@@ -172,7 +172,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				if (ext.animation_id < 1 || ext.animation_id > Data::animations.size()) {
+				if (ext.animation_id < 1 || ext.animation_id > (int)Data::animations.size()) {
 					Output::Warning("Invalid battle animation: %d", ext.animation_id);
 					animation.reset();
 				} else {

@@ -653,26 +653,26 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			action->Apply();
 
-			if (action->GetTarget()) {
+			if (target) {
 				if (action->IsSuccess()) {
 					if (action->GetAffectedHp() != -1) {
 						DrawFloatText(
-							action->GetTarget()->GetBattleX(),
-							action->GetTarget()->GetBattleY(),
+							target->GetBattleX(),
+							target->GetBattleY(),
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							Utils::ToString(action->GetAffectedHp()));
 					}
 
-					action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
+					target->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
 				} else {
 					DrawFloatText(
-						action->GetTarget()->GetBattleX(),
-						action->GetTarget()->GetBattleY(),
+						target->GetBattleX(),
+						target->GetBattleY(),
 						0,
 						Data::terms.miss);
 				}
 
-				targets.push_back(action->GetTarget());
+				targets.push_back(target);
 			}
 
 			status_window->Refresh();

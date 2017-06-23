@@ -47,17 +47,17 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 	// And we can't rely on "success" state of FileRequest because it's always
 	// true on desktop.
 #ifdef EMSCRIPTEN
-	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
+	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", name);
 	request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 	request->Start();
 #else
 	if (!FileFinder::FindImage("Battle", name).empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", animation.animation_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", name);
 		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
 	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", animation.animation_name);
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", name);
 		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	}

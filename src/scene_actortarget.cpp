@@ -25,13 +25,13 @@
 #include "scene_item.h"
 #include "scene_skill.h"
 
-Scene_ActorTarget::Scene_ActorTarget(int item_id, int item_index) :
+Scene_ActorTarget::Scene_ActorTarget(int item_id) :
 	id(item_id), actor_index(0), use_item(true) {
 	Scene::type = Scene::ActorTarget;
 }
 
 Scene_ActorTarget::Scene_ActorTarget(
-	int skill_id, int actor_index, int skill_index) :
+	int skill_id, int actor_index) :
 	id(skill_id), actor_index(actor_index), use_item(false) {
 	Scene::type = Scene::ActorTarget;
 }
