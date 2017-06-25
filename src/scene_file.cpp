@@ -74,21 +74,21 @@ void Scene_File::Start() {
 
 				party.resize(party_size);
 
-				switch (party_size) {
-					case 4:
-						party[3].first = savegame->title.face4_id;
-						party[3].second = savegame->title.face4_name;
-					case 3:
-						party[2].first = savegame->title.face3_id;
-						party[2].second = savegame->title.face3_name;
-					case 2:
-						party[1].first = savegame->title.face2_id;
-						party[1].second = savegame->title.face2_name;
-					case 1:
-						party[0].first = savegame->title.face1_id;
-						party[0].second = savegame->title.face1_name;
-						break;
-					default:;
+				if (party_size > 3) {
+					party[3].first = savegame->title.face4_id;
+					party[3].second = savegame->title.face4_name;
+				}
+				if (party_size > 2) {
+					party[2].first = savegame->title.face3_id;
+					party[2].second = savegame->title.face3_name;
+				}
+				if (party_size > 1) {
+					party[1].first = savegame->title.face2_id;
+					party[1].second = savegame->title.face2_name;
+				}
+				if (party_size > 0) {
+					party[0].first = savegame->title.face1_id;
+					party[0].second = savegame->title.face1_name;
 				}
 
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,

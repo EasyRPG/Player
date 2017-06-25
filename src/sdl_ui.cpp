@@ -785,8 +785,11 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 			EndDisplayModeChange();
 			return;
 		}
-
 		// Continue if return/enter not handled by fullscreen hotkey
+#  if __GNUC__ >= 7
+		__attribute__((fallthrough));
+#  endif
+
 	default:
 		// Update key state
 #  if SDL_MAJOR_VERSION==1
