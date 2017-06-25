@@ -76,7 +76,7 @@ Cuéntanos detalladamente qué fue mal.\n\n</string>
   <string name="save_and_quit">Guardar y salir</string>
   <string name="key_enter">Intro (Z)</string>
   <string name="key_cancel">Cancelar (Esc y X)</string>
-  <string name="key_shift">Mayúsculas/Shift</string>
+  <string name="key_shift">Mayúsculas (Shift)</string>
   <string name="key_fast_forward">Avance rápido</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">Abrir panel de navegación</string>
