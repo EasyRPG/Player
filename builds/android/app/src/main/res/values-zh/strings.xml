@@ -23,6 +23,8 @@
   <string name="no">取消</string>
   <string name="creating_dir_failed">创建路径目录失败</string>
   <string name="path_not_readable">无法读取路径目录</string>
+  <string name="no_games_found_and_explanation">未找到RPG Maker 2000/2003游戏。
+你可以从设置里添加新的游戏目录。</string>
   <string name="no_external_storage">没有发现外部储存卡(如SD卡)</string>
   <string name="not_valid_game">游戏路径里并不是有效的游戏</string>
   <string name="select_game_region">选择游戏语区</string>
@@ -33,16 +35,33 @@
   <string name="refresh">刷新</string>
   <string name="change_default_mapping">更改默认按键映射</string>
   <string name="how_to_use_easy_rpg">EasyRPG模拟器使用教程</string>
+  <string name="how_to_use_easy_rpg_explanation">安装教程：\n\n默认游戏保存在 /easyrpg/games. 你可以在设置里添加新的游戏目录。\n\n可选项: 将RPG Maker 2000 RTP放置在 /easyrpg/rtp/2000 并将RPG Maker 2003 RTP放置在 /easyrpg/rtp/2003 。\n\n游戏必须被放置于 /easyrpg/games (默认)的子目录中以被正常侦测，例如.:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb 是正确的.\n\t/easyrpg/games/MyGame/RPG_RT.ldb is OK.\n\t/easyrpg/games/MyGame.zip 是错误的。. 不支持ZIP格式和EXE格式。</string>
   <!--Ingame menu-->
   <string name="toggle_fps">切换FPS</string>
   <string name="toggle_ui">设置虚拟按钮</string>
   <string name="end_game">结束游戏</string>
+  <string name="report_bug">报告错误</string>
+  <string name="report_bug_msg">此选项将打开你的电子邮件程序（例如Gmail）来向我们发送错误报告。\n\n如果你不希望发送邮件或者你没有电子邮件程序，你可以在 https://github.com/EasyRPG/Player/issues 发送一个新的报告。</string>
+  <string name="report_bug_mail">感谢你支持EasyRPG Player。\n
+一个日志文件和你的游戏存档已被添加至该邮件的附件。\n
+请勿删除日志文件！我们需要一个接近错误位置的存档。\n
+请详细地告诉我们错误的内容。\n\n
+</string>
   <!--Settings Activities-->
+  <string name="video">视频</string>
+  <string name="audio">声音</string>
+  <string name="input">输入</string>
+  <string name="game_folders">游戏目录</string>
   <string name="settings">设置</string>
+  <string name="add_game_folder">添加一个游戏目录</string>
   <string name="enable_vibration">开启震动</string>
   <string name="vibrate_when_sliding_direction">在往另一个方向滑动时震动</string>
+  <string name="enable_audio">编辑音频</string>
   <string name="input_layout_transparency">按键透明度:</string>
   <string name="ignore_size_settings">忽略按键的大小设定并将这个应用到所有的按键：</string>
+  <string name="no_read_access_on_dir">%1$s没有读取访问</string>
+  <string name="quick_access">快速访问</string>
+  <string name="force_landscape_mode">强制横向旋转</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">管理按键显示</string>
   <string name="add_an_input_layout">增加一个按键显示方案</string>
@@ -56,5 +75,12 @@
   <string name="reset_button_mapping">重置按钮</string>
   <string name="exit_without_saving">不保存并退出</string>
   <string name="save_and_quit">保存并退出</string>
+  <string name="key_enter">确定(Z)</string>
+  <string name="key_cancel">取消(ESC或X)</string>
+  <string name="key_shift">换档键(Shift)</string>
+  <string name="key_fast_forward">快进</string>
   <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">打开导航目录</string>
+  <string name="navigation_drawer_close">关闭导航目录</string>
+  <string name="menu">打开Android目录</string>
 </resources>

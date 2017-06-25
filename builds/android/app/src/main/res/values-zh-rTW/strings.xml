@@ -13,7 +13,7 @@
   <string name="turkish">土耳其語</string>
   <string name="hebrew">希伯來語</string>
   <string name="arabic">阿拉伯語</string>
-  <string name="baltic">波羅的海</string>
+  <string name="baltic">波羅的諸語</string>
   <string name="thai">泰文</string>
   <string name="vietnamese">越南語</string>
   <string name="ok">完成</string>
@@ -78,6 +78,7 @@
   <string name="key_enter">確認鍵 (Z)</string>
   <string name="key_cancel">取消 / 目錄鍵 (ESC 與 X)</string>
   <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">快轉</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">開啟側邊欄</string>
   <string name="navigation_drawer_close">關閉側邊欄</string>

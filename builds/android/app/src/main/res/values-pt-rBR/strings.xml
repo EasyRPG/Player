@@ -78,6 +78,7 @@ Por favor nos diga em detalhes o que deu errado.\n\n
   <string name="key_enter">Enter (Z)</string>
   <string name="key_cancel">Cancelar (ESC e X)</string>
   <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">Avançar Rapidamente</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">Abrir menu</string>
   <string name="navigation_drawer_close">Fechar menu</string>

@@ -77,7 +77,7 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
   <string name="save_and_quit">Speichern und beenden</string>
   <string name="key_enter">Bestätigen (Z)</string>
   <string name="key_cancel">Abbrechen (ESC und X)</string>
-  <string name="key_shift">Umschalttaste</string>
+  <string name="key_shift">Umschalttaste (Shift)</string>
   <string name="key_fast_forward">Beschleunigen</string>
   <!--GameBrowserAPI15-->
   <string name="navigation_drawer_open">Navigation einblenden</string>
