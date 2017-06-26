@@ -814,6 +814,8 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 
 	for (Game_Battler* battler : enemies) {
 		if (!battler->CanAct()) {
+			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+			ActionSelectedCallback(battler);
 			continue;
 		}
 
