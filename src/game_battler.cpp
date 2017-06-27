@@ -716,7 +716,7 @@ void Game_Battler::GetBattleCombo(int &command_id, int &times) const {
 }
 
 void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
-	if (attribute_id < 1 || attribute_id > Data::attributes.size()) {
+	if (attribute_id < 1 || attribute_id > (int)Data::attributes.size()) {
 		assert(false && "invalid attribute_id");
 	}
 

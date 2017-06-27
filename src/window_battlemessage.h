@@ -107,6 +107,8 @@ public:
 private:
 	std::vector<std::string> lines;
 
+	bool needs_refresh;
+
 	/**
 	 * How many lines are hidden right now.
 	 *
@@ -115,8 +117,6 @@ private:
 	 * hidden until ShowHiddenLines is called.
 	 */
 	int hidden_lines;
-
-	bool needs_refresh;
 };
 
 #endif

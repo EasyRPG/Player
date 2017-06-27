@@ -60,28 +60,28 @@ void Scene_Save::Action(int index) {
 	int size = (int)Main_Data::game_party->GetActors().size();
 	Game_Actor* actor;
 
-	switch (size) {
-		case 4:
-			actor = Main_Data::game_party->GetActors()[3];
-			title.face4_id = actor->GetFaceIndex();
-			title.face4_name = actor->GetFaceName();
-		case 3:
-			actor = Main_Data::game_party->GetActors()[2];
-			title.face3_id = actor->GetFaceIndex();
-			title.face3_name = actor->GetFaceName();
-		case 2:
-			actor = Main_Data::game_party->GetActors()[1];
-			title.face2_id = actor->GetFaceIndex();
-			title.face2_name = actor->GetFaceName();
-		case 1:
-			actor = Main_Data::game_party->GetActors()[0];
-			title.face1_id = actor->GetFaceIndex();
-			title.face1_name = actor->GetFaceName();
-			title.hero_hp = actor->GetHp();
-			title.hero_level = actor->GetLevel();
-			title.hero_name = actor->GetName();
-			break;
-		default:;
+	if (size > 3) {
+		actor = Main_Data::game_party->GetActors()[3];
+		title.face4_id = actor->GetFaceIndex();
+		title.face4_name = actor->GetFaceName();
+	}
+	if (size > 2) {
+		actor = Main_Data::game_party->GetActors()[2];
+		title.face3_id = actor->GetFaceIndex();
+		title.face3_name = actor->GetFaceName();
+	}
+	if (size > 1) {
+		actor = Main_Data::game_party->GetActors()[1];
+		title.face2_id = actor->GetFaceIndex();
+		title.face2_name = actor->GetFaceName();
+	}
+	if (size > 0) {
+		actor = Main_Data::game_party->GetActors()[0];
+		title.face1_id = actor->GetFaceIndex();
+		title.face1_name = actor->GetFaceName();
+		title.hero_hp = actor->GetHp();
+		title.hero_level = actor->GetLevel();
+		title.hero_name = actor->GetName();
 	}
 
 	Main_Data::game_data.title = title;

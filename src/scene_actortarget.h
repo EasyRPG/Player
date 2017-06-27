@@ -35,18 +35,16 @@ public:
 	 * Constructor.
 	 *
 	 * @param item_id item ID of item to use.
-	 * @param item_index index of item in Scene_Item.
 	 */
-	Scene_ActorTarget(int item_id, int item_index);
+	Scene_ActorTarget(int item_id);
 
 	/**
 	 * Constructor.
 	 *
 	 * @param skill_id skill ID of skill to use.
 	 * @param actor_index index of the spell caster in party.
-	 * @param skill_index index of skill in Scene_Skill.
 	 */
-	Scene_ActorTarget(int skill_id, int actor_index, int skill_index);
+	Scene_ActorTarget(int skill_id, int actor_index);
 
 	void Start() override;
 	void Update() override;

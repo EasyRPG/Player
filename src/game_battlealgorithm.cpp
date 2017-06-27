@@ -402,8 +402,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 	}
 
-	bool target_is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
-
 	if (GetAffectedHp() != -1) {
 
 		if (IsPositive()) {

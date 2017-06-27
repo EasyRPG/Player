@@ -267,16 +267,19 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(const std::string&);
-template<> // utf16
-std::wstring ToWideStringImpl<2>(const std::string& str) {
-	std::u16string const tmp = Utils::DecodeUTF16(str);
-	return std::wstring(tmp.begin(), tmp.end());
-}
+#if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
 template<> // utf32
 std::wstring ToWideStringImpl<4>(const std::string& str) {
 	std::u32string const tmp = Utils::DecodeUTF32(str);
 	return std::wstring(tmp.begin(), tmp.end());
 }
+#else
+template<> // utf16
+std::wstring ToWideStringImpl<2>(const std::string& str) {
+	std::u16string const tmp = Utils::DecodeUTF16(str);
+	return std::wstring(tmp.begin(), tmp.end());
+}
+#endif
 
 std::wstring Utils::ToWideString(const std::string& str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
@@ -284,14 +287,17 @@ std::wstring Utils::ToWideString(const std::string& str) {
 
 template<size_t WideSize>
 static std::string FromWideStringImpl(const std::wstring&);
-template<> // utf16
-std::string FromWideStringImpl<2>(const std::wstring& str) {
-	return Utils::EncodeUTF(std::u16string(str.begin(), str.end()));
-}
+#if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
 template<> // utf32
 std::string FromWideStringImpl<4>(const std::wstring& str) {
 	return Utils::EncodeUTF(std::u32string(str.begin(), str.end()));
 }
+#else
+template<> // utf16
+std::string FromWideStringImpl<2>(const std::wstring& str) {
+	return Utils::EncodeUTF(std::u16string(str.begin(), str.end()));
+}
+#endif
 
 std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
