@@ -65,6 +65,12 @@ Please tell us in detail what went wrong.\n\n
     <string name="no_read_access_on_dir">No read access on %1$s</string>
     <string name="quick_access">Quick access</string>
     <string name="force_landscape_mode">Force landscape orientation</string>
+    <string name="fast_forward">Fast-forward button mode:</string>
+    <string-array name="fast_forward_mode">
+        <item>hold</item>
+        <item>tap</item>
+    </string-array>
+    <string name="fast_forward_factor">Speed multiplier:</string>
 
     <!--InputLayout Managing-->
     <string name="manage_input_layouts">Manage input layouts:</string>

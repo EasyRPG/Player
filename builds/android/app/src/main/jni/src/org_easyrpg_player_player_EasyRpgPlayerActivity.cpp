@@ -23,7 +23,6 @@
  */
 
 #include "org_easyrpg_player_player_EasyRpgPlayerActivity.h"
-#include "graphics.h"
 #include "player.h"
 
 #ifdef __cplusplus
@@ -40,6 +39,12 @@ JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endG
   (JNIEnv *, jclass)
 {
 	Player::exit_flag = true;
+}
+
+JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_setFastForwardMultiplier
+  (JNIEnv *, jclass, jint ji)
+{
+	Player::speed_modifier = ji;
 }
 
 #ifdef __cplusplus

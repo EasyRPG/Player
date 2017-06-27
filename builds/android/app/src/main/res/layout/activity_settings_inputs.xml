@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
         android:padding="10dp">
 
         <!-- Vibration -->
@@ -15,7 +15,6 @@
             android:id="@+id/settings_enable_vibration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="@string/enable_vibration"
             android:textSize="20sp"/>
 
@@ -23,9 +22,53 @@
             android:id="@+id/settings_vibrate_when_sliding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="@string/vibrate_when_sliding_direction"
             android:textSize="20sp"/>
+
+        <include layout="@layout/separator"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/settings_fast_forward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/settings_fast_forward_mode"
+                android:text="@string/fast_forward"
+                android:textSize="20sp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/settings_fast_forward_mode"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/fast_forward_mode"
+                android:layout_alignParentRight="true"
+                android:layout_alignBaseline="@id/settings_fast_forward" />
+
+            <TextView
+                android:id="@+id/settings_fast_forward_multiplier_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fast_forward_factor"
+                android:textSize="20sp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/settings_fast_forward"
+                android:layout_alignBaseline="@+id/settings_fast_forward_multiplier" />
+
+            <SeekBar
+                android:id="@+id/settings_fast_forward_multiplier"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:max="8"
+                android:progress="1"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/settings_fast_forward"
+                />
+        </RelativeLayout>
 
         <include layout="@layout/separator"/>
 
@@ -40,7 +83,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="horizontal">
 
             <TextView

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -35,7 +34,7 @@ public class VirtualButton extends View {
 
     public static VirtualButton Create(Context context, int keyCode, double posX, double posY, int size) {
         if (keyCode == KEY_FAST_FORWARD) {
-            return new VirtualButtonRectangle(context, keyCode, posX, posY, size);
+            return new FastForwardingButton(context, keyCode, posX, posY, size);
         }
 
         return new VirtualButton(context, keyCode, posX, posY, size);
@@ -70,26 +69,40 @@ public class VirtualButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        setProperTransparency(canvas);
+
+        // Draw the circle surrounding the button's letter
+        int border = 5;
+        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - border, painter);
+
+        // Draw the letter, centered in the circle
+        drawCenter(canvas, painter, String.valueOf(charButton));
+    }
+
+    protected void setProperTransparency(Canvas canvas) {
         if (!debug_mode) {
             painter.setAlpha(255 - SettingsManager.getLayoutTransparency());
         }
+    }
 
-        // Draw
-        // The circle
-        canvas.drawCircle(realSize / 2, realSize / 2, realSize / 2 - 5, painter);
-
-        // The letter
-        // Anticipate the size of the letter
+    /** Draw "text" centered in "canvas" */
+    protected void drawCenter(Canvas canvas, Paint paint, String text) {
+        // Set the text size
         painter.setTextSize(Helper.getPixels(this, (int) (originalLetterSize * ((float) resizeFactor / 100))));
-        painter.getTextBounds("" + charButton, 0, 1, letterBound);
 
-        // Draw the letter, centered in the circle
-        canvas.drawText("" + charButton, (realSize - letterBound.width()) / 2,
-                letterBound.height() + (realSize - letterBound.height()) / 2, painter);
+        // Draw the text
+        Rect bound = new Rect();
+        canvas.getClipBounds(bound);
+        int cHeight = bound.height();
+        int cWidth = bound.width();
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.getTextBounds(text, 0, text.length(), bound);
+        float x = cWidth / 2f - bound.width() / 2f - bound.left;
+        float y = cHeight / 2f + bound.height() / 2f - bound.bottom;
+        canvas.drawText(text, x, y, paint);
     }
 
     public int getFuturSize() {
-        // Resize
         realSize = (int) ((float) originalSize * resizeFactor / 100);
 
         return realSize;
@@ -197,11 +210,7 @@ public class VirtualButton extends View {
         } else if (keyCode == KEY_PLUS) {
             charButton = '+';
         } else if (keyCode == KEY_FAST_FORWARD) {
-            if (Build.VERSION.SDK_INT >= 16) { // Android 4.1
-                charButton = '⏩';
-            } else {
-                charButton = '>';
-            }
+            charButton = '»';
         } else {
             charButton = '?';
         }

@@ -6,8 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,11 +27,12 @@ import org.easyrpg.player.settings.SettingsManager;
 
 public class SettingsInputActivity extends AppCompatActivity implements View.OnClickListener {
     private CheckBox enableVibrationCheckBox, enableVibrateWhenSlidingCheckbox, ignoreLayoutSizeCheckbox;
+    private AppCompatSpinner chooseFastForwardModeSpinner;
     private ButtonMappingManager buttonMappingManager;
     private Button addInputLayoutButton;
     private LinearLayout inputLayoutList;
-    private SeekBar layoutTransparencyLayout, layoutSizeSeekBar;
-    private TextView layoutTransparencyTextView, layoutSizeTextView;
+    private SeekBar layoutTransparencyLayout, layoutSizeSeekBar, fastForwardMultiplierSeekBar;
+    private TextView layoutTransparencyTextView, layoutSizeTextView, fastForwardMultiplierTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
         enableVibrateWhenSlidingCheckbox.setChecked(SettingsManager.isVibrateWhenSlidingDirectionEnabled());
         enableVibrateWhenSlidingCheckbox.setOnClickListener(this);
 
+        configureFastForwardButton();
         configureLayoutTransparencySystem();
         configureLayoutSizeSystem();
         updateInputLayoutList();
@@ -71,6 +76,46 @@ public class SettingsInputActivity extends AppCompatActivity implements View.OnC
                 addAnInputLayout();
                 break;
         }
+    }
+
+    private void configureFastForwardButton() {
+        chooseFastForwardModeSpinner = (AppCompatSpinner) findViewById(R.id.settings_fast_forward_mode);
+        chooseFastForwardModeSpinner.setSelection(SettingsManager.getFastForwardMode());
+        chooseFastForwardModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SettingsManager.setFastForwardMode(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        fastForwardMultiplierSeekBar = (SeekBar) findViewById(R.id.settings_fast_forward_multiplier);
+        fastForwardMultiplierSeekBar.setProgress(SettingsManager.getFastForwardMultiplier() - 2);
+        fastForwardMultiplierSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // The seekbar has values 0-8, we want 2-10
+                SettingsManager.setFastForwardMultiplier(seekBar.getProgress() + 2);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                fastForwardMultiplierTextView.setText(getString(R.string.fast_forward_factor) + " " + (fastForwardMultiplierSeekBar.getProgress() + 2) + "x");
+            }
+        });
+
+        // The textview displays the current multiplier value
+        fastForwardMultiplierTextView = (TextView) findViewById(R.id.settings_fast_forward_multiplier_text_view);
+        fastForwardMultiplierTextView.setText(getString(R.string.fast_forward_factor) + " " + (fastForwardMultiplierSeekBar.getProgress() + 2) + "x");
     }
 
     private void configureLayoutTransparencySystem() {
