@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 include(CMakeDependentOption)
 
 project(EasyRPG_Player CXX C)
-set(PACKAGE_VERSION "0.5.1")
+set(PACKAGE_VERSION "0.5.2")
 
 # Source Files
 set(PLAYER_SRCS
