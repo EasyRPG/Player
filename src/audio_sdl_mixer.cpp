@@ -288,7 +288,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 			Output::Warning("Music not readable: %s", FileFinder::GetPathInsideGamePath(file).c_str());
 			return;
 		}
-		if (fread(magic, 4, 1, filehandle) != 4)
+		if (fread(magic, 4, 1, filehandle) != 1)
 			return;
 		fseek(filehandle, 0, SEEK_SET);
 		if (!strncmp(magic, "MThd", 4)) {
