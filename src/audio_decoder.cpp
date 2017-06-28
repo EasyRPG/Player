@@ -130,7 +130,7 @@ const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
 std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string& filename) {
 	char magic[4] = { 0 };
-	if (fread(magic, 4, 1, file) != 4)
+	if (fread(magic, 4, 1, file) != 1)
 		return nullptr;
 	fseek(file, 0, SEEK_SET);
 
@@ -176,7 +176,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	if (!strncmp(magic, "OggS", 4)) { // OGG
 #ifdef HAVE_OPUS
 		fseek(file, 28, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 4)
+		if (fread(magic, 4, 1, file) != 1)
 			return nullptr;
 		fseek(file, 0, SEEK_SET);
 		if (!strncmp(magic, "Opus", 4)) {
@@ -190,7 +190,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
 		fseek(file, 29, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 4)
+		if (fread(magic, 4, 1, file) != 1)
 			return nullptr;
 		fseek(file, 0, SEEK_SET);
 
@@ -209,7 +209,7 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 	if (!strncmp(magic, "RIFF", 4)) {
 		fseek(file, 20, SEEK_SET);
 		uint16_t raw_enc;
-		if (fread(&raw_enc, 2, 1, file) != 2)
+		if (fread(&raw_enc, 2, 1, file) != 1)
 			return nullptr;
 		Utils::SwapByteOrder(raw_enc);
 		fseek(file, 0, SEEK_SET);
