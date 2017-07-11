@@ -901,9 +901,9 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
 		std::vector<bool>& terrain_set = Data::troops[troop_id - 1].terrain_set;
 
-		// RPG_RT optimisation: Omitted entries are the default value (false)
-		return (terrain_set.size() > (unsigned)(terrain_tag - 1) &&
-				terrain_set[terrain_tag - 1]);
+		// RPG_RT optimisation: Omitted entries are the default value (true)
+		return terrain_set.size() <= (unsigned)(terrain_tag - 1) ||
+				terrain_set[terrain_tag - 1];
 	};
 
 	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
