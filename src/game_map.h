@@ -298,11 +298,14 @@ namespace Game_Map {
 	void ResetEncounterSteps();
 
 	/**
-	 * Gets possible encounters at a location. Also scans areas.
+	 * Gets possible encounters at a location.
+	 * Respects areas and terrain settings.
 	 *
-	 * @param out Possible encounters
+	 * @param x x position
+	 * @param y y position
+	 * @return Possible encounters
 	 */
-	void GetEncountersAt(int x, int y, std::vector<int>& out);
+	std::vector<int> GetEncountersAt(int x, int y);
 
 	/**
 	 * Updates all battle data based on the current player position and starts
