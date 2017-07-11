@@ -895,16 +895,18 @@ void Game_Map::ResetEncounterSteps() {
 	}
 }
 
-void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
+std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	int terrain_tag = GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
 		std::vector<bool>& terrain_set = Data::troops[troop_id - 1].terrain_set;
 
-		// RPG_RT optimisation: Omitted entries are the default value (false)
-		return (terrain_set.size() > (unsigned)(terrain_tag - 1) &&
-				terrain_set[terrain_tag - 1]);
+		// RPG_RT optimisation: Omitted entries are the default value (true)
+		return terrain_set.size() <= (unsigned)(terrain_tag - 1) ||
+				terrain_set[terrain_tag - 1];
 	};
+
+	std::vector<int> out;
 
 	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
 		RPG::MapInfo& map = Data::treemap.maps[i];
@@ -929,6 +931,8 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 			}
 		}
 	}
+
+	return out;
 }
 
 bool Game_Map::PrepareEncounter() {
@@ -939,8 +943,7 @@ bool Game_Map::PrepareEncounter() {
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
-	std::vector<int> encounters;
-	GetEncountersAt(x, y, encounters);
+	std::vector<int> encounters = GetEncountersAt(x, y);
 
 	if (encounters.empty()) {
 		// No enemies on this map :(
