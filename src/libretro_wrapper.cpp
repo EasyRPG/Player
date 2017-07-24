@@ -129,14 +129,14 @@ RETRO_API unsigned retro_api_version(void) {
  * must be statically allocated.
  * Can be called at any time, even before retro_init(). */
 RETRO_API void retro_get_system_info(struct retro_system_info *info) {
-    static const char lib_name[] = "EasyRPG";
-    static const char lib_version[] = PLAYER_VERSION;
-    static const char lib_extensions[] = "ini";
     memset(info, 0, sizeof(*info));
-    info->library_name = lib_name;
-    info->library_version = lib_version;
+    info->library_name = "EasyRPG";
+    #ifndef GIT_VERSION
+    #define GIT_VERSION ""
+    #endif
+    info->library_version = PLAYER_VERSION GIT_VERSION;
     info->need_fullpath = true;
-    info->valid_extensions = lib_extensions;
+    info->valid_extensions = "ini";
 }
 
 /* Gets information about system audio/video timings and geometry.
