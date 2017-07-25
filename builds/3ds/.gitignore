@@ -1,4 +1,5 @@
 build/
+*.elf
 *.smdh
 *.3dsx
 *.cia
