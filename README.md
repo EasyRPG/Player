@@ -126,9 +126,9 @@ Create an environment variable EASYDEV_MSVC pointing to buildscripts/windows/bui
 
 Compile the Player:
 
-- liblcf is compiled as part of the Player. Extract/Clone liblcf in the ''lib'' directory
-- Open ''builds/vs2015/Player.sln'' in Visual Studio
-- The executable is created in the ''bin'' directory
+- liblcf is compiled as part of the Player. Extract/Clone liblcf in the `lib` directory
+- Open `builds/vs2015/Player.sln` in Visual Studio
+- The executable is created in the `bin` directory
 
 Read detailed instructions at:
 
@@ -161,4 +161,7 @@ COPYING for license conditions.
 EasyRPG Player makes use of the following 3rd party software:
 
 * FMMidi YM2608 FM synthesizer emulator - Copyright (c) 2003-2006 yuno
-  (Yoshio Uno), available under the (3-clause) BSD license
+  (Yoshio Uno), provided under the (3-clause) BSD license
+
+* PicoJSON JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
+  Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
