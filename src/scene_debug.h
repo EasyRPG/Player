@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_DEBUG_H_
-#define _SCENE_DEBUG_H_
+#ifndef EP_SCENE_DEBUG_H
+#define EP_SCENE_DEBUG_H
 
 // Headers
 #include <vector>

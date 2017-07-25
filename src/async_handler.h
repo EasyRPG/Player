@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_ASYNC_MANAGER_H_
-#define _EASYRPG_ASYNC_MANAGER_H_
+#ifndef EP_ASYNC_HANDLER_H
+#define EP_ASYNC_HANDLER_H
 
 #include <functional>
 #include <memory>

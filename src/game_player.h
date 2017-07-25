@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_PLAYER_H_
-#define _GAME_PLAYER_H_
+#ifndef EP_GAME_PLAYER_H
+#define EP_GAME_PLAYER_H
 
 // Headers
 #include "rpg_music.h"

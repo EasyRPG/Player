@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_UTILS_H_
-#define _EASYRPG_UTILS_H_
+#ifndef EP_UTILS_H
+#define EP_UTILS_H
 
 #include <functional>
 #include <string>

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_IMAGE_XYZ_H_
-#define _EASYRPG_IMAGE_XYZ_H_
+#ifndef EP_IMAGE_XYZ_H
+#define EP_IMAGE_XYZ_H
 
 #include <cstdio>
 #include "system.h"

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAMEMESSAGE_H_
-#define _GAMEMESSAGE_H_
+#ifndef EP_GAME_MESSAGE_H
+#define EP_GAME_MESSAGE_H
 
 #include <vector>
 #include <bitset>

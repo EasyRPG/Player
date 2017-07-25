@@ -15,6 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef EP_GAME_BATTLE_H
+#define EP_GAME_BATTLE_H
+
 #include <functional>
 #include "rpg_troop.h"
 
@@ -170,3 +173,5 @@ namespace Game_Battle {
 	extern int escape_fail_count;
 	extern std::string background_name;
 }
+
+#endif

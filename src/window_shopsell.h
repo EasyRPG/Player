@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_SELL_H_
-#define _WINDOW_SELL_H_
+#ifndef EP_WINDOW_SHOPSELL_H
+#define EP_WINDOW_SHOPSELL_H
 
 // Headers
 #include <vector>

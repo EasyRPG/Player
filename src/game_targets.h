@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_TARGETS_H_
-#define _GAME_TARGETS_H_
+#ifndef EP_GAME_TARGETS_H
+#define EP_GAME_TARGETS_H
 
 namespace RPG {
 	class SaveTarget;

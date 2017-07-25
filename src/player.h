@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef EP_PLAYER_H
+#define EP_PLAYER_H
 
 // Headers
 #include "baseui.h"

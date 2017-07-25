@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _OPTIONS_H_
-#define _OPTIONS_H_
+#ifndef EP_OPTIONS_H
+#define EP_OPTIONS_H
 
 /** Window title to show. */
 #define GAME_TITLE "EasyRPG Player"

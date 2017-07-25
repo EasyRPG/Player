@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_NAME_H_
-#define _SCENE_NAME_H_
+#ifndef EP_SCENE_NAME_H
+#define EP_SCENE_NAME_H
 
 #include "scene.h"
 #include "window_name.h"

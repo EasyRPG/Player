@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_SHOP_H_
-#define _WINDOW_SHOP_H_
+#ifndef EP_WINDOW_SHOP_H
+#define EP_WINDOW_SHOP_H
 
 // Headers
 #include <string>

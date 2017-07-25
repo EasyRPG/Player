@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EASYRPG_AUDIO_DECODER_MPG123_H
-#define EASYRPG_AUDIO_DECODER_MPG123_H
+#ifndef EP_DECODER_MPG123_H
+#define EP_DECODER_MPG123_H
 
 // Headers
 #include "audio_decoder.h"

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_GAME_BATTLEALGORITHM_H_
-#define _EASYRPG_GAME_BATTLEALGORITHM_H_
+#ifndef EP_GAME_BATTLEALGORITHM_H
+#define EP_GAME_BATTLEALGORITHM_H
 
 #include <string>
 #include <vector>

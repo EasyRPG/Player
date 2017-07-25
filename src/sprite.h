@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
+#ifndef EP_SPRITE_H
+#define EP_SPRITE_H
 
 // Headers
 #include "color.h"

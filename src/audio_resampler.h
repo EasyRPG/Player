@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EASYRPG_AUDIO_RESAMPLER_H
-#define EASYRPG_AUDIO_RESAMPLER_H
+#ifndef EP_AUDIO_RESAMPLER_H
+#define EP_AUDIO_RESAMPLER_H
 
 // Headers
 // Don't remove the system.h include, prevents heap corruption for automake (preprocessor defines)

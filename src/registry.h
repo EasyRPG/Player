@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _REGISTRY_H_
-#define _REGISTRY_H_
+#ifndef EP_REGISTRY_H
+#define EP_REGISTRY_H
 
 // Headers
 #include <string>

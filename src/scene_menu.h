@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_MENU_H_
-#define _SCENE_MENU_H_
+#ifndef EP_SCENE_MENU_H
+#define EP_SCENE_MENU_H
 
 // Headers
 #include "scene.h"

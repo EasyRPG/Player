@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _FONT_H_
-#define _FONT_H_
+#ifndef EP_FONT_H
+#define EP_FONT_H
 
 // Headers
 #include "system.h"

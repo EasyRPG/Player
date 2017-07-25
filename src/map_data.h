@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MAP_DATA_H_
-#define _MAP_DATA_H_
+#ifndef EP_MAP_DATA_H
+#define EP_MAP_DATA_H
 
 // Tile IDs
 

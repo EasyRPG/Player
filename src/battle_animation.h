@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BATTLE_ANIMATION_H_
-#define _BATTLE_ANIMATION_H_
+#ifndef EP_BATTLE_ANIMATION_H
+#define EP_BATTLE_ANIMATION_H
 
 // Headers
 #include "game_battler.h"

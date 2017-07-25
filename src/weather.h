@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_GRAPHIC_WEATHER_H_
-#define _EASYRPG_GRAPHIC_WEATHER_H_
+#ifndef EP_WEATHER_H
+#define EP_WEATHER_H
 
 // Headers
 #include <string>

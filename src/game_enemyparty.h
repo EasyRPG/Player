@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GAME_ENEMY_PARTY__
-#define __GAME_ENEMY_PARTY__
+#ifndef EP_GAME_ENEMYPARTY_H
+#define EP_GAME_ENEMYPARTY_H
 
 #include <vector>
 #include "rpg_troop.h"

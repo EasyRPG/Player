@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_BATTLE_RPG2K_H_
-#define _SCENE_BATTLE_RPG2K_H_
+#ifndef EP_SCENE_BATTLE_RPG2K_H
+#define EP_SCENE_BATTLE_RPG2K_H
 
 // Headers
 #include "scene_battle.h"

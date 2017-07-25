@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITESET_BATTLE_H_
-#define _SPRITESET_BATTLE_H_
+#ifndef EP_SPRITESET_BATTLE_H
+#define EP_SPRITESET_BATTLE_H
 
 // Headers
 #include "background.h"

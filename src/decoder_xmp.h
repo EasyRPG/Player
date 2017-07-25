@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EASYRPG_AUDIO_DECODER_XMP_H
-#define EASYRPG_AUDIO_DECODER_XMP_H
+#ifndef EP_DECODER_XMP_H
+#define EP_DECODER_XMP_H
 
 // Headers
 #include <string>

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_ACTORS_H_
-#define _GAME_ACTORS_H_
+#ifndef EP_GAME_ACTORS_H
+#define EP_GAME_ACTORS_H
 
 // Headers
 #include <vector>

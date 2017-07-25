@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _RECT_H_
-#define _RECT_H_
+#ifndef EP_RECT_H
+#define EP_RECT_H
 
 #include "system.h"
 

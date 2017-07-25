@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PLANE_H_
-#define _PLANE_H_
+#ifndef EP_PLANE_H
+#define EP_PLANE_H
 
 // Headers
 #include "system.h"

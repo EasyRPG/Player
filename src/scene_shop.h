@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_SHOP_H_
-#define _SCENE_SHOP_H_
+#ifndef EP_SCENE_SHOP_H
+#define EP_SCENE_SHOP_H
 
 
 // Headers
