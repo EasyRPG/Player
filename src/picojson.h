@@ -65,7 +65,6 @@ extern "C" {
 # endif
 #endif//PICOJSON_USE_RVALUE_REFERENCE
 
-
 // experimental support for int64_t (see README.mkdn for detail)
 #ifdef PICOJSON_USE_INT64
 # define __STDC_FORMAT_MACROS

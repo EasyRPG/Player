@@ -26,7 +26,6 @@
 #include "drawable.h"
 #include "sprite_battler.h"
 
-
 struct FileRequestResult;
 
 // BattleAnimation is responsible for playing an animation.

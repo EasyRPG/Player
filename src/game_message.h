@@ -114,7 +114,6 @@ namespace Game_Message {
 	 */
 	void SetTransparent(bool transparent);
 
-
 	/**
 	 * Gets the message box position.
 	 *

@@ -74,7 +74,6 @@ protected:
 	 */
 	void PushExperienceGainedMessage(int exp);
 
-
 	/**
 	 * Adds messages about the items obtained after the battle
 	 * into Game_Message::texts.
@@ -97,7 +96,6 @@ protected:
 	 * the page is filled or not.
 	 */
 	void SetWaitForEnemyAppearanceMessages();
-
 
 	/**
 	 * Gets the time during before hiding a windowful of

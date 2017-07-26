@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // Headers
 #include <algorithm>
 #include <cassert>
@@ -399,7 +398,6 @@ int Game_Battler::ApplyConditions()
 
 	return damageTaken;
 }
-
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();

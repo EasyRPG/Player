@@ -268,7 +268,6 @@ BitmapRef FTFont::Glyph(char32_t glyph) {
 	return bm;
 }
 
-
 bool FTFont::check_face() {
 	if (!library_) {
 		if (library_checker_.expired()) {

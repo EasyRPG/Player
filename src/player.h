@@ -156,7 +156,6 @@ namespace Player {
 	 */
 	bool IsRPG2k3E();
 
-
 	/**
 	 * @return If engine is the official English RM2k release v.1.61 or newer.
 	 * False if engine is RM2k3, Japanese, unofficial or v.1.60.

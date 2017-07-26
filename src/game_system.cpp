@@ -252,7 +252,6 @@ void Game_System::SetMessageStretch(RPG::System::Stretch stretch) {
 	data.message_stretch = stretch;
 }
 
-
 int Game_System::GetFontId() {
 	return data.font_id;
 }

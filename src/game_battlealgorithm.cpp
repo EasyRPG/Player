@@ -237,7 +237,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int val
 	}
 }
 
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetUndamagedMessage() const {
 	bool target_is_ally = (GetTarget()->GetType() ==
 			Game_Battler::Type_Ally);
@@ -275,7 +274,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 		return GetTarget()->GetName() + message;
 	}
 }
-
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int value, const std::string& points) const {
 	bool target_is_ally = (GetTarget()->GetType() ==
@@ -345,7 +343,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 	}
 }
 
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const {
 	const std::string& message = is_positive ?
 		Data::terms.parameter_increase :
@@ -378,7 +375,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool 
 		return ss.str();
 	}
 }
-
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::string& message) const {
 	if (Player::IsRPG2kE()) {
@@ -1019,7 +1015,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 	}
 
-
 	return this->success;
 }
 
@@ -1623,5 +1618,4 @@ bool Game_BattleAlgorithm::NoMove::Execute() {
 void Game_BattleAlgorithm::NoMove::Apply() {
 	// no-op
 }
-
 

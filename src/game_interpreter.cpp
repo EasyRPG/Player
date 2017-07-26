@@ -294,7 +294,6 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 	return true;
 }
 
-
 int Game_Interpreter::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 
@@ -1553,7 +1552,6 @@ bool Game_Interpreter::CommandChangeSystemGraphics(RPG::EventCommand const& com)
 	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);
 	Game_System::SetFontId(com.parameters[1]);
 
-
 	return true;
 }
 
@@ -2084,7 +2082,6 @@ bool Game_Interpreter::CommandChangeMapTileset(RPG::EventCommand const& com) { /
 	return true;
 }
 
-
 bool Game_Interpreter::CommandChangePBG(RPG::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
 	params.name = com.string;
@@ -2606,7 +2603,6 @@ bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com *
 	DisplayUi->EndDisplayModeChange();
 	return true;
 }
-
 
 bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	continuation = NULL;

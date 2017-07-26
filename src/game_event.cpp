@@ -566,7 +566,6 @@ void Game_Event::UpdateSelfMovement() {
 	}
 }
 
-
 void Game_Event::MoveTypeRandom() {
 	int last_direction = GetDirection();
 	switch (Utils::GetRandomNumber(0, 5)) {

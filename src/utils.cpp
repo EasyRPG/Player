@@ -42,7 +42,6 @@ std::string Utils::UpperCase(const std::string& str) {
 	return result;
 }
 
-
 bool Utils::StartsWith(const std::string& str, const std::string& start) {
 	return str.length() >= start.length() &&
 		   0 == str.compare(0, start.length(), start);
@@ -445,7 +444,6 @@ std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, con
 
 	return tokens;
 }
-
 
 std::string Utils::ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
 	std::string str = text_template;

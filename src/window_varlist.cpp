@@ -23,8 +23,6 @@
 #include "game_variables.h"
 #include "bitmap.h"
 
-
-
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
 Window_Command(commands, 224, 10), show_switch(true), first_var(0) {
 	SetX(0);
@@ -33,7 +31,6 @@ Window_Command(commands, 224, 10), show_switch(true), first_var(0) {
 	SetWidth(224);
 	hidden_index = 0;
 }
-
 
 Window_VarList::~Window_VarList() {
 

@@ -35,7 +35,6 @@ namespace PF {
 	enum { NotAligned = false, IsAligned = true };
 }
 
-
 /** Component struct */
 struct Component {
 	uint8_t bits;
@@ -304,7 +303,6 @@ struct alpha_type_traits<TPF, PF::DynamicAlpha, _alpha_type> {
 		return pf->format.alpha_type;
 	}
 };
-
 
 // opacity_type_traits
 

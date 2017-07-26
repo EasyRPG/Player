@@ -412,7 +412,6 @@ int Game_Party::GetRunCount() {
 	return data.escapes;
 }
 
-
 void Game_Party::ApplyDamage(int damage) {
 	if (damage <= 0) {
 		return;

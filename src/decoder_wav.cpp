@@ -115,7 +115,6 @@ bool WavDecoder::IsFinished() const {
 	return finished;
 }
 
-
 void WavDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	if (file_ == NULL) return;
 	frequency = samplerate;

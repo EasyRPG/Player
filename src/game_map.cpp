@@ -836,7 +836,6 @@ RPG::Map const& Game_Map::GetMap() {
 	return *map;
 }
 
-
 int Game_Map::GetMapId() {
 	return location.map_id;
 }

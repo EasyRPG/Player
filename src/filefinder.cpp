@@ -331,7 +331,6 @@ std::string FileFinder::GetPathInsideGamePath(const std::string& path_in) {
 	return FileFinder::GetPathInsidePath(GetDirectoryTree()->directory_path, path_in);
 }
 
-
 #if defined(_WIN32) && !defined(_ARM_)
 std::string GetFontsPath() {
 	static std::string fonts_path = "";
@@ -420,7 +419,6 @@ static void add_rtp_path(const std::string& p) {
 		search_paths.push_back(tree);
 	}
 }
-
 
 static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
 #if !(defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS)) && !(defined(_WIN32) && defined(_ARM_))
