@@ -121,8 +121,8 @@ public:
 	 * The text_index must be on the char following \ when
 	 * calling.
 	 *
-	 * @param success[out] If parsing was successful.
-	 * @param value[out] The extracted value if parsing was successful
+	 * @param[out] success If parsing was successful.
+	 * @param[out] value The extracted value if parsing was successful
 	 * @return the final text output of the code.
 	 */
 	std::string ParseCommandCode(bool& success, int& value);

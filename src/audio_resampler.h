@@ -113,7 +113,7 @@ public:
 	 *
 	 * @param frequency Filled with the audio frequency
 	 * @param format Filled with the audio format
-	 * @param channel Filled with the amount of channels
+	 * @param channels Filled with the amount of channels
 	 */
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
@@ -127,7 +127,7 @@ public:
 	 *
 	 * @param frequency Sample rate the resampler should output
 	 * @param format Audio format the resampler should output
-	 * @param channel Number of channels
+	 * @param channels Number of channels
 	 * @return true when all settings were set, otherwise false (use GetFormat)
 	 */
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
@@ -155,7 +155,7 @@ private:
 	 * Called by the Decode functions to fill the buffer.
 	 *
 	 * @param buffer Buffer to fill
-	 * @param size Buffer size
+	 * @param length Buffer size
 	 * @return number of bytes read or -1 on error
 	 */
 	int FillBuffer(uint8_t* buffer, int length) override;

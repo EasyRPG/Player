@@ -352,6 +352,7 @@ public:
 	 * @param src_rect source bitmap rect.
 	 * @param horizontal flip horizontally.
 	 * @param vertical flip vertically.
+	 * @param opacity opacity to apply.
 	 */
 	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity);
 
@@ -428,6 +429,7 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param tone tone to apply.
+	 * @param opacity opacity to apply.
 	 */
 	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity);
 
@@ -439,6 +441,7 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param color color to apply.
+	 * @param opacity opacity to apply.
 	 */
 	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color, Opacity const& opacity);
 
@@ -503,11 +506,7 @@ public:
 	 * @param oy source origin y.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
-	 * @param top_opacity opacity of top section.
-	 * @param bottom_opacity opacity of bottom section.
-	 * @param opacity_split boundary between sections,
-	 *                      (zero is bottom edge).
-	 * @param tone tone to apply.
+	 * @param opacity opacity to apply.
 	 * @param zoom_x x scale factor.
 	 * @param zoom_y y scale factor.
 	 * @param angle rotation angle.

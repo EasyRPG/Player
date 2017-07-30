@@ -62,7 +62,7 @@ protected:
 	 * Adds a message about the gold received into
 	 * Game_Message::texts.
 	 *
-	 * @param Number of gold to display.
+	 * @param money Number of gold to display.
 	 */
 	void PushGoldReceivedMessage(int money);
 
@@ -70,7 +70,7 @@ protected:
 	 * Adds a message about the experience received into
 	 * Game_Message::texts.
 	 *
-	 * @param Number of experience to display.
+	 * @param exp Number of experience to display.
 	 */
 	void PushExperienceGainedMessage(int exp);
 
@@ -78,7 +78,7 @@ protected:
 	 * Adds messages about the items obtained after the battle
 	 * into Game_Message::texts.
 	 *
-	 * @param Vector of item IDs
+	 * @param drops Vector of item IDs
 	 */
 	void PushItemRecievedMessages(std::vector<int> drops);
 

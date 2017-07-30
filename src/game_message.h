@@ -188,7 +188,7 @@ namespace Game_Message {
 	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
 
 	/**
-	 * @var whether the texts are word-wrapped;
+	 * Whether the texts are word-wrapped
 	 */
 	extern bool is_word_wrapped;
 

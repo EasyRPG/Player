@@ -36,7 +36,7 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor_index actor in the party.
+	 * @param actor actor in the party.
 	 * @param equip_index selected equipment.
 	 */
 	Scene_Equip(Game_Actor& actor, int equip_index = 0);

@@ -218,7 +218,7 @@ public:
 	 *
 	 * @param frequency Filled with the audio frequency
 	 * @param format Filled with the audio format
-	 * @param channel Filled with the amount of channels
+	 * @param channels Filled with the amount of channels
 	 */
 	virtual void GetFormat(int& frequency, Format& format, int& channels) const = 0;
 
@@ -231,7 +231,7 @@ public:
 	 *
 	 * @param frequency Audio frequency
 	 * @param format Audio format
-	 * @param channel Number of channels
+	 * @param channels Number of channels
 	 * @return true when all settings were set, otherwise false (use GetFormat)
 	 */
 	virtual bool SetFormat(int frequency, Format format, int channels);
@@ -284,7 +284,7 @@ public:
 	/**
 	 * Returns the amount of bytes per sample.
 	 *
-	 * @param Sample format
+	 * @param format Sample format
 	 * @return Bytes per sample
 	 */
 	static int GetSamplesizeForFormat(AudioDecoder::Format format);

@@ -69,15 +69,13 @@ namespace Game_Map {
 
 	/**
 	 * Setups a map from a savegame.
-	 *
-	 * @param map_id map ID.
 	 */
 	void SetupFromSave();
 
 	/**
 	 * Shared code of the Setup methods.
 	 *
-	 * @param map_id map ID.
+	 * @param _id map ID.
 	 */
 	void SetupCommon(int _id);
 
@@ -444,9 +442,9 @@ namespace Game_Map {
 	/**
 	 * Sets the need refresh flag.
 	 *
-	 * @param need_refresh need refresh state.
+	 * @param refresh_mode need refresh state.
 	 */
-	void SetNeedRefresh(RefreshMode refresh_type);
+	void SetNeedRefresh(RefreshMode refresh_mode);
 
 	/**
 	 * Gets lower passages list.

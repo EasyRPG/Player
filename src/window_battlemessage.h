@@ -47,8 +47,8 @@ public:
 	 * or replacing all the occurences of %S with subject, depending
 	 * on the engine version.
 	 *
-	 * @param string Message to be displayed.
-	 * @param string Subject that will be displayed in the message.
+	 * @param message Message to be displayed.
+	 * @param subject Subject that will be displayed in the message.
 	 */
 	void PushWithSubject(const std::string& message, const std::string& subject);
 
@@ -94,7 +94,7 @@ public:
 	 * then, only the first line is displayed, and others are
 	 * considered hidden.
 	 *
-	 * @param Number of lines to display. If -1
+	 * @param count Number of lines to display. If -1
 	 * is passed, all the hidden lines are displayed.
 	 */
 	void ShowHiddenLines(int count);

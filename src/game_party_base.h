@@ -32,7 +32,7 @@ public:
 	/**
 	 * Gets a battler from the party by position in the party
 	 *
-	 * @param int Index of member to return
+	 * @param index Index of member to return
 	 * @return Party battler
 	 */
 	virtual Game_Battler& operator[] (const int index) = 0;

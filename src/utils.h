@@ -202,7 +202,7 @@ namespace Utils {
 	 * Splits a string into tokens specified by a predicate function.
 	 *
 	 * @param str_to_tokenize String that is tokenized
-	 * @param token_re Predicate function, must return true when the character is used for splitting.
+	 * @param predicate Predicate function, must return true when the character is used for splitting.
 	 * @return vector containing the elements between the tokens
 	 */
 	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);

@@ -54,7 +54,7 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param character game battler to display
+	 * @param battler game battler to display
 	 */
 	Sprite_Battler(Game_Battler* battler);
 

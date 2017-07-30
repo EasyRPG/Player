@@ -166,7 +166,7 @@ namespace Game_Battle {
 	 * Sets the need refresh flag.
 	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
 	 *
-	 * @param need_refresh need refresh state.
+	 * @param refresh need refresh state.
 	 */
 	void SetNeedRefresh(bool refresh);
 

@@ -66,7 +66,7 @@ public:
 	 *
 	 * @param frequency Filled with the audio frequency
 	 * @param format Filled with the audio format
-	 * @param channel Filled with the amount of channels
+	 * @param channels Filled with the amount of channels
 	 */
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;
 
@@ -79,7 +79,7 @@ public:
 	 *
 	 * @param frequency Audio frequency
 	 * @param format Audio format
-	 * @param channel Number of channels
+	 * @param channels Number of channels
 	 * @return true when all settings were set, otherwise false (use GetFormat)
 	 */
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels);
@@ -117,7 +117,7 @@ public:
 	 *
 	 * @param frequency Filled with the audio frequency
 	 * @param format Filled with the audio format
-	 * @param channel Filled with the amount of channels
+	 * @param channels Filled with the amount of channels
 	 * @return true when format was cached, the values were populated
 	 */
 	bool GetCachedFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;

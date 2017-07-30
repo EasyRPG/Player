@@ -165,7 +165,7 @@ public:
 	/**
 	 * Activates or deactivates the event.
 	 *
-	 * @param dis_flag enables or disables the event.
+	 * @param active enables or disables the event.
 	 */
 	void SetActive(bool active);
 

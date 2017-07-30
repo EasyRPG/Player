@@ -36,8 +36,6 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param title window title.
-	 * @param fullscreen start in fullscreen flag.
 	 */
 	Psp2Ui(int width, int height);
 

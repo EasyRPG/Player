@@ -32,8 +32,6 @@ class Scene_GameBrowser : public Scene {
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param menu_index selected index in the menu.
 	 */
 	Scene_GameBrowser();
 

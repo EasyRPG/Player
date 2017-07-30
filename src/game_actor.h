@@ -76,7 +76,7 @@ public:
 	/**
 	 * Checks if the actor is permitted to use the item at all.
 	 *
-	 * @param ID of item to test
+	 * @param item_id of item to test
 	 * @return true if item is usable
 	 */
 	virtual bool IsItemUsable(int item_id) const;

@@ -28,11 +28,6 @@ public:
 	 * Constructor.
 	 *
 	 * @param commands commands to display.
-	 * @param width window width, if no width is passed
-	 *              the width is autocalculated.
-	 * @param max_item forces a window height for max_item
-	 *                 items, if no height is passed
-	 *                 the height is autocalculated.
 	 */
 	Window_VarList(std::vector<std::string> commands);
 	~Window_VarList() override;
@@ -40,7 +35,7 @@ public:
 	/**
 	* UpdateList.
 	* 
-	* @param starting value.
+	* @param first_value starting value.
 	*/
 	void UpdateList(int first_value);
 
@@ -52,14 +47,14 @@ public:
 	/**
 	 * Indicate if item value displayed on the window correspond to switches or variables.
 	 *
-	 * @param true to display switches, false to display variables.
+	 * @param _switch true to display switches, false to display variables.
 	 */
 	void SetShowSwitch(bool _switch);
 
 	/**
 	 * Overwrite SetActive to hide/show selection rect when window is disabled.
 	 *
-	 * @param bool indicating if window will be enabled or disabled.
+	 * @param nactive indicating if window will be enabled or disabled.
 	 */
 	void SetActive(bool nactive);
 
