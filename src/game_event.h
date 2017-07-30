@@ -236,6 +236,8 @@ private:
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
 	bool updating = false;
+
+	int frame_count_at_last_auto_start_check = -1;
 };
 
 #endif
