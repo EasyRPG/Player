@@ -57,7 +57,6 @@ protected:
 	const RPG::Animation& animation;
 	int frame;
 	bool frame_update;
-	bool large;
 
 	FileRequestBinding request_id;
 };

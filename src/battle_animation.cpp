@@ -32,7 +32,7 @@
 #include "game_temp.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
-	animation(anim), frame(0), frame_update(false), large(false)
+	animation(anim), frame(0), frame_update(false)
 {
 	SetZ(Priority_BattleAnimation);
 
@@ -41,30 +41,15 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
 
 	if (name.empty()) return;
 
-	// Emscripten handled special here because of the FileFinder checks
-	// Filefinder is not reliable for Emscripten because the files must be
-	// downloaded first.
-	// And we can't rely on "success" state of FileRequest because it's always
-	// true on desktop.
-#ifdef EMSCRIPTEN
-	FileRequestAsync* request = AsyncHandler::RequestFile("Battle", name);
-	request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
-	request->Start();
-#else
-	if (!FileFinder::FindImage("Battle", name).empty()) {
+	if (animation.large) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", name);
+		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
+		request->Start();
+	} else {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", name);
 		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
-	else if (!FileFinder::FindImage("Battle2", name).empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", name);
-		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
-		request->Start();
-	}
-	else {
-		Output::Warning("Couldn't find animation: %s", name.c_str());
-	}
-#endif
 }
 
 DrawableType BattleAnimation::GetType() const {
@@ -98,36 +83,15 @@ bool BattleAnimation::IsDone() const {
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
-	if (result->success) {
-		//Normally only battle2 sprites are "large" sprites - but the check doesn't hurt.
-		BitmapRef bitmap = Cache::Battle(result->file);
-		if (bitmap->GetWidth() == 640) {
-			large = true;
-		}
-		SetBitmap(bitmap);
-
-		SetSrcRect(Rect(0, 0, 0, 0));
-	}
-	else {
-		// Try battle2
-		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", result->file);
-		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
-		request->Start();
-	}
+	BitmapRef bitmap = Cache::Battle(result->file);
+	SetBitmap(bitmap);
+	SetSrcRect(Rect(0, 0, 0, 0));
 }
 
 void BattleAnimation::OnBattle2SpriteReady(FileRequestResult* result) {
-	if (result->success) {
-		BitmapRef bitmap = Cache::Battle2(result->file);
-		if (bitmap->GetWidth() == 640) {
-			large = true;
-		}
-		SetBitmap(bitmap);
-		SetSrcRect(Rect(0, 0, 0, 0));
-	}
-	else {
-		Output::Warning("Couldn't find animation: %s", result->file.c_str());
-	}
+	BitmapRef bitmap = Cache::Battle2(result->file);
+	SetBitmap(bitmap);
+	SetSrcRect(Rect(0, 0, 0, 0));
 }
 
 void BattleAnimation::DrawAt(int x, int y) {
@@ -154,7 +118,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 		SetY(cell.y + y);
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
-		int size = large ? 128 : 96;
+		int size = animation.large ? 128 : 96;
 		SetSrcRect(Rect(sx * size, sy * size, size, size));
 		SetOx(size / 2);
 		SetOy(size / 2);
