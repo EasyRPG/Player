@@ -458,7 +458,7 @@ void Game_Player::Update() {
 
 	if (last_moving && CheckTouchEvent()) return;
 
-	if (!Game_Map::GetInterpreter().IsRunning()) {
+	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 			if ( GetOnOffVehicle() ) return;
 			if ( CheckActionEvent() ) return;
