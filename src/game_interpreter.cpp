@@ -1937,6 +1937,12 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
 
+	if (wait) {
+		// While waiting the variable is reset to 0 every frame
+		Game_Variables[var_id] = 0;
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	}
+
 	if (wait && Game_Message::visible)
 		return false;
 
@@ -2027,8 +2033,10 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		}
 	}
 
-	Game_Variables[var_id] = result;
-	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	if (var_id > 0) {
+		Game_Variables[var_id] = result;
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	}
 
 	if (!wait)
 		return true;
