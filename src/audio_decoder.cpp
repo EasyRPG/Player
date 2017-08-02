@@ -178,10 +178,9 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(std::shared_ptr<FileFinder::i
 #endif
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
-		fseek(file, 29, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 1)
-			return nullptr;
-		fseek(file, 0, SEEK_SET);
+		stream->seekg(29, std::ios::ios_base::beg);
+		stream->read(magic, sizeof(magic));
+		stream->seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "vorb", 4)) {
 			if (resample) {

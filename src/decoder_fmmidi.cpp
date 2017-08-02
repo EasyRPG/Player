@@ -53,11 +53,11 @@ int read_func(void* instance) {
 }
 
 bool FmMidiDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
-
 	seq->clear();
 	Output::Debug("MIDI Size: %d\n", stream->get_size());
 	file_buffer.resize(stream->get_size());
 	stream->read(reinterpret_cast<char*>(file_buffer.data()), stream->get_size());
+	size_t bytes_read = stream->gcount();
 
 	if ((bytes_read != file_buffer.size()) || (!seq->load(this, read_func))) {
 		error_message = "FM Midi: Error reading file";
