@@ -114,8 +114,10 @@ const char wma_magic[] = { (char)0x30, (char)0x26, (char)0xB2, (char)0x75 };
 
 std::unique_ptr<AudioDecoder> AudioDecoder::Create(std::shared_ptr<FileFinder::istream> stream, const std::string& filename, bool resample) {
 	char magic[4] = { 0 };
-	stream->read(magic, sizeof(magic));
-	stream->seekg(std::ios::ios_base::beg);
+	if (stream->read(magic, sizeof(magic)).gcount() == 0) {
+		return nullptr;
+	}
+	stream->seekg(0, std::ios::ios_base::beg);
 
 #if !(defined(HAVE_WILDMIDI) || defined(HAVE_XMP))
 	/* WildMidi and XMP are the only audio decoders that need the filename passed
@@ -164,10 +166,12 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(std::shared_ptr<FileFinder::i
 	// Try to use internal OGG decoder
 	if (!strncmp(magic, "OggS", 4)) { // OGG
 #ifdef HAVE_OPUS
-		fseek(file, 28, SEEK_SET);
-		if (fread(magic, 4, 1, file) != 1)
+		stream->seekg(28, std::ios::ios_base::beg);
+		if (stream->read(magic, sizeof(magic)).gcount() == 0) {
 			return nullptr;
-		fseek(file, 0, SEEK_SET);
+		}
+		stream->seekg(0, std::ios::ios_base::beg);
+
 		if (!strncmp(magic, "Opus", 4)) {
 			if (resample) {
 				return std::unique_ptr<AudioDecoder>(new AudioResampler(std::unique_ptr<AudioDecoder>(new OpusDecoder())));
@@ -179,7 +183,9 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(std::shared_ptr<FileFinder::i
 
 #if defined(HAVE_TREMOR) || defined(HAVE_OGGVORBIS)
 		stream->seekg(29, std::ios::ios_base::beg);
-		stream->read(magic, sizeof(magic));
+		if (stream->read(magic, sizeof(magic)).gcount() == 0) {
+			return nullptr;
+		}
 		stream->seekg(0, std::ios::ios_base::beg);
 
 		if (!strncmp(magic, "vorb", 4)) {

@@ -50,6 +50,7 @@ private:
 #ifdef HAVE_OPUS
 	OggOpusFile* oof;
 #endif
+	std::shared_ptr<FileFinder::istream> stream;
 	bool finished = false;
 	int frequency = 48000;
 	int channels = 2;

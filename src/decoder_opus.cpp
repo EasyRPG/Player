@@ -24,25 +24,43 @@
 #include "audio_decoder.h"
 #include "decoder_opus.h"
 
-static int custom_read(void* stream, unsigned char* ptr, int nbytes) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fread(ptr, 1, nbytes, f);
+static int vio_read_func(void* stream, unsigned char* ptr, int nbytes) {
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	if (nbytes == 0) return 0;
+	return (int)(f->read(reinterpret_cast<char*>(ptr), nbytes).gcount());
 }
 
-static int custom_seek(void* stream, opus_int64 offset, int whence) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fseek(f, offset, whence);
+static int vio_seek_func(void* stream, opus_int64 offset, int whence) {
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	if (f->eof()) f->clear(); //emulate behaviour of fseek
+	switch (whence) {
+		case SEEK_CUR:
+			f->seekg(offset, std::ios::ios_base::cur);
+			break;
+		case SEEK_SET:
+			f->seekg(offset, std::ios::ios_base::beg);
+			break;
+		case SEEK_END:
+			f->seekg(offset, std::ios::ios_base::end);
+			break;
+		default:
+			return -1;
+	}
+
+	return 0;
 }
 
-static opus_int64 custom_tell(void* stream) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return ftell(f);
+static opus_int64 vio_tell_func(void* stream) {
+	FileFinder::istream* f = reinterpret_cast<FileFinder::istream*>(stream);
+	return f->tellg();
 }
 
-static int custom_close(void* stream) {
-	FILE* f = reinterpret_cast<FILE*>(stream);
-	return fclose(f);
-}
+static OpusFileCallbacks vio = {
+		vio_read_func,
+		vio_seek_func,
+		vio_tell_func,
+		nullptr // close not supported by istream interface
+};
 
 OpusDecoder::OpusDecoder() {
 	music_type = "opus";
@@ -54,17 +72,17 @@ OpusDecoder::~OpusDecoder() {
 	}
 }
 
-bool OpusDecoder::Open(FILE* file) {
+bool OpusDecoder::Open(std::shared_ptr<FileFinder::istream> stream) {
+	this->stream = stream;
 	finished = false;
 
 	int res;
-	OpusFileCallbacks callbacks = {custom_read, custom_seek, custom_tell, custom_close};
 
-	oof = op_open_callbacks(file, &callbacks, nullptr, 0, &res);
+	oof = op_open_callbacks(stream.get(), &vio, nullptr, 0, &res);
 	if (res != 0) {
 		error_message = "Opus: Error reading file";
+		this->stream.reset();
 		op_free(oof);
-		fclose(file);
 		return false;
 	}
 
