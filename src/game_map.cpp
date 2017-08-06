@@ -329,12 +329,14 @@ void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> inte
 }
 
 void Game_Map::ScrollRight(int distance) {
-	AddScreenX(map_info.position_x, distance);
+	int x = map_info.position_x;
+	AddScreenX(x, distance);
 	Parallax::Scroll(distance, 0);
 }
 
 void Game_Map::ScrollDown(int distance) {
-	AddScreenY(map_info.position_y, distance);
+	int y = map_info.position_y;
+	AddScreenY(y, distance);
 	Parallax::Scroll(0, distance);
 }
 
@@ -876,7 +878,7 @@ void Game_Map::UpdateEncounterSteps() {
 	int terrain_id = GetTerrainTag(x, y);
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
-	location.encounter_steps -= terrain.encounter_rate;
+	location.encounter_steps = location.encounter_steps - terrain.encounter_rate;
 
 	if (location.encounter_steps <= 0) {
 		ResetEncounterSteps();
@@ -1200,12 +1202,21 @@ void Game_Map::UnlockPan() {
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	distance *= SCREEN_TILE_WIDTH;
-	switch (direction) {
-		case PanUp:		location.pan_finish_y -= distance;		break;
-		case PanRight:	location.pan_finish_x += distance;		break;
-		case PanDown:	location.pan_finish_y += distance;		break;
-		case PanLeft:	location.pan_finish_x -= distance;		break;
+
+	if (direction == PanUp) {
+		int new_pan = location.pan_finish_y - distance;
+		location.pan_finish_y = new_pan;
+	} else if (direction == PanRight) {
+		int new_pan = location.pan_finish_x + distance;
+		location.pan_finish_x = new_pan;
+	} else if (direction == PanDown) {
+		int new_pan = location.pan_finish_y + distance;
+		location.pan_finish_y = new_pan;
+	} else if (direction == PanLeft) {
+		int new_pan = location.pan_finish_x - distance;
+		location.pan_finish_x = new_pan;
 	}
+
 	pan_speed = speed;
 	pan_wait = wait;
 }
@@ -1225,15 +1236,21 @@ void Game_Map::UpdatePan() {
 	int dx = location.pan_finish_x - location.pan_current_x;
 	int dy = location.pan_finish_y - location.pan_current_y;
 
-	if (dx > 0)
-		location.pan_current_x += std::min(step, dx);
-	else if (dx < 0)
-		location.pan_current_x -= std::min(step, -dx);
+	if (dx > 0) {
+		int pan = location.pan_current_x + std::min(step, dx);
+		location.pan_current_x = pan;
+	} else if (dx < 0) {
+		int pan = location.pan_current_x - std::min(step, -dx);
+		location.pan_current_x = pan;
+	}
 
-	if (dy > 0)
-		location.pan_current_y += std::min(step, dy);
-	else if (dy < 0)
-		location.pan_current_y -= std::min(step, -dy);
+	if (dy > 0) {
+		int pan = location.pan_current_y + std::min(step, dy);
+		location.pan_current_y = pan;
+	} else if (dy < 0) {
+		int pan = location.pan_current_y - std::min(step, -dy);
+		location.pan_current_y = pan;
+	}
 }
 
 bool Game_Map::IsPanActive() {

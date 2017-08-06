@@ -1030,12 +1030,16 @@ std::string Game_Actor::GetClassName() const {
 }
 
 void Game_Actor::SetBaseMaxHp(int maxhp) {
-	GetData().hp_mod += maxhp - GetBaseMaxHp();
+	int new_hp_mod = GetData().hp_mod + (maxhp - GetBaseMaxHp());
+	GetData().hp_mod = new_hp_mod;
+
 	SetHp(GetData().current_hp);
 }
 
 void Game_Actor::SetBaseMaxSp(int maxsp) {
-	GetData().sp_mod += maxsp - GetBaseMaxSp();
+	int new_sp_mod = GetData().sp_mod + (maxsp - GetBaseMaxSp());
+	GetData().sp_mod = new_sp_mod;
+
 	SetSp(GetData().current_sp);
 }
 
@@ -1068,19 +1072,23 @@ void Game_Actor::SetSp(int sp) {
 }
 
 void Game_Actor::SetBaseAtk(int atk) {
-	GetData().attack_mod += atk - GetBaseAtk();
+	int new_attack_mod = GetData().attack_mod + (atk - GetBaseAtk());
+	GetData().attack_mod = new_attack_mod;
 }
 
 void Game_Actor::SetBaseDef(int def) {
-	GetData().defense_mod += def - GetBaseDef();
+	int new_defense_mod = GetData().defense_mod + (def - GetBaseDef());
+	GetData().defense_mod = new_defense_mod;
 }
 
 void Game_Actor::SetBaseSpi(int spi) {
-	GetData().spirit_mod += spi - GetBaseSpi();
+	int new_spirit_mod = GetData().spirit_mod + (spi - GetBaseSpi());
+	GetData().spirit_mod = new_spirit_mod;
 }
 
 void Game_Actor::SetBaseAgi(int agi) {
-	GetData().agility_mod += agi - GetBaseAgi();
+	int new_agility_mod = GetData().agility_mod + (agi - GetBaseAgi());
+	GetData().agility_mod = new_agility_mod;
 }
 
 int Game_Actor::GetBattleRow() const {

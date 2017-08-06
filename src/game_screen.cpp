@@ -232,12 +232,12 @@ void Game_Screen::Update() {
 		data.tint_current_green = interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);
 		data.tint_current_blue = interpolate(data.tint_time_left, data.tint_current_blue, data.tint_finish_blue);
 		data.tint_current_sat = interpolate(data.tint_time_left, data.tint_current_sat, data.tint_finish_sat);
-		data.tint_time_left--;
+		data.tint_time_left = data.tint_time_left - 1;
 	}
 
 	if (data.flash_time_left > 0) {
-		data.flash_current_level -= data.flash_current_level / data.flash_time_left;
-		data.flash_time_left--;
+		data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
+		data.flash_time_left = data.flash_time_left - 1;
 		if (data.flash_time_left <= 0)
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
 	}
@@ -247,14 +247,14 @@ void Game_Screen::Update() {
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;
 		else
-			data.shake_position += (int)delta;
+			data.shake_position = data.shake_position + (int)delta;
 		if (data.shake_position > data.shake_strength * 2)
 			shake_direction = -1;
 		if (data.shake_position < -data.shake_strength * 2)
 			shake_direction = 1;
 
 		if (data.shake_time_left > 0)
-			data.shake_time_left--;
+			data.shake_time_left = data.shake_time_left - 1;
 	}
 
 	for (const auto& picture : pictures) {
