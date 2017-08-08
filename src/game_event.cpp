@@ -503,6 +503,11 @@ void Game_Event::StopTalkToHero() {
 
 void Game_Event::CheckEventTriggers() {
 	if (trigger == RPG::EventPage::Trigger_auto_start) {
+		if (Player::GetFrames() == frame_count_at_last_auto_start_check) {
+			// Delay the start to the next frame because the event was enabled
+			// by an event with an higher ID than this event.
+			return;
+		}
 		Start();
 	} else if (trigger == RPG::EventPage::Trigger_collision) {
 		CheckEventTriggerTouch(GetX(),GetY());
@@ -698,6 +703,16 @@ void Game_Event::Update() {
 }
 
 void Game_Event::UpdateParallel() {
+	int cur_frame_count = Player::GetFrames();
+
+	if (trigger != RPG::EventPage::Trigger_auto_start) {
+		// When this event becomes an auto-start event this frame through a
+		// refresh don't allow to run it.
+		// This prevents events  with lower IDs than the event doing the
+		// refresh from starting this frame.
+		frame_count_at_last_auto_start_check = cur_frame_count;
+	}
+
 	if (!data.active || page == NULL || updating) {
 		return;
 	}
@@ -714,7 +729,6 @@ void Game_Event::UpdateParallel() {
 	// Placed after the interpreter update because multiple updates per frame are allowed.
 	// This results in waits to finish quicker when an event collides with this event and
 	// emulates a RPG Maker bug)
-	int cur_frame_count = Player::GetFrames();
 	// Only update the event once per frame
 	if (cur_frame_count == frame_count_at_last_update_parallel) {
 		updating = false;
