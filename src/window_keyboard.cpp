@@ -36,8 +36,12 @@ const char* const Window_Keyboard::TO_HANGUL_1 = "<앞P>";
 const char* const Window_Keyboard::TO_HANGUL_2 = "<뒤P>";
 const char* const Window_Keyboard::DONE_KO = "<결정>";
 
+const char* const Window_Keyboard::TO_ZH_CN_1 = "<翻页>";
+const char* const Window_Keyboard::TO_ZH_CN_2 = "<前页>";
+const char* const Window_Keyboard::DONE_ZH_CN = "<确定>";
+
 /*
- * hiragana <-> katakana; hangul 1 <-> hangul 2; letter <-> symbol
+ * Hiragana <-> Katakana; Hangul 1 <-> Hangul 2; Simp. Chinese 1 <-> Simp. Chinese 2; letter <-> symbol
  */
 
 std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
@@ -87,6 +91,30 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"},
 		{"진", "녘", "의", "민", "예", "건", "현", "운", "걔", "임"},
 		{"영", "은", "성", "준", Window_Keyboard::SPACE, "", Window_Keyboard::TO_HANGUL_1, "", Window_Keyboard::DONE_KO}
+	},
+
+	{ // Simp. Chinese 1
+		{"阿", "艾", "安", "奥", "巴", "拜", "班", "邦", "贝", "本"},
+		{"比", "宾", "波", "伯", "布", "查", "达", "丹", "当", "道"},
+		{"德", "登", "迪", "蒂", "丁", "度", "杜", "顿", "多", "厄"},
+		{"尔", "恩", "法", "凡", "菲", "费", "芬", "佛", "弗", "夫"},
+		{"盖", "格", "戈", "冈", "古", "哈", "海", "汉", "豪", "赫"},
+		{"华", "霍", "基", "吉", "加", "杰", "捷", "金", "卡", "凯"},
+		{"科", "克", "肯", "拉", "莱", "兰", "朗", "劳", "勒", "雷"},
+		{"里", "利", "立", "丽", "莉", "林", "琳", "留", "隆", "鲁"},
+		{"路", "伦", "罗", "洛", "律", "", Window_Keyboard::TO_ZH_CN_2, "", Window_Keyboard::DONE_ZH_CN}
+	},
+
+	{ // Simp. Chinese 2
+		{"玛", "迈", "曼", "梅", "美", "门", "米", "密", "明", "缪"},
+		{"摩", "莫", "姆", "穆", "那", "娜", "纳", "奈", "南", "尼"},
+		{"宁", "纽", "奴", "诺", "欧", "帕", "派", "佩", "皮", "普"},
+		{"奇", "琪", "琼", "丘", "萨", "撒", "赛", "桑", "瑟", "森"},
+		{"沙", "山", "珊", "史", "世", "斯", "丝", "司", "苏", "所"},
+		{"索", "塔", "泰", "坦", "汤", "特", "提", "汀", "统", "瓦"},
+		{"威", "维", "韦", "卫", "温", "沃", "乌", "西", "希", "夏"},
+		{"辛", "修", "休", "雅", "亚", "林", "琳", "留", "隆", "鲁"},
+		{"伊", "英", "尤", "则", "扎", "", Window_Keyboard::TO_ZH_CN_1, "", Window_Keyboard::DONE_ZH_CN}
 	},
 
 	{ // Letter
