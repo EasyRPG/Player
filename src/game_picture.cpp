@@ -187,14 +187,14 @@ void Game_Picture::Update() {
 		if (old_map_x != Game_Map::GetDisplayX()) {
 			double mx = (old_map_x - Game_Map::GetDisplayX()) / (double)TILE_SIZE;
 
-			data.finish_x += mx;
-			data.current_x += mx;
+			data.finish_x = data.finish_x + mx;
+			data.current_x = data.current_x + mx;
 		}
 		if (old_map_y != Game_Map::GetDisplayY()) {
 			double my = (old_map_y - Game_Map::GetDisplayY()) / (double)TILE_SIZE;
 
-			data.finish_y += my;
-			data.current_y += my;
+			data.finish_y = data.finish_y + my;
+			data.current_y = data.current_y + my;
 		}
 
 		old_map_x = Game_Map::GetDisplayX();
@@ -204,30 +204,30 @@ void Game_Picture::Update() {
 	if (data.time_left == 0) {
 		SyncCurrentToFinish();
 	} else {
-		auto interpolate = [=](double& current, double finish) {
+		auto interpolate = [=](double current, double finish) {
 			double d = data.time_left;
-			current = (current * (d - 1) + finish) / d;
+			return (current * (d - 1) + finish) / d;
 		};
 
-		interpolate(data.current_x, data.finish_x);
-		interpolate(data.current_y, data.finish_y);
-		interpolate(data.current_red, data.finish_red);
-		interpolate(data.current_green, data.finish_green);
-		interpolate(data.current_blue, data.finish_blue);
-		interpolate(data.current_sat, data.finish_sat);
-		interpolate(data.current_magnify, data.finish_magnify);
-		interpolate(data.current_top_trans, data.finish_top_trans);
-		interpolate(data.current_bot_trans, data.finish_bot_trans);
+		data.current_x = interpolate(data.current_x, data.finish_x);
+		data.current_y = interpolate(data.current_y, data.finish_y);
+		data.current_red = interpolate(data.current_red, data.finish_red);
+		data.current_green = interpolate(data.current_green, data.finish_green);
+		data.current_blue = interpolate(data.current_blue, data.finish_blue);
+		data.current_sat = interpolate(data.current_sat, data.finish_sat);
+		data.current_magnify = interpolate(data.current_magnify, data.finish_magnify);
+		data.current_top_trans = interpolate(data.current_top_trans, data.finish_top_trans);
+		data.current_bot_trans = interpolate(data.current_bot_trans, data.finish_bot_trans);
 		if (data.effect_mode != 0) {
-			interpolate(data.current_effect, data.finish_effect);
+			data.current_effect = interpolate(data.current_effect, data.finish_effect);
 		}
 
-		data.time_left--;
+		data.time_left = data.time_left - 1;
 	}
 
 	// Update rotation
 	if (data.current_rotation >= 256.0) {
-		data.current_rotation -= 256.0;
+		data.current_rotation = data.current_rotation - 256.0;
 	}
 	bool is_rotating_but_stopping =
 		data.effect_mode == 0 && (
@@ -238,7 +238,7 @@ void Game_Picture::Update() {
 		data.effect_mode == 1 ||
 		is_rotating_but_stopping;
 	if (is_rotating) {
-		data.current_rotation += data.current_effect;
+		data.current_rotation = data.current_rotation + data.current_effect;
 		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
 			data.current_rotation = 0.0;
 		}
@@ -246,7 +246,7 @@ void Game_Picture::Update() {
 
 	// Update waver phase
 	if (data.effect_mode == 2) {
-		data.current_waver += 10;
+		data.current_waver = data.current_waver + 10;
 	}
 
 	UpdateSprite();

@@ -405,11 +405,11 @@ void Game_Vehicle::Update() {
 
 	if (type == Airship) {
 		if (IsAscending()) {
-			data.remaining_ascent -= 8;
+			data.remaining_ascent = data.remaining_ascent - 8;
 			if (!IsAscending())
 				walk_animation = true;
 		} else if (IsDescending()) {
-			data.remaining_descent -= 8;
+			data.remaining_descent = data.remaining_descent - 8;
 			if (!IsDescending()) {
 				if (CanLand()) {
 					SetLayer(RPG::EventPage::Layers_same);

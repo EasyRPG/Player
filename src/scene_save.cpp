@@ -87,7 +87,7 @@ void Scene_Save::Action(int index) {
 	Main_Data::game_data.title = title;
 
 	Main_Data::game_data.system.save_slot = index + 1;
-	Main_Data::game_data.system.save_count += 1;
+	Main_Data::game_data.system.save_count = Main_Data::game_data.system.save_count + 1;
 
 	Game_Map::PrepareSave();
 
