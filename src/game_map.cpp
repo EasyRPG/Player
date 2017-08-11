@@ -331,12 +331,14 @@ void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> inte
 void Game_Map::ScrollRight(int distance) {
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
+	map_info.position_x = x;
 	Parallax::Scroll(distance, 0);
 }
 
 void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
+	map_info.position_y = y;
 	Parallax::Scroll(0, distance);
 }
 
