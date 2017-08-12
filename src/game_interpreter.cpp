@@ -49,6 +49,13 @@
 #include "game_battle.h"
 #include "utils.h"
 
+namespace {
+	constexpr int max_var_size_2k3 = 9999999;
+	constexpr int min_var_size_2k3 = -max_var_size_2k3;
+	constexpr int max_var_size_2k = 999999;
+	constexpr int min_var_size_2k = -max_var_size_2k;
+}
+
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -986,11 +993,13 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					}
 			}
 
-			if (Game_Variables[i] > MaxSize) {
-				Game_Variables[i] = MaxSize;
-			}
-			if (Game_Variables[i] < MinSize) {
-				Game_Variables[i] = MinSize;
+			// Clamp to variable range
+			if (Player::IsRPG2k3()) {
+				Game_Variables[i] = std::max(
+						std::min(Game_Variables[i], max_var_size_2k3), min_var_size_2k3);
+			} else {
+				Game_Variables[i] = std::max(
+						std::min(Game_Variables[i], max_var_size_2k), min_var_size_2k);
 			}
 		}
 
