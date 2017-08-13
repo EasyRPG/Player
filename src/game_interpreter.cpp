@@ -2404,8 +2404,13 @@ bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { /
 		evnt->SetActive(false);
 
 		// Parallel map events shall stop immediately
-		if (!main_flag)
+		if (!main_flag) {
+			// When the event was called indirectly from a parallel process
+			// event execution continues after a yield.
+			// Increment the index for this special case.
+			index++;
 			return false;
+		}
 	}
 
 	return true;
