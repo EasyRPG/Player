@@ -63,11 +63,6 @@ public:
 
 	virtual bool ExecuteCommand();
 
-	enum Sizes {
-		MaxSize = 9999999,
-		MinSize = -9999999
-	};
-
 protected:
 	friend class Game_Interpreter_Map;
 
