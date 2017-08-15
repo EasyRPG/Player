@@ -150,7 +150,8 @@ namespace {
 		int min_height, max_height;
 		std::function<BitmapRef()> dummy_renderer;
 	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 160, backdrop_dummy_func},
+		/* FIXME: 240px max height is 2k3 specific, for 2k is 160px */
+		{ "Backdrop", false, 320, 320, 160, 240, backdrop_dummy_func},
 		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func },
 		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func },
 		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func },

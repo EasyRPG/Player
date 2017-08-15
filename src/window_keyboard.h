@@ -37,13 +37,15 @@ public:
 	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
 
 	enum Mode {
-		Hiragana = 0,
-		Katakana = 1,
-		Hangul1 = 2,
-		Hangul2 = 3,
-		Letter = 4,
-		Symbol = 5,
-		MODE_END = 6
+		Hiragana,
+		Katakana,
+		Hangul1,
+		Hangul2,
+		ZhCn1,
+		ZhCn2,
+		Letter,
+		Symbol,
+		MODE_END
 	};
 
 	void UpdateCursorRect();
@@ -65,6 +67,10 @@ public:
 	static const char* const TO_HANGUL_1;
 	static const char* const TO_HANGUL_2;
 	static const char* const DONE_KO;
+
+	static const char* const TO_ZH_CN_1;
+	static const char* const TO_ZH_CN_2;
+	static const char* const DONE_ZH_CN;
 
 protected:
 	static const int border_x = 8;
