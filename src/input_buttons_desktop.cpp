@@ -77,6 +77,8 @@ void Input::InitButtons() {
 	buttons[TAKE_SCREENSHOT].push_back(Keys::F10);
 	buttons[TOGGLE_FPS].push_back(Keys::F2);
 	buttons[SHOW_LOG].push_back(Keys::F3);
+	buttons[TOGGLE_FULLSCREEN].push_back(Keys::F4);
+	buttons[TOGGLE_ZOOM].push_back(Keys::F5);
 	buttons[PAGE_UP].push_back(Keys::PGUP);
 	buttons[PAGE_DOWN].push_back(Keys::PGDN);
 	buttons[RESET].push_back(Keys::F12);

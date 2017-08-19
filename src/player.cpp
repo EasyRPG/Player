@@ -280,6 +280,12 @@ void Player::Update(bool update_scene) {
 	if (Input::IsTriggered(Input::RESET)) {
 		reset_flag = true;
 	}
+	if (Input::IsTriggered(Input::TOGGLE_ZOOM)) {
+		DisplayUi->ToggleZoom();
+	}
+	if (Input::IsTriggered(Input::TOGGLE_FULLSCREEN)) {
+		DisplayUi->ToggleFullscreen();
+	}
 
 	DisplayUi->ProcessEvents();
 

@@ -549,18 +549,22 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 #endif
 
 void SdlUi::ToggleFullscreen() {
+	BeginDisplayModeChange();
 	if (toggle_fs_available && mode_changing) {
 		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
 		else
 			current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
+	EndDisplayModeChange();
 }
 
 void SdlUi::ToggleZoom() {
+	BeginDisplayModeChange();
 	if (zoom_available && mode_changing) {
 		current_display_mode.zoom = !current_display_mode.zoom;
 	}
+	EndDisplayModeChange();
 }
 
 void SdlUi::ProcessEvents() {
@@ -753,53 +757,25 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-	switch (evnt.key.keysym.sym) {
-	case SDLK_F4:
+	if (evnt.key.keysym.sym == SDLK_F4 && (evnt.key.keysym.mod & KMOD_LALT)) {
 		// Close program on LeftAlt+F4
-		if (evnt.key.keysym.mod & KMOD_LALT) {
-			Player::exit_flag = true;
-			return;
-		}
-
-		// Toggle fullscreen on F4 and no alt is pressed
-		if (!(evnt.key.keysym.mod & KMOD_RALT) && !(evnt.key.keysym.mod & KMOD_LALT)) {
-			BeginDisplayModeChange();
-				ToggleFullscreen();
-			EndDisplayModeChange();
-		}
+		Player::exit_flag = true;
 		return;
-
-	case SDLK_F5:
-		// Toggle zoom on F5
-		BeginDisplayModeChange();
-			ToggleZoom();
-		EndDisplayModeChange();
-		return;
-
-	case SDLK_RETURN:
-	case SDLK_KP_ENTER:
-		// Toggle fullscreen on Alt+Enter
+	} else if (evnt.key.keysym.sym == SDLK_RETURN ||
+			evnt.key.keysym.sym == SDLK_KP_ENTER) {
 		if (evnt.key.keysym.mod & KMOD_LALT || (evnt.key.keysym.mod & KMOD_RALT)) {
-			BeginDisplayModeChange();
-				ToggleFullscreen();
-			EndDisplayModeChange();
+			// Toggle fullscreen on Alt+Enter
+			ToggleFullscreen();
 			return;
 		}
-		// Continue if return/enter not handled by fullscreen hotkey
-#  if __GNUC__ >= 7
-		__attribute__((fallthrough));
-#  endif
-
-	default:
-		// Update key state
-#  if SDL_MAJOR_VERSION==1
-		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
-#  else
-		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
-
-#  endif
-		return;
 	}
+
+	// Update key state
+#  if SDL_MAJOR_VERSION==1
+	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
+#  else
+	keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
+#  endif
 #else
 	/* unused */
 	(void) evnt;
