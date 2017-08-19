@@ -561,6 +561,15 @@ void SdlUi::ToggleFullscreen() {
 
 void SdlUi::ToggleZoom() {
 	BeginDisplayModeChange();
+#if SDL_MAJOR_VERSION > 1
+	// Work around a SDL bug which doesn't demaximize the window when the size
+	// is changed
+	int flags = SDL_GetWindowFlags(sdl_window);
+	if ((flags & SDL_WINDOW_MAXIMIZED) == SDL_WINDOW_MAXIMIZED) {
+		SDL_RestoreWindow(sdl_window);
+	}
+#endif
+
 	if (zoom_available && mode_changing) {
 		current_display_mode.zoom = !current_display_mode.zoom;
 	}
