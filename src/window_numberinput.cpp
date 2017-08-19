@@ -58,7 +58,7 @@ void Window_NumberInput::Refresh() {
 
 	format_string += "%0*d";
 
-	sprintf(s, format_string.c_str(), digits_max, number);
+	snprintf(s, 9, format_string.c_str(), digits_max, number);
 
 	for (int i = 0; i < digits_max + (int)show_operator; ++i) {
 		char c[2] = {s[i], '\0'};

@@ -97,7 +97,7 @@ public:
 	void Update() override;
 
 protected:
-	unsigned number;
+	unsigned int number;
 	int digits_max;
 	unsigned int cursor_width;
 	unsigned int index;
