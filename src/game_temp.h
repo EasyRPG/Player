@@ -35,8 +35,6 @@ public:
 
 	static bool menu_calling;
 
-	static Game_Battler* forcing_battler;
-
 	static bool battle_calling;
 	static bool shop_calling;
 	static bool inn_calling;

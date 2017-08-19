@@ -19,7 +19,6 @@
 #include "game_temp.h"
 
 bool Game_Temp::menu_calling;
-Game_Battler* Game_Temp::forcing_battler;
 bool Game_Temp::battle_calling;
 bool Game_Temp::shop_calling;
 bool Game_Temp::inn_calling;
@@ -53,7 +52,6 @@ int Game_Temp::battle_result;
 
 void Game_Temp::Init() {
 	menu_calling = false;
-	forcing_battler = NULL;
 	battle_calling = false;
 	shop_calling = false;
 	name_calling = false;
