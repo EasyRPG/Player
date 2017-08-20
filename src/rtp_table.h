@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _RTP_TABLE_H_
-#define _RTP_TABLE_H_
+#ifndef EP_RTP_TABLE_H
+#define EP_RTP_TABLE_H
 
 #include <map>
 #include <string>

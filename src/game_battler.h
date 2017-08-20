@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_BATTLER_H_
-#define _GAME_BATTLER_H_
+#ifndef EP_GAME_BATTLER_H
+#define EP_GAME_BATTLER_H
 
 // Headers
 #include <string>
@@ -375,7 +375,7 @@ public:
 	/**
 	 * Sets the battler agility modifier.
 	 *
-	 * @param current attack.
+	 * @param modifier agility modifier.
 	 */
 	void SetAgiModifier(int modifier);
 
@@ -478,7 +478,7 @@ public:
 	/**
 	 * Sets defence state (next turn, defense is doubled)
 	 *
-	 * @param charge new charge state
+	 * @param defend new defence state
 	 */
 	void SetDefending(bool defend);
 

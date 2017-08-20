@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CTRUI_H
-#define CTRUI_H
+#ifndef EP_3DS_UI_H
+#define EP_3DS_UI_H
 
 // Headers
 #include "baseui.h"

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TONE_H_
-#define _TONE_H_
+#ifndef EP_TONE_H
+#define EP_TONE_H
 
 /**
  * Tone class.

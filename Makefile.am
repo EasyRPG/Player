@@ -1,5 +1,4 @@
 ACLOCAL_AMFLAGS = --install -I builds/autoconf/m4
-include builds/autoconf/aminclude/doxygen.am
 
 EXTRA_DIST = AUTHORS.md README.md builds lib/README.md resources CMakeLists.txt
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
@@ -395,6 +394,9 @@ if HAVE_BASHCOMPLETION
 bashcompletiondir = $(BASHCOMPLETION_DIR)
 dist_bashcompletion_DATA = resources/unix/bash-completion/easyrpg-player
 endif
+
+# doxygen
+@DX_RULES@
 
 # FIXME make filefinder work without external scripting
 check_PROGRAMS = output utils directorytree

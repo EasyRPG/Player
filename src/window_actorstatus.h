@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_ACTORSTATUS_H_
-#define _WINDOW_ACTORSTATUS_H_
+#ifndef EP_WINDOW_ACTORSTATUS_H
+#define EP_WINDOW_ACTORSTATUS_H
 
 // Headers
 #include "window_base.h"

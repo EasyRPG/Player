@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_GAMEBROWSER_H_
-#define _SCENE_GAMEBROWSER_H_
+#ifndef EP_SCENE_GAMEBROWSER_H
+#define EP_SCENE_GAMEBROWSER_H
 
 // Headers
 #include "scene.h"
@@ -32,8 +32,6 @@ class Scene_GameBrowser : public Scene {
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param menu_index selected index in the menu.
 	 */
 	Scene_GameBrowser();
 

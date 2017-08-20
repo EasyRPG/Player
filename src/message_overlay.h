@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MESSAGE_OVERLAY_H_
-#define _MESSAGE_OVERLAY_H_
+#ifndef EP_MESSAGE_OVERLAY_H
+#define EP_MESSAGE_OVERLAY_H
 
 #include <deque>
 #include <string>

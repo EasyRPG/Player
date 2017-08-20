@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _COLOR_H_
-#define _COLOR_H_
+#ifndef EP_COLOR_H
+#define EP_COLOR_H
 
 // Headers
 #include "system.h"

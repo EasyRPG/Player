@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITE_AIRSHIPSHADOW_H_
-#define _SPRITE_AIRSHIPSHADOW_H_
+#ifndef EP_SPRITE_AIRSHIPSHADOW_H
+#define EP_SPRITE_AIRSHIPSHADOW_H
 
 // Headers
 #include "sprite.h"

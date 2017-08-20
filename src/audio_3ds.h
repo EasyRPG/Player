@@ -15,10 +15,10 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "audio.h"
+#ifndef EP_AUDIO_3DS_H
+#define EP_AUDIO_3DS_H
 
-#ifndef CTRAUDIO_H
-#define CTRAUDIO_H
+#include "audio.h"
 
 #ifdef _3DS
 #include <3ds.h>

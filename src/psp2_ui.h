@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_PSP2UI_H_
-#define _EASYRPG_PSP2UI_H_
+#ifndef EP_PSP2_UI_H
+#define EP_PSP2_UI_H
 
 // Headers
 #include "baseui.h"
@@ -36,8 +36,6 @@ public:
 	 *
 	 * @param width window client width.
 	 * @param height window client height.
-	 * @param title window title.
-	 * @param fullscreen start in fullscreen flag.
 	 */
 	Psp2Ui(int width, int height);
 

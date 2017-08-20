@@ -95,7 +95,6 @@ bool LibsndfileDecoder::IsFinished() const {
 	return finished;
 }
 
-
 void LibsndfileDecoder::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
 	if(soundfile==0) return;
 	frequency = soundinfo.samplerate;

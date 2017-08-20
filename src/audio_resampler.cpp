@@ -502,7 +502,6 @@ int AudioResampler::FillBufferDifferentRate(uint8_t* buffer, int length) {
 		}
 		//Now we have a prepared full buffer of converted values
 
-
 		//Prepare the source data
 		conversion_data.input_frames = amount_of_samples_read / nr_of_channels + unused_frames;
 		conversion_data.output_frames = total_output_frames;

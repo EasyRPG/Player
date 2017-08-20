@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EASYRPG_AUDIO_DECODER_OPUS_H
-#define EASYRPG_AUDIO_DECODER_OPUS_H
+#ifndef EP_DECODER_OPUS_H
+#define EP_DECODER_OPUS_H
 
 #ifdef HAVE_OPUS
 #include <opus/opusfile.h>

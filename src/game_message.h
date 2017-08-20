@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAMEMESSAGE_H_
-#define _GAMEMESSAGE_H_
+#ifndef EP_GAME_MESSAGE_H
+#define EP_GAME_MESSAGE_H
 
 #include <vector>
 #include <bitset>
@@ -114,7 +114,6 @@ namespace Game_Message {
 	 */
 	void SetTransparent(bool transparent);
 
-
 	/**
 	 * Gets the message box position.
 	 *
@@ -189,7 +188,7 @@ namespace Game_Message {
 	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
 
 	/**
-	 * @var whether the texts are word-wrapped;
+	 * Whether the texts are word-wrapped
 	 */
 	extern bool is_word_wrapped;
 

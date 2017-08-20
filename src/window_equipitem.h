@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_EQUIPITEM_H_
-#define _WINDOW_EQUIPITEM_H_
+#ifndef EP_WINDOW_EQUIPITEM_H
+#define EP_WINDOW_EQUIPITEM_H
 
 // Headers
 #include "window_item.h"

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TILEMAP_H_
-#define _TILEMAP_H_
+#ifndef EP_TILEMAP_H
+#define EP_TILEMAP_H
 
 // Headers
 #include <vector>

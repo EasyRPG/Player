@@ -215,7 +215,6 @@ static void ReadGrayAlphaData(
 	}
 }
 
-
 static void ReadRGBData(
 	png_struct* png_ptr, png_info* info_ptr,
 	png_uint_32 w, png_uint_32 h,

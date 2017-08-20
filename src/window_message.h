@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_MESSAGE_H_
-#define _WINDOW_MESSAGE_H_
+#ifndef EP_WINDOW_MESSAGE_H
+#define EP_WINDOW_MESSAGE_H
 
 // Headers
 #include <string>
@@ -121,8 +121,8 @@ public:
 	 * The text_index must be on the char following \ when
 	 * calling.
 	 *
-	 * @param success[out] If parsing was successful.
-	 * @param value[out] The extracted value if parsing was successful
+	 * @param[out] success If parsing was successful.
+	 * @param[out] value The extracted value if parsing was successful
 	 * @return the final text output of the code.
 	 */
 	std::string ParseCommandCode(bool& success, int& value);

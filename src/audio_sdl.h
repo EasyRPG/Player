@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _AUDIO_SDL_H_
-#define _AUDIO_SDL_H_
+#ifndef EP_AUDIO_SDL_H
+#define EP_AUDIO_SDL_H
 
 #include "audio_generic.h"
 

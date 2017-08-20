@@ -1,10 +1,10 @@
 # ===========================================================================
-#      http://www.gnu.org/software/autoconf-archive/ax_prog_doxygen.html
+#     https://www.gnu.org/software/autoconf-archive/ax_prog_doxygen.html
 # ===========================================================================
 #
 # SYNOPSIS
 #
-#   DX_INIT_DOXYGEN(PROJECT-NAME, DOXYFILE-PATH, [OUTPUT-DIR])
+#   DX_INIT_DOXYGEN(PROJECT-NAME, [DOXYFILE-PATH], [OUTPUT-DIR], ...)
 #   DX_DOXYGEN_FEATURE(ON|OFF)
 #   DX_DOT_FEATURE(ON|OFF)
 #   DX_HTML_FEATURE(ON|OFF)
@@ -13,12 +13,9 @@
 #
 #   The DX_*_FEATURE macros control the default setting for the given
 #   Doxygen feature. Supported features are 'DOXYGEN' itself, 'DOT' for
-#   generating graphics, 'HTML' for plain HTML.
+#   generating graphics and 'HTML' for plain HTML.
 #
-#   By default, HTML documentation is generated as this seems to be the most
-#   popular and portable combination.
-#
-#   The macros mainly control the default state of the feature. The use can
+#   The macros mainly control the default state of the feature. The user can
 #   override the default by specifying --enable or --disable. The macros
 #   ensure that contradictory flags are not given (e.g.,
 #   --enable-doxygen-anything with --disable-doxygen, etc.) Finally, each
@@ -28,22 +25,27 @@
 #   Once all the feature defaults have been specified, call DX_INIT_DOXYGEN
 #   with the following parameters: a one-word name for the project for use
 #   as a filename base etc., an optional configuration file name (the
-#   default is 'Doxyfile', the same as Doxygen's default), and an optional
-#   output directory name (the default is 'doxygen-doc').
+#   default is '$(srcdir)/Doxyfile', the same as Doxygen's default), and an
+#   optional output directory name (the default is 'doxygen-doc'). To run
+#   doxygen multiple times for different configuration files and output
+#   directories provide more parameters: the second, forth, sixth, etc
+#   parameter are configuration file names and the third, fifth, seventh,
+#   etc parameter are output directories. No checking is done to catch
+#   duplicates.
 #
 #   Automake Support
 #
-#   The ../aminclude/doxygen.am file is for use with Automake.
-#   Make targets and variables values are controlled by the various
-#   DX_COND_* conditionals set by autoconf.
+#   The DX_RULES substitution can be used to add all needed rules to the
+#   Makefile. Note that this is a substitution without being a variable:
+#   only the @DX_RULES@ syntax will work.
 #
 #   The provided targets are:
 #
 #     doxygen-doc: Generate all doxygen documentation.
+#     doxygen-run: Run doxygen, which will generate the documentation (HTML).
 #
-#     doxygen-run: Run doxygen, which will generate some of the
-#                  documentation (HTML), but will not do the post processing
-#                  required for the rest of it.
+#   Because of the modification, both targets do the same. Note that by default
+#   these are not integrated into the automake targets.
 #
 #   The following variable is intended for use in Makefile.am:
 #
@@ -54,6 +56,7 @@
 # LICENSE
 #
 #   Copyright (c) 2009 Oren Ben-Kiki <oren@ben-kiki.org>
+#   Copyright (c) 2015 Olaf Mandel <olaf@mandel.name>
 #
 #   Copying and distribution of this file, with or without modification, are
 #   permitted in any medium without royalty provided the copyright notice
@@ -63,10 +66,10 @@
 # MODIFICATION
 #
 #   This file has been modified to only provide HTML generation.
-#   carstene1ns, 2014
+#                                                     - carstene1ns, 2014, 2017
 #
 
-#serial 12
+#serial 23
 
 ## ----------##
 ## Defaults. ##
@@ -83,8 +86,14 @@ AC_DEFUN([DX_FEATURE_html], ON)
 
 # DX_ENV_APPEND(VARIABLE, VALUE)
 # ------------------------------
-# Append VARIABLE="VALUE" to DX_ENV for invoking doxygen.
-AC_DEFUN([DX_ENV_APPEND], [AC_SUBST([DX_ENV], ["$DX_ENV $1='$2'"])])
+# Append VARIABLE="VALUE" to DX_ENV for invoking doxygen and add it
+# as a substitution (but not a Makefile variable). The substitution
+# is skipped if the variable name is VERSION.
+AC_DEFUN([DX_ENV_APPEND],
+[AC_SUBST([DX_ENV], ["$DX_ENV $1='$2'"])dnl
+m4_if([$1], [VERSION], [], [AC_SUBST([$1], [$2])dnl
+AM_SUBST_NOTMAKE([$1])])dnl
+])
 
 # DX_DIRNAME_EXPR
 # ---------------
@@ -169,7 +178,6 @@ if DX_TEST_FEATURE([$1]); then
     $5
     :
 fi
-AM_CONDITIONAL(DX_COND_$1, DX_TEST_FEATURE([$1]))
 if DX_TEST_FEATURE([$1]); then
     $6
     :
@@ -189,21 +197,34 @@ AC_DEFUN([DX_DOXYGEN_FEATURE], [AC_DEFUN([DX_FEATURE_doc],  [$1])])
 AC_DEFUN([DX_DOT_FEATURE],     [AC_DEFUN([DX_FEATURE_dot], [$1])])
 AC_DEFUN([DX_HTML_FEATURE],    [AC_DEFUN([DX_FEATURE_html], [$1])])
 
-# DX_INIT_DOXYGEN(PROJECT, [CONFIG-FILE], [OUTPUT-DOC-DIR])
-# ---------------------------------------------------------
+# DX_INIT_DOXYGEN(PROJECT, [CONFIG-FILE], [OUTPUT-DOC-DIR], ...)
+# --------------------------------------------------------------
 # PROJECT also serves as the base name for the documentation files.
-# The default CONFIG-FILE is "Doxyfile" and OUTPUT-DOC-DIR is "doxygen-doc".
+# The default CONFIG-FILE is "$(srcdir)/Doxyfile" and OUTPUT-DOC-DIR is
+# "doxygen-doc".
+# More arguments are interpreted as interleaved CONFIG-FILE and
+# OUTPUT-DOC-DIR values.
 AC_DEFUN([DX_INIT_DOXYGEN], [
 
 # Files:
 AC_SUBST([DX_PROJECT], [$1])
-AC_SUBST([DX_CONFIG], [ifelse([$2], [], Doxyfile, [$2])])
-AC_SUBST([DX_DOCDIR], [ifelse([$3], [], doxygen-doc, [$3])])
+AC_SUBST([DX_CONFIG], ['ifelse([$2], [], [$(srcdir)/Doxyfile], [$2])'])
+AC_SUBST([DX_DOCDIR], ['ifelse([$3], [], [doxygen-doc], [$3])'])
+m4_if(m4_eval(3 < m4_count($@)), 1, [m4_for([DX_i], 4, m4_count($@), 2,
+      [AC_SUBST([DX_CONFIG]m4_eval(DX_i[/2]),
+                'm4_default_nblank_quoted(m4_argn(DX_i, $@),
+                                          [$(srcdir)/Doxyfile])')])])dnl
+m4_if(m4_eval(3 < m4_count($@)), 1, [m4_for([DX_i], 5, m4_count($@,), 2,
+      [AC_SUBST([DX_DOCDIR]m4_eval([(]DX_i[-1)/2]),
+                'm4_default_nblank_quoted(m4_argn(DX_i, $@),
+                                          [doxygen-doc])')])])dnl
+m4_define([DX_loop], m4_dquote(m4_if(m4_eval(3 < m4_count($@)), 1,
+          [m4_for([DX_i], 4, m4_count($@), 2, [, m4_eval(DX_i[/2])])],
+          [])))dnl
 
 # Environment variables used inside doxygen.cfg:
 DX_ENV_APPEND(SRCDIR, $srcdir)
 DX_ENV_APPEND(PROJECT, $DX_PROJECT)
-DX_ENV_APPEND(DOCDIR, $DX_DOCDIR)
 DX_ENV_APPEND(VERSION, $PACKAGE_VERSION)
 
 # Doxygen itself:
@@ -230,6 +251,56 @@ DX_ARG_ABLE(html, [generate doxygen plain HTML documentation],
             [],
             [DX_ENV_APPEND(GENERATE_HTML, YES)],
             [DX_ENV_APPEND(GENERATE_HTML, NO)])
+
+# Rules:
+AS_IF([[test $DX_FLAG_html -eq 1]],
+[[DX_SNIPPET_html="## ------------------------------- ##
+## Rules specific for HTML output. ##
+## ------------------------------- ##
+
+DX_CLEAN_HTML = \$(DX_DOCDIR)/html]dnl
+m4_foreach([DX_i], [m4_shift(DX_loop)], [[\\
+                \$(DX_DOCDIR]DX_i[)/html]])[
+
+"]],
+[[DX_SNIPPET_html=""]])
+AS_IF([[test $DX_FLAG_doc -eq 1]],
+[[DX_SNIPPET_doc="## --------------------------------- ##
+## Format-independent Doxygen rules. ##
+## --------------------------------- ##
+
+${DX_SNIPPET_html}\
+DX_V_DXGEN = \$(_DX_v_DXGEN_\$(V))
+_DX_v_DXGEN_ = \$(_DX_v_DXGEN_\$(AM_DEFAULT_VERBOSITY))
+_DX_v_DXGEN_0 = @echo \"  DXGEN \" \$<;
+
+.PHONY: doxygen-run doxygen-doc
+
+.INTERMEDIATE: doxygen-run
+
+doxygen-run:]m4_foreach([DX_i], [DX_loop],
+                         [[ \$(DX_DOCDIR]DX_i[)/\$(PACKAGE).tag]])[
+
+doxygen-doc: doxygen-run
+
+]m4_foreach([DX_i], [DX_loop],
+[[\$(DX_DOCDIR]DX_i[)/\$(PACKAGE).tag: \$(DX_CONFIG]DX_i[) \$(pkginclude_HEADERS)
+	\$(A""M_V_at)rm -rf \$(DX_DOCDIR]DX_i[)
+	\$(DX_V_DXGEN)\$(DX_ENV) DOCDIR=\$(DX_DOCDIR]DX_i[) \$(DX_DOXYGEN) \$(DX_CONFIG]DX_i[)
+	\$(A""M_V_at)echo Timestamp >\$][@
+
+]])dnl
+[DX_CLEANFILES = \\]
+m4_foreach([DX_i], [DX_loop],
+[[	\$(DX_DOCDIR]DX_i[)/doxygen_sqlite3.db \\
+	\$(DX_DOCDIR]DX_i[)/\$(PACKAGE).tag \\
+]])dnl
+[	-r \\
+	\$(DX_CLEAN_HTML)"]],
+[[DX_SNIPPET_doc=""]])
+AC_SUBST([DX_RULES],
+["${DX_SNIPPET_doc}"])dnl
+AM_SUBST_NOTMAKE([DX_RULES])
 
 #For debugging:
 #echo DX_FLAG_doc=$DX_FLAG_doc

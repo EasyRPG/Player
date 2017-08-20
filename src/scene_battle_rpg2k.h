@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_BATTLE_RPG2K_H_
-#define _SCENE_BATTLE_RPG2K_H_
+#ifndef EP_SCENE_BATTLE_RPG2K_H
+#define EP_SCENE_BATTLE_RPG2K_H
 
 // Headers
 #include "scene_battle.h"
@@ -62,7 +62,7 @@ protected:
 	 * Adds a message about the gold received into
 	 * Game_Message::texts.
 	 *
-	 * @param Number of gold to display.
+	 * @param money Number of gold to display.
 	 */
 	void PushGoldReceivedMessage(int money);
 
@@ -70,16 +70,15 @@ protected:
 	 * Adds a message about the experience received into
 	 * Game_Message::texts.
 	 *
-	 * @param Number of experience to display.
+	 * @param exp Number of experience to display.
 	 */
 	void PushExperienceGainedMessage(int exp);
-
 
 	/**
 	 * Adds messages about the items obtained after the battle
 	 * into Game_Message::texts.
 	 *
-	 * @param Vector of item IDs
+	 * @param drops Vector of item IDs
 	 */
 	void PushItemRecievedMessages(std::vector<int> drops);
 
@@ -97,7 +96,6 @@ protected:
 	 * the page is filled or not.
 	 */
 	void SetWaitForEnemyAppearanceMessages();
-
 
 	/**
 	 * Gets the time during before hiding a windowful of

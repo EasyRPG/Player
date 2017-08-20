@@ -978,7 +978,6 @@ bool Player::IsRPG2k() {
 	return (engine & EngineRpg2k) == EngineRpg2k;
 }
 
-
 bool Player::IsRPG2k3Legacy() {
 	return (engine == EngineRpg2k3 || engine == (EngineRpg2k3 | EngineMajorUpdated));
 }
@@ -1146,6 +1145,5 @@ static void InitMiniDumpWriter()
 		}
 	}
 }
-
 
 #endif

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_PIXEL_FORMAT_H_
-#define _EASYRPG_PIXEL_FORMAT_H_
+#ifndef EP_PIXEL_FORMAT_H
+#define EP_PIXEL_FORMAT_H
 
 // Headers
 #include <cstdlib>
@@ -34,7 +34,6 @@ namespace PF {
 	enum { StaticAlpha = false, DynamicAlpha = true };
 	enum { NotAligned = false, IsAligned = true };
 }
-
 
 /** Component struct */
 struct Component {
@@ -304,7 +303,6 @@ struct alpha_type_traits<TPF, PF::DynamicAlpha, _alpha_type> {
 		return pf->format.alpha_type;
 	}
 };
-
 
 // opacity_type_traits
 

@@ -195,7 +195,6 @@ namespace midisequencer{
         }
     }
 
-
     void sequencer::set_time(float time, output* out)
     {
         if(position != messages.begin() && (position - 1)->time >= time){

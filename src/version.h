@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#ifndef EP_VERSION_H
+#define EP_VERSION_H
 
 // Helper Macros
 #define STRINGIFY(x) #x
@@ -32,4 +32,4 @@
 #define PLAYER_ADDTL ""
 #define PLAYER_VERSION TO_STRING(PLAYER_MAJOR) "." TO_STRING(PLAYER_MINOR) "." TO_STRING(PLAYER_PATCH)
 
-#endif /* _VERSION_H_ */
+#endif /* EP_VERSION_H */

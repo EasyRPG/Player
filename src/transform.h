@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EASYRPG_MATRIX_H_
-#define _EASYRPG_MATRIX_H_
+#ifndef EP_TRANSFORM_H
+#define EP_TRANSFORM_H
 
 // Headers
 #include <cmath>

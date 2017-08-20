@@ -24,7 +24,6 @@
 #include "game_system.h"
 #include "game_temp.h"
 
-
 Sprite_Timer::Sprite_Timer(int which) :
 	which(which) {
 

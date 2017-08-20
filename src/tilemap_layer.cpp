@@ -542,8 +542,6 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 				quarters_hash |= quarters[j][i][k];
 			}
 
-
-
 	// check whether we have already generated this tile
 	std::map<uint32_t, TileXY>::iterator it;
 	it = autotiles_d_map.find(quarters_hash);

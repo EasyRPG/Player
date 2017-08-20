@@ -572,7 +572,6 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	}
 }
 
-
 void Game_Character::BeginMove() {
 	// no-op
 }
@@ -906,7 +905,6 @@ void Game_Character::Flash(Color color, int duration) {
 	SetFlashColor(color);
 	SetFlashTimeLeft(duration * DEFAULT_FPS / 10);
 }
-
 
 // Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {

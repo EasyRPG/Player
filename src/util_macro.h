@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _UTIL_MACRO_H_
-#define _UTIL_MACRO_H_
+#ifndef EP_UTIL_MACRO_H
+#define EP_UTIL_MACRO_H
 
 // Macros / Templates
 #ifdef max

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _INPUT_KEYS_H_
-#define _INPUT_KEYS_H_
+#ifndef EP_KEYS_H
+#define EP_KEYS_H
 
 // Headers
 #include "system.h"

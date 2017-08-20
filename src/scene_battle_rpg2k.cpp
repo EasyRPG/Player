@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <algorithm>
 #include <sstream>
 #include "input.h"
@@ -896,7 +895,6 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 			return true;
 		}
 	}
-
 
 	if (battle_message_window->IsPageFilled()) {
 		battle_message_window->NextPage();

@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITE_BATTLER_H_
-#define _SPRITE_BATTLER_H_
+#ifndef EP_SPRITE_BATTLER_H
+#define EP_SPRITE_BATTLER_H
 
 // Headers
 #include "sprite.h"
@@ -54,7 +54,7 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param character game battler to display
+	 * @param battler game battler to display
 	 */
 	Sprite_Battler(Game_Battler* battler);
 

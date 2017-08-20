@@ -1,3 +1,7 @@
+build/
+*.elf
 *.smdh
 *.3dsx
-build/
+*.cia
+banner/banner/banner.bcwav
+romfs.bin

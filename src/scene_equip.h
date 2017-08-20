@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_EQUIP_H_
-#define _SCENE_EQUIP_H_
+#ifndef EP_SCENE_EQUIP_H
+#define EP_SCENE_EQUIP_H
 
 // Headers
 #include <vector>
@@ -36,7 +36,7 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor_index actor in the party.
+	 * @param actor actor in the party.
 	 * @param equip_index selected equipment.
 	 */
 	Scene_Equip(Game_Actor& actor, int equip_index = 0);

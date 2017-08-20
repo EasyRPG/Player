@@ -1,5 +1,5 @@
-#ifndef _INC_BITMAPFONT_H_
-#define _INC_BITMAPFONT_H_
+#ifndef EP_BITMAPFONT_H
+#define EP_BITMAPFONT_H
 
 #include <stdint.h>
 
@@ -15,4 +15,4 @@ extern BitmapFontGlyph const BITMAPFONT_WQY[20941];
 extern BitmapFontGlyph const BITMAPFONT_RMG2000[470];
 extern BitmapFontGlyph const BITMAPFONT_TTYP0[3074];
 
-#endif // _INC_BITMAPFONT_H_
+#endif // EP_BITMAPFONT_H

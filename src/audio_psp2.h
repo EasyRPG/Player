@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef AUDIOPSP_H
-#define AUDIOPSP_H
+#ifndef EP_AUDIO_PSP2_H
+#define EP_AUDIO_PSP2_H
 
 #if defined(PSP2)
 
@@ -39,4 +39,5 @@ private:
 }; // class Psp2Audio
 
 #endif
+
 #endif

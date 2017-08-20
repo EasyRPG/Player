@@ -15,10 +15,10 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _WIN32
+#ifndef EP_UTIL_WIN_H
+#define EP_UTIL_WIN_H
 
-#ifndef _UTILWIN_H_
-#define _UTILWIN_H_
+#ifdef _WIN32
 
 // Headers
 #include <string>

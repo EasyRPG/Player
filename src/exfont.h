@@ -18,8 +18,8 @@
 // The default EXFONT, composed by filosofiamanga
 // https://community.easyrpg.org/t/volunteer-for-exfont-replacement/56
 
-#ifndef _EXFONT_H_
-#define _EXFONT_H_
+#ifndef EP_EXFONT_H
+#define EP_EXFONT_H
 
 const uint8_t exfont_h[] = {
 	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,

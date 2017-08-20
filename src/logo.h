@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LOGO_H_
-#define _LOGO_H_
+#ifndef EP_LOGO_H
+#define EP_LOGO_H
 
 const uint8_t easyrpg_logo[] = {
 	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,

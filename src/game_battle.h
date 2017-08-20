@@ -15,6 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef EP_GAME_BATTLE_H
+#define EP_GAME_BATTLE_H
+
 #include <functional>
 #include "rpg_troop.h"
 
@@ -163,10 +166,12 @@ namespace Game_Battle {
 	 * Sets the need refresh flag.
 	 * This flag is set when the interpreter altered the state of enemies (e.g. dead)
 	 *
-	 * @param need_refresh need refresh state.
+	 * @param refresh need refresh state.
 	 */
 	void SetNeedRefresh(bool refresh);
 
 	extern int escape_fail_count;
 	extern std::string background_name;
 }
+
+#endif

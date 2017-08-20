@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_CHARACTER_H_
-#define _GAME_CHARACTER_H_
+#ifndef EP_GAME_CHARACTER_H
+#define EP_GAME_CHARACTER_H
 
 // Headers
 #include <string>
@@ -490,18 +490,11 @@ public:
 	 *
 	 * @param current_route Current move route
 	 * @param current_index Index in the current route
-	 *
-	 * @return current_index if EndJump found, otherwise end of route.
 	 */
 	void BeginJump(const RPG::MoveRoute* current_route, int* current_index);
 
 	/**
 	 * Jump action ends.
-	 *
-	 * @param current_route Current move route
-	 * @param current_index Index in the current route
-	 *
-	 * @return current_index if jump was successful, else index of BeginJump.
 	 */
 	void EndJump();
 
@@ -622,7 +615,7 @@ public:
 	 * Needed for the "SetHeroTransparency" command because this can't be
 	 * altered via the "Increase Transparency" move command.
 	 *
-	 * @param visable true: visible, false: invisible
+	 * @param visible true: visible, false: invisible
 	 */
 	virtual void SetVisible(bool visible);
 
