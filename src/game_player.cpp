@@ -223,7 +223,14 @@ void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
 }
 
 void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
-	ReserveTeleport(target.map_id, target.map_x, target.map_y, Down);
+	int map_id = target.map_id;
+
+	if (Game_Map::GetMapType(target.map_id) == RPG::TreeMap::MapType_area) {
+		// Area: Obtain the map the area belongs to
+		map_id = Game_Map::GetParentId(target.map_id);
+	}
+
+	ReserveTeleport(map_id, target.map_x, target.map_y, Down);
 
 	if (target.switch_on) {
 		Game_Switches[target.switch_id] = true;

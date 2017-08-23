@@ -920,7 +920,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 					out.push_back(enc.troop_id);
 				}
 			}
-		} else if (map.parent_map == location.map_id && map.type == 2) {
+		} else if (map.parent_map == location.map_id && map.type == RPG::TreeMap::MapType_area) {
 			// Area
 			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
 			Rect player_rect(x, y, 1, 1);
@@ -1111,6 +1111,24 @@ std::string Game_Map::GetMapName(int id) {
 	}
 	// nothing found
 	return "";
+}
+
+int Game_Map::GetMapType(int map_id) {
+	int index = Game_Map::GetMapIndex(map_id);
+	if (index == -1) {
+		return 0;
+	}
+
+	return Data::treemap.maps[index].type;
+}
+
+int Game_Map::GetParentId(int map_id) {
+	int index = Game_Map::GetMapIndex(map_id);
+	if (index == -1) {
+		return 0;
+	}
+
+	return Data::treemap.maps[index].parent_map;
 }
 
 void Game_Map::SetChipset(int id) {
