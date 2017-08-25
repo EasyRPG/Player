@@ -531,6 +531,23 @@ namespace Game_Map {
 	std::string GetMapName(int id);
 
 	/**
+	 * Gets the type (1 = normal, 2 = area) of the map.
+	 *
+	 * @parem map_id map id
+	 * @return type of the map
+	 */
+	int GetMapType(int map_id);
+
+	/**
+	 * Gets the ID of the parent map.
+	 * The root of the tree has ID 0.
+	 *
+	 * @param map_id map id
+	 * @return parent map id
+	 */
+	int GetParentId(int map_id);
+
+	/**
 	 * Sets the chipset.
 	 *
 	 * @param id new chipset ID.
