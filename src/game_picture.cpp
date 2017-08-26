@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <reader_util.h>
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
@@ -369,5 +370,6 @@ void Game_Picture::SyncCurrentToFinish() {
 }
 
 RPG::SavePicture& Game_Picture::GetData() const {
-	return Main_Data::game_data.pictures[id - 1];
+	// Save: Picture array is guaranteed to be of correct size
+	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
 }

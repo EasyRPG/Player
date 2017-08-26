@@ -75,6 +75,8 @@ namespace {
 	int last_map_id;
 
 	bool teleport_delay;
+
+	RPG::Chipset* chipset;
 }
 
 void Game_Map::Init() {
@@ -224,6 +226,7 @@ void Game_Map::SetupCommon(int _id) {
 	} else {
 		map = LMU_Reader::LoadXml(map_file);
 	}
+
 	Output::Debug("Loading Map %s", ss.str().c_str());
 
 	if (map.get() == NULL) {
@@ -577,14 +580,17 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	if (vehicle_type == Game_Vehicle::Boat) {
-		if (!Data::data.terrains[GetTerrainTag(x, y) -1].boat_pass)
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+	if (!terrain) {
+		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+	} else if (vehicle_type == Game_Vehicle::Boat) {
+		if (!terrain->boat_pass)
 			return false;
 	} else if (vehicle_type == Game_Vehicle::Ship) {
-		if (!Data::data.terrains[GetTerrainTag(x, y) -1].ship_pass)
+		if (!terrain->ship_pass)
 			return false;
 	} else if (vehicle_type == Game_Vehicle::Airship) {
-		return Data::data.terrains[GetTerrainTag(x, y) -1].airship_pass;
+		return terrain->airship_pass;
 	}
 
 	int tile_id;
@@ -689,7 +695,12 @@ bool Game_Map::IsPassableTile(int bit, int tile_index) {
 int Game_Map::GetBushDepth(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return 0;
 
-	return Data::data.terrains[GetTerrainTag(x,y) - 1].bush_depth;
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
+	if (!terrain) {
+		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		return 0;
+	}
+	return terrain->bush_depth;
 }
 
 bool Game_Map::IsCounter(int x, int y) {
@@ -706,7 +717,7 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	x = RoundX(x);
 	y = RoundY(y);
 
-	if (!Game_Map::IsValid(x, y)) return 9;
+	if (!Game_Map::IsValid(x, y) || !chipset) return 9;
 
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned chip_index =
@@ -715,15 +726,12 @@ int Game_Map::GetTerrainTag(int x, int y) {
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
 		(chipID <  5144)? 18 + (chipID-5000) :
 		0;
-	unsigned const chipset_index = map_info.chipset_id - 1;
 
 	// Apply tile substitution
 	if (chip_index >= 18 && chip_index <= 144)
 		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
 
-	assert(chipset_index < Data::data.chipsets.size());
-
-	auto& terrain_data = Data::data.chipsets[chipset_index].terrain_data;
+	auto& terrain_data = chipset->terrain_data;
 
 	if (terrain_data.empty()) {
 		// RPG_RT optimisation: When the terrain is all 1, no terrain data is stored
@@ -736,7 +744,13 @@ int Game_Map::GetTerrainTag(int x, int y) {
 }
 
 bool Game_Map::AirshipLandOk(int const x, int const y) {
-	return Data::data.terrains[GetTerrainTag(x, y) - 1].airship_land;
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+	if (!terrain) {
+		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		return false;
+	}
+
+	return terrain->airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
@@ -876,10 +890,14 @@ void Game_Map::UpdateEncounterSteps() {
 
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
-	int terrain_id = GetTerrainTag(x, y);
-	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
-	location.encounter_steps = location.encounter_steps - terrain.encounter_rate;
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
+	if (!terrain) {
+		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		return;
+	}
+
+	location.encounter_steps = location.encounter_steps - terrain->encounter_rate;
 
 	if (location.encounter_steps <= 0) {
 		ResetEncounterSteps();
@@ -902,7 +920,13 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	int terrain_tag = GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
-		std::vector<bool>& terrain_set = Data::troops[troop_id - 1].terrain_set;
+		const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
+		if (!troop) {
+			Output::Warning("Invalid troop ID %d in encounter list", troop_id);
+			return false;
+		}
+
+		const std::vector<bool>& terrain_set = troop->terrain_set;
 
 		// RPG_RT optimisation: Omitted entries are the default value (true)
 		return terrain_set.size() <= (unsigned)(terrain_tag - 1) ||
@@ -980,19 +1004,24 @@ void Game_Map::SetupBattle() {
 }
 
 void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	if (!anim) {
+		Output::Warning("Invalid battle animation ID %d", animation_id);
+		return;
+	}
+
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 	Main_Data::game_data.screen.battleanim_target = target_id;
 	Main_Data::game_data.screen.battleanim_global = global;
 
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
 	if (chara) {
-		chara->SetFlashTimeLeft(0); 	// Any flash always ends
+		chara->SetFlashTimeLeft(0); // Any flash always ends
 		if (global) {
-			animation.reset(new BattleAnimationGlobal(anim));
+			animation.reset(new BattleAnimationGlobal(*anim));
 		} else {
-			animation.reset(new BattleAnimationChara(anim, *chara));
+			animation.reset(new BattleAnimationChara(*anim, *chara));
 		}
 	}
 }
@@ -1075,10 +1104,6 @@ int Game_Map::GetAnimationSpeed() {
 	return (animation_fast ? 12 : 24);
 }
 
-std::vector<short>& Game_Map::GetTerrainTags() {
-	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
-}
-
 std::vector<Game_Event>& Game_Map::GetEvents() {
 	return events;
 }
@@ -1133,12 +1158,18 @@ int Game_Map::GetParentId(int map_id) {
 
 void Game_Map::SetChipset(int id) {
 	map_info.chipset_id = id;
-	RPG::Chipset &chipset = Data::chipsets[map_info.chipset_id - 1];
-	chipset_name = chipset.chipset_name;
-	passages_down = chipset.passable_data_lower;
-	passages_up = chipset.passable_data_upper;
-	animation_type = chipset.animation_type;
-	animation_fast = chipset.animation_speed != 0;
+
+	chipset = ReaderUtil::GetElement(Data::chipsets, map_info.chipset_id);
+	if (!chipset) {
+		Output::Warning("Invalid chipset ID %d", map_info.chipset_id);
+	} else {
+		chipset_name = chipset->chipset_name;
+		passages_down = chipset->passable_data_lower;
+		passages_up = chipset->passable_data_upper;
+		animation_type = chipset->animation_type;
+		animation_fast = chipset->animation_speed != 0;
+	}
+
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)

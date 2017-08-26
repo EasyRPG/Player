@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <reader_util.h>
 #include "scene_battle_rpg2k3.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
@@ -204,9 +205,11 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				contents->Clear();
 
 				int text_width = 0;
-				for (auto state : states) {
-					std::string name = Data::states[state - 1].name;
-					int color = Data::states[state - 1].color;
+				for (auto state_id : states) {
+					// States are sanitized in Game_Battler
+					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+					std::string name = state->name;
+					int color = state->color;
 					FontRef font = Font::Default();
 					contents->TextDraw(text_width, 2, color, name, Text::AlignLeft);
 					text_width += font->GetSize(name + "  ").width;
@@ -985,9 +988,16 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
 			Game_Message::texts.push_back(ss.str());
 		}
-		for(std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
+			const RPG::Item* item = ReaderUtil::GetElement(Data::items, *it);
+			// No Output::Warning needed here, reported later when the item is added
+			std::string item_name = "??? BAD ITEM ???";
+			if (item) {
+				item_name = item->name;
+			}
+
 			ss.str("");
-			ss << Data::items[*it - 1].name << space << Data::terms.item_recieved;
+			ss << item_name << space << Data::terms.item_recieved;
 			Game_Message::texts.push_back(ss.str());
 		}
 

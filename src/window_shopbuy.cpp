@@ -18,6 +18,7 @@
 // Headers
 #include <sstream>
 #include <string>
+#include <reader_util.h>
 #include "window_base.h"
 #include "window_shopbuy.h"
 #include "game_system.h"
@@ -25,6 +26,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "output.h"
 
 Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -56,24 +58,43 @@ void Window_ShopBuy::Refresh() {
 
 void Window_ShopBuy::DrawItem(int index) {
 	int item_id = data[index];
-	bool enabled = Data::items[item_id - 1].price <= Main_Data::game_party->GetGold();
+
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+
+	int price = 0;
+	bool enabled = false;
+
+	if (!item) {
+		Output::Warning("Invalid item ID %d", item_id);
+	} else {
+		enabled = item->price <= Main_Data::game_party->GetGold();
+		price = item->price;
+	}
+
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
-	DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
+	DrawItemName(*item, rect.x, rect.y, enabled);
 
-	std::stringstream ss;
-	ss << Data::items[item_id - 1].price;
-	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, ss.str(), Text::AlignRight);
+	std::string str = Utils::ToString(price);
+	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, str, Text::AlignRight);
 }
 
 void Window_ShopBuy::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" :
-		Data::items[GetItemId() - 1].description);
+	std::string help_text = "??? BAD ITEM ???";
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetIndex());
+	if (item) {
+		help_text = item->description;
+	}
+
+	help_window->SetText(help_text);
 }
 
 bool Window_ShopBuy::CheckEnable(int item_id) {
-	return (
-		item_id > 0 &&
-		Data::items[item_id - 1].price <= Main_Data::game_party->GetGold() &&
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetIndex());
+	if (!item) {
+		return false;
+	}
+
+	return (item->price <= Main_Data::game_party->GetGold() &&
 		Main_Data::game_party->GetItemCount(item_id) < 99);
 }

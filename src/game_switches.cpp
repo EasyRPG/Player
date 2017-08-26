@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <reader_util.h>
 #include "game_switches.h"
 #include "main_data.h"
 #include "output.h"
@@ -51,10 +52,13 @@ std::vector<bool>::reference Game_Switches_Class::operator[](int switch_id) {
 }
 
 std::string Game_Switches_Class::GetName(int _id) const {
-	if (!(_id > 0 && _id <= (int)Data::switches.size())) {
+	const RPG::Switch* sw = ReaderUtil::GetElement(Data::switches, _id);
+
+	if (!sw) {
+		// Valid because the switch array resizes dynamic during runtime
 		return "";
 	} else {
-		return Data::switches[_id - 1].name;
+		return sw->name;
 	}
 }
 

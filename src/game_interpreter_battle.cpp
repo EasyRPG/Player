@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <reader_util.h>
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_enemyparty.h"
@@ -85,8 +86,14 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 
 	int event_id = com.parameters[0];
 
+	const RPG::CommonEvent* event = ReaderUtil::GetElement(Data::commonevents, event_id);
+	if (!event) {
+		Output::Warning("Invalid common event ID %d", event_id);
+		return true;
+	}
+
 	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(&Game_Map::GetCommonEvents()[event_id - 1], 0);
+	child_interpreter->Setup(event, 0);
 
 	return true;
 }

@@ -51,21 +51,21 @@ public:
 	 */
 	/** @{ */
 	void DrawFace(const std::string& face_name, int face_index, int cx, int cy, bool flip = false);
-	void DrawActorFace(Game_Actor* actor, int cx, int cy);
-	void DrawActorName(Game_Battler* actor, int cx, int cy);
-	void DrawActorTitle(Game_Actor* actor, int cx, int cy);
-	void DrawActorClass(Game_Actor* actor, int cx, int cy);
-	void DrawActorLevel(Game_Actor* actor, int cx, int cy);
-	void DrawActorState(Game_Battler* actor, int cx, int cy);
-	void DrawActorExp(Game_Actor* actor, int cx, int cy);
-	void DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max = true);
-	void DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max = true);
-	void DrawActorParameter(Game_Battler* actor, int cx, int cy, int type);
-	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
-	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);
-	void DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled = true);
-	void DrawCurrencyValue(int money, int cx, int cy);
-	void DrawGauge(Game_Battler* actor, int cx, int cy);
+	void DrawActorFace(const Game_Actor& actor, int cx, int cy);
+	void DrawActorName(const Game_Battler& actor, int cx, int cy) const;
+	void DrawActorTitle(const Game_Actor& actor, int cx, int cy) const;
+	void DrawActorClass(const Game_Actor& actor, int cx, int cy) const;
+	void DrawActorLevel(const Game_Actor& actor, int cx, int cy) const;
+	void DrawActorState(const Game_Battler& actor, int cx, int cy) const;
+	void DrawActorExp(const Game_Actor& actor, int cx, int cy) const;
+	void DrawActorHp(const Game_Battler& actor, int cx, int cy, bool draw_max = true) const;
+	void DrawActorSp(const Game_Battler& actor, int cx, int cy, bool draw_max = true) const;
+	void DrawActorParameter(const Game_Battler& actor, int cx, int cy, int type) const;
+	void DrawEquipmentType(const Game_Actor& actor, int cx, int cy, int type) const;
+	void DrawItemName(const RPG::Item& item, int cx, int cy, bool enabled = true) const;
+	void DrawSkillName(const RPG::Skill& skill, int cx, int cy, bool enabled = true) const;
+	void DrawCurrencyValue(int money, int cx, int cy) const;
+	void DrawGauge(const Game_Battler& actor, int cx, int cy) const;
 	/** @} */
 
 	/**

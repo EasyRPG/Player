@@ -18,12 +18,18 @@
 // Headers
 #include <iomanip>
 #include <sstream>
+#include <reader_util.h>
 #include "window_shopsell.h"
 #include "game_party.h"
+#include "output.h"
 
 Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
 	Window_Item(ix, iy, iwidth, iheight) {}
 
 bool Window_ShopSell::CheckEnable(int item_id) {
-	return Data::items[item_id - 1].price > 0;
+	// Items are guaranteed to be valid
+
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+
+	return item->price > 0;
 }

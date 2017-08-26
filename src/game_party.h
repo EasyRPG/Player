@@ -300,6 +300,11 @@ public:
 	 * @return number of frames remaining.
 	 */
 	int GetTimerFrames(int which, bool& visible, bool& battle);
+
+	/**
+	 * Removes invalid actors and items from the party
+	 */
+	void RemoveInvalidData();
 };
 
 #endif

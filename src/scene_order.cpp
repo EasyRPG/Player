@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <reader_util.h>
 #include "scene_order.h"
 #include "game_actor.h"
 #include "game_party.h"

@@ -36,6 +36,13 @@ void Game_Actors::Fixup() {
 	for (size_t i = 1; i < data.size(); ++i) {
 		GetActor(i)->Fixup();
 	}
+
+	// Ensure actor save data and LDB actors has correct size
+	if (Main_Data::game_data.actors.size() != data.size()) {
+		Output::Warning("Actor array size doesn't match Savegame actor array size (%d != %d)",
+		Main_Data::game_data.actors.size(), data.size());
+		Main_Data::game_data.actors.resize(data.size());
+	}
 }
 
 void Game_Actors::Dispose() {
@@ -44,8 +51,8 @@ void Game_Actors::Dispose() {
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
-		Output::Warning("Actor ID %d is invalid.", actor_id);
-		return NULL;
+		Output::Warning("Invalid actor ID %d", actor_id);
+		return nullptr;
 	} else if (!data[actor_id])
 		data[actor_id].reset(new Game_Actor(actor_id));
 

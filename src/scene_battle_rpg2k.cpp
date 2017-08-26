@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <reader_util.h>
 #include "input.h"
 #include "player.h"
 #include "sprite.h"
@@ -429,15 +430,19 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				bool message_to_show = false;
 				if (!states_to_heal.empty() || !states_remaining.empty()) {
 					battle_message_window->Clear();
-					for (auto state : states_to_heal) {
-						if (!Data::states[state - 1].message_recovery.empty()) {
-							battle_message_window->PushWithSubject(Data::states[state- 1].message_recovery, action->GetSource()->GetName());
+					for (auto state_id : states_to_heal) {
+						// BattleAlgorithm verifies the states
+						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+						if (!state->message_recovery.empty()) {
+							battle_message_window->PushWithSubject(state->message_recovery, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
-					for (auto state : states_remaining) {
-						if (!Data::states[state - 1].message_affected.empty()) {
-							battle_message_window->PushWithSubject(Data::states[state- 1].message_affected, action->GetSource()->GetName());
+					for (auto state_id : states_remaining) {
+						// BattleAlgorithm verifies the states
+						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+						if (!state->message_affected.empty()) {
+							battle_message_window->PushWithSubject(state->message_affected, action->GetSource()->GetName());
 							message_to_show = true;
 						}
 					}
@@ -948,7 +953,13 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(std::vector<int> drops) {
 	std::stringstream ss;
 
 	for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-		std::string item_name = Data::items[*it - 1].name;
+		const RPG::Item* item = ReaderUtil::GetElement(Data::items, *it);
+		// No Output::Warning needed here, reported later when the item is added
+		std::string item_name = "??? BAD ITEM ???";
+		if (item) {
+			item_name = item->name;
+		}
+
 		if (Player::IsRPG2kE()) {
 			Game_Message::texts.push_back(
 				Utils::ReplacePlaceholders(

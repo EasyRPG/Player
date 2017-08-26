@@ -18,6 +18,7 @@
 // Headers
 #include <algorithm>
 #include <sstream>
+#include <reader_util.h>
 #include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
@@ -54,21 +55,24 @@ void Game_Actor::Setup() {
 }
 
 void Game_Actor::Init() {
-	const std::vector<RPG::Learning>& skills = Data::actors[actor_id - 1].skills;
-	for (int i = 0; i < (int)skills.size(); i++)
-		if (skills[i].level <= GetLevel())
+	const std::vector<RPG::Learning>& skills = GetActor().skills;
+	for (int i = 0; i < (int)skills.size(); i++) {
+		if (skills[i].level <= GetLevel()) {
 			LearnSkill(skills[i].skill_id);
+		}
+	}
+
+	RemoveInvalidData();
+
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 	SetExp(exp_list[GetLevel() - 1]);
-
-	RemoveInvalidEquipment();
 }
 
 void Game_Actor::Fixup() {
 	GetData().Fixup(actor_id);
 
-	RemoveInvalidEquipment();
+	RemoveInvalidData();
 }
 
 int Game_Actor::GetId() const {
@@ -76,23 +80,27 @@ int Game_Actor::GetId() const {
 }
 
 bool Game_Actor::UseItem(int item_id) {
-	const RPG::Item& item = Data::items[item_id - 1];
-
-	if (IsDead() && item.type != RPG::Item::Type_medicine) {
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		Output::Warning("Can't use invalid item %d", item_id);
 		return false;
 	}
 
-	if (item.type == RPG::Item::Type_book) {
-		return LearnSkill(item.skill_id);
+	if (IsDead() && item->type != RPG::Item::Type_medicine) {
+		return false;
 	}
 
-	if (item.type == RPG::Item::Type_material) {
-		SetBaseMaxHp(GetBaseMaxHp() + item.max_hp_points);
-		SetBaseMaxSp(GetBaseMaxSp() + item.max_sp_points);
-		SetBaseAtk(GetBaseAtk() + item.atk_points2);
-		SetBaseDef(GetBaseDef() + item.def_points2);
-		SetBaseAgi(GetBaseAgi() + item.agi_points2);
-		SetBaseSpi(GetBaseSpi() + item.spi_points2);
+	if (item->type == RPG::Item::Type_book) {
+		return LearnSkill(item->skill_id);
+	}
+
+	if (item->type == RPG::Item::Type_material) {
+		SetBaseMaxHp(GetBaseMaxHp() + item->max_hp_points);
+		SetBaseMaxSp(GetBaseMaxSp() + item->max_sp_points);
+		SetBaseAtk(GetBaseAtk() + item->atk_points2);
+		SetBaseDef(GetBaseDef() + item->def_points2);
+		SetBaseAgi(GetBaseAgi() + item->agi_points2);
+		SetBaseSpi(GetBaseSpi() + item->spi_points2);
 
 		return true;
 	}
@@ -101,14 +109,18 @@ bool Game_Actor::UseItem(int item_id) {
 }
 
 bool Game_Actor::IsItemUsable(int item_id) const {
-	const RPG::Item& item = Data::items[item_id - 1];
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		Output::Warning("Invalid item ID %d", item_id);
+		return false;
+	}
 
 	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
-	if (item.actor_set.size() <= (unsigned)(actor_id - 1)) {
+	if (item->actor_set.size() <= (unsigned)(actor_id - 1)) {
 		return true;
 	} else {
-		return item.actor_set.at(actor_id - 1);
+		return item->actor_set.at(actor_id - 1);
 	}
 }
 
@@ -117,18 +129,18 @@ bool Game_Actor::IsSkillLearned(int skill_id) const {
 }
 
 bool Game_Actor::IsSkillUsable(int skill_id) const {
-	if (skill_id <= 0 || skill_id > (int)Data::skills.size()) {
+	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+	if (!skill) {
+		Output::Warning("Invalid skill ID %d", skill_id);
 		return false;
 	}
-
-	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
 	// Actor must have all attributes of the skill equipped as weapons
 	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
 	const RPG::Item* item2 = HasTwoWeapons() ? GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
 
-	for (size_t i = 0; i < skill.attribute_effects.size(); ++i) {
-		bool required = skill.attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
+	for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
+		bool required = skill->attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
 		if (required) {
 			if (item && i < item->attribute_set.size()) {
 				if (!item->attribute_set[i]) {
@@ -169,6 +181,12 @@ int Game_Actor::CalculateSkillCost(int skill_id) const {
 
 bool Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
+		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+		if (!skill) {
+			Output::Warning("Actor %d: Can't learn invalid skill %d", GetId(), skill_id);
+			return false;
+		}
+
 		GetData().skills.push_back((int16_t)skill_id);
 		GetData().skills_size = GetData().skills.size();
 		std::sort(GetData().skills.begin(), GetData().skills.end());
@@ -200,22 +218,24 @@ void Game_Actor::SetFace(const std::string& file_name, int index) {
 const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
 	if (equip_type <= 0 || equip_type > (int)GetData().equipped.size())
 		return nullptr;
+
 	int item_id = GetData().equipped[equip_type - 1];
-
-	if (item_id <= 0 || item_id >(int)Data::items.size()) {
-		return nullptr;
-	}
-
-	return &Data::items[item_id - 1];
+	return ReaderUtil::GetElement(Data::items, item_id);
 }
 
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 	if (equip_type <= 0 || equip_type > (int) GetData().equipped.size())
 		return -1;
 
+
 	int old_item_id = GetData().equipped[equip_type - 1];
-	if (old_item_id > (int)Data::items.size())
-		old_item_id = 0;
+
+	const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, new_item_id);
+	if (new_item_id != 0 && !new_item) {
+		Output::Warning("Can't equip item with invalid ID %d", new_item_id);
+		GetData().equipped[equip_type - 1] = 0;
+		return old_item_id;
+	}
 
 	GetData().equipped[equip_type - 1] = (short)new_item_id;
 	return old_item_id;
@@ -297,8 +317,8 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	// when the class was changed by the ChangeClass event, otherwise it uses
 	// the normal actor attributes.
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.maxhp, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.maxhp, GetData().level);
 
 	if (mod)
 		n += GetData().hp_mod;
@@ -312,8 +332,8 @@ int Game_Actor::GetBaseMaxHp() const {
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.maxsp, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.maxsp, GetData().level);
 
 	if (mod)
 		n += GetData().sp_mod;
@@ -327,8 +347,8 @@ int Game_Actor::GetBaseMaxSp() const {
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.attack, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.attack, GetData().level);
 
 	if (mod) {
 		n += GetData().attack_mod;
@@ -337,7 +357,8 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 	if (equip) {
 		for (std::vector<int16_t>::const_iterator it = GetData().equipped.begin(); it != GetData().equipped.end(); ++it) {
 			if (*it > 0 && *it <= (int)Data::items.size()) {
-				n += Data::items[*it - 1].atk_points1;
+				// Invalid equipment was removed
+				n += ReaderUtil::GetElement(Data::items, *it)->atk_points1;
 			}
 		}
 	}
@@ -351,8 +372,8 @@ int Game_Actor::GetBaseAtk() const {
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.defense, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.defense, GetData().level);
 
 	if (mod) {
 		n += GetData().defense_mod;
@@ -361,7 +382,8 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 	if (equip) {
 		for (std::vector<int16_t>::const_iterator it = GetData().equipped.begin(); it != GetData().equipped.end(); ++it) {
 			if (*it > 0 && *it <= (int)Data::items.size()) {
-				n += Data::items[*it - 1].def_points1;
+				// Invalid equipment was removed
+				n += ReaderUtil::GetElement(Data::items, *it)->def_points1;
 			}
 		}
 	}
@@ -375,8 +397,8 @@ int Game_Actor::GetBaseDef() const {
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.spirit, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.spirit, GetData().level);
 
 	if (mod) {
 		n += GetData().spirit_mod;
@@ -385,7 +407,8 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 	if (equip) {
 		for (std::vector<int16_t>::const_iterator it = GetData().equipped.begin(); it != GetData().equipped.end(); ++it) {
 			if (*it > 0 && *it <= (int)Data::items.size()) {
-				n += Data::items[*it - 1].spi_points1;
+				// Invalid equipment was removed
+				n += ReaderUtil::GetElement(Data::items, *it)->spi_points1;
 			}
 		}
 	}
@@ -399,8 +422,8 @@ int Game_Actor::GetBaseSpi() const {
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 	int n = GetData().class_id > 0
-		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
-		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
+		? *ReaderUtil::GetElement(GetClass()->parameters.agility, GetData().level)
+		: *ReaderUtil::GetElement(GetActor().parameters.agility, GetData().level);
 
 	if (mod) {
 		n += GetData().agility_mod;
@@ -409,7 +432,8 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 	if (equip) {
 		for (std::vector<int16_t>::const_iterator it = GetData().equipped.begin(); it != GetData().equipped.end(); ++it) {
 			if (*it > 0 && *it <= (int)Data::items.size()) {
-				n += Data::items[*it - 1].agi_points1;
+				// Invalid equipment was removed
+				n += ReaderUtil::GetElement(Data::items, *it)->agi_points1;
 			}
 		}
 	}
@@ -423,15 +447,16 @@ int Game_Actor::GetBaseAgi() const {
 
 int Game_Actor::CalculateExp(int level) const
 {
+	const RPG::Class* klass = ReaderUtil::GetElement(Data::classes, GetData().class_id);
+
 	double base, inflation, correction;
 	if (GetData().class_id > 0) {
-		const RPG::Class& klass = Data::classes[GetData().class_id - 1];
-		base = klass.exp_base;
-		inflation = klass.exp_inflation;
-		correction = klass.exp_correction;
+		base = klass->exp_base;
+		inflation = klass->exp_inflation;
+		correction = klass->exp_correction;
 	}
 	else {
-		const RPG::Actor& actor = Data::actors[actor_id - 1];
+		const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, actor_id);
 		base = actor.exp_base;
 		inflation = actor.exp_inflation;
 		correction = actor.exp_correction;
@@ -459,9 +484,8 @@ int Game_Actor::CalculateExp(int level) const
 }
 
 void Game_Actor::MakeExpList() {
-	int final_level = Data::actors[actor_id - 1].final_level;
-	exp_list.resize(final_level, 0);;
-	for (int i = 1; i < final_level; ++i) {
+	exp_list.resize(99);
+	for (int i = 1; i <= exp_list.size(); ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
 }
@@ -505,8 +529,8 @@ int Game_Actor::GetNextExp(int level) const {
 int Game_Actor::GetStateProbability(int state_id) const {
 	int rate = 2; // C - default
 
-	if (state_id <= (int)Data::actors[actor_id - 1].state_ranks.size()) {
-		rate = Data::actors[actor_id - 1].state_ranks[state_id - 1];
+	if (state_id > 0 && state_id <= (int)GetActor().state_ranks.size()) {
+		rate = GetActor().state_ranks[state_id - 1];
 	}
 
 	return GetStateRate(state_id, rate);
@@ -515,8 +539,8 @@ int Game_Actor::GetStateProbability(int state_id) const {
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	int rate = 2; // C - default
 
-	if (attribute_id <= (int)Data::actors[actor_id - 1].attribute_ranks.size()) {
-		rate = Data::actors[actor_id - 1].attribute_ranks[attribute_id - 1];
+	if (attribute_id > 0 && attribute_id <= (int)GetActor().attribute_ranks.size()) {
+		rate = GetActor().attribute_ranks[attribute_id - 1];
 	}
 
 	rate += attribute_shift[attribute_id - 1];
@@ -583,7 +607,7 @@ int Game_Actor::GetLevel() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return Data::actors[actor_id - 1].final_level;
+	return std::max(1, std::min(GetActor().final_level, Player::IsRPG2k() ? 50 : 99));
 }
 
 int Game_Actor::GetExp() const {
@@ -657,7 +681,13 @@ std::string Game_Actor::GetLevelUpMessage(int new_level) const {
 
 std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
 	std::stringstream ss;
-	std::string& skill_name = Data::skills[learn.skill_id - 1].name;
+
+	std::string skill_name = "??? BAD SKILL ???";
+	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, learn.skill_id);
+	if (skill) {
+		skill_name = skill->name;
+	}
+
 	if (Player::IsRPG2kE()) {
 		return Utils::ReplacePlaceholders(
 			Data::terms.skill_learned,
@@ -675,9 +705,9 @@ std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>* skills;
 	if (GetData().class_id > 0) {
-		skills = &Data::classes[GetData().class_id - 1].skills;
+		skills = &GetClass()->skills;
 	} else {
-		skills = &Data::actors[actor_id - 1].skills;
+		skills = &GetActor().skills;
 	}
 
 	bool level_up = false;
@@ -726,8 +756,14 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 }
 
 bool Game_Actor::IsEquippable(int item_id) const {
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		Output::Warning("Invalid item ID %d", item_id);
+		return false;
+	}
+
 	if (HasTwoWeapons() &&
-		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
+		item->type == RPG::Item::Type_shield) {
 			return false;
 	}
 
@@ -760,10 +796,13 @@ const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return GetData().skills;
 }
 
-const RPG::Skill& Game_Actor::GetRandomSkill() const {
+const RPG::Skill* Game_Actor::GetRandomSkill() const {
 	const std::vector<int16_t>& skills = GetSkills();
+	if (skills.empty()) {
+		return nullptr;
+	}
 
-	return Data::skills[skills[Utils::GetRandomNumber(0, skills.size() - 1)] - 1];
+	return ReaderUtil::GetElement(Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
 }
 
 bool Game_Actor::HasTwoWeapons() const {
@@ -777,13 +816,19 @@ bool Game_Actor::GetAutoBattle() const {
 int Game_Actor::GetBattleX() const {
 	float position = 0.0;
 
-	if (Data::actors[actor_id - 1].battle_x == 0 ||
+	if (GetActor().battle_x == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
 		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
 		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
-		float right = left + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_c / 1103;
+		float right = left;
+
+		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
+		if (terrain) {
+			// No warning, already reported on battle start
+			right = left + terrain->grid_c / 1103;
+		}
 
 		switch (party_size) {
 		case 1:
@@ -842,7 +887,7 @@ int Game_Actor::GetBattleX() const {
 	else {
 		//Output::Debug("%d %d %d %d", Data::terrains[0].grid_a, Data::terrains[0].grid_b, Data::terrains[0].grid_c, Data::terrains[0].grid_location);
 
-		position = (Data::actors[actor_id - 1].battle_x*SCREEN_TARGET_WIDTH / 320);
+		position = GetActor().battle_x * SCREEN_TARGET_WIDTH / 320;
 	}
 
 	return position;
@@ -851,13 +896,22 @@ int Game_Actor::GetBattleX() const {
 int Game_Actor::GetBattleY() const {
 	float position = 0.0;
 
-	if (Data::actors[actor_id - 1].battle_y == 0 ||
+	if (GetActor().battle_y == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
 		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
-		float top = Data::terrains[Game_Battle::GetTerrainId() - 1].grid_a;
-		float bottom = top + Data::terrains[Game_Battle::GetTerrainId() - 1].grid_b / 13;
+		float top = 0.0f;
+		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
+		if (terrain) {
+			// No warning, already reported on battle start
+			top = terrain->grid_a;
+		}
+
+		float bottom = top;
+		if (terrain) {
+			bottom = top + terrain->grid_b;
+		}
 
 		switch (party_size) {
 		case 1:
@@ -904,14 +958,14 @@ int Game_Actor::GetBattleY() const {
 		position -= 24;
 	}
 	else {
-		position = (Data::actors[actor_id - 1].battle_y*SCREEN_TARGET_HEIGHT / 240);
+		position = GetActor().battle_y * SCREEN_TARGET_HEIGHT / 240;
 	}
 
 	return (int)position;
 }
 
 const std::string& Game_Actor::GetSkillName() const {
-	return Data::actors[actor_id - 1].skill_name;
+	return GetActor().skill_name;
 }
 
 void Game_Actor::SetName(const std::string &new_name) {
@@ -999,17 +1053,22 @@ const RPG::Class* Game_Actor::GetClass() const {
 
 	if (id < 0) {
 		// This means class ID hasn't been changed yet.
-		id = Data::actors[actor_id - 1].class_id;
+		id = GetActor().class_id;
 	}
 
-	if (id <= 0) {
-		// No class set.
-		return nullptr;
-	}
-	return &Data::classes[id - 1];
+	return ReaderUtil::GetElement(Data::classes, id);
 }
 
 void Game_Actor::SetClass(int _class_id) {
+	if (_class_id != 0) {
+		const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, _class_id);
+
+		if (!cls) {
+			Output::Warning("Actor %d: Can't change to invalid class %d", GetId(), _class_id);
+			return;
+		}
+	}
+
 	GetData().class_id = _class_id;
 	GetData().changed_battle_commands = true; // Any change counts as a battle commands change.
 
@@ -1026,12 +1085,10 @@ void Game_Actor::SetClass(int _class_id) {
 
 		GetData().battle_commands = GetClass()->battle_commands;
 	} else {
-		const RPG::Actor& actor = Data::actors[actor_id - 1];
-
-		GetData().super_guard = actor.super_guard;
-		GetData().lock_equipment = actor.lock_equipment;
-		GetData().two_weapon = actor.two_weapon;
-		GetData().auto_battle = actor.auto_battle;
+		GetData().super_guard = GetActor().super_guard;
+		GetData().lock_equipment = GetActor().lock_equipment;
+		GetData().two_weapon = GetActor().two_weapon;
+		GetData().auto_battle = GetActor().auto_battle;
 
 		GetData().battler_animation = 0;
 
@@ -1137,7 +1194,13 @@ int Game_Actor::GetBattleAnimationId() const {
 		if ((GetData().class_id > 0) && GetClass()) {
 			anim = GetClass()->battler_animation;
 		} else {
-			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
+			const RPG::BattlerAnimation* anima = ReaderUtil::GetElement(Data::battleranimations, GetActor().battler_animation);
+			if (!anima) {
+				Output::Warning("Actor %d: Invalid battle animation ID %d", GetId(), GetActor().battler_animation);
+				return 0;
+			}
+
+			anim = anima->ID;
 		}
 	} else {
 		anim = GetData().battler_animation;
@@ -1156,18 +1219,36 @@ int Game_Actor::GetHitChance() const {
 }
 
 float Game_Actor::GetCriticalHitChance() const {
-	return Data::actors[actor_id - 1].critical_hit ? (1.0f / Data::actors[actor_id - 1].critical_hit_chance) : 0.0f;
+	return GetActor().critical_hit ? (1.0f / GetActor().critical_hit_chance) : 0.0f;
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }
 
-RPG::SaveActor & Game_Actor::GetData() const {
-	return Main_Data::game_data.actors[actor_id - 1];
+const RPG::Actor& Game_Actor::GetActor() const {
+	// Always valid
+	return *ReaderUtil::GetElement(Data::actors, actor_id);
 }
 
-void Game_Actor::RemoveInvalidEquipment() {
+RPG::SaveActor& Game_Actor::GetData() const {
+	// Always valid because the array is resized to match actor size
+	return *ReaderUtil::GetElement(Main_Data::game_data.actors, actor_id);
+}
+
+void Game_Actor::RemoveInvalidData() {
+	/*
+	 * The following actor data is trusted after the initial verify:
+	 * - Class, SetClass filters invalid data
+	 * - Level is between 1 and 99
+	 * - Equipment
+	 * - Learned Skills
+	 * - ...
+	 *
+	 * Data::items (but not skills of items!)
+	 *
+	 */
+
 	// Filter out invalid equipment
 	int eq_types[] = { RPG::Item::Type_weapon,
 		HasTwoWeapons() ? RPG::Item::Type_weapon : RPG::Item::Type_shield,
@@ -1184,5 +1265,36 @@ void Game_Actor::RemoveInvalidEquipment() {
 			SetEquipment(i, 0);
 		}
 	}
-}
 
+	// Remove invalid class
+	if (!GetClass()) {
+		if (GetData().changed_class) {
+			Output::Warning("Actor %d: Removing invalid class %d", GetId(), GetData().class_id);
+		}
+		SetClass(0);
+	}
+
+	// Remove invalid skills
+	for (int16_t skill_id : GetSkills()) {
+		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+		if (!skill) {
+			Output::Warning("Actor %d: Removing invalid skill %d", GetId(), skill_id);
+			UnlearnSkill(skill_id);
+		}
+	}
+
+	// Remove invalid states
+	for (int16_t state_id : GetStates()) {
+		const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+		if (!state) {
+			Output::Warning("Actor %d: Removing invalid state %d", GetId(), state_id);
+			RemoveState(state_id);
+		}
+	}
+
+	// Remove invalid levels
+	if (GetLevel() <= 0 || GetLevel() > GetMaxLevel()) {
+		Output::Warning("Actor %d: Invalid level %d", GetId(), GetLevel());
+		SetLevel(1);
+	}
+}

@@ -16,9 +16,11 @@
  */
 
 // Headers
+#include <reader_util.h>
 #include "window_equipitem.h"
 #include "game_actors.h"
 #include "game_party.h"
+#include "output.h"
 
 Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
 	Window_Item(0, 128, SCREEN_TARGET_WIDTH, (SCREEN_TARGET_HEIGHT-128)),
@@ -43,21 +45,24 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 
 	bool result = false;
 
+	// Equipment and items are guaranteed to be valid
+	RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+
 	switch (equip_type) {
 	case Window_EquipItem::weapon:
-		result = (Data::items[item_id - 1].type == RPG::Item::Type_weapon);
+		result = item->type == RPG::Item::Type_weapon;
 		break;
 	case Window_EquipItem::shield:
-		result = (Data::items[item_id - 1].type == RPG::Item::Type_shield);
+		result = item->type == RPG::Item::Type_shield;
 		break;
 	case Window_EquipItem::armor:
-		result = (Data::items[item_id - 1].type == RPG::Item::Type_armor);
+		result = item->type == RPG::Item::Type_armor;
 		break;
 	case Window_EquipItem::helmet:
-		result = (Data::items[item_id - 1].type == RPG::Item::Type_helmet);
+		result = item->type == RPG::Item::Type_helmet;
 		break;
 	case Window_EquipItem::other:
-		result = (Data::items[item_id - 1].type == RPG::Item::Type_accessory);
+		result = item->type == RPG::Item::Type_accessory;
 		break;
 	default:
 		return false;

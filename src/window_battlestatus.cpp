@@ -63,7 +63,7 @@ void Window_BattleStatus::Refresh() {
 	item_max = std::min(item_max, 4);
 
 	for (int i = 0; i < item_max; i++) {
-		Game_Battler* actor;
+		const Game_Battler* actor;
 		if (enemy) {
 			actor = &(*Main_Data::game_enemyparty)[i];
 		}
@@ -79,16 +79,16 @@ void Window_BattleStatus::Refresh() {
 				break;
 			}
 			else {
-				DrawActorFace(static_cast<Game_Actor*>(actor), 80 * i, 24);
+				DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 			}
 		}
 		else {
 			int y = 2 + i * 16;
 
-			DrawActorName(actor, 4, y);
-			DrawActorState(actor, 84, y);
-			DrawActorHp(actor, 126, y, true);
-			DrawActorSp(actor, 198, y, false);
+			DrawActorName(*actor, 4, y);
+			DrawActorState(*actor, 84, y);
+			DrawActorHp(*actor, 126, y, true);
+			DrawActorSp(*actor, 198, y, false);
 		}
 	}
 
@@ -119,7 +119,7 @@ void Window_BattleStatus::RefreshGauge() {
 				}
 				else {
 					BitmapRef system2 = Cache::System2(Data::system.system2_name);
-					
+
 					// Clear number drawing area
 					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
 					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
@@ -127,7 +127,7 @@ void Window_BattleStatus::RefreshGauge() {
 					// Number clearing removed part of the face, but both, clear and redraw
 					// are needed because some games don't have face graphics that are huge enough
 					// to clear the number area (e.g. Ara Fell)
-					DrawActorFace(static_cast<Game_Actor*>(actor), 80 * i, 24);
+					DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 
 					// Background
 					contents->StretchBlit(Rect(32 + i * 80, 24, 57, 48), *system2, Rect(0, 32, 48, 48), Opacity::opaque);
@@ -138,7 +138,7 @@ void Window_BattleStatus::RefreshGauge() {
 					DrawGaugeSystem2(48 + i * 80, 24 + 16, actor->GetSp(), actor->GetMaxSp(), 1);
 					// Gauge
 					DrawGaugeSystem2(48 + i * 80, 24 + 16 * 2, actor->GetGauge() * actor->GetMaxGauge() / 100, actor->GetMaxGauge(), 2);
-					
+
 					// Numbers
 					DrawNumberSystem2(40 + 80 * i, 24, actor->GetHp());
 					DrawNumberSystem2(40 + 80 * i, 24 + 12 + 4, actor->GetSp());
@@ -147,8 +147,8 @@ void Window_BattleStatus::RefreshGauge() {
 			else {
 				int y = 2 + i * 16;
 
-				DrawGauge(actor, 198 - 10, y - 2);
-				DrawActorSp(actor, 198, y, false);
+				DrawGauge(*actor, 198 - 10, y - 2);
+				DrawActorSp(*actor, 198, y, false);
 			}
 		}
 	}

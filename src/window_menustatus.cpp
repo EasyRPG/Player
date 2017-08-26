@@ -40,11 +40,11 @@ void Window_MenuStatus::Refresh() {
 	int y = 0;
 	for (int i = 0; i < item_max; ++i)
 	{
-		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+		const Game_Actor& actor = *(Main_Data::game_party->GetActors()[i]);
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			face_x = actor->GetBattleRow() == 1 ? 5 : 0;
+			face_x = actor.GetBattleRow() == 1 ? 5 : 0;
 		}
 		DrawActorFace(actor, face_x, i*48 + y);
 

@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <reader_util.h>
 #include "game_temp.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -57,6 +58,19 @@ void Scene_Shop::Start() {
 
 	Game_Temp::shop_transaction = false;
 	timer = 0;
+
+	if (Game_Temp::shop_buys) {
+		// Sanitize shop items
+		for (auto it = Game_Temp::shop_goods.begin(); it != Game_Temp::shop_goods.end();) {
+			const RPG::Item *item = ReaderUtil::GetElement(Data::items, *it);
+			if (!item) {
+				Output::Warning("Removed invalid item %d from shop", *it);
+				it = Game_Temp::shop_goods.erase(it);
+			} else {
+				++it;
+			}
+		}
+	}
 
 	if (Game_Temp::shop_buys && Game_Temp::shop_sells) {
 		SetMode(BuySellLeave);
@@ -225,19 +239,20 @@ void Scene_Shop::UpdateBuySelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = buy_window->GetItemId();
 
-		//checks the money and number of items possessed before buy
+		// checks the money and number of items possessed before buy
 		if (buy_window->CheckEnable(item_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-			RPG::Item& item = Data::items[item_id - 1];
+			// Items are guaranteed to be valid
+			const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 
 			int max;
-			if (item.price == 0) {
+			if (item->price == 0) {
 				max = 99;
 			} else {
-				max = Main_Data::game_party->GetGold() / item.price;
+				max = Main_Data::game_party->GetGold() / item->price;
 			}
-			number_window->SetData(item_id, max, item.price);
+			number_window->SetData(item_id, max, item->price);
 
 			SetMode(BuyHowMany);
 		}
@@ -256,17 +271,15 @@ void Scene_Shop::UpdateSellSelection() {
 			Scene::Pop();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
-		status_window->SetItemId(item_id);
-		party_window->SetItemId(item_id);
+		const RPG::Item* item = sell_window->GetItem();
+		status_window->SetItemId(item->ID);
+		party_window->SetItemId(item->ID);
 
-		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
-			RPG::Item& item = Data::items[item_id - 1];
+		if (item->price > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			number_window->SetData(item_id, Main_Data::game_party->GetItemCount(item_id), item.price / 2);
+			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);
-		}
-		else {
+		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
 	}

@@ -1272,21 +1272,26 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 
 bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
 	int item_id;
-	int type;
 	int slot;
+	const RPG::Item* item;
 
 	switch (com.parameters[2]) {
 		case 0:
 			item_id = ValueOrVariable(com.parameters[3],
 									  com.parameters[4]);
-			type = Data::items[item_id - 1].type;
-			switch (type) {
+			item = ReaderUtil::GetElement(Data::items, item_id);
+			if (!item) {
+				Output::Warning("Invalid item ID %d", item_id);
+				return true;
+			}
+
+			switch (item->type) {
 				case RPG::Item::Type_weapon:
 				case RPG::Item::Type_shield:
 				case RPG::Item::Type_armor:
 				case RPG::Item::Type_helmet:
 				case RPG::Item::Type_accessory:
-					slot = type;
+					slot = item->type;
 					break;
 				default:
 					return true;
@@ -2770,12 +2775,18 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 
 	switch (com.parameters[0]) {
 	case 0: // Common Event
+	{
 		evt_id = com.parameters[1];
+		const RPG::CommonEvent* common_event = ReaderUtil::GetElement(Data::commonevents, evt_id);
+		if (!common_event) {
+			Output::Warning("Can't call invalid common event %d", evt_id);
+			return true;
+		}
 		// Forwarding the event_id is save because all RPG Maker engines prior 2k3 1.12
 		// threw an error when ThisEvent was used in CommonEvents.
 		// The exception is EraseEvent which is handled special (see the code)
-		child_interpreter->Setup(&Game_Map::GetCommonEvents()[evt_id - 1], event_id);
-		return true;
+		child_interpreter->Setup(common_event, event_id);		return true;
+	}
 	case 1: // Map Event
 		evt_id = com.parameters[1];
 		event_page = com.parameters[2];
@@ -2811,11 +2822,17 @@ bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* co
 }
 
 bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // code 1008
-	int class_id = com.parameters[2];
+	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
 	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
 	bool show = com.parameters[6] > 0;
+
+	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
+	if (class_id > 0) {
+		Output::Warning("Can't change class. Class %d is invalid", class_id);
+		return true;
+	}
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int actor_id = actor->GetId();
@@ -2905,7 +2922,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		}
 		if (skill_mode > 0) {
 			// Learn additionally
-			for (const RPG::Learning& learn : Data::classes[class_id - 1].skills) {
+			for (const RPG::Learning& learn : cls->skills) {
 				if (level >= learn.level) {
 					actor->LearnSkill(learn.skill_id);
 					if (show) {

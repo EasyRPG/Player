@@ -17,6 +17,7 @@
 
 // Headers
 #include <sstream>
+#include <reader_util.h>
 #include "game_system.h"
 #include "input.h"
 #include "util_macro.h"
@@ -43,7 +44,8 @@ void Window_ShopNumber::Refresh() {
 	contents->Clear();
 
 	int y = 34;
-	DrawItemName(&Data::items[item_id - 1], 0, y);
+	// (Shop) items are guaranteed to be valid
+	DrawItemName(*ReaderUtil::GetElement(Data::items, item_id), 0, y);
 
 	std::stringstream ss;
 	ss << number;

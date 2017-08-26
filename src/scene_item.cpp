@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <reader_util.h>
 #include "scene_item.h"
 #include "game_map.h"
 #include "game_party.h"
@@ -27,6 +28,7 @@
 #include "scene_actortarget.h"
 #include "scene_map.h"
 #include "scene_teleport.h"
+#include "output.h"
 
 Scene_Item::Scene_Item(int item_index) :
 	item_index(item_index) {
@@ -59,26 +61,33 @@ void Scene_Item::Update() {
 		if (item_id > 0 && item_window->CheckEnable(item_id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
+			// The party only has valid items
 			const RPG::Item& item = *item_window->GetItem();
 
 			if (item.type == RPG::Item::Type_switch) {
 				Main_Data::game_party->ConsumeItemUse(item_id);
-				Game_Switches[Data::items[item_id - 1].switch_id] = true;
+				Game_Switches[item.switch_id] = true;
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
-				if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_teleport) {
+				const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item.skill_id);
+				if (!skill) {
+					Output::Warning("Item references invalid skill ID %d", item.skill_id);
+					return;
+				}
+
+				if (skill->type == RPG::Skill::Type_teleport) {
 					Scene::Push(std::make_shared<Scene_Teleport>(item));
-				} else if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_escape) {
+				} else if (skill->type == RPG::Skill::Type_escape) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
 
 					Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
 					Main_Data::game_player->StartTeleport();
 
 					Scene::PopUntil(Scene::Map);
-				} else if (Data::skills[item.skill_id - 1].type == RPG::Skill::Type_switch) {
+				} else if (skill->type == RPG::Skill::Type_switch) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
-					Game_Switches[Data::items[item_id - 1].switch_id] = true;
+					Game_Switches[skill->switch_id] = true;
 					Scene::PopUntil(Scene::Map);
 					Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				} else {

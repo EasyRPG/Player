@@ -25,6 +25,8 @@
 #include "background.h"
 #include "bitmap.h"
 #include "main_data.h"
+#include "reader_util.h"
+#include "output.h"
 
 Background::Background(const std::string& name) :
 	visible(true),
@@ -47,33 +49,38 @@ Background::Background(int terrain_id) :
 
 	Graphics::RegisterDrawable(this);
 
-	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+
+	if (!terrain) {
+		Output::Warning("Invalid terrain ID %d", terrain_id);
+		return;
+	}
 
 	// Either background or frame
-	if (terrain.background_type == RPG::Terrain::BGAssociation_background && !terrain.background_name.empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain.background_name);
+	if (terrain->background_type == RPG::Terrain::BGAssociation_background && !terrain->background_name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain->background_name);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 		return;
 	}
 
 	// Frame
-	if (!terrain.background_a_name.empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_a_name);
+	if (!terrain->background_a_name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_a_name);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 
-		bg_hscroll = terrain.background_a_scrollh ? terrain.background_a_scrollh_speed : 0;
-		bg_vscroll = terrain.background_a_scrollv ? terrain.background_a_scrollv_speed : 0;
+		bg_hscroll = terrain->background_a_scrollh ? terrain->background_a_scrollh_speed : 0;
+		bg_vscroll = terrain->background_a_scrollv ? terrain->background_a_scrollv_speed : 0;
 	}
 
-	if (terrain.background_b && !terrain.background_b_name.empty()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain.background_b_name);
+	if (terrain->background_b && !terrain->background_b_name.empty()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_b_name);
 		request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
 		request->Start();
 
-		fg_hscroll = terrain.background_b_scrollh ? terrain.background_b_scrollh_speed : 0;
-		fg_vscroll = terrain.background_b_scrollv ? terrain.background_b_scrollv_speed : 0;
+		fg_hscroll = terrain->background_b_scrollh ? terrain->background_b_scrollh_speed : 0;
+		fg_vscroll = terrain->background_b_scrollv ? terrain->background_b_scrollv_speed : 0;
 	}
 }
 
