@@ -1501,6 +1501,12 @@ bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { //
 bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
+
+	if (!vehicle) {
+		Output::Warning("ChangeVehicleGraphic: Invalid vehicle ID %d", vehicle_id);
+		return true;
+	}
+
 	const std::string& name = com.string;
 	int vehicle_index = com.parameters[1];
 
@@ -1575,6 +1581,12 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
+
+	if (!vehicle) {
+		Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);
+		return true;
+	}
+
 	int map_id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[4]);
@@ -2300,10 +2312,19 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 			result = character->GetSpriteDirection() == com.parameters[2];
 		}
 		break;
-	case 7:
+	case 7: {
 		// Vehicle in use
-		result = Game_Map::GetVehicle((Game_Vehicle::Type) (com.parameters[1] + 1))->IsInUse();
+		Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[1] + 1);
+		Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
+
+		if (!vehicle) {
+			Output::Warning("ConditionalBranch: Invalid vehicle ID %d", vehicle_id);
+			return true;
+		}
+
+		result = vehicle->IsInUse();
 		break;
+	}
 	case 8:
 		// Key decision initiated this event
 		result = triggered_by_decision_key;
