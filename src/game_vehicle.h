@@ -36,6 +36,8 @@ public:
 		Airship
 	};
 
+	static const char TypeNames[4][8];
+
 	Game_Vehicle(Type _type);
 
 	/**

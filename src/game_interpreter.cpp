@@ -1580,18 +1580,42 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
+
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 	if (!vehicle) {
-		Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);
-		return true;
+		// SetVehicleLocation moves the party, too, when she is in the referenced
+		// vehicle. In RPG_RT a party that is in no vehicle has the vehicle_id -1.
+		// Due to this implementation detail passing -1 as vehicle_id will move the
+		// party instead.
+		if (vehicle_id == 0) {
+			// 0 because we adjust all vehicle IDs by +1
+			Output::Debug("SetVehicleLocation: Party referenced");
+		} else {
+			Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);
+			return true;
+		}
 	}
 
 	int map_id = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[4]);
 
-	vehicle->SetPosition(map_id, x, y);
+	// Check if the party is in the current vehicle
+	if (Main_Data::game_player->GetVehicle() == vehicle) {
+		if (map_id != Game_Map::GetMapId()) {
+			Output::Warning("SetVehicleLocation: Can't move %s to new map %d while the party is boarded.",
+							Game_Vehicle::TypeNames[vehicle_id], map_id);
+			return true;
+		}
+
+		// Transfer the party together with the vehicle
+		Main_Data::game_player->MoveTo(x, y);
+	}
+
+	if (vehicle) {
+		vehicle->SetPosition(map_id, x, y);
+	}
 
 	return true;
 }
