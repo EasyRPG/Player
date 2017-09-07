@@ -25,7 +25,7 @@
   <string name="path_not_readable">無法讀取 $PATH</string>
   <string name="no_games_found_and_explanation">沒有找到 RPG Maker 2000/2003 的遊戲。
 在設定中可以增加額外的遊戲資料夾。</string>
-  <string name="no_external_storage">沒有找到儲存空間 (如SD卡)</string>
+  <string name="no_external_storage">沒有找到外部儲存空間 (如SD卡)</string>
   <string name="not_valid_game">$PATH 不是個遊戲資料夾</string>
   <string name="select_game_region">選擇遊戲地區編碼</string>
   <string name="change_the_layout">修改按鍵配置</string>
@@ -35,7 +35,7 @@
   <string name="refresh">重新整理</string>
   <string name="change_default_mapping">修改預設的按鍵配置</string>
   <string name="how_to_use_easy_rpg">EasyRPG Player 使用方式</string>
-  <string name="how_to_use_easy_rpg_explanation">遊戲安裝說明：\n\n預設情況下，EasyRPG Player 會在 /easyrpg/games 裡面尋找遊戲。在設定裡面可以加入其他遊戲儲存位置。\n\nRTP方面，RPG Maker 2000 RTP 要放在 /easyrpg/rtp/2000 裡面，2003 的則要放在 /easyrpg/rtp/2003 裡面。\n\n遊戲必須要被解壓縮後放進遊戲儲存位置中 (預設為 /easyrpg/games)，例如：\n\n\t/easyrpg/games/遊戲名/Data/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名.zip (X) ZIP 與 EXE 檔是不被支援的。\n</string>
+  <string name="how_to_use_easy_rpg_explanation">遊戲安裝說明：\n\n預設情況下，EasyRPG Player 會在 /easyrpg/games 裡面尋找遊戲。在設定裡面可以加入其他遊戲儲存位置。\n\nRTP方面，RPG Maker 2000 RTP 要放在 /easyrpg/rtp/2000 裡面，2003 的則要放在 /easyrpg/rtp/2003 裡面。\n\n遊戲必須要被解壓縮後放進遊戲儲存位置中 (預設為 /easyrpg/games)，例如：\n\n\t/easyrpg/games/遊戲名/Data/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名/RPG_RT.ldb (O)\n\t/easyrpg/games/遊戲名.zip (X)\nZIP 與 EXE 檔是不被支援的。\n</string>
   <!--Ingame menu-->
   <string name="toggle_fps">開關 FPS 顯示</string>
   <string name="toggle_ui">隱藏 / 顯示虛擬按鈕</string>
@@ -62,6 +62,12 @@
   <string name="no_read_access_on_dir">沒有 %1$s 的讀取權限</string>
   <string name="quick_access">快速存取</string>
   <string name="force_landscape_mode">強制橫向顯示</string>
+  <string name="fast_forward">快轉按鈕模式：</string>
+  <string-array name="fast_forward_mode">
+    <item>按住</item>
+    <item>輕觸</item>
+  </string-array>
+  <string name="fast_forward_factor">快轉速度：</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">按鍵配置管理：</string>
   <string name="add_an_input_layout">新增按鍵配置</string>

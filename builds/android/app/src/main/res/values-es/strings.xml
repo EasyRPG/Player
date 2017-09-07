@@ -61,6 +61,12 @@ Cuéntanos detalladamente qué fue mal.\n\n</string>
   <string name="no_read_access_on_dir">No hay acceso de lectura en %1$s</string>
   <string name="quick_access">Acceso rápido</string>
   <string name="force_landscape_mode">Forzar pantalla horizontal</string>
+  <string name="fast_forward">Modo del botón de avance rápido:</string>
+  <string-array name="fast_forward_mode">
+    <item>mantener</item>
+    <item>toque</item>
+  </string-array>
+  <string name="fast_forward_factor">Multiplicador de velocidad:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Administrar grupos de botones:</string>
   <string name="add_an_input_layout">Crear grupo de botones</string>

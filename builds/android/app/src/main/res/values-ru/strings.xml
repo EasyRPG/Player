@@ -43,7 +43,7 @@
   <string name="report_bug">Сообщить об ошибке</string>
   <string name="report_bug_msg">Эта функция откроет почтовую программу (напр. Gmail), чтобы послать сообщение об ошибке.\n\nЕсли вы не хотите отправлять письмо, или у вас не настроена почтовая программа, можно создать новое описание проблемы на https://github.com/EasyRPG/Player/issues</string>
   <string name="report_bug_mail">Спасибо за поддержку EasyRPG Player!\n
-К этому письмо прикреплены журнальный файл и сохранённые игры.\n
+К этому письму прикреплены журнальный файл и сохранённые игры.\n
 Пожалуйста, не удаляйте журнальный файл! Нам нужно сохранение рядом с тем местом, где происходит ошибка.\n
 Пожалуйста, подробно опишите, в чём проблема.\n\n
 </string>
@@ -62,6 +62,12 @@
   <string name="no_read_access_on_dir">Нет доступа для чтения к %1$s</string>
   <string name="quick_access">Быстрый доступ</string>
   <string name="force_landscape_mode">Зафиксировать горизонтальную ориентацию</string>
+  <string name="fast_forward">Режим кнопки ускорения:</string>
+  <string-array name="fast_forward_mode">
+    <item>удерживание</item>
+    <item>нажатие</item>
+  </string-array>
+  <string name="fast_forward_factor">Коэффициент ускорения:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Управление интерфейсами ввода:</string>
   <string name="add_an_input_layout">Добавить интерфейс ввода</string>

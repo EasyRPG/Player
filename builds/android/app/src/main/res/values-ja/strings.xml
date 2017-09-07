@@ -61,6 +61,12 @@
   <string name="no_read_access_on_dir">%1$s に読み取りアクセス権限がありません</string>
   <string name="quick_access">クイック アクセス</string>
   <string name="force_landscape_mode">強制的に横置きにする</string>
+  <string name="fast_forward">早送りボタンモード:</string>
+  <string-array name="fast_forward_mode">
+    <item>長押し</item>
+    <item>タップ</item>
+  </string-array>
+  <string name="fast_forward_factor">倍速:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">入力レイアウトの管理:</string>
   <string name="add_an_input_layout">入力レイアウトの追加</string>
