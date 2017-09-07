@@ -88,9 +88,14 @@ void Spriteset_Map::Update() {
 	std::string name = Game_Map::Parallax::GetName();
 	if (name != panorama_name) {
 		panorama_name = name;
-		FileRequestAsync* request = AsyncHandler::RequestFile("Panorama", panorama_name);
-		panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
-		request->Start();
+		if (name.empty()) {
+			panorama->SetBitmap(BitmapRef());
+			tilemap->SetFastBlitDown(true);
+		} else {
+			FileRequestAsync *request = AsyncHandler::RequestFile("Panorama", panorama_name);
+			panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
+			request->Start();
+		}
 	}
 	panorama->SetOx(Game_Map::Parallax::GetX());
 	panorama->SetOy(Game_Map::Parallax::GetY());
