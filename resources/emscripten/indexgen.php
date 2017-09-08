@@ -1,6 +1,10 @@
 <?php
 /* Licensed under WTFPL. Do what you want. */
 
+echo "*******************************************************************";
+echo "* Deprecated by `gencache` tool: https://github.com/EasyRPG/Tools *";
+echo "*******************************************************************";
+
 define('CACHE_FILE', 'index.json');
 define('BASE_DIR', '.');
 
