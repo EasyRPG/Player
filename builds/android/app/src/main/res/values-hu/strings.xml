@@ -62,6 +62,12 @@ Kérjük írja le a hiba részleteit!\n\n
   <string name="no_read_access_on_dir">Nincs olvasási joga ehhez: %1$s</string>
   <string name="quick_access">Gyors hozzáférés</string>
   <string name="force_landscape_mode">Fekvő nézet kényszerítése</string>
+  <string name="fast_forward">Gyors-előre gomb módja:</string>
+  <string-array name="fast_forward_mode">
+    <item>nyomva tartás</item>
+    <item>érintés</item>
+  </string-array>
+  <string name="fast_forward_factor">Sebességszorzó:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Beviteli felületek kezelése:</string>
   <string name="add_an_input_layout">Beviteli felület hozzáadása</string>

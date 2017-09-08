@@ -62,6 +62,12 @@
   <string name="no_read_access_on_dir">Няма доступу, каб прачытаць %1$s</string>
   <string name="quick_access">Хуткі доступ</string>
   <string name="force_landscape_mode">Зафіксаваць гарызантальную арыентацыю</string>
+  <string name="fast_forward">Рэжым кнопкі паскарэння:</string>
+  <string-array name="fast_forward_mode">
+    <item>утрыманне</item>
+    <item>націсканне</item>
+  </string-array>
+  <string name="fast_forward_factor">Каэфіцыент паскарэння:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Кіраванне інтэрфейсамі ўводу:</string>
   <string name="add_an_input_layout">Дадаць інтэрфейс уводу</string>

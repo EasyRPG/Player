@@ -62,6 +62,12 @@ Teile uns zusätzlich in Detail mit, was schiefgegangen ist.\n\n
   <string name="no_read_access_on_dir">Keine Leserechte für %1$s</string>
   <string name="quick_access">Schnellzugriff</string>
   <string name="force_landscape_mode">Querformat erzwingen</string>
+  <string name="fast_forward">Modus Beschleunigungsbutton:</string>
+  <string-array name="fast_forward_mode">
+    <item>halten</item>
+    <item>antippen</item>
+  </string-array>
+  <string name="fast_forward_factor">Geschwindigkeit:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Eingabe-Layouts verwalten:</string>
   <string name="add_an_input_layout">Eingabe-Layout hinzufügen</string>

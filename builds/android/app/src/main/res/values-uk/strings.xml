@@ -61,6 +61,12 @@
   <string name="no_read_access_on_dir">Немає доступу для читання до %1$s</string>
   <string name="quick_access">Швидкий доступ</string>
   <string name="force_landscape_mode">Зафіксувати горизонтальну орієнтацію</string>
+  <string name="fast_forward">Режим кнопки прискорення:</string>
+  <string-array name="fast_forward_mode">
+    <item>утримання</item>
+    <item>натискання</item>
+  </string-array>
+  <string name="fast_forward_factor">Коефіцієнт прискорення:</string>
   <!--InputLayout Managing-->
   <string name="manage_input_layouts">Керування інтерфейсами вводу:</string>
   <string name="add_an_input_layout">Додати інтерфейс вводу</string>
