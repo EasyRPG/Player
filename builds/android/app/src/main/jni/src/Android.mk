@@ -20,16 +20,16 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 LOCAL_SHARED_LIBRARIES := SDL2
 
 LOCAL_STATIC_LIBRARIES := \
-		SDL2_mixer vorbisfile vorbis ogg \
+		vorbisfile vorbis ogg WildMidi \
 		xmp-lite mpg123 speexdsp sndfile \
-		freetype pixman-1 png \
+		freetype pixman-1 png opusfile opus \
 		lcf expat icui18n icuuc icudata \
 		cpufeatures
 
-LOCAL_LDLIBS := -lGLESv1_CM -llog -lz
+LOCAL_LDLIBS := -lGLESv1_CM -llog -lz -latomic
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -DUSE_SDL \
-		-DHAVE_SDL_MIXER -DHAVE_MPG123 -DWANT_FMMIDI=2 \
+		-DHAVE_MPG123 -DWANT_FMMIDI -DHAVE_OPUS -DHAVE_WILDMIDI \
 		-DHAVE_OGGVORBIS -DHAVE_XMP -DHAVE_LIBSNDFILE \
 		-DHAVE_LIBSPEEXDSP -DSUPPORT_AUDIO
 
