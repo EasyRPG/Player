@@ -90,7 +90,7 @@
 #    define SUPPORT_KEYBOARD
 #  endif
 
-#  ifdef USE_SDL_MIXER
+#  ifdef HAVE_SDL_MIXER
 #    define SUPPORT_WAV
 #    define SUPPORT_MID
 #    define SUPPORT_OGG
@@ -102,7 +102,7 @@
 #      error "WANT_FMMIDI must be set to 1 (use instead of sdl) or 2 (fallback on sdl error)"
 #    endif
 
-#  if !defined(USE_SDL_MIXER) && WANT_FMMIDI == 2
+#  if !defined(HAVE_SDL_MIXER) && WANT_FMMIDI == 2
 #      error "WANT_FMMIDI must be set to 1 for non-SDL Mixer builds"
 #    endif 
 #  endif
