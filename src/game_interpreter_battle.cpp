@@ -84,16 +84,16 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 	if (child_interpreter)
 		return false;
 
-	int event_id = com.parameters[0];
+	int evt_id = com.parameters[0];
 
-	const RPG::CommonEvent* event = ReaderUtil::GetElement(Data::commonevents, event_id);
-	if (!event) {
-		Output::Warning("Invalid common event ID %d", event_id);
+	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+	if (!common_event) {
+		Output::Warning("CallCommonEvent: Can't call invalid common event %d", evt_id);
 		return true;
 	}
 
 	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(event, 0);
+	child_interpreter->Setup(common_event, 0);
 
 	return true;
 }

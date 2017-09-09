@@ -65,7 +65,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	clear_child = false;
 
 	if (depth > 100) {
-		Output::Warning("Too many event calls (over 9000)");
+		Output::Warning("Interpreter: Maximum callstack depth (100) exceeded");
 	}
 
 	Clear();
@@ -108,7 +108,11 @@ void Game_Interpreter::Setup(
 
 	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
-	list = _list;
+
+	if (depth <= 100) {
+		list = _list;
+	}
+
 	triggered_by_decision_key = started_by_decision_key;
 
 	index = 0;
@@ -1281,7 +1285,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 									  com.parameters[4]);
 			item = ReaderUtil::GetElement(Data::items, item_id);
 			if (!item) {
-				Output::Warning("Invalid item ID %d", item_id);
+				Output::Warning("ChangeEquipment: Invalid item ID %d", item_id);
 				return true;
 			}
 
@@ -2685,11 +2689,10 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 			// Is Fullscreen active?
 			result = DisplayUi->IsFullscreen();
 			break;
-
 		}
 		break;
 	default:
-		Output::Warning("Branch %d unsupported", com.parameters[0]);
+		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
 	}
 
 	if (result)
@@ -2774,18 +2777,19 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1, main_flag));
 
 	switch (com.parameters[0]) {
-	case 0: // Common Event
-	{
+	case 0: { // Common Event
 		evt_id = com.parameters[1];
-		const RPG::CommonEvent* common_event = ReaderUtil::GetElement(Data::commonevents, evt_id);
+		Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
 		if (!common_event) {
-			Output::Warning("Can't call invalid common event %d", evt_id);
+			Output::Warning("CallEvent: Can't call invalid common event %d", evt_id);
 			return true;
 		}
-		// Forwarding the event_id is save because all RPG Maker engines prior 2k3 1.12
+
+		// Forwarding the event_id is safe because all RPG Maker engines prior 2k3 1.12
 		// threw an error when ThisEvent was used in CommonEvents.
 		// The exception is EraseEvent which is handled special (see the code)
-		child_interpreter->Setup(common_event, event_id);		return true;
+		child_interpreter->Setup(common_event, event_id);
+		return true;
 	}
 	case 1: // Map Event
 		evt_id = com.parameters[1];
@@ -2808,7 +2812,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 			child_interpreter->event_info.y = event->GetY();
 			child_interpreter->event_info.page = page;
 		} else {
-			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
+			Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
 		}
 	}
 
@@ -2830,7 +2834,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
 	if (class_id > 0) {
-		Output::Warning("Can't change class. Class %d is invalid", class_id);
+		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
 		return true;
 	}
 
