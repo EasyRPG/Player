@@ -101,6 +101,10 @@
 #    if WANT_FMMIDI != 1 && WANT_FMMIDI != 2
 #      error "WANT_FMMIDI must be set to 1 (use instead of sdl) or 2 (fallback on sdl error)"
 #    endif
+
+#  if !defined(USE_SDL_MIXER) && WANT_FMMIDI == 2
+#      error "WANT_FMMIDI must be set to 1 for non-SDL Mixer builds"
+#    endif 
 #  endif
 #else
 // ifndef USE_SDL
