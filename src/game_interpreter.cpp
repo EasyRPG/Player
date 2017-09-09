@@ -1580,7 +1580,6 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
-
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
 	if (!vehicle) {
@@ -1589,7 +1588,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 		// Due to this implementation detail passing -1 as vehicle_id will move the
 		// party instead.
 		if (vehicle_id == 0) {
-			// 0 because we adjust all vehicle IDs by +1
+			// 0 because we adjust all vehicle IDs by +1 to match the lcf values
 			Output::Debug("SetVehicleLocation: Party referenced");
 		} else {
 			Output::Warning("SetVehicleLocation: Invalid vehicle ID %d", vehicle_id);

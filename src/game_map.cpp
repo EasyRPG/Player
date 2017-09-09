@@ -1150,10 +1150,13 @@ void Game_Map::SetChipset(int id) {
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
-	if (which == Game_Vehicle::None) {
-		return NULL;
+	if (which == Game_Vehicle::Boat ||
+		which == Game_Vehicle::Ship ||
+		which == Game_Vehicle::Airship) {
+		return vehicles[which - 1].get();
 	}
-	return vehicles[which - 1].get();
+
+	return nullptr;
 }
 
 bool Game_Map::IsAnyEventStarting() {
