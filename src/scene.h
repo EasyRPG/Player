@@ -70,7 +70,7 @@ public:
 	 * executes the scene that is currently on the top of
 	 * the stack.
 	 */
-	virtual void MainFunction();
+	static void MainFunction();
 
 	/**
 	 * Start processing.
@@ -176,7 +176,7 @@ private:
 	static int push_pop_operation;
 
 	/**
-	 * true if Start() was called. For handling the special case that two 
+	 * true if Start() was called. For handling the special case that two
 	 * or more scenes are pushed. In that case only the last calls start, the
 	 * other Continue(). This enforces calling Start().
 	 */

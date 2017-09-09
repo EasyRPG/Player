@@ -208,6 +208,8 @@ uint32_t SdlUi::GetTicks() const {
 void SdlUi::Sleep(uint32_t time) {
 #ifndef EMSCRIPTEN
 	SDL_Delay(time);
+#else
+	emscripten_sleep(time);
 #endif
 }
 

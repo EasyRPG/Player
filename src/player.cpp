@@ -205,9 +205,7 @@ void Player::Run() {
 	FrameReset();
 
 	// Main loop
-#ifdef EMSCRIPTEN
-	emscripten_set_main_loop(Player::MainLoop, 0, 0);
-#elif defined(_3DS)
+#if defined(_3DS)
 	while (aptMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
 	{
 		hidScanInput();
@@ -246,12 +244,6 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-#ifdef EMSCRIPTEN
-	// Ticks in emscripten are unreliable due to how the main loop works:
-	// This function is only called 60 times per second instead of theoretical
-	// 1000s of times.
-	Graphics::Update(true);
-#else
 	// Time left before next frame? Let's render the current frame.
 	double cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < next_frame) {
@@ -265,7 +257,6 @@ void Player::Update(bool update_scene) {
 	} else {
 		Graphics::Update(false);
 	}
-#endif
 
 	// Normal logic update
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {

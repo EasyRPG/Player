@@ -66,6 +66,8 @@ Scene::Scene() {
 }
 
 void Scene::MainFunction() {
+	Scene* old_instance = instance.get();
+
 	static bool init = false;
 
 	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
@@ -74,15 +76,15 @@ void Scene::MainFunction() {
 		// Initialization after scene switch
 		switch (push_pop_operation) {
 		case ScenePushed:
-			Start();
-			initialized = true;
+			instance->Start();
+			instance->initialized = true;
 			break;
 		case ScenePopped:
-			if (!initialized) {
-				Start();
-				initialized = true;
+			if (!instance->initialized) {
+				instance->Start();
+				instance->initialized = true;
 			} else {
-				Continue();
+				instance->Continue();
 			}
 			break;
 		default:;
@@ -90,8 +92,8 @@ void Scene::MainFunction() {
 
 		push_pop_operation = 0;
 
-		TransitionIn();
-		Resume();
+		instance->TransitionIn();
+		instance->Resume();
 
 		init = true;
 
@@ -100,15 +102,15 @@ void Scene::MainFunction() {
 		Player::Update();
 	}
 
-	if (Scene::instance.get() != this) {
+	if (Scene::instance.get() != old_instance) {
 		// Shutdown after scene switch
 		assert(Scene::instance == instances.back() &&
 			"Don't set Scene::instance directly, use Push instead!");
 
 		Graphics::Update(true);
 
-		Suspend();
-		TransitionOut();
+		instance->Suspend();
+		instance->TransitionOut();
 
 		switch (push_pop_operation) {
 		case ScenePushed:
