@@ -59,13 +59,18 @@ namespace {
 	void download_success(unsigned, void* userData, const char*) {
 		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
 		//Output::Debug("DL Success: %s", req->GetPath().c_str());
+
 		req->DownloadDone(true);
+
+		emscripten_sleep_with_yield(1);
 	}
 
 	void download_failure(unsigned, void* userData, int) {
 		FileRequestAsync* req = static_cast<FileRequestAsync*>(userData);
 		Output::Debug("DL Failure: %s", req->GetPath().c_str());
 		req->DownloadDone(false);
+
+		emscripten_sleep_with_yield(1);
 	}
 #endif
 }

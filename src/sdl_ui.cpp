@@ -209,7 +209,7 @@ void SdlUi::Sleep(uint32_t time) {
 #ifndef EMSCRIPTEN
 	SDL_Delay(time);
 #else
-	emscripten_sleep(time);
+	emscripten_sleep_with_yield(time);
 #endif
 }
 

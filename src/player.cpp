@@ -254,6 +254,11 @@ void Player::Update(bool update_scene) {
 		if (cur_time < next_frame) {
 			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
 		}
+#ifdef EMSCRIPTEN
+		else {
+			DisplayUi->Sleep(1);
+		}
+#endif
 	} else {
 		Graphics::Update(false);
 	}
@@ -294,6 +299,10 @@ void Player::Update(bool update_scene) {
 
 	Audio().Update();
 	Input::Update();
+// BAD
+	//if (AsyncHandler::IsImportantFilePending()) {
+		DisplayUi->Sleep(1);
+	//}
 
 	if (update_scene) {
 		std::shared_ptr<Scene> old_instance = Scene::instance;
