@@ -843,7 +843,14 @@ std::string Player::GetEncoding() {
 		encoding = "";
 
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
-		std::vector<std::string> encodings = ReaderUtil::DetectEncodings(ldb);
+
+		std::vector<std::string> encodings;
+		std::ifstream is(ldb, std::ios::binary);
+		// Stream required due to a liblcf api change:
+		// When a string is passed the encoding of the string is detected
+		if (is) {
+			encodings = ReaderUtil::DetectEncodings(is);
+		}
 
 #ifndef EMSCRIPTEN
 		for (std::string& enc : encodings) {
