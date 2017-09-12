@@ -25,6 +25,13 @@
 #include "game_vehicle.h"
 #include "output.h"
 
+const char Game_Vehicle::TypeNames[4][8] {
+	"Party", // RPG_RT special case, see CommandSetVehicleLocation
+	"Boat",
+	"Ship",
+	"Airship"
+};
+
 Game_Vehicle::Game_Vehicle(Type _type) :
 	data(_type == Boat ? Main_Data::game_data.boat_location :
 		 _type == Ship ? Main_Data::game_data.ship_location :

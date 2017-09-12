@@ -92,6 +92,7 @@ void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	if (message == last_message) {
 		// The message matches the previous message -> increase counter
 		messages.back().repeat_count++;
+		messages.back().hidden = false;
 		// Keep the old message (with a new counter) on the screen
 		counter = 0;
 
