@@ -16,49 +16,48 @@
  */
 
 #include "drawable.h"
+#include "rpg_savepicture.h"
 
-int Drawable::GetPriorityForMapLayer(int which) const {
+int Drawable::GetPriorityForMapLayer(int which) {
 	switch (which) {
-		case 1:
+		case RPG::SavePicture::MapLayer_parallax:
 			return Priority_Background;
-		case 2:
+		case RPG::SavePicture::MapLayer_tilemap_below:
 			return Priority_TilesetBelow;
-		case 3:
+		case RPG::SavePicture::MapLayer_events_below:
 			return Priority_EventsBelow;
-		case 4:
+		case RPG::SavePicture::MapLayer_events_same_as_player:
 			return Priority_Player;
-		case 5:
+		case RPG::SavePicture::MapLayer_tilemap_above:
 			return Priority_TilesetAbove;
-		case 6:
+		case RPG::SavePicture::MapLayer_events_above:
 			return Priority_EventsAbove;
-		case 7:
+		case RPG::SavePicture::MapLayer_weather:
 			return Priority_PictureNew;
-		case 8:
+		case RPG::SavePicture::MapLayer_animations:
 			return Priority_BattleAnimation;
-		case 9:
+		case RPG::SavePicture::MapLayer_windows:
 			return Priority_Window;
-		case 10:
+		case RPG::SavePicture::MapLayer_timers:
 			return Priority_Timer;
 		default:
 			return 0;
 	}
 }
 
-int Drawable::GetPriorityForBattleLayer(int which) const {
+int Drawable::GetPriorityForBattleLayer(int which) {
 	switch (which) {
-		case 1:
+		case RPG::SavePicture::BattleLayer_background:
 			return Priority_Background;
-		case 2:
+		case RPG::SavePicture::BattleLayer_battlers_and_animations:
 			return Priority_Battler;
-		case 3:
+		case RPG::SavePicture::BattleLayer_weather:
 			return Priority_PictureNew;
-		case 4:
+		case RPG::SavePicture::BattleLayer_windows_and_status:
 			return Priority_Window;
-		case 5:
+		case RPG::SavePicture::BattleLayer_timers:
 			return Priority_Timer;
 		default:
 			return 0;
 	}
 }
-
-#endif

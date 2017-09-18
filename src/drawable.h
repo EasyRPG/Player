@@ -71,14 +71,14 @@ public:
 	 *
 	 * @return Priority or 0 when not found
 	 */
-	static int GetPriorityForMapLayer(int which) const;
+	static int GetPriorityForMapLayer(int which);
 
 	/**
 	 * Converts a RPG Maker battle layer value into a EasyRPG priority value.
 	 *
 	 * @return Priority or 0 when not found
 	 */
-	static int GetPriorityForBattleLayer(int which) const;
+	static int GetPriorityForBattleLayer(int which);
 };
 
 #endif

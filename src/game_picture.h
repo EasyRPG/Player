@@ -52,16 +52,16 @@ public:
 		bool transparency;
 		bool fixed_to_map;
 		// RPG Maker 2k3 1.12
-		int sheet_x;
-		int sheet_y;
-		bool sheet_loop;
-		int sheet_index;
-		int sheet_animate;
+		int spritesheet_cols = 1;
+		int spritesheet_rows = 1;
+		bool spritesheet_loop = false;
+		int spritesheet_frame = 0;
+		int spritesheet_speed = 0;
 		int map_layer = 7;
-		int battle_layer;
-		bool persistent;
-
+		int battle_layer = 0;
+		int flags;
 	};
+
 	struct MoveParams : Params {
 		int duration;
 	};

@@ -23,6 +23,9 @@
 #include "player.h"
 #include "main_data.h"
 
+// Applied to ensure that all pictures are above "normal" objects on this layer
+constexpr int z_mask = (1 << 16);
+
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
 	old_map_x(0),
@@ -53,7 +56,10 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetY((int)data.current_y);
 	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
-		sprite->SetZ(Priority_PictureNew + data.ID);
+		int priority = Drawable::GetPriorityForMapLayer(data.map_layer);
+		if (priority > 0) {
+			sprite->SetZ(priority + z_mask + data.ID);
+		}
 	} else {
 		// Battle Animations are below pictures
 		sprite->SetZ(Priority_PictureOld + data.ID);
@@ -87,14 +93,25 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == 0) {
 		// params.effect_power seems to contain garbage here
-		data.finish_effect = 0.0;
+		data.finish_effect = (int)0.0;
 	} else {
 		data.finish_effect = params.effect_power;
 	}
+
 	SyncCurrentToFinish();
 	data.current_rotation = 0.0;
 	data.current_waver = 0;
 	data.time_left = 0;
+
+	// RPG Maker 2k3 1.12
+	data.spritesheet_rows = params.spritesheet_rows;
+	data.spritesheet_cols = params.spritesheet_cols;
+	data.spritesheet_play_once = !params.spritesheet_loop;
+	data.spritesheet_frame = params.spritesheet_frame;
+	data.spritesheet_speed = params.spritesheet_speed;
+	data.map_layer = params.map_layer;
+	data.battle_layer = params.battle_layer;
+	// flags
 
 	RequestPictureSprite();
 	UpdateSprite();

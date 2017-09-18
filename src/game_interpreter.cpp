@@ -1991,7 +1991,13 @@ namespace PicPointerPatch {
 		// Replace last 4 characters with 0-padded pic_num
 		std::u32string u_pic_name = Utils::DecodeUTF32(str);
 
+		// Out of bounds test
 		if (u_pic_name.length() < digits) {
+			return str;
+		}
+
+		// No substitution required
+		if (digits == 0) {
 			return str;
 		}
 
@@ -2059,20 +2065,20 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 			params.name = PicPointerPatch::ReplaceName(params.name, Game_Variables[com.parameters[19]], com.parameters[18]);
 			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
-			params.sheet_x = com.parameters[22];
-			params.sheet_y = com.parameters[23];
+			params.spritesheet_cols = com.parameters[22];
+			params.spritesheet_rows = com.parameters[23];
 
 			// Animate and index selection are exclusive
 			if (com.parameters[24] == 2) {
-				params.sheet_animate = com.parameters[25];
+				params.spritesheet_speed = com.parameters[25];
 			} else {
-				params.sheet_index = ValueOrVariable(com.parameters[24], com.parameters[25]);
+				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
 			}
 
-			params.sheet_loop = !com.parameters[26];
+			params.spritesheet_loop = !com.parameters[26];
 			params.map_layer = com.parameters[27];
 			params.battle_layer = com.parameters[28];
-			params.persistent = !!com.parameters[29];
+			params.flags = com.parameters[29];
 		}
 
 		// RPG2k and RPG2k3 1.10 do not support this option
