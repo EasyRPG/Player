@@ -2177,13 +2177,13 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 
 		for (int i = pic_id; i <= max; ++i) {
 			Game_Picture *picture = Main_Data::game_screen->GetPicture(i);
-			picture->Erase();
+			picture->Erase(true);
 		}
 	} else {
 		PicPointerPatch::AdjustId(pic_id);
 
 		Game_Picture *picture = Main_Data::game_screen->GetPicture(pic_id);
-		picture->Erase();
+		picture->Erase(true);
 	}
 
 	return true;

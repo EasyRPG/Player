@@ -139,7 +139,11 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.spritesheet_speed = params.spritesheet_speed;
 	data.map_layer = params.map_layer;
 	data.battle_layer = params.battle_layer;
-	// flags
+	data.flags.erase_on_map_change = (params.flags & 1) == 1;
+	data.flags.erase_on_battle_end = (params.flags & 2) == 2;
+	data.flags.affected_by_tint = (params.flags & 16) == 16;
+	data.flags.affected_by_flash = (params.flags & 32) == 32;
+	data.flags.affected_by_shake = (params.flags & 64) == 64;
 	last_spritesheet_frame = 0;
 
 	RequestPictureSprite();
@@ -192,10 +196,14 @@ void Game_Picture::Move(const MoveParams& params) {
 	}
 }
 
-void Game_Picture::Erase() {
-	request_id = FileRequestBinding();
-
+void Game_Picture::Erase(bool force_erase) {
 	RPG::SavePicture& data = GetData();
+
+	if (!(force_erase || data.flags.erase_on_map_change)) {
+		return;
+	}
+
+	request_id = FileRequestBinding();
 
 	data.name.clear();
 	sprite.reset();
@@ -316,7 +324,7 @@ void Game_Picture::Update() {
 
 				if (data.spritesheet_frame > data.spritesheet_rows * data.spritesheet_cols) {
 					if (data.spritesheet_play_once) {
-						Erase();
+						Erase(true);
 						return;
 					}
 

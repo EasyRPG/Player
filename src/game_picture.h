@@ -68,7 +68,7 @@ public:
 
 	void Show(const ShowParams& params);
 	void Move(const MoveParams& params);
-	void Erase();
+	void Erase(bool force_erase);
 
 	void Update();
 
