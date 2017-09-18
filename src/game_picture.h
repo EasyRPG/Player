@@ -75,6 +75,9 @@ public:
 private:
 	int id;
 	std::unique_ptr<Sprite> sprite;
+	BitmapRef whole_bitmap;
+	BitmapRef sheet_bitmap;
+	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
 	int old_map_x;
 	int old_map_y;
@@ -84,6 +87,7 @@ private:
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
+	bool HasSpritesheet() const;
 	/**
 	 * Compared to other classes picture doesn't hold a direct reference.
 	 * Resizing the picture vector when the ID is larger then the vector can
