@@ -55,7 +55,7 @@ void Game_CommonEvent::Update() {
 	for (int i = 0; i < 500; ++i) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
 			if (!Game_Map::GetInterpreter().IsRunning()) {
-				Game_Map::GetInterpreter().Setup(this);
+				Game_Map::GetInterpreter().Setup(this, 0);
 				Game_Map::GetInterpreter().Update();
 				continue;
 			}
@@ -67,7 +67,7 @@ void Game_CommonEvent::Update() {
 void Game_CommonEvent::UpdateParallel() {
 	if (interpreter && parallel_running) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(this);
+			interpreter->Setup(this, 0);
 		}
 		interpreter->Update();
 	}

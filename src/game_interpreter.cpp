@@ -254,8 +254,8 @@ void Game_Interpreter::Setup(Game_Event* ev) {
 	ev->ClearStarting();
 }
 
-void Game_Interpreter::Setup(Game_CommonEvent* ev) {
-	Setup(ev->GetList(), 0, false);
+void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
+	Setup(ev->GetList(), caller_id, false);
 	event_info.x = ev->GetIndex();
 }
 
@@ -1052,6 +1052,15 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 }
 
 Game_Character* Game_Interpreter::GetCharacter(int character_id) const {
+	if (!event_info.page && character_id == Game_Character::CharThisEvent) {
+		// Is a common event
+		if (event_id == 0) {
+			// With no map parent
+			Output::Warning("Can't use ThisEvent in common event %d: Not called from a map event", event_info.x);
+			return nullptr;
+		}
+	}
+
 	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
 	if (!ch) {
 		Output::Warning("Unknown event with id %d", character_id);
@@ -2440,6 +2449,13 @@ bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { /
 	if (event_id == 0)
 		return true;
 
+	if (!event_info.page && !Player::IsRPG2k3E()) {
+		// When a common event and not RPG2k3E engine ignore the call, otherwise
+		// this breaks games because older version did a no-op in this case
+		Output::Debug("Common Event %d: Erasing of the calling map event only supported in RPG2k3E", event_id, event_info.x, event_info.y);
+		return true;
+	}
+
 	Game_Event* evnt = Game_Map::GetEvent(event_id);
 	if (evnt) {
 		evnt->SetActive(false);
@@ -2471,7 +2487,10 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	switch (com.parameters[0]) {
 	case 0: // Common Event
 		evt_id = com.parameters[1];
-		child_interpreter->Setup(&Game_Map::GetCommonEvents()[evt_id - 1]);
+		// Forwarding the event_id is save because all RPG Maker engines prior 2k3 1.12
+		// threw an error when ThisEvent was used in CommonEvents.
+		// The exception is EraseEvent which is handled special (see the code)
+		child_interpreter->Setup(&Game_Map::GetCommonEvents()[evt_id - 1], event_id);
 		return true;
 	case 1: // Map Event
 		evt_id = com.parameters[1];
@@ -2492,6 +2511,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 			child_interpreter->Setup(page->event_commands, event->GetId(), false);
 			child_interpreter->event_info.x = event->GetX();
 			child_interpreter->event_info.y = event->GetY();
+			child_interpreter->event_info.page = page;
 		} else {
 			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
 		}

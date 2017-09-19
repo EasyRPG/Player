@@ -60,7 +60,7 @@ public:
 			bool started_by_decision_key = false
 	);
 	void Setup(Game_Event* ev);
-	void Setup(Game_CommonEvent* ev);
+	void Setup(Game_CommonEvent* ev, int caller_id);
 
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
