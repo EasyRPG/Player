@@ -31,6 +31,10 @@
 class Game_Event;
 class Game_CommonEvent;
 
+namespace RPG {
+	class EventPage;
+}
+
 /**
  * Game_Interpreter class
  */
@@ -46,18 +50,18 @@ public:
 	~Game_Interpreter();
 
 	void Clear();
-	void Setup(
-		const std::vector<RPG::EventCommand>& _list,
-		int _event_id,
-		bool started_by_decision_key = false,
-		int dbg_x = -1, int dbg_y = -1
-	);
 
 	bool IsRunning() const;
 	void Update();
 
-	void SetupStartingEvent(Game_Event* ev);
-	void SetupStartingEvent(Game_CommonEvent* ev);
+	void Setup(
+			const std::vector<RPG::EventCommand>& _list,
+			int _event_id,
+			bool started_by_decision_key = false
+	);
+	void Setup(Game_Event* ev);
+	void Setup(Game_CommonEvent* ev);
+
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
 
@@ -220,8 +224,12 @@ protected:
 
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 
-	int debug_x;
-	int debug_y;
+	struct {
+		int x = 0;
+		int y = 0;
+		// nullptr when common event
+		const RPG::EventPage* page = nullptr;
+	} event_info;
 
 	FileRequestBinding request_id;
 };

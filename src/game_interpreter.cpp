@@ -101,8 +101,7 @@ bool Game_Interpreter::IsRunning() const {
 void Game_Interpreter::Setup(
 	const std::vector<RPG::EventCommand>& _list,
 	int _event_id,
-	bool started_by_decision_key,
-	int dbg_x, int dbg_y
+	bool started_by_decision_key
 ) {
 	Clear();
 
@@ -110,9 +109,6 @@ void Game_Interpreter::Setup(
 	event_id = _event_id;
 	list = _list;
 	triggered_by_decision_key = started_by_decision_key;
-
-	debug_x = dbg_x;
-	debug_y = dbg_y;
 
 	index = 0;
 
@@ -250,13 +246,17 @@ void Game_Interpreter::Update() {
 }
 
 // Setup Starting Event
-void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
-	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey(), ev->GetX(), ev->GetY());
+void Game_Interpreter::Setup(Game_Event* ev) {
+	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
+	event_info.x = ev->GetX();
+	event_info.y = ev->GetY();
+	event_info.page = ev->GetActivePage();
 	ev->ClearStarting();
 }
 
-void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
-	Setup(ev->GetList(), 0, false, ev->GetIndex(), -2);
+void Game_Interpreter::Setup(Game_CommonEvent* ev) {
+	Setup(ev->GetList(), 0, false);
+	event_info.x = ev->GetIndex();
 }
 
 void Game_Interpreter::CheckGameOver() {
@@ -2471,7 +2471,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	switch (com.parameters[0]) {
 	case 0: // Common Event
 		evt_id = com.parameters[1];
-		child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, false, Data::commonevents[evt_id - 1].ID, -2);
+		child_interpreter->Setup(&Game_Map::GetCommonEvents()[evt_id - 1]);
 		return true;
 	case 1: // Map Event
 		evt_id = com.parameters[1];
@@ -2489,7 +2489,9 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	if (event) {
 		const RPG::EventPage* page = event->GetPage(event_page);
 		if (page) {
-			child_interpreter->Setup(page->event_commands, event->GetId(), false, event->GetX(), event->GetY());
+			child_interpreter->Setup(page->event_commands, event->GetId(), false);
+			child_interpreter->event_info.x = event->GetX();
+			child_interpreter->event_info.y = event->GetY();
 		} else {
 			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
 		}

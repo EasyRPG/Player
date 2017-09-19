@@ -27,6 +27,7 @@
 #include "output.h"
 #include "player.h"
 #include "game_temp.h"
+#include "game_map.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -84,10 +85,8 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 
 	int event_id = com.parameters[0];
 
-	const RPG::CommonEvent& event = Data::commonevents[event_id - 1];
-
 	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(event.event_commands, 0, false, event.ID, -2);
+	child_interpreter->Setup(&Game_Map::GetCommonEvents()[event_id - 1]);
 
 	return true;
 }
