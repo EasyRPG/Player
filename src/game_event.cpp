@@ -233,10 +233,10 @@ void Game_Event::ClearStarting() {
 	started_by_decision_key = false;
 }
 
-void Game_Event::Setup(RPG::EventPage* new_page) {
-	bool from_null = page == NULL;
+void Game_Event::Setup(const RPG::EventPage* new_page) {
+	bool from_null = page == nullptr;
 
-	RPG::EventPage* old_page = page;
+	const RPG::EventPage* old_page = page;
 	page = new_page;
 
 	// Free resources if needed
@@ -249,7 +249,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		interpreter.reset();
 	}
 
-	if (page == NULL) {
+	if (page == nullptr) {
 		tile_id = 0;
 		SetSpriteName("");
 		SetSpriteIndex(0);
@@ -294,10 +294,10 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	}
 }
 
-void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
+void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	page = new_page;
 
-	if (page == NULL) {
+	if (page == nullptr) {
 		tile_id = 0;
 		trigger = -1;
 		list.clear();
@@ -337,7 +337,7 @@ void Game_Event::Refresh() {
 		return;
 	}
 
-	RPG::EventPage* new_page = NULL;
+	RPG::EventPage* new_page = nullptr;
 	std::vector<RPG::EventPage>::reverse_iterator i;
 	for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
 		// Loop in reverse order to see whether any page meets conditions...
@@ -481,7 +481,7 @@ void Game_Event::Start(bool by_decision_key) {
 	started_by_decision_key = by_decision_key;
 }
 
-std::vector<RPG::EventCommand>& Game_Event::GetList() {
+const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
 	return list;
 }
 
@@ -690,7 +690,7 @@ void Game_Event::Update() {
 	Game_Character::UpdateSprite();
 
 	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
-		Game_Map::GetInterpreter().SetupStartingEvent(this);
+		Game_Map::GetInterpreter().Setup(this);
 		Game_Map::GetInterpreter().Update();
 		running = true;
 	}
@@ -720,7 +720,7 @@ void Game_Event::UpdateParallel() {
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, started_by_decision_key, -event.x, event.y);
+			interpreter->Setup(this);
 		}
 		interpreter->Update();
 	}
@@ -744,6 +744,10 @@ const RPG::EventPage* Game_Event::GetPage(int page) const {
 		return nullptr;
 	}
 	return &event.pages[page - 1];
+}
+
+const RPG::EventPage *Game_Event::GetActivePage() const {
+	return page;
 }
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {

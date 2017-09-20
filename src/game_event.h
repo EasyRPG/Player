@@ -99,8 +99,8 @@ public:
 	 */
 	void Refresh();
 
-	void Setup(RPG::EventPage* new_page);
-	void SetupFromSave(RPG::EventPage* new_page);
+	void Setup(const RPG::EventPage* new_page);
+	void SetupFromSave(const RPG::EventPage* new_page);
 
 	/**
 	 * Gets event ID.
@@ -143,7 +143,7 @@ public:
 	 *
 	 * @return event commands list.
 	 */
-	std::vector<RPG::EventCommand>& GetList();
+	const std::vector<RPG::EventCommand>& GetList() const;
 
 	/**
 	 * Event's sprite looks towards the hero but its original direction is remembered.
@@ -184,6 +184,13 @@ public:
 	 * @return page or nullptr
 	 */
 	const RPG::EventPage* GetPage(int page) const;
+
+	/**
+	 * Returns the active event page or nullptr if no page is active.
+	 *
+	 * @return active page or nullptr
+	 */
+	const RPG::EventPage* GetActivePage() const;
 
 	const RPG::SaveMapEvent& GetSaveData();
 private:
@@ -231,7 +238,7 @@ private:
 	bool started_by_decision_key = false;
 	int trigger = -1;
 	RPG::Event event;
-	RPG::EventPage* page = nullptr;
+	const RPG::EventPage* page = nullptr;
 	std::vector<RPG::EventCommand> list;
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
