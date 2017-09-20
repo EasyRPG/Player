@@ -59,6 +59,7 @@ void Window_ShopBuy::Refresh() {
 void Window_ShopBuy::DrawItem(int index) {
 	int item_id = data[index];
 
+	// (Shop) items are guaranteed to be valid
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 
 	int price = 0;

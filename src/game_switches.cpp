@@ -55,7 +55,7 @@ std::string Game_Switches_Class::GetName(int _id) const {
 	const RPG::Switch* sw = ReaderUtil::GetElement(Data::switches, _id);
 
 	if (!sw) {
-		// Valid because the switch array resizes dynamic during runtime
+		// No warning, is valid because the switch array resizes dynamic during runtime
 		return "";
 	} else {
 		return sw->name;

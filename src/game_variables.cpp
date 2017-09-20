@@ -56,7 +56,7 @@ std::string Game_Variables_Class::GetName(int _id) const {
 	const RPG::Variable* var = ReaderUtil::GetElement(Data::variables, _id);
 
 	if (!var) {
-		// Valid because the variable array resizes dynamic during runtime
+		// No warning, is valid because the variable array resizes dynamic during runtime
 		return "";
 	} else {
 		return var->name;

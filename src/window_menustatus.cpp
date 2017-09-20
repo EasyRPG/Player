@@ -38,8 +38,8 @@ void Window_MenuStatus::Refresh() {
 	item_max = Main_Data::game_party->GetActors().size();
 
 	int y = 0;
-	for (int i = 0; i < item_max; ++i)
-	{
+	for (int i = 0; i < item_max; ++i) {
+		// The party always contains valid battlers
 		const Game_Actor& actor = *(Main_Data::game_party->GetActors()[i]);
 
 		int face_x = 0;

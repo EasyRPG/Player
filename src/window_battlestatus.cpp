@@ -63,6 +63,7 @@ void Window_BattleStatus::Refresh() {
 	item_max = std::min(item_max, 4);
 
 	for (int i = 0; i < item_max; i++) {
+		// The party only contains valid battlers
 		const Game_Battler* actor;
 		if (enemy) {
 			actor = &(*Main_Data::game_enemyparty)[i];
@@ -102,6 +103,7 @@ void Window_BattleStatus::RefreshGauge() {
 		}
 
 		for (int i = 0; i < item_max; ++i) {
+			// The always only contains valid battlers
 			Game_Battler* actor;
 			if (enemy) {
 				actor = &(*Main_Data::game_enemyparty)[i];

@@ -162,8 +162,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 
 	if (!item) {
-		Output::Warning("Can't use item. %d is not a valid item ID.",
-						item_id);
+		Output::Warning("Can't use item. %d is not a valid item ID.", item_id);
 		return;
 	}
 

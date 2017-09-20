@@ -72,7 +72,6 @@ void Scene_Battle::Start() {
 	}
 
 	// Game_Temp::battle_troop_id is valid during the whole battle
-
 	Output::Debug("Starting battle %d (%s)", Game_Temp::battle_troop_id, troop->name.c_str());
 
 	if (Player::battle_test_flag) {

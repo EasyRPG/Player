@@ -138,7 +138,7 @@ int Game_Battler::GetStateRate(int state_id, int rate) const {
 int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
 	const RPG::Attribute* attribute = ReaderUtil::GetElement(Data::attributes, attribute_id);
 
-	if (!attribute_id) {
+	if (!attribute) {
 		Output::Warning("Invalid attribute ID %d", attribute_id);
 		return 0;
 	}
@@ -180,6 +180,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator it = states.begin();
 		it != states.end(); ++it) {
+		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, (*it));
 
 		if (state.restrict_skill) {
@@ -364,7 +365,9 @@ void Game_Battler::AddState(int state_id) {
 }
 
 void Game_Battler::RemoveState(int state_id) {
-	if (state_id <= 0) {
+	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	if (!state) {
+		Output::Warning("Can't delete state with invalid ID %d", state_id);
 		return;
 	}
 
@@ -376,10 +379,10 @@ void Game_Battler::RemoveState(int state_id) {
 	states[state_id - 1] = 0;
 }
 
-int Game_Battler::ApplyConditions()
-{
+int Game_Battler::ApplyConditions(){
 	int damageTaken = 0;
 	for (int16_t inflicted : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		RPG::State& state = *ReaderUtil::GetElement(Data::states, inflicted);
 		int hp = state.hp_change_val + (int)(std::ceil(GetMaxHp() * state.hp_change_max / 100.0));
 		int sp = state.sp_change_val + (int)(std::ceil(GetMaxHp() * state.sp_change_max / 100.0));
@@ -519,6 +522,7 @@ int Game_Battler::GetAtk() const {
 	int n = min(max(base_atk, 1), 999);
 
 	for (int16_t i : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
 		if (state.affect_attack) {
 			n = AffectParameter(state.affect_type, base_atk);
@@ -538,6 +542,7 @@ int Game_Battler::GetDef() const {
 	int n = min(max(base_def, 1), 999);
 
 	for (int16_t i : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
 		if (state.affect_defense) {
 			n = AffectParameter(state.affect_type, base_def);
@@ -557,6 +562,7 @@ int Game_Battler::GetSpi() const {
 	int n = min(max(base_spi, 1), 999);
 
 	for (int16_t i : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
 
 		if (state.affect_spirit) {
@@ -577,10 +583,11 @@ int Game_Battler::GetAgi() const {
 	int n = min(max(base_agi, 1), 999);
 
 	for (int16_t i : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
 
 		if (state.affect_agility) {
-			n = AffectParameter(state.affect_agility, base_agi);
+			n = AffectParameter(state.affect_type, base_agi);
 			break;
 		}
 	}
@@ -701,6 +708,7 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 
 bool Game_Battler::HasReflectState() const {
 	for (int16_t i : GetInflictedStates()) {
+		// States are guaranteed to be valid
 		if (ReaderUtil::GetElement(Data::states, i)->reflect_magic) {
 			return true;
 		}

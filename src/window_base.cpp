@@ -106,8 +106,6 @@ void Window_Base::DrawActorLevel(const Game_Actor& actor, int cx, int cy) const 
 }
 
 void Window_Base::DrawActorState(const Game_Battler& actor, int cx, int cy) const {
-	std::vector<int16_t> states = actor.GetStates();
-
 	// Unit has Normal state if no state is set
 	const RPG::State* state = actor.GetSignificantState();
 	if (!state) {

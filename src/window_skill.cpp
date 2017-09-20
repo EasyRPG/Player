@@ -89,6 +89,7 @@ void Window_Skill::DrawItem(int index) {
 		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "-");
 		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
 
+		// Skills are guaranteed to be valid
 		DrawSkillName(*ReaderUtil::GetElement(Data::skills, skill_id), rect.x, rect.y, enabled);
 	}
 }

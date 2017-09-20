@@ -31,6 +31,9 @@
 #include "util_macro.h"
 #include "utils.h"
 
+constexpr int max_level_2k = 50;
+constexpr int max_level_2k3 = 99;
+
 static int max_hp_value() {
 	return Player::IsRPG2k() ? 999 : 9999;
 }
@@ -226,7 +229,6 @@ const RPG::Item* Game_Actor::GetEquipment(int equip_type) const {
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 	if (equip_type <= 0 || equip_type > (int) GetData().equipped.size())
 		return -1;
-
 
 	int old_item_id = GetData().equipped[equip_type - 1];
 
@@ -445,8 +447,7 @@ int Game_Actor::GetBaseAgi() const {
 	return GetBaseAgi(true, true);
 }
 
-int Game_Actor::CalculateExp(int level) const
-{
+int Game_Actor::CalculateExp(int level) const {
 	const RPG::Class* klass = ReaderUtil::GetElement(Data::classes, GetData().class_id);
 
 	double base, inflation, correction;
@@ -484,7 +485,7 @@ int Game_Actor::CalculateExp(int level) const
 }
 
 void Game_Actor::MakeExpList() {
-	exp_list.resize(99);
+	exp_list.resize(GetMaxLevel());
 	for (int i = 1; i <= exp_list.size(); ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
@@ -529,21 +530,33 @@ int Game_Actor::GetNextExp(int level) const {
 int Game_Actor::GetStateProbability(int state_id) const {
 	int rate = 2; // C - default
 
-	if (state_id > 0 && state_id <= (int)GetActor().state_ranks.size()) {
-		rate = GetActor().state_ranks[state_id - 1];
+	const uint8_t* r = ReaderUtil::GetElement(GetActor().state_ranks, state_id);
+	if (r) {
+		rate = *r;
 	}
 
+	// GetStateRate verifies the state_id
 	return GetStateRate(state_id, rate);
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	int rate = 2; // C - default
 
-	if (attribute_id > 0 && attribute_id <= (int)GetActor().attribute_ranks.size()) {
-		rate = GetActor().attribute_ranks[attribute_id - 1];
+	const uint8_t* r = ReaderUtil::GetElement(GetActor().attribute_ranks, attribute_id);
+	if (r) {
+		rate = *r;
 	}
 
-	rate += attribute_shift[attribute_id - 1];
+	// GetAttributeRate will verify this but actors already need a check earlier
+	// because of attribute_shift
+	const int* shift = ReaderUtil::GetElement(attribute_shift, attribute_id);
+
+	if (!shift) {
+		Output::Warning("Invalid attribute ID %d", attribute_id);
+		return 0;
+	}
+
+	rate += *shift;
 	if (rate < 0) {
 		rate = 0;
 	} else if (rate > 4) {
@@ -607,7 +620,7 @@ int Game_Actor::GetLevel() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return std::max(1, std::min(GetActor().final_level, Player::IsRPG2k() ? 50 : 99));
+	return std::max(1, std::min(GetActor().final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
 }
 
 int Game_Actor::GetExp() const {
@@ -802,6 +815,7 @@ const RPG::Skill* Game_Actor::GetRandomSkill() const {
 		return nullptr;
 	}
 
+	// Skills are guaranteed to be valid
 	return ReaderUtil::GetElement(Data::skills, skills[Utils::GetRandomNumber(0, skills.size() - 1)]);
 }
 
@@ -910,7 +924,7 @@ int Game_Actor::GetBattleY() const {
 
 		float bottom = top;
 		if (terrain) {
-			bottom = top + terrain->grid_b;
+			bottom = top + terrain->grid_b / 13;
 		}
 
 		switch (party_size) {
@@ -944,10 +958,10 @@ int Game_Actor::GetBattleY() const {
 				position = top;
 				break;
 			case 1:
-				position = top + ((bottom - top) * 1.0/3);
+				position = top + ((bottom - top) * 1.0 / 3);
 				break;
 			case 2:
-				position = top + ((bottom - top) * 2.0/3);
+				position = top + ((bottom - top) * 2.0 / 3);
 				break;
 			case 3:
 				position = bottom;
@@ -1238,16 +1252,15 @@ RPG::SaveActor& Game_Actor::GetData() const {
 
 void Game_Actor::RemoveInvalidData() {
 	/*
-	 * The following actor data is trusted after the initial verify:
-	 * - Class, SetClass filters invalid data
-	 * - Level is between 1 and 99
-	 * - Equipment
-	 * - Learned Skills
-	 * - ...
-	 *
-	 * Data::items (but not skills of items!)
-	 *
-	 */
+	 The following actor data is cleaned up:
+	 - Invalid equipment is removed
+	 - An invalid class is removed
+	 - Invalid states are removed
+	 - Level is between 1 and 99, and does not exceed MaxLevel
+
+	 For "external data" (not from LCF Actor or LSD SaveActor) the data is
+	 verified in the corresponding functions.
+	*/
 
 	// Filter out invalid equipment
 	int eq_types[] = { RPG::Item::Type_weapon,
@@ -1284,6 +1297,11 @@ void Game_Actor::RemoveInvalidData() {
 	}
 
 	// Remove invalid states
+	if (GetStates().size() > Data::states.size()) {
+		Output::Warning("Actor %d: State array contains invalid states (%d > %d)", GetId(), GetStates().size(), Data::states.size());
+		GetStates().resize(Data::states.size());
+	}
+
 	for (int16_t state_id : GetStates()) {
 		const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 		if (!state) {
