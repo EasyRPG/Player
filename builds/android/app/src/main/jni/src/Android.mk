@@ -13,7 +13,7 @@ LOCAL_C_INCLUDES := \
 	$(EASYRPG_TOOLCHAIN_DIR)/include/SDL2
 
 # Add your application source files here...
-LOCAL_SRC_FILES := SDL_android_main.c \
+LOCAL_SRC_FILES := \
 	org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp))
 
