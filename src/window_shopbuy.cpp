@@ -18,7 +18,6 @@
 // Headers
 #include <sstream>
 #include <string>
-#include <reader_util.h>
 #include "window_base.h"
 #include "window_shopbuy.h"
 #include "game_system.h"
@@ -27,6 +26,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "output.h"
+#include "reader_util.h"
 
 Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -66,7 +66,7 @@ void Window_ShopBuy::DrawItem(int index) {
 	bool enabled = false;
 
 	if (!item) {
-		Output::Warning("Invalid item ID %d", item_id);
+		Output::Warning("Window ShopBuy: Invalid item ID %d", item_id);
 	} else {
 		enabled = item->price <= Main_Data::game_party->GetGold();
 		price = item->price;

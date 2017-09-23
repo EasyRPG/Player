@@ -16,13 +16,13 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "battle_animation.h"
 #include "sprite_battler.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
 #include "player.h"
+#include "reader_util.h"
 #include "output.h"
 
 Sprite_Battler::Sprite_Battler(Game_Battler* battler) :

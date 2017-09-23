@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "game_actors.h"
 #include "game_battle.h"
 #include "game_enemyparty.h"
@@ -25,6 +24,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "reader_util.h"
 #include "output.h"
 #include "player.h"
 #include "game_temp.h"

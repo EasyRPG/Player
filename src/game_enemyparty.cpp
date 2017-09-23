@@ -17,10 +17,10 @@
 
 // Headers
 #include <cassert>
-#include <reader_util.h>
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "main_data.h"
+#include "reader_util.h"
 #include "utils.h"
 #include "output.h"
 

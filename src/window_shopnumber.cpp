@@ -17,13 +17,13 @@
 
 // Headers
 #include <sstream>
-#include <reader_util.h>
 #include "game_system.h"
 #include "input.h"
 #include "util_macro.h"
 #include "window_shopnumber.h"
 #include "bitmap.h"
 #include "font.h"
+#include "reader_util.h"
 
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),

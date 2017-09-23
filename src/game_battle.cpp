@@ -17,8 +17,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <deque>
-#include <reader_util.h>
 #include "data.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
@@ -31,6 +29,7 @@
 #include "game_interpreter_battle.h"
 #include "battle_animation.h"
 #include "game_battle.h"
+#include "reader_util.h"
 #include "spriteset_battle.h"
 #include "output.h"
 
@@ -153,7 +152,7 @@ void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bo
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
-		Output::Warning("Invalid animation ID %d", animation_id);
+		Output::Warning("ShowBattleAnimation Single: Invalid animation ID %d", animation_id);
 		return;
 	}
 
@@ -165,7 +164,7 @@ void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_B
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
-		Output::Warning("Invalid animation ID %d", animation_id);
+		Output::Warning("ShowBattleAnimation Many: Invalid animation ID %d", animation_id);
 		return;
 	}
 

@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <reader_util.h>
 #include "scene_battle_rpg2k3.h"
 #include "rpg_battlecommand.h"
 #include "input.h"
@@ -31,6 +30,7 @@
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
+#include "reader_util.h"
 #include "scene_gameover.h"
 #include "utils.h"
 #include "font.h"

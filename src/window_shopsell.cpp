@@ -18,10 +18,10 @@
 // Headers
 #include <iomanip>
 #include <sstream>
-#include <reader_util.h>
 #include "window_shopsell.h"
 #include "game_party.h"
 #include "output.h"
+#include "reader_util.h"
 
 Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
 	Window_Item(ix, iy, iwidth, iheight) {}

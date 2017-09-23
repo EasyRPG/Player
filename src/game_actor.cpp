@@ -18,7 +18,6 @@
 // Headers
 #include <algorithm>
 #include <sstream>
-#include <reader_util.h>
 #include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
@@ -27,6 +26,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
+#include "reader_util.h"
 #include "rpg_skill.h"
 #include "util_macro.h"
 #include "utils.h"
@@ -85,7 +85,7 @@ int Game_Actor::GetId() const {
 bool Game_Actor::UseItem(int item_id) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("Can't use invalid item %d", item_id);
+		Output::Warning("UseItem: Can't use invalid item %d", item_id);
 		return false;
 	}
 
@@ -114,7 +114,7 @@ bool Game_Actor::UseItem(int item_id) {
 bool Game_Actor::IsItemUsable(int item_id) const {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("Invalid item ID %d", item_id);
+		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
 		return false;
 	}
 
@@ -134,7 +134,7 @@ bool Game_Actor::IsSkillLearned(int skill_id) const {
 bool Game_Actor::IsSkillUsable(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("Invalid skill ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Invalid skill ID %d", skill_id);
 		return false;
 	}
 
@@ -234,7 +234,7 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 
 	const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, new_item_id);
 	if (new_item_id != 0 && !new_item) {
-		Output::Warning("Can't equip item with invalid ID %d", new_item_id);
+		Output::Warning("SetEquipment: Can't equip item with invalid ID %d", new_item_id);
 		GetData().equipped[equip_type - 1] = 0;
 		return old_item_id;
 	}
@@ -552,7 +552,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	const int* shift = ReaderUtil::GetElement(attribute_shift, attribute_id);
 
 	if (!shift) {
-		Output::Warning("Invalid attribute ID %d", attribute_id);
+		Output::Warning("GetAttributeModifier: Invalid attribute ID %d", attribute_id);
 		return 0;
 	}
 
@@ -771,7 +771,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 bool Game_Actor::IsEquippable(int item_id) const {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("Invalid item ID %d", item_id);
+		Output::Warning("IsEquippable: Invalid item ID %d", item_id);
 		return false;
 	}
 

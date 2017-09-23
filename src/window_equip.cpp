@@ -16,10 +16,10 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "window_equip.h"
 #include "game_actors.h"
 #include "bitmap.h"
+#include "reader_util.h"
 #include "output.h"
 
 Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :

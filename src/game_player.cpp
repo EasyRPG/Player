@@ -31,9 +31,9 @@
 #include "util_macro.h"
 #include "game_switches.h"
 #include "output.h"
+#include "reader_util.h"
 #include <algorithm>
 #include <cmath>
-#include <reader_util.h>
 
 Game_Player::Game_Player():
 	location(Main_Data::game_data.party_location) {
@@ -739,7 +739,7 @@ void Game_Player::BeginMove() {
 		}
 		Main_Data::game_party->ApplyDamage(terrain->damage);
 	} else {
-		Output::Warning("Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
+		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
 	}
 }
 

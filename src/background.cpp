@@ -52,7 +52,7 @@ Background::Background(int terrain_id) :
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
 
 	if (!terrain) {
-		Output::Warning("Invalid terrain ID %d", terrain_id);
+		Output::Warning("Background: Invalid terrain ID %d", terrain_id);
 		return;
 	}
 

@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <reader_util.h>
 #include "system.h"
 #include "game_party.h"
 #include "game_actors.h"
@@ -29,6 +28,7 @@
 #include "game_targets.h"
 #include "game_temp.h"
 #include "game_system.h"
+#include "reader_util.h"
 #include "output.h"
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
@@ -162,7 +162,7 @@ void Game_Party::ConsumeItemUse(int item_id) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 
 	if (!item) {
-		Output::Warning("Can't use item. %d is not a valid item ID.", item_id);
+		Output::Warning("ConsumeItemUse: Invalid item ID %d.", item_id);
 		return;
 	}
 
@@ -210,7 +210,7 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("Invalid item ID %d", item_id);
+		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
 		return false;
 	}
 
@@ -283,7 +283,7 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("Can't use skill with invalid ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Can't use skill with invalid ID %d", skill_id);
 		return false;
 	}
 

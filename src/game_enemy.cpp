@@ -17,13 +17,13 @@
 
 // Headers
 #include <algorithm>
-#include <reader_util.h>
 #include "data.h"
 #include "rpg_enemy.h"
 #include "game_battle.h"
 #include "game_enemy.h"
 #include "game_party.h"
 #include "game_switches.h"
+#include "reader_util.h"
 #include "output.h"
 #include "utils.h"
 

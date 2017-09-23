@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <reader_util.h>
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
@@ -23,6 +22,7 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
+#include "reader_util.h"
 
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);

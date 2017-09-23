@@ -16,10 +16,10 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
+#include "reader_util.h"
 
 #define PLAYER_VAR_LIMIT 1000000
 

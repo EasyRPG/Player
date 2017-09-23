@@ -17,11 +17,11 @@
 
 // Headers
 #include <sstream>
-#include <reader_util.h>
 #include "window_targetstatus.h"
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "reader_util.h"
 
 Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), id(-1), use_item(false) {

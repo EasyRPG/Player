@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <algorithm>
 #include <sstream>
-#include <reader_util.h>
 #include "game_actor.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
@@ -34,6 +33,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
+#include "reader_util.h"
 #include "rpg_animation.h"
 #include "rpg_state.h"
 #include "rpg_skill.h"
@@ -742,12 +742,12 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
-				Output::Warning("Invalid unarmed animation ID %d", actor.unarmed_animation);
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
 			}
 		} else {
 			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
 			if (!animation) {
-				Output::Warning("Invalid weapon animation ID %d", weapon->animation_id);
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
 			}
 
 			hit_chance = weapon->hit;
@@ -805,7 +805,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						if (weapon->state_set[i]) {
 							const RPG::State* state = ReaderUtil::GetElement(Data::states, weapon->state_set[i]);
 							if (!state) {
-								Output::Warning("Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
+								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
 								continue;
 							}
 
@@ -928,7 +928,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (skill.animation_id != 0) {
 		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
 		if (!animation) {
-			Output::Warning("Invalid skill animation ID %d", skill.animation_id);
+			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
 		}
 	}
 

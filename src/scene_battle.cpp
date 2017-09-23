@@ -18,7 +18,6 @@
 // Headers
 #include <algorithm>
 #include <sstream>
-#include <reader_util.h>
 
 #include "bitmap.h"
 #include "input.h"
@@ -34,6 +33,7 @@
 #include "game_enemyparty.h"
 #include "game_battle.h"
 #include "battle_animation.h"
+#include "reader_util.h"
 #include "scene_battle.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
@@ -208,7 +208,7 @@ void Scene_Battle::EnemySelected() {
 		if (skill_item) {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
 			if (!skill) {
-				Output::Warning("Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+				Output::Warning("EnemySelected: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
 				return;
 			}
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, skill_item));
@@ -238,7 +238,7 @@ void Scene_Battle::AllySelected() {
 		if (skill_item) {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
 			if (!skill) {
-				Output::Warning("Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+				Output::Warning("AllySelected: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
 				return;
 			}
 		}
@@ -300,7 +300,7 @@ void Scene_Battle::ItemSelected() {
 		case RPG::Item::Type_special: {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("Item %d references invalid skill %d", item->ID, item->skill_id);
+				Output::Warning("ItemSelected: Item %d references invalid skill %d", item->ID, item->skill_id);
 				return;
 			}
 			skill_item = item;
@@ -346,7 +346,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			if (skill_item) {
 				const RPG::Skill *skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
 				if (!skill) {
-					Output::Warning("Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+					Output::Warning("AssignSkill: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
 					return;
 				}
 			}
@@ -368,7 +368,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			if (skill_item) {
 				const RPG::Skill *skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
 				if (!skill) {
-					Output::Warning("Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+					Output::Warning("AssignSkill: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
 					return;
 				}
 			}
@@ -489,7 +489,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 	RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, action->skill_id);
 	if (!skill) {
-		Output::Warning("Enemy can't use invalid skill %d", action->skill_id);
+		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill %d", action->skill_id);
 		return;
 	}
 

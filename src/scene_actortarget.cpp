@@ -16,7 +16,6 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "scene_actortarget.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -26,6 +25,7 @@
 #include "scene_item.h"
 #include "scene_skill.h"
 #include "output.h"
+#include "reader_util.h"
 
 Scene_ActorTarget::Scene_ActorTarget(int item_id) :
 	id(item_id), actor_index(0), use_item(true) {
@@ -50,7 +50,7 @@ void Scene_ActorTarget::Start() {
 	if (use_item) {
 		const RPG::Item* item = ReaderUtil::GetElement(Data::items, id);
 		if (!item) {
-			Output::Warning("Invalid item ID %d", id);
+			Output::Warning("Scene ActorTarget: Invalid item ID %d", id);
 			Scene::Pop();
 		}
 
@@ -62,7 +62,7 @@ void Scene_ActorTarget::Start() {
 	} else {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
 		if (!skill) {
-			Output::Warning("Invalid skill ID %d", id);
+			Output::Warning("Scene ActorTarget: Invalid skill ID %d", id);
 			Scene::Pop();
 		}
 

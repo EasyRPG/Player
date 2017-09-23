@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <reader_util.h>
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
@@ -31,6 +30,7 @@
 #include "main_data.h"
 #include "utils.h"
 #include "output.h"
+#include "reader_util.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -113,7 +113,7 @@ int Game_Battler::GetStateRate(int state_id, int rate) const {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 
 	if (!state) {
-		Output::Warning("Invalid state ID %d", state_id);
+		Output::Warning("GetStateRate: Invalid state ID %d", state_id);
 		return 0;
 	}
 
@@ -139,7 +139,7 @@ int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
 	const RPG::Attribute* attribute = ReaderUtil::GetElement(Data::attributes, attribute_id);
 
 	if (!attribute) {
-		Output::Warning("Invalid attribute ID %d", attribute_id);
+		Output::Warning("GetAttributeRate: Invalid attribute ID %d", attribute_id);
 		return 0;
 	}
 
@@ -165,7 +165,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 
 	if (!skill) {
-		Output::Warning("Invalid skill ID %d", skill_id);
+		Output::Warning("IsSkillUsable: Invalid skill ID %d", skill_id);
 		return false;
 	}
 
@@ -205,7 +205,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 bool Game_Battler::UseItem(int item_id) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
-		Output::Warning("Can't use item with invalid ID %d", item_id);
+		Output::Warning("UseItem: Can't use item with invalid ID %d", item_id);
 		return false;
 	}
 
@@ -272,7 +272,7 @@ bool Game_Battler::UseItem(int item_id) {
 bool Game_Battler::UseSkill(int skill_id) {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("Can't use skill with invalid ID %d", skill_id);
+		Output::Warning("UseSkill: Can't use skill with invalid ID %d", skill_id);
 		return false;
 	}
 
@@ -323,7 +323,7 @@ bool Game_Battler::UseSkill(int skill_id) {
 int Game_Battler::CalculateSkillCost(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
-		Output::Warning("Invalid skill ID %d", skill_id);
+		Output::Warning("CalculateSkillCost: Invalid skill ID %d", skill_id);
 		return 0;
 	}
 
@@ -352,7 +352,7 @@ void Game_Battler::SetAgiModifier(int modifier) {
 void Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
-		Output::Warning("Can't add state with invalid ID %d", state_id);
+		Output::Warning("AddState: Can't add state with invalid ID %d", state_id);
 		return;
 	}
 
@@ -367,7 +367,7 @@ void Game_Battler::AddState(int state_id) {
 void Game_Battler::RemoveState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
-		Output::Warning("Can't delete state with invalid ID %d", state_id);
+		Output::Warning("RemoveState: Can't delete state with invalid ID %d", state_id);
 		return;
 	}
 

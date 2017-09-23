@@ -103,7 +103,7 @@ void Window_BattleStatus::RefreshGauge() {
 		}
 
 		for (int i = 0; i < item_max; ++i) {
-			// The always only contains valid battlers
+			// The party always contains valid battlers
 			Game_Battler* actor;
 			if (enemy) {
 				actor = &(*Main_Data::game_enemyparty)[i];

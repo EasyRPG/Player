@@ -17,7 +17,6 @@
 
 #include <algorithm>
 #include <sstream>
-#include <reader_util.h>
 #include "input.h"
 #include "player.h"
 #include "sprite.h"
@@ -31,6 +30,7 @@
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
 #include "battle_animation.h"
+#include "reader_util.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"
 #include "scene_gameover.h"

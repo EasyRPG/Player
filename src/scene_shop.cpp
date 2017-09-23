@@ -16,11 +16,11 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "game_temp.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
+#include "reader_util.h"
 #include "scene_shop.h"
 #include "output.h"
 

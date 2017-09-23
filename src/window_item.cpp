@@ -18,12 +18,12 @@
 // Headers
 #include <iomanip>
 #include <sstream>
-#include <reader_util.h>
 #include "window_item.h"
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
 #include "game_temp.h"
+#include "reader_util.h"
 #include "output.h"
 
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :

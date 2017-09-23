@@ -18,7 +18,6 @@
 // Headers
 #include <iomanip>
 #include <sstream>
-#include <reader_util.h>
 #include "window_skill.h"
 #include "game_actor.h"
 #include "game_actors.h"
@@ -28,6 +27,7 @@
 #include "font.h"
 #include "player.h"
 #include "output.h"
+#include "reader_util.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
@@ -117,7 +117,7 @@ bool Window_Skill::CheckInclude(int skill_id) {
 			return skill->type == subset;
 		}
 
-		Output::Warning("Invalid skill ID %d", skill_id);
+		Output::Warning("Window Skill: Invalid skill ID %d", skill_id);
 		return false;
 	}
 }

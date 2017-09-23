@@ -582,7 +582,7 @@ bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) 
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
-		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("IsPassableVehicle: Invalid terrain at (%d, %d)", x, y);
 	} else if (vehicle_type == Game_Vehicle::Boat) {
 		if (!terrain->boat_pass)
 			return false;
@@ -697,7 +697,7 @@ int Game_Map::GetBushDepth(int x, int y) {
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
-		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("GetBushDepth: Invalid terrain at (%d, %d)", x, y);
 		return 0;
 	}
 	return terrain->bush_depth;
@@ -746,7 +746,7 @@ int Game_Map::GetTerrainTag(int x, int y) {
 bool Game_Map::AirshipLandOk(int const x, int const y) {
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
-		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("AirshipLandOk: Invalid terrain at (%d, %d)", x, y);
 		return false;
 	}
 
@@ -893,7 +893,7 @@ void Game_Map::UpdateEncounterSteps() {
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
-		Output::Warning("Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("UpdateEncounterSteps: Invalid terrain at (%d, %d)", x, y);
 		return;
 	}
 
@@ -922,7 +922,7 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 	std::function<bool(int)> is_acceptable = [=](int troop_id) {
 		const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, troop_id);
 		if (!troop) {
-			Output::Warning("Invalid troop ID %d in encounter list", troop_id);
+			Output::Warning("GetEncountersAt: Invalid troop ID %d in encounter list", troop_id);
 			return false;
 		}
 
@@ -1006,7 +1006,7 @@ void Game_Map::SetupBattle() {
 void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
-		Output::Warning("Invalid battle animation ID %d", animation_id);
+		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
 		return;
 	}
 
@@ -1161,7 +1161,7 @@ void Game_Map::SetChipset(int id) {
 
 	chipset = ReaderUtil::GetElement(Data::chipsets, map_info.chipset_id);
 	if (!chipset) {
-		Output::Warning("Invalid chipset ID %d", map_info.chipset_id);
+		Output::Warning("SetChipset: Invalid chipset ID %d", map_info.chipset_id);
 	} else {
 		chipset_name = chipset->chipset_name;
 		passages_down = chipset->passable_data_lower;

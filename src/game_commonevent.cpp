@@ -16,12 +16,12 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "game_commonevent.h"
 #include "game_map.h"
 #include "game_switches.h"
 #include "game_interpreter_map.h"
 #include "main_data.h"
+#include "reader_util.h"
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id) {

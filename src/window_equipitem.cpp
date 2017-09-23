@@ -16,10 +16,10 @@
  */
 
 // Headers
-#include <reader_util.h>
 #include "window_equipitem.h"
 #include "game_actors.h"
 #include "game_party.h"
+#include "reader_util.h"
 #include "output.h"
 
 Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
