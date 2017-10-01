@@ -2006,7 +2006,10 @@ namespace PicPointerPatch {
 		ss << new_pic_name << std::setfill('0') << std::setw(digits) << value;
 		new_pic_name = ss.str();
 
-		Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+		if (!Player::IsRPG2k3E()) {
+			// Prevent debug messages because this function is used by ShowPicture of RPG2k3E
+			Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+		}
 		return new_pic_name;
 	}
 
@@ -2039,6 +2042,11 @@ namespace PicPointerPatch {
 }
 
 bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
+	if (Game_Temp::battle_running) {
+		Output::Warning("ShowPicture: Not supported in battle");
+		return true;
+	}
+
 	int pic_id = com.parameters[0];
 
 	Game_Picture::ShowParams params = {};
@@ -2106,6 +2114,11 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
+	if (Game_Temp::battle_running) {
+		Output::Warning("MovePicture: Not supported in battle");
+		return true;
+	}
+
 	int pic_id = com.parameters[0];
 
 	Game_Picture::MoveParams params;
@@ -2129,7 +2142,6 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 		if (param_size > 16) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
-			// TODO ???
 			int chars_to_replace = com.parameters[18];
 			int replace_with = com.parameters[19];
 			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
@@ -2161,6 +2173,11 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
+	if (Game_Temp::battle_running) {
+		Output::Warning("ErasePicture: Not supported in battle");
+		return true;
+	}
+
 	int pic_id = com.parameters[0];
 
 	if (com.parameters.size() > 1) {

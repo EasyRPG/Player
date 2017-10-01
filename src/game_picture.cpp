@@ -120,7 +120,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == 0) {
 		// params.effect_power seems to contain garbage here
-		data.finish_effect = (int)0.0;
+		data.finish_effect = 0.0;
 	} else {
 		data.finish_effect = params.effect_power;
 	}
