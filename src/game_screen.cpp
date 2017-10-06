@@ -45,10 +45,11 @@ void Game_Screen::CreatePicturesFromSave() {
 	}
 }
 
-void Game_Screen::Reset()
-{
+void Game_Screen::Reset() {
 	for (auto& p : pictures) {
-		p->Erase(false);
+		if (p) {
+			p->Erase(false);
+		}
 	}
 
 	data.flash_red = 0;

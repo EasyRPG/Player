@@ -2067,7 +2067,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	size_t param_size = com.parameters.size();
 
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
-		if (param_size > 15) {
+		if (param_size > 16) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 			int var = 0;
@@ -2139,7 +2139,7 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 	size_t param_size = com.parameters.size();
 
 	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
-		if (param_size > 16) {
+		if (param_size > 17) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 			int chars_to_replace = com.parameters[18];
