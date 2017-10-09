@@ -39,7 +39,7 @@ INCLUDES	:=	src
 CFLAGS		= 	-g -O2 -Wall -Wextra \
 				-fomit-frame-pointer -ffast-math \
 				-flto -fdata-sections -ffunction-sections \
-				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI=2 -DHAVE_MPG123 \
+				-DUSE_SDL -DNDEBUG -DWANT_FMMIDI -DHAVE_MPG123 \
 				-DHAVE_LIBSNDFILE -DHAVE_TREMOR -DHAVE_WILDMIDI \
 				-DHAVE_XMP -DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
 				-DSUPPORT_AUDIO \
