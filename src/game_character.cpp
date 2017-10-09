@@ -131,7 +131,7 @@ void Game_Character::MoveTo(int x, int y) {
 int Game_Character::GetScreenX() const {
 	int x = GetRealX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
 
-	if (Game_Map::LoopHorizontal() && (x <= -TILE_SIZE / 2 || x > 0)) {
+	if (Game_Map::LoopHorizontal() && (x <= -TILE_SIZE / 2 || x > 0 || Game_Map::GetWidth() == 20)) {
 		int map_width = Game_Map::GetWidth() * TILE_SIZE;
 		x = (x + map_width) % map_width;
 	}
