@@ -1034,6 +1034,11 @@ bool Player::IsCJK() {
 			IsBig5() || IsCP936());
 }
 
+bool Player::IsCP1251() {
+	return (encoding == "ibm-5347_P100-1998" ||
+			encoding == "windows-1251" || encoding == "1251");
+}
+
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
