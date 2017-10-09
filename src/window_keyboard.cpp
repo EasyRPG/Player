@@ -32,6 +32,10 @@ const char* const Window_Keyboard::TO_KATAKANA = "<カナ>";
 const char* const Window_Keyboard::TO_HIRAGANA = "<かな>";
 const char* const Window_Keyboard::DONE_JP = "<決定>";
 
+const char* const Window_Keyboard::TO_CYRILLIC_RU = "<Абвг>";
+const char* const Window_Keyboard::TO_LATIN_RU = "<Abcd>";
+const char* const Window_Keyboard::DONE_RU = "<OK>";
+
 const char* const Window_Keyboard::TO_HANGUL_1 = "<앞P>";
 const char* const Window_Keyboard::TO_HANGUL_2 = "<뒤P>";
 const char* const Window_Keyboard::DONE_KO = "<결정>";
@@ -41,7 +45,8 @@ const char* const Window_Keyboard::TO_ZH_CN_2 = "<前页>";
 const char* const Window_Keyboard::DONE_ZH_CN = "<确定>";
 
 /*
- * Hiragana <-> Katakana; Hangul 1 <-> Hangul 2; Simp. Chinese 1 <-> Simp. Chinese 2; letter <-> symbol
+ * Hiragana <-> Katakana; Hangul 1 <-> Hangul 2; Simp. Chinese 1 <-> Simp. Chinese 2;
+ * Rus.Cyrillic <-> Rus.Latin; letter <-> symbol
  */
 
 std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
@@ -115,6 +120,30 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 		{"威", "维", "韦", "卫", "温", "沃", "乌", "西", "希", "夏"},
 		{"辛", "修", "休", "雅", "亚", "林", "琳", "留", "隆", "鲁"},
 		{"伊", "英", "尤", "则", "扎", "", Window_Keyboard::TO_ZH_CN_1, "", Window_Keyboard::DONE_ZH_CN}
+	},
+
+	{ // Cp1251 Russian Cyrillic (+ Bel. and Ukr. letters in the last row)
+		{"А", "Б", "В", "Г", "Д", "а", "б", "в", "г", "д"},
+		{"Е", "Ё", "Ж", "З", "И", "е", "ё", "ж", "з", "и"},
+		{"Й", "К", "Л", "М", "Н", "й", "к", "л", "м", "н"},
+		{"О", "П", "Р", "С", "Т", "о", "п", "р", "с", "т"},
+		{"У", "Ф", "Х", "Ц", "Ч", "у", "ф", "х", "ц", "ч"},
+		{"Щ", "Ъ", "Ы", "Ь", "Э", "щ", "ъ", "ы", "ь", "э"},
+		{"Ю", "Я",  "",  "",  "", "ю", "я",  "",  "",  ""},
+		{"Ґ", "Є", "І", "Ї", "Ў", "ґ", "є", "і", "ї", "ў"},
+		{"ʼ",  "",  "",  "",  "",  "", Window_Keyboard::TO_LATIN_RU, "", Window_Keyboard::DONE_RU},
+	},
+
+	{ // Cp1251 Latin (should ideally be merged with Letter)
+		{"A", "B", "C", "D", "E", "a", "b", "c", "d", "e"},
+		{"F", "G", "H", "I", "J", "f", "g", "h", "i", "j"},
+		{"K", "L", "M", "N", "O", "k", "l", "m", "n", "o"},
+		{"P", "Q", "R", "S", "T", "p", "q", "r", "s", "t"},
+		{"U", "V", "W", "X", "Y", "u", "v", "w", "x", "y"},
+		{"Z", "" ,"" ,"" ,"" ,"z",},
+		{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+		{Window_Keyboard::SPACE},
+		{"" ,  "" ,  "" ,  "" ,  "" ,  "" , Window_Keyboard::TO_CYRILLIC_RU, "", Window_Keyboard::DONE_RU},
 	},
 
 	{ // Letter

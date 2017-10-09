@@ -199,6 +199,12 @@ namespace Player {
 	bool IsCJK();
 
 	/**
+	 * @return true if encoding is CP1251 (used for languages written in
+	 * Cyrillic script) or false if not
+	 */
+	bool IsCP1251();
+
+	/**
 	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
 	 */
 	int GetSpeedModifier();

@@ -49,6 +49,9 @@ void Scene_Name::Start() {
 	// Simp. Chinese pages
 	} else if (Player::IsCP936()) {
 		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::ZhCn1));
+	// Cyrillic page (we assume it’s Russian since we have no way to detect Serbian etc.)
+	} else if (Player::IsCP1251()) {
+		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::RuCyrl));
 	// ASCII pages
 	} else {
 		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Letter));
@@ -76,7 +79,8 @@ void Scene_Name::Update() {
 
 		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP
 			|| s == Window_Keyboard::DONE_KO
-			|| s == Window_Keyboard::DONE_ZH_CN ) {
+			|| s == Window_Keyboard::DONE_ZH_CN
+			|| s == Window_Keyboard::DONE_RU ) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
@@ -104,6 +108,10 @@ void Scene_Name::Update() {
 			kbd_window->SetMode(Window_Keyboard::ZhCn1);
 		} else if (s == Window_Keyboard::TO_ZH_CN_2) {
 			kbd_window->SetMode(Window_Keyboard::ZhCn2);
+		} else if (s == Window_Keyboard::TO_CYRILLIC_RU) {
+			kbd_window->SetMode(Window_Keyboard::RuCyrl);
+		} else if (s == Window_Keyboard::TO_LATIN_RU) {
+			kbd_window->SetMode(Window_Keyboard::RuLatn);
 		} else if (s == Window_Keyboard::SPACE) {
 			name_window->Append(" ");
 		} else {

@@ -43,6 +43,8 @@ public:
 		Hangul2,
 		ZhCn1,
 		ZhCn2,
+		RuCyrl,
+		RuLatn,
 		Letter,
 		Symbol,
 		MODE_END
@@ -71,6 +73,10 @@ public:
 	static const char* const TO_ZH_CN_1;
 	static const char* const TO_ZH_CN_2;
 	static const char* const DONE_ZH_CN;
+
+	static const char* const TO_CYRILLIC_RU;
+	static const char* const TO_LATIN_RU;
+	static const char* const DONE_RU;
 
 protected:
 	static const int border_x = 8;
