@@ -54,11 +54,8 @@ private:
 #ifdef HAVE_MPG123
 	std::unique_ptr<mpg123_handle, decltype(&mpg123_delete)> handle;
 #endif
-	FILE* file_handle;
 	int err = 0;
 	bool finished = false;
-
-	int frequency = 44100;
 };
 
 #endif
