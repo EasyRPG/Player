@@ -18,6 +18,7 @@
 // Headers
 #include <cctype>
 #include <sstream>
+#include <iterator>
 
 #include "window_message.h"
 #include "game_actors.h"
@@ -84,6 +85,7 @@ void Window_Message::ApplyTextInsertingCommands() {
 
 	// Contains already substitued \N actors to prevent endless recursion
 	std::vector<int> replaced_actors;
+	int actor_replacement_start = std::distance(text.begin(), end);
 
 	if (!text.empty()) {
 		// Move on first valid char
@@ -105,6 +107,10 @@ void Window_Message::ApplyTextInsertingCommands() {
 				bool success;
 				int parsed_num;
 				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, parsed_num));
+				if (start_code < text.begin() + actor_replacement_start) {
+					replaced_actors.clear();
+				}
+
 				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
 					text_index = start_code - 2;
 					continue;
@@ -112,6 +118,9 @@ void Window_Message::ApplyTextInsertingCommands() {
 
 				if (ch == 'n') {
 					replaced_actors.push_back(parsed_num);
+					if (text.begin() + actor_replacement_start >= text_index - 1) {
+						actor_replacement_start = std::distance(text.begin(), text_index - 1);
+					}
 				}
 
 				text.replace(start_code, text_index + 1, command_result);
