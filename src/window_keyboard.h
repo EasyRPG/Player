@@ -20,6 +20,9 @@
 
 #include "window_base.h"
 
+
+struct Keyboard_Layout;
+
 /**
  * Window Input Number Class.
  * The number input window.
@@ -33,8 +36,9 @@ public:
 	 * @param iy window y position.
 	 * @param iwidth window width.
 	 * @param iheight window height.
+	 * @param ndone_text text for the "Done" button.
 	 */
-	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
+	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80, const char* ndone_text = DONE);
 
 	enum Mode {
 		Hiragana,
@@ -44,7 +48,6 @@ public:
 		ZhCn1,
 		ZhCn2,
 		RuCyrl,
-		RuLatn,
 		Letter,
 		Symbol,
 		MODE_END
@@ -54,44 +57,45 @@ public:
 	Rect GetItemRect(int row, int col) const;
 	void Update() override;
 	void Refresh();
-	void SetMode(Mode nmode);
+	void SetMode(Mode nmode, Mode nnext_mode);
+	std::string const& GetKey(int row, int col) const;
 	std::string const& GetSelected() const;
 
-	static const char* const TO_SYMBOL;
-	static const char* const TO_LETTER;
 	static const char* const DONE;
 	static const char* const SPACE;
-
-	static const char* const TO_KATAKANA;
-	static const char* const TO_HIRAGANA;
+	static const char* const NEXT_PAGE;
 	static const char* const DONE_JP;
-
-	static const char* const TO_HANGUL_1;
-	static const char* const TO_HANGUL_2;
 	static const char* const DONE_KO;
-
-	static const char* const TO_ZH_CN_1;
-	static const char* const TO_ZH_CN_2;
 	static const char* const DONE_ZH_CN;
-
-	static const char* const TO_CYRILLIC_RU;
-	static const char* const TO_LATIN_RU;
 	static const char* const DONE_RU;
+
+	static const int row_max = 9;
+	static const int col_max = 10;
+	static Keyboard_Layout layouts[MODE_END];
 
 protected:
 	static const int border_x = 8;
 	static const int border_y = 4;
-	static const int row_max = 9;
-	static const int col_max = 10;
 	static const int min_width = 2;
-	static std::string items[MODE_END][row_max][col_max];
+	std::string done_text;
 	int row_spacing;
 	int col_spacing;
 	Mode mode;
+	Mode next_mode;
 	int row;
 	int col;
 
 	bool play_cursor;
+};
+
+
+/**
+ * Keyboard layout struct.
+ * Defines which keys are available and how the key to switch here is named
+ */
+struct Keyboard_Layout {
+	const std::string key_text;
+	const std::string items[Window_Keyboard::row_max][Window_Keyboard::col_max];
 };
 
 #endif
