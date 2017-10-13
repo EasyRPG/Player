@@ -16,6 +16,7 @@
  */
 
 #include <string>
+#include <algorithm>
 
 #include "window_keyboard.h"
 #include "game_system.h"
@@ -48,7 +49,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"は", "ひ", "ふ", "へ", "ほ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"},
 			{"ま", "み", "む", "め", "も", "っ", "ゃ", "ゅ", "ょ", "ゎ"},
 			{"や", "ゆ", "よ", "わ", "ん", "ー", "～", "・", "＝", "☆"},
-			{"ら", "り", "る", "れ", "ろ", "ヴ", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"ら", "り", "る", "れ", "ろ", "ヴ", NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -62,7 +63,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"ハ", "ヒ", "フ", "ヘ", "ホ", "ァ", "ィ", "ゥ", "ェ", "ォ"},
 			{"マ", "ミ", "ム", "メ", "モ", "ッ", "ャ", "ュ", "ョ", "ヮ"},
 			{"ヤ", "ユ", "ヨ", "ワ", "ン", "ー", "～", "・", "＝", "☆"},
-			{"ラ", "リ", "ル", "レ", "ロ", "ヴ", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"ラ", "リ", "ル", "レ", "ロ", "ヴ", NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -76,7 +77,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"바", "뱌", "버", "벼", "보", "뵤", "부", "뷰", "비", "밤"},
 			{"사", "색", "서", "세", "소", "쇼", "수", "슈", "신", "심"},
 			{"아", "야", "어", "여", "오", "요", "우", "유", "으", "이"},
-			{"〜", "·", ".", "☆", Window_Keyboard::SPACE, "", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"〜", "·", ".", "☆", SPACE, "", NEXT_PAGE, "", DONE}
 		}
 
 	},
@@ -91,7 +92,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"하", "햐", "허", "혀", "호", "효", "후", "휴", "흐", "해"},
 			{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"},
 			{"진", "녘", "의", "민", "예", "건", "현", "운", "걔", "임"},
-			{"영", "은", "성", "준", Window_Keyboard::SPACE, "", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"영", "은", "성", "준", SPACE, "", NEXT_PAGE, "", DONE}
 		},
 	},
 	{
@@ -105,7 +106,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"华", "霍", "基", "吉", "加", "杰", "捷", "金", "卡", "凯"},
 			{"科", "克", "肯", "拉", "莱", "兰", "朗", "劳", "勒", "雷"},
 			{"里", "利", "立", "丽", "莉", "林", "琳", "留", "隆", "鲁"},
-			{"路", "伦", "罗", "洛", "律", "", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"路", "伦", "罗", "洛", "律", "", NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -119,7 +120,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"索", "塔", "泰", "坦", "汤", "特", "提", "汀", "统", "瓦"},
 			{"威", "维", "韦", "卫", "温", "沃", "乌", "西", "希", "夏"},
 			{"辛", "修", "休", "雅", "亚", "林", "琳", "留", "隆", "鲁"},
-			{"伊", "英", "尤", "则", "扎", "", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE}
+			{"伊", "英", "尤", "则", "扎", "", NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -133,7 +134,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"Ш", "Щ", "Ъ", "Ы", "Ь", "ш", "щ", "ъ", "ы", "ь"},
 			{"Э", "Ю", "Я",  "",  "", "э", "ю", "я",  "",  ""},
 			{"Ґ", "Є", "І", "Ї", "Ў", "ґ", "є", "і", "ї", "ў"},
-			{"ʼ",  "",  "",  "",  "",  "", Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE},
+			{"ʼ",  "",  "",  "",  "",  "", NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -144,10 +145,10 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"K", "L", "M", "N", "O", "k", "l", "m", "n", "o"},
 			{"P", "Q", "R", "S", "T", "p", "q", "r", "s", "t"},
 			{"U", "V", "W", "X", "Y", "u", "v", "w", "x", "y"},
-			{"Z", "" ,"" ,"" ,"" ,"z",},
+			{"Z", "" , "" , "" , "" , "z"},
 			{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			{Window_Keyboard::SPACE},
-			{"" ,  "" ,  "" ,  "" ,  "" ,  "" , Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE},
+			{SPACE},
+			{"" , "" , "" , "" , "" , "" , NEXT_PAGE, "", DONE}
 		}
 	},
 	{
@@ -161,7 +162,7 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"$Z",  "" ,  "" ,  "" ,  "" , "$z"},
 			{},
 			{},
-			{ "" ,  "" ,  "" ,  "" ,  "" ,  "" , Window_Keyboard::NEXT_PAGE, "", Window_Keyboard::DONE},
+			{ "" ,  "" ,  "" ,  "" ,  "" ,  "" , NEXT_PAGE, "", DONE}
 		}
 	}
 };
@@ -237,42 +238,38 @@ void Window_Keyboard::Refresh() {
 void Window_Keyboard::Update() {
 	Window_Base::Update();
 
+	// move left on wide fields
+	int skip_dir = -1;
+
 	if (active) {
 		if (Input::IsRepeated(Input::DOWN)) {
 			play_cursor = true;
 			row = (row + 1) % row_max;
-
-			if (col > 0 && GetSelected().empty() && !GetKey(row, col - 1).empty()) {
-				col--;
-			}
 		}
 		if (Input::IsRepeated(Input::UP)) {
 			play_cursor = true;
 			row = (row + row_max - 1) % row_max;
-
-			if (col > 0 && GetSelected().empty() && !GetKey(row, col - 1).empty()) {
-				col--;
-			}
 		}
 		if (Input::IsRepeated(Input::RIGHT)) {
 			play_cursor = true;
-			col += 1;
-			if (col >= col_max) {
-				col = 0;
-				if (mode == Letter) { row = (row + 1) % row_max; }
-			}
+			col = (col + 1) % col_max;
+			skip_dir = 1;
 		}
 		if (Input::IsRepeated(Input::LEFT)) {
 			play_cursor = true;
-			col -= 1;
-			if (col < 0) {
-				col = col_max - 1;
-				if (mode == Letter) { row = (row + row_max - 1) % row_max; }
-			}
+			col = (col + col_max - 1) % col_max;
 		}
-
 	}
 
+	// Special handling for wide fields
+	if (col > 0) {
+		// page switch and done are always in the bottom right corner
+		if ((row == row_max - 1 && (col == col_max - 3 || col == col_max - 1))
+			|| GetKey(row, col - 1) == SPACE)
+			col = std::min(col + skip_dir, col_max - 1);
+	}
+
+	// Skip empty cells
 	if (GetSelected().empty()) {
 		Update();
 		return;

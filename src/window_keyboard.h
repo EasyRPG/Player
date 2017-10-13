@@ -20,7 +20,6 @@
 
 #include "window_base.h"
 
-
 struct Keyboard_Layout;
 
 /**
@@ -77,6 +76,7 @@ protected:
 	static const int border_x = 8;
 	static const int border_y = 4;
 	static const int min_width = 2;
+
 	std::string done_text;
 	int row_spacing;
 	int col_spacing;
