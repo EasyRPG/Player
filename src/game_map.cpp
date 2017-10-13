@@ -1466,6 +1466,6 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 }
 
 void Game_Map::Parallax::ClearChangedBG() {
-	Params params; // default Param indicates no override
+	Params params {}; // default Param indicates no override
 	ChangeBG(params);
 }

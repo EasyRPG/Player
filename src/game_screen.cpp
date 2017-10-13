@@ -212,8 +212,6 @@ void Game_Screen::InitSnowRain() {
 	}
 }
 
-static const int snowflake_life = 200;
-
 void Game_Screen::UpdateSnowRain(int speed) {
 	std::vector<Snowflake>::iterator it;
 

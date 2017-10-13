@@ -178,10 +178,6 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
-		if (Game_Temp::forcing_battler != NULL) {
-			break;
-		}
-
 		if (Game_Temp::transition_processing) {
 			break;
 		}

@@ -88,6 +88,7 @@ void Game_Battle::Quit() {
 	animation.reset();
 
 	Game_Temp::battle_running = false;
+	Game_Temp::battle_background = "";
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);

@@ -41,6 +41,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 
 void Scene_GameBrowser::Start() {
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
+	Game_System::SetMessageStretch(RPG::System::Stretch_stretch);
 	CreateWindows();
 	Player::FrameReset();
 }

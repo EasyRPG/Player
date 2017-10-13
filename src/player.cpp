@@ -295,7 +295,9 @@ void Player::Update(bool update_scene) {
 		reset_flag = false;
 		if (Scene::Find(Scene::Title) && Scene::instance->type != Scene::Title) {
 			Scene::PopUntil(Scene::Title);
+			// Fade out music and stop sound effects before returning
 			Audio().BGM_Fade(800);
+			Audio().SE_Stop();
 			// Do not update this scene until it's properly set up in the next main loop
 			update_scene = false;
 		}

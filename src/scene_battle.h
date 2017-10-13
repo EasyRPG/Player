@@ -127,7 +127,7 @@ protected:
 
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
-	virtual void NextTurn(Game_Battler* battler);
+	void NextTurn(Game_Battler* battler);
 
 	virtual void EnemySelected();
 	virtual void AllySelected();

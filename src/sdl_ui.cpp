@@ -826,9 +826,13 @@ void SdlUi::ProcessMouseWheelEvent(SDL_Event& evnt) {
 		return;
 
 	int amount = evnt.wheel.y;
+
+	// FIXME: Debian ships older SDL2
+#if SDL_VERSION_ATLEAST(2, 0, 4)
 	// translate direction
 	if (evnt.wheel.direction == SDL_MOUSEWHEEL_FLIPPED)
 		amount *= -1;
+#endif
 
 	keys[Input::Keys::MOUSE_SCROLLUP] = amount > 0;
 	keys[Input::Keys::MOUSE_SCROLLDOWN] = amount < 0;
