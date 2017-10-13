@@ -39,23 +39,41 @@ void Scene_Name::Start() {
 	face_window->Set(Game_Temp::hero_name_id);
 	face_window->Refresh();
 
-	kbd_window.reset(new Window_Keyboard(32, 72, 256, SCREEN_TARGET_WIDTH / 2));
+	layout_index = Game_Temp::hero_name_charset;
+
+	const char* done = Window_Keyboard::DONE;
 	// Japanese pages
 	if (Player::IsCP932()) {
-		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
+		layouts.push_back(Window_Keyboard::Hiragana);
+		layouts.push_back(Window_Keyboard::Katakana);
+		done = Window_Keyboard::DONE_JP;
 	// Korean pages
 	} else if (Player::IsCP949()) {
-		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Hangul1));
+		layouts.push_back(Window_Keyboard::Hangul1);
+		layouts.push_back(Window_Keyboard::Hangul2);
+		done = Window_Keyboard::DONE_KO;
 	// Simp. Chinese pages
 	} else if (Player::IsCP936()) {
-		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::ZhCn1));
+		layouts.push_back(Window_Keyboard::ZhCn1);
+		layouts.push_back(Window_Keyboard::ZhCn2);
+		done = Window_Keyboard::DONE_ZH_CN;
 	// Cyrillic page (we assume it’s Russian since we have no way to detect Serbian etc.)
 	} else if (Player::IsCP1251()) {
-		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::RuCyrl));
-	// ASCII pages
-	} else {
-		kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset + Window_Keyboard::Letter));
+		layouts.push_back(Window_Keyboard::RuCyrl);
+		done = Window_Keyboard::DONE_RU;
 	}
+
+	// Letter and symbol pages are used everywhere
+	layouts.push_back(Window_Keyboard::Letter);
+	layouts.push_back(Window_Keyboard::Symbol);
+	kbd_window.reset(new Window_Keyboard(32, 72, 256, SCREEN_TARGET_WIDTH / 2, done));
+
+	size_t next_index = layout_index + 1;
+	if (next_index >= layouts.size()) {
+		next_index = 0;
+	}
+	kbd_window->SetMode(layouts[layout_index], layouts[next_index]);
+
 	kbd_window->Refresh();
 	kbd_window->UpdateCursorRect();
 }
@@ -77,10 +95,7 @@ void Scene_Name::Update() {
 
 		assert(!s.empty());
 
-		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP
-			|| s == Window_Keyboard::DONE_KO
-			|| s == Window_Keyboard::DONE_ZH_CN
-			|| s == Window_Keyboard::DONE_RU ) {
+		if (s == Window_Keyboard::DONE) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
@@ -92,26 +107,17 @@ void Scene_Name::Update() {
 					Scene::Pop();
 				}
 			}
-		} else if (s == Window_Keyboard::TO_SYMBOL) {
-			kbd_window->SetMode(Window_Keyboard::Symbol);
-		} else if (s == Window_Keyboard::TO_LETTER) {
-			kbd_window->SetMode(Window_Keyboard::Letter);
-		} else if (s == Window_Keyboard::TO_HIRAGANA) {
-			kbd_window->SetMode(Window_Keyboard::Hiragana);
-		} else if (s == Window_Keyboard::TO_KATAKANA) {
-			kbd_window->SetMode(Window_Keyboard::Katakana);
-		} else if (s == Window_Keyboard::TO_HANGUL_1) {
-			kbd_window->SetMode(Window_Keyboard::Hangul1);
-		} else if (s == Window_Keyboard::TO_HANGUL_2) {
-			kbd_window->SetMode(Window_Keyboard::Hangul2);
-		} else if (s == Window_Keyboard::TO_ZH_CN_1) {
-			kbd_window->SetMode(Window_Keyboard::ZhCn1);
-		} else if (s == Window_Keyboard::TO_ZH_CN_2) {
-			kbd_window->SetMode(Window_Keyboard::ZhCn2);
-		} else if (s == Window_Keyboard::TO_CYRILLIC_RU) {
-			kbd_window->SetMode(Window_Keyboard::RuCyrl);
-		} else if (s == Window_Keyboard::TO_LATIN_RU) {
-			kbd_window->SetMode(Window_Keyboard::RuLatn);
+		} else if (s == Window_Keyboard::NEXT_PAGE) {
+			++layout_index;
+			if (layout_index >= layouts.size()) {
+				layout_index = 0;
+			}
+
+			size_t next_index = layout_index + 1;
+			if (next_index >= layouts.size()) {
+				next_index = 0;
+			}
+			kbd_window->SetMode(layouts[layout_index], layouts[next_index]);
 		} else if (s == Window_Keyboard::SPACE) {
 			name_window->Append(" ");
 		} else {

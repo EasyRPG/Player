@@ -37,6 +37,10 @@ public:
 	void Start() override;
 	void Update() override;
 
+protected:
+	std::vector<Window_Keyboard::Mode> layouts;
+	size_t layout_index;
+
 private:
 	std::unique_ptr<Window_Keyboard> kbd_window;
 	std::unique_ptr<Window_Name> name_window;
