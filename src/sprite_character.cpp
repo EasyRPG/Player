@@ -99,7 +99,7 @@ void Sprite_Character::OnTileSpriteReady(FileRequestResult*) {
 		tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 	}
 	else {
-		tile = Bitmap::Create(16, 16, Color());
+		tile = Bitmap::Create(16, 16, true);
 	}
 
 	SetBitmap(tile);
