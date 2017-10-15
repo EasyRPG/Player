@@ -687,7 +687,6 @@ protected:
 
 	int tile_id;
 	int pattern;
-	int original_pattern;
 	int last_pattern;
 	int animation_id;
 	int animation_type;

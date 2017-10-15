@@ -34,7 +34,6 @@
 Game_Character::Game_Character() :
 	tile_id(0),
 	pattern(RPG::EventPage::Frame_middle),
-	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
@@ -202,7 +201,7 @@ void Game_Character::UpdateSprite() {
 			anime_count++;
 	} else {
 		stop_count++;
-		if ((walk_animation && (IsSpinning() || IsContinuous())) || pattern != original_pattern)
+		if ((walk_animation && (IsSpinning() || IsContinuous())) || pattern != RPG::EventPage::Frame_middle)
 			anime_count++;
 	}
 
@@ -210,7 +209,7 @@ void Game_Character::UpdateSprite() {
 		if (IsSpinning()) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
-			pattern = original_pattern;
+			pattern = RPG::EventPage::Frame_middle;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
 			if (last_pattern == RPG::EventPage::Frame_left) {
