@@ -2918,6 +2918,20 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 				}
 			}
 		}
+		else {
+			for (const RPG::Learning& learn : Data::actors[actor_id - 1].skills) {
+				if (level >= learn.level) {
+					actor->LearnSkill(learn.skill_id);
+					if (show) {
+						std::stringstream ss;
+						ss << Data::skills[learn.skill_id - 1].name;
+						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
+						Game_Message::texts.push_back(ss.str());
+						level_up = true;
+					}
+				}
+			}
+		}
 
 		if (level_up) {
 			Game_Message::texts.back().append("\f");

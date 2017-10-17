@@ -754,6 +754,12 @@ private:
 	 */
 	void RemoveInvalidEquipment();
 
+	/**
+	 * Either pads GetData().battle_commands to 7 entries including the 0 and -1 used by RPG_RT,
+	 * or cuts them off for use while adjusting the array.
+	 */
+	void PadBattleCommandsArray(bool include7);
+
 	int actor_id;
 	std::vector<int> exp_list;
 };

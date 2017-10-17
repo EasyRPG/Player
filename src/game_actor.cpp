@@ -45,6 +45,11 @@ Game_Actor::Game_Actor(int actor_id) :
 	Game_Battler(),
 	actor_id(actor_id) {
 	GetData().Setup(actor_id);
+	// - LSD readout is showing this happens.
+	GetData().class_id = -1;
+	GetData().battle_commands.clear();
+	for (int i = 0; i < 7; i++)
+		GetData().battle_commands.push_back(-1);
 
 	Setup();
 }
@@ -293,10 +298,10 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	// Looks like RPG_RT only applies Class changes (changed_class == true)
+	// Looks like RPG_RT only applies Class changes (class_id > 0 - 20kdc)
 	// when the class was changed by the ChangeClass event, otherwise it uses
 	// the normal actor attributes.
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxhp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxhp[GetData().level - 1];
 
@@ -311,7 +316,7 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.maxsp[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.maxsp[GetData().level - 1];
 
@@ -326,7 +331,7 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.attack[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.attack[GetData().level - 1];
 
@@ -350,7 +355,7 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.defense[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.defense[GetData().level - 1];
 
@@ -374,7 +379,7 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.spirit[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.spirit[GetData().level - 1];
 
@@ -398,7 +403,7 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = GetData().changed_class && GetData().class_id > 0
+	int n = GetData().class_id > 0
 		? Data::classes[GetData().class_id - 1].parameters.agility[GetData().level - 1]
 		: Data::actors[actor_id - 1].parameters.agility[GetData().level - 1];
 
@@ -424,7 +429,7 @@ int Game_Actor::GetBaseAgi() const {
 int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
-	if (GetData().changed_class && GetData().class_id > 0) {
+	if (GetData().class_id > 0) {
 		const RPG::Class& klass = Data::classes[GetData().class_id - 1];
 		base = klass.exp_base;
 		inflation = klass.exp_inflation;
@@ -674,7 +679,7 @@ std::string Game_Actor::GetLearningMessage(const RPG::Learning& learn) const {
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>* skills;
-	if (GetData().changed_class && GetData().class_id > 0) {
+	if (GetData().class_id > 0) {
 		skills = &Data::classes[GetData().class_id - 1].skills;
 	} else {
 		skills = &Data::actors[actor_id - 1].skills;
@@ -928,82 +933,117 @@ void Game_Actor::SetSprite(const std::string &file, int index, bool transparent)
 	GetData().sprite_flags = transparent ? 3 : 0;
 }
 
+void Game_Actor::PadBattleCommandsArray(bool include7) {
+	std::vector<uint32_t> ncommands;
+	for (size_t i = 0; i < GetData().battle_commands.size(); ++i) {
+		int32_t command_index = (int32_t) (GetData().battle_commands[i]);
+		if (command_index != -1) {
+			if (command_index != 0) {
+				ncommands.push_back((uint32_t) command_index);
+			}
+		}
+	}
+	if (include7) {
+		if (ncommands.size() < 7) {
+			ncommands.push_back(0);
+			for (int i = ncommands.size(); i < 7; i++) {
+				ncommands.push_back((uint32_t) -1);
+			}
+		}
+	}
+	GetData().battle_commands = ncommands;
+}
+
 void Game_Actor::ChangeBattleCommands(bool add, int id) {
+	// If changing battle commands, *that* is when RPG_RT will replace the -1 list with a 'true' list.
+	// Fetch original command array.
+	if (!GetData().changed_class) {
+		GetData().battle_commands = Data::actors[GetId() - 1].battle_commands;
+		GetData().changed_class = true;
+	}
 	if (add) {
 		if (std::find(GetData().battle_commands.begin(), GetData().battle_commands.end(), id)
 			== GetData().battle_commands.end()) {
+			PadBattleCommandsArray(false);
 			GetData().battle_commands.push_back(id);
 			std::sort(GetData().battle_commands.begin(), GetData().battle_commands.end());
+			PadBattleCommandsArray(true);
 		}
 	}
 	else if (id == 0) {
 		GetData().battle_commands.clear();
+		PadBattleCommandsArray(true);
 	}
 	else {
-		std::vector<uint32_t>::iterator it;
-		it = std::find(GetData().battle_commands.begin(), GetData().battle_commands.end(), id);
-		if (it != GetData().battle_commands.end())
-			GetData().battle_commands.erase(it);
+		PadBattleCommandsArray(false);
+		{
+			std::vector<uint32_t>::iterator it;
+			it = std::find(GetData().battle_commands.begin(), GetData().battle_commands.end(), id);
+			if (it != GetData().battle_commands.end())
+				GetData().battle_commands.erase(it);
+		}
+		PadBattleCommandsArray(true);
 	}
 }
 
 const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() const {
 	std::vector<const RPG::BattleCommand*> commands;
+	std::vector<uint32_t> obc = GetData().battle_commands;
+	if (!GetData().changed_class) {
+		// In this case, get it straight from the LDB.
+		obc = Data::actors[actor_id - 1].battle_commands;
+	}
 
-	for (size_t i = 0; i < GetData().battle_commands.size(); ++i) {
-		int command_index = GetData().battle_commands[i];
+	for (size_t i = 0; i < obc.size(); ++i) {
+		int command_index = obc[i];
+
 		if (command_index == 0) {
 			// Row command -> not impl
 			continue;
 		}
 
 		if (command_index == -1) {
-			// Fetch original command
-			const RPG::Actor& actor = Data::actors[GetId() - 1];
-			if (i + 1 <= actor.battle_commands.size()) {
-				int bcmd_idx = Data::actors[GetId() - 1].battle_commands[i];
-
-				if (bcmd_idx == -1) {
-					// End of list
-					continue;
-				}
-
-				if (bcmd_idx == 0) {
-					// Row command
-					continue;
-				}
-
-				commands.push_back(&Data::battlecommands.commands[bcmd_idx - 1]);
-			}
-		} else {
-			commands.push_back(&Data::battlecommands.commands[command_index - 1]);
+			// Empty slot
+			continue;
 		}
+
+		commands.push_back(&Data::battlecommands.commands[command_index - 1]);
 	}
 
 	return commands;
 }
 
 const RPG::Class* Game_Actor::GetClass() const {
-	if (GetData().class_id <= 0) {
-		return nullptr;
+	int id = GetData().class_id;
+
+	if (id < 0) {
+		// This means class ID hasn't been changed yet.
+		id = Data::actors[actor_id - 1].class_id;
 	}
 
-	return &Data::classes[GetData().class_id - 1];
+	if (id <= 0) {
+		// No class set.
+		return nullptr;
+	}
+	return &Data::classes[id - 1];
 }
 
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
-	GetData().changed_class = _class_id > 0;
+	GetData().changed_class = true; // Any change counts as a battle commands change.
 
 	// The class settings are not applied when the actor has a class on startup
 	// but only when the "Change Class" event command is used.
 
-	if (GetData().changed_class) {
-		GetData().battler_animation = GetClass()->battler_animation;
+	if (_class_id > 0) {
 		GetData().super_guard = GetClass()->super_guard;
 		GetData().lock_equipment = GetClass()->lock_equipment;
 		GetData().two_weapon = GetClass()->two_weapon;
 		GetData().auto_battle = GetClass()->auto_battle;
+
+		GetData().battler_animation = GetClass()->battler_animation;
+
+		GetData().battle_commands = GetClass()->battle_commands;
 	} else {
 		const RPG::Actor& actor = Data::actors[actor_id - 1];
 
@@ -1013,6 +1053,8 @@ void Game_Actor::SetClass(int _class_id) {
 		GetData().auto_battle = actor.auto_battle;
 
 		GetData().battler_animation = 0;
+
+		GetData().battle_commands = actor.battle_commands;
 	}
 	MakeExpList();
 
@@ -1111,7 +1153,7 @@ int Game_Actor::GetBattleAnimationId() const {
 
 		// The battle animation of the class only matters when the class was
 		// changed by event "Change Class"
-		if (GetData().changed_class && GetClass()) {
+		if ((GetData().class_id > 0) && GetClass()) {
 			anim = GetClass()->battler_animation;
 		} else {
 			anim = Data::battleranimations[Data::actors[actor_id - 1].battler_animation - 1].ID;
