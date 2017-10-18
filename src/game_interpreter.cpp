@@ -2790,129 +2790,130 @@ bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* co
 }
 
 bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // code 1008
-	int actor_id = com.parameters[1];
 	int class_id = com.parameters[2];
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
 	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
 	bool show = com.parameters[6] > 0;
 
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
+		int actor_id = actor->GetId();
 
-	int cur_lvl = actor->GetLevel();
-	int cur_exp = actor->GetExp();
-	int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
+		int cur_lvl = actor->GetLevel();
+		int cur_exp = actor->GetExp();
+		int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
 
-	switch (stats_mode) {
-	case 2:
-		actor->SetClass(class_id);
-		actor->SetLevel(1);
-		actor->SetExp(0);
-		break;
-	case 3:
-		actor->SetClass(class_id);
-		break;
-	}
-
-	int cur_hp = actor->GetBaseMaxHp();
-	int cur_sp = actor->GetBaseMaxSp();
-	int cur_atk = actor->GetBaseAtk();
-	int cur_def = actor->GetBaseDef();
-	int cur_spi = actor->GetBaseSpi();
-	int cur_agi = actor->GetBaseAgi();
-
-	switch (stats_mode) {
-	case 1:
-		cur_hp /= 2;
-		cur_sp /= 2;
-		cur_atk /= 2;
-		cur_def /= 2;
-		cur_spi /= 2;
-		cur_agi /= 2;
-		break;
-	}
-
-	actor->SetClass(class_id);
-	if (level1) {
-		actor->SetLevel(1);
-		actor->SetExp(0);
-	} else {
-		actor->SetExp(cur_exp);
-		actor->SetLevel(cur_lvl);
-	}
-
-	actor->SetBaseMaxHp(cur_hp);
-	actor->SetBaseMaxSp(cur_sp);
-	actor->SetBaseAtk(cur_atk);
-	actor->SetBaseDef(cur_def);
-	actor->SetBaseSpi(cur_spi);
-	actor->SetBaseAgi(cur_agi);
-
-	int level = actor->GetLevel();
-
-	// same class, not doing skill processing
-	if (class_id == cur_cid)
-		return true;
-
-	bool level_up = false;
-
-	if (show && !level1) {
-		std::stringstream ss;
-		ss << actor->GetName();
-		if (Player::IsRPG2k3E()) {
-			ss << " " << Data::terms.level_up << " ";
-			ss << " " << Data::terms.level << " " << level;
-		} else {
-			std::string particle, space = "";
-			if (Player::IsCP932()) {
-				particle = "は";
-				space += " ";
-			}
-			else {
-				particle = " ";
-			}
-			ss << particle << Data::terms.level << " ";
-			ss << level << space << Data::terms.level_up;
+		switch (stats_mode) {
+		case 2:
+			actor->SetClass(class_id);
+			actor->SetLevel(1);
+			actor->SetExp(0);
+			break;
+		case 3:
+			actor->SetClass(class_id);
+			break;
 		}
-		Game_Message::texts.push_back(ss.str());
-		level_up = true;
-	}
 
-	if (skill_mode == 1) {
-		// Learn based on level (replace)
-		actor->UnlearnAllSkills();
-	}
-	if (skill_mode > 0) {
-		// Learn additionally
-		for (const RPG::Learning& learn : Data::classes[class_id - 1].skills) {
-			if (level >= learn.level) {
-				actor->LearnSkill(learn.skill_id);
-				if (show) {
-					std::stringstream ss;
-					ss << Data::skills[learn.skill_id - 1].name;
-					ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-					Game_Message::texts.push_back(ss.str());
-					level_up = true;
+		int cur_hp = actor->GetBaseMaxHp();
+		int cur_sp = actor->GetBaseMaxSp();
+		int cur_atk = actor->GetBaseAtk();
+		int cur_def = actor->GetBaseDef();
+		int cur_spi = actor->GetBaseSpi();
+		int cur_agi = actor->GetBaseAgi();
+
+		switch (stats_mode) {
+		case 1:
+			cur_hp /= 2;
+			cur_sp /= 2;
+			cur_atk /= 2;
+			cur_def /= 2;
+			cur_spi /= 2;
+			cur_agi /= 2;
+			break;
+		}
+
+		actor->SetClass(class_id);
+		if (level1) {
+			actor->SetLevel(1);
+			actor->SetExp(0);
+		} else {
+			actor->SetExp(cur_exp);
+			actor->SetLevel(cur_lvl);
+		}
+
+		actor->SetBaseMaxHp(cur_hp);
+		actor->SetBaseMaxSp(cur_sp);
+		actor->SetBaseAtk(cur_atk);
+		actor->SetBaseDef(cur_def);
+		actor->SetBaseSpi(cur_spi);
+		actor->SetBaseAgi(cur_agi);
+
+		int level = actor->GetLevel();
+
+		// same class, not doing skill processing
+		if (class_id == cur_cid)
+			return true;
+
+		bool level_up = false;
+
+		if (show && !level1) {
+			std::stringstream ss;
+			ss << actor->GetName();
+			if (Player::IsRPG2k3E()) {
+				ss << " " << Data::terms.level_up << " ";
+				ss << " " << Data::terms.level << " " << level;
+			} else {
+				std::string particle, space = "";
+				if (Player::IsCP932()) {
+					particle = "は";
+					space += " ";
+				}
+				else {
+					particle = " ";
+				}
+				ss << particle << Data::terms.level << " ";
+				ss << level << space << Data::terms.level_up;
+			}
+			Game_Message::texts.push_back(ss.str());
+			level_up = true;
+		}
+
+		if (skill_mode == 1) {
+			// Learn based on level (replace)
+			actor->UnlearnAllSkills();
+		}
+		if (skill_mode > 0) {
+			// Learn additionally
+			for (const RPG::Learning& learn : Data::classes[class_id - 1].skills) {
+				if (level >= learn.level) {
+					actor->LearnSkill(learn.skill_id);
+					if (show) {
+						std::stringstream ss;
+						ss << Data::skills[learn.skill_id - 1].name;
+						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
+						Game_Message::texts.push_back(ss.str());
+						level_up = true;
+					}
 				}
 			}
 		}
-	}
 
-	if (level_up) {
-		Game_Message::texts.back().append("\f");
-		Game_Message::message_waiting = true;
+		if (level_up) {
+			Game_Message::texts.back().append("\f");
+			Game_Message::message_waiting = true;
+		}
 	}
 
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com) { // code 1009
-	int actor_id = com.parameters[1];
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 	int cmd_id = com.parameters[2];
 	bool add = com.parameters[3] != 0;
 
-	actor->ChangeBattleCommands(add, cmd_id);
+	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
+		actor->ChangeBattleCommands(add, cmd_id);
+	}
 
 	return true;
 }
