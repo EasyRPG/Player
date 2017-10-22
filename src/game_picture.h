@@ -59,7 +59,8 @@ public:
 		int spritesheet_speed = 0;
 		int map_layer = 7;
 		int battle_layer = 0;
-		int flags;
+		// erase_on_map_change | affected_by_flash | affected_by_shake
+		int flags = 1 | 32 | 64;
 	};
 
 	struct MoveParams : Params {
