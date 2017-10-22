@@ -17,6 +17,7 @@
 
 // Headers
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include "game_interpreter.h"
@@ -448,6 +449,12 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandShakeScreen(com);
 		case Cmd::WeatherEffects:
 			return CommandWeatherEffects(com);
+		case Cmd::ShowPicture:
+			return CommandShowPicture(com);
+		case Cmd::MovePicture:
+			return CommandMovePicture(com);
+		case Cmd::ErasePicture:
+			return CommandErasePicture(com);
 		case Cmd::SpriteTransparency:
 			return CommandSpriteTransparency(com);
 		case Cmd::MoveEvent:
@@ -1936,6 +1943,266 @@ bool Game_Interpreter::CommandWeatherEffects(RPG::EventCommand const& com) { // 
 	// Few games use a greater strength value to achieve more intense but glichty weather
 	int strength = std::min(com.parameters[1], 2);
 	screen->SetWeatherEffect(type, strength);
+	return true;
+}
+
+
+// PicPointerPatch handling.
+// See http://cherrytree.at/cms/download/?did=19
+namespace PicPointerPatch {
+
+	static void AdjustId(int& pic_id) {
+		if (pic_id > 10000) {
+			int new_id;
+			if (pic_id > 50000) {
+				new_id = Game_Variables[pic_id - 50000];
+			} else {
+				new_id = Game_Variables[pic_id - 10000];
+			}
+
+			if (new_id > 0) {
+				Output::Debug("PicPointer: ID %d replaced with ID %d", pic_id, new_id);
+				pic_id = new_id;
+			}
+		}
+	}
+
+	static void AdjustParams(Game_Picture::Params& params) {
+		if (params.magnify > 10000) {
+			int new_magnify = Game_Variables[params.magnify - 10000];
+			Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
+			params.magnify = new_magnify;
+		}
+
+		if (params.top_trans > 10000) {
+			int new_top_trans = Game_Variables[params.top_trans - 10000];
+			Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
+			params.top_trans = new_top_trans;
+		}
+
+		if (params.bottom_trans > 10000) {
+			int new_bottom_trans = Game_Variables[params.bottom_trans - 10000];
+			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
+			params.bottom_trans = new_bottom_trans;
+		}
+	}
+
+	static std::string ReplaceName(const std::string& str, int value, int digits) {
+		// Replace last 4 characters with 0-padded pic_num
+		std::u32string u_pic_name = Utils::DecodeUTF32(str);
+
+		// Out of bounds test
+		if (u_pic_name.length() < digits) {
+			return str;
+		}
+
+		// No substitution required
+		if (digits == 0) {
+			return str;
+		}
+
+		std::string new_pic_name = Utils::EncodeUTF(u_pic_name.substr(0, u_pic_name.size() - digits));
+		std::stringstream ss;
+		ss << new_pic_name << std::setfill('0') << std::setw(digits) << value;
+		new_pic_name = ss.str();
+
+		if (!Player::IsRPG2k3E()) {
+			// Prevent debug messages because this function is used by ShowPicture of RPG2k3E
+			Output::Debug("PicPointer: File %s replaced with %s", str.c_str(), new_pic_name.c_str());
+		}
+		return new_pic_name;
+	}
+
+	static void AdjustShowParams(int& pic_id, Game_Picture::ShowParams& params) {
+		// Adjust name
+		if (pic_id >= 50000) {
+			// Name substitution is pic_id + 1
+			int pic_num = Game_Variables[pic_id - 50000 + 1];
+
+			if (pic_num >= 0) {
+				params.name = ReplaceName(params.name, pic_num, 4);
+			}
+		}
+
+		AdjustId(pic_id);
+		AdjustParams(params);
+	}
+
+	static void AdjustMoveParams(int& pic_id, Game_Picture::MoveParams& params) {
+		AdjustId(pic_id);
+		AdjustParams(params);
+
+		if (params.duration > 10000) {
+			int new_duration = Game_Variables[params.duration - 10000];
+			Output::Debug("PicPointer: Move duration %d replaced with %d", params.duration, new_duration);
+			params.duration = new_duration;
+		}
+	}
+
+}
+
+bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
+	if (Game_Temp::battle_running) {
+		Output::Warning("ShowPicture: Not supported in battle");
+		return true;
+	}
+
+	int pic_id = com.parameters[0];
+
+	Game_Picture::ShowParams params = {};
+	params.name = com.string;
+	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	params.fixed_to_map = com.parameters[4] > 0;
+	params.magnify = com.parameters[5];
+	params.transparency = com.parameters[7] > 0;
+	params.top_trans = com.parameters[6];
+	params.red = com.parameters[8];
+	params.green = com.parameters[9];
+	params.blue = com.parameters[10];
+	params.saturation = com.parameters[11];
+	params.effect_mode = com.parameters[12];
+	params.effect_power = com.parameters[13];
+
+	size_t param_size = com.parameters.size();
+
+	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		if (param_size > 16) {
+			// Handling of RPG2k3 1.12 chunks
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+			int var = 0;
+			if (Game_Variables.IsValid(com.parameters[19])) {
+				var = Game_Variables[com.parameters[19]];
+			}
+			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
+			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
+			params.spritesheet_cols = com.parameters[22];
+			params.spritesheet_rows = com.parameters[23];
+
+			// Animate and index selection are exclusive
+			if (com.parameters[24] == 2) {
+				params.spritesheet_speed = com.parameters[25];
+			} else {
+				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
+			}
+
+			params.spritesheet_loop = !com.parameters[26];
+			params.map_layer = com.parameters[27];
+			params.battle_layer = com.parameters[28];
+			params.flags = com.parameters[29];
+		}
+
+		// RPG2k and RPG2k3 1.10 do not support this option
+		params.bottom_trans = params.top_trans;
+	} else {
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
+		params.bottom_trans = param_size > 14 ? com.parameters[14] : params.top_trans;
+	}
+
+	PicPointerPatch::AdjustShowParams(pic_id, params);
+
+	// Sanitize input
+	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.top_trans = std::max(0, std::min(params.top_trans, 100));
+	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
+
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture->Show(params);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
+	if (Game_Temp::battle_running) {
+		Output::Warning("MovePicture: Not supported in battle");
+		return true;
+	}
+
+	int pic_id = com.parameters[0];
+
+	Game_Picture::MoveParams params;
+	params.position_x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+	params.magnify = com.parameters[5];
+	params.top_trans = com.parameters[6];
+	params.red = com.parameters[8];
+	params.green = com.parameters[9];
+	params.blue = com.parameters[10];
+	params.saturation = com.parameters[11];
+	params.effect_mode = com.parameters[12];
+	params.effect_power = com.parameters[13];
+	params.duration = com.parameters[14];
+
+	bool wait = com.parameters[15] != 0;
+
+	size_t param_size = com.parameters.size();
+
+	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
+		if (param_size > 17) {
+			// Handling of RPG2k3 1.12 chunks
+			pic_id = ValueOrVariable(com.parameters[17], pic_id);
+			int chars_to_replace = com.parameters[18];
+			int replace_with = com.parameters[19];
+			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
+		}
+
+		// RPG2k and RPG2k3 1.10 do not support this option
+		params.bottom_trans = params.top_trans;
+	} else {
+		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
+		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
+	}
+
+	PicPointerPatch::AdjustMoveParams(pic_id, params);
+
+	// Sanitize input
+	params.magnify = std::max(0, std::min(params.magnify, 2000));
+	params.top_trans = std::max(0, std::min(params.top_trans, 100));
+	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
+	params.duration = std::max(0, std::min(params.duration, 10000));
+
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture->Move(params);
+
+	if (wait)
+		SetupWait(params.duration);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
+	if (Game_Temp::battle_running) {
+		Output::Warning("ErasePicture: Not supported in battle");
+		return true;
+	}
+
+	int pic_id = com.parameters[0];
+
+	if (com.parameters.size() > 1) {
+		// Handling of RPG2k3 1.12 chunks
+		int id_type = com.parameters[1];
+
+		int max;
+		if (id_type < 2) {
+			pic_id = ValueOrVariable(id_type, pic_id);
+			max = pic_id;
+		} else {
+			max = com.parameters[2];
+		}
+
+		for (int i = pic_id; i <= max; ++i) {
+			Game_Picture *picture = Main_Data::game_screen->GetPicture(i);
+			picture->Erase(true);
+		}
+	} else {
+		PicPointerPatch::AdjustId(pic_id);
+
+		Game_Picture *picture = Main_Data::game_screen->GetPicture(pic_id);
+		picture->Erase(true);
+	}
+
 	return true;
 }
 

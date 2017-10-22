@@ -51,20 +51,34 @@ public:
 		std::string name;
 		bool transparency;
 		bool fixed_to_map;
+		// RPG Maker 2k3 1.12
+		int spritesheet_cols = 1;
+		int spritesheet_rows = 1;
+		bool spritesheet_loop = false;
+		int spritesheet_frame = 0;
+		int spritesheet_speed = 0;
+		int map_layer = 7;
+		int battle_layer = 0;
+		// erase_on_map_change | affected_by_flash | affected_by_shake
+		int flags = 1 | 32 | 64;
 	};
+
 	struct MoveParams : Params {
 		int duration;
 	};
 
 	void Show(const ShowParams& params);
 	void Move(const MoveParams& params);
-	void Erase();
+	void Erase(bool force_erase);
 
 	void Update();
 
 private:
 	int id;
 	std::unique_ptr<Sprite> sprite;
+	BitmapRef whole_bitmap;
+	BitmapRef sheet_bitmap;
+	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
 	int old_map_x;
 	int old_map_y;
@@ -74,6 +88,7 @@ private:
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
+	bool HasSpritesheet() const;
 	/**
 	 * Compared to other classes picture doesn't hold a direct reference.
 	 * Resizing the picture vector when the ID is larger then the vector can

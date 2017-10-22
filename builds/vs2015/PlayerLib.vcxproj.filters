@@ -86,6 +86,9 @@
     <ClCompile Include="..\..\src\color.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\drawable.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\font.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>

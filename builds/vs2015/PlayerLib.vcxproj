@@ -451,6 +451,7 @@
     <ClCompile Include="..\..\src\decoder_oggvorbis.cpp" />
     <ClCompile Include="..\..\src\decoder_wildmidi.cpp" />
     <ClCompile Include="..\..\src\decoder_xmp.cpp" />
+    <ClCompile Include="..\..\src\drawable.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\frame.cpp" />

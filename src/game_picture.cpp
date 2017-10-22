@@ -23,6 +23,9 @@
 #include "player.h"
 #include "main_data.h"
 
+// Applied to ensure that all pictures are above "normal" objects on this layer
+constexpr int z_mask = (1 << 16);
+
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
 	old_map_x(0),
@@ -49,11 +52,41 @@ void Game_Picture::UpdateSprite() {
 	if (data.name.empty())
 		return;
 
+	// RPG Maker 2k3 1.12: Spritesheets
+	if (HasSpritesheet() && (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap)) {
+		// Usage of an additional bitmap instead of Subrect is necessary because the Subrect
+		// approach will fail while the bitmap is rotated because the outer parts will be
+		// visible for degrees != 90 * n
+		if (!sheet_bitmap) {
+			int frame_width = whole_bitmap->GetWidth() / data.spritesheet_cols;
+			int frame_height = whole_bitmap->GetHeight() / data.spritesheet_rows;
+
+			sheet_bitmap = Bitmap::Create(frame_width, frame_height);
+		}
+
+		last_spritesheet_frame = data.spritesheet_frame;
+
+		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame - 1) % data.spritesheet_cols);
+		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame - 1) / data.spritesheet_cols % data.spritesheet_rows);
+		Rect r(sx, sy, sheet_bitmap->GetWidth(), sheet_bitmap->GetHeight());
+
+		sheet_bitmap->Clear();
+
+		if (last_spritesheet_frame > 0 && last_spritesheet_frame <= data.spritesheet_cols * data.spritesheet_rows) {
+			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
+		}
+
+		sprite->SetBitmap(sheet_bitmap);
+	}
+
 	sprite->SetX((int)data.current_x);
 	sprite->SetY((int)data.current_y);
 	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
-		sprite->SetZ(Priority_PictureNew + data.ID);
+		int priority = Drawable::GetPriorityForMapLayer(data.map_layer);
+		if (priority > 0) {
+			sprite->SetZ(priority + z_mask + data.ID);
+		}
 	} else {
 		// Battle Animations are below pictures
 		sprite->SetZ(Priority_PictureOld + data.ID);
@@ -91,10 +124,27 @@ void Game_Picture::Show(const ShowParams& params) {
 	} else {
 		data.finish_effect = params.effect_power;
 	}
+
 	SyncCurrentToFinish();
 	data.current_rotation = 0.0;
 	data.current_waver = 0;
 	data.time_left = 0;
+
+	// RPG Maker 2k3 1.12
+	data.frames = 0;
+	data.spritesheet_rows = params.spritesheet_rows;
+	data.spritesheet_cols = params.spritesheet_cols;
+	data.spritesheet_play_once = !params.spritesheet_loop;
+	data.spritesheet_frame = params.spritesheet_frame;
+	data.spritesheet_speed = params.spritesheet_speed;
+	data.map_layer = params.map_layer;
+	data.battle_layer = params.battle_layer;
+	data.flags.erase_on_map_change = (params.flags & 1) == 1;
+	data.flags.erase_on_battle_end = (params.flags & 2) == 2;
+	data.flags.affected_by_tint = (params.flags & 16) == 16;
+	data.flags.affected_by_flash = (params.flags & 32) == 32;
+	data.flags.affected_by_shake = (params.flags & 64) == 64;
+	last_spritesheet_frame = 0;
 
 	RequestPictureSprite();
 	UpdateSprite();
@@ -146,13 +196,19 @@ void Game_Picture::Move(const MoveParams& params) {
 	}
 }
 
-void Game_Picture::Erase() {
-	request_id = FileRequestBinding();
-
+void Game_Picture::Erase(bool force_erase) {
 	RPG::SavePicture& data = GetData();
+
+	if (!(force_erase || data.flags.erase_on_map_change)) {
+		return;
+	}
+
+	request_id = FileRequestBinding();
 
 	data.name.clear();
 	sprite.reset();
+	whole_bitmap.reset();
+	sheet_bitmap.reset();
 }
 
 void Game_Picture::RequestPictureSprite() {
@@ -167,11 +223,22 @@ void Game_Picture::RequestPictureSprite() {
 void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	RPG::SavePicture& data = GetData();
 
-	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
+	whole_bitmap = Cache::Picture(data.name, data.transparency);
 
 	sprite.reset(new Sprite());
-	sprite->SetBitmap(bitmap);
+	sprite->SetBitmap(whole_bitmap);
+
 	UpdateSprite();
+}
+
+bool Game_Picture::HasSpritesheet() const {
+	RPG::SavePicture& data = GetData();
+
+	if (data.spritesheet_rows < 1 || data.spritesheet_cols < 1) {
+		return false;
+	}
+
+	return data.spritesheet_rows > 1 || data.spritesheet_cols > 1;
 }
 
 void Game_Picture::Update() {
@@ -247,6 +314,26 @@ void Game_Picture::Update() {
 	// Update waver phase
 	if (data.effect_mode == 2) {
 		data.current_waver = data.current_waver + 10;
+	}
+
+	// RPG Maker 2k3 1.12: Spritesheets
+	if (HasSpritesheet()) {
+		if (data.spritesheet_speed > 0) {
+			if (data.frames % data.spritesheet_speed == 0) {
+				data.spritesheet_frame = data.spritesheet_frame + 1;
+
+				if (data.spritesheet_frame > data.spritesheet_rows * data.spritesheet_cols) {
+					if (data.spritesheet_play_once) {
+						Erase(true);
+						return;
+					}
+
+					data.spritesheet_frame = 1;
+				}
+			}
+		}
+
+		data.frames = data.frames + 1;
 	}
 
 	UpdateSprite();
