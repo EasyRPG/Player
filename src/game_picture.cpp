@@ -28,8 +28,8 @@ constexpr int z_mask = (1 << 16);
 
 Game_Picture::Game_Picture(int ID) :
 	id(ID),
-	old_map_x(0),
-	old_map_y(0)
+	old_map_x(Game_Map::GetDisplayX()),
+	old_map_y(Game_Map::GetDisplayY())
 {
 	RequestPictureSprite();
 }
