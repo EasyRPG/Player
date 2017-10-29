@@ -358,6 +358,7 @@ void Player::Exit() {
 	Graphics::Quit();
 	FileFinder::Quit();
 	Output::Quit();
+	Main_Data::Cleanup();
 	DisplayUi.reset();
 
 #ifdef PSP2
