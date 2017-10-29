@@ -236,7 +236,7 @@ if(PLAYER_BUILD_LIBLCF)
 	list(APPEND CMAKE_MODULE_PATH
 		"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 	add_subdirectory(
-		${LIBLCF_PATH}/builds/cmake
+		${LIBLCF_PATH}
 		${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
 else()
 	# Use system package
@@ -244,7 +244,7 @@ else()
 endif()
 
 # Detect all required libraries
-foreach(i Pixman ZLIB PNG SDL2)
+foreach(i Pixman PNG ZLIB SDL2)
 	find_lib(${i} REQUIRED)
 endforeach()
 
@@ -395,9 +395,9 @@ if(PLAYER_BUILD_LIBLCF)
 endif()
 
 # Libraries
-set(EASYRPG_PLAYER_LIBRARIES_ALL ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static")
+set(EASYRPG_PLAYER_LIBRARIES_ALL "${PROJECT_NAME}_Static" ${EASYRPG_PLAYER_LIBRARIES})
 if(PLAYER_BUILD_LIBLCF)
-	list(APPEND EASYRPG_PLAYER_LIBRARIES_ALL liblcf)
+	list(APPEND EASYRPG_PLAYER_LIBRARIES_ALL lcf)
 endif()
 
 # Output path
@@ -427,13 +427,11 @@ add_library(${PROJECT_NAME}_Static STATIC ${PLAYER_SRCS})
 
 # Executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${EXE_FILES})
-foreach(i ${PROJECT_NAME} ${PROJECT_NAME})
-	target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-	add_dependencies(${i} ${PROJECT_NAME}_Static)
-	if(PLAYER_BUILD_LIBLCF)
-		add_dependencies(${i} liblcf)
-	endif()
-endforeach()
+target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES_ALL})
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_Static)
+if(PLAYER_BUILD_LIBLCF)
+	add_dependencies(${PROJECT_NAME} lcf)
+endif()
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
 # manpage
