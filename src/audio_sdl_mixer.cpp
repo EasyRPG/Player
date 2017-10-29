@@ -242,9 +242,9 @@ void SdlMixerAudio::BGM_OnPlayedOnce() {
 
 	if (!bgm_stop) {
 		played_once = true;
+
 		// Play indefinitely without fade-in
-		if (Mix_GetMusicType(bgm.get()) != MUS_MP3_MAD)
-			Mix_PlayMusic(bgm.get(), -1);
+		Mix_PlayMusic(bgm.get(), -1);
 	}
 }
 
