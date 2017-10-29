@@ -265,7 +265,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	pattern = page->character_pattern;
-	original_pattern = pattern;
 
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
@@ -310,7 +309,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	pattern = page->character_pattern;
-	original_pattern = pattern;
 
 	move_type = page->move_type;
 	original_move_route = page->move_route;

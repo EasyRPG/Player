@@ -109,6 +109,12 @@ public:
 
 	bool CheckEventTriggerTouch(int x, int y) override;
 
+	/*
+	 * Overridden to convince Game_Character we aren't stopped if boarding/unboarding.
+	 * Consider calling this 'IsReadyToMove' or something, and 'IsMovable' -> 'IsPlayerMovable'
+	 */
+	bool IsStopping() const override;
+
 	bool GetOnOffVehicle();
 	bool IsMovable() const;
 	bool InVehicle() const;

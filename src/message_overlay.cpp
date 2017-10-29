@@ -124,7 +124,7 @@ void MessageOverlay::Update() {
 
 	if (!bitmap) {
 		// Initialisation is delayed because the display is not ready on startup
-		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
+		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color(0, 0, 0, 255));
 		bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
 		Graphics::RegisterDrawable(this);
 	}

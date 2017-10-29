@@ -673,6 +673,13 @@ bool Game_Player::GetOffVehicle() {
 	return true;
 }
 
+bool Game_Player::IsStopping() const {
+	// Prevent MoveRoute execution while the airship is ascending/descending (Issue #1268)
+	if (InAirship() && !GetVehicle()->IsMovable())
+		return false;
+	return Game_Character::IsStopping();
+}
+
 bool Game_Player::IsMovable() const {
 	if (IsMoving() || IsJumping())
 		return false;
