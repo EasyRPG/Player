@@ -60,10 +60,6 @@ void Scene_Map::Start() {
 	Game_Map::Update(true);
 }
 
-Scene_Map::~Scene_Map() {
-	Main_Data::Cleanup();
-}
-
 void Scene_Map::Continue() {
 	if (Game_Temp::battle_calling) {
 		// Came from battle

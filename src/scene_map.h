@@ -33,7 +33,6 @@ public:
 	 * Constructor.
 	 */
 	Scene_Map(bool from_save = false);
-	~Scene_Map() override;
 
 	void Start() override;
 	void Continue() override;
