@@ -271,7 +271,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetCriticalHitMessage() const {
 		);
 	}
 	else {
-		return GetTarget()->GetName() + message;
+		return message;
 	}
 }
 
