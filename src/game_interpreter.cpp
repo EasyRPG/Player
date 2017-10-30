@@ -1612,19 +1612,40 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 	int x = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[4]);
 
-	// Check if the party is in the current vehicle
+	// Check if the party is in the current vehicle and transfer the party together with it
 	if (Main_Data::game_player->GetVehicle() == vehicle) {
-		if (map_id != Game_Map::GetMapId()) {
-			Output::Warning("SetVehicleLocation: Can't move %s to new map %d while the party is boarded.",
-							Game_Vehicle::TypeNames[vehicle_id], map_id);
+		if (map_id == Game_Map::GetMapId()) {
+			if (vehicle) {
+				vehicle->SetPosition(map_id, x, y);
+			}
+			Main_Data::game_player->MoveTo(x, y);
 			return true;
+		};
+
+		// This implements a bug in RPG_RT which allows moving the party to a new map while boarded (or when using -1)
+		// without doing a teleport + transition.
+		// The implementation of this bug does a normal teleport with transition because other solution would be too
+		// invasive for little gain.
+
+		if (Main_Data::game_player->IsTeleporting() ||
+			Game_Message::visible) {
+			return false;
 		}
 
-		// Transfer the party together with the vehicle
-		Main_Data::game_player->MoveTo(x, y);
-	}
+		if (vehicle) {
+			vehicle->SetPosition(map_id, x, y);
+		}
 
-	if (vehicle) {
+		Main_Data::game_player->ReserveTeleport(map_id, x, y);
+		Main_Data::game_player->StartTeleport();
+
+		// Parallel events should keep on running in 2k and 2k3, unlike in later versions
+		if (!main_flag)
+			return true;
+
+		index++;
+		return false;
+	} else if (vehicle) {
 		vehicle->SetPosition(map_id, x, y);
 	}
 
