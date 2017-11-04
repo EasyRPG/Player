@@ -548,10 +548,18 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	Game_Temp::hero_name_id = com.parameters[0];
 	Game_Temp::hero_name_charset = com.parameters[1];
 
-	if (com.parameters[2] != 0)
-		Game_Temp::hero_name = Game_Actors::GetActor(Game_Temp::hero_name_id)->GetName();
-	else
+	if (com.parameters[2] != 0) {
+		Game_Actor *actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
+
+		if (!actor) {
+			Output::Warning("EnterHeroName: Invalid actor ID %d", Game_Temp::hero_name_id);
+			Game_Temp::hero_name.clear();
+		} else {
+			Game_Temp::hero_name = actor->GetName();
+		}
+	} else {
 		Game_Temp::hero_name.clear();
+	}
 
 	Game_Temp::name_calling = true;
 	return true;

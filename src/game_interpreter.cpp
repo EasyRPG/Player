@@ -772,69 +772,73 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		case 5:
 			// Hero
 			actor = Game_Actors::GetActor(com.parameters[5]);
-			if (actor != NULL) {
-				switch (com.parameters[6]) {
-					case 0:
-						// Level
-						value = actor->GetLevel();
-						break;
-					case 1:
-						// Experience
-						value = actor->GetExp();
-						break;
-					case 2:
-						// Current HP
-						value = actor->GetHp();
-						break;
-					case 3:
-						// Current MP
-						value = actor->GetSp();
-						break;
-					case 4:
-						// Max HP
-						value = actor->GetMaxHp();
-						break;
-					case 5:
-						// Max MP
-						value = actor->GetMaxSp();
-						break;
-					case 6:
-						// Attack
-						value = actor->GetAtk();
-						break;
-					case 7:
-						// Defense
-						value = actor->GetDef();
-						break;
-					case 8:
-						// Intelligence
-						value = actor->GetSpi();
-						break;
-					case 9:
-						// Agility
-						value = actor->GetAgi();
-						break;
-					case 10:
-						// Weapon ID
-						value = actor->GetWeaponId();
-						break;
-					case 11:
-						// Shield ID
-						value = actor->GetShieldId();
-						break;
-					case 12:
-						// Armor ID
-						value = actor->GetArmorId();
-						break;
-					case 13:
-						// Helmet ID
-						value = actor->GetHelmetId();
-						break;
-					case 14:
-						// Accesory ID
-						value = actor->GetAccessoryId();
-						break;
-				}
+
+			if (!actor) {
+				Output::Warning("ControlVariables: Invalid actor ID %d", com.parameters[5]);
+				return true;
+			}
+
+			switch (com.parameters[6]) {
+				case 0:
+					// Level
+					value = actor->GetLevel();
+					break;
+				case 1:
+					// Experience
+					value = actor->GetExp();
+					break;
+				case 2:
+					// Current HP
+					value = actor->GetHp();
+					break;
+				case 3:
+					// Current MP
+					value = actor->GetSp();
+					break;
+				case 4:
+					// Max HP
+					value = actor->GetMaxHp();
+					break;
+				case 5:
+					// Max MP
+					value = actor->GetMaxSp();
+					break;
+				case 6:
+					// Attack
+					value = actor->GetAtk();
+					break;
+				case 7:
+					// Defense
+					value = actor->GetDef();
+					break;
+				case 8:
+					// Intelligence
+					value = actor->GetSpi();
+					break;
+				case 9:
+					// Agility
+					value = actor->GetAgi();
+					break;
+				case 10:
+					// Weapon ID
+					value = actor->GetWeaponId();
+					break;
+				case 11:
+					// Shield ID
+					value = actor->GetShieldId();
+					break;
+				case 12:
+					// Armor ID
+					value = actor->GetArmorId();
+					break;
+				case 13:
+					// Helmet ID
+					value = actor->GetHelmetId();
+					break;
+				case 14:
+					// Accesory ID
+					value = actor->GetAccessoryId();
+					break;
 			}
 			break;
 		case 6:
@@ -1044,14 +1048,23 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	case 1:
 		// Hero
 		actor = Game_Actors::GetActor(id);
-		if (actor)
-			actors.push_back(actor);
+
+		if (!actor) {
+			Output::Warning("Invalid actor ID %d", id);
+			return actors;
+		}
+
+		actors.push_back(actor);
 		break;
 	case 2:
 		// Var hero
 		actor = Game_Actors::GetActor(Game_Variables[id]);
-		if (actor)
-			actors.push_back(actor);
+		if (!actor) {
+			Output::Warning("Invalid actor ID %d", Game_Variables[id]);
+			return actors;
+		}
+
+		actors.push_back(actor);
 		break;
 	}
 
@@ -1163,18 +1176,20 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 	actor = Game_Actors::GetActor(id);
 
-	if (actor != NULL) {
+	if (!actor) {
+		Output::Warning("ChangePartyMember: Invalid actor ID %d", id);
+		return true;
+	}
 
-		if (com.parameters[0] == 0) {
-			// Add members
-			Main_Data::game_party->AddActor(id);
+	if (com.parameters[0] == 0) {
+		// Add members
+		Main_Data::game_party->AddActor(id);
 
-		} else {
-			// Remove members
-			Main_Data::game_party->RemoveActor(id);
+	} else {
+		// Remove members
+		Main_Data::game_party->RemoveActor(id);
 
-			CheckGameOver();
-		}
+		CheckGameOver();
 	}
 
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
@@ -1490,18 +1505,36 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 
 bool Game_Interpreter::CommandChangeHeroName(RPG::EventCommand const& com) { // code 10610
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeHeroName: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	actor->SetName(com.string);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeHeroTitle(RPG::EventCommand const& com) { // code 10620
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeHeroTitle: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	actor->SetTitle(com.string);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& com) { // code 10630
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeSpriteAssociation: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	const std::string &file = com.string;
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
@@ -1512,11 +1545,14 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& c
 
 bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { // code 10640
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
-	if (actor != NULL) {
-		actor->SetFace(com.string, com.parameters[1]);
+
+	if (!actor) {
+		Output::Warning("CommandChangeActorFace: Invalid actor ID %d", com.parameters[0]);
 		return true;
 	}
-	return false;
+
+	actor->SetFace(com.string, com.parameters[1]);
+	return true;
 }
 
 bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
@@ -2591,6 +2627,13 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		// Hero
 		actor_id = com.parameters[1];
 		actor = Game_Actors::GetActor(actor_id);
+
+		if (!actor) {
+			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
+			// Use Else branch
+			return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+		}
+
 		switch (com.parameters[2]) {
 		case 0:
 			// Is actor in party

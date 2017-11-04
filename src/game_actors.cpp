@@ -51,10 +51,10 @@ void Game_Actors::Dispose() {
 
 Game_Actor* Game_Actors::GetActor(int actor_id) {
 	if (!ActorExists(actor_id)) {
-		Output::Warning("GetActor: Invalid actor ID %d", actor_id);
 		return nullptr;
-	} else if (!data[actor_id])
+	} else if (!data[actor_id]) {
 		data[actor_id].reset(new Game_Actor(actor_id));
+	}
 
 	return data[actor_id].get();
 }
