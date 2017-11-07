@@ -46,6 +46,8 @@ public:
 		Hangul2,
 		ZhCn1,
 		ZhCn2,
+		ZhTw1,
+		ZhTw2,
 		RuCyrl,
 		Letter,
 		Symbol,
@@ -66,6 +68,7 @@ public:
 	static const char* const DONE_JP;
 	static const char* const DONE_KO;
 	static const char* const DONE_ZH_CN;
+	static const char* const DONE_ZH_TW;
 	static const char* const DONE_RU;
 
 	static const int row_max = 9;
