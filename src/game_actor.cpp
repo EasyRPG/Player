@@ -48,8 +48,7 @@ Game_Actor::Game_Actor(int actor_id) :
 	// - LSD readout is showing this happens.
 	GetData().class_id = -1;
 	GetData().battle_commands.clear();
-	for (int i = 0; i < 7; i++)
-		GetData().battle_commands.push_back(-1);
+	GetData().battle_commands.resize(7, -1);
 
 	Setup();
 }
@@ -933,57 +932,43 @@ void Game_Actor::SetSprite(const std::string &file, int index, bool transparent)
 	GetData().sprite_flags = transparent ? 3 : 0;
 }
 
-void Game_Actor::PadBattleCommandsArray(bool include7) {
-	std::vector<uint32_t> ncommands;
-	for (size_t i = 0; i < GetData().battle_commands.size(); ++i) {
-		int32_t command_index = (int32_t) (GetData().battle_commands[i]);
-		if (command_index != -1) {
-			if (command_index != 0) {
-				ncommands.push_back((uint32_t) command_index);
-			}
-		}
-	}
-	if (include7) {
-		if (ncommands.size() < 7) {
-			ncommands.push_back(0);
-			for (int i = ncommands.size(); i < 7; i++) {
-				ncommands.push_back((uint32_t) -1);
-			}
-		}
-	}
-	GetData().battle_commands = ncommands;
-}
-
 void Game_Actor::ChangeBattleCommands(bool add, int id) {
-	// If changing battle commands, *that* is when RPG_RT will replace the -1 list with a 'true' list.
+	auto& cmds = GetData().battle_commands;
+
+	// If changing battle commands, that is when RPG_RT will replace the -1 list with a 'true' list.
 	// Fetch original command array.
 	if (!GetData().changed_class) {
-		GetData().battle_commands = Data::actors[GetId() - 1].battle_commands;
+		cmds = Data::actors[GetId() - 1].battle_commands;
 		GetData().changed_class = true;
 	}
+
+	// The battle commands array always has a size of 7 padded with -1. The last element before the padding is 0 which
+	// stands for the Row command
 	if (add) {
-		if (std::find(GetData().battle_commands.begin(), GetData().battle_commands.end(), id)
-			== GetData().battle_commands.end()) {
-			PadBattleCommandsArray(false);
-			GetData().battle_commands.push_back(id);
-			std::sort(GetData().battle_commands.begin(), GetData().battle_commands.end());
-			PadBattleCommandsArray(true);
+		if (std::find(cmds.begin(), cmds.end(), id)	== cmds.end()) {
+			std::vector<uint32_t> new_cmds;
+			std::copy_if(cmds.begin(), cmds.end(),
+						 std::back_inserter(new_cmds), [](uint32_t i) { return i != 0 && i != -1; });
+			// Needs space for at least 2 more commands (new command and row)
+			if (new_cmds.size() >= 6) {
+				return;
+			}
+			new_cmds.push_back(id);
+			std::sort(new_cmds.begin(), new_cmds.end());
+			new_cmds.push_back(0);
+			cmds = new_cmds;
 		}
+	} else if (id == 0) {
+		cmds.clear();
+		cmds.push_back(0);
+	} else {
+		std::vector<uint32_t>::iterator it;
+		it = std::find(cmds.begin(), cmds.end(), id);
+		if (it != cmds.end())
+			cmds.erase(it);
 	}
-	else if (id == 0) {
-		GetData().battle_commands.clear();
-		PadBattleCommandsArray(true);
-	}
-	else {
-		PadBattleCommandsArray(false);
-		{
-			std::vector<uint32_t>::iterator it;
-			it = std::find(GetData().battle_commands.begin(), GetData().battle_commands.end(), id);
-			if (it != GetData().battle_commands.end())
-				GetData().battle_commands.erase(it);
-		}
-		PadBattleCommandsArray(true);
-	}
+
+	cmds.resize(7, -1);
 }
 
 const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() const {
