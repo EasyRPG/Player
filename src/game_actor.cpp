@@ -45,11 +45,6 @@ Game_Actor::Game_Actor(int actor_id) :
 	Game_Battler(),
 	actor_id(actor_id) {
 	GetData().Setup(actor_id);
-	// - LSD readout is showing this happens.
-	GetData().class_id = -1;
-	GetData().battle_commands.clear();
-	GetData().battle_commands.resize(7, -1);
-
 	Setup();
 }
 
@@ -946,9 +941,9 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	// stands for the Row command
 	if (add) {
 		if (std::find(cmds.begin(), cmds.end(), id)	== cmds.end()) {
-			std::vector<uint32_t> new_cmds;
+			std::vector<int32_t> new_cmds;
 			std::copy_if(cmds.begin(), cmds.end(),
-						 std::back_inserter(new_cmds), [](uint32_t i) { return i != 0 && i != -1; });
+						 std::back_inserter(new_cmds), [](int32_t i) { return i != 0 && i != -1; });
 			// Needs space for at least 2 more commands (new command and row)
 			if (new_cmds.size() >= 6) {
 				return;
@@ -962,7 +957,7 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 		cmds.clear();
 		cmds.push_back(0);
 	} else {
-		std::vector<uint32_t>::iterator it;
+		std::vector<int32_t>::iterator it;
 		it = std::find(cmds.begin(), cmds.end(), id);
 		if (it != cmds.end())
 			cmds.erase(it);
@@ -973,7 +968,7 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 
 const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() const {
 	std::vector<const RPG::BattleCommand*> commands;
-	std::vector<uint32_t> obc = GetData().battle_commands;
+	std::vector<int32_t> obc = GetData().battle_commands;
 	if (!GetData().changed_class) {
 		// In this case, get it straight from the LDB.
 		obc = Data::actors[actor_id - 1].battle_commands;
