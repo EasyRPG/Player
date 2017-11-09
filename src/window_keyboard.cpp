@@ -31,10 +31,11 @@ const char* const Window_Keyboard::DONE_JP = "<決定>";
 const char* const Window_Keyboard::DONE_RU = "<OK>";
 const char* const Window_Keyboard::DONE_KO = "<결정>";
 const char* const Window_Keyboard::DONE_ZH_CN = "<确定>";
+const char* const Window_Keyboard::DONE_ZH_TW = "<確定>";
 
 /*
  * Hiragana <-> Katakana; Hangul 1 <-> Hangul 2; Simp. Chinese 1 <-> Simp. Chinese 2;
- * Rus.Cyrillic <-> Rus.Latin; letter <-> symbol
+ * Trad. Chinese 1 <-> Trad. Chinese 2; Rus.Cyrillic <-> Rus.Latin; letter <-> symbol
  */
 
 Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
@@ -121,6 +122,34 @@ Keyboard_Layout Window_Keyboard::layouts[Window_Keyboard::MODE_END] = {
 			{"威", "维", "韦", "卫", "温", "沃", "乌", "西", "希", "夏"},
 			{"辛", "修", "休", "雅", "亚", "林", "琳", "留", "隆", "鲁"},
 			{"伊", "英", "尤", "则", "扎", "", NEXT_PAGE, "", DONE}
+		}
+	},
+	{
+		"<翻頁>",
+		{ // Trad. Chinese 1
+			{"泉", "聲", "咽", "危", "石", "日", "色", "冷", "青", "松"},
+			{"薄", "暮", "空", "潭", "曲", "安", "禪", "制", "毒", "龍"},
+			{"海", "內", "存", "知", "己", "天", "涯", "若", "比", "鄰"},
+			{"滿", "階", "芳", "草", "綠", "一", "片", "杏", "花", "香"},
+			{"恨", "無", "千", "日", "酒", "空", "斷", "九", "迴", "腸"},
+			{"當", "路", "誰", "相", "假", "知", "音", "世", "所", "稀"},
+			{"只", "應", "守", "寂", "寞", "還", "掩", "故", "園", "扉"},
+			{"坐", "觀", "垂", "釣", "者", "－", "～", "’", "＝", "☆"},
+			{"徒", "有", "羨", "魚", "情", "的", NEXT_PAGE, "", DONE}
+		}
+	},
+	{
+		"<前頁>",
+		{ // Trad. Chinese 2
+			{"幾", "行", "歸", "塞", "盡", "念", "爾", "獨", "何", "之"},
+			{"暮", "雨", "相", "呼", "失", "寒", "塘", "欲", "下", "遲"},
+			{"霞", "光", "連", "碧", "彩", "湖", "岸", "水", "連", "灘"},
+			{"天", "地", "丹", "青", "繪", "人", "間", "錦", "秀", "看"},
+			{"返", "景", "入", "深", "林", "復", "照", "青", "苔", "上"},
+			{"中", "歲", "頗", "好", "道", "晚", "家", "南", "山", "睡"},
+			{"興", "來", "每", "獨", "往", "勝", "事", "空", "自", "知"},
+			{"遙", "夜", "泛", "清", "瑟", "－", "～", "’", "＝", "☆"},
+			{"西", "風", "生", "翠", "蘿", "的", NEXT_PAGE, "", DONE}
 		}
 	},
 	{

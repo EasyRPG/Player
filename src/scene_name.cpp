@@ -57,6 +57,11 @@ void Scene_Name::Start() {
 		layouts.push_back(Window_Keyboard::ZhCn1);
 		layouts.push_back(Window_Keyboard::ZhCn2);
 		done = Window_Keyboard::DONE_ZH_CN;
+	// Trad. Chinese pages
+	} else if (Player::IsBig5()) {
+		layouts.push_back(Window_Keyboard::ZhTw1);
+		layouts.push_back(Window_Keyboard::ZhTw2);
+		done = Window_Keyboard::DONE_ZH_TW;
 	// Cyrillic page (we assume it’s Russian since we have no way to detect Serbian etc.)
 	} else if (Player::IsCP1251()) {
 		layouts.push_back(Window_Keyboard::RuCyrl);
