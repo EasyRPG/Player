@@ -932,9 +932,9 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 
 	// If changing battle commands, that is when RPG_RT will replace the -1 list with a 'true' list.
 	// Fetch original command array.
-	if (!GetData().changed_class) {
+	if (!GetData().changed_battle_commands) {
 		cmds = Data::actors[GetId() - 1].battle_commands;
-		GetData().changed_class = true;
+		GetData().changed_battle_commands = true;
 	}
 
 	// The battle commands array always has a size of 7 padded with -1. The last element before the padding is 0 which
@@ -969,7 +969,7 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() const {
 	std::vector<const RPG::BattleCommand*> commands;
 	std::vector<int32_t> obc = GetData().battle_commands;
-	if (!GetData().changed_class) {
+	if (!GetData().changed_battle_commands) {
 		// In this case, get it straight from the LDB.
 		obc = Data::actors[actor_id - 1].battle_commands;
 	}
@@ -1010,7 +1010,7 @@ const RPG::Class* Game_Actor::GetClass() const {
 
 void Game_Actor::SetClass(int _class_id) {
 	GetData().class_id = _class_id;
-	GetData().changed_class = true; // Any change counts as a battle commands change.
+	GetData().changed_battle_commands = true; // Any change counts as a battle commands change.
 
 	// The class settings are not applied when the actor has a class on startup
 	// but only when the "Change Class" event command is used.
