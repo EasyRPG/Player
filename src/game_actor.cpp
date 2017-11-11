@@ -18,6 +18,7 @@
 // Headers
 #include <algorithm>
 #include <sstream>
+#include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
 #include "game_message.h"
