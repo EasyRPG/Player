@@ -377,7 +377,6 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			break;
 	}
 
-
 	switch (skill->scope) {
 		case RPG::Skill::Scope_enemy:
 			SetState(State_SelectEnemyTarget);

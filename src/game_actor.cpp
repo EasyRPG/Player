@@ -451,7 +451,7 @@ int Game_Actor::CalculateExp(int level) const {
 	const RPG::Class* klass = ReaderUtil::GetElement(Data::classes, GetData().class_id);
 
 	double base, inflation, correction;
-	if (GetData().class_id > 0) {
+	if (klass) {
 		base = klass->exp_base;
 		inflation = klass->exp_inflation;
 		correction = klass->exp_correction;
@@ -485,16 +485,16 @@ int Game_Actor::CalculateExp(int level) const {
 }
 
 void Game_Actor::MakeExpList() {
-	exp_list.resize(GetMaxLevel());
-	for (int i = 1; i < exp_list.size(); ++i) {
+	exp_list.resize((size_t)GetMaxLevel());
+	for (int i = 1; i < (int)exp_list.size(); ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
 }
 
 std::string Game_Actor::GetExpString() const {
-		std::stringstream ss;
+	std::stringstream ss;
 	ss << GetExp();
-		return ss.str();
+	return ss.str();
 }
 
 std::string Game_Actor::GetNextExpString() const {
@@ -916,14 +916,11 @@ int Game_Actor::GetBattleY() const {
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
 		float top = 0.0f;
+		float bottom = 0.0f;
 		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
 		if (terrain) {
 			// No warning, already reported on battle start
 			top = terrain->grid_a;
-		}
-
-		float bottom = top;
-		if (terrain) {
 			bottom = top + terrain->grid_b / 13;
 		}
 

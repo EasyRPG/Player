@@ -2876,7 +2876,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	bool show = com.parameters[6] > 0;
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
-	if (class_id > 0) {
+	if (!cls) {
 		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
 		return true;
 	}

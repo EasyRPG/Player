@@ -379,7 +379,7 @@ void Game_Battler::RemoveState(int state_id) {
 	states[state_id - 1] = 0;
 }
 
-int Game_Battler::ApplyConditions(){
+int Game_Battler::ApplyConditions() {
 	int damageTaken = 0;
 	for (int16_t inflicted : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -564,7 +564,6 @@ int Game_Battler::GetSpi() const {
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
-
 		if (state.affect_spirit) {
 			n = AffectParameter(state.affect_type, base_spi);
 			break;
@@ -585,7 +584,6 @@ int Game_Battler::GetAgi() const {
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
 		const RPG::State& state = *ReaderUtil::GetElement(Data::states, i);
-
 		if (state.affect_agility) {
 			n = AffectParameter(state.affect_type, base_agi);
 			break;
