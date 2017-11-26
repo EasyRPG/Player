@@ -485,8 +485,8 @@ int Game_Actor::CalculateExp(int level) const {
 }
 
 void Game_Actor::MakeExpList() {
-	exp_list.resize(GetMaxLevel());
-	for (int i = 1; i <= exp_list.size(); ++i) {
+	exp_list.resize(GetMaxLevel() + 1);
+	for (int i = 1; i < exp_list.size(); ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
 }
@@ -1009,6 +1009,12 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	// The battle commands array always has a size of 7 padded with -1. The last element before the padding is 0 which
 	// stands for the Row command
 	if (add) {
+		const RPG::BattleCommand* cmd = ReaderUtil::GetElement(Data::battlecommands.commands, id);
+		if (!cmd) {
+			Output::Warning("ChangeBattleCommands: Can't add invalid battle command %d", id);
+			return;
+		}
+
 		if (std::find(cmds.begin(), cmds.end(), id)	== cmds.end()) {
 			std::vector<int32_t> new_cmds;
 			std::copy_if(cmds.begin(), cmds.end(),
@@ -1043,9 +1049,7 @@ const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() con
 		obc = Data::actors[actor_id - 1].battle_commands;
 	}
 
-	for (size_t i = 0; i < obc.size(); ++i) {
-		int command_index = obc[i];
-
+	for (int command_index : obc) {
 		if (command_index == 0) {
 			// Row command -> not impl
 			continue;
@@ -1056,7 +1060,13 @@ const std::vector<const RPG::BattleCommand*> Game_Actor::GetBattleCommands() con
 			continue;
 		}
 
-		commands.push_back(&Data::battlecommands.commands[command_index - 1]);
+		const RPG::BattleCommand* cmd = ReaderUtil::GetElement(Data::battlecommands.commands, command_index);
+		if (!cmd) {
+			Output::Warning("GetBattleCommands: Invalid battle command ID %d", command_index);
+			continue;
+		}
+
+		commands.push_back(cmd);
 	}
 
 	return commands;
@@ -1106,7 +1116,7 @@ void Game_Actor::SetClass(int _class_id) {
 
 		GetData().battler_animation = 0;
 
-		GetData().battle_commands = actor.battle_commands;
+		GetData().battle_commands = GetActor().battle_commands;
 	}
 	MakeExpList();
 
@@ -1280,11 +1290,12 @@ void Game_Actor::RemoveInvalidData() {
 	}
 
 	// Remove invalid class
-	if (!GetClass()) {
-		if (GetData().changed_class) {
+	if (GetData().class_id > 0) {
+		const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, GetData().class_id);
+		if (!cls) {
 			Output::Warning("Actor %d: Removing invalid class %d", GetId(), GetData().class_id);
+			SetClass(0);
 		}
-		SetClass(0);
 	}
 
 	// Remove invalid skills
