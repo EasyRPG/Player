@@ -485,7 +485,7 @@ int Game_Actor::CalculateExp(int level) const {
 }
 
 void Game_Actor::MakeExpList() {
-	exp_list.resize(GetMaxLevel() + 1);
+	exp_list.resize(GetMaxLevel());
 	for (int i = 1; i < exp_list.size(); ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
