@@ -67,9 +67,11 @@ void Game_Actor::Init() {
 
 	RemoveInvalidData();
 
-	SetHp(GetMaxHp());
-	SetSp(GetMaxSp());
-	SetExp(exp_list[GetLevel() - 1]);
+	if (GetLevel() > 0) {
+		SetHp(GetMaxHp());
+		SetSp(GetMaxSp());
+		SetExp(exp_list[GetLevel() - 1]);
+	}
 }
 
 void Game_Actor::Fixup() {
@@ -315,12 +317,17 @@ int Game_Actor::GetSp() const {
 }
 
 int Game_Actor::GetBaseMaxHp(bool mod) const {
-	// Looks like RPG_RT only applies Class changes (class_id > 0 - 20kdc)
-	// when the class was changed by the ChangeClass event, otherwise it uses
-	// the normal actor attributes.
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.maxhp, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.maxhp, GetData().level);
+	int n = 0;
+	// Special handling for games that use a level of 0 -> Return 0 Hp
+	// Same applies for other stats
+	if (GetLevel() > 0) {
+		// Looks like RPG_RT only applies Class changes (class_id > 0 - 20kdc)
+		// when the class was changed by the ChangeClass event, otherwise it uses
+		// the normal actor attributes.
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.maxhp, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.maxhp, GetLevel());
+	}
 
 	if (mod)
 		n += GetData().hp_mod;
@@ -333,9 +340,12 @@ int Game_Actor::GetBaseMaxHp() const {
 }
 
 int Game_Actor::GetBaseMaxSp(bool mod) const {
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.maxsp, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.maxsp, GetData().level);
+	int n = 0;
+	if (GetLevel() > 0) {
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.maxsp, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.maxsp, GetLevel());
+	}
 
 	if (mod)
 		n += GetData().sp_mod;
@@ -348,9 +358,12 @@ int Game_Actor::GetBaseMaxSp() const {
 }
 
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.attack, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.attack, GetData().level);
+	int n = 0;
+	if (GetLevel() > 0) {
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.attack, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.attack, GetLevel());
+	}
 
 	if (mod) {
 		n += GetData().attack_mod;
@@ -373,9 +386,12 @@ int Game_Actor::GetBaseAtk() const {
 }
 
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.defense, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.defense, GetData().level);
+	int n = 0;
+	if (GetLevel() > 0) {
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.defense, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.defense, GetLevel());
+	}
 
 	if (mod) {
 		n += GetData().defense_mod;
@@ -398,9 +414,12 @@ int Game_Actor::GetBaseDef() const {
 }
 
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.spirit, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.spirit, GetData().level);
+	int n = 0;
+	if (GetLevel() > 0) {
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.spirit, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.spirit, GetLevel());
+	}
 
 	if (mod) {
 		n += GetData().spirit_mod;
@@ -423,9 +442,12 @@ int Game_Actor::GetBaseSpi() const {
 }
 
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
-	int n = GetData().class_id > 0
-		? *ReaderUtil::GetElement(GetClass()->parameters.agility, GetData().level)
-		: *ReaderUtil::GetElement(GetActor().parameters.agility, GetData().level);
+	int n = 0;
+	if (GetLevel() > 0) {
+		n = GetData().class_id > 0
+			? *ReaderUtil::GetElement(GetClass()->parameters.agility, GetLevel())
+			: *ReaderUtil::GetElement(GetActor().parameters.agility, GetLevel());
+	}
 
 	if (mod) {
 		n += GetData().agility_mod;
@@ -520,8 +542,10 @@ int Game_Actor::GetNextExp() const {
 }
 
 int Game_Actor::GetNextExp(int level) const {
-	if (level >= GetMaxLevel() || level <= 0) {
+	if (level >= GetMaxLevel() || level <= -1) {
 		return -1;
+	} else if (level == 0) {
+		return 0;
 	} else {
 		return exp_list[level];
 	}
@@ -653,7 +677,7 @@ void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 
 	SetExp(new_exp);
 
-	if (new_level != GetData().level) {
+	if (new_level != GetLevel()) {
 		ChangeLevel(new_level, level_up_message);
 	}
 }
@@ -1263,7 +1287,7 @@ void Game_Actor::RemoveInvalidData() {
 	 - Invalid equipment is removed
 	 - An invalid class is removed
 	 - Invalid states are removed
-	 - Level is between 1 and 99, and does not exceed MaxLevel
+	 - Level is between 0 and 99, and does not exceed MaxLevel
 
 	 For "external data" (not from LCF Actor or LSD SaveActor) the data is
 	 verified in the corresponding functions.
@@ -1319,7 +1343,11 @@ void Game_Actor::RemoveInvalidData() {
 	}
 
 	// Remove invalid levels
-	if (GetLevel() <= 0 || GetLevel() > GetMaxLevel()) {
+	// Special handling for the game COLORS: Lost Memories which uses level 0
+	// through database editing. Hopefully no game uses negative levels.
+	if (GetLevel() == 0) {
+		Output::Debug("Actor %d: Special handling for level 0", GetId());
+	} else if (GetLevel() < 0 || GetLevel() > GetMaxLevel()) {
 		Output::Warning("Actor %d: Invalid level %d", GetId(), GetLevel());
 		SetLevel(1);
 	}
