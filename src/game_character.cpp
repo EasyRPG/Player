@@ -774,8 +774,13 @@ int Game_Character::DistanceYfromPlayer() const {
 
 void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 									int frequency) {
-
 	Game_Map::RemovePendingMove(this);
+
+	if (new_route.move_commands.empty()) {
+		CancelMoveRoute();
+		return;
+	}
+
 	Game_Map::AddPendingMove(this);
 
 	original_move_frequency = GetMoveFrequency();
