@@ -1334,14 +1334,6 @@ void Game_Actor::RemoveInvalidData() {
 		GetStates().resize(Data::states.size());
 	}
 
-	for (int16_t state_id : GetStates()) {
-		const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-		if (!state) {
-			Output::Warning("Actor %d: Removing invalid state %d", GetId(), state_id);
-			RemoveState(state_id);
-		}
-	}
-
 	// Remove invalid levels
 	// Special handling for the game COLORS: Lost Memories which uses level 0
 	// through database editing. Hopefully no game uses negative levels.
