@@ -82,7 +82,7 @@ void Window_ShopBuy::DrawItem(int index) {
 
 void Window_ShopBuy::UpdateHelp() {
 	std::string help_text = "??? BAD ITEM ???";
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetIndex());
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, data[index]);
 	if (item) {
 		help_text = item->description;
 	}
@@ -91,7 +91,7 @@ void Window_ShopBuy::UpdateHelp() {
 }
 
 bool Window_ShopBuy::CheckEnable(int item_id) {
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetIndex());
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
 		return false;
 	}
