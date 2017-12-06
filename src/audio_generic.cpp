@@ -67,13 +67,17 @@ void GenericAudio::BGM_Play(const std::string& file, int volume, int pitch, int 
 
 void GenericAudio::BGM_Pause() {
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].paused = true;
+		if (BGM_Channels[i].decoder) {
+			BGM_Channels[i].paused = true;
+		}
 	}
 }
 
 void GenericAudio::BGM_Resume() {
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
-		BGM_Channels[i].paused = false;
+		if (BGM_Channels[i].decoder) {
+			BGM_Channels[i].paused = false;
+		}
 	}
 }
 
@@ -195,6 +199,7 @@ bool GenericAudio::PlayOnChannel(BgmChannel& chan, const std::string& file, int 
 		return true;
 	} else {
 		Output::Warning("Couldn't play BGM %s. Format not supported", FileFinder::GetPathInsideGamePath(file).c_str());
+		chan.decoder.reset();
 		fclose(filehandle);
 	}
 
