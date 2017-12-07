@@ -96,6 +96,7 @@ void Sprite_Battler::Update() {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
+				// Is a battle animation
 				animation->Update();
 
 				if (animation->IsDone()) {
@@ -113,6 +114,7 @@ void Sprite_Battler::Update() {
 
 				return;
 			}
+			// Is a battle charset animation
 
 			static const int frames[] = {0,1,2,1,0};
 			int frame = frames[cycle / 10];
@@ -137,8 +139,10 @@ void Sprite_Battler::Update() {
 				switch (loop_state) {
 					case LoopState_DefaultAnimationAfterFinish:
 						cycle = 0;
-						// fallthrough
+						idling = true;
+						break;
 					case LoopState_WaitAfterFinish:
+						--cycle; // incremented to last cycle next update
 						idling = true;
 						break;
 					case LoopState_LoopAnimation:
