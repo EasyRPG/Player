@@ -4,8 +4,8 @@ Installation Instructions
 RTP
 ---
 * Install the RTP files on your computer
-* RPG2K games: Copy the RTP files, not the RTP folder iteself, to /media/data/local/share/easyrpg/rtp2k
-* RPG2K3 games: Copy the RTP files, not the RTP folder itself, to /media/data/local/share/easyrpg/rtp2k3
+* RPG2K games: Copy the RTP files, not the RTP folder iteself, to /usr/local/home/.easyrpg/rtp2k
+* RPG2K3 games: Copy the RTP files, not the RTP folder itself, to /usr/local/home/.easyrpg/rtp2k3
 
 Games
 -----
