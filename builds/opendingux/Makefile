@@ -34,9 +34,9 @@ ifeq ($(BUILD_TARGET), gcwzero)
 	TOOLCHAINDIR ?= /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	BINDIR = $(TOOLCHAINDIR)/usr/bin
-	CFLAGS = -Ofast -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 -mmxu -std=gnu++11 -DLCF_SUPPORT_ICU 
+	CFLAGS = -Ofast -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 -std=gnu++11 -DLCF_SUPPORT_ICU 
 	CFLAGS += -DGCW_ZERO -DWANT_FMMIDI=2 -DHAVE_MPG123 -DHAVE_LIBSNDFILE -DWANT_FASTWAV
-	LDFLAGS = -Wl,--as-needed,--gc-sections -flto
+	LDFLAGS = -Wl,--no-as-needed,--gc-sections -flto
 	PKG_CONFIG := $(BINDIR)/pkg-config
 	PNG_LIBS := $(shell $(PKG_CONFIG) --libs libpng)
 	PIXMAN_CFLAGS := $(shell $(PKG_CONFIG) --static --cflags pixman-1)
@@ -67,7 +67,7 @@ BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 
 # Compiler flags
-CFLAGS += -Wall -DUSE_SDL -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
+CFLAGS += -Wall -DNDEBUG -DUSE_SDL -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fno-rtti -fno-exceptions
 LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
            -ldl `$(SDL_CONFIG) --libs` $(LIBSDLMIXER_LIBS) $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS) $(LIBMPG123_LIBS) $(LIBSNDFILE_LIBS)

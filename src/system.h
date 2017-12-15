@@ -58,6 +58,10 @@
 #  define WORDS_BIGENDIAN
 #endif
 
+#ifdef OPENDINGUX
+#  include <sys/types.h>
+#endif
+
 #define SUPPORT_BMP
 #define SUPPORT_PNG
 #define SUPPORT_XYZ
