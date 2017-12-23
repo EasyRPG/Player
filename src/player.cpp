@@ -164,7 +164,7 @@ void Player::Init(int argc, char *argv[]) {
 
 	// Create initial directory structure in our private area
 	// Retrieve save directory from persistent storage
-	EM_ASM(
+	EM_ASM((
 
 		FS.mkdir("easyrpg");
 		FS.chdir("easyrpg");
@@ -176,7 +176,7 @@ void Player::Init(int argc, char *argv[]) {
 
 		FS.syncfs(true, function(err) {
 		});
-	);
+	));
 #endif
 
 	Main_Data::Init();
