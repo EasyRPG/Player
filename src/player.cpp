@@ -358,7 +358,6 @@ void Player::Exit() {
 	Graphics::Quit();
 	FileFinder::Quit();
 	Output::Quit();
-	Main_Data::Cleanup();
 	DisplayUi.reset();
 
 #ifdef PSP2
@@ -703,6 +702,8 @@ void Player::ResetGameObjects() {
 	}
 
 	// The init order is important
+	Main_Data::Cleanup();
+
 	Main_Data::game_data.Setup();
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
