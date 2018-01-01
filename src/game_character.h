@@ -635,6 +635,15 @@ public:
 	bool IsDirectionFixed() const;
 
 	/**
+	 * Tests if the step animation is enabled.
+	 * The animation is enabled when the animation type is not "fixed_graphic" and when
+	 * the animation was not disabled through the move command "stop animation".
+	 *
+	 * @return Wheter animations are enabled.
+	 */
+	bool IsAnimated() const;
+
+	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
