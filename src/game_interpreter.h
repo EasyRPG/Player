@@ -221,9 +221,9 @@ protected:
 	virtual bool ContinuationShowInnFinish(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
-	int DecodeInt(std::vector<int>::const_iterator& it);
-	const std::string DecodeString(std::vector<int>::const_iterator& it);
-	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
+	int DecodeInt(std::vector<int32_t>::const_iterator& it);
+	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
+	RPG::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
 
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 

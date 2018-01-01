@@ -40,17 +40,7 @@ public:
 	 * @param blue blue component.
 	 * @param alpha alpha component.
 	 */
-	Color(unsigned red, unsigned green, unsigned blue, unsigned alpha);
-
-	/**
-	 * Constructor.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 * @param alpha alpha component.
-	 */
-	Color(int red, int green, int blue, int alpha);
+	Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
 	/**
 	 * Equality operator.
@@ -70,7 +60,7 @@ public:
 	 * @param blue blue component.
 	 * @param alpha alpha component.
 	 */
-	void Set(unsigned red, unsigned green, unsigned blue, unsigned alpha);
+	void Set(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
 	/** Red component. */
 	uint8_t red;

@@ -275,7 +275,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
-	int highest_rating = 0;
+	int32_t highest_rating = 0;
 	for (int i = 0; i < (int) actions.size(); ++i) {
 		const RPG::EnemyAction& action = actions[i];
 		if (IsActionValid(action)) {

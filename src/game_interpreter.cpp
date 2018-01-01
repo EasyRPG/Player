@@ -295,7 +295,7 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 	return true;
 }
 
-int Game_Interpreter::DecodeInt(std::vector<int>::const_iterator& it) {
+int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
 	int value = 0;
 
 	for (;;) {
@@ -309,7 +309,7 @@ int Game_Interpreter::DecodeInt(std::vector<int>::const_iterator& it) {
 	return value;
 }
 
-const std::string Game_Interpreter::DecodeString(std::vector<int>::const_iterator& it) {
+const std::string Game_Interpreter::DecodeString(std::vector<int32_t>::const_iterator& it) {
 	std::ostringstream out;
 	int len = DecodeInt(it);
 
@@ -321,7 +321,7 @@ const std::string Game_Interpreter::DecodeString(std::vector<int>::const_iterato
 	return result;
 }
 
-RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int>::const_iterator& it) {
+RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterator& it) {
 	RPG::MoveCommand cmd;
 	cmd.command_id = *it++;
 
@@ -2006,8 +2006,9 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
+	int str = com.parameters[1];
 	// Few games use a greater strength value to achieve more intense but glichty weather
-	int strength = std::min(com.parameters[1], 2);
+	int strength = std::min(str, 2);
 	screen->SetWeatherEffect(type, strength);
 	return true;
 }
@@ -2294,7 +2295,7 @@ bool Game_Interpreter::CommandMoveEvent(RPG::EventCommand const& com) { // code 
 		route.repeat = com.parameters[2] != 0;
 		route.skippable = com.parameters[3] != 0;
 
-		std::vector<int>::const_iterator it;
+		std::vector<int32_t>::const_iterator it;
 		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
 			route.move_commands.push_back(DecodeMove(it));
 

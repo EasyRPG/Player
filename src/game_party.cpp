@@ -102,12 +102,12 @@ int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 
 void Game_Party::GainGold(int n) {
 	data.gold = data.gold + n;
-	data.gold = std::min(std::max(data.gold, 0), 999999);
+	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
 }
 
 void Game_Party::LoseGold(int n) {
 	data.gold = data.gold - n;
-	data.gold = std::min(std::max(data.gold, 0), 999999);
+	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
 }
 
 void Game_Party::AddItem(int item_id, int amount) {
