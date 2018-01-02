@@ -475,13 +475,6 @@ namespace Game_Map {
 	int GetAnimationSpeed();
 
 	/**
-	 * Gets terrain tags list.
-	 *
-	 * @return terrain tags list.
-	 */
-	std::vector<short>& GetTerrainTags();
-
-	/**
 	 * Gets events list.
 	 *
 	 * @return events list.

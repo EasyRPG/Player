@@ -31,10 +31,12 @@
 
 Spriteset_Battle::Spriteset_Battle() {
 	// Create background
-	if (!Game_Temp::battle_background.empty())
+	if (!Game_Temp::battle_background.empty()) {
 		background.reset(new Background(Game_Temp::battle_background));
-	else
+	} else {
+		// Background verifies that the Terrain ID is valid
 		background.reset(new Background(Game_Battle::GetTerrainId()));
+	}
 	background_name = Game_Temp::battle_background;
 	Game_Battle::ChangeBackground(background_name);
 

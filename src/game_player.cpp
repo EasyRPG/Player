@@ -30,6 +30,8 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_switches.h"
+#include "output.h"
+#include "reader_util.h"
 #include <algorithm>
 #include <cmath>
 
@@ -730,11 +732,15 @@ bool Game_Player::CanWalk(int x, int y) {
 
 void Game_Player::BeginMove() {
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
-	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
-	if (!terrain.on_damage_se || (terrain.on_damage_se && (terrain.damage > 0))) {
-		Game_System::SePlay(terrain.footstep);
+	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	if (terrain) {
+		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
+			Game_System::SePlay(terrain->footstep);
+		}
+		Main_Data::game_party->ApplyDamage(terrain->damage);
+	} else {
+		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
 	}
-	Main_Data::game_party->ApplyDamage(terrain.damage);
 }
 
 void Game_Player::CancelMoveRoute() {

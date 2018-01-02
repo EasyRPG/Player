@@ -17,7 +17,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <deque>
 #include "data.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
@@ -30,7 +29,9 @@
 #include "game_interpreter_battle.h"
 #include "battle_animation.h"
 #include "game_battle.h"
+#include "reader_util.h"
 #include "spriteset_battle.h"
+#include "output.h"
 
 namespace Game_Battle {
 	const RPG::Troop* troop;
@@ -71,7 +72,8 @@ void Game_Battle::Init() {
 	target_enemy_index = 0;
 	need_refresh = false;
 
-	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
+	// troop_id is guaranteed to be valid
+	troop = ReaderUtil::GetElement(Data::troops, Game_Temp::battle_troop_id);
 	page_executed.resize(troop->pages.size());
 	page_can_run.resize(troop->pages.size());
 
@@ -148,15 +150,25 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattlers(anim, *target, flash));
+	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	if (!anim) {
+		Output::Warning("ShowBattleAnimation Single: Invalid animation ID %d", animation_id);
+		return;
+	}
+
+	animation.reset(new BattleAnimationBattlers(*anim, *target, flash));
 }
 
 void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
-	const RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimationBattlers(anim, targets, flash));
+	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	if (!anim) {
+		Output::Warning("ShowBattleAnimation Many: Invalid animation ID %d", animation_id);
+		return;
+	}
+
+	animation.reset(new BattleAnimationBattlers(*anim, targets, flash));
 }
 
 bool Game_Battle::IsBattleAnimationWaiting() {

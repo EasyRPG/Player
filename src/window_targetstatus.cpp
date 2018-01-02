@@ -21,6 +21,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "reader_util.h"
 
 Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), id(-1), use_item(false) {
@@ -41,15 +42,17 @@ void Window_TargetStatus::Refresh() {
 		contents->TextDraw(0, 0, 1, Data::terms.sp_cost);
 	}
 
-	std::stringstream ss;
+	// Scene_ActorTarget validates items and skills
+	std::string str;
 	if (use_item) {
-		ss << Main_Data::game_party->GetItemCount(id);
+		str = Utils::ToString(Main_Data::game_party->GetItemCount(id));
 	} else {
-		ss << Data::skills[id - 1].sp_cost;
+		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
+		str = skill->sp_cost;
 	}
 
 	FontRef font = Font::Default();
-	contents->TextDraw(contents->GetWidth() - font->GetSize(ss.str()).width, 0, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(contents->GetWidth() - font->GetSize(str).width, 0, Font::ColorDefault, str, Text::AlignRight);
 }
 
 void Window_TargetStatus::SetData(int id, bool is_item) {

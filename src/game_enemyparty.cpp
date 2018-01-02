@@ -20,7 +20,9 @@
 #include "game_interpreter.h"
 #include "game_enemyparty.h"
 #include "main_data.h"
+#include "reader_util.h"
 #include "utils.h"
+#include "output.h"
 
 Game_EnemyParty::Game_EnemyParty() {
 }
@@ -39,7 +41,12 @@ int Game_EnemyParty::GetBattlerCount() const {
 
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
-	troop = &Data::troops[battle_troop_id - 1];
+	const RPG::Troop* troop = ReaderUtil::GetElement(Data::troops, battle_troop_id);
+	if (!troop) {
+		// Shouldn't happen because Scene_Battle verifies this
+		Output::Warning("Invalid battle troop ID %d", battle_troop_id);
+		return;
+	}
 
 	int non_hidden = 0;
 	for (const RPG::TroopMember& mem : troop->members) {

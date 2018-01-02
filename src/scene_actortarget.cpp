@@ -24,6 +24,8 @@
 #include "main_data.h"
 #include "scene_item.h"
 #include "scene_skill.h"
+#include "output.h"
+#include "reader_util.h"
 
 Scene_ActorTarget::Scene_ActorTarget(int item_id) :
 	id(item_id), actor_index(0), use_item(true) {
@@ -46,20 +48,32 @@ void Scene_ActorTarget::Start() {
 	target_window->SetIndex(0);
 
 	if (use_item) {
-		if (Data::items[id - 1].entire_party) {
+		const RPG::Item* item = ReaderUtil::GetElement(Data::items, id);
+		if (!item) {
+			Output::Warning("Scene ActorTarget: Invalid item ID %d", id);
+			Scene::Pop();
+		}
+
+		if (item->entire_party) {
 			target_window->SetIndex(-100);
 		}
 		status_window->SetData(id, true);
-		help_window->SetText(Data::items[id - 1].name);
+		help_window->SetText(item->name);
 	} else {
-		if (Data::skills[id - 1].scope == RPG::Skill::Scope_self) {
+		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
+		if (!skill) {
+			Output::Warning("Scene ActorTarget: Invalid skill ID %d", id);
+			Scene::Pop();
+		}
+
+		if (skill->scope == RPG::Skill::Scope_self) {
 			target_window->SetIndex(-actor_index);
-		} else if (Data::skills[id - 1].scope == RPG::Skill::Scope_party) {
+		} else if (skill->scope == RPG::Skill::Scope_party) {
 			target_window->SetIndex(-100);
 		}
 
 		status_window->SetData(id, false);
-		help_window->SetText(Data::skills[id - 1].name);
+		help_window->SetText(skill->name);
 	}
 }
 

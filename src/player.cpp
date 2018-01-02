@@ -358,7 +358,6 @@ void Player::Exit() {
 	Graphics::Quit();
 	FileFinder::Quit();
 	Output::Quit();
-	Main_Data::Cleanup();
 	DisplayUi.reset();
 
 #ifdef PSP2
@@ -702,7 +701,13 @@ void Player::ResetGameObjects() {
 		request->Start();
 	}
 
+	// The init order is important
+	Main_Data::Cleanup();
+
 	Main_Data::game_data.Setup();
+	// Prevent a crash when Game_Map wants to reset the screen content
+	// because Setup() modified pictures array
+	Main_Data::game_screen.reset(new Game_Screen());
 
 	Game_Actors::Init();
 	Game_Map::Init();
@@ -711,10 +716,10 @@ void Player::ResetGameObjects() {
 	Game_System::Init();
 	Game_Temp::Init();
 	Game_Variables.Reset();
+
 	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
 	Main_Data::game_party.reset(new Game_Party());
 	Main_Data::game_player.reset(new Game_Player());
-	Main_Data::game_screen.reset(new Game_Screen());
 
 	FrameReset();
 }
@@ -763,8 +768,6 @@ void Player::LoadDatabase() {
 }
 
 static void OnMapSaveFileReady(FileRequestResult*) {
-	Game_Actors::Fixup();
-
 	Game_Map::SetupFromSave();
 
 	Main_Data::game_player->MoveTo(
@@ -787,6 +790,9 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	Main_Data::game_data = *save.get();
 	Main_Data::game_data.system.Fixup();
+
+	Game_Actors::Fixup();
+	Main_Data::game_party->RemoveInvalidData();
 
 	int map_id = save->party_location.map_id;
 

@@ -36,7 +36,8 @@ void Window_SkillStatus::SetActor(int actor_id) {
 void Window_SkillStatus::Refresh() {
 	contents->ClearRect(Rect(0, 0, contents->GetWidth(), 16));
 
-	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	// Actors are guaranteed to be valid
+	const Game_Actor& actor = *Game_Actors::GetActor(actor_id);
 
 	DrawActorName(actor, 0, 0);
 	DrawActorLevel(actor, 80, 0);

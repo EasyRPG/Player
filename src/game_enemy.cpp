@@ -23,6 +23,7 @@
 #include "game_enemy.h"
 #include "game_party.h"
 #include "game_switches.h"
+#include "reader_util.h"
 #include "output.h"
 #include "utils.h"
 
@@ -173,16 +174,16 @@ bool Game_Enemy::IsHidden() const {
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
 
-	if (enemy_id <= 0 || enemy_id > static_cast<int>(Data::enemies.size())) {
+	enemy = ReaderUtil::GetElement(Data::enemies, enemy_id);
+
+	if (!enemy) {
 		// Some games (e.g. Battle 5 in Embric) have invalid monsters in the battle.
 		// This case will fail in RPG Maker and the game will exit with an error message.
 		// Create a warning instead and continue the battle.
-		Output::Warning("Enemy id %d invalid", new_enemy_id);
+		Output::Warning("Invalid enemy ID %d", new_enemy_id);
 		enemy_id = 1;
 		// This generates an invisible monster with 0 HP and a minor memory leak
 		enemy = new RPG::Enemy();
-	} else {
-		enemy = &Data::enemies[enemy_id - 1];
 	}
 }
 

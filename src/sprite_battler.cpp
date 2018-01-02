@@ -22,6 +22,7 @@
 #include "cache.h"
 #include "main_data.h"
 #include "player.h"
+#include "reader_util.h"
 #include "output.h"
 
 Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
@@ -95,6 +96,7 @@ void Sprite_Battler::Update() {
 		// Animations for allies
 		if (Player::IsRPG2k3()) {
 			if (animation) {
+				// Is a battle animation
 				animation->Update();
 
 				if (animation->IsDone()) {
@@ -112,23 +114,35 @@ void Sprite_Battler::Update() {
 
 				return;
 			}
+			// Is a battle charset animation
 
 			static const int frames[] = {0,1,2,1,0};
 			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
 				return;
 
-			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
-			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
+			if (!anim) {
+				Output::Warning("Invalid battler animation ID %d", battler->GetBattleAnimationId());
+				return;
+			}
 
-			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
+			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
+			if (!ext) {
+				Output::Warning("Animation %d: Invalid battler anim-extension state %d", anim->ID, anim_state);
+				return;
+			}
+
+			SetSrcRect(Rect(frame * 48, ext->battler_index * 48, 48, 48));
 
 			if (cycle == 40) {
 				switch (loop_state) {
 					case LoopState_DefaultAnimationAfterFinish:
 						cycle = 0;
-						// fallthrough
+						idling = true;
+						break;
 					case LoopState_WaitAfterFinish:
+						--cycle; // incremented to last cycle next update
 						idling = true;
 						break;
 					case LoopState_LoopAnimation:
@@ -168,18 +182,28 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 	if (Player::IsRPG2k3()) {
 		if (battler->GetBattleAnimationId() > 0) {
-			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
-			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+			const RPG::BattlerAnimation* anim = ReaderUtil::GetElement(Data::battleranimations, battler->GetBattleAnimationId());
+			if (!anim) {
+				Output::Warning("Invalid battler animation ID %d", battler->GetBattleAnimationId());
+				return;
+			}
 
-			sprite_file = ext.battler_name;
+			const RPG::BattlerAnimationExtension* ext = ReaderUtil::GetElement(anim->base_data, anim_state);
+			if (!ext) {
+				Output::Warning("Animation %d: Invalid battler anim-extension state %d", anim->ID, anim_state);
+				return;
+			}
 
-			if (ext.animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
+			sprite_file = ext->battler_name;
+
+			if (ext->animation_type == RPG::BattlerAnimationExtension::AnimType_animation) {
 				SetBitmap(BitmapRef());
-				if (ext.animation_id < 1 || ext.animation_id > (int)Data::animations.size()) {
-					Output::Warning("Invalid battle animation: %d", ext.animation_id);
+				RPG::Animation* battle_anim = ReaderUtil::GetElement(Data::animations, ext->animation_id);
+				if (!battle_anim) {
+					Output::Warning("Invalid battle animation ID %d", ext->animation_id);
 					animation.reset();
 				} else {
-					animation.reset(new BattleAnimationBattlers(Data::animations[ext.animation_id - 1], *battler));
+					animation.reset(new BattleAnimationBattlers(*battle_anim, *battler));
 					animation->SetZ(GetZ());
 				}
 			}
@@ -187,7 +211,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				animation.reset();
 				if (!sprite_file.empty()) {
 					FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
-					request_id = request->Bind(&Sprite_Battler::OnBattlercharsetReady, this, ext.battler_index);
+					request_id = request->Bind(&Sprite_Battler::OnBattlercharsetReady, this, ext->battler_index);
 					request->Start();
 				}
 			}

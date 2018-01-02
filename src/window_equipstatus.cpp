@@ -43,7 +43,8 @@ void Window_EquipStatus::Refresh() {
 
 		if (draw_actorname) {
 			y_offset = 18;
-			DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
+			// Actor data is guaranteed to be valid
+			DrawActorName(*Game_Actors::GetActor(actor_id), 0, 2);
 		} else {
 			y_offset = 2;
 		}

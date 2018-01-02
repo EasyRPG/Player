@@ -33,6 +33,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
+#include "reader_util.h"
 #include "rpg_animation.h"
 #include "rpg_state.h"
 #include "rpg_skill.h"
@@ -179,7 +180,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	}
 
 	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
-	const RPG::State* state = GetTarget()->GetSignificantState(); 
+	const RPG::State* state = GetTarget()->GetSignificantState();
 	const std::string& message = is_ally ? state->message_actor
 										: state->message_enemy;
 
@@ -623,7 +624,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
 		// the source
 		return true;
 	}
-	
+
 	if (current_target == targets.end()) {
 		// End of target list reached
 		return false;
@@ -733,21 +734,28 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
-		int weaponID = ally->GetWeaponId() - 1;
-		
-		if (weaponID == -1) {
+		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, ally->GetWeaponId());
+
+		if (!weapon) {
 			// No Weapon
 			// Todo: Two Sword style
-			animation = &Data::animations[Data::actors[ally->GetId() - 1].unarmed_animation - 1];
+			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
+			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
+			}
 		} else {
-			animation = &Data::animations[Data::items[weaponID].animation_id - 1];
-			RPG::Item weapon = Data::items[weaponID];
-			hit_chance = weapon.hit;
-			crit_chance += crit_chance * weapon.critical_hit / 100.0f;
-			multiplier = GetAttributeMultiplier(weapon.attribute_set);
+			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
+			}
+
+			hit_chance = weapon->hit;
+			crit_chance += crit_chance * weapon->critical_hit / 100.0f;
+			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
 
-		if (weaponID != -1 && !Data::items[weaponID].ignore_evasion) {
+		if (weapon && !weapon->ignore_evasion) {
 			to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * GetTarget()->GetAgi() / ally->GetAgi() - 1) / 2));
 		} else {
 			to_hit = (int)(100 - (100 - hit_chance));
@@ -790,15 +798,23 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 		else {
 			if (source->GetType() == Game_Battler::Type_Ally) {
-				int weaponID = static_cast<Game_Actor*>(source)->GetWeaponId() - 1;
-				if (weaponID != -1) {
-					RPG::Item item = Data::items[static_cast<Game_Actor*>(source)->GetWeaponId() - 1];
-					for (unsigned int i = 0; i < item.state_set.size(); i++) {
-						if (item.state_set[i] && Utils::GetRandomNumber(0, 99) < (item.state_chance * GetTarget()->GetStateProbability(Data::states[i].ID) / 100)) {
-							if (item.state_effect) {
-								healing = true;
+				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
+
+				if (weapon) {
+					for (unsigned int i = 0; i < weapon->state_set.size(); i++) {
+						if (weapon->state_set[i]) {
+							const RPG::State* state = ReaderUtil::GetElement(Data::states, weapon->state_set[i]);
+							if (!state) {
+								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
+								continue;
 							}
-							conditions.push_back(Data::states[i]);
+
+							if (Utils::GetRandomNumber(0, 99) < (weapon->state_chance * GetTarget()->GetStateProbability(state->ID) / 100)) {
+								if (weapon->state_effect) {
+									healing = true;
+								}
+								conditions.push_back(*state);
+							}
 						}
 					}
 				}
@@ -820,8 +836,9 @@ void Game_BattleAlgorithm::Normal::Apply() {
 	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* src = static_cast<Game_Actor*>(source);
-		if (src->GetWeaponId() != 0) {
-			source->ChangeSp(-Data::items[src->GetWeaponId() - 1].sp_cost / src->GetSpCostModifier());
+		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, src->GetWeaponId());
+		if (weapon) {
+			source->ChangeSp(-weapon->sp_cost / src->GetSpCostModifier());
 		}
 	}
 }
@@ -886,14 +903,14 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 	if (current_target == targets.end()) {
 		return false;
 	}
-	
+
 	if (skill.scope == RPG::Skill::Scope_ally ||
 		skill.scope == RPG::Skill::Scope_party) {
 		if (GetTarget()->IsDead()) {
 			// Cures death
 			return !skill.state_effects.empty() && skill.state_effects[0];
 		}
-		
+
 		return true;
 	}
 
@@ -907,7 +924,13 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	Reset();
 
-	animation = skill.animation_id == 0 ? NULL : &Data::animations[skill.animation_id - 1];
+	animation = nullptr;
+	if (skill.animation_id != 0) {
+		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
+		if (!animation) {
+			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+		}
+	}
 
 	this->success = false;
 
@@ -976,7 +999,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (skill.affect_sp) {
 				this->sp = std::min<int>(effect, GetTarget()->GetSp());
 			}
-				
+
 			if (skill.affect_attack)
 				this->attack = effect;
 			if (skill.affect_defense)
@@ -994,7 +1017,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 
 			this->success = true;
-			
+
 			if (healing || Utils::GetRandomNumber(0, 99) <= GetTarget()->GetStateProbability(Data::states[i].ID)) {
 				conditions.push_back(Data::states[i]);
 			}
@@ -1447,7 +1470,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	if (effect < 0)
 		effect = 0;
-	
+
 	this->hp = effect / (
 		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
 
@@ -1568,7 +1591,7 @@ std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
 		return Utils::ReplacePlaceholders(
 			Data::terms.enemy_transform,
 			{'S', 'O'},
-			{source->GetName(), Data::enemies[new_monster_id - 1].name}
+			{source->GetName(), ReaderUtil::GetElement(Data::enemies, new_monster_id)->name} // Sanity check in Game_Enemy
 		);
 	}
 	else if (Player::IsRPG2k()) {

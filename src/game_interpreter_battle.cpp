@@ -24,6 +24,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "reader_util.h"
 #include "output.h"
 #include "player.h"
 #include "game_temp.h"
@@ -83,10 +84,16 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 	if (child_interpreter)
 		return false;
 
-	int event_id = com.parameters[0];
+	int evt_id = com.parameters[0];
+
+	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+	if (!common_event) {
+		Output::Warning("CallCommonEvent: Can't call invalid common event %d", evt_id);
+		return true;
+	}
 
 	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(&Game_Map::GetCommonEvents()[event_id - 1], 0);
+	child_interpreter->Setup(common_event, 0);
 
 	return true;
 }
@@ -140,7 +147,14 @@ bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 	int command_id = com.parameters[1];
 	int multiple = com.parameters[2];
 
-	Game_Actors::GetActor(actor_id)->SetBattleCombo(command_id, multiple);
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+
+	if (!actor) {
+		Output::Warning("EnableCombo: Invalid actor ID %d", actor_id);
+		return true;
+	}
+
+	actor->SetBattleCombo(command_id, multiple);
 
 	return true;
 }
@@ -336,9 +350,14 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 		case 2: {
 			// Hero can act
 			Game_Actor* actor = Game_Actors::GetActor(com.parameters[1]);
-			if (actor) {
-				result = actor->CanAct();
+
+			if (!actor) {
+				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
+				// Use Else branch
+				return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
 			}
+
+			result = actor->CanAct();
 			break;
 		}
 		case 3:
@@ -351,10 +370,19 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			// Monster is the current target
 			result = Game_Battle::GetEnemyTargetIndex() == com.parameters[1];
 			break;
-		case 5:
+		case 5: {
 			// Hero uses the ... command
-			result = Game_Actors::GetActor(com.parameters[1])->GetLastBattleAction() == com.parameters[2];
+			Game_Actor *actor = Game_Actors::GetActor(com.parameters[1]);
+
+			if (!actor) {
+				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
+				// Use Else branch
+				return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
+			}
+
+			result = actor->GetLastBattleAction() == com.parameters[2];
 			break;
+		}
 	}
 
 	if (result)

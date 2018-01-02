@@ -19,6 +19,8 @@
 #include "window_equip.h"
 #include "game_actors.h"
 #include "bitmap.h"
+#include "reader_util.h"
+#include "output.h"
 
 Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Selectable(ix, iy, iwidth, iheight),
@@ -49,13 +51,15 @@ void Window_Equip::Refresh() {
 
 	// Draw equipment text
 	for (int i = 0; i < 5; ++i) {
-		DrawEquipmentType(actor, 0, (12 + 4) * i + 2, i);
+		DrawEquipmentType(*actor, 0, (12 + 4) * i + 2, i);
 		if (data[i] > 0) {
-			DrawItemName(&Data::items[data[i] - 1], 60, (12 + 4) * i + 2);
+			// Equipment and items are guaranteed to be valid
+			DrawItemName(*ReaderUtil::GetElement(Data::items, data[i]), 60, (12 + 4) * i + 2);
 		}
 	}
 }
 
 void Window_Equip::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" : Data::items[GetItemId() - 1].description);
+	help_window->SetText(GetItemId() == 0 ? "" :
+		ReaderUtil::GetElement(Data::items, GetItemId())->description);
 }

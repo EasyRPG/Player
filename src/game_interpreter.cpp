@@ -65,7 +65,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	clear_child = false;
 
 	if (depth > 100) {
-		Output::Warning("Too many event calls (over 9000)");
+		Output::Warning("Interpreter: Maximum callstack depth (100) exceeded");
 	}
 
 	Clear();
@@ -108,7 +108,11 @@ void Game_Interpreter::Setup(
 
 	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
-	list = _list;
+
+	if (depth <= 100) {
+		list = _list;
+	}
+
 	triggered_by_decision_key = started_by_decision_key;
 
 	index = 0;
@@ -768,69 +772,73 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		case 5:
 			// Hero
 			actor = Game_Actors::GetActor(com.parameters[5]);
-			if (actor != NULL) {
-				switch (com.parameters[6]) {
-					case 0:
-						// Level
-						value = actor->GetLevel();
-						break;
-					case 1:
-						// Experience
-						value = actor->GetExp();
-						break;
-					case 2:
-						// Current HP
-						value = actor->GetHp();
-						break;
-					case 3:
-						// Current MP
-						value = actor->GetSp();
-						break;
-					case 4:
-						// Max HP
-						value = actor->GetMaxHp();
-						break;
-					case 5:
-						// Max MP
-						value = actor->GetMaxSp();
-						break;
-					case 6:
-						// Attack
-						value = actor->GetAtk();
-						break;
-					case 7:
-						// Defense
-						value = actor->GetDef();
-						break;
-					case 8:
-						// Intelligence
-						value = actor->GetSpi();
-						break;
-					case 9:
-						// Agility
-						value = actor->GetAgi();
-						break;
-					case 10:
-						// Weapon ID
-						value = actor->GetWeaponId();
-						break;
-					case 11:
-						// Shield ID
-						value = actor->GetShieldId();
-						break;
-					case 12:
-						// Armor ID
-						value = actor->GetArmorId();
-						break;
-					case 13:
-						// Helmet ID
-						value = actor->GetHelmetId();
-						break;
-					case 14:
-						// Accesory ID
-						value = actor->GetAccessoryId();
-						break;
-				}
+
+			if (!actor) {
+				Output::Warning("ControlVariables: Invalid actor ID %d", com.parameters[5]);
+				return true;
+			}
+
+			switch (com.parameters[6]) {
+				case 0:
+					// Level
+					value = actor->GetLevel();
+					break;
+				case 1:
+					// Experience
+					value = actor->GetExp();
+					break;
+				case 2:
+					// Current HP
+					value = actor->GetHp();
+					break;
+				case 3:
+					// Current MP
+					value = actor->GetSp();
+					break;
+				case 4:
+					// Max HP
+					value = actor->GetMaxHp();
+					break;
+				case 5:
+					// Max MP
+					value = actor->GetMaxSp();
+					break;
+				case 6:
+					// Attack
+					value = actor->GetAtk();
+					break;
+				case 7:
+					// Defense
+					value = actor->GetDef();
+					break;
+				case 8:
+					// Intelligence
+					value = actor->GetSpi();
+					break;
+				case 9:
+					// Agility
+					value = actor->GetAgi();
+					break;
+				case 10:
+					// Weapon ID
+					value = actor->GetWeaponId();
+					break;
+				case 11:
+					// Shield ID
+					value = actor->GetShieldId();
+					break;
+				case 12:
+					// Armor ID
+					value = actor->GetArmorId();
+					break;
+				case 13:
+					// Helmet ID
+					value = actor->GetHelmetId();
+					break;
+				case 14:
+					// Accesory ID
+					value = actor->GetAccessoryId();
+					break;
 			}
 			break;
 		case 6:
@@ -1040,14 +1048,23 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	case 1:
 		// Hero
 		actor = Game_Actors::GetActor(id);
-		if (actor)
-			actors.push_back(actor);
+
+		if (!actor) {
+			Output::Warning("Invalid actor ID %d", id);
+			return actors;
+		}
+
+		actors.push_back(actor);
 		break;
 	case 2:
 		// Var hero
 		actor = Game_Actors::GetActor(Game_Variables[id]);
-		if (actor)
-			actors.push_back(actor);
+		if (!actor) {
+			Output::Warning("Invalid actor ID %d", Game_Variables[id]);
+			return actors;
+		}
+
+		actors.push_back(actor);
 		break;
 	}
 
@@ -1159,18 +1176,20 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 	actor = Game_Actors::GetActor(id);
 
-	if (actor != NULL) {
+	if (!actor) {
+		Output::Warning("ChangePartyMember: Invalid actor ID %d", id);
+		return true;
+	}
 
-		if (com.parameters[0] == 0) {
-			// Add members
-			Main_Data::game_party->AddActor(id);
+	if (com.parameters[0] == 0) {
+		// Add members
+		Main_Data::game_party->AddActor(id);
 
-		} else {
-			// Remove members
-			Main_Data::game_party->RemoveActor(id);
+	} else {
+		// Remove members
+		Main_Data::game_party->RemoveActor(id);
 
-			CheckGameOver();
-		}
+		CheckGameOver();
 	}
 
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
@@ -1272,21 +1291,26 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 
 bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
 	int item_id;
-	int type;
 	int slot;
+	const RPG::Item* item;
 
 	switch (com.parameters[2]) {
 		case 0:
 			item_id = ValueOrVariable(com.parameters[3],
 									  com.parameters[4]);
-			type = Data::items[item_id - 1].type;
-			switch (type) {
+			item = ReaderUtil::GetElement(Data::items, item_id);
+			if (!item) {
+				Output::Warning("ChangeEquipment: Invalid item ID %d", item_id);
+				return true;
+			}
+
+			switch (item->type) {
 				case RPG::Item::Type_weapon:
 				case RPG::Item::Type_shield:
 				case RPG::Item::Type_armor:
 				case RPG::Item::Type_helmet:
 				case RPG::Item::Type_accessory:
-					slot = type;
+					slot = item->type;
 					break;
 				default:
 					return true;
@@ -1481,18 +1505,36 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 
 bool Game_Interpreter::CommandChangeHeroName(RPG::EventCommand const& com) { // code 10610
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeHeroName: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	actor->SetName(com.string);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeHeroTitle(RPG::EventCommand const& com) { // code 10620
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeHeroTitle: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	actor->SetTitle(com.string);
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& com) { // code 10630
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
+
+	if (!actor) {
+		Output::Warning("ChangeSpriteAssociation: Invalid actor ID %d", com.parameters[0]);
+		return true;
+	}
+
 	const std::string &file = com.string;
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
@@ -1503,11 +1545,14 @@ bool Game_Interpreter::CommandChangeSpriteAssociation(RPG::EventCommand const& c
 
 bool Game_Interpreter::CommandChangeActorFace(RPG::EventCommand const& com) { // code 10640
 	Game_Actor* actor = Game_Actors::GetActor(com.parameters[0]);
-	if (actor != NULL) {
-		actor->SetFace(com.string, com.parameters[1]);
+
+	if (!actor) {
+		Output::Warning("CommandChangeActorFace: Invalid actor ID %d", com.parameters[0]);
 		return true;
 	}
-	return false;
+
+	actor->SetFace(com.string, com.parameters[1]);
+	return true;
 }
 
 bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
@@ -2582,6 +2627,13 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		// Hero
 		actor_id = com.parameters[1];
 		actor = Game_Actors::GetActor(actor_id);
+
+		if (!actor) {
+			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
+			// Use Else branch
+			return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+		}
+
 		switch (com.parameters[2]) {
 		case 0:
 			// Is actor in party
@@ -2680,11 +2732,10 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 			// Is Fullscreen active?
 			result = DisplayUi->IsFullscreen();
 			break;
-
 		}
 		break;
 	default:
-		Output::Warning("Branch %d unsupported", com.parameters[0]);
+		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
 	}
 
 	if (result)
@@ -2769,13 +2820,20 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1, main_flag));
 
 	switch (com.parameters[0]) {
-	case 0: // Common Event
+	case 0: { // Common Event
 		evt_id = com.parameters[1];
-		// Forwarding the event_id is save because all RPG Maker engines prior 2k3 1.12
+		Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
+		if (!common_event) {
+			Output::Warning("CallEvent: Can't call invalid common event %d", evt_id);
+			return true;
+		}
+
+		// Forwarding the event_id is safe because all RPG Maker engines prior 2k3 1.12
 		// threw an error when ThisEvent was used in CommonEvents.
 		// The exception is EraseEvent which is handled special (see the code)
-		child_interpreter->Setup(&Game_Map::GetCommonEvents()[evt_id - 1], event_id);
+		child_interpreter->Setup(common_event, event_id);
 		return true;
+	}
 	case 1: // Map Event
 		evt_id = com.parameters[1];
 		event_page = com.parameters[2];
@@ -2797,7 +2855,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 			child_interpreter->event_info.y = event->GetY();
 			child_interpreter->event_info.page = page;
 		} else {
-			Output::Warning("Can't call non-existant page %d of event %d", event_page, evt_id);
+			Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
 		}
 	}
 
@@ -2811,11 +2869,17 @@ bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* co
 }
 
 bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // code 1008
-	int class_id = com.parameters[2];
+	int class_id = com.parameters[2]; // 0: No class, 1+: Specific class
 	bool level1 = com.parameters[3] > 0;
 	int skill_mode = com.parameters[4]; // no change, replace, add
 	int stats_mode = com.parameters[5]; // no change, halve, level 1, current level
 	bool show = com.parameters[6] > 0;
+
+	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
+	if (!cls) {
+		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
+		return true;
+	}
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int actor_id = actor->GetId();
@@ -2905,7 +2969,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		}
 		if (skill_mode > 0) {
 			// Learn additionally
-			for (const RPG::Learning& learn : Data::classes[class_id - 1].skills) {
+			for (const RPG::Learning& learn : cls->skills) {
 				if (level >= learn.level) {
 					actor->LearnSkill(learn.skill_id);
 					if (show) {

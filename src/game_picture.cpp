@@ -22,6 +22,7 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
+#include "reader_util.h"
 
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
@@ -369,5 +370,6 @@ void Game_Picture::SyncCurrentToFinish() {
 }
 
 RPG::SavePicture& Game_Picture::GetData() const {
-	return Main_Data::game_data.pictures[id - 1];
+	// Save: Picture array is guaranteed to be of correct size
+	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
 }

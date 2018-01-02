@@ -19,6 +19,7 @@
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
+#include "reader_util.h"
 
 #define PLAYER_VAR_LIMIT 1000000
 
@@ -52,10 +53,13 @@ int& Game_Variables_Class::operator[] (int variable_id) {
 }
 
 std::string Game_Variables_Class::GetName(int _id) const {
-	if (!(_id > 0 && _id <= (int)Data::variables.size())) {
+	const RPG::Variable* var = ReaderUtil::GetElement(Data::variables, _id);
+
+	if (!var) {
+		// No warning, is valid because the variable array resizes dynamic during runtime
 		return "";
 	} else {
-		return Data::variables[_id - 1].name;
+		return var->name;
 	}
 }
 

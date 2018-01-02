@@ -21,6 +21,7 @@
 #include "game_switches.h"
 #include "game_interpreter_map.h"
 #include "main_data.h"
+#include "reader_util.h"
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id) {
@@ -77,24 +78,26 @@ int Game_CommonEvent::GetIndex() const {
 	return common_event_id;
 }
 
+// Game_Map ensures validity of Common Events
+
 std::string Game_CommonEvent::GetName() const {
-	return Data::commonevents[common_event_id - 1].name;
+	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->name;
 }
 
 bool Game_CommonEvent::GetSwitchFlag() const {
-	return Data::commonevents[common_event_id - 1].switch_flag;
+	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->switch_flag;
 }
 
 int Game_CommonEvent::GetSwitchId() const {
-	return Data::commonevents[common_event_id - 1].switch_id;
+	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->switch_id;
 }
 
 int Game_CommonEvent::GetTrigger() const {
-	return Data::commonevents[common_event_id - 1].trigger;
+	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->trigger;
 }
 
 std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
-	return Data::commonevents[common_event_id - 1].event_commands;
+	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->event_commands;
 }
 
 RPG::SaveEventData Game_CommonEvent::GetSaveData() {

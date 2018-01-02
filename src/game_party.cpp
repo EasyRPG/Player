@@ -28,6 +28,7 @@
 #include "game_targets.h"
 #include "game_temp.h"
 #include "game_system.h"
+#include "reader_util.h"
 #include "output.h"
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
@@ -35,14 +36,7 @@ static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 Game_Party::Game_Party() {
 	data.Setup();
 
-	// Remove non existing actors
-	std::vector<int16_t> temp_party;
-	std::swap(temp_party, data.party);
-	std::vector<int16_t>::iterator it;
-	for (it = temp_party.begin(); it != temp_party.end(); ++it)
-		if (Game_Actors::ActorExists(*it))
-			data.party.push_back(*it);
-	data.party_size = data.party.size();
+	RemoveInvalidData();
 }
 
 Game_Actor& Game_Party::operator[] (const int index) {
@@ -165,7 +159,14 @@ void Game_Party::RemoveItem(int item_id, int amount) {
 }
 
 void Game_Party::ConsumeItemUse(int item_id) {
-	switch (Data::items[item_id - 1].type) {
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+
+	if (!item) {
+		Output::Warning("ConsumeItemUse: Invalid item ID %d.", item_id);
+		return;
+	}
+
+	switch (item->type) {
 		case RPG::Item::Type_normal:
 		case RPG::Item::Type_weapon:
 		case RPG::Item::Type_shield:
@@ -175,24 +176,18 @@ void Game_Party::ConsumeItemUse(int item_id) {
 			return;
 	}
 
-	if (item_id < 1 || item_id > (int) Data::items.size()) {
-		Output::Warning("Can't use up item. %04d is not a valid item ID.",
-						item_id);
-		return;
-	}
-
 	for (int i = 0; i < (int) data.item_ids.size(); i++) {
 		if (data.item_ids[i] != item_id)
 			continue;
 
-		if (Data::items[item_id - 1].uses == 0) {
+		if (item->uses == 0) {
 			// Unlimited uses
 			return;
 		}
 
 		data.item_usage[i]++;
 
-		if (data.item_usage[i] >= Data::items[item_id - 1].uses) {
+		if (data.item_usage[i] >= item->uses) {
 			if (data.item_counts[i] == 1) {
 				// We just used up the last one
 				data.item_ids.erase(data.item_ids.begin() + i);
@@ -209,43 +204,43 @@ void Game_Party::ConsumeItemUse(int item_id) {
 }
 
 bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
-	if (item_id <= 0 || item_id > (int)Data::items.size()) {
-		return false;
-	}
-
 	if (target && !target->IsItemUsable(item_id)) {
 		return false;
 	}
 
-	RPG::Item& item = Data::items[item_id - 1];
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
+		return false;
+	}
 
 	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {
-		switch (item.type) {
+		switch (item->type) {
 			case RPG::Item::Type_weapon:
 			case RPG::Item::Type_shield:
 			case RPG::Item::Type_armor:
 			case RPG::Item::Type_helmet:
 			case RPG::Item::Type_accessory:
-				return item.use_skill && IsSkillUsable(item.skill_id, nullptr, true);
+				return item->use_skill && IsSkillUsable(item->skill_id, nullptr, true);
 			case RPG::Item::Type_special:
-				return IsSkillUsable(item.skill_id, nullptr, true);
+				return IsSkillUsable(item->skill_id, nullptr, true);
 		}
 
 		if (Game_Temp::battle_running) {
-			switch (item.type) {
+			switch (item->type) {
 				case RPG::Item::Type_medicine:
-					return !item.occasion_field1;
+					return !item->occasion_field1;
 				case RPG::Item::Type_switch:
-					return item.occasion_battle;
+					return item->occasion_battle;
 			}
 		} else {
-			switch (item.type) {
+			switch (item->type) {
 				case RPG::Item::Type_medicine:
 				case RPG::Item::Type_material:
 				case RPG::Item::Type_book:
 					return true;
 				case RPG::Item::Type_switch:
-					return item.occasion_field2;
+					return item->occasion_field2;
 			}
 		}
 	}
@@ -282,19 +277,23 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		return false;
 	}
 
-	const RPG::Skill& skill = Data::skills[skill_id - 1];
-
 	if (target && !target->IsSkillUsable(skill_id)) {
 		return false;
 	}
 
-	if (skill.type == RPG::Skill::Type_escape) {
+	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+	if (!skill) {
+		Output::Warning("IsSkillUsable: Can't use skill with invalid ID %d", skill_id);
+		return false;
+	}
+
+	if (skill->type == RPG::Skill::Type_escape) {
 		return !Game_Temp::battle_running && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
-	} else if (skill.type == RPG::Skill::Type_teleport) {
+	} else if (skill->type == RPG::Skill::Type_teleport) {
 		return !Game_Temp::battle_running && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
-	} else if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_subskill) {
-		int scope = skill.scope;
+	} else if (skill->type == RPG::Skill::Type_normal ||
+		skill->type >= RPG::Skill::Type_subskill) {
+		int scope = skill->scope;
 
 		if (Game_Temp::battle_running) {
 			return true;
@@ -304,23 +303,23 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		// RPG_RT logic...
 
 		if (scope == RPG::Skill::Scope_self) {
-			return from_item || skill.affect_hp || skill.affect_sp;
+			return from_item || skill->affect_hp || skill->affect_sp;
 		}
 
 		if (scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
 
 			return from_item ||
-				skill.affect_hp ||
-				skill.affect_sp ||
-				!skill.state_effects.empty();
+				skill->affect_hp ||
+				skill->affect_sp ||
+				!skill->state_effects.empty();
 		}
-	} else if (skill.type == RPG::Skill::Type_switch) {
+	} else if (skill->type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {
-			return skill.occasion_battle;
+			return skill->occasion_battle;
 		}
 
-		return skill.occasion_field;
+		return skill->occasion_field;
 	}
 
 	return false;
@@ -556,4 +555,30 @@ int Game_Party::GetFatigue() {
 	}
 
 	return (int)std::ceil(100 - 100.0f * (((float)hp / total_hp * 2.0f + (float)sp / total_sp) / 3.0f));
+}
+
+void Game_Party::RemoveInvalidData() {
+	// Remove non existing actors
+	std::vector<int16_t> temp_party;
+	std::swap(temp_party, data.party);
+	std::vector<int16_t>::iterator it;
+	for (it = temp_party.begin(); it != temp_party.end(); ++it) {
+		if (Game_Actors::ActorExists(*it)) {
+			data.party.push_back(*it);
+		} else {
+			Output::Warning("Removing invalid party member %d", *it);
+		}
+	}
+	data.party_size = data.party.size();
+
+	// Remove non existing items
+	for (it = data.item_ids.begin(); it != data.item_ids.end(); ) {
+		if (!ReaderUtil::GetElement(Data::items, *it)) {
+			Output::Warning("Removing invalid item %d from party", *it);
+			it = data.item_ids.erase(it);
+		} else {
+			++it;
+		}
+	}
+	data.items_size = data.item_ids.size();
 }

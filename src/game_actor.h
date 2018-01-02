@@ -27,6 +27,7 @@
 #include "game_battler.h"
 
 namespace RPG {
+	class Actor;
 	class Skill;
 	class BattleCommand;
 	class Item;
@@ -316,7 +317,7 @@ public:
 	/**
 	 * Sets exp of actor.
 	 * The value is adjusted to the boundary 0 up 999999.
-	 * Other actor attributes are not altered. Use ChangeExp to do a proper 
+	 * Other actor attributes are not altered. Use ChangeExp to do a proper
 	 * experience change.
 	 *
 	 * @param _exp exp to set.
@@ -344,7 +345,7 @@ public:
 	/**
 	 * Sets level of actor.
 	 * The value is adjusted to the boundary 1 up to max level.
-	 * Other actor attributes are not altered. Use ChangeLevel to do a proper 
+	 * Other actor attributes are not altered. Use ChangeLevel to do a proper
 	 * level change.
 	 *
 	 * @param _level level to set.
@@ -365,10 +366,10 @@ public:
 	 * @return true if fixed
 	 */
 	bool IsEquipmentFixed() const;
-	
+
 	/**
 	 * Checks if the actors defense skill is stronger the usual.
-	 * 
+	 *
 	 * @return true if strong defense
 	 */
 	bool HasStrongDefense() const override;
@@ -379,7 +380,7 @@ public:
 	 * @return true if a weapon is having preempt attribute
 	 */
 	bool HasPreemptiveAttack() const override;
-	
+
 	/**
 	 * Sets face graphic of actor.
 	 * @param file_name file containing new face.
@@ -447,7 +448,7 @@ public:
 
 	 * @return random skill
 	 */
-	const RPG::Skill& GetRandomSkill() const;
+	const RPG::Skill* GetRandomSkill() const;
 
 	/**
 	 * Gets actor states list.
@@ -706,7 +707,7 @@ public:
 
 	/**
 	 * Gets the actor's class name as a string.
-	 * 
+	 *
 	 * @return Rpg2k3 hero class name
 	 */
 	std::string GetClassName() const;
@@ -742,6 +743,11 @@ public:
 
 	BattlerType GetType() const override;
 private:
+	/**
+	 * @return Reference to the Actor data of the LDB
+	 */
+	const RPG::Actor& GetActor() const;
+
 	// same reason as for Game_Picture, see comment
 	/**
 	 * @return Reference to the SaveActor data
@@ -749,10 +755,9 @@ private:
 	RPG::SaveActor& GetData() const;
 
 	/**
-	 * Removes invalid (wrong type) equipment from the equipment
-	 * slots.
+	 * Removes invalid data from the actor.
 	 */
-	void RemoveInvalidEquipment();
+	void RemoveInvalidData();
 
 	int actor_id;
 	std::vector<int> exp_list;

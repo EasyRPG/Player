@@ -23,6 +23,8 @@
 #include "bitmap.h"
 #include "font.h"
 #include "game_temp.h"
+#include "reader_util.h"
+#include "output.h"
 
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
@@ -30,11 +32,11 @@ Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 }
 
 const RPG::Item* Window_Item::GetItem() const {
-	if (index < 0 || index >= (int)Data::items.size() || data[index] == 0) {
-		return NULL;
+	if (index < 0) {
+		return nullptr;
 	}
 
-	return &Data::items[data[index] - 1];
+	return ReaderUtil::GetElement(Data::items, data[index]);
 }
 
 bool Window_Item::CheckInclude(int item_id) {
@@ -81,10 +83,10 @@ void Window_Item::Refresh() {
 	item_max = data.size();
 
 	CreateContents();
-	
+
 	if (index > 0 && index >= item_max) {
 		--index;
-	} 
+	}
 
 	contents->Clear();
 
@@ -102,15 +104,16 @@ void Window_Item::DrawItem(int index) {
 	if (item_id > 0) {
 		int number = Main_Data::game_party->GetItemCount(item_id);
 
+		// Items are guaranteed to be valid
+		const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 		if (actor) {
-			const RPG::Item &item = Data::items[item_id - 1];
-			if (item.use_skill) {
+			if (item->use_skill) {
 				number += actor->GetItemCount(item_id);
 			}
 		}
 
 		bool enabled = CheckEnable(item_id);
-		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
+		DrawItemName(*item, rect.x, rect.y, enabled);
 
 		std::stringstream ss;
 		ss << number;
@@ -122,7 +125,7 @@ void Window_Item::DrawItem(int index) {
 
 void Window_Item::UpdateHelp() {
 	help_window->SetText(GetItem() == NULL ? "" :
-		Data::items[GetItem()->ID - 1].description);
+		GetItem()->description);
 }
 
 void Window_Item::SetActor(Game_Actor * actor) {

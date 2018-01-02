@@ -23,6 +23,7 @@
 #include "window_shopnumber.h"
 #include "bitmap.h"
 #include "font.h"
+#include "reader_util.h"
 
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -43,7 +44,8 @@ void Window_ShopNumber::Refresh() {
 	contents->Clear();
 
 	int y = 34;
-	DrawItemName(&Data::items[item_id - 1], 0, y);
+	// (Shop) items are guaranteed to be valid
+	DrawItemName(*ReaderUtil::GetElement(Data::items, item_id), 0, y);
 
 	std::stringstream ss;
 	ss << number;

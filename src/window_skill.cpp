@@ -26,6 +26,8 @@
 #include "bitmap.h"
 #include "font.h"
 #include "player.h"
+#include "output.h"
+#include "reader_util.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
@@ -38,11 +40,11 @@ void Window_Skill::SetActor(int actor_id) {
 }
 
 const RPG::Skill* Window_Skill::GetSkill() const {
-	if (index < 0 || index >= (int)Data::skills.size() || data[index] == 0) {
-		return NULL;
+	if (index < 0) {
+		return nullptr;
 	}
 
-	return &Data::skills[data[index] - 1];
+	return ReaderUtil::GetElement(Data::skills, data[index]);
 }
 
 void Window_Skill::Refresh() {
@@ -87,7 +89,8 @@ void Window_Skill::DrawItem(int index) {
 		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "-");
 		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
 
-		DrawSkillName(&Data::skills[skill_id - 1], rect.x, rect.y, enabled);
+		// Skills are guaranteed to be valid
+		DrawSkillName(*ReaderUtil::GetElement(Data::skills, skill_id), rect.x, rect.y, enabled);
 	}
 }
 
@@ -105,7 +108,17 @@ bool Window_Skill::CheckInclude(int skill_id) {
 		return true;
 	}
 	else {
-		return subset == 0 || Data::skills[skill_id - 1].type == subset;
+		if (subset == 0) {
+			return true;
+		}
+
+		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
+		if (skill) {
+			return skill->type == subset;
+		}
+
+		Output::Warning("Window Skill: Invalid skill ID %d", skill_id);
+		return false;
 	}
 }
 

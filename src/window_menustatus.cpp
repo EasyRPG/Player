@@ -38,13 +38,13 @@ void Window_MenuStatus::Refresh() {
 	item_max = Main_Data::game_party->GetActors().size();
 
 	int y = 0;
-	for (int i = 0; i < item_max; ++i)
-	{
-		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+	for (int i = 0; i < item_max; ++i) {
+		// The party always contains valid battlers
+		const Game_Actor& actor = *(Main_Data::game_party->GetActors()[i]);
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
-			face_x = actor->GetBattleRow() == 1 ? 5 : 0;
+			face_x = actor.GetBattleRow() == 1 ? 5 : 0;
 		}
 		DrawActorFace(actor, face_x, i*48 + y);
 
