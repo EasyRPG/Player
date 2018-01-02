@@ -197,11 +197,12 @@ void Game_Character::UpdateSprite() {
 			anime_count++;
 	} else if (IsMoving()) {
 		remaining_step -= min(1 << (1 + GetMoveSpeed()), remaining_step);
-		if (IsSpinning() || (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation))
+		if (IsSpinning() || IsAnimated())
 			anime_count++;
 	} else {
 		stop_count++;
-		if ((walk_animation && (IsSpinning() || IsContinuous())) || pattern != RPG::EventPage::Frame_middle)
+
+		if (IsAnimated() && (IsSpinning() || IsContinuous() || pattern != RPG::EventPage::Frame_middle))
 			anime_count++;
 	}
 
@@ -871,6 +872,10 @@ void Game_Character::SetVisible(bool visible) {
 
 bool Game_Character::IsFlashPending() const {
 	return GetFlashTimeLeft() > 0;
+}
+
+bool Game_Character::IsAnimated() const {
+	return walk_animation && animation_type != RPG::EventPage::AnimType_fixed_graphic;
 }
 
 bool Game_Character::IsDirectionFixed() const {
