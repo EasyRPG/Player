@@ -214,6 +214,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/scene_title.h \
 	src/screen.cpp \
 	src/screen.h \
+	src/sdl2_ui.cpp \
+	src/sdl2_ui.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
 	src/bitmapfont.h \

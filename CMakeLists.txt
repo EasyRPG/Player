@@ -109,6 +109,7 @@ set(PLAYER_SRCS
 	src/scene_title.cpp
 	src/screen.cpp
 	src/sdl_ui.cpp
+	src/sdl2_ui.cpp
 	src/shinonome_gothic.cpp
 	src/shinonome_mincho.cpp
 	src/bitmapfont_wqy.cpp
@@ -183,7 +184,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	add_definitions(-D_DEBUG)
 endif()
 
-add_definitions(-DUSE_SDL)
+add_definitions(-DUSE_SDL=2)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)

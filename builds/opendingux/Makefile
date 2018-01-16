@@ -27,6 +27,7 @@ ifeq ($(BUILD_TARGET), dingoo)
 	LIBSNDFILE_LIBS :=
 	CXXFLAGS = 
 	SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
+	SDL_TARGET = 1
 	LIBSDLMIXER_LIBS = -lSDL_mixer
 else
 ifeq ($(BUILD_TARGET), gcwzero)
@@ -50,6 +51,7 @@ ifeq ($(BUILD_TARGET), gcwzero)
 	LIBSNDFILE_LIBS := $(shell $(PKG_CONFIG) --static --libs sndfile)
 	CXXFLAGS = 
 	SDL_CONFIG = $(SYSROOT)/usr/bin/sdl2-config
+	SDL_TARGET = 2
 	LIBSDLMIXER_LIBS = -lSDL2_mixer
 else
 $(error Unknown device $(BUILD_TARGET)! Valid choices: dingoo, gcwzero)
@@ -67,7 +69,7 @@ BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 
 # Compiler flags
-CFLAGS += -Wall -DNDEBUG -DUSE_SDL -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
+CFLAGS += -Wall -DNDEBUG -DUSE_SDL=$(SDL_TARGET) -DHAVE_SDL_MIXER -DSUPPORT_AUDIO `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS) $(ICU_CFLAGS) $(LIBMPG123_CFLAGS) $(LIBSNDFILE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fno-rtti -fno-exceptions
 LDFLAGS += -lstdc++ -lexpat -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread \
            -ldl `$(SDL_CONFIG) --libs` $(LIBSDLMIXER_LIBS) $(PIXMAN_LIBS) $(ICU_LIBS) $(PNG_LIBS) $(LIBMPG123_LIBS) $(LIBSNDFILE_LIBS)

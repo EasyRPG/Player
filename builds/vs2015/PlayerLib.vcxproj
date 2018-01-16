@@ -527,7 +527,7 @@
     <ClCompile Include="..\..\src\scene_teleport.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\screen.cpp" />
-    <ClCompile Include="..\..\src\sdl_ui.cpp" />
+    <ClCompile Include="..\..\src\sdl2_ui.cpp" />
     <ClCompile Include="..\..\src\shinonome_gothic.cpp" />
     <ClCompile Include="..\..\src\shinonome_mincho.cpp" />
     <ClCompile Include="..\..\src\bitmapfont_wqy.cpp" />
@@ -695,7 +695,7 @@
     <ClInclude Include="..\..\src\scene_teleport.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\screen.h" />
-    <ClInclude Include="..\..\src\sdl_ui.h" />
+    <ClInclude Include="..\..\src\sdl2_ui.h" />
     <ClInclude Include="..\..\src\bitmapfont.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_battle.h" />

@@ -42,7 +42,7 @@ AS_IF([test "x$with_freetype" != "xno"], [
 		PKG_CHECK_MODULES([HARFBUZZ],[harfbuzz],[AC_DEFINE(HAVE_HARFBUZZ,[1],[Enable HarfBuzz text shaping])],[auto_harfbuzz=0])
 	])
 ])
-PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[1],[Enable SDL2])],[
+PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[2],[Enable SDL2])],[
 	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
 ])
 AC_ARG_WITH([audio],[AS_HELP_STRING([--without-audio], [Disable audio support. @<:@default=on@:>@])])
