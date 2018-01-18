@@ -54,6 +54,7 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_enemyparty.h"
+#include "game_ineluki.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_switches.h"
@@ -830,6 +831,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
+	Main_Data::game_ineluki.reset(new Game_Ineluki());
 
 	DynRpg::Reset();
 

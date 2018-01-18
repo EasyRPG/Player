@@ -28,6 +28,7 @@
 #include "game_map.h"
 #include "game_event.h"
 #include "game_enemyparty.h"
+#include "game_ineluki.h"
 #include "game_player.h"
 #include "game_targets.h"
 #include "game_switches.h"
@@ -1151,7 +1152,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 				case 8:
 					// MIDI play position
-					value = Audio().BGM_GetTicks();
+					value = Main_Data::game_ineluki->GetMidiTicks();
 					break;
 				case 9:
 					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);

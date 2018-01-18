@@ -24,6 +24,7 @@
 #include "audio_secache.h"
 #include "cache.h"
 #include "game_battle.h"
+#include "game_ineluki.h"
 #include "game_screen.h"
 #include "game_system.h"
 #include "transition.h"
@@ -66,6 +67,7 @@ void Scene_Title::Continue(SceneType prev_scene) {
 		AudioSeCache::Clear();
 
 		Player::ResetGameObjects();
+		Main_Data::game_ineluki->ExecuteAutorunScript();
 
 		Start();
 	} else if (CheckEnableTitleGraphicAndMusic()) {

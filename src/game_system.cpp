@@ -26,6 +26,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "output.h"
+#include "game_ineluki.h"
 #include "transition.h"
 #include "main_data.h"
 #include "player.h"
@@ -129,8 +130,6 @@ void Game_System::BgmFade(int duration) {
 }
 
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
-	static bool ineluki_warning_shown = false;
-
 	if (se.name.empty()) {
 		return;
 	} else if (se.name == "(OFF)") {
@@ -143,12 +142,7 @@ void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	std::string end = ".script";
 	if (se.name.length() >= end.length() &&
 		0 == se.name.compare(se.name.length() - end.length(), end.length(), end)) {
-		if (!ineluki_warning_shown) {
-			Output::Warning("This game seems to use Ineluki's key patch to support "
-				"additional keys, mouse or scripts. Such patches are "
-				"unsupported, so this functionality will not work!");
-			ineluki_warning_shown = true;
-		}
+		Main_Data::game_ineluki->Execute(se);
 		return;
 	}
 
