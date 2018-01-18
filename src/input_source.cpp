@@ -47,7 +47,7 @@ std::unique_ptr<Input::Source> Input::Source::Create(
 }
 
 void Input::UiSource::DoUpdate(bool system_only) {
-	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
+	keystates = DisplayUi->GetKeyStates();
 
 	pressed_buttons = {};
 
@@ -58,6 +58,9 @@ void Input::UiSource::DoUpdate(bool system_only) {
 	}
 
 	Record();
+
+	mouse_x = DisplayUi->GetMousePosX();
+	mouse_y = DisplayUi->GetMousePosY();
 }
 
 void Input::UiSource::Update() {

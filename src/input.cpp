@@ -46,6 +46,7 @@ namespace Input {
 
 	std::array<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
+	std::bitset<Input::Keys::KEYS_COUNT> raw_triggered, raw_pressed, raw_released;
 	int dir4;
 	int dir8;
 	std::unique_ptr<Source> source;
@@ -66,6 +67,9 @@ void Input::Init(
 	triggered.reset();
 	repeated.reset();
 	released.reset();
+	raw_triggered.reset();
+	raw_pressed.reset();
+	raw_released.reset();
 
 	source = Source::Create(std::move(buttons), std::move(directions), replay_from_path);
 	source->InitRecording(record_to_path);
@@ -147,6 +151,14 @@ void Input::Update() {
 		else if (dirpress[Direction::DOWNRIGHT] > 0)	dir8 = Direction::DOWNRIGHT;
 		else if (dirpress[Direction::DOWNLEFT] > 0)	dir8 = Direction::DOWNLEFT;
 	}
+
+	// Determine pressed & released keys from raw keystate
+	const auto& raw_pressed_now = source->GetPressedKeys();
+	for (unsigned i = 0; i < Input::Keys::KEYS_COUNT; ++i) {
+		raw_triggered[i] = raw_pressed_now[i] && !raw_pressed[i];
+		raw_released[i] = !raw_pressed_now[i] && raw_pressed[i];
+	}
+	raw_pressed = raw_pressed_now;
 }
 
 void Input::UpdateSystem() {
@@ -161,8 +173,6 @@ void Input::UpdateSystem() {
 		}
 	}
 }
-
-
 
 void Input::ResetKeys() {
 	triggered.reset();
@@ -287,4 +297,20 @@ std::vector<Input::InputButton> Input::GetAllReleased() {
 			vector.push_back((InputButton)i);
 	}
 	return vector;
+}
+
+bool Input::IsRawKeyPressed(Input::Keys::InputKey key) {
+	return raw_pressed[key];
+}
+
+bool Input::IsRawKeyTriggered(Input::Keys::InputKey key) {
+	return raw_triggered[key];
+}
+
+bool Input::IsRawKeyReleased(Input::Keys::InputKey key) {
+	return raw_released[key];
+}
+
+void Input::GetMousePosition(int& x, int& y) {
+	source->GetMousePosition(x, y);
 }
