@@ -98,7 +98,7 @@ protected:
 	void CreateSprite();
 	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
-	void OnBattlercharsetReady(FileRequestResult* result, int battler_index);
+	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
 
 	std::string sprite_name;
 	int hue = 0;

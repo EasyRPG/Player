@@ -644,7 +644,7 @@ int Game_Actor::GetLevel() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	return std::max(1, std::min(GetActor().final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
+	return std::max<int32_t>(1, std::min<int32_t>(GetActor().final_level, Player::IsRPG2k() ? max_level_2k : max_level_2k3));
 }
 
 int Game_Actor::GetExp() const {

@@ -339,7 +339,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	Game_Temp::shop_handlers = com.parameters[2] != 0;
 
 	Game_Temp::shop_goods.clear();
-	std::vector<int>::const_iterator it;
+	std::vector<int32_t>::const_iterator it;
 	for (it = com.parameters.begin() + 4; it < com.parameters.end(); ++it)
 		Game_Temp::shop_goods.push_back(*it);
 
@@ -350,7 +350,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
-	continuation = NULL;
+	continuation = nullptr;
 	if (!Game_Temp::shop_handlers) {
 		index++;
 		return true;

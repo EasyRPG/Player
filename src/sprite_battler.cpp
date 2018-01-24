@@ -357,7 +357,7 @@ void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {
 	SetBitmap(graphic);
 }
 
-void Sprite_Battler::OnBattlercharsetReady(FileRequestResult* result, int battler_index) {
+void Sprite_Battler::OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index) {
 	SetBitmap(Cache::Battlecharset(result->file));
 	SetSrcRect(Rect(0, battler_index * 48, 48, 48));
 }

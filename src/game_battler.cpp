@@ -174,8 +174,8 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	}
 
 	// > 10 makes any skill usable
-	int smallest_physical_rate = 11;
-	int smallest_magical_rate = 11;
+	int32_t smallest_physical_rate = 11;
+	int32_t smallest_magical_rate = 11;
 
 	const std::vector<int16_t> states = GetInflictedStates();
 	for (std::vector<int16_t>::const_iterator it = states.begin();
