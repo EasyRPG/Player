@@ -46,10 +46,12 @@ namespace {
 			static_cast<SdlMixerAudio&>(Audio()).BGM_OnPlayedOnce();
 	}
 
+#if SDL_MAJOR_VERSION>1
 	void bgs_played_once(int channel) {
 		if (DisplayUi && channel == BGS_CHANNEL_NUM)
 			bgm_played_once();
 	}
+#endif
 
 	void callback(void *udata, Uint8 *stream, int stream_size) {
 		static std::vector<uint8_t> buffer;
@@ -313,9 +315,8 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 
 	bgm_starttick = SDL_GetTicks();
 
-	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
-
 #if SDL_MAJOR_VERSION>1
+	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
 	if (mtype == MUS_WAV || mtype == MUS_OGG) {
 		BGM_Stop();
 		BGS_Play(file, volume, 0, fadein);

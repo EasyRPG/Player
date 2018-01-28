@@ -32,7 +32,7 @@
     <ClCompile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
-      <PreprocessorDefinitions>WANT_FMMIDI=2;HAVE_MPG123;HAVE_FREETYPE;HAVE_LIBSNDFILE;HAVE_LIBSPEEXDSP;HAVE_OGGVORBIS;HAVE_WILDMIDI;WILDMIDI_STATIC;HAVE_XMP;BUILDING_STATIC;SUPPORT_AUDIO;USE_SDL;HAVE_SDL_MIXER;UNICODE;_CRT_SECURE_NO_WARNINGS;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WANT_FMMIDI=2;HAVE_MPG123;HAVE_FREETYPE;HAVE_LIBSNDFILE;HAVE_LIBSPEEXDSP;HAVE_OGGVORBIS;HAVE_WILDMIDI;WILDMIDI_STATIC;HAVE_XMP;BUILDING_STATIC;SUPPORT_AUDIO;USE_SDL=2;HAVE_SDL_MIXER;UNICODE;_CRT_SECURE_NO_WARNINGS;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

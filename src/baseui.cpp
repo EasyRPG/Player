@@ -19,7 +19,9 @@
 #include "baseui.h"
 #include "bitmap.h"
 
-#ifdef USE_SDL
+#if USE_SDL==2
+#include "sdl2_ui.h"
+#elif USE_SDL==1
 #include "sdl_ui.h"
 #elif _3DS
 #include "3ds_ui.h"
@@ -30,7 +32,9 @@
 std::shared_ptr<BaseUi> DisplayUi;
 
 std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, bool /* zoom */) {
-#ifdef USE_SDL
+#if USE_SDL==2
+	return std::make_shared<Sdl2Ui>(width, height, fs_flag);
+#elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, fs_flag);
 #elif _3DS
 	return std::make_shared<CtrUi>(width, height);

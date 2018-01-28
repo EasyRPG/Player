@@ -15,8 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_SDL_UI_H
-#define EP_SDL_UI_H
+#ifndef EP_SDL2_UI_H
+#define EP_SDL2_UI_H
 
 // Headers
 #include "baseui.h"
@@ -28,15 +28,17 @@
 
 extern "C" {
 	union SDL_Event;
-	struct SDL_Surface;
+	struct SDL_Texture;
+	struct SDL_Window;
+	struct SDL_Renderer;
 }
 
 struct AudioInterface;
 
 /**
- * SdlUi class.
+ * Sdl2Ui class.
  */
-class SdlUi : public BaseUi {
+class Sdl2Ui : public BaseUi {
 public:
 	/**
 	 * Constructor.
@@ -45,12 +47,12 @@ public:
 	 * @param height window client height.
 	 * @param fullscreen start in fullscreen flag.
 	 */
-	SdlUi(long width, long height, bool fullscreen);
+	Sdl2Ui(long width, long height, bool fullscreen);
 
 	/**
 	 * Destructor.
 	 */
-	~SdlUi() override;
+	~Sdl2Ui() override;
 
 	/**
 	 * Inherited from BaseUi.
@@ -105,17 +107,15 @@ private:
 	void ProcessJoystickButtonEvent(SDL_Event &evnt);
 	void ProcessJoystickHatEvent(SDL_Event &evnt);
 	void ProcessJoystickAxisEvent(SDL_Event &evnt);
+	void ProcessMouseWheelEvent(SDL_Event &evnt);
+	void ProcessFingerEvent(SDL_Event & evnt);
 
 	/** @} */
 
-
 	/**
-	 * Blits a bitmap scaled x2 to an SDL surface.
-	 *
-	 * @param src source bitmap.
-	 * @param dst destination surface.
+	 * Sets app icon.
 	 */
-	void Blit2X(Bitmap const& src, SDL_Surface* dst);
+	void SetAppIcon();
 
 	/**
 	 * Resets keys states.
@@ -134,7 +134,9 @@ private:
 	bool mode_changing;
 
 	/** Main SDL window. */
-	SDL_Surface* sdl_surface;
+	SDL_Texture* sdl_texture;
+	SDL_Window* sdl_window;
+	SDL_Renderer* sdl_renderer;
 
 	std::unique_ptr<AudioInterface> audio_;
 };

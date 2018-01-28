@@ -152,7 +152,7 @@
     <ClCompile Include="..\..\src\baseui.cpp">
       <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sdl_ui.cpp">
+    <ClCompile Include="..\..\src\sdl2_ui.cpp">
       <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_vehicle.cpp">
@@ -631,7 +631,7 @@
     <ClInclude Include="..\..\src\baseui.h">
       <Filter>Source Files\Backend\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\sdl_ui.h">
+    <ClInclude Include="..\..\src\sdl2_ui.h">
       <Filter>Source Files\Backend\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_variables.h">
