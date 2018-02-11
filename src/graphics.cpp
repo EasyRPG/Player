@@ -32,6 +32,7 @@
 #include "player.h"
 #include "fps_overlay.h"
 #include "message_overlay.h"
+#include "scene.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -57,7 +58,7 @@ namespace Graphics {
 		State() {}
 		std::list<Drawable*> drawable_list;
 		bool zlist_dirty = false;
-		bool draw_background = true;
+		std::shared_ptr<Scene> scene;
 	};
 
 	std::shared_ptr<State> state;
@@ -185,8 +186,8 @@ void Graphics::DrawFrame() {
 		global_state->zlist_dirty = false;
 	}
 
-	if (state->draw_background) {
-		DisplayUi->AddBackground();
+	if (state->scene != nullptr) {
+		state->scene->DrawBackground();
 	}
 
 	for (Drawable* drawable : state->drawable_list) {
@@ -201,8 +202,8 @@ void Graphics::DrawFrame() {
 }
 
 BitmapRef Graphics::SnapToBitmap() {
-	if (state->draw_background) {
-		DisplayUi->AddBackground();
+	if (state->scene != nullptr) {
+		state->scene->DrawBackground();
 	}
 
 	for (Drawable* drawable : state->drawable_list) {
@@ -466,10 +467,10 @@ inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* se
 	return false;
 }
 
-void Graphics::Push(bool draw_background) {
+void Graphics::Push(std::shared_ptr<Scene> scene) {
 	stack.push_back(state);
 	state.reset(new State());
-	state->draw_background = draw_background;
+	state->scene = scene;
 }
 
 void Graphics::Pop() {

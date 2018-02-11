@@ -25,6 +25,7 @@
 #include "drawable.h"
 
 class MessageOverlay;
+class Scene;
 
 /**
  * Graphics namespace.
@@ -127,7 +128,7 @@ namespace Graphics {
 
 	void UpdateZCallback();
 
-	void Push(bool draw_background = true);
+	void Push(std::shared_ptr<Scene> scene);
 	void Pop();
 
 	/**

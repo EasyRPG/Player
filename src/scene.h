@@ -166,8 +166,8 @@ public:
 	/** Contains name of the Scenes. For debug purposes. */
 	static const char scene_names[SceneMax][12];
 
-	/** When true tells the graphic system to draw a system color background */
-	virtual bool DrawBackground();
+	/** Called by the graphic system to request drawing of a background, usually a system color background */
+	virtual void DrawBackground();
 
 private:
 	/** Scene stack. */
@@ -176,7 +176,7 @@ private:
 	static int push_pop_operation;
 
 	/**
-	 * true if Start() was called. For handling the special case that two 
+	 * true if Start() was called. For handling the special case that two
 	 * or more scenes are pushed. In that case only the last calls start, the
 	 * other Continue(). This enforces calling Start().
 	 */
