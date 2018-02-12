@@ -1,14 +1,9 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
-include(CMakeDependentOption)
-
-project(EasyRPG_Player CXX C)
-set(PACKAGE_VERSION "0.5.3")
+project(EasyRPG_Player VERSION 0.5.3 LANGUAGES CXX C)
 
 # Source Files
-set(PLAYER_SRCS
+add_library(${PROJECT_NAME}_Static
 	src/async_handler.cpp
 	src/audio_al.cpp
 	src/audio.cpp
@@ -168,30 +163,29 @@ set(PLAYER_SRCS
 	src/window_varlist.cpp
 )
 
+include(CMakeDependentOption)
+
 # Include directories
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories(
+	${PROJECT_NAME}_Static PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Extra FindModule files
 list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 
-# Add compile flags
-if(CMAKE_GENERATOR MATCHES "Makefile")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
-endif()
-
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
-	add_definitions(-D_DEBUG)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC _DEBUG=1)
 endif()
 
-add_definitions(-DUSE_SDL=2)
+target_compile_definitions(${PROJECT_NAME}_Static PUBLIC USE_SDL=2)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	include(TestBigEndian)
 	test_big_endian(WORDS_BIGENDIAN)
 	if(WORDS_BIGENDIAN)
-		add_definitions(-DWORDS_BIGENDIAN)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WORDS_BIGENDIAN=1)
 	endif()
 endif()
 
@@ -213,8 +207,9 @@ function(find_lib LIBNAME COND)
 
 		if(${${LIBNAME}_FOUND})
 			string(TOUPPER ${LIBNAME} LIBNAMEUP)
-			include_directories(${${LIBNAMEUP}_INCLUDE_DIRS})
-			set(EASYRPG_PLAYER_LIBRARIES ${EASYRPG_PLAYER_LIBRARIES} ${${LIBNAMEUP}_LIBRARIES} PARENT_SCOPE)
+			target_include_directories(${PROJECT_NAME}_Static PUBLIC ${${LIBNAMEUP}_INCLUDE_DIRS})
+			target_link_libraries(${PROJECT_NAME}_Static ${${LIBNAMEUP}_LIBRARIES})
+			message(STATUS ${LIBNAMEUP} ${${LIBNAMEUP}_INCLUDE_DIRS})
 		endif()
 
 		set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
@@ -230,18 +225,16 @@ if(PLAYER_BUILD_LIBLCF)
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
 	find_package(Git REQUIRED)
 	if(NOT EXISTS ${LIBLCF_PATH})
-	execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
-		"${PLAYER_BUILD_LIBLCF_GIT}"
-		"${LIBLCF_PATH}")
+		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
+			"${PLAYER_BUILD_LIBLCF_GIT}"
+			"${LIBLCF_PATH}")
 	endif()
-	list(APPEND CMAKE_MODULE_PATH
-		"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 	add_subdirectory(
-		${LIBLCF_PATH}
-		${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
+		${LIBLCF_PATH})
 else()
 	# Use system package
-	find_lib(liblcf REQUIRED)
+	find_package(liblcf REQUIRED)
+	target_link_libraries(${PROJECT_NAME}_Static liblcf::liblcf)
 endif()
 
 # Detect all required libraries
@@ -251,7 +244,7 @@ endforeach()
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
-	add_definitions(-DHAVE_WINE)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WINE=1)
 endif()
 
 # freetype and harfbuzz
@@ -259,10 +252,10 @@ option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
 find_lib("Freetype" PLAYER_WITH_FREETYPE)
 if(Freetype_FOUND)
-	add_definitions(-DHAVE_FREETYPE)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_FREETYPE=1)
 	find_lib("Harfbuzz" PLAYER_WITH_HARFBUZZ)
 	if(Harfbuzz_FOUND)
-		add_definitions(-DHAVE_HARFBUZZ)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_HARFBUZZ=1)
 	endif()
 endif()
 
@@ -282,41 +275,41 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 endif()
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
-	add_definitions(-DSUPPORT_AUDIO)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
 
 	# wildmidi (on for non-mixer)
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
 	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
 	if(WildMidi_FOUND)
-		add_definitions(-DHAVE_WILDMIDI)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WILDMIDI=1)
 	endif()
 
 	# Provide fmmidi options
 	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		add_definitions(-DWANT_FMMIDI)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=1)
 	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
-	add_definitions(-DSUPPORT_AUDIO)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
 
 	# SDL2_mixer Audio
 	find_lib(SDL2_mixer REQUIRED)
-	add_definitions(-DHAVE_SDL_MIXER)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_SDL_MIXER=1)
 
 	# wildmidi (optional, OFF)
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
 	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
 	if(WildMidi_FOUND)
-		add_definitions(-DHAVE_WILDMIDI)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WILDMIDI=1)
 	endif()
 
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
 	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
-		add_definitions(-DWANT_FMMIDI=2)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=2)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		add_definitions(-DWANT_FMMIDI=1)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=1)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		# noop
 	else()
@@ -324,14 +317,14 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	# OpenAL Audio
-	add_definitions(-DSUPPORT_AUDIO)
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
 
 	find_package(OpenAL REQUIRED)
 	find_package(SndFile REQUIRED)
 	find_package(FluidSynth REQUIRED)
-	include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
-	list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
-	add_definitions(-DHAVE_OPENAL)
+	target_include_directories(${PROJECT_NAME}_Static PUBLIC ${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
+	target_link_libraries(${PROJECT_NAME}_Static ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
+	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OPENAL=1)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
 
 else()
@@ -343,97 +336,66 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)
 	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
 	if(speexdsp_FOUND)
-		add_definitions(-DHAVE_LIBSPEEXDSP)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_LIBSPEEXDSP=1)
 	endif()
 
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
 	find_lib("mpg123" PLAYER_WITH_MPG123)
 	if(mpg123_FOUND)
-		add_definitions(-DHAVE_MPG123)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_MPG123=1)
 	endif()
 
 	# libsndfile
 	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
 	find_lib("SndFile" PLAYER_WITH_LIBSNDFILE)
 	if(SndFile_FOUND)
-		add_definitions(-DHAVE_LIBSNDFILE)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_LIBSNDFILE=1)
 	endif()
 
 	# libvorbis
 	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
 	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
 	if(OggVorbis_FOUND)
-		add_definitions(-DHAVE_OGGVORBIS)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OGGVORBIS=1)
 	endif()
 
 	# opusfile
 	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
 	find_lib("Opus" PLAYER_WITH_OPUS)
 	if(Opus_FOUND)
-		add_definitions(-DHAVE_OPUS)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OPUS=1)
 	endif()
 
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
 	find_lib("XMP" PLAYER_WITH_XMP)
 	if(XMP_FOUND)
-		add_definitions(-DHAVE_XMP)
+		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_XMP=1)
 	endif()
 
 	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
-		list(APPEND PLAYER_SRCS
+		target_sources(${PROJECT_NAME}_Static PRIVATE
 			src/midisequencer.cpp
-			src/midisynth.cpp
-		)
+			src/midisynth.cpp)
 	endif()
 endif()
 
-# Additional include directories
-if(PLAYER_BUILD_LIBLCF)
-	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
-	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
-endif()
-
-# Libraries
-set(EASYRPG_PLAYER_LIBRARIES_ALL "${PROJECT_NAME}_Static" ${EASYRPG_PLAYER_LIBRARIES})
-if(PLAYER_BUILD_LIBLCF)
-	list(APPEND EASYRPG_PLAYER_LIBRARIES_ALL lcf)
-endif()
-
-# Output path
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
-
-# Entry point
-set(EXE_FILES "src/main.cpp")
-
-# Add prefix (CMAKE_CURRENT_SOURCE_DIR) to list elements
-FUNCTION(PREPEND var prefix)
-	SET(listVar "")
-	FOREACH(f ${ARGN})
-		LIST(APPEND listVar "${prefix}/${f}")
-	ENDFOREACH(f)
-	SET(${var} "${listVar}" PARENT_SCOPE)
-ENDFUNCTION(PREPEND)
-
-PREPEND(PLAYER_SRCS ${CMAKE_CURRENT_SOURCE_DIR} ${PLAYER_SRCS})
-PREPEND(EXE_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${EXE_FILES})
-
-# Static library
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	list(APPEND PLAYER_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
-endif()
-add_library(${PROJECT_NAME}_Static STATIC ${PLAYER_SRCS})
-
 # Executable
-add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${EXE_FILES})
-target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_Static)
-if(PLAYER_BUILD_LIBLCF)
-	add_dependencies(${PROJECT_NAME} lcf)
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE "src/main.cpp")
+
+# Add Windows resources
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+	target_sources(${PROJECT_NAME} PRIVATE "resources/player.rc")
 endif()
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
+
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_Static)
+
+# installation
+include(GNUInstallDirs)
+install(
+	TARGETS ${PROJECT_NAME}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # manpage
 # Handled as extra target "man"
@@ -441,7 +403,7 @@ set(MAN_NAME easyrpg-player.6)
 find_program(A2X_EXECUTABLE NAMES a2x a2x.py)
 if(NOT A2X_EXECUTABLE STREQUAL "A2X_EXECUTABLE-NOTFOUND")
 	add_custom_command(OUTPUT resources/${MAN_NAME}
-		COMMAND ${A2X_EXECUTABLE} -a player_version="${PACKAGE_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
+		COMMAND ${A2X_EXECUTABLE} -a player_version="${PROJECT_VERSION}" -f manpage -D ${CMAKE_CURRENT_BINARY_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/resources/${MAN_NAME}.adoc
 		DEPENDS resources/${MAN_NAME}.adoc
 		COMMENT "(Re-)building manpage ${MAN_NAME}"
 		VERBATIM)
@@ -471,7 +433,6 @@ if(DOXYGEN_FOUND)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
-		DEPENDS ${PLAYER_SRCS} ${EXE_FILES}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
 	add_custom_target(doc)
@@ -506,12 +467,11 @@ if(PLAYER_ENABLE_TESTS)
 	foreach(i ${TEST_FILES})
 		get_filename_component(name "${i}" NAME_WE)
 		add_executable(test_${name} ${i})
-		target_link_libraries(test_${name} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-		add_dependencies(test_${name} ${PROJECT_NAME}_Static)
+		target_link_libraries(test_${name} ${PROJECT_NAME}_Static)
 
 		add_test(
 			NAME test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
-			COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
+			COMMAND ${PROJECT_BINARY_DIR}/test_${name})
 		set_tests_properties(test_${name}
 			PROPERTIES ENVIRONMENT "${TEST_ENVS}")
 	endforeach()
@@ -556,7 +516,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		message(STATUS "MP3 playback:  mpg123")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "MP3 playback:  SDL2_mixer. Some MP3 files will crash or play noise.")
+		message(STATUS "MP3 playback:  SDL2_mixer")
 	else()
 		message(STATUS "MP3 playback:  None")
 	endif()
@@ -586,12 +546,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	endif()
 
 	if(speexdsp_FOUND)
-		message(STATUS "Resampler:     speexdsp")
+		message(STATUS "Resampler:	 speexdsp")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "Resampler:     SDL2")
+		message(STATUS "Resampler:	 SDL2")
 	else()
-		message(STATUS "Resampler:     None")
+		message(STATUS "Resampler:	 None")
 	endif()
 
 	if(SDL_MIXER_USED)
