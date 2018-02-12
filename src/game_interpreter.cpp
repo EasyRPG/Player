@@ -2137,11 +2137,13 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		if (param_size > 16) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
-			int var = 0;
-			if (Game_Variables.IsValid(com.parameters[19])) {
-				var = Game_Variables[com.parameters[19]];
+			if (com.parameters[19] != 0) {
+				int var = 0;
+				if (Game_Variables.IsValid(com.parameters[19])) {
+					var = Game_Variables[com.parameters[19]];
+				}
+				params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 			}
-			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 			params.spritesheet_cols = com.parameters[22];
