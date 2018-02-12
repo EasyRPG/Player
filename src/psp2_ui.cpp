@@ -60,7 +60,7 @@ int _newlib_heap_size_user = 192 * 1024 * 1024;
 
 #define SHADERS_NUM 4
 vita2d_shader* shaders[SHADERS_NUM];
-char* shader_names[] = {
+const char* shader_names[] = {
 	"None",
 	"Sharp Bilinear",
 	"LCD 3x",

@@ -144,6 +144,24 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = path + "/timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
+#elif PSP2
+	// Only wildmidi paths, no timidity because it was never used on PSVita
+
+	// Shipped
+	config_file = "app0:/wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
+
+	// Preferred global directory
+	if (!found) {
+		config_file = "ux0:/data/easyrpg-player/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// Current directory
+	if (!found) {
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
 #else
 	// Prefer wildmidi in current directory
 	config_file = "wildmidi.cfg";
