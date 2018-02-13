@@ -770,8 +770,6 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		return result;
 	}
 
-	static bool has_fast_dir_stat = true;
-
 #ifdef PSP2
 	struct dirent ent;
 	while (readdir(dir, &ent) > 0) {
@@ -788,24 +786,28 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		std::string const name = ent->d_name;
 	#endif
 #endif
-		bool is_directory;
+
+		static bool has_fast_dir_stat = true;
+		bool is_directory = false;
 		if (has_fast_dir_stat) {
 			#ifdef PSP2
 			is_directory = S_ISDIR(ent.d_stat.st_mode);
+			#elif defined(_DIRENT_HAVE_D_TYPE)
+			if (ent->d_type == DT_UNKNOWN) {
+				has_fast_dir_stat = false;
+			} else {
+				is_directory = ent->d_type == DT_DIR;
+			}
 			#else
-			is_directory = ent->d_type == DT_DIR;
+			has_fast_dir_stat = false;
 			#endif
-		} else {
+		}
+
+		if (!has_fast_dir_stat) {
 			is_directory = IsDirectory(MakePath(path, name));
 		}
 
 		if (name == "." || name == "..") {
-			if (has_fast_dir_stat && !is_directory) {
-				Output::Debug("File system does not populate type field (d_type) correctly.");
-				Output::Debug("Directory parsing will be slower.");
-				has_fast_dir_stat = false;
-			}
-
 			continue;
 		}
 
