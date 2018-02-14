@@ -40,7 +40,7 @@ public:
 	void Resume() override;
 	void TransitionIn() override;
 	void TransitionOut() override;
-	bool DrawBackground() override;
+	void DrawBackground() override;
 
 	void CallBattle();
 	void CallShop();

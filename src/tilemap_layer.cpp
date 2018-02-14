@@ -160,14 +160,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow));
 }
 
-/** Draws a black tile at (x,y) (for OOB tiles) */
-static void DrawEmptyTile(int x, int y) {
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	Rect rect(x, y, TILE_SIZE, TILE_SIZE);
-	Color black(0, 0, 0, 255);
-	dst->FillRect(rect, black);
-}
-
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col) {
 	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
 
@@ -226,9 +218,6 @@ void TilemapLayer::Draw(int z_order) {
 				map_y < 0 || map_y >= height;
 
 			if (out_of_bounds) {
-				if (layer == 0) {
-					DrawEmptyTile(map_draw_x, map_draw_y);
-				}
 				continue;
 			}
 

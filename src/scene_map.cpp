@@ -96,8 +96,14 @@ void Scene_Map::TransitionOut() {
 	}
 }
 
-bool Scene_Map::DrawBackground() {
-	return false;
+void Scene_Map::DrawBackground() {
+	if (Main_Data::game_data.screen.shake_position != 0 ||
+			Game_Map::GetWidth() < 20 || Game_Map::GetHeight() < 15) {
+		// Speed optimisation:
+		// Only draw a black background when the screen is out of bounds because of a shake effect or
+		// because of custom maps that are smaller than the screen
+		DisplayUi->CleanDisplay();
+	}
 }
 
 void Scene_Map::Update() {

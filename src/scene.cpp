@@ -112,7 +112,7 @@ void Scene::MainFunction() {
 
 		switch (push_pop_operation) {
 		case ScenePushed:
-			Graphics::Push(Scene::instance->DrawBackground());
+			Graphics::Push(Scene::instance);
 			break;
 			// Graphics::Pop done in Player Loop
 		default:;
@@ -210,6 +210,6 @@ std::shared_ptr<Scene> Scene::Find(SceneType type) {
 	return std::shared_ptr<Scene>();
 }
 
-bool Scene::DrawBackground() {
-	return true;
+void Scene::DrawBackground() {
+	DisplayUi->AddBackground();
 }

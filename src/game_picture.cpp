@@ -146,6 +146,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 	last_spritesheet_frame = 0;
+	sheet_bitmap.reset();
 
 	RequestPictureSprite();
 	UpdateSprite();
