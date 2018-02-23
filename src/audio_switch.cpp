@@ -37,22 +37,25 @@ namespace {
 void switch_audio_thread(void*) {
 	uint8_t *buffer1 = (uint8_t*)memalign(0x1000, ALIGN_TO(buf_size, 0x1000));
 	uint8_t *buffer2 = (uint8_t*)memalign(0x1000, ALIGN_TO(buf_size, 0x1000));
-	uint8_t idx = 0;
+	uint32_t released_count;
 	
-	AudioOutBuffer source_buffers[2], released_buffer;
+	AudioOutBuffer source_buffers[2], *released_buffer;
 	
 	// Init audio buffers
-	source_buffers[0].next = NULL;
 	source_buffers[0].buffer = buffer1;
-	source_buffers[0].buffer_size = buf_size;
-	source_buffers[0].data_size = buf_size;
-	source_buffers[0].data_offset = 0;
-	source_buffers[1].next = NULL;
 	source_buffers[1].buffer = buffer2;
-	source_buffers[1].buffer_size = buf_size;
-	source_buffers[1].data_size = buf_size;
-	source_buffers[1].data_offset = 0;
-
+	
+	for (int i = 0; i < 2; i++){
+		source_buffers[i].next = NULL;
+		source_buffers[i].buffer_size = buf_size;
+		source_buffers[i].data_size = buf_size;
+		source_buffers[i].data_offset = 0;
+		instance->LockMutex();
+		instance->Decode((uint8_t*)source_buffers[i].buffer, buf_size);
+		instance->UnlockMutex();
+		audoutAppendAudioOutBuffer(&source_buffers[i]);
+	}
+	
 	for(;;) {
 		// A pretty bad way to close thread
 		if (instance->termStream) {
@@ -62,15 +65,12 @@ void switch_audio_thread(void*) {
 			return;
 		}
 
+		audoutWaitPlayFinish(&released_buffer, &released_count, U64_MAX);
 		instance->LockMutex();
-		instance->Decode((uint8_t*)source_buffers[idx].buffer, buf_size);
+		instance->Decode((uint8_t*)released_buffer->buffer, buf_size);
 		instance->UnlockMutex();
+		audoutAppendAudioOutBuffer(released_buffer);
 
-		if (R_FAILED(audoutPlayBuffer(&source_buffers[idx], &released_buffer))){
-			Output::Error("An error occurred during audio playback.");
-		}
-		
-		idx = (idx + 1) % 2;
 	}
 }
 
@@ -101,6 +101,10 @@ NxAudio::~NxAudio() {
 	
 	// Deleting thread
 	threadClose(&audio_thread);
+	
+	// Terminating audio API
+	audoutStopAudioOut();
+	audoutExit();
 }
 
 void NxAudio::LockMutex() const {
