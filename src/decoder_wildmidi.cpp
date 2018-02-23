@@ -131,6 +131,10 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "wildmidi.cfg";
 		found = FileFinder::Exists(config_file);
 	}
+#elif SWITCH
+	// Only wildmidi paths, no timidity because it was never used on Switch
+	config_file = "./wildmidi.cfg";
+	found = FileFinder::Exists(config_file);
 #elif __ANDROID__
 	// Use JNI to obtain the path
 	std::string path = get_timidity_path_jni();

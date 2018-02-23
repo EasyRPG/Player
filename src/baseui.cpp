@@ -27,6 +27,8 @@
 #include "3ds_ui.h"
 #elif PSP2
 #include "psp2_ui.h"
+#elif SWITCH
+#include "switch_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;
@@ -40,6 +42,8 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 	return std::make_shared<CtrUi>(width, height);
 #elif PSP2
 	return std::make_shared<Psp2Ui>(width, height);
+#elif SWITCH
+	return std::make_shared<NxUi>(width, height);
 #else
 #error cannot create UI
 #endif
