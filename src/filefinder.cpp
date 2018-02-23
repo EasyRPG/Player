@@ -458,6 +458,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
 #elif defined(SWITCH)
 	add_rtp_path("./rtp/" + version_str + "/");
+	add_rtp_path("/switch/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(_3DS)
 	add_rtp_path("romfs:/data/rtp/" + version_str + "/");
 	add_rtp_path("sdmc:/data/rtp/" + version_str + "/");
