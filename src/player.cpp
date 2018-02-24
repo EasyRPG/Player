@@ -350,6 +350,7 @@ void Player::Exit() {
 	DisplayUi->UpdateDisplay();
 #endif
 
+	Player::ResetGameObjects();
 	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();
