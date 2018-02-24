@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
-#include <list>
 
 #include "graphics.h"
 #include "bitmap.h"
@@ -54,15 +53,7 @@ namespace Graphics {
 
 	uint32_t next_fps_time;
 
-	struct State {
-		State() {}
-		std::list<Drawable*> drawable_list;
-		bool zlist_dirty = false;
-		std::shared_ptr<Scene> scene;
-	};
-
-	std::shared_ptr<State> state;
-	std::vector<std::shared_ptr<State> > stack;
+	std::shared_ptr<Scene> current_scene;
 	std::shared_ptr<State> global_state;
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
@@ -80,7 +71,8 @@ void Graphics::Init() {
 	screen_erased = false;
 	transition_frames_left = 0;
 
-	state.reset(new State());
+	Scene::Push(std::make_shared<Scene>());
+	current_scene = Scene::instance;
 	global_state.reset(new State());
 
 	// Is a drawable, must be init after state
@@ -91,7 +83,6 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
-	state->drawable_list.clear();
 	global_state->drawable_list.clear();
 
 	frozen_screen.reset();
@@ -176,9 +167,10 @@ void Graphics::DrawFrame() {
 		return;
 	}
 
-	if (state->zlist_dirty) {
-		state->drawable_list.sort(SortDrawableList);
-		state->zlist_dirty = false;
+	State& state = current_scene->GetGraphicsState();
+	if (state.zlist_dirty) {
+		state.drawable_list.sort(SortDrawableList);
+		state.zlist_dirty = false;
 	}
 
 	if (global_state->zlist_dirty) {
@@ -186,11 +178,9 @@ void Graphics::DrawFrame() {
 		global_state->zlist_dirty = false;
 	}
 
-	if (state->scene != nullptr) {
-		state->scene->DrawBackground();
-	}
+	current_scene->DrawBackground();
 
-	for (Drawable* drawable : state->drawable_list) {
+	for (Drawable* drawable : state.drawable_list) {
 		drawable->Draw();
 	}
 
@@ -202,11 +192,9 @@ void Graphics::DrawFrame() {
 }
 
 BitmapRef Graphics::SnapToBitmap() {
-	if (state->scene != nullptr) {
-		state->scene->DrawBackground();
-	}
+	current_scene->DrawBackground();
 
-	for (Drawable* drawable : state->drawable_list) {
+	for (Drawable* drawable : current_scene->GetGraphicsState().drawable_list) {
 		drawable->Draw();
 	}
 
@@ -237,9 +225,10 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		transition_duration = type == TransitionErase ? 1 : duration;
 		transition_frames_left = transition_duration;
 
-		if (state->zlist_dirty) {
-			state->drawable_list.sort(SortDrawableList);
-			state->zlist_dirty = false;
+		State& state = current_scene->GetGraphicsState();
+		if (state.zlist_dirty) {
+			state.drawable_list.sort(SortDrawableList);
+			state.zlist_dirty = false;
 		}
 
 		if (global_state->zlist_dirty) {
@@ -441,7 +430,7 @@ void Graphics::RegisterDrawable(Drawable* drawable) {
 	if (drawable->IsGlobal()) {
 		global_state->drawable_list.push_back(drawable);
 	} else {
-		state->drawable_list.push_back(drawable);
+		current_scene->GetGraphicsState().drawable_list.push_back(drawable);
 	}
 	UpdateZCallback();
 }
@@ -452,13 +441,14 @@ void Graphics::RemoveDrawable(Drawable* drawable) {
 		it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
 		if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
 	} else {
-		it = std::find(state->drawable_list.begin(), state->drawable_list.end(), drawable);
-		if (it != state->drawable_list.end()) { state->drawable_list.erase(it); }
+		State& state = current_scene->GetGraphicsState();
+		it = std::find(state.drawable_list.begin(), state.drawable_list.end(), drawable);
+		if (it != state.drawable_list.end()) { state.drawable_list.erase(it); }
 	}
 }
 
 void Graphics::UpdateZCallback() {
-	state->zlist_dirty = true;
+	current_scene->GetGraphicsState().zlist_dirty = true;
 	global_state->zlist_dirty = true;
 }
 
@@ -467,17 +457,8 @@ inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* se
 	return false;
 }
 
-void Graphics::Push(std::shared_ptr<Scene> scene) {
-	stack.push_back(state);
-	state.reset(new State());
-	state->scene = scene;
-}
-
-void Graphics::Pop() {
-	if (stack.size() > 0) {
-		state = stack.back();
-		stack.pop_back();
-	}
+void Graphics::UpdateSceneCallback() {
+	current_scene = Scene::instance;
 }
 
 int Graphics::GetDefaultFps() {

@@ -19,6 +19,7 @@
 #define EP_GRAPHICS_H
 
 // Headers
+#include <list>
 #include <string>
 
 #include "system.h"
@@ -32,6 +33,12 @@ class Scene;
  * Handles screen drawing.
  */
 namespace Graphics {
+	struct State {
+		State() {}
+		std::list<Drawable*> drawable_list;
+		bool zlist_dirty = false;
+	};
+
 	/**
 	 * Initializes Graphics.
 	 */
@@ -128,8 +135,7 @@ namespace Graphics {
 
 	void UpdateZCallback();
 
-	void Push(std::shared_ptr<Scene> scene);
-	void Pop();
+	void UpdateSceneCallback();
 
 	/**
 	 * Gets target frame rate.
