@@ -2059,7 +2059,7 @@ namespace PicPointerPatch {
 		std::u32string u_pic_name = Utils::DecodeUTF32(str);
 
 		// Out of bounds test
-		if (u_pic_name.length() < digits) {
+		if ((int)u_pic_name.length() < digits) {
 			return str;
 		}
 
@@ -2211,8 +2211,9 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 		if (param_size > 17) {
 			// Handling of RPG2k3 1.12 chunks
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
-			int chars_to_replace = com.parameters[18];
-			int replace_with = com.parameters[19];
+			// Currently unused by RPG Maker
+			//int chars_to_replace = com.parameters[18];
+			//int replace_with = com.parameters[19];
 			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
 			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
 		}
