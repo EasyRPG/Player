@@ -2,4 +2,4 @@
 # See CPLUSPLUS-SUPPORT.html in the NDK documentation for more information
 
 APP_STL := c++_static
-APP_ABI := armeabi armeabi-v7a x86 mips
+APP_ABI := armeabi armeabi-v7a x86 arm64-v8a
