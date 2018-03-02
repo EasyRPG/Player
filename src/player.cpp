@@ -195,8 +195,6 @@ void Player::Init(int argc, char *argv[]) {
 }
 
 void Player::Run() {
-	Scene::Push(std::make_shared<Scene>());
-
 	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
@@ -221,9 +219,7 @@ void Player::Run() {
 
 void Player::MainLoop() {
 	Scene::instance->MainFunction();
-	for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
-		Graphics::Pop();
-	}
+
 	Scene::old_instances.clear();
 
 	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
@@ -354,6 +350,7 @@ void Player::Exit() {
 	DisplayUi->UpdateDisplay();
 #endif
 
+	Player::ResetGameObjects();
 	Font::Dispose();
 	Graphics::Quit();
 	FileFinder::Quit();

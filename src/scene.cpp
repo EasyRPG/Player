@@ -110,13 +110,8 @@ void Scene::MainFunction() {
 		Suspend();
 		TransitionOut();
 
-		switch (push_pop_operation) {
-		case ScenePushed:
-			Graphics::Push(Scene::instance);
-			break;
-			// Graphics::Pop done in Player Loop
-		default:;
-		}
+		// TransitionOut stored a screenshot of the last scene
+		Graphics::UpdateSceneCallback();
 
 		init = false;
 	}
@@ -168,9 +163,9 @@ void Scene::Pop() {
 
 	if (instances.size() == 0) {
 		Push(std::make_shared<Scene>()); // Null-scene
-	} else {
-		instance = instances.back();
 	}
+
+	instance = instances.back();
 
 	push_pop_operation = ScenePopped;
 
@@ -212,4 +207,8 @@ std::shared_ptr<Scene> Scene::Find(SceneType type) {
 
 void Scene::DrawBackground() {
 	DisplayUi->AddBackground();
+}
+
+Graphics::State &Scene::GetGraphicsState() {
+	return state;
 }

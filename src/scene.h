@@ -19,6 +19,7 @@
 #define EP_SCENE_H
 
 // Headers
+#include "graphics.h"
 #include "system.h"
 #include <vector>
 
@@ -169,6 +170,8 @@ public:
 	/** Called by the graphic system to request drawing of a background, usually a system color background */
 	virtual void DrawBackground();
 
+	Graphics::State& GetGraphicsState();
+
 private:
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;
@@ -181,6 +184,11 @@ private:
 	 * other Continue(). This enforces calling Start().
 	 */
 	bool initialized = false;
+
+	/**
+	 * Graphic stack of the scene
+	 */
+	Graphics::State state;
 };
 
 #endif
