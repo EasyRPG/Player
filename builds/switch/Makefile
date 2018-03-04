@@ -25,7 +25,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 # DATA is a list of directories containing data files
 # INCLUDES is a list of directories containing header files
 # EXEFS_SRC is the optional input directory containing data copied into exefs, if anything this normally should only contain "main.npdm".
-# 
+#
 # NO_ICON: if set to anything, do not use icon.
 # NO_NACP: if set to anything, no .nacp file is generated.
 # APP_TITLE is the name of the app stored in the .nacp file (Optional)
@@ -40,9 +40,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	easyrpg-player
 BUILD		:=	build
-SOURCES	:=	../../src
+SOURCES		:=	../../src
 DATA		:=	data
-INCLUDES	:=	../../src
+INCLUDES	:=	../../src .
 EXEFS_SRC	:=	exefs_src
 
 APP_TITLE	:= EasyRPG Player
@@ -60,7 +60,7 @@ CFLAGS	:= -g -Wall -O2 -ffunction-sections \
 CFLAGS	+=	$(INCLUDE) -DSWITCH -DHAVE_LIBSAMPLERATE -DHAVE_LIBSNDFILE \
 			-DHAVE_OGGVORBIS -DHAVE_MPG123 -DSUPPORT_AUDIO \
 			-DHAVE_WILDMIDI -DWANT_FMMIDI -DWANT_FASTWAV -DHAVE_OPUS \
-			-DHAVE_XMP -DHAVE_FREETYPE \
+			-DHAVE_XMP -DHAVE_FREETYPE -DHAVE_HARFBUZZ \
 			-I$(TOOLCHAIN_DIR)/include \
 			-I$(LIBLCF_DIR)/include/liblcf \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
@@ -75,7 +75,8 @@ LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*
 
 LIBS	:=  -llcf -licuuc -licui18n -licudata -lpixman-1 -lpng16 -lz -lexpat \
 			-lvorbisfile -lvorbis -logg -lsamplerate -lsndfile -lmpg123 -lWildMidi \
-			-lfreetype -lopusfile -lopus -lxmp-lite -lnx -lc -lm 
+			-lfreetype -lharfbuzz -lfreetype -lopusfile -lopus \
+			-lxmp-lite -lnx -lc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -195,7 +196,7 @@ $(OUTPUT).elf	:	$(OFILES)
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
 #---------------------------------------------------------------------------------
-%.bin.o	:	%.bin
+%.png.o	:	%.png
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
