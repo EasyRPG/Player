@@ -32,6 +32,8 @@
 #include <cstring>
 #include <stdio.h>
 
+#include "build/touch_ui_png.h"
+
 #ifdef SUPPORT_AUDIO
 #include "audio_switch.h"
 AudioInterface& NxUi::GetAudio() {
@@ -67,9 +69,11 @@ NxUi::NxUi(int width, int height) :
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface = Bitmap::Create(width, height, true, 32);
 
-#ifdef SUPPORT_AUDIO
+	touch_ui = Bitmap::Create(touch_ui_png, touch_ui_png_size, false);
+
+	#ifdef SUPPORT_AUDIO
 	audio_.reset(new NxAudio());
-#endif
+	#endif
 
 }
 
@@ -122,22 +126,62 @@ void NxUi::ProcessEvents() {
 	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
 	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
 	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
-	keys[Input::Keys::Z] = (input & KEY_A);
-	keys[Input::Keys::X] = (input & KEY_B);
-	keys[Input::Keys::N1] = (input & KEY_X);
+	keys[Input::Keys::X] = (input & KEY_A);
+	keys[Input::Keys::Z] = (input & KEY_B);
+	keys[Input::Keys::X] = (input & KEY_X);
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	keys[Input::Keys::F] = (input & KEY_R);
-	keys[Input::Keys::N9] = (input & KEY_SL);
-	keys[Input::Keys::N5] = (input & KEY_SR);
 	keys[Input::Keys::F12] = (input & KEY_MINUS);
 	keys[Input::Keys::ESCAPE] = (input & KEY_PLUS);
+
+	// cycle through GUI layouts
+	if (!update_ui) {
+		input = hidKeysDown(CONTROLLER_P1_AUTO);
+		update_ui = (input & KEY_SL);
+		if (update_ui) {
+			ui_mode = (ui_mode + 1) % 3;
+		}
+	}
+
+	static const int touch_left[] = {
+		Input::Keys::N1,
+		Input::Keys::N2,
+		Input::Keys::N3,
+		Input::Keys::N4,
+		Input::Keys::N5,
+		Input::Keys::N6,
+		Input::Keys::N7,
+		Input::Keys::N8
+	};
+
+	static const int touch_right[] = {
+		Input::Keys::ESCAPE,
+		Input::Keys::N9,
+		Input::Keys::N0,
+		Input::Keys::PERIOD,
+		Input::Keys::ADD,
+		Input::Keys::SUBTRACT,
+		Input::Keys::MULTIPLY,
+		Input::Keys::DIVIDE
+	};
+
+	for (uint32_t i = 0; i < hidTouchCount(); ++i) {
+		touchPosition pos;
+		hidTouchRead(&pos, i);
+
+		if (pos.px < 160) {
+			keys[touch_left[720 / pos.py]] = true;
+		} else if (pos.px >= 1280 - 160) {
+			keys[touch_right[720 / pos.py]] = true;
+		}
+	}
 }
 
 void NxUi::UpdateDisplay() {
 	uint32_t w, h;
-	uint8_t *fb = gfxGetFramebuffer(&w, &h);
-	
+	uint8_t* fb = gfxGetFramebuffer(&w, &h);
+
 	const DynamicFormat format(
 		32,
 		0x000000FF,
@@ -146,8 +190,26 @@ void NxUi::UpdateDisplay() {
 		0xFF000000,
 		PF::NoAlpha);
 	BitmapRef framebuffer = Bitmap::Create(fb, w, h, w * 4, format);
-	framebuffer->StretchBlit(Rect(160, 0, 960, 720), *main_surface, main_surface->GetRect(), Opacity::opaque);
-	
+
+	if (update_ui) {
+		if (ui_mode == 0) {
+			// Touch-Ui + 4:3 output
+			// Blit touch ui once
+			framebuffer->Blit(0, 0, *touch_ui, framebuffer->GetRect(), Opacity::opaque);
+		} else if (ui_mode == 1) {
+			// Delete whole screen once
+			framebuffer->Clear();
+		}
+		update_ui = false;
+	}
+
+	Rect dst_rect(160, 0, 960, 720);
+	if (ui_mode == 2) {
+		// Render stretched without touch ui
+		dst_rect = framebuffer->GetRect();
+	}
+	framebuffer->StretchBlit(dst_rect, *main_surface, main_surface->GetRect(), Opacity::opaque);
+
 	gfxFlushBuffers();
 	gfxSwapBuffers();
 	gfxWaitForVsync();

@@ -57,10 +57,11 @@ ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
 CFLAGS	:= -g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -DSWITCH -DHAVE_LIBSAMPLERATE -DHAVE_LIBSNDFILE \
-			-DHAVE_OGGVORBIS -DHAVE_MPG123 -DSUPPORT_AUDIO \
-			-DHAVE_WILDMIDI -DWANT_FMMIDI -DWANT_FASTWAV -DHAVE_OPUS \
-			-DHAVE_XMP -DHAVE_FREETYPE -DHAVE_HARFBUZZ \
+CFLAGS	+=	$(INCLUDE) -DSWITCH \
+			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
+			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
+			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
+			-DHAVE_LIBSAMPLERATE -DWANT_FMMIDI -DWANT_FASTWAV \
 			-I$(TOOLCHAIN_DIR)/include \
 			-I$(LIBLCF_DIR)/include/liblcf \
 			-I$(TOOLCHAIN_DIR)/include/pixman-1 \
@@ -73,10 +74,11 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  -llcf -licuuc -licui18n -licudata -lpixman-1 -lpng16 -lz -lexpat \
-			-lvorbisfile -lvorbis -logg -lsamplerate -lsndfile -lmpg123 -lWildMidi \
-			-lfreetype -lharfbuzz -lfreetype -lopusfile -lopus \
-			-lxmp-lite -lnx -lc -lm
+LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
+		-licuuc -licui18n -licudata \
+		-lfreetype -lharfbuzz -lfreetype \
+		-lmpg123 -lsndfile -lvorbisidec -lxmp-lite \
+		-lWildMidi -lsamplerate -lopusfile -lopus
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
