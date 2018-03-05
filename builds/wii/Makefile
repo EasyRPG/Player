@@ -39,10 +39,11 @@ INCLUDES	:=	src
 CFLAGS		= 	-g -O2 -Wall -Wextra \
 				-fomit-frame-pointer -ffast-math \
 				-flto -fdata-sections -ffunction-sections \
-				-DUSE_SDL=1 -DNDEBUG -DWANT_FMMIDI -DHAVE_MPG123 \
-				-DHAVE_LIBSNDFILE -DHAVE_TREMOR -DHAVE_WILDMIDI \
-				-DHAVE_XMP -DHAVE_LIBSPEEXDSP -DWANT_FASTWAV \
-				-DSUPPORT_AUDIO \
+				-DUSE_SDL=1 -DNDEBUG \
+				-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
+				-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
+				-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
+				-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
 				$(MACHDEP) $(INCLUDE)
 				
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
@@ -53,10 +54,11 @@ LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz \
+LIBS	:=	-llcf -lexpat -lpixman-1 -lpng -lz -lSDL \
 			-licuuc -licui18n -licudata \
-			-lSDL -lvorbisidec -lmpg123 \
-			-lsndfile -lWildMidi -lxmp-lite -lspeexdsp \
+			-lfreetype -lharfbuzz -lfreetype \
+			-lmpg123 -lsndfile -lvorbisidec -logg -lxmp-lite \
+			-lWildMidi -lspeexdsp -lopusfile -lopus \
 			-lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
@@ -109,8 +111,10 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
 					-I$(TOOLCHAIN_DIR)/include/SDL \
+					-I$(TOOLCHAIN_DIR)/include/freetype2 \
 					-I$(TOOLCHAIN_DIR)/include/pixman-1 \
 					-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
+					-I$(TOOLCHAIN_DIR)/include/opus \
 					-I$(LIBLCF_DIR)/include/liblcf
 
 #---------------------------------------------------------------------------------

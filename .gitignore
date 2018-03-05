@@ -62,6 +62,11 @@ cmake_install.cmake
 /builds/switch/*.nso
 /builds/switch/*.pfs0
 
+# vita
+/builds/psvita/*.vpk
+/builds/psvita/*.velf
+/builds/psvita/release/
+
 # doxygen
 /resources/Doxyfile
 /doc/
