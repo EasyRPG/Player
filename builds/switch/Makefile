@@ -76,9 +76,10 @@ LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*
 
 LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 		-licuuc -licui18n -licudata \
-		-lfreetype -lharfbuzz -lfreetype \
-		-lmpg123 -lsndfile -lvorbisidec -lxmp-lite \
-		-lWildMidi -lsamplerate -lopusfile -lopus
+		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
+		-lsndfile -lvorbisidec -logg -lxmp-lite \
+		-lWildMidi -lsamplerate -lopusfile -lopus \
+		-lnx -lc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

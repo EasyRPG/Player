@@ -55,6 +55,13 @@ cmake_install.cmake
 /builds/vs20*/Player*/ARM/
 /resources/player.aps
 
+# switch
+/builds/switch/build
+/builds/switch/*.nacp
+/builds/switch/*.nro
+/builds/switch/*.nso
+/builds/switch/*.pfs0
+
 # doxygen
 /resources/Doxyfile
 /doc/

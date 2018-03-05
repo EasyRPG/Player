@@ -121,13 +121,14 @@ bool NxUi::IsFullscreen() {
 
 void NxUi::ProcessEvents() {
 	hidScanInput();
+
 	u32 input = hidKeysHeld(CONTROLLER_P1_AUTO);
 	keys[Input::Keys::UP] = (input & KEY_DUP);
 	keys[Input::Keys::DOWN] = (input & KEY_DDOWN);
 	keys[Input::Keys::RIGHT] = (input & KEY_DRIGHT);
 	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
-	keys[Input::Keys::X] = (input & KEY_A);
-	keys[Input::Keys::Z] = (input & KEY_B);
+	keys[Input::Keys::Z] = (input & KEY_A);
+	keys[Input::Keys::X] = (input & KEY_B);
 	keys[Input::Keys::X] = (input & KEY_X);
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F2] = (input & KEY_L);
@@ -138,12 +139,13 @@ void NxUi::ProcessEvents() {
 	// cycle through GUI layouts
 	if (!update_ui) {
 		input = hidKeysDown(CONTROLLER_P1_AUTO);
-		update_ui = (input & KEY_SL);
+		update_ui = (input & KEY_ZL);
 		if (update_ui) {
 			ui_mode = (ui_mode + 1) % 3;
 		}
 	}
 
+	// Touch handling
 	static const int touch_left[] = {
 		Input::Keys::N1,
 		Input::Keys::N2,
@@ -166,14 +168,24 @@ void NxUi::ProcessEvents() {
 		Input::Keys::DIVIDE
 	};
 
+	for (int i = 0; i < 8; ++i) {
+		keys[touch_left[i]] = false;
+		keys[touch_right[i]] = false;
+	}
+
 	for (uint32_t i = 0; i < hidTouchCount(); ++i) {
 		touchPosition pos;
 		hidTouchRead(&pos, i);
 
 		if (pos.px < 160) {
-			keys[touch_left[720 / pos.py]] = true;
+			// shouldn't happen
+			if (pos.py < 720) {
+				keys[touch_left[pos.py / (720 / 8)]] = true;
+			}
 		} else if (pos.px >= 1280 - 160) {
-			keys[touch_right[720 / pos.py]] = true;
+			if (pos.py < 720) {
+				keys[touch_right[pos.py / (720 / 8)]] = true;
+			}
 		}
 	}
 }

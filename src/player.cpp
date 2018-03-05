@@ -157,7 +157,7 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
-	//Utils::SeedRandomNumberGenerator(time(NULL));
+	Utils::SeedRandomNumberGenerator(time(NULL));
 
 	ParseCommandLine(argc, argv);
 
