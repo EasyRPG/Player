@@ -41,6 +41,8 @@
 #  include <psp2/kernel/processmgr.h>
 #elif defined(_3DS)
 #  include <3ds.h>
+#elif defined(SWITCH)
+#  include <switch.h>
 #endif
 
 #include "async_handler.h"
@@ -211,6 +213,9 @@ void Player::Run() {
 		hidScanInput();
 		Player::MainLoop();
 	}
+#elif defined(SWITCH)
+	while (appletMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
+		MainLoop();
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
 		MainLoop();
