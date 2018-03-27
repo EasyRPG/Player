@@ -33,15 +33,24 @@ void Game_Actors::Init() {
 }
 
 void Game_Actors::Fixup() {
-	for (size_t i = 1; i < data.size(); ++i) {
-		GetActor(i)->Fixup();
-	}
-
 	// Ensure actor save data and LDB actors has correct size
 	if (Main_Data::game_data.actors.size() != data.size()) {
+		size_t save_actor_size = Main_Data::game_data.actors.size();
+
 		Output::Warning("Actor array size doesn't match Savegame actor array size (%d != %d)",
-		Main_Data::game_data.actors.size(), data.size());
+						data.size(), save_actor_size);
+
 		Main_Data::game_data.actors.resize(data.size());
+
+		// When the save data size is smaller than the LDB size set the additional actors to nullptr.
+		// GetActor will copy the actor data to the savegame data next time it is invoked.
+		if (save_actor_size < data.size()) {
+			std::fill(data.begin() + save_actor_size, data.end(), nullptr);
+		}
+	}
+
+	for (size_t i = 1; i < data.size(); ++i) {
+		GetActor(i)->Fixup();
 	}
 }
 
