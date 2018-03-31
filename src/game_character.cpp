@@ -404,6 +404,9 @@ void Game_Character::MoveTypeCustom() {
 				SetThrough(false);
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
+				if (IsContinuous()) {
+					pattern = RPG::EventPage::Frame_middle;
+				}
 				walk_animation = false;
 				break;
 			case RPG::MoveCommand::Code::start_animation:
