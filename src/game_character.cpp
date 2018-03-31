@@ -741,6 +741,10 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	stop_count = 0;
 	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
 	move_failed = false;
+
+	if (IsContinuous()) {
+		pattern = RPG::EventPage::Frame_middle;
+	}
 }
 
 void Game_Character::EndJump() {
