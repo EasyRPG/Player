@@ -420,6 +420,10 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			}
 
+			if (move_command.command_id <= RPG::MoveCommand::Code::move_forward) {
+				any_move_successful |= !move_failed;
+			}
+
 			last_move_failed = move_failed;
 			if (move_failed) {
 				if (active_route->skippable) {
@@ -802,6 +806,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	wait_count = 0;
 	max_stop_count = 0;
 	last_move_failed = false;
+	any_move_successful = false;
 }
 
 void Game_Character::CancelMoveRoute() {

@@ -747,6 +747,10 @@ void Game_Player::CancelMoveRoute() {
 	if (!IsMoveRouteOverwritten())
 		return;
 
+	// Bugfix: Moved up from end of function. The fix for #1051 in CheckTouchEvent made the Touch check always returning
+	// false because the MoveRoute was still marked as overwritten
+	Game_Character::CancelMoveRoute();
+
 	// If the last executed command of the move route was a Move command, check touch and collision triggers
 	const RPG::MoveRoute& active_route = GetMoveRoute();
 
@@ -757,13 +761,15 @@ void Game_Player::CancelMoveRoute() {
 			index = move_size - 1;
 		}
 
-		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward) {
+		// Touch/Collision events are only triggered after the end of a move route when the last command of the move
+		// route was any movement command.
+		// "any_move_successful" handles the corner case that the last command was a movement but the Player never
+		// changed the tile (because the way was blocked), then no event handling occurs.
+		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward && any_move_successful) {
 			CheckTouchEvent();
 			CheckCollisionEvent();
 		}
 	}
-
-	Game_Character::CancelMoveRoute();
 }
 
 void Game_Player::Unboard() {
