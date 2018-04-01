@@ -437,6 +437,7 @@ void Game_Character::MoveTypeCustom() {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
 				stop_count = 0;
+				max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
 			}
 		}
 	}

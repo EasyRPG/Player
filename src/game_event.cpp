@@ -269,7 +269,9 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int)pow(2.0, 8 - GetMoveFrequency());
+	if (!IsMoveRouteOverwritten()) {
+		max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
+	}
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
