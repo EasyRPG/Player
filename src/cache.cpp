@@ -279,7 +279,17 @@ BitmapRef Cache::Exfont() {
 	cache_type::iterator const it = cache.find(hash);
 
 	if (it == cache.end() || !it->second.bitmap) {
-		return(cache[hash] = {Bitmap::Create(exfont_h, sizeof(exfont_h), true), DisplayUi->GetTicks()}).bitmap;
+		std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+		BitmapRef exfont_img;
+		// Allow overwriting of built-in exfont with a custom ExFont image file
+		// Probe before using LoadBitmap because this generates a warning when the file is missing
+		if (!exfont_file.empty()) {
+			exfont_img = Bitmap::Create(exfont_file, true);
+		} else {
+			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
+		}
+
+		return(cache[hash] = {exfont_img, DisplayUi->GetTicks()}).bitmap;
 	} else {
 		it->second.last_access = DisplayUi->GetTicks();
 		return it->second.bitmap;
