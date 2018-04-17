@@ -47,7 +47,7 @@ all: $(TARGET).vpk
 
 $(TARGET).vpk: $(TARGET).velf
 		vita-make-fself -s $< release/eboot.bin
-		vita-mksfoex -s TITLE_ID=$(APP_ID) "$(APP_TITLE)" release/sce_sys/param.sfo
+		vita-mksfoex -s TITLE_ID=$(APP_ID) -d ATTRIBUTE2=12 "$(APP_TITLE)" release/sce_sys/param.sfo
 ifdef HAVE_ZIP
 		cd release; zip ../$(TARGET).vpk -r ./sce_sys ./eboot.bin
 else

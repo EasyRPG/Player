@@ -56,7 +56,7 @@ AudioInterface& Psp2Ui::GetAudio() {
 }
 #endif
 
-int _newlib_heap_size_user = 192 * 1024 * 1024;
+int _newlib_heap_size_user = 330 * 1024 * 1024;
 
 #define SHADERS_NUM 4
 vita2d_shader* shaders[SHADERS_NUM];
