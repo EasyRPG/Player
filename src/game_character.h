@@ -705,6 +705,8 @@ protected:
 	int move_type;
 	bool move_failed;
 	bool last_move_failed;
+	// contains if any movement (<= step_forward) of a forced move route was successful
+	bool any_move_successful;
 	int remaining_step;
 	int move_count;
 	int wait_count;

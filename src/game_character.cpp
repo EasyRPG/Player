@@ -404,6 +404,9 @@ void Game_Character::MoveTypeCustom() {
 				SetThrough(false);
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
+				if (IsContinuous()) {
+					pattern = RPG::EventPage::Frame_middle;
+				}
 				walk_animation = false;
 				break;
 			case RPG::MoveCommand::Code::start_animation:
@@ -415,6 +418,10 @@ void Game_Character::MoveTypeCustom() {
 			case RPG::MoveCommand::Code::decrease_transp:
 				SetOpacity(GetOpacity() + 45);
 				break;
+			}
+
+			if (move_command.command_id <= RPG::MoveCommand::Code::move_forward) {
+				any_move_successful |= !move_failed;
 			}
 
 			last_move_failed = move_failed;
@@ -434,6 +441,7 @@ void Game_Character::MoveTypeCustom() {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
 				stop_count = 0;
+				max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
 			}
 		}
 	}
@@ -741,6 +749,10 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	stop_count = 0;
 	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
 	move_failed = false;
+
+	if (IsContinuous()) {
+		pattern = RPG::EventPage::Frame_middle;
+	}
 }
 
 void Game_Character::EndJump() {
@@ -794,6 +806,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	wait_count = 0;
 	max_stop_count = 0;
 	last_move_failed = false;
+	any_move_successful = false;
 }
 
 void Game_Character::CancelMoveRoute() {

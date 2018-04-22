@@ -339,15 +339,15 @@ void Game_Player::UpdateScroll() {
 				last_remaining_move = SCREEN_TILE_WIDTH;
 
 			int d = GetDirection();
-			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() >= center_x)
+			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() > center_x)
 				dx = 1;
-			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() <= center_x)
+			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() < center_x)
 				dx = -1;
 			dx *= last_remaining_move - remaining_step;
 
-			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() >= center_y)
+			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() > center_y)
 				dy = 1;
-			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() <= center_y)
+			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() < center_y)
 				dy = -1;
 			dy *= last_remaining_move - remaining_step;
 			last_remaining_move = remaining_step;
@@ -356,9 +356,9 @@ void Game_Player::UpdateScroll() {
 			if (last_remaining_jump == 0)
 				last_remaining_jump = SCREEN_TILE_WIDTH;
 
-			if ((GetX() > jump_x && GetScreenX() >= center_x) || (GetX() < jump_x && GetScreenX() <= center_x))
+			if ((GetX() > jump_x && GetScreenX() > center_x) || (GetX() < jump_x && GetScreenX() < center_x))
 				dx = (GetX() - jump_x) * (last_remaining_jump - remaining_step);
-			if ((GetY() > jump_y && GetScreenY() >= center_y) || (GetY() < jump_y && GetScreenY() <= center_y))
+			if ((GetY() > jump_y && GetScreenY() > center_y) || (GetY() < jump_y && GetScreenY() < center_y))
 				dy = (GetY() - jump_y) * (last_remaining_jump - remaining_step);
 			last_remaining_jump = remaining_step;
 		}
@@ -747,6 +747,10 @@ void Game_Player::CancelMoveRoute() {
 	if (!IsMoveRouteOverwritten())
 		return;
 
+	// Bugfix: Moved up from end of function. The fix for #1051 in CheckTouchEvent made the Touch check always returning
+	// false because the MoveRoute was still marked as overwritten
+	Game_Character::CancelMoveRoute();
+
 	// If the last executed command of the move route was a Move command, check touch and collision triggers
 	const RPG::MoveRoute& active_route = GetMoveRoute();
 
@@ -757,13 +761,15 @@ void Game_Player::CancelMoveRoute() {
 			index = move_size - 1;
 		}
 
-		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward) {
+		// Touch/Collision events are only triggered after the end of a move route when the last command of the move
+		// route was any movement command.
+		// "any_move_successful" handles the corner case that the last command was a movement but the Player never
+		// changed the tile (because the way was blocked), then no event handling occurs.
+		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward && any_move_successful) {
 			CheckTouchEvent();
 			CheckCollisionEvent();
 		}
 	}
-
-	Game_Character::CancelMoveRoute();
 }
 
 void Game_Player::Unboard() {
