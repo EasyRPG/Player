@@ -75,9 +75,8 @@ static void WildMidiDecoder_deinit(void) {
 	WildMidi_Shutdown();
 }
 
-WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
+WildMidiDecoder::WildMidiDecoder() {
 	music_type = "midi";
-	filename = file_name;
 	std::string config_file = "";
 	bool found = false;
 
@@ -306,7 +305,9 @@ bool WildMidiDecoder::Open(Filesystem::InputStream stream) {
 		Output::Debug("WildMidi: Previous handle was not closed.");
 	}
 
-	handle = WildMidi_Open(filename.c_str());
+	file_buffer = Utils::ReadStream(*stream);
+
+	handle = WildMidi_OpenBuffer(file_buffer.data(), file_buffer.size());
 	if (!handle) {
 		error_message = "WildMidi: Error reading file";
 		return false;
@@ -316,11 +317,8 @@ bool WildMidiDecoder::Open(Filesystem::InputStream stream) {
 	// WildMidi has no Api to get Division and Tempo
 	// This allows a better approximation of the Midi ticks but it is still
 	// way off because the tempo information is missing
-	uint8_t midi_header[14];
-	fread(midi_header, 1, 14, file);
-
-	division = midi_header[12] << 8u;
-	division |= midi_header[13];
+	division = file_buffer[12] << 8u;
+	division |= file_buffer[13];
 
 	// Wildmidi will reject such files, but just in case if they ever support it
 	if (division & 0x8000u) {
