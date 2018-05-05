@@ -347,6 +347,7 @@ void Game_Vehicle::GetOff() {
 		data.remaining_descent = SCREEN_TILE_WIDTH;
 	} else {
 		driving = false;
+		Main_Data::game_player->UnboardingFinished();
 	}
 	SetDirection(Left);
 	SetSpriteDirection(Left);
@@ -421,6 +422,7 @@ void Game_Vehicle::Update() {
 				if (CanLand()) {
 					SetLayer(RPG::EventPage::Layers_same);
 					driving = false;
+					Main_Data::game_player->UnboardingFinished();
 					data.flying = false;
 					walk_animation = false;
 					pattern = 1;

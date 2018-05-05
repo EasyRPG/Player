@@ -451,17 +451,8 @@ void Game_Player::Update() {
 	if (last_moving && location.unboarding) {
 		// Unboarding completed
 		location.unboarding = false;
-		location.vehicle = Game_Vehicle::None;
 		CheckTouchEvent();
 		return;
-	}
-
-	if (InAirship() && !GetVehicle()->IsInUse()) {
-		// Airship has landed
-		Unboard();
-		location.vehicle = Game_Vehicle::None;
-		SetDirection(RPG::EventPage::Direction_down);
-
 	}
 
 	if (last_moving && CheckTouchEvent()) return;
@@ -660,18 +651,6 @@ bool Game_Player::GetOffVehicle() {
 	}
 
 	GetVehicle()->GetOff();
-	if (!InAirship()) {
-		location.unboarding = true;
-		Unboard();
-		if (!GetThrough()) {
-			SetThrough(true);
-			MoveForward();
-			SetThrough(false);
-		} else {
-			MoveForward();
-		}
-	}
-
 	return true;
 }
 
@@ -781,4 +760,21 @@ void Game_Player::Unboard() {
 
 bool Game_Player::IsBoardingOrUnboarding() const {
 	return location.boarding || location.unboarding;
+}
+
+void Game_Player::UnboardingFinished() {
+	Unboard();
+	if (InAirship()) {
+		SetDirection(RPG::EventPage::Direction_down);
+	} else {
+		location.unboarding = true;
+		if (!GetThrough()) {
+			SetThrough(true);
+			MoveForward();
+			SetThrough(false);
+		} else {
+			MoveForward();
+		}
+	}
+	location.vehicle = Game_Vehicle::None;
 }
