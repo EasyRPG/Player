@@ -118,8 +118,11 @@ void Scene_Logo::OnIndexReady(FileRequestResult*) {
 	tree->SetImportantFile(true);
 	FileRequestAsync* ini = AsyncHandler::RequestFile(INI_NAME);
 	ini->SetImportantFile(true);
+	FileRequestAsync* exfont = AsyncHandler::RequestFile("ExFont");
+	exfont->SetImportantFile(true);
 
 	db->Start();
 	tree->Start();
 	ini->Start();
+	exfont->Start();
 }
