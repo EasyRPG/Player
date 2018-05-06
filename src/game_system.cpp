@@ -34,6 +34,33 @@
 namespace {
 	FileRequestBinding music_request_id;
 	std::map<std::string, FileRequestBinding> se_request_ids;
+
+	/**
+	 * Determines if the requested file is supposed to Stop BGM/SE play.
+	 * For empty string and (OFF) this is always the case.
+	 * Many RPG Maker translation overtranslated the (OFF) reserved string,
+	 * e.g. (Brak) and (Kein Sound).
+	 * A file is detected as "Stop BGM/SE" when the file is missing in the
+	 * filesystem and the name is wrapped in (), otherwise it is a regular
+	 * file.
+	 *
+	 * @param name File to find
+	 * @param find_func Find function to use (FindSound or FindMusic)
+	 * @param found_name Name of the found file to play
+	 * @return true when the file is supposed to Stop playback.
+	 *         false otherwise and file to play is returned as found_name
+	 */
+	bool isStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name) {
+		found_name = "";
+
+		if (name.empty() || name == "(OFF)") {
+			return true;
+		}
+
+		found_name = find_func(name);
+
+		return found_name.empty() && (Utils::StartsWith(name, "(") && Utils::EndsWith(name, ")"));
+	}
 }
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -72,12 +99,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	}
 
 	// (OFF) means play nothing
-	// A Polish RPG Maker translation overtranslated the (OFF) reserved string.
-	// This particular translation uses (Brak) in editor for these cases.
-	// Because RPG_RT doesn't show warnings about audios not found,
-	// theses strings are ignored to prevent filling the log.
-	// Though RPG_RT plays files named (Brak) is still preferred to ignore it.
-	if (!bgm.name.empty() && bgm.name != "(OFF)" && bgm.name != "(Brak)") {
+	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		// Same music: Only adjust volume and speed
 		if (previous_music.name == bgm.name) {
 			if (previous_music.volume != data.current_music.volume) {
@@ -111,8 +133,12 @@ void Game_System::BgmStop() {
 void Game_System::SePlay(RPG::Sound const& se) {
 	static bool ineluki_warning_shown = false;
 
-	if (se.name.empty() || se.name == "(OFF)" || se.name == "(Brak)")
+	if (se.name.empty()) {
 		return;
+	} else if (se.name == "(OFF)") {
+		Audio().SE_Stop();
+		return;
+	}
 
 	std::string end = ".script";
 	if (se.name.length() >= end.length() &&
@@ -352,8 +378,12 @@ void Game_System::SetTransition(int which, int transition) {
 void Game_System::OnBgmReady(FileRequestResult* result) {
 	// Take from current_music, params could have changed over time
 	bgm_pending = false;
-	std::string const path = FileFinder::FindMusic(result->file);
-	if (path.empty()) {
+
+	std::string path;
+	if (isStopFilename(result->file, FileFinder::FindMusic, path)) {
+		Audio().BGM_Stop();
+		return;
+	} else if (path.empty()) {
 		Output::Debug("Music not found: %s", result->file.c_str());
 		return;
 	}
@@ -399,8 +429,11 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
 		se_request_ids.erase(item);
 	}
 
-	std::string const path = FileFinder::FindSound(result->file);
-	if (path.empty()) {
+	std::string path;
+	if (isStopFilename(result->file, FileFinder::FindSound, path)) {
+		Audio().SE_Stop();
+		return;
+	} else if (path.empty()) {
 		Output::Debug("Sound not found: %s", result->file.c_str());
 		return;
 	}
