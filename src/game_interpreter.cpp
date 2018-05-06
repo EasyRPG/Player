@@ -1478,7 +1478,7 @@ bool Game_Interpreter::CommandPlayBGM(RPG::EventCommand const& com) { // code 11
 
 bool Game_Interpreter::CommandFadeOutBGM(RPG::EventCommand const& com) { // code 11520
 	int fadeout = com.parameters[0];
-	Audio().BGM_Fade(fadeout);
+	Game_System::BgmFade(fadeout);
 	return true;
 }
 

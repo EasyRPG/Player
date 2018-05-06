@@ -107,6 +107,13 @@ namespace Game_System {
 	void BgmStop();
 
 	/**
+	 * Fades out the current BGM
+	 *
+	 * @param duration Duration in ms
+	 */
+	void BgmFade(int duration);
+
+	/**
 	 * Plays a Sound.
 	 *
 	 * @param se sound data.

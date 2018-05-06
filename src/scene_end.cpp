@@ -47,7 +47,7 @@ void Scene_End::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
-			Audio().BGM_Fade(800);
+			Game_System::BgmFade(800);
 			Scene::PopUntil(Scene::Title);
 			break;
 		case 1: // No
