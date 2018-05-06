@@ -492,7 +492,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 			actor->RemoveAllStates();
 		}
 		Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
-		Audio().BGM_Fade(800);
+		Game_System::BgmFade(800);
 		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
 		return false;
 	}
