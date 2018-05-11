@@ -11,9 +11,10 @@ CPPFILES := $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES := $(foreach dir,$(DATA), $(wildcard $(dir)/*.bin))
 OBJS     := $(addsuffix .o,$(BINFILES)) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) 
 
-LIBS = -llcf -licuuc -licui18n -licudata \
-	-lpixman-1 -lpng16 -lz -lfreetype -lvita2d \
-	-lvorbisfile -lvorbis -logg -lspeexdsp -lsndfile -lmpg123 -lWildMidi \
+LIBS = -llcf -lexpat -lvita2d \
+	-lpixman-1 -lpng16 -lz -licuuc -licui18n -licudata \
+	-lfreetype -lharfbuzz -lfreetype -lxmp-lite -lmpg123 -lsndfile \
+	-lvorbisfile -lvorbis -logg -lWildMidi -lspeexdsp -lopusfile -lopus \
 	-lpthread -lSceLibKernel_stub -lSceDisplay_stub -lSceGxm_stub \
 	-lvitashaders -lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub \
 	-lScePgf_stub -lScePower_stub -lSceCommonDialog_stub -lSceAudio_stub
@@ -29,15 +30,17 @@ CXX     = $(PREFIX)-g++
 CFLAGS  = -Wl,-q -g -O3
 CXXFLAGS = $(CFLAGS) -fno-exceptions -std=gnu++11 -fno-rtti
 ASFLAGS = $(CFLAGS)
-CPPFLAGS = -DPSP2 -DSUPPORT_AUDIO \
-		-DHAVE_LIBSPEEXDSP -DHAVE_LIBSNDFILE \
-		-DHAVE_OGGVORBIS -DHAVE_MPG123 -DHAVE_WILDMIDI \
-		-DWANT_FMMIDI -DWANT_FASTWAV \
-		-I$(VITASDK)/arm-vita-eabi/include/liblcf \
-		-I$(VITASDK)/arm-vita-eabi/include/pixman-1 \
+CPPFLAGS = -DPSP2 -DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
+		-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_OGGVORBIS \
+		-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
+		-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
 		-I$(TOOLCHAIN_DIR)/include \
 		-I$(LIBLCF_DIR)/include/liblcf \
-		-I$(TOOLCHAIN_DIR)/include/pixman-1
+		-I$(TOOLCHAIN_DIR)/include/pixman-1 \
+		-I$(TOOLCHAIN_DIR)/include/freetype2 \
+		-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
+		-I$(TOOLCHAIN_DIR)/include/opus
+
 LDFLAGS = -L$(TOOLCHAIN_DIR)/lib \
 		-L$(LIBLCF_DIR)/lib
 

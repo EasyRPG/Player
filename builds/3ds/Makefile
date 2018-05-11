@@ -56,11 +56,12 @@ CFLAGS	:=	-g0 -Wall -O2 -mword-relocations \
 			-flto -fdata-sections -ffunction-sections \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DSUPPORT_AUDIO \
-			-DNO_DEBUG -DHAVE_MPG123 -DWANT_FASTWAV \
-			-DHAVE_LIBSPEEXDSP -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
-			-DHAVE_WILDMIDI
-#-DCITRA3DS_COMPATIBLE
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DNO_DEBUG \
+			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
+			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
+			-DHAVE_XMP -DHAVE_WILDMIDI \
+			-DHAVE_LIBSPEEXDSP -DWANT_FASTWAV
+#-DCITRA3DS_COMPATIBLE <- Enable Citra emu compatibility
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
@@ -69,11 +70,11 @@ LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) \
 		-Wl,--gc-sections
 
 LIBS	:= -lsf2d -lcitro3d -lctru \
-		-llcf -licuuc -licui18n -licudata \
-		-lpixman-1 -lpng -lz -lspeexdsp \
-		-lsndfile -lvorbisidec -logg -lmpg123 \
-		-lWildMidi -lm
-
+		-llcf -lexpat -lpixman-1 -lpng -lz \
+		-licuuc -licui18n -licudata \
+		-lfreetype -lharfbuzz -lfreetype \
+		-lmpg123 -lsndfile -lvorbisidec -logg \
+		-lxmp-lite -lWildMidi -lspeexdsp -lm 
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -126,6 +127,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			-I$(CURDIR)/$(BUILD) \
 			$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/pixman-1) \
 			$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/freetype2) \
+			$(foreach dir,$(TOOLCHAIN_DIR),-I$(dir)/include/libxmp-lite) \
 			$(foreach dir,$(LIBLCF_DIR),-I$(dir)/include/liblcf)
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)

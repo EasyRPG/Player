@@ -6,7 +6,7 @@
           android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="14"
         android:targetSdkVersion="23"/>
 
     <!-- OpenGL ES 2.0 -->
