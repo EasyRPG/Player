@@ -57,7 +57,9 @@ void Scene_Map::Start() {
 	}
 
 	Player::FrameReset();
+
 	Game_Map::Update(true);
+	spriteset->Update();
 }
 
 void Scene_Map::Continue() {
@@ -232,6 +234,7 @@ void Scene_Map::FinishTeleportPlayer() {
 	spriteset.reset(new Spriteset_Map());
 
 	Game_Map::Update(true);
+	spriteset->Update();
 
 	if (autotransition) {
 		auto_transition = true;
