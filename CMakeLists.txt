@@ -244,16 +244,14 @@ player_find_package(
 	CONDITION PLAYER_WITH_FREETYPE
 	DEFINITION HAVE_FREETYPE
 	FOUND Freetype
-	TARGET Freetype::Freetype
-)
+	TARGET Freetype::Freetype)
 
 if(Freetype_FOUND)
 	player_find_package(
 		NAME Harfbuzz
 		CONDITION PLAYER_WITH_HARFBUZZ
 		DEFINITION HAVE_HARFBUZZ
-		TARGET Harfbuzz::Harfbuzz
-	)
+		TARGET Harfbuzz::Harfbuzz)
 endif()
 
 # Sound system to use
@@ -266,8 +264,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 	player_find_package(
 		NAME SDL2_mixer
 		CONDITION PLAYER_WITH_SDL2_MIXER
-		TARGET SDL2::MIXER
-	)
+		TARGET SDL2::MIXER)
 	if(SDL2_MIXER_FOUND)
 		set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
 	else()
@@ -292,8 +289,7 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		CONDITION PLAYER_WITH_SDL2_MIXER
 		DEFINITION HAVE_SDL_MIXER
 		TARGET SDL2::MIXER
-		REQUIRED
-	)
+		REQUIRED)
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_SDL_MIXER=1)
 
 	# Provide fmmidi options
@@ -331,8 +327,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME speexdsp
 		CONDITION PLAYER_WITH_SPEEXDSP
 		DEFINITION HAVE_LIBSPEEXDSP
-		TARGET speexdsp::speexdsp
-	)
+		TARGET speexdsp::speexdsp)
 
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
@@ -340,8 +335,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME mpg123
 		CONDITION PLAYER_WITH_MPG123
 		DEFINITION HAVE_MPG123
-		TARGET mpg123::mpg123
-	)
+		TARGET mpg123::mpg123)
 
 	# libsndfile
 	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
@@ -349,8 +343,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME LibSndFile
 		CONDITION PLAYER_WITH_LIBSNDFILE
 		DEFINITION HAVE_LIBSNDFILE
-		TARGET LibSndFile::LibSndFile
-	)
+		TARGET LibSndFile::LibSndFile)
 
 	# libvorbis
 	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
@@ -358,8 +351,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME Vorbisfile
 		CONDITION PLAYER_WITH_OGGVORBIS
 		DEFINITION HAVE_OGGVORBIS
-		TARGET Vorbisfile::Vorbisfile
-	)
+		TARGET Vorbisfile::Vorbisfile)
 
 	# opusfile
 	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
@@ -367,8 +359,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME Opusfile
 		CONDITION PLAYER_WITH_OPUS
 		DEFINITION HAVE_OPUS
-		TARGET Opusfile::Opusfile
-	)
+		TARGET Opusfile::Opusfile)
 
 	# wildmidi
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
@@ -376,8 +367,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME WildMidi
 		CONDITION PLAYER_WITH_WILDMIDI
 		DEFINITION HAVE_WILDMIDI
-		TARGET WildMidi::WildMidi
-	)
+		TARGET WildMidi::WildMidi)
 
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
@@ -385,8 +375,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		NAME XMP
 		CONDITION PLAYER_WITH_XMP
 		DEFINITION HAVE_XMP
-		TARGET XMP::XMP
-	)
+		TARGET XMP::XMP)
 
 	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		target_sources(${PROJECT_NAME}_Static PRIVATE
@@ -586,7 +575,7 @@ message(STATUS "")
 
 if(HARFBUZZ_FOUND)
 	message(STATUS "Font rendering: Freetype with Harfbuzz / built-in")
-elseif(FreeType_FOUND)
+elseif(Freetype_FOUND)
 	message(STATUS "Font rendering: Freetype and built-in")
 else()
 	message(STATUS "Font rendering: built-in")

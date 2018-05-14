@@ -58,6 +58,10 @@ if(WILDMIDI_FOUND)
 		set_target_properties(WildMidi::WildMidi PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${WILDMIDI_INCLUDE_DIRS}"
 			IMPORTED_LOCATION "${WILDMIDI_LIBRARY}")
+		if(WIN32)
+			set_target_properties(WildMidi::WildMidi PROPERTIES
+				INTERFACE_COMPILE_DEFINITIONS "WILDMIDI_STATIC=1")
+		endif()
 	endif()
 endif()
 
