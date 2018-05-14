@@ -170,9 +170,12 @@ target_include_directories(
 	${PROJECT_NAME}_Static PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# Extra FindModule files
+# Extra CMake Module files
 list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
+
+include(ConfigureWindows)
+include(PlayerFindPackage)
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC _DEBUG=1)
@@ -189,33 +192,6 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	endif()
 endif()
 
-# Adds a library to the liblist if COND is true and the lib is found
-# When COND is REQUIRED the lib is required
-function(find_lib LIBNAME COND)
-	set(REQ OFF)
-	if(${COND} MATCHES "REQUIRED")
-		set(COND ON)
-		set(REQ ON)
-	endif()
-
-	if(${COND})
-		if(${REQ})
-			find_package(${LIBNAME} REQUIRED)
-		else()
-			find_package(${LIBNAME})
-		endif()
-
-		if(${${LIBNAME}_FOUND})
-			string(TOUPPER ${LIBNAME} LIBNAMEUP)
-			target_include_directories(${PROJECT_NAME}_Static PUBLIC ${${LIBNAMEUP}_INCLUDE_DIRS})
-			target_link_libraries(${PROJECT_NAME}_Static ${${LIBNAMEUP}_LIBRARIES})
-			message(STATUS ${LIBNAMEUP} ${${LIBNAMEUP}_INCLUDE_DIRS})
-		endif()
-
-		set(${LIBNAME}_FOUND ${${LIBNAME}_FOUND} PARENT_SCOPE)
-	endif()
-endfunction()
-
 # liblcf
 option(PLAYER_BUILD_LIBLCF "Instead of detecting liblcf the liblcf repository is cloned into lib/liblcf and built together with the Player. This is convenient for development" OFF)
 set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING "Git repository of liblcf to clone when building liblcf. Requires PLAYER_BUILD_LIBLCF=ON.")
@@ -229,8 +205,12 @@ if(PLAYER_BUILD_LIBLCF)
 			"${PLAYER_BUILD_LIBLCF_GIT}"
 			"${LIBLCF_PATH}")
 	endif()
-	add_subdirectory(
-		${LIBLCF_PATH})
+	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build liblcf shared library")
+	list(APPEND CMAKE_MODULE_PATH
+		"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
+
+	add_subdirectory(${LIBLCF_PATH})
+	target_link_libraries(${PROJECT_NAME}_Static lcf)
 else()
 	# Use system package
 	find_package(liblcf REQUIRED)
@@ -238,9 +218,14 @@ else()
 endif()
 
 # Detect all required libraries
-foreach(i Pixman PNG ZLIB SDL2)
-	find_lib(${i} REQUIRED)
-endforeach()
+find_package(PNG REQUIRED)
+target_link_libraries(${PROJECT_NAME}_Static PNG::PNG)
+
+find_package(Pixman REQUIRED)
+target_link_libraries(${PROJECT_NAME}_Static PIXMAN::PIXMAN)
+
+find_package(SDL2 REQUIRED)
+target_link_libraries(${PROJECT_NAME}_Static SDL2::SDL2)
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -250,13 +235,22 @@ endif()
 # freetype and harfbuzz
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
-find_lib("Freetype" PLAYER_WITH_FREETYPE)
+
+player_find_package(
+	NAME Freetype
+	CONDITION PLAYER_WITH_FREETYPE
+	DEFINITION HAVE_FREETYPE
+	FOUND Freetype
+	TARGET Freetype::Freetype
+)
+
 if(Freetype_FOUND)
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_FREETYPE=1)
-	find_lib("Harfbuzz" PLAYER_WITH_HARFBUZZ)
-	if(Harfbuzz_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_HARFBUZZ=1)
-	endif()
+	player_find_package(
+		NAME Harfbuzz
+		CONDITION PLAYER_WITH_HARFBUZZ
+		DEFINITION HAVE_HARFBUZZ
+		TARGET Harfbuzz::Harfbuzz
+	)
 endif()
 
 # Sound system to use
@@ -266,8 +260,12 @@ set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer Op
 # Configure Audio backends
 if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 	option(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available." ON)
-	find_lib("SDL2_mixer" PLAYER_WITH_SDL2_MIXER)
-	if(SDL2_mixer_FOUND)
+	player_find_package(
+		NAME SDL2_mixer
+		CONDITION PLAYER_WITH_SDL2_MIXER
+		TARGET SDL2::MIXER
+	)
+	if(SDL2_MIXER_FOUND)
 		set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
 	else()
 		set(PLAYER_AUDIO_BACKEND "SDL2")
@@ -276,13 +274,6 @@ endif()
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
-
-	# wildmidi (on for non-mixer)
-	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
-	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
-	if(WildMidi_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WILDMIDI=1)
-	endif()
 
 	# Provide fmmidi options
 	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
@@ -293,15 +284,14 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
 
 	# SDL2_mixer Audio
-	find_lib(SDL2_mixer REQUIRED)
+	player_find_package(
+		NAME SDL2_mixer
+		CONDITION PLAYER_WITH_SDL2_MIXER
+		DEFINITION HAVE_SDL_MIXER
+		TARGET SDL2::MIXER
+		REQUIRED
+	)
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_SDL_MIXER=1)
-
-	# wildmidi (optional, OFF)
-	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi. (optional)" OFF)
-	find_lib("WildMidi" PLAYER_WITH_WILDMIDI)
-	if(WildMidi_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WILDMIDI=1)
-	endif()
 
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
@@ -320,10 +310,10 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
 
 	find_package(OpenAL REQUIRED)
-	find_package(SndFile REQUIRED)
+	find_package(LibSndFile REQUIRED)
 	find_package(FluidSynth REQUIRED)
-	target_include_directories(${PROJECT_NAME}_Static PUBLIC ${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
-	target_link_libraries(${PROJECT_NAME}_Static ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
+	target_include_directories(${PROJECT_NAME}_Static PUBLIC ${OPENAL_INCLUDE_DIR})
+	target_link_libraries(${PROJECT_NAME}_Static ${OPENAL_LIBRARY} LibSndFile::LibSndFile Fluidsynth::Fluidsynth)
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OPENAL=1)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
 
@@ -334,45 +324,66 @@ endif()
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	# speexdsp
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)
-	find_lib("speexdsp" PLAYER_WITH_SPEEXDSP)
-	if(speexdsp_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_LIBSPEEXDSP=1)
-	endif()
+	player_find_package(
+		NAME speexdsp
+		CONDITION PLAYER_WITH_SPEEXDSP
+		DEFINITION HAVE_LIBSPEEXDSP
+		TARGET speexdsp::speexdsp
+	)
 
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
-	find_lib("mpg123" PLAYER_WITH_MPG123)
-	if(mpg123_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_MPG123=1)
-	endif()
+	player_find_package(
+		NAME mpg123
+		CONDITION PLAYER_WITH_MPG123
+		DEFINITION HAVE_MPG123
+		TARGET mpg123::mpg123
+	)
 
 	# libsndfile
 	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
-	find_lib("SndFile" PLAYER_WITH_LIBSNDFILE)
-	if(SndFile_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_LIBSNDFILE=1)
-	endif()
+	player_find_package(
+		NAME LibSndFile
+		CONDITION PLAYER_WITH_LIBSNDFILE
+		DEFINITION HAVE_LIBSNDFILE
+		TARGET LibSndFile::LibSndFile
+	)
 
 	# libvorbis
 	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
-	find_lib("OggVorbis" PLAYER_WITH_OGGVORBIS)
-	if(OggVorbis_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OGGVORBIS=1)
-	endif()
+	player_find_package(
+		NAME Vorbisfile
+		CONDITION PLAYER_WITH_OGGVORBIS
+		DEFINITION HAVE_OGGVORBIS
+		TARGET Vorbisfile::Vorbisfile
+	)
 
 	# opusfile
 	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
-	find_lib("Opus" PLAYER_WITH_OPUS)
-	if(Opus_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OPUS=1)
-	endif()
+	player_find_package(
+		NAME Opusfile
+		CONDITION PLAYER_WITH_OPUS
+		DEFINITION HAVE_OPUS
+		TARGET Opusfile::Opusfile
+	)
+
+	# wildmidi
+	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
+	player_find_package(
+		NAME WildMidi
+		CONDITION PLAYER_WITH_WILDMIDI
+		DEFINITION HAVE_WILDMIDI
+		TARGET WildMidi::WildMidi
+	)
 
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
-	find_lib("XMP" PLAYER_WITH_XMP)
-	if(XMP_FOUND)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_XMP=1)
-	endif()
+	player_find_package(
+		NAME XMP
+		CONDITION PLAYER_WITH_XMP
+		DEFINITION HAVE_XMP
+		TARGET XMP::XMP
+	)
 
 	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		target_sources(${PROJECT_NAME}_Static PRIVATE
@@ -487,14 +498,14 @@ message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	message(STATUS "")
 
-	if(SndFile_FOUND)
+	if(LIBSNDFILE_FOUND)
 		message(STATUS "WAV playback:  libsndfile")
 	else()
 		set(SDL_MIXER_USED ON)
 		message(STATUS "WAV playback:  SDL2_mixer")
 	endif()
 
-	if(WildMidi_FOUND)
+	if(WILDMIDI_FOUND)
 		if(${PLAYER_ENABLE_FMMIDI} MATCHES "(Fallback|ON)")
 			message(STATUS "MIDI playback: WildMidi. Fallback to built-in (FmMidi)")
 		else()
@@ -512,7 +523,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		endif()
 	endif()
 
-	if(mpg123_FOUND)
+	if(MPG123_FOUND)
 		message(STATUS "MP3 playback:  mpg123")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
@@ -521,7 +532,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		message(STATUS "MP3 playback:  None")
 	endif()
 
-	if(OggVorbis_FOUND)
+	if(VORBISFILE_FOUND)
 		message(STATUS "Ogg Vorbis playback: libvorbis")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
@@ -539,13 +550,13 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		message(STATUS "MOD playback:  None")
 	endif()
 
-	if(Opus_FOUND)
+	if(OPUSFILE_FOUND)
 		message(STATUS "Opus playback: opusfile")
 	else()
 		message(STATUS "Opus playback: None")
 	endif()
 
-	if(speexdsp_FOUND)
+	if(SPEEXDSP_FOUND)
 		message(STATUS "Resampler:	 speexdsp")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
@@ -564,12 +575,12 @@ endif()
 
 message(STATUS "")
 
-if(Harfbuzz_FOUND)
-	message(STATUS "Font rendering: Freetype with Harfbuzz / built-in (Shinonome)")
+if(HARFBUZZ_FOUND)
+	message(STATUS "Font rendering: Freetype with Harfbuzz / built-in")
 elseif(FreeType_FOUND)
-	message(STATUS "Font rendering: Freetype and built-in (Shinonome)")
+	message(STATUS "Font rendering: Freetype and built-in")
 else()
-	message(STATUS "Font rendering: built-in (Shinonome)")
+	message(STATUS "Font rendering: built-in")
 endif()
 
 message(STATUS "")
