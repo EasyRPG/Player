@@ -177,6 +177,9 @@ list(APPEND CMAKE_MODULE_PATH
 include(ConfigureWindows)
 include(PlayerFindPackage)
 
+# C++11 is required
+target_compile_features(${PROJECT_NAME}_Static PUBLIC cxx_std_11)
+
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC _DEBUG=1)
 endif()
@@ -394,6 +397,12 @@ endif()
 
 # Executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE "src/main.cpp")
+
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Player")
+else()
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
+endif()
 
 # Add Windows resources
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
