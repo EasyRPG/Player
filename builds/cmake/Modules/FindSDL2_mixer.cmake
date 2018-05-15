@@ -57,7 +57,7 @@ if(VORBIS_LIBRARY_FOUND)
 	list(APPEND SDL2_MIXER_EXTRA_DEPS ${VORBIS_LIBRARY} ${OGG_LIBRARY})
 endif()
 
-find_package(mpg123)
+find_package(mpg123 QUIET)
 if(MPG123_FOUND)
 	list(APPEND SDL2_MIXER_EXTRA_DEPS mpg123::mpg123)
 endif()
