@@ -385,7 +385,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 endif()
 
 # Executable
-add_executable(${PROJECT_NAME} MACOSX_BUNDLE "src/main.cpp")
+add_executable(${PROJECT_NAME} "src/main.cpp")
 
 if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Player")
@@ -402,8 +402,7 @@ target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_Static)
 
 # installation
 include(GNUInstallDirs)
-install(
-	TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # manpage
