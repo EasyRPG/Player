@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(EasyRPG_Player VERSION 0.5.3 LANGUAGES CXX C)
+project(EasyRPG_Player VERSION 0.5.3 LANGUAGES CXX)
 
 # Source Files
 add_library(${PROJECT_NAME}
@@ -497,10 +497,10 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	message(STATUS "")
 
 	if(LIBSNDFILE_FOUND)
-		message(STATUS "WAV playback:  libsndfile")
+		message(STATUS "WAV playback: libsndfile")
 	else()
 		set(SDL_MIXER_USED ON)
-		message(STATUS "WAV playback:  SDL2_mixer")
+		message(STATUS "WAV playback: SDL2_mixer")
 	endif()
 
 	if(WILDMIDI_FOUND)
@@ -522,12 +522,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	endif()
 
 	if(MPG123_FOUND)
-		message(STATUS "MP3 playback:  mpg123")
+		message(STATUS "MP3 playback: mpg123")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "MP3 playback:  SDL2_mixer")
+		message(STATUS "MP3 playback: SDL2_mixer")
 	else()
-		message(STATUS "MP3 playback:  None")
+		message(STATUS "MP3 playback: None")
 	endif()
 
 	if(VORBISFILE_FOUND)
@@ -540,12 +540,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	endif()
 
 	if(XMP_FOUND)
-		message(STATUS "MOD playback:  libxmp")
+		message(STATUS "MOD playback: libxmp")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "MOD playback:  SDL2_mixer")
+		message(STATUS "MOD playback: SDL2_mixer")
 	else()
-		message(STATUS "MOD playback:  None")
+		message(STATUS "MOD playback: None")
 	endif()
 
 	if(OPUSFILE_FOUND)
@@ -555,12 +555,12 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 	endif()
 
 	if(SPEEXDSP_FOUND)
-		message(STATUS "Resampler:	 speexdsp")
+		message(STATUS "Resampler: speexdsp")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
-		message(STATUS "Resampler:	 SDL2")
+		message(STATUS "Resampler: SDL2")
 	else()
-		message(STATUS "Resampler:	 None")
+		message(STATUS "Resampler: None")
 	endif()
 
 	if(SDL_MIXER_USED)
