@@ -60,9 +60,6 @@ if(HARFBUZZ_FOUND)
 			INTERFACE_INCLUDE_DIRECTORIES "${HARFBUZZ_INCLUDE_DIRS}"
 			INTERFACE_LINK_LIBRARIES Freetype::Freetype
 			IMPORTED_LOCATION "${HARFBUZZ_LIBRARY}")
-
-		# Handle circular dependency
-		target_link_libraries(Freetype::Freetype INTERFACE Harfbuzz::Harfbuzz)
 	endif()
 endif()
 
