@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 project(EasyRPG_Player VERSION 0.5.3 LANGUAGES CXX C)
 
 # Source Files
-add_library(${PROJECT_NAME}_Static
+add_library(${PROJECT_NAME}
 	src/async_handler.cpp
 	src/audio_al.cpp
 	src/audio.cpp
@@ -167,7 +167,7 @@ include(CMakeDependentOption)
 
 # Include directories
 target_include_directories(
-	${PROJECT_NAME}_Static PUBLIC
+	${PROJECT_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Extra CMake Module files
@@ -178,20 +178,20 @@ include(ConfigureWindows)
 include(PlayerFindPackage)
 
 # C++11 is required
-target_compile_features(${PROJECT_NAME}_Static PUBLIC cxx_std_11)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC _DEBUG=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
 
-target_compile_definitions(${PROJECT_NAME}_Static PUBLIC USE_SDL=2)
+target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 	include(TestBigEndian)
 	test_big_endian(WORDS_BIGENDIAN)
 	if(WORDS_BIGENDIAN)
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WORDS_BIGENDIAN=1)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC WORDS_BIGENDIAN=1)
 	endif()
 endif()
 
@@ -213,26 +213,26 @@ if(PLAYER_BUILD_LIBLCF)
 		"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 
 	add_subdirectory(${LIBLCF_PATH})
-	target_link_libraries(${PROJECT_NAME}_Static lcf)
+	target_link_libraries(${PROJECT_NAME} lcf)
 else()
 	# Use system package
 	find_package(liblcf REQUIRED)
-	target_link_libraries(${PROJECT_NAME}_Static liblcf::liblcf)
+	target_link_libraries(${PROJECT_NAME} liblcf::liblcf)
 endif()
 
 # Detect all required libraries
 find_package(PNG REQUIRED)
-target_link_libraries(${PROJECT_NAME}_Static PNG::PNG)
+target_link_libraries(${PROJECT_NAME} PNG::PNG)
 
 find_package(Pixman REQUIRED)
-target_link_libraries(${PROJECT_NAME}_Static PIXMAN::PIXMAN)
+target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 find_package(SDL2 REQUIRED)
-target_link_libraries(${PROJECT_NAME}_Static SDL2::SDL2)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2)
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_WINE=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
 # freetype and harfbuzz
@@ -273,15 +273,15 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 endif()
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	# Provide fmmidi options
 	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=1)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	# SDL2_mixer Audio
 	player_find_package(
@@ -290,15 +290,15 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 		DEFINITION HAVE_SDL_MIXER
 		TARGET SDL2::MIXER
 		REQUIRED)
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_SDL_MIXER=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_SDL_MIXER=1)
 
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
 	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
 	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=2)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=2)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		target_compile_definitions(${PROJECT_NAME}_Static PUBLIC WANT_FMMIDI=1)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
 		# noop
 	else()
@@ -306,14 +306,14 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	# OpenAL Audio
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC SUPPORT_AUDIO=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	find_package(OpenAL REQUIRED)
 	find_package(LibSndFile REQUIRED)
 	find_package(FluidSynth REQUIRED)
-	target_include_directories(${PROJECT_NAME}_Static PUBLIC ${OPENAL_INCLUDE_DIR})
-	target_link_libraries(${PROJECT_NAME}_Static ${OPENAL_LIBRARY} LibSndFile::LibSndFile Fluidsynth::Fluidsynth)
-	target_compile_definitions(${PROJECT_NAME}_Static PUBLIC HAVE_OPENAL=1)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${OPENAL_INCLUDE_DIR})
+	target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY} LibSndFile::LibSndFile Fluidsynth::Fluidsynth)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_OPENAL=1)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
 
 else()
@@ -378,31 +378,31 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 		TARGET XMP::XMP)
 
 	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
-		target_sources(${PROJECT_NAME}_Static PRIVATE
+		target_sources(${PROJECT_NAME} PRIVATE
 			src/midisequencer.cpp
 			src/midisynth.cpp)
 	endif()
 endif()
 
 # Executable
-add_executable(${PROJECT_NAME} "src/main.cpp")
+add_executable(${PROJECT_NAME}_exe "src/main.cpp")
 
 if(WIN32)
-    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Player")
+    set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
 else()
-    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg-player")
+    set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
 endif()
 
 # Add Windows resources
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	target_sources(${PROJECT_NAME} PRIVATE "resources/player.rc")
+	target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_Static)
+target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
 
 # installation
 include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}_exe
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # manpage
@@ -441,7 +441,7 @@ if(DOXYGEN_FOUND)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
-		DEPENDS ${PROJECT_NAME}_Static
+		DEPENDS ${PROJECT_NAME}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
 	if(NOT TARGET doc)
@@ -476,7 +476,7 @@ if(PLAYER_ENABLE_TESTS)
 	foreach(i ${TEST_FILES})
 		get_filename_component(name "${i}" NAME_WE)
 		add_executable(test_${name} ${i})
-		target_link_libraries(test_${name} ${PROJECT_NAME}_Static)
+		target_link_libraries(test_${name} ${PROJECT_NAME})
 
 		add_test(
 			NAME test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
