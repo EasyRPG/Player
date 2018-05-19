@@ -441,13 +441,14 @@ if(DOXYGEN_FOUND)
 
 	add_custom_target(player_doc
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/resources/Doxyfile
+		DEPENDS ${PROJECT_NAME}_Static
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
-	add_custom_target(doc)
-	add_dependencies(doc player_doc)
-	if(PLAYER_BUILD_LIBLCF)
-		add_dependencies(doc liblcf_doc)
+	if(NOT TARGET doc)
+		# Handle liblcf doc target
+		add_custom_target(doc)
 	endif()
+	add_dependencies(doc player_doc)
 endif()
 
 # Unit tests
