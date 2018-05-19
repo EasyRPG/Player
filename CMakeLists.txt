@@ -228,7 +228,7 @@ find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
 find_package(SDL2 REQUIRED)
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
