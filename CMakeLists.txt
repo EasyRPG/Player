@@ -383,16 +383,21 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 endif()
 
 # Executable
-add_executable(${PROJECT_NAME}_exe "src/main.cpp")
+# Windows: Only open console for Debug builds
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+	add_executable(${PROJECT_NAME}_exe "src/main.cpp")
+else()
+	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
+endif()
 
 if(WIN32)
-    set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
+	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
 else()
-    set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
+	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
 endif()
 
 # Add Windows resources
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+if(WIN32)
 	target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
 endif()
 
