@@ -286,11 +286,9 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# SDL2_mixer Audio
 	player_find_package(
 		NAME SDL2_mixer
-		CONDITION PLAYER_WITH_SDL2_MIXER
 		DEFINITION HAVE_SDL_MIXER
 		TARGET SDL2::MIXER
 		REQUIRED)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_SDL_MIXER=1)
 
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")

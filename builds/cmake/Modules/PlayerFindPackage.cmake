@@ -48,8 +48,8 @@ function(player_find_package)
 		set(FIND_PACKAGE_NAME ${PLAYER_FIND_PACKAGE_FOUND})
 	endif()
 
-	# Needs dereference because is name of a variable
-	if(${PLAYER_FIND_PACKAGE_CONDITION})
+	# Assume "true" when Condition is empty, otherwise dereference the condition variable
+	if((NOT PLAYER_FIND_PACKAGE_CONDITION) OR (${PLAYER_FIND_PACKAGE_CONDITION}))
 		find_package(${PLAYER_FIND_PACKAGE_NAME} ${IS_REQUIRED})
 		if (${${FIND_PACKAGE_NAME}_FOUND})
 			target_link_libraries(${PROJECT_NAME} ${PLAYER_FIND_PACKAGE_TARGET})
