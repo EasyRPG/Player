@@ -17,7 +17,7 @@
 #ifndef EP_AUDIO_SWITCH_H
 #define EP_AUDIO_SWITCH_H
 
-#if defined(SWITCH)
+#ifdef __SWITCH__
 
 #include <switch.h>
 

@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef SWITCH
+#ifdef __SWITCH__
 
 // Headers
 #include "switch_ui.h"
@@ -32,7 +32,7 @@
 #include <cstring>
 #include <stdio.h>
 
-#include "build/touch_ui_png.h"
+#include "touch_ui_png.h"
 
 #ifdef SUPPORT_AUDIO
 #include "audio_switch.h"

@@ -426,7 +426,7 @@ static void add_rtp_path(const std::string& p) {
 }
 
 static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
-#if !(defined(GEKKO) || defined(SWITCH) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS)) && !(defined(_WIN32) && defined(_ARM_))
+#if !(defined(GEKKO) || defined(__SWITCH__) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS)) && !(defined(_WIN32) && defined(_ARM_))
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
@@ -461,7 +461,7 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
-#elif defined(SWITCH)
+#elif defined(__SWITCH__)
 	add_rtp_path("./rtp/" + version_str + "/");
 	add_rtp_path("/switch/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(_3DS)
@@ -678,7 +678,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 bool FileFinder::Exists(const std::string& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
-#elif (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
+#elif (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
 #elif defined(PSP2)
@@ -690,7 +690,7 @@ bool FileFinder::Exists(const std::string& filename) {
 }
 
 bool FileFinder::IsDirectory(const std::string& dir) {
-#if (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
+#if (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
 	struct stat sb;
 	if (::stat(dir.c_str(), &sb) == 0)
 		return S_ISDIR(sb.st_mode);
