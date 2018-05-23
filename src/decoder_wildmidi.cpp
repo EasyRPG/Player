@@ -29,6 +29,10 @@
 #include "utils.h"
 #include "decoder_wildmidi.h"
 
+#ifdef USE_LIBRETRO
+#include "libretro.h"
+#endif
+
 #if defined(GEKKO) || defined(_3DS)
 #  define WILDMIDI_FREQ 22050
 #else
@@ -84,7 +88,17 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	/* find the configuration file in different paths on different platforms
 	 * FIXME: move this logic into some configuration class
 	 */
-#ifdef GEKKO
+#if defined(USE_LIBRETRO)
+	config_file = "wildmidi.cfg";
+	extern retro_environment_t environ_cb;
+	const char *dir = NULL;
+
+	if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
+	{
+		config_file = std::string(dir) + "/wildmidi.cfg";
+	}
+	found = FileFinder::Exists(config_file);
+#elif defined(GEKKO)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
