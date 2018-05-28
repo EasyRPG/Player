@@ -22,6 +22,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <random>
 #include "system.h"
 
 namespace Utils {
@@ -171,6 +172,13 @@ namespace Utils {
 	 * @return Random number in inclusive interval
 	 */
 	int32_t GetRandomNumber(int32_t from, int32_t to);
+
+	/**
+	 * Gets the seeded Random Number Generator (RNG).
+	 *
+	 * @return the random number generator
+	 */
+	std::mt19937 &GetRNG();
 
 	/**
 	 * Has an n/m chance of returning true. If n>m, always returns true.

@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include <array>
 
 #include "graphics.h"
 #include "bitmap.h"
@@ -32,6 +33,11 @@
 #include "fps_overlay.h"
 #include "message_overlay.h"
 #include "scene.h"
+
+namespace {
+	constexpr uint32_t size_random_blocks = 4;
+	constexpr uint32_t size_array_random_blocks = 4800;
+}
 
 namespace Graphics {
 	void UpdateTitle();
@@ -60,6 +66,8 @@ namespace Graphics {
 
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
+
+	std::array<uint32_t, size_array_random_blocks> random_blocks;
 }
 
 unsigned SecondToFrame(float const second) {
@@ -80,6 +88,10 @@ void Graphics::Init() {
 	fps_overlay.reset(new FpsOverlay());
 
 	next_fps_time = 0;
+
+	for (uint32_t i = 0; i < size_array_random_blocks; i++) {
+		random_blocks[i] = i;
+	}
 }
 
 void Graphics::Quit() {
@@ -250,6 +262,10 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 			else
 				screen1 = screen2;
 		}
+
+		if (type == TransitionRandomBlocks) {
+			std::shuffle(random_blocks.begin(), random_blocks.end(), Utils::GetRNG());
+		}
 	}
 
 	screen_erased = erase;
@@ -274,7 +290,6 @@ void Graphics::UpdateTransition() {
 	// Fallback to FadeIn/Out for not implemented transition types:
 	// (Remove from here when implemented below)
 	switch (transition_type) {
-	case TransitionRandomBlocks:
 	case TransitionRandomBlocksUp:
 	case TransitionRandomBlocksDown:
 	case TransitionZoomIn:
@@ -296,6 +311,18 @@ void Graphics::UpdateTransition() {
 		dst->Blit(0, 0, *screen2, screen2->GetRect(), 255 * percentage / 100);
 		break;
 	case TransitionRandomBlocks:
+		dst->Blit(0, 0, *screen1, screen1->GetRect(), 255);
+		for (uint32_t i = 0; i < size_array_random_blocks * percentage / 100; i++) {
+			dst->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
+				random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
+				*screen2,
+				Rect(
+					random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
+					random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
+					size_random_blocks,
+					size_random_blocks),
+				255);
+		}
 		break;
 	case TransitionRandomBlocksUp:
 		break;

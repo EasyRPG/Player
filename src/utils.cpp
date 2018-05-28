@@ -383,6 +383,10 @@ int32_t Utils::GetRandomNumber(int32_t from, int32_t to) {
 	return int32_t(ures);
 }
 
+std::mt19937 &Utils::GetRNG() {
+	return rng;
+}
+
 bool Utils::ChanceOf(int32_t n, int32_t m) {
 	assert(n >= 0 && m > 0);
 	return GetRandomNumber(1, m) <= n;
