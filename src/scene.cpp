@@ -24,6 +24,7 @@
 #include "player.h"
 #include "output.h"
 #include "audio.h"
+#include "transition.h"
 
 std::shared_ptr<Scene> Scene::instance;
 std::vector<std::shared_ptr<Scene> > Scene::old_instances;
@@ -94,7 +95,6 @@ void Scene::MainFunction() {
 		Resume();
 
 		init = true;
-
 		return;
 	} else {
 		Player::Update();
@@ -105,7 +105,7 @@ void Scene::MainFunction() {
 		assert(Scene::instance == instances.back() &&
 			"Don't set Scene::instance directly, use Push instead!");
 
-		Graphics::Update(true);
+		Graphics::Update();
 
 		Suspend();
 		TransitionOut();
@@ -130,11 +130,11 @@ void Scene::Suspend() {
 }
 
 void Scene::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionFadeIn, 6);
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
 }
 
 void Scene::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 6, true);
+	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
 void Scene::Update() {

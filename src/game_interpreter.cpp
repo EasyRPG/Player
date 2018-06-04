@@ -49,6 +49,7 @@
 #include "reader_util.h"
 #include "game_battle.h"
 #include "utils.h"
+#include "transition.h"
 
 namespace {
 	constexpr int max_var_size_2k3 = 9999999;
@@ -1771,71 +1772,71 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 
 	switch (com.parameters[0]) {
 	case -1:
-		Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+		Game_Temp::transition_type = (Transition::TransitionType)Game_System::GetTransition(
 			Game_System::Transition_TeleportErase);
 		return true;
 	case 0:
-		Game_Temp::transition_type = Graphics::TransitionFadeOut;
+		Game_Temp::transition_type = Transition::TransitionFadeOut;
 		return true;
 	case 1:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocks;
 		return true;
 	case 2:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocksUp;
 		return true;
 	case 3:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocksDown;
 		return true;
 	case 4:
-		Game_Temp::transition_type = Graphics::TransitionBlindClose;
+		Game_Temp::transition_type = Transition::TransitionBlindClose;
 		return true;
 	case 5:
-		Game_Temp::transition_type = Graphics::TransitionVerticalStripesOut;
+		Game_Temp::transition_type = Transition::TransitionVerticalStripesOut;
 		return true;
 	case 6:
-		Game_Temp::transition_type = Graphics::TransitionHorizontalStripesOut;
+		Game_Temp::transition_type = Transition::TransitionHorizontalStripesOut;
 		return true;
 	case 7:
-		Game_Temp::transition_type = Graphics::TransitionBorderToCenterOut;
+		Game_Temp::transition_type = Transition::TransitionBorderToCenterOut;
 		return true;
 	case 8:
-		Game_Temp::transition_type = Graphics::TransitionCenterToBorderOut;
+		Game_Temp::transition_type = Transition::TransitionCenterToBorderOut;
 		return true;
 	case 9:
-		Game_Temp::transition_type = Graphics::TransitionScrollUpOut;
+		Game_Temp::transition_type = Transition::TransitionScrollUpOut;
 		return true;
 	case 10:
-		Game_Temp::transition_type = Graphics::TransitionScrollDownOut;
+		Game_Temp::transition_type = Transition::TransitionScrollDownOut;
 		return true;
 	case 11:
-		Game_Temp::transition_type = Graphics::TransitionScrollLeftOut;
+		Game_Temp::transition_type = Transition::TransitionScrollLeftOut;
 		return true;
 	case 12:
-		Game_Temp::transition_type = Graphics::TransitionScrollRightOut;
+		Game_Temp::transition_type = Transition::TransitionScrollRightOut;
 		return true;
 	case 13:
-		Game_Temp::transition_type = Graphics::TransitionVerticalDivision;
+		Game_Temp::transition_type = Transition::TransitionVerticalDivision;
 		return true;
 	case 14:
-		Game_Temp::transition_type = Graphics::TransitionHorizontalDivision;
+		Game_Temp::transition_type = Transition::TransitionHorizontalDivision;
 		return true;
 	case 15:
-		Game_Temp::transition_type = Graphics::TransitionCrossDivision;
+		Game_Temp::transition_type = Transition::TransitionCrossDivision;
 		return true;
 	case 16:
-		Game_Temp::transition_type = Graphics::TransitionZoomIn;
+		Game_Temp::transition_type = Transition::TransitionZoomIn;
 		return true;
 	case 17:
-		Game_Temp::transition_type = Graphics::TransitionMosaicOut;
+		Game_Temp::transition_type = Transition::TransitionMosaicOut;
 		return true;
 	case 18:
-		Game_Temp::transition_type = Graphics::TransitionWaveOut;
+		Game_Temp::transition_type = Transition::TransitionWaveOut;
 		return true;
 	case 19:
-		Game_Temp::transition_type = Graphics::TransitionErase;
+		Game_Temp::transition_type = Transition::TransitionErase;
 		return true;
 	default:
-		Game_Temp::transition_type = Graphics::TransitionNone;
+		Game_Temp::transition_type = Transition::TransitionNone;
 		return true;
 	}
 }
@@ -1853,71 +1854,71 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 
 	switch (com.parameters[0]) {
 	case -1:
-		Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+		Game_Temp::transition_type = (Transition::TransitionType)Game_System::GetTransition(
 			Game_System::Transition_TeleportShow);
 		return true;
 	case 0:
-		Game_Temp::transition_type = Graphics::TransitionFadeIn;
+		Game_Temp::transition_type = Transition::TransitionFadeIn;
 		return true;
 	case 1:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocks;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocks;
 		return true;
 	case 2:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocksUp;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocksUp;
 		return true;
 	case 3:
-		Game_Temp::transition_type = Graphics::TransitionRandomBlocksDown;
+		Game_Temp::transition_type = Transition::TransitionRandomBlocksDown;
 		return true;
 	case 4:
-		Game_Temp::transition_type = Graphics::TransitionBlindOpen;
+		Game_Temp::transition_type = Transition::TransitionBlindOpen;
 		return true;
 	case 5:
-		Game_Temp::transition_type = Graphics::TransitionVerticalStripesIn;
+		Game_Temp::transition_type = Transition::TransitionVerticalStripesIn;
 		return true;
 	case 6:
-		Game_Temp::transition_type = Graphics::TransitionHorizontalStripesIn;
+		Game_Temp::transition_type = Transition::TransitionHorizontalStripesIn;
 		return true;
 	case 7:
-		Game_Temp::transition_type = Graphics::TransitionBorderToCenterIn;
+		Game_Temp::transition_type = Transition::TransitionBorderToCenterIn;
 		return true;
 	case 8:
-		Game_Temp::transition_type = Graphics::TransitionCenterToBorderIn;
+		Game_Temp::transition_type = Transition::TransitionCenterToBorderIn;
 		return true;
 	case 9:
-		Game_Temp::transition_type = Graphics::TransitionScrollUpIn;
+		Game_Temp::transition_type = Transition::TransitionScrollUpIn;
 		return true;
 	case 10:
-		Game_Temp::transition_type = Graphics::TransitionScrollDownIn;
+		Game_Temp::transition_type = Transition::TransitionScrollDownIn;
 		return true;
 	case 11:
-		Game_Temp::transition_type = Graphics::TransitionScrollLeftIn;
+		Game_Temp::transition_type = Transition::TransitionScrollLeftIn;
 		return true;
 	case 12:
-		Game_Temp::transition_type = Graphics::TransitionScrollRightIn;
+		Game_Temp::transition_type = Transition::TransitionScrollRightIn;
 		return true;
 	case 13:
-		Game_Temp::transition_type = Graphics::TransitionVerticalCombine;
+		Game_Temp::transition_type = Transition::TransitionVerticalCombine;
 		return true;
 	case 14:
-		Game_Temp::transition_type = Graphics::TransitionHorizontalCombine;
+		Game_Temp::transition_type = Transition::TransitionHorizontalCombine;
 		return true;
 	case 15:
-		Game_Temp::transition_type = Graphics::TransitionCrossCombine;
+		Game_Temp::transition_type = Transition::TransitionCrossCombine;
 		return true;
 	case 16:
-		Game_Temp::transition_type = Graphics::TransitionZoomOut;
+		Game_Temp::transition_type = Transition::TransitionZoomOut;
 		return true;
 	case 17:
-		Game_Temp::transition_type = Graphics::TransitionMosaicIn;
+		Game_Temp::transition_type = Transition::TransitionMosaicIn;
 		return true;
 	case 18:
-		Game_Temp::transition_type = Graphics::TransitionWaveIn;
+		Game_Temp::transition_type = Transition::TransitionWaveIn;
 		return true;
 	case 19:
-		Game_Temp::transition_type = Graphics::TransitionErase;
+		Game_Temp::transition_type = Transition::TransitionErase;
 		return true;
 	default:
-		Game_Temp::transition_type = Graphics::TransitionNone;
+		Game_Temp::transition_type = Transition::TransitionNone;
 		return true;
 	}
 }

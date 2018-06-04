@@ -491,7 +491,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 			actor->SetSp(actor->GetMaxSp());
 			actor->RemoveAllStates();
 		}
-		Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 		Game_System::BgmFade(800);
 		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
 		return false;
@@ -532,7 +532,7 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 
 		Game_System::BgmStop();
 		continuation = NULL;
-		Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 
 		if (Game_Temp::inn_handlers)

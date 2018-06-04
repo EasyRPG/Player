@@ -29,6 +29,7 @@ enum DrawableType {
 	TypeFrame,
 	TypeWeather,
 	TypeOverlay,
+	TypeTransition,
 	TypeDefault
 };
 
@@ -48,7 +49,9 @@ enum Priority {
 	Priority_Window = 60 << 24,
 	Priority_Timer = 65 << 24,
 	Priority_Frame = 70 << 24,
-	Priority_Overlay = 75 << 24
+	Priority_Transition = 75 << 24,
+	Priority_Overlay = 80 << 24,
+	Priority_Maximum = 100 << 24
 };
 
 /**

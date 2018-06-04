@@ -20,11 +20,10 @@
 
 // Headers
 #include <list>
-#include <string>
-
-#include "system.h"
+#include "bitmap.h"
 #include "drawable.h"
 
+class Transition;
 class MessageOverlay;
 class Scene;
 
@@ -55,7 +54,7 @@ namespace Graphics {
 	 *
 	 * @param time_left Whether time is left to render the frame.
 	 */
-	void Update(bool time_left);
+	void Update();
 
 	/**
 	 * Resets the fps count.
@@ -67,68 +66,14 @@ namespace Graphics {
 	 * Gets a bitmap with the actual contents of the screen.
 	 * @return screen contents
 	 */
-	BitmapRef SnapToBitmap();
-
-	/** Transition types. */
-	enum TransitionType {
-		TransitionFadeIn,
-		TransitionFadeOut,
-		TransitionRandomBlocks,
-		TransitionRandomBlocksUp,
-		TransitionRandomBlocksDown,
-		TransitionBlindOpen,
-		TransitionBlindClose,
-		TransitionVerticalStripesIn,
-		TransitionVerticalStripesOut,
-		TransitionHorizontalStripesIn,
-		TransitionHorizontalStripesOut,
-		TransitionBorderToCenterIn,
-		TransitionBorderToCenterOut,
-		TransitionCenterToBorderIn,
-		TransitionCenterToBorderOut,
-		TransitionScrollUpIn,
-		TransitionScrollDownIn,
-		TransitionScrollLeftIn,
-		TransitionScrollRightIn,
-		TransitionScrollUpOut,
-		TransitionScrollDownOut,
-		TransitionScrollLeftOut,
-		TransitionScrollRightOut,
-		TransitionVerticalCombine,
-		TransitionVerticalDivision,
-		TransitionHorizontalCombine,
-		TransitionHorizontalDivision,
-		TransitionCrossCombine,
-		TransitionCrossDivision,
-		TransitionZoomIn,
-		TransitionZoomOut,
-		TransitionMosaicIn,
-		TransitionMosaicOut,
-		TransitionWaveIn,
-		TransitionWaveOut,
-		TransitionErase,
-		TransitionNone
-	};
-
-	/**
-	 * Does a screen transition.
-	 *
-	 * @param type transition type.
-	 * @param duration transition duration.
-	 * @param erase erase screen flag.
-	 */
-	void Transition(TransitionType type, int duration, bool erase = false);
+	BitmapRef SnapToBitmap(int priority = Priority::Priority_Maximum);
 
 	/**
 	 * Gets if a screen transition is executing.
 	 */
 	bool IsTransitionPending();
 
-	/**
-	 * Freezes the screen, and prepares it for a
-	 * transition.
-	 */
-	void Freeze();
+	void Draw();
 
 	void RegisterDrawable(Drawable* drawable);
 	void RemoveDrawable(Drawable* drawable);
@@ -151,6 +96,8 @@ namespace Graphics {
 	 * @return message overlay
 	 */
 	MessageOverlay& GetMessageOverlay();
+
+	Transition& GetTransition();
 }
 
 #endif

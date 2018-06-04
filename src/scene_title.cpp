@@ -24,7 +24,7 @@
 #include "cache.h"
 #include "game_screen.h"
 #include "game_system.h"
-#include "graphics.h"
+#include "transition.h"
 #include "input.h"
 #include "main_data.h"
 #include "output.h"
@@ -64,11 +64,11 @@ void Scene_Title::TransitionIn() {
 	if (Player::battle_test_flag || !Data::system.show_title || Player::new_game_flag)
 		return;
 
-	Graphics::Transition(Graphics::TransitionErase, 1, true);
+	Graphics::GetTransition().Init(Transition::TransitionErase, this, 1, true);
 	if (!Player::hide_title_flag) {
-		Graphics::Transition(Graphics::TransitionFadeIn, 32);
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 	} else {
-		Graphics::Transition(Graphics::TransitionFadeIn, 6);
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
 	}
 }
 
@@ -204,7 +204,7 @@ void Scene_Title::CommandContinue() {
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
+	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
 	Scene::Pop();
 }
 

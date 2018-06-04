@@ -23,7 +23,7 @@
 #include "input.h"
 #include "output.h"
 #include "player.h"
-#include "graphics.h"
+#include "transition.h"
 #include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"
@@ -95,7 +95,7 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::TransitionIn() {
-	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), 32);
+	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
 }
 
 void Scene_Battle::TransitionOut() {
@@ -103,7 +103,7 @@ void Scene_Battle::TransitionOut() {
 		Scene::TransitionOut();
 	}
 	else {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), 32, true);
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
 	}
 }
 
