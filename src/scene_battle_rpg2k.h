@@ -120,7 +120,8 @@ protected:
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
-	std::vector<std::shared_ptr<Game_Enemy> >::const_iterator enemy_iterator;
+	std::vector<Game_Battler *> visible_enemies;
+	std::vector<Game_Battler *>::const_iterator enemy_iterator;
 	int battle_action_wait;
 	int battle_action_state;
 
