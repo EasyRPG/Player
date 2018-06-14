@@ -106,7 +106,7 @@ void Scene_Battle::TransitionIn() {
 }
 
 void Scene_Battle::TransitionOut() {
-	if (Player::exit_flag || Player::battle_test_flag || Game_Temp::transition_menu) {
+	if (Player::exit_flag || Player::battle_test_flag || Game_Temp::transition_menu || Scene::instance->type == Scene::Title) {
 		Scene::TransitionOut();
 	}
 	else {
