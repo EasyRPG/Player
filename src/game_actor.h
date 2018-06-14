@@ -661,6 +661,13 @@ public:
 	const std::string& GetSkillName() const;
 
 	/**
+	 * Checks if the actor has the Rename Skill active.
+	 *
+	 * @return true if rename_skill is true.
+	 */
+	bool IsSkillRenamed() const;
+
+	/**
 	 * Sets new actor name.
 	 *
 	 * @param new_name new name.

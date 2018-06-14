@@ -102,9 +102,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
-	std::string skill_name = active_actor->GetSkillName();
-	command_window->SetItemText(1,
-		skill_name.empty() ? Data::terms.command_skill : skill_name);
+	command_window->SetItemText(1, !active_actor->IsSkillRenamed() ? Data::terms.command_skill : active_actor->GetSkillName());
 }
 
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {

@@ -1009,6 +1009,10 @@ const std::string& Game_Actor::GetSkillName() const {
 	return GetActor().skill_name;
 }
 
+bool Game_Actor::IsSkillRenamed() const {
+	return GetActor().rename_skill;
+}
+
 void Game_Actor::SetName(const std::string &new_name) {
 	GetData().name = new_name;
 }
