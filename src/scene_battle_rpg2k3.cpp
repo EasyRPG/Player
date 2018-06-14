@@ -976,7 +976,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		Game_Message::texts.push_back(Data::terms.victory);
+		Game_Message::texts.push_back(Data::terms.victory + "\\|");
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
