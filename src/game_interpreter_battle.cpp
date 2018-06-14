@@ -40,10 +40,6 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		return CommandEnd();
 	}
 
-	if (Game_Battle::IsBattleAnimationWaiting()) {
-		return false;
-	}
-
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
