@@ -925,11 +925,11 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(int exp) {
 				Data::terms.exp_received,
 				{'V', 'U'},
 				{ss.str(), Data::terms.exp_short}
-			)
+			) + Player::escape_symbol + "."
 		);
 	}
 	else {
-		ss << exp << Data::terms.exp_received;
+		ss << exp << Data::terms.exp_received << Player::escape_symbol << ".";
 		Game_Message::texts.push_back(ss.str());
 	}
 }
@@ -944,11 +944,11 @@ void Scene_Battle_Rpg2k::PushGoldReceivedMessage(int money) {
 				Data::terms.gold_recieved_a,
 				{'V', 'U'},
 				{ss.str(), Data::terms.gold}
-			)
+			) + Player::escape_symbol + "."
 		);
 	}
 	else {
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << Player::escape_symbol << ".";
 		Game_Message::texts.push_back(ss.str());
 	}
 }
@@ -970,12 +970,12 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(std::vector<int> drops) {
 					Data::terms.item_recieved,
 					{'S'},
 					{item_name}
-				)
+				) + Player::escape_symbol + "."
 			);
 		}
 		else {
 			ss.str("");
-			ss << item_name << Data::terms.item_recieved;
+			ss << item_name << Data::terms.item_recieved << Player::escape_symbol << ".";
 			Game_Message::texts.push_back(ss.str());
 		}
 	}
@@ -992,7 +992,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		Game_Message::is_word_wrapped = Player::IsRPG2kE();
-		Game_Message::texts.push_back(Data::terms.victory);
+		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
 
 		std::stringstream ss;
 		PushExperienceGainedMessage(exp);
