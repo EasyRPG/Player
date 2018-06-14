@@ -89,9 +89,9 @@ void Scene_Battle::Start() {
 	auto_battle = false;
 	enemy_action = NULL;
 
-	CreateUi();
-
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
+
+	CreateUi();
 
 	SetState(State_Start);
 }

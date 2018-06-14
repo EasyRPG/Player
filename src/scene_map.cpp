@@ -254,6 +254,7 @@ void Scene_Map::FinishTeleportPlayer() {
 void Scene_Map::CallBattle() {
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
+	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
 
 	Scene::Push(Scene_Battle::Create());
 }
