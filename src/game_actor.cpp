@@ -1031,7 +1031,8 @@ int Game_Actor::GetBattleY() const {
 }
 
 const std::string& Game_Actor::GetSkillName() const {
-	return GetActor().skill_name;
+	auto& a = GetActor();
+	return a.rename_skill ? a.skill_name : Data::terms.command_skill;
 }
 
 void Game_Actor::SetName(const std::string &new_name) {
