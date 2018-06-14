@@ -235,6 +235,7 @@ void Scene_Battle::EnemySelected() {
 		}
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
@@ -258,6 +259,7 @@ void Scene_Battle::AllySelected() {
 		assert("Invalid previous state for ally selection" && false);
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
