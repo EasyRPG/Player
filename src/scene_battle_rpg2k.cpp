@@ -646,19 +646,21 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k::CommandSelected() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
 			AttackSelected();
 			break;
 		case 1: // Skill
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetState(State_SelectSkill);
 			break;
 		case 2: // Defense
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			DefendSelected();
 			break;
 		case 3: // Item
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetState(State_SelectItem);
 			break;
 		default:
