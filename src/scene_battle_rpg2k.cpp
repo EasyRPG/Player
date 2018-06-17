@@ -849,7 +849,7 @@ int Scene_Battle_Rpg2k::GetDelayForLine() {
 }
 
 void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
-	if ((enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end() &&
+	if ((enemy_iterator == visible_enemies.end() &&
 			!battle_message_window->GetHiddenLineCount()) ||
 			battle_message_window->IsPageFilled()) {
 		encounter_message_sleep_until = Player::GetFrames() + GetDelayForWindow();
@@ -861,7 +861,8 @@ void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
 
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (encounter_message_first_monster) {
-		enemy_iterator = Main_Data::game_enemyparty->GetEnemies().begin();
+		Main_Data::game_enemyparty->GetActiveBattlers(visible_enemies);
+		enemy_iterator = visible_enemies.begin();
 		encounter_message_first_monster = false;
 	}
 
@@ -885,7 +886,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		return false;
 	}
 
-	if (enemy_iterator == Main_Data::game_enemyparty->GetEnemies().end()) {
+	if (enemy_iterator == visible_enemies.end()) {
 		battle_message_window->Clear();
 		if (Game_Temp::battle_first_strike && !encounter_message_first_strike) {
 			battle_message_window->Push(Data::terms.special_combat);
