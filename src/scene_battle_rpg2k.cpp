@@ -651,7 +651,6 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 			SetState(State_SelectSkill);
 			break;
 		case 2: // Defense
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			DefendSelected();
 			break;
 		case 3: // Item
