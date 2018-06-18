@@ -88,6 +88,7 @@ public:
 	 */
 	void Init(TransitionType type, Scene *linked_scene, int duration, bool erase = false);
 
+	void AppendBefore(Color color, int duration, int iterations);
 
 	void Draw() override;
 	void Update();
@@ -113,6 +114,10 @@ private:
 	int current_frame;
 	int total_frames;
 	bool screen_erased;
+
+	Color flash_color;
+	int flash_duration;
+	int flash_iterations;
 
 	std::vector<int> zoom_position;
 	std::vector<uint32_t> random_blocks;

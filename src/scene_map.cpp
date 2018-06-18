@@ -92,6 +92,7 @@ void Scene_Map::TransitionIn() {
 void Scene_Map::TransitionOut() {
 	if (Game_Temp::battle_calling) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
+		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
 	}
 	else {
 		Scene::TransitionOut();

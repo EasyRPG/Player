@@ -30,6 +30,8 @@
 #include "drawable.h"
 
 Transition::Transition() {
+	flash_iterations = 0;
+	flash_duration = 0;
 	current_frame = -1;
 	total_frames = -2;
 	black_screen = nullptr;
@@ -47,6 +49,17 @@ DrawableType Transition::GetType() const {
 	return type;
 }
 
+void Transition::AppendBefore(Color color, int duration, int iterations) {
+	if (!IsActive()) {
+		current_frame = 0;
+		total_frames = 0;
+	}
+	flash_color = color;
+	flash_duration = std::max(1, duration);
+	flash_iterations = std::max(1, iterations);
+	total_frames += flash_duration * flash_iterations;
+}
+
 void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bool erase) {
 	if (!black_screen && DisplayUi) {
 		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
@@ -55,6 +68,7 @@ void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bo
 
 	if (erase && type == TransitionNone) {
 		old_frozen_screen = Graphics::SnapToBitmap(z);
+		screen1 = old_frozen_screen;
 		return;
 	}
 	else if ((screen_erased && erase) || type == TransitionNone) {
@@ -71,6 +85,8 @@ void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bo
 	old_frozen_screen = nullptr;
 
 	current_frame = 0;
+	flash_iterations = 0;
+	flash_duration = 0;
 	total_frames = transition_type == TransitionErase ? 1 : duration;
 
 	SetAttributesTransitions();
@@ -136,7 +152,16 @@ void Transition::Draw() {
 	int w = DisplayUi->GetWidth();
 	int h = DisplayUi->GetHeight();
 
-	int percentage = current_frame * 100 / total_frames;
+	if (current_frame < flash_duration * flash_iterations) {
+		Color current_color = Color(flash_color.red, flash_color.green, flash_color.blue, (flash_duration - current_frame % flash_duration) * 255 / flash_duration);
+		dst->BlendBlit(0, 0, *screen1, screen1->GetRect(), current_color, 255);
+		return;
+	}
+	else if (total_frames == flash_duration * flash_iterations) {
+		return;
+	}
+
+	int percentage = (current_frame - flash_duration * flash_iterations) * 100 / (total_frames - flash_duration * flash_iterations);
 
 	switch (transition_type) {
 	case TransitionFadeIn:
