@@ -868,7 +868,6 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 		AttackSelected();
 		break;
 	case RPG::BattleCommand::Type_defense:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		DefendSelected();
 		break;
 	case RPG::BattleCommand::Type_escape:
