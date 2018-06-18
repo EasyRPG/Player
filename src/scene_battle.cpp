@@ -133,13 +133,8 @@ void Scene_Battle::CreateUi() {
 }
 
 void Scene_Battle::Update() {
-	options_window->Update();
-	status_window->Update();
-	command_window->Update();
-	help_window->Update();
-	item_window->Update();
-	skill_window->Update();
-	target_window->Update();
+	Scene_Battle::State changed_state;
+
 	message_window->Update();
 
 	// Query Timer before and after update.
@@ -152,17 +147,28 @@ void Scene_Battle::Update() {
 		Scene::Pop();
 	}
 
-	bool events_finished = Game_Battle::UpdateEvents();
+	do {
+		bool events_finished = Game_Battle::UpdateEvents();
+		changed_state = state;
 
-	if (Game_Temp::gameover) {
-		Game_Temp::gameover = false;
-		Scene::Push(std::make_shared<Scene_Gameover>());
-	}
+		if (Game_Temp::gameover) {
+			Game_Temp::gameover = false;
+			Scene::Push(std::make_shared<Scene_Gameover>());
+		}
 
-	if (!Game_Message::visible && events_finished) {
-		ProcessActions();
-		ProcessInput();
-	}
+		if (!Game_Message::visible && events_finished) {
+			options_window->Update();
+			status_window->Update();
+			command_window->Update();
+			help_window->Update();
+			item_window->Update();
+			skill_window->Update();
+			target_window->Update();
+
+			ProcessActions();
+			ProcessInput();
+		}
+	} while (changed_state != state && state == State_SelectOption);
 
 	Game_Battle::Update();
 
