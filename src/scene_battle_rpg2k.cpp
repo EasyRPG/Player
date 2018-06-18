@@ -26,6 +26,7 @@
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
+#include "game_interpreter_battle.h"
 #include "game_message.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
@@ -56,6 +57,15 @@ void Scene_Battle_Rpg2k::Update() {
 	}
 
 	Scene_Battle::Update();
+
+	if (Game_Battle::GetInterpreter().IsRunning() && !interpreter_activated && !battle_message_window->GetVisible()) {
+		battle_message_window->SetVisible(true);
+		interpreter_activated = true;
+	}
+	else if (!Game_Battle::GetInterpreter().IsRunning() && interpreter_activated) {
+		battle_message_window->SetVisible(false);
+		interpreter_activated = false;
+	}
 }
 
 void Scene_Battle_Rpg2k::CreateUi() {
