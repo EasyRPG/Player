@@ -231,7 +231,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int val
 			particle = particle2 = " ";
 		}
 		ss << particle << points << particle2;
-		ss << GetAffectedHp() << space << Data::terms.hp_recovery;
+		ss << value << space << Data::terms.hp_recovery;
 		return ss.str();
 	}
 }
@@ -301,7 +301,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 		} else {
 			particle = particle2 = " ";
 		}
-		ss << particle << Data::terms.health_points << particle2;
+		ss << particle << points << particle2;
 		ss << value << space << message;
 
 		return ss.str();
