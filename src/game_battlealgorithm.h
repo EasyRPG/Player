@@ -154,6 +154,13 @@ public:
 	bool IsPositive() const;
 
 	/**
+	 * Gets whether the action had absorb component.
+	 *
+	 * @return Whether action was absorb
+	 */
+	bool IsAbsorb() const;
+
+	/**
 	 * Gets the type of algorithm.
 	 *
 	 * @return Whether action was positive
