@@ -117,7 +117,8 @@ void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	previous_state = state;
-	state = new_state;
+	if (new_state != State_SelectEnemyTarget && new_state != State_SelectAllyTarget)
+		state = new_state;
 
 	options_window->SetActive(false);
 	status_window->SetActive(false);
@@ -127,49 +128,45 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	target_window->SetActive(false);
 	battle_message_window->SetActive(false);
 
-	switch (state) {
-	case State_Start:
-		battle_message_window->SetActive(true);
-		break;
-	case State_SelectOption:
-		options_window->SetActive(true);
-		break;
-	case State_SelectActor:
-		status_window->SetActive(true);
-		break;
-	case State_AutoBattle:
-		break;
-	case State_SelectCommand:
-		command_window->SetActive(true);
-		RefreshCommandWindow();
-		break;
-	case State_SelectEnemyTarget:
-		select_target_flash_count = 0;
-		break;
-	case State_SelectAllyTarget:
-		status_window->SetActive(true);
-		break;
-	case State_Battle:
-		// no-op
-		break;
-	case State_SelectItem:
-		item_window->SetActive(true);
-		item_window->Refresh();
-		break;
-	case State_SelectSkill:
-		skill_window->SetActive(true);
-		skill_window->SetActor(active_actor->GetId());
-		skill_window->SetIndex(0);
-		break;
-	case State_Victory:
-	case State_Defeat:
-		battle_message_window->Clear();
-		break;
-	case State_Escape:
-		battle_message_window->SetActive(true);
-		break;
+	if (new_state != State_SelectEnemyTarget && new_state != State_SelectAllyTarget) {
+		switch (state) {
+		case State_Start:
+			battle_message_window->SetActive(true);
+			break;
+		case State_SelectOption:
+			options_window->SetActive(true);
+			break;
+		case State_SelectActor:
+			status_window->SetActive(true);
+			break;
+		case State_AutoBattle:
+			break;
+		case State_SelectCommand:
+			command_window->SetActive(true);
+			RefreshCommandWindow();
+			break;
+		case State_Battle:
+			// no-op
+			break;
+		case State_SelectItem:
+			item_window->SetActive(true);
+			item_window->Refresh();
+			break;
+		case State_SelectSkill:
+			skill_window->SetActive(true);
+			skill_window->SetActor(active_actor->GetId());
+			skill_window->SetIndex(0);
+			break;
+		case State_Victory:
+		case State_Defeat:
+			battle_message_window->Clear();
+			break;
+		case State_Escape:
+			battle_message_window->SetActive(true);
+			break;
+		}
 	}
-
+	
 	options_window->SetVisible(false);
 	status_window->SetVisible(false);
 	command_window->SetVisible(false);
@@ -201,17 +198,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		command_window->SetVisible(true);
 		status_window->SetX(0);
 		break;
-	case State_SelectEnemyTarget:
-		status_window->SetVisible(true);
-		command_window->SetVisible(true);
-		target_window->SetActive(true);
-		target_window->SetVisible(true);
-		break;
-	case State_SelectAllyTarget:
-		status_window->SetVisible(true);
-		status_window->SetX(0);
-		command_window->SetVisible(true);
-		break;
 	case State_Battle:
 		battle_message_window->SetVisible(true);
 		break;
@@ -232,6 +218,19 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_Escape:
 		battle_message_window->SetVisible(true);
 		break;
+	}
+
+	// If Select:
+	if (new_state == State_SelectEnemyTarget) {
+		state = new_state;
+		select_target_flash_count = 0;
+		target_window->SetActive(true);
+		target_window->SetVisible(true);
+	} else if (new_state == State_SelectAllyTarget) {
+		state = new_state;
+		status_window->SetActive(true);
+		status_window->SetVisible(true);
+		status_window->SetX(0);
 	}
 }
 
