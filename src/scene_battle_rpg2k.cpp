@@ -429,13 +429,19 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_result_messages.clear();
 			action->GetResultMessages(battle_result_messages);
 
-			battle_message_window->Push(action->GetStartMessage());
+			if (battle_message_window->GetLineCount() == 0)
+				battle_message_window->Push(action->GetStartMessage());
+			else if ((battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()))
+				battle_message_window->Push(action->GetSecondStartMessage());
 
 			action->Apply();
 
 			battle_result_messages_it = battle_result_messages.begin();
 
 			if (action->IsFirstAttack()) {
+				if (battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()) {
+					return false;
+				}
 				if (action->GetTarget() &&
 					action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 
@@ -529,6 +535,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (battle_result_messages_it != battle_result_messages.begin()) {
 					battle_message_window->Clear();
 					battle_message_window->Push(action->GetStartMessage());
+					if (action->HasSecondStartMessage())
+						battle_message_window->Push(action->GetSecondStartMessage());
 				}
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
