@@ -154,6 +154,13 @@ public:
 	bool IsPositive() const;
 
 	/**
+	 * Gets the type of algorithm.
+	 *
+	 * @return Whether action was positive
+	 */
+	virtual std::string GetType() const;
+
+	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
 	 *
 	 * @return Battle Animation or NULL if no animation is assigned
@@ -170,6 +177,8 @@ public:
 	 *                  targets (required for reflect)
 	 */
 	void PlayAnimation(bool on_source = false);
+
+	void PlaySoundAnimation(bool on_source = false);
 
 	/**
 	 * Returns a list of all inflicted/removed conditions.
@@ -383,6 +392,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
+	std::string GetType() const override;
 };
 
 class Skill : public AlgorithmBase {
@@ -403,6 +413,7 @@ public:
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	std::string GetType() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -423,6 +434,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
+	std::string GetType() const override;
 
 private:
 	const RPG::Item& item;
@@ -435,6 +447,7 @@ public:
 	std::string GetStartMessage() const override;
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
+	std::string GetType() const override;
 };
 
 class Defend : public AlgorithmBase {
@@ -445,6 +458,7 @@ public:
 	int GetSourceAnimationState() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 class Observe : public AlgorithmBase {
@@ -453,6 +467,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
+	std::string GetType() const override;
 };
 
 class Charge : public AlgorithmBase {
@@ -462,6 +477,7 @@ public:
 	std::string GetStartMessage() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -473,6 +489,7 @@ public:
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 class Escape : public AlgorithmBase {
@@ -486,6 +503,7 @@ public:
 	void Apply() override;
 
 	void GetResultMessages(std::vector<std::string>& out) const override;
+	std::string GetType() const override;
 };
 
 class Transform : public AlgorithmBase {
@@ -495,6 +513,7 @@ public:
 	std::string GetStartMessage() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 
 private:
 	int new_monster_id;
@@ -509,6 +528,7 @@ public:
 
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 }

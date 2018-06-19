@@ -69,7 +69,7 @@ namespace Game_Battle {
 	 * @param target pointer to the battler to play against
 	 * @param flash whether or not the screen should flash during the animation
 	 */
-	void ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash = true);
+	void ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash = true, bool only_sound = false);
 
 	/**
 	 * Plays a battle animation against several targets simultaneously.
@@ -78,7 +78,7 @@ namespace Game_Battle {
 	 * @param targets a vector of pointer to the battlers to play against
 	 * @param flash whether or not the screen should flash during the animation
 	 */
-	void ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true);
+	void ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true, bool only_sound = false);
 
 	/**
 	 * Whether or not a battle animation is currently playing.

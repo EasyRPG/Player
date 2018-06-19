@@ -118,6 +118,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
 	return healing;
 }
 
+std::string Game_BattleAlgorithm::AlgorithmBase::GetType() const {
+	return "Base";
+}
+
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
 	return conditions;
 }
@@ -149,6 +153,34 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	Game_Battle::ShowBattleAnimation(
 		GetAnimation()->ID,
 		anim_targets);
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source) {
+	if (current_target == targets.end() || !GetAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, true);
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetAnimation()->ID,
+		anim_targets, false, true);
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
@@ -888,6 +920,10 @@ int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
 	return 100;
 }
 
+std::string Game_BattleAlgorithm::Normal::GetType() const {
+	return "Normal";
+}
+
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
 	AlgorithmBase(source, target), skill(skill), item(item) {
 	// no-op
@@ -1140,12 +1176,7 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 		return &skill.sound_effect;
 	}
 	else {
-		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-		}
-		else {
-			return NULL;
-		}
+		return NULL;
 	}
 }
 
@@ -1211,6 +1242,10 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 	reflect = has_reflect ? 1 : 0;
 	return has_reflect;
+}
+
+std::string Game_BattleAlgorithm::Skill::GetType() const {
+	return "Skill";
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
@@ -1341,6 +1376,10 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	}
 }
 
+std::string Game_BattleAlgorithm::Item::GetType() const {
+	return "Item";
+}
+
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -1367,6 +1406,10 @@ const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
 bool Game_BattleAlgorithm::NormalDual::Execute() {
 	Output::Warning("Battle: Enemy Double Attack not implemented");
 	return true;
+}
+
+std::string Game_BattleAlgorithm::NormalDual::GetType() const {
+	return "NormalDual";
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
@@ -1402,6 +1445,10 @@ void Game_BattleAlgorithm::Defend::Apply() {
 	source->SetDefending(true);
 }
 
+std::string Game_BattleAlgorithm::Defend::GetType() const {
+	return "Defend";
+}
+
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
 AlgorithmBase(source) {
 	// no-op
@@ -1426,6 +1473,10 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 bool Game_BattleAlgorithm::Observe::Execute() {
 	// Observe only prints the start message
 	return true;
+}
+
+std::string Game_BattleAlgorithm::Observe::GetType() const {
+	return "Observe";
 }
 
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
@@ -1455,6 +1506,10 @@ bool Game_BattleAlgorithm::Charge::Execute() {
 
 void Game_BattleAlgorithm::Charge::Apply() {
 	source->SetCharged(true);
+}
+
+std::string Game_BattleAlgorithm::Charge::GetType() const {
+	return "Charge";
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
@@ -1524,6 +1579,10 @@ void Game_BattleAlgorithm::SelfDestruct::Apply() {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
+}
+
+std::string Game_BattleAlgorithm::SelfDestruct::GetType() const {
+	return "SelfDestruct";
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
@@ -1614,6 +1673,10 @@ void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& o
 	}
 }
 
+std::string Game_BattleAlgorithm::Escape::GetType() const {
+	return "Escape";
+}
+
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
 AlgorithmBase(source), new_monster_id(new_monster_id) {
 	// no-op
@@ -1641,6 +1704,10 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 
 void Game_BattleAlgorithm::Transform::Apply() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
+}
+
+std::string Game_BattleAlgorithm::Transform::GetType() const {
+	return "Transform";
 }
 
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
@@ -1675,3 +1742,6 @@ void Game_BattleAlgorithm::NoMove::Apply() {
 	// no-op
 }
 
+std::string Game_BattleAlgorithm::NoMove::GetType() const {
+	return "NoMove";
+}

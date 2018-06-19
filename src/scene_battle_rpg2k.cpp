@@ -441,10 +441,14 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (battle_message_window->GetLineCount() == 1 && action->IsSecondStartMessage()) {
 					return false;
 				}
-				if (action->GetTarget() &&
-					action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
-
-					action->PlayAnimation();
+				if (action->GetTarget()) {
+					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
+						battle_action_wait = GetDelayForLine();
+						action->PlayAnimation();
+					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == "Skill") {
+						battle_action_wait = GetDelayForLine();
+						action->PlaySoundAnimation();
+					}
 				}
 			}
 
@@ -461,8 +465,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			battle_action_state = BattleActionState_Result;
-
-			battle_action_wait = GetDelayForWindow();
 
 			break;
 		case BattleActionState_ConditionHeal:
