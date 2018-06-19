@@ -107,7 +107,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
-	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
+	command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
 }
 
@@ -182,10 +182,13 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectOption:
 		options_window->SetVisible(true);
+		options_window->SetX(0);
 		status_window->SetVisible(true);
-		status_window->SetX(76);
+		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
+		command_window->SetX(SCREEN_TARGET_WIDTH);
 		status_window->Refresh();
+		move_screen = true;
 		break;
 	case State_SelectActor:
 		SelectNextActor();
@@ -194,9 +197,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		SetState(State_SelectActor);
 		break;
 	case State_SelectCommand:
+		options_window->SetX(-option_command_mov);
 		status_window->SetVisible(true);
-		command_window->SetVisible(true);
 		status_window->SetX(0);
+		command_window->SetVisible(true);
+		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 		break;
 	case State_Battle:
 		battle_message_window->SetVisible(true);
@@ -231,6 +236,31 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetActive(true);
 		status_window->SetVisible(true);
 		status_window->SetX(0);
+	}
+
+	// If SelectOption <-> SelectCommand => Display Movement:
+	if (state == State_SelectOption && previous_state == State_SelectCommand) {
+		options_window->InitMovement(options_window->GetX() - option_command_mov, options_window->GetY(),
+			options_window->GetX(), options_window->GetY(), option_command_time);
+
+		status_window->InitMovement(status_window->GetX() - option_command_mov, status_window->GetY(),
+			status_window->GetX(), status_window->GetY(), option_command_time);
+
+		command_window->SetVisible(true);
+		command_window->InitMovement(command_window->GetX() - option_command_mov, command_window->GetY(),
+			command_window->GetX(), command_window->GetY(), option_command_time);
+	}
+	else if (state == State_SelectCommand && move_screen) {
+		move_screen = false;
+		options_window->SetVisible(true);
+		options_window->InitMovement(options_window->GetX() + option_command_mov, options_window->GetY(),
+			options_window->GetX(), options_window->GetY(), option_command_time);
+
+		status_window->InitMovement(status_window->GetX() + option_command_mov, status_window->GetY(),
+			status_window->GetX(), status_window->GetY(), option_command_time);
+
+		command_window->InitMovement(command_window->GetX() + option_command_mov, command_window->GetY(),
+			command_window->GetX(), command_window->GetY(), option_command_time);
 	}
 }
 

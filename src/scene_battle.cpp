@@ -112,7 +112,7 @@ void Scene_Battle::CreateUi() {
 	commands.push_back(Data::terms.battle_fight);
 	commands.push_back(Data::terms.battle_auto);
 	commands.push_back(Data::terms.battle_escape);
-	options_window.reset(new Window_Command(commands, 76));
+	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 
@@ -127,7 +127,7 @@ void Scene_Battle::CreateUi() {
 	skill_window.reset(new Window_Skill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
+	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
 
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 }
@@ -165,8 +165,10 @@ void Scene_Battle::Update() {
 			skill_window->Update();
 			target_window->Update();
 
-			ProcessActions();
-			ProcessInput();
+			if (!IsWindowMoving()) {
+				ProcessActions();
+				ProcessInput();
+			}
 		}
 	} while (changed_state != state && state == State_SelectOption);
 
@@ -177,6 +179,10 @@ void Scene_Battle::Update() {
 	if (Game_Battle::IsTerminating()) {
 		Scene::Pop();
 	}
+}
+
+bool Scene_Battle::IsWindowMoving() {
+	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
 }
 
 void Scene_Battle::InitBattleTest()
