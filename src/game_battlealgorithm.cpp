@@ -1293,16 +1293,11 @@ void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
-	if (item.type == RPG::Item::Type_switch) {
+	if (item.type == RPG::Item::Type_medicine || item.type == RPG::Item::Type_switch) {
 		return &Game_System::GetSystemSE(Game_System::SFX_UseItem);
 	}
 	else {
-		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-		}
-		else {
-			return NULL;
-		}
+		return NULL;
 	}
 }
 
