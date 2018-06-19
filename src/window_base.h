@@ -19,6 +19,7 @@
 #define EP_WINDOW_BASE_H
 
 // Headers
+#include <array>
 #include <string>
 #include "window.h"
 #include "game_actor.h"
@@ -74,12 +75,22 @@ public:
 	 */
 	void CancelFace();
 
+	void InitMovement(int old_x, int old_y, int new_x, int new_y, int duration);
+	bool IsMovementActive();
+	void UpdateMovement();
+
 protected:
 	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
 
 	std::string windowskin_name;
 
 	std::vector<FileRequestBinding> face_request_ids;
+
+	int current_frame = 0;
+	int total_frames = 0;
+	std::array<int, 2> old_position;
+	std::array<int, 2> new_position;
+
 };
 
 #endif

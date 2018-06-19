@@ -48,25 +48,27 @@ void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
 		case State_SelectActor:
 		case State_AutoBattle: {
-			if (battle_actions.empty()) {
-				Game_Battle::UpdateGauges();
-			}
+			if (!IsWindowMoving()) {
+				if (battle_actions.empty()) {
+					Game_Battle::UpdateGauges();
+				}
 
-			int old_state = state;
-			SelectNextActor();
+				int old_state = state;
+				SelectNextActor();
 
-			if (old_state == state && battle_actions.empty()) {
-				// No actor got the turn
-				std::vector<Game_Battler*> enemies;
-				Main_Data::game_enemyparty->GetActiveBattlers(enemies);
+				if (old_state == state && battle_actions.empty()) {
+					// No actor got the turn
+					std::vector<Game_Battler*> enemies;
+					Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
-				for (std::vector<Game_Battler*>::iterator it = enemies.begin();
-					it != enemies.end(); ++it) {
-					if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-						Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
-						const RPG::EnemyAction* action = enemy->ChooseRandomAction();
-						if (action) {
-							CreateEnemyAction(enemy, action);
+					for (std::vector<Game_Battler*>::iterator it = enemies.begin();
+						it != enemies.end(); ++it) {
+						if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
+							Game_Enemy* enemy = static_cast<Game_Enemy*>(*it);
+							const RPG::EnemyAction* action = enemy->ChooseRandomAction();
+							if (action) {
+								CreateEnemyAction(enemy, action);
+							}
 						}
 					}
 				}
@@ -124,7 +126,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	// No escape. FIXME: Only enabled when party has initiative.
 	options_window->DisableItem(2);
 
-	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - 76, 80, true));
+	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - option_command_mov, 80, true));
 	enemy_status_window->SetVisible(false);
 
 	ally_cursor.reset(new Sprite());
@@ -297,7 +299,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		}
 	}
 
-	command_window.reset(new Window_Command(commands, 76));
+	command_window.reset(new Window_Command(commands, option_command_mov));
 
 	for (std::vector<int>::iterator it = disabled_items.begin(); it != disabled_items.end(); ++it) {
 		command_window->DisableItem(*it);
@@ -309,7 +311,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - 80 / 2);
 	}
 	else {
-		command_window->SetX(SCREEN_TARGET_WIDTH - 76);
+		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 		command_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 	}
 
@@ -400,25 +402,34 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectOption:
 		options_window->SetVisible(true);
+		options_window->SetX(0);
 		status_window->SetVisible(true);
-		status_window->SetX(76);
+		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
 		status_window->Refresh();
+		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+			command_window->SetX(SCREEN_TARGET_WIDTH);
+		}
 		break;
 	case State_AutoBattle:
 	case State_SelectActor:
-		command_window->SetIndex(-1);
+		options_window->SetVisible(true);
+		options_window->SetX(-option_command_mov);
 		status_window->SetVisible(true);
 		status_window->SetX(0);
 		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_None);
+		command_window->SetIndex(-1);
+		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_gauge) {
 			command_window->SetVisible(true);
 		}
 		break;
 	case State_SelectCommand:
+		if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+			options_window->SetVisible(true);
+		}
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
-		status_window->SetX(0);
 		break;
 	case State_SelectEnemyTarget:
 		status_window->SetVisible(true);
@@ -463,6 +474,36 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		command_window->SetVisible(true);
 		status_window->SetX(0);
 		break;
+	}
+
+	// If SelectOption <-> SelectCommand => Display Movement:
+	if (Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
+		if ((previous_state == State_SelectActor || previous_state == State_AutoBattle || previous_state == State_SelectCommand) && state == State_SelectOption) {
+			options_window->InitMovement(options_window->GetX() - option_command_mov, options_window->GetY(),
+				options_window->GetX(), options_window->GetY(), option_command_time);
+
+			status_window->InitMovement(status_window->GetX() - option_command_mov, status_window->GetY(),
+				status_window->GetX(), status_window->GetY(), option_command_time);
+
+			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+				command_window->SetVisible(true);
+				command_window->InitMovement(command_window->GetX() - option_command_mov, command_window->GetY(),
+					command_window->GetX(), command_window->GetY(), option_command_time);
+			}
+		}
+		else if (previous_state == State_SelectOption && (state == State_SelectActor || state == State_AutoBattle)) {
+			options_window->SetVisible(true);
+			options_window->InitMovement(options_window->GetX() + option_command_mov, options_window->GetY(),
+				options_window->GetX(), options_window->GetY(), option_command_time);
+
+			status_window->InitMovement(status_window->GetX() + option_command_mov, status_window->GetY(),
+				status_window->GetX(), status_window->GetY(), option_command_time);
+
+			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+				command_window->InitMovement(command_window->GetX() + option_command_mov, command_window->GetY(),
+					command_window->GetX(), command_window->GetY(), option_command_time);
+			}
+		}
 	}
 }
 
