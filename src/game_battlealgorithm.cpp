@@ -118,6 +118,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
 	return healing;
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
+	return absorb;
+}
+
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
 	return conditions;
 }
@@ -409,7 +413,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				out.push_back(GetUndamagedMessage());
 			}
 			else {
-				if (absorb) {
+				if (IsAbsorb()) {
 					out.push_back(GetHpSpAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
 				}
 				else {
@@ -424,7 +428,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
 		else {
-			if (absorb) {
+			if (IsAbsorb()) {
 				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
 			else {
@@ -528,7 +532,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int hp = GetAffectedHp();
 		int target_hp = GetTarget()->GetHp();
 		GetTarget()->ChangeHp(IsPositive() ? hp : -hp);
-		if (absorb) {
+		if (IsAbsorb()) {
 			// Only absorb the hp that were left
 			int src_hp = std::min(target_hp, IsPositive() ? -hp : hp);
 			source->ChangeHp(src_hp);
@@ -539,7 +543,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int sp = GetAffectedSp();
 		int target_sp = GetTarget()->GetSp();
 		GetTarget()->SetSp(GetTarget()->GetSp() + (IsPositive() ? sp : -sp));
-		if (absorb) {
+		if (IsAbsorb()) {
 			int src_sp = std::min(target_sp, IsPositive() ? -sp : sp);
 			source->ChangeSp(src_sp);
 		}
@@ -548,7 +552,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
 		GetTarget()->SetAtkModifier(IsPositive() ? atk : -atk);
-		if (absorb) {
+		if (IsAbsorb()) {
 			source->SetAtkModifier(IsPositive() ? -atk : atk);
 		}
 	}
@@ -556,7 +560,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
 		GetTarget()->SetDefModifier(IsPositive() ? def : -def);
-		if (absorb) {
+		if (IsAbsorb()) {
 			source->SetDefModifier(IsPositive() ? -def : def);
 		}
 	}
@@ -564,7 +568,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
 		GetTarget()->SetSpiModifier(IsPositive() ? spi : -spi);
-		if (absorb) {
+		if (IsAbsorb()) {
 			source->SetSpiModifier(IsPositive() ? -spi : spi);
 		}
 	}
@@ -572,7 +576,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
 		GetTarget()->SetAgiModifier(IsPositive() ? agi : -agi);
-		if (absorb) {
+		if (IsAbsorb()) {
 			source->SetAgiModifier(IsPositive() ? -agi : agi);
 		}
 	}
@@ -681,14 +685,14 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
-	if (healing) {
+	if (healing || IsAbsorb()) {
 		return NULL;
 	}
 
 	if (!success) {
 		return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 	}
-	else {
+	else if (GetAffectedHp() > -1) {
 		if (current_target != targets.end()) {
 			return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
 				&Game_System::GetSystemSE(Game_System::SFX_AllyDamage) :
@@ -1029,7 +1033,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 
 	absorb = skill.absorb_damage;
-	if (absorb && sp != -1) {
+	if (IsAbsorb() && sp != -1) {
 		if (GetTarget()->GetSp() == 0) {
 			this->success = false;
 		}

@@ -470,7 +470,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
-					if (action->IsSuccess() && target_sprite) {
+					if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
 					}
 
