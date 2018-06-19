@@ -170,6 +170,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsFirstAttack() const {
 	return first_attack;
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::IsSecondStartMessage() const {
+	return false;
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
+	return "";
+}
+
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	if (!killed_by_attack_damage) {
 		return "";
@@ -1074,17 +1082,42 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 		}
 		if (Player::IsRPG2kE()) {
 			return Utils::ReplacePlaceholders(
-				skill.using_message1 + '\n' + skill.using_message2,
+				skill.using_message1,
 				{'S', 'O', 'U'},
 				{GetSource()->GetName(), GetTarget()->GetName(), skill.name}
 			);
 		}
 		else {
-			return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+			return source->GetName() + skill.using_message1;
 		}
 	}
 	else {
 		return skill.name;
+	}
+}
+
+bool Game_BattleAlgorithm::Skill::IsSecondStartMessage() const {
+	return Player::IsRPG2k() && (!item || item->using_message != 0) && !skill.using_message2.empty();
+}
+
+std::string Game_BattleAlgorithm::Skill::GetSecondStartMessage() const {
+	if (Player::IsRPG2k()) {
+		if (item && item->using_message == 0) {
+			return "";
+		}
+		if (Player::IsRPG2kE()) {
+			return Utils::ReplacePlaceholders(
+				skill.using_message2,
+				{ 'S', 'O', 'U' },
+				{ GetSource()->GetName(), GetTarget()->GetName(), skill.name }
+			);
+		}
+		else {
+			return skill.using_message2;
+		}
+	}
+	else {
+		return "";
 	}
 }
 

@@ -226,12 +226,27 @@ public:
 	virtual bool IsTargetValid() const;
 
 	/**
-	 * Gets the message that is displayed when the action is invoked.
+	 * Gets the first line message that is displayed when the action is invoked.
 	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
 	 *
 	 * @return message
 	 */
 	virtual std::string GetStartMessage() const = 0;
+
+	/**
+	 * Checks if there is a second line message to display when the action is invoked.
+	 *
+	 * @return check
+	 */
+	virtual bool IsSecondStartMessage() const;
+
+	/**
+	 * Gets the second line message that is displayed when the action is invoked.
+	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
+	 *
+	 * @return message
+	 */
+	virtual std::string GetSecondStartMessage() const;
 
 	/**
 	 * Gets animation state id of the source character.
@@ -381,6 +396,8 @@ public:
 	void Apply() override;
 
 	std::string GetStartMessage() const override;
+	bool IsSecondStartMessage() const override;
+	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
