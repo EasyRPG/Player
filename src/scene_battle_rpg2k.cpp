@@ -520,6 +520,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
 					}
+					if (action->IsSuccess() && action->GetTarget()->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
+						Main_Data::game_screen->ShakeOnce(2, 16, 1);
+					}
 
 					if (action->GetResultSe()) {
 						Game_System::SePlay(*action->GetResultSe());
