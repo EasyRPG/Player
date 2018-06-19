@@ -46,6 +46,9 @@ class SpriteAction;
 
 class Game_Battler;
 
+constexpr int option_command_mov = 76;
+constexpr int option_command_time = 8;
+
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -129,6 +132,8 @@ protected:
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
 	void NextTurn(Game_Battler* battler);
+
+	bool IsWindowMoving();
 
 	virtual void EnemySelected();
 	virtual void AllySelected();

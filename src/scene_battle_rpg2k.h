@@ -135,6 +135,7 @@ protected:
 	int escape_counter = 0;
 
 	bool message_box_got_visible = false;
+	bool move_screen = false;
 
 	int last_turn_check = -1;
 };
