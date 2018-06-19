@@ -178,6 +178,8 @@ public:
 	 */
 	void PlayAnimation(bool on_source = false);
 
+	void PlaySoundAnimation(bool on_source = false);
+
 	/**
 	 * Returns a list of all inflicted/removed conditions.
 	 *
@@ -321,6 +323,11 @@ public:
 	 */
 	virtual bool IsReflected() const;
 
+	/**
+	 * @return true if this action uses PlaySoundAnimation() on allies
+	 */
+	virtual bool IsSoundAnimationOnAlly() const;
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
@@ -412,6 +419,7 @@ public:
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	bool IsSoundAnimationOnAlly() const override;
 
 private:
 	const RPG::Skill& skill;

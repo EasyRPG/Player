@@ -158,6 +158,34 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	first_attack = old_first_attack;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source) {
+	if (current_target == targets.end() || !GetAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, true);
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetAnimation()->ID,
+		anim_targets, false, true);
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
@@ -737,6 +765,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::IsSoundAnimationOnAlly() const {
+	return false;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -1161,12 +1193,7 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 		return &skill.sound_effect;
 	}
 	else {
-		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-		}
-		else {
-			return NULL;
-		}
+		return NULL;
 	}
 }
 
@@ -1236,6 +1263,10 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 	reflect = has_reflect ? 1 : 0;
 	return has_reflect;
+}
+
+bool Game_BattleAlgorithm::Skill::IsSoundAnimationOnAlly() const {
+	return true;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
@@ -1705,3 +1736,4 @@ bool Game_BattleAlgorithm::NoMove::Execute() {
 void Game_BattleAlgorithm::NoMove::Apply() {
 	ApplyActionSwitches();
 }
+

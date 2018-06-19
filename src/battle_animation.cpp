@@ -31,8 +31,8 @@
 #include "player.h"
 #include "game_temp.h"
 
-BattleAnimation::BattleAnimation(const RPG::Animation& anim) :
-	animation(anim), frame(0), frame_update(false)
+BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound) :
+	animation(anim), frame(0), frame_update(false), should_only_sound(only_sound)
 {
 	SetZ(Priority_BattleAnimation);
 
@@ -139,6 +139,10 @@ void BattleAnimation::DrawAt(int x, int y) {
 	}
 }
 
+bool BattleAnimation::ShouldOnlySound() const {
+	return should_only_sound;
+}
+
 // FIXME: looks okay, but needs to be measured
 static int flash_length = 12;
 
@@ -155,6 +159,8 @@ void BattleAnimation::RunTimedSfx() {
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
+	if (ShouldOnlySound())
+		return;
 
 	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
@@ -214,6 +220,8 @@ BattleAnimationChara::~BattleAnimationChara() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationChara::Draw() {
+	if (ShouldOnlySound())
+		return;
 	//If animation is targeted on the screen
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2);
@@ -231,13 +239,13 @@ bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
 
 /////////
 
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash) :
-	BattleAnimation(anim), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash, bool only_sound) :
+	BattleAnimation(anim, only_sound), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash) :
-	BattleAnimation(anim), battlers(batts), should_flash(flash)
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash, bool only_sound) :
+	BattleAnimation(anim, only_sound), battlers(batts), should_flash(flash)
 {
 	Graphics::RegisterDrawable(this);
 }
@@ -245,6 +253,8 @@ BattleAnimationBattlers::~BattleAnimationBattlers() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationBattlers::Draw() {
+	if (ShouldOnlySound())
+		return;
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
 		return;
@@ -282,6 +292,8 @@ BattleAnimationGlobal::~BattleAnimationGlobal() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationGlobal::Draw() {
+	if (ShouldOnlySound())
+		return;
 	// The animations are played at the vertices of a regular grid,
 	// 20 tiles wide by 10 tiles high, independant of the map.
 	// NOTE: not accurate, but see #574
