@@ -816,11 +816,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			active_actor->SetLastBattleAction(-1);
 			SetState(State_SelectOption);
 			break;
-		case State_SelectEnemyTarget:
 		case State_SelectItem:
 		case State_SelectSkill:
 			SetState(State_SelectCommand);
 			break;
+		case State_SelectEnemyTarget:
 		case State_SelectAllyTarget:
 			SetState(previous_state);
 			break;

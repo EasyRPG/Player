@@ -593,12 +593,12 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			--actor_index;
 			SelectPreviousActor();
 			break;
-		case State_SelectEnemyTarget:
 		case State_SelectItem:
 		case State_SelectSkill:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			SetState(State_SelectCommand);
 			break;
+		case State_SelectEnemyTarget:
 		case State_SelectAllyTarget:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			SetState(previous_state);
