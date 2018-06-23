@@ -470,6 +470,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 		}
 
+		// If enemy is killed, it ends here
+		if (killed_by_attack_damage) {
+			out.push_back(GetDeathMessage());
+			return;
+		}
+
 		// Healed conditions messages
 		std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
 		for (; it_healed != healed_conditions.end(); it_healed++) {
