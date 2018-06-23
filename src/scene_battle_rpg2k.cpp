@@ -359,7 +359,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (Game_Battle::IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}
 
@@ -444,11 +444,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				}
 				if (action->GetTarget()) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
-						battle_action_wait = GetDelayForLine();
 						action->PlayAnimation();
 					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == "Skill") {
-						battle_action_wait = GetDelayForLine();
-						action->PlaySoundAnimation();
+						action->PlaySoundAnimation(false, 20);
 					}
 				}
 			}
