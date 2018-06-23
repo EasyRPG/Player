@@ -362,6 +362,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		}
 	}
 
+	if (Input::IsPressed(Input::CANCEL)) {
+		return false;
+	}
+
 	switch (battle_action_state) {
 		case BattleActionState_Start:
 			battle_action_wait = GetDelayForWindow();
