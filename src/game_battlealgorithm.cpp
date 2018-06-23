@@ -79,6 +79,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	reflect = -1;
 	animation = nullptr;
 	conditions.clear();
+	healed_conditions.clear();
 
 	if (!IsFirstAttack()) {
 		switch_on.clear();
@@ -468,6 +469,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			out.push_back(GetDeathMessage());
 			return;
 		}
+
+		// Healed conditions messages
+		std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+		for (; it_healed != healed_conditions.end(); it_healed++) {
+			out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -503,11 +510,11 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
 	for (; it != conditions.end(); ++it) {
-		if (GetTarget()->HasState(it->ID)) {
+		if (GetTarget()->HasState(it->ID) && std::find(healed_conditions.begin(), healed_conditions.end(), it->ID) == healed_conditions.end()) {
 			if (IsPositive()) {
 				out.push_back(GetStateMessage(it->message_recovery));
 			}
-			if (!it->message_already.empty()) {
+			else if (!it->message_already.empty()) {
 				out.push_back(GetStateMessage(it->message_already));
 			}
 		} else {
@@ -639,8 +646,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		Game_Switches.Set(GetAffectedSwitch(), true);
 	}
 
-	std::vector<RPG::State>::const_iterator it = conditions.begin();
+	// Conditions healed by physical attack:
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); ++it_healed) {
+		GetTarget()->RemoveState(*it_healed);
+	}
 
+	// Conditions healed/caused:
+	std::vector<RPG::State>::const_iterator it = conditions.begin();
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
 			if (GetTarget()->IsDead() && it->ID == 1) {
@@ -851,6 +864,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			killed_by_attack_damage = true;
 		}
 		else {
+			// Conditions healed by physical attack:
+			if (!IsPositive())
+				healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
+
+			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
 				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
 
@@ -1593,6 +1611,12 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
 		killed_by_attack_damage = true;
+	}
+
+	// Conditions healed by physical attack:
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); ++it_healed) {
+		GetTarget()->RemoveState(*it_healed);
 	}
 
 	success = true;
