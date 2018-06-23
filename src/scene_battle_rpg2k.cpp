@@ -822,7 +822,7 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Battler*> enemies;
-	Main_Data::game_enemyparty->GetBattlers(enemies);
+	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
 	for (Game_Battler* battler : enemies) {
 		if (!battler->CanAct()) {
