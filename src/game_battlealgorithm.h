@@ -309,7 +309,7 @@ public:
 	 *
 	 * @param out filled with all conditions in text form
 	 */
-	virtual void GetResultMessages(std::vector<std::string>& out) const;
+	virtual void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const;
 
 	/**
 	 * Returns the physical rate of the attack.
@@ -419,7 +419,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	const RPG::Sound* GetResultSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
 	std::string GetType() const override;
@@ -442,7 +442,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	std::string GetType() const override;
 
 private:
@@ -511,7 +511,7 @@ public:
 	bool Execute() override;
 	void Apply() override;
 
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	std::string GetType() const override;
 };
 

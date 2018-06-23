@@ -37,7 +37,7 @@
 
 Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
 	battle_action_wait(30),
-	battle_action_state(BattleActionState_Start)
+	battle_action_state(BattleActionState_Execute)
 {
 }
 
@@ -518,7 +518,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		if (action->IsDead()) {
 			// No zombies allowed ;)
 			RemoveCurrentAction();
-			battle_action_state = BattleActionState_Start;
+			battle_action_state = BattleActionState_Execute;
 		}
 		else if (ProcessBattleAction(action->GetBattleAlgorithm().get())) {
 			RemoveCurrentAction();
@@ -601,7 +601,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 	}
 
 	switch (battle_action_state) {
-	case BattleActionState_Start:
+	case BattleActionState_Execute:
 		if (battle_action_need_event_refresh) {
 			action->GetSource()->NextBattleTurn();
 			NextTurn(action->GetSource());
@@ -676,9 +676,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 		}
 
-		battle_action_state = BattleActionState_Result;
+		battle_action_state = BattleActionState_ResultPush;
 		break;
-	case BattleActionState_Result:
+	case BattleActionState_ResultPush:
 		if (source_sprite) {
 			source_sprite->SetAnimationLoop(Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 		}
@@ -737,7 +737,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			battle_action_need_event_refresh = true;
 
 			// Reset variables
-			battle_action_state = BattleActionState_Start;
+			battle_action_state = BattleActionState_Execute;
 			targets.clear();
 			combo_repeat = 1;
 
@@ -776,7 +776,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			// TODO: Prevent combo when the combo is a skill and needs more SP
 			// then available
 
-			battle_action_state = BattleActionState_Start;
+			battle_action_state = BattleActionState_Execute;
 			// Count how often we have to repeat
 			++combo_repeat;
 			return false;
@@ -975,6 +975,8 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
+	std::vector<int> dummy;
+
 	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor);
 	active_actor->SetGauge(0);
 
@@ -983,7 +985,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 
 	if (!escape_success) {
 		std::vector<std::string> battle_result_messages;
-		escape_alg.GetResultMessages(battle_result_messages);
+		escape_alg.GetResultMessages(battle_result_messages, dummy);
 		SetState(State_SelectActor);
 		ShowNotification(battle_result_messages[0]);
 	}
