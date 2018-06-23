@@ -307,12 +307,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	case State_Battle:
 		if (!battle_actions.empty()) {
-			if (battle_actions.front()->IsDead()) {
-				// No zombies allowed ;)
-				RemoveCurrentAction();
-				return;
-			}
-
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
 			if (ProcessBattleAction(alg)) {
@@ -506,12 +500,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (action->IsFirstAttack()) {
 
 				if (action->GetTarget() &&
-					!(action->GetSource()->GetType() == Game_Battler::Type_Enemy)) {
+					!(action->GetSource()->GetSignificantRestriction() == RPG::State::Restriction_attack_ally
+						&& action->GetSource()->GetType() == Game_Battler::Type_Enemy)) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
 					}
 					else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally
-						&& action->GetType() == "Skill") {
+						&& (action->GetType() == "Skill" || action->GetSource()->GetSignificantRestriction() == RPG::State::Restriction_attack_ally)) {
 						action->PlaySoundAnimation(false, 20);
 					}
 				}
@@ -786,6 +781,7 @@ void Scene_Battle_Rpg2k::Escape() {
 				SetState(State_Battle);
 				CreateEnemyActions();
 				CreateExecutionOrder();
+				UpdateBattlerAction(battle_actions.front());
 
 				NextTurn();
 				Game_Battle::RefreshEvents();
@@ -804,6 +800,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 			CreateEnemyActions();
 		}
 		CreateExecutionOrder();
+		UpdateBattlerAction(battle_actions.front());
 
 		NextTurn();
 		Game_Battle::RefreshEvents();

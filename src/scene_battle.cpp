@@ -427,6 +427,30 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 	}
 }
 
+void Scene_Battle::UpdateBattlerAction(Game_Battler* battler) {
+	if (!battler->CanAct()) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		battler->SetCharged(false);
+	}
+	else if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+	}
+	else if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+	}
+
+}
+
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
 	switch (action->kind) {
 		case RPG::EnemyAction::Kind_basic:
@@ -493,6 +517,17 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_front();
+
+	if (!battle_actions.empty()) {
+		if (battle_actions.front()->IsDead()) {
+			// No zombies allowed ;)
+			RemoveCurrentAction();
+		}
+		else {
+			UpdateBattlerAction(battle_actions.front());
+		}
+	}
+
 }
 
 void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action) {

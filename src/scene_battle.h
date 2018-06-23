@@ -177,6 +177,7 @@ protected:
 	 */
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
+	void UpdateBattlerAction(Game_Battler* battler);
 	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
 	void CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action);
 	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);
