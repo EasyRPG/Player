@@ -427,7 +427,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		if (IsPositive()) {
 			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
-		else {
+		else if (GetAffectedSp() > 0) {
 			if (IsAbsorb()) {
 				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
@@ -437,19 +437,19 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		}
 	}
 
-	if (GetAffectedAttack() != -1) {
+	if (GetAffectedAttack() > 0) {
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
 	}
 
-	if (GetAffectedDefense() != -1) {
+	if (GetAffectedDefense() > 0) {
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
 	}
 
-	if (GetAffectedSpirit() != -1) {
+	if (GetAffectedSpirit() > 0) {
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
 	}
 
-	if (GetAffectedAgility() != -1) {
+	if (GetAffectedAgility() > 0) {
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
@@ -943,8 +943,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
 		if (this->healing) {
-			this->success = true;
-
 			float mul = GetAttributeMultiplier(skill.attribute_effects);
 			if (mul < 0.5f) {
 				// Determined via testing, the heal is always at least 50%
@@ -965,10 +963,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->spirit = effect;
 			if (skill.affect_agility)
 				this->agility = effect;
+
+			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
+				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 		}
 		else if (Utils::GetRandomNumber(0, 99) < skill.hit) {
-			this->success = true;
-
 			int effect = skill.power +
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
@@ -1009,6 +1008,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->spirit = effect;
 			if (skill.affect_agility)
 				this->agility = effect;
+
+			this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
+				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 		}
 
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
