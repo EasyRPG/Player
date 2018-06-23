@@ -433,28 +433,35 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
-			std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
-			std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
-			action->GetSource()->ApplyConditions();
-			bool message_to_show = false;
-			if (!states_to_heal.empty() || !states_remaining.empty()) {
-				for (auto state_id : states_to_heal) {
-					// BattleAlgorithm verifies the states
-					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-					if (!state->message_recovery.empty()) {
-						battle_message_window->PushWithSubject(state->message_recovery, action->GetSource()->GetName());
-						message_to_show = true;
-					}
+			auto* src = action->GetSource();
+			std::vector<int16_t> states_to_heal = src->NextBattleTurn();
+			src->ApplyConditions();
+
+			const RPG::State* pri_state = nullptr;
+			bool pri_was_healed = false;
+			for (size_t id = 1; id <= Data::states.size(); ++id) {
+				auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
+				if (!was_healed && !src->HasState(id)) {
+					continue;
 				}
-				for (auto state_id : states_remaining) {
-					// BattleAlgorithm verifies the states
-					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-					if (!state->message_affected.empty()) {
-						battle_message_window->PushWithSubject(state->message_affected, action->GetSource()->GetName());
-						message_to_show = true;
-					}
+
+				auto* state = ReaderUtil::GetElement(Data::states, id);
+				if (!pri_state || state->priority >= pri_state->priority) {
+					pri_state = state;
+					pri_was_healed = was_healed;
 				}
-				if (message_to_show) {
+			}
+
+			if (pri_state != nullptr) {
+				const auto& msg = pri_was_healed
+					? pri_state->message_recovery
+					: pri_state->message_affected;
+
+				// RPG_RT behavior:
+				// If state was healed, always prints.
+				// If state is inflicted, only prints if msg not empty.
+				if (pri_was_healed || !msg.empty()) {
+					battle_message_window->PushWithSubject(msg, action->GetSource()->GetName());
 					battle_action_wait = GetDelayForWindow() * 3 / 2;
 				}
 			}
