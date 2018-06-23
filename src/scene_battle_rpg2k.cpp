@@ -155,7 +155,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		case State_SelectSkill:
 			skill_window->SetActive(true);
 			skill_window->SetActor(active_actor->GetId());
-			skill_window->SetIndex(0);
+			if (previous_state == State_SelectCommand)
+				skill_window->SetIndex(0);
 			break;
 		case State_Victory:
 		case State_Defeat:
