@@ -452,12 +452,13 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::stri
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
+void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
 	if (current_target == targets.end()) {
 		return;
 	}
 
 	if (!success) {
+		out_replace.push_back(0);
 		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 		return;
 	}
@@ -466,14 +467,17 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		if (IsPositive()) {
 			if (!GetTarget()->IsDead()) {
+				out_replace.push_back(0);
 				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
 		}
 		else {
 			if (critical_hit) {
+				out_replace.push_back(0);
 				out.push_back(GetCriticalHitMessage());
 			}
 
+			out_replace.push_back(0);
 			if (GetAffectedHp() == 0) {
 				out.push_back(GetUndamagedMessage());
 			}
@@ -489,6 +493,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		// If enemy is killed, it ends here
 		if (killed_by_attack_damage) {
+			out_replace.push_back(1);
 			out.push_back(GetDeathMessage());
 			return;
 		}
@@ -501,6 +506,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (GetAffectedSp() != -1) {
+		out_replace.push_back(0);
 		if (IsPositive()) {
 			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
 		}
@@ -515,18 +521,22 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (GetAffectedAttack() > 0) {
+		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
 	}
 
 	if (GetAffectedDefense() > 0) {
+		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
 	}
 
 	if (GetAffectedSpirit() > 0) {
+		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
 	}
 
 	if (GetAffectedAgility() > 0) {
+		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
@@ -535,9 +545,11 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	for (; it != conditions.end(); ++it) {
 		if (GetTarget()->HasState(it->ID) && std::find(healed_conditions.begin(), healed_conditions.end(), it->ID) == healed_conditions.end()) {
 			if (IsPositive()) {
+				out_replace.push_back(0);
 				out.push_back(GetStateMessage(it->message_recovery));
 			}
 			else if (!it->message_already.empty()) {
+				out_replace.push_back(0);
 				out.push_back(GetStateMessage(it->message_already));
 			}
 		} else {
@@ -547,6 +559,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 
 			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
+			out_replace.push_back(0);
 			out.push_back(GetStateMessage(is_actor ? it->message_actor : it->message_enemy));
 
 			// Reporting ends with death state
@@ -1257,8 +1270,9 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
 	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
 }
 
-void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
+void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
 	if (!success) {
+		out_replace.push_back(0);
 		switch (skill.failure_message) {
 			case 0:
 				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a));
@@ -1278,7 +1292,7 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 		return;
 	}
 
-	AlgorithmBase::GetResultMessages(out);
+	AlgorithmBase::GetResultMessages(out, out_replace);
 }
 
 int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
@@ -1437,9 +1451,9 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Item;
 }
 
-void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
+void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
 	if (success)
-		AlgorithmBase::GetResultMessages(out);
+		AlgorithmBase::GetResultMessages(out, out_replace);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
@@ -1722,8 +1736,9 @@ void Game_BattleAlgorithm::Escape::Apply() {
 	ApplyActionSwitches();
 }
 
-void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out) const {
+void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
 	if (source->GetType() == Game_Battler::Type_Ally) {
+		out_replace.push_back(0);
 		if (this->success) {
 			out.push_back(Data::terms.escape_success);
 		}
