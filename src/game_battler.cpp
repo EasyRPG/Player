@@ -349,6 +349,22 @@ void Game_Battler::SetAgiModifier(int modifier) {
 	agi_modifier = modifier;
 }
 
+void Game_Battler::ChangeAtkModifier(int modifier) {
+	SetAtkModifier(atk_modifier + modifier);
+}
+
+void Game_Battler::ChangeDefModifier(int modifier) {
+	SetDefModifier(def_modifier + modifier);
+}
+
+void Game_Battler::ChangeSpiModifier(int modifier) {
+	SetSpiModifier(spi_modifier + modifier);
+}
+
+void Game_Battler::ChangeAgiModifier(int modifier) {
+	SetAgiModifier(agi_modifier + modifier);
+}
+
 void Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {

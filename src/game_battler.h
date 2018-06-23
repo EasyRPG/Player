@@ -379,6 +379,14 @@ public:
 	 */
 	void SetAgiModifier(int modifier);
 
+	void ChangeAtkModifier(int modifier);
+
+	void ChangeDefModifier(int modifier);
+
+	void ChangeSpiModifier(int modifier);
+
+	void ChangeAgiModifier(int modifier);
+
 	/**
 	 * Adds a State.
 	 *
