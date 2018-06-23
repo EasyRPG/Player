@@ -1127,6 +1127,10 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	}
 }
 
+const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
+	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
+}
+
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
 		switch (skill.failure_message) {
