@@ -704,7 +704,6 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 
 			if (Utils::ChanceOf(release_chance, 100)) {
 				healed_states.push_back(i + 1);
-				RemoveState(i + 1);
 			}
 		}
 	}

@@ -507,11 +507,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		case BattleActionState_Result:
 			battle_action_wait = GetDelayForWindow();
 
-			if (action->GetTarget() && action->IsSuccess()) {
-				// FIXME: Physical damage state heal needs a message
-				action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
-			}
-
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
