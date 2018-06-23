@@ -162,14 +162,14 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	first_attack = old_first_attack;
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source) {
+void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int cutoff) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
 	}
 
 	if (on_source) {
 		std::vector<Game_Battler*> anim_targets = { GetSource() };
-		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, true);
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, true, cutoff);
 		return;
 	}
 
@@ -184,7 +184,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source) {
 
 	Game_Battle::ShowBattleAnimation(
 		GetAnimation()->ID,
-		anim_targets, false, true);
+		anim_targets, false, true, cutoff);
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
