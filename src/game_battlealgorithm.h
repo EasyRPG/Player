@@ -382,6 +382,7 @@ protected:
 	RPG::Animation* animation;
 
 	std::vector<RPG::State> conditions;
+	std::vector<int16_t> healed_conditions;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };
