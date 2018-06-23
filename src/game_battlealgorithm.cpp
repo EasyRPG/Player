@@ -421,6 +421,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				}
 			}
 		}
+
+		// If enemy is killed, it ends here
+		if (killed_by_attack_damage) {
+			out.push_back(GetDeathMessage());
+			return;
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
