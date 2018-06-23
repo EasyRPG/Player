@@ -108,6 +108,7 @@ private:
 	BitmapRef old_frozen_screen;
 	BitmapRef screen1;
 	BitmapRef screen2;
+	BitmapRef random_block_transition;
 
 	TransitionType transition_type;
 	Scene *scene;
@@ -121,6 +122,7 @@ private:
 
 	std::vector<int> zoom_position;
 	std::vector<uint32_t> random_blocks;
+	uint32_t current_blocks_print;
 
 	void SetAttributesTransitions();
 };

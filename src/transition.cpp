@@ -103,10 +103,14 @@ void Transition::SetAttributesTransitions() {
 
 	switch (transition_type) {
 	case TransitionRandomBlocks:
+		random_block_transition = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		current_blocks_print = 0;
 		std::shuffle(random_blocks.begin(), random_blocks.end(), Utils::GetRNG());
 		break;
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
+		random_block_transition = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), true);
+		current_blocks_print = 0;
 		if (transition_type == TransitionRandomBlocksUp) { std::reverse(random_blocks.begin(), random_blocks.end()); }
 
 		w = DisplayUi->GetWidth() / 4;
@@ -145,7 +149,7 @@ void Transition::Draw() {
 	std::vector<int> z_pos(2), z_size(2), z_length(2);
 	int z_min, z_max, z_percent, z_fixed_pos, z_fixed_size;
 	uint8_t m_r, m_g, m_b, m_a;
-	uint32_t *m_pointer;
+	uint32_t *m_pointer, blocks_to_print;
 	int m_size;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface(), screen_pointer1, screen_pointer2;
@@ -172,14 +176,17 @@ void Transition::Draw() {
 	case TransitionRandomBlocks:
 	case TransitionRandomBlocksDown:
 	case TransitionRandomBlocksUp:
-		dst->Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		for (uint32_t i = 0; i < random_blocks.size() * percentage / 100; i++) {
-			dst->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
-				*screen2, Rect(
-					random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
-					size_random_blocks, size_random_blocks),
-				255);
+		blocks_to_print = random_blocks.size() * percentage / 100;
+
+		for (uint32_t i = current_blocks_print; i < blocks_to_print; i++) {
+			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
+				random_blocks[i] / (w / size_random_blocks) * size_random_blocks, *screen2,
+				Rect(random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
+					size_random_blocks, size_random_blocks), Opacity::opaque);
 		}
+		dst->Blit(0, 0, *screen1, screen1->GetRect(), Opacity::opaque);
+		dst->Blit(0, 0, *random_block_transition, random_block_transition->GetRect(), Opacity::opaque);
+		current_blocks_print = blocks_to_print;
 		break;
 	case TransitionBlindOpen:
 		for (int i = 0; i < h / 8; i++) {
