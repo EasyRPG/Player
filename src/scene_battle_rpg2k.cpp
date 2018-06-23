@@ -376,7 +376,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		return false;
 	}
 
-	int default_result_lines;
+	int critical_hit, default_result_lines;
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
@@ -535,7 +535,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_action_wait = std::min<int>(GetDelayForLine() / 2, battle_action_wait);
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
-				default_result_lines = 1 + (action->IsSecondStartMessage() ? 1 : 0);
+				critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
+				default_result_lines = 1 + (action->IsSecondStartMessage() ? 1 : 0) + critical_hit;
 				while (battle_message_window->GetLineCount() > (default_result_lines + *battle_result_order_it))
 					battle_message_window->Pop();
 			}
@@ -544,11 +545,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			return ProcessBattleAction(action);
 		case BattleActionState_ResultPush:
+			critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
+
 			if (battle_result_messages_it != battle_result_messages.end()) {
 
 				// Animation and Sound when hurt (only when HP damage):
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-				if (battle_result_messages_it == battle_result_messages.begin()) {
+				if (battle_result_messages_it == battle_result_messages.begin() + critical_hit) {
 					if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
 					}
@@ -569,6 +572,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
 				++battle_result_order_it;
+
+				// Only goes here if it's the first message of a critic hit:
+				if (battle_result_messages_it == battle_result_messages.begin() + critical_hit) {
+					battle_action_wait = GetDelayForLine() * 2;
+				}
 			}
 
 			// When it finishes
