@@ -84,9 +84,7 @@ void Window_Item::Refresh() {
 
 	CreateContents();
 
-	if (index > 0 && index >= item_max) {
-		--index;
-	}
+	SetIndex(index);
 
 	contents->Clear();
 
