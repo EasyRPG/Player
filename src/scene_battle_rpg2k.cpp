@@ -422,6 +422,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 			std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
+			std::string message_to_print;
 			action->GetSource()->ApplyConditions();
 			bool message_to_show = false;
 			if (!states_to_heal.empty() || !states_remaining.empty()) {
@@ -429,7 +430,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					// BattleAlgorithm verifies the states
 					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 					if (!state->message_recovery.empty()) {
-						battle_message_window->PushWithSubject(state->message_recovery, action->GetSource()->GetName());
+						message_to_print = state->message_recovery;
 						message_to_show = true;
 					}
 				}
@@ -437,11 +438,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					// BattleAlgorithm verifies the states
 					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 					if (!state->message_affected.empty()) {
-						battle_message_window->PushWithSubject(state->message_affected, action->GetSource()->GetName());
+						message_to_print = state->message_affected;
 						message_to_show = true;
 					}
 				}
 				if (message_to_show) {
+					battle_message_window->PushWithSubject(message_to_print, action->GetSource()->GetName());
 					battle_action_wait = GetDelayForWindow() * 3 / 2;
 				}
 			}
