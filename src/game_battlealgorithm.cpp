@@ -1086,6 +1086,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+
+			if (IsAbsorb() && !success)
+				return this->success;
 		}
 
 		// Conditions:
@@ -1108,12 +1111,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 	else {
 		assert(false && "Unsupported skill type");
-	}
-
-	if (IsAbsorb() && sp != -1) {
-		if (GetTarget()->GetSp() == 0) {
-			this->success = false;
-		}
 	}
 
 	return this->success;
