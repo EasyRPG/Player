@@ -29,6 +29,7 @@
 #include "player.h"
 #include "game_temp.h"
 #include "game_map.h"
+#include "spriteset_battle.h"
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -161,6 +162,9 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	bool lose = com.parameters[1] > 0;
 	int hp = enemy.GetHp();
 
+	if (enemy.IsDead())
+		return true;
+
 	int change = 0;
 	switch (com.parameters[2]) {
 	case 0:
@@ -180,6 +184,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	enemy.ChangeHp(change);
 
 	if (enemy.IsDead()) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
 		Game_Battle::SetNeedRefresh(true);
 	}
 
@@ -218,9 +223,15 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	int state_id = com.parameters[2];
 	if (remove) {
 		enemy.RemoveState(state_id);
+		if (state_id == 1) {
+			enemy.SetHp(1);
+			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
+			Game_Battle::SetNeedRefresh(true);
+		}
 	} else {
 		if (state_id == 1) {
 			enemy.ChangeHp(-enemy.GetHp());
+			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
 			Game_Battle::SetNeedRefresh(true);
 		}
 		enemy.AddState(state_id);
