@@ -418,6 +418,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		battle_action_wait = 0;
 		if (action->IsFirstAttack()) {
 			battle_message_window->Clear();
+			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+			if (source_sprite) {
+				source_sprite->Flash(Color(255, 255, 255, 100), 15);
+				source_sprite->SetAnimationState(
+					action->GetSourceAnimationState(),
+					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+			}
 
 			std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 			std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
@@ -508,14 +515,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 						action->PlaySoundAnimation(false, 20);
 					}
 				}
-			}
-
-			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			if (source_sprite) {
-				source_sprite->Flash(Color(255, 255, 255, 100), 15);
-				source_sprite->SetAnimationState(
-					action->GetSourceAnimationState(),
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
 			if (action->IsFirstAttack() && action->GetStartSe()) {
