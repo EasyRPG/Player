@@ -178,7 +178,7 @@ public:
 	 */
 	void PlayAnimation(bool on_source = false);
 
-	void PlaySoundAnimation(bool on_source = false);
+	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
 
 	/**
 	 * Returns a list of all inflicted/removed conditions.

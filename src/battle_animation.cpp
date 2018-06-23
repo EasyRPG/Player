@@ -31,8 +31,8 @@
 #include "player.h"
 #include "game_temp.h"
 
-BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound) :
-	animation(anim), frame(0), frame_update(false), should_only_sound(only_sound)
+BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff_frame) :
+	animation(anim), frame(0), frame_update(false), should_only_sound(only_sound), cutoff(cutoff_frame)
 {
 	SetZ(Priority_BattleAnimation);
 
@@ -61,7 +61,8 @@ void BattleAnimation::Update() {
 
 	if (frame_update) {
 		frame++;
-		RunTimedSfx();
+		if (cutoff == -1 || frame <= cutoff)
+			RunTimedSfx();
 	}
 	frame_update = !frame_update;
 }
@@ -239,13 +240,13 @@ bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
 
 /////////
 
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash, bool only_sound) :
-	BattleAnimation(anim, only_sound), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash, bool only_sound, int cutoff_frame) :
+	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash, bool only_sound) :
-	BattleAnimation(anim, only_sound), battlers(batts), should_flash(flash)
+BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash, bool only_sound, int cutoff_frame) :
+	BattleAnimation(anim, only_sound, cutoff_frame), battlers(batts), should_flash(flash)
 {
 	Graphics::RegisterDrawable(this);
 }
