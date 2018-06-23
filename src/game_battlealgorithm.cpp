@@ -224,7 +224,7 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	}
 
 	bool is_ally = GetTarget()->GetType() == Game_Battler::Type_Ally;
-	const RPG::State* state = GetTarget()->GetSignificantState();
+	const RPG::State* state = ReaderUtil::GetElement(Data::states, 1);
 	const std::string& message = is_ally ? state->message_actor
 										: state->message_enemy;
 
@@ -847,7 +847,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				if (weapon) {
 					for (unsigned int i = 0; i < weapon->state_set.size(); i++) {
 						if (weapon->state_set[i]) {
-							const RPG::State* state = ReaderUtil::GetElement(Data::states, weapon->state_set[i]);
+							RPG::State* state = ReaderUtil::GetElement(Data::states, i + 1);
 							if (!state) {
 								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
 								continue;
