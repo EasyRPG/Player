@@ -395,6 +395,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 	if (!success) {
 		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
+		return;
 	}
 
 	if (GetAffectedHp() != -1) {
@@ -528,6 +529,9 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
+	if (!success)
+		return;
+
 	if (GetAffectedHp() != -1) {
 		int hp = GetAffectedHp();
 		int target_hp = GetTarget()->GetHp();
@@ -689,14 +693,13 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
-	if (healing || IsAbsorb()) {
-		return NULL;
-	}
-
 	if (!success) {
 		return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 	}
-	else if (GetAffectedHp() > -1) {
+	if (healing || IsAbsorb()) {
+		return NULL;
+	}
+	if (GetAffectedHp() > -1) {
 		if (current_target != targets.end()) {
 			return (GetTarget()->GetType() == Game_Battler::Type_Ally ?
 				&Game_System::GetSystemSE(Game_System::SFX_AllyDamage) :
