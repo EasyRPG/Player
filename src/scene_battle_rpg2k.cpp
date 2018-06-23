@@ -372,10 +372,14 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	// Order of execution of BattleActionState:
+	// ConditionHeal > Execute > Apply > (ResultPop > ResultPush) > Death > Finished.
+
 	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}
 
+	int default_result_lines;
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
@@ -414,9 +418,45 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		return false;
 	}
 
+	battle_action_wait = action->GetType() == Game_BattleAlgorithm::Type::NoMove ? 0 : GetDelayForWindow();
+
 	switch (battle_action_state) {
-		case BattleActionState_Start:
-			battle_action_wait = GetDelayForWindow();
+	case BattleActionState_ConditionHeal:
+		battle_action_wait = 0;
+		if (action->IsFirstAttack()) {
+			battle_message_window->Clear();
+
+			std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
+			std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
+			action->GetSource()->ApplyConditions();
+			bool message_to_show = false;
+			if (!states_to_heal.empty() || !states_remaining.empty()) {
+				for (auto state_id : states_to_heal) {
+					// BattleAlgorithm verifies the states
+					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+					if (!state->message_recovery.empty()) {
+						battle_message_window->PushWithSubject(state->message_recovery, action->GetSource()->GetName());
+						message_to_show = true;
+					}
+				}
+				for (auto state_id : states_remaining) {
+					// BattleAlgorithm verifies the states
+					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+					if (!state->message_affected.empty()) {
+						battle_message_window->PushWithSubject(state->message_affected, action->GetSource()->GetName());
+						message_to_show = true;
+					}
+				}
+				if (message_to_show) {
+					battle_action_wait = GetDelayForWindow() * 3 / 2;
+				}
+			}
+		}
+
+		battle_action_state = BattleActionState_Execute;
+
+		break;
+		case BattleActionState_Execute:
 			if (action->IsFirstAttack()) {
 				action->TargetFirst();
 			}
@@ -439,23 +479,33 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			action->Execute();
 
-			battle_result_messages.clear();
-			action->GetResultMessages(battle_result_messages);
+			battle_message_window->Clear();
+			battle_message_window->Push(action->GetStartMessage());
 
-			if (battle_message_window->GetLineCount() == 0)
-				battle_message_window->Push(action->GetStartMessage());
-			else if ((battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()))
+			battle_result_messages.clear();
+			battle_result_order.clear();
+			action->GetResultMessages(battle_result_messages, battle_result_order);
+			battle_result_messages_it = battle_result_messages.begin();
+			battle_result_order_it = battle_result_order.begin();
+
+			if (!action->HasSecondStartMessage())
+				battle_action_wait = 0;
+
+			battle_action_state = BattleActionState_Apply;
+
+			if (!action->IsFirstAttack()) {
+				battle_action_wait = 0;
+				return ProcessBattleAction(action);
+			}
+
+			break;
+		case BattleActionState_Apply:
+			if (action->HasSecondStartMessage())
 				battle_message_window->Push(action->GetSecondStartMessage());
 
-			action->Apply();
-
-			battle_result_messages_it = battle_result_messages.begin();
-
 			if (action->IsFirstAttack()) {
-				if (battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()) {
-					return false;
-				}
-				if (action->GetTarget()) {
+				if (action->GetTarget() &&
+					!(action->GetSource()->GetType() == Game_Battler::Type_Enemy)) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
 					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Skill) {
@@ -476,52 +526,31 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				Game_System::SePlay(*action->GetStartSe());
 			}
 
-			battle_action_state = BattleActionState_Result;
+			action->Apply();
+			battle_action_state = BattleActionState_ResultPop;
 
-			break;
-		case BattleActionState_ConditionHeal:
-			if (action->IsFirstAttack()) {
-				std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
-				std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
-				action->GetSource()->ApplyConditions();
-				bool message_to_show = false;
-				if (!states_to_heal.empty() || !states_remaining.empty()) {
-					battle_message_window->Clear();
-					for (auto state_id : states_to_heal) {
-						// BattleAlgorithm verifies the states
-						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-						if (!state->message_recovery.empty()) {
-							battle_message_window->PushWithSubject(state->message_recovery, action->GetSource()->GetName());
-							message_to_show = true;
-						}
-					}
-					for (auto state_id : states_remaining) {
-						// BattleAlgorithm verifies the states
-						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-						if (!state->message_affected.empty()) {
-							battle_message_window->PushWithSubject(state->message_affected, action->GetSource()->GetName());
-							message_to_show = true;
-						}
-					}
-					if (message_to_show) {
-						battle_action_wait = GetDelayForWindow();
-					}
-					else {
-						battle_action_wait = 0;
-					}
-				}
-				else {
-					battle_action_wait = 0;
-				}
+			if (!action->IsFirstAttack()) {
+				battle_action_wait = 0;
+				return ProcessBattleAction(action);
 			}
 
-			battle_action_state = BattleActionState_Start;
-
 			break;
-		case BattleActionState_Result:
-			battle_action_wait = GetDelayForWindow();
+		case BattleActionState_ResultPop:
+			battle_action_wait = std::min<int>(GetDelayForLine() / 2, battle_action_wait);
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
+				default_result_lines = 1 + (action->HasSecondStartMessage() ? 1 : 0);
+				while (battle_message_window->GetLineCount() > (default_result_lines + *battle_result_order_it))
+					battle_message_window->Pop();
+			}
+
+			battle_action_state = BattleActionState_ResultPush;
+
+			return ProcessBattleAction(action);
+		case BattleActionState_ResultPush:
+			if (battle_result_messages_it != battle_result_messages.end()) {
+
+				// Animation and Sound when hurt (only when HP damage):
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
 					if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
@@ -540,51 +569,49 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					}
 				}
 
-				if (battle_result_messages_it != battle_result_messages.begin()) {
-					battle_message_window->Clear();
-					battle_message_window->Push(action->GetStartMessage());
-					if (action->HasSecondStartMessage())
-						battle_message_window->Push(action->GetSecondStartMessage());
-				}
+				// Push message, next iteration:
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
-			} else {
-				if (action->IsKilledByAttack()) {
-					battle_message_window->Push(action->GetDeathMessage());
-				}
-				battle_action_state = BattleActionState_Finished;
+				++battle_result_order_it;
 			}
 
+			// When it finishes
 			if (battle_result_messages_it == battle_result_messages.end()) {
-				battle_action_state = BattleActionState_Finished;
+				battle_action_wait = 0;
+				battle_action_state = BattleActionState_Death;
+			}
+			else {
+				battle_action_state = BattleActionState_ResultPop;
 			}
 
 			break;
-		case BattleActionState_Finished:
+		case BattleActionState_Death:
 			if (action->GetTarget()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-				if (target_sprite && !target_sprite->IsIdling()) {
-					return false;
-				}
-
 				if (action->GetTarget()->IsDead() && action->GetDeathSe()) {
 					Game_System::SePlay(*action->GetDeathSe());
 				}
-
 				if (target_sprite) {
 					target_sprite->DetectStateChange();
 				}
 			}
+			if (battle_result_messages.empty())
+				battle_action_wait = GetDelayForLine();
 
-			if (action->TargetNext()) {
-				battle_action_state = BattleActionState_ConditionHeal;
-				return false;
+			battle_action_state = BattleActionState_Finished;
+
+			break;
+		case BattleActionState_Finished:
+			battle_action_wait = 0;
+			if (action->GetTarget()) {
+				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+				if (action->GetTarget() && target_sprite && !target_sprite->IsIdling()) {
+					return false;
+				}
 			}
 
-			// Reset variables
 			battle_action_state = BattleActionState_ConditionHeal;
-
-			return true;
+			return !action->TargetNext();
 	}
 
 	return false;
@@ -737,7 +764,8 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_alg.Apply();
 
 		battle_result_messages.clear();
-		escape_alg.GetResultMessages(battle_result_messages);
+		battle_result_order.clear();
+		escape_alg.GetResultMessages(battle_result_messages, battle_result_order);
 
 		battle_message_window->Push(battle_result_messages[0]);
 		begin_escape = false;
