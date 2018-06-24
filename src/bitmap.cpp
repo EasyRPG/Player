@@ -867,7 +867,7 @@ static inline void color_tone(uint32_t &src_pixel, Tone tone, uint8_t hard_light
 		| ((uint32_t)((src_pixel >> as) & 0xFF) << as);
 }
 
-void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity) {
+void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity, bool check_alpha) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
 			Blit(x, y, src, src_rect, opacity);
@@ -910,7 +910,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 	if (tone.gray != 128 && (tone.red != 128 || tone.green != 128 || tone.blue != 128)) {
 		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
 
-		if (&src != this) {
+		if (&src != this || check_alpha) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
@@ -937,7 +937,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 	else if (tone.gray != 128) {
 		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
 
-		if (&src != this) {
+		if (&src != this || check_alpha) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
@@ -960,7 +960,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 	// If Only Color:
 	else if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
-		if (&src != this) {
+		if (&src != this || check_alpha) {
 			for (uint16_t i = 0; i < limit_height; ++i) {
 				pixels += next_row;
 				for (uint16_t j = 0; j < limit_width; ++j) {
