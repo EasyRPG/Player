@@ -180,13 +180,14 @@ bool Game_Player::GetVisible() const {
 }
 
 Color Game_Player::GetFlashColor() const {
-	return Color(location.flash_red, location.flash_green, location.flash_blue, 128);
+	return Color(location.flash_red, location.flash_green, location.flash_blue, flash_alpha);
 }
 
 void Game_Player::SetFlashColor(const Color& flash_color) {
 	location.flash_red = flash_color.red;
 	location.flash_blue = flash_color.blue;
 	location.flash_green = flash_color.green;
+	flash_alpha = flash_color.alpha;
 }
 
 double Game_Player::GetFlashLevel() const {

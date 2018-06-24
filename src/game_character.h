@@ -721,6 +721,7 @@ protected:
 	int stop_count;
 	int max_stop_count;
 	bool walk_animation;
+	uint8_t flash_alpha;
 
 	int opacity;
 	bool visible;

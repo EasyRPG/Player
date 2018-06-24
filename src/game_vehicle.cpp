@@ -181,13 +181,14 @@ void Game_Vehicle::SetSpriteIndex(int index) {
 }
 
 Color Game_Vehicle::GetFlashColor() const {
-	return Color(data.flash_red, data.flash_green, data.flash_blue, 128);
+	return Color(data.flash_red, data.flash_green, data.flash_blue, flash_alpha);
 }
 
 void Game_Vehicle::SetFlashColor(const Color& flash_color) {
 	data.flash_red = flash_color.red;
 	data.flash_blue = flash_color.blue;
 	data.flash_green = flash_color.green;
+	flash_alpha = flash_color.alpha;
 }
 
 double Game_Vehicle::GetFlashLevel() const {
