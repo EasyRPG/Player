@@ -15,6 +15,9 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// All of this code is unused on EMSCRIPTEN. *Do not use it*!
+#ifndef EMSCRIPTEN
+
 #include "exe_reader.h"
 #include "filefinder.h"
 #include "bitmap.h"
@@ -197,3 +200,5 @@ bool EXEReader::ResNameCheck(uint32_t i, const char * p) {
 	}
 	return true;
 }
+
+#endif

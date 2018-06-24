@@ -66,11 +66,15 @@
 #include "player.h"
 #include "reader_lcf.h"
 #include "reader_util.h"
-#include "exe_reader.h"
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "utils.h"
 #include "version.h"
+
+#ifndef EMSCRIPTEN
+// This is not used on Emscripten.
+#include "exe_reader.h"
+#endif
 
 namespace Player {
 	bool exit_flag;
@@ -690,6 +694,10 @@ void Player::CreateGameObjects() {
 		FileFinder::InitRtpPaths();
 	}
 
+#ifndef EMSCRIPTEN
+	// Make sure an ExFont exists before any code that could load an ExFont has been called.
+	// Since the code to make this work properly on Emscripten has been removed,
+	//  the code may as well not be included.
 	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
 	if (exfont_file.empty()) {
 		std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
@@ -697,25 +705,17 @@ void Player::CreateGameObjects() {
 		Output::Debug("No EXFONT - trying EXE");
 		// User does not apparently have a custom EXFONT, so be helpful and extract it for them.
 		std::string exep = FileFinder::FindDefault(EXE_NAME);
-		std::ifstream exe(exep, std::ios::binary);
-		if (exe.fail()) {
+		std::shared_ptr<std::fstream> exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
+		if (!exesp) {
 			Output::Debug("No access to EXE");
 		} else {
+			std::fstream & exe = *exesp;
 			EXEReader exe_reader = EXEReader(exe);
 			exe_reader.GetExfont(filename);
 			exe.close();
-#ifdef EMSCRIPTEN
-			// From scene_save : Save changed file system
-			EM_ASM(
-				FS.syncfs(function(err) {
-				});
-			);
-#endif
-			// Supposedly having to do this is fixed in the VFS branch?
-			// Let's not bother with sanity
-			Cache::ForceLoadExfont();
 		}
 	}
+#endif
 
 	ResetGameObjects();
 }
