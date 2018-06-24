@@ -836,6 +836,37 @@ static void make_hard_light_lookup() {
 	}
 }
 
+// Saturation Tone Inline: Changes a pixel saturation
+static inline void saturation_tone(uint32_t &src_pixel, int saturation, int rs, int gs, int bs, int as) {
+	// Algorithm from OpenPDN (MIT license)
+	// Transformation in Y'CbCr color space
+	uint8_t r = (src_pixel >> rs) & 0xFF;
+	uint8_t g = (src_pixel >> gs) & 0xFF;
+	uint8_t b = (src_pixel >> bs) & 0xFF;
+	uint8_t a = (src_pixel >> as) & 0xFF;
+
+	// Y' = 0.299 R' + 0.587 G' + 0.114 B'
+	uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
+
+	// Scale Cb/Cr by scale factor "sat"
+	int red = ((lum * 1024 + (r - lum) * saturation) >> 10);
+	red = red > 255 ? 255 : red < 0 ? 0 : red;
+	int green = ((lum * 1024 + (g - lum) * saturation) >> 10);
+	green = green > 255 ? 255 : green < 0 ? 0 : green;
+	int blue = ((lum * 1024 + (b - lum) * saturation) >> 10);
+	blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+
+	src_pixel = ((uint32_t)red << rs) | ((uint32_t)green << gs) | ((uint32_t)blue << bs) | ((uint32_t)a << as);
+}
+
+// Color Tone Inline: Changes color of a pixel by hard light table
+static inline void color_tone(uint32_t &src_pixel, Tone tone, uint8_t hard_light_lookup[256][256], int rs, int gs, int bs, int as) {
+	src_pixel = ((uint32_t)hard_light_lookup[tone.red][(src_pixel >> rs) & 0xFF] << rs)
+		| ((uint32_t)hard_light_lookup[tone.green][(src_pixel >> gs) & 0xFF] << gs)
+		| ((uint32_t)hard_light_lookup[tone.blue][(src_pixel >> bs) & 0xFF] << bs)
+		| ((uint32_t)((src_pixel >> as) & 0xFF) << as);
+}
+
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity) {
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
@@ -857,95 +888,100 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		x, y,
 		src_rect.width, src_rect.height);
 
-	if (tone.gray != 128) {
-		uint32_t* pixels = (uint32_t*)this->pixels();
+	// To implement Saturation and Color:
+	static bool index_made = false;
+	if (!index_made) {
+		make_hard_light_lookup();
+		index_made = true;
+	}
 
-		int sat;
-		if (tone.gray > 128) {
-			sat = 1024 + (tone.gray - 128) * 16;
+	int as = pixel_format.a.shift;
+	int rs = pixel_format.r.shift;
+	int gs = pixel_format.g.shift;
+	int bs = pixel_format.b.shift;
+	int next_row = pitch() / sizeof(uint32_t);
+	uint32_t* pixels = (uint32_t*)this->pixels();
+	pixels = pixels + (y - 1) * next_row + x;
+
+	uint16_t limit_height = std::min<uint16_t>(src_rect.height, height());
+	uint16_t limit_width = std::min<uint16_t>(src_rect.width, width());
+
+	// If Saturation + Color:
+	if (tone.gray != 128 && (tone.red != 128 || tone.green != 128 || tone.blue != 128)) {
+		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
+
+		if (&src != this) {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
+						continue;
+
+					saturation_tone(pixels[j], sat, rs, gs, bs, as);
+					color_tone(pixels[j], tone, hard_light_lookup, rs, gs, bs, as);
+				}
+			}
 		}
 		else {
-			sat = tone.gray * 8;
-		}
-
-		int as = pixel_format.a.shift;
-		int rs = pixel_format.r.shift;
-		int gs = pixel_format.g.shift;
-		int bs = pixel_format.b.shift;
-
-		// Move according to x/y value
-		pixels = pixels + (y * pitch() / sizeof(uint32_t) + x) - (pitch() / sizeof(uint32_t));
-
-		// Algorithm from OpenPDN (MIT license)
-		// Transformation in Y'CbCr color space
-		for (int i = 0; i < src_rect.height && i < height(); ++i) {
-			// Advance one pixel row
-			pixels += pitch() / sizeof(uint32_t);
-
-			for (int j = 0; j < src_rect.width && j < width(); ++j) {
-				uint32_t pixel = pixels[j];
-				uint8_t a = (pixel >> as) & 0xFF;
-				// &src != this works around a corner case with opacity split (character in a bush)
-				// in that case a == 0 and the effect is not applied
-				if (a == 0 && &src != this) {
-					continue;
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					saturation_tone(pixels[j], sat, rs, gs, bs, as);
+					color_tone(pixels[j], tone, hard_light_lookup, rs, gs, bs, as);
 				}
-				uint8_t r = (pixel >> rs) & 0xFF;
-				uint8_t g = (pixel >> gs) & 0xFF;
-				uint8_t b = (pixel >> bs) & 0xFF;
-				// Y' = 0.299 R' + 0.587 G' + 0.114 B'
-				uint8_t lum = (7471 * b + 38470 * g + 19595 * r) >> 16;
-				// Scale Cb/Cr by scale factor "sat"
-				int red = ((lum * 1024 + (r - lum) * sat) >> 10);
-				red = red > 255 ? 255 : red < 0 ? 0 : red;
-				int green = ((lum * 1024 + (g - lum) * sat) >> 10);
-				green = green > 255 ? 255 : green < 0 ? 0 : green;
-				int blue = ((lum * 1024 + (b - lum) * sat) >> 10);
-				blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
-				pixels[j] = ((uint32_t) red << rs) | ((uint32_t) green << gs) | ((uint32_t) blue << bs) |
-							((uint32_t) a << as);
 			}
 		}
 	}
 
-	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
-		static bool index_made = false;
-		if (!index_made) {
-			make_hard_light_lookup();
-			index_made = true;
-		}
+	// If Only Saturation:
+	else if (tone.gray != 128) {
+		int sat = tone.gray > 128 ? 1024 + (tone.gray - 128) * 16 : tone.gray * 8;
 
-		int as = pixel_format.a.shift;
-		int rs = pixel_format.r.shift;
-		int gs = pixel_format.g.shift;
-		int bs = pixel_format.b.shift;
+		if (&src != this) {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
+						continue;
 
-		uint32_t* pixels = (uint32_t*)this->pixels();
-		// Move according to x/y value
-		pixels = pixels + (y * pitch() / sizeof(uint32_t) + x) - (pitch() / sizeof(uint32_t));
-
-		for (int i = 0; i < src_rect.height && i < height(); ++i) {
-			// Advance one pixel row
-			pixels += pitch() / sizeof(uint32_t);
-
-			for (int j = 0; j < src_rect.width && j < width(); ++j) {
-				uint32_t pixel = pixels[j];
-				uint8_t a = (pixel >> as) & 0xFF;
-				if (a == 0 && &src != this) {
-					continue;
+					saturation_tone(pixels[j], sat, rs, gs, bs, as);
 				}
-				uint8_t r = (pixel >> rs) & 0xFF;
-				uint8_t g = (pixel >> gs) & 0xFF;
-				uint8_t b = (pixel >> bs) & 0xFF;
-
-				int red = hard_light_lookup[tone.red][r];
-				int green = hard_light_lookup[tone.green][g];
-				int blue = hard_light_lookup[tone.blue][b];
-				pixels[j] = ((uint32_t) red << rs) | ((uint32_t) green << gs) | ((uint32_t) blue << bs) |
-							((uint32_t) a << as);
+			}
+		}
+		else {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					saturation_tone(pixels[j], sat, rs, gs, bs, as);
+				}
 			}
 		}
 	}
+
+	// If Only Color:
+	else if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
+		if (&src != this) {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					if ((uint8_t)((pixels[j] >> as) & 0xFF) == 0)
+						continue;
+
+					color_tone(pixels[j], tone, hard_light_lookup, rs, gs, bs, as);
+				}
+			}
+		}
+		else {
+			for (uint16_t i = 0; i < limit_height; ++i) {
+				pixels += next_row;
+				for (uint16_t j = 0; j < limit_width; ++j) {
+					color_tone(pixels[j], tone, hard_light_lookup, rs, gs, bs, as);
+				}
+			}
+		}
+
+	}
+	
 }
 
 void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color, Opacity const& opacity) {
