@@ -62,19 +62,6 @@ Spriteset_Map::Spriteset_Map() {
 void Spriteset_Map::Update() {
 	Tone new_tone = Main_Data::game_screen->GetTone();
 
-	if (new_tone != last_tone) {
-		// Could be a gradient change, just updating the display is faster
-		screen->SetTone(new_tone);
-		last_tone = new_tone;
-
-		// Normal tone for all graphics
-		new_tone = Tone();
-	} else {
-		// Not a gradient change, use the cached Tone graphics instead of
-		// recalculating the screen tone
-		screen->SetTone(Tone());
-	}
-
 	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
 	tilemap->SetTone(new_tone);

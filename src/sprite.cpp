@@ -172,12 +172,12 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 		else if (no_flip) {
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect, Opacity::opaque);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect, Opacity::opaque);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap_effects, rect, flash_effect, Opacity::opaque);
 		}
 		else {
-			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect, Opacity::opaque);
-			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect, Opacity::opaque);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect, Opacity::opaque);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap_effects, rect, flash_effect, Opacity::opaque);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 

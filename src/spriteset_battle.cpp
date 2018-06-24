@@ -65,8 +65,7 @@ Spriteset_Battle::Spriteset_Battle() {
 }
 
 void Spriteset_Battle::Update() {
-	// Battle is not as resource heavy as map, always use screen tone
-	screen->SetTone(Main_Data::game_screen->GetTone());
+	Tone new_tone = Main_Data::game_screen->GetTone();
 
 	// Handle background change
 	if (background_name != Game_Battle::background_name) {
@@ -77,6 +76,7 @@ void Spriteset_Battle::Update() {
 			background.reset();
 		}
 	}
+	background->SetTone(new_tone);
 
 	for (auto sprite : sprites) {
 		Game_Battler* battler = sprite->GetBattler();
@@ -85,6 +85,7 @@ void Spriteset_Battle::Update() {
 		}
 
 		sprite->Update();
+		sprite->SetTone(new_tone);
 	}
 
 	timer1->Update();

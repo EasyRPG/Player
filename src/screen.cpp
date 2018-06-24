@@ -47,10 +47,6 @@ void Screen::Update() {
 void Screen::Draw() {
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	if (tone_effect != Tone()) {
-		disp->ToneBlit(0, 0, *disp, Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT), tone_effect, Opacity::opaque);
-	}
-
 	int flash_time_left;
 	int flash_current_level;
 	Color flash_color = Main_Data::game_screen->GetFlash(flash_current_level, flash_time_left);
@@ -63,12 +59,4 @@ void Screen::Draw() {
 		}
 		disp->Blit(0, 0, *flash, flash->GetRect(), flash_current_level);
 	}
-}
-
-Tone Screen::GetTone() const {
-	return tone_effect;
-}
-
-void Screen::SetTone(Tone tone) {
-	tone_effect = tone;
 }
