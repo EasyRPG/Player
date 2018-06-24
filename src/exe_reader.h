@@ -37,8 +37,9 @@ public:
 	~EXEReader();
 
 	// Extracts an EXFONT resource with BMP header if present,
-	//  and saves it in the appropriate place.
-	void GetExfont(std::string filename);
+	//  and saves it in the given place.
+	// Returns true on success.
+	bool GetExfont(std::string filename);
 private:
 	// Bounds-checked unaligned reader primitives.
 	// In case of out-of-bounds, returns 0 - this will usually result in a harmless error at some other level,

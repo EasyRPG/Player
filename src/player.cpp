@@ -692,26 +692,29 @@ void Player::CreateGameObjects() {
 
 	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
 	if (exfont_file.empty()) {
-		Output::Debug("No EXFONT.");
 		std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
 		std::string filename = FileFinder::MakePath(save_tree->directory_path, "ExFont.bmp");
-		Output::Debug("No evidence of attempted EXFONT replacement, will try to extract from EXE.");
+		Output::Debug("No EXFONT - trying EXE");
 		// User does not apparently have a custom EXFONT, so be helpful and extract it for them.
 		std::string exep = FileFinder::FindDefault(EXE_NAME);
 		std::ifstream exe(exep, std::ios::binary);
-		EXEReader exe_reader = EXEReader(exe);
-		exe_reader.GetExfont(filename);
-		exe.close();
+		if (exe.fail()) {
+			Output::Debug("No access to EXE");
+		} else {
+			EXEReader exe_reader = EXEReader(exe);
+			exe_reader.GetExfont(filename);
+			exe.close();
 #ifdef EMSCRIPTEN
-		// From scene_save : Save changed file system
-		EM_ASM(
-			FS.syncfs(function(err) {
-			});
-		);
+			// From scene_save : Save changed file system
+			EM_ASM(
+				FS.syncfs(function(err) {
+				});
+			);
 #endif
-		// Supposedly having to do this is fixed in the VFS branch?
-		// Let's not bother with sanity
-		Cache::ForceLoadExfont();
+			// Supposedly having to do this is fixed in the VFS branch?
+			// Let's not bother with sanity
+			Cache::ForceLoadExfont();
+		}
 	}
 
 	ResetGameObjects();
