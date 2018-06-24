@@ -62,6 +62,7 @@ public:
 
 	void TransitionIn() override;
 	void TransitionOut() override;
+	void DrawBackground() override;
 
 	enum State {
 		/** Battle has started (Display encounter message) */
