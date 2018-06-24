@@ -57,6 +57,21 @@
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
 
+/**
+ * EXE filename.
+ * Note that this is only used for EXFONT, and downloading RPG_RT.exe individually would probably cause complaints.
+ * So in case of Emscripten, instead the filename used is "exfont.dll",
+ *  which makes it clear the file is only being downloaded for the EXFONT resource.
+ * The best way to handle this is of course to just have people extracting the resource themselves,
+ *  but we can't really go around expecting people to do that.
+ * However much protection that gives... debate in PR comments.
+ */
+#ifndef EMSCRIPTEN
+#define EXE_NAME "RPG_RT.exe"
+#else
+#define EXE_NAME "exfont.dll"
+#endif
+
 /** Database filename. */
 #define DATABASE_NAME "RPG_RT.ldb"
 #define DATABASE_NAME_EASYRPG "EASY_RT.edb"

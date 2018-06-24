@@ -52,6 +52,9 @@ namespace Cache {
 
 	void Clear();
 
+	// If you are sure the Exfont should be loadable, use this.
+	void ForceLoadExfont();
+
 	BitmapRef System();
 	void SetSystemName(std::string const& filename);
 }

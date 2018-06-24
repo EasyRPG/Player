@@ -28,6 +28,7 @@ add_library(${PROJECT_NAME}
 	src/decoder_wildmidi.cpp
 	src/decoder_xmp.cpp
 	src/drawable.cpp
+	src/exe_reader.cpp
 	src/filefinder.cpp
 	src/font.cpp
 	src/fps_overlay.cpp

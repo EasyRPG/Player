@@ -293,6 +293,10 @@ BitmapRef Cache::Exfont() {
 
 	if (it == cache.end() || !it->second.bitmap) {
 		std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+		if (exfont_file.empty()) {
+			// Extracted EXFONTs have a specific name and are only in the save directory tree.
+			exfont_file = FileFinder::FindDefault(*FileFinder::CreateSaveDirectoryTree(), "ExFont.bmp");
+		}
 		BitmapRef exfont_img;
 		// Allow overwriting of built-in exfont with a custom ExFont image file
 		// Probe before using LoadBitmap because this generates a warning when the file is missing
@@ -352,6 +356,12 @@ void Cache::Clear() {
 	}
 
 	cache_tiles.clear();
+}
+
+void Cache::ForceLoadExfont() {
+	string_pair const hash("ExFont","ExFont");
+	// FileFinder won't believe it.
+	cache.erase(hash);
 }
 
 void Cache::SetSystemName(std::string const& filename) {

@@ -66,6 +66,7 @@
 #include "player.h"
 #include "reader_lcf.h"
 #include "reader_util.h"
+#include "exe_reader.h"
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "utils.h"
@@ -687,6 +688,30 @@ void Player::CreateGameObjects() {
 
 	if (!no_rtp_flag) {
 		FileFinder::InitRtpPaths();
+	}
+
+	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+	if (exfont_file.empty()) {
+		Output::Debug("No EXFONT.");
+		std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
+		std::string filename = FileFinder::MakePath(save_tree->directory_path, "ExFont.bmp");
+		Output::Debug("No evidence of attempted EXFONT replacement, will try to extract from EXE.");
+		// User does not apparently have a custom EXFONT, so be helpful and extract it for them.
+		std::string exep = FileFinder::FindDefault(EXE_NAME);
+		std::ifstream exe(exep, std::ios::binary);
+		EXEReader exe_reader = EXEReader(exe);
+		exe_reader.GetExfont(filename);
+		exe.close();
+#ifdef EMSCRIPTEN
+		// From scene_save : Save changed file system
+		EM_ASM(
+			FS.syncfs(function(err) {
+			});
+		);
+#endif
+		// Supposedly having to do this is fixed in the VFS branch?
+		// Let's not bother with sanity
+		Cache::ForceLoadExfont();
 	}
 
 	ResetGameObjects();
