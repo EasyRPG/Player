@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 23
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.0"
     defaultConfig {
         applicationId "org.easyrpg.player"
         minSdkVersion 10
-        targetSdkVersion 23
+        targetSdkVersion 28
     }
     buildTypes {
         release {
@@ -22,6 +22,7 @@ android {
     }
     lintOptions {
         disable 'MissingTranslation'
+        abortOnError false
     }
     productFlavors {
     }
