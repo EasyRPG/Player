@@ -1142,11 +1142,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 void Game_BattleAlgorithm::Skill::Apply() {
 	AlgorithmBase::Apply();
 
-	if (item) {
-		Main_Data::game_party->ConsumeItemUse(item->ID);
-	}
-	else {
-		if (first_attack) {
+	if (IsFirstAttack()) {
+		if (item) {
+			Main_Data::game_party->ConsumeItemUse(item->ID);
+		}
+		else {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
