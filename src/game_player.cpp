@@ -716,7 +716,10 @@ void Game_Player::BeginMove() {
 		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
 			Game_System::SePlay(terrain->footstep);
 		}
-		Main_Data::game_party->ApplyDamage(terrain->damage);
+		if (terrain->damage > 0) {
+			Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 1);
+			Main_Data::game_party->ApplyDamage(terrain->damage);
+		}
 	} else {
 		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
 	}
