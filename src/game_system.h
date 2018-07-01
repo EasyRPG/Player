@@ -117,8 +117,9 @@ namespace Game_System {
 	 * Plays a Sound.
 	 *
 	 * @param se sound data.
+	 * @param stop_sounds If true stops all SEs when playing (OFF)/(...). Only used by the interpreter.
 	 */
-	void SePlay(RPG::Sound const& se);
+	void SePlay(RPG::Sound const& se, bool stop_sounds = false);
 
 	/**
 	 * Gets system graphic name.
@@ -244,7 +245,7 @@ namespace Game_System {
 	void PlayMemorizedBGM();
 
 	void OnBgmReady(FileRequestResult* result);
-	void OnSeReady(FileRequestResult* result, int volume, int tempo);
+	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
 }
 
 #endif

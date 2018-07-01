@@ -139,13 +139,15 @@ void Game_System::BgmFade(int duration) {
 	force_bgm_play = true;
 }
 
-void Game_System::SePlay(RPG::Sound const& se) {
+void Game_System::SePlay(RPG::Sound const& se, bool stop_sounds) {
 	static bool ineluki_warning_shown = false;
 
 	if (se.name.empty()) {
 		return;
 	} else if (se.name == "(OFF)") {
-		Audio().SE_Stop();
+		if (stop_sounds) {
+			Audio().SE_Stop();
+		}
 		return;
 	}
 
@@ -181,7 +183,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
-	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, volume, tempo));
+	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, volume, tempo, stop_sounds));
 	request->Start();
 }
 
@@ -432,7 +434,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 	Audio().BGM_Play(path, data.current_music.volume, data.current_music.tempo, data.current_music.fadein);
 }
 
-void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
+void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds) {
 	auto item = se_request_ids.find(result->file);
 	if (item != se_request_ids.end()) {
 		se_request_ids.erase(item);
@@ -440,7 +442,9 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo) {
 
 	std::string path;
 	if (isStopFilename(result->file, FileFinder::FindSound, path)) {
-		Audio().SE_Stop();
+		if (stop_sounds) {
+			Audio().SE_Stop();
+		}
 		return;
 	} else if (path.empty()) {
 		Output::Debug("Sound not found: %s", result->file.c_str());

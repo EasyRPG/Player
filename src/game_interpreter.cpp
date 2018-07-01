@@ -1489,7 +1489,7 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 	sound.volume = com.parameters[0];
 	sound.tempo = com.parameters[1];
 	sound.balance = com.parameters[2];
-	Game_System::SePlay(sound);
+	Game_System::SePlay(sound, true);
 	return true;
 }
 
