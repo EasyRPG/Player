@@ -112,21 +112,20 @@ void Window_Message::ApplyTextInsertingCommands() {
 				}
 
 				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
-					text_index = start_code - 2;
+					text_index = start_code;
 					continue;
 				}
 
 				if (ch == 'n') {
 					replaced_actors.push_back(parsed_num);
-					if (text.begin() + actor_replacement_start >= text_index - 1) {
-						actor_replacement_start = std::distance(text.begin(), text_index - 1);
-					}
+					actor_replacement_start = std::min<int>(std::distance(text.begin(), start_code), actor_replacement_start);
 				}
 
 				text.replace(start_code, text_index + 1, command_result);
 				// Start from the beginning, the inserted text might add new commands
 				text_index = text.end();
 				end = text.end();
+				actor_replacement_start = std::min<int> (std::distance(text.begin(), end), actor_replacement_start);
 
 				// Move on first valid char
 				--text_index;
