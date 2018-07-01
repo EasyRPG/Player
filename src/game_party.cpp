@@ -411,7 +411,7 @@ int Game_Party::GetRunCount() {
 	return data.escapes;
 }
 
-void Game_Party::ApplyDamage(int damage) {
+void Game_Party::ApplyDamage(int damage, bool lethal) {
 	if (damage <= 0) {
 		return;
 	}
@@ -420,7 +420,7 @@ void Game_Party::ApplyDamage(int damage) {
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
-		actor->SetHp(actor->GetHp() - damage);
+		actor->ChangeHp(lethal? -damage : - std::max<int>(0, std::min<int>(damage, actor->GetHp() - 1)));
 	}
 }
 

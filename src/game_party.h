@@ -232,8 +232,9 @@ public:
 	 * Used by damage terrain on the map.
 	 *
 	 * @param damage How many damage to apply
+	 * @param lethal If the damage can be lethal (kill a character) or not
 	 */
-	void ApplyDamage(int damage);
+	void ApplyDamage(int damage, bool lethal);
 
 	/**
 	 * Gets average level of the party (for battle)
