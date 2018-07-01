@@ -198,6 +198,7 @@ void Player::Init(int argc, char *argv[]) {
 
 void Player::Run() {
 	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
+	Graphics::UpdateSceneCallback();
 
 	reset_flag = false;
 
@@ -251,24 +252,20 @@ void Player::Update(bool update_scene) {
 	// Ticks in emscripten are unreliable due to how the main loop works:
 	// This function is only called 60 times per second instead of theoretical
 	// 1000s of times.
-	Graphics::Update(true);
+	Graphics::Draw();
 #else
-	// Time left before next frame? Let's render the current frame.
 	double cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < next_frame) {
-		Graphics::Update(true);
-
+		Graphics::Draw();
 		cur_time = (double)DisplayUi->GetTicks();
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
 			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
 		}
-	} else {
-		Graphics::Update(false);
 	}
 #endif
 
-	// Normal logic update
+	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
 	}
@@ -288,6 +285,7 @@ void Player::Update(bool update_scene) {
 		DisplayUi->ToggleFullscreen();
 	}
 
+	// Update Logic:
 	DisplayUi->ProcessEvents();
 
 	if (exit_flag) {
@@ -307,17 +305,18 @@ void Player::Update(bool update_scene) {
 	Audio().Update();
 	Input::Update();
 
-	if (update_scene) {
-		std::shared_ptr<Scene> old_instance = Scene::instance;
+	std::shared_ptr<Scene> old_instance = Scene::instance;
 
-		int speed_modifier = GetSpeedModifier();
+	int speed_modifier = GetSpeedModifier();
 
-		for (int i = 0; i < speed_modifier; ++i) {
-			Graphics::Update(false);
+	for (int i = 0; i < speed_modifier; ++i) {
+		Graphics::Update();
+		if (update_scene) {
 			Scene::instance->Update();
 			++frames;
+
 			// Scene changed or webplayer waits for files.
-			// Not save to Update again, setup code must run
+			// Not save to Update again, setup code must run:
 			if (&*old_instance != &*Scene::instance || AsyncHandler::IsImportantFilePending()) {
 				break;
 			}

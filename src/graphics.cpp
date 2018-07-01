@@ -16,46 +16,25 @@
  */
 
 // Headers
-#include <algorithm>
 #include <sstream>
-#include <vector>
 #include <array>
 
 #include "graphics.h"
-#include "bitmap.h"
 #include "cache.h"
-#include "baseui.h"
-#include "drawable.h"
-#include "input.h"
-#include "util_macro.h"
 #include "output.h"
 #include "player.h"
 #include "fps_overlay.h"
 #include "message_overlay.h"
+#include "transition.h"
 #include "scene.h"
-
-namespace {
-	constexpr uint32_t size_random_blocks = 4;
-	constexpr uint32_t size_array_random_blocks = 4800;
-}
+#include "drawable.h"
 
 namespace Graphics {
 	void UpdateTitle();
-	void DrawFrame();
+	void LocalDraw(int priority = Priority::Priority_Maximum);
+	void GlobalDraw(int priority = Priority::Priority_Maximum);
 
 	int framerate;
-
-	void UpdateTransition();
-
-	BitmapRef frozen_screen;
-	BitmapRef black_screen;
-	BitmapRef screen1;
-	BitmapRef screen2;
-	TransitionType transition_type;
-	int transition_duration;
-	int transition_frames_left;
-	int transition_frame;
-	bool screen_erased;
 
 	uint32_t next_fps_time;
 
@@ -64,10 +43,9 @@ namespace Graphics {
 
 	bool SortDrawableList(const Drawable* first, const Drawable* second);
 
+	std::unique_ptr<Transition> transition;
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
-
-	std::array<uint32_t, size_array_random_blocks> random_blocks;
 }
 
 unsigned SecondToFrame(float const second) {
@@ -75,71 +53,53 @@ unsigned SecondToFrame(float const second) {
 }
 
 void Graphics::Init() {
-	frozen_screen = BitmapRef();
-	screen_erased = false;
-	transition_frames_left = 0;
-
 	Scene::Push(std::make_shared<Scene>());
 	current_scene = Scene::instance;
 	global_state.reset(new State());
 
 	// Is a drawable, must be init after state
+	transition.reset(new Transition());
 	message_overlay.reset(new MessageOverlay());
 	fps_overlay.reset(new FpsOverlay());
 
 	next_fps_time = 0;
-
-	for (uint32_t i = 0; i < size_array_random_blocks; i++) {
-		random_blocks[i] = i;
-	}
 }
 
 void Graphics::Quit() {
 	global_state->drawable_list.clear();
 
-	frozen_screen.reset();
-	black_screen.reset();
-
+	transition.reset();
 	fps_overlay.reset();
 	message_overlay.reset();
 
 	Cache::Clear();
 }
 
-void Graphics::Update(bool time_left) {
+void Graphics::Update() {
+	//FPS:
 	if (next_fps_time == 0) {
 		next_fps_time = DisplayUi->GetTicks() + 1000;
 	}
 
-	// Calculate fps
 	uint32_t current_time = DisplayUi->GetTicks();
 	if (current_time >= next_fps_time) {
-		// 1 sec over
 		next_fps_time += 1000;
 
 		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
-			DrawFrame();
+			Draw();
 		}
 
 		next_fps_time = current_time + 1000;
-
 		fps_overlay->ResetCounter();
-
 		UpdateTitle();
 	}
 
-	// Render next frame
-	if (time_left) {
-		fps_overlay->AddFrame();
-
-		DrawFrame();
-	}
-
+	//Update Graphics:
 	fps_overlay->Update();
 	fps_overlay->AddUpdate();
-
 	message_overlay->Update();
+	transition->Update();
 }
 
 void Graphics::UpdateTitle() {
@@ -161,291 +121,54 @@ void Graphics::UpdateTitle() {
 	DisplayUi->SetTitle(title.str());
 }
 
-void Graphics::DrawFrame() {
-	if (transition_frames_left > 0) {
-		UpdateTransition();
+void Graphics::Draw() {
+	fps_overlay->AddFrame();
 
-		for (Drawable* drawable : global_state->drawable_list) {
-			drawable->Draw();
-		}
-
-		DisplayUi->UpdateDisplay();
-		return;
-	}
-
-	if (screen_erased) {
+	if (transition->IsErased()) {
 		DisplayUi->CleanDisplay();
+		GlobalDraw();
 		DisplayUi->UpdateDisplay();
 		return;
 	}
+	LocalDraw();
+	GlobalDraw();
+	DisplayUi->UpdateDisplay();
+}
 
+void Graphics::LocalDraw(int priority) {
 	State& state = current_scene->GetGraphicsState();
 	if (state.zlist_dirty) {
 		state.drawable_list.sort(SortDrawableList);
 		state.zlist_dirty = false;
 	}
 
+	if (!state.drawable_list.empty())
+		current_scene->DrawBackground();
+	for (Drawable* drawable : state.drawable_list) {
+		if (drawable->GetZ() <= priority) {
+			drawable->Draw();
+		}
+	}
+}
+
+void Graphics::GlobalDraw(int priority) {
 	if (global_state->zlist_dirty) {
 		global_state->drawable_list.sort(SortDrawableList);
 		global_state->zlist_dirty = false;
 	}
-
-	current_scene->DrawBackground();
-
-	for (Drawable* drawable : state.drawable_list) {
-		drawable->Draw();
-	}
-
-	for (Drawable* drawable : global_state->drawable_list) {
-		drawable->Draw();
-	}
-
-	DisplayUi->UpdateDisplay();
+	for (Drawable* drawable : global_state->drawable_list)
+		if (drawable->GetZ() <= priority)
+			drawable->Draw();
 }
 
-BitmapRef Graphics::SnapToBitmap() {
-	current_scene->DrawBackground();
-
-	for (Drawable* drawable : current_scene->GetGraphicsState().drawable_list) {
-		drawable->Draw();
-	}
-
-	for (Drawable* drawable : global_state->drawable_list) {
-		drawable->Draw();
-	}
-
+BitmapRef Graphics::SnapToBitmap(int priority) {
+	LocalDraw(priority);
+	GlobalDraw(priority);
 	return DisplayUi->CaptureScreen();
 }
 
-void Graphics::Freeze() {
-	frozen_screen = SnapToBitmap();
-}
-
-void Graphics::Transition(TransitionType type, int duration, bool erase) {
-	if (!black_screen) {
-		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-	}
-
-	if (screen_erased && erase) {
-		// Don't allow another erase when already erased
-		return;
-	}
-
-	if (type != TransitionNone) {
-		transition_type = type;
-		transition_frame = 0;
-		transition_duration = type == TransitionErase ? 1 : duration;
-		transition_frames_left = transition_duration;
-
-		State& state = current_scene->GetGraphicsState();
-		if (state.zlist_dirty) {
-			state.drawable_list.sort(SortDrawableList);
-			state.zlist_dirty = false;
-		}
-
-		if (global_state->zlist_dirty) {
-			global_state->drawable_list.sort(SortDrawableList);
-			global_state->zlist_dirty = false;
-		}
-
-		Freeze();
-
-		if (erase) {
-			screen1 = frozen_screen;
-
-			screen2 = black_screen;
-		} else {
-			screen2 = frozen_screen;
-
-			if (screen_erased)
-				screen1 = black_screen;
-			else
-				screen1 = screen2;
-		}
-
-		if (type == TransitionRandomBlocks) {
-			std::shuffle(random_blocks.begin(), random_blocks.end(), Utils::GetRNG());
-		}
-	}
-
-	screen_erased = erase;
-}
-
 bool Graphics::IsTransitionPending() {
-	return transition_frames_left > 0;
-}
-
-void Graphics::UpdateTransition() {
-	// FIXME: Comments. Pleeeease. screen1, screen2?
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	int w = DisplayUi->GetWidth();
-	int h = DisplayUi->GetHeight();
-
-	transition_frame++;
-
-	int percentage = transition_frame * 100 / transition_duration;
-
-	transition_frames_left--;
-
-	// Fallback to FadeIn/Out for not implemented transition types:
-	// (Remove from here when implemented below)
-	switch (transition_type) {
-	case TransitionRandomBlocksUp:
-	case TransitionRandomBlocksDown:
-	case TransitionZoomIn:
-	case TransitionZoomOut:
-	case TransitionMosaicIn:
-	case TransitionMosaicOut:
-	case TransitionWaveIn:
-	case TransitionWaveOut:
-		transition_type = TransitionFadeIn;
-		break;
-	default:
-		break;
-	}
-
-	switch (transition_type) {
-	case TransitionFadeIn:
-	case TransitionFadeOut:
-		dst->Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		dst->Blit(0, 0, *screen2, screen2->GetRect(), 255 * percentage / 100);
-		break;
-	case TransitionRandomBlocks:
-		dst->Blit(0, 0, *screen1, screen1->GetRect(), 255);
-		for (uint32_t i = 0; i < size_array_random_blocks * percentage / 100; i++) {
-			dst->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
-				random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
-				*screen2,
-				Rect(
-					random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
-					random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
-					size_random_blocks,
-					size_random_blocks),
-				255);
-		}
-		break;
-	case TransitionRandomBlocksUp:
-		break;
-	case TransitionRandomBlocksDown:
-		break;
-	case TransitionBlindOpen:
-		for (int i = 0; i < h / 8; i++) {
-			dst->Blit(0, i * 8, *screen1, Rect(0, i * 8, w, 8 - 8 * percentage / 100), 255);
-			dst->Blit(0, i * 8 + 8 - 8 * percentage / 100, *screen2, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100), 255 * percentage / 100);
-		}
-		break;
-	case TransitionBlindClose:
-		for (int i = 0; i < h / 8; i++) {
-			dst->Blit(0, i * 8 + 8 * percentage / 100, *screen1, Rect(0, i * 8 + 8 * percentage / 100, w, 8 - 8 * percentage / 100), 255);
-			dst->Blit(0, i * 8, *screen2, Rect(0, i * 8, w, 8 * percentage / 100), 255);
-		}
-		break;
-	case TransitionVerticalStripesIn:
-	case TransitionVerticalStripesOut:
-		for (int i = 0; i < h / 6 + 1 - h / 6 * percentage / 100; i++) {
-			dst->Blit(0, i * 6 + 3, *screen1, Rect(0, i * 6 + 3, w, 3), 255);
-			dst->Blit(0, h - i * 6, *screen1, Rect(0, h - i * 6, w, 3), 255);
-		}
-		for (int i = 0; i < h / 6 * percentage / 100; i++) {
-			dst->Blit(0, i * 6, *screen2, Rect(0, i * 6, w, 3), 255);
-			dst->Blit(0, h - 3 - i * 6, *screen2, Rect(0, h - 3 - i * 6, w, 3), 255);
-		}
-		break;
-	case TransitionHorizontalStripesIn:
-	case TransitionHorizontalStripesOut:
-		for (int i = 0; i < w / 8 + 1 - w / 8 * percentage / 100; i++) {
-			dst->Blit(i * 8 + 4, 0, *screen1, Rect(i * 8 + 4, 0, 4, h), 255);
-			dst->Blit(w - i * 8, 0, *screen1, Rect(w - i * 8, 0, 4, h), 255);
-		}
-		for (int i = 0; i < w / 8 * percentage / 100; i++) {
-			dst->Blit(i * 8, 0, *screen2, Rect(i * 8, 0, 4, h), 255);
-			dst->Blit(w - 4 - i * 8, 0, *screen2, Rect(w - 4 - i * 8, 0, 4, h), 255);
-		}
-		break;
-	case TransitionBorderToCenterIn:
-	case TransitionBorderToCenterOut:
-		dst->Blit(0,  0, *screen2, screen2->GetRect(), 255);
-		dst->Blit((w / 2) * percentage / 100, (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100), 255);
-		break;
-	case TransitionCenterToBorderIn:
-	case TransitionCenterToBorderOut:
-		dst->Blit(0,  0, *screen1, screen1->GetRect(), 255);
-		dst->Blit(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100), 255);
-		break;
-	case TransitionScrollUpIn:
-	case TransitionScrollUpOut:
-		dst->Blit(0,  -h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst->Blit(0,  h - h * percentage / 100, *screen2, screen2->GetRect(), 255);
-		break;
-	case TransitionScrollDownIn:
-	case TransitionScrollDownOut:
-		dst->Blit(0,  h * percentage / 100, *screen1, screen1->GetRect(), 255);
-		dst->Blit(0,  -h + h * percentage / 100, *screen2, screen2->GetRect(), 255);
-		break;
-	case TransitionScrollLeftIn:
-	case TransitionScrollLeftOut:
-		dst->Blit(-w * percentage / 100,  0, *screen1, screen1->GetRect(), 255);
-		dst->Blit(w - w * percentage / 100,  0, *screen2, screen2->GetRect(), 255);
-		break;
-	case TransitionScrollRightIn:
-	case TransitionScrollRightOut:
-		dst->Blit(w * percentage / 100,  0, *screen1, screen1->GetRect(), 255);
-		dst->Blit(-w + w * percentage / 100,  0, *screen2, screen2->GetRect(), 255);
-		break;
-	case TransitionVerticalCombine:
-		dst->Blit(0, (h / 2) * percentage / 100, *screen1, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100), 255);
-		dst->Blit(0, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(0, 0, w, h / 2), 255);
-		dst->Blit(0, h - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2, w, h / 2), 255);
-		break;
-	case TransitionVerticalDivision:
-		dst->Blit(0, -(h / 2) * percentage / 100, *screen1, Rect(0, 0, w, h / 2), 255);
-		dst->Blit(0, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(0, h / 2, w, h / 2), 255);
-		dst->Blit(0, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
-		break;
-	case TransitionHorizontalCombine:
-		dst->Blit((w / 2) * percentage / 100, 0, *screen1, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, h), 255);
-		dst->Blit(- w / 2 + (w / 2) * percentage / 100, 0, *screen2, Rect(0, 0, w / 2, h), 255);
-		dst->Blit(w - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2, 0, w / 2, h), 255);
-		break;
-	case TransitionHorizontalDivision:
-		dst->Blit(-(w / 2) * percentage / 100, 0, *screen1, Rect(0, 0, w / 2, h), 255);
-		dst->Blit(w / 2 + (w / 2) * percentage / 100, 0, *screen1, Rect(w / 2, 0, w / 2, h), 255);
-		dst->Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h), 255);
-		break;
-	case TransitionCrossCombine:
-		dst->Blit((w / 2) * percentage / 100, 0, *screen1, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, (h / 2) * percentage / 100), 255);
-		dst->Blit((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen1, Rect((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, w - w * percentage / 100, (h / 2) * percentage / 100), 255);
-		dst->Blit(0, (h / 2) * percentage / 100, *screen1, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100), 255);
-		dst->Blit(- w / 2 + (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(0, 0, w / 2, h / 2), 255);
-		dst->Blit(w - (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, *screen2, Rect(w / 2, 0, w / 2, h / 2), 255);
-		dst->Blit(w - (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen2, Rect(w / 2, h / 2, w / 2, h / 2), 255);
-		dst->Blit(- w / 2 + (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2, w / 2, h / 2), 255);
-		break;
-	case TransitionCrossDivision:
-		dst->Blit(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen1, Rect(0, 0, w / 2, h / 2), 255);
-		dst->Blit(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, *screen1, Rect(w / 2, 0, w / 2, h / 2), 255);
-		dst->Blit(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(w / 2, h / 2, w / 2, h / 2), 255);
-		dst->Blit(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen1, Rect(0, h / 2, w / 2, h / 2), 255);
-		dst->Blit(w / 2 - (w / 2) * percentage / 100, 0, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100), 255);
-		dst->Blit(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, *screen2, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100), 255);
-		dst->Blit(0, h / 2 - (h / 2) * percentage / 100, *screen2, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100), 255);
-		break;
-	case TransitionZoomIn:
-		break;
-	case TransitionZoomOut:
-		break;
-	case TransitionMosaicIn:
-		break;
-	case TransitionMosaicOut:
-		break;
-	case TransitionWaveIn:
-		break;
-	case TransitionWaveOut:
-		break;
-	default:
-		DisplayUi->CleanDisplay();
-		break;
-	}
+	return (transition ? transition->IsActive() : false);
 }
 
 void Graphics::FrameReset() {
@@ -480,8 +203,7 @@ void Graphics::UpdateZCallback() {
 }
 
 inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* second) {
-	if (first->GetZ() < second->GetZ()) return true;
-	return false;
+	return first->GetZ() < second->GetZ();
 }
 
 void Graphics::UpdateSceneCallback() {
@@ -494,4 +216,8 @@ int Graphics::GetDefaultFps() {
 
 MessageOverlay& Graphics::GetMessageOverlay() {
 	return *message_overlay;
+}
+
+Transition& Graphics::GetTransition() {
+	return *transition;
 }

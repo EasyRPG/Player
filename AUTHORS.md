@@ -1,6 +1,7 @@
 EasyRPG Player authors
 ======================
 
+* Alberto Leon Meaños (albeleon)
 * Alejandro Marzini (vgvgf)
 * Alessio Tosto (Rinnegatamante)
 * Carsten Teibes (carstene1ns)

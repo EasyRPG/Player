@@ -35,7 +35,7 @@
 #include "game_temp.h"
 #include "rpg_system.h"
 #include "player.h"
-#include "graphics.h"
+#include "transition.h"
 #include "audio.h"
 #include "input.h"
 #include "screen.h"
@@ -82,16 +82,19 @@ void Scene_Map::TransitionIn() {
 		// Teleport will handle fade-in
 		return;
 	} else if (Game_Temp::battle_calling) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
-	}
-	else {
-		Graphics::Transition(Graphics::TransitionFadeIn, 32);
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
+	} else if (Game_Temp::transition_menu) {
+		Game_Temp::transition_menu = false;
+		Scene::TransitionIn();
+	} else {
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 	}
 }
 
 void Scene_Map::TransitionOut() {
 	if (Game_Temp::battle_calling) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), 32, true);
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
+		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
 	}
 	else {
 		Scene::TransitionOut();
@@ -112,7 +115,7 @@ void Scene_Map::Update() {
 	if (Game_Temp::transition_processing) {
 		Game_Temp::transition_processing = false;
 
-		Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
+		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
 	}
 
 	if (auto_transition) {
@@ -121,7 +124,7 @@ void Scene_Map::Update() {
 		if (!auto_transition_erase) {
 			// Fade Out not handled here but in StartTeleportPlayer because otherwise
 			// emscripten hangs before fading out when doing async loading...
-			Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 			return;
 		}
 	}
@@ -221,7 +224,7 @@ void Scene_Map::StartTeleportPlayer() {
 	bool const autotransition = !Game_Temp::transition_erase;
 
 	if (autotransition) {
-		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 }
 
@@ -253,18 +256,21 @@ void Scene_Map::CallBattle() {
 
 void Scene_Map::CallShop() {
 	Game_Temp::shop_calling = false;
+	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
 	Game_Temp::name_calling = false;
+	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
+	Game_Temp::transition_menu = true;
 
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
@@ -283,12 +289,14 @@ void Scene_Map::CallMenu() {
 
 void Scene_Map::CallSave() {
 	Game_Temp::save_calling = false;
+	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
 	Game_Temp::load_calling = false;
+	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Load>());
 }

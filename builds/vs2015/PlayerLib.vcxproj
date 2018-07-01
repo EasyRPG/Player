@@ -544,6 +544,7 @@
     <ClCompile Include="..\..\src\tilemap.cpp" />
     <ClCompile Include="..\..\src\tilemap_layer.cpp" />
     <ClCompile Include="..\..\src\tone.cpp" />
+    <ClCompile Include="..\..\src\transition.cpp" />
     <ClCompile Include="..\..\src\fps_overlay.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
@@ -709,6 +710,7 @@
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\transform.h" />
+    <ClInclude Include="..\..\src\transition.h" />
     <ClInclude Include="..\..\src\tone.h" />
     <ClInclude Include="..\..\src\fps_overlay.h" />
     <ClInclude Include="..\..\src\utils.h" />

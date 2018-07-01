@@ -248,6 +248,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/tone.cpp \
 	src/tone.h \
 	src/transform.h \
+	src/transition.cpp \
+	src/transition.h \
 	src/util_macro.h \
 	src/utils.cpp \
 	src/utils.h \

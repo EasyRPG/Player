@@ -121,6 +121,7 @@ add_library(${PROJECT_NAME}
 	src/tilemap.cpp
 	src/tilemap_layer.cpp
 	src/tone.cpp
+	src/transition.cpp
 	src/utils.cpp
 	src/util_win.cpp
 	src/weather.cpp
