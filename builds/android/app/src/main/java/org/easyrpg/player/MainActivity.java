@@ -70,7 +70,20 @@ public class MainActivity extends Activity {
             if (!(new File(dataDir + "/game").exists())) {
                 AssetUtils.copyFolder(assetManager, "game", dataDir + "/game");
             }
+        }
 
+        // Standalone mode: Unzip game.zip
+        if (AssetUtils.fileExists(assetManager, "game.zip")) {
+            Log.i("EasyRPG", "Standalone mode : a \"game.zip\" file is present inside the asset folder");
+            standaloneMode = true;
+
+            // Unzip game to internal memory
+            if (!(new File(dataDir + "/game").exists())) {
+                AssetUtils.unzipFile(assetManager, "game.zip", dataDir + "/game");
+            }
+        }
+
+        if (standaloneMode) {
             // Launch the game
             GameInformation project = new GameInformation(dataDir + "/game");
             GameBrowserHelper.launchGame(this, project);
