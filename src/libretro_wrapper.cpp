@@ -105,9 +105,9 @@ RETRO_API void retro_set_input_state(retro_input_state_t cb) {
 }
 
 static void reinit_easy_rpg(void){
-	Player::Init(0, 0);
+    Player::Init(0, 0);
     Graphics::Init();
-    Input::Init();
+    Input::Init("", "");
 }
 
 /* Library global initialization/deinitialization. */
@@ -150,7 +150,7 @@ RETRO_API void retro_get_system_av_info(struct retro_system_av_info *info) {
     info->geometry.base_height = SCREEN_TARGET_HEIGHT;
     info->geometry.max_width = SCREEN_TARGET_WIDTH;
     info->geometry.max_height = SCREEN_TARGET_HEIGHT;
-    info->geometry.aspect_ratio = SCREEN_TARGET_WIDTH / SCREEN_TARGET_HEIGHT;
+    info->geometry.aspect_ratio = 0.0f;
     info->timing.fps = Graphics::GetDefaultFps();
     info->timing.sample_rate = AUDIO_SAMPLERATE;
 }

@@ -250,7 +250,7 @@ void Player::Update(bool update_scene) {
 	// Ticks in emscripten are unreliable due to how the main loop works:
 	// This function is only called 60 times per second instead of theoretical
 	// 1000s of times.
-	Graphics::Update(true);
+	Graphics::Draw();
 #elif defined(USE_LIBRETRO)
 	// Libretro ensures the fps
 	Graphics::Draw();
