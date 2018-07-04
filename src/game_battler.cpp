@@ -380,7 +380,7 @@ void Game_Battler::AddState(int state_id) {
 		states.resize(state_id);
 	}
 
-	states[state_id - 1] = 1;
+	states[state_id - 1] = std::max<int> (1, states[state_id - 1]);
 }
 
 void Game_Battler::RemoveState(int state_id) {
@@ -696,11 +696,13 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
 			states[i] += 1;
-
-			if (states[i] >= Data::states[i].hold_turn) {
+			if (states[i] > Data::states[i].hold_turn + 1) {
 				if (Utils::ChanceOf(Data::states[i].auto_release_prob, 100)) {
 					healed_states.push_back(i + 1);
 					RemoveState(i + 1);
+				}
+				else {
+					states[i] -= Data::states[i].hold_turn;
 				}
 			}
 		}
