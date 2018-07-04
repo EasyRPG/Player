@@ -1312,7 +1312,8 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
-	AlgorithmBase::GetResultMessages(out);
+	if (success)
+		AlgorithmBase::GetResultMessages(out);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
