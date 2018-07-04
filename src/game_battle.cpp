@@ -145,7 +145,26 @@ bool Game_Battle::CheckWin() {
 }
 
 bool Game_Battle::CheckLose() {
-	return !Main_Data::game_party->IsAnyActive();
+	if (!Main_Data::game_party->IsAnyActive())
+		return true;
+
+	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability, it's game over
+	// Physical recovery doesn't matter in this case
+	int character_number = 0;
+	std::vector<Game_Battler*> actors;
+
+	Main_Data::game_party->GetActiveBattlers(actors);
+	for (auto actor : actors) {
+		for (auto id_state : actor->GetInflictedStates()) {
+			RPG::State *state = ReaderUtil::GetElement(Data::states, id_state);
+			if (state->restriction == RPG::State::Restriction_do_nothing && state->auto_release_prob == 0) {
+				++character_number;
+				break;
+			}
+		}
+	}
+
+	return character_number == actors.size();
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
