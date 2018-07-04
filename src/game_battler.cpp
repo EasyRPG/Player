@@ -837,6 +837,21 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	}
 }
 
+int Game_Battler::GetAttributeRateShift(int attribute_id) {
+	if (attribute_id < 1 || attribute_id >(int)Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+	return attribute_shift[attribute_id - 1];
+}
+
+bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
+	if (attribute_id < 1 || attribute_id > (int)Data::attributes.size()) {
+		return false;
+	}
+	auto new_shift = attribute_shift[attribute_id - 1] + shift;
+	return new_shift >= -1 && new_shift <= 1;
+}
+
 void Game_Battler::SetBattleOrderAgi(int val) {
 	battle_order = val;
 }

@@ -363,6 +363,7 @@ protected:
 	std::string GetDamagedMessage() const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 	std::string GetStateMessage(const std::string& message) const;
+	std::string GetAttributeShiftMessage(const std::string& attribute) const;
 
 	void ApplyActionSwitches();
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
@@ -406,6 +407,7 @@ protected:
 
 	std::vector<RPG::State> conditions;
 	std::vector<int16_t> healed_conditions;
+	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };

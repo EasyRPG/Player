@@ -107,6 +107,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	animation = nullptr;
 	conditions.clear();
 	healed_conditions.clear();
+	shift_attributes.clear();
 
 	if (!IsFirstAttack()) {
 		switch_on.clear();
@@ -449,6 +450,38 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetStateMessage(const std::stri
 	}
 	else {
 		return GetTarget()->GetName() + message;
+	}
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const std::string& attribute) const {
+	const std::string& message = IsPositive() ?
+		Data::terms.resistance_increase :
+		Data::terms.resistance_decrease;
+	std::stringstream ss;
+
+	if (Player::IsRPG2kE()) {
+		ss << attribute;
+		return Utils::ReplacePlaceholders(
+			message,
+			{ 'S', 'O' },
+			{ GetTarget()->GetName(), ss.str() }
+		);
+	}
+	else {
+		std::string particle, space = "";
+		ss << GetTarget()->GetName();
+
+		if (Player::IsCP932()) {
+			particle = "は";
+			space += " ";
+		}
+		else {
+			particle = " ";
+		}
+		ss << particle << attribute << space;
+		ss << message;
+
+		return ss.str();
 	}
 }
 
@@ -1158,6 +1191,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				conditions.push_back(Data::states[i]);
 			}
 		}
+
+		// Attribute resistance / weakness + an attribute selected + can be modified
+		if (!success && skill.affect_attr_defence) {
+			for (int i = 0; i < skill.attribute_effects.size(); i++) {
+				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositive() ? 1 : -1)) {
+					if (Utils::GetRandomNumber(0, 99) >= skill.hit)
+						continue;
+					shift_attributes.push_back(i + 1);
+					this->success = true;
+				}
+			}
+		}
+
 	}
 	else if (skill.type == RPG::Skill::Type_switch) {
 		switch_id = skill.switch_id;
@@ -1182,16 +1228,8 @@ void Game_BattleAlgorithm::Skill::Apply() {
 		}
 	}
 
-	if (success && skill.affect_attr_defence) {
-		// Todo: When the only effect of the skill is a (de)buff and the buff
-		// did not alter anything (because was already buffed) then the attack
-		// failed (display a miss)
-
-		for (int i = 0; i < (int)skill.attribute_effects.size(); ++i) {
-			if (skill.attribute_effects[i]) {
-				GetTarget()->ShiftAttributeRate(i + 1, healing ? 1 : -1);
-			}
-		}
+	for (auto& sa: shift_attributes) {
+		GetTarget()->ShiftAttributeRate(sa, healing ? 1 : -1);
 	}
 }
 
@@ -1294,6 +1332,12 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 	}
 
 	AlgorithmBase::GetResultMessages(out, out_replace);
+
+	// Attribute resistance / weakness + an attribute selected + can be modified
+	for (auto& sa: shift_attributes) {
+		out_replace.push_back(0);
+		out.push_back(GetAttributeShiftMessage(ReaderUtil::GetElement(Data::attributes, sa)->name));
+	}
 }
 
 int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
