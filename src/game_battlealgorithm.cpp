@@ -1078,6 +1078,8 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 }
 
 bool Game_BattleAlgorithm::Skill::Execute() {
+	int effect;
+
 	if (item && item->skill_id != skill.ID) {
 		assert(false && "Item skill mismatch");
 	}
@@ -1109,7 +1111,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				mul = 0.5f;
 			}
 
-			int effect = (int)(skill.power * mul);
+			effect = (int)(skill.power * mul);
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -1140,7 +1142,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 
 			if (Utils::GetRandomNumber(0, 99) < to_hit) {
-				int effect = skill.power +
+				effect = skill.power +
 					source->GetAtk() * skill.physical_rate / 20 +
 					source->GetSpi() * skill.magical_rate / 40;
 				if (!skill.ignore_defense) {
@@ -1212,6 +1214,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (healing || Utils::GetRandomNumber(0, 99) <= GetTarget()->GetStateProbability(Data::states[i].ID)) {
 				this->success = true;
 				conditions.push_back(Data::states[i]);
+			}
+		}
+
+		//If resurrected and no HP selected, the effect value is a percentage:
+		if (healing && GetTarget()->IsDead() && !skill.affect_hp) {
+			for (auto condition : conditions) {
+				if (condition.ID == 1) {
+					hp = GetTarget()->GetMaxHp() * effect / 100;
+					this->success = true;
+					break;
+				}
 			}
 		}
 
