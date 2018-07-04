@@ -573,15 +573,25 @@ int Game_Actor::GetNextExp(int level) const {
 }
 
 int Game_Actor::GetStateProbability(int state_id) const {
-	int rate = 2; // C - default
+	int rate = 2, mul = 100; // C - default
 
 	const uint8_t* r = ReaderUtil::GetElement(GetActor().state_ranks, state_id);
 	if (r) {
 		rate = *r;
 	}
 
+	// This takes the armor of the character with the most resistance for that particular state
+	for (const auto equipment : GetWholeEquipment()) {
+		RPG::Item* item = ReaderUtil::GetElement(Data::items, equipment);
+		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
+			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
+			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
+			mul = std::min(mul, 100 - item->state_chance);
+		}
+	}
+
 	// GetStateRate verifies the state_id
-	return GetStateRate(state_id, rate);
+	return GetStateRate(state_id, rate) * mul / 100;
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
