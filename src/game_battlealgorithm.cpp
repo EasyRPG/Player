@@ -1113,8 +1113,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
-			if (skill.affect_sp)
-				this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp()));
+			if (skill.affect_sp) {
+				int sp_cost = GetSource() == GetTarget() ? source->CalculateSkillCost(skill.ID) : 0;
+				this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + sp_cost));
+			}
 			if (skill.affect_attack)
 				this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
 			if (skill.affect_defense)
@@ -1226,8 +1228,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 }
 
 void Game_BattleAlgorithm::Skill::Apply() {
-	AlgorithmBase::Apply();
-
 	if (IsFirstAttack()) {
 		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
@@ -1236,6 +1236,8 @@ void Game_BattleAlgorithm::Skill::Apply() {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
+
+	AlgorithmBase::Apply();
 
 	for (auto& sa: shift_attributes) {
 		GetTarget()->ShiftAttributeRate(sa, healing ? 1 : -1);
