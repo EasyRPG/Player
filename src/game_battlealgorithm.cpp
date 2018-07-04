@@ -1081,6 +1081,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	absorb = false;
 	this->success = false;
+	int effect = skill.power;
 
 	this->healing =
 		skill.scope == RPG::Skill::Scope_ally ||
@@ -1109,7 +1110,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				mul = 0.5f;
 			}
 
-			int effect = (int)(skill.power * mul);
+			effect *= mul;
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -1126,11 +1127,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+
+			//If resurrected and no HP selected, the effect value is a percentage:
+			if (IsRevived() && !skill.affect_hp) {
+				this->hp = GetTarget()->GetMaxHp() * effect / 100;
+				this->success = true;
+			}
 		}
 		else if (Utils::PercentChance(to_hit)) {
 			absorb = skill.absorb_damage;
 
-			int effect = skill.power +
+			effect +=
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
 			if (!skill.ignore_defense) {
