@@ -941,7 +941,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			effect = 0;
 		}
 		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) /
-			(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+			(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
@@ -1110,8 +1110,15 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				// Determined via testing, the heal is always at least 50%
 				mul = 0.5f;
 			}
+			effect = skill.power +
+				source->GetAtk() * skill.physical_rate / 20 +
+				source->GetSpi() * skill.magical_rate / 40;
+			effect *= mul;
 
-			effect = (int)(skill.power * mul);
+			effect += (effect * Utils::GetRandomNumber(-skill.variance * 10, skill.variance * 10) / 100);
+
+			if (effect < 0)
+				effect = 0;
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -1151,11 +1158,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				}
 				effect *= GetAttributeMultiplier(skill.attribute_effects);
 
-				if (effect < 0) {
-					effect = 0;
-				}
-
-				effect += Utils::GetRandomNumber(0, (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20)) - 1);
+				effect += (effect * Utils::GetRandomNumber(-skill.variance * 10, skill.variance * 10) / 100);
 
 				if (effect < 0)
 					effect = 0;
@@ -1733,7 +1736,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		effect = 0;
 
 	this->hp = effect / (
-		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
@@ -1822,7 +1825,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		float to_hit = std::max(0.0f, 1.5f - ((float)enemy_agi / ally_agi));
 
 		// Every failed escape is worth 10% higher escape chance
-		to_hit += to_hit * Game_Battle::escape_fail_count * 0.1f;
+		to_hit += Game_Battle::escape_fail_count * 0.1f;
 
 		to_hit *= 100;
 		this->success = Utils::GetRandomNumber(0, 99) < (int)to_hit;
