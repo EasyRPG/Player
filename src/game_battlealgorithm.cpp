@@ -621,7 +621,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (!success)
 		return;
 
-	if (GetAffectedHp() != -1) {
+	if (GetAffectedHp() != -1 && !GetTarget()->IsDead()) {
 		int hp = GetAffectedHp();
 		int target_hp = GetTarget()->GetHp();
 		GetTarget()->ChangeHp(IsPositive() ? hp : -hp);
@@ -694,7 +694,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		if (IsPositive()) {
 			if (GetTarget()->IsDead() && it->ID == 1) {
 				// Was a revive skill with an effect rating of 0
-				GetTarget()->ChangeHp(1);
+				GetTarget()->ChangeHp(std::max<int>(1, GetAffectedHp()));
 			}
 
 			GetTarget()->RemoveState(it->ID);
@@ -1358,14 +1358,6 @@ bool Game_BattleAlgorithm::Item::IsTargetValid() const {
 	if (current_target == targets.end()) {
 		return false;
 	}
-
-	if (GetTarget()->IsDead()) {
-		// Medicine curing death
-		return item.type == RPG::Item::Type_medicine &&
-			!item.state_set.empty() &&
-			item.state_set[0];
-	}
-
 	return item.type == RPG::Item::Type_medicine;
 }
 
@@ -1391,6 +1383,9 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			this->success = true;
 			return this->success;
 		}
+		if (item.ko_only && !GetTarget()->IsDead()) {
+			return this->success;
+		}
 
 		// HP recovery
 		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
@@ -1402,13 +1397,20 @@ bool Game_BattleAlgorithm::Item::Execute() {
 			this->sp = std::max<int>(0, std::min<int>(item.recover_sp_rate * GetTarget()->GetMaxSp() / 100 + item.recover_sp, GetTarget()->GetMaxSp() - GetTarget()->GetSp()));
 		}
 
+		bool is_dead_cured = false;
 		for (int i = 0; i < (int)item.state_set.size(); i++) {
 			if (item.state_set[i]) {
-				this->conditions.push_back(Data::states[i]);
+				if (i == 0)
+					is_dead_cured = true;
+				if (GetTarget()->HasState(i + 1))
+					this->conditions.push_back(Data::states[i]);
 			}
 		}
 
-		this->success = true;
+		if (GetTarget()->IsDead() && !is_dead_cured)
+			this->hp = -1;
+
+		this->success = this->hp > -1 || this->sp > -1 || !conditions.empty();
 	}
 	else if (item.type == RPG::Item::Type_switch) {
 		switch_id = item.switch_id;
