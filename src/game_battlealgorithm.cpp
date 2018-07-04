@@ -925,7 +925,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 		if (GetTarget()->IsDefending()) {
 			if (GetTarget()->HasStrongDefense()) {
-				effect /= 3;
+				effect /= 4;
 			} else {
 				effect /= 2;
 			}
@@ -1075,7 +1075,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	absorb = false;
 	this->success = false;
-	int effect = skill.power;
 
 	this->healing =
 		skill.scope == RPG::Skill::Scope_ally ||
@@ -1098,12 +1097,16 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 		if (this->healing) {
-			float mul = GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
-
-			effect +=
+			int effect = skill.power +
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
-			effect *= mul;
+
+			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
+
+			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+
+			if (effect < 0)
+				effect = 0;
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -1128,30 +1131,28 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->success = true;
 			}
 		}
-		else if (Utils::PercentChance(to_hit)) {
+		if (!healing && Utils::PercentChance(to_hit)) {
 			absorb = skill.absorb_damage;
 
-			effect +=
+			int effect = skill.power +
 				source->GetAtk() * skill.physical_rate / 20 +
 				source->GetSpi() * skill.magical_rate / 40;
+
 			if (!skill.ignore_defense) {
 				effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
 				effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
 			}
 			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
+			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
+
 			if (effect < 0) {
 				effect = 0;
 			}
 
-			effect += Utils::GetRandomNumber(0, (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20)) - 1);
-
-			if (effect < 0)
-				effect = 0;
-
 			if (skill.affect_hp) {
 				this->hp = effect /
-					(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+					(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
 
 				if (IsAbsorb())
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
@@ -1699,7 +1700,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		effect = 0;
 
 	this->hp = effect / (
-		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
@@ -1783,7 +1784,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		float to_hit = std::max(0.0f, 1.5f - ((float)enemy_agi / ally_agi));
 
 		// Every failed escape is worth 10% higher escape chance
-		to_hit += to_hit * Game_Battle::escape_fail_count * 0.1f;
+		to_hit += Game_Battle::escape_fail_count * 0.1f;
 
 		to_hit *= 100;
 		this->success = Utils::GetRandomNumber(0, 99) < (int)to_hit;
