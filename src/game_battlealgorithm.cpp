@@ -1198,12 +1198,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing && Utils::GetRandomNumber(0, 99) >= skill.hit)
+			if (!healing && GetTarget()->HasState(i + 1)) {
+				this->success = true;
+				conditions.push_back(Data::states[i]);
+				continue;
+			}
+			if (healing && !GetTarget()->HasState(i + 1)) {
+				continue;
+			}
+			if (Utils::GetRandomNumber(0, 99) >= skill.hit)
 				continue;
 
-			this->success = true;
-
 			if (healing || Utils::GetRandomNumber(0, 99) <= GetTarget()->GetStateProbability(Data::states[i].ID)) {
+				this->success = true;
 				conditions.push_back(Data::states[i]);
 			}
 		}
