@@ -57,6 +57,11 @@ void Scene_Battle_Rpg2k::Update() {
 	}
 
 	Scene_Battle::Update();
+	
+	// If an event that changed status finishes without displaying a message window,
+	// we need this so it can update automatically the status_window
+	if (Game_Battle::GetInterpreter().finished_not_updated)
+		status_window->Refresh();
 
 	if (Game_Battle::GetInterpreter().IsRunning() && !interpreter_activated && !battle_message_window->GetVisible()) {
 		battle_message_window->SetVisible(true);

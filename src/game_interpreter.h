@@ -67,6 +67,8 @@ public:
 
 	virtual bool ExecuteCommand();
 
+	bool finished_not_updated = false;
+
 protected:
 	friend class Game_Interpreter_Map;
 

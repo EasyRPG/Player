@@ -349,6 +349,7 @@ bool Game_Battle::UpdateEvents() {
 		return false;
 	});
 
+	interpreter->finished_not_updated = false;
 	return true;
 }
 
