@@ -23,6 +23,7 @@
 #include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_temp.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -118,6 +119,9 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 	if (!item) {
 		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
 		return false;
+	}
+	if (Game_Temp::battle_running && item->type == RPG::Item::Type_medicine && !item->occasion_field1) {
+		return true;
 	}
 
 	// If the actor ID is out of range this is an optimization in the ldb file

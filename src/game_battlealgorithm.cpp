@@ -1403,6 +1403,9 @@ bool Game_BattleAlgorithm::Item::Execute() {
 	this->success = false;
 
 	if (item.type == RPG::Item::Type_medicine) {
+		if (GetTarget()->GetType() == Game_Battler::Type_Ally && !item.actor_set[GetTarget()->GetId() - 1]) {
+			return this->success;
+		}
 		this->healing = true;
 
 		// HP recovery

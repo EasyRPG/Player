@@ -155,6 +155,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 			break;
 		case State_SelectItem:
 			item_window->SetActive(true);
+			item_window->SetActor(active_actor);
 			item_window->Refresh();
 			break;
 		case State_SelectSkill:
