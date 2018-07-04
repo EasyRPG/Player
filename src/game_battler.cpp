@@ -801,3 +801,10 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 		--old_shift;
 	}
 }
+
+int Game_Battler::GetShiftAttributeRate(int attribute_id) {
+	if (attribute_id < 1 || attribute_id >(int)Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+	return attribute_shift[attribute_id - 1];
+}

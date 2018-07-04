@@ -137,6 +137,15 @@ public:
 	void ShiftAttributeRate(int attribute_id, int shift);
 
 	/**
+	 * Gets the current modifier (buff/debuff) to an attribute rate.
+	 * The shift is cleared after the battle ended.
+	 *
+	 * @param attribute_id Attribute modified
+	 * @return shift Shift applied.
+	 */
+	int GetShiftAttributeRate(int attribute_id);
+
+	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
 	 * @param state_id State to test
