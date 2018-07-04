@@ -30,6 +30,7 @@
 #include "game_party_base.h"
 #include "game_switches.h"
 #include "game_system.h"
+#include "game_temp.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -1814,9 +1815,8 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	// Monsters always escape
 	this->success = true;
 
-	// TODO: Preemptive attack has 100% escape ratio
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
+	// Preemptive attack has 100% escape ratio
+	if (source->GetType() == Game_Battler::Type_Ally && !(Game_Temp::battle_first_strike && Game_Battle::GetTurn() == 0)) {
 		int ally_agi = Main_Data::game_party->GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 

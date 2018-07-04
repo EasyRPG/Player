@@ -81,6 +81,12 @@ void Game_Battle::Init() {
 		return false;
 	});
 
+	if (Game_Temp::battle_check_surprise_attack) {
+		Game_Temp::battle_first_strike = Utils::GetRandomNumber(1, 100) <=
+			(Main_Data::game_party->GetAverageAgility() > Main_Data::game_enemyparty->GetAverageAgility() ? 5 : 3);
+		//TODO: IMPLEMENT 2k3 DIFFERENT SURPRISE MODES
+	}
+
 	Main_Data::game_party->ResetBattle();
 }
 
@@ -91,6 +97,8 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 	Game_Temp::battle_background = "";
+	Game_Temp::battle_first_strike = false;
+	Game_Temp::battle_check_surprise_attack = false;
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);

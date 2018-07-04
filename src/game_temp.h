@@ -72,6 +72,7 @@ public:
 	static int battle_escape_mode;
 	static int battle_defeat_mode;
 	static bool battle_first_strike;
+	static bool battle_check_surprise_attack;
 	static int battle_result;
 
 	enum BattleResult {

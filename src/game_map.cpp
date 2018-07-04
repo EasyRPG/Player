@@ -982,6 +982,7 @@ bool Game_Map::PrepareEncounter() {
 
 	Game_Temp::battle_troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
 	Game_Temp::battle_calling = true;
+	Game_Temp::battle_check_surprise_attack = true;
 
 	SetupBattle();
 
