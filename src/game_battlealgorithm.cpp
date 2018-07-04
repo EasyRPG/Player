@@ -1323,12 +1323,19 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (!skill.state_effects[i])
 				continue;
 
-			if (!healing && !Utils::PercentChance(to_hit))
+			if (!healing && GetTarget()->HasState(i + 1)) {
+				this->success = true;
+				conditions.push_back(Data::states[i]);
+				continue;
+			}
+			if (healing && !GetTarget()->HasState(i + 1)) {
+				continue;
+			}
+			if (!Utils::PercentChance(to_hit))
 				continue;
 
-			this->success = true;
-
 			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(Data::states[i].ID))) {
+				this->success = true;
 				conditions.push_back(Data::states[i]);
 			}
 		}
