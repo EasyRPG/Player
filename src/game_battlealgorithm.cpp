@@ -41,6 +41,37 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
+static inline int to_hit_physical(Game_Battler *i_source, Game_Battler *i_target, int current_to_hit) {
+	int to_hit = current_to_hit;
+
+	// If target has Restriction "do_nothing", the attack always hits
+	if (i_target->GetSignificantRestriction() == RPG::State::Restriction_do_nothing) {
+		return 100;
+	}
+
+	// Modify hit chance for each state the source has
+	for (const auto state : i_source->GetInflictedStates()) {
+		if (state > 0) {
+			to_hit = to_hit * ReaderUtil::GetElement(Data::states, state)->reduce_hit_ratio / 100;
+		}
+	}
+
+	// If target has physical dodge evasion:
+	if (i_target->GetType() == Game_Battler::Type_Ally) {
+		Game_Actor* ally = static_cast<Game_Actor*>(i_target);
+		for (const auto equipment : ally->GetWholeEquipment()) {
+			RPG::Item* weapon = ReaderUtil::GetElement(Data::items, equipment);
+			if (weapon != nullptr && (weapon->type == RPG::Item::Type_shield || weapon->type == RPG::Item::Type_armor
+				|| weapon->type == RPG::Item::Type_helmet || weapon->type == RPG::Item::Type_accessory) && weapon->raise_evasion) {
+				to_hit = to_hit * (100 - 25) / 100;
+				break;
+			}
+		}
+	}
+
+	return to_hit;
+}
+
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
 	source(source), no_target(true), first_attack(true) {
 	Reset();
@@ -887,6 +918,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 	}
 
+	to_hit = to_hit_physical(GetSource(), GetTarget(), to_hit);
+
 	// Damage calculation
 	if (Utils::GetRandomNumber(0, 99) < to_hit) {
 		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < (int)ceil(crit_chance * 100)) {
@@ -1094,58 +1127,67 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 		}
-		else if (Utils::GetRandomNumber(0, 99) < skill.hit) {
+		else {
 			absorb = skill.absorb_damage;
 
-			int effect = skill.power +
-				source->GetAtk() * skill.physical_rate / 20 +
-				source->GetSpi() * skill.magical_rate / 40;
-			if (!skill.ignore_defense) {
-				effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
-				effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
-			}
-			effect *= GetAttributeMultiplier(skill.attribute_effects);
+			int to_hit = skill.hit;
 
-			if(effect < 0) {
-				effect = 0;
+			//If Physical technique, apply physical restrictions
+			if (skill.failure_message == 3) {
+				to_hit = to_hit_physical(GetSource(), GetTarget(), to_hit);
 			}
 
-			effect += Utils::GetRandomNumber(0, (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20)) - 1);
-
-			if (effect < 0)
-				effect = 0;
-
-			if (skill.affect_hp) {
-				this->hp = effect /
-					(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
-
-				if (IsAbsorb())
-					this->hp = std::min<int>(hp, GetTarget()->GetHp());
-
-				if (GetTarget()->GetHp() - this->hp <= 0) {
-					// Death state
-					killed_by_attack_damage = true;
+			if (Utils::GetRandomNumber(0, 99) < to_hit) {
+				int effect = skill.power +
+					source->GetAtk() * skill.physical_rate / 20 +
+					source->GetSpi() * skill.magical_rate / 40;
+				if (!skill.ignore_defense) {
+					effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
+					effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
 				}
+				effect *= GetAttributeMultiplier(skill.attribute_effects);
+
+				if (effect < 0) {
+					effect = 0;
+				}
+
+				effect += Utils::GetRandomNumber(0, (((effect * skill.variance / 10) + 1) - (effect * skill.variance / 20)) - 1);
+
+				if (effect < 0)
+					effect = 0;
+
+				if (skill.affect_hp) {
+					this->hp = effect /
+						(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
+
+					if (IsAbsorb())
+						this->hp = std::min<int>(hp, GetTarget()->GetHp());
+
+					if (GetTarget()->GetHp() - this->hp <= 0) {
+						// Death state
+						killed_by_attack_damage = true;
+					}
+				}
+
+				if (skill.affect_sp) {
+					this->sp = std::min<int>(effect, GetTarget()->GetSp());
+				}
+
+				if (skill.affect_attack)
+					this->attack = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2));
+				if (skill.affect_defense)
+					this->defense = std::max<int>(0, std::min<int>(effect, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2));
+				if (skill.affect_spirit)
+					this->spirit = std::max<int>(0, std::min<int>(effect, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2));
+				if (skill.affect_agility)
+					this->agility = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2));
+
+				this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
+					|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+
+				if (IsAbsorb() && !success)
+					return this->success;
 			}
-
-			if (skill.affect_sp) {
-				this->sp = std::min<int>(effect, GetTarget()->GetSp());
-			}
-
-			if (skill.affect_attack)
-				this->attack = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAtk() - (GetTarget()->GetBaseAtk() + 1) / 2));
-			if (skill.affect_defense)
-				this->defense = std::max<int>(0, std::min<int>(effect, GetTarget()->GetDef() - (GetTarget()->GetBaseDef() + 1) / 2));
-			if (skill.affect_spirit)
-				this->spirit = std::max<int>(0, std::min<int>(effect, GetTarget()->GetSpi() - (GetTarget()->GetBaseSpi() + 1) / 2));
-			if (skill.affect_agility)
-				this->agility = std::max<int>(0, std::min<int>(effect, GetTarget()->GetAgi() - (GetTarget()->GetBaseAgi() + 1) / 2));
-
-			this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
-				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
-
-			if (IsAbsorb() && !success)
-				return this->success;
 		}
 
 		// Conditions:
