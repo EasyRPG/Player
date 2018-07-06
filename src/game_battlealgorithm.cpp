@@ -773,6 +773,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	current_target = targets.begin();
+	cur_repeat = 0;
 
 	if (!IsTargetValid()) {
 		TargetNext();
@@ -786,6 +787,12 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 		// Only source available, can't target again
 		return false;
 	}
+	++cur_repeat;
+	if (IsTargetValid() && cur_repeat < repeat) {
+		first_attack = false;
+		return true;
+	}
+	cur_repeat = 0;
 
 	return TargetNextInternal();
 }
@@ -803,6 +810,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 	first_attack = false;
 
 	return true;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
+	this->repeat = repeat;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
@@ -849,13 +860,19 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(Type::Normal, source, target) {
-	// no-op
+	AlgorithmBase(Type::Normal, source, target)
+{
+	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
+		SetRepeat(2);
+	}
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
-	AlgorithmBase(Type::Normal, source, target) {
-	// no-op
+	AlgorithmBase(Type::Normal, source, target)
+{
+	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
+		SetRepeat(2);
+	}
 }
 
 bool Game_BattleAlgorithm::Normal::Execute() {
@@ -1537,34 +1554,6 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
 	return Main_Data::game_party->GetItemCount(item.ID, false) > 0;
-}
-
-Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(Type::NormalDual, source, target) {
-	// no-op
-}
-
-std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
-		return source->GetName() + " TODO DUAL";
-	}
-	else {
-		return "";
-	}
-}
-
-const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-	}
-	else {
-		return NULL;
-	}
-}
-
-bool Game_BattleAlgorithm::NormalDual::Execute() {
-	Output::Warning("Battle: Enemy Double Attack not implemented");
-	return true;
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :

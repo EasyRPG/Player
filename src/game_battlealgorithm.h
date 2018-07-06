@@ -47,7 +47,6 @@ enum class Type {
 	Normal,
 	Skill,
 	Item,
-	NormalDual,
 	Defend,
 	Observe,
 	Charge,
@@ -367,6 +366,11 @@ public:
 	 */
 	RPG::State::Restriction GetSourceRestrictionWhenStarted() const;
 
+	/**
+	 * Set number of times to repeat the same action on a target
+	 */
+	void SetRepeat(int repeat);
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -420,6 +424,8 @@ protected:
 	bool revived = false;
 	mutable int reflect;
 	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
+	int cur_repeat = 0;
+	int repeat = 1;
 
 	RPG::Animation* animation;
 
@@ -488,15 +494,6 @@ public:
 
 private:
 	const RPG::Item& item;
-};
-
-class NormalDual : public AlgorithmBase {
-public:
-	NormalDual(Game_Battler* source, Game_Battler* target);
-
-	std::string GetStartMessage() const override;
-	const RPG::Sound* GetStartSe() const override;
-	bool Execute() override;
 };
 
 class Defend : public AlgorithmBase {
