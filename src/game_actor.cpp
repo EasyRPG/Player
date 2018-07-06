@@ -151,17 +151,13 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
 		bool required = skill->attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
 		if (required) {
-			if (item && i < item->attribute_set.size()) {
-				if (!item->attribute_set[i]) {
-					return false;
-				}
-			} else if (item2 && i < item2->attribute_set.size()) {
-				if (!item2->attribute_set[i]) {
-					return false;
-				}
-			} else {
-				return false;
+			if (item && i < item->attribute_set.size() && item->attribute_set[i]) {
+				continue;
 			}
+			if (item2 && i < item2->attribute_set.size() && item2->attribute_set[i]) {
+				continue;
+			}
+			return false;
 		}
 	}
 
