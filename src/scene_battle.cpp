@@ -219,7 +219,15 @@ void Scene_Battle::EnemySelected() {
 	Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 
 	if (previous_state == State_SelectCommand) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
+		const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
+		const RPG::Item* item2 = active_actor->HasTwoWeapons() ? active_actor->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
+		if ((item && item->dual_attack) || (item2 && item2->dual_attack)) {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(active_actor, target));
+		}
+		else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
+		}
+		
 	} else if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
 		if (skill_item) {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
@@ -276,8 +284,14 @@ void Scene_Battle::AttackSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->attack_all) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
+	const RPG::Item* item2 = active_actor->HasTwoWeapons() ? active_actor->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
+	if ((item && item->attack_all) || (item2 && item2->attack_all)) {
+		if ((item && item->dual_attack) || (item2 && item2->dual_attack)) {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(active_actor, Main_Data::game_enemyparty.get()));
+		}
+		else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
+		}
 		ActionSelectedCallback(active_actor);
 	} else {
 		SetState(State_SelectEnemyTarget);
@@ -485,8 +499,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
-			// ToDo: Must be NormalDual, not implemented
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));

@@ -792,7 +792,7 @@ void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	current_target = targets.begin();
 
 	if (!IsTargetValid()) {
-		TargetNext();
+		AlgorithmBase::TargetNext();
 	}
 
 	first_attack = true;
@@ -1558,31 +1558,31 @@ std::string Game_BattleAlgorithm::Item::GetType() const {
 }
 
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(source, target) {
+	Normal(source, target), second_attack(false) {
 	// no-op
 }
 
-std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
-		return source->GetName() + " TODO DUAL";
-	}
-	else {
-		return "";
-	}
+Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Party_Base* target) :
+	Normal(source, target), second_attack(false) {
+	// no-op
 }
 
-const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
+bool Game_BattleAlgorithm::NormalDual::TargetNext() {
+	if (IsReflected()) {
+		// Only source available, can't target again
+		second_attack = false;
+		return false;
+	}
+	if (!second_attack && !GetTarget()->IsDead()) {
+		first_attack = false;
+		second_attack = true;
+		return true;
 	}
 	else {
-		return NULL;
+		second_attack = false;
 	}
-}
 
-bool Game_BattleAlgorithm::NormalDual::Execute() {
-	Output::Warning("Battle: Enemy Double Attack not implemented");
-	return true;
+	return TargetNextInternal();
 }
 
 std::string Game_BattleAlgorithm::NormalDual::GetType() const {

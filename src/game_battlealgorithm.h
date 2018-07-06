@@ -79,7 +79,7 @@ public:
 	 *
 	 * @return true if there was a next target available
 	 */
-	bool TargetNext();
+	virtual bool TargetNext();
 
 	/**
 	 * Defines switches that will be switched on after the action is finished.
@@ -451,14 +451,16 @@ private:
 	const RPG::Item& item;
 };
 
-class NormalDual : public AlgorithmBase {
+class NormalDual : public Normal {
 public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
+	NormalDual(Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetStartMessage() const override;
-	const RPG::Sound* GetStartSe() const override;
-	bool Execute() override;
+	bool TargetNext() override;
 	std::string GetType() const override;
+
+private:
+	bool second_attack;
 };
 
 class Defend : public AlgorithmBase {
