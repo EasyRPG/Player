@@ -995,7 +995,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 		Game_Actor* src = static_cast<Game_Actor*>(source);
 		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, src->GetWeaponId());
 		if (weapon) {
-			source->ChangeSp(-weapon->sp_cost / src->GetSpCostModifier());
+			source->ChangeSp(std::ceil(-weapon->sp_cost / (float) src->GetSpCostModifier()));
 		}
 	}
 }

@@ -181,7 +181,7 @@ int Game_Actor::GetSpCostModifier() const {
 }
 
 int Game_Actor::CalculateSkillCost(int skill_id) const {
-	return Game_Battler::CalculateSkillCost(skill_id) / GetSpCostModifier();
+	return std::ceil(Game_Battler::CalculateSkillCost(skill_id) / (float) GetSpCostModifier());
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
