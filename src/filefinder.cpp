@@ -850,14 +850,14 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 	return result;
 }
 
-Offset FileFinder::GetFileSize(const std::string& file) {
+EasyRPG_Offset FileFinder::GetFileSize(const std::string& file) {
 	StatBuf sb;
 	int result = GetStat(file.c_str(), &sb);
 	return (result == 0) ? sb.st_size : -1;
 }
 
 bool FileFinder::IsMajorUpdatedTree() {
-	Offset size;
+	EasyRPG_Offset size;
 
 	// Find an MP3 music file only when official Harmony.dll exists
 	// in the gamedir or the file doesn't exist because
