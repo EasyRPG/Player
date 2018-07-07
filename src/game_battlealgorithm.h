@@ -272,6 +272,13 @@ public:
 	virtual int GetSourceAnimationState() const;
 
 	/**
+	 * Gets animation state id of the source character when applies the action.
+	 *
+	 * @return animation state
+	 */
+	virtual int GetSourceAnimationStateApply() const;
+
+	/**
 	 * Gets the sound effect that is played when the action is starting.
 	 *
 	 * @return start se
@@ -499,6 +506,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
+	int GetSourceAnimationStateApply() const override;
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;

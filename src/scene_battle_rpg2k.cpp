@@ -527,6 +527,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			action->Apply();
 			battle_action_state = BattleActionState_ResultPop;
 
+			if (action->GetSourceAnimationStateApply() != NULL) {
+				source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+				source_sprite->SetAnimationState(
+					action->GetSourceAnimationStateApply(),
+					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+			}
+
 			if (!action->IsFirstAttack()) {
 				battle_action_wait = 0;
 				return ProcessBattleAction(action);

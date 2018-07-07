@@ -788,6 +788,10 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Idle;
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationStateApply() const {
+	return NULL;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	current_target = targets.begin();
 
@@ -1711,7 +1715,11 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Dead;
+	return Sprite_Battler::AnimationState_SelfDestruct;
+}
+
+int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationStateApply() const {
+	return Sprite_Battler::AnimationState_DeadSelfDestruct;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
