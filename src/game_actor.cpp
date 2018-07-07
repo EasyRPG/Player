@@ -608,6 +608,16 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	}
 
 	rate += *shift;
+	for (auto id_object : GetWholeEquipment()) {
+		RPG::Item *object = ReaderUtil::GetElement(Data::items, id_object);
+		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
+			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory)
+			&& object->attribute_set.size() >= attribute_id && object->attribute_set[attribute_id - 1]) {
+			rate++;
+			break;
+		}
+	}
+
 	if (rate < 0) {
 		rate = 0;
 	} else if (rate > 4) {
