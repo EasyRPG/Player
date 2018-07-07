@@ -31,7 +31,8 @@ class BattleAnimation;
 class Sprite_Battler : public Sprite {
 public:
 	enum AnimationState {
-		AnimationState_Idle = 1,
+		AnimationState_Null,
+		AnimationState_Idle,
 		AnimationState_RightHand,
 		AnimationState_LeftHand,
 		AnimationState_SkillUse,
@@ -42,7 +43,8 @@ public:
 		AnimationState_WalkingLeft,
 		AnimationState_WalkingRight,
 		AnimationState_Victory,
-		AnimationState_Item
+		AnimationState_Item,
+		AnimationState_SelfDestruct = 255
 	};
 
 	enum LoopState {
@@ -115,6 +117,7 @@ protected:
 	std::unique_ptr<BattleAnimation> animation;
 	// false when a newly set animation didn't loop once
 	bool idling = true;
+	float zoom = 1.0;
 
 	FileRequestBinding request_id;
 };

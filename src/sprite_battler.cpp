@@ -49,6 +49,8 @@ void Sprite_Battler::Update() {
 	}
 
 	if (!battler->IsHidden() && old_hidden != battler->IsHidden()) {
+		SetZoomX(1.0);
+		SetZoomY(1.0);
 		SetOpacity(255);
 		SetVisible(true);
 		DoIdleAnimation();
@@ -62,8 +64,9 @@ void Sprite_Battler::Update() {
 
 	if (battler->GetBattleAnimationId() <= 0) {
 		// Animations for monster
-		if (anim_state != AnimationState_Dead) {
+		if (anim_state != AnimationState_Dead && anim_state != AnimationState_SelfDestruct) {
 			fade_out = 255;
+			zoom = 1.0;
 		}
 
 		if (anim_state == AnimationState_Idle) {
@@ -75,6 +78,18 @@ void Sprite_Battler::Update() {
 				fade_out -= 15;
 				SetOpacity(std::max(0, fade_out));
 			} else {
+				idling = true;
+			}
+		}
+		else if (anim_state == AnimationState_SelfDestruct) {
+			if (fade_out > 0) {
+				fade_out -= 15;
+				zoom += 0.07;
+				SetOpacity(std::max(0, fade_out));
+				SetZoomX(zoom);
+				SetZoomY(zoom);
+			}
+			else {
 				idling = true;
 			}
 		}
