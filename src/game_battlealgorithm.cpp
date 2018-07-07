@@ -116,6 +116,9 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	reflect = -1;
 	animation = nullptr;
+	animation2 = nullptr;
+	has_animation_played = false;
+	has_animation2_played = false;
 	conditions.clear();
 	healed_conditions.clear();
 	shift_attributes.clear();
@@ -178,6 +181,10 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
+const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
+	return animation2;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
@@ -186,6 +193,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (on_source) {
 		std::vector<Game_Battler*> anim_targets = { GetSource() };
 		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets);
+		has_animation_played = true;
 		return;
 	}
 
@@ -201,6 +209,37 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	Game_Battle::ShowBattleAnimation(
 		GetAnimation()->ID,
 		anim_targets);
+	has_animation_played = true;
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_source) {
+	if (current_target == targets.end() || !GetSecondAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets);
+		has_animation2_played = true;
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetSecondAnimation()->ID,
+		anim_targets);
+	has_animation2_played = true;
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
@@ -232,6 +271,14 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasAnimationPlayed() const {
+	return has_animation_played;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasSecondAnimationPlayed() const {
+	return has_animation2_played;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
@@ -898,6 +945,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 		if (!weapon1 && !weapon2) {
 			// No Weapon
+			// TODO: Different behavior for 2k3
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
@@ -916,6 +964,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
 			if (!animation) {
 				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+			} else {
+				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+				if (!animation2) {
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				}
 			}
 
 			auto& a1 = weapon1->attribute_set;
@@ -930,7 +983,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 			multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
 		}
-
 	} else {
 		// Source is Enemy
 		if (!Data::animations.empty()) {

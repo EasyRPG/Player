@@ -381,6 +381,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}
+	else if (action->HasAnimationPlayed() && action->GetSecondAnimation() != nullptr && !action->HasSecondAnimationPlayed()) {
+		action->PlaySecondAnimation();
+		return false;
+	}
 
 	int critical_hit, default_result_lines;
 	Sprite_Battler* source_sprite;
