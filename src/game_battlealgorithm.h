@@ -234,6 +234,11 @@ public:
 	virtual void Apply();
 
 	/**
+	* Applies some results by itself right before the turn comes.
+	*/
+	virtual void ApplyFirst();
+
+	/**
 	 * Tests if it makes sense to apply an action on the target.
 	 * E.g. when it is dead.
 	 *
@@ -496,6 +501,7 @@ public:
 	int GetSourceAnimationState() const override;
 	bool Execute() override;
 	void Apply() override;
+	void ApplyFirst() override;
 	std::string GetType() const override;
 };
 

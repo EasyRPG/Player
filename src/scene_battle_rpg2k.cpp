@@ -327,6 +327,15 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		} else {
 			// Everybody acted
 			actor_index = 0;
+			for (auto ally : Main_Data::game_party->GetActors()) {
+				ally->SetDefending(false);
+			}
+			
+			std::vector<Game_Battler*> enemy_battlers;
+			Main_Data::game_enemyparty->GetBattlers(enemy_battlers);
+			for (auto enemy : enemy_battlers) {
+				enemy->SetDefending(false);
+			}
 
 			SetState(State_SelectOption);
 		}
@@ -914,6 +923,9 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 		battler->SetRandomOrderAgi();
 	}
 	std::sort(battle_actions.begin(), battle_actions.end(), BattlerSort);
+	for (auto battler : battle_actions) {
+		battler->GetBattleAlgorithm()->ApplyFirst();
+	}
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {

@@ -773,6 +773,10 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::ApplyFirst() {
+	// no-op
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
 	if (no_target) {
 		// Selected algorithm does not need a target because it targets
@@ -1671,6 +1675,10 @@ bool Game_BattleAlgorithm::Defend::Execute() {
 }
 
 void Game_BattleAlgorithm::Defend::Apply() {
+	source->SetDefending(true);
+}
+
+void Game_BattleAlgorithm::Defend::ApplyFirst() {
 	source->SetDefending(true);
 }
 
