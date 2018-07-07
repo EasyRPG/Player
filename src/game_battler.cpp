@@ -474,7 +474,7 @@ void Game_Battler::RemoveBattleStates() {
 	}
 
 	for (size_t i = 0; i < states.size(); ++i) {
-		if (non_permanent(i + 1)) {
+		if (i != 0 && (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob == 0)) {
 			states[i] = 0;
 		}
 	}
