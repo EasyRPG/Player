@@ -999,7 +999,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
 	source->SetCharged(false);
-	if (source->GetType() == Game_Battler::Type_Ally && success) {
+	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		Game_Actor* src = static_cast<Game_Actor*>(source);
 		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, src->GetWeaponId());
 		if (weapon) {
