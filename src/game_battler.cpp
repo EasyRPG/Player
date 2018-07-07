@@ -212,7 +212,7 @@ bool Game_Battler::UseItem(int item_id) {
 
 	if (item->type == RPG::Item::Type_medicine) {
 		bool was_used = false;
-
+		int revived = 0;
 		int hp_change = item->recover_hp_rate * GetMaxHp() / 100 + item->recover_hp;
 		int sp_change = item->recover_sp_rate * GetMaxSp() / 100 + item->recover_sp;
 
@@ -221,32 +221,28 @@ bool Game_Battler::UseItem(int item_id) {
 			if (item->state_set.empty() || !item->state_set[0]) {
 				return false;
 			}
-
-			// Revive gives at least 1 Hp
-			if (hp_change == 0) {
-				ChangeHp(1);
-				was_used = true;
-			}
 		} else if (item->ko_only) {
 			// Must be dead
 			return false;
 		}
 
+		for (int i = 0; i < (int)item->state_set.size(); i++) {
+			if (item->state_set[i]) {
+				was_used |= HasState(Data::states[i].ID);
+				if (i == 0 && HasState(i + 1))
+					revived = 1;
+				RemoveState(Data::states[i].ID);
+			}
+		}
+
 		if (hp_change > 0 && !HasFullHp()) {
-			ChangeHp(hp_change);
+			ChangeHp(hp_change - revived);
 			was_used = true;
 		}
 
 		if (sp_change > 0 && !HasFullSp()) {
 			ChangeSp(sp_change);
 			was_used = true;
-		}
-
-		for (int i = 0; i < (int)item->state_set.size(); i++) {
-			if (item->state_set[i]) {
-				was_used |= HasState(Data::states[i].ID);
-				RemoveState(Data::states[i].ID);
-			}
 		}
 
 		return was_used;
@@ -289,28 +285,30 @@ bool Game_Battler::UseSkill(int skill_id) {
 			return false;
 		}
 
-		// Skills only increase hp and sp outside of battle
-		if (skill->power > 0 && skill->affect_hp && !HasFullHp()) {
-			was_used = true;
-			ChangeHp(skill->power);
-		}
-
-		if (skill->power > 0 && skill->affect_sp && !HasFullSp()) {
-			was_used = true;
-			ChangeSp(skill->power);
-		}
-
-		for (int i = 0; i < (int) skill->state_effects.size(); i++) {
+		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
 			if (skill->state_effects[i]) {
 				if (skill->state_effect) {
 					was_used |= !HasState(Data::states[i].ID);
 					AddState(Data::states[i].ID);
-				} else {
+				}
+				else {
 					was_used |= HasState(Data::states[i].ID);
 					RemoveState(Data::states[i].ID);
 				}
 			}
 		}
+
+		// Skills only increase hp and sp outside of battle
+		if (skill->power > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
+			was_used = true;
+			ChangeHp(skill->power);
+		}
+
+		if (skill->power > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
+			was_used = true;
+			ChangeSp(skill->power);
+		}
+
 	} else if (skill->type == RPG::Skill::Type_teleport || skill->type == RPG::Skill::Type_escape) {
 		Game_System::SePlay(skill->sound_effect);
 		was_used = true;
@@ -375,6 +373,22 @@ void Game_Battler::AddState(int state_id) {
 		return;
 	}
 
+	if (IsDead()) {
+		return;
+	}
+	if (state_id == 1) {
+		SetGauge(0);
+		RemoveAllStates();
+		SetDefending(false);
+		SetCharged(false);
+		SetAtkModifier(0);
+		SetDefModifier(0);
+		SetSpiModifier(0);
+		SetAgiModifier(0);
+		attribute_shift.clear();
+		attribute_shift.resize(Data::attributes.size());
+	}
+
 	std::vector<int16_t>& states = GetStates();
 	if (state_id - 1 >= static_cast<int>(states.size())) {
 		states.resize(state_id);
@@ -393,6 +407,10 @@ void Game_Battler::RemoveState(int state_id) {
 	std::vector<int16_t>& states = GetStates();
 	if (state_id - 1 >= static_cast<int>(states.size())) {
 		return;
+	}
+
+	if (state_id == 1 && IsDead()) {
+		SetHp(1);
 	}
 
 	states[state_id - 1] = 0;
@@ -506,7 +524,14 @@ bool Game_Battler::IsImmortal() const {
 }
 
 void Game_Battler::ChangeHp(int hp) {
-	SetHp(GetHp() + hp);
+	if (!IsDead()) {
+		SetHp(GetHp() + hp);
+
+		// Death
+		if (GetHp() == 0) {
+			AddState(1);
+		}
+	}
 }
 
 int Game_Battler::GetMaxHp() const {

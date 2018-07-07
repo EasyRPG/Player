@@ -1438,9 +1438,9 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
+		actor->RemoveAllStates();
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
-		actor->RemoveAllStates();
 	}
 
 	Game_Battle::SetNeedRefresh(true);

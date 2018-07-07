@@ -1204,26 +1204,6 @@ void Game_Actor::SetHp(int hp) {
 	GetData().current_hp = min(max(hp, 0), GetMaxHp());
 }
 
-void Game_Actor::ChangeHp(int hp) {
-	Game_Battler::ChangeHp(hp);
-
-	if (GetData().current_hp == 0) {
-		// Death
-		SetGauge(0);
-		RemoveAllStates();
-		SetDefending(false);
-		SetCharged(false);
-		AddState(1);
-	} else {
-		// Back to life
-		RemoveState(1);
-		if (GetHp() <= 0) {
-			// Reviving gives at least 1 Hp
-			SetHp(1);
-		}
-	}
-}
-
 void Game_Actor::SetSp(int sp) {
 	GetData().current_sp = min(max(sp, 0), GetMaxSp());
 }
