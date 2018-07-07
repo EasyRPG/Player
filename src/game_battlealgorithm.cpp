@@ -960,6 +960,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	to_hit = to_hit_physical(GetSource(), GetTarget(), to_hit);
 
+	// If the target actor has a "Prevent Critic Hits" armor, there's no critic:
+	if (GetTarget()->GetType() == Game_Battler::Type_Ally) {
+		for (auto object_id : static_cast<Game_Actor*>(GetTarget())->GetWholeEquipment()) {
+			RPG::Item *object = ReaderUtil::GetElement(Data::items, object_id);
+			if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
+				|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory) && object->prevent_critical) {
+				crit_chance = 0.0;
+				break;
+			}
+		}
+	}
+
 	// Damage calculation
 	if (Utils::GetRandomNumber(0, 99) < to_hit) {
 		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < (int)ceil(crit_chance * 100)) {
