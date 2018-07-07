@@ -143,7 +143,6 @@ public:
 
 	int GetHp() const override;
 	void SetHp(int _hp) override;
-	void ChangeHp(int hp) override;
 
 	int GetSp() const override;
 	void SetSp(int _sp) override;
