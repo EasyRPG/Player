@@ -641,21 +641,21 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 }
 
 float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
-	float multiplier = 0;
-	int attributes_applied = 0;
+	float physical = -1001, magical = -1001;
 	for (unsigned int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {
-			multiplier += GetTarget()->GetAttributeModifier(i + 1);
-			attributes_applied++;
+			if (ReaderUtil::GetElement(Data::attributes, i + 1)->type == RPG::Attribute::Type_physical) {
+				physical = std::max<float>(physical, GetTarget()->GetAttributeModifier(i + 1));
+			}
+			else {
+				magical = std::max<float>(magical, GetTarget()->GetAttributeModifier(i + 1));
+			}
 		}
 	}
+	physical = physical < -1000 ? 100 : physical;
+	magical = magical < -1000 ? 100 : magical;
 
-	if (attributes_applied > 0) {
-		multiplier /= (attributes_applied * 100);
-		return multiplier;
-	}
-
-	return 1.0;
+	return physical * magical / 10000;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
