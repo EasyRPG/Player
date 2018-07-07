@@ -446,6 +446,7 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 }
 
 void Scene_Battle::UpdateBattlerAction(Game_Battler* battler) {
+	BattleAlgorithmRef alg = battler->GetBattleAlgorithm();
 	if (!battler->CanAct()) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
 		battler->SetCharged(false);
@@ -466,7 +467,12 @@ void Scene_Battle::UpdateBattlerAction(Game_Battler* battler) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
 		battler->SetCharged(false);
 	}
-
+	else if (alg->GetType() == "Skill" && alg->GetItem() == nullptr && static_cast<Game_BattleAlgorithm::Skill*>(alg.get())->GetSpCost() > battler->GetSp()) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+	}
+	else if (alg->GetItem() != nullptr && Main_Data::game_party->GetItemCount(alg->GetItem()->ID, false) == 0) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+	}
 }
 
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {

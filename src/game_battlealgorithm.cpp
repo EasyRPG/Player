@@ -156,6 +156,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
 	return absorb;
 }
 
+const RPG::Item* Game_BattleAlgorithm::AlgorithmBase::GetItem() const {
+	return nullptr;
+}
+
 std::string Game_BattleAlgorithm::AlgorithmBase::GetType() const {
 	return "Base";
 }
@@ -1424,6 +1428,14 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 	return has_reflect;
 }
 
+int Game_BattleAlgorithm::Skill::GetSpCost() const {
+	return item? -1 : source->CalculateSkillCost(skill.ID);
+}
+
+const RPG::Item* Game_BattleAlgorithm::Skill::GetItem() const {
+	return item;
+}
+
 std::string Game_BattleAlgorithm::Skill::GetType() const {
 	return "Skill";
 }
@@ -1555,6 +1567,10 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	else {
 		return NULL;
 	}
+}
+
+const RPG::Item* Game_BattleAlgorithm::Item::GetItem() const {
+	return &item;
 }
 
 std::string Game_BattleAlgorithm::Item::GetType() const {

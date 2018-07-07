@@ -272,6 +272,13 @@ public:
 	virtual int GetSourceAnimationState() const;
 
 	/**
+	* Gets item associated to the action.
+	*
+	* @return item
+	*/
+	virtual const RPG::Item* GetItem() const;
+
+	/**
 	 * Gets animation state id of the source character when applies the action.
 	 *
 	 * @return animation state
@@ -431,6 +438,8 @@ public:
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	int GetSpCost() const;
+	const RPG::Item* GetItem() const override;
 	std::string GetType() const override;
 
 private:
@@ -452,6 +461,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	const RPG::Item* GetItem() const override;
 	std::string GetType() const override;
 
 private:
