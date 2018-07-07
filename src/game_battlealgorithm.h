@@ -173,6 +173,15 @@ public:
 	 * @return Battle Animation or NULL if no animation is assigned
 	 */
 	const RPG::Animation* GetAnimation() const;
+	const RPG::Animation* GetSecondAnimation() const;
+
+	/**
+	* Checks if the animation has already played once
+	*
+	* @return Whether the animation played once
+	*/
+	bool HasAnimationPlayed() const;
+	bool HasSecondAnimationPlayed() const;
 
 	/**
 	 * Plays the battle animation on the targets.
@@ -184,6 +193,7 @@ public:
 	 *                  targets (required for reflect)
 	 */
 	void PlayAnimation(bool on_source = false);
+	void PlaySecondAnimation(bool on_source = false);
 
 	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
 
@@ -409,6 +419,9 @@ protected:
 	mutable int reflect;
 
 	RPG::Animation* animation;
+	RPG::Animation* animation2;
+	bool has_animation_played;
+	bool has_animation2_played;
 
 	std::vector<RPG::State> conditions;
 	std::vector<int16_t> healed_conditions;

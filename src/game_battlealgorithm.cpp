@@ -110,6 +110,9 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	absorb = false;
 	reflect = -1;
 	animation = nullptr;
+	animation2 = nullptr;
+	has_animation_played = false;
+	has_animation2_played = false;
 	conditions.clear();
 	healed_conditions.clear();
 	shift_attributes.clear();
@@ -172,6 +175,10 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
+const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
+	return animation2;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
@@ -180,6 +187,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (on_source) {
 		std::vector<Game_Battler*> anim_targets = { GetSource() };
 		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets);
+		has_animation_played = true;
 		return;
 	}
 
@@ -195,6 +203,37 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	Game_Battle::ShowBattleAnimation(
 		GetAnimation()->ID,
 		anim_targets);
+	has_animation_played = true;
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_source) {
+	if (current_target == targets.end() || !GetSecondAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets);
+		has_animation2_played = true;
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetSecondAnimation()->ID,
+		anim_targets);
+	has_animation2_played = true;
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
@@ -226,6 +265,14 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasAnimationPlayed() const {
+	return has_animation_played;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasSecondAnimationPlayed() const {
+	return has_animation2_played;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
@@ -924,16 +971,28 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
 		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, ally->GetWeaponId());
+		const RPG::Item* weapon2 = ally->HasTwoWeapons() ? ally->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
 
-		if (!weapon) {
+		if (!weapon && !weapon2) {
 			// No Weapon
-			// Todo: Two Sword style
+			// TODO: Different behavior for 2k3
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
 				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
 			}
-		} else {
+		}
+		else if (!weapon) {
+			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
+			}
+
+			hit_chance = weapon2->hit;
+			crit_chance += (1.0 - crit_chance) * weapon2->critical_hit / 100.0f;
+			multiplier = GetAttributeMultiplier(weapon2->attribute_set);
+		}
+		else if (!weapon2) {
 			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
 			if (!animation) {
 				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
@@ -943,11 +1002,31 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			crit_chance += (1.0 - crit_chance) * weapon->critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
+		else {
+			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
+			animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
+			}
+			if (!animation2) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+			}
 
-		if (weapon && !weapon->ignore_evasion) {
-			to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * GetTarget()->GetAgi() / ally->GetAgi() - 1) / 2));
-		} else {
+			hit_chance = (weapon->hit + weapon2->hit) / 2;
+			crit_chance += (1.0 - crit_chance) * (weapon->critical_hit + weapon2->critical_hit) / 200.0f;
+
+			std::vector<bool> weapon12_attribute_set;
+			for (int i = 0; i < Data::attributes.size(); ++i) {
+				weapon12_attribute_set.push_back((weapon->attribute_set.size() < i + 1 ? false : weapon->attribute_set[i])
+					|| (weapon2->attribute_set.size() < i + 1 ? false : weapon2->attribute_set[i]));
+			}
+			multiplier = GetAttributeMultiplier(weapon12_attribute_set);
+		}
+
+		if ((weapon && weapon->ignore_evasion) || (weapon2 && weapon2->ignore_evasion)) {
 			to_hit = (int)(100 - (100 - hit_chance));
+		} else {
+			to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * GetTarget()->GetAgi() / ally->GetAgi() - 1) / 2));
 		}
 	} else {
 		// Source is Enemy
@@ -1006,7 +1085,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
-				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
+				Game_Actor* actor = static_cast<Game_Actor*>(source);
+				
+				const RPG::Item* weapon = actor->GetEquipment(RPG::Item::Type_weapon);
+				const RPG::Item* weapon2 = actor->HasTwoWeapons()? actor->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
 
 				if (weapon) {
 					for (unsigned int i = 0; i < weapon->state_set.size(); i++) {
@@ -1021,6 +1103,34 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 								if (weapon->state_effect) {
 									healing = true;
 								}
+								conditions.push_back(*state);
+							}
+						}
+					}
+				}
+
+				if (weapon2) {
+					struct checker {
+						checker(const RPG::State* compare_to) : compare_to_(compare_to) { }
+						bool operator()(RPG::State elem) const { return compare_to_->ID == elem.ID; }
+					private:
+						const RPG::State* compare_to_;
+					};
+
+					for (unsigned int i = 0; i < weapon2->state_set.size(); i++) {
+						if (weapon2->state_set[i]) {
+							RPG::State* state = ReaderUtil::GetElement(Data::states, i + 1);
+							if (!state) {
+								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
+								continue;
+							}
+
+							if (std::find_if(conditions.begin(), conditions.end(), checker(state)) == conditions.end()
+								&& Utils::GetRandomNumber(0, 99) < (weapon2->state_chance * GetTarget()->GetStateProbability(state->ID) / 100)) {
+								if (weapon2->state_effect) {
+									healing = true;
+								}
+								
 								conditions.push_back(*state);
 							}
 						}
