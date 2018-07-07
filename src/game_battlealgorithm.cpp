@@ -940,7 +940,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 
 			hit_chance = weapon->hit;
-			crit_chance += crit_chance * weapon->critical_hit / 100.0f;
+			crit_chance += (1.0 - crit_chance) * weapon->critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
 
