@@ -873,6 +873,33 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
 
+std::vector<RPG::State> Game_BattleAlgorithm::AlgorithmBase::FilterStatesByPriority(std::vector<RPG::State> filter_states) {
+	if (filter_states.empty())
+		return filter_states;
+
+	std::vector<RPG::State> return_states;
+	int new_priority = -1;
+	for (auto state : filter_states) {
+		if (state.ID == 1) {
+			return_states.push_back(state);
+			return return_states;
+		}
+		new_priority = std::max(new_priority, state.priority);
+	}
+	for (auto state_id : GetTarget()->GetInflictedStates()) {
+		if (std::find(healed_conditions.begin(), healed_conditions.end(), state_id) == healed_conditions.end()) {
+			new_priority = std::max(new_priority, ReaderUtil::GetElement(Data::states, state_id)->priority);
+		}
+	}
+
+	for (auto state : filter_states) {
+		if (state.priority >= new_priority - 9) {
+			return_states.push_back(state);
+		}
+	}
+	return return_states;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -983,6 +1010,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						}
 					}
 				}
+
+				conditions = FilterStatesByPriority(conditions);
 			}
 		}
 	}
@@ -1224,9 +1253,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 
 			if (healing || Utils::GetRandomNumber(0, 99) <= GetTarget()->GetStateProbability(Data::states[i].ID)) {
-				this->success = true;
 				conditions.push_back(Data::states[i]);
 			}
+		}
+		conditions = FilterStatesByPriority(conditions);
+		if (!conditions.empty()) {
+			this->success = true;
 		}
 
 		//If resurrected and no HP selected, the effect value is a percentage:

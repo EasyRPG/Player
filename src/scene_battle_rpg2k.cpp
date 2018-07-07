@@ -426,32 +426,29 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
+			const RPG::State* highest_state = nullptr;
+			std::string message_to_print;
 			std::vector<int16_t> states_to_heal = action->GetSource()->NextBattleTurn();
 			std::vector<int16_t> states_remaining = action->GetSource()->GetInflictedStates();
-			std::string message_to_print;
 			action->GetSource()->ApplyConditions();
-			bool message_to_show = false;
-			if (!states_to_heal.empty() || !states_remaining.empty()) {
-				for (auto state_id : states_to_heal) {
-					// BattleAlgorithm verifies the states
-					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-					if (!state->message_recovery.empty()) {
-						message_to_print = state->message_recovery;
-						message_to_show = true;
-					}
+
+			for (auto state_id : states_to_heal) {
+				const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+				if (!state->message_recovery.empty() && (!highest_state || state->priority >= highest_state->priority)) {
+					highest_state = state;
+					message_to_print = state->message_recovery;
 				}
-				for (auto state_id : states_remaining) {
-					// BattleAlgorithm verifies the states
-					const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-					if (!state->message_affected.empty()) {
-						message_to_print = state->message_affected;
-						message_to_show = true;
-					}
+			}
+			for (auto state_id : states_remaining) {
+				const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+				if (!state->message_affected.empty() && (!highest_state || state->priority >= highest_state->priority)) {
+					highest_state = state;
+					message_to_print = state->message_affected;
 				}
-				if (message_to_show) {
-					battle_message_window->PushWithSubject(message_to_print, action->GetSource()->GetName());
-					battle_action_wait = GetDelayForWindow() * 3 / 2;
-				}
+			}
+			if (highest_state != nullptr) {
+				battle_message_window->PushWithSubject(message_to_print, action->GetSource()->GetName());
+				battle_action_wait = GetDelayForWindow() * 3 / 2;
 			}
 		}
 

@@ -378,6 +378,21 @@ void Game_Battler::AddState(int state_id) {
 	}
 
 	states[state_id - 1] = std::max<int> (1, states[state_id - 1]);
+	FilterStatesByPriority();
+}
+
+void Game_Battler::FilterStatesByPriority() {
+	if (!IsDead()) {
+		int new_priority = GetSignificantState() != nullptr? GetSignificantState()->priority : -1;
+		for (auto state_id : GetInflictedStates()) {
+			if (state_id <= 0 || state_id > Data::states.size()) {
+				continue;
+			}
+			if (ReaderUtil::GetElement(Data::states, state_id)->priority < new_priority - 9) {
+				RemoveState(state_id);
+			}
+		}
+	}
 }
 
 void Game_Battler::RemoveState(int state_id) {

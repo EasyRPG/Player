@@ -404,6 +404,11 @@ public:
 	virtual void AddState(int state_id);
 
 	/**
+	 * Filters all the states that have 10 or less priority than the top one.
+	 */
+	virtual void FilterStatesByPriority();
+
+	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.

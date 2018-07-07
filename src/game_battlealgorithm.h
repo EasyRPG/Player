@@ -344,6 +344,14 @@ public:
 	 */
 	virtual bool IsReflected() const;
 
+	/*
+	 * Returns a copy of the vector with the state ids that remain by being their priority less than 10 of difference than the top one
+	 *
+	 * @param filter_states vector of states to be filtered
+	 * @return vector of states filtered
+	 */
+	virtual std::vector<RPG::State> FilterStatesByPriority(std::vector<RPG::State> filter_states);
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
