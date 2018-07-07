@@ -712,16 +712,24 @@ bool Game_Player::CanWalk(int x, int y) {
 void Game_Player::BeginMove() {
 	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
+	bool red_flash = false;
+
 	if (terrain) {
 		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
 			Game_System::SePlay(terrain->footstep);
 		}
 		if (terrain->damage > 0) {
-			Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 1);
+			red_flash = true;
 			Main_Data::game_party->ApplyDamage(terrain->damage, false);
 		}
 	} else {
 		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
+	}
+
+	red_flash = red_flash || Main_Data::game_party->ApplyStateDamage();
+
+	if (red_flash) {
+		Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 1);
 	}
 }
 

@@ -582,3 +582,56 @@ void Game_Party::RemoveInvalidData() {
 	}
 	data.items_size = data.item_ids.size();
 }
+
+std::vector<int16_t> Game_Party::GetInflictedStates() const {
+	std::vector<int16_t> states;
+
+	for (auto actor : GetActors()) {
+		std::vector<int16_t> actor_states = actor->GetInflictedStates();
+		states.insert(states.end(), actor_states.begin(), actor_states.end());
+	}
+
+	if (!states.empty()) {
+		std::sort(states.begin(), states.end());
+		states.erase(std::unique(states.begin(), states.end()), states.end());
+	}
+	return states;
+}
+
+bool Game_Party::ApplyStateDamage() {
+	bool damage = false;
+	std::vector<int16_t> states = GetInflictedStates();
+
+	for (auto state_id : states) {
+		if (state_steps_hp.size() < state_id) {
+			state_steps_hp.resize(state_id);
+		}
+		if (state_steps_sp.size() < state_id) {
+			state_steps_sp.resize(state_id);
+		}
+
+		RPG::State *state = ReaderUtil::GetElement(Data::states, state_id);
+
+		if (state->hp_change_map_val > 0 && (++state_steps_hp[state_id - 1]) >= state->hp_change_map_steps) {
+			state_steps_hp[state_id - 1] = 0;
+			for (auto actor : GetActors()) {
+				if (actor->HasState(state_id)) {
+					actor->ChangeHp(-std::max<int>(0, std::min<int>(state->hp_change_map_val, actor->GetHp() - 1)));
+					damage = true;
+				}
+			}
+		}
+
+		if (state->sp_change_map_val > 0 && (++state_steps_sp[state_id - 1]) >= state->sp_change_map_steps) {
+			state_steps_sp[state_id - 1] = 0;
+			for (auto actor : GetActors()) {
+				if (actor->HasState(state_id)) {
+					actor->ChangeSp(-state->sp_change_map_val);
+					damage = true;
+				}
+			}
+		}
+	}
+
+	return damage;
+}
