@@ -940,7 +940,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 	AlgorithmBase::Apply();
 
 	source->SetCharged(false);
-	if (source->GetType() == Game_Battler::Type_Ally) {
+	if (source->GetType() == Game_Battler::Type_Ally && IsFirstAttack()) {
 		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
 	}
 }
