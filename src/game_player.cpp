@@ -719,8 +719,12 @@ void Game_Player::BeginMove() {
 			Game_System::SePlay(terrain->footstep);
 		}
 		if (terrain->damage > 0) {
-			red_flash = true;
-			Main_Data::game_party->ApplyDamage(terrain->damage, false);
+			for (auto hero : Main_Data::game_party->GetActors()) {
+				if (!hero->PreventsTerrainDamage()) {
+					red_flash = true;
+					hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
+				}
+			}
 		}
 	} else {
 		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());

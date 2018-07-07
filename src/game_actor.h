@@ -733,6 +733,13 @@ public:
 	 */
 	void SetBattleRow(int battle_row);
 
+	/**
+	 * Checks if the actor has an equipment that protects against terrain damage.
+	 *
+	 * @return Whether the actor avoid terrain damage.
+	 */
+	bool PreventsTerrainDamage();
+
 	int GetBattleAnimationId() const override;
 
 	int GetHitChance() const override;
