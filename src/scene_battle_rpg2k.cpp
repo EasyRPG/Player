@@ -393,7 +393,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
-	if (battle_action_wait) {
+	if (Input::IsPressed(Input::DECISION)) {
+		--battle_action_wait;
+	}
+
+	if (battle_action_wait > 0) {
 		if (--battle_action_wait) {
 			return false;
 		}
@@ -644,8 +648,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
-			// Skip current message
-			encounter_message_sleep_until = Player::GetFrames();
+			// no-op
 			break;
 		case State_SelectOption:
 			// Interpreter message boxes pop up in this state
@@ -789,6 +792,10 @@ void Scene_Battle_Rpg2k::Escape() {
 		begin_escape = false;
 	}
 	else {
+		if (Input::IsPressed(Input::DECISION)) {
+			++escape_counter;
+		}
+
 		++escape_counter;
 
 		if (escape_counter > 60) {
@@ -984,6 +991,10 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		Main_Data::game_enemyparty->GetActiveBattlers(visible_enemies);
 		enemy_iterator = visible_enemies.begin();
 		encounter_message_first_monster = false;
+	}
+
+	if (Input::IsPressed(Input::DECISION)) {
+		--encounter_message_sleep_until;
 	}
 
 	if (encounter_message_sleep_until > -1) {
