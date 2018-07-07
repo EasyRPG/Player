@@ -808,3 +808,11 @@ int Game_Battler::GetShiftAttributeRate(int attribute_id) {
 	}
 	return attribute_shift[attribute_id - 1];
 }
+
+void Game_Battler::SetRandomOrderAgi() {
+	agi_order = GetAgi() + Utils::GetRandomNumber(std::ceil(GetAgi() * -10 / 100.0) - 1, std::ceil(GetAgi() * 10 / 100.0) + 1);
+}
+
+int Game_Battler::GetRandomOrderAgi() {
+	return agi_order;
+}

@@ -600,6 +600,9 @@ public:
 	 */
 	std::vector<int16_t> BattlePhysicalStateHeal(int physical_rate);
 
+	void SetRandomOrderAgi();
+	int GetRandomOrderAgi();
+
 	void SetLastBattleAction(int battle_action);
 
 	int GetLastBattleAction() const;
@@ -631,6 +634,8 @@ protected:
 	int battle_combo_times;
 
 	std::vector<int> attribute_shift;
+
+	int agi_order;
 };
 
 #endif

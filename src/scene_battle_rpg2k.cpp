@@ -897,7 +897,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 
 static bool BattlerSort(Game_Battler* first, Game_Battler* second) {
 	if (first->HasPreemptiveAttack() && second->HasPreemptiveAttack()) {
-		return first->GetAgi() > second->GetAgi();
+		return first->GetRandomOrderAgi() > second->GetRandomOrderAgi();
 	}
 
 	if (first->HasPreemptiveAttack()) {
@@ -908,10 +908,14 @@ static bool BattlerSort(Game_Battler* first, Game_Battler* second) {
 		return false;
 	}
 
-	return first->GetAgi() > second->GetAgi();
+	return first->GetRandomOrderAgi() > second->GetRandomOrderAgi();
 }
 
 void Scene_Battle_Rpg2k::CreateExecutionOrder() {
+	// Define random Agility. Must be done outside of the sort function because of the "strict weak ordering" property, so the sort is consistent
+	for (auto battler : battle_actions) {
+		battler->SetRandomOrderAgi();
+	}
 	std::sort(battle_actions.begin(), battle_actions.end(), BattlerSort);
 }
 
