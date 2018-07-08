@@ -46,12 +46,12 @@ void Scene_Equip::Start() {
 	}
 
 	// Assign the help windows
-	equip_window->SetHelpWindow(help_window.get());
 	for (size_t i = 0; i < item_windows.size(); ++i) {
 		item_windows[i]->SetHelpWindow(help_window.get());
 		item_windows[i]->SetActive(false);
 		item_windows[i]->Refresh();
 	}
+	equip_window->SetHelpWindow(help_window.get());
 }
 
 void Scene_Equip::Update() {
