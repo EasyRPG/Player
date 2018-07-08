@@ -139,6 +139,9 @@ void Transition::SetAttributesTransitions() {
 			zoom_position[1] = DisplayUi->GetHeight() / 2;
 		}
 		break;
+	default:
+		// do nothing, keep the compiler happy
+		break;
 	}
 }
 
