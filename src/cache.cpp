@@ -149,24 +149,24 @@ namespace {
 		int min_width , max_width;
 		int min_height, max_height;
 		std::function<BitmapRef()> dummy_renderer;
+		bool oob_check;
 	} const spec[] = {
-		/* FIXME: 240px max height is 2k3 specific, for 2k is 160px */
-		{ "Backdrop", false, 320, 320, 160, 240, backdrop_dummy_func},
-		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func },
-		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func },
-		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func },
-		{ "FaceSet", true, 192, 192, 192, 192, faceset_dummy_func },
-		{ "GameOver", false, 320, 320, 240, 240, gameover_dummy_func },
-		{ "Monster", true, 16, 320, 16, 160, monster_dummy_func },
-		{ "Panorama", false, 80, 640, 80, 480, panorama_dummy_func },
-		{ "Picture", true, 1, 640, 1, 480, picture_dummy_func },
-		{ "System", true, 160, 160, 80, 80, &DummySystem },
-		{ "Title", false, 320, 320, 240, 240, title_dummy_func },
-		{ "System2", true, 80, 80, 96, 96, system2_dummy_func },
-		{ "Battle2", true, 640, 640, 640, 640, battle2_dummy_func },
-		{ "BattleCharSet", true, 144, 144, 384, 384, battlecharset_dummy_func },
-		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func },
-		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func },
+		{ "Backdrop", false, 320, 320, 160, 240, backdrop_dummy_func, true },
+		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func, true },
+		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func, true },
+		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func, true },
+		{ "FaceSet", true, 192, 192, 192, 192, faceset_dummy_func, true},
+		{ "GameOver", false, 320, 320, 240, 240, gameover_dummy_func, true },
+		{ "Monster", true, 16, 320, 16, 160, monster_dummy_func, false },
+		{ "Panorama", false, 80, 640, 80, 480, panorama_dummy_func, false },
+		{ "Picture", true, 1, 640, 1, 480, picture_dummy_func, false },
+		{ "System", true, 160, 160, 80, 80, &DummySystem, true },
+		{ "Title", false, 320, 320, 240, 240, title_dummy_func, true },
+		{ "System2", true, 80, 80, 96, 96, system2_dummy_func, true },
+		{ "Battle2", true, 640, 640, 640, 640, battle2_dummy_func, true },
+		{ "BattleCharSet", true, 144, 144, 384, 384, battlecharset_dummy_func, true},
+		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func, true },
+		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func, true },
 	};
 
 	template<Material::Type T>
@@ -233,11 +233,23 @@ namespace {
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
-		if(ret->GetWidth() < s.min_width   || s.max_width  < ret->GetWidth() ||
-		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()) {
-			Output::Debug("Image size out of bounds: %s/%s (%dx%d < %dx%d < %dx%d)",
-						  s.directory, f.c_str(), s.min_width, s.min_height,
-						  ret->GetWidth(), ret->GetHeight(), s.max_width, s.max_height);
+		if (s.oob_check) {
+			int w = ret->GetWidth();
+			int h = ret->GetHeight();
+			int min_h = s.min_height;
+			int max_h = s.max_height;
+			int min_w = s.min_width;
+			int max_w = s.max_width;
+
+			// 240px backdrop height is 2k3 specific, for 2k is 160px
+			if (T == Material::Backdrop) {
+				max_h = min_h = Player::IsRPG2k() ? 160 : 240;
+			}
+
+			if (w < min_w || max_w < w || h < min_h || max_h < h) {
+				Output::Debug("Image size out of bounds: %s/%s (%dx%d < %dx%d < %dx%d)",
+				              s.directory, f.c_str(), min_w, min_h, w, h, max_w, max_h);
+			}
 		}
 
 		return ret;
