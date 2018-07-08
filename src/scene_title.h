@@ -37,7 +37,6 @@ public:
 	void Start() override;
 	void Continue() override;
 	void TransitionIn() override;
-	void Suspend() override;
 	void Resume() override;
 	void Update() override;
 

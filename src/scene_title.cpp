@@ -24,6 +24,7 @@
 #include "cache.h"
 #include "game_screen.h"
 #include "game_system.h"
+#include "game_temp.h"
 #include "transition.h"
 #include "input.h"
 #include "main_data.h"
@@ -50,22 +51,26 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::Continue() {
-	// Clear the cache when the game returns to the
-	// title screen e.g. by pressing F12
-	Cache::Clear();
-	AudioSeCache::Clear();
+	if (Game_Temp::restart_title_cache) {
+		// Clear the cache when the game returns to the
+		// title screen e.g. by pressing F12, except the Title Load menu
+		Cache::Clear();
+		AudioSeCache::Clear();
 
-	Player::ResetGameObjects();
+		Player::ResetGameObjects();
 
-	Start();
+		Start();
+	}
 }
 
 void Scene_Title::TransitionIn() {
 	if (Player::battle_test_flag || !Data::system.show_title || Player::new_game_flag)
 		return;
 
-	Graphics::GetTransition().Init(Transition::TransitionErase, this, 1, true);
-	if (!Player::hide_title_flag) {
+	if (command_window->GetVisible()) {
+		Scene::TransitionIn();
+	}
+	else if (!Player::hide_title_flag) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 	} else {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
@@ -80,13 +85,6 @@ void Scene_Title::Resume() {
 		command_window->SetVisible(true);
 	}
 }
-
-void Scene_Title::Suspend() {
-	if (command_window) {
-		command_window->SetVisible(false);
-	}
-}
-
 void Scene_Title::Update() {
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
@@ -183,6 +181,7 @@ void Scene_Title::CommandNewGame() {
 	if (!CheckValidPlayerLocation()) {
 		Output::Warning("The game has no start location set.");
 	} else {
+		Game_Temp::restart_title_cache = true;
 		Output::Debug("Starting new game");
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
