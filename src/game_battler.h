@@ -537,6 +537,16 @@ public:
 	bool IsGaugeFull() const;
 
 	/**
+	 * @return Offset of flying enemies
+	 */
+	virtual int GetFlyingOffset() const;
+
+	/**
+	 * Updates the Battler
+	 */
+	virtual void UpdateBattle();
+
+	/**
 	* Gets the current BattleAlgorithm (action to execute in battle)
 
 	* @return Current algorithm or NULL if none
