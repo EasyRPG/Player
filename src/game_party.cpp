@@ -603,10 +603,10 @@ bool Game_Party::ApplyStateDamage() {
 	std::vector<int16_t> states = GetInflictedStates();
 
 	for (auto state_id : states) {
-		if (state_steps_hp.size() < state_id) {
+		if (static_cast<int>(state_steps_hp.size()) < state_id) {
 			state_steps_hp.resize(state_id);
 		}
-		if (state_steps_sp.size() < state_id) {
+		if (static_cast<int>(state_steps_sp.size()) < state_id) {
 			state_steps_sp.resize(state_id);
 		}
 
