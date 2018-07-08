@@ -22,6 +22,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
+#include "transition.h"
 
 Scene_Gameover::Scene_Gameover() {
 	type = Scene::Gameover;
@@ -47,4 +48,12 @@ void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 	// Load Background Graphic
 	background.reset(new Sprite());
 	background->SetBitmap(Cache::Gameover(result->file));
+}
+
+void Scene_Gameover::TransitionIn() {
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 80);
+}
+
+void Scene_Gameover::TransitionOut() {
+	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 80, true);
 }
