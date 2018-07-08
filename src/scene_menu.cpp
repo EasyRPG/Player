@@ -229,19 +229,26 @@ void Scene_Menu::UpdateActorSelection() {
 		menustatus_window->SetActive(false);
 		menustatus_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
+			if (!menustatus_window->GetActor()->CanAct()) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+				return;
+			}
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Equip>(*menustatus_window->GetActor()));
 			break;
 		case Status:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Scene::Push(std::make_shared<Scene_Status>(menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Game_Actor* actor = Main_Data::game_party->GetActors()[menustatus_window->GetIndex()];
 			actor->GetBattleRow() == -1 ?
 				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
