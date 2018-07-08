@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "rpg_animation.h"
 #include "rpg_music.h"
 #include "rpg_sound.h"
 #include "rpg_system.h"
@@ -119,7 +120,14 @@ namespace Game_System {
 	 * @param se sound data.
 	 * @param stop_sounds If true stops all SEs when playing (OFF)/(...). Only used by the interpreter.
 	 */
-	void SePlay(RPG::Sound const& se, bool stop_sounds = false);
+	void SePlay(const RPG::Sound& se, bool stop_sounds = false);
+
+	/**
+	 * Plays the first valid sound in the animation.
+	 *
+	 * @param animation animation data.
+	 */
+	void SePlay(const RPG::Animation& animation);
 
 	/**
 	 * Gets system graphic name.

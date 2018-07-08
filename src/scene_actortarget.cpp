@@ -121,7 +121,14 @@ void Scene_ActorTarget::UpdateSkill() {
 			return;
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+			RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
+			RPG::Animation* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
+			if (animation) {
+				Game_System::SePlay(*animation);
+			}
+			else {
+				Output::Warning("UpdateSkill: Skill %d references invalid animation %d", id, skill->animation_id);
+			}
 		}
 		else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
