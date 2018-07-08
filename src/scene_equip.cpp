@@ -23,6 +23,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "player.h"
+#include "reader_util.h"
 #include "scene_menu.h"
 #include "rpg_item.h"
 
@@ -92,6 +93,17 @@ void Scene_Equip::UpdateStatusWindow() {
 
 		equipstatus_window->SetNewParameters(
 			actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
+
+		// Consider parameters if a weapon is taken out because of two-handed weapon:
+		if (current_item && (equip_window->GetIndex() == 0 || equip_window->GetIndex() == 1)) {
+			const RPG::Item* other_item = ReaderUtil::GetElement(Data::items, equip_window->GetIndex() == 0 ? actor.GetShieldId() : actor.GetWeaponId());
+			if (other_item && (current_item->two_handed || other_item->two_handed)) {
+				int old_other_item = actor.SetEquipment(equip_window->GetIndex() == 0 ? 2 : 1, 0);
+				equipstatus_window->SetNewParameters(
+					actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
+				actor.SetEquipment(equip_window->GetIndex() == 0 ? 2 : 1, old_other_item);
+			}
+		}
 
 		actor.SetEquipment(equip_window->GetIndex() + 1, old_item);
 

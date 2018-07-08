@@ -254,6 +254,13 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	if (item_id != 0) {
 		Main_Data::game_party->RemoveItem(item_id, 1);
 	}
+
+	// In case you have a two_handed weapon equipped, the other weapon is removed.
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetWeaponId());
+	const RPG::Item* item2 = ReaderUtil::GetElement(Data::items, GetShieldId());
+	if (item && item2 && (item->two_handed || item2->two_handed)) {
+		ChangeEquipment(equip_type == RPG::Item::Type_weapon ? equip_type + 1 : equip_type - 1, 0);
+	}
 }
 
 const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
