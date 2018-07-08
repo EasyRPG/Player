@@ -267,6 +267,15 @@ const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
 	return GetData().equipped;
 }
 
+bool Game_Actor::IsEquipped(int equip_id) const {
+	for (auto equip : GetWholeEquipment()) {
+		if (equip == equip_id) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Game_Actor::RemoveWholeEquipment() {
 	for (int i = 1; i <= 5; ++i) {
 		ChangeEquipment(i, 0);

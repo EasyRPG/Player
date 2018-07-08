@@ -424,6 +424,14 @@ public:
 	const std::vector<int16_t>& GetWholeEquipment() const;
 
 	/**
+	 * Checks if the actor has a specific item equipped.
+	 *
+	 * @param equip_id item id to check
+	 * @return Whether it has the item equipped
+	 */
+	bool IsEquipped(int equip_id) const;
+
+	/**
 	 * Unequips the whole equipment and adds it to the inventory.
 	 */
 	void RemoveWholeEquipment();

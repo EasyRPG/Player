@@ -1331,6 +1331,25 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 		}
 	} else {
 		for (const auto &actor : GetActors(com.parameters[0], com.parameters[1])) {
+			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_shield && item_id != 0) {
+				continue;
+			}
+
+			if (Main_Data::game_party->GetItemCount(item_id, false) == 0 && !actor->IsEquipped(item_id)) {
+				Main_Data::game_party->AddItem(item_id, 1);
+			}
+
+			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon) {
+				RPG::Item* new_equipment = ReaderUtil::GetElement(Data::items, item_id);
+				RPG::Item* equipment1 = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
+				RPG::Item* equipment2 = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
+
+				if (equipment1 && !equipment2 && !equipment1->two_handed && !new_equipment->two_handed) {
+					actor->ChangeEquipment(slot + 1, item_id);
+					continue;
+				}
+			}
+
 			actor->ChangeEquipment(slot, item_id);
 		}
 	}
