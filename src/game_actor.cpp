@@ -1344,3 +1344,15 @@ void Game_Actor::RemoveInvalidData() {
 		SetLevel(1);
 	}
 }
+
+bool Game_Actor::PreventsTerrainDamage() {
+	for (auto object_id : GetWholeEquipment()) {
+		RPG::Item *object = ReaderUtil::GetElement(Data::items, object_id);
+		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
+			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory) && object->no_terrain_damage) {
+			return true;
+		}
+	}
+
+	return false;
+}

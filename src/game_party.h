@@ -306,6 +306,19 @@ public:
 	 * Removes invalid actors and items from the party
 	 */
 	void RemoveInvalidData();
+
+	std::vector<int16_t> GetInflictedStates() const;
+
+	/**
+	* Applies damage to the game party based on their stats.
+	*
+	* @return Whether the actor suffered some damage.
+	*/
+	bool ApplyStateDamage();
+
+private:
+	std::vector<int> state_steps_hp;
+	std::vector<int> state_steps_sp;
 };
 
 #endif
