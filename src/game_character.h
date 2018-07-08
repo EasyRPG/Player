@@ -44,17 +44,17 @@ public:
 	~Game_Character();
 
 	/**
-	* Gets x position.
-	*
-	* @return x position.
-	*/
+	 * Gets x position.
+	 *
+	 * @return x position.
+	 */
 	virtual int GetX() const = 0;
 
 	/**
-	* Sets x position.
-	*
-	* @param new_x new x position.
-	*/
+	 * Sets x position.
+	 *
+	 * @param new_x new x position.
+	 */
 	virtual void SetX(int new_x) = 0;
 
 	/**

@@ -43,8 +43,7 @@ private:
 	/** Contains number of rearranged actors. */
 	int actor_counter;
 
-	std::unique_ptr<Window_Command>
-		window_left, window_right, window_confirm;
+	std::unique_ptr<Window_Command>	window_left, window_right, window_confirm;
 
 	void CreateCommandWindow();
 

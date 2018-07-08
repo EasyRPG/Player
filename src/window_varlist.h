@@ -33,10 +33,10 @@ public:
 	~Window_VarList() override;
 
 	/**
-	* UpdateList.
-	* 
-	* @param first_value starting value.
-	*/
+	 * UpdateList.
+	 * 
+	 * @param first_value starting value.
+	 */
 	void UpdateList(int first_value);
 
 	/**

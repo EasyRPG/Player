@@ -97,13 +97,13 @@ namespace FileFinder {
 	std::string FindDefault(const std::string& name);
 
 	/**
-	* Finds a file in a subdirectory of a custom directory tree.
-	*
-	* @param tree Project tree to search
-	* @param dir directory to check
-	* @param name the path and name
-	* @return path to file.
-	*/
+	 * Finds a file in a subdirectory of a custom directory tree.
+	 *
+	 * @param tree Project tree to search
+	 * @param dir directory to check
+	 * @param name the path and name
+	 * @return path to file.
+	 */
 	std::string FindDefault(const DirectoryTree& tree, const std::string& dir, const std::string& name);
 
 	/**

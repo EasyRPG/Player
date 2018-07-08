@@ -38,9 +38,9 @@ public:
 	explicit Game_CommonEvent(int common_event_id);
 
 	/**
-	* Set savegame data.
-	*
-	* @param data savegame data.
+	 * Set savegame data.
+	 *
+	 * @param data savegame data.
 	 */
 	void SetSaveData(const RPG::SaveEventData& data);
 
