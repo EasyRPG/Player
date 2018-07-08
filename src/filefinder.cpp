@@ -240,7 +240,7 @@ const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectory
 	return tree;
 }
 
-void FileFinder::SetDirectoryTree(std::shared_ptr<FileFinder::DirectoryTree> directory_tree) {
+void FileFinder::SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree) {
 	game_directory_tree = directory_tree;
 }
 

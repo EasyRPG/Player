@@ -526,7 +526,7 @@ namespace Game_Map {
 	/**
 	 * Gets the type (1 = normal, 2 = area) of the map.
 	 *
-	 * @parem map_id map id
+	 * @param map_id map id
 	 * @return type of the map
 	 */
 	int GetMapType(int map_id);
