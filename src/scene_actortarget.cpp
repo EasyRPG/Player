@@ -57,7 +57,7 @@ void Scene_ActorTarget::Start() {
 		if (item->entire_party) {
 			target_window->SetIndex(-100);
 		}
-		status_window->SetData(id, true);
+		status_window->SetData(id, true, 0);
 		help_window->SetText(item->name);
 	} else {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
@@ -72,7 +72,7 @@ void Scene_ActorTarget::Start() {
 			target_window->SetIndex(-100);
 		}
 
-		status_window->SetData(id, false);
+		status_window->SetData(id, false, actor_index);
 		help_window->SetText(skill->name);
 	}
 }

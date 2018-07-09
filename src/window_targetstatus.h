@@ -45,14 +45,17 @@ public:
 	 *
 	 * @param id ID of item/skill.
 	 * @param is_item true if ID for an item, otherwise for a skill.
+	 * @param actor_index index position of the actor in the party
 	 */
-	void SetData(int id, bool is_item);
+	void SetData(int id, bool is_item, int actor_index);
 
 private:
 	/** ID of item or skill. */
 	int id;
 	/** True if item, false if skill. */
 	bool use_item;
+	/** ID of actor who does the skill. */
+	int actor_index;
 };
 
 #endif
