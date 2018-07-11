@@ -339,13 +339,13 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 	bool was_used = false;
 
 	if (target) {
-		was_used = target->UseSkill(skill_id);
+		was_used = target->UseSkill(skill_id, source);
 	}
 	else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
-			was_used |= (*it)->UseSkill(skill_id);
+			was_used |= (*it)->UseSkill(skill_id, source);
 		}
 	}
 
@@ -632,3 +632,13 @@ bool Game_Party::IsAnyControllable() {
 	return false;
 }
 
+Game_Actor* Game_Party::GetHighestLeveledActor() const {
+	Game_Actor* best = nullptr;
+
+	for (auto* actor : GetActors()) {
+		if (best == nullptr || best->GetLevel() < actor->GetLevel()) {
+			best = actor;
+		}
+	}
+	return best;
+}

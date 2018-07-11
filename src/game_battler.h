@@ -361,9 +361,10 @@ public:
 	 * Does not reduce the MP, use Game_Party->UseSkill for this.
 	 *
 	 * @param skill_id ID of skill to use
+	 * @param source battler who threw the skill
 	 * @return true if skill affected anything
 	 */
-	virtual bool UseSkill(int skill_id);
+	virtual bool UseSkill(int skill_id, Game_Battler* source);
 
 	/**
 	 * Calculates the Skill costs including all modifiers.

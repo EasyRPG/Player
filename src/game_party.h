@@ -341,6 +341,13 @@ public:
 	 */
 	bool IsAnyControllable();
 
+	/**
+	 * Gets the actor with the highest level. If there are many, choose the one with the earliest position in the group.
+	 *
+	 * @return The first Highest leveled actor.
+	 */
+	Game_Actor* GetHighestLeveledActor() const;
+
 private:
 	const RPG::SaveInventory& data() const;
 	RPG::SaveInventory& data();
