@@ -258,21 +258,22 @@ bool Game_Battler::UseItem(int item_id) {
 		case RPG::Item::Type_armor:
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
-			return item->use_skill && UseSkill(item->skill_id);
+			return item->use_skill && UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
 		case RPG::Item::Type_special:
-			return UseSkill(item->skill_id);
+			return UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
 	}
 
 	return false;
 }
 
-bool Game_Battler::UseSkill(int skill_id) {
+bool Game_Battler::UseSkill(int skill_id, Game_Battler* source) {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
 		Output::Warning("UseSkill: Can't use skill with invalid ID %d", skill_id);
 		return false;
 	}
 
+	bool cure_hp_percentage = false;
 	bool was_used = false;
 
 	if (skill->type == RPG::Skill::Type_normal || skill->type >= RPG::Skill::Type_subskill) {
@@ -285,6 +286,25 @@ bool Game_Battler::UseSkill(int skill_id) {
 			return false;
 		}
 
+		// Calculate effect:
+		int effect;
+		float mul = GetAttributeMultiplier(skill->attribute_effects);
+		if (mul < 0.5f) {
+			// Determined via testing, the heal is always at least 50%
+			mul = 0.5f;
+		}
+
+		effect = source == nullptr ? skill->power : skill->power +
+			source->GetAtk() * skill->physical_rate / 20 +
+			source->GetSpi() * skill->magical_rate / 40;
+		effect *= mul;
+
+		effect += (effect * Utils::GetRandomNumber(-skill->variance * 10, skill->variance * 10) / 100);
+
+		if (effect < 0)
+			effect = 0;
+
+		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
 			if (skill->state_effects[i]) {
 				if (skill->state_effect) {
@@ -294,6 +314,11 @@ bool Game_Battler::UseSkill(int skill_id) {
 				else {
 					was_used |= HasState(Data::states[i].ID);
 					RemoveState(Data::states[i].ID);
+
+					// If Death is cured and HP is not selected, we set a bool so it later heals HP percentage
+					if (i == 0 && !skill->affect_hp) {
+						cure_hp_percentage = true;
+					}
 				}
 			}
 		}
@@ -301,12 +326,16 @@ bool Game_Battler::UseSkill(int skill_id) {
 		// Skills only increase hp and sp outside of battle
 		if (skill->power > 0 && skill->affect_hp && !HasFullHp() && !IsDead()) {
 			was_used = true;
-			ChangeHp(skill->power);
+			ChangeHp(effect);
+		}
+		else if (skill->power > 0 && cure_hp_percentage) {
+			was_used = true;
+			ChangeHp(GetMaxHp() * effect / 100);
 		}
 
 		if (skill->power > 0 && skill->affect_sp && !HasFullSp() && !IsDead()) {
 			was_used = true;
-			ChangeSp(skill->power);
+			ChangeSp(effect);
 		}
 
 	} else if (skill->type == RPG::Skill::Type_teleport || skill->type == RPG::Skill::Type_escape) {
@@ -827,4 +856,22 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
 		--old_shift;
 	}
+}
+
+float Game_Battler::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
+	float physical = -1001, magical = -1001;
+	for (unsigned int i = 0; i < attributes_set.size(); i++) {
+		if (attributes_set[i]) {
+			if (ReaderUtil::GetElement(Data::attributes, i + 1)->type == RPG::Attribute::Type_physical) {
+				physical = std::max<float>(physical, GetAttributeModifier(i + 1));
+			}
+			else {
+				magical = std::max<float>(magical, GetAttributeModifier(i + 1));
+			}
+		}
+	}
+	physical = physical < -1000 ? 100 : physical;
+	magical = magical < -1000 ? 100 : magical;
+
+	return physical * magical / 10000;
 }

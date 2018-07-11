@@ -339,13 +339,13 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 	bool was_used = false;
 
 	if (target) {
-		was_used = target->UseSkill(skill_id);
+		was_used = target->UseSkill(skill_id, source);
 	}
 	else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
-			was_used |= (*it)->UseSkill(skill_id);
+			was_used |= (*it)->UseSkill(skill_id, source);
 		}
 	}
 
@@ -621,4 +621,19 @@ bool Game_Party::ApplyStateDamage() {
 	}
 
 	return damage;
+}
+
+Game_Actor* Game_Party::GetHighestLeveledActor() const {
+	int max_level = -1;
+
+	for (auto actor : GetActors()) {
+		max_level = std::max(max_level, actor->GetLevel());
+	}
+	for (auto actor : GetActors()) {
+		if (actor->GetLevel() == max_level) {
+			return actor;
+		}
+	}
+
+	return nullptr;
 }
