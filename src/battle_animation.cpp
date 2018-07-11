@@ -140,7 +140,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 }
 
 // FIXME: looks okay, but needs to be measured
-static int flash_length = 5;
+static int flash_length = 12;
 
 void BattleAnimation::RunTimedSfx() {
 	// Lookup any timed SFX (SE/flash/shake) data for this frame
@@ -158,10 +158,10 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 
 	// Flash.
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		SetFlash(Color(timing.flash_red << 3,
-			timing.flash_green << 3,
-			timing.flash_blue << 3,
-			timing.flash_power << 3));
+		SetFlash(Color(timing.flash_red * 255 / 31,
+			timing.flash_green * 255 / 31,
+			timing.flash_blue * 255 / 31,
+			timing.flash_power * 255 / 31));
 	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
 		Main_Data::game_screen->FlashOnce(
 			timing.flash_red,

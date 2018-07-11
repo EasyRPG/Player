@@ -431,7 +431,7 @@ public:
 	 * @param tone tone to apply.
 	 * @param opacity opacity to apply.
 	 */
-	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity);
+	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity, bool check_alpha = false);
 
 	/**
 	 * Blends bitmap with color.

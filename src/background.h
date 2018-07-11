@@ -23,6 +23,7 @@
 #include "system.h"
 #include "drawable.h"
 #include "async_handler.h"
+#include "tone.h"
 
 class Background : public Drawable {
 public:
@@ -32,6 +33,8 @@ public:
 
 	void Draw() override;
 	void Update();
+	Tone GetTone() const;
+	void SetTone(Tone tone);
 
 	int GetZ() const override;
 	DrawableType GetType() const override;
@@ -48,6 +51,8 @@ private:
 
 	bool visible;
 
+	Tone tone_effect;
+	Tone current_tone;
 	BitmapRef bg_bitmap;
 	int bg_hscroll;
 	int bg_vscroll;

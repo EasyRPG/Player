@@ -29,7 +29,7 @@
 #include "output.h"
 
 Background::Background(const std::string& name) :
-	visible(true),
+	visible(true), tone_effect(Tone()),
 	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
 	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
 
@@ -43,7 +43,7 @@ Background::Background(const std::string& name) :
 }
 
 Background::Background(int terrain_id) :
-	visible(true),
+	visible(true), tone_effect(Tone()),
 	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
 	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
 
@@ -109,6 +109,15 @@ DrawableType Background::GetType() const {
 	return type;
 }
 
+Tone Background::GetTone() const {
+	return tone_effect;
+}
+
+void Background::SetTone(Tone tone) {
+	if (tone_effect != tone) {
+		tone_effect = tone;
+	}
+}
 void Background::Update(int& rate, int& value) {
 	int step =
 		(rate > 0) ? 1 << rate :
@@ -143,4 +152,8 @@ void Background::Draw() {
 
 	if (fg_bitmap)
 		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
+
+	if (tone_effect != Tone()) {
+		dst->ToneBlit(0, 0, *dst, dst->GetRect(), tone_effect, Opacity::opaque);
+	}
 }
