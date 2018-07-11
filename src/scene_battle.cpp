@@ -99,7 +99,7 @@ void Scene_Battle::TransitionIn() {
 }
 
 void Scene_Battle::TransitionOut() {
-	if (Player::exit_flag) {
+	if (Player::exit_flag || Player::battle_test_flag) {
 		Scene::TransitionOut();
 	}
 	else {

@@ -348,9 +348,9 @@ void Player::Exit() {
 	emscripten_cancel_main_loop();
 
 	BitmapRef surface = DisplayUi->GetDisplaySurface();
-	std::string error = "You can turn off your browser now.";
+	std::string message = "It's now safe to turn off\n      your browser.";
 
-	Text::Draw(*surface, 55, DisplayUi->GetHeight() / 2 - 6, Color(255, 255, 255, 255), Font::Default(), error);
+	Text::Draw(*surface, 84, DisplayUi->GetHeight() / 2 - 30, Color(221, 123, 64, 255), Font::Default(), message);
 	DisplayUi->UpdateDisplay();
 #endif
 
