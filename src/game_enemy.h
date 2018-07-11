@@ -160,6 +160,10 @@ public:
 
 	int GetMoney() const;
 
+	int GetFlyingOffset() const override;
+
+	void UpdateBattle() override;
+
 	/**
 	 * Get's the ID of the item the enemy drops when defeated.
 	 *
@@ -191,6 +195,8 @@ protected:
 	bool hidden;
 	int hp;
 	int sp;
+	int cycle;
+	int flying_offset;
 	std::vector<int16_t> states;
 
 	RPG::Enemy* enemy;

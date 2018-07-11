@@ -45,14 +45,11 @@ namespace Graphics {
 
 	/**
 	 * Disposes Graphics.
-	 **/
+	 */
 	void Quit();
 
 	/**
 	 * Updates the screen.
-	 * The rendering is skipped when time_left is false.
-	 *
-	 * @param time_left Whether time is left to render the frame.
 	 */
 	void Update();
 

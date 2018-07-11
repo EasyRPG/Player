@@ -394,6 +394,9 @@ static int DirToMask(int d) {
 		default:
 			assert(false);
 	}
+
+	// keeping the compiler happy
+	return Passable::Down;
 }
 
 enum CollisionResult {

@@ -603,7 +603,7 @@ int Game_Battler::GetDisplayX() const {
 }
 
 int Game_Battler::GetDisplayY() const {
-	return GetBattleY();
+	return GetBattleY() + GetFlyingOffset();
 }
 
 int Game_Battler::GetHue() const {
@@ -650,6 +650,14 @@ void Game_Battler::UpdateGauge(int multiplier) {
 	gauge += GetAgi() * multiplier;
 
 	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+}
+
+int Game_Battler::GetFlyingOffset() const {
+	return 0;
+}
+
+void Game_Battler::UpdateBattle() {
+	// no-op
 }
 
 const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {

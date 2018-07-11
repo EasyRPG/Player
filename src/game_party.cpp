@@ -17,6 +17,7 @@
 
 // Headers
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cmath>
 #include "system.h"
@@ -56,17 +57,22 @@ int Game_Party::GetBattlerCount() const {
 void Game_Party::SetupBattleTestMembers() {
 	Clear();
 
-	std::vector<RPG::TestBattler>::const_iterator it;
-	for (it = Data::system.battletest_data.begin();
-		it != Data::system.battletest_data.end(); ++it) {
-		AddActor(it->actor_id);
-		Game_Actor* actor = Game_Actors::GetActor(it->actor_id);
-		actor->SetEquipment(RPG::Item::Type_weapon, it->weapon_id);
-		actor->SetEquipment(RPG::Item::Type_shield, it->shield_id);
-		actor->SetEquipment(RPG::Item::Type_armor, it->armor_id);
-		actor->SetEquipment(RPG::Item::Type_helmet, it->helmet_id);
-		actor->SetEquipment(RPG::Item::Type_accessory, it->accessory_id);
-		actor->ChangeLevel(it->level, false);
+	for (auto& data : Data::system.battletest_data) {
+		AddActor(data.actor_id);
+		Game_Actor* actor = Game_Actors::GetActor(data.actor_id);
+
+		// Filter garbage data inserted by the editor
+		std::array<int, 5> ids = { data.weapon_id, data.shield_id, data.armor_id, data.helmet_id, data.accessory_id };
+		std::replace_if(ids.begin(), ids.end(), [] (const int& item_id) {
+			return ReaderUtil::GetElement(Data::items, item_id) == nullptr;
+		}, 0);
+
+		actor->SetEquipment(RPG::Item::Type_weapon, ids[0]);
+		actor->SetEquipment(RPG::Item::Type_shield, ids[1]);
+		actor->SetEquipment(RPG::Item::Type_armor, ids[2]);
+		actor->SetEquipment(RPG::Item::Type_helmet, ids[3]);
+		actor->SetEquipment(RPG::Item::Type_accessory, ids[4]);
+		actor->ChangeLevel(data.level, false);
 		actor->SetHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 	}
@@ -603,10 +609,10 @@ bool Game_Party::ApplyStateDamage() {
 	std::vector<int16_t> states = GetInflictedStates();
 
 	for (auto state_id : states) {
-		if (state_steps_hp.size() < state_id) {
+		if (static_cast<int>(state_steps_hp.size()) < state_id) {
 			state_steps_hp.resize(state_id);
 		}
-		if (state_steps_sp.size() < state_id) {
+		if (static_cast<int>(state_steps_sp.size()) < state_id) {
 			state_steps_sp.resize(state_id);
 		}
 

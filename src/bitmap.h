@@ -132,7 +132,7 @@ public:
 	 * @param height surface height.
 	 * @param pitch surface pitch.
 	 * @param format pixel format.
-	*/
+	 */
 	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	Bitmap(int width, int height, bool transparent);

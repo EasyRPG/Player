@@ -74,7 +74,6 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Game_Enemy> > enemies;
-	RPG::Troop* troop;
 };
 
 #endif

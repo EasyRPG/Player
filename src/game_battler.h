@@ -84,10 +84,10 @@ public:
 	int GetSignificantRestriction();
 
 	/**
-	* Gets the Battler ID.
-	*
-	* @return Battler ID
-	*/
+	 * Gets the Battler ID.
+	 *
+	 * @return Battler ID
+	 */
 	virtual int GetId() const = 0;
 
 	/**
@@ -537,10 +537,20 @@ public:
 	bool IsGaugeFull() const;
 
 	/**
-	* Gets the current BattleAlgorithm (action to execute in battle)
+	 * @return Offset of flying enemies
+	 */
+	virtual int GetFlyingOffset() const;
 
-	* @return Current algorithm or NULL if none
-	*/
+	/**
+	 * Updates the Battler
+	 */
+	virtual void UpdateBattle();
+
+	/**
+	 * Gets the current BattleAlgorithm (action to execute in battle)
+	 *
+	 * @return Current algorithm or NULL if none
+	 */
 	const BattleAlgorithmRef GetBattleAlgorithm() const;
 
 	/**

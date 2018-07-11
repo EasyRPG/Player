@@ -267,6 +267,7 @@ void Game_Vehicle::LoadSystemSettings() {
 RPG::Music& Game_Vehicle::GetBGM() {
 	switch (type) {
 	case None:
+		assert(false);
 		break;
 	case Boat:
 		return Game_System::GetSystemBGM(Game_System::BGM_Boat);
@@ -276,7 +277,8 @@ RPG::Music& Game_Vehicle::GetBGM() {
 		return Game_System::GetSystemBGM(Game_System::BGM_Airship);
 	}
 
-	assert(false);
+	// keeping the compiler happy
+	return Game_System::GetSystemBGM(Game_System::BGM_Battle);
 }
 
 void Game_Vehicle::Refresh() {

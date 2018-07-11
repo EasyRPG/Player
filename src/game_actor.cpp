@@ -881,6 +881,7 @@ int Game_Actor::GetBattleX() const {
 				position = left;
 				break;
 			}
+			break;
 		case 3:
 			switch (party_pos) {
 			case 0:
@@ -893,6 +894,7 @@ int Game_Actor::GetBattleX() const {
 				position = left;
 				break;
 			}
+			break;
 		case 4:
 			switch (party_pos) {
 			case 0:
@@ -908,6 +910,7 @@ int Game_Actor::GetBattleX() const {
 				position = left;
 				break;
 			}
+			break;
 		}
 
 		switch (Game_Battle::GetBattleMode()) {
@@ -961,6 +964,7 @@ int Game_Actor::GetBattleY() const {
 				position = bottom;
 				break;
 			}
+			break;
 		case 3:
 			switch (party_pos) {
 			case 0:
@@ -973,6 +977,7 @@ int Game_Actor::GetBattleY() const {
 				position = bottom;
 				break;
 			}
+			break;
 		case 4:
 			switch (party_pos) {
 			case 0:
@@ -988,6 +993,7 @@ int Game_Actor::GetBattleY() const {
 				position = bottom;
 				break;
 			}
+			break;
 		}
 
 		position -= 24;

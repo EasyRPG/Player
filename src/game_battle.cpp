@@ -116,11 +116,16 @@ void Game_Battle::Update() {
 			animation.reset();
 		}
 	}
+
+	std::vector<Game_Battler*> battlers;
+	(*Main_Data::game_party).GetBattlers(battlers);
+	(*Main_Data::game_enemyparty).GetBattlers(battlers);
+	for (Game_Battler* b : battlers) {
+		b->UpdateBattle();
+	}
+
 	if (need_refresh) {
 		need_refresh = false;
-		std::vector<Game_Battler*> battlers;
-		(*Main_Data::game_party).GetBattlers(battlers);
-		(*Main_Data::game_enemyparty).GetBattlers(battlers);
 		for (Game_Battler* b : battlers) {
 			Sprite_Battler* spr = spriteset->FindBattler(b);
 			if (spr) {

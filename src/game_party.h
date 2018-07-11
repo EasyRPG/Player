@@ -93,11 +93,6 @@ public:
 	void LoseGold(int value);
 
 	/**
-	 * Increases steps in 1.
-	 */
-	//void IncreaseSteps();
-
-	/**
 	 * Returns all items of the party.
 	 *
 	 * @param item_list vector to fill.
@@ -310,10 +305,10 @@ public:
 	std::vector<int16_t> GetInflictedStates() const;
 
 	/**
-	* Applies damage to the game party based on their stats.
-	*
-	* @return Whether the actor suffered some damage.
-	*/
+	 * Applies damage to the game party based on their stats.
+	 *
+	 * @return Whether the actor suffered some damage.
+	 */
 	bool ApplyStateDamage();
 
 private:

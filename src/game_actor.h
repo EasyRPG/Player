@@ -308,10 +308,10 @@ public:
 	int GetMaxLevel() const;
 
 	/**
-	* Gets actor current experience points.
-	*
-	* @return current experience points.
-	*/
+	 * Gets actor current experience points.
+	 *
+	 * @return current experience points.
+	 */
 	int GetExp() const;
 
 	/**

@@ -161,6 +161,8 @@ void Sprite_Battler::Update() {
 
 	// needed for screen shaking
 	SetX(battler->GetDisplayX());
+	// needed for flying enemies
+	SetY(battler->GetDisplayY());
 }
 
 void Sprite_Battler::SetAnimationState(int state, LoopState loop) {

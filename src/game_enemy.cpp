@@ -27,6 +27,11 @@
 #include "output.h"
 #include "utils.h"
 
+namespace {
+	constexpr int levitation_frame_count = 14;
+	constexpr int levitation_frame_cycle = 20;
+}
+
 Game_Enemy::Game_Enemy(int enemy_id) : Game_Battler() {
 	Setup(enemy_id);
 }
@@ -38,6 +43,8 @@ void Game_Enemy::Setup(int enemy_id) {
 	x = 0;
 	y = 0;
 	hidden = false;
+	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
+	flying_offset = 0;
 }
 
 const std::vector<int16_t>& Game_Enemy::GetStates() const {
@@ -217,6 +224,25 @@ int Game_Enemy::GetDropId() const {
 
 int Game_Enemy::GetDropProbability() const {
 	return enemy->drop_prob;
+}
+
+int Game_Enemy::GetFlyingOffset() const {
+	return (enemy->levitate ? flying_offset : 0);
+}
+
+void Game_Enemy::UpdateBattle() {
+	if (enemy->levitate) {
+		static const int frames[levitation_frame_count] = { 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1 };
+
+		cycle++;
+		// reset animation
+		if (cycle >= levitation_frame_count * levitation_frame_cycle) {
+			cycle = 0;
+		}
+		if (cycle % levitation_frame_cycle == 0) {
+			flying_offset = frames[cycle / levitation_frame_cycle];
+		}
+	}
 }
 
 bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
