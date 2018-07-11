@@ -47,6 +47,7 @@ void Scene_Equip::Start() {
 
 	// Assign the help windows
 	for (size_t i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
 		item_windows[i]->SetHelpWindow(help_window.get());
 		item_windows[i]->SetActive(false);
 		item_windows[i]->Refresh();
