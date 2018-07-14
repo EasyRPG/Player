@@ -419,7 +419,7 @@ void Game_Character::MoveTypeCustom() {
 		}
 
 		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping() && wait_count == 0) {
-			if (IsMoveRouteOverwritten()) {
+			if (!(active_route->repeat && active_route->skippable) && IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
 				SetStopCount(0);
