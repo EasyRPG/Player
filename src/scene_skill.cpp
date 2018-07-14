@@ -25,6 +25,7 @@
 #include "input.h"
 #include "scene_actortarget.h"
 #include "scene_teleport.h"
+#include "transition.h"
 
 Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 	actor_index(actor_index), skill_index(skill_index) {
@@ -72,7 +73,7 @@ void Scene_Skill::Update() {
 				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
 			} else if (skill->type == RPG::Skill::Type_escape) {
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
-
+				Game_System::SePlay(skill->sound_effect);
 				Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
 				Main_Data::game_player->StartTeleport();
 
@@ -81,5 +82,13 @@ void Scene_Skill::Update() {
 		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
+	}
+}
+
+void Scene_Skill::TransitionOut() {
+	if (Scene::instance->type == Map) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	} else {
+		Scene::TransitionOut();
 	}
 }
