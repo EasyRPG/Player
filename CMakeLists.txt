@@ -113,6 +113,7 @@ add_library(${PROJECT_NAME}
 	src/sprite_airshipshadow.cpp
 	src/sprite_battler.cpp
 	src/sprite_character.cpp
+	src/sprite_clone.cpp
 	src/sprite.cpp
 	src/spriteset_battle.cpp
 	src/spriteset_map.cpp

@@ -20,6 +20,7 @@
 
 // Headers
 #include "sprite.h"
+#include "sprite_clone.h"
 #include <string>
 #include "async_handler.h"
 
@@ -58,7 +59,13 @@ public:
 	  */
 	void SetCharacter(Game_Character* character);
 
+	void CreateClones() override;
+	void DestroyClones() override;
+
 private:
+	std::shared_ptr<SpriteClone> clone_x;
+	std::shared_ptr<SpriteClone> clone_y;
+	std::shared_ptr<SpriteClone> clone_xy;
 	Game_Character* character;
 
 	int tile_id;

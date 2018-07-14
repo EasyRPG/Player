@@ -452,6 +452,7 @@
     <ClCompile Include="..\..\src\decoder_wildmidi.cpp" />
     <ClCompile Include="..\..\src\decoder_xmp.cpp" />
     <ClCompile Include="..\..\src\drawable.cpp" />
+    <ClCompile Include="..\..\src\sprite_clone.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\frame.cpp" />
@@ -614,6 +615,7 @@
     <ClInclude Include="..\..\src\decoder_mpg123.h" />
     <ClInclude Include="..\..\src\dirent_win.h" />
     <ClInclude Include="..\..\src\drawable.h" />
+    <ClInclude Include="..\..\src\sprite_clone.h" />
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />

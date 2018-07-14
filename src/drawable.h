@@ -30,6 +30,7 @@ enum DrawableType {
 	TypeWeather,
 	TypeOverlay,
 	TypeTransition,
+	TypeClone,
 	TypeDefault
 };
 
@@ -66,6 +67,9 @@ public:
 	virtual int GetZ() const = 0;
 
 	virtual DrawableType GetType() const = 0;
+
+	virtual void CreateClones() { }
+	virtual void DestroyClones() { }
 
 	virtual bool IsGlobal() const { return false; }
 

@@ -20,6 +20,7 @@
 #include "cache.h"
 #include "game_map.h"
 #include "bitmap.h"
+#include "sprite_clone.h"
 
 Sprite_Character::Sprite_Character(Game_Character* character) :
 	character(character),
@@ -28,6 +29,51 @@ Sprite_Character::Sprite_Character(Game_Character* character) :
 	chara_width(0),
 	chara_height(0) {
 	Update();
+}
+
+void Sprite_Character::CreateClones() {
+	if (Game_Map::GetMapId() > 0) {
+		int x = GetX();
+		int y = GetY();
+		Rect src_rect = GetSrcRect();
+
+		bool loop_x = Game_Map::GetWidth() <= 21 && Game_Map::LoopHorizontal()
+			&& (x < src_rect.width || x >= Game_Map::GetWidth() * TILE_SIZE - src_rect.width);
+
+		bool loop_y = Game_Map::GetHeight() <= 16 && Game_Map::LoopVertical()
+			&& (y < src_rect.height || y >= Game_Map::GetHeight() * TILE_SIZE - src_rect.height);
+		
+		if (loop_x) {
+			clone_x = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x + Game_Map::GetWidth() * TILE_SIZE * (x < src_rect.width ? 1 : -1), y, GetZ()));
+		}
+		
+		if (loop_y) {
+			character->SetY(character->GetY() + (Game_Map::GetHeight() * TILE_SIZE + 1) * (y < src_rect.height ? 1 : -1));
+
+			clone_y = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x, y + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1), character->GetScreenZ()));
+
+			character->SetY(character->GetY() - (Game_Map::GetHeight() * TILE_SIZE + 1) * (y < src_rect.height ? 1 : -1));
+		}
+
+		if (loop_x && loop_y) {
+			character->SetY(character->GetY() + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1));
+
+			clone_xy = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x + Game_Map::GetWidth() * TILE_SIZE * (x < src_rect.width ? 1 : -1),
+				y + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1), character->GetScreenZ()));
+
+			character->SetY(character->GetY() - Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1));
+		}
+
+	}
+}
+
+void Sprite_Character::DestroyClones() {
+	clone_x.reset();
+	clone_y.reset();
+	clone_xy.reset();
 }
 
 void Sprite_Character::Update() {

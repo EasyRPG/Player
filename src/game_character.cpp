@@ -127,10 +127,10 @@ void Game_Character::MoveTo(int x, int y) {
 	remaining_step = 0;
 }
 
-int Game_Character::GetScreenX() const {
+int Game_Character::GetScreenX(bool ignore_loop) const {
 	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
 
-	if (Game_Map::LoopHorizontal() && (x <= -TILE_SIZE / 2 || x > 0 || Game_Map::GetWidth() == 20)) {
+	if (!ignore_loop && Game_Map::LoopHorizontal() && (x <= -TILE_SIZE / 2 || x > 0 || Game_Map::GetWidth() == 20)) {
 		int map_width = Game_Map::GetWidth() * TILE_SIZE;
 		x = (x + map_width) % map_width;
 	}
@@ -138,10 +138,10 @@ int Game_Character::GetScreenX() const {
 	return x;
 }
 
-int Game_Character::GetScreenY() const {
+int Game_Character::GetScreenY(bool ignore_loop) const {
 	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
 
-	if (Game_Map::LoopVertical()) {
+	if (!ignore_loop && Game_Map::LoopVertical()) {
 		int map_height = Game_Map::GetHeight() * TILE_SIZE;
 		y = (y + map_height) % map_height;
 
@@ -150,7 +150,7 @@ int Game_Character::GetScreenY() const {
 		}
 	}
 
-	if (IsJumping()) {
+	if (!ignore_loop && IsJumping()) {
 		int jump_height = (remaining_step > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - remaining_step : remaining_step) / 8;
 		y -= (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
 	}
@@ -170,8 +170,7 @@ int Game_Character::GetScreenZ() const {
 	}
 
 	// For events on the screen, this should be inside a 0-40 range
-	z += GetScreenY() >> 3;
-
+	z += GetScreenY(true) >> 3;
 	return z;
 }
 

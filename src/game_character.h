@@ -518,16 +518,18 @@ public:
 	/**
 	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
 	 *
+	 * @param ignore_loop if active it doesn't account for the loop change parameters
 	 * @return screen x coordinate in pixels.
 	 */
-	virtual int GetScreenX() const;
+	virtual int GetScreenX(bool ignore_loop = false) const;
 
 	/**
 	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
+	 * @param ignore_loop if active it doesn't account for the loop change parameters
 	 * @return screen y coordinate in pixels.
 	 */
-	virtual int GetScreenY() const;
+	virtual int GetScreenY(bool ignore_loop = false) const;
 
 	/**
 	 * Gets screen z coordinate in pixels.

@@ -15,33 +15,33 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_SPRITE_AIRSHIPSHADOW_H
-#define EP_SPRITE_AIRSHIPSHADOW_H
+#ifndef EP_DRAWABLE_CLONE_H
+#define EP_DRAWABLE_CLONE_H
 
 // Headers
 #include "sprite.h"
-#include "sprite_clone.h"
-#include <string>
 
 /**
- * Sprite for the shadow of the airship.
- *
- * Actually, the shadow is made of two 16x16 shadow sprites in the
- * System file drawn on top of each other. These are blit to an
- * intermediate bitmap and cached until the system graphic is changed.
+ * DrawableClone class.
  */
-class Sprite_AirshipShadow : public Sprite {
+class SpriteClone : public Sprite {
 public:
-	Sprite_AirshipShadow();
-	void Update();
-	void RecreateShadow();
-	void CreateClones() override;
-	void DestroyClones() override;
+	SpriteClone(Sprite* drawable, int nx, int ny, int nz);
+	~SpriteClone() override;
+
+	void Draw() override;
+	int GetX() const;
+	int GetY() const;
+	int GetZ() const override;
+
+	DrawableType GetType() const override;
 
 private:
-	std::shared_ptr<SpriteClone> clone_x;
-	std::shared_ptr<SpriteClone> clone_y;
-	std::shared_ptr<SpriteClone> clone_xy;
+	Sprite* reference;
+	DrawableType type;
+	int x;
+	int y;
+	int z;
 };
 
 #endif

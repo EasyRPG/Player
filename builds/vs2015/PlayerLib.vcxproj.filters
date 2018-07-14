@@ -521,9 +521,12 @@
     <ClCompile Include="..\..\src\decoder_xmp.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\src\transition.cpp">
+    <ClCompile Include="..\..\src\transition.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sprite_clone.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -1026,6 +1029,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\decoder_xmp.h">
       <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sprite_clone.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

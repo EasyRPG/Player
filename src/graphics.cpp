@@ -140,6 +140,11 @@ void Graphics::LocalDraw(int priority) {
 
 	DrawableList& drawable_list = state.drawable_list;
 
+
+	for (auto it = drawable_list.begin(); it != drawable_list.end(); ++it) {
+		(*it)->CreateClones();
+	}
+
 	if (state.zlist_dirty) {
 		std::sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
 		state.zlist_dirty = false;
@@ -152,6 +157,10 @@ void Graphics::LocalDraw(int priority) {
 		if (drawable->GetZ() <= priority) {
 			drawable->Draw();
 		}
+	}
+
+	for (Drawable* drawable : state.drawable_list) {
+		drawable->DestroyClones();
 	}
 }
 

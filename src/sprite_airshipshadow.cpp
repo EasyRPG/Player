@@ -23,6 +23,7 @@
 #include "game_system.h"
 #include "main_data.h"
 #include "sprite_airshipshadow.h"
+#include "sprite_clone.h"
 #include <string>
 
 Sprite_AirshipShadow::Sprite_AirshipShadow() {
@@ -50,6 +51,55 @@ void Sprite_AirshipShadow::RecreateShadow() {
 	Opacity opacity = Opacity(0.26 * 255);
 	GetBitmap()->Blit(0, 0, *system, Rect(128,32,16,16), opacity);
 	GetBitmap()->Blit(0, 0, *system, Rect(128+16,32,16,16), opacity);
+}
+
+void Sprite_AirshipShadow::CreateClones() {
+	if (Game_Map::GetMapId() > 0) {
+		Game_Vehicle* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
+		if (!airship) {
+			return;
+		}
+		int x = GetX();
+		int y = GetY();
+		Rect src_rect = GetSrcRect();
+
+		bool loop_x = Game_Map::GetWidth() <= 21 && Game_Map::LoopHorizontal()
+			&& (x < src_rect.width || x >= Game_Map::GetWidth() * TILE_SIZE - src_rect.width);
+
+		bool loop_y = Game_Map::GetHeight() <= 16 && Game_Map::LoopVertical()
+			&& (y < src_rect.height || y >= Game_Map::GetHeight() * TILE_SIZE - src_rect.height);
+
+		if (loop_x) {
+			clone_x = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x + Game_Map::GetWidth() * TILE_SIZE * (x < src_rect.width ? 1 : -1), y, GetZ()));
+		}
+
+		if (loop_y) {
+			airship->SetY(airship->GetY() + (Game_Map::GetHeight() * TILE_SIZE + 1) * (y < src_rect.height ? 1 : -1));
+
+			clone_y = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x, y + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1), airship->GetScreenZ()));
+
+			airship->SetY(airship->GetY() - (Game_Map::GetHeight() * TILE_SIZE + 1) * (y < src_rect.height ? 1 : -1));
+		}
+
+		if (loop_x && loop_y) {
+			airship->SetY(airship->GetY() + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1));
+
+			clone_xy = std::shared_ptr<SpriteClone>(
+				new SpriteClone(this, x + Game_Map::GetWidth() * TILE_SIZE * (x < src_rect.width ? 1 : -1),
+					y + Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1), airship->GetScreenZ()));
+
+			airship->SetY(airship->GetY() - Game_Map::GetHeight() * TILE_SIZE * (y < src_rect.height ? 1 : -1));
+		}
+
+	}
+}
+
+void Sprite_AirshipShadow::DestroyClones() {
+	clone_x.reset();
+	clone_y.reset();
+	clone_xy.reset();
 }
 
 void Sprite_AirshipShadow::Update() {
