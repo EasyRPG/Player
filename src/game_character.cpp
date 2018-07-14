@@ -434,6 +434,10 @@ void Game_Character::MoveTypeCustom() {
 			}
 
 			++active_route_index;
+
+			if ((size_t)active_route_index >= active_route->move_commands.size() && !active_route->repeat) {
+				max_stop_count = 0;
+			}
 		}
 
 		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping() && wait_count == 0) {
