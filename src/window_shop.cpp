@@ -77,6 +77,7 @@ Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
 	index = 1;
 
 	Refresh();
+	UpdateCursorRect();
 }
 
 void Window_Shop::UpdateCursorRect() {
