@@ -37,6 +37,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void TransitionOut() override;
 
 private:
 	/** Actor in the party whose skills are displayed. */
