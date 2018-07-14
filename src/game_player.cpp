@@ -270,7 +270,11 @@ void Game_Player::PerformTeleport() {
 		last_pan_y = 0;
 	}
 
-	SetOpacity(255);
+	Game_Actor* actor;
+	if (!Main_Data::game_party->GetActors().empty()) {
+		actor = Main_Data::game_party->GetActors()[0];
+		SetOpacity(255 - actor->GetSpriteFlags() * 32);
+	}
 
 	MoveTo(new_x, new_y);
 	if (new_direction >= 0) {
@@ -591,6 +595,7 @@ void Game_Player::Refresh() {
 
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
+	SetOpacity(255 - actor->GetSpriteFlags() * 32);
 
 	if (location.aboard)
 		GetVehicle()->SyncWithPlayer();

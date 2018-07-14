@@ -238,6 +238,13 @@ public:
 	int GetSpriteIndex() const;
 
 	/**
+	 * Gets actor character sprite index.
+	 *
+	 * @return character sprite index.
+	 */
+	int GetSpriteFlags() const;
+
+	/**
 	 * Gets actor face graphic filename.
 	 *
 	 * @return face graphic filename.

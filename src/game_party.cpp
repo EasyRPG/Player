@@ -353,20 +353,18 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 }
 
 void Game_Party::AddActor(int actor_id) {
-	if (IsActorInParty(actor_id))
-		return;
-	if (data.party.size() >= 4)
-		return;
-	data.party.push_back((int16_t)actor_id);
-	data.party_size = data.party.size();
+	if (!IsActorInParty(actor_id) && data.party.size() < 4) {
+		data.party.push_back((int16_t)actor_id);
+		data.party_size = data.party.size();
+	}
 	Main_Data::game_player->Refresh();
 }
 
 void Game_Party::RemoveActor(int actor_id) {
-	if (!IsActorInParty(actor_id))
-		return;
-	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
-	data.party_size = data.party.size();
+	if (IsActorInParty(actor_id)) {
+		data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
+		data.party_size = data.party.size();
+	}
 	Main_Data::game_player->Refresh();
 }
 

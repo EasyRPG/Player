@@ -413,10 +413,10 @@ void Game_Character::MoveTypeCustom() {
 				walk_animation = true;
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
-				SetOpacity(max(40, GetOpacity() - 45));
+				SetOpacity(max(31, GetOpacity() - 32));
 				break;
 			case RPG::MoveCommand::Code::decrease_transp:
-				SetOpacity(GetOpacity() + 45);
+				SetOpacity(GetOpacity() + 32);
 				break;
 			}
 

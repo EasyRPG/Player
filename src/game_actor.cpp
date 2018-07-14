@@ -627,6 +627,10 @@ int Game_Actor::GetSpriteIndex() const {
 	return GetData().sprite_id;
 }
 
+int Game_Actor::GetSpriteFlags() const {
+	return GetData().sprite_flags;
+}
+
 std::string Game_Actor::GetFaceName() const {
 	return GetData().face_name;
 }
