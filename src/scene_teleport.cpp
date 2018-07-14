@@ -21,6 +21,7 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "input.h"
+#include "transition.h"
 
 Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
 		: actor(&actor), skill(&skill) {
@@ -42,7 +43,7 @@ void Scene_Teleport::Update() {
 	teleport_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+		Game_System::SePlay(skill->sound_effect);
 
 		if (skill) {
 			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
@@ -60,5 +61,13 @@ void Scene_Teleport::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 
 		Scene::Pop();
+	}
+}
+
+void Scene_Teleport::TransitionOut() {
+	if (Scene::instance->type == Map) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	} else {
+		Scene::TransitionOut();
 	}
 }
