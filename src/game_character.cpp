@@ -620,6 +620,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	jump_plus_x = 0;
 	jump_plus_y = 0;
 	jumping = true;
+	int only_if_fixed_direction = GetDirection();
 
 	bool end_found = false;
 	unsigned int i;
@@ -737,7 +738,19 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 			*current_index = i;
 			return;
 		}
+	}
 
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning()) && (jump_plus_x != 0 || jump_plus_y != 0)) {
+		int direction = std::abs(jump_plus_x) > std::abs(jump_plus_y) ? (jump_plus_x > 0 ? Right : Left) : (jump_plus_y > 0 ? Down : Up);
+		SetDirection(direction);
+		SetSpriteDirection(direction);
+	}
+	else {
+		SetDirection(only_if_fixed_direction);
+		SetSpriteDirection(only_if_fixed_direction);
+	}
+
+	if (move_failed) {
 		return;
 	}
 
