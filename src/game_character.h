@@ -671,6 +671,8 @@ public:
 	 */
 	bool IsSpinning() const;
 
+	bool IsMiddleFrameAvailable() const;
+
 	/**
 	 * Gets the bush depth of the tile where this character is standing
 	 *
