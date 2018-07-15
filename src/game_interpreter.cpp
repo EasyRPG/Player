@@ -1951,7 +1951,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 	int tenths = com.parameters[4];
 	bool wait = com.parameters[5] != 0;
 
-	screen->TintScreen(r, g, b, s, tenths);
+	screen->TintScreen(r, g, b, s, tenths * DEFAULT_FPS / 10);
 
 	if (wait)
 		SetupWait(tenths);
@@ -1969,18 +1969,18 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	bool wait = com.parameters[5] != 0;
 
 	if (com.parameters.size() <= 6) {
-		screen->FlashOnce(r, g, b, s, tenths);
+		screen->FlashOnce(r, g, b, s, tenths * DEFAULT_FPS / 10);
 		if (wait)
 			SetupWait(tenths);
 	} else {
 		switch (com.parameters[6]) {
 		case 0:
-			screen->FlashOnce(r, g, b, s, tenths);
+			screen->FlashOnce(r, g, b, s, tenths * DEFAULT_FPS / 10);
 			if (wait)
 				SetupWait(tenths);
 			break;
 		case 1:
-			screen->FlashBegin(r, g, b, s, tenths);
+			screen->FlashBegin(r, g, b, s, tenths * DEFAULT_FPS / 10);
 			break;
 		case 2:
 			screen->FlashEnd();
@@ -1999,14 +1999,14 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	bool wait = com.parameters[3] != 0;
 
 	if (Player::IsRPG2k()) {
-		screen->ShakeOnce(strength, speed, tenths);
+		screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
 		if (wait) {
 			SetupWait(tenths);
 		}
 	} else {
 		switch (com.parameters[4]) {
 		case 0:
-			screen->ShakeOnce(strength, speed, tenths);
+			screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
 			if (wait) {
 				SetupWait(tenths);
 			}
