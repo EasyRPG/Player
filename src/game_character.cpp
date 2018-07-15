@@ -742,7 +742,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 	move_failed = false;
 
-	if (IsContinuous()) {
+	if (IsMiddleFrameAvailable()) {
 		SetAnimFrame(RPG::EventPage::Frame_middle);
 	}
 }
@@ -888,6 +888,15 @@ bool Game_Character::IsContinuous() const {
 
 bool Game_Character::IsSpinning() const {
 	return GetAnimationType() == RPG::EventPage::AnimType_spin;
+}
+
+bool Game_Character::IsMiddleFrameAvailable() const {
+	auto at = GetAnimationType();
+	return
+		at == RPG::EventPage::AnimType_non_continuous ||
+		at == RPG::EventPage::AnimType_continuous ||
+		at == RPG::EventPage::AnimType_fixed_non_continuous ||
+		at == RPG::EventPage::AnimType_fixed_continuous;
 }
 
 int Game_Character::GetBushDepth() const {

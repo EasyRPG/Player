@@ -792,6 +792,13 @@ public:
 	bool IsSpinning() const;
 
 	/**
+	 * Tests if the current animation type can change to the middle frame.
+	 *
+	 * @return Wheter middle frame is available
+	 */
+	bool IsMiddleFrameAvailable() const;
+
+	/**
 	 * Gets the bush depth of the tile where this character is standing
 	 *
 	 * @return Bush depth at this character's position
