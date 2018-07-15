@@ -174,6 +174,36 @@ int Game_Character::GetScreenZ() const {
 	return z;
 }
 
+int Game_Character::GetRealScreenX(bool ignore_loop) const {
+	int x = GetSpriteX() - Game_Map::GetDisplayX() + (TILE_SIZE * TILE_SIZE / 2);
+
+	if (!ignore_loop && Game_Map::LoopHorizontal() && (x <= -TILE_SIZE * TILE_SIZE / 2 || x > 0 || Game_Map::GetWidth() == 20)) {
+		int map_width = Game_Map::GetWidth() * TILE_SIZE * TILE_SIZE;
+		x = (x + map_width) % map_width;
+	}
+	return x;
+}
+
+int Game_Character::GetRealScreenY(bool ignore_loop) const {
+	int y = GetSpriteY() - Game_Map::GetDisplayY() + TILE_SIZE * TILE_SIZE;
+
+	if (!ignore_loop && Game_Map::LoopVertical()) {
+		int map_height = Game_Map::GetHeight() * TILE_SIZE * TILE_SIZE;
+		y = (y + map_height) % map_height;
+
+		if (y == 0) {
+			y += map_height;
+		}
+	}
+
+	if (!ignore_loop && IsJumping()) {
+		int jump_height = (remaining_step > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - remaining_step : remaining_step) / 8;
+		y -= (jump_height < 5 ? jump_height * 2 * TILE_SIZE : jump_height < 13 ? jump_height + 4 * TILE_SIZE : 16 * TILE_SIZE);
+	}
+
+	return y;
+}
+
 void Game_Character::Update() {
 	if (wait_count == 0 && stop_count >= max_stop_count) {
 		if (IsMoveRouteOverwritten()) {

@@ -344,15 +344,15 @@ void Game_Player::UpdateScroll() {
 				last_remaining_move = SCREEN_TILE_WIDTH;
 
 			int d = GetDirection();
-			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() > center_x)
+			if ((d == Right || d == UpRight || d == DownRight) && GetRealScreenX() > center_x * TILE_SIZE)
 				dx = 1;
-			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() < center_x)
+			else if ((d == Left || d == UpLeft || d == DownLeft) && GetRealScreenX() < center_x * TILE_SIZE)
 				dx = -1;
 			dx *= last_remaining_move - remaining_step;
 
-			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() > center_y)
+			if ((d == Down || d == DownRight || d == DownLeft) && GetRealScreenY() > center_y * TILE_SIZE)
 				dy = 1;
-			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() < center_y)
+			else if ((d == Up || d == UpRight || d == UpLeft) && GetRealScreenY() < center_y * TILE_SIZE)
 				dy = -1;
 			dy *= last_remaining_move - remaining_step;
 			last_remaining_move = remaining_step;
@@ -361,9 +361,9 @@ void Game_Player::UpdateScroll() {
 			if (last_remaining_jump == 0)
 				last_remaining_jump = SCREEN_TILE_WIDTH;
 
-			if ((GetX() > jump_x && GetScreenX() > center_x) || (GetX() < jump_x && GetScreenX() < center_x))
+			if ((GetX() > jump_x && GetRealScreenY() > center_x * TILE_SIZE) || (GetX() < jump_x && GetRealScreenY() < center_x * TILE_SIZE))
 				dx = (GetX() - jump_x) * (last_remaining_jump - remaining_step);
-			if ((GetY() > jump_y && GetScreenY() > center_y) || (GetY() < jump_y && GetScreenY() < center_y))
+			if ((GetY() > jump_y && GetRealScreenY() > center_y * TILE_SIZE) || (GetY() < jump_y && GetRealScreenY() < center_y * TILE_SIZE))
 				dy = (GetY() - jump_y) * (last_remaining_jump - remaining_step);
 			last_remaining_jump = remaining_step;
 		}

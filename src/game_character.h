@@ -523,6 +523,10 @@ public:
 	 */
 	virtual int GetScreenX(bool ignore_loop = false) const;
 
+	virtual int GetRealScreenX(bool ignore_loop = false) const;
+
+	virtual int GetRealScreenY(bool ignore_loop = false) const;
+
 	/**
 	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
