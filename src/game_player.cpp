@@ -647,7 +647,9 @@ bool Game_Player::GetOffVehicle() {
 	if (!InAirship()) {
 		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-		if (!CanWalk(front_x, front_y))
+		if (!CanWalk(front_x, front_y)
+			&& !Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y)
+			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 			return false;
 	}
 
