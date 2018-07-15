@@ -445,7 +445,8 @@ void Game_Player::Update() {
 		location.aboard = true;
 		location.boarding = false;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
-		SetDirection(GetVehicle()->GetDirection());
+		GetVehicle()->SetDirection(GetDirection());
+		GetVehicle()->SetSpriteDirection(GetSpriteDirection());
 		return;
 	}
 
