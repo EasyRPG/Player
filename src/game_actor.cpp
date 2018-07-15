@@ -805,16 +805,16 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		// At least level minimum
 		SetExp(max(GetBaseExp(), GetExp()));
 	} else if (new_level < old_level) {
-		// Set HP and SP to maximum possible value
-		SetHp(GetHp());
-		SetSp(GetSp());
-
 		// Experience adjustment:
 		// Level minimum if higher then Level maximum
 		if (GetExp() >= GetNextExp()) {
 			SetExp(GetBaseExp());
 		}
 	}
+
+	// Set HP and SP to maximum possible value
+	SetHp(GetHp());
+	SetSp(GetSp());
 }
 
 bool Game_Actor::IsEquippable(int item_id) const {
