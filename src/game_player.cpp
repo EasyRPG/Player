@@ -716,14 +716,16 @@ void Game_Player::BeginMove() {
 	bool red_flash = false;
 
 	if (terrain) {
-		if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
-			Game_System::SePlay(terrain->footstep);
-		}
-		if (terrain->damage > 0) {
-			for (auto hero : Main_Data::game_party->GetActors()) {
-				if (!hero->PreventsTerrainDamage()) {
-					red_flash = true;
-					hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
+		if (!InAirship()) {
+			if (!terrain->on_damage_se || (terrain->on_damage_se && (terrain->damage > 0))) {
+				Game_System::SePlay(terrain->footstep);
+			}
+			if (terrain->damage > 0) {
+				for (auto hero : Main_Data::game_party->GetActors()) {
+					if (!hero->PreventsTerrainDamage()) {
+						red_flash = true;
+						hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));
+					}
 				}
 			}
 		}
