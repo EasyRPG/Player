@@ -641,7 +641,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
 		return false;
 	}
 
-	return (!GetTarget()->IsDead());
+	return GetTarget()->Exists();
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
