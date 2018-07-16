@@ -983,8 +983,10 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
 		std::stringstream ss;
-		ss << exp << space << Data::terms.exp_received;
-		Game_Message::texts.push_back(ss.str());
+		if (exp > 0) {
+			ss << exp << space << Data::terms.exp_received;
+			Game_Message::texts.push_back(ss.str());
+		}
 		if (money > 0) {
 			ss.str("");
 			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;

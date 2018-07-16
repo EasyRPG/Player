@@ -1015,7 +1015,9 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
 
 		std::stringstream ss;
-		PushExperienceGainedMessage(exp);
+		if (exp > 0) {
+			PushExperienceGainedMessage(exp);
+		}
 		if (money > 0) {
 			PushGoldReceivedMessage(money);
 		}
