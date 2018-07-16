@@ -1982,8 +1982,12 @@ int Game_BattleAlgorithm::Escape::GetSourceAnimationState() const {
 		return AlgorithmBase::GetSourceAnimationState();
 	}
 	else {
-		return Sprite_Battler::AnimationState_Dead;
+		return Sprite_Battler::AnimationState_Escape;
 	}
+}
+
+int Game_BattleAlgorithm::Escape::GetSourceAnimationStateApply() const {
+	return Sprite_Battler::AnimationState_Dead;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Escape::GetStartSe() const {

@@ -43,6 +43,7 @@ public:
 		AnimationState_WalkingRight,
 		AnimationState_Victory,
 		AnimationState_Item,
+		AnimationState_Escape,
 		AnimationState_SelfDestruct,
 		AnimationState_DeadSelfDestruct
 	};
