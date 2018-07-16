@@ -70,6 +70,7 @@ void Scene_Map::Continue() {
 	else {
 		Game_Map::PlayBgm();
 	}
+	spriteset->Update();
 }
 
 void Scene_Map::Resume() {
