@@ -164,6 +164,8 @@ public:
 
 	void UpdateBattle() override;
 
+	bool GetTransparency() const;
+
 	/**
 	 * Get's the ID of the item the enemy drops when defeated.
 	 *

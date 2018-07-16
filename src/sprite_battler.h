@@ -102,6 +102,7 @@ protected:
 	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
+	int GetMaxOpacity() const;
 
 	std::string sprite_name;
 	int hue = 0;
@@ -112,6 +113,7 @@ protected:
 	std::string sprite_file;
 	int sprite_frame = -1;
 	int fade_out = 255;
+	int fade_out_incr = 15;
 	int flash_counter = 0;
 	LoopState loop_state = LoopState_DefaultAnimationAfterFinish;
 	bool old_hidden = false;

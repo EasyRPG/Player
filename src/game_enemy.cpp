@@ -337,3 +337,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 
 	return nullptr;
 }
+
+bool Game_Enemy::GetTransparency() const {
+	return enemy->transparent;
+}
