@@ -41,6 +41,10 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
+static inline int MaxDamageValue() {
+	return Player::IsRPG2k() ? 999 : 9999;
+}
+
 static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int to_hit) {
 	// If target has Restriction "do_nothing", the attack always hits
 	if (target->GetSignificantRestriction() == RPG::State::Restriction_do_nothing) {
@@ -915,9 +919,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		int change = (int)(std::ceil(effect * act_perc / 100.0));
 		effect += change;
 		effect *= multiplier;
-		if(effect < 0) {
-			effect = 0;
-		}
 		if (critical_hit) {
 			effect *= 3;
 		} else if(source->IsCharged()) {
@@ -930,6 +931,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				effect /= 2;
 			}
 		}
+
+		effect = Utils::Clamp(effect, 0, MaxDamageValue());
+
 		this->hp = effect;
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
@@ -1105,8 +1109,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
 
-			if (effect < 0)
-				effect = 0;
+			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -1146,9 +1149,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			effect += (effect * Utils::GetRandomNumber(-skill.variance, skill.variance) / 10);
 
-			if (effect < 0) {
-				effect = 0;
-			}
+			effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 			if (skill.affect_hp) {
 				this->hp = effect /
@@ -1696,11 +1697,11 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	int change = (int)(std::ceil(effect * act_perc / 100.0));
 	effect += change;
 
-	if (effect < 0)
-		effect = 0;
+	effect /= GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1;
 
-	this->hp = effect / (
-		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 4 : 2 : 1);
+	effect = Utils::Clamp(effect, 0, MaxDamageValue());
+
+	this->hp = effect;
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
