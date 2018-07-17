@@ -40,6 +40,8 @@ public:
 	 */
 	Sprite_Character(Game_Character* character);
 
+	void Draw() override;
+
 	/**
 	 * Updates sprite state.
 	 */

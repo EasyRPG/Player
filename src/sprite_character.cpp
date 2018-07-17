@@ -70,6 +70,16 @@ void Sprite_Character::CreateClones() {
 	}
 }
 
+void Sprite_Character::Draw() {
+	if (UsesCharset()) {
+		Rect r;
+		int row = character->GetSpriteDirection();
+		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
+		SetSrcRect(r);
+	}
+	Sprite::Draw();
+}
+
 void Sprite_Character::DestroyClones() {
 	clone_x.reset();
 	clone_y.reset();
@@ -96,12 +106,6 @@ void Sprite_Character::Update() {
 			request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
 			tile_request->Start();
 		}
-	}
-
-	if (UsesCharset()) {
-		int row = character->GetSpriteDirection();
-		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
-		SetSrcRect(r);
 	}
 
 	if (character->IsFlashPending()) {

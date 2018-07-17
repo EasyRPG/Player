@@ -962,6 +962,10 @@ bool Game_Character::IsMiddleFrameAvailable() const {
 		animation_type == RPG::EventPage::AnimType_fixed_continuous;
 }
 
+void Game_Character::SetPattern(int new_pattern) {
+	pattern = new_pattern;
+}
+
 int Game_Character::GetBushDepth() const {
 	if (jumping)
 		return 0;

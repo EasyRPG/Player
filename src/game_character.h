@@ -677,6 +677,8 @@ public:
 
 	bool IsMiddleFrameAvailable() const;
 
+	void SetPattern(int new_pattern);
+
 	/**
 	 * Gets the bush depth of the tile where this character is standing
 	 *

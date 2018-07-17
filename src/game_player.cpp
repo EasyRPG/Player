@@ -242,6 +242,9 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 }
 
 void Game_Player::StartTeleport() {
+	if (Main_Data::game_player->IsMiddleFrameAvailable()) {
+		Main_Data::game_player->SetPattern(RPG::EventPage::Frame_middle);
+	}
 	teleporting = true;
 }
 

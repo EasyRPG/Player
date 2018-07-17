@@ -253,6 +253,9 @@ void Scene_Map::FinishTeleportPlayer() {
 
 void Scene_Map::CallBattle() {
 	DisableCalls();
+	if (Main_Data::game_player->IsMiddleFrameAvailable()) {
+		Main_Data::game_player->SetPattern(RPG::EventPage::Frame_middle);
+	}
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 
@@ -274,6 +277,9 @@ void Scene_Map::CallName() {
 }
 
 void Scene_Map::CallMenu() {
+	if (!Game_Temp::inmediate_call && Main_Data::game_player->IsMiddleFrameAvailable()) {
+		Main_Data::game_player->SetPattern(RPG::EventPage::Frame_middle);
+	}
 	DisableCalls();
 	Game_Temp::transition_menu = true;
 
