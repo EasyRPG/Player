@@ -649,7 +649,7 @@ static int AffectParameter(const int type, const int val) {
 
 int Game_Battler::GetAtk() const {
 	int base_atk = GetBaseAtk();
-	int n = min(max(base_atk, 1), 999);
+	int n = Utils::Clamp(base_atk, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -662,14 +662,14 @@ int Game_Battler::GetAtk() const {
 
 	n += atk_modifier;
 
-	n = min(max(n, 1), 999);
+	n = Utils::Clamp(n, 1, MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetDef() const {
 	int base_def = GetBaseDef();
-	int n = min(max(base_def, 1), 999);
+	int n = Utils::Clamp(base_def, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -682,14 +682,14 @@ int Game_Battler::GetDef() const {
 
 	n += def_modifier;
 
-	n = min(max(n, 1), 999);
+	n = Utils::Clamp(n, 1, MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetSpi() const {
 	int base_spi = GetBaseSpi();
-	int n = min(max(base_spi, 1), 999);
+	int n = Utils::Clamp(base_spi, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -702,14 +702,14 @@ int Game_Battler::GetSpi() const {
 
 	n += spi_modifier;
 
-	n = min(max(n, 1), 999);
+	n = Utils::Clamp(n, 1, MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetAgi() const {
 	int base_agi = GetBaseAgi();
-	int n = min(max(base_agi, 1), 999);
+	int n = Utils::Clamp(base_agi, 1, MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -722,7 +722,7 @@ int Game_Battler::GetAgi() const {
 
 	n += agi_modifier;
 
-	n = min(max(n, 1), 999);
+	n = Utils::Clamp(n, 1, MaxStatBattleValue());
 
 	return n;
 }

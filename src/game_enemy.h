@@ -33,6 +33,12 @@ public:
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
 
+	int MaxHpValue() const override;
+
+	int MaxStatBattleValue() const override;
+
+	int MaxStatBaseValue() const override;
+
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
 	 *
