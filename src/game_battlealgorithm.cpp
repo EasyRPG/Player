@@ -796,6 +796,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) /
 			(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+		this->hp = std::min(this->hp, source->MaxDamageValue());
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
@@ -955,6 +956,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 
 			int effect = (int)(skill.power * mul);
+			effect = std::min(effect, source->MaxDamageValue());
 
 			if (skill.affect_hp)
 				this->hp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxHp() - GetTarget()->GetHp()));
@@ -996,6 +998,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (skill.affect_hp) {
 				this->hp = effect /
 					(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+
+				effect = std::min(effect, source->MaxDamageValue());
 
 				if (IsAbsorb())
 					this->hp = std::min<int>(hp, GetTarget()->GetHp());
@@ -1483,6 +1487,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	this->hp = effect / (
 		GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+	this->hp = std::min(this->hp, source->MaxDamageValue());
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state

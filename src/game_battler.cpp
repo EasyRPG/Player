@@ -37,6 +37,10 @@ Game_Battler::Game_Battler() {
 	ResetBattle();
 }
 
+int Game_Battler::MaxDamageValue() const {
+	return Player::IsRPG2k ? 999 : 9999;
+}
+
 bool Game_Battler::HasState(int state_id) const {
 	const std::vector<int16_t> states = GetInflictedStates();
 
@@ -303,6 +307,7 @@ bool Game_Battler::UseSkill(int skill_id, Game_Battler* source) {
 
 		if (effect < 0)
 			effect = 0;
+		effect = std::min(effect, MaxDamageValue());
 
 		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {

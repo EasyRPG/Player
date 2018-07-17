@@ -43,6 +43,8 @@ public:
 	 */
 	Game_Battler();
 
+	int MaxDamageValue() const;
+
 	/**
 	 * Gets if battler has a state.
 	 *
