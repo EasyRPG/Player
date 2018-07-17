@@ -26,6 +26,7 @@
 #include "reader_util.h"
 #include "output.h"
 #include "utils.h"
+#include "player.h"
 
 namespace {
 	constexpr int levitation_frame_count = 14;
@@ -45,6 +46,18 @@ void Game_Enemy::Setup(int enemy_id) {
 	hidden = false;
 	cycle = Utils::GetRandomNumber(0, levitation_frame_count - 1) * levitation_frame_cycle;
 	flying_offset = 0;
+}
+
+int Game_Enemy::MaxHpValue() const {
+	return Player::IsRPG2k() ? 9999 : 99999;
+}
+
+int Game_Enemy::MaxStatBattleValue() const {
+	return 9999;
+}
+
+int Game_Enemy::MaxStatBaseValue() const {
+	return 999;
 }
 
 const std::vector<int16_t>& Game_Enemy::GetStates() const {

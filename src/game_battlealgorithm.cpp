@@ -747,7 +747,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int atk = GetAffectedAttack();
 		GetTarget()->ChangeAtkModifier(IsPositive() ? atk : -atk);
 		if (IsAbsorb()) {
-			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(999, source->GetBaseAtk() * 2) - source->GetAtk()));
+			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAtkModifier(atk);
 		}
 	}
@@ -756,7 +756,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int def = GetAffectedDefense();
 		GetTarget()->ChangeDefModifier(IsPositive() ? def : -def);
 		if (IsAbsorb()) {
-			def = std::max<int>(0, std::min<int>(def, std::min<int>(999, source->GetBaseAtk() * 2) - source->GetAtk()));
+			def = std::max<int>(0, std::min<int>(def, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeDefModifier(def);
 		}
 	}
@@ -765,7 +765,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int spi = GetAffectedSpirit();
 		GetTarget()->ChangeSpiModifier(IsPositive() ? spi : -spi);
 		if (IsAbsorb()) {
-			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(999, source->GetBaseAtk() * 2) - source->GetAtk()));
+			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeSpiModifier(spi);
 		}
 	}
@@ -774,7 +774,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		int agi = GetAffectedAgility();
 		GetTarget()->ChangeAgiModifier(IsPositive() ? agi : -agi);
 		if (IsAbsorb()) {
-			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(999, source->GetBaseAtk() * 2) - source->GetAtk()));
+			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAgiModifier(agi);
 		}
 	}
@@ -1291,13 +1291,13 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->sp = std::max<int>(0, std::min<int>(effect, GetTarget()->GetMaxSp() - GetTarget()->GetSp() + prov_sp));
 			}
 			if (skill.affect_attack)
-				this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(999, GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
+				this->attack = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAtk() * 2) - GetTarget()->GetAtk()));
 			if (skill.affect_defense)
-				this->defense = std::max<int>(0, std::min<int>(effect, std::min<int>(999, GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef()));
+				this->defense = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseDef() * 2) - GetTarget()->GetDef()));
 			if (skill.affect_spirit)
-				this->spirit = std::max<int>(0, std::min<int>(effect, std::min<int>(999, GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi()));
+				this->spirit = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseSpi() * 2) - GetTarget()->GetSpi()));
 			if (skill.affect_agility)
-				this->agility = std::max<int>(0, std::min<int>(effect, std::min<int>(999, GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi()));
+				this->agility = std::max<int>(0, std::min<int>(effect, std::min<int>(GetTarget()->MaxStatBattleValue(), GetTarget()->GetBaseAgi() * 2) - GetTarget()->GetAgi()));
 
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
