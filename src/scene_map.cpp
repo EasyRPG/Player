@@ -189,7 +189,7 @@ void Scene_Map::Update() {
 		}
 	}
 
-	if (!Main_Data::game_player->IsMoving()) {
+	if (!Main_Data::game_player->IsMoving() || Game_Temp::inmediate_call) {
 		if (Game_Temp::battle_calling) {
 			CallBattle();
 			return;
@@ -319,4 +319,5 @@ void Scene_Map::DisableCalls() {
 	Game_Temp::shop_calling = false;
 	Game_Temp::save_calling = false;
 	Game_Temp::load_calling = false;
+	Game_Temp::inmediate_call = false;
 }

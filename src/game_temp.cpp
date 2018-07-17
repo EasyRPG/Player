@@ -52,6 +52,7 @@ int Game_Temp::battle_defeat_mode;
 bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_result;
 bool Game_Temp::restart_title_cache;
+bool Game_Temp::inmediate_call;
 
 void Game_Temp::Init() {
 	menu_calling = false;
@@ -87,4 +88,5 @@ void Game_Temp::Init() {
 	battle_first_strike = false;
 	battle_result = 0;
 	restart_title_cache = false;
+	inmediate_call = false;
 }

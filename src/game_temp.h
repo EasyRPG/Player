@@ -43,6 +43,7 @@ public:
 	static bool load_calling;
 	static bool to_title;
 	static bool gameover;
+	static bool inmediate_call;
 
 	static bool transition_processing;
 	static Transition::TransitionType transition_type;
