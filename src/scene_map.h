@@ -57,6 +57,7 @@ public:
 private:
 	void StartTeleportPlayer();
 	void FinishTeleportPlayer();
+	void DisableCalls();
 
 	std::unique_ptr<Window_Message> message_window;
 

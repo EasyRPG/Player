@@ -190,6 +190,11 @@ void Scene_Map::Update() {
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
+		if (Game_Temp::battle_calling) {
+			CallBattle();
+			return;
+		}
+
 		if (Game_Temp::menu_calling) {
 			CallMenu();
 			return;
@@ -212,11 +217,6 @@ void Scene_Map::Update() {
 
 		if (Game_Temp::load_calling) {
 			CallLoad();
-			return;
-		}
-
-		if (Game_Temp::battle_calling) {
-			CallBattle();
 			return;
 		}
 	}
@@ -252,6 +252,7 @@ void Scene_Map::FinishTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
+	DisableCalls();
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 
@@ -259,21 +260,21 @@ void Scene_Map::CallBattle() {
 }
 
 void Scene_Map::CallShop() {
-	Game_Temp::shop_calling = false;
+	DisableCalls();
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
-	Game_Temp::name_calling = false;
+	DisableCalls();
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
-	Game_Temp::menu_calling = false;
+	DisableCalls();
 	Game_Temp::transition_menu = true;
 
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -292,14 +293,14 @@ void Scene_Map::CallMenu() {
 }
 
 void Scene_Map::CallSave() {
-	Game_Temp::save_calling = false;
+	DisableCalls();
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
-	Game_Temp::load_calling = false;
+	DisableCalls();
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Load>());
@@ -310,4 +311,12 @@ void Scene_Map::CallDebug() {
 		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
+}
+void Scene_Map::DisableCalls() {
+	// "battle_calling" has the upmost priority and is not disabled until the battle ends, so it's not here
+	Game_Temp::menu_calling = false;
+	Game_Temp::name_calling = false;
+	Game_Temp::shop_calling = false;
+	Game_Temp::save_calling = false;
+	Game_Temp::load_calling = false;
 }
