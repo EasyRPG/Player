@@ -79,7 +79,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, bool fs_flag) :
+Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen) :
 	BaseUi(),
 	zoom_available(true),
 	toggle_fs_available(false),
@@ -105,10 +105,15 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fs_flag) :
 	sdl_window = NULL;
 
 	BeginDisplayModeChange();
-		if (!RequestVideoMode(width, height, fs_flag)) {
+		if (!RequestVideoMode(width, height)) {
 			Output::Error("No suitable video resolution found. Aborting.");
 		}
 	EndDisplayModeChange();
+
+	// Work around some SDL bugs, window properties are incorrect when started
+	// as full screen, e.g. height lacks title bar size, icon is not added, etc.
+	if (fullscreen)
+		ToggleFullscreen();
 
 	SetTitle(GAME_TITLE);
 
@@ -163,15 +168,12 @@ void Sdl2Ui::Sleep(uint32_t time) {
 #endif
 }
 
-bool Sdl2Ui::RequestVideoMode(int width, int height, bool fullscreen) {
+bool Sdl2Ui::RequestVideoMode(int width, int height) {
 	// SDL2 documentation says that resolution dependent code should not be used
 	// anymore. The library takes care of it now.
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
-	if (fullscreen) {
-		current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-	}
 	toggle_fs_available = true;
 
 	current_display_mode.zoom = true;

@@ -125,7 +125,7 @@ private:
 	bool zoom_available;
 	bool toggle_fs_available;
 
-	bool RequestVideoMode(int width, int height, bool fullscreen);
+	bool RequestVideoMode(int width, int height);
 
 	/** Last display mode. */
 	DisplayMode last_display_mode;
