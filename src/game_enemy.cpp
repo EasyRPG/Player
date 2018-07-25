@@ -26,6 +26,7 @@
 #include "reader_util.h"
 #include "output.h"
 #include "utils.h"
+#include "player.h"
 
 namespace {
 	constexpr int levitation_frame_count = 14;
@@ -227,11 +228,15 @@ int Game_Enemy::GetDropProbability() const {
 }
 
 int Game_Enemy::GetFlyingOffset() const {
-	return (enemy->levitate ? flying_offset : 0);
+	// 2k does not support flying, albeit mentioned in the help file
+	if (Player::IsRPG2k3() && enemy->levitate) {
+		return flying_offset;
+	}
+	return 0;
 }
 
 void Game_Enemy::UpdateBattle() {
-	if (enemy->levitate) {
+	if (Player::IsRPG2k3() && enemy->levitate) {
 		static const int frames[levitation_frame_count] = { 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1 };
 
 		cycle++;
