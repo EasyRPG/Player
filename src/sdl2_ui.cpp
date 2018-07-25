@@ -79,9 +79,9 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen) :
+Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen, int zoom) :
 	BaseUi(),
-	zoom_available(true),
+	zoom_available(false),
 	toggle_fs_available(false),
 	mode_changing(false) {
 
@@ -105,7 +105,7 @@ Sdl2Ui::Sdl2Ui(long width, long height, bool fullscreen) :
 	sdl_window = NULL;
 
 	BeginDisplayModeChange();
-		if (!RequestVideoMode(width, height)) {
+		if (!RequestVideoMode(width, height, zoom)) {
 			Output::Error("No suitable video resolution found. Aborting.");
 		}
 	EndDisplayModeChange();
@@ -168,7 +168,7 @@ void Sdl2Ui::Sleep(uint32_t time) {
 #endif
 }
 
-bool Sdl2Ui::RequestVideoMode(int width, int height) {
+bool Sdl2Ui::RequestVideoMode(int width, int height, int zoom) {
 	// SDL2 documentation says that resolution dependent code should not be used
 	// anymore. The library takes care of it now.
 	current_display_mode.width = width;
@@ -176,7 +176,7 @@ bool Sdl2Ui::RequestVideoMode(int width, int height) {
 	current_display_mode.bpp = 32;
 	toggle_fs_available = true;
 
-	current_display_mode.zoom = true;
+	current_display_mode.zoom = zoom;
 #ifdef SUPPORT_ZOOM
 	zoom_available = true;
 #else
@@ -225,9 +225,9 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
-	if (zoom_available && current_display_mode.zoom) {
-		display_width *= 2;
-		display_height *= 2;
+	if (zoom_available) {
+		display_width *= current_display_mode.zoom;
+		display_height *= current_display_mode.zoom;
 	}
 
 	if (!sdl_window) {
@@ -359,7 +359,27 @@ void Sdl2Ui::ToggleZoom() {
 	}
 
 	if (zoom_available && mode_changing) {
-		current_display_mode.zoom = !current_display_mode.zoom;
+		// get current window size, calculate next bigger zoom factor
+		int w, h;
+		SDL_GetWindowSize(sdl_window, &w, &h);
+		last_display_mode.zoom = std::min(w / SCREEN_TARGET_WIDTH, h / SCREEN_TARGET_HEIGHT);
+		current_display_mode.zoom = last_display_mode.zoom + 1;
+
+		// get maximum usable window size
+		int display_index = SDL_GetWindowDisplayIndex(sdl_window);
+		SDL_Rect max_mode;
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+		// this takes account of the menu bar and dock on macOS and task bar on windows
+		SDL_GetDisplayUsableBounds(display_index, &max_mode);
+#else
+		SDL_GetDisplayBounds(display_index, &max_mode);
+#endif
+
+		// reset zoom, if it does not fit
+		if ((max_mode.h < SCREEN_TARGET_HEIGHT * current_display_mode.zoom) ||
+			(max_mode.w < SCREEN_TARGET_WIDTH * current_display_mode.zoom)) {
+			current_display_mode.zoom = 1;
+		}
 	}
 	EndDisplayModeChange();
 }

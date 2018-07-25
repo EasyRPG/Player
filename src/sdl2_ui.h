@@ -46,8 +46,9 @@ public:
 	 * @param width window client width.
 	 * @param height window client height.
 	 * @param fullscreen start in fullscreen flag.
+	 * @param zoom initial magnification factor.
 	 */
-	Sdl2Ui(long width, long height, bool fullscreen);
+	Sdl2Ui(long width, long height, bool fullscreen, int zoom);
 
 	/**
 	 * Destructor.
@@ -125,7 +126,7 @@ private:
 	bool zoom_available;
 	bool toggle_fs_available;
 
-	bool RequestVideoMode(int width, int height);
+	bool RequestVideoMode(int width, int height, int zoom);
 
 	/** Last display mode. */
 	DisplayMode last_display_mode;

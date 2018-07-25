@@ -192,9 +192,10 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 				// All modes available
 				if (modes == (SDL_Rect **)-1) {
 					// If we have a high res, turn zoom on
-					current_display_mode.zoom = (vinfo->current_h > height*2 && vinfo->current_w > width*2);
+					if (vinfo->current_h > height*2 && vinfo->current_w > width*2)
+						current_display_mode.zoom = 2;
 #if defined(SUPPORT_ZOOM)
-					zoom_available = current_display_mode.zoom;
+					zoom_available = current_display_mode.zoom == 2;
 #else
 					zoom_available = false;
 #endif
@@ -211,8 +212,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 							|| (modes[i]->h == height*2 && modes[i]->w == width*2)
 #endif
 						) {
-							current_display_mode.zoom = ((modes[i]->w >> 1) == width);
-							zoom_available = current_display_mode.zoom;
+							current_display_mode.zoom = modes[i]->w / width;
+							zoom_available = current_display_mode.zoom == 2;
 							return true;
 						}
 					}
@@ -246,8 +247,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	if (modes == (SDL_Rect **)-1) {
 		// All modes available
 		current_display_mode.flags = flags;
-		current_display_mode.zoom = false;
-		zoom_available = current_display_mode.zoom;
+		current_display_mode.zoom = 1;
+		zoom_available = false;
 		return true;
 	}
 
@@ -263,8 +264,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 			) {
 				current_display_mode.flags = flags;
 				// FIXME: we have to find a way to make zoom possible only in windowed mode
-				current_display_mode.zoom = ((modes[i]->w >> 1) == width);
-				zoom_available = current_display_mode.zoom;
+				current_display_mode.zoom = modes[i]->w / width;
+				zoom_available = current_display_mode.zoom == 2;
 				return true;
 		}
 	}
@@ -312,7 +313,7 @@ bool SdlUi::RefreshDisplayMode() {
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
-	if (zoom_available && current_display_mode.zoom) {
+	if (zoom_available && current_display_mode.zoom == 2) {
 		display_width *= 2;
 		display_height *= 2;
 	}
@@ -342,7 +343,7 @@ bool SdlUi::RefreshDisplayMode() {
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
-	if (zoom_available && current_display_mode.zoom) {
+	if (zoom_available && current_display_mode.zoom == 2) {
 		// Create a non zoomed surface as drawing surface
 		main_surface = Bitmap::Create(current_display_mode.width,
 											  current_display_mode.height,
@@ -380,7 +381,10 @@ void SdlUi::ToggleFullscreen() {
 void SdlUi::ToggleZoom() {
 	BeginDisplayModeChange();
 	if (zoom_available && mode_changing) {
-		current_display_mode.zoom = !current_display_mode.zoom;
+		if(current_display_mode.zoom == 2)
+			current_display_mode.zoom = 1;
+		else
+			current_display_mode.zoom = 2;
 	}
 	EndDisplayModeChange();
 }
@@ -398,7 +402,7 @@ void SdlUi::ProcessEvents() {
 }
 
 void SdlUi::UpdateDisplay() {
-	if (zoom_available && current_display_mode.zoom) {
+	if (zoom_available && current_display_mode.zoom == 2) {
 		// Blit drawing surface x2 scaled over window surface
 		Blit2X(*main_surface, sdl_surface);
 	}
