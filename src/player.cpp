@@ -248,6 +248,13 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
+	double cur_time = DisplayUi->GetTicks();
+	if (cur_time < start_time) {
+		// Ensure this function is only called 60 times per second
+		// Main purpose is for emscripten where the calls per second equal the display refresh rate
+		return;
+	}
+
 	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
@@ -306,22 +313,18 @@ void Player::Update(bool update_scene) {
 		}
 	}
 
-#ifdef EMSCRIPTEN
-	// Ticks in emscripten are unreliable due to how the main loop works:
-	// This function is only called 60 times per second instead of theoretical
-	// 1000s of times.
-	Graphics::Draw();
-#else
-	double cur_time = (double)DisplayUi->GetTicks();
+	cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < next_frame) {
 		Graphics::Draw();
 		cur_time = (double)DisplayUi->GetTicks();
+		// Emscripten manages the framerate via the webbrowser
+#if !defined(EMSCRIPTEN)
 		// Still time after graphic update? Yield until it's time for next one.
 		if (cur_time < next_frame) {
 			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
 		}
-	}
 #endif
+	}
 
 	start_time = next_frame;
 }
