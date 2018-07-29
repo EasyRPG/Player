@@ -248,23 +248,6 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-#ifdef EMSCRIPTEN
-	// Ticks in emscripten are unreliable due to how the main loop works:
-	// This function is only called 60 times per second instead of theoretical
-	// 1000s of times.
-	Graphics::Draw();
-#else
-	double cur_time = (double)DisplayUi->GetTicks();
-	if (cur_time < next_frame) {
-		Graphics::Draw();
-		cur_time = (double)DisplayUi->GetTicks();
-		// Still time after graphic update? Yield until it's time for next one.
-		if (cur_time < next_frame) {
-			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
-		}
-	}
-#endif
-
 	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
@@ -322,6 +305,23 @@ void Player::Update(bool update_scene) {
 			}
 		}
 	}
+
+#ifdef EMSCRIPTEN
+	// Ticks in emscripten are unreliable due to how the main loop works:
+	// This function is only called 60 times per second instead of theoretical
+	// 1000s of times.
+	Graphics::Draw();
+#else
+	double cur_time = (double)DisplayUi->GetTicks();
+	if (cur_time < next_frame) {
+		Graphics::Draw();
+		cur_time = (double)DisplayUi->GetTicks();
+		// Still time after graphic update? Yield until it's time for next one.
+		if (cur_time < next_frame) {
+			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
+		}
+	}
+#endif
 
 	start_time = next_frame;
 }
