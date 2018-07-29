@@ -248,12 +248,13 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-	double cur_time = DisplayUi->GetTicks();
+	double cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < start_time) {
 		// Ensure this function is only called 60 times per second
 		// Main purpose is for emscripten where the calls per second equal the display refresh rate
 		return;
 	}
+	printf("%f %f %f\n", cur_time, start_time, next_frame);
 
 	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
