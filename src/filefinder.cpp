@@ -676,29 +676,9 @@ std::string FileFinder::FindSound(const std::string& name) {
 bool FileFinder::Exists(const std::string& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
-#elif (defined(GEKKO) || defined(SWITCH))
+#elif (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
-#elif defined(_3DS)
-	FILE* tmp = fopen(filename.c_str(),"r");
-	if (tmp == NULL){
-		DIR* tmp2 = opendir(filename.c_str());
-		if (tmp2 == NULL){
-			std::string tmp_str = filename + "/";
-			tmp2 = opendir(tmp_str.c_str());
-			if (tmp2 == NULL) return false;
-			else{
-				closedir(tmp2);
-				return true;
-			}
-		}else{
-			closedir(tmp2);
-			return true;
-		}
-	}else{
-		fclose(tmp);
-		return true;
-	}
 #elif defined(PSP2)
 	struct SceIoStat sb;
 	return (sceIoGetstat(filename.c_str(), &sb) >= 0);
@@ -708,21 +688,7 @@ bool FileFinder::Exists(const std::string& filename) {
 }
 
 bool FileFinder::IsDirectory(const std::string& dir) {
-#ifdef _3DS
-	DIR* d = opendir(dir.c_str());
-	if(d) {
-		closedir(d);
-		return true;
-	}else{
-		std::string tmp_str = dir + "/";
-		d = opendir(tmp_str.c_str());
-		if(d) {
-			closedir(d);
-			return true;
-		}
-	}
-	return false;
-#elif (defined(GEKKO) || defined(SWITCH))
+#if (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
 	struct stat sb;
 	if (::stat(dir.c_str(), &sb) == 0)
 		return S_ISDIR(sb.st_mode);
@@ -759,8 +725,6 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath Utils::ToWideString(path)
 #  define dirent _wdirent
 #  define readdir _wreaddir
-#elif _3DS
-	std::string wpath = path + "/";
 #else
 #  define wpath path
 #endif
@@ -798,7 +762,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		if (has_fast_dir_stat) {
 			#ifdef PSP2
 			is_directory = S_ISDIR(ent.d_stat.st_mode);
-			#elif defined(_DIRENT_HAVE_D_TYPE)
+			#elif defined(_DIRENT_HAVE_D_TYPE) || defined(_3DS)
 			if (ent->d_type == DT_UNKNOWN) {
 				has_fast_dir_stat = false;
 			} else {

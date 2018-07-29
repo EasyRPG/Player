@@ -363,10 +363,10 @@ void Player::Exit() {
 
 #ifdef PSP2
 	sceKernelExitProcess(0);
-#endif
-
-#ifdef _3DS
+#elif defined(_3DS)
+#  ifndef CITRA3DS_COMPATIBLE
 	romfsExit();
+#  endif
 #endif
 }
 

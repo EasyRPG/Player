@@ -108,7 +108,10 @@ void Main_Data::Init() {
 
 			}
 #elif defined(_3DS)
-#  ifndef CITRA3DS_COMPATIBLE
+#  ifdef CITRA3DS_COMPATIBLE
+			// load games from hardcoded path
+			project_path = "sdmc:/3ds/easyrpg-player";
+#  else
 			// Check if romFs has some files inside or not
 			FILE* testfile = fopen("romfs:/RPG_RT.lmt","r");
 			if (testfile != NULL) {

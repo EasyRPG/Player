@@ -23,7 +23,8 @@
 #include "color.h"
 #include "rect.h"
 #include "system.h"
-#include <sf2d.h>
+#include <citro3d.h>
+#include <citro2d.h>
 
 /**
  * CtrUi class.
@@ -73,8 +74,9 @@ public:
 	/** @} */
 
 private:
-	sf2d_texture* main_texture;
-	sf2d_texture* keyboard_texture;
+	C3D_RenderTarget *top_screen, *bottom_screen;
+	C2D_Image top_image, bottom_image;
+	C2D_SpriteSheet assets;
 	bool fullscreen;
 	bool trigger_state;
 
