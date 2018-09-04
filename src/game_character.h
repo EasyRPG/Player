@@ -44,28 +44,28 @@ public:
 	~Game_Character();
 
 	/**
-	 * Gets x position.
+	 * Gets x position in tiles.
 	 *
 	 * @return x position.
 	 */
 	virtual int GetX() const = 0;
 
 	/**
-	 * Sets x position.
+	 * Sets x position in tiles.
 	 *
 	 * @param new_x new x position.
 	 */
 	virtual void SetX(int new_x) = 0;
 
 	/**
-	 * Gets y position.
+	 * Gets y position in tiles.
 	 *
 	 * @return y position.
 	 */
 	virtual int GetY() const = 0;
 
 	/**
-	 * Sets y position.
+	 * Sets y position in tiles.
 	 *
 	 * @param new_y new y position.
 	 */
@@ -512,14 +512,14 @@ public:
 	virtual void CancelMoveRoute();
 
 	/**
-	 * Gets screen x coordinate in pixels.
+	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
 	 *
 	 * @return screen x coordinate in pixels.
 	 */
 	virtual int GetScreenX() const;
 
 	/**
-	 * Gets screen y coordinate in pixels.
+	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
 	 * @return screen y coordinate in pixels.
 	 */
@@ -540,18 +540,18 @@ public:
 	int GetTileId() const;
 
 	/**
-	 * Gets real x.
+	 * Gets sprite x position in pixels.
 	 *
 	 * @return real x.
 	 */
-	int GetRealX() const;
+	int GetSpriteX() const;
 
 	/**
-	 * Gets real y.
+	 * Gets sprite y position in pixels.
 	 *
 	 * @return real y.
 	 */
-	int GetRealY() const;
+	int GetSpriteY() const;
 
 	/**
 	 * Gets remaining step
@@ -584,6 +584,14 @@ public:
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;
 
+	/**
+	 * Tests if the character is currently on the tile at x/y or moving
+	 * towards it.
+	 *
+	 * @param x X tile position
+	 * @param y Y tile position
+	 * @return If on tile or moving towards
+	 */
 	virtual bool IsInPosition(int x, int y) const;
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
