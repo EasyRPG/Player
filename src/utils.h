@@ -92,6 +92,7 @@ namespace Utils {
 	 */
 	std::string EncodeUTF(const std::u32string& str);
 
+#ifndef __amigaos4__
 	/**
 	 * Converts UTF-8 string to std::wstring.
 	 *
@@ -107,6 +108,7 @@ namespace Utils {
 	 * @return the converted string.
 	 */
 	std::string FromWideString(const std::wstring& str);
+#endif
 
 	/**
 	 * Converts arithmetic types to a string.

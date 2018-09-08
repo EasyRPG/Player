@@ -34,7 +34,7 @@
 	#include <SDL_system.h>
 #endif
 
-#ifdef GEKKO
+#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
 	#include <unistd.h>
 #endif
 
@@ -83,11 +83,11 @@ void Main_Data::Init() {
 			// first set to current directory for all platforms
 			project_path = ".";
 
-#ifdef GEKKO
-			// Working directory not correctly handled under Wii
-			char gekko_dir[256];
-			getcwd(gekko_dir, 255);
-			project_path = std::string(gekko_dir);
+#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
+			// Working directory not correctly handled
+			char working_dir[256];
+			getcwd(working_dir, 255);
+			project_path = std::string(working_dir);
 #elif defined(PSP2)
 			// Check if app0 filesystem contains the title id reference file
 			FILE* f = fopen("app0:/titleid.txt","r");
