@@ -33,9 +33,13 @@
 
 std::shared_ptr<BaseUi> DisplayUi;
 
-std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, bool /* zoom */) {
+std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, int zoom) {
+#if USE_SDL!=2
+	/* unused */
+	(void) zoom;
+#endif
 #if USE_SDL==2
-	return std::make_shared<Sdl2Ui>(width, height, fs_flag);
+	return std::make_shared<Sdl2Ui>(width, height, fs_flag, zoom);
 #elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, fs_flag);
 #elif _3DS

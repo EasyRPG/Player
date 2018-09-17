@@ -48,9 +48,9 @@ public:
 	 * @param width display client width.
 	 * @param height display client height.
 	 * @param fullscreen start in fullscreen flag.
-	 * @param zoom start with zoom flag.
+	 * @param zoom initial magnification factor.
 	 */
-	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, bool zoom);
+	static std::shared_ptr<BaseUi> CreateUi(long width, long height, bool fullscreen, int zoom);
 
 	/**
 	 * Begins a display mode change.
@@ -223,9 +223,9 @@ protected:
 	 * Display mode data struct.
 	 */
 	struct DisplayMode {
-		DisplayMode() : effective(false), zoom(false), width(0), height(0), bpp(0), flags(0) {}
+		DisplayMode() : effective(false), zoom(0), width(0), height(0), bpp(0), flags(0) {}
 		bool effective;
-		bool zoom;
+		int zoom;
 		int width;
 		int height;
 		uint8_t bpp;

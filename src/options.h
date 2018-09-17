@@ -22,7 +22,6 @@
 #define GAME_TITLE "EasyRPG Player"
 
 /** Targeted screen default width. */
-//#define SCREEN_TARGET_WIDTH 640
 #define SCREEN_TARGET_WIDTH 320
 
 /** Targeted screen default height. */
@@ -40,8 +39,8 @@
 /** Run game in fullscreen mode. */
 #define RUN_FULLSCREEN 0
 
-/** Run game in zoom mode. */
-#define RUN_ZOOM 1
+/** Run game with this magnification factor. */
+#define RUN_ZOOM 2
 
 /**
  * Pause the game process when the player window
