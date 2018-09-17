@@ -261,6 +261,11 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
 		if (!sdl_renderer)
 			return false;
+
+		// Flush display
+		SDL_RenderClear(sdl_renderer);
+		SDL_RenderPresent(sdl_renderer);
+
 		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
 		uint32_t const texture_format =
