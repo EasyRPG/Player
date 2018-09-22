@@ -608,7 +608,10 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	source->SetDefending(false);
+	ApplyActionSwitches();
+}
 
+void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
 	for (int s : switch_on) {
 		Game_Switches[s] = true;
 	}
@@ -1367,6 +1370,7 @@ bool Game_BattleAlgorithm::Defend::Execute() {
 
 void Game_BattleAlgorithm::Defend::Apply() {
 	source->SetDefending(true);
+	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
@@ -1422,6 +1426,7 @@ bool Game_BattleAlgorithm::Charge::Execute() {
 
 void Game_BattleAlgorithm::Charge::Apply() {
 	source->SetCharged(true);
+	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
@@ -1568,6 +1573,7 @@ void Game_BattleAlgorithm::Escape::Apply() {
 	if (source->GetType() == Game_Battler::Type_Enemy) {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
+	ApplyActionSwitches();
 }
 
 void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out) const {
@@ -1608,6 +1614,7 @@ bool Game_BattleAlgorithm::Transform::Execute() {
 
 void Game_BattleAlgorithm::Transform::Apply() {
 	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
+	ApplyActionSwitches();
 }
 
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
@@ -1639,6 +1646,5 @@ bool Game_BattleAlgorithm::NoMove::Execute() {
 }
 
 void Game_BattleAlgorithm::NoMove::Apply() {
-	// no-op
+	ApplyActionSwitches();
 }
-
