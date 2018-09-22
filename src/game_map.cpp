@@ -510,8 +510,9 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 		}
 	}
 
-	if (!self.IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
+	if (vehicles[0]->IsInPosition(new_x, new_y) || vehicles[1]->IsInPosition(new_x, new_y)) {
 		return false;
+	}
 
 	if (Main_Data::game_player->IsInPosition(new_x, new_y)
 			&& !Main_Data::game_player->GetThrough()

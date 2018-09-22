@@ -427,7 +427,7 @@ void Game_Player::Update() {
 		}
 
 		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && Input::IsTriggered(Input::CANCEL)) {
+		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsBlockedByMoveRoute() && Input::IsTriggered(Input::CANCEL)) {
 			Game_Temp::menu_calling = true;
 		}
 	}
@@ -445,7 +445,8 @@ void Game_Player::Update() {
 		location.aboard = true;
 		location.boarding = false;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
-		SetDirection(GetVehicle()->GetDirection());
+		GetVehicle()->SetDirection(GetDirection());
+		GetVehicle()->SetSpriteDirection(GetSpriteDirection());
 		return;
 	}
 
@@ -647,7 +648,9 @@ bool Game_Player::GetOffVehicle() {
 	if (!InAirship()) {
 		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-		if (!CanWalk(front_x, front_y))
+		if (!CanWalk(front_x, front_y)
+			&& !Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y)
+			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 			return false;
 	}
 
