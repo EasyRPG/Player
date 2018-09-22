@@ -313,6 +313,7 @@ protected:
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 	std::string GetStateMessage(const std::string& message) const;
 
+	void ApplyActionSwitches();
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
 	void Reset();
