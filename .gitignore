@@ -6,6 +6,7 @@ easyrpg-player
 *.o
 *~
 *.orig
+*.bak
 
 # autotools
 /autom4te.cache/
@@ -30,7 +31,7 @@ stamp-h1
 /directorytree
 
 # cmake
-/CMakeFiles/
+CMakeFiles/
 CMakeCache.txt
 CPackConfig.cmake
 CPackSourceConfig.cmake
@@ -55,17 +56,12 @@ cmake_install.cmake
 /builds/vs20*/Player*/ARM/
 /resources/player.aps
 
-# switch
-/builds/switch/build
-/builds/switch/*.nacp
-/builds/switch/*.nro
-/builds/switch/*.nso
-/builds/switch/*.pfs0
+# IntelliJ
+.idea/
 
-# vita
-/builds/psvita/*.vpk
-/builds/psvita/*.velf
-/builds/psvita/release/
+# VS Code
+.vscode/
+compile_commands.json
 
 # doxygen
 /resources/Doxyfile
@@ -82,6 +78,7 @@ Testing/
 
 # distribution archives
 easyrpg-player-*.tar.*
+*.zip
 
 # osx
 __MACOSX
