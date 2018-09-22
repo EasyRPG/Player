@@ -693,10 +693,10 @@ void Scene_Battle_Rpg2k::Escape() {
 			}
 			else {
 				SetState(State_Battle);
+				NextTurn();
+
 				CreateEnemyActions();
 				CreateExecutionOrder();
-
-				NextTurn();
 				Game_Battle::RefreshEvents();
 			}
 		}
@@ -709,12 +709,12 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	if ((size_t)actor_index == allies.size()) {
 		// All actor actions decided, player turn ends
 		SetState(State_Battle);
-		if (!Game_Temp::battle_first_strike || Game_Battle::GetTurn() > 0) {
+		NextTurn();
+
+		if (!Game_Temp::battle_first_strike || Game_Battle::GetTurn() > 1) {
 			CreateEnemyActions();
 		}
 		CreateExecutionOrder();
-
-		NextTurn();
 		Game_Battle::RefreshEvents();
 
 		return;
