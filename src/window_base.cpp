@@ -40,6 +40,22 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	SetHeight(height);
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 	SetZ(Priority_Window);
+
+	current_frame = -1;
+	total_frames = -2;
+}
+
+void Window_Base::InitMovement(int old_x, int old_y, int new_x, int new_y, int duration) {
+	current_frame = 0;
+	total_frames = duration;
+	old_position[0] = old_x;
+	old_position[1] = old_y;
+	new_position[0] = new_x;
+	new_position[1] = new_y;
+}
+
+bool Window_Base::IsMovementActive() {
+	return current_frame <= total_frames;
 }
 
 void Window_Base::Update() {
@@ -49,6 +65,26 @@ void Window_Base::Update() {
 		SetWindowskin(Cache::System(windowskin_name));
 	}
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
+	UpdateMovement();
+}
+
+void Window_Base::UpdateMovement() {
+	if (!IsMovementActive()) {
+		return;
+	}
+	current_frame++;
+	if (!IsMovementActive()) {
+		SetX(new_position[0]);
+		SetY(new_position[1]);
+	}
+}
+
+void Window_Base::Draw() {
+	if (IsMovementActive()) {
+		SetX(old_position[0] + (new_position[0] - old_position[0]) * current_frame / total_frames);
+		SetY(old_position[1] + (new_position[1] - old_position[1]) * current_frame / total_frames);
+	}
+	Window::Draw();
 }
 
 void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip) {

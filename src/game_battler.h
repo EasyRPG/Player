@@ -43,6 +43,12 @@ public:
 	 */
 	Game_Battler();
 
+	virtual int MaxHpValue() const = 0;
+
+	virtual int MaxStatBattleValue() const = 0;
+
+	virtual int MaxStatBaseValue() const = 0;
+
 	/**
 	 * Gets if battler has a state.
 	 *
@@ -135,6 +141,15 @@ public:
 	 * @param shift Shift to apply.
 	 */
 	void ShiftAttributeRate(int attribute_id, int shift);
+
+	/**
+	 * Gets the current modifier (buff/debuff) to an attribute rate.
+	 * The shift is cleared after the battle ended.
+	 *
+	 * @param attribute_id Attribute modified
+	 * @return shift Shift applied.
+	 */
+	int GetShiftAttributeRate(int attribute_id);
 
 	/**
 	 * Gets probability that a state can be inflicted on this actor.
@@ -379,12 +394,25 @@ public:
 	 */
 	void SetAgiModifier(int modifier);
 
+	void ChangeAtkModifier(int modifier);
+
+	void ChangeDefModifier(int modifier);
+
+	void ChangeSpiModifier(int modifier);
+
+	void ChangeAgiModifier(int modifier);
+
 	/**
 	 * Adds a State.
 	 *
 	 * @param state_id ID of state to add.
 	 */
 	virtual void AddState(int state_id);
+
+	/**
+	 * Filters all the states that have 10 or less priority than the top one.
+	 */
+	virtual void FilterStatesByPriority();
 
 	/**
 	 * Removes a State.
@@ -583,6 +611,9 @@ public:
 	 */
 	std::vector<int16_t> BattlePhysicalStateHeal(int physical_rate);
 
+	void SetRandomOrderAgi();
+	int GetRandomOrderAgi();
+
 	void SetLastBattleAction(int battle_action);
 
 	int GetLastBattleAction() const;
@@ -614,6 +645,8 @@ protected:
 	int battle_combo_times;
 
 	std::vector<int> attribute_shift;
+
+	int agi_order;
 };
 
 #endif

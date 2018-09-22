@@ -349,6 +349,22 @@ void Game_Battler::SetAgiModifier(int modifier) {
 	agi_modifier = modifier;
 }
 
+void Game_Battler::ChangeAtkModifier(int modifier) {
+	SetAtkModifier(atk_modifier + modifier);
+}
+
+void Game_Battler::ChangeDefModifier(int modifier) {
+	SetDefModifier(def_modifier + modifier);
+}
+
+void Game_Battler::ChangeSpiModifier(int modifier) {
+	SetSpiModifier(spi_modifier + modifier);
+}
+
+void Game_Battler::ChangeAgiModifier(int modifier) {
+	SetAgiModifier(agi_modifier + modifier);
+}
+
 void Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
@@ -361,7 +377,22 @@ void Game_Battler::AddState(int state_id) {
 		states.resize(state_id);
 	}
 
-	states[state_id - 1] = 1;
+	states[state_id - 1] = std::max<int> (1, states[state_id - 1]);
+	FilterStatesByPriority();
+}
+
+void Game_Battler::FilterStatesByPriority() {
+	if (!IsDead()) {
+		int new_priority = GetSignificantState() != nullptr? GetSignificantState()->priority : -1;
+		for (auto state_id : GetInflictedStates()) {
+			if (state_id <= 0 || state_id > Data::states.size()) {
+				continue;
+			}
+			if (ReaderUtil::GetElement(Data::states, state_id)->priority < new_priority - 9) {
+				RemoveState(state_id);
+			}
+		}
+	}
 }
 
 void Game_Battler::RemoveState(int state_id) {
@@ -443,7 +474,7 @@ void Game_Battler::RemoveBattleStates() {
 	}
 
 	for (size_t i = 0; i < states.size(); ++i) {
-		if (non_permanent(i + 1)) {
+		if (i != 0 && (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob == 0)) {
 			states[i] = 0;
 		}
 	}
@@ -519,7 +550,7 @@ static int AffectParameter(const int type, const int val) {
 
 int Game_Battler::GetAtk() const {
 	int base_atk = GetBaseAtk();
-	int n = min(max(base_atk, 1), 999);
+	int n = min(max(base_atk, 1), MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -532,14 +563,14 @@ int Game_Battler::GetAtk() const {
 
 	n += atk_modifier;
 
-	n = min(max(n, 1), 999);
+	n = min(max(n, 1), MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetDef() const {
 	int base_def = GetBaseDef();
-	int n = min(max(base_def, 1), 999);
+	int n = min(max(base_def, 1), MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -552,14 +583,14 @@ int Game_Battler::GetDef() const {
 
 	n += def_modifier;
 
-	n = min(max(n, 1), 999);
+	n = min(max(n, 1), MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetSpi() const {
 	int base_spi = GetBaseSpi();
-	int n = min(max(base_spi, 1), 999);
+	int n = min(max(base_spi, 1), MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -572,14 +603,14 @@ int Game_Battler::GetSpi() const {
 
 	n += spi_modifier;
 
-	n = min(max(n, 1), 999);
+	n = min(max(n, 1), MaxStatBattleValue());
 
 	return n;
 }
 
 int Game_Battler::GetAgi() const {
 	int base_agi = GetBaseAgi();
-	int n = min(max(base_agi, 1), 999);
+	int n = min(max(base_agi, 1), MaxStatBaseValue());
 
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid
@@ -592,7 +623,7 @@ int Game_Battler::GetAgi() const {
 
 	n += agi_modifier;
 
-	n = min(max(n, 1), 999);
+	n = min(max(n, 1), MaxStatBattleValue());
 
 	return n;
 }
@@ -677,11 +708,13 @@ std::vector<int16_t> Game_Battler::NextBattleTurn() {
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
 			states[i] += 1;
-
-			if (states[i] >= Data::states[i].hold_turn) {
+			if (states[i] > Data::states[i].hold_turn + 1) {
 				if (Utils::ChanceOf(Data::states[i].auto_release_prob, 100)) {
 					healed_states.push_back(i + 1);
 					RemoveState(i + 1);
+				}
+				else {
+					states[i] -= Data::states[i].hold_turn;
 				}
 			}
 		}
@@ -704,7 +737,6 @@ std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
 
 			if (Utils::ChanceOf(release_chance, 100)) {
 				healed_states.push_back(i + 1);
-				RemoveState(i + 1);
 			}
 		}
 	}
@@ -783,4 +815,19 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	} else if ((old_shift == 1 || old_shift == 0) && shift == -1) {
 		--old_shift;
 	}
+}
+
+int Game_Battler::GetShiftAttributeRate(int attribute_id) {
+	if (attribute_id < 1 || attribute_id >(int)Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+	return attribute_shift[attribute_id - 1];
+}
+
+void Game_Battler::SetRandomOrderAgi() {
+	agi_order = GetAgi() + Utils::GetRandomNumber(std::ceil(GetAgi() * -10 / 100.0) - 1, std::ceil(GetAgi() * 10 / 100.0) + 1);
+}
+
+int Game_Battler::GetRandomOrderAgi() {
+	return agi_order;
 }

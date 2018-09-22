@@ -42,7 +42,10 @@ public:
 		AnimationState_WalkingLeft,
 		AnimationState_WalkingRight,
 		AnimationState_Victory,
-		AnimationState_Item
+		AnimationState_Item,
+		AnimationState_Escape,
+		AnimationState_SelfDestruct,
+		AnimationState_DeadSelfDestruct
 	};
 
 	enum LoopState {
@@ -99,6 +102,7 @@ protected:
 	void DoIdleAnimation();
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
+	int GetMaxOpacity() const;
 
 	std::string sprite_name;
 	int hue = 0;
@@ -109,12 +113,14 @@ protected:
 	std::string sprite_file;
 	int sprite_frame = -1;
 	int fade_out = 255;
+	int fade_out_incr = 15;
 	int flash_counter = 0;
 	LoopState loop_state = LoopState_DefaultAnimationAfterFinish;
 	bool old_hidden = false;
 	std::unique_ptr<BattleAnimation> animation;
 	// false when a newly set animation didn't loop once
 	bool idling = true;
+	float zoom = 1.0;
 
 	FileRequestBinding request_id;
 };

@@ -118,6 +118,8 @@ protected:
 	bool DisplayMonstersInMessageWindow();
 
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
+	std::vector<int> battle_result_order;
+	std::vector<int>::iterator battle_result_order_it;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	std::vector<Game_Battler *> visible_enemies;
@@ -133,8 +135,10 @@ protected:
 	bool begin_escape = true;
 	bool escape_success = false;
 	int escape_counter = 0;
+	bool interpreter_activated = false;
 
 	bool message_box_got_visible = false;
+	bool move_screen = false;
 
 	int last_turn_check = -1;
 };

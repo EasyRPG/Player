@@ -46,6 +46,9 @@ class SpriteAction;
 
 class Game_Battler;
 
+constexpr int option_command_mov = 76;
+constexpr int option_command_time = 8;
+
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -62,6 +65,7 @@ public:
 
 	void TransitionIn() override;
 	void TransitionOut() override;
+	void DrawBackground() override;
 
 	enum State {
 		/** Battle has started (Display encounter message) */
@@ -94,21 +98,38 @@ public:
 
 	enum BattleActionState {
 		/**
-		 * Called once at the beginning of the Action.
-		 * Used to execute the algorithm to play an optional battle animation.
-		 */
-		BattleActionState_Start,
-		/**
+		 * 1st action, called repeatedly.
 		 * Handles healing of conditions that get auto removed after X turns.
 		 */
 		BattleActionState_ConditionHeal,
 		/**
-		 * Used to apply the new conditions that were caused.
-		 * Called once for each condition.
+		 * 2nd action, called once.
+		 * Used to execute the algorithm and print the first start line.
 		 */
-		BattleActionState_Result,
+		BattleActionState_Execute,
 		/**
-		 * Action execution finished (no function is called here)
+		 * 3rd action, called once.
+		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
+		 */
+		BattleActionState_Apply,
+		/**
+		* 4th action, called repeatedly.
+		* Used for the results, concretely wait a few frames and pop the messages.
+		*/
+		BattleActionState_ResultPop,
+		/**
+		 * 5th action, called repeatedly.
+		 * Used to push the message results, effects and advances the messages. If it finishes, it calls Death. If not, it calls ResultPop
+		 */
+		BattleActionState_ResultPush,
+		/**
+		 * 6th action, called once.
+		 * Action treating whether the enemy died or not.
+		 */
+		BattleActionState_Death,
+		/**
+		 * 7th action, called once.
+		 * It finishes the action and checks whether to repeat it if there is another target to hit.
 		 */
 		BattleActionState_Finished
 	};
@@ -128,6 +149,8 @@ protected:
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
 	void NextTurn(Game_Battler* battler);
+
+	bool IsWindowMoving();
 
 	virtual void EnemySelected();
 	virtual void AllySelected();
@@ -155,6 +178,7 @@ protected:
 	 */
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
+	void UpdateBattlerAction(Game_Battler* battler);
 	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
 	void CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action);
 	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);

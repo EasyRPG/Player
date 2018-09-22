@@ -526,6 +526,7 @@ bool Game_Interpreter::ExecuteCommand() {
 }
 
 bool Game_Interpreter::CommandEnd() { // code 10
+	finished_not_updated = true;
 	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
 	}

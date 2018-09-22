@@ -50,6 +50,7 @@ int Game_Temp::battle_formation;
 int Game_Temp::battle_escape_mode;
 int Game_Temp::battle_defeat_mode;
 bool Game_Temp::battle_first_strike;
+bool Game_Temp::battle_check_surprise_attack;
 int Game_Temp::battle_result;
 
 void Game_Temp::Init() {
@@ -81,4 +82,5 @@ void Game_Temp::Init() {
 	battle_escape_mode = -1;
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
+	battle_check_surprise_attack = false;
 }

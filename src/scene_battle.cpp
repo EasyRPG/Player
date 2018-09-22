@@ -99,7 +99,7 @@ void Scene_Battle::TransitionIn() {
 }
 
 void Scene_Battle::TransitionOut() {
-	if (Player::exit_flag || Player::battle_test_flag) {
+	if (Player::exit_flag || Player::battle_test_flag || Scene::instance->type == Scene::Title) {
 		Scene::TransitionOut();
 	}
 	else {
@@ -107,12 +107,16 @@ void Scene_Battle::TransitionOut() {
 	}
 }
 
+void Scene_Battle::DrawBackground() {
+	DisplayUi->CleanDisplay();
+}
+
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
 	commands.push_back(Data::terms.battle_fight);
 	commands.push_back(Data::terms.battle_auto);
 	commands.push_back(Data::terms.battle_escape);
-	options_window.reset(new Window_Command(commands, 76));
+	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
 
@@ -127,19 +131,14 @@ void Scene_Battle::CreateUi() {
 	skill_window.reset(new Window_Skill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
+	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
 
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
 }
 
 void Scene_Battle::Update() {
-	options_window->Update();
-	status_window->Update();
-	command_window->Update();
-	help_window->Update();
-	item_window->Update();
-	skill_window->Update();
-	target_window->Update();
+	Scene_Battle::State changed_state;
+
 	message_window->Update();
 
 	// Query Timer before and after update.
@@ -152,17 +151,30 @@ void Scene_Battle::Update() {
 		Scene::Pop();
 	}
 
-	bool events_finished = Game_Battle::UpdateEvents();
+	do {
+		bool events_finished = Game_Battle::UpdateEvents();
+		changed_state = state;
 
-	if (Game_Temp::gameover) {
-		Game_Temp::gameover = false;
-		Scene::Push(std::make_shared<Scene_Gameover>());
-	}
+		if (Game_Temp::gameover) {
+			Game_Temp::gameover = false;
+			Scene::Push(std::make_shared<Scene_Gameover>());
+		}
 
-	if (!Game_Message::visible && events_finished) {
-		ProcessActions();
-		ProcessInput();
-	}
+		if (!Game_Message::visible && events_finished) {
+			options_window->Update();
+			status_window->Update();
+			command_window->Update();
+			help_window->Update();
+			item_window->Update();
+			skill_window->Update();
+			target_window->Update();
+
+			if (!IsWindowMoving()) {
+				ProcessActions();
+				ProcessInput();
+			}
+		}
+	} while (changed_state != state && state == State_SelectOption);
 
 	Game_Battle::Update();
 
@@ -171,6 +183,10 @@ void Scene_Battle::Update() {
 	if (Game_Battle::IsTerminating()) {
 		Scene::Pop();
 	}
+}
+
+bool Scene_Battle::IsWindowMoving() {
+	return options_window->IsMovementActive() || status_window->IsMovementActive() || command_window->IsMovementActive();
 }
 
 void Scene_Battle::InitBattleTest()
@@ -203,7 +219,15 @@ void Scene_Battle::EnemySelected() {
 	Game_Enemy* target = static_cast<Game_Enemy*>(enemies[target_window->GetIndex()]);
 
 	if (previous_state == State_SelectCommand) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
+		const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
+		const RPG::Item* item2 = active_actor->HasTwoWeapons() ? active_actor->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
+		if ((item && item->dual_attack) || (item2 && item2->dual_attack)) {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(active_actor, target));
+		}
+		else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
+		}
+		
 	} else if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
 		if (skill_item) {
 			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
@@ -228,6 +252,7 @@ void Scene_Battle::EnemySelected() {
 		}
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
@@ -251,6 +276,7 @@ void Scene_Battle::AllySelected() {
 		assert("Invalid previous state for ally selection" && false);
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
@@ -258,8 +284,14 @@ void Scene_Battle::AttackSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->attack_all) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
+	const RPG::Item* item2 = active_actor->HasTwoWeapons() ? active_actor->GetEquipment(RPG::Item::Type_weapon + 1) : nullptr;
+	if ((item && item->attack_all) || (item2 && item2->attack_all)) {
+		if ((item && item->dual_attack) || (item2 && item2->dual_attack)) {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(active_actor, Main_Data::game_enemyparty.get()));
+		}
+		else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
+		}
 		ActionSelectedCallback(active_actor);
 	} else {
 		SetState(State_SelectEnemyTarget);
@@ -413,6 +445,36 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 	}
 }
 
+void Scene_Battle::UpdateBattlerAction(Game_Battler* battler) {
+	BattleAlgorithmRef alg = battler->GetBattleAlgorithm();
+	if (!battler->CanAct()) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		battler->SetCharged(false);
+	}
+	else if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+	}
+	else if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+	}
+	else if (alg->GetType() == "Skill" && alg->GetItem() == nullptr && static_cast<Game_BattleAlgorithm::Skill*>(alg.get())->GetSpCost() > battler->GetSp()) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+	}
+	else if (alg->GetItem() != nullptr && Main_Data::game_party->GetItemCount(alg->GetItem()->ID, false) == 0) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+	}
+}
+
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
 	switch (action->kind) {
 		case RPG::EnemyAction::Kind_basic:
@@ -443,8 +505,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
-			// ToDo: Must be NormalDual, not implemented
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NormalDual>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));
@@ -479,6 +540,17 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_front();
+
+	if (!battle_actions.empty()) {
+		if (battle_actions.front()->IsDead()) {
+			// No zombies allowed ;)
+			RemoveCurrentAction();
+		}
+		else {
+			UpdateBattlerAction(battle_actions.front());
+		}
+	}
+
 }
 
 void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action) {

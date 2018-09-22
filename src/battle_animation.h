@@ -34,7 +34,7 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	BattleAnimation(const RPG::Animation& anim);
+	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff_frame = -1);
 
 	DrawableType GetType() const override;
 
@@ -43,6 +43,7 @@ public:
 	int GetFrames() const;
 	void SetFrame(int);
 	bool IsDone() const;
+	bool ShouldOnlySound() const;
 
 protected:
 	virtual void SetFlash(Color c) = 0;
@@ -53,9 +54,11 @@ protected:
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
 
+	bool should_only_sound;
 	const RPG::Animation& animation;
 	int frame;
 	bool frame_update;
+	int cutoff;
 
 	FileRequestBinding request_id;
 };
@@ -75,8 +78,8 @@ protected:
 // For playing animations against a (group of) battlers in battle.
 class BattleAnimationBattlers : public BattleAnimation {
 public:
-	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true);
-	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true);
+	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
+	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
 	~BattleAnimationBattlers() override;
 	void Draw() override;
 protected:

@@ -46,6 +46,12 @@ public:
 	 */
 	Game_Actor(int actor_id);
 
+	int MaxHpValue() const override;
+
+	int MaxStatBattleValue() const override;
+
+	int MaxStatBaseValue() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.
@@ -659,6 +665,13 @@ public:
 	 * @return name of skill menu item
 	 */
 	const std::string& GetSkillName() const;
+
+	/**
+	 * Checks if the actor has the Rename Skill active.
+	 *
+	 * @return true if rename_skill is true.
+	 */
+	bool IsSkillRenamed() const;
 
 	/**
 	 * Sets new actor name.

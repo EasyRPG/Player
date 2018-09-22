@@ -81,6 +81,12 @@ void Game_Battle::Init() {
 		return false;
 	});
 
+	if (Game_Temp::battle_check_surprise_attack) {
+		Game_Temp::battle_first_strike = Utils::GetRandomNumber(1, 100) <=
+			(Main_Data::game_party->GetAverageAgility() > Main_Data::game_enemyparty->GetAverageAgility() ? 5 : 3);
+		//TODO: IMPLEMENT 2k3 DIFFERENT SURPRISE MODES
+	}
+
 	Main_Data::game_party->ResetBattle();
 }
 
@@ -91,6 +97,8 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 	Game_Temp::battle_background = "";
+	Game_Temp::battle_first_strike = false;
+	Game_Temp::battle_check_surprise_attack = false;
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);
@@ -145,14 +153,33 @@ bool Game_Battle::CheckWin() {
 }
 
 bool Game_Battle::CheckLose() {
-	return !Main_Data::game_party->IsAnyActive();
+	if (!Main_Data::game_party->IsAnyActive())
+		return true;
+
+	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability, it's game over
+	// Physical recovery doesn't matter in this case
+	int character_number = 0;
+	std::vector<Game_Battler*> actors;
+
+	Main_Data::game_party->GetActiveBattlers(actors);
+	for (auto actor : actors) {
+		for (auto id_state : actor->GetInflictedStates()) {
+			RPG::State *state = ReaderUtil::GetElement(Data::states, id_state);
+			if (state->restriction == RPG::State::Restriction_do_nothing && state->auto_release_prob == 0) {
+				++character_number;
+				break;
+			}
+		}
+	}
+
+	return character_number == actors.size();
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
 
-void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash) {
+void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash, bool only_sound, int cutoff) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
@@ -161,10 +188,10 @@ void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bo
 		return;
 	}
 
-	animation.reset(new BattleAnimationBattlers(*anim, *target, flash));
+	animation.reset(new BattleAnimationBattlers(*anim, *target, flash, only_sound, cutoff));
 }
 
-void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
+void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash, bool only_sound, int cutoff) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
@@ -173,11 +200,15 @@ void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_B
 		return;
 	}
 
-	animation.reset(new BattleAnimationBattlers(*anim, targets, flash));
+	animation.reset(new BattleAnimationBattlers(*anim, targets, flash, only_sound, cutoff));
 }
 
 bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation);
+}
+
+bool Game_Battle::IsBattleAnimationOnlySound() {
+	return bool(animation) && animation->ShouldOnlySound();
 }
 
 void Game_Battle::NextTurn(Game_Battler* battler) {
@@ -345,6 +376,7 @@ bool Game_Battle::UpdateEvents() {
 		return false;
 	});
 
+	interpreter->finished_not_updated = false;
 	return true;
 }
 

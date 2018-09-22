@@ -23,6 +23,7 @@
 #include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_temp.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -34,16 +35,20 @@
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 
-static int max_hp_value() {
+static int max_exp_value() {
+	return Player::IsRPG2k() ? 999999 : 9999999;
+}
+
+int Game_Actor::MaxHpValue() const {
 	return Player::IsRPG2k() ? 999 : 9999;
 }
 
-static int max_other_stat_value() {
-	return 999;
+int Game_Actor::MaxStatBattleValue() const {
+	return Player::IsRPG2k() ? 999 : 9999;
 }
 
-static int max_exp_value() {
-	return Player::IsRPG2k() ? 999999 : 9999999;
+int Game_Actor::MaxStatBaseValue() const {
+	return 999;
 }
 
 Game_Actor::Game_Actor(int actor_id) :
@@ -119,6 +124,9 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 		Output::Warning("IsItemUsable: Invalid item ID %d", item_id);
 		return false;
 	}
+	if (Game_Temp::battle_running && item->type == RPG::Item::Type_medicine && !item->occasion_field1) {
+		return true;
+	}
 
 	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
@@ -147,17 +155,13 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
 		bool required = skill->attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
 		if (required) {
-			if (item && i < item->attribute_set.size()) {
-				if (!item->attribute_set[i]) {
-					return false;
-				}
-			} else if (item2 && i < item2->attribute_set.size()) {
-				if (!item2->attribute_set[i]) {
-					return false;
-				}
-			} else {
-				return false;
+			if (item && i < item->attribute_set.size() && item->attribute_set[i]) {
+				continue;
 			}
+			if (item2 && i < item2->attribute_set.size() && item2->attribute_set[i]) {
+				continue;
+			}
+			return false;
 		}
 	}
 
@@ -181,7 +185,7 @@ int Game_Actor::GetSpCostModifier() const {
 }
 
 int Game_Actor::CalculateSkillCost(int skill_id) const {
-	return Game_Battler::CalculateSkillCost(skill_id) / GetSpCostModifier();
+	return std::ceil(Game_Battler::CalculateSkillCost(skill_id) / (float) GetSpCostModifier());
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
@@ -332,7 +336,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += GetData().hp_mod;
 
-	return min(max(n, 1), max_hp_value());
+	return min(max(n, 1), MaxHpValue());
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -350,7 +354,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += GetData().sp_mod;
 
-	return min(max(n, 0), max_other_stat_value());
+	return min(max(n, 0), MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -378,7 +382,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return min(max(n, 1), MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseAtk() const {
@@ -406,7 +410,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return min(max(n, 1), MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseDef() const {
@@ -434,7 +438,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return min(max(n, 1), MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseSpi() const {
@@ -462,7 +466,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return min(max(n, 1), MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseAgi() const {
@@ -552,15 +556,25 @@ int Game_Actor::GetNextExp(int level) const {
 }
 
 int Game_Actor::GetStateProbability(int state_id) const {
-	int rate = 2; // C - default
+	int rate = 2, mul = 100; // C - default
 
 	const uint8_t* r = ReaderUtil::GetElement(GetActor().state_ranks, state_id);
 	if (r) {
 		rate = *r;
 	}
 
+	// This takes the armor of the character with the most resistance for that particular state
+	for (const auto equipment : GetWholeEquipment()) {
+		RPG::Item* weapon = ReaderUtil::GetElement(Data::items, equipment);
+		if (weapon != nullptr && (weapon->type == RPG::Item::Type_shield || weapon->type == RPG::Item::Type_armor
+			|| weapon->type == RPG::Item::Type_helmet || weapon->type == RPG::Item::Type_accessory)
+			&& state_id  <= weapon->state_set.size() && weapon->state_set[state_id - 1]) {
+			mul = std::min(mul, 100 - weapon->state_chance);
+		}
+	}
+
 	// GetStateRate verifies the state_id
-	return GetStateRate(state_id, rate);
+	return GetStateRate(state_id, rate) * mul / 100;
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
@@ -581,6 +595,16 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	}
 
 	rate += *shift;
+	for (auto id_object : GetWholeEquipment()) {
+		RPG::Item *object = ReaderUtil::GetElement(Data::items, id_object);
+		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
+			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory)
+			&& object->attribute_set.size() >= attribute_id && object->attribute_set[attribute_id - 1]) {
+			rate++;
+			break;
+		}
+	}
+
 	if (rate < 0) {
 		rate = 0;
 	} else if (rate > 4) {
@@ -1007,6 +1031,10 @@ int Game_Actor::GetBattleY() const {
 
 const std::string& Game_Actor::GetSkillName() const {
 	return GetActor().skill_name;
+}
+
+bool Game_Actor::IsSkillRenamed() const {
+	return GetActor().rename_skill;
 }
 
 void Game_Actor::SetName(const std::string &new_name) {

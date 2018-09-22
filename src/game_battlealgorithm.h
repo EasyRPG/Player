@@ -79,7 +79,7 @@ public:
 	 *
 	 * @return true if there was a next target available
 	 */
-	bool TargetNext();
+	virtual bool TargetNext();
 
 	/**
 	 * Defines switches that will be switched on after the action is finished.
@@ -154,11 +154,34 @@ public:
 	bool IsPositive() const;
 
 	/**
+	 * Gets whether the action had absorb component.
+	 *
+	 * @return Whether action was absorb
+	 */
+	bool IsAbsorb() const;
+
+	/**
+	 * Gets the type of algorithm.
+	 *
+	 * @return Whether action was positive
+	 */
+	virtual std::string GetType() const;
+
+	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
 	 *
 	 * @return Battle Animation or NULL if no animation is assigned
 	 */
 	const RPG::Animation* GetAnimation() const;
+	const RPG::Animation* GetSecondAnimation() const;
+
+	/**
+	* Checks if the animation has already played once
+	*
+	* @return Whether the animation played once
+	*/
+	bool HasAnimationPlayed() const;
+	bool HasSecondAnimationPlayed() const;
 
 	/**
 	 * Plays the battle animation on the targets.
@@ -170,6 +193,9 @@ public:
 	 *                  targets (required for reflect)
 	 */
 	void PlayAnimation(bool on_source = false);
+	void PlaySecondAnimation(bool on_source = false);
+
+	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
 
 	/**
 	 * Returns a list of all inflicted/removed conditions.
@@ -218,6 +244,11 @@ public:
 	virtual void Apply();
 
 	/**
+	* Applies some results by itself right before the turn comes.
+	*/
+	virtual void ApplyFirst();
+
+	/**
 	 * Tests if it makes sense to apply an action on the target.
 	 * E.g. when it is dead.
 	 *
@@ -226,7 +257,7 @@ public:
 	virtual bool IsTargetValid() const;
 
 	/**
-	 * Gets the message that is displayed when the action is invoked.
+	 * Gets the first line message that is displayed when the action is invoked.
 	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
 	 *
 	 * @return message
@@ -234,11 +265,40 @@ public:
 	virtual std::string GetStartMessage() const = 0;
 
 	/**
+	 * Checks if there is a second line message to display when the action is invoked.
+	 *
+	 * @return check
+	 */
+	virtual bool IsSecondStartMessage() const;
+
+	/**
+	 * Gets the second line message that is displayed when the action is invoked.
+	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
+	 *
+	 * @return message
+	 */
+	virtual std::string GetSecondStartMessage() const;
+
+	/**
 	 * Gets animation state id of the source character.
 	 *
 	 * @return animation state
 	 */
 	virtual int GetSourceAnimationState() const;
+
+	/**
+	* Gets item associated to the action.
+	*
+	* @return item
+	*/
+	virtual const RPG::Item* GetItem() const;
+
+	/**
+	 * Gets animation state id of the source character when applies the action.
+	 *
+	 * @return animation state
+	 */
+	virtual int GetSourceAnimationStateApply() const;
 
 	/**
 	 * Gets the sound effect that is played when the action is starting.
@@ -278,7 +338,7 @@ public:
 	 *
 	 * @param out filled with all conditions in text form
 	 */
-	virtual void GetResultMessages(std::vector<std::string>& out) const;
+	virtual void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const;
 
 	/**
 	 * Returns the physical rate of the attack.
@@ -299,6 +359,14 @@ public:
 	 */
 	virtual bool IsReflected() const;
 
+	/*
+	 * Returns a copy of the vector with the state ids that remain by being their priority less than 10 of difference than the top one
+	 *
+	 * @param filter_states vector of states to be filtered
+	 * @return vector of states filtered
+	 */
+	virtual std::vector<RPG::State> FilterStatesByPriority(std::vector<RPG::State> filter_states);
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
@@ -312,6 +380,7 @@ protected:
 	std::string GetDamagedMessage() const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 	std::string GetStateMessage(const std::string& message) const;
+	std::string GetShiftAttributeMessage(bool is_positive, const std::string& attribute) const;
 
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
@@ -350,8 +419,13 @@ protected:
 	mutable int reflect;
 
 	RPG::Animation* animation;
+	RPG::Animation* animation2;
+	bool has_animation_played;
+	bool has_animation2_played;
 
 	std::vector<RPG::State> conditions;
+	std::vector<int16_t> healed_conditions;
+	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };
@@ -368,6 +442,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
+	std::string GetType() const override;
 };
 
 class Skill : public AlgorithmBase {
@@ -381,11 +456,17 @@ public:
 	void Apply() override;
 
 	std::string GetStartMessage() const override;
+	bool IsSecondStartMessage() const override;
+	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	const RPG::Sound* GetResultSe() const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	int GetSpCost() const;
+	const RPG::Item* GetItem() const override;
+	std::string GetType() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -405,19 +486,24 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	const RPG::Item* GetItem() const override;
+	std::string GetType() const override;
 
 private:
 	const RPG::Item& item;
 };
 
-class NormalDual : public AlgorithmBase {
+class NormalDual : public Normal {
 public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
+	NormalDual(Game_Battler* source, Game_Party_Base* target);
 
-	std::string GetStartMessage() const override;
-	const RPG::Sound* GetStartSe() const override;
-	bool Execute() override;
+	bool TargetNext() override;
+	std::string GetType() const override;
+
+private:
+	bool second_attack;
 };
 
 class Defend : public AlgorithmBase {
@@ -428,6 +514,8 @@ public:
 	int GetSourceAnimationState() const override;
 	bool Execute() override;
 	void Apply() override;
+	void ApplyFirst() override;
+	std::string GetType() const override;
 };
 
 class Observe : public AlgorithmBase {
@@ -436,6 +524,7 @@ public:
 
 	std::string GetStartMessage() const override;
 	bool Execute() override;
+	std::string GetType() const override;
 };
 
 class Charge : public AlgorithmBase {
@@ -445,6 +534,7 @@ public:
 	std::string GetStartMessage() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -453,9 +543,11 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
+	int GetSourceAnimationStateApply() const override;
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 class Escape : public AlgorithmBase {
@@ -464,11 +556,13 @@ public:
 
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
+	int GetSourceAnimationStateApply() const override;
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
 
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	std::string GetType() const override;
 };
 
 class Transform : public AlgorithmBase {
@@ -478,6 +572,7 @@ public:
 	std::string GetStartMessage() const override;
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 
 private:
 	int new_monster_id;
@@ -492,6 +587,7 @@ public:
 
 	bool Execute() override;
 	void Apply() override;
+	std::string GetType() const override;
 };
 
 }

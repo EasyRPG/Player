@@ -250,6 +250,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Game_Temp::battle_escape_mode = com.parameters[3]; // 0 disallow, 1 end event processing, 2 victory/escape custom handler
 	Game_Temp::battle_defeat_mode = com.parameters[4]; // 0 game over, 1 victory/defeat custom handler
 	Game_Temp::battle_first_strike = com.parameters[5] != 0;
+	Game_Temp::battle_check_surprise_attack = false;
 
 	if (Player::IsRPG2k())
 		Game_Battle::SetBattleMode(0);

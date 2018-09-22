@@ -48,7 +48,7 @@ bool Window_Item::CheckInclude(int item_id) {
 }
 
 bool Window_Item::CheckEnable(int item_id) {
-	return Main_Data::game_party->IsItemUsable(item_id);
+	return Main_Data::game_party->IsItemUsable(item_id, actor);
 }
 
 void Window_Item::Refresh() {
@@ -84,9 +84,7 @@ void Window_Item::Refresh() {
 
 	CreateContents();
 
-	if (index > 0 && index >= item_max) {
-		--index;
-	}
+	SetIndex(index);
 
 	contents->Clear();
 
