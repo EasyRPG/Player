@@ -47,7 +47,7 @@ DATA		:=	data
 INCLUDES	:=	../../src
 GRAPHICS	:=	gfx
 GFXBUILD	:=	$(BUILD)
-#ROMFS		:=	romfs
+ROMFS		:=	romfs
 #GFXBUILD	:=	$(ROMFS)/gfx
 
 APP_TITLE   	:=	EasyRPG Player
