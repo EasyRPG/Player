@@ -37,6 +37,10 @@
 #include "assets.h"
 #include "assets_t3x.h"
 
+// 8 MB required for booting and need extra linear memory for the sound
+// effect cache
+u32 __ctru_linear_heap_size = 12*1024*1024;
+
 #ifdef SUPPORT_AUDIO
 #include "audio_3ds.h"
 AudioInterface& CtrUi::GetAudio() {
@@ -47,12 +51,15 @@ AudioInterface& CtrUi::GetAudio() {
 namespace {
 	const double ticks_per_msec = 268123.480;
 	int touch_x, touch_y;
-	bool has_touched = false;
+	int touch_state = 0; // 0 not, 1 touched, 2 touched before, wait clear
 	u32 old_time_limit;
 	Tex3DS_SubTexture subt3x;
 	constexpr int button_width = 80;
 	constexpr int button_height = 60;
 	constexpr int joy_threshold = 25;
+	constexpr int width_pow2 = 512;
+	constexpr int height_pow2 = 256;
+	u32* main_buffer;
 }
 
 CtrUi::CtrUi(int width, int height) :
@@ -85,25 +92,28 @@ CtrUi::CtrUi(int width, int height) :
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
+
 	const DynamicFormat format(
 		32,
-		0xFF000000,
 		0x00FF0000,
 		0x0000FF00,
 		0x000000FF,
+		0xFF000000,
 		PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-	main_surface = Bitmap::Create(width, height, true, 32);
 
-	subt3x.width = 512;
-	subt3x.height = 256;
+	main_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
+	main_surface = Bitmap::Create(main_buffer, width, height, width_pow2*4, format);
+
+	subt3x.width = width_pow2;
+	subt3x.height = height_pow2;
 	subt3x.left = 0.0f;
 	subt3x.top = 1.0f;
 	subt3x.right = 1.0f;
 	subt3x.bottom = 0.0f;
 	top_image.subtex = &subt3x;
 	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
-	C3D_TexInit(tex, 512, 256, GPU_RGBA8);
+	C3D_TexInit(tex, width_pow2, height_pow2, GPU_RGB8);
 	memset(tex->data, 0, tex->size);
 	tex->border = 0xFFFFFFFF;
 	C3D_TexSetWrap(tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
@@ -184,7 +194,7 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
 	keys[Input::Keys::Z] = (input & KEY_A);
 	keys[Input::Keys::X] = (input & KEY_B);
-	keys[Input::Keys::N8] = (input & KEY_X);
+	keys[Input::Keys::F] = (input & KEY_X);
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	keys[Input::Keys::F12] = (input & KEY_SELECT);
@@ -222,13 +232,16 @@ void CtrUi::ProcessEvents() {
 		Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
 	};
 
-	// reset state
-	has_touched = false;
+	if (touch_state == 1) {
+		// Touch finished, do final redraw in UpdateDisplay
+		touch_state = 2;
+	}
+
 	for (int i = 0; i < 16; i++)
 		keys[keys_tbl[i]] = false;
 
 	if (input & KEY_TOUCH) {
-		has_touched = true;
+		touch_state = 1;
 		touchPosition pos;
 		hidTouchRead(&pos);
 		u8 col = pos.px / button_width;
@@ -241,20 +254,50 @@ void CtrUi::ProcessEvents() {
 #endif
 }
 
+static __attribute__((always_inline, optimize(3))) inline u32 NDS3D_Reverse32(u32 val)
+{
+	__asm("ROR %0, %1, #24" : "=r" (val) : "r" (val));
+
+	return val;
+}
+
 void CtrUi::UpdateDisplay() {
-	//C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	// rotate ARGB buffer to RGBA buffer
+	// required because pixman has no fast-paths for non AXXX buffers
+	u32* line = main_buffer;
+	for (int i = 0; i <= 240; ++i) {
+		for (int j = 0; j <= 320; ++j) {
+			u32* val = line + j;
+			*val = NDS3D_Reverse32(*val);
+		}
+		line += width_pow2;
+	}
+
+	GSPGPU_FlushDataCache(main_buffer, (width_pow2*height_pow2*4));
+
+	// Using RGB8 as output format is faster and improves framerate ¯\_(ツ)_/¯
+	const u32 flags = (GX_TRANSFER_FLIP_VERT(0) |
+		GX_TRANSFER_OUT_TILED(1) |
+		GX_TRANSFER_RAW_COPY(0) |
+		GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
+		GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
+		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO));
+
+	// Doing this after FrameBegin corrupts the output, probably because this
+	// is asynchronous and FrameBegin will block until it finishes
+	C3D_SyncDisplayTransfer(
+		(u32*)main_buffer,
+		GX_BUFFER_DIM(width_pow2, height_pow2),
+		(u32*)top_image.tex->data,
+		GX_BUFFER_DIM(width_pow2, height_pow2),
+		flags
+	 );
+
 	C3D_FrameBegin(0);
 
 	// top screen
 	C2D_SceneBegin(top_screen);
 	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
-	for (int x = 0; x < main_surface->width(); x++) {
-		for (int y = 0; y < main_surface->height(); y++) {
-			u32 dstPos = ((((y >> 3) * (512 >> 3) + (x >> 3)) << 6) + ((x & 1) | ((y & 1) << 1) | ((x & 2) << 1) | ((y & 2) << 2) | ((x & 4) << 2) | ((y & 4) << 3))) * 4;
-			u32 srcPos = (y * main_surface->width() + x) * 4;
-			memcpy(&((u8*)top_image.tex->data)[dstPos], &((u8*)main_surface->pixels())[srcPos], 4);
-		}
-	}
 
 	if (fullscreen) {
 		C2D_DrawImageAt(top_image, 0, 0, 0.5f, NULL, 1.25f, 1.0f);
@@ -265,10 +308,21 @@ void CtrUi::UpdateDisplay() {
 #if NDEBUG
 	// bottom screen
 	C2D_SceneBegin(bottom_screen);
-	C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
-	C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
 
-	if (has_touched) {
+	// More low hanging fruit optimisation:
+	// Only refresh the bottom when a touch happens and one frame after
+	static bool once = false;
+	if (!once || touch_state == 2) {
+		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+		touch_state = 0;
+		once = true;
+	}
+
+	if (touch_state == 1) {
+		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+
 		u32 gray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
 		u32 white = C2D_Color32f(1, 1, 1, 1);
 
