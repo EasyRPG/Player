@@ -167,23 +167,22 @@ namespace {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
 	}
 
-	const std::string& translate_rtp(const std::string& dir, const std::string& name) {
-		rtp_table_type const& table =
+	const std::string translate_rtp(const std::string& dir, const std::string& name) {
+		RTP::rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
-		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		RTP::rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir).c_str());
 		std::string lower_name = Utils::LowerCase(name);
 
 		if (dir_it == table.end()) { return name; }
 
-		std::map<std::string, std::string>::const_iterator file_it =
-			dir_it->second.find(lower_name);
+		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(lower_name.c_str());
 		if (file_it == dir_it->second.end()) {
 			if (is_not_ascii_filename(lower_name)) {
 				// Linear Search: Japanese file name to English file name
-				for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
-					if (it->second == lower_name) {
-						return it->first;
+				for (const auto& entry : dir_it->second) {
+					if (!strcmp(entry.second, lower_name.c_str())) {
+						return entry.first;
 					}
 				}
 			}
