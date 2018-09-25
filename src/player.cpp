@@ -148,9 +148,7 @@ void Player::Init(int argc, char *argv[]) {
 		Output::Error("Couldn't mount any storage medium!");
 	}
 #elif defined(_3DS)
-#  ifndef CITRA3DS_COMPATIBLE
 	romfsInit();
-#  endif
 #endif
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
@@ -364,9 +362,7 @@ void Player::Exit() {
 #ifdef PSP2
 	sceKernelExitProcess(0);
 #elif defined(_3DS)
-#  ifndef CITRA3DS_COMPATIBLE
 	romfsExit();
-#  endif
 #endif
 }
 
