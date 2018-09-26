@@ -22,6 +22,7 @@
 #include <string>
 #include "async_handler.h"
 #include "frame.h"
+#include "graphics.h"
 #include "plane.h"
 #include "screen.h"
 #include "sprite_airshipshadow.h"
@@ -63,10 +64,13 @@ public:
 	 * Substitutes tile in lower layer.
 	 */
 	void SubstituteDown(int old_id, int new_id);
+
 	/**
 	 * Substitutes tile in upper layer.
 	 */
 	void SubstituteUp(int old_id, int new_id);
+
+	bool RequireBackground(const Graphics::DrawableList& drawable_list);
 
 protected:
 	std::unique_ptr<Tilemap> tilemap;

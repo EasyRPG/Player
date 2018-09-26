@@ -137,14 +137,18 @@ void Graphics::Draw() {
 
 void Graphics::LocalDraw(int priority) {
 	State& state = current_scene->GetGraphicsState();
+
+	DrawableList& drawable_list = state.drawable_list;
+
 	if (state.zlist_dirty) {
-		state.drawable_list.sort(SortDrawableList);
+		std::sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
 		state.zlist_dirty = false;
 	}
 
-	if (!state.drawable_list.empty())
+	if (!drawable_list.empty())
 		current_scene->DrawBackground();
-	for (Drawable* drawable : state.drawable_list) {
+
+	for (Drawable* drawable : drawable_list) {
 		if (drawable->GetZ() <= priority) {
 			drawable->Draw();
 		}
@@ -152,11 +156,13 @@ void Graphics::LocalDraw(int priority) {
 }
 
 void Graphics::GlobalDraw(int priority) {
+	DrawableList& drawable_list = global_state->drawable_list;
+
 	if (global_state->zlist_dirty) {
-		global_state->drawable_list.sort(SortDrawableList);
+		std::sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
 		global_state->zlist_dirty = false;
 	}
-	for (Drawable* drawable : global_state->drawable_list)
+	for (Drawable* drawable : drawable_list)
 		if (drawable->GetZ() <= priority)
 			drawable->Draw();
 }
@@ -186,7 +192,7 @@ void Graphics::RegisterDrawable(Drawable* drawable) {
 }
 
 void Graphics::RemoveDrawable(Drawable* drawable) {
-	std::list<Drawable*>::iterator it;
+	DrawableList::iterator it;
 	if (drawable->IsGlobal()) {
 		it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
 		if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }

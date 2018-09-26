@@ -145,6 +145,42 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	tilemap->SubstituteUp(old_id, new_id);
 }
 
+bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_list) {
+	// Speed optimisation:
+	// Only draw a black background when the screen is out of bounds because of a shake effect
+	// or because of custom maps that are smaller than the screen
+	if (Main_Data::game_data.screen.shake_position != 0 ||
+			Game_Map::GetWidth() < 20 || Game_Map::GetHeight() < 15) {
+			return true;
+	}
+
+	if (!Player::IsRPG2k3E()) {
+		return false;
+	}
+
+	tilemap->SetFastBlitDown(false);
+
+	if (!panorama_name.empty()) {
+		return false;
+	}
+
+	// Require background when there is anything between panorama and tilemap,
+	// otherwise simply draw the tilemap opaque
+	for (const Drawable* d : drawable_list) {
+		if (d->GetZ() > Priority_Background) {
+			if (d->GetZ() < Priority_TilesetBelow) {
+				return true;
+			} else {
+				tilemap->SetFastBlitDown(true);
+				return false;
+			}
+		}
+	}
+
+	// shouldn't happen
+	return false;
+}
+
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	if (!Game_Map::GetChipsetName().empty()) {
 		tilemap->SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));

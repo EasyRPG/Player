@@ -19,7 +19,7 @@
 #define EP_GRAPHICS_H
 
 // Headers
-#include <list>
+#include <vector>
 #include "bitmap.h"
 #include "drawable.h"
 
@@ -32,9 +32,11 @@ class Scene;
  * Handles screen drawing.
  */
 namespace Graphics {
+	using DrawableList = std::vector<Drawable*>;
+
 	struct State {
 		State() {}
-		std::list<Drawable*> drawable_list;
+		DrawableList drawable_list;
 		bool zlist_dirty = false;
 	};
 
