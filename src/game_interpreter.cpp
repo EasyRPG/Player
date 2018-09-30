@@ -56,6 +56,10 @@ namespace {
 	constexpr int min_var_size_2k3 = -max_var_size_2k3;
 	constexpr int max_var_size_2k = 999999;
 	constexpr int min_var_size_2k = -max_var_size_2k;
+
+	// Used to ensure that the interpreter that runs after a Erase/ShowScreen
+	// is the invoker of the transition
+	static Game_Interpreter* transition_owner = nullptr;
 }
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
@@ -179,12 +183,18 @@ void Game_Interpreter::Update() {
 				break;
 		}
 
-		if (wait_count > 0) {
-			wait_count--;
+		if (Game_Temp::transition_processing) {
 			break;
 		}
 
-		if (Game_Temp::transition_processing) {
+		if (transition_owner && transition_owner != this) {
+			break;
+		} else {
+			transition_owner = nullptr;
+		}
+
+		if (wait_count > 0) {
+			wait_count--;
 			break;
 		}
 
@@ -1769,6 +1779,7 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
+	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
@@ -1851,6 +1862,7 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
+	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
