@@ -139,7 +139,7 @@ void Game_System::BgmFade(int duration) {
 	force_bgm_play = true;
 }
 
-void Game_System::SePlay(RPG::Sound const& se, bool stop_sounds) {
+void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
 	static bool ineluki_warning_shown = false;
 
 	if (se.name.empty()) {
@@ -185,6 +185,16 @@ void Game_System::SePlay(RPG::Sound const& se, bool stop_sounds) {
 	FileRequestAsync* request = AsyncHandler::RequestFile("Sound", se.name);
 	se_request_ids[se.name] = request->Bind(std::bind(&Game_System::OnSeReady, std::placeholders::_1, volume, tempo, stop_sounds));
 	request->Start();
+}
+
+void Game_System::SePlay(const RPG::Animation &animation) {
+	std::string path;
+	for (const auto& anim : animation.timings) {
+		if (!isStopFilename(anim.se.name, FileFinder::FindSound, path)) {
+			SePlay(anim.se);
+			return;
+		}
+	}
 }
 
 std::string Game_System::GetSystemName() {

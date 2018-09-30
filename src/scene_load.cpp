@@ -18,6 +18,7 @@
 // Headers
 #include <sstream>
 #include "filefinder.h"
+#include "game_temp.h"
 #include "output.h"
 #include "player.h"
 #include "scene_load.h"
@@ -38,6 +39,7 @@ void Scene_Load::Action(int index) {
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 
 	Player::LoadSavegame(save_name);
+	Game_Temp::restart_title_cache = true;
 
 	Scene::Push(std::make_shared<Scene_Map>(true), true);
 }

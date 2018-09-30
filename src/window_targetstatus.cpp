@@ -47,17 +47,17 @@ void Window_TargetStatus::Refresh() {
 	if (use_item) {
 		str = Utils::ToString(Main_Data::game_party->GetItemCount(id));
 	} else {
-		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
-		str = skill->sp_cost;
+		str = Utils::ToString((*Main_Data::game_party)[actor_index].CalculateSkillCost(id));
 	}
 
 	FontRef font = Font::Default();
 	contents->TextDraw(contents->GetWidth() - font->GetSize(str).width, 0, Font::ColorDefault, str, Text::AlignRight);
 }
 
-void Window_TargetStatus::SetData(int id, bool is_item) {
+void Window_TargetStatus::SetData(int id, bool is_item, int actor_index) {
 	this->id = id;
 	use_item = is_item;
+	this->actor_index = actor_index;
 
 	Refresh();
 }

@@ -74,6 +74,8 @@ public:
 	static bool battle_first_strike;
 	static int battle_result;
 
+	static bool restart_title_cache;
+
 	enum BattleResult {
 		BattleVictory,
 		BattleEscape,

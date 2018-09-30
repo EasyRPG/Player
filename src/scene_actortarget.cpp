@@ -57,7 +57,7 @@ void Scene_ActorTarget::Start() {
 		if (item->entire_party) {
 			target_window->SetIndex(-100);
 		}
-		status_window->SetData(id, true);
+		status_window->SetData(id, true, 0);
 		help_window->SetText(item->name);
 	} else {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
@@ -72,7 +72,7 @@ void Scene_ActorTarget::Start() {
 			target_window->SetIndex(-100);
 		}
 
-		status_window->SetData(id, false);
+		status_window->SetData(id, false, actor_index);
 		help_window->SetText(skill->name);
 	}
 }
@@ -121,7 +121,14 @@ void Scene_ActorTarget::UpdateSkill() {
 			return;
 		}
 		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+			RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
+			RPG::Animation* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
+			if (animation) {
+				Game_System::SePlay(*animation);
+			}
+			else {
+				Output::Warning("UpdateSkill: Skill %d references invalid animation %d", id, skill->animation_id);
+			}
 		}
 		else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));

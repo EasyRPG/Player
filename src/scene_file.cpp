@@ -111,8 +111,8 @@ void Scene_File::Start() {
 
 	index = latest_slot;
 
-	Update();
 	Refresh();
+	Update();
 }
 
 void Scene_File::Refresh() {

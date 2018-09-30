@@ -120,13 +120,19 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 		return false;
 	}
 
-	// If the actor ID is out of range this is an optimization in the ldb file
-	// (all actors missing can equip the item)
+	// Class index. If there's no class, in the "class_set" it's equal to 0. The first class is 1, not 0
+	int class_index = GetClass() ? GetClass()->ID : 0;
+
+	// If the actor or class ID is out of range this is an optimization in the ldb file
+	// (all actors or classes missing can equip the item)
 	if (item->actor_set.size() <= (unsigned)(actor_id - 1)) {
 		return true;
-	} else {
-		return item->actor_set.at(actor_id - 1);
 	}
+	else if (Player::IsRPG2k3() && item->class_set.size() <= (unsigned)(class_index)) {
+		return true;
+	}
+
+	return item->actor_set.at(actor_id - 1) || (Player::IsRPG2k3() && item->class_set.at(class_index));
 }
 
 bool Game_Actor::IsSkillLearned(int skill_id) const {
@@ -254,10 +260,26 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	if (item_id != 0) {
 		Main_Data::game_party->RemoveItem(item_id, 1);
 	}
+
+	// In case you have a two_handed weapon equipped, the other weapon is removed.
+	const RPG::Item* item = ReaderUtil::GetElement(Data::items, GetWeaponId());
+	const RPG::Item* item2 = ReaderUtil::GetElement(Data::items, GetShieldId());
+	if (item && item2 && (item->two_handed || item2->two_handed)) {
+		ChangeEquipment(equip_type == RPG::Item::Type_weapon ? equip_type + 1 : equip_type - 1, 0);
+	}
 }
 
 const std::vector<int16_t>& Game_Actor::GetWholeEquipment() const {
 	return GetData().equipped;
+}
+
+bool Game_Actor::IsEquipped(int equip_id) const {
+	for (auto equip : GetWholeEquipment()) {
+		if (equip == equip_id) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Game_Actor::RemoveWholeEquipment() {

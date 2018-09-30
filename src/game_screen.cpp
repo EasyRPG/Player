@@ -111,7 +111,7 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 	data.tint_finish_blue = b;
 	data.tint_finish_sat = s;
 
-	data.tint_time_left = tenths * DEFAULT_FPS / 10;
+	data.tint_time_left = tenths;
 
 	if (data.tint_time_left == 0) {
 		data.tint_current_red = data.tint_finish_red;
@@ -133,7 +133,7 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int tenths) {
 		tenths = 1;
 	}
 
-	data.flash_time_left = tenths * DEFAULT_FPS / 10;
+	data.flash_time_left = tenths;
 	flash_period = 0;
 }
 
@@ -151,7 +151,7 @@ void Game_Screen::FlashEnd() {
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
-	data.shake_time_left = tenths * DEFAULT_FPS / 10;
+	data.shake_time_left = tenths;
 	data.shake_position = 0;
 	data.shake_continuous = false;
 }

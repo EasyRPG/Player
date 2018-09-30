@@ -1341,6 +1341,25 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 		}
 	} else {
 		for (const auto &actor : GetActors(com.parameters[0], com.parameters[1])) {
+			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_shield && item_id != 0) {
+				continue;
+			}
+
+			if (Main_Data::game_party->GetItemCount(item_id, false) == 0 && !actor->IsEquipped(item_id)) {
+				Main_Data::game_party->AddItem(item_id, 1);
+			}
+
+			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon) {
+				RPG::Item* new_equipment = ReaderUtil::GetElement(Data::items, item_id);
+				RPG::Item* equipment1 = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
+				RPG::Item* equipment2 = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
+
+				if (equipment1 && !equipment2 && !equipment1->two_handed && !new_equipment->two_handed) {
+					actor->ChangeEquipment(slot + 1, item_id);
+					continue;
+				}
+			}
+
 			actor->ChangeEquipment(slot, item_id);
 		}
 	}
@@ -1944,7 +1963,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 	int tenths = com.parameters[4];
 	bool wait = com.parameters[5] != 0;
 
-	screen->TintScreen(r, g, b, s, tenths);
+	screen->TintScreen(r, g, b, s, tenths * DEFAULT_FPS / 10);
 
 	if (wait)
 		SetupWait(tenths);
@@ -1962,18 +1981,18 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	bool wait = com.parameters[5] != 0;
 
 	if (com.parameters.size() <= 6) {
-		screen->FlashOnce(r, g, b, s, tenths);
+		screen->FlashOnce(r, g, b, s, tenths * DEFAULT_FPS / 10);
 		if (wait)
 			SetupWait(tenths);
 	} else {
 		switch (com.parameters[6]) {
 		case 0:
-			screen->FlashOnce(r, g, b, s, tenths);
+			screen->FlashOnce(r, g, b, s, tenths * DEFAULT_FPS / 10);
 			if (wait)
 				SetupWait(tenths);
 			break;
 		case 1:
-			screen->FlashBegin(r, g, b, s, tenths);
+			screen->FlashBegin(r, g, b, s, tenths * DEFAULT_FPS / 10);
 			break;
 		case 2:
 			screen->FlashEnd();
@@ -1992,14 +2011,14 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	bool wait = com.parameters[3] != 0;
 
 	if (Player::IsRPG2k()) {
-		screen->ShakeOnce(strength, speed, tenths);
+		screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
 		if (wait) {
 			SetupWait(tenths);
 		}
 	} else {
 		switch (com.parameters[4]) {
 		case 0:
-			screen->ShakeOnce(strength, speed, tenths);
+			screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
 			if (wait) {
 				SetupWait(tenths);
 			}
