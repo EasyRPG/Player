@@ -128,7 +128,7 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	int x = GetRealX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
+	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
 
 	if (Game_Map::LoopHorizontal() && (x <= -TILE_SIZE / 2 || x > 0 || Game_Map::GetWidth() == 20)) {
 		int map_width = Game_Map::GetWidth() * TILE_SIZE;
@@ -139,7 +139,7 @@ int Game_Character::GetScreenX() const {
 }
 
 int Game_Character::GetScreenY() const {
-	int y = GetRealY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
+	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
 
 	if (Game_Map::LoopVertical()) {
 		int map_height = Game_Map::GetHeight() * TILE_SIZE;
@@ -818,7 +818,7 @@ int Game_Character::GetTileId() const {
 	return tile_id;
 }
 
-int Game_Character::GetRealX() const {
+int Game_Character::GetSpriteX() const {
 	int x = GetX() * SCREEN_TILE_WIDTH;
 
 	if (IsMoving()) {
@@ -833,7 +833,7 @@ int Game_Character::GetRealX() const {
 	return x;
 }
 
-int Game_Character::GetRealY() const {
+int Game_Character::GetSpriteY() const {
 	int y = GetY() * SCREEN_TILE_WIDTH;
 
 	if (IsMoving()) {

@@ -280,9 +280,13 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
 	animation_type = page->animation_type;
 
-	if (from_null || !(same_direction_as_on_old_page || IsMoving()) || IsDirectionFixed()) {
+	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
 		SetSpriteDirection(page->character_direction);
 		SetDirection(page->character_direction);
+	}
+
+	if (IsDirectionFixed()) {
+		SetSpriteDirection(page->character_direction);
 	}
 
 	SetOpacity(page->translucent ? 160 : 255);
@@ -519,12 +523,12 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;
 
-	if (trigger == RPG::EventPage::Trigger_collision && !IsJumping()) {
+	if (trigger == RPG::EventPage::Trigger_collision) {
 		if (Main_Data::game_player->IsInPosition(GetX(), GetY()) && GetLayer() == RPG::EventPage::Layers_same) {
 			return false;
 		}
 
-		if (Main_Data::game_player->IsInPosition(x, y) && !Main_Data::game_player->IsBlockedByMoveRoute()) {
+		if (Main_Data::game_player->IsInPosition(x, y)) {
 			if (Main_Data::game_player->InAirship() && GetLayer() == RPG::EventPage::Layers_same) {
 				return false;
 			}

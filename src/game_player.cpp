@@ -297,8 +297,8 @@ bool Game_Player::IsTeleporting() const {
 }
 
 void Game_Player::Center() {
-	int x = GetRealX() + SCREEN_TILE_WIDTH;
-	int y = GetRealY() + SCREEN_TILE_WIDTH / 2;
+	int x = GetSpriteX() + SCREEN_TILE_WIDTH;
+	int y = GetSpriteY() + SCREEN_TILE_WIDTH / 2;
 
 	int dist_to_screen_left = -SCREEN_WIDTH / 2;
 	int dist_to_screen_top = -SCREEN_HEIGHT / 2;

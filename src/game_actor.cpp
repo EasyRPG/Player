@@ -1345,9 +1345,12 @@ void Game_Actor::RemoveInvalidData() {
 	// through database editing. Hopefully no game uses negative levels.
 	if (GetLevel() == 0) {
 		Output::Debug("Actor %d: Special handling for level 0", GetId());
-	} else if (GetLevel() < 0 || GetLevel() > GetMaxLevel()) {
-		Output::Warning("Actor %d: Invalid level %d", GetId(), GetLevel());
+	} else if (GetLevel() < 0) {
+		Output::Warning("Actor %d: Invalid level %d, changed to 1", GetId(), GetLevel());
 		SetLevel(1);
+	} else if (GetLevel() > GetMaxLevel()) {
+		Output::Warning("Actor %d: Invalid level %d, changed to %d", GetId(), GetLevel(), GetMaxLevel());
+		SetLevel(GetMaxLevel());
 	}
 }
 
