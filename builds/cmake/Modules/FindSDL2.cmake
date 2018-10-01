@@ -236,7 +236,7 @@ if(SDL2_FOUND)
 		set_target_properties(SDL2::SDL2main
 			PROPERTIES
 			INTERFACE_LINK_LIBRARIES "${SDL2MAIN_LIBRARIES}")
-		
+
 		if(WIN32)
 			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
 				INTERFACE_LINK_LIBRARIES "winmm;imm32;version")
@@ -248,11 +248,12 @@ if(SDL2_FOUND)
 			find_library(CARBON_LIBRARY Carbon)
 			find_library(COREAUDIO CoreAudio)
 			find_library(AUDIOTOOLBOX AudioToolbox)
+			find_library(AUDIOUNIT AudioUnit)
 			find_library(ICONV_LIBRARY iconv)
 			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
 				INTERFACE_LINK_LIBRARIES ${COREVIDEO} ${COCOA_LIBRARY}
 					${IOKIT} ${FORCEFEEDBACK} ${CARBON_LIBRARY}
-					${COREAUDIO} ${AUDIOTOOLBOX} ${ICONV_LIBRARY})
+					${COREAUDIO} ${AUDIOTOOLBOX} ${AUDIOUNIT} ${ICONV_LIBRARY})
 		else()
 			# Remove -lSDL2 -lSDL2main from the pkg-config linker line,
 			# to prevent linking against the system library
