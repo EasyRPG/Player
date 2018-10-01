@@ -154,10 +154,10 @@ TilemapLayer::TilemapLayer(int ilayer) :
 
 	// SubLayer for the tiles with Wall or Above passability
 	// Its z-value should be between the z of the events in the upper layer and the hero
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetAbove));
+	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetAbove + layer));
 	// SubLayer for the tiles without Wall or Above passability
 	// Its z-value should be under z of the events in the lower layer
-	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow));
+	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow + layer));
 }
 
 void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col) {
@@ -363,9 +363,9 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 			if (!passable.empty()) {
 				if (tile.ID >= BLOCK_F) { // Upper layer
 					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-						tile.z = Priority_TilesetAbove; // Upper sublayer
+						tile.z = Priority_TilesetAbove + 1; // Upper sublayer
 					else
-						tile.z = Priority_TilesetBelow; // Lower sublayer
+						tile.z = Priority_TilesetBelow + 1; // Lower sublayer
 
 				} else { // Lower layer
 					int chip_index =
