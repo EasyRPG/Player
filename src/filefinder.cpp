@@ -167,23 +167,22 @@ namespace {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
 	}
 
-	const std::string& translate_rtp(const std::string& dir, const std::string& name) {
-		rtp_table_type const& table =
+	const std::string translate_rtp(const std::string& dir, const std::string& name) {
+		RTP::rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
-		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		RTP::rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir).c_str());
 		std::string lower_name = Utils::LowerCase(name);
 
 		if (dir_it == table.end()) { return name; }
 
-		std::map<std::string, std::string>::const_iterator file_it =
-			dir_it->second.find(lower_name);
+		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(lower_name.c_str());
 		if (file_it == dir_it->second.end()) {
 			if (is_not_ascii_filename(lower_name)) {
 				// Linear Search: Japanese file name to English file name
-				for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
-					if (it->second == lower_name) {
-						return it->first;
+				for (const auto& entry : dir_it->second) {
+					if (!strcmp(entry.second, lower_name.c_str())) {
+						return entry.first;
 					}
 				}
 			}
@@ -676,29 +675,9 @@ std::string FileFinder::FindSound(const std::string& name) {
 bool FileFinder::Exists(const std::string& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
-#elif (defined(GEKKO) || defined(SWITCH))
+#elif (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
-#elif defined(_3DS)
-	FILE* tmp = fopen(filename.c_str(),"r");
-	if (tmp == NULL){
-		DIR* tmp2 = opendir(filename.c_str());
-		if (tmp2 == NULL){
-			std::string tmp_str = filename + "/";
-			tmp2 = opendir(tmp_str.c_str());
-			if (tmp2 == NULL) return false;
-			else{
-				closedir(tmp2);
-				return true;
-			}
-		}else{
-			closedir(tmp2);
-			return true;
-		}
-	}else{
-		fclose(tmp);
-		return true;
-	}
 #elif defined(PSP2)
 	struct SceIoStat sb;
 	return (sceIoGetstat(filename.c_str(), &sb) >= 0);
@@ -708,21 +687,7 @@ bool FileFinder::Exists(const std::string& filename) {
 }
 
 bool FileFinder::IsDirectory(const std::string& dir) {
-#ifdef _3DS
-	DIR* d = opendir(dir.c_str());
-	if(d) {
-		closedir(d);
-		return true;
-	}else{
-		std::string tmp_str = dir + "/";
-		d = opendir(tmp_str.c_str());
-		if(d) {
-			closedir(d);
-			return true;
-		}
-	}
-	return false;
-#elif (defined(GEKKO) || defined(SWITCH))
+#if (defined(GEKKO) || defined(_3DS) || defined(SWITCH))
 	struct stat sb;
 	if (::stat(dir.c_str(), &sb) == 0)
 		return S_ISDIR(sb.st_mode);
@@ -759,8 +724,6 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 #  define wpath Utils::ToWideString(path)
 #  define dirent _wdirent
 #  define readdir _wreaddir
-#elif _3DS
-	std::string wpath = path + "/";
 #else
 #  define wpath path
 #endif
@@ -798,7 +761,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		if (has_fast_dir_stat) {
 			#ifdef PSP2
 			is_directory = S_ISDIR(ent.d_stat.st_mode);
-			#elif defined(_DIRENT_HAVE_D_TYPE)
+			#elif defined(_DIRENT_HAVE_D_TYPE) || defined(_3DS)
 			if (ent->d_type == DT_UNKNOWN) {
 				has_fast_dir_stat = false;
 			} else {

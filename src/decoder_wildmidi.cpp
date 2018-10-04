@@ -116,7 +116,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 #elif _3DS
 	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
 
-	// Shipped in a romfs (for CIA files)
+	// Shipped in a romfs (for CIA and newer 3dsx files)
 	config_file = "romfs:/wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
 

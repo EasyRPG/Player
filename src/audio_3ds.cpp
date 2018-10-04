@@ -26,7 +26,7 @@
 #include "audio_secache.h"
 
 namespace {
-	const int samples_per_buf = 4096 / 2;
+	const int samples_per_buf = 4096;
 	const int bytes_per_sample = 4;
 	const int bgm_channel = 0;
 	const int se_channel_begin = 1;

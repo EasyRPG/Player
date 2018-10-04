@@ -29,11 +29,17 @@
 #include <sys/iosupport.h>
 
 #include <3ds.h>
-#include <sf2d.h>
+#include <citro3d.h>
+#include <citro2d.h>
 #include <cstring>
 #include <stdio.h>
 
-#include "../build/keyboard_bmp.h"
+#include "assets.h"
+#include "assets_t3x.h"
+
+// 8 MB required for booting and need extra linear memory for the sound
+// effect cache
+u32 __ctru_linear_heap_size = 12*1024*1024;
 
 #ifdef SUPPORT_AUDIO
 #include "audio_3ds.h"
@@ -45,12 +51,16 @@ AudioInterface& CtrUi::GetAudio() {
 namespace {
 	const double ticks_per_msec = 268123.480;
 	int touch_x, touch_y;
-	bool has_touched = false;
+	int touch_state = 0; // 0 not, 1 touched, 2 touched before, wait clear
+	u32 old_time_limit;
+	Tex3DS_SubTexture subt3x;
+	constexpr int button_width = 80;
+	constexpr int button_height = 60;
+	constexpr int joy_threshold = 25;
+	constexpr int width_pow2 = 512;
+	constexpr int height_pow2 = 256;
+	u32* main_buffer;
 }
-
-static const devoptab_t dotab_null = {
-	"null", 0, NULL, NULL, NULL, NULL, NULL, NULL
-};
 
 CtrUi::CtrUi(int width, int height) :
 	BaseUi() {
@@ -58,6 +68,7 @@ CtrUi::CtrUi(int width, int height) :
 	fullscreen = false;
 	trigger_state = false;
 
+	APT_GetAppCpuTimeLimit(&old_time_limit);
 	APT_SetAppCpuTimeLimit(30);
 
 	// Enable 804 Mhz mode if on N3DS
@@ -67,62 +78,73 @@ CtrUi::CtrUi(int width, int height) :
 		osSetSpeedupEnable(true);
 	}
 
-	sf2d_init();
+	gfxInitDefault();
+	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
+	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
+	C2D_Prepare();
+	top_screen = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
+	bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-#ifndef NO_DEBUG
+#ifndef NDEBUG
 	consoleInit(GFX_BOTTOM, nullptr);
 #endif
 
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
+
 	const DynamicFormat format(
 		32,
-		0x000000FF,
-		0x0000FF00,
 		0x00FF0000,
+		0x0000FF00,
+		0x000000FF,
 		0xFF000000,
 		PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
-	main_surface = Bitmap::Create(width, height, true, 32);
-	main_texture = sf2d_create_texture_mem_RGBA8(main_surface->pixels(),
-	                                             main_surface->GetWidth(),
-	                                             main_surface->GetHeight(),
-	                                             TEXFMT_RGBA8, SF2D_PLACE_VRAM);
+
+	main_buffer = (u32*)linearAlloc((width_pow2*height_pow2*4));
+	main_surface = Bitmap::Create(main_buffer, width, height, width_pow2*4, format);
+
+	subt3x.width = width_pow2;
+	subt3x.height = height_pow2;
+	subt3x.left = 0.0f;
+	subt3x.top = 1.0f;
+	subt3x.right = 1.0f;
+	subt3x.bottom = 0.0f;
+	top_image.subtex = &subt3x;
+	C3D_Tex* tex = (C3D_Tex*)malloc(sizeof(C3D_Tex));
+	C3D_TexInit(tex, width_pow2, height_pow2, GPU_RGB8);
+	memset(tex->data, 0, tex->size);
+	tex->border = 0xFFFFFFFF;
+	C3D_TexSetWrap(tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
+	top_image.tex = tex;
 
 #ifdef SUPPORT_AUDIO
 	audio_.reset(new CtrAudio());
 #endif
 
-#ifdef NO_DEBUG
+#ifdef NDEBUG
 	// Loading bottom screen keyboard
-	u8* key_buffer = (u8*)&keyboard_bmp[0x36];
-	u32 key_buffer_size = keyboard_bmp_size - 0x36;
-	u8* key_buffer_rgba = (u8*)malloc((key_buffer_size / 3) << 2);
-	for(size_t i = 0, z = 0; i < key_buffer_size; i = i + 3, z = z + 4) {
-		key_buffer_rgba[z + 3] = 0xFF;              // A
-		key_buffer_rgba[z + 2] = key_buffer[i];     // B
-		key_buffer_rgba[z + 1] = key_buffer[i + 1]; // G
-		key_buffer_rgba[z] = key_buffer[i + 2];     // R
-	}
-	keyboard_texture = sf2d_create_texture_mem_RGBA8(key_buffer_rgba,
-	                                                 320, 240,
-	                                                 TEXFMT_RGBA8, SF2D_PLACE_RAM);
-	free(key_buffer_rgba);
-
-	// Disabling debug console
-	devoptab_list[STD_OUT] = &dotab_null;
-	devoptab_list[STD_ERR] = &dotab_null;
-	consoleGetDefault()->frameBuffer = NULL;
-	gfxSetScreenFormat(GFX_BOTTOM, GSP_BGR8_OES);
-	gfxSetDoubleBuffering(GFX_BOTTOM, true);
+	assets = C2D_SpriteSheetLoadFromMem(assets_t3x, assets_t3x_size);
+	bottom_image = C2D_SpriteSheetGetImage(assets, assets_keyboard_idx);
 #endif
 }
 
 CtrUi::~CtrUi() {
-	sf2d_free_texture(main_texture);
-	sf2d_free_texture(keyboard_texture);
-	sf2d_fini();
+	C3D_TexDelete(top_image.tex);
+	free(top_image.tex);
+
+#ifdef NDEBUG
+	C2D_SpriteSheetFree(assets);
+#endif
+
+	C2D_Fini();
+	C3D_Fini();
+	gfxExit();
+
+	if (old_time_limit != UINT32_MAX) {
+		APT_SetAppCpuTimeLimit(old_time_limit);
+	}
 }
 
 void CtrUi::Sleep(uint32_t time) {
@@ -172,7 +194,7 @@ void CtrUi::ProcessEvents() {
 	keys[Input::Keys::LEFT] = (input & KEY_DLEFT);
 	keys[Input::Keys::Z] = (input & KEY_A);
 	keys[Input::Keys::X] = (input & KEY_B);
-	keys[Input::Keys::N8] = (input & KEY_X);
+	keys[Input::Keys::F] = (input & KEY_X);
 	keys[Input::Keys::LSHIFT] = (input & KEY_Y);
 	keys[Input::Keys::F2] = (input & KEY_L);
 	keys[Input::Keys::F12] = (input & KEY_SELECT);
@@ -181,21 +203,27 @@ void CtrUi::ProcessEvents() {
 	// Fullscreen mode support
 	bool old_state = trigger_state;
 	trigger_state = (input & KEY_R);
-	if ((trigger_state != old_state) && trigger_state)
+	if ((trigger_state != old_state) && trigger_state) {
 		fullscreen = !fullscreen;
+		if (fullscreen) {
+			C3D_TexSetFilter(top_image.tex, GPU_LINEAR, GPU_LINEAR);
+		} else {
+			C3D_TexSetFilter(top_image.tex, GPU_NEAREST, GPU_NEAREST);
+		}
+	}
 
 #if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	// CirclePad support
 	circlePosition circlepad;
 	hidCircleRead(&circlepad);
 
-	keys[Input::Keys::JOY_AXIS_Y_UP] = (circlepad.dy > 25);
-	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (circlepad.dy < -25);
-	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (circlepad.dx > 25);
-	keys[Input::Keys::JOY_AXIS_X_LEFT] = (circlepad.dx < -25);
+	keys[Input::Keys::JOY_AXIS_Y_UP] = (circlepad.dy > joy_threshold);
+	keys[Input::Keys::JOY_AXIS_Y_DOWN] = (circlepad.dy < -joy_threshold);
+	keys[Input::Keys::JOY_AXIS_X_RIGHT] = (circlepad.dx > joy_threshold);
+	keys[Input::Keys::JOY_AXIS_X_LEFT] = (circlepad.dx < -joy_threshold);
 #endif
 
-#ifdef NO_DEBUG
+#ifdef NDEBUG
 	// Touchscreen support
 	u32 keys_tbl[16] = {
 		Input::Keys::N7, Input::Keys::N8, Input::Keys::N9, Input::Keys::DIVIDE,
@@ -204,17 +232,20 @@ void CtrUi::ProcessEvents() {
 		Input::Keys::N0, Input::Keys::N0, Input::Keys::PERIOD, Input::Keys::ADD
 	};
 
+	if (touch_state == 1) {
+		// Touch finished, do final redraw in UpdateDisplay
+		touch_state = 2;
+	}
+
 	for (int i = 0; i < 16; i++)
 		keys[keys_tbl[i]] = false;
 
-	has_touched = false;
-
 	if (input & KEY_TOUCH) {
-		has_touched = true;
+		touch_state = 1;
 		touchPosition pos;
 		hidTouchRead(&pos);
-		u8 col = pos.px / 80;
-		u8 row = pos.py / 60;
+		u8 col = pos.px / button_width;
+		u8 row = pos.py / button_height;
 		touch_x = pos.px;
 		touch_y = pos.py;
 
@@ -223,51 +254,106 @@ void CtrUi::ProcessEvents() {
 #endif
 }
 
+static __attribute__((always_inline, optimize(3))) inline u32 NDS3D_Reverse32(u32 val)
+{
+	__asm("ROR %0, %1, #24" : "=r" (val) : "r" (val));
+
+	return val;
+}
+
 void CtrUi::UpdateDisplay() {
-	main_texture->tiled = 0;
-	sf2d_fill_texture_from_RGBA8(main_texture, main_surface->pixels(),
-	                             main_surface->GetWidth(),
-	                             main_surface->GetHeight());
-	sf2d_start_frame(GFX_TOP, GFX_LEFT);
-	if (fullscreen)
-		sf2d_draw_texture_scale(main_texture, 0, 0, 1.25, 1.0);
-	else
-		sf2d_draw_texture(main_texture, 40, 0);
-	sf2d_end_frame();
+	// rotate ARGB buffer to RGBA buffer
+	// required because pixman has no fast-paths for non AXXX buffers
+	u32* line = main_buffer;
+	for (int i = 0; i <= 240; ++i) {
+		for (int j = 0; j <= 320; ++j) {
+			u32* val = line + j;
+			*val = NDS3D_Reverse32(*val);
+		}
+		line += width_pow2;
+	}
 
-	sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
-	sf2d_draw_texture(keyboard_texture, 0, 0);
-	if (has_touched) {
-		// cursor
-		sf2d_draw_fill_circle(touch_x, touch_y, 5, RGBA8(0xCC, 0xCC, 0xCC, 0xAA));
+	GSPGPU_FlushDataCache(main_buffer, (width_pow2*height_pow2*4));
 
-		u32 color = RGBA8(0xFF, 0xFF, 0xFF, 0xFF);
-		u8 width = 80;
-		u8 height = 60;
+	// Using RGB8 as output format is faster and improves framerate ¯\_(ツ)_/¯
+	const u32 flags = (GX_TRANSFER_FLIP_VERT(0) |
+		GX_TRANSFER_OUT_TILED(1) |
+		GX_TRANSFER_RAW_COPY(0) |
+		GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8) |
+		GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8) |
+		GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO));
 
-		// selected button
-		u8 col = touch_x / width;
-		u8 row = touch_y / height;
+	// Doing this after FrameBegin corrupts the output, probably because this
+	// is asynchronous and FrameBegin will block until it finishes
+	C3D_SyncDisplayTransfer(
+		(u32*)main_buffer,
+		GX_BUFFER_DIM(width_pow2, height_pow2),
+		(u32*)top_image.tex->data,
+		GX_BUFFER_DIM(width_pow2, height_pow2),
+		flags
+	 );
 
-		// button position
-		u8 pos_x = col * width;
-		u8 pos_y = row * height;
+	C3D_FrameBegin(0);
 
-		// 0 is handled specially
+	// top screen
+	C2D_SceneBegin(top_screen);
+	C2D_TargetClear(top_screen, C2D_Color32f(0, 0, 0, 1));
+
+	if (fullscreen) {
+		C2D_DrawImageAt(top_image, 0, 0, 0.5f, NULL, 1.25f, 1.0f);
+	} else {
+		C2D_DrawImageAt(top_image, 40, 0, 0.5f, NULL);
+	}
+
+#if NDEBUG
+	// bottom screen
+	C2D_SceneBegin(bottom_screen);
+
+	// More low hanging fruit optimisation:
+	// Only refresh the bottom when a touch happens and one frame after
+	static bool once = false;
+	if (!once || touch_state == 2) {
+		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+		touch_state = 0;
+		once = true;
+	}
+
+	if (touch_state == 1) {
+		C2D_TargetClear(bottom_screen, C2D_Color32f(0, 0, 0, 1));
+		C2D_DrawImageAt(bottom_image, 0, 0, 0.5f, NULL);
+
+		u32 gray = C2D_Color32f(0.8f, 0.8f, 0.8f, 1);
+		u32 white = C2D_Color32f(1, 1, 1, 1);
+
+		// "circle" cursor
+		C2D_DrawRectSolid(touch_x - 1, touch_y, 0.5f, 3, 1, gray);
+		C2D_DrawRectSolid(touch_x, touch_y - 1, 0.5f, 1, 3, gray);
+
+		// get touched button
+		u8 col = touch_x / button_width;
+		u8 row = touch_y / button_height;
+		u8 pos_x = col * button_width;
+		u8 pos_y = row * button_height;
+
+		// "0" is handled specially
+		u8 draw_width = button_width;
 		if (col < 2 && row == 3) {
-			width *= 2;
+			draw_width *= 2;
 			if (col == 1)
 				pos_x = 0;
 		}
 
-		sf2d_draw_line(pos_x, pos_y + 1, pos_x + width, pos_y + 1, 2, color); // top border
-		sf2d_draw_line(pos_x, pos_y + height - 1, pos_x + width, pos_y + height - 1, 2, color); // bottom border
-		sf2d_draw_line(pos_x + 1, pos_y, pos_x + 1, pos_y + height, 2, color); // left border
-		sf2d_draw_line(pos_x + width - 1, pos_y, pos_x + width - 1, pos_y + height, 2, color); // right border
+		// darkened button with outline
+		C2D_DrawRectSolid(pos_x + 2, pos_y + 2, 0.5f, draw_width - 2, button_height - 2, C2D_Color32f(0, 0, 0, 0.2f));
+		C2D_DrawRectSolid(pos_x + draw_width - 2, pos_y, 0.5f, 2, button_height, white); // right
+		C2D_DrawRectSolid(pos_x, pos_y + button_height - 2, 0.5f, draw_width, 2, white); // bottom
+		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, draw_width, 2, gray); // top
+		C2D_DrawRectSolid(pos_x, pos_y, 0.5f, 2, button_height, gray); // left
 	}
-	sf2d_end_frame();
+#endif
 
-	sf2d_swapbuffers();
+	C3D_FrameEnd(0);
 }
 
 void CtrUi::BeginScreenCapture() {

@@ -21,9 +21,9 @@
 #include <map>
 #include <string>
 
-typedef std::map<std::string, std::map<std::string, std::string>> rtp_table_type;
-
 namespace RTP {
+	using rtp_table_type = std::map<const char*, std::map<const char*, const char*>>;
+
 	void Init();
 
 	/**
