@@ -52,7 +52,7 @@
 #  define SUPPORT_JOYSTICK_AXIS
 #endif
 
-#ifdef GEKKO
+#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
 #  include "stdint.h"
 
 #  define WORDS_BIGENDIAN

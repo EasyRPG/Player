@@ -89,7 +89,7 @@ SdlUi::SdlUi(long width, long height, bool fs_flag) :
 
 	// Set some SDL environment variables before starting. These are platform
 	// dependent, so every port needs to set them manually
-#ifndef GEKKO
+#if !defined(GEKKO) && !defined(__MORPHOS__)
 	// Set window position to the middle of the screen
 	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
@@ -423,6 +423,90 @@ bool SdlUi::ShowCursor(bool flag) {
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
+#if defined(__MORPHOS__) || defined(__amigaos4__)
+	// Quick & dirty big endian 2x zoom blitter
+	int blit_height = src.height() * 2;
+	int blit_width = src.width();
+	int src_pitch = src.pitch();
+	int dst_pitch = dst_surf->pitch;
+	int dst_bpp = sdl_surface->format->BitsPerPixel;
+
+	uint8_t* src_pixels = (uint8_t*)src.pixels();
+	uint8_t* dst_pixels = (uint8_t*)dst_surf->pixels;
+
+	switch (dst_bpp) {
+		case 32:
+			for (int i = 0; i < blit_height; i++) {
+				uint32_t* src = (uint32_t*)src_pixels;
+				uint32_t* dst = (uint32_t*)dst_pixels;
+				for (int j = 0; j < blit_width; j++) {
+					uint32_t pixel = *src;
+					*dst++ = pixel;
+					*dst++ = pixel;
+					src++;
+				}
+				dst_pixels += dst_pitch;
+				if (i & 1) {
+					src_pixels += src_pitch;
+				}
+			}
+			break;
+		case 24:
+			for (int i = 0; i < blit_height; i++) {
+				uint32_t* src = (uint32_t*)src_pixels;
+				uint8_t* dst = (uint8_t*)dst_pixels;
+				for (int j = 0; j < blit_width; j++) {
+					uint8_t* pixels = (uint8_t*)src + 1;
+					*dst++ = *pixels++;
+					*dst++ = *pixels++;
+					*dst++ = *pixels;
+					pixels = (uint8_t*)src + 1;
+					*dst++ = *pixels++;
+					*dst++ = *pixels++;
+					*dst++ = *pixels;
+					src++;
+				}
+				dst_pixels += dst_pitch;
+				if (i & 1) {
+					src_pixels += src_pitch;
+				}
+			}
+			break;
+		case 16:
+			for (int i = 0; i < blit_height; i++) {
+				uint16_t* src = (uint16_t*)src_pixels;
+				uint16_t* dst = (uint16_t*)dst_pixels;
+				for (int j = 0; j < blit_width; j++) {
+					// 5:5:5:1 RGBA to 6:5:5 RGB
+					uint16_t pixel = (*src & 0x7FE0) << 1 | (*src & 0x001F);
+					*dst++ = pixel;
+					*dst++ = pixel;
+					src++;
+				}
+				dst_pixels += dst_pitch;
+				if (i & 1) {
+					src_pixels += src_pitch;
+				}
+			}
+			break;
+		case 15:
+			for (int i = 0; i < blit_height; i++) {
+				uint16_t* src = (uint16_t*)src_pixels;
+				uint16_t* dst = (uint16_t*)dst_pixels;
+				for (int j = 0; j < blit_width; j++) {
+					uint16_t pixel = *src;
+					*dst++ = pixel;
+					*dst++ = pixel;
+					src++;
+				}
+				dst_pixels += dst_pitch;
+				if (i & 1) {
+					src_pixels += src_pitch;
+				}
+			}
+			break;
+	}
+#else
 	BitmapRef dst = Bitmap::Create(
 		dst_surf->pixels,
 		dst_surf->w,
@@ -437,6 +521,7 @@ void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 			PF::NoAlpha));
 
 	dst->Blit2x(dst->GetRect(), src, src.GetRect());
+#endif
 
 	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }

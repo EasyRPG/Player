@@ -23,6 +23,10 @@
 #include <string>
 #include <vector>
 
+#ifdef __MORPHOS__
+#undef bind
+#endif
+
 class FileRequestAsync;
 struct FileRequestResult;
 

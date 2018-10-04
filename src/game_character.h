@@ -23,6 +23,10 @@
 #include "color.h"
 #include "rpg_moveroute.h"
 
+#ifdef __MORPHOS__
+#undef Wait
+#endif
+
 /**
  * Game_Character class.
  */

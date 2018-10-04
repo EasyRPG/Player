@@ -264,6 +264,7 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 	return result;
 }
 
+#ifndef __amigaos4__
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(const std::string&);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
@@ -301,6 +302,7 @@ std::string FromWideStringImpl<2>(const std::wstring& str) {
 std::string Utils::FromWideString(const std::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
+#endif
 
 int Utils::PositiveModulo(int i, int m) {
 	return (i % m + m) % m;
