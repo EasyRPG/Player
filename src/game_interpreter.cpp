@@ -2327,6 +2327,12 @@ bool Game_Interpreter::CommandMoveEvent(RPG::EventCommand const& com) { // code 
 
 		RPG::MoveRoute route;
 		int move_freq = com.parameters[1];
+
+		if (move_freq <= 0 || move_freq > 8) {
+			// Invalid values
+			move_freq = 6;
+		}
+
 		route.repeat = com.parameters[2] != 0;
 		route.skippable = com.parameters[3] != 0;
 
