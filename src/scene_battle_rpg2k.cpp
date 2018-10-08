@@ -612,6 +612,9 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		}
 	}
+	if (Input::IsTriggered(Input::DEBUG_MENU)) {
+		this->CallDebug();
+	}
 }
 
 void Scene_Battle_Rpg2k::OptionSelected() {

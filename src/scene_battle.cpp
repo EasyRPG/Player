@@ -38,6 +38,7 @@
 #include "scene_battle_rpg2k.h"
 #include "scene_battle_rpg2k3.h"
 #include "scene_gameover.h"
+#include "scene_debug.h"
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
@@ -538,5 +539,11 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
 		SetState(State_SelectActor);
+	}
+}
+
+void Scene_Battle::CallDebug() {
+	if (Player::debug_flag) {
+		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }
