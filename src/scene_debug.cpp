@@ -288,7 +288,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Load", true);
 				addItem(i++, "Switches", true);
 				addItem(i++, "Variables", true);
-				addItem(i++, "Gold", true);
+				addItem(i++, Data::terms.gold.c_str(), true);
 				addItem(i++, "Items", true);
 				while (i < 10) {
 					addItem(i++, "", true);
@@ -330,7 +330,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 			}
 			break;
 		case eGold:
-			range_window->SetItemText(0, "Gold");
+			range_window->SetItemText(0, Data::terms.gold);
 			for (int i = 1; i < 10; i++){
 				range_window->SetItemText(i, "");
 			}
