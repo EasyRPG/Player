@@ -35,6 +35,7 @@
 #include "window_numberinput.h"
 #include "bitmap.h"
 #include "game_temp.h"
+#include "game_party.h"
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -92,7 +93,19 @@ void Scene_Debug::Update() {
 		} else if (numberinput_window->GetActive()) {
 			numberinput_window->SetVisible(false);
 			numberinput_window->SetActive(false);
-			var_window->SetActive(true);
+			if (var_window->GetMode() != Window_VarList::eNone) {
+				var_window->SetActive(true);
+				var_window->Refresh();
+			} else {
+				range_index = 0;
+				if (mode == eGold) {
+					range_index = 4;
+				}
+				mode = eMain;
+				range_window->SetActive(true);
+				range_window->SetIndex(range_index);
+				UpdateRangeListWindow();
+			}
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		var_window->Refresh();
@@ -132,6 +145,19 @@ void Scene_Debug::Update() {
 						UpdateRangeListWindow();
 						var_window->Refresh();
 						break;
+					case 4:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						mode = eGold;
+						range_window->SetActive(false);
+						range_index = 0;
+						range_window->SetIndex(range_index);
+						numberinput_window->SetNumber(Main_Data::game_party->GetGold());
+						numberinput_window->SetShowOperator(false);
+						numberinput_window->SetVisible(true);
+						numberinput_window->SetActive(true);
+						numberinput_window->Refresh();
+						UpdateRangeListWindow();
+						break;
 					default:
 						break;
 				}
@@ -150,8 +176,10 @@ void Scene_Debug::Update() {
 					if (Game_Variables.IsValid(GetIndex())) {
 						var_window->SetActive(false);
 						numberinput_window->SetNumber(Game_Variables[GetIndex()]);
+						numberinput_window->SetShowOperator(true);
 						numberinput_window->SetVisible(true);
 						numberinput_window->SetActive(true);
+						numberinput_window->Refresh();
 					}
 					break;
 				default:
@@ -159,11 +187,24 @@ void Scene_Debug::Update() {
 			}
 			var_window->Refresh();
 		} else if (numberinput_window->GetActive()) {
-			Game_Variables[GetIndex()] = numberinput_window->GetNumber();
+			if (mode == eVariable) {
+				Game_Variables[GetIndex()] = numberinput_window->GetNumber();
+			} else if (mode == eGold) {
+				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
+				Main_Data::game_party->GainGold(delta);
+				range_index = 4;
+			}
 			numberinput_window->SetActive(false);
 			numberinput_window->SetVisible(false);
-			var_window->SetActive(true);
-			var_window->Refresh();
+			if (var_window->GetVisible()) {
+				var_window->SetActive(true);
+				var_window->Refresh();
+			} else {
+				mode = eMain;
+				range_window->SetIndex(4);
+				range_window->SetActive(true);
+				UpdateRangeListWindow();
+			}
 		}
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	} else if (range_window->GetActive() && Input::IsTriggered(Input::RIGHT)) {
@@ -215,6 +256,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Load", true);
 				addItem(i++, "Switch", true);
 				addItem(i++, "Variable", true);
+				addItem(i++, "Gold", true);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -248,6 +290,12 @@ void Scene_Debug::UpdateRangeListWindow() {
 						"]";
 					range_window->SetItemText(i, ss.str());
 				}
+			}
+			break;
+		case eGold:
+			range_window->SetItemText(0, "Gold");
+			for (int i = 1; i < 10; i++){
+				range_window->SetItemText(i, "");
 			}
 			break;
 		default:

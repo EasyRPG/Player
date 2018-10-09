@@ -64,7 +64,8 @@ private:
 	enum Mode {
 		eMain,
 		eSwitch,
-		eVariable
+		eVariable,
+		eGold
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
