@@ -74,6 +74,12 @@ void Window_VarList::DrawItemValue(int index){
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
 			}
 			break;
+		case eTroop:
+			{
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
+			}
+			break;
 	}
 }
 
@@ -95,6 +101,9 @@ void Window_VarList::UpdateList(int first_value){
 				break;
 			case eItem:
 				ss << ReaderUtil::GetElement(Data::items, first_value+i)->name;
+				break;
+			case eTroop:
+				ss << ReaderUtil::GetElement(Data::troops, first_value+i)->name;
 				break;
 			default:
 				break;
@@ -133,6 +142,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return Game_Variables.IsValid(range_index);
 		case eItem:
 			return range_index > 0 && range_index <= Data::items.size();
+		case eTroop:
+			return range_index > 0 && range_index <= Data::troops.size();
 		default:
 			break;
 	}

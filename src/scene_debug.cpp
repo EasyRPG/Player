@@ -26,9 +26,11 @@
 #include "game_switches.h"
 #include "game_map.h"
 #include "game_system.h"
+#include "game_battle.h"
 #include "scene_debug.h"
 #include "scene_load.h"
 #include "scene_save.h"
+#include "scene_map.h"
 #include "player.h"
 #include "window_command.h"
 #include "window_varlist.h"
@@ -36,6 +38,7 @@
 #include "bitmap.h"
 #include "game_temp.h"
 #include "game_party.h"
+#include "game_player.h"
 #include "data.h"
 
 Scene_Debug::Scene_Debug() {
@@ -82,6 +85,10 @@ void Scene_Debug::Update() {
 					prev_item_range_index = range_index;
 					prev_item_range_page = range_page;
 					range_index = 5;
+				} else if (mode == eBattle) {
+					prev_troop_range_index = range_index;
+					prev_troop_range_page = range_page;
+					range_index = 6;
 				} else {
 					range_index = 0;
 				}
@@ -175,6 +182,21 @@ void Scene_Debug::Update() {
 						UpdateRangeListWindow();
 						var_window->Refresh();
 						break;
+					case 6:
+						if (Game_Temp::battle_running) {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+						} else {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+							range_index = prev_troop_range_index;
+							range_page = prev_troop_range_page;
+							mode = eBattle;
+							var_window->SetMode(Window_VarList::eTroop);
+							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+							range_window->SetIndex(range_index);
+							UpdateRangeListWindow();
+							var_window->Refresh();
+						}
+						break;
 					default:
 						break;
 				}
@@ -209,6 +231,26 @@ void Scene_Debug::Update() {
 						numberinput_window->SetActive(true);
 						numberinput_window->SetMaxDigits(2);
 						numberinput_window->Refresh();
+					}
+					break;
+				case eBattle:
+					if (GetIndex() <= Data::troops.size()) {
+						Scene::PopUntil(Scene::Map);
+						if (Scene::instance) {
+							Game_Character *player = Main_Data::game_player.get();
+							Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+							Game_Map::SetupBattle();
+							Game_Temp::battle_troop_id = GetIndex();
+							Game_Temp::battle_formation = 0;
+							Game_Temp::battle_escape_mode = 2;
+							Game_Temp::battle_defeat_mode = 1;
+							Game_Temp::battle_first_strike = 0;
+							Game_Temp::battle_result = Game_Temp::BattleVictory;
+							Game_Battle::SetBattleMode(0);
+							Game_Temp::battle_calling = true;
+							Game_Temp::transition_menu = false;
+							static_cast<Scene_Map*>(Scene::instance.get())->CallBattle();
+						}
 					}
 					break;
 				default:
@@ -279,7 +321,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				auto addItem = [&](int idx, const char* name, bool battle_ok) {
 					range_window->SetItemText(idx, name);
 					if (!battle_ok && Game_Temp::battle_running) {
-						range_window->DisableItem(0);
+						range_window->DisableItem(idx);
 					}
 				};
 
@@ -290,6 +332,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Variables", true);
 				addItem(i++, Data::terms.gold.c_str(), true);
 				addItem(i++, "Items", true);
+				addItem(i++, "Battle", false);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -299,6 +342,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 		case eSwitch:
 		case eVariable:
 		case eItem:
+		case eBattle:
 			{
 				const char* prefix = "???";
 				switch (mode) {
@@ -310,6 +354,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 						break;
 					case eItem:
 						prefix = "It[";
+						break;
+					case eBattle:
+						prefix = "Tp[";
 						break;
 					default:
 						break;
@@ -373,6 +420,8 @@ int Scene_Debug::GetLastPage() {
 			return Game_Variables.GetSize() / 100;
 		case eItem:
 			return Data::items.size() / 100;
+		case eBattle:
+			return Data::troops.size() / 100;
 		default:
 			return 0;
 	}

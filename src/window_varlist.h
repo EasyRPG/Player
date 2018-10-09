@@ -29,6 +29,7 @@ public:
 		eSwitch,
 		eVariable,
 		eItem,
+		eTroop,
 	};
 
 	/**
