@@ -36,6 +36,7 @@
 #include "bitmap.h"
 #include "game_temp.h"
 #include "game_party.h"
+#include "data.h"
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -77,6 +78,10 @@ void Scene_Debug::Update() {
 					prev_variable_range_index = range_index;
 					prev_variable_range_page = range_page;
 					range_index = 3;
+				} else if (mode == eItem) {
+					prev_item_range_index = range_index;
+					prev_item_range_page = range_page;
+					range_index = 5;
 				} else {
 					range_index = 0;
 				}
@@ -155,8 +160,20 @@ void Scene_Debug::Update() {
 						numberinput_window->SetShowOperator(false);
 						numberinput_window->SetVisible(true);
 						numberinput_window->SetActive(true);
+						numberinput_window->SetMaxDigits(7);
 						numberinput_window->Refresh();
 						UpdateRangeListWindow();
+						break;
+					case 5:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						range_index = prev_item_range_index;
+						range_page = prev_item_range_page;
+						mode = eItem;
+						var_window->SetMode(Window_VarList::eItem);
+						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+						range_window->SetIndex(range_index);
+						UpdateRangeListWindow();
+						var_window->Refresh();
 						break;
 					default:
 						break;
@@ -179,6 +196,18 @@ void Scene_Debug::Update() {
 						numberinput_window->SetShowOperator(true);
 						numberinput_window->SetVisible(true);
 						numberinput_window->SetActive(true);
+						numberinput_window->SetMaxDigits(7);
+						numberinput_window->Refresh();
+					}
+					break;
+				case eItem:
+					if (GetIndex() <= Data::items.size()) {
+						var_window->SetActive(false);
+						numberinput_window->SetNumber(Main_Data::game_party->GetItemCount(GetIndex()));
+						numberinput_window->SetShowOperator(false);
+						numberinput_window->SetVisible(true);
+						numberinput_window->SetActive(true);
+						numberinput_window->SetMaxDigits(2);
 						numberinput_window->Refresh();
 					}
 					break;
@@ -193,6 +222,9 @@ void Scene_Debug::Update() {
 				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
 				Main_Data::game_party->GainGold(delta);
 				range_index = 4;
+			} else if (mode == eItem) {
+				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
+				Main_Data::game_party->AddItem(GetIndex(), delta);
 			}
 			numberinput_window->SetActive(false);
 			numberinput_window->SetVisible(false);
@@ -254,9 +286,10 @@ void Scene_Debug::UpdateRangeListWindow() {
 				int i = 0;
 				addItem(i++, "Save", false);
 				addItem(i++, "Load", true);
-				addItem(i++, "Switch", true);
-				addItem(i++, "Variable", true);
+				addItem(i++, "Switches", true);
+				addItem(i++, "Variables", true);
 				addItem(i++, "Gold", true);
+				addItem(i++, "Items", true);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -265,6 +298,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 			break;
 		case eSwitch:
 		case eVariable:
+		case eItem:
 			{
 				const char* prefix = "???";
 				switch (mode) {
@@ -273,6 +307,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 						break;
 					case eVariable:
 						prefix = "Vr[";
+						break;
+					case eItem:
+						prefix = "It[";
 						break;
 					default:
 						break;
@@ -334,6 +371,8 @@ int Scene_Debug::GetLastPage() {
 			return Game_Switches.GetSize() / 100;
 		case eVariable:
 			return Game_Variables.GetSize() / 100;
+		case eItem:
+			return Data::items.size() / 100;
 		default:
 			return 0;
 	}

@@ -22,6 +22,9 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "bitmap.h"
+#include "data.h"
+#include "reader_util.h"
+#include "game_party.h"
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
 Window_Command(commands, 224, 10) {
@@ -48,12 +51,28 @@ void Window_VarList::DrawItemValue(int index){
 	}
 	switch (mode) {
 		case eSwitch:
-			DrawItem(index, Font::ColorDefault);
-			contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
+			{
+				auto value = Game_Switches[first_var + index];
+				auto font = (!value) ? Font::ColorCritical : Font::ColorDefault;
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, value ? "[ON]" : "[OFF]", Text::AlignRight);
+			}
 			break;
 		case eVariable:
-			DrawItem(index, Font::ColorDefault);
-			contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, std::to_string(Game_Variables[first_var+index]), Text::AlignRight);
+			{
+				auto value = Game_Variables[first_var + index];
+				auto font = (value < 0) ? Font::ColorCritical : Font::ColorDefault;
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
+			}
+			break;
+		case eItem:
+			{
+				auto value = Main_Data::game_party->GetItemCount(first_var + index);
+				auto font = (value == 0) ? Font::ColorCritical : Font::ColorDefault;
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
+			}
 			break;
 	}
 }
@@ -73,6 +92,9 @@ void Window_VarList::UpdateList(int first_value){
 				break;
 			case eVariable:
 				ss << Game_Variables.GetName(first_value + i);
+				break;
+			case eItem:
+				ss << ReaderUtil::GetElement(Data::items, first_value+i)->name;
 				break;
 			default:
 				break;
@@ -109,6 +131,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return Game_Switches.IsValid(range_index);
 		case eVariable:
 			return Game_Variables.IsValid(range_index);
+		case eItem:
+			return range_index > 0 && range_index <= Data::items.size();
 		default:
 			break;
 	}

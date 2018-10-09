@@ -28,6 +28,7 @@ public:
 		eNone,
 		eSwitch,
 		eVariable,
+		eItem,
 	};
 
 	/**

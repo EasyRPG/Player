@@ -65,7 +65,8 @@ private:
 		eMain,
 		eSwitch,
 		eVariable,
-		eGold
+		eGold,
+		eItem
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
@@ -81,6 +82,10 @@ private:
 	int prev_variable_range_index = 0;
 	/** Last range page used for variable */
 	int prev_variable_range_page = 0;
+	/** Last range index used for item */
+	int prev_item_range_index = 0;
+	/** Last range page used for item */
+	int prev_item_range_page = 0;
 
 	/** Creates Range window. */
 	void CreateRangeWindow();
