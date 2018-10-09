@@ -60,20 +60,18 @@ public:
 	 */
 	int GetIndex();
 
-	enum VarType {
-		TypeInt,
-		TypeSwitch,
-		TypeGeneral,
-		TypeEnd
-	};
-
 private:
+	enum Mode {
+		eMain,
+		eSwitch,
+		eVariable
+	};
 	/** Current variables being displayed (Switches or Integers). */
-	int current_var_type;
+	Mode mode = eMain;
 	/** Current Page being displayed */
-	int range_page;
+	int range_page = 0;
 	/** Current range being displayed. */
-	int range_index;
+	int range_index = 0;
 	/** Last range_index used for switch */
 	int prev_switch_range_index = 0;
 	/** Last range page used for switch */
@@ -92,7 +90,10 @@ private:
 	/** Creates number input window. */
 	void CreateNumberInputWindow();
 
-	/** Displays a range selection for current var type. */
+	/** Get the last page for the current mode */
+	int GetLastPage();
+
+	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
 	std::unique_ptr<Window_VarList> var_window;

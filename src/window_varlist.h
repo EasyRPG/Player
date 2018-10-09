@@ -29,6 +29,7 @@ public:
 		eSwitch,
 		eVariable,
 	};
+
 	/**
 	 * Constructor.
 	 *
@@ -68,6 +69,11 @@ public:
 	 */
 	int GetIndex();
 
+	/**
+	 * Returns the current mode.
+	 */
+	Mode GetMode() const;
+
 private:
 
 	/**
@@ -84,5 +90,9 @@ private:
 	bool DataIsValid(int range_index);
 
 };
+
+inline Window_VarList::Mode Window_VarList::GetMode() const {
+	return mode;
+}
 
 #endif
