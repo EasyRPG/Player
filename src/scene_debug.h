@@ -74,6 +74,14 @@ private:
 	int range_page;
 	/** Current range being displayed. */
 	int range_index;
+	/** Last range_index used for switch */
+	int prev_switch_range_index = 0;
+	/** Last range page used for switch */
+	int prev_switch_range_page = 0;
+	/** Last range index used for variable */
+	int prev_variable_range_index = 0;
+	/** Last range page used for variable */
+	int prev_variable_range_page = 0;
 
 	/** Creates Range window. */
 	void CreateRangeWindow();

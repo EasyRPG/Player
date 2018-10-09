@@ -68,7 +68,24 @@ void Scene_Debug::Update() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		if (range_window->GetActive())
-			Scene::Pop();
+			if (current_var_type == TypeGeneral) {
+				Scene::Pop();
+			} else {
+				if (current_var_type == TypeSwitch) {
+					prev_switch_range_index = range_index;
+					prev_switch_range_page = range_page;
+					range_index = 2;
+				} else if (current_var_type == TypeInt) {
+					prev_variable_range_index = range_index;
+					prev_variable_range_page = range_page;
+					range_index = 3;
+				}
+				range_page = 0;
+				current_var_type = TypeGeneral;
+				//var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+				UpdateRangeListWindow();
+				var_window->Refresh();
+			}
 		else if (var_window->GetActive()) {
 			var_window->SetActive(false);
 			range_window->SetActive(true);
@@ -93,6 +110,24 @@ void Scene_Debug::Update() {
 						break;
 					case 1:
 						Scene::Push(std::make_shared<Scene_Load>());
+						break;
+					case 2:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						range_index = prev_switch_range_index;
+						range_page = prev_switch_range_page;
+						current_var_type = TypeSwitch;
+						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+						UpdateRangeListWindow();
+						var_window->Refresh();
+						break;
+					case 3:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						range_index = prev_variable_range_index;
+						range_page = prev_variable_range_page;
+						current_var_type = TypeInt;
+						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+						UpdateRangeListWindow();
+						var_window->Refresh();
 						break;
 					default:
 						break;
@@ -122,45 +157,39 @@ void Scene_Debug::Update() {
 	} else if (range_window->GetActive() &&  Input::IsTriggered(Input::RIGHT)) {
 		if (current_var_type != TypeGeneral) {
 			range_page++;
+			if (current_var_type == TypeSwitch && !Game_Switches.IsValid(range_page*100+1)) {
+				range_page = 0;
+			} else if (current_var_type == TypeInt && !Game_Variables.IsValid(range_page*100+1)) {
+				range_page = 0;
+			}
+			var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+			UpdateRangeListWindow();
+			var_window->Refresh();
 		}
-		if (current_var_type == TypeSwitch && !Game_Switches.IsValid(range_page*100+1)) {
-			range_page = 0;
-			current_var_type++;
-		} else if (current_var_type == TypeInt && !Game_Variables.IsValid(range_page*100+1)) {
-			range_page = 0;
-			current_var_type++;
-		} else if (current_var_type == TypeGeneral) {
-			current_var_type = 0;
-		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
 	} else if (range_window->GetActive() && Input::IsTriggered(Input::LEFT)) {
 		if (current_var_type != TypeGeneral) {
-			range_page--;
+			if (range_page == 0) {
+				if (current_var_type == TypeSwitch) {
+					for (;;)
+						if (Game_Switches.IsValid(range_page*100 + 101))
+							range_page++;
+						else
+							break;
+				}
+				if (current_var_type == TypeInt) {
+					for (;;)
+						if (Game_Variables.IsValid(range_page*100 + 101))
+							range_page++;
+						else
+							break;
+				}
+			} else {
+				range_page--;
+			}
+			var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+			UpdateRangeListWindow();
+			var_window->Refresh();
 		}
-		if (current_var_type == TypeSwitch && range_page < 0) {
-			range_page = 0;
-			for (;;)
-				if (Game_Variables.IsValid(range_page*100 + 101))
-					range_page++;
-				else
-					break;
-			current_var_type--;
-		} else if (current_var_type == TypeInt && range_page < 0) {
-			range_page = 0;
-			current_var_type = TypeEnd - 1;
-		} else if (current_var_type == TypeGeneral) {
-			for (;;)
-				if (Game_Switches.IsValid(range_page*100 + 101))
-					range_page++;
-				else
-					break;
-			current_var_type--;
-		}
-		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-		UpdateRangeListWindow();
-		var_window->Refresh();
 	}
 
 	if (current_var_type == TypeSwitch) {
@@ -187,13 +216,20 @@ void Scene_Debug::CreateRangeWindow() {
 void Scene_Debug::UpdateRangeListWindow() {
 	if (current_var_type != TypeSwitch &&
 			current_var_type != TypeInt) {
-		range_window->SetItemText(0, "Save");
-		if (Game_Temp::battle_running) {
-			range_window->DisableItem(0);
-		}
-		range_window->SetItemText(1, "Load");
-		for (int i = 2; i < 10; i++){
-			range_window->SetItemText(i, "");
+		auto addItem = [&](int idx, const char* name, bool battle_ok) {
+			range_window->SetItemText(idx, name);
+			if (!battle_ok && Game_Temp::battle_running) {
+				range_window->DisableItem(0);
+			}
+		};
+
+		int i = 0;
+		addItem(i++, "Save", false);
+		addItem(i++, "Load", true);
+		addItem(i++, "Switch", true);
+		addItem(i++, "Variable", true);
+		while (i < 10) {
+			addItem(i++, "", true);
 		}
 		return;
 	}
