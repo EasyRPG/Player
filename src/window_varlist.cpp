@@ -24,12 +24,11 @@
 #include "bitmap.h"
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
-Window_Command(commands, 224, 10), show_switch(true), first_var(0) {
+Window_Command(commands, 224, 10) {
 	SetX(0);
 	SetY(32);
 	SetHeight(176);
 	SetWidth(224);
-	hidden_index = 0;
 }
 
 Window_VarList::~Window_VarList() {
@@ -39,27 +38,23 @@ Window_VarList::~Window_VarList() {
 void Window_VarList::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < 10; i++) {
-		if (!show_switch && Game_Variables.IsValid(first_var+i)) {
-			DrawItem(i, Font::ColorDefault);
-		}
 		DrawItemValue(i);
 	}
 }
 
 void Window_VarList::DrawItemValue(int index){
-	if (show_switch){
-		if (!Game_Switches.IsValid(first_var+index))
-			return;
-		DrawItem(index, Font::ColorDefault);
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
+	if (!DataIsValid(first_var+index)) {
+		return;
 	}
-	else {
-		if (!Game_Variables.IsValid(first_var+index))
-			return;
-		DrawItem(index, Font::ColorDefault);
-		std::stringstream ss;
-		ss  << Game_Variables[first_var+index];
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, ss.str(), Text::AlignRight);
+	switch (mode) {
+		case eSwitch:
+			DrawItem(index, Font::ColorDefault);
+			contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
+			break;
+		case eVariable:
+			DrawItem(index, Font::ColorDefault);
+			contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, std::to_string(Game_Variables[first_var+index]), Text::AlignRight);
+			break;
 	}
 }
 
@@ -67,18 +62,29 @@ void Window_VarList::UpdateList(int first_value){
 	static std::stringstream ss;
 	first_var = first_value;
 	for (int i = 0; i < 10; i++){
+		if (!DataIsValid(first_var+i)) {
+			continue;
+		}
 		ss.str("");
-		if ((show_switch && Game_Switches.IsValid(first_var+i)) || ((!show_switch && Game_Variables.IsValid(first_var+i))))
-			ss << std::setfill('0') << std::setw(4) << (first_value + i) << ": " << (show_switch ? Game_Switches.GetName(first_value + i) : Game_Variables.GetName(first_value + i));
+		ss << std::setfill('0') << std::setw(4) << (first_value + i) << ": ";
+		switch (mode) {
+			case eSwitch:
+				ss << Game_Switches.GetName(first_value + i);
+				break;
+			case eVariable:
+				ss << Game_Variables.GetName(first_value + i);
+				break;
+			default:
+				break;
+		}
 		this->SetItemText(i, ss.str());
 	}
 }
 
-void Window_VarList::SetShowSwitch(bool _switch) {
-	if (show_switch != _switch) {
-		show_switch = _switch;
-		Refresh();
-	}
+void Window_VarList::SetMode(Mode mode) {
+	this->mode = mode;
+	SetVisible((mode != eNone));
+	Refresh();
 }
 
 void Window_VarList::SetActive(bool nactive) {
@@ -95,3 +101,17 @@ void Window_VarList::SetActive(bool nactive) {
 int Window_VarList::GetIndex() {
 	return GetActive() ? index : hidden_index;
 }
+
+
+bool Window_VarList::DataIsValid(int range_index) {
+	switch (mode) {
+		case eSwitch:
+			return Game_Switches.IsValid(range_index);
+		case eVariable:
+			return Game_Variables.IsValid(range_index);
+		default:
+			break;
+	}
+	return false;
+}
+
