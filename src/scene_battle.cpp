@@ -96,11 +96,16 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::TransitionIn() {
-	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+	if (Game_Temp::transition_menu) {
+		Game_Temp::transition_menu = false;
+		Scene::TransitionIn();
+	} else {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+	}
 }
 
 void Scene_Battle::TransitionOut() {
-	if (Player::exit_flag || Player::battle_test_flag) {
+	if (Player::exit_flag || Player::battle_test_flag || Game_Temp::transition_menu) {
 		Scene::TransitionOut();
 	}
 	else {
@@ -544,6 +549,7 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 
 void Scene_Battle::CallDebug() {
 	if (Player::debug_flag) {
+		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }

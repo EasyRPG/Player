@@ -46,6 +46,10 @@ Scene_Map::Scene_Map(bool from_save) :
 	type = Scene::Map;
 }
 
+Scene_Map::~Scene_Map() {
+	Game_Temp::transition_menu = false;
+}
+
 void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
@@ -303,6 +307,7 @@ void Scene_Map::CallLoad() {
 
 void Scene_Map::CallDebug() {
 	if (Player::debug_flag) {
+		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }
