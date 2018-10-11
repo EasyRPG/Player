@@ -1,0 +1,7 @@
+EasyRPG Player可以游玩使用RPG Maker 2000和RPG Maker 2003制作的游戏（不支持新的RPG引擎，例如XP、VX、VX Ace和MV。）
+
+主页: https://easyrpg.org/
+更新日志: https://blog.easyrpg.org/
+报告bug: https://github.com/EasyRPG/Player/issues/
+
+此应用不隶属于Kadokawa公司。

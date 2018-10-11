@@ -1,0 +1,7 @@
+EasyRPG Player egy program, ami lehetővé teszi, hogy RPG Maker 2000 és RPG Maker 2003 játékokkal játssz (az újabb RPG motorok, mint az XP, VX, VX Ace és MV nem támogatottak).
+
+Weboldal: https://easyrpg.org/
+Változásnapló: https://blog.easyrpg.org/
+Hibajelentés: https://github.com/EasyRPG/Player/issues/
+
+Ez a program nem áll kapcsolatban a Kadokawa Corporationnel.

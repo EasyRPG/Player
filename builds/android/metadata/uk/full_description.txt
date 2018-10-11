@@ -1,0 +1,7 @@
+EasyRPG Player — це програма, яка дозволяє грати в ігри, створені в RPG Maker 2000 або RPG Maker 2003 (новіші RPG-рушіі, такі як XP, VX, VX Ace або MV, не підтримуються).
+
+Домашня сторінка: https://easyrpg.org/
+Опис змін: https://blog.easyrpg.org/
+Повідомлення про помилки: https://github.com/EasyRPG/Player/issues/
+
+Ця програма не має відношення до корпорації Kadokawa.

@@ -1,0 +1,24 @@
+# fastlane task config
+
+# disable usage tracking
+opt_out_usage
+
+lane :beta do
+  gradle (
+    task: 'assemble',
+    build_type: 'Release'
+  )
+
+  supply (
+    track: 'beta'
+  )
+end
+
+lane :playstore do
+  gradle (
+    task: 'assemble',
+    build_type: 'Release'
+  )
+
+  supply
+end

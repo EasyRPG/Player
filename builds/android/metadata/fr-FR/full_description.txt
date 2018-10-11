@@ -1,0 +1,7 @@
+EasyRPG Player est une application permettant de jouer à des jeux créés avec RPG Maker 2000 et RPG Maker 2003 (les moteurs de jeu plus récents tels que XP, VX, VX Ace et MV ne sont pas supportés).
+
+Site web: https://easyrpg.org/
+Journal des modifications: https://blog.easyrpg.org/
+Rapporter un bug: https://github.com/EasyRPG/Player/issues/
+
+Cette application n\'est pas affiliée à Kadokawa Corporation.
