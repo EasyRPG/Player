@@ -61,3 +61,14 @@ app/src/main/jniLibs
 
 ### Android Patch ###
 gen-external-apklibs
+
+# Bundler artifacts
+.bundle
+vendor/bundle
+Gemfile.lock
+
+# immediate translation files
+metadata/*/playstore.xml
+
+# immediate changelog files
+metadata/en-US/changelogs/*.txt

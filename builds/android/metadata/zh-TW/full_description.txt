@@ -1,0 +1,7 @@
+EasyRPG Player 是個可以玩用 RPG Maker 2000 和 RPG Maker 2003 做的遊戲的程式 (不支援 XP、VX、VX Ace、MV 等其他較新的 RPG Maker 版本)。
+
+官網：https://easyrpg.org/
+更新紀錄：https://blog.easyrpg.org/
+錯誤回報：https://github.com/EasyRPG/Player/issues/
+
+本 App 與 Kadokawa Corporation 沒有關連。

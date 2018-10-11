@@ -1,0 +1,5 @@
+# fastlane global config
+
+package_name "org.easyrpg.player"
+# useful for local configuration:
+#json_key_file "/path/to/our/key.json"

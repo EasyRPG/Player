@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--GameBrowser Activity-->
+  <string name="autodetect">Pendeteksi Wilayah Otomatis (Direkomendasikan)</string>
+  <string name="west_europe">Eropa Barat</string>
+  <string name="east_europe">Eropa Tengah/Timur</string>
+  <string name="cyrillic">Cyrillic</string>
+  <string name="japan">Bahasa Jepang</string>
+  <string name="korean">Bahasa Korea</string>
+  <string name="chinese_simple">Bahasa Mandarin (Disederhanakan)</string>
+  <string name="chinese_traditional">Bahasa Mandarin (Tradisional)</string>
+  <string name="greek">Bahasa Yunani</string>
+  <string name="turkish">Bahasa Turki</string>
+  <string name="hebrew">Ibrani</string>
+  <string name="arabic">Bahasa Arab</string>
+  <string name="baltic">Baltik</string>
+  <string name="thai">Bahasa Thailand</string>
+  <string name="vietnamese">Bahasa Vietnam</string>
+  <string name="ok">OKE</string>
+  <string name="cancel">Batal</string>
+  <string name="do_want_quit">Apa benar ingin keluar?</string>
+  <string name="yes">Ya</string>
+  <string name="no">Tidak</string>
+  <string name="creating_dir_failed">Gagal membuat direktori $PATH</string>
+  <string name="path_not_readable">$PATH tidak terbaca</string>
+  <string name="no_games_found_and_explanation">Tidak ada permainan RPG Maker 2000/2003 yang ditemukan.
+Anda bisa menambah direktori permainan di pengaturan.</string>
+  <string name="no_external_storage">Tidak ada penyimpanan eksternal (misal: kartu SD) yang ditemukan</string>
+  <string name="not_valid_game">$PATH bukan permainan yang valid</string>
+  <string name="select_game_region">Pilih wilayah permainan</string>
+  <string name="change_the_layout">Ubah tampilan</string>
+  <string name="choose_layout">Pilih tampilan</string>
+  <string name="unknown_region">Wilayah tidak dikenal</string>
+  <string name="region_modification_failed">Gagal merubah wilayah</string>
+  <string name="refresh">Segarkan ulang</string>
+  <string name="change_default_mapping">Ubah pemetaan tombol bawaan</string>
+  <string name="how_to_use_easy_rpg">Cara memakai EasyRPG Player</string>
+  <string name="how_to_use_easy_rpg_explanation">Instruksi pemasangan:\n\nSecara bawaan permainan akan dicari di /easyrpg/games. Anda bisa menambah direktori permainan di Pengaturan.\n\nOpsional: Tempatkan RTP di /easyrpg/rtp/2000 untuk RTP RPG Maker 2000 dan di /easyrpg/rtp/2003 untuk RTP RPG Maker 2003.\n\nAgar permainan di deteksi dengan benar, permainannya harus di letakkan di sub direktori dari /easyrpg/games (secara bawaan), misal:\n\n\t/easyrpg/games/MyGame/Data/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame/RPG_RT.ldb adalah OKE.\n\t/easyrpg/games/MyGame.zip adalah SALAH. ZIP dan EXE tidak di dukung.</string>
+  <!--Ingame menu-->
+  <string name="toggle_fps">Aktifkan FPS</string>
+  <string name="toggle_ui">Aktifkan tombol virtual</string>
+  <string name="end_game">Matikan permainan</string>
+  <string name="report_bug">Laporkan kutu</string>
+  <string name="report_bug_msg">Fungsi ini akan membuka aplikasi surel Anda (misal. Gmail) untuk mengirimkan kepada kami laporan kutu.\n\nJika Anda tidak ingin mengirimkan surel atau tidak punya aplikasi surel yang di konfigurasikan, Anda dapat membuka isu baru di https://github.com/EasyRPG/Player/issues sebagai gantinya.</string>
+  <string name="report_bug_mail">Terima kasih telah mendukung EasyRPG Player.\n
+File log dan savegame Anda dilampirkan di surel ini.\n
+Tolong jangan menghapus file log! Kami membutuhkan savegame yang dekat dengan lokasi kutunya.\n
+Tolong beri tahu kami secara detail apa yang salah.\n\n
+</string>
+  <!--Settings Activities-->
+  <string name="video">Video</string>
+  <string name="audio">Audio</string>
+  <string name="input">Masukan</string>
+  <string name="game_folders">Folder permainan</string>
+  <string name="settings">Pengaturan</string>
+  <string name="add_game_folder">Tambahkan folder permainan</string>
+  <string name="enable_vibration">Aktifkan getaran</string>
+  <string name="vibrate_when_sliding_direction">Bergetar saat meluncur ke arah lain</string>
+  <string name="enable_audio">Aktifkan audio</string>
+  <string name="input_layout_transparency">Masukan transparansi tampilan:</string>
+  <string name="ignore_size_settings">Abaikan pengaturan ukuran tombol dan pakai ini sebagai gantinya:</string>
+  <string name="no_read_access_on_dir">Tidak ada akses baca pada %1$s</string>
+  <string name="quick_access">Akses cepat</string>
+  <string name="force_landscape_mode">Paksa orientasi lanskap</string>
+  <string name="fast_forward">Mode tombol fast-forward:</string>
+  <string-array name="fast_forward_mode">
+    <item>tekan</item>
+    <item>tap</item>
+  </string-array>
+  <string name="fast_forward_factor">Penambah kecepatan:</string>
+  <!--InputLayout Managing-->
+  <string name="manage_input_layouts">Kelola tampilan masukan:</string>
+  <string name="add_an_input_layout">Tambahkan tampilan masukan</string>
+  <string name="set_as_default">Atur sebagai bawaan</string>
+  <string name="edit_name">Sunting nama</string>
+  <string name="edit_layout">Sunting tampilan</string>
+  <string name="delete">Hapus</string>
+  <string name="default_layout">Bawaan</string>
+  <!--ButtonMapping Activity-->
+  <string name="add_a_button">Tambahkan tombol</string>
+  <string name="reset_button_mapping">Setel ulang pemetaan tombol</string>
+  <string name="exit_without_saving">Keluar tanpa menyimpan</string>
+  <string name="save_and_quit">Simpan dan keluar</string>
+  <string name="key_enter">Enter (Z)</string>
+  <string name="key_cancel">Batal (ESC dan X)</string>
+  <string name="key_shift">Shift</string>
+  <string name="key_fast_forward">Fast forward</string>
+  <!--GameBrowserAPI15-->
+  <string name="navigation_drawer_open">Buka panel navigasi</string>
+  <string name="navigation_drawer_close">Tutup panel navigasi</string>
+  <string name="menu">Buka menu Android</string>
+</resources>

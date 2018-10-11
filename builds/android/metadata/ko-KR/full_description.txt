@@ -1,0 +1,7 @@
+EasyRPG 플레이어는 RPG 만들기 2000/2003에서 만든 게임을 구동하는 프로그램입니다 (이후 버전인 XP, VX, VX Ace와 MV는 지원하지 않습니다).
+
+홈페이지: https://easyrpg.org/
+변경내역: https://blog.easyrpg.org/
+버그보고: https://github.com/EasyRPG/Player/issues/
+
+본 앱은 주식회사 KADOKAWA와 관련이 없습니다.

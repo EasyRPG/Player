@@ -1,0 +1,7 @@
+EasyRPG é um software que te permite jogar qualquer jogo criado com RPG Maker 2000 ou 2003 (obs: as novas engines como XP, VX, VX Ace e MV não são suportadas).
+
+Página inicial: https://easyrpg.org/
+Changelog (novidades/mudanças): https://blog.easyrpg.org/
+Reportar Erros/Bugs: https://github.com/EasyRPG/Player/issues/
+
+Este aplicativo não é afiliado com a Kadokawa Corporation.
