@@ -57,6 +57,7 @@ void Game_Temp::Init() {
 	menu_calling = false;
 	battle_calling = false;
 	shop_calling = false;
+	inn_calling = false;
 	name_calling = false;
 	save_calling = false;
 	load_calling = false;
@@ -70,6 +71,8 @@ void Game_Temp::Init() {
 	shop_sells = true;
 	shop_type = 0;
 	shop_handlers = false;
+	shop_goods = {};
+	shop_transaction = false;
 	inn_price = 0;
 	inn_handlers = false;
 	hero_name = "";
@@ -77,10 +80,11 @@ void Game_Temp::Init() {
 	hero_name_charset = 0;
 	battle_running = false;
 	battle_troop_id = 0;
-	battle_background = "";
+	battle_background = {};
 	battle_formation = 0;
 	battle_escape_mode = -1;
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
+	battle_result = 0;
 	restart_title_cache = false;
 }
