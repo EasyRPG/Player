@@ -189,6 +189,8 @@ private:
 	 * Graphic stack of the scene
 	 */
 	Graphics::State state;
+
+	static void DebugValidate(const char* caller);
 };
 
 #endif
