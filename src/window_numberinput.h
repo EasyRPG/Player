@@ -103,6 +103,8 @@ protected:
 	unsigned int index;
 	bool show_operator;
 	bool plus;
+
+	void ResetIndex();
 };
 
 #endif

@@ -38,7 +38,7 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	// Above the message window
 	SetZ(Priority_Window + 150);
 	opacity = 0;
-	index = 0;
+	ResetIndex();
 	active = false;
 	show_operator = false;
 
@@ -77,7 +77,7 @@ void Window_NumberInput::SetNumber(int inumber) {
 		num *= 10;
 	}
 	number = min(max(abs(inumber), 0), num - 1);
-	index = 0;
+	ResetIndex();
 
 	plus = inumber >= 0;
 
@@ -96,7 +96,8 @@ void Window_NumberInput::SetMaxDigits(int idigits_max) {
 		(idigits_max > top) ? top :
 		(idigits_max <= 0) ? 1 :
 		idigits_max;
-	index = 0;
+	ResetIndex();
+	UpdateCursorRect();
 	Refresh();
 }
 
@@ -152,4 +153,8 @@ void Window_NumberInput::Update() {
 
 		UpdateCursorRect();
 	}
+}
+
+void Window_NumberInput::ResetIndex() {
+	index = digits_max - 1 + int(show_operator);
 }
