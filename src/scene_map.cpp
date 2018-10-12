@@ -276,8 +276,6 @@ void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 	Game_Temp::transition_menu = true;
 
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-
 	// TODO: Main_Data::game_player->Straighten();
 
 	Scene::Push(std::make_shared<Scene_Menu>());
