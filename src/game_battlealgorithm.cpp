@@ -210,17 +210,15 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const s
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpRecoveredMessage(int value, const std::string& points) const {
-	std::stringstream ss;
-
 	if (Player::IsRPG2kE()) {
-		ss << value;
 		return Utils::ReplacePlaceholders(
 			Data::terms.hp_recovery,
 			{'S', 'V', 'U'},
-			{GetTarget()->GetName(), ss.str(), points}
+			{GetTarget()->GetName(), std::to_string(value), points}
 		);
 	}
 	else {
+		std::stringstream ss;
 		std::string particle, particle2, space = "";
 
 		ss << GetTarget()->GetName();
@@ -282,17 +280,16 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetHpSpAbsorbedMessage(int valu
 	const std::string& message = target_is_ally ?
 		Data::terms.actor_hp_absorbed :
 		Data::terms.enemy_hp_absorbed;
-	std::stringstream ss;
 
 	if (Player::IsRPG2kE()) {
-		ss << value;
 		return Utils::ReplacePlaceholders(
 			message,
 			{'S', 'O', 'V', 'U'},
-			{GetSource()->GetName(), GetTarget()->GetName(), ss.str(), points}
+			{GetSource()->GetName(), GetTarget()->GetName(), std::to_string(value), points}
 		);
 	}
 	else {
+		std::stringstream ss;
 		std::string particle, particle2, space = "";
 
 		ss << GetTarget()->GetName();
@@ -319,17 +316,15 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDamagedMessage() const {
 		Data::terms.enemy_damaged;
 	int value = GetAffectedHp();
 
-	std::stringstream ss;
-
 	if (Player::IsRPG2kE()) {
-		ss << value;
 		return Utils::ReplacePlaceholders(
 			message,
 			{'S', 'V', 'U'},
-			{GetTarget()->GetName(), ss.str(), Data::terms.health_points}
+			{GetTarget()->GetName(), std::to_string(value), Data::terms.health_points}
 		);
 	}
 	else {
+		std::stringstream ss;
 		std::string particle, space = "";
 		ss << GetTarget()->GetName();
 
@@ -348,17 +343,16 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetParameterChangeMessage(bool 
 	const std::string& message = is_positive ?
 		Data::terms.parameter_increase :
 		Data::terms.parameter_decrease;
-	std::stringstream ss;
 
 	if (Player::IsRPG2kE()) {
-		ss << value;
 		return Utils::ReplacePlaceholders(
 			message,
 			{'S', 'V', 'U'},
-			{GetTarget()->GetName(), ss.str(), points}
+			{GetTarget()->GetName(), std::to_string(value), points}
 		);
 	}
 	else {
+		std::stringstream ss;
 		std::string particle, particle2, space = "";
 		ss << GetTarget()->GetName();
 
