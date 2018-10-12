@@ -26,6 +26,7 @@
 #include "game_party.h"
 #include "game_party_base.h"
 #include "game_switches.h"
+#include "game_system.h"
 #include "util_macro.h"
 #include "main_data.h"
 #include "utils.h"
@@ -311,8 +312,10 @@ bool Game_Battler::UseSkill(int skill_id) {
 			}
 		}
 	} else if (skill->type == RPG::Skill::Type_teleport || skill->type == RPG::Skill::Type_escape) {
+		Game_System::SePlay(skill->sound_effect);
 		was_used = true;
 	} else if (skill->type == RPG::Skill::Type_switch) {
+		Game_System::SePlay(skill->sound_effect);
 		Game_Switches[skill->switch_id] = true;
 		was_used = true;
 	}
