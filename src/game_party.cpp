@@ -315,10 +315,16 @@ bool Game_Party::IsSkillUsable(int skill_id, const Game_Actor* target, bool from
 		if (scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
 
-			return from_item ||
-				skill->affect_hp ||
-				skill->affect_sp ||
-				!skill->state_effects.empty();
+			if (from_item || skill->affect_hp || skill->affect_sp) {
+				return true;
+			}
+			for (size_t i = 0; i < skill->state_effects.size(); ++i) {
+				auto& state = Data::states[i];
+				if (skill->state_effects[i] && state.type == RPG::State::Persistence_persists) {
+					return true;
+				}
+			}
+			return false;
 		}
 	} else if (skill->type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {
