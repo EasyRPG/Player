@@ -132,7 +132,7 @@ void Game_Map::Quit() {
 }
 
 void Game_Map::Setup(int _id) {
-	SetupCommon(_id);
+	SetupCommon(_id, false);
 
 	Parallax::ClearChangedBG();
 
@@ -171,7 +171,7 @@ void Game_Map::Setup(int _id) {
 }
 
 void Game_Map::SetupFromSave() {
-	SetupCommon(location.map_id);
+	SetupCommon(location.map_id, true);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
 	interpreter->SetupFromSave(Main_Data::game_data.events.commands);
@@ -207,7 +207,7 @@ void Game_Map::SetupFromSave() {
 	location.pan_finish_y = 0;
 }
 
-void Game_Map::SetupCommon(int _id) {
+void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	Dispose();
 
 	location.map_id = _id;
@@ -258,9 +258,21 @@ void Game_Map::SetupCommon(int _id) {
 	pan_wait = false;
 	pan_speed = 0;
 
-	// Make RPG_RT happy
-	// Otherwise current event not resumed after loading
+	//When loading a save game and versions have changed, we need to reset the running events.
+	if (is_load_savegame) {
+		if (location.map_save_count != map->save_count) {
+			Main_Data::game_data.common_events = {};
+			Main_Data::game_data.events = {};
+			Main_Data::game_data.map_info.events = {};
+		} else if (location.database_save_count != Data::system.save_count) {
+			Main_Data::game_data.common_events = {};
+		}
+	}
+
+	// Update the save counts so that if the player saves the game
+	// events will properly resume upon loading.
 	location.map_save_count = map->save_count;
+	location.database_save_count = Data::system.save_count;
 
 	ResetEncounterSteps();
 }

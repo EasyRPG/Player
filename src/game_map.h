@@ -77,7 +77,7 @@ namespace Game_Map {
 	 *
 	 * @param _id map ID.
 	 */
-	void SetupCommon(int _id);
+	void SetupCommon(int _id, bool is_load_savegame);
 
 	/**
 	 * Copies event data into RPG::Save data.
