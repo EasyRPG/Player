@@ -29,7 +29,7 @@ TARGET		:=	boot
 BUILD		:=	obj
 TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
 SOURCES		:=	src
-DATA		:=	data  
+DATA		:=	data
 INCLUDES	:=	src
 
 #---------------------------------------------------------------------------------
@@ -37,18 +37,17 @@ INCLUDES	:=	src
 #---------------------------------------------------------------------------------
 
 CFLAGS		= 	-g -O2 -Wall -Wextra \
-				-fomit-frame-pointer -ffast-math \
-				-flto -fdata-sections -ffunction-sections \
+				-fomit-frame-pointer -fdata-sections -ffunction-sections \
 				-DUSE_SDL=1 -DNDEBUG \
 				-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 				-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 				-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 				-DHAVE_LIBSPEEXDSP -DWANT_FMMIDI -DWANT_FASTWAV \
 				$(MACHDEP) $(INCLUDE)
-				
+
 CXXFLAGS	= 	$(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
-LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections,-flto
+LDFLAGS	=		-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map,--gc-sections
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
