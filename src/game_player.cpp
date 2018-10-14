@@ -283,7 +283,7 @@ void Game_Player::PerformTeleport() {
 }
 
 bool Game_Player::MakeWay(int x, int y, int d) const {
-	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH))
+	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH) && IsMovable())
 		return true;
 
 	if (location.aboard)
