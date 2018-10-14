@@ -329,6 +329,10 @@ bool Game_Vehicle::IsDescending() const {
 	return data.remaining_descent > 0;
 }
 
+bool Game_Vehicle::IsAscendingOrDescending() const {
+	return IsAscending() || IsDescending();
+}
+
 bool Game_Vehicle::GetVisible() const {
 	return IsInCurrentMap() && Game_Character::GetVisible();
 }

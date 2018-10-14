@@ -98,6 +98,7 @@ public:
 	bool GetVisible() const override;
 	bool IsAscending() const;
 	bool IsDescending() const;
+	bool IsAscendingOrDescending() const;
 	int GetAltitude() const;
 	void GetOn();
 	void GetOff();

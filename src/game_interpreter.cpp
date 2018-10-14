@@ -176,6 +176,9 @@ void Game_Interpreter::Update() {
 			if (Main_Data::game_player->IsBoardingOrUnboarding())
 				break;
 
+			if (Main_Data::game_player->InVehicle() && Main_Data::game_player->GetVehicle()->IsAscendingOrDescending())
+				break;
+
 			if (Game_Message::message_waiting)
 				break;
 		} else {
