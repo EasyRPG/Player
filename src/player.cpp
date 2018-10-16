@@ -786,6 +786,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 		Output::Error("%s", LcfReader::GetError().c_str());
 	}
 
+	Scene::PopUntil(Scene::Title);
 	Game_Temp::Init();
 
 	Main_Data::game_data = *save.get();

@@ -41,7 +41,6 @@ void Scene_Load::Action(int index) {
 	Player::LoadSavegame(save_name);
 	Game_Temp::restart_title_cache = true;
 
-	Scene::PopUntil(Scene::Title);
 	Scene::Push(std::make_shared<Scene_Map>(true));
 }
 
