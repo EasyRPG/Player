@@ -46,6 +46,7 @@ Scene_Battle::Scene_Battle() :
 	skill_item(NULL)
 {
 	Scene::type = Scene::Battle;
+	Game_Temp::battle_result = Game_Temp::BattleAbort;
 }
 
 Scene_Battle::~Scene_Battle() {
