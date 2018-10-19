@@ -268,6 +268,8 @@ void Game_Player::PerformTeleport() {
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;
+	} else {
+		Game_Map::SetupFromTeleportSelf();
 	}
 
 	SetOpacity(255);

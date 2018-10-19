@@ -212,6 +212,11 @@ void Game_Map::SetupFromSave() {
 	location.pan_finish_y = 0;
 }
 
+
+void Game_Map::SetupFromTeleportSelf() {
+	ResetEncounterSteps();
+}
+
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	Dispose();
 
