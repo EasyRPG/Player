@@ -306,10 +306,9 @@ namespace Game_Map {
 	void UpdateEncounterSteps();
 
 	/**
-	 * Resets encounter step counter based on the encounter rate using
-	 * Gaussian distribution.
+	 * Sets encounter_steps to steps.
 	 */
-	void ResetEncounterSteps();
+	void SetEncounterSteps(int steps);
 
 	/**
 	 * Gets possible encounters at a location.

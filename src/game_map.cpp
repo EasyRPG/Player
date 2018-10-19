@@ -137,7 +137,7 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
-	ResetEncounterSteps();
+	SetEncounterSteps(0);
 
 	Parallax::ClearChangedBG();
 
@@ -206,7 +206,7 @@ void Game_Map::SetupFromSave() {
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
 
-	ResetEncounterSteps();
+	SetEncounterSteps(location.encounter_steps);
 
 	// FIXME: Handle Pan correctly
 	location.pan_current_x = 0;
@@ -217,7 +217,7 @@ void Game_Map::SetupFromSave() {
 
 
 void Game_Map::SetupFromTeleportSelf() {
-	ResetEncounterSteps();
+	SetEncounterSteps(0);
 }
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
@@ -983,14 +983,14 @@ void Game_Map::UpdateEncounterSteps() {
 	auto draw = std::uniform_real_distribution<float>()(Utils::GetRNG());
 
 	if (draw < p) {
-		ResetEncounterSteps();
+		SetEncounterSteps(0);
 		PrepareEncounter();
 	}
 }
 
-void Game_Map::ResetEncounterSteps() {
+void Game_Map::SetEncounterSteps(int steps) {
 	last_encounter_idx = 0;
-	location.encounter_steps = 0;
+	location.encounter_steps = steps;
 }
 
 std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
