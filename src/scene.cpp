@@ -219,8 +219,8 @@ Graphics::State &Scene::GetGraphicsState() {
 
 inline void Scene::DebugValidate(const char* caller) {
 	if (instances.size() <= 1) {
-		//Scene of size 1 happens before graphics stack is up. Which can
-		//cause the following logs to crash.
+		// Scene of size 1 happens before graphics stack is up. Which can
+		// cause the following logs to crash.
 		return;
 	}
 	std::bitset<SceneMax> present;
@@ -234,5 +234,8 @@ inline void Scene::DebugValidate(const char* caller) {
 			Output::Error("Multiple scenes of type=%s in the Scene instances stack!", scene_names[scene->type]);
 		}
 		present[scene->type] = true;
+	}
+	if (instances[0]->type != Null) {
+		Output::Error("Scene.instances[0] is of type=%s in the Scene instances stack!", scene_names[instances[0]->type]);
 	}
 }
