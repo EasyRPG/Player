@@ -93,13 +93,10 @@ bool Game_Character::IsStopping() const {
 
 bool Game_Character::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
-		int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
-		int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
-		return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
-			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
+		return MakeWayDiagonal(x, y, d);
 	}
 
-	return Game_Map::MakeWay(x, y, d, *this);
+	return Game_Map::MakeWay(x, y, d, *this, false);
 }
 
 bool Game_Character::IsLandable(int x, int y) const
@@ -953,4 +950,12 @@ int Game_Character::ReverseDir(int dir) {
 	constexpr static char reversed[] =
 		{ Down, Left, Up, Right, DownLeft, UpLeft, UpRight, DownRight };
 	return reversed[dir];
+}
+
+
+bool Game_Character::MakeWayDiagonal(int x, int y, int d) const {
+	int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
+	int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
+	return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
+			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
 }

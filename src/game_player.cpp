@@ -283,13 +283,16 @@ void Game_Player::PerformTeleport() {
 }
 
 bool Game_Player::MakeWay(int x, int y, int d) const {
-	if (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH) && IsMovable())
-		return true;
-
 	if (location.aboard)
 		return GetVehicle()->MakeWay(x, y, d);
 
-	return Game_Character::MakeWay(x, y, d);
+	if (d > 3) {
+		return MakeWayDiagonal(x, y, d);
+	}
+
+	bool force_through = (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH) && IsMovable());
+
+	return Game_Map::MakeWay(x, y, d, *this, force_through);
 }
 
 bool Game_Player::IsTeleporting() const {
