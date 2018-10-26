@@ -26,6 +26,12 @@
 #undef Debug
 #endif
 
+#if defined __GNUC__ && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC__ < 8))
+#define EASYRPG_NORETURN __attribute__((noreturn))
+#else
+#define EASYRPG_NORETURN [[noreturn]]
+#endif
+
 /**
  * Output Namespace.
  */
@@ -111,7 +117,7 @@ namespace Output {
 	 *
 	 * @param fmt formatted error to display.
 	 */
-	[[noreturn]] void Error(const char* fmt, ...);
+	EASYRPG_NORETURN void Error(const char* fmt, ...);
 
 	/**
 	 * Display an error message and closes the player
@@ -119,7 +125,7 @@ namespace Output {
 	 *
 	 * @param err error to display.
 	 */
-	[[noreturn]] void ErrorStr(std::string const& err);
+	EASYRPG_NORETURN void ErrorStr(std::string const& err);
 
 	/**
 	 * Prints a debug message to the console.
