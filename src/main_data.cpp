@@ -34,7 +34,7 @@
 	#include <SDL_system.h>
 #endif
 
-#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
+#if defined(GEKKO) || defined(SWITCH) || defined(__MORPHOS__) || defined(__amigaos4__)
 	#include <unistd.h>
 #endif
 
@@ -83,7 +83,7 @@ void Main_Data::Init() {
 			// first set to current directory for all platforms
 			project_path = ".";
 
-#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
+#if defined(GEKKO) || defined(SWITCH) || defined(__MORPHOS__) || defined(__amigaos4__)
 			// Working directory not correctly handled
 			char working_dir[256];
 			getcwd(working_dir, 255);

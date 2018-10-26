@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !(defined(_WIN32) || defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS))
+#if !(defined(_WIN32) || defined(GEKKO) || defined(__ANDROID__) || defined(EMSCRIPTEN) || defined(_3DS) || defined(SWITCH))
 
 #include <cstdlib>
 #include "registry.h"
