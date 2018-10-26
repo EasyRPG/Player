@@ -413,6 +413,10 @@ void Game_Vehicle::Update() {
 	Game_Character::Update();
 	Game_Character::UpdateSprite();
 
+	if (!Main_Data::game_player->IsBoardingOrUnboarding()) {
+		SyncWithPlayer();
+	}
+
 	if (type == Airship) {
 		if (IsAscending()) {
 			data.remaining_ascent = data.remaining_ascent - 8;

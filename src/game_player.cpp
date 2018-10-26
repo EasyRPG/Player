@@ -435,9 +435,6 @@ void Game_Player::Update() {
 	Game_Character::UpdateSprite();
 	UpdateScroll();
 
-	if (location.aboard)
-		GetVehicle()->SyncWithPlayer();
-
 	if (IsMoving() || was_blocked) return;
 
 	if (last_moving && location.boarding) {
