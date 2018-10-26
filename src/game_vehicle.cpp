@@ -216,6 +216,10 @@ void Game_Vehicle::SetThrough(bool through) {
 }
 
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
+	if (d > 3) {
+		return MakeWayDiagonal(x, y, d);
+	}
+
 	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
 	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
 
