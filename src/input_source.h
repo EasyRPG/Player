@@ -31,7 +31,7 @@ namespace Input {
 	public:
 		Source() = default;
 
-		virtual ~Source() = default;
+		virtual ~Source();
 
 		/**
 		 * Called once each frame to update pressed_buttons.

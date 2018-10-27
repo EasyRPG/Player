@@ -21,6 +21,8 @@
 #include "input_source.h"
 #include "player.h"
 
+Input::Source::~Source() = default;
+
 void Input::UiSource::Update() {
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
