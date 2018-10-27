@@ -34,6 +34,7 @@
 #include "window_varlist.h"
 #include "window_numberinput.h"
 #include "bitmap.h"
+#include "game_temp.h"
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -83,8 +84,12 @@ void Scene_Debug::Update() {
 			if (current_var_type == TypeGeneral) {
 				switch (range_window->GetIndex()) {
 					case 0:
-						Scene::PopUntil(Scene::Map);
-						Scene::Push(std::make_shared<Scene_Save>());
+						if (Game_Temp::battle_running) {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+						} else {
+							Scene::PopUntil(Scene::Map);
+							Scene::Push(std::make_shared<Scene_Save>());
+						}
 						break;
 					case 1:
 						Scene::Push(std::make_shared<Scene_Load>());
@@ -183,6 +188,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 	if (current_var_type != TypeSwitch &&
 			current_var_type != TypeInt) {
 		range_window->SetItemText(0, "Save");
+		if (Game_Temp::battle_running) {
+			range_window->DisableItem(0);
+		}
 		range_window->SetItemText(1, "Load");
 		for (int i = 2; i < 10; i++){
 			range_window->SetItemText(i, "");

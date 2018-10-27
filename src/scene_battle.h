@@ -160,6 +160,9 @@ protected:
 	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
 	void RemoveCurrentAction();
+
+	void CallDebug();
+
 	// Variables
 	State state;
 	State previous_state;
