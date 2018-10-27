@@ -551,6 +551,8 @@ bool Game_Interpreter::CommandEnd() { // code 10
 			evnt->StopTalkToHero();
 	}
 
+	Scene::instance->onCommandEnd();
+
 	return true;
 }
 
