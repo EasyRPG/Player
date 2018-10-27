@@ -114,7 +114,7 @@ namespace {
 	const devoptab_t dotab_geckoout = {
 		"stdout", 0, NULL, NULL, __usbgecko_write, NULL, NULL, NULL, NULL, NULL, NULL,
 		NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-		NULL
+		NULL, NULL, NULL
 	};
 #endif
 

@@ -66,7 +66,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 		extern void WII_ChangeSquare(int xscale, int yscale, int xshift, int yshift);
 	}
 
-	static void GekkoResetCallback();
+	static void GekkoResetCallback(u32 irq, void *ctx);
 #endif
 
 SdlUi::SdlUi(long width, long height, bool fs_flag) :
@@ -866,7 +866,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 }
 
 #ifdef GEKKO
-void GekkoResetCallback() {
+void GekkoResetCallback(u32, void*) {
 	Player::reset_flag = true;
 }
 #endif
