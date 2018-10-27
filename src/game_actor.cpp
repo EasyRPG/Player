@@ -120,19 +120,22 @@ bool Game_Actor::IsItemUsable(int item_id) const {
 		return false;
 	}
 
-	// Class index. If there's no class, in the "class_set" it's equal to 0. The first class is 1, not 0
-	int class_index = GetClass() ? GetClass()->ID : 0;
+	int query_idx = actor_id - 1;
+	auto* query_set = &item->actor_set;
+	if (Player::IsRPG2k3() && Data::system.equipment_setting == RPG::System::EquipmentSetting_class) {
+		auto* cls = GetClass();
+
+		// Class index. If there's no class, in the "class_set" it's equal to 0. The first class is 1, not 0
+		query_idx = cls ? cls->ID : 0;
+		query_set = &item->class_set;
+	}
 
 	// If the actor or class ID is out of range this is an optimization in the ldb file
 	// (all actors or classes missing can equip the item)
-	if (item->actor_set.size() <= (unsigned)(actor_id - 1)) {
+	if (query_set->size() <= (unsigned)(query_idx)) {
 		return true;
 	}
-	else if (Player::IsRPG2k3() && item->class_set.size() <= (unsigned)(class_index)) {
-		return true;
-	}
-
-	return item->actor_set.at(actor_id - 1) || (Player::IsRPG2k3() && item->class_set.at(class_index));
+	return query_set->at(query_idx);
 }
 
 bool Game_Actor::IsSkillLearned(int skill_id) const {
