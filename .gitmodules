@@ -1,0 +1,3 @@
+[submodule "builds/libretro/libretro-common"]
+	path = builds/libretro/libretro-common
+	url = https://github.com/libretro/libretro-common
