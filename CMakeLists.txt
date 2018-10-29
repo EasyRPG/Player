@@ -230,10 +230,6 @@ add_library(${PROJECT_NAME}
 	src/scene_title.h
 	src/screen.cpp
 	src/screen.h
-	src/sdl2_ui.cpp
-	src/sdl2_ui.h
-	src/sdl_ui.cpp
-	src/sdl_ui.h
 	src/shinonome_gothic.cpp
 	src/shinonome_mincho.cpp
 	src/sprite_airshipshadow.cpp
@@ -364,11 +360,38 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules"
 include(ConfigureWindows)
 include(PlayerFindPackage)
 
+# Platform setup
+set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 libretro")
+set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 libretro)
+set(PLAYER_BUILD_EXECUTABLE ON)
+
+if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/sdl_ui.cpp
+		src/sdl_ui.h
+		src/sdl2_ui.cpp
+		src/sdl2_ui.h)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
+
+	find_package(SDL2 REQUIRED)
+	target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/audio_libretro.cpp
+		src/audio_libretro.h
+		src/libretro_ui.cpp
+		src/libretro_ui.h
+		src/libretro_wrapper.cpp)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
+	set(PLAYER_BUILD_EXECUTABLE OFF)
+	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "easyrpg_libretro")
+else()
+	message(FATAL_ERROR "Invalid target platform")
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
-
-target_compile_definitions(${PROJECT_NAME} PUBLIC USE_SDL=2)
 
 # Endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -410,9 +433,6 @@ target_link_libraries(${PROJECT_NAME} PNG::PNG)
 find_package(Pixman REQUIRED)
 target_link_libraries(${PROJECT_NAME} PIXMAN::PIXMAN)
 
-find_package(SDL2 REQUIRED)
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
-
 # Always enable Wine registry support on non-Windows
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
@@ -436,27 +456,38 @@ if(Freetype_FOUND)
 endif()
 
 # Sound system to use
-set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2_mixer SDL2 OpenAL OFF")
-set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer OpenAL OFF)
+if(${PLAYER_TARGET_PLATFORM} STREQUAL "SDL2")
+	set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto SDL2_mixer SDL2 OpenAL OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer OpenAL OFF)
 
-# Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} STREQUAL "Auto")
-	set(PLAYER_AUDIO_BACKEND_IS_AUTO ON)
-endif()
-CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available" ON "PLAYER_AUDIO_BACKEND_IS_AUTO" OFF)
+	# Configure Audio backends
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Auto")
+		set(PLAYER_AUDIO_BACKEND_IS_AUTO ON)
+	endif()
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available" ON "PLAYER_AUDIO_BACKEND_IS_AUTO" OFF)
 
-if(PLAYER_AUDIO_BACKEND_IS_AUTO)
-	player_find_package(NAME SDL2_mixer
-		CONDITION PLAYER_WITH_SDL2_MIXER
-		TARGET SDL2::MIXER)
-	if(SDL2_MIXER_FOUND)
-		set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
-	else()
-		set(PLAYER_AUDIO_BACKEND "SDL2")
+	if(PLAYER_AUDIO_BACKEND_IS_AUTO)
+		player_find_package(NAME SDL2_mixer
+			CONDITION PLAYER_WITH_SDL2_MIXER
+			TARGET SDL2::MIXER)
+		if(SDL2_MIXER_FOUND)
+			set(PLAYER_AUDIO_BACKEND "SDL2_mixer")
+		else()
+			set(PLAYER_AUDIO_BACKEND "SDL2")
+		endif()
+	endif()
+else()
+	set(PLAYER_AUDIO_BACKEND "Default" CACHE STRING "Audio system to use. Options: Default OFF")
+	set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Default OFF)
+
+	if(${PLAYER_AUDIO_BACKEND} STREQUAL "Default")
+		# Assuming that all platforms not targeting SDL have only one audio backend
+		set(PLAYER_AUDIO_BACKEND ${PLAYER_TARGET_PLATFORM})
 	endif()
 endif()
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
+# Configure Audio backends
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL2|libretro)$")
 	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
@@ -511,7 +542,7 @@ CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAY
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO" OFF)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
 
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
@@ -604,30 +635,32 @@ if(MSVC)
 endif()
 
 # Executable
-add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
-set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
+if (${PLAYER_BUILD_EXECUTABLE})
+	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
+	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
 
-if(WIN32)
-	# Open console for Debug builds
-	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
+	if(WIN32)
+		# Open console for Debug builds
+		if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+			set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
+		endif()
+
+		# Add resources
+		target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
+
+		# Change executable name
+		set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
 	endif()
 
-	# Add resources
-	target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
+	target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
 
-	# Change executable name
-	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
-endif()
+	# installation
+	include(GNUInstallDirs)
+	install(TARGETS ${PROJECT_NAME}_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
-
-# installation
-include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-if(MSVC)
-	install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+	if(MSVC)
+		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+	endif()
 endif()
 
 # manpage
@@ -712,12 +745,16 @@ endif()
 
 # Print summary
 message(STATUS "")
+message(STATUS "Target system: ${PLAYER_TARGET_PLATFORM}")
+message(STATUS "")
+
 if(PLAYER_BUILD_LIBLCF)
 	message(STATUS "liblcf: Built from ${PLAYER_BUILD_LIBLCF_GIT}")
 	message(STATUS "")
 endif()
+
 message(STATUS "Audio backend: ${PLAYER_AUDIO_BACKEND}")
-if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
+if(${PLAYER_AUDIO_BACKEND} MATCHES "^(SDL.*|libretro)$")
 	message(STATUS "")
 
 	if(LIBSNDFILE_FOUND)
