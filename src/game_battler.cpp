@@ -38,7 +38,7 @@ Game_Battler::Game_Battler() {
 }
 
 int Game_Battler::MaxDamageValue() const {
-	return Player::IsRPG2k ? 999 : 9999;
+	return Player::IsRPG2k() ? 999 : 9999;
 }
 
 bool Game_Battler::HasState(int state_id) const {
@@ -256,15 +256,16 @@ bool Game_Battler::UseItem(int item_id) {
 		return true;
 	}
 
+	// FIXME: For items with skills the user of the skill depends on the scope
 	switch (item->type) {
 		case RPG::Item::Type_weapon:
 		case RPG::Item::Type_shield:
 		case RPG::Item::Type_armor:
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
-			return item->use_skill && UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
+			return item->use_skill && UseSkill(item->skill_id, this);
 		case RPG::Item::Type_special:
-			return UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
+			return UseSkill(item->skill_id, this);
 	}
 
 	return false;

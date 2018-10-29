@@ -622,18 +622,3 @@ bool Game_Party::ApplyStateDamage() {
 
 	return damage;
 }
-
-Game_Actor* Game_Party::GetHighestLeveledActor() const {
-	int max_level = -1;
-
-	for (auto actor : GetActors()) {
-		max_level = std::max(max_level, actor->GetLevel());
-	}
-	for (auto actor : GetActors()) {
-		if (actor->GetLevel() == max_level) {
-			return actor;
-		}
-	}
-
-	return nullptr;
-}
