@@ -76,8 +76,12 @@ void Sprite_Character::Update() {
 	SetZ(character->GetScreenZ());
 
 	//SetBlendType(character->GetBlendType());
-	int bush_split = 4 - character->GetBushDepth();
-	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
+	if (character->GetLayer() != RPG::EventPage::Layers_same) {
+		SetBushDepth(0);
+	} else {
+		int bush_split = 4 - character->GetBushDepth();
+		SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
+	}
 }
 
 Game_Character* Sprite_Character::GetCharacter() {
