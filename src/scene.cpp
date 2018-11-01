@@ -26,6 +26,13 @@
 #include "audio.h"
 #include "transition.h"
 
+#ifndef NDEBUG
+#define DEBUG_VALIDATE() Scene::DebugValidate(__PRETTY_FUNCTION__)
+#else
+#define DEBUG_VALIDATE() do {} while(0)
+#endif
+
+
 std::shared_ptr<Scene> Scene::instance;
 std::vector<std::shared_ptr<Scene> > Scene::old_instances;
 std::vector<std::shared_ptr<Scene> > Scene::instances;
@@ -151,10 +158,7 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 
 	push_pop_operation = ScenePushed;
 
-	/*Output::Debug("Scene Stack after Push:");
-	for (size_t i = 0; i < instances.size(); ++i) {
-		Output::Debug(scene_names[instances[i]->type]);
-	}*/
+	DEBUG_VALIDATE();
 }
 
 void Scene::Pop() {
@@ -169,10 +173,7 @@ void Scene::Pop() {
 
 	push_pop_operation = ScenePopped;
 
-	/*Output::Debug("Scene Stack after Pop:");
-	for (size_t i = 0; i < instances.size(); ++i) {
-		Output::Debug(scene_names[instances[i]->type]);
-	}*/
+	DEBUG_VALIDATE();
 }
 
 void Scene::PopUntil(SceneType type) {
@@ -186,12 +187,14 @@ void Scene::PopUntil(SceneType type) {
 			}
 			instance = instances.back();
 			push_pop_operation = ScenePopped;
+			DEBUG_VALIDATE();
 			return;
 		}
 		++count;
 	}
 
 	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
+	DEBUG_VALIDATE();
 }
 
 std::shared_ptr<Scene> Scene::Find(SceneType type) {
@@ -211,4 +214,28 @@ void Scene::DrawBackground() {
 
 Graphics::State &Scene::GetGraphicsState() {
 	return state;
+}
+
+
+inline void Scene::DebugValidate(const char* caller) {
+	if (instances.size() <= 1) {
+		// Scene of size 1 happens before graphics stack is up. Which can
+		// cause the following logs to crash.
+		return;
+	}
+	std::bitset<SceneMax> present;
+	for (auto& scene: instances) {
+		if (present[scene->type]) {
+			Output::Debug("Scene Stack after %s:", caller);
+			for (auto& s: instances) {
+				auto fmt =  (s == scene) ? "--> %s <--" : "  %s";
+				Output::Debug(fmt, scene_names[s->type]);
+			}
+			Output::Error("Multiple scenes of type=%s in the Scene instances stack!", scene_names[scene->type]);
+		}
+		present[scene->type] = true;
+	}
+	if (instances[0]->type != Null) {
+		Output::Error("Scene.instances[0] is of type=%s in the Scene instances stack!", scene_names[instances[0]->type]);
+	}
 }
