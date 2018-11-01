@@ -111,19 +111,6 @@ namespace Utils {
 #endif
 
 	/**
-	 * Converts arithmetic types to a string.
-	 *
-	 * @param n arithmetic type to convert.
-	 * @return the converted string
-	 */
-	template<typename T>
-	std::string ToString(const T& n) {
-		std::ostringstream stm ;
-		stm << n ;
-		return stm.str();
-	}
-
-	/**
 	 * Calculates the modulo of number i ensuring the result is non-negative
 	 * for all values of i when m > 0.
 	 *

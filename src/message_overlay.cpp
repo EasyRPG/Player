@@ -64,7 +64,7 @@ void MessageOverlay::Draw() {
 
 			std::string text = message.text;
 			if (message.repeat_count > 0) {
-				text += " [" + Utils::ToString(message.repeat_count + 1) + "x]";
+				text += " [" + std::to_string(message.repeat_count + 1) + "x]";
 			}
 
 			bitmap->TextDraw(Rect(2,
