@@ -236,7 +236,7 @@ AudioSeRef AudioSeCache::Decode() {
 		se.reset(new AudioSeData());
 		GetCachedFormat(se->frequency, se->format, se->channels);
 
-		audio_decoder.reset(new AudioResampler(new MemoryPitchResampler(cache.find(filename)->second)));
+		audio_decoder.reset(new AudioResampler(std::unique_ptr<AudioDecoder>(new MemoryPitchResampler(cache.find(filename)->second))));
 		audio_decoder->Open(nullptr);
 #else
 		assert(false && "SeCache: Unexpected code path taken");

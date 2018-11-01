@@ -51,7 +51,7 @@ public:
 	 * @param[in] pitch_handled Defines whether the decoder handles pitch changes by itself or not. 
 	 * @param[in] quality Sets the quality rting of the resampler - higher quality implies slower filtering
 	 */
-	AudioResampler(AudioDecoder * decoder, bool pitch_handled=false, Quality quality=Quality::Medium);
+	AudioResampler(std::unique_ptr<AudioDecoder> decoder, bool pitch_handled=false, Quality quality=Quality::Medium);
 	
 	/**
 	 * Destroys the resampler as well as its owned ressources
@@ -170,7 +170,7 @@ private:
 	 */
 	int FillBufferDifferentRate(uint8_t* buffer, int length);
 	
-	AudioDecoder * wrapped_decoder;
+	std::unique_ptr<AudioDecoder> wrapped_decoder;
 	bool pitch_handled_by_decoder;
 	int pitch;
 	int sampling_quality;

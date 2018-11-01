@@ -181,13 +181,13 @@ inline static int DecodeAndConvertInt16(AudioDecoder * wrapped_decoder,
 }
 #endif
 
-AudioResampler::AudioResampler(AudioDecoder * wrapped, bool pitch_handled, AudioResampler::Quality quality)
+AudioResampler::AudioResampler(std::unique_ptr<AudioDecoder> wrapped, bool pitch_handled, AudioResampler::Quality quality)
+	: wrapped_decoder(std::move(wrapped))
 {
 	//There is no need for a standalone resampler decoder
-	assert(wrapped != 0);
+	assert(wrapped_decoder != 0);
 
-	wrapped_decoder = wrapped;
-	music_type = wrapped->GetType();
+	music_type = wrapped_decoder->GetType();
 	lasterror = 0;
 	pitch_handled_by_decoder = pitch_handled;
 
@@ -229,9 +229,6 @@ AudioResampler::~AudioResampler() {
 	#elif defined(HAVE_LIBSAMPLERATE)
 			src_delete(conversion_state);
 	#endif
-	}
-	if (wrapped_decoder) {
-		delete wrapped_decoder;
 	}
 }
 
@@ -396,11 +393,11 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 
 			switch (output_format) {
 				case AudioDecoder::Format::F32: 
-				amount_of_data_read = DecodeAndConvertFloat(wrapped_decoder, internal_buffer, amount_of_data_to_read, input_samplesize, input_format); 
+				amount_of_data_read = DecodeAndConvertFloat(wrapped_decoder.get(), internal_buffer, amount_of_data_to_read, input_samplesize, input_format); 
 				break;
 			#ifdef HAVE_LIBSPEEXDSP
 				case AudioDecoder::Format::S16: 
-				amount_of_data_read = DecodeAndConvertInt16(wrapped_decoder, internal_buffer, amount_of_data_to_read, input_samplesize, input_format); 
+				amount_of_data_read = DecodeAndConvertInt16(wrapped_decoder.get(), internal_buffer, amount_of_data_to_read, input_samplesize, input_format); 
 				break;
 			#endif
 				default: error_message = "internal error: output_format is not convertable"; return ERROR;
@@ -429,11 +426,11 @@ int AudioResampler::FillBufferSameRate(uint8_t* buffer, int length) {
 		//It is possible to work inplace as length is specified for the output samplesize.
 		switch (output_format) {
 			case AudioDecoder::Format::F32: 
-			decoded = DecodeAndConvertFloat(wrapped_decoder, buffer, amount_of_data_read, input_samplesize, input_format); 
+			decoded = DecodeAndConvertFloat(wrapped_decoder.get(), buffer, amount_of_data_read, input_samplesize, input_format); 
 			break;
 		#ifdef HAVE_LIBSPEEXDSP
 			case AudioDecoder::Format::S16: 
-			decoded = DecodeAndConvertInt16(wrapped_decoder, buffer, amount_of_data_read, input_samplesize, input_format); 
+			decoded = DecodeAndConvertInt16(wrapped_decoder.get(), buffer, amount_of_data_read, input_samplesize, input_format); 
 			break;
 		#endif
 			default: error_message = "internal error: output_format is not convertable"; return ERROR;
@@ -489,9 +486,9 @@ int AudioResampler::FillBufferDifferentRate(uint8_t* buffer, int length) {
 		//Read as many frames as needed to refill the buffer (filled after the conversion to float)
 		if (amount_of_samples_to_read != 0) {
 			switch (output_format) {
-				case AudioDecoder::Format::F32: amount_of_samples_read = DecodeAndConvertFloat(wrapped_decoder, advanced_input_buffer, amount_of_samples_to_read, input_samplesize, input_format); break;
+				case AudioDecoder::Format::F32: amount_of_samples_read = DecodeAndConvertFloat(wrapped_decoder.get(), advanced_input_buffer, amount_of_samples_to_read, input_samplesize, input_format); break;
 			#ifdef HAVE_LIBSPEEXDSP
-				case AudioDecoder::Format::S16:  amount_of_samples_read = DecodeAndConvertInt16(wrapped_decoder, advanced_input_buffer, amount_of_samples_to_read, input_samplesize, input_format); break;
+				case AudioDecoder::Format::S16:  amount_of_samples_read = DecodeAndConvertInt16(wrapped_decoder.get(), advanced_input_buffer, amount_of_samples_to_read, input_samplesize, input_format); break;
 			#endif
 				default: error_message = "internal error: output_format is not convertable"; return ERROR;
 			}
