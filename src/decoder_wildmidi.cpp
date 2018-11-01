@@ -175,13 +175,21 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	config_file = "wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
 
+	// wildmidi command line player default config
+	if (!found) {
+		config_file = "/etc/wildmidi/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
 	// Use Timidity strategy used in SDL mixer
 
 	// Environment variable
-	const char *env = getenv("TIMIDITY_CFG");
-	if (env) {
-		config_file = env;
-		found = FileFinder::Exists(config_file);
+	if (!found) {
+		const char *env = getenv("TIMIDITY_CFG");
+		if (env) {
+			config_file = env;
+			found = FileFinder::Exists(config_file);
+		}
 	}
 
 	if (!found) {
@@ -197,6 +205,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	}
 
 	// TODO: We need some installer which creates registry keys for wildmidi
+
 #	elif defined(__MORPHOS__) || defined(__amigaos4__)
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
