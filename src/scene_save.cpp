@@ -98,8 +98,7 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath((*tree).directory_path, save_file);
 	}
 
-	Main_Data::game_data.title.timestamp = LSD_Reader::GenerateTimestamp();
-
+	LSD_Reader::PrepareSave(Main_Data::game_data);
 	LSD_Reader::Save(filename, Main_Data::game_data, Player::encoding);
 
 #ifdef EMSCRIPTEN
