@@ -24,6 +24,14 @@
 class Window_VarList : public Window_Command
 {
 public:
+	enum Mode {
+		eNone,
+		eSwitch,
+		eVariable,
+		eItem,
+		eTroop,
+	};
+
 	/**
 	 * Constructor.
 	 *
@@ -45,11 +53,11 @@ public:
 	void  Refresh();
 
 	/**
-	 * Indicate if item value displayed on the window correspond to switches or variables.
+	 * Indicate what to display.
 	 *
-	 * @param _switch true to display switches, false to display variables.
+	 * @param mode the mode to set.
 	 */
-	void SetShowSwitch(bool _switch);
+	void SetMode(Mode mode);
 
 	/**
 	 * Overwrite SetActive to hide/show selection rect when window is disabled.
@@ -63,6 +71,11 @@ public:
 	 */
 	int GetIndex();
 
+	/**
+	 * Returns the current mode.
+	 */
+	Mode GetMode() const;
+
 private:
 
 	/**
@@ -72,10 +85,16 @@ private:
 	 */
 	void DrawItemValue(int index);
 
-	bool show_switch;
-	int first_var;
-	int hidden_index;
+	Mode mode = eNone;
+	int first_var = 0;
+	int hidden_index = 0;
+
+	bool DataIsValid(int range_index);
 
 };
+
+inline Window_VarList::Mode Window_VarList::GetMode() const {
+	return mode;
+}
 
 #endif
