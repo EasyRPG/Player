@@ -146,27 +146,33 @@ std::unique_ptr<AudioDecoder> AudioDecoder::Create(FILE* file, const std::string
 #ifdef HAVE_WILDMIDI
 		static bool wildmidi_works = true;
 		if (wildmidi_works) {
-			AudioDecoder *mididec = nullptr;
+			auto mididec = std::unique_ptr<AudioDecoder>(new WildMidiDecoder(filename));
+			if (mididec->WasInited()) {
 #  ifdef USE_AUDIO_RESAMPLER
-			mididec = new AudioResampler(new WildMidiDecoder(filename));
-#  else
-			mididec = new WildMidiDecoder(filename);
+				auto resampler = std::unique_ptr<AudioResampler>(new AudioResampler(mididec.get()));
+				mididec.release(); //<- AudioResampler owns the mididec now.
+				mididec = std::move(resampler);
 #  endif
-			if (mididec) {
-				if (mididec->WasInited())
-					return std::unique_ptr<AudioDecoder>(mididec);
-
-				delete mididec;
+				return mididec;
+			} else {
+				wildmidi_works = false;
+				Output::Debug("WildMidi Failed: %s", mididec->GetError().c_str());
 			}
-			wildmidi_works = false;
 		}
 #endif
 #if WANT_FMMIDI == 1
+		auto mididec = std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
+
+		if (mididec->WasInited()) {
 #  ifdef USE_AUDIO_RESAMPLER
-		return std::unique_ptr<AudioDecoder>(new AudioResampler(new FmMidiDecoder(), true, AudioResampler::Quality::Low));
-#  else
-		return std::unique_ptr<AudioDecoder>(new FmMidiDecoder());
+			auto resampler = std::unique_ptr<AudioResampler>(new AudioResampler(mididec.get(), true, AudioResampler::Quality::Low));
+			mididec.release(); //<- AudioResampler owns the mididec now.
+			mididec = std::move(resampler);
 #  endif
+			return mididec;
+		} else {
+			Output::Debug("FmMidi Failed: %s", mididec->GetError().c_str());
+		}
 #endif
 		// No MIDI decoder available
 		return nullptr;
