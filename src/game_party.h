@@ -199,28 +199,48 @@ public:
 	 *
 	 * @return number of battles.
 	 */
-	int GetBattleCount();
+	int GetBattleCount() const;
+
+	/**
+	 * Increment the number of battles by 1.
+	 */
+	void IncBattleCount();
 
 	/**
 	 * Gets number of battles wins.
 	 *
 	 * @return number of battles wins.
 	 */
-	int GetWinCount();
+	int GetWinCount() const;
+
+	/**
+	 * Increment the number of battles wins by 1.
+	 */
+	void IncWinCount();
 
 	/**
 	 * Gets number of battles defeats.
 	 *
 	 * @return number of battles defeats.
 	 */
-	int GetDefeatCount();
+	int GetDefeatCount() const;
+
+	/**
+	 * Increment the number of battles defeats by 1.
+	 */
+	void IncDefeatCount();
 
 	/**
 	 * Gets number of battles escapes.
 	 *
 	 * @return number of battles escapes.
 	 */
-	int GetRunCount();
+	int GetRunCount() const;
+
+	/**
+	 * Increment the number of battles escapes by 1.
+	 */
+	void IncRunCount();
 
 	/**
 	 * Damages all actors in party by the same value.
@@ -312,8 +332,55 @@ public:
 	bool ApplyStateDamage();
 
 private:
+	const RPG::SaveInventory& data() const;
+	RPG::SaveInventory& data();
+
+private:
 	std::vector<int> state_steps_hp;
 	std::vector<int> state_steps_sp;
 };
+
+// ------ INLINES --------
+
+inline const RPG::SaveInventory& Game_Party::data() const {
+	return Main_Data::game_data.inventory;
+}
+
+inline RPG::SaveInventory& Game_Party::data() {
+	return Main_Data::game_data.inventory;
+}
+
+inline int Game_Party::GetBattleCount() const {
+	return data().battles;
+}
+
+inline void Game_Party::IncBattleCount() {
+	++data().battles;
+}
+
+inline int Game_Party::GetWinCount() const {
+	return data().victories;
+}
+
+inline void Game_Party::IncWinCount() {
+	++data().victories;
+}
+
+inline int Game_Party::GetDefeatCount() const {
+	return data().defeats;
+}
+
+inline void Game_Party::IncDefeatCount() {
+	++data().defeats;
+}
+
+inline int Game_Party::GetRunCount() const {
+	return data().escapes;
+}
+
+inline void Game_Party::IncRunCount() {
+	++data().escapes;
+}
+
 
 #endif

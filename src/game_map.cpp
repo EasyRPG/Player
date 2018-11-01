@@ -494,14 +494,14 @@ static CollisionResult TestCollisionDuringMove(
 	return NoCollision;
 }
 
-bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
+bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool force_through) {
 	int new_x = RoundX(x + (d == Game_Character::Right ? 1 : d == Game_Character::Left ? -1 : 0));
 	int new_y = RoundY(y + (d == Game_Character::Down ? 1 : d == Game_Character::Up ? -1 : 0));
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 
-	if (self.GetThrough()) return true;
+	if (self.GetThrough() || force_through) return true;
 
 	// A character can move to a position with an impassable tile by
 	// standing on top of an event below it. These flags track whether

@@ -703,6 +703,7 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
+	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement();
 	void UpdateJump();
 

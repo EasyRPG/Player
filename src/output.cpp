@@ -238,7 +238,7 @@ bool Output::TakeScreenshot() {
 	do {
 		p = FileFinder::MakePath(Main_Data::GetSavePath(),
 								 "screenshot_"
-								 + Utils::ToString(index++)
+								 + std::to_string(index++)
 								 + ".png");
 	} while(FileFinder::Exists(p));
 	return TakeScreenshot(p);

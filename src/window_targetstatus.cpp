@@ -45,9 +45,9 @@ void Window_TargetStatus::Refresh() {
 	// Scene_ActorTarget validates items and skills
 	std::string str;
 	if (use_item) {
-		str = Utils::ToString(Main_Data::game_party->GetItemCount(id));
+		str = std::to_string(Main_Data::game_party->GetItemCount(id));
 	} else {
-		str = Utils::ToString((*Main_Data::game_party)[actor_index].CalculateSkillCost(id));
+		str = std::to_string((*Main_Data::game_party)[actor_index].CalculateSkillCost(id));
 	}
 
 	FontRef font = Font::Default();

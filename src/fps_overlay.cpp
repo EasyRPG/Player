@@ -79,7 +79,7 @@ void FpsOverlay::Draw() {
 	// Always drawn when speedup is on independent of FPS
 	if (last_speed_mod > 1) {
 		if (speedup_dirty) {
-			std::string text = "> x" + Utils::ToString(last_speed_mod);
+			std::string text = "> x" + std::to_string(last_speed_mod);
 
 			Rect rect = Font::Default()->GetSize(text);
 

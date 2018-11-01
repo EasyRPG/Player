@@ -278,7 +278,7 @@ void Window_BattleStatus::UpdateCursorRect() {
 	if (index < 0)
 		SetCursorRect(Rect());
 	else
-		SetCursorRect(Rect(0, index * 15, contents->GetWidth(), 16));
+		SetCursorRect(Rect(0, index * 16, contents->GetWidth(), 16));
 }
 
 bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {

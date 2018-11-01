@@ -101,6 +101,14 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
+	Main_Data::game_party->IncBattleCount();
+	switch (Game_Temp::battle_result) {
+		case Game_Temp::BattleVictory: Main_Data::game_party->IncWinCount(); break;
+		case Game_Temp::BattleEscape: Main_Data::game_party->IncRunCount(); break;
+		case Game_Temp::BattleDefeat: Main_Data::game_party->IncDefeatCount(); break;
+		case Game_Temp::BattleAbort: break;
+	}
+
 	page_executed.clear();
 	page_can_run.clear();
 

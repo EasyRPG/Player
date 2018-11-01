@@ -184,6 +184,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	enemy.ChangeHp(change);
 
 	if (enemy.IsDead()) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_EnemyKill));
 		Game_Battle::SetNeedRefresh(true);
 	}
 

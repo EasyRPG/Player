@@ -625,7 +625,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 								b->GetBattleX(),
 								b->GetBattleY(),
 								damageTaken < 0 ? Font::ColorDefault : Font::ColorHeal,
-								Utils::ToString(damageTaken < 0 ? -damageTaken : damageTaken));
+								std::to_string(damageTaken < 0 ? -damageTaken : damageTaken));
 					}
 				}
 			}
@@ -663,7 +663,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 							target->GetBattleX(),
 							target->GetBattleY(),
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
-							Utils::ToString(action->GetAffectedHp()));
+							std::to_string(action->GetAffectedHp()));
 					}
 
 					target->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());

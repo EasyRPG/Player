@@ -76,7 +76,7 @@ void Window_ShopBuy::DrawItem(int index) {
 	contents->ClearRect(rect);
 	DrawItemName(*item, rect.x, rect.y, enabled);
 
-	std::string str = Utils::ToString(price);
+	std::string str = std::to_string(price);
 	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, str, Text::AlignRight);
 }
 

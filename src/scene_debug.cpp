@@ -281,7 +281,7 @@ void Scene_Debug::Update() {
 			}
 		}
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
-	} else if (range_window->GetActive() && Input::IsTriggered(Input::RIGHT)) {
+	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
 		if (range_page < GetLastPage()) {
 			++range_page;
 		} else {
@@ -290,7 +290,7 @@ void Scene_Debug::Update() {
 		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
 		UpdateRangeListWindow();
 		var_window->Refresh();
-	} else if (range_window->GetActive() && Input::IsTriggered(Input::LEFT)) {
+	} else if (range_window->GetActive() && Input::IsRepeated(Input::LEFT)) {
 		if (range_page > 0) {
 			--range_page;
 		} else {
