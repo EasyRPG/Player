@@ -413,17 +413,26 @@ int Scene_Debug::GetIndex() {
 
 
 int Scene_Debug::GetLastPage() {
+	size_t num_elements = 0;
 	switch (mode) {
 		case eSwitch:
-			return Game_Switches.GetSize() / 100;
+			num_elements = Game_Switches.GetSize();
+			break;
 		case eVariable:
-			return Game_Variables.GetSize() / 100;
+			num_elements = Game_Variables.GetSize();
+			break;
 		case eItem:
-			return Data::items.size() / 100;
+			num_elements = Data::items.size();
+			break;
 		case eBattle:
-			return Data::troops.size() / 100;
-		default:
-			return 0;
+			num_elements = Data::troops.size();
+			break;
+		default: break;
 	}
+
+	if (num_elements > 0) {
+		return (num_elements - 1) / 100;
+	}
+	return 0;
 }
 
