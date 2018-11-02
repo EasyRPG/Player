@@ -430,7 +430,7 @@ void Game_Player::Update() {
 					Move(Up);
 			}
 			if (GetX() != old_x || GetY() != old_y) {
-				++Main_Data::game_data.inventory.steps;
+				Main_Data::game_party->IncSteps();
 			}
 		}
 

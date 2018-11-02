@@ -178,14 +178,19 @@ public:
 	 *
 	 * @return gold possessed.
 	 */
-	int GetGold();
+	int GetGold() const;
 
 	/**
 	 * Gets steps walked.
 	 *
 	 * @return steps walked.
 	 */
-	int GetSteps();
+	int GetSteps() const;
+
+	/**
+	 * Increment the number of steps walked by 1.
+	 */
+	void IncSteps();
 
 	/**
 	 * Gets actors in party list.
@@ -334,10 +339,6 @@ public:
 private:
 	const RPG::SaveInventory& data() const;
 	RPG::SaveInventory& data();
-
-private:
-	std::vector<int> state_steps_hp;
-	std::vector<int> state_steps_sp;
 };
 
 // ------ INLINES --------
@@ -380,6 +381,18 @@ inline int Game_Party::GetRunCount() const {
 
 inline void Game_Party::IncRunCount() {
 	++data().escapes;
+}
+
+inline int Game_Party::GetGold() const {
+	return data().gold;
+}
+
+inline int Game_Party::GetSteps() const {
+	return data().steps;
+}
+
+inline void Game_Party::IncSteps() {
+	++data().steps;
 }
 
 
