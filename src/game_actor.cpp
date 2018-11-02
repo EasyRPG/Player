@@ -315,22 +315,18 @@ std::vector<int16_t>& Game_Actor::GetStates() {
 
 void Game_Actor::AddState(int state_id) {
 	Game_Battler::AddState(state_id);
-	GetData().status_size = GetData().status.size();
 }
 
 void Game_Actor::RemoveState(int state_id) {
 	Game_Battler::RemoveState(state_id);
-	GetData().status_size = GetData().status.size();
 }
 
 void Game_Actor::RemoveBattleStates() {
 	Game_Battler::RemoveBattleStates();
-	GetData().status_size = GetData().status.size();
 }
 
 void Game_Actor::RemoveAllStates() {
 	Game_Battler::RemoveAllStates();
-	GetData().status_size = GetData().status.size();
 }
 
 int Game_Actor::GetHp() const {
