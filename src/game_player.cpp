@@ -414,6 +414,8 @@ void Game_Player::Update() {
 
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (IsMovable()) {
+			auto old_x = GetX();
+			auto old_y = GetY();
 			switch (Input::dir4) {
 				case 2:
 					Move(Down);
@@ -426,6 +428,9 @@ void Game_Player::Update() {
 					break;
 				case 8:
 					Move(Up);
+			}
+			if (GetX() != old_x || GetY() != old_y) {
+				++Main_Data::game_data.inventory.steps;
 			}
 		}
 
