@@ -23,12 +23,12 @@ namespace RPG {
 }
 
 namespace Game_Targets {
-	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
+	void AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 	void RemoveTeleportTarget(int map_id);
 	bool HasTeleportTarget();
 	RPG::SaveTarget* GetTeleportTarget(int map_id);
 	std::vector<RPG::SaveTarget*> GetTeleportTargets();
-	void SetEscapeTarget(int map_id, int x, int y, int switch_id);
+	void SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id);
 	bool HasEscapeTarget();
 	RPG::SaveTarget* GetEscapeTarget();
 }

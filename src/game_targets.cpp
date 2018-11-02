@@ -38,13 +38,13 @@ std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool cre
 	return data.end() - 1;
 }
 
-void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
+void Game_Targets::AddTeleportTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, true);
 
 	target->map_id = map_id;
 	target->map_x = x;
 	target->map_y = y;
-	target->switch_on = switch_id > 0;
+	target->switch_on = switch_on;
 	target->switch_id = switch_id;
 }
 
@@ -86,13 +86,13 @@ std::vector<RPG::SaveTarget*> Game_Targets::GetTeleportTargets() {
 	return targets;
 }
 
-void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
+void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, true);
 
 	target->map_id = map_id;
 	target->map_x = x;
 	target->map_y = y;
-	target->switch_on = switch_id > 0;
+	target->switch_on = switch_on;
 	target->switch_id = switch_id;
 }
 

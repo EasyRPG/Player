@@ -2549,10 +2549,9 @@ bool Game_Interpreter::CommandTeleportTargets(RPG::EventCommand const& com) { //
 
 	int x = com.parameters[2];
 	int y = com.parameters[3];
-	int switch_id = (com.parameters[4] != 0)
-		? com.parameters[5]
-		: -1;
-	Game_Targets::AddTeleportTarget(map_id, x, y, switch_id);
+	bool switch_on = static_cast<bool>(com.parameters[4]);
+	int switch_id = com.parameters[5];
+	Game_Targets::AddTeleportTarget(map_id, x, y, switch_on, switch_id);
 	return true;
 }
 
@@ -2565,10 +2564,9 @@ bool Game_Interpreter::CommandEscapeTarget(RPG::EventCommand const& com) { // co
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
-	int switch_id = (com.parameters[3] != 0)
-		? com.parameters[4]
-		: -1;
-	Game_Targets::SetEscapeTarget(map_id, x, y, switch_id);
+	bool switch_on = static_cast<bool>(com.parameters[3]);
+	int switch_id = com.parameters[4];
+	Game_Targets::SetEscapeTarget(map_id, x, y, switch_on, switch_id);
 	return true;
 }
 
