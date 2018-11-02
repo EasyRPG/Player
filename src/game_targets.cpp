@@ -87,7 +87,7 @@ std::vector<RPG::SaveTarget*> Game_Targets::GetTeleportTargets() {
 }
 
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int switch_id) {
-	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, true);
+	auto* target = &data[0];
 
 	target->map_id = map_id;
 	target->map_x = x;
@@ -97,11 +97,10 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, bool switch_on, int
 }
 
 bool Game_Targets::HasEscapeTarget() {
-	return GetEscapeTarget() != nullptr;
+	return data[0].map_id != 0;
 }
 
 RPG::SaveTarget* Game_Targets::GetEscapeTarget() {
-	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, false);
-	return target == data.end() ? NULL : &*target;
+	return HasEscapeTarget() ? &data[0] : nullptr;
 }
 
