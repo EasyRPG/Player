@@ -27,6 +27,7 @@
 #include "game_vehicle.h"
 #include "rpg_encounter.h"
 #include "rpg_map.h"
+#include "rpg_mapinfo.h"
 
 class FileRequestAsync;
 
@@ -228,6 +229,13 @@ namespace Game_Map {
 	 * @param only_parallel Update only parallel interpreters
 	 */
 	void Update(bool only_parallel = false);
+
+	/**
+	 * Gets current map_info.
+	 *
+	 * @return current map_info.
+	 */
+	RPG::MapInfo const& GetMapInfo();
 
 	/**
 	 * Gets current map.

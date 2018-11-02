@@ -98,7 +98,7 @@ void Scene_Save::Action(int index) {
 	}
 
 	LSD_Reader::PrepareSave(Main_Data::game_data);
-	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMap());
+	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	LSD_Reader::Save(filename, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
