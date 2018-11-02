@@ -99,6 +99,8 @@ void Scene_Save::Action(int index) {
 
 	LSD_Reader::PrepareSave(Main_Data::game_data);
 	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
+	// RPG_RT saves always have the scene set to this.
+	data_copy.system.scene = RPG::SaveSystem::Scene_file;
 	LSD_Reader::Save(filename, data_copy, Player::encoding);
 
 #ifdef EMSCRIPTEN
