@@ -316,7 +316,7 @@ bool Game_Battler::UseSkill(int skill_id) {
 		was_used = true;
 	} else if (skill->type == RPG::Skill::Type_switch) {
 		Game_System::SePlay(skill->sound_effect);
-		Game_Switches[skill->switch_id] = true;
+		Game_Switches.Set(skill->switch_id, true);
 		was_used = true;
 	}
 

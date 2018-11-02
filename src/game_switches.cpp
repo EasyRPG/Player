@@ -21,34 +21,33 @@
 #include "output.h"
 #include "reader_util.h"
 
-#define PLAYER_VAR_LIMIT 1000000
-
 Game_Switches_Class::Game_Switches_Class() {}
 
 static std::vector<bool>& switches() {
 	return Main_Data::game_data.system.switches;
 }
 
-static int resize_report_limit = 10;
-
-std::vector<bool>::reference Game_Switches_Class::operator[](int switch_id) {
-	if (!IsValid(switch_id)) {
-		if (switch_id > 0 && switch_id <= PLAYER_VAR_LIMIT) {
-			if (resize_report_limit > 0) {
-				Output::Debug("Resizing switch array to %d elements.", switch_id);
-				--resize_report_limit;
-			}
-			switches().reserve(switch_id + 1000);
-			switches().resize(switch_id);
-			Main_Data::game_data.system.switches_size = switches().size();
-		} else {
-			Output::Debug("Switch index %d is invalid.", switch_id);
-			dummy.resize(1);
-			return dummy[0];
-		}
+bool Game_Switches_Class::Get(int switch_id) const {
+	auto& sv = switches();
+	if (switch_id <= 0 || switch_id > sv.size()) {
+		return false;
 	}
+	return sv[switch_id - 1];
+}
 
-	return switches()[switch_id - 1];
+void Game_Switches_Class::Set(int switch_id, bool value) {
+	auto& sv = switches();
+	if (switch_id <= 0) {
+		return;
+	}
+	if (switch_id > sv.size()) {
+		sv.resize(switch_id);
+	}
+	sv[switch_id - 1] = value;
+}
+
+void Game_Switches_Class::Flip(int switch_id) {
+	Set(switch_id, !Get(switch_id));
 }
 
 std::string Game_Switches_Class::GetName(int _id) const {
@@ -63,7 +62,7 @@ std::string Game_Switches_Class::GetName(int _id) const {
 }
 
 bool Game_Switches_Class::IsValid(int switch_id) const {
-	return (switch_id > 0 && switch_id <= (int)switches().size());
+	return switch_id > 0 && switch_id <= (int)Data::switches.size();
 }
 
 int Game_Switches_Class::GetSize() const {
@@ -71,6 +70,5 @@ int Game_Switches_Class::GetSize() const {
 }
 
 void Game_Switches_Class::Reset() {
-	resize_report_limit = 10;
-	switches().assign(Data::switches.size(), false);
+	switches().clear();
 }

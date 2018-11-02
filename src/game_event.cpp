@@ -372,45 +372,45 @@ void Game_Event::Refresh() {
 
 bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	// First switch (A)
-	if (page.condition.flags.switch_a && !Game_Switches[page.condition.switch_a_id]) {
+	if (page.condition.flags.switch_a && !Game_Switches.Get(page.condition.switch_a_id)) {
 		return false;
 	}
 
 	// Second switch (B)
-	if (page.condition.flags.switch_b && !Game_Switches[page.condition.switch_b_id]) {
+	if (page.condition.flags.switch_b && !Game_Switches.Get(page.condition.switch_b_id)) {
 		return false;
 	}
 
 	// Variable
 	if (Player::IsRPG2k()) {
-		if (page.condition.flags.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
+		if (page.condition.flags.variable && !(Game_Variables.Get(page.condition.variable_id) >= page.condition.variable_value)) {
 			return false;
 		}
 	} else {
 		if (page.condition.flags.variable) {
 			switch (page.condition.compare_operator) {
 			case 0: // ==
-				if (!(Game_Variables[page.condition.variable_id] == page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) == page.condition.variable_value))
 					return false;
 				break;
 			case 1: // >=
-				if (!(Game_Variables[page.condition.variable_id] >= page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) >= page.condition.variable_value))
 					return false;
 				break;
 			case 2: // <=
-				if (!(Game_Variables[page.condition.variable_id] <= page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) <= page.condition.variable_value))
 					return false;
 				break;
 			case 3: // >
-				if (!(Game_Variables[page.condition.variable_id] > page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) > page.condition.variable_value))
 					return false;
 				break;
 			case 4: // <
-				if (!(Game_Variables[page.condition.variable_id] < page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) < page.condition.variable_value))
 					return false;
 				break;
 			case 5: // !=
-				if (!(Game_Variables[page.condition.variable_id] != page.condition.variable_value))
+				if (!(Game_Variables.Get(page.condition.variable_id) != page.condition.variable_value))
 					return false;
 				break;
 			}

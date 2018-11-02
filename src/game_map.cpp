@@ -1218,7 +1218,7 @@ bool Game_Map::IsAnyEventStarting() {
 
 	for (Game_CommonEvent& ev : common_events)
 		if ((ev.GetTrigger() == RPG::EventPage::Trigger_auto_start) &&
-			(ev.GetSwitchFlag() ? Game_Switches[ev.GetSwitchId()] : true) &&
+			(ev.GetSwitchFlag() ? Game_Switches.Get(ev.GetSwitchId()) : true) &&
 			(!ev.GetList().empty()))
 				return true;
 

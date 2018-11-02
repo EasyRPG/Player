@@ -19,37 +19,34 @@
 #include "game_variables.h"
 #include "main_data.h"
 #include "output.h"
+#include "player.h"
 #include "reader_util.h"
-
-#define PLAYER_VAR_LIMIT 1000000
 
 Game_Variables_Class::Game_Variables_Class() {}
 
-static std::vector<uint32_t>& variables() {
+static std::vector<int32_t>& variables() {
 	return Main_Data::game_data.system.variables;
 }
 
-static int resize_report_limit = 10;
-
-int& Game_Variables_Class::operator[] (int variable_id) {
-	if (!IsValid(variable_id)) {
-		if (variable_id > 0 && variable_id <= PLAYER_VAR_LIMIT) {
-			if (resize_report_limit > 0) {
-				Output::Debug("Resizing variable array to %d elements.", variable_id);
-				--resize_report_limit;
-			}
-			variables().reserve(variable_id + 1000);
-			variables().resize(variable_id);
-			Main_Data::game_data.system.variables_size = variables().size();
-		} else {
-			Output::Debug("Variable index %d is invalid.",
-				variable_id);
-			dummy = 0;
-			return dummy;
-		}
+int Game_Variables_Class::Get(int variable_id) const {
+	auto& vv = variables();
+	if (variable_id <= 0 || variable_id > vv.size()) {
+		return 0;
 	}
+	return vv[variable_id - 1];
+}
 
-	return (int&)variables()[variable_id - 1];
+void Game_Variables_Class::Set(int variable_id, int value) {
+	auto& vv = variables();
+	if (variable_id <= 0) {
+		return;
+	}
+	if (variable_id > vv.size()) {
+		vv.resize(variable_id);
+	}
+	const int maxval = Player::IsRPG2k3() ? 9999999 : 999999;
+	const int minval = Player::IsRPG2k3() ? -9999999 : -999999;
+	vv[variable_id - 1] = std::max(std::min(value, maxval), minval);
 }
 
 std::string Game_Variables_Class::GetName(int _id) const {
@@ -64,7 +61,7 @@ std::string Game_Variables_Class::GetName(int _id) const {
 }
 
 bool Game_Variables_Class::IsValid(int variable_id) const {
-	return (variable_id > 0 && variable_id <= (int)variables().size());
+	return variable_id > 0 && variable_id <= (int)Data::variables.size();
 }
 
 int Game_Variables_Class::GetSize() const {
@@ -72,6 +69,5 @@ int Game_Variables_Class::GetSize() const {
 }
 
 void Game_Variables_Class::Reset() {
-	resize_report_limit = 10;
-	variables().assign(Data::variables.size(), 0);
+	variables().clear();
 }

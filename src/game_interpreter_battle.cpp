@@ -171,7 +171,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 		change = com.parameters[3];
 	    break;
 	case 1:
-		change = Game_Variables[com.parameters[3]];
+		change = Game_Variables.Get(com.parameters[3]);
 	    break;
 	case 2:
 		change = com.parameters[3] * hp / 100;
@@ -203,7 +203,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& co
 		change = com.parameters[3];
 	    break;
 	case 1:
-		change = Game_Variables[com.parameters[3]];
+		change = Game_Variables.Get(com.parameters[3]);
 	    break;
 	}
 
@@ -311,15 +311,15 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 	switch (com.parameters[0]) {
 		case 0:
 			// Switch
-			result = Game_Switches[com.parameters[1]] == (com.parameters[2] == 0);
+			result = Game_Switches.Get(com.parameters[1]) == (com.parameters[2] == 0);
 			break;
 		case 1:
 			// Variable
-			value1 = Game_Variables[com.parameters[1]];
+			value1 = Game_Variables.Get(com.parameters[1]);
 			if (com.parameters[2] == 0) {
 				value2 = com.parameters[3];
 			} else {
-				value2 = Game_Variables[com.parameters[3]];
+				value2 = Game_Variables.Get(com.parameters[3]);
 			}
 			switch (com.parameters[4]) {
 				case 0:

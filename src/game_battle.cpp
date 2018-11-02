@@ -276,13 +276,13 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 		return false;
 	}
 
-	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id])
+	if (condition.flags.switch_a && !Game_Switches.Get(condition.switch_a_id))
 		return false;
 
-	if (condition.flags.switch_b && !Game_Switches[condition.switch_b_id])
+	if (condition.flags.switch_b && !Game_Switches.Get(condition.switch_b_id))
 		return false;
 
-	if (condition.flags.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
+	if (condition.flags.variable && !(Game_Variables.Get(condition.variable_id) >= condition.variable_value))
 		return false;
 
 	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))

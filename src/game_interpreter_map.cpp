@@ -198,9 +198,9 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
-	int map_id = Game_Variables[var_map_id];
-	int x = Game_Variables[var_x];
-	int y = Game_Variables[var_y];
+	int map_id = Game_Variables.Get(var_map_id);
+	int x = Game_Variables.Get(var_x);
+	int y = Game_Variables.Get(var_y);
 
 	if (map_id == Game_Map::GetMapId()) {
 		player->MoveTo(x, y);

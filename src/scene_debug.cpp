@@ -208,13 +208,13 @@ void Scene_Debug::Update() {
 			switch (mode) {
 				case eSwitch:
 					if (Game_Switches.IsValid(GetIndex())) {
-						Game_Switches[GetIndex()] = !Game_Switches[GetIndex()];
+						Game_Switches.Flip(GetIndex());
 					}
 					break;
 				case eVariable:
 					if (Game_Variables.IsValid(GetIndex())) {
 						var_window->SetActive(false);
-						numberinput_window->SetNumber(Game_Variables[GetIndex()]);
+						numberinput_window->SetNumber(Game_Variables.Get(GetIndex()));
 						numberinput_window->SetShowOperator(true);
 						numberinput_window->SetVisible(true);
 						numberinput_window->SetActive(true);
@@ -259,7 +259,7 @@ void Scene_Debug::Update() {
 			var_window->Refresh();
 		} else if (numberinput_window->GetActive()) {
 			if (mode == eVariable) {
-				Game_Variables[GetIndex()] = numberinput_window->GetNumber();
+				Game_Variables.Set(GetIndex(), numberinput_window->GetNumber());
 			} else if (mode == eGold) {
 				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
 				Main_Data::game_party->GainGold(delta);
