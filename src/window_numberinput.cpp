@@ -136,6 +136,9 @@ void Window_NumberInput::Update() {
 				}
 				number += n * place;
 			}
+			if (number == 0) {
+				plus = true;
+			}
 			Refresh();
 		}
 
