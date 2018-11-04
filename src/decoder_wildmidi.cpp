@@ -255,7 +255,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 
 	init = (WildMidi_Init(config_file.c_str(), WILDMIDI_FREQ, WILDMIDI_OPTS) == 0);
 	if (!init) {
-		error_message = "Could not initialize libWildMidi";
+		error_message = std::string("WildMidi_Init() failed : ") + WildMidi_GetError();
 		return;
 	}
 
