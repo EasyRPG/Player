@@ -21,6 +21,8 @@
 #include "output.h"
 #include "reader_util.h"
 
+constexpr int kMaxWarnings = 10;
+
 Game_Switches_Class::Game_Switches_Class() {}
 
 static std::vector<bool>& switches() {
@@ -28,6 +30,10 @@ static std::vector<bool>& switches() {
 }
 
 bool Game_Switches_Class::Get(int switch_id) const {
+	if ((switch_id <= 0 || switch_id > Data::switches.size()) && _warnings < kMaxWarnings) {
+		Output::Debug("Invalid read sw[%d]!", switch_id);
+		++_warnings;
+	}
 	auto& sv = switches();
 	if (switch_id <= 0 || switch_id > sv.size()) {
 		return false;
@@ -36,6 +42,10 @@ bool Game_Switches_Class::Get(int switch_id) const {
 }
 
 void Game_Switches_Class::Set(int switch_id, bool value) {
+	if ((switch_id <= 0 || switch_id > Data::switches.size()) && _warnings < kMaxWarnings) {
+		Output::Debug("Invalid write sw[%d] = %d!", switch_id, value);
+		++_warnings;
+	}
 	auto& sv = switches();
 	if (switch_id <= 0) {
 		return;
@@ -71,4 +81,5 @@ int Game_Switches_Class::GetSize() const {
 
 void Game_Switches_Class::Reset() {
 	switches().clear();
+	_warnings = 0;
 }

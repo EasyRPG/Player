@@ -22,6 +22,8 @@
 #include "player.h"
 #include "reader_util.h"
 
+constexpr int kMaxWarnings = 10;
+
 Game_Variables_Class::Game_Variables_Class() {}
 
 static std::vector<int32_t>& variables() {
@@ -29,6 +31,10 @@ static std::vector<int32_t>& variables() {
 }
 
 int Game_Variables_Class::Get(int variable_id) const {
+	if ((variable_id <= 0 || variable_id > Data::variables.size()) && _warnings < kMaxWarnings) {
+		Output::Debug("Invalid read var[%d]!", variable_id);
+		++_warnings;
+	}
 	auto& vv = variables();
 	if (variable_id <= 0 || variable_id > vv.size()) {
 		return 0;
@@ -37,6 +43,10 @@ int Game_Variables_Class::Get(int variable_id) const {
 }
 
 void Game_Variables_Class::Set(int variable_id, int value) {
+	if ((variable_id <= 0 || variable_id > Data::variables.size()) && _warnings < kMaxWarnings) {
+		Output::Debug("Invalid write var[%d] = %d!", variable_id, value);
+		++_warnings;
+	}
 	auto& vv = variables();
 	if (variable_id <= 0) {
 		return;
@@ -70,4 +80,5 @@ int Game_Variables_Class::GetSize() const {
 
 void Game_Variables_Class::Reset() {
 	variables().clear();
+	_warnings = 0;
 }

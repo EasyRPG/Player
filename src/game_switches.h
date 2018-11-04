@@ -44,7 +44,7 @@ public:
 	void Reset();
 
 private:
-	std::vector<bool> dummy;
+	mutable int _warnings = 0;
 };
 
 

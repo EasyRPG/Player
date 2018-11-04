@@ -40,6 +40,8 @@ public:
 	int GetSize() const;
 
 	void Reset();
+private:
+	mutable int _warnings = 0;
 };
 
 // Global variable
