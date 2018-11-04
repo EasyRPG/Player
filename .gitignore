@@ -88,3 +88,6 @@ __MACOSX
 /lib/liblcf/
 liblcf.pc
 .buildconfig
+
+# Android
+*.iml
