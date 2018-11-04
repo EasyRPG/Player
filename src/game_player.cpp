@@ -236,7 +236,7 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 	ReserveTeleport(map_id, target.map_x, target.map_y, Down);
 
 	if (target.switch_on) {
-		Game_Switches[target.switch_id] = true;
+		Game_Switches.Set(target.switch_id, true);
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	}
 }

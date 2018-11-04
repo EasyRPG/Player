@@ -29,7 +29,9 @@ class Game_Variables_Class {
 public:
 	Game_Variables_Class();
 
-	int& operator[] (int variable_id);
+	int Get(int variable_id) const;
+
+	void Set(int variable_id, int value);
 
 	std::string GetName(int _id) const;
 
@@ -38,9 +40,8 @@ public:
 	int GetSize() const;
 
 	void Reset();
-
 private:
-	int dummy = 0;
+	mutable int _warnings = 0;
 };
 
 // Global variable

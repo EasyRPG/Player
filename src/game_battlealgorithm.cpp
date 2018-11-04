@@ -586,7 +586,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	if (GetAffectedSwitch() != -1) {
-		Game_Switches[GetAffectedSwitch()] = true;
+		Game_Switches.Set(GetAffectedSwitch(), true);
 	}
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
@@ -615,11 +615,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
 	for (int s : switch_on) {
-		Game_Switches[s] = true;
+		Game_Switches.Set(s, true);
 	}
 
 	for (int s : switch_off) {
-		Game_Switches[s] = false;
+		Game_Switches.Set(s, false);
 	}
 }
 

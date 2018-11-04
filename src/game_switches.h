@@ -29,9 +29,13 @@ class Game_Switches_Class {
 public:
 	Game_Switches_Class();
 
-	std::vector<bool>::reference operator[](int switch_id);
-	
-	std::string GetName(int _id) const;
+	bool Get(int switch_id) const;
+
+	void Set(int switch_id, bool value);
+
+	void Flip(int switch_id);
+
+	std::string GetName(int switch_id) const;
 
 	bool IsValid(int switch_id) const;
 
@@ -40,8 +44,9 @@ public:
 	void Reset();
 
 private:
-	std::vector<bool> dummy;
+	mutable int _warnings = 0;
 };
+
 
 // Global variable
 extern Game_Switches_Class Game_Switches;

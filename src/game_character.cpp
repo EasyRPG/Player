@@ -371,12 +371,12 @@ void Game_Character::MoveTypeCustom() {
 				SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
 				break;
 			case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
-				Game_Switches[move_command.parameter_a] = true;
+				Game_Switches.Set(move_command.parameter_a, true);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				Game_Map::Refresh();
 				break;
 			case RPG::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
-				Game_Switches[move_command.parameter_a] = false;
+				Game_Switches.Set(move_command.parameter_a, false);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				Game_Map::Refresh();
 				break;

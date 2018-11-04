@@ -52,7 +52,7 @@ void Window_VarList::DrawItemValue(int index){
 	switch (mode) {
 		case eSwitch:
 			{
-				auto value = Game_Switches[first_var + index];
+				auto value = Game_Switches.Get(first_var + index);
 				auto font = (!value) ? Font::ColorCritical : Font::ColorDefault;
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, value ? "[ON]" : "[OFF]", Text::AlignRight);
@@ -60,7 +60,7 @@ void Window_VarList::DrawItemValue(int index){
 			break;
 		case eVariable:
 			{
-				auto value = Game_Variables[first_var + index];
+				auto value = Game_Variables.Get(first_var + index);
 				auto font = (value < 0) ? Font::ColorCritical : Font::ColorDefault;
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);

@@ -38,7 +38,7 @@ void Game_CommonEvent::SetSaveData(const RPG::SaveEventData& data) {
 
 void Game_CommonEvent::Refresh() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
+		if (GetSwitchFlag() ? Game_Switches.Get(GetSwitchId()) : true) {
 			if (!interpreter) {
 				interpreter.reset(new Game_Interpreter_Map());
 			}
@@ -54,7 +54,7 @@ void Game_CommonEvent::Update() {
 		return;
 
 	for (int i = 0; i < 500; ++i) {
-		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
+		if (GetSwitchFlag() ? Game_Switches.Get(GetSwitchId()) : true) {
 			if (!Game_Map::GetInterpreter().IsRunning()) {
 				Game_Map::GetInterpreter().Setup(this, 0);
 				Game_Map::GetInterpreter().Update();
