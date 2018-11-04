@@ -1338,12 +1338,13 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				Main_Data::game_party->AddItem(item_id, 1);
 			}
 
-			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon) {
+			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon && item_id != 0) {
 				RPG::Item* new_equipment = ReaderUtil::GetElement(Data::items, item_id);
 				RPG::Item* equipment1 = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
 				RPG::Item* equipment2 = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
 
 				if (equipment1 && !equipment2 && !equipment1->two_handed && !new_equipment->two_handed) {
+					// Assign to 2nd weapon slot when empty
 					actor->ChangeEquipment(slot + 1, item_id);
 					continue;
 				}
