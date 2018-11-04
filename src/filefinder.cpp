@@ -735,7 +735,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 	int dir = opendir(wpath.c_str());
 	if (dir < 0) {
 	#else
-	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), ::closedir);
+	std::shared_ptr< ::DIR> dir(::opendir(wpath.c_str()), [](::DIR* d) { if (d) ::closedir(d); });
 	if (!dir) {
 	#endif
 		Output::Debug("Error opening dir %s: %s", path.c_str(),
