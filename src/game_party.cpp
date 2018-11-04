@@ -389,14 +389,6 @@ int Game_Party::GetActorPositionInParty(int actor_id) {
 	return it != data().party.end() ? std::distance(data().party.begin(), it) : -1;
 }
 
-int Game_Party::GetGold() {
-	return data().gold;
-}
-
-int Game_Party::GetSteps() {
-	return data().steps;
-}
-
 std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
@@ -596,18 +588,17 @@ bool Game_Party::ApplyStateDamage() {
 	bool damage = false;
 	std::vector<int16_t> states = GetInflictedStates();
 
-	for (auto state_id : states) {
-		if (static_cast<int>(state_steps_hp.size()) < state_id) {
-			state_steps_hp.resize(state_id);
-		}
-		if (static_cast<int>(state_steps_sp.size()) < state_id) {
-			state_steps_sp.resize(state_id);
-		}
+	const auto steps = GetSteps();
 
+	for (auto state_id : states) {
 		RPG::State *state = ReaderUtil::GetElement(Data::states, state_id);
 
-		if (state->hp_change_map_val > 0 && (++state_steps_hp[state_id - 1]) >= state->hp_change_map_steps) {
-			state_steps_hp[state_id - 1] = 0;
+		// NOTE: We do steps + 1 here because this gets called before steps are incremented.
+
+		if (state->hp_change_map_steps > 0
+				&& state->hp_change_map_val > 0
+				&& (((steps + 1) % state->hp_change_map_steps) == 0)
+				) {
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
 					actor->ChangeHp(-std::max<int>(0, std::min<int>(state->hp_change_map_val, actor->GetHp() - 1)));
@@ -616,8 +607,10 @@ bool Game_Party::ApplyStateDamage() {
 			}
 		}
 
-		if (state->sp_change_map_val > 0 && (++state_steps_sp[state_id - 1]) >= state->sp_change_map_steps) {
-			state_steps_sp[state_id - 1] = 0;
+		if (state->sp_change_map_steps > 0
+				&& state->sp_change_map_val > 0
+				&& (((steps + 1) % state->sp_change_map_steps) == 0)
+		   ){
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
 					actor->ChangeSp(-state->sp_change_map_val);
