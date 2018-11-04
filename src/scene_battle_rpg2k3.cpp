@@ -816,11 +816,11 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			active_actor->SetLastBattleAction(-1);
 			SetState(State_SelectOption);
 			break;
-		case State_SelectEnemyTarget:
 		case State_SelectItem:
 		case State_SelectSkill:
 			SetState(State_SelectCommand);
 			break;
+		case State_SelectEnemyTarget:
 		case State_SelectAllyTarget:
 			SetState(previous_state);
 			break;
@@ -865,11 +865,9 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 
 	switch (command->type) {
 	case RPG::BattleCommand::Type_attack:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		AttackSelected();
 		break;
 	case RPG::BattleCommand::Type_defense:
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		DefendSelected();
 		break;
 	case RPG::BattleCommand::Type_escape:
@@ -980,7 +978,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		Game_Message::texts.push_back(Data::terms.victory);
+		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 

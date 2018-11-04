@@ -102,9 +102,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
-	std::string skill_name = active_actor->GetSkillName();
-	command_window->SetItemText(1,
-		skill_name.empty() ? Data::terms.command_skill : skill_name);
+	command_window->SetItemText(1, active_actor->GetSkillName());
 }
 
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
@@ -151,7 +149,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_SelectSkill:
 		skill_window->SetActive(true);
 		skill_window->SetActor(active_actor->GetId());
-		skill_window->SetIndex(0);
+		if (previous_state == State_SelectCommand)
+			skill_window->SetIndex(0);
 		break;
 	case State_Victory:
 	case State_Defeat:
@@ -472,8 +471,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
-					if (action->IsSuccess() && target_sprite) {
+					if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
 						target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
+					}
+					if (action->IsSuccess() && action->GetTarget()->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
+						Main_Data::game_screen->ShakeOnce(2, 16, 1);
 					}
 
 					if (action->GetResultSe()) {
@@ -580,7 +582,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		switch (state) {
 		case State_Start:
 		case State_SelectOption:
@@ -588,18 +589,22 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_SelectActor:
 		case State_AutoBattle:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			SetState(State_SelectOption);
 			break;
 		case State_SelectCommand:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			--actor_index;
 			SelectPreviousActor();
 			break;
-		case State_SelectEnemyTarget:
 		case State_SelectItem:
 		case State_SelectSkill:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			SetState(State_SelectCommand);
 			break;
+		case State_SelectEnemyTarget:
 		case State_SelectAllyTarget:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 			SetState(previous_state);
 			break;
 		case State_Battle:
@@ -643,19 +648,20 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k::CommandSelected() {
-	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
 			AttackSelected();
 			break;
 		case 1: // Skill
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetState(State_SelectSkill);
 			break;
 		case 2: // Defense
 			DefendSelected();
 			break;
 		case 3: // Item
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			SetState(State_SelectItem);
 			break;
 		default:
@@ -673,9 +679,6 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_success = escape_alg.Execute();
 		escape_alg.Apply();
 
-		if (escape_success)
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
-
 		battle_result_messages.clear();
 		escape_alg.GetResultMessages(battle_result_messages);
 
@@ -690,6 +693,8 @@ void Scene_Battle_Rpg2k::Escape() {
 			escape_counter = 0;
 
 			if (escape_success) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
+
 				Game_Temp::battle_result = Game_Temp::BattleEscape;
 
 				Scene::Pop();
@@ -817,7 +822,7 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Battler*> enemies;
-	Main_Data::game_enemyparty->GetBattlers(enemies);
+	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
 	for (Game_Battler* battler : enemies) {
 		if (!battler->CanAct()) {
@@ -925,11 +930,11 @@ void Scene_Battle_Rpg2k::PushExperienceGainedMessage(int exp) {
 				Data::terms.exp_received,
 				{'V', 'U'},
 				{ss.str(), Data::terms.exp_short}
-			)
+			) + Player::escape_symbol + "."
 		);
 	}
 	else {
-		ss << exp << Data::terms.exp_received;
+		ss << exp << Data::terms.exp_received << Player::escape_symbol << ".";
 		Game_Message::texts.push_back(ss.str());
 	}
 }
@@ -944,11 +949,11 @@ void Scene_Battle_Rpg2k::PushGoldReceivedMessage(int money) {
 				Data::terms.gold_recieved_a,
 				{'V', 'U'},
 				{ss.str(), Data::terms.gold}
-			)
+			) + Player::escape_symbol + "."
 		);
 	}
 	else {
-		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << Player::escape_symbol << ".";
 		Game_Message::texts.push_back(ss.str());
 	}
 }
@@ -970,12 +975,12 @@ void Scene_Battle_Rpg2k::PushItemRecievedMessages(std::vector<int> drops) {
 					Data::terms.item_recieved,
 					{'S'},
 					{item_name}
-				)
+				) + Player::escape_symbol + "."
 			);
 		}
 		else {
 			ss.str("");
-			ss << item_name << Data::terms.item_recieved;
+			ss << item_name << Data::terms.item_recieved << Player::escape_symbol << ".";
 			Game_Message::texts.push_back(ss.str());
 		}
 	}
@@ -992,7 +997,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
 		Game_Message::is_word_wrapped = Player::IsRPG2kE();
-		Game_Message::texts.push_back(Data::terms.victory);
+		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
 
 		std::stringstream ss;
 		PushExperienceGainedMessage(exp);

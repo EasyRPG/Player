@@ -89,9 +89,9 @@ void Scene_Battle::Start() {
 	auto_battle = false;
 	enemy_action = NULL;
 
-	CreateUi();
-
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
+
+	CreateUi();
 
 	SetState(State_Start);
 }
@@ -106,7 +106,7 @@ void Scene_Battle::TransitionIn() {
 }
 
 void Scene_Battle::TransitionOut() {
-	if (Player::exit_flag || Player::battle_test_flag || Game_Temp::transition_menu) {
+	if (Player::exit_flag || Player::battle_test_flag || Game_Temp::transition_menu || Scene::instance->type == Scene::Title) {
 		Scene::TransitionOut();
 	}
 	else {
@@ -235,6 +235,7 @@ void Scene_Battle::EnemySelected() {
 		}
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
@@ -258,6 +259,7 @@ void Scene_Battle::AllySelected() {
 		assert("Invalid previous state for ally selection" && false);
 	}
 
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 	ActionSelectedCallback(active_actor);
 }
 
