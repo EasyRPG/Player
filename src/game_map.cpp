@@ -133,6 +133,8 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
+	map_info.encounter_rate = GetMapInfo().encounter_steps;
+	ResetEncounterSteps();
 
 	Parallax::ClearChangedBG();
 
@@ -197,8 +199,11 @@ void Game_Map::SetupFromSave() {
 		if (vehicles[i]->IsMoveRouteOverwritten())
 			pending.push_back(vehicles[i].get());
 
-	map_info.Fixup(*map.get());
+	map_info.Fixup(GetMap());
+	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
+
+	ResetEncounterSteps();
 
 	// FIXME: Handle Pan correctly
 	location.pan_current_x = 0;
@@ -236,7 +241,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	refresh_type = Refresh_All;
 
 	int current_index = GetMapIndex(location.map_id);
-	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
 
 	ss.str("");
 	for (int cur = current_index;
@@ -278,8 +282,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	// events will properly resume upon loading.
 	location.map_save_count = map_save_count;
 	location.database_save_count = Data::system.save_count;
-
-	ResetEncounterSteps();
 }
 
 void Game_Map::PrepareSave() {
@@ -865,6 +867,11 @@ void Game_Map::Update(bool only_parallel) {
 		vehicles[i]->Update();
 
 	free_interpreters.clear();
+}
+
+RPG::MapInfo const& Game_Map::GetMapInfo() {
+	auto idx = GetMapIndex(location.map_id);
+	return Data::treemap.maps[idx];
 }
 
 RPG::Map const& Game_Map::GetMap() {
