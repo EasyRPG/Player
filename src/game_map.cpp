@@ -283,6 +283,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 			Main_Data::game_data.common_events = {};
 			Main_Data::game_data.events = {};
 			Main_Data::game_data.map_info.events = {};
+			Main_Data::game_data.panorama = {};
 		} else if (location.database_save_count != Data::system.save_count) {
 			Main_Data::game_data.common_events = {};
 		}
