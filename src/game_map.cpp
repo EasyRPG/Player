@@ -1582,6 +1582,7 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 	map_info.parallax_vert = params.scroll_vert;
 	map_info.parallax_vert_auto = params.scroll_vert_auto;
 	map_info.parallax_vert_speed = params.scroll_vert_speed;
+	panorama = {};
 }
 
 void Game_Map::Parallax::ClearChangedBG() {
