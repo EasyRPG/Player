@@ -1243,6 +1243,12 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 	if (item.type == RPG::Item::Type_medicine) {
 		this->healing = true;
+		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
+		if (GetTarget()->GetType() == Game_Battler::Type_Ally && !static_cast<Game_Actor*>(GetTarget())->IsItemUsable(item.ID)) {
+			// No effect, but doesn't behave like a dodge or damage to set healing and success to true.
+			this->success = true;
+			return this->success;
+		}
 
 		// HP recovery
 		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
