@@ -1383,3 +1383,57 @@ bool Game_Actor::PreventsTerrainDamage() {
 
 	return false;
 }
+
+
+const RPG::Item* Game_Actor::GetWeapon() const {
+	auto* weapon = GetEquipment(RPG::Item::Type_weapon);
+	if (weapon && weapon->type == RPG::Item::Type_weapon) {
+		return weapon;
+	}
+	return nullptr;
+}
+
+const RPG::Item* Game_Actor::Get2ndWeapon() const {
+	// Checking of HasTwoWeapons() not neccessary. If true, the
+	// item equipped in this slot will never be a weapon from
+	// legitimate means.
+	auto* weapon = GetEquipment(RPG::Item::Type_shield);
+	if (weapon && weapon->type == RPG::Item::Type_weapon) {
+		return weapon;
+	}
+	return nullptr;
+}
+
+const RPG::Item* Game_Actor::GetShield() const {
+	auto* shield = GetEquipment(RPG::Item::Type_shield);
+	if (shield && shield->type == RPG::Item::Type_shield) {
+		return shield;
+	}
+	return nullptr;
+}
+
+const RPG::Item* Game_Actor::GetArmor() const {
+	auto* armor = GetEquipment(RPG::Item::Type_armor);
+	if (armor && armor->type == RPG::Item::Type_armor) {
+		return armor;
+	}
+	return nullptr;
+}
+
+const RPG::Item* Game_Actor::GetHelmet() const {
+	auto* helmet = GetEquipment(RPG::Item::Type_helmet);
+	if (helmet && helmet->type == RPG::Item::Type_helmet) {
+		return helmet;
+	}
+	return nullptr;
+}
+
+const RPG::Item* Game_Actor::GetAccessory() const {
+	auto* accessory = GetEquipment(RPG::Item::Type_accessory);
+	if (accessory && accessory->type == RPG::Item::Type_accessory) {
+		return accessory;
+	}
+	return nullptr;
+}
+
+
