@@ -48,7 +48,14 @@ bool Window_Item::CheckInclude(int item_id) {
 }
 
 bool Window_Item::CheckEnable(int item_id) {
-	return Main_Data::game_party->IsItemUsable(item_id);
+	auto* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		return false;
+	}
+	if (item->type == RPG::Item::Type_medicine) {
+		return true;
+	}
+	return Main_Data::game_party->IsItemUsable(item_id, actor);
 }
 
 void Window_Item::Refresh() {
