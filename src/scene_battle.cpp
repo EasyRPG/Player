@@ -114,6 +114,10 @@ void Scene_Battle::TransitionOut() {
 	}
 }
 
+void Scene_Battle::DrawBackground() {
+	DisplayUi->CleanDisplay();
+}
+
 void Scene_Battle::CreateUi() {
 	std::vector<std::string> commands;
 	commands.push_back(Data::terms.battle_fight);

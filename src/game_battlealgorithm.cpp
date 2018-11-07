@@ -422,6 +422,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				}
 			}
 		}
+
+		// If enemy is killed, it ends here
+		if (killed_by_attack_damage) {
+			out.push_back(GetDeathMessage());
+			return;
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -639,7 +645,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() const {
 		return false;
 	}
 
-	return (!GetTarget()->IsDead());
+	return GetTarget()->Exists();
 }
 
 int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
@@ -846,7 +852,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 		Game_Actor* src = static_cast<Game_Actor*>(source);
 		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, src->GetWeaponId());
 		if (weapon) {
-			source->ChangeSp(-weapon->sp_cost / src->GetSpCostModifier());
+			source->ChangeSp(std::ceil(-weapon->sp_cost / (float) src->GetSpCostModifier()));
 		}
 	}
 }
@@ -1024,8 +1030,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			this->success = (GetAffectedHp() != -1 && !IsAbsorb()) || (GetAffectedHp() > 0 && IsAbsorb()) || GetAffectedSp() > 0 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
+
+			if (IsAbsorb() && !success)
+				return this->success;
 		}
 
+		// Conditions:
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
@@ -1047,23 +1057,17 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		assert(false && "Unsupported skill type");
 	}
 
-	if (IsAbsorb() && sp != -1) {
-		if (GetTarget()->GetSp() == 0) {
-			this->success = false;
-		}
-	}
-
 	return this->success;
 }
 
 void Game_BattleAlgorithm::Skill::Apply() {
 	AlgorithmBase::Apply();
 
-	if (item) {
-		Main_Data::game_party->ConsumeItemUse(item->ID);
-	}
-	else {
-		if (first_attack) {
+	if (IsFirstAttack()) {
+		if (item) {
+			Main_Data::game_party->ConsumeItemUse(item->ID);
+		}
+		else {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
 		}
 	}
@@ -1130,6 +1134,10 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 			return NULL;
 		}
 	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
+	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
 }
 
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
@@ -1313,7 +1321,8 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 }
 
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
-	AlgorithmBase::GetResultMessages(out);
+	if (success)
+		AlgorithmBase::GetResultMessages(out);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {

@@ -156,17 +156,13 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	for (size_t i = 0; i < skill->attribute_effects.size(); ++i) {
 		bool required = skill->attribute_effects[i] && Data::attributes[i].type == RPG::Attribute::Type_physical;
 		if (required) {
-			if (item && i < item->attribute_set.size()) {
-				if (!item->attribute_set[i]) {
-					return false;
-				}
-			} else if (item2 && i < item2->attribute_set.size()) {
-				if (!item2->attribute_set[i]) {
-					return false;
-				}
-			} else {
-				return false;
+			if (item && i < item->attribute_set.size() && item->attribute_set[i]) {
+				continue;
 			}
+			if (item2 && i < item2->attribute_set.size() && item2->attribute_set[i]) {
+				continue;
+			}
+			return false;
 		}
 	}
 
@@ -190,7 +186,7 @@ int Game_Actor::GetSpCostModifier() const {
 }
 
 int Game_Actor::CalculateSkillCost(int skill_id) const {
-	return Game_Battler::CalculateSkillCost(skill_id) / GetSpCostModifier();
+	return std::ceil(Game_Battler::CalculateSkillCost(skill_id) / (float) GetSpCostModifier());
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
@@ -573,15 +569,25 @@ int Game_Actor::GetNextExp(int level) const {
 }
 
 int Game_Actor::GetStateProbability(int state_id) const {
-	int rate = 2; // C - default
+	int rate = 2, mul = 100; // C - default
 
 	const uint8_t* r = ReaderUtil::GetElement(GetActor().state_ranks, state_id);
 	if (r) {
 		rate = *r;
 	}
 
+	// This takes the armor of the character with the most resistance for that particular state
+	for (const auto equipment : GetWholeEquipment()) {
+		RPG::Item* item = ReaderUtil::GetElement(Data::items, equipment);
+		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
+			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
+			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
+			mul = std::min(mul, 100 - item->state_chance);
+		}
+	}
+
 	// GetStateRate verifies the state_id
-	return GetStateRate(state_id, rate);
+	return GetStateRate(state_id, rate) * mul / 100;
 }
 
 int Game_Actor::GetAttributeModifier(int attribute_id) const {
@@ -602,6 +608,16 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 	}
 
 	rate += *shift;
+	for (auto id_object : GetWholeEquipment()) {
+		RPG::Item *object = ReaderUtil::GetElement(Data::items, id_object);
+		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
+			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory)
+			&& object->attribute_set.size() >= attribute_id && object->attribute_set[attribute_id - 1]) {
+			rate++;
+			break;
+		}
+	}
+
 	if (rate < 0) {
 		rate = 0;
 	} else if (rate > 4) {

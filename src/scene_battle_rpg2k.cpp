@@ -336,7 +336,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
-	if (battle_action_wait) {
+	if (Input::IsPressed(Input::DECISION)) {
+		--battle_action_wait;
+	}
+
+	if (battle_action_wait > 0) {
 		if (--battle_action_wait) {
 			return false;
 		}
@@ -361,6 +365,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 			return false;
 		}
+	}
+
+	if (Input::IsPressed(Input::CANCEL)) {
+		return false;
 	}
 
 	switch (battle_action_state) {
@@ -540,8 +548,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
-			// Skip current message
-			encounter_message_sleep_until = Player::GetFrames();
+			// no-op
 			break;
 		case State_SelectOption:
 			// Interpreter message boxes pop up in this state
@@ -687,6 +694,10 @@ void Scene_Battle_Rpg2k::Escape() {
 		begin_escape = false;
 	}
 	else {
+		if (Input::IsPressed(Input::DECISION)) {
+			++escape_counter;
+		}
+
 		++escape_counter;
 
 		if (escape_counter > 60) {
@@ -875,6 +886,10 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		encounter_message_first_monster = false;
 	}
 
+	if (Input::IsPressed(Input::DECISION)) {
+		--encounter_message_sleep_until;
+	}
+
 	if (encounter_message_sleep_until > -1) {
 		if (Player::GetFrames() >= encounter_message_sleep_until) {
 			// Sleep over
@@ -1001,7 +1016,9 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
 
 		std::stringstream ss;
-		PushExperienceGainedMessage(exp);
+		if (exp > 0) {
+			PushExperienceGainedMessage(exp);
+		}
 		if (money > 0) {
 			PushGoldReceivedMessage(money);
 		}
