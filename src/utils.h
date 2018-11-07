@@ -178,6 +178,23 @@ namespace Utils {
 	 */
 	bool ChanceOf(int32_t n, int32_t m);
 
+
+	/**
+	 * Rolls a random number in [0.0f, 1.0f) returns true if it's less than rate.
+	 *
+	 * @param rate a value in [0.0f, 1.0f]. Values out of this range are clamped.
+	 * @return true with probability rate.
+	 */
+	bool PercentChance(float rate);
+
+	/**
+	 * Rolls a random number in [0, 99] and returns true if it's less than rate.
+	 *
+	 * @param rate a value in [0, 100]. Values out of this range are clamped.
+	 * @return true with probability rate.
+	 */
+	bool PercentChance(int rate);
+
 	/**
 	 * Seeds the RNG used by GetRandomNumber and ChanceOf.
 	 *
