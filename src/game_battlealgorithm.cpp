@@ -744,7 +744,13 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	int to_hit;
 	float multiplier = 1;
-	float crit_chance = source->GetCriticalHitChance();
+
+	// Criticals cannot occur when ally attacks ally or enemy attacks enemy (e.g. confusion)
+	float crit_chance = 0.0f;
+	if (source->GetType() != GetTarget()->GetType()) {
+		crit_chance = source->GetCriticalHitChance();
+	}
+
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		int hit_chance = source->GetHitChance();
@@ -765,7 +771,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 
 			hit_chance = weapon->hit;
-			crit_chance += crit_chance * weapon->critical_hit / 100.0f;
 			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
 
@@ -785,7 +790,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	// Damage calculation
 	if (Utils::GetRandomNumber(0, 99) < to_hit) {
-		if (!source->IsCharged() && Utils::GetRandomNumber(0, 99) < (int)ceil(crit_chance * 100)) {
+		if (Utils::PercentChance(crit_chance)) {
 			critical_hit = true;
 		}
 
@@ -803,8 +808,19 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if(effect < 0) {
 			effect = 0;
 		}
-		this->hp = (effect * (critical_hit ? 3 : 1) * (source->IsCharged() ? 2 : 1)) /
-			(GetTarget()->IsDefending() ? GetTarget()->HasStrongDefense() ? 3 : 2 : 1);
+		if (critical_hit) {
+			effect *= 3;
+		} else if(source->IsCharged()) {
+			effect *= 2;
+		}
+		if (GetTarget()->IsDefending()) {
+			if (GetTarget()->HasStrongDefense()) {
+				effect /= 3;
+			} else {
+				effect /= 2;
+			}
+		}
+		this->hp = effect;
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state

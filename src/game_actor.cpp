@@ -1288,7 +1288,21 @@ int Game_Actor::GetHitChance() const {
 }
 
 float Game_Actor::GetCriticalHitChance() const {
-	return GetActor().critical_hit ? (1.0f / GetActor().critical_hit_chance) : 0.0f;
+	auto& actor = GetActor();
+	float crit_chance = actor.critical_hit ? 1.0f / actor.critical_hit_chance : 0.0f;
+
+	float weapon_bonus = 0;
+
+	auto checkWeapon = [&](const RPG::Item* weapon) {
+		if (weapon) {
+			weapon_bonus = std::max(weapon_bonus, float(weapon->critical_hit));
+		}
+	};
+
+	checkWeapon(GetWeapon());
+	checkWeapon(Get2ndWeapon());
+
+	return crit_chance + (weapon_bonus / 100.0f);
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {
