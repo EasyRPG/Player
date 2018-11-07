@@ -381,6 +381,20 @@ void Game_Battler::AddState(int state_id) {
 	}
 
 	states[state_id - 1] = 1;
+
+	int max_priority = 0;
+	for (size_t i = 0; i < Data::states.size(); ++i) {
+		if (states[i] && Data::states[i].priority > max_priority) {
+			max_priority = Data::states[i].priority;
+		}
+	}
+
+	for (size_t i = 0; i < Data::states.size(); ++i) {
+		if (Data::states[i].priority <= max_priority - 10) {
+			states[i] = 0;
+		}
+	}
+
 }
 
 void Game_Battler::RemoveState(int state_id) {
