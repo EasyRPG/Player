@@ -777,6 +777,11 @@ public:
 	 */
 	bool PreventsTerrainDamage();
 
+	/**
+	 * @return If the actor has an equipment that protects against critical hits.
+	 */
+	bool PreventsCritical() const;
+
 	int GetBattleAnimationId() const override;
 
 	int GetHitChance() const override;

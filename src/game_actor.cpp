@@ -1305,6 +1305,16 @@ float Game_Actor::GetCriticalHitChance() const {
 	return crit_chance + (weapon_bonus / 100.0f);
 }
 
+bool Game_Actor::PreventsCritical() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->prevent_critical;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }

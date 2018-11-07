@@ -748,7 +748,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	// Criticals cannot occur when ally attacks ally or enemy attacks enemy (e.g. confusion)
 	float crit_chance = 0.0f;
 	if (source->GetType() != GetTarget()->GetType()) {
-		crit_chance = source->GetCriticalHitChance();
+		if (GetTarget()->GetType() != Game_Battler::Type_Ally || !static_cast<Game_Actor*>(GetTarget())->PreventsCritical()) {
+			crit_chance = source->GetCriticalHitChance();
+		}
 	}
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
