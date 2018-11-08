@@ -582,7 +582,7 @@ int Game_Actor::GetStateProbability(int state_id) const {
 		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
 			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
 			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
-			mul = std::min(mul, 100 - item->state_chance);
+			mul = std::min<int>(mul, 100 - item->state_chance);
 		}
 	}
 
