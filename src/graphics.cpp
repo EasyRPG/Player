@@ -141,7 +141,9 @@ void Graphics::LocalDraw(int priority) {
 	DrawableList& drawable_list = state.drawable_list;
 
 	if (state.zlist_dirty) {
-		std::sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
+		// stable sort to work around a flickering event sprite issue when
+		// the map is scrolling (have same Z value)
+		std::stable_sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
 		state.zlist_dirty = false;
 	}
 
@@ -159,7 +161,7 @@ void Graphics::GlobalDraw(int priority) {
 	DrawableList& drawable_list = global_state->drawable_list;
 
 	if (global_state->zlist_dirty) {
-		std::sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
+		std::stable_sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
 		global_state->zlist_dirty = false;
 	}
 	for (Drawable* drawable : drawable_list)

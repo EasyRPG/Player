@@ -32,6 +32,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,6 +41,7 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
@@ -61,6 +63,7 @@ import org.easyrpg.player.settings.SettingsManager;
 import org.libsdl.app.SDLActivity;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -229,6 +232,16 @@ public class EasyRpgPlayerActivity extends SDLActivity implements NavigationView
                         files.add(Uri.fromFile(new File(savepath + "/easyrpg_log.txt")));
                         for (File f : GameBrowserHelper.getSavegames(new File(savepath))) {
                             files.add(Uri.fromFile(f));
+                        }
+
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            // Lazy workaround as suggested on https://stackoverflow.com/q/38200282
+                            try {
+                                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                                m.invoke(null);
+                            } catch (Exception e) {
+                                Log.i("EasyRPG", "Bug report: Calling disableDeathOnFileUriExposure failed");
+                            }
                         }
 
                         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
