@@ -92,7 +92,7 @@ namespace Utils {
 	 */
 	std::string EncodeUTF(const std::u32string& str);
 
-#ifndef __amigaos4__
+#if !defined(__amigaos4__) && !defined(__AROS__)
 	/**
 	 * Converts UTF-8 string to std::wstring.
 	 *

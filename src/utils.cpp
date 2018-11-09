@@ -264,7 +264,7 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 	return result;
 }
 
-#ifndef __amigaos4__
+#if !defined(__amigaos4__) && !defined(__AROS__)
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(const std::string&);
 #if __SIZEOF_WCHAR_T__ == 4 || __WCHAR_MAX__ > 0x10000
