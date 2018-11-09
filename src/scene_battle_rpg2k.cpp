@@ -1069,3 +1069,4 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 bool Scene_Battle_Rpg2k::CheckResultConditions() {
 	return CheckLose() || CheckWin();
 }
+

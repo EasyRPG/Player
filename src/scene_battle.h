@@ -161,6 +161,7 @@ protected:
 	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
 	void RemoveCurrentAction();
+	virtual void onCommandEnd() override;
 
 	void CallDebug();
 

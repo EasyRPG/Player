@@ -560,3 +560,9 @@ void Scene_Battle::CallDebug() {
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }
+
+void Scene_Battle::onCommandEnd() {
+	// If an event that changed status finishes without displaying a message window,
+	// we need this so it can update automatically the status_window
+	status_window->Refresh();
+}
