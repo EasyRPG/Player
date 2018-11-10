@@ -396,19 +396,15 @@ void Game_Battler::AddState(int state_id) {
 
 	states[state_id - 1] = 1;
 
-	int max_priority = 0;
-	for (size_t i = 0; i < Data::states.size(); ++i) {
-		if (states[i] && Data::states[i].priority > max_priority) {
-			max_priority = Data::states[i].priority;
-		}
-	}
+	// Clear states that are more than 10 priority points below the
+	// significant state
+	const RPG::State* sig_state = GetSignificantState();
 
-	for (size_t i = 0; i < Data::states.size(); ++i) {
-		if (Data::states[i].priority <= max_priority - 10) {
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (Data::states[i].priority <= sig_state->priority - 10) {
 			states[i] = 0;
 		}
 	}
-
 }
 
 void Game_Battler::RemoveState(int state_id) {
