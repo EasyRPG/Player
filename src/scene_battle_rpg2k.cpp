@@ -886,11 +886,11 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		encounter_message_first_monster = false;
 	}
 
-	if (Input::IsPressed(Input::DECISION)) {
-		--encounter_message_sleep_until;
-	}
-
 	if (encounter_message_sleep_until > -1) {
+		if (Input::IsPressed(Input::DECISION)) {
+			--encounter_message_sleep_until;
+		}
+
 		if (Player::GetFrames() >= encounter_message_sleep_until) {
 			// Sleep over
 			encounter_message_sleep_until = -1;
