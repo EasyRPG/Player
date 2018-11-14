@@ -242,14 +242,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		}
 		break;
 	case State_SelectOption:
-		if (last_turn_check < Game_Battle::GetTurn()) {
-			// Handle end of a battle caused by an event that ran on battle
-			// start or at the end of a turn.
-			CheckResultConditions();
-
-			last_turn_check = Game_Battle::GetTurn();
-		}
-
 		// No Auto battle/Escape when all actors are sleeping or similar
 		if (!Main_Data::game_party->IsAnyControllable()) {
 			SelectNextActor();
@@ -267,6 +259,11 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
+		// If no battle action is running, we need to check for battle events which could have
+		// triggered win/loss.
+		if (!battle_action_pending && CheckResultConditions()) {
+			return;
+		}
 		if (!battle_actions.empty()) {
 			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
@@ -276,7 +273,9 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
+			battle_action_pending = true;
 			if (ProcessBattleAction(alg)) {
+				battle_action_pending = false;
 				RemoveCurrentAction();
 				battle_message_window->Clear();
 				Game_Battle::RefreshEvents();
