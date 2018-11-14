@@ -1296,7 +1296,7 @@ Game_Battler::BattlerType Game_Actor::GetType() const {
 }
 
 int Game_Actor::IsControllable() const {
-	return GetSignificantRestriction() == RPG::State::Restriction_normal;
+	return GetSignificantRestriction() == RPG::State::Restriction_normal && !GetAutoBattle();
 }
 
 

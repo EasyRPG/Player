@@ -102,13 +102,6 @@ public:
 	virtual int GetAverageAgility();
 
 	/**
-	 * Tests if any party member has no state restriction.
-	 *
-	 * @return Whether any party member accepts custom battle commands.
-	 */
-	bool IsAnyControllable();
-
-	/**
 	 * Resets battle modifiers of all members (gauge, defense and charge).
 	 */
 	void ResetBattle();
