@@ -756,6 +756,12 @@ public:
 	std::string GetLearningMessage(const RPG::Learning& learn) const;
 
 	BattlerType GetType() const override;
+
+	/**
+	 * @return true if the actor is controllable in battle.
+	 */
+	int IsControllable() const;
+
 private:
 	/**
 	 * @return Reference to the Actor data of the LDB

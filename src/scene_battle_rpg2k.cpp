@@ -808,7 +808,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	battle_actions.back()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_back();
 
-	if (active_actor->GetAutoBattle()) {
+	if (active_actor->GetAutoBattle() || !active_actor->IsControllable()) {
 		SelectPreviousActor();
 		return;
 	}

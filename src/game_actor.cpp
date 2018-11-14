@@ -1295,6 +1295,11 @@ Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }
 
+int Game_Actor::IsControllable() const {
+	return GetSignificantRestriction() == RPG::State::Restriction_normal;
+}
+
+
 const RPG::Actor& Game_Actor::GetActor() const {
 	// Always valid
 	return *ReaderUtil::GetElement(Data::actors, actor_id);
