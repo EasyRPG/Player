@@ -238,8 +238,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
 			Game_Battle::RefreshEvents();
-			SetState(State_SelectOption);
-			CheckResultConditions();
+			SetState(State_Battle);
 		}
 		break;
 	case State_SelectOption:
@@ -290,7 +289,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			// Everybody acted
 			actor_index = 0;
 
-			SetState(State_SelectOption);
+			// Go right into next turn if no actors controllable.
+			if (!Main_Data::game_party->IsAnyControllable()) {
+				SelectNextActor();
+			} else {
+				SetState(State_SelectOption);
+			}
 		}
 		break;
 	case State_SelectEnemyTarget: {
