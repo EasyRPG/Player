@@ -162,14 +162,16 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	}
 
-	options_window->SetVisible(false);
-	status_window->SetVisible(false);
-	command_window->SetVisible(false);
-	item_window->SetVisible(false);
-	skill_window->SetVisible(false);
-	help_window->SetVisible(false);
-	target_window->SetVisible(false);
-	battle_message_window->SetVisible(false);
+	if (state != State_SelectEnemyTarget && state != State_SelectAllyTarget) {
+		options_window->SetVisible(false);
+		status_window->SetVisible(false);
+		command_window->SetVisible(false);
+		target_window->SetVisible(false);
+		battle_message_window->SetVisible(false);
+		item_window->SetVisible(false);
+		skill_window->SetVisible(false);
+		help_window->SetVisible(false);
+	}
 
 	switch (state) {
 	case State_Start:
@@ -194,15 +196,14 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		break;
 	case State_SelectEnemyTarget:
-		status_window->SetVisible(true);
-		command_window->SetVisible(true);
 		target_window->SetActive(true);
 		target_window->SetVisible(true);
+		target_window->SetIndex(0);
 		break;
 	case State_SelectAllyTarget:
 		status_window->SetVisible(true);
 		status_window->SetX(0);
-		command_window->SetVisible(true);
+		status_window->SetIndex(0);
 		break;
 	case State_Battle:
 		battle_message_window->SetVisible(true);
