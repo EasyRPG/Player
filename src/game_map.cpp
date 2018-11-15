@@ -45,6 +45,9 @@
 #include "utils.h"
 
 namespace {
+	constexpr int default_pan_x = 9 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_y = 7 * SCREEN_TILE_WIDTH;
+
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 	RPG::SavePanorama& panorama = Main_Data::game_data.panorama;
@@ -107,10 +110,10 @@ void Game_Map::Init() {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
+	location.pan_current_x = default_pan_x;
+	location.pan_current_y = default_pan_y;
 	last_map_id = -1;
 
 	teleport_delay = false;
@@ -150,10 +153,10 @@ void Game_Map::Setup(int _id) {
 		events.emplace_back(location.map_id, ev);
 	}
 
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
+	location.pan_current_x = default_pan_x;
+	location.pan_current_y = default_pan_y;
 
 	// Save allowed
 	int current_index = GetMapIndex(location.map_id);
@@ -209,12 +212,6 @@ void Game_Map::SetupFromSave() {
 	SetChipset(map_info.chipset_id);
 
 	SetEncounterSteps(location.encounter_steps);
-
-	// FIXME: Handle Pan correctly
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
 }
 
 
@@ -1348,16 +1345,16 @@ void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	distance *= SCREEN_TILE_WIDTH;
 
 	if (direction == PanUp) {
-		int new_pan = location.pan_finish_y - distance;
-		location.pan_finish_y = new_pan;
-	} else if (direction == PanRight) {
-		int new_pan = location.pan_finish_x + distance;
-		location.pan_finish_x = new_pan;
-	} else if (direction == PanDown) {
 		int new_pan = location.pan_finish_y + distance;
 		location.pan_finish_y = new_pan;
-	} else if (direction == PanLeft) {
+	} else if (direction == PanRight) {
 		int new_pan = location.pan_finish_x - distance;
+		location.pan_finish_x = new_pan;
+	} else if (direction == PanDown) {
+		int new_pan = location.pan_finish_y - distance;
+		location.pan_finish_y = new_pan;
+	} else if (direction == PanLeft) {
+		int new_pan = location.pan_finish_x + distance;
 		location.pan_finish_x = new_pan;
 	}
 
@@ -1366,8 +1363,8 @@ void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 }
 
 void Game_Map::ResetPan(int speed, bool wait) {
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
 	pan_speed = speed;
 	pan_wait = wait;
 }
@@ -1410,19 +1407,19 @@ bool Game_Map::IsPanLocked() {
 }
 
 int Game_Map::GetPanX() {
-	return location.pan_current_x;
+	return -(location.pan_current_x - default_pan_x);
 }
 
 int Game_Map::GetPanY() {
-	return location.pan_current_y;
+	return -(location.pan_current_y - default_pan_y);
 }
 
 int Game_Map::GetTargetPanX() {
-	return location.pan_finish_x;
+	return -(location.pan_finish_x - default_pan_x);
 }
 
 int Game_Map::GetTargetPanY() {
-	return location.pan_finish_y;
+	return -(location.pan_finish_y - default_pan_y);
 }
 
 bool Game_Map::IsTeleportDelayed() {
