@@ -108,14 +108,14 @@ namespace Game_Map {
 	 *
 	 * @param distance scroll amount in sixteenths of a pixel
 	 */
-	void ScrollRight(int distance);
+	void ScrollRight(int distance, bool ignore_pan_lock = false);
 
 	/**
 	 * Scrolls the map view down.
 	 *
 	 * @param distance scroll amount in sixteenths of a pixel
 	 */
-	void ScrollDown(int distance);
+	void ScrollDown(int distance, bool ignore_pan_lock = false);
 
 	/**
 	 * Adds inc, a distance in sixteenths of a pixel, to screen_x, the

@@ -119,7 +119,15 @@ void Game_Player::PerformTeleport() {
 
 	SetTransparency(0);
 
+	// When teleporting we always reset the screen position.
+	// After this, the paning stays locked if it was before.
+	const auto is_locked = Game_Map::IsPanLocked();
+	Game_Map::UnlockPan();
 	MoveTo(new_x, new_y);
+	if (is_locked) {
+		Game_Map::LockPan();
+	}
+
 	if (new_direction >= 0) {
 		SetDirection(new_direction);
 		SetSpriteDirection(new_direction);
@@ -238,11 +246,11 @@ void Game_Player::UpdateScroll() {
 
 	// Only move for the pan if we're closer to the target pan than we were before.
 	if (std::abs(actual_pan_x + pan_dx - Game_Map::GetTargetPanX()) < std::abs(actual_pan_x - Game_Map::GetTargetPanX())) {
-		Game_Map::ScrollRight(pan_dx);
+		Game_Map::ScrollRight(pan_dx, true);
 		actual_pan_x += pan_dx;
 	}
 	if (std::abs(actual_pan_y + pan_dy - Game_Map::GetTargetPanY()) < std::abs(actual_pan_y - Game_Map::GetTargetPanY())) {
-		Game_Map::ScrollDown(pan_dy);
+		Game_Map::ScrollDown(pan_dy, true);
 		actual_pan_y += pan_dy;
 	}
 }

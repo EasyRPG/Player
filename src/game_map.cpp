@@ -74,7 +74,6 @@ namespace {
 
 	std::unique_ptr<BattleAnimation> animation;
 
-	bool pan_locked;
 	bool pan_wait;
 
 	int last_map_id;
@@ -107,8 +106,8 @@ void Game_Map::Init() {
 	for (int i = 0; i < 3; i++)
 		vehicles.push_back(std::make_shared<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
 
-	pan_locked = false;
 	pan_wait = false;
+	location.pan_state = RPG::SavePartyLocation::PanState_follow;
 	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
@@ -153,6 +152,7 @@ void Game_Map::Setup(int _id) {
 		events.emplace_back(location.map_id, ev);
 	}
 
+	// pan_state does not reset when you change maps.
 	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
@@ -358,7 +358,10 @@ void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> inte
 	free_interpreters.push_back(interpreter);
 }
 
-void Game_Map::ScrollRight(int distance) {
+void Game_Map::ScrollRight(int distance, bool ignore_pan_lock) {
+	if (!ignore_pan_lock && IsPanLocked()) {
+		return;
+	}
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
 	map_info.position_x = x;
@@ -369,7 +372,10 @@ void Game_Map::ScrollRight(int distance) {
 	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
 }
 
-void Game_Map::ScrollDown(int distance) {
+void Game_Map::ScrollDown(int distance, bool ignore_pan_lock) {
+	if (!ignore_pan_lock && IsPanLocked()) {
+		return;
+	}
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
 	map_info.position_y = y;
@@ -1154,7 +1160,9 @@ int Game_Map::GetDisplayX() {
 }
 
 void Game_Map::SetPositionX(int new_position_x) {
-	map_info.position_x = new_position_x;
+	if (!IsPanLocked()) {
+		map_info.position_x = new_position_x;
+	}
 }
 
 int Game_Map::GetPositionY() {
@@ -1166,7 +1174,9 @@ int Game_Map::GetDisplayY() {
 }
 
 void Game_Map::SetPositionY(int new_position_y) {
-	map_info.position_y = new_position_y;
+	if (!IsPanLocked()) {
+		map_info.position_y = new_position_y;
+	}
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
@@ -1334,11 +1344,11 @@ void Game_Map::SubstituteUp(int old_id, int new_id) {
 }
 
 void Game_Map::LockPan() {
-	pan_locked = true;
+	location.pan_state = RPG::SavePartyLocation::PanState_fixed;
 }
 
 void Game_Map::UnlockPan() {
-	pan_locked = false;
+	location.pan_state = RPG::SavePartyLocation::PanState_follow;
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
@@ -1403,7 +1413,7 @@ bool Game_Map::IsPanWaiting() {
 }
 
 bool Game_Map::IsPanLocked() {
-	return pan_locked;
+	return location.pan_state == RPG::SavePartyLocation::PanState_fixed;
 }
 
 int Game_Map::GetPanX() {
@@ -1548,6 +1558,9 @@ static int closer_to_zero(int x, int y) {
 }
 
 void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
+	if (IsPanLocked()) {
+		return;
+	}
 	Params params = GetParallaxParams();
 
 	// TODO: understand and then doc this function :)
