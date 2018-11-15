@@ -113,8 +113,6 @@ void Game_Player::PerformTeleport() {
 	if (Game_Map::GetMapId() != new_map_id) {
 		SetAnimFrame(RPG::EventPage::Frame_middle);
 		Game_Map::Setup(new_map_id);
-		last_pan_x = 0;
-		last_pan_y = 0;
 	} else {
 		Game_Map::SetupFromTeleportSelf();
 	}
@@ -166,6 +164,9 @@ void Game_Player::Center() {
 
 	Game_Map::SetPositionX(x);
 	Game_Map::SetPositionY(y);
+
+	last_pan_x = actual_pan_x;
+	last_pan_y = actual_pan_y;
 }
 
 void Game_Player::MoveTo(int x, int y) {

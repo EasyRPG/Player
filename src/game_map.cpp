@@ -47,6 +47,7 @@
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_WIDTH;
 	constexpr int default_pan_y = 7 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_speed = 16;
 
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
@@ -75,7 +76,6 @@ namespace {
 
 	bool pan_locked;
 	bool pan_wait;
-	int pan_speed;
 
 	int last_map_id;
 
@@ -109,7 +109,7 @@ void Game_Map::Init() {
 
 	pan_locked = false;
 	pan_wait = false;
-	pan_speed = 0;
+	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
 	location.pan_current_x = default_pan_x;
@@ -153,6 +153,7 @@ void Game_Map::Setup(int _id) {
 		events.emplace_back(location.map_id, ev);
 	}
 
+	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
 	location.pan_current_x = default_pan_x;
@@ -267,7 +268,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		pending.push_back(Main_Data::game_player.get());
 
 	pan_wait = false;
-	pan_speed = 0;
 
 	auto map_save_count = map->save_count;
 	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
@@ -1358,14 +1358,14 @@ void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 		location.pan_finish_x = new_pan;
 	}
 
-	pan_speed = speed;
+	location.pan_speed = 2 << speed;
 	pan_wait = wait;
 }
 
 void Game_Map::ResetPan(int speed, bool wait) {
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
-	pan_speed = speed;
+	location.pan_speed = 2 << speed;
 	pan_wait = wait;
 }
 
@@ -1373,7 +1373,7 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = (SCREEN_TILE_WIDTH/128) << pan_speed;
+	int step = location.pan_speed;
 	int dx = location.pan_finish_x - location.pan_current_x;
 	int dy = location.pan_finish_y - location.pan_current_y;
 
