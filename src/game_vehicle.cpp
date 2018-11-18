@@ -48,8 +48,7 @@ static RPG::SaveVehicleLocation* getDataFromType(Game_Vehicle::Type ty) {
 }
 
 Game_Vehicle::Game_Vehicle(Type _type) :
-	Game_Character(getDataFromType(_type)),
-	data(*getDataFromType(_type))
+	Game_Character(getDataFromType(_type))
 {
 	type = _type;
 	driving = false;
@@ -61,59 +60,59 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 }
 
 int Game_Vehicle::GetX() const {
-	return data.position_x;
+	return data()->position_x;
 }
 
 void Game_Vehicle::SetX(int new_x) {
-	data.position_x = new_x;
+	data()->position_x = new_x;
 }
 
 int Game_Vehicle::GetY() const {
-	return data.position_y;
+	return data()->position_y;
 }
 
 void Game_Vehicle::SetY(int new_y) {
-	data.position_y = new_y;
+	data()->position_y = new_y;
 }
 
 int Game_Vehicle::GetMapId() const {
-	return data.map_id;
+	return data()->map_id;
 }
 
 void Game_Vehicle::SetMapId(int new_map_id) {
-	data.map_id = new_map_id;
+	data()->map_id = new_map_id;
 }
 
 int Game_Vehicle::GetDirection() const {
-	return data.direction;
+	return data()->direction;
 }
 
 void Game_Vehicle::SetDirection(int new_direction) {
-	data.direction = new_direction;
+	data()->direction = new_direction;
 }
 
 int Game_Vehicle::GetSpriteDirection() const {
-	return data.sprite_direction;
+	return data()->sprite_direction;
 }
 
 void Game_Vehicle::SetSpriteDirection(int new_direction) {
-	data.sprite_direction = new_direction;
+	data()->sprite_direction = new_direction;
 }
 
 bool Game_Vehicle::IsFacingLocked() const {
-	return data.lock_facing;
+	return data()->lock_facing;
 }
 
 void Game_Vehicle::SetFacingLocked(bool locked) {
-	data.lock_facing = locked;
+	data()->lock_facing = locked;
 }
 
 int Game_Vehicle::GetLayer() const {
-	return data.layer;
+	return data()->layer;
 }
 
 void Game_Vehicle::SetLayer(int new_layer) {
-	data.layer = new_layer;
+	data()->layer = new_layer;
 }
 
 int Game_Vehicle::GetSteppingSpeed() const {
@@ -121,112 +120,112 @@ int Game_Vehicle::GetSteppingSpeed() const {
 }
 
 int Game_Vehicle::GetMoveSpeed() const {
-	return data.move_speed;
+	return data()->move_speed;
 }
 
 void Game_Vehicle::SetMoveSpeed(int speed) {
-	data.move_speed = speed;
+	data()->move_speed = speed;
 	if (driving)
 		Main_Data::game_player->SetMoveSpeed(speed);
 }
 
 int Game_Vehicle::GetMoveFrequency() const {
-	return data.move_frequency;
+	return data()->move_frequency;
 }
 
 void Game_Vehicle::SetMoveFrequency(int frequency) {
-	data.move_frequency = frequency;
+	data()->move_frequency = frequency;
 }
 
 const RPG::MoveRoute& Game_Vehicle::GetMoveRoute() const {
-	return data.move_route;
+	return data()->move_route;
 }
 
 void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data.move_route = move_route;
+	data()->move_route = move_route;
 }
 
 int Game_Vehicle::GetOriginalMoveRouteIndex() const {
-	return data.original_move_route_index;
+	return data()->original_move_route_index;
 }
 
 void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
-	data.original_move_route_index = new_index;
+	data()->original_move_route_index = new_index;
 }
 
 int Game_Vehicle::GetMoveRouteIndex() const {
-	return data.move_route_index;
+	return data()->move_route_index;
 }
 
 void Game_Vehicle::SetMoveRouteIndex(int new_index) {
-	data.move_route_index = new_index;
+	data()->move_route_index = new_index;
 }
 
 bool Game_Vehicle::IsMoveRouteOverwritten() const {
-	return data.move_route_overwrite;
+	return data()->move_route_overwrite;
 }
 
 void Game_Vehicle::SetMoveRouteOverwritten(bool force) {
-	data.move_route_overwrite = force;
+	data()->move_route_overwrite = force;
 }
 
 bool Game_Vehicle::IsMoveRouteRepeated() const {
-	return data.move_route_repeated;
+	return data()->move_route_repeated;
 }
 
 void Game_Vehicle::SetMoveRouteRepeated(bool force) {
-	data.move_route_repeated = force;
+	data()->move_route_repeated = force;
 }
 
 const std::string& Game_Vehicle::GetSpriteName() const {
-	return data.sprite_name;
+	return data()->sprite_name;
 }
 
 void Game_Vehicle::SetSpriteName(const std::string& sprite_name) {
-	data.sprite_name = sprite_name;
+	data()->sprite_name = sprite_name;
 }
 
 int Game_Vehicle::GetSpriteIndex() const {
-	return data.sprite_id;
+	return data()->sprite_id;
 }
 
 void Game_Vehicle::SetSpriteIndex(int index) {
-	data.sprite_id = index;
+	data()->sprite_id = index;
 }
 
 Color Game_Vehicle::GetFlashColor() const {
-	return Color(data.flash_red, data.flash_green, data.flash_blue, flash_alpha);
+	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
 }
 
 void Game_Vehicle::SetFlashColor(const Color& flash_color) {
-	data.flash_red = flash_color.red;
-	data.flash_blue = flash_color.blue;
-	data.flash_green = flash_color.green;
+	data()->flash_red = flash_color.red;
+	data()->flash_blue = flash_color.blue;
+	data()->flash_green = flash_color.green;
 	flash_alpha = flash_color.alpha;
 }
 
 double Game_Vehicle::GetFlashLevel() const {
-	return data.flash_current_level;
+	return data()->flash_current_level;
 }
 
 void Game_Vehicle::SetFlashLevel(double flash_level) {
-	data.flash_current_level = flash_level;
+	data()->flash_current_level = flash_level;
 }
 
 int Game_Vehicle::GetFlashTimeLeft() const {
-	return data.flash_time_left;
+	return data()->flash_time_left;
 }
 
 void Game_Vehicle::SetFlashTimeLeft(int time_left) {
-	data.flash_time_left = time_left;
+	data()->flash_time_left = time_left;
 }
 
 bool Game_Vehicle::GetThrough() const {
-	return data.through;
+	return data()->through;
 }
 
 void Game_Vehicle::SetThrough(bool through) {
-	data.through = through;
+	data()->through = through;
 }
 
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
@@ -249,7 +248,7 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 }
 
 int Game_Vehicle::GetBushDepth() const {
-	if (data.flying)
+	if (data()->flying)
 		return 0;
 
 	return Game_Character::GetBushDepth();
@@ -340,11 +339,11 @@ bool Game_Vehicle::IsInPosition(int x, int y) const {
 }
 
 bool Game_Vehicle::IsAscending() const {
-	return data.remaining_ascent > 0;
+	return data()->remaining_ascent > 0;
 }
 
 bool Game_Vehicle::IsDescending() const {
-	return data.remaining_descent > 0;
+	return data()->remaining_descent > 0;
 }
 
 bool Game_Vehicle::IsAscendingOrDescending() const {
@@ -359,8 +358,8 @@ void Game_Vehicle::GetOn() {
 	driving = true;
 	if (type == Airship) {
 		SetLayer(RPG::EventPage::Layers_above);
-		data.remaining_ascent = SCREEN_TILE_WIDTH;
-		data.flying = true;
+		data()->remaining_ascent = SCREEN_TILE_WIDTH;
+		data()->flying = true;
 	} else {
 		walk_animation = true;
 	}
@@ -369,7 +368,7 @@ void Game_Vehicle::GetOn() {
 
 void Game_Vehicle::GetOff() {
 	if (type == Airship) {
-		data.remaining_descent = SCREEN_TILE_WIDTH;
+		data()->remaining_descent = SCREEN_TILE_WIDTH;
 	} else {
 		driving = false;
 		Main_Data::game_player->UnboardingFinished();
@@ -393,12 +392,12 @@ void Game_Vehicle::SyncWithPlayer() {
 }
 
 int Game_Vehicle::GetAltitude() const {
-	if (!data.flying)
+	if (!data()->flying)
 		return 0;
 	else if (IsAscending())
-		return (SCREEN_TILE_WIDTH - data.remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
+		return (SCREEN_TILE_WIDTH - data()->remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
 	else if (IsDescending())
-		return data.remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
+		return data()->remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
 	else
 		return SCREEN_TILE_WIDTH / (SCREEN_TILE_WIDTH / TILE_SIZE);
 }
@@ -441,22 +440,22 @@ void Game_Vehicle::Update() {
 
 	if (type == Airship) {
 		if (IsAscending()) {
-			data.remaining_ascent = data.remaining_ascent - 8;
+			data()->remaining_ascent = data()->remaining_ascent - 8;
 			if (!IsAscending())
 				walk_animation = true;
 		} else if (IsDescending()) {
-			data.remaining_descent = data.remaining_descent - 8;
+			data()->remaining_descent = data()->remaining_descent - 8;
 			if (!IsDescending()) {
 				if (CanLand()) {
 					SetLayer(RPG::EventPage::Layers_same);
 					driving = false;
 					Main_Data::game_player->UnboardingFinished();
-					data.flying = false;
+					data()->flying = false;
 					walk_animation = false;
 					pattern = 1;
 				} else {
 					// Can't land here, ascend again
-					data.remaining_ascent = SCREEN_TILE_WIDTH;
+					data()->remaining_ascent = SCREEN_TILE_WIDTH;
 				}
 			}
 		}

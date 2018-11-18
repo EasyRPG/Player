@@ -111,10 +111,19 @@ public:
 	bool CheckEventTriggerTouch(int x, int y) override;
 
 protected:
-	RPG::SaveVehicleLocation& data;
+	RPG::SaveVehicleLocation* data();
+	const RPG::SaveVehicleLocation* data() const;
 
 	Type type;
 	bool driving;
 };
+
+inline RPG::SaveVehicleLocation* Game_Vehicle::data() {
+	return static_cast<RPG::SaveVehicleLocation*>(Game_Character::data());
+}
+
+inline const RPG::SaveVehicleLocation* Game_Vehicle::data() const {
+	return static_cast<const RPG::SaveVehicleLocation*>(Game_Character::data());
+}
 
 #endif
