@@ -101,15 +101,10 @@ private:
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
 
-	int last_pan_x = 0, last_pan_y = 0;
-	int last_remaining_move = 0, last_remaining_jump = 0;
-	// These track how much of the pan has actually occurred, which
-	// may be less than the pan values if the pan went off the map.
-	int actual_pan_x = 0, actual_pan_y = 0;
-
 	RPG::Music walking_bgm;
 
-	void UpdateScroll();
+	void UpdateScroll(int prev_x, int prev_y);
+	void UpdatePan();
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();

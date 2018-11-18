@@ -119,14 +119,7 @@ void Game_Player::PerformTeleport() {
 
 	SetTransparency(0);
 
-	// When teleporting we always reset the screen position.
-	// After this, the paning stays locked if it was before.
-	const auto is_locked = Game_Map::IsPanLocked();
-	Game_Map::UnlockPan();
 	MoveTo(new_x, new_y);
-	if (is_locked) {
-		Game_Map::LockPan();
-	}
 
 	if (new_direction >= 0) {
 		SetDirection(new_direction);
@@ -155,26 +148,8 @@ bool Game_Player::IsTeleporting() const {
 }
 
 void Game_Player::Center() {
-	int x = GetSpriteX() + SCREEN_TILE_WIDTH;
-	int y = GetSpriteY() + SCREEN_TILE_WIDTH / 2;
-
-	int dist_to_screen_left = -SCREEN_WIDTH / 2;
-	int dist_to_screen_top = -SCREEN_HEIGHT / 2;
-
-	Game_Map::AddScreenX(x, dist_to_screen_left);
-	Game_Map::AddScreenY(y, dist_to_screen_top);
-
-	actual_pan_x = Game_Map::GetPanX();
-	actual_pan_y = Game_Map::GetPanY();
-
-	Game_Map::AddScreenX(x, actual_pan_x);
-	Game_Map::AddScreenY(y, actual_pan_y);
-
-	Game_Map::SetPositionX(x);
-	Game_Map::SetPositionY(y);
-
-	last_pan_x = actual_pan_x;
-	last_pan_y = actual_pan_y;
+	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
+	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
 }
 
 void Game_Player::MoveTo(int x, int y) {
@@ -183,75 +158,38 @@ void Game_Player::MoveTo(int x, int y) {
 
 	Game_Character::MoveTo(x, y);
 	Center();
-	Game_Map::Parallax::ResetPosition();
 }
 
-void Game_Player::UpdateScroll() {
-	// First, update for the player's movement...
-
-	int center_x = DisplayUi->GetWidth() / 2 - TILE_SIZE / 2 - actual_pan_x / (SCREEN_TILE_WIDTH / TILE_SIZE);
-	int center_y = DisplayUi->GetHeight() / 2 + TILE_SIZE / 2 - actual_pan_y / (SCREEN_TILE_WIDTH / TILE_SIZE);
-
-	int dx = 0;
-	int dy = 0;
-
-	if (!Game_Map::IsPanLocked()) {
-		if (IsMoving() || last_remaining_move > 0) {
-			if (last_remaining_move == 0)
-				last_remaining_move = SCREEN_TILE_WIDTH;
-
-			int d = GetDirection();
-			if ((d == Right || d == UpRight || d == DownRight) && GetScreenX() > center_x)
-				dx = 1;
-			else if ((d == Left || d == UpLeft || d == DownLeft) && GetScreenX() < center_x)
-				dx = -1;
-			dx *= last_remaining_move - GetRemainingStep();
-
-			if ((d == Down || d == DownRight || d == DownLeft) && GetScreenY() > center_y)
-				dy = 1;
-			else if ((d == Up || d == UpRight || d == UpLeft) && GetScreenY() < center_y)
-				dy = -1;
-			dy *= last_remaining_move - GetRemainingStep();
-			last_remaining_move = GetRemainingStep();
-
-		} else if (IsJumping() || last_remaining_jump > 0) {
-			if (last_remaining_jump == 0)
-				last_remaining_jump = SCREEN_TILE_WIDTH;
-
-			if ((GetX() > jump_x && GetScreenX() > center_x) || (GetX() < jump_x && GetScreenX() < center_x))
-				dx = (GetX() - jump_x) * (last_remaining_jump - GetRemainingStep());
-			if ((GetY() > jump_y && GetScreenY() > center_y) || (GetY() < jump_y && GetScreenY() < center_y))
-				dy = (GetY() - jump_y) * (last_remaining_jump - GetRemainingStep());
-			last_remaining_jump = GetRemainingStep();
-		}
+void Game_Player::UpdateScroll(int old_x, int old_y) {
+	if (Game_Map::IsPanLocked()) {
+		return;
 	}
 
-	Game_Map::ScrollRight(dx);
-	Game_Map::ScrollDown(dy);
-
-	// Second, update for the change in pan...
-
-	int pan_x = Game_Map::GetPanX();
-	int pan_y = Game_Map::GetPanY();
-	int pan_dx = pan_x - last_pan_x;
-	int pan_dy = pan_y - last_pan_y;
-	last_pan_x = pan_x;
-	last_pan_y = pan_y;
-
-	// Change pan_dx/pan_dy to account for hitting the edges
 	int screen_x = Game_Map::GetPositionX();
 	int screen_y = Game_Map::GetPositionY();
-	Game_Map::AddScreenX(screen_x, pan_dx);
-	Game_Map::AddScreenY(screen_y, pan_dy);
 
-	// Only move for the pan if we're closer to the target pan than we were before.
-	if (std::abs(actual_pan_x + pan_dx - Game_Map::GetTargetPanX()) < std::abs(actual_pan_x - Game_Map::GetTargetPanX())) {
-		Game_Map::ScrollRight(pan_dx, true);
-		actual_pan_x += pan_dx;
+	int old_panx = old_x - screen_x;
+	int old_pany = old_y - screen_y;
+
+	int new_x = GetSpriteX();
+	int new_y = GetSpriteY();
+
+	int dx = new_x - old_x;
+	int dy = new_y - old_y;
+
+	int new_panx = new_x - screen_x;
+	int new_pany = new_y - screen_y;
+
+	if (Game_Map::LoopHorizontal() ||
+			std::abs(data()->pan_current_x - new_panx) >=
+			std::abs(data()->pan_current_x - old_panx)) {
+		Game_Map::ScrollRight(dx);
 	}
-	if (std::abs(actual_pan_y + pan_dy - Game_Map::GetTargetPanY()) < std::abs(actual_pan_y - Game_Map::GetTargetPanY())) {
-		Game_Map::ScrollDown(pan_dy, true);
-		actual_pan_y += pan_dy;
+
+	if (Game_Map::LoopVertical() ||
+			std::abs(data()->pan_current_y - new_pany) >=
+			std::abs(data()->pan_current_y - old_pany)) {
+		Game_Map::ScrollDown(dy);
 	}
 }
 
@@ -299,8 +237,11 @@ void Game_Player::Update() {
 		}
 	}
 
+	int prev_x = GetSpriteX();
+	int prev_y = GetSpriteY();
+
 	Game_Character::UpdateSprite();
-	UpdateScroll();
+	UpdateScroll(prev_x, prev_y);
 
 	if (IsMoving() || was_blocked) return;
 

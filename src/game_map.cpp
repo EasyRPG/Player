@@ -358,10 +358,7 @@ void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> inte
 	free_interpreters.push_back(interpreter);
 }
 
-void Game_Map::ScrollRight(int distance, bool ignore_pan_lock) {
-	if (!ignore_pan_lock && IsPanLocked()) {
-		return;
-	}
+void Game_Map::ScrollRight(int distance) {
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
 	map_info.position_x = x;
@@ -372,10 +369,7 @@ void Game_Map::ScrollRight(int distance, bool ignore_pan_lock) {
 	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
 }
 
-void Game_Map::ScrollDown(int distance, bool ignore_pan_lock) {
-	if (!ignore_pan_lock && IsPanLocked()) {
-		return;
-	}
+void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
 	map_info.position_y = y;
@@ -850,7 +844,6 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::Update(bool only_parallel) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
-	UpdatePan();
 	Parallax::Update();
 	if (animation) {
 		animation->Update();
@@ -875,6 +868,7 @@ void Game_Map::Update(bool only_parallel) {
 	}
 
 	Main_Data::game_player->Update();
+	UpdatePan();
 	GetInterpreter().Update();
 
 	for (Game_Event& ev : events) {
@@ -1159,10 +1153,15 @@ int Game_Map::GetDisplayX() {
 	return map_info.position_x + shake_in_pixels * 16;
 }
 
-void Game_Map::SetPositionX(int new_position_x) {
-	if (!IsPanLocked()) {
-		map_info.position_x = new_position_x;
+void Game_Map::SetPositionX(int x) {
+	const int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	if (LoopHorizontal()) {
+		x = Utils::PositiveModulo(x, map_width);
+	} else {
+		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
+	map_info.position_x = x;
+	Parallax::ResetPosition();
 }
 
 int Game_Map::GetPositionY() {
@@ -1173,10 +1172,15 @@ int Game_Map::GetDisplayY() {
 	return map_info.position_y;
 }
 
-void Game_Map::SetPositionY(int new_position_y) {
-	if (!IsPanLocked()) {
-		map_info.position_y = new_position_y;
+void Game_Map::SetPositionY(int y) {
+	const int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	if (LoopVertical()) {
+		y = Utils::PositiveModulo(y, map_height);
+	} else {
+		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
+	map_info.position_y = y;
+	Parallax::ResetPosition();
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
@@ -1383,25 +1387,33 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = location.pan_speed;
-	int dx = location.pan_finish_x - location.pan_current_x;
-	int dy = location.pan_finish_y - location.pan_current_y;
+	const int step = location.pan_speed;
+	const int pan_remain_x = location.pan_current_x - location.pan_finish_x;
+	const int pan_remain_y = location.pan_current_y - location.pan_finish_y;
 
-	if (dx > 0) {
-		int pan = location.pan_current_x + std::min(step, dx);
-		location.pan_current_x = pan;
-	} else if (dx < 0) {
-		int pan = location.pan_current_x - std::min(step, -dx);
-		location.pan_current_x = pan;
+	int dx = std::min(step, std::abs(pan_remain_x));
+	dx = pan_remain_x >= 0 ? dx : -dx;
+	int dy = std::min(step, std::abs(pan_remain_y));
+	dy = pan_remain_y >= 0 ? dy : -dy;
+
+	int screen_x = Game_Map::GetPositionX();
+	int screen_y = Game_Map::GetPositionY();
+
+	Game_Map::AddScreenX(screen_x, dx);
+	Game_Map::AddScreenY(screen_y, dy);
+
+	// If we hit the edge of the map before pan finishes, the
+	// pan converts from waiting to non-waiting.
+	if (dx == 0 && dy == 0) {
+		pan_wait = false;
+		return;
 	}
 
-	if (dy > 0) {
-		int pan = location.pan_current_y + std::min(step, dy);
-		location.pan_current_y = pan;
-	} else if (dy < 0) {
-		int pan = location.pan_current_y - std::min(step, -dy);
-		location.pan_current_y = pan;
-	}
+	Game_Map::ScrollRight(dx);
+	Game_Map::ScrollDown(dy);
+
+	location.pan_current_x -= dx;
+	location.pan_current_y -= dy;
 }
 
 bool Game_Map::IsPanActive() {
@@ -1417,19 +1429,19 @@ bool Game_Map::IsPanLocked() {
 }
 
 int Game_Map::GetPanX() {
-	return -(location.pan_current_x - default_pan_x);
+	return location.pan_current_x;
 }
 
 int Game_Map::GetPanY() {
-	return -(location.pan_current_y - default_pan_y);
+	return location.pan_current_y;
 }
 
 int Game_Map::GetTargetPanX() {
-	return -(location.pan_finish_x - default_pan_x);
+	return location.pan_finish_x;
 }
 
 int Game_Map::GetTargetPanY() {
-	return -(location.pan_finish_y - default_pan_y);
+	return location.pan_finish_y;
 }
 
 bool Game_Map::IsTeleportDelayed() {
@@ -1558,9 +1570,6 @@ static int closer_to_zero(int x, int y) {
 }
 
 void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
-	if (IsPanLocked()) {
-		return;
-	}
 	Params params = GetParallaxParams();
 
 	// TODO: understand and then doc this function :)
