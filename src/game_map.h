@@ -58,8 +58,9 @@ namespace Game_Map {
 
 	/**
 	 * Disposes Game_Map.
+	 * @param is_load_savegame true if we're calling this while loading a saved game.
 	 */
-	void Dispose();
+	void Dispose(bool is_load_savegame);
 
 	/**
 	 * Setups a map.
