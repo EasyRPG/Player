@@ -193,6 +193,10 @@ public:
 	const RPG::EventPage* GetActivePage() const;
 
 	const RPG::SaveMapEvent& GetSaveData();
+protected:
+	RPG::SaveMapEvent* data();
+	const RPG::SaveMapEvent* data() const;
+
 private:
 	void UpdateSelfMovement() override;
 
@@ -232,7 +236,7 @@ private:
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.
-	RPG::SaveMapEvent data;
+	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
 	bool starting = false, running = false, halting = false;
 	bool started_by_decision_key = false;
@@ -246,5 +250,13 @@ private:
 
 	int frame_count_at_last_auto_start_check = -1;
 };
+
+inline RPG::SaveMapEvent* Game_Event::data() {
+	return static_cast<RPG::SaveMapEvent*>(Game_Character::data());
+}
+
+inline const RPG::SaveMapEvent* Game_Event::data() const {
+	return static_cast<const RPG::SaveMapEvent*>(Game_Character::data());
+}
 
 #endif

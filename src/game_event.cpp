@@ -33,7 +33,8 @@
 #include <cmath>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	Game_Character(&this->data),
+	Game_Character(new RPG::SaveMapEvent()),
+	_data_copy(this->data()),
 	event(event),
 	from_save(false) {
 
@@ -42,193 +43,193 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& data) :
-	Game_Character(&this->data),
+Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+	Game_Character(new RPG::SaveMapEvent(orig_data)),
+	_data_copy(this->data()),
 	// FIXME unused int parameter
-	data(data),
 	event(event),
 	from_save(true) {
 
-	this->event.ID = data.ID;
+	this->event.ID = data()->ID;
 
-	MoveTo(data.position_x, data.position_y);
+	MoveTo(data()->position_x, data()->position_y);
 
-	if (!data.event_data.commands.empty()) {
+	if (!data()->event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data()->event_data.commands);
 	}
 
 	Refresh();
 }
 
 int Game_Event::GetX() const {
-	return data.position_x;
+	return data()->position_x;
 }
 
 void Game_Event::SetX(int new_x) {
-	data.position_x = new_x;
+	data()->position_x = new_x;
 }
 
 int Game_Event::GetY() const {
-	return data.position_y;
+	return data()->position_y;
 }
 
 void Game_Event::SetY(int new_y) {
-	data.position_y = new_y;
+	data()->position_y = new_y;
 }
 
 int Game_Event::GetMapId() const {
-	return data.map_id;
+	return data()->map_id;
 }
 
 void Game_Event::SetMapId(int new_map_id) {
-	data.map_id = new_map_id;
+	data()->map_id = new_map_id;
 }
 
 int Game_Event::GetDirection() const {
-	return data.direction;
+	return data()->direction;
 }
 
 void Game_Event::SetDirection(int new_direction) {
-	data.direction = new_direction;
+	data()->direction = new_direction;
 }
 
 int Game_Event::GetSpriteDirection() const {
-	return data.sprite_direction;
+	return data()->sprite_direction;
 }
 
 void Game_Event::SetSpriteDirection(int new_direction) {
-	data.sprite_direction = new_direction;
+	data()->sprite_direction = new_direction;
 }
 
 bool Game_Event::IsFacingLocked() const {
-	return data.lock_facing;
+	return data()->lock_facing;
 }
 
 void Game_Event::SetFacingLocked(bool locked) {
-	data.lock_facing = locked;
+	data()->lock_facing = locked;
 }
 
 int Game_Event::GetLayer() const {
-	return data.layer;
+	return data()->layer;
 }
 
 void Game_Event::SetLayer(int new_layer) {
-	data.layer = new_layer;
+	data()->layer = new_layer;
 }
 
 bool Game_Event::IsOverlapForbidden() const {
-	return data.overlap_forbidden;
+	return data()->overlap_forbidden;
 }
 
 int Game_Event::GetMoveSpeed() const {
-	return data.move_speed;
+	return data()->move_speed;
 }
 
 void Game_Event::SetMoveSpeed(int speed) {
-	data.move_speed = speed;
+	data()->move_speed = speed;
 }
 
 int Game_Event::GetMoveFrequency() const {
-	return data.move_frequency;
+	return data()->move_frequency;
 }
 
 void Game_Event::SetMoveFrequency(int frequency) {
-	data.move_frequency = frequency;
+	data()->move_frequency = frequency;
 	if (original_move_frequency == -1) {
 		original_move_frequency = frequency;
 	}
 }
 
 const RPG::MoveRoute& Game_Event::GetMoveRoute() const {
-	return data.move_route;
+	return data()->move_route;
 }
 
 void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data.move_route = move_route;
+	data()->move_route = move_route;
 }
 
 int Game_Event::GetOriginalMoveRouteIndex() const {
-	return data.original_move_route_index;
+	return data()->original_move_route_index;
 }
 
 void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
-	data.original_move_route_index = new_index;
+	data()->original_move_route_index = new_index;
 }
 
 int Game_Event::GetMoveRouteIndex() const {
-	return data.move_route_index;
+	return data()->move_route_index;
 }
 
 void Game_Event::SetMoveRouteIndex(int new_index) {
-	data.move_route_index = new_index;
+	data()->move_route_index = new_index;
 }
 
 bool Game_Event::IsMoveRouteOverwritten() const {
-	return data.move_route_overwrite;
+	return data()->move_route_overwrite;
 }
 
 void Game_Event::SetMoveRouteOverwritten(bool force) {
-	data.move_route_overwrite = force;
+	data()->move_route_overwrite = force;
 }
 
 bool Game_Event::IsMoveRouteRepeated() const {
-	return data.move_route_repeated;
+	return data()->move_route_repeated;
 }
 
 void Game_Event::SetMoveRouteRepeated(bool force) {
-	data.move_route_repeated = force;
+	data()->move_route_repeated = force;
 }
 
 const std::string& Game_Event::GetSpriteName() const {
-	return data.sprite_name;
+	return data()->sprite_name;
 }
 
 void Game_Event::SetSpriteName(const std::string& sprite_name) {
-	data.sprite_name = sprite_name;
+	data()->sprite_name = sprite_name;
 }
 
 int Game_Event::GetSpriteIndex() const {
-	return data.sprite_id;
+	return data()->sprite_id;
 }
 
 void Game_Event::SetSpriteIndex(int index) {
-	data.sprite_id = index;
+	data()->sprite_id = index;
 }
 
 Color Game_Event::GetFlashColor() const {
-	return Color(data.flash_red, data.flash_green, data.flash_blue, flash_alpha);
+	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
 }
 
 void Game_Event::SetFlashColor(const Color& flash_color) {
-	data.flash_red = flash_color.red;
-	data.flash_blue = flash_color.blue;
-	data.flash_green = flash_color.green;
+	data()->flash_red = flash_color.red;
+	data()->flash_blue = flash_color.blue;
+	data()->flash_green = flash_color.green;
 	flash_alpha = flash_color.alpha;
 }
 
 double Game_Event::GetFlashLevel() const {
-	return data.flash_current_level;
+	return data()->flash_current_level;
 }
 
 void Game_Event::SetFlashLevel(double flash_level) {
-	data.flash_current_level = flash_level;
+	data()->flash_current_level = flash_level;
 }
 
 int Game_Event::GetFlashTimeLeft() const {
-	return data.flash_time_left;
+	return data()->flash_time_left;
 }
 
 void Game_Event::SetFlashTimeLeft(int time_left) {
-	data.flash_time_left = time_left;
+	data()->flash_time_left = time_left;
 }
 
 bool Game_Event::GetThrough() const {
-	return page == nullptr || data.through;
+	return page == nullptr || data()->through;
 }
 
 void Game_Event::SetThrough(bool through) {
-	data.through = through;
+	data()->through = through;
 }
 
 void Game_Event::ClearStarting() {
@@ -293,7 +294,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	SetOpacity(page->translucent ? 160 : 255);
 	SetLayer(page->layer);
-	data.overlap_forbidden = page->overlap_forbidden;
+	data()->overlap_forbidden = page->overlap_forbidden;
 	trigger = page->trigger;
 	list = page->event_commands;
 
@@ -334,7 +335,7 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 }
 
 void Game_Event::Refresh() {
-	if (!data.active) {
+	if (!data()->active) {
 		if (from_save) {
 			SetVisible(false);
 			from_save = false;
@@ -469,17 +470,17 @@ int Game_Event::GetTrigger() const {
 }
 
 void Game_Event::SetActive(bool active) {
-	data.active = active;
+	data()->active = active;
 	SetVisible(active);
 }
 
 bool Game_Event::GetActive() const {
-	return data.active;
+	return data()->active;
 }
 
 void Game_Event::Start(bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data.active)
+	if (list.empty() || !data()->active)
 		return;
 
 	starting = true;
@@ -688,7 +689,7 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 }
 
 void Game_Event::Update() {
-	if (!data.active || page == NULL) {
+	if (!data()->active || page == NULL) {
 		return;
 	}
 
@@ -717,7 +718,7 @@ void Game_Event::UpdateParallel() {
 		frame_count_at_last_auto_start_check = cur_frame_count;
 	}
 
-	if (!data.active || page == NULL || updating) {
+	if (!data()->active || page == NULL || updating) {
 		return;
 	}
 
@@ -757,9 +758,9 @@ const RPG::EventPage *Game_Event::GetActivePage() const {
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
-		data.event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+		data()->event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	}
-	data.ID = event.ID;
+	data()->ID = event.ID;
 
-	return data;
+	return *data();
 }
