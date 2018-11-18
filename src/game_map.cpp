@@ -980,9 +980,8 @@ void Game_Map::UpdateEncounterSteps() {
 
 	const auto pmod = row.pmod;
 	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
-	auto draw = std::uniform_real_distribution<float>()(Utils::GetRNG());
 
-	if (draw < p) {
+	if (Utils::PercentChance(p)) {
 		SetEncounterSteps(0);
 		PrepareEncounter();
 	}
