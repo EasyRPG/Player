@@ -31,7 +31,7 @@
 #include <cmath>
 #include <cassert>
 
-Game_Character::Game_Character() :
+Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	tile_id(0),
 	pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
@@ -54,7 +54,9 @@ Game_Character::Game_Character() :
 	max_stop_count(0),
 	walk_animation(true),
 	opacity(255),
-	visible(true) {
+	visible(true),
+	_data(d)
+{
 }
 
 Game_Character::~Game_Character() {

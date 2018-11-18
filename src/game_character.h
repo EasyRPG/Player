@@ -22,6 +22,7 @@
 #include <string>
 #include "color.h"
 #include "rpg_moveroute.h"
+#include "rpg_savemapeventbase.h"
 
 #ifdef __MORPHOS__
 #undef Wait
@@ -32,10 +33,6 @@
  */
 class Game_Character {
 public:
-	/**
-	 * Constructor.
-	 */
-	Game_Character();
 
 	/**
 	 * Destructor.
@@ -703,9 +700,15 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
+	explicit Game_Character(RPG::SaveMapEventBase* d);
+
+protected:
 	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement();
 	void UpdateJump();
+
+	RPG::SaveMapEventBase* data();
+	const RPG::SaveMapEventBase* data() const;
 
 	int tile_id;
 	int pattern;
@@ -740,6 +743,16 @@ protected:
 	bool visible;
 
 	int frame_count_at_last_update_parallel = -1;
+	RPG::SaveMapEventBase* _data = nullptr;
 };
+
+
+inline RPG::SaveMapEventBase* Game_Character::data() {
+	return _data;
+}
+
+inline const RPG::SaveMapEventBase* Game_Character::data() const {
+	return _data;
+}
 
 #endif

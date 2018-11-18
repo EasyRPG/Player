@@ -33,6 +33,7 @@
 #include <cmath>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
+	Game_Character(&this->data),
 	event(event),
 	from_save(false) {
 
@@ -42,6 +43,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 }
 
 Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& data) :
+	Game_Character(&this->data),
 	// FIXME unused int parameter
 	data(data),
 	event(event),
