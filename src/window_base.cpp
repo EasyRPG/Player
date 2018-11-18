@@ -49,6 +49,8 @@ void Window_Base::InitMovement(int old_x, int old_y, int new_x, int new_y, int d
 	old_position[1] = old_y;
 	new_position[0] = new_x;
 	new_position[1] = new_y;
+	SetX(old_position[0]);
+	SetY(old_position[1]);
 }
 
 bool Window_Base::IsMovementActive() {
