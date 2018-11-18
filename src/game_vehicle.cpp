@@ -59,62 +59,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-int Game_Vehicle::GetX() const {
-	return data()->position_x;
-}
-
-void Game_Vehicle::SetX(int new_x) {
-	data()->position_x = new_x;
-}
-
-int Game_Vehicle::GetY() const {
-	return data()->position_y;
-}
-
-void Game_Vehicle::SetY(int new_y) {
-	data()->position_y = new_y;
-}
-
-int Game_Vehicle::GetMapId() const {
-	return data()->map_id;
-}
-
-void Game_Vehicle::SetMapId(int new_map_id) {
-	data()->map_id = new_map_id;
-}
-
-int Game_Vehicle::GetDirection() const {
-	return data()->direction;
-}
-
-void Game_Vehicle::SetDirection(int new_direction) {
-	data()->direction = new_direction;
-}
-
-int Game_Vehicle::GetSpriteDirection() const {
-	return data()->sprite_direction;
-}
-
-void Game_Vehicle::SetSpriteDirection(int new_direction) {
-	data()->sprite_direction = new_direction;
-}
-
-bool Game_Vehicle::IsFacingLocked() const {
-	return data()->lock_facing;
-}
-
-void Game_Vehicle::SetFacingLocked(bool locked) {
-	data()->lock_facing = locked;
-}
-
-int Game_Vehicle::GetLayer() const {
-	return data()->layer;
-}
-
-void Game_Vehicle::SetLayer(int new_layer) {
-	data()->layer = new_layer;
-}
-
 int Game_Vehicle::GetSteppingSpeed() const {
 	return 16;
 }

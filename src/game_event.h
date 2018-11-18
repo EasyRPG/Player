@@ -46,20 +46,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetX() const override;
-	void SetX(int new_x) override;
-	int GetY() const override;
-	void SetY(int new_y) override;
-	int GetMapId() const override;
-	void SetMapId(int new_map_id) override;
-	int GetDirection() const override;
-	void SetDirection(int new_direction) override;
-	int GetSpriteDirection() const override;
-	void SetSpriteDirection(int new_direction) override;
-	bool IsFacingLocked() const override;
-	void SetFacingLocked(bool locked) override;
-	int GetLayer() const override;
-	void SetLayer(int new_layer) override;
 	bool IsOverlapForbidden() const override;
 	int GetMoveSpeed() const override;
 	void SetMoveSpeed(int speed) override;

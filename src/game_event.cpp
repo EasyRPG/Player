@@ -62,62 +62,6 @@ Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::Sav
 	Refresh();
 }
 
-int Game_Event::GetX() const {
-	return data()->position_x;
-}
-
-void Game_Event::SetX(int new_x) {
-	data()->position_x = new_x;
-}
-
-int Game_Event::GetY() const {
-	return data()->position_y;
-}
-
-void Game_Event::SetY(int new_y) {
-	data()->position_y = new_y;
-}
-
-int Game_Event::GetMapId() const {
-	return data()->map_id;
-}
-
-void Game_Event::SetMapId(int new_map_id) {
-	data()->map_id = new_map_id;
-}
-
-int Game_Event::GetDirection() const {
-	return data()->direction;
-}
-
-void Game_Event::SetDirection(int new_direction) {
-	data()->direction = new_direction;
-}
-
-int Game_Event::GetSpriteDirection() const {
-	return data()->sprite_direction;
-}
-
-void Game_Event::SetSpriteDirection(int new_direction) {
-	data()->sprite_direction = new_direction;
-}
-
-bool Game_Event::IsFacingLocked() const {
-	return data()->lock_facing;
-}
-
-void Game_Event::SetFacingLocked(bool locked) {
-	data()->lock_facing = locked;
-}
-
-int Game_Event::GetLayer() const {
-	return data()->layer;
-}
-
-void Game_Event::SetLayer(int new_layer) {
-	data()->layer = new_layer;
-}
-
 bool Game_Event::IsOverlapForbidden() const {
 	return data()->overlap_forbidden;
 }

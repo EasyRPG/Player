@@ -49,98 +49,98 @@ public:
 	 *
 	 * @return x position.
 	 */
-	virtual int GetX() const = 0;
+	int GetX() const;
 
 	/**
 	 * Sets x position in tiles.
 	 *
 	 * @param new_x new x position.
 	 */
-	virtual void SetX(int new_x) = 0;
+	void SetX(int new_x);
 
 	/**
 	 * Gets y position in tiles.
 	 *
 	 * @return y position.
 	 */
-	virtual int GetY() const = 0;
+	int GetY() const;
 
 	/**
 	 * Sets y position in tiles.
 	 *
 	 * @param new_y new y position.
 	 */
-	virtual void SetY(int new_y) = 0;
+	void SetY(int new_y);
 
 	/**
 	 * Gets the map id the character was inititialy on.
 	 *
 	 * @return map id.
 	 */
-	virtual int GetMapId() const = 0;
+	int GetMapId() const;
 
 	/**
 	 * Sets the map id the character was inititialy on.
 	 *
 	 * @param new_map_id New map id of character.
 	 */
-	virtual void SetMapId(int new_map_id) = 0;
+	void SetMapId(int new_map_id);
 
 	/**
 	 * Gets character's front direction.
 	 *
 	 * @return current front direction.
 	 */
-	virtual int GetDirection() const = 0;
+	int GetDirection() const;
 
 	/**
 	 * Sets character's front direction.
 	 *
 	 * @param new_direction New current front direction.
 	 */
-	virtual void SetDirection(int new_direction) = 0;
+	void SetDirection(int new_direction);
 
 	/**
 	 * Gets direction of the sprite.
 	 *
 	 * @return direction of the sprite.
 	 */
-	virtual int GetSpriteDirection() const = 0;
+	int GetSpriteDirection() const;
 
 	/**
 	 * Sets sprite direction.
 	 *
 	 * @param new_direction New sprite direction.
 	 */
-	virtual void SetSpriteDirection(int new_direction) = 0;
+	void SetSpriteDirection(int new_direction);
 
 	/**
 	 * Gets whether facing is locked.
 	 *
 	 * @return facing locked
 	 */
-	virtual bool IsFacingLocked() const = 0;
+	bool IsFacingLocked() const;
 
 	/**
 	 * Enables or disables locked facing direction.
 	 *
 	 * @param locked true: locked, false: unlocked.
 	 */
-	virtual void SetFacingLocked(bool locked) = 0;
+	void SetFacingLocked(bool locked);
 
 	/**
 	 * Gets the event layer (top, same, below).
 	 *
 	 * @return event layer
 	 */
-	virtual int GetLayer() const = 0;
+	int GetLayer() const;
 
 	/**
 	 * Sets the event layer (top, same, below).
 	 *
 	 * @param new_layer New event layer
 	 */
-	virtual void SetLayer(int new_layer) = 0;
+	void SetLayer(int new_layer);
 
 	/**
 	 * Gets whether other events can be in the same tile.
@@ -754,5 +754,62 @@ inline RPG::SaveMapEventBase* Game_Character::data() {
 inline const RPG::SaveMapEventBase* Game_Character::data() const {
 	return _data;
 }
+
+inline int Game_Character::GetX() const {
+	return data()->position_x;
+}
+
+inline void Game_Character::SetX(int new_x) {
+	data()->position_x = new_x;
+}
+
+inline int Game_Character::GetY() const {
+	return data()->position_y;
+}
+
+inline void Game_Character::SetY(int new_y) {
+	data()->position_y = new_y;
+}
+
+inline int Game_Character::GetMapId() const {
+	return data()->map_id;
+}
+
+inline void Game_Character::SetMapId(int new_map_id) {
+	data()->map_id = new_map_id;
+}
+
+inline int Game_Character::GetDirection() const {
+	return data()->direction;
+}
+
+inline void Game_Character::SetDirection(int new_direction) {
+	data()->direction = new_direction;
+}
+
+inline int Game_Character::GetSpriteDirection() const {
+	return data()->sprite_direction;
+}
+
+inline void Game_Character::SetSpriteDirection(int new_direction) {
+	data()->sprite_direction = new_direction;
+}
+
+inline bool Game_Character::IsFacingLocked() const {
+	return data()->lock_facing;
+}
+
+inline void Game_Character::SetFacingLocked(bool locked) {
+	data()->lock_facing = locked;
+}
+
+inline int Game_Character::GetLayer() const {
+	return data()->layer;
+}
+
+inline void Game_Character::SetLayer(int new_layer) {
+	data()->layer = new_layer;
+}
+
 
 #endif

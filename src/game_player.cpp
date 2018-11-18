@@ -42,66 +42,10 @@ Game_Player::Game_Player():
 	SetMoveSpeed(4);
 }
 
-int Game_Player::GetX() const {
-	return data()->position_x;
-}
-
-void Game_Player::SetX(int new_x) {
-	data()->position_x = new_x;
-}
-
-int Game_Player::GetY() const {
-	return data()->position_y;
-}
-
-void Game_Player::SetY(int new_y) {
-	data()->position_y = new_y;
-}
-
 int Game_Player::GetScreenZ() const {
 	// Player is always slightly above events
 	// (and always on "same layer as hero" obviously)
 	return Game_Character::GetScreenZ() + 1;
-}
-
-int Game_Player::GetMapId() const {
-	return data()->map_id;
-}
-
-void Game_Player::SetMapId(int new_map_id) {
-	data()->map_id = new_map_id;
-}
-
-int Game_Player::GetDirection() const {
-	return data()->direction;
-}
-
-void Game_Player::SetDirection(int new_direction) {
-	data()->direction = new_direction;
-}
-
-int Game_Player::GetSpriteDirection() const {
-	return data()->sprite_direction;
-}
-
-void Game_Player::SetSpriteDirection(int new_direction) {
-	data()->sprite_direction = new_direction;
-}
-
-bool Game_Player::IsFacingLocked() const {
-	return data()->lock_facing;
-}
-
-void Game_Player::SetFacingLocked(bool locked) {
-	data()->lock_facing = locked;
-}
-
-int Game_Player::GetLayer() const {
-	return data()->layer;
-}
-
-void Game_Player::SetLayer(int new_layer) {
-	data()->layer = new_layer;
 }
 
 int Game_Player::GetMoveSpeed() const {
