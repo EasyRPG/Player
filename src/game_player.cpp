@@ -48,30 +48,6 @@ int Game_Player::GetScreenZ() const {
 	return Game_Character::GetScreenZ() + 1;
 }
 
-int Game_Player::GetMoveSpeed() const {
-	return data()->move_speed;
-}
-
-void Game_Player::SetMoveSpeed(int speed) {
-	data()->move_speed = speed;
-}
-
-int Game_Player::GetMoveFrequency() const {
-	return data()->move_frequency;
-}
-
-void Game_Player::SetMoveFrequency(int frequency) {
-	data()->move_frequency = frequency;
-}
-
-const RPG::MoveRoute& Game_Player::GetMoveRoute() const {
-	return data()->move_route;
-}
-
-void Game_Player::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data()->move_route = move_route;
-}
-
 int Game_Player::GetOriginalMoveRouteIndex() const {
 	return 0;
 }
@@ -80,83 +56,8 @@ void Game_Player::SetOriginalMoveRouteIndex(int /* new_index */) {
 	// no-op
 }
 
-int Game_Player::GetMoveRouteIndex() const {
-	return data()->move_route_index;
-}
-
-void Game_Player::SetMoveRouteIndex(int new_index) {
-	data()->move_route_index = new_index;
-}
-
-bool Game_Player::IsMoveRouteOverwritten() const {
-	return data()->move_route_overwrite;
-}
-
-void Game_Player::SetMoveRouteOverwritten(bool force) {
-	data()->move_route_overwrite = force;
-}
-
-bool Game_Player::IsMoveRouteRepeated() const {
-	return data()->move_route_repeated;
-}
-
-void Game_Player::SetMoveRouteRepeated(bool force) {
-	data()->move_route_repeated = force;
-}
-
-const std::string& Game_Player::GetSpriteName() const {
-	return data()->sprite_name;
-}
-
-void Game_Player::SetSpriteName(const std::string& sprite_name) {
-	data()->sprite_name = sprite_name;
-}
-
-int Game_Player::GetSpriteIndex() const {
-	return data()->sprite_id;
-}
-
-void Game_Player::SetSpriteIndex(int index) {
-	data()->sprite_id = index;
-}
-
 bool Game_Player::GetVisible() const {
 	return visible && !data()->aboard;
-}
-
-Color Game_Player::GetFlashColor() const {
-	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
-}
-
-void Game_Player::SetFlashColor(const Color& flash_color) {
-	data()->flash_red = flash_color.red;
-	data()->flash_blue = flash_color.blue;
-	data()->flash_green = flash_color.green;
-	flash_alpha = flash_color.alpha;
-}
-
-double Game_Player::GetFlashLevel() const {
-	return data()->flash_current_level;
-}
-
-void Game_Player::SetFlashLevel(double flash_level) {
-	data()->flash_current_level = flash_level;
-}
-
-int Game_Player::GetFlashTimeLeft() const {
-	return data()->flash_time_left;
-}
-
-void Game_Player::SetFlashTimeLeft(int time_left) {
-	data()->flash_time_left = time_left;
-}
-
-bool Game_Player::GetThrough() const {
-	return data()->through;
-}
-
-void Game_Player::SetThrough(bool through) {
-	data()->through = through;
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {

@@ -73,22 +73,6 @@ void Game_Vehicle::SetMoveSpeed(int speed) {
 		Main_Data::game_player->SetMoveSpeed(speed);
 }
 
-int Game_Vehicle::GetMoveFrequency() const {
-	return data()->move_frequency;
-}
-
-void Game_Vehicle::SetMoveFrequency(int frequency) {
-	data()->move_frequency = frequency;
-}
-
-const RPG::MoveRoute& Game_Vehicle::GetMoveRoute() const {
-	return data()->move_route;
-}
-
-void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data()->move_route = move_route;
-}
-
 int Game_Vehicle::GetOriginalMoveRouteIndex() const {
 	return data()->original_move_route_index;
 }
@@ -97,80 +81,6 @@ void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
 	data()->original_move_route_index = new_index;
 }
 
-int Game_Vehicle::GetMoveRouteIndex() const {
-	return data()->move_route_index;
-}
-
-void Game_Vehicle::SetMoveRouteIndex(int new_index) {
-	data()->move_route_index = new_index;
-}
-
-bool Game_Vehicle::IsMoveRouteOverwritten() const {
-	return data()->move_route_overwrite;
-}
-
-void Game_Vehicle::SetMoveRouteOverwritten(bool force) {
-	data()->move_route_overwrite = force;
-}
-
-bool Game_Vehicle::IsMoveRouteRepeated() const {
-	return data()->move_route_repeated;
-}
-
-void Game_Vehicle::SetMoveRouteRepeated(bool force) {
-	data()->move_route_repeated = force;
-}
-
-const std::string& Game_Vehicle::GetSpriteName() const {
-	return data()->sprite_name;
-}
-
-void Game_Vehicle::SetSpriteName(const std::string& sprite_name) {
-	data()->sprite_name = sprite_name;
-}
-
-int Game_Vehicle::GetSpriteIndex() const {
-	return data()->sprite_id;
-}
-
-void Game_Vehicle::SetSpriteIndex(int index) {
-	data()->sprite_id = index;
-}
-
-Color Game_Vehicle::GetFlashColor() const {
-	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
-}
-
-void Game_Vehicle::SetFlashColor(const Color& flash_color) {
-	data()->flash_red = flash_color.red;
-	data()->flash_blue = flash_color.blue;
-	data()->flash_green = flash_color.green;
-	flash_alpha = flash_color.alpha;
-}
-
-double Game_Vehicle::GetFlashLevel() const {
-	return data()->flash_current_level;
-}
-
-void Game_Vehicle::SetFlashLevel(double flash_level) {
-	data()->flash_current_level = flash_level;
-}
-
-int Game_Vehicle::GetFlashTimeLeft() const {
-	return data()->flash_time_left;
-}
-
-void Game_Vehicle::SetFlashTimeLeft(int time_left) {
-	data()->flash_time_left = time_left;
-}
-
-bool Game_Vehicle::GetThrough() const {
-	return data()->through;
-}
-
-void Game_Vehicle::SetThrough(bool through) {
-	data()->through = through;
-}
 
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	if (d > 3) {

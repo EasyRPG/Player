@@ -62,18 +62,6 @@ Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::Sav
 	Refresh();
 }
 
-bool Game_Event::IsOverlapForbidden() const {
-	return data()->overlap_forbidden;
-}
-
-int Game_Event::GetMoveSpeed() const {
-	return data()->move_speed;
-}
-
-void Game_Event::SetMoveSpeed(int speed) {
-	data()->move_speed = speed;
-}
-
 int Game_Event::GetMoveFrequency() const {
 	return data()->move_frequency;
 }
@@ -85,87 +73,12 @@ void Game_Event::SetMoveFrequency(int frequency) {
 	}
 }
 
-const RPG::MoveRoute& Game_Event::GetMoveRoute() const {
-	return data()->move_route;
-}
-
-void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data()->move_route = move_route;
-}
-
 int Game_Event::GetOriginalMoveRouteIndex() const {
 	return data()->original_move_route_index;
 }
 
 void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
 	data()->original_move_route_index = new_index;
-}
-
-int Game_Event::GetMoveRouteIndex() const {
-	return data()->move_route_index;
-}
-
-void Game_Event::SetMoveRouteIndex(int new_index) {
-	data()->move_route_index = new_index;
-}
-
-bool Game_Event::IsMoveRouteOverwritten() const {
-	return data()->move_route_overwrite;
-}
-
-void Game_Event::SetMoveRouteOverwritten(bool force) {
-	data()->move_route_overwrite = force;
-}
-
-bool Game_Event::IsMoveRouteRepeated() const {
-	return data()->move_route_repeated;
-}
-
-void Game_Event::SetMoveRouteRepeated(bool force) {
-	data()->move_route_repeated = force;
-}
-
-const std::string& Game_Event::GetSpriteName() const {
-	return data()->sprite_name;
-}
-
-void Game_Event::SetSpriteName(const std::string& sprite_name) {
-	data()->sprite_name = sprite_name;
-}
-
-int Game_Event::GetSpriteIndex() const {
-	return data()->sprite_id;
-}
-
-void Game_Event::SetSpriteIndex(int index) {
-	data()->sprite_id = index;
-}
-
-Color Game_Event::GetFlashColor() const {
-	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
-}
-
-void Game_Event::SetFlashColor(const Color& flash_color) {
-	data()->flash_red = flash_color.red;
-	data()->flash_blue = flash_color.blue;
-	data()->flash_green = flash_color.green;
-	flash_alpha = flash_color.alpha;
-}
-
-double Game_Event::GetFlashLevel() const {
-	return data()->flash_current_level;
-}
-
-void Game_Event::SetFlashLevel(double flash_level) {
-	data()->flash_current_level = flash_level;
-}
-
-int Game_Event::GetFlashTimeLeft() const {
-	return data()->flash_time_left;
-}
-
-void Game_Event::SetFlashTimeLeft(int time_left) {
-	data()->flash_time_left = time_left;
 }
 
 bool Game_Event::GetThrough() const {

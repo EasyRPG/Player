@@ -162,42 +162,42 @@ public:
 	 *
 	 * @return character movement speed
 	 */
-	virtual int GetMoveSpeed() const = 0;
+	virtual int GetMoveSpeed() const;
 
 	/**
 	 * Sets character movement speed.
 	 *
 	 * @param speed new movement speed
 	 */
-	virtual void SetMoveSpeed(int speed) = 0;
+	virtual void SetMoveSpeed(int speed);
 
 	/**
 	 * Gets character movement frequency.
 	 *
 	 * @return character movement frequency
 	 */
-	virtual int GetMoveFrequency() const = 0;
+	virtual int GetMoveFrequency() const;
 
 	/**
 	 * Sets character movement frequency.
 	 *
 	 * @param frequency new character movement frequency
 	 */
-	virtual void SetMoveFrequency(int frequency) = 0;
+	virtual void SetMoveFrequency(int frequency);
 
 	/**
 	 * Returns the custom move route assigned via a MoveEvent.
 	 *
 	 * @return custom move route
 	 */
-	virtual const RPG::MoveRoute& GetMoveRoute() const = 0;
+	const RPG::MoveRoute& GetMoveRoute() const;
 
 	/**
 	 * Sets a new custom move route. Used to assign a new MoveEvent.
 	 *
 	 * @param move_route new custom move route
 	 */
-	virtual void SetMoveRoute(const RPG::MoveRoute& move_route) = 0;
+	void SetMoveRoute(const RPG::MoveRoute& move_route);
 
 	/**
 	 * Returns current index of a "Movement Type Custom" move route.
@@ -218,70 +218,70 @@ public:
 	 *
 	 * @return current move route index
 	 */
-	virtual int GetMoveRouteIndex() const = 0;
+	int GetMoveRouteIndex() const;
 
 	/**
 	 * Sets current index of a MoveEvent move route.
 	 *
 	 * @param new_index New custom move route index
 	 */
-	virtual void SetMoveRouteIndex(int new_index) = 0;
+	void SetMoveRouteIndex(int new_index);
 
 	/**
 	 * Gets whether move route is overwritten by event.
 	 *
 	 * @return move route overwritten
 	 */
-	virtual bool IsMoveRouteOverwritten() const = 0;
+	bool IsMoveRouteOverwritten() const;
 
 	/**
 	 * Enables/Disables overwriting of move routes.
 	 *
 	 * @param force true: Use default move scheme, false: Use custom move route
 	 */
-	virtual void SetMoveRouteOverwritten(bool force) = 0;
+	void SetMoveRouteOverwritten(bool force);
 
 	/**
 	 * Checks if the forced move route has been repeating itself.
 	 *
 	 * @return whether forced move route has been repeating itself
 	 */
-	virtual bool IsMoveRouteRepeated() const = 0;
+	bool IsMoveRouteRepeated() const;
 
 	/**
 	 * Makes current forced move route repeated/non-repeated.
 	 *
 	 * @param repeat true: Repeated move route, false: Non-repeated move route
 	 */
-	virtual void SetMoveRouteRepeated(bool repeat) = 0;
+	void SetMoveRouteRepeated(bool repeat);
 
 	/**
 	 * Gets sprite name. Usually the name of the graphic file.
 	 *
 	 * @return sprite name
 	 */
-	virtual const std::string& GetSpriteName() const = 0;
+	const std::string& GetSpriteName() const;
 
 	/**
 	 * Sets sprite name. Usually the name of the graphic file.
 	 *
 	 * @param sprite_name new sprite name
 	 */
-	virtual void SetSpriteName(const std::string& sprite_name) = 0;
+	void SetSpriteName(std::string sprite_name);
 
 	/**
 	 * Gets sprite index of character.
 	 *
 	 * @return sprite index
 	 */
-	virtual int GetSpriteIndex() const = 0;
+	int GetSpriteIndex() const;
 
 	/**
 	 * Sets sprite index of character.
 	 *
 	 * @param index new sprite index
 	 */
-	virtual void SetSpriteIndex(int index) = 0;
+	void SetSpriteIndex(int index);
 
 	/**
 	 * Begins a flash.
@@ -296,56 +296,56 @@ public:
 	 *
 	 * @return flash color
 	 */
-	virtual Color GetFlashColor() const = 0;
+	Color GetFlashColor() const;
 
 	/**
 	 * Sets flash effect color.
 	 *
 	 * @param flash_color new flash color
 	 */
-	virtual void SetFlashColor(const Color& flash_color) = 0;
+	void SetFlashColor(const Color& flash_color);
 
 	/**
 	 * Returns intensity of flash effect.
 	 *
 	 * @return flash intensity
 	 */
-	virtual double GetFlashLevel() const = 0;
+	double GetFlashLevel() const;
 
 	/**
 	 * Sets intensity of flash effect.
 	 *
 	 * @param flash_level new flash intensity
 	 */
-	virtual void SetFlashLevel(double flash_level) = 0;
+	void SetFlashLevel(double flash_level);
 
 	/**
 	 * Returns how many flash effect time is left.
 	 *
 	 * @return time left
 	 */
-	virtual int GetFlashTimeLeft() const = 0;
+	int GetFlashTimeLeft() const;
 
 	/**
 	 * Set how long the flash effect will take.
 	 *
 	 * @param time_left flash duration
 	 */
-	virtual void SetFlashTimeLeft(int time_left) = 0;
+	void SetFlashTimeLeft(int time_left);
 
 	/**
 	 * Gets the through flag (walk through everything)
 	 *
 	 * @return through flag
 	 */
-	virtual bool GetThrough() const = 0;
+	virtual bool GetThrough() const;
 
 	/**
 	 * Sets the through flag (walk through everything)
 	 *
 	 * @param through through flag
 	 */
-	virtual void SetThrough(bool through) = 0;
+	virtual void SetThrough(bool through);
 
 	/**
 	 * Gets if character is moving.
@@ -811,5 +811,107 @@ inline void Game_Character::SetLayer(int new_layer) {
 	data()->layer = new_layer;
 }
 
+inline bool Game_Character::IsOverlapForbidden() const {
+	return data()->overlap_forbidden;
+}
+
+inline int Game_Character::GetMoveSpeed() const {
+	return data()->move_speed;
+}
+
+inline void Game_Character::SetMoveSpeed(int speed) {
+	data()->move_speed = speed;
+}
+
+inline int Game_Character::GetMoveFrequency() const {
+	return data()->move_frequency;
+}
+
+inline void Game_Character::SetMoveFrequency(int frequency) {
+	data()->move_frequency = frequency;
+}
+
+inline const RPG::MoveRoute& Game_Character::GetMoveRoute() const {
+	return data()->move_route;
+}
+
+inline void Game_Character::SetMoveRoute(const RPG::MoveRoute& move_route) {
+	data()->move_route = move_route;
+}
+
+inline int Game_Character::GetMoveRouteIndex() const {
+	return data()->move_route_index;
+}
+
+inline void Game_Character::SetMoveRouteIndex(int new_index) {
+	data()->move_route_index = new_index;
+}
+
+inline bool Game_Character::IsMoveRouteOverwritten() const {
+	return data()->move_route_overwrite;
+}
+
+inline void Game_Character::SetMoveRouteOverwritten(bool force) {
+	data()->move_route_overwrite = force;
+}
+
+inline bool Game_Character::IsMoveRouteRepeated() const {
+	return data()->move_route_repeated;
+}
+
+inline void Game_Character::SetMoveRouteRepeated(bool force) {
+	data()->move_route_repeated = force;
+}
+
+inline const std::string& Game_Character::GetSpriteName() const {
+	return data()->sprite_name;
+}
+
+inline void Game_Character::SetSpriteName(std::string sprite_name) {
+	data()->sprite_name = std::move(sprite_name);
+}
+
+inline int Game_Character::GetSpriteIndex() const {
+	return data()->sprite_id;
+}
+
+inline void Game_Character::SetSpriteIndex(int index) {
+	data()->sprite_id = index;
+}
+
+inline Color Game_Character::GetFlashColor() const {
+	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
+}
+
+inline void Game_Character::SetFlashColor(const Color& flash_color) {
+	data()->flash_red = flash_color.red;
+	data()->flash_blue = flash_color.blue;
+	data()->flash_green = flash_color.green;
+	flash_alpha = flash_color.alpha;
+}
+
+inline double Game_Character::GetFlashLevel() const {
+	return data()->flash_current_level;
+}
+
+inline void Game_Character::SetFlashLevel(double flash_level) {
+	data()->flash_current_level = flash_level;
+}
+
+inline int Game_Character::GetFlashTimeLeft() const {
+	return data()->flash_time_left;
+}
+
+inline void Game_Character::SetFlashTimeLeft(int time_left) {
+	data()->flash_time_left = time_left;
+}
+
+inline bool Game_Character::GetThrough() const {
+	return data()->through;
+}
+
+inline void Game_Character::SetThrough(bool through) {
+	data()->through = through;
+}
 
 #endif
