@@ -36,27 +36,26 @@
 #include <cmath>
 
 Game_Player::Game_Player():
-	Game_Character(&Main_Data::game_data.party_location),
-	location(Main_Data::game_data.party_location)
+	Game_Character(&Main_Data::game_data.party_location)
 {
 	SetDirection(RPG::EventPage::Direction_down);
 	SetMoveSpeed(4);
 }
 
 int Game_Player::GetX() const {
-	return location.position_x;
+	return data()->position_x;
 }
 
 void Game_Player::SetX(int new_x) {
-	location.position_x = new_x;
+	data()->position_x = new_x;
 }
 
 int Game_Player::GetY() const {
-	return location.position_y;
+	return data()->position_y;
 }
 
 void Game_Player::SetY(int new_y) {
-	location.position_y = new_y;
+	data()->position_y = new_y;
 }
 
 int Game_Player::GetScreenZ() const {
@@ -66,67 +65,67 @@ int Game_Player::GetScreenZ() const {
 }
 
 int Game_Player::GetMapId() const {
-	return location.map_id;
+	return data()->map_id;
 }
 
 void Game_Player::SetMapId(int new_map_id) {
-	location.map_id = new_map_id;
+	data()->map_id = new_map_id;
 }
 
 int Game_Player::GetDirection() const {
-	return location.direction;
+	return data()->direction;
 }
 
 void Game_Player::SetDirection(int new_direction) {
-	location.direction = new_direction;
+	data()->direction = new_direction;
 }
 
 int Game_Player::GetSpriteDirection() const {
-	return location.sprite_direction;
+	return data()->sprite_direction;
 }
 
 void Game_Player::SetSpriteDirection(int new_direction) {
-	location.sprite_direction = new_direction;
+	data()->sprite_direction = new_direction;
 }
 
 bool Game_Player::IsFacingLocked() const {
-	return location.lock_facing;
+	return data()->lock_facing;
 }
 
 void Game_Player::SetFacingLocked(bool locked) {
-	location.lock_facing = locked;
+	data()->lock_facing = locked;
 }
 
 int Game_Player::GetLayer() const {
-	return location.layer;
+	return data()->layer;
 }
 
 void Game_Player::SetLayer(int new_layer) {
-	location.layer = new_layer;
+	data()->layer = new_layer;
 }
 
 int Game_Player::GetMoveSpeed() const {
-	return location.move_speed;
+	return data()->move_speed;
 }
 
 void Game_Player::SetMoveSpeed(int speed) {
-	location.move_speed = speed;
+	data()->move_speed = speed;
 }
 
 int Game_Player::GetMoveFrequency() const {
-	return location.move_frequency;
+	return data()->move_frequency;
 }
 
 void Game_Player::SetMoveFrequency(int frequency) {
-	location.move_frequency = frequency;
+	data()->move_frequency = frequency;
 }
 
 const RPG::MoveRoute& Game_Player::GetMoveRoute() const {
-	return location.move_route;
+	return data()->move_route;
 }
 
 void Game_Player::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	location.move_route = move_route;
+	data()->move_route = move_route;
 }
 
 int Game_Player::GetOriginalMoveRouteIndex() const {
@@ -138,82 +137,82 @@ void Game_Player::SetOriginalMoveRouteIndex(int /* new_index */) {
 }
 
 int Game_Player::GetMoveRouteIndex() const {
-	return location.move_route_index;
+	return data()->move_route_index;
 }
 
 void Game_Player::SetMoveRouteIndex(int new_index) {
-	location.move_route_index = new_index;
+	data()->move_route_index = new_index;
 }
 
 bool Game_Player::IsMoveRouteOverwritten() const {
-	return location.move_route_overwrite;
+	return data()->move_route_overwrite;
 }
 
 void Game_Player::SetMoveRouteOverwritten(bool force) {
-	location.move_route_overwrite = force;
+	data()->move_route_overwrite = force;
 }
 
 bool Game_Player::IsMoveRouteRepeated() const {
-	return location.move_route_repeated;
+	return data()->move_route_repeated;
 }
 
 void Game_Player::SetMoveRouteRepeated(bool force) {
-	location.move_route_repeated = force;
+	data()->move_route_repeated = force;
 }
 
 const std::string& Game_Player::GetSpriteName() const {
-	return location.sprite_name;
+	return data()->sprite_name;
 }
 
 void Game_Player::SetSpriteName(const std::string& sprite_name) {
-	location.sprite_name = sprite_name;
+	data()->sprite_name = sprite_name;
 }
 
 int Game_Player::GetSpriteIndex() const {
-	return location.sprite_id;
+	return data()->sprite_id;
 }
 
 void Game_Player::SetSpriteIndex(int index) {
-	location.sprite_id = index;
+	data()->sprite_id = index;
 }
 
 bool Game_Player::GetVisible() const {
-	return visible && !location.aboard;
+	return visible && !data()->aboard;
 }
 
 Color Game_Player::GetFlashColor() const {
-	return Color(location.flash_red, location.flash_green, location.flash_blue, flash_alpha);
+	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
 }
 
 void Game_Player::SetFlashColor(const Color& flash_color) {
-	location.flash_red = flash_color.red;
-	location.flash_blue = flash_color.blue;
-	location.flash_green = flash_color.green;
+	data()->flash_red = flash_color.red;
+	data()->flash_blue = flash_color.blue;
+	data()->flash_green = flash_color.green;
 	flash_alpha = flash_color.alpha;
 }
 
 double Game_Player::GetFlashLevel() const {
-	return location.flash_current_level;
+	return data()->flash_current_level;
 }
 
 void Game_Player::SetFlashLevel(double flash_level) {
-	location.flash_current_level = flash_level;
+	data()->flash_current_level = flash_level;
 }
 
 int Game_Player::GetFlashTimeLeft() const {
-	return location.flash_time_left;
+	return data()->flash_time_left;
 }
 
 void Game_Player::SetFlashTimeLeft(int time_left) {
-	location.flash_time_left = time_left;
+	data()->flash_time_left = time_left;
 }
 
 bool Game_Player::GetThrough() const {
-	return location.through;
+	return data()->through;
 }
 
 void Game_Player::SetThrough(bool through) {
-	location.through = through;
+	data()->through = through;
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
@@ -253,12 +252,12 @@ void Game_Player::PerformTeleport() {
 	teleporting = false;
 
 	// Finish (un)boarding process
-	if (location.boarding) {
-		location.boarding = false;
-		location.aboard = true;
-	} else if (location.unboarding) {
-		location.unboarding = false;
-		location.aboard = false;
+	if (data()->boarding) {
+		data()->boarding = false;
+		data()->aboard = true;
+	} else if (data()->unboarding) {
+		data()->unboarding = false;
+		data()->aboard = false;
 	}
 
 	// Reset sprite if it was changed by a move
@@ -287,7 +286,7 @@ void Game_Player::PerformTeleport() {
 }
 
 bool Game_Player::MakeWay(int x, int y, int d) const {
-	if (location.aboard)
+	if (data()->aboard)
 		return GetVehicle()->MakeWay(x, y, d);
 
 	if (d > 3) {
@@ -450,19 +449,19 @@ void Game_Player::Update() {
 
 	if (IsMoving() || was_blocked) return;
 
-	if (last_moving && location.boarding) {
+	if (last_moving && data()->boarding) {
 		// Boarding completed
-		location.aboard = true;
-		location.boarding = false;
+		data()->aboard = true;
+		data()->boarding = false;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 		GetVehicle()->SetDirection(GetDirection());
 		GetVehicle()->SetSpriteDirection(GetSpriteDirection());
 		return;
 	}
 
-	if (last_moving && location.unboarding) {
+	if (last_moving && data()->unboarding) {
 		// Unboarding completed
-		location.unboarding = false;
+		data()->unboarding = false;
 		CheckTouchEvent();
 		return;
 	}
@@ -605,7 +604,7 @@ void Game_Player::Refresh() {
 	SetSpriteName(actor->GetSpriteName());
 	SetSpriteIndex(actor->GetSpriteIndex());
 
-	if (location.aboard)
+	if (data()->aboard)
 		GetVehicle()->SyncWithPlayer();
 }
 
@@ -632,10 +631,10 @@ bool Game_Player::GetOnVehicle() {
 	else
 		return false;
 
-	location.vehicle = type;
-	location.preboard_move_speed = GetMoveSpeed();
+	data()->vehicle = type;
+	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
-		location.boarding = true;
+		data()->boarding = true;
 		if (!GetThrough()) {
 			SetThrough(true);
 			MoveForward();
@@ -644,7 +643,7 @@ bool Game_Player::GetOnVehicle() {
 			MoveForward();
 		}
 	} else {
-		location.aboard = true;
+		data()->aboard = true;
 		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
 		SetDirection(RPG::EventPage::Direction_left);
 	}
@@ -682,7 +681,7 @@ bool Game_Player::IsMovable() const {
 		return false;
 	if (IsMoveRouteOverwritten())
 		return false;
-	if (location.boarding || location.unboarding)
+	if (data()->boarding || data()->unboarding)
 		return false;
 	if (Game_Message::message_waiting)
 		return false;
@@ -708,15 +707,15 @@ bool Game_Player::IsBlockedByMoveRoute() const {
 }
 
 bool Game_Player::InVehicle() const {
-	return location.vehicle > 0;
+	return data()->vehicle > 0;
 }
 
 bool Game_Player::InAirship() const {
-	return location.vehicle == Game_Vehicle::Airship;
+	return data()->vehicle == Game_Vehicle::Airship;
 }
 
 Game_Vehicle* Game_Player::GetVehicle() const {
-	return Game_Map::GetVehicle((Game_Vehicle::Type) location.vehicle);
+	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
 }
 
 bool Game_Player::CanWalk(int x, int y) {
@@ -783,14 +782,14 @@ void Game_Player::CancelMoveRoute() {
 }
 
 void Game_Player::Unboard() {
-	location.aboard = false;
-	SetMoveSpeed(location.preboard_move_speed);
+	data()->aboard = false;
+	SetMoveSpeed(data()->preboard_move_speed);
 
 	Game_System::BgmPlay(walking_bgm);
 }
 
 bool Game_Player::IsBoardingOrUnboarding() const {
-	return location.boarding || location.unboarding;
+	return data()->boarding || data()->unboarding;
 }
 
 void Game_Player::UnboardingFinished() {
@@ -798,7 +797,7 @@ void Game_Player::UnboardingFinished() {
 	if (InAirship()) {
 		SetDirection(RPG::EventPage::Direction_down);
 	} else {
-		location.unboarding = true;
+		data()->unboarding = true;
 		if (!GetThrough()) {
 			SetThrough(true);
 			MoveForward();
@@ -807,5 +806,5 @@ void Game_Player::UnboardingFinished() {
 			MoveForward();
 		}
 	}
-	location.vehicle = Game_Vehicle::None;
+	data()->vehicle = Game_Vehicle::None;
 }

@@ -131,8 +131,10 @@ public:
 	 */
 	void UnboardingFinished();
 
+protected:
+	RPG::SavePartyLocation* data();
+	const RPG::SavePartyLocation* data() const;
 private:
-	RPG::SavePartyLocation& location;
 
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
@@ -155,5 +157,13 @@ private:
 	bool GetOffVehicle();
 	void Unboard();
 };
+
+inline RPG::SavePartyLocation* Game_Player::data() {
+	return static_cast<RPG::SavePartyLocation*>(Game_Character::data());
+}
+
+inline const RPG::SavePartyLocation* Game_Player::data() const {
+	return static_cast<const RPG::SavePartyLocation*>(Game_Character::data());
+}
 
 #endif
