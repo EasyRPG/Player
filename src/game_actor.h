@@ -294,6 +294,36 @@ public:
 	int GetAccessoryId() const;
 
 	/**
+	 * @return actor's weapon if equipped and type == RPG::Item::Type_weapon
+	 */
+	const RPG::Item* GetWeapon() const;
+
+	/**
+	 * @return actor's 2nd weapon if equipped and type == RPG::Item::Type_weapon
+	 */
+	const RPG::Item* Get2ndWeapon() const;
+
+	/**
+	 * @return actor's shield if equipped and type == RPG::Item::Type_shield
+	 */
+	const RPG::Item* GetShield() const;
+
+	/**
+	 * @return actor's armor if equipped and type == RPG::Item::Type_armor
+	 */
+	const RPG::Item* GetArmor() const;
+
+	/**
+	 * @return actor's helmet if equipped and type == RPG::Item::Type_helmet
+	 */
+	const RPG::Item* GetHelmet() const;
+
+	/**
+	 * @return actor's accessory if equipped and type == RPG::Item::Type_accessory
+	 */
+	const RPG::Item* GetAccessory() const;
+
+	/**
 	 * Gets actor current level.
 	 *
 	 * @return current level.
@@ -746,6 +776,11 @@ public:
 	 * @return Whether the actor avoid terrain damage.
 	 */
 	bool PreventsTerrainDamage();
+
+	/**
+	 * @return If the actor has an equipment that protects against critical hits.
+	 */
+	bool PreventsCritical() const;
 
 	int GetBattleAnimationId() const override;
 
