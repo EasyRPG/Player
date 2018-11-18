@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
+#include <climits>
 
 #include "async_handler.h"
 #include "system.h"
@@ -77,6 +78,8 @@ namespace {
 	bool teleport_delay;
 
 	RPG::Chipset* chipset;
+
+	int last_encounter_idx = 0;
 }
 
 void Game_Map::Init() {
@@ -134,7 +137,7 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
-	ResetEncounterSteps();
+	SetEncounterSteps(0);
 
 	Parallax::ClearChangedBG();
 
@@ -203,13 +206,18 @@ void Game_Map::SetupFromSave() {
 	map_info.Fixup(GetMapInfo());
 	SetChipset(map_info.chipset_id);
 
-	ResetEncounterSteps();
+	SetEncounterSteps(location.encounter_steps);
 
 	// FIXME: Handle Pan correctly
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
 	location.pan_finish_x = 0;
 	location.pan_finish_y = 0;
+}
+
+
+void Game_Map::SetupFromTeleportSelf() {
+	SetEncounterSteps(0);
 }
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
@@ -916,6 +924,11 @@ void Game_Map::UpdateEncounterSteps() {
 		return;
 	}
 
+	if (GetEncounterRate() <= 0) {
+		location.encounter_steps = 0;
+		return;
+	}
+
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
@@ -925,23 +938,59 @@ void Game_Map::UpdateEncounterSteps() {
 		return;
 	}
 
-	location.encounter_steps = location.encounter_steps - terrain->encounter_rate;
+	location.encounter_steps += terrain->encounter_rate;
 
-	if (location.encounter_steps <= 0) {
-		ResetEncounterSteps();
+	struct Row {
+		int ratio;
+		float pmod;
+	};
+
+#if 1
+	static constexpr Row enc_table[] = {
+		{ 0, 0.0625},
+		{ 20, 0.125 },
+		{ 40, 0.25 },
+		{ 60, 0.5 },
+		{ 100, 2.0 },
+		{ 140, 4.0 },
+		{ 160, 8.0 },
+		{ 180, 16.0 },
+		{ INT_MAX, 16.0 }
+	};
+#else
+	//Old versions of RM2k used this table.
+	//Left here for posterity.
+	static constexpr Row enc_table[] = {
+		{ 0, 0.5 },
+		{ 20, 2.0 / 3.0 },
+		{ 50, 5.0 / 6.0 },
+		{ 100, 6.0 / 5.0 },
+		{ 200, 3.0 / 2.0 },
+		{ INT_MAX, 3.0 / 2.0 }
+	};
+#endif
+	const auto encounter_rate = GetEncounterRate();
+	const auto ratio = location.encounter_steps / encounter_rate;
+
+	auto& idx = last_encounter_idx;
+	while (ratio > enc_table[idx+1].ratio) {
+		++idx;
+	}
+	const auto& row = enc_table[idx];
+
+	const auto pmod = row.pmod;
+	const auto p = (1.0f / float(encounter_rate)) * pmod * (float(terrain->encounter_rate) / 100.0f);
+	auto draw = std::uniform_real_distribution<float>()(Utils::GetRNG());
+
+	if (draw < p) {
+		SetEncounterSteps(0);
 		PrepareEncounter();
 	}
 }
 
-void Game_Map::ResetEncounterSteps() {
-	int rate = GetEncounterRate();
-	if (rate > 0) {
-		int throw_one = Utils::GetRandomNumber(0, rate - 1);
-		int throw_two = Utils::GetRandomNumber(0, rate - 1);
-
-		// *100 to handle terrain rate better
-		location.encounter_steps = (throw_one + throw_two + 1) * 100;
-	}
+void Game_Map::SetEncounterSteps(int steps) {
+	last_encounter_idx = 0;
+	location.encounter_steps = steps;
 }
 
 std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
@@ -1007,6 +1056,10 @@ bool Game_Map::PrepareEncounter() {
 
 	Game_Temp::battle_troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
 	Game_Temp::battle_calling = true;
+
+	if (Utils::GetRandomNumber(1, 32) == 1) {
+		Game_Temp::battle_first_strike = true;
+	}
 
 	SetupBattle();
 
