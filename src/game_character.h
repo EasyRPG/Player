@@ -771,7 +771,7 @@ public:
 	 *
 	 * @return Bush depth at this character's position
 	 */
-	virtual int GetBushDepth() const;
+	int GetBushDepth() const;
 
 	void SetGraphic(const std::string& name, int index);
 

@@ -50,7 +50,6 @@ public:
 	int GetOriginalMoveRouteIndex() const override;
 	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool MakeWay(int x, int y, int d) const override;
-	int GetBushDepth() const override;
 	/** @} */
 
 	void LoadSystemSettings();

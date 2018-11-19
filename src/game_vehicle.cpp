@@ -101,14 +101,6 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	return true;
 }
 
-int Game_Vehicle::GetBushDepth() const {
-	if (IsFlying()) {
-		return 0;
-	}
-
-	return Game_Character::GetBushDepth();
-}
-
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case None:

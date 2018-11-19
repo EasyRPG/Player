@@ -895,7 +895,7 @@ bool Game_Character::IsSpinning() const {
 }
 
 int Game_Character::GetBushDepth() const {
-	if (IsJumping())
+	if (IsJumping() || IsFlying())
 		return 0;
 
 	return Game_Map::GetBushDepth(GetX(), GetY());
