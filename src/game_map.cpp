@@ -884,8 +884,11 @@ void Game_Map::Update(bool only_parallel) {
 		ev.Update();
 	}
 
-	for (int i = 0; i < 3; ++i)
-		vehicles[i]->Update();
+	for (auto& vehicle: vehicles) {
+		if (vehicle->GetMapId() == location.map_id) {
+			vehicle->Update();
+		}
+	}
 
 	free_interpreters.clear();
 }
