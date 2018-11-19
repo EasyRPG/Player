@@ -710,6 +710,16 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 		}
 	}
 
+	if (jump_plus_x != 0 || jump_plus_y != 0) {
+		if (std::abs(jump_plus_y) >= std::abs(jump_plus_x)) {
+			SetDirection(jump_plus_y > 0 ? Down : Up);
+			SetSpriteDirection(GetDirection());
+		} else {
+			SetDirection(jump_plus_x > 0 ? Right : Left);
+			SetSpriteDirection(GetDirection());
+		}
+	}
+
 	if (
 		// A character can always land on a tile they were already standing on
 		!(jump_plus_x == 0 && jump_plus_y == 0) &&
