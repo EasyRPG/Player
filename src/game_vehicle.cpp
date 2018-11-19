@@ -240,7 +240,7 @@ void Game_Vehicle::SyncWithPlayer() {
 		return;
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
-	remaining_step = Main_Data::game_player->GetRemainingStep();
+	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
 	SetDirection(Main_Data::game_player->GetDirection());
 	SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
 }

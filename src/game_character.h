@@ -588,6 +588,13 @@ public:
 	int GetRemainingStep() const;
 
 	/**
+	 * Sets remaining step
+	 *
+	 * @param step new remaining step count
+	 */
+	void SetRemainingStep(int step);
+
+	/**
 	 * Gets pattern.
 	 *
 	 * @return pattern.
@@ -761,7 +768,6 @@ protected:
 	bool last_move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
 	bool any_move_successful;
-	int remaining_step;
 	int move_count;
 	int wait_count;
 
@@ -973,6 +979,14 @@ inline int Game_Character::GetMaxStopCount() const {
 
 inline void Game_Character::SetMaxStopCount(int sc) {
 	data()->max_stop_count = sc;
+}
+
+inline int Game_Character::GetRemainingStep() const {
+	return data()->remaining_step;
+}
+
+inline void Game_Character::SetRemainingStep(int step) {
+	data()->remaining_step = step;
 }
 
 #endif

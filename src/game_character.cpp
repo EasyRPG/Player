@@ -39,7 +39,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
 	last_move_failed(false),
-	remaining_step(0),
 	move_count(0),
 	wait_count(0),
 	jumping(false),
@@ -74,7 +73,7 @@ int Game_Character::GetSteppingSpeed() const {
 }
 
 bool Game_Character::IsMoving() const {
-	return !IsJumping() && remaining_step > 0;
+	return !IsJumping() && GetRemainingStep() > 0;
 }
 
 bool Game_Character::IsJumping() const {
@@ -115,7 +114,7 @@ bool Game_Character::IsLandable(int x, int y) const
 void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
-	remaining_step = 0;
+	SetRemainingStep(0);
 }
 
 int Game_Character::GetScreenX() const {
@@ -142,7 +141,7 @@ int Game_Character::GetScreenY() const {
 	}
 
 	if (IsJumping()) {
-		int jump_height = (remaining_step > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - remaining_step : remaining_step) / 8;
+		int jump_height = (GetRemainingStep() > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - GetRemainingStep() : GetRemainingStep()) / 8;
 		y -= (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
 	}
 
@@ -187,7 +186,7 @@ void Game_Character::UpdateSprite() {
 		if (IsSpinning())
 			anime_count++;
 	} else if (IsMoving()) {
-		remaining_step -= min(1 << (1 + GetMoveSpeed()), remaining_step);
+		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		if (IsSpinning() || IsAnimated())
 			anime_count++;
 	} else {
@@ -227,9 +226,10 @@ void Game_Character::UpdateSprite() {
 
 void Game_Character::UpdateJump() {
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
-	remaining_step -= min(jump_speed[GetMoveSpeed() - 1], remaining_step);
-	if (remaining_step <= 0)
+	SetRemainingStep(GetRemainingStep() - min(jump_speed[GetMoveSpeed() - 1], GetRemainingStep()));
+	if (GetRemainingStep() <= 0) {
 		jumping = false;
+	}
 }
 
 void Game_Character::UpdateSelfMovement() {
@@ -485,7 +485,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	} else {
 		SetX(Game_Map::RoundX(GetX() + dx));
 		SetY(Game_Map::RoundY(GetY() + dy));
-		remaining_step = SCREEN_TILE_WIDTH;
+		SetRemainingStep(SCREEN_TILE_WIDTH);
 		BeginMove();
 	}
 
@@ -736,7 +736,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	SetY(new_y);
 	*current_index = i;
 
-	remaining_step = SCREEN_TILE_WIDTH;
+	SetRemainingStep(SCREEN_TILE_WIDTH);
 	SetStopCount(0);
 	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 	move_failed = false;
@@ -815,11 +815,11 @@ int Game_Character::GetSpriteX() const {
 	if (IsMoving()) {
 		int d = GetDirection();
 		if (d == Right || d == UpRight || d == DownRight)
-			x -= remaining_step;
+			x -= GetRemainingStep();
 		else if (d == Left || d == UpLeft || d == DownLeft)
-			x += remaining_step;
+			x += GetRemainingStep();
 	} else if (IsJumping())
-		x -= ((GetX() - jump_x) * remaining_step);
+		x -= ((GetX() - jump_x) * GetRemainingStep());
 
 	return x;
 }
@@ -830,17 +830,13 @@ int Game_Character::GetSpriteY() const {
 	if (IsMoving()) {
 		int d = GetDirection();
 		if (d == Down || d == DownRight || d == DownLeft)
-			y -= remaining_step;
+			y -= GetRemainingStep();
 		else if (d == Up || d == UpRight || d == UpLeft)
-			y += remaining_step;
+			y += GetRemainingStep();
 	} else if (IsJumping())
-		y -= (GetY() - jump_y) * remaining_step;
+		y -= (GetY() - jump_y) * GetRemainingStep();
 
 	return y;
-}
-
-int Game_Character::GetRemainingStep() const {
-	return remaining_step;
 }
 
 int Game_Character::GetPattern() const {
