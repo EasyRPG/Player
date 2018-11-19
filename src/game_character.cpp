@@ -48,8 +48,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	jump_plus_x(0),
 	jump_plus_y(0),
 	anime_count(0),
-	stop_count(0),
-	max_stop_count(0),
 	walk_animation(true),
 	opacity(255),
 	visible(true),
@@ -169,7 +167,7 @@ int Game_Character::GetScreenZ() const {
 }
 
 void Game_Character::Update() {
-	if (wait_count == 0 && stop_count >= max_stop_count) {
+	if (wait_count == 0 && GetStopCount() >= GetMaxStopCount()) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else {
@@ -193,7 +191,7 @@ void Game_Character::UpdateSprite() {
 		if (IsSpinning() || IsAnimated())
 			anime_count++;
 	} else {
-		stop_count++;
+		data()->stop_count++;
 
 		if (IsAnimated() && (IsSpinning() || IsContinuous() || pattern != RPG::EventPage::Frame_middle))
 			anime_count++;
@@ -260,7 +258,7 @@ void Game_Character::MoveTypeCustom() {
 		int original_index = active_route_index;
 		bool looped_around = false;
 		while (true) {
-			if (!IsStopping() || wait_count > 0 || stop_count < max_stop_count)
+			if (!IsStopping() || wait_count > 0 || GetStopCount() < GetMaxStopCount())
 				break;
 
 			if (active_route_index == original_index && looped_around) {
@@ -433,8 +431,8 @@ void Game_Character::MoveTypeCustom() {
 			if (IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
-				stop_count = 0;
-				max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
+				SetStopCount(0);
+				SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
 			}
 		}
 	}
@@ -491,8 +489,8 @@ void Game_Character::Move(int dir, MoveOption option) {
 		BeginMove();
 	}
 
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 }
 
 void Game_Character::MoveForward(MoveOption option) {
@@ -549,8 +547,8 @@ void Game_Character::Turn(int dir) {
 	SetDirection(dir);
 	SetSpriteDirection(dir);
 	move_failed = false;
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency());
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency()));
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -739,8 +737,8 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	*current_index = i;
 
 	remaining_step = SCREEN_TILE_WIDTH;
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 	move_failed = false;
 
 	if (IsContinuous()) {
@@ -797,7 +795,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
 	wait_count = 0;
-	max_stop_count = 0;
+	SetMaxStopCount(0);
 	last_move_failed = false;
 	any_move_successful = false;
 }

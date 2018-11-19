@@ -350,6 +350,30 @@ public:
 	virtual void SetThrough(bool through);
 
 	/**
+	 * @return stop_count
+	 */
+	int GetStopCount() const;
+
+	/**
+	 * Sets the stop_count
+	 *
+	 * @param sc the new stop count
+	 */
+	void SetStopCount(int sc);
+
+	/**
+	 * @return max_stop_count
+	 */
+	int GetMaxStopCount() const;
+
+	/**
+	 * Sets the max_stop_count
+	 *
+	 * @param sc the new max stop count
+	 */
+	void SetMaxStopCount(int sc);
+
+	/**
 	 * Gets if character is moving.
 	 *
 	 * @return whether the character is moving.
@@ -748,8 +772,6 @@ protected:
 	int jump_plus_y;
 
 	int anime_count;
-	int stop_count;
-	int max_stop_count;
 	bool walk_animation;
 	uint8_t flash_alpha;
 
@@ -935,6 +957,22 @@ inline Game_Character::AnimType Game_Character::GetAnimationType() const {
 
 inline void Game_Character::SetAnimationType(Game_Character::AnimType anim_type) {
 	data()->animation_type = int(anim_type);
+}
+
+inline int Game_Character::GetStopCount() const {
+	return data()->stop_count;
+}
+
+inline void Game_Character::SetStopCount(int sc) {
+	data()->stop_count = sc;
+}
+
+inline int Game_Character::GetMaxStopCount() const {
+	return data()->max_stop_count;
+}
+
+inline void Game_Character::SetMaxStopCount(int sc) {
+	data()->max_stop_count = sc;
 }
 
 #endif

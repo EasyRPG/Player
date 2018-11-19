@@ -129,7 +129,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	if (!IsMoveRouteOverwritten()) {
-		max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
+		SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
 	}
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
@@ -427,9 +427,9 @@ void Game_Event::MoveTypeRandom() {
 	int last_direction = GetDirection();
 	switch (Utils::GetRandomNumber(0, 5)) {
 	case 0:
-		stop_count -= Utils::GetRandomNumber(0, stop_count);
-		if (stop_count < 0) {
-			stop_count = 0;
+		SetStopCount(GetStopCount() - Utils::GetRandomNumber(0, GetStopCount()));
+		if (GetStopCount() < 0) {
+			SetStopCount(0);
 		}
 		return;
 	case 1:
@@ -443,13 +443,13 @@ void Game_Event::MoveTypeRandom() {
 		if (!(IsDirectionFixed() || IsFacingLocked()))
 			SetSpriteDirection(last_direction);
 	} else {
-		max_stop_count = max_stop_count / 5 * Utils::GetRandomNumber(3, 6);
+		SetMaxStopCount(GetMaxStopCount() / 5 * Utils::GetRandomNumber(3, 6));
 	}
 }
 
 void Game_Event::MoveTypeCycle(int default_dir) {
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency()));
-	if (stop_count < max_stop_count) return;
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency())));
+	if (GetStopCount() < GetMaxStopCount()) return;
 
 	int non_default_dir = ReverseDir(default_dir);
 	int move_dir = GetDirection();
@@ -459,10 +459,10 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 
 	Move(move_dir, MoveOption::IgnoreIfCantMove);
 
-	if (move_failed && stop_count >= max_stop_count + 20) {
-		if (stop_count >= max_stop_count + 60) {
+	if (move_failed && GetStopCount() >= GetMaxStopCount() + 20) {
+		if (GetStopCount() >= GetMaxStopCount() + 60) {
 			Move(ReverseDir(move_dir));
-			stop_count = 0;
+			SetStopCount(0);
 		} else {
 			Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
 		}
@@ -498,8 +498,8 @@ void Game_Event::MoveTypeTowardsPlayer() {
 	}
 
 	if (move_failed && !starting) {
-		if (stop_count >= max_stop_count + 60) {
-			stop_count = 0;
+		if (GetStopCount() >= GetMaxStopCount() + 60) {
+			SetStopCount(0);
 		} else {
 			SetDirection(last_direction);
 			if (!(IsDirectionFixed() || IsFacingLocked()))
@@ -529,8 +529,8 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 	}
 
 	if (move_failed && !starting) {
-		if (stop_count >= max_stop_count + 60) {
-			stop_count = 0;
+		if (GetStopCount() >= GetMaxStopCount() + 60) {
+			SetStopCount(0);
 		} else {
 			SetDirection(last_direction);
 			if (!(IsDirectionFixed() || IsFacingLocked()))
