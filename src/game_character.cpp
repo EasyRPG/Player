@@ -41,7 +41,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	last_move_failed(false),
 	move_count(0),
 	wait_count(0),
-	jumping(false),
 	jump_x(0),
 	jump_y(0),
 	jump_plus_x(0),
@@ -75,9 +74,6 @@ bool Game_Character::IsMoving() const {
 	return !IsJumping() && GetRemainingStep() > 0;
 }
 
-bool Game_Character::IsJumping() const {
-	return jumping;
-}
 
 bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
@@ -227,7 +223,7 @@ void Game_Character::UpdateJump() {
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
 	SetRemainingStep(GetRemainingStep() - min(jump_speed[GetMoveSpeed() - 1], GetRemainingStep()));
 	if (GetRemainingStep() <= 0) {
-		jumping = false;
+		SetJumping(false);
 	}
 }
 
@@ -460,7 +456,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	int dx = (dir == Right || dir == UpRight || dir == DownRight) - (dir == Left || dir == DownLeft || dir == UpLeft);
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
 
-	if (jumping) {
+	if (IsJumping()) {
 		jump_plus_x += dx;
 		jump_plus_y += dy;
 		return;
@@ -609,7 +605,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	jump_y = GetY();
 	jump_plus_x = 0;
 	jump_plus_y = 0;
-	jumping = true;
+	SetJumping(true);
 
 	bool end_found = false;
 	unsigned int i;
@@ -685,7 +681,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	if (!end_found) {
 		// No EndJump found. Move route ends directly
 		*current_index = i;
-		jumping = false;
+		SetJumping(false);
 		return;
 	}
 
@@ -721,7 +717,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	) {
 		// Reset to begin jump command and try again...
 		move_failed = true;
-		jumping = false;
+		SetJumping(false);
 
 		if (current_route->skippable) {
 			*current_index = i;
@@ -897,7 +893,7 @@ bool Game_Character::IsSpinning() const {
 }
 
 int Game_Character::GetBushDepth() const {
-	if (jumping)
+	if (IsJumping())
 		return 0;
 
 	return Game_Map::GetBushDepth(GetX(), GetY());

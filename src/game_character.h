@@ -393,11 +393,16 @@ public:
 	virtual bool IsMoving() const;
 
 	/**
-	 * Checks if the character is jumping.
-	 *
 	 * @return whether the character is jumping.
 	 */
-	virtual bool IsJumping() const;
+	bool IsJumping() const;
+
+	/**
+	 * Set whether the character is jumping.
+	 *
+	 * @param val flag indicating jumping status
+	 */
+	void SetJumping(bool val);
 
 	/**
 	 * Checks if the character is stopping.
@@ -783,7 +788,6 @@ protected:
 	int move_count;
 	int wait_count;
 
-	bool jumping;
 	int jump_x;
 	int jump_y;
 	int jump_plus_x;
@@ -1006,6 +1010,14 @@ inline int Game_Character::GetRemainingStep() const {
 
 inline void Game_Character::SetRemainingStep(int step) {
 	data()->remaining_step = step;
+}
+
+inline bool Game_Character::IsJumping() const {
+	return data()->jumping;
+}
+
+inline void Game_Character::SetJumping(bool val) {
+	data()->jumping = val;
 }
 
 #endif
