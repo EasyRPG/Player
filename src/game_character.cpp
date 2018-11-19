@@ -381,9 +381,11 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_on:
 				SetThrough(true);
+				data()->route_through = true;
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_off:
 				SetThrough(false);
+				data()->route_through = false;
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
 				if (IsContinuous()) {
