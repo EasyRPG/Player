@@ -32,7 +32,6 @@
 #include <cassert>
 
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
-	pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
@@ -185,7 +184,7 @@ void Game_Character::UpdateSprite() {
 	} else {
 		data()->stop_count++;
 
-		if (IsAnimated() && (IsSpinning() || IsContinuous() || pattern != RPG::EventPage::Frame_middle))
+		if (IsAnimated() && (IsSpinning() || IsContinuous() || GetAnimFrame() != RPG::EventPage::Frame_middle))
 			SetAnimCount(GetAnimCount() + 1);
 	}
 
@@ -193,22 +192,22 @@ void Game_Character::UpdateSprite() {
 		if (IsSpinning()) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
-			pattern = RPG::EventPage::Frame_middle;
+			SetAnimFrame(RPG::EventPage::Frame_middle);
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
 			if (last_pattern == RPG::EventPage::Frame_left) {
-				if (pattern == RPG::EventPage::Frame_right) {
-					pattern = RPG::EventPage::Frame_middle;
+				if (GetAnimFrame() == RPG::EventPage::Frame_right) {
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 					last_pattern = RPG::EventPage::Frame_right;
 				} else {
-					pattern = RPG::EventPage::Frame_right;
+					SetAnimFrame(RPG::EventPage::Frame_right);
 				}
 			} else {
-				if (pattern == RPG::EventPage::Frame_left) {
-					pattern = RPG::EventPage::Frame_middle;
+				if (GetAnimFrame() == RPG::EventPage::Frame_left) {
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 					last_pattern = RPG::EventPage::Frame_left;
 				} else {
-					pattern = RPG::EventPage::Frame_left;
+					SetAnimFrame(RPG::EventPage::Frame_left);
 				}
 			}
 		}
@@ -389,7 +388,7 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
 				if (IsContinuous()) {
-					pattern = RPG::EventPage::Frame_middle;
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 				}
 				walk_animation = false;
 				break;
@@ -737,7 +736,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	move_failed = false;
 
 	if (IsContinuous()) {
-		pattern = RPG::EventPage::Frame_middle;
+		SetAnimFrame(RPG::EventPage::Frame_middle);
 	}
 }
 
@@ -832,10 +831,6 @@ int Game_Character::GetSpriteY() const {
 		y -= (GetY() - jump_y) * GetRemainingStep();
 
 	return y;
-}
-
-int Game_Character::GetPattern() const {
-	return pattern;
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {

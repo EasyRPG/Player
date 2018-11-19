@@ -294,7 +294,7 @@ void Game_Vehicle::Update() {
 					SetFlying(false);
 					Main_Data::game_player->SetFlying(false);
 					walk_animation = false;
-					pattern = 1;
+					SetAnimFrame(AnimFrame::Frame_middle);
 				} else {
 					// Can't land here, ascend again
 					data()->remaining_ascent = SCREEN_TILE_WIDTH;

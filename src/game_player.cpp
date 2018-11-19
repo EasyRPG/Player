@@ -111,7 +111,7 @@ void Game_Player::PerformTeleport() {
 	Refresh();
 
 	if (Game_Map::GetMapId() != new_map_id) {
-		pattern = RPG::EventPage::Frame_middle;
+		SetAnimFrame(RPG::EventPage::Frame_middle);
 		Game_Map::Setup(new_map_id);
 		last_pan_x = 0;
 		last_pan_y = 0;

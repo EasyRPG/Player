@@ -36,6 +36,7 @@
 class Game_Character {
 public:
 	using AnimType = RPG::EventPage::AnimType;
+	using AnimFrame = RPG::EventPage::Frame;
 
 	/**
 	 * Destructor.
@@ -285,6 +286,20 @@ public:
 	 * @param index new sprite index
 	 */
 	void SetSpriteIndex(int index);
+
+	/**
+	 * Gets animation frame of character.
+	 *
+	 * @return anim_frame
+	 */
+	AnimFrame GetAnimFrame() const;
+
+	/**
+	 * Sets animation frame of character.
+	 *
+	 * @param frame new anim_frame
+	 */
+	void SetAnimFrame(AnimFrame frame);
 
 	/**
 	 * Begins a flash.
@@ -649,13 +664,6 @@ public:
 	void SetRemainingStep(int step);
 
 	/**
-	 * Gets pattern.
-	 *
-	 * @return pattern.
-	 */
-	int GetPattern() const;
-
-	/**
 	 * Gets animation type.
 	 *
 	 * @return animation type.
@@ -802,7 +810,6 @@ protected:
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
 
-	int pattern;
 	int last_pattern;
 
 	RPG::MoveRoute original_move_route;
@@ -960,6 +967,14 @@ inline int Game_Character::GetSpriteIndex() const {
 
 inline void Game_Character::SetSpriteIndex(int index) {
 	data()->sprite_id = index;
+}
+
+inline Game_Character::AnimFrame Game_Character::GetAnimFrame() const {
+	return AnimFrame(data()->anim_frame);
+}
+
+inline void Game_Character::SetAnimFrame(AnimFrame frame) {
+	data()->anim_frame = AnimFrame(frame);
 }
 
 inline Color Game_Character::GetFlashColor() const {
