@@ -104,7 +104,7 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 
 
 bool Game_Vehicle::IsAnimated() const {
-	return true;
+	return IsContinuous();
 }
 
 bool Game_Vehicle::IsContinuous() const {
