@@ -102,8 +102,9 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 }
 
 int Game_Vehicle::GetBushDepth() const {
-	if (data()->flying)
+	if (IsFlying()) {
 		return 0;
+	}
 
 	return Game_Character::GetBushDepth();
 }
@@ -213,7 +214,7 @@ void Game_Vehicle::GetOn() {
 	if (type == Airship) {
 		SetLayer(RPG::EventPage::Layers_above);
 		data()->remaining_ascent = SCREEN_TILE_WIDTH;
-		data()->flying = true;
+		SetFlying(true);
 	} else {
 		walk_animation = true;
 	}
@@ -246,7 +247,7 @@ void Game_Vehicle::SyncWithPlayer() {
 }
 
 int Game_Vehicle::GetAltitude() const {
-	if (!data()->flying)
+	if (!IsFlying())
 		return 0;
 	else if (IsAscending())
 		return (SCREEN_TILE_WIDTH - data()->remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
@@ -304,7 +305,7 @@ void Game_Vehicle::Update() {
 					SetLayer(RPG::EventPage::Layers_same);
 					driving = false;
 					Main_Data::game_player->UnboardingFinished();
-					data()->flying = false;
+					SetFlying(false);
 					walk_animation = false;
 					pattern = 1;
 				} else {

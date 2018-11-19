@@ -429,6 +429,18 @@ public:
 	void SetBeginJumpY(int y);
 
 	/**
+	 * @return whether the character is flying.
+	 */
+	bool IsFlying() const;
+
+	/**
+	 * Set whether the character is flying.
+	 *
+	 * @param val whether or not character is flying.
+	 */
+	void SetFlying(bool val);
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -1058,6 +1070,14 @@ inline int Game_Character::GetBeginJumpY() const {
 
 inline void Game_Character::SetBeginJumpY(int y) {
 	data()->begin_jump_y = y;
+}
+
+inline bool Game_Character::IsFlying() const {
+	return data()->flying;
+}
+
+inline void Game_Character::SetFlying(bool val) {
+	data()->flying = val;
 }
 
 #endif
