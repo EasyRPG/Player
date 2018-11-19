@@ -111,7 +111,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	}
 
 	if (page == nullptr) {
-		tile_id = 0;
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
@@ -120,10 +119,9 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		list.clear();
 		return;
 	}
+
 	SetSpriteName(page->character_name);
 	SetSpriteIndex(page->character_index);
-
-	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	pattern = page->character_pattern;
 
@@ -164,14 +162,11 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	page = new_page;
 
 	if (page == nullptr) {
-		tile_id = 0;
 		trigger = -1;
 		list.clear();
 		interpreter.reset();
 		return;
 	}
-
-	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	pattern = page->character_pattern;
 

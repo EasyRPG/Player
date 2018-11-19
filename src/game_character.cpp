@@ -32,7 +32,6 @@
 #include <cassert>
 
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
-	tile_id(0),
 	pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	animation_id(0),
@@ -810,7 +809,7 @@ void Game_Character::CancelMoveRoute() {
 }
 
 int Game_Character::GetTileId() const {
-	return tile_id;
+	return GetSpriteName().empty() ? GetSpriteIndex() : 0;
 }
 
 int Game_Character::GetSpriteX() const {
@@ -914,7 +913,6 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	if (GetSpriteName() != name || GetSpriteIndex() != index) {
 		SetSpriteName(name);
 		SetSpriteIndex(index);
-		tile_id = 0;
 	}
 }
 

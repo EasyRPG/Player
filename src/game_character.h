@@ -710,7 +710,6 @@ protected:
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
 
-	int tile_id;
 	int pattern;
 	int last_pattern;
 	int animation_id;
