@@ -55,7 +55,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	walk_animation = type != Airship;
-	animation_type = RPG::EventPage::AnimType_continuous;
+	SetAnimationType(RPG::EventPage::AnimType_continuous);
 	LoadSystemSettings();
 }
 

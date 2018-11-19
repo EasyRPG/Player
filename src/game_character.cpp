@@ -35,7 +35,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	animation_id(0),
-	animation_type(RPG::EventPage::AnimType_non_continuous),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
@@ -882,24 +881,26 @@ bool Game_Character::IsFlashPending() const {
 }
 
 bool Game_Character::IsAnimated() const {
-	return walk_animation && animation_type != RPG::EventPage::AnimType_fixed_graphic;
+	return walk_animation && GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic;
 }
 
 bool Game_Character::IsDirectionFixed() const {
+	auto at = GetAnimationType();
 	return
-		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
-		animation_type == RPG::EventPage::AnimType_fixed_non_continuous;
+		at == RPG::EventPage::AnimType_fixed_continuous ||
+		at == RPG::EventPage::AnimType_fixed_graphic ||
+		at == RPG::EventPage::AnimType_fixed_non_continuous;
 }
 
 bool Game_Character::IsContinuous() const {
+	auto at = GetAnimationType();
 	return
-		animation_type == RPG::EventPage::AnimType_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_continuous;
+		at == RPG::EventPage::AnimType_continuous ||
+		at == RPG::EventPage::AnimType_fixed_continuous;
 }
 
 bool Game_Character::IsSpinning() const {
-	return animation_type == RPG::EventPage::AnimType_spin;
+	return GetAnimationType() == RPG::EventPage::AnimType_spin;
 }
 
 int Game_Character::GetBushDepth() const {

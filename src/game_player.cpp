@@ -40,6 +40,7 @@ Game_Player::Game_Player():
 {
 	SetDirection(RPG::EventPage::Direction_down);
 	SetMoveSpeed(4);
+	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
 }
 
 int Game_Player::GetScreenZ() const {

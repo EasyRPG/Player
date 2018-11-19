@@ -136,7 +136,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetOriginalMoveRouteIndex(0);
 
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
-	animation_type = page->animation_type;
+	SetAnimationType(RPG::EventPage::AnimType(page->animation_type));
 
 	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
 		SetSpriteDirection(page->character_direction);
@@ -172,7 +172,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 
 	move_type = page->move_type;
 	original_move_route = page->move_route;
-	animation_type = page->animation_type;
 	trigger = page->trigger;
 	list = page->event_commands;
 

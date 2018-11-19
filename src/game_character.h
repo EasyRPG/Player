@@ -22,6 +22,7 @@
 #include <string>
 #include "color.h"
 #include "rpg_moveroute.h"
+#include "rpg_eventpage.h"
 #include "rpg_savemapeventbase.h"
 
 #ifdef __MORPHOS__
@@ -33,6 +34,7 @@
  */
 class Game_Character {
 public:
+	using AnimType = RPG::EventPage::AnimType;
 
 	/**
 	 * Destructor.
@@ -576,6 +578,20 @@ public:
 	int GetAnimationId() const;
 
 	/**
+	 * Gets animation type.
+	 *
+	 * @return animation type.
+	 */
+	AnimType GetAnimationType() const;
+
+	/**
+	 * Sets animation type.
+	 *
+	 * @param anim_type new animation type.
+	 */
+	void SetAnimationType(AnimType anim_type);
+
+	/**
 	 * Sets animation ID.
 	 *
 	 * @param animation_id new animation ID.
@@ -713,7 +729,6 @@ protected:
 	int pattern;
 	int last_pattern;
 	int animation_id;
-	int animation_type;
 
 	RPG::MoveRoute original_move_route;
 	int original_move_frequency;
@@ -911,6 +926,15 @@ inline bool Game_Character::GetThrough() const {
 
 inline void Game_Character::SetThrough(bool through) {
 	data()->through = through;
+}
+
+
+inline Game_Character::AnimType Game_Character::GetAnimationType() const {
+	return AnimType(data()->animation_type);
+}
+
+inline void Game_Character::SetAnimationType(Game_Character::AnimType anim_type) {
+	data()->animation_type = int(anim_type);
 }
 
 #endif
