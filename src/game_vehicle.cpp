@@ -207,6 +207,7 @@ void Game_Vehicle::GetOn() {
 		SetLayer(RPG::EventPage::Layers_above);
 		data()->remaining_ascent = SCREEN_TILE_WIDTH;
 		SetFlying(true);
+		Main_Data::game_player->SetFlying(true);
 	} else {
 		walk_animation = true;
 	}
@@ -298,6 +299,7 @@ void Game_Vehicle::Update() {
 					driving = false;
 					Main_Data::game_player->UnboardingFinished();
 					SetFlying(false);
+					Main_Data::game_player->SetFlying(false);
 					walk_animation = false;
 					pattern = 1;
 				} else {
