@@ -302,6 +302,18 @@ public:
 	void SetAnimFrame(AnimFrame frame);
 
 	/**
+	 * @return true if animation is paused.
+	 */
+	bool IsAnimPaused() const;
+
+	/**
+	 * Sets whether animation is paused.
+	 *
+	 * @param value whether to pause the animation.
+	 */
+	void SetAnimPaused(bool value);
+
+	/**
 	 * Begins a flash.
 	 *
 	 * @param color The flash color.
@@ -827,7 +839,6 @@ protected:
 	int jump_plus_x;
 	int jump_plus_y;
 
-	bool walk_animation;
 	uint8_t flash_alpha;
 
 	bool visible;
@@ -975,6 +986,14 @@ inline Game_Character::AnimFrame Game_Character::GetAnimFrame() const {
 
 inline void Game_Character::SetAnimFrame(AnimFrame frame) {
 	data()->anim_frame = AnimFrame(frame);
+}
+
+inline bool Game_Character::IsAnimPaused() const {
+	return data()->anim_paused;
+}
+
+inline void Game_Character::SetAnimPaused(bool value) {
+	data()->anim_paused = value;
 }
 
 inline Color Game_Character::GetFlashColor() const {

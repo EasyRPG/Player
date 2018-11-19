@@ -43,7 +43,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	jump_y(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
-	walk_animation(true),
 	visible(true),
 	_data(d)
 {
@@ -390,10 +389,10 @@ void Game_Character::MoveTypeCustom() {
 				if (IsContinuous()) {
 					SetAnimFrame(RPG::EventPage::Frame_middle);
 				}
-				walk_animation = false;
+				SetAnimPaused(true);
 				break;
 			case RPG::MoveCommand::Code::start_animation:
-				walk_animation = true;
+				SetAnimPaused(false);
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
 				SetTransparency(GetTransparency() + 1);
@@ -854,7 +853,7 @@ bool Game_Character::IsFlashPending() const {
 }
 
 bool Game_Character::IsAnimated() const {
-	return walk_animation && GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic;
+	return !IsAnimPaused() && GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic;
 }
 
 bool Game_Character::IsDirectionFixed() const {
