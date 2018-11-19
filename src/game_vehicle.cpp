@@ -51,7 +51,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	Game_Character(getDataFromType(_type))
 {
 	type = _type;
-	driving = false;
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	walk_animation = type != Airship;
@@ -69,7 +68,7 @@ int Game_Vehicle::GetMoveSpeed() const {
 
 void Game_Vehicle::SetMoveSpeed(int speed) {
 	data()->move_speed = speed;
-	if (driving)
+	if (IsInUse())
 		Main_Data::game_player->SetMoveSpeed(speed);
 }
 
@@ -147,10 +146,7 @@ RPG::Music& Game_Vehicle::GetBGM() {
 }
 
 void Game_Vehicle::Refresh() {
-	if (!driving && Main_Data::game_player->GetVehicle() == this)
-		driving = true;
-
-	if (driving)
+	if (IsInUse())
 		SetMapId(Game_Map::GetMapId());
 	else if (IsInCurrentMap())
 		MoveTo(GetX(), GetY());
@@ -164,11 +160,11 @@ void Game_Vehicle::Refresh() {
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_same);
+			SetLayer(IsInUse() ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
-	walk_animation = (type != Airship) || driving;
+	walk_animation = (type != Airship) || IsInUse();
 }
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
@@ -202,7 +198,6 @@ bool Game_Vehicle::GetVisible() const {
 }
 
 void Game_Vehicle::GetOn() {
-	driving = true;
 	if (type == Airship) {
 		SetLayer(RPG::EventPage::Layers_above);
 		data()->remaining_ascent = SCREEN_TILE_WIDTH;
@@ -218,7 +213,6 @@ void Game_Vehicle::GetOff() {
 	if (type == Airship) {
 		data()->remaining_descent = SCREEN_TILE_WIDTH;
 	} else {
-		driving = false;
 		Main_Data::game_player->UnboardingFinished();
 	}
 	SetDirection(Left);
@@ -226,11 +220,11 @@ void Game_Vehicle::GetOff() {
 }
 
 bool Game_Vehicle::IsInUse() const {
-	return driving;
+	return Main_Data::game_player->GetVehicle() == this;
 }
 
 void Game_Vehicle::SyncWithPlayer() {
-	if (!driving || IsAscending() || IsDescending())
+	if (!IsInUse() || IsAscending() || IsDescending())
 		return;
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
@@ -296,7 +290,6 @@ void Game_Vehicle::Update() {
 			if (!IsDescending()) {
 				if (CanLand()) {
 					SetLayer(RPG::EventPage::Layers_same);
-					driving = false;
 					Main_Data::game_player->UnboardingFinished();
 					SetFlying(false);
 					Main_Data::game_player->SetFlying(false);
