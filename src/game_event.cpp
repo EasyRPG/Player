@@ -39,6 +39,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	from_save(false) {
 
 	SetMapId(map_id);
+	SetMoveSpeed(3);
 	MoveTo(event.x, event.y);
 	Refresh();
 }
