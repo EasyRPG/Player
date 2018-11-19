@@ -142,7 +142,9 @@ int Game_Character::GetScreenY() const {
 int Game_Character::GetScreenZ() const {
 	int z = 0;
 
-	if (GetLayer() == RPG::EventPage::Layers_same) {
+	if (IsFlying()) {
+		z = Priority_EventsAbove;
+	} else if (GetLayer() == RPG::EventPage::Layers_same) {
 		z = Priority_Player;
 	} else if (GetLayer() == RPG::EventPage::Layers_below) {
 		z = Priority_EventsBelow;

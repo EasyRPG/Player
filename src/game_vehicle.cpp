@@ -55,6 +55,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	SetSpriteDirection(Left);
 	SetAnimPaused(type == Airship);
 	SetAnimationType(RPG::EventPage::AnimType_continuous);
+	SetLayer(RPG::EventPage::Layers_same);
 	LoadSystemSettings();
 }
 
@@ -156,11 +157,9 @@ void Game_Vehicle::Refresh() {
 			break;
 		case Boat:
 		case Ship:
-			SetLayer(RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetLayer(IsInUse() ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
@@ -198,7 +197,6 @@ bool Game_Vehicle::GetVisible() const {
 
 void Game_Vehicle::GetOn() {
 	if (type == Airship) {
-		SetLayer(RPG::EventPage::Layers_above);
 		data()->remaining_ascent = SCREEN_TILE_WIDTH;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
@@ -288,7 +286,6 @@ void Game_Vehicle::Update() {
 			data()->remaining_descent = data()->remaining_descent - 8;
 			if (!IsDescending()) {
 				if (CanLand()) {
-					SetLayer(RPG::EventPage::Layers_same);
 					Main_Data::game_player->UnboardingFinished();
 					SetFlying(false);
 					Main_Data::game_player->SetFlying(false);
