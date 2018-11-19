@@ -762,14 +762,14 @@ public:
 	 *
 	 * @return Wheter animations are enabled.
 	 */
-	bool IsAnimated() const;
+	virtual bool IsAnimated() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	bool IsContinuous() const;
+	virtual bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
