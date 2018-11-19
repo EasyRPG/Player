@@ -405,6 +405,30 @@ public:
 	void SetJumping(bool val);
 
 	/**
+	 * @return X position where jump began.
+	 */
+	int GetBeginJumpX() const;
+
+	/**
+	 * Set X position where jump began.
+	 *
+	 * @param x x position where jump began
+	 */
+	void SetBeginJumpX(int x);
+
+	/**
+	 * @return Y position where jump began.
+	 *
+	 * @param y y position where jump began
+	 */
+	int GetBeginJumpY() const;
+
+	/**
+	 * Set Y position where jump began.
+	 */
+	void SetBeginJumpY(int y);
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -1018,6 +1042,22 @@ inline bool Game_Character::IsJumping() const {
 
 inline void Game_Character::SetJumping(bool val) {
 	data()->jumping = val;
+}
+
+inline int Game_Character::GetBeginJumpX() const {
+	return data()->begin_jump_x;
+}
+
+inline void Game_Character::SetBeginJumpX(int x) {
+	data()->begin_jump_x = x;
+}
+
+inline int Game_Character::GetBeginJumpY() const {
+	return data()->begin_jump_y;
+}
+
+inline void Game_Character::SetBeginJumpY(int y) {
+	data()->begin_jump_y = y;
 }
 
 #endif

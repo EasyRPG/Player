@@ -603,6 +603,8 @@ void Game_Character::Wait() {
 void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current_index) {
 	jump_x = GetX();
 	jump_y = GetY();
+	SetBeginJumpX(jump_x);
+	SetBeginJumpY(jump_y);
 	jump_plus_x = 0;
 	jump_plus_y = 0;
 	SetJumping(true);
