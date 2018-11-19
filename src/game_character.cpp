@@ -34,7 +34,6 @@
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
-	animation_id(0),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
@@ -837,13 +836,6 @@ int Game_Character::GetSpriteY() const {
 
 int Game_Character::GetPattern() const {
 	return pattern;
-}
-
-int Game_Character::GetAnimationId() const {
-	return animation_id;
-}
-void Game_Character::SetAnimationId(int new_animation_id) {
-	animation_id = new_animation_id;
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {

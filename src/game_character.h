@@ -656,13 +656,6 @@ public:
 	int GetPattern() const;
 
 	/**
-	 * Gets animation ID.
-	 *
-	 * @return animation ID.
-	 */
-	int GetAnimationId() const;
-
-	/**
 	 * Gets animation type.
 	 *
 	 * @return animation type.
@@ -675,13 +668,6 @@ public:
 	 * @param anim_type new animation type.
 	 */
 	void SetAnimationType(AnimType anim_type);
-
-	/**
-	 * Sets animation ID.
-	 *
-	 * @param animation_id new animation ID.
-	 */
-	void SetAnimationId(int animation_id);
 
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;
@@ -818,7 +804,6 @@ protected:
 
 	int pattern;
 	int last_pattern;
-	int animation_id;
 
 	RPG::MoveRoute original_move_route;
 	int original_move_frequency;
