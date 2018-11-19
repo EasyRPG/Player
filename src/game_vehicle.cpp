@@ -68,9 +68,11 @@ int Game_Vehicle::GetMoveSpeed() const {
 }
 
 void Game_Vehicle::SetMoveSpeed(int speed) {
-	data()->move_speed = speed;
-	if (IsInUse())
+	if (IsInUse()) {
 		Main_Data::game_player->SetMoveSpeed(speed);
+	} else {
+		Game_Character::SetMoveSpeed(speed);
+	}
 }
 
 int Game_Vehicle::GetOriginalMoveRouteIndex() const {
