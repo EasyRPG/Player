@@ -147,7 +147,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteDirection(page->character_direction);
 	}
 
-	SetOpacity(page->translucent ? 160 : 255);
+	SetTransparency(page->translucent ? 3 : 0);
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 	trigger = page->trigger;
@@ -174,9 +174,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	original_move_route = page->move_route;
 	trigger = page->trigger;
 	list = page->event_commands;
-
-	// FIXME: transparency gets not restored otherwise
-	SetOpacity(page->translucent ? 160 : 255);
 
 	// Trigger parallel events when the interpreter wasn't already running
 	// (because it was the middle of a parallel event while saving)

@@ -24,6 +24,7 @@
 #include "rpg_moveroute.h"
 #include "rpg_eventpage.h"
 #include "rpg_savemapeventbase.h"
+#include "utils.h"
 
 #ifdef __MORPHOS__
 #undef Wait
@@ -702,14 +703,19 @@ public:
 	 *
 	 * @return opacity (0 = Invisible, 255 = opaque)
 	 */
-	virtual int GetOpacity() const;
+	int GetOpacity() const;
 
 	/**
-	 * Sets opacity of the character.
-	 *
-	 * @param opacity New opacity (0 = Invisible, 255 = opaque)
+	 * @return transparency (0 = Invisible, 255 = opaque)
 	 */
-	virtual void SetOpacity(int opacity);
+	int GetTransparency() const;
+
+	/**
+	 * Sets transparency of the character.
+	 *
+	 * @param value New transparency (0 = Opaque, 7 = mostly transparent)
+	 */
+	void SetTransparency(int value);
 
 	/**
 	 * Gets if the character is visible.
@@ -832,7 +838,6 @@ protected:
 	bool walk_animation;
 	uint8_t flash_alpha;
 
-	int opacity;
 	bool visible;
 
 	int frame_count_at_last_update_parallel = -1;
@@ -1078,6 +1083,14 @@ inline bool Game_Character::IsFlying() const {
 
 inline void Game_Character::SetFlying(bool val) {
 	data()->flying = val;
+}
+
+inline int Game_Character::GetTransparency() const {
+	return data()->transparency;
+}
+
+inline void Game_Character::SetTransparency(int value) {
+	data()->transparency = Utils::Clamp(value, 0, 7);
 }
 
 #endif

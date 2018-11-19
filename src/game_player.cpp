@@ -119,7 +119,7 @@ void Game_Player::PerformTeleport() {
 		Game_Map::SetupFromTeleportSelf();
 	}
 
-	SetOpacity(255);
+	SetTransparency(0);
 
 	MoveTo(new_x, new_y);
 	if (new_direction >= 0) {

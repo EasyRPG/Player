@@ -46,7 +46,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	jump_plus_x(0),
 	jump_plus_y(0),
 	walk_animation(true),
-	opacity(255),
 	visible(true),
 	_data(d)
 {
@@ -399,10 +398,10 @@ void Game_Character::MoveTypeCustom() {
 				walk_animation = true;
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
-				SetOpacity(max(40, GetOpacity() - 45));
+				SetTransparency(GetTransparency() + 1);
 				break;
 			case RPG::MoveCommand::Code::decrease_transp:
-				SetOpacity(GetOpacity() + 45);
+				SetTransparency(GetTransparency() - 1);
 				break;
 			}
 
@@ -851,12 +850,8 @@ bool Game_Character::IsInPosition(int x, int y) const {
 	return ((GetX() == x) && (GetY() == y));
 }
 
-void Game_Character::SetOpacity(int opacity) {
-	this->opacity = min(max(0, opacity), 255);
-}
-
 int Game_Character::GetOpacity() const {
-	return opacity;
+	return (8 - GetTransparency()) * 32 - 1;
 }
 
 bool Game_Character::GetVisible() const {
