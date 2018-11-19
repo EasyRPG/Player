@@ -46,7 +46,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	jump_y(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
-	anime_count(0),
 	walk_animation(true),
 	opacity(255),
 	visible(true),
@@ -184,19 +183,19 @@ void Game_Character::UpdateSprite() {
 	if (IsJumping()) {
 		UpdateJump();
 		if (IsSpinning())
-			anime_count++;
+			SetAnimCount(GetAnimCount() + 1);
 	} else if (IsMoving()) {
 		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		if (IsSpinning() || IsAnimated())
-			anime_count++;
+			SetAnimCount(GetAnimCount() + 1);
 	} else {
 		data()->stop_count++;
 
 		if (IsAnimated() && (IsSpinning() || IsContinuous() || pattern != RPG::EventPage::Frame_middle))
-			anime_count++;
+			SetAnimCount(GetAnimCount() + 1);
 	}
 
-	if (anime_count >= GetSteppingSpeed()) {
+	if (GetAnimCount() >= GetSteppingSpeed()) {
 		if (IsSpinning()) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
@@ -220,7 +219,7 @@ void Game_Character::UpdateSprite() {
 			}
 		}
 
-		anime_count = 0;
+		SetAnimCount(0);
 	}
 }
 

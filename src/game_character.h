@@ -374,6 +374,18 @@ public:
 	void SetMaxStopCount(int sc);
 
 	/**
+	 * @return anim_count
+	 */
+	int GetAnimCount() const;
+
+	/**
+	 * Sets the stop_count
+	 *
+	 * @param ac the new anim count.
+	 */
+	void SetAnimCount(int ac);
+
+	/**
 	 * Gets if character is moving.
 	 *
 	 * @return whether the character is moving.
@@ -777,7 +789,6 @@ protected:
 	int jump_plus_x;
 	int jump_plus_y;
 
-	int anime_count;
 	bool walk_animation;
 	uint8_t flash_alpha;
 
@@ -979,6 +990,14 @@ inline int Game_Character::GetMaxStopCount() const {
 
 inline void Game_Character::SetMaxStopCount(int sc) {
 	data()->max_stop_count = sc;
+}
+
+inline int Game_Character::GetAnimCount() const {
+	return data()->anim_count;
+}
+
+inline void Game_Character::SetAnimCount(int ac) {
+	data()->anim_count = ac;
 }
 
 inline int Game_Character::GetRemainingStep() const {
