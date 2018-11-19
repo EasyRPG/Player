@@ -834,8 +834,6 @@ protected:
 	int move_count;
 	int wait_count;
 
-	int jump_x;
-	int jump_y;
 	int jump_plus_x;
 	int jump_plus_y;
 
