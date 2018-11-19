@@ -895,8 +895,9 @@ bool Game_Character::IsSpinning() const {
 }
 
 int Game_Character::GetBushDepth() const {
-	if (IsJumping() || IsFlying())
+	if ((GetLayer() != RPG::EventPage::Layers_same) || IsJumping() || IsFlying()) {
 		return 0;
+	}
 
 	return Game_Map::GetBushDepth(GetX(), GetY());
 }
