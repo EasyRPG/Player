@@ -44,12 +44,14 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
 	Game_Character(new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
-	// FIXME unused int parameter
 	event(event),
-	from_save(true) {
+	from_save(true)
+{
+	// Savegames have 0 for the mapid for compatibility with RPG_RT.
+	SetMapId(map_id);
 
 	this->event.ID = data()->ID;
 
