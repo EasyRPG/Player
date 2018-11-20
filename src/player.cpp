@@ -246,23 +246,16 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-#ifdef EMSCRIPTEN
-	// Ticks in emscripten are unreliable due to how the main loop works:
-	// This function is only called 60 times per second instead of theoretical
-	// 1000s of times.
-	Graphics::Draw();
-#elif defined(USE_LIBRETRO)
-	// Libretro ensures the fps
-	Graphics::Draw();
-#else
 	double cur_time = (double)DisplayUi->GetTicks();
-	if (cur_time < next_frame) {
-		Graphics::Draw();
-		cur_time = (double)DisplayUi->GetTicks();
-		// Still time after graphic update? Yield until it's time for next one.
-		if (cur_time < next_frame) {
-			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
-		}
+
+#if !defined(USE_LIBRETRO)
+	// libretro: The frontend handles this, cores should not do rate
+	// limiting
+	if (cur_time < start_time) {
+		// Ensure this function is only called 60 times per second.
+		// Main purpose is for emscripten where the calls per second
+		// equal the display refresh rate.
+		return;
 	}
 #endif
 
@@ -328,6 +321,23 @@ void Player::Update(bool update_scene) {
 			}
 		}
 	}
+
+#ifdef EMSCRIPTEN
+	Graphics::Draw();
+#else
+	cur_time = (double)DisplayUi->GetTicks();
+	if (cur_time < next_frame) {
+		Graphics::Draw();
+		cur_time = (double)DisplayUi->GetTicks();
+		// Don't use sleep when the port uses an external timing source
+#if !defined(USE_LIBRETRO)
+		// Still time after graphic update? Yield until it's time for next one.
+		if (cur_time < next_frame) {
+			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
+		}
+#endif
+	}
+#endif
 
 	start_time = next_frame;
 }
