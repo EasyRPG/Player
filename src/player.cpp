@@ -772,6 +772,15 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 		Main_Data::game_data.party_location.position_x,
 		Main_Data::game_data.party_location.position_y
 		);
+
+	// Compatibility hack for pre 0.6 EasyRPG Player saves.
+	// Old savegames accidentally wrote animation_type as
+	// continuous for all events.
+	Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+
 	Main_Data::game_player->Refresh();
 
 	RPG::Music current_music = Main_Data::game_data.system.current_music;
