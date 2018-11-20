@@ -42,6 +42,21 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	SetZ(Priority_Window);
 }
 
+void Window_Base::InitMovement(int old_x, int old_y, int new_x, int new_y, int duration) {
+	current_frame = 0;
+	total_frames = duration;
+	old_position[0] = old_x;
+	old_position[1] = old_y;
+	new_position[0] = new_x;
+	new_position[1] = new_y;
+	SetX(old_position[0]);
+	SetY(old_position[1]);
+}
+
+bool Window_Base::IsMovementActive() {
+	return total_frames > 0 && current_frame <= total_frames;
+}
+
 void Window_Base::Update() {
 	Window::Update();
 	if (Game_System::GetSystemName() != windowskin_name) {
@@ -49,6 +64,21 @@ void Window_Base::Update() {
 		SetWindowskin(Cache::System(windowskin_name));
 	}
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
+	UpdateMovement();
+}
+
+void Window_Base::UpdateMovement() {
+	if (!IsMovementActive()) {
+		return;
+	}
+	current_frame++;
+	if (IsMovementActive()) {
+		SetX(old_position[0] + (new_position[0] - old_position[0]) * current_frame / total_frames);
+		SetY(old_position[1] + (new_position[1] - old_position[1]) * current_frame / total_frames);
+	} else {
+		SetX(new_position[0]);
+		SetY(new_position[1]);
+	}
 }
 
 void Window_Base::OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip) {

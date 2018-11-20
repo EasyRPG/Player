@@ -79,6 +79,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	reflect = -1;
 	animation = nullptr;
 	conditions.clear();
+	healed_conditions.clear();
 
 	if (!IsFirstAttack()) {
 		switch_on.clear();
@@ -158,6 +159,34 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	first_attack = old_first_attack;
 }
 
+void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int cutoff) {
+	if (current_target == targets.end() || !GetAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets, false, true, cutoff);
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetAnimation()->ID,
+		anim_targets, false, true, cutoff);
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
@@ -172,6 +201,14 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsFirstAttack() const {
 	return first_attack;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasSecondStartMessage() const {
+	return false;
+}
+
+std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
+	return "";
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
@@ -428,6 +465,12 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			out.push_back(GetDeathMessage());
 			return;
 		}
+
+		// Healed conditions messages
+		std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+		for (; it_healed != healed_conditions.end(); it_healed++) {
+			out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -463,11 +506,11 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
 	for (; it != conditions.end(); ++it) {
-		if (GetTarget()->HasState(it->ID)) {
+		if (GetTarget()->HasState(it->ID) && std::find(healed_conditions.begin(), healed_conditions.end(), it->ID) == healed_conditions.end()) {
 			if (IsPositive()) {
 				out.push_back(GetStateMessage(it->message_recovery));
 			}
-			if (!it->message_already.empty()) {
+			else if (!it->message_already.empty()) {
 				out.push_back(GetStateMessage(it->message_already));
 			}
 		} else {
@@ -599,8 +642,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		Game_Switches.Set(GetAffectedSwitch(), true);
 	}
 
-	std::vector<RPG::State>::const_iterator it = conditions.begin();
+	// Conditions healed by physical attack:
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); ++it_healed) {
+		GetTarget()->RemoveState(*it_healed);
+	}
 
+	// Conditions healed/caused:
+	std::vector<RPG::State>::const_iterator it = conditions.begin();
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
 			if (GetTarget()->IsDead() && it->ID == 1) {
@@ -729,6 +778,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::IsSoundAnimationOnAlly() const {
+	return false;
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -829,6 +882,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			killed_by_attack_damage = true;
 		}
 		else {
+			// Conditions healed by physical attack:
+			if (!IsPositive())
+				healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
+
+			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
 				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
 
@@ -1112,17 +1170,43 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 		if (Player::IsRPG2kE()) {
 			auto* target = GetTarget();
 			return Utils::ReplacePlaceholders(
-				skill.using_message1 + '\n' + skill.using_message2,
+				skill.using_message1,
 				{'S', 'O', 'U'},
 				{GetSource()->GetName(), (target ? target->GetName() : "???"), skill.name}
 			);
 		}
 		else {
-			return source->GetName() + skill.using_message1 + '\n' + skill.using_message2;
+			return source->GetName() + skill.using_message1;
 		}
 	}
 	else {
 		return skill.name;
+	}
+}
+
+bool Game_BattleAlgorithm::Skill::HasSecondStartMessage() const {
+	return Player::IsRPG2k() && (!item || item->using_message != 0) && !skill.using_message2.empty();
+}
+
+std::string Game_BattleAlgorithm::Skill::GetSecondStartMessage() const {
+	if (Player::IsRPG2k()) {
+		if (item && item->using_message == 0) {
+			return "";
+		}
+		if (Player::IsRPG2kE()) {
+			auto* target = GetTarget();
+			return Utils::ReplacePlaceholders(
+				skill.using_message2,
+				{ 'S', 'O', 'U' },
+				{GetSource()->GetName(), (target ? target->GetName() : "???"), skill.name}
+			);
+		}
+		else {
+			return skill.using_message2;
+		}
+	}
+	else {
+		return "";
 	}
 }
 
@@ -1145,12 +1229,7 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 		return &skill.sound_effect;
 	}
 	else {
-		if (source->GetType() == Game_Battler::Type_Enemy) {
-			return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-		}
-		else {
-			return NULL;
-		}
+		return NULL;
 	}
 }
 
@@ -1220,6 +1299,10 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 	reflect = has_reflect ? 1 : 0;
 	return has_reflect;
+}
+
+bool Game_BattleAlgorithm::Skill::IsSoundAnimationOnAlly() const {
+	return true;
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
@@ -1525,6 +1608,12 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		killed_by_attack_damage = true;
 	}
 
+	// Conditions healed by physical attack:
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); ++it_healed) {
+		GetTarget()->RemoveState(*it_healed);
+	}
+
 	success = true;
 
 	return true;
@@ -1689,3 +1778,4 @@ bool Game_BattleAlgorithm::NoMove::Execute() {
 void Game_BattleAlgorithm::NoMove::Apply() {
 	ApplyActionSwitches();
 }
+

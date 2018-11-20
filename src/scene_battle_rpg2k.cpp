@@ -97,7 +97,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
-	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
+	command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
 }
 
@@ -177,10 +177,13 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectOption:
 		options_window->SetVisible(true);
+		options_window->SetX(0);
 		status_window->SetVisible(true);
-		status_window->SetX(76);
+		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
+		command_window->SetX(SCREEN_TARGET_WIDTH);
 		status_window->Refresh();
+		move_screen = true;
 		break;
 	case State_SelectActor:
 		SelectNextActor();
@@ -189,9 +192,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		SetState(State_SelectActor);
 		break;
 	case State_SelectCommand:
+		options_window->SetX(-option_command_mov);
 		status_window->SetVisible(true);
-		command_window->SetVisible(true);
 		status_window->SetX(0);
+		command_window->SetVisible(true);
+		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 		break;
 	case State_SelectEnemyTarget:
 		status_window->SetVisible(true);
@@ -224,6 +229,31 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_Escape:
 		battle_message_window->SetVisible(true);
 		break;
+	}
+
+	// If SelectOption <-> SelectCommand => Display Movement:
+	if (state == State_SelectOption && previous_state == State_SelectCommand) {
+		options_window->InitMovement(options_window->GetX() - option_command_mov, options_window->GetY(),
+			options_window->GetX(), options_window->GetY(), option_command_time);
+
+		status_window->InitMovement(status_window->GetX() - option_command_mov, status_window->GetY(),
+			status_window->GetX(), status_window->GetY(), option_command_time);
+
+		command_window->SetVisible(true);
+		command_window->InitMovement(command_window->GetX() - option_command_mov, command_window->GetY(),
+			command_window->GetX(), command_window->GetY(), option_command_time);
+	}
+	else if (state == State_SelectCommand && move_screen) {
+		move_screen = false;
+		options_window->SetVisible(true);
+		options_window->InitMovement(options_window->GetX() + option_command_mov, options_window->GetY(),
+			options_window->GetX(), options_window->GetY(), option_command_time);
+
+		status_window->InitMovement(status_window->GetX() + option_command_mov, status_window->GetY(),
+			status_window->GetX(), status_window->GetY(), option_command_time);
+
+		command_window->InitMovement(command_window->GetX() + option_command_mov, command_window->GetY(),
+			command_window->GetX(), command_window->GetY(), option_command_time);
 	}
 }
 
@@ -329,7 +359,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
-	if (Game_Battle::IsBattleAnimationWaiting()) {
+	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}
 
@@ -399,17 +429,25 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_result_messages.clear();
 			action->GetResultMessages(battle_result_messages);
 
-			battle_message_window->Push(action->GetStartMessage());
+			if (battle_message_window->GetLineCount() == 0)
+				battle_message_window->Push(action->GetStartMessage());
+			else if ((battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()))
+				battle_message_window->Push(action->GetSecondStartMessage());
 
 			action->Apply();
 
 			battle_result_messages_it = battle_result_messages.begin();
 
 			if (action->IsFirstAttack()) {
-				if (action->GetTarget() &&
-					action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
-
-					action->PlayAnimation();
+				if (battle_message_window->GetLineCount() == 1 && action->HasSecondStartMessage()) {
+					return false;
+				}
+				if (action->GetTarget()) {
+					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
+						action->PlayAnimation();
+					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->IsSoundAnimationOnAlly()) {
+						action->PlaySoundAnimation(false, 20);
+					}
 				}
 			}
 
@@ -426,8 +464,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 
 			battle_action_state = BattleActionState_Result;
-
-			battle_action_wait = GetDelayForWindow();
 
 			break;
 		case BattleActionState_ConditionHeal:
@@ -472,11 +508,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		case BattleActionState_Result:
 			battle_action_wait = GetDelayForWindow();
 
-			if (action->GetTarget() && action->IsSuccess()) {
-				// FIXME: Physical damage state heal needs a message
-				action->GetTarget()->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
-			}
-
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (battle_result_messages_it == battle_result_messages.begin()) {
@@ -499,6 +530,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (battle_result_messages_it != battle_result_messages.begin()) {
 					battle_message_window->Clear();
 					battle_message_window->Push(action->GetStartMessage());
+					if (action->HasSecondStartMessage())
+						battle_message_window->Push(action->GetSecondStartMessage());
 				}
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;

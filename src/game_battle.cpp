@@ -179,7 +179,7 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
 
-void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash) {
+void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash, bool only_sound, int cutoff) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
@@ -188,10 +188,10 @@ void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bo
 		return;
 	}
 
-	animation.reset(new BattleAnimationBattlers(*anim, *target, flash));
+	animation.reset(new BattleAnimationBattlers(*anim, *target, flash, only_sound, cutoff));
 }
 
-void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash) {
+void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash, bool only_sound, int cutoff) {
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
@@ -200,11 +200,15 @@ void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_B
 		return;
 	}
 
-	animation.reset(new BattleAnimationBattlers(*anim, targets, flash));
+	animation.reset(new BattleAnimationBattlers(*anim, targets, flash, only_sound, cutoff));
 }
 
 bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation);
+}
+
+bool Game_Battle::IsBattleAnimationOnlySound() {
+	return bool(animation) && animation->ShouldOnlySound();
 }
 
 void Game_Battle::NextTurn(Game_Battler* battler) {

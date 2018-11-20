@@ -178,6 +178,8 @@ public:
 	 */
 	void PlayAnimation(bool on_source = false);
 
+	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
+
 	/**
 	 * Returns a list of all inflicted/removed conditions.
 	 *
@@ -233,12 +235,27 @@ public:
 	virtual bool IsTargetValid() const;
 
 	/**
-	 * Gets the message that is displayed when the action is invoked.
+	 * Gets the first line message that is displayed when the action is invoked.
 	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
 	 *
 	 * @return message
 	 */
 	virtual std::string GetStartMessage() const = 0;
+
+	/**
+	 * Checks if there is a second line message to display when the action is invoked.
+	 *
+	 * @return check
+	 */
+	virtual bool HasSecondStartMessage() const;
+
+	/**
+	 * Gets the second line message that is displayed when the action is invoked.
+	 * Usually of style "[Name] uses/casts [Weapon/Item/Skill]".
+	 *
+	 * @return message
+	 */
+	virtual std::string GetSecondStartMessage() const;
 
 	/**
 	 * Gets animation state id of the source character.
@@ -306,6 +323,11 @@ public:
 	 */
 	virtual bool IsReflected() const;
 
+	/**
+	 * @return true if this action uses PlaySoundAnimation() on allies
+	 */
+	virtual bool IsSoundAnimationOnAlly() const;
+
 protected:
 	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
@@ -360,6 +382,7 @@ protected:
 	RPG::Animation* animation;
 
 	std::vector<RPG::State> conditions;
+	std::vector<int16_t> healed_conditions;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };
@@ -389,12 +412,15 @@ public:
 	void Apply() override;
 
 	std::string GetStartMessage() const override;
+	bool HasSecondStartMessage() const override;
+	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	const RPG::Sound* GetResultSe() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	bool IsSoundAnimationOnAlly() const override;
 
 private:
 	const RPG::Skill& skill;
