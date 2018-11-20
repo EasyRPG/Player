@@ -157,10 +157,12 @@ RPG::Music& Game_Vehicle::GetBGM() {
 }
 
 void Game_Vehicle::Refresh() {
-	if (IsInUse())
+	if (IsInUse()) {
 		SetMapId(Game_Map::GetMapId());
-	else if (IsInCurrentMap())
+	} else if (IsInCurrentMap()) {
+		SetProcessed(true); // RPG_RT compatibility
 		MoveTo(GetX(), GetY());
+	}
 
 	switch (type) {
 		case None:
