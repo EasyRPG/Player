@@ -311,8 +311,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 		return;
 	}
 
-	data.Fixup(*new_page);
-
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	pattern = page->character_pattern;
