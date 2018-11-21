@@ -82,6 +82,11 @@
 #include "main_data.h"
 #include "reader_util.h"
 
+#ifdef USE_LIBRETRO
+#include "libretro.h"
+extern retro_environment_t environ_cb;
+#endif
+
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
 #define SHGFP_TYPE_CURRENT 0
@@ -502,6 +507,12 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	add_rtp_path("sdmc:/data/rtp/" + version_str + "/");
 #elif defined(PSP2)
 	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
+#elif defined(USE_LIBRETRO)
+	const char *dir = NULL;
+
+	if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
+	}
 #elif defined(__ANDROID__)
 	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
 	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -516,7 +527,6 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 	env->ReleaseStringUTFChars(return_string, js);
 	env->DeleteLocalRef(sdl_activity);
 	env->DeleteLocalRef(cls);
-
 	add_rtp_path(cs + "/" + version_str + "/");
 #else
 	// Windows/Wine
