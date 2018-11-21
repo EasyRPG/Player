@@ -449,7 +449,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (action->GetTarget()) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
-					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->IsSoundAnimationOnAlly()) {
+					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Skill) {
 						action->PlaySoundAnimation(false, 20);
 					}
 				}

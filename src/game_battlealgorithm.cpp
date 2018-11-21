@@ -41,22 +41,22 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
-Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
-	source(source), no_target(true), first_attack(true) {
+Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
+	type(ty), source(source), no_target(true), first_attack(true) {
 	Reset();
 
 	current_target = targets.end();
 }
 
-Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
-	source(source), no_target(false), first_attack(true) {
+Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
+	type(ty), source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	SetTarget(target);
 }
 
-Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
-	source(source), no_target(false), first_attack(true) {
+Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
+	type(ty), source(source), no_target(false), first_attack(true) {
 	Reset();
 
 	target->GetBattlers(targets);
@@ -778,17 +778,13 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsSoundAnimationOnAlly() const {
-	return false;
-}
-
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(source, target) {
+	AlgorithmBase(Type::Normal, source, target) {
 	// no-op
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
-	AlgorithmBase(source, target) {
+	AlgorithmBase(Type::Normal, source, target) {
 	// no-op
 }
 
@@ -971,17 +967,17 @@ int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(source, target), skill(skill), item(item) {
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
 	// no-op
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(source, target), skill(skill), item(item) {
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
 	// no-op
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(source), skill(skill), item(item) {
+	AlgorithmBase(Type::Skill, source), skill(skill), item(item) {
 	// no-op
 }
 
@@ -1301,22 +1297,18 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 	return has_reflect;
 }
 
-bool Game_BattleAlgorithm::Skill::IsSoundAnimationOnAlly() const {
-	return true;
-}
-
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
-	AlgorithmBase(source, target), item(item) {
+	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item) :
-	AlgorithmBase(source, target), item(item) {
+	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
 }
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, const RPG::Item& item) :
-AlgorithmBase(source), item(item) {
+AlgorithmBase(Type::Item, source), item(item) {
 	// no-op
 }
 
@@ -1436,7 +1428,7 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 }
 
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(source, target) {
+	AlgorithmBase(Type::NormalDual, source, target) {
 	// no-op
 }
 
@@ -1464,7 +1456,7 @@ bool Game_BattleAlgorithm::NormalDual::Execute() {
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
-	AlgorithmBase(source) {
+	AlgorithmBase(Type::Defend, source) {
 	// no-op
 }
 
@@ -1498,7 +1490,7 @@ void Game_BattleAlgorithm::Defend::Apply() {
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
-AlgorithmBase(source) {
+AlgorithmBase(Type::Observe, source) {
 	// no-op
 }
 
@@ -1524,7 +1516,7 @@ bool Game_BattleAlgorithm::Observe::Execute() {
 }
 
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
-AlgorithmBase(source) {
+AlgorithmBase(Type::Charge, source) {
 	// no-op
 }
 
@@ -1554,7 +1546,7 @@ void Game_BattleAlgorithm::Charge::Apply() {
 }
 
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source, Game_Party_Base* target) :
-AlgorithmBase(source, target) {
+AlgorithmBase(Type::SelfDestruct, source, target) {
 	// no-op
 }
 
@@ -1629,7 +1621,7 @@ void Game_BattleAlgorithm::SelfDestruct::Apply() {
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
-	AlgorithmBase(source) {
+	AlgorithmBase(Type::Escape, source) {
 	// no-op
 }
 
@@ -1718,7 +1710,7 @@ void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& o
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
-AlgorithmBase(source), new_monster_id(new_monster_id) {
+AlgorithmBase(Type::Transform, source), new_monster_id(new_monster_id) {
 	// no-op
 }
 
@@ -1748,7 +1740,7 @@ void Game_BattleAlgorithm::Transform::Apply() {
 }
 
 Game_BattleAlgorithm::NoMove::NoMove(Game_Battler* source) :
-AlgorithmBase(source) {
+AlgorithmBase(Type::NoMove, source) {
 	// no-op
 }
 
