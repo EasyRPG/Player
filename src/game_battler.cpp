@@ -381,6 +381,7 @@ void Game_Battler::AddState(int state_id) {
 		RemoveAllStates();
 		SetDefending(false);
 		SetCharged(false);
+		SetHp(0);
 		SetAtkModifier(0);
 		SetDefModifier(0);
 		SetSpiModifier(0);
@@ -538,7 +539,7 @@ void Game_Battler::ChangeHp(int hp) {
 		SetHp(GetHp() + hp);
 
 		// Death
-		if (GetHp() == 0) {
+		if (GetHp() <= 0) {
 			AddState(1);
 		}
 	}
