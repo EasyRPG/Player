@@ -482,16 +482,9 @@ static bool non_permanent(int state_id) {
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
-
-	// If death is non-permanent change HP to 1
-	if (IsDead() &&
-		non_permanent(1)) {
-		RemoveState(1);
-	}
-
-	for (size_t i = 1; i < states.size(); ++i) {
+	for (size_t i = 0; i < states.size(); ++i) {
 		if (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob > 0) {
-			states[i] = 0;
+			RemoveState(i + 1);
 		}
 	}
 }
