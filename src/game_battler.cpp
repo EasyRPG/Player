@@ -38,9 +38,8 @@ Game_Battler::Game_Battler() {
 }
 
 bool Game_Battler::HasState(int state_id) const {
-	const std::vector<int16_t> states = GetInflictedStates();
-
-	return (std::find(states.begin(), states.end(), state_id) != states.end());
+	auto* state_turns = ReaderUtil::GetElement(GetStates(), state_id);
+	return state_turns && *state_turns > 0;
 }
 
 std::vector<int16_t> Game_Battler::GetInflictedStates() const {
