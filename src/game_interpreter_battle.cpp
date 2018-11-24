@@ -224,13 +224,11 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	if (remove) {
 		enemy.RemoveState(state_id);
 		if (state_id == 1) {
-			enemy.SetHp(1);
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
 			Game_Battle::SetNeedRefresh(true);
 		}
 	} else {
 		if (state_id == 1) {
-			enemy.ChangeHp(-enemy.GetHp());
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
 			Game_Battle::SetNeedRefresh(true);
 		}

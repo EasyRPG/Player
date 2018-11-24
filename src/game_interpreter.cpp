@@ -1413,9 +1413,6 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 			actor->RemoveState(state_id);
 			Game_Battle::SetNeedRefresh(true);
 		} else {
-			if(state_id == 1) {
-				actor->ChangeHp(-actor->GetHp());
-			}
 			actor->AddState(state_id);
 			Game_Battle::SetNeedRefresh(true);
 			CheckGameOver();

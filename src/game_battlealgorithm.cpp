@@ -726,19 +726,13 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
-			if (GetTarget()->IsDead() && it->ID == 1) {
-				// Was a revive skill with an effect rating of 0
-				GetTarget()->ChangeHp(std::max<int>(1, GetAffectedHp()));
-			}
-
+			auto was_revive = it->ID == 1 && GetTarget()->IsDead();
 			GetTarget()->RemoveState(it->ID);
-		}
-		else {
-			if (it->ID == 1) {
-				GetTarget()->ChangeHp(-(GetTarget()->GetHp()));
-			} else {
-				GetTarget()->AddState(it->ID);
+			if (was_revive) {
+				GetTarget()->ChangeHp(std::max(0, GetAffectedHp()-1));
 			}
+		} else {
+			GetTarget()->AddState(it->ID);
 		}
 	}
 
