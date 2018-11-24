@@ -222,19 +222,17 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove) {
-		enemy.RemoveState(state_id);
-		if (state_id == 1) {
-			enemy.SetHp(1);
+		bool was_removed = enemy.RemoveState(state_id);
+		if (was_removed && state_id == 1) {
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(true);
 			Game_Battle::SetNeedRefresh(true);
 		}
 	} else {
-		if (state_id == 1) {
-			enemy.ChangeHp(-enemy.GetHp());
+		bool was_added = enemy.AddState(state_id);
+		if (was_added && state_id == 1) {
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
 			Game_Battle::SetNeedRefresh(true);
 		}
-		enemy.AddState(state_id);
 	}
 	return true;
 }
