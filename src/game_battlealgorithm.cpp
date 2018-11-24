@@ -1105,7 +1105,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing && Utils::GetRandomNumber(0, 99) >= skill.hit)
+			if (!healing && (!GetTarget()->CanAddState(i+1) || Utils::GetRandomNumber(0, 99) >= skill.hit))
 				continue;
 
 			this->success = true;

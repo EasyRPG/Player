@@ -404,6 +404,11 @@ public:
 	bool RemoveState(int state_id);
 
 	/**
+	 * @return true if state can be added.
+	 */
+	bool CanAddState(int state_id);
+
+	/**
 	 * Removes all states which end after battle.
 	 */
 	virtual void RemoveBattleStates();

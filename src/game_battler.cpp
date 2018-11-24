@@ -365,6 +365,24 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 	SetAgiModifier(agi_modifier + modifier);
 }
 
+bool Game_Battler::CanAddState(int state_id) {
+	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+	if (!state) {
+		return false;
+	}
+
+	if (HasState(state_id) || IsDead()) {
+		return false;
+	}
+
+	const RPG::State* sig_state = GetSignificantState();
+	if (sig_state && sig_state->priority - 10 >= state->priority) {
+		return false;
+	}
+
+	return true;
+}
+
 bool Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
