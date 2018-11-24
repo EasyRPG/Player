@@ -391,15 +391,17 @@ public:
 	 * Adds a State.
 	 *
 	 * @param state_id ID of state to add.
+	 * @return true if state was added because its not already present and battler is not dead.
 	 */
-	virtual void AddState(int state_id);
+	bool AddState(int state_id);
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
+	 * @return true if state was removed because it n already present and battler is not dead.
 	 */
-	virtual void RemoveState(int state_id);
+	bool RemoveState(int state_id);
 
 	/**
 	 * Removes all states which end after battle.

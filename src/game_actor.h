@@ -497,20 +497,6 @@ public:
 	std::vector<int16_t>& GetStates() override;
 
 	/**
-	 * Adds a State.
-	 *
-	 * @param state_id ID of state to add.
-	 */
-	void AddState(int state_id) override;
-
-	/**
-	 * Removes a State.
-	 *
-	 * @param state_id ID of state to remove.
-	 */
-	void RemoveState(int state_id) override;
-
-	/**
 	 * Removes all states which end after battle.
 	 */
 	void RemoveBattleStates() override;

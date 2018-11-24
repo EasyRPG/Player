@@ -228,10 +228,12 @@ bool Game_Battler::UseItem(int item_id) {
 
 		for (int i = 0; i < (int)item->state_set.size(); i++) {
 			if (item->state_set[i]) {
-				was_used |= HasState(Data::states[i].ID);
-				if (i == 0 && HasState(i + 1))
-					revived = 1;
-				RemoveState(Data::states[i].ID);
+				if (RemoveState(Data::states[i].ID)) {
+					was_used = true;
+					if (i == 0) {
+						revived = 1;
+					}
+				}
 			}
 		}
 
@@ -288,12 +290,10 @@ bool Game_Battler::UseSkill(int skill_id) {
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
 			if (skill->state_effects[i]) {
 				if (skill->state_effect) {
-					was_used |= !HasState(Data::states[i].ID);
-					AddState(Data::states[i].ID);
+					was_used |= AddState(Data::states[i].ID);
 				}
 				else {
-					was_used |= HasState(Data::states[i].ID);
-					RemoveState(Data::states[i].ID);
+					was_used |= RemoveState(Data::states[i].ID);
 				}
 			}
 		}
@@ -366,16 +366,17 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 	SetAgiModifier(agi_modifier + modifier);
 }
 
-void Game_Battler::AddState(int state_id) {
+bool Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("AddState: Can't add state with invalid ID %d", state_id);
-		return;
+		return false;
 	}
 
-	if (IsDead()) {
-		return;
+	if (HasState(state_id) || IsDead()) {
+		return false;
 	}
+
 	if (state_id == 1) {
 		SetGauge(0);
 		RemoveAllStates();
@@ -391,10 +392,6 @@ void Game_Battler::AddState(int state_id) {
 	}
 
 	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= static_cast<int>(states.size())) {
-		states.resize(state_id);
-	}
-
 	states[state_id - 1] = 1;
 
 	// Clear states that are more than 10 priority points below the
@@ -406,25 +403,27 @@ void Game_Battler::AddState(int state_id) {
 			states[i] = 0;
 		}
 	}
+	return states[state_id - 1] > 0;
 }
 
-void Game_Battler::RemoveState(int state_id) {
+bool Game_Battler::RemoveState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("RemoveState: Can't delete state with invalid ID %d", state_id);
-		return;
+		return false;
 	}
 
 	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= static_cast<int>(states.size())) {
-		return;
-	}
 
-	if (state_id == 1 && IsDead()) {
-		SetHp(1);
+	if (!HasState(state_id)) {
+		return false;
 	}
 
 	states[state_id - 1] = 0;
+	if (state_id == 1) {
+		SetHp(1);
+	}
+	return true;
 }
 
 int Game_Battler::ApplyConditions() {
