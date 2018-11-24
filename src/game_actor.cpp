@@ -896,7 +896,7 @@ int Game_Actor::GetBattleX() const {
 		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
 		int party_size = Main_Data::game_party->GetBattlerCount();
 
-		float left = GetBattleRow() == 1 ? 25.0 : 50.0;
+		float left = GetBattleRow() == RowType::RowType_back ? 25.0 : 50.0;
 		float right = left;
 
 		const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, Game_Battle::GetTerrainId());
@@ -1240,12 +1240,12 @@ void Game_Actor::SetBaseAgi(int agi) {
 	GetData().agility_mod = new_agility_mod;
 }
 
-int Game_Actor::GetBattleRow() const {
-	return GetData().row;
+Game_Actor::RowType Game_Actor::GetBattleRow() const {
+	return RowType(GetData().row);
 }
 
-void Game_Actor::SetBattleRow(int battle_row) {
-	GetData().row = battle_row;
+void Game_Actor::SetBattleRow(RowType battle_row) {
+	GetData().row = int(battle_row);
 }
 
 int Game_Actor::GetBattleAnimationId() const {

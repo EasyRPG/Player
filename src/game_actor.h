@@ -39,6 +39,7 @@ namespace RPG {
  */
 class Game_Actor : public Game_Battler {
 public:
+	using RowType = RPG::SaveActor::RowType;
 	/**
 	 * Constructor.
 	 *
@@ -759,16 +760,16 @@ public:
 	/**
 	 * Gets battle row for Rpg2k3 battles.
 	 *
-	 * @return row for Rpg2k3 battles (-1 front, 1 back).
+	 * @return row for Rpg2k3 battles
 	 */
-	int GetBattleRow() const;
+	RowType GetBattleRow() const;
 
 	/**
 	 * Sets battle row for Rpg2k3 battles.
 	 *
-	 * @param battle_row new row for Rpg2k3 battles (-1 front, 1 back).
+	 * @param battle_row new row for Rpg2k3 battles
 	 */
-	void SetBattleRow(int battle_row);
+	void SetBattleRow(RowType battle_row);
 
 	/**
 	 * Checks if the actor has an equipment that protects against terrain damage.

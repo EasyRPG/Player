@@ -250,8 +250,11 @@ void Scene_Menu::UpdateActorSelection() {
 		{
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Game_Actor* actor = Main_Data::game_party->GetActors()[menustatus_window->GetIndex()];
-			actor->GetBattleRow() == -1 ?
-				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
+			actor->SetBattleRow(
+					actor->GetBattleRow() == Game_Actor::RowType::RowType_front
+					? Game_Actor::RowType::RowType_back
+					: Game_Actor::RowType::RowType_front
+					);
 			menustatus_window->Refresh();
 			break;
 		}
