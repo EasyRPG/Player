@@ -777,11 +777,6 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	status_window->SetIndex(actor_index);
 	actor_index++;
 
-	if (active_actor->IsDead()) {
-		SelectNextActor();
-		return;
-	}
-
 	Game_Battler* random_target = NULL;
 
 	if (active_actor->CanAct()) {
