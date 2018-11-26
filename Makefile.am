@@ -21,6 +21,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
+	src/audio_libretro.cpp \
+	src/audio_libretro.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
 	src/audio_secache.cpp \
@@ -136,6 +138,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/input_buttons_desktop.cpp \
 	src/input_buttons_gekko.cpp \
 	src/input_buttons.h \
+	src/input_buttons_libretro.cpp \
 	src/input_buttons_opendingux.cpp \
 	src/input_buttons_psp.cpp \
 	src/input_source.cpp \
@@ -143,6 +146,9 @@ libeasyrpg_player_a_SOURCES = \
 	src/input.cpp \
 	src/input.h \
 	src/keys.h \
+	src/libretro.h \
+	src/libretro_ui.cpp \
+	src/libretro_ui.h \
 	src/logo.h \
 	src/main_data.cpp \
 	src/main_data.h \

@@ -379,9 +379,9 @@ elseif(${PLAYER_TARGET_PLATFORM} STREQUAL "libretro")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/audio_libretro.cpp
 		src/audio_libretro.h
+		src/input_buttons_libretro.cpp
 		src/libretro_ui.cpp
-		src/libretro_ui.h
-		src/libretro_wrapper.cpp)
+		src/libretro_ui.h)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC USE_LIBRETRO=1)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")

@@ -15,26 +15,15 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_AUDIO_LIBRETRO_H
-#define EP_AUDIO_LIBRETRO_H
+#if 0
 
-#if defined(USE_LIBRETRO)
-
+// Headers
+#include "input_buttons.h"
+#include "keys.h"
 #include "libretro.h"
-#include "audio_generic.h"
 
-class LibretroAudio : public GenericAudio {
-public:
-	LibretroAudio();
-	~LibretroAudio();
+void Input::InitButtons() {
+	// STUB: TODO IMPLEMENT
+}
 
-	void LockMutex() const override;
-	void UnlockMutex() const override;
-
-   static void EnableAudio(bool enabled);
-   static void AudioThreadCallback();
-   static void SetRetroAudioCallback(retro_audio_sample_batch_t cb);
-};
-
-#endif
 #endif

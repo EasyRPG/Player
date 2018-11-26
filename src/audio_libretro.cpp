@@ -23,6 +23,7 @@
 #include <vector>
 #include <cstdlib>
 #include <stddef.h>
+
 #include <rthreads/rthreads.h>
 
 retro_audio_sample_batch_t RenderAudioFrames=0;
@@ -30,46 +31,47 @@ retro_audio_sample_batch_t RenderAudioFrames=0;
 static const unsigned AUDIO_SAMPLERATE = 44100.0;
 
 namespace {
-   unsigned samples_per_frame = 0;
-   bool enable_audio = false;
+	unsigned samples_per_frame = 0;
+    bool enable_audio = false;
 	LibretroAudio* instance = nullptr;
-  std::vector<uint8_t> buffer;
-  slock_t* mutex=NULL;
+	std::vector<uint8_t> buffer;
+ 	slock_t* mutex=NULL;
 }
 
 void LibretroAudio::AudioThreadCallback()
 {
-   if (!enable_audio)
-      return;
+	if (!enable_audio)
+		return;
 
-   instance->LockMutex();
-   instance->Decode(buffer.data(), samples_per_frame * 2 * 2);
-   instance->UnlockMutex();
+	instance->LockMutex();
+	instance->Decode(buffer.data(), samples_per_frame * 2 * 2);
+	instance->UnlockMutex();
 
-   RenderAudioFrames((const int16_t*)buffer.data(), samples_per_frame);
+	RenderAudioFrames((const int16_t*)buffer.data(), samples_per_frame);
 }
 
-void LibretroAudio::EnableAudio(bool enabled)
-{
-   enable_audio = enabled;
+void LibretroAudio::EnableAudio(bool enabled) {
+	enable_audio = enabled;
 }
 
 LibretroAudio::LibretroAudio() :
-	GenericAudio()
-{
+	GenericAudio() {
 	instance = this;
-    
-  mutex = slock_new();
-    
-  buffer.resize(8192);
+
+	mutex = slock_new();
+
+	buffer.resize(8192);
 
 	SetFormat(44100, AudioDecoder::Format::S16, 2);
 
-   samples_per_frame = AUDIO_SAMPLERATE / Graphics::GetDefaultFps();
+	samples_per_frame = AUDIO_SAMPLERATE / Graphics::GetDefaultFps();
 }
 
 LibretroAudio::~LibretroAudio() {
-	// clean up resources here
+	slock_free(mutex);
+	mutex = nullptr;
+
+	buffer.clear();
 }
 
 void LibretroAudio::LockMutex() const {
