@@ -19,16 +19,18 @@
 
 // Headers
 #include "libretro_ui.h"
+#include "audio_libretro.h"
+#include "bitmap.h"
 #include "color.h"
 #include "graphics.h"
+#include "input.h"
 #include "keys.h"
+#include "main_data.h"
+#include "options.h"
 #include "output.h"
 #include "player.h"
-#include "bitmap.h"
-
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-#include <glsm/glsm.h>
-#endif
+#include "scene.h"
+#include "version.h"
 
 #include <cstring>
 #include <stdio.h>
@@ -51,25 +53,15 @@ LibretroUi::LibretroUi(int width, int height) {
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
-	#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-	// RGBA
+
 	const DynamicFormat format(
 		32,
-		0x000000FF,
-		0x0000FF00,
 		0x00FF0000,
+		0x0000FF00,
+		0x000000FF,
 		0xFF000000,
 		PF::NoAlpha);
-	#else
-	// BGRA
-	const DynamicFormat format(
-		32,
-		0x00FF0000,
-		0x0000FF00,
-		0x000000FF,
-		0xff000000,
-		PF::NoAlpha);
-	#endif
+
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 	main_surface.reset();
 	main_surface = Bitmap::Create(current_display_mode.width,
@@ -108,68 +100,7 @@ void LibretroUi::UpdateDisplay() {
 		return;
 	}
 
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-	if (!retro_gl_framebuffer_ready) {
-		UpdateWindow(NULL, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, 0);
-		return;
-	}
-	glsm_ctl(GLSM_CTL_STATE_BIND, NULL);
-
-	GLuint TextureID;
-	glViewport(0, 0, current_display_mode.width, current_display_mode.height);
-	glClearColor(0, 0, 0, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-	glDepthFunc(GL_LEQUAL);
-
-	glGenTextures(1,&TextureID);
-
-	glBindTexture(GL_TEXTURE_2D,TextureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,current_display_mode.width,current_display_mode.height,0,GL_RGBA,GL_UNSIGNED_BYTE,main_surface->pixels());
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0.0,current_display_mode.width, 0.0, current_display_mode.height, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-
-	glLoadIdentity();
-	glDisable(GL_LIGHTING);
-
-	glBegin(GL_QUADS);
-	glColor3f(1,1,1);
-	glTexCoord2f(0,0); glVertex3f(0,current_display_mode.height,0);
-	glTexCoord2f(1,0); glVertex3f(current_display_mode.width,current_display_mode.height,0);
-	glTexCoord2f(1,1); glVertex3f(current_display_mode.width,0,0);
-	glTexCoord2f(0,1); glVertex3f(0,0,0);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix();
-
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-
-	glMatrixMode(GL_MODELVIEW);
-	glDeleteTextures(1,&TextureID);
-
-	glsm_ctl(GLSM_CTL_STATE_UNBIND, NULL);
-
-	UpdateWindow(RETRO_HW_FRAME_BUFFER_VALID, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, 0);
-#else
 	UpdateWindow(main_surface->pixels(), current_display_mode.width, current_display_mode.height, main_surface->pitch());
-#endif
 }
 void LibretroUi::SetTitle(const std::string &title){
 
@@ -206,33 +137,12 @@ bool LibretroUi::IsFullscreen() {
 }
 
 uint32_t LibretroUi::GetTicks() const {
-	// Despite it's name this function should obviously return the amount of milliseconds since the game started.
 	return (uint32_t)(time_in_microseconds/1000);
 }
-void LibretroUi::Sleep(uint32_t){
+
+void LibretroUi::Sleep(uint32_t) {
 	// Sleep is not needed libretro will ensure 60 fps
 }
-
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-bool LibretroUi::retro_gl_framebuffer_ready = false;
-void LibretroUi::ResetRetroGLContext(void) {
-	glsm_ctl(GLSM_CTL_STATE_CONTEXT_RESET, NULL);
-
-	if (!glsm_ctl(GLSM_CTL_STATE_SETUP, NULL))
-		return;
-
-	retro_gl_framebuffer_ready=true;
-}
-
-void LibretroUi::DestroyRetroGLContext(void){
-}
-
-bool LibretroUi::LockRetroGLFramebuffer(void *data){
-	if (retro_gl_framebuffer_ready)
-		return false;
-	return true;
-}
-#endif
 
 retro_video_refresh_t LibretroUi::UpdateWindow = 0;
 void LibretroUi::SetRetroVideoCallback(retro_video_refresh_t cb) {
@@ -245,22 +155,6 @@ void LibretroUi::SetRetroInputStateCallback(retro_input_state_t cb) {
 }
 
 ////////////////
-
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-#include <glsm/glsm.h>
-#endif
-
-#include <libretro.h>
-
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "main_data.h"
-#include "version.h"
-#include "options.h"
-#include "libretro_ui.h"
-#include "audio_libretro.h"
-#include "scene.h"
 
 static const unsigned AUDIO_SAMPLERATE = 44100.0;
 
@@ -479,13 +373,9 @@ static void extract_directory(char *buf, const char *path, size_t size)
 }
 
 /* Loads a game. */
-RETRO_API bool retro_load_game(const struct retro_game_info *game)
-{
-   char parent_dir[1024];
+RETRO_API bool retro_load_game(const struct retro_game_info *game) {
+	char parent_dir[1024];
 	enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-	glsm_ctx_params_t params = {0};
-#endif
 
 	if (!game)
 		return false;
@@ -495,22 +385,8 @@ RETRO_API bool retro_load_game(const struct retro_game_info *game)
 		return false;
 	}
 
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-	params.context_reset		 = LibretroUi::ResetRetroGLContext;
-	params.context_destroy	   = LibretroUi::DestroyRetroGLContext;
-	params.environ_cb			   = environ_cb;
-	params.stencil			   = false;
-	params.imm_vbo_draw		  = NULL;
-	params.imm_vbo_disable	   = NULL;
-	params.framebuffer_lock	  = LibretroUi::LockRetroGLFramebuffer;
-
-	if (!glsm_ctl(GLSM_CTL_STATE_CONTEXT_INIT, &params)){
-		return false;
-	}
-#endif
-
 	if (game != 0)
-	   extract_directory(parent_dir, game->path, sizeof(parent_dir));
+		extract_directory(parent_dir, game->path, sizeof(parent_dir));
 
 	Player::exit_flag = false;
 
@@ -518,7 +394,7 @@ RETRO_API bool retro_load_game(const struct retro_game_info *game)
 		reinit_easy_rpg();
 	}
 
-   log_cb(RETRO_LOG_INFO, "parent dir is: %s\n", parent_dir );
+	log_cb(RETRO_LOG_INFO, "parent dir is: %s\n", parent_dir );
 
 	if (parent_dir[0] != '\0') {
 		Main_Data::SetProjectPath(parent_dir);

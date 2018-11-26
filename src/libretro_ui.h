@@ -70,15 +70,6 @@ public:
 #endif
 	/** @} */
 
-#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES)
-public:
-	static void ResetRetroGLContext(void);
-	static void DestroyRetroGLContext(void);
-	static bool LockRetroGLFramebuffer(void *data);
-private:
-	static bool retro_gl_framebuffer_ready;
-#endif
-
 public:
 	static void SetRetroVideoCallback(retro_video_refresh_t cb);
 	static void SetRetroInputStateCallback(retro_input_state_t cb);
@@ -89,4 +80,5 @@ private:
 
 };
 
+#endif
 #endif
