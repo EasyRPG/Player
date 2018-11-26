@@ -47,6 +47,7 @@
 namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
+	RPG::SavePanorama& panorama = Main_Data::game_data.panorama;
 
 	std::string chipset_name;
 	std::string battleback_name;
@@ -138,6 +139,7 @@ void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
+	panorama = {};
 
 	Parallax::ClearChangedBG();
 
@@ -281,6 +283,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 			Main_Data::game_data.common_events = {};
 			Main_Data::game_data.events = {};
 			Main_Data::game_data.map_info.events = {};
+			Main_Data::game_data.panorama = {};
 		} else if (location.database_save_count != Data::system.save_count) {
 			Main_Data::game_data.common_events = {};
 		}
@@ -1475,11 +1478,11 @@ std::string Game_Map::Parallax::GetName() {
 }
 
 int Game_Map::Parallax::GetX() {
-	return parallax_x / TILE_SIZE;
+	return (parallax_x - panorama.pan_x / 2) / TILE_SIZE;
 }
 
 int Game_Map::Parallax::GetY() {
-	return parallax_y / TILE_SIZE;
+	return (parallax_y - panorama.pan_y / 2) / TILE_SIZE;
 }
 
 void Game_Map::Parallax::Initialize(int width, int height) {
@@ -1521,11 +1524,16 @@ void Game_Map::Parallax::Update() {
 		return 0;
 	};
 
+
 	if (params.scroll_horz && params.scroll_horz_auto) {
-		parallax_x += scroll_amt(params.scroll_horz_speed);
+		const auto w = parallax_width * TILE_SIZE * 2;
+		panorama.pan_x -= scroll_amt(params.scroll_horz_speed) * 2;
+		panorama.pan_x = (panorama.pan_x + w) % w;
 	}
 	if (params.scroll_vert && params.scroll_vert_auto) {
-		parallax_y += scroll_amt(params.scroll_vert_speed);
+		const auto h = parallax_height * TILE_SIZE * 2;
+		panorama.pan_y -= scroll_amt(params.scroll_vert_speed) * 2;
+		panorama.pan_y = (panorama.pan_y + h) % h;
 	}
 }
 
@@ -1574,6 +1582,7 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 	map_info.parallax_vert = params.scroll_vert;
 	map_info.parallax_vert_auto = params.scroll_vert_auto;
 	map_info.parallax_vert_speed = params.scroll_vert_speed;
+	panorama = {};
 }
 
 void Game_Map::Parallax::ClearChangedBG() {
