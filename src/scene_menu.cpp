@@ -249,9 +249,22 @@ void Scene_Menu::UpdateActorSelection() {
 		case Row:
 		{
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			Game_Actor* actor = Main_Data::game_party->GetActors()[menustatus_window->GetIndex()];
-			actor->GetBattleRow() == -1 ?
-				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
+			// Don't allow entire party in the back row.
+			const auto& actors = Main_Data::game_party->GetActors();
+			int num_in_back = 0;
+			for (auto* actor: actors) {
+				if (actor->GetBattleRow() == Game_Actor::RowType::RowType_back) {
+					++num_in_back;
+				}
+			}
+			Game_Actor* actor = actors[menustatus_window->GetIndex()];
+			if (actor->GetBattleRow() == Game_Actor::RowType::RowType_front) {
+				if (num_in_back < int(actors.size() - 1)) {
+					actor->SetBattleRow(Game_Actor::RowType::RowType_back);
+				}
+			} else {
+				actor->SetBattleRow(Game_Actor::RowType::RowType_front);
+			}
 			menustatus_window->Refresh();
 			break;
 		}

@@ -41,7 +41,7 @@ void Window_ActorInfo::Refresh() {
 
 void Window_ActorInfo::DrawInfo() {
 	// Draw Row formation.
-	std::string battle_row = Game_Actors::GetActor(actor_id)->GetBattleRow() == 1 ? "Back" : "Front";
+	std::string battle_row = Game_Actors::GetActor(actor_id)->GetBattleRow() == Game_Actor::RowType::RowType_back ? "Back" : "Front";
 	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, battle_row, Text::AlignRight);
 
 	const Game_Actor& actor = *Game_Actors::GetActor(actor_id);
