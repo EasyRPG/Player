@@ -84,7 +84,7 @@ namespace {
 }
 
 void Game_Map::Init() {
-	Dispose();
+	Dispose(false);
 
 	map_info.position_x = 0;
 	map_info.position_y = 0;
@@ -116,12 +116,12 @@ void Game_Map::Init() {
 	teleport_delay = false;
 }
 
-void Game_Map::Dispose() {
+void Game_Map::Dispose(bool is_load_savegame) {
 	events.clear();
 	pending.clear();
 
 	if (Main_Data::game_screen) {
-		Main_Data::game_screen->Reset();
+		Main_Data::game_screen->Reset(is_load_savegame);
 	}
 
 	map.reset();
@@ -129,7 +129,7 @@ void Game_Map::Dispose() {
 }
 
 void Game_Map::Quit() {
-	Dispose();
+	Dispose(false);
 
 	common_events.clear();
 	interpreter.reset();
@@ -223,7 +223,7 @@ void Game_Map::SetupFromTeleportSelf() {
 }
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
-	Dispose();
+	Dispose(is_load_savegame);
 
 	location.map_id = _id;
 

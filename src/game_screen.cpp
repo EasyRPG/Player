@@ -30,7 +30,7 @@
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	Reset();
+	Reset(false);
 }
 
 void Game_Screen::CreatePicturesFromSave() {
@@ -45,19 +45,21 @@ void Game_Screen::CreatePicturesFromSave() {
 	}
 }
 
-void Game_Screen::Reset() {
+void Game_Screen::Reset(bool is_load_savegame) {
 	for (auto& p : pictures) {
 		if (p) {
 			p->Erase(false);
 		}
 	}
 
-	data.flash_red = 0;
-	data.flash_green = 0;
-	data.flash_blue = 0;
+	if (!is_load_savegame) {
+		data.flash_red = 0;
+		data.flash_green = 0;
+		data.flash_blue = 0;
+		data.flash_time_left = 0;
+		data.flash_current_level = 0;
+	}
 	flash_sat = 0;
-	data.flash_time_left = 0;
-	data.flash_current_level = 0;
 	flash_period = 0;
 
 	if (data.tint_current_red < 0 ||
@@ -141,11 +143,13 @@ void Game_Screen::FlashBegin(int r, int g, int b, int s, int tenths) {
 	FlashOnce(r, g, b, s, tenths);
 
 	flash_period = data.flash_time_left;
+	data.flash_continuous = true;
 }
 
 void Game_Screen::FlashEnd() {
 	data.flash_time_left = 0;
 	flash_period = 0;
+	data.flash_continuous = false;
 }
 
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
@@ -238,8 +242,13 @@ void Game_Screen::Update() {
 	if (data.flash_time_left > 0) {
 		data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
 		data.flash_time_left = data.flash_time_left - 1;
-		if (data.flash_time_left <= 0)
-			data.flash_time_left = data.flash_continuous ? flash_period : 0;
+		if (data.flash_time_left <= 0) {
+			data.flash_time_left = 0;
+			if (data.flash_continuous) {
+				data.flash_time_left = flash_period;
+				data.flash_current_level = flash_sat;
+			}
+		}
 	}
 
 	if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
