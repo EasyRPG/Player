@@ -258,6 +258,13 @@ public:
 	virtual std::string GetStartMessage() const = 0;
 
 	/**
+	 * Checks if there is a first line message to display when the action is invoked.
+	 *
+	 * @return check
+	 */
+	bool HasStartMessage() const;
+
+	/**
 	 * Checks if there is a second line message to display when the action is invoked.
 	 *
 	 * @return check
@@ -547,6 +554,10 @@ public:
 
 inline Type AlgorithmBase::GetType() const {
 	return type;
+}
+
+inline bool AlgorithmBase::HasStartMessage() const {
+	return !GetStartMessage().empty();
 }
 
 } //namespace Game_BattleAlgorithm

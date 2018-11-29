@@ -546,7 +546,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
-				default_result_lines = 1 + (action->HasSecondStartMessage() ? 1 : 0) + critical_hit;
+				default_result_lines = action->HasStartMessage() + action->HasSecondStartMessage() + critical_hit;
 				while (battle_message_window->GetLineCount() > (default_result_lines + *battle_result_order_it))
 					battle_message_window->Pop();
 			}
