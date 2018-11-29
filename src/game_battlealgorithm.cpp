@@ -466,7 +466,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedHp() != -1) {
 
 		if (IsPositive()) {
-			if (!GetTarget()->IsDead()) {
+			if (GetAffectedHp() > 0 || GetType() != Type::Item) {
 				out_replace.push_back(0);
 				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
@@ -508,9 +508,10 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedSp() != -1) {
 		out_replace.push_back(0);
 		if (IsPositive()) {
-			out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
-		}
-		else if (GetAffectedSp() > 0) {
+			if (GetAffectedSp() > 0 || GetType() != Type::Item) {
+				out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
+			}
+		} else if (GetAffectedSp() > 0) {
 			if (IsAbsorb()) {
 				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
 			}
