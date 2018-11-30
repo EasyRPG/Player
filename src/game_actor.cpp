@@ -1451,6 +1451,13 @@ const RPG::Item* Game_Actor::GetAccessory() const {
 	return nullptr;
 }
 
+bool Game_Actor::AttackIgnoresEvasion() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->ignore_evasion;
+	};
+	return checkEquip(GetWeapon()) || checkEquip(Get2ndWeapon());
+}
+
 bool Game_Actor::PreventsCritical() const {
 	auto checkEquip = [](const RPG::Item* item) {
 		return item && item->prevent_critical;

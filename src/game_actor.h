@@ -772,6 +772,11 @@ public:
 	void SetBattleRow(RowType battle_row);
 
 	/**
+	 * @return If the actor has weapon that ignores evasion
+	 */
+	bool AttackIgnoresEvasion() const;
+
+	/**
 	 * @return If the actor has equipment that protects against terrain damage.
 	 */
 	bool PreventsTerrainDamage() const;
