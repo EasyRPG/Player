@@ -234,6 +234,16 @@ namespace Utils {
 	 */
 	std::string ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values);
 
+	/**
+	 * @return value clamped between min and max
+	 */
+	template <typename T> T Clamp(T value, const T& minv, const T& maxv);
+
 } // namespace Utils
+
+template <typename T>
+inline T Utils::Clamp(T value, const T& minv, const T& maxv) {
+	return (value < minv) ? (minv) : ((value > maxv) ? maxv : value);
+}
 
 #endif
