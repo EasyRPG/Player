@@ -804,7 +804,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		int hit_chance = source->GetHitChance();
+		int hit_chance = ally->GetHitChance();
 		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, ally->GetWeaponId());
 
 		if (!weapon) {
@@ -821,7 +821,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
 			}
 
-			hit_chance = weapon->hit;
 			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
 

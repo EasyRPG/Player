@@ -1284,6 +1284,15 @@ int Game_Actor::GetBattleAnimationId() const {
 }
 
 int Game_Actor::GetHitChance() const {
+	auto* weapon1 = GetWeapon();
+	auto* weapon2 = Get2ndWeapon();
+	if (weapon1 && weapon2) {
+		return std::max(weapon1->hit, weapon2->hit);
+	} else if(weapon1) {
+		return weapon1->hit;
+	} else if(weapon2) {
+		return weapon2->hit;
+	}
 	return 90;
 }
 
