@@ -41,6 +41,33 @@
 #include "sprite_battler.h"
 #include "utils.h"
 
+static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int to_hit) {
+	// If target has Restriction "do_nothing", the attack always hits
+	if (target->GetSignificantRestriction() == RPG::State::Restriction_do_nothing) {
+		return 100;
+	}
+
+	// Modify hit chance for each state the source has
+	to_hit = (to_hit * source->GetHitChanceModifierFromStates()) / 100;
+
+	// Stop here if attacker ignores evasion.
+	if (source->GetType() == Game_Battler::Type_Ally
+		&& static_cast<Game_Actor*>(source)->AttackIgnoresEvasion()) {
+		return to_hit;
+	}
+
+	// AGI adjustment.
+	to_hit = 100 - (100 - to_hit) * (1.5f * (float(target->GetAgi()) / float(source->GetAgi()) - 1.0f));
+
+	// If target has physical dodge evasion:
+	if (target->GetType() == Game_Battler::Type_Ally
+			&& static_cast<Game_Actor*>(target)->HasPhysicalEvasionUp()) {
+		to_hit -= 25;
+	}
+
+	return to_hit;
+}
+
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
 	type(ty), source(source), no_target(true), first_attack(true) {
 	Reset();
@@ -791,7 +818,6 @@ Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* targ
 bool Game_BattleAlgorithm::Normal::Execute() {
 	Reset();
 
-	int to_hit;
 	float multiplier = 1;
 
 	// Criticals cannot occur when ally attacks ally or enemy attacks enemy (e.g. confusion)
@@ -804,8 +830,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		int hit_chance = ally->GetHitChance();
-		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, ally->GetWeaponId());
+		const RPG::Item* weapon = ally->GetWeapon();
 
 		if (!weapon) {
 			// No Weapon
@@ -824,22 +849,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			multiplier = GetAttributeMultiplier(weapon->attribute_set);
 		}
 
-		if (weapon && !weapon->ignore_evasion) {
-			to_hit = (int)(100 - (100 - hit_chance) * (1 + (1.0 * GetTarget()->GetAgi() / ally->GetAgi() - 1) / 2));
-		} else {
-			to_hit = (int)(100 - (100 - hit_chance));
-		}
 	} else {
 		// Source is Enemy
-		int hit = source->GetHitChance();
-		to_hit = (int)(100 - (100 - hit) * (1 + (1.0 * GetTarget()->GetAgi() / source->GetAgi() - 1) / 2));
 		if (!Data::animations.empty()) {
 			animation = &Data::animations[0];
 		}
 	}
 
+	auto to_hit = source->GetHitChance();
+	to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
+
 	// Damage calculation
-	if (Utils::GetRandomNumber(0, 99) < to_hit) {
+	if (Utils::PercentChance(to_hit)) {
 		if (Utils::PercentChance(crit_chance)) {
 			critical_hit = true;
 		}
@@ -1027,6 +1048,14 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
+
+		int to_hit = skill.hit;
+
+		//If Physical technique, apply physical restrictions
+		if (skill.failure_message == 3) {
+			to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
+		}
+
 		if (this->healing) {
 			float mul = GetAttributeMultiplier(skill.attribute_effects);
 			if (mul < 0.5f) {
@@ -1052,7 +1081,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 		}
-		else if (Utils::GetRandomNumber(0, 99) < skill.hit) {
+		else if (Utils::PercentChance(to_hit)) {
 			absorb = skill.absorb_damage;
 
 			int effect = skill.power +
@@ -1064,7 +1093,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 			effect *= GetAttributeMultiplier(skill.attribute_effects);
 
-			if(effect < 0) {
+			if (effect < 0) {
 				effect = 0;
 			}
 
@@ -1110,7 +1139,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing && Utils::GetRandomNumber(0, 99) >= skill.hit)
+			if (!healing && Utils::PercentChance(to_hit))
 				continue;
 
 			this->success = true;

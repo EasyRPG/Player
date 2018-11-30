@@ -606,6 +606,11 @@ public:
 	 */
 	virtual void ResetBattle();
 
+	/**
+	 * @return Effective physical hit rate modifier from inflicted states.
+	 */
+	int GetHitChanceModifierFromStates() const;
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;

@@ -844,3 +844,15 @@ void Game_Battler::SetBattleOrderAgi(int val) {
 int Game_Battler::GetBattleOrderAgi() {
 	return battle_order;
 }
+
+int Game_Battler::GetHitChanceModifierFromStates() const {
+	int modifier = 100;
+	// Modify hit chance for each state the source has
+	for (const auto id : GetInflictedStates()) {
+		auto* state = ReaderUtil::GetElement(Data::states, id);
+		if (state) {
+			modifier = std::min(modifier, state->reduce_hit_ratio);
+		}
+	}
+	return modifier;
+}
