@@ -15,41 +15,42 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_SCENE_STATUS_H
-#define EP_SCENE_STATUS_H
+#ifndef EP_WINDOW_PARAMSTATUS_H
+#define EP_WINDOW_PARAMSTATUS_H
 
 // Headers
-#include "scene.h"
-#include "window_actorinfo.h"
-#include "window_actorstatus.h"
-#include "window_equip.h"
-#include "window_paramstatus.h"
-#include "window_gold.h"
+#include "window_base.h"
 
 /**
- * Scene Status class.
- * Displays status information about a party member.
+ * Window_ParamStatus class.
+ * Displays stats of the hero.
  */
-class Scene_Status : public Scene {
+class Window_ParamStatus : public Window_Base {
+
 public:
 	/**
 	 * Constructor.
 	 *
-	 * @param actor_index party index of the actor.
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
+	 * @param actor_id actor whose stats are displayed.
 	 */
-	Scene_Status(int actor_index);
+	Window_ParamStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
 
-	void Start() override;
-	void Update() override;
+	/**
+	 * Refreshes screen.
+	 */
+	void Refresh();
 
 private:
-	int actor_index;
+	int actor_id = 0;
 
-	std::unique_ptr<Window_ActorInfo> actorinfo_window;
-	std::unique_ptr<Window_ActorStatus> actorstatus_window;
-	std::unique_ptr<Window_Gold> gold_window;
-	std::unique_ptr<Window_ParamStatus> paramstatus_window;
-	std::unique_ptr<Window_Equip> equip_window;
+	int atk = 0;
+	int def = 0;
+	int spi = 0;
+	int agi = 0;
 };
 
 #endif

@@ -149,6 +149,7 @@ add_library(${PROJECT_NAME}
 	src/window_message.cpp
 	src/window_name.cpp
 	src/window_numberinput.cpp
+	src/window_paramstatus.cpp
 	src/window_savefile.cpp
 	src/window_selectable.cpp
 	src/window_shopbuy.cpp
