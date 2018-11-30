@@ -1305,16 +1305,6 @@ float Game_Actor::GetCriticalHitChance() const {
 	return crit_chance + (weapon_bonus / 100.0f);
 }
 
-bool Game_Actor::PreventsCritical() const {
-	auto checkEquip = [](const RPG::Item* item) {
-		return item && item->prevent_critical;
-	};
-	return checkEquip(GetShield())
-		|| checkEquip(GetArmor())
-		|| checkEquip(GetHelmet())
-		|| checkEquip(GetAccessory());
-}
-
 Game_Battler::BattlerType Game_Actor::GetType() const {
 	return Game_Battler::Type_Ally;
 }
@@ -1401,19 +1391,6 @@ void Game_Actor::RemoveInvalidData() {
 	}
 }
 
-bool Game_Actor::PreventsTerrainDamage() {
-	for (auto object_id : GetWholeEquipment()) {
-		RPG::Item *object = ReaderUtil::GetElement(Data::items, object_id);
-		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
-			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory) && object->no_terrain_damage) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
 const RPG::Item* Game_Actor::GetWeapon() const {
 	auto* weapon = GetEquipment(RPG::Item::Type_weapon);
 	if (weapon && weapon->type == RPG::Item::Type_weapon) {
@@ -1463,6 +1440,46 @@ const RPG::Item* Game_Actor::GetAccessory() const {
 		return accessory;
 	}
 	return nullptr;
+}
+
+bool Game_Actor::PreventsCritical() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->prevent_critical;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::PreventsTerrainDamage() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->no_terrain_damage;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::HasPhysicalEvasionUp() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->raise_evasion;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::HasHalfSpCost() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->half_sp_cost;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
 }
 
 
