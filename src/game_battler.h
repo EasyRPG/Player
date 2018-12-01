@@ -81,7 +81,7 @@ public:
 	 *
 	 * @return First non-normal restriction or normal if not restricted
 	 */
-	int GetSignificantRestriction();
+	int GetSignificantRestriction() const;
 
 	/**
 	 * Gets the Battler ID.

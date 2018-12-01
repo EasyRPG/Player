@@ -171,8 +171,8 @@ protected:
 	void CallDebug();
 
 	// Variables
-	State state;
-	State previous_state;
+	State state = State_Start;
+	State previous_state = State_Start;
 	bool auto_battle;
 	int cycle;
 	int attack_state;

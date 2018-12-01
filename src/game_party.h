@@ -336,6 +336,11 @@ public:
 	 */
 	bool ApplyStateDamage();
 
+	/**
+	 * @return Whether any party member accepts custom battle commands.
+	 */
+	bool IsAnyControllable();
+
 private:
 	const RPG::SaveInventory& data() const;
 	RPG::SaveInventory& data();

@@ -53,7 +53,7 @@ std::vector<int16_t> Game_Battler::GetInflictedStates() const {
 	return states;
 }
 
-int Game_Battler::GetSignificantRestriction() {
+int Game_Battler::GetSignificantRestriction() const {
 	const std::vector<int16_t> states = GetInflictedStates();
 	for (int i = 0; i < (int)states.size(); i++) {
 		// States are guaranteed to be valid

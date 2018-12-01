@@ -622,3 +622,13 @@ bool Game_Party::ApplyStateDamage() {
 
 	return damage;
 }
+
+bool Game_Party::IsAnyControllable() {
+	for (auto& actor: GetActors()) {
+		if (actor->IsControllable()) {
+			return true;
+		}
+	}
+	return false;
+}
+

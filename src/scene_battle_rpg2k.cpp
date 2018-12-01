@@ -162,14 +162,16 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	}
 
-	options_window->SetVisible(false);
-	status_window->SetVisible(false);
-	command_window->SetVisible(false);
-	item_window->SetVisible(false);
-	skill_window->SetVisible(false);
-	help_window->SetVisible(false);
-	target_window->SetVisible(false);
-	battle_message_window->SetVisible(false);
+	if (state != State_SelectEnemyTarget && state != State_SelectAllyTarget) {
+		options_window->SetVisible(false);
+		status_window->SetVisible(false);
+		command_window->SetVisible(false);
+		target_window->SetVisible(false);
+		battle_message_window->SetVisible(false);
+		item_window->SetVisible(false);
+		skill_window->SetVisible(false);
+		help_window->SetVisible(false);
+	}
 
 	switch (state) {
 	case State_Start:
@@ -199,15 +201,14 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
 		break;
 	case State_SelectEnemyTarget:
-		status_window->SetVisible(true);
-		command_window->SetVisible(true);
 		target_window->SetActive(true);
 		target_window->SetVisible(true);
+		target_window->SetIndex(0);
 		break;
 	case State_SelectAllyTarget:
 		status_window->SetVisible(true);
 		status_window->SetX(0);
-		command_window->SetVisible(true);
+		status_window->SetIndex(0);
 		break;
 	case State_Battle:
 		battle_message_window->SetVisible(true);
@@ -268,19 +269,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
 			Game_Battle::RefreshEvents();
-			SetState(State_SelectOption);
-			CheckResultConditions();
+			SetState(State_Battle);
 		}
 		break;
 	case State_SelectOption:
-		if (last_turn_check < Game_Battle::GetTurn()) {
-			// Handle end of a battle caused by an event that ran on battle
-			// start or at the end of a turn.
-			CheckResultConditions();
-
-			last_turn_check = Game_Battle::GetTurn();
-		}
-
 		// No Auto battle/Escape when all actors are sleeping or similar
 		if (!Main_Data::game_party->IsAnyControllable()) {
 			SelectNextActor();
@@ -298,6 +290,11 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
+		// If no battle action is running, we need to check for battle events which could have
+		// triggered win/loss.
+		if (!battle_action_pending && CheckResultConditions()) {
+			return;
+		}
 		if (!battle_actions.empty()) {
 			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
@@ -307,7 +304,9 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
+			battle_action_pending = true;
 			if (ProcessBattleAction(alg)) {
+				battle_action_pending = false;
 				RemoveCurrentAction();
 				battle_message_window->Clear();
 				Game_Battle::RefreshEvents();
@@ -320,7 +319,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			// Everybody acted
 			actor_index = 0;
 
-			SetState(State_SelectOption);
+			// Go right into next turn if no actors controllable.
+			if (!Main_Data::game_party->IsAnyControllable()) {
+				SelectNextActor();
+			} else {
+				SetState(State_SelectOption);
+			}
 		}
 		break;
 	case State_SelectEnemyTarget: {
@@ -837,7 +841,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	battle_actions.back()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_back();
 
-	if (active_actor->GetAutoBattle()) {
+	if (!active_actor->IsControllable()) {
 		SelectPreviousActor();
 		return;
 	}
@@ -919,11 +923,11 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		encounter_message_first_monster = false;
 	}
 
-	if (Input::IsPressed(Input::DECISION)) {
-		--encounter_message_sleep_until;
-	}
-
 	if (encounter_message_sleep_until > -1) {
+		if (Input::IsPressed(Input::DECISION)) {
+			--encounter_message_sleep_until;
+		}
+
 		if (Player::GetFrames() >= encounter_message_sleep_until) {
 			// Sleep over
 			encounter_message_sleep_until = -1;

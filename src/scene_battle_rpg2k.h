@@ -130,6 +130,7 @@ protected:
 	int encounter_message_sleep_until = -1;
 	bool encounter_message_first_strike = false;
 
+	bool battle_action_pending = false;
 	bool begin_escape = true;
 	bool escape_success = false;
 	int escape_counter = 0;
