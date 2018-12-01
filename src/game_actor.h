@@ -122,19 +122,17 @@ public:
 	bool IsSkillUsable(int skill_id) const override;
 
 	/**
-	 * Returns the modifier by which skill costs are divided.
-	 *
-	 * @return modifier
-	 */
-	int GetSpCostModifier() const;
-
-	/**
 	 * Calculates the Skill costs including all modifiers.
 	 *
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
 	int CalculateSkillCost(int skill_id) const override;
+
+	/**
+	 * @return sp cost for attacking with weapon.
+	 */
+	int CalculateWeaponSpCost() const;
 
 	/**
 	 * Gets the actor ID.

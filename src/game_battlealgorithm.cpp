@@ -941,11 +941,7 @@ void Game_BattleAlgorithm::Normal::Apply() {
 
 	source->SetCharged(false);
 	if (source->GetType() == Game_Battler::Type_Ally) {
-		Game_Actor* src = static_cast<Game_Actor*>(source);
-		const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, src->GetWeaponId());
-		if (weapon) {
-			source->ChangeSp(std::ceil(-weapon->sp_cost / (float) src->GetSpCostModifier()));
-		}
+		source->ChangeSp(-static_cast<Game_Actor*>(source)->CalculateWeaponSpCost());
 	}
 }
 

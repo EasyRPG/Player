@@ -169,24 +169,30 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	return Game_Battler::IsSkillUsable(skill_id);
 }
 
-int Game_Actor::GetSpCostModifier() const {
-	// Only non-weapons have this modifier
-	int start = HasTwoWeapons() ? RPG::Item::Type_armor : RPG::Item::Type_shield;
-	int sp_mod = 1;
-
-	for (int i = start; i <= 5; ++i) {
-		const RPG::Item* item = GetEquipment(i);
-		if (item && item->half_sp_cost) {
-			sp_mod = 2;
-			break;
-		}
+int Game_Actor::CalculateSkillCost(int skill_id) const {
+	int cost = Game_Battler::CalculateSkillCost(skill_id);
+	if (HasHalfSpCost()) {
+		cost = (cost + 1) / 2;
 	}
-
-	return sp_mod;
+	return cost;
 }
 
-int Game_Actor::CalculateSkillCost(int skill_id) const {
-	return std::ceil(Game_Battler::CalculateSkillCost(skill_id) / (float) GetSpCostModifier());
+int Game_Actor::CalculateWeaponSpCost() const {
+	int cost = 0;
+	auto* w1 = GetWeapon();
+	if (w1) {
+		cost += w1->sp_cost;
+	}
+	auto* w2 = Get2ndWeapon();
+	if (w2) {
+		cost += w2->sp_cost;
+	}
+
+	if (HasHalfSpCost()) {
+		cost = (cost + 1) / 2;
+	}
+
+	return cost;
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
