@@ -103,6 +103,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	killed_by_attack_damage = false;
 	critical_hit = false;
 	absorb = false;
+	revived = false;
 	reflect = -1;
 	animation = nullptr;
 	conditions.clear();
@@ -149,6 +150,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
 	return absorb;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
+	return revived;
 }
 
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
@@ -499,7 +504,7 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedHp() != -1) {
 
 		if (IsPositive()) {
-			if (GetAffectedHp() > 0 || GetType() != Type::Item) {
+			if (!IsRevived() && (GetAffectedHp() > 0 || GetType() != Type::Item)) {
 				out_replace.push_back(0);
 				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
@@ -726,9 +731,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
-			auto was_revive = it->ID == 1 && GetTarget()->IsDead();
 			GetTarget()->RemoveState(it->ID);
-			if (was_revive) {
+			if (this->IsRevived()) {
 				GetTarget()->ChangeHp(std::max(0, GetAffectedHp()-1));
 			}
 		} else {
@@ -1083,6 +1087,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		skill.scope == RPG::Skill::Scope_party ||
 		skill.scope == RPG::Skill::Scope_self;
 
+	this->revived = this->healing
+		&& !skill.state_effects.empty()
+		&& skill.state_effects[0]
+		&& GetTarget()->IsDead();
+
 	if (skill.type == RPG::Skill::Type_normal ||
 		skill.type >= RPG::Skill::Type_subskill) {
 
@@ -1416,6 +1425,11 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 	if (item.type == RPG::Item::Type_medicine) {
 		this->healing = true;
+
+		this->revived = !item.state_set.empty()
+			&& item.state_set[0]
+			&& GetTarget()->IsDead();
+
 		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
 		if (GetTarget()->GetType() == Game_Battler::Type_Ally && !static_cast<Game_Actor*>(GetTarget())->IsItemUsable(item.ID)) {
 			// No effect, but doesn't behave like a dodge or damage to set healing and success to true.

@@ -175,6 +175,11 @@ public:
 	 */
 	bool IsAbsorb() const;
 
+	/*
+	 * @return Whether target will be revived from death
+	 */
+	bool IsRevived() const;
+
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
 	 *
@@ -401,6 +406,7 @@ protected:
 	bool killed_by_attack_damage;
 	bool critical_hit;
 	bool absorb;
+	bool revived = false;
 	mutable int reflect;
 
 	RPG::Animation* animation;
