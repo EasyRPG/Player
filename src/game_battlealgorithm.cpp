@@ -1110,6 +1110,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				mul = 0.5f;
 			}
 
+			effect +=
+				source->GetAtk() * skill.physical_rate / 20 +
+				source->GetSpi() * skill.magical_rate / 40;
 			effect *= mul;
 
 			if (skill.affect_hp)
