@@ -24,6 +24,7 @@
 #include "input.h"
 #include "bitmap.h"
 #include "font.h"
+#include "player.h"
 
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -86,20 +87,30 @@ void Window_SaveFile::Refresh() {
 	if (party.empty())
 		return;
 
-	contents->TextDraw(8, 16 + 2, Font::ColorDefault, hero_name);
 
-	contents->TextDraw(8, 32 + 2, 1, Data::terms.lvl_short);
+	contents->TextDraw(4, 16 + 2, Font::ColorDefault, hero_name);
+	auto lvl_short = Data::terms.lvl_short;
+	if (lvl_short.size() != 2) {
+		lvl_short.resize(2, ' ');
+	}
 
-	int lx = Font::Default()->GetSize(Data::terms.lvl_short).width;
+	contents->TextDraw(4, 32 + 2, 1, lvl_short);
+
+	int lx = Font::Default()->GetSize(lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << hero_level;
-	contents->TextDraw(8 + lx, 32 + 2, Font::ColorDefault, out.str());
+	contents->TextDraw(4 + lx, 32 + 2, Font::ColorDefault, out.str());
 
-	contents->TextDraw(42, 32 + 2, 1, Data::terms.hp_short);
+	auto hp_short = Data::terms.hp_short;
+	if (hp_short.size() != 2) {
+		hp_short.resize(2, ' ');
+	}
 
-	int hx = Font::Default()->GetSize(Data::terms.hp_short).width;
+	contents->TextDraw(42, 32 + 2, 1, hp_short);
+
+	int hx = Font::Default()->GetSize(hp_short).width;
 	out.str("");
-	out << hero_hp;
+	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << hero_hp;
 	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());
 
 	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
