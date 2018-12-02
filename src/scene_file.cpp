@@ -38,11 +38,24 @@ Scene_File::Scene_File(std::string message) :
 	index = 0;
 }
 
+static std::unique_ptr<Sprite> makeBorderSprite(int y) {
+	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::System()->GetBackgroundColor());
+	auto sprite = std::unique_ptr<Sprite>(new Sprite());
+	sprite->SetVisible(true);
+	sprite->SetZ(Priority_Window + 1);
+	sprite->SetBitmap(bitmap);
+	sprite->SetX(0);
+	sprite->SetY(y);
+	return sprite;
+}
+
 void Scene_File::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);
 	help_window->SetZ(Priority_Window + 1);
+
+	border_top = makeBorderSprite(32);
 
 	// Refresh File Finder Save Folder
 	tree = FileFinder::CreateSaveDirectoryTree();
@@ -110,6 +123,8 @@ void Scene_File::Start() {
 
 		file_windows.push_back(w);
 	}
+
+	border_bottom = makeBorderSprite(232);
 
 	index = latest_slot;
 

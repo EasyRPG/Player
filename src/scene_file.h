@@ -55,6 +55,8 @@ protected:
 	int top_index;
 	std::unique_ptr<Window_Help> help_window;
 	std::vector<std::shared_ptr<Window_SaveFile> > file_windows;
+	std::unique_ptr<Sprite> border_top;
+	std::unique_ptr<Sprite> border_bottom;
 	std::string message;
 
 	std::shared_ptr<FileFinder::DirectoryTree> tree;
