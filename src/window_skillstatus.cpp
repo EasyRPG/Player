@@ -39,9 +39,15 @@ void Window_SkillStatus::Refresh() {
 	// Actors are guaranteed to be valid
 	const Game_Actor& actor = *Game_Actors::GetActor(actor_id);
 
-	DrawActorName(actor, 0, 0);
-	DrawActorLevel(actor, 80, 0);
-	DrawActorState(actor, 80 + 44, 0);
-	DrawActorHp(actor, 80 + 44 + 54, 0);
-	DrawActorSp(actor, 80 + 44 + 54 + 72, 0);
+	int x = 0;
+	int y = 2;
+	DrawActorName(actor, x, y);
+	x += 80;
+	DrawActorLevel(actor, x, y);
+	x += 44;
+	DrawActorState(actor, x, y);
+	x += 54;
+	DrawActorHp(actor, x, y);
+	x += 72;
+	DrawActorSp(actor, x, y);
 }
