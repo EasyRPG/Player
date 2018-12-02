@@ -23,11 +23,10 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname) :
+Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Base(ix, iy, iwidth, iheight),
 	actor_id(actor_id),
 	draw_params(false),
-	draw_actorname(draw_actorname),
 	dirty(true) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
@@ -41,13 +40,9 @@ void Window_EquipStatus::Refresh() {
 
 		int y_offset;
 
-		if (draw_actorname) {
-			y_offset = 18;
-			// Actor data is guaranteed to be valid
-			DrawActorName(*Game_Actors::GetActor(actor_id), 0, 2);
-		} else {
-			y_offset = 2;
-		}
+		y_offset = 18;
+		// Actor data is guaranteed to be valid
+		DrawActorName(*Game_Actors::GetActor(actor_id), 0, 2);
 
 		for (int i = 0; i < 4; ++i) {
 			DrawParameter(0, y_offset + ((12 + 4) * i), i);

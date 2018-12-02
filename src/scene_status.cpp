@@ -34,18 +34,18 @@ void Scene_Status::Start() {
 	actorinfo_window.reset(new Window_ActorInfo(0, 0, 124, 208, actor));
 	actorstatus_window.reset(new Window_ActorStatus(124, 0, 196, 64, actor));
 	gold_window.reset(new Window_Gold(0, 208, 124, 32));
-	equipstatus_window.reset(new Window_EquipStatus(124, 64, 196, 80, actor, false));
+	paramstatus_window.reset(new Window_ParamStatus(124, 64, 196, 80, actor));
 	equip_window.reset(new Window_Equip(124, 144, 196, 96, actor));
 
 	equip_window->SetActive(false);
-	equipstatus_window->SetActive(false);
+	paramstatus_window->SetActive(false);
 
 	equip_window->SetIndex(-1);
 }
 
 void Scene_Status::Update() {
 	gold_window->Update();
-	equipstatus_window->Update();
+	paramstatus_window->Update();
 	equip_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {

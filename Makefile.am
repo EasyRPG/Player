@@ -306,6 +306,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_name.h \
 	src/window_numberinput.cpp \
 	src/window_numberinput.h \
+	src/window_paramstatus.cpp \
+	src/window_paramstatus.h \
 	src/window_savefile.cpp \
 	src/window_savefile.h \
 	src/window_selectable.cpp \

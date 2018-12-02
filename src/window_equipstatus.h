@@ -36,9 +36,8 @@ public:
 	 * @param iwidth window width.
 	 * @param iheight window height.
 	 * @param actor_id actor whose stats are displayed.
-	 * @param draw_actorname displays the actor name above the items.
 	 */
-	Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname = true);
+	Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id);
 
 	/**
 	 * Refreshes screen.
@@ -82,8 +81,6 @@ private:
 	int actor_id;
 	/** Draws the params if true. */
 	bool draw_params;
-	/** Draws the actor name above the values if true. */
-	bool draw_actorname;
 
 	int atk;
 	int def;
