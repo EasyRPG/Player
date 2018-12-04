@@ -42,6 +42,8 @@ public:
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
+
+	int GetTicks() const override;
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
 

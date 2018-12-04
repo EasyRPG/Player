@@ -47,6 +47,8 @@ public:
 
 	bool SetFormat(int frequency, AudioDecoder::Format format, int channels) override;
 
+	int GetTicks() const override;
+
 	static bool IsMp3(FILE* stream);
 private:
 	int FillBuffer(uint8_t* buffer, int length) override;
@@ -56,6 +58,8 @@ private:
 #endif
 	int err = 0;
 	bool finished = false;
+
+	long samplerate = 0;
 };
 
 #endif

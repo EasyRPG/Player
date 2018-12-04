@@ -68,7 +68,6 @@ bool OggVorbisDecoder::Open(FILE* file) {
 		return false;
 	}
 
-	// (long)ov_pcm_total(ovf, -1)) -> decoded length in samples, maybe useful for ticks later?
 	frequency = vi->rate;
 	channels = vi->channels;
 
@@ -105,6 +104,14 @@ bool OggVorbisDecoder::SetFormat(int freq, AudioDecoder::Format format, int chan
 		return false;
 
 	return true;
+}
+
+int OggVorbisDecoder::GetTicks() const {
+	if (!ovf) {
+		return 0;
+	}
+
+	return (int)ov_time_tell(ovf);
 }
 
 int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {

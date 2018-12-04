@@ -455,12 +455,16 @@ bool SdlMixerAudio::BGM_IsPlaying() const {
 }
 
 unsigned SdlMixerAudio::BGM_GetTicks() const {
+	if (!BGM_IsPlaying()) {
+		return 0;
+	}
+
 	if (audio_decoder) {
 		return audio_decoder->GetTicks();
 	}
 
-	// TODO: Implement properly. This is an approximation.
-	return SDL_GetTicks() - bgm_starttick;
+	// Should work for everything except MIDI
+	return SDL_GetTicks() + 1 - bgm_starttick;
 }
 
 void SdlMixerAudio::BGM_Volume(int volume) {

@@ -103,6 +103,15 @@ bool OpusDecoder::SetFormat(int freq, AudioDecoder::Format format, int chans) {
 	return true;
 }
 
+int OpusDecoder::GetTicks() const {
+	if (!oof) {
+		return 0;
+	}
+
+	// According to the docs it is number of samples at 48 kHz
+	return op_pcm_tell(oof) / 48000;
+}
+
 int OpusDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!oof)
 		return -1;
