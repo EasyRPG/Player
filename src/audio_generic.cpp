@@ -113,6 +113,7 @@ unsigned GenericAudio::BGM_GetTicks() const {
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {
 		if (BGM_Channels[i].decoder) {
 			ticks = BGM_Channels[i].decoder->GetTicks();
+			break;
 		}
 	}
 	UnlockMutex();

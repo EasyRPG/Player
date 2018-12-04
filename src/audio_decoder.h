@@ -249,7 +249,7 @@ public:
 	 * 200 = double speed and so on
 	 * Not all audio decoders support this. Using the audio hardware is
 	 * recommended.
-	 * 
+	 *
 	 * @param pitch Pitch multiplier to use
 	 * @return true if pitch was set, false otherwise
 	 */
@@ -275,9 +275,11 @@ public:
 	virtual size_t Tell() const;
 
 	/**
-	 * Returns amount of executed ticks. Only useful for MIDI format.
+	 * Returns a value suitable for the GetMidiTicks command.
+	 * For MIDI this is the amount of MIDI ticks, for other
+	 * formats usually the playback position in seconds.
 	 *
-	 * @return Amount of MIDI ticks.
+	 * @return Amount of MIDI ticks or position in seconds
 	 */
 	virtual int GetTicks() const;
 

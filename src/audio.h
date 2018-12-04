@@ -51,10 +51,10 @@ struct AudioInterface {
 	 * Returns whether the background music has played at least once.
 	 */
 	virtual bool BGM_PlayedOnce() const = 0;
-	
+
 	/**
 	 * Reports if a music file is currently being played.
-	 * 
+	 *
 	 * @return true when BGM is playing
 	 */
 	virtual bool BGM_IsPlaying() const = 0;
@@ -112,10 +112,11 @@ struct AudioInterface {
 };
 
 struct EmptyAudio : public AudioInterface {
+public:
 	void BGM_Play(std::string const&, int, int, int) override;
 	void BGM_Pause() override {}
 	void BGM_Resume() override {}
-	void BGM_Stop() override {}
+	void BGM_Stop() override;
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override { return false; }
 	unsigned BGM_GetTicks() const override;
@@ -126,7 +127,10 @@ struct EmptyAudio : public AudioInterface {
 	void SE_Stop() override {}
 	void Update() override {}
 
+private:
 	unsigned bgm_starttick = 0;
+
+	bool playing = false;
 };
 
 AudioInterface& Audio();

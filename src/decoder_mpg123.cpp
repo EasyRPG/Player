@@ -94,6 +94,11 @@ bool Mpg123Decoder::Open(FILE* file) {
 		return false;
 	}
 
+	// Samplerate cached, regularly needed for Ticks function
+	int ch;
+	int fmt;
+	mpg123_getformat(handle.get(), &samplerate, &ch, &fmt);
+
 	return true;
 }
 
@@ -185,6 +190,15 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) 
 	return err == MPG123_OK;
 }
 
+int Mpg123Decoder::GetTicks() const {
+	if (samplerate == 0) {
+		return 0;
+	}
+
+	off_t pos = mpg123_tell(handle.get());
+	return pos / samplerate;
+}
+
 bool Mpg123Decoder::IsMp3(FILE* stream) {
 	Mpg123Decoder decoder;
 	// Prevent stream handle destruction
@@ -199,7 +213,7 @@ bool Mpg123Decoder::IsMp3(FILE* stream) {
 	int err = 0;
 	size_t done = 0;
 	int err_count = 0;
-	
+
 	// Read beginning of assumed MP3 file and count errors as an heuristic to detect MP3
 	for (int i = 0; i < 10; ++i) {
 		err = mpg123_read(decoder.handle.get(), buffer, 1024, &done);
