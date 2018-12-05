@@ -199,6 +199,9 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		command_window->SetVisible(true);
 		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
+		if (previous_state == State_SelectActor) {
+			command_window->SetIndex(0);
+		}
 		break;
 	case State_SelectEnemyTarget:
 		target_window->SetActive(true);
