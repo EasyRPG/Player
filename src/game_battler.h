@@ -167,6 +167,14 @@ public:
 	virtual int GetAttributeModifier(int attribute_id) const = 0;
 
 	/**
+	 * Gets the final effect multiplier when a skill/attack is targeting this battler.
+	 *
+	 * @param attributes set for the incoming action
+	 * @return effect multiplier
+	 */
+	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name

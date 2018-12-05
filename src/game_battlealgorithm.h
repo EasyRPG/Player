@@ -371,7 +371,6 @@ protected:
 	std::string GetAttributeShiftMessage(const std::string& attribute) const;
 
 	void ApplyActionSwitches();
-	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
 
 	void Reset();
 

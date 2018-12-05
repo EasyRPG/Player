@@ -162,6 +162,26 @@ int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
 	return 0;
 }
 
+float Game_Battler::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
+	float multiplier = 0;
+	int attributes_applied = 0;
+	for (unsigned int i = 0; i < attributes_set.size(); i++) {
+		if (attributes_set[i]) {
+			multiplier += GetAttributeModifier(i + 1);
+			attributes_applied++;
+		}
+	}
+
+	if (attributes_applied > 0) {
+		multiplier /= (attributes_applied * 100);
+		return multiplier;
+	}
+
+	return 1.0;
+}
+
+
+
 bool Game_Battler::IsSkillUsable(int skill_id) const {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 
