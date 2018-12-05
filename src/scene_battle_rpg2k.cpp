@@ -184,6 +184,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
 		command_window->SetX(SCREEN_TARGET_WIDTH);
+		command_window->SetIndex(-1);
 		status_window->Refresh();
 		move_screen = true;
 		break;
