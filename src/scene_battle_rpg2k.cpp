@@ -582,6 +582,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 }
 
 void Scene_Battle_Rpg2k::ProcessInput() {
+	if (IsWindowMoving()) {
+		return;
+	}
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
