@@ -727,6 +727,10 @@ void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 
 void Game_Actor::SetLevel(int _level) {
 	GetData().level = min(max(_level, 1), GetMaxLevel());
+	// Ensure current HP/SP remain clamped if new Max HP/SP is less.
+	SetHp(GetHp());
+	SetSp(GetSp());
+
 }
 
 std::string Game_Actor::GetLevelUpMessage(int new_level) const {
@@ -823,10 +827,6 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		// At least level minimum
 		SetExp(max(GetBaseExp(), GetExp()));
 	} else if (new_level < old_level) {
-		// Set HP and SP to maximum possible value
-		SetHp(GetHp());
-		SetSp(GetSp());
-
 		// Experience adjustment:
 		// Level minimum if higher then Level maximum
 		if (GetExp() >= GetNextExp()) {
