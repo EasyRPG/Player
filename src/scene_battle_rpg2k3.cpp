@@ -415,6 +415,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->Refresh();
 		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 			command_window->SetX(SCREEN_TARGET_WIDTH);
+			command_window->SetIndex(-1);
 		}
 		break;
 	case State_AutoBattle:
