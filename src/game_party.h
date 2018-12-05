@@ -342,11 +342,11 @@ public:
 	bool IsAnyControllable();
 
 	/**
-	 * Gets the actor with the highest level. If there are many, choose the one with the earliest position in the group.
+	 * Gets the actor with the highest level who can act. If there are many, choose the one with the earliest position in the group.
 	 *
-	 * @return The first Highest leveled actor.
+	 * @return The first Highest leveled actor who can act.
 	 */
-	Game_Actor* GetHighestLeveledActor() const;
+	Game_Actor* GetHighestLeveledActorWhoCanAct() const;
 
 private:
 	const RPG::SaveInventory& data() const;

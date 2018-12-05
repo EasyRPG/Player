@@ -297,7 +297,7 @@ bool Game_Battler::UseItem(int item_id) {
 		if (skill != nullptr) {
 			Game_Battler* source = this;
 			if (skill->scope != RPG::Skill::Scope_self) {
-				source = Main_Data::game_party->GetHighestLeveledActor();
+				source = Main_Data::game_party->GetHighestLeveledActorWhoCanAct();
 			}
 			UseSkill(item->skill_id, source);
 		}

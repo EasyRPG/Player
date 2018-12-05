@@ -632,11 +632,11 @@ bool Game_Party::IsAnyControllable() {
 	return false;
 }
 
-Game_Actor* Game_Party::GetHighestLeveledActor() const {
+Game_Actor* Game_Party::GetHighestLeveledActorWhoCanAct() const {
 	Game_Actor* best = nullptr;
 
 	for (auto* actor : GetActors()) {
-		if (best == nullptr || best->GetLevel() < actor->GetLevel()) {
+		if (actor->CanAct() && (best == nullptr || best->GetLevel() < actor->GetLevel())) {
 			best = actor;
 		}
 	}
