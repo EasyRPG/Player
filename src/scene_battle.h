@@ -192,7 +192,7 @@ protected:
 	/** Displays Attack, Defense, Magic, Item */
 	std::unique_ptr<Window_Command> command_window;
 	std::unique_ptr<Window_Item> item_window;
-	std::unique_ptr<Window_Skill> skill_window;
+	std::unique_ptr<Window_BattleSkill> skill_window;
 	std::unique_ptr<Window_Help> help_window;
 	/** Displays allies status */
 	std::unique_ptr<Window_BattleStatus> status_window;

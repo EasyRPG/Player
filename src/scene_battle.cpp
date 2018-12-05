@@ -135,7 +135,7 @@ void Scene_Battle::CreateUi() {
 	item_window->Refresh();
 	item_window->SetIndex(0);
 
-	skill_window.reset(new Window_Skill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
+	skill_window.reset(new Window_BattleSkill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));

@@ -93,4 +93,38 @@ protected:
 	int subset;
 };
 
+/**
+ * Window_Skill class.
+ */
+class Window_BattleSkill : public Window_Skill {
+	public:
+		using Window_Skill::Window_Skill;
+
+		/**
+		 * Saves the value of GetIndex() for actor.
+		 *
+		 * @param which_actor which actor to save
+		 **/
+		void SaveActorIndex(int which_actor);
+
+		/**
+		 * Restores the index value for actor.
+		 *
+		 * @param which_actor which actor to restore
+		 **/
+		void RestoreActorIndex(int which_actor);
+
+	private:
+		std::array<int,4> actor_index = {{}};
+};
+
+
+inline void Window_BattleSkill::SaveActorIndex(int which_actor) {
+	actor_index[which_actor] = GetIndex();
+}
+
+inline void Window_BattleSkill::RestoreActorIndex(int which_actor) {
+	SetIndex(actor_index[which_actor]);
+}
+
 #endif

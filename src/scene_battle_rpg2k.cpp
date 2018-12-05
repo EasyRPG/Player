@@ -151,7 +151,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		skill_window->SetActive(true);
 		skill_window->SetActor(active_actor->GetId());
 		if (previous_state == State_SelectCommand)
-			skill_window->SetIndex(0);
+			skill_window->RestoreActorIndex(actor_index - 1);
 		break;
 	case State_Victory:
 	case State_Defeat:
@@ -171,6 +171,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		item_window->SetVisible(false);
 		skill_window->SetVisible(false);
 		help_window->SetVisible(false);
+
+	}
+
+	if (previous_state == State_SelectSkill) {
+		skill_window->SaveActorIndex(actor_index - 1);
 	}
 
 	switch (state) {
