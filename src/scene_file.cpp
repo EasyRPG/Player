@@ -136,7 +136,6 @@ void Scene_File::Refresh() {
 	for (int i = 0; i < (int)file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetActive(i == index);
-		w->SetVisible(i >= top_index -1 && i <= top_index + 3);
 		w->Refresh();
 	}
 }
