@@ -449,7 +449,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				if (action->GetTarget()) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
-					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->IsSoundAnimationOnAlly()) {
+					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Skill) {
 						action->PlaySoundAnimation(false, 20);
 					}
 				}
@@ -849,24 +849,20 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	SetState(State_SelectActor);
 }
 
-static bool BattlerSort(Game_Battler* first, Game_Battler* second) {
-	if (first->HasPreemptiveAttack() && second->HasPreemptiveAttack()) {
-		return first->GetAgi() > second->GetAgi();
-	}
-
-	if (first->HasPreemptiveAttack()) {
-		return true;
-	}
-
-	if (second->HasPreemptiveAttack()) {
-		return false;
-	}
-
-	return first->GetAgi() > second->GetAgi();
-}
-
 void Scene_Battle_Rpg2k::CreateExecutionOrder() {
-	std::sort(battle_actions.begin(), battle_actions.end(), BattlerSort);
+	// Define random Agility. Must be done outside of the sort function because of the "strict weak ordering" property, so the sort is consistent
+	for (auto battler : battle_actions) {
+		int battle_order = battler->GetAgi() + Utils::GetRandomNumber(0, battler->GetAgi() / 4 + 3);
+		if (battler->GetBattleAlgorithm()->GetType() == Game_BattleAlgorithm::Type::Normal && battler->HasPreemptiveAttack()) {
+			// This is an arbitrarily large number to separate preemptive vs non-preemptive battlers
+			battle_order += 100000;
+		}
+		battler->SetBattleOrderAgi(battle_order);
+	}
+	std::sort(battle_actions.begin(), battle_actions.end(),
+			[](Game_Battler* l, Game_Battler* r) {
+			return l->GetBattleOrderAgi() > r->GetBattleOrderAgi();
+			});
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {

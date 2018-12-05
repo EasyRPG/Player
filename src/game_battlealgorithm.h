@@ -41,6 +41,21 @@ namespace RPG {
  */
 namespace Game_BattleAlgorithm {
 
+enum class Type {
+	Null,
+	Normal,
+	Skill,
+	Item,
+	NormalDual,
+	Defend,
+	Observe,
+	Charge,
+	SelfDestruct,
+	Escape,
+	Transform,
+	NoMove,
+};
+
 class AlgorithmBase {
 public:
 	/**
@@ -324,14 +339,14 @@ public:
 	virtual bool IsReflected() const;
 
 	/**
-	 * @return true if this action uses PlaySoundAnimation() on allies
+	 * Returns the algorithm type of this object.
 	 */
-	virtual bool IsSoundAnimationOnAlly() const;
+	Type GetType() const;
 
 protected:
-	AlgorithmBase(Game_Battler* source);
-	AlgorithmBase(Game_Battler* source, Game_Battler* target);
-	AlgorithmBase(Game_Battler* source, Game_Party_Base* target);
+	AlgorithmBase(Type t, Game_Battler* source);
+	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
+	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 
 	std::string GetAttackFailureMessage(const std::string& points) const;
 	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
@@ -357,6 +372,7 @@ protected:
 	 */
 	bool TargetNextInternal() const;
 
+	Type type = Type::Null;
 	Game_Battler* source;
 	std::vector<Game_Battler*> targets;
 	mutable std::vector<Game_Battler*>::iterator current_target;
@@ -420,7 +436,6 @@ public:
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
-	bool IsSoundAnimationOnAlly() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -529,6 +544,11 @@ public:
 	void Apply() override;
 };
 
+
+inline Type AlgorithmBase::GetType() const {
+	return type;
 }
+
+} //namespace Game_BattleAlgorithm
 
 #endif

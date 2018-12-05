@@ -836,3 +836,11 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 		--old_shift;
 	}
 }
+
+void Game_Battler::SetBattleOrderAgi(int val) {
+	battle_order = val;
+}
+
+int Game_Battler::GetBattleOrderAgi() {
+	return battle_order;
+}
