@@ -282,15 +282,25 @@ bool Game_Battler::UseItem(int item_id) {
 		return true;
 	}
 
-	switch (item->type) {
-		case RPG::Item::Type_weapon:
-		case RPG::Item::Type_shield:
-		case RPG::Item::Type_armor:
-		case RPG::Item::Type_helmet:
-		case RPG::Item::Type_accessory:
-			return item->use_skill && UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
-		case RPG::Item::Type_special:
-			return UseSkill(item->skill_id, Main_Data::game_party->GetHighestLeveledActor());
+	bool do_skill = RPG::Item::Type_special
+		|| (item->use_skill && (
+				item->type == RPG::Item::Type_weapon
+				|| item->type == RPG::Item::Type_shield
+				|| item->type == RPG::Item::Type_armor
+				|| item->type == RPG::Item::Type_helmet
+				|| item->type == RPG::Item::Type_accessory
+				)
+				);
+
+	if (do_skill) {
+		auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+		if (skill != nullptr) {
+			Game_Battler* source = this;
+			if (skill->scope != RPG::Skill::Scope_self) {
+				source = Main_Data::game_party->GetHighestLeveledActor();
+			}
+			UseSkill(item->skill_id, source);
+		}
 	}
 
 	return false;
