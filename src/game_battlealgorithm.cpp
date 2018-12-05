@@ -1133,7 +1133,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			//If resurrected and no HP selected, the effect value is a percentage:
 			if (IsRevived() && !skill.affect_hp) {
-				this->hp = GetTarget()->GetMaxHp() * effect / 100;
+				this->hp = std::max<int>(0, std::min<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(),
+							GetTarget()->GetMaxHp() * effect / 10));
 				this->success = true;
 			}
 		}
