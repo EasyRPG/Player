@@ -38,10 +38,24 @@ Scene_File::Scene_File(std::string message) :
 	index = 0;
 }
 
+static std::unique_ptr<Sprite> makeBorderSprite(int y) {
+	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::System()->GetBackgroundColor());
+	auto sprite = std::unique_ptr<Sprite>(new Sprite());
+	sprite->SetVisible(true);
+	sprite->SetZ(Priority_Window + 1);
+	sprite->SetBitmap(bitmap);
+	sprite->SetX(0);
+	sprite->SetY(y);
+	return sprite;
+}
+
 void Scene_File::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);
+	help_window->SetZ(Priority_Window + 1);
+
+	border_top = makeBorderSprite(32);
 
 	// Refresh File Finder Save Folder
 	tree = FileFinder::CreateSaveDirectoryTree();
@@ -50,6 +64,7 @@ void Scene_File::Start() {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
+		w->SetZ(Priority_Window);
 
 		// Try to access file
 		std::stringstream ss;
@@ -109,23 +124,32 @@ void Scene_File::Start() {
 		file_windows.push_back(w);
 	}
 
+	border_bottom = makeBorderSprite(232);
+
 	index = latest_slot;
+	top_index = std::max(0, index - 2);
 
 	Refresh();
 	Update();
 }
 
 void Scene_File::Refresh() {
-	for (unsigned int i = 0; (size_t) i < file_windows.size(); i++) {
+	for (int i = 0; i < (int)file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
-		w->SetVisible(i >= top_index && i < top_index + 3);
 		w->Refresh();
 	}
 }
 
 void Scene_File::Update() {
+	if (IsWindowMoving()) {
+		for (auto& fw: file_windows) {
+			fw->Update();
+		}
+		return;
+	}
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
@@ -172,9 +196,11 @@ void Scene_File::Update() {
 	}
 
 	if (index > top_index + 2) {
+		MoveFileWindows((top_index + 2 - index) * 64, 8);
 		top_index = std::max(top_index, index - 3 + 1);
 	}
 	else if (index < top_index) {
+		MoveFileWindows((top_index - index) * 64, 8);
 		top_index = std::min(top_index, index);
 	}
 
@@ -183,6 +209,24 @@ void Scene_File::Update() {
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
 
-	for (int i = 0; (size_t)i < file_windows.size(); i++)
-		file_windows[i]->Update();
+	for (auto& fw: file_windows) {
+		fw->Update();
+	}
 }
+
+
+bool Scene_File::IsWindowMoving() const {
+	for (auto& fw: file_windows) {
+		if (fw->IsMovementActive()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Scene_File::MoveFileWindows(int dy, int dt) {
+	for (auto& fw: file_windows) {
+		fw->InitMovement(fw->GetX(), fw->GetY(), fw->GetX(), fw->GetY() + dy, dt);
+	}
+}
+
