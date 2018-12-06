@@ -80,6 +80,7 @@
 #include "registry.h"
 #include "rtp_table.h"
 #include "main_data.h"
+#include "reader_util.h"
 
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
@@ -111,11 +112,11 @@ namespace {
 			return em_file;
 #endif
 
-		std::string lower_dir = Utils::LowerCase(dir);
+		std::string corrected_dir = ReaderUtil::Normalize(dir);
 		std::string const escape_symbol = Player::escape_symbol;
-		std::string corrected_name = Utils::LowerCase(name);
+		std::string corrected_name = ReaderUtil::Normalize(name);
 
-		std::string combined_path = MakePath(lower_dir, corrected_name);
+		std::string combined_path = MakePath(corrected_dir, corrected_name);
 		std::string canon = MakeCanonical(combined_path, 1);
 		if (combined_path != canon) {
 			// Very few games (e.g. Yume2kki) use path traversal (..) in the filenames to point
@@ -147,10 +148,10 @@ namespace {
 		}
 #endif
 
-		string_map::const_iterator dir_it = tree.directories.find(lower_dir);
+		string_map::const_iterator dir_it = tree.directories.find(corrected_dir);
 		if(dir_it == tree.directories.end()) { return ""; }
 
-		string_map const& dir_map = tree.sub_members.find(lower_dir)->second;
+		string_map const& dir_map = tree.sub_members.find(corrected_dir)->second;
 
 		for(char const** c = exts; *c != NULL; ++c) {
 			string_map::const_iterator const name_it = dir_map.find(corrected_name + *c);
@@ -174,17 +175,17 @@ namespace {
 		RTP::rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
-		RTP::rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir).c_str());
-		std::string lower_name = Utils::LowerCase(name);
+		RTP::rtp_table_type::const_iterator dir_it = table.find(ReaderUtil::Normalize(dir).c_str());
+		std::string corrected_name = ReaderUtil::Normalize(name);
 
 		if (dir_it == table.end()) { return name; }
 
-		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(lower_name.c_str());
+		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(corrected_name.c_str());
 		if (file_it == dir_it->second.end()) {
-			if (is_not_ascii_filename(lower_name)) {
+			if (is_not_ascii_filename(corrected_name)) {
 				// Linear Search: Japanese file name to English file name
 				for (const auto& entry : dir_it->second) {
-					if (!strcmp(entry.second, lower_name.c_str())) {
+					if (!strcmp(entry.second, corrected_name.c_str())) {
 						return entry.first;
 					}
 				}
@@ -615,7 +616,7 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 
 	string_map const& files = p.files;
 
-	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
+	string_map::const_iterator const it = files.find(ReaderUtil::Normalize(name));
 
 	return(it != files.end()) ? MakePath(p.directory_path, it->second) : "";
 }
@@ -800,13 +801,13 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 				continue;
 			}
 
-			result.files[Utils::LowerCase(MakePath(parent, name))] = MakePath(parent, name);
+			result.files[ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
 			continue;
 		}
 		if (is_directory) {
-			result.directories[Utils::LowerCase(name)] = name;
+			result.directories[ReaderUtil::Normalize(name)] = name;
 		} else {
-			result.files[Utils::LowerCase(name)] = name;
+			result.files[ReaderUtil::Normalize(name)] = name;
 		}
 	}
 
