@@ -127,6 +127,7 @@ void Scene_File::Start() {
 	border_bottom = makeBorderSprite(232);
 
 	index = latest_slot;
+	top_index = std::max(0, index - 2);
 
 	Refresh();
 	Update();
@@ -135,6 +136,7 @@ void Scene_File::Start() {
 void Scene_File::Refresh() {
 	for (int i = 0; i < (int)file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
+		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
 		w->Refresh();
 	}
