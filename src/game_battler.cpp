@@ -381,6 +381,7 @@ void Game_Battler::AddState(int state_id) {
 		RemoveAllStates();
 		SetDefending(false);
 		SetCharged(false);
+		SetHp(0);
 		SetAtkModifier(0);
 		SetDefModifier(0);
 		SetSpiModifier(0);
@@ -482,16 +483,9 @@ static bool non_permanent(int state_id) {
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
-
-	// If death is non-permanent change HP to 1
-	if (IsDead() &&
-		non_permanent(1)) {
-		RemoveState(1);
-	}
-
-	for (size_t i = 1; i < states.size(); ++i) {
+	for (size_t i = 0; i < states.size(); ++i) {
 		if (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob > 0) {
-			states[i] = 0;
+			RemoveState(i + 1);
 		}
 	}
 }
@@ -538,7 +532,7 @@ void Game_Battler::ChangeHp(int hp) {
 		SetHp(GetHp() + hp);
 
 		// Death
-		if (GetHp() == 0) {
+		if (GetHp() <= 0) {
 			AddState(1);
 		}
 	}
@@ -837,6 +831,21 @@ void Game_Battler::ShiftAttributeRate(int attribute_id, int shift) {
 	}
 }
 
+int Game_Battler::GetAttributeRateShift(int attribute_id) {
+	if (attribute_id < 1 || attribute_id >(int)Data::attributes.size()) {
+		assert(false && "invalid attribute_id");
+	}
+	return attribute_shift[attribute_id - 1];
+}
+
+bool Game_Battler::CanShiftAttributeRate(int attribute_id, int shift) const {
+	if (attribute_id < 1 || attribute_id > (int)Data::attributes.size()) {
+		return false;
+	}
+	auto new_shift = attribute_shift[attribute_id - 1] + shift;
+	return new_shift >= -1 && new_shift <= 1;
+}
+
 void Game_Battler::SetBattleOrderAgi(int val) {
 	battle_order = val;
 }
@@ -851,7 +860,7 @@ int Game_Battler::GetHitChanceModifierFromStates() const {
 	for (const auto id : GetInflictedStates()) {
 		auto* state = ReaderUtil::GetElement(Data::states, id);
 		if (state) {
-			modifier = std::min(modifier, state->reduce_hit_ratio);
+			modifier = std::min<int>(modifier, state->reduce_hit_ratio);
 		}
 	}
 	return modifier;

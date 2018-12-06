@@ -175,6 +175,11 @@ public:
 	 */
 	bool IsAbsorb() const;
 
+	/*
+	 * @return Whether target will be revived from death
+	 */
+	bool IsRevived() const;
+
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
 	 *
@@ -258,6 +263,13 @@ public:
 	virtual std::string GetStartMessage() const = 0;
 
 	/**
+	 * Checks if there is a first line message to display when the action is invoked.
+	 *
+	 * @return check
+	 */
+	bool HasStartMessage() const;
+
+	/**
 	 * Checks if there is a second line message to display when the action is invoked.
 	 *
 	 * @return check
@@ -317,7 +329,7 @@ public:
 	 *
 	 * @param out filled with all conditions in text form
 	 */
-	virtual void GetResultMessages(std::vector<std::string>& out) const;
+	virtual void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const;
 
 	/**
 	 * Returns the physical rate of the attack.
@@ -356,6 +368,7 @@ protected:
 	std::string GetDamagedMessage() const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 	std::string GetStateMessage(const std::string& message) const;
+	std::string GetAttributeShiftMessage(const std::string& attribute) const;
 
 	void ApplyActionSwitches();
 	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
@@ -393,12 +406,14 @@ protected:
 	bool killed_by_attack_damage;
 	bool critical_hit;
 	bool absorb;
+	bool revived = false;
 	mutable int reflect;
 
 	RPG::Animation* animation;
 
 	std::vector<RPG::State> conditions;
 	std::vector<int16_t> healed_conditions;
+	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
 };
@@ -433,7 +448,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	const RPG::Sound* GetResultSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
 
@@ -455,7 +470,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 
 private:
 	const RPG::Item& item;
@@ -518,7 +533,7 @@ public:
 	bool Execute() override;
 	void Apply() override;
 
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 };
 
 class Transform : public AlgorithmBase {
@@ -547,6 +562,10 @@ public:
 
 inline Type AlgorithmBase::GetType() const {
 	return type;
+}
+
+inline bool AlgorithmBase::HasStartMessage() const {
+	return !GetStartMessage().empty();
 }
 
 } //namespace Game_BattleAlgorithm
