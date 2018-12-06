@@ -218,34 +218,36 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		return false;
 	}
 
-	if (item_id > 0 && item_id <= (int)Data::items.size() && data().party.size() > 0) {
-		switch (item->type) {
-			case RPG::Item::Type_weapon:
-			case RPG::Item::Type_shield:
-			case RPG::Item::Type_armor:
-			case RPG::Item::Type_helmet:
-			case RPG::Item::Type_accessory:
-				return item->use_skill && IsSkillUsable(item->skill_id, nullptr, true);
-			case RPG::Item::Type_special:
-				return IsSkillUsable(item->skill_id, nullptr, true);
-		}
+	if (data().party.size() == 0) {
+		return false;
+	}
 
-		if (Game_Temp::battle_running) {
-			switch (item->type) {
-				case RPG::Item::Type_medicine:
-					return !item->occasion_field1;
-				case RPG::Item::Type_switch:
-					return item->occasion_battle;
-			}
-		} else {
-			switch (item->type) {
-				case RPG::Item::Type_medicine:
-				case RPG::Item::Type_material:
-				case RPG::Item::Type_book:
-					return true;
-				case RPG::Item::Type_switch:
-					return item->occasion_field2;
-			}
+	switch (item->type) {
+		case RPG::Item::Type_weapon:
+		case RPG::Item::Type_shield:
+		case RPG::Item::Type_armor:
+		case RPG::Item::Type_helmet:
+		case RPG::Item::Type_accessory:
+			return item->use_skill && IsSkillUsable(item->skill_id, nullptr, true);
+		case RPG::Item::Type_special:
+			return IsSkillUsable(item->skill_id, nullptr, true);
+	}
+
+	if (Game_Temp::battle_running) {
+		switch (item->type) {
+			case RPG::Item::Type_medicine:
+				return !item->occasion_field1;
+			case RPG::Item::Type_switch:
+				return item->occasion_battle;
+		}
+	} else {
+		switch (item->type) {
+			case RPG::Item::Type_medicine:
+			case RPG::Item::Type_material:
+			case RPG::Item::Type_book:
+				return true;
+			case RPG::Item::Type_switch:
+				return item->occasion_field2;
 		}
 	}
 
@@ -255,16 +257,49 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 	bool was_used = false;
 
+	auto* item = ReaderUtil::GetElement(Data::items, item_id);
+	if (!item) {
+		Output::Warning("UseItem: Can't use item with invalid ID %d", item_id);
+		return false;
+	}
+
+	bool do_skill = (item->type == RPG::Item::Type_special)
+		|| (item->use_skill && (
+				item->type == RPG::Item::Type_weapon
+				|| item->type == RPG::Item::Type_shield
+				|| item->type == RPG::Item::Type_armor
+				|| item->type == RPG::Item::Type_helmet
+				|| item->type == RPG::Item::Type_accessory
+				)
+				);
+
+	const RPG::Skill* skill = nullptr;
+	if (do_skill) {
+		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+		if (skill == nullptr) {
+			Output::Warning("UseItem: Can't use item %d skill with invalid ID %d", item->ID, item->skill_id);
+			return false;
+		}
+	}
+
+	const Game_Actor* fixed_source = nullptr;
+	if (skill && skill->scope != RPG::Skill::Scope_self) {
+		fixed_source = GetHighestLeveledActorWhoCanUse(item);
+		if (fixed_source == nullptr) {
+			return false;
+		}
+	}
+
 	if (target) {
-		if (IsItemUsable(item_id, target)) {
-			was_used = target->UseItem(item_id);
+		const auto* source = fixed_source ? fixed_source : target;
+		if (IsItemUsable(item_id, source)) {
+			was_used = target->UseItem(item_id, source);
 		}
 	} else {
-		std::vector<Game_Actor*> actors = GetActors();
-		std::vector<Game_Actor*>::iterator it;
-		for (it = actors.begin(); it != actors.end(); ++it) {
-			if (IsItemUsable(item_id, (*it))) {
-				was_used |= (*it)->UseItem(item_id);
+		for (auto* actor: GetActors()) {
+			const auto* source = fixed_source ? fixed_source : actor;
+			if (IsItemUsable(item_id, source)) {
+				was_used |= actor->UseItem(item_id, source);
 			}
 		}
 	}
@@ -632,11 +667,13 @@ bool Game_Party::IsAnyControllable() {
 	return false;
 }
 
-Game_Actor* Game_Party::GetHighestLeveledActorWhoCanAct() const {
+Game_Actor* Game_Party::GetHighestLeveledActorWhoCanUse(const RPG::Item* item) const {
 	Game_Actor* best = nullptr;
 
 	for (auto* actor : GetActors()) {
-		if (actor->CanAct() && (best == nullptr || best->GetLevel() < actor->GetLevel())) {
+		if (actor->CanAct()
+				&& actor->IsItemUsable(item->ID)
+				&& (best == nullptr || best->GetLevel() < actor->GetLevel())) {
 			best = actor;
 		}
 	}

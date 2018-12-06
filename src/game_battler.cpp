@@ -233,7 +233,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	return true;
 }
 
-bool Game_Battler::UseItem(int item_id) {
+bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
 		Output::Warning("UseItem: Can't use item with invalid ID %d", item_id);
@@ -282,7 +282,7 @@ bool Game_Battler::UseItem(int item_id) {
 		return true;
 	}
 
-	bool do_skill = RPG::Item::Type_special
+	bool do_skill = (item->type == RPG::Item::Type_special)
 		|| (item->use_skill && (
 				item->type == RPG::Item::Type_weapon
 				|| item->type == RPG::Item::Type_shield
@@ -294,19 +294,17 @@ bool Game_Battler::UseItem(int item_id) {
 
 	if (do_skill) {
 		auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
-		if (skill != nullptr) {
-			Game_Battler* source = this;
-			if (skill->scope != RPG::Skill::Scope_self) {
-				source = Main_Data::game_party->GetHighestLeveledActorWhoCanAct();
-			}
-			UseSkill(item->skill_id, source);
+		if (skill == nullptr) {
+			Output::Warning("UseItem: Can't use item %d skill with invalid ID %d", item->ID, item->skill_id);
+			return false;
 		}
+		UseSkill(item->skill_id, source);
 	}
 
 	return false;
 }
 
-bool Game_Battler::UseSkill(int skill_id, Game_Battler* source) {
+bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 	const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_id);
 	if (!skill) {
 		Output::Warning("UseSkill: Can't use skill with invalid ID %d", skill_id);

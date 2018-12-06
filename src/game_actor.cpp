@@ -84,7 +84,7 @@ int Game_Actor::GetId() const {
 	return actor_id;
 }
 
-bool Game_Actor::UseItem(int item_id) {
+bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 	const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);
 	if (!item) {
 		Output::Warning("UseItem: Can't use invalid item %d", item_id);
@@ -110,7 +110,7 @@ bool Game_Actor::UseItem(int item_id) {
 		return true;
 	}
 
-	return Game_Battler::UseItem(item_id);
+	return Game_Battler::UseItem(item_id, source);
 }
 
 bool Game_Actor::IsItemUsable(int item_id) const {

@@ -73,7 +73,7 @@ public:
 	 * @param item_id ID if item to use
 	 * @return true if item affected anything
 	 */
-	bool UseItem(int item_id) override;
+	bool UseItem(int item_id, const Game_Battler* source) override;
 
 	/**
 	 * Checks if the actor is permitted to use the item at all.

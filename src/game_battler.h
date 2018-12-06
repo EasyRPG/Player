@@ -352,7 +352,7 @@ public:
 	 * @param item_id ID if item to use
 	 * @return true if item affected anything
 	 */
-	virtual bool UseItem(int item_id);
+	virtual bool UseItem(int item_id, const Game_Battler* source);
 
 	/**
 	 * Applies the effects of a skill.
@@ -364,7 +364,7 @@ public:
 	 * @param source battler who threw the skill
 	 * @return true if skill affected anything
 	 */
-	virtual bool UseSkill(int skill_id, Game_Battler* source);
+	virtual bool UseSkill(int skill_id, const Game_Battler* source);
 
 	/**
 	 * Calculates the Skill costs including all modifiers.
