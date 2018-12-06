@@ -851,7 +851,7 @@ int Game_Battler::GetHitChanceModifierFromStates() const {
 	for (const auto id : GetInflictedStates()) {
 		auto* state = ReaderUtil::GetElement(Data::states, id);
 		if (state) {
-			modifier = std::min(modifier, state->reduce_hit_ratio);
+			modifier = std::min<int>(modifier, state->reduce_hit_ratio);
 		}
 	}
 	return modifier;
