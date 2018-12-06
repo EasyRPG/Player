@@ -380,7 +380,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_SelectSkill:
 		skill_window->SetActive(true);
 		skill_window->SetActor(active_actor->GetId());
-		skill_window->SetIndex(0);
+		if (previous_state == State_SelectCommand) {
+			skill_window->RestoreActorIndex(actor_index);
+		}
 		break;
 	case State_Victory:
 	case State_Defeat:
@@ -397,6 +399,10 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	help_window->SetVisible(false);
 	target_window->SetVisible(false);
 
+	if (previous_state == State_SelectSkill) {
+		skill_window->SaveActorIndex(actor_index);
+	}
+
 	switch (state) {
 	case State_Start:
 		break;
@@ -409,6 +415,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->Refresh();
 		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
 			command_window->SetX(SCREEN_TARGET_WIDTH);
+			command_window->SetIndex(-1);
 		}
 		break;
 	case State_AutoBattle:

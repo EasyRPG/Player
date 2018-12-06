@@ -151,7 +151,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		skill_window->SetActive(true);
 		skill_window->SetActor(active_actor->GetId());
 		if (previous_state == State_SelectCommand)
-			skill_window->SetIndex(0);
+			skill_window->RestoreActorIndex(actor_index - 1);
 		break;
 	case State_Victory:
 	case State_Defeat:
@@ -171,6 +171,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		item_window->SetVisible(false);
 		skill_window->SetVisible(false);
 		help_window->SetVisible(false);
+
+	}
+
+	if (previous_state == State_SelectSkill) {
+		skill_window->SaveActorIndex(actor_index - 1);
 	}
 
 	switch (state) {
@@ -184,6 +189,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(option_command_mov);
 		status_window->SetIndex(-1);
 		command_window->SetX(SCREEN_TARGET_WIDTH);
+		command_window->SetIndex(-1);
 		status_window->Refresh();
 		move_screen = true;
 		break;
@@ -199,6 +205,9 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		command_window->SetVisible(true);
 		command_window->SetX(SCREEN_TARGET_WIDTH - option_command_mov);
+		if (previous_state == State_SelectActor) {
+			command_window->SetIndex(0);
+		}
 		break;
 	case State_SelectEnemyTarget:
 		target_window->SetActive(true);
@@ -582,6 +591,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 }
 
 void Scene_Battle_Rpg2k::ProcessInput() {
+	if (IsWindowMoving()) {
+		return;
+	}
 	if (Input::IsTriggered(Input::DECISION)) {
 		switch (state) {
 		case State_Start:
