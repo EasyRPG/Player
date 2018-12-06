@@ -169,24 +169,30 @@ bool Game_Actor::IsSkillUsable(int skill_id) const {
 	return Game_Battler::IsSkillUsable(skill_id);
 }
 
-int Game_Actor::GetSpCostModifier() const {
-	// Only non-weapons have this modifier
-	int start = HasTwoWeapons() ? RPG::Item::Type_armor : RPG::Item::Type_shield;
-	int sp_mod = 1;
-
-	for (int i = start; i <= 5; ++i) {
-		const RPG::Item* item = GetEquipment(i);
-		if (item && item->half_sp_cost) {
-			sp_mod = 2;
-			break;
-		}
+int Game_Actor::CalculateSkillCost(int skill_id) const {
+	int cost = Game_Battler::CalculateSkillCost(skill_id);
+	if (HasHalfSpCost()) {
+		cost = (cost + 1) / 2;
 	}
-
-	return sp_mod;
+	return cost;
 }
 
-int Game_Actor::CalculateSkillCost(int skill_id) const {
-	return std::ceil(Game_Battler::CalculateSkillCost(skill_id) / (float) GetSpCostModifier());
+int Game_Actor::CalculateWeaponSpCost() const {
+	int cost = 0;
+	auto* w1 = GetWeapon();
+	if (w1) {
+		cost += w1->sp_cost;
+	}
+	auto* w2 = Get2ndWeapon();
+	if (w2) {
+		cost += w2->sp_cost;
+	}
+
+	if (HasHalfSpCost()) {
+		cost = (cost + 1) / 2;
+	}
+
+	return cost;
 }
 
 bool Game_Actor::LearnSkill(int skill_id) {
@@ -1284,6 +1290,15 @@ int Game_Actor::GetBattleAnimationId() const {
 }
 
 int Game_Actor::GetHitChance() const {
+	auto* weapon1 = GetWeapon();
+	auto* weapon2 = Get2ndWeapon();
+	if (weapon1 && weapon2) {
+		return std::max(weapon1->hit, weapon2->hit);
+	} else if(weapon1) {
+		return weapon1->hit;
+	} else if(weapon2) {
+		return weapon2->hit;
+	}
 	return 90;
 }
 
@@ -1303,16 +1318,6 @@ float Game_Actor::GetCriticalHitChance() const {
 	checkWeapon(Get2ndWeapon());
 
 	return crit_chance + (weapon_bonus / 100.0f);
-}
-
-bool Game_Actor::PreventsCritical() const {
-	auto checkEquip = [](const RPG::Item* item) {
-		return item && item->prevent_critical;
-	};
-	return checkEquip(GetShield())
-		|| checkEquip(GetArmor())
-		|| checkEquip(GetHelmet())
-		|| checkEquip(GetAccessory());
 }
 
 Game_Battler::BattlerType Game_Actor::GetType() const {
@@ -1401,19 +1406,6 @@ void Game_Actor::RemoveInvalidData() {
 	}
 }
 
-bool Game_Actor::PreventsTerrainDamage() {
-	for (auto object_id : GetWholeEquipment()) {
-		RPG::Item *object = ReaderUtil::GetElement(Data::items, object_id);
-		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
-			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory) && object->no_terrain_damage) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
 const RPG::Item* Game_Actor::GetWeapon() const {
 	auto* weapon = GetEquipment(RPG::Item::Type_weapon);
 	if (weapon && weapon->type == RPG::Item::Type_weapon) {
@@ -1463,6 +1455,53 @@ const RPG::Item* Game_Actor::GetAccessory() const {
 		return accessory;
 	}
 	return nullptr;
+}
+
+bool Game_Actor::AttackIgnoresEvasion() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->ignore_evasion;
+	};
+	return checkEquip(GetWeapon()) || checkEquip(Get2ndWeapon());
+}
+
+bool Game_Actor::PreventsCritical() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->prevent_critical;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::PreventsTerrainDamage() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->no_terrain_damage;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::HasPhysicalEvasionUp() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->raise_evasion;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+bool Game_Actor::HasHalfSpCost() const {
+	auto checkEquip = [](const RPG::Item* item) {
+		return item && item->half_sp_cost;
+	};
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
 }
 
 

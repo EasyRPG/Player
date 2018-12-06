@@ -122,19 +122,17 @@ public:
 	bool IsSkillUsable(int skill_id) const override;
 
 	/**
-	 * Returns the modifier by which skill costs are divided.
-	 *
-	 * @return modifier
-	 */
-	int GetSpCostModifier() const;
-
-	/**
 	 * Calculates the Skill costs including all modifiers.
 	 *
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
 	int CalculateSkillCost(int skill_id) const override;
+
+	/**
+	 * @return sp cost for attacking with weapon.
+	 */
+	int CalculateWeaponSpCost() const;
 
 	/**
 	 * Gets the actor ID.
@@ -772,16 +770,29 @@ public:
 	void SetBattleRow(RowType battle_row);
 
 	/**
-	 * Checks if the actor has an equipment that protects against terrain damage.
-	 *
-	 * @return Whether the actor avoid terrain damage.
+	 * @return If the actor has weapon that ignores evasion
 	 */
-	bool PreventsTerrainDamage();
+	bool AttackIgnoresEvasion() const;
+
+	/**
+	 * @return If the actor has equipment that protects against terrain damage.
+	 */
+	bool PreventsTerrainDamage() const;
 
 	/**
 	 * @return If the actor has an equipment that protects against critical hits.
 	 */
 	bool PreventsCritical() const;
+
+	/**
+	 * @return If the actor has an equipment that with physical evasion up.
+	 */
+	bool HasPhysicalEvasionUp() const;
+
+	/**
+	 * @return If the actor has an equipment with half sp cost.
+	 */
+	bool HasHalfSpCost() const;
 
 	int GetBattleAnimationId() const override;
 
