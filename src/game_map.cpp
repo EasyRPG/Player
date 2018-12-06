@@ -366,6 +366,10 @@ void Game_Map::ScrollRight(int distance) {
 	AddScreenX(x, distance);
 	map_info.position_x = x;
 	Parallax::Scroll(distance, 0);
+	// Unused, except compatibility with RPG_RT
+	auto& pan_x = Main_Data::game_data.screen.pan_x;
+	const auto pan_limit_x = 20 * SCREEN_TILE_WIDTH;
+	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
 }
 
 void Game_Map::ScrollDown(int distance) {
@@ -373,6 +377,10 @@ void Game_Map::ScrollDown(int distance) {
 	AddScreenY(y, distance);
 	map_info.position_y = y;
 	Parallax::Scroll(0, distance);
+	// Unused, except compatibility with RPG_RT
+	auto& pan_y = Main_Data::game_data.screen.pan_y;
+	const auto pan_limit_y = 10 * SCREEN_TILE_WIDTH;
+	pan_y = (pan_y + distance + pan_limit_y) % pan_limit_y;
 }
 
 // Add inc to acc, clamping the result into the range [low, high].
