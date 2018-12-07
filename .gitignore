@@ -37,24 +37,25 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 CTestTestfile.cmake
 cmake_install.cmake
+install_manifest.txt
 
-# msvc
-/builds/vs20*/Debug/
-/builds/vs20*/Release/
-/builds/vs20*/*.*sdf
-/builds/vs20*/*.ncb
-/builds/vs20*/*.psess
-/builds/vs20*/*.suo
-/builds/vs20*/*.user
-/builds/vs20*/*.vsp*
-/builds/vs20*/*.pdb
-/builds/vs20*/*.lib
-/builds/vs20*/.vs/
-/builds/vs20*/ipch/
-/builds/vs20*/Player*/x86/
-/builds/vs20*/Player*/x64/
-/builds/vs20*/Player*/ARM/
-/resources/player.aps
+# msvc / Windows
+*.vcxproj*
+*.sdf
+*.ncb
+*.psess
+*.suo
+*.user
+*.vsp*
+*.lib
+*.exe
+*.exp
+*.ilk
+*.pdb
+
+# ninja
+.ninja_*
+build.ninja
 
 # IntelliJ
 .idea/
