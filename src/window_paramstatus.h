@@ -46,11 +46,6 @@ public:
 
 private:
 	int actor_id = 0;
-
-	int atk = 0;
-	int def = 0;
-	int spi = 0;
-	int agi = 0;
 };
 
 #endif
