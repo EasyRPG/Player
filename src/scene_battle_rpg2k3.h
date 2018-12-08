@@ -92,6 +92,7 @@ protected:
 	int select_target_flash_count = 0;
 
 	FileRequestBinding request_id;
+	bool battle_action_pending = false;
 };
 
 #endif

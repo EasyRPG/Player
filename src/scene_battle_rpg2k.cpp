@@ -304,13 +304,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (!battle_action_pending && CheckResultConditions()) {
 			return;
 		}
+		if (!battle_action_pending) {
+			// If we will start a new battle action, first check for state changes
+			// such as death, paralyze, confuse, etc..
+			UpdateBattlerActions();
+		}
 		if (!battle_actions.empty()) {
-			if (battle_actions.front()->IsDead()) {
-				// No zombies allowed ;)
-				RemoveCurrentAction();
-				return;
-			}
-
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
 			battle_action_pending = true;
@@ -374,7 +373,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	// Order of execution of BattleActionState:
 	// ConditionHeal > Execute > Apply > (ResultPop > ResultPush) > Death > Finished.
-
 	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}

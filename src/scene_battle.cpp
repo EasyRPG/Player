@@ -430,6 +430,45 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 	}
 }
 
+void Scene_Battle::UpdateBattlerActions() {
+	if (battle_actions.empty()) {
+		return;
+	}
+
+	auto* battler = battle_actions.front();
+	if (battler->IsDead()) {
+		RemoveCurrentAction();
+		UpdateBattlerActions();
+		return;
+	}
+	if (!battler->CanAct()) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		battler->SetCharged(false);
+		return;
+	}
+
+	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+		return;
+	}
+
+	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
+		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
+			Main_Data::game_enemyparty->GetRandomActiveBattler() :
+			Main_Data::game_party->GetRandomActiveBattler();
+
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+		battler->SetCharged(false);
+		return;
+	}
+
+}
+
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
 	switch (action->kind) {
 		case RPG::EnemyAction::Kind_basic:
@@ -494,7 +533,6 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::RemoveCurrentAction() {
-	battle_actions.front()->SetBattleAlgorithm(std::shared_ptr<Game_BattleAlgorithm::AlgorithmBase>());
 	battle_actions.pop_front();
 }
 
