@@ -53,16 +53,34 @@ std::vector<int16_t> Game_Battler::GetInflictedStates() const {
 	return states;
 }
 
-int Game_Battler::GetSignificantRestriction() const {
+RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 	const std::vector<int16_t> states = GetInflictedStates();
+
+	//Priority is nomove > attack enemy > attack ally > normal
+
+	RPG::State::Restriction sig_res = RPG::State::Restriction_normal;
 	for (int i = 0; i < (int)states.size(); i++) {
 		// States are guaranteed to be valid
 		const RPG::State* state = ReaderUtil::GetElement(Data::states, states[i]);
-		if (state->restriction != RPG::State::Restriction_normal) {
-			return state->restriction;
+
+		switch (state->restriction) {
+			case RPG::State::Restriction_normal:
+				break;
+			case RPG::State::Restriction_do_nothing:
+				return RPG::State::Restriction_do_nothing;
+			case RPG::State::Restriction::Restriction_attack_enemy:
+				if (sig_res == RPG::State::Restriction::Restriction_attack_ally
+						|| sig_res == RPG::State::Restriction_normal) {
+					sig_res = RPG::State::Restriction_attack_enemy;
+				}
+				break;
+			case RPG::State::Restriction::Restriction_attack_ally:
+				if (sig_res == RPG::State::Restriction_normal) {
+					sig_res = RPG::State::Restriction_attack_ally;
+				}
 		}
 	}
-	return RPG::State::Restriction_normal;
+	return sig_res;
 }
 
 bool Game_Battler::CanAct() const {
