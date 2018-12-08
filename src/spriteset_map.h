@@ -84,11 +84,16 @@ protected:
 	std::unique_ptr<Weather> weather;
 	std::unique_ptr<Frame> frame;
 
+	void CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone);
+
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);
 
 	FileRequestBinding panorama_request_id;
 	FileRequestBinding tilemap_request_id;
+
+	bool need_x_clone = false;
+	bool need_y_clone = false;
 
 	bool vehicle_loaded[3] = {};
 

@@ -44,10 +44,10 @@ Game_Player::Game_Player():
 	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
 }
 
-int Game_Player::GetScreenZ() const {
+int Game_Player::GetScreenZ(bool apply_shift) const {
 	// Player is always slightly above events
 	// (and always on "same layer as hero" obviously)
-	return Game_Character::GetScreenZ() + 1;
+	return Game_Character::GetScreenZ(apply_shift) + 1;
 }
 
 int Game_Player::GetOriginalMoveRouteIndex() const {

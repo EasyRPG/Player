@@ -39,14 +39,16 @@ Spriteset_Map::Spriteset_Map() {
 
 	ChipsetUpdated();
 
+	need_x_clone = Game_Map::LoopHorizontal();
+	need_y_clone = Game_Map::LoopVertical();
+
 	for (Game_Event& ev : Game_Map::GetEvents()) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(&ev));
+		CreateSprite(&ev, need_x_clone, need_y_clone);
 	}
 
 	airship_shadow.reset(new Sprite_AirshipShadow());
 
-	character_sprites.push_back
-		(std::make_shared<Sprite_Character>(Main_Data::game_player.get()));
+	CreateSprite(Main_Data::game_player.get(), need_x_clone, need_y_clone);
 
 	timer1.reset(new Sprite_Timer(0));
 	timer2.reset(new Sprite_Timer(1));
@@ -95,7 +97,7 @@ void Spriteset_Map::Update() {
 
 		if (!vehicle_loaded[i - 1] && vehicle->GetMapId() == map_id) {
 			vehicle_loaded[i - 1] = true;
-			character_sprites.push_back(std::make_shared<Sprite_Character>(vehicle));
+			CreateSprite(vehicle, need_x_clone, need_y_clone);
 		}
 	}
 
@@ -184,6 +186,20 @@ bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_lis
 
 	// shouldn't happen
 	return false;
+}
+
+void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
+	character_sprites.push_back(std::make_shared<Sprite_Character>(character));
+	if (create_x_clone) {
+		character_sprites.push_back(std::make_shared<Sprite_Character>(character, Sprite_Character::XClone));
+	}
+	if (create_y_clone) {
+		character_sprites.push_back(std::make_shared<Sprite_Character>(character, Sprite_Character::YClone));
+	}
+	if (create_x_clone && create_y_clone) {
+		character_sprites.push_back(std::make_shared<Sprite_Character>(character,
+			(Sprite_Character::CloneType)(Sprite_Character::XClone | Sprite_Character::YClone)));
+	}
 }
 
 void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
