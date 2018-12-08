@@ -986,22 +986,61 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
-				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
+				auto* ally = static_cast<Game_Actor*>(source);
+				const auto* weapon1 = ally->GetWeapon();
+				const auto* weapon2 = ally->Get2ndWeapon();
+				if (weapon1 == nullptr) {
+					weapon1 = weapon2;
+				}
 
-				if (weapon) {
-					for (unsigned int i = 0; i < weapon->state_set.size(); i++) {
-						if (weapon->state_set[i]) {
-							const RPG::State* state = ReaderUtil::GetElement(Data::states, i + 1);
-							if (!state) {
-								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
-								continue;
-							}
+				if (weapon1 || weapon2) {
+					bool weapon1_heals_states = false;
+					bool weapon2_heals_states = false;
+					if (Player::IsRPG2k3()) {
+						weapon1_heals_states = weapon1 && weapon1->state_effect;
+						weapon2_heals_states = weapon2 && weapon2->state_effect;
+					}
 
-							if (Utils::GetRandomNumber(0, 99) < (weapon->state_chance * GetTarget()->GetStateProbability(state->ID) / 100)) {
-								if (weapon->state_effect) {
-									healing = true;
+					auto inflict_state = [&](const RPG::State& new_state) {
+						// Don't allow duplicates.
+						if (std::find_if(conditions.rbegin(), conditions.rend(),
+									[&](const RPG::State& st) { return st.ID == new_state.ID; })
+								== conditions.rend()) {
+							conditions.push_back(new_state);
+						}
+					};
+
+					auto heal_state = [&](int state_id) {
+						// If state was inflicted by other weapon, remove it.
+						// We don't need to loop, it'll be the last one as it was just added.
+						if (!conditions.empty() && conditions.back().ID == state_id) {
+							conditions.pop_back();
+						}
+						// Don't allow duplicates.
+						if (std::find(healed_conditions.rbegin(), healed_conditions.rend(), state_id) == healed_conditions.rend()) {
+							healed_conditions.push_back(state_id);
+						}
+					};
+
+					for (size_t i = 0; i < Data::states.size(); ++i) {
+						const int state_id = i + 1;
+						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+						if (weapon1 && i < weapon1->state_set.size() && weapon1->state_set[i]) {
+							if (Utils::PercentChance(weapon1->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
+								if (!weapon1_heals_states) {
+									inflict_state(*state);
+								} else {
+									heal_state(state->ID);
 								}
-								conditions.push_back(*state);
+							}
+						}
+						if (weapon2 && i < weapon2->state_set.size() && weapon2->state_set[i]) {
+							if (Utils::PercentChance(weapon2->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
+								if (!weapon2_heals_states) {
+									inflict_state(*state);
+								} else {
+									heal_state(state->ID);
+								}
 							}
 						}
 					}
