@@ -25,13 +25,16 @@
 #include "sprite_airshipshadow.h"
 #include <string>
 
-Sprite_AirshipShadow::Sprite_AirshipShadow() {
+Sprite_AirshipShadow::Sprite_AirshipShadow(CloneType type) {
 	SetBitmap(Bitmap::Create(16,16));
 
 	SetOx(TILE_SIZE/2);
 	SetOy(TILE_SIZE);
 
 	RecreateShadow();
+
+	x_shift = ((type & XClone) == XClone);
+	y_shift = ((type & YClone) == YClone);
 }
 
 // Draws the two shadow sprites to a single intermediate bitmap to be blit to the map
@@ -68,8 +71,8 @@ void Sprite_AirshipShadow::Update() {
 	const double opacity = (double)altitude / max_altitude;
 	SetOpacity(opacity * 255);
 
-	SetX(Main_Data::game_player->GetScreenX());
-	SetY(Main_Data::game_player->GetScreenY());
+	SetX(Main_Data::game_player->GetScreenX(x_shift));
+	SetY(Main_Data::game_player->GetScreenY(y_shift));
 	// Synchronized with airship priority
-	SetZ(airship->GetScreenZ());
+	SetZ(airship->GetScreenZ(y_shift));
 }

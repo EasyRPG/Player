@@ -76,8 +76,8 @@ protected:
 	std::unique_ptr<Tilemap> tilemap;
 	std::unique_ptr<Plane> panorama;
 	std::string panorama_name;
-	std::vector<std::shared_ptr<Sprite_Character> > character_sprites;
-	std::unique_ptr<Sprite_AirshipShadow> airship_shadow;
+	std::vector<std::shared_ptr<Sprite_Character>> character_sprites;
+	std::vector<std::shared_ptr<Sprite_AirshipShadow>> airship_shadows;
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
 	std::unique_ptr<Screen> screen;
@@ -85,6 +85,7 @@ protected:
 	std::unique_ptr<Frame> frame;
 
 	void CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone);
+	void CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone);
 
 	void OnTilemapSpriteReady(FileRequestResult*);
 	void OnPanoramaSpriteReady(FileRequestResult* result);

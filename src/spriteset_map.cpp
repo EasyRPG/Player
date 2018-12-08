@@ -46,7 +46,7 @@ Spriteset_Map::Spriteset_Map() {
 		CreateSprite(&ev, need_x_clone, need_y_clone);
 	}
 
-	airship_shadow.reset(new Sprite_AirshipShadow());
+	CreateAirshipShadowSprite(need_x_clone, need_y_clone);
 
 	CreateSprite(Main_Data::game_player.get(), need_x_clone, need_y_clone);
 
@@ -101,8 +101,10 @@ void Spriteset_Map::Update() {
 		}
 	}
 
-	airship_shadow->SetTone(new_tone);
-	airship_shadow->Update();
+	for (auto& shadow : airship_shadows) {
+		shadow->SetTone(new_tone);
+		shadow->Update();
+	}
 
 	timer1->Update();
 	timer2->Update();
@@ -135,7 +137,9 @@ void Spriteset_Map::ChipsetUpdated() {
 }
 
 void Spriteset_Map::SystemGraphicUpdated() {
-	airship_shadow->RecreateShadow();
+	for (auto& shadow : airship_shadows) {
+		shadow->RecreateShadow();
+	}
 }
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {
@@ -189,16 +193,34 @@ bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_lis
 }
 
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
+	using CloneType = Sprite_Character::CloneType;
+
 	character_sprites.push_back(std::make_shared<Sprite_Character>(character));
 	if (create_x_clone) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(character, Sprite_Character::XClone));
+		character_sprites.push_back(std::make_shared<Sprite_Character>(character, CloneType::XClone));
 	}
 	if (create_y_clone) {
-		character_sprites.push_back(std::make_shared<Sprite_Character>(character, Sprite_Character::YClone));
+		character_sprites.push_back(std::make_shared<Sprite_Character>(character, CloneType::YClone));
 	}
 	if (create_x_clone && create_y_clone) {
 		character_sprites.push_back(std::make_shared<Sprite_Character>(character,
-			(Sprite_Character::CloneType)(Sprite_Character::XClone | Sprite_Character::YClone)));
+			(CloneType)(CloneType::XClone | CloneType::YClone)));
+	}
+}
+
+void Spriteset_Map::CreateAirshipShadowSprite(bool create_x_clone, bool create_y_clone) {
+	using CloneType = Sprite_AirshipShadow::CloneType;
+
+	airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>());
+	if (create_x_clone) {
+		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(CloneType::XClone));
+	}
+	if (create_y_clone) {
+		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(CloneType::YClone));
+	}
+	if (create_x_clone && create_y_clone) {
+		airship_shadows.push_back(std::make_shared<Sprite_AirshipShadow>(
+			(CloneType)(CloneType::XClone | CloneType::YClone)));
 	}
 }
 
