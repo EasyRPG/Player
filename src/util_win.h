@@ -33,6 +33,11 @@ namespace WindowsUtils {
 	 * Vista (and later) have version 6 and higher.
 	 */
 	int GetWindowsVersion();
+
+	/**
+	 * Configures creation of minidumps when the release build crashes.
+	 */
+	void InitMiniDumpWriter();
 }
 
 #endif
