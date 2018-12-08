@@ -69,21 +69,27 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
-	type(ty), source(source), no_target(true), first_attack(true) {
+	type(ty), source(source), no_target(true), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
-	type(ty), source(source), no_target(false), first_attack(true) {
+	type(ty), source(source), no_target(false), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
-	type(ty), source(source), no_target(false), first_attack(true) {
+	type(ty), source(source), no_target(false), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	target->GetBattlers(targets);
@@ -268,6 +274,10 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	else {
 		return GetTarget()->GetName() + message;
 	}
+}
+
+RPG::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
+	return source_restriction;
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const std::string& message) const {

@@ -467,6 +467,13 @@ void Scene_Battle::UpdateBattlerActions() {
 		return;
 	}
 
+	// If we had a state restriction previously but were recovered, we do nothing for this round.
+	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_normal) {
+		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+		battler->SetCharged(false);
+		return;
+	}
+
 }
 
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {

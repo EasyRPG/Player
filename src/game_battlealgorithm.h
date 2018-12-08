@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include "rpg_state.h"
 
 class Game_Battler;
 class Game_Party_Base;
@@ -355,6 +356,12 @@ public:
 	 */
 	Type GetType() const;
 
+	/**
+	 * @return The significant restriction of the source when this
+	 *      algorithm was created.
+	 */
+	RPG::State::Restriction GetSourceRestrictionWhenStarted() const;
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -408,6 +415,7 @@ protected:
 	bool absorb;
 	bool revived = false;
 	mutable int reflect;
+	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
 
 	RPG::Animation* animation;
 
