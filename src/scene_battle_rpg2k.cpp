@@ -519,10 +519,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (action->IsFirstAttack()) {
 				if (action->GetTarget() &&
-					!(action->GetSource()->GetType() == Game_Battler::Type_Enemy)) {
+					action->GetSource()->GetType() == Game_Battler::Type_Ally) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
-					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+					} else {
 						action->PlaySoundAnimation(false, 20);
 					}
 				}
