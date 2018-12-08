@@ -293,6 +293,11 @@ public:
 	virtual int GetSourceAnimationState() const;
 
 	/**
+	* @return true if it is still possible to perform this action now.
+	*/
+	virtual bool ActionIsPossible() const;
+
+	/**
 	 * Gets the sound effect that is played when the action is starting.
 	 *
 	 * @return start se
@@ -459,6 +464,7 @@ public:
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	bool ActionIsPossible() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -479,6 +485,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	bool ActionIsPossible() const override;
 
 private:
 	const RPG::Item& item;

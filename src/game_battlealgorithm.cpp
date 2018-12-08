@@ -162,6 +162,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
 	return revived;
 }
 
+bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
+	return true;
+}
+
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
 	return conditions;
 }
@@ -1405,6 +1409,13 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 	return has_reflect;
 }
 
+bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
+	if (item) {
+		return Main_Data::game_party->GetItemCount(item->ID, false) > 0;
+	}
+	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
+}
+
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
 	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
@@ -1540,6 +1551,10 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	else {
 		return NULL;
 	}
+}
+
+bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
+	return Main_Data::game_party->GetItemCount(item.ID, false) > 0;
 }
 
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
