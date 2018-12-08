@@ -593,6 +593,11 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	// Immediately quit for dead actors no move. Prevents any animations or delays.
+	if (action->GetType() == Game_BattleAlgorithm::Type::NoMove && action->GetSource()->IsDead()) {
+		return true;
+	}
+
 	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}

@@ -436,12 +436,6 @@ void Scene_Battle::UpdateBattlerActions() {
 	}
 
 	auto* battler = battle_actions.front();
-	if (battler->IsDead()) {
-		RemoveCurrentAction();
-		UpdateBattlerActions();
-		return;
-	}
-
 	if (!battler->CanAct()) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
 		battler->SetCharged(false);
