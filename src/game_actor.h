@@ -410,13 +410,6 @@ public:
 	bool HasStrongDefense() const override;
 
 	/**
-	 * Tests if the battler has a weapon that grants preemption.
-	 *
-	 * @return true if a weapon is having preempt attribute
-	 */
-	bool HasPreemptiveAttack() const override;
-
-	/**
 	 * Sets face graphic of actor.
 	 * @param file_name file containing new face.
 	 * @param index index of face graphic in the file.
@@ -774,6 +767,27 @@ public:
 	 * @param battle_row new row for Rpg2k3 battles
 	 */
 	void SetBattleRow(RowType battle_row);
+
+	/**
+	 * Tests if the battler has a weapon that grants preemption.
+	 *
+	 * @return true if a weapon is having preempt attribute
+	 */
+	bool HasPreemptiveAttack() const override;
+
+	/**
+	 * Tests if the battler has a weapon that grants dual attack.
+	 *
+	 * @return true if a weapon is having dual attack attribute
+	 */
+	bool HasDualAttack() const;
+
+	/**
+	 * Tests if the battler has a weapon that grants attack all
+	 *
+	 * @return true if a weapon is having attack all attribute
+	 */
+	bool HasAttackAll() const;
 
 	/**
 	 * @return If the actor has weapon that ignores evasion
