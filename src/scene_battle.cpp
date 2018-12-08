@@ -441,6 +441,7 @@ void Scene_Battle::UpdateBattlerActions() {
 		UpdateBattlerActions();
 		return;
 	}
+
 	if (!battler->CanAct()) {
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
 		battler->SetCharged(false);
