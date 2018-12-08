@@ -890,23 +890,45 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		const RPG::Item* weapon = ally->GetWeapon();
+		const auto* weapon1 = ally->GetWeapon();
+		const auto* weapon2 = ally->Get2ndWeapon();
+		if (weapon1 == nullptr) {
+			weapon1 = weapon2;
+		}
 
-		if (!weapon) {
+		if (!weapon1 && !weapon2) {
 			// No Weapon
-			// Todo: Two Sword style
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
 				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
 			}
-		} else {
-			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
+		} else if (!weapon2) {
+			// Single weapon
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
 			}
 
-			multiplier = GetTarget()->GetAttributeMultiplier(weapon->attribute_set);
+			multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
+		} else {
+			// Double weapon
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+			}
+
+			auto& a1 = weapon1->attribute_set;
+			auto& a2 = weapon2->attribute_set;
+			std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
+			for (size_t i = 0; i < attribute_set.size(); ++i) {
+				if (i < a1.size())
+					attribute_set[i] = attribute_set[i] | a1[i];
+				if (i < a2.size())
+					attribute_set[i] = attribute_set[i] | a2[i];
+			}
+
+			multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
 		}
 
 	} else {
