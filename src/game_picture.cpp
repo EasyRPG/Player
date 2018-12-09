@@ -112,6 +112,7 @@ void Game_Picture::UpdateSprite() {
 		(int)(255 * (100 - data.current_bot_trans) / 100));
 	if (data.current_bot_trans != data.current_top_trans)
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
+
 	auto tone = Tone((int) (data.current_red * 128 / 100),
 			(int) (data.current_green * 128 / 100),
 			(int) (data.current_blue * 128 / 100),
@@ -121,6 +122,16 @@ void Game_Picture::UpdateSprite() {
 		tone = Blend(tone, screen_tone);
 	}
 	sprite->SetTone(tone);
+
+	if (data.flags.affected_by_flash) {
+		int flash_level = 0;
+		int flash_time = 0;
+		auto flash = Main_Data::game_screen->GetFlash(flash_level, flash_time);
+		if (flash_time > 0) {
+			flash.alpha = flash_level;
+			sprite->Flash(flash, flash_time);
+		}
+	}
 }
 
 void Game_Picture::Show(const ShowParams& params) {
