@@ -34,6 +34,10 @@ if(WIN32)
 
 	# Disable API deprecation warnings
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
+	# Prevent some Windows.h global namespace pollution
+	add_definitions(-DNOMINMAX)
+	add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
 if(MSVC)

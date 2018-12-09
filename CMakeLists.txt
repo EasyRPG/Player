@@ -384,6 +384,11 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	endif()
 endif()
 
+# MSVC: Set UTF-8 encoding for all files (important for rtp table)
+if(MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE "/utf-8")
+endif()
+
 # Executable
 # Windows: Only open console for Debug builds
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
@@ -409,6 +414,10 @@ target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME}_exe
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+if(MSVC)
+	install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
+endif()
 
 # manpage
 # Handled as extra target "man"

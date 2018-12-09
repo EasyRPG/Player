@@ -22,7 +22,6 @@
 
 // Headers
 #include <string>
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 /**
@@ -34,6 +33,11 @@ namespace WindowsUtils {
 	 * Vista (and later) have version 6 and higher.
 	 */
 	int GetWindowsVersion();
+
+	/**
+	 * Configures creation of minidumps when the release build crashes.
+	 */
+	void InitMiniDumpWriter();
 }
 
 #endif

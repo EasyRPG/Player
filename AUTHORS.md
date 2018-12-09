@@ -13,6 +13,7 @@ EasyRPG Player authors
 * Glynn Clements (glynnc)
 * Khelifi Mehdi (BlisterB)
 * Mariano Javier Suligoy (MarianoGNU)
+* Matthew Fioravante (fmatthew5876)
 * Patrick Müssig (Tondorian)
 * Paulo "Zhek" Vizcaino (paulo_v)
 * scurest

@@ -94,46 +94,23 @@ Read more detailed instructions at:
 
 Building requirements:
 
-- pkg-config
+- pkg-config (Not on Windows)
 - CMake
 
 Step-by-step instructions:
 
-    tar xf easyrpg-player-0.5.4.tar.xz # unpack the tarball
-    cd easyrpg-player-0.5.4            # enter in the package directory
-    cmake .                            # generate Makefile
-    make                               # compile the executable
+    tar xf easyrpg-player-0.5.4.tar.xz    # unpack the tarball
+    cd easyrpg-player-0.5.4               # enter in the package directory
+    cmake . -DCMAKE_BUILD_TYPE=Release    # configure project
+    cmake --build .                       # compile the executable
+    sudo cmake --build . --target install # install system-wide
 
 Read more detailed instructions at:
 
 * https://wiki.easyrpg.org/development/compiling/player/cmake
 
-
-### Visual Studio method:
-
-Building requirements:
-
-- Visual Studio 2015 Update 2 or newer
-
-Compile the dependencies in a Visual Studio command prompt:
-
-    git clone https://github.com/EasyRPG/buildscripts
-    cd buildscripts/windows
-    powershell .\setup.ps1             # requires policy "RemoteSigned"
-    build v140                         # compile all dependencies
-
-Create an environment variable EASYDEV_MSVC pointing to buildscripts/windows/build
-
-Compile the Player:
-
-- liblcf is compiled as part of the Player. Extract/Clone liblcf in the `lib` directory
-- Open `builds/vs2015/Player.sln` in Visual Studio
-- The executable is created in the `bin` directory
-
-Read detailed instructions at:
-
-* https://wiki.easyrpg.org/development/compiling/player/windows/visual-studio
-
+CMake is the only supported way to build liblcf for Windows. All dependencies
+must be installed with [vcpkg](https://github.com/Microsoft/vcpkg).
 
 ## Running EasyRPG Player
 
