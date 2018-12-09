@@ -76,14 +76,6 @@ void Game_Screen::Reset(bool is_load_savegame) {
 		data.tint_current_sat = 100;
 	}
 
-	if (!is_load_savegame) {
-		data.shake_strength = 0;
-		data.shake_speed = 0;
-		data.shake_time_left = 0;
-		data.shake_position = 0;
-		data.shake_continuous = false;
-	}
-
 	movie_filename = "";
 	movie_pos_x = 0;
 	movie_pos_y = 0;
