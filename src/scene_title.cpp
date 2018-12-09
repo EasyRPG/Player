@@ -186,6 +186,8 @@ void Scene_Title::CommandNewGame() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
 		Player::SetupPlayerSpawn();
+		// RPG_RT compatible frame counter.
+		Main_Data::game_data.system.frame_count = 0;
 		Scene::Push(std::make_shared<Scene_Map>());
 	}
 }

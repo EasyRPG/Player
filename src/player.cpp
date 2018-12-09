@@ -308,6 +308,8 @@ void Player::Update(bool update_scene) {
 		if (update_scene) {
 			Scene::instance->Update();
 			++frames;
+			// RPG_RT compatible frame counter.
+			++Main_Data::game_data.system.frame_count;
 
 			// Scene changed or webplayer waits for files.
 			// Not save to Update again, setup code must run:
