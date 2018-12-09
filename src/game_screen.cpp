@@ -153,16 +153,18 @@ void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
 	data.shake_time_left = tenths;
-	data.shake_position = 0;
 	data.shake_continuous = false;
+	// Shake position is not reset in RPG_RT, so that multiple shakes
+	// which interrupt each other flow smoothly.
 }
 
 void Game_Screen::ShakeBegin(int power, int speed) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
 	data.shake_time_left = kShakeContinuousTimeStart;
-	data.shake_position = 0;
 	data.shake_continuous = true;
+	// Shake position is not reset in RPG_RT, so that multiple shakes
+	// which interrupt each other flow smoothly.
 }
 
 void Game_Screen::ShakeEnd() {
