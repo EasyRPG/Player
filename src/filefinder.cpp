@@ -292,7 +292,7 @@ std::string FileFinder::MakeCanonical(const std::string& path, int initial_deepn
 			} else {
 				Output::Debug("Path traversal out of game directory: %s", path.c_str());
 			}
-		} else if (path_comp == ".") {
+		} else if (path_comp.empty() || path_comp == ".") {
 			// ignore
 		} else {
 			path_can.push_back(path_comp);
