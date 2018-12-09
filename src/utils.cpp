@@ -17,7 +17,10 @@
 
 // Headers
 #include "utils.h"
+#include "output.h"
 #include <cassert>
+#include <cstdint>
+#include <cinttypes>
 #include <stdio.h>
 #include <algorithm>
 #include <random>
@@ -405,6 +408,7 @@ bool Utils::PercentChance(int rate) {
 
 void Utils::SeedRandomNumberGenerator(int32_t seed) {
 	rng.seed(seed);
+	Output::Debug("Seeded the RNG with %" PRId32 ".", seed);
 }
 
 // via https://stackoverflow.com/questions/6089231/
