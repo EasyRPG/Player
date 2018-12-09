@@ -722,21 +722,19 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	// Conditions healed by physical attack:
-	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
-	for (; it_healed != healed_conditions.end(); ++it_healed) {
-		GetTarget()->RemoveState(*it_healed);
+	for (auto state_id: healed_conditions) {
+		GetTarget()->RemoveState(state_id);
 	}
 
 	// Conditions healed/caused:
-	std::vector<RPG::State>::const_iterator it = conditions.begin();
-	for (; it != conditions.end(); ++it) {
+	for (auto& state: conditions) {
 		if (IsPositive()) {
-			GetTarget()->RemoveState(it->ID);
+			GetTarget()->RemoveState(state.ID);
 			if (this->IsRevived()) {
 				GetTarget()->ChangeHp(std::max(0, GetAffectedHp()-1));
 			}
 		} else {
-			GetTarget()->AddState(it->ID);
+			GetTarget()->AddState(state.ID);
 		}
 	}
 
@@ -1090,7 +1088,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	this->revived = this->healing
 		&& !skill.state_effects.empty()
-		&& skill.state_effects[0]
+		&& skill.state_effects[RPG::State::kDeathID - 1]
 		&& GetTarget()->IsDead();
 
 	if (skill.type == RPG::Skill::Type_normal ||
@@ -1438,7 +1436,7 @@ bool Game_BattleAlgorithm::Item::Execute() {
 		this->healing = true;
 
 		this->revived = !item.state_set.empty()
-			&& item.state_set[0]
+			&& item.state_set[RPG::State::kDeathID - 1]
 			&& GetTarget()->IsDead();
 
 		// RM2k3 BUG: In rm2k3 battle system, this IsItemUsable() check is only applied when equipment_setting == actor, not for class.
@@ -1705,9 +1703,8 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	}
 
 	// Conditions healed by physical attack:
-	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
-	for (; it_healed != healed_conditions.end(); ++it_healed) {
-		GetTarget()->RemoveState(*it_healed);
+	for (auto state_id: healed_conditions) {
+		GetTarget()->RemoveState(state_id);
 	}
 
 	success = true;

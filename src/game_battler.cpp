@@ -533,7 +533,7 @@ void Game_Battler::ChangeHp(int hp) {
 
 		// Death
 		if (GetHp() <= 0) {
-			AddState(1);
+			AddState(RPG::State::kDeathID);
 		}
 	}
 }
