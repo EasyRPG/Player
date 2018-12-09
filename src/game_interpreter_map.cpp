@@ -618,9 +618,12 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		break;
 	case 3: // Reset
 		speed = com.parameters[3];
-		distance = std::max(std::abs(Game_Map::GetPanX()), std::abs(Game_Map::GetPanY())) / SCREEN_TILE_WIDTH;
 		waiting_pan_screen = com.parameters[4] != 0;
 		Game_Map::ResetPan(speed, waiting_pan_screen);
+		distance = std::max(
+				std::abs(Game_Map::GetPanX() - Game_Map::GetTargetPanX())
+				, std::abs(Game_Map::GetPanY() - Game_Map::GetTargetPanY()));
+		distance /= SCREEN_TILE_WIDTH;
 		break;
 	}
 

@@ -45,6 +45,10 @@
 #include "utils.h"
 
 namespace {
+	constexpr int default_pan_x = 9 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_y = 7 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_speed = 16;
+
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 	RPG::SavePanorama& panorama = Main_Data::game_data.panorama;
@@ -70,9 +74,7 @@ namespace {
 
 	std::unique_ptr<BattleAnimation> animation;
 
-	bool pan_locked;
 	bool pan_wait;
-	int pan_speed;
 
 	int last_map_id;
 
@@ -104,13 +106,13 @@ void Game_Map::Init() {
 	for (int i = 0; i < 3; i++)
 		vehicles.push_back(std::make_shared<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
 
-	pan_locked = false;
 	pan_wait = false;
-	pan_speed = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
+	location.pan_state = RPG::SavePartyLocation::PanState_follow;
+	location.pan_speed = default_pan_speed;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
+	location.pan_current_x = default_pan_x;
+	location.pan_current_y = default_pan_y;
 	last_map_id = -1;
 
 	teleport_delay = false;
@@ -150,10 +152,12 @@ void Game_Map::Setup(int _id) {
 		events.emplace_back(location.map_id, ev);
 	}
 
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
+	// pan_state does not reset when you change maps.
+	location.pan_speed = default_pan_speed;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
+	location.pan_current_x = default_pan_x;
+	location.pan_current_y = default_pan_y;
 
 	// Save allowed
 	int current_index = GetMapIndex(location.map_id);
@@ -209,12 +213,6 @@ void Game_Map::SetupFromSave() {
 	SetChipset(map_info.chipset_id);
 
 	SetEncounterSteps(location.encounter_steps);
-
-	// FIXME: Handle Pan correctly
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
 }
 
 
@@ -270,7 +268,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		pending.push_back(Main_Data::game_player.get());
 
 	pan_wait = false;
-	pan_speed = 0;
 
 	auto map_save_count = map->save_count;
 	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
@@ -847,7 +844,6 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::Update(bool only_parallel) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
-	UpdatePan();
 	Parallax::Update();
 	if (animation) {
 		animation->Update();
@@ -872,6 +868,7 @@ void Game_Map::Update(bool only_parallel) {
 	}
 
 	Main_Data::game_player->Update();
+	UpdatePan();
 	GetInterpreter().Update();
 
 	for (Game_Event& ev : events) {
@@ -1156,8 +1153,15 @@ int Game_Map::GetDisplayX() {
 	return map_info.position_x + shake_in_pixels * 16;
 }
 
-void Game_Map::SetPositionX(int new_position_x) {
-	map_info.position_x = new_position_x;
+void Game_Map::SetPositionX(int x) {
+	const int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	if (LoopHorizontal()) {
+		x = Utils::PositiveModulo(x, map_width);
+	} else {
+		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
+	}
+	map_info.position_x = x;
+	Parallax::ResetPosition();
 }
 
 int Game_Map::GetPositionY() {
@@ -1168,8 +1172,15 @@ int Game_Map::GetDisplayY() {
 	return map_info.position_y;
 }
 
-void Game_Map::SetPositionY(int new_position_y) {
-	map_info.position_y = new_position_y;
+void Game_Map::SetPositionY(int y) {
+	const int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	if (LoopVertical()) {
+		y = Utils::PositiveModulo(y, map_height);
+	} else {
+		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
+	}
+	map_info.position_y = y;
+	Parallax::ResetPosition();
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
@@ -1337,38 +1348,38 @@ void Game_Map::SubstituteUp(int old_id, int new_id) {
 }
 
 void Game_Map::LockPan() {
-	pan_locked = true;
+	location.pan_state = RPG::SavePartyLocation::PanState_fixed;
 }
 
 void Game_Map::UnlockPan() {
-	pan_locked = false;
+	location.pan_state = RPG::SavePartyLocation::PanState_follow;
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	distance *= SCREEN_TILE_WIDTH;
 
 	if (direction == PanUp) {
-		int new_pan = location.pan_finish_y - distance;
-		location.pan_finish_y = new_pan;
-	} else if (direction == PanRight) {
-		int new_pan = location.pan_finish_x + distance;
-		location.pan_finish_x = new_pan;
-	} else if (direction == PanDown) {
 		int new_pan = location.pan_finish_y + distance;
 		location.pan_finish_y = new_pan;
-	} else if (direction == PanLeft) {
+	} else if (direction == PanRight) {
 		int new_pan = location.pan_finish_x - distance;
+		location.pan_finish_x = new_pan;
+	} else if (direction == PanDown) {
+		int new_pan = location.pan_finish_y - distance;
+		location.pan_finish_y = new_pan;
+	} else if (direction == PanLeft) {
+		int new_pan = location.pan_finish_x + distance;
 		location.pan_finish_x = new_pan;
 	}
 
-	pan_speed = speed;
+	location.pan_speed = 2 << speed;
 	pan_wait = wait;
 }
 
 void Game_Map::ResetPan(int speed, bool wait) {
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	pan_speed = speed;
+	location.pan_finish_x = default_pan_x;
+	location.pan_finish_y = default_pan_y;
+	location.pan_speed = 2 << speed;
 	pan_wait = wait;
 }
 
@@ -1376,25 +1387,33 @@ void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;
 
-	int step = (SCREEN_TILE_WIDTH/128) << pan_speed;
-	int dx = location.pan_finish_x - location.pan_current_x;
-	int dy = location.pan_finish_y - location.pan_current_y;
+	const int step = location.pan_speed;
+	const int pan_remain_x = location.pan_current_x - location.pan_finish_x;
+	const int pan_remain_y = location.pan_current_y - location.pan_finish_y;
 
-	if (dx > 0) {
-		int pan = location.pan_current_x + std::min(step, dx);
-		location.pan_current_x = pan;
-	} else if (dx < 0) {
-		int pan = location.pan_current_x - std::min(step, -dx);
-		location.pan_current_x = pan;
+	int dx = std::min(step, std::abs(pan_remain_x));
+	dx = pan_remain_x >= 0 ? dx : -dx;
+	int dy = std::min(step, std::abs(pan_remain_y));
+	dy = pan_remain_y >= 0 ? dy : -dy;
+
+	int screen_x = Game_Map::GetPositionX();
+	int screen_y = Game_Map::GetPositionY();
+
+	Game_Map::AddScreenX(screen_x, dx);
+	Game_Map::AddScreenY(screen_y, dy);
+
+	// If we hit the edge of the map before pan finishes, the
+	// pan converts from waiting to non-waiting.
+	if (dx == 0 && dy == 0) {
+		pan_wait = false;
+		return;
 	}
 
-	if (dy > 0) {
-		int pan = location.pan_current_y + std::min(step, dy);
-		location.pan_current_y = pan;
-	} else if (dy < 0) {
-		int pan = location.pan_current_y - std::min(step, -dy);
-		location.pan_current_y = pan;
-	}
+	Game_Map::ScrollRight(dx);
+	Game_Map::ScrollDown(dy);
+
+	location.pan_current_x -= dx;
+	location.pan_current_y -= dy;
 }
 
 bool Game_Map::IsPanActive() {
@@ -1406,7 +1425,7 @@ bool Game_Map::IsPanWaiting() {
 }
 
 bool Game_Map::IsPanLocked() {
-	return pan_locked;
+	return location.pan_state == RPG::SavePartyLocation::PanState_fixed;
 }
 
 int Game_Map::GetPanX() {
