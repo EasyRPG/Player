@@ -54,7 +54,7 @@ void Sprite_Character::Update() {
 
 	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
-		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
+		r.Set(character->GetAnimFrame() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
 
@@ -76,12 +76,8 @@ void Sprite_Character::Update() {
 	SetZ(character->GetScreenZ());
 
 	//SetBlendType(character->GetBlendType());
-	if (character->GetLayer() != RPG::EventPage::Layers_same) {
-		SetBushDepth(0);
-	} else {
-		int bush_split = 4 - character->GetBushDepth();
-		SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
-	}
+	int bush_split = 4 - character->GetBushDepth();
+	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
 }
 
 Game_Character* Sprite_Character::GetCharacter() {

@@ -46,45 +46,10 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetX() const override;
-	void SetX(int new_x) override;
-	int GetY() const override;
-	void SetY(int new_y) override;
-	int GetMapId() const override;
-	void SetMapId(int new_map_id) override;
-	int GetDirection() const override;
-	void SetDirection(int new_direction) override;
-	int GetSpriteDirection() const override;
-	void SetSpriteDirection(int new_direction) override;
-	bool IsFacingLocked() const override;
-	void SetFacingLocked(bool locked) override;
-	int GetLayer() const override;
-	void SetLayer(int new_layer) override;
-	bool IsOverlapForbidden() const override;
-	int GetMoveSpeed() const override;
-	void SetMoveSpeed(int speed) override;
 	int GetMoveFrequency() const override;
 	void SetMoveFrequency(int frequency) override;
-	const RPG::MoveRoute& GetMoveRoute() const override;
-	void SetMoveRoute(const RPG::MoveRoute& move_route) override;
 	int GetOriginalMoveRouteIndex() const override;
 	void SetOriginalMoveRouteIndex(int new_index) override;
-	int GetMoveRouteIndex() const override;
-	void SetMoveRouteIndex(int new_index) override;
-	bool IsMoveRouteOverwritten() const override;
-	void SetMoveRouteOverwritten(bool force) override;
-	bool IsMoveRouteRepeated() const override;
-	void SetMoveRouteRepeated(bool force) override;
-	const std::string& GetSpriteName() const override;
-	void SetSpriteName(const std::string& sprite_name) override;
-	int GetSpriteIndex() const override;
-	void SetSpriteIndex(int index) override;
-	Color GetFlashColor() const override;
-	void SetFlashColor(const Color& flash_color) override;
-	double GetFlashLevel() const override;
-	void SetFlashLevel(double flash_level) override;
-	int GetFlashTimeLeft() const override;
-	void SetFlashTimeLeft(int time_left) override;
 	bool GetThrough() const override;
 	void SetThrough(bool through) override;
 	/** @} */
@@ -193,6 +158,10 @@ public:
 	const RPG::EventPage* GetActivePage() const;
 
 	const RPG::SaveMapEvent& GetSaveData();
+protected:
+	RPG::SaveMapEvent* data();
+	const RPG::SaveMapEvent* data() const;
+
 private:
 	void UpdateSelfMovement() override;
 
@@ -232,7 +201,7 @@ private:
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
 	// reference.
-	RPG::SaveMapEvent data;
+	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
 	bool starting = false, running = false, halting = false;
 	bool started_by_decision_key = false;
@@ -246,5 +215,13 @@ private:
 
 	int frame_count_at_last_auto_start_check = -1;
 };
+
+inline RPG::SaveMapEvent* Game_Event::data() {
+	return static_cast<RPG::SaveMapEvent*>(Game_Character::data());
+}
+
+inline const RPG::SaveMapEvent* Game_Event::data() const {
+	return static_cast<const RPG::SaveMapEvent*>(Game_Character::data());
+}
 
 #endif

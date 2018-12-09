@@ -31,38 +31,25 @@
 #include <cmath>
 #include <cassert>
 
-Game_Character::Game_Character() :
-	tile_id(0),
-	pattern(RPG::EventPage::Frame_middle),
+Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	last_pattern(0),
-	animation_id(0),
-	animation_type(RPG::EventPage::AnimType_non_continuous),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
 	last_move_failed(false),
-	remaining_step(0),
 	move_count(0),
 	wait_count(0),
-	jumping(false),
 	jump_x(0),
 	jump_y(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
-	anime_count(0),
-	stop_count(0),
-	max_stop_count(0),
-	walk_animation(true),
-	opacity(255),
-	visible(true) {
+	visible(true),
+	_data(d)
+{
 }
 
 Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
-}
-
-bool Game_Character::IsOverlapForbidden() const {
-	return false;
 }
 
 int Game_Character::GetSteppingSpeed() const {
@@ -80,12 +67,9 @@ int Game_Character::GetSteppingSpeed() const {
 }
 
 bool Game_Character::IsMoving() const {
-	return !IsJumping() && remaining_step > 0;
+	return !IsJumping() && GetRemainingStep() > 0;
 }
 
-bool Game_Character::IsJumping() const {
-	return jumping;
-}
 
 bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
@@ -121,7 +105,7 @@ bool Game_Character::IsLandable(int x, int y) const
 void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
-	remaining_step = 0;
+	SetRemainingStep(0);
 }
 
 int Game_Character::GetScreenX() const {
@@ -148,7 +132,7 @@ int Game_Character::GetScreenY() const {
 	}
 
 	if (IsJumping()) {
-		int jump_height = (remaining_step > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - remaining_step : remaining_step) / 8;
+		int jump_height = (GetRemainingStep() > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - GetRemainingStep() : GetRemainingStep()) / 8;
 		y -= (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
 	}
 
@@ -173,7 +157,7 @@ int Game_Character::GetScreenZ() const {
 }
 
 void Game_Character::Update() {
-	if (wait_count == 0 && stop_count >= max_stop_count) {
+	if (wait_count == 0 && GetStopCount() >= GetMaxStopCount()) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else {
@@ -191,51 +175,52 @@ void Game_Character::UpdateSprite() {
 	if (IsJumping()) {
 		UpdateJump();
 		if (IsSpinning())
-			anime_count++;
+			SetAnimCount(GetAnimCount() + 1);
 	} else if (IsMoving()) {
-		remaining_step -= min(1 << (1 + GetMoveSpeed()), remaining_step);
+		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		if (IsSpinning() || IsAnimated())
-			anime_count++;
+			SetAnimCount(GetAnimCount() + 1);
 	} else {
-		stop_count++;
+		data()->stop_count++;
 
-		if (IsAnimated() && (IsSpinning() || IsContinuous() || pattern != RPG::EventPage::Frame_middle))
-			anime_count++;
+		if (IsAnimated() && (IsSpinning() || IsContinuous() || GetAnimFrame() != RPG::EventPage::Frame_middle))
+			SetAnimCount(GetAnimCount() + 1);
 	}
 
-	if (anime_count >= GetSteppingSpeed()) {
+	if (GetAnimCount() >= GetSteppingSpeed()) {
 		if (IsSpinning()) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
-			pattern = RPG::EventPage::Frame_middle;
+			SetAnimFrame(RPG::EventPage::Frame_middle);
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
 			if (last_pattern == RPG::EventPage::Frame_left) {
-				if (pattern == RPG::EventPage::Frame_right) {
-					pattern = RPG::EventPage::Frame_middle;
+				if (GetAnimFrame() == RPG::EventPage::Frame_right) {
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 					last_pattern = RPG::EventPage::Frame_right;
 				} else {
-					pattern = RPG::EventPage::Frame_right;
+					SetAnimFrame(RPG::EventPage::Frame_right);
 				}
 			} else {
-				if (pattern == RPG::EventPage::Frame_left) {
-					pattern = RPG::EventPage::Frame_middle;
+				if (GetAnimFrame() == RPG::EventPage::Frame_left) {
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 					last_pattern = RPG::EventPage::Frame_left;
 				} else {
-					pattern = RPG::EventPage::Frame_left;
+					SetAnimFrame(RPG::EventPage::Frame_left);
 				}
 			}
 		}
 
-		anime_count = 0;
+		SetAnimCount(0);
 	}
 }
 
 void Game_Character::UpdateJump() {
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
-	remaining_step -= min(jump_speed[GetMoveSpeed() - 1], remaining_step);
-	if (remaining_step <= 0)
-		jumping = false;
+	SetRemainingStep(GetRemainingStep() - min(jump_speed[GetMoveSpeed() - 1], GetRemainingStep()));
+	if (GetRemainingStep() <= 0) {
+		SetJumping(false);
+	}
 }
 
 void Game_Character::UpdateSelfMovement() {
@@ -264,7 +249,7 @@ void Game_Character::MoveTypeCustom() {
 		int original_index = active_route_index;
 		bool looped_around = false;
 		while (true) {
-			if (!IsStopping() || wait_count > 0 || stop_count < max_stop_count)
+			if (!IsStopping() || wait_count > 0 || GetStopCount() < GetMaxStopCount())
 				break;
 
 			if (active_route_index == original_index && looped_around) {
@@ -402,18 +387,18 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
 				if (IsContinuous()) {
-					pattern = RPG::EventPage::Frame_middle;
+					SetAnimFrame(RPG::EventPage::Frame_middle);
 				}
-				walk_animation = false;
+				SetAnimPaused(true);
 				break;
 			case RPG::MoveCommand::Code::start_animation:
-				walk_animation = true;
+				SetAnimPaused(false);
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
-				SetOpacity(max(40, GetOpacity() - 45));
+				SetTransparency(GetTransparency() + 1);
 				break;
 			case RPG::MoveCommand::Code::decrease_transp:
-				SetOpacity(GetOpacity() + 45);
+				SetTransparency(GetTransparency() - 1);
 				break;
 			}
 
@@ -437,8 +422,8 @@ void Game_Character::MoveTypeCustom() {
 			if (IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
-				stop_count = 0;
-				max_stop_count = (GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency());
+				SetStopCount(0);
+				SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
 			}
 		}
 	}
@@ -467,7 +452,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	int dx = (dir == Right || dir == UpRight || dir == DownRight) - (dir == Left || dir == DownLeft || dir == UpLeft);
 	int dy = (dir == Down || dir == DownRight || dir == DownLeft) - (dir == Up || dir == UpRight || dir == UpLeft);
 
-	if (jumping) {
+	if (IsJumping()) {
 		jump_plus_x += dx;
 		jump_plus_y += dy;
 		return;
@@ -491,12 +476,12 @@ void Game_Character::Move(int dir, MoveOption option) {
 	} else {
 		SetX(Game_Map::RoundX(GetX() + dx));
 		SetY(Game_Map::RoundY(GetY() + dy));
-		remaining_step = SCREEN_TILE_WIDTH;
+		SetRemainingStep(SCREEN_TILE_WIDTH);
 		BeginMove();
 	}
 
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 }
 
 void Game_Character::MoveForward(MoveOption option) {
@@ -553,8 +538,8 @@ void Game_Character::Turn(int dir) {
 	SetDirection(dir);
 	SetSpriteDirection(dir);
 	move_failed = false;
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency());
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency()));
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -614,9 +599,11 @@ void Game_Character::Wait() {
 void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current_index) {
 	jump_x = GetX();
 	jump_y = GetY();
+	SetBeginJumpX(jump_x);
+	SetBeginJumpY(jump_y);
 	jump_plus_x = 0;
 	jump_plus_y = 0;
-	jumping = true;
+	SetJumping(true);
 
 	bool end_found = false;
 	unsigned int i;
@@ -692,7 +679,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	if (!end_found) {
 		// No EndJump found. Move route ends directly
 		*current_index = i;
-		jumping = false;
+		SetJumping(false);
 		return;
 	}
 
@@ -728,7 +715,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	) {
 		// Reset to begin jump command and try again...
 		move_failed = true;
-		jumping = false;
+		SetJumping(false);
 
 		if (current_route->skippable) {
 			*current_index = i;
@@ -742,13 +729,13 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	SetY(new_y);
 	*current_index = i;
 
-	remaining_step = SCREEN_TILE_WIDTH;
-	stop_count = 0;
-	max_stop_count = (GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency());
+	SetRemainingStep(SCREEN_TILE_WIDTH);
+	SetStopCount(0);
+	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 	move_failed = false;
 
 	if (IsContinuous()) {
-		pattern = RPG::EventPage::Frame_middle;
+		SetAnimFrame(RPG::EventPage::Frame_middle);
 	}
 }
 
@@ -801,7 +788,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
 	wait_count = 0;
-	max_stop_count = 0;
+	SetMaxStopCount(0);
 	last_move_failed = false;
 	any_move_successful = false;
 }
@@ -812,7 +799,7 @@ void Game_Character::CancelMoveRoute() {
 }
 
 int Game_Character::GetTileId() const {
-	return tile_id;
+	return GetSpriteName().empty() ? GetSpriteIndex() : 0;
 }
 
 int Game_Character::GetSpriteX() const {
@@ -821,11 +808,11 @@ int Game_Character::GetSpriteX() const {
 	if (IsMoving()) {
 		int d = GetDirection();
 		if (d == Right || d == UpRight || d == DownRight)
-			x -= remaining_step;
+			x -= GetRemainingStep();
 		else if (d == Left || d == UpLeft || d == DownLeft)
-			x += remaining_step;
+			x += GetRemainingStep();
 	} else if (IsJumping())
-		x -= ((GetX() - jump_x) * remaining_step);
+		x -= ((GetX() - jump_x) * GetRemainingStep());
 
 	return x;
 }
@@ -836,40 +823,21 @@ int Game_Character::GetSpriteY() const {
 	if (IsMoving()) {
 		int d = GetDirection();
 		if (d == Down || d == DownRight || d == DownLeft)
-			y -= remaining_step;
+			y -= GetRemainingStep();
 		else if (d == Up || d == UpRight || d == UpLeft)
-			y += remaining_step;
+			y += GetRemainingStep();
 	} else if (IsJumping())
-		y -= (GetY() - jump_y) * remaining_step;
+		y -= (GetY() - jump_y) * GetRemainingStep();
 
 	return y;
-}
-
-int Game_Character::GetRemainingStep() const {
-	return remaining_step;
-}
-
-int Game_Character::GetPattern() const {
-	return pattern;
-}
-
-int Game_Character::GetAnimationId() const {
-	return animation_id;
-}
-void Game_Character::SetAnimationId(int new_animation_id) {
-	animation_id = new_animation_id;
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {
 	return ((GetX() == x) && (GetY() == y));
 }
 
-void Game_Character::SetOpacity(int opacity) {
-	this->opacity = min(max(0, opacity), 255);
-}
-
 int Game_Character::GetOpacity() const {
-	return opacity;
+	return (8 - GetTransparency()) * 32 - 1;
 }
 
 bool Game_Character::GetVisible() const {
@@ -885,29 +853,32 @@ bool Game_Character::IsFlashPending() const {
 }
 
 bool Game_Character::IsAnimated() const {
-	return walk_animation && animation_type != RPG::EventPage::AnimType_fixed_graphic;
+	return !IsAnimPaused() && GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic;
 }
 
 bool Game_Character::IsDirectionFixed() const {
+	auto at = GetAnimationType();
 	return
-		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
-		animation_type == RPG::EventPage::AnimType_fixed_non_continuous;
+		at == RPG::EventPage::AnimType_fixed_continuous ||
+		at == RPG::EventPage::AnimType_fixed_graphic ||
+		at == RPG::EventPage::AnimType_fixed_non_continuous;
 }
 
 bool Game_Character::IsContinuous() const {
+	auto at = GetAnimationType();
 	return
-		animation_type == RPG::EventPage::AnimType_continuous ||
-		animation_type == RPG::EventPage::AnimType_fixed_continuous;
+		at == RPG::EventPage::AnimType_continuous ||
+		at == RPG::EventPage::AnimType_fixed_continuous;
 }
 
 bool Game_Character::IsSpinning() const {
-	return animation_type == RPG::EventPage::AnimType_spin;
+	return GetAnimationType() == RPG::EventPage::AnimType_spin;
 }
 
 int Game_Character::GetBushDepth() const {
-	if (jumping)
+	if ((GetLayer() != RPG::EventPage::Layers_same) || IsJumping() || IsFlying()) {
 		return 0;
+	}
 
 	return Game_Map::GetBushDepth(GetX(), GetY());
 }
@@ -916,7 +887,6 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	if (GetSpriteName() != name || GetSpriteIndex() != index) {
 		SetSpriteName(name);
 		SetSpriteIndex(index);
-		tile_id = 0;
 	}
 }
 
