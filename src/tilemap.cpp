@@ -109,11 +109,11 @@ int Tilemap::GetAnimationType() const {
 void Tilemap::SetAnimationType(int type) {
 	layer_down.SetAnimationType(type);
 }
-void Tilemap::SubstituteDown(int old_id, int new_id) {
-	layer_down.Substitute(old_id, new_id);
+void Tilemap::OnSubstituteDown() {
+	layer_down.OnSubstitute();
 }
-void Tilemap::SubstituteUp(int old_id, int new_id) {
-	layer_up.Substitute(old_id, new_id);
+void Tilemap::OnSubstituteUp() {
+	layer_up.OnSubstitute();
 }
 
 void Tilemap::SetFastBlitDown(bool fast) {

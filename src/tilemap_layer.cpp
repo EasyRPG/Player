@@ -25,6 +25,7 @@
 #include "map_data.h"
 #include "bitmap.h"
 #include "game_map.h"
+#include "main_data.h"
 
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
@@ -137,6 +138,9 @@ static const uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 };
 
 TilemapLayer::TilemapLayer(int ilayer) :
+	substitutions(ilayer >= 1
+			? Main_Data::game_data.map_info.upper_tiles
+			: Main_Data::game_data.map_info.lower_tiles),
 	visible(true),
 	ox(0),
 	oy(0),
@@ -681,13 +685,6 @@ std::vector<unsigned char> TilemapLayer::GetPassable() const {
 void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 	passable = npassable;
 
-	if (substitutions.size() < passable.size())
-	{
-		substitutions.resize(passable.size());
-		for (uint8_t i = 0; i < substitutions.size(); i++)
-			substitutions[i] = i;
-	}
-
 	// Recalculate z values of all tiles
 	CreateTileCache(map_data);
 }
@@ -748,20 +745,9 @@ void TilemapLayer::SetAnimationType(int type) {
 	animation_type = type;
 }
 
-void TilemapLayer::Substitute(int old_id, int new_id) {
-	int subst_count = 0;
-
-	for (size_t i = 0; i < substitutions.size(); ++i) {
-		if (substitutions[i] == old_id) {
-			++subst_count;
-			substitutions[i] = (uint8_t) new_id;
-		}
-	}
-
-	if (subst_count > 0) {
-		// Recalculate z values of all tiles
-		CreateTileCache(map_data);
-	}
+void TilemapLayer::OnSubstitute() {
+	// Recalculate z values of all tiles
+	CreateTileCache(map_data);
 }
 
 void TilemapLayer::SetFastBlit(bool fast) {

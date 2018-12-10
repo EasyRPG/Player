@@ -1330,20 +1330,23 @@ void Game_Map::RemoveAllPendingMoves() {
 	pending.clear();
 }
 
-void Game_Map::SubstituteDown(int old_id, int new_id) {
-	for (size_t i = 0; i < map_info.lower_tiles.size(); ++i) {
-		if (map_info.lower_tiles[i] == old_id) {
-			map_info.lower_tiles[i] = (uint8_t) new_id;
+static int DoSubstitute(std::vector<uint8_t>& tiles, int old_id, int new_id) {
+	int num_subst = 0;
+	for (size_t i = 0; i < tiles.size(); ++i) {
+		if (tiles[i] == old_id) {
+			tiles[i] = (uint8_t) new_id;
+			++num_subst;
 		}
 	}
+	return num_subst;
 }
 
-void Game_Map::SubstituteUp(int old_id, int new_id) {
-	for (size_t i = 0; i < map_info.upper_tiles.size(); ++i) {
-		if (map_info.upper_tiles[i] == old_id) {
-			map_info.upper_tiles[i] = (uint8_t) new_id;
-		}
-	}
+int Game_Map::SubstituteDown(int old_id, int new_id) {
+	return DoSubstitute(map_info.lower_tiles, old_id, new_id);
+}
+
+int Game_Map::SubstituteUp(int old_id, int new_id) {
+	return DoSubstitute(map_info.upper_tiles, old_id, new_id);
 }
 
 void Game_Map::LockPan() {

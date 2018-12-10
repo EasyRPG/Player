@@ -137,13 +137,17 @@ void Spriteset_Map::SystemGraphicUpdated() {
 }
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {
-	Game_Map::SubstituteDown(old_id, new_id);
-	tilemap->SubstituteDown(old_id, new_id);
+	int num_subst = Game_Map::SubstituteDown(old_id, new_id);
+	if (num_subst) {
+		tilemap->OnSubstituteDown();
+	}
 }
 
 void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
-	Game_Map::SubstituteUp(old_id, new_id);
-	tilemap->SubstituteUp(old_id, new_id);
+	int num_subst = Game_Map::SubstituteUp(old_id, new_id);
+	if (num_subst) {
+		tilemap->OnSubstituteUp();
+	}
 }
 
 bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_list) {
