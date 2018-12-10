@@ -247,8 +247,8 @@ inline T Utils::Clamp(T value, const T& minv, const T& maxv) {
 	return (value < minv) ? (minv) : ((value > maxv) ? maxv : value);
 }
 
-inline bool PercentChance(long rate) {
-	return PercentChance(static_cast<int>(rate));
+inline bool Utils::PercentChance(long rate) {
+	return Utils::PercentChance(static_cast<int>(rate));
 }
 
 #endif
