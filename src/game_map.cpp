@@ -362,7 +362,6 @@ void Game_Map::ScrollRight(int distance) {
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
 	map_info.position_x = x;
-	Parallax::Scroll(distance, 0);
 	// Unused, except compatibility with RPG_RT
 	auto& pan_x = Main_Data::game_data.screen.pan_x;
 	const auto pan_limit_x = 20 * SCREEN_TILE_WIDTH;
@@ -373,7 +372,6 @@ void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
 	map_info.position_y = y;
-	Parallax::Scroll(0, distance);
 	// Unused, except compatibility with RPG_RT
 	auto& pan_y = Main_Data::game_data.screen.pan_y;
 	const auto pan_limit_y = 10 * SCREEN_TILE_WIDTH;
@@ -1161,7 +1159,6 @@ void Game_Map::SetPositionX(int x) {
 		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
 	map_info.position_x = x;
-	Parallax::ResetPosition();
 }
 
 int Game_Map::GetPositionY() {
@@ -1180,7 +1177,6 @@ void Game_Map::SetPositionY(int y) {
 		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
 	map_info.position_y = y;
-	Parallax::ResetPosition();
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
@@ -1516,10 +1512,10 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_width = width;
 	parallax_height = height;
 
-	ResetPosition();
+	UpdatePosition();
 }
 
-void Game_Map::Parallax::ResetPosition() {
+void Game_Map::Parallax::UpdatePosition() {
 	Params params = GetParallaxParams();
 
 	if (params.scroll_horz)
@@ -1545,6 +1541,8 @@ void Game_Map::Parallax::Update() {
 	if (params.name.empty())
 		return;
 
+	UpdatePosition();
+
 	auto scroll_amt = [](int speed) {
 		if (speed > 0) return 1 << (speed - 1);
 		if (speed < 0) return -(1 << (-speed - 1));
@@ -1561,43 +1559,6 @@ void Game_Map::Parallax::Update() {
 		const auto h = parallax_height * TILE_SIZE * 2;
 		panorama.pan_y -= scroll_amt(params.scroll_vert_speed) * 2;
 		panorama.pan_y = (panorama.pan_y + h) % h;
-	}
-}
-
-/** Return the argument that is closer to zero. */
-static int closer_to_zero(int x, int y) {
-	return (std::abs(x) < std::abs(y)) ? x : y;
-}
-
-void Game_Map::Parallax::Scroll(int distance_right, int distance_down) {
-	Params params = GetParallaxParams();
-
-	// TODO: understand and then doc this function :)
-
-	if (params.scroll_vert) {
-		parallax_y -= distance_down / 2;
-	} else if (
-		!LoopVertical() &&
-		GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT
-	) {
-		parallax_y -=
-			closer_to_zero(
-				distance_down,
-				distance_down * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15) / (SCREEN_TILE_WIDTH / TILE_SIZE)
-			);
-	}
-
-	if (params.scroll_horz) {
-		parallax_x -= distance_right / 2;
-	} else if (
-		!LoopHorizontal() &&
-		GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH
-	) {
-		parallax_x -=
-			closer_to_zero(
-				distance_right,
-				distance_right * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20) / (SCREEN_TILE_WIDTH / TILE_SIZE)
-			);
 	}
 }
 

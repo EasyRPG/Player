@@ -652,17 +652,11 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
-		/** Reset the x- and y- position of the BG (eg. after a teleport). */
-		void ResetPosition();
+		/** Reset the x- and y- position of the BG. */
+		void UpdatePosition();
 
 		/** Update autoscrolling BG (call every frame). */
 		void Update();
-
-		/**
-		 * Scrolls the BG by the correct amount when the screen scrolls
-		 * by the given distances.
-		 */
-		void Scroll(int distance_right, int distance_down);
 
 		/** Change BG (eg. with a "Change Parallax BG" command). */
 		void ChangeBG(const Params& params);
