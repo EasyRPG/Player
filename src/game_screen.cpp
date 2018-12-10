@@ -261,7 +261,7 @@ void Game_Screen::Update() {
 			int newpos = amplitude * sin((data.shake_time_left * 4 * (data.shake_speed + 2)) % 256 * M_PI / 128);
 			int cutoff = (data.shake_speed * amplitude / 8) + 1;
 
-			data.shake_position = Utils::Clamp(newpos, data.shake_position - cutoff, data.shake_position + cutoff);
+			data.shake_position = Utils::Clamp<int>(newpos, data.shake_position - cutoff, data.shake_position + cutoff);
 		} else {
 			data.shake_position = 0;
 			data.shake_time_left = 0;
