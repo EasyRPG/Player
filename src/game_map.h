@@ -652,8 +652,12 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
-		/** Reset the x- and y- position of the BG. */
-		void UpdatePosition();
+		/**
+		 * Reset the x- and y- position of the BG.
+		 *
+		 * @param init if true will always reset position, even on looping maps
+		 */
+		void UpdatePosition(bool init = false);
 
 		/** Update autoscrolling BG (call every frame). */
 		void Update();

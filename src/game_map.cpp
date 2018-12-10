@@ -1512,27 +1512,36 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_width = width;
 	parallax_height = height;
 
-	UpdatePosition();
+	UpdatePosition(true);
 }
 
-void Game_Map::Parallax::UpdatePosition() {
+void Game_Map::Parallax::UpdatePosition(bool init) {
 	Params params = GetParallaxParams();
 
-	if (params.scroll_horz)
-		parallax_x = -map_info.position_x / 2;
-	else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
-		parallax_x = -std::min(map_info.position_x,
-			(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
-	else
-		parallax_x = 0;
+	// RPG_RT bug:
+	// On loaded save games, RPG_RT will always reset
+	// parallax_x/y to 0 when the map is looping.
+	// We don't emulate this.
 
-	if (params.scroll_vert)
-		parallax_y = -map_info.position_y / 2;
-	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
-		parallax_y = -std::min(map_info.position_y,
-			(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
-	else
-		parallax_y = 0;
+	if (init || !Game_Map::LoopHorizontal()) {
+		if (params.scroll_horz || LoopHorizontal())
+			parallax_x = -map_info.position_x / 2;
+		else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
+			parallax_x = -std::min(map_info.position_x,
+					(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
+		else
+			parallax_x = 0;
+	}
+
+	if (init || !Game_Map::LoopVertical()) {
+		if (params.scroll_vert || Game_Map::LoopVertical())
+			parallax_y = -map_info.position_y / 2;
+		else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
+			parallax_y = -std::min(map_info.position_y,
+					(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
+		else
+			parallax_y = 0;
+	}
 }
 
 void Game_Map::Parallax::Update() {
