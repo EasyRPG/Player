@@ -147,6 +147,13 @@ void Game_Map::Setup(int _id) {
 
 	SetChipset(map->chipset_id);
 
+	for (size_t i = 0; i < map_info.lower_tiles.size(); i++) {
+		map_info.lower_tiles[i] = i;
+	}
+	for (size_t i = 0; i < map_info.upper_tiles.size(); i++) {
+		map_info.upper_tiles[i] = i;
+	}
+
 	events.reserve(map->events.size());
 	for (const RPG::Event& ev : map->events) {
 		events.emplace_back(location.map_id, ev);
@@ -1272,10 +1279,6 @@ void Game_Map::SetChipset(int id) {
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
 		passages_up.resize(144, (unsigned char) 0x0F);
-	for (uint8_t i = 0; i < 144; i++) {
-		map_info.lower_tiles[i] = i;
-		map_info.upper_tiles[i] = i;
-	}
 }
 
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
