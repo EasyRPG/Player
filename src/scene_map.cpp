@@ -147,8 +147,8 @@ void Scene_Map::Update() {
 
 	Main_Data::game_party->UpdateTimers();
 
-	Game_Map::Update();
 	Main_Data::game_screen->Update();
+	Game_Map::Update();
 	spriteset->Update();
 	message_window->Update();
 

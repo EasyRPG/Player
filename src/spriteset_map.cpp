@@ -99,6 +99,7 @@ void Spriteset_Map::Update() {
 		}
 	}
 
+	airship_shadow->SetTone(new_tone);
 	airship_shadow->Update();
 
 	timer1->Update();

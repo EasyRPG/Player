@@ -33,14 +33,6 @@ Tone::Tone(int red, int green, int blue, int gray) :
 	gray(min(255, max(0, gray))) {
 }
 
-bool Tone::operator==(const Tone &other) const {
-	return red == other.red && green == other.green && blue == other.blue && gray == other.gray;
-}
-
-bool Tone::operator!=(const Tone &other) const {
-	return red != other.red || green != other.green || blue != other.blue || gray != other.gray;
-}
-
 void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
 	red = min(255, max(0, nred));
 	green = min(255, max(0, ngreen));

@@ -39,16 +39,6 @@ public:
 	Tone(int red, int green, int blue, int gray);
 
 	/**
-	 * Equality operator.
-	 */
-	bool operator==(const Tone &other) const;
-
-	/**
-	 * Inequality operator.
-	 */
-	bool operator!=(const Tone &other) const;
-
-	/**
 	 * Set all color properties.
 	 *
 	 * @param red red component.
@@ -70,5 +60,24 @@ public:
 	/** Gray component. */
 	int gray;
 };
+
+inline Tone Blend(const Tone& l, const Tone& r) {
+	return Tone((l.red + r.red) / 2,
+			(l.green + r.green) / 2,
+			(l.blue + r.blue) / 2,
+			(l.gray * r.gray) / 128);
+}
+
+inline bool operator==(const Tone &l, const Tone& r) {
+	return l.red == r.red
+		&& l.green == r.green
+		&& l.blue == r.blue
+		&& l.gray == r.gray;
+}
+
+inline bool operator!=(const Tone &l, const Tone& r) {
+	return !(l == r);
+}
+
 
 #endif
