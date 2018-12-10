@@ -194,6 +194,7 @@ namespace Utils {
 	 * @return true with probability rate.
 	 */
 	bool PercentChance(int rate);
+	bool PercentChance(long rate);
 
 	/**
 	 * Seeds the RNG used by GetRandomNumber and ChanceOf.
@@ -244,6 +245,10 @@ namespace Utils {
 template <typename T>
 inline T Utils::Clamp(T value, const T& minv, const T& maxv) {
 	return (value < minv) ? (minv) : ((value > maxv) ? maxv : value);
+}
+
+inline bool PercentChance(long rate) {
+	return PercentChance(static_cast<int>(rate));
 }
 
 #endif
