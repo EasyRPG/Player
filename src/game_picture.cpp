@@ -80,8 +80,15 @@ void Game_Picture::UpdateSprite() {
 		sprite->SetBitmap(sheet_bitmap);
 	}
 
-	sprite->SetX((int)data.current_x);
-	sprite->SetY((int)data.current_y);
+	int x = data.current_x;
+	int y = data.current_y;
+	if (data.flags.affected_by_shake) {
+		x -= Main_Data::game_data.screen.shake_position;
+		y += Main_Data::game_data.screen.shake_position_y;
+	}
+
+	sprite->SetX(x);
+	sprite->SetY(y);
 	if (Player::IsMajorUpdatedVersion()) {
 		// Battle Animations are above pictures
 		int priority = Drawable::GetPriorityForMapLayer(data.map_layer);

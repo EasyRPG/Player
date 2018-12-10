@@ -16,6 +16,7 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include "bitmap.h"
 #include "data.h"
 #include "game_battle.h"
@@ -26,6 +27,9 @@
 #include "main_data.h"
 #include "output.h"
 #include "utils.h"
+#include <cmath>
+
+static constexpr int kShakeContinuousTimeStart = 65535;
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -71,13 +75,6 @@ void Game_Screen::Reset(bool is_load_savegame) {
 		data.tint_current_blue = 100;
 		data.tint_current_sat = 100;
 	}
-
-	data.shake_strength = 0;
-	data.shake_speed = 0;
-	data.shake_time_left = 0;
-	data.shake_position = 0;
-	data.shake_continuous = false;
-	shake_direction = 1;
 
 	movie_filename = "";
 	movie_pos_x = 0;
@@ -156,19 +153,22 @@ void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
 	data.shake_time_left = tenths;
-	data.shake_position = 0;
 	data.shake_continuous = false;
+	// Shake position is not reset in RPG_RT, so that multiple shakes
+	// which interrupt each other flow smoothly.
 }
 
 void Game_Screen::ShakeBegin(int power, int speed) {
 	data.shake_strength = power;
 	data.shake_speed = speed;
-	data.shake_time_left = 0;
-	data.shake_position = 0;
+	data.shake_time_left = kShakeContinuousTimeStart;
 	data.shake_continuous = true;
+	// Shake position is not reset in RPG_RT, so that multiple shakes
+	// which interrupt each other flow smoothly.
 }
 
 void Game_Screen::ShakeEnd() {
+	data.shake_position = 0;
 	data.shake_time_left = 0;
 	data.shake_continuous = false;
 }
@@ -251,19 +251,21 @@ void Game_Screen::Update() {
 		}
 	}
 
-	if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
-		double delta = (data.shake_strength * data.shake_speed * shake_direction) / 10.0;
-		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
-			data.shake_position = 0;
-		else
-			data.shake_position = data.shake_position + (int)delta;
-		if (data.shake_position > data.shake_strength * 2)
-			shake_direction = -1;
-		if (data.shake_position < -data.shake_strength * 2)
-			shake_direction = 1;
+	if (data.shake_continuous || data.shake_time_left > 0) {
+		--data.shake_time_left;
+		if (data.shake_continuous || data.shake_time_left > 0) {
+			if (data.shake_time_left < 0 && data.shake_continuous) {
+				data.shake_time_left = kShakeContinuousTimeStart;
+			}
+			int amplitude = 1 + 2 * data.shake_strength;
+			int newpos = amplitude * sin((data.shake_time_left * 4 * (data.shake_speed + 2)) % 256 * M_PI / 128);
+			int cutoff = (data.shake_speed * amplitude / 8) + 1;
 
-		if (data.shake_time_left > 0)
-			data.shake_time_left = data.shake_time_left - 1;
+			data.shake_position = Utils::Clamp(newpos, data.shake_position - cutoff, data.shake_position + cutoff);
+		} else {
+			data.shake_position = 0;
+			data.shake_time_left = 0;
+		}
 	}
 
 	for (const auto& picture : pictures) {

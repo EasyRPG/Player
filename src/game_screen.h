@@ -100,7 +100,6 @@ private:
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
-	int shake_direction;
 
 	std::string movie_filename;
 	int movie_pos_x;
