@@ -625,24 +625,6 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
 }
 
-float Game_BattleAlgorithm::AlgorithmBase::GetAttributeMultiplier(const std::vector<bool>& attributes_set) const {
-	float multiplier = 0;
-	int attributes_applied = 0;
-	for (unsigned int i = 0; i < attributes_set.size(); i++) {
-		if (attributes_set[i]) {
-			multiplier += GetTarget()->GetAttributeModifier(i + 1);
-			attributes_applied++;
-		}
-	}
-
-	if (attributes_applied > 0) {
-		multiplier /= (attributes_applied * 100);
-		return multiplier;
-	}
-
-	return 1.0;
-}
-
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 	targets.clear();
 
@@ -889,7 +871,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
 			}
 
-			multiplier = GetAttributeMultiplier(weapon->attribute_set);
+			multiplier = GetTarget()->GetAttributeMultiplier(weapon->attribute_set);
 		}
 
 	} else {
@@ -1102,11 +1084,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		}
 
 		if (this->healing) {
-			float mul = GetAttributeMultiplier(skill.attribute_effects);
-			if (mul < 0.5f) {
-				// Determined via testing, the heal is always at least 50%
-				mul = 0.5f;
-			}
+			float mul = GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
 			effect +=
 				source->GetAtk() * skill.physical_rate / 20 +
@@ -1146,7 +1124,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				effect -= GetTarget()->GetDef() * skill.physical_rate / 40;
 				effect -= GetTarget()->GetSpi() * skill.magical_rate / 80;
 			}
-			effect *= GetAttributeMultiplier(skill.attribute_effects);
+			effect *= GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
 
 			if (effect < 0) {
 				effect = 0;

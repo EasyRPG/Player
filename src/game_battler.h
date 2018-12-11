@@ -167,6 +167,14 @@ public:
 	virtual int GetAttributeModifier(int attribute_id) const = 0;
 
 	/**
+	 * Gets the final effect multiplier when a skill/attack is targeting this battler.
+	 *
+	 * @param attributes set for the incoming action
+	 * @return effect multiplier
+	 */
+	float GetAttributeMultiplier(const std::vector<bool>& attributes_set) const;
+
+	/**
 	 * Gets the characters name
 	 *
 	 * @return Character name
@@ -344,7 +352,7 @@ public:
 	 * @param item_id ID if item to use
 	 * @return true if item affected anything
 	 */
-	virtual bool UseItem(int item_id);
+	virtual bool UseItem(int item_id, const Game_Battler* source);
 
 	/**
 	 * Applies the effects of a skill.
@@ -353,9 +361,10 @@ public:
 	 * Does not reduce the MP, use Game_Party->UseSkill for this.
 	 *
 	 * @param skill_id ID of skill to use
+	 * @param source battler who threw the skill
 	 * @return true if skill affected anything
 	 */
-	virtual bool UseSkill(int skill_id);
+	virtual bool UseSkill(int skill_id, const Game_Battler* source);
 
 	/**
 	 * Calculates the Skill costs including all modifiers.

@@ -52,18 +52,33 @@ void Scene_ActorTarget::Start() {
 		if (!item) {
 			Output::Warning("Scene ActorTarget: Invalid item ID %d", id);
 			Scene::Pop();
+			return;
 		}
-
-		if (item->entire_party) {
-			target_window->SetIndex(-100);
+		const RPG::Skill* skill = nullptr;
+		if (item->type == RPG::Item::Type_special) {
+			skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+			if (!skill) {
+				Output::Warning("Scene ActorTarget: Item %d has invalid skill ID %d", id, item->skill_id);
+				Scene::Pop();
+				return;
+			}
+			if (skill->scope == RPG::Skill::Scope_party) {
+				target_window->SetIndex(-100);
+			}
+		} else {
+			if (item->entire_party) {
+				target_window->SetIndex(-100);
+			}
 		}
 		status_window->SetData(id, true, 0);
 		help_window->SetText(item->name);
+		return;
 	} else {
 		const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
 		if (!skill) {
 			Output::Warning("Scene ActorTarget: Invalid skill ID %d", id);
 			Scene::Pop();
+			return;
 		}
 
 		if (skill->scope == RPG::Skill::Scope_self) {
