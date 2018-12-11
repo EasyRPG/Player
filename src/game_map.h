@@ -656,7 +656,11 @@ namespace Game_Map {
 		 *
 		 * @param init if true will always reset position, even on looping maps
 		 */
-		void UpdatePosition(bool init = false);
+		void ResetPositionX();
+		void ResetPositionY();
+
+		void ScrollRight(int distance);
+		void ScrollDown(int distance);
 
 		/** Update autoscrolling BG (call every frame). */
 		void Update();
