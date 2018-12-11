@@ -50,6 +50,9 @@ void Game_Screen::CreatePicturesFromSave() {
 }
 
 void Game_Screen::Reset(bool is_load_savegame) {
+	if (Main_Data::game_data.pictures.size() < pictures.size()) {
+		pictures.resize(Main_Data::game_data.pictures.size());
+	}
 	for (auto& p : pictures) {
 		if (p) {
 			p->Erase(false);
