@@ -326,10 +326,6 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 
 		// Calculate effect:
 		float mul = GetAttributeMultiplier(skill->attribute_effects);
-		if (mul < 0.5f) {
-			// Determined via testing, the heal is always at least 50%
-			mul = 0.5f;
-		}
 
 		int effect = skill->power;
 		if (source != nullptr) {

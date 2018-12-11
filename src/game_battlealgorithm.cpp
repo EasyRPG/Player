@@ -1087,10 +1087,6 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		if (this->healing) {
 			float mul = GetTarget()->GetAttributeMultiplier(skill.attribute_effects);
-			if (mul < 0.5f) {
-				// Determined via testing, the heal is always at least 50%
-				mul = 0.5f;
-			}
 
 			effect +=
 				source->GetAtk() * skill.physical_rate / 20 +
