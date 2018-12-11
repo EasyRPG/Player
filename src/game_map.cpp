@@ -83,6 +83,9 @@ namespace {
 	RPG::Chipset* chipset;
 
 	int last_encounter_idx = 0;
+
+	// FIXME: Find a better way to do this
+	bool load_panorama_from_save = false;
 }
 
 void Game_Map::Init() {
@@ -142,6 +145,7 @@ void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
+	load_panorama_from_save = false;
 	panorama = {};
 
 	Parallax::ClearChangedBG();
@@ -221,6 +225,12 @@ void Game_Map::SetupFromSave() {
 	SetChipset(map_info.chipset_id);
 
 	SetEncounterSteps(location.encounter_steps);
+
+	// If the later async code will load panorama, set the flag to not clear the offsets.
+	if (!map_info.parallax_name.empty()
+			|| (map->parallax_flag && !map->parallax_name.empty())) {
+		load_panorama_from_save = true;
+	}
 }
 
 
@@ -1533,8 +1543,23 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_width = width;
 	parallax_height = height;
 
-	ResetPositionX();
-	ResetPositionY();
+	Params params = GetParallaxParams();
+
+	// We want to support loading rm2k3e panning chunks
+	// but also not break other saves which don't have them.
+	// To solve this problem, we reuse the scrolling methods
+	// which always reset the position anyways when scroll_horz/vert
+	// is false.
+	// This produces compatible behavior for old RPG_RT saves, namely
+	// the pan_x/y is always forced to 0.
+	if (load_panorama_from_save) {
+		load_panorama_from_save = false;
+		ScrollRight(0);
+		ScrollDown(0);
+	} else {
+		ResetPositionX();
+		ResetPositionY();
+	}
 }
 
 void Game_Map::Parallax::ResetPositionX() {
