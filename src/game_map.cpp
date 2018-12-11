@@ -393,7 +393,7 @@ void Game_Map::ScrollDown(int distance) {
 	// Unused, except compatibility with RPG_RT
 	auto& pan_y = Main_Data::game_data.screen.pan_y;
 	const auto pan_limit_y = 10 * SCREEN_TILE_WIDTH;
-	pan_y = (pan_y + distance + pan_limit_y) % pan_limit_y;
+	pan_y = (pan_y - distance + pan_limit_y) % pan_limit_y;
 
 	Game_Map::Parallax::ScrollDown(distance);
 }
