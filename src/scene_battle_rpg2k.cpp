@@ -304,13 +304,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (!battle_action_pending && CheckResultConditions()) {
 			return;
 		}
+		if (!battle_action_pending) {
+			// If we will start a new battle action, first check for state changes
+			// such as death, paralyze, confuse, etc..
+			UpdateBattlerActions();
+		}
 		if (!battle_actions.empty()) {
-			if (battle_actions.front()->IsDead()) {
-				// No zombies allowed ;)
-				RemoveCurrentAction();
-				return;
-			}
-
 			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
 
 			battle_action_pending = true;
@@ -372,9 +371,13 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	// Immediately quit for dead actors no move. Prevents any animations or delays.
+	if (action->GetType() == Game_BattleAlgorithm::Type::NoMove && action->GetSource()->IsDead()) {
+		return true;
+	}
+
 	// Order of execution of BattleActionState:
 	// ConditionHeal > Execute > Apply > (ResultPop > ResultPush) > Death > Finished.
-
 	if (Game_Battle::IsBattleAnimationWaiting() && !Game_Battle::IsBattleAnimationOnlySound()) {
 		return false;
 	}
@@ -519,10 +522,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (action->IsFirstAttack()) {
 				if (action->GetTarget() &&
-					!(action->GetSource()->GetType() == Game_Battler::Type_Enemy)) {
+					action->GetSource()->GetType() == Game_Battler::Type_Ally) {
 					if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 						action->PlayAnimation();
-					} else if (action->GetTarget()->GetType() == Game_Battler::Type_Ally && action->GetType() == Game_BattleAlgorithm::Type::Skill) {
+					} else {
 						action->PlaySoundAnimation(false, 20);
 					}
 				}
@@ -835,28 +838,24 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	status_window->SetIndex(actor_index);
 	actor_index++;
 
-	if (active_actor->IsDead()) {
+	Game_Battler* random_target = NULL;
+
+	if (!active_actor->CanAct()) {
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
+		battle_actions.push_back(active_actor);
 		SelectNextActor();
 		return;
 	}
 
-	Game_Battler* random_target = NULL;
-
-	if (active_actor->CanAct()) {
-		switch (active_actor->GetSignificantRestriction()) {
+	switch (active_actor->GetSignificantRestriction()) {
 		case RPG::State::Restriction_attack_ally:
 			random_target = Main_Data::game_party->GetRandomActiveBattler();
 			break;
 		case RPG::State::Restriction_attack_enemy:
 			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 			break;
-		}
-	}
-	else {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(active_actor));
-		battle_actions.push_back(active_actor);
-		SelectNextActor();
-		return;
+		default:
+			break;
 	}
 
 	if (random_target || auto_battle || active_actor->GetAutoBattle()) {

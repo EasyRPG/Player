@@ -69,21 +69,27 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
-	type(ty), source(source), no_target(true), first_attack(true) {
+	type(ty), source(source), no_target(true), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	current_target = targets.end();
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Battler* target) :
-	type(ty), source(source), no_target(false), first_attack(true) {
+	type(ty), source(source), no_target(false), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source, Game_Party_Base* target) :
-	type(ty), source(source), no_target(false), first_attack(true) {
+	type(ty), source(source), no_target(false), first_attack(true),
+	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
+{
 	Reset();
 
 	target->GetBattlers(targets);
@@ -154,6 +160,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsAbsorb() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
 	return revived;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
+	return true;
 }
 
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
@@ -268,6 +278,10 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	else {
 		return GetTarget()->GetName() + message;
 	}
+}
+
+RPG::State::Restriction Game_BattleAlgorithm::AlgorithmBase::GetSourceRestrictionWhenStarted() const {
+	return source_restriction;
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetAttackFailureMessage(const std::string& message) const {
@@ -1172,12 +1186,13 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
-			if (!healing && Utils::PercentChance(to_hit))
+
+			if (!healing && !Utils::PercentChance(to_hit))
 				continue;
 
 			this->success = true;
 
-			if (healing || Utils::GetRandomNumber(0, 99) <= GetTarget()->GetStateProbability(Data::states[i].ID)) {
+			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(Data::states[i].ID))) {
 				conditions.push_back(Data::states[i]);
 			}
 		}
@@ -1370,6 +1385,13 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 	return has_reflect;
 }
 
+bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
+	if (item) {
+		return Main_Data::game_party->GetItemCount(item->ID, false) > 0;
+	}
+	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
+}
+
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
 	AlgorithmBase(Type::Item, source, target), item(item) {
 		// no-op
@@ -1505,6 +1527,10 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 	else {
 		return NULL;
 	}
+}
+
+bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
+	return Main_Data::game_party->GetItemCount(item.ID, false) > 0;
 }
 
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :

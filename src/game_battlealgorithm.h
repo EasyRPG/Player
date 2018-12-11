@@ -20,6 +20,7 @@
 
 #include <string>
 #include <vector>
+#include "rpg_state.h"
 
 class Game_Battler;
 class Game_Party_Base;
@@ -292,6 +293,11 @@ public:
 	virtual int GetSourceAnimationState() const;
 
 	/**
+	* @return true if it is still possible to perform this action now.
+	*/
+	virtual bool ActionIsPossible() const;
+
+	/**
 	 * Gets the sound effect that is played when the action is starting.
 	 *
 	 * @return start se
@@ -355,6 +361,12 @@ public:
 	 */
 	Type GetType() const;
 
+	/**
+	 * @return The significant restriction of the source when this
+	 *      algorithm was created.
+	 */
+	RPG::State::Restriction GetSourceRestrictionWhenStarted() const;
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -407,6 +419,7 @@ protected:
 	bool absorb;
 	bool revived = false;
 	mutable int reflect;
+	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
 
 	RPG::Animation* animation;
 
@@ -450,6 +463,7 @@ public:
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
+	bool ActionIsPossible() const override;
 
 private:
 	const RPG::Skill& skill;
@@ -470,6 +484,7 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	bool ActionIsPossible() const override;
 
 private:
 	const RPG::Item& item;

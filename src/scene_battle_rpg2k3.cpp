@@ -520,14 +520,17 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		Scene::Pop();
 	}
 
+	if (!battle_action_pending) {
+		// If we will start a new battle action, first check for state changes
+		// such as death, paralyze, confuse, etc..
+		UpdateBattlerActions();
+	}
+
 	if (!battle_actions.empty()) {
 		Game_Battler* action = battle_actions.front();
-		if (action->IsDead()) {
-			// No zombies allowed ;)
-			RemoveCurrentAction();
-			battle_action_state = BattleActionState_Execute;
-		}
-		else if (ProcessBattleAction(action->GetBattleAlgorithm().get())) {
+		battle_action_pending = true;
+		if (ProcessBattleAction(action->GetBattleAlgorithm().get())) {
+			battle_action_pending = false;
 			RemoveCurrentAction();
 			if (CheckResultConditions()) {
 				return;
@@ -590,6 +593,11 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	// Immediately quit for dead actors no move. Prevents any animations or delays.
+	if (action->GetType() == Game_BattleAlgorithm::Type::NoMove && action->GetSource()->IsDead()) {
+		return true;
+	}
+
 	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
 	}
