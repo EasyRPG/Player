@@ -1566,6 +1566,9 @@ void Game_Map::Parallax::ResetPositionX() {
 	Params params = GetParallaxParams();
 
 	panorama.pan_x = 0;
+	if (params.name.empty()) {
+		return;
+	}
 	if (params.scroll_horz || LoopHorizontal()) {
 		panorama.pan_x = map_info.position_x;
 	} else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
@@ -1577,6 +1580,9 @@ void Game_Map::Parallax::ResetPositionY() {
 	Params params = GetParallaxParams();
 
 	panorama.pan_y = 0;
+	if (params.name.empty()) {
+		return;
+	}
 	if (params.scroll_vert || Game_Map::LoopVertical()) {
 		panorama.pan_y = map_info.position_y;
 	} else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
