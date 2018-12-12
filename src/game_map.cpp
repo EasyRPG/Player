@@ -1566,22 +1566,22 @@ void Game_Map::Parallax::ResetPositionX() {
 	Params params = GetParallaxParams();
 
 	panorama.pan_x = 0;
-	if (params.scroll_horz || LoopHorizontal())
+	if (params.scroll_horz || LoopHorizontal()) {
 		panorama.pan_x = map_info.position_x;
-	else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
-		panorama.pan_x = std::min(map_info.position_x,
-				(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20)) * 2;
+	} else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
+		panorama.pan_x = map_info.position_x * (parallax_width - SCREEN_TARGET_WIDTH) * 2 / ((GetWidth() - 20) * TILE_SIZE);
+	}
 }
 
 void Game_Map::Parallax::ResetPositionY() {
 	Params params = GetParallaxParams();
 
 	panorama.pan_y = 0;
-	if (params.scroll_vert || Game_Map::LoopVertical())
+	if (params.scroll_vert || Game_Map::LoopVertical()) {
 		panorama.pan_y = map_info.position_y;
-	else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
-		panorama.pan_y = std::min(map_info.position_y,
-				(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15)) * 2;
+	} else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
+		panorama.pan_y = map_info.position_y * (parallax_height - SCREEN_TARGET_HEIGHT) * 2 / ((GetHeight() - 15) * TILE_SIZE);
+	}
 }
 
 void Game_Map::Parallax::ScrollRight(int distance) {
