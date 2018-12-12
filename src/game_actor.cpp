@@ -34,16 +34,20 @@
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
 
-static int max_hp_value() {
+static int max_exp_value() {
+	return Player::IsRPG2k() ? 999999 : 9999999;
+}
+
+int Game_Actor::MaxHpValue() const {
 	return Player::IsRPG2k() ? 999 : 9999;
 }
 
-static int max_other_stat_value() {
-	return 999;
+int Game_Actor::MaxStatBattleValue() const {
+	return Player::IsRPG2k() ? 999 : 9999;
 }
 
-static int max_exp_value() {
-	return Player::IsRPG2k() ? 999999 : 9999999;
+int Game_Actor::MaxStatBaseValue() const {
+	return 999;
 }
 
 Game_Actor::Game_Actor(int actor_id) :
@@ -355,7 +359,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += GetData().hp_mod;
 
-	return min(max(n, 1), max_hp_value());
+	return Utils::Clamp(n, 1, MaxHpValue());
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -373,7 +377,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += GetData().sp_mod;
 
-	return min(max(n, 0), max_other_stat_value());
+	return Utils::Clamp(n, 0, MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseMaxSp() const {
@@ -401,7 +405,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseAtk() const {
@@ -429,7 +433,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseDef() const {
@@ -457,7 +461,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseSpi() const {
@@ -485,7 +489,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		}
 	}
 
-	return min(max(n, 1), max_other_stat_value());
+	return Utils::Clamp(n, 1, MaxStatBaseValue());
 }
 
 int Game_Actor::GetBaseAgi() const {

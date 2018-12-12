@@ -43,6 +43,12 @@ public:
 	 */
 	Game_Battler();
 
+	virtual int MaxHpValue() const = 0;
+
+	virtual int MaxStatBattleValue() const = 0;
+
+	virtual int MaxStatBaseValue() const = 0;
+
 	/**
 	 * Gets if battler has a state.
 	 *

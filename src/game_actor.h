@@ -47,6 +47,12 @@ public:
 	 */
 	Game_Actor(int actor_id);
 
+	int MaxHpValue() const override;
+
+	int MaxStatBattleValue() const override;
+
+	int MaxStatBaseValue() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.

@@ -48,6 +48,18 @@ void Game_Enemy::Setup(int enemy_id) {
 	flying_offset = 0;
 }
 
+int Game_Enemy::MaxHpValue() const {
+	return Player::IsRPG2k() ? 9999 : 99999;
+}
+
+int Game_Enemy::MaxStatBattleValue() const {
+	return 9999;
+}
+
+int Game_Enemy::MaxStatBaseValue() const {
+	return 999;
+}
+
 const std::vector<int16_t>& Game_Enemy::GetStates() const {
 	return states;
 }
