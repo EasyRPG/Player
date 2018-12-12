@@ -430,49 +430,47 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 }
 
 void Scene_Battle::UpdateBattlerActions() {
-	if (battle_actions.empty()) {
-		return;
-	}
+	for (auto* battler: battle_actions) {
+		if (!battler->CanAct()) {
+			if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
+				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+				battler->SetCharged(false);
+			}
+			continue;
+		}
 
-	auto* battler = battle_actions.front();
-	if (!battler->CanAct()) {
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-		battler->SetCharged(false);
-		return;
-	}
+		if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
+			if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_attack_ally) {
+				Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
+					Main_Data::game_enemyparty->GetRandomActiveBattler() :
+					Main_Data::game_party->GetRandomActiveBattler();
 
-	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
-		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
-			Main_Data::game_enemyparty->GetRandomActiveBattler() :
-			Main_Data::game_party->GetRandomActiveBattler();
+				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+				battler->SetCharged(false);
+			}
+			continue;
+		}
 
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
-		battler->SetCharged(false);
-		return;
-	}
+		if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
+			if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_attack_enemy) {
+				Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
+					Main_Data::game_enemyparty->GetRandomActiveBattler() :
+					Main_Data::game_party->GetRandomActiveBattler();
 
-	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
-		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
-			Main_Data::game_enemyparty->GetRandomActiveBattler() :
-			Main_Data::game_party->GetRandomActiveBattler();
+				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
+				battler->SetCharged(false);
+			}
+			continue;
+		}
 
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
-		battler->SetCharged(false);
-		return;
-	}
-
-	// If we can no longer perform the action (no more items, ran out of SP, etc..)
-	if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-		battler->SetCharged(false);
-		return;
-	}
-
-	// If we had a state restriction previously but were recovered, we do nothing for this round.
-	if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_normal) {
-		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-		battler->SetCharged(false);
-		return;
+		// If we had a state restriction previously but were recovered, we do nothing for this round.
+		if (battler->GetBattleAlgorithm()->GetSourceRestrictionWhenStarted() != RPG::State::Restriction_normal) {
+			if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
+				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+				battler->SetCharged(false);
+			}
+			continue;
+		}
 	}
 }
 
