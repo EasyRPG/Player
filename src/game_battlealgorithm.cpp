@@ -1350,7 +1350,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		if (!success && skill.affect_attr_defence) {
 			for (int i = 0; i < skill.attribute_effects.size(); i++) {
 				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositive() ? 1 : -1)) {
-					if (Utils::GetRandomNumber(0, 99) >= skill.hit)
+					if (!Utils::PercentChance(skill.hit))
 						continue;
 					shift_attributes.push_back(i + 1);
 					this->success = true;
@@ -1907,7 +1907,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		to_hit += Game_Battle::escape_fail_count * 0.1f;
 
 		to_hit *= 100;
-		this->success = Utils::GetRandomNumber(0, 99) < (int)to_hit;
+		this->success = Utils::PercentChance((int)to_hit);
 	}
 
 	return this->success;
