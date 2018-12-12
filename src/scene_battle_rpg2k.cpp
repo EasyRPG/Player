@@ -862,13 +862,23 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 			break;
 	}
 
-	if (random_target || auto_battle || active_actor->GetAutoBattle()) {
-		if (!random_target) {
-			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
-		}
-
-		// ToDo: Auto battle logic is dumb
+	if (random_target) {
+		// RPG_RT doesn't support "Attack All" weapons when battler is confused or provoked.
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, random_target));
+		battle_actions.push_back(active_actor);
+
+		SelectNextActor();
+		return;
+	}
+
+	if (auto_battle || active_actor->GetAutoBattle()) {
+		if (active_actor->HasAttackAll()) {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor,
+						Main_Data::game_enemyparty.get()));
+		} else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor,
+						Main_Data::game_enemyparty->GetRandomActiveBattler()));
+		}
 		battle_actions.push_back(active_actor);
 
 		SelectNextActor();
