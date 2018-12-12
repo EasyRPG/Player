@@ -181,6 +181,30 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	int new_panx = new_x - screen_x;
 	int new_pany = new_y - screen_y;
 
+	// Detect whether we crossed map boundary.
+	// We need to scale down dx/dy to a single step
+	// to not message up further calculations.
+	// FIXME: This logic will break if something moves so fast
+	// as to cross half the map in 1 frame.
+	if (Game_Map::LoopHorizontal()) {
+		auto w = Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
+		if (std::abs(dx) > w / 2) {
+			dx = (w - std::abs(dx)) % w;
+			if (new_x > old_x) {
+				dx = -dx;
+			}
+		}
+	}
+	if (Game_Map::LoopVertical()) {
+		auto h = Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
+		if (std::abs(dy) > h / 2) {
+			dy = (h - std::abs(dy)) % h;
+			if (new_y > old_y) {
+				dy = -dy;
+			}
+		}
+	}
+
 	if (Game_Map::LoopHorizontal() ||
 			std::abs(data()->pan_current_x - new_panx) >=
 			std::abs(data()->pan_current_x - old_panx)) {
