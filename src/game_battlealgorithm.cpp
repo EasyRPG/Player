@@ -116,6 +116,9 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	reflect = -1;
 	animation = nullptr;
+	animation2 = nullptr;
+	has_animation_played = false;
+	has_animation2_played = false;
 	conditions.clear();
 	healed_conditions.clear();
 	shift_attributes.clear();
@@ -178,6 +181,10 @@ const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const 
 	return animation;
 }
 
+const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetSecondAnimation() const {
+	return animation2;
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (current_target == targets.end() || !GetAnimation()) {
 		return;
@@ -186,6 +193,7 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	if (on_source) {
 		std::vector<Game_Battler*> anim_targets = { GetSource() };
 		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, anim_targets);
+		has_animation_played = true;
 		return;
 	}
 
@@ -201,6 +209,37 @@ void Game_BattleAlgorithm::AlgorithmBase::PlayAnimation(bool on_source) {
 	Game_Battle::ShowBattleAnimation(
 		GetAnimation()->ID,
 		anim_targets);
+	has_animation_played = true;
+
+	current_target = old_current_target;
+	first_attack = old_first_attack;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::PlaySecondAnimation(bool on_source) {
+	if (current_target == targets.end() || !GetSecondAnimation()) {
+		return;
+	}
+
+	if (on_source) {
+		std::vector<Game_Battler*> anim_targets = { GetSource() };
+		Game_Battle::ShowBattleAnimation(GetSecondAnimation()->ID, anim_targets);
+		has_animation2_played = true;
+		return;
+	}
+
+	auto old_current_target = current_target;
+	bool old_first_attack = first_attack;
+
+	std::vector<Game_Battler*> anim_targets;
+
+	do {
+		anim_targets.push_back(*current_target);
+	} while (TargetNextInternal());
+
+	Game_Battle::ShowBattleAnimation(
+		GetSecondAnimation()->ID,
+		anim_targets);
+	has_animation2_played = true;
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
@@ -232,6 +271,14 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int
 
 	current_target = old_current_target;
 	first_attack = old_first_attack;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasAnimationPlayed() const {
+	return has_animation_played;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::HasSecondAnimationPlayed() const {
+	return has_animation2_played;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
@@ -773,6 +820,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
 
 void Game_BattleAlgorithm::AlgorithmBase::TargetFirst() {
 	current_target = targets.begin();
+	cur_repeat = 0;
 
 	if (!IsTargetValid()) {
 		TargetNext();
@@ -786,6 +834,12 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 		// Only source available, can't target again
 		return false;
 	}
+	++cur_repeat;
+	if (IsTargetValid() && cur_repeat < repeat) {
+		first_attack = false;
+		return true;
+	}
+	cur_repeat = 0;
 
 	return TargetNextInternal();
 }
@@ -803,6 +857,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNextInternal() const {
 	first_attack = false;
 
 	return true;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetRepeat(int repeat) {
+	this->repeat = repeat;
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetSwitchEnable(int switch_id) {
@@ -849,13 +907,19 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(Type::Normal, source, target) {
-	// no-op
+	AlgorithmBase(Type::Normal, source, target)
+{
+	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
+		SetRepeat(2);
+	}
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
-	AlgorithmBase(Type::Normal, source, target) {
-	// no-op
+	AlgorithmBase(Type::Normal, source, target)
+{
+	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
+		SetRepeat(2);
+	}
 }
 
 bool Game_BattleAlgorithm::Normal::Execute() {
@@ -873,25 +937,52 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		const RPG::Item* weapon = ally->GetWeapon();
+		const auto* weapon1 = ally->GetWeapon();
+		const auto* weapon2 = ally->Get2ndWeapon();
+		if (weapon1 == nullptr) {
+			weapon1 = weapon2;
+		}
 
-		if (!weapon) {
+		if (!weapon1 && !weapon2) {
 			// No Weapon
-			// Todo: Two Sword style
+			// TODO: Different behavior for 2k3
 			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
 			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
 			if (!animation) {
 				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
 			}
-		} else {
-			animation = ReaderUtil::GetElement(Data::animations, weapon->animation_id);
+		} else if (!weapon2) {
+			// Single weapon
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
 			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon->animation_id);
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
 			}
 
-			multiplier = GetTarget()->GetAttributeMultiplier(weapon->attribute_set);
-		}
+			multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
+		} else {
+			// Double weapon
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+			} else {
+				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+				if (!animation2) {
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				}
+			}
 
+			auto& a1 = weapon1->attribute_set;
+			auto& a2 = weapon2->attribute_set;
+			std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
+			for (size_t i = 0; i < attribute_set.size(); ++i) {
+				if (i < a1.size())
+					attribute_set[i] = attribute_set[i] | a1[i];
+				if (i < a2.size())
+					attribute_set[i] = attribute_set[i] | a2[i];
+			}
+
+			multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
+		}
 	} else {
 		// Source is Enemy
 		if (!Data::animations.empty()) {
@@ -947,22 +1038,61 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
-				const RPG::Item* weapon = ReaderUtil::GetElement(Data::items, static_cast<Game_Actor*>(source)->GetWeaponId());
+				auto* ally = static_cast<Game_Actor*>(source);
+				const auto* weapon1 = ally->GetWeapon();
+				const auto* weapon2 = ally->Get2ndWeapon();
+				if (weapon1 == nullptr) {
+					weapon1 = weapon2;
+				}
 
-				if (weapon) {
-					for (unsigned int i = 0; i < weapon->state_set.size(); i++) {
-						if (weapon->state_set[i]) {
-							const RPG::State* state = ReaderUtil::GetElement(Data::states, i + 1);
-							if (!state) {
-								Output::Warning("Algorithm Normal: Weapon %d causes invalid state %d", weapon->ID, weapon->state_set[i]);
-								continue;
-							}
+				if (weapon1 || weapon2) {
+					bool weapon1_heals_states = false;
+					bool weapon2_heals_states = false;
+					if (Player::IsRPG2k3()) {
+						weapon1_heals_states = weapon1 && weapon1->state_effect;
+						weapon2_heals_states = weapon2 && weapon2->state_effect;
+					}
 
-							if (Utils::GetRandomNumber(0, 99) < (weapon->state_chance * GetTarget()->GetStateProbability(state->ID) / 100)) {
-								if (weapon->state_effect) {
-									healing = true;
+					auto inflict_state = [&](const RPG::State& new_state) {
+						// Don't allow duplicates.
+						if (std::find_if(conditions.rbegin(), conditions.rend(),
+									[&](const RPG::State& st) { return st.ID == new_state.ID; })
+								== conditions.rend()) {
+							conditions.push_back(new_state);
+						}
+					};
+
+					auto heal_state = [&](int state_id) {
+						// If state was inflicted by other weapon, remove it.
+						// We don't need to loop, it'll be the last one as it was just added.
+						if (!conditions.empty() && conditions.back().ID == state_id) {
+							conditions.pop_back();
+						}
+						// Don't allow duplicates.
+						if (std::find(healed_conditions.rbegin(), healed_conditions.rend(), state_id) == healed_conditions.rend()) {
+							healed_conditions.push_back(state_id);
+						}
+					};
+
+					for (size_t i = 0; i < Data::states.size(); ++i) {
+						const int state_id = i + 1;
+						const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
+						if (weapon1 && i < weapon1->state_set.size() && weapon1->state_set[i]) {
+							if (Utils::PercentChance(weapon1->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
+								if (!weapon1_heals_states) {
+									inflict_state(*state);
+								} else {
+									heal_state(state->ID);
 								}
-								conditions.push_back(*state);
+							}
+						}
+						if (weapon2 && i < weapon2->state_set.size() && weapon2->state_set[i]) {
+							if (Utils::PercentChance(weapon2->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
+								if (!weapon2_heals_states) {
+									inflict_state(*state);
+								} else {
+									heal_state(state->ID);
+								}
 							}
 						}
 					}
@@ -1537,34 +1667,6 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
 	return Main_Data::game_party->GetItemCount(item.ID, false) > 0;
-}
-
-Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
-	AlgorithmBase(Type::NormalDual, source, target) {
-	// no-op
-}
-
-std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
-	if (Player::IsRPG2k()) {
-		return source->GetName() + " TODO DUAL";
-	}
-	else {
-		return "";
-	}
-}
-
-const RPG::Sound* Game_BattleAlgorithm::NormalDual::GetStartSe() const {
-	if (source->GetType() == Game_Battler::Type_Enemy) {
-		return &Game_System::GetSystemSE(Game_System::SFX_EnemyAttacks);
-	}
-	else {
-		return NULL;
-	}
-}
-
-bool Game_BattleAlgorithm::NormalDual::Execute() {
-	Output::Warning("Battle: Enemy Double Attack not implemented");
-	return true;
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :

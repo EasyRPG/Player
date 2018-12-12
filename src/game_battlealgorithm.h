@@ -47,7 +47,6 @@ enum class Type {
 	Normal,
 	Skill,
 	Item,
-	NormalDual,
 	Defend,
 	Observe,
 	Charge,
@@ -187,6 +186,15 @@ public:
 	 * @return Battle Animation or NULL if no animation is assigned
 	 */
 	const RPG::Animation* GetAnimation() const;
+	const RPG::Animation* GetSecondAnimation() const;
+
+	/**
+	 * Checks if the animation has already played once
+	 *
+	 * @return Whether the animation played once
+	 */
+	bool HasAnimationPlayed() const;
+	bool HasSecondAnimationPlayed() const;
 
 	/**
 	 * Plays the battle animation on the targets.
@@ -198,6 +206,7 @@ public:
 	 *                  targets (required for reflect)
 	 */
 	void PlayAnimation(bool on_source = false);
+	void PlaySecondAnimation(bool on_source = false);
 
 	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
 
@@ -367,6 +376,11 @@ public:
 	 */
 	RPG::State::Restriction GetSourceRestrictionWhenStarted() const;
 
+	/**
+	 * Set number of times to repeat the same action on a target
+	 */
+	void SetRepeat(int repeat);
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -420,8 +434,13 @@ protected:
 	bool revived = false;
 	mutable int reflect;
 	RPG::State::Restriction source_restriction = RPG::State::Restriction_normal;
+	int cur_repeat = 0;
+	int repeat = 1;
 
 	RPG::Animation* animation;
+	RPG::Animation* animation2;
+	bool has_animation_played;
+	bool has_animation2_played;
 
 	std::vector<RPG::State> conditions;
 	std::vector<int16_t> healed_conditions;
@@ -488,15 +507,6 @@ public:
 
 private:
 	const RPG::Item& item;
-};
-
-class NormalDual : public AlgorithmBase {
-public:
-	NormalDual(Game_Battler* source, Game_Battler* target);
-
-	std::string GetStartMessage() const override;
-	const RPG::Sound* GetStartSe() const override;
-	bool Execute() override;
 };
 
 class Defend : public AlgorithmBase {

@@ -274,8 +274,7 @@ void Scene_Battle::AllySelected() {
 void Scene_Battle::AttackSelected() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	const RPG::Item* item = active_actor->GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->attack_all) {
+	if (active_actor->HasAttackAll()) {
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty.get()));
 		ActionSelectedCallback(active_actor);
 	} else {
@@ -507,8 +506,8 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
-			// ToDo: Must be NormalDual, not implemented
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->GetBattleAlgorithm()->SetRepeat(2);
 			break;
 		case RPG::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Defend>(enemy));

@@ -862,20 +862,6 @@ bool Game_Actor::HasStrongDefense() const {
 	return GetData().super_guard;
 }
 
-bool Game_Actor::HasPreemptiveAttack() const {
-	const RPG::Item* item = GetEquipment(RPG::Item::Type_weapon);
-	if (item && item->preemptive) {
-		return true;
-	}
-	if (HasTwoWeapons()) {
-		item = GetEquipment(RPG::Item::Type_weapon + 1);
-		if (item && item->preemptive) {
-			return true;
-		}
-	}
-	return false;
-}
-
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return GetData().skills;
 }
@@ -1461,11 +1447,29 @@ const RPG::Item* Game_Actor::GetAccessory() const {
 	return nullptr;
 }
 
+bool Game_Actor::HasPreemptiveAttack() const {
+	auto* w1 = GetWeapon();
+	auto* w2 = Get2ndWeapon();
+	return (w1 && w1->preemptive) || (w2 && w2->preemptive);
+}
+
+bool Game_Actor::HasDualAttack() const {
+	auto* w1 = GetWeapon();
+	auto* w2 = Get2ndWeapon();
+	return (w1 && w1->dual_attack) || (w2 && w2->dual_attack);
+}
+
+bool Game_Actor::HasAttackAll() const {
+	auto* w1 = GetWeapon();
+	auto* w2 = Get2ndWeapon();
+	return (w1 && w1->attack_all) || (w2 && w2->attack_all);
+}
+
+
 bool Game_Actor::AttackIgnoresEvasion() const {
-	auto checkEquip = [](const RPG::Item* item) {
-		return item && item->ignore_evasion;
-	};
-	return checkEquip(GetWeapon()) || checkEquip(Get2ndWeapon());
+	auto* w1 = GetWeapon();
+	auto* w2 = Get2ndWeapon();
+	return (w1 && w1->ignore_evasion) || (w2 && w2->ignore_evasion);
 }
 
 bool Game_Actor::PreventsCritical() const {
