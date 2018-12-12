@@ -215,7 +215,7 @@ public:
 	 *
 	 * @return List of all inflicted/removed conditions
 	 */
-	const std::vector<RPG::State>& GetAffectedConditions() const;
+	const std::vector<int16_t>& GetAffectedConditions() const;
 
 	/**
 	 * Returns whether the action hit the target.
@@ -442,7 +442,7 @@ protected:
 	bool has_animation_played;
 	bool has_animation2_played;
 
-	std::vector<RPG::State> conditions;
+	std::vector<int16_t> conditions;
 	std::vector<int16_t> healed_conditions;
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;

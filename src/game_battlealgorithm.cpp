@@ -173,7 +173,7 @@ bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
 	return true;
 }
 
-const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
+const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
 	return conditions;
 }
 
@@ -644,17 +644,18 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
-	std::vector<RPG::State>::const_iterator it = conditions.begin();
+	for (auto state_id: conditions) {
+		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		assert(state);
 
-	for (; it != conditions.end(); ++it) {
-		if (GetTarget()->HasState(it->ID) && std::find(healed_conditions.begin(), healed_conditions.end(), it->ID) == healed_conditions.end()) {
+		if (GetTarget()->HasState(state_id) && std::find(healed_conditions.begin(), healed_conditions.end(), state_id) == healed_conditions.end()) {
 			if (IsPositive()) {
 				out_replace.push_back(0);
-				out.push_back(GetStateMessage(it->message_recovery));
+				out.push_back(GetStateMessage(state->message_recovery));
 			}
-			else if (!it->message_already.empty()) {
+			else if (!state->message_already.empty()) {
 				out_replace.push_back(0);
-				out.push_back(GetStateMessage(it->message_already));
+				out.push_back(GetStateMessage(state->message_already));
 			}
 		} else {
 			// Positive case doesn't report anything in case of uselessness
@@ -664,10 +665,10 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
 			out_replace.push_back(0);
-			out.push_back(GetStateMessage(is_actor ? it->message_actor : it->message_enemy));
+			out.push_back(GetStateMessage(is_actor ? state->message_actor : state->message_enemy));
 
 			// Reporting ends with death state
-			if (it->ID == 1) {
+			if (state_id == RPG::State::kDeathID) {
 				return;
 			}
 		}
@@ -774,14 +775,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	// Conditions healed/caused:
-	for (auto& state: conditions) {
+	for (auto& state_id: conditions) {
 		if (IsPositive()) {
-			GetTarget()->RemoveState(state.ID);
+			GetTarget()->RemoveState(state_id);
 			if (this->IsRevived()) {
 				GetTarget()->ChangeHp(std::max(0, GetAffectedHp()-1));
 			}
 		} else {
-			GetTarget()->AddState(state.ID);
+			GetTarget()->AddState(state_id);
 		}
 	}
 
@@ -1053,19 +1054,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						weapon2_heals_states = weapon2 && weapon2->state_effect;
 					}
 
-					auto inflict_state = [&](const RPG::State& new_state) {
+					auto inflict_state = [&](int state_id) {
 						// Don't allow duplicates.
-						if (std::find_if(conditions.rbegin(), conditions.rend(),
-									[&](const RPG::State& st) { return st.ID == new_state.ID; })
+						if (std::find(conditions.rbegin(), conditions.rend(), state_id)
 								== conditions.rend()) {
-							conditions.push_back(new_state);
+							conditions.push_back(state_id);
 						}
 					};
 
 					auto heal_state = [&](int state_id) {
 						// If state was inflicted by other weapon, remove it.
 						// We don't need to loop, it'll be the last one as it was just added.
-						if (!conditions.empty() && conditions.back().ID == state_id) {
+						if (!conditions.empty() && conditions.back() == state_id) {
 							conditions.pop_back();
 						}
 						// Don't allow duplicates.
@@ -1080,18 +1080,18 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						if (weapon1 && i < weapon1->state_set.size() && weapon1->state_set[i]) {
 							if (Utils::PercentChance(weapon1->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
 								if (!weapon1_heals_states) {
-									inflict_state(*state);
+									inflict_state(state_id);
 								} else {
-									heal_state(state->ID);
+									heal_state(state_id);
 								}
 							}
 						}
 						if (weapon2 && i < weapon2->state_set.size() && weapon2->state_set[i]) {
 							if (Utils::PercentChance(weapon2->state_chance * GetTarget()->GetStateProbability(state_id) / 100)) {
 								if (!weapon2_heals_states) {
-									inflict_state(*state);
+									inflict_state(state_id);
 								} else {
-									heal_state(state->ID);
+									heal_state(state_id);
 								}
 							}
 						}
@@ -1322,21 +1322,22 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
 			if (!skill.state_effects[i])
 				continue;
+			auto state_id = i + 1;
 
-			if (!healing && GetTarget()->HasState(i + 1)) {
+			if (!healing && GetTarget()->HasState(state_id)) {
 				this->success = true;
-				conditions.push_back(Data::states[i]);
+				conditions.push_back(state_id);
 				continue;
 			}
-			if (healing && !GetTarget()->HasState(i + 1)) {
+			if (healing && !GetTarget()->HasState(state_id)) {
 				continue;
 			}
 			if (!Utils::PercentChance(to_hit))
 				continue;
 
-			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(Data::states[i].ID))) {
+			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 				this->success = true;
-				conditions.push_back(Data::states[i]);
+				conditions.push_back(state_id);
 			}
 		}
 
@@ -1608,7 +1609,7 @@ bool Game_BattleAlgorithm::Item::Execute() {
 				if (i == 0)
 					is_dead_cured = true;
 				if (GetTarget()->HasState(i + 1))
-					this->conditions.push_back(Data::states[i]);
+					this->conditions.push_back(i + 1);
 			}
 		}
 
