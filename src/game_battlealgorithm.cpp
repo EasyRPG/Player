@@ -1097,6 +1097,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						}
 					}
 				}
+
+				GetTarget()->FilterInapplicableStates(conditions);
 			}
 		}
 	}
@@ -1336,9 +1338,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 
 			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-				this->success = true;
 				conditions.push_back(state_id);
 			}
+		}
+		GetTarget()->FilterInapplicableStates(conditions);
+		if (!conditions.empty()) {
+			this->success = true;
 		}
 
 		// Attribute resistance / weakness + an attribute selected + can be modified

@@ -424,6 +424,16 @@ public:
 	virtual void AddState(int state_id);
 
 	/**
+	 * Filters out all states that can't be applied due to their priority being
+	 * < 10 of the most significant state.
+	 *
+	 * @param states in-out parameter of states.
+	 *
+	 * @return The number of states removed.
+	 */
+	int FilterInapplicableStates(std::vector<int16_t>& states) const;
+
+	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
