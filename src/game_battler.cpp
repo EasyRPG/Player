@@ -32,6 +32,7 @@
 #include "utils.h"
 #include "output.h"
 #include "reader_util.h"
+#include "game_battlealgorithm.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -461,7 +462,6 @@ void Game_Battler::AddState(int state_id) {
 	if (state_id == 1) {
 		SetGauge(0);
 		RemoveAllStates();
-		SetDefending(false);
 		SetCharged(false);
 		SetHp(0);
 		SetAtkModifier(0);
@@ -620,7 +620,10 @@ void Game_Battler::SetCharged(bool charge) {
 }
 
 bool Game_Battler::IsDefending() const {
-	return defending;
+	auto* algo = GetBattleAlgorithm().get();
+	return algo
+		&& algo->GetType() == Game_BattleAlgorithm::Type::Defend
+		&& GetSignificantRestriction() == RPG::State::Restriction_normal;
 }
 
 bool Game_Battler::HasStrongDefense() const {
@@ -629,10 +632,6 @@ bool Game_Battler::HasStrongDefense() const {
 
 bool Game_Battler::HasPreemptiveAttack() const {
 	return false;
-}
-
-void Game_Battler::SetDefending(bool defend) {
-	defending = defend;
 }
 
 bool Game_Battler::IsHidden() const {
@@ -891,7 +890,6 @@ void Game_Battler::ResetBattle() {
 		gauge /= 2;
 	}
 	charged = false;
-	defending = false;
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;

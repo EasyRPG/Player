@@ -786,7 +786,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		}
 	}
 
-	source->SetDefending(false);
 	ApplyActionSwitches();
 }
 
@@ -1712,7 +1711,6 @@ bool Game_BattleAlgorithm::Defend::Execute() {
 }
 
 void Game_BattleAlgorithm::Defend::Apply() {
-	source->SetDefending(true);
 	ApplyActionSwitches();
 }
 
