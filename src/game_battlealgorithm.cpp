@@ -46,6 +46,11 @@ static inline int MaxDamageValue() {
 }
 
 static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int to_hit) {
+	// If target has rm2k3 state which grants 100% dodge.
+	if (target->EvadesAllPhysicalAttacks()) {
+		return 0;
+	}
+
 	// If target has Restriction "do_nothing", the attack always hits
 	if (target->GetSignificantRestriction() == RPG::State::Restriction_do_nothing) {
 		return 100;

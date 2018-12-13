@@ -53,6 +53,16 @@ std::vector<int16_t> Game_Battler::GetInflictedStates() const {
 	return states;
 }
 
+bool Game_Battler::EvadesAllPhysicalAttacks() const {
+	for (auto state_id: GetInflictedStates()) {
+		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		if (state && state->avoid_attacks) {
+			return true;
+		}
+	}
+	return false;
+}
+
 RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 	const std::vector<int16_t> states = GetInflictedStates();
 

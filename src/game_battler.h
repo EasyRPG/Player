@@ -65,6 +65,11 @@ public:
 	std::vector<int16_t> GetInflictedStates() const;
 
 	/**
+	 * @return true battler evades all physical attacks.
+	 */
+	bool EvadesAllPhysicalAttacks() const;
+
+	/**
 	 * Apply effects of Conditions to Battler
 	 *
 	 * @return Damage taken to Battler from conditions
