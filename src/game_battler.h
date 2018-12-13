@@ -429,6 +429,16 @@ public:
 	virtual void AddState(int state_id);
 
 	/**
+	 * Filters out all states that can't be applied due to their priority being
+	 * < 10 of the most significant state.
+	 *
+	 * @param states in-out parameter of states.
+	 *
+	 * @return The number of states removed.
+	 */
+	int FilterInapplicableStates(std::vector<int16_t>& states) const;
+
+	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
@@ -516,13 +526,6 @@ public:
 	 * @return true if a weapon is having preempt attribute
 	 */
 	virtual bool HasPreemptiveAttack() const;
-
-	/**
-	 * Sets defence state (next turn, defense is doubled)
-	 *
-	 * @param defend new defence state
-	 */
-	void SetDefending(bool defend);
 
 	enum BattlerType {
 		Type_Ally,
@@ -653,7 +656,6 @@ protected:
 	BattleAlgorithmRef battle_algorithm;
 
 	bool charged;
-	bool defending;
 	int atk_modifier;
 	int def_modifier;
 	int spi_modifier;

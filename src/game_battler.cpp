@@ -32,6 +32,7 @@
 #include "utils.h"
 #include "output.h"
 #include "reader_util.h"
+#include "game_battlealgorithm.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
@@ -471,7 +472,6 @@ void Game_Battler::AddState(int state_id) {
 	if (state_id == 1) {
 		SetGauge(0);
 		RemoveAllStates();
-		SetDefending(false);
 		SetCharged(false);
 		SetHp(0);
 		SetAtkModifier(0);
@@ -498,6 +498,40 @@ void Game_Battler::AddState(int state_id) {
 			states[i] = 0;
 		}
 	}
+}
+
+int Game_Battler::FilterInapplicableStates(std::vector<int16_t>& states) const {
+	if (IsDead()) {
+		int rc = states.size();
+		states.clear();
+		return rc;
+	}
+
+	auto* sig_state = GetSignificantState();
+
+	for (auto state_id: states) {
+		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		if (!state) {
+			Output::Warning("Invalid state id %d", state_id);
+			continue;
+		}
+		if (!sig_state || sig_state->priority < state->priority) {
+			sig_state = state;
+		}
+	}
+
+	int num_removed = 0;
+	for (auto iter = states.begin(); iter != states.end();) {
+		auto* state = ReaderUtil::GetElement(Data::states, *iter);
+		if (!state || state->priority <= sig_state->priority - 10) {
+			// Already logged the state == nullptr case error above.
+			iter = states.erase(iter);
+			++num_removed;
+			continue;
+		}
+		++iter;
+	}
+	return num_removed;
 }
 
 void Game_Battler::RemoveState(int state_id) {
@@ -596,7 +630,10 @@ void Game_Battler::SetCharged(bool charge) {
 }
 
 bool Game_Battler::IsDefending() const {
-	return defending;
+	auto* algo = GetBattleAlgorithm().get();
+	return algo
+		&& algo->GetType() == Game_BattleAlgorithm::Type::Defend
+		&& GetSignificantRestriction() == RPG::State::Restriction_normal;
 }
 
 bool Game_Battler::HasStrongDefense() const {
@@ -605,10 +642,6 @@ bool Game_Battler::HasStrongDefense() const {
 
 bool Game_Battler::HasPreemptiveAttack() const {
 	return false;
-}
-
-void Game_Battler::SetDefending(bool defend) {
-	defending = defend;
 }
 
 bool Game_Battler::IsHidden() const {
@@ -867,7 +900,6 @@ void Game_Battler::ResetBattle() {
 		gauge /= 2;
 	}
 	charged = false;
-	defending = false;
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;

@@ -310,7 +310,15 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			UpdateBattlerActions();
 		}
 		if (!battle_actions.empty()) {
-			Game_BattleAlgorithm::AlgorithmBase* alg = battle_actions.front()->GetBattleAlgorithm().get();
+			auto* battler = battle_actions.front();
+			if (!battle_action_pending) {
+				// If we can no longer perform the action (no more items, ran out of SP, etc..)
+				if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
+					battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
+					battler->SetCharged(false);
+				}
+			}
+			auto* alg = battler->GetBattleAlgorithm().get();
 
 			battle_action_pending = true;
 			if (ProcessBattleAction(alg)) {
