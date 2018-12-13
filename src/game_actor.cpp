@@ -855,7 +855,17 @@ bool Game_Actor::IsEquippable(int item_id) const {
 }
 
 bool Game_Actor::IsEquipmentFixed() const {
-	return GetData().lock_equipment;
+	if (GetData().lock_equipment) {
+		return true;
+	}
+
+	for (auto state_id: GetInflictedStates()) {
+		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		if (state && state->cursed) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Game_Actor::HasStrongDefense() const {
