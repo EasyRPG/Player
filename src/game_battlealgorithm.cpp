@@ -1786,7 +1786,7 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 }
 
 int Game_BattleAlgorithm::SelfDestruct::GetSourceAnimationState() const {
-	return Sprite_Battler::AnimationState_Dead;
+	return Sprite_Battler::AnimationState_SelfDestruct;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {

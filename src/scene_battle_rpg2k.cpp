@@ -435,9 +435,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 			if (source_sprite) {
 				source_sprite->Flash(Color(255, 255, 255, 100), 15);
-				source_sprite->SetAnimationState(
-					action->GetSourceAnimationState(),
-					Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
 			}
 
 			auto* src = action->GetSource();
@@ -541,6 +538,22 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			action->Apply();
 			battle_action_state = BattleActionState_ResultPop;
+
+			if (action->GetSource()->GetType() == Game_Battler::Type_Enemy) {
+				if (action->GetType() == Game_BattleAlgorithm::Type::Escape) {
+					source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+					source_sprite->SetAnimationState(
+							Sprite_Battler::AnimationState_Dead,
+							Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+				}
+
+				if (action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
+					source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+					source_sprite->SetAnimationState(
+							Sprite_Battler::AnimationState_SelfDestruct,
+							Sprite_Battler::LoopState_DefaultAnimationAfterFinish);
+				}
+			}
 
 			if (!action->IsFirstAttack()) {
 				battle_action_wait = 0;
