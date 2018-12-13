@@ -1369,11 +1369,13 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 		amount = -amount;
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
-		int hp = actor->GetHp() + amount;
-		if (!lethal && hp <= 0) {
-			amount += hp * (-1) + 1;
+		int hp = actor->GetHp();
+
+		if (!lethal && hp + amount <= 0) {
+			actor->ChangeHp(-hp + 1);
+		} else {
+			actor->ChangeHp(amount);
 		}
-		actor->ChangeHp(amount);
 
 		if (actor->IsDead()) {
 			Game_Battle::SetNeedRefresh(true);
