@@ -114,12 +114,23 @@ void Scene_Equip::UpdateStatusWindow() {
 	equipstatus_window->Update();
 }
 
+static bool CanRemoveEquipment(const Game_Actor& actor, int index) {
+	if (actor.IsEquipmentFixed()) {
+		return false;
+	}
+	auto* item = actor.GetEquipment(index + 1);
+	if (item && item->cursed) {
+		return false;
+	}
+	return true;
+}
+
 void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		if (actor.IsEquipmentFixed()) {
+		if (!CanRemoveEquipment(actor, equip_window->GetIndex())) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			return;
 		}
