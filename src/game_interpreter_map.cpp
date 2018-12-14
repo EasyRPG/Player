@@ -52,6 +52,7 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 }
 
 bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _index) {
+	Clear();
 	if (_index < (int)save.size()) {
 		event_id = save[_index].event_id;
 		if (event_id != 0) {
