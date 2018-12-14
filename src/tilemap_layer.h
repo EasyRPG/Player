@@ -80,7 +80,7 @@ public:
 	void SetAnimationSpeed(int speed);
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
-	void Substitute(int old_id, int new_id);
+	void OnSubstitute();
 	/**
 	 * Influences how tiles of the tilemap are blitted.
 	 * When enabled the opacity information of the tile is ignored and a opaque
@@ -99,7 +99,8 @@ private:
 
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
-	std::vector<uint8_t> substitutions;
+	// FIXME Should be span<uint8_t>
+	const std::vector<uint8_t>& substitutions;
 	bool visible;
 	int ox;
 	int oy;

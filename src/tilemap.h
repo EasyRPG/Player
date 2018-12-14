@@ -57,8 +57,8 @@ public:
 	void SetAnimationSpeed(int speed);
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
-	void SubstituteDown(int old_id, int new_id);
-	void SubstituteUp(int old_id, int new_id);
+	void OnSubstituteDown();
+	void OnSubstituteUp();
 	void SetFastBlitDown(bool fast);
 	void SetTone(Tone tone);
 
