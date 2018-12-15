@@ -91,6 +91,7 @@ void Game_Interpreter::Clear() {
 			child_interpreter.reset();
 	}
 	list.clear();
+	ResetEventCalling();
 }
 
 // Is interpreter running.
@@ -197,11 +198,11 @@ void Game_Interpreter::Update() {
 		}
 
 		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
-			Game_Temp::shop_calling ||
-			Game_Temp::name_calling ||
-			Game_Temp::menu_calling ||
-			Game_Temp::save_calling ||
-			Game_Temp::load_calling ||
+			IsShopCalling() ||
+			IsNameCalling() ||
+			IsMenuCalling() ||
+			IsSaveCalling() ||
+			IsLoadCalling() ||
 			Game_Temp::to_title ||
 			Game_Temp::gameover) {
 
@@ -3069,6 +3070,23 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	index++;
 	return true;
 }
+
+void Game_Interpreter::ResetEventCalling() {
+	event_calling = {};
+	// FIXME: Need to separate immediate battle calls from events
+	// and SavePartyLocation::encounter_calling for random encounters.
+	Game_Temp::battle_calling = false;
+}
+
+
+bool Game_Interpreter::IsImmediateCall() const {
+	return event_calling.load
+		|| event_calling.save
+		|| event_calling.name
+		|| event_calling.shop
+		|| event_calling.menu
+		|| Game_Temp::battle_calling;
+};
 
 // Dummy Continuations
 
