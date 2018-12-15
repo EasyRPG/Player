@@ -509,10 +509,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_message_window->Push(action->GetStartMessage());
 
 			battle_result_messages.clear();
-			battle_result_order.clear();
-			action->GetResultMessages(battle_result_messages, battle_result_order);
+			action->GetResultMessages(battle_result_messages);
 			battle_result_messages_it = battle_result_messages.begin();
-			battle_result_order_it = battle_result_order.begin();
 
 			if (!action->HasSecondStartMessage())
 				battle_action_wait = 0;
@@ -574,8 +572,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
-				default_result_lines = action->HasStartMessage() + action->HasSecondStartMessage() + critical_hit;
-				while (battle_message_window->GetLineCount() > (default_result_lines + *battle_result_order_it))
+				default_result_lines = action->HasStartMessage() + action->HasSecondStartMessage() + critical_hit + action->IsKilledByAttack();
+				while (battle_message_window->GetLineCount() > default_result_lines)
 					battle_message_window->Pop();
 			}
 
@@ -609,7 +607,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				// Push message, next iteration:
 				battle_message_window->Push(*battle_result_messages_it);
 				++battle_result_messages_it;
-				++battle_result_order_it;
 
 				// Only goes here if it's the first message of a critic hit:
 				if (battle_result_messages_it == battle_result_messages.begin() + critical_hit) {
@@ -806,8 +803,7 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_alg.Apply();
 
 		battle_result_messages.clear();
-		battle_result_order.clear();
-		escape_alg.GetResultMessages(battle_result_messages, battle_result_order);
+		escape_alg.GetResultMessages(battle_result_messages);
 
 		battle_message_window->Push(battle_result_messages[0]);
 		begin_escape = false;

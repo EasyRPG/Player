@@ -1002,7 +1002,6 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
-	std::vector<int> dummy;
 
 	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor);
 	active_actor->SetGauge(0);
@@ -1012,7 +1011,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 
 	if (!escape_success) {
 		std::vector<std::string> battle_result_messages;
-		escape_alg.GetResultMessages(battle_result_messages, dummy);
+		escape_alg.GetResultMessages(battle_result_messages);
 		SetState(State_SelectActor);
 		ShowNotification(battle_result_messages[0]);
 	}
