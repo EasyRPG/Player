@@ -29,7 +29,7 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 	needs_refresh(true),
 	hidden_lines(0) {
 
-	SetContents(Bitmap::Create(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 20, height - 16));
 
 	visible = false;
 	// Above other windows but below the messagebox
@@ -45,7 +45,7 @@ void Window_BattleMessage::Push(const std::string& message) {
 			std::vector<std::string>& wrapped_lines = lines;
 			int line_count = Game_Message::WordWrap(
 								line,
-								GetWidth() - 24,
+								GetWidth() - 20,
 								[&wrapped_lines](const std::string& line) {
 									wrapped_lines.push_back(line);
 								}
