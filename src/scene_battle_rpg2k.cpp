@@ -394,7 +394,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		return false;
 	}
 
-	int critical_hit, default_result_lines;
 	Sprite_Battler* source_sprite;
 	Sprite_Battler* target_sprite;
 
@@ -406,7 +405,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		if (--battle_action_wait) {
 			return false;
 		}
-		else if (battle_message_window->GetHiddenLineCount()) {
+		if (battle_message_window->GetHiddenLineCount()) {
 			if (battle_message_window->IsPageFilled()) {
 				if (battle_message_window->NextPage()) {
 					battle_action_wait = GetDelayForLine();
@@ -571,8 +570,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_action_wait = std::min<int>(GetDelayForLine() / 2, battle_action_wait);
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
-				critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
-				default_result_lines = action->HasStartMessage() + action->HasSecondStartMessage() + critical_hit + action->IsKilledByAttack();
+				bool critical_hit = action->IsCriticalHit() && action->IsSuccess();
+				int default_result_lines = action->HasStartMessage() + action->HasSecondStartMessage() + critical_hit + action->IsKilledByAttack();
 				while (battle_message_window->GetLineCount() > default_result_lines)
 					battle_message_window->Pop();
 			}
@@ -581,9 +580,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			return ProcessBattleAction(action);
 		case BattleActionState_ResultPush:
-			critical_hit = action->IsCriticalHit() && action->IsSuccess() ? 1 : 0;
-
 			if (battle_result_messages_it != battle_result_messages.end()) {
+				bool critical_hit = action->IsCriticalHit() && action->IsSuccess();
 
 				// Animation and Sound when hurt (only when HP damage):
 				target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
