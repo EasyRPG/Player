@@ -478,6 +478,8 @@ void Game_Battler::AddState(int state_id) {
 		SetDefModifier(0);
 		SetSpiModifier(0);
 		SetAgiModifier(0);
+		SetIsDefending(false);
+		SetCharged(false);
 		attribute_shift.clear();
 		attribute_shift.resize(Data::attributes.size());
 	}
@@ -497,6 +499,10 @@ void Game_Battler::AddState(int state_id) {
 		if (Data::states[i].priority <= sig_state->priority - 10) {
 			states[i] = 0;
 		}
+	}
+
+	if (IsDefending() && GetSignificantRestriction() != RPG::State::Restriction_normal) {
+		SetIsDefending(false);
 	}
 }
 
@@ -630,10 +636,11 @@ void Game_Battler::SetCharged(bool charge) {
 }
 
 bool Game_Battler::IsDefending() const {
-	auto* algo = GetBattleAlgorithm().get();
-	return algo
-		&& algo->GetType() == Game_BattleAlgorithm::Type::Defend
-		&& GetSignificantRestriction() == RPG::State::Restriction_normal;
+	return defending;
+}
+
+void Game_Battler::SetIsDefending(bool val) {
+	defending = val;
 }
 
 bool Game_Battler::HasStrongDefense() const {
@@ -900,6 +907,7 @@ void Game_Battler::ResetBattle() {
 		gauge /= 2;
 	}
 	charged = false;
+	defending = false;
 	battle_turn = 0;
 	last_battle_action = -1;
 	atk_modifier = 0;
