@@ -30,6 +30,8 @@
 #  include <unistd.h>
 #  include <gccore.h>
 #  include <sys/iosupport.h>
+#elif defined(__SWITCH__)
+#  include <unistd.h>
 #elif defined(__ANDROID__)
 #  include <android/log.h>
 #elif defined(EMSCRIPTEN)
@@ -284,8 +286,8 @@ void Output::ErrorStr(std::string const& err) {
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now.";
-#if defined (GEKKO)
-		// Wii stdin is non-blocking
+#if defined (GEKKO) || defined(__SWITCH__)
+		// stdin is non-blocking
 		sleep(5);
 #elif defined (EMSCRIPTEN)
 		// Don't show JavaScript Window.prompt from stdin call

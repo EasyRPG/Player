@@ -25,17 +25,18 @@
 #include "output.h"
 #include "player.h"
 #include "bitmap.h"
-#include <iostream>
-#include <sys/iosupport.h>
 
 #include <switch.h>
 #include <cstring>
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
+#include <unistd.h>
 
 #include "touch_ui_png.h"
 
 #ifdef SUPPORT_AUDIO
 #include "audio_switch.h"
+
 AudioInterface& NxUi::GetAudio() {
 	return *audio_;
 }
@@ -43,11 +44,26 @@ AudioInterface& NxUi::GetAudio() {
 
 namespace {
 	const double ticks_per_msec = 19200.0f;
+
+	int nxlinkSocket = -1;
 }
 
-static const devoptab_t dotab_null = {
-	"null", 0, NULL, NULL, NULL, NULL, NULL, NULL
-};
+extern "C" void userAppInit() {
+	if (R_FAILED(socketInitializeDefault()))
+		return;
+
+	nxlinkSocket = nxlinkStdio();
+	if (nxlinkSocket < 0)
+		socketExit();
+}
+
+extern "C" void userAppExit() {
+	if (nxlinkSocket >= 0) {
+		close(nxlinkSocket);
+		socketExit();
+		nxlinkSocket = -1;
+	}
+}
 
 NxUi::NxUi(int width, int height) :
 	BaseUi() {
@@ -71,10 +87,9 @@ NxUi::NxUi(int width, int height) :
 
 	touch_ui = Bitmap::Create(touch_ui_png, touch_ui_png_size, false);
 
-	#ifdef SUPPORT_AUDIO
+#ifdef SUPPORT_AUDIO
 	audio_.reset(new NxAudio());
-	#endif
-
+#endif
 }
 
 NxUi::~NxUi() {
@@ -91,10 +106,11 @@ static inline double u64_to_double(u64 value) {
 }
 
 uint32_t NxUi::GetTicks() const {
-	double ticks = u64_to_double(svcGetSystemTick());
+	double ticks = u64_to_double(armGetSystemTick());
 	u64 msecs = (u64)(ticks / ticks_per_msec);
 	return msecs;
 }
+
 void NxUi::BeginDisplayModeChange() {
 	// no-op
 }
