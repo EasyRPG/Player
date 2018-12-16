@@ -1703,6 +1703,7 @@ int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
 }
 
 bool Game_BattleAlgorithm::Defend::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1733,6 +1734,7 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 
 bool Game_BattleAlgorithm::Observe::Execute() {
 	// Observe only prints the start message
+	this->success = true;
 	return true;
 }
 
@@ -1758,6 +1760,7 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Charge::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1951,6 +1954,7 @@ std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Transform::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1983,7 +1987,7 @@ std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::NoMove::Execute() {
-	// no-op
+	this->success = true;
 	return true;
 }
 
