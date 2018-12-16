@@ -574,10 +574,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 		}
 		else {
-			if (critical_hit) {
-				out.push_back(GetCriticalHitMessage());
-			}
-
 			if (GetAffectedHp() == 0) {
 				out.push_back(GetUndamagedMessage());
 			}
@@ -593,7 +589,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		// If enemy is killed, it ends here
 		if (killed_by_attack_damage) {
-			out.push_back(GetDeathMessage());
 			return;
 		}
 

@@ -33,37 +33,47 @@ class Scene_Battle_Rpg2k : public Scene_Battle {
 public:
 	enum BattleActionState {
 		/**
-		 * 1st action, called repeatedly.
+		 * Called once
 		 * Handles healing of conditions that get auto removed after X turns.
 		 */
 		BattleActionState_ConditionHeal,
 		/**
-		 * 2nd action, called once.
-		 * Used to execute the algorithm and print the first start line.
+		 * Called once
+		 * Handles first start message
+		 */
+		BattleActionState_Usage1,
+		/**
+		 * Called once
+		 * Handles second start message
+		 */
+		BattleActionState_Usage2,
+		/**
+		 * Called once
+		 * Handles the animation
+		 */
+		BattleActionState_Animation,
+		/**
+		 * Called once.
+		 * Used to execute the algorithm.
 		 */
 		BattleActionState_Execute,
 		/**
-		 * 3rd action, called once.
+		 * Called once.
 		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
 		 */
 		BattleActionState_Apply,
 		/**
-		* 4th action, called repeatedly.
-		* Used for the results, concretely wait a few frames and pop the messages.
+		* Called repeatedly.
+		* Used for the results, to push and pop each message.
 		*/
-		BattleActionState_ResultPop,
+		BattleActionState_Results,
 		/**
-		 * 5th action, called repeatedly.
-		 * Used to push the message results, effects and advances the messages. If it finishes, it calls Death. If not, it calls ResultPop
-		 */
-		BattleActionState_ResultPush,
-		/**
-		 * 6th action, called once.
+		 * Called once.
 		 * Action treating whether the enemy died or not.
 		 */
 		BattleActionState_Death,
 		/**
-		 * 7th action, called once.
+		 * Called once.
 		 * It finishes the action and checks whether to repeat it if there is another target to hit.
 		 */
 		BattleActionState_Finished
@@ -148,22 +158,34 @@ protected:
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 
+	// Battle Start Handlers
 	bool DisplayMonstersInMessageWindow();
 
+	// BattleAction State Machine Handlers
 	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
+	bool battle_action_pending = false;
 	int battle_action_wait = 0;
 	int battle_action_state = BattleActionState_ConditionHeal;
+	int battle_action_start_index = 0;
+	int battle_action_results_index = 0;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
 	int encounter_message_wait = 0;
 	bool encounter_message_first_strike = false;
 
-	bool battle_action_pending = false;
 	bool begin_escape = true;
 	bool escape_success = false;
 	int escape_counter = 0;
