@@ -222,6 +222,15 @@ namespace Utils {
 	 */
 	std::vector<std::string> Tokenize(const std::string& str_to_tokenize, const std::function<bool(char32_t)> predicate);
 
+	/*
+	 * Searches for newlines and calls f(const std::string&) for each line.
+	 *
+	 * @param line the line to parse.
+	 * @param f function of type void(const std::string&)
+	 */
+	template <typename F>
+	void ForEachLine(const std::string& line, F&& f);
+
 	/**
 	 * Replaces placeholders (like %S, %O, %V, %U) in strings.
 	 *
@@ -249,6 +258,24 @@ inline T Utils::Clamp(T value, const T& minv, const T& maxv) {
 
 inline bool Utils::PercentChance(long rate) {
 	return Utils::PercentChance(static_cast<int>(rate));
+}
+
+template <typename F>
+inline void Utils::ForEachLine(const std::string& line, F&& f) {
+	int next = 0;
+	do {
+		auto idx = line.find('\n', next);
+		if (idx == std::string::npos) {
+			if (next == 0) {
+				// Optimize the common case
+				f(line);
+				break;
+			}
+			idx = line.size();
+		}
+		f(line.substr(next, idx - next));
+		next = idx + 1;
+	} while(next < line.size());
 }
 
 #endif

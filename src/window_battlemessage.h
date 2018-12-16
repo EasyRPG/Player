@@ -54,16 +54,14 @@ public:
 
 	void Pop();
 
+	void PopUntil(int line_number);
+
 	void Clear();
 
 	/**
-	 * Remove 4 lines (determined by linesPerPage) of the battle
-	 * messages, thus proceeding to the next page.
-	 *
-	 * @return True if there is something left to show, false is the
-	 * previous page was the last one.
+	 * Scrolls down in the console so that the last 4 lines are displayed.
 	 */
-	bool NextPage();
+	void ScrollToEnd();
 
 	int GetLineCount();
 
@@ -78,45 +76,44 @@ public:
 	bool IsPageFilled();
 
 	/**
-	 * Number of lines that are hidden right now.
-	 *
-	 * Hidden lines are added when the text is word-wrapped:
-	 * only the first line is shown, and others are hidden.
-	 *
-	 * @return number of hidden lines
+	 * @return the line index we will start displaying
 	 */
-	int GetHiddenLineCount();
+	int GetIndex() const;
 
 	/**
-	 * Displays the given number of hidden lines.
+	 * Set the first line index to display
 	 *
-	 * Hidden lines are added when a word-wrapped line is pushed:
-	 * then, only the first line is displayed, and others are
-	 * considered hidden.
-	 *
-	 * @param count Number of lines to display. If -1
-	 * is passed, all the hidden lines are displayed.
+	 * @param val the first line index to display
 	 */
-	void ShowHiddenLines(int count);
+	void SetIndex(int val);
+
+	const std::vector<std::string>& GetLines() const;
 
 	/**
 	 * How many lines would fit into a window of battle messages.
 	 */
 	static const int linesPerPage = 4;
 
+protected:
+	void PushLine(const std::string& line);
 private:
 	std::vector<std::string> lines;
 
-	bool needs_refresh;
-
-	/**
-	 * How many lines are hidden right now.
-	 *
-	 * Hidden lines are added by PushWordWrappedLine when
-	 * the pushed line doesn't fit one line. Such lines are
-	 * hidden until ShowHiddenLines is called.
-	 */
-	int hidden_lines;
+	int index = 0;
+	bool needs_refresh = false;
 };
+
+
+inline int Window_BattleMessage::GetIndex() const {
+	return index;
+}
+
+inline void Window_BattleMessage::SetIndex(int val) {
+	index = val;
+}
+
+inline const std::vector<std::string>& Window_BattleMessage::GetLines() const {
+	return lines;
+}
 
 #endif

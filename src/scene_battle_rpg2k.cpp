@@ -405,27 +405,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		if (--battle_action_wait) {
 			return false;
 		}
-		if (battle_message_window->GetHiddenLineCount()) {
-			if (battle_message_window->IsPageFilled()) {
-				if (battle_message_window->NextPage()) {
-					battle_action_wait = GetDelayForLine();
-					battle_message_window->ShowHiddenLines(1);
-				}
-			}
-			else {
-				if (battle_message_window->GetLineCount()) {
-					battle_message_window->ShowHiddenLines(1);
-					if (battle_message_window->IsPageFilled() &&
-							battle_message_window->GetHiddenLineCount()) {
-						battle_action_wait = GetDelayForLine();
-					}
-					else {
-						battle_action_wait = GetDelayForWindow();
-					}
-				}
-			}
-			return false;
-		}
 	}
 
 	if (Input::IsPressed(Input::CANCEL)) {
@@ -984,8 +963,7 @@ int Scene_Battle_Rpg2k::GetDelayForLine() {
 }
 
 void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
-	if ((enemy_iterator == visible_enemies.end() &&
-			!battle_message_window->GetHiddenLineCount()) ||
+	if (enemy_iterator == visible_enemies.end() ||
 			battle_message_window->IsPageFilled()) {
 		encounter_message_sleep_until = Player::GetFrames() + GetDelayForWindow();
 	}
@@ -1012,17 +990,6 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		} else {
 			return false;
 		}
-	}
-
-	if (battle_message_window->GetHiddenLineCount() > 0) {
-		if (battle_message_window->IsPageFilled()) {
-			battle_message_window->NextPage();
-		}
-		else {
-			battle_message_window->ShowHiddenLines(1);
-		}
-		SetWaitForEnemyAppearanceMessages();
-		return false;
 	}
 
 	if (enemy_iterator == visible_enemies.end()) {
