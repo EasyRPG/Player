@@ -28,7 +28,7 @@
 #include "output.h"
 
 namespace {
-#ifdef EMSCRIPTEN
+#if SDL_MAJOR_VERSION >= 2
 	SDL_AudioDeviceID audio_dev_id = 0;
 #endif
 }
@@ -75,16 +75,18 @@ SdlAudio::SdlAudio() :
 	want.freq = 44100;
 	want.format = AUDIO_S16;
 	want.channels = 2;
-	want.samples = 4096;
+	want.samples = 2048;
 	want.callback = sdl_audio_callback;
 	want.userdata = this;
 
-#ifdef EMSCRIPTEN
+#if SDL_MAJOR_VERSION >= 2
 	audio_dev_id = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE);
-	if (audio_dev_id == 0) {
+	bool init_success = audio_dev_id > 0;
 #else
-	if (SDL_OpenAudio(&want, &have) < 0) {
+	bool init_success = SDL_OpenAudio(&want, &have) >= 0;
 #endif
+
+	if (!init_success) {
 		Output::Warning("Couldn't open audio: %s", SDL_GetError());
 		return;
 	}
@@ -92,7 +94,7 @@ SdlAudio::SdlAudio() :
 	SetFormat(have.freq, sdl_format_to_format(have.format), have.channels);
 
 	// Start Audio
-#ifdef EMSCRIPTEN
+#if SDL_MAJOR_VERSION >= 2
 	SDL_PauseAudioDevice(audio_dev_id, 0);
 #else
 	SDL_PauseAudio(0);
@@ -100,7 +102,7 @@ SdlAudio::SdlAudio() :
 }
 
 SdlAudio::~SdlAudio() {
-#ifdef EMSCRIPTEN
+#if SDL_MAJOR_VERSION >= 2
 	SDL_CloseAudioDevice(audio_dev_id);
 #else
 	SDL_CloseAudio();

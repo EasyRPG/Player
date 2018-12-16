@@ -27,9 +27,9 @@
 #include "transition.h"
 
 #ifndef NDEBUG
-#define DEBUG_VALIDATE() Scene::DebugValidate(__PRETTY_FUNCTION__)
+#define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
 #else
-#define DEBUG_VALIDATE() do {} while(0)
+#define DEBUG_VALIDATE(x) do {} while(0)
 #endif
 
 
@@ -158,7 +158,7 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 
 	push_pop_operation = ScenePushed;
 
-	DEBUG_VALIDATE();
+	DEBUG_VALIDATE("Push");
 }
 
 void Scene::Pop() {
@@ -173,7 +173,7 @@ void Scene::Pop() {
 
 	push_pop_operation = ScenePopped;
 
-	DEBUG_VALIDATE();
+	DEBUG_VALIDATE("Pop");
 }
 
 void Scene::PopUntil(SceneType type) {
@@ -187,14 +187,14 @@ void Scene::PopUntil(SceneType type) {
 			}
 			instance = instances.back();
 			push_pop_operation = ScenePopped;
-			DEBUG_VALIDATE();
+			DEBUG_VALIDATE("PopUntil");
 			return;
 		}
 		++count;
 	}
 
 	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
-	DEBUG_VALIDATE();
+	DEBUG_VALIDATE("PopUntil");
 }
 
 std::shared_ptr<Scene> Scene::Find(SceneType type) {

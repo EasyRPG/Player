@@ -96,7 +96,7 @@ namespace {
 			}
 
 #if SDL_MIXER_MAJOR_VERSION>1
-			SDL_MixAudioFormat(stream, reinterpret_cast<const Uint8*>(cvt.buf), MIX_DEFAULT_FORMAT, cvt.len_cvt, audio->GetDecoder()->GetVolume());
+			SDL_MixAudioFormat(stream, reinterpret_cast<const Uint8*>(cvt.buf), cvt.src_format, cvt.len_cvt, audio->GetDecoder()->GetVolume());
 #else
 			SDL_MixAudio(stream, reinterpret_cast<const Uint8*>(cvt.buf), cvt.len_cvt, audio->GetDecoder()->GetVolume());
 #endif
@@ -156,7 +156,8 @@ SdlMixerAudio::SdlMixerAudio() :
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-			Output::Error("Couldn't initialize audio.\n%s", SDL_GetError());
+			Output::Warning("Couldn't initialize audio.\n%s", SDL_GetError());
+			return;
 		}
 	}
 #ifdef GEKKO
@@ -177,14 +178,16 @@ SdlMixerAudio::SdlMixerAudio() :
 	int const frequency = 44100;
 #endif
 
-#ifdef EMSCRIPTEN
-	// FIXME: this requires SDL_mixer => 2.0.2 but not tagged yet (using Hg)
-	if (Mix_OpenAudioDevice(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048,
-		NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
+#if SDL_MIXER_MAJOR_VERSION > 2 || (SDL_MIXER_MAJOR_VERSION == 2 && SDL_MIXER_PATCHLEVEL >= 2)
+	bool init_success = Mix_OpenAudioDevice(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048,
+		NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) >= 0;
 #else
-	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) < 0)
+	bool init_success = Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) >= 0;
 #endif
+
+	if (!init_success) {
 		Output::Error("Couldn't initialize audio mixer.\n%s", Mix_GetError());
+	}
 
 	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 
