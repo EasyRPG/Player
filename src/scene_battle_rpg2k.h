@@ -110,11 +110,13 @@ protected:
 
 	bool DisplayMonstersInMessageWindow();
 
+	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
+
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
-	int battle_action_wait;
-	int battle_action_state;
+	int battle_action_wait = 0;
+	int battle_action_state = BattleActionState_ConditionHeal;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
