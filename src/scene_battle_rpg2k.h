@@ -91,13 +91,6 @@ protected:
 	void SelectPreviousActor();
 
 	/**
-	 * Sets the encounter message sleep time (encounter_message_sleep_until)
-	 * depending on whether the last character is shown or not, whether
-	 * the page is filled or not.
-	 */
-	void SetWaitForEnemyAppearanceMessages();
-
-	/**
 	 * Gets the time during before hiding a windowful of
 	 * text.
 	 *
@@ -120,14 +113,12 @@ protected:
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
-	std::vector<Game_Battler *> visible_enemies;
-	std::vector<Game_Battler *>::const_iterator enemy_iterator;
 	int battle_action_wait;
 	int battle_action_state;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
-	int encounter_message_sleep_until = -1;
+	int encounter_message_wait = 0;
 	bool encounter_message_first_strike = false;
 
 	bool battle_action_pending = false;

@@ -962,61 +962,73 @@ int Scene_Battle_Rpg2k::GetDelayForLine() {
 	}
 }
 
-void Scene_Battle_Rpg2k::SetWaitForEnemyAppearanceMessages() {
-	if (enemy_iterator == visible_enemies.end() ||
-			battle_message_window->IsPageFilled()) {
-		encounter_message_sleep_until = Player::GetFrames() + GetDelayForWindow();
-	}
-	else {
-		encounter_message_sleep_until = Player::GetFrames() + GetDelayForLine();
-	}
-}
-
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (encounter_message_first_monster) {
+		std::vector<Game_Battler *> visible_enemies;
+		// First time entered, initialize.
 		Main_Data::game_enemyparty->GetActiveBattlers(visible_enemies);
-		enemy_iterator = visible_enemies.begin();
+
+		for (auto& enemy: visible_enemies) {
+			// Format and wordwrap all messages, then pull them out and push them back 1 at a time.
+			battle_message_window->PushWithSubject(Data::terms.encounter, enemy->GetName());
+		}
+
+		battle_result_messages = battle_message_window->GetLines();
+		battle_result_messages_it = battle_result_messages.begin();
+		battle_message_window->Clear();
+
+		encounter_message_wait = 0;
+		encounter_message_first_strike = false;
 		encounter_message_first_monster = false;
 	}
 
-	if (encounter_message_sleep_until > -1) {
-		if (Input::IsPressed(Input::DECISION)) {
-			--encounter_message_sleep_until;
-		}
-
-		if (Player::GetFrames() >= encounter_message_sleep_until) {
-			// Sleep over
-			encounter_message_sleep_until = -1;
-		} else {
+	if (encounter_message_wait > 0) {
+		if (Input::IsPressed(Input::CANCEL)) {
 			return false;
 		}
+		--encounter_message_wait;
+		if (Input::IsPressed(Input::DECISION) && encounter_message_wait > 0) {
+			--encounter_message_wait;
+		}
+		return false;
 	}
 
-	if (enemy_iterator == visible_enemies.end()) {
+	if (battle_result_messages_it == battle_result_messages.end()) {
 		battle_message_window->Clear();
 		if (Game_Temp::battle_first_strike && !encounter_message_first_strike) {
 			battle_message_window->Push(Data::terms.special_combat);
-			encounter_message_sleep_until = Player::GetFrames() + 60;
+			encounter_message_wait = GetDelayForWindow();
 			encounter_message_first_strike = true;
-			return false;
+			assert(encounter_message_wait > 0);
+			return DisplayMonstersInMessageWindow();;
 		}
 		else {
 			//reset static vars
 			encounter_message_first_strike = false;
 			encounter_message_first_monster = true;
+			battle_result_messages.clear();
+			battle_result_messages_it = battle_result_messages.end();
 			return true;
 		}
 	}
 
 	if (battle_message_window->IsPageFilled()) {
-		battle_message_window->NextPage();
+		battle_message_window->Clear();
 	}
-	battle_message_window->PushWithSubject(Data::terms.encounter, (*enemy_iterator)->GetName());
-	++enemy_iterator;
 
-	SetWaitForEnemyAppearanceMessages();
+	battle_message_window->Push(*battle_result_messages_it);
+	++battle_result_messages_it;
 
-	return false;
+	if (battle_result_messages_it == battle_result_messages.end() ||
+			battle_message_window->IsPageFilled()) {
+		encounter_message_wait = GetDelayForWindow();
+	}
+	else {
+		encounter_message_wait = GetDelayForLine();
+	}
+
+	assert(encounter_message_wait > 0);
+	return DisplayMonstersInMessageWindow();
 }
 
 void Scene_Battle_Rpg2k::PushExperienceGainedMessage(int exp) {
