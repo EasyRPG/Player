@@ -41,12 +41,12 @@ namespace {
 		uint32_t last_access;
 	};
 
-	typedef std::pair<std::string, int> tile_pair;
+	using tile_pair = std::pair<std::string, int>;
 
-	typedef std::map<string_pair, CacheItem> cache_type;
+	using cache_type = std::map<KeyType, CacheItem>;
 	cache_type cache;
 
-	typedef std::map<tile_pair, std::weak_ptr<Bitmap> > cache_tiles_type;
+	using cache_tiles_type = std::map<tile_pair, std::weak_ptr<Bitmap>>;
 	cache_tiles_type cache_tiles;
 
 	std::string system_name;
