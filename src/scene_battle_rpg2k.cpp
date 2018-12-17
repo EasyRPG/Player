@@ -637,7 +637,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 	auto* target = action->GetTarget();
 
 	if (battle_result_messages_it == battle_result_messages.end()) {
-		if (action->IsKilledByAttack()) {
+		if (action->IsLethal()) {
 			return ProcessActionDeath(action);
 		}
 		return ProcessActionFinished(action);

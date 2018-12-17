@@ -226,11 +226,9 @@ public:
 	bool IsSuccess() const;
 
 	/**
-	 * See GetDeathMessage for further explanations
-	 *
-	 * @return True when the caller died because his hp reached 0 (false when a condition caused death)
+	 * @return truen when this action inflicts death on the target.
 	 */
-	bool IsKilledByAttack() const;
+	bool IsLethal() const;
 
 	/**
 	 * Gets if the last action was a critical hit.
@@ -432,7 +430,7 @@ protected:
 	mutable bool first_attack;
 	bool healing;
 	bool success;
-	bool killed_by_attack_damage;
+	bool lethal = false;
 	bool critical_hit;
 	bool absorb;
 	bool revived = false;

@@ -115,7 +115,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	switch_id = -1;
 	healing = false;
 	success = false;
-	killed_by_attack_damage = false;
+	lethal = false;
 	critical_hit = false;
 	absorb = false;
 	revived = false;
@@ -286,8 +286,8 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByAttack() const {
-	return killed_by_attack_damage;
+bool Game_BattleAlgorithm::AlgorithmBase::IsLethal() const {
+	return lethal;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
@@ -307,10 +307,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
-	if (!killed_by_attack_damage) {
-		return "";
-	}
-
 	if (current_target == targets.end()) {
 		return "";
 	}
@@ -586,17 +582,17 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				}
 			}
 		}
+	}
 
-		// If enemy is killed, it ends here
-		if (killed_by_attack_damage) {
-			return;
-		}
+	// If target is killed, it ends here
+	if (lethal) {
+		return;
+	}
 
-		// Healed conditions messages
-		std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
-		for (; it_healed != healed_conditions.end(); it_healed++) {
-			out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
-		}
+	// Healed conditions messages
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); it_healed++) {
+		out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
 	}
 
 	if (GetAffectedSp() != -1) {
@@ -1016,7 +1012,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
-			killed_by_attack_damage = true;
+			lethal = true;
 		}
 		else {
 			// Conditions healed by physical attack:
@@ -1085,6 +1081,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				}
 
 				GetTarget()->FilterInapplicableStates(conditions);
+
+				if (std::find(conditions.begin(), conditions.end(), RPG::State::kDeathID) != conditions.end()) {
+					lethal = true;
+				}
 			}
 		}
 	}
@@ -1286,7 +1286,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 				if (GetTarget()->GetHp() - this->hp <= 0) {
 					// Death state
-					killed_by_attack_damage = true;
+					lethal = true;
 				}
 			}
 
@@ -1336,6 +1336,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		GetTarget()->FilterInapplicableStates(conditions);
 		if (!conditions.empty()) {
 			this->success = true;
+		}
+
+		if (std::find(conditions.begin(), conditions.end(), RPG::State::kDeathID) != conditions.end()) {
+			lethal = true;
 		}
 
 		// Attribute resistance / weakness + an attribute selected + can be modified
@@ -1816,7 +1820,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
-		killed_by_attack_damage = true;
+		lethal = true;
 	}
 
 	// Conditions healed by physical attack:
