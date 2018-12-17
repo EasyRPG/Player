@@ -634,7 +634,7 @@ void Player::CreateGameObjects() {
 		Output::Debug("Loading game %s", game_title.c_str());
 		title << game_title << " - ";
 	} else {
-		Output::Warning("Could not read game title.");
+		Output::Debug("Could not read game title.");
 	}
 	title << GAME_TITLE;
 	DisplayUi->SetTitle(title.str());
