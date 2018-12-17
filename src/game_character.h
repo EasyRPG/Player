@@ -469,6 +469,16 @@ public:
 	void SetFlying(bool val);
 
 	/**
+	 * @return whether the RPG_RT processed flag is set.
+	 */
+	bool IsProcessed() const;
+
+	/**
+	 * Set the RPG_RT processed flag
+	 */
+	void SetProcessed(bool val);
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -762,14 +772,14 @@ public:
 	 *
 	 * @return Wheter animations are enabled.
 	 */
-	bool IsAnimated() const;
+	virtual bool IsAnimated() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	bool IsContinuous() const;
+	virtual bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
@@ -834,8 +844,6 @@ protected:
 	int move_count;
 	int wait_count;
 
-	int jump_x;
-	int jump_y;
 	int jump_plus_x;
 	int jump_plus_y;
 
@@ -1110,6 +1118,14 @@ inline int Game_Character::GetTransparency() const {
 
 inline void Game_Character::SetTransparency(int value) {
 	data()->transparency = Utils::Clamp(value, 0, 7);
+}
+
+inline bool Game_Character::IsProcessed() const {
+	return data()->processed;
+}
+
+inline void Game_Character::SetProcessed(bool val) {
+	data()->processed = val;
 }
 
 #endif

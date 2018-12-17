@@ -39,6 +39,7 @@ Game_Player::Game_Player():
 	Game_Character(&Main_Data::game_data.party_location)
 {
 	SetDirection(RPG::EventPage::Direction_down);
+	SetProcessed(true); // RPG_RT compatibility
 	SetMoveSpeed(4);
 	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
 }

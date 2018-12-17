@@ -268,8 +268,11 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	}
 	Output::Debug("Tree: %s", ss.str().c_str());
 
-	for (size_t i = 0; i < 3; i++)
-		vehicles[i]->Refresh();
+	if (!is_load_savegame) {
+		for (auto& vehicle: vehicles) {
+			vehicle->Refresh();
+		}
+	}
 
 	if (Main_Data::game_player->IsMoveRouteOverwritten())
 		pending.push_back(Main_Data::game_player.get());
@@ -884,8 +887,11 @@ void Game_Map::Update(bool only_parallel) {
 		ev.Update();
 	}
 
-	for (int i = 0; i < 3; ++i)
-		vehicles[i]->Update();
+	for (auto& vehicle: vehicles) {
+		if (vehicle->GetMapId() == location.map_id) {
+			vehicle->Update();
+		}
+	}
 
 	free_interpreters.clear();
 }

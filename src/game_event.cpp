@@ -36,23 +36,26 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Game_Character(new RPG::SaveMapEvent()),
 	_data_copy(this->data()),
 	event(event),
-	from_save(false) {
-
+	from_save(false)
+{
 	SetMapId(map_id);
+	SetProcessed(true); // RPG_RT compatibility
+	SetMoveSpeed(3);
 	MoveTo(event.x, event.y);
 	Refresh();
 }
 
-Game_Event::Game_Event(int /* map_id */, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
 	Game_Character(new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
-	// FIXME unused int parameter
 	event(event),
-	from_save(true) {
+	from_save(true)
+{
+	// Savegames have 0 for the mapid for compatibility with RPG_RT.
+	SetMapId(map_id);
+	SetProcessed(true); // RPG_RT compatibility
 
 	this->event.ID = data()->ID;
-
-	MoveTo(data()->position_x, data()->position_y);
 
 	if (!data()->event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());

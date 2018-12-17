@@ -49,6 +49,8 @@ public:
 	void SetMoveSpeed(int speed) override;
 	int GetOriginalMoveRouteIndex() const override;
 	void SetOriginalMoveRouteIndex(int new_index) override;
+	bool IsAnimated() const override;
+	bool IsContinuous() const override;
 	bool MakeWay(int x, int y, int d) const override;
 	/** @} */
 

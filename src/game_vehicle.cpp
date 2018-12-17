@@ -53,8 +53,8 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	type = _type;
 	SetDirection(Left);
 	SetSpriteDirection(Left);
-	SetAnimPaused(type == Airship);
-	SetAnimationType(RPG::EventPage::AnimType_continuous);
+	SetAnimationType(AnimType::AnimType_non_continuous);
+	SetLayer(RPG::EventPage::Layers_same);
 	LoadSystemSettings();
 }
 
@@ -67,9 +67,11 @@ int Game_Vehicle::GetMoveSpeed() const {
 }
 
 void Game_Vehicle::SetMoveSpeed(int speed) {
-	data()->move_speed = speed;
-	if (IsInUse())
+	if (IsInUse()) {
 		Main_Data::game_player->SetMoveSpeed(speed);
+	} else {
+		Game_Character::SetMoveSpeed(speed);
+	}
 }
 
 int Game_Vehicle::GetOriginalMoveRouteIndex() const {
@@ -98,6 +100,15 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 		return false;
 
 	return true;
+}
+
+
+bool Game_Vehicle::IsAnimated() const {
+	return IsContinuous();
+}
+
+bool Game_Vehicle::IsContinuous() const {
+	return type != Airship || (IsFlying() && !IsAscendingOrDescending());
 }
 
 void Game_Vehicle::LoadSystemSettings() {
@@ -146,21 +157,21 @@ RPG::Music& Game_Vehicle::GetBGM() {
 }
 
 void Game_Vehicle::Refresh() {
-	if (IsInUse())
+	if (IsInUse()) {
 		SetMapId(Game_Map::GetMapId());
-	else if (IsInCurrentMap())
+	} else if (IsInCurrentMap()) {
+		SetProcessed(true); // RPG_RT compatibility
 		MoveTo(GetX(), GetY());
+	}
 
 	switch (type) {
 		case None:
 			break;
 		case Boat:
 		case Ship:
-			SetLayer(RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Airship:
-			SetLayer(IsInUse() ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_same);
 			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 	}
@@ -198,12 +209,10 @@ bool Game_Vehicle::GetVisible() const {
 
 void Game_Vehicle::GetOn() {
 	if (type == Airship) {
-		SetLayer(RPG::EventPage::Layers_above);
 		data()->remaining_ascent = SCREEN_TILE_WIDTH;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
-	} else {
-		SetAnimPaused(false);
+		SetAnimFrame(AnimFrame::Frame_middle);
 	}
 	Game_System::BgmPlay(GetBGM());
 }
@@ -282,18 +291,15 @@ void Game_Vehicle::Update() {
 	if (type == Airship) {
 		if (IsAscending()) {
 			data()->remaining_ascent = data()->remaining_ascent - 8;
-			if (!IsAscending())
-				SetAnimPaused(false);
+			SetAnimFrame(AnimFrame::Frame_middle);
 		} else if (IsDescending()) {
+			SetAnimFrame(AnimFrame::Frame_middle);
 			data()->remaining_descent = data()->remaining_descent - 8;
 			if (!IsDescending()) {
 				if (CanLand()) {
-					SetLayer(RPG::EventPage::Layers_same);
 					Main_Data::game_player->UnboardingFinished();
 					SetFlying(false);
 					Main_Data::game_player->SetFlying(false);
-					SetAnimPaused(true);
-					SetAnimFrame(AnimFrame::Frame_middle);
 				} else {
 					// Can't land here, ascend again
 					data()->remaining_ascent = SCREEN_TILE_WIDTH;

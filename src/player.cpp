@@ -308,6 +308,8 @@ void Player::Update(bool update_scene) {
 		if (update_scene) {
 			Scene::instance->Update();
 			++frames;
+			// RPG_RT compatible frame counter.
+			++Main_Data::game_data.system.frame_count;
 
 			// Scene changed or webplayer waits for files.
 			// Not save to Update again, setup code must run:
@@ -763,11 +765,6 @@ void Player::LoadDatabase() {
 static void OnMapSaveFileReady(FileRequestResult*) {
 	Game_Map::SetupFromSave();
 
-	Main_Data::game_player->MoveTo(
-		Main_Data::game_data.party_location.position_x,
-		Main_Data::game_data.party_location.position_y
-		);
-
 	// Compatibility hack for pre 0.6 EasyRPG Player saves.
 	// Old savegames accidentally wrote animation_type as
 	// continuous for all events.
@@ -776,6 +773,7 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 	Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 	Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 
+	Main_Data::game_player->Center();
 	Main_Data::game_player->Refresh();
 
 	RPG::Music current_music = Main_Data::game_data.system.current_music;

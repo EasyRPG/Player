@@ -39,8 +39,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	last_move_failed(false),
 	move_count(0),
 	wait_count(0),
-	jump_x(0),
-	jump_y(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
 	visible(true),
@@ -142,7 +140,9 @@ int Game_Character::GetScreenY() const {
 int Game_Character::GetScreenZ() const {
 	int z = 0;
 
-	if (GetLayer() == RPG::EventPage::Layers_same) {
+	if (IsFlying()) {
+		z = Priority_EventsAbove;
+	} else if (GetLayer() == RPG::EventPage::Layers_same) {
 		z = Priority_Player;
 	} else if (GetLayer() == RPG::EventPage::Layers_below) {
 		z = Priority_EventsBelow;
@@ -381,9 +381,11 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_on:
 				SetThrough(true);
+				data()->route_through = true;
 				break;
 			case RPG::MoveCommand::Code::walk_everywhere_off:
 				SetThrough(false);
+				data()->route_through = false;
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
 				if (IsContinuous()) {
@@ -597,10 +599,8 @@ void Game_Character::Wait() {
 }
 
 void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current_index) {
-	jump_x = GetX();
-	jump_y = GetY();
-	SetBeginJumpX(jump_x);
-	SetBeginJumpY(jump_y);
+	SetBeginJumpX(GetX());
+	SetBeginJumpY(GetY());
 	jump_plus_x = 0;
 	jump_plus_y = 0;
 	SetJumping(true);
@@ -683,16 +683,16 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 		return;
 	}
 
-	int new_x = jump_x + jump_plus_x;
-	int new_y = jump_y + jump_plus_y;
+	int new_x = GetBeginJumpX() + jump_plus_x;
+	int new_y = GetBeginJumpY() + jump_plus_y;
 
 	if (Game_Map::LoopHorizontal()) {
 		int map_width = Game_Map::GetWidth();
 		if (new_x < 0) {
-			jump_x += map_width;
+			SetBeginJumpX(GetBeginJumpX() + map_width);
 			new_x += map_width;
 		} else if (new_x >= map_width) {
-			jump_x -= map_width;
+			SetBeginJumpX(GetBeginJumpX() - map_width);
 			new_x -= map_width;
 		}
 	}
@@ -700,11 +700,21 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	if (Game_Map::LoopVertical()) {
 		int map_height = Game_Map::GetHeight();
 		if (new_y < 0) {
-			jump_y += map_height;
+			SetBeginJumpY(GetBeginJumpY() + map_height);
 			new_y += map_height;
 		} else if (new_y >= map_height) {
-			jump_y -= map_height;
+			SetBeginJumpY(GetBeginJumpY() - map_height);
 			new_y -= map_height;
+		}
+	}
+
+	if (jump_plus_x != 0 || jump_plus_y != 0) {
+		if (std::abs(jump_plus_y) >= std::abs(jump_plus_x)) {
+			SetDirection(jump_plus_y > 0 ? Down : Up);
+			SetSpriteDirection(GetDirection());
+		} else {
+			SetDirection(jump_plus_x > 0 ? Right : Left);
+			SetSpriteDirection(GetDirection());
 		}
 	}
 
@@ -812,7 +822,7 @@ int Game_Character::GetSpriteX() const {
 		else if (d == Left || d == UpLeft || d == DownLeft)
 			x += GetRemainingStep();
 	} else if (IsJumping())
-		x -= ((GetX() - jump_x) * GetRemainingStep());
+		x -= ((GetX() - GetBeginJumpX()) * GetRemainingStep());
 	if (x < 0) {
 		x += Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
 	}
@@ -830,7 +840,7 @@ int Game_Character::GetSpriteY() const {
 		else if (d == Up || d == UpRight || d == UpLeft)
 			y += GetRemainingStep();
 	} else if (IsJumping())
-		y -= (GetY() - jump_y) * GetRemainingStep();
+		y -= (GetY() - GetBeginJumpY()) * GetRemainingStep();
 
 	if (y < 0) {
 		y += Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
