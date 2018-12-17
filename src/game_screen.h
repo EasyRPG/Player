@@ -35,7 +35,7 @@ public:
 
 	Game_Picture* GetPicture(int id);
 
-	void Reset(bool is_load_savegame);
+	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int tenths);
 	void FlashBegin(int r, int g, int b, int s, int tenths);

@@ -122,8 +122,8 @@ void Game_Map::Dispose(bool is_load_savegame) {
 	events.clear();
 	pending.clear();
 
-	if (Main_Data::game_screen) {
-		Main_Data::game_screen->Reset(is_load_savegame);
+	if (Main_Data::game_screen && !is_load_savegame) {
+		Main_Data::game_screen->Reset();
 	}
 
 	map.reset();
