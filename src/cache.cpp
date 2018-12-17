@@ -21,6 +21,7 @@
 #endif
 
 #include <map>
+#include <tuple>
 
 #include "async_handler.h"
 #include "cache.h"
@@ -33,7 +34,7 @@
 #include "data.h"
 
 namespace {
-	typedef std::pair<std::string,std::string> string_pair;
+	using KeyType = std::tuple<std::string,std::string,bool>;
 
 	struct CacheItem {
 		BitmapRef bitmap;
@@ -70,7 +71,7 @@ namespace {
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
 						 bool transparent, uint32_t const flags) {
-		string_pair const key(folder_name, filename);
+		KeyType const key(folder_name, filename, transparent);
 
 		cache_type::iterator const it = cache.find(key);
 
@@ -197,7 +198,7 @@ namespace {
 
 		Spec const& s = spec[T];
 
-		string_pair const key(folder_name, filename);
+		KeyType const key(folder_name, filename, false);
 
 		BitmapRef bitmap = s.dummy_renderer();
 
@@ -286,7 +287,7 @@ BitmapRef Cache::Picture(const std::string& f, bool trans) {
 }
 
 BitmapRef Cache::Exfont() {
-	string_pair const hash("ExFont","ExFont");
+	KeyType const hash("ExFont", "ExFont", false);
 
 	cache_type::iterator const it = cache.find(hash);
 
