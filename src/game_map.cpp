@@ -1192,6 +1192,7 @@ void Game_Map::SetPositionX(int x) {
 		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
 	map_info.position_x = x;
+	Parallax::ResetPositionX();
 }
 
 int Game_Map::GetPositionY() {
@@ -1210,6 +1211,7 @@ void Game_Map::SetPositionY(int y) {
 		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
 	map_info.position_y = y;
+	Parallax::ResetPositionY();
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
