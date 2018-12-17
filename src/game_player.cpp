@@ -393,6 +393,7 @@ void Game_Player::Refresh() {
 
 	if (Main_Data::game_party->GetActors().empty()) {
 		SetSpriteName("");
+		SetSpriteIndex(0);
 		return;
 	}
 
