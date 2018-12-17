@@ -58,7 +58,7 @@ public:
 	static std::string hero_name;
 	static int hero_name_id;
 	static int hero_name_charset;
-	
+
 	static bool battle_running;
 	static int battle_troop_id;
 	static std::string battle_background;
@@ -67,8 +67,6 @@ public:
 	static int battle_defeat_mode;
 	static bool battle_first_strike;
 	static int battle_result;
-
-	static bool restart_title_cache;
 
 	enum BattleResult {
 		BattleVictory,

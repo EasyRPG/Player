@@ -24,6 +24,7 @@
 #include "scene_load.h"
 #include "scene_file.h"
 #include "scene_map.h"
+#include "scene_title.h"
 
 Scene_Load::Scene_Load() :
 	Scene_File(Data::terms.load_game_message) {
@@ -39,7 +40,11 @@ void Scene_Load::Action(int index) {
 	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
 
 	Player::LoadSavegame(save_name);
-	Game_Temp::restart_title_cache = true;
+
+	auto title_scene = Scene::Find(Scene::Title);
+	if (title_scene) {
+		static_cast<Scene_Title*>(title_scene.get())->OnGameLoad();
+	}
 
 	Scene::Push(std::make_shared<Scene_Map>(true));
 }

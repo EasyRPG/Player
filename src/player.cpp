@@ -286,7 +286,6 @@ void Player::Update(bool update_scene) {
 	} else if (reset_flag) {
 		reset_flag = false;
 		if (Scene::Find(Scene::Title) && Scene::instance->type != Scene::Title) {
-			Game_Temp::restart_title_cache = true;
 			Scene::PopUntil(Scene::Title);
 			// Fade out music and stop sound effects before returning
 			Game_System::BgmFade(800);
