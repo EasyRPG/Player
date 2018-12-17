@@ -431,6 +431,10 @@ std::shared_ptr<Scene_Battle> Scene_Battle::Create()
 
 void Scene_Battle::UpdateBattlerActions() {
 	for (auto* battler: battle_actions) {
+		if (battler->GetBattleAlgorithm() == nullptr) {
+			continue;
+		}
+
 		if (!battler->CanAct()) {
 			if (battler->GetBattleAlgorithm()->GetType() != Game_BattleAlgorithm::Type::NoMove) {
 				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
@@ -538,6 +542,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::RemoveCurrentAction() {
+	battle_actions.front()->SetBattleAlgorithm(nullptr);
 	battle_actions.pop_front();
 }
 

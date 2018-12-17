@@ -516,6 +516,13 @@ public:
 	bool IsDefending() const;
 
 	/**
+	 * Set whether the battler is defending
+	 *
+	 * @param val whether battler is defending.
+	 */
+	void SetIsDefending(bool val);
+
+	/**
 	 * @return If battler has strong defense (defense is tripled when defending)
 	 */
 	virtual bool HasStrongDefense() const;
@@ -655,6 +662,7 @@ protected:
 	/** Battle action for next turn */
 	BattleAlgorithmRef battle_algorithm;
 
+	bool defending = false;
 	bool charged;
 	int atk_modifier;
 	int def_modifier;
