@@ -1037,6 +1037,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					}
 
 					auto inflict_state = [&](int state_id) {
+						if (GetTarget()->HasState(state_id)) {
+							return;
+						}
 						// Don't allow duplicates.
 						if (std::find(conditions.rbegin(), conditions.rend(), state_id)
 								== conditions.rend()) {

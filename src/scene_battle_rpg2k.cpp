@@ -613,11 +613,11 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 
 	auto* target = action->GetTarget();
 	if (target) {
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 		if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
 			target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
 		}
-		if (action->IsSuccess() && action->GetTarget()->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
+		if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
 			// FIXME: How does this interact with map shake?
 			Main_Data::game_screen->ShakeOnce(5, 5, 6);
 		}
