@@ -446,7 +446,7 @@ namespace Game_Map {
 	 *
 	 * @return the game interpreter.
 	 */
-	Game_Interpreter& GetInterpreter();
+	Game_Interpreter_Map& GetInterpreter();
 
 	/**
 	 * Destroy an interpreter after all events and common events have been updated.

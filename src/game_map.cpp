@@ -359,7 +359,7 @@ void Game_Map::Refresh() {
 	refresh_type = Refresh_None;
 }
 
-Game_Interpreter& Game_Map::GetInterpreter() {
+Game_Interpreter_Map& Game_Map::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
 }

@@ -33,14 +33,8 @@ public:
 	 */
 	static void Init();
 
-	static bool menu_calling;
-
 	static bool battle_calling;
-	static bool shop_calling;
 	static bool inn_calling;
-	static bool name_calling;
-	static bool save_calling;
-	static bool load_calling;
 	static bool to_title;
 	static bool gameover;
 

@@ -233,7 +233,7 @@ void Game_Player::Update() {
 
 		// ESC-Menu calling
 		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsBlockedByMoveRoute() && Input::IsTriggered(Input::CANCEL)) {
-			Game_Temp::menu_calling = true;
+			Main_Data::game_data.party_location.menu_calling = true;
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
 	}

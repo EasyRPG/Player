@@ -167,13 +167,14 @@ void Scene_Map::Update() {
 	if (Game_Message::visible)
 		return;
 
+	bool force_menu_calling = false;
 	if (Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					Game_Temp::menu_calling = true;
+					force_menu_calling = true;
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -189,33 +190,41 @@ void Scene_Map::Update() {
 		}
 	}
 
-	if (!Main_Data::game_player->IsMoving()) {
-		if (Game_Temp::menu_calling) {
+	auto& interp = Game_Map::GetInterpreter();
+
+	if (!Main_Data::game_player->IsMoving() || interp.IsImmediateCall() || force_menu_calling) {
+		if (Main_Data::game_data.party_location.menu_calling || interp.IsMenuCalling() || force_menu_calling) {
+			interp.ResetEventCalling();
 			CallMenu();
 			return;
 		}
 
-		if (Game_Temp::name_calling) {
+		if (interp.IsNameCalling()) {
+			interp.ResetEventCalling();
 			CallName();
 			return;
 		}
 
-		if (Game_Temp::shop_calling) {
+		if (interp.IsShopCalling()) {
+			interp.ResetEventCalling();
 			CallShop();
 			return;
 		}
 
-		if (Game_Temp::save_calling) {
+		if (interp.IsSaveCalling()) {
+			interp.ResetEventCalling();
 			CallSave();
 			return;
 		}
 
-		if (Game_Temp::load_calling) {
+		if (interp.IsLoadCalling()) {
+			interp.ResetEventCalling();
 			CallLoad();
 			return;
 		}
 
 		if (Game_Temp::battle_calling) {
+			interp.ResetEventCalling();
 			CallBattle();
 			return;
 		}
@@ -260,21 +269,19 @@ void Scene_Map::CallBattle() {
 }
 
 void Scene_Map::CallShop() {
-	Game_Temp::shop_calling = false;
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
-	Game_Temp::name_calling = false;
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
-	Game_Temp::menu_calling = false;
+	Main_Data::game_data.party_location.menu_calling = false;
 	Game_Temp::transition_menu = true;
 
 	// TODO: Main_Data::game_player->Straighten();
@@ -291,14 +298,12 @@ void Scene_Map::CallMenu() {
 }
 
 void Scene_Map::CallSave() {
-	Game_Temp::save_calling = false;
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
-	Game_Temp::load_calling = false;
 	Game_Temp::transition_menu = true;
 
 	Scene::Push(std::make_shared<Scene_Load>());
