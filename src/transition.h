@@ -114,7 +114,7 @@ private:
 	Scene *scene;
 	int current_frame;
 	int total_frames;
-	bool screen_erased;
+	bool screen_erased = false;
 
 	Color flash_color;
 	int flash_duration;
