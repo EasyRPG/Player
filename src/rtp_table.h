@@ -20,9 +20,16 @@
 
 #include <map>
 #include <string>
+#include <cstring>
 
 namespace RTP {
-	using rtp_table_type = std::map<const char*, std::map<const char*, const char*>>;
+	struct rtp_table_cmp {
+		bool operator()(char const* a, char const* b) const {
+			return std::strcmp(a, b) < 0;
+		}
+	};
+
+	using rtp_table_type = std::map<const char*, std::map<const char*, const char*, rtp_table_cmp>, rtp_table_cmp>;
 
 	void Init();
 
