@@ -987,11 +987,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (effect < 0)
 			effect = 0;
 
-		// up to 20% stronger/weaker
-		int act_perc = Utils::GetRandomNumber(-20, 20);
-		// Change rounded up
-		int change = (int)(std::ceil(effect * act_perc / 100.0));
-		effect += change;
 		effect *= multiplier;
 		if (critical_hit) {
 			effect *= 3;
@@ -1005,6 +1000,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				effect /= 2;
 			}
 		}
+
+		auto var = Utils::GetRandomNumber(-20, 20);
+		effect += (effect * var) / 100;
 
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
