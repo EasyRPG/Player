@@ -437,10 +437,10 @@ protected:
 	int cur_repeat = 0;
 	int repeat = 1;
 
-	RPG::Animation* animation;
-	RPG::Animation* animation2;
-	bool has_animation_played;
-	bool has_animation2_played;
+	RPG::Animation* animation = nullptr;
+	RPG::Animation* animation2 = nullptr;
+	bool has_animation_played = false;
+	bool has_animation2_played = false;
 
 	std::vector<int16_t> conditions;
 	std::vector<int16_t> healed_conditions;
@@ -461,6 +461,8 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
+private:
+	void Init();
 };
 
 class Skill : public AlgorithmBase {
@@ -484,6 +486,8 @@ public:
 	bool IsReflected() const override;
 	bool ActionIsPossible() const override;
 
+private:
+	void Init();
 private:
 	const RPG::Skill& skill;
 	const RPG::Item* item;

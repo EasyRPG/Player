@@ -120,10 +120,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	absorb = false;
 	revived = false;
 	reflect = -1;
-	animation = nullptr;
-	animation2 = nullptr;
-	has_animation_played = false;
-	has_animation2_played = false;
 	conditions.clear();
 	healed_conditions.clear();
 	shift_attributes.clear();
@@ -901,16 +897,48 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {
-	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
-		SetRepeat(2);
-	}
+	Init();
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {
-	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
-		SetRepeat(2);
+	Init();
+}
+
+void Game_BattleAlgorithm::Normal::Init() {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		Game_Actor* ally = static_cast<Game_Actor*>(source);
+
+		if (ally->HasDualAttack()) {
+			SetRepeat(2);
+		}
+
+		const auto* weapon1 = ally->GetWeapon();
+		const auto* weapon2 = ally->Get2ndWeapon();
+		if (weapon1 == nullptr) {
+			weapon1 = weapon2;
+		}
+
+		if (weapon1) {
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+				return;
+			}
+			if (weapon2) {
+				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+				if (!animation2) {
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				}
+			}
+		} else {
+			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
+			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
+			}
+		}
 	}
 }
 
@@ -935,50 +963,22 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			weapon1 = weapon2;
 		}
 
-		if (!weapon1 && !weapon2) {
-			// No Weapon
-			// TODO: Different behavior for 2k3
-			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
-			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
-			}
-		} else if (!weapon2) {
-			// Single weapon
-			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
-			}
-
-			multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
-		} else {
-			// Double weapon
-			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+		if (weapon1) {
+			if (!weapon2) {
+				multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
 			} else {
-				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
-				if (!animation2) {
-					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				auto& a1 = weapon1->attribute_set;
+				auto& a2 = weapon2->attribute_set;
+				std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
+				for (size_t i = 0; i < attribute_set.size(); ++i) {
+					if (i < a1.size())
+						attribute_set[i] = attribute_set[i] | a1[i];
+					if (i < a2.size())
+						attribute_set[i] = attribute_set[i] | a2[i];
 				}
-			}
 
-			auto& a1 = weapon1->attribute_set;
-			auto& a2 = weapon2->attribute_set;
-			std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
-			for (size_t i = 0; i < attribute_set.size(); ++i) {
-				if (i < a1.size())
-					attribute_set[i] = attribute_set[i] | a1[i];
-				if (i < a2.size())
-					attribute_set[i] = attribute_set[i] | a2[i];
+				multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
 			}
-
-			multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
-		}
-	} else {
-		// Source is Enemy
-		if (!Data::animations.empty()) {
-			animation = &Data::animations[0];
 		}
 	}
 
@@ -1149,18 +1149,31 @@ int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
+{
+	Init();
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
+{
+	Init();
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source), skill(skill), item(item)
+{
+	Init();
+}
+
+void Game_BattleAlgorithm::Skill::Init() {
+	animation = nullptr;
+	if (skill.animation_id != 0) {
+		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
+		if (!animation) {
+			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+		}
+	}
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
@@ -1185,20 +1198,13 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 	return (!GetTarget()->IsDead());
 }
 
+
 bool Game_BattleAlgorithm::Skill::Execute() {
 	if (item && item->skill_id != skill.ID) {
 		assert(false && "Item skill mismatch");
 	}
 
 	Reset();
-
-	animation = nullptr;
-	if (skill.animation_id != 0) {
-		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
-		if (!animation) {
-			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
-		}
-	}
 
 	absorb = false;
 	this->success = false;
