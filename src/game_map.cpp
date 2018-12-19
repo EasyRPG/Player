@@ -1312,10 +1312,11 @@ bool Game_Map::IsAnyEventStarting() {
 }
 
 bool Game_Map::IsAnyMovePending() {
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		if (!(*it)->IsMoveRouteRepeated())
+	for (auto& ev: pending) {
+		if (ev->GetMapId() == GetMapId() && !ev->IsMoveRouteRepeated()) {
 			return true;
+		}
+	}
 
 	return false;
 }
