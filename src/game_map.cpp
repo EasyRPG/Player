@@ -45,8 +45,8 @@
 #include "utils.h"
 
 namespace {
-	constexpr int default_pan_x = 9 * SCREEN_TILE_WIDTH;
-	constexpr int default_pan_y = 7 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
+	constexpr int default_pan_y = 7 * SCREEN_TILE_SIZE;
 	constexpr int default_pan_speed = 16;
 
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
@@ -387,7 +387,7 @@ void Game_Map::ScrollRight(int distance) {
 	}
 	// Unused, except compatibility with RPG_RT
 	auto& pan_x = Main_Data::game_data.screen.pan_x;
-	const auto pan_limit_x = 20 * SCREEN_TILE_WIDTH;
+	const auto pan_limit_x = 20 * SCREEN_TILE_SIZE;
 	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
 
 	Game_Map::Parallax::ScrollRight(distance);
@@ -402,7 +402,7 @@ void Game_Map::ScrollDown(int distance) {
 	}
 	// Unused, except compatibility with RPG_RT
 	auto& pan_y = Main_Data::game_data.screen.pan_y;
-	const auto pan_limit_y = 10 * SCREEN_TILE_WIDTH;
+	const auto pan_limit_y = 10 * SCREEN_TILE_SIZE;
 	pan_y = (pan_y - distance + pan_limit_y) % pan_limit_y;
 
 	Game_Map::Parallax::ScrollDown(distance);
@@ -418,7 +418,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 }
 
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
-	int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		screen_x = Utils::PositiveModulo(screen_x + inc, map_width);
 	} else {
@@ -427,7 +427,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 }
 
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
-	int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		screen_y = Utils::PositiveModulo(screen_y + inc, map_height);
 	} else {
@@ -1185,7 +1185,7 @@ int Game_Map::GetDisplayX() {
 }
 
 void Game_Map::SetPositionX(int x) {
-	const int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	const int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
 	} else {
@@ -1204,7 +1204,7 @@ int Game_Map::GetDisplayY() {
 }
 
 void Game_Map::SetPositionY(int y) {
-	const int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	const int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
 	} else {
@@ -1387,7 +1387,7 @@ void Game_Map::UnlockPan() {
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
-	distance *= SCREEN_TILE_WIDTH;
+	distance *= SCREEN_TILE_SIZE;
 
 	if (direction == PanUp) {
 		int new_pan = location.pan_finish_y + distance;

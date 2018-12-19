@@ -32,9 +32,9 @@
 class FileRequestAsync;
 
 // These are in sixteenths of a pixel.
-constexpr int SCREEN_TILE_WIDTH = 256;
-constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_WIDTH;
-constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_WIDTH;
+constexpr int SCREEN_TILE_SIZE = 256;
+constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_SIZE;
+constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_SIZE;
 
 /**
  * Game_Map namespace

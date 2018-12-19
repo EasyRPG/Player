@@ -624,7 +624,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		distance = std::max(
 				std::abs(Game_Map::GetPanX() - Game_Map::GetTargetPanX())
 				, std::abs(Game_Map::GetPanY() - Game_Map::GetTargetPanY()));
-		distance /= SCREEN_TILE_WIDTH;
+		distance /= SCREEN_TILE_SIZE;
 		break;
 	}
 

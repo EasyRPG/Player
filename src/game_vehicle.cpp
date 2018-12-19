@@ -209,7 +209,7 @@ bool Game_Vehicle::GetVisible() const {
 
 void Game_Vehicle::GetOn() {
 	if (type == Airship) {
-		data()->remaining_ascent = SCREEN_TILE_WIDTH;
+		data()->remaining_ascent = SCREEN_TILE_SIZE;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
 		SetAnimFrame(AnimFrame::Frame_middle);
@@ -219,7 +219,7 @@ void Game_Vehicle::GetOn() {
 
 void Game_Vehicle::GetOff() {
 	if (type == Airship) {
-		data()->remaining_descent = SCREEN_TILE_WIDTH;
+		data()->remaining_descent = SCREEN_TILE_SIZE;
 	} else {
 		Main_Data::game_player->UnboardingFinished();
 	}
@@ -245,11 +245,11 @@ int Game_Vehicle::GetAltitude() const {
 	if (!IsFlying())
 		return 0;
 	else if (IsAscending())
-		return (SCREEN_TILE_WIDTH - data()->remaining_ascent) / (SCREEN_TILE_WIDTH / TILE_SIZE);
+		return (SCREEN_TILE_SIZE - data()->remaining_ascent) / (SCREEN_TILE_SIZE / TILE_SIZE);
 	else if (IsDescending())
-		return data()->remaining_descent / (SCREEN_TILE_WIDTH / TILE_SIZE);
+		return data()->remaining_descent / (SCREEN_TILE_SIZE / TILE_SIZE);
 	else
-		return SCREEN_TILE_WIDTH / (SCREEN_TILE_WIDTH / TILE_SIZE);
+		return SCREEN_TILE_SIZE / (SCREEN_TILE_SIZE / TILE_SIZE);
 }
 
 int Game_Vehicle::GetScreenY() const {
@@ -302,7 +302,7 @@ void Game_Vehicle::Update() {
 					Main_Data::game_player->SetFlying(false);
 				} else {
 					// Can't land here, ascend again
-					data()->remaining_ascent = SCREEN_TILE_WIDTH;
+					data()->remaining_ascent = SCREEN_TILE_SIZE;
 				}
 			}
 		}

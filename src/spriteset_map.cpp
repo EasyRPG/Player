@@ -62,8 +62,8 @@ Spriteset_Map::Spriteset_Map() {
 void Spriteset_Map::Update() {
 	Tone new_tone = Main_Data::game_screen->GetTone();
 
-	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / TILE_SIZE));
-	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / TILE_SIZE));
+	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_SIZE / TILE_SIZE));
+	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_SIZE / TILE_SIZE));
 	tilemap->SetTone(new_tone);
 	tilemap->Update();
 
