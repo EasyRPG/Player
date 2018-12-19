@@ -51,9 +51,9 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::Continue() {
-	if (Game_Temp::restart_title_cache) {
-		// Clear the cache when the game returns to the
-		// title screen e.g. by pressing F12, except the Title Load menu
+	if (restart_title_cache) {
+		// Clear the cache when the game returns to the title screen
+		// e.g. by pressing F12, except the Title Load menu
 		Cache::Clear();
 		AudioSeCache::Clear();
 
@@ -181,7 +181,6 @@ void Scene_Title::CommandNewGame() {
 	if (!CheckValidPlayerLocation()) {
 		Output::Warning("The game has no start location set.");
 	} else {
-		Game_Temp::restart_title_cache = true;
 		Output::Debug("Starting new game");
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
@@ -200,6 +199,7 @@ void Scene_Title::CommandContinue() {
 		return;
 	}
 
+	restart_title_cache = false;
 	Scene::Push(std::make_shared<Scene_Load>());
 }
 
@@ -211,4 +211,8 @@ void Scene_Title::CommandShutdown() {
 
 void Scene_Title::OnTitleSpriteReady(FileRequestResult* result) {
 	title->SetBitmap(Cache::Title(result->file));
+}
+
+void Scene_Title::OnGameLoad() {
+	restart_title_cache = true;
 }

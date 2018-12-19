@@ -70,37 +70,37 @@ public:
 	/**
 	 * @return true if an immediate call is requested
 	 */
-	bool IsImmediateCall() const;
+	static bool IsImmediateCall();
 
 	/**
 	 * Reset the event calling flags
 	 */
-	void ResetEventCalling();
+	static void ResetEventCalling();
 
 	/**
 	 * @return true if interpreter wants to immediately call the main menu
 	 */
-	bool IsMenuCalling() const;
+	static bool IsMenuCalling();
 
 	/**
 	 * @return true if interpreter wants to immediately call the save menu
 	 */
-	bool IsSaveCalling() const;
+	static bool IsSaveCalling();
 
 	/**
 	 * @return true if interpreter wants to immediately call the load menu
 	 */
-	bool IsLoadCalling() const;
+	static bool IsLoadCalling();
 
 	/**
 	 * @return true if interpreter wants to immediately call the name actor menu
 	 */
-	bool IsNameCalling() const;
+	static bool IsNameCalling();
 
 	/**
 	 * @return true if interpreter wants to immediately call the shop menu
 	 */
-	bool IsShopCalling() const;
+	static bool IsShopCalling();
 
 protected:
 	friend class Game_Interpreter_Map;
@@ -278,27 +278,27 @@ protected:
 		bool save = false;
 		bool load = false;
 	};
-	EventCalling event_calling = {};
+	static EventCalling event_calling;
 };
 
 
-inline bool Game_Interpreter::IsMenuCalling() const {
+inline bool Game_Interpreter::IsMenuCalling() {
 	return event_calling.menu;
 }
 
-inline bool Game_Interpreter::IsSaveCalling() const {
+inline bool Game_Interpreter::IsSaveCalling() {
 	return event_calling.save;
 }
 
-inline bool Game_Interpreter::IsLoadCalling() const {
+inline bool Game_Interpreter::IsLoadCalling() {
 	return event_calling.load;
 }
 
-inline bool Game_Interpreter::IsNameCalling() const {
+inline bool Game_Interpreter::IsNameCalling() {
 	return event_calling.name;
 }
 
-inline bool Game_Interpreter::IsShopCalling() const {
+inline bool Game_Interpreter::IsShopCalling() {
 	return event_calling.shop;
 }
 

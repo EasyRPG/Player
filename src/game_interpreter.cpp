@@ -57,6 +57,8 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
+Game_Interpreter::EventCalling Game_Interpreter::event_calling = {};
+
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -91,7 +93,6 @@ void Game_Interpreter::Clear() {
 			child_interpreter.reset();
 	}
 	list.clear();
-	ResetEventCalling();
 }
 
 // Is interpreter running.
@@ -3081,8 +3082,7 @@ void Game_Interpreter::ResetEventCalling() {
 	Game_Temp::battle_calling = false;
 }
 
-
-bool Game_Interpreter::IsImmediateCall() const {
+bool Game_Interpreter::IsImmediateCall() {
 	return event_calling.load
 		|| event_calling.save
 		|| event_calling.name

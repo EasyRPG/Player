@@ -46,7 +46,6 @@ int Game_Temp::battle_escape_mode;
 int Game_Temp::battle_defeat_mode;
 bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_result;
-bool Game_Temp::restart_title_cache;
 
 void Game_Temp::Init() {
 	battle_calling = false;
@@ -76,5 +75,4 @@ void Game_Temp::Init() {
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
 	battle_result = BattleAbort;
-	restart_title_cache = false;
 }

@@ -190,41 +190,39 @@ void Scene_Map::Update() {
 		}
 	}
 
-	auto& interp = Game_Map::GetInterpreter();
-
-	if (!Main_Data::game_player->IsMoving() || interp.IsImmediateCall() || force_menu_calling) {
-		if (Main_Data::game_data.party_location.menu_calling || interp.IsMenuCalling() || force_menu_calling) {
-			interp.ResetEventCalling();
+	if (!Main_Data::game_player->IsMoving() || Game_Interpreter::IsImmediateCall() || force_menu_calling) {
+		if (Main_Data::game_data.party_location.menu_calling || Game_Interpreter::IsMenuCalling() || force_menu_calling) {
+			Game_Interpreter::ResetEventCalling();
 			CallMenu();
 			return;
 		}
 
-		if (interp.IsNameCalling()) {
-			interp.ResetEventCalling();
+		if (Game_Interpreter::IsNameCalling()) {
+			Game_Interpreter::ResetEventCalling();
 			CallName();
 			return;
 		}
 
-		if (interp.IsShopCalling()) {
-			interp.ResetEventCalling();
+		if (Game_Interpreter::IsShopCalling()) {
+			Game_Interpreter::ResetEventCalling();
 			CallShop();
 			return;
 		}
 
-		if (interp.IsSaveCalling()) {
-			interp.ResetEventCalling();
+		if (Game_Interpreter::IsSaveCalling()) {
+			Game_Interpreter::ResetEventCalling();
 			CallSave();
 			return;
 		}
 
-		if (interp.IsLoadCalling()) {
-			interp.ResetEventCalling();
+		if (Game_Interpreter::IsLoadCalling()) {
+			Game_Interpreter::ResetEventCalling();
 			CallLoad();
 			return;
 		}
 
 		if (Game_Temp::battle_calling) {
-			interp.ResetEventCalling();
+			Game_Interpreter::ResetEventCalling();
 			CallBattle();
 			return;
 		}

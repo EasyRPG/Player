@@ -90,6 +90,11 @@ public:
 	 */
 	void CommandShutdown();
 
+	/**
+	 * Invoked by the load scene to notify that a game was loaded.
+	 */
+	void OnGameLoad();
+
 private:
 	void OnTitleSpriteReady(FileRequestResult* result);
 
@@ -101,6 +106,8 @@ private:
 
 	/** Contains the state of continue button. */
 	bool continue_enabled;
+
+	bool restart_title_cache = true;
 
 	FileRequestBinding request_id;
 };
