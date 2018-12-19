@@ -53,12 +53,12 @@ public:
 		 */
 		BattleActionState_Animation,
 		/**
-		 * Called once.
+		 * Called once per target.
 		 * Used to execute the algorithm.
 		 */
 		BattleActionState_Execute,
 		/**
-		 * Called once.
+		 * Called once per target.
 		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
 		 */
 		BattleActionState_Apply,
@@ -68,12 +68,12 @@ public:
 		*/
 		BattleActionState_Results,
 		/**
-		 * Called once.
+		 * Called once per target if killed.
 		 * Action treating whether the enemy died or not.
 		 */
 		BattleActionState_Death,
 		/**
-		 * Called once.
+		 * Called once per target.
 		 * It finishes the action and checks whether to repeat it if there is another target to hit.
 		 */
 		BattleActionState_Finished
