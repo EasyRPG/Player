@@ -1574,7 +1574,8 @@ void Game_Map::Parallax::ResetPositionX() {
 	if (params.scroll_horz || LoopHorizontal()) {
 		panorama.pan_x = map_info.position_x;
 	} else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
-		panorama.pan_x = map_info.position_x * (parallax_width - SCREEN_TARGET_WIDTH) * 2 / ((GetWidth() - 20) * TILE_SIZE);
+		panorama.pan_x = std::min(map_info.position_x * (parallax_width - SCREEN_TARGET_WIDTH) * 2 / ((GetWidth() - 20) * TILE_SIZE)
+				, map_info.position_x * 2);
 	}
 }
 
@@ -1588,7 +1589,8 @@ void Game_Map::Parallax::ResetPositionY() {
 	if (params.scroll_vert || Game_Map::LoopVertical()) {
 		panorama.pan_y = map_info.position_y;
 	} else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
-		panorama.pan_y = map_info.position_y * (parallax_height - SCREEN_TARGET_HEIGHT) * 2 / ((GetHeight() - 15) * TILE_SIZE);
+		panorama.pan_y = std::min(map_info.position_y * (parallax_height - SCREEN_TARGET_HEIGHT) * 2 / ((GetHeight() - 15) * TILE_SIZE)
+				, map_info.position_y * 2);
 	}
 }
 
