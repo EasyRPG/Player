@@ -3077,9 +3077,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 
 void Game_Interpreter::ResetEventCalling() {
 	event_calling = {};
-	// FIXME: Need to separate immediate battle calls from events
-	// and SavePartyLocation::encounter_calling for random encounters.
-	Game_Temp::battle_calling = false;
 }
 
 bool Game_Interpreter::IsImmediateCall() {

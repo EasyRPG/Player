@@ -34,7 +34,7 @@ static constexpr int kShakeContinuousTimeStart = 65535;
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	Reset(false);
+	Reset();
 }
 
 void Game_Screen::CreatePicturesFromSave() {
@@ -49,23 +49,22 @@ void Game_Screen::CreatePicturesFromSave() {
 	}
 }
 
-void Game_Screen::Reset(bool is_load_savegame) {
+void Game_Screen::Reset() {
 	if (Main_Data::game_data.pictures.size() < pictures.size()) {
 		pictures.resize(Main_Data::game_data.pictures.size());
 	}
+
 	for (auto& p : pictures) {
 		if (p) {
 			p->Erase(false);
 		}
 	}
 
-	if (!is_load_savegame) {
-		data.flash_red = 0;
-		data.flash_green = 0;
-		data.flash_blue = 0;
-		data.flash_time_left = 0;
-		data.flash_current_level = 0;
-	}
+	data.flash_red = 0;
+	data.flash_green = 0;
+	data.flash_blue = 0;
+	data.flash_time_left = 0;
+	data.flash_current_level = 0;
 	flash_sat = 0;
 	flash_period = 0;
 

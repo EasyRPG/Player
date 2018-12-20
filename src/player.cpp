@@ -789,6 +789,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	Scene::PopUntil(Scene::Title);
 	Game_Temp::Init();
+	Game_Map::Dispose();
 
 	Main_Data::game_data = *save.get();
 	Main_Data::game_data.system.Fixup();

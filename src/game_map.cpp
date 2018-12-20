@@ -86,7 +86,7 @@ namespace {
 }
 
 void Game_Map::Init() {
-	Dispose(false);
+	Dispose();
 
 	map_info.position_x = 0;
 	map_info.position_y = 0;
@@ -118,12 +118,12 @@ void Game_Map::Init() {
 	teleport_delay = false;
 }
 
-void Game_Map::Dispose(bool is_load_savegame) {
+void Game_Map::Dispose() {
 	events.clear();
 	pending.clear();
 
 	if (Main_Data::game_screen) {
-		Main_Data::game_screen->Reset(is_load_savegame);
+		Main_Data::game_screen->Reset();
 	}
 
 	map.reset();
@@ -131,13 +131,14 @@ void Game_Map::Dispose(bool is_load_savegame) {
 }
 
 void Game_Map::Quit() {
-	Dispose(false);
+	Dispose();
 
 	common_events.clear();
 	interpreter.reset();
 }
 
 void Game_Map::Setup(int _id) {
+	Dispose();
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -228,7 +229,6 @@ void Game_Map::SetupFromTeleportSelf() {
 }
 
 void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
-	Dispose(is_load_savegame);
 
 	location.map_id = _id;
 
@@ -1312,10 +1312,11 @@ bool Game_Map::IsAnyEventStarting() {
 }
 
 bool Game_Map::IsAnyMovePending() {
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		if (!(*it)->IsMoveRouteRepeated())
+	for (auto& ev: pending) {
+		if (ev->GetMapId() == GetMapId() && !ev->IsMoveRouteRepeated()) {
 			return true;
+		}
+	}
 
 	return false;
 }
