@@ -45,8 +45,8 @@
 #include "utils.h"
 
 namespace {
-	constexpr int default_pan_x = 9 * SCREEN_TILE_WIDTH;
-	constexpr int default_pan_y = 7 * SCREEN_TILE_WIDTH;
+	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
+	constexpr int default_pan_y = 7 * SCREEN_TILE_SIZE;
 	constexpr int default_pan_speed = 16;
 
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
@@ -83,7 +83,13 @@ namespace {
 	RPG::Chipset* chipset;
 
 	int last_encounter_idx = 0;
+
+	//FIXME: Find a better way to do this.
+	bool reset_panorama_x_on_next_init = true;
+	bool reset_panorama_y_on_next_init = true;
 }
+
+static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
 	Dispose();
@@ -142,6 +148,8 @@ void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
+	reset_panorama_x_on_next_init = true;
+	reset_panorama_y_on_next_init = true;
 	panorama = {};
 
 	Parallax::ClearChangedBG();
@@ -221,6 +229,17 @@ void Game_Map::SetupFromSave() {
 	SetChipset(map_info.chipset_id);
 
 	SetEncounterSteps(location.encounter_steps);
+
+
+	// We want to support loading rm2k3e panning chunks
+	// but also not break other saves which don't have them.
+	// To solve this problem, we reuse the scrolling methods
+	// which always reset the position anyways when scroll_horz/vert
+	// is false.
+	// This produces compatible behavior for old RPG_RT saves, namely
+	// the pan_x/y is always forced to 0.
+	// If the later async code will load panorama, set the flag to not clear the offsets.
+	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
 
@@ -372,20 +391,30 @@ void Game_Map::ScrollRight(int distance) {
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
 	map_info.position_x = x;
+	if (distance == 0) {
+		return;
+	}
 	// Unused, except compatibility with RPG_RT
 	auto& pan_x = Main_Data::game_data.screen.pan_x;
-	const auto pan_limit_x = 20 * SCREEN_TILE_WIDTH;
+	const auto pan_limit_x = 20 * SCREEN_TILE_SIZE;
 	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
+
+	Game_Map::Parallax::ScrollRight(distance);
 }
 
 void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
 	map_info.position_y = y;
+	if (distance == 0) {
+		return;
+	}
 	// Unused, except compatibility with RPG_RT
 	auto& pan_y = Main_Data::game_data.screen.pan_y;
-	const auto pan_limit_y = 10 * SCREEN_TILE_WIDTH;
-	pan_y = (pan_y + distance + pan_limit_y) % pan_limit_y;
+	const auto pan_limit_y = 10 * SCREEN_TILE_SIZE;
+	pan_y = (pan_y - distance + pan_limit_y) % pan_limit_y;
+
+	Game_Map::Parallax::ScrollDown(distance);
 }
 
 // Add inc to acc, clamping the result into the range [low, high].
@@ -398,7 +427,7 @@ static void ClampingAdd(int low, int high, int& acc, int& inc) {
 }
 
 void Game_Map::AddScreenX(int& screen_x, int& inc) {
-	int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		screen_x = Utils::PositiveModulo(screen_x + inc, map_width);
 	} else {
@@ -407,7 +436,7 @@ void Game_Map::AddScreenX(int& screen_x, int& inc) {
 }
 
 void Game_Map::AddScreenY(int& screen_y, int& inc) {
-	int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		screen_y = Utils::PositiveModulo(screen_y + inc, map_height);
 	} else {
@@ -1165,13 +1194,14 @@ int Game_Map::GetDisplayX() {
 }
 
 void Game_Map::SetPositionX(int x) {
-	const int map_width = GetWidth() * SCREEN_TILE_WIDTH;
+	const int map_width = GetWidth() * SCREEN_TILE_SIZE;
 	if (LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, map_width);
 	} else {
 		x = std::max(0, std::min(map_width - SCREEN_WIDTH, x));
 	}
 	map_info.position_x = x;
+	Parallax::ResetPositionX();
 }
 
 int Game_Map::GetPositionY() {
@@ -1183,13 +1213,14 @@ int Game_Map::GetDisplayY() {
 }
 
 void Game_Map::SetPositionY(int y) {
-	const int map_height = GetHeight() * SCREEN_TILE_WIDTH;
+	const int map_height = GetHeight() * SCREEN_TILE_SIZE;
 	if (LoopVertical()) {
 		y = Utils::PositiveModulo(y, map_height);
 	} else {
 		y = std::max(0, std::min(map_height - SCREEN_HEIGHT, y));
 	}
 	map_info.position_y = y;
+	Parallax::ResetPositionY();
 }
 
 Game_Map::RefreshMode Game_Map::GetNeedRefresh() {
@@ -1365,7 +1396,7 @@ void Game_Map::UnlockPan() {
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
-	distance *= SCREEN_TILE_WIDTH;
+	distance *= SCREEN_TILE_SIZE;
 
 	if (direction == PanUp) {
 		int new_pan = location.pan_finish_y + distance;
@@ -1472,8 +1503,6 @@ FileRequestAsync* Game_Map::RequestMap(int map_id) {
 /////////////
 
 namespace {
-	int parallax_x;
-	int parallax_y;
 	int parallax_width;
 	int parallax_height;
 }
@@ -1514,47 +1543,93 @@ std::string Game_Map::Parallax::GetName() {
 }
 
 int Game_Map::Parallax::GetX() {
-	return (parallax_x - panorama.pan_x / 2) / TILE_SIZE;
+	return (-panorama.pan_x / TILE_SIZE) / 2;
 }
 
 int Game_Map::Parallax::GetY() {
-	return (parallax_y - panorama.pan_y / 2) / TILE_SIZE;
+	return (-panorama.pan_y / TILE_SIZE) / 2;
 }
 
 void Game_Map::Parallax::Initialize(int width, int height) {
 	parallax_width = width;
 	parallax_height = height;
 
-	UpdatePosition(true);
-}
-
-void Game_Map::Parallax::UpdatePosition(bool init) {
 	Params params = GetParallaxParams();
 
-	// RPG_RT bug:
-	// On loaded save games, RPG_RT will always reset
-	// parallax_x/y to 0 when the map is looping.
-	// We don't emulate this.
+	if (reset_panorama_x_on_next_init) {
+		ResetPositionX();
+	}
+	if (reset_panorama_y_on_next_init) {
+		ResetPositionY();
+	}
+}
 
-	if (init || !Game_Map::LoopHorizontal()) {
-		if (params.scroll_horz || LoopHorizontal())
-			parallax_x = -map_info.position_x / 2;
-		else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH)
-			parallax_x = -std::min(map_info.position_x,
-					(map_info.position_x / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_width - SCREEN_TARGET_WIDTH) / (GetWidth() - 20));
-		else
-			parallax_x = 0;
+void Game_Map::Parallax::ResetPositionX() {
+	Params params = GetParallaxParams();
+
+	panorama.pan_x = 0;
+	if (params.name.empty()) {
+		return;
+	}
+	if (params.scroll_horz || LoopHorizontal()) {
+		panorama.pan_x = map_info.position_x;
+	} else if (GetWidth() > 20 && parallax_width > SCREEN_TARGET_WIDTH) {
+		panorama.pan_x = std::min(map_info.position_x * (parallax_width - SCREEN_TARGET_WIDTH) * 2 / ((GetWidth() - 20) * TILE_SIZE)
+				, map_info.position_x * 2);
+	}
+}
+
+void Game_Map::Parallax::ResetPositionY() {
+	Params params = GetParallaxParams();
+
+	panorama.pan_y = 0;
+	if (params.name.empty()) {
+		return;
+	}
+	if (params.scroll_vert || Game_Map::LoopVertical()) {
+		panorama.pan_y = map_info.position_y;
+	} else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT) {
+		panorama.pan_y = std::min(map_info.position_y * (parallax_height - SCREEN_TARGET_HEIGHT) * 2 / ((GetHeight() - 15) * TILE_SIZE)
+				, map_info.position_y * 2);
+	}
+}
+
+void Game_Map::Parallax::ScrollRight(int distance) {
+	Params params = GetParallaxParams();
+	if (params.name.empty()) {
+		return;
 	}
 
-	if (init || !Game_Map::LoopVertical()) {
-		if (params.scroll_vert || Game_Map::LoopVertical())
-			parallax_y = -map_info.position_y / 2;
-		else if (GetHeight() > 15 && parallax_height > SCREEN_TARGET_HEIGHT)
-			parallax_y = -std::min(map_info.position_y,
-					(map_info.position_y / (SCREEN_TILE_WIDTH / TILE_SIZE)) * (parallax_height - SCREEN_TARGET_HEIGHT) / (GetHeight() - 15));
-		else
-			parallax_y = 0;
+	if (params.scroll_horz) {
+		const auto w = parallax_width * TILE_SIZE * 2;
+		panorama.pan_x = (panorama.pan_x + distance + w) % w;
+		return;
 	}
+
+	if (Game_Map::LoopHorizontal()) {
+		return;
+	}
+
+	ResetPositionX();
+}
+
+void Game_Map::Parallax::ScrollDown(int distance) {
+	Params params = GetParallaxParams();
+	if (params.name.empty()) {
+		return;
+	}
+
+	if (params.scroll_vert) {
+		const auto h = parallax_height * TILE_SIZE * 2;
+		panorama.pan_y = (panorama.pan_y + distance + h) % h;
+		return;
+	}
+
+	if (Game_Map::LoopVertical()) {
+		return;
+	}
+
+	ResetPositionY();
 }
 
 void Game_Map::Parallax::Update() {
@@ -1563,24 +1638,22 @@ void Game_Map::Parallax::Update() {
 	if (params.name.empty())
 		return;
 
-	UpdatePosition();
-
 	auto scroll_amt = [](int speed) {
-		if (speed > 0) return 1 << (speed - 1);
-		if (speed < 0) return -(1 << (-speed - 1));
-		return 0;
+		return speed < 0 ? (1 << -speed) : -(1 << speed);
 	};
 
-
-	if (params.scroll_horz && params.scroll_horz_auto) {
+	if (params.scroll_horz
+			&& params.scroll_horz_auto
+			&& params.scroll_horz_speed != 0) {
 		const auto w = parallax_width * TILE_SIZE * 2;
-		panorama.pan_x -= scroll_amt(params.scroll_horz_speed) * 2;
-		panorama.pan_x = (panorama.pan_x + w) % w;
+		panorama.pan_x = (panorama.pan_x + scroll_amt(params.scroll_horz_speed) + w) % w;
 	}
-	if (params.scroll_vert && params.scroll_vert_auto) {
+
+	if (params.scroll_vert
+			&& params.scroll_vert_auto
+			&& params.scroll_vert_speed != 0) {
 		const auto h = parallax_height * TILE_SIZE * 2;
-		panorama.pan_y -= scroll_amt(params.scroll_vert_speed) * 2;
-		panorama.pan_y = (panorama.pan_y + h) % h;
+		panorama.pan_y = (panorama.pan_y + scroll_amt(params.scroll_vert_speed) + h) % h;
 	}
 }
 
@@ -1592,7 +1665,9 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 	map_info.parallax_vert = params.scroll_vert;
 	map_info.parallax_vert_auto = params.scroll_vert_auto;
 	map_info.parallax_vert_speed = params.scroll_vert_speed;
-	panorama = {};
+
+	reset_panorama_x_on_next_init = !Game_Map::LoopHorizontal() && !map_info.parallax_horz;
+	reset_panorama_y_on_next_init = !Game_Map::LoopVertical() && !map_info.parallax_vert;
 }
 
 void Game_Map::Parallax::ClearChangedBG() {

@@ -32,9 +32,9 @@
 class FileRequestAsync;
 
 // These are in sixteenths of a pixel.
-constexpr int SCREEN_TILE_WIDTH = 256;
-constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_WIDTH;
-constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_WIDTH;
+constexpr int SCREEN_TILE_SIZE = 256;
+constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_SIZE;
+constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_SIZE;
 
 /**
  * Game_Map namespace
@@ -651,12 +651,25 @@ namespace Game_Map {
 		/** Call this when you find out the width and height of the BG. */
 		void Initialize(int width, int height);
 
+		/** Reset the x position of the BG. */
+		void ResetPositionX();
+
+		/** Reset the y position of the BG. */
+		void ResetPositionY();
+
 		/**
-		 * Reset the x- and y- position of the BG.
+		 * To be called when the map scrolls right.
 		 *
-		 * @param init if true will always reset position, even on looping maps
+		 * @param distance Amount of scroll in 1/16th pixels.
 		 */
-		void UpdatePosition(bool init = false);
+		void ScrollRight(int distance);
+
+		/**
+		 * To be called when the map scrolls down.
+		 *
+		 * @param distance Amount of scroll in 1/16th pixels.
+		 */
+		void ScrollDown(int distance);
 
 		/** Update autoscrolling BG (call every frame). */
 		void Update();

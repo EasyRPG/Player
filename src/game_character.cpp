@@ -130,7 +130,7 @@ int Game_Character::GetScreenY() const {
 	}
 
 	if (IsJumping()) {
-		int jump_height = (GetRemainingStep() > SCREEN_TILE_WIDTH / 2 ? SCREEN_TILE_WIDTH - GetRemainingStep() : GetRemainingStep()) / 8;
+		int jump_height = (GetRemainingStep() > SCREEN_TILE_SIZE / 2 ? SCREEN_TILE_SIZE - GetRemainingStep() : GetRemainingStep()) / 8;
 		y -= (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
 	}
 
@@ -478,7 +478,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	} else {
 		SetX(Game_Map::RoundX(GetX() + dx));
 		SetY(Game_Map::RoundY(GetY() + dy));
-		SetRemainingStep(SCREEN_TILE_WIDTH);
+		SetRemainingStep(SCREEN_TILE_SIZE);
 		BeginMove();
 	}
 
@@ -739,7 +739,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 	SetY(new_y);
 	*current_index = i;
 
-	SetRemainingStep(SCREEN_TILE_WIDTH);
+	SetRemainingStep(SCREEN_TILE_SIZE);
 	SetStopCount(0);
 	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
 	move_failed = false;
@@ -813,7 +813,7 @@ int Game_Character::GetTileId() const {
 }
 
 int Game_Character::GetSpriteX() const {
-	int x = GetX() * SCREEN_TILE_WIDTH;
+	int x = GetX() * SCREEN_TILE_SIZE;
 
 	if (IsMoving()) {
 		int d = GetDirection();
@@ -824,14 +824,14 @@ int Game_Character::GetSpriteX() const {
 	} else if (IsJumping())
 		x -= ((GetX() - GetBeginJumpX()) * GetRemainingStep());
 	if (x < 0) {
-		x += Game_Map::GetWidth() * SCREEN_TILE_WIDTH;
+		x += Game_Map::GetWidth() * SCREEN_TILE_SIZE;
 	}
 
 	return x;
 }
 
 int Game_Character::GetSpriteY() const {
-	int y = GetY() * SCREEN_TILE_WIDTH;
+	int y = GetY() * SCREEN_TILE_SIZE;
 
 	if (IsMoving()) {
 		int d = GetDirection();
@@ -843,7 +843,7 @@ int Game_Character::GetSpriteY() const {
 		y -= (GetY() - GetBeginJumpY()) * GetRemainingStep();
 
 	if (y < 0) {
-		y += Game_Map::GetHeight() * SCREEN_TILE_WIDTH;
+		y += Game_Map::GetHeight() * SCREEN_TILE_SIZE;
 	}
 
 	return y;

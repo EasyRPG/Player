@@ -148,17 +148,13 @@ bool Game_Player::IsTeleporting() const {
 	return teleporting;
 }
 
-void Game_Player::Center() {
-	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
-	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
-}
-
 void Game_Player::MoveTo(int x, int y) {
 	x = max(0, min(x, Game_Map::GetWidth() - 1));
 	y = max(0, min(y, Game_Map::GetHeight() - 1));
 
 	Game_Character::MoveTo(x, y);
-	Center();
+	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
+	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
 }
 
 void Game_Player::UpdateScroll(int old_x, int old_y) {
@@ -180,6 +176,30 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 
 	int new_panx = new_x - screen_x;
 	int new_pany = new_y - screen_y;
+
+	// Detect whether we crossed map boundary.
+	// We need to scale down dx/dy to a single step
+	// to not message up further calculations.
+	// FIXME: This logic will break if something moves so fast
+	// as to cross half the map in 1 frame.
+	if (Game_Map::LoopHorizontal()) {
+		auto w = Game_Map::GetWidth() * SCREEN_TILE_SIZE;
+		if (std::abs(dx) > w / 2) {
+			dx = (w - std::abs(dx)) % w;
+			if (new_x > old_x) {
+				dx = -dx;
+			}
+		}
+	}
+	if (Game_Map::LoopVertical()) {
+		auto h = Game_Map::GetHeight() * SCREEN_TILE_SIZE;
+		if (std::abs(dy) > h / 2) {
+			dy = (h - std::abs(dy)) % h;
+			if (new_y > old_y) {
+				dy = -dy;
+			}
+		}
+	}
 
 	if (Game_Map::LoopHorizontal() ||
 			std::abs(data()->pan_current_x - new_panx) >=
