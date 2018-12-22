@@ -1606,6 +1606,10 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 		return;
 	}
 
+	if (Game_Map::LoopHorizontal()) {
+		return;
+	}
+
 	ResetPositionX();
 }
 
@@ -1618,6 +1622,10 @@ void Game_Map::Parallax::ScrollDown(int distance) {
 	if (params.scroll_vert) {
 		const auto h = parallax_height * TILE_SIZE * 2;
 		panorama.pan_y = (panorama.pan_y + distance + h) % h;
+		return;
+	}
+
+	if (Game_Map::LoopVertical()) {
 		return;
 	}
 
