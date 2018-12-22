@@ -84,9 +84,12 @@ namespace {
 
 	int last_encounter_idx = 0;
 
-	// FIXME: Find a better way to do this
-	bool load_panorama_from_save = false;
+	//FIXME: Find a better way to do this.
+	bool reset_panorama_x_on_next_init = true;
+	bool reset_panorama_y_on_next_init = true;
 }
+
+static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
 	Dispose();
@@ -145,7 +148,8 @@ void Game_Map::Setup(int _id) {
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
-	load_panorama_from_save = false;
+	reset_panorama_x_on_next_init = true;
+	reset_panorama_y_on_next_init = true;
 	panorama = {};
 
 	Parallax::ClearChangedBG();
@@ -226,11 +230,16 @@ void Game_Map::SetupFromSave() {
 
 	SetEncounterSteps(location.encounter_steps);
 
+
+	// We want to support loading rm2k3e panning chunks
+	// but also not break other saves which don't have them.
+	// To solve this problem, we reuse the scrolling methods
+	// which always reset the position anyways when scroll_horz/vert
+	// is false.
+	// This produces compatible behavior for old RPG_RT saves, namely
+	// the pan_x/y is always forced to 0.
 	// If the later async code will load panorama, set the flag to not clear the offsets.
-	if (!map_info.parallax_name.empty()
-			|| (map->parallax_flag && !map->parallax_name.empty())) {
-		load_panorama_from_save = true;
-	}
+	Game_Map::Parallax::ChangeBG(GetParallaxParams());
 }
 
 
@@ -1547,19 +1556,10 @@ void Game_Map::Parallax::Initialize(int width, int height) {
 
 	Params params = GetParallaxParams();
 
-	// We want to support loading rm2k3e panning chunks
-	// but also not break other saves which don't have them.
-	// To solve this problem, we reuse the scrolling methods
-	// which always reset the position anyways when scroll_horz/vert
-	// is false.
-	// This produces compatible behavior for old RPG_RT saves, namely
-	// the pan_x/y is always forced to 0.
-	if (load_panorama_from_save) {
-		load_panorama_from_save = false;
-		ScrollRight(0);
-		ScrollDown(0);
-	} else {
+	if (reset_panorama_x_on_next_init) {
 		ResetPositionX();
+	}
+	if (reset_panorama_y_on_next_init) {
 		ResetPositionY();
 	}
 }
@@ -1657,7 +1657,9 @@ void Game_Map::Parallax::ChangeBG(const Params& params) {
 	map_info.parallax_vert = params.scroll_vert;
 	map_info.parallax_vert_auto = params.scroll_vert_auto;
 	map_info.parallax_vert_speed = params.scroll_vert_speed;
-	panorama = {};
+
+	reset_panorama_x_on_next_init = !Game_Map::LoopHorizontal() && !map_info.parallax_horz;
+	reset_panorama_y_on_next_init = !Game_Map::LoopVertical() && !map_info.parallax_vert;
 }
 
 void Game_Map::Parallax::ClearChangedBG() {
