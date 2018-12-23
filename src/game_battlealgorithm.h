@@ -379,7 +379,7 @@ public:
 	 */
 	void SetRepeat(int repeat);
 
-	/*
+	/**
 	 * @return the critical hit message
 	 */
 	std::string GetCriticalHitMessage() const;
