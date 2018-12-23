@@ -21,12 +21,16 @@
 #include "game_map.h"
 #include "bitmap.h"
 
-Sprite_Character::Sprite_Character(Game_Character* character) :
+Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
 	character(character),
 	tile_id(-1),
 	character_index(0),
 	chara_width(0),
 	chara_height(0) {
+
+	x_shift = ((type & XClone) == XClone);
+	y_shift = ((type & YClone) == YClone);
+
 	Update();
 }
 
@@ -71,11 +75,11 @@ void Sprite_Character::Update() {
 		SetOpacity(character->GetOpacity());
 	}
 
-	SetX(character->GetScreenX());
-	SetY(character->GetScreenY());
-	SetZ(character->GetScreenZ());
+	SetX(character->GetScreenX(x_shift));
+	SetY(character->GetScreenY(y_shift));
+	// y_shift because Z is calculated via the screen Y position
+	SetZ(character->GetScreenZ(y_shift));
 
-	//SetBlendType(character->GetBlendType());
 	int bush_split = 4 - character->GetBushDepth();
 	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
 }

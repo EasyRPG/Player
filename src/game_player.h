@@ -40,7 +40,7 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetScreenZ() const override;
+	int GetScreenZ(bool apply_shift = false) const override;
 	int GetOriginalMoveRouteIndex() const override;
 	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool GetVisible() const override;

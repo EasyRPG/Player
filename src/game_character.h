@@ -632,23 +632,26 @@ public:
 	/**
 	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
 	 *
+	 * @param apply_shift When true the coordinate is shifted by the map width (for looping maps)
 	 * @return screen x coordinate in pixels.
 	 */
-	virtual int GetScreenX() const;
+	virtual int GetScreenX(bool apply_shift = false) const;
 
 	/**
 	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
+	 * @param apply_shift When true the coordinate is shifted by the map height (for looping maps)
 	 * @return screen y coordinate in pixels.
 	 */
-	virtual int GetScreenY() const;
+	virtual int GetScreenY(bool apply_shift = false) const;
 
 	/**
 	 * Gets screen z coordinate in pixels.
 	 *
+	 * @param apply_shift Forwarded to GetScreenY
 	 * @return screen z coordinate in pixels.
 	 */
-	virtual int GetScreenZ() const;
+	virtual int GetScreenZ(bool apply_shift = false) const;
 
 	/**
 	 * Gets tile graphic ID.

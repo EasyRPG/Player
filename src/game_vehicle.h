@@ -69,7 +69,7 @@ public:
 	void GetOff();
 	bool IsInUse() const;
 	void SyncWithPlayer();
-	int GetScreenY() const override;
+	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;
 	void Update() override;
