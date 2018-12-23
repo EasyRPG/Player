@@ -931,6 +931,11 @@ void Game_BattleAlgorithm::Normal::Init() {
 			}
 		}
 	}
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		if (Player::IsRPG2k3() && !Data::animations.empty()) {
+			animation = ReaderUtil::GetElement(Data::animations, 1);
+		}
+	}
 }
 
 bool Game_BattleAlgorithm::Normal::Execute() {
