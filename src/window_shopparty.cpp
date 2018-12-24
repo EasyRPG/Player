@@ -43,6 +43,39 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
+static int CalcEquipScore(const RPG::Item* item) {
+	if (item == nullptr) {
+		return 0;
+	}
+	return item->atk_points1 + item->def_points1 + item->agi_points1 + item->spi_points1;
+}
+
+static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
+	int new_score = CalcEquipScore(new_item);
+	switch (new_item->type) {
+	case RPG::Item::Type_weapon:
+	{
+		int score = CalcEquipScore(actor->GetWeapon());
+		if (actor->HasTwoWeapons()) {
+			int score2 = CalcEquipScore(actor->Get2ndWeapon());
+			score = (new_item->two_handed) ? score + score2 : std::min(score, score2);
+		}
+		return new_score - score;
+	}
+	case RPG::Item::Type_helmet:
+		return new_score - CalcEquipScore(actor->GetHelmet());
+	case RPG::Item::Type_shield:
+		return new_score - CalcEquipScore(actor->GetShield());
+	case RPG::Item::Type_armor:
+		return new_score - CalcEquipScore(actor->GetArmor());
+	case RPG::Item::Type_accessory:
+		return new_score - CalcEquipScore(actor->GetAccessory());
+	default:
+		break;
+	}
+	return 0;
+}
+
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
@@ -78,46 +111,17 @@ void Window_ShopParty::Refresh() {
 				contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {
 				// (Shop) items are guaranteed to be valid
-				const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, item_id);
+				const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
 
-				int item_type = new_item->type;
-				const RPG::Item* current_item = nullptr;
-
-				switch (item_type) {
-				// get the current equipped item
-				case RPG::Item::Type_weapon:
-					if (actor->GetWeaponId() > 0)
-						current_item = ReaderUtil::GetElement(Data::items, actor->GetWeaponId());
-					break;
-				case RPG::Item::Type_helmet:
-					if (actor->GetHelmetId() > 0)
-						current_item = ReaderUtil::GetElement(Data::items, actor->GetHelmetId());
-					break;
-				case RPG::Item::Type_shield:
-					if (actor->GetShieldId() > 0)
-						current_item = ReaderUtil::GetElement(Data::items, actor->GetShieldId());
-					break;
-				case RPG::Item::Type_armor:
-					if (actor->GetArmorId() > 0)
-						current_item = ReaderUtil::GetElement(Data::items, actor->GetArmorId());
-					break;
-				case RPG::Item::Type_accessory:
-					if (actor->GetAccessoryId() > 0)
-						current_item = ReaderUtil::GetElement(Data::items, actor->GetAccessoryId());
-					break;
+				int cmp = CmpEquip(actor, new_item);
+				if (cmp > 0) {
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 0, 8, 8), 255);
 				}
-
-				if (current_item != nullptr) {
-					int diff_atk = new_item->atk_points1 - current_item->atk_points1;
-					int diff_def = new_item->def_points1 - current_item->def_points1;
-					int diff_spi = new_item->spi_points1 - current_item->spi_points1;
-					int diff_agi = new_item->agi_points1 - current_item->agi_points1;
-					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
-						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 0, 8, 8), 255);
-					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)
-						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 16, 8, 8), 255);
-					else
-						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 8, 8, 8), 255);
+				else if (cmp < 0) {
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 16, 8, 8), 255);
+				}
+				else {
+					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 8, 8, 8), 255);
 				}
 			}
 		}
