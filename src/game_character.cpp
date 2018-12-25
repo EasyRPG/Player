@@ -419,7 +419,7 @@ void Game_Character::MoveTypeCustom() {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
 				SetStopCount(0);
-				SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
+				SetMaxStopCountForStep();
 			}
 		}
 	}
@@ -477,7 +477,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	}
 
 	SetStopCount(0);
-	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
+	SetMaxStopCountForStep();
 }
 
 void Game_Character::MoveForward(MoveOption option) {
@@ -535,7 +535,7 @@ void Game_Character::Turn(int dir) {
 	SetSpriteDirection(dir);
 	move_failed = false;
 	SetStopCount(0);
-	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 8 - GetMoveFrequency()));
+	SetMaxStopCountForTurn();
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -735,7 +735,7 @@ void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current
 
 	SetRemainingStep(SCREEN_TILE_SIZE);
 	SetStopCount(0);
-	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()));
+	SetMaxStopCountForStep();
 	move_failed = false;
 
 	if (IsContinuous()) {
@@ -940,3 +940,19 @@ bool Game_Character::MakeWayDiagonal(int x, int y, int d) const {
 	return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
 			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
 }
+
+void Game_Character::SetMaxStopCountForStep() {
+	const auto freq = GetMoveFrequency();
+	SetMaxStopCount(freq >= 8 ? 0 : 1 << (9 - freq));
+}
+
+void Game_Character::SetMaxStopCountForTurn() {
+	const auto freq = GetMoveFrequency();
+	SetMaxStopCount(freq >= 8 ? 0 : 1 << (8 - freq));
+}
+
+void Game_Character::SetMaxStopCountForWait() {
+	const auto freq = GetMoveFrequency();
+	SetMaxStopCount(20 + (freq >= 8 ? 0 : 1 << (8 - freq)));
+}
+

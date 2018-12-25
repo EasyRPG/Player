@@ -831,6 +831,9 @@ protected:
 	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement();
 	void UpdateJump();
+	void SetMaxStopCountForStep();
+	void SetMaxStopCountForTurn();
+	void SetMaxStopCountForWait();
 
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;

@@ -132,7 +132,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	if (!IsMoveRouteOverwritten()) {
-		SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
+		SetMaxStopCountForTurn();
 	}
 	original_move_frequency = page->move_frequency;
 	original_move_route = page->move_route;
@@ -446,7 +446,7 @@ void Game_Event::MoveTypeRandom() {
 }
 
 void Game_Event::MoveTypeCycle(int default_dir) {
-	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency())));
+	SetMaxStopCountForStep();
 	if (GetStopCount() < GetMaxStopCount()) return;
 
 	const int reverse_dir = ReverseDir(default_dir);
