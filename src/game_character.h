@@ -848,7 +848,6 @@ protected:
 	// contains if any movement (<= step_forward) of a forced move route was successful
 	bool any_move_successful;
 	int move_count;
-	int wait_count;
 
 	int jump_plus_x;
 	int jump_plus_y;

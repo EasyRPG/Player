@@ -38,7 +38,6 @@ Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
 	move_failed(false),
 	last_move_failed(false),
 	move_count(0),
-	wait_count(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
 	visible(true),
@@ -151,17 +150,13 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 }
 
 void Game_Character::Update() {
-	if (wait_count == 0 && GetStopCount() >= GetMaxStopCount()) {
+	if (GetStopCount() >= GetMaxStopCount()) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else {
 			// Only events
 			UpdateSelfMovement();
 		}
-	}
-
-	if (wait_count > 0) {
-		--wait_count;
 	}
 }
 
@@ -243,7 +238,7 @@ void Game_Character::MoveTypeCustom() {
 		int original_index = active_route_index;
 		bool looped_around = false;
 		while (true) {
-			if (!IsStopping() || wait_count > 0 || GetStopCount() < GetMaxStopCount())
+			if (!IsStopping() || GetStopCount() < GetMaxStopCount())
 				break;
 
 			if (active_route_index == original_index && looped_around) {
@@ -414,7 +409,7 @@ void Game_Character::MoveTypeCustom() {
 			++active_route_index;
 		}
 
-		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping() && wait_count == 0) {
+		if ((size_t)active_route_index >= active_route->move_commands.size() && IsStopping()) {
 			if (IsMoveRouteOverwritten()) {
 				CancelMoveRoute();
 				Game_Map::RemovePendingMove(this);
@@ -589,7 +584,8 @@ void Game_Character::FaceRandomDirection() {
 }
 
 void Game_Character::Wait() {
-	wait_count += 20;
+	SetStopCount(0);
+	SetMaxStopCountForWait();
 }
 
 void Game_Character::BeginJump(const RPG::MoveRoute* current_route, int* current_index) {
@@ -791,7 +787,6 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	SetMoveRouteOverwritten(true);
 	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
-	wait_count = 0;
 	SetMaxStopCount(0);
 	last_move_failed = false;
 	any_move_successful = false;
