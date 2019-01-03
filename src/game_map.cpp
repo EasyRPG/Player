@@ -87,6 +87,7 @@ namespace {
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
+	bool first_frame = false;
 }
 
 static Game_Map::Parallax::Params GetParallaxParams();
@@ -145,6 +146,7 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id) {
 	Dispose();
+	first_frame = true;
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);

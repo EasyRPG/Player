@@ -48,10 +48,9 @@ public:
 	/** @{ */
 	int GetMoveFrequency() const override;
 	void SetMoveFrequency(int frequency) override;
-	int GetOriginalMoveRouteIndex() const override;
-	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool GetThrough() const override;
 	void SetThrough(bool through) override;
+	bool IsMoveRouteActive() const override;
 	/** @} */
 
 	/**
@@ -140,6 +139,20 @@ public:
 	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
 	 */
 	bool GetActive() const;
+
+	/**
+	 * Returns current index of a "Movement Type Custom" move route.
+	 *
+	 * @return current original move route index
+	 */
+	int GetOriginalMoveRouteIndex() const;
+
+	/**
+	 * Sets current index of a "Movement Type Custom" move route.
+	 *
+	 * @param new_index New move route index
+	 */
+	void SetOriginalMoveRouteIndex(int new_index);
 
 	/**
 	 * Returns the event page or nullptr is page does not exist.

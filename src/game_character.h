@@ -204,18 +204,9 @@ public:
 	void SetMoveRoute(const RPG::MoveRoute& move_route);
 
 	/**
-	 * Returns current index of a "Movement Type Custom" move route.
-	 *
-	 * @return current original move route index
+	 * @return true if this character is currently following a move route.
 	 */
-	virtual int GetOriginalMoveRouteIndex() const = 0;
-
-	/**
-	 * Sets current index of a "Movement Type Custom" move route.
-	 *
-	 * @param new_index New move route index
-	 */
-	virtual void SetOriginalMoveRouteIndex(int new_index) = 0;
+	virtual bool IsMoveRouteActive() const;
 
 	/**
 	 * Returns current index of the route assigned via a MoveEvent.
@@ -401,6 +392,9 @@ public:
 	 */
 	void SetMaxStopCount(int sc);
 
+	/** @return true if waiting for stop count in movement to complete */
+	bool IsStopCountActive() const;
+
 	/**
 	 * @return anim_count
 	 */
@@ -516,17 +510,16 @@ public:
 	/**
 	 * Updates character state and actions.
 	 */
-	virtual void Update();
+	virtual void Update() = 0;
 
 	/**
 	 * Updates character animation and movement.
 	 */
-	void UpdateSprite();
+	void UpdateMovement();
 
 	/**
 	 * Walks around on a custom move route.
 	 */
-	void MoveTypeCustom();
 
 	void Turn(int dir);
 
@@ -606,10 +599,10 @@ public:
 	/**
 	 * Jump action begins. Ends the movement when EndJump is missing.
 	 *
-	 * @param current_route Current move route
 	 * @param current_index Index in the current route
+	 * @param current_route Current move route
 	 */
-	void BeginJump(const RPG::MoveRoute* current_route, int* current_index);
+	void BeginJump(int32_t& current_index, const RPG::MoveRoute& current_route);
 
 	/**
 	 * Jump action ends.
@@ -826,25 +819,22 @@ public:
 
 protected:
 	explicit Game_Character(RPG::SaveMapEventBase* d);
-
-protected:
 	bool MakeWayDiagonal(int x, int y, int d) const;
-	virtual void UpdateSelfMovement();
+	virtual void UpdateSelfMovement() {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
+	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
 
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
 
 	int last_pattern;
 
-	RPG::MoveRoute original_move_route;
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;
-	bool last_move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
 	bool any_move_successful;
 	int move_count;
@@ -1067,6 +1057,10 @@ inline int Game_Character::GetMaxStopCount() const {
 
 inline void Game_Character::SetMaxStopCount(int sc) {
 	data()->max_stop_count = sc;
+}
+
+inline bool Game_Character::IsStopCountActive() const {
+	return GetStopCount() < GetMaxStopCount();
 }
 
 inline int Game_Character::GetAnimCount() const {

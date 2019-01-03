@@ -41,8 +41,6 @@ public:
 	 */
 	/** @{ */
 	int GetScreenZ(bool apply_shift = false) const override;
-	int GetOriginalMoveRouteIndex() const override;
-	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool GetVisible() const override;
 	bool MakeWay(int x, int y, int d) const override;
 	void BeginMove() override;
@@ -101,6 +99,7 @@ private:
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
 
+	void UpdatePlayerInput();
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
 	bool CheckTouchEvent();

@@ -74,15 +74,6 @@ void Game_Vehicle::SetMoveSpeed(int speed) {
 	}
 }
 
-int Game_Vehicle::GetOriginalMoveRouteIndex() const {
-	return data()->original_move_route_index;
-}
-
-void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
-	data()->original_move_route_index = new_index;
-}
-
-
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		return MakeWayDiagonal(x, y, d);
@@ -281,8 +272,7 @@ bool Game_Vehicle::CanLand() const {
 }
 
 void Game_Vehicle::Update() {
-	Game_Character::Update();
-	Game_Character::UpdateSprite();
+	Game_Character::UpdateMovement();
 
 	if (!Main_Data::game_player->IsBoardingOrUnboarding()) {
 		SyncWithPlayer();

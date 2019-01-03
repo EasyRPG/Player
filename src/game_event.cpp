@@ -132,10 +132,13 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	if (!IsMoveRouteOverwritten()) {
-		SetMaxStopCountForTurn();
+		if (move_type == RPG::EventPage::MoveType_custom) {
+			SetMaxStopCountForTurn();
+		} else {
+			SetMaxStopCountForStep();
+		}
 	}
 	original_move_frequency = page->move_frequency;
-	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
 
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
@@ -172,7 +175,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	}
 
 	move_type = page->move_type;
-	original_move_route = page->move_route;
 	trigger = page->trigger;
 	list = page->event_commands;
 
@@ -416,7 +418,7 @@ void Game_Event::UpdateSelfMovement() {
 		MoveTypeAwayFromPlayer();
 		break;
 	case RPG::EventPage::MoveType_custom:
-		MoveTypeCustom();
+		UpdateMoveRoute(data()->original_move_route_index, page->move_route);
 		break;
 	}
 }
@@ -554,7 +556,7 @@ void Game_Event::Update() {
 		return;
 	}
 
-	Game_Character::UpdateSprite();
+	Game_Character::UpdateMovement();
 
 	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().Setup(this);
@@ -602,7 +604,6 @@ void Game_Event::UpdateParallel() {
 	}
 	frame_count_at_last_update_parallel = cur_frame_count;
 
-	Game_Character::Update();
 	updating = false;
 }
 
@@ -624,4 +625,8 @@ const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	data()->ID = event.ID;
 
 	return *data();
+}
+
+bool Game_Event::IsMoveRouteActive() const {
+	return true;
 }

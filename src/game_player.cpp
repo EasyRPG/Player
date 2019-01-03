@@ -50,14 +50,6 @@ int Game_Player::GetScreenZ(bool apply_shift) const {
 	return Game_Character::GetScreenZ(apply_shift) + 1;
 }
 
-int Game_Player::GetOriginalMoveRouteIndex() const {
-	return 0;
-}
-
-void Game_Player::SetOriginalMoveRouteIndex(int /* new_index */) {
-	// no-op
-}
-
 bool Game_Player::GetVisible() const {
 	return visible && !data()->aboard;
 }
@@ -214,25 +206,11 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	}
 }
 
-void Game_Player::Update() {
-	int cur_frame_count = Player::GetFrames();
-	// Only update the event once per frame
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
-		return;
-	}
-	frame_count_at_last_update_parallel = cur_frame_count;
-
-	bool last_moving = IsMoving() || IsJumping();
-
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	bool was_blocked = IsBlockedByMoveRoute();
-	Game_Character::Update();
-
+void Game_Player::UpdatePlayerInput() {
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (IsMovable()) {
-			auto old_x = GetX();
-			auto old_y = GetY();
+			const auto old_x = GetX();
+			const auto old_y = GetY();
 			switch (Input::dir4) {
 				case 2:
 					Move(Down);
@@ -258,11 +236,29 @@ void Game_Player::Update() {
 		}
 	}
 
-	int prev_x = GetSpriteX();
-	int prev_y = GetSpriteY();
 
-	Game_Character::UpdateSprite();
-	UpdateScroll(prev_x, prev_y);
+}
+
+void Game_Player::Update() {
+	int cur_frame_count = Player::GetFrames();
+	// Only update the event once per frame
+	if (cur_frame_count == frame_count_at_last_update_parallel) {
+		return;
+	}
+	frame_count_at_last_update_parallel = cur_frame_count;
+
+	const bool last_moving = IsMoving() || IsJumping();
+
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	const bool was_blocked = IsBlockedByMoveRoute();
+	const auto old_sprite_x = GetSpriteX();
+	const auto old_sprite_y = GetSpriteY();
+
+	UpdatePlayerInput();
+	Game_Character::UpdateMovement();
+
+	UpdateScroll(old_sprite_x, old_sprite_y);
 
 	if (IsMoving() || was_blocked) return;
 
