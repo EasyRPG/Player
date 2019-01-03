@@ -177,24 +177,41 @@ void Game_Map::Setup(int _id) {
 
 	// Save allowed
 	int current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
-	}
-	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
+	int can_save = Data::treemap.maps[current_index].save;
+	int can_escape = Data::treemap.maps[current_index].escape;
+	int can_teleport = Data::treemap.maps[current_index].teleport;
 
-	// Escape allowed
-	current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].escape == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	while (can_save == RPG::MapInfo::TriState_parent
+			|| can_escape == RPG::MapInfo::TriState_parent
+			|| can_teleport == RPG::MapInfo::TriState_parent)
+	{
+		int parent_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+		if (parent_index == 0) {
+			// If parent is 0 and flag is parent, it's implicitly enabled.
+			break;
+		}
+		if (parent_index == current_index) {
+			Output::Warning("Map %d has parent pointing to itself!", current_index);
+			break;
+		}
+		if (parent_index < 0) {
+			Output::Warning("Map %d has invalid parent id %d!", Data::treemap.maps[current_index].parent_map);
+			break;
+		}
+		current_index = parent_index;
+		if (can_save == RPG::MapInfo::TriState_parent) {
+			can_save = Data::treemap.maps[current_index].save;
+		}
+		if (can_escape == RPG::MapInfo::TriState_parent) {
+			can_escape = Data::treemap.maps[current_index].escape;
+		}
+		if (can_teleport == RPG::MapInfo::TriState_parent) {
+			can_teleport = Data::treemap.maps[current_index].teleport;
+		}
 	}
-	Game_System::SetAllowEscape(Data::treemap.maps[current_index].escape == 1);
-
-	// Teleport allowed
-	current_index = GetMapIndex(location.map_id);
-	while (Data::treemap.maps[current_index].teleport == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
-	}
-	Game_System::SetAllowTeleport(Data::treemap.maps[current_index].teleport == 1);
+	Game_System::SetAllowSave(can_save != RPG::MapInfo::TriState_forbid);
+	Game_System::SetAllowEscape(can_escape != RPG::MapInfo::TriState_forbid);
+	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 }
 
 void Game_Map::SetupFromSave() {
