@@ -28,9 +28,10 @@ Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
 	type = Scene::Teleport;
 }
 
-Scene_Teleport::Scene_Teleport(const RPG::Item& item)
-		: item(&item) {
+Scene_Teleport::Scene_Teleport(const RPG::Item& item, const RPG::Skill& skill)
+		: skill(&skill), item(&item) {
 	type = Scene::Teleport;
+	assert(item.skill_id == skill.ID && "Item doesn't invoke the skill");
 }
 
 void Scene_Teleport::Start() {
@@ -43,13 +44,13 @@ void Scene_Teleport::Update() {
 	teleport_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(skill->sound_effect);
-
-		if (skill) {
-			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
-		} else if (item) {
+		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
+		} else {
+			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
 		}
+
+		Game_System::SePlay(skill->sound_effect);
 
 		const RPG::SaveTarget& target = teleport_window->GetTarget();
 
