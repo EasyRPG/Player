@@ -712,6 +712,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 
 	Game_Message::message_waiting = true;
 	Game_Message::owner_id = event_id;
+	wait_messages = true;
 
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];
