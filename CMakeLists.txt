@@ -355,13 +355,10 @@ add_library(${PROJECT_NAME}
 include(CMakeDependentOption)
 
 # Include directories
-target_include_directories(
-	${PROJECT_NAME} PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Extra CMake Module files
-list(APPEND CMAKE_MODULE_PATH
-	"${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules")
 
 include(ConfigureWindows)
 include(PlayerFindPackage)
@@ -395,8 +392,7 @@ if(PLAYER_BUILD_LIBLCF)
 			"${LIBLCF_PATH}")
 	endif()
 	SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build liblcf shared library")
-	list(APPEND CMAKE_MODULE_PATH
-		"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
+	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules")
 
 	add_subdirectory(${LIBLCF_PATH})
 	target_link_libraries(${PROJECT_NAME} lcf)
@@ -425,16 +421,14 @@ endif()
 option(PLAYER_WITH_FREETYPE "Support FreeType font rendering" ON)
 CMAKE_DEPENDENT_OPTION(PLAYER_WITH_HARFBUZZ "Enable HarfBuzz text shaping (Requires FreeType)" ON "PLAYER_WITH_FREETYPE" OFF)
 
-player_find_package(
-	NAME Freetype
+player_find_package(NAME Freetype
 	CONDITION PLAYER_WITH_FREETYPE
 	DEFINITION HAVE_FREETYPE
 	FOUND Freetype
 	TARGET Freetype::Freetype)
 
 if(Freetype_FOUND)
-	player_find_package(
-		NAME Harfbuzz
+	player_find_package(NAME Harfbuzz
 		CONDITION PLAYER_WITH_HARFBUZZ
 		DEFINITION HAVE_HARFBUZZ
 		TARGET Harfbuzz::Harfbuzz)
@@ -447,8 +441,7 @@ set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer Op
 # Configure Audio backends
 if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 	option(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available." ON)
-	player_find_package(
-		NAME SDL2_mixer
+	player_find_package(NAME SDL2_mixer
 		CONDITION PLAYER_WITH_SDL2_MIXER
 		TARGET SDL2::MIXER)
 	if(SDL2_MIXER_FOUND)
@@ -463,15 +456,14 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
 
 	# Provide fmmidi options
 	option(PLAYER_ENABLE_FMMIDI "Enable internal MIDI sequencer. Will be used when external MIDI library fails." ON)
-	if(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
+	if(PLAYER_ENABLE_FMMIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	endif()
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	# SDL2_mixer Audio
-	player_find_package(
-		NAME SDL2_mixer
+	player_find_package(NAME SDL2_mixer
 		DEFINITION HAVE_SDL_MIXER
 		TARGET SDL2::MIXER
 		REQUIRED)
@@ -499,7 +491,7 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
 	target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY} LibSndFile::LibSndFile Fluidsynth::Fluidsynth)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_OPENAL=1)
 elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
-
+	# noop
 else()
 	message(FATAL_ERROR "Invalid Audio Backend")
 endif()
@@ -507,61 +499,54 @@ endif()
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
 	# speexdsp
 	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)
-	player_find_package(
-		NAME speexdsp
+	player_find_package(NAME speexdsp
 		CONDITION PLAYER_WITH_SPEEXDSP
 		DEFINITION HAVE_LIBSPEEXDSP
 		TARGET speexdsp::speexdsp)
 
 	# mpg123
 	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
-	player_find_package(
-		NAME mpg123
+	player_find_package(NAME mpg123
 		CONDITION PLAYER_WITH_MPG123
 		DEFINITION HAVE_MPG123
 		TARGET mpg123::mpg123)
 
 	# libsndfile
 	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
-	player_find_package(
-		NAME LibSndFile
+	player_find_package(NAME LibSndFile
 		CONDITION PLAYER_WITH_LIBSNDFILE
 		DEFINITION HAVE_LIBSNDFILE
 		TARGET LibSndFile::LibSndFile)
 
 	# libvorbis
 	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
-	player_find_package(
-		NAME Vorbisfile
+	player_find_package(NAME Vorbisfile
 		CONDITION PLAYER_WITH_OGGVORBIS
 		DEFINITION HAVE_OGGVORBIS
 		TARGET Vorbisfile::Vorbisfile)
 
 	# opusfile
 	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
-	player_find_package(
-		NAME Opusfile
+	player_find_package(NAME Opusfile
 		CONDITION PLAYER_WITH_OPUS
 		DEFINITION HAVE_OPUS
 		TARGET Opusfile::Opusfile)
 
 	# wildmidi
 	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
-	player_find_package(
-		NAME WildMidi
+	player_find_package(NAME WildMidi
 		CONDITION PLAYER_WITH_WILDMIDI
 		DEFINITION HAVE_WILDMIDI
 		TARGET WildMidi::WildMidi)
 
 	# xmp (lite)
 	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
-	player_find_package(
-		NAME XMP
+	player_find_package(NAME XMP
 		CONDITION PLAYER_WITH_XMP
 		DEFINITION HAVE_XMP
 		TARGET XMP::XMP)
 
-	if(NOT ${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+	if(PLAYER_ENABLE_FMMIDI)
 		target_sources(${PROJECT_NAME} PRIVATE
 			src/decoder_fmmidi.cpp
 			src/decoder_fmmidi.h
@@ -579,30 +564,27 @@ if(MSVC)
 endif()
 
 # Executable
-# Windows: Only open console for Debug builds
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-	add_executable(${PROJECT_NAME}_exe "src/main.cpp")
-else()
-	add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
-endif()
+add_executable(${PROJECT_NAME}_exe WIN32 "src/main.cpp")
+set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
 
 if(WIN32)
-	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
-else()
-	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player")
-endif()
+	# Open console for Debug builds
+	if(CMAKE_BUILD_TYPE MATCHES "Debug")
+		set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
+	endif()
 
-# Add Windows resources
-if(WIN32)
+	# Add resources
 	target_sources(${PROJECT_NAME}_exe PRIVATE "resources/player.rc")
+
+	# Change executable name
+	set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "Player")
 endif()
 
 target_link_libraries(${PROJECT_NAME}_exe ${PROJECT_NAME})
 
 # installation
 include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}_exe
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${PROJECT_NAME}_exe RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(MSVC)
 	install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}_exe> DESTINATION ${CMAKE_INSTALL_BINDIR} OPTIONAL)
@@ -711,11 +693,11 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		else()
 			message(STATUS "MIDI playback: WildMidi")
 		endif()
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
-		message(STATUS "MIDI playback: built-in (FmMidi)")
 	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
 		message(STATUS "MIDI playback: SDL2_mixer. Fallback to built-in (FmMidi)")
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+	elseif(PLAYER_ENABLE_FMMIDI)
+		message(STATUS "MIDI playback: built-in (FmMidi)")
+	else()
 		if(SDL2_mixer_FOUND)
 			message(STATUS "MIDI playback: SDL2_mixer.")
 		else()
