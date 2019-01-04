@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.7)
 
 project(EasyRPG_Player VERSION 0.5.4 LANGUAGES CXX)
 
+# C++11 is required
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Source Files
 add_library(${PROJECT_NAME}
 	src/3ds_ui.cpp
@@ -360,9 +365,6 @@ list(APPEND CMAKE_MODULE_PATH
 
 include(ConfigureWindows)
 include(PlayerFindPackage)
-
-# C++11 is required
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
