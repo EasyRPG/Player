@@ -33,6 +33,8 @@ stamp-h1
 # cmake
 CMakeFiles/
 CMakeCache.txt
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
 CTestTestfile.cmake
@@ -55,7 +57,7 @@ install_manifest.txt
 
 # ninja
 .ninja_*
-build.ninja
+*.ninja
 
 # IntelliJ
 .idea/
