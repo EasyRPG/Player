@@ -21,15 +21,17 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "input.h"
+#include "transition.h"
 
 Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
 		: actor(&actor), skill(&skill) {
 	type = Scene::Teleport;
 }
 
-Scene_Teleport::Scene_Teleport(const RPG::Item& item)
-		: item(&item) {
+Scene_Teleport::Scene_Teleport(const RPG::Item& item, const RPG::Skill& skill)
+		: skill(&skill), item(&item) {
 	type = Scene::Teleport;
+	assert(item.skill_id == skill.ID && "Item doesn't invoke the skill");
 }
 
 void Scene_Teleport::Start() {
@@ -42,13 +44,13 @@ void Scene_Teleport::Update() {
 	teleport_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
-
-		if (skill) {
-			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
-		} else if (item) {
+		if (item) {
 			Main_Data::game_party->ConsumeItemUse(item->ID);
+		} else {
+			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
 		}
+
+		Game_System::SePlay(skill->sound_effect);
 
 		const RPG::SaveTarget& target = teleport_window->GetTarget();
 
@@ -60,5 +62,13 @@ void Scene_Teleport::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 
 		Scene::Pop();
+	}
+}
+
+void Scene_Teleport::TransitionOut() {
+	if (Scene::instance->type == Map) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	} else {
+		Scene::TransitionOut();
 	}
 }

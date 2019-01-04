@@ -33,10 +33,11 @@ public:
 	 * Constructor.
 	 */
 	Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill);
-	Scene_Teleport(const RPG::Item& item);
+	Scene_Teleport(const RPG::Item& item, const RPG::Skill& skill);
 
 	void Start() override;
 	void Update() override;
+	void TransitionOut() override;
 private:
 	std::unique_ptr<Window_Teleport> teleport_window;
 
