@@ -45,7 +45,7 @@ void Window_BattleMessage::PushLine(const std::string& line) {
 				line,
 				GetWidth() - 20,
 				[this](const std::string& wrap_line) {
-				lines.push_back(wrap_line);
+					lines.push_back(wrap_line);
 				}
 				);
 	}

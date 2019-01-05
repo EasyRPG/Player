@@ -490,7 +490,6 @@ public:
 
 private:
 	void Init();
-private:
 	const RPG::Skill& skill;
 	const RPG::Item* item;
 };
