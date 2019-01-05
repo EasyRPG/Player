@@ -67,7 +67,7 @@ bool Game_Battler::EvadesAllPhysicalAttacks() const {
 RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
 	const std::vector<int16_t> states = GetInflictedStates();
 
-	//Priority is nomove > attack enemy > attack ally > normal
+	// Priority is nomove > attack enemy > attack ally > normal
 
 	RPG::State::Restriction sig_res = RPG::State::Restriction_normal;
 	for (int i = 0; i < (int)states.size(); i++) {

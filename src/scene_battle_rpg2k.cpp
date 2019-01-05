@@ -1074,7 +1074,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 			return DisplayMonstersInMessageWindow();;
 		}
 		else {
-			//reset static vars
+			// reset static vars
 			encounter_message_first_strike = false;
 			encounter_message_first_monster = true;
 			battle_result_messages.clear();

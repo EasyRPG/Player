@@ -1225,7 +1225,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		int to_hit = skill.hit;
 
-		//If Physical technique, apply physical restrictions
+		// If Physical technique, apply physical restrictions
 		if (skill.failure_message == 3) {
 			to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
 		}
@@ -1259,7 +1259,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 
-			//If resurrected and no HP selected, the effect value is a percentage:
+			// If resurrected and no HP selected, the effect value is a percentage:
 			if (IsRevived() && !skill.affect_hp) {
 				this->hp = std::max<int>(0, std::min<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(),
 							GetTarget()->GetMaxHp() * effect / 10));
