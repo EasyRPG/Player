@@ -17,7 +17,7 @@ LOCAL_SRC_FILES := \
 	org_easyrpg_player_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp))
 
-LOCAL_SHARED_LIBRARIES := SDL2
+LOCAL_SHARED_LIBRARIES := SDL2 hidapi
 
 LOCAL_STATIC_LIBRARIES := \
 		vorbisfile vorbis ogg WildMidi \
