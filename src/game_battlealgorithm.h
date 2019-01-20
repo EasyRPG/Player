@@ -226,11 +226,9 @@ public:
 	bool IsSuccess() const;
 
 	/**
-	 * See GetDeathMessage for further explanations
-	 *
-	 * @return True when the caller died because his hp reached 0 (false when a condition caused death)
+	 * @return truen when this action inflicts death on the target.
 	 */
-	bool IsKilledByAttack() const;
+	bool IsLethal() const;
 
 	/**
 	 * Gets if the last action was a critical hit.
@@ -344,7 +342,7 @@ public:
 	 *
 	 * @param out filled with all conditions in text form
 	 */
-	virtual void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const;
+	virtual void GetResultMessages(std::vector<std::string>& out) const;
 
 	/**
 	 * Returns the physical rate of the attack.
@@ -381,6 +379,11 @@ public:
 	 */
 	void SetRepeat(int repeat);
 
+	/**
+	 * @return the critical hit message
+	 */
+	std::string GetCriticalHitMessage() const;
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -389,7 +392,6 @@ protected:
 	std::string GetAttackFailureMessage(const std::string& points) const;
 	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
 	std::string GetUndamagedMessage() const;
-	std::string GetCriticalHitMessage() const;
 	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
 	std::string GetDamagedMessage() const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
@@ -428,7 +430,7 @@ protected:
 	mutable bool first_attack;
 	bool healing;
 	bool success;
-	bool killed_by_attack_damage;
+	bool lethal = false;
 	bool critical_hit;
 	bool absorb;
 	bool revived = false;
@@ -437,10 +439,10 @@ protected:
 	int cur_repeat = 0;
 	int repeat = 1;
 
-	RPG::Animation* animation;
-	RPG::Animation* animation2;
-	bool has_animation_played;
-	bool has_animation2_played;
+	RPG::Animation* animation = nullptr;
+	RPG::Animation* animation2 = nullptr;
+	bool has_animation_played = false;
+	bool has_animation2_played = false;
 
 	std::vector<int16_t> conditions;
 	std::vector<int16_t> healed_conditions;
@@ -461,6 +463,8 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	int GetPhysicalDamageRate() const override;
+private:
+	void Init();
 };
 
 class Skill : public AlgorithmBase {
@@ -479,12 +483,13 @@ public:
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
 	const RPG::Sound* GetResultSe() const override;
-	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
 	bool ActionIsPossible() const override;
 
 private:
+	void Init();
 	const RPG::Skill& skill;
 	const RPG::Item* item;
 };
@@ -502,7 +507,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 	bool ActionIsPossible() const override;
 
 private:
@@ -557,7 +562,7 @@ public:
 	bool Execute() override;
 	void Apply() override;
 
-	void GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const override;
+	void GetResultMessages(std::vector<std::string>& out) const override;
 };
 
 class Transform : public AlgorithmBase {

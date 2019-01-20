@@ -30,6 +30,56 @@
  * Manages the battles.
  */
 class Scene_Battle_Rpg2k : public Scene_Battle {
+public:
+	enum BattleActionState {
+		/**
+		 * Called once
+		 * Handles healing of conditions that get auto removed after X turns.
+		 */
+		BattleActionState_ConditionHeal,
+		/**
+		 * Called once
+		 * Handles first start message
+		 */
+		BattleActionState_Usage1,
+		/**
+		 * Called once
+		 * Handles second start message
+		 */
+		BattleActionState_Usage2,
+		/**
+		 * Called once
+		 * Handles the animation
+		 */
+		BattleActionState_Animation,
+		/**
+		 * Called once per target.
+		 * Used to execute the algorithm.
+		 */
+		BattleActionState_Execute,
+		/**
+		 * Called once per target.
+		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
+		 */
+		BattleActionState_Apply,
+		/**
+		* Called repeatedly.
+		* Used for the results, to push and pop each message.
+		*/
+		BattleActionState_Results,
+		/**
+		 * Called once per target if killed.
+		 * Action treating whether the enemy died or not.
+		 */
+		BattleActionState_Death,
+		/**
+		 * Called once per target.
+		 * It finishes the action and checks whether to repeat it if there is another target to hit.
+		 */
+		BattleActionState_Finished
+	};
+
+
 
 public:
 	Scene_Battle_Rpg2k();
@@ -91,13 +141,6 @@ protected:
 	void SelectPreviousActor();
 
 	/**
-	 * Sets the encounter message sleep time (encounter_message_sleep_until)
-	 * depending on whether the last character is shown or not, whether
-	 * the page is filled or not.
-	 */
-	void SetWaitForEnemyAppearanceMessages();
-
-	/**
 	 * Gets the time during before hiding a windowful of
 	 * text.
 	 *
@@ -115,24 +158,34 @@ protected:
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 
+	// Battle Start Handlers
 	bool DisplayMonstersInMessageWindow();
 
+	// BattleAction State Machine Handlers
+	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
-	std::vector<int> battle_result_order;
-	std::vector<int>::iterator battle_result_order_it;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
-	std::vector<Game_Battler *> visible_enemies;
-	std::vector<Game_Battler *>::const_iterator enemy_iterator;
-	int battle_action_wait;
-	int battle_action_state;
+	bool battle_action_pending = false;
+	int battle_action_wait = 0;
+	int battle_action_state = BattleActionState_ConditionHeal;
+	int battle_action_start_index = 0;
+	int battle_action_results_index = 0;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
-	int encounter_message_sleep_until = -1;
+	int encounter_message_wait = 0;
 	bool encounter_message_first_strike = false;
 
-	bool battle_action_pending = false;
 	bool begin_escape = true;
 	bool escape_success = false;
 	int escape_counter = 0;

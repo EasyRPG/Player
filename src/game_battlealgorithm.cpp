@@ -115,15 +115,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	switch_id = -1;
 	healing = false;
 	success = false;
-	killed_by_attack_damage = false;
+	lethal = false;
 	critical_hit = false;
 	absorb = false;
 	revived = false;
 	reflect = -1;
-	animation = nullptr;
-	animation2 = nullptr;
-	has_animation_played = false;
-	has_animation2_played = false;
 	conditions.clear();
 	healed_conditions.clear();
 	shift_attributes.clear();
@@ -290,8 +286,8 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 	return success;
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByAttack() const {
-	return killed_by_attack_damage;
+bool Game_BattleAlgorithm::AlgorithmBase::IsLethal() const {
+	return lethal;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
@@ -311,10 +307,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetSecondStartMessage() const {
 }
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
-	if (!killed_by_attack_damage) {
-		return "";
-	}
-
 	if (current_target == targets.end()) {
 		return "";
 	}
@@ -560,13 +552,12 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const
 	}
 }
 
-void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
+void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
 	}
 
 	if (!success) {
-		out_replace.push_back(0);
 		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 		return;
 	}
@@ -575,17 +566,10 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		if (IsPositive()) {
 			if (!IsRevived() && (GetAffectedHp() > 0 || GetType() != Type::Item)) {
-				out_replace.push_back(0);
 				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 			}
 		}
 		else {
-			if (critical_hit) {
-				out_replace.push_back(0);
-				out.push_back(GetCriticalHitMessage());
-			}
-
-			out_replace.push_back(0);
 			if (GetAffectedHp() == 0) {
 				out.push_back(GetUndamagedMessage());
 			}
@@ -598,23 +582,20 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 				}
 			}
 		}
+	}
 
-		// If enemy is killed, it ends here
-		if (killed_by_attack_damage) {
-			out_replace.push_back(1);
-			out.push_back(GetDeathMessage());
-			return;
-		}
+	// If target is killed, it ends here
+	if (lethal) {
+		return;
+	}
 
-		// Healed conditions messages
-		std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
-		for (; it_healed != healed_conditions.end(); it_healed++) {
-			out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
-		}
+	// Healed conditions messages
+	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
+	for (; it_healed != healed_conditions.end(); it_healed++) {
+		out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
 	}
 
 	if (GetAffectedSp() != -1) {
-		out_replace.push_back(0);
 		if (IsPositive()) {
 			if (GetAffectedSp() > 0 || GetType() != Type::Item) {
 				out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
@@ -630,22 +611,18 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	if (GetAffectedAttack() > 0) {
-		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
 	}
 
 	if (GetAffectedDefense() > 0) {
-		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
 	}
 
 	if (GetAffectedSpirit() > 0) {
-		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
 	}
 
 	if (GetAffectedAgility() > 0) {
-		out_replace.push_back(0);
 		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
 	}
 
@@ -655,11 +632,9 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 		if (GetTarget()->HasState(state_id) && std::find(healed_conditions.begin(), healed_conditions.end(), state_id) == healed_conditions.end()) {
 			if (IsPositive()) {
-				out_replace.push_back(0);
 				out.push_back(GetStateMessage(state->message_recovery));
 			}
 			else if (!state->message_already.empty()) {
-				out_replace.push_back(0);
 				out.push_back(GetStateMessage(state->message_already));
 			}
 		} else {
@@ -669,7 +644,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 			}
 
 			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
-			out_replace.push_back(0);
 			out.push_back(GetStateMessage(is_actor ? state->message_actor : state->message_enemy));
 
 			// Reporting ends with death state
@@ -914,16 +888,53 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {
-	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
-		SetRepeat(2);
-	}
+	Init();
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Party_Base* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {
-	if (source->GetType() == Game_Battler::Type_Ally && static_cast<Game_Actor*>(source)->HasDualAttack()) {
-		SetRepeat(2);
+	Init();
+}
+
+void Game_BattleAlgorithm::Normal::Init() {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		Game_Actor* ally = static_cast<Game_Actor*>(source);
+
+		if (ally->HasDualAttack()) {
+			SetRepeat(2);
+		}
+
+		const auto* weapon1 = ally->GetWeapon();
+		const auto* weapon2 = ally->Get2ndWeapon();
+		if (weapon1 == nullptr) {
+			weapon1 = weapon2;
+		}
+
+		if (weapon1) {
+			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+				return;
+			}
+			if (weapon2) {
+				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
+				if (!animation2) {
+					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				}
+			}
+		} else {
+			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
+			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
+			if (!animation) {
+				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
+			}
+		}
+	}
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		if (Player::IsRPG2k3() && !Data::animations.empty()) {
+			animation = ReaderUtil::GetElement(Data::animations, 1);
+		}
 	}
 }
 
@@ -948,50 +959,22 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			weapon1 = weapon2;
 		}
 
-		if (!weapon1 && !weapon2) {
-			// No Weapon
-			// TODO: Different behavior for 2k3
-			const RPG::Actor& actor = *ReaderUtil::GetElement(Data::actors, ally->GetId());
-			animation = ReaderUtil::GetElement(Data::animations, actor.unarmed_animation);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid unarmed animation ID %d", actor.unarmed_animation);
-			}
-		} else if (!weapon2) {
-			// Single weapon
-			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
-			}
-
-			multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
-		} else {
-			// Double weapon
-			animation = ReaderUtil::GetElement(Data::animations, weapon1->animation_id);
-			if (!animation) {
-				Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon1->animation_id);
+		if (weapon1) {
+			if (!weapon2) {
+				multiplier = GetTarget()->GetAttributeMultiplier(weapon1->attribute_set);
 			} else {
-				animation2 = ReaderUtil::GetElement(Data::animations, weapon2->animation_id);
-				if (!animation2) {
-					Output::Warning("Algorithm Normal: Invalid weapon animation ID %d", weapon2->animation_id);
+				auto& a1 = weapon1->attribute_set;
+				auto& a2 = weapon2->attribute_set;
+				std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
+				for (size_t i = 0; i < attribute_set.size(); ++i) {
+					if (i < a1.size())
+						attribute_set[i] = attribute_set[i] | a1[i];
+					if (i < a2.size())
+						attribute_set[i] = attribute_set[i] | a2[i];
 				}
-			}
 
-			auto& a1 = weapon1->attribute_set;
-			auto& a2 = weapon2->attribute_set;
-			std::vector<bool> attribute_set(std::max(a1.size(), a2.size()), false);
-			for (size_t i = 0; i < attribute_set.size(); ++i) {
-				if (i < a1.size())
-					attribute_set[i] = attribute_set[i] | a1[i];
-				if (i < a2.size())
-					attribute_set[i] = attribute_set[i] | a2[i];
+				multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
 			}
-
-			multiplier = GetTarget()->GetAttributeMultiplier(attribute_set);
-		}
-	} else {
-		// Source is Enemy
-		if (!Data::animations.empty()) {
-			animation = &Data::animations[0];
 		}
 	}
 
@@ -1009,11 +992,6 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (effect < 0)
 			effect = 0;
 
-		// up to 20% stronger/weaker
-		int act_perc = Utils::GetRandomNumber(-20, 20);
-		// Change rounded up
-		int change = (int)(std::ceil(effect * act_perc / 100.0));
-		effect += change;
 		effect *= multiplier;
 		if (critical_hit) {
 			effect *= 3;
@@ -1028,13 +1006,16 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			}
 		}
 
+		auto var = Utils::GetRandomNumber(-20, 20);
+		effect += (effect * var) / 100;
+
 		effect = Utils::Clamp(effect, 0, MaxDamageValue());
 
 		this->hp = effect;
 
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
-			killed_by_attack_damage = true;
+			lethal = true;
 		}
 		else {
 			// Conditions healed by physical attack:
@@ -1059,6 +1040,9 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					}
 
 					auto inflict_state = [&](int state_id) {
+						if (GetTarget()->HasState(state_id)) {
+							return;
+						}
 						// Don't allow duplicates.
 						if (std::find(conditions.rbegin(), conditions.rend(), state_id)
 								== conditions.rend()) {
@@ -1103,6 +1087,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 				}
 
 				GetTarget()->FilterInapplicableStates(conditions);
+
+				if (std::find(conditions.begin(), conditions.end(), RPG::State::kDeathID) != conditions.end()) {
+					lethal = true;
+				}
 			}
 		}
 	}
@@ -1162,18 +1150,31 @@ int Game_BattleAlgorithm::Normal::GetPhysicalDamageRate() const {
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
+{
+	Init();
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source, target), skill(skill), item(item)
+{
+	Init();
 }
 
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item) :
-	AlgorithmBase(Type::Skill, source), skill(skill), item(item) {
-	// no-op
+	AlgorithmBase(Type::Skill, source), skill(skill), item(item)
+{
+	Init();
+}
+
+void Game_BattleAlgorithm::Skill::Init() {
+	animation = nullptr;
+	if (skill.animation_id != 0) {
+		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
+		if (!animation) {
+			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
+		}
+	}
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
@@ -1198,20 +1199,13 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 	return (!GetTarget()->IsDead());
 }
 
+
 bool Game_BattleAlgorithm::Skill::Execute() {
 	if (item && item->skill_id != skill.ID) {
 		assert(false && "Item skill mismatch");
 	}
 
 	Reset();
-
-	animation = nullptr;
-	if (skill.animation_id != 0) {
-		animation = ReaderUtil::GetElement(Data::animations, skill.animation_id);
-		if (!animation) {
-			Output::Warning("Algorithm Skill: Invalid skill animation ID %d", skill.animation_id);
-		}
-	}
 
 	absorb = false;
 	this->success = false;
@@ -1231,7 +1225,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		int to_hit = skill.hit;
 
-		//If Physical technique, apply physical restrictions
+		// If Physical technique, apply physical restrictions
 		if (skill.failure_message == 3) {
 			to_hit = ToHitPhysical(GetSource(), GetTarget(), to_hit);
 		}
@@ -1265,7 +1259,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			this->success = GetAffectedHp() != -1 || GetAffectedSp() != -1 || GetAffectedAttack() > 0
 				|| GetAffectedDefense() > 0 || GetAffectedSpirit() > 0 || GetAffectedAgility() > 0;
 
-			//If resurrected and no HP selected, the effect value is a percentage:
+			// If resurrected and no HP selected, the effect value is a percentage:
 			if (IsRevived() && !skill.affect_hp) {
 				this->hp = std::max<int>(0, std::min<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(),
 							GetTarget()->GetMaxHp() * effect / 10));
@@ -1298,7 +1292,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 				if (GetTarget()->GetHp() - this->hp <= 0) {
 					// Death state
-					killed_by_attack_damage = true;
+					lethal = true;
 				}
 			}
 
@@ -1350,8 +1344,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			this->success = true;
 		}
 
+		if (std::find(conditions.begin(), conditions.end(), RPG::State::kDeathID) != conditions.end()) {
+			lethal = true;
+		}
+
 		// Attribute resistance / weakness + an attribute selected + can be modified
-		if (!success && skill.affect_attr_defence) {
+		if (skill.affect_attr_defence) {
 			for (int i = 0; i < skill.attribute_effects.size(); i++) {
 				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositive() ? 1 : -1)) {
 					if (!Utils::PercentChance(skill.hit))
@@ -1467,9 +1465,8 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
 	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
 }
 
-void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
+void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
-		out_replace.push_back(0);
 		switch (skill.failure_message) {
 			case 0:
 				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a));
@@ -1489,11 +1486,10 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 		return;
 	}
 
-	AlgorithmBase::GetResultMessages(out, out_replace);
+	AlgorithmBase::GetResultMessages(out);
 
 	// Attribute resistance / weakness + an attribute selected + can be modified
 	for (auto& sa: shift_attributes) {
-		out_replace.push_back(0);
 		out.push_back(GetAttributeShiftMessage(ReaderUtil::GetElement(Data::attributes, sa)->name));
 	}
 }
@@ -1668,9 +1664,9 @@ int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Item;
 }
 
-void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
+void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
 	if (success)
-		AlgorithmBase::GetResultMessages(out, out_replace);
+		AlgorithmBase::GetResultMessages(out);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
@@ -1712,6 +1708,7 @@ int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
 }
 
 bool Game_BattleAlgorithm::Defend::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1742,6 +1739,7 @@ std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 
 bool Game_BattleAlgorithm::Observe::Execute() {
 	// Observe only prints the start message
+	this->success = true;
 	return true;
 }
 
@@ -1767,6 +1765,7 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Charge::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1827,7 +1826,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
-		killed_by_attack_damage = true;
+		lethal = true;
 	}
 
 	// Conditions healed by physical attack:
@@ -1927,9 +1926,8 @@ void Game_BattleAlgorithm::Escape::Apply() {
 	ApplyActionSwitches();
 }
 
-void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out, std::vector<int>& out_replace) const {
+void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out) const {
 	if (source->GetType() == Game_Battler::Type_Ally) {
-		out_replace.push_back(0);
 		if (this->success) {
 			out.push_back(Data::terms.escape_success);
 		}
@@ -1961,6 +1959,7 @@ std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::Transform::Execute() {
+	this->success = true;
 	return true;
 }
 
@@ -1993,7 +1992,7 @@ std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
 }
 
 bool Game_BattleAlgorithm::NoMove::Execute() {
-	// no-op
+	this->success = true;
 	return true;
 }
 

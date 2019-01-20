@@ -520,20 +520,13 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		Scene::Pop();
 	}
 
-	if (!battle_action_pending) {
-		// If we will start a new battle action, first check for state changes
-		// such as death, paralyze, confuse, etc..
-		UpdateBattlerActions();
-	}
-
 	if (!battle_actions.empty()) {
 		auto* battler = battle_actions.front();
 		if (!battle_action_pending) {
-			// If we can no longer perform the action (no more items, ran out of SP, etc..)
-			if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
-				battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-				battler->SetCharged(false);
-			}
+			// If we will start a new battle action, first check for state changes
+			// such as death, paralyze, confuse, etc..
+			PrepareBattleAction(battler);
+
 		}
 		auto* alg = battler->GetBattleAlgorithm().get();
 		battle_action_pending = true;
@@ -1002,7 +995,6 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
-	std::vector<int> dummy;
 
 	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor);
 	active_actor->SetGauge(0);
@@ -1012,7 +1004,7 @@ void Scene_Battle_Rpg2k3::Escape() {
 
 	if (!escape_success) {
 		std::vector<std::string> battle_result_messages;
-		escape_alg.GetResultMessages(battle_result_messages, dummy);
+		escape_alg.GetResultMessages(battle_result_messages);
 		SetState(State_SelectActor);
 		ShowNotification(battle_result_messages[0]);
 	}

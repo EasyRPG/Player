@@ -25,11 +25,9 @@
 #include "utils.h"
 
 Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	needs_refresh(true),
-	hidden_lines(0) {
-
-	SetContents(Bitmap::Create(width - 16, height - 16));
+	Window_Base(ix, iy, iwidth, iheight)
+{
+	SetContents(Bitmap::Create(width - 20, height - 16));
 
 	visible = false;
 	// Above other windows but below the messagebox
@@ -37,24 +35,22 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 }
 
 void Window_BattleMessage::Push(const std::string& message) {
-	std::stringstream smessage(message);
-	std::string line;
-	hidden_lines = 0;
-	while (getline(smessage, line)) {
-		if (Player::IsRPG2kE()) {
-			std::vector<std::string>& wrapped_lines = lines;
-			int line_count = Game_Message::WordWrap(
-								line,
-								GetWidth() - 24,
-								[&wrapped_lines](const std::string& line) {
-									wrapped_lines.push_back(line);
-								}
-							);
-			hidden_lines = line_count - 1;
-		}
-		else {
-			lines.push_back(line);
-		}
+	Utils::ForEachLine(message, [this](const std::string& line)
+			{ PushLine(line); });
+}
+
+void Window_BattleMessage::PushLine(const std::string& line) {
+	if (Player::IsRPG2kE()) {
+		Game_Message::WordWrap(
+				line,
+				GetWidth() - 20,
+				[this](const std::string& wrap_line) {
+					lines.push_back(wrap_line);
+				}
+				);
+	}
+	else {
+		lines.push_back(line);
 	}
 
 	needs_refresh = true;
@@ -71,58 +67,56 @@ void Window_BattleMessage::PushWithSubject(const std::string& message, const std
 	else {
 		Push(subject + message);
 	}
+	needs_refresh = true;
 }
 
 void Window_BattleMessage::Pop() {
 	lines.pop_back();
 	needs_refresh = true;
+	if (GetIndex() > (int)lines.size()) {
+		SetIndex(lines.size());
+	}
+}
+
+void Window_BattleMessage::PopUntil(int line_number) {
+	while (static_cast<int>(lines.size()) > line_number) {
+		lines.pop_back();
+	}
+	needs_refresh = true;
 }
 
 void Window_BattleMessage::Clear() {
 	lines.clear();
+	SetIndex(0);
 	needs_refresh = true;
 }
 
-bool Window_BattleMessage::NextPage() {
-	int count = (int)lines.size();
-
-	if (!count) {
-		return false;
+void Window_BattleMessage::ScrollToEnd() {
+	const auto old_index = index;
+	if (lines.size() > linesPerPage) {
+		index = lines.size() - linesPerPage;
+	} else {
+		index = 0;
 	}
-	else if (count <= linesPerPage) {
-		lines.clear();
-		needs_refresh = true;
-		return false;
-	}
-	else {
-		lines.erase(lines.begin(), lines.begin() + linesPerPage - 1);
-		needs_refresh = true;
-		return true;
-	}
+	needs_refresh |= (index != old_index);
 }
 
 void Window_BattleMessage::Refresh() {
 	contents->Clear();
 
-	int contents_y = 2;
-
-	std::vector<std::string>::const_iterator it;
-	int i = 0;
-	for (it = lines.begin(); it < lines.end() - hidden_lines; ++it) {
-		contents->TextDraw(0, contents_y, Font::ColorDefault, *it);
-		contents_y += 16;
-
-		++i;
-		if (i > 3) {
-			break;
-		}
+	int i = GetIndex();
+	const auto ed = std::min(i + linesPerPage, (int)lines.size());
+	int y = 2;
+	for (; i < ed; ++i) {
+		contents->TextDraw(0, y, Font::ColorDefault, lines[i]);
+		y+= 16;
 	}
+	needs_refresh = false;
 }
 
 void Window_BattleMessage::Update() {
 	Window_Base::Update();
 	if (needs_refresh) {
-		needs_refresh = false;
 		Refresh();
 	}
 }
@@ -131,24 +125,6 @@ int Window_BattleMessage::GetLineCount() {
 	return (int)lines.size();
 }
 
-int Window_BattleMessage::GetHiddenLineCount() {
-	return hidden_lines;
-}
-
-void Window_BattleMessage::ShowHiddenLines(int count) {
-	if (count == -1) {
-		hidden_lines = 0;
-	}
-	else {
-		hidden_lines -= count;
-		if (hidden_lines < 0) {
-			hidden_lines = 0;
-		}
-	}
-
-	needs_refresh = true;
-}
-
 bool Window_BattleMessage::IsPageFilled() {
-	return (lines.size() - hidden_lines) >= linesPerPage;
+	return (lines.size() - GetIndex()) >= linesPerPage;
 }

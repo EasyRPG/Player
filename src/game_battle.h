@@ -85,8 +85,6 @@ namespace Game_Battle {
 	 */
 	bool IsBattleAnimationWaiting();
 
-	bool IsBattleAnimationOnlySound();
-
 	/**
 	 * Starts a new battle turn.
 	 * Event pages are reset depending on the actor.

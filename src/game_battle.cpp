@@ -207,10 +207,6 @@ bool Game_Battle::IsBattleAnimationWaiting() {
 	return bool(animation);
 }
 
-bool Game_Battle::IsBattleAnimationOnlySound() {
-	return bool(animation) && animation->ShouldOnlySound();
-}
-
 void Game_Battle::NextTurn(Game_Battler* battler) {
 	if (battler == nullptr) {
 		std::fill(page_executed.begin(), page_executed.end(), false);

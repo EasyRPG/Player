@@ -174,41 +174,43 @@ int Game_Message::GetRealPosition() {
 	}
 }
 
-int Game_Message::WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback) {
-	size_t start = 0;
-	size_t lastfound = 0;
+int Game_Message::WordWrap(const std::string& line, const int limit, const std::function<void(const std::string &line)> callback) {
+	int start = 0;
 	int line_count = 0;
-	bool end_of_string;
 	FontRef font = Font::Default();
-	Rect size;
 
 	do {
-		line_count++;
-		size_t found = line.find(" ", start);
-		std::string wrapped = line.substr(start, found - start);
-		end_of_string = false;
+		int next = start;
 		do {
-			lastfound = found;
-			found = line.find(" ", lastfound + 1);
+			auto found = line.find(" ", next);
 			if (found == std::string::npos) {
 				found = line.size();
 			}
-			wrapped = line.substr(start, found - start);
-			size = font->GetSize(wrapped);
-		} while (found < line.size() - 1 && size.width < limit);
-		if (found >= line.size() - 1) {
-			// It's end of the string, not a word-break
-			if (size.width < limit) {
-				// And the last word of the string fits on the line
-				// (otherwise do another word-break)
-				lastfound = found;
-				end_of_string = true;
+
+			auto wrapped = line.substr(start, found - start);
+			auto width = font->GetSize(wrapped).width;
+			if (width > limit) {
+				if (next == start) {
+					next = found + 1;
+				}
+				break;
 			}
+
+			next = found + 1;
+		} while(next < line.size());
+
+		if (start == (next - 1)) {
+			start = next;
+			continue;
 		}
-		wrapped = line.substr(start, lastfound - start);
+
+		auto wrapped = line.substr(start, (next - 1) - start);
+
 		callback(wrapped);
-		start = lastfound + 1;
-	} while (start < line.size() && !end_of_string);
+		line_count++;
+
+		start = next;
+	} while (start < line.size());
 
 	return line_count;
 }

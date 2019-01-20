@@ -470,7 +470,6 @@ option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
 
 if(PLAYER_ENABLE_TESTS)
 	enable_testing()
-
 	set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/TestGame")
 	if(NOT EXISTS ${TEST_GAME_REPOSITORY_PATH})
 		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
