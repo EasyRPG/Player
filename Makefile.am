@@ -262,6 +262,8 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_about.h \
 	src/window_actorinfo.cpp \
 	src/window_actorinfo.h \
+	src/window_actorsp.cpp \
+	src/window_actorsp.h \
 	src/window_actorstatus.cpp \
 	src/window_actorstatus.h \
 	src/window_actortarget.cpp \

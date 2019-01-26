@@ -127,6 +127,7 @@ add_library(${PROJECT_NAME}
 	src/weather.cpp
 	src/window_about.cpp
 	src/window_actorinfo.cpp
+	src/window_actorsp.cpp
 	src/window_actorstatus.cpp
 	src/window_actortarget.cpp
 	src/window_base.cpp
