@@ -120,8 +120,8 @@ void Background::SetTone(Tone tone) {
 }
 void Background::Update(int& rate, int& value) {
 	int step =
-		(rate > 0) ? 1 << rate :
-		(rate < 0) ? 1 << -rate :
+		(rate > 0) ? 2 << rate :
+		(rate < 0) ? 2 << -rate :
 		0;
 	value += step;
 }
