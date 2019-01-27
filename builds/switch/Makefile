@@ -82,7 +82,7 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
 		-lsndfile -lvorbisidec -logg -lxmp-lite \
 		-lWildMidi -lsamplerate -lopusfile -lopus \
-		-lnx -lm
+		-lglad -lEGL -lglapi -ldrm_nouveau -lnx -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
