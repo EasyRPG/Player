@@ -464,12 +464,14 @@ bool Game_Player::GetOnVehicle() {
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
 		data()->boarding = true;
-		if (!GetThrough()) {
-			SetThrough(true);
-			MoveForward();
-			SetThrough(false);
-		} else {
-			MoveForward();
+		if (!IsMoving() && !IsJumping()) {
+			if (!GetThrough()) {
+				SetThrough(true);
+				MoveForward();
+				SetThrough(false);
+			} else {
+				MoveForward();
+			}
 		}
 	} else {
 		data()->aboard = true;
@@ -632,6 +634,10 @@ bool Game_Player::IsAboard() const {
 	return data()->aboard;
 }
 
+bool Game_Player::IsAboard() const {
+	return data()->aboard;
+}
+
 bool Game_Player::IsBoardingOrUnboarding() const {
 	return data()->boarding || data()->unboarding;
 }
@@ -643,12 +649,14 @@ void Game_Player::UnboardingFinished() {
 		SetSpriteDirection(RPG::EventPage::Direction_down);
 	} else {
 		data()->unboarding = true;
-		if (!GetThrough()) {
-			SetThrough(true);
-			MoveForward();
-			SetThrough(false);
-		} else {
-			MoveForward();
+		if (!IsMoving() && !IsJumping()) {
+			if (!GetThrough()) {
+				SetThrough(true);
+				MoveForward();
+				SetThrough(false);
+			} else {
+				MoveForward();
+			}
 		}
 	}
 	data()->vehicle = Game_Vehicle::None;

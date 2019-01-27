@@ -215,9 +215,6 @@ bool Game_Vehicle::IsInUse() const {
 }
 
 void Game_Vehicle::SyncWithPlayer() {
-	if (!IsInUse()) {
-		return;
-	}
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
 	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
@@ -277,7 +274,7 @@ bool Game_Vehicle::CanLand() const {
 void Game_Vehicle::Update() {
 	Game_Character::UpdateMovement();
 
-	if (!Main_Data::game_player->IsBoardingOrUnboarding()) {
+	if (IsInUse() && Main_Data::game_player->IsAboard()) {
 		SyncWithPlayer();
 	}
 
