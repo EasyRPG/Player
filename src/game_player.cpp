@@ -260,15 +260,21 @@ void Game_Player::Update() {
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
-	if (IsMoving() || was_blocked) return;
+	if (IsMoving()) return;
 
 	if (last_moving && data()->boarding) {
 		// Boarding completed
 		data()->aboard = true;
 		data()->boarding = false;
-		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
-		GetVehicle()->SetDirection(GetDirection());
-		GetVehicle()->SetSpriteDirection(GetSpriteDirection());
+		auto* vehicle = GetVehicle();
+		if (vehicle->IsMoveRouteOverwritten()) {
+			vehicle->CancelMoveRoute();
+		}
+		SetMoveSpeed(vehicle->GetMoveSpeed());
+		vehicle->SetDirection(GetDirection());
+		vehicle->SetSpriteDirection(GetSpriteDirection());
+		vehicle->SetX(GetX());
+		vehicle->SetY(GetY());
 		return;
 	}
 
@@ -278,6 +284,8 @@ void Game_Player::Update() {
 		CheckTouchEvent();
 		return;
 	}
+
+	if (was_blocked) return;
 
 	if (last_moving && CheckTouchEvent()) return;
 
@@ -458,8 +466,15 @@ bool Game_Player::GetOnVehicle() {
 		}
 	} else {
 		data()->aboard = true;
-		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
+		auto* vehicle = GetVehicle();
+		if (vehicle->IsMoveRouteOverwritten()) {
+			vehicle->CancelMoveRoute();
+		}
+		SetMoveSpeed(vehicle->GetMoveSpeed());
 		SetDirection(RPG::EventPage::Direction_left);
+		SetSpriteDirection(RPG::EventPage::Direction_left);
+		vehicle->SetX(GetX());
+		vehicle->SetY(GetY());
 	}
 
 	Main_Data::game_data.system.before_vehicle_music = Game_System::GetCurrentBGM();

@@ -45,8 +45,6 @@ public:
 	 */
 	/** @{ */
 	int GetSteppingSpeed() const override;
-	int GetMoveSpeed() const override;
-	void SetMoveSpeed(int speed) override;
 	bool IsAnimated() const override;
 	bool IsContinuous() const override;
 	bool MakeWay(int x, int y, int d) const override;

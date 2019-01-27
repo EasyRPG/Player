@@ -62,18 +62,6 @@ int Game_Vehicle::GetSteppingSpeed() const {
 	return 16;
 }
 
-int Game_Vehicle::GetMoveSpeed() const {
-	return data()->move_speed;
-}
-
-void Game_Vehicle::SetMoveSpeed(int speed) {
-	if (IsInUse()) {
-		Main_Data::game_player->SetMoveSpeed(speed);
-	} else {
-		Game_Character::SetMoveSpeed(speed);
-	}
-}
-
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		return MakeWayDiagonal(x, y, d);

@@ -166,14 +166,14 @@ public:
 	 *
 	 * @return character movement speed
 	 */
-	virtual int GetMoveSpeed() const;
+	int GetMoveSpeed() const;
 
 	/**
 	 * Sets character movement speed.
 	 *
 	 * @param speed new movement speed
 	 */
-	virtual void SetMoveSpeed(int speed);
+	void SetMoveSpeed(int speed);
 
 	/**
 	 * Gets character movement frequency.
