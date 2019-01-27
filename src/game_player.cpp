@@ -640,6 +640,7 @@ void Game_Player::UnboardingFinished() {
 	Unboard();
 	if (InAirship()) {
 		SetDirection(RPG::EventPage::Direction_down);
+		SetSpriteDirection(RPG::EventPage::Direction_down);
 	} else {
 		data()->unboarding = true;
 		if (!GetThrough()) {
