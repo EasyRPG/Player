@@ -18,9 +18,6 @@
 #ifndef EP_IMAGE_BMP_H
 #define EP_IMAGE_BMP_H
 
-#include "system.h"
-#ifdef SUPPORT_BMP
-
 #include <cstdio>
 
 namespace ImageBMP {
@@ -28,5 +25,4 @@ namespace ImageBMP {
 	bool ReadBMP(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
 }
 
-#endif // SUPPORT_BMP
 #endif

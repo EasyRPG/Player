@@ -16,9 +16,6 @@
  */
 
 // Headers
-#include "system.h"
-#ifdef SUPPORT_BMP
-
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -152,5 +149,3 @@ bool ImageBMP::ReadBMP(FILE* stream, bool transparent,
 	}
 	return ReadBMP(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
 }
-
-#endif // SUPPORT_BMP

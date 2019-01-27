@@ -15,9 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "system.h"
-#ifdef SUPPORT_PNG
-
 // Headers
 #ifdef __MORPHOS__
 #define __MORPHOS_SHAREDLIBS
@@ -308,5 +305,3 @@ bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint3
 
 	return true;
 }
-
-#endif // SUPPORT_PNG

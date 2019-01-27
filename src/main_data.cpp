@@ -29,29 +29,21 @@
 #include "font.h"
 #include "player.h"
 
+#ifndef _WIN32
+#  include <unistd.h>
+#endif
 #ifdef __ANDROID__
-	#include <jni.h>
-	#include <SDL_system.h>
-#endif
-
-#if defined(GEKKO) || defined(SWITCH) || defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
-	#include <unistd.h>
-#endif
-
-#ifdef _3DS
-	#include <3ds.h>
-	#include "output.h"
-	#include <stdio.h>
-#endif
-
-#ifdef PSP2
-	#include <stdio.h>
-	#include <psp2/io/stat.h>
-#endif
-
-#if defined(__APPLE__) && defined(__MACH__)
-	#include <SDL.h>
-	#include <unistd.h>
+#  include <jni.h>
+#  include <SDL_system.h>
+#elif defined(_3DS)
+#  include <3ds.h>
+#  include "output.h"
+#  include <cstdio>
+#elif defined(PSP2)
+#  include <cstdio>
+#  include <psp2/io/stat.h>
+#elif defined(__APPLE__) && defined(__MACH__)
+#  include <SDL.h>
 #endif
 
 // Global variables.

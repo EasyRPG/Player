@@ -20,15 +20,15 @@
 #include "bitmap.h"
 
 #if USE_SDL==2
-#include "sdl2_ui.h"
+#  include "sdl2_ui.h"
 #elif USE_SDL==1
-#include "sdl_ui.h"
+#  include "sdl_ui.h"
 #elif defined(_3DS)
-#include "3ds_ui.h"
+#  include "3ds_ui.h"
 #elif defined(PSP2)
-#include "psp2_ui.h"
+#  include "psp2_ui.h"
 #elif defined(__SWITCH__)
-#include "switch_ui.h"
+#  include "switch_ui.h"
 #endif
 
 std::shared_ptr<BaseUi> DisplayUi;
@@ -49,7 +49,7 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 #elif defined(__SWITCH__)
 	return std::make_shared<NxUi>(width, height);
 #else
-#error cannot create UI
+#  error cannot create UI
 #endif
 }
 

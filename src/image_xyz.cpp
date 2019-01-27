@@ -16,9 +16,6 @@
  */
 
 // Headers
-#include "system.h"
-#ifdef SUPPORT_XYZ
-
 #include <cstdlib>
 #include <cstring>
 #include <zlib.h>
@@ -86,5 +83,3 @@ bool ImageXYZ::ReadXYZ(FILE* stream, bool transparent,
 	}
 	return ReadXYZ(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
 }
-
-#endif // SUPPORT_XYZ

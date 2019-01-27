@@ -18,9 +18,6 @@
 #ifndef EP_IMAGE_PNG_H
 #define EP_IMAGE_PNG_H
 
-#include "system.h"
-#ifdef SUPPORT_PNG
-
 #include <cstdio>
 #include <ostream>
 
@@ -29,5 +26,4 @@ namespace ImagePNG {
 	bool WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
 }
 
-#endif // SUPPORT_PNG
 #endif
