@@ -106,6 +106,14 @@ void Game_Character::MoveTo(int x, int y) {
 	SetRemainingStep(0);
 }
 
+int Game_Character::GetJumpHeight() const {
+	if (IsJumping()) {
+		int jump_height = (GetRemainingStep() > SCREEN_TILE_SIZE / 2 ? SCREEN_TILE_SIZE - GetRemainingStep() : GetRemainingStep()) / 8;
+		return (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
+	}
+	return 0;
+}
+
 int Game_Character::GetScreenX(bool apply_shift) const {
 	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
 
@@ -119,10 +127,7 @@ int Game_Character::GetScreenX(bool apply_shift) const {
 int Game_Character::GetScreenY(bool apply_shift) const {
 	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
 
-	if (IsJumping()) {
-		int jump_height = (GetRemainingStep() > SCREEN_TILE_SIZE / 2 ? SCREEN_TILE_SIZE - GetRemainingStep() : GetRemainingStep()) / 8;
-		y -= (jump_height < 5 ? jump_height * 2 : jump_height < 13 ? jump_height + 4 : 16);
-	}
+	y -= GetJumpHeight();
 
 	if (apply_shift) {
 		y += Game_Map::GetHeight() * TILE_SIZE;

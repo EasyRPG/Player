@@ -622,6 +622,9 @@ public:
 	 */
 	virtual void CancelMoveRoute();
 
+	/** @return height of active jump in pixels */
+	int GetJumpHeight() const;
+
 	/**
 	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
 	 *

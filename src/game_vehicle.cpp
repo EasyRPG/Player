@@ -221,6 +221,9 @@ void Game_Vehicle::SyncWithPlayer() {
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
 	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
+	SetJumping(Main_Data::game_player->IsJumping());
+	SetBeginJumpX(Main_Data::game_player->GetBeginJumpX());
+	SetBeginJumpY(Main_Data::game_player->GetBeginJumpY());
 	if (!IsAscendingOrDescending()) {
 		SetDirection(Main_Data::game_player->GetDirection());
 		SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
