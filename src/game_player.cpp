@@ -431,9 +431,6 @@ void Game_Player::Refresh() {
 }
 
 bool Game_Player::GetOnOffVehicle() {
-	if (!IsMovable())
-		return false;
-
 	if (InVehicle())
 		return GetOffVehicle();
 	return GetOnVehicle();
@@ -453,6 +450,16 @@ bool Game_Player::GetOnVehicle() {
 	else
 		return false;
 
+	auto* vehicle = Game_Map::GetVehicle(type);
+
+	if (vehicle->IsAscendingOrDescending()) {
+		return false;
+	}
+
+	if (type == Game_Vehicle::Airship && (IsMoving() || IsJumping())) {
+		return false;
+	}
+
 	data()->vehicle = type;
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
@@ -466,7 +473,6 @@ bool Game_Player::GetOnVehicle() {
 		}
 	} else {
 		data()->aboard = true;
-		auto* vehicle = GetVehicle();
 		if (vehicle->IsMoveRouteOverwritten()) {
 			vehicle->CancelMoveRoute();
 		}
@@ -491,8 +497,13 @@ bool Game_Player::GetOffVehicle() {
 			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 			return false;
 	}
+	auto* vehicle = GetVehicle();
 
-	GetVehicle()->GetOff();
+	if (vehicle->IsAscendingOrDescending()) {
+		return false;
+	}
+
+	vehicle->GetOff();
 	return true;
 }
 
