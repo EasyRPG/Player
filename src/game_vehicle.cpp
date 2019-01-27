@@ -202,8 +202,12 @@ void Game_Vehicle::GetOff() {
 	} else {
 		Main_Data::game_player->UnboardingFinished();
 	}
-	SetDirection(Left);
-	SetSpriteDirection(Left);
+	// Get off airship can be trigger while airship is moving. Don't break the animation
+	// until its finished.
+	if (type != Airship || (!IsMoving() && !IsJumping())) {
+		SetDirection(Left);
+		SetSpriteDirection(Left);
+	}
 }
 
 bool Game_Vehicle::IsInUse() const {
@@ -211,13 +215,21 @@ bool Game_Vehicle::IsInUse() const {
 }
 
 void Game_Vehicle::SyncWithPlayer() {
-	if (!IsInUse() || IsAscending() || IsDescending())
+	if (!IsInUse()) {
 		return;
+	}
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
 	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
-	SetDirection(Main_Data::game_player->GetDirection());
-	SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
+	if (!IsAscendingOrDescending()) {
+		SetDirection(Main_Data::game_player->GetDirection());
+		SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
+	} else {
+		if (!IsMoving() && !IsJumping()) {
+			SetDirection(Left);
+			SetSpriteDirection(Left);
+		}
+	}
 }
 
 int Game_Vehicle::GetAltitude() const {
@@ -267,20 +279,22 @@ void Game_Vehicle::Update() {
 	}
 
 	if (type == Airship) {
-		if (IsAscending()) {
-			data()->remaining_ascent = data()->remaining_ascent - 8;
-			SetAnimFrame(AnimFrame::Frame_middle);
-		} else if (IsDescending()) {
-			SetAnimFrame(AnimFrame::Frame_middle);
-			data()->remaining_descent = data()->remaining_descent - 8;
-			if (!IsDescending()) {
-				if (CanLand()) {
-					Main_Data::game_player->UnboardingFinished();
-					SetFlying(false);
-					Main_Data::game_player->SetFlying(false);
-				} else {
-					// Can't land here, ascend again
-					data()->remaining_ascent = SCREEN_TILE_SIZE;
+		if (!IsMoving() && !IsJumping()) {
+			if (IsAscending()) {
+				data()->remaining_ascent = data()->remaining_ascent - 8;
+				SetAnimFrame(AnimFrame::Frame_middle);
+			} else if (IsDescending()) {
+				SetAnimFrame(AnimFrame::Frame_middle);
+				data()->remaining_descent = data()->remaining_descent - 8;
+				if (!IsDescending()) {
+					if (CanLand()) {
+						Main_Data::game_player->UnboardingFinished();
+						SetFlying(false);
+						Main_Data::game_player->SetFlying(false);
+					} else {
+						// Can't land here, ascend again
+						data()->remaining_ascent = SCREEN_TILE_SIZE;
+					}
 				}
 			}
 		}
