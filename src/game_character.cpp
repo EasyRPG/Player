@@ -86,6 +86,8 @@ bool Game_Character::IsLandable(int x, int y) const
 
 	if (GetThrough()) return true;
 
+	if (IsFlying()) return true;
+
 	if (!Game_Map::IsLandable(x, y, this))
 		return false;
 
