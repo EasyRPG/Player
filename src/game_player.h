@@ -45,6 +45,7 @@ public:
 	bool MakeWay(int x, int y, int d) const override;
 	void BeginMove() override;
 	void CancelMoveRoute() override;
+	int GetVehicleType() const override;
 	/** @} */
 
 	bool IsTeleporting() const;

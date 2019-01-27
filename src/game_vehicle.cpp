@@ -307,3 +307,7 @@ void Game_Vehicle::Update() {
 bool Game_Vehicle::CheckEventTriggerTouch(int /* x */, int /* y */) {
 	return false;
 }
+
+int Game_Vehicle::GetVehicleType() const {
+	return data()->vehicle;
+}

@@ -653,3 +653,7 @@ void Game_Player::UnboardingFinished() {
 	}
 	data()->vehicle = Game_Vehicle::None;
 }
+
+int Game_Player::GetVehicleType() const {
+	return data()->vehicle;
+}

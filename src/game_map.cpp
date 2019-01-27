@@ -750,6 +750,9 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 				}
 			}
 		}
+		if (self_event->GetVehicleType() > 0) {
+			return Game_Map::IsPassableVehicle(x, y, (Game_Vehicle::Type) self_event->GetVehicleType());
+		}
 	}
 
 	return IsPassableTile(bit, x + y * GetWidth());

@@ -963,3 +963,7 @@ bool Game_Character::IsMoveRouteActive() const {
 	return IsMoveRouteOverwritten();
 }
 
+
+int Game_Character::GetVehicleType() const {
+	return 0;
+}
