@@ -256,7 +256,9 @@ void Game_Player::Update() {
 	const auto old_sprite_y = GetSpriteY();
 
 	UpdatePlayerInput();
+	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
@@ -628,10 +630,6 @@ void Game_Player::Unboard() {
 	SetMoveSpeed(data()->preboard_move_speed);
 
 	Game_System::BgmPlay(Main_Data::game_data.system.before_vehicle_music);
-}
-
-bool Game_Player::IsAboard() const {
-	return data()->aboard;
 }
 
 bool Game_Player::IsAboard() const {

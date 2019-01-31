@@ -58,7 +58,9 @@ void Sprite_Character::Update() {
 
 	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
-		r.Set(character->GetAnimFrame() * chara_width, row * chara_height, chara_width, chara_height);
+		auto frame = character->GetAnimFrame();
+		if (frame >= 3) frame = 1;
+		r.Set(frame * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
 

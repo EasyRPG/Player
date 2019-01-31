@@ -126,7 +126,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetSpriteName(page->character_name);
 	SetSpriteIndex(page->character_index);
 
-	SetAnimFrame(AnimFrame(page->character_pattern));
+	SetAnimFrame(page->character_pattern);
 
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
@@ -556,7 +556,10 @@ void Game_Event::Update() {
 		return;
 	}
 
+	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
+
 
 	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().Setup(this);

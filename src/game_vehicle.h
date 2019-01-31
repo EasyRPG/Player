@@ -44,7 +44,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetSteppingSpeed() const override;
 	bool IsAnimated() const override;
 	bool IsContinuous() const override;
 	bool MakeWay(int x, int y, int d) const override;
@@ -65,12 +64,15 @@ public:
 	void GetOn();
 	void GetOff();
 	bool IsInUse() const;
+	bool IsAboard() const;
 	void SyncWithPlayer();
 	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;
 	void Update() override;
 	bool CheckEventTriggerTouch(int x, int y) override;
+	void UpdateAnimationShip();
+	void UpdateAnimationAirship();
 
 protected:
 	RPG::SaveVehicleLocation* data();

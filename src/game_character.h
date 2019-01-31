@@ -36,7 +36,6 @@
 class Game_Character {
 public:
 	using AnimType = RPG::EventPage::AnimType;
-	using AnimFrame = RPG::EventPage::Frame;
 
 	/**
 	 * Destructor.
@@ -152,14 +151,6 @@ public:
 	 * @return whether event overlap is forbidden.
 	 */
 	virtual bool IsOverlapForbidden() const;
-
-	/**
-	 * Gets character stepping speed: the number of frames between each change
-	 * of the left-middle-right-middle walking animation or the spinning animation
-	 *
-	 * @return stepping speed (the same units as movement speed)
-	 */
-	virtual int GetSteppingSpeed() const;
 
 	/**
 	 * Gets character movement speed.
@@ -283,14 +274,14 @@ public:
 	 *
 	 * @return anim_frame
 	 */
-	AnimFrame GetAnimFrame() const;
+	int GetAnimFrame() const;
 
 	/**
 	 * Sets animation frame of character.
 	 *
 	 * @param frame new anim_frame
 	 */
-	void SetAnimFrame(AnimFrame frame);
+	void SetAnimFrame(int frame);
 
 	/**
 	 * @return true if animation is paused.
@@ -516,9 +507,16 @@ public:
 	virtual void Update() = 0;
 
 	/**
-	 * Updates character animation and movement.
+	 * Updates character and movement.
 	 */
 	void UpdateMovement();
+
+	/**
+	 * Updates character animation
+	 *
+	 * @param was_moving if the event moved or jumped this frame
+	 */
+	void UpdateAnimation(bool was_moving);
 
 	/**
 	 * Walks around on a custom move route.
@@ -832,11 +830,11 @@ protected:
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
 	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
+	void IncAnimCount();
+	void IncAnimFrame();
 
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
-
-	int last_pattern;
 
 	int original_move_frequency;
 	int move_type;
@@ -989,12 +987,12 @@ inline void Game_Character::SetSpriteIndex(int index) {
 	data()->sprite_id = index;
 }
 
-inline Game_Character::AnimFrame Game_Character::GetAnimFrame() const {
-	return AnimFrame(data()->anim_frame);
+inline int Game_Character::GetAnimFrame() const {
+	return data()->anim_frame;
 }
 
-inline void Game_Character::SetAnimFrame(AnimFrame frame) {
-	data()->anim_frame = AnimFrame(frame);
+inline void Game_Character::SetAnimFrame(int frame) {
+	data()->anim_frame = frame;
 }
 
 inline bool Game_Character::IsAnimPaused() const {
@@ -1075,6 +1073,14 @@ inline int Game_Character::GetAnimCount() const {
 
 inline void Game_Character::SetAnimCount(int ac) {
 	data()->anim_count = ac;
+}
+
+inline void Game_Character::IncAnimCount() {
+	++data()->anim_count;
+}
+
+inline void Game_Character::IncAnimFrame() {
+	data()->anim_frame = (data()->anim_frame + 1) % 4;
 }
 
 inline int Game_Character::GetRemainingStep() const {

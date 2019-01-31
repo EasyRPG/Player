@@ -32,7 +32,6 @@
 #include <cassert>
 
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
-	last_pattern(0),
 	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
@@ -48,24 +47,9 @@ Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
 }
 
-int Game_Character::GetSteppingSpeed() const {
-	int move_speed = GetMoveSpeed();
-	if (IsSpinning()) {
-		// 24, 16, 12, 8, 6, 4
-		return (move_speed < 4) ? 48 / (move_speed + 1) : 24 / (move_speed - 1);
-	} else if (IsMoving()) {
-		// 12, 10, 8, 6, 5, 4
-		return (move_speed < 4) ? 60 / (move_speed + 4) : 30 / (move_speed + 1);
-	} else {
-		// 16, 12, 10, 8, 7, 6
-		return (move_speed < 2) ? 16 : 60 / (move_speed + 3);
-	}
-}
-
 bool Game_Character::IsMoving() const {
 	return !IsJumping() && GetRemainingStep() > 0;
 }
-
 
 bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
@@ -174,22 +158,14 @@ void Game_Character::UpdateMovement() {
 		SetStopCount(0);
 		UpdateJump();
 		moved = true;
-		if (IsSpinning())
-			SetAnimCount(GetAnimCount() + 1);
 	} else if (IsMoving()) {
 		SetStopCount(0);
 		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		moved = true;
-		if (IsSpinning() || IsAnimated())
-			SetAnimCount(GetAnimCount() + 1);
 	} else {
-
 		if (IsMoveRouteOverwritten() || (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting())) {
 			SetStopCount(GetStopCount() + 1);
 		}
-
-		if (IsAnimated() && (IsSpinning() || IsContinuous() || GetAnimFrame() != RPG::EventPage::Frame_middle))
-			SetAnimCount(GetAnimCount() + 1);
 	}
 
 	// These actions happen after movement has finished but before stop count timer.
@@ -208,34 +184,62 @@ void Game_Character::UpdateMovement() {
 			}
 		}
 	}
+}
 
-	if (GetAnimCount() >= GetSteppingSpeed()) {
-		if (IsSpinning()) {
-			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
-		} else if (!IsContinuous() && IsStopping()) {
-			SetAnimFrame(RPG::EventPage::Frame_middle);
-			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
-		} else {
-			if (last_pattern == RPG::EventPage::Frame_left) {
-				if (GetAnimFrame() == RPG::EventPage::Frame_right) {
-					SetAnimFrame(RPG::EventPage::Frame_middle);
-					last_pattern = RPG::EventPage::Frame_right;
-				} else {
-					SetAnimFrame(RPG::EventPage::Frame_right);
-				}
-			} else {
-				if (GetAnimFrame() == RPG::EventPage::Frame_left) {
-					SetAnimFrame(RPG::EventPage::Frame_middle);
-					last_pattern = RPG::EventPage::Frame_left;
-				} else {
-					SetAnimFrame(RPG::EventPage::Frame_left);
-				}
-			}
-		}
+void Game_Character::UpdateAnimation(bool was_moving) {
+	const auto anim_type = GetAnimationType();
+	const auto step_idx = Utils::Clamp(GetMoveSpeed(), 1, 6) - 1;
 
+	constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
+	constexpr int stationary_limits[] = { 11, 9, 7, 5, 4, 3 };
+	constexpr int continuous_limits[] = { 15, 11, 9, 7, 6, 5 };
+
+	if (anim_type == RPG::EventPage::AnimType_fixed_graphic
+			|| anim_type == RPG::EventPage::AnimType_step_frame_fix) {
 		SetAnimCount(0);
+		return;
 	}
 
+	if (IsSpinning()) {
+		const auto limit = spin_limits[step_idx];
+
+		if (GetAnimCount() >= limit) {
+			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
+			SetAnimCount(0);
+		} else {
+			IncAnimCount();
+		}
+		return;
+	}
+
+	if (IsJumping()) {
+		// Note: We start ticking animations right away on the last frame of the jump, not the frame after.
+		// Hence there is no "was_jumping" to pass in here.
+		SetAnimCount(0);
+		SetAnimFrame(1);
+		return;
+	}
+
+	const auto stationary_limit = stationary_limits[step_idx];
+	const auto continuous_limit = continuous_limits[step_idx];
+
+	if (GetAnimCount() >= continuous_limit) {
+		IncAnimFrame();
+		SetAnimCount(0);
+		return;
+	}
+
+	if (GetAnimCount() >= stationary_limit) {
+		if (was_moving) {
+			IncAnimFrame();
+			SetAnimCount(0);
+			return;
+		} else if (!IsContinuous() && (data()->anim_frame == 1 || data()->anim_frame == 3)) {
+			return;
+		}
+	}
+
+	IncAnimCount();
 }
 
 void Game_Character::UpdateJump() {

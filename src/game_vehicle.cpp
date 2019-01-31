@@ -58,10 +58,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-int Game_Vehicle::GetSteppingSpeed() const {
-	return 16;
-}
-
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		return MakeWayDiagonal(x, y, d);
@@ -191,7 +187,6 @@ void Game_Vehicle::GetOn() {
 		data()->remaining_ascent = SCREEN_TILE_SIZE;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
-		SetAnimFrame(AnimFrame::Frame_middle);
 	}
 	Game_System::BgmPlay(GetBGM());
 }
@@ -212,6 +207,10 @@ void Game_Vehicle::GetOff() {
 
 bool Game_Vehicle::IsInUse() const {
 	return Main_Data::game_player->GetVehicle() == this;
+}
+
+bool Game_Vehicle::IsAboard() const {
+	return IsInUse() && Main_Data::game_player->IsAboard();
 }
 
 void Game_Vehicle::SyncWithPlayer() {
@@ -271,10 +270,36 @@ bool Game_Vehicle::CanLand() const {
 	return true;
 }
 
+void Game_Vehicle::UpdateAnimationAirship() {
+	if (IsAboard()) {
+		const auto limit = 11;
+
+		if (GetAnimCount() >= limit) {
+			SetAnimCount(0);
+			IncAnimFrame();
+		} else {
+			IncAnimCount();
+		}
+	} else {
+		SetAnimCount(0);
+		SetAnimFrame(1);
+	}
+}
+
+void Game_Vehicle::UpdateAnimationShip() {
+	const auto limit = 15;
+
+	if (GetAnimCount() >= limit) {
+		SetAnimCount(0);
+		IncAnimFrame();
+	} else {
+		IncAnimCount();
+	}
+}
+
 void Game_Vehicle::Update() {
 	Game_Character::UpdateMovement();
-
-	if (IsInUse() && Main_Data::game_player->IsAboard()) {
+	if (IsAboard()) {
 		SyncWithPlayer();
 	}
 
@@ -282,9 +307,7 @@ void Game_Vehicle::Update() {
 		if (!IsMoving() && !IsJumping()) {
 			if (IsAscending()) {
 				data()->remaining_ascent = data()->remaining_ascent - 8;
-				SetAnimFrame(AnimFrame::Frame_middle);
 			} else if (IsDescending()) {
-				SetAnimFrame(AnimFrame::Frame_middle);
 				data()->remaining_descent = data()->remaining_descent - 8;
 				if (!IsDescending()) {
 					if (CanLand()) {
@@ -298,6 +321,12 @@ void Game_Vehicle::Update() {
 				}
 			}
 		}
+	}
+
+	if (type == Airship) {
+		UpdateAnimationAirship();
+	} else {
+		UpdateAnimationShip();
 	}
 }
 
