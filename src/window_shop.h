@@ -46,6 +46,13 @@ public:
 	int GetChoice() const;
 	void SetChoice(int nchoice);
 
+	enum WindowMessageValues {
+		LeftMargin = 8,
+		FaceSize = 48,
+		RightFaceMargin = 16,
+		TopMargin = 8
+	};
+
 protected:
 	void UpdateCursorRect();
 
