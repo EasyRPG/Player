@@ -27,7 +27,8 @@
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Bitmap::Create(width - 16, height - 16));
+	SetBorderX(4);
+	SetContents(Bitmap::Create(width - GetBorderX() * 2, height - 16));
 
 	cycle = 0;
 	item_id = 0;
