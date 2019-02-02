@@ -66,7 +66,7 @@ void Window_ActorInfo::DrawInfo() {
 	DrawActorState(actor, 36, 155);
 
 	//Draw Level
-	contents->TextDraw(3, 170, 1, Data::terms.lvl_short);
+	contents->TextDraw(3, 170, 1, Data::terms.level);
 	std::stringstream ss;
 	ss << actor.GetLevel();
 	contents->TextDraw(79, 170, Font::ColorDefault, ss.str(), Text::AlignRight);

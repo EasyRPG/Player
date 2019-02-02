@@ -44,11 +44,11 @@ void Window_ActorStatus::DrawStatus(){
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 
 	// Draw Hp
-	contents->TextDraw(1, 3, 1, Data::terms.hp_short);
+	contents->TextDraw(1, 3, 1, Data::terms.health_points);
 	DrawMinMax(100,3,actor->GetHp(), actor->GetMaxHp());
 
 	// Draw Sp
-	contents->TextDraw(1, 18, 1, Data::terms.sp_short);
+	contents->TextDraw(1, 18, 1, Data::terms.spirit_points);
 	DrawMinMax(100,18,actor->GetSp(), actor->GetMaxSp());
 
 	// Draw Exp
