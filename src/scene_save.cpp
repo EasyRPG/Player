@@ -109,10 +109,10 @@ void Scene_Save::Action(int index) {
 
 #ifdef EMSCRIPTEN
 	// Save changed file system
-	EM_ASM(
+	EM_ASM({
 		FS.syncfs(function(err) {
 		});
-	);
+	});
 #endif
 
 	Scene::Pop();
