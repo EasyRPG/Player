@@ -54,15 +54,15 @@ void Window_ActorInfo::DrawInfo() {
 	DrawActorName(actor, 36, 65);
 
 	// Draw Profession
-	contents->TextDraw(3, 80, 1, "Profession");
+	contents->TextDraw(3, 80, 1, "Class");
 	DrawActorClass(actor, 36, 95);
 
 	// Draw Rank
-	contents->TextDraw(3, 110, 1, "Title");
+	contents->TextDraw(3, 110, 1, "Nickname");
 	DrawActorTitle(actor, 36, 125);
 
 	// Draw Status
-	contents->TextDraw(3, 140, 1, "Status");
+	contents->TextDraw(3, 140, 1, "State");
 	DrawActorState(actor, 36, 155);
 
 	//Draw Level
