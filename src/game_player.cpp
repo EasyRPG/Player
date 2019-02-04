@@ -606,6 +606,10 @@ void Game_Player::Unboard() {
 	Game_System::BgmPlay(walking_bgm);
 }
 
+bool Game_Player::IsAboard() const {
+	return data()->aboard;
+}
+
 bool Game_Player::IsBoardingOrUnboarding() const {
 	return data()->boarding || data()->unboarding;
 }
