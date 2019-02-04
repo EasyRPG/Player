@@ -101,8 +101,6 @@ private:
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
 
-	RPG::Music walking_bgm;
-
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
 	bool CheckTouchEvent();

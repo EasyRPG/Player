@@ -375,7 +375,12 @@ void Game_Map::PlayBgm() {
 		if (Data::treemap.maps[current_index].music_type == 1) {
 			return;
 		}
-		Game_System::BgmPlay(Data::treemap.maps[current_index].music);
+		auto& music = Data::treemap.maps[current_index].music;
+		if (!Main_Data::game_player->IsAboard()) {
+			Game_System::BgmPlay(music);
+		} else {
+			Main_Data::game_data.system.before_vehicle_music = music;
+		}
 	}
 }
 
