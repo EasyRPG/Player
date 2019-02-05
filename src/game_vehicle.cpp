@@ -154,8 +154,7 @@ void Game_Vehicle::Refresh() {
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetMapId(_map_id);
-	SetX(_x);
-	SetY(_y);
+	MoveTo(_x, _y);
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {

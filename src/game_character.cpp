@@ -88,6 +88,9 @@ void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
 	SetRemainingStep(0);
+	// This Fixes an RPG_RT bug where the jumping flag doesn't get reset
+	// if you change maps during a jump
+	SetJumping(false);
 }
 
 int Game_Character::GetJumpHeight() const {
