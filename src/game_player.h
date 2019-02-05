@@ -63,7 +63,13 @@ public:
 	void StartTeleport();
 	void PerformTeleport();
 	void MoveTo(int x, int y) override;
-	void Update() override;
+
+	/** 
+	 * Update this for the current frame
+	 *
+	 * @param process_movement if false, we will not process movement or animations
+	 * */
+	void Update(bool process_movement);
 
 	void Refresh();
 

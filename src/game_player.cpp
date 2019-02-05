@@ -239,7 +239,7 @@ void Game_Player::UpdatePlayerInput() {
 
 }
 
-void Game_Player::Update() {
+void Game_Player::Update(bool process_movement) {
 	int cur_frame_count = Player::GetFrames();
 	// Only update the event once per frame
 	if (cur_frame_count == frame_count_at_last_update_parallel) {
@@ -257,8 +257,11 @@ void Game_Player::Update() {
 
 	UpdatePlayerInput();
 	auto was_moving = !IsStopping();
-	Game_Character::UpdateMovement();
-	Game_Character::UpdateAnimation(was_moving);
+
+	if (process_movement) {
+		Game_Character::UpdateMovement();
+		Game_Character::UpdateAnimation(was_moving);
+	}
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 

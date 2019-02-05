@@ -50,6 +50,13 @@ public:
 	int GetVehicleType() const override;
 	/** @} */
 
+	/** 
+	 * Update this for the current frame
+	 *
+	 * @param process_movement if false, we will not process movement or animations
+	 * */
+	void Update(bool process_movement);
+
 	void LoadSystemSettings();
 	RPG::Music& GetBGM();
 	void Refresh();
@@ -69,7 +76,6 @@ public:
 	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;
-	void Update() override;
 	bool CheckEventTriggerTouch(int x, int y) override;
 	void UpdateAnimationShip();
 	void UpdateAnimationAirship();

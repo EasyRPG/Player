@@ -502,11 +502,6 @@ public:
 	virtual void MoveTo(int x, int y);
 
 	/**
-	 * Updates character state and actions.
-	 */
-	virtual void Update() = 0;
-
-	/**
 	 * Updates character and movement.
 	 */
 	void UpdateMovement();

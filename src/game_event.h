@@ -119,10 +119,12 @@ public:
 	 */
 	void StopTalkToHero();
 
+	/** Update this for the current frame */
+	void Update();
+
 	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y) override;
 	void Start(bool triggered_by_decision_key = false);
-	void Update() override;
 	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
