@@ -298,13 +298,14 @@ void Game_Vehicle::UpdateAnimationShip() {
 }
 
 void Game_Vehicle::Update() {
-	Game_Character::UpdateMovement();
 	if (IsAboard()) {
 		SyncWithPlayer();
+	} else {
+		Game_Character::UpdateMovement();
 	}
 
 	if (type == Airship) {
-		if (!IsMoving() && !IsJumping()) {
+		if (IsStopping()) {
 			if (IsAscending()) {
 				data()->remaining_ascent = data()->remaining_ascent - 8;
 			} else if (IsDescending()) {
