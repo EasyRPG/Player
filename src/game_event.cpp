@@ -343,15 +343,13 @@ const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
 }
 
 void Game_Event::StartTalkToHero() {
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
-		int prelock_dir = GetDirection();
-		TurnTowardHero();
-		SetDirection(prelock_dir);
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
+		SetSpriteDirection(GetDirectionToHero());
 	}
 }
 
 void Game_Event::StopTalkToHero() {
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirection());
 	}
 

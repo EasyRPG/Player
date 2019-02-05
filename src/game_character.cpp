@@ -562,26 +562,34 @@ void Game_Character::BeginMove() {
 	// no-op
 }
 
-void Game_Character::TurnTowardHero() {
+int Game_Character::GetDirectionToHero() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
-		Turn((sx > 0) ? Left : Right);
+		return (sx > 0) ? Left : Right;
 	} else {
-		Turn((sy > 0) ? Up : Down);
+		return (sy > 0) ? Up : Down;
 	}
 }
 
-void Game_Character::TurnAwayFromHero() {
+int Game_Character::GetDirectionAwayHero() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
 
 	if ( std::abs(sx) > std::abs(sy) ) {
-		Turn((sx > 0) ? Right : Left);
+		return (sx > 0) ? Right : Left;
 	} else {
-		Turn((sy > 0) ? Down : Up);
+		return (sy > 0) ? Down : Up;
 	}
+}
+
+void Game_Character::TurnTowardHero() {
+	Turn(GetDirectionToHero());
+}
+
+void Game_Character::TurnAwayFromHero() {
+	Turn(GetDirectionAwayHero());
 }
 
 void Game_Character::FaceRandomDirection() {

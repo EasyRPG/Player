@@ -577,6 +577,13 @@ public:
 	 */
 	virtual void BeginMove();
 
+	/** @return the direction we would need to face the hero. */
+	int GetDirectionToHero();
+
+	/** @return the direction we would need to face away from hero. */
+	int GetDirectionAwayHero();
+
+
 	/**
 	 * Character looks in a random direction
 	 */
@@ -588,7 +595,7 @@ public:
 	void TurnTowardHero();
 
 	/**
-	 * Character looks away from the the hero.
+	 * Character looks away from the hero.
 	 */
 	void TurnAwayFromHero();
 
