@@ -371,7 +371,7 @@ void Game_Map::PlayBgm() {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 
-	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
+	if ((current_index > 0) && !Data::treemap.maps[current_index].music.name.empty()) {
 		if (Data::treemap.maps[current_index].music_type == 1) {
 			return;
 		}
