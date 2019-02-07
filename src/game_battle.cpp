@@ -91,6 +91,7 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 	Game_Temp::battle_background = "";
+	SetTerrainId(0);
 
 	std::vector<Game_Battler*> allies;
 	Main_Data::game_party->GetBattlers(allies);
@@ -411,10 +412,7 @@ void Game_Battle::SetTerrainId(int terrain_id_) {
 }
 
 int Game_Battle::GetTerrainId() {
-	// Fixme: Workaround for battle test
-	// Has options loose/tight formation which hardcodes to specific
-	// x/y values and ignores terrain
-	return terrain_id <= 0 ? 1 : terrain_id;
+	return terrain_id;
 }
 
 void Game_Battle::SetBattleMode(int battle_mode_) {

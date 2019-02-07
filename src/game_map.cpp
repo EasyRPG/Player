@@ -1143,8 +1143,6 @@ void Game_Map::SetupBattle() {
 	}
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
-	} else {
-		Game_Temp::battle_background = Data::terrains[Game_Battle::GetTerrainId() - 1].background_name;
 	}
 }
 
