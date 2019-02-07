@@ -707,27 +707,33 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 		}
 	}
 
-	if (jump_plus_x != 0 || jump_plus_y != 0) {
-		if (std::abs(jump_plus_y) >= std::abs(jump_plus_x)) {
-			SetDirection(jump_plus_y > 0 ? Down : Up);
-			if (!IsDirectionFixed() && !IsFacingLocked()) {
-				SetSpriteDirection(GetDirection());
-			}
-		} else {
-			SetDirection(jump_plus_x > 0 ? Right : Left);
-			if (!IsDirectionFixed() && !IsFacingLocked()) {
-				SetSpriteDirection(GetDirection());
-			}
-		}
-	}
-
 	if (
 		// A character can always land on a tile they were already standing on
 		!(jump_plus_x == 0 && jump_plus_y == 0) &&
 		!IsLandable(new_x, new_y)
 	) {
-		// Reset to begin jump command and try again...
 		move_failed = true;
+	}
+
+
+	if (!move_failed || !current_route.skippable) {
+		if (jump_plus_x != 0 || jump_plus_y != 0) {
+			if (std::abs(jump_plus_y) >= std::abs(jump_plus_x)) {
+				SetDirection(jump_plus_y > 0 ? Down : Up);
+				if (!IsDirectionFixed() && !IsFacingLocked()) {
+					SetSpriteDirection(GetDirection());
+				}
+			} else {
+				SetDirection(jump_plus_x > 0 ? Right : Left);
+				if (!IsDirectionFixed() && !IsFacingLocked()) {
+					SetSpriteDirection(GetDirection());
+				}
+			}
+		}
+	}
+
+	if (move_failed) {
+		// Reset to begin jump command and try again...
 		SetJumping(false);
 
 		if (current_route.skippable) {
