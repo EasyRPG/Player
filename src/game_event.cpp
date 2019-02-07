@@ -126,8 +126,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetSpriteName(page->character_name);
 	SetSpriteIndex(page->character_index);
 
-	SetAnimFrame(page->character_pattern);
-
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
@@ -143,6 +141,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
 	SetAnimationType(RPG::EventPage::AnimType(page->animation_type));
+
+	if (GetAnimationType() == RPG::EventPage::AnimType_fixed_graphic) {
+		SetAnimFrame(page->character_pattern);
+	}
 
 	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
 		SetSpriteDirection(page->character_direction);

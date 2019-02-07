@@ -44,8 +44,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool IsAnimated() const override;
-	bool IsContinuous() const override;
 	bool MakeWay(int x, int y, int d) const override;
 	int GetVehicleType() const override;
 	/** @} */

@@ -78,14 +78,6 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 }
 
 
-bool Game_Vehicle::IsAnimated() const {
-	return IsContinuous();
-}
-
-bool Game_Vehicle::IsContinuous() const {
-	return type != Airship || (IsFlying() && !IsAscendingOrDescending());
-}
-
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case None:
@@ -274,14 +266,12 @@ void Game_Vehicle::UpdateAnimationAirship() {
 		const auto limit = 11;
 
 		if (GetAnimCount() >= limit) {
-			SetAnimCount(0);
 			IncAnimFrame();
 		} else {
 			IncAnimCount();
 		}
 	} else {
-		SetAnimCount(0);
-		SetAnimFrame(1);
+		ResetAnimation();
 	}
 }
 
@@ -289,7 +279,6 @@ void Game_Vehicle::UpdateAnimationShip() {
 	const auto limit = 15;
 
 	if (GetAnimCount() >= limit) {
-		SetAnimCount(0);
 		IncAnimFrame();
 	} else {
 		IncAnimCount();

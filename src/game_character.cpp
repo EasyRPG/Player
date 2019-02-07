@@ -191,17 +191,15 @@ void Game_Character::UpdateMovement() {
 
 void Game_Character::UpdateAnimation(bool was_moving) {
 	const auto anim_type = GetAnimationType();
+	if (!IsAnimated()) {
+		return;
+	}
+
 	const auto step_idx = Utils::Clamp(GetMoveSpeed(), 1, 6) - 1;
 
 	constexpr int spin_limits[] = { 23, 14, 11, 7, 5, 3 };
 	constexpr int stationary_limits[] = { 11, 9, 7, 5, 4, 3 };
 	constexpr int continuous_limits[] = { 15, 11, 9, 7, 6, 5 };
-
-	if (anim_type == RPG::EventPage::AnimType_fixed_graphic
-			|| anim_type == RPG::EventPage::AnimType_step_frame_fix) {
-		SetAnimCount(0);
-		return;
-	}
 
 	if (IsSpinning()) {
 		const auto limit = spin_limits[step_idx];
@@ -218,8 +216,7 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 	if (IsJumping()) {
 		// Note: We start ticking animations right away on the last frame of the jump, not the frame after.
 		// Hence there is no "was_jumping" to pass in here.
-		SetAnimCount(0);
-		SetAnimFrame(1);
+		ResetAnimation();
 		return;
 	}
 
@@ -228,14 +225,12 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 
 	if (GetAnimCount() >= continuous_limit) {
 		IncAnimFrame();
-		SetAnimCount(0);
 		return;
 	}
 
 	if (GetAnimCount() >= stationary_limit) {
 		if (was_moving) {
 			IncAnimFrame();
-			SetAnimCount(0);
 			return;
 		} else if (!IsContinuous() && (data()->anim_frame == 1 || data()->anim_frame == 3)) {
 			return;
@@ -415,9 +410,6 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 				data()->route_through = false;
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
-				if (IsContinuous()) {
-					SetAnimFrame(RPG::EventPage::Frame_middle);
-				}
 				SetAnimPaused(true);
 				break;
 			case RPG::MoveCommand::Code::start_animation:
@@ -717,10 +709,14 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 	if (jump_plus_x != 0 || jump_plus_y != 0) {
 		if (std::abs(jump_plus_y) >= std::abs(jump_plus_x)) {
 			SetDirection(jump_plus_y > 0 ? Down : Up);
-			SetSpriteDirection(GetDirection());
+			if (!IsDirectionFixed() && !IsFacingLocked()) {
+				SetSpriteDirection(GetDirection());
+			}
 		} else {
 			SetDirection(jump_plus_x > 0 ? Right : Left);
-			SetSpriteDirection(GetDirection());
+			if (!IsDirectionFixed() && !IsFacingLocked()) {
+				SetSpriteDirection(GetDirection());
+			}
 		}
 	}
 
@@ -749,10 +745,6 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 	SetStopCount(0);
 	SetMaxStopCountForStep();
 	move_failed = false;
-
-	if (IsContinuous()) {
-		SetAnimFrame(RPG::EventPage::Frame_middle);
-	}
 }
 
 void Game_Character::EndJump() {
@@ -882,7 +874,10 @@ bool Game_Character::IsFlashPending() const {
 }
 
 bool Game_Character::IsAnimated() const {
-	return !IsAnimPaused() && GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic;
+	auto at = GetAnimationType();
+	return !IsAnimPaused()
+		&& at != RPG::EventPage::AnimType_fixed_graphic
+		&& at != RPG::EventPage::AnimType_step_frame_fix;
 }
 
 bool Game_Character::IsDirectionFixed() const {

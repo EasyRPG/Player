@@ -401,6 +401,9 @@ public:
 	 */
 	void SetAnimCount(int ac);
 
+	/** Resets the stepping animation */
+	void ResetAnimation();
+
 	/**
 	 * Gets if character is moving.
 	 *
@@ -774,14 +777,14 @@ public:
 	 *
 	 * @return Wheter animations are enabled.
 	 */
-	virtual bool IsAnimated() const;
+	bool IsAnimated() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	virtual bool IsContinuous() const;
+	bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
@@ -1083,6 +1086,14 @@ inline void Game_Character::IncAnimCount() {
 
 inline void Game_Character::IncAnimFrame() {
 	data()->anim_frame = (data()->anim_frame + 1) % 4;
+	SetAnimCount(0);
+}
+
+inline void Game_Character::ResetAnimation() {
+	SetAnimCount(0);
+	if (GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic) {
+		SetAnimFrame(1);
+	}
 }
 
 inline int Game_Character::GetRemainingStep() const {
