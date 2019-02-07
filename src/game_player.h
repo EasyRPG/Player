@@ -80,6 +80,7 @@ public:
 	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
+	bool IsAboard() const;
 	bool IsBoardingOrUnboarding() const;
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
@@ -99,8 +100,6 @@ private:
 
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
-
-	RPG::Music walking_bgm;
 
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();

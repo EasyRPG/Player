@@ -371,11 +371,16 @@ void Game_Map::PlayBgm() {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 
-	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
+	if ((current_index > 0) && !Data::treemap.maps[current_index].music.name.empty()) {
 		if (Data::treemap.maps[current_index].music_type == 1) {
 			return;
 		}
-		Game_System::BgmPlay(Data::treemap.maps[current_index].music);
+		auto& music = Data::treemap.maps[current_index].music;
+		if (!Main_Data::game_player->IsAboard()) {
+			Game_System::BgmPlay(music);
+		} else {
+			Main_Data::game_data.system.before_vehicle_music = music;
+		}
 	}
 }
 

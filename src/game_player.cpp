@@ -466,7 +466,7 @@ bool Game_Player::GetOnVehicle() {
 		SetDirection(RPG::EventPage::Direction_left);
 	}
 
-	walking_bgm = Game_System::GetCurrentBGM();
+	Main_Data::game_data.system.before_vehicle_music = Game_System::GetCurrentBGM();
 	GetVehicle()->GetOn();
 	return true;
 }
@@ -603,7 +603,11 @@ void Game_Player::Unboard() {
 	data()->aboard = false;
 	SetMoveSpeed(data()->preboard_move_speed);
 
-	Game_System::BgmPlay(walking_bgm);
+	Game_System::BgmPlay(Main_Data::game_data.system.before_vehicle_music);
+}
+
+bool Game_Player::IsAboard() const {
+	return data()->aboard;
 }
 
 bool Game_Player::IsBoardingOrUnboarding() const {
