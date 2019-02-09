@@ -205,11 +205,11 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 	if (IsSpinning()) {
 		const auto limit = spin_limits[step_idx];
 
-		if (GetAnimCount() >= limit) {
+		IncAnimCount();
+
+		if (GetAnimCount() > limit) {
 			SetSpriteDirection((GetSpriteDirection() + 1) % 4);
 			SetAnimCount(0);
-		} else {
-			IncAnimCount();
 		}
 		return;
 	}
@@ -224,21 +224,18 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 	const auto stationary_limit = stationary_limits[step_idx];
 	const auto continuous_limit = continuous_limits[step_idx];
 
-	if (GetAnimCount() >= continuous_limit) {
+	if (IsContinuous()
+			|| was_moving
+			|| data()->anim_frame == 0 || data()->anim_frame == 2
+			|| GetAnimCount() < stationary_limit) {
+		IncAnimCount();
+	}
+
+	if (GetAnimCount() > continuous_limit
+			|| (was_moving && GetAnimCount() > stationary_limit)) {
 		IncAnimFrame();
 		return;
 	}
-
-	if (GetAnimCount() >= stationary_limit) {
-		if (was_moving) {
-			IncAnimFrame();
-			return;
-		} else if (!IsContinuous() && (data()->anim_frame == 1 || data()->anim_frame == 3)) {
-			return;
-		}
-	}
-
-	IncAnimCount();
 }
 
 void Game_Character::UpdateJump() {

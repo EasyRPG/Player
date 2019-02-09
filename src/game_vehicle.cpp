@@ -265,10 +265,10 @@ void Game_Vehicle::UpdateAnimationAirship() {
 	if (IsAboard()) {
 		const auto limit = 11;
 
-		if (GetAnimCount() >= limit) {
+		IncAnimCount();
+
+		if (GetAnimCount() > limit) {
 			IncAnimFrame();
-		} else {
-			IncAnimCount();
 		}
 	} else {
 		ResetAnimation();
@@ -278,10 +278,10 @@ void Game_Vehicle::UpdateAnimationAirship() {
 void Game_Vehicle::UpdateAnimationShip() {
 	const auto limit = 15;
 
-	if (GetAnimCount() >= limit) {
+	IncAnimCount();
+
+	if (GetAnimCount() > limit) {
 		IncAnimFrame();
-	} else {
-		IncAnimCount();
 	}
 }
 
