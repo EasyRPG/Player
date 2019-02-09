@@ -98,7 +98,7 @@ public:
 	 *
 	 * @return trigger condition.
 	 */
-	int GetTrigger() const;
+	RPG::EventPage::Trigger GetTrigger() const;
 
 	/**
 	 * Gets event commands list.

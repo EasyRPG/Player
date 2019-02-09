@@ -325,24 +325,22 @@ bool Game_Player::CheckCollisionEvent() {
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
-bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
-	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); ++i) {
-		if (((*i)->GetLayer() != RPG::EventPage::Layers_same)
-			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
-			(*i)->Start(triggered_by_decision_key);
-			result = (*i)->GetStarting();
+	for (auto* ev: events) {
+		if (ev->GetLayer() != RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+			ev->Start(triggered_by_decision_key);
+			result = ev->GetStarting();
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key) {
 	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
 
 	bool result = false;
@@ -354,10 +352,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool 
 	Game_Map::GetEventsXY(events, front_x, front_y);
 
 	for (const auto& ev : events) {
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same &&
-			std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
-		)
-		{
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
 			if (!ev->GetList().empty()) {
 				ev->StartTalkToHero();
 			}
@@ -373,10 +368,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
 		for (const auto& ev : events) {
-			if ( ev->GetLayer() == 1 &&
-				std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
-			)
-			{
+			if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
 				if (!ev->GetList().empty()) {
 					ev->StartTalkToHero();
 				}

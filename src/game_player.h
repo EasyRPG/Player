@@ -22,6 +22,7 @@
 #include "rpg_music.h"
 #include "rpg_savepartylocation.h"
 #include "game_character.h"
+#include "flag_set.h"
 #include <vector>
 
 class Game_Vehicle;
@@ -103,6 +104,7 @@ protected:
 	RPG::SavePartyLocation* data();
 	const RPG::SavePartyLocation* data() const;
 private:
+	using TriggerSet = FlagSet<RPG::EventPage::Trigger>;
 
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
@@ -112,8 +114,8 @@ private:
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
-	bool CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key = false);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();

@@ -303,8 +303,8 @@ bool Game_Event::WasStartedByDecisionKey() const {
 	return started_by_decision_key;
 }
 
-int Game_Event::GetTrigger() const {
-	return trigger;
+RPG::EventPage::Trigger Game_Event::GetTrigger() const {
+	return static_cast<RPG::EventPage::Trigger>(trigger);
 }
 
 void Game_Event::SetActive(bool active) {
