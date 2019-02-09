@@ -46,7 +46,6 @@ public:
 	bool GetVisible() const override;
 	bool MakeWay(int x, int y) const override;
 	void BeginMove() override;
-	void CancelMoveRoute() override;
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
 	/** @} */
