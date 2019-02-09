@@ -255,6 +255,7 @@ void Game_Player::Update() {
 
 	if (IsMoving()) return;
 
+	bool finished_boarding_or_unboarding = false;
 	if (data()->boarding) {
 		// Boarding completed
 		data()->aboard = true;
@@ -270,13 +271,13 @@ void Game_Player::Update() {
 		SetSpriteDirection(Left);
 		vehicle->SetX(GetX());
 		vehicle->SetY(GetY());
-		return;
+		finished_boarding_or_unboarding = true;
 	}
 
 	if (data()->unboarding) {
 		// Unboarding completed
 		data()->unboarding = false;
-		return;
+		finished_boarding_or_unboarding = true;
 	}
 
 	if (IsMoveRouteOverwritten()) return;
@@ -294,6 +295,10 @@ void Game_Player::Update() {
 		if(CheckTouchEvent()) {
 			return;
 		}
+	}
+
+	if (finished_boarding_or_unboarding) {
+		return;
 	}
 
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
