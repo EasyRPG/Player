@@ -653,7 +653,7 @@ public:
 	/**
 	 * Cancels a previous forced move route.
 	 */
-	virtual void CancelMoveRoute();
+	void CancelMoveRoute();
 
 	/** @return height of active jump in pixels */
 	int GetJumpHeight() const;

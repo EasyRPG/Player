@@ -234,12 +234,11 @@ void Game_Player::Update() {
 	}
 	SetProcessed(true);
 
-	const bool last_moving = IsMoving() || IsJumping();
-
 	const auto old_sprite_x = GetSpriteX();
 	const auto old_sprite_y = GetSpriteY();
 
 	auto was_moving = !IsStopping();
+	auto was_move_route_overriden = IsMoveRouteOverwritten();
 
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
@@ -277,13 +276,25 @@ void Game_Player::Update() {
 	if (data()->unboarding) {
 		// Unboarding completed
 		data()->unboarding = false;
-		CheckTouchEvent();
 		return;
 	}
 
 	if (IsMoveRouteOverwritten()) return;
 
-	if (last_moving && CheckTouchEvent()) return;
+	// When the last command of a move route is a move command, there is special
+	// logic to reset the move route index to 0. We leverage this here because
+	// we only do touch checks if the last move command was a move.
+	// Checking was_moving is not enough, because there could have been 0 frame
+	// commands after the move in the move route, in which case index would be > 0.
+	if (!IsFlying()
+			&& was_moving
+			&& (!was_move_route_overriden || GetMoveRouteIndex() == 0)
+			)
+	{
+		if(CheckTouchEvent()) {
+			return;
+		}
+	}
 
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
@@ -292,8 +303,9 @@ void Game_Player::Update() {
 		}
 	}
 
-	if (last_moving)
+	if (was_moving) {
 		Game_Map::UpdateEncounterSteps();
+	}
 }
 
 bool Game_Player::CheckActionEvent() {
@@ -307,12 +319,6 @@ bool Game_Player::CheckActionEvent() {
 }
 
 bool Game_Player::CheckTouchEvent() {
-	if (InAirship())
-		return false;
-
-	if (IsMoveRouteOverwritten())
-		return false;
-
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
 }
 
@@ -379,10 +385,8 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 
 	for (const auto& ev : events) {
 		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
-			(ev->GetTrigger() == RPG::EventPage::Trigger_touched ||
-			ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
+			(ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
 			result |= ev->SetAsWaitingForegroundExecution(true, false);
-
 		}
 	}
 	return result;
@@ -555,35 +559,6 @@ void Game_Player::BeginMove() {
 
 	if (red_flash) {
 		Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 6);
-	}
-}
-
-void Game_Player::CancelMoveRoute() {
-	if (!IsMoveRouteOverwritten())
-		return;
-
-	// Bugfix: Moved up from end of function. The fix for #1051 in CheckTouchEvent made the Touch check always returning
-	// false because the MoveRoute was still marked as overwritten
-	Game_Character::CancelMoveRoute();
-
-	// If the last executed command of the move route was a Move command, check touch and collision triggers
-	const RPG::MoveRoute& active_route = GetMoveRoute();
-
-	int index = GetMoveRouteIndex();
-	if (!active_route.move_commands.empty()) {
-		int move_size = static_cast<int>(active_route.move_commands.size());
-		if (index >= move_size) {
-			index = move_size - 1;
-		}
-
-		// Touch/Collision events are only triggered after the end of a move route when the last command of the move
-		// route was any movement command.
-		// "any_move_successful" handles the corner case that the last command was a movement but the Player never
-		// changed the tile (because the way was blocked), then no event handling occurs.
-		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward && any_move_successful) {
-			CheckTouchEvent();
-			CheckCollisionEvent();
-		}
 	}
 }
 

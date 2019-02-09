@@ -395,11 +395,6 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 				break;
 		}
 
-		//FIXME: DO we need this?
-		if (move_command.command_id <= RPG::MoveCommand::Code::move_forward) {
-			any_move_successful |= !move_failed;
-		}
-
 		if (move_failed && !current_route.skippable) {
 			break;
 		}
@@ -762,7 +757,6 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 	SetMoveRouteIndex(0);
 	SetMoveRouteRepeated(false);
 	SetMoveRoute(new_route);
-	any_move_successful = false;
 
 	if (GetMoveRoute().move_commands.empty()) {
 		// Matches RPG_RT behavior
