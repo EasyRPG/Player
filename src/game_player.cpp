@@ -103,8 +103,8 @@ void Game_Player::PerformTeleport() {
 	// Even when target is the same map
 	Refresh();
 
+	ResetAnimation();
 	if (Game_Map::GetMapId() != new_map_id) {
-		SetAnimFrame(RPG::EventPage::Frame_middle);
 		Game_Map::Setup(new_map_id);
 	} else {
 		Game_Map::SetupFromTeleportSelf();
