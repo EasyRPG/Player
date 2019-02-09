@@ -88,9 +88,6 @@ public:
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 
-	/** Workaround used to avoid blocking the player with move routes that are completeable in a single frame */
-	bool IsBlockedByMoveRoute() const;
-
 	/**
 	 * Callback function invoked by the Vehicle to notify that the unboarding has finished
 	 */

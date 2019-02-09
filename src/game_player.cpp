@@ -229,7 +229,7 @@ void Game_Player::UpdateSelfMovement() {
 		}
 
 		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsBlockedByMoveRoute() && Input::IsTriggered(Input::CANCEL)) {
+		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsMoveRouteOverwritten() && Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_data.party_location.menu_calling = true;
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
@@ -246,9 +246,6 @@ void Game_Player::Update() {
 
 	const bool last_moving = IsMoving() || IsJumping();
 
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	const bool was_blocked = IsBlockedByMoveRoute();
 	const auto old_sprite_x = GetSpriteX();
 	const auto old_sprite_y = GetSpriteY();
 
@@ -286,7 +283,7 @@ void Game_Player::Update() {
 		return;
 	}
 
-	if (was_blocked) return;
+	if (IsMoveRouteOverwritten()) return;
 
 	if (last_moving && CheckTouchEvent()) return;
 
@@ -324,6 +321,7 @@ bool Game_Player::CheckTouchEvent() {
 bool Game_Player::CheckCollisionEvent() {
 	if (InAirship())
 		return false;
+
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
@@ -515,22 +513,6 @@ bool Game_Player::IsMovable() const {
 	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
     return true;
-}
-
-bool Game_Player::IsBlockedByMoveRoute() const {
-	if (!IsMoveRouteOverwritten())
-		return false;
-
-	// Check if it includes a blocking move command
-	for (const auto& move_command : GetMoveRoute().move_commands) {
-		int code = move_command.command_id;
-		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
-			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
-			(code == RPG::MoveCommand::Code::wait || code == RPG::MoveCommand::Code::begin_jump)) // Wait or jump
-				return true;
-	}
-
-	return false;
 }
 
 bool Game_Player::InVehicle() const {
