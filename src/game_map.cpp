@@ -1395,11 +1395,9 @@ void Game_Map::RemovePendingMove(Game_Character* character) {
 }
 
 void Game_Map::RemoveAllPendingMoves() {
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		(*it)->CancelMoveRoute();
-
-	pending.clear();
+	while (!pending.empty()) {
+		pending.back()->CancelMoveRoute();
+	}
 }
 
 static int DoSubstitute(std::vector<uint8_t>& tiles, int old_id, int new_id) {
