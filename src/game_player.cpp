@@ -90,15 +90,6 @@ void Game_Player::PerformTeleport() {
 
 	teleporting = false;
 
-	// Finish (un)boarding process
-	if (data()->boarding) {
-		data()->boarding = false;
-		data()->aboard = true;
-	} else if (data()->unboarding) {
-		data()->unboarding = false;
-		data()->aboard = false;
-	}
-
 	// Reset sprite if it was changed by a move
 	// Even when target is the same map
 	Refresh();
@@ -267,27 +258,29 @@ void Game_Player::Update(bool process_movement) {
 
 	if (IsMoving()) return;
 
-	if (last_moving && data()->boarding) {
-		// Boarding completed
-		data()->aboard = true;
-		data()->boarding = false;
-		auto* vehicle = GetVehicle();
-		if (vehicle->IsMoveRouteOverwritten()) {
-			vehicle->CancelMoveRoute();
+	if (process_movement) {
+		if (data()->boarding) {
+			// Boarding completed
+			data()->aboard = true;
+			data()->boarding = false;
+			auto* vehicle = GetVehicle();
+			if (vehicle->IsMoveRouteOverwritten()) {
+				vehicle->CancelMoveRoute();
+			}
+			SetMoveSpeed(vehicle->GetMoveSpeed());
+			vehicle->SetDirection(GetDirection());
+			vehicle->SetSpriteDirection(GetSpriteDirection());
+			vehicle->SetX(GetX());
+			vehicle->SetY(GetY());
+			return;
 		}
-		SetMoveSpeed(vehicle->GetMoveSpeed());
-		vehicle->SetDirection(GetDirection());
-		vehicle->SetSpriteDirection(GetSpriteDirection());
-		vehicle->SetX(GetX());
-		vehicle->SetY(GetY());
-		return;
-	}
 
-	if (last_moving && data()->unboarding) {
-		// Unboarding completed
-		data()->unboarding = false;
-		CheckTouchEvent();
-		return;
+		if (data()->unboarding) {
+			// Unboarding completed
+			data()->unboarding = false;
+			CheckTouchEvent();
+			return;
+		}
 	}
 
 	if (was_blocked) return;
