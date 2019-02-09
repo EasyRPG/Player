@@ -269,7 +269,9 @@ void Game_Player::Update(bool process_movement) {
 			}
 			SetMoveSpeed(vehicle->GetMoveSpeed());
 			vehicle->SetDirection(GetDirection());
-			vehicle->SetSpriteDirection(GetSpriteDirection());
+			vehicle->SetSpriteDirection(Left);
+			// Note: RPG_RT ignores the lock_facing flag here!
+			SetSpriteDirection(Left);
 			vehicle->SetX(GetX());
 			vehicle->SetY(GetY());
 			return;
@@ -478,6 +480,7 @@ bool Game_Player::GetOnVehicle() {
 		}
 		SetMoveSpeed(vehicle->GetMoveSpeed());
 		SetDirection(RPG::EventPage::Direction_left);
+		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(RPG::EventPage::Direction_left);
 		vehicle->SetX(GetX());
 		vehicle->SetY(GetY());
@@ -640,6 +643,7 @@ void Game_Player::UnboardingFinished() {
 	Unboard();
 	if (InAirship()) {
 		SetDirection(RPG::EventPage::Direction_down);
+		// Note: RPG_RT ignores the lock_facing flag here!
 		SetSpriteDirection(RPG::EventPage::Direction_down);
 	} else {
 		data()->unboarding = true;
