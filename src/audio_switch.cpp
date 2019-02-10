@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(SWITCH) && defined(SUPPORT_AUDIO)
+#if defined(__SWITCH__) && defined(SUPPORT_AUDIO)
 #include "audio_switch.h"
 #include "output.h"
 

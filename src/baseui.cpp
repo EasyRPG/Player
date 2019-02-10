@@ -23,11 +23,11 @@
 #include "sdl2_ui.h"
 #elif USE_SDL==1
 #include "sdl_ui.h"
-#elif _3DS
+#elif defined(_3DS)
 #include "3ds_ui.h"
-#elif PSP2
+#elif defined(PSP2)
 #include "psp2_ui.h"
-#elif SWITCH
+#elif defined(__SWITCH__)
 #include "switch_ui.h"
 #endif
 
@@ -42,11 +42,11 @@ std::shared_ptr<BaseUi> BaseUi::CreateUi(long width, long height, bool fs_flag, 
 	return std::make_shared<Sdl2Ui>(width, height, fs_flag, zoom);
 #elif USE_SDL==1
 	return std::make_shared<SdlUi>(width, height, fs_flag);
-#elif _3DS
+#elif defined(_3DS)
 	return std::make_shared<CtrUi>(width, height);
-#elif PSP2
+#elif defined(PSP2)
 	return std::make_shared<Psp2Ui>(width, height);
-#elif SWITCH
+#elif defined(__SWITCH__)
 	return std::make_shared<NxUi>(width, height);
 #else
 #error cannot create UI

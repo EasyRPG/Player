@@ -25,6 +25,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 # DATA is a list of directories containing data files
 # INCLUDES is a list of directories containing header files
 # EXEFS_SRC is the optional input directory containing data copied into exefs, if anything this normally should only contain "main.npdm".
+# ROMFS is the directory containing data to be added to RomFS, relative to the Makefile (Optional)
 #
 # NO_ICON: if set to anything, do not use icon.
 # NO_NACP: if set to anything, no .nacp file is generated.
@@ -42,8 +43,9 @@ TARGET		:=	easyrpg-player
 BUILD		:=	build
 SOURCES		:=	../../src
 DATA		:=	data
-INCLUDES	:=	../../src .
+INCLUDES	:=	../../src
 EXEFS_SRC	:=	exefs_src
+#ROMFS	:=	romfs
 
 APP_TITLE	:= EasyRPG Player
 APP_AUTHOR	:= EasyRPG Team & Rinnegatamante
@@ -55,10 +57,10 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:= -g -Wall -O2 -ffunction-sections \
+CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -DSWITCH \
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 			-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_TREMOR \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
@@ -80,7 +82,7 @@ LIBS	:=  -llcf -lexpat -lpixman-1 -lpng -lz \
 		-lfreetype -lharfbuzz -lfreetype -lmpg123 \
 		-lsndfile -lvorbisidec -logg -lxmp-lite \
 		-lWildMidi -lsamplerate -lopusfile -lopus \
-		-lnx -lc -lm
+		-lglad -lEGL -lglapi -ldrm_nouveau -lnx -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -123,8 +125,10 @@ else
 endif
 #---------------------------------------------------------------------------------
 
-export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-			$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES_BIN	:=	$(addsuffix .o,$(BINFILES))
+export OFILES_SRC	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES 	:=	$(OFILES_BIN) $(OFILES_SRC)
+export HFILES_BIN	:=	$(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
@@ -157,6 +161,10 @@ endif
 
 ifneq ($(APP_TITLEID),)
 	export NACPFLAGS += --titleid=$(APP_TITLEID)
+endif
+
+ifneq ($(ROMFS),)
+	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
 .PHONY: $(BUILD) clean all
@@ -197,10 +205,17 @@ endif
 
 $(OUTPUT).elf	:	$(OFILES)
 
+$(OFILES_SRC)	:	$(HFILES_BIN)
+
+# make compiling silent
+%.o: %.cpp
+	@echo $(notdir $<)
+	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
 #---------------------------------------------------------------------------------
-%.png.o	:	%.png
+%.png.o %_png.h :	%.png
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)

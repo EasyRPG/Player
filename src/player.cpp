@@ -36,7 +36,7 @@
 #  include <psp2/kernel/processmgr.h>
 #elif defined(_3DS)
 #  include <3ds.h>
-#elif defined(SWITCH)
+#elif defined(__SWITCH__)
 #  include <switch.h>
 #endif
 
@@ -207,7 +207,7 @@ void Player::Run() {
 		hidScanInput();
 		Player::MainLoop();
 	}
-#elif defined(SWITCH)
+#elif defined(__SWITCH__)
 	while (appletMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
 		MainLoop();
 #else

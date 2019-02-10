@@ -26,7 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !(defined(USE_SDL) || defined(_3DS) || defined(PSP2) || defined(SWITCH))
+#if !(defined(USE_SDL) || defined(_3DS) || defined(PSP2) || defined(__SWITCH__))
 #  error "This build doesn't target a backend"
 #endif
 
