@@ -22,6 +22,7 @@
 #include "audio.h"
 #include "audio_secache.h"
 #include "cache.h"
+#include "game_battle.h"
 #include "game_screen.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -42,7 +43,7 @@ Scene_Title::Scene_Title() {
 void Scene_Title::Start() {
 	// Skip background image and music if not used
 	if (Data::system.show_title && !Player::new_game_flag &&
-		!Player::battle_test_flag && !Player::hide_title_flag) {
+		!Game_Battle::battle_test.enabled && !Player::hide_title_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
 	}
@@ -64,7 +65,7 @@ void Scene_Title::Continue() {
 }
 
 void Scene_Title::TransitionIn() {
-	if (Player::battle_test_flag || !Data::system.show_title || Player::new_game_flag)
+	if (Game_Battle::battle_test.enabled || !Data::system.show_title || Player::new_game_flag)
 		return;
 
 	if (command_window->GetVisible()) {
@@ -86,7 +87,7 @@ void Scene_Title::Resume() {
 	}
 }
 void Scene_Title::Update() {
-	if (Player::battle_test_flag) {
+	if (Game_Battle::battle_test.enabled) {
 		PrepareBattleTest();
 		return;
 	}

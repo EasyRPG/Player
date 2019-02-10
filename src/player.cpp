@@ -45,6 +45,7 @@
 #include "cache.h"
 #include "filefinder.h"
 #include "game_actors.h"
+#include "game_battle.h"
 #include "game_map.h"
 #include "game_message.h"
 #include "game_enemyparty.h"
@@ -77,8 +78,6 @@ namespace Player {
 	bool hide_title_flag;
 	bool window_flag;
 	bool fps_flag;
-	bool battle_test_flag;
-	int battle_test_troop_id;
 	bool new_game_flag;
 	int load_game_id;
 	int party_x_position;
@@ -382,8 +381,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	hide_title_flag = false;
 	exit_flag = false;
 	reset_flag = false;
-	battle_test_flag = false;
-	battle_test_troop_id = 0;
 	new_game_flag = false;
 	load_game_id = -1;
 	party_x_position = -1;
@@ -393,6 +390,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	no_audio_flag = false;
 	mouse_flag = false;
 	touch_flag = false;
+	Game_Battle::battle_test.enabled = false;
 
 	std::vector<std::string> args;
 
@@ -437,11 +435,18 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			battle_test_flag = true;
-			battle_test_troop_id = atoi((*it).c_str());
-			if (battle_test_troop_id == 0) {
+			Game_Battle::battle_test.enabled = true;
+			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
+
+			if (Game_Battle::battle_test.troop_id == 0) {
 				--it;
-				battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+				Game_Battle::battle_test.troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+				// 2k3 passes formation, condition and terrain_id as args 5-7
+				if (argc > 7) {
+					Game_Battle::battle_test.formation = (RPG::System::BattleFormation)atoi(argv[5]);
+					Game_Battle::battle_test.condition = (RPG::System::BattleCondition)atoi(argv[6]);
+					Game_Battle::battle_test.terrain_id = (RPG::System::BattleFormation)atoi(argv[7]);
+				}
 			}
 		}
 		else if (*it == "--battle-test") {
@@ -449,8 +454,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it == args.end()) {
 				return;
 			}
-			battle_test_flag = true;
-			battle_test_troop_id = atoi((*it).c_str());
+			Game_Battle::battle_test.enabled = true;
+			Game_Battle::battle_test.troop_id = atoi((*it).c_str());
 		}
 		else if (*it == "--project-path") {
 			++it;

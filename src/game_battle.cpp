@@ -46,6 +46,8 @@ namespace Game_Battle {
 	std::unique_ptr<BattleAnimation> animation;
 
 	int escape_fail_count;
+
+	struct BattleTest battle_test;
 }
 
 namespace {

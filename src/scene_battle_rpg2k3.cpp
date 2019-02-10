@@ -585,7 +585,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			Scene::Pop();
 			break;
 		case State_Defeat:
-			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
+			if (Game_Battle::battle_test.enabled || Game_Temp::battle_defeat_mode != 0) {
 				Scene::Pop();
 			}
 			else {

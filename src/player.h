@@ -239,12 +239,6 @@ namespace Player {
 	/** Touch flag, if true enables finger taps */
 	extern bool touch_flag;
 
-	/** Battle Test flag, if true will run battle test. */
-	extern bool battle_test_flag;
-
-	/** Battle Test Troop ID to fight with if battle test is run. */
-	extern int battle_test_troop_id;
-
 	/** Overwrite party x position */
 	extern int party_x_position;
 
