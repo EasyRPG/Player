@@ -179,8 +179,8 @@ namespace Game_Battle {
 		int troop_id = 0;
 		std::string background;
 		int terrain_id = 0;
-		RPG::System::BattleFormation formation;
-		RPG::System::BattleCondition condition;
+		RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
+		RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
 	};
 
 	extern struct BattleTest battle_test;
