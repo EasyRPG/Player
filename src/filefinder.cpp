@@ -96,6 +96,7 @@ namespace {
 	std::shared_ptr<FileFinder::DirectoryTree> game_directory_tree;
 	search_path_list search_paths;
 	std::string fonts_path;
+	bool disable_rtp = true;
 
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  const std::string& dir,
@@ -173,13 +174,14 @@ namespace {
 	}
 
 	const std::string translate_rtp(const std::string& dir, const std::string& name) {
+		// returns empty string when the file is not belonging to an RTP
 		RTP::rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
 		RTP::rtp_table_type::const_iterator dir_it = table.find(ReaderUtil::Normalize(dir).c_str());
 		std::string corrected_name = ReaderUtil::Normalize(name);
 
-		if (dir_it == table.end()) { return name; }
+		if (dir_it == table.end()) { return std::string(); }
 
 		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(corrected_name.c_str());
 		if (file_it == dir_it->second.end()) {
@@ -191,7 +193,7 @@ namespace {
 					}
 				}
 			}
-			return name;
+			return std::string();
 		}
 		return file_it->second;
 	}
@@ -201,7 +203,13 @@ namespace {
 		std::string const ret = FindFile(*tree, dir, name, exts);
 		if (!ret.empty()) { return ret; }
 
-		const std::string& rtp_name = translate_rtp(dir, name);
+		std::string rtp_name = translate_rtp(dir, name);
+
+		if (rtp_name.empty()) {
+			// not an RTP asset
+			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
+			return std::string();
+		}
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if (! *i) { continue; }
@@ -211,6 +219,14 @@ namespace {
 
 			std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
 			if (!ret_rtp.empty()) { return ret_rtp; }
+		}
+
+		if (!disable_rtp) {
+			std::string msg = "Cannot find: %s/%s. " + std::string(search_paths.empty() ?
+				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
+
+			Output::Warning(msg.c_str(),
+				dir.c_str(), name.c_str(), Player::IsRPG2k() ? 2000 : 2003);
 		}
 
 		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
@@ -443,15 +459,22 @@ static void read_rtp_registry(const std::string& company, const std::string& pro
 #endif
 }
 
-void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
+void FileFinder::InitRtpPaths(bool no_rtp) {
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
+	disable_rtp = true;
 	return;
 #endif
 
 	RTP::Init();
 
 	search_paths.clear();
+
+	disable_rtp = no_rtp;
+	if (disable_rtp) {
+		Output::Debug("RTP is disabled (FullPackageFlag=1)");
+		return;
+	}
 
 	std::string const version_str =
 		Player::IsRPG2k() ? "2000" :
@@ -538,13 +561,6 @@ void FileFinder::InitRtpPaths(bool warn_no_rtp_found) {
 
 	for (const std::string p : env_paths) {
 		add_rtp_path(p);
-	}
-
-	if (warn_no_rtp_found && search_paths.empty()) {
-		Output::Warning("RTP not found. This may create missing file errors. "
-			"Install RTP files or check they are installed fine. "
-			"If this game really does not require RTP, then add "
-			"FullPackageFlag=1 line to the RPG_RT.ini game file.");
 	}
 }
 
