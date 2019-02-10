@@ -624,7 +624,15 @@ public:
 	 *
 	 * @return Healed states
 	 */
-	std::vector<int16_t> NextBattleTurn();
+	void NextBattleTurn();
+
+	/**
+	 * Increases the internal turn counter of states and heals states that
+	 * reached the required numbers of turns.
+	 *
+	 * @return Healed states
+	 */
+	std::vector<int16_t> BattleStateHeal();
 
 	/**
 	 * Heals states based on the passed physical rate.

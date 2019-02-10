@@ -620,6 +620,16 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 	case BattleActionState_Execute:
 		if (battle_action_need_event_refresh) {
 			action->GetSource()->NextBattleTurn();
+
+			// The internal state turn counter increments for all every turn
+			std::vector<Game_Battler*> battler;
+			Main_Data::game_party->GetActiveBattlers(battler);
+			Main_Data::game_enemyparty->GetActiveBattlers(battler);
+
+			for (auto& b : battler) {
+				b->BattleStateHeal();
+			}
+
 			NextTurn(action->GetSource());
 			battle_action_need_event_refresh = false;
 
