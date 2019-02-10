@@ -54,13 +54,14 @@ void Scene_GameBrowser::Continue() {
 
 	Cache::Clear();
 	AudioSeCache::Clear();
-
 	Data::Clear();
-	Player::ResetGameObjects();
+	Main_Data::Cleanup();
+
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 
 	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
+	Game_System::SetMessageStretch(RPG::System::Stretch_stretch);
 	Game_System::BgmStop();
 }
 
