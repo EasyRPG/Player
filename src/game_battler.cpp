@@ -848,9 +848,11 @@ void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
 }
 
-std::vector<int16_t> Game_Battler::NextBattleTurn() {
+void Game_Battler::NextBattleTurn() {
 	++battle_turn;
+}
 
+std::vector<int16_t> Game_Battler::BattleStateHeal() {
 	std::vector<int16_t> healed_states;
 	std::vector<int16_t>& states = GetStates();
 

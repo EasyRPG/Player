@@ -445,7 +445,8 @@ bool Scene_Battle_Rpg2k::ProcessActionConditionHeal(Game_BattleAlgorithm::Algori
 			}
 		}
 
-		std::vector<int16_t> states_to_heal = src->NextBattleTurn();
+		src->NextBattleTurn();
+		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
 		src->ApplyConditions();
 
 		const RPG::State* pri_state = nullptr;
