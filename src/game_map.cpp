@@ -1379,6 +1379,10 @@ void Game_Map::AddPendingMove(Game_Character* character) {
 }
 
 void Game_Map::RemovePendingMove(Game_Character* character) {
+	if (pending.empty()) {
+		return;
+	}
+
 	pending.erase(std::remove(pending.begin(), pending.end(), character), pending.end());
 }
 

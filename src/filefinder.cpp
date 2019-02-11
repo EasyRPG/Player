@@ -136,6 +136,7 @@ namespace {
 		}
 
 #ifdef _WIN32
+		std::replace(corrected_name.begin(), corrected_name.end(), '/', '\\');
 		if (escape_symbol != "\\") {
 #endif
 			std::size_t escape_pos = corrected_name.find(escape_symbol);
