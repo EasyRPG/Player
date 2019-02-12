@@ -191,8 +191,12 @@ void Game_Character::UpdateMovement() {
 
 void Game_Character::UpdateAnimation(bool was_moving) {
 	const auto anim_type = GetAnimationType();
-	if (!IsAnimated()) {
+	if (IsAnimPaused()) {
 		ResetAnimation();
+		return;
+	}
+
+	if (!IsAnimated()) {
 		return;
 	}
 
