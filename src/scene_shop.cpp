@@ -272,10 +272,11 @@ void Scene_Shop::UpdateSellSelection() {
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		const RPG::Item* item = sell_window->GetItem();
-		status_window->SetItemId(item->ID);
-		party_window->SetItemId(item->ID);
+		int item_id = (item != nullptr) ? item->ID : 0;
+		status_window->SetItemId(item_id);
+		party_window->SetItemId(item_id);
 
-		if (item->price > 0) {
+		if (item && item->price > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);

@@ -30,6 +30,7 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	index(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
 
+	SetBorderX(4);
 	SetContents(Bitmap::Create(width - 8, height - 16));
 
 	Refresh();
@@ -106,15 +107,15 @@ void Window_SaveFile::Refresh() {
 		hp_short.resize(2, ' ');
 	}
 
-	contents->TextDraw(42, 32 + 2, 1, hp_short);
+	contents->TextDraw(46, 32 + 2, 1, hp_short);
 
 	int hx = Font::Default()->GetSize(hp_short).width;
 	out.str("");
 	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << hero_hp;
-	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());
+	contents->TextDraw(46 + hx, 32 + 2, Font::ColorDefault, out.str());
 
 	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
-		DrawFace(party[i].second, party[i].first, 88 + i * 56, 0);
+		DrawFace(party[i].second, party[i].first, 92 + i * 56, 0);
 	}
 }
 

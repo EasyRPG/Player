@@ -27,7 +27,8 @@
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Bitmap::Create(width - 16, height - 16));
+	SetBorderX(4);
+	SetContents(Bitmap::Create(width - GetBorderX() * 2, height - 16));
 
 	cycle = 0;
 	item_id = 0;
@@ -76,6 +77,14 @@ static int CmpEquip(const Game_Actor* actor, const RPG::Item* new_item) {
 	return 0;
 }
 
+static bool IsEquipment(const RPG::Item* item) {
+	return item->type == RPG::Item::Type_weapon
+		|| item->type == RPG::Item::Type_shield
+		|| item->type == RPG::Item::Type_helmet
+		|| item->type == RPG::Item::Type_armor
+		|| item->type == RPG::Item::Type_accessory;
+}
+
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
@@ -91,12 +100,17 @@ void Window_ShopParty::Refresh() {
 		if (phase == 3) {
 			phase = 1;
 		}
-		bool equippable = actor->IsEquippable(item_id);
-		BitmapRef bm = bitmaps[i][equippable ? phase : 1][equippable ? 1 : 0];
+		bool usable = actor->IsEquippable(item_id);
+		BitmapRef bm = bitmaps[i][usable ? phase : 1][usable ? 1 : 0];
 
 		if (bm) {
 			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
 		}
+
+		// (Shop) items are guaranteed to be valid
+		const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
+
+		bool equippable = usable && IsEquipment(new_item);
 
 		if (equippable) {
 			// check if item is equipped by each member
@@ -110,9 +124,6 @@ void Window_ShopParty::Refresh() {
 			if (is_equipped)
 				contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {
-				// (Shop) items are guaranteed to be valid
-				const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
-
 				int cmp = CmpEquip(actor, new_item);
 				if (cmp > 0) {
 					contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 0, 8, 8), 255);

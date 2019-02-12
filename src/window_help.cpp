@@ -36,6 +36,19 @@ void Window_Help::SetText(std::string text,	Text::Alignment align) {
 		this->text = text;
 		this->align = align;
 
-		contents->TextDraw(0, 2, Font::ColorDefault, text, align);
+		int x = 0;
+		std::string::size_type pos = 0;
+		std::string::size_type nextpos = 0;
+		while (nextpos != std::string::npos) {
+			nextpos = text.find(' ', pos);
+			auto segment = text.substr(pos, nextpos - pos);
+			contents->TextDraw(x, 2, Font::ColorDefault, segment, align);
+			x += Font::Default()->GetSize(segment).width;
+
+			if (nextpos != std::string::npos) {
+				x += Font::Default()->GetSize(" ").width / 2;
+				pos = nextpos + 1;
+			}
+		}
 	}
 }

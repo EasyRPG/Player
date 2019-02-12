@@ -43,7 +43,7 @@ void Window_ParamStatus::Refresh() {
 		contents->TextDraw(0, y, 1, name);
 
 		// Draw Value
-		contents->TextDraw(100, y, Font::ColorDefault, std::to_string(value), Text::AlignRight);
+		contents->TextDraw(90, y, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 		return y + 16;
 	};
 
