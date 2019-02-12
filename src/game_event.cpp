@@ -65,17 +65,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	Refresh();
 }
 
-int Game_Event::GetMoveFrequency() const {
-	return data()->move_frequency;
-}
-
-void Game_Event::SetMoveFrequency(int frequency) {
-	data()->move_frequency = frequency;
-	if (original_move_frequency == -1) {
-		original_move_frequency = frequency;
-	}
-}
-
 int Game_Event::GetOriginalMoveRouteIndex() const {
 	return data()->original_move_route_index;
 }
@@ -177,6 +166,7 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	}
 
 	move_type = page->move_type;
+	original_move_frequency = page->move_frequency;
 	trigger = page->trigger;
 	list = page->event_commands;
 

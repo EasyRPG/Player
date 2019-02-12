@@ -171,14 +171,14 @@ public:
 	 *
 	 * @return character movement frequency
 	 */
-	virtual int GetMoveFrequency() const;
+	int GetMoveFrequency() const;
 
 	/**
 	 * Sets character movement frequency.
 	 *
 	 * @param frequency new character movement frequency
 	 */
-	virtual void SetMoveFrequency(int frequency);
+	void SetMoveFrequency(int frequency);
 
 	/**
 	 * Returns the custom move route assigned via a MoveEvent.
@@ -841,7 +841,7 @@ protected:
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
 
-	int original_move_frequency;
+	int original_move_frequency = 2;
 	int move_type;
 	bool move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful

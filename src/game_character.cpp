@@ -32,7 +32,6 @@
 #include <cassert>
 
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
-	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
 	move_count(0),

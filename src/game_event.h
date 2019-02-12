@@ -46,8 +46,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetMoveFrequency() const override;
-	void SetMoveFrequency(int frequency) override;
 	bool GetThrough() const override;
 	void SetThrough(bool through) override;
 	bool IsMoveRouteActive() const override;
