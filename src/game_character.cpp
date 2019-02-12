@@ -32,9 +32,7 @@
 #include <cassert>
 
 Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
-	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
-	move_count(0),
 	jump_plus_x(0),
 	jump_plus_y(0),
 	visible(true),

@@ -842,11 +842,9 @@ protected:
 	const RPG::SaveMapEventBase* data() const;
 
 	int original_move_frequency = 2;
-	int move_type;
 	bool move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
 	bool any_move_successful;
-	int move_count;
 
 	int jump_plus_x;
 	int jump_plus_y;

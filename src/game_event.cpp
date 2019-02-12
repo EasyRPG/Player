@@ -106,7 +106,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
-		//move_type = 0;
 		trigger = -1;
 		list.clear();
 		return;
@@ -115,11 +114,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetSpriteName(page->character_name);
 	SetSpriteIndex(page->character_index);
 
-	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	if (!IsMoveRouteOverwritten()) {
-		if (move_type == RPG::EventPage::MoveType_custom) {
+		if (page->move_type == RPG::EventPage::MoveType_custom) {
 			SetMaxStopCountForTurn();
 		} else {
 			SetMaxStopCountForStep();
@@ -165,7 +163,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 		return;
 	}
 
-	move_type = page->move_type;
 	original_move_frequency = page->move_frequency;
 	trigger = page->trigger;
 	list = page->event_commands;
@@ -390,8 +387,11 @@ void Game_Event::UpdateSelfMovement() {
 		return;
 	if (!IsStopping())
 		return;
+	if (page == nullptr) {
+		return;
+	}
 
-	switch (move_type) {
+	switch (page->move_type) {
 	case RPG::EventPage::MoveType_random:
 		MoveTypeRandom();
 		break;
