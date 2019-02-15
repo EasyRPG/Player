@@ -19,6 +19,7 @@
 #define EP_GAME_BATTLE_H
 
 #include <functional>
+#include "rpg_system.h"
 #include "rpg_troop.h"
 
 class Game_Battler;
@@ -172,6 +173,17 @@ namespace Game_Battle {
 
 	extern int escape_fail_count;
 	extern std::string background_name;
+
+	struct BattleTest {
+		bool enabled = false;
+		int troop_id = 0;
+		std::string background;
+		int terrain_id = 0;
+		RPG::System::BattleFormation formation = RPG::System::BattleFormation_terrain;
+		RPG::System::BattleCondition condition = RPG::System::BattleCondition_none;
+	};
+
+	extern struct BattleTest battle_test;
 }
 
 #endif

@@ -77,6 +77,7 @@ void Spriteset_Battle::Update() {
 		}
 	}
 	background->SetTone(new_tone);
+	background->Update();
 
 	for (auto sprite : sprites) {
 		Game_Battler* battler = sprite->GetBattler();

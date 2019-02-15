@@ -21,6 +21,7 @@
 // Headers
 #include "scene_battle.h"
 #include "async_handler.h"
+#include "window_actorsp.h"
 
 /**
  * Scene_Battle class.
@@ -126,6 +127,7 @@ protected:
 	bool play_reflected_anim = false;
 
 	std::unique_ptr<Window_BattleStatus> enemy_status_window;
+	std::unique_ptr<Window_ActorSp> sp_window;
 
 	std::vector<Game_Battler*> targets;
 

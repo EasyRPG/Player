@@ -128,6 +128,9 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 
 	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - option_command_mov, 80, true));
 	enemy_status_window->SetVisible(false);
+	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
+	sp_window->SetVisible(false);
+	sp_window->SetZ(Priority_Window + 1);
 
 	ally_cursor.reset(new Sprite());
 	enemy_cursor.reset(new Sprite());
@@ -171,7 +174,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 
 		std::vector<Game_Battler*> actors;
 
-		if (ally_index >= 0) {
+		if (ally_index >= 0 && Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 			ally_cursor->SetVisible(true);
 			Main_Data::game_party->GetBattlers(actors);
 			const Game_Battler* actor = actors[ally_index];
@@ -398,6 +401,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	skill_window->SetVisible(false);
 	help_window->SetVisible(false);
 	target_window->SetVisible(false);
+	sp_window->SetVisible(false);
 
 	if (previous_state == State_SelectSkill) {
 		skill_window->SaveActorIndex(actor_index);
@@ -467,6 +471,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		skill_window->SetVisible(true);
 		skill_window->SetHelpWindow(help_window.get());
 		help_window->SetVisible(true);
+		if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+			sp_window->SetVisible(true);
+		}
 		break;
 	case State_Victory:
 	case State_Defeat:
@@ -578,7 +585,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			Scene::Pop();
 			break;
 		case State_Defeat:
-			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
+			if (Game_Battle::battle_test.enabled || Game_Temp::battle_defeat_mode != 0) {
 				Scene::Pop();
 			}
 			else {
@@ -953,6 +960,7 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 	case RPG::BattleCommand::Type_skill:
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		skill_window->SetSubsetFilter(0);
+		sp_window->SetBattler(*active_actor);
 		SetState(State_SelectSkill);
 		break;
 	case RPG::BattleCommand::Type_special:
@@ -994,6 +1002,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// skill subset is 4 (Type_subskill) + counted subsets
 	skill_window->SetSubsetFilter(subskill);
 	SetState(State_SelectSkill);
+	sp_window->SetBattler(*active_actor);
 }
 
 void Scene_Battle_Rpg2k3::SpecialSelected() {

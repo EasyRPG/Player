@@ -20,6 +20,7 @@
 #include "async_handler.h"
 #include "bitmap.h"
 #include "filefinder.h"
+#include "game_battle.h"
 #include "input.h"
 #include "player.h"
 #include "scene_map.h"
@@ -35,7 +36,7 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	logo.reset(new Sprite());
-	if (!Player::debug_flag) {
+	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
 		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		logo->SetBitmap(logo_img);
 	}
@@ -77,6 +78,7 @@ void Scene_Logo::Update() {
 	++frame_counter;
 
 	if (Player::debug_flag ||
+		Game_Battle::battle_test.enabled ||
 		frame_counter == 60 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {

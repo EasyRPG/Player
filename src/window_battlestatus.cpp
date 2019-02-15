@@ -88,8 +88,12 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			DrawActorState(*actor, 84, y);
-			DrawActorHp(*actor, 126, y, true);
-			DrawActorSp(*actor, 198, y, false);
+			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
+			} else {
+				DrawActorHp(*actor, 126, y, true);
+				DrawActorSp(*actor, 198, y, false);
+			}
 		}
 	}
 
@@ -150,7 +154,9 @@ void Window_BattleStatus::RefreshGauge() {
 				int y = 2 + i * 16;
 
 				DrawGauge(*actor, 198 - 10, y - 2);
-				DrawActorSp(*actor, 198, y, false);
+				if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_alternative) {
+					DrawActorSp(*actor, 198, y, false);
+				}
 			}
 		}
 	}
