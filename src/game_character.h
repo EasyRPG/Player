@@ -374,6 +374,24 @@ public:
 	int GetMaxStopCount() const;
 
 	/**
+	 * @return stepping max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	static constexpr int GetMaxStopCountForStep(int freq);
+
+	/**
+	 * @return turning max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	constexpr int GetMaxStopCountForTurn(int freq);
+
+	/**
+	 * @return waiting max_stop_count for the given frequency
+	 * @param freq input movement frequency
+	 */
+	constexpr int GetMaxStopCountForWait(int freq);
+
+	/**
 	 * Sets the max_stop_count
 	 *
 	 * @param sc the new max stop count
@@ -584,6 +602,26 @@ public:
 	/** @return the direction we would need to face away from hero. */
 	int GetDirectionAwayHero();
 
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 90 degrees to the left of dir
+	 */
+	static constexpr int GetDirection90DegreeLeft(int dir);
+
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 90 degrees to the right of dir
+	 */
+	static constexpr int GetDirection90DegreeRight(int dir);
+
+	/**
+	 * @param dir input direction
+	 *
+	 * @return the direction 180 degrees to the of dir
+	 */
+	static constexpr int GetDirection180Degree(int dir);
 
 	/**
 	 * Character looks in a random direction
@@ -1160,6 +1198,30 @@ inline bool Game_Character::HasTileSprite() const {
 
 inline void Game_Character::SetVisible(bool visible) {
 	this->visible = visible;
+}
+
+constexpr int Game_Character::GetDirection90DegreeLeft(int dir) {
+	return (dir + 3) % 4;
+}
+
+constexpr int Game_Character::GetDirection90DegreeRight(int dir) {
+	return (dir + 1) % 4;
+}
+
+constexpr int Game_Character::GetDirection180Degree(int dir) {
+	return (dir + 2) % 4;
+}
+
+constexpr int Game_Character::GetMaxStopCountForStep(int freq) {
+	return freq >= 8 ? 0 : 1 << (9 - freq);
+}
+
+constexpr int Game_Character::GetMaxStopCountForTurn(int freq) {
+	return freq >= 8 ? 0 : 1 << (8 - freq);
+}
+
+constexpr int Game_Character::GetMaxStopCountForWait(int freq) {
+	return 20 + GetMaxStopCountForTurn(freq);
 }
 
 #endif
