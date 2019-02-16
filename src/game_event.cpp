@@ -116,12 +116,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	if (!IsMoveRouteOverwritten()) {
-		if (page->move_type == RPG::EventPage::MoveType_custom) {
-			SetMaxStopCountForTurn();
-		} else {
-			SetMaxStopCountForStep();
-		}
+	if (page->move_type == RPG::EventPage::MoveType_custom) {
+		SetMaxStopCountForTurn();
+	} else {
+		SetMaxStopCountForStep();
 	}
 	original_move_frequency = page->move_frequency;
 	SetOriginalMoveRouteIndex(0);
