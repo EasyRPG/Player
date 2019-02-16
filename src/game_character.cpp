@@ -308,10 +308,10 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 				MoveRandom(option);
 				break;
 			case RPG::MoveCommand::Code::move_towards_hero:
-				MoveTowardsPlayer();
+				Move(GetDirectionToHero());
 				break;
 			case RPG::MoveCommand::Code::move_away_from_hero:
-				MoveAwayFromPlayer();
+				Move(GetDirectionAwayHero());
 				break;
 			case RPG::MoveCommand::Code::move_forward:
 				MoveForward(option);
@@ -621,10 +621,10 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 				MoveRandom();
 				break;
 			case RPG::MoveCommand::Code::move_towards_hero:
-				MoveTowardsPlayer();
+				Move(GetDirectionToHero());
 				break;
 			case RPG::MoveCommand::Code::move_away_from_hero:
-				MoveAwayFromPlayer();
+				Move(GetDirectionAwayHero());
 				break;
 			case RPG::MoveCommand::Code::move_forward:
 				MoveForward();
