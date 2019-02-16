@@ -677,7 +677,11 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	for (;;) {
 		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
 			return false;
-		int which = list[index].parameters[0];
+		auto& cmd = list[index];
+		if (cmd.code == Cmd::ShowChoiceEnd) {
+			return false;
+		}
+		int which = cmd.parameters[0];
 		index++;
 		if (which > Game_Message::choice_result)
 			return false;
