@@ -294,10 +294,10 @@ BitmapRef Cache::Exfont() {
 	if (it == cache.end() || !it->second.bitmap) {
 		std::string exfont_file = FileFinder::FindImage(".", "ExFont");
 		if (exfont_file.empty()) {
-			// Extracted EXFONTs have a specific name and are only in the save directory tree.
-            // To clarify - CreateSaveDirectoryTree *must* be called to ensure the resulting directory tree is up to date.
-            std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
-			exfont_file = FileFinder::FindDefault(*save_tree, "ExFont.bmp");
+			// Check for automatically extracted ExFont in the save directory
+			std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
+			// Due to API limitations only check for ExFont.bmp
+			exfont_file = FileFinder::FindImage(*save_tree, "ExFont.bmp");
 		}
 		BitmapRef exfont_img;
 		// Allow overwriting of built-in exfont with a custom ExFont image file
