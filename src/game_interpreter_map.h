@@ -23,7 +23,7 @@
 #include <vector>
 #include "game_character.h"
 #include "rpg_eventcommand.h"
-#include "rpg_saveeventcommands.h"
+#include "rpg_saveeventexecframe.h"
 #include "system.h"
 #include "game_interpreter.h"
 
@@ -46,14 +46,14 @@ public:
 	 *
 	 * @return If the setup was successful (fails when index out of range)
 	 */
-	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int index = 0);
+	bool SetupFromSave(const std::vector<RPG::SaveEventExecFrame>& save, int index = 0);
 
 	/**
 	 * Generates a SaveEventCommands vector needed for the savefile.
 	 *
 	 * @return interpreter commands stored in SaveEventCommands
 	 */
-	std::vector<RPG::SaveEventCommands> GetSaveData() const;
+	std::vector<RPG::SaveEventExecFrame> GetSaveData() const;
 
 	bool ExecuteCommand() override;
 

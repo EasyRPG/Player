@@ -27,10 +27,10 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id) {
 }
 
-void Game_CommonEvent::SetSaveData(const RPG::SaveEventData& data) {
-	if (!data.commands.empty()) {
+void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
+	if (!data.stack.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		interpreter->SetupFromSave(data.commands);
+		interpreter->SetupFromSave(data.stack);
 	}
 
 	Refresh();
@@ -79,11 +79,11 @@ std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 	return ReaderUtil::GetElement(Data::commonevents, common_event_id)->event_commands;
 }
 
-RPG::SaveEventData Game_CommonEvent::GetSaveData() {
-	RPG::SaveEventData event_data;
+RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
+	RPG::SaveEventExecState event_data;
 
 	if (interpreter) {
-		event_data.commands = interpreter->GetSaveData();
+		event_data.stack = interpreter->GetSaveData();
 	}
 
 	return event_data;

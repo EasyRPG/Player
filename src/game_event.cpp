@@ -55,9 +55,9 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 
 	this->event.ID = data()->ID;
 
-	if (!data()->event_data.commands.empty()) {
+	if (!data()->parallel_event_execstate.stack.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data()->event_data.commands);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data()->parallel_event_execstate.stack);
 	}
 
 	Refresh();
@@ -575,7 +575,7 @@ const RPG::EventPage *Game_Event::GetActivePage() const {
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
-		data()->event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+		data()->parallel_event_execstate.stack = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	}
 	data()->ID = event.ID;
 

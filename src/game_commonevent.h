@@ -23,7 +23,7 @@
 #include <vector>
 #include "game_interpreter_map.h"
 #include "rpg_commonevent.h"
-#include "rpg_saveeventdata.h"
+#include "rpg_saveeventexecstate.h"
 
 /**
  * Game_CommonEvent class.
@@ -42,7 +42,7 @@ public:
 	 *
 	 * @param data savegame data.
 	 */
-	void SetSaveData(const RPG::SaveEventData& data);
+	void SetSaveData(const RPG::SaveEventExecState& data);
 
 	/**
 	 * Refreshes the common event.
@@ -96,7 +96,7 @@ public:
 	 */
 	std::vector<RPG::EventCommand>& GetList();
 
-	RPG::SaveEventData GetSaveData();
+	RPG::SaveEventExecState GetSaveData();
 
 	/** @return true if waiting for foreground execution */
 	bool IsWaitingForegroundExecution() const;
