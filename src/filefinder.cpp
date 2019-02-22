@@ -225,12 +225,8 @@ namespace {
 			std::string msg = "Cannot find: %s/%s. " + std::string(search_paths.empty() ?
 				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
 
-			Output::Warning(msg.c_str(),
-				dir.c_str(), name.c_str(), Player::IsRPG2k() ? 2000 : 2003);
+			Output::Warning(msg.c_str(), dir.c_str(), rtp_name.c_str(), Player::EngineVersion());
 		}
-
-		Output::Debug("Cannot find: %s/%s (%s)", dir.c_str(), name.c_str(),
-						name == rtp_name ? "!" : rtp_name.c_str());
 
 		return std::string();
 	}
@@ -476,11 +472,7 @@ void FileFinder::InitRtpPaths(bool no_rtp) {
 		return;
 	}
 
-	std::string const version_str =
-		Player::IsRPG2k() ? "2000" :
-		Player::IsRPG2k3() ? "2003" :
-		"";
-
+	std::string const version_str =	Player::GetEngineVersion();
 	assert(!version_str.empty());
 
 #ifdef GEKKO

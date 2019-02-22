@@ -1012,13 +1012,11 @@ bool Player::IsMajorUpdatedVersion() {
 }
 
 bool Player::IsRPG2k3E() {
-	return ((engine & EngineRpg2k3) == EngineRpg2k3)
-		&& ((engine & EngineEnglish) == EngineEnglish);
+	return (IsRPG2k3() && IsEnglish());
 }
 
 bool Player::IsRPG2kE() {
-	return ((engine & EngineRpg2k) == EngineRpg2k)
-		&& ((engine & EngineEnglish) == EngineEnglish);
+	return (IsRPG2k() && IsEnglish());
 }
 
 bool Player::IsEnglish() {
@@ -1044,11 +1042,21 @@ bool Player::IsCP936() {
 }
 
 bool Player::IsCJK() {
-	return (IsCP932() || IsCP949() ||
-			IsBig5() || IsCP936());
+	return (IsCP932() || IsCP949() || IsBig5() || IsCP936());
 }
 
 bool Player::IsCP1251() {
 	return (encoding == "ibm-5347_P100-1998" ||
 			encoding == "windows-1251" || encoding == "1251");
+}
+
+int Player::EngineVersion() {
+	if (IsRPG2k3()) return 2003;
+	if (IsRPG2k()) return 2000;
+	return 0;
+}
+
+std::string Player::GetEngineVersion() {
+	if (EngineVersion() > 0) return std::to_string(EngineVersion());
+	return std::string();
 }
