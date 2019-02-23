@@ -97,6 +97,8 @@ namespace {
 	search_path_list search_paths;
 	std::string fonts_path;
 	bool disable_rtp = true;
+	bool disable_rtp_warnings = false;
+	bool warning_broken_rtp_game_shown = false;
 
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  const std::string& dir,
@@ -199,33 +201,45 @@ namespace {
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
+		std::string rtp_name;
+
 		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
 		std::string const ret = FindFile(*tree, dir, name, exts);
 		if (!ret.empty()) { return ret; }
 
-		std::string rtp_name = translate_rtp(dir, name);
+		// Try RTP if enabled and available
+		if (!disable_rtp)
+			rtp_name = translate_rtp(dir, name);
 
-		if (rtp_name.empty()) {
-			// not an RTP asset
-			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
-			return std::string();
+		if (!rtp_name.empty()) {
+			// RPG_RT will even load RTP files when the game disables it
+			if (disable_rtp_warnings && !warning_broken_rtp_game_shown) {
+				std::string lcase = Utils::LowerCase(dir);
+				if (lcase != "music" && lcase != "sound") {
+					warning_broken_rtp_game_shown = true;
+					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
+				}
+			}
+
+			for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
+				if (! *i) { continue; }
+
+				std::string const ret = FindFile(*(*i), dir, name, exts);
+				if (!ret.empty()) { return ret; }
+
+				std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
+				if (!ret_rtp.empty()) { return ret_rtp; }
+			}
 		}
 
-		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
-			if (! *i) { continue; }
-
-			std::string const ret = FindFile(*(*i), dir, name, exts);
-			if (!ret.empty()) { return ret; }
-
-			std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if (!ret_rtp.empty()) { return ret_rtp; }
-		}
-
-		if (!disable_rtp) {
+		if (!disable_rtp_warnings && !rtp_name.empty()) {
 			std::string msg = "Cannot find: %s/%s. " + std::string(search_paths.empty() ?
 				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
 
 			Output::Warning(msg.c_str(), dir.c_str(), rtp_name.c_str(), Player::EngineVersion());
+		} else {
+			// not an RTP asset or RTP support was disabled
+			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
 		}
 
 		return std::string();
@@ -455,22 +469,24 @@ static void read_rtp_registry(const std::string& company, const std::string& pro
 #endif
 }
 
-void FileFinder::InitRtpPaths(bool no_rtp) {
+void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
 	disable_rtp = true;
-	return;
+#else
+	disable_rtp = no_rtp;
 #endif
+	disable_rtp_warnings = no_rtp_warnings;
+
+	if (disable_rtp) {
+		Output::Debug("RTP support is disabled.");
+		return;
+	}
 
 	RTP::Init();
 
 	search_paths.clear();
-
-	disable_rtp = no_rtp;
-	if (disable_rtp) {
-		Output::Debug("RTP is disabled (FullPackageFlag=1)");
-		return;
-	}
+	warning_broken_rtp_game_shown = false;
 
 	std::string const version_str =	Player::GetEngineVersion();
 	assert(!version_str.empty());

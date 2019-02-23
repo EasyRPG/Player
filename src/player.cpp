@@ -625,13 +625,14 @@ void Player::CreateGameObjects() {
 
 	LoadDatabase();
 
+	bool no_rtp_warning_flag = false;
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
 	INIReader ini(ini_file);
 	if (ini.ParseError() != -1) {
-		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string title = ini.GetString("RPG_RT", "GameTitle", "");
 		game_title = ReaderUtil::Recode(title, encoding);
-		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+		no_rtp_warning_flag = ini.GetBoolean("RPG_RT", "FullPackageFlag", false);
 	}
 
 	std::stringstream title;
@@ -643,6 +644,10 @@ void Player::CreateGameObjects() {
 	}
 	title << GAME_TITLE;
 	DisplayUi->SetTitle(title.str());
+
+	if (no_rtp_warning_flag) {
+		Output::Debug("Game does not need RTP (FullPackageFlag=1)");
+	}
 
 	if (engine == EngineNone) {
 		if (Data::system.ldb_id == 2003) {
@@ -685,7 +690,7 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	FileFinder::InitRtpPaths(no_rtp_flag);
+	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
 	ResetGameObjects();
 }

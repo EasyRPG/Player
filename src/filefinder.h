@@ -43,8 +43,9 @@ namespace FileFinder {
 	 * Adds RTP paths to the file finder
 	 *
 	 * @param disable_rtp When true disables RTP handling in the FileFinder
+	 * @param disable_warnings When true disables warnings about missing RTP files
 	 */
-	void InitRtpPaths(bool disable_rtp = false);
+	void InitRtpPaths(bool disable_rtp = false, bool disable_warnings = false);
 
 	/**
 	 * Quits FileFinder.
