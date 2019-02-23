@@ -4,19 +4,21 @@
 AC_PREREQ([2.69])
 AC_INIT([easyrpg-player],[0.5.4],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
-AC_CONFIG_AUX_DIR([builds/autoconf])
-AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall -Werror])
+AC_CONFIG_AUX_DIR([builds/autoconf/aux])
+AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall dist-xz])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_MACRO_DIR([builds/autoconf/m4])
-AC_CONFIG_SRCDIR([src/battle_animation.cpp])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_LANG([C++])
 
 # Checks for programs.
-AM_PROG_AR
 AC_PROG_CXX
-LT_INIT([disable-shared])
+AC_PROG_CXXCPP
+AM_PROG_AR
+AC_PROG_RANLIB
 PKG_PROG_PKG_CONFIG
 
 # Options
@@ -109,8 +111,11 @@ AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
 AC_SUBST([BASHCOMPLETION_DIR])
 AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
 
+# C++11 is mandatory
+AX_CXX_COMPILE_STDCXX(11, noext)
+
 # Checks for header files.
-AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
+AC_CHECK_HEADERS([cstdint cstdlib string iostream unistd.h wchar.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN
@@ -143,6 +148,7 @@ DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)
 DX_INIT_DOXYGEN(easyrpg-player, resources/Doxyfile, doc)
 
+# Files to generate
 AC_CONFIG_FILES([Makefile
                  resources/Doxyfile])
 
