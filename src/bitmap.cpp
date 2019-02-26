@@ -187,7 +187,7 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	std::vector<uint32_t> data(width * height);
 
 	std::shared_ptr<pixman_image_t> dst
-		(pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, &data.front(), stride),
+		(pixman_image_create_bits(PIXMAN_b8g8r8, width, height, &data.front(), stride),
 		 pixman_image_unref);
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap, NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
