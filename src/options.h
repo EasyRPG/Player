@@ -65,6 +65,12 @@
 #define TREEMAP_NAME "RPG_RT.lmt"
 #define TREEMAP_NAME_EASYRPG "EASY_RT.emt"
 
+/**
+ * RPG_RT.exe (official engine) filename.
+ * Not used by emscripten.
+ */
+#define EXE_NAME "RPG_RT.exe"
+
 /** Default fps rate. */
 #define DEFAULT_FPS 60
 

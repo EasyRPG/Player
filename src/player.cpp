@@ -71,6 +71,11 @@
 #include "utils.h"
 #include "version.h"
 
+#ifndef EMSCRIPTEN
+// This is not used on Emscripten.
+#include "exe_reader.h"
+#endif
+
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -691,6 +696,39 @@ void Player::CreateGameObjects() {
 	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
+
+	// ExFont parsing
+	Cache::exfont_custom.clear();
+	// Check for bundled ExFont
+	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+#ifndef EMSCRIPTEN
+	if (exfont_file.empty()) {
+		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
+		// a ExFont can be manually bundled there)
+		std::string exep = FileFinder::FindDefault(EXE_NAME);
+		if (!exep.empty()) {
+			auto exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
+			if (exesp) {
+				Output::Debug("Loading ExFont from %s", exep.c_str());
+				EXEReader exe_reader = EXEReader(*exesp);
+				Cache::exfont_custom = exe_reader.GetExFont();
+			} else {
+				Output::Debug("ExFont loading failed: %s not readable", exep.c_str());
+			}
+		} else {
+			Output::Debug("ExFont loading failed: %s not found", EXE_NAME);
+		}
+	}
+#endif
+	if (!exfont_file.empty()) {
+		auto exfont_stream = FileFinder::openUTF8(exfont_file, std::ios::binary | std::ios::in);
+		if (exfont_stream) {
+			Output::Debug("Using custom ExFont: %s", exfont_file.c_str());
+			Cache::exfont_custom = Utils::ReadStream(*exfont_stream);
+		} else {
+			Output::Debug("Reading custom ExFont %s failed", exfont_file.c_str());
+		}
+	}
 
 	ResetGameObjects();
 }

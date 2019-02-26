@@ -231,6 +231,15 @@ namespace Utils {
 	template <typename F>
 	void ForEachLine(const std::string& line, F&& f);
 
+
+	/**
+	 * Reads a stream until EOF and returns the read bytes.
+	 *
+	 * @param stream input stream to read
+	 * @return content read from stream
+	 */
+	std::vector<uint8_t> ReadStream(std::istream& stream);
+
 	/**
 	 * Replaces placeholders (like %S, %O, %V, %U) in strings.
 	 *
