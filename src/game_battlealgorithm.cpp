@@ -1190,7 +1190,8 @@ bool Game_BattleAlgorithm::Skill::IsTargetValid() const {
 		skill.scope == RPG::Skill::Scope_party) {
 		if (GetTarget()->IsDead()) {
 			// Cures death
-			return !skill.state_effects.empty() && skill.state_effects[0];
+			return !skill.state_effects.empty() && skill.state_effects[0] &&
+				!(Player::IsRPG2k3() && skill.state_effect);
 		}
 
 		return true;
@@ -1215,7 +1216,16 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 		skill.scope == RPG::Skill::Scope_party ||
 		skill.scope == RPG::Skill::Scope_self;
 
-	this->revived = this->healing
+	bool heals_states = this->healing;
+	if (Player::IsRPG2k3()) {
+		if (this->healing) {
+			heals_states = !skill.state_effect;
+		} else {
+			heals_states = skill.state_effect;
+		}
+	}
+
+	this->revived = heals_states
 		&& !skill.state_effects.empty()
 		&& skill.state_effects[RPG::State::kDeathID - 1]
 		&& GetTarget()->IsDead();
@@ -1324,18 +1334,18 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				continue;
 			auto state_id = i + 1;
 
-			if (!healing && GetTarget()->HasState(state_id)) {
+			if (!heals_states && GetTarget()->HasState(state_id)) {
 				this->success = true;
 				conditions.push_back(state_id);
 				continue;
 			}
-			if (healing && !GetTarget()->HasState(state_id)) {
+			if (heals_states && !GetTarget()->HasState(state_id)) {
 				continue;
 			}
 			if (!Utils::PercentChance(to_hit))
 				continue;
 
-			if (healing || Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
+			if (heals_states || Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
 				conditions.push_back(state_id);
 			}
 		}
