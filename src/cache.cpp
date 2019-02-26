@@ -257,6 +257,8 @@ namespace {
 	}
 }
 
+std::vector<uint8_t> Cache::exfont_custom;
+
 #define cache(elem) \
 	BitmapRef Cache::elem(const std::string& f) { \
 		bool trans = spec[Material::elem].transparent; \
@@ -292,18 +294,11 @@ BitmapRef Cache::Exfont() {
 	cache_type::iterator const it = cache.find(hash);
 
 	if (it == cache.end() || !it->second.bitmap) {
-		std::string exfont_file = FileFinder::FindImage(".", "ExFont");
-		if (exfont_file.empty()) {
-			// Check for automatically extracted ExFont in the save directory
-			std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
-			// Due to API limitations only check for ExFont.bmp
-			exfont_file = FileFinder::FindImage(*save_tree, "ExFont.bmp");
-		}
-		BitmapRef exfont_img;
 		// Allow overwriting of built-in exfont with a custom ExFont image file
-		// Probe before using LoadBitmap because this generates a warning when the file is missing
-		if (!exfont_file.empty()) {
-			exfont_img = Bitmap::Create(exfont_file, true);
+		// exfont_custom is filled by Player::CreateGameObjects
+		BitmapRef exfont_img;
+		if (!exfont_custom.empty()) {
+			exfont_img = Bitmap::Create(exfont_custom.data(), exfont_custom.size(), true);
 		} else {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}

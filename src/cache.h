@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include <vector>
 
 #include "system.h"
 #include "color.h"
@@ -54,6 +55,8 @@ namespace Cache {
 
 	BitmapRef System();
 	void SetSystemName(std::string const& filename);
+
+	extern std::vector<uint8_t> exfont_custom;
 }
 
 #endif

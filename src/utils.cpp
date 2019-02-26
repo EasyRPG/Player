@@ -460,6 +460,20 @@ std::vector<std::string> Utils::Tokenize(const std::string &str_to_tokenize, con
 	return tokens;
 }
 
+std::vector<uint8_t> Utils::ReadStream(std::istream& stream) {
+	constexpr int buffer_incr = 8192;
+	std::vector<uint8_t> outbuf;
+
+	do {
+		outbuf.resize(outbuf.size() + buffer_incr);
+		stream.read(reinterpret_cast<char*>(outbuf.data() + outbuf.size() - buffer_incr), buffer_incr);
+	} while (stream.gcount() == buffer_incr);
+
+	outbuf.resize(outbuf.size() - buffer_incr + stream.gcount());
+
+	return outbuf;
+}
+
 std::string Utils::ReplacePlaceholders(const std::string& text_template, std::vector<char> types, std::vector<std::string> values) {
 	std::string str = text_template;
 	size_t index = str.find("%");

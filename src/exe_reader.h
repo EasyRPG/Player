@@ -18,8 +18,10 @@
 #ifndef EP_EXE_READER_H
 #define EP_EXE_READER_H
 
+#include <cstdint>
 #include <string>
 #include <istream>
+#include <vector>
 #include "bitmap.h"
 
 /**
@@ -33,13 +35,12 @@ public:
 	// 1. everywhere else uses "unsigned", which is equally as odd...
 	// 2. max offset value is this size
 
-	EXEReader(std::istream & core);
+	EXEReader(std::istream& core);
 	~EXEReader();
 
-	// Extracts an EXFONT resource with BMP header if present,
-	//  and saves it in the given place.
-	// Returns true on success.
-	bool GetExfont(std::string filename);
+	// Extracts an EXFONT resource with BMP header if present
+	// and returns exfont buffer on success.
+	std::vector<uint8_t> GetExFont();
 private:
 	// Bounds-checked unaligned reader primitives.
 	// In case of out-of-bounds, returns 0 - this will usually result in a harmless error at some other level,
@@ -48,13 +49,13 @@ private:
 	uint16_t GetU16(uint32_t point);
 	uint32_t GetU32(uint32_t point);
 
-	bool ResNameCheck(uint32_t namepoint, const char * name);
+	bool ResNameCheck(uint32_t namepoint, const char* name);
 
 	// 0 if resource section was unfindable.
 	uint32_t resource_ofs;
 	uint32_t resource_rva;
 
-	std::istream & corefile;
+	std::istream& corefile;
 };
 
 #endif

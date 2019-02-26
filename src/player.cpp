@@ -694,28 +694,38 @@ void Player::CreateGameObjects() {
 		FileFinder::InitRtpPaths();
 	}
 
-#ifndef EMSCRIPTEN
-	// Make sure an ExFont exists before any code that could load an ExFont has been called.
-	// Since the code to make this work properly on Emscripten has been removed,
-	//  the code may as well not be included.
+	// ExFont parsing
+	Cache::exfont_custom.clear();
+	// Check for bundled ExFont
 	std::string exfont_file = FileFinder::FindImage(".", "ExFont");
+#ifndef EMSCRIPTEN
 	if (exfont_file.empty()) {
-		std::shared_ptr<FileFinder::DirectoryTree> save_tree = FileFinder::CreateSaveDirectoryTree();
-		std::string filename = FileFinder::MakePath(save_tree->directory_path, "ExFont.bmp");
-		Output::Debug("No EXFONT - trying EXE");
-		// User does not apparently have a custom EXFONT, so be helpful and extract it for them.
+		// Attempt reading ExFont from RPG_RT.exe (not supported on Emscripten,
+		// a ExFont can be manually bundled there)
 		std::string exep = FileFinder::FindDefault(EXE_NAME);
-		std::shared_ptr<std::fstream> exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
-		if (!exesp) {
-			Output::Debug("No access to EXE");
+		if (!exep.empty()) {
+			auto exesp = FileFinder::openUTF8(exep, std::ios::binary | std::ios::in);
+			if (exesp) {
+				Output::Debug("Loading ExFont from %s", exep.c_str());
+				EXEReader exe_reader = EXEReader(*exesp);
+				Cache::exfont_custom = exe_reader.GetExFont();
+			} else {
+				Output::Debug("ExFont loading failed: %s not readable", exep.c_str());
+			}
 		} else {
-			std::fstream & exe = *exesp;
-			EXEReader exe_reader = EXEReader(exe);
-			exe_reader.GetExfont(filename);
-			exe.close();
+			Output::Debug("ExFont loading failed: %s not found", EXE_NAME);
 		}
 	}
 #endif
+	if (!exfont_file.empty()) {
+		auto exfont_stream = FileFinder::openUTF8(exfont_file, std::ios::binary | std::ios::in);
+		if (exfont_stream) {
+			Output::Debug("Using custom ExFont: %s", exfont_file.c_str());
+			Cache::exfont_custom = Utils::ReadStream(*exfont_stream);
+		} else {
+			Output::Debug("Reading custom ExFont %s failed", exfont_file.c_str());
+		}
+	}
 
 	ResetGameObjects();
 }

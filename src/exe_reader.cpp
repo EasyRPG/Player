@@ -25,7 +25,7 @@
 #include <iostream>
 #include <fstream>
 
-EXEReader::EXEReader(std::istream & core) : corefile(core) {
+EXEReader::EXEReader(std::istream& core) : corefile(core) {
 	// The Incredibly Dumb Resource Grabber (tm)
 	// The idea is that this code will eventually be moved to happen earlier or broken down as-needed.
 	// Since EXFONT is the only thing that matters right now, it's the only thing handled.
@@ -63,8 +63,13 @@ EXEReader::EXEReader(std::istream & core) : corefile(core) {
 EXEReader::~EXEReader() {
 }
 
-static bool exe_reader_perform_exfont_save(std::string f, std::istream & corefile, uint32_t pos, uint32_t len) {
-	corefile.seekg(pos, std::ios_base::beg);
+static std::vector<uint8_t> exe_reader_perform_exfont_save(std::istream& corefile, uint32_t position, uint32_t len) {
+	std::vector<uint8_t> exfont;
+	constexpr int header_size = 14;
+	exfont.resize(len + header_size);
+
+	corefile.seekg(position, std::ios_base::beg);
+
 	// Solely for calculating position of actual data
 	uint32_t hdrL = corefile.get();
 	hdrL |= ((uint32_t) corefile.get()) << 8;
@@ -76,57 +81,50 @@ static bool exe_reader_perform_exfont_save(std::string f, std::istream & corefil
 	// Since this is a packed bitmap, there's nothing else to worry about.
 	hdrL += 256 * 4;
 	// And the header that's going to be prepended.
-	hdrL += 14;
-
-	std::shared_ptr<std::fstream> exfilex = FileFinder::openUTF8(f, std::ios_base::binary | std::ios_base::out);
-	std::fstream & exfile = *exfilex;
-	if (exfile.fail()) {
-		Output::Debug("EXEReader::GetExfont : Unable to open exfont file");
-		return false;
-	}
+	hdrL += header_size;
 
 	// 0 (these are in decimal)
-	exfile.put('B');
-	exfile.put('M');
+	int pos = 0;
+	exfont[pos++] = 'B';
+	exfont[pos++] = 'M';
 	// 2
 	uint32_t totallen = len + 14;
-	exfile.put((totallen) & 0xFF);
-	exfile.put((totallen >> 8) & 0xFF);
-	exfile.put((totallen >> 16) & 0xFF);
-	exfile.put((totallen >> 24) & 0xFF);
+	exfont[pos++] = (totallen) & 0xFF;
+	exfont[pos++] = (totallen >> 8) & 0xFF;
+	exfont[pos++] = (totallen >> 16) & 0xFF;
+	exfont[pos++] = (totallen >> 24) & 0xFF;
 	// 6
-	exfile.put('E');
-	exfile.put('x');
-	exfile.put('F');
-	exfile.put('n');
+	exfont[pos++] = 'E';
+	exfont[pos++] = 'x';
+	exfont[pos++] = 'F';
+	exfont[pos++] = 'n';
 	// 10
-	exfile.put((hdrL) & 0xFF);
-	exfile.put((hdrL >> 8) & 0xFF);
-	exfile.put((hdrL >> 16) & 0xFF);
-	exfile.put((hdrL >> 24) & 0xFF);
+	exfont[pos++] = (hdrL) & 0xFF;
+	exfont[pos++] = (hdrL >> 8) & 0xFF;
+	exfont[pos++] = (hdrL >> 16) & 0xFF;
+	exfont[pos++] = (hdrL >> 24) & 0xFF;
 
-	corefile.seekg(pos, std::ios_base::beg);
+	corefile.seekg(position, std::ios_base::beg);
 	while (len > 0) {
 		int v = corefile.get();
 		if (v == -1)
 			break;
-		exfile.put(v);
+		exfont[pos++] = v;
 		len--;
 	}
-	
-	exfile.close();
-	return true;
+
+	return exfont;
 }
 
 static uint32_t exe_reader_roffset(uint32_t bas, uint32_t ofs) {
 	return bas + (ofs ^ 0x80000000);
 }
 
-bool EXEReader::GetExfont(std::string file) {
+std::vector<uint8_t> EXEReader::GetExFont() {
 	// Part 2 of the resource grabber.
 	if (!resource_ofs) {
-		Output::Debug("EXEReader::GetExfont : No resource section.");
-		return false;
+		Output::Debug("EXEReader: No resource section.");
+		return std::vector<uint8_t>();
 	}
 	// For each ID/Name entry in the outer...
 	uint32_t resourcesIDEs = GetU16(resource_ofs + 0x0C) + (uint32_t) GetU16(resource_ofs + 0x0E);
@@ -143,7 +141,7 @@ bool EXEReader::GetExfont(std::string file) {
 				// Actually a name?
 				if (name & 0x80000000) {
 					name = exe_reader_roffset(resource_ofs, name);
-					// Output::Debug("EXEReader::GetExfont : Name at %x.", name);
+
 					if (ResNameCheck(name, "EXFONT")) {
 						uint32_t dataent = GetU32(resourcesNDEbase + 4);
 						if (dataent & 0x80000000) {
@@ -152,21 +150,21 @@ bool EXEReader::GetExfont(std::string file) {
 						}
 						uint32_t filebase = (GetU32(dataent) - resource_rva) + resource_ofs;
 						uint32_t filesize = GetU32(dataent + 0x04);
-						Output::Debug("EXEReader::GetExfont : EXFONT found (DE %x ; %x ; len %x), committing to extraction.", dataent, filebase, filesize);
-						return exe_reader_perform_exfont_save(file, corefile, filebase, filesize);
+						Output::Debug("EXEReader: EXFONT resource found (DE %x; %x; len %x)", dataent, filebase, filesize);
+						return exe_reader_perform_exfont_save(corefile, filebase, filesize);
 					}
 				}
 				resourcesNDEbase += 8;
 				resourcesNDEs--;
 			}
-			Output::Debug("EXEReader::GetExfont : EXFONT not found in dbase at %x.", bitmapDBase);
-			return false;
+			Output::Debug("EXEReader: EXFONT not found in dbase at %x", bitmapDBase);
+			return std::vector<uint8_t>();
 		}
 		resourcesIDEbase += 8;
 		resourcesIDEs--;
 	}
-	Output::Debug("EXEReader::GetExfont : BITMAP not found.");
-	return false;
+	Output::Debug("EXEReader: BITMAP not found.");
+	return std::vector<uint8_t>();
 }
 
 uint8_t EXEReader::GetU8(uint32_t i) {
@@ -189,7 +187,7 @@ uint32_t EXEReader::GetU32(uint32_t i) {
 	return v;
 }
 
-bool EXEReader::ResNameCheck(uint32_t i, const char * p) {
+bool EXEReader::ResNameCheck(uint32_t i, const char* p) {
 	if (GetU16(i) != strlen(p))
 		return false;
 	while (*p) {
