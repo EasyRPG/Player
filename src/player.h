@@ -205,6 +205,12 @@ namespace Player {
 	bool IsCP1251();
 
 	/**
+	 * @return Running engine version. 2000 for RPG2k and 2003 for RPG2k3
+	 */
+	int EngineVersion();
+	std::string GetEngineVersion();
+
+	/**
 	 * @return Returns how fast EasyRPG currently runs (1: Normal speed, 2: double speed, 5: 5x speed, ...)
 	 */
 	int GetSpeedModifier();

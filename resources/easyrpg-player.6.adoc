@@ -28,7 +28,8 @@ for some additional binary patches.
   Disable audio (in case you prefer your own music).
 
 *--disable-rtp*::
-  Disable support for the Runtime Package (RTP).
+  Disable support for the Runtime Package (RTP). Will lead to checkerboard
+  graphics and silent music/sound effects in games depending on the RTP.
 
 *--encoding* 'ENCODING'::
   Instead of auto detecting the encoding or using the one in RPG_RT.ini, the

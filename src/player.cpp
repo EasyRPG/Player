@@ -625,13 +625,14 @@ void Player::CreateGameObjects() {
 
 	LoadDatabase();
 
+	bool no_rtp_warning_flag = false;
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
 
 	INIReader ini(ini_file);
 	if (ini.ParseError() != -1) {
-		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string title = ini.GetString("RPG_RT", "GameTitle", "");
 		game_title = ReaderUtil::Recode(title, encoding);
-		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+		no_rtp_warning_flag = ini.GetBoolean("RPG_RT", "FullPackageFlag", false);
 	}
 
 	std::stringstream title;
@@ -643,6 +644,10 @@ void Player::CreateGameObjects() {
 	}
 	title << GAME_TITLE;
 	DisplayUi->SetTitle(title.str());
+
+	if (no_rtp_warning_flag) {
+		Output::Debug("Game does not need RTP (FullPackageFlag=1)");
+	}
 
 	if (engine == EngineNone) {
 		if (Data::system.ldb_id == 2003) {
@@ -685,9 +690,7 @@ void Player::CreateGameObjects() {
 	}
 	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
-	if (!no_rtp_flag) {
-		FileFinder::InitRtpPaths();
-	}
+	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
 	ResetGameObjects();
 }
@@ -1014,13 +1017,11 @@ bool Player::IsMajorUpdatedVersion() {
 }
 
 bool Player::IsRPG2k3E() {
-	return ((engine & EngineRpg2k3) == EngineRpg2k3)
-		&& ((engine & EngineEnglish) == EngineEnglish);
+	return (IsRPG2k3() && IsEnglish());
 }
 
 bool Player::IsRPG2kE() {
-	return ((engine & EngineRpg2k) == EngineRpg2k)
-		&& ((engine & EngineEnglish) == EngineEnglish);
+	return (IsRPG2k() && IsEnglish());
 }
 
 bool Player::IsEnglish() {
@@ -1046,11 +1047,21 @@ bool Player::IsCP936() {
 }
 
 bool Player::IsCJK() {
-	return (IsCP932() || IsCP949() ||
-			IsBig5() || IsCP936());
+	return (IsCP932() || IsCP949() || IsBig5() || IsCP936());
 }
 
 bool Player::IsCP1251() {
 	return (encoding == "ibm-5347_P100-1998" ||
 			encoding == "windows-1251" || encoding == "1251");
+}
+
+int Player::EngineVersion() {
+	if (IsRPG2k3()) return 2003;
+	if (IsRPG2k()) return 2000;
+	return 0;
+}
+
+std::string Player::GetEngineVersion() {
+	if (EngineVersion() > 0) return std::to_string(EngineVersion());
+	return std::string();
 }
