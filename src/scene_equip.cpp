@@ -88,6 +88,9 @@ void Scene_Equip::UpdateStatusWindow() {
 	} else if (item_window->GetActive()) {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
+		// Remember hp and states because equipment can inflict states and kill
+		int hp = actor.GetHp();
+		std::vector<int16_t> states = actor.GetStates();
 
 		int old_item = actor.SetEquipment(equip_window->GetIndex() + 1,
 			current_item_id);
@@ -106,6 +109,8 @@ void Scene_Equip::UpdateStatusWindow() {
 			}
 		}
 
+		actor.GetStates().swap(states);
+		actor.SetHp(hp);
 		actor.SetEquipment(equip_window->GetIndex() + 1, old_item);
 
 		equipstatus_window->Refresh();

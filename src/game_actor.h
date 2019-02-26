@@ -518,6 +518,27 @@ public:
 	 */
 	void RemoveAllStates() override;
 
+	/**
+	 * Determines if a state is caused by equipment.
+	 * @param state_id state
+	 * @return true if equipment state
+	 */
+	bool IsEquipmentState(int state_id);
+
+	/**
+	 * Checks the actor equipment and adds all states that are inflicted by it.
+	 * (only RPG2k3)
+	 */
+	void AddEquipmentStates();
+
+	/**
+	 * Removes the states inflicted that were caused by wearing a certain
+	 * equipment (only RPG2k3). When the state is caused by multiple items it
+	 * is not removed.
+	 * @param item Item whose states are removed
+	 */
+	void RemoveEquipmentState(const RPG::Item& item);
+
 	int GetHp() const override;
 	void SetHp(int _hp) override;
 

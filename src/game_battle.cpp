@@ -84,6 +84,12 @@ void Game_Battle::Init() {
 	});
 
 	Main_Data::game_party->ResetBattle();
+
+	std::vector<Game_Battler*> allies;
+	Main_Data::game_party->GetBattlers(allies);
+	for (auto* ally : allies) {
+		static_cast<Game_Actor*>(ally)->AddEquipmentStates();
+	}
 }
 
 void Game_Battle::Quit() {

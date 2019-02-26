@@ -446,6 +446,12 @@ public:
 	virtual void RemoveState(int state_id);
 
 	/**
+	 * @param state_id state to test
+	 * @return true when the state persists after battle
+	 */
+	static bool IsPermanentState(int state_id);
+
+	/**
 	 * Removes all states which end after battle.
 	 */
 	virtual void RemoveBattleStates();

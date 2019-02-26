@@ -609,14 +609,14 @@ int Game_Battler::ApplyConditions() {
 	return damageTaken;
 }
 
-static bool non_permanent(int state_id) {
-	return ReaderUtil::GetElement(Data::states, state_id)->type == RPG::State::Persistence_ends;
+bool Game_Battler::IsPermanentState(int state_id) {
+	return ReaderUtil::GetElement(Data::states, state_id)->type == RPG::State::Persistence_persists;
 }
 
 void Game_Battler::RemoveBattleStates() {
 	std::vector<int16_t>& states = GetStates();
 	for (size_t i = 0; i < states.size(); ++i) {
-		if (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob > 0) {
+		if (!IsPermanentState(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob > 0) {
 			RemoveState(i + 1);
 		}
 	}
@@ -624,7 +624,13 @@ void Game_Battler::RemoveBattleStates() {
 
 void Game_Battler::RemoveAllStates() {
 	std::vector<int16_t>& states = GetStates();
-	states.clear();
+	for (size_t i = 0; i < states.size(); ++i) {
+		RemoveState(i + 1);
+	}
+
+	if (GetInflictedStates().empty()) {
+		states.clear();
+	}
 }
 
 bool Game_Battler::IsCharged() const {

@@ -23,6 +23,7 @@
 #include "game_battle.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_temp.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -76,12 +77,16 @@ void Game_Actor::Init() {
 		SetSp(GetMaxSp());
 		SetExp(exp_list[GetLevel() - 1]);
 	}
+
+	AddEquipmentStates();
 }
 
 void Game_Actor::Fixup() {
 	GetData().Fixup(actor_id);
 
 	RemoveInvalidData();
+
+	AddEquipmentStates();
 }
 
 int Game_Actor::GetId() const {
@@ -253,10 +258,16 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 	if (new_item_id != 0 && !new_item) {
 		Output::Warning("SetEquipment: Can't equip item with invalid ID %d", new_item_id);
 		GetData().equipped[equip_type - 1] = 0;
-		return old_item_id;
+	} else {
+		GetData().equipped[equip_type - 1] = (short)new_item_id;
 	}
 
-	GetData().equipped[equip_type - 1] = (short)new_item_id;
+	if (old_item_id > 0) {
+		RemoveEquipmentState(*ReaderUtil::GetElement(Data::items, old_item_id));
+	}
+
+	AddEquipmentStates();
+
 	return old_item_id;
 }
 
@@ -324,6 +335,10 @@ void Game_Actor::AddState(int state_id) {
 }
 
 void Game_Actor::RemoveState(int state_id) {
+	if (IsEquipmentState(state_id)) {
+		return;
+	}
+
 	Game_Battler::RemoveState(state_id);
 }
 
@@ -334,6 +349,73 @@ void Game_Actor::RemoveBattleStates() {
 void Game_Actor::RemoveAllStates() {
 	Game_Battler::RemoveAllStates();
 }
+
+bool Game_Actor::IsEquipmentState(int state_id) {
+	if (!Player::IsRPG2k3()) {
+		return false;
+	}
+
+	auto checkEquip = [state_id](const RPG::Item* item) {
+		if (item && item->state_effect) {
+			if (item->state_set.size() >= state_id && item->state_set[state_id - 1]) {
+				if (!IsPermanentState(state_id)) {
+					if (Game_Temp::battle_running) {
+						return true;
+					}
+				} else {
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+
+	return checkEquip(GetShield())
+		|| checkEquip(GetArmor())
+		|| checkEquip(GetHelmet())
+		|| checkEquip(GetAccessory());
+}
+
+void Game_Actor::AddEquipmentStates() {
+	if (!Player::IsRPG2k3()) {
+		return;
+	}
+
+	auto checkEquip = [this](const RPG::Item* item) {
+		if (item && item->state_effect) {
+			for (int i = 0; i < (int)item->state_set.size(); i++) {
+				if (item->state_set[i]) {
+					if (!IsPermanentState(i + 1)) {
+						if (Game_Temp::battle_running) {
+							AddState(i + 1);
+						}
+					} else {
+						AddState(i + 1);
+					}
+				}
+			}
+		}
+	};
+	checkEquip(GetShield());
+	checkEquip(GetArmor());
+	checkEquip(GetHelmet());
+	checkEquip(GetAccessory());
+}
+
+void Game_Actor::RemoveEquipmentState(const RPG::Item& item) {
+	if (!Player::IsRPG2k3()) {
+		return;
+	}
+
+	if (item.state_effect) {
+		for (int i = 0; i < (int)item.state_set.size(); i++) {
+			if (item.state_set[i]) {
+				RemoveState(i + 1);
+			}
+		}
+	}
+}
+
 
 int Game_Actor::GetHp() const {
 	return GetData().current_hp;
@@ -589,7 +671,10 @@ int Game_Actor::GetStateProbability(int state_id) const {
 	// This takes the armor of the character with the most resistance for that particular state
 	for (const auto equipment : GetWholeEquipment()) {
 		RPG::Item* item = ReaderUtil::GetElement(Data::items, equipment);
-		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
+
+		if (item != nullptr &&
+			!(Player::IsRPG2k3() && item->state_effect) &&
+			(item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
 			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
 			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
 			mul = std::min<int>(mul, 100 - item->state_chance);
@@ -1474,7 +1559,6 @@ bool Game_Actor::HasAttackAll() const {
 	auto* w2 = Get2ndWeapon();
 	return (w1 && w1->attack_all) || (w2 && w2->attack_all);
 }
-
 
 bool Game_Actor::AttackIgnoresEvasion() const {
 	auto* w1 = GetWeapon();
