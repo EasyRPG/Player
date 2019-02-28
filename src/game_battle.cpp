@@ -247,8 +247,8 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 
 void Game_Battle::UpdateGauges() {
 	std::vector<Game_Battler*> battlers;
-	Main_Data::game_enemyparty->GetBattlers(battlers);
-	Main_Data::game_party->GetBattlers(battlers);
+	Main_Data::game_enemyparty->GetActiveBattlers(battlers);
+	Main_Data::game_party->GetActiveBattlers(battlers);
 
 	int max_agi = 1;
 
@@ -256,6 +256,9 @@ void Game_Battle::UpdateGauges() {
 		it != battlers.end(); ++it) {
 		max_agi = std::max(max_agi, (*it)->GetAgi());
 	}
+
+	// Only affects how fast the gauges move, can be safely clamped
+	max_agi = Utils::Clamp(max_agi, 1, 1000);
 
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 		it != battlers.end(); ++it) {
