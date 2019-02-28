@@ -20,8 +20,9 @@ config.h.in
 config.status
 configure
 libtool
-/builds/autoconf/
-!/builds/autoconf/m4/ax_prog_doxygen.m4
+/builds/autoconf/aux/
+/builds/autoconf/m4/*.m4
+!/builds/autoconf/m4/ax_*.m4
 stamp-h1
 .dirstamp
 *.la
@@ -33,6 +34,8 @@ stamp-h1
 # cmake
 CMakeFiles/
 CMakeCache.txt
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
 CTestTestfile.cmake
@@ -55,7 +58,7 @@ install_manifest.txt
 
 # ninja
 .ninja_*
-build.ninja
+*.ninja
 
 # IntelliJ
 .idea/

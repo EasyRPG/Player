@@ -5,8 +5,8 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 bin_PROGRAMS = easyrpg-player
 
-noinst_LTLIBRARIES = libeasyrpg-player.la
-libeasyrpg_player_la_SOURCES = \
+noinst_LIBRARIES = libeasyrpg-player.a
+libeasyrpg_player_a_SOURCES = \
 	src/async_handler.cpp \
 	src/async_handler.h \
 	src/audio_al.cpp \
@@ -340,7 +340,7 @@ libeasyrpg_player_la_SOURCES = \
 	src/window_varlist.h
 
 if WANT_FMMIDI
-libeasyrpg_player_la_SOURCES += \
+libeasyrpg_player_a_SOURCES += \
 	src/midiprogram.h \
 	src/midisequencer.cpp \
 	src/midisequencer.h \
@@ -348,9 +348,8 @@ libeasyrpg_player_la_SOURCES += \
 	src/midisynth.h
 endif
 
-libeasyrpg_player_la_CXXFLAGS = \
+libeasyrpg_player_a_CXXFLAGS = \
 	-I$(srcdir)/src \
-	-std=c++11 \
 	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
@@ -366,7 +365,10 @@ libeasyrpg_player_la_CXXFLAGS = \
 	$(SNDFILE_CFLAGS) \
 	$(XMP_CFLAGS) \
 	$(SPEEXDSP_CFLAGS)
-libeasyrpg_player_la_LIBADD = \
+
+easyrpg_player_SOURCES = src/main.cpp
+easyrpg_player_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+easyrpg_player_LDADD = libeasyrpg-player.a \
 	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
@@ -382,10 +384,6 @@ libeasyrpg_player_la_LIBADD = \
 	$(SNDFILE_LIBS) \
 	$(XMP_LIBS) \
 	$(SPEEXDSP_LIBS)
-
-easyrpg_player_SOURCES = src/main.cpp
-easyrpg_player_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
-easyrpg_player_LDADD = libeasyrpg-player.la
 
 # manual page
 if HAVE_A2X
@@ -410,20 +408,23 @@ endif
 @DX_RULES@
 
 # FIXME make filefinder work without external scripting
-check_PROGRAMS = output utils directorytree
-TESTS = output utils directorytree
+check_PROGRAMS = directorytree output utils wordwrap
+TESTS = directorytree output utils wordwrap
+directorytree_SOURCES = tests/directorytree.cpp
+directorytree_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+directorytree_LDADD = $(easyrpg_player_LDADD)
 #filefinder_SOURCES = tests/filefinder.cpp
-#filefinder_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+#filefinder_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 #filefinder_LDADD = $(easyrpg_player_LDADD)
 output_SOURCES = tests/output.cpp
-output_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+output_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 output_LDADD = $(easyrpg_player_LDADD)
 utils_SOURCES = tests/utils.cpp
-utils_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
+utils_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 utils_LDADD = $(easyrpg_player_LDADD)
-directorytree_SOURCES = tests/directorytree.cpp
-directorytree_CXXFLAGS = $(libeasyrpg_player_la_CXXFLAGS)
-directorytree_LDADD = $(easyrpg_player_LDADD)
+wordwrap_SOURCES = tests/wordwrap.cpp tests/doctest.h
+wordwrap_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+wordwrap_LDADD = $(easyrpg_player_LDADD)
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after runing these tests

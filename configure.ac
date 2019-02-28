@@ -4,19 +4,21 @@
 AC_PREREQ([2.69])
 AC_INIT([easyrpg-player],[0.5.4],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easyrpg.org])
 
-AC_CONFIG_AUX_DIR([builds/autoconf])
-AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall -Werror])
+AC_CONFIG_AUX_DIR([builds/autoconf/aux])
+AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects tar-ustar -Wall dist-xz])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_MACRO_DIR([builds/autoconf/m4])
-AC_CONFIG_SRCDIR([src/battle_animation.cpp])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_LANG([C++])
 
 # Checks for programs.
-AM_PROG_AR
 AC_PROG_CXX
-LT_INIT([disable-shared])
+AC_PROG_CXXCPP
+AM_PROG_AR
+AC_PROG_RANLIB
 PKG_PROG_PKG_CONFIG
 
 # Options
@@ -61,21 +63,12 @@ PKG_CHECK_MODULES([ZLIB],[zlib])
 AC_ARG_WITH([libmpg123],[AS_HELP_STRING([--without-libmpg123],
 	[Disable improved MP3 support provided by libmpg123. Uses SDL_mixer instead which results in noise or crashes for some MP3s. @<:@default=auto@:>@])])
 AS_IF([test "x$with_libmpg123" != "xno"],[
-	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Disable improved MP3 support provided by libmpg123])],[auto_mpg123=0])
+	PKG_CHECK_MODULES([MPG123],[libmpg123],[AC_DEFINE(HAVE_MPG123,[1],[Enable improved MP3 support provided by libmpg123])],[auto_mpg123=0])
 ])
-# wildmidi has no pkg-config support (yet), this aims to make the same features available
-AC_ARG_VAR([WILDMIDI_CFLAGS], [C compiler flags for WILDMIDI])
-AC_ARG_VAR([WILDMIDI_LIBS], [linker flags for WILDMIDI])
-AC_ARG_WITH([libwildmidi],[AS_HELP_STRING([--with-libwildmidi],
-	[Enable Midi support provided by libwildmidi. @<:@default=no@:>@])])
-AS_IF([test "x$with_libwildmidi" = "xyes"],[
-	AS_IF([test -z "$WILDMIDI_CFLAGS" -a -z "$WILDMIDI_LIBS"],[
-		AC_CHECK_LIB([WildMidi],[WildMidi_Init],[AC_DEFINE(HAVE_WILDMIDI,[1],[Enable Midi support provided by libwildmidi]) WILDMIDI_LIBS=[-lWildMidi]],[auto_wildmidi=0])
-	],[
-		AC_MSG_CHECKING([for WILDMIDI])
-		AC_MSG_RESULT([assuming yes])
-		AC_DEFINE(HAVE_WILDMIDI,[1],[Enable Midi support provided by libwildmidi])
-	])
+AC_ARG_WITH([libwildmidi],[AS_HELP_STRING([--without-libwildmidi],
+	[Disable Midi support provided by libwildmidi. @<:@default=auto@:>@])])
+AS_IF([test "x$with_libwildmidi" != "xno"],[
+	PKG_CHECK_MODULES([WILDMIDI],[wildmidi],[AC_DEFINE(HAVE_WILDMIDI,[1],[Enable Midi support provided by libwildmidi])],[auto_wildmidi=0])
 ])
 AC_ARG_WITH([oggvorbis],[AS_HELP_STRING([--without-oggvorbis],
 	[Disable Ogg Vorbis support @<:@default=auto@:>@])])
@@ -118,8 +111,11 @@ AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
 AC_SUBST([BASHCOMPLETION_DIR])
 AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
 
+# C++11 is mandatory
+AX_CXX_COMPILE_STDCXX(11, noext)
+
 # Checks for header files.
-AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
+AC_CHECK_HEADERS([cstdint cstdlib string iostream unistd.h wchar.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN
@@ -152,6 +148,7 @@ DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)
 DX_INIT_DOXYGEN(easyrpg-player, resources/Doxyfile, doc)
 
+# Files to generate
 AC_CONFIG_FILES([Makefile
                  resources/Doxyfile])
 

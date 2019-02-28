@@ -16,7 +16,7 @@ Documentation is available at the documentation wiki: https://wiki.easyrpg.org
 
 ### minimal / required
 
-- liblcf for RPG Maker data reading. https://github.com/EasyRPG/liblcf
+- [liblcf] for RPG Maker data reading.
 - SDL2 for screen backend support.
 - Pixman for low level pixel manipulation.
 - libpng for PNG image support.
@@ -87,7 +87,7 @@ To generate the "configure" script, run before following the above section:
 
 Read more detailed instructions at:
 
-* https://wiki.easyrpg.org/development/compiling/player/autotools
+https://wiki.easyrpg.org/development/compiling/player/autotools
 
 
 ### CMake method:
@@ -107,10 +107,10 @@ Step-by-step instructions:
 
 Read more detailed instructions at:
 
-* https://wiki.easyrpg.org/development/compiling/player/cmake
+https://wiki.easyrpg.org/development/compiling/player/cmake
 
 CMake is the only supported way to build liblcf for Windows. All dependencies
-must be installed with [vcpkg](https://github.com/Microsoft/vcpkg).
+must be installed with [vcpkg].
 
 ## Running EasyRPG Player
 
@@ -124,24 +124,32 @@ Available options:
 
 * File an issue at https://github.com/EasyRPG/Player/issues
 * Open a thread at https://community.easyrpg.org/
-* Chat with us via IRC: #easyrpg at irc.freenode.net
+* Chat with us via IRC: [#easyrpg at irc.freenode.net]
 
 
 ## License
 
 EasyRPG Player is free software available under the GPLv3 license. See the file
-COPYING for license conditions.
+[COPYING] for license conditions.
 
 
 ### 3rd party software
 
 EasyRPG Player makes use of the following 3rd party software:
 
-* FMMidi YM2608 FM synthesizer emulator - Copyright (c) 2003-2006 yuno
+* [FMMidi] YM2608 FM synthesizer emulator - Copyright (c) 2003-2006 yuno
   (Yoshio Uno), provided under the (3-clause) BSD license
 
-* PicoJSON JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
+* [PicoJSON] JSON parser/serializer - Copyright (c) 2009-2010 Cybozu Labs, Inc.
   Copyright (c) 2011-2015 Kazuho Oku, provided under the (2-clause) BSD license
 
-* Dirent interface for Microsoft Visual Studio -
+* [Dirent] interface for Microsoft Visual Studio -
   Copyright (c) 2006-2012 Toni Ronkko, provided under the MIT license
+
+[liblcf]: https://github.com/EasyRPG/liblcf
+[vcpkg]: https://github.com/Microsoft/vcpkg
+[#easyrpg at irc.freenode.net]: https://kiwiirc.com/nextclient/#ircs://irc.freenode.net/#easyrpg?nick=rpgguest??
+[COPYING]: COPYING
+[FMMidi]: http://unhaut.x10host.com/fmmidi/
+[PicoJSON]: https://github.com/kazuho/picojson
+[Dirent]: https://github.com/tronkko/dirent

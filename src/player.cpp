@@ -205,18 +205,17 @@ void Player::Run() {
 	// Main loop
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
-#elif defined(_3DS)
-	while (aptMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
-	{
-		hidScanInput();
-		Player::MainLoop();
-	}
-#elif defined(__SWITCH__)
-	while (appletMainLoop() && (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null))
-		MainLoop();
 #else
-	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null)
+	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null) {
+#  if defined(_3DS)
+		if (!aptMainLoop())
+			Exit();
+#  elif defined(__SWITCH__)
+		if(!appletMainLoop())
+			Exit();
+#  endif
 		MainLoop();
+	}
 #endif
 }
 

@@ -110,21 +110,13 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 
 	bool img_okay = false;
 
-#ifdef SUPPORT_XYZ
 	if (bytes >= 4 && strncmp((char*)data, "XYZ1", 4) == 0)
 		img_okay = ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-	else
-#endif
-#ifdef SUPPORT_BMP
-	if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
+	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
-	else
-#endif
-#ifdef SUPPORT_PNG
-	if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
+	else if (bytes >= 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		img_okay = ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
 	else
-#endif
 		Output::Warning("Unsupported image file %s", filename.c_str());
 
 	fclose(stream);
@@ -153,21 +145,13 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 
 	bool img_okay = false;
 
-#ifdef SUPPORT_XYZ
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
 		img_okay = ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
-	else
-#endif
-#ifdef SUPPORT_BMP
-	if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
+	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		img_okay = ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
-	else
-#endif
-#ifdef SUPPORT_PNG
-	if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
+	else if (bytes > 4 && strncmp((char*)(data + 1), "PNG", 3) == 0)
 		img_okay = ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
 	else
-#endif
 		Output::Warning("Unsupported image");
 
 	if (!img_okay) {
@@ -197,22 +181,18 @@ Bitmap::~Bitmap() {
 }
 
 bool Bitmap::WritePNG(std::ostream& os) const {
-#ifdef SUPPORT_PNG
 	size_t const width = GetWidth(), height = GetHeight();
 	size_t const stride = width * 4;
 
 	std::vector<uint32_t> data(width * height);
 
 	std::shared_ptr<pixman_image_t> dst
-		(pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, &data.front(), stride),
+		(pixman_image_create_bits(PIXMAN_b8g8r8, width, height, &data.front(), stride),
 		 pixman_image_unref);
 	pixman_image_composite32(PIXMAN_OP_SRC, bitmap, NULL, dst.get(),
 							 0, 0, 0, 0, 0, 0, width, height);
 
 	return ImagePNG::WritePNG(os, width, height, &data.front());
-#else
-	return false;
-#endif
 }
 
 int Bitmap::GetWidth() const {

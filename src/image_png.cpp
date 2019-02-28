@@ -15,9 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "system.h"
-#ifdef SUPPORT_PNG
-
 // Headers
 #ifdef __MORPHOS__
 #define __MORPHOS_SHAREDLIBS
@@ -255,20 +252,6 @@ static void flush_stream(png_structp out_ptr) {
 }
 
 bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
-	for (size_t i = 0; i < width * height; ++i) {
-		uint32_t const p = data[i];
-		uint8_t* out = reinterpret_cast<uint8_t*>(&data[i]);
-		uint8_t
-			a = (p >> 24) & 0xff, r = (p >> 16) & 0xff,
-			g = (p >>  8) & 0xff, b = (p >>  0) & 0xff;
-		if(a != 0) {
-			r = (r * 255) / a;
-			g = (g * 255) / a;
-			b = (b * 255) / a;
-		}
-		*out++ = r; *out++ = g; *out++ = b; *out++ = a;
-	}
-
 	png_structp write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!write) {
 		Output::Warning("Bitmap::WritePNG: error in png_create_write");
@@ -297,7 +280,7 @@ bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint3
 	png_set_write_fn(write, &os, &write_data, &flush_stream);
 
 	png_set_IHDR(write, info, width, height, 8,
-				 PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+				 PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 	png_write_info(write, info);
 	png_write_image(write, ptrs);
@@ -308,5 +291,3 @@ bool ImagePNG::WritePNG(std::ostream& os, uint32_t width, uint32_t height, uint3
 
 	return true;
 }
-
-#endif // SUPPORT_PNG

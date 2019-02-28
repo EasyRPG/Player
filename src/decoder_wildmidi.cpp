@@ -36,9 +36,9 @@
 #endif
 
 #ifdef __ANDROID__
-#include <jni.h>
-#include "SDL_system.h"
-#include "string.h"
+#  include <jni.h>
+#  include "SDL_system.h"
+#  include "string.h"
 #endif
 
 /* possible options include: WM_MO_REVERB|WM_MO_ENHANCED_RESAMPLING
@@ -64,7 +64,6 @@ std::string get_timidity_path_jni() {
 
 	return ret_str;
 }
-
 #endif
 
 static bool init = false;
@@ -113,7 +112,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
-#elif _3DS
+#elif defined(_3DS)
 	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
 
 	// Shipped in a romfs (for CIA and newer 3dsx files)
@@ -131,7 +130,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "wildmidi.cfg";
 		found = FileFinder::Exists(config_file);
 	}
-#elif __SWITCH__
+#elif defined(__SWITCH__)
 	// Only wildmidi paths, no timidity because it was never used on Switch
 	config_file = "./wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
@@ -139,7 +138,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = "/switch/easyrpg-player/wildmidi.cfg";
 		found = FileFinder::Exists(config_file);
 	}
-#elif __ANDROID__
+#elif defined(__ANDROID__)
 	// Use JNI to obtain the path
 	std::string path = get_timidity_path_jni();
 
@@ -152,7 +151,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		config_file = path + "/timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
-#elif PSP2
+#elif defined(PSP2)
 	// Only wildmidi paths, no timidity because it was never used on PSVita
 
 	// Shipped
@@ -197,7 +196,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		found = FileFinder::Exists(config_file);
 	}
 
-#	ifdef _WIN32
+#  ifdef _WIN32
 	// Probably not too useful
 	if (!found) {
 		config_file = "C:\\TIMIDITY\\timidity.cfg";
@@ -206,12 +205,12 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 
 	// TODO: We need some installer which creates registry keys for wildmidi
 
-#	elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
 		found = FileFinder::Exists(config_file);
 	}
-#	else
+#  else
 	if (!found) {
 		config_file = "/etc/timidity.cfg";
 		found = FileFinder::Exists(config_file);
@@ -243,7 +242,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 			}
 		}
 	}
-#	endif
+#  endif
 #endif
 
 	// bail, if nothing found
@@ -335,21 +334,7 @@ int WildMidiDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!handle)
 		return -1;
 
-	/* Old wildmidi (< 0.4.0) did output only in little endian and had a different API,
-	 * this inverts the buffer. The used version macro exists since 0.4.0.
-	 */
-#ifndef LIBWILDMIDI_VERSION
-	int res = WildMidi_GetOutput(handle, reinterpret_cast<char*>(buffer), length);
-	if (Utils::IsBigEndian() && res > 0) {
-		uint16_t* buffer_16 = reinterpret_cast<uint16_t*>(buffer);
-		for (int i = 0; i < res / 2; ++i) {
-			Utils::SwapByteOrder(buffer_16[i]);
-		}
-	}
-#else
-	int res = WildMidi_GetOutput(handle, reinterpret_cast<int8_t*>(buffer), length);
-#endif
-	return res;
+	return WildMidi_GetOutput(handle, reinterpret_cast<int8_t*>(buffer), length);
 }
 
 #endif

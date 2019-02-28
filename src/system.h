@@ -38,85 +38,73 @@
  */
 #include "options.h"
 
-/*
- * Smart pointer header.
- */
+// Smart pointer header.
 #include "memory_management.h"
-
-#ifdef _3DS
-#  define SUPPORT_JOYSTICK_AXIS
-#endif
-
-#ifdef PSP2
-#  define SUPPORT_JOYSTICK
-#  define SUPPORT_JOYSTICK_AXIS
-#endif
-
-#if defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
-#  include "stdint.h"
-
-#  define WORDS_BIGENDIAN
-#endif
 
 #ifdef OPENDINGUX
 #  include <sys/types.h>
+#elif defined(__ANDROID__)
+#  define SUPPORT_ZOOM
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(EMSCRIPTEN)
+#  define SUPPORT_MOUSE
+#  define SUPPORT_TOUCH
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(_3DS)
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(PSP2)
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
+#  include <cstdint>
+#  define WORDS_BIGENDIAN
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(_WIN32)
+#  define SUPPORT_ZOOM
+#  define SUPPORT_MOUSE
+#  define SUPPORT_TOUCH
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
+#elif defined(SWITCH)
+#else // Everything not catched above, e.g. Linux/*BSD/macOS
+#  define USE_WINE_REGISTRY
+#  define SUPPORT_ZOOM
+#  define SUPPORT_MOUSE
+#  define SUPPORT_TOUCH
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
 #endif
 
-#define SUPPORT_BMP
-#define SUPPORT_PNG
-#define SUPPORT_XYZ
-#define SUPPORT_TTF
-#define SUPPORT_FON
-
-#define SUPPORT_ZOOM
-
 #ifdef USE_SDL
-#  if defined(GEKKO) || defined(OPENDINGUX) || defined(EMSCRIPTEN)
-#    undef SUPPORT_ZOOM
-#  endif
 
-#  if !defined(OPENDINGUX) && !defined(GEKKO)
-#    define SUPPORT_KEYBOARD
-#    define SUPPORT_MOUSE
-
-     // We have our own touch input solution on Android
-#    if !defined(__ANDROID__)
-#      define SUPPORT_TOUCH
-#    endif
-#  endif
-
-#  if !defined(OPENDINGUX)
-#    define SUPPORT_JOYSTICK
-#    define SUPPORT_JOYSTICK_HAT
-#    define SUPPORT_JOYSTICK_AXIS
-#    define JOYSTICK_AXIS_SENSIBILITY 20000
-#  else
-#    define SUPPORT_KEYBOARD
-#  endif
-
-#  ifdef HAVE_SDL_MIXER
-#    define SUPPORT_WAV
-#    define SUPPORT_MID
-#    define SUPPORT_OGG
-#    define SUPPORT_MP3
-#  endif
+#  define SUPPORT_KEYBOARD
+#  define JOYSTICK_AXIS_SENSIBILITY 20000
 
 #  ifdef WANT_FMMIDI
 #    if WANT_FMMIDI != 1 && WANT_FMMIDI != 2
 #      error "WANT_FMMIDI must be set to 1 (use instead of sdl) or 2 (fallback on sdl error)"
 #    endif
-
 #    if !defined(HAVE_SDL_MIXER) && WANT_FMMIDI == 2
 #      error "WANT_FMMIDI must be set to 1 for non-SDL Mixer builds"
 #    endif 
 #  endif
+
 #else
-// ifndef USE_SDL
+
 #  ifdef WANT_FMMIDI
 #    if WANT_FMMIDI != 1
 #      error "WANT_FMMIDI must be set to 1 for non-SDL builds"
 #    endif
 #  endif
+
 #endif
 
 #if defined(HAVE_LIBSAMPLERATE) || defined(HAVE_LIBSPEEXDSP)
