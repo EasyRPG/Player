@@ -684,6 +684,8 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
+	ApplyActionSwitches();
+
 	if (!success)
 		return;
 
@@ -764,8 +766,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 			GetTarget()->AddState(state_id);
 		}
 	}
-
-	ApplyActionSwitches();
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
