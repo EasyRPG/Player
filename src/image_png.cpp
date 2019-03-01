@@ -122,50 +122,37 @@ static void ReadPalettedData(
 	// For transparent images, all the colors are opaque, except the
 	// color with index 0. So we'll need to do index->RGB conversion
 	// on our own.
-	if (transparent) {
-		png_set_packing(png_ptr);
-		png_read_update_info(png_ptr, info_ptr);
+	png_set_packing(png_ptr);
+	png_read_update_info(png_ptr, info_ptr);
 
-		if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
-			Output::Warning("Palette PNG without PLTE block");
-			return;
-		}
-
-		png_colorp palette;
-		int num_palette;
-		png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
-
-		for (png_uint_32 y = 0; y < h; y++) {
-			// We read the indices (w bytes) into the end of the pixel
-			// data for this row (4w bytes), then scan over them
-			// converting them into RGBA values. Putting them at the end
-			// gives us enough room that we don't overwrite an index
-			// we'll need later with an RGBA value.
-
-			uint32_t* beginning_of_row = pixels + y * w;
-
-			uint8_t* indices = (uint8_t*)beginning_of_row + w * 3;
-			png_read_row(png_ptr, (png_bytep)indices, NULL);
-
-			uint32_t* dst = beginning_of_row;
-			for (png_uint_32 x = 0; x < w; x++, dst++) {
-				uint8_t idx = indices[x];
-				png_color& color = palette[idx];
-				uint8_t alpha = idx == 0 ? 0 : 255;
-				uint8_t rgba[4] = { color.red, color.green, color.blue, alpha };
-				*dst = *(uint32_t*)rgba;
-			}
-		}
+	if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
+		Output::Warning("Palette PNG without PLTE block");
+		return;
 	}
-	// Otherwise, libpng can convert to RGBA on its own
-	else {
-		png_set_palette_to_rgb(png_ptr);
-		png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
-		png_read_update_info(png_ptr, info_ptr);
 
-		for (png_uint_32 y = 0; y < h; y++) {
-			png_bytep dst = (png_bytep) pixels + y * w * 4;
-			png_read_row(png_ptr, dst, NULL);
+	png_colorp palette;
+	int num_palette;
+	png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+
+	for (png_uint_32 y = 0; y < h; y++) {
+		// We read the indices (w bytes) into the end of the pixel
+		// data for this row (4w bytes), then scan over them
+		// converting them into RGBA values. Putting them at the end
+		// gives us enough room that we don't overwrite an index
+		// we'll need later with an RGBA value.
+
+		uint32_t* beginning_of_row = pixels + y * w;
+
+		uint8_t* indices = (uint8_t*)beginning_of_row + w * 3;
+		png_read_row(png_ptr, (png_bytep)indices, NULL);
+
+		uint32_t* dst = beginning_of_row;
+		for (png_uint_32 x = 0; x < w; x++, dst++) {
+			uint8_t idx = indices[x];
+			png_color& color = palette[idx];
+			uint8_t alpha = (idx == 0 && transparent) ? 0 : 255;
+			uint8_t rgba[4] = { color.red, color.green, color.blue, alpha };
+			*dst = *(uint32_t*)rgba;
 		}
 	}
 }
