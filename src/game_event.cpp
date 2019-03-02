@@ -356,26 +356,17 @@ void Game_Event::CheckEventCollision() {
 	}
 }
 
-bool Game_Event::CheckEventTriggerTouch(int x, int y) {
-	if (Game_Map::GetInterpreter().IsRunning())
-		return false;
-
-	if (trigger == RPG::EventPage::Trigger_collision) {
-		if (Main_Data::game_player->IsInPosition(GetX(), GetY()) && GetLayer() == RPG::EventPage::Layers_same) {
-			return false;
-		}
-
-		if (Main_Data::game_player->IsInPosition(x, y)) {
-			if (Main_Data::game_player->InAirship() && GetLayer() == RPG::EventPage::Layers_same) {
-				return false;
-			}
-
-			SetAsWaitingForegroundExecution(false, false);
-			return true;
-		}
+void Game_Event::OnMoveFailed(int x, int y) {
+	if (Main_Data::game_player->InAirship()
+			|| GetLayer() != RPG::EventPage::Layers_same
+			|| trigger != RPG::EventPage::Trigger_collision) {
+		return;
 	}
 
-	return false;
+	if (Main_Data::game_player->IsInPosition(x, y)) {
+		SetAsWaitingForegroundExecution(false, false);
+		return;
+	}
 }
 
 void Game_Event::UpdateSelfMovement() {

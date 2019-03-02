@@ -224,8 +224,14 @@ void Game_Player::UpdateSelfMovement() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
 	}
+}
 
+void Game_Player::OnMoveFailed(int x, int y) {
+	if (IsMoveRouteOverwritten()) {
+		return;
+	}
 
+	CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, x, y, true, false);
 }
 
 void Game_Player::Update() {
@@ -314,84 +320,61 @@ void Game_Player::Update() {
 }
 
 bool Game_Player::CheckActionEvent() {
-	if (InAirship())
+	if (IsFlying()) {
 		return false;
+	}
 
-	// Use | instead of || to avoid short-circuit evaluation
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true)
-		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
-		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, true);
+	bool result = CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true, true);
+
+	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+	result |= CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, true, true);
+
+	// Counter tile loop stops only if you talk to an action event.
+	bool got_action = CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+	// RPG_RT allows maximum of 3 counter tiles
+	for (int i = 0; !got_action && i < 3; ++i) {
+		if (!Game_Map::IsCounter(front_x, front_y)) {
+			break;
+		}
+
+		front_x = Game_Map::XwithDirection(front_x, GetDirection());
+		front_y = Game_Map::YwithDirection(front_y, GetDirection());
+
+		got_action |= CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+	}
+	return result || got_action;
 }
 
 bool Game_Player::CheckTouchEvent() {
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
+	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, true, false);
 }
 
-bool Game_Player::CheckCollisionEvent() {
-	if (InAirship())
-		return false;
-
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
-}
-
-bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	for (auto* ev: events) {
-		if (ev->GetLayer() != RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
+		if (ev->GetLayer() != RPG::EventPage::Layers_same
+				&& triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
-
-	bool result = false;
-
-	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-
-	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, front_x, front_y);
-
-	for (const auto& ev : events) {
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
-		}
-	}
-
-	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
-		front_x = Game_Map::XwithDirection(front_x, GetDirection());
-		front_y = Game_Map::YwithDirection(front_y, GetDirection());
-
-		Game_Map::GetEventsXY(events, front_x, front_y);
-
-		for (const auto& ev : events) {
-			if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-				result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
-			}
-		}
-	}
-	return result;
-}
-
-bool Game_Player::CheckEventTriggerTouch(int x, int y) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
-
+bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 
 	for (const auto& ev : events) {
-		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
-			(ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			result |= ev->SetAsWaitingForegroundExecution(true, false);
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
 	return result;

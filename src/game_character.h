@@ -734,8 +734,6 @@ public:
 	 */
 	virtual bool IsInPosition(int x, int y) const;
 
-	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
-
 	/**
 	 * Gets current opacity of character.
 	 *
@@ -846,6 +844,7 @@ public:
 protected:
 	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
 	virtual void UpdateSelfMovement() {}
+	virtual void OnMoveFailed(int x, int y) {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
