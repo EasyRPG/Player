@@ -33,6 +33,7 @@
 #include "scene_save.h"
 #include "scene_file.h"
 #include "reader_util.h"
+#include "version.h"
 
 Scene_Save::Scene_Save() :
 	Scene_File(Data::terms.save_game_message) {
@@ -97,7 +98,7 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath((*tree).directory_path, save_file);
 	}
 
-	LSD_Reader::PrepareSave(Main_Data::game_data);
+	LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
 	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;

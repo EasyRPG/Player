@@ -812,10 +812,12 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 	// Compatibility hack for pre 0.6 EasyRPG Player saves.
 	// Old savegames accidentally wrote animation_type as
 	// continuous for all events.
-	Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-	Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-	Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
-	Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	if (Main_Data::game_data.easyrpg_data.version == 0) {
+		Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+		Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	}
 
 	Main_Data::game_player->Refresh();
 
@@ -825,10 +827,35 @@ static void OnMapSaveFileReady(FileRequestResult*) {
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
+	Output::Debug("Loading Save %s", FileFinder::GetPathInsidePath(Main_Data::GetSavePath(), save_name).c_str());
+
 	std::unique_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());
+	}
+
+	std::stringstream verstr;
+	int32_t ver = save->easyrpg_data.version;
+	if (ver == 0) {
+		verstr << "RPG_RT or EasyRPG Player Pre-0.6.0";
+	} else if (ver >= 10000) {
+		verstr << "Unknown Engine";
+	} else {
+		verstr << "EasyRPG Player ";
+		char verbuf[64];
+		sprintf(verbuf, "%d.%d.%d", ver / 1000 % 10, ver / 100 % 10, ver / 10 % 10);
+		verstr << verbuf;
+		if (ver % 10 > 0) {
+			verstr << "." << ver % 10;
+		}
+	}
+
+	Output::Debug("Savegame version %d (%s)", ver, verstr.str().c_str());
+
+	if (ver > PLAYER_SAVEGAME_VERSION) {
+		Output::Warning("This savegame was created with %s which is newer than the current version of EasyRPG Player (%s)",
+			verstr.str().c_str(), PLAYER_VERSION);
 	}
 
 	Scene::PopUntil(Scene::Title);
