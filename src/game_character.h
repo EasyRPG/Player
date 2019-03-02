@@ -863,7 +863,6 @@ protected:
 
 	bool visible;
 
-	int frame_count_at_last_update_parallel = -1;
 	RPG::SaveMapEventBase* _data = nullptr;
 };
 

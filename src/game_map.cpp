@@ -597,7 +597,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool for
 		if (result == Collision) {
 			// Try updating the offending event to give it a chance to move out of the
 			// way and recheck.
-			other.UpdateParallel();
+			other.Update();
 			if (TestCollisionDuringMove(x, y, new_x, new_y, d, self, other) == Collision) {
 				return false;
 			}
@@ -934,32 +934,60 @@ void Game_Map::Update(bool only_parallel) {
 	}
 
 	for (Game_Event& ev : events) {
-		ev.UpdateParallel();
+		ev.Update();
 	}
 
 	if (only_parallel)
 		return;
 
-	for (Game_Event& ev : events) {
-		ev.CheckEventTriggers();
-	}
-
-	for (Game_CommonEvent& ev : common_events) {
-		ev.Update();
-	}
-
-	for (Game_Event& ev : events) {
-		ev.Update();
-	}
-
 	Main_Data::game_player->Update(!first_frame);
 	UpdatePan();
-	GetInterpreter().Update();
 
 	for (auto& vehicle: vehicles) {
 		if (vehicle->GetMapId() == location.map_id) {
 			vehicle->Update(!first_frame);
 		}
+	}
+
+	auto& interp = GetInterpreter();
+
+	// Run any event loaded from last frame.
+	interp.Update(true);
+	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
+		Game_CommonEvent* run_ce = nullptr;
+
+		for (auto& ce: common_events) {
+			if (ce.IsWaitingForegroundExecution()) {
+				run_ce = &ce;
+				break;
+			}
+		}
+		if (run_ce) {
+			interp.Setup(run_ce, 0);
+			interp.Update(false);
+			if (interp.IsRunning()) {
+				break;
+			}
+			continue;
+		}
+
+		Game_Event* run_ev = nullptr;
+		for (auto& ev: events) {
+			if (ev.IsWaitingForegroundExecution()) {
+				run_ev = &ev;
+				break;
+			}
+		}
+		if (run_ev) {
+			interp.Setup(run_ev);
+			run_ev->ClearWaitingForegroundExecution();
+			interp.Update(false);
+			if (interp.IsRunning()) {
+				break;
+			}
+			continue;
+		}
+		break;
 	}
 
 	free_interpreters.clear();
@@ -1370,14 +1398,12 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 bool Game_Map::IsAnyEventStarting() {
 	for (Game_Event& ev : events)
-		if (ev.GetStarting() && !ev.GetList().empty() && ev.GetActive())
+		if (ev.IsWaitingForegroundExecution() && !ev.GetList().empty() && ev.GetActive())
 			return true;
 
 	for (Game_CommonEvent& ev : common_events)
-		if ((ev.GetTrigger() == RPG::EventPage::Trigger_auto_start) &&
-			(ev.GetSwitchFlag() ? Game_Switches.Get(ev.GetSwitchId()) : true) &&
-			(!ev.GetList().empty()))
-				return true;
+		if (ev.IsWaitingForegroundExecution())
+			return true;
 
 	return false;
 }

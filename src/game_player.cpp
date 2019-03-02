@@ -330,8 +330,7 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 
 	for (auto* ev: events) {
 		if (ev->GetLayer() != RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			ev->Start(triggered_by_decision_key);
-			result = ev->GetStarting();
+			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 		}
 	}
 	return result;
@@ -350,11 +349,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_
 
 	for (const auto& ev : events) {
 		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			if (!ev->GetList().empty()) {
-				ev->StartTalkToHero();
-			}
-			ev->Start(triggered_by_decision_key);
-			result = true;
+			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 		}
 	}
 
@@ -366,11 +361,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_
 
 		for (const auto& ev : events) {
 			if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-				if (!ev->GetList().empty()) {
-					ev->StartTalkToHero();
-				}
-				ev->Start(triggered_by_decision_key);
-				result = true;
+				result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 			}
 		}
 	}
@@ -389,11 +380,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
 			(ev->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			if (!ev->GetList().empty()) {
-				ev->StartTalkToHero();
-			}
-			ev->Start();
-			result = true;
+			result |= ev->SetAsWaitingForegroundExecution(true, false);
 
 		}
 	}

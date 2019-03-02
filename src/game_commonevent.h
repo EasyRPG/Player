@@ -50,11 +50,6 @@ public:
 	void Refresh();
 
 	/**
-	 * Updates common event.
-	 */
-	void Update();
-
-	/**
 	 * Updates common event parallel interpreter.
 	 */
 	void UpdateParallel();
@@ -102,6 +97,9 @@ public:
 	std::vector<RPG::EventCommand>& GetList();
 
 	RPG::SaveEventData GetSaveData();
+
+	/** @return true if waiting for foreground execution */
+	bool IsWaitingForegroundExecution() const;
 
 private:
 	int common_event_id;

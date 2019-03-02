@@ -53,7 +53,8 @@ public:
 	void Clear();
 
 	bool IsRunning() const;
-	void Update();
+	bool ReachedLoopLimit() const;
+	void Update(bool reset_loop_count=true);
 
 	void Setup(
 			const std::vector<RPG::EventCommand>& _list,

@@ -52,11 +52,6 @@ public:
 	/** @} */
 
 	/**
-	 * Clears starting flag.
-	 */
-	void ClearStarting();
-
-	/**
 	 * Does refresh.
 	 */
 	void Refresh();
@@ -78,12 +73,11 @@ public:
 	 */
 	std::string GetName() const;
 
-	/**
-	 * Gets starting flag.
-	 *
-	 * @return starting flag.
-	 */
-	bool GetStarting() const;
+	/** Clears waiting_execution flag */
+	void ClearWaitingForegroundExecution();
+
+	/** @return waiting_execution flag.  */
+	bool IsWaitingForegroundExecution() const;
 
 	/**
 	 * If the event is starting, whether or not it was started
@@ -108,21 +102,18 @@ public:
 	const std::vector<RPG::EventCommand>& GetList() const;
 
 	/**
-	 * Event's sprite looks towards the hero but its original direction is remembered.
-	 */
-	void StartTalkToHero();
-
-	/**
 	 * Event returns to its original direction before talking to the hero.
 	 */
 	void OnFinishForegroundEvent();
+
+	/** Mark the event as waiting for execution */
+	bool SetAsWaitingForegroundExecution(bool face_hero, bool triggered_by_decision_key);
 
 	/** Update this for the current frame */
 	void Update();
 
 	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y) override;
-	void Start(bool triggered_by_decision_key = false);
 	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
@@ -216,16 +207,12 @@ private:
 	// reference.
 	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
-	bool starting = false, running = false, halting = false;
 	int trigger = -1;
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
 	std::vector<RPG::EventCommand> list;
 	std::shared_ptr<Game_Interpreter> interpreter;
 	bool from_save;
-	bool updating = false;
-
-	int frame_count_at_last_auto_start_check = -1;
 };
 
 inline RPG::SaveMapEvent* Game_Event::data() {
