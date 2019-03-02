@@ -3079,8 +3079,7 @@ void Game_Interpreter::ResetSceneCalling() {
 }
 
 bool Game_Interpreter::IsImmediateCall() {
-	return scene_call != Scene::Null
-		|| Game_Temp::battle_calling;
+	return scene_call != Scene::Null;
 };
 
 // Dummy Continuations

@@ -196,6 +196,9 @@ void Scene_Map::Update() {
 		if (Main_Data::game_data.party_location.menu_calling || force_menu_calling) {
 			call = Scene::Menu;
 		}
+		if (Game_Temp::battle_calling) {
+			call = Scene::Battle;
+		}
 
 		Game_Interpreter::ResetSceneCalling();
 		switch (call) {
@@ -214,13 +217,11 @@ void Scene_Map::Update() {
 			case Scene::Load:
 				CallLoad();
 				break;
+			case Scene::Battle:
+				CallBattle();
+				break;
 			default:
 				break;
-		}
-
-		if (Game_Temp::battle_calling) {
-			CallBattle();
-			return;
 		}
 	}
 }
@@ -255,6 +256,7 @@ void Scene_Map::FinishTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
+	Game_Temp::battle_calling = true;
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
