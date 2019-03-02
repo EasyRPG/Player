@@ -52,3 +52,8 @@ void Window_Help::SetText(std::string text,	Text::Alignment align) {
 		}
 	}
 }
+
+void Window_Help::Clear() {
+	this->text = "";
+	contents->Clear();
+}
