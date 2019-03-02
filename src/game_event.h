@@ -217,7 +217,6 @@ private:
 	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
 	bool starting = false, running = false, halting = false;
-	bool started_by_decision_key = false;
 	int trigger = -1;
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;

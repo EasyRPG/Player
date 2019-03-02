@@ -83,7 +83,6 @@ void Game_Event::SetThrough(bool through) {
 
 void Game_Event::ClearStarting() {
 	starting = false;
-	started_by_decision_key = false;
 }
 
 void Game_Event::Setup(const RPG::EventPage* new_page) {
@@ -300,7 +299,7 @@ bool Game_Event::GetStarting() const {
 }
 
 bool Game_Event::WasStartedByDecisionKey() const {
-	return started_by_decision_key;
+	return data()->triggered_by_decision_key;
 }
 
 RPG::EventPage::Trigger Game_Event::GetTrigger() const {
@@ -322,7 +321,7 @@ void Game_Event::Start(bool by_decision_key) {
 		return;
 
 	starting = true;
-	started_by_decision_key = by_decision_key;
+	data()->triggered_by_decision_key = by_decision_key;
 }
 
 const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
