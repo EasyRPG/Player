@@ -437,7 +437,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 	}
 
 	if (move_failed) {
-		CheckEventTriggerTouch(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy));
+		OnMoveFailed(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy));
 		return;
 	}
 

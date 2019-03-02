@@ -48,6 +48,7 @@ public:
 	void BeginMove() override;
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
+	void OnMoveFailed(int x, int y) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;
@@ -71,8 +72,6 @@ public:
 	void Update();
 
 	void Refresh();
-
-	bool CheckEventTriggerTouch(int x, int y) override;
 
 	/*
 	 * Overridden to convince Game_Character we aren't stopped if boarding/unboarding.
@@ -104,8 +103,8 @@ private:
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key = false);
-	bool CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key);
+	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();
