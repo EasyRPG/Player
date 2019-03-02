@@ -116,13 +116,16 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
-	cx += 60;
-	contents->TextDraw(cx + 10, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
+	cx += 10 * 6 + 6 * 3;
+	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
+		// Draw arrow (+3 for center between the two numbers)
+		contents->TextDraw(cx + 3, cy, 1, ">");
+
 		// Draw New Value
-		cx += 38;
+		cx += 6 * 2 + 6 * 3;
 		int color = GetNewParameterColor(value, new_value);
-		contents->TextDraw(cx + 10, cy, color, std::to_string(new_value), Text::AlignRight);
+		contents->TextDraw(cx, cy, color, std::to_string(new_value), Text::AlignRight);
 	}
 }
