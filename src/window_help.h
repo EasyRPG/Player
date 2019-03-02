@@ -42,6 +42,11 @@ public:
 	 */
 	void SetText(std::string text, Text::Alignment align = Text::AlignLeft);
 
+	/**
+	 * Clears the window
+	 */
+	void Clear();
+
 private:
 	/** Text to draw. */
 	std::string text;

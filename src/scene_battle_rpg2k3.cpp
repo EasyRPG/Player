@@ -206,8 +206,8 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 				auto states = actor->GetInflictedStates();
 
 				help_window->SetVisible(!states.empty());
+				help_window->Clear();
 				BitmapRef contents = help_window->GetContents();
-				contents->Clear();
 
 				int text_width = 0;
 				for (auto state_id : states) {

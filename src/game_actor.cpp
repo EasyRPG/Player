@@ -1359,12 +1359,23 @@ void Game_Actor::RemoveInvalidData() {
 		RPG::Item::Type_accessory
 	};
 
-	for (int i = 1; i <= 5; ++i) {
-		const RPG::Item* item = GetEquipment(i);
-		if (item && item->type != eq_types[i - 1]) {
-			Output::Debug("Actor %d: Removing invalid item %d (of type %d) from equipment slot %d (needs type %d)",
-			GetId(), item->ID, item->type, i, eq_types[i - 1]);
-			SetEquipment(i, 0);
+	auto& equipment = GetWholeEquipment();
+	for (size_t i = 0; i < equipment.size(); ++i) {
+		int eq_id = equipment[i];
+		RPG::Item* item = ReaderUtil::GetElement(Data::items, eq_id);
+
+		if (!item && eq_id != 0) {
+			Output::Debug("Actor %d: Removing invalid item %d from equipment slot %d",
+			GetId(), eq_id, eq_types[i]);
+			SetEquipment(i + 1, 0);
+		} else if (item && item->type != eq_types[i]) {
+			Output::Debug("Actor %d: Removing item %d (of type %d) from equipment slot %d (needs type %d)",
+			GetId(), item->ID, item->type, i + 1, eq_types[i]);
+			SetEquipment(i + 1, 0);
+		} else if (item && !IsItemUsable(item->ID)) {
+			Output::Debug("Actor %d: Removing item %d from equipment slot %d (Not equippable by this actor)",
+			GetId(), item->ID, i + 1);
+			SetEquipment(i + 1, 0);
 		}
 	}
 
