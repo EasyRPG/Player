@@ -563,7 +563,8 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	}
 
 	scene_call = Scene::Name;
-	return true;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
@@ -703,18 +704,20 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
 	scene_call = Scene::Save;
-	return true;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
 	scene_call = Scene::Menu;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	++index;
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
 	scene_call = Scene::Load;
-	return true;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
