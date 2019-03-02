@@ -191,38 +191,34 @@ void Scene_Map::Update() {
 	}
 
 	if (!Main_Data::game_player->IsMoving() || Game_Interpreter::IsImmediateCall() || force_menu_calling) {
-		if (Main_Data::game_data.party_location.menu_calling || Game_Interpreter::IsMenuCalling() || force_menu_calling) {
-			Game_Interpreter::ResetEventCalling();
-			CallMenu();
-			return;
+		auto call = Game_Interpreter::GetSceneCalling();
+
+		if (Main_Data::game_data.party_location.menu_calling || force_menu_calling) {
+			call = Scene::Menu;
 		}
 
-		if (Game_Interpreter::IsNameCalling()) {
-			Game_Interpreter::ResetEventCalling();
-			CallName();
-			return;
-		}
-
-		if (Game_Interpreter::IsShopCalling()) {
-			Game_Interpreter::ResetEventCalling();
-			CallShop();
-			return;
-		}
-
-		if (Game_Interpreter::IsSaveCalling()) {
-			Game_Interpreter::ResetEventCalling();
-			CallSave();
-			return;
-		}
-
-		if (Game_Interpreter::IsLoadCalling()) {
-			Game_Interpreter::ResetEventCalling();
-			CallLoad();
-			return;
+		Game_Interpreter::ResetSceneCalling();
+		switch (call) {
+			case Scene::Menu:
+				CallMenu();
+				break;
+			case Scene::Shop:
+				CallShop();
+				break;
+			case Scene::Name:
+				CallName();
+				break;
+			case Scene::Save:
+				CallSave();
+				break;
+			case Scene::Load:
+				CallLoad();
+				break;
+			default:
+				break;
 		}
 
 		if (Game_Temp::battle_calling) {
-			Game_Interpreter::ResetEventCalling();
 			CallBattle();
 			return;
 		}

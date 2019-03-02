@@ -345,7 +345,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
-	event_calling.shop = true;
+	scene_call = Scene::Shop;
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
 	return false;
 }
@@ -562,7 +562,7 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 		Game_Temp::hero_name.clear();
 	}
 
-	event_calling.name = true;
+	scene_call = Scene::Name;
 	return true;
 }
 
@@ -702,18 +702,18 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
-	event_calling.save = true;
+	scene_call = Scene::Save;
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
-	event_calling.menu = true;
+	scene_call = Scene::Menu;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
-	event_calling.load = true;
+	scene_call = Scene::Load;
 	return true;
 }
 

@@ -27,6 +27,7 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 #include "command_codes.h"
+#include "scene.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -75,32 +76,9 @@ public:
 	/**
 	 * Reset the event calling flags
 	 */
-	static void ResetEventCalling();
+	static void ResetSceneCalling();
 
-	/**
-	 * @return true if interpreter wants to immediately call the main menu
-	 */
-	static bool IsMenuCalling();
-
-	/**
-	 * @return true if interpreter wants to immediately call the save menu
-	 */
-	static bool IsSaveCalling();
-
-	/**
-	 * @return true if interpreter wants to immediately call the load menu
-	 */
-	static bool IsLoadCalling();
-
-	/**
-	 * @return true if interpreter wants to immediately call the name actor menu
-	 */
-	static bool IsNameCalling();
-
-	/**
-	 * @return true if interpreter wants to immediately call the shop menu
-	 */
-	static bool IsShopCalling();
+	static Scene::SceneType GetSceneCalling();
 
 protected:
 	friend class Game_Interpreter_Map;
@@ -271,35 +249,11 @@ protected:
 
 	FileRequestBinding request_id;
 
-	struct EventCalling {
-		bool menu = false;
-		bool shop = false;
-		bool name = false;
-		bool save = false;
-		bool load = false;
-	};
-	static EventCalling event_calling;
+	static Scene::SceneType scene_call;
 };
 
-
-inline bool Game_Interpreter::IsMenuCalling() {
-	return event_calling.menu;
-}
-
-inline bool Game_Interpreter::IsSaveCalling() {
-	return event_calling.save;
-}
-
-inline bool Game_Interpreter::IsLoadCalling() {
-	return event_calling.load;
-}
-
-inline bool Game_Interpreter::IsNameCalling() {
-	return event_calling.name;
-}
-
-inline bool Game_Interpreter::IsShopCalling() {
-	return event_calling.shop;
+inline Scene::SceneType Game_Interpreter::GetSceneCalling() {
+	return scene_call;
 }
 
 #endif

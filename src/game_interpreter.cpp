@@ -57,7 +57,7 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
-Game_Interpreter::EventCalling Game_Interpreter::event_calling = {};
+Scene::SceneType Game_Interpreter::scene_call = Scene::Null;
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
@@ -3074,16 +3074,12 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	return true;
 }
 
-void Game_Interpreter::ResetEventCalling() {
-	event_calling = {};
+void Game_Interpreter::ResetSceneCalling() {
+	scene_call = Scene::Null;
 }
 
 bool Game_Interpreter::IsImmediateCall() {
-	return event_calling.load
-		|| event_calling.save
-		|| event_calling.name
-		|| event_calling.shop
-		|| event_calling.menu
+	return scene_call != Scene::Null
 		|| Game_Temp::battle_calling;
 };
 
