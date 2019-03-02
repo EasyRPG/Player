@@ -198,15 +198,7 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
-		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
-			IsShopCalling() ||
-			IsNameCalling() ||
-			IsMenuCalling() ||
-			IsSaveCalling() ||
-			IsLoadCalling() ||
-			Game_Temp::to_title ||
-			Game_Temp::gameover) {
-
+		if (Game_Temp::to_title || Game_Temp::gameover) {
 			break;
 		}
 
