@@ -2917,7 +2917,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 	bool show = com.parameters[6] > 0;
 
 	const RPG::Class* cls = ReaderUtil::GetElement(Data::classes, class_id);
-	if (!cls) {
+	if (!cls && class_id != 0) {
 		Output::Warning("ChangeClass: Can't change class. Class %d is invalid", class_id);
 		return true;
 	}
@@ -2928,6 +2928,8 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		int cur_lvl = actor->GetLevel();
 		int cur_exp = actor->GetExp();
 		int cur_cid = actor->GetClass() ? actor->GetClass()->ID : -1;
+
+		actor->RemoveWholeEquipment();
 
 		switch (stats_mode) {
 		case 2:
@@ -3008,7 +3010,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 			// Learn based on level (replace)
 			actor->UnlearnAllSkills();
 		}
-		if (skill_mode > 0) {
+		if (skill_mode > 0 && cls) {
 			// Learn additionally
 			for (const RPG::Learning& learn : cls->skills) {
 				if (level >= learn.level) {
