@@ -954,6 +954,12 @@ void Game_Map::Update(bool only_parallel) {
 	// Run any event loaded from last frame.
 	interp.Update(true);
 	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
+		// This logic is probably one big loop in RPG_RT. We have to replicate
+		// it here because once we stop executing from this we should not
+		// clear anymore waiting flags.
+		if (interp.IsImmediateCall() && interp.GetLoopCount() > 0) {
+			break;
+		}
 		Game_CommonEvent* run_ce = nullptr;
 
 		for (auto& ce: common_events) {
