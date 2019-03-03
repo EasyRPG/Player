@@ -233,10 +233,10 @@ namespace {
 		}
 
 		if (!disable_rtp_warnings && !rtp_name.empty()) {
-			std::string msg = "Cannot find: %s/%s. " + std::string(search_paths.empty() ?
+			std::string msg = "Cannot find: %s/%s (%s). " + std::string(search_paths.empty() ?
 				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
 
-			Output::Warning(msg.c_str(), dir.c_str(), rtp_name.c_str(), Player::EngineVersion());
+			Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), rtp_name.c_str(), Player::EngineVersion());
 		} else {
 			// not an RTP asset or RTP support was disabled
 			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());

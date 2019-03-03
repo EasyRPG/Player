@@ -88,7 +88,7 @@ void Window_BattleStatus::Refresh() {
 
 			DrawActorName(*actor, 4, y);
 			DrawActorState(*actor, 84, y);
-			if (Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
+			if (Player::IsRPG2k3() && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_traditional) {
 				contents->TextDraw(126 + 42 + 4 * 6, y, Font::ColorDefault, std::to_string(actor->GetHp()), Text::AlignRight);
 			} else {
 				DrawActorHp(*actor, 126, y, true);
