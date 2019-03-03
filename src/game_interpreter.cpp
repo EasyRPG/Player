@@ -169,6 +169,12 @@ void Game_Interpreter::Update() {
 			}
 		}
 
+		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
+		// RPG_RT compatible behavior.
+		if (loop_count > 0 && IsImmediateCall()) {
+			break;
+		}
+
 		if (main_flag) {
 			if (Main_Data::game_player->IsBoardingOrUnboarding())
 				break;
