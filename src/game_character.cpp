@@ -159,7 +159,8 @@ void Game_Character::UpdateMovement() {
 		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		moved = true;
 	} else {
-		if (IsMoveRouteOverwritten() || (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting())) {
+		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
+					(Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning())) {
 			SetStopCount(GetStopCount() + 1);
 		}
 	}
