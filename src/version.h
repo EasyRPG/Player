@@ -32,4 +32,10 @@
 #define PLAYER_ADDTL ""
 #define PLAYER_VERSION TO_STRING(PLAYER_MAJOR) "." TO_STRING(PLAYER_MINOR) "." TO_STRING(PLAYER_PATCH)
 
+/**
+ * Version written to the easyrpg_data.version field in savegames.
+ * Increment the last digit (0) only when having a good reason.
+ */
+#define PLAYER_SAVEGAME_VERSION (PLAYER_MAJOR * 1000 + PLAYER_MINOR * 100 + PLAYER_PATCH * 10 + 0)
+
 #endif /* EP_VERSION_H */

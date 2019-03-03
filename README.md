@@ -41,7 +41,7 @@ SDL 1.2 and SDL_mixer 1.2 are still supported, but deprecated.
 
 ## Daily builds
 
-Up to date binaries for assorted platforms are available at our continous
+Up to date binaries for assorted platforms are available at our continuous
 integration service:
 
 https://ci.easyrpg.org/view/Player/
