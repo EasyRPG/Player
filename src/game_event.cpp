@@ -449,20 +449,32 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency())));
 	if (GetStopCount() < GetMaxStopCount()) return;
 
-	int non_default_dir = ReverseDir(default_dir);
+	const int reverse_dir = ReverseDir(default_dir);
 	int move_dir = GetDirection();
-	if (!(move_dir == default_dir || move_dir == non_default_dir)) {
+	if (move_dir != reverse_dir) {
 		move_dir = default_dir;
 	}
 
 	Move(move_dir, MoveOption::IgnoreIfCantMove);
 
-	if (move_failed && GetStopCount() >= GetMaxStopCount() + 20) {
-		if (GetStopCount() >= GetMaxStopCount() + 60) {
-			Move(ReverseDir(move_dir));
-			SetStopCount(0);
-		} else {
-			Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
+	if (move_failed) {
+		if (trigger == RPG::EventPage::Trigger_collision) {
+			int new_x = Game_Map::XwithDirection(GetX(), move_dir);
+			int new_y = Game_Map::YwithDirection(GetY(), move_dir);
+
+			if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
+				SetStopCount(0);
+				return;
+			}
+		}
+
+		if (GetStopCount() >= GetMaxStopCount() + 20) {
+			if (GetStopCount() >= GetMaxStopCount() + 60) {
+				Move(ReverseDir(move_dir));
+				SetStopCount(0);
+			} else {
+				Move(ReverseDir(move_dir), MoveOption::IgnoreIfCantMove);
+			}
 		}
 	}
 }
