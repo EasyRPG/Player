@@ -127,7 +127,6 @@ void Game_Vehicle::Refresh() {
 	if (IsInUse()) {
 		SetMapId(Game_Map::GetMapId());
 	} else if (IsInCurrentMap()) {
-		SetProcessed(true); // RPG_RT compatibility
 		MoveTo(GetX(), GetY());
 	}
 
@@ -286,10 +285,13 @@ void Game_Vehicle::UpdateAnimationShip() {
 }
 
 void Game_Vehicle::Update(bool process_movement) {
-
 	if (!process_movement) {
 		return;
 	}
+	if (IsProcessed()) {
+		return;
+	}
+	SetProcessed(true);
 
 	if (IsAboard()) {
 		SyncWithPlayer();

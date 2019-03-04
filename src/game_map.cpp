@@ -919,6 +919,16 @@ void Game_Map::Update(bool only_parallel) {
 		}
 	}
 
+	for (Game_Event& ev : events) {
+		ev.SetProcessed(false);
+	}
+	Main_Data::game_player->SetProcessed(false);
+	for (auto& vehicle: vehicles) {
+		if (vehicle->GetMapId() == location.map_id) {
+			vehicle->SetProcessed(false);
+		}
+	}
+
 	for (Game_CommonEvent& ev : common_events) {
 		ev.UpdateParallel();
 	}

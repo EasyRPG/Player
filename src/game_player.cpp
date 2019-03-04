@@ -39,7 +39,6 @@ Game_Player::Game_Player():
 	Game_Character(&Main_Data::game_data.party_location)
 {
 	SetDirection(RPG::EventPage::Direction_down);
-	SetProcessed(true); // RPG_RT compatibility
 	SetMoveSpeed(4);
 	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
 }
@@ -231,12 +230,10 @@ void Game_Player::UpdateSelfMovement() {
 }
 
 void Game_Player::Update(bool process_movement) {
-	int cur_frame_count = Player::GetFrames();
-	// Only update the event once per frame
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
+	if (IsProcessed()) {
 		return;
 	}
-	frame_count_at_last_update_parallel = cur_frame_count;
+	SetProcessed(true);
 
 	const bool last_moving = IsMoving() || IsJumping();
 

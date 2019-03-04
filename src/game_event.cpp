@@ -39,7 +39,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	from_save(false)
 {
 	SetMapId(map_id);
-	SetProcessed(true); // RPG_RT compatibility
 	SetMoveSpeed(3);
 	MoveTo(event.x, event.y);
 	Refresh();
@@ -53,7 +52,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 {
 	// Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
-	SetProcessed(true); // RPG_RT compatibility
 
 	this->event.ID = data()->ID;
 
@@ -549,6 +547,11 @@ void Game_Event::Update() {
 	if (!data()->active || page == NULL) {
 		return;
 	}
+
+	if (IsProcessed()) {
+		return;
+	}
+	SetProcessed(true);
 
 	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();
