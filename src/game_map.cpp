@@ -930,7 +930,7 @@ void Game_Map::Update(bool only_parallel) {
 	}
 
 	for (Game_CommonEvent& ev : common_events) {
-		ev.UpdateParallel();
+		ev.Update();
 	}
 
 	for (Game_Event& ev : events) {
