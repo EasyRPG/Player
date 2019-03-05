@@ -160,7 +160,7 @@ void Game_Character::UpdateMovement() {
 		moved = true;
 	} else {
 		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
-					(Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning())) {
+					((Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
 			SetStopCount(GetStopCount() + 1);
 		}
 	}
@@ -785,6 +785,7 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 		CancelMoveRoute();
 	}
 
+	SetPaused(false);
 	SetStopCount(0xFFFF);
 	SetMoveRouteIndex(0);
 	SetMoveRouteRepeated(false);

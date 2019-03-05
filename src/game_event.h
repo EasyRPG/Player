@@ -115,7 +115,7 @@ public:
 	/**
 	 * Event returns to its original direction before talking to the hero.
 	 */
-	void StopTalkToHero();
+	void OnFinishForegroundEvent();
 
 	/** Update this for the current frame */
 	void Update();

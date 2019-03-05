@@ -101,6 +101,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		interpreter.reset();
 	}
 
+	SetPaused(false);
+
 	if (page == nullptr) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
@@ -322,6 +324,7 @@ void Game_Event::Start(bool by_decision_key) {
 
 	starting = true;
 	data()->triggered_by_decision_key = by_decision_key;
+	SetPaused(true);
 }
 
 const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
@@ -334,11 +337,12 @@ void Game_Event::StartTalkToHero() {
 	}
 }
 
-void Game_Event::StopTalkToHero() {
+void Game_Event::OnFinishForegroundEvent() {
 	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirection());
 	}
 
+	SetPaused(false);
 	halting = true;
 }
 
@@ -378,7 +382,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 }
 
 void Game_Event::UpdateSelfMovement() {
-	if (running)
+	if (IsPaused())
 		return;
 	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
 		return;

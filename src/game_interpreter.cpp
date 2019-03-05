@@ -548,7 +548,7 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	if (main_flag && depth == 0 && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (evnt)
-			evnt->StopTalkToHero();
+			evnt->OnFinishForegroundEvent();
 	}
 
 	Scene::instance->onCommandEnd();

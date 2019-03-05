@@ -470,6 +470,16 @@ public:
 	void SetProcessed(bool val);
 
 	/**
+	 * @return whether the event is paused.
+	 */
+	bool IsPaused() const;
+
+	/**
+	 * Set the paused flag
+	 */
+	void SetPaused(bool val);
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -1149,5 +1159,14 @@ inline bool Game_Character::IsProcessed() const {
 inline void Game_Character::SetProcessed(bool val) {
 	data()->processed = val;
 }
+
+inline bool Game_Character::IsPaused() const {
+	return data()->pause;
+}
+
+inline void Game_Character::SetPaused(bool val) {
+	data()->pause = val;
+}
+
 
 #endif
