@@ -10,6 +10,7 @@
 
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
+    android:background="@android:color/black"
     >
 
     <!-- The main content view -->
