@@ -258,7 +258,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		Game_Battle::SetBattleMode(com.parameters[6]); // 0 normal, 1 initiative, 2 surround, 3 back attack, 4 pincer
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
-	Game_Temp::battle_calling = true;
+	scene_call = Scene::Battle;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
 	return false;
@@ -345,7 +345,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
-	event_calling.shop = true;
+	scene_call = Scene::Shop;
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
 	return false;
 }
@@ -562,8 +562,9 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 		Game_Temp::hero_name.clear();
 	}
 
-	event_calling.name = true;
-	return true;
+	scene_call = Scene::Name;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
@@ -702,19 +703,21 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
-	event_calling.save = true;
-	return true;
+	scene_call = Scene::Save;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
-	event_calling.menu = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	scene_call = Scene::Menu;
+	++index;
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
-	event_calling.load = true;
-	return true;
+	scene_call = Scene::Load;
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {

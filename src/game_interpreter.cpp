@@ -57,7 +57,7 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
-Game_Interpreter::EventCalling Game_Interpreter::event_calling = {};
+Scene::SceneType Game_Interpreter::scene_call = Scene::Null;
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
@@ -169,6 +169,12 @@ void Game_Interpreter::Update() {
 			}
 		}
 
+		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
+		// RPG_RT compatible behavior.
+		if (loop_count > 0 && IsImmediateCall()) {
+			break;
+		}
+
 		if (main_flag) {
 			if (Main_Data::game_player->IsBoardingOrUnboarding())
 				break;
@@ -198,15 +204,7 @@ void Game_Interpreter::Update() {
 			break;
 		}
 
-		if ((Game_Temp::battle_calling && !Game_Temp::battle_running) ||
-			IsShopCalling() ||
-			IsNameCalling() ||
-			IsMenuCalling() ||
-			IsSaveCalling() ||
-			IsLoadCalling() ||
-			Game_Temp::to_title ||
-			Game_Temp::gameover) {
-
+		if (Game_Temp::to_title || Game_Temp::gameover) {
 			break;
 		}
 
@@ -3082,17 +3080,12 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	return true;
 }
 
-void Game_Interpreter::ResetEventCalling() {
-	event_calling = {};
+void Game_Interpreter::ResetSceneCalling() {
+	scene_call = Scene::Null;
 }
 
 bool Game_Interpreter::IsImmediateCall() {
-	return event_calling.load
-		|| event_calling.save
-		|| event_calling.name
-		|| event_calling.shop
-		|| event_calling.menu
-		|| Game_Temp::battle_calling;
+	return scene_call != Scene::Null;
 };
 
 // Dummy Continuations
