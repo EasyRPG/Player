@@ -934,17 +934,17 @@ void Game_Map::Update(bool only_parallel) {
 		ev.CheckEventTriggers();
 	}
 
-	Main_Data::game_player->Update(!first_frame);
-	UpdatePan();
-	GetInterpreter().Update();
+	for (Game_CommonEvent& ev : common_events) {
+		ev.Update();
+	}
 
 	for (Game_Event& ev : events) {
 		ev.Update();
 	}
 
-	for (Game_CommonEvent& ev : common_events) {
-		ev.Update();
-	}
+	Main_Data::game_player->Update(!first_frame);
+	UpdatePan();
+	GetInterpreter().Update();
 
 	for (auto& vehicle: vehicles) {
 		if (vehicle->GetMapId() == location.map_id) {
