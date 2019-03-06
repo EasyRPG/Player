@@ -454,7 +454,7 @@ static void add_rtp_path(const std::string& p) {
 }
 
 static void read_rtp_registry(const std::string& company, const std::string& product, const std::string& key) {
-#ifdef USE_WINE_REGISTRY
+#if defined(USE_WINE_REGISTRY) || defined(_WIN32)
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\" + product, key, KEY32);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
