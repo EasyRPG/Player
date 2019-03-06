@@ -233,9 +233,9 @@ namespace Game_Map {
 	/**
 	 * Updates the map state.
 	 *
-	 * @param only_parallel Update only parallel interpreters
+	 * @param is_preupdate Update only common events and map events
 	 */
-	void Update(bool only_parallel = false);
+	void Update(bool is_preupdate = false);
 
 	/**
 	 * Gets current map_info.

@@ -84,10 +84,6 @@ namespace {
 
 	int last_encounter_idx = 0;
 
-	// RPG_RT doesn't update player or vehicle movement or animation on the first frame
-	// of a new map. We use this flag to emulate that behavior.
-	bool first_frame = false;
-
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
@@ -149,7 +145,6 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id) {
 	Dispose();
-	first_frame = true;
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -617,7 +612,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool for
 			&& !Main_Data::game_player->GetThrough()
 			&& self.GetLayer() == RPG::EventPage::Layers_same) {
 		// Update the Player to see if they'll move and recheck.
-		Main_Data::game_player->Update(!first_frame);
+		Main_Data::game_player->Update();
 		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
 			return false;
 		}
@@ -909,7 +904,7 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::Update(bool only_parallel) {
+void Game_Map::Update(bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 	Parallax::Update();
 	if (animation) {
@@ -937,15 +932,16 @@ void Game_Map::Update(bool only_parallel) {
 		ev.Update();
 	}
 
-	if (only_parallel)
+	if (is_preupdate) {
 		return;
+	}
 
-	Main_Data::game_player->Update(!first_frame);
+	Main_Data::game_player->Update();
 	UpdatePan();
 
 	for (auto& vehicle: vehicles) {
 		if (vehicle->GetMapId() == location.map_id) {
-			vehicle->Update(!first_frame);
+			vehicle->Update();
 		}
 	}
 
@@ -997,8 +993,6 @@ void Game_Map::Update(bool only_parallel) {
 	}
 
 	free_interpreters.clear();
-
-	first_frame = false;
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {

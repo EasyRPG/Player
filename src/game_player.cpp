@@ -229,7 +229,7 @@ void Game_Player::UpdateSelfMovement() {
 
 }
 
-void Game_Player::Update(bool process_movement) {
+void Game_Player::Update() {
 	if (IsProcessed()) {
 		return;
 	}
@@ -245,40 +245,36 @@ void Game_Player::Update(bool process_movement) {
 
 	auto was_moving = !IsStopping();
 
-	if (process_movement) {
-		Game_Character::UpdateMovement();
-		Game_Character::UpdateAnimation(was_moving);
-	}
+	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
 	if (IsMoving()) return;
 
-	if (process_movement) {
-		if (data()->boarding) {
-			// Boarding completed
-			data()->aboard = true;
-			data()->boarding = false;
-			auto* vehicle = GetVehicle();
-			if (vehicle->IsMoveRouteOverwritten()) {
-				vehicle->CancelMoveRoute();
-			}
-			SetMoveSpeed(vehicle->GetMoveSpeed());
-			vehicle->SetDirection(GetDirection());
-			vehicle->SetSpriteDirection(Left);
-			// Note: RPG_RT ignores the lock_facing flag here!
-			SetSpriteDirection(Left);
-			vehicle->SetX(GetX());
-			vehicle->SetY(GetY());
-			return;
+	if (data()->boarding) {
+		// Boarding completed
+		data()->aboard = true;
+		data()->boarding = false;
+		auto* vehicle = GetVehicle();
+		if (vehicle->IsMoveRouteOverwritten()) {
+			vehicle->CancelMoveRoute();
 		}
+		SetMoveSpeed(vehicle->GetMoveSpeed());
+		vehicle->SetDirection(GetDirection());
+		vehicle->SetSpriteDirection(Left);
+		// Note: RPG_RT ignores the lock_facing flag here!
+		SetSpriteDirection(Left);
+		vehicle->SetX(GetX());
+		vehicle->SetY(GetY());
+		return;
+	}
 
-		if (data()->unboarding) {
-			// Unboarding completed
-			data()->unboarding = false;
-			CheckTouchEvent();
-			return;
-		}
+	if (data()->unboarding) {
+		// Unboarding completed
+		data()->unboarding = false;
+		CheckTouchEvent();
+		return;
 	}
 
 	if (was_blocked) return;

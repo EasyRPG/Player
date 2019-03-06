@@ -284,10 +284,7 @@ void Game_Vehicle::UpdateAnimationShip() {
 	}
 }
 
-void Game_Vehicle::Update(bool process_movement) {
-	if (!process_movement) {
-		return;
-	}
+void Game_Vehicle::Update() {
 	if (IsProcessed()) {
 		return;
 	}
