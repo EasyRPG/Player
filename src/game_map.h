@@ -138,19 +138,18 @@ namespace Game_Map {
 	bool IsValid(int x, int y);
 
 	/**
-	 * Clears the way for a move by self from (x,y) in the direction d. Any events
-	 * that block the way are updated early (by UpdateParallel) to give them a
+	 * Clears the way for a move by self to (x,y). Any events
+	 * that block the way are updated early to give them a
 	 * chance to move out of the way.
 	 *
-	 * Returns true if everything is clear to make the move.
+	 * Returns true if move is possible.
 	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @param d direction
 	 * @param self Character to move.
+	 * @param x new tile x.
+	 * @param y new tile y.
 	 * @return whether is passable.
 	 */
-	bool MakeWay(int x, int y, int d, const Game_Character& self);
+	bool MakeWay(const Game_Character& self, int x, int y);
 
 	/**
 	 * Gets if a tile coordinate is passable in a direction.
@@ -565,7 +564,20 @@ namespace Game_Map {
 	int SubstituteDown(int old_id, int new_id);
 	int SubstituteUp(int old_id, int new_id);
 
-	bool IsPassableTile(int bit, int tile_index);
+	/**
+	 * Checks if its possible to step onto the tile at (x,y)
+	 * The check includes tile graphic events checks.
+	 *
+	 * Returns true if move is possible.
+	 *
+	 * @param self Character to move. If not nullptr, checks the vehicle type and performs vehicle specific checks if is vehicle.
+	 *        Also ignores self in the event tile graphic checks if self is not nullptr.
+	 * @param bit which direction bits to check
+	 * @param x target tile x.
+	 * @param y target tile y.
+	 * @return whether is passable.
+	 */
+	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
 	enum PanDirection {
 		PanUp,

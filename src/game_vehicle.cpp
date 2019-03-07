@@ -58,26 +58,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-bool Game_Vehicle::MakeWay(int x, int y, int d) const {
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
-	}
-
-	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
-	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
-
-	if (!Game_Map::IsValid(new_x, new_y))
-		return false;
-
-	if (GetThrough()) return true;
-
-	if (!Game_Map::IsPassableVehicle(new_x, new_y, type))
-		return false;
-
-	return true;
-}
-
-
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case None:
