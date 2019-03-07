@@ -53,12 +53,8 @@ bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-bool Game_Character::MakeWay(int x, int y, int d) const {
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
-	}
-
-	return Game_Map::MakeWay(x, y, d, *this);
+bool Game_Character::MakeWay(int x, int y) const {
+	return Game_Map::MakeWay(*this, x, y);
 }
 
 bool Game_Character::IsLandable(int x, int y) const
@@ -447,7 +443,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 		return;
 	}
 
-	move_failed = !MakeWay(GetX(), GetY(), dir);
+	move_failed = !MakeWay(GetX() + dx, GetY() + dy);
 
 	if (!move_failed || option == MoveOption::Normal) {
 		SetDirection(dir);
@@ -703,11 +699,7 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 		}
 	}
 
-	if (
-		// A character can always land on a tile they were already standing on
-		!(jump_plus_x == 0 && jump_plus_y == 0) &&
-		!IsLandable(new_x, new_y)
-	) {
+	if (!MakeWay(new_x, new_y)) {
 		move_failed = true;
 	}
 
@@ -948,14 +940,6 @@ int Game_Character::ReverseDir(int dir) {
 	constexpr static char reversed[] =
 		{ Down, Left, Up, Right, DownLeft, UpLeft, UpRight, DownRight };
 	return reversed[dir];
-}
-
-
-bool Game_Character::MakeWayDiagonal(int x, int y, int d) const {
-	int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
-	int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
-	return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
-			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
 }
 
 void Game_Character::SetMaxStopCountForStep() {

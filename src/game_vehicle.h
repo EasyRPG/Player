@@ -44,7 +44,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool MakeWay(int x, int y, int d) const override;
 	int GetVehicleType() const override;
 	/** @} */
 

@@ -114,15 +114,12 @@ void Game_Player::PerformTeleport() {
 		GetVehicle()->MoveTo(new_x, new_y);
 }
 
-bool Game_Player::MakeWay(int x, int y, int d) const {
-	if (data()->aboard)
-		return GetVehicle()->MakeWay(x, y, d);
-
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
+bool Game_Player::MakeWay(int x, int y) const {
+	if (data()->aboard) {
+		return GetVehicle()->MakeWay(x, y);
 	}
 
-	return Game_Map::MakeWay(x, y, d, *this);
+	return Game_Character::MakeWay(x, y);
 }
 
 bool Game_Player::IsTeleporting() const {
