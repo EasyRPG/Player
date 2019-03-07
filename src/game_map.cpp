@@ -527,7 +527,7 @@ static CollisionResult TestCollisionDuringMove(
 	const Game_Character& self,
 	const Game_Event& other
 ) {
-	if (!other.GetActive()) {
+	if (!other.IsActive()) {
 		return NoCollision;
 	}
 
@@ -856,7 +856,7 @@ bool Game_Map::AirshipLandOk(int const x, int const y) {
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	for (Game_Event& ev : GetEvents()) {
-		if (ev.IsInPosition(x, y) && ev.GetActive()) {
+		if (ev.IsInPosition(x, y) && ev.IsActive()) {
 			events.push_back(&ev);
 		}
 	}
@@ -1398,7 +1398,7 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 bool Game_Map::IsAnyEventStarting() {
 	for (Game_Event& ev : events)
-		if (ev.IsWaitingForegroundExecution() && !ev.GetList().empty() && ev.GetActive())
+		if (ev.IsWaitingForegroundExecution() && !ev.GetList().empty() && ev.IsActive())
 			return true;
 
 	for (Game_CommonEvent& ev : common_events)

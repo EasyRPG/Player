@@ -306,14 +306,6 @@ RPG::EventPage::Trigger Game_Event::GetTrigger() const {
 	return static_cast<RPG::EventPage::Trigger>(trigger);
 }
 
-void Game_Event::SetActive(bool active) {
-	data()->active = active;
-	SetVisible(active);
-}
-
-bool Game_Event::GetActive() const {
-	return data()->active;
-}
 
 bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?

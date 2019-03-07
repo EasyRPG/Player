@@ -980,3 +980,9 @@ bool Game_Character::IsMoveRouteActive() const {
 int Game_Character::GetVehicleType() const {
 	return 0;
 }
+
+void Game_Character::SetActive(bool active) {
+	data()->active = active;
+	SetVisible(active);
+}
+

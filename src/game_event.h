@@ -118,20 +118,6 @@ public:
 	bool AreConditionsMet(const RPG::EventPage& page);
 
 	/**
-	 * Activates or deactivates the event.
-	 *
-	 * @param active enables or disables the event.
-	 */
-	void SetActive(bool active);
-
-	/**
-	 * Gets if the event is active.
-	 *
-	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
-	 */
-	bool GetActive() const;
-
-	/**
 	 * Returns current index of a "Movement Type Custom" move route.
 	 *
 	 * @return current original move route index

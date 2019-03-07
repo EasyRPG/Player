@@ -480,6 +480,20 @@ public:
 	void SetPaused(bool val);
 
 	/**
+	 * Activates or deactivates the event.
+	 *
+	 * @param active enables or disables the event.
+	 */
+	void SetActive(bool active);
+
+	/**
+	 * Gets if the event is active.
+	 *
+	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
+	 */
+	bool IsActive() const;
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -1165,6 +1179,10 @@ inline bool Game_Character::IsPaused() const {
 
 inline void Game_Character::SetPaused(bool val) {
 	data()->pause = val;
+}
+
+inline bool Game_Character::IsActive() const {
+	return data()->active;
 }
 
 
