@@ -48,7 +48,7 @@ static RPG::SaveVehicleLocation* getDataFromType(Game_Vehicle::Type ty) {
 }
 
 Game_Vehicle::Game_Vehicle(Type _type) :
-	Game_Character(getDataFromType(_type))
+	Game_Character(Vehicle, getDataFromType(_type))
 {
 	type = _type;
 	SetDirection(Left);

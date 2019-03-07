@@ -31,11 +31,12 @@
 #include <cmath>
 #include <cassert>
 
-Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
+Game_Character::Game_Character(Type type, RPG::SaveMapEventBase* d) :
 	move_failed(false),
 	jump_plus_x(0),
 	jump_plus_y(0),
 	visible(true),
+	_type(type),
 	_data(d)
 {
 }

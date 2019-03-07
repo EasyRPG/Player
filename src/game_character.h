@@ -37,6 +37,12 @@ class Game_Character {
 public:
 	using AnimType = RPG::EventPage::AnimType;
 
+	enum Type {
+		Event,
+		Player,
+		Vehicle
+	};
+
 	/**
 	 * Destructor.
 	 */
@@ -46,6 +52,9 @@ public:
 	virtual
 #endif
 	~Game_Character();
+
+	/** @return the type of character this is */
+	Type GetType() const;
 
 	/**
 	 * Gets x position in tiles.
@@ -851,7 +860,7 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
-	explicit Game_Character(RPG::SaveMapEventBase* d);
+	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
 	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement() {}
 	void UpdateJump();
@@ -877,9 +886,9 @@ protected:
 
 	bool visible;
 
+	Type _type;
 	RPG::SaveMapEventBase* _data = nullptr;
 };
-
 
 inline RPG::SaveMapEventBase* Game_Character::data() {
 	return _data;
@@ -887,6 +896,10 @@ inline RPG::SaveMapEventBase* Game_Character::data() {
 
 inline const RPG::SaveMapEventBase* Game_Character::data() const {
 	return _data;
+}
+
+inline Game_Character::Type Game_Character::GetType() const {
+	return _type;
 }
 
 inline int Game_Character::GetX() const {

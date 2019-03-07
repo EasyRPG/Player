@@ -36,7 +36,7 @@
 #include <cmath>
 
 Game_Player::Game_Player():
-	Game_Character(&Main_Data::game_data.party_location)
+	Game_Character(Player, &Main_Data::game_data.party_location)
 {
 	SetDirection(RPG::EventPage::Direction_down);
 	SetMoveSpeed(4);

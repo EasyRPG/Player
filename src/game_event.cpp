@@ -33,7 +33,7 @@
 #include <cmath>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	Game_Character(new RPG::SaveMapEvent()),
+	Game_Character(Event, new RPG::SaveMapEvent()),
 	_data_copy(this->data()),
 	event(event),
 	from_save(false)
@@ -45,7 +45,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 }
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
-	Game_Character(new RPG::SaveMapEvent(orig_data)),
+	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
 	event(event),
 	from_save(true)
