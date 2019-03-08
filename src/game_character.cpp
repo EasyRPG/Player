@@ -140,8 +140,6 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 }
 
 void Game_Character::UpdateMovement() {
-	bool was_move_route_overriden = IsMoveRouteOverwritten();
-
 	if (IsMoveRouteOverwritten()) {
 		UpdateMoveRoute(data()->move_route_index, data()->move_route);
 	}
