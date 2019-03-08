@@ -524,15 +524,6 @@ public:
 	virtual bool MakeWay(int x, int y) const;
 
 	/**
-	 * Gets if the character can jump to a tile.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @return whether the character can jump to.
-	 */
-	virtual bool IsLandable(int x, int y) const;
-
-	/**
 	 * Moves the character to a new tile.
 	 *
 	 * @param x tile x.

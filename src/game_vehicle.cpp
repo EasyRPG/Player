@@ -225,19 +225,7 @@ bool Game_Vehicle::IsMovable() {
 }
 
 bool Game_Vehicle::CanLand() const {
-	if (!Game_Map::AirshipLandOk(GetX(), GetY()))
-		return false;
-	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, GetX(), GetY());
-	if (!events.empty())
-		return false;
-	if (!Game_Map::IsLandable(GetX(), GetY(), nullptr))
-		return false;
-	if (Game_Map::GetVehicle(Ship)->IsInPosition(GetX(), GetY()))
-		return false;
-	if (Game_Map::GetVehicle(Boat)->IsInPosition(GetX(), GetY()))
-		return false;
-	return true;
+	return Game_Map::CanLandAirship(GetX(), GetY());
 }
 
 void Game_Vehicle::UpdateAnimationAirship() {

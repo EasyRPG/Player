@@ -772,84 +772,33 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	return IsPassableTile(nullptr, bit, x, y);
 }
 
-bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) {
+bool Game_Map::CanLandAirship(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+	const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
-		Output::Warning("IsPassableVehicle: Invalid terrain at (%d, %d)", x, y);
-	} else if (vehicle_type == Game_Vehicle::Boat) {
-		if (!terrain->boat_pass)
-			return false;
-	} else if (vehicle_type == Game_Vehicle::Ship) {
-		if (!terrain->ship_pass)
-			return false;
-	} else if (vehicle_type == Game_Vehicle::Airship) {
-		return terrain->airship_pass;
-	}
-
-	int tile_id;
-	std::vector<Game_Event*> events;
-	std::vector<Game_Event*>::iterator it;
-
-	Game_Map::GetEventsXY(events, x, y);
-	for (it = events.begin(); it != events.end(); ++it) {
-		if ((*it)->GetThrough()) {
-			continue;
-		} else if ((*it)->GetLayer() == 1) {
-			return false;
-		} else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
-			// Event layer Chipset Tile
-			tile_id = (*it)->GetTileId();
-			if ((passages_up[tile_id] & Passable::Above) == 0)
-				return false;
-		}
-	}
-
-	int const tile_index = x + y * GetWidth();
-
-	tile_id = map->upper_layer[tile_index] - BLOCK_F;
-	tile_id = map_info.upper_tiles[tile_id];
-
-	if ((passages_up[tile_id] & Passable::Above) == 0)
+		Output::Warning("MakeWay: Invalid terrain at (%d, %d)", x, y);
 		return false;
+	}
+	if (!terrain->airship_land) {
+		return false;
+	}
 
-	for (int i = 0; i < 3; i++) {
-		if (i+1 == vehicle_type)
-			continue;
-		Game_Vehicle* vehicle = vehicles[i].get();
-		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
+	for (auto& ev: events) {
+		if (ev.IsInPosition(x, y)
+				&& ev.IsActive()
+				&& ev.GetActivePage() != nullptr) {
 			return false;
-	}
-
-	return true;
-}
-
-
-bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	int tile_id;
-	int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
-
-	if (self_event) {
-		for (Game_Event& ev : events) {
-			if (&ev != self_event && ev.IsInPosition(x, y)) {
-				if (!ev.GetThrough()) {
-					if (ev.GetLayer() == RPG::EventPage::Layers_same) {
-						return false;
-					} else if (ev.GetTileId() >= 0 && ev.GetLayer() == RPG::EventPage::Layers_below) {
-						// Event layer Chipset Tile
-						tile_id = ev.GetTileId();
-						return (passages_up[tile_id] & bit) != 0;
-					}
-				}
-			}
-		}
-		if (self_event->GetVehicleType() > 0) {
-			return Game_Map::IsPassableVehicle(x, y, (Game_Vehicle::Type) self_event->GetVehicleType());
 		}
 	}
+	for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship }) {
+		auto& vehicle = vehicles[vid - 1];
+		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y)) {
+			return false;
+		}
+	}
+
+	const int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
 	return IsPassableTile(nullptr, bit, x, y);
 }
@@ -1001,16 +950,6 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	assert(chip_index < terrain_data.size());
 
 	return terrain_data[chip_index];
-}
-
-bool Game_Map::AirshipLandOk(int const x, int const y) {
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
-	if (!terrain) {
-		Output::Warning("AirshipLandOk: Invalid terrain at (%d, %d)", x, y);
-		return false;
-	}
-
-	return terrain->airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {

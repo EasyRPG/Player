@@ -57,27 +57,6 @@ bool Game_Character::MakeWay(int x, int y) const {
 	return Game_Map::MakeWay(*this, x, y);
 }
 
-bool Game_Character::IsLandable(int x, int y) const
-{
-	if (!Game_Map::IsValid(x, y))
-		return false;
-
-	if (GetThrough()) return true;
-
-	if (IsFlying()) return true;
-
-	if (!Game_Map::IsLandable(x, y, this))
-		return false;
-
-	if (GetLayer() == RPG::EventPage::Layers_same && Main_Data::game_player->IsInPosition(x, y)) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
 void Game_Character::MoveTo(int x, int y) {
 	SetX(Game_Map::RoundX(x));
 	SetY(Game_Map::RoundY(y));
