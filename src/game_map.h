@@ -148,10 +148,9 @@ namespace Game_Map {
 	 * @param y tile y.
 	 * @param d direction
 	 * @param self Character to move.
-	 * @param force_through act as if self.SetThrough() == true
 	 * @return whether is passable.
 	 */
-	bool MakeWay(int x, int y, int d, const Game_Character& self, bool force_through);
+	bool MakeWay(int x, int y, int d, const Game_Character& self);
 
 	/**
 	 * Gets if a tile coordinate is passable in a direction.

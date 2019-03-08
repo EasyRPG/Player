@@ -32,6 +32,7 @@
 #include "game_switches.h"
 #include "output.h"
 #include "reader_util.h"
+#include "scope_guard.h"
 #include <algorithm>
 #include <cmath>
 
@@ -121,9 +122,7 @@ bool Game_Player::MakeWay(int x, int y, int d) const {
 		return MakeWayDiagonal(x, y, d);
 	}
 
-	bool force_through = (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH) && IsMovable());
-
-	return Game_Map::MakeWay(x, y, d, *this, force_through);
+	return Game_Map::MakeWay(x, y, d, *this);
 }
 
 bool Game_Player::IsTeleporting() const {
@@ -201,6 +200,16 @@ void Game_Player::UpdateSelfMovement() {
 		if (IsMovable()) {
 			const auto old_x = GetX();
 			const auto old_y = GetY();
+			const bool force_through = (Player::debug_flag
+					&& Input::IsPressed(Input::DEBUG_THROUGH)
+					&& !GetThrough());
+			if (force_through) {
+				SetThrough(true);
+			}
+			auto sg = makeScopeGuard([&](){
+					if (force_through) { SetThrough(false); }
+					});
+
 			switch (Input::dir4) {
 				case 2:
 					Move(Down);

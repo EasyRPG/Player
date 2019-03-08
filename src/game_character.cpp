@@ -58,7 +58,7 @@ bool Game_Character::MakeWay(int x, int y, int d) const {
 		return MakeWayDiagonal(x, y, d);
 	}
 
-	return Game_Map::MakeWay(x, y, d, *this, false);
+	return Game_Map::MakeWay(x, y, d, *this);
 }
 
 bool Game_Character::IsLandable(int x, int y) const
