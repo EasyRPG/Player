@@ -164,24 +164,13 @@ namespace Game_Map {
 	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
 
 	/**
-	 * Gets if a tile coordinate is passable in a direction by a vehicle.
+	 * Gets if possible to land the airship at (x,y)
 	 *
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @param vehicle_type type of vehicle
-	 * @return whether is passable.
+	 * @return whether is posible to land airship
 	 */
-	bool IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type);
-
-	/**
-	 * Gets if a tile coordinate can be jumped to.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @param self_event Current character attemping to jump.
-	 * @return whether is posible to jump.
-	 */
-	bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
+	bool CanLandAirship(int x, int y);
 
 	/**
 	 * Gets the bush depth at a certain tile.
@@ -209,15 +198,6 @@ namespace Game_Map {
 	 * @return terrain tag ID.
 	 */
 	int GetTerrainTag(int x, int y);
-
-	/**
-	 * Gets if a tile can land airship.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @return terrain tag ID.
-	 */
-	bool AirshipLandOk(int x, int y);
 
 	/**
 	 * Gets designated position event.
