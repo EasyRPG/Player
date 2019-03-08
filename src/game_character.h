@@ -1090,7 +1090,7 @@ inline void Game_Character::IncAnimFrame() {
 inline void Game_Character::ResetAnimation() {
 	SetAnimCount(0);
 	if (GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic) {
-		SetAnimFrame(1);
+		SetAnimFrame(RPG::EventPage::Frame_middle);
 	}
 }
 

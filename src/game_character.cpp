@@ -227,7 +227,7 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 
 	if (IsContinuous()
 			|| was_moving
-			|| data()->anim_frame == 0 || data()->anim_frame == 2
+			|| data()->anim_frame == RPG::EventPage::Frame_left || data()->anim_frame == RPG::EventPage::Frame_right
 			|| GetAnimCount() < stationary_limit) {
 		IncAnimCount();
 	}
