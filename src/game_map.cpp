@@ -721,58 +721,6 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 	return IsPassableTile(&self, bit, x, y);
 }
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
-	// TODO: this and MakeWay share a lot of code.
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	int bit = DirToMask(d);
-
-	int tile_id;
-
-	if (self_event) {
-		bool pass = false;
-		std::vector<Game_Event*> events;
-		std::vector<Game_Event*>::iterator it;
-
-		Game_Map::GetEventsXY(events, x, y);
-		for (it = events.begin(); it != events.end(); ++it) {
-			if (*it == self_event || (*it)->GetThrough()) {
-				continue;
-			}
-
-			if (self_event != Main_Data::game_player.get()) {
-				if (self_event->IsOverlapForbidden() || (*it)->IsOverlapForbidden())
-					return false;
-			}
-
-			if ((*it)->GetLayer() == self_event->GetLayer()) {
-				if (self_event->IsInPosition(x, y))
-					pass = true;
-				else
-					return false;
-			}
-			else if ((*it)->GetLayer() == RPG::EventPage::Layers_below) {
-				// Event layer Chipset Tile
-				tile_id = (*it)->GetTileId();
-				if ((passages_up[tile_id] & Passable::Above) != 0)
-					continue;
-				if ((passages_up[tile_id] & bit) != 0)
-					pass = true;
-				else
-					return false;
-			}
-		}
-
-		if (!self_event->IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
-			return false;
-
-		if (pass) // All events here are passable
-			return true;
-	}
-
-	return IsPassableTile(nullptr, bit, x, y);
-}
-
 bool Game_Map::CanLandAirship(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
@@ -800,6 +748,24 @@ bool Game_Map::CanLandAirship(int x, int y) {
 	}
 
 	const int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
+
+	return IsPassableTile(nullptr, bit, x, y);
+}
+
+bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
+	if (!Game_Map::IsValid(x, y)) {
+		return false;
+	}
+
+	for (auto& ev: GetEvents()) {
+		if (ev.IsInPosition(x, y)
+			&& ev.GetLayer() == RPG::EventPage::Layers_same
+			&& ev.IsActive()) {
+			return false;
+		}
+	}
+
+	int bit = GetPassableMask(x, y, player.GetX(), player.GetY());
 
 	return IsPassableTile(nullptr, bit, x, y);
 }

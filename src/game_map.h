@@ -25,6 +25,7 @@
 #include "game_commonevent.h"
 #include "game_event.h"
 #include "game_vehicle.h"
+#include "game_player.h"
 #include "rpg_encounter.h"
 #include "rpg_map.h"
 #include "rpg_mapinfo.h"
@@ -152,18 +153,6 @@ namespace Game_Map {
 	bool MakeWay(const Game_Character& self, int x, int y);
 
 	/**
-	 * Gets if a tile coordinate is passable in a direction.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @param d direction (0, 2, 4, 6, 8, 10).
-	 *		    0,10 = determine if all directions are impassable.
-	 * @param self_event Current character for doing passability check
-	 * @return whether is passable.
-	 */
-	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
-
-	/**
 	 * Gets if possible to land the airship at (x,y)
 	 *
 	 * @param x tile x.
@@ -171,6 +160,16 @@ namespace Game_Map {
 	 * @return whether is posible to land airship
 	 */
 	bool CanLandAirship(int x, int y);
+
+	/**
+	 * Gets if possible to disembark the boat or ship to (x,y)
+	 *
+	 * @param player the player
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @return whether is posible to disembark the boat or ship
+	 */
+	bool CanDisembarkShip(Game_Player& player, int x, int y);
 
 	/**
 	 * Gets the bush depth at a certain tile.

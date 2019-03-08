@@ -474,10 +474,9 @@ bool Game_Player::GetOffVehicle() {
 	if (!InAirship()) {
 		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-		if (!CanWalk(front_x, front_y)
-			&& !Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y)
-			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
+		if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
 			return false;
+		}
 	}
 	auto* vehicle = GetVehicle();
 
@@ -522,10 +521,6 @@ bool Game_Player::InAirship() const {
 
 Game_Vehicle* Game_Player::GetVehicle() const {
 	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
-}
-
-bool Game_Player::CanWalk(int x, int y) {
-	return Game_Map::IsPassable(x, y, GetDirection(), this);
 }
 
 void Game_Player::BeginMove() {

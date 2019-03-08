@@ -86,7 +86,6 @@ public:
 	bool IsAboard() const;
 	bool IsBoardingOrUnboarding() const;
 	Game_Vehicle* GetVehicle() const;
-	bool CanWalk(int x, int y);
 
 	/**
 	 * Callback function invoked by the Vehicle to notify that the unboarding has finished
