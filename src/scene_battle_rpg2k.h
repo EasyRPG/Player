@@ -172,19 +172,23 @@ protected:
 	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
+	void SetWait(int min_wait, int max_wait);
+	bool CheckWait();
+
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	bool battle_action_pending = false;
-	int battle_action_wait = 0;
 	int battle_action_state = BattleActionState_ConditionHeal;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
-	int encounter_message_wait = 0;
 	bool encounter_message_first_strike = false;
+
+	int battle_action_wait = 0;
+	int battle_action_min_wait = 0;
 
 	bool begin_escape = true;
 	bool escape_success = false;

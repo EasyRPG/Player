@@ -1033,6 +1033,31 @@ int Scene_Battle_Rpg2k::GetDelayForLine() {
 	}
 }
 
+void Scene_Battle_Rpg2k::SetWait(int min_wait, int max_wait) {
+	battle_action_wait = max_wait;
+	battle_action_min_wait = max_wait - min_wait;
+}
+
+bool Scene_Battle_Rpg2k::CheckWait() {
+	if (battle_action_wait > 0) {
+		if (Input::IsPressed(Input::CANCEL)) {
+			return false;
+		}
+		--battle_action_wait;
+		if (battle_action_wait > battle_action_min_wait) {
+			return false;
+		}
+		if (!Input::IsPressed(Input::DECISION)
+			&& !Input::IsPressed(Input::SHIFT)
+			&& battle_action_wait > 0) {
+			return false;
+		}
+		battle_action_wait = 0;
+	}
+	return true;
+}
+
+
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	if (encounter_message_first_monster) {
 		std::vector<Game_Battler *> visible_enemies;
@@ -1048,19 +1073,14 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		battle_result_messages_it = battle_result_messages.begin();
 		battle_message_window->Clear();
 
-		encounter_message_wait = 0;
 		encounter_message_first_strike = false;
 		encounter_message_first_monster = false;
+
+		SetWait(4, 4);
+		return DisplayMonstersInMessageWindow();
 	}
 
-	if (encounter_message_wait > 0) {
-		if (Input::IsPressed(Input::CANCEL)) {
-			return false;
-		}
-		--encounter_message_wait;
-		if (Input::IsPressed(Input::DECISION) && encounter_message_wait > 0) {
-			--encounter_message_wait;
-		}
+	if (!CheckWait()) {
 		return false;
 	}
 
@@ -1068,9 +1088,8 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		battle_message_window->Clear();
 		if (Game_Temp::battle_first_strike && !encounter_message_first_strike) {
 			battle_message_window->Push(Data::terms.special_combat);
-			encounter_message_wait = GetDelayForWindow();
 			encounter_message_first_strike = true;
-			assert(encounter_message_wait > 0);
+			SetWait(30, 70);
 			return DisplayMonstersInMessageWindow();;
 		}
 		else {
@@ -1092,13 +1111,12 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 	if (battle_result_messages_it == battle_result_messages.end() ||
 			battle_message_window->IsPageFilled()) {
-		encounter_message_wait = GetDelayForWindow();
+		SetWait(30, 70);
 	}
 	else {
-		encounter_message_wait = GetDelayForLine();
+		SetWait(8, 8);
 	}
 
-	assert(encounter_message_wait > 0);
 	return DisplayMonstersInMessageWindow();
 }
 
