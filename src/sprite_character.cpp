@@ -59,7 +59,7 @@ void Sprite_Character::Update() {
 	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
 		auto frame = character->GetAnimFrame();
-		if (frame >= 3) frame = 1;
+		if (frame >= RPG::EventPage::Frame_middle2) frame = RPG::EventPage::Frame_middle;
 		r.Set(frame * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
