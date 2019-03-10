@@ -59,7 +59,7 @@
 #elif defined(PSP2)
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
-#elif defined(GEKKO) || defined(__MORPHOS__) || defined(__amigaos4__)
+#elif defined(GEKKO)
 #  include <cstdint>
 #  define WORDS_BIGENDIAN
 #  define SUPPORT_JOYSTICK
@@ -73,6 +73,12 @@
 #  define SUPPORT_JOYSTICK_HAT
 #  define SUPPORT_JOYSTICK_AXIS
 #elif defined(SWITCH)
+#elif defined(__MORPHOS__) || defined(__amigaos4__)
+#  define SUPPORT_ZOOM
+#  define WORDS_BIGENDIAN
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
 #else // Everything not catched above, e.g. Linux/*BSD/macOS
 #  define USE_WINE_REGISTRY
 #  define SUPPORT_ZOOM
