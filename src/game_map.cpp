@@ -84,6 +84,10 @@ namespace {
 
 	int last_encounter_idx = 0;
 
+	// RPG_RT doesn't update player or vehicle movement or animation on the first frame
+	// of a new map. We use this flag to emulate that behavior.
+	bool first_frame = false;
+
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
@@ -145,6 +149,7 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id) {
 	Dispose();
+	first_frame = true;
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -612,7 +617,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool for
 			&& !Main_Data::game_player->GetThrough()
 			&& self.GetLayer() == RPG::EventPage::Layers_same) {
 		// Update the Player to see if they'll move and recheck.
-		Main_Data::game_player->Update();
+		Main_Data::game_player->Update(!first_frame);
 		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
 			return false;
 		}
@@ -747,6 +752,9 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
 					}
 				}
 			}
+		}
+		if (self_event->GetVehicleType() > 0) {
+			return Game_Map::IsPassableVehicle(x, y, (Game_Vehicle::Type) self_event->GetVehicleType());
 		}
 	}
 
@@ -926,7 +934,7 @@ void Game_Map::Update(bool only_parallel) {
 		ev.CheckEventTriggers();
 	}
 
-	Main_Data::game_player->Update();
+	Main_Data::game_player->Update(!first_frame);
 	UpdatePan();
 	GetInterpreter().Update();
 
@@ -940,11 +948,13 @@ void Game_Map::Update(bool only_parallel) {
 
 	for (auto& vehicle: vehicles) {
 		if (vehicle->GetMapId() == location.map_id) {
-			vehicle->Update();
+			vehicle->Update(!first_frame);
 		}
 	}
 
 	free_interpreters.clear();
+
+	first_frame = false;
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {
@@ -1385,11 +1395,9 @@ void Game_Map::RemovePendingMove(Game_Character* character) {
 }
 
 void Game_Map::RemoveAllPendingMoves() {
-	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); ++it)
-		(*it)->CancelMoveRoute();
-
-	pending.clear();
+	while (!pending.empty()) {
+		pending.back()->CancelMoveRoute();
+	}
 }
 
 static int DoSubstitute(std::vector<uint8_t>& tiles, int old_id, int new_id) {

@@ -65,17 +65,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	Refresh();
 }
 
-int Game_Event::GetMoveFrequency() const {
-	return data()->move_frequency;
-}
-
-void Game_Event::SetMoveFrequency(int frequency) {
-	data()->move_frequency = frequency;
-	if (original_move_frequency == -1) {
-		original_move_frequency = frequency;
-	}
-}
-
 int Game_Event::GetOriginalMoveRouteIndex() const {
 	return data()->original_move_route_index;
 }
@@ -117,7 +106,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
-		//move_type = 0;
 		trigger = -1;
 		list.clear();
 		return;
@@ -126,20 +114,22 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetSpriteName(page->character_name);
 	SetSpriteIndex(page->character_index);
 
-	SetAnimFrame(AnimFrame(page->character_pattern));
-
-	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	if (!IsMoveRouteOverwritten()) {
-		SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (int) pow(2.0, 8 - GetMoveFrequency()));
+	if (page->move_type == RPG::EventPage::MoveType_custom) {
+		SetMaxStopCountForTurn();
+	} else {
+		SetMaxStopCountForStep();
 	}
 	original_move_frequency = page->move_frequency;
-	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
 
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
 	SetAnimationType(RPG::EventPage::AnimType(page->animation_type));
+
+	if (GetAnimationType() == RPG::EventPage::AnimType_fixed_graphic) {
+		SetAnimFrame(page->character_pattern);
+	}
 
 	if (from_null || !(same_direction_as_on_old_page || IsMoving())) {
 		SetSpriteDirection(page->character_direction);
@@ -171,8 +161,7 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 		return;
 	}
 
-	move_type = page->move_type;
-	original_move_route = page->move_route;
+	original_move_frequency = page->move_frequency;
 	trigger = page->trigger;
 	list = page->event_commands;
 
@@ -341,15 +330,13 @@ const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
 }
 
 void Game_Event::StartTalkToHero() {
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
-		int prelock_dir = GetDirection();
-		TurnTowardHero();
-		SetDirection(prelock_dir);
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
+		SetSpriteDirection(GetDirectionToHero());
 	}
 }
 
 void Game_Event::StopTalkToHero() {
-	if (!(IsDirectionFixed() || IsFacingLocked())) {
+	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirection());
 	}
 
@@ -398,8 +385,11 @@ void Game_Event::UpdateSelfMovement() {
 		return;
 	if (!IsStopping())
 		return;
+	if (page == nullptr) {
+		return;
+	}
 
-	switch (move_type) {
+	switch (page->move_type) {
 	case RPG::EventPage::MoveType_random:
 		MoveTypeRandom();
 		break;
@@ -416,7 +406,7 @@ void Game_Event::UpdateSelfMovement() {
 		MoveTypeAwayFromPlayer();
 		break;
 	case RPG::EventPage::MoveType_custom:
-		MoveTypeCustom();
+		UpdateMoveRoute(data()->original_move_route_index, page->move_route);
 		break;
 	}
 }
@@ -446,7 +436,7 @@ void Game_Event::MoveTypeRandom() {
 }
 
 void Game_Event::MoveTypeCycle(int default_dir) {
-	SetMaxStopCount((GetMoveFrequency() > 7) ? 0 : (1 << (9 - GetMoveFrequency())));
+	SetMaxStopCountForStep();
 	if (GetStopCount() < GetMaxStopCount()) return;
 
 	const int reverse_dir = ReverseDir(default_dir);
@@ -554,7 +544,10 @@ void Game_Event::Update() {
 		return;
 	}
 
-	Game_Character::UpdateSprite();
+	auto was_moving = !IsStopping();
+	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
+
 
 	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().Setup(this);
@@ -602,7 +595,6 @@ void Game_Event::UpdateParallel() {
 	}
 	frame_count_at_last_update_parallel = cur_frame_count;
 
-	Game_Character::Update();
 	updating = false;
 }
 
@@ -624,4 +616,8 @@ const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	data()->ID = event.ID;
 
 	return *data();
+}
+
+bool Game_Event::IsMoveRouteActive() const {
+	return true;
 }

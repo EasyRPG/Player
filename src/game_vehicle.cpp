@@ -58,31 +58,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-int Game_Vehicle::GetSteppingSpeed() const {
-	return 16;
-}
-
-int Game_Vehicle::GetMoveSpeed() const {
-	return data()->move_speed;
-}
-
-void Game_Vehicle::SetMoveSpeed(int speed) {
-	if (IsInUse()) {
-		Main_Data::game_player->SetMoveSpeed(speed);
-	} else {
-		Game_Character::SetMoveSpeed(speed);
-	}
-}
-
-int Game_Vehicle::GetOriginalMoveRouteIndex() const {
-	return data()->original_move_route_index;
-}
-
-void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
-	data()->original_move_route_index = new_index;
-}
-
-
 bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	if (d > 3) {
 		return MakeWayDiagonal(x, y, d);
@@ -102,14 +77,6 @@ bool Game_Vehicle::MakeWay(int x, int y, int d) const {
 	return true;
 }
 
-
-bool Game_Vehicle::IsAnimated() const {
-	return IsContinuous();
-}
-
-bool Game_Vehicle::IsContinuous() const {
-	return type != Airship || (IsFlying() && !IsAscendingOrDescending());
-}
 
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
@@ -179,8 +146,7 @@ void Game_Vehicle::Refresh() {
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	SetMapId(_map_id);
-	SetX(_x);
-	SetY(_y);
+	MoveTo(_x, _y);
 }
 
 bool Game_Vehicle::IsInCurrentMap() const {
@@ -212,7 +178,6 @@ void Game_Vehicle::GetOn() {
 		data()->remaining_ascent = SCREEN_TILE_SIZE;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
-		SetAnimFrame(AnimFrame::Frame_middle);
 	}
 	Game_System::BgmPlay(GetBGM());
 }
@@ -223,22 +188,38 @@ void Game_Vehicle::GetOff() {
 	} else {
 		Main_Data::game_player->UnboardingFinished();
 	}
-	SetDirection(Left);
-	SetSpriteDirection(Left);
+	// Get off airship can be trigger while airship is moving. Don't break the animation
+	// until its finished.
+	if (type != Airship || (!IsMoving() && !IsJumping())) {
+		SetDirection(Left);
+		SetSpriteDirection(Left);
+	}
 }
 
 bool Game_Vehicle::IsInUse() const {
 	return Main_Data::game_player->GetVehicle() == this;
 }
 
+bool Game_Vehicle::IsAboard() const {
+	return IsInUse() && Main_Data::game_player->IsAboard();
+}
+
 void Game_Vehicle::SyncWithPlayer() {
-	if (!IsInUse() || IsAscending() || IsDescending())
-		return;
 	SetX(Main_Data::game_player->GetX());
 	SetY(Main_Data::game_player->GetY());
 	SetRemainingStep(Main_Data::game_player->GetRemainingStep());
-	SetDirection(Main_Data::game_player->GetDirection());
-	SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
+	SetJumping(Main_Data::game_player->IsJumping());
+	SetBeginJumpX(Main_Data::game_player->GetBeginJumpX());
+	SetBeginJumpY(Main_Data::game_player->GetBeginJumpY());
+	if (!IsAscendingOrDescending()) {
+		SetDirection(Main_Data::game_player->GetDirection());
+		SetSpriteDirection(Main_Data::game_player->GetSpriteDirection());
+	} else {
+		if (!IsMoving() && !IsJumping()) {
+			SetDirection(Left);
+			SetSpriteDirection(Left);
+		}
+	}
 }
 
 int Game_Vehicle::GetAltitude() const {
@@ -280,35 +261,73 @@ bool Game_Vehicle::CanLand() const {
 	return true;
 }
 
-void Game_Vehicle::Update() {
-	Game_Character::Update();
-	Game_Character::UpdateSprite();
+void Game_Vehicle::UpdateAnimationAirship() {
+	if (IsAboard()) {
+		const auto limit = 11;
 
-	if (!Main_Data::game_player->IsBoardingOrUnboarding()) {
+		IncAnimCount();
+
+		if (GetAnimCount() > limit) {
+			IncAnimFrame();
+		}
+	} else {
+		ResetAnimation();
+	}
+}
+
+void Game_Vehicle::UpdateAnimationShip() {
+	const auto limit = 15;
+
+	IncAnimCount();
+
+	if (GetAnimCount() > limit) {
+		IncAnimFrame();
+	}
+}
+
+void Game_Vehicle::Update(bool process_movement) {
+
+	if (!process_movement) {
+		return;
+	}
+
+	if (IsAboard()) {
 		SyncWithPlayer();
+	} else {
+		Game_Character::UpdateMovement();
 	}
 
 	if (type == Airship) {
-		if (IsAscending()) {
-			data()->remaining_ascent = data()->remaining_ascent - 8;
-			SetAnimFrame(AnimFrame::Frame_middle);
-		} else if (IsDescending()) {
-			SetAnimFrame(AnimFrame::Frame_middle);
-			data()->remaining_descent = data()->remaining_descent - 8;
-			if (!IsDescending()) {
-				if (CanLand()) {
-					Main_Data::game_player->UnboardingFinished();
-					SetFlying(false);
-					Main_Data::game_player->SetFlying(false);
-				} else {
-					// Can't land here, ascend again
-					data()->remaining_ascent = SCREEN_TILE_SIZE;
+		if (IsStopping()) {
+			if (IsAscending()) {
+				data()->remaining_ascent = data()->remaining_ascent - 8;
+			} else if (IsDescending()) {
+				data()->remaining_descent = data()->remaining_descent - 8;
+				if (!IsDescending()) {
+					if (CanLand()) {
+						Main_Data::game_player->UnboardingFinished();
+						SetFlying(false);
+						Main_Data::game_player->SetFlying(false);
+					} else {
+						// Can't land here, ascend again
+						data()->remaining_ascent = SCREEN_TILE_SIZE;
+					}
 				}
 			}
 		}
+	}
+
+	if (type == Airship) {
+		UpdateAnimationAirship();
+	} else {
+		UpdateAnimationShip();
 	}
 }
 
 bool Game_Vehicle::CheckEventTriggerTouch(int /* x */, int /* y */) {
 	return false;
+}
+
+int Game_Vehicle::GetVehicleType() const {
+	return data()->vehicle;
 }

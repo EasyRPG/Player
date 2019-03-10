@@ -58,7 +58,9 @@ void Sprite_Character::Update() {
 
 	if (UsesCharset()) {
 		int row = character->GetSpriteDirection();
-		r.Set(character->GetAnimFrame() * chara_width, row * chara_height, chara_width, chara_height);
+		auto frame = character->GetAnimFrame();
+		if (frame >= RPG::EventPage::Frame_middle2) frame = RPG::EventPage::Frame_middle;
+		r.Set(frame * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
 

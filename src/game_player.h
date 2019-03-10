@@ -41,12 +41,11 @@ public:
 	 */
 	/** @{ */
 	int GetScreenZ(bool apply_shift = false) const override;
-	int GetOriginalMoveRouteIndex() const override;
-	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool GetVisible() const override;
 	bool MakeWay(int x, int y, int d) const override;
 	void BeginMove() override;
 	void CancelMoveRoute() override;
+	int GetVehicleType() const override;
 	/** @} */
 
 	bool IsTeleporting() const;
@@ -64,7 +63,13 @@ public:
 	void StartTeleport();
 	void PerformTeleport();
 	void MoveTo(int x, int y) override;
-	void Update() override;
+
+	/** 
+	 * Update this for the current frame
+	 *
+	 * @param process_movement if false, we will not process movement or animations
+	 * */
+	void Update(bool process_movement);
 
 	void Refresh();
 
@@ -101,6 +106,7 @@ private:
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
 
+	void UpdatePlayerInput();
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
 	bool CheckTouchEvent();

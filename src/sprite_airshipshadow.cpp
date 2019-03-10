@@ -72,7 +72,7 @@ void Sprite_AirshipShadow::Update() {
 	SetOpacity(opacity * 255);
 
 	SetX(Main_Data::game_player->GetScreenX(x_shift));
-	SetY(Main_Data::game_player->GetScreenY(y_shift));
+	SetY(Main_Data::game_player->GetScreenY(y_shift) + Main_Data::game_player->GetJumpHeight());
 	// Synchronized with airship priority
 	SetZ(airship->GetScreenZ(y_shift));
 }

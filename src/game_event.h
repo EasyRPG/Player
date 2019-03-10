@@ -46,12 +46,9 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetMoveFrequency() const override;
-	void SetMoveFrequency(int frequency) override;
-	int GetOriginalMoveRouteIndex() const override;
-	void SetOriginalMoveRouteIndex(int new_index) override;
 	bool GetThrough() const override;
 	void SetThrough(bool through) override;
+	bool IsMoveRouteActive() const override;
 	/** @} */
 
 	/**
@@ -120,10 +117,12 @@ public:
 	 */
 	void StopTalkToHero();
 
+	/** Update this for the current frame */
+	void Update();
+
 	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y) override;
 	void Start(bool triggered_by_decision_key = false);
-	void Update() override;
 	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
@@ -140,6 +139,20 @@ public:
 	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
 	 */
 	bool GetActive() const;
+
+	/**
+	 * Returns current index of a "Movement Type Custom" move route.
+	 *
+	 * @return current original move route index
+	 */
+	int GetOriginalMoveRouteIndex() const;
+
+	/**
+	 * Sets current index of a "Movement Type Custom" move route.
+	 *
+	 * @param new_index New move route index
+	 */
+	void SetOriginalMoveRouteIndex(int new_index);
 
 	/**
 	 * Returns the event page or nullptr is page does not exist.

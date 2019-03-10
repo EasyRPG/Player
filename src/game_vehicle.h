@@ -44,15 +44,16 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	int GetSteppingSpeed() const override;
-	int GetMoveSpeed() const override;
-	void SetMoveSpeed(int speed) override;
-	int GetOriginalMoveRouteIndex() const override;
-	void SetOriginalMoveRouteIndex(int new_index) override;
-	bool IsAnimated() const override;
-	bool IsContinuous() const override;
 	bool MakeWay(int x, int y, int d) const override;
+	int GetVehicleType() const override;
 	/** @} */
+
+	/** 
+	 * Update this for the current frame
+	 *
+	 * @param process_movement if false, we will not process movement or animations
+	 * */
+	void Update(bool process_movement);
 
 	void LoadSystemSettings();
 	RPG::Music& GetBGM();
@@ -68,12 +69,14 @@ public:
 	void GetOn();
 	void GetOff();
 	bool IsInUse() const;
+	bool IsAboard() const;
 	void SyncWithPlayer();
 	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;
-	void Update() override;
 	bool CheckEventTriggerTouch(int x, int y) override;
+	void UpdateAnimationShip();
+	void UpdateAnimationAirship();
 
 protected:
 	RPG::SaveVehicleLocation* data();

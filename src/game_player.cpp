@@ -50,14 +50,6 @@ int Game_Player::GetScreenZ(bool apply_shift) const {
 	return Game_Character::GetScreenZ(apply_shift) + 1;
 }
 
-int Game_Player::GetOriginalMoveRouteIndex() const {
-	return 0;
-}
-
-void Game_Player::SetOriginalMoveRouteIndex(int /* new_index */) {
-	// no-op
-}
-
 bool Game_Player::GetVisible() const {
 	return visible && !data()->aboard;
 }
@@ -98,21 +90,12 @@ void Game_Player::PerformTeleport() {
 
 	teleporting = false;
 
-	// Finish (un)boarding process
-	if (data()->boarding) {
-		data()->boarding = false;
-		data()->aboard = true;
-	} else if (data()->unboarding) {
-		data()->unboarding = false;
-		data()->aboard = false;
-	}
-
 	// Reset sprite if it was changed by a move
 	// Even when target is the same map
 	Refresh();
 
+	ResetAnimation();
 	if (Game_Map::GetMapId() != new_map_id) {
-		SetAnimFrame(RPG::EventPage::Frame_middle);
 		Game_Map::Setup(new_map_id);
 	} else {
 		Game_Map::SetupFromTeleportSelf();
@@ -214,25 +197,11 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	}
 }
 
-void Game_Player::Update() {
-	int cur_frame_count = Player::GetFrames();
-	// Only update the event once per frame
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
-		return;
-	}
-	frame_count_at_last_update_parallel = cur_frame_count;
-
-	bool last_moving = IsMoving() || IsJumping();
-
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	bool was_blocked = IsBlockedByMoveRoute();
-	Game_Character::Update();
-
+void Game_Player::UpdatePlayerInput() {
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (IsMovable()) {
-			auto old_x = GetX();
-			auto old_y = GetY();
+			const auto old_x = GetX();
+			const auto old_y = GetY();
 			switch (Input::dir4) {
 				case 2:
 					Move(Down);
@@ -258,30 +227,65 @@ void Game_Player::Update() {
 		}
 	}
 
-	int prev_x = GetSpriteX();
-	int prev_y = GetSpriteY();
 
-	Game_Character::UpdateSprite();
-	UpdateScroll(prev_x, prev_y);
+}
 
-	if (IsMoving() || was_blocked) return;
-
-	if (last_moving && data()->boarding) {
-		// Boarding completed
-		data()->aboard = true;
-		data()->boarding = false;
-		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
-		GetVehicle()->SetDirection(GetDirection());
-		GetVehicle()->SetSpriteDirection(GetSpriteDirection());
+void Game_Player::Update(bool process_movement) {
+	int cur_frame_count = Player::GetFrames();
+	// Only update the event once per frame
+	if (cur_frame_count == frame_count_at_last_update_parallel) {
 		return;
 	}
+	frame_count_at_last_update_parallel = cur_frame_count;
 
-	if (last_moving && data()->unboarding) {
-		// Unboarding completed
-		data()->unboarding = false;
-		CheckTouchEvent();
-		return;
+	const bool last_moving = IsMoving() || IsJumping();
+
+	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
+	// which events to start. was_blocked is used to avoid triggering events the usual way.
+	const bool was_blocked = IsBlockedByMoveRoute();
+	const auto old_sprite_x = GetSpriteX();
+	const auto old_sprite_y = GetSpriteY();
+
+	UpdatePlayerInput();
+	auto was_moving = !IsStopping();
+
+	if (process_movement) {
+		Game_Character::UpdateMovement();
+		Game_Character::UpdateAnimation(was_moving);
 	}
+
+	UpdateScroll(old_sprite_x, old_sprite_y);
+
+	if (IsMoving()) return;
+
+	if (process_movement) {
+		if (data()->boarding) {
+			// Boarding completed
+			data()->aboard = true;
+			data()->boarding = false;
+			auto* vehicle = GetVehicle();
+			if (vehicle->IsMoveRouteOverwritten()) {
+				vehicle->CancelMoveRoute();
+			}
+			SetMoveSpeed(vehicle->GetMoveSpeed());
+			vehicle->SetDirection(GetDirection());
+			vehicle->SetSpriteDirection(Left);
+			// Note: RPG_RT ignores the lock_facing flag here!
+			SetSpriteDirection(Left);
+			vehicle->SetX(GetX());
+			vehicle->SetY(GetY());
+			return;
+		}
+
+		if (data()->unboarding) {
+			// Unboarding completed
+			data()->unboarding = false;
+			CheckTouchEvent();
+			return;
+		}
+	}
+
+	if (was_blocked) return;
 
 	if (last_moving && CheckTouchEvent()) return;
 
@@ -427,9 +431,6 @@ void Game_Player::Refresh() {
 }
 
 bool Game_Player::GetOnOffVehicle() {
-	if (!IsMovable())
-		return false;
-
 	if (InVehicle())
 		return GetOffVehicle();
 	return GetOnVehicle();
@@ -449,21 +450,40 @@ bool Game_Player::GetOnVehicle() {
 	else
 		return false;
 
+	auto* vehicle = Game_Map::GetVehicle(type);
+
+	if (vehicle->IsAscendingOrDescending()) {
+		return false;
+	}
+
+	if (type == Game_Vehicle::Airship && (IsMoving() || IsJumping())) {
+		return false;
+	}
+
 	data()->vehicle = type;
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
 		data()->boarding = true;
-		if (!GetThrough()) {
-			SetThrough(true);
-			MoveForward();
-			SetThrough(false);
-		} else {
-			MoveForward();
+		if (!IsMoving() && !IsJumping()) {
+			if (!GetThrough()) {
+				SetThrough(true);
+				MoveForward();
+				SetThrough(false);
+			} else {
+				MoveForward();
+			}
 		}
 	} else {
 		data()->aboard = true;
-		SetMoveSpeed(GetVehicle()->GetMoveSpeed());
+		if (vehicle->IsMoveRouteOverwritten()) {
+			vehicle->CancelMoveRoute();
+		}
+		SetMoveSpeed(vehicle->GetMoveSpeed());
 		SetDirection(RPG::EventPage::Direction_left);
+		// Note: RPG_RT ignores the lock_facing flag here!
+		SetSpriteDirection(RPG::EventPage::Direction_left);
+		vehicle->SetX(GetX());
+		vehicle->SetY(GetY());
 	}
 
 	Main_Data::game_data.system.before_vehicle_music = Game_System::GetCurrentBGM();
@@ -480,8 +500,13 @@ bool Game_Player::GetOffVehicle() {
 			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 			return false;
 	}
+	auto* vehicle = GetVehicle();
 
-	GetVehicle()->GetOff();
+	if (vehicle->IsAscendingOrDescending()) {
+		return false;
+	}
+
+	vehicle->GetOff();
 	return true;
 }
 
@@ -618,15 +643,23 @@ void Game_Player::UnboardingFinished() {
 	Unboard();
 	if (InAirship()) {
 		SetDirection(RPG::EventPage::Direction_down);
+		// Note: RPG_RT ignores the lock_facing flag here!
+		SetSpriteDirection(RPG::EventPage::Direction_down);
 	} else {
 		data()->unboarding = true;
-		if (!GetThrough()) {
-			SetThrough(true);
-			MoveForward();
-			SetThrough(false);
-		} else {
-			MoveForward();
+		if (!IsMoving() && !IsJumping()) {
+			if (!GetThrough()) {
+				SetThrough(true);
+				MoveForward();
+				SetThrough(false);
+			} else {
+				MoveForward();
+			}
 		}
 	}
 	data()->vehicle = Game_Vehicle::None;
+}
+
+int Game_Player::GetVehicleType() const {
+	return data()->vehicle;
 }

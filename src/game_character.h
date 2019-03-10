@@ -36,7 +36,6 @@
 class Game_Character {
 public:
 	using AnimType = RPG::EventPage::AnimType;
-	using AnimFrame = RPG::EventPage::Frame;
 
 	/**
 	 * Destructor.
@@ -154,40 +153,32 @@ public:
 	virtual bool IsOverlapForbidden() const;
 
 	/**
-	 * Gets character stepping speed: the number of frames between each change
-	 * of the left-middle-right-middle walking animation or the spinning animation
-	 *
-	 * @return stepping speed (the same units as movement speed)
-	 */
-	virtual int GetSteppingSpeed() const;
-
-	/**
 	 * Gets character movement speed.
 	 *
 	 * @return character movement speed
 	 */
-	virtual int GetMoveSpeed() const;
+	int GetMoveSpeed() const;
 
 	/**
 	 * Sets character movement speed.
 	 *
 	 * @param speed new movement speed
 	 */
-	virtual void SetMoveSpeed(int speed);
+	void SetMoveSpeed(int speed);
 
 	/**
 	 * Gets character movement frequency.
 	 *
 	 * @return character movement frequency
 	 */
-	virtual int GetMoveFrequency() const;
+	int GetMoveFrequency() const;
 
 	/**
 	 * Sets character movement frequency.
 	 *
 	 * @param frequency new character movement frequency
 	 */
-	virtual void SetMoveFrequency(int frequency);
+	void SetMoveFrequency(int frequency);
 
 	/**
 	 * Returns the custom move route assigned via a MoveEvent.
@@ -204,18 +195,9 @@ public:
 	void SetMoveRoute(const RPG::MoveRoute& move_route);
 
 	/**
-	 * Returns current index of a "Movement Type Custom" move route.
-	 *
-	 * @return current original move route index
+	 * @return true if this character is currently following a move route.
 	 */
-	virtual int GetOriginalMoveRouteIndex() const = 0;
-
-	/**
-	 * Sets current index of a "Movement Type Custom" move route.
-	 *
-	 * @param new_index New move route index
-	 */
-	virtual void SetOriginalMoveRouteIndex(int new_index) = 0;
+	virtual bool IsMoveRouteActive() const;
 
 	/**
 	 * Returns current index of the route assigned via a MoveEvent.
@@ -292,19 +274,22 @@ public:
 	 *
 	 * @return anim_frame
 	 */
-	AnimFrame GetAnimFrame() const;
+	int GetAnimFrame() const;
 
 	/**
 	 * Sets animation frame of character.
 	 *
 	 * @param frame new anim_frame
 	 */
-	void SetAnimFrame(AnimFrame frame);
+	void SetAnimFrame(int frame);
 
 	/**
 	 * @return true if animation is paused.
 	 */
 	bool IsAnimPaused() const;
+
+	/** @return the type of vehicle this event itself is, or is boarded */
+	virtual int GetVehicleType() const;
 
 	/**
 	 * Sets whether animation is paused.
@@ -401,6 +386,9 @@ public:
 	 */
 	void SetMaxStopCount(int sc);
 
+	/** @return true if waiting for stop count in movement to complete */
+	bool IsStopCountActive() const;
+
 	/**
 	 * @return anim_count
 	 */
@@ -412,6 +400,9 @@ public:
 	 * @param ac the new anim count.
 	 */
 	void SetAnimCount(int ac);
+
+	/** Resets the stepping animation */
+	void ResetAnimation();
 
 	/**
 	 * Gets if character is moving.
@@ -514,19 +505,20 @@ public:
 	virtual void MoveTo(int x, int y);
 
 	/**
-	 * Updates character state and actions.
+	 * Updates character and movement.
 	 */
-	virtual void Update();
+	void UpdateMovement();
 
 	/**
-	 * Updates character animation and movement.
+	 * Updates character animation
+	 *
+	 * @param was_moving if the event moved or jumped this frame
 	 */
-	void UpdateSprite();
+	void UpdateAnimation(bool was_moving);
 
 	/**
 	 * Walks around on a custom move route.
 	 */
-	void MoveTypeCustom();
 
 	void Turn(int dir);
 
@@ -583,6 +575,13 @@ public:
 	 */
 	virtual void BeginMove();
 
+	/** @return the direction we would need to face the hero. */
+	int GetDirectionToHero();
+
+	/** @return the direction we would need to face away from hero. */
+	int GetDirectionAwayHero();
+
+
 	/**
 	 * Character looks in a random direction
 	 */
@@ -594,7 +593,7 @@ public:
 	void TurnTowardHero();
 
 	/**
-	 * Character looks away from the the hero.
+	 * Character looks away from the hero.
 	 */
 	void TurnAwayFromHero();
 
@@ -606,10 +605,10 @@ public:
 	/**
 	 * Jump action begins. Ends the movement when EndJump is missing.
 	 *
-	 * @param current_route Current move route
 	 * @param current_index Index in the current route
+	 * @param current_route Current move route
 	 */
-	void BeginJump(const RPG::MoveRoute* current_route, int* current_index);
+	void BeginJump(int32_t& current_index, const RPG::MoveRoute& current_route);
 
 	/**
 	 * Jump action ends.
@@ -628,6 +627,9 @@ public:
 	 * Cancels a previous forced move route.
 	 */
 	virtual void CancelMoveRoute();
+
+	/** @return height of active jump in pixels */
+	int GetJumpHeight() const;
 
 	/**
 	 * Gets sprite x coordinate transformed to screen coordinate in pixels.
@@ -775,14 +777,14 @@ public:
 	 *
 	 * @return Wheter animations are enabled.
 	 */
-	virtual bool IsAnimated() const;
+	bool IsAnimated() const;
 
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
 	 * @return Whether animation is continuous
 	 */
-	virtual bool IsContinuous() const;
+	bool IsContinuous() const;
 
 	/**
 	 * Tests if animation is of the type spin.
@@ -826,26 +828,23 @@ public:
 
 protected:
 	explicit Game_Character(RPG::SaveMapEventBase* d);
-
-protected:
 	bool MakeWayDiagonal(int x, int y, int d) const;
-	virtual void UpdateSelfMovement();
+	virtual void UpdateSelfMovement() {}
 	void UpdateJump();
+	void SetMaxStopCountForStep();
+	void SetMaxStopCountForTurn();
+	void SetMaxStopCountForWait();
+	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
+	void IncAnimCount();
+	void IncAnimFrame();
 
 	RPG::SaveMapEventBase* data();
 	const RPG::SaveMapEventBase* data() const;
 
-	int last_pattern;
-
-	RPG::MoveRoute original_move_route;
-	int original_move_frequency;
-	int move_type;
+	int original_move_frequency = 2;
 	bool move_failed;
-	bool last_move_failed;
 	// contains if any movement (<= step_forward) of a forced move route was successful
 	bool any_move_successful;
-	int move_count;
-	int wait_count;
 
 	int jump_plus_x;
 	int jump_plus_y;
@@ -991,12 +990,12 @@ inline void Game_Character::SetSpriteIndex(int index) {
 	data()->sprite_id = index;
 }
 
-inline Game_Character::AnimFrame Game_Character::GetAnimFrame() const {
-	return AnimFrame(data()->anim_frame);
+inline int Game_Character::GetAnimFrame() const {
+	return data()->anim_frame;
 }
 
-inline void Game_Character::SetAnimFrame(AnimFrame frame) {
-	data()->anim_frame = AnimFrame(frame);
+inline void Game_Character::SetAnimFrame(int frame) {
+	data()->anim_frame = frame;
 }
 
 inline bool Game_Character::IsAnimPaused() const {
@@ -1067,12 +1066,32 @@ inline void Game_Character::SetMaxStopCount(int sc) {
 	data()->max_stop_count = sc;
 }
 
+inline bool Game_Character::IsStopCountActive() const {
+	return GetStopCount() < GetMaxStopCount();
+}
+
 inline int Game_Character::GetAnimCount() const {
 	return data()->anim_count;
 }
 
 inline void Game_Character::SetAnimCount(int ac) {
 	data()->anim_count = ac;
+}
+
+inline void Game_Character::IncAnimCount() {
+	++data()->anim_count;
+}
+
+inline void Game_Character::IncAnimFrame() {
+	data()->anim_frame = (data()->anim_frame + 1) % 4;
+	SetAnimCount(0);
+}
+
+inline void Game_Character::ResetAnimation() {
+	SetAnimCount(0);
+	if (GetAnimationType() != RPG::EventPage::AnimType_fixed_graphic) {
+		SetAnimFrame(RPG::EventPage::Frame_middle);
+	}
 }
 
 inline int Game_Character::GetRemainingStep() const {
