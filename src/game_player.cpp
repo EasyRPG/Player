@@ -439,6 +439,10 @@ bool Game_Player::GetOnVehicle() {
 		return false;
 	}
 
+	if (type != Game_Vehicle::Airship && !Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
+		return false;
+	}
+
 	data()->vehicle = type;
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {

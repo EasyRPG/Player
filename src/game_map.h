@@ -162,6 +162,16 @@ namespace Game_Map {
 	bool CanLandAirship(int x, int y);
 
 	/**
+	 * Gets if possible to embark the boat or ship at (x,y)
+	 *
+	 * @param player the player
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @return whether is posible to disembark the boat or ship
+	 */
+	bool CanEmbarkShip(Game_Player& player, int x, int y);
+
+	/**
 	 * Gets if possible to disembark the boat or ship to (x,y)
 	 *
 	 * @param player the player
