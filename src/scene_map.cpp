@@ -62,7 +62,7 @@ void Scene_Map::Start() {
 
 	Player::FrameReset();
 
-	Game_Map::Update(true);
+	PreUpdate();
 	spriteset->Update();
 }
 
@@ -109,10 +109,23 @@ void Scene_Map::TransitionOut() {
 	}
 }
 
+void Scene_Map::OnTransitionFinish() {
+	if (do_preupdate) {
+		UpdateSceneCalling();
+		do_preupdate = false;
+	}
+}
+
 void Scene_Map::DrawBackground() {
 	if (spriteset->RequireBackground(GetGraphicsState().drawable_list)) {
 		DisplayUi->CleanDisplay();
 	}
+}
+
+void Scene_Map::PreUpdate() {
+	Game_Map::Update(true);
+	// Tells the next OnTransitionFinish() to allow scene changes.
+	do_preupdate = true;
 }
 
 void Scene_Map::Update() {
@@ -153,7 +166,10 @@ void Scene_Map::Update() {
 	message_window->Update();
 
 	StartTeleportPlayer();
+	UpdateSceneCalling();
+}
 
+void Scene_Map::UpdateSceneCalling() {
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
 		Scene::Push(std::make_shared<Scene_Gameover>());

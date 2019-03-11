@@ -306,7 +306,11 @@ void Player::Update(bool update_scene) {
 	int speed_modifier = GetSpeedModifier();
 
 	for (int i = 0; i < speed_modifier; ++i) {
+		bool was_transition_pending = Graphics::IsTransitionPending();
 		Graphics::Update();
+		if (was_transition_pending && !Graphics::IsTransitionPending() && Scene::instance->IsInitialized()) {
+			Scene::instance->OnTransitionFinish();
+		}
 		if (update_scene) {
 			Scene::instance->Update();
 			++frames;

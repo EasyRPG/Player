@@ -144,6 +144,9 @@ void Scene::TransitionOut() {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
+void Scene::OnTransitionFinish() {
+}
+
 void Scene::Update() {
 }
 

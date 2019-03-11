@@ -42,6 +42,7 @@ public:
 	void Resume() override;
 	void TransitionIn() override;
 	void TransitionOut() override;
+	void OnTransitionFinish() override;
 	void DrawBackground() override;
 
 	void CallBattle();
@@ -57,12 +58,15 @@ public:
 private:
 	void StartTeleportPlayer();
 	void FinishTeleportPlayer();
+	void PreUpdate();
+	void UpdateSceneCalling();
 
 	std::unique_ptr<Window_Message> message_window;
 
 	bool from_save;
 	bool auto_transition = false;
 	bool auto_transition_erase = false;
+	bool do_preupdate = false;
 	int debug_menuoverwrite_counter = 0;
 };
 
