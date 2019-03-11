@@ -748,7 +748,16 @@ bool Game_Map::CanLandAirship(int x, int y) {
 
 	const int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
 
-	return IsPassableTile(nullptr, bit, x, y);
+	int tile_index = x + y * GetWidth();
+
+	if (!IsPassableLowerTile(bit, tile_index)) {
+		return false;
+	}
+
+	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
+
+	return (passages_up[tile_id] & bit) != 0;
 }
 
 bool Game_Map::CanEmbarkShip(Game_Player& player, int x, int y) {
@@ -772,6 +781,35 @@ bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
 	int bit = GetPassableMask(x, y, player.GetX(), player.GetY());
 
 	return IsPassableTile(nullptr, bit, x, y);
+}
+
+bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
+	int tile_raw_id = map->lower_layer[tile_index];
+	int tile_id = 0;
+
+	if (tile_raw_id >= BLOCK_E) {
+		tile_id = tile_raw_id - BLOCK_E;
+		tile_id = map_info.lower_tiles[tile_id] + 18;
+
+	} else if (tile_raw_id >= BLOCK_D) {
+		tile_id = (tile_raw_id - BLOCK_D) / 50 + 6;
+		int autotile_id = (tile_raw_id - BLOCK_D) % 50;
+
+		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
+				(autotile_id >= 20 && autotile_id <= 23) ||
+				(autotile_id >= 33 && autotile_id <= 37) ||
+				autotile_id == 42 || autotile_id == 43 ||
+				autotile_id == 45 || autotile_id == 46))
+			return true;
+
+	} else if (tile_raw_id >= BLOCK_C) {
+		tile_id = (tile_raw_id - BLOCK_C) / 50 + 3;
+
+	} else if (map->lower_layer[tile_index] < BLOCK_C) {
+		tile_id = tile_raw_id / 1000;
+	}
+
+	return (passages_down[tile_id] & bit) != 0;
 }
 
 bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y) {
@@ -845,31 +883,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 	if ((passages_up[tile_id] & Passable::Above) == 0)
 		return true;
 
-	int tile_raw_id = map->lower_layer[tile_index];
-
-	if (tile_raw_id >= BLOCK_E) {
-		tile_id = tile_raw_id - BLOCK_E;
-		tile_id = map_info.lower_tiles[tile_id] + 18;
-
-	} else if (tile_raw_id >= BLOCK_D) {
-		tile_id = (tile_raw_id - BLOCK_D) / 50 + 6;
-		int autotile_id = (tile_raw_id - BLOCK_D) % 50;
-
-		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
-				(autotile_id >= 20 && autotile_id <= 23) ||
-				(autotile_id >= 33 && autotile_id <= 37) ||
-				autotile_id == 42 || autotile_id == 43 ||
-				autotile_id == 45 || autotile_id == 46))
-			return true;
-
-	} else if (tile_raw_id >= BLOCK_C) {
-		tile_id = (tile_raw_id - BLOCK_C) / 50 + 3;
-
-	} else if (map->lower_layer[tile_index] < BLOCK_C) {
-		tile_id = tile_raw_id / 1000;
-	}
-
-	return (passages_down[tile_id] & bit) != 0;
+	return IsPassableLowerTile(bit, tile_index);
 }
 
 int Game_Map::GetBushDepth(int x, int y) {
