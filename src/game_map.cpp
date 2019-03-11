@@ -752,6 +752,11 @@ bool Game_Map::CanLandAirship(int x, int y) {
 	return IsPassableTile(nullptr, bit, x, y);
 }
 
+bool Game_Map::CanEmbarkShip(Game_Player& player, int x, int y) {
+	auto bit = GetPassableMask(player.GetX(), player.GetY(), x, y);
+	return IsPassableTile(&player, bit, player.GetX(), player.GetY());
+}
+
 bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
 	if (!Game_Map::IsValid(x, y)) {
 		return false;
