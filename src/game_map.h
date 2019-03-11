@@ -568,6 +568,17 @@ namespace Game_Map {
 	 */
 	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
 
+	/**
+	 * Checks if the lower tile at (x,y) is passable by the player.
+	 *
+	 * Returns true if move is possible.
+	 *
+	 * @param bit which direction bits to check
+	 * @param tile_index the tile index
+	 * @return whether is passable.
+	 */
+	bool IsPassableLowerTile(int bit, int tile_index);
+
 	enum PanDirection {
 		PanUp,
 		PanRight,
