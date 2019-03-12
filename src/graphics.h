@@ -72,6 +72,11 @@ namespace Graphics {
 	 */
 	bool IsTransitionPending();
 
+	/**
+	 * Gets if the screen is erased due to transition.
+	 */
+	bool IsTransitionErased();
+
 	void Draw();
 
 	void RegisterDrawable(Drawable* drawable);
