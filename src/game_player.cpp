@@ -55,14 +55,7 @@ bool Game_Player::GetVisible() const {
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
-	new_map_id = map_id;
-	new_x = x;
-	new_y = y;
-	new_direction = direction;
-
-	FileRequestAsync* request = Game_Map::RequestMap(new_map_id);
-	request->SetImportantFile(true);
-	request->Start();
+	teleport_target = TeleportTarget(map_id, x, y, direction);
 }
 
 void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
@@ -81,37 +74,42 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 	}
 }
 
-void Game_Player::StartTeleport() {
-	teleporting = true;
-}
-
 void Game_Player::PerformTeleport() {
-	if (!teleporting) return;
+	assert(IsPendingTeleport());
+	if (!IsPendingTeleport()) {
+		return;
+	}
 
-	teleporting = false;
+	if (teleport_target.GetMapId() <= 0) {
+		Output::Error("Invalid Teleport map id! mapid=%d x=%d y=%d d=%d", teleport_target.GetMapId(),
+				teleport_target.GetX(), teleport_target.GetY(), teleport_target.GetDirection());
+	}
 
 	// Reset sprite if it was changed by a move
 	// Even when target is the same map
 	Refresh();
 
 	ResetAnimation();
-	if (Game_Map::GetMapId() != new_map_id) {
-		Game_Map::Setup(new_map_id);
+	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
+		Game_Map::Setup(teleport_target.GetMapId());
 	} else {
 		Game_Map::SetupFromTeleportSelf();
 	}
 
 	SetTransparency(0);
 
-	MoveTo(new_x, new_y);
+	MoveTo(teleport_target.GetX(), teleport_target.GetY());
 
-	if (new_direction >= 0) {
-		SetDirection(new_direction);
-		SetSpriteDirection(new_direction);
+	if (teleport_target.GetDirection() >= 0) {
+		SetDirection(teleport_target.GetDirection());
+		SetSpriteDirection(teleport_target.GetDirection());
 	}
 
-	if (InVehicle())
-		GetVehicle()->MoveTo(new_x, new_y);
+	if (InVehicle()) {
+		GetVehicle()->SyncWithPlayer();
+	}
+
+	teleport_target = {};
 }
 
 bool Game_Player::MakeWay(int x, int y) const {
@@ -120,10 +118,6 @@ bool Game_Player::MakeWay(int x, int y) const {
 	}
 
 	return Game_Character::MakeWay(x, y);
-}
-
-bool Game_Player::IsTeleporting() const {
-	return teleporting;
 }
 
 void Game_Player::MoveTo(int x, int y) {

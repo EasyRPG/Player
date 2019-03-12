@@ -80,6 +80,7 @@ public:
 	 */
 	static void ResetSceneCalling();
 
+	/** @return the scene requested by events */
 	static Scene::SceneType GetSceneCalling();
 
 protected:
