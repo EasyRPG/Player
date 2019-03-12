@@ -179,11 +179,10 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		toggle_fs_available = true;
 		// FIXME: this for may work, but is really confusing. Calling a method
 		// that does this with the desired flags would be nicer.
+		if (fullscreen) {
+			flags |= SDL_FULLSCREEN;
+		}
 		for (;;) {
-			if (fullscreen) {
-				flags |= SDL_FULLSCREEN;
-			}
-
 			modes = SDL_ListModes(NULL, flags);
 			if (modes != NULL) {
 				// Set up...
