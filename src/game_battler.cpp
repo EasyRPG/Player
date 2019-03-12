@@ -421,8 +421,7 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 		return 0;
 	}
 
-	return (Player::engine == Player::EngineRpg2k3 &&
-			skill->sp_type == RPG::Skill::SpType_percent)
+	return (Player::IsRPG2k3() && skill->sp_type == RPG::Skill::SpType_percent)
 		? GetMaxSp() * skill->sp_percent / 100
 		: skill->sp_cost;
 }
