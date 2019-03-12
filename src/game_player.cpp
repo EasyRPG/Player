@@ -102,7 +102,9 @@ void Game_Player::PerformTeleport() {
 
 	if (teleport_target.GetDirection() >= 0) {
 		SetDirection(teleport_target.GetDirection());
-		SetSpriteDirection(teleport_target.GetDirection());
+		if (!IsFacingLocked()) {
+			SetSpriteDirection(teleport_target.GetDirection());
+		}
 	}
 
 	if (InVehicle()) {
