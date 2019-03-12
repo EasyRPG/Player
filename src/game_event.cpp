@@ -388,6 +388,9 @@ void Game_Event::UpdateSelfMovement() {
 	if (page == nullptr) {
 		return;
 	}
+	if (IsStopCountActive()) {
+		return;
+	}
 
 	switch (page->move_type) {
 	case RPG::EventPage::MoveType_random:

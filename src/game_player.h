@@ -46,6 +46,7 @@ public:
 	void BeginMove() override;
 	void CancelMoveRoute() override;
 	int GetVehicleType() const override;
+	void UpdateSelfMovement() override;
 	/** @} */
 
 	bool IsTeleporting() const;
@@ -106,7 +107,6 @@ private:
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
 
-	void UpdatePlayerInput();
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
 	bool CheckTouchEvent();
