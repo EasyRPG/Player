@@ -253,6 +253,7 @@ add_library(${PROJECT_NAME}
 	src/switch_ui.cpp
 	src/switch_ui.h
 	src/system.h
+	src/teleport_target.h
 	src/text.cpp
 	src/text.h
 	src/tilemap.cpp
