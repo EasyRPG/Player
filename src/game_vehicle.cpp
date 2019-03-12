@@ -258,9 +258,7 @@ void Game_Vehicle::Update() {
 	}
 	SetProcessed(true);
 
-	if (IsAboard()) {
-		SyncWithPlayer();
-	} else {
+	if (!IsAboard()) {
 		Game_Character::UpdateMovement();
 	}
 
