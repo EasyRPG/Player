@@ -197,7 +197,7 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	}
 }
 
-void Game_Player::UpdatePlayerInput() {
+void Game_Player::UpdateSelfMovement() {
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (IsMovable()) {
 			const auto old_x = GetX();
@@ -246,7 +246,6 @@ void Game_Player::Update(bool process_movement) {
 	const auto old_sprite_x = GetSpriteX();
 	const auto old_sprite_y = GetSpriteY();
 
-	UpdatePlayerInput();
 	auto was_moving = !IsStopping();
 
 	if (process_movement) {

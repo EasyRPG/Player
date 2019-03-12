@@ -145,9 +145,7 @@ void Game_Character::UpdateMovement() {
 	}
 
 	if (!IsMoveRouteOverwritten()) {
-		if (IsStopping() && !IsStopCountActive()) {
-			UpdateSelfMovement();
-		}
+		UpdateSelfMovement();
 	}
 
 	bool moved = false;
