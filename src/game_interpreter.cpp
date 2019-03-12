@@ -231,7 +231,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				break;
 		}
 
-		if (!Main_Data::game_player->IsTeleporting() && Game_Map::GetNeedRefresh()) {
+		if (Game_Map::GetNeedRefresh()) {
 			Game_Map::Refresh();
 		}
 
@@ -1716,17 +1716,11 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 		// The implementation of this bug does a normal teleport with transition because other solution would be too
 		// invasive for little gain.
 
-		if (Main_Data::game_player->IsTeleporting() ||
-			Game_Message::visible) {
-			return false;
-		}
-
 		if (vehicle) {
 			vehicle->SetPosition(map_id, x, y);
 		}
 
-		Main_Data::game_player->ReserveTeleport(map_id, x, y);
-		Main_Data::game_player->StartTeleport();
+		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1);
 
 		// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 		if (!main_flag)
@@ -1806,10 +1800,6 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
 
-	if (!main_flag) {
-		Game_Map::SetTeleportDelayed(true);
-	}
-
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
 	transition_owner = this;
@@ -1888,10 +1878,6 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
 	if (Game_Temp::transition_processing || Game_Message::visible)
 		return false;
-
-	if (!main_flag) {
-		Game_Map::SetTeleportDelayed(true);
-	}
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;

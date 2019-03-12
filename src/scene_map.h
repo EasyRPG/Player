@@ -56,17 +56,15 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
-	void StartTeleportPlayer();
-	void FinishTeleportPlayer();
+	void StartPendingTeleport();
+	void FinishPendingTeleport();
 	void PreUpdate();
 	void UpdateSceneCalling();
 
 	std::unique_ptr<Window_Message> message_window;
 
 	bool from_save;
-	bool auto_transition = false;
-	bool auto_transition_erase = false;
-	bool do_preupdate = false;
+	bool call_scenes_on_transition_in = false;
 	int debug_menuoverwrite_counter = 0;
 };
 

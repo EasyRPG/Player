@@ -76,7 +76,6 @@ void Scene_Skill::Update() {
 				Game_System::SePlay(skill->sound_effect);
 				Main_Data::game_party->UseSkill(skill_id, actor, actor);
 				Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
-				Main_Data::game_player->StartTeleport();
 
 				Scene::PopUntil(Scene::Map);
 			}

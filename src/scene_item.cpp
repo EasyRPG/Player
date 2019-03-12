@@ -83,7 +83,6 @@ void Scene_Item::Update() {
 					Game_System::SePlay(skill->sound_effect);
 
 					Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
-					Main_Data::game_player->StartTeleport();
 
 					Scene::PopUntil(Scene::Map);
 				} else if (skill->type == RPG::Skill::Type_switch) {

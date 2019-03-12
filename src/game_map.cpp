@@ -79,8 +79,6 @@ namespace {
 
 	int last_map_id;
 
-	bool teleport_delay;
-
 	RPG::Chipset* chipset;
 
 	int last_encounter_idx = 0;
@@ -121,8 +119,6 @@ void Game_Map::Init() {
 	location.pan_current_x = default_pan_x;
 	location.pan_current_y = default_pan_y;
 	last_map_id = -1;
-
-	teleport_delay = false;
 }
 
 void Game_Map::Dispose() {
@@ -1545,14 +1541,6 @@ int Game_Map::GetTargetPanX() {
 
 int Game_Map::GetTargetPanY() {
 	return location.pan_finish_y;
-}
-
-bool Game_Map::IsTeleportDelayed() {
-	return teleport_delay;
-}
-
-void Game_Map::SetTeleportDelayed(bool delay) {
-	teleport_delay = delay;
 }
 
 FileRequestAsync* Game_Map::RequestMap(int map_id) {

@@ -23,6 +23,7 @@
 #include "rpg_savepartylocation.h"
 #include "game_character.h"
 #include "flag_set.h"
+#include "teleport_target.h"
 #include <vector>
 
 class Game_Vehicle;
@@ -50,7 +51,8 @@ public:
 	void UpdateSelfMovement() override;
 	/** @} */
 
-	bool IsTeleporting() const;
+	bool IsPendingTeleport() const;
+	TeleportTarget GetTeleportTarget() const;
 
 	/**
 	 * Sets the map, position and direction that the game player must have after the teleport is over
@@ -60,10 +62,10 @@ public:
 	 * @param y new y position after teleport
 	 * @param direction New direction after teleport. If -1, the direction isn't changed.
 	 */
-	void ReserveTeleport(int map_id, int x, int y, int direction = -1);
+	void ReserveTeleport(int map_id, int x, int y, int direction);
 	void ReserveTeleport(const RPG::SaveTarget& target);
-	void StartTeleport();
 	void PerformTeleport();
+
 	void MoveTo(int x, int y) override;
 
 	/** Update this for the current frame */
@@ -98,9 +100,6 @@ protected:
 private:
 	using TriggerSet = FlagSet<RPG::EventPage::Trigger>;
 
-	bool teleporting = false;
-	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
-
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
 	bool CheckTouchEvent();
@@ -111,6 +110,8 @@ private:
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();
+
+	TeleportTarget teleport_target;
 };
 
 inline RPG::SavePartyLocation* Game_Player::data() {
@@ -119,6 +120,14 @@ inline RPG::SavePartyLocation* Game_Player::data() {
 
 inline const RPG::SavePartyLocation* Game_Player::data() const {
 	return static_cast<const RPG::SavePartyLocation*>(Game_Character::data());
+}
+
+inline bool Game_Player::IsPendingTeleport() const {
+	return teleport_target.IsActive();
+}
+
+inline TeleportTarget Game_Player::GetTeleportTarget() const {
+	return teleport_target;
 }
 
 #endif
