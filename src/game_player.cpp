@@ -251,8 +251,12 @@ void Game_Player::Update() {
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
 
-	if (IsAboard() && GetVehicle()) {
-		GetVehicle()->SyncWithPlayer();
+	if (IsAboard()) {
+		auto* vehicle = GetVehicle();
+		if (vehicle) {
+			GetVehicle()->SyncWithPlayer();
+			vehicle->AnimateAscentDescent();
+		}
 	}
 
 	UpdateScroll(old_sprite_x, old_sprite_y);

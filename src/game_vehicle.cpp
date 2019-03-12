@@ -252,6 +252,27 @@ void Game_Vehicle::UpdateAnimationShip() {
 	}
 }
 
+void Game_Vehicle::AnimateAscentDescent() {
+	if (!IsStopping()) {
+		return;
+	}
+	if (IsAscending()) {
+		data()->remaining_ascent = data()->remaining_ascent - 8;
+	} else if (IsDescending()) {
+		data()->remaining_descent = data()->remaining_descent - 8;
+		if (!IsDescending()) {
+			if (CanLand()) {
+				Main_Data::game_player->UnboardingFinished();
+				SetFlying(false);
+				Main_Data::game_player->SetFlying(false);
+			} else {
+				// Can't land here, ascend again
+				data()->remaining_ascent = SCREEN_TILE_SIZE;
+			}
+		}
+	}
+}
+
 void Game_Vehicle::Update() {
 	if (IsProcessed()) {
 		return;
@@ -260,26 +281,6 @@ void Game_Vehicle::Update() {
 
 	if (!IsAboard()) {
 		Game_Character::UpdateMovement();
-	}
-
-	if (type == Airship) {
-		if (IsStopping()) {
-			if (IsAscending()) {
-				data()->remaining_ascent = data()->remaining_ascent - 8;
-			} else if (IsDescending()) {
-				data()->remaining_descent = data()->remaining_descent - 8;
-				if (!IsDescending()) {
-					if (CanLand()) {
-						Main_Data::game_player->UnboardingFinished();
-						SetFlying(false);
-						Main_Data::game_player->SetFlying(false);
-					} else {
-						// Can't land here, ascend again
-						data()->remaining_ascent = SCREEN_TILE_SIZE;
-					}
-				}
-			}
-		}
 	}
 
 	if (type == Airship) {
