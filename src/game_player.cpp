@@ -431,6 +431,10 @@ void Game_Player::Refresh() {
 }
 
 bool Game_Player::GetOnOffVehicle() {
+	if (IsBoardingOrUnboarding()) {
+		return false;
+	}
+
 	if (InVehicle())
 		return GetOffVehicle();
 	return GetOnVehicle();
