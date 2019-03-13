@@ -981,9 +981,13 @@ void Game_Map::Update(bool is_preupdate) {
 			}
 		}
 		if (run_ev) {
-			interp.Setup(run_ev);
+			if (run_ev->IsActive()) {
+				interp.Setup(run_ev);
+			}
 			run_ev->ClearWaitingForegroundExecution();
-			interp.Update(false);
+			if (run_ev->IsActive()) {
+				interp.Update(false);
+			}
 			if (interp.IsRunning()) {
 				break;
 			}
