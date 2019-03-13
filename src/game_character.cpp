@@ -828,7 +828,7 @@ int Game_Character::GetSpriteX() const {
 			x += GetRemainingStep();
 	} else if (IsJumping())
 		x -= ((GetX() - GetBeginJumpX()) * GetRemainingStep());
-	if (x < 0) {
+	if (x < 0 && Game_Map::LoopHorizontal()) {
 		x += Game_Map::GetWidth() * SCREEN_TILE_SIZE;
 	}
 
@@ -847,7 +847,7 @@ int Game_Character::GetSpriteY() const {
 	} else if (IsJumping())
 		y -= (GetY() - GetBeginJumpY()) * GetRemainingStep();
 
-	if (y < 0) {
+	if (y < 0 && Game_Map::LoopVertical()) {
 		y += Game_Map::GetHeight() * SCREEN_TILE_SIZE;
 	}
 
