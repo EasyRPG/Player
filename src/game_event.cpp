@@ -335,11 +335,16 @@ void Game_Event::OnFinishForegroundEvent() {
 	SetPaused(false);
 }
 
-void Game_Event::CheckEventTriggers() {
-	if (trigger == RPG::EventPage::Trigger_auto_start) {
+void Game_Event::CheckEventAutostart() {
+	if (trigger == RPG::EventPage::Trigger_auto_start
+			&& GetRemainingStep() == 0) {
 		SetAsWaitingForegroundExecution(false, false);
 		return;
-	} else if (trigger == RPG::EventPage::Trigger_collision) {
+	}
+}
+
+void Game_Event::CheckEventCollision() {
+	if (trigger == RPG::EventPage::Trigger_collision) {
 		CheckEventTriggerTouch(GetX(),GetY());
 		return;
 	}
@@ -554,7 +559,8 @@ void Game_Event::Update() {
 		}
 	}
 
-	CheckEventTriggers();
+	CheckEventAutostart();
+	CheckEventCollision();
 
 	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();

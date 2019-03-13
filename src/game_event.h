@@ -112,7 +112,6 @@ public:
 	/** Update this for the current frame */
 	void Update();
 
-	void CheckEventTriggers();
 	bool CheckEventTriggerTouch(int x, int y) override;
 	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
@@ -154,6 +153,8 @@ protected:
 
 private:
 	void UpdateSelfMovement() override;
+	void CheckEventAutostart();
+	void CheckEventCollision();
 
 	/**
 	 * Moves on a random route.
