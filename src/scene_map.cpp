@@ -109,7 +109,12 @@ void Scene_Map::OnTransitionFinish() {
 	if (Graphics::IsTransitionErased()) {
 		if (Main_Data::game_player->IsPendingTeleport()) {
 			FinishPendingTeleport();
-			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+			if (!Game_Temp::transition_menu) {
+				Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+			} else {
+				// Escape / Teleport spell always uses fade.
+				Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+			}
 		}
 	} else {
 		if (call_scenes_on_transition_in) {
