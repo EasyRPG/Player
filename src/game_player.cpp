@@ -123,9 +123,6 @@ bool Game_Player::MakeWay(int x, int y) const {
 }
 
 void Game_Player::MoveTo(int x, int y) {
-	x = max(0, min(x, Game_Map::GetWidth() - 1));
-	y = max(0, min(y, Game_Map::GetHeight() - 1));
-
 	Game_Character::MoveTo(x, y);
 	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
 	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
