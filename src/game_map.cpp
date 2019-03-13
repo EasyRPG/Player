@@ -996,10 +996,12 @@ void Game_Map::Update(bool is_preupdate) {
 	for (Game_Event& ev : events) {
 		ev.SetProcessed(false);
 	}
-	Main_Data::game_player->SetProcessed(false);
-	for (auto& vehicle: vehicles) {
-		if (vehicle->GetMapId() == location.map_id) {
-			vehicle->SetProcessed(false);
+	if (!is_preupdate) {
+		Main_Data::game_player->SetProcessed(false);
+		for (auto& vehicle: vehicles) {
+			if (vehicle->IsInCurrentMap()) {
+				vehicle->SetProcessed(false);
+			}
 		}
 	}
 
