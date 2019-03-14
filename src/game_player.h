@@ -100,8 +100,6 @@ private:
 
 	void UpdateScroll(int prev_x, int prev_y);
 	void UpdatePan();
-	bool CheckTouchEvent();
-	bool CheckCollisionEvent();
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key);
 	bool CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key);
