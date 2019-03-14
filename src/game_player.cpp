@@ -288,17 +288,24 @@ void Game_Player::Update() {
 
 	if (IsMoveRouteOverwritten()) return;
 
-	// When the last command of a move route is a move command, there is special
-	// logic to reset the move route index to 0. We leverage this here because
-	// we only do touch checks if the last move command was a move.
-	// Checking was_moving is not enough, because there could have been 0 frame
-	// commands after the move in the move route, in which case index would be > 0.
-	if (!IsFlying()
-			&& was_moving
-			&& (!was_move_route_overriden || GetMoveRouteIndex() == 0)
-			)
-	{
-		if(CheckTouchEvent()) {
+	if (!InAirship()) {
+		TriggerSet triggers;
+
+		if (!Game_Map::GetInterpreter().IsRunning()) {
+			triggers[RPG::EventPage::Trigger_collision] = true;
+		}
+
+		// When the last command of a move route is a move command, there is special
+		// logic to reset the move route index to 0. We leverage this here because
+		// we only do touch checks if the last move command was a move.
+		// Checking was_moving is not enough, because there could have been 0 frame
+		// commands after the move in the move route, in which case index would be > 0.
+		if (was_moving && (!was_move_route_overriden || GetMoveRouteIndex() == 0)) {
+			triggers[RPG::EventPage::Trigger_touched] = true;
+			triggers[RPG::EventPage::Trigger_collision] = true;
+		}
+
+		if (triggers.count() > 0 && CheckEventTriggerHere(triggers, true, false)) {
 			return;
 		}
 	}
@@ -345,10 +352,6 @@ bool Game_Player::CheckActionEvent() {
 		got_action |= CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
 	}
 	return result || got_action;
-}
-
-bool Game_Player::CheckTouchEvent() {
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, true, false);
 }
 
 bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key) {
