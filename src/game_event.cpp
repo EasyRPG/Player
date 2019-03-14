@@ -344,8 +344,13 @@ void Game_Event::CheckEventAutostart() {
 }
 
 void Game_Event::CheckEventCollision() {
-	if (trigger == RPG::EventPage::Trigger_collision) {
-		CheckEventTriggerTouch(GetX(),GetY());
+	if (trigger == RPG::EventPage::Trigger_collision
+			&& GetLayer() != RPG::EventPage::Layers_same
+			&& !Main_Data::game_player->IsMoveRouteOverwritten()
+			&& !Game_Map::GetInterpreter().IsRunning()
+			&& !Main_Data::game_player->InAirship()
+			&& Main_Data::game_player->IsInPosition(GetX(), GetY())) {
+		SetAsWaitingForegroundExecution(true, false);
 		return;
 	}
 }
