@@ -573,16 +573,6 @@ public:
 	void MoveRandom(MoveOption option = MoveOption::Normal);
 
 	/**
-	 * Does a move to the player hero.
-	 */
-	void MoveTowardsPlayer();
-
-	/**
-	 * Does a move away from the player hero.
-	 */
-	void MoveAwayFromPlayer();
-
-	/**
 	 * Turns the character 90 Degree to the left.
 	 */
 	void Turn90DegreeLeft();
