@@ -158,8 +158,6 @@ void Scene_Map::Update() {
 	// the interpreters continue on the old map afterwards
 	Game_Map::SetTeleportDelayed(false);
 
-	Main_Data::game_party->UpdateTimers();
-
 	Game_Map::Update();
 	spriteset->Update();
 	message_window->Update();

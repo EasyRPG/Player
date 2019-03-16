@@ -308,19 +308,27 @@ public:
 	 * Get a timer's value in seconds.
 	 *
 	 * @param which which timer to read.
-	 * @return number of frames remaining.
+	 * @return number of seconds remaining.
 	 */
-	int GetTimer(int which);
+	int GetTimerSeconds(int which);
 
 	/**
 	 * Get a timer's value in frames.
 	 *
 	 * @param which which timer to read.
-	 * @param[out] visible whether timer is visible
-	 * @param[out] battle whether timer runs in battle
 	 * @return number of frames remaining.
 	 */
-	int GetTimerFrames(int which, bool& visible, bool& battle);
+	int GetTimerFrames(int which);
+
+	/**
+	 * Returns whether a timer should be visible now
+	 *
+	 * @param which which timer to read
+	 * @param in_battle whether we're currently in a battle.
+	 *
+	 * @return true if visible.
+	 */
+	bool GetTimerVisible(int which, bool in_battle);
 
 	/**
 	 * Removes invalid actors and items from the party

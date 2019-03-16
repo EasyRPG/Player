@@ -45,7 +45,6 @@ protected:
 	void Draw() override;
 
 	int which;
-	int counter;
 
 	Rect digits[5];
 };

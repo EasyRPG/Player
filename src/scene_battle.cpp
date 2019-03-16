@@ -155,11 +155,11 @@ void Scene_Battle::Update() {
 
 	// Query Timer before and after update.
 	// If it reached zero during update was a running battle timer.
-	int timer1 = Main_Data::game_party->GetTimer(Game_Party::Timer1);
-	int timer2 = Main_Data::game_party->GetTimer(Game_Party::Timer2);
+	int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
+	int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
 	Main_Data::game_party->UpdateTimers();
-	if ((Main_Data::game_party->GetTimer(Game_Party::Timer1) == 0 && timer1 > 0) ||
-		(Main_Data::game_party->GetTimer(Game_Party::Timer2) == 0 && timer2 > 0)) {
+	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
+		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
 		Scene::Pop();
 	}
 
