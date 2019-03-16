@@ -945,6 +945,8 @@ void Game_Map::Update(bool is_preupdate) {
 		}
 	}
 
+	Main_Data::game_screen->Update();
+
 	auto& interp = GetInterpreter();
 
 	// Run any event loaded from last frame.
