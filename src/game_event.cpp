@@ -546,11 +546,18 @@ void Game_Event::Update() {
 	SetProcessed(true);
 
 	CheckEventAutostart();
-	CheckEventCollision();
+
+	if (!IsMoveRouteOverwritten() || IsMoving()) {
+		CheckEventCollision();
+	}
 
 	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
+
+	if (IsStopping()) {
+		CheckEventCollision();
+	}
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {
