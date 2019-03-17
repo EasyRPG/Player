@@ -199,8 +199,8 @@ void Scene_Map::UpdateSceneCalling() {
 		}
 	}
 
-	if (!Main_Data::game_player->IsMoving() || Game_Interpreter::IsImmediateCall() || force_menu_calling) {
-		auto call = Game_Interpreter::GetSceneCalling();
+	if (!Main_Data::game_player->IsMoving() || HasRequestedScene() || force_menu_calling) {
+		auto call = GetRequestedScene();
 
 		if (Main_Data::game_data.party_location.menu_calling || force_menu_calling) {
 			call = Scene::Menu;
@@ -209,7 +209,7 @@ void Scene_Map::UpdateSceneCalling() {
 			call = Scene::Battle;
 		}
 
-		Game_Interpreter::ResetSceneCalling();
+		SetRequestedScene(Null);
 		switch (call) {
 			case Scene::Menu:
 				CallMenu();
