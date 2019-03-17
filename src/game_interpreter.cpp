@@ -2685,6 +2685,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		if (!actor) {
 			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
 			// Use Else branch
+			++loop_count;
 			return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
 		}
 
@@ -2795,6 +2796,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 	if (result)
 		return true;
 
+	++loop_count;
 	return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
 }
 
