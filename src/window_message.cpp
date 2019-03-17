@@ -38,6 +38,8 @@
 const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
 
+constexpr int message_animation_frames = 8;
+
 // C4428 is nonsense
 #ifdef _MSC_VER
 #pragma warning (disable : 4428)
@@ -215,7 +217,7 @@ void Window_Message::ShowGoldWindow() {
 	if (!gold_window->GetVisible() && !Game_Temp::battle_running) {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
-		gold_window->SetOpenAnimation(5);
+		gold_window->SetOpenAnimation(message_animation_frames);
 	}
 }
 
@@ -294,11 +296,11 @@ void Window_Message::TerminateMessage() {
 	Game_Message::message_waiting = false;
 	if (number_input_window->GetVisible()) {
 		number_input_window->SetActive(false);
-		number_input_window->SetCloseAnimation(5);
+		number_input_window->SetCloseAnimation(message_animation_frames);
 	}
 
 	if (gold_window->GetVisible()) {
-		gold_window->SetCloseAnimation(5);
+		gold_window->SetCloseAnimation(message_animation_frames);
 	}
 	// The other flag resetting is done in Game_Interpreter::CommandEnd
 	Game_Message::SemiClear();
@@ -337,7 +339,7 @@ void Window_Message::Update() {
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
 			// Open and Close Animations are skipped in battle
-			SetOpenAnimation(Game_Temp::battle_running ? 0 : 5);
+			SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
 		} else if (closing) {
 			// Cancel closing animation
 			SetOpenAnimation(0);
@@ -346,7 +348,7 @@ void Window_Message::Update() {
 	} else if (!Game_Message::message_waiting && Game_Message::visible) {
 		if (visible && !closing) {
 			// Start the closing animation
-			SetCloseAnimation(Game_Temp::battle_running ? 0 : 5);
+			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
 		} else if (!visible) {
 			// The closing animation has finished
 			Game_Message::visible = false;
