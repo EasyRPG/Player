@@ -49,6 +49,7 @@ public:
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
 	void OnMoveFailed(int x, int y) override;
+	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;
@@ -72,12 +73,6 @@ public:
 	void Update();
 
 	void Refresh();
-
-	/*
-	 * Overridden to convince Game_Character we aren't stopped if boarding/unboarding.
-	 * Consider calling this 'IsReadyToMove' or something, and 'IsMovable' -> 'IsPlayerMovable'
-	 */
-	bool IsStopping() const override;
 
 	bool GetOnOffVehicle();
 	bool IsMovable() const;

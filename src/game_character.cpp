@@ -45,14 +45,6 @@ Game_Character::~Game_Character() {
 	Game_Map::RemovePendingMove(this);
 }
 
-bool Game_Character::IsMoving() const {
-	return !IsJumping() && GetRemainingStep() > 0;
-}
-
-bool Game_Character::IsStopping() const {
-	return !(IsMoving() || IsJumping());
-}
-
 bool Game_Character::MakeWay(int x, int y) const {
 	return Game_Map::MakeWay(*this, x, y);
 }
