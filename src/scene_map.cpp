@@ -171,14 +171,13 @@ void Scene_Map::UpdateSceneCalling() {
 	if (Game_Message::visible)
 		return;
 
-	bool force_menu_calling = false;
 	if (Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					force_menu_calling = true;
+					SetRequestedScene(Menu);
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -187,49 +186,47 @@ void Scene_Map::UpdateSceneCalling() {
 		}
 
 		if (Input::IsTriggered(Input::DEBUG_MENU)) {
-			CallDebug();
+			SetRequestedScene(Debug);
 		}
 		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-			CallSave();
+			SetRequestedScene(Save);
 		}
 	}
 
-	if (HasRequestedScene() || force_menu_calling) {
-		auto call = GetRequestedScene();
+	auto call = GetRequestedScene();
 
-		if (force_menu_calling) {
-			call = Scene::Menu;
-		}
-		if (Game_Temp::battle_calling) {
-			call = Scene::Battle;
-		}
+	if (Game_Temp::battle_calling) {
+		call = Scene::Battle;
+	}
 
-		SetRequestedScene(Null);
-		switch (call) {
-			case Scene::Menu:
-				CallMenu();
-				break;
-			case Scene::Shop:
-				CallShop();
-				break;
-			case Scene::Name:
-				CallName();
-				break;
-			case Scene::Save:
-				CallSave();
-				break;
-			case Scene::Load:
-				CallLoad();
-				break;
-			case Scene::Battle:
-				CallBattle();
-				break;
-			case Scene::Gameover:
-				CallGameover();
-				break;
-			default:
-				break;
-		}
+	SetRequestedScene(Null);
+	switch (call) {
+		case Scene::Menu:
+			CallMenu();
+			break;
+		case Scene::Shop:
+			CallShop();
+			break;
+		case Scene::Name:
+			CallName();
+			break;
+		case Scene::Save:
+			CallSave();
+			break;
+		case Scene::Load:
+			CallLoad();
+			break;
+		case Scene::Battle:
+			CallBattle();
+			break;
+		case Scene::Gameover:
+			CallGameover();
+			break;
+		case Scene::Debug:
+			CallDebug();
+			break;
+		default:
+			break;
 	}
 }
 
