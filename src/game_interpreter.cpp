@@ -57,6 +57,9 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
+// 10000 based on: https://gist.github.com/4406621
+constexpr int loop_limit = 10000;
+
 Scene::SceneType Game_Interpreter::scene_call = Scene::Null;
 
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
@@ -143,17 +146,16 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 }
 
 bool Game_Interpreter::ReachedLoopLimit() const {
-	return loop_count >= 10000;
+	return loop_count >= loop_limit;
 }
 
 // Update
 void Game_Interpreter::Update(bool reset_loop_count) {
 	updating = true;
-	// 10000 based on: https://gist.github.com/4406621
 	if (reset_loop_count) {
 		loop_count = 0;
 	}
-	for (; loop_count < 10000; ++loop_count) {
+	for (; loop_count < loop_limit; ++loop_count) {
 		/* If map is different than event startup time
 		set event_id to 0 */
 		if (Game_Map::GetMapId() != map_id) {
@@ -254,7 +256,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		index++;
 	} // for
 
-	if (loop_count > 9999) {
+	if (loop_count > loop_limit - 1) {
 		// Executed Events Count exceeded (10000)
 		Output::Debug("Event %d exceeded execution limit", event_id);
 	}
