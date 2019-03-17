@@ -185,9 +185,49 @@ void Game_Player::UpdateScroll(int old_x, int old_y) {
 	}
 }
 
+void Game_Player::UpdateVehicleActions() {
+	if (IsAboard()) {
+		auto* vehicle = GetVehicle();
+		if (vehicle) {
+			vehicle->SyncWithPlayer();
+			vehicle->AnimateAscentDescent();
+		}
+	}
+
+	if (IsStopping()) {
+		if (data()->boarding) {
+			// Boarding completed
+			data()->aboard = true;
+			data()->boarding = false;
+			auto* vehicle = GetVehicle();
+			if (vehicle->IsMoveRouteOverwritten()) {
+				vehicle->CancelMoveRoute();
+			}
+			SetMoveSpeed(vehicle->GetMoveSpeed());
+			vehicle->SetDirection(GetDirection());
+			vehicle->SetSpriteDirection(Left);
+			// Note: RPG_RT ignores the lock_facing flag here!
+			SetSpriteDirection(Left);
+			vehicle->SetX(GetX());
+			vehicle->SetY(GetY());
+		}
+
+		if (data()->unboarding) {
+			// Unboarding completed
+			data()->unboarding = false;
+		}
+	}
+}
+
 void Game_Player::UpdateSelfMovement() {
-	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
-		if (IsMovable()) {
+	if (!IsBoardingOrUnboarding()
+			&& !Game_Map::GetInterpreter().IsRunning()
+			&& !Game_Message::visible
+			&& !IsMoveRouteOverwritten()
+			&& !IsPaused() // RPG_RT compatible logic, but impossible to set pause on player
+			&& !Game_Map::IsAnyEventStarting())
+	{
+		if (IsStopping()) {
 			const auto old_x = GetX();
 			const auto old_y = GetY();
 			const bool force_through = (Player::debug_flag
@@ -218,8 +258,21 @@ void Game_Player::UpdateSelfMovement() {
 			}
 		}
 
-		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsMoveRouteOverwritten() && Input::IsTriggered(Input::CANCEL)) {
+		if (IsStopping()) {
+			if (Input::IsTriggered(Input::DECISION)) {
+				if (!GetOnOffVehicle()) {
+					CheckActionEvent();
+				}
+			}
+		}
+	}
+
+	// ESC-Menu calling
+	if (Game_System::GetAllowMenu()
+			&& !Game_Message::visible
+			&& !Game_Map::GetInterpreter().IsRunning())
+	{
+		if (Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_data.party_location.menu_calling = true;
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
@@ -249,42 +302,11 @@ void Game_Player::Update() {
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
 
-	if (IsAboard()) {
-		auto* vehicle = GetVehicle();
-		if (vehicle) {
-			GetVehicle()->SyncWithPlayer();
-			vehicle->AnimateAscentDescent();
-		}
-	}
-
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
+	UpdateVehicleActions();
+
 	if (IsMoving()) return;
-
-	bool finished_boarding_or_unboarding = false;
-	if (data()->boarding) {
-		// Boarding completed
-		data()->aboard = true;
-		data()->boarding = false;
-		auto* vehicle = GetVehicle();
-		if (vehicle->IsMoveRouteOverwritten()) {
-			vehicle->CancelMoveRoute();
-		}
-		SetMoveSpeed(vehicle->GetMoveSpeed());
-		vehicle->SetDirection(GetDirection());
-		vehicle->SetSpriteDirection(Left);
-		// Note: RPG_RT ignores the lock_facing flag here!
-		SetSpriteDirection(Left);
-		vehicle->SetX(GetX());
-		vehicle->SetY(GetY());
-		finished_boarding_or_unboarding = true;
-	}
-
-	if (data()->unboarding) {
-		// Unboarding completed
-		data()->unboarding = false;
-		finished_boarding_or_unboarding = true;
-	}
 
 	if (IsMoveRouteOverwritten()) return;
 
@@ -310,16 +332,6 @@ void Game_Player::Update() {
 		}
 	}
 
-	if (finished_boarding_or_unboarding) {
-		return;
-	}
-
-	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
-		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
-			if ( GetOnOffVehicle() ) return;
-			if ( CheckActionEvent() ) return;
-		}
-	}
 
 	if (was_moving) {
 		Game_Map::UpdateEncounterSteps();
