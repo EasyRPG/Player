@@ -19,7 +19,6 @@
 #include "game_temp.h"
 #include "transition.h"
 
-bool Game_Temp::battle_calling;
 bool Game_Temp::inn_calling;
 bool Game_Temp::to_title;
 bool Game_Temp::transition_processing;
@@ -47,7 +46,6 @@ bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_result;
 
 void Game_Temp::Init() {
-	battle_calling = false;
 	inn_calling = false;
 	to_title = false;
 	transition_processing = false;

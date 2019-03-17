@@ -71,6 +71,7 @@ private:
 	bool from_save;
 	// Teleport from new game or Teleport / Escape skill from menu.
 	bool teleport_from_other_scene = false;
+	bool called_battle = false;
 };
 
 #endif

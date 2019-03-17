@@ -82,7 +82,7 @@ void Scene_Map::Start() {
 
 void Scene_Map::Continue() {
 	teleport_from_other_scene = true;
-	if (Game_Temp::battle_calling) {
+	if (called_battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 	}
@@ -100,8 +100,8 @@ void Scene_Map::Continue() {
 }
 
 void Scene_Map::Resume() {
-	Game_Temp::battle_calling = false;
 	teleport_from_other_scene = false;
+	called_battle = false;
 }
 
 void Scene_Map::TransitionIn() {
@@ -109,7 +109,8 @@ void Scene_Map::TransitionIn() {
 	if (Graphics::IsTransitionPending()) {
 		return;
 	}
-	if (Game_Temp::battle_calling) {
+
+	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
@@ -120,7 +121,7 @@ void Scene_Map::TransitionIn() {
 }
 
 void Scene_Map::TransitionOut() {
-	if (Game_Temp::battle_calling) {
+	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
 	}
@@ -223,10 +224,6 @@ void Scene_Map::UpdateSceneCalling() {
 
 	auto call = GetRequestedScene();
 
-	if (Game_Temp::battle_calling) {
-		call = Scene::Battle;
-	}
-
 	SetRequestedScene(Null);
 	switch (call) {
 		case Scene::Menu:
@@ -315,7 +312,7 @@ void Scene_Map::FinishPendingTeleport() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_Temp::battle_calling = true;
+	called_battle = true;
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
