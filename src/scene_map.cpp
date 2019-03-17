@@ -222,10 +222,10 @@ void Scene_Map::UpdateSceneCalling() {
 		}
 	}
 
-	if (!Main_Data::game_player->IsMoving() || HasRequestedScene() || force_menu_calling) {
+	if (HasRequestedScene() || force_menu_calling) {
 		auto call = GetRequestedScene();
 
-		if (Main_Data::game_data.party_location.menu_calling || force_menu_calling) {
+		if (force_menu_calling) {
 			call = Scene::Menu;
 		}
 		if (Game_Temp::battle_calling) {
@@ -339,7 +339,6 @@ void Scene_Map::CallName() {
 }
 
 void Scene_Map::CallMenu() {
-	Main_Data::game_data.party_location.menu_calling = false;
 	Game_Temp::transition_menu = true;
 
 	// TODO: Main_Data::game_player->Straighten();

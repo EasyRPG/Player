@@ -92,6 +92,16 @@ public:
 	 */
 	void UnboardingFinished();
 
+	/**
+	 * Set the menu callling flag
+	 *
+	 * @param value the value of the flag to set
+	 */
+	void SetMenuCalling(bool value);
+
+	/** @return the menu calling flag */
+	bool IsMenuCalling() const;
+
 protected:
 	RPG::SavePartyLocation* data();
 	const RPG::SavePartyLocation* data() const;
@@ -125,6 +135,14 @@ inline bool Game_Player::IsPendingTeleport() const {
 
 inline TeleportTarget Game_Player::GetTeleportTarget() const {
 	return teleport_target;
+}
+
+inline void Game_Player::SetMenuCalling(bool value) {
+	data()->menu_calling = value;
+}
+
+inline bool Game_Player::IsMenuCalling() const {
+	return data()->menu_calling;
 }
 
 #endif

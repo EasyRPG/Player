@@ -122,8 +122,10 @@ void Game_Interpreter::Setup(
 
 	CancelMenuCall();
 
-	if (main_flag && depth == 0)
+	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
+		Main_Data::game_player->SetMenuCalling(false);
+	}
 }
 
 void Game_Interpreter::CancelMenuCall() {
