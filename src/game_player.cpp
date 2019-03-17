@@ -126,6 +126,7 @@ void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
 	Game_Map::SetPositionX(GetSpriteX() - data()->pan_current_x);
 	Game_Map::SetPositionY(GetSpriteY() - data()->pan_current_y);
+	SetMenuCalling(false);
 }
 
 void Game_Player::UpdateScroll(int old_x, int old_y) {
@@ -220,11 +221,20 @@ void Game_Player::UpdateVehicleActions() {
 }
 
 void Game_Player::UpdateSelfMovement() {
+	bool did_call_menu = false;
+	if (IsMenuCalling()) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+		Scene::instance->SetRequestedScene(Scene::Menu);
+		SetMenuCalling(false);
+		did_call_menu = true;
+	}
+
 	if (!IsBoardingOrUnboarding()
 			&& !Game_Map::GetInterpreter().IsRunning()
 			&& !Game_Message::visible
 			&& !IsMoveRouteOverwritten()
 			&& !IsPaused() // RPG_RT compatible logic, but impossible to set pause on player
+			&& !did_call_menu
 			&& !Game_Map::IsAnyEventStarting())
 	{
 		if (IsStopping()) {
@@ -273,8 +283,7 @@ void Game_Player::UpdateSelfMovement() {
 			&& !Game_Map::GetInterpreter().IsRunning())
 	{
 		if (Input::IsTriggered(Input::CANCEL)) {
-			Main_Data::game_data.party_location.menu_calling = true;
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetMenuCalling(true);
 		}
 	}
 }
@@ -331,7 +340,6 @@ void Game_Player::Update() {
 			return;
 		}
 	}
-
 
 	if (was_moving) {
 		Game_Map::UpdateEncounterSteps();
