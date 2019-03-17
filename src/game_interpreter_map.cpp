@@ -225,6 +225,10 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
+	if (Game_Message::visible) {
+		return false;
+	}
+
 	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
 		com.parameters[1]);
 	Game_Character *player = Main_Data::game_player.get();
@@ -318,6 +322,9 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
+	if (Game_Message::visible) {
+		return false;
+	}
 
 	switch (com.parameters[0]) {
 		case 0:
@@ -546,6 +553,10 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740
+	if (Game_Message::visible) {
+		return false;
+	}
+
 	Game_Temp::hero_name_id = com.parameters[0];
 	Game_Temp::hero_name_charset = com.parameters[1];
 
@@ -703,18 +714,30 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
+	if (Game_Message::visible) {
+		return false;
+	}
+
 	scene_call = Scene::Save;
 	++index;
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
+	if (Game_Message::visible) {
+		return false;
+	}
+
 	scene_call = Scene::Menu;
 	++index;
 	return false;
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
+	if (Game_Message::visible) {
+		return false;
+	}
+
 	scene_call = Scene::Load;
 	++index;
 	return false;
