@@ -27,7 +27,6 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 #include "command_codes.h"
-#include "scene.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -69,19 +68,6 @@ public:
 	void SetupChoices(const std::vector<std::string>& choices);
 
 	virtual bool ExecuteCommand();
-
-	/**
-	 * @return true if an immediate call is requested
-	 */
-	static bool IsImmediateCall();
-
-	/**
-	 * Reset the event calling flags
-	 */
-	static void ResetSceneCalling();
-
-	/** @return the scene requested by events */
-	static Scene::SceneType GetSceneCalling();
 
 protected:
 	friend class Game_Interpreter_Map;
@@ -252,15 +238,10 @@ protected:
 
 	FileRequestBinding request_id;
 
-	static Scene::SceneType scene_call;
 };
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
-}
-
-inline Scene::SceneType Game_Interpreter::GetSceneCalling() {
-	return scene_call;
 }
 
 #endif

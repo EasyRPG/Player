@@ -942,7 +942,7 @@ void Game_Map::Update(bool is_preupdate) {
 		// This logic is probably one big loop in RPG_RT. We have to replicate
 		// it here because once we stop executing from this we should not
 		// clear anymore waiting flags.
-		if (interp.IsImmediateCall() && interp.GetLoopCount() > 0) {
+		if (Scene::instance->HasRequestedScene() && interp.GetLoopCount() > 0) {
 			break;
 		}
 		Game_CommonEvent* run_ce = nullptr;

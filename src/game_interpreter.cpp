@@ -60,8 +60,6 @@ namespace {
 // 10000 based on: https://gist.github.com/4406621
 constexpr int loop_limit = 10000;
 
-Scene::SceneType Game_Interpreter::scene_call = Scene::Null;
-
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -180,7 +178,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
 		// RPG_RT compatible behavior.
-		if (loop_count > 0 && IsImmediateCall()) {
+		if (loop_count > 0 && Scene::instance->HasRequestedScene()) {
 			break;
 		}
 
@@ -3079,14 +3077,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	index++;
 	return true;
 }
-
-void Game_Interpreter::ResetSceneCalling() {
-	scene_call = Scene::Null;
-}
-
-bool Game_Interpreter::IsImmediateCall() {
-	return scene_call != Scene::Null;
-};
 
 // Dummy Continuations
 
