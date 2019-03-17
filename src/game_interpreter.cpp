@@ -1527,6 +1527,9 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
+	if (Game_Message::visible) {
+		return false;
+	}
 	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
