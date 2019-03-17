@@ -211,7 +211,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
-		if (Game_Temp::to_title || Game_Temp::gameover) {
+		if (Game_Temp::to_title) {
 			break;
 		}
 
@@ -282,7 +282,9 @@ void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
 void Game_Interpreter::CheckGameOver() {
 	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
-		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
+		if (Main_Data::game_party->GetBattlerCount() > 0) {
+			Scene::instance->SetRequestedScene(Scene::Gameover);
+		}
 	}
 }
 
@@ -1540,8 +1542,9 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 	if (Game_Message::visible) {
 		return false;
 	}
-	Game_Temp::gameover = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
+
+	Scene::instance->SetRequestedScene(Scene::Gameover);
+	++index;
 	return false;
 }
 

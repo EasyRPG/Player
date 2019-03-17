@@ -191,11 +191,6 @@ void Scene_Map::UpdateStage3() {
 }
 
 void Scene_Map::UpdateSceneCalling() {
-	if (Game_Temp::gameover) {
-		Game_Temp::gameover = false;
-		Scene::Push(std::make_shared<Scene_Gameover>());
-	}
-
 	if (Game_Temp::to_title) {
 		Game_Temp::to_title = false;
 		Scene::PopUntil(Scene::Title);
@@ -256,6 +251,9 @@ void Scene_Map::UpdateSceneCalling() {
 				break;
 			case Scene::Battle:
 				CallBattle();
+				break;
+			case Scene::Gameover:
+				CallGameover();
 				break;
 			default:
 				break;
@@ -374,4 +372,8 @@ void Scene_Map::CallDebug() {
 		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
+}
+
+void Scene_Map::CallGameover() {
+	Scene::Push(std::make_shared<Scene_Gameover>());
 }
