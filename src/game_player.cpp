@@ -221,12 +221,23 @@ void Game_Player::UpdateVehicleActions() {
 }
 
 void Game_Player::UpdateSelfMovement() {
+	bool did_call_encounter = false;
+	if (IsEncounterCalling() && IsStopping()) {
+		if (Game_Map::PrepareEncounter()) {
+			Scene::instance->SetRequestedScene(Scene::Battle);
+		}
+		SetEncounterCalling(false);
+		did_call_encounter = true;
+	}
+
 	bool did_call_menu = false;
 	if (IsMenuCalling()) {
-		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Scene::instance->SetRequestedScene(Scene::Menu);
+		if (!did_call_encounter) {
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			Scene::instance->SetRequestedScene(Scene::Menu);
+			did_call_menu = true;
+		}
 		SetMenuCalling(false);
-		did_call_menu = true;
 	}
 
 	if (!IsBoardingOrUnboarding()
@@ -234,12 +245,11 @@ void Game_Player::UpdateSelfMovement() {
 			&& !Game_Message::visible
 			&& !IsMoveRouteOverwritten()
 			&& !IsPaused() // RPG_RT compatible logic, but impossible to set pause on player
+			&& !did_call_encounter
 			&& !did_call_menu
 			&& !Game_Map::IsAnyEventStarting())
 	{
 		if (IsStopping()) {
-			const auto old_x = GetX();
-			const auto old_y = GetY();
 			const bool force_through = (Player::debug_flag
 					&& Input::IsPressed(Input::DEBUG_THROUGH)
 					&& !GetThrough());
@@ -250,21 +260,30 @@ void Game_Player::UpdateSelfMovement() {
 					if (force_through) { SetThrough(false); }
 					});
 
+			bool tried_move = false;
 			switch (Input::dir4) {
 				case 2:
+					tried_move = true;
 					Move(Down);
 					break;
 				case 4:
+					tried_move = true;
 					Move(Left);
 					break;
 				case 6:
+					tried_move = true;
 					Move(Right);
 					break;
 				case 8:
+					tried_move = true;
 					Move(Up);
+					break;
 			}
-			if (GetX() != old_x || GetY() != old_y) {
+			if (tried_move && !move_failed) {
 				Main_Data::game_party->IncSteps();
+				if (Game_Map::UpdateEncounterSteps()) {
+					SetEncounterCalling(true);
+				}
 			}
 		}
 
@@ -315,11 +334,10 @@ void Game_Player::Update() {
 
 	UpdateVehicleActions();
 
-	if (IsMoving()) return;
-
-	if (IsMoveRouteOverwritten()) return;
-
-	if (!InAirship()) {
+	if (!InAirship()
+			&& IsStopping()
+			&& !IsMoveRouteOverwritten()
+			) {
 		TriggerSet triggers;
 
 		if (!Game_Map::GetInterpreter().IsRunning()) {
@@ -339,10 +357,6 @@ void Game_Player::Update() {
 		if (triggers.count() > 0 && CheckEventTriggerHere(triggers, true, false)) {
 			return;
 		}
-	}
-
-	if (was_moving) {
-		Game_Map::UpdateEncounterSteps();
 	}
 }
 

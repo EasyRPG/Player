@@ -102,6 +102,16 @@ public:
 	/** @return the menu calling flag */
 	bool IsMenuCalling() const;
 
+	/**
+	 * Set the encounter callling flag
+	 *
+	 * @param value the value of the flag to set
+	 */
+	void SetEncounterCalling(bool value);
+
+	/** @return the encounter calling flag */
+	bool IsEncounterCalling() const;
+
 protected:
 	RPG::SavePartyLocation* data();
 	const RPG::SavePartyLocation* data() const;
@@ -143,6 +153,14 @@ inline void Game_Player::SetMenuCalling(bool value) {
 
 inline bool Game_Player::IsMenuCalling() const {
 	return data()->menu_calling;
+}
+
+inline void Game_Player::SetEncounterCalling(bool value) {
+	data()->encounter_calling = value;
+}
+
+inline bool Game_Player::IsEncounterCalling() const {
+	return data()->encounter_calling;
 }
 
 #endif
