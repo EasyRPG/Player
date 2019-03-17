@@ -52,6 +52,7 @@ public:
 	void CallSave();
 	void CallLoad();
 	void CallDebug();
+	void CallGameover();
 
 	std::unique_ptr<Spriteset_Map> spriteset;
 

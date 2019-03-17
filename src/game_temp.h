@@ -36,7 +36,6 @@ public:
 	static bool battle_calling;
 	static bool inn_calling;
 	static bool to_title;
-	static bool gameover;
 
 	static bool transition_processing;
 	static Transition::TransitionType transition_type;
