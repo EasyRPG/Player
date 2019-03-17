@@ -106,6 +106,7 @@ private:
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();
+	void UpdateVehicleActions();
 
 	TeleportTarget teleport_target;
 };
