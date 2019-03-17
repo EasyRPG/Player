@@ -364,6 +364,9 @@ void Game_Event::OnMoveFailed(int x, int y) {
 
 	if (Main_Data::game_player->IsInPosition(x, y)) {
 		SetAsWaitingForegroundExecution(false, false);
+		// Events with trigger collision and layer same always reset their
+		// stop_count when they fail movement to a tile that the player inhabits.
+		SetStopCount(0);
 		return;
 	}
 }
@@ -441,16 +444,6 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 	Move(move_dir, MoveOption::IgnoreIfCantMove);
 
 	if (move_failed) {
-		if (trigger == RPG::EventPage::Trigger_collision) {
-			int new_x = Game_Map::XwithDirection(GetX(), move_dir);
-			int new_y = Game_Map::YwithDirection(GetY(), move_dir);
-
-			if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
-				SetStopCount(0);
-				return;
-			}
-		}
-
 		if (GetStopCount() >= GetMaxStopCount() + 20) {
 			if (GetStopCount() >= GetMaxStopCount() + 60) {
 				Move(ReverseDir(move_dir));
