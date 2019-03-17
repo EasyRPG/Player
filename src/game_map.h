@@ -289,8 +289,10 @@ namespace Game_Map {
 
 	/**
 	 * Updates encounter steps according to terrain.
+	 *
+	 * @return true if an encounter should trigger.
 	 */
-	void UpdateEncounterSteps();
+	bool UpdateEncounterSteps();
 
 	/**
 	 * Sets encounter_steps to steps.

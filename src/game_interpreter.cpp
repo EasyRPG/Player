@@ -125,6 +125,7 @@ void Game_Interpreter::Setup(
 	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
 		Main_Data::game_player->SetMenuCalling(false);
+		Main_Data::game_player->SetEncounterCalling(false);
 	}
 }
 
