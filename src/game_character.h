@@ -510,8 +510,7 @@ public:
 	 *
 	 * @return whether the character is stopping.
 	 */
-	virtual bool IsStopping() const;
-
+	bool IsStopping() const;
 
 	/**
 	 * Makes way for the character to move to (x,y). Returns
@@ -849,7 +848,7 @@ protected:
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
 	void SetMaxStopCountForWait();
-	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
+	virtual void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route);
 	void IncAnimCount();
 	void IncAnimFrame();
 
@@ -1127,6 +1126,15 @@ inline bool Game_Character::IsJumping() const {
 inline void Game_Character::SetJumping(bool val) {
 	data()->jumping = val;
 }
+
+inline bool Game_Character::IsMoving() const {
+	return !IsJumping() && GetRemainingStep() > 0;
+}
+
+inline bool Game_Character::IsStopping() const {
+	return !(IsMoving() || IsJumping());
+}
+
 
 inline int Game_Character::GetBeginJumpX() const {
 	return data()->begin_jump_x;

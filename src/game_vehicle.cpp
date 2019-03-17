@@ -253,9 +253,6 @@ void Game_Vehicle::UpdateAnimationShip() {
 }
 
 void Game_Vehicle::AnimateAscentDescent() {
-	if (!IsStopping()) {
-		return;
-	}
 	if (IsAscending()) {
 		data()->remaining_ascent = data()->remaining_ascent - 8;
 	} else if (IsDescending()) {

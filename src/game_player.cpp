@@ -191,7 +191,9 @@ void Game_Player::UpdateVehicleActions() {
 		auto* vehicle = GetVehicle();
 		if (vehicle) {
 			vehicle->SyncWithPlayer();
-			vehicle->AnimateAscentDescent();
+			if (IsStopping()) {
+				vehicle->AnimateAscentDescent();
+			}
 		}
 	}
 
@@ -525,11 +527,12 @@ bool Game_Player::GetOffVehicle() {
 	return true;
 }
 
-bool Game_Player::IsStopping() const {
-	// Prevent MoveRoute execution while the airship is ascending/descending (Issue #1268)
-	if (InAirship() && !GetVehicle()->IsMovable())
-		return false;
-	return Game_Character::IsStopping();
+void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route) {
+	auto* vehicle = GetVehicle();
+	if (vehicle && vehicle->IsAscendingOrDescending()) {
+		return;
+	}
+	Game_Character::UpdateMoveRoute(current_index, current_route);
 }
 
 bool Game_Player::IsMovable() const {
