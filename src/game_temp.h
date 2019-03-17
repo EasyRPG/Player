@@ -33,7 +33,6 @@ public:
 	 */
 	static void Init();
 
-	static bool battle_calling;
 	static bool inn_calling;
 	static bool to_title;
 
