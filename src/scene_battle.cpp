@@ -97,21 +97,21 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::TransitionIn(SceneType prev_scene) {
-	if (Game_Temp::transition_menu) {
-		Game_Temp::transition_menu = false;
+	if (prev_scene == Scene::Debug) {
 		Scene::TransitionIn(prev_scene);
-	} else {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+		return;
 	}
+	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
 }
 
 void Scene_Battle::TransitionOut(SceneType next_scene) {
-	if (Player::exit_flag || Game_Battle::battle_test.enabled || Game_Temp::transition_menu || Scene::instance->type == Scene::Title) {
+	if (Player::exit_flag
+			|| Game_Battle::battle_test.enabled
+			|| next_scene == Scene::Debug || next_scene == Scene::Title) {
 		Scene::TransitionOut(next_scene);
+		return;
 	}
-	else {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
-	}
+	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
 }
 
 void Scene_Battle::DrawBackground() {
@@ -622,7 +622,6 @@ void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
 
 void Scene_Battle::CallDebug() {
 	if (Player::debug_flag) {
-		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }
