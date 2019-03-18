@@ -45,7 +45,7 @@ void Scene_GameBrowser::Start() {
 	Player::FrameReset();
 }
 
-void Scene_GameBrowser::Continue() {
+void Scene_GameBrowser::Continue(SceneType prev_scene) {
 #ifdef _WIN32
 	SetCurrentDirectory(L"..");
 #endif

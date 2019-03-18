@@ -85,8 +85,10 @@ public:
 	 * Continue processing.
 	 * This function is executed when returning from a
 	 * nested scene (instead of Start).
+	 *
+	 * @param prev_scene The previous scene
 	 */
-	virtual void Continue();
+	virtual void Continue(SceneType prev_scene);
 
 	/**
 	 * Resume processing.

@@ -37,7 +37,7 @@ public:
 	Scene_Menu(int menu_index = 0);
 
 	void Start() override;
-	void Continue() override;
+	void Continue(SceneType prev_scene) override;
 	void Update() override;
 
 	/**

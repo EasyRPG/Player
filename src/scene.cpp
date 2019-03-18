@@ -102,7 +102,7 @@ void Scene::MainFunction() {
 						Start();
 						initialized = true;
 					} else {
-						Continue();
+						Continue(prev_scene);
 					}
 					break;
 				default:;
@@ -140,7 +140,7 @@ void Scene::MainFunction() {
 void Scene::Start() {
 }
 
-void Scene::Continue() {
+void Scene::Continue(SceneType prev_scene) {
 }
 
 void Scene::Resume() {

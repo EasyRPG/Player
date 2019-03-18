@@ -45,7 +45,7 @@ void Scene_Item::Start() {
 	item_window->SetIndex(item_index);
 }
 
-void Scene_Item::Continue() {
+void Scene_Item::Continue(SceneType prev_scene) {
 	item_window->Refresh();
 }
 

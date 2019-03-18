@@ -52,7 +52,7 @@ void Scene_Title::Start() {
 	CreateCommandWindow();
 }
 
-void Scene_Title::Continue() {
+void Scene_Title::Continue(SceneType prev_scene) {
 	if (restart_title_cache) {
 		// Clear the cache when the game returns to the title screen
 		// e.g. by pressing F12, except the Title Load menu

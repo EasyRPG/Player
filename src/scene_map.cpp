@@ -80,7 +80,7 @@ void Scene_Map::Start() {
 	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
-void Scene_Map::Continue() {
+void Scene_Map::Continue(SceneType prev_scene) {
 	teleport_from_other_scene = true;
 	if (called_battle) {
 		// Came from battle

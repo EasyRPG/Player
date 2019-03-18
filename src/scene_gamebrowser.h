@@ -36,7 +36,7 @@ public:
 	Scene_GameBrowser();
 
 	void Start() override;
-	void Continue() override;
+	void Continue(SceneType prev_scene) override;
 	void Update() override;
 
 	/**
