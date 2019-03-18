@@ -99,7 +99,7 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	spriteset->Update();
 }
 
-void Scene_Map::Resume() {
+void Scene_Map::Resume(SceneType prev_scene) {
 	teleport_from_other_scene = false;
 	called_battle = false;
 }

@@ -79,7 +79,7 @@ void Scene_Title::TransitionIn(SceneType prev_scene) {
 	}
 }
 
-void Scene_Title::Resume() {
+void Scene_Title::Resume(SceneType prev_scene) {
 	if (!Data::system.show_title || Player::new_game_flag)
 		return;
 

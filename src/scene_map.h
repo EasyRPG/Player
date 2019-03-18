@@ -39,7 +39,7 @@ public:
 	void Start() override;
 	void Continue(SceneType prev_scene) override;
 	void Update() override;
-	void Resume() override;
+	void Resume(SceneType prev_scene) override;
 	void TransitionIn(SceneType prev_scene) override;
 	void TransitionOut(SceneType next_scene) override;
 	void DrawBackground() override;

@@ -95,8 +95,10 @@ public:
 	 * This function is executed after the fade in,
 	 * either when starting the scene or when returning
 	 * from a nested scene
+	 *
+	 * @param prev_scene The previous scene
 	 */
-	virtual void Resume();
+	virtual void Resume(SceneType prev_scene);
 
 	/**
 	 * Suspend processing.

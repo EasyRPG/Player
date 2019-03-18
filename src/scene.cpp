@@ -111,7 +111,7 @@ void Scene::MainFunction() {
 			push_pop_operation = 0;
 
 			TransitionIn(prev_scene);
-			Resume();
+			Resume(prev_scene);
 
 			init = true;
 			return;
@@ -143,7 +143,7 @@ void Scene::Start() {
 void Scene::Continue(SceneType prev_scene) {
 }
 
-void Scene::Resume() {
+void Scene::Resume(SceneType prev_scene) {
 }
 
 void Scene::Suspend() {
