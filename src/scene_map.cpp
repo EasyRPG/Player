@@ -82,7 +82,7 @@ void Scene_Map::Start() {
 
 void Scene_Map::Continue(SceneType prev_scene) {
 	teleport_from_other_scene = true;
-	if (called_battle) {
+	if (prev_scene == Scene::Battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 	}
@@ -99,18 +99,15 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	spriteset->Update();
 }
 
-void Scene_Map::Resume(SceneType prev_scene) {
-	teleport_from_other_scene = false;
-	called_battle = false;
-}
-
 void Scene_Map::TransitionIn(SceneType prev_scene) {
+	teleport_from_other_scene = false;
+
 	// Teleport already setup a transition.
 	if (Graphics::IsTransitionPending()) {
 		return;
 	}
 
-	if (called_battle) {
+	if (prev_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
@@ -121,16 +118,16 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
-	if (called_battle) {
+	if (next_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
+		return;
 	}
-	else if (next_scene == Scene::Gameover) {
+	if (next_scene == Scene::Gameover) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		return;
 	}
-	else {
-		Scene::TransitionOut(next_scene);
-	}
+	Scene::TransitionOut(next_scene);
 }
 
 void Scene_Map::DrawBackground() {
@@ -312,7 +309,6 @@ void Scene_Map::FinishPendingTeleport() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	called_battle = true;
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
