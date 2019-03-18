@@ -47,7 +47,6 @@ Scene_Map::Scene_Map(bool from_save) :
 }
 
 Scene_Map::~Scene_Map() {
-	Game_Temp::transition_menu = false;
 }
 
 void Scene_Map::Start() {
@@ -85,10 +84,10 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	if (prev_scene == Scene::Battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+		return;
 	}
-	else {
-		Game_Map::PlayBgm();
-	}
+
+	Game_Map::PlayBgm();
 
 	// Player cast Escape / Teleport from menu
 	if (Main_Data::game_player->IsPendingTeleport()) {
@@ -97,6 +96,24 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	}
 
 	spriteset->Update();
+}
+
+static bool IsMenuScene(Scene::SceneType scene) {
+	switch (scene) {
+		case Scene::Shop:
+		case Scene::Name:
+		case Scene::Menu:
+		case Scene::Save:
+		case Scene::Load:
+		case Scene::Debug:
+		case Scene::Skill:
+		case Scene::Item:
+		case Scene::Teleport:
+			return true;
+		default:
+			break;
+	}
+	return false;
 }
 
 void Scene_Map::TransitionIn(SceneType prev_scene) {
@@ -109,12 +126,15 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 
 	if (prev_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
-	} else if (Game_Temp::transition_menu) {
-		Game_Temp::transition_menu = false;
-		Scene::TransitionIn(prev_scene);
-	} else {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
+		return;
 	}
+
+	if (IsMenuScene(prev_scene)) {
+		Scene::TransitionIn(prev_scene);
+		return;
+	}
+
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
@@ -317,20 +337,14 @@ void Scene_Map::CallBattle() {
 }
 
 void Scene_Map::CallShop() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
-	Game_Temp::transition_menu = true;
-
 	// TODO: Main_Data::game_player->Straighten();
 
 	Scene::Push(std::make_shared<Scene_Menu>());
@@ -345,20 +359,15 @@ void Scene_Map::CallMenu() {
 }
 
 void Scene_Map::CallSave() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Load>());
 }
 
 void Scene_Map::CallDebug() {
 	if (Player::debug_flag) {
-		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }

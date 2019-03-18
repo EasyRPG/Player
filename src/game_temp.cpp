@@ -24,7 +24,6 @@ bool Game_Temp::to_title;
 bool Game_Temp::transition_processing;
 Transition::TransitionType Game_Temp::transition_type;
 bool Game_Temp::transition_erase;
-bool Game_Temp::transition_menu;
 bool Game_Temp::shop_buys;
 bool Game_Temp::shop_sells;
 int Game_Temp::shop_type;
@@ -51,7 +50,6 @@ void Game_Temp::Init() {
 	transition_processing = false;
 	transition_type = Transition::TransitionNone;
 	transition_erase = false;
-	transition_menu = false;
 	shop_buys = true;
 	shop_sells = true;
 	shop_type = 0;
