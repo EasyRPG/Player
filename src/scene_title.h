@@ -36,7 +36,7 @@ public:
 
 	void Start() override;
 	void Continue() override;
-	void TransitionIn() override;
+	void TransitionIn(SceneType prev_scene) override;
 	void Resume() override;
 	void Update() override;
 

@@ -107,14 +107,18 @@ public:
 	/**
 	 * Does the transition upon starting or resuming
 	 * the scene
+	 *
+	 * @param prev_scene the scene we transitioned from
 	 */
-	virtual void TransitionIn();
+	virtual void TransitionIn(SceneType prev_scene);
 
 	/**
 	 * Does the transition upon ending or suspending
 	 * the scene
+	 *
+	 * @param next_scene the scene we will transition to
 	 */
-	virtual void TransitionOut();
+	virtual void TransitionOut(SceneType next_scene);
 
 	/**
 	 * Called when a transition or async load is finished.
@@ -231,6 +235,7 @@ private:
 	Graphics::State state;
 
 	static void DebugValidate(const char* caller);
+	static void UpdatePrevScene();
 
 	Scene::SceneType request_scene = Null;
 };

@@ -65,12 +65,12 @@ void Scene_Title::Continue() {
 	}
 }
 
-void Scene_Title::TransitionIn() {
+void Scene_Title::TransitionIn(SceneType prev_scene) {
 	if (Game_Battle::battle_test.enabled || !Data::system.show_title || Player::new_game_flag)
 		return;
 
 	if (command_window->GetVisible()) {
-		Scene::TransitionIn();
+		Scene::TransitionIn(prev_scene);
 	}
 	else if (!Player::hide_title_flag) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);

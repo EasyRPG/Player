@@ -96,18 +96,18 @@ void Scene_Battle::Start() {
 	SetState(State_Start);
 }
 
-void Scene_Battle::TransitionIn() {
+void Scene_Battle::TransitionIn(SceneType prev_scene) {
 	if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
-		Scene::TransitionIn();
+		Scene::TransitionIn(prev_scene);
 	} else {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
 	}
 }
 
-void Scene_Battle::TransitionOut() {
+void Scene_Battle::TransitionOut(SceneType next_scene) {
 	if (Player::exit_flag || Game_Battle::battle_test.enabled || Game_Temp::transition_menu || Scene::instance->type == Scene::Title) {
-		Scene::TransitionOut();
+		Scene::TransitionOut(next_scene);
 	}
 	else {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);

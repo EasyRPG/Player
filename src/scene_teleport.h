@@ -37,7 +37,7 @@ public:
 
 	void Start() override;
 	void Update() override;
-	void TransitionOut() override;
+	void TransitionOut(SceneType next_scene) override;
 private:
 	std::unique_ptr<Window_Teleport> teleport_window;
 

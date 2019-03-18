@@ -51,10 +51,10 @@ void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 	background->SetBitmap(Cache::Gameover(result->file));
 }
 
-void Scene_Gameover::TransitionIn() {
+void Scene_Gameover::TransitionIn(SceneType prev_scene) {
 	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 80);
 }
 
-void Scene_Gameover::TransitionOut() {
+void Scene_Gameover::TransitionOut(SceneType next_scene) {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 80, true);
 }

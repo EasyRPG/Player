@@ -104,7 +104,7 @@ void Scene_Map::Resume() {
 	called_battle = false;
 }
 
-void Scene_Map::TransitionIn() {
+void Scene_Map::TransitionIn(SceneType prev_scene) {
 	// Teleport already setup a transition.
 	if (Graphics::IsTransitionPending()) {
 		return;
@@ -114,22 +114,22 @@ void Scene_Map::TransitionIn() {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
-		Scene::TransitionIn();
+		Scene::TransitionIn(prev_scene);
 	} else {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 	}
 }
 
-void Scene_Map::TransitionOut() {
+void Scene_Map::TransitionOut(SceneType next_scene) {
 	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
 	}
-	else if (Scene::instance && Scene::instance->type == Scene::Gameover) {
+	else if (next_scene == Scene::Gameover) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
 	}
 	else {
-		Scene::TransitionOut();
+		Scene::TransitionOut(next_scene);
 	}
 }
 

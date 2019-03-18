@@ -39,7 +39,7 @@ public:
 	void Start() override;
 	void Continue() override;
 	void Update() override;
-	void TransitionOut() override;
+	void TransitionOut(Scene::SceneType next_scene) override;
 
 private:
 	/** Displays description about the selected item. */

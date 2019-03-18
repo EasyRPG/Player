@@ -64,10 +64,10 @@ void Scene_Teleport::Update() {
 	}
 }
 
-void Scene_Teleport::TransitionOut() {
-	if (Scene::instance->type == Map) {
+void Scene_Teleport::TransitionOut(SceneType next_scene) {
+	if (next_scene == Map) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
 	} else {
-		Scene::TransitionOut();
+		Scene::TransitionOut(next_scene);
 	}
 }

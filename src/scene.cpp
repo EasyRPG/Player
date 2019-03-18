@@ -68,6 +68,7 @@ enum PushPopOperation {
 };
 
 int Scene::push_pop_operation = 0;
+Scene::SceneType prev_scene = Scene::Null;
 
 Scene::Scene() {
 	type = Scene::Null;
@@ -109,7 +110,7 @@ void Scene::MainFunction() {
 
 			push_pop_operation = 0;
 
-			TransitionIn();
+			TransitionIn(prev_scene);
 			Resume();
 
 			init = true;
@@ -127,7 +128,7 @@ void Scene::MainFunction() {
 		Graphics::Update();
 
 		Suspend();
-		TransitionOut();
+		TransitionOut(instance ? instance->type : Null);
 
 		// TransitionOut stored a screenshot of the last scene
 		Graphics::UpdateSceneCallback();
@@ -148,11 +149,11 @@ void Scene::Resume() {
 void Scene::Suspend() {
 }
 
-void Scene::TransitionIn() {
+void Scene::TransitionIn(SceneType) {
 	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
 }
 
-void Scene::TransitionOut() {
+void Scene::TransitionOut(SceneType) {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
@@ -186,7 +187,12 @@ bool Scene::IsAsyncPending() {
 void Scene::Update() {
 }
 
+void Scene::UpdatePrevScene() {
+	prev_scene = instance ? instance->type : Null;
+}
+
 void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
+	UpdatePrevScene();
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
 		instances.pop_back();
@@ -201,6 +207,7 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 }
 
 void Scene::Pop() {
+	UpdatePrevScene();
 	old_instances.push_back(instances.back());
 	instances.pop_back();
 
@@ -216,6 +223,7 @@ void Scene::Pop() {
 }
 
 void Scene::PopUntil(SceneType type) {
+	UpdatePrevScene();
 	int count = 0;
 
 	for (int i = (int)instances.size() - 1 ; i >= 0; --i) {
