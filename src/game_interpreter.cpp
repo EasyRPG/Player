@@ -260,6 +260,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	}
 
 	updating = false;
+
+	if (Game_Map::GetNeedRefresh()) {
+		Game_Map::Refresh();
+	}
 }
 
 // Setup Starting Event
