@@ -782,6 +782,7 @@ int Game_Character::DistanceYfromPlayer() const {
 
 void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 									int frequency) {
+	const auto prev_max_sc = GetMaxStopCount();
 	if (IsMoveRouteActive()) {
 		CancelMoveRoute();
 	}
@@ -805,7 +806,12 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 
 	SetMoveRouteOverwritten(true);
 	SetMoveFrequency(frequency);
-	SetMaxStopCountForStep();
+
+	if (frequency != original_move_frequency) {
+		SetMaxStopCountForStep();
+	} else {
+		SetMaxStopCount(prev_max_sc);
+	}
 }
 
 void Game_Character::CancelMoveRoute() {
