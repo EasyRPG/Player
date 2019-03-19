@@ -39,6 +39,7 @@ public:
 	void Start() override;
 	void Continue() override;
 	void Update() override;
+	void TransitionOut() override;
 
 private:
 	/** Displays description about the selected item. */

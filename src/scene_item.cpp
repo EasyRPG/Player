@@ -29,6 +29,7 @@
 #include "scene_map.h"
 #include "scene_teleport.h"
 #include "output.h"
+#include "transition.h"
 
 Scene_Item::Scene_Item(int item_index) :
 	item_index(item_index) {
@@ -104,5 +105,19 @@ void Scene_Item::Update() {
 		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		}
+	}
+}
+
+void Scene_Item::TransitionOut() {
+	const auto* item = item_window->GetItem();
+	const RPG::Skill* skill = nullptr;
+	if (item && item->type == RPG::Item::Type_special && item->skill_id > 0) {
+		skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+	}
+
+	if (Scene::instance && Scene::instance->type == Map && skill && skill->type == RPG::Skill::Type_escape) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	} else {
+		Scene::TransitionOut();
 	}
 }
