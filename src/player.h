@@ -20,7 +20,10 @@
 
 // Headers
 #include "baseui.h"
+#include "transition.h"
 #include <vector>
+
+class Scene;
 
 /**
  * Player namespace.
@@ -71,6 +74,16 @@ namespace Player {
 	 * @param update_scene Whether to update the current scene.
 	 */
 	void Update(bool update_scene = true);
+
+	/**
+	 * Executions a transition show right now
+	 */
+	void TransitionShow(Transition::TransitionType type, int frames, Scene* scene);
+
+	/**
+	 * Executions a transition erase right now
+	 */
+	void TransitionErase(Transition::TransitionType type, int frames, Scene* scene);
 
 	/**
 	 * Returns executed game frames since player start.

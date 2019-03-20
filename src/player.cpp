@@ -69,6 +69,7 @@
 #include "scene_battle.h"
 #include "scene_logo.h"
 #include "utils.h"
+#include "transition.h"
 #include "version.h"
 
 #ifndef EMSCRIPTEN
@@ -326,6 +327,23 @@ void Player::Update(bool update_scene) {
 	}
 
 	start_time = next_frame;
+}
+
+void DoTransition(Transition::TransitionType type, int frames, bool erase, Scene* scene) {
+	auto& transition = Graphics::GetTransition();
+	transition.Init(type, scene, frames, erase);
+
+	while (transition.IsActive()) {
+		Player::Update(false);
+	}
+}
+
+void Player::TransitionShow(Transition::TransitionType type, int frames, Scene* scene) {
+	DoTransition(type, frames, false, scene);
+}
+
+void Player::TransitionErase(Transition::TransitionType type, int frames, Scene* scene) {
+	DoTransition(type, frames, true, scene);
 }
 
 void Player::FrameReset() {

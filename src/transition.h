@@ -23,7 +23,9 @@
 #include <string>
 #include "drawable.h"
 #include "system.h"
-#include "scene.h"
+#include "color.h"
+
+class Scene;
 
 
 /**
@@ -77,7 +79,7 @@ public:
 
 	int GetZ() const override;
 	DrawableType GetType() const override;
-	
+
 	/**
 	 * Defines a screen transition.
 	 *

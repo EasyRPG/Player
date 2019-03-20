@@ -21,7 +21,6 @@
 // Headers
 #include <string>
 #include "game_battler.h"
-#include "transition.h"
 
 /**
  * Game Temp static class.
@@ -36,9 +35,6 @@ public:
 	static bool inn_calling;
 	static bool to_title;
 
-	static bool transition_processing;
-	static Transition::TransitionType transition_type;
-	static bool transition_erase;
 	static bool transition_menu;
 
 	static bool shop_buys;

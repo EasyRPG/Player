@@ -46,6 +46,7 @@
 #include "util_macro.h"
 #include "game_interpreter_map.h"
 #include "reader_lcf.h"
+#include "transition.h"
 
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {

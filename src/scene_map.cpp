@@ -96,20 +96,22 @@ void Scene_Map::TransitionOut() {
 	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
+		return;
 	}
-	else if (Scene::instance && Scene::instance->type == Scene::Gameover) {
+
+	screen_erased_by_event = false;
+	if (Scene::instance && Scene::instance->type == Scene::Gameover) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		return;
 	}
-	else {
-		Scene::TransitionOut();
-	}
+	Scene::TransitionOut();
 }
 
 void Scene_Map::OnTransitionFinish() {
 	if (Graphics::IsTransitionErased()) {
 		if (Main_Data::game_player->IsPendingTeleport()) {
 			FinishPendingTeleport();
-			if (!Game_Temp::transition_erase) {
+			if (!screen_erased_by_event) {
 				if (!Game_Temp::transition_menu) {
 					Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 				} else {
@@ -142,16 +144,15 @@ void Scene_Map::PreUpdate() {
 }
 
 void Scene_Map::Update() {
-	if (Game_Temp::transition_processing) {
-		Game_Temp::transition_processing = false;
-
-		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-	}
-
 	Main_Data::game_party->UpdateTimers();
 
 	Main_Data::game_screen->Update();
 	Game_Map::Update();
+
+	if (Graphics::IsTransitionErased()) {
+		screen_erased_by_event = true;
+	}
+
 	spriteset->Update();
 	message_window->Update();
 

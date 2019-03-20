@@ -65,6 +65,7 @@ private:
 	std::unique_ptr<Window_Message> message_window;
 
 	bool from_save;
+	bool screen_erased_by_event = false;
 	bool call_scenes_on_transition_in = false;
 	bool called_battle = false;
 	int debug_menuoverwrite_counter = 0;

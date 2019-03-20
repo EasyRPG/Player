@@ -43,6 +43,7 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
+#include "scene.h"
 
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;

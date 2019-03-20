@@ -17,13 +17,9 @@
 
 // Headers
 #include "game_temp.h"
-#include "transition.h"
 
 bool Game_Temp::inn_calling;
 bool Game_Temp::to_title;
-bool Game_Temp::transition_processing;
-Transition::TransitionType Game_Temp::transition_type;
-bool Game_Temp::transition_erase;
 bool Game_Temp::transition_menu;
 bool Game_Temp::shop_buys;
 bool Game_Temp::shop_sells;
@@ -48,9 +44,6 @@ int Game_Temp::battle_result;
 void Game_Temp::Init() {
 	inn_calling = false;
 	to_title = false;
-	transition_processing = false;
-	transition_type = Transition::TransitionNone;
-	transition_erase = false;
 	transition_menu = false;
 	shop_buys = true;
 	shop_sells = true;

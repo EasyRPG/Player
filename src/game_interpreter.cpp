@@ -51,12 +51,6 @@
 #include "utils.h"
 #include "transition.h"
 
-namespace {
-	// Used to ensure that the interpreter that runs after a Erase/ShowScreen
-	// is the invoker of the transition
-	static Game_Interpreter* transition_owner = nullptr;
-}
-
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -195,16 +189,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		} else {
 			if ((Game_Message::visible || Game_Message::message_waiting) && wait_messages)
 				break;
-		}
-
-		if (Game_Temp::transition_processing) {
-			break;
-		}
-
-		if (transition_owner && transition_owner != this) {
-			break;
-		} else {
-			transition_owner = nullptr;
 		}
 
 		if (wait_count > 0) {
@@ -1795,161 +1779,163 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
-	if (Game_Temp::transition_processing || Game_Message::visible)
+	if (Game_Message::visible)
 		return false;
 
-	Game_Temp::transition_processing = true;
-	Game_Temp::transition_erase = true;
-	transition_owner = this;
+	auto transition_type = Transition::TransitionNone;
 
 	switch (com.parameters[0]) {
 	case -1:
-		Game_Temp::transition_type = (Transition::TransitionType)Game_System::GetTransition(
+		transition_type = (Transition::TransitionType)Game_System::GetTransition(
 			Game_System::Transition_TeleportErase);
-		return true;
+		break;
 	case 0:
-		Game_Temp::transition_type = Transition::TransitionFadeOut;
-		return true;
+		transition_type = Transition::TransitionFadeOut;
+		break;
 	case 1:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocks;
-		return true;
+		transition_type = Transition::TransitionRandomBlocks;
+		break;
 	case 2:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocksUp;
-		return true;
+		transition_type = Transition::TransitionRandomBlocksUp;
+		break;
 	case 3:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocksDown;
-		return true;
+		transition_type = Transition::TransitionRandomBlocksDown;
+		break;
 	case 4:
-		Game_Temp::transition_type = Transition::TransitionBlindClose;
-		return true;
+		transition_type = Transition::TransitionBlindClose;
+		break;
 	case 5:
-		Game_Temp::transition_type = Transition::TransitionVerticalStripesOut;
-		return true;
+		transition_type = Transition::TransitionVerticalStripesOut;
+		break;
 	case 6:
-		Game_Temp::transition_type = Transition::TransitionHorizontalStripesOut;
-		return true;
+		transition_type = Transition::TransitionHorizontalStripesOut;
+		break;
 	case 7:
-		Game_Temp::transition_type = Transition::TransitionBorderToCenterOut;
-		return true;
+		transition_type = Transition::TransitionBorderToCenterOut;
+		break;
 	case 8:
-		Game_Temp::transition_type = Transition::TransitionCenterToBorderOut;
-		return true;
+		transition_type = Transition::TransitionCenterToBorderOut;
+		break;
 	case 9:
-		Game_Temp::transition_type = Transition::TransitionScrollUpOut;
-		return true;
+		transition_type = Transition::TransitionScrollUpOut;
+		break;
 	case 10:
-		Game_Temp::transition_type = Transition::TransitionScrollDownOut;
-		return true;
+		transition_type = Transition::TransitionScrollDownOut;
+		break;
 	case 11:
-		Game_Temp::transition_type = Transition::TransitionScrollLeftOut;
-		return true;
+		transition_type = Transition::TransitionScrollLeftOut;
+		break;
 	case 12:
-		Game_Temp::transition_type = Transition::TransitionScrollRightOut;
-		return true;
+		transition_type = Transition::TransitionScrollRightOut;
+		break;
 	case 13:
-		Game_Temp::transition_type = Transition::TransitionVerticalDivision;
-		return true;
+		transition_type = Transition::TransitionVerticalDivision;
+		break;
 	case 14:
-		Game_Temp::transition_type = Transition::TransitionHorizontalDivision;
-		return true;
+		transition_type = Transition::TransitionHorizontalDivision;
+		break;
 	case 15:
-		Game_Temp::transition_type = Transition::TransitionCrossDivision;
-		return true;
+		transition_type = Transition::TransitionCrossDivision;
+		break;
 	case 16:
-		Game_Temp::transition_type = Transition::TransitionZoomIn;
-		return true;
+		transition_type = Transition::TransitionZoomIn;
+		break;
 	case 17:
-		Game_Temp::transition_type = Transition::TransitionMosaicOut;
-		return true;
+		transition_type = Transition::TransitionMosaicOut;
+		break;
 	case 18:
-		Game_Temp::transition_type = Transition::TransitionWaveOut;
-		return true;
+		transition_type = Transition::TransitionWaveOut;
+		break;
 	case 19:
-		Game_Temp::transition_type = Transition::TransitionErase;
-		return true;
+		transition_type = Transition::TransitionErase;
+		break;
 	default:
-		Game_Temp::transition_type = Transition::TransitionNone;
-		return true;
+		transition_type = Transition::TransitionNone;
+		break;
 	}
+
+	Player::TransitionErase(transition_type, 32, Scene::instance.get());
+	return true;
 }
 
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
-	if (Game_Temp::transition_processing || Game_Message::visible)
+	if (Game_Message::visible)
 		return false;
 
-	Game_Temp::transition_processing = true;
-	Game_Temp::transition_erase = false;
-	transition_owner = this;
+	auto transition_type = Transition::TransitionNone;
 
 	switch (com.parameters[0]) {
 	case -1:
-		Game_Temp::transition_type = (Transition::TransitionType)Game_System::GetTransition(
+		transition_type = (Transition::TransitionType)Game_System::GetTransition(
 			Game_System::Transition_TeleportShow);
-		return true;
+		break;
 	case 0:
-		Game_Temp::transition_type = Transition::TransitionFadeIn;
-		return true;
+		transition_type = Transition::TransitionFadeIn;
+		break;
 	case 1:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocks;
-		return true;
+		transition_type = Transition::TransitionRandomBlocks;
+		break;
 	case 2:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocksUp;
-		return true;
+		transition_type = Transition::TransitionRandomBlocksUp;
+		break;
 	case 3:
-		Game_Temp::transition_type = Transition::TransitionRandomBlocksDown;
-		return true;
+		transition_type = Transition::TransitionRandomBlocksDown;
+		break;
 	case 4:
-		Game_Temp::transition_type = Transition::TransitionBlindOpen;
-		return true;
+		transition_type = Transition::TransitionBlindOpen;
+		break;
 	case 5:
-		Game_Temp::transition_type = Transition::TransitionVerticalStripesIn;
-		return true;
+		transition_type = Transition::TransitionVerticalStripesIn;
+		break;
 	case 6:
-		Game_Temp::transition_type = Transition::TransitionHorizontalStripesIn;
-		return true;
+		transition_type = Transition::TransitionHorizontalStripesIn;
+		break;
 	case 7:
-		Game_Temp::transition_type = Transition::TransitionBorderToCenterIn;
-		return true;
+		transition_type = Transition::TransitionBorderToCenterIn;
+		break;
 	case 8:
-		Game_Temp::transition_type = Transition::TransitionCenterToBorderIn;
-		return true;
+		transition_type = Transition::TransitionCenterToBorderIn;
+		break;
 	case 9:
-		Game_Temp::transition_type = Transition::TransitionScrollUpIn;
-		return true;
+		transition_type = Transition::TransitionScrollUpIn;
+		break;
 	case 10:
-		Game_Temp::transition_type = Transition::TransitionScrollDownIn;
-		return true;
+		transition_type = Transition::TransitionScrollDownIn;
+		break;
 	case 11:
-		Game_Temp::transition_type = Transition::TransitionScrollLeftIn;
-		return true;
+		transition_type = Transition::TransitionScrollLeftIn;
+		break;
 	case 12:
-		Game_Temp::transition_type = Transition::TransitionScrollRightIn;
-		return true;
+		transition_type = Transition::TransitionScrollRightIn;
+		break;
 	case 13:
-		Game_Temp::transition_type = Transition::TransitionVerticalCombine;
-		return true;
+		transition_type = Transition::TransitionVerticalCombine;
+		break;
 	case 14:
-		Game_Temp::transition_type = Transition::TransitionHorizontalCombine;
-		return true;
+		transition_type = Transition::TransitionHorizontalCombine;
+		break;
 	case 15:
-		Game_Temp::transition_type = Transition::TransitionCrossCombine;
-		return true;
+		transition_type = Transition::TransitionCrossCombine;
+		break;
 	case 16:
-		Game_Temp::transition_type = Transition::TransitionZoomOut;
-		return true;
+		transition_type = Transition::TransitionZoomOut;
+		break;
 	case 17:
-		Game_Temp::transition_type = Transition::TransitionMosaicIn;
-		return true;
+		transition_type = Transition::TransitionMosaicIn;
+		break;
 	case 18:
-		Game_Temp::transition_type = Transition::TransitionWaveIn;
-		return true;
+		transition_type = Transition::TransitionWaveIn;
+		break;
 	case 19:
-		Game_Temp::transition_type = Transition::TransitionErase;
-		return true;
+		transition_type = Transition::TransitionErase;
+		break;
 	default:
-		Game_Temp::transition_type = Transition::TransitionNone;
-		return true;
+		transition_type = Transition::TransitionNone;
+		break;
 	}
+
+	Player::TransitionShow(transition_type, 32, Scene::instance.get());
+	return true;
 }
 
 bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code 11030

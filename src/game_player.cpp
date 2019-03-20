@@ -26,6 +26,7 @@
 #include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
+#include "scene.h"
 #include "main_data.h"
 #include "player.h"
 #include "util_macro.h"
