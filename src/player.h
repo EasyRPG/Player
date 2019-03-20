@@ -86,6 +86,11 @@ namespace Player {
 	void TransitionErase(Transition::TransitionType type, int frames, Scene* scene);
 
 	/**
+	 * Executions a battle transition erase right now
+	 */
+	void TransitionEraseBattle(Transition::TransitionType type, int frames, Scene* scene);
+
+	/**
 	 * Returns executed game frames since player start.
 	 * Should be 60 fps when game ran fast enough.
 	 *

@@ -35,6 +35,7 @@
 #include "scene_load.h"
 #include "scene_map.h"
 #include "window_command.h"
+#include "player.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -72,9 +73,9 @@ void Scene_Title::TransitionIn() {
 		Scene::TransitionIn();
 	}
 	else if (!Player::hide_title_flag) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
+		Player::TransitionShow(Transition::TransitionFadeIn, 32, this);
 	} else {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
+		Player::TransitionShow(Transition::TransitionFadeIn, 6, this);
 	}
 }
 
@@ -206,7 +207,7 @@ void Scene_Title::CommandContinue() {
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+	Player::TransitionErase(Transition::TransitionFadeOut, 32, this);
 	Scene::Pop();
 }
 

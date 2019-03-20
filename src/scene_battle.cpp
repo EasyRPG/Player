@@ -101,7 +101,7 @@ void Scene_Battle::TransitionIn() {
 		Game_Temp::transition_menu = false;
 		Scene::TransitionIn();
 	} else {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+		Player::TransitionShow((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), 32, this);
 	}
 }
 
@@ -110,7 +110,7 @@ void Scene_Battle::TransitionOut() {
 		Scene::TransitionOut();
 	}
 	else {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
+		Player::TransitionErase((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), 32, this);
 	}
 }
 

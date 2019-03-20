@@ -42,7 +42,6 @@ public:
 	void Resume() override;
 	void TransitionIn() override;
 	void TransitionOut() override;
-	void OnTransitionFinish() override;
 	void DrawBackground() override;
 
 	void CallBattle();
@@ -57,8 +56,8 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
-	void StartPendingTeleport();
-	void FinishPendingTeleport();
+	int HandleTeleportPreUpdateLoop();
+	void HandleTeleport();
 	void PreUpdate();
 	void UpdateSceneCalling();
 

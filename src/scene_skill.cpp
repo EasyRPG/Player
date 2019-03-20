@@ -26,6 +26,7 @@
 #include "scene_actortarget.h"
 #include "scene_teleport.h"
 #include "transition.h"
+#include "player.h"
 
 Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 	actor_index(actor_index), skill_index(skill_index) {
@@ -88,7 +89,7 @@ void Scene_Skill::Update() {
 void Scene_Skill::TransitionOut() {
 	const auto* skill = skill_window->GetSkill();
 	if (Scene::instance && Scene::instance->type == Map && skill && skill->type == RPG::Skill::Type_escape) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		Player::TransitionErase(Transition::TransitionFadeOut, 32, this);
 	} else {
 		Scene::TransitionOut();
 	}

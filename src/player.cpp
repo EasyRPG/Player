@@ -307,11 +307,7 @@ void Player::Update(bool update_scene) {
 	int speed_modifier = GetSpeedModifier();
 
 	for (int i = 0; i < speed_modifier; ++i) {
-		bool was_transition_pending = Graphics::IsTransitionPending();
 		Graphics::Update();
-		if (was_transition_pending && !Graphics::IsTransitionPending() && Scene::instance->IsInitialized()) {
-			Scene::instance->OnTransitionFinish();
-		}
 		if (update_scene) {
 			Scene::instance->Update();
 			++frames;
@@ -329,9 +325,12 @@ void Player::Update(bool update_scene) {
 	start_time = next_frame;
 }
 
-void DoTransition(Transition::TransitionType type, int frames, bool erase, Scene* scene) {
+void DoTransition(Transition::TransitionType type, int frames, bool erase, Scene* scene, bool is_battle=false) {
 	auto& transition = Graphics::GetTransition();
 	transition.Init(type, scene, frames, erase);
+	if (is_battle) {
+		transition.AppendBefore(Color(255, 255, 255, 255), 12, 2);
+	}
 
 	while (transition.IsActive()) {
 		Player::Update(false);
@@ -344,6 +343,10 @@ void Player::TransitionShow(Transition::TransitionType type, int frames, Scene* 
 
 void Player::TransitionErase(Transition::TransitionType type, int frames, Scene* scene) {
 	DoTransition(type, frames, true, scene);
+}
+
+void Player::TransitionEraseBattle(Transition::TransitionType type, int frames, Scene* scene) {
+	DoTransition(type, frames, true, scene, true);
 }
 
 void Player::FrameReset() {

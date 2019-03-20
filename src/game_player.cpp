@@ -536,8 +536,6 @@ void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& 
 bool Game_Player::IsMovable() const {
 	if (IsMoving() || IsJumping())
 		return false;
-	if (Graphics::IsTransitionPending())
-		return false;
 	if (IsMoveRouteOverwritten())
 		return false;
 	if (data()->boarding || data()->unboarding)

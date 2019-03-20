@@ -23,6 +23,7 @@
 #include "input.h"
 #include "main_data.h"
 #include "transition.h"
+#include "player.h"
 
 Scene_Gameover::Scene_Gameover() {
 	type = Scene::Gameover;
@@ -51,9 +52,9 @@ void Scene_Gameover::OnBackgroundReady(FileRequestResult* result) {
 }
 
 void Scene_Gameover::TransitionIn() {
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 80);
+	Player::TransitionShow(Transition::TransitionFadeIn, 80, this);
 }
 
 void Scene_Gameover::TransitionOut() {
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 80, true);
+	Player::TransitionErase(Transition::TransitionFadeOut, 80, this);
 }

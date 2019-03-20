@@ -137,14 +137,11 @@ void Scene::Suspend() {
 }
 
 void Scene::TransitionIn() {
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
+	Player::TransitionShow(Transition::TransitionFadeIn, 6, this);
 }
 
 void Scene::TransitionOut() {
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
-}
-
-void Scene::OnTransitionFinish() {
+	Player::TransitionErase(Transition::TransitionFadeOut, 6, this);
 }
 
 void Scene::Update() {

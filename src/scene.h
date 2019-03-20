@@ -117,11 +117,6 @@ public:
 	virtual void TransitionOut();
 
 	/**
-	 * Called when a transition is finished and scene has been initialized
-	 */
-	virtual void OnTransitionFinish();
-
-	/**
 	 * Called every frame.
 	 * The scene should redraw all elements.
 	 */
