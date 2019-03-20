@@ -469,7 +469,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com) {
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -489,10 +489,9 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 			actor->ChangeHp(actor->GetMaxHp());
 			actor->SetSp(actor->GetMaxSp());
 		}
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 		Game_System::BgmFade(800);
-		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
-		return false;
+		Player::TransitionErase(Transition::TransitionFadeOut, 36, Scene::instance.get());
+		return Game_Interpreter_Map::ContinuationShowInnContinue(com);
 	}
 
 	if (Game_Temp::inn_handlers)
@@ -502,9 +501,6 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& /* com */) {
-	if (Graphics::IsTransitionPending())
-		return false;
-
 	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 	// FIXME: Abusing before_battle_music (Which is unused when calling an Inn)
 	// Is there also before_inn_music in the savegame?
@@ -518,9 +514,6 @@ bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& 
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
-	if (Graphics::IsTransitionPending())
-		return false;
-
 	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
 	if (bgm_inn.name.empty() ||
 		bgm_inn.name == "(OFF)" ||
@@ -530,8 +523,9 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 
 		Game_System::BgmStop();
 		continuation = NULL;
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+
+		Player::TransitionShow(Transition::TransitionFadeIn, 36, Scene::instance.get());
 
 		if (Game_Temp::inn_handlers)
 			SkipTo(Cmd::Stay, Cmd::EndInn);
