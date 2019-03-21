@@ -41,6 +41,7 @@
 #include "screen.h"
 #include "scene_load.h"
 #include "player.h"
+#include "output.h"
 
 Scene_Map::Scene_Map(bool from_save) :
 	from_save(from_save) {
@@ -243,6 +244,10 @@ int Scene_Map::HandleTeleportPreUpdateLoop() {
 		HandleTeleport();
 		PreUpdate();
 		++i;
+
+		if (i > 10000) {
+			Output::Error("Infinite teleport event loop detected!");
+		}
 	}
 	return i;
 }
