@@ -217,13 +217,16 @@ void Scene_Map::UpdateSceneCalling() {
 	if (Game_Message::visible)
 		return;
 
-	if (Player::debug_flag) {
+	auto call = GetRequestedScene();
+	SetRequestedScene(Null);
+
+	if (call == Null && Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					SetRequestedScene(Menu);
+					call = Menu;
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -231,17 +234,16 @@ void Scene_Map::UpdateSceneCalling() {
 			debug_menuoverwrite_counter = 0;
 		}
 
-		if (Input::IsTriggered(Input::DEBUG_MENU)) {
-			SetRequestedScene(Debug);
-		}
-		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-			SetRequestedScene(Save);
+		if (call == Null) {
+			if (Input::IsTriggered(Input::DEBUG_MENU)) {
+				call = Debug;
+			}
+			else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+				call = Save;
+			}
 		}
 	}
 
-	auto call = GetRequestedScene();
-
-	SetRequestedScene(Null);
 	switch (call) {
 		case Scene::Menu:
 			CallMenu();
