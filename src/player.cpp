@@ -208,19 +208,19 @@ void Player::Run() {
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null) {
-#  if defined(_3DS)
-		if (!aptMainLoop())
-			Exit();
-#  elif defined(__SWITCH__)
-		if(!appletMainLoop())
-			Exit();
-#  endif
 		MainLoop();
 	}
 #endif
 }
 
 void Player::MainLoop() {
+#  if defined(_3DS)
+	if (!aptMainLoop())
+		Exit();
+#  elif defined(__SWITCH__)
+	if(!appletMainLoop())
+		Exit();
+#  endif
 	Scene::instance->MainFunction();
 
 	Scene::old_instances.clear();
@@ -333,7 +333,7 @@ void DoTransition(Transition::TransitionType type, int frames, bool erase, Scene
 	}
 
 	while (transition.IsActive()) {
-		Player::Update(false);
+		Player::MainLoop();
 	}
 }
 
