@@ -124,6 +124,11 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 		return;
 	}
 
+	// If an event erased the screen, don't transition in.
+	if (screen_erased_by_event) {
+		return;
+	}
+
 	if (prev_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 		return;
@@ -138,6 +143,11 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 }
 
 void Scene_Map::TransitionOut(SceneType next_scene) {
+	if (next_scene != Scene::Battle
+			&& next_scene != Scene::Debug) {
+		screen_erased_by_event = false;
+	}
+
 	if (next_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
@@ -192,6 +202,7 @@ void Scene_Map::UpdateStage2() {
 	// This will be fixed later.
 
 	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+	screen_erased_by_event = Game_Temp::transition_erase;
 	// Unless its an instant transition, we must wait for it to finish before we can proceed.
 	if (IsAsyncPending()) {
 		async_continuation = [this]() { UpdateStage3(); };
@@ -313,7 +324,7 @@ void Scene_Map::FinishPendingTeleport() {
 	}
 
 	// Event forced the screen to erased, so we're done here.
-	if (Game_Temp::transition_erase) {
+	if (screen_erased_by_event) {
 		UpdateSceneCalling();
 		return;
 	}
