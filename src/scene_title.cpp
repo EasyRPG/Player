@@ -63,30 +63,23 @@ void Scene_Title::Continue(SceneType prev_scene) {
 
 		Start();
 	}
+
+	if (prev_scene != Scene::Load && !Player::hide_title_flag) {
+		command_window->SetOpenAnimation(8);
+	}
 }
 
 void Scene_Title::TransitionIn(SceneType prev_scene) {
 	if (Game_Battle::battle_test.enabled || !Data::system.show_title || Player::new_game_flag)
 		return;
 
-	if (command_window->GetVisible()) {
+	if (prev_scene == Scene::Load || Player::hide_title_flag) {
 		Scene::TransitionIn(prev_scene);
-	}
-	else if (!Player::hide_title_flag) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
-	} else {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
-	}
-}
-
-void Scene_Title::Resume(SceneType prev_scene) {
-	if (!Data::system.show_title || Player::new_game_flag)
 		return;
-
-	if (command_window) {
-		command_window->SetVisible(true);
 	}
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 }
+
 void Scene_Title::Update() {
 	if (Game_Battle::battle_test.enabled) {
 		PrepareBattleTest();
@@ -166,7 +159,7 @@ void Scene_Title::CreateCommandWindow() {
 		command_window->SetBackOpacity(128);
 	}
 
-	command_window->SetVisible(false);
+	command_window->SetVisible(true);
 }
 
 void Scene_Title::PlayTitleMusic() {
