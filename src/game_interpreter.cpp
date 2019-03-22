@@ -2457,7 +2457,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		}
 	}
 
-	if (var_id > 0) {
+	if (result > 0) {
 		Game_Variables.Set(var_id, result);
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
