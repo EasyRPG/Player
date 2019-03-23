@@ -548,6 +548,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
+	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
 	void Apply() override;
 };

@@ -1803,6 +1803,10 @@ const RPG::Sound* Game_BattleAlgorithm::SelfDestruct::GetStartSe() const {
 	return &Game_System::GetSystemSE(Game_System::SFX_EnemyKill);
 }
 
+int Game_BattleAlgorithm::SelfDestruct::GetPhysicalDamageRate() const {
+	return 100;
+}
+
 bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	Reset();
 
@@ -1829,10 +1833,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		lethal = true;
 	}
 
-	// Conditions healed by physical attack:
-	for (auto state_id: healed_conditions) {
-		GetTarget()->RemoveState(state_id);
-	}
+	healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
 
 	success = true;
 
