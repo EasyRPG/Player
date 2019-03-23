@@ -404,6 +404,10 @@ public:
 	 */
 	std::string GetCriticalHitMessage() const;
 
+	std::string GetUndamagedMessage() const;
+	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
+	std::string GetDamagedMessage() const;
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
@@ -411,9 +415,6 @@ protected:
 
 	std::string GetAttackFailureMessage(const std::string& points) const;
 	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
-	std::string GetUndamagedMessage() const;
-	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
-	std::string GetDamagedMessage() const;
 	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
 	std::string GetStateMessage(const std::string& message) const;
 	std::string GetAttributeShiftMessage(const std::string& attribute) const;

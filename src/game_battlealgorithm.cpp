@@ -570,25 +570,9 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		return;
 	}
 
-	if (GetAffectedHp() != -1) {
-
-		if (IsPositive()) {
-			if (!IsRevived() && (GetAffectedHp() > 0 || GetType() != Type::Item)) {
-				out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
-			}
-		}
-		else {
-			if (GetAffectedHp() == 0) {
-				out.push_back(GetUndamagedMessage());
-			}
-			else {
-				if (IsAbsorb()) {
-					out.push_back(GetHpSpAbsorbedMessage(GetAffectedHp(), Data::terms.health_points));
-				}
-				else {
-					out.push_back(GetDamagedMessage());
-				}
-			}
+	if (IsPositive() && GetAffectedHp() != -1) {
+		if (!IsRevived() && (GetAffectedHp() > 0 || GetType() != Type::Item)) {
+			out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
 		}
 	}
 

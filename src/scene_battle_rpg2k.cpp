@@ -439,6 +439,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			return ProcessActionApply(action);
 		case BattleActionState_Failure:
 			return ProcessActionFailure(action);
+		case BattleActionState_Damage:
+			return ProcessActionDamage(action);
 		case BattleActionState_Results:
 			return ProcessActionResults(action);
 		case BattleActionState_Death:
@@ -643,16 +645,8 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 		return ProcessNextAction(BattleActionState_Finished, action);
 	}
 
-	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-	if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
-		target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
-	}
-	if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
-		Main_Data::game_screen->ShakeOnce(3, 5, 8);
-	}
-
-	if (action->GetResultSe()) {
-		Game_System::SePlay(*action->GetResultSe());
+	if (!action->IsPositive() && action->GetAffectedHp() >= 0) {
+		return ProcessNextAction(BattleActionState_Damage, action);
 	}
 
 	return ProcessNextAction(BattleActionState_Results, action);
@@ -680,6 +674,66 @@ bool Scene_Battle_Rpg2k::ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBas
 	SetWait(20, 60);
 
 	return ProcessNextAction(BattleActionState_Finished, action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase* action) {
+	enum SubState {
+		eBegin = 0,
+		eProcess,
+		ePost,
+	};
+
+	if (battle_action_substate == eBegin) {
+		SetWait(4,4);
+		return ProcessNextSubState(eProcess, action);
+	}
+
+	if (battle_action_substate == eProcess) {
+		auto* target = action->GetTarget();
+		assert(target);
+		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+
+		if (!action->IsAbsorb()) {
+			if (target->GetType() == Game_Battler::Type_Ally) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_AllyDamage));
+				Main_Data::game_screen->ShakeOnce(3, 5, 8);
+			} else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_EnemyDamage));
+			}
+			if (target_sprite) {
+				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
+			}
+		}
+
+		std::string msg;
+		if (action->GetAffectedHp() == 0) {
+			msg = action->GetUndamagedMessage();
+		} else  if (action->IsAbsorb()) {
+			msg = action->GetHpSpAbsorbedMessage(action->GetAffectedHp(), Data::terms.health_points);
+		} else {
+			msg = action->GetDamagedMessage();
+		}
+
+		battle_message_window->Push(msg);
+		battle_message_window->ScrollToEnd();
+		if (action->IsAbsorb()) {
+			SetWait(20, 60);
+		} else {
+			SetWait(20, 40);
+		}
+
+		if (action->IsLethal() && action->IsKilledByDamage()) {
+			return ProcessNextAction(BattleActionState_Death, action);
+		}
+
+		return ProcessNextSubState(ePost, action);
+	}
+
+	if (battle_action_substate == ePost) {
+		SetWait(0, 10);
+	}
+
+	return ProcessNextAction(BattleActionState_Results, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action) {
