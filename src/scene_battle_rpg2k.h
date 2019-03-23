@@ -24,6 +24,7 @@
 
 #include "window_command.h"
 #include "window_battlemessage.h"
+#include "game_battlealgorithm.h"
 
 /**
  * Scene_Battle class.
@@ -186,6 +187,7 @@ protected:
 	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
 	void SetWait(int min_wait, int max_wait);
+	void SetWaitForUsage(Game_BattleAlgorithm::Type type);
 	bool CheckWait();
 
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
