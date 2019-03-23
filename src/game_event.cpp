@@ -127,7 +127,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	bool same_direction_as_on_old_page = old_page && old_page->character_direction == new_page->character_direction;
 	SetAnimationType(RPG::EventPage::AnimType(page->animation_type));
 
-	if (GetAnimationType() == RPG::EventPage::AnimType_fixed_graphic) {
+	if (GetAnimationType() == RPG::EventPage::AnimType_fixed_graphic
+			|| GetAnimationType() == RPG::EventPage::AnimType_spin) {
 		SetAnimFrame(page->character_pattern);
 	}
 
