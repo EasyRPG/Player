@@ -377,12 +377,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 }
 
 void Scene_Battle_Rpg2k::SetBattleActionState(BattleActionState state) {
-       battle_action_state = state;
-       battle_action_substate = 0;
+	battle_action_state = state;
+	battle_action_substate = 0;
 }
 
 void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate) {
-       battle_action_substate = substate;
+	battle_action_substate = substate;
 }
 
 bool Scene_Battle_Rpg2k::ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -399,7 +399,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	if (!battle_action_pending) {
 		// First time we are called, do initialization.
 		battle_action_wait = 0;
-		SetBattleActionState(BattleActionState_ConditionHeal);
+		SetBattleActionState(BattleActionState_Begin);
 		battle_action_start_index = 0;
 		battle_action_results_index = 0;
 
@@ -421,8 +421,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	}
 
 	switch (battle_action_state) {
-		case BattleActionState_ConditionHeal:
-			return ProcessActionConditionHeal(action);
+		case BattleActionState_Begin:
+			return ProcessActionBegin(action);
+		case BattleActionState_Conditions:
+			return ProcessActionConditions(action);
 		case BattleActionState_Usage1:
 			return ProcessActionUsage1(action);
 		case BattleActionState_Usage2:
@@ -446,21 +448,32 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	return true;
 }
 
-bool Scene_Battle_Rpg2k::ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_ConditionHeal;
-	if (action->IsFirstAttack()) {
-		battle_message_window->Clear();
+bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
+	auto* src = action->GetSource();
 
-		auto* src = action->GetSource();
+	battle_message_window->Clear();
 
-		if (src->Exists()) {
-			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			if (source_sprite) {
-				source_sprite->Flash(Color(255, 255, 255, 100), 15);
-			}
+	if (src->Exists()) {
+		auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+		if (source_sprite) {
+			source_sprite->Flash(Color(255, 255, 255, 100), 15);
 		}
+	}
 
-		src->NextBattleTurn();
+	src->NextBattleTurn();
+	SetWait(4,4);
+	return ProcessNextAction(BattleActionState_Conditions, action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action) {
+	enum SubState {
+		eConditions = 0,
+		ePostCondition,
+	};
+
+	auto* src = action->GetSource();
+
+	if (battle_action_substate == eConditions) {
 		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
 		src->ApplyConditions();
 
@@ -489,15 +502,18 @@ bool Scene_Battle_Rpg2k::ProcessActionConditionHeal(Game_BattleAlgorithm::Algori
 			// If state is inflicted, only prints if msg not empty.
 			if (pri_was_healed || !msg.empty()) {
 				battle_message_window->PushWithSubject(msg, action->GetSource()->GetName());
-				SetWait(20, 40);
-
-				battle_action_state = BattleActionState_Usage1;
-				return ProcessBattleAction(action);
+				SetWait(20, 60);
+				return ProcessNextSubState(ePostCondition, action);
 			}
 		}
 	}
 
-	return ProcessActionUsage1(action);
+	if (battle_action_substate == ePostCondition) {
+		battle_message_window->Clear();
+		SetWait(4,4);
+	}
+
+	return ProcessNextAction(BattleActionState_Usage1, action);
 }
 
 

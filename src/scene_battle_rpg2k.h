@@ -34,9 +34,14 @@ public:
 	enum BattleActionState {
 		/**
 		 * Called once
+		 * Flashes enemy sprite and a small delay to start action.
+		 */
+		BattleActionState_Begin,
+		/**
+		 * Called once
 		 * Handles healing of conditions that get auto removed after X turns.
 		 */
-		BattleActionState_ConditionHeal,
+		BattleActionState_Conditions,
 		/**
 		 * Called once
 		 * Handles first start message
@@ -169,7 +174,8 @@ protected:
 	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action);
 
 	// BattleAction State Machine Handlers
-	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
@@ -186,7 +192,7 @@ protected:
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	bool battle_action_pending = false;
-	int battle_action_state = BattleActionState_ConditionHeal;
+	int battle_action_state = BattleActionState_Begin;
 	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
