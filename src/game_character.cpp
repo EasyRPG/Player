@@ -99,7 +99,12 @@ int Game_Character::GetJumpHeight() const {
 }
 
 int Game_Character::GetScreenX(bool apply_shift) const {
-	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + (TILE_SIZE / 2);
+	int x = (GetSpriteX() - Game_Map::GetDisplayX()) / TILE_SIZE + TILE_SIZE;
+
+	if (Game_Map::LoopHorizontal()) {
+		x = Utils::PositiveModulo(x, Game_Map::GetWidth() * TILE_SIZE);
+	}
+	x -= TILE_SIZE / 2;
 
 	if (apply_shift) {
 		x += Game_Map::GetWidth() * TILE_SIZE;
@@ -109,9 +114,13 @@ int Game_Character::GetScreenX(bool apply_shift) const {
 }
 
 int Game_Character::GetScreenY(bool apply_shift) const {
-	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
+	int y = (GetSpriteY() - Game_Map::GetDisplayY()) / TILE_SIZE + TILE_SIZE;
 
 	y -= GetJumpHeight();
+
+	if (Game_Map::LoopVertical()) {
+		y = Utils::PositiveModulo(y, Game_Map::GetHeight() * TILE_SIZE);
+	}
 
 	if (apply_shift) {
 		y += Game_Map::GetHeight() * TILE_SIZE;
@@ -826,10 +835,8 @@ int Game_Character::GetSpriteX() const {
 			x -= GetRemainingStep();
 		else if (d == Left || d == UpLeft || d == DownLeft)
 			x += GetRemainingStep();
-	} else if (IsJumping())
+	} else if (IsJumping()) {
 		x -= ((GetX() - GetBeginJumpX()) * GetRemainingStep());
-	if (x < 0 && Game_Map::LoopHorizontal()) {
-		x += Game_Map::GetWidth() * SCREEN_TILE_SIZE;
 	}
 
 	return x;
@@ -844,11 +851,8 @@ int Game_Character::GetSpriteY() const {
 			y -= GetRemainingStep();
 		else if (d == Up || d == UpRight || d == UpLeft)
 			y += GetRemainingStep();
-	} else if (IsJumping())
+	} else if (IsJumping()) {
 		y -= (GetY() - GetBeginJumpY()) * GetRemainingStep();
-
-	if (y < 0 && Game_Map::LoopVertical()) {
-		y += Game_Map::GetHeight() * SCREEN_TILE_SIZE;
 	}
 
 	return y;
