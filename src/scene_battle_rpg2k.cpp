@@ -836,6 +836,10 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k::Escape() {
+	if (!CheckWait()) {
+		return;
+	}
+
 	if (begin_escape) {
 		battle_message_window->Clear();
 
@@ -844,40 +848,33 @@ void Scene_Battle_Rpg2k::Escape() {
 		escape_success = escape_alg.Execute();
 		escape_alg.Apply();
 
-		battle_result_messages.clear();
-		escape_alg.GetResultMessages(battle_result_messages);
-
-		battle_message_window->Push(battle_result_messages[0]);
+		if (escape_success) {
+			battle_message_window->Push(Data::terms.escape_success);
+		} else {
+			battle_message_window->Push(Data::terms.escape_failure);
+		}
 		begin_escape = false;
+		SetWait(10, 60);
+		return;
 	}
-	else {
-		if (Input::IsPressed(Input::DECISION)) {
-			++escape_counter;
-		}
 
-		++escape_counter;
+	begin_escape = true;
 
-		if (escape_counter > 60) {
-			begin_escape = true;
-			escape_counter = 0;
+	if (escape_success) {
+		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 
-			if (escape_success) {
-				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
+		Game_Temp::battle_result = Game_Temp::BattleEscape;
 
-				Game_Temp::battle_result = Game_Temp::BattleEscape;
-
-				Scene::Pop();
-			}
-			else {
-				SetState(State_Battle);
-				NextTurn();
-
-				CreateEnemyActions();
-				CreateExecutionOrder();
-				Game_Battle::RefreshEvents();
-			}
-		}
+		Scene::Pop();
+		return;
 	}
+
+	SetState(State_Battle);
+	NextTurn();
+
+	CreateEnemyActions();
+	CreateExecutionOrder();
+	Game_Battle::RefreshEvents();
 }
 
 void Scene_Battle_Rpg2k::SelectNextActor() {

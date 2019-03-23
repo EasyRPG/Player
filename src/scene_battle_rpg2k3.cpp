@@ -1023,10 +1023,12 @@ void Scene_Battle_Rpg2k3::Escape() {
 	escape_alg.Apply();
 
 	if (!escape_success) {
-		std::vector<std::string> battle_result_messages;
-		escape_alg.GetResultMessages(battle_result_messages);
 		SetState(State_SelectActor);
-		ShowNotification(battle_result_messages[0]);
+		if (escape_success) {
+			ShowNotification(Data::terms.escape_success);
+		} else {
+			ShowNotification(Data::terms.escape_failure);
+		}
 	}
 	else {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
