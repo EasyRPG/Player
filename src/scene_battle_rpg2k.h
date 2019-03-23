@@ -140,21 +140,6 @@ protected:
 	void SelectNextActor();
 	void SelectPreviousActor();
 
-	/**
-	 * Gets the time during before hiding a windowful of
-	 * text.
-	 *
-	 * @return int seconds to wait
-	 */
-	int GetDelayForWindow();
-
-	/**
-	 * Gets delay between showing two lines of text.
-	 *
-	 * @return int seconds to wait
-	 */
-	int GetDelayForLine();
-
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 

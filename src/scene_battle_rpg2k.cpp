@@ -385,13 +385,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		battle_action_pending = true;
 	}
 
-	const bool wait = battle_action_wait > 0;
-	if (battle_action_wait > 0 && !Input::IsPressed(Input::CANCEL)) {
-		--battle_action_wait;
-		if (Input::IsPressed(Input::DECISION) && battle_action_wait > 0) {
-			--battle_action_wait;
-		}
-	}
+	const bool wait = !CheckWait();
 
 	if (Game_Battle::IsBattleAnimationWaiting()) {
 		return false;
@@ -474,7 +468,7 @@ bool Scene_Battle_Rpg2k::ProcessActionConditionHeal(Game_BattleAlgorithm::Algori
 			// If state is inflicted, only prints if msg not empty.
 			if (pri_was_healed || !msg.empty()) {
 				battle_message_window->PushWithSubject(msg, action->GetSource()->GetName());
-				battle_action_wait = GetDelayForWindow();
+				SetWait(20, 40);
 
 				battle_action_state = BattleActionState_Usage1;
 				return ProcessBattleAction(action);
@@ -513,7 +507,7 @@ bool Scene_Battle_Rpg2k::ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase
 		battle_message_window->ScrollToEnd();
 
 		if (action->HasSecondStartMessage()) {
-			battle_action_wait = GetDelayForWindow();
+			SetWait(20, 40);
 
 			battle_action_state = BattleActionState_Usage2;
 			return ProcessBattleAction(action);
@@ -572,9 +566,9 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 	if (action->GetSource()->Exists()) {
 		battle_action_state = BattleActionState_Execute;
 		if (action->GetType() != Game_BattleAlgorithm::Type::NoMove) {
-			battle_action_wait = GetDelayForWindow();
+			SetWait(20, 40);
 		} else {
-			battle_action_wait = 1;
+			SetWait(1, 1);
 		}
 		return ProcessBattleAction(action);
 	}
@@ -591,7 +585,7 @@ bool Scene_Battle_Rpg2k::ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBas
 	if (action->IsSuccess() && action->IsCriticalHit()) {
 		battle_message_window->Push(action->GetCriticalHitMessage());
 		battle_message_window->ScrollToEnd();
-		battle_action_wait = GetDelayForWindow();
+		SetWait(20, 40);
 
 		battle_action_state = BattleActionState_Apply;
 		return ProcessBattleAction(action);
@@ -651,7 +645,7 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 
 	battle_message_window->Push(*battle_result_messages_it);
 	battle_message_window->ScrollToEnd();
-	battle_action_wait = GetDelayForWindow();
+	SetWait(20, 40);
 	++battle_result_messages_it;
 
 	return false;
@@ -663,7 +657,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase*
 		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 		battle_message_window->Push(action->GetDeathMessage());
 		battle_message_window->ScrollToEnd();
-		battle_action_wait = GetDelayForWindow();
+		SetWait(20, 40);
 
 		battle_action_state = BattleActionState_Finished;
 
@@ -1012,24 +1006,6 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
 		}
-	}
-}
-
-int Scene_Battle_Rpg2k::GetDelayForWindow() {
-	if (Player::IsRPG2kE()) {
-		return 40;
-	}
-	else {
-		return 60 / 2;
-	}
-}
-
-int Scene_Battle_Rpg2k::GetDelayForLine() {
-	if (Player::IsRPG2kE()) {
-		return 60 / 10;
-	}
-	else {
-		return 60 / 7;
 	}
 }
 
