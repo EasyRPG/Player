@@ -107,6 +107,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	previous_state = state;
 	state = new_state;
 
+	SetBattleActionSubState(0);
+
 	options_window->SetActive(false);
 	status_window->SetActive(false);
 	command_window->SetActive(false);
@@ -374,11 +376,30 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	}
 }
 
+void Scene_Battle_Rpg2k::SetBattleActionState(BattleActionState state) {
+       battle_action_state = state;
+       battle_action_substate = 0;
+}
+
+void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate) {
+       battle_action_substate = substate;
+}
+
+bool Scene_Battle_Rpg2k::ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action) {
+    SetBattleActionState(state);
+    return ProcessBattleAction(action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action) {
+	SetBattleActionSubState(substate);
+	return ProcessBattleAction(action);
+}
+
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	if (!battle_action_pending) {
 		// First time we are called, do initialization.
 		battle_action_wait = 0;
-		battle_action_state = BattleActionState_ConditionHeal;
+		SetBattleActionState(BattleActionState_ConditionHeal);
 		battle_action_start_index = 0;
 		battle_action_results_index = 0;
 
@@ -836,31 +857,40 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k::Escape() {
+	enum SubState {
+		eBegin = 0,
+		eSuccess = 1,
+		eFailure = 2,
+	};
+
 	if (!CheckWait()) {
 		return;
 	}
 
-	if (begin_escape) {
+	if (battle_action_substate == eBegin) {
 		battle_message_window->Clear();
 
 		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0]);
 
-		escape_success = escape_alg.Execute();
+		auto next_ss = escape_alg.Execute()
+			? eSuccess
+			: eFailure;
+
 		escape_alg.Apply();
 
-		if (escape_success) {
+		if (next_ss == eSuccess) {
 			battle_message_window->Push(Data::terms.escape_success);
 		} else {
 			battle_message_window->Push(Data::terms.escape_failure);
 		}
-		begin_escape = false;
 		SetWait(10, 60);
+		SetBattleActionSubState(next_ss);
+		// To count this frame in CheckWait() we recurse just like in ProcessBattleActions.
+		Escape();
 		return;
 	}
 
-	begin_escape = true;
-
-	if (escape_success) {
+	if (battle_action_substate == eSuccess) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Escape));
 
 		Game_Temp::battle_result = Game_Temp::BattleEscape;
@@ -869,12 +899,15 @@ void Scene_Battle_Rpg2k::Escape() {
 		return;
 	}
 
-	SetState(State_Battle);
-	NextTurn();
+	if (battle_action_substate == eFailure) {
+		SetState(State_Battle);
+		NextTurn();
 
-	CreateEnemyActions();
-	CreateExecutionOrder();
-	Game_Battle::RefreshEvents();
+		CreateEnemyActions();
+		CreateExecutionOrder();
+		Game_Battle::RefreshEvents();
+		return;
+	}
 }
 
 void Scene_Battle_Rpg2k::SelectNextActor() {

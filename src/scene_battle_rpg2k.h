@@ -146,6 +146,28 @@ protected:
 	// Battle Start Handlers
 	bool DisplayMonstersInMessageWindow();
 
+	void SetBattleActionState(BattleActionState state);
+	void SetBattleActionSubState(int substate);
+
+	/**
+	 * Switch to the next action state, resetting the substate.
+	 *
+	 * @param state the state to change to
+	 * @param action the action we're processing
+	 * @return the return value of the state handler
+	 * @post battle_action_substate is reset to 0
+	 */
+	bool ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action);
+
+	/**
+	 * Switch to the next action substate
+	 *
+	 * @param substate the substate to change to
+	 * @param action the action we're processing
+	 * @return the return value of the state handler
+	 */
+	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action);
+
 	// BattleAction State Machine Handlers
 	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
@@ -165,6 +187,7 @@ protected:
 	std::vector<std::string>::iterator battle_result_messages_it;
 	bool battle_action_pending = false;
 	int battle_action_state = BattleActionState_ConditionHeal;
+	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
 
@@ -174,9 +197,6 @@ protected:
 
 	int battle_action_wait = 0;
 	int battle_action_min_wait = 0;
-
-	bool begin_escape = true;
-	bool escape_success = false;
 
 	bool message_box_got_visible = false;
 	bool move_screen = false;
