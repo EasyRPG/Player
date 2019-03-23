@@ -433,6 +433,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			return ProcessActionAnimation(action);
 		case BattleActionState_Execute:
 			return ProcessActionExecute(action);
+		case BattleActionState_Critical:
+			return ProcessActionCritical(action);
 		case BattleActionState_Apply:
 			return ProcessActionApply(action);
 		case BattleActionState_Results:
@@ -601,21 +603,23 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_Execute;
-
 	action->Execute();
-
-	// Wait for critical hit message.
-	if (action->IsSuccess() && action->IsCriticalHit()) {
-		battle_message_window->Push(action->GetCriticalHitMessage());
-		battle_message_window->ScrollToEnd();
-		SetWait(20, 40);
-
-		battle_action_state = BattleActionState_Apply;
-		return ProcessBattleAction(action);
+	if (action->GetType() == Game_BattleAlgorithm::Type::Normal
+			|| action->GetType() == Game_BattleAlgorithm::Type::SelfDestruct) {
+		SetWait(4,4);
+		if (action->IsSuccess() && action->IsCriticalHit()) {
+			return ProcessNextAction(BattleActionState_Critical, action);
+		}
 	}
+	return ProcessNextAction(BattleActionState_Apply, action);
+}
 
-	return ProcessActionApply(action);
+bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action) {
+	battle_message_window->Push(action->GetCriticalHitMessage());
+	battle_message_window->ScrollToEnd();
+	SetWait(10, 30);
+
+	return ProcessNextAction(BattleActionState_Apply, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -713,9 +717,7 @@ bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBa
 		battle_message_window->PopUntil(battle_action_start_index);
 		battle_message_window->ScrollToEnd();
 
-		// 1 frame delay before starting next target.
-		battle_action_state = BattleActionState_Execute;
-		return false;
+		return ProcessNextAction(BattleActionState_Execute, action);
 	}
 
 	battle_message_window->Clear();

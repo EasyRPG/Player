@@ -65,6 +65,11 @@ public:
 		BattleActionState_Execute,
 		/**
 		 * Called once per target.
+		 * Used to display critical hit message.
+		 */
+		BattleActionState_Critical,
+		/**
+		 * Called once per target.
 		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
 		 */
 		BattleActionState_Apply,
@@ -181,6 +186,7 @@ protected:
 	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
