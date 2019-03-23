@@ -116,6 +116,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	healing = false;
 	success = false;
 	lethal = false;
+	killed_by_dmg = false;
 	critical_hit = false;
 	absorb = false;
 	revived = false;
@@ -288,6 +289,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsSuccess() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsLethal() const {
 	return lethal;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsKilledByDamage() const {
+	return killed_by_dmg;
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsCriticalHit() const {
@@ -1016,6 +1021,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		if (GetTarget()->GetHp() - this->hp <= 0) {
 			// Death state
 			lethal = true;
+			killed_by_dmg = true;
 		}
 		else {
 			// Conditions healed by physical attack:
@@ -1293,6 +1299,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				if (GetTarget()->GetHp() - this->hp <= 0) {
 					// Death state
 					lethal = true;
+					killed_by_dmg = true;
 				}
 			}
 
@@ -1831,6 +1838,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 	if (GetTarget()->GetHp() - this->hp <= 0) {
 		// Death state
 		lethal = true;
+		killed_by_dmg = true;
 	}
 
 	healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
