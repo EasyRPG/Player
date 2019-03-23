@@ -437,6 +437,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			return ProcessActionCritical(action);
 		case BattleActionState_Apply:
 			return ProcessActionApply(action);
+		case BattleActionState_Failure:
+			return ProcessActionFailure(action);
 		case BattleActionState_Results:
 			return ProcessActionResults(action);
 		case BattleActionState_Death:
@@ -623,8 +625,6 @@ bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBa
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_Apply;
-
 	battle_result_messages.clear();
 	action->GetResultMessages(battle_result_messages);
 	battle_result_messages_it = battle_result_messages.begin();
@@ -633,22 +633,53 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 
 	battle_action_results_index = battle_message_window->GetLineCount();
 
+	if (!action->IsSuccess()) {
+		return ProcessNextAction(BattleActionState_Failure, action);
+	}
+
 	auto* target = action->GetTarget();
-	if (target) {
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
-			target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
-		}
-		if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
-			Main_Data::game_screen->ShakeOnce(3, 5, 8);
-		}
+
+	if (!target) {
+		return ProcessNextAction(BattleActionState_Finished, action);
+	}
+
+	auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+	if (action->IsSuccess() && target_sprite && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > -1) {
+		target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage);
+	}
+	if (action->IsSuccess() && target->GetType() == Game_Battler::Type_Ally && !action->IsPositive() && !action->IsAbsorb() && action->GetAffectedHp() > 0) {
+		Main_Data::game_screen->ShakeOnce(3, 5, 8);
 	}
 
 	if (action->GetResultSe()) {
 		Game_System::SePlay(*action->GetResultSe());
 	}
 
-	return ProcessActionResults(action);
+	return ProcessNextAction(BattleActionState_Results, action);
+}
+
+bool Scene_Battle_Rpg2k::ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action) {
+	enum SubState {
+		eBegin = 0,
+		eProcess,
+	};
+
+	if (battle_action_substate == eBegin) {
+		SetWait(4,4);
+		return ProcessNextSubState(eProcess, action);
+	}
+
+	auto* se = action->GetFailureSe();
+	if (se) {
+		Game_System::SePlay(*se);
+	}
+
+	const auto& fail_msg = action->GetFailureMessage();
+	battle_message_window->Push(fail_msg);
+	battle_message_window->ScrollToEnd();
+	SetWait(20, 60);
+
+	return ProcessNextAction(BattleActionState_Finished, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action) {

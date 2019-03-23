@@ -74,6 +74,11 @@ public:
 		 */
 		BattleActionState_Apply,
 		/**
+		 * Called once per target.
+		 * Used to handle action failure.
+		 */
+		BattleActionState_Failure,
+		/**
 		* Called repeatedly.
 		* Used for the results, to push and pop each message.
 		*/
@@ -188,6 +193,7 @@ protected:
 	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);

@@ -557,13 +557,16 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const
 	}
 }
 
+std::string Game_BattleAlgorithm::AlgorithmBase::GetFailureMessage() const {
+	return GetAttackFailureMessage(Data::terms.dodge);
+}
+
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
 	if (current_target == targets.end()) {
 		return;
 	}
 
 	if (!success) {
-		out.push_back(GetAttackFailureMessage(Data::terms.dodge));
 		return;
 	}
 
@@ -857,6 +860,10 @@ void Game_BattleAlgorithm::AlgorithmBase::SetSwitchDisable(int switch_id) {
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 	return NULL;
+}
+
+const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetFailureSe() const {
+	return &Game_System::GetSystemSE(Game_System::SFX_Evasion);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
@@ -1468,28 +1475,36 @@ const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
 	}
 }
 
+const RPG::Sound* Game_BattleAlgorithm::Skill::GetFailureSe() const {
+	return skill.failure_message != 3
+		? nullptr
+		: AlgorithmBase::GetResultSe();
+}
+
 const RPG::Sound* Game_BattleAlgorithm::Skill::GetResultSe() const {
 	return !success && skill.failure_message != 3 ? NULL : AlgorithmBase::GetResultSe();
 }
 
+std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
+	switch (skill.failure_message) {
+		case 0:
+			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a);
+		case 1:
+			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_b);
+		case 2:
+			return AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_c);
+		case 3:
+			return AlgorithmBase::GetAttackFailureMessage(Data::terms.dodge);
+		default:
+			break;
+	}
+	return "BUG: INVALID SKILL FAIL MSG";
+}
+
+
+
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
-		switch (skill.failure_message) {
-			case 0:
-				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_a));
-				break;
-			case 1:
-				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_b));
-				break;
-			case 2:
-				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.skill_failure_c));
-				break;
-			case 3:
-				out.push_back(AlgorithmBase::GetAttackFailureMessage(Data::terms.dodge));
-				break;
-			default:
-				out.push_back("BUG: INVALID SKILL FAIL MSG");
-		}
 		return;
 	}
 
@@ -1933,17 +1948,6 @@ void Game_BattleAlgorithm::Escape::Apply() {
 		static_cast<Game_Enemy*>(source)->SetHidden(true);
 	}
 	ApplyActionSwitches();
-}
-
-void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out) const {
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		if (this->success) {
-			out.push_back(Data::terms.escape_success);
-		}
-		else {
-			out.push_back(Data::terms.escape_failure);
-		}
-	}
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :

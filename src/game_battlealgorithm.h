@@ -316,6 +316,14 @@ public:
 	 */
 	virtual const RPG::Sound* GetStartSe() const;
 
+
+	/**
+	 * Gets the sound effect that is played then the action fails. 
+	 *
+	 * @return result se
+	 */
+	virtual const RPG::Sound* GetFailureSe() const;
+
 	/**
 	 * Gets the sound effect that is played then the action took place.
 	 *
@@ -329,6 +337,13 @@ public:
 	 * @return death se
 	 */
 	virtual const RPG::Sound* GetDeathSe() const;
+
+	/**
+	 * Returns the message used when the action fails.
+	 *
+	 * @return failure message
+	 */
+	virtual std::string GetFailureMessage() const;
 
 	/**
 	 * This is used to handle a corner case in the RPG2k battle system.
@@ -488,7 +503,9 @@ public:
 	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
+	const RPG::Sound* GetFailureSe() const override;
 	const RPG::Sound* GetResultSe() const override;
+	std::string GetFailureMessage() const override;
 	void GetResultMessages(std::vector<std::string>& out) const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
@@ -568,8 +585,6 @@ public:
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
-
-	void GetResultMessages(std::vector<std::string>& out) const override;
 };
 
 class Transform : public AlgorithmBase {
