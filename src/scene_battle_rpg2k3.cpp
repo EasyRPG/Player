@@ -756,6 +756,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			status_window->Refresh();
 		} while (action->TargetNext());
 
+		//FIXME: Figure out specific logic for 2k3 and remove GetResultSe() method.
+		//This method is no longer used in 2k battle system.
 		if (action->GetResultSe()) {
 			Game_System::SePlay(*action->GetResultSe());
 		}
