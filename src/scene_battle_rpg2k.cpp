@@ -737,31 +737,39 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_Results;
-
-	auto* source = action->GetSource();
-	auto* target = action->GetTarget();
+	enum SubState {
+		eBegin = 0,
+		eProcess
+	};
 
 	if (battle_result_messages_it == battle_result_messages.end()) {
 		if (action->IsLethal()) {
-			return ProcessActionDeath(action);
+			return ProcessNextAction(BattleActionState_Death, action);
 		}
-		return ProcessActionFinished(action);
+		return ProcessNextAction(BattleActionState_Finished, action);
 	}
 
-	if (battle_action_results_index != battle_message_window->GetLineCount()) {
+	if (battle_action_substate == eBegin) {
 		battle_message_window->PopUntil(battle_action_results_index);
 		battle_message_window->ScrollToEnd();
-		// One frame of emptyness between results
-		return false;
+		SetWait(4,4);
+
+		return ProcessNextSubState(eProcess, action);
 	}
 
-	battle_message_window->Push(*battle_result_messages_it);
-	battle_message_window->ScrollToEnd();
-	SetWait(20, 40);
-	++battle_result_messages_it;
+	if (battle_action_substate == eProcess) {
+		auto* source = action->GetSource();
+		auto* target = action->GetTarget();
 
-	return false;
+		battle_message_window->Push(*battle_result_messages_it);
+		battle_message_window->ScrollToEnd();
+		SetWait(20, 60);
+		++battle_result_messages_it;
+
+		return ProcessNextSubState(eBegin, action);
+	}
+
+	return ProcessNextAction(BattleActionState_Finished, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
