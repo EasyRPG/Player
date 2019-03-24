@@ -765,34 +765,45 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_Death;
-	if (action->GetTarget()) {
-		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+	enum SubState {
+		eProcess,
+		ePost
+	};
+
+	if (battle_action_substate == eProcess) {
+		auto* target = action->GetTarget();
+		assert(target);
+		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 		battle_message_window->Push(action->GetDeathMessage());
 		battle_message_window->ScrollToEnd();
-		SetWait(20, 40);
+		SetWait(36, 60);
 
-		battle_action_state = BattleActionState_Finished;
-
-		if (action->GetDeathSe()) {
-			Game_System::SePlay(*action->GetDeathSe());
+		auto* se = action->GetDeathSe();
+		if (se) {
+			Game_System::SePlay(*se);
 		}
 		if (target_sprite) {
 			target_sprite->DetectStateChange();
 		}
 
-		return false;
+		if (action->IsKilledByDamage()) {
+			// When target is killed by damage, we skip the ePost substate in damage
+			// and instead of do it here after the kill message.
+			return ProcessNextSubState(ePost, action);
+		}
 	}
 
-	return ProcessActionFinished(action);
+	if (battle_action_substate == ePost) {
+		SetWait(0, 10);
+	}
+
+	return ProcessNextAction(BattleActionState_Finished, action);
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_action_state = BattleActionState_Finished;
-
 	if (action->GetTarget()) {
 		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-		if (action->GetTarget() && target_sprite && !target_sprite->IsIdling()) {
+		if (target_sprite && !target_sprite->IsIdling()) {
 			return false;
 		}
 	}
