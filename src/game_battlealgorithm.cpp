@@ -155,6 +155,18 @@ int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
 	return agility;
 }
 
+const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetPhysicalHealedConditions() const {
+	return healed_conditions;
+}
+
+const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
+	return conditions;
+}
+
+const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetShiftedAttributes() const {
+	return shift_attributes;
+}
+
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
 	return switch_id;
 }
@@ -173,10 +185,6 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsRevived() const {
 
 bool Game_BattleAlgorithm::AlgorithmBase::ActionIsPossible() const {
 	return true;
-}
-
-const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
-	return conditions;
 }
 
 const RPG::Animation* Game_BattleAlgorithm::AlgorithmBase::GetAnimation() const {
@@ -559,91 +567,6 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetAttributeShiftMessage( const
 
 std::string Game_BattleAlgorithm::AlgorithmBase::GetFailureMessage() const {
 	return GetAttackFailureMessage(Data::terms.dodge);
-}
-
-void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
-	if (current_target == targets.end()) {
-		return;
-	}
-
-	if (!success) {
-		return;
-	}
-
-	if (IsPositive() && GetAffectedHp() != -1) {
-		if (!IsRevived() && (GetAffectedHp() > 0 || GetType() != Type::Item)) {
-			out.push_back(GetHpSpRecoveredMessage(GetAffectedHp(), Data::terms.health_points));
-		}
-	}
-
-	// If target is killed, it ends here
-	if (lethal) {
-		return;
-	}
-
-	// Healed conditions messages
-	std::vector<int16_t>::const_iterator it_healed = healed_conditions.begin();
-	for (; it_healed != healed_conditions.end(); it_healed++) {
-		out.push_back(GetStateMessage(ReaderUtil::GetElement(Data::states, *it_healed)->message_recovery));
-	}
-
-	if (GetAffectedSp() != -1) {
-		if (IsPositive()) {
-			if (GetAffectedSp() > 0 || GetType() != Type::Item) {
-				out.push_back(GetHpSpRecoveredMessage(GetAffectedSp(), Data::terms.spirit_points));
-			}
-		} else if (GetAffectedSp() > 0) {
-			if (IsAbsorb()) {
-				out.push_back(GetHpSpAbsorbedMessage(GetAffectedSp(), Data::terms.spirit_points));
-			}
-			else {
-				out.push_back(GetParameterChangeMessage(false, GetAffectedSp(), Data::terms.spirit_points));
-			}
-		}
-	}
-
-	if (GetAffectedAttack() > 0) {
-		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAttack(), Data::terms.attack));
-	}
-
-	if (GetAffectedDefense() > 0) {
-		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedDefense(), Data::terms.defense));
-	}
-
-	if (GetAffectedSpirit() > 0) {
-		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedSpirit(), Data::terms.spirit));
-	}
-
-	if (GetAffectedAgility() > 0) {
-		out.push_back(GetParameterChangeMessage(IsPositive(), GetAffectedAgility(), Data::terms.agility));
-	}
-
-	for (auto state_id: conditions) {
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
-		assert(state);
-
-		if (GetTarget()->HasState(state_id) && std::find(healed_conditions.begin(), healed_conditions.end(), state_id) == healed_conditions.end()) {
-			if (IsPositive()) {
-				out.push_back(GetStateMessage(state->message_recovery));
-			}
-			else if (!state->message_already.empty()) {
-				out.push_back(GetStateMessage(state->message_already));
-			}
-		} else {
-			// Positive case doesn't report anything in case of uselessness
-			if (IsPositive()) {
-				continue;
-			}
-
-			bool is_actor = GetTarget()->GetType() == Game_Battler::Type_Ally;
-			out.push_back(GetStateMessage(is_actor ? state->message_actor : state->message_enemy));
-
-			// Reporting ends with death state
-			if (state_id == RPG::State::kDeathID) {
-				return;
-			}
-		}
-	}
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
@@ -1485,21 +1408,6 @@ std::string Game_BattleAlgorithm::Skill::GetFailureMessage() const {
 	return "BUG: INVALID SKILL FAIL MSG";
 }
 
-
-
-void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
-	if (!success) {
-		return;
-	}
-
-	AlgorithmBase::GetResultMessages(out);
-
-	// Attribute resistance / weakness + an attribute selected + can be modified
-	for (auto& sa: shift_attributes) {
-		out.push_back(GetAttributeShiftMessage(ReaderUtil::GetElement(Data::attributes, sa)->name));
-	}
-}
-
 int Game_BattleAlgorithm::Skill::GetPhysicalDamageRate() const {
 	return skill.physical_rate * 10;
 }
@@ -1668,11 +1576,6 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 
 int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
 	return Sprite_Battler::AnimationState_Item;
-}
-
-void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
-	if (success)
-		AlgorithmBase::GetResultMessages(out);
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {

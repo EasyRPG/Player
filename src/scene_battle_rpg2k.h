@@ -168,7 +168,7 @@ protected:
 	bool DisplayMonstersInMessageWindow();
 
 	void SetBattleActionState(BattleActionState state);
-	void SetBattleActionSubState(int substate);
+	void SetBattleActionSubState(int substate, bool reset_index = true);
 
 	/**
 	 * Switch to the next action state, resetting the substate.
@@ -185,9 +185,10 @@ protected:
 	 *
 	 * @param substate the substate to change to
 	 * @param action the action we're processing
+	 * @param reset_index if true, reset the substate index
 	 * @return the return value of the state handler
 	 */
-	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index = true);
 
 	// BattleAction State Machine Handlers
 	bool ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
@@ -216,6 +217,8 @@ protected:
 	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
+	std::string pending_message;
+	int battle_action_substate_index = 0;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;

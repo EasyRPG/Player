@@ -381,8 +381,11 @@ void Scene_Battle_Rpg2k::SetBattleActionState(BattleActionState state) {
 	battle_action_substate = 0;
 }
 
-void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate) {
+void Scene_Battle_Rpg2k::SetBattleActionSubState(int substate, bool reset_index) {
 	battle_action_substate = substate;
+	if (reset_index) {
+		battle_action_substate_index = 0;
+	}
 }
 
 bool Scene_Battle_Rpg2k::ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action) {
@@ -390,8 +393,8 @@ bool Scene_Battle_Rpg2k::ProcessNextAction(BattleActionState state, Game_BattleA
     return ProcessBattleAction(action);
 }
 
-bool Scene_Battle_Rpg2k::ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action) {
-	SetBattleActionSubState(substate);
+bool Scene_Battle_Rpg2k::ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index) {
+	SetBattleActionSubState(substate, reset_index);
 	return ProcessBattleAction(action);
 }
 
@@ -627,10 +630,6 @@ bool Scene_Battle_Rpg2k::ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBa
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action) {
-	battle_result_messages.clear();
-	action->GetResultMessages(battle_result_messages);
-	battle_result_messages_it = battle_result_messages.begin();
-
 	action->Apply();
 
 	battle_action_results_index = battle_message_window->GetLineCount();
@@ -747,35 +746,186 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 
 bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
-		eBegin = 0,
-		eProcess
+		ePreHp,
+		eHp,
+		ePreSp,
+		eSp,
+		ePreAtk,
+		eAtk,
+		ePreDef,
+		eDef,
+		ePreSpi,
+		eSpi,
+		ePreAgi,
+		eAgi,
+		ePreConditionsPhysicalHealed,
+		eConditionsPhysicalHealed,
+		ePreConditions,
+		eConditions,
+		ePreAttributes,
+		eAttributes,
+		eDone
 	};
 
-	if (battle_result_messages_it == battle_result_messages.end()) {
-		if (action->IsLethal()) {
-			return ProcessNextAction(BattleActionState_Death, action);
+	auto* target = action->GetTarget();
+
+	// All of the "Pre" states are even numbers, so catch all Pre here.
+	if ((battle_action_substate & 1) == 0) {
+		pending_message.clear();
+
+		auto checkNext = [&]() {
+			if (pending_message.empty()) {
+				SetBattleActionSubState(battle_action_substate + 2);
+			}
+		};
+
+		if (battle_action_substate == ePreHp) {
+			// Damage is handled by Damage state, so only check healing here.
+			if (action->IsPositive() && action->GetAffectedHp() != -1) {
+				if (!action->IsRevived() && (action->GetAffectedHp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item)) {
+					pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedHp(), Data::terms.health_points);
+				}
+			}
+			checkNext();
 		}
+
+		if (battle_action_substate == ePreSp) {
+			if (action->GetAffectedSp() != -1) {
+				if (action->IsPositive()) {
+					if (action->GetAffectedSp() > 0 || action->GetType() != Game_BattleAlgorithm::Type::Item) {
+						pending_message = action->GetHpSpRecoveredMessage(action->GetAffectedSp(), Data::terms.spirit_points);
+					}
+				} else if (action->GetAffectedSp() > 0) {
+					if (action->IsAbsorb()) {
+						pending_message = action->GetHpSpAbsorbedMessage(action->GetAffectedSp(), Data::terms.spirit_points);
+					}
+					else {
+						pending_message = action->GetParameterChangeMessage(false, action->GetAffectedSp(), Data::terms.spirit_points);
+					}
+				}
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreAtk) {
+			if (action->GetAffectedAttack() > 0) {
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAttack(), Data::terms.attack);
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreDef) {
+			if (action->GetAffectedDefense() > 0) {
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedDefense(), Data::terms.defense);
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreSpi) {
+			if (action->GetAffectedSpirit() > 0) {
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedSpirit(), Data::terms.spirit);
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreAgi) {
+			if (action->GetAffectedAgility() > 0) {
+				pending_message = action->GetParameterChangeMessage(action->IsPositive(), action->GetAffectedAgility(), Data::terms.agility);
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreConditionsPhysicalHealed) {
+			const auto& states = action->GetPhysicalHealedConditions();
+			if (battle_action_substate_index < (int)states.size()) {
+				pending_message = action->GetStateMessage(ReaderUtil::GetElement(Data::states, states[battle_action_substate_index])->message_recovery);
+				++battle_action_substate_index;
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreConditions) {
+			const auto& healed_states = action->GetPhysicalHealedConditions();
+			const auto& states = action->GetAffectedConditions();
+			while (battle_action_substate_index < (int)states.size()) {
+				int state_id = states[battle_action_substate_index];
+				auto* state = ReaderUtil::GetElement(Data::states, state_id);
+				assert(state);
+				auto was_phys_healed = std::find(healed_states.begin(), healed_states.end(), state_id) != healed_states.end();
+
+				if (target->HasState(state_id) && !was_phys_healed) {
+					if (action->IsPositive()) {
+						pending_message = action->GetStateMessage(state->message_recovery);
+					}
+					else if (!state->message_already.empty()) {
+						pending_message = action->GetStateMessage(state->message_already);
+					}
+				} else {
+					// Positive case doesn't report anything in case of uselessness
+					if (!action->IsPositive()) {
+						bool is_actor = target->GetType() == Game_Battler::Type_Ally;
+						pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
+					}
+				}
+				++battle_action_substate_index;
+				if (!pending_message.empty()) {
+					break;
+				}
+			}
+			checkNext();
+		}
+
+		if (battle_action_substate == ePreAttributes) {
+			const auto& attrs = action->GetShiftedAttributes();
+			if (battle_action_substate_index < (int)attrs.size()) {
+				int attr_id = attrs[battle_action_substate_index];
+				pending_message = action->GetAttributeShiftMessage(ReaderUtil::GetElement(Data::attributes, attr_id)->name);
+				++battle_action_substate_index;
+			}
+			checkNext();
+		}
+
+		if (!pending_message.empty()) {
+			battle_message_window->PopUntil(battle_action_results_index);
+			battle_message_window->ScrollToEnd();
+			SetWait(4,4);
+
+			return ProcessNextSubState(battle_action_substate + 1, action, false);
+		}
+	}
+
+	// Use >= here so that the each "pre" stage above can just call
+	// checkNext() to increment +2 without worrying about overflowing
+	// past eDone.
+	if (battle_action_substate >= eDone) {
 		return ProcessNextAction(BattleActionState_Finished, action);
 	}
 
-	if (battle_action_substate == eBegin) {
-		battle_message_window->PopUntil(battle_action_results_index);
-		battle_message_window->ScrollToEnd();
-		SetWait(4,4);
-
-		return ProcessNextSubState(eProcess, action);
+	// Once we get to the conditions stage, if death was inflicted
+	// we stop everything and jump to death.
+	// RPG_RT has a bug where death caused by state infliction has an extra
+	// wait(20,60) after the death message. We don't emulate this bug.
+	// RPG_RT: Wait(36,60), Wait(4,4), Wait(20, 60)
+	// Player: Wait(4,4), Wait(36,60)
+	if (battle_action_substate == eConditions
+			&& action->IsLethal())
+	{
+		return ProcessNextAction(BattleActionState_Death, action);
 	}
 
-	if (battle_action_substate == eProcess) {
-		auto* source = action->GetSource();
-		auto* target = action->GetTarget();
-
-		battle_message_window->Push(*battle_result_messages_it);
+	// All of the normal states are odd numbers.
+	if ((battle_action_substate & 1) != 0) {
+		battle_message_window->Push(pending_message);
 		battle_message_window->ScrollToEnd();
 		SetWait(20, 60);
-		++battle_result_messages_it;
 
-		return ProcessNextSubState(eBegin, action);
+		// For actions which use the index (conditions, attributes, etc..)
+		// We transition back to "pre" state and let that logic decide
+		// what to do next.
+		if (battle_action_substate_index != 0) {
+			return ProcessNextSubState(battle_action_substate - 1, action, false);
+		}
+		return ProcessNextSubState(battle_action_substate + 1, action);
 	}
 
 	return ProcessNextAction(BattleActionState_Finished, action);
