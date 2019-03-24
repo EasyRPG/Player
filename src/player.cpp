@@ -308,6 +308,8 @@ void Player::Update(bool update_scene) {
 	for (int i = 0; i < speed_modifier; ++i) {
 		bool was_transition_pending = Graphics::IsTransitionPending();
 		Graphics::Update();
+		// This is used to provide a hook for Scene_Map to finish
+		// it's PreUpdate() logic after transition.
 		if (was_transition_pending && !Graphics::IsTransitionPending() && Scene::instance->IsInitialized()) {
 			Scene::instance->OnTransitionFinish();
 		}
