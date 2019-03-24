@@ -332,6 +332,10 @@ void Sprite_Battler::CreateSprite() {
 	SetVisible(!battler->IsHidden());
 }
 
+void Sprite_Battler::SetForcedAlive(bool value) {
+	forced_alive = value;
+}
+
 void Sprite_Battler::DoIdleAnimation() {
 	if (battler->IsDefending()) {
 		SetAnimationState(AnimationState_Defending);
@@ -344,7 +348,7 @@ void Sprite_Battler::DoIdleAnimation() {
 	if (battler->GetBattleAnimationId() <= 0) {
 		// Monster
 		// Only visually different state is Death
-		if (state && state->ID == 1) {
+		if (state && state->ID == 1 && !forced_alive) {
 			idling_anim = AnimationState_Dead;
 		} else {
 			idling_anim = AnimationState_Idle;

@@ -645,6 +645,15 @@ bool Scene_Battle_Rpg2k::ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase*
 		return ProcessNextAction(BattleActionState_Finished, action);
 	}
 
+	// This is a hack to ensure the sprite's death animation doesn't happen
+	// until we actually transition to the death state in the battle system.
+	if (action->IsLethal()) {
+		auto* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		if (target_sprite) {
+			target_sprite->SetForcedAlive(true);
+		}
+	}
+
 	if (!action->IsPositive() && action->GetAffectedHp() >= 0) {
 		return ProcessNextAction(BattleActionState_Damage, action);
 	}
@@ -791,6 +800,7 @@ bool Scene_Battle_Rpg2k::ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase*
 			Game_System::SePlay(*se);
 		}
 		if (target_sprite) {
+			target_sprite->SetForcedAlive(false);
 			target_sprite->DetectStateChange();
 		}
 
