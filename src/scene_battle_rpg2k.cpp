@@ -742,9 +742,15 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	}
 
 	if (battle_action_substate == ePreStates) {
-		const auto& states = action->GetPhysicalHealedConditions();
-		if (battle_action_substate_index < (int)states.size()) {
-			pending_message = action->GetStateMessage(ReaderUtil::GetElement(Data::states, states[battle_action_substate_index])->message_recovery);
+		const auto& states = action->GetStateEffects();
+		auto& idx = battle_action_substate_index;
+		for (;idx < (int)states.size(); ++idx) {
+			auto& se = states[idx];
+			auto* state = ReaderUtil::GetElement(Data::states, se.state_id);
+			if (!state || se.effect != Game_BattleAlgorithm::StateEffect::HealedByAttack) {
+				continue;
+			}
+			pending_message = action->GetStateMessage(state->message_recovery);
 			++battle_action_substate_index;
 
 			battle_message_window->PopUntil(battle_action_dmg_index);
@@ -861,28 +867,32 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		}
 
 		if (battle_action_substate == ePreConditions) {
-			const auto& states = action->GetAffectedConditions();
-			while (battle_action_substate_index < (int)states.size()) {
-				int state_id = states[battle_action_substate_index];
-				auto* state = ReaderUtil::GetElement(Data::states, state_id);
-				assert(state);
-
-				if (target->HasState(state_id)) {
-					if (action->IsPositive()) {
-						pending_message = action->GetStateMessage(state->message_recovery);
-					}
-					else if (!state->message_already.empty()) {
-						pending_message = action->GetStateMessage(state->message_already);
-					}
-				} else {
-					// Positive case doesn't report anything in case of uselessness
-					if (!action->IsPositive()) {
-						bool is_actor = target->GetType() == Game_Battler::Type_Ally;
-						pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
-					}
+			const auto& states = action->GetStateEffects();
+			auto& idx = battle_action_substate_index;
+			for (;idx < (int)states.size(); ++idx) {
+				auto& se = states[idx];
+				auto* state = ReaderUtil::GetElement(Data::states, se.state_id);
+				if (!state) {
+					continue;
 				}
-				++battle_action_substate_index;
+
+				bool is_actor = target->GetType() == Game_Battler::Type_Ally;
+				switch (se.effect) {
+					case Game_BattleAlgorithm::StateEffect::Inflicted:
+						pending_message = action->GetStateMessage(is_actor ? state->message_actor : state->message_enemy);
+						break;
+					case Game_BattleAlgorithm::StateEffect::Healed:
+						pending_message = action->GetStateMessage(state->message_recovery);
+						break;
+					case Game_BattleAlgorithm::StateEffect::AlreadyInflicted:
+						pending_message = action->GetStateMessage(state->message_already);
+						break;
+					default:
+						break;
+				}
+
 				if (!pending_message.empty()) {
+					++battle_action_substate_index;
 					break;
 				}
 			}

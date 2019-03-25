@@ -56,6 +56,22 @@ enum class Type {
 	NoMove,
 };
 
+struct StateEffect {
+	enum Effect : int16_t {
+		None,
+		Inflicted,
+		AlreadyInflicted,
+		Healed,
+		HealedByAttack
+	};
+	int16_t state_id = 0;
+	Effect effect = None;
+
+	StateEffect() = default;
+	StateEffect(int state_id, Effect effect)
+		: state_id(state_id), effect(effect) {}
+};
+
 class AlgorithmBase {
 public:
 	/**
@@ -155,18 +171,11 @@ public:
 	int GetAffectedAgility() const;
 
 	/**
-	 * Gets which conditions were healed by physical attack.
+	 * Gets all states changes caused by this action in order.
 	 *
-	 * @return healed conditions
+	 * @return state effects
 	 */
-	const std::vector<int16_t>& GetPhysicalHealedConditions() const;
-
-	/**
-	 * Gets which conditions were inflicted / healed directly.
-	 *
-	 * @return inflicted conditions
-	 */
-	const std::vector<int16_t>& GetAffectedConditions() const;
+	const std::vector<StateEffect>& GetStateEffects() const;
 
 	/**
 	 * Gets which attributes were shifited.
@@ -470,8 +479,7 @@ protected:
 	bool has_animation_played = false;
 	bool has_animation2_played = false;
 
-	std::vector<int16_t> conditions;
-	std::vector<int16_t> phys_healed_conditions;
+	std::vector<StateEffect> states;
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
@@ -620,6 +628,10 @@ inline Type AlgorithmBase::GetType() const {
 
 inline bool AlgorithmBase::HasStartMessage() const {
 	return !GetStartMessage().empty();
+}
+
+inline const std::vector<StateEffect>& AlgorithmBase::GetStateEffects() const {
+	return states;
 }
 
 } //namespace Game_BattleAlgorithm
