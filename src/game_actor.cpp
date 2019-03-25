@@ -326,14 +326,6 @@ std::vector<int16_t>& Game_Actor::GetStates() {
 	return GetData().status;
 }
 
-void Game_Actor::AddState(int state_id) {
-	Game_Battler::AddState(state_id);
-}
-
-void Game_Actor::RemoveState(int state_id) {
-	Game_Battler::RemoveState(state_id);
-}
-
 void Game_Actor::RemoveBattleStates() {
 	Game_Battler::RemoveBattleStates();
 }

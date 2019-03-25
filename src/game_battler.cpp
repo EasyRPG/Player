@@ -458,15 +458,15 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 	SetAgiModifier(agi_modifier + modifier);
 }
 
-void Game_Battler::AddState(int state_id) {
+bool Game_Battler::AddState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("AddState: Can't add state with invalid ID %d", state_id);
-		return;
+		return false;
 	}
 
 	if (IsDead()) {
-		return;
+		return false;
 	}
 	if (state_id == 1) {
 		SetGauge(0);
@@ -503,59 +503,34 @@ void Game_Battler::AddState(int state_id) {
 	if (IsDefending() && GetSignificantRestriction() != RPG::State::Restriction_normal) {
 		SetIsDefending(false);
 	}
+
+	return states[state_id - 1] != 0;
 }
 
-int Game_Battler::FilterInapplicableStates(std::vector<int16_t>& states) const {
-	if (IsDead()) {
-		int rc = states.size();
-		states.clear();
-		return rc;
-	}
-
-	auto* sig_state = GetSignificantState();
-
-	for (auto state_id: states) {
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
-		if (!state) {
-			Output::Warning("Invalid state id %d", state_id);
-			continue;
-		}
-		if (!sig_state || sig_state->priority < state->priority) {
-			sig_state = state;
-		}
-	}
-
-	int num_removed = 0;
-	for (auto iter = states.begin(); iter != states.end();) {
-		auto* state = ReaderUtil::GetElement(Data::states, *iter);
-		if (!state || state->priority <= sig_state->priority - 10) {
-			// Already logged the state == nullptr case error above.
-			iter = states.erase(iter);
-			++num_removed;
-			continue;
-		}
-		++iter;
-	}
-	return num_removed;
-}
-
-void Game_Battler::RemoveState(int state_id) {
+bool Game_Battler::RemoveState(int state_id) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("RemoveState: Can't delete state with invalid ID %d", state_id);
-		return;
+		return false;
 	}
 
 	std::vector<int16_t>& states = GetStates();
 	if (state_id - 1 >= static_cast<int>(states.size())) {
-		return;
+		return false;
 	}
 
-	if (state_id == 1 && IsDead()) {
+	auto& st = states[state_id - 1];
+
+	if (!st) {
+		return false;
+	}
+
+	if (state_id == RPG::State::kDeathID) {
 		SetHp(1);
 	}
 
-	states[state_id - 1] = 0;
+	st = 0;
+	return true;
 }
 
 int Game_Battler::ApplyConditions() {

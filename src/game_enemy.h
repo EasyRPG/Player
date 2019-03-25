@@ -191,6 +191,10 @@ public:
 	bool IsActionValid(const RPG::EnemyAction& action);
 	const RPG::EnemyAction* ChooseRandomAction();
 
+	std::unique_ptr<Game_Battler> Clone() const override {
+		return std::unique_ptr<Game_Battler>(new Game_Enemy(*this));
+	}
+
 protected:
 	void Setup(int enemy_id);
 

@@ -422,28 +422,22 @@ public:
 	void ChangeAgiModifier(int modifier);
 
 	/**
-	 * Adds a State.
+	 * Add a State.
 	 *
 	 * @param state_id ID of state to add.
-	 */
-	virtual void AddState(int state_id);
-
-	/**
-	 * Filters out all states that can't be applied due to their priority being
-	 * < 10 of the most significant state.
 	 *
-	 * @param states in-out parameter of states.
-	 *
-	 * @return The number of states removed.
+	 * @return true if the state was added
 	 */
-	int FilterInapplicableStates(std::vector<int16_t>& states) const;
+	virtual bool AddState(int state_id);
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
+	 *
+	 * @return true if the state was removed
 	 */
-	virtual void RemoveState(int state_id);
+	virtual bool RemoveState(int state_id);
 
 	/**
 	 * Removes all states which end after battle.
@@ -662,6 +656,8 @@ public:
 	 * @return Effective physical hit rate modifier from inflicted states.
 	 */
 	int GetHitChanceModifierFromStates() const;
+
+	virtual std::unique_ptr<Game_Battler> Clone() const = 0;
 
 protected:
 	/** Gauge for RPG2k3 Battle */

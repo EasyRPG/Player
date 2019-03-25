@@ -495,20 +495,6 @@ public:
 	std::vector<int16_t>& GetStates() override;
 
 	/**
-	 * Adds a State.
-	 *
-	 * @param state_id ID of state to add.
-	 */
-	void AddState(int state_id) override;
-
-	/**
-	 * Removes a State.
-	 *
-	 * @param state_id ID of state to remove.
-	 */
-	void RemoveState(int state_id) override;
-
-	/**
 	 * Removes all states which end after battle.
 	 */
 	void RemoveBattleStates() override;
@@ -828,6 +814,10 @@ public:
 	 * @return true if the actor is controllable in battle.
 	 */
 	int IsControllable() const;
+
+	std::unique_ptr<Game_Battler> Clone() const override {
+		return std::unique_ptr<Game_Battler>(new Game_Actor(*this));
+	}
 
 private:
 	/**
