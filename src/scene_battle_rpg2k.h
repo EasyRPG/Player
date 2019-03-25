@@ -217,6 +217,7 @@ protected:
 	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
+	int battle_action_dmg_index = 0;
 	std::string pending_message;
 	int battle_action_substate_index = 0;
 

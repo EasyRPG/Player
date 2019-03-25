@@ -122,7 +122,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	revived = false;
 	reflect = -1;
 	conditions.clear();
-	healed_conditions.clear();
+	phys_healed_conditions.clear();
 	shift_attributes.clear();
 
 	if (!IsFirstAttack()) {
@@ -156,7 +156,7 @@ int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
 }
 
 const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetPhysicalHealedConditions() const {
-	return healed_conditions;
+	return phys_healed_conditions;
 }
 
 const std::vector<int16_t>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
@@ -666,7 +666,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 
 	// Conditions healed by physical attack:
-	for (auto state_id: healed_conditions) {
+	for (auto state_id: phys_healed_conditions) {
 		GetTarget()->RemoveState(state_id);
 	}
 
@@ -939,8 +939,15 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		}
 		else {
 			// Conditions healed by physical attack:
-			if (!IsPositive())
-				healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
+			if (!IsPositive()) {
+				phys_healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
+			}
+
+			// States can be healed by an attack and then re-infliced again.
+			auto targetHasState = [&](int state_id) {
+				return GetTarget()->HasState(state_id)
+					&& std::find(phys_healed_conditions.begin(), phys_healed_conditions.end(), state_id) == phys_healed_conditions.end();
+			};
 
 			// Conditions caused:
 			if (source->GetType() == Game_Battler::Type_Ally) {
@@ -960,7 +967,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					}
 
 					auto inflict_state = [&](int state_id) {
-						if (GetTarget()->HasState(state_id)) {
+						if (targetHasState(state_id)) {
 							return;
 						}
 						// Don't allow duplicates.
@@ -977,8 +984,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 							conditions.pop_back();
 						}
 						// Don't allow duplicates.
-						if (std::find(healed_conditions.rbegin(), healed_conditions.rend(), state_id) == healed_conditions.rend()) {
-							healed_conditions.push_back(state_id);
+						if (std::find(phys_healed_conditions.rbegin(), phys_healed_conditions.rend(), state_id) == phys_healed_conditions.rend()) {
+							phys_healed_conditions.push_back(state_id);
 						}
 					};
 
@@ -1743,7 +1750,7 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		killed_by_dmg = true;
 	}
 
-	healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
+	phys_healed_conditions = GetTarget()->BattlePhysicalStateHeal(GetPhysicalDamageRate());
 
 	success = true;
 

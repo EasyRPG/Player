@@ -471,7 +471,7 @@ protected:
 	bool has_animation2_played = false;
 
 	std::vector<int16_t> conditions;
-	std::vector<int16_t> healed_conditions;
+	std::vector<int16_t> phys_healed_conditions;
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;

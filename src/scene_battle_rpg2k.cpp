@@ -688,6 +688,8 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 	enum SubState {
 		eBegin = 0,
 		eProcess,
+		ePreStates,
+		eStates,
 		ePost,
 	};
 
@@ -730,11 +732,36 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 			SetWait(20, 40);
 		}
 
+		battle_action_dmg_index = battle_message_window->GetLineCount();
+
 		if (action->IsLethal() && action->IsKilledByDamage()) {
 			return ProcessNextAction(BattleActionState_Death, action);
 		}
 
+		return ProcessNextSubState(ePreStates, action);
+	}
+
+	if (battle_action_substate == ePreStates) {
+		const auto& states = action->GetPhysicalHealedConditions();
+		if (battle_action_substate_index < (int)states.size()) {
+			pending_message = action->GetStateMessage(ReaderUtil::GetElement(Data::states, states[battle_action_substate_index])->message_recovery);
+			++battle_action_substate_index;
+
+			battle_message_window->PopUntil(battle_action_dmg_index);
+			battle_message_window->ScrollToEnd();
+			SetWait(4,4);
+
+			return ProcessNextSubState(eStates, action, false);
+		}
 		return ProcessNextSubState(ePost, action);
+	}
+
+	if (battle_action_substate == eStates) {
+		battle_message_window->Push(pending_message);
+		battle_message_window->ScrollToEnd();
+		SetWait(20, 40);
+
+		return ProcessNextSubState(ePreStates, action, false);
 	}
 
 	if (battle_action_substate == ePost) {
@@ -758,8 +785,6 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 		eSpi,
 		ePreAgi,
 		eAgi,
-		ePreConditionsPhysicalHealed,
-		eConditionsPhysicalHealed,
 		ePreConditions,
 		eConditions,
 		ePreAttributes,
@@ -835,25 +860,14 @@ bool Scene_Battle_Rpg2k::ProcessActionResults(Game_BattleAlgorithm::AlgorithmBas
 			checkNext();
 		}
 
-		if (battle_action_substate == ePreConditionsPhysicalHealed) {
-			const auto& states = action->GetPhysicalHealedConditions();
-			if (battle_action_substate_index < (int)states.size()) {
-				pending_message = action->GetStateMessage(ReaderUtil::GetElement(Data::states, states[battle_action_substate_index])->message_recovery);
-				++battle_action_substate_index;
-			}
-			checkNext();
-		}
-
 		if (battle_action_substate == ePreConditions) {
-			const auto& healed_states = action->GetPhysicalHealedConditions();
 			const auto& states = action->GetAffectedConditions();
 			while (battle_action_substate_index < (int)states.size()) {
 				int state_id = states[battle_action_substate_index];
 				auto* state = ReaderUtil::GetElement(Data::states, state_id);
 				assert(state);
-				auto was_phys_healed = std::find(healed_states.begin(), healed_states.end(), state_id) != healed_states.end();
 
-				if (target->HasState(state_id) && !was_phys_healed) {
+				if (target->HasState(state_id)) {
 					if (action->IsPositive()) {
 						pending_message = action->GetStateMessage(state->message_recovery);
 					}
