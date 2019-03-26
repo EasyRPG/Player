@@ -45,6 +45,7 @@ namespace {
 	std::unordered_map<std::string, FileRequestAsync> async_requests;
 	std::unordered_map<std::string, std::string> file_mapping;
 	int next_id = 0;
+	int index_version = 1;
 
 	FileRequestAsync* GetRequest(const std::string& path) {
 		auto it = async_requests.find(path);
@@ -87,8 +88,39 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 	picojson::value v;
 	picojson::parse(v, f);
 
-	for (const auto& value : v.get<picojson::object>()) {
-		file_mapping[value.first] = value.second.to_str();
+	const auto& metadata = v.get("metadata");
+	if (metadata.is<picojson::object>()) {
+		for (const auto& value : metadata.get<picojson::object>()) {
+			if (value.first == "version") {
+				index_version = (int)value.second.get<double>();
+			}
+		}
+	}
+
+	Output::Debug("Parsing index.json version %d", index_version);
+
+	if (index_version <= 1) {
+		// legacy format
+		for (const auto& value : v.get<picojson::object>()) {
+			file_mapping[value.first] = value.second.to_str();
+		}
+	} else {
+		using fn = std::function<void(const picojson::object&,const std::string&)>;
+		fn parse = [&] (const picojson::object& obj, const std::string& path) {
+			for (const auto& value : obj) {
+				const auto& second = value.second;
+				if (second.is<picojson::object>()) {
+					parse(second.get<picojson::object>(), FileFinder::MakePath(path, value.first));
+				} else if (second.is<std::string>()){
+					file_mapping[FileFinder::MakePath(path, value.first)] = FileFinder::MakePath(path, second.to_str());
+				}
+			}
+		};
+
+		const auto& cache = v.get("cache");
+		if (cache.is<picojson::object>()) {
+			parse(cache.get<picojson::object>(), "");
+		}
 	}
 #else
 	// no-op
@@ -191,8 +223,14 @@ void FileRequestAsync::Start() {
 		request_path += "default/";
 	}
 
-	auto it = file_mapping.find(ReaderUtil::Normalize(path));
+	std::string modified_path;
+	if (index_version >= 2) {
+		modified_path = lcf::ReaderUtil::Normalize(path);
+	} else {
+		modified_path = Utils::LowerCase(path);
+	}
 
+	auto it = file_mapping.find(modified_path);
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
