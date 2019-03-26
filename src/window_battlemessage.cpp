@@ -23,6 +23,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "utils.h"
+#include "output.h"
 
 Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight)
@@ -35,6 +36,9 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 }
 
 void Window_BattleMessage::Push(const std::string& message) {
+#ifdef EP_DEBUG_BATTLE2K_MESSAGE
+	Output::Debug("Battle2k Message Push \"%s\"", message.c_str());
+#endif
 	Utils::ForEachLine(message, [this](const std::string& line)
 			{ PushLine(line); });
 }
@@ -71,6 +75,9 @@ void Window_BattleMessage::PushWithSubject(const std::string& message, const std
 }
 
 void Window_BattleMessage::Pop() {
+#ifdef EP_DEBUG_BATTLE2K_MESSAGE
+	Output::Debug("Battle2k Message Pop");
+#endif
 	lines.pop_back();
 	needs_refresh = true;
 	if (GetIndex() > (int)lines.size()) {
@@ -79,6 +86,9 @@ void Window_BattleMessage::Pop() {
 }
 
 void Window_BattleMessage::PopUntil(int line_number) {
+#ifdef EP_DEBUG_BATTLE2K_MESSAGE
+	Output::Debug("Battle2k Message PopUntil %d", line_number);
+#endif
 	while (static_cast<int>(lines.size()) > line_number) {
 		lines.pop_back();
 	}
@@ -86,6 +96,9 @@ void Window_BattleMessage::PopUntil(int line_number) {
 }
 
 void Window_BattleMessage::Clear() {
+#ifdef EP_DEBUG_BATTLE2K_MESSAGE
+	Output::Debug("Battle2k Message Clear");
+#endif
 	lines.clear();
 	SetIndex(0);
 	needs_refresh = true;

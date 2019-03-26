@@ -1333,6 +1333,9 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 }
 
 void Scene_Battle_Rpg2k::SetWait(int min_wait, int max_wait) {
+#ifdef EP_DEBUG_BATTLE2K_MESSAGE
+	Output::Debug("Wait(%d,%d)", min_wait, max_wait);
+#endif
 	battle_action_wait = max_wait;
 	battle_action_min_wait = max_wait - min_wait;
 }
