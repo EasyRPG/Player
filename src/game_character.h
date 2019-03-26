@@ -37,6 +37,12 @@ class Game_Character {
 public:
 	using AnimType = RPG::EventPage::AnimType;
 
+	enum Type {
+		Event,
+		Player,
+		Vehicle
+	};
+
 	/**
 	 * Destructor.
 	 */
@@ -46,6 +52,9 @@ public:
 	virtual
 #endif
 	~Game_Character();
+
+	/** @return the type of character this is */
+	Type GetType() const;
 
 	/**
 	 * Gets x position in tiles.
@@ -470,6 +479,30 @@ public:
 	void SetProcessed(bool val);
 
 	/**
+	 * @return whether the event is paused.
+	 */
+	bool IsPaused() const;
+
+	/**
+	 * Set the paused flag
+	 */
+	void SetPaused(bool val);
+
+	/**
+	 * Activates or deactivates the event.
+	 *
+	 * @param active enables or disables the event.
+	 */
+	void SetActive(bool active);
+
+	/**
+	 * Gets if the event is active.
+	 *
+	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
+	 */
+	bool IsActive() const;
+
+	/**
 	 * Checks if the character is stopping.
 	 *
 	 * @return whether the character is stopping.
@@ -827,7 +860,7 @@ public:
 	static Game_Character* GetCharacter(int character_id, int event_id);
 
 protected:
-	explicit Game_Character(RPG::SaveMapEventBase* d);
+	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
 	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement() {}
 	void UpdateJump();
@@ -853,10 +886,9 @@ protected:
 
 	bool visible;
 
-	int frame_count_at_last_update_parallel = -1;
+	Type _type;
 	RPG::SaveMapEventBase* _data = nullptr;
 };
-
 
 inline RPG::SaveMapEventBase* Game_Character::data() {
 	return _data;
@@ -864,6 +896,10 @@ inline RPG::SaveMapEventBase* Game_Character::data() {
 
 inline const RPG::SaveMapEventBase* Game_Character::data() const {
 	return _data;
+}
+
+inline Game_Character::Type Game_Character::GetType() const {
+	return _type;
 }
 
 inline int Game_Character::GetX() const {
@@ -1149,5 +1185,18 @@ inline bool Game_Character::IsProcessed() const {
 inline void Game_Character::SetProcessed(bool val) {
 	data()->processed = val;
 }
+
+inline bool Game_Character::IsPaused() const {
+	return data()->pause;
+}
+
+inline void Game_Character::SetPaused(bool val) {
+	data()->pause = val;
+}
+
+inline bool Game_Character::IsActive() const {
+	return data()->active;
+}
+
 
 #endif

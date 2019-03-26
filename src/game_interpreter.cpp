@@ -142,11 +142,18 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
+bool Game_Interpreter::ReachedLoopLimit() const {
+	return loop_count >= 10000;
+}
+
 // Update
-void Game_Interpreter::Update() {
+void Game_Interpreter::Update(bool reset_loop_count) {
 	updating = true;
 	// 10000 based on: https://gist.github.com/4406621
-	for (loop_count = 0; loop_count < 10000; ++loop_count) {
+	if (reset_loop_count) {
+		loop_count = 0;
+	}
+	for (; loop_count < 10000; ++loop_count) {
 		/* If map is different than event startup time
 		set event_id to 0 */
 		if (Game_Map::GetMapId() != map_id) {
@@ -253,6 +260,10 @@ void Game_Interpreter::Update() {
 	}
 
 	updating = false;
+
+	if (Game_Map::GetNeedRefresh()) {
+		Game_Map::Refresh();
+	}
 }
 
 // Setup Starting Event
@@ -261,7 +272,6 @@ void Game_Interpreter::Setup(Game_Event* ev) {
 	event_info.x = ev->GetX();
 	event_info.y = ev->GetY();
 	event_info.page = ev->GetActivePage();
-	ev->ClearStarting();
 }
 
 void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
@@ -548,7 +558,7 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	if (main_flag && depth == 0 && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (evnt)
-			evnt->StopTalkToHero();
+			evnt->OnFinishForegroundEvent();
 	}
 
 	Scene::instance->onCommandEnd();

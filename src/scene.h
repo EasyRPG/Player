@@ -117,6 +117,11 @@ public:
 	virtual void TransitionOut();
 
 	/**
+	 * Called when a transition is finished and scene has been initialized
+	 */
+	virtual void OnTransitionFinish();
+
+	/**
 	 * Called every frame.
 	 * The scene should redraw all elements.
 	 */
@@ -175,6 +180,9 @@ public:
 	/** Called by the interpreter when an event finishes processing */
 	virtual void onCommandEnd() {}
 
+	/** @return true if the Scene has been initialized */
+	bool IsInitialized() const;
+
 private:
 	/** Scene stack. */
 	static std::vector<std::shared_ptr<Scene> > instances;
@@ -195,5 +203,9 @@ private:
 
 	static void DebugValidate(const char* caller);
 };
+
+inline bool Scene::IsInitialized() const {
+	return initialized;
+}
 
 #endif

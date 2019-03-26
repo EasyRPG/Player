@@ -148,10 +148,9 @@ namespace Game_Map {
 	 * @param y tile y.
 	 * @param d direction
 	 * @param self Character to move.
-	 * @param force_through act as if self.SetThrough() == true
 	 * @return whether is passable.
 	 */
-	bool MakeWay(int x, int y, int d, const Game_Character& self, bool force_through);
+	bool MakeWay(int x, int y, int d, const Game_Character& self);
 
 	/**
 	 * Gets if a tile coordinate is passable in a direction.
@@ -233,9 +232,9 @@ namespace Game_Map {
 	/**
 	 * Updates the map state.
 	 *
-	 * @param only_parallel Update only parallel interpreters
+	 * @param is_preupdate Update only common events and map events
 	 */
-	void Update(bool only_parallel = false);
+	void Update(bool is_preupdate = false);
 
 	/**
 	 * Gets current map_info.

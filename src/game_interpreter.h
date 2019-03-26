@@ -53,7 +53,9 @@ public:
 	void Clear();
 
 	bool IsRunning() const;
-	void Update();
+	int GetLoopCount() const;
+	bool ReachedLoopLimit() const;
+	void Update(bool reset_loop_count=true);
 
 	void Setup(
 			const std::vector<RPG::EventCommand>& _list,
@@ -251,6 +253,10 @@ protected:
 
 	static Scene::SceneType scene_call;
 };
+
+inline int Game_Interpreter::GetLoopCount() const {
+	return loop_count;
+}
 
 inline Scene::SceneType Game_Interpreter::GetSceneCalling() {
 	return scene_call;

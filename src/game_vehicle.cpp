@@ -48,7 +48,7 @@ static RPG::SaveVehicleLocation* getDataFromType(Game_Vehicle::Type ty) {
 }
 
 Game_Vehicle::Game_Vehicle(Type _type) :
-	Game_Character(getDataFromType(_type))
+	Game_Character(Vehicle, getDataFromType(_type))
 {
 	type = _type;
 	SetDirection(Left);
@@ -127,7 +127,6 @@ void Game_Vehicle::Refresh() {
 	if (IsInUse()) {
 		SetMapId(Game_Map::GetMapId());
 	} else if (IsInCurrentMap()) {
-		SetProcessed(true); // RPG_RT compatibility
 		MoveTo(GetX(), GetY());
 	}
 
@@ -285,11 +284,11 @@ void Game_Vehicle::UpdateAnimationShip() {
 	}
 }
 
-void Game_Vehicle::Update(bool process_movement) {
-
-	if (!process_movement) {
+void Game_Vehicle::Update() {
+	if (IsProcessed()) {
 		return;
 	}
+	SetProcessed(true);
 
 	if (IsAboard()) {
 		SyncWithPlayer();

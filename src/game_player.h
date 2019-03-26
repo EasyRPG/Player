@@ -22,6 +22,7 @@
 #include "rpg_music.h"
 #include "rpg_savepartylocation.h"
 #include "game_character.h"
+#include "flag_set.h"
 #include <vector>
 
 class Game_Vehicle;
@@ -65,12 +66,8 @@ public:
 	void PerformTeleport();
 	void MoveTo(int x, int y) override;
 
-	/** 
-	 * Update this for the current frame
-	 *
-	 * @param process_movement if false, we will not process movement or animations
-	 * */
-	void Update(bool process_movement);
+	/** Update this for the current frame */
+	void Update();
 
 	void Refresh();
 
@@ -91,9 +88,6 @@ public:
 	Game_Vehicle* GetVehicle() const;
 	bool CanWalk(int x, int y);
 
-	/** Workaround used to avoid blocking the player with move routes that are completeable in a single frame */
-	bool IsBlockedByMoveRoute() const;
-
 	/**
 	 * Callback function invoked by the Vehicle to notify that the unboarding has finished
 	 */
@@ -103,6 +97,7 @@ protected:
 	RPG::SavePartyLocation* data();
 	const RPG::SavePartyLocation* data() const;
 private:
+	using TriggerSet = FlagSet<RPG::EventPage::Trigger>;
 
 	bool teleporting = false;
 	int new_map_id = 0, new_x = 0, new_y = 0, new_direction = 0;
@@ -112,8 +107,8 @@ private:
 	bool CheckTouchEvent();
 	bool CheckCollisionEvent();
 	bool CheckActionEvent();
-	bool CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
-	bool CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key = false);
+	bool CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key = false);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();

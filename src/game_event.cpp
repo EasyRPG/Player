@@ -33,27 +33,25 @@
 #include <cmath>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
-	Game_Character(new RPG::SaveMapEvent()),
+	Game_Character(Event, new RPG::SaveMapEvent()),
 	_data_copy(this->data()),
 	event(event),
 	from_save(false)
 {
 	SetMapId(map_id);
-	SetProcessed(true); // RPG_RT compatibility
 	SetMoveSpeed(3);
 	MoveTo(event.x, event.y);
 	Refresh();
 }
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
-	Game_Character(new RPG::SaveMapEvent(orig_data)),
+	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
 	event(event),
 	from_save(true)
 {
 	// Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
-	SetProcessed(true); // RPG_RT compatibility
 
 	this->event.ID = data()->ID;
 
@@ -81,9 +79,8 @@ void Game_Event::SetThrough(bool through) {
 	data()->through = through;
 }
 
-void Game_Event::ClearStarting() {
-	starting = false;
-	started_by_decision_key = false;
+void Game_Event::ClearWaitingForegroundExecution() {
+	data()->waiting_execution = false;
 }
 
 void Game_Event::Setup(const RPG::EventPage* new_page) {
@@ -101,6 +98,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		Game_Map::ReserveInterpreterDeletion(interpreter);
 		interpreter.reset();
 	}
+
+	SetPaused(false);
 
 	if (page == nullptr) {
 		SetSpriteName("");
@@ -205,7 +204,7 @@ void Game_Event::Refresh() {
 		from_save = false;
 	}
 	else if (new_page != this->page) {
-		ClearStarting();
+		ClearWaitingForegroundExecution();
 		Setup(new_page);
 	}
 }
@@ -296,64 +295,54 @@ std::string Game_Event::GetName() const {
 	return event.name;
 }
 
-bool Game_Event::GetStarting() const {
-	return starting;
+bool Game_Event::IsWaitingForegroundExecution() const {
+	return data()->waiting_execution;
 }
 
 bool Game_Event::WasStartedByDecisionKey() const {
-	return started_by_decision_key;
+	return data()->triggered_by_decision_key;
 }
 
-int Game_Event::GetTrigger() const {
-	return trigger;
+RPG::EventPage::Trigger Game_Event::GetTrigger() const {
+	return static_cast<RPG::EventPage::Trigger>(trigger);
 }
 
-void Game_Event::SetActive(bool active) {
-	data()->active = active;
-	SetVisible(active);
-}
 
-bool Game_Event::GetActive() const {
-	return data()->active;
-}
-
-void Game_Event::Start(bool by_decision_key) {
+bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data()->active)
-		return;
+	if (list.empty() || !data()->active) {
+		return false;
+	}
 
-	starting = true;
-	started_by_decision_key = by_decision_key;
+	if (face_hero && !(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
+		SetSpriteDirection(GetDirectionToHero());
+	}
+
+	data()->waiting_execution = true;
+	data()->triggered_by_decision_key = by_decision_key;
+	SetPaused(true);
+
+	return true;
 }
 
 const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
 	return list;
 }
 
-void Game_Event::StartTalkToHero() {
-	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
-		SetSpriteDirection(GetDirectionToHero());
-	}
-}
-
-void Game_Event::StopTalkToHero() {
+void Game_Event::OnFinishForegroundEvent() {
 	if (!(IsDirectionFixed() || IsFacingLocked() || IsSpinning())) {
 		SetSpriteDirection(GetDirection());
 	}
-
-	halting = true;
+	SetPaused(false);
 }
 
 void Game_Event::CheckEventTriggers() {
 	if (trigger == RPG::EventPage::Trigger_auto_start) {
-		if (Player::GetFrames() == frame_count_at_last_auto_start_check) {
-			// Delay the start to the next frame because the event was enabled
-			// by an event with an higher ID than this event.
-			return;
-		}
-		Start();
+		SetAsWaitingForegroundExecution(false, false);
+		return;
 	} else if (trigger == RPG::EventPage::Trigger_collision) {
 		CheckEventTriggerTouch(GetX(),GetY());
+		return;
 	}
 }
 
@@ -371,7 +360,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 				return false;
 			}
 
-			Start();
+			SetAsWaitingForegroundExecution(false, false);
 			return true;
 		}
 	}
@@ -380,7 +369,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 }
 
 void Game_Event::UpdateSelfMovement() {
-	if (running)
+	if (IsPaused())
 		return;
 	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
 		return;
@@ -430,7 +419,7 @@ void Game_Event::MoveTypeRandom() {
 	default:
 		MoveRandom();
 	}
-	if (move_failed && !starting) {
+	if (move_failed) {
 		SetDirection(last_direction);
 		if (!(IsDirectionFixed() || IsFacingLocked()))
 			SetSpriteDirection(last_direction);
@@ -501,7 +490,7 @@ void Game_Event::MoveTypeTowardsPlayer() {
 		}
 	}
 
-	if (move_failed && !starting) {
+	if (move_failed) {
 		if (GetStopCount() >= GetMaxStopCount() + 60) {
 			SetStopCount(0);
 		} else {
@@ -532,7 +521,7 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 		}
 	}
 
-	if (move_failed && !starting) {
+	if (move_failed) {
 		if (GetStopCount() >= GetMaxStopCount() + 60) {
 			SetStopCount(0);
 		} else {
@@ -548,58 +537,29 @@ void Game_Event::Update() {
 		return;
 	}
 
-	auto was_moving = !IsStopping();
-	Game_Character::UpdateMovement();
-	Game_Character::UpdateAnimation(was_moving);
-
-
-	if (starting && !Game_Map::GetInterpreter().IsRunning()) {
-		Game_Map::GetInterpreter().Setup(this);
-		Game_Map::GetInterpreter().Update();
-		running = true;
-	}
-
-	if (halting) {
-		running = false;
-		halting = false;
-	}
-}
-
-void Game_Event::UpdateParallel() {
-	int cur_frame_count = Player::GetFrames();
-
-	if (trigger != RPG::EventPage::Trigger_auto_start) {
-		// When this event becomes an auto-start event this frame through a
-		// refresh don't allow to run it.
-		// This prevents events  with lower IDs than the event doing the
-		// refresh from starting this frame.
-		frame_count_at_last_auto_start_check = cur_frame_count;
-	}
-
-	if (!data()->active || page == NULL || updating) {
+	if (IsProcessed()) {
 		return;
 	}
+	SetProcessed(true);
 
-	updating = true;
-
-	if (interpreter) {
+	if (trigger == RPG::EventPage::Trigger_parallel && interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
 		}
 		interpreter->Update();
+
+		// RPG_RT only exits if active is false here, but not if there is
+		// no active page...
+		if (!data()->active) {
+			return;
+		}
 	}
 
-	// Placed after the interpreter update because multiple updates per frame are allowed.
-	// This results in waits to finish quicker when an event collides with this event and
-	// emulates a RPG Maker bug)
-	// Only update the event once per frame
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
-		updating = false;
-		return;
-	}
-	frame_count_at_last_update_parallel = cur_frame_count;
+	CheckEventTriggers();
 
-	updating = false;
+	auto was_moving = !IsStopping();
+	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {

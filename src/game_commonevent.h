@@ -50,14 +50,9 @@ public:
 	void Refresh();
 
 	/**
-	 * Updates common event.
-	 */
-	void Update();
-
-	/**
 	 * Updates common event parallel interpreter.
 	 */
-	void UpdateParallel();
+	void Update();
 
 	/**
 	 * Gets common event index.
@@ -103,13 +98,14 @@ public:
 
 	RPG::SaveEventData GetSaveData();
 
+	/** @return true if waiting for foreground execution */
+	bool IsWaitingForegroundExecution() const;
+
+	/** @return true if waiting for background execution */
+	bool IsWaitingBackgroundExecution() const;
+
 private:
 	int common_event_id;
-	/**
-	 * If parallel interpreter is running (true) or suspended (false).
-	 * When switched to running it continues where it was suspended.
-	 */
-	bool parallel_running = false;
 
 	/** Interpreter for parallel common events. */
 	std::unique_ptr<Game_Interpreter_Map> interpreter;

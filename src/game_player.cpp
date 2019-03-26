@@ -32,14 +32,14 @@
 #include "game_switches.h"
 #include "output.h"
 #include "reader_util.h"
+#include "scope_guard.h"
 #include <algorithm>
 #include <cmath>
 
 Game_Player::Game_Player():
-	Game_Character(&Main_Data::game_data.party_location)
+	Game_Character(Player, &Main_Data::game_data.party_location)
 {
 	SetDirection(RPG::EventPage::Direction_down);
-	SetProcessed(true); // RPG_RT compatibility
 	SetMoveSpeed(4);
 	SetAnimationType(RPG::EventPage::AnimType_non_continuous);
 }
@@ -122,9 +122,7 @@ bool Game_Player::MakeWay(int x, int y, int d) const {
 		return MakeWayDiagonal(x, y, d);
 	}
 
-	bool force_through = (Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH) && IsMovable());
-
-	return Game_Map::MakeWay(x, y, d, *this, force_through);
+	return Game_Map::MakeWay(x, y, d, *this);
 }
 
 bool Game_Player::IsTeleporting() const {
@@ -202,6 +200,16 @@ void Game_Player::UpdateSelfMovement() {
 		if (IsMovable()) {
 			const auto old_x = GetX();
 			const auto old_y = GetY();
+			const bool force_through = (Player::debug_flag
+					&& Input::IsPressed(Input::DEBUG_THROUGH)
+					&& !GetThrough());
+			if (force_through) {
+				SetThrough(true);
+			}
+			auto sg = makeScopeGuard([&](){
+					if (force_through) { SetThrough(false); }
+					});
+
 			switch (Input::dir4) {
 				case 2:
 					Move(Down);
@@ -221,7 +229,7 @@ void Game_Player::UpdateSelfMovement() {
 		}
 
 		// ESC-Menu calling
-		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsBlockedByMoveRoute() && Input::IsTriggered(Input::CANCEL)) {
+		if (Game_System::GetAllowMenu() && !Game_Message::message_waiting && !IsMoveRouteOverwritten() && Input::IsTriggered(Input::CANCEL)) {
 			Main_Data::game_data.party_location.menu_calling = true;
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
@@ -230,61 +238,52 @@ void Game_Player::UpdateSelfMovement() {
 
 }
 
-void Game_Player::Update(bool process_movement) {
-	int cur_frame_count = Player::GetFrames();
-	// Only update the event once per frame
-	if (cur_frame_count == frame_count_at_last_update_parallel) {
+void Game_Player::Update() {
+	if (IsProcessed()) {
 		return;
 	}
-	frame_count_at_last_update_parallel = cur_frame_count;
+	SetProcessed(true);
 
 	const bool last_moving = IsMoving() || IsJumping();
 
-	// Workaround: If a blocking move route ends in this frame, Game_Player::CancelMoveRoute decides
-	// which events to start. was_blocked is used to avoid triggering events the usual way.
-	const bool was_blocked = IsBlockedByMoveRoute();
 	const auto old_sprite_x = GetSpriteX();
 	const auto old_sprite_y = GetSpriteY();
 
 	auto was_moving = !IsStopping();
 
-	if (process_movement) {
-		Game_Character::UpdateMovement();
-		Game_Character::UpdateAnimation(was_moving);
-	}
+	Game_Character::UpdateMovement();
+	Game_Character::UpdateAnimation(was_moving);
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
 	if (IsMoving()) return;
 
-	if (process_movement) {
-		if (data()->boarding) {
-			// Boarding completed
-			data()->aboard = true;
-			data()->boarding = false;
-			auto* vehicle = GetVehicle();
-			if (vehicle->IsMoveRouteOverwritten()) {
-				vehicle->CancelMoveRoute();
-			}
-			SetMoveSpeed(vehicle->GetMoveSpeed());
-			vehicle->SetDirection(GetDirection());
-			vehicle->SetSpriteDirection(Left);
-			// Note: RPG_RT ignores the lock_facing flag here!
-			SetSpriteDirection(Left);
-			vehicle->SetX(GetX());
-			vehicle->SetY(GetY());
-			return;
+	if (data()->boarding) {
+		// Boarding completed
+		data()->aboard = true;
+		data()->boarding = false;
+		auto* vehicle = GetVehicle();
+		if (vehicle->IsMoveRouteOverwritten()) {
+			vehicle->CancelMoveRoute();
 		}
-
-		if (data()->unboarding) {
-			// Unboarding completed
-			data()->unboarding = false;
-			CheckTouchEvent();
-			return;
-		}
+		SetMoveSpeed(vehicle->GetMoveSpeed());
+		vehicle->SetDirection(GetDirection());
+		vehicle->SetSpriteDirection(Left);
+		// Note: RPG_RT ignores the lock_facing flag here!
+		SetSpriteDirection(Left);
+		vehicle->SetX(GetX());
+		vehicle->SetY(GetY());
+		return;
 	}
 
-	if (was_blocked) return;
+	if (data()->unboarding) {
+		// Unboarding completed
+		data()->unboarding = false;
+		CheckTouchEvent();
+		return;
+	}
+
+	if (IsMoveRouteOverwritten()) return;
 
 	if (last_moving && CheckTouchEvent()) return;
 
@@ -322,27 +321,25 @@ bool Game_Player::CheckTouchEvent() {
 bool Game_Player::CheckCollisionEvent() {
 	if (InAirship())
 		return false;
+
 	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
 }
 
-bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
-	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); ++i) {
-		if (((*i)->GetLayer() != RPG::EventPage::Layers_same)
-			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
-			(*i)->Start(triggered_by_decision_key);
-			result = (*i)->GetStarting();
+	for (auto* ev: events) {
+		if (ev->GetLayer() != RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key) {
 	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
 
 	bool result = false;
@@ -354,15 +351,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool 
 	Game_Map::GetEventsXY(events, front_x, front_y);
 
 	for (const auto& ev : events) {
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same &&
-			std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
-		)
-		{
-			if (!ev->GetList().empty()) {
-				ev->StartTalkToHero();
-			}
-			ev->Start(triggered_by_decision_key);
-			result = true;
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 		}
 	}
 
@@ -373,15 +363,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers, bool 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
 		for (const auto& ev : events) {
-			if ( ev->GetLayer() == 1 &&
-				std::find(triggers.begin(), triggers.end(), ev->GetTrigger() ) != triggers.end()
-			)
-			{
-				if (!ev->GetList().empty()) {
-					ev->StartTalkToHero();
-				}
-				ev->Start(triggered_by_decision_key);
-				result = true;
+			if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+				result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
 			}
 		}
 	}
@@ -400,11 +383,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
 			(ev->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			if (!ev->GetList().empty()) {
-				ev->StartTalkToHero();
-			}
-			ev->Start();
-			result = true;
+			result |= ev->SetAsWaitingForegroundExecution(true, false);
 
 		}
 	}
@@ -534,22 +513,6 @@ bool Game_Player::IsMovable() const {
 	if (InAirship() && !GetVehicle()->IsMovable())
 		return false;
     return true;
-}
-
-bool Game_Player::IsBlockedByMoveRoute() const {
-	if (!IsMoveRouteOverwritten())
-		return false;
-
-	// Check if it includes a blocking move command
-	for (const auto& move_command : GetMoveRoute().move_commands) {
-		int code = move_command.command_id;
-		if ((code <= RPG::MoveCommand::Code::move_forward) || // Move
-			(code <= RPG::MoveCommand::Code::face_away_from_hero && GetMoveFrequency() < 8) || // Turn
-			(code == RPG::MoveCommand::Code::wait || code == RPG::MoveCommand::Code::begin_jump)) // Wait or jump
-				return true;
-	}
-
-	return false;
 }
 
 bool Game_Player::InVehicle() const {

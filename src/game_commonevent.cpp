@@ -38,35 +38,14 @@ void Game_CommonEvent::SetSaveData(const RPG::SaveEventData& data) {
 
 void Game_CommonEvent::Refresh() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		if (GetSwitchFlag() ? Game_Switches.Get(GetSwitchId()) : true) {
-			if (!interpreter) {
-				interpreter.reset(new Game_Interpreter_Map());
-			}
-			parallel_running = true;
-		} else {
-			parallel_running = false;
+		if (!interpreter) {
+			interpreter.reset(new Game_Interpreter_Map());
 		}
 	}
 }
 
 void Game_CommonEvent::Update() {
-	if (GetTrigger() != RPG::EventPage::Trigger_auto_start)
-		return;
-
-	for (int i = 0; i < 500; ++i) {
-		if (GetSwitchFlag() ? Game_Switches.Get(GetSwitchId()) : true) {
-			if (!Game_Map::GetInterpreter().IsRunning()) {
-				Game_Map::GetInterpreter().Setup(this, 0);
-				Game_Map::GetInterpreter().Update();
-				continue;
-			}
-		}
-		return;
-	}
-}
-
-void Game_CommonEvent::UpdateParallel() {
-	if (interpreter && parallel_running) {
+	if (interpreter && IsWaitingBackgroundExecution()) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this, 0);
 		}
@@ -108,4 +87,18 @@ RPG::SaveEventData Game_CommonEvent::GetSaveData() {
 	}
 
 	return event_data;
+}
+
+bool Game_CommonEvent::IsWaitingForegroundExecution() const {
+	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	return ce->trigger == RPG::EventPage::Trigger_auto_start &&
+		(!ce->switch_flag || Game_Switches.Get(ce->switch_id))
+		&& !ce->event_commands.empty();
+}
+
+bool Game_CommonEvent::IsWaitingBackgroundExecution() const {
+	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	return ce->trigger == RPG::EventPage::Trigger_parallel &&
+		(!ce->switch_flag || Game_Switches.Get(ce->switch_id))
+		&& !ce->event_commands.empty();
 }

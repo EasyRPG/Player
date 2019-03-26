@@ -31,11 +31,12 @@
 #include <cmath>
 #include <cassert>
 
-Game_Character::Game_Character(RPG::SaveMapEventBase* d) :
+Game_Character::Game_Character(Type type, RPG::SaveMapEventBase* d) :
 	move_failed(false),
 	jump_plus_x(0),
 	jump_plus_y(0),
 	visible(true),
+	_type(type),
 	_data(d)
 {
 }
@@ -57,7 +58,7 @@ bool Game_Character::MakeWay(int x, int y, int d) const {
 		return MakeWayDiagonal(x, y, d);
 	}
 
-	return Game_Map::MakeWay(x, y, d, *this, false);
+	return Game_Map::MakeWay(x, y, d, *this);
 }
 
 bool Game_Character::IsLandable(int x, int y) const
@@ -168,7 +169,8 @@ void Game_Character::UpdateMovement() {
 		SetRemainingStep(GetRemainingStep() - min(1 << (1 + GetMoveSpeed()), GetRemainingStep()));
 		moved = true;
 	} else {
-		if (IsMoveRouteOverwritten() || (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting())) {
+		if (GetStopCount() == 0 || IsMoveRouteOverwritten() ||
+					((Game_Message::GetContinueEvents() || !Game_Map::GetInterpreter().IsRunning()) && !IsPaused())) {
 			SetStopCount(GetStopCount() + 1);
 		}
 	}
@@ -789,10 +791,12 @@ int Game_Character::DistanceYfromPlayer() const {
 
 void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 									int frequency) {
+	const auto prev_max_sc = GetMaxStopCount();
 	if (IsMoveRouteActive()) {
 		CancelMoveRoute();
 	}
 
+	SetPaused(false);
 	SetStopCount(0xFFFF);
 	SetMoveRouteIndex(0);
 	SetMoveRouteRepeated(false);
@@ -811,7 +815,12 @@ void Game_Character::ForceMoveRoute(const RPG::MoveRoute& new_route,
 
 	SetMoveRouteOverwritten(true);
 	SetMoveFrequency(frequency);
-	SetMaxStopCountForStep();
+
+	if (frequency != original_move_frequency) {
+		SetMaxStopCountForStep();
+	} else {
+		SetMaxStopCount(prev_max_sc);
+	}
 }
 
 void Game_Character::CancelMoveRoute() {
@@ -982,3 +991,9 @@ bool Game_Character::IsMoveRouteActive() const {
 int Game_Character::GetVehicleType() const {
 	return 0;
 }
+
+void Game_Character::SetActive(bool active) {
+	data()->active = active;
+	SetVisible(active);
+}
+

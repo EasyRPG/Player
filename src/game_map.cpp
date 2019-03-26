@@ -84,10 +84,6 @@ namespace {
 
 	int last_encounter_idx = 0;
 
-	// RPG_RT doesn't update player or vehicle movement or animation on the first frame
-	// of a new map. We use this flag to emulate that behavior.
-	bool first_frame = false;
-
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
@@ -149,7 +145,6 @@ void Game_Map::Quit() {
 
 void Game_Map::Setup(int _id) {
 	Dispose();
-	first_frame = true;
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -532,7 +527,7 @@ static CollisionResult TestCollisionDuringMove(
 	const Game_Character& self,
 	const Game_Event& other
 ) {
-	if (!other.GetActive()) {
+	if (!other.IsActive()) {
 		return NoCollision;
 	}
 
@@ -576,14 +571,14 @@ static CollisionResult TestCollisionDuringMove(
 	return NoCollision;
 }
 
-bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool force_through) {
+bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
 	int new_x = RoundX(x + (d == Game_Character::Right ? 1 : d == Game_Character::Left ? -1 : 0));
 	int new_y = RoundY(y + (d == Game_Character::Down ? 1 : d == Game_Character::Up ? -1 : 0));
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
 
-	if (self.GetThrough() || force_through) return true;
+	if (self.GetThrough()) return true;
 
 	// A character can move to a position with an impassable tile by
 	// standing on top of an event below it. These flags track whether
@@ -597,7 +592,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool for
 		if (result == Collision) {
 			// Try updating the offending event to give it a chance to move out of the
 			// way and recheck.
-			other.UpdateParallel();
+			other.Update();
 			if (TestCollisionDuringMove(x, y, new_x, new_y, d, self, other) == Collision) {
 				return false;
 			}
@@ -617,7 +612,7 @@ bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self, bool for
 			&& !Main_Data::game_player->GetThrough()
 			&& self.GetLayer() == RPG::EventPage::Layers_same) {
 		// Update the Player to see if they'll move and recheck.
-		Main_Data::game_player->Update(!first_frame);
+		Main_Data::game_player->Update();
 		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
 			return false;
 		}
@@ -861,7 +856,7 @@ bool Game_Map::AirshipLandOk(int const x, int const y) {
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	for (Game_Event& ev : GetEvents()) {
-		if (ev.IsInPosition(x, y) && ev.GetActive()) {
+		if (ev.IsInPosition(x, y) && ev.IsActive()) {
 			events.push_back(&ev);
 		}
 	}
@@ -909,7 +904,7 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::Update(bool only_parallel) {
+void Game_Map::Update(bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 	Parallax::Update();
 	if (animation) {
@@ -919,42 +914,89 @@ void Game_Map::Update(bool only_parallel) {
 		}
 	}
 
-	for (Game_CommonEvent& ev : common_events) {
-		ev.UpdateParallel();
-	}
-
 	for (Game_Event& ev : events) {
-		ev.UpdateParallel();
+		ev.SetProcessed(false);
 	}
-
-	if (only_parallel)
-		return;
-
-	for (Game_Event& ev : events) {
-		ev.CheckEventTriggers();
-	}
-
-	Main_Data::game_player->Update(!first_frame);
-	UpdatePan();
-	GetInterpreter().Update();
-
-	for (Game_Event& ev : events) {
-		ev.Update();
-	}
-
-	for (Game_CommonEvent& ev : common_events) {
-		ev.Update();
-	}
-
+	Main_Data::game_player->SetProcessed(false);
 	for (auto& vehicle: vehicles) {
 		if (vehicle->GetMapId() == location.map_id) {
-			vehicle->Update(!first_frame);
+			vehicle->SetProcessed(false);
 		}
 	}
 
-	free_interpreters.clear();
+	for (Game_CommonEvent& ev : common_events) {
+		ev.Update();
+	}
 
-	first_frame = false;
+	for (Game_Event& ev : events) {
+		ev.Update();
+	}
+
+	if (is_preupdate) {
+		return;
+	}
+
+	Main_Data::game_player->Update();
+	UpdatePan();
+
+	for (auto& vehicle: vehicles) {
+		if (vehicle->GetMapId() == location.map_id) {
+			vehicle->Update();
+		}
+	}
+
+	auto& interp = GetInterpreter();
+
+	// Run any event loaded from last frame.
+	interp.Update(true);
+	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
+		// This logic is probably one big loop in RPG_RT. We have to replicate
+		// it here because once we stop executing from this we should not
+		// clear anymore waiting flags.
+		if (interp.IsImmediateCall() && interp.GetLoopCount() > 0) {
+			break;
+		}
+		Game_CommonEvent* run_ce = nullptr;
+
+		for (auto& ce: common_events) {
+			if (ce.IsWaitingForegroundExecution()) {
+				run_ce = &ce;
+				break;
+			}
+		}
+		if (run_ce) {
+			interp.Setup(run_ce, 0);
+			interp.Update(false);
+			if (interp.IsRunning()) {
+				break;
+			}
+			continue;
+		}
+
+		Game_Event* run_ev = nullptr;
+		for (auto& ev: events) {
+			if (ev.IsWaitingForegroundExecution()) {
+				run_ev = &ev;
+				break;
+			}
+		}
+		if (run_ev) {
+			if (run_ev->IsActive()) {
+				interp.Setup(run_ev);
+			}
+			run_ev->ClearWaitingForegroundExecution();
+			if (run_ev->IsActive()) {
+				interp.Update(false);
+			}
+			if (interp.IsRunning()) {
+				break;
+			}
+			continue;
+		}
+		break;
+	}
+
+	free_interpreters.clear();
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {
@@ -1360,14 +1402,12 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 bool Game_Map::IsAnyEventStarting() {
 	for (Game_Event& ev : events)
-		if (ev.GetStarting() && !ev.GetList().empty() && ev.GetActive())
+		if (ev.IsWaitingForegroundExecution() && !ev.GetList().empty() && ev.IsActive())
 			return true;
 
 	for (Game_CommonEvent& ev : common_events)
-		if ((ev.GetTrigger() == RPG::EventPage::Trigger_auto_start) &&
-			(ev.GetSwitchFlag() ? Game_Switches.Get(ev.GetSwitchId()) : true) &&
-			(!ev.GetList().empty()))
-				return true;
+		if (ev.IsWaitingForegroundExecution())
+			return true;
 
 	return false;
 }
