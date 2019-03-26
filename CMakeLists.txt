@@ -179,7 +179,6 @@ add_library(${PROJECT_NAME}
 	src/registry.h
 	src/registry_wine.cpp
 	src/rtp_table.cpp
-	src/rtp_table.h
 	src/scene_actortarget.cpp
 	src/scene_actortarget.h
 	src/scene_battle.cpp
