@@ -569,6 +569,9 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
+	if (Game_Message::visible) {
+		return false;
+	}
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
