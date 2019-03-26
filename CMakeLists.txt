@@ -178,6 +178,8 @@ add_library(${PROJECT_NAME}
 	src/registry.cpp
 	src/registry.h
 	src/registry_wine.cpp
+	src/rtp.cpp
+	src/rtp.h
 	src/rtp_table.cpp
 	src/scene_actortarget.cpp
 	src/scene_actortarget.h

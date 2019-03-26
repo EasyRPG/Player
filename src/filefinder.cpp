@@ -78,7 +78,7 @@
 #include "output.h"
 #include "player.h"
 #include "registry.h"
-#include "rtp_table.h"
+#include "rtp.h"
 #include "main_data.h"
 #include "reader_util.h"
 
@@ -181,6 +181,7 @@ namespace {
 
 	const std::string translate_rtp(const std::string& dir, const std::string& name) {
 		// returns empty string when the file is not belonging to an RTP
+		#if 0
 		RTP::rtp_table_type const& table =
 			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
 
@@ -202,6 +203,8 @@ namespace {
 			return std::string();
 		}
 		return file_it->second;
+		#endif
+		return "";
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
@@ -451,9 +454,15 @@ std::string FileFinder::FindFont(const std::string& name) {
 static void add_rtp_path(const std::string& p) {
 	using namespace FileFinder;
 	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
-	if(tree) {
+	if (tree) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
 		search_paths.push_back(tree);
+
+		auto hit_info = RTP::Detect(*tree.get(), atoi(Player::GetEngineVersion().c_str()));
+
+		for (const auto& hit : hit_info) {
+			printf("%s %d (%d/%d)\n", hit.name.c_str(), hit.version, hit.hits, hit.max);
+		}
 	}
 }
 
@@ -486,8 +495,6 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 		Output::Debug("RTP support is disabled.");
 		return;
 	}
-
-	RTP::Init();
 
 	search_paths.clear();
 	warning_broken_rtp_game_shown = false;
@@ -659,6 +666,10 @@ std::string FileFinder::FindDefault(const DirectoryTree& tree, const std::string
 
 bool FileFinder::IsValidProject(DirectoryTree const & dir) {
 	return IsRPG2kProject(dir) || IsEasyRpgProject(dir);
+}
+
+std::string FileFinder::FindDefault(FileFinder::DirectoryTree const &tree, const std::string &dir, const std::string &name,	const char **exts) {
+	return FindFile(tree, dir, name, exts);
 }
 
 bool FileFinder::IsRPG2kProject(DirectoryTree const& dir) {

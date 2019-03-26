@@ -18,6 +18,21 @@
 #include <array>
 
 namespace RTP {
+/*
+RPG 2000 RTP Table
+- Official Japanese
+- Official English
+- Don Miguel English Translation
+- Don Miguel RTP Addon
+
+RPG 2003 RTP Table
+- Official Japanese
+- Official English
+- RPG Advocate English Translation
+- Vlad Russian Translation
+- RPG Universe Spanish/Portuguese Translation
+- Korean Translation
+*/
 
 const char* rtp_table_2k[][5] = {
 	{"backdrop", "ダンジョン1", "dungeon1", "cave1", nullptr},
