@@ -706,7 +706,9 @@ bool Scene_Battle_Rpg2k::ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase
 		if (!action->IsAbsorb()) {
 			if (target->GetType() == Game_Battler::Type_Ally) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_AllyDamage));
-				Main_Data::game_screen->ShakeOnce(3, 5, 8);
+				if (action->GetAffectedHp() > 0) {
+					Main_Data::game_screen->ShakeOnce(3, 5, 8);
+				}
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_EnemyDamage));
 			}
