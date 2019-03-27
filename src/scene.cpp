@@ -76,35 +76,47 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
-	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
+	if (IsAsyncPending()) {
 		Player::Update(false);
-	} else if (!init) {
-		// Initialization after scene switch
-		switch (push_pop_operation) {
-		case ScenePushed:
-			Start();
-			initialized = true;
-			break;
-		case ScenePopped:
-			if (!initialized) {
-				Start();
-				initialized = true;
-			} else {
-				Continue();
-			}
-			break;
-		default:;
-		}
-
-		push_pop_operation = 0;
-
-		TransitionIn();
-		Resume();
-
-		init = true;
 		return;
 	} else {
-		Player::Update();
+		// This is used to provide a hook for Scene_Map to finish
+		// it's PreUpdate() and teleport logic after transition
+		// or asynchronous file load.
+		OnFinishAsync();
+	}
+
+	// The continuation could have caused a new async wait condition, or
+	// it could have changed the scene.
+	if (!IsAsyncPending() && Scene::instance.get() == this) {
+		if (!init) {
+			// Initialization after scene switch
+			switch (push_pop_operation) {
+				case ScenePushed:
+					Start();
+					initialized = true;
+					break;
+				case ScenePopped:
+					if (!initialized) {
+						Start();
+						initialized = true;
+					} else {
+						Continue();
+					}
+					break;
+				default:;
+			}
+
+			push_pop_operation = 0;
+
+			TransitionIn();
+			Resume();
+
+			init = true;
+			return;
+		} else {
+			Player::Update();
+		}
 	}
 
 	if (Scene::instance.get() != this) {
@@ -144,7 +156,15 @@ void Scene::TransitionOut() {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
-void Scene::OnTransitionFinish() {
+void Scene::OnFinishAsync() {
+	if (async_continuation) {
+		async_continuation();
+	}
+	async_continuation = {};
+}
+
+bool Scene::IsAsyncPending() {
+	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending();
 }
 
 void Scene::Update() {

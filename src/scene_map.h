@@ -42,7 +42,6 @@ public:
 	void Resume() override;
 	void TransitionIn() override;
 	void TransitionOut() override;
-	void OnTransitionFinish() override;
 	void DrawBackground() override;
 
 	void CallBattle();
@@ -64,7 +63,6 @@ private:
 	std::unique_ptr<Window_Message> message_window;
 
 	bool from_save;
-	bool call_scenes_on_transition_in = false;
 	int debug_menuoverwrite_counter = 0;
 };
 

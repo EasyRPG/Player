@@ -63,7 +63,12 @@ void Scene_Map::Start() {
 	Player::FrameReset();
 
 	PreUpdate();
-	spriteset->Update();
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		StartPendingTeleport();
+		return;
+	}
+	// Call any requested scenes when transition is done.
+	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
 void Scene_Map::Continue() {
@@ -105,27 +110,6 @@ void Scene_Map::TransitionOut() {
 	}
 }
 
-void Scene_Map::OnTransitionFinish() {
-	if (Graphics::IsTransitionErased()) {
-		if (Main_Data::game_player->IsPendingTeleport()) {
-			FinishPendingTeleport();
-			if (!Game_Temp::transition_erase) {
-				if (!Game_Temp::transition_menu) {
-					Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-				} else {
-					// Escape / Teleport spell always uses fade.
-					Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
-				}
-			}
-		}
-	} else {
-		if (call_scenes_on_transition_in) {
-			UpdateSceneCalling();
-			call_scenes_on_transition_in = false;
-		}
-	}
-}
-
 void Scene_Map::DrawBackground() {
 	if (spriteset->RequireBackground(GetGraphicsState().drawable_list)) {
 		DisplayUi->CleanDisplay();
@@ -134,11 +118,7 @@ void Scene_Map::DrawBackground() {
 
 void Scene_Map::PreUpdate() {
 	Game_Map::Update(true);
-	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
-	} else {
-		call_scenes_on_transition_in = true;
-	}
+	spriteset->Update();
 }
 
 void Scene_Map::Update() {
@@ -154,9 +134,9 @@ void Scene_Map::Update() {
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		StartPendingTeleport();
-	} else {
-		UpdateSceneCalling();
+		return;
 	}
+	UpdateSceneCalling();
 }
 
 void Scene_Map::UpdateSceneCalling() {
@@ -239,11 +219,16 @@ void Scene_Map::StartPendingTeleport() {
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (Graphics::IsTransitionErased()) {
-		FinishPendingTeleport();
-	} else {
+	if (!Graphics::IsTransitionErased()) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
+
+	if (IsAsyncPending()) {
+		async_continuation = [&]() { FinishPendingTeleport(); };
+		return;
+	}
+
+	FinishPendingTeleport();
 }
 
 void Scene_Map::FinishPendingTeleport() {
@@ -253,7 +238,26 @@ void Scene_Map::FinishPendingTeleport() {
 	spriteset.reset(new Spriteset_Map());
 
 	PreUpdate();
-	spriteset->Update();
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		StartPendingTeleport();
+		return;
+	}
+
+	// Event forced the screen to erased, so we're done here.
+	if (Game_Temp::transition_erase) {
+		UpdateSceneCalling();
+		return;
+	}
+
+	if (!Game_Temp::transition_menu) {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+	} else {
+		// Escape / Teleport spell always uses fade.
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+	}
+
+	// Call any requested scenes when transition is done.
+	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
 // Scene calling stuff.
