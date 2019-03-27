@@ -43,10 +43,12 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, in
 
 	if (animation.large) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle2", name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&BattleAnimation::OnBattle2SpriteReady, this);
 		request->Start();
 	} else {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Battle", name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}

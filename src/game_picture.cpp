@@ -241,6 +241,7 @@ void Game_Picture::RequestPictureSprite() {
 	if (name.empty()) return;
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
+	request->SetGraphicFile(true);
 	request_id = request->Bind(&Game_Picture::OnPictureSpriteReady, this);
 	request->Start();
 }

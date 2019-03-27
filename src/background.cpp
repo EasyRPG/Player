@@ -37,6 +37,7 @@ Background::Background(const std::string& name) :
 
 	if (!name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 	}
@@ -59,6 +60,7 @@ Background::Background(int terrain_id) :
 	// Either background or frame
 	if (terrain->background_type == RPG::Terrain::BGAssociation_background && !terrain->background_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", terrain->background_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 		return;
@@ -67,6 +69,7 @@ Background::Background(int terrain_id) :
 	// Frame
 	if (!terrain->background_a_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_a_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Background::OnBackgroundGraphicReady, this);
 		request->Start();
 
@@ -76,6 +79,7 @@ Background::Background(int terrain_id) :
 
 	if (terrain->background_b && !terrain->background_b_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", terrain->background_b_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Background::OnForegroundFrameGraphicReady, this);
 		request->Start();
 

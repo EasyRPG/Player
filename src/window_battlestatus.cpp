@@ -74,6 +74,7 @@ void Window_BattleStatus::Refresh() {
 
 		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 			FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+			request->SetGraphicFile(true);
 			if (!request->IsReady()) {
 				request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
 				request->Start();
@@ -118,6 +119,7 @@ void Window_BattleStatus::RefreshGauge() {
 
 			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
 				FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+				request->SetGraphicFile(true);
 				if (!request->IsReady()) {
 					request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
 					request->Start();

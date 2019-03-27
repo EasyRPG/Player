@@ -1654,6 +1654,7 @@ bool Game_Interpreter::CommandChangeSystemGraphics(RPG::EventCommand const& com)
 	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
 	request_id = request->Bind(&Game_Interpreter::OnChangeSystemGraphicReady, this);
 	request->SetImportantFile(true);
+	request->SetGraphicFile(true);
 	request->Start();
 
 	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);

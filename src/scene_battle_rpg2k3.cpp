@@ -154,6 +154,7 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	}
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+	request->SetGraphicFile(true);
 	request_id = request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
 	request->Start();
 }

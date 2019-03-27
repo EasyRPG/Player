@@ -736,6 +736,7 @@ void Player::ResetGameObjects() {
 	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
+		request->SetGraphicFile(true);
 		system_request_id = request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
@@ -876,6 +877,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
 	system->SetImportantFile(true);
+	system->SetGraphicFile(true);
 	system_request_id = system->Bind(&OnSystemFileReady);
 
 	map->Start();
