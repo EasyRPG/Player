@@ -32,6 +32,7 @@
 #include "picojson.h"
 #include <fstream>
 #include "utils.h"
+#include "graphics.h"
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
@@ -157,6 +158,12 @@ bool FileRequestAsync::IsGraphicFile() const {
 
 void FileRequestAsync::SetGraphicFile(bool graphic) {
 	this->graphic = graphic;
+	// We need this flag in order to prevent show screen transitions
+	// from starting util all graphical assets are loaded.
+	// Also, the screen is erased, so you can't see any delays :)
+	if (Graphics::IsTransitionErased()) {
+		SetImportantFile(true);
+	}
 }
 
 void FileRequestAsync::Start() {
