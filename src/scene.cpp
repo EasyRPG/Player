@@ -156,6 +156,10 @@ void Scene::TransitionOut() {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
+void Scene::SetAsyncFromMainLoop() {
+	was_async_from_main_loop = true;
+}
+
 void Scene::OnFinishAsync() {
 	if (async_continuation) {
 		// The continuation could set another continuation, so move this 
@@ -164,6 +168,14 @@ void Scene::OnFinishAsync() {
 		async_continuation.swap(continuation);
 
 		continuation();
+	}
+
+	// If we just finished an async operation that was
+	// started within the Update() routine, player will
+	// tell us to defer incrementing the frame counter
+	// until now.
+	if (was_async_from_main_loop && !IsAsyncPending()) {
+		Player::IncFrame();
 	}
 }
 

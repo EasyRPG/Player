@@ -87,6 +87,11 @@ namespace Player {
 	void FrameReset();
 
 	/**
+	 * Increment the frame counters.
+	 */
+	void IncFrame();
+
+	/**
 	 * Exits EasyRPG Player.
 	 */
 	void Exit();

@@ -309,19 +309,28 @@ void Player::Update(bool update_scene) {
 		Graphics::Update();
 		if (update_scene) {
 			Scene::instance->Update();
-			++frames;
-			// RPG_RT compatible frame counter.
-			++Main_Data::game_data.system.frame_count;
+			// Async file loading or transition. Don't increment the frame
+			// counter as we now have to "suspend" and "resume"
+			if (Scene::IsAsyncPending()) {
+				old_instance->SetAsyncFromMainLoop();
+				break;
+			}
+			IncFrame();
 
-			// Scene changed or webplayer waits for files.
 			// Not save to Update again, setup code must run:
-			if (&*old_instance != &*Scene::instance || AsyncHandler::IsImportantFilePending()) {
+			if (&*old_instance != &*Scene::instance) {
 				break;
 			}
 		}
 	}
 
 	start_time = next_frame;
+}
+
+void Player::IncFrame() {
+	++frames;
+	// RPG_RT compatible frame counter.
+	++Main_Data::game_data.system.frame_count;
 }
 
 void Player::FrameReset() {

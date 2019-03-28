@@ -121,6 +121,13 @@ public:
 	 */
 	void OnFinishAsync();
 
+	/**
+	 * Tell the scene we spawned an async operation from the main loop.
+	 * This is used to delay incrementing the frame counter until all
+	 * async operations and continuations are completed.
+	 */
+	void SetAsyncFromMainLoop();
+
 	/** @returns true if an async operation that would block the main loop is pending */
 	static bool IsAsyncPending();
 
@@ -201,6 +208,8 @@ private:
 	 * other Continue(). This enforces calling Start().
 	 */
 	bool initialized = false;
+
+	bool was_async_from_main_loop = false;
 
 	/**
 	 * Graphic stack of the scene
