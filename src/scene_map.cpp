@@ -89,6 +89,13 @@ void Scene_Map::Continue() {
 	else {
 		Game_Map::PlayBgm();
 	}
+
+	// Player cast Escape / Teleport from menu
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		FinishPendingTeleport();
+		return;
+	}
+
 	spriteset->Update();
 }
 
