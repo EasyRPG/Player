@@ -54,6 +54,8 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
+	teleport_from_other_scene = true;
+
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
@@ -79,6 +81,7 @@ void Scene_Map::Start() {
 }
 
 void Scene_Map::Continue() {
+	teleport_from_other_scene = true;
 	if (Game_Temp::battle_calling) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
@@ -91,9 +94,14 @@ void Scene_Map::Continue() {
 
 void Scene_Map::Resume() {
 	Game_Temp::battle_calling = false;
+	teleport_from_other_scene = false;
 }
 
 void Scene_Map::TransitionIn() {
+	// Teleport already setup a transition.
+	if (Graphics::IsTransitionPending()) {
+		return;
+	}
 	if (Game_Temp::battle_calling) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
@@ -292,11 +300,10 @@ void Scene_Map::FinishPendingTeleport() {
 		return;
 	}
 
-	if (!Game_Temp::transition_menu) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-	} else {
-		// Escape / Teleport spell always uses fade.
+	if (teleport_from_other_scene) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+	} else {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 	}
 
 	// Call any requested scenes when transition is done.

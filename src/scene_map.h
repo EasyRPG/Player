@@ -66,8 +66,10 @@ private:
 
 	std::unique_ptr<Window_Message> message_window;
 
-	bool from_save;
 	int debug_menuoverwrite_counter = 0;
+	bool from_save;
+	// Teleport from new game or Teleport / Escape skill from menu.
+	bool teleport_from_other_scene = false;
 };
 
 #endif
