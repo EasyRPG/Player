@@ -58,6 +58,10 @@ private:
 	void StartPendingTeleport();
 	void FinishPendingTeleport();
 	void PreUpdate();
+	// Handles event requested transitions.
+	void UpdateStage2();
+	// Handles pending teleport and scene changes.
+	void UpdateStage3();
 	void UpdateSceneCalling();
 
 	std::unique_ptr<Window_Message> message_window;

@@ -63,6 +63,13 @@ void Scene_Map::Start() {
 	Player::FrameReset();
 
 	PreUpdate();
+	// FIXME: Handle transitions requested on the first frame of a new game by PreUpdate!!
+	if (Game_Temp::transition_processing) {
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;
+	}
+
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		StartPendingTeleport();
 		return;
@@ -122,16 +129,45 @@ void Scene_Map::PreUpdate() {
 }
 
 void Scene_Map::Update() {
-	if (Game_Temp::transition_processing) {
-		Game_Temp::transition_processing = false;
-
-		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-	}
-
 	Game_Map::Update();
 	spriteset->Update();
 	message_window->Update();
 
+	// On platforms with async loading (emscripten) graphical assets loaded this frame
+	// may require us to wait for them to download before we can start the transitions.
+	if (IsAsyncPending()) {
+		async_continuation = [this]() { UpdateStage2(); };
+		return;
+	}
+
+	UpdateStage2();
+}
+
+void Scene_Map::UpdateStage2() {
+	if (!Game_Temp::transition_processing) {
+		UpdateStage3();
+		return;
+	}
+
+	Game_Temp::transition_processing = false;
+
+	// Do the transition and then finish the update routine.
+	// FIXME: This behavior is incomplete as the update loop has to be
+	// resumed at exactly the right time. In particular if a parallel
+	// event requests a transition, we have to continue running the interpreter
+	// and all stages of the update loop afterwards.
+	// This will be fixed later.
+
+	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+	// Unless its an instant transition, we must wait for it to finish before we can proceed.
+	if (IsAsyncPending()) {
+		async_continuation = [this]() { UpdateStage3(); };
+		return;
+	}
+	UpdateStage3();
+}
+
+void Scene_Map::UpdateStage3() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		StartPendingTeleport();
 		return;
@@ -238,6 +274,13 @@ void Scene_Map::FinishPendingTeleport() {
 	spriteset.reset(new Spriteset_Map());
 
 	PreUpdate();
+	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
+	if (Game_Temp::transition_processing) {
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;
+	}
+
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		StartPendingTeleport();
 		return;
