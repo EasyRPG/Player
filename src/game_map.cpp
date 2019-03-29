@@ -649,6 +649,14 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		}
 	}
 
+	// Infer directions before we do any rounding.
+	const auto bit_from = GetPassableMask(self.GetX(), self.GetY(), x, y);
+	const auto bit_to = GetPassableMask(x, y, self.GetX(), self.GetY());
+
+	// Now round for looping maps.
+	x = Game_Map::RoundX(x);
+	y = Game_Map::RoundY(y);
+
 	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
 	if (!Game_Map::IsValid(x, y)) {
 		return false;
@@ -662,13 +670,12 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 
 	bool self_conflict = false;
 	if (!self.IsJumping()) {
-		auto bit = GetPassableMask(self.GetX(), self.GetY(), x, y);
 		// Check for self conflict.
 		// If this event has a tile graphic and the tile itself has passage blocked in the direction
 		// we want to move, flag it as "self conflicting" for use later.
 		if (self.GetLayer() == RPG::EventPage::Layers_below && self.GetTileId() != 0) {
 			int tile_id = self.GetTileId();
-			if ((passages_up[tile_id] & bit) == 0) {
+			if ((passages_up[tile_id] & bit_from) == 0) {
 				self_conflict = true;
 			}
 		}
@@ -676,7 +683,7 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		if (vehicle_type == Game_Vehicle::None) {
 			// Check that we are allowed to step off of the current tile.
 			// Note: Vehicles can always step off a tile.
-			if (!IsPassableTile(&self, bit, self.GetX(), self.GetY())) {
+			if (!IsPassableTile(&self, bit_from, self.GetX(), self.GetY())) {
 				return false;
 			}
 		}
@@ -711,11 +718,9 @@ bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
 		}
 	}
 
-	int bit = 0;
+	int bit = bit_to;
 	if (self.IsJumping()) {
 		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
-	} else {
-		bit = GetPassableMask(x, y, self.GetX(), self.GetY());
 	}
 
 	return IsPassableTile(&self, bit, x, y);
