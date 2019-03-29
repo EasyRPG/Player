@@ -521,11 +521,9 @@ void Game_Event::Update() {
 		return;
 	}
 
-	if (IsProcessed()) {
-		return;
-	}
-	SetProcessed(true);
-
+	// RPG_RT runs the parallel interpreter everytime Update is called.
+	// That means if the event updates multiple times due to makeway,
+	// the interpreter will run multiple times per frame.
 	if (trigger == RPG::EventPage::Trigger_parallel && interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
@@ -538,6 +536,11 @@ void Game_Event::Update() {
 			return;
 		}
 	}
+
+	if (IsProcessed()) {
+		return;
+	}
+	SetProcessed(true);
 
 	CheckEventTriggers();
 
