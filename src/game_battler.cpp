@@ -371,7 +371,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 		// Cure states
 		for (int i = 0; i < (int)skill->state_effects.size(); i++) {
 			if (skill->state_effects[i]) {
-				if (skill->state_effect) {
+				if (skill->reverse_state_effect) {
 					was_used |= !HasState(Data::states[i].ID);
 					AddState(Data::states[i].ID);
 				}
