@@ -51,7 +51,7 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
-bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _index) {
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventExecFrame>& save, int _index) {
 	Clear();
 	if (_index < (int)save.size()) {
 		event_id = save[_index].event_id;
@@ -61,7 +61,7 @@ bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommand
 		}
 		list = save[_index].commands;
 		index = save[_index].current_command;
-		triggered_by_decision_key = save[_index].actioned;
+		triggered_by_decision_key = save[_index].triggered_by_decision_key;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
 		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _index + 1);
@@ -96,8 +96,8 @@ static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
 	return result;
 }
 
-std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
-	std::vector<RPG::SaveEventCommands> save;
+std::vector<RPG::SaveEventExecFrame> Game_Interpreter_Map::GetSaveData() const {
+	std::vector<RPG::SaveEventExecFrame> save;
 
 	const Game_Interpreter_Map* save_interpreter = this;
 
@@ -108,13 +108,13 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 	}
 
 	while (save_interpreter != NULL) {
-		RPG::SaveEventCommands save_commands;
+		RPG::SaveEventExecFrame save_commands;
 		save_commands.commands = save_interpreter->list;
 		save_commands.current_command = save_interpreter->index;
 		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
 		save_commands.event_id = event_id;
-		save_commands.actioned = triggered_by_decision_key;
+		save_commands.triggered_by_decision_key = triggered_by_decision_key;
 		save.push_back(save_commands);
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}

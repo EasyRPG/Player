@@ -218,7 +218,7 @@ void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id, true);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetupFromSave(Main_Data::game_data.events.commands);
+	interpreter->SetupFromSave(Main_Data::game_data.foreground_event_execstate.stack);
 
 	events.reserve(map->events.size());
 	for (size_t i = 0; i < map->events.size(); ++i) {
@@ -234,7 +234,7 @@ void Game_Map::SetupFromSave() {
 	}
 
 	for (size_t i = 0; i < Main_Data::game_data.common_events.size() && i < common_events.size(); ++i) {
-		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].event_data);
+		common_events[i].SetSaveData(Main_Data::game_data.common_events[i].parallel_event_execstate);
 	}
 
 	for (size_t i = 0; i < 3; i++)
@@ -324,7 +324,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 	if (is_load_savegame) {
 		if (location.map_save_count != map_save_count) {
 			Main_Data::game_data.common_events = {};
-			Main_Data::game_data.events = {};
+			Main_Data::game_data.foreground_event_execstate = {};
 			Main_Data::game_data.map_info.events = {};
 			Main_Data::game_data.panorama = {};
 		} else if (location.database_save_count != Data::system.save_count) {
@@ -339,7 +339,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 }
 
 void Game_Map::PrepareSave() {
-	Main_Data::game_data.events.commands = interpreter->GetSaveData();
+	Main_Data::game_data.foreground_event_execstate.stack = interpreter->GetSaveData();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());
@@ -353,7 +353,7 @@ void Game_Map::PrepareSave() {
 	for (Game_CommonEvent& ev : common_events) {
 		save_common_events.push_back(RPG::SaveCommonEvent());
 		save_common_events.back().ID = ev.GetIndex();
-		save_common_events.back().event_data = ev.GetSaveData();
+		save_common_events.back().parallel_event_execstate = ev.GetSaveData();
 	}
 }
 
