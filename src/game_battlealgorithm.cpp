@@ -1035,8 +1035,8 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					bool weapon1_heals_states = false;
 					bool weapon2_heals_states = false;
 					if (Player::IsRPG2k3()) {
-						weapon1_heals_states = weapon1 && weapon1->state_effect;
-						weapon2_heals_states = weapon2 && weapon2->state_effect;
+						weapon1_heals_states = weapon1 && weapon1->reverse_state_effect;
+						weapon2_heals_states = weapon2 && weapon2->reverse_state_effect;
 					}
 
 					auto inflict_state = [&](int state_id) {
