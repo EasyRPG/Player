@@ -122,6 +122,7 @@ void Game_Battle::Quit() {
 
 void Game_Battle::Update() {
 	interpreter->Update();
+	Main_Data::game_screen->Update();
 	spriteset->Update();
 	if (animation) {
 		animation->Update();
