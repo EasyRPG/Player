@@ -77,7 +77,9 @@ void Game_Battle::Init() {
 	// troop_id is guaranteed to be valid
 	troop = ReaderUtil::GetElement(Data::troops, Game_Temp::battle_troop_id);
 	page_executed.resize(troop->pages.size());
+	std::fill(page_executed.begin(), page_executed.end(), false);
 	page_can_run.resize(troop->pages.size());
+	std::fill(page_can_run.begin(), page_can_run.end(), false);
 
 	RefreshEvents([](const RPG::TroopPage&) {
 		return false;
@@ -361,13 +363,14 @@ bool Game_Battle::UpdateEvents() {
 		return false;
 	}
 
-	// Check if another page can run now and preempt it
+	// Check if another page can run now or if a page that could run can no longer run.
 	RefreshEvents(last_event_filter);
 
 	for (const auto& page : troop->pages) {
 		if (page_can_run[page.ID - 1]) {
 			interpreter->Setup(page.event_commands, 0);
 			page_can_run[page.ID - 1] = false;
+			page_executed[page.ID - 1] = true;
 			return false;
 		}
 	}
@@ -390,9 +393,12 @@ void Game_Battle::RefreshEvents() {
 void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predicate) {
 	for (const auto& it : troop->pages) {
 		const RPG::TroopPage& page = it;
-		if (predicate(it) && !page_executed[it.ID - 1] && AreConditionsMet(page.condition)) {
-			page_can_run[it.ID - 1] = true;
-			page_executed[it.ID - 1] = true;
+		if (!page_executed[page.ID - 1] && AreConditionsMet(page.condition)) {
+			if (predicate(it)) {
+				page_can_run[it.ID - 1] = true;
+			}
+		} else {
+			page_can_run[it.ID - 1] = false;
 		}
 	}
 
