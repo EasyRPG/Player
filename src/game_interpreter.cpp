@@ -912,7 +912,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
-					value = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
+					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
@@ -943,7 +943,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					value = Audio().BGM_GetTicks();
 					break;
 				case 9:
-					value = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
+					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
 					break;
 			}
 			break;
@@ -2644,7 +2644,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		}
 		break;
 	case 2:
-		value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer1);
+		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
 		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:
@@ -2757,7 +2757,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		result = Audio().BGM_PlayedOnce();
 		break;
 	case 10:
-		value1 = Main_Data::game_party->GetTimer(Main_Data::game_party->Timer2);
+		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
 		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:

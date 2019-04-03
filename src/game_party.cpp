@@ -448,11 +448,11 @@ void Game_Party::ApplyDamage(int damage, bool lethal) {
 void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
-			data().timer1_frames = seconds * DEFAULT_FPS;
+			data().timer1_frames = seconds * DEFAULT_FPS + (DEFAULT_FPS - 1);
 			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 			break;
 		case Timer2:
-			data().timer2_frames = seconds * DEFAULT_FPS;
+			data().timer2_frames = seconds * DEFAULT_FPS + (DEFAULT_FPS -1);
 			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 			break;
 	}
@@ -487,51 +487,67 @@ void Game_Party::StopTimer(int which) {
 }
 
 void Game_Party::UpdateTimers() {
-	bool battle = Game_Temp::battle_running;
+	const bool battle = Game_Temp::battle_running;
+	bool seconds_changed = false;
+
 	if (data().timer1_active && (data().timer1_battle || !battle) && data().timer1_frames > 0) {
 		data().timer1_frames = data().timer1_frames - 1;
-		if (data().timer1_frames % DEFAULT_FPS == 0) {
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
-		}
-		if (data().timer1_frames == 0) {
+
+		const int seconds = data().timer1_frames / DEFAULT_FPS;
+		const int mod_frames = data().timer1_frames % DEFAULT_FPS;
+		seconds_changed |= (mod_frames == (DEFAULT_FPS - 1));
+
+		if (seconds == 0) {
 			StopTimer(Timer1);
 		}
 	}
+
 	if (data().timer2_active && (data().timer2_battle || !battle) && data().timer2_frames > 0) {
 		data().timer2_frames = data().timer2_frames - 1;
-		if (data().timer2_frames % DEFAULT_FPS == 0) {
-			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
-		}
-		if (data().timer2_frames == 0) {
+
+		const int seconds = data().timer2_frames / DEFAULT_FPS;
+		const int mod_frames = data().timer2_frames % DEFAULT_FPS;
+		seconds_changed |= (mod_frames == (DEFAULT_FPS - 1));
+
+		if (seconds == 0) {
 			StopTimer(Timer2);
 		}
 	}
-}
 
-int Game_Party::GetTimer(int which) {
-	switch (which) {
-		case Timer1:
-			return (int)std::ceil(data().timer1_frames / (float)DEFAULT_FPS);
-		case Timer2:
-			return (int)std::ceil(data().timer2_frames / (float)DEFAULT_FPS);
-		default:
-			return 0;
+	if (seconds_changed) {
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 }
 
-int Game_Party::GetTimerFrames(int which, bool& visible, bool& battle) {
+int Game_Party::GetTimerSeconds(int which) {
+	return GetTimerFrames(which) / DEFAULT_FPS;
+}
+
+int Game_Party::GetTimerFrames(int which) {
 	switch (which) {
 		case Timer1:
-			visible = data().timer1_visible;
-			battle = data().timer1_battle;
 			return data().timer1_frames;
 		case Timer2:
-			visible = data().timer2_visible;
-			battle = data().timer2_battle;
 			return data().timer2_frames;
 		default:
 			return 0;
 	}
+}
+
+bool Game_Party::GetTimerVisible(int which, bool in_battle) {
+	bool visible = false;
+	bool battle = false;
+	switch (which) {
+		case Timer1:
+			visible = data().timer1_visible;
+			battle = data().timer1_battle;
+			break;
+		case Timer2:
+			visible = data().timer2_visible;
+			battle = data().timer2_battle;
+			break;
+	}
+	return visible && (!in_battle || battle);
 }
 
 int Game_Party::GetAverageLevel() {

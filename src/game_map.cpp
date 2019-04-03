@@ -32,6 +32,7 @@
 #include "game_switches.h"
 #include "game_temp.h"
 #include "game_player.h"
+#include "game_party.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -944,6 +945,9 @@ void Game_Map::Update(bool is_preupdate) {
 			vehicle->Update();
 		}
 	}
+
+	Main_Data::game_party->UpdateTimers();
+	Main_Data::game_screen->Update();
 
 	auto& interp = GetInterpreter();
 

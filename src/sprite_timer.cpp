@@ -25,8 +25,8 @@
 #include "game_temp.h"
 
 Sprite_Timer::Sprite_Timer(int which) :
-	which(which) {
-
+	which(which)
+{
 	if (which != Game_Party::Timer1 &&
 		which != Game_Party::Timer2) {
 		assert(false && "Invalid timer");
@@ -39,21 +39,11 @@ Sprite_Timer::~Sprite_Timer() {
 }
 
 void Sprite_Timer::Draw() {
-	bool timer_visible;
-	bool battle;
-
-	Main_Data::game_party->GetTimerFrames(which, timer_visible, battle);
-
-	if (!GetVisible() || !timer_visible) {
+	if (!GetVisible()) {
 		return;
 	}
 
-	// In battle but not a battle timer
-	if (Game_Temp::battle_running && !battle) {
-		return;
-	}
-
-	std::string system_name = Game_System::GetSystemName();
+	const auto& system_name = Game_System::GetSystemName();
 	if (system_name.empty()) {
 		return;
 	}
@@ -63,7 +53,8 @@ void Sprite_Timer::Draw() {
 	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {
 		if (i == 2) { // :
-			if (counter % DEFAULT_FPS >= DEFAULT_FPS / 2) {
+			int frames =  Main_Data::game_party->GetTimerFrames(which);
+			if (frames % DEFAULT_FPS < DEFAULT_FPS / 2) {
 				continue;
 			}
 		}
@@ -74,35 +65,15 @@ void Sprite_Timer::Draw() {
 }
 
 void Sprite_Timer::Update() {
-	bool timer_visible;
-	bool battle;
+	const bool visible = Main_Data::game_party->GetTimerVisible(which, Game_Temp::battle_running);
 
-	int time = Main_Data::game_party->GetTimerFrames(which, timer_visible, battle) - 1;
+	SetVisible(visible);
 
-	if (time <= 0) {
-		SetVisible(false);
-		return;
-	}
-	else {
-		++counter;
-
-		if (!GetVisible()) {
-			// Wasn't visible until now
-			counter = 0;
-		}
-		SetVisible(true);
-	}
-
-	if (!timer_visible) {
+	if (!visible) {
 		return;
 	}
 
-	// In battle but not a battle timer
-	if (Game_Temp::battle_running && !battle) {
-		return;
-	}
-
-	int all_secs = (time + DEFAULT_FPS) / DEFAULT_FPS;
+	const int all_secs = Main_Data::game_party->GetTimerSeconds(which);
 
 	int mins = all_secs / 60;
 	int secs = all_secs % 60;
