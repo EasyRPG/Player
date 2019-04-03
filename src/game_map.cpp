@@ -731,7 +731,7 @@ bool Game_Map::CanLandAirship(int x, int y) {
 
 	const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 	if (!terrain) {
-		Output::Warning("MakeWay: Invalid terrain at (%d, %d)", x, y);
+		Output::Warning("CanLandAirship: Invalid terrain at (%d, %d)", x, y);
 		return false;
 	}
 	if (!terrain->airship_land) {
@@ -827,7 +827,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 	if (vehicle_type != Game_Vehicle::None) {
 		const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
 		if (!terrain) {
-			Output::Warning("MakeWay: Invalid terrain at (%d, %d)", x, y);
+			Output::Warning("IsPassableTile: Invalid terrain at (%d, %d)", x, y);
 			return false;
 		}
 		if (vehicle_type == Game_Vehicle::Boat && !terrain->boat_pass) {
