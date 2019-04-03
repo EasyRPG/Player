@@ -496,41 +496,6 @@ void Game_Character::MoveRandom(MoveOption option) {
 	Move(Utils::GetRandomNumber(0, 3), option);
 }
 
-void Game_Character::MoveTowardsPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
-
-	if (sx != 0 || sy != 0) {
-		if ( std::abs(sx) > std::abs(sy) ) {
-			Move((sx > 0) ? Left : Right);
-			if (move_failed && sy != 0)
-				Move((sy > 0) ? Up : Down);
-		} else {
-			Move((sy > 0) ? Up : Down);
-			if (move_failed && sx != 0) {
-				Move((sx > 0) ? Left : Right);
-			}
-		}
-	}
-}
-
-void Game_Character::MoveAwayFromPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
-
-	if (sx != 0 || sy != 0) {
-		if ( std::abs(sx) > std::abs(sy) ) {
-			Move((sx > 0) ? Right : Left);
-			if (move_failed && sy != 0)
-				Move((sy > 0) ? Down : Up);
-		} else {
-			Move((sy > 0) ? Down : Up);
-			if (move_failed && sx != 0)
-				Move((sx > 0) ? Right : Left);
-		}
-	}
-}
-
 void Game_Character::Turn(int dir) {
 	SetDirection(dir);
 	SetSpriteDirection(dir);

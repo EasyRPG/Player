@@ -179,12 +179,18 @@ private:
 	void MoveTypeCycleUpDown();
 
 	/**
+	 * Implementation method for walking to
+	 * or from the player
+	 */
+	void MoveTypeTowardsOrAwayPlayer(bool towards);
+
+	/**
 	 * Walks to the player.
 	 */
 	void MoveTypeTowardsPlayer();
 
 	/**
-	 * Walks to the player.
+	 * Walks away from the player.
 	 */
 	void MoveTypeAwayFromPlayer();
 

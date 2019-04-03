@@ -470,66 +470,50 @@ void Game_Event::MoveTypeCycleUpDown() {
 	MoveTypeCycle(Down);
 }
 
-void Game_Event::MoveTypeTowardsPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
-	int last_direction = GetDirection();
+void Game_Event::MoveTypeTowardsOrAwayPlayer(bool towards) {
+	int sx = GetScreenX();
+	int sy = GetScreenY();
 
-	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
-		MoveRandom();
+	constexpr int offset = TILE_SIZE * 2;
+
+	const bool in_sight = (sx >= -offset && sx <= SCREEN_TARGET_WIDTH + offset
+			&& sy >= -offset && sy <= SCREEN_TARGET_HEIGHT + offset);
+
+	int dir = 0;
+	if (!in_sight) {
+		dir = Utils::GetRandomNumber(0, 3);
 	} else {
-		switch (Utils::GetRandomNumber(0, 5)) {
-		case 0:
-			MoveRandom();
-			break;
-		case 1:
-			MoveForward();
-			break;
-		default:
-			MoveTowardsPlayer();
+		int draw = Utils::GetRandomNumber(0, 9);
+		if (draw == 0) {
+			dir = GetDirection();
+		} else if(draw == 1) {
+			dir = Utils::GetRandomNumber(0, 3);
+		} else {
+			dir = towards
+				? GetDirectionToHero()
+				: GetDirectionAwayHero();
 		}
 	}
 
-	if (move_failed) {
-		if (GetStopCount() >= GetMaxStopCount() + 60) {
-			SetStopCount(0);
-		} else {
-			SetDirection(last_direction);
-			if (!(IsDirectionFixed() || IsFacingLocked()))
-				SetSpriteDirection(last_direction);
-		}
+	const bool stop_limit = (GetStopCount() >= 60);
+
+	const auto move_opt = stop_limit
+		? MoveOption::Normal
+		: MoveOption::IgnoreIfCantMove;
+
+	Move(dir, move_opt);
+
+	if (move_failed && stop_limit) {
+		SetStopCount(0);
 	}
 }
 
+void Game_Event::MoveTypeTowardsPlayer() {
+	MoveTypeTowardsOrAwayPlayer(true);
+}
+
 void Game_Event::MoveTypeAwayFromPlayer() {
-	int sx = DistanceXfromPlayer();
-	int sy = DistanceYfromPlayer();
-	int last_direction = GetDirection();
-
-	if ( std::abs(sx) + std::abs(sy) >= 20 ) {
-		MoveRandom();
-	} else {
-		switch (Utils::GetRandomNumber(0, 5)) {
-		case 0:
-			MoveRandom();
-			break;
-		case 1:
-			MoveForward();
-			break;
-		default:
-			MoveAwayFromPlayer();
-		}
-	}
-
-	if (move_failed) {
-		if (GetStopCount() >= GetMaxStopCount() + 60) {
-			SetStopCount(0);
-		} else {
-			SetDirection(last_direction);
-			if (!(IsDirectionFixed() || IsFacingLocked()))
-				SetSpriteDirection(last_direction);
-		}
-	}
+	MoveTypeTowardsOrAwayPlayer(false);
 }
 
 void Game_Event::Update() {
