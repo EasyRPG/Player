@@ -524,6 +524,8 @@ void Game_Event::Update() {
 	// RPG_RT runs the parallel interpreter everytime Update is called.
 	// That means if the event updates multiple times due to makeway,
 	// the interpreter will run multiple times per frame.
+	// This results in event waits to finish quicker during collisions as
+	// the wait will tick by 1 each time the interpreter is invoked.
 	if (trigger == RPG::EventPage::Trigger_parallel && interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
