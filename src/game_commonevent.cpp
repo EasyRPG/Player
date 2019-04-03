@@ -25,22 +25,15 @@
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id) {
+
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		interpreter.reset(new Game_Interpreter_Map());
+	}
 }
 
 void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
-	if (!data.stack.empty()) {
-		interpreter.reset(new Game_Interpreter_Map());
+	if (interpreter && !data.stack.empty()) {
 		interpreter->SetupFromSave(data.stack);
-	}
-
-	Refresh();
-}
-
-void Game_CommonEvent::Refresh() {
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		if (!interpreter) {
-			interpreter.reset(new Game_Interpreter_Map());
-		}
 	}
 }
 

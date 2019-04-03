@@ -45,11 +45,6 @@ public:
 	void SetSaveData(const RPG::SaveEventExecState& data);
 
 	/**
-	 * Refreshes the common event.
-	 */
-	void Refresh();
-
-	/**
 	 * Updates common event parallel interpreter.
 	 */
 	void Update();

@@ -391,12 +391,6 @@ void Game_Map::Refresh() {
 		for (Game_Event& ev : events) {
 			ev.Refresh();
 		}
-
-		if (refresh_type == Refresh_All) {
-			for (Game_CommonEvent& ev : common_events) {
-				ev.Refresh();
-			}
-		}
 	}
 
 	refresh_type = Refresh_None;
