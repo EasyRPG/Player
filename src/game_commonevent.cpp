@@ -33,7 +33,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 
 void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
 	if (interpreter && !data.stack.empty()) {
-		interpreter->SetupFromSave(data.stack);
+		interpreter->SetState(data);
 	}
 }
 
@@ -73,13 +73,11 @@ std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 }
 
 RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
-	RPG::SaveEventExecState event_data;
-
+	RPG::SaveEventExecState state;
 	if (interpreter) {
-		event_data.stack = interpreter->GetSaveData();
+		state = interpreter->GetState();
 	}
-
-	return event_data;
+	return state;
 }
 
 bool Game_CommonEvent::IsWaitingExecution(RPG::EventPage::Trigger trigger) const {

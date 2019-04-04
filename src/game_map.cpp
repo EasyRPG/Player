@@ -216,7 +216,7 @@ void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id, true);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetupFromSave(Main_Data::game_data.foreground_event_execstate.stack);
+	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
 
 	events.reserve(map->events.size());
 	for (size_t i = 0; i < map->events.size(); ++i) {
@@ -341,7 +341,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 }
 
 void Game_Map::PrepareSave() {
-	Main_Data::game_data.foreground_event_execstate.stack = interpreter->GetSaveData();
+	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());

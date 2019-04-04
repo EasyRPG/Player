@@ -238,7 +238,6 @@ protected:
 	} event_info;
 
 	FileRequestBinding request_id;
-
 };
 
 inline int Game_Interpreter::GetLoopCount() const {
