@@ -87,7 +87,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		// carry on executing its command list during this frame
 		if (page)
 			interpreter->Clear();
-		Game_Map::ReserveInterpreterDeletion(interpreter);
 		interpreter.reset();
 	}
 
@@ -519,6 +518,11 @@ void Game_Event::Update() {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
 		}
+		// Event code could run which changes the current page of this event.
+		// That can then result in the interpreter shared_ptr getting reset.
+		// To prevent a crash, we make a copy of the interpreter shared_ptr
+		// here to prevent it from getting deleted until after Update() returns.
+		auto interpreter_guard = interpreter;
 		interpreter->Update();
 
 		// RPG_RT only exits if active is false here, but not if there is

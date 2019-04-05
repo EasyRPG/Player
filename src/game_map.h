@@ -437,13 +437,6 @@ namespace Game_Map {
 	Game_Interpreter_Map& GetInterpreter();
 
 	/**
-	 * Destroy an interpreter after all events and common events have been updated.
-	 *
-	 * @param interpreter to destroy.
-	 */
-	void ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> interpreter);
-
-	/**
 	 * Sets the need refresh flag.
 	 *
 	 * @param refresh_mode need refresh state.

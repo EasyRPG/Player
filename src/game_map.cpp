@@ -69,7 +69,6 @@ namespace {
 	std::unique_ptr<RPG::Map> map;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
-	std::vector<std::shared_ptr<Game_Interpreter> > free_interpreters;
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
@@ -399,10 +398,6 @@ void Game_Map::Refresh() {
 Game_Interpreter_Map& Game_Map::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
-}
-
-void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> interpreter) {
-	free_interpreters.push_back(interpreter);
 }
 
 void Game_Map::ScrollRight(int distance) {
@@ -1021,7 +1016,6 @@ void Game_Map::Update(bool is_preupdate) {
 		do_map_event = !do_map_event;
 	}
 
-	free_interpreters.clear();
 	Parallax::Update();
 }
 
