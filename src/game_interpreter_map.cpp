@@ -64,7 +64,7 @@ bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _in
 		}
 		// FIXME: Update this when we remove child interpreters
 		_state.stack = { stack[_index] };
-		index = stack[_index].current_command;
+		GetFrame()->current_command = stack[_index].current_command;
 		triggered_by_decision_key = stack[_index].triggered_by_decision_key;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
@@ -94,8 +94,8 @@ RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
 		RPG::SaveEventExecFrame save_frame;
 		if (frame) {
 			save_frame.commands = frame->commands;
+			save_frame.current_command = frame->current_command;
 		}
-		save_frame.current_command = save_interpreter->index;
 		save_frame.ID = i++;
 		save_frame.event_id = event_id;
 		save_frame.triggered_by_decision_key = triggered_by_decision_key;
@@ -113,6 +113,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	if (index >= list.size()) {
 		return CommandEnd();
@@ -183,6 +184,10 @@ bool Game_Interpreter_Map::ExecuteCommand() {
  * Commands
  */
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
@@ -246,6 +251,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	continuation = NULL;
 
 	switch (Game_Temp::battle_result) {
@@ -335,6 +344,10 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	continuation = nullptr;
 	if (!Game_Temp::shop_handlers) {
 		index++;
@@ -457,6 +470,10 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -503,6 +520,10 @@ bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& 
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Graphics::IsTransitionPending())
 		return false;
 
@@ -528,6 +549,10 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -554,6 +579,10 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -686,6 +715,10 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -696,6 +729,10 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -706,6 +743,10 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}

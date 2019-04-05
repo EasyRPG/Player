@@ -83,7 +83,6 @@ protected:
 	int loop_count;
 	bool wait_messages;
 
-	unsigned int index;
 	int map_id;
 	unsigned int event_id;
 	int wait_count;

@@ -64,7 +64,6 @@ constexpr int loop_limit = 10000;
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
-	index = 0;
 	updating = false;
 	clear_child = false;
 
@@ -122,7 +121,10 @@ void Game_Interpreter::Setup(
 
 	triggered_by_decision_key = started_by_decision_key;
 
-	index = 0;
+	auto* frame = GetFrame();
+	if (frame) {
+		frame->current_command = 0;
+	}
 
 	CancelMenuCall();
 
@@ -230,6 +232,8 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		if (continuation) {
 			const auto& list = frame->commands;
+			auto& index = frame->current_command;
+
 			bool result;
 			if (index >= list.size()) {
 				result = (this->*continuation)(RPG::EventCommand());
@@ -264,12 +268,19 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
+		// Previous operations could have modified the stack.
+		// So we need to fetch the frame again.
+		frame = GetFrame();
+		if (!frame) {
+			break;
+		}
+
 		// FIXME?
 		// After calling SkipTo this index++ will skip execution of e.g. END.
 		// This causes a different timing because loop_count reaches 10000
 		// faster then Player does.
 		// No idea if any game depends on this special case.
-		index++;
+		frame->current_command++;
 	} // for
 
 	if (loop_count > loop_limit - 1) {
@@ -311,7 +322,7 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
-
+	auto& index = frame->current_command;
 
 	if (code2 < 0)
 		code2 = code;
@@ -394,6 +405,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	RPG::EventCommand const& com = list[index];
 
@@ -604,6 +616,7 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
@@ -634,6 +647,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	// If there's a text already, return immediately
 	if (Game_Message::message_waiting)
@@ -725,6 +739,7 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	continuation = NULL;
 	int indent = com.indent;
@@ -1582,12 +1597,17 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	index = list.size();
 	return true;
 }
 
 bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -1731,6 +1751,10 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) { // code 10850
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) (com.parameters[0] + 1);
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 
@@ -2837,6 +2861,7 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	int label_id = com.parameters[0];
 
@@ -2860,6 +2885,7 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	int indent = com.indent;
 
@@ -2878,6 +2904,10 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 }
 
 bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { // code 12320
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (event_id == 0)
 		return true;
 
@@ -3133,6 +3163,10 @@ bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	continuation = NULL;
 	index++;
 	return true;

@@ -41,6 +41,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
+	auto& index = frame->current_command;
 
 	if (index >= list.size()) {
 		return CommandEnd();
