@@ -96,7 +96,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
 		trigger = -1;
-		list.clear();
 		return;
 	}
 
@@ -134,7 +133,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 	trigger = page->trigger;
-	list = page->event_commands;
 
 	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
@@ -146,13 +144,11 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 
 	if (page == nullptr) {
 		trigger = -1;
-		list.clear();
 		return;
 	}
 
 	original_move_frequency = page->move_frequency;
 	trigger = page->trigger;
-	list = page->event_commands;
 
 	// Trigger parallel events when the interpreter wasn't already running
 	// (because it was the middle of a parallel event while saving)
@@ -299,7 +295,7 @@ RPG::EventPage::Trigger Game_Event::GetTrigger() const {
 
 bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data()->active) {
+	if (GetList().empty() || !data()->active) {
 		return false;
 	}
 
@@ -314,8 +310,10 @@ bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decisio
 	return true;
 }
 
+static std::vector<RPG::EventCommand> _empty_list = {};
+
 const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
-	return list;
+	return page ? page->event_commands : _empty_list;
 }
 
 void Game_Event::OnFinishForegroundEvent() {

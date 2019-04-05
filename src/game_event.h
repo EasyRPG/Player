@@ -201,7 +201,6 @@ private:
 	int trigger = -1;
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
-	std::vector<RPG::EventCommand> list;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	bool from_save;
 };
