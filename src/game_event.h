@@ -53,7 +53,7 @@ public:
 	/**
 	 * Does refresh.
 	 */
-	void Refresh();
+	void Refresh(bool from_save = false);
 
 	void Setup(const RPG::EventPage* new_page);
 	void SetupFromSave(const RPG::EventPage* new_page);
@@ -201,7 +201,6 @@ private:
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
-	bool from_save;
 };
 
 inline RPG::SaveMapEvent* Game_Event::data() {

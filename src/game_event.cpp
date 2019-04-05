@@ -36,8 +36,7 @@
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Game_Character(Event, new RPG::SaveMapEvent()),
 	_data_copy(this->data()),
-	event(event),
-	from_save(false)
+	event(event)
 {
 	SetMapId(map_id);
 	SetMoveSpeed(3);
@@ -49,8 +48,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	//FIXME: This will leak if Game_Character() throws.
 	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
-	event(event),
-	from_save(true)
+	event(event)
 {
 	// Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
@@ -62,7 +60,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 		interpreter->SetState(data()->parallel_event_execstate);
 	}
 
-	Refresh();
+	Refresh(true);
 }
 
 int Game_Event::GetOriginalMoveRouteIndex() const {
@@ -153,11 +151,10 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	}
 }
 
-void Game_Event::Refresh() {
+void Game_Event::Refresh(bool from_save) {
 	if (!data()->active) {
 		if (from_save) {
 			SetVisible(false);
-			from_save = false;
 		}
 		return;
 	}
@@ -182,7 +179,6 @@ void Game_Event::Refresh() {
 	// don't setup event, already done
 	if (from_save) {
 		SetupFromSave(new_page);
-		from_save = false;
 	}
 	else if (new_page != this->page) {
 		ClearWaitingForegroundExecution();
