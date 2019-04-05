@@ -83,7 +83,6 @@ void Game_Interpreter::Clear() {
 	event_id = 0;					// event ID
 	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
-	triggered_by_decision_key = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 	wait_messages = false;			// wait if message window is visible
@@ -119,11 +118,10 @@ void Game_Interpreter::Setup(
 		_state.stack[0].commands = _list;
 	}
 
-	triggered_by_decision_key = started_by_decision_key;
-
 	auto* frame = GetFrame();
 	if (frame) {
 		frame->current_command = 0;
+		frame->triggered_by_decision_key = started_by_decision_key;
 	}
 
 	CancelMenuCall();
@@ -2654,6 +2652,9 @@ bool Game_Interpreter::CommandChangeMainMenuAccess(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { // Code 12010
+	auto* frame = GetFrame();
+	assert(frame);
+
 	bool result = false;
 	int value1, value2;
 	int actor_id;
@@ -2807,7 +2808,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 	}
 	case 8:
 		// Key decision initiated this event
-		result = triggered_by_decision_key;
+		result = frame->triggered_by_decision_key;
 		break;
 	case 9:
 		// BGM looped at least once

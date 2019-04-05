@@ -96,8 +96,6 @@ protected:
 	bool updating;
 	bool clear_child;
 
-	bool triggered_by_decision_key = false;
-
 	/**
 	 * Gets strings for choice selection.
 	 * This is just a helper (private) method

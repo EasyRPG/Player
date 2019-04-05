@@ -64,8 +64,9 @@ bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _in
 		}
 		// FIXME: Update this when we remove child interpreters
 		_state.stack = { stack[_index] };
-		GetFrame()->current_command = stack[_index].current_command;
-		triggered_by_decision_key = stack[_index].triggered_by_decision_key;
+		auto* frame = GetFrame();
+		frame->current_command = stack[_index].current_command;
+		frame->triggered_by_decision_key = stack[_index].triggered_by_decision_key;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
 		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetState(save, _index + 1);
@@ -95,10 +96,10 @@ RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
 		if (frame) {
 			save_frame.commands = frame->commands;
 			save_frame.current_command = frame->current_command;
+			save_frame.triggered_by_decision_key = frame->triggered_by_decision_key;
 		}
 		save_frame.ID = i++;
 		save_frame.event_id = event_id;
-		save_frame.triggered_by_decision_key = triggered_by_decision_key;
 		save.stack.push_back(std::move(save_frame));
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
