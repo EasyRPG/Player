@@ -31,6 +31,7 @@
 #include "player.h"
 #include "utils.h"
 #include <cmath>
+#include <cassert>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Game_Character(Event, new RPG::SaveMapEvent()),
@@ -45,6 +46,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 }
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+	//FIXME: This will leak if Game_Character() throws.
 	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
 	event(event),
@@ -57,7 +59,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 
 	if (!data()->parallel_event_execstate.stack.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetState(data()->parallel_event_execstate);
+		interpreter->SetState(data()->parallel_event_execstate);
 	}
 
 	Refresh();
@@ -81,13 +83,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	const RPG::EventPage* old_page = page;
 	page = new_page;
 
-	// Free resources if needed
-	if (interpreter) {
-		// If the new page is null and the interpreter is running, it should
-		// carry on executing its command list during this frame
-		if (page)
-			interpreter->Clear();
-		interpreter.reset();
+	// If the new page is null and the interpreter is running, it should
+	// carry on executing its command list during this frame
+	if (interpreter && page) {
+		interpreter->Clear();
 	}
 
 	SetPaused(false);
@@ -137,7 +136,7 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	trigger = page->trigger;
 	list = page->event_commands;
 
-	if (trigger == RPG::EventPage::Trigger_parallel) {
+	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 }
@@ -148,7 +147,6 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	if (page == nullptr) {
 		trigger = -1;
 		list.clear();
-		interpreter.reset();
 		return;
 	}
 
@@ -514,15 +512,11 @@ void Game_Event::Update() {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (trigger == RPG::EventPage::Trigger_parallel && interpreter) {
+	if (trigger == RPG::EventPage::Trigger_parallel) {
+		assert(interpreter != nullptr);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
 		}
-		// Event code could run which changes the current page of this event.
-		// That can then result in the interpreter shared_ptr getting reset.
-		// To prevent a crash, we make a copy of the interpreter shared_ptr
-		// here to prevent it from getting deleted until after Update() returns.
-		auto interpreter_guard = interpreter;
 		interpreter->Update();
 
 		// RPG_RT only exits if active is false here, but not if there is
@@ -566,8 +560,7 @@ const RPG::EventPage *Game_Event::GetActivePage() const {
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
-		auto* imap = static_cast<Game_Interpreter_Map*>(interpreter.get());
-		data()->parallel_event_execstate = imap->GetState();
+		data()->parallel_event_execstate = interpreter->GetState();
 	}
 	data()->ID = event.ID;
 

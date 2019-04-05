@@ -24,7 +24,7 @@
 #include "game_character.h"
 #include "rpg_event.h"
 #include "rpg_savemapevent.h"
-#include "game_interpreter.h"
+#include "game_interpreter_map.h"
 
 /**
  * Game_Event class.
@@ -202,7 +202,7 @@ private:
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
 	std::vector<RPG::EventCommand> list;
-	std::shared_ptr<Game_Interpreter> interpreter;
+	std::unique_ptr<Game_Interpreter_Map> interpreter;
 	bool from_save;
 };
 
