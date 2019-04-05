@@ -30,6 +30,7 @@
 #include "game_temp.h"
 #include "game_map.h"
 #include "spriteset_battle.h"
+#include <cassert>
 
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -37,6 +38,10 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	if (index >= list.size()) {
 		return CommandEnd();
 	}

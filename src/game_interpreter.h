@@ -27,6 +27,7 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 #include "command_codes.h"
+#include "rpg_saveeventexecstate.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -73,6 +74,9 @@ public:
 protected:
 	friend class Game_Interpreter_Map;
 
+	const RPG::SaveEventExecFrame* GetFrame() const;
+	RPG::SaveEventExecFrame* GetFrame();
+
 	int depth;
 	bool main_flag;
 
@@ -87,8 +91,6 @@ protected:
 	std::unique_ptr<Game_Interpreter> child_interpreter;
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
-
-	std::vector<RPG::EventCommand> list;
 
 	int button_timer;
 	bool waiting_battle_anim;
@@ -238,7 +240,18 @@ protected:
 	} event_info;
 
 	FileRequestBinding request_id;
+
+	RPG::SaveEventExecState _state;
 };
+
+
+inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
+	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
+}
+
+inline RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() {
+	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
+}
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;

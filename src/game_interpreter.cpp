@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include "game_interpreter.h"
 #include "audio.h"
 #include "filefinder.h"
@@ -93,12 +94,13 @@ void Game_Interpreter::Clear() {
 		else
 			child_interpreter.reset();
 	}
-	list.clear();
+	_state = {};
 }
 
 // Is interpreter running.
 bool Game_Interpreter::IsRunning() const {
-	return !list.empty();
+	auto* frame = GetFrame();
+	return frame && !frame->commands.empty();
 }
 
 // Setup.
@@ -113,7 +115,9 @@ void Game_Interpreter::Setup(
 	event_id = _event_id;
 
 	if (depth <= 100) {
-		list = _list;
+		// FIXME: Update this when we remove child interpreters
+		_state.stack = { RPG::SaveEventExecFrame{} };
+		_state.stack[0].commands = _list;
 	}
 
 	triggered_by_decision_key = started_by_decision_key;
@@ -156,6 +160,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	if (reset_loop_count) {
 		loop_count = 0;
 	}
+
 	for (; loop_count < loop_limit; ++loop_count) {
 		/* If map is different than event startup time
 		set event_id to 0 */
@@ -218,7 +223,13 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
+		auto* frame = GetFrame();
+		if (frame == nullptr) {
+			return;
+		}
+
 		if (continuation) {
+			const auto& list = frame->commands;
 			bool result;
 			if (index >= list.size()) {
 				result = (this->*continuation)(RPG::EventCommand());
@@ -236,7 +247,11 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			Game_Map::Refresh();
 		}
 
-		if (list.empty()) {
+		// Previous operations could have modified the stack.
+		// So we need to fetch the frame again.
+		frame = GetFrame();
+
+		if (!frame || frame->commands.empty()) {
 			break;
 		}
 
@@ -293,6 +308,11 @@ void Game_Interpreter::CheckGameOver() {
 
 // Skip to command.
 bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent, bool otherwise_end) {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
+
 	if (code2 < 0)
 		code2 = code;
 	if (min_indent < 0)
@@ -371,6 +391,10 @@ RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int32_t>::const_iterat
 
 // Execute Command.
 bool Game_Interpreter::ExecuteCommand() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	RPG::EventCommand const& com = list[index];
 
 	switch (com.code) {
@@ -549,6 +573,10 @@ bool Game_Interpreter::ExecuteCommand() {
 }
 
 bool Game_Interpreter::CommandEnd() { // code 10
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& list = frame->commands;
+
 	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
 	}
@@ -558,7 +586,8 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	//	Game_Message::FullClear();
 	//}
 
-	list.clear();
+	//FIXME: Update this when we remove child interpreters
+	_state.stack.front().commands.clear();
 
 	if (main_flag && depth == 0 && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
@@ -572,6 +601,10 @@ bool Game_Interpreter::CommandEnd() { // code 10
 }
 
 std::vector<std::string> Game_Interpreter::GetChoices() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
 	std::vector<std::string> s_choices;
@@ -598,6 +631,10 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 }
 
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	// If there's a text already, return immediately
 	if (Game_Message::message_waiting)
 		return false;
@@ -685,6 +722,10 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 }
 
 bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	continuation = NULL;
 	int indent = com.indent;
 	for (;;) {
@@ -1538,6 +1579,10 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com */) { // code 12310
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	index = list.size();
 	return true;
 }
@@ -2789,6 +2834,10 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 }
 
 bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
@@ -2808,6 +2857,10 @@ bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	int indent = com.indent;
 
 	for (int idx = index; idx >= 0; idx--) {
@@ -3091,3 +3144,4 @@ bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) 
 bool Game_Interpreter::ContinuationShowInnStart(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
+

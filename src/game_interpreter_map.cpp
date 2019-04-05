@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include "audio.h"
 #include "game_map.h"
 #include "game_battle.h"
@@ -53,6 +54,7 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 
 bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _index) {
 	Clear();
+	_state = save;
 	auto& stack = save.stack;
 	if (_index < (int)stack.size()) {
 		event_id = stack[_index].event_id;
@@ -60,7 +62,8 @@ bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _in
 			// When 0 the event is from a different map
 			map_id = Game_Map::GetMapId();
 		}
-		list = stack[_index].commands;
+		// FIXME: Update this when we remove child interpreters
+		_state.stack = { stack[_index] };
 		index = stack[_index].current_command;
 		triggered_by_decision_key = stack[_index].triggered_by_decision_key;
 
@@ -81,18 +84,22 @@ RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
 
 	int i = 1;
 
-	if (save_interpreter->list.empty()) {
+	auto* frame = save_interpreter->GetFrame();
+	if (!frame || frame->commands.empty()) {
 		return save;
 	}
 
 	while (save_interpreter != NULL) {
-		RPG::SaveEventExecFrame save_commands;
-		save_commands.commands = save_interpreter->list;
-		save_commands.current_command = save_interpreter->index;
-		save_commands.ID = i++;
-		save_commands.event_id = event_id;
-		save_commands.triggered_by_decision_key = triggered_by_decision_key;
-		save.stack.push_back(std::move(save_commands));
+		frame = save_interpreter->GetFrame();
+		RPG::SaveEventExecFrame save_frame;
+		if (frame) {
+			save_frame.commands = frame->commands;
+		}
+		save_frame.current_command = save_interpreter->index;
+		save_frame.ID = i++;
+		save_frame.event_id = event_id;
+		save_frame.triggered_by_decision_key = triggered_by_decision_key;
+		save.stack.push_back(std::move(save_frame));
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
 
@@ -103,6 +110,10 @@ RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
  * Execute Command.
  */
 bool Game_Interpreter_Map::ExecuteCommand() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+
 	if (index >= list.size()) {
 		return CommandEnd();
 	}
