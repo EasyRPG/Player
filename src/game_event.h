@@ -198,7 +198,6 @@ private:
 	// reference.
 	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
-	int trigger = -1;
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
 	std::unique_ptr<Game_Interpreter_Map> interpreter;

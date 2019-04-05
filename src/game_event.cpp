@@ -95,7 +95,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
-		trigger = -1;
 		return;
 	}
 
@@ -132,9 +131,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetTransparency(page->translucent ? 3 : 0);
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
-	trigger = page->trigger;
 
-	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
+	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 }
@@ -143,16 +141,14 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	page = new_page;
 
 	if (page == nullptr) {
-		trigger = -1;
 		return;
 	}
 
 	original_move_frequency = page->move_frequency;
-	trigger = page->trigger;
 
 	// Trigger parallel events when the interpreter wasn't already running
 	// (because it was the middle of a parallel event while saving)
-	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
+	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 }
@@ -289,6 +285,7 @@ bool Game_Event::WasStartedByDecisionKey() const {
 }
 
 RPG::EventPage::Trigger Game_Event::GetTrigger() const {
+	int trigger = page ? page->trigger : -1;
 	return static_cast<RPG::EventPage::Trigger>(trigger);
 }
 
@@ -324,7 +321,7 @@ void Game_Event::OnFinishForegroundEvent() {
 }
 
 void Game_Event::CheckEventAutostart() {
-	if (trigger == RPG::EventPage::Trigger_auto_start
+	if (GetTrigger() == RPG::EventPage::Trigger_auto_start
 			&& GetRemainingStep() == 0) {
 		SetAsWaitingForegroundExecution(false, false);
 		return;
@@ -332,7 +329,7 @@ void Game_Event::CheckEventAutostart() {
 }
 
 void Game_Event::CheckEventCollision() {
-	if (trigger == RPG::EventPage::Trigger_collision
+	if (GetTrigger() == RPG::EventPage::Trigger_collision
 			&& GetLayer() != RPG::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning()
@@ -346,7 +343,7 @@ void Game_Event::CheckEventCollision() {
 void Game_Event::OnMoveFailed(int x, int y) {
 	if (Main_Data::game_player->InAirship()
 			|| GetLayer() != RPG::EventPage::Layers_same
-			|| trigger != RPG::EventPage::Trigger_collision) {
+			|| GetTrigger() != RPG::EventPage::Trigger_collision) {
 		return;
 	}
 
@@ -510,7 +507,7 @@ void Game_Event::Update() {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (trigger == RPG::EventPage::Trigger_parallel) {
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		assert(interpreter != nullptr);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
