@@ -197,6 +197,13 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			_state.wait_key_enter = false;
 		}
 
+		if (_state.wait_movement) {
+			if (Game_Map::IsAnyMovePending()) {
+				break;
+			}
+			_state.wait_movement = false;
+		}
+
 		if (Game_Temp::to_title) {
 			break;
 		}
