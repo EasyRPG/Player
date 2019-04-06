@@ -594,8 +594,9 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		break;
 	}
 
-	if (waiting_pan_screen)
-		wait_count = distance * (2 << (6 - speed));
+	if (waiting_pan_screen) {
+		_state.wait_time = distance * (2 << (6 - speed));
+	}
 
 	return true;
 }

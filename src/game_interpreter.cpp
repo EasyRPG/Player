@@ -73,7 +73,6 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
@@ -114,9 +113,9 @@ void Game_Interpreter::Setup(
 void Game_Interpreter::SetupWait(int duration) {
 	if (duration == 0) {
 		// 0.0 waits 1 frame
-		wait_count = 1;
+		_state.wait_time = 1;
 	} else {
-		wait_count = duration * DEFAULT_FPS / 10;
+		_state.wait_time = duration * DEFAULT_FPS / 10;
 	}
 }
 
@@ -186,8 +185,8 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			transition_owner = nullptr;
 		}
 
-		if (wait_count > 0) {
-			wait_count--;
+		if (_state.wait_time > 0) {
+			_state.wait_time--;
 			break;
 		}
 

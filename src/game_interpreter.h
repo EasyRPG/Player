@@ -99,8 +99,6 @@ protected:
 	int loop_count;
 	bool wait_messages;
 
-	int wait_count;
-
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 
