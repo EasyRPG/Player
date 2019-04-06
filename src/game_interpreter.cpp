@@ -586,9 +586,9 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::ShowChoice:
 			return CommandShowChoices(com);
 		case Cmd::ShowChoiceOption:
-			return SkipTo(Cmd::ShowChoiceEnd);
+			return CommandShowChoiceOption(com);
 		case Cmd::ShowChoiceEnd:
-			return true;
+			return CommandShowChoiceEnd(com);
 		case Cmd::InputNumber:
 			return CommandInputNumber(com);
 		case Cmd::ControlSwitches:
@@ -865,7 +865,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 					index++;
 					Game_Message::choice_start = line_count;
 					Game_Message::choice_cancel_type = list[index].parameters[0];
-					SetupChoices(s_choices);
+					SetupChoices(s_choices, com.indent);
 				}
 			} else if (list[index+1].code == Cmd::InputNumber) {
 				// If next event command is input number
@@ -904,7 +904,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { 
 	return true;
 }
 
-void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
+void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent) {
 	Game_Message::choice_start = Game_Message::texts.size();
 	Game_Message::choice_max = choices.size();
 	Game_Message::choice_disabled.reset();
@@ -916,36 +916,27 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	}
 
 	SetContinuation(&Game_Interpreter::ContinuationChoices);
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(indent);
 }
 
 bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
-	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	continuation = NULL;
-	int indent = com.indent;
-	for (;;) {
-		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
-			return false;
-		auto& cmd = list[index];
-		if (cmd.code == Cmd::ShowChoiceEnd) {
-			return false;
-		}
-		int which = cmd.parameters[0];
-		index++;
-		if (which > Game_Message::choice_result)
-			return false;
-		if (which < Game_Message::choice_result)
-			continue;
-		break;
-	}
+	SetSubcommandIndex(com.indent, Game_Message::choice_result);
+
+	continuation = nullptr;
 
 	return true;
 }
 
 bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -956,10 +947,22 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
-	SetupChoices(choices);
+	SetupChoices(choices, com.indent);
 
+	++index;
+	return false;
+}
+
+
+bool Game_Interpreter::CommandShowChoiceOption(RPG::EventCommand const& com) { //code 20140
+	const auto opt_sub_idx = com.parameters[0];
+	return CommandOptionGeneric(com, opt_sub_idx, {Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd});
+}
+
+bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& com) { //code 20141
 	return true;
 }
+
 
 bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
 	if (Game_Message::message_waiting) {
