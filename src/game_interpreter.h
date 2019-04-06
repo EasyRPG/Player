@@ -68,7 +68,7 @@ public:
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
-	void SetupChoices(const std::vector<std::string>& choices);
+	void SetupChoices(const std::vector<std::string>& choices, int indent);
 
 	virtual bool ExecuteCommand();
 
@@ -187,6 +187,8 @@ protected:
 	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
 	bool CommandShowChoices(RPG::EventCommand const& com);
+	bool CommandShowChoiceOption(RPG::EventCommand const& com);
+	bool CommandShowChoiceEnd(RPG::EventCommand const& com);
 	bool CommandInputNumber(RPG::EventCommand const& com);
 	bool CommandControlSwitches(RPG::EventCommand const& com);
 	bool CommandControlVariables(RPG::EventCommand const& com);
