@@ -58,6 +58,11 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
+
+constexpr int Game_Interpreter::loop_limit;
+constexpr int Game_Interpreter::call_stack_limit;
+constexpr int Game_Interpreter::subcommand_sentinel;
+
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 
@@ -260,6 +265,34 @@ int Game_Interpreter::GetThisEventId() const {
 	return event_id;
 }
 
+uint8_t& Game_Interpreter::ReserveSubcommandIndex(int indent) {
+	auto* frame = GetFrame();
+	assert(frame);
+
+	auto& path = frame->subcommand_path;
+	if (indent >= (int)path.size()) {
+		// This fixes an RPG_RT bug where RPG_RT would resize
+		// the array with uninitialized values.
+		path.resize(indent + 1, subcommand_sentinel);
+	}
+	return path[indent];
+}
+
+void Game_Interpreter::SetSubcommandIndex(int indent, int idx) {
+	ReserveSubcommandIndex(indent) = idx;
+}
+
+int Game_Interpreter::GetSubcommandIndex(int indent) const {
+	auto* frame = GetFrame();
+	if (frame == nullptr) {
+		return subcommand_sentinel;
+	}
+	auto& path = frame->subcommand_path;
+	if ((int)path.size() <= indent) {
+		return subcommand_sentinel;
+	}
+	return path[indent];
+}
 
 // Update
 void Game_Interpreter::Update(bool reset_loop_count) {

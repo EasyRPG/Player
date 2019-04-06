@@ -91,6 +91,7 @@ public:
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
+	static constexpr int subcommand_sentinel = 255;
 
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
@@ -235,6 +236,10 @@ protected:
 	RPG::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
 
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
+
+	void SetSubcommandIndex(int indent, int idx);
+	uint8_t& ReserveSubcommandIndex(int indent);
+	int GetSubcommandIndex(int indent) const;
 
 	FileRequestBinding request_id;
 	enum class Keys {
