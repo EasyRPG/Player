@@ -51,6 +51,7 @@
 void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
 	Clear();
 	_state = save;
+	_keyinput.fromSave(save);
 }
 
 void Game_Interpreter_Map::OnMapChange() {

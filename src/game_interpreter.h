@@ -28,6 +28,7 @@
 #include "system.h"
 #include "command_codes.h"
 #include "rpg_saveeventexecstate.h"
+#include "flag_set.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -77,7 +78,7 @@ public:
 	 *
 	 * @return interpreter commands stored in SaveEventCommands
 	 */
-	const RPG::SaveEventExecState& GetState() const;
+	RPG::SaveEventExecState GetState() const;
 
 protected:
 	friend class Game_Interpreter_Map;
@@ -102,7 +103,6 @@ protected:
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 
-	int button_timer;
 	bool waiting_battle_anim;
 	bool updating;
 
@@ -238,13 +238,34 @@ protected:
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 
 	FileRequestBinding request_id;
+	enum class Keys {
+		eDown,
+		eLeft,
+		eRight,
+		eUp,
+		eDecision,
+		eCancel,
+		eShift,
+		eNumbers,
+		eOperators
+	};
+
+	struct KeyInputState {
+		FlagSet<Keys> keys = {};
+		int variable = 0;
+		int time_variable = 0;
+		int wait_frames = 0;
+		bool wait = false;
+		bool timed = false;
+
+		int CheckInput() const;
+		void fromSave(const RPG::SaveEventExecState& save);
+		void toSave(RPG::SaveEventExecState& save) const;
+	};
 
 	RPG::SaveEventExecState _state;
+	KeyInputState _keyinput;
 };
-
-inline const RPG::SaveEventExecState& Game_Interpreter::GetState() const {
-	return _state;
-}
 
 inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;

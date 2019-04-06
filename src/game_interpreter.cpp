@@ -75,9 +75,9 @@ Game_Interpreter::~Game_Interpreter() {
 void Game_Interpreter::Clear() {
 	waiting_battle_anim = false;
 	continuation = NULL;			// function to execute to resume command
-	button_timer = 0;
 	wait_messages = false;			// wait if message window is visible
 	_state = {};
+	_keyinput = {};
 }
 
 // Is interpreter running.
@@ -109,6 +109,119 @@ void Game_Interpreter::Setup(
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
 }
+
+
+void Game_Interpreter::KeyInputState::fromSave(const RPG::SaveEventExecState& save) {
+	*this = {};
+
+	wait = save.keyinput_wait;
+	// FIXME: There is an RPG_RT bug where keyinput_variable is uint8_t
+	// which we currently have to emulate. So the value from the save could be wrong.
+	variable = save.keyinput_variable;
+
+	if (save.keyinput_all_directions) {
+		keys[Keys::eDown] = true;
+		keys[Keys::eLeft] = true;
+		keys[Keys::eRight] = true;
+		keys[Keys::eUp] = true;
+	} else {
+		if (Player::IsRPG2k3()) {
+			keys[Keys::eDown] = save.keyinput_2k3down;
+			keys[Keys::eLeft] = save.keyinput_2k3left;
+			keys[Keys::eRight] = save.keyinput_2k3right;
+			keys[Keys::eUp] = save.keyinput_2k3up;
+		} else {
+			keys[Keys::eDown] = save.keyinput_2kdown_2k3operators	;
+			keys[Keys::eLeft] = save.keyinput_2kleft_2k3shift;
+			keys[Keys::eRight] = save.keyinput_2kright;
+			keys[Keys::eUp] = save.keyinput_2kup;
+		}
+	}
+
+	keys[Keys::eDecision] = save.keyinput_decision;
+	keys[Keys::eCancel] = save.keyinput_cancel;
+
+	if (Player::IsRPG2k3()) {
+		keys[Keys::eShift] = save.keyinput_2kleft_2k3shift;
+		keys[Keys::eNumbers] = save.keyinput_2kshift_2k3numbers;
+		keys[Keys::eOperators] = save.keyinput_2kdown_2k3operators;
+	} else {
+		keys[Keys::eShift] = save.keyinput_2kshift_2k3numbers;
+	}
+
+	time_variable = save.keyinput_time_variable;
+	timed = save.keyinput_timed;
+	// FIXME: Rm2k3 has no LSD chunk for this.
+	wait_frames = 0;
+}
+
+void Game_Interpreter::KeyInputState::toSave(RPG::SaveEventExecState& save) const {
+	save.keyinput_wait = 0;
+	save.keyinput_variable = 0;
+	save.keyinput_all_directions = 0;
+	save.keyinput_decision = 0;
+	save.keyinput_cancel = 0;
+	save.keyinput_2kshift_2k3numbers = 0;
+	save.keyinput_2kdown_2k3operators = 0;
+	save.keyinput_2kleft_2k3shift = 0;
+	save.keyinput_2kright = 0;
+	save.keyinput_2kup = 0;
+	save.keyinput_time_variable = 0;
+	save.keyinput_2k3down = 0;
+	save.keyinput_2k3left = 0;
+	save.keyinput_2k3right = 0;
+	save.keyinput_2k3up = 0;
+	save.keyinput_timed = 0;
+
+	save.keyinput_wait = wait;
+	// FIXME: There is an RPG_RT bug where keyinput_variable is uint8_t
+	// which we currently have to emulate. So this assignment truncates.
+	save.keyinput_variable = variable;
+
+	if (keys[Keys::eDown]
+			&& keys[Keys::eLeft]
+			&& keys[Keys::eRight]
+			&& keys[Keys::eUp]) {
+		save.keyinput_all_directions = true;
+	} else {
+		if (Player::IsRPG2k3()) {
+			save.keyinput_2k3down = keys[Keys::eDown];
+			save.keyinput_2k3left = keys[Keys::eLeft];
+			save.keyinput_2k3right = keys[Keys::eRight];
+			save.keyinput_2k3up = keys[Keys::eUp];
+		} else {
+			// RM2k uses these chunks for directions.
+			save.keyinput_2kdown_2k3operators = keys[Keys::eDown];
+			save.keyinput_2kleft_2k3shift = keys[Keys::eLeft];
+			save.keyinput_2kright = keys[Keys::eRight];
+			save.keyinput_2kup = keys[Keys::eUp];
+		}
+	}
+
+	save.keyinput_decision = keys[Keys::eDecision];
+	save.keyinput_cancel = keys[Keys::eCancel];
+
+	if (Player::IsRPG2k3()) {
+		save.keyinput_2kleft_2k3shift = keys[Keys::eShift];
+		save.keyinput_2kshift_2k3numbers = keys[Keys::eNumbers];
+		save.keyinput_2kdown_2k3operators = keys[Keys::eOperators];
+	} else {
+		save.keyinput_2kshift_2k3numbers = keys[Keys::eShift];
+	}
+
+	save.keyinput_time_variable = time_variable;
+	save.keyinput_timed = timed;
+	// FIXME: Rm2k3 has no LSD chunk for this.
+	//void = wait_frames;
+}
+
+
+RPG::SaveEventExecState Game_Interpreter::GetState() const {
+	auto save = _state;
+	_keyinput.toSave(save);
+	return save;
+}
+
 
 void Game_Interpreter::SetupWait(int duration) {
 	if (duration == 0) {
@@ -202,6 +315,22 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				break;
 			}
 			_state.wait_movement = false;
+		}
+
+		if (_keyinput.wait) {
+			const int key = _keyinput.CheckInput();
+			Game_Variables.Set(_keyinput.variable, key);
+			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+			if (key == 0) {
+				++_keyinput.wait_frames;
+				break;
+			}
+			if (_keyinput.timed) {
+				// 10 per second
+				Game_Variables.Set(_keyinput.time_variable,
+						(int)((float)_keyinput.wait_frames / Graphics::GetDefaultFps() * 10));
+			}
+			_keyinput.wait = false;
 		}
 
 		if (Game_Temp::to_title) {
@@ -2422,125 +2551,108 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com *
 	return true;
 }
 
-bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
-	int var_id = com.parameters[0];
-	bool wait = com.parameters[1] != 0;
 
-	if (wait) {
-		// While waiting the variable is reset to 0 every frame
-		Game_Variables.Set(var_id, 0);
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+int Game_Interpreter::KeyInputState::CheckInput() const {
+	auto check = wait ? Input::IsTriggered : Input::IsPressed;
+
+	if (keys[Keys::eDown] && check(Input::DOWN)) {
+		return 1;
+	}
+	if (keys[Keys::eLeft] && check(Input::LEFT)) {
+		return 2;
+	}
+	if (keys[Keys::eRight] && check(Input::RIGHT)) {
+		return 3;
+	}
+	if (keys[Keys::eUp] && check(Input::UP)) {
+		return 4;
+	}
+	if (keys[Keys::eDecision] && check(Input::DECISION)) {
+		return 5;
+	}
+	if (keys[Keys::eCancel] && check(Input::CANCEL)) {
+		return 6;
+	}
+	if (keys[Keys::eShift] && check(Input::SHIFT)) {
+		return 7;
+	}
+	if (keys[Keys::eNumbers]) {
+		for (int i = 0; i < 10; ++i) {
+			if (check((Input::InputButton)(Input::N0 + i))) {
+				return 10 + i;
+			}
+		}
+	}
+	if (keys[Keys::eOperators]) {
+		for (int i = 0; i < 5; ++i) {
+			if (check((Input::InputButton)(Input::PLUS + i))) {
+				return 20 + i;
+			}
+		}
 	}
 
+	return 0;
+}
+
+bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
+	bool wait = com.parameters[1] != 0;
+
+	// FIXME: Is this valid?
 	if (wait && Game_Message::visible)
 		return false;
 
-	// Wait the first frame so that it ignores keys that were pressed before this command started.
-	if (wait && button_timer == 0) {
-		button_timer++;
-		return false;
-	}
+	_keyinput = {};
+	_keyinput.wait = wait;
+	_keyinput.variable = com.parameters[0];
 
-	bool time = false;
-	int time_id = 0;
+	_keyinput.keys[Keys::eDecision] = com.parameters[3] != 0;
+	_keyinput.keys[Keys::eCancel] = com.parameters[4] != 0;
 
-	bool check_decision = com.parameters[3] != 0;
-	bool check_cancel = com.parameters[4] != 0;
-	bool check_numbers = false;
-	bool check_arith = false;
-	bool check_shift = false;
-	bool check_down = false;
-	bool check_left = false;
-	bool check_right = false;
-	bool check_up = false;
-	int result = 0;
-	size_t param_size = com.parameters.size();
-
-	// Use a function pointer to check triggered keys if it waits for input and pressed keys otherwise
-	bool(*check)(Input::InputButton) = wait ? Input::IsTriggered : Input::IsPressed;
+	const size_t param_size = com.parameters.size();
 
 	if (param_size < 6) {
 		// For Rpg2k <1.50
-		bool check_dir = com.parameters[2] != 0;
-		check_down = check_dir;
-		check_left = check_dir;
-		check_right = check_dir;
-		check_up = check_dir;
+		if (com.parameters[2] != 0) {
+			_keyinput.keys[Keys::eDown] = true;
+			_keyinput.keys[Keys::eLeft] = true;
+			_keyinput.keys[Keys::eRight] = true;
+			_keyinput.keys[Keys::eUp] = true;
+		}
 	} else if (param_size < 11) {
 		// For Rpg2k >=1.50
-		check_shift = com.parameters[5] != 0;
-		check_down = param_size > 6 ? com.parameters[6] != 0 : false;
-		check_left = param_size > 7 ? com.parameters[7] != 0 : false;
-		check_right = param_size > 8 ? com.parameters[8] != 0 : false;
-		check_up = param_size > 9 ? com.parameters[9] != 0 : false;
+		_keyinput.keys[Keys::eShift] = com.parameters[5] != 0;
+		_keyinput.keys[Keys::eDown] = param_size > 6 ? com.parameters[6] != 0 : false;
+		_keyinput.keys[Keys::eLeft] = param_size > 7 ? com.parameters[7] != 0 : false;
+		_keyinput.keys[Keys::eRight] = param_size > 8 ? com.parameters[8] != 0 : false;
+		_keyinput.keys[Keys::eUp] = param_size > 9 ? com.parameters[9] != 0 : false;
 	} else {
 		// For Rpg2k3
-		check_numbers = com.parameters[5] != 0;
-		check_arith = com.parameters[6] != 0;
-		time_id = com.parameters[7];
-		time = com.parameters[8] != 0;
-		check_shift = com.parameters[9] != 0;
-		check_down = com.parameters[10] != 0;
-		check_left = param_size > 11 ? com.parameters[11] != 0 : false;
-		check_right = param_size > 12 ? com.parameters[12] != 0 : false;
-		check_up = param_size > 13 ? com.parameters[13] != 0 : false;
+		_keyinput.keys[Keys::eNumbers] = com.parameters[5] != 0;
+		_keyinput.keys[Keys::eOperators] = com.parameters[6] != 0;
+		_keyinput.time_variable = com.parameters[7];
+		_keyinput.timed = com.parameters[8] != 0;
+		_keyinput.keys[Keys::eShift] = com.parameters[9] != 0;
+		_keyinput.keys[Keys::eDown] = com.parameters[10] != 0;
+		_keyinput.keys[Keys::eLeft] = param_size > 11 ? com.parameters[11] != 0 : false;
+		_keyinput.keys[Keys::eRight] = param_size > 12 ? com.parameters[12] != 0 : false;
+		_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
 	}
 
-	if (check_down && check(Input::DOWN)) {
-		result = 1;
-	}
-	if (check_left && check(Input::LEFT)) {
-		result = 2;
-	}
-	if (check_right && check(Input::RIGHT)) {
-		result = 3;
-	}
-	if (check_up && check(Input::UP)) {
-		result = 4;
-	}
-	if (check_decision && check(Input::DECISION)) {
-		result = 5;
-	}
-	if (check_cancel && check(Input::CANCEL)) {
-		result = 6;
-	}
-	if (check_shift && check(Input::SHIFT)) {
-		result = 7;
-	}
-	if (check_numbers) {
-		for (int i = 0; i < 10; ++i) {
-			if (check((Input::InputButton)(Input::N0 + i))) {
-				result = 10 + i;
-			}
-		}
-	}
-	if (check_arith) {
-		for (int i = 0; i < 5; ++i) {
-			if (check((Input::InputButton)(Input::PLUS + i))) {
-				result = 20 + i;
-			}
-		}
-	}
-
-	if (var_id > 0) {
-		Game_Variables.Set(var_id, result);
-		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
-	}
-
-	if (!wait)
-		return true;
-
-	button_timer++;
-
-	if (result == 0)
+	// Wait until key pressed, but skip the first frame so that
+	// it ignores keys that were pressed before this command started.
+	// FIXME: Is this behavior correct?
+	if (_keyinput.wait) {
+		++index;
 		return false;
-
-	if (time) {
-		// 10 per second
-		Game_Variables.Set(time_id, (int)((float)button_timer / Graphics::GetDefaultFps() * 10));
 	}
 
-	button_timer = 0;
+	int key = _keyinput.CheckInput();
+	Game_Variables.Set(_keyinput.variable, key);
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 
 	return true;
 }
