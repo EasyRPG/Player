@@ -405,6 +405,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// Save the frame index before we call events.
 		int current_frame_idx = _state.stack.size() - 1;
 
+		const int index_before_exec = frame->current_command;
 		if (!ExecuteCommand()) {
 			break;
 		}
@@ -419,14 +420,15 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			continue;
 		}
 
-		// FIXME?
-		// After calling SkipTo this index++ will skip execution of e.g. END.
-		// This causes a different timing because loop_count reaches 10000
-		// faster then Player does.
-		// No idea if any game depends on this special case.
 		// Note: In the case we executed a CallEvent command, be sure to
 		// increment the old frame and not the new one we just pushed.
-		_state.stack[current_frame_idx].current_command++;
+		frame = &_state.stack[current_frame_idx];
+
+		// Only do auto increment if the command didn't manually 
+		// change the index.
+		if (index_before_exec == frame->current_command) {
+			frame->current_command++;
+		}
 	} // for
 
 	if (loop_count > loop_limit - 1) {
@@ -735,9 +737,9 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::ChangeBattleCommands:
 			return CommandChangeBattleCommands(com);
 		case Cmd::ElseBranch:
-			return SkipTo(Cmd::EndBranch);
+			return CommandElseBranch(com);
 		case Cmd::EndBranch:
-			return true;
+			return CommandEndBranch(com);
 		case Cmd::ExitGame:
 			return CommandExitGame(com);
 		case Cmd::ToggleFullscreen:
@@ -811,6 +813,17 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 		}
 	}
 	return s_choices;
+}
+
+bool Game_Interpreter::CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next) {
+	const auto sub_idx = GetSubcommandIndex(com.indent);
+	if (sub_idx == option_sub_idx) {
+		// Executes this option, so clear the subidx to skip all other options.
+		SetSubcommandIndex(com.indent, subcommand_sentinel);
+	} else {
+		SkipToNextConditional(next, com.indent);
+	}
+	return true;
 }
 
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
@@ -2897,9 +2910,10 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 
 		if (!actor) {
 			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
-			// Use Else branch
-			++loop_count;
-			return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+			// Use Else Branch
+			SetSubcommandIndex(com.indent, 1);
+			SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
+			return true;
 		}
 
 		switch (com.parameters[2]) {
@@ -3006,11 +3020,24 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
 	}
 
-	if (result)
-		return true;
 
-	++loop_count;
-	return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+	int sub_idx = subcommand_sentinel;
+	if (!result) {
+		sub_idx = 1;
+		SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
+	}
+
+	SetSubcommandIndex(com.indent, sub_idx);
+	return true;
+}
+
+
+bool Game_Interpreter::CommandElseBranch(RPG::EventCommand const& com) { //code 22010
+	return CommandOptionGeneric(com, 1, {Cmd::EndBranch});
+}
+
+bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& com) { //code 22011
+	return true;
 }
 
 bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
