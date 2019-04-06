@@ -58,9 +58,6 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
-// 10000 based on: https://gist.github.com/4406621
-constexpr int loop_limit = 10000;
-
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 	updating = false;
@@ -3047,8 +3044,9 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	int evt_id;
 	int event_page;
 
-	//FIXME: Max call stack depth of 100??
-
+	if ((int)_state.stack.size() > call_stack_limit) {
+		Output::Error("Call Event limit has been exceeded");
+	}
 
 	RPG::SaveEventExecFrame new_frame;
 	new_frame.ID = _state.stack.size() + 1;

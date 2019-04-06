@@ -91,6 +91,10 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 		return true;
 	}
 
+	if ((int)_state.stack.size() > call_stack_limit) {
+		Output::Error("Call Event limit has been exceeded");
+	}
+
 	RPG::SaveEventExecFrame new_frame;
 
 	new_frame.ID = _state.stack.size() + 1;

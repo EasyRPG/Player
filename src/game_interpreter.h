@@ -83,6 +83,9 @@ public:
 protected:
 	friend class Game_Interpreter_Map;
 
+	static constexpr int loop_limit = 10000;
+	static constexpr int call_stack_limit = 1000;
+
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
 
