@@ -97,7 +97,7 @@ void Game_Map::Init() {
 	refresh_type = Refresh_All;
 
 	location.map_id = 0;
-	interpreter.reset(new Game_Interpreter_Map(0, true));
+	interpreter.reset(new Game_Interpreter_Map(true));
 	map_info.encounter_rate = 0;
 
 	common_events.clear();

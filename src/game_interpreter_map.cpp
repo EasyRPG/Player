@@ -48,66 +48,15 @@
 #include "game_interpreter_map.h"
 #include "reader_lcf.h"
 
-Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
-}
-
-bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _index) {
+void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
 	Clear();
 	_state = save;
-	auto& stack = save.stack;
-	if (_index < (int)stack.size()) {
-		// FIXME: Update this when we remove child interpreters
-		_state.stack = { stack[_index] };
-		auto* frame = GetFrame();
-		frame->current_command = stack[_index].current_command;
-		frame->triggered_by_decision_key = stack[_index].triggered_by_decision_key;
-		frame->event_id = stack[_index].event_id;
-
-		child_interpreter.reset(new Game_Interpreter_Map());
-		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetState(save, _index + 1);
-		if (!result) {
-			child_interpreter.reset();
-		}
-		return true;
-	}
-	return false;
-}
-
-RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
-	RPG::SaveEventExecState save;
-
-	const Game_Interpreter_Map* save_interpreter = this;
-
-	int i = 1;
-
-	auto* frame = save_interpreter->GetFrame();
-	if (!frame || frame->commands.empty()) {
-		return save;
-	}
-
-	while (save_interpreter != NULL) {
-		frame = save_interpreter->GetFrame();
-		RPG::SaveEventExecFrame save_frame;
-		if (frame) {
-			save_frame.commands = frame->commands;
-			save_frame.current_command = frame->current_command;
-			save_frame.triggered_by_decision_key = frame->triggered_by_decision_key;
-		}
-		save_frame.ID = i++;
-		save_frame.event_id = event_id;
-		save.stack.push_back(std::move(save_frame));
-		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
-	}
-
-	return save;
 }
 
 void Game_Interpreter_Map::OnMapChange() {
 	// When we change the map, we reset all event id's to 0.
-	event_id = 0;
-	if (child_interpreter) {
-		static_cast<Game_Interpreter_Map*>(child_interpreter.get())->OnMapChange();
+	for (auto& frame: _state.stack) {
+		frame.event_id = 0;
 	}
 }
 
@@ -667,7 +616,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 		return true;
 
 	if (evt_id == Game_Character::CharThisEvent)
-		evt_id = event_id;
+		evt_id = GetThisEventId();
 
 	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
 

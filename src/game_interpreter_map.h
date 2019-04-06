@@ -36,24 +36,15 @@ class Game_CommonEvent;
 class Game_Interpreter_Map : public Game_Interpreter
 {
 public:
-	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
+	using Game_Interpreter::Game_Interpreter;
 
 	/**
 	 * Sets up the interpreter with given state.
 	 *
 	 * @param save event to load.
-	 * @param index index in the event list.
 	 *
-	 * @return If the setup was successful (fails when index out of range)
 	 */
-	bool SetState(const RPG::SaveEventExecState& save, int index = 0);
-
-	/**
-	 * Returns a SaveEventExecState needed for the savefile.
-	 *
-	 * @return interpreter commands stored in SaveEventCommands
-	 */
-	RPG::SaveEventExecState GetState() const;
+	void SetState(const RPG::SaveEventExecState& save);
 
 	/**
 	 * Called when we change maps.

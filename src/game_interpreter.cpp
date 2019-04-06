@@ -61,15 +61,9 @@ namespace {
 // 10000 based on: https://gist.github.com/4406621
 constexpr int loop_limit = 10000;
 
-Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
-	depth = _depth;
+Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 	updating = false;
-	clear_child = false;
-
-	if (depth > 100) {
-		Output::Warning("Interpreter: Maximum callstack depth (100) exceeded");
-	}
 
 	Clear();
 }
@@ -79,18 +73,11 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	event_id = 0;					// event ID
 	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 	wait_messages = false;			// wait if message window is visible
-	if (child_interpreter) {		// clear child interpreter for called events
-		if (child_interpreter->updating)
-			clear_child = true;
-		else
-			child_interpreter.reset();
-	}
 	_state = {};
 }
 
@@ -103,36 +90,25 @@ bool Game_Interpreter::IsRunning() const {
 // Setup.
 void Game_Interpreter::Setup(
 	const std::vector<RPG::EventCommand>& _list,
-	int _event_id,
+	int event_id,
 	bool started_by_decision_key
 ) {
 	Clear();
 
-	event_id = _event_id;
-
-	if (depth <= 100) {
-		// FIXME: Update this when we remove child interpreters
-		_state.stack = { RPG::SaveEventExecFrame{} };
-		_state.stack[0].commands = _list;
-	}
+	_state.stack = { RPG::SaveEventExecFrame{} };
 
 	auto* frame = GetFrame();
-	if (frame) {
-		frame->current_command = 0;
-		frame->triggered_by_decision_key = started_by_decision_key;
-	}
+	frame->ID = 1;
+	frame->commands = _list;
+	frame->current_command = 0;
+	frame->triggered_by_decision_key = started_by_decision_key;
+	frame->event_id = event_id;
 
-	CancelMenuCall();
-
-	if (main_flag && depth == 0) {
+	if (main_flag) {
 		Game_Message::SetFaceName("");
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
-}
-
-void Game_Interpreter::CancelMenuCall() {
-	// TODO
 }
 
 void Game_Interpreter::SetupWait(int duration) {
@@ -152,6 +128,26 @@ bool Game_Interpreter::ReachedLoopLimit() const {
 	return loop_count >= loop_limit;
 }
 
+int Game_Interpreter::GetThisEventId() const {
+	auto event_id = GetCurrentEventId();
+
+	if (event_id == 0 && Player::IsRPG2k3E()) {
+		// RM2k3E allows "ThisEvent" commands to run from called
+		// common events. It operates on the last map event in
+		// the call stack.
+		for (auto iter = _state.stack.rbegin()++;
+				iter != _state.stack.rend(); ++iter) {
+			if (iter->event_id != 0) {
+				event_id = iter->event_id;
+				break;
+			}
+		}
+	}
+
+	return event_id;
+}
+
+
 // Update
 void Game_Interpreter::Update(bool reset_loop_count) {
 	updating = true;
@@ -160,22 +156,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	}
 
 	for (; loop_count < loop_limit; ++loop_count) {
-		/* If there's any active child interpreter, update it */
-		if (child_interpreter) {
-
-			child_interpreter->Update();
-
-			if (!child_interpreter->IsRunning() || clear_child) {
-				child_interpreter.reset();
-				clear_child = false;
-			}
-
-			// If child interpreter still exists
-			if (child_interpreter) {
-				break;
-			}
-		}
-
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
 		// RPG_RT compatible behavior.
 		if (loop_count > 0 && Scene::instance->HasRequestedScene()) {
@@ -249,6 +229,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
+		// Save the frame index before we call events.
+		int current_frame_idx = _state.stack.size() - 1;
+
 		if (!ExecuteCommand()) {
 			break;
 		}
@@ -258,11 +241,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
-		// Previous operations could have modified the stack.
-		// So we need to fetch the frame again.
-		frame = GetFrame();
-		if (!frame) {
-			break;
+		// Last event command removed the frame? We're done.
+		if (current_frame_idx >= (int)_state.stack.size() ) {
+			continue;
 		}
 
 		// FIXME?
@@ -270,10 +251,14 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// This causes a different timing because loop_count reaches 10000
 		// faster then Player does.
 		// No idea if any game depends on this special case.
-		frame->current_command++;
+		// Note: In the case we executed a CallEvent command, be sure to
+		// increment the old frame and not the new one we just pushed.
+		_state.stack[current_frame_idx].current_command++;
 	} // for
 
 	if (loop_count > loop_limit - 1) {
+		auto* frame = GetFrame();
+		int event_id = frame ? frame->event_id : 0;
 		// Executed Events Count exceeded (10000)
 		Output::Debug("Event %d exceeded execution limit", event_id);
 	}
@@ -288,14 +273,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 // Setup Starting Event
 void Game_Interpreter::Setup(Game_Event* ev) {
 	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
-	event_info.x = ev->GetX();
-	event_info.y = ev->GetY();
-	event_info.page = ev->GetActivePage();
 }
 
 void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
 	Setup(ev->GetList(), caller_id, false);
-	event_info.x = ev->GetIndex();
 }
 
 void Game_Interpreter::CheckGameOver() {
@@ -579,7 +560,10 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	assert(frame);
 	auto& list = frame->commands;
 
-	if (main_flag && depth == 0) {
+	// Is this the first event and not a called one?
+	const bool is_original_event = _state.stack.size() == 1;
+
+	if (main_flag && is_original_event) {
 		Game_Message::SetFaceName("");
 	}
 
@@ -588,11 +572,14 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	//	Game_Message::FullClear();
 	//}
 
-	//FIXME: Update this when we remove child interpreters
-	_state.stack.front().commands.clear();
+	frame->commands.clear();
+	if (_state.stack.size() > 1) {
+        _state.stack.pop_back();
+	}
 
-	if (main_flag && depth == 0 && event_id > 0) {
-		Game_Event* evnt = Game_Map::GetEvent(event_id);
+
+	if (main_flag && is_original_event && frame->event_id > 0) {
+		Game_Event* evnt = Game_Map::GetEvent(frame->event_id);
 		if (evnt)
 			evnt->OnFinishForegroundEvent();
 	}
@@ -651,7 +638,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = event_id;
+	Game_Message::owner_id = GetOriginalEventId();
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -701,7 +688,7 @@ bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //c
 }
 
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	if (Game_Message::message_waiting && Game_Message::owner_id != event_id)
+	if (Game_Message::message_waiting && Game_Message::owner_id != GetOriginalEventId())
 		return false;
 
 	Game_Message::SetFaceName(com.string);
@@ -758,7 +745,7 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = event_id;
+	Game_Message::owner_id = GetOriginalEventId();
 	wait_messages = true;
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
@@ -774,7 +761,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = event_id;
+	Game_Message::owner_id = GetOriginalEventId();
 	wait_messages = true;
 
 	Game_Message::num_input_start = 0;
@@ -1139,19 +1126,20 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int character_id) const {
-	if (!event_info.page && character_id == Game_Character::CharThisEvent) {
+Game_Character* Game_Interpreter::GetCharacter(int event_id) const {
+	if (event_id == Game_Character::CharThisEvent) {
+		event_id = GetThisEventId();
 		// Is a common event
 		if (event_id == 0) {
 			// With no map parent
-			Output::Warning("Can't use ThisEvent in common event %d: Not called from a map event", event_info.x);
+			Output::Warning("Can't use ThisEvent in common event: Not called from a map event");
 			return nullptr;
 		}
 	}
 
-	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
+	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
 	if (!ch) {
-		Output::Warning("Unknown event with id %d", character_id);
+		Output::Warning("Unknown event with id %d", event_id);
 	}
 	return ch;
 }
@@ -2901,15 +2889,12 @@ bool Game_Interpreter::CommandEraseEvent(RPG::EventCommand const& /* com */) { /
 	assert(frame);
 	auto& index = frame->current_command;
 
+	auto event_id = GetThisEventId();
+
+	// When a common event and not RPG2k3E engine ignore the call, otherwise
+	// operate on last map_event
 	if (event_id == 0)
 		return true;
-
-	if (!event_info.page && !Player::IsRPG2k3E()) {
-		// When a common event and not RPG2k3E engine ignore the call, otherwise
-		// this breaks games because older version did a no-op in this case
-		Output::Debug("Common Event %d: Erasing of the calling map event only supported in RPG2k3E", event_id, event_info.x, event_info.y);
-		return true;
-	}
 
 	Game_Event* evnt = Game_Map::GetEvent(event_id);
 	if (evnt) {
@@ -2932,12 +2917,11 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	int evt_id;
 	int event_page;
 
-	if (child_interpreter)
-		return false;
+	//FIXME: Max call stack depth of 100??
 
-	clear_child = false;
 
-	child_interpreter.reset(new Game_Interpreter_Map(depth + 1, main_flag));
+	RPG::SaveEventExecFrame new_frame;
+	new_frame.ID = _state.stack.size() + 1;
 
 	switch (com.parameters[0]) {
 	case 0: { // Common Event
@@ -2948,10 +2932,11 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 			return true;
 		}
 
-		// Forwarding the event_id is safe because all RPG Maker engines prior 2k3 1.12
-		// threw an error when ThisEvent was used in CommonEvents.
-		// The exception is EraseEvent which is handled special (see the code)
-		child_interpreter->Setup(common_event, event_id);
+		new_frame.commands = common_event->GetList();
+		new_frame.current_command = 0;
+		new_frame.event_id = 0;
+
+		_state.stack.push_back(new_frame);
 		return true;
 	}
 	case 1: // Map Event
@@ -2967,17 +2952,22 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
-	if (event) {
-		const RPG::EventPage* page = event->GetPage(event_page);
-		if (page) {
-			child_interpreter->Setup(page->event_commands, event->GetId(), false);
-			child_interpreter->event_info.x = event->GetX();
-			child_interpreter->event_info.y = event->GetY();
-			child_interpreter->event_info.page = page;
-		} else {
-			Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
-		}
+	if (!event) {
+		Output::Warning("CallEvent: Can't call non-existant event %d", evt_id);
+		return false;
 	}
+
+	const RPG::EventPage* page = event->GetPage(event_page);
+	if (!page) {
+		Output::Warning("CallEvent: Can't call non-existant page %d of event %d", event_page, evt_id);
+		return false;
+	}
+
+	new_frame.commands = page->event_commands;
+	new_frame.current_command = 0;
+	new_frame.event_id = event->GetId();
+
+	_state.stack.push_back(new_frame);
 
 	return true;
 }

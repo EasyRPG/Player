@@ -42,7 +42,7 @@ namespace RPG {
 class Game_Interpreter
 {
 public:
-	Game_Interpreter(int _depth = 0, bool _main_flag = false);
+	Game_Interpreter(bool _main_flag = false);
 #ifndef EMSCRIPTEN
 	// No idea why but emscripten will complain about a missing destructor when
 	// using virtual here
@@ -71,29 +71,42 @@ public:
 
 	virtual bool ExecuteCommand();
 
+
+	/**
+	 * Returns a SaveEventExecState needed for the savefile.
+	 *
+	 * @return interpreter commands stored in SaveEventCommands
+	 */
+	const RPG::SaveEventExecState& GetState() const;
+
 protected:
 	friend class Game_Interpreter_Map;
 
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
 
-	int depth;
+	/** @return the event_id of the current frame */
+	int GetCurrentEventId() const;
+
+	/** @return the event_id used by "ThisEvent" in commands */
+	int GetThisEventId() const;
+
+	/** @return the event_id of the event at the base of the call stack */
+	int GetOriginalEventId() const;
+
 	bool main_flag;
 
 	int loop_count;
 	bool wait_messages;
 
-	unsigned int event_id;
 	int wait_count;
 
-	std::unique_ptr<Game_Interpreter> child_interpreter;
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 
 	int button_timer;
 	bool waiting_battle_anim;
 	bool updating;
-	bool clear_child;
 
 	/**
 	 * Gets strings for choice selection.
@@ -114,8 +127,6 @@ protected:
 
 	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
 	void SetContinuation(ContinuationFunction func);
-
-	void CancelMenuCall();
 
 	/**
 	 * Sets up a wait (and closes the message box)
@@ -228,18 +239,14 @@ protected:
 
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 
-	struct {
-		int x = 0;
-		int y = 0;
-		// nullptr when common event
-		const RPG::EventPage* page = nullptr;
-	} event_info;
-
 	FileRequestBinding request_id;
 
 	RPG::SaveEventExecState _state;
 };
 
+inline const RPG::SaveEventExecState& Game_Interpreter::GetState() const {
+	return _state;
+}
 
 inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
@@ -249,12 +256,20 @@ inline RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() {
 	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
 }
 
+inline int Game_Interpreter::GetCurrentEventId() const {
+	return !_state.stack.empty() ? _state.stack.back().event_id : 0;
+}
+
+inline int Game_Interpreter::GetOriginalEventId() const {
+	return !_state.stack.empty() ? _state.stack.front().event_id : 0;
+}
+
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
 }
 
 inline bool Game_Interpreter::IsRunningMapEvent() const {
-	return event_id != 0;
+	return GetOriginalEventId() != 0;
 }
 
 #endif
