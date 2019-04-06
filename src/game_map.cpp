@@ -209,6 +209,10 @@ void Game_Map::Setup(int _id) {
 	Game_System::SetAllowSave(can_save != RPG::MapInfo::TriState_forbid);
 	Game_System::SetAllowEscape(can_escape != RPG::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
+
+	if (interpreter) {
+		interpreter->OnMapChange();
+	}
 }
 
 void Game_Map::SetupFromSave() {

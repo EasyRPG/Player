@@ -57,16 +57,12 @@ bool Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save, int _in
 	_state = save;
 	auto& stack = save.stack;
 	if (_index < (int)stack.size()) {
-		event_id = stack[_index].event_id;
-		if (event_id != 0) {
-			// When 0 the event is from a different map
-			map_id = Game_Map::GetMapId();
-		}
 		// FIXME: Update this when we remove child interpreters
 		_state.stack = { stack[_index] };
 		auto* frame = GetFrame();
 		frame->current_command = stack[_index].current_command;
 		frame->triggered_by_decision_key = stack[_index].triggered_by_decision_key;
+		frame->event_id = stack[_index].event_id;
 
 		child_interpreter.reset(new Game_Interpreter_Map());
 		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetState(save, _index + 1);
@@ -105,6 +101,14 @@ RPG::SaveEventExecState Game_Interpreter_Map::GetState() const {
 	}
 
 	return save;
+}
+
+void Game_Interpreter_Map::OnMapChange() {
+	// When we change the map, we reset all event id's to 0.
+	event_id = 0;
+	if (child_interpreter) {
+		static_cast<Game_Interpreter_Map*>(child_interpreter.get())->OnMapChange();
+	}
 }
 
 /**

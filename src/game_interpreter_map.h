@@ -55,6 +55,11 @@ public:
 	 */
 	RPG::SaveEventExecState GetState() const;
 
+	/**
+	 * Called when we change maps.
+	 */
+	void OnMapChange();
+
 	bool ExecuteCommand() override;
 
 private:

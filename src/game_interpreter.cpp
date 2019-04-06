@@ -79,7 +79,6 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
 	wait_count = 0;					// wait count
 	waiting_battle_anim = false;
@@ -109,7 +108,6 @@ void Game_Interpreter::Setup(
 ) {
 	Clear();
 
-	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
 
 	if (depth <= 100) {
@@ -162,12 +160,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 	}
 
 	for (; loop_count < loop_limit; ++loop_count) {
-		/* If map is different than event startup time
-		set event_id to 0 */
-		if (Game_Map::GetMapId() != map_id) {
-			event_id = 0;
-		}
-
 		/* If there's any active child interpreter, update it */
 		if (child_interpreter) {
 
