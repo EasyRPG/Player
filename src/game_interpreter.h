@@ -157,6 +157,8 @@ protected:
 	 */
 	void CheckGameOver();
 
+	bool CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next);
+
 	bool CommandShowMessage(RPG::EventCommand const& com);
 	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
@@ -224,6 +226,8 @@ protected:
 	bool CommandChangeSaveAccess(RPG::EventCommand const& com);
 	bool CommandChangeMainMenuAccess(RPG::EventCommand const& com);
 	bool CommandConditionalBranch(RPG::EventCommand const& com);
+	bool CommandElseBranch(RPG::EventCommand const& com);
+	bool CommandEndBranch(RPG::EventCommand const& com);
 	bool CommandJumpToLabel(RPG::EventCommand const& com);
 	bool CommandBreakLoop(RPG::EventCommand const& com);
 	bool CommandEndLoop(RPG::EventCommand const& com);
