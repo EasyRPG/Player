@@ -190,6 +190,13 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
+		if (_state.wait_key_enter) {
+			if (!Input::IsTriggered(Input::DECISION)) {
+				break;
+			}
+			_state.wait_key_enter = false;
+		}
+
 		if (Game_Temp::to_title) {
 			break;
 		}
@@ -1525,6 +1532,10 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	// Wait a given time
 	if (com.parameters.size() <= 1 ||
 		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
@@ -1532,14 +1543,15 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 		return true;
 	}
 
-	// Wait until decision key pressed, but skip the first frame so that
-	// it ignores keys that were pressed before this command started.
-	if (!Game_Message::visible && button_timer > 0 && Input::IsTriggered(Input::DECISION)) {
-		button_timer = 0;
-		return true;
+	if (Game_Message::visible) {
+		return false;
 	}
 
-	button_timer++;
+	// Wait until decision key pressed, but skip the first frame so that
+	// it ignores keys that were pressed before this command started.
+	// FIXME: Is this behavior correct?
+	_state.wait_key_enter = true;
+	++index;
 	return false;
 }
 
