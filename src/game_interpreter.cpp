@@ -494,6 +494,27 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 	return true;
 }
 
+void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
+	if (index >= (int)list.size()) {
+		return;
+	}
+
+	for (++index; index < (int)list.size(); ++index) {
+		const auto& com = list[index];
+		if (com.indent > indent) {
+			continue;
+		}
+		if (std::find(codes.begin(), codes.end(), com.code) != codes.end()) {
+			break;
+		}
+	}
+}
+
 int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
 	int value = 0;
 

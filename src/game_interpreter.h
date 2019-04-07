@@ -124,6 +124,18 @@ protected:
 	Game_Character* GetCharacter(int character_id) const;
 
 	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
+
+	/**
+	 * Skips to the next option in a chain of conditional commands.
+	 * Works by skipping until we hit the end or the next command
+	 * with com.indent <= indent.
+	 * The <= protects against broken game code which terminates without
+	 * a proper conditional.
+	 *
+	 * @param codes which codes to check.
+	 * @param indent the indentation level to check
+	 */
+	void SkipToNextConditional(std::initializer_list<int> codes, int indent);
 	void SetContinuation(ContinuationFunction func);
 
 	/**
