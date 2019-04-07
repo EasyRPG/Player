@@ -44,11 +44,7 @@ public:
 	static int shop_type;		// message set A, B, or C
 	static std::vector<int> shop_goods;
 	static bool shop_transaction;
-
-	static int inn_type;		// message set A or B
 	static int inn_price;
-	static bool inn_handlers;	// custom stay/no-stay handlers
-	static bool inn_stay;
 
 	static std::string hero_name;
 	static int hero_name_id;
