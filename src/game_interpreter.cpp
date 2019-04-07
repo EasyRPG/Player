@@ -463,38 +463,6 @@ void Game_Interpreter::CheckGameOver() {
 	}
 }
 
-bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent, bool otherwise_end) {
-	auto* frame = GetFrame();
-	assert(frame);
-	const auto& list = frame->commands;
-	auto& index = frame->current_command;
-
-	if (code2 < 0)
-		code2 = code;
-	if (min_indent < 0)
-		min_indent = list[index].indent;
-	if (max_indent < 0)
-		max_indent = list[index].indent;
-
-	int idx;
-	for (idx = index; (size_t) idx < list.size(); idx++) {
-		if (list[idx].indent < min_indent)
-			return false;
-		if (list[idx].indent > max_indent)
-			continue;
-		if (list[idx].code != code &&
-			list[idx].code != code2)
-			continue;
-		index = idx;
-		return true;
-	}
-
-	if (otherwise_end)
-		index = idx;
-
-	return true;
-}
-
 void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
 	auto* frame = GetFrame();
 	assert(frame);

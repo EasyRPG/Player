@@ -123,8 +123,6 @@ protected:
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id) const;
 
-	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
-
 	/**
 	 * Skips to the next option in a chain of conditional commands.
 	 * Works by skipping until we hit the end or the next command
