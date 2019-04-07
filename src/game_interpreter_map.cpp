@@ -82,11 +82,13 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::EnemyEncounter:
 			return CommandEnemyEncounter(com);
 		case Cmd::VictoryHandler:
+			return CommandVictoryHandler(com);
 		case Cmd::EscapeHandler:
+			return CommandEscapeHandler(com);
 		case Cmd::DefeatHandler:
-			return SkipTo(Cmd::EndBattle);
+			return CommandDefeatHandler(com);
 		case Cmd::EndBattle:
-			return true;
+			return CommandEndBattle(com);
 		case Cmd::OpenShop:
 			return CommandOpenShop(com);
 		case Cmd::Transaction:
@@ -164,6 +166,10 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -204,6 +210,11 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Scene::instance->SetRequestedScene(Scene::Battle);
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(com.indent);
+
+	++index;
 	return false;
 }
 
@@ -214,54 +225,47 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 
 	continuation = NULL;
 
-	switch (Game_Temp::battle_result) {
-	case Game_Temp::BattleVictory:
-		if ((Game_Temp::battle_defeat_mode == 0 && Game_Temp::battle_escape_mode != 2) || !SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
-			index++;
-			return false;
-		}
-		index++;
-		return true;
-	case Game_Temp::BattleEscape:
-		switch (Game_Temp::battle_escape_mode) {
-		case 0:	// disallowed - shouldn't happen
-			return true;
-		case 1:
-			return CommandEndEventProcessing(com);
-		case 2:
-			if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle)) {
-				index++;
-				return false;
-			}
-			index++;
-			return true;
-		default:
-			return false;
-		}
-	case Game_Temp::BattleDefeat:
-		switch (Game_Temp::battle_defeat_mode) {
-		case 0:
-			return CommandGameOver(com);
-		case 1:
-			if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle)) {
-				index++;
-				return false;
-			}
-			index++;
-			return true;
-		default:
-			return false;
-		}
-	case Game_Temp::BattleAbort:
-		if (!SkipTo(Cmd::EndBattle)) {
-			index++;
-			return false;
-		}
-		index++;
-		return true;
-	default:
-		return false;
+	int sub_idx = subcommand_sentinel;
+
+	if (Game_Temp::battle_result == Game_Temp::BattleVictory) {
+		sub_idx = 0;
 	}
+
+	if (Game_Temp::battle_result == Game_Temp::BattleEscape) {
+		sub_idx = 1;
+		//FIXME: subidx set before this anyway??
+		if (Game_Temp::battle_escape_mode == 1) {
+			return CommandEndEventProcessing(com);
+		}
+	}
+
+	if (Game_Temp::battle_result == Game_Temp::BattleDefeat) {
+		sub_idx = 2;
+		//FIXME: subidx set before this anyway??
+		if (Game_Temp::battle_defeat_mode == 0) {
+			return CommandGameOver(com);
+		}
+	}
+
+	SetSubcommandIndex(com.indent, sub_idx);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandVictoryHandler(RPG::EventCommand const& com) { // code 20710
+	return CommandOptionGeneric(com, 0, {Cmd::EscapeHandler, Cmd::DefeatHandler, Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandEscapeHandler(RPG::EventCommand const& com) { // code 20711
+	return CommandOptionGeneric(com, 1, {Cmd::DefeatHandler, Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandDefeatHandler(RPG::EventCommand const& com) { // code 20712
+	return CommandOptionGeneric(com, 2, {Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& com) { // code 20713
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
