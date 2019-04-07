@@ -30,7 +30,6 @@ int Game_Temp::shop_type;
 std::vector<int> Game_Temp::shop_goods;
 bool Game_Temp::shop_transaction;
 int Game_Temp::inn_price;
-bool Game_Temp::inn_handlers;
 std::string Game_Temp::hero_name;
 int Game_Temp::hero_name_id;
 int Game_Temp::hero_name_charset;
@@ -55,7 +54,6 @@ void Game_Temp::Init() {
 	shop_goods = {};
 	shop_transaction = false;
 	inn_price = 0;
-	inn_handlers = false;
 	hero_name = "";
 	hero_name_id = 0;
 	hero_name_charset = 0;

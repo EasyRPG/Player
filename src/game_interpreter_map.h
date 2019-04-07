@@ -61,6 +61,9 @@ private:
 	bool CommandNoTransaction(RPG::EventCommand const& com);
 	bool CommandEndShop(RPG::EventCommand const& com);
 	bool CommandShowInn(RPG::EventCommand const& com);
+	bool CommandStay(RPG::EventCommand const& com);
+	bool CommandNoStay(RPG::EventCommand const& com);
+	bool CommandEndInn(RPG::EventCommand const& com);
 	bool CommandEnterHeroName(RPG::EventCommand const& com);
 	bool CommandTeleport(RPG::EventCommand const& com);
 	bool CommandEnterExitVehicle(RPG::EventCommand const& com);
