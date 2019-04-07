@@ -26,7 +26,6 @@ bool Game_Temp::transition_erase;
 bool Game_Temp::shop_buys;
 bool Game_Temp::shop_sells;
 int Game_Temp::shop_type;
-bool Game_Temp::shop_handlers;
 std::vector<int> Game_Temp::shop_goods;
 bool Game_Temp::shop_transaction;
 int Game_Temp::inn_price;
@@ -51,7 +50,6 @@ void Game_Temp::Init() {
 	shop_buys = true;
 	shop_sells = true;
 	shop_type = 0;
-	shop_handlers = false;
 	shop_goods = {};
 	shop_transaction = false;
 	inn_price = 0;

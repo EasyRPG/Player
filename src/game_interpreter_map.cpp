@@ -88,10 +88,11 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::OpenShop:
 			return CommandOpenShop(com);
 		case Cmd::Transaction:
+			return CommandTransaction(com);
 		case Cmd::NoTransaction:
-			return SkipTo(Cmd::EndShop);
+			return CommandNoTransaction(com);
 		case Cmd::EndShop:
-			return true;
+			return CommandEndShop(com);
 		case Cmd::ShowInn:
 			return CommandShowInn(com);
 		case Cmd::Stay:
@@ -263,6 +264,10 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -285,7 +290,8 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	}
 
 	Game_Temp::shop_type = com.parameters[1];
-	Game_Temp::shop_handlers = com.parameters[2] != 0;
+	// Not used, but left here for documentation purposes
+	//bool has_shop_handlers = com.parameters[2] != 0;
 
 	Game_Temp::shop_goods.clear();
 	std::vector<int32_t>::const_iterator it;
@@ -295,28 +301,37 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	Game_Temp::shop_transaction = false;
 	Scene::instance->SetRequestedScene(Scene::Shop);
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(com.indent);
+
+	++index;
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
 
 	continuation = nullptr;
-	if (!Game_Temp::shop_handlers) {
-		index++;
-		return true;
-	}
 
-	if (!SkipTo(Game_Temp::shop_transaction
-				? Cmd::Transaction
-				: Cmd::NoTransaction,
-				Cmd::EndShop)) {
-		return false;
-	}
+	int sub_idx = Game_Temp::shop_transaction ? 0 : 1;
 
-	index++;
+	SetSubcommandIndex(com.indent, sub_idx);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
+	return CommandOptionGeneric(com, 0, {Cmd::NoTransaction, Cmd::EndShop});
+}
+
+bool Game_Interpreter_Map::CommandNoTransaction(RPG::EventCommand const& com) { // code 20721
+	return CommandOptionGeneric(com, 1, {Cmd::EndShop});
+}
+
+bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& com) { // code 20722
 	return true;
 }
 
