@@ -72,9 +72,9 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 		case Cmd::ConditionalBranch_B:
 			return CommandConditionalBranchBattle(com);
 		case Cmd::ElseBranch_B:
-			return SkipTo(Cmd::EndBranch_B);
+			return CommandElseBranchBattle(com);
 		case Cmd::EndBranch_B:
-			return true;
+			return CommandEndBranchBattle(com);
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -359,8 +359,10 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 
 			if (!actor) {
 				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
-				// Use Else branch
-				return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
+				// Use Else Branch
+				SetSubcommandIndex(com.indent, 1);
+				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
+				return true;
 			}
 
 			result = actor->CanAct();
@@ -383,7 +385,9 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 			if (!actor) {
 				Output::Warning("ConditionalBranchBattle: Invalid actor ID %d", com.parameters[1]);
 				// Use Else branch
-				return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
+				SetSubcommandIndex(com.indent, 1);
+				SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
+				return true;
 			}
 
 			result = actor->GetLastBattleAction() == com.parameters[2];
@@ -391,8 +395,21 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 		}
 	}
 
-	if (result)
-		return true;
+	int sub_idx = subcommand_sentinel;
+	if (!result) {
+		sub_idx = 1;
+		SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
+	}
 
-	return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
+	SetSubcommandIndex(com.indent, sub_idx);
+	return true;
 }
+
+bool Game_Interpreter_Battle::CommandElseBranchBattle(RPG::EventCommand const& com) { //code 23310
+	return CommandOptionGeneric(com, 1, {Cmd::EndBranch_B});
+}
+
+bool Game_Interpreter_Battle::CommandEndBranchBattle(RPG::EventCommand const& com) { //code 23311
+	return true;
+}
+
