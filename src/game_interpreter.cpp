@@ -461,7 +461,6 @@ void Game_Interpreter::CheckGameOver() {
 	}
 }
 
-// Skip to command.
 bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent, bool otherwise_end) {
 	auto* frame = GetFrame();
 	assert(frame);
@@ -3064,7 +3063,24 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& com) { // code 12220
-	return SkipTo(Cmd::EndLoop, Cmd::EndLoop, 0, com.indent - 1, true);
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
+	// BreakLoop will jump to the end of the event if there is no loop.
+
+	//FIXME: This emulates an RPG_RT bug where break loop ignores scopes and
+	//unconditionally jumps to the next EndLoop command.
+	auto pcode = list[index].code;
+	for (++index; index < (int)list.size(); ++index) {
+		if (pcode == Cmd::EndLoop) {
+			break;
+		}
+		pcode = list[index].code;
+	}
+
+	return true;
 }
 
 bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
