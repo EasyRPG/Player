@@ -25,6 +25,7 @@
 #include "game_commonevent.h"
 #include "game_event.h"
 #include "game_vehicle.h"
+#include "game_player.h"
 #include "rpg_encounter.h"
 #include "rpg_map.h"
 #include "rpg_mapinfo.h"
@@ -138,51 +139,47 @@ namespace Game_Map {
 	bool IsValid(int x, int y);
 
 	/**
-	 * Clears the way for a move by self from (x,y) in the direction d. Any events
-	 * that block the way are updated early (by UpdateParallel) to give them a
+	 * Clears the way for a move by self to (x,y). Any events
+	 * that block the way are updated early to give them a
 	 * chance to move out of the way.
 	 *
-	 * Returns true if everything is clear to make the move.
+	 * Returns true if move is possible.
 	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @param d direction
 	 * @param self Character to move.
+	 * @param x new tile x.
+	 * @param y new tile y.
 	 * @return whether is passable.
 	 */
-	bool MakeWay(int x, int y, int d, const Game_Character& self);
+	bool MakeWay(const Game_Character& self, int x, int y);
 
 	/**
-	 * Gets if a tile coordinate is passable in a direction.
+	 * Gets if possible to land the airship at (x,y)
 	 *
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @param d direction (0, 2, 4, 6, 8, 10).
-	 *		    0,10 = determine if all directions are impassable.
-	 * @param self_event Current character for doing passability check
-	 * @return whether is passable.
+	 * @return whether is posible to land airship
 	 */
-	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
+	bool CanLandAirship(int x, int y);
 
 	/**
-	 * Gets if a tile coordinate is passable in a direction by a vehicle.
+	 * Gets if possible to embark the boat or ship at (x,y)
 	 *
+	 * @param player the player
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @param vehicle_type type of vehicle
-	 * @return whether is passable.
+	 * @return whether is posible to disembark the boat or ship
 	 */
-	bool IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type);
+	bool CanEmbarkShip(Game_Player& player, int x, int y);
 
 	/**
-	 * Gets if a tile coordinate can be jumped to.
+	 * Gets if possible to disembark the boat or ship to (x,y)
 	 *
+	 * @param player the player
 	 * @param x tile x.
 	 * @param y tile y.
-	 * @param self_event Current character attemping to jump.
-	 * @return whether is posible to jump.
+	 * @return whether is posible to disembark the boat or ship
 	 */
-	bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
+	bool CanDisembarkShip(Game_Player& player, int x, int y);
 
 	/**
 	 * Gets the bush depth at a certain tile.
@@ -210,15 +207,6 @@ namespace Game_Map {
 	 * @return terrain tag ID.
 	 */
 	int GetTerrainTag(int x, int y);
-
-	/**
-	 * Gets if a tile can land airship.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @return terrain tag ID.
-	 */
-	bool AirshipLandOk(int x, int y);
 
 	/**
 	 * Gets designated position event.
@@ -565,7 +553,31 @@ namespace Game_Map {
 	int SubstituteDown(int old_id, int new_id);
 	int SubstituteUp(int old_id, int new_id);
 
-	bool IsPassableTile(int bit, int tile_index);
+	/**
+	 * Checks if its possible to step onto the tile at (x,y)
+	 * The check includes tile graphic events checks.
+	 *
+	 * Returns true if move is possible.
+	 *
+	 * @param self Character to move. If not nullptr, checks the vehicle type and performs vehicle specific checks if is vehicle.
+	 *        Also ignores self in the event tile graphic checks if self is not nullptr.
+	 * @param bit which direction bits to check
+	 * @param x target tile x.
+	 * @param y target tile y.
+	 * @return whether is passable.
+	 */
+	bool IsPassableTile(const Game_Character* self, int bit, int x, int y);
+
+	/**
+	 * Checks if the lower tile at (x,y) is passable by the player.
+	 *
+	 * Returns true if move is possible.
+	 *
+	 * @param bit which direction bits to check
+	 * @param tile_index the tile index
+	 * @return whether is passable.
+	 */
+	bool IsPassableLowerTile(int bit, int tile_index);
 
 	enum PanDirection {
 		PanUp,

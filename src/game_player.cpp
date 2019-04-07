@@ -114,15 +114,12 @@ void Game_Player::PerformTeleport() {
 		GetVehicle()->MoveTo(new_x, new_y);
 }
 
-bool Game_Player::MakeWay(int x, int y, int d) const {
-	if (data()->aboard)
-		return GetVehicle()->MakeWay(x, y, d);
-
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
+bool Game_Player::MakeWay(int x, int y) const {
+	if (data()->aboard) {
+		return GetVehicle()->MakeWay(x, y);
 	}
 
-	return Game_Map::MakeWay(x, y, d, *this);
+	return Game_Character::MakeWay(x, y);
 }
 
 bool Game_Player::IsTeleporting() const {
@@ -253,6 +250,14 @@ void Game_Player::Update() {
 
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
+
+	if (IsAboard()) {
+		auto* vehicle = GetVehicle();
+		if (vehicle) {
+			GetVehicle()->SyncWithPlayer();
+			vehicle->AnimateAscentDescent();
+		}
+	}
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 
@@ -442,6 +447,10 @@ bool Game_Player::GetOnVehicle() {
 		return false;
 	}
 
+	if (type != Game_Vehicle::Airship && !Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
+		return false;
+	}
+
 	data()->vehicle = type;
 	data()->preboard_move_speed = GetMoveSpeed();
 	if (type != Game_Vehicle::Airship) {
@@ -477,10 +486,9 @@ bool Game_Player::GetOffVehicle() {
 	if (!InAirship()) {
 		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-		if (!CanWalk(front_x, front_y)
-			&& !Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y)
-			&& !Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
+		if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
 			return false;
+		}
 	}
 	auto* vehicle = GetVehicle();
 
@@ -525,10 +533,6 @@ bool Game_Player::InAirship() const {
 
 Game_Vehicle* Game_Player::GetVehicle() const {
 	return Game_Map::GetVehicle((Game_Vehicle::Type) data()->vehicle);
-}
-
-bool Game_Player::CanWalk(int x, int y) {
-	return Game_Map::IsPassable(x, y, GetDirection(), this);
 }
 
 void Game_Player::BeginMove() {

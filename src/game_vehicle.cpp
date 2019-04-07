@@ -58,26 +58,6 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-bool Game_Vehicle::MakeWay(int x, int y, int d) const {
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
-	}
-
-	int new_x = Game_Map::RoundX(x + (d == Right ? 1 : d == Left ? -1 : 0));
-	int new_y = Game_Map::RoundY(y + (d == Down ? 1 : d == Up ? -1 : 0));
-
-	if (!Game_Map::IsValid(new_x, new_y))
-		return false;
-
-	if (GetThrough()) return true;
-
-	if (!Game_Map::IsPassableVehicle(new_x, new_y, type))
-		return false;
-
-	return true;
-}
-
-
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case None:
@@ -245,19 +225,7 @@ bool Game_Vehicle::IsMovable() {
 }
 
 bool Game_Vehicle::CanLand() const {
-	if (!Game_Map::AirshipLandOk(GetX(), GetY()))
-		return false;
-	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, GetX(), GetY());
-	if (!events.empty())
-		return false;
-	if (!Game_Map::IsLandable(GetX(), GetY(), nullptr))
-		return false;
-	if (Game_Map::GetVehicle(Ship)->IsInPosition(GetX(), GetY()))
-		return false;
-	if (Game_Map::GetVehicle(Boat)->IsInPosition(GetX(), GetY()))
-		return false;
-	return true;
+	return Game_Map::CanLandAirship(GetX(), GetY());
 }
 
 void Game_Vehicle::UpdateAnimationAirship() {
@@ -284,36 +252,35 @@ void Game_Vehicle::UpdateAnimationShip() {
 	}
 }
 
+void Game_Vehicle::AnimateAscentDescent() {
+	if (!IsStopping()) {
+		return;
+	}
+	if (IsAscending()) {
+		data()->remaining_ascent = data()->remaining_ascent - 8;
+	} else if (IsDescending()) {
+		data()->remaining_descent = data()->remaining_descent - 8;
+		if (!IsDescending()) {
+			if (CanLand()) {
+				Main_Data::game_player->UnboardingFinished();
+				SetFlying(false);
+				Main_Data::game_player->SetFlying(false);
+			} else {
+				// Can't land here, ascend again
+				data()->remaining_ascent = SCREEN_TILE_SIZE;
+			}
+		}
+	}
+}
+
 void Game_Vehicle::Update() {
 	if (IsProcessed()) {
 		return;
 	}
 	SetProcessed(true);
 
-	if (IsAboard()) {
-		SyncWithPlayer();
-	} else {
+	if (!IsAboard()) {
 		Game_Character::UpdateMovement();
-	}
-
-	if (type == Airship) {
-		if (IsStopping()) {
-			if (IsAscending()) {
-				data()->remaining_ascent = data()->remaining_ascent - 8;
-			} else if (IsDescending()) {
-				data()->remaining_descent = data()->remaining_descent - 8;
-				if (!IsDescending()) {
-					if (CanLand()) {
-						Main_Data::game_player->UnboardingFinished();
-						SetFlying(false);
-						Main_Data::game_player->SetFlying(false);
-					} else {
-						// Can't land here, ascend again
-						data()->remaining_ascent = SCREEN_TILE_SIZE;
-					}
-				}
-			}
-		}
 	}
 
 	if (type == Airship) {

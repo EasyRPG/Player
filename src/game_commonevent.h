@@ -105,6 +105,8 @@ public:
 	bool IsWaitingBackgroundExecution() const;
 
 private:
+	bool IsWaitingExecution(RPG::EventPage::Trigger trigger) const;
+
 	int common_event_id;
 
 	/** Interpreter for parallel common events. */

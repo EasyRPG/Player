@@ -53,33 +53,8 @@ bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-bool Game_Character::MakeWay(int x, int y, int d) const {
-	if (d > 3) {
-		return MakeWayDiagonal(x, y, d);
-	}
-
-	return Game_Map::MakeWay(x, y, d, *this);
-}
-
-bool Game_Character::IsLandable(int x, int y) const
-{
-	if (!Game_Map::IsValid(x, y))
-		return false;
-
-	if (GetThrough()) return true;
-
-	if (IsFlying()) return true;
-
-	if (!Game_Map::IsLandable(x, y, this))
-		return false;
-
-	if (GetLayer() == RPG::EventPage::Layers_same && Main_Data::game_player->IsInPosition(x, y)) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
-			return false;
-		}
-	}
-
-	return true;
+bool Game_Character::MakeWay(int x, int y) const {
+	return Game_Map::MakeWay(*this, x, y);
 }
 
 void Game_Character::MoveTo(int x, int y) {
@@ -456,7 +431,7 @@ void Game_Character::Move(int dir, MoveOption option) {
 		return;
 	}
 
-	move_failed = !MakeWay(GetX(), GetY(), dir);
+	move_failed = !MakeWay(GetX() + dx, GetY() + dy);
 
 	if (!move_failed || option == MoveOption::Normal) {
 		SetDirection(dir);
@@ -568,8 +543,6 @@ void Game_Character::Wait() {
 }
 
 void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& current_route) {
-	SetBeginJumpX(GetX());
-	SetBeginJumpY(GetY());
 	jump_plus_x = 0;
 	jump_plus_y = 0;
 	SetJumping(true);
@@ -652,39 +625,12 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 		return;
 	}
 
-	int new_x = GetBeginJumpX() + jump_plus_x;
-	int new_y = GetBeginJumpY() + jump_plus_y;
+	int new_x = GetX() + jump_plus_x;
+	int new_y = GetY() + jump_plus_y;
 
-	if (Game_Map::LoopHorizontal()) {
-		int map_width = Game_Map::GetWidth();
-		if (new_x < 0) {
-			SetBeginJumpX(GetBeginJumpX() + map_width);
-			new_x += map_width;
-		} else if (new_x >= map_width) {
-			SetBeginJumpX(GetBeginJumpX() - map_width);
-			new_x -= map_width;
-		}
-	}
-
-	if (Game_Map::LoopVertical()) {
-		int map_height = Game_Map::GetHeight();
-		if (new_y < 0) {
-			SetBeginJumpY(GetBeginJumpY() + map_height);
-			new_y += map_height;
-		} else if (new_y >= map_height) {
-			SetBeginJumpY(GetBeginJumpY() - map_height);
-			new_y -= map_height;
-		}
-	}
-
-	if (
-		// A character can always land on a tile they were already standing on
-		!(jump_plus_x == 0 && jump_plus_y == 0) &&
-		!IsLandable(new_x, new_y)
-	) {
+	if (!MakeWay(new_x, new_y)) {
 		move_failed = true;
 	}
-
 
 	if (!move_failed || !current_route.skippable) {
 		if (jump_plus_x != 0 || jump_plus_y != 0) {
@@ -714,6 +660,29 @@ void Game_Character::BeginJump(int32_t& current_index, const RPG::MoveRoute& cur
 		return;
 	}
 
+	int begin_x = GetX();
+	int begin_y = GetY();
+
+	// Adjust positions for looping maps. jump begin positions
+	// get set off the edge of the map to preserve direction.
+	if (Game_Map::LoopHorizontal()
+			&& (new_x < 0 || new_x >= Game_Map::GetWidth()))
+	{
+		auto old_x = new_x;
+		new_x = Game_Map::RoundX(new_x);
+		begin_x += new_x - old_x;
+	}
+
+	if (Game_Map::LoopVertical()
+			&& (new_y < 0 || new_y >= Game_Map::GetHeight()))
+	{
+		auto old_y = new_y;
+		new_y = Game_Map::RoundY(new_y);
+		begin_y += new_y - old_y;
+	}
+
+	SetBeginJumpX(begin_x);
+	SetBeginJumpY(begin_y);
 	SetX(new_x);
 	SetY(new_y);
 	current_index = i;
@@ -923,14 +892,6 @@ int Game_Character::ReverseDir(int dir) {
 	constexpr static char reversed[] =
 		{ Down, Left, Up, Right, DownLeft, UpLeft, UpRight, DownRight };
 	return reversed[dir];
-}
-
-
-bool Game_Character::MakeWayDiagonal(int x, int y, int d) const {
-	int dx = (d == UpRight || d == DownRight) - (d == DownLeft || d == UpLeft);
-	int dy = (d == DownRight || d == DownLeft) - (d == UpRight || d == UpLeft);
-	return ((MakeWay(x, y, dy + 1) && MakeWay(x, y + dy, -dx + 2)) ||
-			(MakeWay(x, y, -dx + 2) && MakeWay(x + dx, y, dy + 1)));
 }
 
 void Game_Character::SetMaxStopCountForStep() {

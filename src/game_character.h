@@ -257,6 +257,9 @@ public:
 	 */
 	const std::string& GetSpriteName() const;
 
+	/** @return true if this has a tile sprite */
+	bool HasTileSprite() const;
+
 	/**
 	 * Sets sprite name. Usually the name of the graphic file.
 	 *
@@ -509,25 +512,16 @@ public:
 	 */
 	virtual bool IsStopping() const;
 
-	/**
-	 * Makes way for the character to move from (x,y) in the direction d. Returns
-	 * true if the move can be completed.
-	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @param d character direction.
-	 * @return whether the character can walk through.
-	 */
-	virtual bool MakeWay(int x, int y, int d) const;
 
 	/**
-	 * Gets if the character can jump to a tile.
+	 * Makes way for the character to move to (x,y). Returns
+	 * true if the move can be completed.
 	 *
-	 * @param x tile x.
-	 * @param y tile y.
-	 * @return whether the character can jump to.
+	 * @param x new x position.
+	 * @param y new y position.
+	 * @return whether the character can walk through.
 	 */
-	virtual bool IsLandable(int x, int y) const;
+	virtual bool MakeWay(int x, int y) const;
 
 	/**
 	 * Moves the character to a new tile.
@@ -851,7 +845,6 @@ public:
 
 protected:
 	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
-	bool MakeWayDiagonal(int x, int y, int d) const;
 	virtual void UpdateSelfMovement() {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
@@ -1188,5 +1181,8 @@ inline bool Game_Character::IsActive() const {
 	return data()->active;
 }
 
+inline bool Game_Character::HasTileSprite() const {
+	return GetSpriteName().empty();
+}
 
 #endif

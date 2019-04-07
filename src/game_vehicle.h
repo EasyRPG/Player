@@ -44,7 +44,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool MakeWay(int x, int y, int d) const override;
 	int GetVehicleType() const override;
 	/** @} */
 
@@ -67,6 +66,7 @@ public:
 	bool IsInUse() const;
 	bool IsAboard() const;
 	void SyncWithPlayer();
+	void AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;

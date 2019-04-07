@@ -471,303 +471,226 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-static int DirToMask(int d) {
-	switch (d)
-	{
-		case RPG::EventPage::Direction_down:
-			return Passable::Down;
-
-		case RPG::EventPage::Direction_up:
-			return Passable::Up;
-
-		case RPG::EventPage::Direction_left:
-			return Passable::Left;
-
-		case RPG::EventPage::Direction_right:
-			return Passable::Right;
-
-		default:
-			assert(false);
-	}
-
-	// keeping the compiler happy
-	return Passable::Down;
+static int GetPassableMask(int old_x, int old_y, int new_x, int new_y) {
+	int bit = 0;
+	if (new_x > old_x) { bit |= Passable::Right; }
+	if (new_x < old_x) { bit |= Passable::Left; }
+	if (new_y > old_y) { bit |= Passable::Down; }
+	if (new_y < old_y) { bit |= Passable::Up; }
+	return bit;
 }
 
-enum CollisionResult {
-	/** No collision occured. */
-	NoCollision,
-	/** Collision occured. */
-	Collision,
-	/**
-	 * The other event was a tile event below self that self could
-	 * leave by stepping across.
-	 */
-	CanStepOffCurrentTile,
-	/**
-	 * The other event was a tile event beneath self's new position
-	 * that self could step onto.
-	 */
-	CanStepOntoNewTile
-};
-
-/**
- * Checks whether a collision occurs between self and other if self
- * moves from (x,y) to (new_x, new_y) in direction d.
- *
- * If other is a tile event, also indicates if the player can use it
- * as a "bridge" to step across without hitting the underlying tile
- * layer.
- */
-static CollisionResult TestCollisionDuringMove(
-	int x,
-	int y,
-	int new_x,
-	int new_y,
-	int d,
-	const Game_Character& self,
-	const Game_Event& other
-) {
-	if (!other.IsActive()) {
-		return NoCollision;
+static bool WouldCollide(const Game_Character& self, const Game_Character& other, bool self_conflict) {
+	if (self.GetThrough() || other.GetThrough()) {
+		return false;
 	}
 
+	if (self.IsFlying() || other.IsFlying()) {
+		return false;
+	}
+
+	if (!self.IsActive() || !other.IsActive()) {
+		return false;
+	}
+
+	if (self.GetType() == Game_Character::Event
+			&& other.GetType() == Game_Character::Event
+			&& (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
+		return true;
+	}
+
+	if (other.GetLayer() == RPG::EventPage::Layers_same && self_conflict) {
+		return true;
+	}
+
+	if (self.GetLayer() == other.GetLayer()) {
+		return true;
+	}
+
+	return false;
+}
+
+template <typename T>
+static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
 	if (&self == &other) {
-		return NoCollision;
+		return false;
 	}
 
-	if (other.GetThrough()) {
-		return NoCollision;
+	if (!other.IsInPosition(x, y)) {
+		return false;
 	}
 
-	if (!other.IsInPosition(x, y) && !other.IsInPosition(new_x, new_y)) {
-		return NoCollision;
+	// Force the other event to update, allowing them to possibly move out of the way.
+	other.Update();
+
+	if (!other.IsInPosition(x, y)) {
+		return false;
 	}
 
-	if (&self != Main_Data::game_player.get()) {
-		if (other.IsInPosition(new_x, new_y) && (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
-			return Collision;
-		}
-	}
-
-	if (other.IsInPosition(new_x, new_y) && self.GetLayer() == other.GetLayer()) {
-		return Collision;
-	}
-
-	if (other.GetLayer() == RPG::EventPage::Layers_below) {
-		int tile_id = other.GetTileId();
-		if ((passages_up[tile_id] & Passable::Above) != 0) {
-			return NoCollision;
-		}
-		if (other.IsInPosition(x,y) && (passages_up[tile_id] & DirToMask(d)) != 0) {
-			return CanStepOffCurrentTile;
-		}
-		else if (other.IsInPosition(new_x, new_y) && (passages_up[tile_id] & DirToMask(Game_Character::ReverseDir(d))) != 0) {
-			return CanStepOntoNewTile;
-		} else {
-			return Collision;
-		}
-	}
-
-	return NoCollision;
+	return WouldCollide(self, other, self_conflict);
 }
 
-bool Game_Map::MakeWay(int x, int y, int d, const Game_Character& self) {
-	int new_x = RoundX(x + (d == Game_Character::Right ? 1 : d == Game_Character::Left ? -1 : 0));
-	int new_y = RoundY(y + (d == Game_Character::Down ? 1 : d == Game_Character::Up ? -1 : 0));
-
-	if (!Game_Map::IsValid(new_x, new_y))
-		return false;
-
-	if (self.GetThrough()) return true;
-
-	// A character can move to a position with an impassable tile by
-	// standing on top of an event below it. These flags track whether
-	// we stepped off an event and therefore don't need to check the
-	// passability of the tile layer below.
-	bool stepped_off_event = false;
-	bool stepped_onto_event = false;
-
-	for (Game_Event& other : GetEvents()) {
-		CollisionResult result = TestCollisionDuringMove(x, y, new_x, new_y, d, self, other);
-		if (result == Collision) {
-			// Try updating the offending event to give it a chance to move out of the
-			// way and recheck.
-			other.Update();
-			if (TestCollisionDuringMove(x, y, new_x, new_y, d, self, other) == Collision) {
+bool Game_Map::MakeWay(const Game_Character& self, int x, int y) {
+	// Moving to same tile (used for jumps) always succeeds
+	if (x == self.GetX() && y == self.GetY()) {
+		return true;
+	}
+	if (!self.IsJumping() && x != self.GetX() && y != self.GetY()) {
+		// Handle diagonal stepping.
+		// Must be able to step on at least one of the 2 adjacent tiles and also the target tile.
+		// Verified behavior: Always checks vertical first, only checks horizontal if vertical fails.
+		bool vertical_ok = MakeWay(self, self.GetX(), y);
+		if (!vertical_ok) {
+			bool horizontal_ok = MakeWay(self, x, self.GetY());
+			if (!horizontal_ok) {
 				return false;
 			}
 		}
-		else if (result == CanStepOffCurrentTile) {
-			stepped_off_event = true;
-		} else if (result == CanStepOntoNewTile) {
-			stepped_onto_event = true;
-		}
 	}
 
-	if (vehicles[0]->IsInPosition(new_x, new_y) || vehicles[1]->IsInPosition(new_x, new_y)) {
+	// Infer directions before we do any rounding.
+	const auto bit_from = GetPassableMask(self.GetX(), self.GetY(), x, y);
+	const auto bit_to = GetPassableMask(x, y, self.GetX(), self.GetY());
+
+	// Now round for looping maps.
+	x = Game_Map::RoundX(x);
+	y = Game_Map::RoundY(y);
+
+	// Note, even for diagonal, if the tile is invalid we still check vertical/horizontal first!
+	if (!Game_Map::IsValid(x, y)) {
 		return false;
 	}
 
-	if (Main_Data::game_player->IsInPosition(new_x, new_y)
-			&& !Main_Data::game_player->GetThrough()
-			&& self.GetLayer() == RPG::EventPage::Layers_same) {
-		// Update the Player to see if they'll move and recheck.
-		Main_Data::game_player->Update();
-		if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
-			return false;
-		}
+	if (self.GetThrough()) {
+		return true;
 	}
 
-	return
-		(stepped_off_event || IsPassableTile(DirToMask(d), x + y * GetWidth()))
-		&& (stepped_onto_event || IsPassableTile(DirToMask(Game_Character::ReverseDir(d)), new_x + new_y * GetWidth()));
-}
+	const auto vehicle_type = static_cast<Game_Vehicle::Type>(self.GetVehicleType());
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
-	// TODO: this and MakeWay share a lot of code.
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	int bit = DirToMask(d);
-
-	int tile_id;
-
-	if (self_event) {
-		bool pass = false;
-		std::vector<Game_Event*> events;
-		std::vector<Game_Event*>::iterator it;
-
-		Game_Map::GetEventsXY(events, x, y);
-		for (it = events.begin(); it != events.end(); ++it) {
-			if (*it == self_event || (*it)->GetThrough()) {
-				continue;
-			}
-
-			if (self_event != Main_Data::game_player.get()) {
-				if (self_event->IsOverlapForbidden() || (*it)->IsOverlapForbidden())
-					return false;
-			}
-
-			if ((*it)->GetLayer() == self_event->GetLayer()) {
-				if (self_event->IsInPosition(x, y))
-					pass = true;
-				else
-					return false;
-			}
-			else if ((*it)->GetLayer() == RPG::EventPage::Layers_below) {
-				// Event layer Chipset Tile
-				tile_id = (*it)->GetTileId();
-				if ((passages_up[tile_id] & Passable::Above) != 0)
-					continue;
-				if ((passages_up[tile_id] & bit) != 0)
-					pass = true;
-				else
-					return false;
+	bool self_conflict = false;
+	if (!self.IsJumping()) {
+		// Check for self conflict.
+		// If this event has a tile graphic and the tile itself has passage blocked in the direction
+		// we want to move, flag it as "self conflicting" for use later.
+		if (self.GetLayer() == RPG::EventPage::Layers_below && self.GetTileId() != 0) {
+			int tile_id = self.GetTileId();
+			if ((passages_up[tile_id] & bit_from) == 0) {
+				self_conflict = true;
 			}
 		}
 
-		if (!self_event->IsInPosition(x, y) && (vehicles[0]->IsInPosition(x, y) || vehicles[1]->IsInPosition(x, y)))
-			return false;
-
-		if (pass) // All events here are passable
-			return true;
-	}
-
-	return IsPassableTile(bit, x + y * GetWidth());
-}
-
-bool Game_Map::IsPassableVehicle(int x, int y, Game_Vehicle::Type vehicle_type) {
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
-	if (!terrain) {
-		Output::Warning("IsPassableVehicle: Invalid terrain at (%d, %d)", x, y);
-	} else if (vehicle_type == Game_Vehicle::Boat) {
-		if (!terrain->boat_pass)
-			return false;
-	} else if (vehicle_type == Game_Vehicle::Ship) {
-		if (!terrain->ship_pass)
-			return false;
-	} else if (vehicle_type == Game_Vehicle::Airship) {
-		return terrain->airship_pass;
-	}
-
-	int tile_id;
-	std::vector<Game_Event*> events;
-	std::vector<Game_Event*>::iterator it;
-
-	Game_Map::GetEventsXY(events, x, y);
-	for (it = events.begin(); it != events.end(); ++it) {
-		if ((*it)->GetThrough()) {
-			continue;
-		} else if ((*it)->GetLayer() == 1) {
-			return false;
-		} else if ((*it)->GetTileId() > 0 && (*it)->GetLayer() == RPG::EventPage::Layers_below) {
-			// Event layer Chipset Tile
-			tile_id = (*it)->GetTileId();
-			if ((passages_up[tile_id] & Passable::Above) == 0)
+		if (vehicle_type == Game_Vehicle::None) {
+			// Check that we are allowed to step off of the current tile.
+			// Note: Vehicles can always step off a tile.
+			if (!IsPassableTile(&self, bit_from, self.GetX(), self.GetY())) {
 				return false;
+			}
 		}
 	}
 
-	int const tile_index = x + y * GetWidth();
-
-	tile_id = map->upper_layer[tile_index] - BLOCK_F;
-	tile_id = map_info.upper_tiles[tile_id];
-
-	if ((passages_up[tile_id] & Passable::Above) == 0)
-		return false;
-
-	for (int i = 0; i < 3; i++) {
-		if (i+1 == vehicle_type)
-			continue;
-		Game_Vehicle* vehicle = vehicles[i].get();
-		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y) && !vehicle->GetThrough())
-			return false;
-	}
-
-	return true;
-}
-
-bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event) {
-	if (!Game_Map::IsValid(x, y)) return false;
-
-	int tile_id;
-	int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
-
-	if (self_event) {
-		for (Game_Event& ev : events) {
-			if (&ev != self_event && ev.IsInPosition(x, y)) {
-				if (!ev.GetThrough()) {
-					if (ev.GetLayer() == RPG::EventPage::Layers_same) {
-						return false;
-					} else if (ev.GetTileId() >= 0 && ev.GetLayer() == RPG::EventPage::Layers_below) {
-						// Event layer Chipset Tile
-						tile_id = ev.GetTileId();
-						return (passages_up[tile_id] & bit) != 0;
-					}
+	if (vehicle_type != Game_Vehicle::Airship) {
+		// Check for collision with events on the target tile.
+		for (auto& other: GetEvents()) {
+			if (MakeWayCollideEvent(x, y, self, other, self_conflict)) {
+				return false;
+			}
+		}
+		auto& player = Main_Data::game_player;
+		if (player->GetVehicleType() == Game_Vehicle::None) {
+			if (MakeWayCollideEvent(x, y, self, *Main_Data::game_player, self_conflict)) {
+				return false;
+			}
+		}
+		for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship}) {
+			auto& other = vehicles[vid - 1];
+			if (other->IsInCurrentMap()) {
+				if (MakeWayCollideEvent(x, y, self, *other, self_conflict)) {
+					return false;
 				}
 			}
 		}
-		if (self_event->GetVehicleType() > 0) {
-			return Game_Map::IsPassableVehicle(x, y, (Game_Vehicle::Type) self_event->GetVehicleType());
+		auto& airship = vehicles[Game_Vehicle::Airship - 1];
+		if (airship->IsInCurrentMap() && self.GetType() != Game_Character::Player) {
+			if (MakeWayCollideEvent(x, y, self, *airship, self_conflict)) {
+				return false;
+			}
 		}
 	}
 
-	return IsPassableTile(bit, x + y * GetWidth());
+	int bit = bit_to;
+	if (self.IsJumping()) {
+		bit = Passable::Down | Passable::Up | Passable::Left | Passable::Right;
+	}
+
+	return IsPassableTile(&self, bit, x, y);
 }
 
-bool Game_Map::IsPassableTile(int bit, int tile_index) {
+bool Game_Map::CanLandAirship(int x, int y) {
+	if (!Game_Map::IsValid(x, y)) return false;
+
+	const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+	if (!terrain) {
+		Output::Warning("CanLandAirship: Invalid terrain at (%d, %d)", x, y);
+		return false;
+	}
+	if (!terrain->airship_land) {
+		return false;
+	}
+
+	for (auto& ev: events) {
+		if (ev.IsInPosition(x, y)
+				&& ev.IsActive()
+				&& ev.GetActivePage() != nullptr) {
+			return false;
+		}
+	}
+	for (auto vid: { Game_Vehicle::Boat, Game_Vehicle::Ship }) {
+		auto& vehicle = vehicles[vid - 1];
+		if (vehicle->IsInCurrentMap() && vehicle->IsInPosition(x, y)) {
+			return false;
+		}
+	}
+
+	const int bit = Passable::Down | Passable::Right | Passable::Left | Passable::Up;
+
+	int tile_index = x + y * GetWidth();
+
+	if (!IsPassableLowerTile(bit, tile_index)) {
+		return false;
+	}
+
 	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
-	if ((passages_up[tile_id] & bit) == 0)
+	return (passages_up[tile_id] & bit) != 0;
+}
+
+bool Game_Map::CanEmbarkShip(Game_Player& player, int x, int y) {
+	auto bit = GetPassableMask(player.GetX(), player.GetY(), x, y);
+	return IsPassableTile(&player, bit, player.GetX(), player.GetY());
+}
+
+bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
+	if (!Game_Map::IsValid(x, y)) {
 		return false;
+	}
 
-	if ((passages_up[tile_id] & Passable::Above) == 0)
-		return true;
+	for (auto& ev: GetEvents()) {
+		if (ev.IsInPosition(x, y)
+			&& ev.GetLayer() == RPG::EventPage::Layers_same
+			&& ev.IsActive()) {
+			return false;
+		}
+	}
 
+	int bit = GetPassableMask(x, y, player.GetX(), player.GetY());
+
+	return IsPassableTile(nullptr, bit, x, y);
+}
+
+bool Game_Map::IsPassableLowerTile(int bit, int tile_index) {
 	int tile_raw_id = map->lower_layer[tile_index];
+	int tile_id = 0;
 
 	if (tile_raw_id >= BLOCK_E) {
 		tile_id = tile_raw_id - BLOCK_E;
@@ -792,6 +715,80 @@ bool Game_Map::IsPassableTile(int bit, int tile_index) {
 	}
 
 	return (passages_down[tile_id] & bit) != 0;
+}
+
+bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y) {
+	if (!IsValid(x, y)) return false;
+
+	auto vehicle_type = (self != nullptr)
+		? self->GetVehicleType() : Game_Vehicle::None;
+
+	if (vehicle_type != Game_Vehicle::None) {
+		const auto* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
+		if (!terrain) {
+			Output::Warning("IsPassableTile: Invalid terrain at (%d, %d)", x, y);
+			return false;
+		}
+		if (vehicle_type == Game_Vehicle::Boat && !terrain->boat_pass) {
+			return false;
+		}
+		if (vehicle_type == Game_Vehicle::Ship && !terrain->ship_pass) {
+			return false;
+		}
+		if (vehicle_type == Game_Vehicle::Airship) {
+			return terrain->airship_pass;
+		}
+	}
+
+	// Highest ID event with layer=below, not through, and a tile graphic wins.
+	int event_tile_id = 0;
+	for (auto& ev: events) {
+		if (self == &ev) {
+			continue;
+		}
+		if (!ev.IsActive() || ev.GetThrough()) {
+			continue;
+		}
+		if (ev.IsInPosition(x, y) && ev.GetLayer() == RPG::EventPage::Layers_below) {
+			int tile_id = ev.GetTileId();
+			if (tile_id > 0) {
+				event_tile_id = tile_id;
+			}
+		}
+	}
+
+	// If there was a below tile event, and the tile is not above
+	// Override the chipset with event tile behavior.
+	if (event_tile_id > 0
+			&& ((passages_up[event_tile_id] & Passable::Above) == 0)) {
+		switch (vehicle_type) {
+			case Game_Vehicle::None:
+				return ((passages_up[event_tile_id] & bit) != 0);
+			case Game_Vehicle::Boat:
+			case Game_Vehicle::Ship:
+				return false;
+			case Game_Vehicle::Airship:
+				break;
+		};
+	}
+
+	int tile_index = x + y * GetWidth();
+	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map_info.upper_tiles[tile_id];
+
+	if (vehicle_type == Game_Vehicle::Boat || vehicle_type == Game_Vehicle::Ship) {
+		if ((passages_up[tile_id] & Passable::Above) == 0)
+			return false;
+		return true;
+	}
+
+	if ((passages_up[tile_id] & bit) == 0)
+		return false;
+
+	if ((passages_up[tile_id] & Passable::Above) == 0)
+		return true;
+
+	return IsPassableLowerTile(bit, tile_index);
 }
 
 int Game_Map::GetBushDepth(int x, int y) {
@@ -843,16 +840,6 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	assert(chip_index < terrain_data.size());
 
 	return terrain_data[chip_index];
-}
-
-bool Game_Map::AirshipLandOk(int const x, int const y) {
-	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x, y));
-	if (!terrain) {
-		Output::Warning("AirshipLandOk: Invalid terrain at (%d, %d)", x, y);
-		return false;
-	}
-
-	return terrain->airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
