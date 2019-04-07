@@ -43,7 +43,6 @@ public:
 	static bool shop_buys;
 	static bool shop_sells;
 	static int shop_type;		// message set A, B, or C
-	static bool shop_handlers;	// custom transaction/no-transaction handlers
 	static std::vector<int> shop_goods;
 	static bool shop_transaction;
 
