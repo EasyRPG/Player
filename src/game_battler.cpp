@@ -327,7 +327,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 			Output::Warning("UseItem: Can't use item %d skill with invalid ID %d", item->ID, item->skill_id);
 			return false;
 		}
-		UseSkill(item->skill_id, source);
+		return UseSkill(item->skill_id, source);
 	}
 
 	return false;
