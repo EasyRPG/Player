@@ -116,7 +116,29 @@ void Scene_ActorTarget::UpdateItem() {
 			return;
 		}
 		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+			auto* item = ReaderUtil::GetElement(Data::items, id);
+			assert(item);
+
+			bool do_skill = (item->type == RPG::Item::Type_special)
+				|| (item->use_skill && (
+							item->type == RPG::Item::Type_weapon
+							|| item->type == RPG::Item::Type_shield
+							|| item->type == RPG::Item::Type_armor
+							|| item->type == RPG::Item::Type_helmet
+							|| item->type == RPG::Item::Type_accessory
+							)
+				   );
+
+			if (do_skill) {
+				auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+				assert(skill);
+				auto* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
+				if (animation) {
+					Game_System::SePlay(*animation);
+				}
+			} else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+			}
 		}
 		else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
