@@ -325,7 +325,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (_keyinput.timed) {
 				// 10 per second
 				Game_Variables.Set(_keyinput.time_variable,
-						(int)((float)_keyinput.wait_frames / Graphics::GetDefaultFps() * 10));
+						(_keyinput.wait_frames * 10) / Graphics::GetDefaultFps());
 			}
 			_keyinput.wait = false;
 		}
