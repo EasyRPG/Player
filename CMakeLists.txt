@@ -708,9 +708,11 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 
 	if(LIBSNDFILE_FOUND)
 		message(STATUS "WAV playback: libsndfile")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "WAV playback: SDL2_mixer")
+	else()
+		message(STATUS "WAV playback: None")
 	endif()
 
 	if(WILDMIDI_FOUND)
