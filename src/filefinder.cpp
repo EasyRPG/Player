@@ -62,7 +62,7 @@
 #  include <sys/types.h>
 #endif
 
-#ifdef __ANDROID__
+#if defined(USE_SDL) && defined(__ANDROID__)
 #   include <jni.h>
 #   include <SDL_system.h>
 #endif

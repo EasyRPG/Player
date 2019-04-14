@@ -32,7 +32,7 @@
 #ifndef _WIN32
 #  include <unistd.h>
 #endif
-#ifdef __ANDROID__
+#if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include <SDL_system.h>
 #elif defined(_3DS)
@@ -42,7 +42,7 @@
 #elif defined(PSP2)
 #  include <cstdio>
 #  include <psp2/io/stat.h>
-#elif defined(__APPLE__) && defined(__MACH__)
+#elif defined(USE_SDL) && defined(__APPLE__) && defined(__MACH__)
 #  include <SDL.h>
 #endif
 
@@ -132,7 +132,7 @@ void Main_Data::Init() {
 				// No RomFS -> load games from hardcoded path
 				project_path = "sdmc:/3ds/easyrpg-player";
 			}
-#elif defined(__APPLE__) && defined(__MACH__)
+#elif defined(USE_SDL) && defined(__APPLE__) && defined(__MACH__)
 #  if SDL_MAJOR_VERSION>1
 			// Apple Finder does not set the working directory
 			// It points to HOME instead. When it is HOME change it to

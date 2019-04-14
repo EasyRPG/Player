@@ -35,7 +35,7 @@
 #  define WILDMIDI_FREQ 44100
 #endif
 
-#ifdef __ANDROID__
+#if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
 #  include "SDL_system.h"
 #  include "string.h"
@@ -46,7 +46,7 @@
  */
 #define WILDMIDI_OPTS 0
 
-#ifdef __ANDROID__
+#if defined(USE_SDL) && defined(__ANDROID__)
 std::string get_timidity_path_jni() {
 	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
