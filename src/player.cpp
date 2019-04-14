@@ -306,28 +306,31 @@ void Player::Update(bool update_scene) {
 	int speed_modifier = GetSpeedModifier();
 
 	for (int i = 0; i < speed_modifier; ++i) {
-		bool was_transition_pending = Graphics::IsTransitionPending();
 		Graphics::Update();
-		// This is used to provide a hook for Scene_Map to finish
-		// it's PreUpdate() logic after transition.
-		if (was_transition_pending && !Graphics::IsTransitionPending() && Scene::instance->IsInitialized()) {
-			Scene::instance->OnTransitionFinish();
-		}
 		if (update_scene) {
 			Scene::instance->Update();
-			++frames;
-			// RPG_RT compatible frame counter.
-			++Main_Data::game_data.system.frame_count;
+			// Async file loading or transition. Don't increment the frame
+			// counter as we now have to "suspend" and "resume"
+			if (Scene::IsAsyncPending()) {
+				old_instance->SetAsyncFromMainLoop();
+				break;
+			}
+			IncFrame();
 
-			// Scene changed or webplayer waits for files.
 			// Not save to Update again, setup code must run:
-			if (&*old_instance != &*Scene::instance || AsyncHandler::IsImportantFilePending()) {
+			if (&*old_instance != &*Scene::instance) {
 				break;
 			}
 		}
 	}
 
 	start_time = next_frame;
+}
+
+void Player::IncFrame() {
+	++frames;
+	// RPG_RT compatible frame counter.
+	++Main_Data::game_data.system.frame_count;
 }
 
 void Player::FrameReset() {
@@ -742,6 +745,7 @@ void Player::ResetGameObjects() {
 	if (Data::system.system_name != Game_System::GetSystemName()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
 		request->SetImportantFile(true);
+		request->SetGraphicFile(true);
 		system_request_id = request->Bind(&OnSystemFileReady);
 		request->Start();
 	}
@@ -882,6 +886,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 
 	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
 	system->SetImportantFile(true);
+	system->SetGraphicFile(true);
 	system_request_id = system->Bind(&OnSystemFileReady);
 
 	map->Start();

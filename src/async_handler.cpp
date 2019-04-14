@@ -32,6 +32,7 @@
 #include "picojson.h"
 #include <fstream>
 #include "utils.h"
+#include "graphics.h"
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
@@ -101,15 +102,16 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& file_name) {
 	return RequestFile(".", file_name);
 }
 
-bool AsyncHandler::IsImportantFilePending() {
-	std::map<std::string, FileRequestAsync>::iterator it;
-
-	for (it = async_requests.begin(); it != async_requests.end(); ++it) {
-		FileRequestAsync& request = it->second;
+bool AsyncHandler::IsFilePending(bool important, bool graphic) {
+	for (auto& ap: async_requests) {
+		FileRequestAsync& request = ap.second;
 		// remove comment for fake download testing
 		//request.UpdateProgress();
 
-		if (!request.IsReady() && request.IsImportantFile()) {
+		if (!request.IsReady()
+				&& (!important || request.IsImportantFile())
+				&& (!graphic || request.IsGraphicFile())
+				) {
 			return true;
 		}
 	}
@@ -117,11 +119,20 @@ bool AsyncHandler::IsImportantFilePending() {
 	return false;
 }
 
+bool AsyncHandler::IsImportantFilePending() {
+	return IsFilePending(true, false);
+}
+
+bool AsyncHandler::IsGraphicFilePending() {
+	return IsFilePending(false, true);
+}
+
 FileRequestAsync::FileRequestAsync(const std::string& folder_name, const std::string& file_name) :
 	directory(folder_name),
 	file(file_name) {
 	this->path = path = FileFinder::MakePath(folder_name, file_name);
 	this->important = false;
+	this->graphic = false;
 
 	state = State_WaitForStart;
 }
@@ -139,6 +150,20 @@ bool FileRequestAsync::IsImportantFile() const {
 
 void FileRequestAsync::SetImportantFile(bool important) {
 	this->important = important;
+}
+
+bool FileRequestAsync::IsGraphicFile() const {
+	return graphic;
+}
+
+void FileRequestAsync::SetGraphicFile(bool graphic) {
+	this->graphic = graphic;
+	// We need this flag in order to prevent show screen transitions
+	// from starting util all graphical assets are loaded.
+	// Also, the screen is erased, so you can't see any delays :)
+	if (Graphics::IsTransitionErased()) {
+		SetImportantFile(true);
+	}
 }
 
 void FileRequestAsync::Start() {

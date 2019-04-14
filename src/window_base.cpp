@@ -105,6 +105,7 @@ void Window_Base::DrawFace(const std::string& face_name, int face_index, int cx,
 	if (face_name.empty()) { return; }
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("FaceSet", face_name);
+	request->SetGraphicFile(true);
 	face_request_ids.push_back(request->Bind(&Window_Base::OnFaceReady, this, face_index, cx, cy, flip));
 	request->Start();
 }
@@ -314,6 +315,7 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 
 void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
 	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
+	request->SetGraphicFile(true);
 	if (!request->IsReady()) {
 		// Gauge refreshed each frame, so we can wait via polling
 		request->Start();

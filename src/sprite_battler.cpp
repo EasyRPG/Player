@@ -230,6 +230,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 				animation.reset();
 				if (!sprite_file.empty()) {
 					FileRequestAsync* request = AsyncHandler::RequestFile("BattleCharSet", sprite_file);
+					request->SetGraphicFile(true);
 					request_id = request->Bind(&Sprite_Battler::OnBattlercharsetReady, this, ext->battler_index);
 					request->Start();
 				}
@@ -316,6 +317,7 @@ void Sprite_Battler::CreateSprite() {
 		}
 		else {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Monster", sprite_name);
+			request->SetGraphicFile(true);
 			request_id = request->Bind(&Sprite_Battler::OnMonsterSpriteReady, this);
 			request->Start();
 		}

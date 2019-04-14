@@ -203,18 +203,7 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	int x = Game_Variables.Get(var_x);
 	int y = Game_Variables.Get(var_y);
 
-	if (map_id == Game_Map::GetMapId()) {
-		player->MoveTo(x, y);
-		return true;
-	};
-
-	if (Main_Data::game_player->IsTeleporting() ||
-		Game_Message::visible) {
-			return false;
-	}
-
-	Main_Data::game_player->ReserveTeleport(map_id, x, y);
-	Main_Data::game_player->StartTeleport();
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1);
 
 	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 	if (!main_flag)
@@ -580,11 +569,9 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing ||
-		Game_Message::visible) {
+	if (Game_Message::visible) {
 		return false;
 	}
-
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
@@ -593,7 +580,6 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	int direction = com.parameters.size() > 3 ? com.parameters[3] - 1 : -1;
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
-	Main_Data::game_player->StartTeleport();
 
 	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 	if (!main_flag)

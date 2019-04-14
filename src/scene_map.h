@@ -42,7 +42,6 @@ public:
 	void Resume() override;
 	void TransitionIn() override;
 	void TransitionOut() override;
-	void OnTransitionFinish() override;
 	void DrawBackground() override;
 
 	void CallBattle();
@@ -56,18 +55,21 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
-	void StartTeleportPlayer();
-	void FinishTeleportPlayer();
+	void StartPendingTeleport();
+	void FinishPendingTeleport();
 	void PreUpdate();
+	// Handles event requested transitions.
+	void UpdateStage2();
+	// Handles pending teleport and scene changes.
+	void UpdateStage3();
 	void UpdateSceneCalling();
 
 	std::unique_ptr<Window_Message> message_window;
 
-	bool from_save;
-	bool auto_transition = false;
-	bool auto_transition_erase = false;
-	bool do_preupdate = false;
 	int debug_menuoverwrite_counter = 0;
+	bool from_save;
+	// Teleport from new game or Teleport / Escape skill from menu.
+	bool teleport_from_other_scene = false;
 };
 
 #endif

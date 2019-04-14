@@ -54,6 +54,8 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
+	teleport_from_other_scene = true;
+
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
@@ -63,10 +65,23 @@ void Scene_Map::Start() {
 	Player::FrameReset();
 
 	PreUpdate();
-	spriteset->Update();
+	// FIXME: Handle transitions requested on the first frame of a new game by PreUpdate!!
+	if (Game_Temp::transition_processing) {
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;
+	}
+
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		StartPendingTeleport();
+		return;
+	}
+	// Call any requested scenes when transition is done.
+	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
 void Scene_Map::Continue() {
+	teleport_from_other_scene = true;
 	if (Game_Temp::battle_calling) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
@@ -74,19 +89,27 @@ void Scene_Map::Continue() {
 	else {
 		Game_Map::PlayBgm();
 	}
+
+	// Player cast Escape / Teleport from menu
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		FinishPendingTeleport();
+		return;
+	}
+
 	spriteset->Update();
 }
 
 void Scene_Map::Resume() {
 	Game_Temp::battle_calling = false;
+	teleport_from_other_scene = false;
 }
 
 void Scene_Map::TransitionIn() {
-	if (Main_Data::game_player->IsTeleporting()) {
-		// Comes from the teleport scene
-		// Teleport will handle fade-in
+	// Teleport already setup a transition.
+	if (Graphics::IsTransitionPending()) {
 		return;
-	} else if (Game_Temp::battle_calling) {
+	}
+	if (Game_Temp::battle_calling) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
@@ -109,13 +132,6 @@ void Scene_Map::TransitionOut() {
 	}
 }
 
-void Scene_Map::OnTransitionFinish() {
-	if (do_preupdate) {
-		UpdateSceneCalling();
-		do_preupdate = false;
-	}
-}
-
 void Scene_Map::DrawBackground() {
 	if (spriteset->RequireBackground(GetGraphicsState().drawable_list)) {
 		DisplayUi->CleanDisplay();
@@ -124,45 +140,53 @@ void Scene_Map::DrawBackground() {
 
 void Scene_Map::PreUpdate() {
 	Game_Map::Update(true);
-	// Tells the next OnTransitionFinish() to allow scene changes.
-	do_preupdate = true;
+	spriteset->Update();
 }
 
 void Scene_Map::Update() {
-	if (Game_Temp::transition_processing) {
-		Game_Temp::transition_processing = false;
-
-		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-	}
-
-	if (auto_transition) {
-		auto_transition = false;
-
-		if (!auto_transition_erase) {
-			// Fade Out not handled here but in StartTeleportPlayer because otherwise
-			// emscripten hangs before fading out when doing async loading...
-			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-			return;
-		}
-	}
-
-	// Async loading note:
-	// Fade In must be done before finish teleport, otherwise chipset is not
-	// loaded and renders black while fading -> ugly
-
-	if (!Game_Map::IsTeleportDelayed() && Main_Data::game_player->IsTeleporting()) {
-		FinishTeleportPlayer();
-		return;
-	}
-	// The delay is only needed for one frame to execute pending transitions,
-	// the interpreters continue on the old map afterwards
-	Game_Map::SetTeleportDelayed(false);
-
 	Game_Map::Update();
 	spriteset->Update();
 	message_window->Update();
 
-	StartTeleportPlayer();
+	// On platforms with async loading (emscripten) graphical assets loaded this frame
+	// may require us to wait for them to download before we can start the transitions.
+	if (IsAsyncPending()) {
+		async_continuation = [this]() { UpdateStage2(); };
+		return;
+	}
+
+	UpdateStage2();
+}
+
+void Scene_Map::UpdateStage2() {
+	if (!Game_Temp::transition_processing) {
+		UpdateStage3();
+		return;
+	}
+
+	Game_Temp::transition_processing = false;
+
+	// Do the transition and then finish the update routine.
+	// FIXME: This behavior is incomplete as the update loop has to be
+	// resumed at exactly the right time. In particular if a parallel
+	// event requests a transition, we have to continue running the interpreter
+	// and all stages of the update loop afterwards.
+	// This will be fixed later.
+
+	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+	// Unless its an instant transition, we must wait for it to finish before we can proceed.
+	if (IsAsyncPending()) {
+		async_continuation = [this]() { UpdateStage3(); };
+		return;
+	}
+	UpdateStage3();
+}
+
+void Scene_Map::UpdateStage3() {
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		StartPendingTeleport();
+		return;
+	}
 	UpdateSceneCalling();
 }
 
@@ -239,31 +263,58 @@ void Scene_Map::UpdateSceneCalling() {
 	}
 }
 
-void Scene_Map::StartTeleportPlayer() {
-	if (!Main_Data::game_player->IsTeleporting())
-		return;
-	bool const autotransition = !Game_Temp::transition_erase;
+void Scene_Map::StartPendingTeleport() {
+	const auto& tt = Main_Data::game_player->GetTeleportTarget();
 
-	if (autotransition) {
+	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
+	request->SetImportantFile(true);
+	request->Start();
+
+	if (!Graphics::IsTransitionErased()) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
+
+	if (IsAsyncPending()) {
+		async_continuation = [&]() { FinishPendingTeleport(); };
+		return;
+	}
+
+	FinishPendingTeleport();
 }
 
-void Scene_Map::FinishTeleportPlayer() {
-	bool const autotransition = !Game_Temp::transition_erase;
-
+void Scene_Map::FinishPendingTeleport() {
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 
-	Game_Map::Update(true);
-	spriteset->Update();
-
-	if (autotransition) {
-		auto_transition = true;
-		auto_transition_erase = false;
+	PreUpdate();
+	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
+	if (Game_Temp::transition_processing) {
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;
 	}
+
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		StartPendingTeleport();
+		return;
+	}
+
+	// Event forced the screen to erased, so we're done here.
+	if (Game_Temp::transition_erase) {
+		UpdateSceneCalling();
+		return;
+	}
+
+	if (teleport_from_other_scene) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+	} else {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+	}
+
+	// Call any requested scenes when transition is done.
+	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
 // Scene calling stuff.

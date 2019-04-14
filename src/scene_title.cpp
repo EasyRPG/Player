@@ -123,6 +123,7 @@ void Scene_Title::CreateTitleGraphic() {
 	{
 		title.reset(new Sprite());
 		FileRequestAsync* request = AsyncHandler::RequestFile("Title", Data::system.title_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Scene_Title::OnTitleSpriteReady, this);
 		request->Start();
 	}

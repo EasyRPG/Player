@@ -47,10 +47,12 @@ void Sprite_Character::Update() {
 
 		if (UsesCharset()) {
 			FileRequestAsync* char_request = AsyncHandler::RequestFile("CharSet", character_name);
+			char_request->SetGraphicFile(true);
 			request_id = char_request->Bind(&Sprite_Character::OnCharSpriteReady, this);
 			char_request->Start();
 		} else {
 			FileRequestAsync* tile_request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
+			tile_request->SetGraphicFile(true);
 			request_id = tile_request->Bind(&Sprite_Character::OnTileSpriteReady, this);
 			tile_request->Start();
 		}

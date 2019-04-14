@@ -31,6 +31,7 @@ Scene_Gameover::Scene_Gameover() {
 void Scene_Gameover::Start() {
 	if (!Data::system.gameover_name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("GameOver", Data::system.gameover_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Scene_Gameover::OnBackgroundReady, this);
 		request->Start();
 	}

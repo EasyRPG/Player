@@ -82,6 +82,7 @@ void Spriteset_Map::Update() {
 			tilemap->SetFastBlitDown(true);
 		} else {
 			FileRequestAsync *request = AsyncHandler::RequestFile("Panorama", panorama_name);
+			request->SetGraphicFile(true);
 			panorama_request_id = request->Bind(&Spriteset_Map::OnPanoramaSpriteReady, this);
 			request->Start();
 		}
@@ -129,6 +130,7 @@ void Spriteset_Map::ChipsetUpdated() {
 		FileRequestAsync* request = AsyncHandler::RequestFile("ChipSet", Game_Map::GetChipsetName());
 		tilemap_request_id = request->Bind(&Spriteset_Map::OnTilemapSpriteReady, this);
 		request->SetImportantFile(true);
+		request->SetGraphicFile(true);
 		request->Start();
 	}
 	else {

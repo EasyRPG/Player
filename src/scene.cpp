@@ -76,35 +76,47 @@ Scene::Scene() {
 void Scene::MainFunction() {
 	static bool init = false;
 
-	if (AsyncHandler::IsImportantFilePending() || Graphics::IsTransitionPending()) {
+	if (IsAsyncPending()) {
 		Player::Update(false);
-	} else if (!init) {
-		// Initialization after scene switch
-		switch (push_pop_operation) {
-		case ScenePushed:
-			Start();
-			initialized = true;
-			break;
-		case ScenePopped:
-			if (!initialized) {
-				Start();
-				initialized = true;
-			} else {
-				Continue();
-			}
-			break;
-		default:;
-		}
-
-		push_pop_operation = 0;
-
-		TransitionIn();
-		Resume();
-
-		init = true;
 		return;
 	} else {
-		Player::Update();
+		// This is used to provide a hook for Scene_Map to finish
+		// it's PreUpdate() and teleport logic after transition
+		// or asynchronous file load.
+		OnFinishAsync();
+	}
+
+	// The continuation could have caused a new async wait condition, or
+	// it could have changed the scene.
+	if (!IsAsyncPending() && Scene::instance.get() == this) {
+		if (!init) {
+			// Initialization after scene switch
+			switch (push_pop_operation) {
+				case ScenePushed:
+					Start();
+					initialized = true;
+					break;
+				case ScenePopped:
+					if (!initialized) {
+						Start();
+						initialized = true;
+					} else {
+						Continue();
+					}
+					break;
+				default:;
+			}
+
+			push_pop_operation = 0;
+
+			TransitionIn();
+			Resume();
+
+			init = true;
+			return;
+		} else {
+			Player::Update();
+		}
 	}
 
 	if (Scene::instance.get() != this) {
@@ -144,7 +156,31 @@ void Scene::TransitionOut() {
 	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
-void Scene::OnTransitionFinish() {
+void Scene::SetAsyncFromMainLoop() {
+	was_async_from_main_loop = true;
+}
+
+void Scene::OnFinishAsync() {
+	if (async_continuation) {
+		// The continuation could set another continuation, so move this 
+		// one out of the way first before we call it.
+		AsyncContinuation continuation;
+		async_continuation.swap(continuation);
+
+		continuation();
+	}
+
+	// If we just finished an async operation that was
+	// started within the Update() routine, player will
+	// tell us to defer incrementing the frame counter
+	// until now.
+	if (was_async_from_main_loop && !IsAsyncPending()) {
+		Player::IncFrame();
+	}
+}
+
+bool Scene::IsAsyncPending() {
+	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending();
 }
 
 void Scene::Update() {

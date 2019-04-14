@@ -37,6 +37,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		const std::string& sprite_name = actors[i]->GetSpriteName();
 		FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", sprite_name);
+		request->SetGraphicFile(true);
 		request_ids.push_back(request->Bind(&Window_ShopParty::OnCharsetSpriteReady, this, (int)i));
 		request->Start();
 	}

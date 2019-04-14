@@ -28,6 +28,7 @@
 Frame::Frame() {
 	if (!Data::system.frame_name.empty() && Data::system.show_frame) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", Data::system.frame_name);
+		request->SetGraphicFile(true);
 		request_id = request->Bind(&Frame::OnFrameGraphicReady, this);
 		request->Start();
 	}

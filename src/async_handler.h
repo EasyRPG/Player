@@ -72,6 +72,23 @@ namespace AsyncHandler {
 	 * @return If any file with important-flag is pending.
 	 */
 	bool IsImportantFilePending();
+
+	/**
+	 * Checks if any file with graphic-flag hasn't finished downloading yet.
+	 *
+	 * @return If any file with graphic-flag is pending.
+	 */
+	bool IsGraphicFilePending();
+
+	/**
+	 * Checks if any file is hasn't finished downloading yet.
+	 *
+	 * @param important check only important files
+	 * @param graphic check only graphic files
+	 *
+	 * @return If any file with params is pending.
+	 */
+	bool IsFilePending(bool important, bool graphic);
 }
 
 using FileRequestBinding = std::shared_ptr<int>;
@@ -122,9 +139,22 @@ public:
 	 * the request is finished.
 	 *
 	 * @param important value of important flag.
-	 * @return 
 	 */
 	void SetImportantFile(bool important);
+
+	/**
+	 * @return If while has graphic-flag set.
+	 */
+	bool IsGraphicFile() const;
+
+	/**
+	 * Sets the graphic flag.
+	 * When the graphic flag is set, Scene_Map will block starting any
+	 * user requested transitions until the request is finished.
+	 *
+	 * @param important value of important flag.
+	 */
+	void SetGraphicFile(bool graphic);
 
 	/**
 	 * Starts the async requests.
@@ -186,7 +216,8 @@ private:
 	std::string file;
 	std::string path;
 	int state;
-	bool important;
+	bool important = false;
+	bool graphic = false;
 };
 
 /**

@@ -55,7 +55,6 @@ void Scene_Teleport::Update() {
 		const RPG::SaveTarget& target = teleport_window->GetTarget();
 
 		Main_Data::game_player->ReserveTeleport(target);
-		Main_Data::game_player->StartTeleport();
 
 		Scene::PopUntil(Scene::Map);
 	} else if (Input::IsTriggered(Input::CANCEL)) {

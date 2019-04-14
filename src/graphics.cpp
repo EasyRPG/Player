@@ -179,6 +179,10 @@ bool Graphics::IsTransitionPending() {
 	return (transition ? transition->IsActive() : false);
 }
 
+bool Graphics::IsTransitionErased() {
+	return (transition ? transition->IsErased() : false);
+}
+
 void Graphics::FrameReset() {
 	next_fps_time = (uint32_t)DisplayUi->GetTicks() + 1000;
 	fps_overlay->ResetCounter();
