@@ -52,40 +52,40 @@ class TeleportTarget {
 		/** @return whether this is active */
 		bool IsActive() const;
 	private:
-		int _map_id = 0;
-		int _x = 0;
-		int _y = 0;
-		int16_t _d = -1;
-		bool _active = false;
+		int map_id = 0;
+		int x = 0;
+		int y = 0;
+		int16_t d = -1;
+		bool active = false;
 };
 
 
 inline TeleportTarget::TeleportTarget(int map_id, int x, int y, int d)
-	: _map_id(map_id)
-	  , _x(x)
-	  , _y(y)
-	  , _d(d)
-	  , _active(true)
+	: map_id(map_id)
+	  , x(x)
+	  , y(y)
+	  , d(d)
+	  , active(true)
 { }
 
 inline int TeleportTarget::GetMapId() const {
-	return _map_id;
+	return map_id;
 }
 
 inline int TeleportTarget::GetX() const {
-	return _x;
+	return x;
 }
 
 inline int TeleportTarget::GetY() const {
-	return _y;
+	return y;
 }
 
 inline int TeleportTarget::GetDirection() const {
-	return _d;
+	return d;
 }
 
 inline bool TeleportTarget::IsActive() const {
-	return _active;
+	return active;
 }
 
 #endif

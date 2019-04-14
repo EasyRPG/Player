@@ -83,8 +83,8 @@ namespace AsyncHandler {
 	/**
 	 * Checks if any file is hasn't finished downloading yet.
 	 *
-	 * @param important - check only important files
-	 * @param graphic - check only graphic files
+	 * @param important check only important files
+	 * @param graphic check only graphic files
 	 *
 	 * @return If any file with params is pending.
 	 */
