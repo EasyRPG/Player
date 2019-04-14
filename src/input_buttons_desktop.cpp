@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !(defined(OPENDINGUX) || defined(GEKKO))
+#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO))
 
 // Headers
 #include "input_buttons.h"

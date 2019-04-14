@@ -70,14 +70,19 @@ public:
 #endif
 	/** @} */
 
-public:
+	void UpdateKeyboardCallback(bool down, unsigned keycode);
+
 	static void SetRetroVideoCallback(retro_video_refresh_t cb);
 	static void SetRetroInputStateCallback(retro_input_state_t cb);
+
 	static retro_usec_t time_in_microseconds;
+	static retro_environment_t environ_cb;
 private:
 	static retro_video_refresh_t UpdateWindow;
 	static retro_input_state_t CheckInputState;
+	uint32_t keyboard_retropad_state = 0;
 
+	void UpdateVariables();
 };
 
 #endif

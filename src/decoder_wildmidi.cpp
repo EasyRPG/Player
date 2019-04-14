@@ -30,7 +30,7 @@
 #include "decoder_wildmidi.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro.h"
+#include "libretro_ui.h"
 #endif
 
 #if defined(GEKKO) || defined(_3DS)
@@ -90,10 +90,9 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	 */
 #if defined(USE_LIBRETRO)
 	config_file = "wildmidi.cfg";
-	extern retro_environment_t environ_cb;
 	const char *dir = NULL;
 
-	if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
 	{
 		config_file = std::string(dir) + "/wildmidi.cfg";
 	}
@@ -219,7 +218,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 
 	// TODO: We need some installer which creates registry keys for wildmidi
 
-#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
 		found = FileFinder::Exists(config_file);
@@ -272,7 +271,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		return;
 	}
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 	// the default volume is way too quiet with the SDL_mixer patches
 	WildMidi_MasterVolume(127);
 #endif

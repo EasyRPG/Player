@@ -83,8 +83,7 @@
 #include "reader_util.h"
 
 #ifdef USE_LIBRETRO
-#include "libretro.h"
-extern retro_environment_t environ_cb;
+#include "libretro_ui.h"
 #endif
 
 // MinGW shlobj.h does not define this
@@ -510,7 +509,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 #elif defined(USE_LIBRETRO)
 	const char *dir = NULL;
 
-	if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
 		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
 	}
 #elif defined(__ANDROID__)

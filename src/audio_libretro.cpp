@@ -26,16 +26,17 @@
 
 #include <rthreads/rthreads.h>
 
-retro_audio_sample_batch_t RenderAudioFrames=0;
+retro_audio_sample_batch_t RenderAudioFrames = nullptr;
 
-static const unsigned AUDIO_SAMPLERATE = 44100.0;
+constexpr int AUDIO_SAMPLERATE = 44100;
+constexpr int BUFFER_SIZE = 4096;
 
 namespace {
 	unsigned samples_per_frame = 0;
     bool enable_audio = false;
 	LibretroAudio* instance = nullptr;
 	std::vector<uint8_t> buffer;
- 	slock_t* mutex=NULL;
+ 	slock_t* mutex = nullptr;
 }
 
 void LibretroAudio::AudioThreadCallback()
@@ -60,9 +61,9 @@ LibretroAudio::LibretroAudio() :
 
 	mutex = slock_new();
 
-	buffer.resize(8192);
+	buffer.resize(BUFFER_SIZE);
 
-	SetFormat(44100, AudioDecoder::Format::S16, 2);
+	SetFormat(AUDIO_SAMPLERATE, AudioDecoder::Format::S16, 2);
 
 	samples_per_frame = AUDIO_SAMPLERATE / Graphics::GetDefaultFps();
 }

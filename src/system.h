@@ -41,7 +41,14 @@
 // Smart pointer header.
 #include "memory_management.h"
 
-#ifdef OPENDINGUX
+#if defined(USE_LIBRETRO)
+// libretro must be first to prevent conflicts with other defines
+#  define SUPPORT_KEYBOARD
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_HAT
+#  define SUPPORT_JOYSTICK_AXIS
+#  define JOYSTICK_AXIS_SENSIBILITY 20000
+#elif defined(OPENDINGUX)
 #  include <sys/types.h>
 #elif defined(__ANDROID__)
 #  define SUPPORT_ZOOM
@@ -100,7 +107,7 @@
 #    endif
 #    if !defined(HAVE_SDL_MIXER) && WANT_FMMIDI == 2
 #      error "WANT_FMMIDI must be set to 1 for non-SDL Mixer builds"
-#    endif 
+#    endif
 #  endif
 
 #else
