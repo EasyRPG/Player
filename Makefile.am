@@ -146,7 +146,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/input.cpp \
 	src/input.h \
 	src/keys.h \
-	src/libretro.h \
 	src/libretro_ui.cpp \
 	src/libretro_ui.h \
 	src/logo.h \

@@ -33,14 +33,13 @@ constexpr int BUFFER_SIZE = 4096;
 
 namespace {
 	unsigned samples_per_frame = 0;
-    bool enable_audio = false;
+	bool enable_audio = false;
 	LibretroAudio* instance = nullptr;
 	std::vector<uint8_t> buffer;
  	slock_t* mutex = nullptr;
 }
 
-void LibretroAudio::AudioThreadCallback()
-{
+void LibretroAudio::AudioThreadCallback() {
 	if (!enable_audio)
 		return;
 
@@ -84,7 +83,7 @@ void LibretroAudio::UnlockMutex() const {
 }
 
 void LibretroAudio::SetRetroAudioCallback(retro_audio_sample_batch_t cb){
-	RenderAudioFrames=cb;
+	RenderAudioFrames = cb;
 }
 
 #endif
