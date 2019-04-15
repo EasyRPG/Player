@@ -420,6 +420,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	touch_flag = false;
 	Game_Battle::battle_test.enabled = false;
 
+	if (argv == nullptr) {
+		return;
+	}
+
 	std::vector<std::string> args;
 
 	std::stringstream ss;
