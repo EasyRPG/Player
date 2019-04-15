@@ -89,14 +89,21 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	 * FIXME: move this logic into some configuration class
 	 */
 #if defined(USE_LIBRETRO)
-	config_file = "wildmidi.cfg";
 	const char *dir = NULL;
 
-	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
-	{
+	// Game directory
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
 		config_file = std::string(dir) + "/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
 	}
-	found = FileFinder::Exists(config_file);
+
+	// Content downloader
+	if (!found) {
+		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
+			config_file = std::string(dir) + "/wildmidi/wildmidi.cfg";
+			found = FileFinder::Exists(config_file);
+		}
+	}
 #elif defined(GEKKO)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";

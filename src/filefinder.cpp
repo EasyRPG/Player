@@ -507,8 +507,10 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 #elif defined(PSP2)
 	add_rtp_path("ux0:/data/easyrpg-player/rtp/" + version_str + "/");
 #elif defined(USE_LIBRETRO)
-	const char *dir = NULL;
-
+	const char* dir = nullptr;
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
+		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
+	}
 	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
 		add_rtp_path(std::string(dir) + "/rtp/" + version_str + "/");
 	}
