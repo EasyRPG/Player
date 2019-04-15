@@ -1,4 +1,17 @@
 if(WIN32)
+	# Target Unicode API
+	add_definitions(-D_UNICODE)
+	add_definitions(-DUNICODE)
+
+	# Disable API deprecation warnings
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
+	# Prevent some Windows.h global namespace pollution
+	add_definitions(-DNOMINMAX)
+	add_definitions(-DWIN32_LEAN_AND_MEAN)
+endif()
+
+if(MSVC)
 	option(SHARED_RUNTIME "Windows: Build using the shared runtime library (/MD), disable for static runtime (/MT)" ON)
 
 	# Set compiler options.
@@ -28,19 +41,6 @@ if(WIN32)
 		endforeach()
 	endif()
 
-	# Target Unicode API
-	add_definitions(-D_UNICODE)
-	add_definitions(-DUNICODE)
-
-	# Disable API deprecation warnings
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-
-	# Prevent some Windows.h global namespace pollution
-	add_definitions(-DNOMINMAX)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
-endif()
-
-if(MSVC)
 	option(MSVC_MULTICORE "MSVC: Build using multiple cores (/MP)" ON)
 	if (MSVC_MULTICORE)
 		add_compile_options(/MP)
