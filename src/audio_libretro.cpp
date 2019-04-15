@@ -28,7 +28,7 @@
 
 retro_audio_sample_batch_t RenderAudioFrames = nullptr;
 
-constexpr int AUDIO_SAMPLERATE = 44100;
+constexpr int AUDIO_SAMPLERATE = 48000;
 constexpr int BUFFER_SIZE = 4096;
 
 namespace {

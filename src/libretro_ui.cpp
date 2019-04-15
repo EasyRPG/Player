@@ -426,7 +426,7 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 #endif
 
 /* libretro api implementation */
-static const unsigned AUDIO_SAMPLERATE = 44100;
+static const unsigned AUDIO_SAMPLERATE = 48000;
 
 static retro_input_poll_t poll_cb;
 
