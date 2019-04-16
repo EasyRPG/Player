@@ -49,6 +49,8 @@ AudioInterface& LibretroUi::GetAudio() {
 
 retro_usec_t LibretroUi::time_in_microseconds = 0;
 retro_environment_t LibretroUi::environ_cb = nullptr;
+retro_input_poll_t LibretroUi::input_poll_cb = nullptr;
+bool LibretroUi::player_exit_called = false;
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 static Input::Keys::InputKey RetroKey2InputKey(int retrokey);
@@ -134,6 +136,8 @@ void LibretroUi::ProcessEvents() {
 		return;
 	}
 
+	LibretroUi::input_poll_cb();
+
 	bool any_var_changed;
 	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &any_var_changed);
 	if (any_var_changed) {
@@ -198,6 +202,7 @@ void LibretroUi::ProcessEvents() {
 }
 
 bool LibretroUi::IsFullscreen() {
+	// Handled by libretro
 	return false;
 }
 
@@ -428,8 +433,6 @@ Input::Keys::InputKey RetroJKey2InputKey(int button_index) {
 /* libretro api implementation */
 static const unsigned AUDIO_SAMPLERATE = 48000;
 
-static retro_input_poll_t poll_cb;
-
 RETRO_CALLCONV void retro_time_update(retro_usec_t usec) {
 	LibretroUi::time_in_microseconds += usec;
 }
@@ -526,25 +529,28 @@ RETRO_API void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb) {
 }
 
 RETRO_API void retro_set_input_poll(retro_input_poll_t cb) {
-	poll_cb = cb;
+	LibretroUi::input_poll_cb = cb;
 }
 
 RETRO_API void retro_set_input_state(retro_input_state_t cb) {
 	LibretroUi::SetRetroInputStateCallback(cb);
 }
 
-static void reinit_easy_rpg() {
+static void init_easy_rpg() {
+	Player::exit_flag = false;
+	LibretroUi::player_exit_called = false;
+
 	Player::Init(0, nullptr);
 	Input::Init("", "");
 }
 
 /* Library global initialization/deinitialization. */
 RETRO_API void retro_init() {
-	reinit_easy_rpg();
+	// no-op, handled in retro_load_game
 }
 
 RETRO_API void retro_deinit() {
-	Player::Exit();
+	// no-op, handled in retro_unload_game
 }
 
 /* Must return RETRO_API_VERSION. Used to validate ABI compatibility
@@ -610,15 +616,13 @@ RETRO_API void retro_reset(void) {
  */
 
 RETRO_API void retro_run() {
-	poll_cb();
+	Player::MainLoop();
 
-	if (!Player::exit_flag) {
-		Player::MainLoop();
-		if (!DisplayUi) {
-			// Only occurs when the function Player::Exit() was called from within the game
-			Player::exit_flag = true;
-			LibretroUi::environ_cb(RETRO_ENVIRONMENT_SHUTDOWN, nullptr);
-		}
+	if (!DisplayUi) {
+		// Player::Exit was called, send shutdown request to the frontend
+		LibretroUi::player_exit_called = true;
+		// This closes the whole frontend and not just the core, but there is no API for core unloading...
+		LibretroUi::environ_cb(RETRO_ENVIRONMENT_SHUTDOWN, nullptr);
 	}
 }
 
@@ -649,15 +653,9 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 		return false;
 	}
 
-	if (game != nullptr)
-		extract_directory(parent_dir, game->path, sizeof(parent_dir));
+	extract_directory(parent_dir, game->path, sizeof(parent_dir));
 
-	Player::exit_flag = false;
-
-	if (!DisplayUi) {
-		// If player was exited before -> reinitialize
-		reinit_easy_rpg();
-	}
+	init_easy_rpg();
 
 	log_cb(RETRO_LOG_INFO, "parent dir is: %s\n", parent_dir );
 
@@ -673,11 +671,10 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 
 /* Unloads a currently loaded game. */
 RETRO_API void retro_unload_game(void) {
-	if (!Player::exit_flag){
-		Player::exit_flag = true;
-		Player::MainLoop(); // Execute one mainloop to do the exiting
+	if (!LibretroUi::player_exit_called) {
+		// Shutdown requested by the frontend and not via Title scene
+		Player::Exit();
 	}
-	Main_Data::Cleanup();
 }
 
 // unused stuff required by libretro api
