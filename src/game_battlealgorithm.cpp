@@ -1263,6 +1263,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			if (IsRevived() && !skill.affect_hp) {
 				this->hp = std::max<int>(0, std::min<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(),
 							GetTarget()->GetMaxHp() * effect / 10));
+				this->healed_conditions.push_back(1);
 				this->success = true;
 			}
 		}
