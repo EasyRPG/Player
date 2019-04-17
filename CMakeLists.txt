@@ -364,7 +364,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/builds/cmake/Modules"
 include(ConfigureWindows)
 include(PlayerFindPackage)
 
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC _DEBUG=1)
 endif()
 
@@ -414,7 +414,7 @@ find_package(SDL2 REQUIRED)
 target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 
 # Always enable Wine registry support on non-Windows
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Windows")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_WINE=1)
 endif()
 
@@ -440,8 +440,12 @@ set(PLAYER_AUDIO_BACKEND "Auto" CACHE STRING "Audio system to use. Options: Auto
 set_property(CACHE PLAYER_AUDIO_BACKEND PROPERTY STRINGS Auto SDL2 SDL2_mixer OpenAL OFF)
 
 # Configure Audio backends
-if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
-	option(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available." ON)
+if(${PLAYER_AUDIO_BACKEND} STREQUAL "Auto")
+	set(PLAYER_AUDIO_BACKEND_IS_AUTO ON)
+endif()
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SDL2_MIXER "Use SDL2 mixer when available" ON "PLAYER_AUDIO_BACKEND_IS_AUTO" OFF)
+
+if(PLAYER_AUDIO_BACKEND_IS_AUTO)
 	player_find_package(NAME SDL2_mixer
 		CONDITION PLAYER_WITH_SDL2_MIXER
 		TARGET SDL2::MIXER)
@@ -453,6 +457,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "Auto")
 endif()
 
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
+	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	# Provide fmmidi options
@@ -460,7 +465,8 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2$")
 	if(PLAYER_ENABLE_FMMIDI)
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
 	endif()
-elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "SDL2_mixer")
+	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	# SDL2_mixer Audio
@@ -472,76 +478,109 @@ elseif(${PLAYER_AUDIO_BACKEND} MATCHES "SDL2_mixer")
 	# Provide fmmidi options
 	set(PLAYER_ENABLE_FMMIDI "Fallback" CACHE STRING "Enable internal MIDI sequencer. Fallback (default) mode will use it when the external MIDI library fails. Options: Fallback ON OFF")
 	set_property(CACHE PLAYER_ENABLE_FMMIDI PROPERTY STRINGS Fallback ON OFF)
-	if(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
+	if(${PLAYER_ENABLE_FMMIDI} STREQUAL "Fallback")
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=2)
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "ON")
+	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "ON")
 		target_compile_definitions(${PROJECT_NAME} PUBLIC WANT_FMMIDI=1)
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "OFF")
+	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "OFF")
 		# noop
 	else()
-		message(FATAL_ERROR "Bad FmMidi setting")
+		message(FATAL_ERROR "Bad FmMidi setting ${PLAYER_ENABLE_FMMIDI}")
 	endif()
-elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OpenAL")
+elseif(${PLAYER_AUDIO_BACKEND} STREQUAL "OpenAL")
 	# OpenAL Audio
+	set(PLAYER_HAS_AUDIO ON)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC SUPPORT_AUDIO=1)
 
 	find_package(OpenAL REQUIRED)
 	find_package(LibSndFile REQUIRED)
 	find_package(FluidSynth REQUIRED)
 	target_include_directories(${PROJECT_NAME} PUBLIC ${OPENAL_INCLUDE_DIR})
-	target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY} LibSndFile::LibSndFile Fluidsynth::Fluidsynth)
+	target_link_libraries(${PROJECT_NAME} ${OPENAL_LIBRARY} LibSndFile::LibSndFile fluidsynth::fluidsynth)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_OPENAL=1)
-elseif(${PLAYER_AUDIO_BACKEND} MATCHES "OFF")
-	# noop
+elseif(NOT PLAYER_AUDIO_BACKEND)
+	set(PLAYER_HAS_AUDIO OFF)
 else()
-	message(FATAL_ERROR "Invalid Audio Backend")
+	message(FATAL_ERROR "Invalid Audio Backend ${PLAYER_AUDIO_BACKEND}")
 endif()
 
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_OPUS "Play Opus audio with opusfile" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi" ON "PLAYER_HAS_AUDIO" OFF)
+CMAKE_DEPENDENT_OPTION(PLAYER_WITH_XMP "Play MOD audio with libxmp" ON "PLAYER_HAS_AUDIO" OFF)
+
 if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL.*$")
-	# speexdsp
-	option(PLAYER_WITH_SPEEXDSP "Resample audio with speexdsp." ON)
-	player_find_package(NAME speexdsp
-		CONDITION PLAYER_WITH_SPEEXDSP
-		DEFINITION HAVE_LIBSPEEXDSP
-		TARGET speexdsp::speexdsp)
+	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
+	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
+
+	if(${PLAYER_AUDIO_RESAMPLER} STREQUAL "Auto")
+		set(PLAYER_AUDIO_RESAMPLER_IS_AUTO ON)
+	endif()
+
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SPEEXDSP "Use speexdsp as resampler when available." ON "PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+	CMAKE_DEPENDENT_OPTION(PLAYER_WITH_SAMPLERATE "Use libsamplerate as resampler when available." ON "PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+
+	if(PLAYER_AUDIO_RESAMPLER_IS_AUTO)
+		player_find_package(NAME speexdsp
+			CONDITION PLAYER_WITH_SPEEXDSP
+			DEFINITION HAVE_LIBSPEEXDSP
+			TARGET speexdsp::speexdsp)
+		if(NOT SPEEXDSP_FOUND)
+			player_find_package(
+				NAME Samplerate
+				CONDITION PLAYER_WITH_SAMPLERATE
+				DEFINITION HAVE_LIBSAMPLERATE
+				TARGET Samplerate::Samplerate)
+		endif()
+	elseif(${PLAYER_AUDIO_RESAMPLER} STREQUAL "speexdsp")
+		player_find_package(NAME speexdsp
+			DEFINITION HAVE_LIBSPEEXDSP
+			TARGET speexdsp::speexdsp
+			REQUIRED)
+	elseif(${PLAYER_AUDIO_RESAMPLER} STREQUAL "samplerate")
+		player_find_package(NAME Samplerate
+			DEFINITION HAVE_LIBSAMPLERATE
+			TARGET Samplerate::Samplerate
+			REQUIRED)
+	elseif(NOT PLAYER_AUDIO_RESAMPLER)
+		# no-op
+	else()
+		message(FATAL_ERROR "Invalid Audio Resampler ${PLAYER_AUDIO_RESAMPLER}")
+	endif()
 
 	# mpg123
-	option(PLAYER_WITH_MPG123 "Play MP3 audio with libmpg123." ON)
 	player_find_package(NAME mpg123
 		CONDITION PLAYER_WITH_MPG123
 		DEFINITION HAVE_MPG123
 		TARGET mpg123::mpg123)
 
 	# libsndfile
-	option(PLAYER_WITH_LIBSNDFILE "Play WAV audio with libsndfile." ON)
 	player_find_package(NAME LibSndFile
 		CONDITION PLAYER_WITH_LIBSNDFILE
 		DEFINITION HAVE_LIBSNDFILE
 		TARGET LibSndFile::LibSndFile)
 
 	# libvorbis
-	option(PLAYER_WITH_OGGVORBIS "Play Ogg Vorbis audio with libvorbis." ON)
 	player_find_package(NAME Vorbisfile
 		CONDITION PLAYER_WITH_OGGVORBIS
 		DEFINITION HAVE_OGGVORBIS
 		TARGET Vorbisfile::Vorbisfile)
 
 	# opusfile
-	option(PLAYER_WITH_OPUS "Play Opus audio with opusfile." ON)
 	player_find_package(NAME Opusfile
 		CONDITION PLAYER_WITH_OPUS
 		DEFINITION HAVE_OPUS
 		TARGET Opusfile::Opusfile)
 
 	# wildmidi
-	option(PLAYER_WITH_WILDMIDI "Play MIDI audio with wildmidi." ON)
 	player_find_package(NAME WildMidi
 		CONDITION PLAYER_WITH_WILDMIDI
 		DEFINITION HAVE_WILDMIDI
 		TARGET WildMidi::WildMidi)
 
 	# xmp (lite)
-	option(PLAYER_WITH_XMP "Play MOD audio with libxmp." ON)
 	player_find_package(NAME XMP
 		CONDITION PLAYER_WITH_XMP
 		DEFINITION HAVE_XMP
@@ -570,7 +609,7 @@ set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME "easyrpg-player
 
 if(WIN32)
 	# Open console for Debug builds
-	if(CMAKE_BUILD_TYPE MATCHES "Debug")
+	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		set_target_properties(${PROJECT_NAME}_exe PROPERTIES WIN32_EXECUTABLE FALSE)
 	endif()
 
@@ -683,9 +722,11 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 
 	if(LIBSNDFILE_FOUND)
 		message(STATUS "WAV playback: libsndfile")
-	else()
+	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "WAV playback: SDL2_mixer")
+	else()
+		message(STATUS "WAV playback: None")
 	endif()
 
 	if(WILDMIDI_FOUND)
@@ -694,7 +735,7 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 		else()
 			message(STATUS "MIDI playback: WildMidi")
 		endif()
-	elseif(${PLAYER_ENABLE_FMMIDI} MATCHES "Fallback")
+	elseif(${PLAYER_ENABLE_FMMIDI} STREQUAL "Fallback")
 		message(STATUS "MIDI playback: SDL2_mixer. Fallback to built-in (FmMidi)")
 	elseif(PLAYER_ENABLE_FMMIDI)
 		message(STATUS "MIDI playback: built-in (FmMidi)")
@@ -741,6 +782,8 @@ if(${PLAYER_AUDIO_BACKEND} MATCHES "^SDL2.*$")
 
 	if(SPEEXDSP_FOUND)
 		message(STATUS "Resampler: speexdsp")
+	elseif(SAMPLERATE_FOUND)
+		message(STATUS "Resampler: libsamplerate")
 	elseif(SDL2_mixer_FOUND)
 		set(SDL_MIXER_USED ON)
 		message(STATUS "Resampler: SDL2")
