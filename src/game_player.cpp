@@ -224,8 +224,14 @@ void Game_Player::UpdateSelfMovement() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		}
 	}
+}
 
+void Game_Player::OnMoveFailed(int x, int y) {
+	if (IsMoveRouteOverwritten()) {
+		return;
+	}
 
+	CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, x, y, true, false);
 }
 
 void Game_Player::Update() {
@@ -234,12 +240,11 @@ void Game_Player::Update() {
 	}
 	SetProcessed(true);
 
-	const bool last_moving = IsMoving() || IsJumping();
-
 	const auto old_sprite_x = GetSpriteX();
 	const auto old_sprite_y = GetSpriteY();
 
 	auto was_moving = !IsStopping();
+	auto was_move_route_overriden = IsMoveRouteOverwritten();
 
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
@@ -256,6 +261,7 @@ void Game_Player::Update() {
 
 	if (IsMoving()) return;
 
+	bool finished_boarding_or_unboarding = false;
 	if (data()->boarding) {
 		// Boarding completed
 		data()->aboard = true;
@@ -271,19 +277,42 @@ void Game_Player::Update() {
 		SetSpriteDirection(Left);
 		vehicle->SetX(GetX());
 		vehicle->SetY(GetY());
-		return;
+		finished_boarding_or_unboarding = true;
 	}
 
 	if (data()->unboarding) {
 		// Unboarding completed
 		data()->unboarding = false;
-		CheckTouchEvent();
-		return;
+		finished_boarding_or_unboarding = true;
 	}
 
 	if (IsMoveRouteOverwritten()) return;
 
-	if (last_moving && CheckTouchEvent()) return;
+	if (!InAirship()) {
+		TriggerSet triggers;
+
+		if (!Game_Map::GetInterpreter().IsRunning()) {
+			triggers[RPG::EventPage::Trigger_collision] = true;
+		}
+
+		// When the last command of a move route is a move command, there is special
+		// logic to reset the move route index to 0. We leverage this here because
+		// we only do touch checks if the last move command was a move.
+		// Checking was_moving is not enough, because there could have been 0 frame
+		// commands after the move in the move route, in which case index would be > 0.
+		if (was_moving && (!was_move_route_overriden || GetMoveRouteIndex() == 0)) {
+			triggers[RPG::EventPage::Trigger_touched] = true;
+			triggers[RPG::EventPage::Trigger_collision] = true;
+		}
+
+		if (triggers.count() > 0 && CheckEventTriggerHere(triggers, true, false)) {
+			return;
+		}
+	}
+
+	if (finished_boarding_or_unboarding) {
+		return;
+	}
 
 	if (!Game_Map::GetInterpreter().IsRunning() && !Game_Map::IsAnyEventStarting()) {
 		if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
@@ -292,97 +321,63 @@ void Game_Player::Update() {
 		}
 	}
 
-	if (last_moving)
+	if (was_moving) {
 		Game_Map::UpdateEncounterSteps();
+	}
 }
 
 bool Game_Player::CheckActionEvent() {
-	if (InAirship())
+	if (IsFlying()) {
 		return false;
+	}
 
-	// Use | instead of || to avoid short-circuit evaluation
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true)
-		| CheckEventTriggerThere({RPG::EventPage::Trigger_action,
-		RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, true);
+	bool result = CheckEventTriggerHere({RPG::EventPage::Trigger_action}, true, true);
+
+	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+	result |= CheckEventTriggerThere({RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision}, front_x, front_y, true, true);
+
+	// Counter tile loop stops only if you talk to an action event.
+	bool got_action = CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+	// RPG_RT allows maximum of 3 counter tiles
+	for (int i = 0; !got_action && i < 3; ++i) {
+		if (!Game_Map::IsCounter(front_x, front_y)) {
+			break;
+		}
+
+		front_x = Game_Map::XwithDirection(front_x, GetDirection());
+		front_y = Game_Map::YwithDirection(front_y, GetDirection());
+
+		got_action |= CheckEventTriggerThere({RPG::EventPage::Trigger_action}, front_x, front_y, true, true);
+	}
+	return result || got_action;
 }
 
-bool Game_Player::CheckTouchEvent() {
-	if (InAirship())
-		return false;
-
-	if (IsMoveRouteOverwritten())
-		return false;
-
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_touched});
-}
-
-bool Game_Player::CheckCollisionEvent() {
-	if (InAirship())
-		return false;
-
-	return CheckEventTriggerHere({RPG::EventPage::Trigger_collision});
-}
-
-bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_decision_key) {
+bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool face_hero, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	for (auto* ev: events) {
-		if (ev->GetLayer() != RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
+		if (ev->GetLayer() != RPG::EventPage::Layers_same
+				&& triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
 	return result;
 }
 
-bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, bool triggered_by_decision_key) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
-
-	bool result = false;
-
-	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-
-	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, front_x, front_y);
-
-	for (const auto& ev : events) {
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-			result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
-		}
-	}
-
-	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
-		front_x = Game_Map::XwithDirection(front_x, GetDirection());
-		front_y = Game_Map::YwithDirection(front_y, GetDirection());
-
-		Game_Map::GetEventsXY(events, front_x, front_y);
-
-		for (const auto& ev : events) {
-			if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
-				result |= ev->SetAsWaitingForegroundExecution(true, triggered_by_decision_key);
-			}
-		}
-	}
-	return result;
-}
-
-bool Game_Player::CheckEventTriggerTouch(int x, int y) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
-
+bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool face_hero, bool triggered_by_decision_key) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 
 	for (const auto& ev : events) {
-		if (ev->GetLayer() == RPG::EventPage::Layers_same &&
-			(ev->GetTrigger() == RPG::EventPage::Trigger_touched ||
-			ev->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			result |= ev->SetAsWaitingForegroundExecution(true, false);
-
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
 	return result;
@@ -555,35 +550,6 @@ void Game_Player::BeginMove() {
 
 	if (red_flash) {
 		Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 6);
-	}
-}
-
-void Game_Player::CancelMoveRoute() {
-	if (!IsMoveRouteOverwritten())
-		return;
-
-	// Bugfix: Moved up from end of function. The fix for #1051 in CheckTouchEvent made the Touch check always returning
-	// false because the MoveRoute was still marked as overwritten
-	Game_Character::CancelMoveRoute();
-
-	// If the last executed command of the move route was a Move command, check touch and collision triggers
-	const RPG::MoveRoute& active_route = GetMoveRoute();
-
-	int index = GetMoveRouteIndex();
-	if (!active_route.move_commands.empty()) {
-		int move_size = static_cast<int>(active_route.move_commands.size());
-		if (index >= move_size) {
-			index = move_size - 1;
-		}
-
-		// Touch/Collision events are only triggered after the end of a move route when the last command of the move
-		// route was any movement command.
-		// "any_move_successful" handles the corner case that the last command was a movement but the Player never
-		// changed the tile (because the way was blocked), then no event handling occurs.
-		if (active_route.move_commands[index].command_id <= RPG::MoveCommand::Code::move_forward && any_move_successful) {
-			CheckTouchEvent();
-			CheckCollisionEvent();
-		}
 	}
 }
 

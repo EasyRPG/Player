@@ -336,36 +336,40 @@ void Game_Event::OnFinishForegroundEvent() {
 	SetPaused(false);
 }
 
-void Game_Event::CheckEventTriggers() {
-	if (trigger == RPG::EventPage::Trigger_auto_start) {
+void Game_Event::CheckEventAutostart() {
+	if (trigger == RPG::EventPage::Trigger_auto_start
+			&& GetRemainingStep() == 0) {
 		SetAsWaitingForegroundExecution(false, false);
-		return;
-	} else if (trigger == RPG::EventPage::Trigger_collision) {
-		CheckEventTriggerTouch(GetX(),GetY());
 		return;
 	}
 }
 
-bool Game_Event::CheckEventTriggerTouch(int x, int y) {
-	if (Game_Map::GetInterpreter().IsRunning())
-		return false;
+void Game_Event::CheckEventCollision() {
+	if (trigger == RPG::EventPage::Trigger_collision
+			&& GetLayer() != RPG::EventPage::Layers_same
+			&& !Main_Data::game_player->IsMoveRouteOverwritten()
+			&& !Game_Map::GetInterpreter().IsRunning()
+			&& !Main_Data::game_player->InAirship()
+			&& Main_Data::game_player->IsInPosition(GetX(), GetY())) {
+		SetAsWaitingForegroundExecution(true, false);
+		return;
+	}
+}
 
-	if (trigger == RPG::EventPage::Trigger_collision) {
-		if (Main_Data::game_player->IsInPosition(GetX(), GetY()) && GetLayer() == RPG::EventPage::Layers_same) {
-			return false;
-		}
-
-		if (Main_Data::game_player->IsInPosition(x, y)) {
-			if (Main_Data::game_player->InAirship() && GetLayer() == RPG::EventPage::Layers_same) {
-				return false;
-			}
-
-			SetAsWaitingForegroundExecution(false, false);
-			return true;
-		}
+void Game_Event::OnMoveFailed(int x, int y) {
+	if (Main_Data::game_player->InAirship()
+			|| GetLayer() != RPG::EventPage::Layers_same
+			|| trigger != RPG::EventPage::Trigger_collision) {
+		return;
 	}
 
-	return false;
+	if (Main_Data::game_player->IsInPosition(x, y)) {
+		SetAsWaitingForegroundExecution(false, false);
+		// Events with trigger collision and layer same always reset their
+		// stop_count when they fail movement to a tile that the player inhabits.
+		SetStopCount(0);
+		return;
+	}
 }
 
 void Game_Event::UpdateSelfMovement() {
@@ -441,16 +445,6 @@ void Game_Event::MoveTypeCycle(int default_dir) {
 	Move(move_dir, MoveOption::IgnoreIfCantMove);
 
 	if (move_failed) {
-		if (trigger == RPG::EventPage::Trigger_collision) {
-			int new_x = Game_Map::XwithDirection(GetX(), move_dir);
-			int new_y = Game_Map::YwithDirection(GetY(), move_dir);
-
-			if (Main_Data::game_player->IsInPosition(new_x, new_y)) {
-				SetStopCount(0);
-				return;
-			}
-		}
-
 		if (GetStopCount() >= GetMaxStopCount() + 20) {
 			if (GetStopCount() >= GetMaxStopCount() + 60) {
 				Move(ReverseDir(move_dir));
@@ -544,11 +538,19 @@ void Game_Event::Update() {
 	}
 	SetProcessed(true);
 
-	CheckEventTriggers();
+	CheckEventAutostart();
+
+	if (!IsMoveRouteOverwritten() || IsMoving()) {
+		CheckEventCollision();
+	}
 
 	auto was_moving = !IsStopping();
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
+
+	if (IsStopping()) {
+		CheckEventCollision();
+	}
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {

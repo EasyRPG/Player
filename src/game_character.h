@@ -643,7 +643,7 @@ public:
 	/**
 	 * Cancels a previous forced move route.
 	 */
-	virtual void CancelMoveRoute();
+	void CancelMoveRoute();
 
 	/** @return height of active jump in pixels */
 	int GetJumpHeight() const;
@@ -733,8 +733,6 @@ public:
 	 * @return If on tile or moving towards
 	 */
 	virtual bool IsInPosition(int x, int y) const;
-
-	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
 	/**
 	 * Gets current opacity of character.
@@ -846,6 +844,7 @@ public:
 protected:
 	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
 	virtual void UpdateSelfMovement() {}
+	virtual void OnMoveFailed(int x, int y) {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();

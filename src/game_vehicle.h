@@ -70,7 +70,6 @@ public:
 	int GetScreenY(bool apply_shift = false) const override;
 	bool IsMovable();
 	bool CanLand() const;
-	bool CheckEventTriggerTouch(int x, int y) override;
 	void UpdateAnimationShip();
 	void UpdateAnimationAirship();
 
