@@ -35,6 +35,7 @@
 #include "scene_load.h"
 #include "scene_map.h"
 #include "window_command.h"
+#include "baseui.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
@@ -126,6 +127,10 @@ void Scene_Title::CreateTitleGraphic() {
 		request->SetGraphicFile(true);
 		request_id = request->Bind(&Scene_Title::OnTitleSpriteReady, this);
 		request->Start();
+	}
+	else {
+		title.reset(new Sprite());
+		title->SetBitmap(Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255)));
 	}
 }
 
