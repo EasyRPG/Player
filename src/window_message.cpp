@@ -274,9 +274,6 @@ void Window_Message::InsertNewLine() {
 	++line_count;
 
 	if (line_count >= Game_Message::choice_start && Game_Message::choice_max > 0) {
-		// A choice resets the font color
-		text_color = Font::ColorDefault;
-
 		unsigned choice_index = line_count - Game_Message::choice_start;
 		// Check for disabled choices
 		if (Game_Message::choice_disabled.test(choice_index)) {
