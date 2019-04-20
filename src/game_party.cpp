@@ -228,7 +228,19 @@ bool Game_Party::IsItemUsable(int item_id, const Game_Actor* target) const {
 		case RPG::Item::Type_armor:
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
-			return item->use_skill && IsSkillUsable(item->skill_id, nullptr, true);
+			if (item->use_skill) {
+				auto* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
+				if (skill && (
+							skill->type == RPG::Skill::Type_escape
+							|| skill->type == RPG::Skill::Type_teleport
+							|| skill->type == RPG::Skill::Type_switch
+							)
+				   ) {
+					return false;
+				}
+				return IsSkillUsable(item->skill_id, nullptr, true);
+			}
+			return false;
 		case RPG::Item::Type_special:
 			return IsSkillUsable(item->skill_id, nullptr, true);
 	}

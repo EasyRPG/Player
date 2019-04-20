@@ -2010,14 +2010,11 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	int speed = com.parameters[1];
 	int tenths = com.parameters[2];
 	bool wait = com.parameters[3] != 0;
+	// params array is size 4 in 2k and 2k games ported to 2k3.
+	int shake_cmd = com.parameters.size() > 4 ?
+		com.parameters[4] : 0;
 
-	if (Player::IsRPG2k()) {
-		screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
-		if (wait) {
-			SetupWait(tenths);
-		}
-	} else {
-		switch (com.parameters[4]) {
+	switch (shake_cmd) {
 		case 0:
 			screen->ShakeOnce(strength, speed, tenths * DEFAULT_FPS / 10);
 			if (wait) {
@@ -2030,7 +2027,6 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 		case 2:
 			screen->ShakeEnd();
 			break;
-		}
 	}
 
 	return true;
