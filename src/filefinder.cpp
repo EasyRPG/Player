@@ -189,12 +189,9 @@ namespace {
 	const std::string rtp_lookup(const std::string& dir, const std::string& name, const char* exts[]) {
 		int version = Player::IsRPG2k() ? 2000 : 2003;
 
-		std::string norm_dir = ReaderUtil::Normalize(dir);
-		std::string norm_name = ReaderUtil::Normalize(name);
-
 		auto normal_search = [&]() -> std::string {
 			for (const auto path : rtp_state.search_paths) {
-				const std::string ret = FindFile(*path, norm_dir, norm_name, exts);
+				const std::string ret = FindFile(*path, dir, name, exts);
 				if (!ret.empty()) {
 					return ret;
 				}
@@ -204,7 +201,7 @@ namespace {
 
 		// Detect the RTP version the game uses, when only one candidate is left the RTP is known
 		if (rtp_state.game_rtp.size() != 1) {
-			auto candidates = RTP::LookupAnyToRtp(norm_dir, norm_name, version);
+			auto candidates = RTP::LookupAnyToRtp(dir, name, version);
 
 			// when empty the requested asset does not belong to any (known) RTP
 			if (!candidates.empty()) {
@@ -237,7 +234,7 @@ namespace {
 		// Search across all RTP
 		for (const auto& rtp : rtp_state.detected_rtp) {
 			for (RTP::Type game_rtp : rtp_state.game_rtp) {
-				std::string rtp_entry = RTP::LookupRtpToRtp(norm_dir, norm_name, rtp.type, game_rtp);
+				std::string rtp_entry = RTP::LookupRtpToRtp(dir, name, rtp.type, game_rtp);
 				if (!rtp_entry.empty()) {
 					const std::string ret = FindFile(*rtp.tree, dir, rtp_entry, exts);
 					if (!ret.empty()) {
@@ -253,44 +250,36 @@ namespace {
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
 		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
-		std::string const ret = FindFile(*tree, dir, name, exts);
-		if (!ret.empty()) { return ret; }
+		std::string ret = FindFile(*tree, dir, name, exts);
+		if (!ret.empty()) {
+			return ret;
+		}
 
 		// True RTP if enabled and available
 		if (!rtp_state.disable_rtp) {
-			std::string rtp_name = rtp_lookup(dir, name, exts);
-		}
+			ret = rtp_lookup(ReaderUtil::Normalize(dir), ReaderUtil::Normalize(name), exts);
 
-		/*if (!rtp_name.empty()) {
-			// RPG_RT will even load RTP files when the game disables it
-			if (rtp_state.disable_rtp_warnings && !rtp_state.warning_broken_rtp_game_shown) {
-				std::string lcase = Utils::LowerCase(dir);
-				if (lcase != "music" && lcase != "sound") {
+			if (!ret.empty()) {
+				std::string lcase = ReaderUtil::Normalize(dir);
+				bool is_audio_asset = lcase == "music" || lcase == "sound";
+
+				// RPG_RT will even load RTP files when the game disables it
+				if (rtp_state.disable_rtp_warnings && !rtp_state.warning_broken_rtp_game_shown && !is_audio_asset) {
 					rtp_state.warning_broken_rtp_game_shown = true;
 					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
+				} else if (!rtp_state.disable_rtp_warnings && !is_audio_asset) {
+					std::string msg = "Cannot find: %s/%s (%s). " +
+									  std::string(rtp_state.search_paths.empty() ?
+												  "Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
+
+					Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), ret.c_str(), Player::EngineVersion());
 				}
-			}
-
-			for (const auto i : rtp_state.search_paths) {
-				if (!i) { continue; }
-
-				std::string const ret = FindFile(*i, dir, name, exts);
-				if (!ret.empty()) { return ret; }
-
-				std::string const ret_rtp = FindFile(*i, dir, rtp_name, exts);
-				if (!ret_rtp.empty()) { return ret_rtp; }
 			}
 		}
 
-		if (!rtp_state.disable_rtp_warnings && !rtp_name.empty()) {
-			std::string msg = "Cannot find: %s/%s (%s). " + std::string(rtp_state.search_paths.empty() ?
-				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
-
-			Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), rtp_name.c_str(), Player::EngineVersion());
-		} else {
-			// not an RTP asset or RTP support was disabled
+		if (ret.empty()) {
 			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
-		}*/
+		}
 
 		return std::string();
 	}
@@ -512,7 +501,7 @@ static void add_rtp_path(const std::string& p) {
 		for (const auto& hit : hit_info) {
 			float rate = (float)hit.hits / hit.max;
 			if (rate >= best) {
-				Output::Debug("%s (%d/%d)\n", hit.name.c_str(), hit.hits, hit.max);
+				Output::Debug("RTP is \"%s\" (%d/%d)\n", hit.name.c_str(), hit.hits, hit.max);
 				rtp_state.detected_rtp.emplace_back(hit);
 				best = rate;
 			}
