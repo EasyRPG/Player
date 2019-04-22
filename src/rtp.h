@@ -40,8 +40,10 @@ namespace RTP {
 		RPG2003_Korean
 	};
 
+	extern const char* Names[];
+
     struct RtpHitInfo {
-        RTP::Type rtp_id;
+        RTP::Type type;
 		std::string name;
 		int version;
         int hits;

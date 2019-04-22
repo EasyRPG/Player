@@ -27,6 +27,19 @@ namespace RTP {
 
 	constexpr int num_2k_rtps = 4;
 	constexpr int num_2k3_rtps = 6;
+
+	const char* Names[] {
+			"Official Japanese",
+			"Official English",
+			"Don Miguel English Translation",
+			"Don Miguel RTP Addon",
+			"Official Japanese",
+			"Official English",
+			"RPG Advocate English Translation",
+			"Vlad Russian Translation",
+			"RPG Universe Spanish/Portuguese Translation",
+			"Korean Translation"
+	};
 }
 
 template <typename T>
@@ -62,16 +75,16 @@ static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<str
 
 std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTree> tree, int version) {
 	std::vector<struct RTP::RtpHitInfo> hit_list = {{
-		{RTP::Type::RPG2000_OfficialJapanese, "Official Japanese", 2000, 0, 465, tree},
-		{RTP::Type::RPG2000_OfficialEnglish, "Official English", 2000, 0, 465, tree},
-		{RTP::Type::RPG2000_DonMiguelEnglish, "Don Miguel English Translation", 2000, 0, 500, tree},
-		{RTP::Type::RPG2000_DonMigualAddon, "Don Miguel RTP Addon", 2000, 0, 503, tree},
-		{RTP::Type::RPG2003_OfficialJapanese, "Official Japanese", 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_OfficialEnglish, "Official English", 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_RpgAdvocateEnglish, "RPG Advocate English Translation", 2003, 0, 675, tree},
-		{RTP::Type::RPG2003_VladRussian, "Vlad Russian Translation", 2003, 0, 350, tree},
-		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, "RPG Universe Spanish/Portuguese Translation", 2003, 0, 600, tree},
-		{RTP::Type::RPG2003_Korean, "Korean Translation", 2003, 0, 675, tree}
+		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, tree},
+		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, tree},
+		{RTP::Type::RPG2000_DonMiguelEnglish, Names[2], 2000, 0, 500, tree},
+		{RTP::Type::RPG2000_DonMigualAddon, Names[3], 2000, 0, 503, tree},
+		{RTP::Type::RPG2003_OfficialJapanese, Names[4], 2003, 0, 675, tree},
+		{RTP::Type::RPG2003_OfficialEnglish, Names[5], 2003, 0, 675, tree},
+		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, tree},
+		{RTP::Type::RPG2003_VladRussian, Names[7], 2003, 0, 350, tree},
+		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, Names[8], 2003, 0, 600, tree},
+		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, tree}
 	}};
 
 	if (version == 2000 || version == 0) {

@@ -102,12 +102,18 @@ namespace {
 	std::string fonts_path;
 
 	struct {
+		// all RTP search paths
 		search_path_list search_paths;
+		// RTP was disabled with --disable-rtp
 		bool disable_rtp = true;
+		// Game has FullPackageFlag=1, RTP will still be used as RPG_RT does
 		bool disable_rtp_warnings = false;
+		// warning about "game has FullPackageFlag=1 but needs RTP" shown
 		bool warning_broken_rtp_game_shown = false;
-		std::vector<RTP::RtpHitInfo> best_rtp_hits;
-		std::vector<RTP::Type> game_rtp_candidates;
+		// RTP candidates per search_pathwarning_broken_rtp_game_shown
+		std::vector<RTP::RtpHitInfo> detected_rtp;
+		// the RTP the game uses, when only one left the RTP of the game is known
+		std::vector<RTP::Type> game_rtp;
 	} rtp_state;
 
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
@@ -179,52 +185,83 @@ namespace {
 		return "";
 	}
 
-	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
+	// returns empty string when the file is not belonging to an RTP
+	const std::string rtp_lookup(const std::string& dir, const std::string& name, const char* exts[]) {
+		int version = Player::IsRPG2k() ? 2000 : 2003;
 
-	bool is_not_ascii_filename(const std::string& n) {
-		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
-	}
+		std::string norm_dir = ReaderUtil::Normalize(dir);
+		std::string norm_name = ReaderUtil::Normalize(name);
 
-	const std::string translate_rtp(const std::string& dir, const std::string& name) {
-		// returns empty string when the file is not belonging to an RTP
-		#if 0
-		RTP::rtp_table_type const& table =
-			Player::IsRPG2k() ? RTP::RTP_TABLE_2000 : RTP::RTP_TABLE_2003;
-
-		RTP::rtp_table_type::const_iterator dir_it = table.find(ReaderUtil::Normalize(dir).c_str());
-		std::string corrected_name = ReaderUtil::Normalize(name);
-
-		if (dir_it == table.end()) { return std::string(); }
-
-		std::map<const char*, const char*>::const_iterator file_it = dir_it->second.find(corrected_name.c_str());
-		if (file_it == dir_it->second.end()) {
-			if (is_not_ascii_filename(corrected_name)) {
-				// Linear Search: Japanese file name to English file name
-				for (const auto& entry : dir_it->second) {
-					if (!strcmp(entry.second, corrected_name.c_str())) {
-						return entry.first;
-					}
+		auto normal_search = [&]() -> std::string {
+			for (const auto path : rtp_state.search_paths) {
+				const std::string ret = FindFile(*path, norm_dir, norm_name, exts);
+				if (!ret.empty()) {
+					return ret;
 				}
 			}
 			return std::string();
+		};
+
+		// Detect the RTP version the game uses, when only one candidate is left the RTP is known
+		if (rtp_state.game_rtp.size() != 1) {
+			auto candidates = RTP::LookupAnyToRtp(norm_dir, norm_name, version);
+
+			// when empty the requested asset does not belong to any (known) RTP
+			if (!candidates.empty()) {
+				if (rtp_state.game_rtp.empty()) {
+					rtp_state.game_rtp = candidates;
+				} else {
+					// Strategy: Remove all RTP that are not candidates by comparing with all previous candidates
+					// as the used RTP can only be the one that contains all by now requested assets
+					for (auto it = rtp_state.game_rtp.begin(); it != rtp_state.game_rtp.end();) {
+						if (std::find(candidates.begin(), candidates.end(), *it) == candidates.end()) {
+							it = rtp_state.game_rtp.erase(it);
+						} else {
+							++it;
+						}
+					}
+				}
+
+				if (rtp_state.game_rtp.size() == 1) {
+					// From now on the RTP lookups should be perfect
+					Output::Debug("Game uses RTP \"%s\"", RTP::Names[(int) rtp_state.game_rtp[0]]);
+				}
+			}
 		}
-		return file_it->second;
-		#endif
-		return "";
+
+		if (rtp_state.game_rtp.empty()) {
+			// The game RTP is currently unknown and it is not a RTP asset -> fallback to direct search
+			return normal_search();
+		}
+
+		// Search across all RTP
+		for (const auto& rtp : rtp_state.detected_rtp) {
+			for (RTP::Type game_rtp : rtp_state.game_rtp) {
+				std::string rtp_entry = RTP::LookupRtpToRtp(norm_dir, norm_name, rtp.type, game_rtp);
+				if (!rtp_entry.empty()) {
+					const std::string ret = FindFile(*rtp.tree, dir, rtp_entry, exts);
+					if (!ret.empty()) {
+						return ret;
+					}
+				}
+			}
+		}
+
+		// Asset is missing or not a RTP asset -> fallback to direct search
+		return normal_search();
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
-		std::string rtp_name;
-
 		const std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::GetDirectoryTree();
 		std::string const ret = FindFile(*tree, dir, name, exts);
 		if (!ret.empty()) { return ret; }
 
-		// Try RTP if enabled and available
-		if (!rtp_state.disable_rtp)
-			rtp_name = translate_rtp(dir, name);
+		// True RTP if enabled and available
+		if (!rtp_state.disable_rtp) {
+			std::string rtp_name = rtp_lookup(dir, name, exts);
+		}
 
-		if (!rtp_name.empty()) {
+		/*if (!rtp_name.empty()) {
 			// RPG_RT will even load RTP files when the game disables it
 			if (rtp_state.disable_rtp_warnings && !rtp_state.warning_broken_rtp_game_shown) {
 				std::string lcase = Utils::LowerCase(dir);
@@ -253,7 +290,7 @@ namespace {
 		} else {
 			// not an RTP asset or RTP support was disabled
 			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
-		}
+		}*/
 
 		return std::string();
 	}
@@ -476,7 +513,7 @@ static void add_rtp_path(const std::string& p) {
 			float rate = (float)hit.hits / hit.max;
 			if (rate >= best) {
 				Output::Debug("%s (%d/%d)\n", hit.name.c_str(), hit.hits, hit.max);
-				rtp_state.best_rtp_hits.emplace_back(hit);
+				rtp_state.detected_rtp.emplace_back(hit);
 				best = rate;
 			}
 		}
