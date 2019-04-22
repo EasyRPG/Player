@@ -50,7 +50,8 @@ namespace RTP {
     };
 
     /**
-     * Uses a file finder tree to detect the installed RTP
+     * Uses a file finder tree to detect the installed RTP, the list is sorted from best to worst hit.
+     * RTP with zero hits are removed.
      *
      * @param tree directory tree
      * @param version RTP version in the folder (2000 or 2003), use 0 to detect all

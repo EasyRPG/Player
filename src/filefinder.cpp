@@ -466,8 +466,19 @@ static void add_rtp_path(const std::string& p) {
 
 		auto hit_info = RTP::Detect(tree, atoi(Player::GetEngineVersion().c_str()));
 
+		if (hit_info.empty()) {
+			Output::Debug("The folder does not contain a known RTP!");
+		}
+
+		// Only consider the best RTP hits (usually 100% if properly installed)
+		float best = 0.0;
 		for (const auto& hit : hit_info) {
-			Output::Debug("RTP: %s %d (%d/%d)\n", hit.name.c_str(), hit.version, hit.hits, hit.max);
+			float rate = (float)hit.hits / hit.max;
+			if (rate >= best) {
+				Output::Debug("%s (%d/%d)\n", hit.name.c_str(), hit.hits, hit.max);
+				rtp_state.best_rtp_hits.emplace_back(hit);
+				best = rate;
+			}
 		}
 	}
 }

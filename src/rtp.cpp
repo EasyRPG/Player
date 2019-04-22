@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstring>
@@ -80,7 +81,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		detect_helper(*tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps);
 	}
 
-	// remove RTP with zero matches
+	// remove RTPs with zero hits
 	for (auto it = hit_list.begin(); it != hit_list.end(); ) {
 		if (it->hits == 0) {
 			it = hit_list.erase(it);
@@ -88,6 +89,11 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 			++it;
 		}
 	}
+
+	// sort by best hit rate
+	std::sort(hit_list.begin(), hit_list.end(), [](const struct RTP::RtpHitInfo& a, const struct RTP::RtpHitInfo& b) {
+		return (float)a.hits / a.max < (float)b.hits / a.max;
+	});
 
 	return hit_list;
 }
