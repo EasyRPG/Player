@@ -96,13 +96,19 @@ namespace {
 	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 #endif
 
-	typedef std::vector<std::shared_ptr<FileFinder::DirectoryTree>> search_path_list;
+	using search_path_list = std::vector<std::shared_ptr<FileFinder::DirectoryTree>>;
+
 	std::shared_ptr<FileFinder::DirectoryTree> game_directory_tree;
-	search_path_list search_paths;
 	std::string fonts_path;
-	bool disable_rtp = true;
-	bool disable_rtp_warnings = false;
-	bool warning_broken_rtp_game_shown = false;
+
+	struct {
+		search_path_list search_paths;
+		bool disable_rtp = true;
+		bool disable_rtp_warnings = false;
+		bool warning_broken_rtp_game_shown = false;
+		std::vector<RTP::RtpHitInfo> best_rtp_hits;
+		std::vector<RTP::Type> game_rtp_candidates;
+	} rtp_state;
 
 	std::string FindFile(FileFinder::DirectoryTree const& tree,
 										  const std::string& dir,
@@ -215,32 +221,32 @@ namespace {
 		if (!ret.empty()) { return ret; }
 
 		// Try RTP if enabled and available
-		if (!disable_rtp)
+		if (!rtp_state.disable_rtp)
 			rtp_name = translate_rtp(dir, name);
 
 		if (!rtp_name.empty()) {
 			// RPG_RT will even load RTP files when the game disables it
-			if (disable_rtp_warnings && !warning_broken_rtp_game_shown) {
+			if (rtp_state.disable_rtp_warnings && !rtp_state.warning_broken_rtp_game_shown) {
 				std::string lcase = Utils::LowerCase(dir);
 				if (lcase != "music" && lcase != "sound") {
-					warning_broken_rtp_game_shown = true;
+					rtp_state.warning_broken_rtp_game_shown = true;
 					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
 				}
 			}
 
-			for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
-				if (! *i) { continue; }
+			for (const auto i : rtp_state.search_paths) {
+				if (!i) { continue; }
 
-				std::string const ret = FindFile(*(*i), dir, name, exts);
+				std::string const ret = FindFile(*i, dir, name, exts);
 				if (!ret.empty()) { return ret; }
 
-				std::string const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
+				std::string const ret_rtp = FindFile(*i, dir, rtp_name, exts);
 				if (!ret_rtp.empty()) { return ret_rtp; }
 			}
 		}
 
-		if (!disable_rtp_warnings && !rtp_name.empty()) {
-			std::string msg = "Cannot find: %s/%s (%s). " + std::string(search_paths.empty() ?
+		if (!rtp_state.disable_rtp_warnings && !rtp_name.empty()) {
+			std::string msg = "Cannot find: %s/%s (%s). " + std::string(rtp_state.search_paths.empty() ?
 				"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
 
 			Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), rtp_name.c_str(), Player::EngineVersion());
@@ -456,12 +462,12 @@ static void add_rtp_path(const std::string& p) {
 	std::shared_ptr<DirectoryTree> tree(CreateDirectoryTree(p));
 	if (tree) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
-		search_paths.push_back(tree);
+		rtp_state.search_paths.push_back(tree);
 
-		auto hit_info = RTP::Detect(*tree.get(), atoi(Player::GetEngineVersion().c_str()));
+		auto hit_info = RTP::Detect(tree, atoi(Player::GetEngineVersion().c_str()));
 
 		for (const auto& hit : hit_info) {
-			printf("%s %d (%d/%d)\n", hit.name.c_str(), hit.version, hit.hits, hit.max);
+			Output::Debug("RTP: %s %d (%d/%d)\n", hit.name.c_str(), hit.version, hit.hits, hit.max);
 		}
 	}
 }
@@ -483,21 +489,20 @@ static void read_rtp_registry(const std::string& company, const std::string& pro
 }
 
 void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
+	rtp_state = {};
+
 #ifdef EMSCRIPTEN
 	// No RTP support for emscripten at the moment.
-	disable_rtp = true;
+	rtp_state.disable_rtp = true;
 #else
-	disable_rtp = no_rtp;
+	rtp_state.disable_rtp = no_rtp;
 #endif
-	disable_rtp_warnings = no_rtp_warnings;
+	rtp_state.disable_rtp_warnings = no_rtp_warnings;
 
-	if (disable_rtp) {
+	if (rtp_state.disable_rtp) {
 		Output::Debug("RTP support is disabled.");
 		return;
 	}
-
-	search_paths.clear();
-	warning_broken_rtp_game_shown = false;
 
 	std::string const version_str =	Player::GetEngineVersion();
 	assert(!version_str.empty());
@@ -591,7 +596,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 }
 
 void FileFinder::Quit() {
-	search_paths.clear();
+	rtp_state = {};
 	game_directory_tree.reset();
 }
 
