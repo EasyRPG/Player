@@ -501,7 +501,7 @@ static void add_rtp_path(const std::string& p) {
 		for (const auto& hit : hit_info) {
 			float rate = (float)hit.hits / hit.max;
 			if (rate >= best) {
-				Output::Debug("RTP is \"%s\" (%d/%d)\n", hit.name.c_str(), hit.hits, hit.max);
+				Output::Debug("RTP is \"%s\" (%d/%d)", hit.name.c_str(), hit.hits, hit.max);
 				rtp_state.detected_rtp.emplace_back(hit);
 				best = rate;
 			}

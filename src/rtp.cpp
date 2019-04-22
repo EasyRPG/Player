@@ -29,16 +29,16 @@ namespace RTP {
 	constexpr int num_2k3_rtps = 6;
 
 	const char* Names[] {
-			"Official Japanese",
-			"Official English",
-			"Don Miguel English Translation",
-			"Don Miguel RTP Addon",
-			"Official Japanese",
-			"Official English",
-			"RPG Advocate English Translation",
-			"Vlad Russian Translation",
-			"RPG Universe Spanish/Portuguese Translation",
-			"Korean Translation"
+		"Official Japanese",
+		"Official English",
+		"Don Miguel English Translation",
+		"Don Miguel RTP Addon",
+		"Official Japanese",
+		"Official English",
+		"RPG Advocate English Translation",
+		"Vlad Russian Translation",
+		"RPG Universe Spanish/Portuguese Translation",
+		"Korean Translation"
 	};
 }
 
@@ -53,7 +53,8 @@ static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<str
 				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
 				if (!strcmp("sound", category)) {
-					static const char* SOUND_TYPES[] = { ".wav", nullptr };
+					// RPG Advocate uses MP3
+					static const char* SOUND_TYPES[] = { ".wav", ".mp3", nullptr };
 					ret = FileFinder::FindDefault(tree, category, name, SOUND_TYPES);
 				} else if (!strcmp("music", category)) {
 					static const char* MUSIC_TYPES[] = { ".wav", ".mid", nullptr };
@@ -66,7 +67,7 @@ static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<str
 					ret = FileFinder::FindDefault(tree, category, name, IMAGE_TYPES);
 				}
 				if (!ret.empty()) {
-					hit_list[offset + j].hits++;
+					hit_list[offset + j - 1].hits++;
 				}
 			}
 		}
@@ -78,7 +79,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		{RTP::Type::RPG2000_OfficialJapanese, Names[0], 2000, 0, 465, tree},
 		{RTP::Type::RPG2000_OfficialEnglish, Names[1], 2000, 0, 465, tree},
 		{RTP::Type::RPG2000_DonMiguelEnglish, Names[2], 2000, 0, 500, tree},
-		{RTP::Type::RPG2000_DonMigualAddon, Names[3], 2000, 0, 503, tree},
+		{RTP::Type::RPG2000_DonMiguelAddon, Names[3], 2000, 0, 503, tree},
 		{RTP::Type::RPG2003_OfficialJapanese, Names[4], 2003, 0, 675, tree},
 		{RTP::Type::RPG2003_OfficialEnglish, Names[5], 2003, 0, 675, tree},
 		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, tree},
@@ -103,9 +104,9 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		}
 	}
 
-	// sort by best hit rate
+	// sort by hit rate (best to worse)
 	std::sort(hit_list.begin(), hit_list.end(), [](const struct RTP::RtpHitInfo& a, const struct RTP::RtpHitInfo& b) {
-		return (float)a.hits / a.max < (float)b.hits / a.max;
+		return (float)a.hits / a.max > (float)b.hits / b.max;
 	});
 
 	return hit_list;

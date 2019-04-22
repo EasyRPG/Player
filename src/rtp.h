@@ -31,7 +31,7 @@ namespace RTP {
 		RPG2000_OfficialJapanese,
 		RPG2000_OfficialEnglish,
 		RPG2000_DonMiguelEnglish,
-		RPG2000_DonMigualAddon,
+		RPG2000_DonMiguelAddon,
 		RPG2003_OfficialJapanese,
 		RPG2003_OfficialEnglish,
 		RPG2003_RpgAdvocateEnglish,
