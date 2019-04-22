@@ -107,7 +107,7 @@ namespace {
 		// RTP was disabled with --disable-rtp
 		bool disable_rtp = true;
 		// Game has FullPackageFlag=1, RTP will still be used as RPG_RT does
-		bool disable_rtp_warnings = false;
+		bool game_has_full_package_flag = false;
 		// warning about "game has FullPackageFlag=1 but needs RTP" shown
 		bool warning_broken_rtp_game_shown = false;
 		// RTP candidates per search_pathwarning_broken_rtp_game_shown
@@ -186,10 +186,11 @@ namespace {
 	}
 
 	// returns empty string when the file is not belonging to an RTP
-	const std::string rtp_lookup(const std::string& dir, const std::string& name, const char* exts[]) {
+	const std::string rtp_lookup(const std::string& dir, const std::string& name, const char* exts[], bool& is_rtp_asset) {
 		int version = Player::IsRPG2k() ? 2000 : 2003;
 
 		auto normal_search = [&]() -> std::string {
+			is_rtp_asset = false;
 			for (const auto path : rtp_state.search_paths) {
 				const std::string ret = FindFile(*path, dir, name, exts);
 				if (!ret.empty()) {
@@ -227,17 +228,20 @@ namespace {
 		}
 
 		if (rtp_state.game_rtp.empty()) {
-			// The game RTP is currently unknown and it is not a RTP asset -> fallback to direct search
+			// The game RTP is currently unknown because all requested assets by now were not in any RTP
+			// -> fallback to direct search
+			is_rtp_asset = false;
 			return normal_search();
 		}
 
 		// Search across all RTP
 		for (const auto& rtp : rtp_state.detected_rtp) {
 			for (RTP::Type game_rtp : rtp_state.game_rtp) {
-				std::string rtp_entry = RTP::LookupRtpToRtp(dir, name, rtp.type, game_rtp);
+				std::string rtp_entry = RTP::LookupRtpToRtp(dir, name, game_rtp, rtp.type, &is_rtp_asset);
 				if (!rtp_entry.empty()) {
 					const std::string ret = FindFile(*rtp.tree, dir, rtp_entry, exts);
 					if (!ret.empty()) {
+						is_rtp_asset = true;
 						return ret;
 					}
 				}
@@ -257,22 +261,21 @@ namespace {
 
 		// True RTP if enabled and available
 		if (!rtp_state.disable_rtp) {
-			ret = rtp_lookup(ReaderUtil::Normalize(dir), ReaderUtil::Normalize(name), exts);
+			bool is_rtp_asset;
+			ret = rtp_lookup(ReaderUtil::Normalize(dir), ReaderUtil::Normalize(name), exts, is_rtp_asset);
 
-			if (!ret.empty()) {
-				std::string lcase = ReaderUtil::Normalize(dir);
-				bool is_audio_asset = lcase == "music" || lcase == "sound";
+			std::string lcase = ReaderUtil::Normalize(dir);
+			bool is_audio_asset = lcase == "music" || lcase == "sound";
 
-				// RPG_RT will even load RTP files when the game disables it
-				if (rtp_state.disable_rtp_warnings && !rtp_state.warning_broken_rtp_game_shown && !is_audio_asset) {
+			if (is_rtp_asset) {
+				if (!ret.empty() && rtp_state.game_has_full_package_flag && !rtp_state.warning_broken_rtp_game_shown && !is_audio_asset) {
 					rtp_state.warning_broken_rtp_game_shown = true;
 					Output::Warning("This game claims it does not need the RTP, but actually uses files from it!");
-				} else if (!rtp_state.disable_rtp_warnings && !is_audio_asset) {
-					std::string msg = "Cannot find: %s/%s (%s). " +
-									  std::string(rtp_state.search_paths.empty() ?
-												  "Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
-
-					Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), ret.c_str(), Player::EngineVersion());
+				} else if (ret.empty() && !rtp_state.game_has_full_package_flag && !is_audio_asset) {
+					std::string msg = "Cannot find: %s/%s. " +
+						std::string(rtp_state.search_paths.empty() ?
+						"Install RTP %d to resolve this warning." : "RTP %d was probably not installed correctly.");
+					Output::Warning(msg.c_str(), dir.c_str(), name.c_str(), Player::EngineVersion());
 				}
 			}
 		}
@@ -281,7 +284,7 @@ namespace {
 			Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
 		}
 
-		return std::string();
+		return ret;
 	}
 } // anonymous namespace
 
@@ -534,7 +537,7 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 #else
 	rtp_state.disable_rtp = no_rtp;
 #endif
-	rtp_state.disable_rtp_warnings = no_rtp_warnings;
+	rtp_state.game_has_full_package_flag = no_rtp_warnings;
 
 	if (rtp_state.disable_rtp) {
 		Output::Debug("RTP support is disabled.");

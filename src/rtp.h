@@ -78,10 +78,11 @@ namespace RTP {
 	 * @param src_name Asset name
 	 * @param src_rtp Type of the source RTP the asset name is from
 	 * @param target_rtp Target RTP the asset name is translated to
+	 * @param is_rtp_asset When not null indicates if src_name is a known entry in the src_rtp but only when src_rtp != target_rtp
 	 * @return The translated asset name or empty string when the mapping is unavailable
 	 */
 	std::string LookupRtpToRtp(const std::string& src_category, const std::string& src_name,
-			RTP::Type src_rtp, RTP::Type target_rtp);
+			RTP::Type src_rtp, RTP::Type target_rtp, bool* is_rtp_asset = nullptr);
 }
 
 #endif

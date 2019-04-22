@@ -148,36 +148,57 @@ std::vector<RTP::Type> RTP::LookupAnyToRtp(const std::string& src_category, cons
 
 template <typename T>
 static std::string lookup_rtp_to_rtp_helper(T rtp_table,
-		const std::string& src_category, const std::string& src_name, int src_index, int dst_index) {
+		const std::string& src_category, const std::string& src_name, int src_index, int dst_index, bool* is_rtp_asset) {
 	bool cat_found = false;
 
 	for (int i = 0; rtp_table[i][0] != nullptr; ++i) {
 		if (src_category != rtp_table[i][0]) {
 			if (cat_found) {
+				if (is_rtp_asset) {
+					*is_rtp_asset = false;
+				}
 				return "";
 			}
 			continue;
 		}
 		cat_found = true;
 
-		const char* name = rtp_table[i][src_index];
+		const char* name = rtp_table[i][src_index + 1];
 		if (name != nullptr && !strcmp(src_name.c_str(), name)) {
-			return rtp_table[i][dst_index];
+			const char* dst_name = rtp_table[i][dst_index + 1];
+
+			if (is_rtp_asset) {
+				*is_rtp_asset = true;
+			}
+
+			return dst_name == nullptr ? "" : dst_name;
 		}
+	}
+
+	if (is_rtp_asset) {
+		*is_rtp_asset = false;
 	}
 
 	return "";
 }
 
 std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::string& src_name, RTP::Type src_rtp,
-						   RTP::Type target_rtp) {
+						   RTP::Type target_rtp, bool* is_rtp_asset) {
 	// ensure both 2k or 2k3
 	assert((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps ||
 		(int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps);
 
+	if (src_rtp == target_rtp) {
+		// Performance limitation: When game_rtp == installed rtp the code can't tell if it is a rtp asset
+		if (is_rtp_asset) {
+			*is_rtp_asset = false;
+		}
+		return src_name;
+	}
+
 	if ((int)src_rtp < num_2k_rtps) {
-		return lookup_rtp_to_rtp_helper(rtp_table_2k, src_category, src_name, (int)src_rtp, (int)target_rtp);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k, src_category, src_name, (int)src_rtp, (int)target_rtp, is_rtp_asset);
 	} else {
-		return lookup_rtp_to_rtp_helper(rtp_table_2k3, src_category, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k3, src_category, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps, is_rtp_asset);
 	}
 }
