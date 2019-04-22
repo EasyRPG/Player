@@ -15,8 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <array>
-
 namespace RTP {
 /*
 RPG 2000 RTP Table
@@ -1044,6 +1042,42 @@ const char* rtp_table_2k[][5] = {
 	{nullptr, nullptr, nullptr, nullptr, nullptr}
 };
 
+const char* rtp_table_2k_categories[15] = {
+	"backdrop",
+	"battle",
+	"charset",
+	"chipset",
+	"faceset",
+	"gameover",
+	"monster",
+	"movie",
+	"music",
+	"panorama",
+	"picture",
+	"sound",
+	"system",
+	"title",
+	nullptr
+};
+
+int rtp_table_2k_categories_idx[15] = {
+	0,
+	39,
+	69,
+	282,
+	418,
+	521,
+	522,
+	613,
+	614,
+	741,
+	755,
+	756,
+	978,
+	1002,
+	1006
+};
+
 const char* rtp_table_2k3[][7] = {
 	{"backdrop", "お墓", "graveyard", "graveyard", "grave", "grave", "바닥"},
 	{"backdrop", "お寺", "temple1", "shrine", "temple", "temple", "절"},
@@ -1721,6 +1755,44 @@ const char* rtp_table_2k3[][7] = {
 	{"title", "タイトル3", "title3", "title3", "title3", "title3", "타이틀3"},
 	{"title", "タイトル4", "title4", "title4", "title4", "title4", "타이틀4"},
 	{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}
+};
+
+const char* rtp_table_2k3_categories[16] = {
+	"backdrop",
+	"battle",
+	"battlecharset",
+	"battleweapon",
+	"charset",
+	"chipset",
+	"faceset",
+	"gameover",
+	"monster",
+	"music",
+	"panorama",
+	"sound",
+	"system",
+	"system2",
+	"title",
+	nullptr
+};
+
+int rtp_table_2k3_categories_idx[16] = {
+	0,
+	34,
+	88,
+	152,
+	153,
+	168,
+	173,
+	178,
+	179,
+	294,
+	445,
+	458,
+	664,
+	668,
+	671,
+	675
 };
 
 }

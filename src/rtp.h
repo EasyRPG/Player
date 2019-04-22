@@ -42,23 +42,23 @@ namespace RTP {
 
 	extern const char* Names[];
 
-    struct RtpHitInfo {
-        RTP::Type type;
+	struct RtpHitInfo {
+		RTP::Type type;
 		std::string name;
 		int version;
-        int hits;
-        int max;
-        std::shared_ptr<FileFinder::DirectoryTree> tree;
-    };
+		int hits;
+		int max;
+		std::shared_ptr<FileFinder::DirectoryTree> tree;
+	};
 
-    /**
-     * Uses a file finder tree to detect the installed RTP, the list is sorted from best to worst hit.
-     * RTP with zero hits are removed.
-     *
-     * @param tree directory tree
-     * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
-     * @return List of detected RTP types
-     */
+	/**
+	 * Uses a file finder tree to detect the installed RTP, the list is sorted from best to worst hit.
+	 * RTP with zero hits are removed.
+	 *
+	 * @param tree directory tree
+	 * @param version RTP version in the folder (2000 or 2003), use 0 to detect all
+	 * @return List of detected RTP types
+	 */
 	std::vector<RtpHitInfo> Detect(std::shared_ptr<FileFinder::DirectoryTree> tree, int version);
 
 	/**
@@ -82,7 +82,7 @@ namespace RTP {
 	 * @return The translated asset name or empty string when the mapping is unavailable
 	 */
 	std::string LookupRtpToRtp(const std::string& src_category, const std::string& src_name,
-			RTP::Type src_rtp, RTP::Type target_rtp, bool* is_rtp_asset = nullptr);
+		RTP::Type src_rtp, RTP::Type target_rtp, bool* is_rtp_asset = nullptr);
 }
 
 #endif
