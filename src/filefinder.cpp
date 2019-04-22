@@ -204,6 +204,13 @@ namespace {
 		if (rtp_state.game_rtp.size() != 1) {
 			auto candidates = RTP::LookupAnyToRtp(dir, name, version);
 
+			// Prevent Don Miguel RTP addon data from being detected as game RTP because a game can only have one RTP
+			// and using this one will break the whole lookup table logic.
+			auto addon_it = std::find(candidates.begin(), candidates.end(), RTP::Type::RPG2000_DonMiguelAddon);
+			if (addon_it != candidates.end()) {
+				candidates.erase(addon_it);
+			}
+
 			// when empty the requested asset does not belong to any (known) RTP
 			if (!candidates.empty()) {
 				if (rtp_state.game_rtp.empty()) {
