@@ -46,16 +46,17 @@ namespace RTP {
 	};
 }
 
-static int get_table_idx(const char* lookup_table[16], const std::string& category) {
+static std::pair<int, int> get_table_idx(const char* lookup_table[16], int lookup_table_idx[16], const std::string& category) {
 	int i;
 
 	for (i = 0; lookup_table[i] != nullptr; ++i) {
 		if (!strcmp(lookup_table[i], category.c_str())) {
-			return i;
+			return {lookup_table_idx[i], lookup_table_idx[i+1]};
 		}
 	}
 
-	return i;
+	// Points at nullptr (final row) in the rtp table
+	return {lookup_table_idx[i], lookup_table_idx[i]};
 }
 
 template <typename T>
@@ -129,20 +130,11 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 }
 
 template <typename T>
-static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table,
+static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
 		const std::string& src_category, const std::string& src_name, int num_rtps, int offset) {
-	bool cat_found = false;
 	std::vector<RTP::Type> type_hits;
 
-	for (int i = 0; rtp_table[i][0] != nullptr; ++i) {
-		if (src_category != rtp_table[i][0]) {
-			if (cat_found) {
-				return type_hits;
-			}
-			continue;
-		}
-		cat_found = true;
-
+	for (int i = range.first; i < range.second; ++i) {
 		for (int j = 1; j <= num_rtps; ++j) {
 			const char* name = rtp_table[i][j];
 			if (name != nullptr && !strcmp(src_name.c_str(), name)) {
@@ -156,31 +148,19 @@ static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table,
 
 std::vector<RTP::Type> RTP::LookupAnyToRtp(const std::string& src_category, const std::string &src_name, int version) {
 	if (version == 2000) {
-		int tbl_idx = rtp_table_2k_categories_idx[get_table_idx(rtp_table_2k_categories, src_category)];
-		return lookup_any_to_rtp_helper(&rtp_table_2k[tbl_idx], src_category, src_name, num_2k_rtps, 0);
+		auto tbl_idx = get_table_idx(rtp_table_2k_categories, rtp_table_2k_categories_idx, src_category);
+		return lookup_any_to_rtp_helper(rtp_table_2k, tbl_idx, src_category, src_name, num_2k_rtps, 0);
 	} else {
-		int tbl_idx = rtp_table_2k3_categories_idx[get_table_idx(rtp_table_2k3_categories, src_category)];
-		return lookup_any_to_rtp_helper(&rtp_table_2k3[tbl_idx], src_category, src_name, num_2k3_rtps, num_2k_rtps);
+		auto tbl_idx = get_table_idx(rtp_table_2k3_categories, rtp_table_2k3_categories_idx, src_category);
+		return lookup_any_to_rtp_helper(rtp_table_2k3, tbl_idx, src_category, src_name, num_2k3_rtps, num_2k_rtps);
 	}
 }
 
 template <typename T>
-static std::string lookup_rtp_to_rtp_helper(T rtp_table,
+static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
 		const std::string& src_category, const std::string& src_name, int src_index, int dst_index, bool* is_rtp_asset) {
-	bool cat_found = false;
 
-	for (int i = 0; rtp_table[i][0] != nullptr; ++i) {
-		if (src_category != rtp_table[i][0]) {
-			if (cat_found) {
-				if (is_rtp_asset) {
-					*is_rtp_asset = false;
-				}
-				return "";
-			}
-			continue;
-		}
-		cat_found = true;
-
+	for (int i = range.first; i < range.second; ++i) {
 		const char* name = rtp_table[i][src_index + 1];
 		if (name != nullptr && !strcmp(src_name.c_str(), name)) {
 			const char* dst_name = rtp_table[i][dst_index + 1];
@@ -207,7 +187,7 @@ std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::stri
 		(int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps);
 
 	if (src_rtp == target_rtp) {
-		// Performance limitation: When game_rtp == installed rtp the code can't tell if it is a rtp asset
+		// Design limitation: When game_rtp == installed rtp can't tell if it is a rtp asset, this needs a table scan
 		if (is_rtp_asset) {
 			*is_rtp_asset = false;
 		}
@@ -215,10 +195,10 @@ std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::stri
 	}
 
 	if ((int)src_rtp < num_2k_rtps) {
-		int tbl_idx = rtp_table_2k_categories_idx[get_table_idx(rtp_table_2k_categories, src_category)];
-		return lookup_rtp_to_rtp_helper(&rtp_table_2k[tbl_idx], src_category, src_name, (int)src_rtp, (int)target_rtp, is_rtp_asset);
+		auto tbl_idx = get_table_idx(rtp_table_2k_categories, rtp_table_2k_categories_idx, src_category);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k, tbl_idx, src_category, src_name, (int)src_rtp, (int)target_rtp, is_rtp_asset);
 	} else {
-		int tbl_idx = rtp_table_2k3_categories_idx[get_table_idx(rtp_table_2k3_categories, src_category)];
-		return lookup_rtp_to_rtp_helper(&rtp_table_2k3[tbl_idx], src_category, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps, is_rtp_asset);
+		auto tbl_idx = get_table_idx(rtp_table_2k3_categories, rtp_table_2k3_categories_idx, src_category);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k3, tbl_idx, src_category, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps, is_rtp_asset);
 	}
 }
