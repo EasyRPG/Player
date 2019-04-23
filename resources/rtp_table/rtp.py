@@ -28,7 +28,7 @@ for i, line in enumerate(stdin):
 		lst.append("")
 	lines.append(lst)
 
-print("const char* rtp_table_2k%s[][%s] = {" % (rtp_table, str(elems)))
+print("const char* const rtp_table_2k%s[][%s] = {" % (rtp_table, str(elems)))
 for l in lines:
 	print("\t{", end="")
 	for i in range(elems):
@@ -57,7 +57,7 @@ print("}")
 print("};")
 
 print("");
-print("const char* rtp_table_2k%s_categories[%s] = {" % (rtp_table, len(lookup.items()) + 1))
+print("const char* const rtp_table_2k%s_categories[%s] = {" % (rtp_table, len(lookup.items()) + 1))
 
 for k in lookup.keys():
 	print('\t"%s",' % k)
@@ -66,7 +66,7 @@ print("\tnullptr")
 print("};")
 
 print("")
-print("int rtp_table_2k%s_categories_idx[%s] = {" % (rtp_table, len(lookup.items()) + 1))
+print("const int rtp_table_2k%s_categories_idx[%s] = {" % (rtp_table, len(lookup.items()) + 1))
 
 for v in lookup.values():
 	print('\t%s,' % v)

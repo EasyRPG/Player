@@ -27,6 +27,13 @@
  * The RTP namespace contains functions for working with the Runtime Package
  */
 namespace RTP {
+	extern const char* const rtp_table_2k[][5];
+	extern const char* const rtp_table_2k3[][7];
+	extern const char* const rtp_table_2k_categories[15];
+	extern const char* const rtp_table_2k3_categories[16];
+	extern const int rtp_table_2k_categories_idx[15];
+	extern const int rtp_table_2k3_categories_idx[16];
+
 	enum class Type {
 		RPG2000_OfficialJapanese,
 		RPG2000_OfficialEnglish,

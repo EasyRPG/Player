@@ -22,13 +22,6 @@
 #include "rtp.h"
 
 namespace RTP {
-	extern const char* rtp_table_2k[][5];
-	extern const char* rtp_table_2k3[][7];
-	extern const char* rtp_table_2k_categories[16];
-	extern const char* rtp_table_2k3_categories[16];
-	extern int rtp_table_2k_categories_idx[16];
-	extern int rtp_table_2k3_categories_idx[16];
-
 	constexpr int num_2k_rtps = 4;
 	constexpr int num_2k3_rtps = 6;
 
@@ -46,7 +39,7 @@ namespace RTP {
 	};
 }
 
-static std::pair<int, int> get_table_idx(const char* lookup_table[16], int lookup_table_idx[16], const std::string& category) {
+static std::pair<int, int> get_table_idx(const char* const lookup_table[16], const int lookup_table_idx[16], const std::string& category) {
 	int i;
 
 	for (i = 0; lookup_table[i] != nullptr; ++i) {

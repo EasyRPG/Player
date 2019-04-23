@@ -15,6 +15,8 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "rtp.h"
+
 namespace RTP {
 /*
 RPG 2000 RTP Table
@@ -32,7 +34,7 @@ RPG 2003 RTP Table
 - Korean Translation
 */
 
-const char* rtp_table_2k[][5] = {
+const char* const rtp_table_2k[][5] = {
 	{"backdrop", "ダンジョン1", "dungeon1", "cave1", nullptr},
 	{"backdrop", "ダンジョン2", "dungeon2", "lavacave2", nullptr},
 	{"backdrop", "ダンジョン3", "dungeon3", "icecave3", nullptr},
@@ -1042,7 +1044,7 @@ const char* rtp_table_2k[][5] = {
 	{nullptr, nullptr, nullptr, nullptr, nullptr}
 };
 
-const char* rtp_table_2k_categories[15] = {
+const char* const rtp_table_2k_categories[15] = {
 	"backdrop",
 	"battle",
 	"charset",
@@ -1060,7 +1062,7 @@ const char* rtp_table_2k_categories[15] = {
 	nullptr
 };
 
-int rtp_table_2k_categories_idx[15] = {
+const int rtp_table_2k_categories_idx[15] = {
 	0,
 	39,
 	69,
@@ -1078,7 +1080,7 @@ int rtp_table_2k_categories_idx[15] = {
 	1006
 };
 
-const char* rtp_table_2k3[][7] = {
+const char* const rtp_table_2k3[][7] = {
 	{"backdrop", "お墓", "graveyard", "graveyard", "grave", "grave", "바닥"},
 	{"backdrop", "お寺", "temple1", "shrine", "temple", "temple", "절"},
 	{"backdrop", "ダンジョン１", "dungeon1", "dungeon1", "cave", "donjohn1", "던젼１"},
@@ -1757,7 +1759,7 @@ const char* rtp_table_2k3[][7] = {
 	{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}
 };
 
-const char* rtp_table_2k3_categories[16] = {
+const char* const rtp_table_2k3_categories[16] = {
 	"backdrop",
 	"battle",
 	"battlecharset",
@@ -1776,7 +1778,7 @@ const char* rtp_table_2k3_categories[16] = {
 	nullptr
 };
 
-int rtp_table_2k3_categories_idx[16] = {
+const int rtp_table_2k3_categories_idx[16] = {
 	0,
 	34,
 	88,
