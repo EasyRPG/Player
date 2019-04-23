@@ -398,7 +398,7 @@ std::vector<std::string> FileFinder::SplitPath(const std::string& path) {
 
 std::string FileFinder::GetPathInsidePath(const std::string& path_to, const std::string& path_in) {
 	if (!Utils::StartsWith(path_in, path_to)) {
-		return "";
+		return path_in;
 	}
 
 	std::string path_out = path_in.substr(path_to.size());
