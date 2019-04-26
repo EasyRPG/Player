@@ -234,7 +234,7 @@ void LibretroUi::UpdateVariables() {
 	static const char* none = "None (See Core Options)";
 
 	static struct retro_variable debug = { "Debug Mode", nullptr };
-	static struct retro_variable keyboard = { "Keyboard", nullptr };
+	static struct retro_variable input = { "Input", nullptr };
 	static struct retro_variable variables[] = {
 		{ "RetroPad X", nullptr },
 		{ "RetroPad L", nullptr },
@@ -255,12 +255,12 @@ void LibretroUi::UpdateVariables() {
 	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &debug);
 	Player::debug_flag = strcmp(debug.value, "Enabled") == 0;
 
-	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &keyboard);
-	if (strcmp(keyboard.value, "Use Both") == 0) {
+	LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &input);
+	if (strcmp(input.value, "Use Both") == 0) {
 		keyboard_retropad_state = PadInputState_Keyboard | PadInputState_RetroPad;
-	} else if (strcmp(keyboard.value, "Only Keyboard") == 0) {
+	} else if (strcmp(input.value, "Only Keyboard") == 0) {
 		keyboard_retropad_state = PadInputState_Keyboard;
-	} else if (strcmp(keyboard.value, "Only RetroPad") == 0) {
+	} else if (strcmp(input.value, "Only RetroPad") == 0) {
 		keyboard_retropad_state = PadInputState_RetroPad;
 	}
 
@@ -509,7 +509,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 		{ "RetroPad R2", "Button mapping of RetroPad R2; " EP_RETRO_OPTIONS },
 		{ "RetroPad L3", "Button mapping of RetroPad L3; " EP_RETRO_OPTIONS },
 		{ "RetroPad R3", "Button mapping of RetroPad R3; " EP_RETRO_OPTIONS },
-		{ "Keyboard", "Keyboard and RetroPad; Use Both|Only Keyboard|Only RetroPad" },
+		{ "Input", "Keyboard and RetroPad; Use Both|Only Keyboard|Only RetroPad" },
 		{ "Debug Mode", "Debug menu and walk through walls; Disabled|Enabled" },
 		{ nullptr, nullptr }
 	};
@@ -670,7 +670,14 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 }
 
 /* Unloads a currently loaded game. */
-RETRO_API void retro_unload_game(void) {
+RETRO_API void retro_unload_game() {
+	// Workaround a crash on Windows & Android because the callbacks are invoked after the DLL/SO was unloaded
+	static retro_audio_callback no_audio_callback_definition = {
+		nullptr,
+		nullptr
+	};
+	LibretroUi::environ_cb(RETRO_ENVIRONMENT_SET_AUDIO_CALLBACK, &no_audio_callback_definition);
+
 	if (!LibretroUi::player_exit_called) {
 		// Shutdown requested by the frontend and not via Title scene
 		Player::Exit();
