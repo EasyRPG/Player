@@ -73,29 +73,6 @@ bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventExecFra
 	return false;
 }
 
-// Taken from readers because a kitten is killed when reader_structs is included
-static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
-	std::vector<RPG::EventCommand>::const_iterator it;
-
-	int result = 0;
-	for (it = commands.begin(); it != commands.end(); ++it) {
-		result += LcfReader::IntSize(it->code);
-		result += LcfReader::IntSize(it->indent);
-		// Convert string to LDB encoding
-		std::string orig_string = ReaderUtil::Recode(it->string, "UTF-8", Player::encoding);
-		result += LcfReader::IntSize(orig_string.size());
-		result += orig_string.size();
-
-		int count = it->parameters.size();
-		result += LcfReader::IntSize(count);
-		for (int i = 0; i < count; i++)
-			result += LcfReader::IntSize(it->parameters[i]);
-	}
-	result += 4; // No idea why but then it fits
-
-	return result;
-}
-
 std::vector<RPG::SaveEventExecFrame> Game_Interpreter_Map::GetSaveData() const {
 	std::vector<RPG::SaveEventExecFrame> save;
 
@@ -111,7 +88,6 @@ std::vector<RPG::SaveEventExecFrame> Game_Interpreter_Map::GetSaveData() const {
 		RPG::SaveEventExecFrame save_commands;
 		save_commands.commands = save_interpreter->list;
 		save_commands.current_command = save_interpreter->index;
-		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
 		save_commands.ID = i++;
 		save_commands.event_id = event_id;
 		save_commands.triggered_by_decision_key = triggered_by_decision_key;
