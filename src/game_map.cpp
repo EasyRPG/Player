@@ -275,6 +275,10 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
 		map_file = FileFinder::FindDefault(ss.str());
 
+		if (map_file.empty()) {
+			Output::Error("Loading of Map %s failed.\nThe map was not found.", ss.str().c_str());
+		}
+
 		map = LMU_Reader::Load(map_file, Player::encoding);
 	} else {
 		map = LMU_Reader::LoadXml(map_file);
