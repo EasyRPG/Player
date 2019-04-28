@@ -165,7 +165,7 @@ static void WriteLog(std::string const& type, std::string const& msg, Color cons
 	std::cerr << type << ": " << msg << std::endl;
 #endif
 
-	if (type != "Debug") {
+	if (type != "Debug" && type != "Error") {
 		Graphics::GetMessageOverlay().AddMessage(msg, c);
 	}
 }

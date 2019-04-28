@@ -299,7 +299,9 @@ BitmapRef Cache::Exfont() {
 		BitmapRef exfont_img;
 		if (!exfont_custom.empty()) {
 			exfont_img = Bitmap::Create(exfont_custom.data(), exfont_custom.size(), true);
-		} else {
+		}
+		// exfont_custom can contain invalid data and fail
+		if (!exfont_img) {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}
 
