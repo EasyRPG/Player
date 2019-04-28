@@ -23,9 +23,9 @@
 #include "libretro.h"
 
 void Input::InitButtons() {
-	// Basicly the desktop keyboard mapping but with some functionality
-	// disabled because it is provided by libretro or not usableon these
-	// keys because of global hotkey pollution
+	// Basically the desktop keyboard mapping but with some functionality
+	// disabled because it is provided by libretro or not usable on these
+	// keys due to global hotkey pollution
 	buttons.resize(BUTTON_COUNT);
 	buttons[UP].push_back(Keys::UP);
 	buttons[UP].push_back(Keys::KP8);

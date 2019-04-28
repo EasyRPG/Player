@@ -112,11 +112,9 @@
 
 #else
 
-#  ifndef HAVE_SDL_MIXER
-#    ifdef WANT_FMMIDI
-#      if WANT_FMMIDI != 1
-#        error "WANT_FMMIDI must be set to 1 for non-SDL builds"
-#      endif
+#  ifdef WANT_FMMIDI
+#    if WANT_FMMIDI != 1
+#      error "WANT_FMMIDI must be set to 1 for non-SDL builds"
 #    endif
 #  endif
 
