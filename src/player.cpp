@@ -395,7 +395,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	is_3dsx = argc > 0;
 #endif
 #if defined(_WIN32) && !defined(__WINRT__)
-	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
+	int argc_w;
+	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
 #endif
 
 	engine = EngineNone;
@@ -420,10 +421,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	touch_flag = false;
 	Game_Battle::battle_test.enabled = false;
 
-	if (argv == nullptr) {
-		return;
-	}
-
 	std::vector<std::string> args;
 
 	std::stringstream ss;
@@ -438,10 +435,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	Output::Debug("CLI: %s", ss.str().c_str());
 
 	std::vector<std::string>::const_iterator it;
-
-	for (it = args.begin(); it != args.end(); ++it) {
-		ss << *it << " ";
-	}
 
 	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
@@ -633,6 +626,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 #endif
 	}
+
+#if defined(_WIN32) && !defined(__WINRT__)
+	LocalFree(argv_w);
+#endif
 }
 
 static void OnSystemFileReady(FileRequestResult* result) {
