@@ -89,6 +89,10 @@ DrawableType MessageOverlay::GetType() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
+	if (message.empty()) {
+		return;
+	}
+
 	if (message == last_message) {
 		// The message matches the previous message -> increase counter
 		messages.back().repeat_count++;
