@@ -216,14 +216,6 @@ int Game_Vehicle::GetScreenY(bool apply_shift) const {
 	return Game_Character::GetScreenY(apply_shift) - GetAltitude();
 }
 
-bool Game_Vehicle::IsMovable() {
-	if (!IsInUse())
-		return false;
-	if (type == Airship && (IsAscending() || IsDescending()))
-		return false;
-	return !IsMoving();
-}
-
 bool Game_Vehicle::CanLand() const {
 	return Game_Map::CanLandAirship(GetX(), GetY());
 }

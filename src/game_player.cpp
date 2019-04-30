@@ -224,7 +224,13 @@ void Game_Player::UpdateVehicleActions() {
 
 void Game_Player::UpdateSelfMovement() {
 	bool did_call_encounter = false;
-	if (IsEncounterCalling() && IsStopping()) {
+
+	auto* vehicle = GetVehicle();
+
+	bool is_boarding = IsBoardingOrUnboarding()
+		|| (vehicle && vehicle->IsAscendingOrDescending());
+
+	if (IsEncounterCalling() && IsStopping() && !is_boarding) {
 		if (Game_Map::PrepareEncounter()) {
 			Scene::instance->SetRequestedScene(Scene::Battle);
 		}
@@ -233,7 +239,7 @@ void Game_Player::UpdateSelfMovement() {
 	}
 
 	bool did_call_menu = false;
-	if (IsMenuCalling()) {
+	if (IsMenuCalling() && !is_boarding) {
 		if (!did_call_encounter) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			Scene::instance->SetRequestedScene(Scene::Menu);
@@ -242,7 +248,7 @@ void Game_Player::UpdateSelfMovement() {
 		SetMenuCalling(false);
 	}
 
-	if (!IsBoardingOrUnboarding()
+	if (!is_boarding
 			&& !Game_Map::GetInterpreter().IsRunning()
 			&& !Game_Message::message_waiting
 			&& !Game_Message::visible
@@ -533,22 +539,6 @@ void Game_Player::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& 
 		return;
 	}
 	Game_Character::UpdateMoveRoute(current_index, current_route);
-}
-
-bool Game_Player::IsMovable() const {
-	if (IsMoving() || IsJumping())
-		return false;
-	if (Graphics::IsTransitionPending())
-		return false;
-	if (IsMoveRouteOverwritten())
-		return false;
-	if (data()->boarding || data()->unboarding)
-		return false;
-	if (Game_Message::message_waiting)
-		return false;
-	if (InAirship() && !GetVehicle()->IsMovable())
-		return false;
-    return true;
 }
 
 bool Game_Player::InVehicle() const {

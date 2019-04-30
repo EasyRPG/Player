@@ -68,7 +68,6 @@ public:
 	void SyncWithPlayer();
 	void AnimateAscentDescent();
 	int GetScreenY(bool apply_shift = false) const override;
-	bool IsMovable();
 	bool CanLand() const;
 	void UpdateAnimationShip();
 	void UpdateAnimationAirship();

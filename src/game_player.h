@@ -75,7 +75,6 @@ public:
 	void Refresh();
 
 	bool GetOnOffVehicle();
-	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
 	bool IsAboard() const;
