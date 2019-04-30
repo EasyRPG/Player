@@ -69,14 +69,14 @@ namespace {
 		}
 	}
 
-	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
-						 bool transparent, uint32_t const flags) {
-		KeyType const key(folder_name, filename, transparent);
+	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
+						 bool transparent, const uint32_t flags) {
+		const KeyType key(folder_name, filename, transparent);
 
-		cache_type::iterator const it = cache.find(key);
+		const cache_type::iterator it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
-			std::string const path = FileFinder::FindImage(folder_name, filename);
+			const std::string path = FileFinder::FindImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
 
@@ -174,7 +174,7 @@ namespace {
 	BitmapRef DrawCheckerboard() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
 
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
 
@@ -193,12 +193,12 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
+	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
 
-		KeyType const key(folder_name, filename, false);
+		const KeyType key(folder_name, filename, false);
 
 		BitmapRef bitmap = s.dummy_renderer();
 
@@ -206,10 +206,10 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
+	BitmapRef LoadBitmap(const std::string& f, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
 
 		if (f == CACHE_DEFAULT_BITMAP) {
 			return LoadDummyBitmap<T>(s.directory, f);
@@ -255,41 +255,85 @@ namespace {
 
 		return ret;
 	}
+
+	template<Material::Type T>
+	BitmapRef LoadBitmap(const std::string& f) {
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
+
+		const Spec& s = spec[T];
+
+		return LoadBitmap<T>(f, s.transparent);
+	}
 }
 
 std::vector<uint8_t> Cache::exfont_custom;
 
-#define cache(elem) \
-	BitmapRef Cache::elem(const std::string& f) { \
-		bool trans = spec[Material::elem].transparent; \
-		return LoadBitmap<Material::elem>(f, trans); \
-	}
-	cache(Backdrop)
-	cache(Battle)
-	cache(Battle2)
-	cache(Battlecharset)
-	cache(Battleweapon)
-	cache(Charset)
-	cache(Chipset)
-	cache(Faceset)
-	cache(Gameover)
-	cache(Monster)
-	cache(Panorama)
-	cache(System2)
-	cache(Title)
-	cache(System)
-#undef cache
-
-BitmapRef Cache::Frame(const std::string& f, bool trans) {
-	return LoadBitmap<Material::Frame>(f, trans);
+BitmapRef Cache::Backdrop(const std::string& file) {
+	return LoadBitmap<Material::Backdrop>(file);
 }
 
-BitmapRef Cache::Picture(const std::string& f, bool trans) {
-	return LoadBitmap<Material::Picture>(f, trans);
+BitmapRef Cache::Battle(const std::string& file) {
+	return LoadBitmap<Material::Battle>(file);
+}
+
+BitmapRef Cache::Battle2(const std::string& file) {
+	return LoadBitmap<Material::Battle2>(file);
+}
+
+BitmapRef Cache::Battlecharset(const std::string& file) {
+	return LoadBitmap<Material::Battlecharset>(file);
+}
+
+BitmapRef Cache::Battleweapon(const std::string& file) {
+	return LoadBitmap<Material::Battleweapon>(file);
+}
+
+BitmapRef Cache::Charset(const std::string& file) {
+	return LoadBitmap<Material::Charset>(file);
+}
+
+BitmapRef Cache::Chipset(const std::string& file) {
+	return LoadBitmap<Material::Chipset>(file);
+}
+
+BitmapRef Cache::Faceset(const std::string& file) {
+	return LoadBitmap<Material::Faceset>(file);
+}
+
+BitmapRef Cache::Frame(const std::string& file, bool transparent) {
+	return LoadBitmap<Material::Frame>(file, transparent);
+}
+
+BitmapRef Cache::Gameover(const std::string& file) {
+	return LoadBitmap<Material::Gameover>(file);
+}
+
+BitmapRef Cache::Monster(const std::string& file) {
+	return LoadBitmap<Material::Monster>(file);
+}
+
+BitmapRef Cache::Panorama(const std::string& file) {
+	return LoadBitmap<Material::Panorama>(file);
+}
+
+BitmapRef Cache::Picture(const std::string& file, bool transparent) {
+	return LoadBitmap<Material::Picture>(file, transparent);
+}
+
+BitmapRef Cache::System2(const std::string& file) {
+	return LoadBitmap<Material::System2>(file);
+}
+
+BitmapRef Cache::Title(const std::string& file) {
+	return LoadBitmap<Material::Title>(file);
+}
+
+BitmapRef Cache::System(const std::string& file) {
+	return LoadBitmap<Material::System>(file);
 }
 
 BitmapRef Cache::Exfont() {
-	KeyType const hash("ExFont", "ExFont", false);
+	const KeyType hash("ExFont", "ExFont", false);
 
 	cache_type::iterator const it = cache.find(hash);
 
