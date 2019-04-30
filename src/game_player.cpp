@@ -224,28 +224,33 @@ void Game_Player::UpdateVehicleActions() {
 
 void Game_Player::UpdateSelfMovement() {
 	bool did_call_encounter = false;
+	bool did_call_menu = false;
 
 	auto* vehicle = GetVehicle();
 
 	bool is_boarding = IsBoardingOrUnboarding()
 		|| (vehicle && vehicle->IsAscendingOrDescending());
 
-	if (IsEncounterCalling() && IsStopping() && !is_boarding) {
-		if (Game_Map::PrepareEncounter()) {
-			Scene::instance->SetRequestedScene(Scene::Battle);
-		}
-		SetEncounterCalling(false);
-		did_call_encounter = true;
-	}
+	if (!is_boarding
+			&& IsStopping()
+			&& !IsMoveRouteOverwritten()) {
 
-	bool did_call_menu = false;
-	if (IsMenuCalling() && !is_boarding) {
-		if (!did_call_encounter) {
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			Scene::instance->SetRequestedScene(Scene::Menu);
-			did_call_menu = true;
+		if (IsEncounterCalling()) {
+			if (Game_Map::PrepareEncounter()) {
+				Scene::instance->SetRequestedScene(Scene::Battle);
+			}
+			SetEncounterCalling(false);
+			did_call_encounter = true;
 		}
-		SetMenuCalling(false);
+
+		if (IsMenuCalling()) {
+			if (!did_call_encounter) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				Scene::instance->SetRequestedScene(Scene::Menu);
+				did_call_menu = true;
+			}
+			SetMenuCalling(false);
+		}
 	}
 
 	if (!is_boarding
@@ -309,7 +314,6 @@ void Game_Player::UpdateSelfMovement() {
 	if (Game_System::GetAllowMenu()
 			&& !Game_Message::message_waiting
 			&& !Game_Message::visible
-			&& !IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning())
 	{
 		if (Input::IsTriggered(Input::CANCEL)) {

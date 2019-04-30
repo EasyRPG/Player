@@ -121,9 +121,7 @@ void Game_Character::UpdateMovement() {
 		UpdateMoveRoute(data()->move_route_index, data()->move_route);
 	}
 
-	if (!IsMoveRouteOverwritten()) {
-		UpdateSelfMovement();
-	}
+	UpdateSelfMovement();
 
 	bool moved = false;
 
