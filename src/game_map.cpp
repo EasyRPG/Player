@@ -946,7 +946,7 @@ void Game_Map::Update(bool is_preupdate) {
 		// This logic is probably one big loop in RPG_RT. We have to replicate
 		// it here because once we stop executing from this we should not
 		// clear anymore waiting flags.
-		if (interp.IsImmediateCall() && interp.GetLoopCount() > 0) {
+		if (Scene::instance->HasRequestedScene() && interp.GetLoopCount() > 0) {
 			break;
 		}
 		Game_CommonEvent* run_ce = nullptr;
@@ -1029,19 +1029,19 @@ int Game_Map::GetEncounterSteps() {
 	return location.encounter_steps;
 }
 
-void Game_Map::UpdateEncounterSteps() {
+bool Game_Map::UpdateEncounterSteps() {
 	if (Player::debug_flag &&
 		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return;
+			return false;
 	}
 
 	if(Main_Data::game_player->InAirship()) {
-		return;
+		return false;
 	}
 
 	if (GetEncounterRate() <= 0) {
 		location.encounter_steps = 0;
-		return;
+		return false;
 	}
 
 	int x = Main_Data::game_player->GetX();
@@ -1050,7 +1050,7 @@ void Game_Map::UpdateEncounterSteps() {
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, GetTerrainTag(x,y));
 	if (!terrain) {
 		Output::Warning("UpdateEncounterSteps: Invalid terrain at (%d, %d)", x, y);
-		return;
+		return false;
 	}
 
 	location.encounter_steps += terrain->encounter_rate;
@@ -1098,8 +1098,10 @@ void Game_Map::UpdateEncounterSteps() {
 
 	if (Utils::PercentChance(p)) {
 		SetEncounterSteps(0);
-		PrepareEncounter();
+		return true;
 	}
+
+	return false;
 }
 
 void Game_Map::SetEncounterSteps(int steps) {
@@ -1154,10 +1156,6 @@ std::vector<int> Game_Map::GetEncountersAt(int x, int y) {
 }
 
 bool Game_Map::PrepareEncounter() {
-	if (GetEncounterRate() <= 0) {
-		return false;
-	}
-
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 
@@ -1169,7 +1167,6 @@ bool Game_Map::PrepareEncounter() {
 	}
 
 	Game_Temp::battle_troop_id = encounters[Utils::GetRandomNumber(0, encounters.size() - 1)];
-	Game_Temp::battle_calling = true;
 
 	if (Utils::GetRandomNumber(1, 32) == 1) {
 		Game_Temp::battle_first_strike = true;

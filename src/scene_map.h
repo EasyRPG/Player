@@ -51,6 +51,7 @@ public:
 	void CallSave();
 	void CallLoad();
 	void CallDebug();
+	void CallGameover();
 
 	std::unique_ptr<Spriteset_Map> spriteset;
 
@@ -70,6 +71,7 @@ private:
 	bool from_save;
 	// Teleport from new game or Teleport / Escape skill from menu.
 	bool teleport_from_other_scene = false;
+	bool called_battle = false;
 };
 
 #endif

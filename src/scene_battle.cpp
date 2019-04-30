@@ -165,8 +165,8 @@ void Scene_Battle::Update() {
 
 	bool events_finished = Game_Battle::UpdateEvents();
 
-	if (Game_Temp::gameover) {
-		Game_Temp::gameover = false;
+	if (GetRequestedScene() == Gameover) {
+		SetRequestedScene(Null);
 		Scene::Push(std::make_shared<Scene_Gameover>());
 	}
 

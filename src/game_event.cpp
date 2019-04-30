@@ -375,6 +375,9 @@ void Game_Event::OnMoveFailed(int x, int y) {
 void Game_Event::UpdateSelfMovement() {
 	if (IsPaused())
 		return;
+	if (IsMoveRouteOverwritten()) {
+		return;
+	}
 	if (!Game_Message::GetContinueEvents() && Game_Map::GetInterpreter().IsRunning())
 		return;
 	if (!IsStopping())

@@ -49,6 +49,7 @@ public:
 	int GetVehicleType() const override;
 	void UpdateSelfMovement() override;
 	void OnMoveFailed(int x, int y) override;
+	void UpdateMoveRoute(int32_t& current_index, const RPG::MoveRoute& current_route) override;
 	/** @} */
 
 	bool IsPendingTeleport() const;
@@ -73,14 +74,7 @@ public:
 
 	void Refresh();
 
-	/*
-	 * Overridden to convince Game_Character we aren't stopped if boarding/unboarding.
-	 * Consider calling this 'IsReadyToMove' or something, and 'IsMovable' -> 'IsPlayerMovable'
-	 */
-	bool IsStopping() const override;
-
 	bool GetOnOffVehicle();
-	bool IsMovable() const;
 	bool InVehicle() const;
 	bool InAirship() const;
 	bool IsAboard() const;
@@ -91,6 +85,26 @@ public:
 	 * Callback function invoked by the Vehicle to notify that the unboarding has finished
 	 */
 	void UnboardingFinished();
+
+	/**
+	 * Set the menu callling flag
+	 *
+	 * @param value the value of the flag to set
+	 */
+	void SetMenuCalling(bool value);
+
+	/** @return the menu calling flag */
+	bool IsMenuCalling() const;
+
+	/**
+	 * Set the encounter callling flag
+	 *
+	 * @param value the value of the flag to set
+	 */
+	void SetEncounterCalling(bool value);
+
+	/** @return the encounter calling flag */
+	bool IsEncounterCalling() const;
 
 protected:
 	RPG::SavePartyLocation* data();
@@ -106,6 +120,7 @@ private:
 	bool GetOnVehicle();
 	bool GetOffVehicle();
 	void Unboard();
+	void UpdateVehicleActions();
 
 	TeleportTarget teleport_target;
 };
@@ -124,6 +139,22 @@ inline bool Game_Player::IsPendingTeleport() const {
 
 inline TeleportTarget Game_Player::GetTeleportTarget() const {
 	return teleport_target;
+}
+
+inline void Game_Player::SetMenuCalling(bool value) {
+	data()->menu_calling = value;
+}
+
+inline bool Game_Player::IsMenuCalling() const {
+	return data()->menu_calling;
+}
+
+inline void Game_Player::SetEncounterCalling(bool value) {
+	data()->encounter_calling = value;
+}
+
+inline bool Game_Player::IsEncounterCalling() const {
+	return data()->encounter_calling;
 }
 
 #endif

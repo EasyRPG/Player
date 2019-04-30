@@ -60,8 +60,6 @@ namespace {
 // 10000 based on: https://gist.github.com/4406621
 constexpr int loop_limit = 10000;
 
-Scene::SceneType Game_Interpreter::scene_call = Scene::Null;
-
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -124,8 +122,11 @@ void Game_Interpreter::Setup(
 
 	CancelMenuCall();
 
-	if (main_flag && depth == 0)
+	if (main_flag && depth == 0) {
 		Game_Message::SetFaceName("");
+		Main_Data::game_player->SetMenuCalling(false);
+		Main_Data::game_player->SetEncounterCalling(false);
+	}
 }
 
 void Game_Interpreter::CancelMenuCall() {
@@ -180,7 +181,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
 		// RPG_RT compatible behavior.
-		if (loop_count > 0 && IsImmediateCall()) {
+		if (loop_count > 0 && Scene::instance->HasRequestedScene()) {
 			break;
 		}
 
@@ -213,7 +214,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
-		if (Game_Temp::to_title || Game_Temp::gameover) {
+		if (Game_Temp::to_title) {
 			break;
 		}
 
@@ -284,7 +285,9 @@ void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
 void Game_Interpreter::CheckGameOver() {
 	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
 		// Empty party is allowed
-		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
+		if (Main_Data::game_party->GetBattlerCount() > 0) {
+			Scene::instance->SetRequestedScene(Scene::Gameover);
+		}
 	}
 }
 
@@ -1542,8 +1545,9 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 	if (Game_Message::visible) {
 		return false;
 	}
-	Game_Temp::gameover = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
+
+	Scene::instance->SetRequestedScene(Scene::Gameover);
+	++index;
 	return false;
 }
 
@@ -3079,14 +3083,6 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	index++;
 	return true;
 }
-
-void Game_Interpreter::ResetSceneCalling() {
-	scene_call = Scene::Null;
-}
-
-bool Game_Interpreter::IsImmediateCall() {
-	return scene_call != Scene::Null;
-};
 
 // Dummy Continuations
 

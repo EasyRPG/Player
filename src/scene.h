@@ -192,6 +192,20 @@ public:
 
 	/** @return true if the Scene has been initialized */
 	bool IsInitialized() const;
+
+	/** @return the scene requested by events */
+	SceneType GetRequestedScene();
+
+	/** @return true if a scene is being requested */
+	bool HasRequestedScene();
+
+	/**
+	 * Sets the requested scene to change to
+	 *
+	 * @param scene the scene to call
+	 */
+	void SetRequestedScene(SceneType scene);
+
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;
@@ -217,10 +231,25 @@ private:
 	Graphics::State state;
 
 	static void DebugValidate(const char* caller);
+
+	Scene::SceneType request_scene = Null;
 };
 
 inline bool Scene::IsInitialized() const {
 	return initialized;
 }
+
+inline Scene::SceneType Scene::GetRequestedScene() {
+	return request_scene;
+}
+
+inline bool Scene::HasRequestedScene() {
+	return GetRequestedScene() != Null;
+}
+
+inline void Scene::SetRequestedScene(SceneType scene) {
+	request_scene = scene;
+}
+
 
 #endif

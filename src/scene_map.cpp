@@ -82,7 +82,7 @@ void Scene_Map::Start() {
 
 void Scene_Map::Continue() {
 	teleport_from_other_scene = true;
-	if (Game_Temp::battle_calling) {
+	if (called_battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 	}
@@ -100,8 +100,8 @@ void Scene_Map::Continue() {
 }
 
 void Scene_Map::Resume() {
-	Game_Temp::battle_calling = false;
 	teleport_from_other_scene = false;
+	called_battle = false;
 }
 
 void Scene_Map::TransitionIn() {
@@ -109,7 +109,8 @@ void Scene_Map::TransitionIn() {
 	if (Graphics::IsTransitionPending()) {
 		return;
 	}
-	if (Game_Temp::battle_calling) {
+
+	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
 	} else if (Game_Temp::transition_menu) {
 		Game_Temp::transition_menu = false;
@@ -120,7 +121,7 @@ void Scene_Map::TransitionIn() {
 }
 
 void Scene_Map::TransitionOut() {
-	if (Game_Temp::battle_calling) {
+	if (called_battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
 	}
@@ -191,11 +192,6 @@ void Scene_Map::UpdateStage3() {
 }
 
 void Scene_Map::UpdateSceneCalling() {
-	if (Game_Temp::gameover) {
-		Game_Temp::gameover = false;
-		Scene::Push(std::make_shared<Scene_Gameover>());
-	}
-
 	if (Game_Temp::to_title) {
 		Game_Temp::to_title = false;
 		Scene::PopUntil(Scene::Title);
@@ -204,14 +200,13 @@ void Scene_Map::UpdateSceneCalling() {
 	if (Game_Message::visible)
 		return;
 
-	bool force_menu_calling = false;
 	if (Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					force_menu_calling = true;
+					SetRequestedScene(Menu);
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -220,46 +215,43 @@ void Scene_Map::UpdateSceneCalling() {
 		}
 
 		if (Input::IsTriggered(Input::DEBUG_MENU)) {
-			CallDebug();
+			SetRequestedScene(Debug);
 		}
 		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-			CallSave();
+			SetRequestedScene(Save);
 		}
 	}
 
-	if (!Main_Data::game_player->IsMoving() || Game_Interpreter::IsImmediateCall() || force_menu_calling) {
-		auto call = Game_Interpreter::GetSceneCalling();
+	auto call = GetRequestedScene();
 
-		if (Main_Data::game_data.party_location.menu_calling || force_menu_calling) {
-			call = Scene::Menu;
-		}
-		if (Game_Temp::battle_calling) {
-			call = Scene::Battle;
-		}
-
-		Game_Interpreter::ResetSceneCalling();
-		switch (call) {
-			case Scene::Menu:
-				CallMenu();
-				break;
-			case Scene::Shop:
-				CallShop();
-				break;
-			case Scene::Name:
-				CallName();
-				break;
-			case Scene::Save:
-				CallSave();
-				break;
-			case Scene::Load:
-				CallLoad();
-				break;
-			case Scene::Battle:
-				CallBattle();
-				break;
-			default:
-				break;
-		}
+	SetRequestedScene(Null);
+	switch (call) {
+		case Scene::Menu:
+			CallMenu();
+			break;
+		case Scene::Shop:
+			CallShop();
+			break;
+		case Scene::Name:
+			CallName();
+			break;
+		case Scene::Save:
+			CallSave();
+			break;
+		case Scene::Load:
+			CallLoad();
+			break;
+		case Scene::Battle:
+			CallBattle();
+			break;
+		case Scene::Gameover:
+			CallGameover();
+			break;
+		case Scene::Debug:
+			CallDebug();
+			break;
+		default:
+			break;
 	}
 }
 
@@ -320,7 +312,7 @@ void Scene_Map::FinishPendingTeleport() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_Temp::battle_calling = true;
+	called_battle = true;
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
@@ -341,7 +333,6 @@ void Scene_Map::CallName() {
 }
 
 void Scene_Map::CallMenu() {
-	Main_Data::game_data.party_location.menu_calling = false;
 	Game_Temp::transition_menu = true;
 
 	// TODO: Main_Data::game_player->Straighten();
@@ -374,4 +365,8 @@ void Scene_Map::CallDebug() {
 		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
+}
+
+void Scene_Map::CallGameover() {
+	Scene::Push(std::make_shared<Scene_Gameover>());
 }
