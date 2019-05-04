@@ -369,6 +369,16 @@ namespace Game_Map {
 	int ShowBattleAnimation(int animation_id, int target_id, bool global);
 
 	/**
+	 * Update the currently running battle animation by 1 frame.
+	 */
+	void UpdateBattleAnimation();
+
+	/**
+	 * Cancel the currently running battle animation.
+	 */
+	void CancelBattleAnimation();
+
+	/**
 	 * Whether or not a battle animation is currently playing.
 	 */
 	bool IsBattleAnimationWaiting();

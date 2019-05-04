@@ -943,13 +943,6 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 	if (!actx.IsActive()) {
 		//If not resuming from async op ...
-		if (animation) {
-			animation->Update();
-			if (animation->IsDone()) {
-				animation.reset();
-			}
-		}
-
 		UpdateProcessedFlags(is_preupdate);
 	}
 
@@ -984,6 +977,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
+		UpdateBattleAnimation();
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {
@@ -1343,6 +1337,8 @@ int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) 
 	Main_Data::game_data.screen.battleanim_id = animation_id;
 	Main_Data::game_data.screen.battleanim_target = target_id;
 	Main_Data::game_data.screen.battleanim_global = global;
+	Main_Data::game_data.screen.battleanim_active = true;
+	Main_Data::game_data.screen.battleanim_frame = 0;
 
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
@@ -1356,6 +1352,23 @@ int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) 
 	}
 
 	return anim->frames.size() * 2;
+}
+
+void Game_Map::UpdateBattleAnimation() {
+	if (animation) {
+		animation->Update();
+		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
+		if (animation->IsDone()) {
+			CancelBattleAnimation();
+		}
+	}
+}
+
+void Game_Map::CancelBattleAnimation() {
+	Main_Data::game_data.screen.battleanim_frame = animation ?
+		animation->GetFrames() : 0;
+	Main_Data::game_data.screen.battleanim_active = false;
+	animation.reset();
 }
 
 bool Game_Map::IsBattleAnimationWaiting() {

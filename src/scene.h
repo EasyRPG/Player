@@ -106,8 +106,10 @@ public:
 	 * This function is executed before the fade out for
 	 * the scene change, either when terminating the scene
 	 * or switching to a nested scene
+	 *
+	 * @param next_scene the scene we will transition to
 	 */
-	virtual void Suspend();
+	virtual void Suspend(SceneType next_scene);
 
 	/**
 	 * Does the transition upon starting or resuming

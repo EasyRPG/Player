@@ -128,8 +128,9 @@ void Scene::MainFunction() {
 
 		Graphics::Update();
 
-		Suspend();
-		TransitionOut(instance ? instance->type : Null);
+		auto next_scene = instance ? instance->type : Null;
+		Suspend(next_scene);
+		TransitionOut(next_scene);
 
 		// TransitionOut stored a screenshot of the last scene
 		Graphics::UpdateSceneCallback();
@@ -147,7 +148,7 @@ void Scene::Continue(SceneType prev_scene) {
 void Scene::Resume(SceneType prev_scene) {
 }
 
-void Scene::Suspend() {
+void Scene::Suspend(SceneType next_scene) {
 }
 
 void Scene::TransitionIn(SceneType) {
