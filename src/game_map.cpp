@@ -1333,11 +1333,11 @@ void Game_Map::SetupBattle() {
 	}
 }
 
-void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
-		return;
+		return 0;
 	}
 
 	Main_Data::game_data.screen.battleanim_id = animation_id;
@@ -1354,6 +1354,8 @@ void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global)
 			animation.reset(new BattleAnimationChara(*anim, *chara));
 		}
 	}
+
+	return anim->frames.size() * 2;
 }
 
 bool Game_Map::IsBattleAnimationWaiting() {

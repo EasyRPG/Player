@@ -363,8 +363,10 @@ namespace Game_Map {
 	 * @param animation_id the animation ID
 	 * @param target_id the ID of the targeted character
 	 * @param global whether to "show on the entire map"
+	 *
+	 * @return the number of frames the animation will run.
 	 */
-	void ShowBattleAnimation(int animation_id, int target_id, bool global);
+	int ShowBattleAnimation(int animation_id, int target_id, bool global);
 
 	/**
 	 * Whether or not a battle animation is currently playing.
