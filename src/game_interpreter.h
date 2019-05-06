@@ -105,7 +105,6 @@ protected:
 	ContinuationFunction continuation;
 
 	bool waiting_battle_anim;
-	bool updating;
 
 	/**
 	 * Gets strings for choice selection.

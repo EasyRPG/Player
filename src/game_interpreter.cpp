@@ -60,7 +60,6 @@ namespace {
 
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
-	updating = false;
 
 	Clear();
 }
@@ -259,7 +258,6 @@ int Game_Interpreter::GetThisEventId() const {
 
 // Update
 void Game_Interpreter::Update(bool reset_loop_count) {
-	updating = true;
 	if (reset_loop_count) {
 		loop_count = 0;
 	}
@@ -401,8 +399,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// Executed Events Count exceeded (10000)
 		Output::Debug("Event %d exceeded execution limit", event_id);
 	}
-
-	updating = false;
 
 	if (Game_Map::GetNeedRefresh()) {
 		Game_Map::Refresh();
