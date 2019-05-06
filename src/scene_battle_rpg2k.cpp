@@ -598,7 +598,7 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 		if (action->GetTarget()->GetType() == Game_Battler::Type_Enemy) {
 			action->PlayAnimation();
 		} else {
-			action->PlaySoundAnimation(false, 20);
+			action->PlaySoundAnimation(false, 40);
 		}
 	}
 

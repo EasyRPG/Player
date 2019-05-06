@@ -34,22 +34,42 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff_frame = -1);
+	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
 
 	DrawableType GetType() const override;
 
+	/** Update the animation to the next animation **/
 	void Update();
+
+	/** @return the current timing frame (2x the number of frames in the underlying animation **/
 	int GetFrame() const;
+
+	/** @return the animation frame that is currently being displayed **/
+	int GetRealFrame() const;
+
+	/** @return the number of frames the animation will play for **/
 	int GetFrames() const;
-	void SetFrame(int);
+
+	/** @return the number of frames in the underlying animation **/
+	int GetRealFrames() const;
+
+	/**
+	 * Set the current running frame
+	 *
+	 * @param frame the frame to set.
+	 **/
+	void SetFrame(int frame);
+
+	/** @return true if the animation has finished **/
 	bool IsDone() const;
+
+	/** @return true if the animation only plays audio and doesn't display **/
 	bool ShouldOnlySound() const;
 
 protected:
 	virtual void SetFlash(int r, int g, int b, int p) = 0;
 	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
-	void RunTimedSfx();
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
@@ -57,8 +77,7 @@ protected:
 	bool should_only_sound;
 	const RPG::Animation& animation;
 	int frame;
-	bool frame_update;
-	int cutoff;
+	int num_frames;
 
 	FileRequestBinding request_id;
 };
@@ -99,5 +118,30 @@ protected:
 	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
 };
+
+inline void BattleAnimation::SetFrame(int frame) {
+	this->frame = frame;
+}
+
+inline int BattleAnimation::GetFrame() const {
+	return frame;
+}
+
+inline int BattleAnimation::GetRealFrame() const {
+	return GetFrame() / 2;
+}
+
+inline int BattleAnimation::GetFrames() const {
+	return num_frames;
+}
+
+inline int BattleAnimation::GetRealFrames() const {
+	return animation.frames.size();
+}
+
+inline bool BattleAnimation::IsDone() const {
+	return GetFrame() >= GetFrames();
+}
+
 
 #endif

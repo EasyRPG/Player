@@ -31,9 +31,14 @@
 #include "player.h"
 #include "game_temp.h"
 
-BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff_frame) :
-	animation(anim), frame(0), frame_update(false), should_only_sound(only_sound), cutoff(cutoff_frame)
+BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
+	animation(anim), frame(0), should_only_sound(only_sound)
 {
+	num_frames = GetRealFrames() * 2;
+	if (cutoff >= 0 && cutoff < num_frames) {
+		num_frames = cutoff;
+	}
+
 	SetZ(Priority_BattleAnimation);
 
 	const std::string& name = animation.animation_name;
@@ -59,10 +64,13 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Update() {
-	if (frame_update) {
-		frame++;
-		if (cutoff == -1 || frame <= cutoff)
-			RunTimedSfx();
+	if (!IsDone() && (frame & 1) == 0) {
+		// Lookup any timed SFX (SE/flash/shake) data for this frame
+		for (auto& timing: animation.timings) {
+			if (timing.frame == GetRealFrame() + 1) {
+				ProcessAnimationTiming(timing);
+			}
+		}
 	}
 
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
@@ -74,23 +82,7 @@ void BattleAnimation::Update() {
 
 	Sprite::Update();
 
-	frame_update = !frame_update;
-}
-
-void BattleAnimation::SetFrame(int _frame) {
-	frame = _frame;
-}
-
-int BattleAnimation::GetFrame() const {
-	return frame;
-}
-
-int BattleAnimation::GetFrames() const {
-	return animation.frames.size();
-}
-
-bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
+	frame++;
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
@@ -113,7 +105,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 		return;
 	}
 
-	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
+	const RPG::AnimationFrame& anim_frame = animation.frames[GetRealFrame()];
 
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
@@ -156,16 +148,6 @@ bool BattleAnimation::ShouldOnlySound() const {
 
 // FIXME: looks okay, but needs to be measured
 static int flash_length = 12;
-
-void BattleAnimation::RunTimedSfx() {
-	// Lookup any timed SFX (SE/flash/shake) data for this frame
-	std::vector<RPG::AnimationTiming>::const_iterator it = animation.timings.begin();
-	for (; it != animation.timings.end(); ++it) {
-		if (it->frame == GetFrame()) {
-			ProcessAnimationTiming(*it);
-		}
-	}
-}
 
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
