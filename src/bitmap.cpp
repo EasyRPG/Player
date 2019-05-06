@@ -207,6 +207,14 @@ Rect Bitmap::GetRect() const {
 	return Rect(0, 0, width(), height());
 }
 
+size_t Bitmap::GetSize() const {
+	if (!bitmap) {
+		return 0;
+	}
+
+	return pitch() * height();
+}
+
 bool Bitmap::GetTransparent() const {
 	return format.alpha_type != PF::NoAlpha;
 }
@@ -961,7 +969,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		}
 
 	}
-	
+
 }
 
 void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color, Opacity const& opacity) {

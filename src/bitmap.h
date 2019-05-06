@@ -168,6 +168,13 @@ public:
 	Rect GetRect() const;
 
 	/**
+	 * Gets how many bytes the bitmap consumes.
+	 *
+	 * @return bitmap size in bytes
+	 */
+	size_t GetSize() const;
+
+	/**
 	 * Gets if bitmap allows transparency.
 	 *
 	 * @return if bitmap allows transparency.

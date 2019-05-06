@@ -51,22 +51,46 @@ namespace {
 
 	std::string system_name;
 
+	constexpr int cache_limit = 10 * 1024 * 1024;
+	size_t cache_size = 0;
+
 	void FreeBitmapMemory() {
 		int32_t cur_ticks = DisplayUi->GetTicks();
 
 		for (auto& i : cache) {
-			if (i.second.bitmap.use_count() != 1) { continue; }
-
-			if (cur_ticks - i.second.last_access < 5000) {
-				// Last access < 5s
+			if (i.second.bitmap.use_count() != 1) {
+				// Bitmap is referenced
 				continue;
 			}
 
-			//Output::Debug("Freeing memory of %s/%s %d %d",
-			//			  i.first.first.c_str(), i.first.second.c_str(), i.second.last_access, cur_ticks);
+			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3000) {
+				// Below memory limit and last access < 3s
+				continue;
+			}
 
+#ifdef CACHE_DEBUG
+			Output::Debug("Freeing memory of %s/%s %d %d",
+						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str(), i.second.last_access, cur_ticks);
+#endif
+
+			cache_size -= i.second.bitmap->GetSize();
 			i.second.bitmap.reset();
 		}
+
+#ifdef CACHE_DEBUG
+		Output::Debug("Bitmap cache size: %f", cache_size / 1024.0 / 1024);
+#endif
+	}
+
+	BitmapRef AddToCache(const KeyType& key, BitmapRef bmp) {
+		if (bmp) {
+			cache_size += bmp->GetSize();
+#ifdef CACHE_DEBUG
+			Output::Debug("Bitmap cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+#endif
+		}
+
+		return (cache[key] = {bmp, DisplayUi->GetTicks()}).bitmap;
 	}
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
@@ -80,6 +104,8 @@ namespace {
 
 			BitmapRef bmp = BitmapRef();
 
+			FreeBitmapMemory();
+
 			if (path.empty()) {
 				Output::Warning("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			} else {
@@ -89,9 +115,7 @@ namespace {
 				}
 			}
 
-			FreeBitmapMemory();
-
-			return (cache[key] = {bmp, DisplayUi->GetTicks()}).bitmap;
+			return AddToCache(key, bmp);
 		} else {
 			it->second.last_access = DisplayUi->GetTicks();
 			return it->second.bitmap;
@@ -176,7 +200,10 @@ namespace {
 
 		const Spec& s = spec[T];
 
+		FreeBitmapMemory();
+
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
+		cache_size += bitmap->GetSize();
 
 		// ToDo: Maybe use different renderers depending on material
 		// Will look ugly for some image types
@@ -200,9 +227,18 @@ namespace {
 
 		const KeyType key(folder_name, filename, false);
 
-		BitmapRef bitmap = s.dummy_renderer();
+		const cache_type::iterator it = cache.find(key);
 
-		return (cache[key] = {bitmap, DisplayUi->GetTicks()}).bitmap;
+		if (it == cache.end() || !it->second.bitmap) {
+			FreeBitmapMemory();
+
+			BitmapRef bitmap = s.dummy_renderer();
+
+			return AddToCache(key, bitmap);
+		} else {
+			it->second.last_access = DisplayUi->GetTicks();
+			return it->second.bitmap;
+		}
 	}
 
 	template<Material::Type T>
@@ -349,7 +385,7 @@ BitmapRef Cache::Exfont() {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}
 
-		return(cache[hash] = {exfont_img, DisplayUi->GetTicks()}).bitmap;
+		return AddToCache(hash, exfont_img);
 	} else {
 		it->second.last_access = DisplayUi->GetTicks();
 		return it->second.bitmap;
@@ -391,6 +427,7 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 
 void Cache::Clear() {
 	cache.clear();
+	cache_size = 0;
 
 	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
 		if (i->second.expired()) { continue; }
