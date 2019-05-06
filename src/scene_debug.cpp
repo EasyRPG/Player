@@ -247,7 +247,6 @@ void Scene_Debug::Update() {
 							Game_Temp::battle_first_strike = 0;
 							Game_Temp::battle_result = Game_Temp::BattleVictory;
 							Game_Battle::SetBattleMode(0);
-							Game_Temp::transition_menu = false;
 							static_cast<Scene_Map*>(Scene::instance.get())->CallBattle();
 						}
 					}

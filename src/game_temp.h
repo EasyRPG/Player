@@ -39,7 +39,6 @@ public:
 	static bool transition_processing;
 	static Transition::TransitionType transition_type;
 	static bool transition_erase;
-	static bool transition_menu;
 
 	static bool shop_buys;
 	static bool shop_sells;

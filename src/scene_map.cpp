@@ -47,7 +47,6 @@ Scene_Map::Scene_Map(bool from_save) :
 }
 
 Scene_Map::~Scene_Map() {
-	Game_Temp::transition_menu = false;
 }
 
 void Scene_Map::Start() {
@@ -80,15 +79,15 @@ void Scene_Map::Start() {
 	async_continuation = [&]() { UpdateSceneCalling(); };
 }
 
-void Scene_Map::Continue() {
+void Scene_Map::Continue(SceneType prev_scene) {
 	teleport_from_other_scene = true;
-	if (called_battle) {
+	if (prev_scene == Scene::Battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+		return;
 	}
-	else {
-		Game_Map::PlayBgm();
-	}
+
+	Game_Map::PlayBgm();
 
 	// Player cast Escape / Teleport from menu
 	if (Main_Data::game_player->IsPendingTeleport()) {
@@ -99,38 +98,66 @@ void Scene_Map::Continue() {
 	spriteset->Update();
 }
 
-void Scene_Map::Resume() {
-	teleport_from_other_scene = false;
-	called_battle = false;
+static bool IsMenuScene(Scene::SceneType scene) {
+	switch (scene) {
+		case Scene::Shop:
+		case Scene::Name:
+		case Scene::Menu:
+		case Scene::Save:
+		case Scene::Load:
+		case Scene::Debug:
+		case Scene::Skill:
+		case Scene::Item:
+		case Scene::Teleport:
+			return true;
+		default:
+			break;
+	}
+	return false;
 }
 
-void Scene_Map::TransitionIn() {
+void Scene_Map::TransitionIn(SceneType prev_scene) {
+	teleport_from_other_scene = false;
+
 	// Teleport already setup a transition.
 	if (Graphics::IsTransitionPending()) {
 		return;
 	}
 
-	if (called_battle) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
-	} else if (Game_Temp::transition_menu) {
-		Game_Temp::transition_menu = false;
-		Scene::TransitionIn();
-	} else {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
+	// If an event erased the screen, don't transition in.
+	if (screen_erased_by_event) {
+		return;
 	}
+
+	if (prev_scene == Scene::Battle) {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), this, 32);
+		return;
+	}
+
+	if (IsMenuScene(prev_scene)) {
+		Scene::TransitionIn(prev_scene);
+		return;
+	}
+
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 }
 
-void Scene_Map::TransitionOut() {
-	if (called_battle) {
+void Scene_Map::TransitionOut(SceneType next_scene) {
+	if (next_scene != Scene::Battle
+			&& next_scene != Scene::Debug) {
+		screen_erased_by_event = false;
+	}
+
+	if (next_scene == Scene::Battle) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), this, 32, true);
 		Graphics::GetTransition().AppendBefore(Color(255, 255, 255, 255), 12, 2);
+		return;
 	}
-	else if (Scene::instance && Scene::instance->type == Scene::Gameover) {
+	if (next_scene == Scene::Gameover) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		return;
 	}
-	else {
-		Scene::TransitionOut();
-	}
+	Scene::TransitionOut(next_scene);
 }
 
 void Scene_Map::DrawBackground() {
@@ -175,6 +202,7 @@ void Scene_Map::UpdateStage2() {
 	// This will be fixed later.
 
 	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+	screen_erased_by_event = Game_Temp::transition_erase;
 	// Unless its an instant transition, we must wait for it to finish before we can proceed.
 	if (IsAsyncPending()) {
 		async_continuation = [this]() { UpdateStage3(); };
@@ -200,13 +228,16 @@ void Scene_Map::UpdateSceneCalling() {
 	if (Game_Message::visible)
 		return;
 
-	if (Player::debug_flag) {
+	auto call = GetRequestedScene();
+	SetRequestedScene(Null);
+
+	if (call == Null && Player::debug_flag) {
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
 				debug_menuoverwrite_counter++;
 				if (debug_menuoverwrite_counter >= 5) {
-					SetRequestedScene(Menu);
+					call = Menu;
 					debug_menuoverwrite_counter = 0;
 				}
 			}
@@ -214,17 +245,16 @@ void Scene_Map::UpdateSceneCalling() {
 			debug_menuoverwrite_counter = 0;
 		}
 
-		if (Input::IsTriggered(Input::DEBUG_MENU)) {
-			SetRequestedScene(Debug);
-		}
-		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
-			SetRequestedScene(Save);
+		if (call == Null) {
+			if (Input::IsTriggered(Input::DEBUG_MENU)) {
+				call = Debug;
+			}
+			else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+				call = Save;
+			}
 		}
 	}
 
-	auto call = GetRequestedScene();
-
-	SetRequestedScene(Null);
 	switch (call) {
 		case Scene::Menu:
 			CallMenu();
@@ -294,7 +324,7 @@ void Scene_Map::FinishPendingTeleport() {
 	}
 
 	// Event forced the screen to erased, so we're done here.
-	if (Game_Temp::transition_erase) {
+	if (screen_erased_by_event) {
 		UpdateSceneCalling();
 		return;
 	}
@@ -312,7 +342,6 @@ void Scene_Map::FinishPendingTeleport() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	called_battle = true;
 	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_BeginBattle));
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Battle));
@@ -321,20 +350,14 @@ void Scene_Map::CallBattle() {
 }
 
 void Scene_Map::CallShop() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Name>());
 }
 
 void Scene_Map::CallMenu() {
-	Game_Temp::transition_menu = true;
-
 	// TODO: Main_Data::game_player->Straighten();
 
 	Scene::Push(std::make_shared<Scene_Menu>());
@@ -349,20 +372,15 @@ void Scene_Map::CallMenu() {
 }
 
 void Scene_Map::CallSave() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Save>());
 }
 
 void Scene_Map::CallLoad() {
-	Game_Temp::transition_menu = true;
-
 	Scene::Push(std::make_shared<Scene_Load>());
 }
 
 void Scene_Map::CallDebug() {
 	if (Player::debug_flag) {
-		Game_Temp::transition_menu = true;
 		Scene::Push(std::make_shared<Scene_Debug>());
 	}
 }

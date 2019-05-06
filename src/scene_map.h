@@ -37,11 +37,10 @@ public:
 	~Scene_Map();
 
 	void Start() override;
-	void Continue() override;
+	void Continue(SceneType prev_scene) override;
 	void Update() override;
-	void Resume() override;
-	void TransitionIn() override;
-	void TransitionOut() override;
+	void TransitionIn(SceneType prev_scene) override;
+	void TransitionOut(SceneType next_scene) override;
 	void DrawBackground() override;
 
 	void CallBattle();
@@ -71,7 +70,7 @@ private:
 	bool from_save;
 	// Teleport from new game or Teleport / Escape skill from menu.
 	bool teleport_from_other_scene = false;
-	bool called_battle = false;
+	bool screen_erased_by_event = false;
 };
 
 #endif

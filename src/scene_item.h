@@ -37,8 +37,9 @@ public:
 	Scene_Item(int item_index = 0);
 
 	void Start() override;
-	void Continue() override;
+	void Continue(SceneType prev_scene) override;
 	void Update() override;
+	void TransitionOut(Scene::SceneType next_scene) override;
 
 private:
 	/** Displays description about the selected item. */

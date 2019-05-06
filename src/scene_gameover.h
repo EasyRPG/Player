@@ -39,8 +39,8 @@ public:
 
 	void Start() override;
 	void Update() override;
-	void TransitionIn() override;
-	void TransitionOut() override;
+	void TransitionIn(SceneType prev_scene) override;
+	void TransitionOut(SceneType next_scene) override;
 private:
 	/** Background graphic. */
 	std::unique_ptr<Sprite> background;
