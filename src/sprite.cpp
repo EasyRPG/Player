@@ -105,8 +105,9 @@ void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap,
 }
 
 BitmapRef Sprite::Refresh(Rect& rect) {
-	if (zoom_x_effect != 1.0 && zoom_y_effect != 1.0 && angle_effect != 0.0 && waver_effect_depth != 0) {
-		// TODO: Out of bounds check adjustments for zoom, angle and waver
+	if (zoom_x_effect == 1.0 && zoom_y_effect == 1.0 && angle_effect == 0.0 && waver_effect_depth == 0) {
+		// Prevent effect sprite creation when not in the viewport
+		// TODO: Out of bounds math adjustments for zoom, angle and waver
 		// but even without this will catch most of the cases
 		if (Rect(x - ox, y - oy, GetWidth(), GetHeight()).IsOutOfBounds(Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT))) {
 			return BitmapRef();
