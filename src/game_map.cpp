@@ -271,6 +271,12 @@ void Game_Map::SetupFromSave() {
 
 	SetEncounterSteps(location.encounter_steps);
 
+	if (Main_Data::game_data.screen.battleanim_active) {
+		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
+				Main_Data::game_data.screen.battleanim_target,
+				Main_Data::game_data.screen.battleanim_global,
+				Main_Data::game_data.screen.battleanim_frame);
+	}
 
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
@@ -1327,7 +1333,7 @@ void Game_Map::SetupBattle() {
 	}
 }
 
-int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
@@ -1338,7 +1344,7 @@ int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) 
 	Main_Data::game_data.screen.battleanim_target = target_id;
 	Main_Data::game_data.screen.battleanim_global = global;
 	Main_Data::game_data.screen.battleanim_active = true;
-	Main_Data::game_data.screen.battleanim_frame = 0;
+	Main_Data::game_data.screen.battleanim_frame = start_frame;
 
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
@@ -1351,7 +1357,11 @@ int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) 
 		}
 	}
 
-	return anim->frames.size() * 2;
+	if (start_frame) {
+		animation->SetFrame(start_frame);
+	}
+
+	return animation->GetFrames();
 }
 
 void Game_Map::UpdateBattleAnimation() {
