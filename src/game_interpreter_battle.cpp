@@ -252,19 +252,16 @@ bool Game_Interpreter_Battle::CommandChangeBattleBG(RPG::EventCommand const& com
 }
 
 bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const& com) {
-	if (waiting_battle_anim) {
-		waiting_battle_anim = Game_Battle::IsBattleAnimationWaiting();
-		return !waiting_battle_anim;
-	}
-
 	int animation_id = com.parameters[0];
 	int target = com.parameters[1];
-	waiting_battle_anim = com.parameters[2] != 0;
+	bool waiting_battle_anim = com.parameters[2] != 0;
 	bool allies = false;
 
 	if (Player::IsRPG2k3()) {
 		allies = com.parameters[3] != 0;
 	}
+
+	int frames = 0;
 
 	if (target < 0) {
 		std::vector<Game_Battler*> v;
@@ -275,9 +272,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 			Main_Data::game_enemyparty->GetActiveBattlers(v);
 		}
 
-		Game_Battle::ShowBattleAnimation(animation_id, v, false);
-
-		return !waiting_battle_anim;
+		frames = Game_Battle::ShowBattleAnimation(animation_id, v, false);
 	}
 	else {
 		Game_Battler* battler_target = nullptr;
@@ -295,14 +290,16 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 			}
 		}
 
-		if (!battler_target) {
-			return !waiting_battle_anim;
+		if (battler_target) {
+			frames = Game_Battle::ShowBattleAnimation(animation_id, battler_target);
 		}
-
-		Game_Battle::ShowBattleAnimation(animation_id, battler_target);
 	}
 
-	return !waiting_battle_anim;
+	if (waiting_battle_anim) {
+		_state.wait_time = frames;
+	}
+
+	return true;
 }
 
 bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {

@@ -71,7 +71,6 @@ Game_Interpreter::~Game_Interpreter() {
 
 // Clear.
 void Game_Interpreter::Clear() {
-	waiting_battle_anim = false;
 	continuation = NULL;			// function to execute to resume command
 	wait_messages = false;			// wait if message window is visible
 	_state = {};

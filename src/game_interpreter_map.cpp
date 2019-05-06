@@ -606,7 +606,7 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
-	waiting_battle_anim = com.parameters[2] > 0;
+	bool waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
 	Game_Character* chara = GetCharacter(evt_id);
