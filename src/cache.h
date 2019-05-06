@@ -23,10 +23,13 @@
 #include <vector>
 
 #include "system.h"
-#include "color.h"
 #include "memory_management.h"
 
 #define CACHE_DEFAULT_BITMAP "\x01"
+
+class Color;
+class Rect;
+class Tone;
 
 /**
  * Cache namespace.
@@ -49,7 +52,9 @@ namespace Cache {
 	BitmapRef Title(const std::string& filename);
 	BitmapRef System(const std::string& filename);
 	BitmapRef System2(const std::string& filename);
+
 	BitmapRef Tile(const std::string& filename, int tile_id);
+	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend);
 
 	void Clear();
 

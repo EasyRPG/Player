@@ -32,15 +32,6 @@ Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) :
 	alpha(alpha) {
 }
 
-
-bool Color::operator==(const Color &other) const {
-	return red == other.red && green == other.green && blue == other.blue && alpha == other.alpha;
-}
-
-bool Color::operator!=(const Color &other) const {
-	return red != other.red || green != other.green || blue != other.blue || alpha != other.alpha;
-}
-
 void Color::Set(uint8_t nred, uint8_t ngreen, uint8_t nblue, uint8_t nalpha) {
 	red = nred;
 	green = ngreen;

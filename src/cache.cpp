@@ -34,7 +34,7 @@
 #include "data.h"
 
 namespace {
-	using KeyType = std::tuple<std::string,std::string,bool>;
+	using key_type = std::tuple<std::string,std::string,bool>;
 
 	struct CacheItem {
 		BitmapRef bitmap;
@@ -43,11 +43,16 @@ namespace {
 
 	using tile_pair = std::pair<std::string, int>;
 
-	using cache_type = std::map<KeyType, CacheItem>;
+	using cache_type = std::map<key_type, CacheItem>;
 	cache_type cache;
 
 	using cache_tiles_type = std::map<tile_pair, std::weak_ptr<Bitmap>>;
 	cache_tiles_type cache_tiles;
+
+	// rect, flip_x, flip_y, tone, blend
+	using effect_key_type = std::tuple<BitmapRef, Rect, bool, bool, Tone, Color>;
+	using cache_effect_type = std::map<effect_key_type, std::weak_ptr<Bitmap>>;
+	cache_effect_type cache_effects;
 
 	std::string system_name;
 
@@ -82,7 +87,7 @@ namespace {
 #endif
 	}
 
-	BitmapRef AddToCache(const KeyType& key, BitmapRef bmp) {
+	BitmapRef AddToCache(const key_type& key, BitmapRef bmp) {
 		if (bmp) {
 			cache_size += bmp->GetSize();
 #ifdef CACHE_DEBUG
@@ -95,7 +100,7 @@ namespace {
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
 						 bool transparent, const uint32_t flags) {
-		const KeyType key(folder_name, filename, transparent);
+		const key_type key(folder_name, filename, transparent);
 
 		const cache_type::iterator it = cache.find(key);
 
@@ -225,7 +230,7 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		const KeyType key(folder_name, filename, false);
+		const key_type key(folder_name, filename, false);
 
 		const cache_type::iterator it = cache.find(key);
 
@@ -369,7 +374,7 @@ BitmapRef Cache::System(const std::string& file) {
 }
 
 BitmapRef Cache::Exfont() {
-	const KeyType hash("ExFont", "ExFont", false);
+	const key_type hash("ExFont", "ExFont", false);
 
 	cache_type::iterator const it = cache.find(hash);
 
@@ -422,6 +427,56 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 		rect.y += sub_tile_id / 6 * 16;
 
 		return(cache_tiles[key] = Bitmap::Create(*chipset, rect)).lock();
+	} else { return it->second.lock(); }
+}
+
+BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend) {
+	const effect_key_type key {
+		src_bitmap,
+		rect,
+		flip_x,
+		flip_y,
+		tone,
+		blend
+	};
+
+	const auto it = cache_effects.find(key);
+
+	if (it == cache_effects.end() || it->second.expired()) {
+		BitmapRef bitmap_effects;
+
+		auto create = [&src_bitmap] () -> BitmapRef {
+			return Bitmap::Create(src_bitmap->GetWidth(), src_bitmap->GetHeight(), true);
+		};
+
+		if (tone != Tone()) {
+			bitmap_effects = create();
+			bitmap_effects->ToneBlit(rect.x, rect.y, *src_bitmap, rect, tone, Opacity::opaque);
+		}
+
+		if (blend != Color()) {
+			if (bitmap_effects) {
+				// Tone blit was applied
+				bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap_effects, rect, blend, Opacity::opaque);
+			} else {
+				bitmap_effects = create();
+				bitmap_effects->BlendBlit(rect.x, rect.y, *src_bitmap, rect, blend, Opacity::opaque);
+			}
+		}
+
+		if (flip_x || flip_y) {
+			if (bitmap_effects) {
+				// Tone or blend blit was applied
+				bitmap_effects->Flip(rect, flip_x, flip_y);
+			} else {
+				bitmap_effects = create();
+				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::opaque);
+			}
+		}
+
+		assert(bitmap_effects && "Effect cache used but no effect applied!");
+
+		return(cache_effects[key] = bitmap_effects).lock();
 	} else { return it->second.lock(); }
 }
 
