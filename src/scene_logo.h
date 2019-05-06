@@ -40,6 +40,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void DrawBackground() override;
 
 private:
 	std::unique_ptr<Sprite> logo;
