@@ -52,7 +52,6 @@ Sprite::Sprite() :
 	waver_effect_phase(0.0),
 	flash_effect(Color(0,0,0,0)),
 	bitmap_effects_src_rect(Rect()),
-	bitmap_effects_valid(false),
 
 	current_tone(Tone()),
 	current_flash(Color(0,0,0,0)),
@@ -111,7 +110,7 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		// but even without this will catch most of the cases
 		if (Rect(x - ox, y - oy, GetWidth(), GetHeight()).IsOutOfBounds(Rect(0, 0, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT))) {
 			return BitmapRef();
-		};
+		}
 	}
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
@@ -127,21 +126,13 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 	bool effects_rect_changed = rect != bitmap_effects_src_rect;
 
 	if (effects_changed || effects_rect_changed || bitmap_changed) {
-		bitmap_effects_valid = false;
+		bitmap_effects.reset();
 	}
 
 	if (no_effects)
 		return bitmap;
-
-	if (bitmap_effects && bitmap_effects_valid)
+	else if (bitmap_effects)
 		return bitmap_effects;
-
-	BitmapRef src_bitmap;
-
-	if (no_effects)
-		src_bitmap = bitmap;
-	else if (bitmap_effects_valid)
-		src_bitmap = bitmap_effects;
 	else {
 		current_tone = tone_effect;
 		current_flash = flash_effect;
@@ -149,9 +140,9 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flip_y = flipy_effect;
 
 		if (bitmap_effects &&
-			bitmap_effects->GetWidth() < rect.x + rect.width &&
-			bitmap_effects->GetHeight() < rect.y + rect.height) {
-		bitmap_effects.reset();
+				bitmap_effects->GetWidth() < rect.x + rect.width &&
+				bitmap_effects->GetHeight() < rect.y + rect.height) {
+			bitmap_effects.reset();
 		}
 
 		if (!bitmap_effects)
@@ -183,12 +174,9 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		}
 
 		bitmap_effects_src_rect = rect;
-		bitmap_effects_valid = true;
 
-		src_bitmap = bitmap_effects;
+		return bitmap_effects;
 	}
-
-	return src_bitmap;
 }
 
 int Sprite::GetWidth() const {
