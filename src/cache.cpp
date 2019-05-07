@@ -445,29 +445,29 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 	if (it == cache_effects.end() || it->second.expired()) {
 		BitmapRef bitmap_effects;
 
-		auto create = [&src_bitmap] () -> BitmapRef {
-			return Bitmap::Create(src_bitmap->GetWidth(), src_bitmap->GetHeight(), true);
+		auto create = [&rect] () -> BitmapRef {
+			return Bitmap::Create(rect.width, rect.height, true);
 		};
 
 		if (tone != Tone()) {
 			bitmap_effects = create();
-			bitmap_effects->ToneBlit(rect.x, rect.y, *src_bitmap, rect, tone, Opacity::opaque);
+			bitmap_effects->ToneBlit(0, 0, *src_bitmap, rect, tone, Opacity::opaque);
 		}
 
 		if (blend != Color()) {
 			if (bitmap_effects) {
 				// Tone blit was applied
-				bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap_effects, rect, blend, Opacity::opaque);
+				bitmap_effects->BlendBlit(0, 0, *bitmap_effects, bitmap_effects->GetRect(), blend, Opacity::opaque);
 			} else {
 				bitmap_effects = create();
-				bitmap_effects->BlendBlit(rect.x, rect.y, *src_bitmap, rect, blend, Opacity::opaque);
+				bitmap_effects->BlendBlit(0, 0, *src_bitmap, rect, blend, Opacity::opaque);
 			}
 		}
 
 		if (flip_x || flip_y) {
 			if (bitmap_effects) {
 				// Tone or blend blit was applied
-				bitmap_effects->Flip(rect, flip_x, flip_y);
+				bitmap_effects->Flip(bitmap_effects->GetRect(), flip_x, flip_y);
 			} else {
 				bitmap_effects = create();
 				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::opaque);

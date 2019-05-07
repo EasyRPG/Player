@@ -79,14 +79,20 @@ void Sprite::BlitScreen() {
 	if (!bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
-	Rect rect = src_rect_effect.GetSubRect(src_rect);
-
-	BitmapRef draw_bitmap = Refresh(rect);
+	BitmapRef draw_bitmap = Refresh(src_rect_effect);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
 	if (draw_bitmap) {
+		Rect rect = src_rect_effect.GetSubRect(src_rect);
+		if (draw_bitmap == bitmap_effects) {
+			// When a "sprite rect" (src_rect_effect) is used bitmap_effects
+			// only has the size of this subrect instead of the whole bitmap
+			rect.x %= bitmap_effects->GetWidth();
+			rect.y %= bitmap_effects->GetHeight();
+		}
+
 		BlitScreenIntern(*draw_bitmap, rect, bush_effect);
 	}
 }
