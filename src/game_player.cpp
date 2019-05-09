@@ -410,8 +410,10 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool face_hero, boo
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	for (auto* ev: events) {
+		const auto trigger = ev->GetTrigger();
 		if (ev->GetLayer() != RPG::EventPage::Layers_same
-				&& triggers[ev->GetTrigger()]) {
+				&& trigger >= 0
+				&& triggers[trigger]) {
 			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
@@ -425,7 +427,10 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 	Game_Map::GetEventsXY(events, x, y);
 
 	for (const auto& ev : events) {
-		if ( ev->GetLayer() == RPG::EventPage::Layers_same && triggers[ev->GetTrigger()]) {
+		const auto trigger = ev->GetTrigger();
+		if ( ev->GetLayer() == RPG::EventPage::Layers_same
+				&& trigger >= 0
+				&& triggers[trigger]) {
 			result |= ev->SetAsWaitingForegroundExecution(face_hero, triggered_by_decision_key);
 		}
 	}
