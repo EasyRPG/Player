@@ -35,9 +35,9 @@ Scene_Logo::Scene_Logo() :
 }
 
 void Scene_Logo::Start() {
-	logo.reset(new Sprite());
 	if (!Player::debug_flag && !Game_Battle::battle_test.enabled) {
 		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
+		logo.reset(new Sprite());
 		logo->SetBitmap(logo_img);
 	}
 }
@@ -102,6 +102,10 @@ void Scene_Logo::Update() {
 			Scene::Push(std::make_shared<Scene_GameBrowser>(), true);
 		}
 	}
+}
+
+void Scene_Logo::DrawBackground() {
+	DisplayUi->CleanDisplay();
 }
 
 void Scene_Logo::OnIndexReady(FileRequestResult*) {
