@@ -15,29 +15,28 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !(defined(OPENDINGUX) || defined(GEKKO) || defined(USE_LIBRETRO))
+#if defined(USE_LIBRETRO)
 
 // Headers
 #include "input_buttons.h"
 #include "keys.h"
+#include "libretro.h"
 
 void Input::InitButtons() {
+	// Basically the desktop keyboard mapping but with some functionality
+	// disabled because it is provided by libretro or not usable on these
+	// keys due to global hotkey pollution
 	buttons.resize(BUTTON_COUNT);
-
 	buttons[UP].push_back(Keys::UP);
-	buttons[UP].push_back(Keys::K);
 	buttons[UP].push_back(Keys::KP8);
 	buttons[UP].push_back(Keys::W);
 	buttons[DOWN].push_back(Keys::DOWN);
-	buttons[DOWN].push_back(Keys::J);
 	buttons[DOWN].push_back(Keys::KP2);
 	buttons[DOWN].push_back(Keys::S);
 	buttons[LEFT].push_back(Keys::LEFT);
-	buttons[LEFT].push_back(Keys::H);
 	buttons[LEFT].push_back(Keys::KP4);
 	buttons[LEFT].push_back(Keys::A);
 	buttons[RIGHT].push_back(Keys::RIGHT);
-	buttons[RIGHT].push_back(Keys::L);
 	buttons[RIGHT].push_back(Keys::KP6);
 	buttons[RIGHT].push_back(Keys::D);
 	buttons[DECISION].push_back(Keys::Z);
@@ -50,7 +49,6 @@ void Input::InitButtons() {
 	buttons[CANCEL].push_back(Keys::C);
 	buttons[CANCEL].push_back(Keys::V);
 	buttons[CANCEL].push_back(Keys::B);
-	buttons[CANCEL].push_back(Keys::N);
 	buttons[CANCEL].push_back(Keys::ESCAPE);
 	buttons[CANCEL].push_back(Keys::KP0);
 	buttons[SHIFT].push_back(Keys::LSHIFT);
@@ -70,37 +68,24 @@ void Input::InitButtons() {
 	buttons[MULTIPLY].push_back(Keys::MULTIPLY);
 	buttons[DIVIDE].push_back(Keys::DIVIDE);
 	buttons[PERIOD].push_back(Keys::PERIOD);
-	buttons[DEBUG_MENU].push_back(Keys::F9);
+	buttons[DEBUG_MENU].push_back(Keys::F10); // remapped
 	buttons[DEBUG_THROUGH].push_back(Keys::LCTRL);
 	buttons[DEBUG_THROUGH].push_back(Keys::RCTRL);
-	buttons[DEBUG_SAVE].push_back(Keys::F11);
-	buttons[TAKE_SCREENSHOT].push_back(Keys::F10);
-	buttons[TOGGLE_FPS].push_back(Keys::F2);
 	buttons[SHOW_LOG].push_back(Keys::F3);
-	buttons[TOGGLE_FULLSCREEN].push_back(Keys::F4);
-	buttons[TOGGLE_ZOOM].push_back(Keys::F5);
 	buttons[PAGE_UP].push_back(Keys::PGUP);
 	buttons[PAGE_DOWN].push_back(Keys::PGDN);
-	buttons[RESET].push_back(Keys::F12);
-	buttons[FAST_FORWARD].push_back(Keys::F);
-
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	buttons[DECISION].push_back(Keys::MOUSE_LEFT);
-	buttons[CANCEL].push_back(Keys::MOUSE_RIGHT);
-	buttons[SHIFT].push_back(Keys::MOUSE_MIDDLE);
-	buttons[SCROLL_UP].push_back(Keys::MOUSE_SCROLLUP);
-	buttons[SCROLL_DOWN].push_back(Keys::MOUSE_SCROLLDOWN);
-#endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-	// FIXME: Random joystick keys mapping, better to read joystick configuration from .ini
-	buttons[UP].push_back(Keys::JOY_8);
-	buttons[DOWN].push_back(Keys::JOY_2);
-	buttons[LEFT].push_back(Keys::JOY_4);
-	buttons[RIGHT].push_back(Keys::JOY_6);
-	buttons[DECISION].push_back(Keys::JOY_1);
-	buttons[CANCEL].push_back(Keys::JOY_3);
-	buttons[SHIFT].push_back(Keys::JOY_5);
+	buttons[UP].push_back(Keys::JOY_0);
+	buttons[DOWN].push_back(Keys::JOY_1);
+	buttons[LEFT].push_back(Keys::JOY_2);
+	buttons[RIGHT].push_back(Keys::JOY_3);
+	buttons[DECISION].push_back(Keys::JOY_4);
+	buttons[DECISION].push_back(Keys::JOY_7);
+	buttons[CANCEL].push_back(Keys::JOY_5);
+	buttons[SHIFT].push_back(Keys::JOY_6);
+	buttons[RESET].push_back(Keys::JOY_8);
+
 	buttons[N0].push_back(Keys::JOY_10);
 	buttons[N1].push_back(Keys::JOY_11);
 	buttons[N2].push_back(Keys::JOY_12);
@@ -116,28 +101,22 @@ void Input::InitButtons() {
 	buttons[MULTIPLY].push_back(Keys::JOY_22);
 	buttons[DIVIDE].push_back(Keys::JOY_23);
 	buttons[PERIOD].push_back(Keys::JOY_24);
-	buttons[DEBUG_MENU].push_back(Keys::JOY_7);
-	buttons[DEBUG_THROUGH].push_back(Keys::JOY_9);
+	buttons[DEBUG_MENU].push_back(Keys::JOY_25);
+	buttons[DEBUG_THROUGH].push_back(Keys::JOY_26);
 #endif
 
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
+#if defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT)
 	buttons[DOWN].push_back(Keys::JOY_HAT_DOWN);
 	buttons[LEFT].push_back(Keys::JOY_HAT_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_HAT_RIGHT);
 	buttons[UP].push_back(Keys::JOY_HAT_UP);
-
 #endif
 
-#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+#if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	buttons[LEFT].push_back(Keys::JOY_AXIS_X_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
 	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);
 	buttons[UP].push_back(Keys::JOY_AXIS_Y_UP);
-#endif
-
-#if defined(USE_TOUCH) && defined(SUPPORT_TOUCH)
-	buttons[DECISION].push_back(Keys::ONE_FINGER);
-	buttons[CANCEL].push_back(Keys::TWO_FINGERS);
 #endif
 
 	dir_buttons.resize(10);

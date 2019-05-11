@@ -205,6 +205,8 @@ void Player::Run() {
 	// Main loop
 #ifdef EMSCRIPTEN
 	emscripten_set_main_loop(Player::MainLoop, 0, 0);
+#elif defined(USE_LIBRETRO)
+	// Do nothing
 #else
 	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null) {
 #  if defined(_3DS)
@@ -244,20 +246,16 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-#ifdef EMSCRIPTEN
-	// Ticks in emscripten are unreliable due to how the main loop works:
-	// This function is only called 60 times per second instead of theoretical
-	// 1000s of times.
-	Graphics::Draw();
-#else
 	double cur_time = (double)DisplayUi->GetTicks();
-	if (cur_time < next_frame) {
-		Graphics::Draw();
-		cur_time = (double)DisplayUi->GetTicks();
-		// Still time after graphic update? Yield until it's time for next one.
-		if (cur_time < next_frame) {
-			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
-		}
+
+#if !defined(USE_LIBRETRO)
+	// libretro: The frontend handles this, cores should not do rate
+	// limiting
+	if (cur_time < start_time) {
+		// Ensure this function is only called 60 times per second.
+		// Main purpose is for emscripten where the calls per second
+		// equal the display refresh rate.
+		return;
 	}
 #endif
 
@@ -324,6 +322,23 @@ void Player::Update(bool update_scene) {
 		}
 	}
 
+#ifdef EMSCRIPTEN
+	Graphics::Draw();
+#else
+	cur_time = (double)DisplayUi->GetTicks();
+	if (cur_time < next_frame) {
+		Graphics::Draw();
+		cur_time = (double)DisplayUi->GetTicks();
+		// Don't use sleep when the port uses an external timing source
+#if !defined(USE_LIBRETRO)
+		// Still time after graphic update? Yield until it's time for next one.
+		if (cur_time < next_frame) {
+			DisplayUi->Sleep((uint32_t)(next_frame - cur_time));
+		}
+#endif
+	}
+#endif
+
 	start_time = next_frame;
 }
 
@@ -380,7 +395,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	is_3dsx = argc > 0;
 #endif
 #if defined(_WIN32) && !defined(__WINRT__)
-	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc);
+	int argc_w;
+	LPWSTR *argv_w = CommandLineToArgvW(GetCommandLineW(), &argc_w);
 #endif
 
 	engine = EngineNone;
@@ -419,10 +435,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	Output::Debug("CLI: %s", ss.str().c_str());
 
 	std::vector<std::string>::const_iterator it;
-
-	for (it = args.begin(); it != args.end(); ++it) {
-		ss << *it << " ";
-	}
 
 	for (it = args.begin(); it != args.end(); ++it) {
 		if (*it == "window" || *it == "--window") {
@@ -614,6 +626,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 #endif
 	}
+
+#if defined(_WIN32) && !defined(__WINRT__)
+	LocalFree(argv_w);
+#endif
 }
 
 static void OnSystemFileReady(FileRequestResult* result) {

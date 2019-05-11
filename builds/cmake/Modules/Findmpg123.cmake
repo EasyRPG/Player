@@ -58,6 +58,10 @@ if(MPG123_FOUND)
 		set_target_properties(mpg123::mpg123 PROPERTIES
 			INTERFACE_INCLUDE_DIRECTORIES "${MPG123_INCLUDE_DIRS}"
 			IMPORTED_LOCATION "${MPG123_LIBRARY}")
+		if(WIN32)
+			set_property(TARGET mpg123::mpg123 APPEND_STRING PROPERTY
+				INTERFACE_LINK_LIBRARIES "shlwapi")
+		endif()
 	endif()
 endif()
 

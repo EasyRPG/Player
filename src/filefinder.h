@@ -29,9 +29,9 @@
 
 #ifdef PSP2
 #  include <psp2/types.h>
-#  define Offset SceOff
+#  define EasyRPG_Offset SceOff
 #else
-#  define Offset off_t
+#  define EasyRPG_Offset off_t
 #endif
 
 /**
@@ -288,7 +288,7 @@ namespace FileFinder {
 	 * @param file the path to a file
 	 * @return the filesize, or -1 on error
 	 */
-	Offset GetFileSize(const std::string& file);
+	EasyRPG_Offset GetFileSize(const std::string& file);
 
 	/**
 	 * Known file sizes

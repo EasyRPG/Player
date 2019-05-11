@@ -29,6 +29,10 @@
 #include "utils.h"
 #include "decoder_wildmidi.h"
 
+#ifdef USE_LIBRETRO
+#include "libretro_ui.h"
+#endif
+
 #if defined(GEKKO) || defined(_3DS)
 #  define WILDMIDI_FREQ 22050
 #else
@@ -84,7 +88,23 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 	/* find the configuration file in different paths on different platforms
 	 * FIXME: move this logic into some configuration class
 	 */
-#ifdef GEKKO
+#if defined(USE_LIBRETRO)
+	const char *dir = NULL;
+
+	// Game directory
+	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+		config_file = std::string(dir) + "/wildmidi.cfg";
+		found = FileFinder::Exists(config_file);
+	}
+
+	// Content downloader
+	if (!found) {
+		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
+			config_file = std::string(dir) + "/wildmidi/wildmidi.cfg";
+			found = FileFinder::Exists(config_file);
+		}
+	}
+#elif defined(GEKKO)
 	// preferred under /data
 	config_file = "usb:/data/wildmidi/wildmidi.cfg";
 	found = FileFinder::Exists(config_file);
@@ -205,7 +225,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 
 	// TODO: We need some installer which creates registry keys for wildmidi
 
-#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#  elif defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 	if (!found) {
 		config_file = "timidity/timidity.cfg";
 		found = FileFinder::Exists(config_file);
@@ -258,7 +278,7 @@ WildMidiDecoder::WildMidiDecoder(const std::string file_name) {
 		return;
 	}
 
-#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__) 
+#if defined(__MORPHOS__) || defined(__amigaos4__) || defined(__AROS__)
 	// the default volume is way too quiet with the SDL_mixer patches
 	WildMidi_MasterVolume(127);
 #endif
