@@ -187,7 +187,7 @@ namespace {
 
 	// returns empty string when the file is not belonging to an RTP
 	const std::string rtp_lookup(const std::string& dir, const std::string& name, const char* exts[], bool& is_rtp_asset) {
-		int version = Player::IsRPG2k() ? 2000 : 2003;
+		int version = Player::EngineVersion();
 
 		auto normal_search = [&]() -> std::string {
 			is_rtp_asset = false;
@@ -500,7 +500,7 @@ static void add_rtp_path(const std::string& p) {
 		Output::Debug("Adding %s to RTP path", p.c_str());
 		rtp_state.search_paths.push_back(tree);
 
-		auto hit_info = RTP::Detect(tree, atoi(Player::GetEngineVersion().c_str()));
+		auto hit_info = RTP::Detect(tree, Player::EngineVersion());
 
 		if (hit_info.empty()) {
 			Output::Debug("The folder does not contain a known RTP!");
