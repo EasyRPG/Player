@@ -845,27 +845,6 @@ std::vector<int16_t> Game_Battler::BattleStateHeal() {
 	return healed_states;
 }
 
-std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
-	std::vector<int16_t> healed_states;
-	std::vector<int16_t>& states = GetStates();
-
-	if (physical_rate <= 0) {
-		return healed_states;
-	}
-
-	for (size_t i = 0; i < states.size(); ++i) {
-		if (HasState(i + 1) && Data::states[i].release_by_damage > 0) {
-			int release_chance = (int)(Data::states[i].release_by_damage * physical_rate / 100.0);
-
-			if (Utils::ChanceOf(release_chance, 100)) {
-				healed_states.push_back(i + 1);
-			}
-		}
-	}
-
-	return healed_states;
-}
-
 bool Game_Battler::HasReflectState() const {
 	for (int16_t i : GetInflictedStates()) {
 		// States are guaranteed to be valid

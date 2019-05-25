@@ -740,8 +740,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 							action->IsPositive() ? Font::ColorHeal : Font::ColorDefault,
 							std::to_string(action->GetAffectedHp()));
 					}
-
-					target->BattlePhysicalStateHeal(action->GetPhysicalDamageRate());
 				} else {
 					DrawFloatText(
 						target->GetBattleX(),

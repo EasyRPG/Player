@@ -77,6 +77,32 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 	return to_hit;
 }
 
+static void BattlePhysicalStateHeal(Game_Battler* target, int physical_rate, std::vector<Game_BattleAlgorithm::StateEffect>& states) {
+	if (physical_rate <= 0) {
+		return;
+	}
+
+	for (auto state_id: target->GetInflictedStates()) {
+		auto* state = ReaderUtil::GetElement(Data::states, state_id);
+		if (state == nullptr) {
+			continue;
+		}
+		if (state->release_by_damage > 0) {
+			int release_chance = state->release_by_damage * physical_rate / 100;
+
+			if (!Utils::ChanceOf(release_chance, 100)) {
+				continue;
+			}
+
+			if (target->RemoveState(state_id)) {
+				states.push_back(Game_BattleAlgorithm::StateEffect(state_id, Game_BattleAlgorithm::StateEffect::HealedByAttack));
+			}
+		}
+	}
+}
+
+
+
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Type ty, Game_Battler* source) :
 	type(ty), source(source), no_target(true), first_attack(true),
 	source_restriction(RPG::State::Restriction(source->GetSignificantRestriction()))
@@ -934,11 +960,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 			auto target_copy = target->Clone();
 
 			// Conditions healed by physical attack:
-			for (auto state_id: target_copy->BattlePhysicalStateHeal(GetPhysicalDamageRate())) {
-				if (target_copy->RemoveState(state_id)) {
-					states.push_back(StateEffect(state_id, StateEffect::HealedByAttack));
-				}
-			}
+			BattlePhysicalStateHeal(target_copy.get(), GetPhysicalDamageRate(), states);
 
 			// Conditions caused / healed by weapon.
 			if (source->GetType() == Game_Battler::Type_Ally) {
@@ -1230,11 +1252,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		// Conditions healed by physical attack:
 		if (!IsPositive() && skill.affect_hp) {
-			for (auto state_id: target_copy->BattlePhysicalStateHeal(GetPhysicalDamageRate())) {
-				if (target_copy->RemoveState(state_id)) {
-					states.push_back(StateEffect(state_id, StateEffect::HealedByAttack));
-				}
-			}
+			BattlePhysicalStateHeal(target_copy.get(), GetPhysicalDamageRate(), states);
 		}
 
 		// Conditions:
@@ -1765,9 +1783,8 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 		killed_by_dmg = true;
 	}
 
-	for (auto state_id: target->BattlePhysicalStateHeal(GetPhysicalDamageRate())) {
-		states.push_back({state_id, StateEffect::HealedByAttack});
-	}
+	//FIXME: Do we need a clone here?
+	BattlePhysicalStateHeal(target, GetPhysicalDamageRate(), states);
 
 	success = true;
 
