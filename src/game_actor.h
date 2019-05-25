@@ -53,6 +53,8 @@ public:
 
 	int MaxStatBaseValue() const override;
 
+	virtual PermanentStates GetPermanentStates() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.
@@ -806,6 +808,9 @@ public:
 	int IsControllable() const;
 
 private:
+	void ResetEquipmentStates();
+	void AdjustEquipmentStates(const RPG::Item* item, bool add);
+
 	/**
 	 * @return Reference to the Actor data of the LDB
 	 */

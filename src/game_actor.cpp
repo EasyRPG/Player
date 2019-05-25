@@ -76,6 +76,8 @@ void Game_Actor::Init() {
 		SetSp(GetMaxSp());
 		SetExp(exp_list[GetLevel() - 1]);
 	}
+
+	ResetEquipmentStates();
 }
 
 void Game_Actor::Fixup() {
@@ -89,6 +91,8 @@ void Game_Actor::Fixup() {
 	}
 
 	RemoveInvalidData();
+
+	ResetEquipmentStates();
 }
 
 int Game_Actor::GetId() const {
@@ -255,15 +259,19 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 		return -1;
 
 	int old_item_id = GetData().equipped[equip_type - 1];
+	const RPG::Item* old_item = ReaderUtil::GetElement(Data::items, old_item_id);
 
 	const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, new_item_id);
 	if (new_item_id != 0 && !new_item) {
 		Output::Warning("SetEquipment: Can't equip item with invalid ID %d", new_item_id);
-		GetData().equipped[equip_type - 1] = 0;
-		return old_item_id;
+		new_item_id = 0;
 	}
 
 	GetData().equipped[equip_type - 1] = (short)new_item_id;
+
+	AdjustEquipmentStates(old_item, false);
+	AdjustEquipmentStates(new_item, true);
+
 	return old_item_id;
 }
 
@@ -580,7 +588,9 @@ int Game_Actor::GetStateProbability(int state_id) const {
 	// This takes the armor of the character with the most resistance for that particular state
 	for (const auto equipment : GetWholeEquipment()) {
 		RPG::Item* item = ReaderUtil::GetElement(Data::items, equipment);
-		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
+		if (item != nullptr
+				&& !(Player::IsRPG2k3() && item->reverse_state_effect)
+				&& (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
 			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
 			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
 			mul = std::min<int>(mul, 100 - item->state_chance);
@@ -1524,4 +1534,65 @@ bool Game_Actor::HasHalfSpCost() const {
 		|| checkEquip(GetAccessory());
 }
 
+
+static bool IsArmorType(const RPG::Item* item) {
+	return item->type == RPG::Item::Type_shield
+		|| item->type == RPG::Item::Type_armor
+		|| item->type == RPG::Item::Type_helmet
+		|| item->type == RPG::Item::Type_accessory;
+}
+
+void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add) {
+	// All states inflicted by new armor get inflicted.
+	if (Player::IsRPG2k3()
+			&& item
+			&& IsArmorType(item)
+			&& item->reverse_state_effect)
+	{
+		auto& states = item->state_set;
+		for (int i = 0; i < (int)states.size(); ++i) {
+			if (states[i]) {
+				if (add) {
+					AddState(i + 1);
+				} else {
+					RemoveState(i + 1);
+				}
+			}
+		}
+	}
+}
+
+
+void Game_Actor::ResetEquipmentStates() {
+	AdjustEquipmentStates(GetShield(), true);
+	AdjustEquipmentStates(GetArmor(), true);
+	AdjustEquipmentStates(GetHelmet(), true);
+	AdjustEquipmentStates(GetAccessory(), true);
+}
+
+PermanentStates Game_Actor::GetPermanentStates() const {
+	PermanentStates ps;
+	if (!Player::IsRPG2k3()) {
+		return ps;
+	}
+
+	auto addEquip = [&](const RPG::Item* item) {
+		if (!item || !IsArmorType(item) || !item->reverse_state_effect) {
+			return;
+		}
+		auto& states = item->state_set;
+		for (int i = 0; i < (int)states.size(); ++i) {
+			if (states[i]) {
+				ps.Add(i + 1);
+			}
+		}
+	};
+
+	addEquip(GetShield());
+	addEquip(GetArmor());
+	addEquip(GetHelmet());
+	addEquip(GetAccessory());
+
+	return ps;
+}
 
