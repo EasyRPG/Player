@@ -628,7 +628,9 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	auto* target = GetTarget();
 
-	if (GetAffectedHp() != -1 && !GetTarget()->IsDead()) {
+	bool was_dead = GetTarget()->IsDead();
+
+	if (GetAffectedHp() != -1 && !was_dead) {
 		int hp = GetAffectedHp();
 		int target_hp = GetTarget()->GetHp();
 		GetTarget()->ChangeHp(IsPositive() ? hp : -hp);
@@ -701,6 +703,14 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 				break;
 			default:
 				break;
+		}
+	}
+
+	// Apply revived hp healing
+	if (IsPositive() && was_dead && !target->IsDead()) {
+		if (GetAffectedHp()) {
+			int hp = GetAffectedHp();
+			GetTarget()->ChangeHp(hp - 1);
 		}
 	}
 }
@@ -1196,8 +1206,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			// If resurrected and no HP selected, the effect value is a percentage:
 			if (IsRevived() && !skill.affect_hp) {
-				this->hp = std::max<int>(0, std::min<int>(GetTarget()->GetMaxHp() - GetTarget()->GetHp(),
-							GetTarget()->GetMaxHp() * effect / 10));
+				this->hp = Utils::Clamp(GetTarget()->GetMaxHp() * effect / 100, 1, GetTarget()->GetMaxHp() - GetTarget()->GetHp());
 				this->success = true;
 			}
 		}
