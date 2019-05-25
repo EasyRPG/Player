@@ -429,10 +429,11 @@ public:
 	 * Add a State.
 	 *
 	 * @param state_id ID of state to add.
+	 * @param allow_battle_states allow adding of battle only states
 	 *
 	 * @return true if the state was added
 	 */
-	bool AddState(int state_id);
+	bool AddState(int state_id, bool allow_battle_states);
 
 	/**
 	 * Removes a State.

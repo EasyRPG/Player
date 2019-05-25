@@ -30,6 +30,7 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 #include "utils.h"
+#include "game_temp.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -77,7 +78,7 @@ void Game_Actor::Init() {
 		SetExp(exp_list[GetLevel() - 1]);
 	}
 
-	ResetEquipmentStates();
+	ResetEquipmentStates(false);
 }
 
 void Game_Actor::Fixup() {
@@ -92,7 +93,7 @@ void Game_Actor::Fixup() {
 
 	RemoveInvalidData();
 
-	ResetEquipmentStates();
+	ResetEquipmentStates(false);
 }
 
 int Game_Actor::GetId() const {
@@ -269,8 +270,8 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 
 	GetData().equipped[equip_type - 1] = (short)new_item_id;
 
-	AdjustEquipmentStates(old_item, false);
-	AdjustEquipmentStates(new_item, true);
+	AdjustEquipmentStates(old_item, false, false);
+	AdjustEquipmentStates(new_item, true, false);
 
 	return old_item_id;
 }
@@ -1542,7 +1543,7 @@ static bool IsArmorType(const RPG::Item* item) {
 		|| item->type == RPG::Item::Type_accessory;
 }
 
-void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add) {
+void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states) {
 	// All states inflicted by new armor get inflicted.
 	if (Player::IsRPG2k3()
 			&& item
@@ -1553,7 +1554,7 @@ void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add) {
 		for (int i = 0; i < (int)states.size(); ++i) {
 			if (states[i]) {
 				if (add) {
-					AddState(i + 1);
+					AddState(i + 1, allow_battle_states);
 				} else {
 					RemoveState(i + 1);
 				}
@@ -1563,11 +1564,11 @@ void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add) {
 }
 
 
-void Game_Actor::ResetEquipmentStates() {
-	AdjustEquipmentStates(GetShield(), true);
-	AdjustEquipmentStates(GetArmor(), true);
-	AdjustEquipmentStates(GetHelmet(), true);
-	AdjustEquipmentStates(GetAccessory(), true);
+void Game_Actor::ResetEquipmentStates(bool allow_battle_states) {
+	AdjustEquipmentStates(GetShield(), true, allow_battle_states);
+	AdjustEquipmentStates(GetArmor(), true, allow_battle_states);
+	AdjustEquipmentStates(GetHelmet(), true, allow_battle_states);
+	AdjustEquipmentStates(GetAccessory(), true, allow_battle_states);
 }
 
 PermanentStates Game_Actor::GetPermanentStates() const {

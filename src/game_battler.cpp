@@ -312,7 +312,9 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 			if (skill->state_effects[i]) {
 				if (skill->reverse_state_effect) {
 					was_used |= !HasState(Data::states[i].ID);
-					AddState(Data::states[i].ID);
+					// FIXME: This logic always called from menu, so we set false
+					// to allow_battle_states
+					AddState(Data::states[i].ID, false);
 				}
 				else {
 					was_used |= HasState(Data::states[i].ID);
@@ -397,8 +399,8 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 	SetAgiModifier(agi_modifier + modifier);
 }
 
-bool Game_Battler::AddState(int state_id) {
-	auto was_added = State::Add(state_id, GetStates(), GetPermanentStates());
+bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
+	auto was_added = State::Add(state_id, GetStates(), GetPermanentStates(), allow_battle_states);
 
 	if (!was_added) {
 		return was_added;
@@ -531,7 +533,7 @@ void Game_Battler::ChangeHp(int hp) {
 
 		// Death
 		if (GetHp() <= 0) {
-			AddState(RPG::State::kDeathID);
+			AddState(RPG::State::kDeathID, true);
 		}
 	}
 }

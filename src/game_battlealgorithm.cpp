@@ -693,7 +693,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	for (auto& se: states) {
 		switch (se.effect) {
 			case StateEffect::Inflicted:
-				target->AddState(se.state_id);
+				target->AddState(se.state_id, true);
 				break;
 			case StateEffect::Healed:
 			case StateEffect::HealedByAttack:
@@ -1007,7 +1007,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 					}
 					// Normal attacks don't produce AlreadyInflicted messages in 2k battle
 					// so we filter on HasState.
-					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states)) {
+					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states, true)) {
 						states.push_back(StateEffect(state_id, StateEffect::Inflicted));
 						return true;
 					}
@@ -1290,7 +1290,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 					states.push_back({state_id, StateEffect::Healed});
 				}
 			} else if (Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-				if (State::Add(state_id, target_states, target_perm_states)) {
+				if (State::Add(state_id, target_states, target_perm_states, true)) {
 					this->success = true;
 					states.push_back({state_id, StateEffect::Inflicted});
 					if (state_id == RPG::State::kDeathID) {

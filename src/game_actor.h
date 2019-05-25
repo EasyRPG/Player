@@ -807,9 +807,15 @@ public:
 	 */
 	int IsControllable() const;
 
+	/** 
+	 * Reset all equipment inflicted states
+	 *
+	 * @param allow_battle_states allow battle states to be added.
+	 */
+	void ResetEquipmentStates(bool allow_battle_states);
+
 private:
-	void ResetEquipmentStates();
-	void AdjustEquipmentStates(const RPG::Item* item, bool add);
+	void AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states);
 
 	/**
 	 * @return Reference to the Actor data of the LDB

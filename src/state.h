@@ -53,9 +53,10 @@ bool Has(int state_id, const StateVec& states);
  * @param state_id database state ID.
  * @param vector of states
  * @param ps permanent states that can never be removed
+ * @param allow_battle_states allow adding of battle only states
  * @return whether state was added.
  */
-bool Add(int state_id, StateVec& states, const PermanentStates& ps);
+bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_battle_states);
 
 /**
  * Removes a state from states if possible

@@ -23,7 +23,7 @@
 
 namespace State {
 
-bool Add(int state_id, StateVec& states, const PermanentStates& ps) {
+bool Add(int state_id, StateVec& states, const PermanentStates& ps, bool allow_battle_states) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("State::Add: Can't add state with invalid ID %d", state_id);
@@ -31,6 +31,10 @@ bool Add(int state_id, StateVec& states, const PermanentStates& ps) {
 	}
 
 	if (Has(RPG::State::kDeathID, states)) {
+		return false;
+	}
+
+	if (!allow_battle_states && state->type == RPG::State::Persistence_ends) {
 		return false;
 	}
 

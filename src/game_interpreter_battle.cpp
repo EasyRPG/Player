@@ -232,7 +232,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand co
 			Game_Battle::GetSpriteset().FindBattler(&enemy)->SetVisible(false);
 			Game_Battle::SetNeedRefresh(true);
 		}
-		enemy.AddState(state_id);
+		enemy.AddState(state_id, true);
 	}
 	return true;
 }

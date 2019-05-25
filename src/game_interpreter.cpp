@@ -1438,7 +1438,8 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 			actor->RemoveState(state_id);
 			Game_Battle::SetNeedRefresh(true);
 		} else {
-			actor->AddState(state_id);
+			// RPG_RT always adds states from event commands, even battle states.
+			actor->AddState(state_id, true);
 			Game_Battle::SetNeedRefresh(true);
 		}
 	}
