@@ -727,9 +727,10 @@ std::vector<int16_t> Game_Battler::BattleStateHeal() {
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
 			if (states[i] > Data::states[i].hold_turn
-					&& Utils::ChanceOf(Data::states[i].auto_release_prob, 100)) {
+					&& Utils::ChanceOf(Data::states[i].auto_release_prob, 100)
+					&& RemoveState(i + 1)
+					) {
 				healed_states.push_back(i + 1);
-				RemoveState(i + 1);
 			} else {
 				++states[i];
 			}
