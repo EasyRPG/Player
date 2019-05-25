@@ -439,10 +439,11 @@ public:
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
+	 * @param always_remove_battle_states remove battle states even if permanent
 	 *
 	 * @return true if the state was removed
 	 */
-	bool RemoveState(int state_id);
+	bool RemoveState(int state_id, bool always_remove_battle_states);
 
 	/**
 	 * Removes all states which end after battle.

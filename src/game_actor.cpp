@@ -1556,7 +1556,7 @@ void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add, bool all
 				if (add) {
 					AddState(i + 1, allow_battle_states);
 				} else {
-					RemoveState(i + 1);
+					RemoveState(i + 1, false);
 				}
 			}
 		}

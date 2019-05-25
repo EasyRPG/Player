@@ -229,7 +229,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 				was_used |= HasState(Data::states[i].ID);
 				if (i == 0 && HasState(i + 1))
 					revived = 1;
-				RemoveState(Data::states[i].ID);
+				RemoveState(Data::states[i].ID, false);
 			}
 		}
 
@@ -318,7 +318,7 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 				}
 				else {
 					was_used |= HasState(Data::states[i].ID);
-					RemoveState(Data::states[i].ID);
+					RemoveState(Data::states[i].ID, false);
 
 					// If Death is cured and HP is not selected, we set a bool so it later heals HP percentage
 					if (i == 0 && !skill->affect_hp) {
@@ -427,8 +427,16 @@ bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
 	return was_added;
 }
 
-bool Game_Battler::RemoveState(int state_id) {
-	auto was_removed = State::Remove(state_id, GetStates(), GetPermanentStates());
+bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
+	PermanentStates ps;
+
+	auto* state = ReaderUtil::GetElement(Data::states, state_id);
+
+	if (!(always_remove_battle_states && state && state->type == RPG::State::Persistence_ends)) {
+		ps = GetPermanentStates();
+	}
+
+	auto was_removed = State::Remove(state_id, GetStates(), ps);
 
 	if (was_removed && state_id == RPG::State::kDeathID) {
 		SetHp(1);
@@ -728,7 +736,7 @@ std::vector<int16_t> Game_Battler::BattleStateHeal() {
 		if (HasState(i + 1)) {
 			if (states[i] > Data::states[i].hold_turn
 					&& Utils::ChanceOf(Data::states[i].auto_release_prob, 100)
-					&& RemoveState(i + 1)
+					&& RemoveState(i + 1, false)
 					) {
 				healed_states.push_back(i + 1);
 			} else {

@@ -697,7 +697,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 				break;
 			case StateEffect::Healed:
 			case StateEffect::HealedByAttack:
-				target->RemoveState(se.state_id);
+				target->RemoveState(se.state_id, false);
 				break;
 			default:
 				break;
