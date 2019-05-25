@@ -112,7 +112,7 @@ public:
 	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
-	 *         Returns NULL if no states.
+	 *         Returns nullptr if no states.
 	 */
 	const RPG::State* GetSignificantState() const;
 
@@ -428,7 +428,7 @@ public:
 	 *
 	 * @return true if the state was added
 	 */
-	virtual bool AddState(int state_id);
+	bool AddState(int state_id);
 
 	/**
 	 * Removes a State.
@@ -437,17 +437,17 @@ public:
 	 *
 	 * @return true if the state was removed
 	 */
-	virtual bool RemoveState(int state_id);
+	bool RemoveState(int state_id);
 
 	/**
 	 * Removes all states which end after battle.
 	 */
-	virtual void RemoveBattleStates();
+	void RemoveBattleStates();
 
 	/**
 	 * Removes all states.
 	 */
-	virtual void RemoveAllStates();
+	void RemoveAllStates();
 
 	/**
 	 * Tests if the battler has a state that provides reflect.

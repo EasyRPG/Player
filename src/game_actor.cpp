@@ -326,14 +326,6 @@ std::vector<int16_t>& Game_Actor::GetStates() {
 	return GetData().status;
 }
 
-void Game_Actor::RemoveBattleStates() {
-	Game_Battler::RemoveBattleStates();
-}
-
-void Game_Actor::RemoveAllStates() {
-	Game_Battler::RemoveAllStates();
-}
-
 int Game_Actor::GetHp() const {
 	return GetData().current_hp;
 }

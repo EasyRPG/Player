@@ -494,16 +494,6 @@ public:
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
 
-	/**
-	 * Removes all states which end after battle.
-	 */
-	void RemoveBattleStates() override;
-
-	/**
-	 * Removes all states.
-	 */
-	void RemoveAllStates() override;
-
 	int GetHp() const override;
 	void SetHp(int _hp) override;
 
