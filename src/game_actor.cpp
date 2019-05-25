@@ -107,23 +107,21 @@ bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 		return false;
 	}
 
-	if (IsDead() && item->type != RPG::Item::Type_medicine) {
-		return false;
-	}
+	if (!IsDead()) {
+		if (item->type == RPG::Item::Type_book) {
+			return LearnSkill(item->skill_id);
+		}
 
-	if (item->type == RPG::Item::Type_book) {
-		return LearnSkill(item->skill_id);
-	}
+		if (item->type == RPG::Item::Type_material) {
+			SetBaseMaxHp(GetBaseMaxHp() + item->max_hp_points);
+			SetBaseMaxSp(GetBaseMaxSp() + item->max_sp_points);
+			SetBaseAtk(GetBaseAtk() + item->atk_points2);
+			SetBaseDef(GetBaseDef() + item->def_points2);
+			SetBaseAgi(GetBaseAgi() + item->agi_points2);
+			SetBaseSpi(GetBaseSpi() + item->spi_points2);
 
-	if (item->type == RPG::Item::Type_material) {
-		SetBaseMaxHp(GetBaseMaxHp() + item->max_hp_points);
-		SetBaseMaxSp(GetBaseMaxSp() + item->max_sp_points);
-		SetBaseAtk(GetBaseAtk() + item->atk_points2);
-		SetBaseDef(GetBaseDef() + item->def_points2);
-		SetBaseAgi(GetBaseAgi() + item->agi_points2);
-		SetBaseSpi(GetBaseSpi() + item->spi_points2);
-
-		return true;
+			return true;
+		}
 	}
 
 	return Game_Battler::UseItem(item_id, source);
