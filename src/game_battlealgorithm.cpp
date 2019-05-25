@@ -1285,8 +1285,9 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 
 			if (heals_states) {
+				// RPG_RT 2k3 skills which fail due to permanent states don't "miss"
+				this->success = true;
 				if (State::Remove(state_id, target_states, target_perm_states)) {
-					this->success = true;
 					states.push_back({state_id, StateEffect::Healed});
 				}
 			} else if (Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
