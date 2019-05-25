@@ -78,13 +78,13 @@ static inline int ToHitPhysical(Game_Battler *source, Game_Battler *target, int 
 	return to_hit;
 }
 
-static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, std::vector<Game_BattleAlgorithm::StateEffect>& states) {
+static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& target_states, const PermanentStates& ps, std::vector<Game_BattleAlgorithm::StateEffect>& states) {
 	if (physical_rate <= 0) {
 		return;
 	}
 
-	for (size_t i = 0; i < target_states.size(); ++i) {
-		auto state_id = (int)(i + 1);
+	for (int i = 0; i < (int)target_states.size(); ++i) {
+		auto state_id = i + 1;
 		if (!State::Has(state_id, target_states)) {
 			continue;
 		}
@@ -100,7 +100,7 @@ static void BattlePhysicalStateHeal(int physical_rate, std::vector<int16_t>& tar
 				continue;
 			}
 
-			if (State::Remove(state_id, target_states)) {
+			if (State::Remove(state_id, target_states, ps)) {
 				states.push_back(Game_BattleAlgorithm::StateEffect(state_id, Game_BattleAlgorithm::StateEffect::HealedByAttack));
 			}
 		}
@@ -964,9 +964,10 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 		else {
 			// Make a copy of the target's state set and see what we can apply.
 			auto target_states = target->GetStates();
+			auto target_perm_states = target->GetPermanentStates();
 
 			// Conditions healed by physical attack:
-			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, states);
+			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 
 			// Conditions caused / healed by weapon.
 			if (source->GetType() == Game_Battler::Type_Ally) {
@@ -999,14 +1000,14 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 						return false;
 					}
 					if (weapon_heals_states) {
-						if (State::Remove(state_id, target_states)) {
+						if (State::Remove(state_id, target_states, target_perm_states)) {
 							states.push_back(StateEffect(state_id, StateEffect::Healed));
 						}
 						return false;
 					}
 					// Normal attacks don't produce AlreadyInflicted messages in 2k battle
 					// so we filter on HasState.
-					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states)) {
+					if (!State::Has(state_id, target_states) && State::Add(state_id, target_states, target_perm_states)) {
 						states.push_back(StateEffect(state_id, StateEffect::Inflicted));
 						return true;
 					}
@@ -1255,10 +1256,11 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		// Make a copy of the target's state set and see what we can apply.
 		auto target_states = target->GetStates();
+		auto target_perm_states = target->GetPermanentStates();
 
 		// Conditions healed by physical attack:
 		if (!IsPositive() && skill.affect_hp) {
-			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, states);
+			BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 		}
 
 		// Conditions:
@@ -1283,12 +1285,12 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			}
 
 			if (heals_states) {
-				if (State::Remove(state_id, target_states)) {
+				if (State::Remove(state_id, target_states, target_perm_states)) {
 					this->success = true;
 					states.push_back({state_id, StateEffect::Healed});
 				}
 			} else if (Utils::PercentChance(GetTarget()->GetStateProbability(state_id))) {
-				if (State::Add(state_id, target_states)) {
+				if (State::Add(state_id, target_states, target_perm_states)) {
 					this->success = true;
 					states.push_back({state_id, StateEffect::Inflicted});
 					if (state_id == RPG::State::kDeathID) {
@@ -1564,13 +1566,14 @@ bool Game_BattleAlgorithm::Item::Execute() {
 
 		// Make a copy of the target's state set and see what we can apply.
 		auto target_states = target->GetStates();
+		auto target_perm_states = target->GetPermanentStates();
 
 		bool is_dead_cured = false;
 		for (int i = 0; i < (int)item.state_set.size(); i++) {
 			if (item.state_set[i]) {
 				if (i == 0)
 					is_dead_cured = true;
-				if (State::Remove(i + 1, target_states)) {
+				if (State::Remove(i + 1, target_states, target_perm_states)) {
 					states.push_back({i+1, StateEffect::Healed});
 				}
 			}
@@ -1791,9 +1794,10 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 
 	// Make a copy of the target's state set and see what we can apply.
 	auto target_states = target->GetStates();
+	auto target_perm_states = target->GetPermanentStates();
 
 	// Conditions healed by physical attack:
-	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, states);
+	BattlePhysicalStateHeal(GetPhysicalDamageRate(), target_states, target_perm_states, states);
 
 	success = true;
 

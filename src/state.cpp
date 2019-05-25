@@ -23,7 +23,7 @@
 
 namespace State {
 
-bool Add(int state_id, StateVec& states) {
+bool Add(int state_id, StateVec& states, const PermanentStates& ps) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("State::Add: Can't add state with invalid ID %d", state_id);
@@ -35,7 +35,7 @@ bool Add(int state_id, StateVec& states) {
 	}
 
 	if (state_id == RPG::State::kDeathID) {
-		RemoveAll(states);
+		RemoveAll(states, ps);
 	}
 
 	if (state_id > static_cast<int>(states.size())) {
@@ -49,7 +49,7 @@ bool Add(int state_id, StateVec& states) {
 	const RPG::State* sig_state = GetSignificantState(states);
 
 	for (int i = 0; i < (int)states.size(); ++i) {
-		if (Data::states[i].priority <= sig_state->priority - 10) {
+		if (Data::states[i].priority <= sig_state->priority - 10 && !ps.Has(i + 1)) {
 			states[i] = 0;
 		}
 	}
@@ -57,7 +57,7 @@ bool Add(int state_id, StateVec& states) {
 	return states[state_id - 1] != 0;
 }
 
-bool Remove(int state_id, StateVec& states) {
+bool Remove(int state_id, StateVec& states, const PermanentStates& ps) {
 	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
 	if (!state) {
 		Output::Warning("State::Remove: Can't remove state with invalid ID %d", state_id);
@@ -71,6 +71,10 @@ bool Remove(int state_id, StateVec& states) {
 	auto& st = states[state_id - 1];
 
 	if (!st) {
+		return false;
+	}
+
+	if (ps.Has(state_id)) {
 		return false;
 	}
 
@@ -90,13 +94,18 @@ void RemoveAllBattle(StateVec& states) {
 			continue;
 		}
 		if (state->auto_release_prob > 0) {
-			Remove(state_id, states);
+			Remove(state_id, states, {});
 		}
 	}
 }
 
-void RemoveAll(StateVec& states) {
-	states.clear();
+void RemoveAll(StateVec& states, const PermanentStates& ps) {
+	for (int i = 0; i < (int)states.size(); ++i) {
+		auto state_id = i + 1;
+		if (Has(state_id, states)) {
+			Remove(state_id, states, ps);
+		}
+	}
 }
 
 RPG::State::Restriction GetSignificantRestriction(const StateVec& states) {

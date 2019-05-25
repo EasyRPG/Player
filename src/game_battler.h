@@ -23,6 +23,7 @@
 #include <vector>
 #include "rpg_state.h"
 #include "system.h"
+#include "state.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -63,6 +64,9 @@ public:
 	 * @return vector containing the IDs of all states the battler has.
 	 */
 	std::vector<int16_t> GetInflictedStates() const;
+
+	/** @return permenant states that cannot be removed */
+	virtual PermanentStates GetPermanentStates() const;
 
 	/**
 	 * @return true battler evades all physical attacks.

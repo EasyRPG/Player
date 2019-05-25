@@ -54,6 +54,10 @@ std::vector<int16_t> Game_Battler::GetInflictedStates() const {
 	return inf_states;
 }
 
+PermanentStates Game_Battler::GetPermanentStates() const {
+	return PermanentStates();
+}
+
 bool Game_Battler::EvadesAllPhysicalAttacks() const {
 	for (auto state_id: GetInflictedStates()) {
 		auto* state = ReaderUtil::GetElement(Data::states, state_id);
@@ -394,7 +398,7 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 }
 
 bool Game_Battler::AddState(int state_id) {
-	auto was_added = State::Add(state_id, GetStates());
+	auto was_added = State::Add(state_id, GetStates(), GetPermanentStates());
 
 	if (!was_added) {
 		return was_added;
@@ -422,7 +426,7 @@ bool Game_Battler::AddState(int state_id) {
 }
 
 bool Game_Battler::RemoveState(int state_id) {
-	auto was_removed = State::Remove(state_id, GetStates());
+	auto was_removed = State::Remove(state_id, GetStates(), GetPermanentStates());
 
 	if (was_removed && state_id == RPG::State::kDeathID) {
 		SetHp(1);
@@ -486,7 +490,7 @@ void Game_Battler::RemoveBattleStates() {
 }
 
 void Game_Battler::RemoveAllStates() {
-	State::RemoveAll(GetStates());
+	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
 bool Game_Battler::IsCharged() const {

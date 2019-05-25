@@ -27,7 +27,18 @@
  */
 using StateVec = std::vector<int16_t>;
 
+class PermanentStates {
+	public:
+		void Add(int state_id);
+		void Remove(int state_id);
+		void Clear();
+		bool Has(int state_id) const;
+	private:
+		std::vector<bool> states;
+};
+
 namespace State {
+
 
 /**
  * @param state_id database state ID.
@@ -41,18 +52,20 @@ bool Has(int state_id, const StateVec& states);
  *
  * @param state_id database state ID.
  * @param vector of states
+ * @param ps permanent states that can never be removed
  * @return whether state was added.
  */
-bool Add(int state_id, StateVec& states);
+bool Add(int state_id, StateVec& states, const PermanentStates& ps);
 
 /**
  * Removes a state from states if possible
  *
  * @param state_id database state ID.
  * @param vector of states
+ * @param ps permanent states that can never be removed
  * @return whether state was removed.
  */
-bool Remove(int state_id, StateVec& states);
+bool Remove(int state_id, StateVec& states, const PermanentStates& ps);
 
 /**
  * Removes all states which end after battle.
@@ -65,8 +78,9 @@ void RemoveAllBattle(StateVec& states);
  * Removes all states.
  *
  * @param vector of states
+ * @param ps permanent states that can never be removed
  */
-void RemoveAll(StateVec& states);
+void RemoveAll(StateVec& states, const PermanentStates& ps);
 
 /**
  * Checks all states and returns the highest priority restriction that different to
@@ -97,6 +111,28 @@ int GetStateRate(int state_id, int rate);
 
 inline bool State::Has(int state_id, const StateVec& states) {
 	return states.size() >= state_id && states[state_id - 1] > 0;
+}
+
+
+inline void PermanentStates::Add(int state_id) {
+	if (states.size() < state_id) {
+		states.resize(state_id);
+	}
+	states[state_id - 1] = true;
+}
+
+inline void PermanentStates::Remove(int state_id) {
+	if (states.size() >= state_id) {
+		states[state_id - 1] = 0;
+	}
+}
+
+inline void PermanentStates::Clear() {
+	states.clear();
+}
+
+inline bool PermanentStates::Has(int state_id) const {
+	return states.size() >= state_id && states[state_id - 1];
 }
 
 #endif
