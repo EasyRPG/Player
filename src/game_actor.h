@@ -805,10 +805,6 @@ public:
 	 */
 	int IsControllable() const;
 
-	std::unique_ptr<Game_Battler> Clone() const override {
-		return std::unique_ptr<Game_Battler>(new Game_Actor(*this));
-	}
-
 private:
 	/**
 	 * @return Reference to the Actor data of the LDB

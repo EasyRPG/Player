@@ -648,8 +648,6 @@ public:
 	 */
 	int GetHitChanceModifierFromStates() const;
 
-	virtual std::unique_ptr<Game_Battler> Clone() const = 0;
-
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
