@@ -39,19 +39,19 @@ Game_Battler::Game_Battler() {
 }
 
 bool Game_Battler::HasState(int state_id) const {
-	const std::vector<int16_t> states = GetInflictedStates();
-
-	return (std::find(states.begin(), states.end(), state_id) != states.end());
+	auto& states = GetStates();
+	return states.size() >= state_id && states[state_id - 1] > 0;
 }
 
 std::vector<int16_t> Game_Battler::GetInflictedStates() const {
-	std::vector<int16_t> states;
-	for (size_t i = 0; i < GetStates().size(); ++i) {
-		if (GetStates()[i] > 0) {
-			states.push_back(Data::states[i].ID);
+	auto& states = GetStates();
+	std::vector<int16_t> inf_states;
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			inf_states.push_back(i + 1);
 		}
 	}
-	return states;
+	return inf_states;
 }
 
 bool Game_Battler::EvadesAllPhysicalAttacks() const {
