@@ -246,6 +246,8 @@ add_library(${PROJECT_NAME}
 	src/spriteset_map.h
 	src/sprite_timer.cpp
 	src/sprite_timer.h
+	src/state.cpp
+	src/state.h
 	src/switch_ui.cpp
 	src/switch_ui.h
 	src/system.h
