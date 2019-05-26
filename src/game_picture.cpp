@@ -124,12 +124,11 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetTone(tone);
 
 	if (data.flags.affected_by_flash) {
-		int flash_level = 0;
-		int flash_time = 0;
-		auto flash = Main_Data::game_screen->GetFlash(flash_level, flash_time);
-		if (flash_time > 0) {
-			flash.alpha = flash_level;
-			sprite->Flash(flash, flash_time);
+		auto flash_color = Main_Data::game_screen->GetFlashColor();
+		if (flash_color.alpha > 0) {
+			sprite->Flash(flash_color, 0);
+		} else {
+			sprite->Flash(Color(), 0);
 		}
 	}
 }
