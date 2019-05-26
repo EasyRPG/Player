@@ -276,7 +276,7 @@ void BattleAnimationBattlers::Draw() {
 	}
 }
 void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
-	auto color = Color(r * 255 / 31, g * 255 / 31, b * 255 / 31, p * 255 / 31);
+	auto color = MakeFlashColor(r, g, b, p);
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 	     it != battlers.end(); ++it) {
 		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);

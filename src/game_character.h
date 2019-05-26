@@ -1015,7 +1015,7 @@ inline void Game_Character::SetAnimPaused(bool value) {
 }
 
 inline Color Game_Character::GetFlashColor() const {
-	return Color(data()->flash_red * 255 / 31, data()->flash_green * 255 / 31, data()->flash_blue * 255 / 31, data()->flash_current_level * 255 / 31);
+	return MakeFlashColor(data()->flash_red, data()->flash_green, data()->flash_blue, data()->flash_current_level);
 }
 
 inline double Game_Character::GetFlashLevel() const {
