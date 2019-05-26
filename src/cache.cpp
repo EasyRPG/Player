@@ -34,7 +34,7 @@
 #include "data.h"
 
 namespace {
-	using KeyType = std::tuple<std::string,std::string,bool>;
+	using key_type = std::tuple<std::string,std::string,bool>;
 
 	struct CacheItem {
 		BitmapRef bitmap;
@@ -43,42 +43,73 @@ namespace {
 
 	using tile_pair = std::pair<std::string, int>;
 
-	using cache_type = std::map<KeyType, CacheItem>;
+	using cache_type = std::map<key_type, CacheItem>;
 	cache_type cache;
 
 	using cache_tiles_type = std::map<tile_pair, std::weak_ptr<Bitmap>>;
 	cache_tiles_type cache_tiles;
 
+	// rect, flip_x, flip_y, tone, blend
+	using effect_key_type = std::tuple<BitmapRef, Rect, bool, bool, Tone, Color>;
+	using cache_effect_type = std::map<effect_key_type, std::weak_ptr<Bitmap>>;
+	cache_effect_type cache_effects;
+
 	std::string system_name;
+
+	constexpr int cache_limit = 10 * 1024 * 1024;
+	size_t cache_size = 0;
 
 	void FreeBitmapMemory() {
 		int32_t cur_ticks = DisplayUi->GetTicks();
 
 		for (auto& i : cache) {
-			if (i.second.bitmap.use_count() != 1) { continue; }
-
-			if (cur_ticks - i.second.last_access < 5000) {
-				// Last access < 5s
+			if (i.second.bitmap.use_count() != 1) {
+				// Bitmap is referenced
 				continue;
 			}
 
-			//Output::Debug("Freeing memory of %s/%s %d %d",
-			//			  i.first.first.c_str(), i.first.second.c_str(), i.second.last_access, cur_ticks);
+			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3000) {
+				// Below memory limit and last access < 3s
+				continue;
+			}
 
+#ifdef CACHE_DEBUG
+			Output::Debug("Freeing memory of %s/%s %d %d",
+						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str(), i.second.last_access, cur_ticks);
+#endif
+
+			cache_size -= i.second.bitmap->GetSize();
 			i.second.bitmap.reset();
 		}
+
+#ifdef CACHE_DEBUG
+		Output::Debug("Bitmap cache size: %f", cache_size / 1024.0 / 1024);
+#endif
 	}
 
-	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
-						 bool transparent, uint32_t const flags) {
-		KeyType const key(folder_name, filename, transparent);
+	BitmapRef AddToCache(const key_type& key, BitmapRef bmp) {
+		if (bmp) {
+			cache_size += bmp->GetSize();
+#ifdef CACHE_DEBUG
+			Output::Debug("Bitmap cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+#endif
+		}
 
-		cache_type::iterator const it = cache.find(key);
+		return (cache[key] = {bmp, DisplayUi->GetTicks()}).bitmap;
+	}
+
+	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
+						 bool transparent, const uint32_t flags) {
+		const key_type key(folder_name, filename, transparent);
+
+		const cache_type::iterator it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
-			std::string const path = FileFinder::FindImage(folder_name, filename);
+			const std::string path = FileFinder::FindImage(folder_name, filename);
 
 			BitmapRef bmp = BitmapRef();
+
+			FreeBitmapMemory();
 
 			if (path.empty()) {
 				Output::Warning("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
@@ -89,9 +120,7 @@ namespace {
 				}
 			}
 
-			FreeBitmapMemory();
-
-			return (cache[key] = {bmp, DisplayUi->GetTicks()}).bitmap;
+			return AddToCache(key, bmp);
 		} else {
 			it->second.last_access = DisplayUi->GetTicks();
 			return it->second.bitmap;
@@ -174,9 +203,12 @@ namespace {
 	BitmapRef DrawCheckerboard() {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
+
+		FreeBitmapMemory();
 
 		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
+		cache_size += bitmap->GetSize();
 
 		// ToDo: Maybe use different renderers depending on material
 		// Will look ugly for some image types
@@ -193,23 +225,32 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
+	BitmapRef LoadDummyBitmap(const std::string& folder_name, const std::string& filename) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
 
-		KeyType const key(folder_name, filename, false);
+		const key_type key(folder_name, filename, false);
 
-		BitmapRef bitmap = s.dummy_renderer();
+		const cache_type::iterator it = cache.find(key);
 
-		return (cache[key] = {bitmap, DisplayUi->GetTicks()}).bitmap;
+		if (it == cache.end() || !it->second.bitmap) {
+			FreeBitmapMemory();
+
+			BitmapRef bitmap = s.dummy_renderer();
+
+			return AddToCache(key, bitmap);
+		} else {
+			it->second.last_access = DisplayUi->GetTicks();
+			return it->second.bitmap;
+		}
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
+	BitmapRef LoadBitmap(const std::string& f, bool transparent) {
 		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
 
-		Spec const& s = spec[T];
+		const Spec& s = spec[T];
 
 		if (f == CACHE_DEFAULT_BITMAP) {
 			return LoadDummyBitmap<T>(s.directory, f);
@@ -255,41 +296,85 @@ namespace {
 
 		return ret;
 	}
+
+	template<Material::Type T>
+	BitmapRef LoadBitmap(const std::string& f) {
+		static_assert(Material::REND < T && T < Material::END, "Invalid material.");
+
+		const Spec& s = spec[T];
+
+		return LoadBitmap<T>(f, s.transparent);
+	}
 }
 
 std::vector<uint8_t> Cache::exfont_custom;
 
-#define cache(elem) \
-	BitmapRef Cache::elem(const std::string& f) { \
-		bool trans = spec[Material::elem].transparent; \
-		return LoadBitmap<Material::elem>(f, trans); \
-	}
-	cache(Backdrop)
-	cache(Battle)
-	cache(Battle2)
-	cache(Battlecharset)
-	cache(Battleweapon)
-	cache(Charset)
-	cache(Chipset)
-	cache(Faceset)
-	cache(Gameover)
-	cache(Monster)
-	cache(Panorama)
-	cache(System2)
-	cache(Title)
-	cache(System)
-#undef cache
-
-BitmapRef Cache::Frame(const std::string& f, bool trans) {
-	return LoadBitmap<Material::Frame>(f, trans);
+BitmapRef Cache::Backdrop(const std::string& file) {
+	return LoadBitmap<Material::Backdrop>(file);
 }
 
-BitmapRef Cache::Picture(const std::string& f, bool trans) {
-	return LoadBitmap<Material::Picture>(f, trans);
+BitmapRef Cache::Battle(const std::string& file) {
+	return LoadBitmap<Material::Battle>(file);
+}
+
+BitmapRef Cache::Battle2(const std::string& file) {
+	return LoadBitmap<Material::Battle2>(file);
+}
+
+BitmapRef Cache::Battlecharset(const std::string& file) {
+	return LoadBitmap<Material::Battlecharset>(file);
+}
+
+BitmapRef Cache::Battleweapon(const std::string& file) {
+	return LoadBitmap<Material::Battleweapon>(file);
+}
+
+BitmapRef Cache::Charset(const std::string& file) {
+	return LoadBitmap<Material::Charset>(file);
+}
+
+BitmapRef Cache::Chipset(const std::string& file) {
+	return LoadBitmap<Material::Chipset>(file);
+}
+
+BitmapRef Cache::Faceset(const std::string& file) {
+	return LoadBitmap<Material::Faceset>(file);
+}
+
+BitmapRef Cache::Frame(const std::string& file, bool transparent) {
+	return LoadBitmap<Material::Frame>(file, transparent);
+}
+
+BitmapRef Cache::Gameover(const std::string& file) {
+	return LoadBitmap<Material::Gameover>(file);
+}
+
+BitmapRef Cache::Monster(const std::string& file) {
+	return LoadBitmap<Material::Monster>(file);
+}
+
+BitmapRef Cache::Panorama(const std::string& file) {
+	return LoadBitmap<Material::Panorama>(file);
+}
+
+BitmapRef Cache::Picture(const std::string& file, bool transparent) {
+	return LoadBitmap<Material::Picture>(file, transparent);
+}
+
+BitmapRef Cache::System2(const std::string& file) {
+	return LoadBitmap<Material::System2>(file);
+}
+
+BitmapRef Cache::Title(const std::string& file) {
+	return LoadBitmap<Material::Title>(file);
+}
+
+BitmapRef Cache::System(const std::string& file) {
+	return LoadBitmap<Material::System>(file);
 }
 
 BitmapRef Cache::Exfont() {
-	KeyType const hash("ExFont", "ExFont", false);
+	const key_type hash("ExFont", "ExFont", false);
 
 	cache_type::iterator const it = cache.find(hash);
 
@@ -305,7 +390,7 @@ BitmapRef Cache::Exfont() {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}
 
-		return(cache[hash] = {exfont_img, DisplayUi->GetTicks()}).bitmap;
+		return AddToCache(hash, exfont_img);
 	} else {
 		it->second.last_access = DisplayUi->GetTicks();
 		return it->second.bitmap;
@@ -345,8 +430,59 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	} else { return it->second.lock(); }
 }
 
+BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend) {
+	const effect_key_type key {
+		src_bitmap,
+		rect,
+		flip_x,
+		flip_y,
+		tone,
+		blend
+	};
+
+	const auto it = cache_effects.find(key);
+
+	if (it == cache_effects.end() || it->second.expired()) {
+		BitmapRef bitmap_effects;
+
+		auto create = [&rect] () -> BitmapRef {
+			return Bitmap::Create(rect.width, rect.height, true);
+		};
+
+		if (tone != Tone()) {
+			bitmap_effects = create();
+			bitmap_effects->ToneBlit(0, 0, *src_bitmap, rect, tone, Opacity::opaque);
+		}
+
+		if (blend != Color()) {
+			if (bitmap_effects) {
+				// Tone blit was applied
+				bitmap_effects->BlendBlit(0, 0, *bitmap_effects, bitmap_effects->GetRect(), blend, Opacity::opaque);
+			} else {
+				bitmap_effects = create();
+				bitmap_effects->BlendBlit(0, 0, *src_bitmap, rect, blend, Opacity::opaque);
+			}
+		}
+
+		if (flip_x || flip_y) {
+			if (bitmap_effects) {
+				// Tone or blend blit was applied
+				bitmap_effects->Flip(bitmap_effects->GetRect(), flip_x, flip_y);
+			} else {
+				bitmap_effects = create();
+				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::opaque);
+			}
+		}
+
+		assert(bitmap_effects && "Effect cache used but no effect applied!");
+
+		return(cache_effects[key] = bitmap_effects).lock();
+	} else { return it->second.lock(); }
+}
+
 void Cache::Clear() {
 	cache.clear();
+	cache_size = 0;
 
 	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
 		if (i->second.expired()) { continue; }

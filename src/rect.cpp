@@ -32,14 +32,6 @@ Rect::Rect(int x, int y, int width, int height) :
 	height(height) {
 }
 
-bool Rect::operator==(const Rect &other) const {
-	return	x == other.x && y == other.y && width == other.width && height == other.height;
-}
-
-bool Rect::operator!=(const Rect &other) const {
-	return	x != other.x || y != other.y || width != other.width || height != other.height;
-}
-
 void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
 	x = new_x;
 	y = new_y;

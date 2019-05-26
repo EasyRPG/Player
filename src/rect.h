@@ -41,16 +41,6 @@ public:
 	Rect(int x, int y, int width, int height);
 
 	/**
-	 * Equality operator.
-	 */
-	bool operator==(Rect const& other) const;
-
-	/**
-	 * Inequality operator.
-	 */
-	bool operator!=(Rect const& other) const;
-
-	/**
 	 * Sets all rect values simultaneously.
 	 *
 	 * @param x new x.
@@ -143,5 +133,23 @@ public:
 	 */
 	void Halve();
 };
+
+inline bool operator==(const Rect &l, const Rect& r) {
+	return l.x == r.x
+		   && l.y == r.y
+		   && l.width == r.width
+		   && l.height == r.height;
+}
+
+inline bool operator!=(const Rect &l, const Rect& r) {
+	return !(l == r);
+}
+
+inline bool operator<(const Rect &l, const Rect& r) {
+	return l.x < r.x
+		   && l.y < r.y
+		   && l.width < r.width
+		   && l.height < r.height;
+}
 
 #endif

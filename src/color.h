@@ -43,16 +43,6 @@ public:
 	Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
 	/**
-	 * Equality operator.
-	 */
-	bool operator==(const Color &other) const;
-
-	/**
-	 * Inequality operator.
-	 */
-	bool operator!=(const Color &other) const;
-
-	/**
 	 * Sets all color properties.
 	 *
 	 * @param red red component.
@@ -74,5 +64,23 @@ public:
 	/** Alpha component. */
 	uint8_t alpha;
 };
+
+inline bool operator==(const Color &l, const Color& r) {
+	return l.red == r.red
+		   && l.green == r.green
+		   && l.blue == r.blue
+		   && l.alpha == r.alpha;
+}
+
+inline bool operator!=(const Color &l, const Color& r) {
+	return !(l == r);
+}
+
+inline bool operator<(const Color &l, const Color& r) {
+	return l.red < r.red
+		   && l.green < r.green
+		   && l.blue < r.blue
+		   && l.alpha < r.alpha;
+}
 
 #endif

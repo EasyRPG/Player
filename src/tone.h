@@ -79,5 +79,11 @@ inline bool operator!=(const Tone &l, const Tone& r) {
 	return !(l == r);
 }
 
+inline bool operator<(const Tone &l, const Tone& r) {
+	return l.red < r.red
+		   && l.green < r.green
+		   && l.blue < r.blue
+		   && l.gray < r.gray;
+}
 
 #endif

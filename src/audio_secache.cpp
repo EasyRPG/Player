@@ -31,7 +31,7 @@ namespace {
 
 	cache_type cache;
 
-	const int cache_limit = 1 * 1024 * 1024;
+	constexpr int cache_limit = 3 * 1024 * 1024;
 	int cache_size = 0;
 
 	void FreeCacheMemory() {
@@ -39,23 +39,29 @@ namespace {
 
 		for (auto it = cache.begin(); it != cache.end(); ) {
 			if (it->second.use_count() > 1) {
-				// Somebody uses this SE right now
+				// SE is currently playing
 				++it;
 				continue;
 			}
 
-			if (cur_ticks - it->second->last_access < 5000) {
-				// Last access < 5s
+			if (cache_size <= cache_limit && cur_ticks - it->second->last_access < 3000) {
+				// Below memory limit and last access < 3s
 				++it;
 				continue;
 			}
 
-			//Output::Debug("SE: Freeing memory of %s", it->first.c_str());
+#ifdef CACHE_DEBUG
+			Output::Debug("SE: Freeing memory of %s", it->first.c_str());
+#endif
 
 			cache_size -= it->second->buffer.size();
 
 			it = cache.erase(it);
 		}
+
+#ifdef CACHE_DEBUG
+		Output::Debug("SE cache size: %f", cache_size / 1024.0 / 1024);
+#endif
 	}
 }
 
@@ -291,11 +297,11 @@ AudioSeRef AudioSeCache::Decode() {
 
 		cache_size += se->buffer.size();
 
-		if (cache_size > cache_limit) {
-			FreeCacheMemory();
-		}
+#ifdef CACHE_DEBUG
+		Output::Debug("SE cache size (Add): %f", cache_size / 1024.0 / 1024.0);
+#endif
 
-		//Output::Debug("cache %f", cache_size / 1024.0f / 1024.0f);
+		FreeCacheMemory();
 
 		if (GetPitch() != 100) {
 			// Also handle a requested resampling

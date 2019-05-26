@@ -124,7 +124,6 @@ private:
 	BitmapRef bitmap_effects;
 
 	Rect bitmap_effects_src_rect;
-	bool bitmap_effects_valid;
 
 	Tone current_tone;
 	Color current_flash;
