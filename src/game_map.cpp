@@ -892,6 +892,48 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
+static bool RunNextForegroundCommonEvent(Game_Interpreter_Map& interp) {
+	Game_CommonEvent* run_ce = nullptr;
+	for (auto& ce: common_events) {
+		if (ce.IsWaitingForegroundExecution()) {
+			run_ce = &ce;
+			break;
+		}
+	}
+
+	if (!run_ce) {
+		return false;
+	}
+
+	interp.Setup(run_ce, 0);
+	interp.Update(false);
+
+	return true;
+}
+
+static bool RunNextForegroundMapEvent(Game_Interpreter_Map& interp) {
+	Game_Event* run_ev = nullptr;
+	for (auto& ev: events) {
+		if (ev.IsWaitingForegroundExecution()) {
+			run_ev = &ev;
+			break;
+		}
+	}
+
+	if (run_ev == nullptr) {
+		return false;
+	}
+
+	if (run_ev->IsActive()) {
+		interp.Setup(run_ev);
+	}
+	run_ev->ClearWaitingForegroundExecution();
+	if (run_ev->IsActive()) {
+		interp.Update(false);
+	}
+	return true;
+}
+
 void Game_Map::Update(bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 	Parallax::Update();
@@ -940,53 +982,31 @@ void Game_Map::Update(bool is_preupdate) {
 
 	auto& interp = GetInterpreter();
 
-	// Run any event loaded from last frame.
+	//Do we start with map events or common events?
+	bool do_map_event = !interp.IsRunningMapEvent();
+
+	// Run any event still loaded from last frame.
 	interp.Update(true);
-	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
+
+	bool ran_ev = true;
+	bool ran_ce = true;
+	// Keep going until interpreter needs to run into next frame, ran too many commands, or no events left to run.
+	while (!interp.IsRunning()
+			&& !interp.ReachedLoopLimit()
+			&& (ran_ev || ran_ce)) {
 		// This logic is probably one big loop in RPG_RT. We have to replicate
 		// it here because once we stop executing from this we should not
 		// clear anymore waiting flags.
 		if (Scene::instance->HasRequestedScene() && interp.GetLoopCount() > 0) {
 			break;
 		}
-		Game_CommonEvent* run_ce = nullptr;
 
-		for (auto& ce: common_events) {
-			if (ce.IsWaitingForegroundExecution()) {
-				run_ce = &ce;
-				break;
-			}
+		if (do_map_event) {
+			ran_ev = RunNextForegroundMapEvent(interp);
+		} else {
+			ran_ce = RunNextForegroundCommonEvent(interp);
 		}
-		if (run_ce) {
-			interp.Setup(run_ce, 0);
-			interp.Update(false);
-			if (interp.IsRunning()) {
-				break;
-			}
-			continue;
-		}
-
-		Game_Event* run_ev = nullptr;
-		for (auto& ev: events) {
-			if (ev.IsWaitingForegroundExecution()) {
-				run_ev = &ev;
-				break;
-			}
-		}
-		if (run_ev) {
-			if (run_ev->IsActive()) {
-				interp.Setup(run_ev);
-			}
-			run_ev->ClearWaitingForegroundExecution();
-			if (run_ev->IsActive()) {
-				interp.Update(false);
-			}
-			if (interp.IsRunning()) {
-				break;
-			}
-			continue;
-		}
-		break;
+		do_map_event = !do_map_event;
 	}
 
 	free_interpreters.clear();
