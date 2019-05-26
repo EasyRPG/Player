@@ -915,6 +915,10 @@ static bool RunNextForegroundMapEvent(Game_Interpreter_Map& interp) {
 	Game_Event* run_ev = nullptr;
 	for (auto& ev: events) {
 		if (ev.IsWaitingForegroundExecution()) {
+			if (!ev.IsActive()) {
+				ev.ClearWaitingForegroundExecution();
+				continue;
+			}
 			run_ev = &ev;
 			break;
 		}
@@ -924,13 +928,9 @@ static bool RunNextForegroundMapEvent(Game_Interpreter_Map& interp) {
 		return false;
 	}
 
-	if (run_ev->IsActive()) {
-		interp.Setup(run_ev);
-	}
+	interp.Setup(run_ev);
 	run_ev->ClearWaitingForegroundExecution();
-	if (run_ev->IsActive()) {
-		interp.Update(false);
-	}
+	interp.Update(false);
 	return true;
 }
 
