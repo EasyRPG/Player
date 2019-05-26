@@ -52,7 +52,8 @@ bool Window_Item::CheckEnable(int item_id) {
 	if (!item) {
 		return false;
 	}
-	if (item->type == RPG::Item::Type_medicine) {
+	if (item->type == RPG::Item::Type_medicine
+			&& (!Game_Temp::battle_running || !item->occasion_field1)) {
 		return true;
 	}
 	return Main_Data::game_party->IsItemUsable(item_id, actor);
