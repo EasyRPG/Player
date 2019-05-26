@@ -59,6 +59,13 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Update() {
+	auto flash_color = Main_Data::game_screen->GetFlashColor();
+	if (flash_color.alpha > 0) {
+		Sprite::Flash(flash_color, 0);
+	} else {
+		Sprite::Flash(Color(), 0);
+	}
+
 	Sprite::Update();
 
 	if (frame_update) {
