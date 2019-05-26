@@ -18,8 +18,8 @@
 #ifndef EP_COLOR_H
 #define EP_COLOR_H
 
-// Headers
-#include "system.h"
+#include <cstdint>
+#include <tuple>
 
 /**
  * Color class.
@@ -77,10 +77,9 @@ inline bool operator!=(const Color &l, const Color& r) {
 }
 
 inline bool operator<(const Color &l, const Color& r) {
-	return l.red < r.red
-		   && l.green < r.green
-		   && l.blue < r.blue
-		   && l.alpha < r.alpha;
+	return
+		std::tie(l.red, l.green, l.blue, l.alpha) <
+		std::tie(r.red, r.green, r.blue, r.alpha);
 }
 
 #endif

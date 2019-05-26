@@ -21,6 +21,7 @@
 // Headers
 #include "color.h"
 #include "drawable.h"
+#include "memory_management.h"
 #include "rect.h"
 #include "tone.h"
 
