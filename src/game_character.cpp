@@ -101,7 +101,7 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 	int z = 0;
 
 	if (IsFlying()) {
-		z = Priority_EventsAbove;
+		z = Priority_EventsFlying;
 	} else if (GetLayer() == RPG::EventPage::Layers_same) {
 		z = Priority_Player;
 	} else if (GetLayer() == RPG::EventPage::Layers_below) {

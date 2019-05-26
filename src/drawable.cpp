@@ -31,7 +31,7 @@ int Drawable::GetPriorityForMapLayer(int which) {
 		case RPG::SavePicture::MapLayer_tilemap_above:
 			return Priority_TilesetAbove;
 		case RPG::SavePicture::MapLayer_events_above:
-			return Priority_EventsAbove;
+			return Priority_EventsFlying;
 		case RPG::SavePicture::MapLayer_weather:
 			return Priority_PictureNew;
 		case RPG::SavePicture::MapLayer_animations:

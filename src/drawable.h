@@ -41,7 +41,8 @@ enum Priority {
 	Priority_Battler = 20 << 24, // In Battle (includes animations)
 	Priority_TilesetAbove = 25 << 24,
 	Priority_EventsAbove = 30 << 24,
-	Priority_Weather = 35 << 24,
+	Priority_EventsFlying = 35 << 24,
+	Priority_Weather = 36 << 24,
 	Priority_Screen = 40 << 24,
 	Priority_PictureNew = 45 << 24, // Pictures in RPG2k Value! and RPG2k3 >=1.05, shared
 	Priority_BattleAnimation = 50 << 24,
