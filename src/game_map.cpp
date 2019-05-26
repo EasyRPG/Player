@@ -894,7 +894,6 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::Update(bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
-	Parallax::Update();
 	if (animation) {
 		animation->Update();
 		if (animation->IsDone()) {
@@ -990,6 +989,7 @@ void Game_Map::Update(bool is_preupdate) {
 	}
 
 	free_interpreters.clear();
+	Parallax::Update();
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {
