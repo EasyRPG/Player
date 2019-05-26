@@ -18,7 +18,7 @@
 #ifndef EP_RECT_H
 #define EP_RECT_H
 
-#include "system.h"
+#include <tuple>
 
 /**
  * Rect.
@@ -146,10 +146,9 @@ inline bool operator!=(const Rect &l, const Rect& r) {
 }
 
 inline bool operator<(const Rect &l, const Rect& r) {
-	return l.x < r.x
-		   && l.y < r.y
-		   && l.width < r.width
-		   && l.height < r.height;
+	return
+		std::tie(l.x, l.y, l.width, l.height) <
+		std::tie(r.x, r.y, r.width, r.height);
 }
 
 #endif

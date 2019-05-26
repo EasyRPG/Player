@@ -21,6 +21,7 @@
 #include <deque>
 #include <string>
 #include "drawable.h"
+#include "memory_management.h"
 #include "rect.h"
 
 /**

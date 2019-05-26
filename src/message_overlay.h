@@ -22,6 +22,7 @@
 #include <string>
 #include "color.h"
 #include "drawable.h"
+#include "memory_management.h"
 #include "tone.h"
 
 class MessageOverlayItem {
