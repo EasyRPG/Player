@@ -632,20 +632,21 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 
 bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { // code 11320
 	int event_id = com.parameters[0];
-	Color color(com.parameters[1] * 255 / 31,
-		com.parameters[2] * 255 / 31,
-		com.parameters[3] * 255 / 31,
-		com.parameters[4] * 255 / 31);
+	int r = com.parameters[1];
+	int g = com.parameters[2];
+	int b = com.parameters[3];
+	int p = com.parameters[4];
 
 	int tenths = com.parameters[5];
 	bool wait = com.parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		event->Flash(color, tenths * DEFAULT_FPS / 10);
+		event->Flash(r, g, b, p, tenths * DEFAULT_FPS / 10);
 
-		if (wait)
+		if (wait) {
 			SetupWait(tenths);
+		}
 	}
 
 	return true;

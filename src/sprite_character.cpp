@@ -66,12 +66,11 @@ void Sprite_Character::Update() {
 		SetSrcRect(r);
 	}
 
-	if (character->IsFlashPending()) {
+	if (character->GetFlashLevel() > 0) {
 		Color col = character->GetFlashColor();
-		int dur = character->GetFlashTimeLeft();
-		Flash(col, dur);
-		// TODO: Gradual decrease of Flash Time Left
-		character->SetFlashTimeLeft(0);
+		Flash(character->GetFlashColor(), 0);
+	} else {
+		Flash(Color(), 0);
 	}
 
 	SetVisible(character->GetVisible());

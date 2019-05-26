@@ -46,7 +46,7 @@ public:
 	bool ShouldOnlySound() const;
 
 protected:
-	virtual void SetFlash(Color c) = 0;
+	virtual void SetFlash(int r, int g, int b, int p) = 0;
 	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void RunTimedSfx();
@@ -70,7 +70,7 @@ public:
 	~BattleAnimationChara() override;
 	void Draw() override;
 protected:
-	void SetFlash(Color c) override;
+	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
 	Game_Character& character;
 };
@@ -83,7 +83,7 @@ public:
 	~BattleAnimationBattlers() override;
 	void Draw() override;
 protected:
-	void SetFlash(Color c) override;
+	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
 	std::vector<Game_Battler*> battlers;
 	bool should_flash;
@@ -96,7 +96,7 @@ public:
 	~BattleAnimationGlobal() override;
 	void Draw() override;
 protected:
-	void SetFlash(Color c) override;
+	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
 };
 

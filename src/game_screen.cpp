@@ -246,6 +246,7 @@ void Game_Screen::Update() {
 		data.flash_time_left = data.flash_time_left - 1;
 		if (data.flash_time_left <= 0) {
 			data.flash_time_left = 0;
+			data.flash_current_level = 0;
 			if (data.flash_continuous) {
 				data.flash_time_left = flash_period;
 				data.flash_current_level = flash_sat;
