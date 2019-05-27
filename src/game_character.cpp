@@ -211,6 +211,18 @@ void Game_Character::UpdateAnimation(bool was_moving) {
 	}
 }
 
+void Game_Character::UpdateFlash() {
+	if (data()->flash_current_level > 0) {
+		if (data()->flash_time_left > 0) {
+			data()->flash_current_level = data()->flash_current_level - (data()->flash_current_level / data()->flash_time_left);
+			--data()->flash_time_left;
+		} else {
+			data()->flash_current_level = 0.0;
+			data()->flash_time_left = 0;
+		}
+	}
+}
+
 void Game_Character::UpdateJump() {
 	static const int jump_speed[] = {8, 12, 16, 24, 32, 64};
 	SetRemainingStep(GetRemainingStep() - min(jump_speed[GetMoveSpeed() - 1], GetRemainingStep()));
@@ -801,10 +813,6 @@ void Game_Character::SetVisible(bool visible) {
 	this->visible = visible;
 }
 
-bool Game_Character::IsFlashPending() const {
-	return GetFlashTimeLeft() > 0;
-}
-
 bool Game_Character::IsAnimated() const {
 	auto at = GetAnimationType();
 	return !IsAnimPaused()
@@ -846,9 +854,12 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	}
 }
 
-void Game_Character::Flash(Color color, int duration) {
-	SetFlashColor(color);
-	SetFlashTimeLeft(duration);
+void Game_Character::Flash(int r, int g, int b, int power, int frames) {
+	data()->flash_red = r;
+	data()->flash_blue = g;
+	data()->flash_green = b;
+	data()->flash_current_level = power;
+	data()->flash_time_left = frames;
 }
 
 // Gets Character

@@ -344,6 +344,7 @@ void Game_Player::Update() {
 
 	Game_Character::UpdateMovement();
 	Game_Character::UpdateAnimation(was_moving);
+	Game_Character::UpdateFlash();
 
 	UpdateScroll(old_sprite_x, old_sprite_y);
 

@@ -122,31 +122,26 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 	}
 }
 
-void Game_Screen::FlashOnce(int r, int g, int b, int s, int tenths) {
+void Game_Screen::FlashOnce(int r, int g, int b, int s, int frames) {
 	data.flash_red = r;
 	data.flash_green = g;
 	data.flash_blue = b;
 	flash_sat = s;
 	data.flash_current_level = s;
-
-	if (tenths == 0) {
-		// 0.0 duration case
-		tenths = 1;
-	}
-
-	data.flash_time_left = tenths;
+	data.flash_time_left = frames;
 	flash_period = 0;
 }
 
-void Game_Screen::FlashBegin(int r, int g, int b, int s, int tenths) {
-	FlashOnce(r, g, b, s, tenths);
+void Game_Screen::FlashBegin(int r, int g, int b, int s, int frames) {
+	FlashOnce(r, g, b, s, frames);
 
-	flash_period = data.flash_time_left;
+	flash_period = frames;
 	data.flash_continuous = true;
 }
 
 void Game_Screen::FlashEnd() {
 	data.flash_time_left = 0;
+	data.flash_current_level = 0;
 	flash_period = 0;
 	data.flash_continuous = false;
 }
@@ -241,11 +236,14 @@ void Game_Screen::Update() {
 		data.tint_time_left = data.tint_time_left - 1;
 	}
 
-	if (data.flash_time_left > 0) {
-		data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
-		data.flash_time_left = data.flash_time_left - 1;
+	if (data.flash_current_level > 0 || data.flash_continuous) {
+		if (data.flash_time_left > 0) {
+			data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
+			--data.flash_time_left;
+		}
 		if (data.flash_time_left <= 0) {
 			data.flash_time_left = 0;
+			data.flash_current_level = 0;
 			if (data.flash_continuous) {
 				data.flash_time_left = flash_period;
 				data.flash_current_level = flash_sat;
@@ -305,10 +303,8 @@ Tone Game_Screen::GetTone() {
 		(int) ((data.tint_current_sat) * 128 / 100));
 }
 
-Color Game_Screen::GetFlash(int& current_level, int& time_left) {
-	time_left = data.flash_time_left;
-	current_level = data.flash_current_level / 31 * 255;
-	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255);
+Color Game_Screen::GetFlashColor() const {
+	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
 }
 
 int Game_Screen::GetWeatherType() {

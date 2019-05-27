@@ -37,8 +37,8 @@ public:
 
 	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
-	void FlashOnce(int r, int g, int b, int s, int tenths);
-	void FlashBegin(int r, int g, int b, int s, int tenths);
+	void FlashOnce(int r, int g, int b, int s, int frames);
+	void FlashBegin(int r, int g, int b, int s, int frames);
 	void FlashEnd();
 	void ShakeOnce(int power, int speed, int tenths);
 	void ShakeBegin(int power, int speed);
@@ -59,10 +59,9 @@ public:
 	 * Returns the current flash color.
 	 *
 	 * @param current_level Current strength adjusted to 0-255
-	 * @param time_left how many frames of flashing are left
 	 * @return Flash color
 	 */
-	Color GetFlash(int& current_level, int& time_left);
+	Color GetFlashColor() const;
 
 	/**
 	 * Returns the weather type

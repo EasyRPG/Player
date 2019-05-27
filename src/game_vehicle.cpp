@@ -277,6 +277,7 @@ void Game_Vehicle::Update() {
 	} else {
 		UpdateAnimationShip();
 	}
+	Game_Character::UpdateFlash();
 }
 
 int Game_Vehicle::GetVehicleType() const {

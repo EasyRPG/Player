@@ -313,10 +313,13 @@ public:
 	/**
 	 * Begins a flash.
 	 *
-	 * @param color The flash color.
-	 * @param tenths Duration of the flash in tenths of a second.
+	 * @param r red color
+	 * @param g blue color
+	 * @param b green color
+	 * @param power power of the flash
+	 * @param frames Duration of the flash in frames
 	 */
-	void Flash(Color color, int tenths);
+	void Flash(int r, int g, int b, int power, int frames);
 
 	/**
 	 * Gets flash effect color.
@@ -324,13 +327,6 @@ public:
 	 * @return flash color
 	 */
 	Color GetFlashColor() const;
-
-	/**
-	 * Sets flash effect color.
-	 *
-	 * @param flash_color new flash color
-	 */
-	void SetFlashColor(const Color& flash_color);
 
 	/**
 	 * Returns intensity of flash effect.
@@ -541,6 +537,11 @@ public:
 	 * @param was_moving if the event moved or jumped this frame
 	 */
 	void UpdateAnimation(bool was_moving);
+
+	/**
+	 * Updates character flash
+	 */
+	void UpdateFlash();
 
 	/**
 	 * Walks around on a custom move route.
@@ -770,14 +771,6 @@ public:
 	virtual void SetVisible(bool visible);
 
 	/**
-	 * Gets whether a flash animation is pending for that character.
-	 * A flash is pending when there is flash time left.
-	 *
-	 * @return Whether a flash is pending
-	 */
-	bool IsFlashPending() const;
-
-	/**
 	 * Tests if animation type is any fixed state.
 	 *
 	 * @return Whether direction is fixed
@@ -862,8 +855,6 @@ protected:
 
 	int jump_plus_x;
 	int jump_plus_y;
-
-	uint8_t flash_alpha;
 
 	bool visible;
 
@@ -1024,14 +1015,7 @@ inline void Game_Character::SetAnimPaused(bool value) {
 }
 
 inline Color Game_Character::GetFlashColor() const {
-	return Color(data()->flash_red, data()->flash_green, data()->flash_blue, flash_alpha);
-}
-
-inline void Game_Character::SetFlashColor(const Color& flash_color) {
-	data()->flash_red = flash_color.red;
-	data()->flash_blue = flash_color.blue;
-	data()->flash_green = flash_color.green;
-	flash_alpha = flash_color.alpha;
+	return MakeFlashColor(data()->flash_red, data()->flash_green, data()->flash_blue, data()->flash_current_level);
 }
 
 inline double Game_Character::GetFlashLevel() const {

@@ -47,16 +47,13 @@ void Screen::Update() {
 void Screen::Draw() {
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	int flash_time_left;
-	int flash_current_level;
-	Color flash_color = Main_Data::game_screen->GetFlash(flash_current_level, flash_time_left);
-
-	if (flash_time_left > 0) {
+	auto flash_color = Main_Data::game_screen->GetFlashColor();
+	if (flash_color.alpha > 0) {
 		if (!flash) {
 			flash = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, flash_color);
 		} else {
 			flash->Fill(flash_color);
 		}
-		disp->Blit(0, 0, *flash, flash->GetRect(), flash_current_level);
+		disp->Blit(0, 0, *flash, flash->GetRect(), 255);
 	}
 }
