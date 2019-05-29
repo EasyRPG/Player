@@ -54,8 +54,8 @@ bool Game_Player::GetVisible() const {
 	return visible && !data()->aboard;
 }
 
-void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction) {
-	teleport_target = TeleportTarget(map_id, x, y, direction);
+void Game_Player::ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt) {
+	teleport_target = TeleportTarget(map_id, x, y, direction, tt);
 }
 
 void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
@@ -66,7 +66,7 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 		map_id = Game_Map::GetParentId(target.map_id);
 	}
 
-	ReserveTeleport(map_id, target.map_x, target.map_y, Down);
+	ReserveTeleport(map_id, target.map_x, target.map_y, Down, TeleportTarget::eNormalTeleport);
 
 	if (target.switch_on) {
 		Game_Switches.Set(target.switch_id, true);
@@ -96,7 +96,7 @@ void Game_Player::PerformTeleport() {
 
 	ResetAnimation();
 	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
-		Game_Map::Setup(teleport_target.GetMapId());
+		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());
 	} else {
 		Game_Map::SetupFromTeleportSelf();
 	}

@@ -140,7 +140,7 @@ void Game_Map::Quit() {
 	interpreter.reset();
 }
 
-void Game_Map::Setup(int _id) {
+void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Dispose();
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
@@ -210,7 +210,7 @@ void Game_Map::Setup(int _id) {
 	Game_System::SetAllowEscape(can_escape != RPG::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 
-	if (interpreter) {
+	if (interpreter && tt != TeleportTarget::eVehicleHackTeleport) {
 		interpreter->OnMapChange();
 	}
 }
