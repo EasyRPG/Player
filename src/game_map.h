@@ -59,8 +59,10 @@ namespace Game_Map {
 
 	/**
 	 * Disposes Game_Map.
+	 *
+	 * @param clear_screen clear the screen.
 	 */
-	void Dispose();
+	void Dispose(bool clear_screen = true);
 
 	/**
 	 * Setups a map.

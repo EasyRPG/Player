@@ -121,11 +121,11 @@ void Game_Map::Init() {
 	last_map_id = -1;
 }
 
-void Game_Map::Dispose() {
+void Game_Map::Dispose(bool clear_screen) {
 	events.clear();
 	pending.clear();
 
-	if (Main_Data::game_screen) {
+	if (Main_Data::game_screen && clear_screen) {
 		Main_Data::game_screen->Reset();
 	}
 
@@ -141,7 +141,7 @@ void Game_Map::Quit() {
 }
 
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
-	Dispose();
+	Dispose(tt != TeleportTarget::eVehicleHackTeleport);
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
