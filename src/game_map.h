@@ -611,6 +611,9 @@ namespace Game_Map {
 	int GetTargetPanX();
 	int GetTargetPanY();
 
+	void UpdateProcessedFlags(bool is_preupdate);
+	void UpdateCommonEvents();
+	void UpdateMapEvents();
 	void UpdateForegroundEvents();
 
 	FileRequestAsync* RequestMap(int map_id);

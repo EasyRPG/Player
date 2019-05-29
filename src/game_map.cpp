@@ -915,25 +915,10 @@ void Game_Map::Update(bool is_preupdate) {
 		}
 	}
 
-	for (Game_Event& ev : events) {
-		ev.SetProcessed(false);
-	}
-	if (!is_preupdate) {
-		Main_Data::game_player->SetProcessed(false);
-		for (auto& vehicle: vehicles) {
-			if (vehicle->IsInCurrentMap()) {
-				vehicle->SetProcessed(false);
-			}
-		}
-	}
+	UpdateProcessedFlags(is_preupdate);
 
-	for (Game_CommonEvent& ev : common_events) {
-		ev.Update();
-	}
-
-	for (Game_Event& ev : events) {
-		ev.Update();
-	}
+	UpdateCommonEvents();
+	UpdateMapEvents();
 
 	if (is_preupdate) {
 		return;
@@ -954,6 +939,32 @@ void Game_Map::Update(bool is_preupdate) {
 	UpdateForegroundEvents();
 
 	Parallax::Update();
+}
+
+void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
+	for (Game_Event& ev : events) {
+		ev.SetProcessed(false);
+	}
+	if (!is_preupdate) {
+		Main_Data::game_player->SetProcessed(false);
+		for (auto& vehicle: vehicles) {
+			if (vehicle->IsInCurrentMap()) {
+				vehicle->SetProcessed(false);
+			}
+		}
+	}
+}
+
+void Game_Map::UpdateCommonEvents() {
+	for (Game_CommonEvent& ev : common_events) {
+		ev.Update();
+	}
+}
+
+void Game_Map::UpdateMapEvents() {
+	for (Game_Event& ev : events) {
+		ev.Update();
+	}
 }
 
 void Game_Map::UpdateForegroundEvents() {
