@@ -80,13 +80,6 @@ public:
 	 */
 	RPG::SaveEventExecState GetState() const;
 
-protected:
-	static constexpr int loop_limit = 10000;
-	static constexpr int call_stack_limit = 1000;
-
-	const RPG::SaveEventExecFrame* GetFrame() const;
-	RPG::SaveEventExecFrame* GetFrame();
-
 	/** @return the event_id of the current frame */
 	int GetCurrentEventId() const;
 
@@ -95,6 +88,13 @@ protected:
 
 	/** @return the event_id of the event at the base of the call stack */
 	int GetOriginalEventId() const;
+
+protected:
+	static constexpr int loop_limit = 10000;
+	static constexpr int call_stack_limit = 1000;
+
+	const RPG::SaveEventExecFrame* GetFrame() const;
+	RPG::SaveEventExecFrame* GetFrame();
 
 	bool main_flag;
 
