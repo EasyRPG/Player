@@ -55,8 +55,8 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
-	void StartPendingTeleport();
-	void FinishPendingTeleport();
+	void StartPendingTeleport(bool use_default_transition);
+	void FinishPendingTeleport(bool use_default_transition);
 	void PreUpdate();
 	// Handles event requested transitions.
 	void UpdateStage2();
@@ -68,8 +68,6 @@ private:
 
 	int debug_menuoverwrite_counter = 0;
 	bool from_save;
-	// Teleport from new game or Teleport / Escape skill from menu.
-	bool teleport_from_other_scene = false;
 	bool screen_erased_by_event = false;
 };
 

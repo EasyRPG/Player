@@ -54,8 +54,6 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
-	teleport_from_other_scene = true;
-
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
@@ -73,7 +71,7 @@ void Scene_Map::Start() {
 	}
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+		StartPendingTeleport(true);
 		return;
 	}
 	// Call any requested scenes when transition is done.
@@ -81,7 +79,6 @@ void Scene_Map::Start() {
 }
 
 void Scene_Map::Continue(SceneType prev_scene) {
-	teleport_from_other_scene = true;
 	if (prev_scene == Scene::Battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
@@ -92,7 +89,7 @@ void Scene_Map::Continue(SceneType prev_scene) {
 
 	// Player cast Escape / Teleport from menu
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		FinishPendingTeleport();
+		FinishPendingTeleport(true);
 		return;
 	}
 
@@ -118,8 +115,6 @@ static bool IsMenuScene(Scene::SceneType scene) {
 }
 
 void Scene_Map::TransitionIn(SceneType prev_scene) {
-	teleport_from_other_scene = false;
-
 	// Teleport already setup a transition.
 	if (Graphics::IsTransitionPending()) {
 		return;
@@ -214,7 +209,7 @@ void Scene_Map::UpdateStage2() {
 
 void Scene_Map::UpdateStage3() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+		StartPendingTeleport(false);
 		return;
 	}
 	UpdateSceneCalling();
@@ -286,7 +281,7 @@ void Scene_Map::UpdateSceneCalling() {
 	}
 }
 
-void Scene_Map::StartPendingTeleport() {
+void Scene_Map::StartPendingTeleport(bool use_default_transition) {
 	const auto& tt = Main_Data::game_player->GetTeleportTarget();
 
 	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
@@ -298,14 +293,14 @@ void Scene_Map::StartPendingTeleport() {
 	}
 
 	if (IsAsyncPending()) {
-		async_continuation = [&]() { FinishPendingTeleport(); };
+		async_continuation = [this,use_default_transition]() { FinishPendingTeleport(use_default_transition); };
 		return;
 	}
 
-	FinishPendingTeleport();
+	FinishPendingTeleport(use_default_transition);
 }
 
-void Scene_Map::FinishPendingTeleport() {
+void Scene_Map::FinishPendingTeleport(bool use_default_transition) {
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
@@ -325,7 +320,7 @@ void Scene_Map::FinishPendingTeleport() {
 	}
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+		StartPendingTeleport(use_default_transition);
 		return;
 	}
 
@@ -336,7 +331,7 @@ void Scene_Map::FinishPendingTeleport() {
 	}
 
 	if (Graphics::IsTransitionErased()) {
-		if (teleport_from_other_scene) {
+		if (use_default_transition) {
 			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
 		} else {
 			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
@@ -345,7 +340,7 @@ void Scene_Map::FinishPendingTeleport() {
 
 	// Call any requested scenes when transition is done.
 	if (IsAsyncPending()) {
-		async_continuation = [&]() { UpdateSceneCalling(); };
+		async_continuation = [this]() { UpdateSceneCalling(); };
 		return;
 	} else {
 		UpdateSceneCalling();
