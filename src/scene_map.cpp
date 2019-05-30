@@ -174,12 +174,7 @@ void Scene_Map::Update() {
 
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
 	// may require us to wait for them to download before we can start the transitions.
-	if (IsAsyncPending()) {
-		async_continuation = [this]() { UpdateStage2(); };
-		return;
-	}
-
-	UpdateStage2();
+	AsyncNext([this]() { UpdateStage2(); });
 }
 
 void Scene_Map::UpdateStage2() {
@@ -199,12 +194,9 @@ void Scene_Map::UpdateStage2() {
 
 	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
 	screen_erased_by_event = Game_Temp::transition_erase;
+
 	// Unless its an instant transition, we must wait for it to finish before we can proceed.
-	if (IsAsyncPending()) {
-		async_continuation = [this]() { UpdateStage3(); };
-		return;
-	}
-	UpdateStage3();
+	AsyncNext([this]() { UpdateStage3(); });
 }
 
 void Scene_Map::UpdateStage3() {
@@ -292,12 +284,7 @@ void Scene_Map::StartPendingTeleport(bool use_default_transition) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
-	if (IsAsyncPending()) {
-		async_continuation = [this,use_default_transition]() { FinishPendingTeleport(use_default_transition); };
-		return;
-	}
-
-	FinishPendingTeleport(use_default_transition);
+	AsyncNext([this,use_default_transition]() { FinishPendingTeleport(use_default_transition); });
 }
 
 void Scene_Map::FinishPendingTeleport(bool use_default_transition) {
@@ -339,12 +326,7 @@ void Scene_Map::FinishPendingTeleport(bool use_default_transition) {
 	}
 
 	// Call any requested scenes when transition is done.
-	if (IsAsyncPending()) {
-		async_continuation = [this]() { UpdateSceneCalling(); };
-		return;
-	} else {
-		UpdateSceneCalling();
-	}
+	AsyncNext([this]() { UpdateSceneCalling(); });
 }
 
 // Scene calling stuff.
@@ -395,4 +377,13 @@ void Scene_Map::CallDebug() {
 
 void Scene_Map::CallGameover() {
 	Scene::Push(std::make_shared<Scene_Gameover>());
+}
+
+template <typename F>
+void Scene_Map::AsyncNext(F&& f) {
+	if (IsAsyncPending()) {
+		async_continuation = std::forward<F>(f);
+	} else {
+		f();
+	}
 }

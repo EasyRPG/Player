@@ -64,6 +64,8 @@ private:
 	void UpdateStage3();
 	void UpdateSceneCalling();
 
+	template <typename F> void AsyncNext(F&& f);
+
 	std::unique_ptr<Window_Message> message_window;
 
 	int debug_menuoverwrite_counter = 0;
