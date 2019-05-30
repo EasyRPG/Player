@@ -65,7 +65,7 @@ private:
 
 	void Start2(MapUpdateAsyncContext actx);
 
-	void StartPendingTeleport(bool use_default_transition);
+	void StartPendingTeleport(bool use_default_transition, bool no_erase);
 	void FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports);
 	void FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports);
 
