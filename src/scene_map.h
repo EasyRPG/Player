@@ -78,7 +78,7 @@ private:
 	void UpdateSceneCalling();
 
 	template <typename F> void AsyncNext(F&& f);
-	template <typename F> void OnAsyncSuspend(F&& f);
+	template <typename F> void OnAsyncSuspend(F&& f, bool is_preupdate);
 
 	std::unique_ptr<Window_Message> message_window;
 

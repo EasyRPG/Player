@@ -69,7 +69,7 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	PreUpdate(actx);
 
 	if (actx.IsActive()) {
-		OnAsyncSuspend([this,actx]() { Start2(actx); });
+		OnAsyncSuspend([this,actx]() { Start2(actx); }, true);
 		return;
 	}
 
@@ -182,7 +182,7 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 
 	// Waiting for async operation from map update.
 	if (actx.IsActive()) {
-		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); });
+		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); }, false);
 		return;
 	}
 
@@ -293,7 +293,7 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_defa
 	PreUpdate(actx);
 
 	if (actx.IsActive()) {
-		OnAsyncSuspend([=] { FinishPendingTeleport2(actx,use_default_transition,defer_recursive_teleports); });
+		OnAsyncSuspend([=] { FinishPendingTeleport2(actx,use_default_transition,defer_recursive_teleports); }, true);
 		return;
 	}
 
@@ -378,10 +378,13 @@ void Scene_Map::AsyncNext(F&& f) {
 }
 
 template <typename F>
-void Scene_Map::OnAsyncSuspend(F&& f) {
+void Scene_Map::OnAsyncSuspend(F&& f, bool is_preupdate) {
 	if (Game_Temp::transition_processing) {
 		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-		screen_erased_by_event = Game_Temp::transition_erase;
+		if (!Game_Temp::transition_erase || !is_preupdate) {
+			// RPG_RT behavior: EraseScreen commands performed during pre-update don't stick.
+			screen_erased_by_event = Game_Temp::transition_erase;
+		}
 
 		Game_Temp::transition_processing = false;
 		Game_Temp::transition_erase = false;
