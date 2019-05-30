@@ -56,7 +56,11 @@ public:
 	bool IsRunning() const;
 	int GetLoopCount() const;
 	bool ReachedLoopLimit() const;
+
 	void Update(bool reset_loop_count=true);
+
+	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
+	bool IsAsyncPending();
 
 	void Push(
 			const std::vector<RPG::EventCommand>& _list,

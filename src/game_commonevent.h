@@ -46,8 +46,10 @@ public:
 
 	/**
 	 * Updates common event parallel interpreter.
+	 *
+	 * @return false if we must suspend due to an async operation.
 	 */
-	void Update();
+	bool Update();
 
 	/**
 	 * Gets common event index.
@@ -99,6 +101,9 @@ public:
 	/** @return true if waiting for background execution */
 	bool IsWaitingBackgroundExecution() const;
 
+	/** @return true if parallel event waiting for async op */
+	bool IsAsyncPending() const;
+
 private:
 	bool IsWaitingExecution(RPG::EventPage::Trigger trigger) const;
 
@@ -107,5 +112,9 @@ private:
 	/** Interpreter for parallel common events. */
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
+
+inline bool Game_CommonEvent::IsAsyncPending() const {
+	return interpreter && interpreter->IsAsyncPending();
+}
 
 #endif

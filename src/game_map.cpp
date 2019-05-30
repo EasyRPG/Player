@@ -906,37 +906,54 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::Update(bool is_preupdate) {
+void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
-	if (animation) {
-		animation->Update();
-		if (animation->IsDone()) {
-			animation.reset();
+
+	if (!actx.IsActive()) {
+		//If not resuming from async op ...
+		if (animation) {
+			animation->Update();
+			if (animation->IsDone()) {
+				animation.reset();
+			}
 		}
+
+		UpdateProcessedFlags(is_preupdate);
 	}
 
-	UpdateProcessedFlags(is_preupdate);
+	if (!UpdateCommonEvents(actx)) {
+		// Suspend due to common event async op ...
+		return;
+	}
 
-	UpdateCommonEvents();
-	UpdateMapEvents();
+	if (!UpdateMapEvents(actx)) {
+		// Suspend due to map event async op ...
+		return;
+	}
 
 	if (is_preupdate) {
 		return;
 	}
 
-	Main_Data::game_player->Update();
-	UpdatePan();
+	if (!actx.IsActive()) {
+		//If not resuming from async op ...
+		Main_Data::game_player->Update();
+		UpdatePan();
 
-	for (auto& vehicle: vehicles) {
-		if (vehicle->GetMapId() == location.map_id) {
-			vehicle->Update();
+		for (auto& vehicle: vehicles) {
+			if (vehicle->GetMapId() == location.map_id) {
+				vehicle->Update();
+			}
 		}
+
+		Main_Data::game_party->UpdateTimers();
+		Main_Data::game_screen->Update();
 	}
 
-	Main_Data::game_party->UpdateTimers();
-	Main_Data::game_screen->Update();
-
-	UpdateForegroundEvents();
+	if (!UpdateForegroundEvents(actx)) {
+		// Suspend due to foreground event async op ...
+		return;
+	}
 
 	Parallax::Update();
 }
@@ -955,23 +972,69 @@ void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
 	}
 }
 
-void Game_Map::UpdateCommonEvents() {
+
+bool Game_Map::UpdateCommonEvents(MapUpdateAsyncContext& actx) {
+	int resume_ce = actx.GetCommonEvent();
+
 	for (Game_CommonEvent& ev : common_events) {
-		ev.Update();
+		if (resume_ce != 0) {
+			// If resuming, skip all unit the event to resume from ..
+			if (ev.GetIndex() != resume_ce) {
+				continue;
+			} else {
+				resume_ce = 0;
+			}
+		}
+
+		if (!ev.Update()) {
+			// Suspend due to this event ..
+			actx = MapUpdateAsyncContext::FromCommonEvent(ev.GetIndex());
+			return false;
+		}
 	}
+
+	actx = {};
+	return true;
 }
 
-void Game_Map::UpdateMapEvents() {
+bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
+	int resume_ev = actx.GetMapEvent();
+
 	for (Game_Event& ev : events) {
-		ev.Update();
+		if (resume_ev != 0) {
+			// If resuming, skip all unit the event to resume from ..
+			if (ev.GetId() != resume_ev) {
+				continue;
+			} else {
+				resume_ev = 0;
+			}
+		}
+
+		if (!ev.Update()) {
+			// Suspend due to this event ..
+			actx = MapUpdateAsyncContext::FromMapEvent(ev.GetId());
+			return false;
+		}
 	}
+
+	actx = {};
+	return true;
 }
 
-void Game_Map::UpdateForegroundEvents() {
+bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	auto& interp = GetInterpreter();
 
+	// If we resume from async op, we don't clear the loop index.
+	const bool resume_fg = !actx.IsForegroundEvent();
+
 	// Run any event loaded from last frame.
-	interp.Update(true);
+	interp.Update(!resume_fg);
+	if (interp.IsAsyncPending()) {
+		// Suspend due to this event ..
+		actx = MapUpdateAsyncContext::FromForegroundEvent();
+		return false;
+	}
+
 	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
 		interp.Clear();
 
@@ -1015,7 +1078,15 @@ void Game_Map::UpdateForegroundEvents() {
 		}
 
 		interp.Update(false);
+		if (interp.IsAsyncPending()) {
+			// Suspend due to this event ..
+			actx = MapUpdateAsyncContext::FromForegroundEvent();
+			return false;
+		}
 	}
+
+	actx = {};
+	return true;
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {

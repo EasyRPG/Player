@@ -23,6 +23,7 @@
 #include "spriteset_map.h"
 #include "window_message.h"
 #include "window_varlist.h"
+#include "game_map.h"
 
 /**
  * Scene Map class.
@@ -55,16 +56,29 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
+	enum TeleportTransitionRule {
+		eTransitionNormal,
+		eTransitionFade,
+		eTransitionForceFade,
+		eTransitionNone
+	};
+
+	void Start2(MapUpdateAsyncContext actx);
+
 	void StartPendingTeleport(bool use_default_transition);
 	void FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports);
-	void PreUpdate();
-	// Handles event requested transitions.
-	void UpdateStage2();
+	void FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports);
+
+	void PreUpdate(MapUpdateAsyncContext& actx);
+
+	// Calls map update
+	void UpdateStage1(MapUpdateAsyncContext actx);
 	// Handles pending teleport and scene changes.
-	void UpdateStage3();
+	void UpdateStage2();
 	void UpdateSceneCalling();
 
 	template <typename F> void AsyncNext(F&& f);
+	template <typename F> void OnAsyncSuspend(F&& f);
 
 	std::unique_ptr<Window_Message> message_window;
 

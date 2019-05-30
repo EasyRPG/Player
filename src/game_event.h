@@ -108,10 +108,13 @@ public:
 	/** Mark the event as waiting for execution */
 	bool SetAsWaitingForegroundExecution(bool face_hero, bool triggered_by_decision_key);
 
-	/** Update this for the current frame */
-	void Update();
+	/** 
+	 * Update this for the current frame
+	 *
+	 * @return false if we must suspend due to an async operation.
+	 */
+	bool Update();
 
-	void UpdateParallel();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
 	/**
@@ -145,6 +148,7 @@ public:
 	const RPG::EventPage* GetActivePage() const;
 
 	const RPG::SaveMapEvent& GetSaveData();
+
 protected:
 	RPG::SaveMapEvent* data();
 	const RPG::SaveMapEvent* data() const;

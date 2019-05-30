@@ -62,12 +62,15 @@ void Scene_Map::Start() {
 
 	Player::FrameReset();
 
-	PreUpdate();
-	// FIXME: Handle transitions requested on the first frame of a new game by PreUpdate!!
-	if (Game_Temp::transition_processing) {
-		Game_Temp::transition_processing = false;
-		Game_Temp::transition_erase = false;
-		Game_Temp::transition_type = Transition::TransitionNone;
+	Start2(MapUpdateAsyncContext());
+}
+
+void Scene_Map::Start2(MapUpdateAsyncContext actx) {
+	PreUpdate(actx);
+
+	if (actx.IsActive()) {
+		OnAsyncSuspend([this,actx]() { Start2(actx); });
+		return;
 	}
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
@@ -163,14 +166,26 @@ void Scene_Map::DrawBackground() {
 	}
 }
 
-void Scene_Map::PreUpdate() {
-	Game_Map::Update(true);
+void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
+	Game_Map::Update(actx, true);
 	spriteset->Update();
 }
 
 void Scene_Map::Update() {
-	Game_Map::Update();
+	MapUpdateAsyncContext actx;
+	UpdateStage1(actx);
+}
+
+void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
+	Game_Map::Update(actx);
 	spriteset->Update();
+
+	// Waiting for async operation from map update.
+	if (actx.IsActive()) {
+		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); });
+		return;
+	}
+
 	message_window->Update();
 
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
@@ -179,28 +194,6 @@ void Scene_Map::Update() {
 }
 
 void Scene_Map::UpdateStage2() {
-	if (!Game_Temp::transition_processing) {
-		UpdateStage3();
-		return;
-	}
-
-	Game_Temp::transition_processing = false;
-
-	// Do the transition and then finish the update routine.
-	// FIXME: This behavior is incomplete as the update loop has to be
-	// resumed at exactly the right time. In particular if a parallel
-	// event requests a transition, we have to continue running the interpreter
-	// and all stages of the update loop afterwards.
-	// This will be fixed later.
-
-	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-	screen_erased_by_event = Game_Temp::transition_erase;
-
-	// Unless its an instant transition, we must wait for it to finish before we can proceed.
-	AsyncNext([this]() { UpdateStage3(); });
-}
-
-void Scene_Map::UpdateStage3() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		StartPendingTeleport(false);
 		return;
@@ -293,19 +286,15 @@ void Scene_Map::FinishPendingTeleport(bool use_default_transition, bool defer_re
 	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
+	FinishPendingTeleport2(MapUpdateAsyncContext(), use_default_transition, defer_recursive_teleports);
+}
 
-	PreUpdate();
+void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports) {
+	PreUpdate(actx);
 
-	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
-	if (Game_Temp::transition_processing) {
-		// Show screen command allows screen to be visible from normal transitions, even
-		// though currently we don't emulate the actual transition caused by it.
-		if (!Game_Temp::transition_erase) {
-			screen_erased_by_event = false;
-		}
-		Game_Temp::transition_processing = false;
-		Game_Temp::transition_erase = false;
-		Game_Temp::transition_type = Transition::TransitionNone;
+	if (actx.IsActive()) {
+		OnAsyncSuspend([=] { FinishPendingTeleport2(actx,use_default_transition,defer_recursive_teleports); });
+		return;
 	}
 
 	if (!defer_recursive_teleports) {
@@ -317,13 +306,7 @@ void Scene_Map::FinishPendingTeleport(bool use_default_transition, bool defer_re
 		}
 	}
 
-	// Event forced the screen to erased, so we're done here.
-	if (screen_erased_by_event) {
-		UpdateSceneCalling();
-		return;
-	}
-
-	if (Graphics::IsTransitionErased()) {
+	if (!screen_erased_by_event && Graphics::IsTransitionErased()) {
 		if (use_default_transition) {
 			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
 		} else {
@@ -393,3 +376,18 @@ void Scene_Map::AsyncNext(F&& f) {
 		f();
 	}
 }
+
+template <typename F>
+void Scene_Map::OnAsyncSuspend(F&& f) {
+	if (Game_Temp::transition_processing) {
+		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+		screen_erased_by_event = Game_Temp::transition_erase;
+
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;;
+	}
+
+	AsyncNext(std::forward<F>(f));
+}
+

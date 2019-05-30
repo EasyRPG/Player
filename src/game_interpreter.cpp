@@ -3272,3 +3272,7 @@ bool Game_Interpreter::ContinuationShowInnStart(RPG::EventCommand const& /* com 
 bool Game_Interpreter::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
+
+bool Game_Interpreter::IsAsyncPending() {
+	return Game_Temp::transition_processing;
+}

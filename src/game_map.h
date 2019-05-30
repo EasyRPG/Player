@@ -37,6 +37,24 @@ constexpr int SCREEN_TILE_SIZE = 256;
 constexpr int SCREEN_WIDTH = 20 * SCREEN_TILE_SIZE;
 constexpr int SCREEN_HEIGHT = 15 * SCREEN_TILE_SIZE;
 
+class MapUpdateAsyncContext {
+	public:
+		MapUpdateAsyncContext() = default;
+
+		static MapUpdateAsyncContext FromCommonEvent(int ce);
+		static MapUpdateAsyncContext FromMapEvent(int ce);
+		static MapUpdateAsyncContext FromForegroundEvent();
+
+		int GetCommonEvent() const;
+		int GetMapEvent() const;
+		bool IsForegroundEvent() const;
+		bool IsActive() const;
+	private:
+		int common_event = 0;
+		int map_event = 0;
+		bool foreground_event = 0;
+};
+
 /**
  * Game_Map namespace
  */
@@ -223,9 +241,12 @@ namespace Game_Map {
 	/**
 	 * Updates the map state.
 	 *
+	 * @param actx asynchronous operations context. In out param.
+	 *        If IsActive() when passed in, will resume to that point.
+	 *        If IsActive() after return in, will suspend from that point.
 	 * @param is_preupdate Update only common events and map events
 	 */
-	void Update(bool is_preupdate = false);
+	void Update(MapUpdateAsyncContext& actx, bool is_preupdate = false);
 
 	/**
 	 * Gets current map_info.
@@ -612,9 +633,9 @@ namespace Game_Map {
 	int GetTargetPanY();
 
 	void UpdateProcessedFlags(bool is_preupdate);
-	void UpdateCommonEvents();
-	void UpdateMapEvents();
-	void UpdateForegroundEvents();
+	bool UpdateCommonEvents(MapUpdateAsyncContext& actx);
+	bool UpdateMapEvents(MapUpdateAsyncContext& actx);
+	bool UpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
 	FileRequestAsync* RequestMap(int map_id);
 
@@ -680,6 +701,41 @@ namespace Game_Map {
 		 */
 		void ClearChangedBG();
 	}
+}
+
+
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromCommonEvent(int ce) {
+	MapUpdateAsyncContext actx;
+	actx.common_event = ce;
+	return actx;
+}
+
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromMapEvent(int ev) {
+	MapUpdateAsyncContext actx;
+	actx.map_event = ev;
+	return actx;
+}
+
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent() {
+	MapUpdateAsyncContext actx;
+	actx.foreground_event = true;
+	return actx;
+}
+
+inline int MapUpdateAsyncContext::GetCommonEvent() const {
+	return common_event;
+}
+
+inline int MapUpdateAsyncContext::GetMapEvent() const {
+	return map_event;
+}
+
+inline bool MapUpdateAsyncContext::IsForegroundEvent() const {
+	return foreground_event;
+}
+
+inline bool MapUpdateAsyncContext::IsActive() const {
+	return GetCommonEvent() || GetMapEvent() || IsForegroundEvent();
 }
 
 #endif
