@@ -88,8 +88,9 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	Game_Map::PlayBgm();
 
 	// Player cast Escape / Teleport from menu
-	if (Main_Data::game_player->IsPendingTeleport()) {
-		FinishPendingTeleport(true);
+	if (Main_Data::game_player->IsPendingTeleport()
+			&& Main_Data::game_player->GetTeleportTarget().GetType() == TeleportTarget::eSkillTeleport) {
+		FinishPendingTeleport(true, true);
 		return;
 	}
 
@@ -284,16 +285,17 @@ void Scene_Map::StartPendingTeleport(bool use_default_transition) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
-	AsyncNext([this,use_default_transition]() { FinishPendingTeleport(use_default_transition); });
+	AsyncNext([this,use_default_transition]() { FinishPendingTeleport(use_default_transition, false); });
 }
 
-void Scene_Map::FinishPendingTeleport(bool use_default_transition) {
+void Scene_Map::FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports) {
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 
 	PreUpdate();
+
 	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
 	if (Game_Temp::transition_processing) {
 		// Show screen command allows screen to be visible from normal transitions, even
@@ -306,9 +308,13 @@ void Scene_Map::FinishPendingTeleport(bool use_default_transition) {
 		Game_Temp::transition_type = Transition::TransitionNone;
 	}
 
-	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport(use_default_transition);
-		return;
+	if (!defer_recursive_teleports) {
+		// RPG_RT behavior - Escape and Teleport skills silently ignore any teleport commands
+		// executed by events during pre-update frame and defer them until first frame.
+		if (Main_Data::game_player->IsPendingTeleport()) {
+			StartPendingTeleport(use_default_transition);
+			return;
+		}
 	}
 
 	// Event forced the screen to erased, so we're done here.

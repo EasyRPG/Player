@@ -66,7 +66,7 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 		map_id = Game_Map::GetParentId(target.map_id);
 	}
 
-	ReserveTeleport(map_id, target.map_x, target.map_y, Down, TeleportTarget::eNormalTeleport);
+	ReserveTeleport(map_id, target.map_x, target.map_y, Down, TeleportTarget::eSkillTeleport);
 
 	if (target.switch_on) {
 		Game_Switches.Set(target.switch_id, true);
@@ -116,7 +116,7 @@ void Game_Player::PerformTeleport() {
 		GetVehicle()->SyncWithPlayer();
 	}
 
-	teleport_target = {};
+	ResetTeleportTarget();
 }
 
 bool Game_Player::MakeWay(int x, int y) const {

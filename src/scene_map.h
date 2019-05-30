@@ -56,7 +56,7 @@ public:
 
 private:
 	void StartPendingTeleport(bool use_default_transition);
-	void FinishPendingTeleport(bool use_default_transition);
+	void FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports);
 	void PreUpdate();
 	// Handles event requested transitions.
 	void UpdateStage2();
