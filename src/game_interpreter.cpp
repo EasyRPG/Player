@@ -3084,7 +3084,6 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 
 bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
 	Game_Temp::to_title = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
@@ -3274,5 +3273,5 @@ bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* co
 
 
 bool Game_Interpreter::IsAsyncPending() {
-	return Game_Temp::transition_processing;
+	return Game_Temp::transition_processing || Game_Temp::to_title;
 }
