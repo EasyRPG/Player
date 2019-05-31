@@ -58,6 +58,8 @@ namespace {
 	static Game_Interpreter* transition_owner = nullptr;
 }
 
+bool Game_Interpreter::to_title = false;
+
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 
@@ -331,10 +333,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 						(_keyinput.wait_frames * 10) / Graphics::GetDefaultFps());
 			}
 			_keyinput.wait = false;
-		}
-
-		if (Game_Temp::to_title) {
-			break;
 		}
 
 		auto* frame = GetFrame();
@@ -3083,7 +3081,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
-	Game_Temp::to_title = true;
+	to_title = true;
 	return false;
 }
 
@@ -3273,5 +3271,5 @@ bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* co
 
 
 bool Game_Interpreter::IsAsyncPending() {
-	return Game_Temp::transition_processing || Game_Temp::to_title;
+	return Game_Temp::transition_processing || to_title;
 }

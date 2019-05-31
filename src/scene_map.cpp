@@ -373,8 +373,8 @@ void Scene_Map::AsyncNext(F&& f) {
 
 template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, bool is_preupdate) {
-	if (Game_Temp::to_title) {
-		Game_Temp::to_title = false;
+	if (Game_Interpreter::GetReturnToTitle()) {
+		Game_Interpreter::ResetReturnToTitle();
 		Scene::PopUntil(Scene::Title);
 		return;
 	}
