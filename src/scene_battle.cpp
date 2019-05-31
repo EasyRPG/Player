@@ -189,6 +189,9 @@ void Scene_Battle::Update() {
 		// we need this so it can update automatically the status_window
 		status_window->Refresh();
 	}
+	if (CheckInterpreterExit()) {
+		return;
+	}
 
 	if (Game_Battle::IsTerminating()) {
 		Scene::Pop();

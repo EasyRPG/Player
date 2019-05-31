@@ -373,19 +373,7 @@ void Scene_Map::AsyncNext(F&& f) {
 
 template <typename F>
 void Scene_Map::OnAsyncSuspend(F&& f, bool is_preupdate) {
-	if (Game_Interpreter::GetExitGame()) {
-		Game_Interpreter::ResetExitGame();
-		if (Scene::Find(Scene::GameBrowser)) {
-			Scene::PopUntil(Scene::GameBrowser);
-		} else {
-			Player::exit_flag = true;
-		}
-		return;
-	}
-
-	if (Game_Interpreter::GetReturnToTitle()) {
-		Game_Interpreter::ResetReturnToTitle();
-		Scene::PopUntil(Scene::Title);
+	if (CheckInterpreterExit()) {
 		return;
 	}
 

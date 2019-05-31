@@ -211,6 +211,11 @@ public:
 	 */
 	void SetRequestedScene(SceneType scene);
 
+	/**
+	 * Check if the interpreter wants to end the game
+	 */
+	static bool CheckInterpreterExit();
+
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;

@@ -59,9 +59,6 @@ public:
 
 	void Update(bool reset_loop_count=true);
 
-	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
-	bool IsAsyncPending();
-
 	void Push(
 			const std::vector<RPG::EventCommand>& _list,
 			int _event_id,
@@ -91,6 +88,9 @@ public:
 
 	/** @return the event_id of the event at the base of the call stack */
 	int GetOriginalEventId() const;
+
+	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
+	static bool IsAsyncPending();
 
 	/** @return true if any interpreter requested to return to title screen */
 	static bool GetReturnToTitle();

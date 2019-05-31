@@ -75,6 +75,7 @@ private:
 	void UpdateStage1(MapUpdateAsyncContext actx);
 	// Handles pending teleport and scene changes.
 	void UpdateStage2();
+
 	void UpdateSceneCalling();
 
 	template <typename F> void AsyncNext(F&& f);

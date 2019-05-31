@@ -25,6 +25,7 @@
 #include "output.h"
 #include "audio.h"
 #include "transition.h"
+#include "game_interpreter.h"
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -262,6 +263,27 @@ void Scene::DrawBackground() {
 Graphics::State &Scene::GetGraphicsState() {
 	return state;
 }
+
+bool Scene::CheckInterpreterExit() {
+	if (Game_Interpreter::GetExitGame()) {
+		Game_Interpreter::ResetExitGame();
+		if (Scene::Find(Scene::GameBrowser)) {
+			Scene::PopUntil(Scene::GameBrowser);
+		} else {
+			Player::exit_flag = true;
+		}
+		return true;
+	}
+
+	if (Game_Interpreter::GetReturnToTitle()) {
+		Game_Interpreter::ResetReturnToTitle();
+		Scene::PopUntil(Scene::Title);
+		return true;
+	}
+
+	return false;
+}
+
 
 
 inline void Scene::DebugValidate(const char* caller) {
