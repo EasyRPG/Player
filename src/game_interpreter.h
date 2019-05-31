@@ -98,11 +98,18 @@ public:
 	/** Resets the return to title flag */
 	static void ResetReturnToTitle();
 
+	/** @return true if any interpreter requested to return to title screen */
+	static bool GetExitGame();
+
+	/** Resets the return to title flag */
+	static void ResetExitGame();
+
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
 
 	static bool to_title;
+	static bool exit_game;
 
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
@@ -304,5 +311,12 @@ inline void Game_Interpreter::ResetReturnToTitle() {
 	to_title = false;
 }
 
+inline bool Game_Interpreter::GetExitGame() {
+	return exit_game;
+}
+
+inline void Game_Interpreter::ResetExitGame() {
+	exit_game = false;
+}
 
 #endif

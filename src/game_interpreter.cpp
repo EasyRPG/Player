@@ -59,6 +59,7 @@ namespace {
 }
 
 bool Game_Interpreter::to_title = false;
+bool Game_Interpreter::exit_game = false;
 
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
@@ -3237,12 +3238,8 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
-	if (Scene::Find(Scene::GameBrowser)) {
-		Scene::PopUntil(Scene::GameBrowser);
-	} else {
-		Player::exit_flag = true;
-	}
-	return true;
+	exit_game = true;
+	return false;
 }
 
 bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com */) {
@@ -3271,5 +3268,5 @@ bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* co
 
 
 bool Game_Interpreter::IsAsyncPending() {
-	return Game_Temp::transition_processing || to_title;
+	return Game_Temp::transition_processing || to_title || exit_game;
 }
