@@ -59,6 +59,12 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Update() {
+	if (frame_update) {
+		frame++;
+		if (cutoff == -1 || frame <= cutoff)
+			RunTimedSfx();
+	}
+
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
 		Sprite::Flash(flash_color, 0);
@@ -68,11 +74,6 @@ void BattleAnimation::Update() {
 
 	Sprite::Update();
 
-	if (frame_update) {
-		frame++;
-		if (cutoff == -1 || frame <= cutoff)
-			RunTimedSfx();
-	}
 	frame_update = !frame_update;
 }
 
