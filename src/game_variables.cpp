@@ -75,7 +75,7 @@ bool Game_Variables_Class::IsValid(int variable_id) const {
 }
 
 int Game_Variables_Class::GetSize() const {
-	return (int)variables().size();
+	return Data::variables.size();
 }
 
 void Game_Variables_Class::Reset() {
