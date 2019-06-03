@@ -49,8 +49,13 @@ Spriteset_Battle::Spriteset_Battle() {
 		}
 	}
 
+	int enemy_index = 0;
 	for (Game_Battler* b : battler) {
-		sprites.push_back(std::make_shared<Sprite_Battler>(b));
+		// For Z ordering, actors use actors id and enemies use troop id.
+		const int index = (b->GetType() == Game_Battler::Type_Ally)
+			? b->GetId() : enemy_index++;
+
+		sprites.push_back(std::make_shared<Sprite_Battler>(b, index));
 		if (b->GetType() == Game_Battler::Type_Ally) {
 			sprites.back()->SetVisible(false);
 		}

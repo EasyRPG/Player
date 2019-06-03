@@ -26,8 +26,8 @@
 #include "reader_util.h"
 #include "output.h"
 
-Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
-	battler(battler) {
+Sprite_Battler::Sprite_Battler(Game_Battler* battler, int index) :
+	battler(battler), battle_index(index) {
 }
 
 Sprite_Battler::~Sprite_Battler() {
@@ -298,14 +298,32 @@ int Sprite_Battler::GetHeight() const {
 	return Sprite::GetHeight();
 }
 
+void Sprite_Battler::ResetZ() {
+	static_assert(Game_Battler::Type_Ally < Game_Battler::Type_Enemy, "Game_Battler enums re-ordered! Fix Z order logic here!");
+
+	constexpr int id_limit = 128;
+
+	int y = battler->GetBattleY();
+	if (battler->GetType() == Game_Battler::Type_Enemy && graphic) {
+		y += graphic->GetHeight() / 2;
+	}
+
+	int z = battler->GetType();
+	z *= SCREEN_TARGET_HEIGHT * 2;
+	z += y;
+	z *= id_limit;
+	z += id_limit - battle_index;
+	z += Priority_Battler;
+
+	SetZ(z);
+}
+
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
 	hue = battler->GetHue();
 
 	SetX(battler->GetDisplayX());
 	SetY(battler->GetDisplayY());
-	// Battlers at the bottom appear above battlers at the top
-	SetZ(Priority_Battler + battler->GetBattleY());
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
@@ -314,6 +332,7 @@ void Sprite_Battler::CreateSprite() {
 			SetOx(graphic->GetWidth() / 2);
 			SetOy(graphic->GetHeight() / 2);
 			SetBitmap(graphic);
+			ResetZ();
 		}
 		else {
 			FileRequestAsync* request = AsyncHandler::RequestFile("Monster", sprite_name);
@@ -327,6 +346,7 @@ void Sprite_Battler::CreateSprite() {
 		SetOy(24);
 		SetAnimationState(anim_state);
 		idling = true;
+		ResetZ();
 	}
 
 	SetVisible(!battler->IsHidden());
@@ -367,6 +387,8 @@ void Sprite_Battler::OnMonsterSpriteReady(FileRequestResult* result) {
 
 	SetOx(graphic->GetWidth() / 2);
 	SetOy(graphic->GetHeight() / 2);
+
+	ResetZ();
 
 	bool hue_change = hue != 0;
 	if (hue_change) {
