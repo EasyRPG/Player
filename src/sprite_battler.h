@@ -57,8 +57,9 @@ public:
 	 * Constructor.
 	 *
 	 * @param battler game battler to display
+	 * @param battle_index battle index for Z ordering
 	 */
-	Sprite_Battler(Game_Battler* battler);
+	Sprite_Battler(Game_Battler* battler, int battle_index);
 
 	~Sprite_Battler() override;
 
@@ -102,6 +103,7 @@ protected:
 	void OnMonsterSpriteReady(FileRequestResult* result);
 	void OnBattlercharsetReady(FileRequestResult* result, int32_t battler_index);
 	int GetMaxOpacity() const;
+	void ResetZ();
 
 	std::string sprite_name;
 	int hue = 0;
@@ -114,6 +116,7 @@ protected:
 	int fade_out = 255;
 	int fade_out_incr = 15;
 	int flash_counter = 0;
+	int battle_index = 0;
 	LoopState loop_state = LoopState_DefaultAnimationAfterFinish;
 	bool old_hidden = false;
 	std::unique_ptr<BattleAnimation> animation;
@@ -123,5 +126,6 @@ protected:
 
 	FileRequestBinding request_id;
 };
+
 
 #endif
