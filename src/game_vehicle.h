@@ -76,7 +76,6 @@ protected:
 	RPG::SaveVehicleLocation* data();
 	const RPG::SaveVehicleLocation* data() const;
 
-	Type type;
 	bool driving;
 };
 

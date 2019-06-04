@@ -50,7 +50,6 @@ static RPG::SaveVehicleLocation* getDataFromType(Game_Vehicle::Type ty) {
 Game_Vehicle::Game_Vehicle(Type _type) :
 	Game_Character(Vehicle, getDataFromType(_type))
 {
-	type = _type;
 	SetDirection(Left);
 	SetSpriteDirection(Left);
 	SetAnimationType(AnimType::AnimType_non_continuous);
@@ -59,7 +58,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 }
 
 void Game_Vehicle::LoadSystemSettings() {
-	switch (type) {
+	switch (GetVehicleType()) {
 		case None:
 			break;
 		case Boat:
@@ -87,7 +86,7 @@ void Game_Vehicle::LoadSystemSettings() {
 }
 
 RPG::Music& Game_Vehicle::GetBGM() {
-	switch (type) {
+	switch (GetVehicleType()) {
 	case None:
 		assert(false);
 		break;
@@ -110,7 +109,7 @@ void Game_Vehicle::Refresh() {
 		MoveTo(GetX(), GetY());
 	}
 
-	switch (type) {
+	switch (GetVehicleType()) {
 		case None:
 			break;
 		case Boat:
@@ -153,7 +152,7 @@ bool Game_Vehicle::GetVisible() const {
 }
 
 void Game_Vehicle::GetOn() {
-	if (type == Airship) {
+	if (GetVehicleType() == Airship) {
 		data()->remaining_ascent = SCREEN_TILE_SIZE;
 		SetFlying(true);
 		Main_Data::game_player->SetFlying(true);
@@ -162,14 +161,14 @@ void Game_Vehicle::GetOn() {
 }
 
 void Game_Vehicle::GetOff() {
-	if (type == Airship) {
+	if (GetVehicleType() == Airship) {
 		data()->remaining_descent = SCREEN_TILE_SIZE;
 	} else {
 		Main_Data::game_player->UnboardingFinished();
 	}
 	// Get off airship can be trigger while airship is moving. Don't break the animation
 	// until its finished.
-	if (type != Airship || (!IsMoving() && !IsJumping())) {
+	if (GetVehicleType() != Airship || (!IsMoving() && !IsJumping())) {
 		SetDirection(Left);
 		SetSpriteDirection(Left);
 	}
@@ -272,7 +271,7 @@ void Game_Vehicle::Update() {
 		Game_Character::UpdateMovement();
 	}
 
-	if (type == Airship) {
+	if (GetVehicleType() == Airship) {
 		UpdateAnimationAirship();
 	} else {
 		UpdateAnimationShip();
