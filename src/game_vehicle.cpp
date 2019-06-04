@@ -32,23 +32,8 @@ const char Game_Vehicle::TypeNames[4][8] {
 	"Airship"
 };
 
-static RPG::SaveVehicleLocation* getDataFromType(Game_Vehicle::Type ty) {
-	assert(ty >= 1 && ty <= 3 && "Invalid Vehicle index");
-	switch (ty) {
-		case Game_Vehicle::Boat:
-			return &Main_Data::game_data.boat_location;
-		case Game_Vehicle::Ship:
-			return &Main_Data::game_data.ship_location;
-		case Game_Vehicle::Airship:
-			return &Main_Data::game_data.airship_location;
-		case Game_Vehicle::None:
-			break;
-	}
-	return nullptr;
-}
-
-Game_Vehicle::Game_Vehicle(Type _type) :
-	Game_Character(Vehicle, getDataFromType(_type))
+Game_Vehicle::Game_Vehicle(RPG::SaveVehicleLocation* vdata)
+	: Game_Character(Vehicle, vdata)
 {
 	SetDirection(Left);
 	SetSpriteDirection(Left);
