@@ -108,8 +108,9 @@ void Game_Map::Init() {
 	}
 
 	vehicles.clear();
-	for (int i = 0; i < 3; i++)
-		vehicles.push_back(std::make_shared<Game_Vehicle>((Game_Vehicle::Type) (i + 1)));
+	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.boat_location));
+	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.ship_location));
+	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.airship_location));
 
 	pan_wait = false;
 	location.pan_state = RPG::SavePartyLocation::PanState_follow;

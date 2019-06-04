@@ -835,14 +835,21 @@ void Player::LoadDatabase() {
 static void OnMapSaveFileReady(FileRequestResult*) {
 	Game_Map::SetupFromSave();
 
-	// Compatibility hack for pre 0.6 EasyRPG Player saves.
-	// Old savegames accidentally wrote animation_type as
-	// continuous for all events.
+	// Compatibility hacks for old EasyRPG Player saves.
 	if (Main_Data::game_data.easyrpg_data.version == 0) {
+		// Old savegames accidentally wrote animation_type as
+		// continuous for all events.
 		Main_Data::game_player->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 		Game_Map::GetVehicle(Game_Vehicle::Boat)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 		Game_Map::GetVehicle(Game_Vehicle::Ship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
 		Game_Map::GetVehicle(Game_Vehicle::Airship)->SetAnimationType(Game_Character::AnimType::AnimType_non_continuous);
+	}
+
+	if (Main_Data::game_data.easyrpg_data.version <= 600) {
+		// Old savegames didn't write the vehicle chunk.
+		Main_Data::game_data.boat_location.vehicle = 1;
+		Main_Data::game_data.ship_location.vehicle = 2;
+		Main_Data::game_data.airship_location.vehicle = 3;
 	}
 
 	Main_Data::game_player->Refresh();

@@ -38,7 +38,7 @@ public:
 
 	static const char TypeNames[4][8];
 
-	Game_Vehicle(Type _type);
+	explicit Game_Vehicle(RPG::SaveVehicleLocation* vdata);
 
 	/**
 	 * Implementation of abstract methods
@@ -76,7 +76,6 @@ protected:
 	RPG::SaveVehicleLocation* data();
 	const RPG::SaveVehicleLocation* data() const;
 
-	Type type;
 	bool driving;
 };
 
