@@ -67,7 +67,7 @@ int Game_Character::GetJumpHeight() const {
 }
 
 int Game_Character::GetScreenX(bool apply_shift) const {
-	int x = (GetSpriteX() - Game_Map::GetDisplayX()) / TILE_SIZE + TILE_SIZE;
+	int x = GetSpriteX() / TILE_SIZE - Game_Map::GetDisplayX() / TILE_SIZE + TILE_SIZE;
 
 	if (Game_Map::LoopHorizontal()) {
 		x = Utils::PositiveModulo(x, Game_Map::GetWidth() * TILE_SIZE);
@@ -82,7 +82,7 @@ int Game_Character::GetScreenX(bool apply_shift) const {
 }
 
 int Game_Character::GetScreenY(bool apply_shift) const {
-	int y = (GetSpriteY() - Game_Map::GetDisplayY()) / TILE_SIZE + TILE_SIZE;
+	int y = GetSpriteY() / TILE_SIZE - Game_Map::GetDisplayY() / TILE_SIZE + TILE_SIZE;
 
 	y -= GetJumpHeight();
 
