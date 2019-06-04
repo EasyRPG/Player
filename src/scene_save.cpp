@@ -100,6 +100,16 @@ void Scene_Save::Action(int index) {
 
 	LSD_Reader::PrepareSave(Main_Data::game_data, PLAYER_SAVEGAME_VERSION);
 	auto data_copy = LSD_Reader::ClearDefaults(Main_Data::game_data, Game_Map::GetMapInfo(), Game_Map::GetMap());
+	// RPG_RT doesn't save these chunks in rm2k as they are meaningless
+	if (Player::IsRPG2k()) {
+		for (auto& actor: data_copy.actors) {
+			actor.two_weapon = 0;
+			actor.lock_equipment = 0;
+			actor.auto_battle = 0;
+			actor.super_guard = 0;
+		}
+	}
+
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;
 	// RPG_RT always stores SaveMapEvent with map_id == 0.

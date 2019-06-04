@@ -80,6 +80,13 @@ void Game_Actor::Init() {
 
 void Game_Actor::Fixup() {
 	GetData().Fixup(actor_id);
+	if (Player::IsRPG2k()) {
+		auto& actor = GetActor();
+		GetData().two_weapon = actor.two_weapon;
+		GetData().lock_equipment = actor.lock_equipment;
+		GetData().auto_battle = actor.auto_battle;
+		GetData().super_guard = actor.super_guard;
+	}
 
 	RemoveInvalidData();
 }
