@@ -76,7 +76,7 @@ bool Game_Switches_Class::IsValid(int switch_id) const {
 }
 
 int Game_Switches_Class::GetSize() const {
-	return (int)switches().size();
+	return Data::switches.size();
 }
 
 void Game_Switches_Class::Reset() {
