@@ -155,6 +155,27 @@ public:
 	int GetAffectedAgility() const;
 
 	/**
+	 * Gets which conditions were healed by physical attack.
+	 *
+	 * @return healed conditions
+	 */
+	const std::vector<int16_t>& GetPhysicalHealedConditions() const;
+
+	/**
+	 * Gets which conditions were inflicted / healed directly.
+	 *
+	 * @return inflicted conditions
+	 */
+	const std::vector<int16_t>& GetAffectedConditions() const;
+
+	/**
+	 * Gets which attributes were shifited.
+	 *
+	 * @return shifted attributes
+	 */
+	const std::vector<int16_t>& GetShiftedAttributes() const;
+
+	/**
 	 * Gets activated switch.
 	 *
 	 * @return switch id or -1 when algorithm didn't affect a switch
@@ -211,13 +232,6 @@ public:
 	void PlaySoundAnimation(bool on_source = false, int cutoff = -1);
 
 	/**
-	 * Returns a list of all inflicted/removed conditions.
-	 *
-	 * @return List of all inflicted/removed conditions
-	 */
-	const std::vector<int16_t>& GetAffectedConditions() const;
-
-	/**
 	 * Returns whether the action hit the target.
 	 * This function returns the same as the last Execute-call.
 	 *
@@ -226,9 +240,14 @@ public:
 	bool IsSuccess() const;
 
 	/**
-	 * @return truen when this action inflicts death on the target.
+	 * @return true when this action inflicts death on the target.
 	 */
 	bool IsLethal() const;
+
+	/**
+	 * @return true when the target was killed by damage.
+	 */
+	bool IsKilledByDamage() const;
 
 	/**
 	 * Gets if the last action was a critical hit.
@@ -312,6 +331,13 @@ public:
 	virtual const RPG::Sound* GetStartSe() const;
 
 	/**
+	 * Gets the sound effect that is played then the action fails. 
+	 *
+	 * @return result se
+	 */
+	virtual const RPG::Sound* GetFailureSe() const;
+
+	/**
 	 * Gets the sound effect that is played then the action took place.
 	 *
 	 * @return result se
@@ -326,6 +352,13 @@ public:
 	virtual const RPG::Sound* GetDeathSe() const;
 
 	/**
+	 * Returns the message used when the action fails.
+	 *
+	 * @return failure message
+	 */
+	virtual std::string GetFailureMessage() const;
+
+	/**
 	 * This is used to handle a corner case in the RPG2k battle system.
 	 * When a battler dies because his hp reached 0 the "[NAME] has fallen"
 	 * message is displayed on a new line. When the death is caused by a
@@ -334,15 +367,6 @@ public:
 	 * @return death message
 	 */
 	virtual std::string GetDeathMessage() const;
-
-	/**
-	 * Returns all inflicted/healed conditions.
-	 * This must be called before calling Execute, otherwise the conditions
-	 * are reported incorrectly.
-	 *
-	 * @param out filled with all conditions in text form
-	 */
-	virtual void GetResultMessages(std::vector<std::string>& out) const;
 
 	/**
 	 * Returns the physical rate of the attack.
@@ -384,19 +408,20 @@ public:
 	 */
 	std::string GetCriticalHitMessage() const;
 
+	std::string GetUndamagedMessage() const;
+	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
+	std::string GetDamagedMessage() const;
+	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
+	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
+	std::string GetStateMessage(const std::string& message) const;
+	std::string GetAttributeShiftMessage(const std::string& attribute) const;
+
 protected:
 	AlgorithmBase(Type t, Game_Battler* source);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Type t, Game_Battler* source, Game_Party_Base* target);
 
 	std::string GetAttackFailureMessage(const std::string& points) const;
-	std::string GetHpSpRecoveredMessage(int value, const std::string& points) const;
-	std::string GetUndamagedMessage() const;
-	std::string GetHpSpAbsorbedMessage(int value, const std::string& points) const;
-	std::string GetDamagedMessage() const;
-	std::string GetParameterChangeMessage(bool is_positive, int value, const std::string& points) const;
-	std::string GetStateMessage(const std::string& message) const;
-	std::string GetAttributeShiftMessage(const std::string& attribute) const;
 
 	void ApplyActionSwitches();
 
@@ -431,6 +456,7 @@ protected:
 	bool healing;
 	bool success;
 	bool lethal = false;
+	bool killed_by_dmg = false;
 	bool critical_hit;
 	bool absorb;
 	bool revived = false;
@@ -445,7 +471,7 @@ protected:
 	bool has_animation2_played = false;
 
 	std::vector<int16_t> conditions;
-	std::vector<int16_t> healed_conditions;
+	std::vector<int16_t> phys_healed_conditions;
 	std::vector<int16_t> shift_attributes;
 	std::vector<int> switch_on;
 	std::vector<int> switch_off;
@@ -482,8 +508,9 @@ public:
 	std::string GetSecondStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
+	const RPG::Sound* GetFailureSe() const override;
 	const RPG::Sound* GetResultSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
+	std::string GetFailureMessage() const override;
 	int GetPhysicalDamageRate() const override;
 	bool IsReflected() const override;
 	bool ActionIsPossible() const override;
@@ -507,7 +534,6 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
-	void GetResultMessages(std::vector<std::string>& out) const override;
 	bool ActionIsPossible() const override;
 
 private:
@@ -548,6 +574,7 @@ public:
 	std::string GetStartMessage() const override;
 	int GetSourceAnimationState() const override;
 	const RPG::Sound* GetStartSe() const override;
+	int GetPhysicalDamageRate() const override;
 	bool Execute() override;
 	void Apply() override;
 };
@@ -561,8 +588,6 @@ public:
 	const RPG::Sound* GetStartSe() const override;
 	bool Execute() override;
 	void Apply() override;
-
-	void GetResultMessages(std::vector<std::string>& out) const override;
 };
 
 class Transform : public AlgorithmBase {

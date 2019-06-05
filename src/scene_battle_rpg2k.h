@@ -24,6 +24,7 @@
 
 #include "window_command.h"
 #include "window_battlemessage.h"
+#include "game_battlealgorithm.h"
 
 /**
  * Scene_Battle class.
@@ -34,9 +35,14 @@ public:
 	enum BattleActionState {
 		/**
 		 * Called once
+		 * Flashes enemy sprite and a small delay to start action.
+		 */
+		BattleActionState_Begin,
+		/**
+		 * Called once
 		 * Handles healing of conditions that get auto removed after X turns.
 		 */
-		BattleActionState_ConditionHeal,
+		BattleActionState_Conditions,
 		/**
 		 * Called once
 		 * Handles first start message
@@ -59,9 +65,24 @@ public:
 		BattleActionState_Execute,
 		/**
 		 * Called once per target.
+		 * Used to display critical hit message.
+		 */
+		BattleActionState_Critical,
+		/**
+		 * Called once per target.
 		 * Used to apply the new conditions, play an optional battle animation and sound, and print the second line of a technique.
 		 */
 		BattleActionState_Apply,
+		/**
+		 * Called once per target.
+		 * Used to handle action failure.
+		 */
+		BattleActionState_Failure,
+		/**
+		 * Called once per target.
+		 * Used to handle damage.
+		 */
+		BattleActionState_Damage,
 		/**
 		* Called repeatedly.
 		* Used for the results, to push and pop each message.
@@ -140,55 +161,72 @@ protected:
 	void SelectNextActor();
 	void SelectPreviousActor();
 
-	/**
-	 * Gets the time during before hiding a windowful of
-	 * text.
-	 *
-	 * @return int seconds to wait
-	 */
-	int GetDelayForWindow();
-
-	/**
-	 * Gets delay between showing two lines of text.
-	 *
-	 * @return int seconds to wait
-	 */
-	int GetDelayForLine();
-
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 
 	// Battle Start Handlers
 	bool DisplayMonstersInMessageWindow();
 
+	void SetBattleActionState(BattleActionState state);
+	void SetBattleActionSubState(int substate, bool reset_index = true);
+
+	/**
+	 * Switch to the next action state, resetting the substate.
+	 *
+	 * @param state the state to change to
+	 * @param action the action we're processing
+	 * @return the return value of the state handler
+	 * @post battle_action_substate is reset to 0
+	 */
+	bool ProcessNextAction(BattleActionState state, Game_BattleAlgorithm::AlgorithmBase* action);
+
+	/**
+	 * Switch to the next action substate
+	 *
+	 * @param substate the substate to change to
+	 * @param action the action we're processing
+	 * @param reset_index if true, reset the substate index
+	 * @return the return value of the state handler
+	 */
+	bool ProcessNextSubState(int substate, Game_BattleAlgorithm::AlgorithmBase* action, bool reset_index = true);
+
 	// BattleAction State Machine Handlers
-	bool ProcessActionConditionHeal(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionExecute(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionCritical(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionApply(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionFailure(Game_BattleAlgorithm::AlgorithmBase* action);
+	bool ProcessActionDamage(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionResults(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionDeath(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
+
+	void SetWait(int min_wait, int max_wait);
+	void SetWaitForUsage(Game_BattleAlgorithm::Type type);
+	bool CheckWait();
 
 	std::unique_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	bool battle_action_pending = false;
-	int battle_action_wait = 0;
-	int battle_action_state = BattleActionState_ConditionHeal;
+	int battle_action_state = BattleActionState_Begin;
+	int battle_action_substate = 0;
 	int battle_action_start_index = 0;
 	int battle_action_results_index = 0;
+	int battle_action_dmg_index = 0;
+	std::string pending_message;
+	int battle_action_substate_index = 0;
 
 	int select_target_flash_count = 0;
 	bool encounter_message_first_monster = true;
-	int encounter_message_wait = 0;
 	bool encounter_message_first_strike = false;
 
-	bool begin_escape = true;
-	bool escape_success = false;
-	int escape_counter = 0;
+	int battle_action_wait = 0;
+	int battle_action_min_wait = 0;
 
 	bool message_box_got_visible = false;
 	bool move_screen = false;

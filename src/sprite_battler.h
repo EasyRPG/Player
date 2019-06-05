@@ -97,6 +97,15 @@ public:
 	int GetWidth() const override;
 	int GetHeight() const override;
 
+	/**
+	 * A hack for 2k battle system. Treat the sprite as not dead
+	 * even if the battler is dead. This is needed because battler "dies"
+	 * before the 2k battle system animates the death
+	 *
+	 * @param value whether to force alive or not
+	 */
+	void SetForcedAlive(bool value);
+
 protected:
 	void CreateSprite();
 	void DoIdleAnimation();
@@ -122,6 +131,7 @@ protected:
 	std::unique_ptr<BattleAnimation> animation;
 	// false when a newly set animation didn't loop once
 	bool idling = true;
+	bool forced_alive = false;
 	float zoom = 1.0;
 
 	FileRequestBinding request_id;
