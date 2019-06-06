@@ -105,7 +105,7 @@ public:
 	 * @param item_id database item ID.
 	 * @return number of items.
 	 */
-	int GetItemCount(int item_id);
+	int GetItemCount(int item_id) const;
 
 	/**
 	 * Gets number of item equipped by the party.
@@ -113,7 +113,7 @@ public:
 	 * @param item_id database item ID.
 	 * @return number of items.
 	 */
-	int GetEquippedItemCount(int item_id);
+	int GetEquippedItemCount(int item_id) const;
 
 	/**
 	 * Gains an amount of items.
@@ -366,6 +366,8 @@ public:
 	Game_Actor* GetHighestLeveledActorWhoCanUse(const RPG::Item*) const;
 
 private:
+	std::pair<int,bool> GetItemIndex(int item_id) const;
+
 	const RPG::SaveInventory& data() const;
 	RPG::SaveInventory& data();
 };

@@ -87,17 +87,12 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 		item_list.push_back(*it);
 }
 
-int Game_Party::GetItemCount(int item_id) {
-	if (item_id > 0) {
-		for (int i = 0; i < (int) data().item_ids.size(); i++)
-			if (data().item_ids[i] == item_id)
-				return data().item_counts[i];
-	}
-
-	return 0;
+int Game_Party::GetItemCount(int item_id) const {
+	auto ip = GetItemIndex(item_id);
+	return ip.second ? data().item_counts[ip.first] : 0;
 }
 
-int Game_Party::GetEquippedItemCount(int item_id) {
+int Game_Party::GetEquippedItemCount(int item_id) const {
 	int number = 0;
 	if (item_id > 0) {
 		for (int i = 0; i < (int) data().party.size(); i++) {
@@ -125,39 +120,35 @@ void Game_Party::AddItem(int item_id, int amount) {
 		return;
 	}
 
-	for (int i = 0; i < (int) data().item_ids.size(); i++) {
-		if (data().item_ids[i] != item_id)
-			continue;
-
-		int total_items = data().item_counts[i] + amount;
-
-		if (total_items <= 0) {
-			data().item_ids.erase(data().item_ids.begin() + i);
-			data().item_counts.erase(data().item_counts.begin() + i);
-			data().item_usage.erase(data().item_usage.begin() + i);
-			return;
+	auto ip = GetItemIndex(item_id);
+	auto idx = ip.first;
+	auto has = ip.second;
+	if (!has) {
+		if (amount > 0) {
+			amount = std::min(amount, 99);
+			data().item_ids.insert(data().item_ids.begin() + idx, (int16_t)item_id);
+			data().item_counts.insert(data().item_counts.begin() + idx, (uint8_t)amount);
+			data().item_usage.insert(data().item_usage.begin() + idx, 0);
 		}
-
-		data().item_counts[i] = (uint8_t)std::min(total_items, 99);
-		// If the item was removed, the number of uses resets.
-		// (Adding an item never changes the number of uses, even when
-		// you already have x99 of them.)
-		if (amount < 0) {
-			data().item_usage[i] = 0;
-		}
-
 		return;
 	}
 
-	// Item isn't in the inventory yet
+	int total_items = data().item_counts[idx] + amount;
 
-	if (amount <= 0) {
+	if (total_items <= 0) {
+		data().item_ids.erase(data().item_ids.begin() + idx);
+		data().item_counts.erase(data().item_counts.begin() + idx);
+		data().item_usage.erase(data().item_usage.begin() + idx);
 		return;
 	}
 
-	data().item_ids.push_back((int16_t)item_id);
-	data().item_counts.push_back((uint8_t)std::min(amount, 99));
-	data().item_usage.push_back(0);
+	data().item_counts[idx] = (uint8_t)std::min(total_items, 99);
+	// If the item was removed, the number of uses resets.
+	// (Adding an item never changes the number of uses, even when
+	// you already have x99 of them.)
+	if (amount < 0) {
+		data().item_usage[idx] = 0;
+	}
 }
 
 void Game_Party::RemoveItem(int item_id, int amount) {
@@ -182,29 +173,31 @@ void Game_Party::ConsumeItemUse(int item_id) {
 			return;
 	}
 
-	for (int i = 0; i < (int) data().item_ids.size(); i++) {
-		if (data().item_ids[i] != item_id)
-			continue;
-
-		if (item->uses == 0) {
-			// Unlimited uses
-			return;
-		}
-
-		data().item_usage[i]++;
-
-		if (data().item_usage[i] >= item->uses) {
-			if (data().item_counts[i] == 1) {
-				// We just used up the last one
-				data().item_ids.erase(data().item_ids.begin() + i);
-				data().item_counts.erase(data().item_counts.begin() + i);
-				data().item_usage.erase(data().item_usage.begin() + i);
-			} else {
-				data().item_counts[i]--;
-				data().item_usage[i] = 0;
-			}
-		}
+	if (item->uses == 0) {
+		// Unlimited uses
 		return;
+	}
+
+	auto ip = GetItemIndex(item_id);
+	auto idx = ip.first;
+	auto has = ip.second;
+
+	if (!has) {
+		return;
+	}
+
+	data().item_usage[idx]++;
+
+	if (data().item_usage[idx] >= item->uses) {
+		if (data().item_counts[idx] == 1) {
+			// We just used up the last one
+			data().item_ids.erase(data().item_ids.begin() + idx);
+			data().item_counts.erase(data().item_counts.begin() + idx);
+			data().item_usage.erase(data().item_usage.begin() + idx);
+		} else {
+			data().item_counts[idx]--;
+			data().item_usage[idx] = 0;
+		}
 	}
 }
 
@@ -706,4 +699,10 @@ Game_Actor* Game_Party::GetHighestLeveledActorWhoCanUse(const RPG::Item* item) c
 		}
 	}
 	return best;
+}
+
+std::pair<int,bool> Game_Party::GetItemIndex(int item_id) const {
+	auto& ids = data().item_ids;
+	auto iter = std::lower_bound(ids.begin(), ids.end(), item_id);
+	return std::make_pair(iter - ids.begin(), (iter != ids.end() && *iter == item_id));
 }
