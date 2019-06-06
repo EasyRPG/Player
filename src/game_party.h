@@ -93,7 +93,7 @@ public:
 	void LoseGold(int value);
 
 	/**
-	 * Returns all items of the party.
+	 * Returns all items of the party sorted by item id.
 	 *
 	 * @param item_list vector to fill.
 	 */

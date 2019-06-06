@@ -71,13 +71,15 @@ void Window_Item::Refresh() {
 	}
 
 	if (Game_Temp::battle_running) {
-		// Include equipped accessories that invoke skills
+		// Include equipped accessories that invoke skills in sorted order.
 		if (actor) {
 			for (int i = 1; i <= 5; ++i) {
 				const RPG::Item* item = actor->GetEquipment(i);
-				if (item && item->use_skill && item->skill_id > 0 &&
-						std::find(data.begin(), data.end(), item->ID) == data.end()) {
-					data.push_back(item->ID);
+				if (item && item->use_skill && item->skill_id > 0) {
+					auto iter = std::lower_bound(data.begin(), data.end(), item->ID);
+					if (iter == data.end() || *iter != item->ID) {
+						data.insert(iter, item->ID);
+					}
 				}
 			}
 		}
