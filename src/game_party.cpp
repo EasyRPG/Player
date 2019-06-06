@@ -129,7 +129,6 @@ void Game_Party::AddItem(int item_id, int amount) {
 
 		if (total_items <= 0) {
 			data().item_ids.erase(data().item_ids.begin() + i);
-			data().items_size = data().item_ids.size();
 			data().item_counts.erase(data().item_counts.begin() + i);
 			data().item_usage.erase(data().item_usage.begin() + i);
 			return;
@@ -153,7 +152,6 @@ void Game_Party::AddItem(int item_id, int amount) {
 	}
 
 	data().item_ids.push_back((int16_t)item_id);
-	data().items_size = data().item_ids.size();
 	data().item_counts.push_back((uint8_t)std::min(amount, 99));
 	data().item_usage.push_back(0);
 }
@@ -195,7 +193,6 @@ void Game_Party::ConsumeItemUse(int item_id) {
 			if (data().item_counts[i] == 1) {
 				// We just used up the last one
 				data().item_ids.erase(data().item_ids.begin() + i);
-				data().items_size = data().item_ids.size();
 				data().item_counts.erase(data().item_counts.begin() + i);
 				data().item_usage.erase(data().item_usage.begin() + i);
 			} else {
@@ -629,7 +626,6 @@ void Game_Party::RemoveInvalidData() {
 			++it;
 		}
 	}
-	data().items_size = data().item_ids.size();
 }
 
 std::vector<int16_t> Game_Party::GetInflictedStates() const {
