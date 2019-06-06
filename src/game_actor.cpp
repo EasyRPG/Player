@@ -1580,7 +1580,10 @@ PermanentStates Game_Actor::GetPermanentStates() const {
 			return;
 		}
 		auto& states = item->state_set;
-		for (int i = 0; i < (int)states.size(); ++i) {
+		// Invalid states in armor already reported earlier in
+		// calls to AdjustEquipmentStates.
+		int num_states = std::min(states.size(), Data::states.size());
+		for (int i = 0; i < num_states; ++i) {
 			if (states[i]) {
 				ps.Add(i + 1);
 			}
