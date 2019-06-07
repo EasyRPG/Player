@@ -55,6 +55,7 @@ public:
 	int GetLoopCount() const;
 	bool ReachedLoopLimit() const;
 	void Update(bool reset_loop_count=true);
+	bool IsRunningMapEvent() const;
 
 	void Setup(
 			const std::vector<RPG::EventCommand>& _list,
@@ -242,6 +243,10 @@ protected:
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
+}
+
+inline bool Game_Interpreter::IsRunningMapEvent() const {
+	return event_id != 0;
 }
 
 #endif
