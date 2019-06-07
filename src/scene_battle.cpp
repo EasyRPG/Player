@@ -42,8 +42,7 @@
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
-	active_actor(NULL),
-	skill_item(NULL)
+	active_actor(NULL)
 {
 	Scene::type = Scene::Battle;
 	Game_Temp::battle_result = Game_Temp::BattleAbort;
@@ -233,20 +232,28 @@ void Scene_Battle::EnemySelected() {
 
 	if (previous_state == State_SelectCommand) {
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(active_actor, target));
-	} else if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
-		if (skill_item) {
-			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
+	} else if (previous_state == State_SelectSkill) {
+		active_actor->SetBattleAlgorithm(
+				std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+	} else if (previous_state == State_SelectItem) {
+		auto* item = item_window->GetItem();
+		assert(item);
+		if (item->type == RPG::Item::Type_special
+				|| (item->use_skill && (item->type == RPG::Item::Type_weapon
+						|| item->type == RPG::Item::Type_shield
+						|| item->type == RPG::Item::Type_armor
+						|| item->type == RPG::Item::Type_helmet
+						|| item->type == RPG::Item::Type_accessory)))
+		{
+			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("EnemySelected: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+				Output::Warning("EnemySelected: Item %d references invalid skill %d", item->ID, item->skill_id);
 				return;
 			}
-			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill, item));
 		} else {
-			active_actor->SetBattleAlgorithm(
-					std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, target, *item));
 		}
-	} else if (previous_state == State_SelectItem) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
 	} else {
 		assert("Invalid previous state for enemy selection" && false);
 	}
@@ -264,19 +271,27 @@ void Scene_Battle::EnemySelected() {
 void Scene_Battle::AllySelected() {
 	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
 
-	if (previous_state == State_SelectSkill || (previous_state == State_SelectItem && skill_item)) {
-		if (skill_item) {
-			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
+	if (previous_state == State_SelectSkill) {
+		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill_window->GetSkill()));
+	} else if (previous_state == State_SelectItem) {
+		auto* item = item_window->GetItem();
+		assert(item);
+		if (item->type == RPG::Item::Type_special
+				|| (item->use_skill && (item->type == RPG::Item::Type_weapon
+						|| item->type == RPG::Item::Type_shield
+						|| item->type == RPG::Item::Type_armor
+						|| item->type == RPG::Item::Type_helmet
+						|| item->type == RPG::Item::Type_accessory)))
+		{
+			const RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, item->skill_id);
 			if (!skill) {
-				Output::Warning("AllySelected: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
+				Output::Warning("AllySelected: Item %d references invalid skill %d", item->ID, item->skill_id);
 				return;
 			}
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill, item));
+		} else {
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, &target, *item));
 		}
-
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target,
-			skill_item ? *ReaderUtil::GetElement(Data::skills, skill_item->skill_id) : *skill_window->GetSkill(), skill_item));
-	} else if (previous_state == State_SelectItem) {
-		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
 	} else {
 		assert("Invalid previous state for ally selection" && false);
 	}
@@ -307,8 +322,6 @@ void Scene_Battle::DefendSelected() {
 void Scene_Battle::ItemSelected() {
 	const RPG::Item* item = item_window->GetItem();
 
-	skill_item = nullptr;
-
 	if (!item || !item_window->CheckEnable(item->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
@@ -333,8 +346,7 @@ void Scene_Battle::ItemSelected() {
 				Output::Warning("ItemSelected: Item %d references invalid skill %d", item->ID, item->skill_id);
 				return;
 			}
-			skill_item = item;
-			AssignSkill(skill);
+			AssignSkill(skill, item);
 			break;
 		}
 		case RPG::Item::Type_medicine:
@@ -356,8 +368,6 @@ void Scene_Battle::ItemSelected() {
 void Scene_Battle::SkillSelected() {
 	const RPG::Skill* skill = skill_window->GetSkill();
 
-	skill_item = NULL;
-
 	if (!skill || !skill_window->CheckEnable(skill->ID)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 		return;
@@ -365,44 +375,20 @@ void Scene_Battle::SkillSelected() {
 
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	AssignSkill(skill);
+	AssignSkill(skill, nullptr);
 }
 
-void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
+void Scene_Battle::AssignSkill(const RPG::Skill* skill, const RPG::Item* item) {
 	switch (skill->type) {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 		case RPG::Skill::Type_switch: {
-			if (skill_item) {
-				const RPG::Skill *skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
-				if (!skill) {
-					Output::Warning("AssignSkill: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
-					return;
-				}
-			}
-
-			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, skill_item ? *ReaderUtil::GetElement(Data::skills, skill_item->skill_id) : *skill_window->GetSkill(), skill_item));
+			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, *skill, item));
 			ActionSelectedCallback(active_actor);
 			return;
 		}
 		case RPG::Skill::Type_normal:
 		case RPG::Skill::Type_subskill:
-		default:
-			break;
-	}
-
-	switch (skill->scope) {
-		case RPG::Skill::Scope_enemies:
-		case RPG::Skill::Scope_self:
-		case RPG::Skill::Scope_party: {
-			if (skill_item) {
-				const RPG::Skill *skill = ReaderUtil::GetElement(Data::skills, skill_item->skill_id);
-				if (!skill) {
-					Output::Warning("AssignSkill: Item %d references invalid skill %d", skill_item->ID, skill_item->skill_id);
-					return;
-				}
-			}
-		}
 		default:
 			break;
 	}
@@ -417,17 +403,17 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill) {
 			break;
 		case RPG::Skill::Scope_enemies:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
-					active_actor, Main_Data::game_enemyparty.get(), skill_item ? *ReaderUtil::GetElement(Data::skills, skill_item->skill_id) : *skill_window->GetSkill(), skill_item));
+					active_actor, Main_Data::game_enemyparty.get(), *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
 		case RPG::Skill::Scope_self:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
-					active_actor, active_actor, skill_item ? *ReaderUtil::GetElement(Data::skills, skill_item->skill_id) : *skill_window->GetSkill(), skill_item));
+					active_actor, active_actor, *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
 		case RPG::Skill::Scope_party:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
-					active_actor, Main_Data::game_party.get(), skill_item ? *ReaderUtil::GetElement(Data::skills, skill_item->skill_id) : *skill_window->GetSkill(), skill_item));
+					active_actor, Main_Data::game_party.get(), *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
 	}

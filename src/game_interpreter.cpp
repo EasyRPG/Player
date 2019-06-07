@@ -796,7 +796,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Main_Data::game_party->GetItemCount(com.parameters[5], true);
+					value = Main_Data::game_party->GetEquippedItemCount(com.parameters[5]);
 					break;
 			}
 			break;
@@ -1360,7 +1360,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				continue;
 			}
 
-			if (Main_Data::game_party->GetItemCount(item_id, false) == 0 && !actor->IsEquipped(item_id)) {
+			if (Main_Data::game_party->GetItemCount(item_id) == 0 && !actor->IsEquipped(item_id)) {
 				Main_Data::game_party->AddItem(item_id, 1);
 			}
 
@@ -2657,11 +2657,11 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		if (com.parameters[2] == 0) {
 			// Having
 			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetItemCount(com.parameters[1], true) > 0;
+				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) > 0;
 		} else {
 			// Not having
 			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetItemCount(com.parameters[1], true) == 0;
+				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) == 0;
 		}
 		break;
 	case 5:

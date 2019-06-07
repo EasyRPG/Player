@@ -100,13 +100,20 @@ public:
 	void GetItems(std::vector<int>& item_list);
 
 	/**
-	 * Gets number of possessed or equipped items.
+	 * Gets number of item in inventory.
 	 *
 	 * @param item_id database item ID.
-	 * @param get_equipped if true equipped items are counted instead
 	 * @return number of items.
 	 */
-	int GetItemCount(int item_id, bool get_equipped = false);
+	int GetItemCount(int item_id);
+
+	/**
+	 * Gets number of item equipped by the party.
+	 *
+	 * @param item_id database item ID.
+	 * @return number of items.
+	 */
+	int GetEquippedItemCount(int item_id);
 
 	/**
 	 * Gains an amount of items.

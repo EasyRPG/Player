@@ -121,7 +121,7 @@ protected:
 	virtual void ItemSelected();
 	virtual void SkillSelected();
 
-	virtual void AssignSkill(const RPG::Skill* skill);
+	virtual void AssignSkill(const RPG::Skill* skill, const RPG::Item* item);
 
 	/**
 	 * Executed when selection an action (normal, skill, item, ...) and
@@ -179,8 +179,6 @@ protected:
 	std::unique_ptr<Window_Message> message_window;
 
 	std::deque<Game_Battler*> battle_actions;
-
-	const RPG::Item* skill_item;
 };
 
 #endif

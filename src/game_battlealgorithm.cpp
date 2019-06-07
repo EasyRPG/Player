@@ -1457,7 +1457,14 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	if (item) {
-		return Main_Data::game_party->GetItemCount(item->ID, false) > 0;
+		int count = Main_Data::game_party->GetItemCount(item->ID);
+		if (count == 0) {
+			auto* src = GetSource();
+			if (src && src->GetType() == Game_Battler::Type_Ally) {
+				count += static_cast<Game_Actor*>(src)->IsEquipped(item->ID);
+			}
+		}
+		return count > 0;
 	}
 	return source->GetSp() >= source->CalculateSkillCost(skill.ID);
 }
@@ -1595,7 +1602,7 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 }
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
-	return Main_Data::game_party->GetItemCount(item.ID, false) > 0;
+	return Main_Data::game_party->GetItemCount(item.ID) > 0;
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :

@@ -87,21 +87,25 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 		item_list.push_back(*it);
 }
 
-int Game_Party::GetItemCount(int item_id, bool get_equipped) {
-	if (get_equipped && item_id > 0) {
-		int number = 0;
-		for (int i = 0; i < (int) data().party.size(); i++) {
-			Game_Actor* actor = Game_Actors::GetActor(data().party[i]);
-			number += actor->GetItemCount(item_id);
-		}
-		return number;
-	} else {
+int Game_Party::GetItemCount(int item_id) {
+	if (item_id > 0) {
 		for (int i = 0; i < (int) data().item_ids.size(); i++)
 			if (data().item_ids[i] == item_id)
 				return data().item_counts[i];
 	}
 
 	return 0;
+}
+
+int Game_Party::GetEquippedItemCount(int item_id) {
+	int number = 0;
+	if (item_id > 0) {
+		for (int i = 0; i < (int) data().party.size(); i++) {
+			Game_Actor* actor = Game_Actors::GetActor(data().party[i]);
+			number += actor->GetItemCount(item_id);
+		}
+	}
+	return number;
 }
 
 void Game_Party::GainGold(int n) {

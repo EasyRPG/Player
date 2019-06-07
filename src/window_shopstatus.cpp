@@ -46,7 +46,7 @@ void Window_ShopStatus::Refresh() {
 		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Text::AlignRight);
 
 		ss.str("");
-		ss << Main_Data::game_party->GetItemCount(item_id, true);
+		ss << Main_Data::game_party->GetEquippedItemCount(item_id);
 		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
 }
