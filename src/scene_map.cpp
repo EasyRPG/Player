@@ -313,6 +313,11 @@ void Scene_Map::FinishPendingTeleport() {
 	PreUpdate();
 	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
 	if (Game_Temp::transition_processing) {
+		// Show screen command allows screen to be visible from normal transitions, even
+		// though currently we don't emulate the actual transition caused by it.
+		if (!Game_Temp::transition_erase) {
+			screen_erased_by_event = false;
+		}
 		Game_Temp::transition_processing = false;
 		Game_Temp::transition_erase = false;
 		Game_Temp::transition_type = Transition::TransitionNone;
