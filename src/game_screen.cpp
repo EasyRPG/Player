@@ -129,6 +129,7 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int frames) {
 	flash_sat = s;
 	data.flash_current_level = s;
 	data.flash_time_left = frames;
+	data.flash_continuous = false;
 	flash_period = 0;
 }
 
