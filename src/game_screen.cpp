@@ -147,6 +147,10 @@ void Game_Screen::FlashEnd() {
 	data.flash_continuous = false;
 }
 
+void Game_Screen::FlashMapStepDamage() {
+	Main_Data::game_screen->FlashOnce(31, 10, 10, 20, 6);
+}
+
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
 	data.shake_strength = power;
 	data.shake_speed = speed;

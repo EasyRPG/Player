@@ -589,7 +589,7 @@ void Game_Player::BeginMove() {
 	red_flash = red_flash || Main_Data::game_party->ApplyStateDamage();
 
 	if (red_flash) {
-		Main_Data::game_screen->FlashOnce(31, 10, 10, 19, 6);
+		Main_Data::game_screen->FlashMapStepDamage();
 	}
 }
 
