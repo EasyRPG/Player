@@ -1455,6 +1455,8 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 		actor->RemoveAllStates();
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
+		// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
+		actor->ResetEquipmentStates(true);
 	}
 
 	CheckGameOver();
