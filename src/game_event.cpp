@@ -504,7 +504,8 @@ void Game_Event::Update() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		assert(interpreter != nullptr);
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(this);
+			interpreter->Clear();
+			interpreter->Push(this);
 		}
 		interpreter->Update();
 

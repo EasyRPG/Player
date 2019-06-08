@@ -906,48 +906,6 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-static bool RunNextForegroundCommonEvent(Game_Interpreter_Map& interp) {
-	Game_CommonEvent* run_ce = nullptr;
-	for (auto& ce: common_events) {
-		if (ce.IsWaitingForegroundExecution()) {
-			run_ce = &ce;
-			break;
-		}
-	}
-
-	if (!run_ce) {
-		return false;
-	}
-
-	interp.Setup(run_ce, 0);
-	interp.Update(false);
-
-	return true;
-}
-
-static bool RunNextForegroundMapEvent(Game_Interpreter_Map& interp) {
-	Game_Event* run_ev = nullptr;
-	for (auto& ev: events) {
-		if (ev.IsWaitingForegroundExecution()) {
-			if (!ev.IsActive()) {
-				ev.ClearWaitingForegroundExecution();
-				continue;
-			}
-			run_ev = &ev;
-			break;
-		}
-	}
-
-	if (run_ev == nullptr) {
-		return false;
-	}
-
-	interp.Setup(run_ev);
-	run_ev->ClearWaitingForegroundExecution();
-	interp.Update(false);
-	return true;
-}
-
 void Game_Map::Update(bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 	if (animation) {
@@ -993,36 +951,60 @@ void Game_Map::Update(bool is_preupdate) {
 	Main_Data::game_party->UpdateTimers();
 	Main_Data::game_screen->Update();
 
+	UpdateForegroundEvents();
+
+	Parallax::Update();
+}
+
+void Game_Map::UpdateForegroundEvents() {
 	auto& interp = GetInterpreter();
 
-	//Do we start with map events or common events?
-	bool do_map_event = !interp.IsRunningMapEvent();
-
-	// Run any event still loaded from last frame.
+	// Run any event loaded from last frame.
 	interp.Update(true);
+	while (!interp.IsRunning() && !interp.ReachedLoopLimit()) {
+		interp.Clear();
 
-	bool ran_ev = true;
-	bool ran_ce = true;
-	// Keep going until interpreter needs to run into next frame, ran too many commands, or no events left to run.
-	while (!interp.IsRunning()
-			&& !interp.ReachedLoopLimit()
-			&& (ran_ev || ran_ce)) {
 		// This logic is probably one big loop in RPG_RT. We have to replicate
 		// it here because once we stop executing from this we should not
 		// clear anymore waiting flags.
 		if (Scene::instance->HasRequestedScene() && interp.GetLoopCount() > 0) {
 			break;
 		}
+		Game_CommonEvent* run_ce = nullptr;
 
-		if (do_map_event) {
-			ran_ev = RunNextForegroundMapEvent(interp);
-		} else {
-			ran_ce = RunNextForegroundCommonEvent(interp);
+		for (auto& ce: common_events) {
+			if (ce.IsWaitingForegroundExecution()) {
+				run_ce = &ce;
+				break;
+			}
 		}
-		do_map_event = !do_map_event;
-	}
+		if (run_ce) {
+			interp.Push(run_ce);
+		}
 
-	Parallax::Update();
+		Game_Event* run_ev = nullptr;
+		for (auto& ev: events) {
+			if (ev.IsWaitingForegroundExecution()) {
+				if (!ev.IsActive()) {
+					ev.ClearWaitingForegroundExecution();
+					continue;
+				}
+				run_ev = &ev;
+				break;
+			}
+		}
+		if (run_ev) {
+			interp.Push(run_ev);
+			run_ev->ClearWaitingForegroundExecution();
+		}
+
+		// If no events to run we're finished.
+		if (!interp.IsRunning()) {
+			break;
+		}
+
+		interp.Update(false);
+	}
 }
 
 RPG::MapInfo const& Game_Map::GetMapInfo() {

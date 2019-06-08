@@ -611,6 +611,8 @@ namespace Game_Map {
 	int GetTargetPanX();
 	int GetTargetPanY();
 
+	void UpdateForegroundEvents();
+
 	FileRequestAsync* RequestMap(int map_id);
 
 	namespace Parallax {

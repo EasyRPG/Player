@@ -57,15 +57,14 @@ public:
 	int GetLoopCount() const;
 	bool ReachedLoopLimit() const;
 	void Update(bool reset_loop_count=true);
-	bool IsRunningMapEvent() const;
 
-	void Setup(
+	void Push(
 			const std::vector<RPG::EventCommand>& _list,
 			int _event_id,
 			bool started_by_decision_key = false
 	);
-	void Setup(Game_Event* ev);
-	void Setup(Game_CommonEvent* ev, int caller_id);
+	void Push(Game_Event* ev);
+	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
@@ -285,10 +284,6 @@ inline int Game_Interpreter::GetOriginalEventId() const {
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
-}
-
-inline bool Game_Interpreter::IsRunningMapEvent() const {
-	return GetOriginalEventId() != 0;
 }
 
 #endif

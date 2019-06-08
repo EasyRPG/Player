@@ -78,32 +78,33 @@ void Game_Interpreter::Clear() {
 
 // Is interpreter running.
 bool Game_Interpreter::IsRunning() const {
-	auto* frame = GetFrame();
-	return frame && !frame->commands.empty();
+	return !_state.stack.empty();
 }
 
 // Setup.
-void Game_Interpreter::Setup(
+void Game_Interpreter::Push(
 	const std::vector<RPG::EventCommand>& _list,
 	int event_id,
 	bool started_by_decision_key
 ) {
-	Clear();
+	if (_list.empty()) {
+		return;
+	}
 
-	_state.stack = { RPG::SaveEventExecFrame{} };
-
-	auto* frame = GetFrame();
-	frame->ID = 1;
-	frame->commands = _list;
-	frame->current_command = 0;
-	frame->triggered_by_decision_key = started_by_decision_key;
-	frame->event_id = event_id;
+	RPG::SaveEventExecFrame frame;
+	frame.ID = _state.stack.size() + 1;
+	frame.commands = _list;
+	frame.current_command = 0;
+	frame.triggered_by_decision_key = started_by_decision_key;
+	frame.event_id = event_id;
 
 	if (main_flag) {
 		Game_Message::SetFaceName("");
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
+
+	_state.stack.push_back(std::move(frame));
 }
 
 
@@ -406,12 +407,12 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 }
 
 // Setup Starting Event
-void Game_Interpreter::Setup(Game_Event* ev) {
-	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
+void Game_Interpreter::Push(Game_Event* ev) {
+	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
 }
 
-void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
-	Setup(ev->GetList(), caller_id, false);
+void Game_Interpreter::Push(Game_CommonEvent* ev) {
+	Push(ev->GetList(), 0, false);
 }
 
 void Game_Interpreter::CheckGameOver() {
@@ -707,11 +708,7 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	//	Game_Message::FullClear();
 	//}
 
-	frame->commands.clear();
 	int event_id = frame->event_id;
-	if (_state.stack.size() > 1) {
-        _state.stack.pop_back();
-	}
 
 	if (is_original_event && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
@@ -721,6 +718,8 @@ bool Game_Interpreter::CommandEnd() { // code 10
 			evnt->OnFinishForegroundEvent();
 		}
 	}
+
+	_state.stack.pop_back();
 
 	return true;
 }
