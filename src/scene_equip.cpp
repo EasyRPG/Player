@@ -116,7 +116,7 @@ void Scene_Equip::UpdateStatusWindow() {
 
 		add_item(old_item, -1);
 		// If other hand had a two handed weapon, or we considering a 2 handed weapon, remove the other hand.
-		if (other_old_item &&
+		if (current_item && other_old_item &&
 				(other_old_item->two_handed || current_item->two_handed)) {
 			add_item(other_old_item, -1);
 		}
