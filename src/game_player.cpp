@@ -298,6 +298,9 @@ void Game_Player::UpdateSelfMovement() {
 				if (Game_Map::UpdateEncounterSteps()) {
 					SetEncounterCalling(true);
 				}
+				if (Main_Data::game_party->ApplyStateDamage()) {
+					Main_Data::game_screen->FlashMapStepDamage();
+				}
 			}
 		}
 
@@ -585,8 +588,6 @@ void Game_Player::BeginMove() {
 	} else {
 		Output::Warning("Player BeginMove: Invalid terrain ID %d at (%d, %d)", terrain_id, GetX(), GetY());
 	}
-
-	red_flash = red_flash || Main_Data::game_party->ApplyStateDamage();
 
 	if (red_flash) {
 		Main_Data::game_screen->FlashMapStepDamage();

@@ -656,11 +656,9 @@ bool Game_Party::ApplyStateDamage() {
 	for (auto state_id : states) {
 		RPG::State *state = ReaderUtil::GetElement(Data::states, state_id);
 
-		// NOTE: We do steps + 1 here because this gets called before steps are incremented.
-
 		if (state->hp_change_map_steps > 0
 				&& state->hp_change_map_val > 0
-				&& (((steps + 1) % state->hp_change_map_steps) == 0)
+				&& ((steps % state->hp_change_map_steps) == 0)
 				) {
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
@@ -677,7 +675,7 @@ bool Game_Party::ApplyStateDamage() {
 
 		if (state->sp_change_map_steps > 0
 				&& state->sp_change_map_val > 0
-				&& (((steps + 1) % state->sp_change_map_steps) == 0)
+				&& ((steps % state->sp_change_map_steps) == 0)
 		   ){
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
