@@ -1961,20 +1961,6 @@ AlgorithmBase(Type::NoMove, source) {
 }
 
 std::string Game_BattleAlgorithm::NoMove::GetStartMessage() const {
-	const std::vector<int16_t>& states = source->GetStates();
-
-	for (std::vector<int16_t>::const_iterator it = states.begin();
-		it != states.end(); ++it) {
-		if (Data::states[*it].restriction == RPG::State::Restriction_do_nothing) {
-			std::string msg = Data::states[*it].message_affected;
-			if (!msg.empty()) {
-				return source->GetName() + msg;
-			}
-			return "";
-		}
-	}
-
-	// State was healed before the actor got his turn
 	return "";
 }
 
