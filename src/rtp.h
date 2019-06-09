@@ -27,8 +27,12 @@
  * The RTP namespace contains functions for working with the Runtime Package
  */
 namespace RTP {
-	extern const char* const rtp_table_2k[][5];
-	extern const char* const rtp_table_2k3[][7];
+	// adjust these numbers when a new RTP is added
+	constexpr int num_2k_rtps = 4;
+	constexpr int num_2k3_rtps = 6;
+
+	extern const char* const rtp_table_2k[][num_2k_rtps + 1];
+	extern const char* const rtp_table_2k3[][num_2k3_rtps + 1];
 	extern const char* const rtp_table_2k_categories[15];
 	extern const char* const rtp_table_2k3_categories[16];
 	extern const int rtp_table_2k_categories_idx[15];

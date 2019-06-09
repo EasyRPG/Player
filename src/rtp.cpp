@@ -22,9 +22,6 @@
 #include "rtp.h"
 
 namespace RTP {
-	constexpr int num_2k_rtps = 4;
-	constexpr int num_2k3_rtps = 6;
-
 	const char* Names[] {
 		"Official Japanese",
 		"Official English",
