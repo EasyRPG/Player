@@ -1435,10 +1435,13 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		if (remove) {
-			actor->RemoveState(state_id);
+			// RPG_RT: On the map, will remove battle states even if actor has
+			// state inflicted by equipment.
+			actor->RemoveState(state_id, !Game_Temp::battle_running);
 			Game_Battle::SetNeedRefresh(true);
 		} else {
-			actor->AddState(state_id);
+			// RPG_RT always adds states from event commands, even battle states.
+			actor->AddState(state_id, true);
 			Game_Battle::SetNeedRefresh(true);
 		}
 	}
@@ -1452,6 +1455,8 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 		actor->RemoveAllStates();
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
+		// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
+		actor->ResetEquipmentStates(true);
 	}
 
 	CheckGameOver();

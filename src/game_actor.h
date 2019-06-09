@@ -53,6 +53,8 @@ public:
 
 	int MaxStatBaseValue() const override;
 
+	virtual PermanentStates GetPermanentStates() const override;
+
 	/**
 	 * Sets up the game actor
 	 * This is automatically called in the constructor.
@@ -494,30 +496,6 @@ public:
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
 
-	/**
-	 * Adds a State.
-	 *
-	 * @param state_id ID of state to add.
-	 */
-	void AddState(int state_id) override;
-
-	/**
-	 * Removes a State.
-	 *
-	 * @param state_id ID of state to remove.
-	 */
-	void RemoveState(int state_id) override;
-
-	/**
-	 * Removes all states which end after battle.
-	 */
-	void RemoveBattleStates() override;
-
-	/**
-	 * Removes all states.
-	 */
-	void RemoveAllStates() override;
-
 	int GetHp() const override;
 	void SetHp(int _hp) override;
 
@@ -829,7 +807,16 @@ public:
 	 */
 	int IsControllable() const;
 
+	/** 
+	 * Reset all equipment inflicted states
+	 *
+	 * @param allow_battle_states allow battle states to be added.
+	 */
+	void ResetEquipmentStates(bool allow_battle_states);
+
 private:
+	void AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states);
+
 	/**
 	 * @return Reference to the Actor data of the LDB
 	 */

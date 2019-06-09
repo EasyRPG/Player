@@ -245,6 +245,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/spriteset_battle.h \
 	src/spriteset_map.cpp \
 	src/spriteset_map.h \
+	src/state.cpp \
+	src/state.h \
 	src/system.h \
 	src/teleport_target.h \
 	src/text.cpp \

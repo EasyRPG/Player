@@ -23,6 +23,7 @@
 #include <vector>
 #include "rpg_state.h"
 #include "system.h"
+#include "state.h"
 
 class Game_Actor;
 class Game_Party_Base;
@@ -63,6 +64,9 @@ public:
 	 * @return vector containing the IDs of all states the battler has.
 	 */
 	std::vector<int16_t> GetInflictedStates() const;
+
+	/** @return permenant states that cannot be removed */
+	virtual PermanentStates GetPermanentStates() const;
 
 	/**
 	 * @return true battler evades all physical attacks.
@@ -112,7 +116,7 @@ public:
 	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
-	 *         Returns NULL if no states.
+	 *         Returns nullptr if no states.
 	 */
 	const RPG::State* GetSignificantState() const;
 
@@ -422,38 +426,34 @@ public:
 	void ChangeAgiModifier(int modifier);
 
 	/**
-	 * Adds a State.
+	 * Add a State.
 	 *
 	 * @param state_id ID of state to add.
-	 */
-	virtual void AddState(int state_id);
-
-	/**
-	 * Filters out all states that can't be applied due to their priority being
-	 * < 10 of the most significant state.
+	 * @param allow_battle_states allow adding of battle only states
 	 *
-	 * @param states in-out parameter of states.
-	 *
-	 * @return The number of states removed.
+	 * @return true if the state was added
 	 */
-	int FilterInapplicableStates(std::vector<int16_t>& states) const;
+	bool AddState(int state_id, bool allow_battle_states);
 
 	/**
 	 * Removes a State.
 	 *
 	 * @param state_id ID of state to remove.
+	 * @param always_remove_battle_states remove battle states even if permanent
+	 *
+	 * @return true if the state was removed
 	 */
-	virtual void RemoveState(int state_id);
+	bool RemoveState(int state_id, bool always_remove_battle_states);
 
 	/**
 	 * Removes all states which end after battle.
 	 */
-	virtual void RemoveBattleStates();
+	void RemoveBattleStates();
 
 	/**
 	 * Removes all states.
 	 */
-	virtual void RemoveAllStates();
+	void RemoveAllStates();
 
 	/**
 	 * Tests if the battler has a state that provides reflect.
@@ -633,15 +633,6 @@ public:
 	 * @return Healed states
 	 */
 	std::vector<int16_t> BattleStateHeal();
-
-	/**
-	 * Heals states based on the passed physical rate.
-	 *
-	 * @param physical_rate Physical rate of the attack
-	 *
-	 * @return Healed states
-	 */
-	std::vector<int16_t> BattlePhysicalStateHeal(int physical_rate);
 
 	void SetBattleOrderAgi(int val);
 	int GetBattleOrderAgi();

@@ -89,24 +89,45 @@ void Scene_Equip::UpdateStatusWindow() {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		int old_item = actor.SetEquipment(equip_window->GetIndex() + 1,
-			current_item_id);
+		const auto eidx = equip_window->GetIndex();
 
-		equipstatus_window->SetNewParameters(
-			actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
+		auto atk = actor.GetAtk();
+		auto def = actor.GetDef();
+		auto spi = actor.GetSpi();
+		auto agi = actor.GetAgi();
 
-		// Consider parameters if a weapon is taken out because of two-handed weapon:
-		if (current_item && (equip_window->GetIndex() == 0 || equip_window->GetIndex() == 1)) {
-			const RPG::Item* other_item = ReaderUtil::GetElement(Data::items, equip_window->GetIndex() == 0 ? actor.GetShieldId() : actor.GetWeaponId());
-			if (other_item && (current_item->two_handed || other_item->two_handed)) {
-				int old_other_item = actor.SetEquipment(equip_window->GetIndex() == 0 ? 2 : 1, 0);
-				equipstatus_window->SetNewParameters(
-					actor.GetAtk(), actor.GetDef(), actor.GetSpi(), actor.GetAgi());
-				actor.SetEquipment(equip_window->GetIndex() == 0 ? 2 : 1, old_other_item);
+		auto add_item = [&](const RPG::Item* item, int mod = 1) {
+			if (item) {
+				atk += item->atk_points1 * mod;
+				def += item->def_points1 * mod;
+				spi += item->spi_points1 * mod;
+				agi += item->agi_points1 * mod;
 			}
+		};
+
+		auto* old_item = actor.GetEquipment(eidx + 1);
+		// If its a weapon or shield, get the other hand
+		const RPG::Item* other_old_item = nullptr;
+		if (eidx == 0) {
+			other_old_item = actor.GetEquipment(eidx + 2);
+		} else if (eidx == 1) {
+			other_old_item = actor.GetEquipment(eidx);
 		}
 
-		actor.SetEquipment(equip_window->GetIndex() + 1, old_item);
+		add_item(old_item, -1);
+		// If other hand had a two handed weapon, or we considering a 2 handed weapon, remove the other hand.
+		if (current_item && other_old_item &&
+				(other_old_item->two_handed || current_item->two_handed)) {
+			add_item(other_old_item, -1);
+		}
+		add_item(current_item, 1);
+
+		atk = Utils::Clamp(atk, 1, 999);
+		def = Utils::Clamp(def, 1, 999);
+		spi = Utils::Clamp(spi, 1, 999);
+		agi = Utils::Clamp(agi, 1, 999);
+
+		equipstatus_window->SetNewParameters(atk, def, spi, agi);
 
 		equipstatus_window->Refresh();
 	}

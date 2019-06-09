@@ -33,25 +33,29 @@
 #include "output.h"
 #include "reader_util.h"
 #include "game_battlealgorithm.h"
+#include "state.h"
 
 Game_Battler::Game_Battler() {
 	ResetBattle();
 }
 
 bool Game_Battler::HasState(int state_id) const {
-	const std::vector<int16_t> states = GetInflictedStates();
-
-	return (std::find(states.begin(), states.end(), state_id) != states.end());
+	return State::Has(state_id, GetStates());
 }
 
 std::vector<int16_t> Game_Battler::GetInflictedStates() const {
-	std::vector<int16_t> states;
-	for (size_t i = 0; i < GetStates().size(); ++i) {
-		if (GetStates()[i] > 0) {
-			states.push_back(Data::states[i].ID);
+	auto& states = GetStates();
+	std::vector<int16_t> inf_states;
+	for (size_t i = 0; i < states.size(); ++i) {
+		if (states[i] > 0) {
+			inf_states.push_back(i + 1);
 		}
 	}
-	return states;
+	return inf_states;
+}
+
+PermanentStates Game_Battler::GetPermanentStates() const {
+	return PermanentStates();
 }
 
 bool Game_Battler::EvadesAllPhysicalAttacks() const {
@@ -65,33 +69,7 @@ bool Game_Battler::EvadesAllPhysicalAttacks() const {
 }
 
 RPG::State::Restriction Game_Battler::GetSignificantRestriction() const {
-	const std::vector<int16_t> states = GetInflictedStates();
-
-	// Priority is nomove > attack enemy > attack ally > normal
-
-	RPG::State::Restriction sig_res = RPG::State::Restriction_normal;
-	for (int i = 0; i < (int)states.size(); i++) {
-		// States are guaranteed to be valid
-		const RPG::State* state = ReaderUtil::GetElement(Data::states, states[i]);
-
-		switch (state->restriction) {
-			case RPG::State::Restriction_normal:
-				break;
-			case RPG::State::Restriction_do_nothing:
-				return RPG::State::Restriction_do_nothing;
-			case RPG::State::Restriction::Restriction_attack_enemy:
-				if (sig_res == RPG::State::Restriction::Restriction_attack_ally
-						|| sig_res == RPG::State::Restriction_normal) {
-					sig_res = RPG::State::Restriction_attack_enemy;
-				}
-				break;
-			case RPG::State::Restriction::Restriction_attack_ally:
-				if (sig_res == RPG::State::Restriction_normal) {
-					sig_res = RPG::State::Restriction_attack_ally;
-				}
-		}
-	}
-	return sig_res;
+	return State::GetSignificantRestriction(GetStates());
 }
 
 bool Game_Battler::CanAct() const {
@@ -107,7 +85,7 @@ bool Game_Battler::CanAct() const {
 }
 
 bool Game_Battler::IsDead() const {
-	return HasState(1);
+	return HasState(RPG::State::kDeathID);
 }
 
 void Game_Battler::Kill() {
@@ -119,50 +97,11 @@ bool Game_Battler::Exists() const {
 }
 
 const RPG::State* Game_Battler::GetSignificantState() const {
-	int priority = 0;
-	const RPG::State* the_state = NULL;
-
-	const std::vector<int16_t> states = GetInflictedStates();
-	for (int i = 0; i < (int) states.size(); i++) {
-		// States are guaranteed to be valid
-		const RPG::State* state = ReaderUtil::GetElement(Data::states, states[i]);
-		// Death has highest priority
-		if (state->ID == 1)
-			return state;
-
-		if (state->priority >= priority) {
-			the_state = state;
-			priority = state->priority;
-		}
-	}
-
-	return the_state;
+	return State::GetSignificantState(GetStates());
 }
 
 int Game_Battler::GetStateRate(int state_id, int rate) const {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-
-	if (!state) {
-		Output::Warning("GetStateRate: Invalid state ID %d", state_id);
-		return 0;
-	}
-
-	switch (rate) {
-	case 0:
-		return state->a_rate;
-	case 1:
-		return state->b_rate;
-	case 2:
-		return state->c_rate;
-	case 3:
-		return state->d_rate;
-	case 4:
-		return state->e_rate;
-	default:;
-	}
-
-	assert(false && "bad rate");
-	return 0;
+	return State::GetStateRate(state_id, rate);
 }
 
 int Game_Battler::GetAttributeRate(int attribute_id, int rate) const {
@@ -290,7 +229,7 @@ bool Game_Battler::UseItem(int item_id, const Game_Battler* source) {
 				was_used |= HasState(Data::states[i].ID);
 				if (i == 0 && HasState(i + 1))
 					revived = 1;
-				RemoveState(Data::states[i].ID);
+				RemoveState(Data::states[i].ID, false);
 			}
 		}
 
@@ -373,11 +312,13 @@ bool Game_Battler::UseSkill(int skill_id, const Game_Battler* source) {
 			if (skill->state_effects[i]) {
 				if (skill->reverse_state_effect) {
 					was_used |= !HasState(Data::states[i].ID);
-					AddState(Data::states[i].ID);
+					// FIXME: This logic always called from menu, so we set false
+					// to allow_battle_states
+					AddState(Data::states[i].ID, false);
 				}
 				else {
 					was_used |= HasState(Data::states[i].ID);
-					RemoveState(Data::states[i].ID);
+					RemoveState(Data::states[i].ID, false);
 
 					// If Death is cured and HP is not selected, we set a bool so it later heals HP percentage
 					if (i == 0 && !skill->affect_hp) {
@@ -458,19 +399,15 @@ void Game_Battler::ChangeAgiModifier(int modifier) {
 	SetAgiModifier(agi_modifier + modifier);
 }
 
-void Game_Battler::AddState(int state_id) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-	if (!state) {
-		Output::Warning("AddState: Can't add state with invalid ID %d", state_id);
-		return;
+bool Game_Battler::AddState(int state_id, bool allow_battle_states) {
+	auto was_added = State::Add(state_id, GetStates(), GetPermanentStates(), allow_battle_states);
+
+	if (!was_added) {
+		return was_added;
 	}
 
-	if (IsDead()) {
-		return;
-	}
-	if (state_id == 1) {
+	if (state_id == RPG::State::kDeathID) {
 		SetGauge(0);
-		RemoveAllStates();
 		SetCharged(false);
 		SetHp(0);
 		SetAtkModifier(0);
@@ -483,79 +420,29 @@ void Game_Battler::AddState(int state_id) {
 		attribute_shift.resize(Data::attributes.size());
 	}
 
-	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= static_cast<int>(states.size())) {
-		states.resize(state_id);
-	}
-
-	states[state_id - 1] = 1;
-
-	// Clear states that are more than 10 priority points below the
-	// significant state
-	const RPG::State* sig_state = GetSignificantState();
-
-	for (size_t i = 0; i < states.size(); ++i) {
-		if (Data::states[i].priority <= sig_state->priority - 10) {
-			states[i] = 0;
-		}
-	}
-
 	if (IsDefending() && GetSignificantRestriction() != RPG::State::Restriction_normal) {
 		SetIsDefending(false);
 	}
+
+	return was_added;
 }
 
-int Game_Battler::FilterInapplicableStates(std::vector<int16_t>& states) const {
-	if (IsDead()) {
-		int rc = states.size();
-		states.clear();
-		return rc;
+bool Game_Battler::RemoveState(int state_id, bool always_remove_battle_states) {
+	PermanentStates ps;
+
+	auto* state = ReaderUtil::GetElement(Data::states, state_id);
+
+	if (!(always_remove_battle_states && state && state->type == RPG::State::Persistence_ends)) {
+		ps = GetPermanentStates();
 	}
 
-	auto* sig_state = GetSignificantState();
+	auto was_removed = State::Remove(state_id, GetStates(), ps);
 
-	for (auto state_id: states) {
-		auto* state = ReaderUtil::GetElement(Data::states, state_id);
-		if (!state) {
-			Output::Warning("Invalid state id %d", state_id);
-			continue;
-		}
-		if (!sig_state || sig_state->priority < state->priority) {
-			sig_state = state;
-		}
-	}
-
-	int num_removed = 0;
-	for (auto iter = states.begin(); iter != states.end();) {
-		auto* state = ReaderUtil::GetElement(Data::states, *iter);
-		if (!state || state->priority <= sig_state->priority - 10) {
-			// Already logged the state == nullptr case error above.
-			iter = states.erase(iter);
-			++num_removed;
-			continue;
-		}
-		++iter;
-	}
-	return num_removed;
-}
-
-void Game_Battler::RemoveState(int state_id) {
-	const RPG::State* state = ReaderUtil::GetElement(Data::states, state_id);
-	if (!state) {
-		Output::Warning("RemoveState: Can't delete state with invalid ID %d", state_id);
-		return;
-	}
-
-	std::vector<int16_t>& states = GetStates();
-	if (state_id - 1 >= static_cast<int>(states.size())) {
-		return;
-	}
-
-	if (state_id == 1 && IsDead()) {
+	if (was_removed && state_id == RPG::State::kDeathID) {
 		SetHp(1);
 	}
 
-	states[state_id - 1] = 0;
+	return was_removed;
 }
 
 int Game_Battler::ApplyConditions() {
@@ -608,22 +495,12 @@ int Game_Battler::ApplyConditions() {
 	return damageTaken;
 }
 
-static bool non_permanent(int state_id) {
-	return ReaderUtil::GetElement(Data::states, state_id)->type == RPG::State::Persistence_ends;
-}
-
 void Game_Battler::RemoveBattleStates() {
-	std::vector<int16_t>& states = GetStates();
-	for (size_t i = 0; i < states.size(); ++i) {
-		if (non_permanent(i + 1) || ReaderUtil::GetElement(Data::states, i + 1)->auto_release_prob > 0) {
-			RemoveState(i + 1);
-		}
-	}
+	State::RemoveAllBattle(GetStates());
 }
 
 void Game_Battler::RemoveAllStates() {
-	std::vector<int16_t>& states = GetStates();
-	states.clear();
+	State::RemoveAll(GetStates(), GetPermanentStates());
 }
 
 bool Game_Battler::IsCharged() const {
@@ -664,7 +541,7 @@ void Game_Battler::ChangeHp(int hp) {
 
 		// Death
 		if (GetHp() <= 0) {
-			AddState(RPG::State::kDeathID);
+			AddState(RPG::State::kDeathID, true);
 		}
 	}
 }
@@ -858,32 +735,12 @@ std::vector<int16_t> Game_Battler::BattleStateHeal() {
 	for (size_t i = 0; i < states.size(); ++i) {
 		if (HasState(i + 1)) {
 			if (states[i] > Data::states[i].hold_turn
-					&& Utils::ChanceOf(Data::states[i].auto_release_prob, 100)) {
+					&& Utils::ChanceOf(Data::states[i].auto_release_prob, 100)
+					&& RemoveState(i + 1, false)
+					) {
 				healed_states.push_back(i + 1);
-				RemoveState(i + 1);
 			} else {
 				++states[i];
-			}
-		}
-	}
-
-	return healed_states;
-}
-
-std::vector<int16_t> Game_Battler::BattlePhysicalStateHeal(int physical_rate) {
-	std::vector<int16_t> healed_states;
-	std::vector<int16_t>& states = GetStates();
-
-	if (physical_rate <= 0) {
-		return healed_states;
-	}
-
-	for (size_t i = 0; i < states.size(); ++i) {
-		if (HasState(i + 1) && Data::states[i].release_by_damage > 0) {
-			int release_chance = (int)(Data::states[i].release_by_damage * physical_rate / 100.0);
-
-			if (Utils::ChanceOf(release_chance, 100)) {
-				healed_states.push_back(i + 1);
 			}
 		}
 	}

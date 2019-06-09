@@ -30,6 +30,7 @@
 #include "rpg_skill.h"
 #include "util_macro.h"
 #include "utils.h"
+#include "game_temp.h"
 
 constexpr int max_level_2k = 50;
 constexpr int max_level_2k3 = 99;
@@ -76,6 +77,8 @@ void Game_Actor::Init() {
 		SetSp(GetMaxSp());
 		SetExp(exp_list[GetLevel() - 1]);
 	}
+
+	ResetEquipmentStates(false);
 }
 
 void Game_Actor::Fixup() {
@@ -89,6 +92,8 @@ void Game_Actor::Fixup() {
 	}
 
 	RemoveInvalidData();
+
+	ResetEquipmentStates(false);
 }
 
 int Game_Actor::GetId() const {
@@ -102,23 +107,21 @@ bool Game_Actor::UseItem(int item_id, const Game_Battler* source) {
 		return false;
 	}
 
-	if (IsDead() && item->type != RPG::Item::Type_medicine) {
-		return false;
-	}
+	if (!IsDead()) {
+		if (item->type == RPG::Item::Type_book) {
+			return LearnSkill(item->skill_id);
+		}
 
-	if (item->type == RPG::Item::Type_book) {
-		return LearnSkill(item->skill_id);
-	}
+		if (item->type == RPG::Item::Type_material) {
+			SetBaseMaxHp(GetBaseMaxHp() + item->max_hp_points);
+			SetBaseMaxSp(GetBaseMaxSp() + item->max_sp_points);
+			SetBaseAtk(GetBaseAtk() + item->atk_points2);
+			SetBaseDef(GetBaseDef() + item->def_points2);
+			SetBaseAgi(GetBaseAgi() + item->agi_points2);
+			SetBaseSpi(GetBaseSpi() + item->spi_points2);
 
-	if (item->type == RPG::Item::Type_material) {
-		SetBaseMaxHp(GetBaseMaxHp() + item->max_hp_points);
-		SetBaseMaxSp(GetBaseMaxSp() + item->max_sp_points);
-		SetBaseAtk(GetBaseAtk() + item->atk_points2);
-		SetBaseDef(GetBaseDef() + item->def_points2);
-		SetBaseAgi(GetBaseAgi() + item->agi_points2);
-		SetBaseSpi(GetBaseSpi() + item->spi_points2);
-
-		return true;
+			return true;
+		}
 	}
 
 	return Game_Battler::UseItem(item_id, source);
@@ -255,15 +258,19 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 		return -1;
 
 	int old_item_id = GetData().equipped[equip_type - 1];
+	const RPG::Item* old_item = ReaderUtil::GetElement(Data::items, old_item_id);
 
 	const RPG::Item* new_item = ReaderUtil::GetElement(Data::items, new_item_id);
 	if (new_item_id != 0 && !new_item) {
 		Output::Warning("SetEquipment: Can't equip item with invalid ID %d", new_item_id);
-		GetData().equipped[equip_type - 1] = 0;
-		return old_item_id;
+		new_item_id = 0;
 	}
 
 	GetData().equipped[equip_type - 1] = (short)new_item_id;
+
+	AdjustEquipmentStates(old_item, false, false);
+	AdjustEquipmentStates(new_item, true, false);
+
 	return old_item_id;
 }
 
@@ -324,22 +331,6 @@ const std::vector<int16_t>& Game_Actor::GetStates() const {
 
 std::vector<int16_t>& Game_Actor::GetStates() {
 	return GetData().status;
-}
-
-void Game_Actor::AddState(int state_id) {
-	Game_Battler::AddState(state_id);
-}
-
-void Game_Actor::RemoveState(int state_id) {
-	Game_Battler::RemoveState(state_id);
-}
-
-void Game_Actor::RemoveBattleStates() {
-	Game_Battler::RemoveBattleStates();
-}
-
-void Game_Actor::RemoveAllStates() {
-	Game_Battler::RemoveAllStates();
 }
 
 int Game_Actor::GetHp() const {
@@ -596,7 +587,9 @@ int Game_Actor::GetStateProbability(int state_id) const {
 	// This takes the armor of the character with the most resistance for that particular state
 	for (const auto equipment : GetWholeEquipment()) {
 		RPG::Item* item = ReaderUtil::GetElement(Data::items, equipment);
-		if (item != nullptr && (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
+		if (item != nullptr
+				&& !(Player::IsRPG2k3() && item->reverse_state_effect)
+				&& (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
 			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
 			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
 			mul = std::min<int>(mul, 100 - item->state_chance);
@@ -1540,4 +1533,68 @@ bool Game_Actor::HasHalfSpCost() const {
 		|| checkEquip(GetAccessory());
 }
 
+
+static bool IsArmorType(const RPG::Item* item) {
+	return item->type == RPG::Item::Type_shield
+		|| item->type == RPG::Item::Type_armor
+		|| item->type == RPG::Item::Type_helmet
+		|| item->type == RPG::Item::Type_accessory;
+}
+
+void Game_Actor::AdjustEquipmentStates(const RPG::Item* item, bool add, bool allow_battle_states) {
+	// All states inflicted by new armor get inflicted.
+	if (Player::IsRPG2k3()
+			&& item
+			&& IsArmorType(item)
+			&& item->reverse_state_effect)
+	{
+		auto& states = item->state_set;
+		for (int i = 0; i < (int)states.size(); ++i) {
+			if (states[i]) {
+				if (add) {
+					AddState(i + 1, allow_battle_states);
+				} else {
+					RemoveState(i + 1, false);
+				}
+			}
+		}
+	}
+}
+
+
+void Game_Actor::ResetEquipmentStates(bool allow_battle_states) {
+	AdjustEquipmentStates(GetShield(), true, allow_battle_states);
+	AdjustEquipmentStates(GetArmor(), true, allow_battle_states);
+	AdjustEquipmentStates(GetHelmet(), true, allow_battle_states);
+	AdjustEquipmentStates(GetAccessory(), true, allow_battle_states);
+}
+
+PermanentStates Game_Actor::GetPermanentStates() const {
+	PermanentStates ps;
+	if (!Player::IsRPG2k3()) {
+		return ps;
+	}
+
+	auto addEquip = [&](const RPG::Item* item) {
+		if (!item || !IsArmorType(item) || !item->reverse_state_effect) {
+			return;
+		}
+		auto& states = item->state_set;
+		// Invalid states in armor already reported earlier in
+		// calls to AdjustEquipmentStates.
+		int num_states = std::min(states.size(), Data::states.size());
+		for (int i = 0; i < num_states; ++i) {
+			if (states[i]) {
+				ps.Add(i + 1);
+			}
+		}
+	};
+
+	addEquip(GetShield());
+	addEquip(GetArmor());
+	addEquip(GetHelmet());
+	addEquip(GetAccessory());
+
+	return ps;
+}
 

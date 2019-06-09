@@ -463,6 +463,8 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 			actor->RemoveAllStates();
 			actor->ChangeHp(actor->GetMaxHp());
 			actor->SetSp(actor->GetMaxSp());
+			// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
+			actor->ResetEquipmentStates(true);
 		}
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 		Game_System::BgmFade(800);
