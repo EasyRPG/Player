@@ -54,28 +54,15 @@ static std::pair<int, int> get_table_idx(const char* const lookup_table[16], con
 
 template <typename T>
 static void detect_helper(const FileFinder::DirectoryTree& tree, std::vector<struct RTP::RtpHitInfo>& hit_list,
-		T rtp_table, int num_rtps, int offset) {
-	for (int i = 0; rtp_table[i][0] != nullptr; ++i) {
+		T rtp_table, int num_rtps, int offset, const std::pair<int, int>& range, const char** ext_list) {
+	for (int i = range.first; i < range.second; ++i) {
 		const char* category = rtp_table[i][0];
 		for (int j = 1; j <= num_rtps; ++j) {
 			const char* name = rtp_table[i][j];
 			if (name != nullptr) {
 				std::string ret;
 				// TODO: Filefinder refactor should provide FindImage etc. for non-project trees
-				if (!strcmp("sound", category)) {
-					// RPG Advocate uses MP3
-					static const char* SOUND_TYPES[] = { ".wav", ".mp3", nullptr };
-					ret = FileFinder::FindDefault(tree, category, name, SOUND_TYPES);
-				} else if (!strcmp("music", category)) {
-					static const char* MUSIC_TYPES[] = { ".wav", ".mid", nullptr };
-					ret = FileFinder::FindDefault(tree, category, name, MUSIC_TYPES);
-				} else if (!strcmp("movie", category)) {
-					static const char* MOVIE_TYPES[] = { ".avi", nullptr };
-					ret = FileFinder::FindDefault(tree, category, name, MOVIE_TYPES);
-				} else {
-					static const char* IMAGE_TYPES[] = { ".png", nullptr };
-					ret = FileFinder::FindDefault(tree, category, name, IMAGE_TYPES);
-				}
+				ret = FileFinder::FindDefault(tree, category, name, ext_list);
 				if (!ret.empty()) {
 					hit_list[offset + j - 1].hits++;
 				}
@@ -98,11 +85,38 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, tree}
 	}};
 
+	static const char* SOUND_TYPES[] = { ".wav", ".mp3", nullptr };
+	static const char* MUSIC_TYPES[] = { ".wav", ".mid", nullptr };
+	static const char* MOVIE_TYPES[] = { ".avi", nullptr };
+	static const char* IMAGE_TYPES[] = { ".png", nullptr };
+
+	auto ext_for_cat = [](const char* category) {
+		if (!strcmp("sound", category)) {
+			return SOUND_TYPES;
+		} else if (!strcmp("music", category)) {
+			return MUSIC_TYPES;
+		} else if (!strcmp("movie", category)) {
+			return MOVIE_TYPES;
+		} else {
+			return IMAGE_TYPES;
+		}
+	};
+
 	if (version == 2000 || version == 0) {
-		detect_helper(*tree, hit_list, rtp_table_2k, num_2k_rtps, 0);
+		for (int i = 0; rtp_table_2k_categories[i] != nullptr; ++i) {
+			const char* category = rtp_table_2k_categories[i];
+			std::pair<int, int> range = {rtp_table_2k_categories_idx[i], rtp_table_2k_categories_idx[i+1]};
+			const char** ext_list = ext_for_cat(category);
+			detect_helper(*tree, hit_list, rtp_table_2k, num_2k_rtps, 0, range, ext_list);
+		}
 	}
 	if (version == 2003 || version == 0) {
-		detect_helper(*tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps);
+		for (int i = 0; rtp_table_2k3_categories[i] != nullptr; ++i) {
+			const char* category = rtp_table_2k3_categories[i];
+			std::pair<int, int> range = {rtp_table_2k3_categories_idx[i], rtp_table_2k3_categories_idx[i+1]};
+			const char** ext_list = ext_for_cat(category);
+			detect_helper(*tree, hit_list, rtp_table_2k3, num_2k3_rtps, num_2k_rtps, range, ext_list);
+		}
 	}
 
 	// remove RTPs with zero hits
