@@ -426,8 +426,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	switch (battle_action_state) {
 		case BattleActionState_Begin:
 			return ProcessActionBegin(action);
-		case BattleActionState_Conditions:
-			return ProcessActionConditions(action);
 		case BattleActionState_Usage1:
 			return ProcessActionUsage1(action);
 		case BattleActionState_Usage2:
@@ -458,66 +456,74 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
-	auto* src = action->GetSource();
-
-	battle_message_window->Clear();
-
-	if (src->Exists()) {
-		auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-		if (source_sprite) {
-			source_sprite->Flash(Color(255, 255, 255, 100), 15);
-		}
-	}
-
-	src->NextBattleTurn();
-	SetWait(4,4);
-	return ProcessNextAction(BattleActionState_Conditions, action);
-}
-
-bool Scene_Battle_Rpg2k::ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
-		eConditions = 0,
-		ePostCondition,
+		eBegin = 0,
+		eShowMessage,
+		ePost,
 	};
 
 	auto* src = action->GetSource();
 
-	if (battle_action_substate == eConditions) {
-		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
-		src->ApplyConditions();
+	if (battle_action_substate == eBegin) {
+		battle_message_window->Clear();
 
-		const RPG::State* pri_state = nullptr;
-		bool pri_was_healed = false;
-		for (size_t id = 1; id <= Data::states.size(); ++id) {
-			auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
-			if (!was_healed && !src->HasState(id)) {
-				continue;
+		bool show_message = false;
+		if (src->Exists()) {
+			src->NextBattleTurn();
+
+			std::vector<int16_t> states_to_heal = src->BattleStateHeal();
+			src->ApplyConditions();
+
+			const RPG::State* pri_state = nullptr;
+			bool pri_was_healed = false;
+			for (size_t id = 1; id <= Data::states.size(); ++id) {
+				auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
+				if (!was_healed && !src->HasState(id)) {
+					continue;
+				}
+
+				auto* state = ReaderUtil::GetElement(Data::states, id);
+				if (!pri_state || state->priority >= pri_state->priority) {
+					pri_state = state;
+					pri_was_healed = was_healed;
+				}
 			}
 
-			auto* state = ReaderUtil::GetElement(Data::states, id);
-			if (!pri_state || state->priority >= pri_state->priority) {
-				pri_state = state;
-				pri_was_healed = was_healed;
+			if (pri_state != nullptr) {
+				const auto& msg = pri_was_healed
+					? pri_state->message_recovery
+					: pri_state->message_affected;
+
+				// RPG_RT behavior:
+				// If state was healed, always prints.
+				// If state is inflicted, only prints if msg not empty.
+				if (pri_was_healed || !msg.empty()) {
+					show_message = true;
+					pending_message = msg;
+				}
+			}
+
+			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+			if (source_sprite) {
+				source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			}
 		}
 
-		if (pri_state != nullptr) {
-			const auto& msg = pri_was_healed
-				? pri_state->message_recovery
-				: pri_state->message_affected;
-
-			// RPG_RT behavior:
-			// If state was healed, always prints.
-			// If state is inflicted, only prints if msg not empty.
-			if (pri_was_healed || !msg.empty()) {
-				battle_message_window->PushWithSubject(msg, action->GetSource()->GetName());
-				SetWait(20, 60);
-				return ProcessNextSubState(ePostCondition, action);
-			}
+		if (show_message) {
+			SetWait(4,4);
+			return ProcessNextSubState(eShowMessage, action);
 		}
+		battle_action_substate = ePost;
 	}
 
-	if (battle_action_substate == ePostCondition) {
+	if (battle_action_substate == eShowMessage) {
+		battle_message_window->PushWithSubject(std::move(pending_message), action->GetSource()->GetName());
+		SetWait(20, 60);
+		pending_message.clear();
+		return ProcessNextSubState(ePost, action);
+	}
+
+	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
 		SetWait(4,4);
 	}

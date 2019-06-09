@@ -35,14 +35,9 @@ public:
 	enum BattleActionState {
 		/**
 		 * Called once
-		 * Flashes enemy sprite and a small delay to start action.
+		 * Flashes enemy sprite and handles states.
 		 */
 		BattleActionState_Begin,
-		/**
-		 * Called once
-		 * Handles healing of conditions that get auto removed after X turns.
-		 */
-		BattleActionState_Conditions,
 		/**
 		 * Called once
 		 * Handles first start message
@@ -192,7 +187,6 @@ protected:
 
 	// BattleAction State Machine Handlers
 	bool ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action);
-	bool ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage1(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionUsage2(Game_BattleAlgorithm::AlgorithmBase* action);
 	bool ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmBase* action);
