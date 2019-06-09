@@ -40,6 +40,7 @@ public:
 	void FlashOnce(int r, int g, int b, int s, int frames);
 	void FlashBegin(int r, int g, int b, int s, int frames);
 	void FlashEnd();
+	void FlashMapStepDamage();
 	void ShakeOnce(int power, int speed, int tenths);
 	void ShakeBegin(int power, int speed);
 	void ShakeEnd();

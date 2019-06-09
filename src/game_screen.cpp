@@ -129,6 +129,7 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int frames) {
 	flash_sat = s;
 	data.flash_current_level = s;
 	data.flash_time_left = frames;
+	data.flash_continuous = false;
 	flash_period = 0;
 }
 
@@ -144,6 +145,10 @@ void Game_Screen::FlashEnd() {
 	data.flash_current_level = 0;
 	flash_period = 0;
 	data.flash_continuous = false;
+}
+
+void Game_Screen::FlashMapStepDamage() {
+	Main_Data::game_screen->FlashOnce(31, 10, 10, 20, 6);
 }
 
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {

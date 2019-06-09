@@ -649,28 +649,36 @@ bool Game_Party::ApplyStateDamage() {
 	for (auto state_id : states) {
 		RPG::State *state = ReaderUtil::GetElement(Data::states, state_id);
 
-		// NOTE: We do steps + 1 here because this gets called before steps are incremented.
-
 		if (state->hp_change_map_steps > 0
 				&& state->hp_change_map_val > 0
-				&& (((steps + 1) % state->hp_change_map_steps) == 0)
+				&& ((steps % state->hp_change_map_steps) == 0)
 				) {
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
-					actor->ChangeHp(-std::max<int>(0, std::min<int>(state->hp_change_map_val, actor->GetHp() - 1)));
-					damage = true;
+					if (state->hp_change_type == RPG::State::ChangeType_lose) {
+						actor->ChangeHp(-std::max<int>(0, std::min<int>(state->hp_change_map_val, actor->GetHp() - 1)));
+						damage = true;
+					}
+					else if (state->hp_change_type == RPG::State::ChangeType_gain) {
+						actor->ChangeHp(state->hp_change_map_val);
+					}
 				}
 			}
 		}
 
 		if (state->sp_change_map_steps > 0
 				&& state->sp_change_map_val > 0
-				&& (((steps + 1) % state->sp_change_map_steps) == 0)
+				&& ((steps % state->sp_change_map_steps) == 0)
 		   ){
 			for (auto actor : GetActors()) {
 				if (actor->HasState(state_id)) {
-					actor->ChangeSp(-state->sp_change_map_val);
-					damage = true;
+					if (state->sp_change_type == RPG::State::ChangeType_lose) {
+						actor->ChangeSp(-state->sp_change_map_val);
+						damage = true;
+					}
+					else if (state->sp_change_type == RPG::State::ChangeType_gain) {
+						actor->ChangeSp(state->sp_change_map_val);
+					}
 				}
 			}
 		}
