@@ -626,14 +626,22 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (!success)
 		return;
 
+	if (GetAffectedSwitch() != -1) {
+		Game_Switches.Set(GetAffectedSwitch(), true);
+	}
+
 	auto* target = GetTarget();
 
-	bool was_dead = GetTarget()->IsDead();
+	if (!target) {
+		return;
+	}
+
+	bool was_dead = target->IsDead();
 
 	if (GetAffectedHp() != -1 && !was_dead) {
 		int hp = GetAffectedHp();
-		int target_hp = GetTarget()->GetHp();
-		GetTarget()->ChangeHp(IsPositive() ? hp : -hp);
+		int target_hp = target->GetHp();
+		target->ChangeHp(IsPositive() ? hp : -hp);
 		if (IsAbsorb()) {
 			// Only absorb the hp that were left
 			int src_hp = std::min(target_hp, hp);
@@ -643,8 +651,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	if (GetAffectedSp() != -1) {
 		int sp = GetAffectedSp();
-		int target_sp = GetTarget()->GetSp();
-		GetTarget()->SetSp(GetTarget()->GetSp() + (IsPositive() ? sp : -sp));
+		int target_sp = target->GetSp();
+		target->SetSp(target->GetSp() + (IsPositive() ? sp : -sp));
 		if (IsAbsorb()) {
 			int src_sp = std::min(target_sp, sp);
 			source->ChangeSp(src_sp);
@@ -653,7 +661,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	if (GetAffectedAttack() != -1) {
 		int atk = GetAffectedAttack();
-		GetTarget()->ChangeAtkModifier(IsPositive() ? atk : -atk);
+		target->ChangeAtkModifier(IsPositive() ? atk : -atk);
 		if (IsAbsorb()) {
 			atk = std::max<int>(0, std::min<int>(atk, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAtkModifier(atk);
@@ -662,7 +670,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	if (GetAffectedDefense() != -1) {
 		int def = GetAffectedDefense();
-		GetTarget()->ChangeDefModifier(IsPositive() ? def : -def);
+		target->ChangeDefModifier(IsPositive() ? def : -def);
 		if (IsAbsorb()) {
 			def = std::max<int>(0, std::min<int>(def, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeDefModifier(def);
@@ -671,7 +679,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	if (GetAffectedSpirit() != -1) {
 		int spi = GetAffectedSpirit();
-		GetTarget()->ChangeSpiModifier(IsPositive() ? spi : -spi);
+		target->ChangeSpiModifier(IsPositive() ? spi : -spi);
 		if (IsAbsorb()) {
 			spi = std::max<int>(0, std::min<int>(spi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeSpiModifier(spi);
@@ -680,15 +688,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	if (GetAffectedAgility() != -1) {
 		int agi = GetAffectedAgility();
-		GetTarget()->ChangeAgiModifier(IsPositive() ? agi : -agi);
+		target->ChangeAgiModifier(IsPositive() ? agi : -agi);
 		if (IsAbsorb()) {
 			agi = std::max<int>(0, std::min<int>(agi, std::min<int>(source->MaxStatBattleValue(), source->GetBaseAtk() * 2) - source->GetAtk()));
 			source->ChangeAgiModifier(agi);
 		}
-	}
-
-	if (GetAffectedSwitch() != -1) {
-		Game_Switches.Set(GetAffectedSwitch(), true);
 	}
 
 	// Apply states
@@ -710,7 +714,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (IsPositive() && was_dead && !target->IsDead()) {
 		if (GetAffectedHp()) {
 			int hp = GetAffectedHp();
-			GetTarget()->ChangeHp(hp - 1);
+			target->ChangeHp(hp - 1);
 		}
 	}
 }
