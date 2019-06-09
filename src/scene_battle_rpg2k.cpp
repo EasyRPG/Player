@@ -310,12 +310,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				// If we will start a new battle action, first check for state changes
 				// such as death, paralyze, confuse, etc..
 				PrepareBattleAction(battler);
-
-				// If we can no longer perform the action (no more items, ran out of SP, etc..)
-				if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
-					battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-					battler->SetCharged(false);
-				}
 			}
 			auto* alg = battler->GetBattleAlgorithm().get();
 
