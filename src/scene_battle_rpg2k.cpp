@@ -503,9 +503,11 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 				}
 			}
 
-			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-			if (source_sprite) {
-				source_sprite->Flash(Color(255, 255, 255, 100), 15);
+			if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
+				auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+				if (source_sprite) {
+					source_sprite->Flash(Color(255, 255, 255, 100), 15);
+				}
 			}
 		}
 
@@ -525,6 +527,11 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 
 	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
+
+		if (action->GetType() == Game_BattleAlgorithm::Type::Null) {
+			return true;
+		}
+
 		SetWait(4,4);
 	}
 
@@ -1336,6 +1343,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
+		} else {
+			// Enemies with no action list get Null callback
+			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Null>(battler));
+			ActionSelectedCallback(battler);
 		}
 	}
 }

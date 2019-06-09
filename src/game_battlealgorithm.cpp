@@ -840,6 +840,25 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsReflected() const {
 	return false;
 }
 
+Game_BattleAlgorithm::Null::Null(Game_Battler* source) :
+AlgorithmBase(Type::Null, source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Null::GetStartMessage() const {
+	return "";
+}
+
+bool Game_BattleAlgorithm::Null::Execute() {
+	this->success = true;
+	return true;
+}
+
+void Game_BattleAlgorithm::Null::Apply() {
+	ApplyActionSwitches();
+}
+
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(Type::Normal, source, target)
 {

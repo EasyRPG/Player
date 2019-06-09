@@ -485,6 +485,19 @@ protected:
 	std::vector<int> switch_off;
 };
 
+// Special algorithm for battlers which have no action. 
+// Similar to NoMove, but treated as no action wheras NoMove
+// is an action that does nothing.
+class Null : public AlgorithmBase {
+public:
+	Null(Game_Battler* source);
+
+	std::string GetStartMessage() const override;
+
+	bool Execute() override;
+	void Apply() override;
+};
+
 class Normal : public AlgorithmBase {
 public:
 	Normal(Game_Battler* source, Game_Battler* target);
