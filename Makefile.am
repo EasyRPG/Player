@@ -417,8 +417,8 @@ endif
 @DX_RULES@
 
 # FIXME make filefinder work without external scripting
-check_PROGRAMS = directorytree output utils wordwrap
-TESTS = directorytree output utils wordwrap
+check_PROGRAMS = directorytree output rtp utils wordwrap
+TESTS = directorytree output rtp utils wordwrap
 directorytree_SOURCES = tests/directorytree.cpp
 directorytree_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 directorytree_LDADD = $(easyrpg_player_LDADD)
@@ -428,6 +428,9 @@ directorytree_LDADD = $(easyrpg_player_LDADD)
 output_SOURCES = tests/output.cpp
 output_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 output_LDADD = $(easyrpg_player_LDADD)
+rtp_SOURCES = tests/rtp.cpp tests/doctest.h
+rtp_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+rtp_LDADD = $(easyrpg_player_LDADD)
 utils_SOURCES = tests/utils.cpp
 utils_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 utils_LDADD = $(easyrpg_player_LDADD)
@@ -436,5 +439,5 @@ wordwrap_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 wordwrap_LDADD = $(easyrpg_player_LDADD)
 
 # Some tests will create this file
-# make distcheck will fail if it is not cleaned after runing these tests
+# make distcheck will fail if it is not cleaned after running these tests
 CLEANFILES = easyrpg_log.txt
