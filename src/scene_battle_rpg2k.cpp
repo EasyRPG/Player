@@ -304,6 +304,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (!battle_action_pending && CheckResultConditions()) {
 			return;
 		}
+		RemoveActionsForNonExistantBattlers();
 		if (!battle_actions.empty()) {
 			auto* battler = battle_actions.front();
 			if (!battle_action_pending) {
@@ -459,49 +460,48 @@ bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase*
 	auto* src = action->GetSource();
 
 	if (battle_action_substate == eBegin) {
+		assert(src->Exists());
 		battle_message_window->Clear();
 
 		bool show_message = false;
-		if (src->Exists()) {
-			src->NextBattleTurn();
+		src->NextBattleTurn();
 
-			std::vector<int16_t> states_to_heal = src->BattleStateHeal();
-			src->ApplyConditions();
+		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
+		src->ApplyConditions();
 
-			const RPG::State* pri_state = nullptr;
-			bool pri_was_healed = false;
-			for (size_t id = 1; id <= Data::states.size(); ++id) {
-				auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
-				if (!was_healed && !src->HasState(id)) {
-					continue;
-				}
-
-				auto* state = ReaderUtil::GetElement(Data::states, id);
-				if (!pri_state || state->priority >= pri_state->priority) {
-					pri_state = state;
-					pri_was_healed = was_healed;
-				}
+		const RPG::State* pri_state = nullptr;
+		bool pri_was_healed = false;
+		for (size_t id = 1; id <= Data::states.size(); ++id) {
+			auto was_healed = std::find(states_to_heal.begin(), states_to_heal.end(), id) != states_to_heal.end();
+			if (!was_healed && !src->HasState(id)) {
+				continue;
 			}
 
-			if (pri_state != nullptr) {
-				const auto& msg = pri_was_healed
-					? pri_state->message_recovery
-					: pri_state->message_affected;
-
-				// RPG_RT behavior:
-				// If state was healed, always prints.
-				// If state is inflicted, only prints if msg not empty.
-				if (pri_was_healed || !msg.empty()) {
-					show_message = true;
-					pending_message = msg;
-				}
+			auto* state = ReaderUtil::GetElement(Data::states, id);
+			if (!pri_state || state->priority >= pri_state->priority) {
+				pri_state = state;
+				pri_was_healed = was_healed;
 			}
+		}
 
-			if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
-				auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-				if (source_sprite) {
-					source_sprite->Flash(Color(255, 255, 255, 100), 15);
-				}
+		if (pri_state != nullptr) {
+			const auto& msg = pri_was_healed
+				? pri_state->message_recovery
+				: pri_state->message_affected;
+
+			// RPG_RT behavior:
+			// If state was healed, always prints.
+			// If state is inflicted, only prints if msg not empty.
+			if (pri_was_healed || !msg.empty()) {
+				show_message = true;
+				pending_message = msg;
+			}
+		}
+
+		if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
+			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+			if (source_sprite) {
+				source_sprite->Flash(Color(255, 255, 255, 100), 15);
 			}
 		}
 
@@ -609,9 +609,7 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 
 
 	// Wait for last start message and animations.
-	if (action->GetSource()->Exists()) {
-		SetWaitForUsage(action->GetType());
-	}
+	SetWaitForUsage(action->GetType());
 
 	return ProcessNextAction(BattleActionState_Execute, action);
 }

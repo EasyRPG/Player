@@ -539,6 +539,14 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 	ActionSelectedCallback(enemy);
 }
 
+void Scene_Battle::RemoveActionsForNonExistantBattlers() {
+	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(), [](const Game_Battler* b) { return !b->Exists(); });
+	for (auto it = iter; it != battle_actions.end(); ++it) {
+		(*it)->SetBattleAlgorithm(nullptr);
+	}
+	battle_actions.erase(iter, battle_actions.end());
+}
+
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(nullptr);
 	battle_actions.pop_front();
