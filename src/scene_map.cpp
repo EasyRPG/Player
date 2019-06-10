@@ -162,12 +162,6 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32);
 }
 
-void Scene_Map::Suspend(SceneType next_scene) {
-	if (next_scene == Scene::Battle) {
-		Main_Data::game_screen->CancelBattleAnimation();
-	}
-}
-
 void Scene_Map::TransitionOut(SceneType next_scene) {
 	if (next_scene != Scene::Battle
 			&& next_scene != Scene::Debug) {

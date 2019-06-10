@@ -41,7 +41,6 @@ public:
 	void Continue(SceneType prev_scene) override;
 	void Update() override;
 	void TransitionIn(SceneType prev_scene) override;
-	void Suspend(SceneType next_scene) override;
 	void TransitionOut(SceneType next_scene) override;
 	void DrawBackground() override;
 
