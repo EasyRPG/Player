@@ -27,6 +27,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "utils.h"
+#include "reader_util.h"
 #include <cmath>
 
 static constexpr int kShakeContinuousTimeStart = 65535;
@@ -83,6 +84,8 @@ void Game_Screen::Reset() {
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	animation.reset();
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
@@ -299,6 +302,8 @@ void Game_Screen::Update() {
 		case Weather_Sandstorm:
 			break;
 	}
+
+	UpdateBattleAnimation();
 }
 
 Tone Game_Screen::GetTone() {
@@ -323,3 +328,57 @@ int Game_Screen::GetWeatherStrength() {
 const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
 	return snowflakes;
 }
+
+int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
+	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	if (!anim) {
+		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
+		return 0;
+	}
+
+	Main_Data::game_data.screen.battleanim_id = animation_id;
+	Main_Data::game_data.screen.battleanim_target = target_id;
+	Main_Data::game_data.screen.battleanim_global = global;
+	Main_Data::game_data.screen.battleanim_active = true;
+	Main_Data::game_data.screen.battleanim_frame = start_frame;
+
+	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
+
+	if (chara) {
+		chara->SetFlashTimeLeft(0); // Any flash always ends
+		if (global) {
+			animation.reset(new BattleAnimationGlobal(*anim));
+		} else {
+			animation.reset(new BattleAnimationChara(*anim, *chara));
+		}
+	}
+
+	if (start_frame) {
+		animation->SetFrame(start_frame);
+	}
+
+	return animation->GetFrames();
+}
+
+void Game_Screen::UpdateBattleAnimation() {
+	if (animation) {
+		animation->Update();
+		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
+		if (animation->IsDone()) {
+			CancelBattleAnimation();
+		}
+	}
+}
+
+void Game_Screen::CancelBattleAnimation() {
+	Main_Data::game_data.screen.battleanim_frame = animation ?
+		animation->GetFrames() : 0;
+	Main_Data::game_data.screen.battleanim_active = false;
+	animation.reset();
+}
+
+bool Game_Screen::IsBattleAnimationWaiting() {
+	return (bool)animation;
+}
+
+

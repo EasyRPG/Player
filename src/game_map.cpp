@@ -24,7 +24,6 @@
 
 #include "async_handler.h"
 #include "system.h"
-#include "battle_animation.h"
 #include "game_battle.h"
 #include "game_battler.h"
 #include "game_map.h"
@@ -72,7 +71,6 @@ namespace {
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-	std::unique_ptr<BattleAnimation> animation;
 
 	bool pan_wait;
 
@@ -151,7 +149,6 @@ void Game_Map::Dispose(bool clear_screen) {
 	}
 
 	map.reset();
-	animation.reset();
 }
 
 void Game_Map::Quit() {
@@ -272,7 +269,7 @@ void Game_Map::SetupFromSave() {
 	SetEncounterSteps(location.encounter_steps);
 
 	if (Main_Data::game_data.screen.battleanim_active) {
-		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
+		Main_Data::game_screen->ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
 				Main_Data::game_data.screen.battleanim_target,
 				Main_Data::game_data.screen.battleanim_global,
 				Main_Data::game_data.screen.battleanim_frame);
@@ -983,7 +980,6 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
-		UpdateBattleAnimation();
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {
@@ -1331,58 +1327,6 @@ void Game_Map::SetupBattle() {
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
 	}
-}
-
-int Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
-	if (!anim) {
-		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
-		return 0;
-	}
-
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-	Main_Data::game_data.screen.battleanim_target = target_id;
-	Main_Data::game_data.screen.battleanim_global = global;
-	Main_Data::game_data.screen.battleanim_active = true;
-	Main_Data::game_data.screen.battleanim_frame = start_frame;
-
-	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
-
-	if (chara) {
-		chara->SetFlashTimeLeft(0); // Any flash always ends
-		if (global) {
-			animation.reset(new BattleAnimationGlobal(*anim));
-		} else {
-			animation.reset(new BattleAnimationChara(*anim, *chara));
-		}
-	}
-
-	if (start_frame) {
-		animation->SetFrame(start_frame);
-	}
-
-	return animation->GetFrames();
-}
-
-void Game_Map::UpdateBattleAnimation() {
-	if (animation) {
-		animation->Update();
-		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
-		if (animation->IsDone()) {
-			CancelBattleAnimation();
-		}
-	}
-}
-
-void Game_Map::CancelBattleAnimation() {
-	Main_Data::game_data.screen.battleanim_frame = animation ?
-		animation->GetFrames() : 0;
-	Main_Data::game_data.screen.battleanim_active = false;
-	animation.reset();
-}
-
-bool Game_Map::IsBattleAnimationWaiting() {
-	return (bool)animation;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {

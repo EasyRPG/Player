@@ -616,7 +616,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	if (evt_id == Game_Character::CharThisEvent)
 		evt_id = GetThisEventId();
 
-	int frames = Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
+	int frames = Main_Data::game_screen->ShowBattleAnimation(animation_id, evt_id, global);
 
 	if (waiting_battle_anim) {
 		_state.wait_time = frames;

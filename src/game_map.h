@@ -358,33 +358,6 @@ namespace Game_Map {
 	void SetupBattle();
 
 	/**
-	 * Plays the given animation against a character.
-	 *
-	 * @param animation_id the animation ID
-	 * @param target_id the ID of the targeted character
-	 * @param global whether to "show on the entire map"
-	 * @param which frame to start on.
-	 *
-	 * @return the number of frames the animation will run.
-	 */
-	int ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame = 0);
-
-	/**
-	 * Update the currently running battle animation by 1 frame.
-	 */
-	void UpdateBattleAnimation();
-
-	/**
-	 * Cancel the currently running battle animation.
-	 */
-	void CancelBattleAnimation();
-
-	/**
-	 * Whether or not a battle animation is currently playing.
-	 */
-	bool IsBattleAnimationWaiting();
-
-	/**
 	 * Gets lower layer map data.
 	 *
 	 * @return lower layer map data.

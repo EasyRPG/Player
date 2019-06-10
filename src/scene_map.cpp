@@ -164,7 +164,7 @@ void Scene_Map::TransitionIn(SceneType prev_scene) {
 
 void Scene_Map::Suspend(SceneType next_scene) {
 	if (next_scene == Scene::Battle) {
-		Game_Map::CancelBattleAnimation();
+		Main_Data::game_screen->CancelBattleAnimation();
 	}
 }
 
