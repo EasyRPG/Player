@@ -125,6 +125,9 @@ void Scene_Battle::CreateUi() {
 	options_window.reset(new Window_Command(commands, option_command_mov));
 	options_window->SetHeight(80);
 	options_window->SetY(SCREEN_TARGET_HEIGHT - 80);
+	if (!Game_Battle::IsEscapeAllowed()) {
+		options_window->DisableItem(2);
+	}
 
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetVisible(false);

@@ -123,9 +123,6 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 	CreateBattleTargetWindow();
 	CreateBattleCommandWindow();
 
-	// No escape. FIXME: Only enabled when party has initiative.
-	options_window->DisableItem(2);
-
 	enemy_status_window.reset(new Window_BattleStatus(0, 0, SCREEN_TARGET_WIDTH - option_command_mov, 80, true));
 	enemy_status_window->SetVisible(false);
 	sp_window.reset(new Window_ActorSp(SCREEN_TARGET_WIDTH - 60, 136, 60, 32));
@@ -928,9 +925,13 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			break;
 		case 2: // Escape
-			// FIXME : Only enabled when party has initiative.
-			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-			//SetState(State_Escape);
+			if (!Game_Battle::IsEscapeAllowed()) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			}
+			else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				SetState(State_Escape);
+			}
 			break;
 	}
 }

@@ -411,7 +411,10 @@ void Game_Battle::RefreshEvents(std::function<bool(const RPG::TroopPage&)> predi
 }
 
 bool Game_Battle::IsEscapeAllowed() {
-	return Game_Temp::battle_escape_mode != 0;
+	// Not back or pincer
+	return Game_Temp::battle_escape_mode != 0
+		&& GetBattleMode() != 2 /* Surprise Attack */
+		&& GetBattleMode() != 4; /* Pincer Attack */
 }
 
 bool Game_Battle::IsTerminating() {
