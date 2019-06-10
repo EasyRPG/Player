@@ -31,8 +31,7 @@ class Game_Screen {
 
 public:
 	Game_Screen();
-
-	void CreatePicturesFromSave();
+	void SetupFromSave();
 
 	Game_Picture* GetPicture(int id);
 
@@ -142,6 +141,7 @@ protected:
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
+	void CreatePicturesFromSave();
 };
 
 #endif

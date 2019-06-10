@@ -38,6 +38,17 @@ Game_Screen::Game_Screen() :
 	Reset();
 }
 
+void Game_Screen::SetupFromSave() {
+	CreatePicturesFromSave();
+
+	if (Main_Data::game_data.screen.battleanim_active) {
+		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
+				Main_Data::game_data.screen.battleanim_target,
+				Main_Data::game_data.screen.battleanim_global,
+				Main_Data::game_data.screen.battleanim_frame);
+	}
+}
+
 void Game_Screen::CreatePicturesFromSave() {
 	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
 

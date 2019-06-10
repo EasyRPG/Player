@@ -69,7 +69,7 @@ void Scene_Map::Start() {
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
-		Main_Data::game_screen->CreatePicturesFromSave();
+		Main_Data::game_screen->SetupFromSave();
 	}
 
 	Player::FrameReset();

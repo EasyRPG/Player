@@ -268,13 +268,6 @@ void Game_Map::SetupFromSave() {
 
 	SetEncounterSteps(location.encounter_steps);
 
-	if (Main_Data::game_data.screen.battleanim_active) {
-		Main_Data::game_screen->ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
-				Main_Data::game_data.screen.battleanim_target,
-				Main_Data::game_data.screen.battleanim_global,
-				Main_Data::game_data.screen.battleanim_frame);
-	}
-
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
 	// To solve this problem, we reuse the scrolling methods
