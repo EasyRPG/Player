@@ -840,10 +840,15 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 			result.files[ReaderUtil::Normalize(MakePath(parent, name))] = MakePath(parent, name);
 			continue;
 		}
+		std::string name_norm = ReaderUtil::Normalize(name);
 		if (is_directory) {
-			result.directories[ReaderUtil::Normalize(name)] = name;
+			if (result.directories.find(name_norm) != result.directories.end()) {
+				Output::Warning("This game provides the folder \"%s\" twice.", name.c_str());
+				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser."); 
+			}
+			result.directories[name_norm] = name;
 		} else {
-			result.files[ReaderUtil::Normalize(name)] = name;
+			result.files[name_norm] = name;
 		}
 	}
 
