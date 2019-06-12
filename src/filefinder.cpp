@@ -278,12 +278,18 @@ void FileFinder::SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree)
 	game_directory_tree = directory_tree;
 }
 
-std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p, bool recursive) {
+std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p, Mode mode) {
 	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
 	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
 
-	Directory mem = GetDirectoryMembers(tree->directory_path, ALL);
+	bool recursive = false;
+	if (mode == RECURSIVE) {
+		mode = ALL;
+		recursive = true;
+	}
+
+	Directory mem = GetDirectoryMembers(tree->directory_path, mode);
 	for (auto& i : mem.files) {
 		tree->files[i.first] = i.second;
 	}
@@ -844,7 +850,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		if (is_directory) {
 			if (result.directories.find(name_norm) != result.directories.end()) {
 				Output::Warning("This game provides the folder \"%s\" twice.", name.c_str());
-				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser."); 
+				Output::Warning("This can lead to file not found errors. Merge the directories manually in a file browser.");
 			}
 			result.directories[name_norm] = name;
 		} else {

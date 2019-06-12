@@ -29,23 +29,23 @@ Window_GameList::Window_GameList(int ix, int iy, int iwidth, int iheight) :
 }
 
 void Window_GameList::Refresh() {
-	tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
+	tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), FileFinder::DIRECTORIES);
 	game_directories.clear();
 
 	// Find valid game diectories
 	for (auto dir : tree.get()->directories) {
-		std::shared_ptr<FileFinder::DirectoryTree> subtree = FileFinder::CreateDirectoryTree(FileFinder::MakePath(Main_Data::GetProjectPath(), dir.second), false);
+		std::shared_ptr<FileFinder::DirectoryTree> subtree = FileFinder::CreateDirectoryTree(FileFinder::MakePath(Main_Data::GetProjectPath(), dir.second), FileFinder::FILES);
 		if (FileFinder::IsValidProject(*subtree)) {
 			game_directories.push_back(dir.second);
 		}
 	}
-	
+
 	// Sort game list in place
 	std::sort(game_directories.begin(), game_directories.end(),
 			  [](const std::string& s, const std::string& s2) {
 				  return strcmp(Utils::LowerCase(s).c_str(), Utils::LowerCase(s2).c_str()) <= 0;
 			  });
-	
+
 	if (HasValidGames()) {
 		item_max = game_directories.size();
 
@@ -67,7 +67,7 @@ void Window_GameList::Refresh() {
 void Window_GameList::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
-	
+
 	std::string text;
 
 	if (HasValidGames()) {
