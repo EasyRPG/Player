@@ -460,11 +460,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 		// Full heal
 		std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 		for (Game_Actor* actor : actors) {
-			actor->RemoveAllStates();
-			actor->ChangeHp(actor->GetMaxHp());
-			actor->SetSp(actor->GetMaxSp());
-			// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
-			actor->ResetEquipmentStates(true);
+			actor->FullHeal();
 		}
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 		Game_System::BgmFade(800);

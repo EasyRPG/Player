@@ -496,6 +496,8 @@ public:
 	const std::vector<int16_t>& GetStates() const override;
 	std::vector<int16_t>& GetStates() override;
 
+	void FullHeal();
+
 	int GetHp() const override;
 	void SetHp(int _hp) override;
 
