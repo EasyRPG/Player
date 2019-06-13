@@ -23,6 +23,7 @@
 #include "game_variables.h"
 #include "bitmap.h"
 #include "data.h"
+#include "output.h"
 #include "reader_util.h"
 #include "game_party.h"
 
@@ -80,12 +81,26 @@ void Window_VarList::DrawItemValue(int index){
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
 			}
 			break;
+		case eMap:
+			{
+				DrawItem(index, Font::ColorDefault);
+				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
+			}
+			break;
+		case eNone:
+			break;
 	}
 }
 
 void Window_VarList::UpdateList(int first_value){
 	static std::stringstream ss;
 	first_var = first_value;
+	int map_idx = 0;
+	if (mode == eMap) {
+		auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), first_value,
+				[](const RPG::MapInfo& l, int r) { return l.ID < r; });
+		map_idx = iter - Data::treemap.maps.begin();
+	}
 	for (int i = 0; i < 10; i++){
 		if (!DataIsValid(first_var+i)) {
 			continue;
@@ -104,6 +119,15 @@ void Window_VarList::UpdateList(int first_value){
 				break;
 			case eTroop:
 				ss << ReaderUtil::GetElement(Data::troops, first_value+i)->name;
+				break;
+			case eMap:
+				if (map_idx < (int)Data::treemap.maps.size()) {
+					auto& map = Data::treemap.maps[map_idx];
+					if (map.ID == first_value + i) {
+						ss << map.name;
+						++map_idx;
+					}
+				}
 				break;
 			default:
 				break;
@@ -144,6 +168,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= Data::items.size();
 		case eTroop:
 			return range_index > 0 && range_index <= Data::troops.size();
+		case eMap:
+			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
 		default:
 			break;
 	}

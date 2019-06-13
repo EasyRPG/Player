@@ -30,6 +30,7 @@ public:
 		eVariable,
 		eItem,
 		eTroop,
+		eMap,
 	};
 
 	/**

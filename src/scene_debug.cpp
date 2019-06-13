@@ -89,6 +89,10 @@ void Scene_Debug::Update() {
 					prev_troop_range_index = range_index;
 					prev_troop_range_page = range_page;
 					range_index = 6;
+				} else if (mode == eMap) {
+					prev_map_range_index = range_index;
+					prev_map_range_page = range_page;
+					range_index = 7;
 				} else {
 					range_index = 0;
 				}
@@ -197,6 +201,21 @@ void Scene_Debug::Update() {
 							var_window->Refresh();
 						}
 						break;
+					case 7:
+						if (Game_Temp::battle_running) {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+						} else {
+							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+							range_index = prev_map_range_index;
+							range_page = prev_map_range_page;
+							mode = eMap;
+							var_window->SetMode(Window_VarList::eMap);
+							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+							range_window->SetIndex(range_index);
+							UpdateRangeListWindow();
+							var_window->Refresh();
+						}
+						break;
 					default:
 						break;
 				}
@@ -251,6 +270,22 @@ void Scene_Debug::Update() {
 						}
 					}
 					break;
+				case eMap:
+					{
+						auto map_id = GetIndex();
+						auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), map_id,
+								[](const RPG::MapInfo& l, int r) { return l.ID < r; });
+						if (iter != Data::treemap.maps.end()
+								&& iter->ID == map_id
+								&& iter->type == RPG::TreeMap::MapType_map
+								) {
+							Scene::PopUntil(Scene::Map);
+							if (Scene::instance) {
+								Main_Data::game_player->ReserveTeleport(map_id, 0, 0, -1);
+								Game_Character *player = Main_Data::game_player.get();
+							}
+						}
+					}
 				default:
 					break;
 			}
@@ -331,6 +366,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, Data::terms.gold.c_str(), true);
 				addItem(i++, "Items", true);
 				addItem(i++, "Battle", false);
+				addItem(i++, "Map", false);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -341,6 +377,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 		case eVariable:
 		case eItem:
 		case eBattle:
+		case eMap:
 			{
 				const char* prefix = "???";
 				switch (mode) {
@@ -355,6 +392,9 @@ void Scene_Debug::UpdateRangeListWindow() {
 						break;
 					case eBattle:
 						prefix = "Tp[";
+						break;
+					case eMap:
+						prefix = "Mp[";
 						break;
 					default:
 						break;
@@ -424,6 +464,9 @@ int Scene_Debug::GetLastPage() {
 			break;
 		case eBattle:
 			num_elements = Data::troops.size();
+			break;
+		case eMap:
+			num_elements = Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0;
 			break;
 		default: break;
 	}

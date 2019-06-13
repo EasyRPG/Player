@@ -67,7 +67,8 @@ private:
 		eVariable,
 		eGold,
 		eItem,
-		eBattle
+		eBattle,
+		eMap
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
@@ -91,6 +92,10 @@ private:
 	int prev_troop_range_index = 0;
 	/** Last range page used for troop */
 	int prev_troop_range_page = 0;
+	/** Last range index used for map */
+	int prev_map_range_index = 0;
+	/** Last range page used for map */
+	int prev_map_range_page = 0;
 
 	/** Creates Range window. */
 	void CreateRangeWindow();
