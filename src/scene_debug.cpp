@@ -342,6 +342,12 @@ void Scene_Debug::Update() {
 								&& iter->ID == map_id
 								&& iter->type == RPG::TreeMap::MapType_map
 								) {
+
+							prev.main_range_index = 7;
+							prev.map.range_index = range_index;
+							prev.map.range_page = range_page;
+							prev.map.range_page_index = var_window->GetIndex();
+
 							var_window->SetActive(false);
 							pending_map_id = map_id;
 							pending_map_x = 0;
