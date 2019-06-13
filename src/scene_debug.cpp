@@ -40,15 +40,44 @@
 #include "game_party.h"
 #include "game_player.h"
 #include "data.h"
+#include "output.h"
+
+namespace {
+struct PrevIndex {
+	int main_range_index = 0;
+
+	struct IndexSet {
+		int range_index = 0;
+		int range_page = 0;
+		int range_page_index = 0;
+	};
+
+	IndexSet sw;
+	IndexSet var;
+	IndexSet item;
+	IndexSet troop;
+	IndexSet map;
+};
+
+static PrevIndex prev = {};
+
+} //namespace
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
+}
+
+void Scene_Debug::ResetPrevIndicies() {
+	prev = {};
 }
 
 void Scene_Debug::Start() {
 	CreateRangeWindow();
 	CreateVarListWindow();
 	CreateNumberInputWindow();
+
+	range_index = prev.main_range_index;
+	range_window->SetIndex(range_index);
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
@@ -71,27 +100,28 @@ void Scene_Debug::Update() {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		if (range_window->GetActive())
 			if (mode == eMain) {
+				prev.main_range_index = range_index;
 				Scene::Pop();
 			} else {
 				if (mode == eSwitch) {
-					prev_switch_range_index = range_index;
-					prev_switch_range_page = range_page;
+					prev.sw.range_index = range_index;
+					prev.sw.range_page = range_page;
 					range_index = 2;
 				} else if (mode == eVariable) {
-					prev_variable_range_index = range_index;
-					prev_variable_range_page = range_page;
+					prev.var.range_index = range_index;
+					prev.var.range_page = range_page;
 					range_index = 3;
 				} else if (mode == eItem) {
-					prev_item_range_index = range_index;
-					prev_item_range_page = range_page;
+					prev.item.range_index = range_index;
+					prev.item.range_page = range_page;
 					range_index = 5;
 				} else if (mode == eBattle) {
-					prev_troop_range_index = range_index;
-					prev_troop_range_page = range_page;
+					prev.troop.range_index = range_index;
+					prev.troop.range_page = range_page;
 					range_index = 6;
 				} else if (mode == eMap) {
-					prev_map_range_index = range_index;
-					prev_map_range_page = range_page;
+					prev.map.range_index = range_index;
+					prev.map.range_page = range_page;
 					range_index = 7;
 				} else {
 					range_index = 0;
@@ -103,6 +133,17 @@ void Scene_Debug::Update() {
 				UpdateRangeListWindow();
 			}
 		else if (var_window->GetActive()) {
+			if (mode == eSwitch) {
+				prev.sw.range_page_index = var_window->GetIndex();
+			} else if (mode == eVariable) {
+				prev.var.range_page_index = var_window->GetIndex();
+			} else if (mode == eItem) {
+				prev.item.range_page_index = var_window->GetIndex();
+			} else if (mode == eBattle) {
+				prev.troop.range_page_index = var_window->GetIndex();
+			} else if (mode == eMap) {
+				prev.map.range_page_index = var_window->GetIndex();
+			}
 			var_window->SetActive(false);
 			range_window->SetActive(true);
 			var_window->Refresh();
@@ -141,8 +182,8 @@ void Scene_Debug::Update() {
 						break;
 					case 2:
 						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev_switch_range_index;
-						range_page = prev_switch_range_page;
+						range_index = prev.sw.range_index;
+						range_page = prev.sw.range_page;
 						mode = eSwitch;
 						var_window->SetMode(Window_VarList::eSwitch);
 						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
@@ -152,8 +193,8 @@ void Scene_Debug::Update() {
 						break;
 					case 3:
 						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev_variable_range_index;
-						range_page = prev_variable_range_page;
+						range_index = prev.var.range_index;
+						range_page = prev.var.range_page;
 						mode = eVariable;
 						var_window->SetMode(Window_VarList::eVariable);
 						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
@@ -177,8 +218,8 @@ void Scene_Debug::Update() {
 						break;
 					case 5:
 						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev_item_range_index;
-						range_page = prev_item_range_page;
+						range_index = prev.item.range_index;
+						range_page = prev.item.range_page;
 						mode = eItem;
 						var_window->SetMode(Window_VarList::eItem);
 						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
@@ -191,8 +232,9 @@ void Scene_Debug::Update() {
 							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 						} else {
 							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-							range_index = prev_troop_range_index;
-							range_page = prev_troop_range_page;
+							range_index = prev.troop.range_index;
+							range_page = prev.troop.range_page;
+							var_window->SetIndex(prev.troop.range_page_index);
 							mode = eBattle;
 							var_window->SetMode(Window_VarList::eTroop);
 							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
@@ -206,8 +248,8 @@ void Scene_Debug::Update() {
 							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 						} else {
 							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-							range_index = prev_map_range_index;
-							range_page = prev_map_range_page;
+							range_index = prev.map.range_index;
+							range_page = prev.map.range_page;
 							mode = eMap;
 							var_window->SetMode(Window_VarList::eMap);
 							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
@@ -222,6 +264,17 @@ void Scene_Debug::Update() {
 			} else {
 				range_window->SetActive(false);
 				var_window->SetActive(true);
+				if (mode == eSwitch) {
+					var_window->SetIndex(prev.sw.range_page_index);
+				} else if (mode == eVariable) {
+					var_window->SetIndex(prev.var.range_page_index);
+				} else if (mode == eItem) {
+					var_window->SetIndex(prev.item.range_page_index);
+				} else if (mode == eBattle) {
+					var_window->SetIndex(prev.troop.range_page_index);
+				} else if (mode == eMap) {
+					var_window->SetIndex(prev.map.range_page_index);
+				}
 			}
 		} else if (var_window->GetActive()) {
 			switch (mode) {

@@ -60,6 +60,11 @@ public:
 	 */
 	int GetIndex();
 
+	/**
+	 * Resets the remembered indices
+	 */
+	static void ResetPrevIndicies();
+
 private:
 	enum Mode {
 		eMain,
@@ -72,30 +77,11 @@ private:
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
+
 	/** Current Page being displayed */
 	int range_page = 0;
 	/** Current range being displayed. */
 	int range_index = 0;
-	/** Last range_index used for switch */
-	int prev_switch_range_index = 0;
-	/** Last range page used for switch */
-	int prev_switch_range_page = 0;
-	/** Last range index used for variable */
-	int prev_variable_range_index = 0;
-	/** Last range page used for variable */
-	int prev_variable_range_page = 0;
-	/** Last range index used for item */
-	int prev_item_range_index = 0;
-	/** Last range page used for item */
-	int prev_item_range_page = 0;
-	/** Last range index used for troop */
-	int prev_troop_range_index = 0;
-	/** Last range page used for troop */
-	int prev_troop_range_page = 0;
-	/** Last range index used for map */
-	int prev_map_range_index = 0;
-	/** Last range page used for map */
-	int prev_map_range_page = 0;
 
 	/** Creates Range window. */
 	void CreateRangeWindow();
