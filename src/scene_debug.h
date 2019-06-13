@@ -73,7 +73,9 @@ private:
 		eGold,
 		eItem,
 		eBattle,
-		eMap
+		eMap,
+		eMapX,
+		eMapY
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
@@ -101,6 +103,10 @@ private:
 	std::unique_ptr<Window_VarList> var_window;
 	/** Number Editor. */
 	std::unique_ptr<Window_NumberInput> numberinput_window;
+
+	int pending_map_id = 0;
+	int pending_map_x = 0;
+	int pending_map_y = 0;
 };
 
 #endif

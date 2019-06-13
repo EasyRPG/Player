@@ -148,20 +148,30 @@ void Scene_Debug::Update() {
 			range_window->SetActive(true);
 			var_window->Refresh();
 		} else if (numberinput_window->GetActive()) {
-			numberinput_window->SetVisible(false);
-			numberinput_window->SetActive(false);
-			if (var_window->GetMode() != Window_VarList::eNone) {
-				var_window->SetActive(true);
-				var_window->Refresh();
-			} else {
-				range_index = 0;
-				if (mode == eGold) {
-					range_index = 4;
-				}
-				mode = eMain;
-				range_window->SetActive(true);
-				range_window->SetIndex(range_index);
+			if (mode == eMapY) {
+				numberinput_window->SetNumber(pending_map_x);
+				mode = eMapX;
 				UpdateRangeListWindow();
+			} else {
+				numberinput_window->SetVisible(false);
+				numberinput_window->SetActive(false);
+				if (mode == eMapX) {
+					mode = eMap;
+					UpdateRangeListWindow();
+				}
+				if (var_window->GetMode() != Window_VarList::eNone) {
+					var_window->SetActive(true);
+					var_window->Refresh();
+				} else {
+					range_index = 0;
+					if (mode == eGold) {
+						range_index = 4;
+					}
+					mode = eMain;
+					range_window->SetActive(true);
+					range_window->SetIndex(range_index);
+					UpdateRangeListWindow();
+				}
 			}
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
@@ -332,11 +342,18 @@ void Scene_Debug::Update() {
 								&& iter->ID == map_id
 								&& iter->type == RPG::TreeMap::MapType_map
 								) {
-							Scene::PopUntil(Scene::Map);
-							if (Scene::instance) {
-								Main_Data::game_player->ReserveTeleport(map_id, 0, 0, -1);
-								Game_Character *player = Main_Data::game_player.get();
-							}
+							var_window->SetActive(false);
+							pending_map_id = map_id;
+							pending_map_x = 0;
+							pending_map_y = 0;
+							numberinput_window->SetNumber(pending_map_x);
+							numberinput_window->SetShowOperator(false);
+							numberinput_window->SetVisible(true);
+							numberinput_window->SetActive(true);
+							numberinput_window->SetMaxDigits(4);
+							numberinput_window->Refresh();
+							mode = eMapX;
+							UpdateRangeListWindow();
 						}
 					}
 				default:
@@ -353,17 +370,31 @@ void Scene_Debug::Update() {
 			} else if (mode == eItem) {
 				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
 				Main_Data::game_party->AddItem(GetIndex(), delta);
-			}
-			numberinput_window->SetActive(false);
-			numberinput_window->SetVisible(false);
-			if (var_window->GetVisible()) {
-				var_window->SetActive(true);
-				var_window->Refresh();
-			} else {
-				mode = eMain;
-				range_window->SetIndex(4);
-				range_window->SetActive(true);
+			} else if (mode == eMapX) {
+				pending_map_x = numberinput_window->GetNumber();
+				numberinput_window->SetNumber(pending_map_y);
+				mode = eMapY;
 				UpdateRangeListWindow();
+			} else if (mode == eMapY) {
+				int pending_map_y = numberinput_window->GetNumber();
+				Scene::PopUntil(Scene::Map);
+				if (Scene::instance) {
+					Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1);
+					Game_Character *player = Main_Data::game_player.get();
+				}
+			}
+			if (mode != eMapY) {
+				numberinput_window->SetActive(false);
+				numberinput_window->SetVisible(false);
+				if (var_window->GetVisible()) {
+					var_window->SetActive(true);
+					var_window->Refresh();
+				} else {
+					mode = eMain;
+					range_window->SetIndex(4);
+					range_window->SetActive(true);
+					UpdateRangeListWindow();
+				}
 			}
 		}
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
@@ -473,6 +504,19 @@ void Scene_Debug::UpdateRangeListWindow() {
 				range_window->SetItemText(i, "");
 			}
 			break;
+		case eMapX:
+		case eMapY:
+			range_window->SetItemText(0, std::string("Map: ") + std::to_string(pending_map_id));
+			if (mode == eMapX) {
+				range_window->SetItemText(1, "X: ");
+				range_window->SetItemText(2, "");
+			} else {
+				range_window->SetItemText(1, "X: " + std::to_string(pending_map_x));
+				range_window->SetItemText(2, "Y: ");
+			}
+			for (int i = 3; i < 10; i++){
+				range_window->SetItemText(i, "");
+			}
 		default:
 			break;
 	}
