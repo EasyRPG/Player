@@ -319,6 +319,11 @@ void Scene_Debug::Update() {
 					if (GetIndex() <= Data::troops.size()) {
 						Scene::PopUntil(Scene::Map);
 						if (Scene::instance) {
+							prev.main_range_index = 6;
+							prev.troop.range_index = range_index;
+							prev.troop.range_page = range_page;
+							prev.troop.range_page_index = var_window->GetIndex();
+
 							Game_Character *player = Main_Data::game_player.get();
 							Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
 							Game_Map::SetupBattle();
