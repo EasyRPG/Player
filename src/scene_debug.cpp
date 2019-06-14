@@ -431,7 +431,11 @@ void Scene_Debug::Update() {
 				Scene::PopUntil(Scene::Map);
 				if (Scene::instance) {
 					Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1);
-					Game_Character *player = Main_Data::game_player.get();
+
+					// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
+					FileRequestAsync* request = Game_Map::RequestMap(pending_map_id);
+					request->SetImportantFile(true);
+					request->Start();
 				}
 			}
 			if (mode != eMapY) {
