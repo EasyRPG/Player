@@ -123,6 +123,8 @@ void Scene_Debug::Update() {
 					prev.map.range_index = range_index;
 					prev.map.range_page = range_page;
 					range_index = 7;
+				} else if (mode == eFullHeal) {
+					range_index = 8;
 				} else {
 					range_index = 0;
 				}
@@ -143,6 +145,13 @@ void Scene_Debug::Update() {
 				prev.troop.range_page_index = var_window->GetIndex();
 			} else if (mode == eMap) {
 				prev.map.range_page_index = var_window->GetIndex();
+			} else if (mode == eFullHeal) {
+				range_index = 8;
+				range_page = 0;
+				mode = eMain;
+				range_window->SetIndex(range_index);
+				var_window->SetMode(Window_VarList::eNone);
+				UpdateRangeListWindow();
 			}
 			var_window->SetActive(false);
 			range_window->SetActive(true);
@@ -268,6 +277,19 @@ void Scene_Debug::Update() {
 							var_window->Refresh();
 						}
 						break;
+					case 8:
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+						mode = eFullHeal;
+						var_window->SetMode(Window_VarList::eHeal);
+						var_window->UpdateList(1);
+						UpdateRangeListWindow();
+						var_window->Refresh();
+						var_window->SetActive(true);
+						range_window->SetActive(false);
+						range_index = 0;
+						range_window->SetIndex(range_index);
+						range_page = 0;
+						break;
 					default:
 						break;
 				}
@@ -367,6 +389,24 @@ void Scene_Debug::Update() {
 							UpdateRangeListWindow();
 						}
 					}
+					break;
+				case eFullHeal:
+					{
+						int id = GetIndex();
+						auto actors = Main_Data::game_party->GetActors();
+						if (id <= 1) {
+							for (auto& actor: actors) {
+								actor->FullHeal();
+							}
+						} else {
+							int idx = id - 2;
+							if (idx < (int)actors.size()) {
+								actors[idx]->FullHeal();
+							}
+						}
+						var_window->UpdateList(1);
+					}
+					break;
 				default:
 					break;
 			}
@@ -462,6 +502,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Items", true);
 				addItem(i++, "Battle", false);
 				addItem(i++, "Map", false);
+				addItem(i++, "Full Heal", true);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -528,6 +569,13 @@ void Scene_Debug::UpdateRangeListWindow() {
 			for (int i = 3; i < 10; i++){
 				range_window->SetItemText(i, "");
 			}
+			break;
+		case eFullHeal:
+			range_window->SetItemText(0, "Full Heal");
+			for (int i = 1; i < 10; i++){
+				range_window->SetItemText(i, "");
+			}
+			break;
 		default:
 			break;
 	}

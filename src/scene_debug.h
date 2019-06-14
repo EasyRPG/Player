@@ -75,7 +75,8 @@ private:
 		eBattle,
 		eMap,
 		eMapX,
-		eMapY
+		eMapY,
+		eFullHeal
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;

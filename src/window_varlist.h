@@ -31,6 +31,7 @@ public:
 		eItem,
 		eTroop,
 		eMap,
+		eHeal,
 	};
 
 	/**

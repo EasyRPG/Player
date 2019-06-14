@@ -76,12 +76,8 @@ void Window_VarList::DrawItemValue(int index){
 			}
 			break;
 		case eTroop:
-			{
-				DrawItem(index, Font::ColorDefault);
-				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
-			}
-			break;
 		case eMap:
+		case eHeal:
 			{
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
@@ -129,6 +125,13 @@ void Window_VarList::UpdateList(int first_value){
 					}
 				}
 				break;
+			case eHeal:
+				if (first_value + i == 1) {
+					ss << "Party";
+				} else {
+					auto* actor = Main_Data::game_party->GetActors()[first_value + i-2];
+					ss << actor->GetName() << " " << actor->GetHp() << " / " << actor->GetMaxHp();
+				}
 			default:
 				break;
 		}
@@ -170,6 +173,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= Data::troops.size();
 		case eMap:
 			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
+		case eHeal:
+			return range_index > 0 && range_index <= Main_Data::game_party->GetActors().size() + 1;
 		default:
 			break;
 	}
