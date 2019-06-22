@@ -1676,8 +1676,12 @@ void Game_Map::Parallax::ScrollRight(int distance) {
 	}
 
 	if (params.scroll_horz) {
-		const auto w = parallax_width * TILE_SIZE * 2;
-		panorama.pan_x = (panorama.pan_x + distance + w) % w;
+		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+		// Real fix TBD
+		if (parallax_width != 0) {
+			const auto w = parallax_width * TILE_SIZE * 2;
+			panorama.pan_x = (panorama.pan_x + distance + w) % w;
+		}
 		return;
 	}
 
@@ -1695,8 +1699,12 @@ void Game_Map::Parallax::ScrollDown(int distance) {
 	}
 
 	if (params.scroll_vert) {
-		const auto h = parallax_height * TILE_SIZE * 2;
-		panorama.pan_y = (panorama.pan_y + distance + h) % h;
+		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+		// Real fix TBD
+		if (parallax_height != 0) {
+			const auto h = parallax_height * TILE_SIZE * 2;
+			panorama.pan_y = (panorama.pan_y + distance + h) % h;
+		}
 		return;
 	}
 
