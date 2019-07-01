@@ -1728,15 +1728,24 @@ void Game_Map::Parallax::Update() {
 	if (params.scroll_horz
 			&& params.scroll_horz_auto
 			&& params.scroll_horz_speed != 0) {
-		const auto w = parallax_width * TILE_SIZE * 2;
-		panorama.pan_x = (panorama.pan_x + scroll_amt(params.scroll_horz_speed) + w) % w;
+
+		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+		// Real fix TBD
+		if (parallax_width != 0) {
+			const auto w = parallax_width * TILE_SIZE * 2;
+			panorama.pan_x = (panorama.pan_x + scroll_amt(params.scroll_horz_speed) + w) % w;
+		}
 	}
 
 	if (params.scroll_vert
 			&& params.scroll_vert_auto
 			&& params.scroll_vert_speed != 0) {
-		const auto h = parallax_height * TILE_SIZE * 2;
-		panorama.pan_y = (panorama.pan_y + scroll_amt(params.scroll_vert_speed) + h) % h;
+		// FIXME: Fixes a crash with ChangeBG commands in events, but not correct.
+		// Real fix TBD
+		if (parallax_height != 0) {
+			const auto h = parallax_height * TILE_SIZE * 2;
+			panorama.pan_y = (panorama.pan_y + scroll_amt(params.scroll_vert_speed) + h) % h;
+		}
 	}
 }
 
