@@ -269,7 +269,7 @@ namespace FileFinder {
 	 */
 	const std::shared_ptr<DirectoryTree> GetDirectoryTree();
 	const std::shared_ptr<DirectoryTree> CreateSaveDirectoryTree();
-	std::shared_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p, bool recursive = true);
+	std::shared_ptr<DirectoryTree> CreateDirectoryTree(std::string const& p, Mode mode = RECURSIVE);
 
 	bool IsValidProject(DirectoryTree const& dir);
 	bool IsRPG2kProject(DirectoryTree const& dir);

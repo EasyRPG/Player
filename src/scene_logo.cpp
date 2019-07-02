@@ -62,7 +62,7 @@ void Scene_Logo::Update() {
 		}
 #endif
 
-		std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), false);
+		std::shared_ptr<FileFinder::DirectoryTree> tree = FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath(), FileFinder::FILES);
 
 		if (!tree) {
 			Output::Error("%s is not a valid path", Main_Data::GetProjectPath().c_str());
