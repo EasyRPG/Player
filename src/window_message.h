@@ -188,6 +188,9 @@ protected:
 	 */
 	static const int speed_table[21];
 
+	/** Frames to wait when a message wait command was used */
+	int wait_count = 0;
+
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;

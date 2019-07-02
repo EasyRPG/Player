@@ -357,22 +357,16 @@ void Window_Message::Update() {
 void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
 
-	// Contains at what frame the sleep is over
-	static int sleep_until = -1;
 	bool instant_speed = false;
 
 	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
-		sleep_until = -1;
+		wait_count = 0;
 		instant_speed = true;
 	}
 
-	if (sleep_until > -1) {
-		if (Player::GetFrames() >= sleep_until) {
-			// Sleep over
-			sleep_until = -1;
-		} else {
-			return;
-		}
+	if (wait_count > 0) {
+		--wait_count;
+		return;
 	}
 
 	int loop_count = 0;
@@ -473,13 +467,13 @@ void Window_Message::UpdateMessage() {
 			case '.':
 				// 1/4 second sleep
 				if (instant_speed) break;
-				sleep_until = Player::GetFrames() + 60 / 4;
+				wait_count = 60 / 4;
 				++text_index;
 				return;
 			case '|':
 				// Second sleep
 				if (instant_speed) break;
-				sleep_until = Player::GetFrames() + 60;
+				wait_count = 60;
 				++text_index;
 				return;
 			case '\n':
