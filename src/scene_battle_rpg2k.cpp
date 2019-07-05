@@ -304,18 +304,13 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (!battle_action_pending && CheckResultConditions()) {
 			return;
 		}
+		RemoveActionsForNonExistantBattlers();
 		if (!battle_actions.empty()) {
 			auto* battler = battle_actions.front();
 			if (!battle_action_pending) {
 				// If we will start a new battle action, first check for state changes
 				// such as death, paralyze, confuse, etc..
 				PrepareBattleAction(battler);
-
-				// If we can no longer perform the action (no more items, ran out of SP, etc..)
-				if (!battler->GetBattleAlgorithm()->ActionIsPossible()) {
-					battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::NoMove>(battler));
-					battler->SetCharged(false);
-				}
 			}
 			auto* alg = battler->GetBattleAlgorithm().get();
 
@@ -426,8 +421,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	switch (battle_action_state) {
 		case BattleActionState_Begin:
 			return ProcessActionBegin(action);
-		case BattleActionState_Conditions:
-			return ProcessActionConditions(action);
 		case BattleActionState_Usage1:
 			return ProcessActionUsage1(action);
 		case BattleActionState_Usage2:
@@ -458,31 +451,21 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 }
 
 bool Scene_Battle_Rpg2k::ProcessActionBegin(Game_BattleAlgorithm::AlgorithmBase* action) {
-	auto* src = action->GetSource();
-
-	battle_message_window->Clear();
-
-	if (src->Exists()) {
-		auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
-		if (source_sprite) {
-			source_sprite->Flash(Color(255, 255, 255, 100), 15);
-		}
-	}
-
-	src->NextBattleTurn();
-	SetWait(4,4);
-	return ProcessNextAction(BattleActionState_Conditions, action);
-}
-
-bool Scene_Battle_Rpg2k::ProcessActionConditions(Game_BattleAlgorithm::AlgorithmBase* action) {
 	enum SubState {
-		eConditions = 0,
-		ePostCondition,
+		eBegin = 0,
+		eShowMessage,
+		ePost,
 	};
 
 	auto* src = action->GetSource();
 
-	if (battle_action_substate == eConditions) {
+	if (battle_action_substate == eBegin) {
+		assert(src->Exists());
+		battle_message_window->Clear();
+
+		bool show_message = false;
+		src->NextBattleTurn();
+
 		std::vector<int16_t> states_to_heal = src->BattleStateHeal();
 		src->ApplyConditions();
 
@@ -510,15 +493,39 @@ bool Scene_Battle_Rpg2k::ProcessActionConditions(Game_BattleAlgorithm::Algorithm
 			// If state was healed, always prints.
 			// If state is inflicted, only prints if msg not empty.
 			if (pri_was_healed || !msg.empty()) {
-				battle_message_window->PushWithSubject(msg, action->GetSource()->GetName());
-				SetWait(20, 60);
-				return ProcessNextSubState(ePostCondition, action);
+				show_message = true;
+				pending_message = msg;
 			}
 		}
+
+		if (action->GetType() != Game_BattleAlgorithm::Type::Null || show_message) {
+			auto* source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+			if (source_sprite) {
+				source_sprite->Flash(Color(255, 255, 255, 100), 15);
+			}
+		}
+
+		if (show_message) {
+			SetWait(4,4);
+			return ProcessNextSubState(eShowMessage, action);
+		}
+		battle_action_substate = ePost;
 	}
 
-	if (battle_action_substate == ePostCondition) {
+	if (battle_action_substate == eShowMessage) {
+		battle_message_window->PushWithSubject(std::move(pending_message), action->GetSource()->GetName());
+		SetWait(20, 60);
+		pending_message.clear();
+		return ProcessNextSubState(ePost, action);
+	}
+
+	if (battle_action_substate == ePost) {
 		battle_message_window->Clear();
+
+		if (action->GetType() == Game_BattleAlgorithm::Type::Null) {
+			return true;
+		}
+
 		SetWait(4,4);
 	}
 
@@ -602,9 +609,7 @@ bool Scene_Battle_Rpg2k::ProcessActionAnimation(Game_BattleAlgorithm::AlgorithmB
 
 
 	// Wait for last start message and animations.
-	if (action->GetSource()->Exists()) {
-		SetWaitForUsage(action->GetType());
-	}
+	SetWaitForUsage(action->GetType());
 
 	return ProcessNextAction(BattleActionState_Execute, action);
 }
@@ -1330,6 +1335,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
+		} else {
+			// Enemies with no action list get Null callback
+			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Null>(battler));
+			ActionSelectedCallback(battler);
 		}
 	}
 }
