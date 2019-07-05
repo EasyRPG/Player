@@ -392,6 +392,7 @@ void Scene_Debug::Update() {
 					break;
 				case eFullHeal:
 					{
+						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
 						int id = GetIndex();
 						auto actors = Main_Data::game_party->GetActors();
 						if (id <= 1) {
