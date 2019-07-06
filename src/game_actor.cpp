@@ -333,6 +333,14 @@ std::vector<int16_t>& Game_Actor::GetStates() {
 	return GetData().status;
 }
 
+void Game_Actor::FullHeal() {
+	RemoveAllStates();
+	ChangeHp(GetMaxHp());
+	SetSp(GetMaxSp());
+	// Emulates RPG_RT behavior of resetting even battle equipment states on full heal.
+	ResetEquipmentStates(true);
+}
+
 int Game_Actor::GetHp() const {
 	return GetData().current_hp;
 }

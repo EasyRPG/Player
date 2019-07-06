@@ -72,6 +72,11 @@ void Game_Player::ReserveTeleport(const RPG::SaveTarget& target) {
 		Game_Switches.Set(target.switch_id, true);
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	}
+
+	// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
+	FileRequestAsync* request = Game_Map::RequestMap(target.map_id);
+	request->SetImportantFile(true);
+	request->Start();
 }
 
 void Game_Player::PerformTeleport() {
