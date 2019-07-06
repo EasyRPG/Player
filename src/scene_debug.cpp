@@ -67,7 +67,7 @@ Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
 }
 
-void Scene_Debug::ResetPrevIndicies() {
+void Scene_Debug::ResetPrevIndices() {
 	prev = {};
 }
 

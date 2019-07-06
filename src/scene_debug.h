@@ -63,7 +63,7 @@ public:
 	/**
 	 * Resets the remembered indices
 	 */
-	static void ResetPrevIndicies();
+	static void ResetPrevIndices();
 
 private:
 	enum Mode {
