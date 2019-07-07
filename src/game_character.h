@@ -768,7 +768,7 @@ public:
 	 *
 	 * @param visible true: visible, false: invisible
 	 */
-	virtual void SetVisible(bool visible);
+	void SetVisible(bool visible);
 
 	/**
 	 * Tests if animation type is any fixed state.
@@ -1174,6 +1174,10 @@ inline bool Game_Character::IsActive() const {
 
 inline bool Game_Character::HasTileSprite() const {
 	return GetSpriteName().empty();
+}
+
+inline void Game_Character::SetVisible(bool visible) {
+	this->visible = visible;
 }
 
 #endif
