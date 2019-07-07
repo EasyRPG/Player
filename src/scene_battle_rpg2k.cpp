@@ -1341,8 +1341,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
-		} else {
-			// Enemies with no action list get Null callback
+		}
+
+		if (battler->GetBattleAlgorithm() == nullptr) {
+			// Enemies with no valid actions get Null action so that their states still process.
 			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Null>(battler));
 			ActionSelectedCallback(battler);
 		}

@@ -27,6 +27,8 @@
 #include "game_party_base.h"
 #include "game_switches.h"
 #include "game_system.h"
+#include "game_temp.h"
+#include "game_targets.h"
 #include "util_macro.h"
 #include "main_data.h"
 #include "utils.h"
@@ -170,6 +172,22 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
+	}
+
+	if (skill->type == RPG::Skill::Type_escape) {
+		return !Game_Temp::battle_running && Game_System::GetAllowEscape() && Game_Targets::HasEscapeTarget();
+	}
+
+	if (skill->type == RPG::Skill::Type_teleport) {
+		return !Game_Temp::battle_running && Game_System::GetAllowTeleport() && Game_Targets::HasTeleportTarget();
+	}
+
+	if (skill->type == RPG::Skill::Type_switch) {
+		if (Game_Temp::battle_running) {
+			return skill->occasion_battle;
+		} else {
+			return skill->occasion_field;
+		}
 	}
 
 	// > 10 makes any skill usable

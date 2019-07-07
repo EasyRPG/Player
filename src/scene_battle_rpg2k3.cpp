@@ -69,6 +69,7 @@ void Scene_Battle_Rpg2k3::Update() {
 							if (action) {
 								CreateEnemyAction(enemy, action);
 							}
+							//FIXME: Do we need to handle invalid actions or empty action list here?
 						}
 					}
 				}

@@ -563,19 +563,6 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		return;
 	}
 
-
-	switch (skill->type) {
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-			// FIXME: Can enemy use this?
-			return;
-		case RPG::Skill::Type_switch:
-		case RPG::Skill::Type_normal:
-		case RPG::Skill::Type_subskill:
-		default:
-			break;
-		}
-
 	switch (skill->scope) {
 		case RPG::Skill::Scope_enemy:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), *skill));
