@@ -417,7 +417,7 @@ public:
 	 *
 	 * @return whether the character is moving.
 	 */
-	virtual bool IsMoving() const;
+	bool IsMoving() const;
 
 	/**
 	 * @return whether the character is jumping.
