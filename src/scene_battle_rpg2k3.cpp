@@ -1234,3 +1234,19 @@ void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {
 	message_timer = 60;
 	help_window->SetText(text);
 }
+
+void Scene_Battle_Rpg2k3::InitBattleTest() {
+	int terrain_id = Game_Battle::battle_test.terrain_id;
+	// Allow fallback to battle background battle when the additional 2k3
+	// command line args are not passed (terrain_id = 0)
+	if (Game_Battle::battle_test.formation == RPG::System::BattleFormation_terrain &&
+			terrain_id > 0) {
+		Game_Battle::SetTerrainId(terrain_id);
+	} else {
+		Game_Temp::battle_background = Data::system.battletest_background;
+		// FIXME: figure out how the terrain is configured
+		Game_Battle::SetTerrainId(1);
+	}
+
+	Scene_Battle::InitBattleTest();
+}

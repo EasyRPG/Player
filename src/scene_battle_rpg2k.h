@@ -104,6 +104,7 @@ public:
 	void Update() override;
 
 protected:
+	void InitBattleTest() override;
 	void SetState(State new_state) override;
 
 	void NextTurn();

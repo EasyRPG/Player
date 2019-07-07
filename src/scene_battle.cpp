@@ -202,23 +202,6 @@ bool Scene_Battle::IsWindowMoving() {
 void Scene_Battle::InitBattleTest()
 {
 	Game_Temp::battle_troop_id = Game_Battle::battle_test.troop_id;
-	if (Player::IsRPG2k()) {
-		Game_Temp::battle_background = Data::system.battletest_background;
-		Game_Battle::SetTerrainId(Data::system.battletest_terrain);
-	} else {
-		int terrain_id = Game_Battle::battle_test.terrain_id;
-		// Allow fallback to battle background battle when the additional 2k3
-		// command line args are not passed (terrain_id = 0)
-		if (Game_Battle::battle_test.formation == RPG::System::BattleFormation_terrain &&
-			terrain_id > 0) {
-			Game_Battle::SetTerrainId(terrain_id);
-		} else {
-			Game_Temp::battle_background = Data::system.battletest_background;
-			// FIXME: figure out how the terrain is configured
-			Game_Battle::SetTerrainId(1);
-		}
-	}
-
 	Main_Data::game_party->SetupBattleTestMembers();
 
 	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
