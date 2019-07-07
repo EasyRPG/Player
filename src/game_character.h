@@ -46,12 +46,7 @@ public:
 	/**
 	 * Destructor.
 	 */
-#ifndef EMSCRIPTEN
-	// No idea why but emscripten will complain about a missing destructor when
-	// using virtual here
-	virtual
-#endif
-	~Game_Character();
+	virtual ~Game_Character();
 
 	/** @return the type of character this is */
 	Type GetType() const;
