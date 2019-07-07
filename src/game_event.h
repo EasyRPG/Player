@@ -46,7 +46,6 @@ public:
 	 * Implementation of abstract methods
 	 */
 	/** @{ */
-	bool GetThrough() const override;
 	bool IsMoveRouteActive() const override;
 	void OnMoveFailed(int x, int y) override;
 	/** @} */

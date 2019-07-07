@@ -361,7 +361,7 @@ public:
 	 *
 	 * @return through flag
 	 */
-	virtual bool GetThrough() const;
+	bool GetThrough() const;
 
 	/**
 	 * Sets the through flag (walk through everything)

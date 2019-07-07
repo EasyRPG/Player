@@ -71,11 +71,6 @@ void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
 	data()->original_move_route_index = new_index;
 }
 
-bool Game_Event::GetThrough() const {
-	//FIXME: Remove hacky page check from here!
-	return page == nullptr || data()->through;
-}
-
 void Game_Event::ClearWaitingForegroundExecution() {
 	data()->waiting_execution = false;
 }
