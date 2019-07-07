@@ -159,7 +159,7 @@ public:
 	 *
 	 * @return whether event overlap is forbidden.
 	 */
-	virtual bool IsOverlapForbidden() const;
+	bool IsOverlapForbidden() const;
 
 	/**
 	 * Gets character movement speed.
