@@ -39,6 +39,7 @@
 #include "scene_battle_rpg2k3.h"
 #include "scene_gameover.h"
 #include "scene_debug.h"
+#include "game_interpreter.h"
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
@@ -179,7 +180,15 @@ void Scene_Battle::Update() {
 		ProcessInput();
 	}
 
+	auto& interp = Game_Battle::GetInterpreter();
+
+	bool events_running = interp.IsRunning();
 	Game_Battle::Update();
+	if (events_running && !interp.IsRunning()) {
+		// If an event that changed status finishes without displaying a message window,
+		// we need this so it can update automatically the status_window
+		status_window->Refresh();
+	}
 
 	if (Game_Battle::IsTerminating()) {
 		Scene::Pop();
@@ -618,8 +627,3 @@ void Scene_Battle::CallDebug() {
 	}
 }
 
-void Scene_Battle::onCommandEnd() {
-	// If an event that changed status finishes without displaying a message window,
-	// we need this so it can update automatically the status_window
-	status_window->Refresh();
-}

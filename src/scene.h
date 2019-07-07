@@ -195,9 +195,6 @@ public:
 
 	Graphics::State& GetGraphicsState();
 
-	/** Called by the interpreter when an event finishes processing */
-	virtual void onCommandEnd() {}
-
 	/** @return true if the Scene has been initialized */
 	bool IsInitialized() const;
 

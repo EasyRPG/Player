@@ -566,8 +566,6 @@ bool Game_Interpreter::CommandEnd() { // code 10
 			evnt->OnFinishForegroundEvent();
 	}
 
-	Scene::instance->onCommandEnd();
-
 	return true;
 }
 
