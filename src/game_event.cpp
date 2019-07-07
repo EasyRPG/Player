@@ -72,11 +72,8 @@ void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
 }
 
 bool Game_Event::GetThrough() const {
+	//FIXME: Remove hacky page check from here!
 	return page == nullptr || data()->through;
-}
-
-void Game_Event::SetThrough(bool through) {
-	data()->through = through;
 }
 
 void Game_Event::ClearWaitingForegroundExecution() {

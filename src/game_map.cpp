@@ -679,7 +679,8 @@ bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
 	for (auto& ev: GetEvents()) {
 		if (ev.IsInPosition(x, y)
 			&& ev.GetLayer() == RPG::EventPage::Layers_same
-			&& ev.IsActive()) {
+			&& ev.IsActive()
+			&& ev.GetActivePage() != nullptr) {
 			return false;
 		}
 	}

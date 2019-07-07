@@ -368,7 +368,7 @@ public:
 	 *
 	 * @param through through flag
 	 */
-	virtual void SetThrough(bool through);
+	void SetThrough(bool through);
 
 	/**
 	 * @return stop_count
