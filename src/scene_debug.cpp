@@ -56,6 +56,7 @@ struct Scene_Debug::PrevIndex {
 	IndexSet item;
 	IndexSet troop;
 	IndexSet map;
+	IndexSet event;
 };
 
 Scene_Debug::PrevIndex Scene_Debug::prev = {};
@@ -148,6 +149,12 @@ void Scene_Debug::Update() {
 			case eFullHeal:
 				ReturnToMain(8);
 				break;
+			case eCallEvent:
+				CancelListOption(prev.event, 9);
+				break;
+			case eCallEventSelect:
+				CancelListOptionSelect(eCallEvent, prev.event);
+				break;
 			}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (mode) {
@@ -206,6 +213,12 @@ void Scene_Debug::Update() {
 			case eFullHeal:
 				DoFullHeal();
 				break;
+			case eCallEvent:
+				EnterFromListOption(eCallEventSelect, prev.event);
+				break;
+			case eCallEventSelect:
+				DoCallEvent();
+				break;
 		}
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
@@ -262,6 +275,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem(i++, "Battle", false);
 				addItem(i++, "Map", false);
 				addItem(i++, "Full Heal", true);
+				addItem(i++, "Call Event", true);
 				while (i < 10) {
 					addItem(i++, "", true);
 				}
@@ -279,6 +293,8 @@ void Scene_Debug::UpdateRangeListWindow() {
 		case eBattleSelect:
 		case eMap:
 		case eMapSelect:
+		case eCallEvent:
+		case eCallEventSelect:
 			{
 				const char* prefix = "???";
 				switch (mode) {
@@ -302,6 +318,10 @@ void Scene_Debug::UpdateRangeListWindow() {
 					case eMap:
 					case eMapSelect:
 						prefix = "Mp[";
+						break;
+					case eCallEvent:
+					case eCallEventSelect:
+						prefix = "Ce[";
 						break;
 					default:
 						break;
@@ -473,6 +493,9 @@ void Scene_Debug::EnterFromMain() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			EnterFullHeal();
 			break;
+		case 9:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetupListOption(eCallEvent, Window_VarList::eCommonEvent, prev.event);
 		default:
 			break;
 	}
@@ -699,3 +722,21 @@ void Scene_Debug::DoFullHeal() {
 	var_window->Refresh();
 }
 
+void Scene_Debug::DoCallEvent() {
+	if (GetIndex() > Data::commonevents.size()) {
+		return;
+	}
+
+	auto& ce = Game_Map::GetCommonEvents()[GetIndex() - 1];
+
+	if (Game_Temp::battle_running) {
+		Game_Battle::GetInterpreter().Push(&ce);
+		Scene::PopUntil(Scene::Battle);
+		Output::Debug("Debug Scene Forced execution of common event %d on the battle foreground interpreter.", ce.GetIndex());
+	} else {
+		Game_Map::GetInterpreter().Push(&ce);
+		Scene::PopUntil(Scene::Map);
+		Output::Debug("Debug Scene Forced execution of common event %d on the map foreground interpreter.", ce.GetIndex());
+	}
+
+}
