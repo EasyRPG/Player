@@ -42,15 +42,14 @@
 #include "data.h"
 #include "output.h"
 
-namespace {
-struct PrevIndex {
-	int main_range_index = 0;
+struct Scene_Debug::IndexSet {
+	int range_index = 0;
+	int range_page = 0;
+	int range_page_index = 0;
+};
 
-	struct IndexSet {
-		int range_index = 0;
-		int range_page = 0;
-		int range_page_index = 0;
-	};
+struct Scene_Debug::PrevIndex {
+	int main_range_index = 0;
 
 	IndexSet sw;
 	IndexSet var;
@@ -59,9 +58,7 @@ struct PrevIndex {
 	IndexSet map;
 };
 
-static PrevIndex prev = {};
-
-} //namespace
+Scene_Debug::PrevIndex Scene_Debug::prev = {};
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -98,361 +95,117 @@ void Scene_Debug::Update() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-		if (range_window->GetActive())
-			if (mode == eMain) {
+		switch (mode) {
+			case eMain:
 				prev.main_range_index = range_index;
 				Scene::Pop();
-			} else {
-				if (mode == eSwitch) {
-					prev.sw.range_index = range_index;
-					prev.sw.range_page = range_page;
-					range_index = 2;
-				} else if (mode == eVariable) {
-					prev.var.range_index = range_index;
-					prev.var.range_page = range_page;
-					range_index = 3;
-				} else if (mode == eItem) {
-					prev.item.range_index = range_index;
-					prev.item.range_page = range_page;
-					range_index = 5;
-				} else if (mode == eBattle) {
-					prev.troop.range_index = range_index;
-					prev.troop.range_page = range_page;
-					range_index = 6;
-				} else if (mode == eMap) {
-					prev.map.range_index = range_index;
-					prev.map.range_page = range_page;
-					range_index = 7;
-				} else if (mode == eFullHeal) {
-					range_index = 8;
-				} else {
-					range_index = 0;
-				}
-				range_page = 0;
-				mode = eMain;
-				range_window->SetIndex(range_index);
-				var_window->SetMode(Window_VarList::eNone);
-				UpdateRangeListWindow();
+				break;
+			case eSwitch:
+				CancelListOption(prev.sw, 2);
+				break;
+			case eSwitchSelect:
+				CancelListOptionSelect(eSwitch, prev.sw);
+				break;
+			case eVariable:
+				CancelListOption(prev.var, 3);
+				break;
+			case eVariableSelect:
+				CancelListOptionSelect(eVariable, prev.var);
+				break;
+			case eVariableValue:
+				CancelListOptionValue(eVariableSelect);
+				break;
+			case eGold:
+				ReturnToMain(4);
+				break;
+			case eItem:
+				CancelListOption(prev.item, 5);
+				break;
+			case eItemSelect:
+				CancelListOptionSelect(eItem, prev.item);
+				break;
+			case eItemValue:
+				CancelListOptionValue(eItemSelect);
+				break;
+			case eBattle:
+				CancelListOption(prev.troop, 6);
+				break;
+			case eBattleSelect:
+				CancelListOptionSelect(eBattle, prev.troop);
+				break;
+			case eMap:
+				CancelListOption(prev.map, 7);
+				break;
+			case eMapSelect:
+				CancelListOptionSelect(eMap, prev.map);
+				break;
+			case eMapX:
+				CancelListOptionValue(eMapSelect);
+				break;
+			case eMapY:
+				CancelMapSelectY();
+				break;
+			case eFullHeal:
+				ReturnToMain(8);
+				break;
 			}
-		else if (var_window->GetActive()) {
-			if (mode == eSwitch) {
-				prev.sw.range_page_index = var_window->GetIndex();
-			} else if (mode == eVariable) {
-				prev.var.range_page_index = var_window->GetIndex();
-			} else if (mode == eItem) {
-				prev.item.range_page_index = var_window->GetIndex();
-			} else if (mode == eBattle) {
-				prev.troop.range_page_index = var_window->GetIndex();
-			} else if (mode == eMap) {
-				prev.map.range_page_index = var_window->GetIndex();
-			} else if (mode == eFullHeal) {
-				range_index = 8;
-				range_page = 0;
-				mode = eMain;
-				range_window->SetIndex(range_index);
-				var_window->SetMode(Window_VarList::eNone);
-				UpdateRangeListWindow();
-			}
-			var_window->SetActive(false);
-			range_window->SetActive(true);
-			var_window->Refresh();
-		} else if (numberinput_window->GetActive()) {
-			if (mode == eMapY) {
-				numberinput_window->SetNumber(pending_map_x);
-				mode = eMapX;
-				UpdateRangeListWindow();
-			} else {
-				numberinput_window->SetVisible(false);
-				numberinput_window->SetActive(false);
-				if (mode == eMapX) {
-					mode = eMap;
-					UpdateRangeListWindow();
-				}
-				if (var_window->GetMode() != Window_VarList::eNone) {
-					var_window->SetActive(true);
-					var_window->Refresh();
-				} else {
-					range_index = 0;
-					if (mode == eGold) {
-						range_index = 4;
-					}
-					mode = eMain;
-					range_window->SetActive(true);
-					range_window->SetIndex(range_index);
-					UpdateRangeListWindow();
-				}
-			}
-		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		var_window->Refresh();
-		if (range_window->GetActive()) {
-			if (mode == eMain) {
-				switch (range_window->GetIndex()) {
-					case 0:
-						if (Game_Temp::battle_running) {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-						} else {
-							Scene::PopUntil(Scene::Map);
-							Scene::Push(std::make_shared<Scene_Save>());
-						}
-						break;
-					case 1:
-						Scene::Push(std::make_shared<Scene_Load>());
-						break;
-					case 2:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev.sw.range_index;
-						range_page = prev.sw.range_page;
-						mode = eSwitch;
-						var_window->SetMode(Window_VarList::eSwitch);
-						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-						range_window->SetIndex(range_index);
-						UpdateRangeListWindow();
-						var_window->Refresh();
-						break;
-					case 3:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev.var.range_index;
-						range_page = prev.var.range_page;
-						mode = eVariable;
-						var_window->SetMode(Window_VarList::eVariable);
-						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-						range_window->SetIndex(range_index);
-						UpdateRangeListWindow();
-						var_window->Refresh();
-						break;
-					case 4:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						mode = eGold;
-						range_window->SetActive(false);
-						range_index = 0;
-						range_window->SetIndex(range_index);
-						numberinput_window->SetNumber(Main_Data::game_party->GetGold());
-						numberinput_window->SetShowOperator(false);
-						numberinput_window->SetVisible(true);
-						numberinput_window->SetActive(true);
-						numberinput_window->SetMaxDigits(7);
-						numberinput_window->Refresh();
-						UpdateRangeListWindow();
-						break;
-					case 5:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						range_index = prev.item.range_index;
-						range_page = prev.item.range_page;
-						mode = eItem;
-						var_window->SetMode(Window_VarList::eItem);
-						var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-						range_window->SetIndex(range_index);
-						UpdateRangeListWindow();
-						var_window->Refresh();
-						break;
-					case 6:
-						if (Game_Temp::battle_running) {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-						} else {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-							range_index = prev.troop.range_index;
-							range_page = prev.troop.range_page;
-							var_window->SetIndex(prev.troop.range_page_index);
-							mode = eBattle;
-							var_window->SetMode(Window_VarList::eTroop);
-							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-							range_window->SetIndex(range_index);
-							UpdateRangeListWindow();
-							var_window->Refresh();
-						}
-						break;
-					case 7:
-						if (Game_Temp::battle_running) {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
-						} else {
-							Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-							range_index = prev.map.range_index;
-							range_page = prev.map.range_page;
-							mode = eMap;
-							var_window->SetMode(Window_VarList::eMap);
-							var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
-							range_window->SetIndex(range_index);
-							UpdateRangeListWindow();
-							var_window->Refresh();
-						}
-						break;
-					case 8:
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-						mode = eFullHeal;
-						var_window->SetMode(Window_VarList::eHeal);
-						var_window->UpdateList(1);
-						UpdateRangeListWindow();
-						var_window->Refresh();
-						var_window->SetActive(true);
-						range_window->SetActive(false);
-						range_index = 0;
-						range_window->SetIndex(range_index);
-						range_page = 0;
-						break;
-					default:
-						break;
+		switch (mode) {
+			case eMain:
+				EnterFromMain();
+				break;
+			case eSwitch:
+				EnterFromListOption(eSwitchSelect, prev.sw);
+				break;
+			case eSwitchSelect:
+				DoSwitch();
+				break;
+			case eVariable:
+				EnterFromListOption(eVariableSelect, prev.var);
+				break;
+			case eVariableSelect:
+				if (Game_Variables.IsValid(GetIndex())) {
+					EnterFromListOptionToValue(eVariableValue, Game_Variables.Get(GetIndex()), 7, true);
 				}
-			} else {
-				range_window->SetActive(false);
-				var_window->SetActive(true);
-				if (mode == eSwitch) {
-					var_window->SetIndex(prev.sw.range_page_index);
-				} else if (mode == eVariable) {
-					var_window->SetIndex(prev.var.range_page_index);
-				} else if (mode == eItem) {
-					var_window->SetIndex(prev.item.range_page_index);
-				} else if (mode == eBattle) {
-					var_window->SetIndex(prev.troop.range_page_index);
-				} else if (mode == eMap) {
-					var_window->SetIndex(prev.map.range_page_index);
+				break;
+			case eVariableValue:
+				DoVariable();
+				break;
+			case eGold:
+				DoGold();
+				break;
+			case eItem:
+				EnterFromListOption(eItemSelect, prev.item);
+				break;
+			case eItemSelect:
+				if (GetIndex() <= Data::items.size()) {
+					EnterFromListOptionToValue(eItemValue, Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
 				}
-			}
-		} else if (var_window->GetActive()) {
-			switch (mode) {
-				case eSwitch:
-					if (Game_Switches.IsValid(GetIndex())) {
-						Game_Switches.Flip(GetIndex());
-					}
-					break;
-				case eVariable:
-					if (Game_Variables.IsValid(GetIndex())) {
-						var_window->SetActive(false);
-						numberinput_window->SetNumber(Game_Variables.Get(GetIndex()));
-						numberinput_window->SetShowOperator(true);
-						numberinput_window->SetVisible(true);
-						numberinput_window->SetActive(true);
-						numberinput_window->SetMaxDigits(7);
-						numberinput_window->Refresh();
-					}
-					break;
-				case eItem:
-					if (GetIndex() <= Data::items.size()) {
-						var_window->SetActive(false);
-						numberinput_window->SetNumber(Main_Data::game_party->GetItemCount(GetIndex()));
-						numberinput_window->SetShowOperator(false);
-						numberinput_window->SetVisible(true);
-						numberinput_window->SetActive(true);
-						numberinput_window->SetMaxDigits(2);
-						numberinput_window->Refresh();
-					}
-					break;
-				case eBattle:
-					if (GetIndex() <= Data::troops.size()) {
-						Scene::PopUntil(Scene::Map);
-						if (Scene::instance) {
-							prev.main_range_index = 6;
-							prev.troop.range_index = range_index;
-							prev.troop.range_page = range_page;
-							prev.troop.range_page_index = var_window->GetIndex();
-
-							Game_Character *player = Main_Data::game_player.get();
-							Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
-							Game_Map::SetupBattle();
-							Game_Temp::battle_random_encounter = false;
-							Game_Temp::battle_troop_id = GetIndex();
-							Game_Temp::battle_formation = 0;
-							Game_Temp::battle_escape_mode = 2;
-							Game_Temp::battle_defeat_mode = 1;
-							Game_Temp::battle_first_strike = 0;
-							Game_Temp::battle_result = Game_Temp::BattleVictory;
-							Game_Battle::SetBattleMode(0);
-							static_cast<Scene_Map*>(Scene::instance.get())->CallBattle();
-						}
-					}
-					break;
-				case eMap:
-					{
-						auto map_id = GetIndex();
-						auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), map_id,
-								[](const RPG::MapInfo& l, int r) { return l.ID < r; });
-						if (iter != Data::treemap.maps.end()
-								&& iter->ID == map_id
-								&& iter->type == RPG::TreeMap::MapType_map
-								) {
-
-							prev.main_range_index = 7;
-							prev.map.range_index = range_index;
-							prev.map.range_page = range_page;
-							prev.map.range_page_index = var_window->GetIndex();
-
-							var_window->SetActive(false);
-							pending_map_id = map_id;
-							pending_map_x = 0;
-							pending_map_y = 0;
-							numberinput_window->SetNumber(pending_map_x);
-							numberinput_window->SetShowOperator(false);
-							numberinput_window->SetVisible(true);
-							numberinput_window->SetActive(true);
-							numberinput_window->SetMaxDigits(4);
-							numberinput_window->Refresh();
-							mode = eMapX;
-							UpdateRangeListWindow();
-						}
-					}
-					break;
-				case eFullHeal:
-					{
-						Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
-						int id = GetIndex();
-						auto actors = Main_Data::game_party->GetActors();
-						if (id <= 1) {
-							for (auto& actor: actors) {
-								actor->FullHeal();
-							}
-						} else {
-							int idx = id - 2;
-							if (idx < (int)actors.size()) {
-								actors[idx]->FullHeal();
-							}
-						}
-						var_window->UpdateList(1);
-					}
-					break;
-				default:
-					break;
-			}
-			var_window->Refresh();
-		} else if (numberinput_window->GetActive()) {
-			if (mode == eVariable) {
-				Game_Variables.Set(GetIndex(), numberinput_window->GetNumber());
-			} else if (mode == eGold) {
-				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
-				Main_Data::game_party->GainGold(delta);
-				range_index = 4;
-			} else if (mode == eItem) {
-				auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
-				Main_Data::game_party->AddItem(GetIndex(), delta);
-			} else if (mode == eMapX) {
-				pending_map_x = numberinput_window->GetNumber();
-				numberinput_window->SetNumber(pending_map_y);
-				mode = eMapY;
-				UpdateRangeListWindow();
-			} else if (mode == eMapY) {
-				int pending_map_y = numberinput_window->GetNumber();
-				Scene::PopUntil(Scene::Map);
-				if (Scene::instance) {
-					Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1, TeleportTarget::eSkillTeleport);
-
-					// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
-					FileRequestAsync* request = Game_Map::RequestMap(pending_map_id);
-					request->SetImportantFile(true);
-					request->Start();
-				}
-			}
-			if (mode != eMapY) {
-				numberinput_window->SetActive(false);
-				numberinput_window->SetVisible(false);
-				if (var_window->GetVisible()) {
-					var_window->SetActive(true);
-					var_window->Refresh();
-				} else {
-					mode = eMain;
-					range_window->SetIndex(4);
-					range_window->SetActive(true);
-					UpdateRangeListWindow();
-				}
-			}
+				break;
+			case eItemValue:
+				DoItem();
+				break;
+			case eBattle:
+				EnterFromListOption(eBattleSelect, prev.troop);
+				break;
+			case eMap:
+				EnterFromListOption(eMapSelect, prev.map);
+				break;
+			case eBattleSelect:
+				DoBattle();
+				break;
+			case eMapSelect:
+				EnterMapSelectX();
+				break;
+			case eMapX:
+				EnterMapSelectY();
+				break;
+			case eMapY:
+				DoMap();
+				break;
+			case eFullHeal:
+				DoFullHeal();
+				break;
 		}
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 	} else if (range_window->GetActive() && Input::IsRepeated(Input::RIGHT)) {
@@ -516,26 +269,38 @@ void Scene_Debug::UpdateRangeListWindow() {
 			}
 			break;
 		case eSwitch:
+		case eSwitchSelect:
 		case eVariable:
+		case eVariableSelect:
+		case eVariableValue:
 		case eItem:
+		case eItemSelect:
 		case eBattle:
+		case eBattleSelect:
 		case eMap:
+		case eMapSelect:
 			{
 				const char* prefix = "???";
 				switch (mode) {
 					case eSwitch:
+					case eSwitchSelect:
 						prefix = "Sw[";
 						break;
 					case eVariable:
+					case eVariableSelect:
+					case eVariableValue:
 						prefix = "Vr[";
 						break;
 					case eItem:
+					case eItemSelect:
 						prefix = "It[";
 						break;
 					case eBattle:
+					case eBattleSelect:
 						prefix = "Tp[";
 						break;
 					case eMap:
+					case eMapSelect:
 						prefix = "Mp[";
 						break;
 					default:
@@ -637,5 +402,300 @@ int Scene_Debug::GetLastPage() {
 		return (num_elements - 1) / 100;
 	}
 	return 0;
+}
+
+void Scene_Debug::SetupListOption(Mode m, Window_VarList::Mode winmode, const IndexSet& idx) {
+	mode = m;
+	range_index = idx.range_index;
+	range_page = idx.range_page;
+	var_window->SetMode(winmode);
+	var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
+	range_window->SetIndex(range_index);
+	UpdateRangeListWindow();
+	var_window->Refresh();
+}
+
+void Scene_Debug::UseRangeWindow() {
+}
+
+void Scene_Debug::UseVarWindow() {
+}
+
+void Scene_Debug::UseNumberWindow() {
+}
+
+void Scene_Debug::EnterFromMain() {
+	switch (range_window->GetIndex()) {
+		case 0:
+			if (Game_Temp::battle_running) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			} else {
+				Scene::PopUntil(Scene::Map);
+				Scene::Push(std::make_shared<Scene_Save>());
+			}
+			break;
+		case 1:
+			Scene::Push(std::make_shared<Scene_Load>());
+			break;
+		case 2:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetupListOption(eSwitch, Window_VarList::eSwitch, prev.sw);
+			break;
+		case 3:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetupListOption(eVariable, Window_VarList::eVariable, prev.var);
+			break;
+		case 4:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			EnterGold();
+			break;
+		case 5:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			SetupListOption(eItem, Window_VarList::eItem, prev.item);
+			break;
+		case 6:
+			if (Game_Temp::battle_running) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			} else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				SetupListOption(eBattle, Window_VarList::eTroop, prev.troop);
+			}
+			break;
+		case 7:
+			if (Game_Temp::battle_running) {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
+			} else {
+				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+				SetupListOption(eMap, Window_VarList::eMap, prev.map);
+			}
+			break;
+		case 8:
+			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+			EnterFullHeal();
+			break;
+		default:
+			break;
+	}
+}
+
+void Scene_Debug::EnterFromListOption(Mode m, const IndexSet& idx) {
+	range_window->SetActive(false);
+	var_window->SetActive(true);
+	mode = m;
+	var_window->SetIndex(idx.range_page_index);
+	var_window->Refresh();
+}
+
+void Scene_Debug::EnterFromListOptionToValue(Mode m, int init_value, int digits, bool show_operator) {
+	mode = m;
+	var_window->SetActive(false);
+	var_window->Refresh();
+	numberinput_window->SetNumber(init_value);
+	numberinput_window->SetShowOperator(show_operator);
+	numberinput_window->SetVisible(true);
+	numberinput_window->SetActive(true);
+	numberinput_window->SetMaxDigits(digits);
+	numberinput_window->Refresh();
+}
+
+void Scene_Debug::EnterGold() {
+	mode = eGold;
+	range_window->SetActive(false);
+	range_index = 0;
+	range_window->SetIndex(range_index);
+	numberinput_window->SetNumber(Main_Data::game_party->GetGold());
+	numberinput_window->SetShowOperator(false);
+	numberinput_window->SetVisible(true);
+	numberinput_window->SetActive(true);
+	numberinput_window->SetMaxDigits(7);
+	numberinput_window->Refresh();
+	UpdateRangeListWindow();
+}
+
+void Scene_Debug::EnterMapSelectX() {
+	auto map_id = GetIndex();
+	auto iter = std::lower_bound(Data::treemap.maps.begin(), Data::treemap.maps.end(), map_id,
+			[](const RPG::MapInfo& l, int r) { return l.ID < r; });
+	if (iter != Data::treemap.maps.end()
+			&& iter->ID == map_id
+			&& iter->type == RPG::TreeMap::MapType_map
+	   ) {
+
+		prev.main_range_index = 7;
+		prev.map.range_index = range_index;
+		prev.map.range_page = range_page;
+		prev.map.range_page_index = var_window->GetIndex();
+
+		var_window->SetActive(false);
+		pending_map_id = map_id;
+		pending_map_x = 0;
+		pending_map_y = 0;
+		numberinput_window->SetNumber(pending_map_x);
+		numberinput_window->SetShowOperator(false);
+		numberinput_window->SetVisible(true);
+		numberinput_window->SetActive(true);
+		numberinput_window->SetMaxDigits(4);
+		numberinput_window->Refresh();
+		mode = eMapX;
+		UpdateRangeListWindow();
+	}
+}
+
+void Scene_Debug::EnterMapSelectY() {
+	pending_map_x = numberinput_window->GetNumber();
+	numberinput_window->SetNumber(pending_map_y);
+	mode = eMapY;
+	UpdateRangeListWindow();
+}
+
+void Scene_Debug::EnterFullHeal() {
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
+	mode = eFullHeal;
+	var_window->SetMode(Window_VarList::eHeal);
+	var_window->UpdateList(1);
+	UpdateRangeListWindow();
+	var_window->Refresh();
+	var_window->SetActive(true);
+	range_window->SetActive(false);
+	range_index = 0;
+	range_window->SetIndex(range_index);
+	range_page = 0;
+}
+
+void Scene_Debug::CancelListOption(IndexSet& idx, int from_idx) {
+	idx.range_index = range_index;
+	idx.range_page = range_page;
+
+	ReturnToMain(from_idx);
+}
+
+void Scene_Debug::CancelListOptionSelect(Mode m, IndexSet& idx) {
+	mode = m;
+	idx.range_page_index = var_window->GetIndex();
+	var_window->SetActive(false);
+	range_window->SetActive(true);
+	var_window->Refresh();
+}
+
+void Scene_Debug::CancelListOptionValue(Mode m) {
+	mode = m;
+	numberinput_window->SetActive(false);
+	numberinput_window->SetVisible(false);
+	var_window->SetActive(true);
+	var_window->Refresh();
+}
+
+void Scene_Debug::CancelMapSelectY() {
+	numberinput_window->SetNumber(pending_map_x);
+	mode = eMapX;
+	UpdateRangeListWindow();
+}
+
+void Scene_Debug::ReturnToMain(int from_idx) {
+	numberinput_window->SetActive(false);
+	numberinput_window->SetVisible(false);
+	var_window->SetActive(false);
+	//var_window->SetVisible(false);
+	var_window->SetMode(Window_VarList::eNone);
+
+	mode = eMain;
+	range_index = from_idx;
+	range_page = 0;
+	range_window->SetIndex(range_index);
+	range_window->SetActive(true);
+	UpdateRangeListWindow();
+}
+
+
+void Scene_Debug::DoSwitch() {
+	if (Game_Switches.IsValid(GetIndex())) {
+		Game_Switches.Flip(GetIndex());
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+
+		var_window->Refresh();
+	}
+}
+
+void Scene_Debug::DoVariable() {
+	Game_Variables.Set(GetIndex(), numberinput_window->GetNumber());
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+
+	var_window->Refresh();
+
+	CancelListOptionValue(eVariableSelect);
+}
+
+void Scene_Debug::DoGold() {
+	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
+	Main_Data::game_party->GainGold(delta);
+
+	ReturnToMain(4);
+}
+
+void Scene_Debug::DoItem() {
+	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
+	Main_Data::game_party->AddItem(GetIndex(), delta);
+
+	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
+
+	var_window->Refresh();
+
+	CancelListOptionValue(eItemSelect);
+}
+
+void Scene_Debug::DoBattle() {
+	if (GetIndex() <= Data::troops.size()) {
+		Scene::PopUntil(Scene::Map);
+		if (Scene::instance) {
+			prev.main_range_index = 6;
+			prev.troop.range_index = range_index;
+			prev.troop.range_page = range_page;
+			prev.troop.range_page_index = var_window->GetIndex();
+
+			Game_Character *player = Main_Data::game_player.get();
+			Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
+			Game_Map::SetupBattle();
+			Game_Temp::battle_troop_id = GetIndex();
+			Game_Temp::battle_random_encounter = false;
+			Game_Temp::battle_formation = 0;
+			Game_Temp::battle_escape_mode = 2;
+			Game_Temp::battle_defeat_mode = 1;
+			Game_Temp::battle_first_strike = 0;
+			Game_Temp::battle_result = Game_Temp::BattleVictory;
+			Game_Battle::SetBattleMode(0);
+			static_cast<Scene_Map*>(Scene::instance.get())->CallBattle();
+		}
+	}
+}
+
+void Scene_Debug::DoMap() {
+	int pending_map_y = numberinput_window->GetNumber();
+	Scene::PopUntil(Scene::Map);
+	if (Scene::instance) {
+		Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1, TeleportTarget::eSkillTeleport);
+
+		// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
+		FileRequestAsync* request = Game_Map::RequestMap(pending_map_id);
+		request->SetImportantFile(true);
+		request->Start();
+	}
+}
+
+void Scene_Debug::DoFullHeal() {
+	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
+	int id = GetIndex();
+	auto actors = Main_Data::game_party->GetActors();
+	if (id <= 1) {
+		for (auto& actor: actors) {
+			actor->FullHeal();
+		}
+	} else {
+		int idx = id - 2;
+		if (idx < (int)actors.size()) {
+			actors[idx]->FullHeal();
+		}
+	}
+	var_window->UpdateList(1);
+	var_window->Refresh();
 }
 

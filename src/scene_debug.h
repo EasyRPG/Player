@@ -69,17 +69,29 @@ private:
 	enum Mode {
 		eMain,
 		eSwitch,
+		eSwitchSelect,
 		eVariable,
+		eVariableSelect,
+		eVariableValue,
 		eGold,
 		eItem,
+		eItemSelect,
+		eItemValue,
 		eBattle,
+		eBattleSelect,
 		eMap,
+		eMapSelect,
 		eMapX,
 		eMapY,
-		eFullHeal
+		eFullHeal,
 	};
 	/** Current variables being displayed (Switches or Integers). */
 	Mode mode = eMain;
+
+	struct PrevIndex;
+	struct IndexSet;
+
+	static PrevIndex prev;
 
 	/** Current Page being displayed */
 	int range_page = 0;
@@ -98,6 +110,36 @@ private:
 	/** Get the last page for the current mode */
 	int GetLastPage();
 
+	void SetupListOption(Mode mode, Window_VarList::Mode winmode, const IndexSet& idx);
+	void UseRangeWindow();
+	void UseVarWindow();
+	void UseNumberWindow();
+
+	void EnterFromMain();
+	void EnterFromListOption(Mode m, const IndexSet& idx);
+	void EnterFromListOptionToValue(Mode m, int init_value, int digits, bool show_operator);
+
+	void EnterGold();
+	void EnterMapSelectX();
+	void EnterMapSelectY();
+	void EnterFullHeal();
+
+	void CancelListOption(IndexSet& idx, int from_idx);
+	void CancelListOptionSelect(Mode m, IndexSet& idx);
+	void CancelListOptionValue(Mode m);
+
+	void CancelMapSelectY();
+
+	void ReturnToMain(int from_idx);
+
+	void DoSwitch();
+	void DoVariable();
+	void DoGold();
+	void DoItem();
+	void DoBattle();
+	void DoMap();
+	void DoFullHeal();
+
 	/** Displays a range selection for mode. */
 	std::unique_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
@@ -108,6 +150,7 @@ private:
 	int pending_map_id = 0;
 	int pending_map_x = 0;
 	int pending_map_y = 0;
+
 };
 
 #endif
