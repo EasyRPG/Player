@@ -95,6 +95,11 @@ void Scene_Battle::Start() {
 	SetState(State_Start);
 }
 
+void Scene_Battle::Continue(SceneType prev_scene) {
+	// Debug scene / other scene could have changed party status.
+	status_window->Refresh();
+}
+
 void Scene_Battle::TransitionIn(SceneType prev_scene) {
 	if (prev_scene == Scene::Debug) {
 		Scene::TransitionIn(prev_scene);
