@@ -494,6 +494,14 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 		return false;
 	}
 
+	if (self.GetType() == Game_Character::Event && static_cast<const Game_Event&>(self).GetActivePage() == nullptr) {
+		return false;
+	}
+
+	if (other.GetType() == Game_Character::Event && static_cast<const Game_Event&>(other).GetActivePage() == nullptr) {
+		return false;
+	}
+
 	if (self.GetType() == Game_Character::Event
 			&& other.GetType() == Game_Character::Event
 			&& (self.IsOverlapForbidden() || other.IsOverlapForbidden())) {
@@ -679,7 +687,8 @@ bool Game_Map::CanDisembarkShip(Game_Player& player, int x, int y) {
 	for (auto& ev: GetEvents()) {
 		if (ev.IsInPosition(x, y)
 			&& ev.GetLayer() == RPG::EventPage::Layers_same
-			&& ev.IsActive()) {
+			&& ev.IsActive()
+			&& ev.GetActivePage() != nullptr) {
 			return false;
 		}
 	}
@@ -747,7 +756,7 @@ bool Game_Map::IsPassableTile(const Game_Character* self, int bit, int x, int y)
 		if (self == &ev) {
 			continue;
 		}
-		if (!ev.IsActive() || ev.GetThrough()) {
+		if (!ev.IsActive() || ev.GetActivePage() == nullptr || ev.GetThrough()) {
 			continue;
 		}
 		if (ev.IsInPosition(x, y) && ev.GetLayer() == RPG::EventPage::Layers_below) {

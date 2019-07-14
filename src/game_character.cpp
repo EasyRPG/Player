@@ -809,10 +809,6 @@ bool Game_Character::GetVisible() const {
 	return visible;
 }
 
-void Game_Character::SetVisible(bool visible) {
-	this->visible = visible;
-}
-
 bool Game_Character::IsAnimated() const {
 	auto at = GetAnimationType();
 	return !IsAnimPaused()

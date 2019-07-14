@@ -46,12 +46,7 @@ public:
 	/**
 	 * Destructor.
 	 */
-#ifndef EMSCRIPTEN
-	// No idea why but emscripten will complain about a missing destructor when
-	// using virtual here
-	virtual
-#endif
-	~Game_Character();
+	virtual ~Game_Character();
 
 	/** @return the type of character this is */
 	Type GetType() const;
@@ -159,7 +154,7 @@ public:
 	 *
 	 * @return whether event overlap is forbidden.
 	 */
-	virtual bool IsOverlapForbidden() const;
+	bool IsOverlapForbidden() const;
 
 	/**
 	 * Gets character movement speed.
@@ -361,14 +356,14 @@ public:
 	 *
 	 * @return through flag
 	 */
-	virtual bool GetThrough() const;
+	bool GetThrough() const;
 
 	/**
 	 * Sets the through flag (walk through everything)
 	 *
 	 * @param through through flag
 	 */
-	virtual void SetThrough(bool through);
+	void SetThrough(bool through);
 
 	/**
 	 * @return stop_count
@@ -417,7 +412,7 @@ public:
 	 *
 	 * @return whether the character is moving.
 	 */
-	virtual bool IsMoving() const;
+	bool IsMoving() const;
 
 	/**
 	 * @return whether the character is jumping.
@@ -768,7 +763,7 @@ public:
 	 *
 	 * @param visible true: visible, false: invisible
 	 */
-	virtual void SetVisible(bool visible);
+	void SetVisible(bool visible);
 
 	/**
 	 * Tests if animation type is any fixed state.
@@ -1174,6 +1169,10 @@ inline bool Game_Character::IsActive() const {
 
 inline bool Game_Character::HasTileSprite() const {
 	return GetSpriteName().empty();
+}
+
+inline void Game_Character::SetVisible(bool visible) {
+	this->visible = visible;
 }
 
 #endif
