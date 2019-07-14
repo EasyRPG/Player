@@ -18,6 +18,8 @@
 #ifndef EP_SWITCH_UI_H
 #define EP_SWITCH_UI_H
 
+#ifdef __SWITCH__
+
 // Headers
 #include "baseui.h"
 #include "color.h"
@@ -83,5 +85,7 @@ private:
 #endif
 
 };
+
+#endif
 
 #endif

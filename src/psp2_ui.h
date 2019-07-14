@@ -18,6 +18,8 @@
 #ifndef EP_PSP2_UI_H
 #define EP_PSP2_UI_H
 
+#ifdef PSP2
+
 // Headers
 #include "baseui.h"
 #include "color.h"
@@ -79,5 +81,7 @@ public:
 	SceUID GPU_Thread;
 	
 };
+
+#endif
 
 #endif
