@@ -117,6 +117,17 @@ namespace FileFinder {
 	std::string FindDefault(const DirectoryTree& tree, const std::string& name);
 
 	/**
+	 * Finds a file with different extensions in a subdirectory of a custom directory tree.
+	 *
+	 * @param tree Project tree to search
+	 * @param dir directory to check
+	 * @param name the path and name
+	 * @param exts list of extensions
+	 * @return path to file.
+	 */
+	std::string FindDefault(FileFinder::DirectoryTree const& tree, const std::string& dir, const std::string& name, char const* exts[]);
+
+	/**
 	 * Finds a music file.
 	 * Searches through the Music folder of the current RPG Maker game and
 	 * the RTP directories.

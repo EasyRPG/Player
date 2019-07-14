@@ -25,32 +25,41 @@
 #include "output.h"
 #include "inireader.h"
 
-std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val, REGVIEW view) {
+/*
+Wine registry file example:
+
+[Software\\Wow6432Node\\ASCII\\RPG2000] 1554665942 9542200
+#time=1d4ed798dfc6938
+"FullScreenFlag"="0"
+"RuntimePackagePath"="C:\\Program Files (x86)\\ASCII\\RPG2000\\RTP"
+ */
+
+std::string Registry::ReadStrValue(HKEY hkey, const std::string& key, const std::string& val, REGVIEW view) {
 	std::string prefix =
 			getenv("WINEPREFIX")? getenv("WINEPREFIX"):
 			getenv("HOME")? std::string(getenv("HOME")).append("/.wine"):
 			std::string();
 
-	std::string registry_file = "";
-	std::string string_value = "";
+	std::string registry_file;
+	std::string string_value;
 	std::string formatted_key = key;
 
 	// Replaces key backslashes with double backslashes
 	size_t pos = 0;
-	while ((pos = formatted_key.find("\\", pos)) != std::string::npos) {
-		formatted_key.replace(pos, 1, "\\\\");
+	while ((pos = formatted_key.find('\\', pos)) != std::string::npos) {
+		formatted_key.replace(pos, 1, R"(\\)");
 		pos += 2;
 	}
 
 	// Puts value between quotes
 	std::string formatted_val = "\"" + val + "\"";
 
-	if(prefix.empty() || !FileFinder::Exists(prefix)) {
+	if (prefix.empty() || !FileFinder::Exists(prefix)) {
 		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
 		return std::string("");
 	}
 
-	switch(hkey) {
+	switch (hkey) {
 		case HKEY_LOCAL_MACHINE:
 			registry_file = prefix + "/system.reg";
 			break;
@@ -61,52 +70,59 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 
 	bool is_wine64 = FileFinder::Exists(prefix + "/drive_c/windows/syswow64");
 	bool use_redirect = (view == KEY32 && is_wine64);
-	/* FIXME: Actual registry redirection behaviour on 64 bit Windows is much more complex,
-	 * for reference see: https://msdn.microsoft.com/en-us/library/aa384253(v=vs.85).aspx
-	 * We just care for the simple case where the "Software" Key inside HKLM is redirected
-	 * to the "Software\Wow6432Node" Key in 64 bit wine prefixes.
+
+	/* On 64bit Windows 32bit keys are redirected in some cases, see:
+	 * https://msdn.microsoft.com/en-us/library/aa384253(v=vs.85).aspx
+	 * Contrary to Windows, Wine redirects in 64 bit wine prefixes
+	 * "Software" to "Software\Wow6432Node" in both HKLM and HKCU.
 	 */
-	if (hkey == HKEY_LOCAL_MACHINE && use_redirect && (formatted_key.rfind("Software\\\\", 0) == 0)) {
-		int pos = formatted_key.find("\\\\", 0);
-		formatted_key.insert(pos, "\\\\Wow6432Node");
+	if ((hkey == HKEY_LOCAL_MACHINE || hkey == HKEY_CURRENT_USER) &&
+		use_redirect && (formatted_key.rfind(R"(Software\\)", 0) == 0)) {
+		pos = formatted_key.find(R"(\\)", 0);
+		formatted_key.insert(pos, R"(\\Wow6432Node)");
 	}
 
 	INIReader registry(registry_file);
 	std::string path;
 
-	if(registry.ParseError() != -1) {
+	if (registry.ParseError() != -1) {
 		string_value = registry.Get(formatted_key, formatted_val, "");
 
 		// Removes begin and end quotes but keeps all other inner just in case
-		if (string_value.size()) string_value.erase(0, 1);
-		if (string_value.size()) string_value.erase(string_value.size() - 1, 1);
+		if (!string_value.empty()) {
+			string_value.erase(0, 1);
+		}
+		if (!string_value.empty()) {
+			string_value.erase(string_value.size() - 1, 1);
+		}
 
-		if(string_value.size() < 3
-			|| !std::isupper(*string_value.begin())
-			|| std::string(string_value.begin() + 1, string_value.begin() + 3) != ":\\")
-		{ return string_value; }
+		if (string_value.size() < 3
+				|| !std::isupper(*string_value.begin())
+				|| std::string(string_value.begin() + 1, string_value.begin() + 3) != R"(:\)") {
+			return string_value;
+		}
 
 		// Replaces double backslashes with single backslashes
 		pos = 0;
-		while ((pos = string_value.find("\\\\", pos)) != std::string::npos) {
+		while ((pos = string_value.find(R"(\\)", pos)) != std::string::npos) {
 			string_value.replace(pos, 2, "/");
 			pos += 1;
 		}
 
-		char const drive = std::tolower(*string_value.begin());
-		switch(drive) {
-			default:
-				path.assign(prefix.append("/drive_"))
-						.append(&drive, 1).append(string_value.begin() + 2, string_value.end());
-				break;
-			case 'z': path.assign(string_value.begin() + 2, string_value.end()); break;
+		const char drive = std::tolower(*string_value.begin());
+
+		if (drive == 'z') {
+			path.assign(string_value.begin() + 2, string_value.end());
+		} else {
+			path.assign(prefix.append("/drive_"))
+					.append(&drive, 1).append(string_value.begin() + 2, string_value.end());
 		}
 	}
 
 	return path;
 }
 
-int Registry::ReadBinValue(HKEY, std::string const&, std::string const&, unsigned char*, REGVIEW) {
+int Registry::ReadBinValue(HKEY, const std::string&, const std::string&, unsigned char*, REGVIEW) {
 	return 0; // not really used yet
 }
 
