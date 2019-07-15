@@ -1846,8 +1846,8 @@ void Game_BattleAlgorithm::SelfDestruct::Apply() {
 	}
 }
 
-Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
-	AlgorithmBase(Type::Escape, source) {
+Game_BattleAlgorithm::Escape::Escape(Game_Battler* source, bool always_succeed) :
+	AlgorithmBase(Type::Escape, source), always_succeed(always_succeed) {
 	// no-op
 }
 
@@ -1893,9 +1893,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	// Monsters always escape
 	this->success = true;
 
-	// TODO: Preemptive attack has 100% escape ratio
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
+	if (source->GetType() == Game_Battler::Type_Ally && !always_succeed) {
 		int ally_agi = Main_Data::game_party->GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 

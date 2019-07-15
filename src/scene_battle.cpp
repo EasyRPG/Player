@@ -95,6 +95,11 @@ void Scene_Battle::Start() {
 	SetState(State_Start);
 }
 
+void Scene_Battle::Continue(SceneType prev_scene) {
+	// Debug scene / other scene could have changed party status.
+	status_window->Refresh();
+}
+
 void Scene_Battle::TransitionIn(SceneType prev_scene) {
 	if (prev_scene == Scene::Debug) {
 		Scene::TransitionIn(prev_scene);
@@ -562,19 +567,6 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 		Output::Warning("CreateEnemyAction: Enemy can't use invalid skill %d", action->skill_id);
 		return;
 	}
-
-
-	switch (skill->type) {
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-			// FIXME: Can enemy use this?
-			return;
-		case RPG::Skill::Type_switch:
-		case RPG::Skill::Type_normal:
-		case RPG::Skill::Type_subskill:
-		default:
-			break;
-		}
 
 	switch (skill->scope) {
 		case RPG::Skill::Scope_enemy:

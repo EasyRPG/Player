@@ -38,6 +38,7 @@
 
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle()
 {
+	first_strike = Game_Temp::battle_first_strike;
 }
 
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
@@ -327,6 +328,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		} else {
 			// Everybody acted
 			actor_index = 0;
+
+			if (Game_Battle::GetTurn() > 0) {
+				first_strike = false;
+			}
 
 			// Go right into next turn if no actors controllable.
 			if (!Main_Data::game_party->IsAnyControllable()) {
@@ -1170,7 +1175,7 @@ void Scene_Battle_Rpg2k::Escape() {
 	if (battle_action_substate == eBegin) {
 		battle_message_window->Clear();
 
-		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0]);
+		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0], first_strike);
 
 		auto next_ss = escape_alg.Execute()
 			? eSuccess
@@ -1218,9 +1223,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		SetState(State_Battle);
 		NextTurn();
 
-		if (!Game_Temp::battle_first_strike || Game_Battle::GetTurn() > 1) {
-			CreateEnemyActions();
-		}
+		CreateEnemyActions();
 		CreateExecutionOrder();
 		Game_Battle::RefreshEvents();
 
@@ -1322,6 +1325,9 @@ void Scene_Battle_Rpg2k::CreateExecutionOrder() {
 }
 
 void Scene_Battle_Rpg2k::CreateEnemyActions() {
+	if (first_strike) {
+		return;
+	}
 	std::vector<Game_Battler*> enemies;
 	Main_Data::game_enemyparty->GetActiveBattlers(enemies);
 
@@ -1335,8 +1341,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 		const RPG::EnemyAction* action = static_cast<Game_Enemy*>(battler)->ChooseRandomAction();
 		if (action) {
 			CreateEnemyAction(static_cast<Game_Enemy*>(battler), action);
-		} else {
-			// Enemies with no action list get Null callback
+		}
+
+		if (battler->GetBattleAlgorithm() == nullptr) {
+			// Enemies with no valid actions get Null action so that their states still process.
 			battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Null>(battler));
 			ActionSelectedCallback(battler);
 		}
@@ -1415,7 +1423,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 
 	if (battle_result_messages_it == battle_result_messages.end()) {
 		battle_message_window->Clear();
-		if (Game_Temp::battle_first_strike && !encounter_message_first_strike) {
+		if (first_strike && !encounter_message_first_strike) {
 			battle_message_window->Push(Data::terms.special_combat);
 			encounter_message_first_strike = true;
 			SetWait(30, 70);

@@ -69,6 +69,7 @@ void Scene_Battle_Rpg2k3::Update() {
 							if (action) {
 								CreateEnemyAction(enemy, action);
 							}
+							//FIXME: Do we need to handle invalid actions or empty action list here?
 						}
 					}
 				}
@@ -1016,7 +1017,8 @@ void Scene_Battle_Rpg2k3::SpecialSelected() {
 
 void Scene_Battle_Rpg2k3::Escape() {
 
-	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor);
+	//FIXME: Handle first strike etc.. here.
+	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor, false);
 	active_actor->SetGauge(0);
 
 	bool escape_success = escape_alg.Execute();

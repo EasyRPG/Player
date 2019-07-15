@@ -216,16 +216,16 @@ protected:
 	int battle_action_substate_index = 0;
 
 	int select_target_flash_count = 0;
-	bool encounter_message_first_monster = true;
-	bool encounter_message_first_strike = false;
 
 	int battle_action_wait = 0;
 	int battle_action_min_wait = 0;
 
+	bool encounter_message_first_monster = true;
+	bool encounter_message_first_strike = false;
 	bool message_box_got_visible = false;
 	bool move_screen = false;
+	bool first_strike = false;
 
-	int last_turn_check = -1;
 };
 
 #endif
