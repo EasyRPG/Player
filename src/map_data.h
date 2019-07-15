@@ -19,17 +19,45 @@
 #define EP_MAP_DATA_H
 
 // Tile IDs
+static constexpr int BLOCK_A = 0;
+static constexpr int BLOCK_A_TILES = 2;
+static constexpr int BLOCK_A_STRIDE = 1000;
+static constexpr int BLOCK_A_INDEX = 0;
+static constexpr int BLOCK_A_END = BLOCK_A + BLOCK_A_TILES * BLOCK_A_STRIDE;
 
-static const int BLOCK_C = 3000;
+static constexpr int BLOCK_B = 2000;
+static constexpr int BLOCK_B_TILES = 1;
+static constexpr int BLOCK_B_STRIDE = 1000;
+static constexpr int BLOCK_B_INDEX = 2;
+static constexpr int BLOCK_B_END = BLOCK_B + BLOCK_B_TILES * BLOCK_B_STRIDE;
 
-static const int BLOCK_D = 4000;
-static const int BLOCK_D_BLOCKS = 12;
+static constexpr int BLOCK_C = 3000;
+static constexpr int BLOCK_C_TILES = 3;
+static constexpr int BLOCK_C_STRIDE = 50;
+static constexpr int BLOCK_C_INDEX = 3;
+static constexpr int BLOCK_C_END = BLOCK_C + BLOCK_C_TILES * BLOCK_C_STRIDE;
 
-static const int BLOCK_E = 5000;
-static const int BLOCK_E_TILES = 144;
+static constexpr int BLOCK_D = 4000;
+static constexpr int BLOCK_D_TILES = 12;
+static constexpr int BLOCK_D_STRIDE = 50;
+static constexpr int BLOCK_D_INDEX = 6;
+static constexpr int BLOCK_D_END = BLOCK_D + BLOCK_D_TILES * BLOCK_D_STRIDE;
 
-static const int BLOCK_F = 10000;
-static const int BLOCK_F_TILES = 144;
+static constexpr int BLOCK_E = 5000;
+static constexpr int BLOCK_E_TILES = 144;
+static constexpr int BLOCK_E_STRIDE = 1;
+static constexpr int BLOCK_E_INDEX = 18;
+static constexpr int BLOCK_E_END = BLOCK_E + BLOCK_E_TILES * BLOCK_E_STRIDE;
+
+static constexpr int BLOCK_F = 10000;
+static constexpr int BLOCK_F_TILES = 144;
+static constexpr int BLOCK_F_STRIDE = 1;
+static constexpr int BLOCK_F_INDEX = 162;
+static constexpr int BLOCK_F_END = BLOCK_F + BLOCK_F_TILES * BLOCK_F_STRIDE;
+
+static constexpr int NUM_LOWER_TILES = BLOCK_F_INDEX;
+static constexpr int NUM_UPPER_TILES = BLOCK_F_TILES;
+static constexpr int NUM_TILES = NUM_LOWER_TILES + NUM_UPPER_TILES;
 
 /** Passability flags. */
 namespace Passable {
@@ -42,6 +70,28 @@ namespace Passable {
 		Wall		= 0x20,
 		Counter		= 0x40
 	};
+}
+
+inline int ChipIdToIndex(int chip_id) {
+	if (chip_id >= BLOCK_A && chip_id < BLOCK_A_END) {
+		return BLOCK_A_INDEX + (chip_id - BLOCK_A) / BLOCK_A_STRIDE;
+	}
+	else if (chip_id >= BLOCK_B && chip_id < BLOCK_B_END) {
+		return BLOCK_B_INDEX + (chip_id - BLOCK_B) / BLOCK_B_STRIDE;
+	}
+	else if (chip_id >= BLOCK_C && chip_id < BLOCK_C_END) {
+		return BLOCK_C_INDEX + (chip_id - BLOCK_C) / BLOCK_C_STRIDE;
+	}
+	else if (chip_id >= BLOCK_D && chip_id < BLOCK_D_END) {
+		return BLOCK_D_INDEX + (chip_id - BLOCK_D) / BLOCK_D_STRIDE;
+	}
+	else if (chip_id >= BLOCK_E && chip_id < BLOCK_E_END) {
+		return BLOCK_E_INDEX + (chip_id - BLOCK_E) / BLOCK_E_STRIDE;
+	}
+	else if (chip_id >= BLOCK_F && chip_id < BLOCK_F_END) {
+		return BLOCK_F_INDEX + (chip_id - BLOCK_F) / BLOCK_F_STRIDE;
+	}
+	return 0;
 }
 
 #endif

@@ -822,29 +822,38 @@ bool Game_Map::IsCounter(int x, int y) {
 }
 
 int Game_Map::GetTerrainTag(int x, int y) {
-	// Terrain tag wraps on looping maps
-	x = RoundX(x);
-	y = RoundY(y);
-
-	if (!Game_Map::IsValid(x, y) || !chipset) return 9;
-
-	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
-	unsigned chip_index =
-		(chipID <  3050)?  0 + chipID/1000 :
-		(chipID <  4000)?  4 + (chipID-3050)/50 :
-		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + (chipID-5000) :
-		0;
-
-	// Apply tile substitution
-	if (chip_index >= 18 && chip_index <= 144)
-		chip_index = map_info.lower_tiles[chip_index - 18] + 18;
+	if (!chipset) {
+		// FIXME: Is this ever possible?
+		return 1;
+	}
 
 	auto& terrain_data = chipset->terrain_data;
 
 	if (terrain_data.empty()) {
 		// RPG_RT optimisation: When the terrain is all 1, no terrain data is stored
 		return 1;
+	}
+
+	// Terrain tag wraps on looping maps
+	if (Game_Map::LoopHorizontal()) {
+		x = RoundX(x);
+	}
+	if (Game_Map::LoopVertical()) {
+		y = RoundY(y);
+	}
+
+	// RPG_RT always uses the terrain of the first lower tile
+	// for out of bounds coordinates.
+	unsigned chip_index = 0;
+
+	if (Game_Map::IsValid(x, y)) {
+		const auto chip_id = map->lower_layer[x + y * GetWidth()];
+		chip_index = ChipIdToIndex(chip_id);
+
+		// Apply tile substitution
+		if (chip_index >= BLOCK_E_INDEX && chip_index < NUM_LOWER_TILES) {
+			chip_index = map_info.lower_tiles[chip_index - BLOCK_E_INDEX] + BLOCK_E_INDEX;
+		}
 	}
 
 	assert(chip_index < terrain_data.size());
