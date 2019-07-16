@@ -545,10 +545,14 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::RemoveActionsForNonExistantBattlers() {
-	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(), [](const Game_Battler* b) { return !b->Exists(); });
-	for (auto it = iter; it != battle_actions.end(); ++it) {
-		(*it)->SetBattleAlgorithm(nullptr);
-	}
+	auto iter = std::remove_if(battle_actions.begin(), battle_actions.end(),
+			[](Game_Battler* b) {
+				if (!b->Exists()) {
+					b->SetBattleAlgorithm(nullptr);
+					return true;
+				}
+				return false;
+			});
 	battle_actions.erase(iter, battle_actions.end());
 }
 
@@ -597,6 +601,10 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
+	if (for_battler->GetBattleAlgorithm() == nullptr) {
+		Output::Debug("Tried to add a nullptr battle action!");
+		std::abort();
+	}
 	battle_actions.push_back(for_battler);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
