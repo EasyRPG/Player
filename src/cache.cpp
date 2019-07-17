@@ -508,11 +508,19 @@ BitmapRef Cache::System() {
 	if (!system_name.empty()) {
 		return Cache::System(system_name);
 	} else {
-		if (!default_system) {
-			default_system = Bitmap::Create(160, 80, false);
-		}
-		return default_system;
+		return nullptr;
 	}
+}
+
+BitmapRef Cache::SystemOrBlack() {
+	auto system = Cache::System();
+	if (system) {
+		return system;
+	}
+	if (!default_system) {
+		default_system = Bitmap::Create(160, 80, false);
+	}
+	return default_system;
 }
 
 BitmapRef Cache::System2() {

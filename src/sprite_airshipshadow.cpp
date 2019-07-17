@@ -43,11 +43,10 @@ void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Clear();
 
 	// RPG_RT never displays shadows if there is no system graphic.
-	if (!Game_System::HasSystemGraphic()) {
+	BitmapRef system = Cache::System();
+	if (!system) {
 		return;
 	}
-
-	BitmapRef system = Cache::System();
 
 	// Offset of the shadow in the System graphic as per
 	// https://wiki.easyrpg.org/development/technical-details/system-graphics

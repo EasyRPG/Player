@@ -204,7 +204,7 @@ const std::string& Game_System::GetSystemName() {
 
 static void OnChangeSystemGraphicReady(FileRequestResult* result) {
 	Cache::SetSystemName(result->file);
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
+	DisplayUi->SetBackcolor(Cache::SystemOrBlack()->GetBackgroundColor());
 
 	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 

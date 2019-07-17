@@ -89,7 +89,7 @@ static bool IsEquipment(const RPG::Item* item) {
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
-	BitmapRef system = Cache::System();
+	BitmapRef system = Cache::SystemOrBlack();
 
 	if (item_id < 0 || item_id > static_cast<int>(Data::items.size()))
 		return;

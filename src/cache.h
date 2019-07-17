@@ -58,8 +58,11 @@ namespace Cache {
 
 	void Clear();
 
-	/** @return the configured system bitmap, or a default black bitmap if there is no system */
+	/** @return the configured system bitmap, or nullptr if there is no system */
 	BitmapRef System();
+
+	/** @return the configured system bitmap, or a default black bitmap if there is no system */
+	BitmapRef SystemOrBlack();
 
 	/** @return the configured system2 bitmap, or nullptr if there is no system2 */
 	BitmapRef System2();

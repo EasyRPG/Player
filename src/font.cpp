@@ -373,7 +373,9 @@ Rect Font::GetSize(std::string const& txt) const {
 void Font::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, char32_t code) {
 	if(color != ColorShadow) {
 		BitmapRef system = Cache::System();
-		Render(bmp, x + 1, y + 1, system->GetShadowColor(), code);
+		if (system) {
+			Render(bmp, x + 1, y + 1, system->GetShadowColor(), code);
+		}
 	}
 
 	BitmapRef bm = Glyph(code);

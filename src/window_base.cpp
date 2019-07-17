@@ -27,7 +27,7 @@
 #include "player.h"
 
 Window_Base::Window_Base(int x, int y, int width, int height) {
-	SetWindowskin(Cache::System());
+	SetWindowskin(Cache::SystemOrBlack());
 
 	SetX(x);
 	SetY(y);
@@ -54,7 +54,7 @@ bool Window_Base::IsMovementActive() {
 
 void Window_Base::Update() {
 	Window::Update();
-	SetWindowskin(Cache::System());
+	SetWindowskin(Cache::SystemOrBlack());
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 	UpdateMovement();
 }
