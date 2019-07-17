@@ -34,7 +34,7 @@ Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
 }
 
 int Window_ShopBuy::GetItemId() {
-	if (index < 0) {
+	if (index < 0 || index >= (int)data.size()) {
 		return 0;
 	} else {
 		return data[index];
@@ -81,10 +81,14 @@ void Window_ShopBuy::DrawItem(int index) {
 }
 
 void Window_ShopBuy::UpdateHelp() {
-	std::string help_text = "??? BAD ITEM ???";
-	const RPG::Item* item = ReaderUtil::GetElement(Data::items, data[index]);
-	if (item) {
-		help_text = item->description;
+	std::string help_text = "";
+	if (!data.empty()) {
+		const RPG::Item* item = ReaderUtil::GetElement(Data::items, data[index]);
+		if (item) {
+			help_text = item->description;
+		} else {
+			help_text = "??? BAD ITEM ???";
+		}
 	}
 
 	help_window->SetText(help_text);
