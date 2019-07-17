@@ -632,10 +632,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 #endif
 }
 
-static void OnSystemFileReady(FileRequestResult* result) {
-	Game_System::SetSystemName(result->file);
-}
-
 void Player::CreateGameObjects() {
 	GetEncoding();
 	escape_symbol = ReaderUtil::Recode("\\", encoding);
@@ -758,13 +754,7 @@ void Player::CreateGameObjects() {
 }
 
 void Player::ResetGameObjects() {
-	if (Data::system.system_name != Game_System::GetSystemName()) {
-		FileRequestAsync* request = AsyncHandler::RequestFile("System", Data::system.system_name);
-		request->SetImportantFile(true);
-		request->SetGraphicFile(true);
-		system_request_id = request->Bind(&OnSystemFileReady);
-		request->Start();
-	}
+	Game_System::ResetSystemGraphic();
 
 	// The init order is important
 	Main_Data::Cleanup();
@@ -942,13 +932,9 @@ void Player::LoadSavegame(const std::string& save_name) {
 	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
 
-	FileRequestAsync* system = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
-	system->SetImportantFile(true);
-	system->SetGraphicFile(true);
-	system_request_id = system->Bind(&OnSystemFileReady);
+	Game_System::ReloadSystemGraphic();
 
 	map->Start();
-	system->Start();
 }
 
 static void OnMapFileReady(FileRequestResult*) {

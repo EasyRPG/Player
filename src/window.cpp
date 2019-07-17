@@ -346,6 +346,9 @@ BitmapRef const& Window::GetWindowskin() const {
 	return windowskin;
 }
 void Window::SetWindowskin(BitmapRef const& nwindowskin) {
+	if (windowskin == nwindowskin) {
+		return;
+	}
 	background_needs_refresh = true;
 	frame_needs_refresh = true;
 	cursor_needs_refresh = true;

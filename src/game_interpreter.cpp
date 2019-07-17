@@ -1831,26 +1831,10 @@ bool Game_Interpreter::CommandChangeSystemSFX(RPG::EventCommand const& com) { //
 	return true;
 }
 
-void Game_Interpreter::OnChangeSystemGraphicReady(FileRequestResult* result) {
-	Game_System::SetSystemName(result->file);
-
-	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-
-	if (!scene)
-		return;
-
-	scene->spriteset->SystemGraphicUpdated();
-}
-
 bool Game_Interpreter::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
-	FileRequestAsync* request = AsyncHandler::RequestFile("System", com.string);
-	request_id = request->Bind(&Game_Interpreter::OnChangeSystemGraphicReady, this);
-	request->SetImportantFile(true);
-	request->SetGraphicFile(true);
-	request->Start();
-
-	Game_System::SetMessageStretch((RPG::System::Stretch)com.parameters[0]);
-	Game_System::SetFontId(com.parameters[1]);
+	Game_System::SetSystemGraphic(com.string,
+			(RPG::System::Stretch)com.parameters[0],
+			(RPG::System::Font)com.parameters[1]);
 
 	return true;
 }

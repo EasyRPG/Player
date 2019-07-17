@@ -43,12 +43,7 @@ void Sprite_Timer::Draw() {
 		return;
 	}
 
-	const auto& system_name = Game_System::GetSystemName();
-	if (system_name.empty()) {
-		return;
-	}
-
-	BitmapRef system = Cache::System(system_name);
+	BitmapRef system = Cache::System();
 
 	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {

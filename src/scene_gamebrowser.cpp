@@ -39,8 +39,7 @@ Scene_GameBrowser::Scene_GameBrowser() {
 }
 
 void Scene_GameBrowser::Start() {
-	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
-	Game_System::SetMessageStretch(RPG::System::Stretch_stretch);
+	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, RPG::System::Stretch_stretch, RPG::System::Font_gothic);
 	CreateWindows();
 	Player::FrameReset();
 }
@@ -61,8 +60,7 @@ void Scene_GameBrowser::Continue(SceneType prev_scene) {
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
 
-	Game_System::SetSystemName(CACHE_DEFAULT_BITMAP);
-	Game_System::SetMessageStretch(RPG::System::Stretch_stretch);
+	Game_System::SetSystemGraphic(CACHE_DEFAULT_BITMAP, RPG::System::Stretch_stretch, RPG::System::Font_gothic);
 	Game_System::BgmStop();
 }
 

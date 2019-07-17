@@ -129,19 +129,28 @@ namespace Game_System {
 	 */
 	void SePlay(const RPG::Animation& animation);
 
-	/**
-	 * Gets system graphic name.
-	 *
-	 * @return system graphic filename.
-	 */
+	/** @return system graphic filename.  */
 	std::string GetSystemName();
+
+	/** @return message stretch style */
+	RPG::System::Stretch GetMessageStretch();
+
+	/** @return system font */
+	RPG::System::Font GetFontId();
 
 	/**
 	 * Sets the system graphic.
 	 *
 	 * @param system_name new system name.
+	 * @param message_stretch message stretch style
+	 * @param font_id The system font to use.
 	 */
-	void SetSystemName(std::string const& system_name);
+	void SetSystemGraphic(const std::string& system_name,
+			RPG::System::Stretch stretch,
+			RPG::System::Font font);
+
+	/** Resets the system graphic to the default value. */
+	void ResetSystemGraphic();
 
 	/**
 	 * Gets the system music.
@@ -241,10 +250,6 @@ namespace Game_System {
 	void SetAllowSave(bool allow);
 	bool GetAllowMenu();
 	void SetAllowMenu(bool allow);
-	RPG::System::Stretch GetMessageStretch();
-	void SetMessageStretch(RPG::System::Stretch stretch);
-	int GetFontId();
-	void SetFontId(int id);
 
 	int GetSaveCount();
 
@@ -254,6 +259,7 @@ namespace Game_System {
 
 	void OnBgmReady(FileRequestResult* result);
 	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
+	void ReloadSystemGraphic();
 }
 
 #endif

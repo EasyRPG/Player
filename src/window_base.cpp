@@ -27,12 +27,7 @@
 #include "player.h"
 
 Window_Base::Window_Base(int x, int y, int width, int height) {
-	windowskin_name = Game_System::GetSystemName();
-	if (!windowskin_name.empty()) {
-		SetWindowskin(Cache::System(windowskin_name));
-	} else {
-		SetWindowskin(Bitmap::Create(160, 80, false));
-	}
+	SetWindowskin(Cache::System());
 
 	SetX(x);
 	SetY(y);
@@ -59,10 +54,7 @@ bool Window_Base::IsMovementActive() {
 
 void Window_Base::Update() {
 	Window::Update();
-	if (Game_System::GetSystemName() != windowskin_name) {
-		windowskin_name = Game_System::GetSystemName();
-		SetWindowskin(Cache::System(windowskin_name));
-	}
+	SetWindowskin(Cache::System());
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 	UpdateMovement();
 }

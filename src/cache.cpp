@@ -55,6 +55,7 @@ namespace {
 	cache_effect_type cache_effects;
 
 	std::string system_name;
+	BitmapRef default_system;
 
 	constexpr int cache_limit = 10 * 1024 * 1024;
 	size_t cache_size = 0;
@@ -501,11 +502,9 @@ BitmapRef Cache::System() {
 	if (!system_name.empty()) {
 		return Cache::System(system_name);
 	} else {
-		if (!Data::system.system_name.empty()) {
-			// Load the system file for the shadow and text color
-			return Cache::System(Data::system.system_name);
-		} else {
-			return Bitmap::Create(160, 80, false);
+		if (!default_system) {
+			default_system = Bitmap::Create(160, 80, false);
 		}
+		return default_system;
 	}
 }

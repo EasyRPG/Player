@@ -326,7 +326,7 @@ bool FTFont::check_face() {
 #endif
 
 FontRef Font::Default() {
-	return Default(Game_System::GetFontId() == 1);
+	return Default(Game_System::GetFontId() == RPG::System::Font_mincho);
 }
 
 FontRef Font::Default(bool const m) {
