@@ -91,8 +91,6 @@ protected:
 
 	ChoiceMode mode;
 
-	void OnSystem2Ready(FileRequestResult* result);
-
 	// Debug helper
 	bool enemy;
 

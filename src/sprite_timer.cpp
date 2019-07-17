@@ -44,7 +44,7 @@ void Sprite_Timer::Draw() {
 	}
 
 	// RPG_RT never displays timers if there is no system graphic.
-	if (Game_System::GetSystemName().empty()) {
+	if (!Game_System::HasSystemGraphic()) {
 		return;
 	}
 

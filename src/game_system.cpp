@@ -197,7 +197,7 @@ void Game_System::SePlay(const RPG::Animation &animation) {
 	}
 }
 
-std::string Game_System::GetSystemName() {
+const std::string& Game_System::GetSystemName() {
 	return !data.graphics_name.empty() ?
 		data.graphics_name : Data::system.system_name;
 }
@@ -243,6 +243,10 @@ void Game_System::ResetSystemGraphic() {
 	data.font_id = (RPG::System::Font)0;
 
 	ReloadSystemGraphic();
+}
+
+const std::string& Game_System::GetSystem2Name() {
+	return Data::system.system2_name;
 }
 
 RPG::Music& Game_System::GetSystemBGM(int which) {

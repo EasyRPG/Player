@@ -57,6 +57,8 @@ namespace {
 	std::string system_name;
 	BitmapRef default_system;
 
+	std::string system2_name;
+
 	constexpr int cache_limit = 10 * 1024 * 1024;
 	size_t cache_size = 0;
 
@@ -498,6 +500,10 @@ void Cache::SetSystemName(std::string const& filename) {
 	system_name = filename;
 }
 
+void Cache::SetSystem2Name(std::string const& filename) {
+	system2_name = filename;
+}
+
 BitmapRef Cache::System() {
 	if (!system_name.empty()) {
 		return Cache::System(system_name);
@@ -506,5 +512,13 @@ BitmapRef Cache::System() {
 			default_system = Bitmap::Create(160, 80, false);
 		}
 		return default_system;
+	}
+}
+
+BitmapRef Cache::System2() {
+	if (!system2_name.empty()) {
+		return Cache::System2(system2_name);
+	} else {
+		return nullptr;
 	}
 }

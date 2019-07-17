@@ -306,15 +306,10 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 }
 
 void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
-	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-	request->SetGraphicFile(true);
-	if (!request->IsReady()) {
-		// Gauge refreshed each frame, so we can wait via polling
-		request->Start();
+	BitmapRef system2 = Cache::System2();
+	if (!system2) {
 		return;
 	}
-
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 	bool full = actor.IsGaugeFull();
 	int gauge_w = actor.GetGauge() / 4;

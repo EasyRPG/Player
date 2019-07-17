@@ -43,7 +43,7 @@ void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Clear();
 
 	// RPG_RT never displays shadows if there is no system graphic.
-	if (Game_System::GetSystemName().empty()) {
+	if (!Game_System::HasSystemGraphic()) {
 		return;
 	}
 

@@ -107,7 +107,16 @@ void Scene_Battle_Rpg2k3::Update() {
 }
 
 void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
-	BitmapRef system2 = Cache::System2(result->file);
+	Cache::SetSystem2Name(result->file);
+
+	SetupSystem2Graphics();
+}
+
+void Scene_Battle_Rpg2k3::SetupSystem2Graphics() {
+	BitmapRef system2 = Cache::System2();
+	if (!system2) {
+		return;
+	}
 
 	ally_cursor->SetBitmap(system2);
 	ally_cursor->SetZ(Priority_Window);
@@ -116,6 +125,8 @@ void Scene_Battle_Rpg2k3::OnSystem2Ready(FileRequestResult* result) {
 	enemy_cursor->SetBitmap(system2);
 	enemy_cursor->SetZ(Priority_Window);
 	enemy_cursor->SetVisible(false);
+
+	enemy_status_window->Refresh();
 }
 
 void Scene_Battle_Rpg2k3::CreateUi() {
@@ -154,10 +165,14 @@ void Scene_Battle_Rpg2k3::CreateUi() {
 		enemy_status_window->SetBackOpacity(transp);
 	}
 
-	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-	request->SetGraphicFile(true);
-	request_id = request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
-	request->Start();
+	if (!Cache::System2() && Game_System::HasSystem2Graphic()) {
+		FileRequestAsync* request = AsyncHandler::RequestFile("System2", Game_System::GetSystem2Name());
+		request->SetGraphicFile(true);
+		request_id = request->Bind(&Scene_Battle_Rpg2k3::OnSystem2Ready, this);
+		request->Start();
+	} else {
+		SetupSystem2Graphics();
+	}
 }
 
 void Scene_Battle_Rpg2k3::UpdateCursors() {

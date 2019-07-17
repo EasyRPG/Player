@@ -130,7 +130,7 @@ namespace Game_System {
 	void SePlay(const RPG::Animation& animation);
 
 	/** @return system graphic filename.  */
-	std::string GetSystemName();
+	const std::string& GetSystemName();
 
 	/** @return message stretch style */
 	RPG::System::Stretch GetMessageStretch();
@@ -151,6 +151,15 @@ namespace Game_System {
 
 	/** Resets the system graphic to the default value. */
 	void ResetSystemGraphic();
+
+	/** @return the system2 graphic name */
+	const std::string& GetSystem2Name();
+
+	/** @return true if the game has a configured system graphic */
+	bool HasSystemGraphic();
+
+	/** @return true if the game has a configured system2 graphic */
+	bool HasSystem2Graphic();
 
 	/**
 	 * Gets the system music.
@@ -260,6 +269,14 @@ namespace Game_System {
 	void OnBgmReady(FileRequestResult* result);
 	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
 	void ReloadSystemGraphic();
+}
+
+inline bool Game_System::HasSystemGraphic() {
+	return !GetSystemName().empty();
+}
+
+inline bool Game_System::HasSystem2Graphic() {
+	return !GetSystem2Name().empty();
 }
 
 #endif
