@@ -91,7 +91,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::System();
 
-	if (item_id <= 0 || item_id > static_cast<int>(Data::items.size()))
+	if (item_id < 0 || item_id > static_cast<int>(Data::items.size()))
 		return;
 
 	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
@@ -101,15 +101,19 @@ void Window_ShopParty::Refresh() {
 		if (phase == 3) {
 			phase = 1;
 		}
-		bool usable = actor->IsEquippable(item_id);
+		// RPG_RT displays the actors in an empty shop.
+		bool usable = item_id == 0 || actor->IsEquippable(item_id);
 		BitmapRef bm = bitmaps[i][usable ? phase : 1][usable ? 1 : 0];
 
 		if (bm) {
 			contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
 		}
 
-		// (Shop) items are guaranteed to be valid
 		const auto* new_item = ReaderUtil::GetElement(Data::items, item_id);
+		if (new_item == nullptr) {
+			// Can be null for an empty shop, in which case there is only 1 item 0.
+			return;
+		}
 
 		bool equippable = usable && IsEquipment(new_item);
 
