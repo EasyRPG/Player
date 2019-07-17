@@ -43,6 +43,11 @@ void Sprite_Timer::Draw() {
 		return;
 	}
 
+	// RPG_RT never displays timers if there is no system graphic.
+	if (Game_System::GetSystemName().empty()) {
+		return;
+	}
+
 	BitmapRef system = Cache::System();
 
 	GetBitmap()->Clear();

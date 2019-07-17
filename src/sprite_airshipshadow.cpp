@@ -42,6 +42,11 @@ Sprite_AirshipShadow::Sprite_AirshipShadow(CloneType type) {
 void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Clear();
 
+	// RPG_RT never displays shadows if there is no system graphic.
+	if (Game_System::GetSystemName().empty()) {
+		return;
+	}
+
 	BitmapRef system = Cache::System();
 
 	// Offset of the shadow in the System graphic as per
