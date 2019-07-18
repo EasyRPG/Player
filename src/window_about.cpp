@@ -22,6 +22,7 @@
 #include "game_party.h"
 #include "bitmap.h"
 #include "font.h"
+#include "version.h"
 
 Window_About::Window_About(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -35,6 +36,7 @@ void Window_About::Refresh() {
 		"interpreter.",
 		"Licensed under the GPLv3",
 		"",
+		"Version: " PLAYER_VERSION,
 		"Website: easyrpg.org",
 		"",
 		"Contact us:",
