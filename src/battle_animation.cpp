@@ -73,6 +73,9 @@ void BattleAnimation::Update() {
 		}
 	}
 
+	UpdateScreenFlash();
+	UpdateTargetFlash();
+
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
 		Sprite::Flash(flash_color, 0);
@@ -146,8 +149,13 @@ bool BattleAnimation::ShouldOnlySound() const {
 	return should_only_sound;
 }
 
-// FIXME: looks okay, but needs to be measured
-static int flash_length = 12;
+void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) {
+	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
+		target_flash_timing = &timing - animation.timings.data();
+	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
+		screen_flash_timing = &timing - animation.timings.data();
+	}
+}
 
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
@@ -156,19 +164,7 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 		return;
 
 	// Flash.
-	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		SetFlash(timing.flash_red,
-			timing.flash_green,
-			timing.flash_blue,
-			timing.flash_power);
-	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
-		Main_Data::game_screen->FlashOnce(
-			timing.flash_red,
-			timing.flash_green,
-			timing.flash_blue,
-			timing.flash_power,
-			flash_length);
-	}
+	ProcessAnimationFlash(timing);
 
 	// Shake (only happens in battle).
 	if (Game_Temp::battle_running) {
@@ -185,7 +181,41 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 			break;
 		}
 	}
+}
 
+static int CalculateFlashPower(int frames, int power) {
+	// This algorithm was determined numerically by measuring the flash
+	// power for each frame of battle animation flashs.
+	int f = 7 - ((frames + 1) / 2);
+	return std::min(f * power / 6, 31);
+}
+
+void BattleAnimation::UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p) {
+	r = 0; g = 0; b = 0; p = 0;
+
+	if (timing_idx >= 0) {
+		auto& timing = animation.timings[timing_idx];
+		int start_frame = (timing.frame - 1) * 2;
+		int delta_frames = GetFrame() - start_frame;
+		if (delta_frames <= 10) {
+			r = timing.flash_red;
+			g = timing.flash_green;
+			b = timing.flash_blue;
+			p = CalculateFlashPower(delta_frames, timing.flash_power);
+		}
+	}
+}
+
+void BattleAnimation::UpdateScreenFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(screen_flash_timing, r, g, b, p);
+	Main_Data::game_screen->FlashOnce(r, g, b, p, 0);
+}
+
+void BattleAnimation::UpdateTargetFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
+	SetFlash(r, g, b, p);
 }
 
 // For handling the vertical position.
@@ -226,7 +256,7 @@ void BattleAnimationChara::Draw() {
 	DrawAt(character.GetScreenX(), vertical_center + offset);
 }
 void BattleAnimationChara::SetFlash(int r, int g, int b, int p) {
-	character.Flash(r, g, b, p, flash_length);
+	character.Flash(r, g, b, p, 0);
 }
 
 bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
@@ -271,7 +301,7 @@ void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
 	     it != battlers.end(); ++it) {
 		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 		if (sprite)
-			sprite->Flash(color, flash_length);
+			sprite->Flash(color, 0);
 	}
 }
 bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
@@ -306,3 +336,20 @@ void BattleAnimationGlobal::SetFlash(int r, int g, int b, int p) {
 	// nop
 }
 bool BattleAnimationGlobal::ShouldScreenFlash() const { return true; }
+
+
+void BattleAnimation::SetFrame(int frame) {
+	// Reset pending flash.
+	int real_frame = frame / 2;
+	screen_flash_timing = -1;
+	target_flash_timing = -1;
+	for (auto& timing: animation.timings) {
+		if (timing.frame > real_frame + 1) {
+			break;
+		}
+		ProcessAnimationFlash(timing);
+	}
+
+	this->frame = frame;
+}
+

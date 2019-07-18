@@ -71,13 +71,19 @@ protected:
 	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
+	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
+	void UpdateScreenFlash();
+	void UpdateTargetFlash();
+	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
 	bool should_only_sound;
 	const RPG::Animation& animation;
 	int frame;
 	int num_frames;
+	int screen_flash_timing = -1;
+	int target_flash_timing = -1;
 
 	FileRequestBinding request_id;
 };
@@ -118,10 +124,6 @@ protected:
 	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
 };
-
-inline void BattleAnimation::SetFrame(int frame) {
-	this->frame = frame;
-}
 
 inline int BattleAnimation::GetFrame() const {
 	return frame;
