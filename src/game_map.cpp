@@ -193,7 +193,7 @@ void Game_Map::Setup(int _id) {
 			break;
 		}
 		if (parent_index < 0) {
-			Output::Warning("Map %d has invalid parent id %d!", Data::treemap.maps[current_index].parent_map);
+			Output::Warning("Map %d has invalid parent id %d!", Data::treemap.maps[current_index].ID, Data::treemap.maps[current_index].parent_map);
 			break;
 		}
 		current_index = parent_index;
