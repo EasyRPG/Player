@@ -34,8 +34,6 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
-
 	DrawableType GetType() const override;
 
 	/** Update the animation to the next animation **/
@@ -67,6 +65,8 @@ public:
 	bool IsOnlySound() const;
 
 protected:
+	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
+
 	virtual void SetFlash(int r, int g, int b, int p) = 0;
 	void DrawAt(int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
