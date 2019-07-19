@@ -54,6 +54,10 @@ Scene_Battle::~Scene_Battle() {
 }
 
 void Scene_Battle::Start() {
+	// RPG_RT will cancel any active screen flash from the map, including
+	// wiping out all flash LSD chunks.
+	Main_Data::game_screen->FlashOnce(0, 0, 0, 0, 0);
+
 	if (Game_Battle::battle_test.enabled) {
 		Game_Temp::battle_troop_id = Game_Battle::battle_test.troop_id;
 	}
