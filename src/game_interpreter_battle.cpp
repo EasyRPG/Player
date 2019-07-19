@@ -291,7 +291,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		}
 
 		if (battler_target) {
-			frames = Game_Battle::ShowBattleAnimation(animation_id, battler_target);
+			frames = Game_Battle::ShowBattleAnimation(animation_id, { battler_target });
 		}
 	}
 

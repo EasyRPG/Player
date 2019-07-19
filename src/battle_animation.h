@@ -64,11 +64,10 @@ public:
 	bool IsDone() const;
 
 	/** @return true if the animation only plays audio and doesn't display **/
-	bool ShouldOnlySound() const;
+	bool IsOnlySound() const;
 
 protected:
 	virtual void SetFlash(int r, int g, int b, int p) = 0;
-	virtual bool ShouldScreenFlash() const = 0;
 	void DrawAt(int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
 	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
@@ -78,7 +77,7 @@ protected:
 	void UpdateTargetFlash();
 	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
-	bool should_only_sound;
+	bool only_sound;
 	const RPG::Animation& animation;
 	int frame;
 	int num_frames;
@@ -96,7 +95,6 @@ public:
 	void Draw() override;
 protected:
 	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
 	void DrawSingle();
 	void DrawGlobal();
 
@@ -105,17 +103,14 @@ protected:
 };
 
 // For playing animations against a (group of) battlers in battle.
-class BattleAnimationBattlers : public BattleAnimation {
+class BattleAnimationBattle : public BattleAnimation {
 public:
-	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
-	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
-	~BattleAnimationBattlers() override;
+	BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
+	~BattleAnimationBattle() override;
 	void Draw() override;
 protected:
 	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
 	std::vector<Game_Battler*> battlers;
-	bool should_flash;
 };
 
 inline int BattleAnimation::GetFrame() const {
@@ -137,6 +132,11 @@ inline int BattleAnimation::GetRealFrames() const {
 inline bool BattleAnimation::IsDone() const {
 	return GetFrame() >= GetFrames();
 }
+
+inline bool BattleAnimation::IsOnlySound() const {
+	return only_sound;
+}
+
 
 
 #endif

@@ -222,7 +222,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 					Output::Warning("Invalid battle animation ID %d", ext->animation_id);
 					animation.reset();
 				} else {
-					animation.reset(new BattleAnimationBattlers(*battle_anim, *battler));
+					animation.reset(new BattleAnimationBattle(*battle_anim, { battler }));
 					animation->SetZ(GetZ());
 				}
 			}

@@ -32,7 +32,7 @@
 #include "game_temp.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
-	animation(anim), frame(0), should_only_sound(only_sound)
+	animation(anim), frame(0), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
 	if (cutoff >= 0 && cutoff < num_frames) {
@@ -145,14 +145,14 @@ void BattleAnimation::DrawAt(int x, int y) {
 	}
 }
 
-bool BattleAnimation::ShouldOnlySound() const {
-	return should_only_sound;
-}
-
 void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) {
+	if (IsOnlySound()) {
+		return;
+	}
+
 	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
 		target_flash_timing = &timing - animation.timings.data();
-	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
+	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen) {
 		screen_flash_timing = &timing - animation.timings.data();
 	}
 }
@@ -160,8 +160,9 @@ void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) 
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
-	if (ShouldOnlySound())
+	if (IsOnlySound()) {
 		return;
+	}
 
 	// Flash.
 	ProcessAnimationFlash(timing);
@@ -243,8 +244,10 @@ BattleAnimationMap::~BattleAnimationMap() {
 	Graphics::RemoveDrawable(this);
 }
 void BattleAnimationMap::Draw() {
-	if (ShouldOnlySound())
+	if (IsOnlySound()) {
 		return;
+	}
+
 	if (global) {
 		DrawGlobal();
 	} else {
@@ -283,25 +286,18 @@ void BattleAnimationMap::SetFlash(int r, int g, int b, int p) {
 	target.Flash(r, g, b, p, 0);
 }
 
-bool BattleAnimationMap::ShouldScreenFlash() const { return true; }
-
 /////////
 
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash, bool only_sound, int cutoff_frame) :
-	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
+BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
+	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash, bool only_sound, int cutoff_frame) :
-	BattleAnimation(anim, only_sound, cutoff_frame), battlers(batts), should_flash(flash)
-{
-	Graphics::RegisterDrawable(this);
-}
-BattleAnimationBattlers::~BattleAnimationBattlers() {
+BattleAnimationBattle::~BattleAnimationBattle() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationBattlers::Draw() {
-	if (ShouldOnlySound())
+void BattleAnimationBattle::Draw() {
+	if (IsOnlySound())
 		return;
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
@@ -319,7 +315,7 @@ void BattleAnimationBattlers::Draw() {
 		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
 }
-void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
+void BattleAnimationBattle::SetFlash(int r, int g, int b, int p) {
 	auto color = MakeFlashColor(r, g, b, p);
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 	     it != battlers.end(); ++it) {
@@ -328,7 +324,6 @@ void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
 			sprite->Flash(color, 0);
 	}
 }
-bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
 
 void BattleAnimation::SetFrame(int frame) {
 	// Reset pending flash.
