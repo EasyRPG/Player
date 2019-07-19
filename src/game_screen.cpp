@@ -356,12 +356,7 @@ int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool globa
 	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
 
 	if (chara) {
-		chara->SetFlashTimeLeft(0); // Any flash always ends
-		if (global) {
-			animation.reset(new BattleAnimationGlobal(*anim));
-		} else {
-			animation.reset(new BattleAnimationChara(*anim, *chara));
-		}
+		animation.reset(new BattleAnimationMap(*anim, *chara, global));
 	}
 
 	if (start_frame) {

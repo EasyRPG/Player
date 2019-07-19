@@ -234,32 +234,56 @@ static int CalculateOffset(int pos, int target_height) {
 
 /////////
 
-BattleAnimationChara::BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara) :
-	BattleAnimation(anim), character(chara)
+BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global) :
+	BattleAnimation(anim), target(target), global(global)
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationChara::~BattleAnimationChara() {
+BattleAnimationMap::~BattleAnimationMap() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationChara::Draw() {
+void BattleAnimationMap::Draw() {
 	if (ShouldOnlySound())
 		return;
+	if (global) {
+		DrawGlobal();
+	} else {
+		DrawSingle();
+	}
+}
+
+void BattleAnimationMap::DrawGlobal() {
+	// The animations are played at the vertices of a regular grid,
+	// 20 tiles wide by 10 tiles high, independant of the map.
+	// NOTE: not accurate, but see #574
+	const int x_stride = 20 * TILE_SIZE;
+	const int y_stride = 10 * TILE_SIZE;
+	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
+	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
+	for (int y = 0; y != 3; ++y) {
+		for (int x = 0; x != 3; ++x) {
+			DrawAt(x_stride*x - x_offset, y_stride*y - y_offset);
+		}
+	}
+}
+
+void BattleAnimationMap::DrawSingle() {
 	//If animation is targeted on the screen
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2);
 		return;
 	}
 	const int character_height = 24;
-	int vertical_center = character.GetScreenY() - character_height/2;
+	int vertical_center = target.GetScreenY() - character_height/2;
 	int offset = CalculateOffset(animation.position, character_height);
-	DrawAt(character.GetScreenX(), vertical_center + offset);
-}
-void BattleAnimationChara::SetFlash(int r, int g, int b, int p) {
-	character.Flash(r, g, b, p, 0);
+	DrawAt(target.GetScreenX(), vertical_center + offset);
 }
 
-bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
+void BattleAnimationMap::SetFlash(int r, int g, int b, int p) {
+	target.Flash(r, g, b, p, 0);
+}
+
+bool BattleAnimationMap::ShouldScreenFlash() const { return true; }
 
 /////////
 
@@ -305,38 +329,6 @@ void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
 	}
 }
 bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
-
-/////////
-
-BattleAnimationGlobal::BattleAnimationGlobal(const RPG::Animation& anim) :
-	BattleAnimation(anim)
-{
-	Graphics::RegisterDrawable(this);
-}
-BattleAnimationGlobal::~BattleAnimationGlobal() {
-	Graphics::RemoveDrawable(this);
-}
-void BattleAnimationGlobal::Draw() {
-	if (ShouldOnlySound())
-		return;
-	// The animations are played at the vertices of a regular grid,
-	// 20 tiles wide by 10 tiles high, independant of the map.
-	// NOTE: not accurate, but see #574
-	const int x_stride = 20 * TILE_SIZE;
-	const int y_stride = 10 * TILE_SIZE;
-	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
-	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
-	for (int y = 0; y != 3; ++y) {
-		for (int x = 0; x != 3; ++x) {
-			DrawAt(x_stride*x - x_offset, y_stride*y - y_offset);
-		}
-	}
-}
-void BattleAnimationGlobal::SetFlash(int r, int g, int b, int p) {
-	// nop
-}
-bool BattleAnimationGlobal::ShouldScreenFlash() const { return true; }
-
 
 void BattleAnimation::SetFrame(int frame) {
 	// Reset pending flash.

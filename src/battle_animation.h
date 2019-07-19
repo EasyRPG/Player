@@ -88,16 +88,20 @@ protected:
 	FileRequestBinding request_id;
 };
 
-// For playing animations against a character on the map.
-class BattleAnimationChara : public BattleAnimation {
+// For playing animations on the map.
+class BattleAnimationMap : public BattleAnimation {
 public:
-	BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara);
-	~BattleAnimationChara() override;
+	BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global);
+	~BattleAnimationMap() override;
 	void Draw() override;
 protected:
 	virtual void SetFlash(int r, int g, int b, int p) override;
 	bool ShouldScreenFlash() const override;
-	Game_Character& character;
+	void DrawSingle();
+	void DrawGlobal();
+
+	Game_Character& target;
+	bool global = false;
 };
 
 // For playing animations against a (group of) battlers in battle.
@@ -112,17 +116,6 @@ protected:
 	bool ShouldScreenFlash() const override;
 	std::vector<Game_Battler*> battlers;
 	bool should_flash;
-};
-
-// For playing "Show on the entire map" animations.
-class BattleAnimationGlobal : public BattleAnimation {
-public:
-	BattleAnimationGlobal(const RPG::Animation& anim);
-	~BattleAnimationGlobal() override;
-	void Draw() override;
-protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
 };
 
 inline int BattleAnimation::GetFrame() const {
