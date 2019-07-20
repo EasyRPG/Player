@@ -246,6 +246,14 @@ void Game_Screen::UpdateSnowRain(int speed) {
 	}
 }
 
+int Game_Screen::AnimateShake(int strength, int speed, int time_left, int position) {
+	int amplitude = 1 + 2 * strength;
+	int newpos = amplitude * sin((time_left * 4 * (speed + 2)) % 256 * M_PI / 128);
+	int cutoff = (speed * amplitude / 8) + 1;
+
+	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
+}
+
 void Game_Screen::Update() {
 	if (data.tint_time_left > 0) {
 		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
@@ -276,11 +284,7 @@ void Game_Screen::Update() {
 			if (data.shake_time_left < 0 && data.shake_continuous) {
 				data.shake_time_left = kShakeContinuousTimeStart;
 			}
-			int amplitude = 1 + 2 * data.shake_strength;
-			int newpos = amplitude * sin((data.shake_time_left * 4 * (data.shake_speed + 2)) % 256 * M_PI / 128);
-			int cutoff = (data.shake_speed * amplitude / 8) + 1;
-
-			data.shake_position = Utils::Clamp<int>(newpos, data.shake_position - cutoff, data.shake_position + cutoff);
+			data.shake_position = AnimateShake(data.shake_strength, data.shake_speed, data.shake_time_left, data.shake_position);
 		} else {
 			data.shake_position = 0;
 			data.shake_time_left = 0;

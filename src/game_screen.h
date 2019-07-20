@@ -121,6 +121,18 @@ public:
 	 */
 	bool IsBattleAnimationWaiting();
 
+	/**
+	 * Animates the screen shake algorithm given the parameters
+	 *
+	 * @param strength the strength of the shake
+	 * @param speed of the shake
+	 * @param time_left how much time is left in frames
+	 * @param current shake displacement
+	 *
+	 * @return next shake displacement
+	 */
+	static int AnimateShake(int strength, int speed, int time_left, int position);
+
 private:
 	std::vector<std::unique_ptr<Game_Picture>> pictures;
 	std::unique_ptr<BattleAnimation> animation;
