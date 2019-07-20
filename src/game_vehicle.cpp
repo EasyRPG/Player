@@ -47,22 +47,19 @@ void Game_Vehicle::LoadSystemSettings() {
 		case None:
 			break;
 		case Boat:
-			SetSpriteName(Data::system.boat_name);
-			SetSpriteIndex(Data::system.boat_index);
+			SetSpriteGraphic(Data::system.boat_name, Data::system.boat_index);
 			SetMapId(Data::treemap.start.boat_map_id);
 			SetX(Data::treemap.start.boat_x);
 			SetY(Data::treemap.start.boat_y);
 			break;
 		case Ship:
-			SetSpriteName(Data::system.ship_name);
-			SetSpriteIndex(Data::system.ship_index);
+			SetSpriteGraphic(Data::system.ship_name, Data::system.ship_index);
 			SetMapId(Data::treemap.start.ship_map_id);
 			SetX(Data::treemap.start.ship_x);
 			SetY(Data::treemap.start.ship_y);
 			break;
 		case Airship:
-			SetSpriteName(Data::system.airship_name);
-			SetSpriteIndex(Data::system.airship_index);
+			SetSpriteGraphic(Data::system.airship_name, Data::system.airship_index);
 			SetMapId(Data::treemap.start.airship_map_id);
 			SetX(Data::treemap.start.airship_x);
 			SetY(Data::treemap.start.airship_y);

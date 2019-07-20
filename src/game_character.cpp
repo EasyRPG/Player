@@ -371,7 +371,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 				Game_Map::Refresh();
 				break;
 			case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
-				SetGraphic(move_command.parameter_string, move_command.parameter_a);
+				SetSpriteGraphic(move_command.parameter_string, move_command.parameter_a);
 				break;
 			case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)" && move_command.parameter_string != "(Brak)") {
@@ -842,13 +842,6 @@ int Game_Character::GetBushDepth() const {
 	}
 
 	return Game_Map::GetBushDepth(GetX(), GetY());
-}
-
-void Game_Character::SetGraphic(const std::string& name, int index) {
-	if (GetSpriteName() != name || GetSpriteIndex() != index) {
-		SetSpriteName(name);
-		SetSpriteIndex(index);
-	}
 }
 
 void Game_Character::Flash(int r, int g, int b, int power, int frames) {
