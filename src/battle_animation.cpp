@@ -177,8 +177,11 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 			break;
 		case RPG::AnimationTiming::ScreenShake_screen:
 			Game_Screen* screen = Main_Data::game_screen.get();
-			// FIXME: 8,7,3 are made up
-			screen->ShakeOnce(8, 7, 3);
+			// FIXME: This is not proven accurate. Screen captures show that
+			// the shake effect lasts for 16 animation frames (32 real frames).
+			// The maximum offset observed was 6 or 7, which makes these numbers
+			// seem reasonable.
+			screen->ShakeOnce(3, 5, 32);
 			break;
 		}
 	}
