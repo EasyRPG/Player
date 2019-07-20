@@ -593,10 +593,7 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::ActionSelectedCallback(Game_Battler* for_battler) {
-	if (for_battler->GetBattleAlgorithm() == nullptr) {
-		Output::Debug("Tried to add a nullptr battle action!");
-		std::abort();
-	}
+	assert(for_battler->GetBattleAlgorithm() != nullptr);
 	battle_actions.push_back(for_battler);
 
 	if (for_battler->GetType() == Game_Battler::Type_Ally) {
