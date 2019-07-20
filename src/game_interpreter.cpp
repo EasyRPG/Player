@@ -1803,6 +1803,7 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(RPG::EventCommand const& com)
 	int vehicle_index = com.parameters[1];
 
 	vehicle->SetSpriteGraphic(name, vehicle_index);
+	vehicle->SetOrigSpriteGraphic(name, vehicle_index);
 
 	return true;
 }

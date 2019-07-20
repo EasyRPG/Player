@@ -72,6 +72,20 @@ public:
 	void UpdateAnimationShip();
 	void UpdateAnimationAirship();
 
+	/**
+	 * Sets default sprite name. Usually the name of the graphic file.
+	 *
+	 * @param sprite_name new sprite name
+	 * @param index the index of the new sprite.
+	 */
+	void SetOrigSpriteGraphic(std::string sprite_name, int index);
+
+	/** Gets the original sprite graphic name */
+	const std::string& GetOrigSpriteName() const;
+
+	/** Gets the original sprite graphic index */
+	int GetOrigSpriteIndex() const;
+
 protected:
 	RPG::SaveVehicleLocation* data();
 	const RPG::SaveVehicleLocation* data() const;
@@ -85,6 +99,11 @@ inline RPG::SaveVehicleLocation* Game_Vehicle::data() {
 
 inline const RPG::SaveVehicleLocation* Game_Vehicle::data() const {
 	return static_cast<const RPG::SaveVehicleLocation*>(Game_Character::data());
+}
+
+inline void Game_Vehicle::SetOrigSpriteGraphic(std::string sprite_name, int index) {
+	data()->orig_sprite_name = std::move(sprite_name);
+	data()->orig_sprite_id = index;
 }
 
 #endif
