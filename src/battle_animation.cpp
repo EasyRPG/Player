@@ -173,7 +173,8 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 		case RPG::AnimationTiming::ScreenShake_nothing:
 			break;
 		case RPG::AnimationTiming::ScreenShake_target:
-			// TODO: shake the targets
+			// FIXME: Estimate, see below for screen shake.
+			ShakeTargets(3, 5, 32);
 			break;
 		case RPG::AnimationTiming::ScreenShake_screen:
 			Game_Screen* screen = Main_Data::game_screen.get();
@@ -219,7 +220,7 @@ void BattleAnimation::UpdateScreenFlash() {
 void BattleAnimation::UpdateTargetFlash() {
 	int r, g, b, p;
 	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
-	SetFlash(r, g, b, p);
+	FlashTargets(r, g, b, p);
 }
 
 // For handling the vertical position.
@@ -285,8 +286,11 @@ void BattleAnimationMap::DrawSingle() {
 	DrawAt(target.GetScreenX(), vertical_center + offset);
 }
 
-void BattleAnimationMap::SetFlash(int r, int g, int b, int p) {
+void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
 	target.Flash(r, g, b, p, 0);
+}
+
+void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
 }
 
 /////////
@@ -318,13 +322,18 @@ void BattleAnimationBattle::Draw() {
 		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
 }
-void BattleAnimationBattle::SetFlash(int r, int g, int b, int p) {
+void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
 	auto color = MakeFlashColor(r, g, b, p);
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-	     it != battlers.end(); ++it) {
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+	for (auto& battler: battlers) {
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
 		if (sprite)
 			sprite->Flash(color, 0);
+	}
+}
+
+void BattleAnimationBattle::ShakeTargets(int str, int spd, int time) {
+	for (auto& battler: battlers) {
+		battler->ShakeOnce(str, spd, time);
 	}
 }
 

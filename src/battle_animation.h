@@ -67,7 +67,8 @@ public:
 protected:
 	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
 
-	virtual void SetFlash(int r, int g, int b, int p) = 0;
+	virtual void FlashTargets(int r, int g, int b, int p) = 0;
+	virtual void ShakeTargets(int str, int spd, int time) = 0;
 	void DrawAt(int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
 	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
@@ -94,7 +95,8 @@ public:
 	~BattleAnimationMap() override;
 	void Draw() override;
 protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
+	void FlashTargets(int r, int g, int b, int p) override;
+	void ShakeTargets(int str, int spd, int time) override;
 	void DrawSingle();
 	void DrawGlobal();
 
@@ -109,7 +111,8 @@ public:
 	~BattleAnimationBattle() override;
 	void Draw() override;
 protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
+	void FlashTargets(int r, int g, int b, int p) override;
+	void ShakeTargets(int str, int spd, int time) override;
 	std::vector<Game_Battler*> battlers;
 };
 
