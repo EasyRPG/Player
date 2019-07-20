@@ -74,7 +74,6 @@ void Game_Party::SetupBattleTestMembers() {
 		actor->SetHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 	}
-	data().party_size = data().party.size();
 
 	Main_Data::game_player->Refresh();
 }
@@ -403,7 +402,6 @@ void Game_Party::AddActor(int actor_id) {
 	if (data().party.size() >= 4)
 		return;
 	data().party.push_back((int16_t)actor_id);
-	data().party_size = data().party.size();
 	Main_Data::game_player->Refresh();
 }
 
@@ -411,13 +409,11 @@ void Game_Party::RemoveActor(int actor_id) {
 	if (!IsActorInParty(actor_id))
 		return;
 	data().party.erase(std::find(data().party.begin(), data().party.end(), actor_id));
-	data().party_size = data().party.size();
 	Main_Data::game_player->Refresh();
 }
 
 void Game_Party::Clear() {
 	data().party.clear();
-	data().party_size = 0;
 }
 
 bool Game_Party::IsActorInParty(int actor_id) {
@@ -612,7 +608,6 @@ void Game_Party::RemoveInvalidData() {
 			Output::Warning("Removing invalid party member %d", *it);
 		}
 	}
-	data().party_size = data().party.size();
 
 	// Remove non existing items
 	for (it = data().item_ids.begin(); it != data().item_ids.end(); ) {
