@@ -56,6 +56,7 @@ void Scene_GameBrowser::Continue(SceneType prev_scene) {
 	AudioSeCache::Clear();
 	Data::Clear();
 	Main_Data::Cleanup();
+	FileFinder::Quit();
 
 	Player::game_title = "";
 	Player::engine = Player::EngineNone;
