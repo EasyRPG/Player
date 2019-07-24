@@ -793,6 +793,11 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 }
 
 void Bitmap::Clear() {
+	if (!pixels()) {
+		// Happens when height or width of bitmap are 0
+		return;
+	}
+
 	memset(pixels(), '\0', height() * pitch());
 }
 
