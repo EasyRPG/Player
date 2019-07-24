@@ -7,26 +7,34 @@ bin_PROGRAMS = easyrpg-player
 
 noinst_LIBRARIES = libeasyrpg-player.a
 libeasyrpg_player_a_SOURCES = \
+	src/3ds_ui.cpp \
+	src/3ds_ui.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
-	src/audio_al.cpp \
-	src/audio_al.h \
-	src/audio_sdl_mixer.cpp \
-	src/audio_sdl_mixer.h \
-	src/audio_sdl.cpp \
-	src/audio_sdl.h \
 	src/audio.cpp \
 	src/audio.h \
+	src/audio_3ds.cpp \
+	src/audio_3ds.h \
+	src/audio_al.cpp \
+	src/audio_al.h \
 	src/audio_decoder.cpp \
 	src/audio_decoder.h \
 	src/audio_generic.cpp \
 	src/audio_generic.h \
 	src/audio_libretro.cpp \
 	src/audio_libretro.h \
+	src/audio_psp2.cpp \
+	src/audio_psp2.h \
 	src/audio_resampler.cpp \
 	src/audio_resampler.h \
+	src/audio_sdl.cpp \
+	src/audio_sdl.h \
+	src/audio_sdl_mixer.cpp \
+	src/audio_sdl_mixer.h \
 	src/audio_secache.cpp \
 	src/audio_secache.h \
+	src/audio_switch.cpp \
+	src/audio_switch.h \
 	src/background.cpp \
 	src/background.h \
 	src/baseui.cpp \
@@ -35,11 +43,17 @@ libeasyrpg_player_a_SOURCES = \
 	src/battle_animation.h \
 	src/bitmap.cpp \
 	src/bitmap.h \
+	src/bitmapfont.h \
+	src/bitmapfont_wqy.cpp \
+	src/bitmapfont_ttyp0.cpp \
+	src/bitmapfont_rmg2000.cpp \
 	src/bitmap_hslrgb.h \
 	src/cache.cpp \
 	src/cache.h \
 	src/color.cpp \
 	src/color.h \
+	src/decoder_fmmidi.cpp \
+	src/decoder_fmmidi.h \
 	src/decoder_libsndfile.cpp \
 	src/decoder_libsndfile.h \
 	src/decoder_mpg123.cpp \
@@ -48,8 +62,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/decoder_oggvorbis.h \
 	src/decoder_opus.cpp \
 	src/decoder_opus.h \
-	src/decoder_fmmidi.cpp \
-	src/decoder_fmmidi.h \
 	src/decoder_wav.cpp \
 	src/decoder_wav.h \
 	src/decoder_wildmidi.cpp \
@@ -92,10 +104,10 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_enemyparty.h \
 	src/game_event.cpp \
 	src/game_event.h \
-	src/game_interpreter_battle.cpp \
-	src/game_interpreter_battle.h \
 	src/game_interpreter.cpp \
 	src/game_interpreter.h \
+	src/game_interpreter_battle.cpp \
+	src/game_interpreter_battle.h \
 	src/game_interpreter_map.cpp \
 	src/game_interpreter_map.h \
 	src/game_map.cpp \
@@ -135,16 +147,16 @@ libeasyrpg_player_a_SOURCES = \
 	src/image_png.h \
 	src/image_xyz.cpp \
 	src/image_xyz.h \
+	src/input.cpp \
+	src/input.h \
+	src/input_buttons.h \
 	src/input_buttons_desktop.cpp \
 	src/input_buttons_gekko.cpp \
-	src/input_buttons.h \
 	src/input_buttons_libretro.cpp \
 	src/input_buttons_opendingux.cpp \
 	src/input_buttons_psp.cpp \
 	src/input_source.cpp \
 	src/input_source.h \
-	src/input.cpp \
-	src/input.h \
 	src/keys.h \
 	src/libretro_ui.cpp \
 	src/libretro_ui.h \
@@ -164,14 +176,18 @@ libeasyrpg_player_a_SOURCES = \
 	src/plane.h \
 	src/player.cpp \
 	src/player.h \
+	src/psp2_ui.cpp \
+	src/psp2_ui.h \
 	src/rect.cpp \
 	src/rect.h \
 	src/registry.cpp \
-	src/registry_wine.cpp \
 	src/registry.h \
+	src/registry_wine.cpp \
 	src/rtp.cpp \
 	src/rtp.h \
 	src/rtp_table.cpp \
+	src/scene.cpp \
+	src/scene.h \
 	src/scene_actortarget.cpp \
 	src/scene_actortarget.h \
 	src/scene_battle.cpp \
@@ -180,7 +196,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_battle_rpg2k.h \
 	src/scene_battle_rpg2k3.cpp \
 	src/scene_battle_rpg2k3.h \
-	src/scene.cpp \
 	src/scene_debug.cpp \
 	src/scene_debug.h \
 	src/scene_end.cpp \
@@ -193,7 +208,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/scene_gamebrowser.h \
 	src/scene_gameover.cpp \
 	src/scene_gameover.h \
-	src/scene.h \
 	src/scene_item.cpp \
 	src/scene_item.h \
 	src/scene_load.cpp \
@@ -226,12 +240,10 @@ libeasyrpg_player_a_SOURCES = \
 	src/sdl2_ui.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
-	src/bitmapfont.h \
 	src/shinonome_gothic.cpp \
 	src/shinonome_mincho.cpp \
-	src/bitmapfont_wqy.cpp \
-	src/bitmapfont_ttyp0.cpp \
-	src/bitmapfont_rmg2000.cpp \
+	src/sprite.cpp \
+	src/sprite.h \
 	src/sprite_airshipshadow.h \
 	src/sprite_airshipshadow.cpp \
 	src/sprite_battler.cpp \
@@ -240,14 +252,14 @@ libeasyrpg_player_a_SOURCES = \
 	src/sprite_character.h \
 	src/sprite_timer.cpp \
 	src/sprite_timer.h \
-	src/sprite.cpp \
-	src/sprite.h \
 	src/spriteset_battle.cpp \
 	src/spriteset_battle.h \
 	src/spriteset_map.cpp \
 	src/spriteset_map.h \
 	src/state.cpp \
 	src/state.h \
+	src/switch_ui.cpp \
+	src/switch_ui.h \
 	src/system.h \
 	src/teleport_target.h \
 	src/text.cpp \
@@ -269,6 +281,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/version.h \
 	src/weather.cpp \
 	src/weather.h \
+	src/window.cpp \
+	src/window.h \
 	src/window_about.cpp \
 	src/window_about.h \
 	src/window_actorinfo.cpp \
@@ -291,7 +305,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_battlestatus.h \
 	src/window_command.cpp \
 	src/window_command.h \
-	src/window.cpp \
 	src/window_equip.cpp \
 	src/window_equip.h \
 	src/window_equipitem.cpp \
@@ -304,7 +317,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_gamelist.h \
 	src/window_gold.cpp \
 	src/window_gold.h \
-	src/window.h \
 	src/window_help.cpp \
 	src/window_help.h \
 	src/window_item.cpp \
@@ -325,10 +337,10 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_savefile.h \
 	src/window_selectable.cpp \
 	src/window_selectable.h \
-	src/window_shopbuy.cpp \
-	src/window_shopbuy.h \
 	src/window_shop.cpp \
 	src/window_shop.h \
+	src/window_shopbuy.cpp \
+	src/window_shopbuy.h \
 	src/window_shopnumber.cpp \
 	src/window_shopnumber.h \
 	src/window_shopparty.cpp \

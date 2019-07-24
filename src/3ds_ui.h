@@ -18,6 +18,8 @@
 #ifndef EP_3DS_UI_H
 #define EP_3DS_UI_H
 
+#ifdef _3DS
+
 // Headers
 #include "baseui.h"
 #include "color.h"
@@ -85,5 +87,7 @@ private:
 #endif
 	
 };
+
+#endif
 
 #endif
