@@ -64,11 +64,11 @@ EXEReader::~EXEReader() {
 }
 
 static uint32_t djb2_hash(char* str, size_t length) {
-    uint32_t hash = 5381;
+	uint32_t hash = 5381;
 	for (size_t i = 0; i < length; ++i) {
-        hash = ((hash << 5) + hash) + str[i];
+		hash = ((hash << 5) + hash) + (uint8_t)str[i];
 	}
-    return hash;
+	return hash;
 }
 
 static std::vector<uint8_t> exe_reader_perform_exfont_save(std::istream& corefile, uint32_t position, uint32_t len) {
@@ -122,7 +122,7 @@ static std::vector<uint8_t> exe_reader_perform_exfont_save(std::istream& corefil
 	}
 
 	// Check if the ExFont is the original through a fast hash function
-	if (djb2_hash((char*)exfont.data() + header_size, exfont.size() - header_size) != 0xf90c5cde) {
+	if (djb2_hash((char*)exfont.data() + header_size, exfont.size() - header_size) != 0x491e19de) {
 		Output::Debug("EXEReader: Custom ExFont found");
 	}
 

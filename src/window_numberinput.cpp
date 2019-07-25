@@ -38,10 +38,10 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	// Above the message window
 	SetZ(Priority_Window + 150);
 	opacity = 0;
-	ResetIndex();
 	active = false;
 	show_operator = false;
 
+	ResetIndex();
 	Refresh();
 	UpdateCursorRect();
 }
