@@ -127,6 +127,9 @@ namespace Game_Map {
 	 */
 	void Refresh();
 
+	/** Actions to perform after finishing a battle */
+	void OnContinueFromBattle();
+
 	/**
 	 * Scrolls the map view right.
 	 *

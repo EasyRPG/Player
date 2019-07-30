@@ -349,6 +349,7 @@ void Scene_Debug::Update() {
 							Game_Character *player = Main_Data::game_player.get();
 							Game_Battle::SetTerrainId(Game_Map::GetTerrainTag(player->GetX(), player->GetY()));
 							Game_Map::SetupBattle();
+							Game_Temp::battle_random_encounter = false;
 							Game_Temp::battle_troop_id = GetIndex();
 							Game_Temp::battle_formation = 0;
 							Game_Temp::battle_escape_mode = 2;

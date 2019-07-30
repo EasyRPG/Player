@@ -489,7 +489,7 @@ int Game_Battle::GetDeathHandlerCommonEvent() {
 TeleportTarget Game_Battle::GetDeathHandlerTeleport() {
 	auto& db = Data::battlecommands;
 	if (HasDeathHandler() && db.death_teleport) {
-		return TeleportTarget(db.death_teleport_id, db.death_teleport_x, db.death_teleport_y, db.death_teleport_face -1, TeleportTarget::eSkillTeleport);
+		return TeleportTarget(db.death_teleport_id, db.death_teleport_x, db.death_teleport_y, db.death_teleport_face -1, TeleportTarget::eParallelTeleport);
 	}
 	return {};
 }
