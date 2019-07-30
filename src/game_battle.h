@@ -21,6 +21,7 @@
 #include <functional>
 #include "rpg_system.h"
 #include "rpg_troop.h"
+#include "teleport_target.h"
 
 class Game_Battler;
 class Game_Interpreter;
@@ -187,6 +188,15 @@ namespace Game_Battle {
 	};
 
 	extern struct BattleTest battle_test;
+
+	/** @return true if a death handler is installed */
+	bool HasDeathHandler();
+
+	/** @return death handler common event if one is installed, otherwise 0 */
+	int GetDeathHandlerCommonEvent();
+
+	/** @return death teleport handler if one is installed, otherwise an inactive target */
+	TeleportTarget GetDeathHandlerTeleport();
 }
 
 #endif

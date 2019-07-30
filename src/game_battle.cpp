@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cassert>
 #include "data.h"
+#include "player.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
 #include "game_message.h"
@@ -468,4 +469,27 @@ int Game_Battle::GetEnemyTargetIndex() {
 
 void Game_Battle::SetNeedRefresh(bool refresh) {
 	need_refresh = refresh;
+}
+
+bool Game_Battle::HasDeathHandler() {
+	// RPG Maker Editor always sets both death_handler and death_handler_unused chunks.
+	// However, RPG_RT will only trigger death handler based on the death_handler chunk.
+	auto& db = Data::battlecommands;
+	return Player::IsRPG2k3() && db.death_handler;
+}
+
+int Game_Battle::GetDeathHandlerCommonEvent() {
+	auto& db = Data::battlecommands;
+	if (HasDeathHandler()) {
+		return db.death_event;
+	}
+	return 0;
+}
+
+TeleportTarget Game_Battle::GetDeathHandlerTeleport() {
+	auto& db = Data::battlecommands;
+	if (HasDeathHandler() && db.death_teleport) {
+		return TeleportTarget(db.death_teleport_id, db.death_teleport_x, db.death_teleport_y, db.death_teleport_face -1, TeleportTarget::eSkillTeleport);
+	}
+	return {};
 }
