@@ -139,22 +139,22 @@ void Window_Shop::Refresh() {
 			leave_index = idx++;
 			break;
 		case Scene_Shop::Buy:
-			contents->TextDraw(0, 2, Font::ColorDefault, buy_select);
+			contents->TextDraw(x, 2, Font::ColorDefault, buy_select);
 			break;
 		case Scene_Shop::BuyHowMany:
-			contents->TextDraw(0, 2, Font::ColorDefault, buy_number);
+			contents->TextDraw(x, 2, Font::ColorDefault, buy_number);
 			break;
 		case Scene_Shop::Bought:
-			contents->TextDraw(0, 2, Font::ColorDefault, purchased);
+			contents->TextDraw(x, 2, Font::ColorDefault, purchased);
 			break;
 		case Scene_Shop::Sell:
-			contents->TextDraw(0, 2, Font::ColorDefault, sell_select);
+			contents->TextDraw(x, 2, Font::ColorDefault, sell_select);
 			break;
 		case Scene_Shop::SellHowMany:
-			contents->TextDraw(0, 2, Font::ColorDefault, sell_number);
+			contents->TextDraw(x, 2, Font::ColorDefault, sell_number);
 			break;
 		case Scene_Shop::Sold:
-			contents->TextDraw(0, 2, Font::ColorDefault, sold_msg);
+			contents->TextDraw(x, 2, Font::ColorDefault, sold_msg);
 			break;
 	}
 }

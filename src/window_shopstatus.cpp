@@ -34,21 +34,20 @@ Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
 void Window_ShopStatus::Refresh() {
 	contents->Clear();
 
+	int number = 0;
+	int equipped = 0;
+
 	if (item_id != 0) {
-		int number = Main_Data::game_party->GetItemCount(item_id);
-
-		contents->TextDraw(0, 2, 1, Data::terms.possessed_items);
-		contents->TextDraw(0, 18, 1, Data::terms.equipped_items);
-
-		std::stringstream ss;
-		ss << number;
-
-		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Text::AlignRight);
-
-		ss.str("");
-		ss << Main_Data::game_party->GetEquippedItemCount(item_id);
-		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Text::AlignRight);
+		number = Main_Data::game_party->GetItemCount(item_id);
+		equipped = Main_Data::game_party->GetEquippedItemCount(item_id);
 	}
+
+	contents->TextDraw(0, 2, 1, Data::terms.possessed_items);
+	contents->TextDraw(0, 18, 1, Data::terms.equipped_items);
+
+	contents->TextDraw(120, 2, Font::ColorDefault, std::to_string(number), Text::AlignRight);
+
+	contents->TextDraw(120, 18, Font::ColorDefault, std::to_string(equipped), Text::AlignRight);
 }
 
 void Window_ShopStatus::SetItemId(int new_item_id) {
