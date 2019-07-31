@@ -2548,40 +2548,44 @@ bool Game_Interpreter::CommandPlayMemorizedBGM(RPG::EventCommand const& /* com *
 int Game_Interpreter::KeyInputState::CheckInput() const {
 	auto check = wait ? Input::IsTriggered : Input::IsPressed;
 
-	if (keys[Keys::eDown] && check(Input::DOWN)) {
-		return 1;
-	}
-	if (keys[Keys::eLeft] && check(Input::LEFT)) {
-		return 2;
-	}
-	if (keys[Keys::eRight] && check(Input::RIGHT)) {
-		return 3;
-	}
-	if (keys[Keys::eUp] && check(Input::UP)) {
-		return 4;
-	}
-	if (keys[Keys::eDecision] && check(Input::DECISION)) {
-		return 5;
-	}
-	if (keys[Keys::eCancel] && check(Input::CANCEL)) {
-		return 6;
-	}
-	if (keys[Keys::eShift] && check(Input::SHIFT)) {
-		return 7;
+	// RPG processes keys from highest variable value to lowest.
+	if (keys[Keys::eOperators]) {
+		for (int i = 5; i > 0;) {
+			--i;
+			if (check((Input::InputButton)(Input::PLUS + i))) {
+				return 20 + i;
+			}
+		}
 	}
 	if (keys[Keys::eNumbers]) {
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 10; i > 0;) {
+			--i;
 			if (check((Input::InputButton)(Input::N0 + i))) {
 				return 10 + i;
 			}
 		}
 	}
-	if (keys[Keys::eOperators]) {
-		for (int i = 0; i < 5; ++i) {
-			if (check((Input::InputButton)(Input::PLUS + i))) {
-				return 20 + i;
-			}
-		}
+
+	if (keys[Keys::eShift] && check(Input::SHIFT)) {
+		return 7;
+	}
+	if (keys[Keys::eCancel] && check(Input::CANCEL)) {
+		return 6;
+	}
+	if (keys[Keys::eDecision] && check(Input::DECISION)) {
+		return 5;
+	}
+	if (keys[Keys::eUp] && check(Input::UP)) {
+		return 4;
+	}
+	if (keys[Keys::eRight] && check(Input::RIGHT)) {
+		return 3;
+	}
+	if (keys[Keys::eLeft] && check(Input::LEFT)) {
+		return 2;
+	}
+	if (keys[Keys::eDown] && check(Input::DOWN)) {
+		return 1;
 	}
 
 	return 0;
