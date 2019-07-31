@@ -2596,7 +2596,14 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 	assert(frame);
 	auto& index = frame->current_command;
 
+	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
+
+	if (wait) {
+		// While waiting the variable is reset to 0 each frame.
+		Game_Variables.Set(var_id, 0);
+		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
+	}
 
 	// FIXME: Is this valid?
 	if (wait && Game_Message::visible)
@@ -2604,7 +2611,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	_keyinput = {};
 	_keyinput.wait = wait;
-	_keyinput.variable = com.parameters[0];
+	_keyinput.variable = var_id;
 
 	_keyinput.keys[Keys::eDecision] = com.parameters[3] != 0;
 	_keyinput.keys[Keys::eCancel] = com.parameters[4] != 0;
