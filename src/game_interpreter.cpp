@@ -3064,7 +3064,9 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 		new_frame.current_command = 0;
 		new_frame.event_id = 0;
 
-		_state.stack.push_back(new_frame);
+		if (!new_frame.commands.empty()) {
+			_state.stack.push_back(new_frame);
+		}
 		return true;
 	}
 	case 1: // Map Event
@@ -3095,7 +3097,9 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	new_frame.current_command = 0;
 	new_frame.event_id = event->GetId();
 
-	_state.stack.push_back(new_frame);
+	if (!new_frame.commands.empty()) {
+		_state.stack.push_back(new_frame);
+	}
 
 	return true;
 }

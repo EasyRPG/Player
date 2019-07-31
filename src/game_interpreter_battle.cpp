@@ -102,7 +102,9 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 	new_frame.current_command = 0;
 	new_frame.event_id = 0;
 
-	_state.stack.push_back(new_frame);
+	if (!new_frame.commands.empty()) {
+		_state.stack.push_back(new_frame);
+	}
 
 	return true;
 }
