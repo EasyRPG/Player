@@ -121,11 +121,11 @@ void Game_Map::Init() {
 	last_map_id = -1;
 }
 
-void Game_Map::Dispose() {
+void Game_Map::Dispose(bool clear_screen) {
 	events.clear();
 	pending.clear();
 
-	if (Main_Data::game_screen) {
+	if (Main_Data::game_screen && clear_screen) {
 		Main_Data::game_screen->Reset();
 	}
 
@@ -140,8 +140,8 @@ void Game_Map::Quit() {
 	interpreter.reset();
 }
 
-void Game_Map::Setup(int _id) {
-	Dispose();
+void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
+	Dispose(tt != TeleportTarget::eVehicleHackTeleport);
 	SetupCommon(_id, false);
 	map_info.encounter_rate = GetMapInfo().encounter_steps;
 	SetEncounterSteps(0);
@@ -211,7 +211,17 @@ void Game_Map::Setup(int _id) {
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 
 	if (interpreter) {
-		interpreter->OnMapChange();
+		if (tt == TeleportTarget::eVehicleHackTeleport) {
+			// If you do a vehicle teleport to a map where the event id at the
+			// base of the call stack doesn't exist on the new map, RPG_RT will crash.
+			// This emulates that behavior.
+			auto event_id = interpreter->GetOriginalEventId();
+			if (event_id != 0 && GetEvent(event_id) == nullptr) {
+				Output::Error("Did a vehicle teleport to a map without event %d", event_id);
+			}
+		} else {
+			interpreter->OnMapChange();
+		}
 	}
 }
 

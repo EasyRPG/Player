@@ -59,15 +59,18 @@ namespace Game_Map {
 
 	/**
 	 * Disposes Game_Map.
+	 *
+	 * @param clear_screen clear the screen.
 	 */
-	void Dispose();
+	void Dispose(bool clear_screen = true);
 
 	/**
 	 * Setups a map.
 	 *
 	 * @param map_id map ID.
+	 * @param tt the type of teleport used to setup the map
 	 */
-	void Setup(int map_id);
+	void Setup(int map_id, TeleportTarget::Type tt = TeleportTarget::eNormalTeleport);
 
 	/**
 	 * Setups a map from a savegame.

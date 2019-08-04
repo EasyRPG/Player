@@ -1913,7 +1913,7 @@ bool Game_Interpreter::CommandSetVehicleLocation(RPG::EventCommand const& com) {
 			vehicle->SetPosition(map_id, x, y);
 		}
 
-		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1);
+		Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, TeleportTarget::eVehicleHackTeleport);
 
 		// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 		if (!main_flag)

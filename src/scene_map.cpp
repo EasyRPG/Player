@@ -293,7 +293,7 @@ void Scene_Map::StartPendingTeleport() {
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!Graphics::IsTransitionErased()) {
+	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
@@ -335,14 +335,21 @@ void Scene_Map::FinishPendingTeleport() {
 		return;
 	}
 
-	if (teleport_from_other_scene) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
-	} else {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+	if (Graphics::IsTransitionErased()) {
+		if (teleport_from_other_scene) {
+			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+		} else {
+			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+		}
 	}
 
 	// Call any requested scenes when transition is done.
-	async_continuation = [&]() { UpdateSceneCalling(); };
+	if (IsAsyncPending()) {
+		async_continuation = [&]() { UpdateSceneCalling(); };
+		return;
+	} else {
+		UpdateSceneCalling();
+	}
 }
 
 // Scene calling stuff.
