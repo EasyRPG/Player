@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include "audio.h"
 #include "game_map.h"
 #include "game_battle.h"
@@ -47,61 +48,28 @@
 #include "game_interpreter_map.h"
 #include "reader_lcf.h"
 
-Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
-}
-
-bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventExecFrame>& save, int _index) {
+void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
 	Clear();
-	if (_index < (int)save.size()) {
-		event_id = save[_index].event_id;
-		if (event_id != 0) {
-			// When 0 the event is from a different map
-			map_id = Game_Map::GetMapId();
-		}
-		list = save[_index].commands;
-		index = save[_index].current_command;
-		triggered_by_decision_key = save[_index].triggered_by_decision_key;
-
-		child_interpreter.reset(new Game_Interpreter_Map());
-		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _index + 1);
-		if (!result) {
-			child_interpreter.reset();
-		}
-		return true;
-	}
-	return false;
+	_state = save;
+	_keyinput.fromSave(save);
 }
 
-std::vector<RPG::SaveEventExecFrame> Game_Interpreter_Map::GetSaveData() const {
-	std::vector<RPG::SaveEventExecFrame> save;
-
-	const Game_Interpreter_Map* save_interpreter = this;
-
-	int i = 1;
-
-	if (save_interpreter->list.empty()) {
-		return save;
+void Game_Interpreter_Map::OnMapChange() {
+	// When we change the map, we reset all event id's to 0.
+	for (auto& frame: _state.stack) {
+		frame.event_id = 0;
 	}
-
-	while (save_interpreter != NULL) {
-		RPG::SaveEventExecFrame save_commands;
-		save_commands.commands = save_interpreter->list;
-		save_commands.current_command = save_interpreter->index;
-		save_commands.ID = i++;
-		save_commands.event_id = event_id;
-		save_commands.triggered_by_decision_key = triggered_by_decision_key;
-		save.push_back(save_commands);
-		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
-	}
-
-	return save;
 }
 
 /**
  * Execute Command.
  */
 bool Game_Interpreter_Map::ExecuteCommand() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
 	if (index >= list.size()) {
 		return CommandEnd();
 	}
@@ -171,6 +139,10 @@ bool Game_Interpreter_Map::ExecuteCommand() {
  * Commands
  */
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
@@ -234,6 +206,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	continuation = NULL;
 
 	switch (Game_Temp::battle_result) {
@@ -323,6 +299,10 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	continuation = nullptr;
 	if (!Game_Temp::shop_handlers) {
 		index++;
@@ -445,6 +425,10 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -491,6 +475,10 @@ bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& 
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Graphics::IsTransitionPending())
 		return false;
 
@@ -516,6 +504,10 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -542,6 +534,10 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -599,8 +595,9 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 		break;
 	}
 
-	if (waiting_pan_screen)
-		wait_count = distance * (2 << (6 - speed));
+	if (waiting_pan_screen) {
+		_state.wait_time = distance * (2 << (6 - speed));
+	}
 
 	return true;
 }
@@ -621,7 +618,7 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 		return true;
 
 	if (evt_id == Game_Character::CharThisEvent)
-		evt_id = event_id;
+		evt_id = GetThisEventId();
 
 	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
 
@@ -651,7 +648,8 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code 11340
-	return !Game_Map::IsAnyMovePending();
+	_state.wait_movement = true;
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
@@ -674,6 +672,10 @@ bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com */) { // code 11910
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -684,6 +686,10 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com */) { // code 11950
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -694,6 +700,10 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com */) {
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}

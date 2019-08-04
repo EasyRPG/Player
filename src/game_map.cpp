@@ -69,7 +69,6 @@ namespace {
 	std::unique_ptr<RPG::Map> map;
 
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
-	std::vector<std::shared_ptr<Game_Interpreter> > free_interpreters;
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
@@ -98,7 +97,7 @@ void Game_Map::Init() {
 	refresh_type = Refresh_All;
 
 	location.map_id = 0;
-	interpreter.reset(new Game_Interpreter_Map(0, true));
+	interpreter.reset(new Game_Interpreter_Map(true));
 	map_info.encounter_rate = 0;
 
 	common_events.clear();
@@ -210,13 +209,17 @@ void Game_Map::Setup(int _id) {
 	Game_System::SetAllowSave(can_save != RPG::MapInfo::TriState_forbid);
 	Game_System::SetAllowEscape(can_escape != RPG::MapInfo::TriState_forbid);
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
+
+	if (interpreter) {
+		interpreter->OnMapChange();
+	}
 }
 
 void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id, true);
 
 	// Make main interpreter "busy" if save contained events to prevent auto-events from starting
-	interpreter->SetupFromSave(Main_Data::game_data.foreground_event_execstate.stack);
+	interpreter->SetState(Main_Data::game_data.foreground_event_execstate);
 
 	events.reserve(map->events.size());
 	for (size_t i = 0; i < map->events.size(); ++i) {
@@ -341,7 +344,7 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 }
 
 void Game_Map::PrepareSave() {
-	Main_Data::game_data.foreground_event_execstate.stack = interpreter->GetSaveData();
+	Main_Data::game_data.foreground_event_execstate = interpreter->GetState();
 
 	map_info.events.clear();
 	map_info.events.reserve(events.size());
@@ -391,12 +394,6 @@ void Game_Map::Refresh() {
 		for (Game_Event& ev : events) {
 			ev.Refresh();
 		}
-
-		if (refresh_type == Refresh_All) {
-			for (Game_CommonEvent& ev : common_events) {
-				ev.Refresh();
-			}
-		}
 	}
 
 	refresh_type = Refresh_None;
@@ -405,10 +402,6 @@ void Game_Map::Refresh() {
 Game_Interpreter_Map& Game_Map::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
-}
-
-void Game_Map::ReserveInterpreterDeletion(std::shared_ptr<Game_Interpreter> interpreter) {
-	free_interpreters.push_back(interpreter);
 }
 
 void Game_Map::ScrollRight(int distance) {
@@ -1027,7 +1020,6 @@ void Game_Map::Update(bool is_preupdate) {
 		do_map_event = !do_map_event;
 	}
 
-	free_interpreters.clear();
 	Parallax::Update();
 }
 

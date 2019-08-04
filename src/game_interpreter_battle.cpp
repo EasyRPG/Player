@@ -30,13 +30,18 @@
 #include "game_temp.h"
 #include "game_map.h"
 #include "spriteset_battle.h"
+#include <cassert>
 
-Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
-	Game_Interpreter(depth, main_flag) {
-}
+Game_Interpreter_Battle::Game_Interpreter_Battle()
+	: Game_Interpreter(true) {}
 
 // Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
 	if (index >= list.size()) {
 		return CommandEnd();
 	}
@@ -78,9 +83,6 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 // Commands
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
-	if (child_interpreter)
-		return false;
-
 	int evt_id = com.parameters[0];
 
 	Game_CommonEvent* common_event = ReaderUtil::GetElement(Game_Map::GetCommonEvents(), evt_id);
@@ -89,8 +91,20 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 		return true;
 	}
 
-	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
-	child_interpreter->Setup(common_event, 0);
+	if ((int)_state.stack.size() > call_stack_limit) {
+		Output::Error("Call Event limit (%d) has been exceeded", call_stack_limit);
+	}
+
+	RPG::SaveEventExecFrame new_frame;
+
+	new_frame.ID = _state.stack.size() + 1;
+	new_frame.commands = common_event->GetList();
+	new_frame.current_command = 0;
+	new_frame.event_id = 0;
+
+	if (!new_frame.commands.empty()) {
+		_state.stack.push_back(new_frame);
+	}
 
 	return true;
 }

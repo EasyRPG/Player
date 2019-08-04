@@ -27,6 +27,8 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 #include "command_codes.h"
+#include "rpg_saveeventexecstate.h"
+#include "flag_set.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -41,7 +43,7 @@ namespace RPG {
 class Game_Interpreter
 {
 public:
-	Game_Interpreter(int _depth = 0, bool _main_flag = false);
+	Game_Interpreter(bool _main_flag = false);
 #ifndef EMSCRIPTEN
 	// No idea why but emscripten will complain about a missing destructor when
 	// using virtual here
@@ -70,32 +72,39 @@ public:
 
 	virtual bool ExecuteCommand();
 
-protected:
-	friend class Game_Interpreter_Map;
 
-	int depth;
+	/**
+	 * Returns a SaveEventExecState needed for the savefile.
+	 *
+	 * @return interpreter commands stored in SaveEventCommands
+	 */
+	RPG::SaveEventExecState GetState() const;
+
+protected:
+	static constexpr int loop_limit = 10000;
+	static constexpr int call_stack_limit = 1000;
+
+	const RPG::SaveEventExecFrame* GetFrame() const;
+	RPG::SaveEventExecFrame* GetFrame();
+
+	/** @return the event_id of the current frame */
+	int GetCurrentEventId() const;
+
+	/** @return the event_id used by "ThisEvent" in commands */
+	int GetThisEventId() const;
+
+	/** @return the event_id of the event at the base of the call stack */
+	int GetOriginalEventId() const;
+
 	bool main_flag;
 
 	int loop_count;
 	bool wait_messages;
 
-	unsigned int index;
-	int map_id;
-	unsigned int event_id;
-	int wait_count;
-
-	std::unique_ptr<Game_Interpreter> child_interpreter;
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 
-	std::vector<RPG::EventCommand> list;
-
-	int button_timer;
 	bool waiting_battle_anim;
-	bool updating;
-	bool clear_child;
-
-	bool triggered_by_decision_key = false;
 
 	/**
 	 * Gets strings for choice selection.
@@ -116,8 +125,6 @@ protected:
 
 	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
 	void SetContinuation(ContinuationFunction func);
-
-	void CancelMenuCall();
 
 	/**
 	 * Sets up a wait (and closes the message box)
@@ -230,23 +237,58 @@ protected:
 
 	void OnChangeSystemGraphicReady(FileRequestResult* result);
 
-	struct {
-		int x = 0;
-		int y = 0;
-		// nullptr when common event
-		const RPG::EventPage* page = nullptr;
-	} event_info;
-
 	FileRequestBinding request_id;
+	enum class Keys {
+		eDown,
+		eLeft,
+		eRight,
+		eUp,
+		eDecision,
+		eCancel,
+		eShift,
+		eNumbers,
+		eOperators
+	};
 
+	struct KeyInputState {
+		FlagSet<Keys> keys = {};
+		int variable = 0;
+		int time_variable = 0;
+		int wait_frames = 0;
+		bool wait = false;
+		bool timed = false;
+
+		int CheckInput() const;
+		void fromSave(const RPG::SaveEventExecState& save);
+		void toSave(RPG::SaveEventExecState& save) const;
+	};
+
+	RPG::SaveEventExecState _state;
+	KeyInputState _keyinput;
 };
+
+inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
+	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
+}
+
+inline RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() {
+	return !_state.stack.empty() ? &_state.stack.back() : nullptr;
+}
+
+inline int Game_Interpreter::GetCurrentEventId() const {
+	return !_state.stack.empty() ? _state.stack.back().event_id : 0;
+}
+
+inline int Game_Interpreter::GetOriginalEventId() const {
+	return !_state.stack.empty() ? _state.stack.front().event_id : 0;
+}
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
 }
 
 inline bool Game_Interpreter::IsRunningMapEvent() const {
-	return event_id != 0;
+	return GetOriginalEventId() != 0;
 }
 
 #endif

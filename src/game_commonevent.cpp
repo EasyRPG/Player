@@ -25,22 +25,15 @@
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 	common_event_id(common_event_id) {
+
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		interpreter.reset(new Game_Interpreter_Map());
+	}
 }
 
 void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
-	if (!data.stack.empty()) {
-		interpreter.reset(new Game_Interpreter_Map());
-		interpreter->SetupFromSave(data.stack);
-	}
-
-	Refresh();
-}
-
-void Game_CommonEvent::Refresh() {
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		if (!interpreter) {
-			interpreter.reset(new Game_Interpreter_Map());
-		}
+	if (interpreter && !data.stack.empty()) {
+		interpreter->SetState(data);
 	}
 }
 
@@ -80,13 +73,11 @@ std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 }
 
 RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
-	RPG::SaveEventExecState event_data;
-
+	RPG::SaveEventExecState state;
 	if (interpreter) {
-		event_data.stack = interpreter->GetSaveData();
+		state = interpreter->GetState();
 	}
-
-	return event_data;
+	return state;
 }
 
 bool Game_CommonEvent::IsWaitingExecution(RPG::EventPage::Trigger trigger) const {

@@ -63,7 +63,7 @@ namespace {
 }
 
 void Game_Battle::Init() {
-	interpreter.reset(new Game_Interpreter_Battle(0, true));
+	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle());
 	animation.reset();
 

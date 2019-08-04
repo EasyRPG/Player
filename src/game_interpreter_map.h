@@ -23,7 +23,7 @@
 #include <vector>
 #include "game_character.h"
 #include "rpg_eventcommand.h"
-#include "rpg_saveeventexecframe.h"
+#include "rpg_saveeventexecstate.h"
 #include "system.h"
 #include "game_interpreter.h"
 
@@ -36,24 +36,20 @@ class Game_CommonEvent;
 class Game_Interpreter_Map : public Game_Interpreter
 {
 public:
-	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
+	using Game_Interpreter::Game_Interpreter;
 
 	/**
-	 * Parses a SaveEventCommand to create an interpreter.
+	 * Sets up the interpreter with given state.
 	 *
 	 * @param save event to load.
-	 * @param index index in the event list.
 	 *
-	 * @return If the setup was successful (fails when index out of range)
 	 */
-	bool SetupFromSave(const std::vector<RPG::SaveEventExecFrame>& save, int index = 0);
+	void SetState(const RPG::SaveEventExecState& save);
 
 	/**
-	 * Generates a SaveEventCommands vector needed for the savefile.
-	 *
-	 * @return interpreter commands stored in SaveEventCommands
+	 * Called when we change maps.
 	 */
-	std::vector<RPG::SaveEventExecFrame> GetSaveData() const;
+	void OnMapChange();
 
 	bool ExecuteCommand() override;
 

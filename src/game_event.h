@@ -24,7 +24,7 @@
 #include "game_character.h"
 #include "rpg_event.h"
 #include "rpg_savemapevent.h"
-#include "game_interpreter.h"
+#include "game_interpreter_map.h"
 
 /**
  * Game_Event class.
@@ -53,7 +53,7 @@ public:
 	/**
 	 * Does refresh.
 	 */
-	void Refresh();
+	void Refresh(bool from_save = false);
 
 	void Setup(const RPG::EventPage* new_page);
 	void SetupFromSave(const RPG::EventPage* new_page);
@@ -198,12 +198,9 @@ private:
 	// reference.
 	std::unique_ptr<RPG::SaveMapEvent> _data_copy;
 
-	int trigger = -1;
 	RPG::Event event;
 	const RPG::EventPage* page = nullptr;
-	std::vector<RPG::EventCommand> list;
-	std::shared_ptr<Game_Interpreter> interpreter;
-	bool from_save;
+	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
 
 inline RPG::SaveMapEvent* Game_Event::data() {

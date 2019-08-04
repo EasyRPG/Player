@@ -31,12 +31,12 @@
 #include "player.h"
 #include "utils.h"
 #include <cmath>
+#include <cassert>
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Game_Character(Event, new RPG::SaveMapEvent()),
 	_data_copy(this->data()),
-	event(event),
-	from_save(false)
+	event(event)
 {
 	SetMapId(map_id);
 	SetMoveSpeed(3);
@@ -45,10 +45,10 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 }
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& orig_data) :
+	//FIXME: This will leak if Game_Character() throws.
 	Game_Character(Event, new RPG::SaveMapEvent(orig_data)),
 	_data_copy(this->data()),
-	event(event),
-	from_save(true)
+	event(event)
 {
 	// Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
@@ -57,10 +57,10 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 
 	if (!data()->parallel_event_execstate.stack.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data()->parallel_event_execstate.stack);
+		interpreter->SetState(data()->parallel_event_execstate);
 	}
 
-	Refresh();
+	Refresh(true);
 }
 
 int Game_Event::GetOriginalMoveRouteIndex() const {
@@ -81,14 +81,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	const RPG::EventPage* old_page = page;
 	page = new_page;
 
-	// Free resources if needed
-	if (interpreter) {
-		// If the new page is null and the interpreter is running, it should
-		// carry on executing its command list during this frame
-		if (page)
-			interpreter->Clear();
-		Game_Map::ReserveInterpreterDeletion(interpreter);
-		interpreter.reset();
+	// If the new page is null and the interpreter is running, it should
+	// carry on executing its command list during this frame
+	if (interpreter && page) {
+		interpreter->Clear();
 	}
 
 	SetPaused(false);
@@ -97,8 +93,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 		SetSpriteName("");
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
-		trigger = -1;
-		list.clear();
 		return;
 	}
 
@@ -135,10 +129,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetTransparency(page->translucent ? 3 : 0);
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
-	trigger = page->trigger;
-	list = page->event_commands;
 
-	if (trigger == RPG::EventPage::Trigger_parallel) {
+	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 }
@@ -147,28 +139,22 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	page = new_page;
 
 	if (page == nullptr) {
-		trigger = -1;
-		list.clear();
-		interpreter.reset();
 		return;
 	}
 
 	original_move_frequency = page->move_frequency;
-	trigger = page->trigger;
-	list = page->event_commands;
 
 	// Trigger parallel events when the interpreter wasn't already running
 	// (because it was the middle of a parallel event while saving)
-	if (!interpreter && trigger == RPG::EventPage::Trigger_parallel) {
+	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
 }
 
-void Game_Event::Refresh() {
+void Game_Event::Refresh(bool from_save) {
 	if (!data()->active) {
 		if (from_save) {
 			SetVisible(false);
-			from_save = false;
 		}
 		return;
 	}
@@ -193,7 +179,6 @@ void Game_Event::Refresh() {
 	// don't setup event, already done
 	if (from_save) {
 		SetupFromSave(new_page);
-		from_save = false;
 	}
 	else if (new_page != this->page) {
 		ClearWaitingForegroundExecution();
@@ -296,13 +281,14 @@ bool Game_Event::WasStartedByDecisionKey() const {
 }
 
 RPG::EventPage::Trigger Game_Event::GetTrigger() const {
+	int trigger = page ? page->trigger : -1;
 	return static_cast<RPG::EventPage::Trigger>(trigger);
 }
 
 
 bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decision_key) {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || !data()->active) {
+	if (GetList().empty() || !data()->active) {
 		return false;
 	}
 
@@ -317,8 +303,10 @@ bool Game_Event::SetAsWaitingForegroundExecution(bool face_hero, bool by_decisio
 	return true;
 }
 
+static std::vector<RPG::EventCommand> _empty_list = {};
+
 const std::vector<RPG::EventCommand>& Game_Event::GetList() const {
-	return list;
+	return page ? page->event_commands : _empty_list;
 }
 
 void Game_Event::OnFinishForegroundEvent() {
@@ -329,7 +317,7 @@ void Game_Event::OnFinishForegroundEvent() {
 }
 
 void Game_Event::CheckEventAutostart() {
-	if (trigger == RPG::EventPage::Trigger_auto_start
+	if (GetTrigger() == RPG::EventPage::Trigger_auto_start
 			&& GetRemainingStep() == 0) {
 		SetAsWaitingForegroundExecution(false, false);
 		return;
@@ -337,7 +325,7 @@ void Game_Event::CheckEventAutostart() {
 }
 
 void Game_Event::CheckEventCollision() {
-	if (trigger == RPG::EventPage::Trigger_collision
+	if (GetTrigger() == RPG::EventPage::Trigger_collision
 			&& GetLayer() != RPG::EventPage::Layers_same
 			&& !Main_Data::game_player->IsMoveRouteOverwritten()
 			&& !Game_Map::GetInterpreter().IsRunning()
@@ -351,7 +339,7 @@ void Game_Event::CheckEventCollision() {
 void Game_Event::OnMoveFailed(int x, int y) {
 	if (Main_Data::game_player->InAirship()
 			|| GetLayer() != RPG::EventPage::Layers_same
-			|| trigger != RPG::EventPage::Trigger_collision) {
+			|| GetTrigger() != RPG::EventPage::Trigger_collision) {
 		return;
 	}
 
@@ -515,7 +503,8 @@ void Game_Event::Update() {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (trigger == RPG::EventPage::Trigger_parallel && interpreter) {
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		assert(interpreter != nullptr);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(this);
 		}
@@ -562,7 +551,7 @@ const RPG::EventPage *Game_Event::GetActivePage() const {
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
-		data()->parallel_event_execstate.stack = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+		data()->parallel_event_execstate = interpreter->GetState();
 	}
 	data()->ID = event.ID;
 
