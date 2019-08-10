@@ -211,15 +211,7 @@ void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
 	Game_System::SetAllowTeleport(can_teleport != RPG::MapInfo::TriState_forbid);
 
 	if (interpreter) {
-		if (tt == TeleportTarget::eVehicleHackTeleport) {
-			// If you do a vehicle teleport to a map where the event id at the
-			// base of the call stack doesn't exist on the new map, RPG_RT will crash.
-			// This emulates that behavior.
-			auto event_id = interpreter->GetOriginalEventId();
-			if (event_id != 0 && GetEvent(event_id) == nullptr) {
-				Output::Error("Did a vehicle teleport to a map without event %d", event_id);
-			}
-		} else {
+		if (tt != TeleportTarget::eVehicleHackTeleport) {
 			interpreter->OnMapChange();
 		}
 	}

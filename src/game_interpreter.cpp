@@ -713,11 +713,13 @@ bool Game_Interpreter::CommandEnd() { // code 10
         _state.stack.pop_back();
 	}
 
-
-	if (main_flag && is_original_event && event_id > 0) {
+	if (is_original_event && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
-		if (evnt)
+		if (!evnt) {
+			Output::Error("Call stack finished with invalid event id %d. This can be caused by a vehicle teleport?", event_id);
+		} else if (main_flag) {
 			evnt->OnFinishForegroundEvent();
+		}
 	}
 
 	Scene::instance->onCommandEnd();
