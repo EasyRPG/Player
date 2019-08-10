@@ -257,6 +257,9 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 		//Move route is finished
 		if (current_index >= last_move_route_index) {
 			if (current_route.repeat) {
+				if (IsMoveRouteOverwritten()) {
+					SetMoveRouteRepeated(true);
+				}
 				current_index = 0;
 			} else {
 				if (IsMoveRouteOverwritten()) {
@@ -269,9 +272,6 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 
 		// Repeating move route will end after doing one full cycle in a single frame.
 		if (num_cmds_processed >= current_route.move_commands.size()) {
-			if (IsMoveRouteOverwritten() && current_route.repeat) {
-				SetMoveRouteRepeated(true);
-			}
 			break;
 		}
 
@@ -412,6 +412,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 
 		++current_index;
 		++num_cmds_processed;
+
 		if(!is_move_route_possible()) {
 			break;
 		}
