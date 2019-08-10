@@ -708,13 +708,14 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	//}
 
 	frame->commands.clear();
+	int event_id = frame->event_id;
 	if (_state.stack.size() > 1) {
         _state.stack.pop_back();
 	}
 
 
-	if (main_flag && is_original_event && frame->event_id > 0) {
-		Game_Event* evnt = Game_Map::GetEvent(frame->event_id);
+	if (main_flag && is_original_event && event_id > 0) {
+		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (evnt)
 			evnt->OnFinishForegroundEvent();
 	}
