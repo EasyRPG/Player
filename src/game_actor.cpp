@@ -1212,46 +1212,56 @@ std::string Game_Actor::GetClassName() const {
     return GetClass()->name;
 }
 
+static int ClampMaxHpMod(int hp, const Game_Actor* actor) {
+	auto limit = actor->MaxHpValue();
+	return Utils::Clamp(hp, -limit, limit);
+}
+
+static int ClampStatMod(int value, const Game_Actor* actor) {
+	auto limit = actor->MaxStatBaseValue();
+	return Utils::Clamp(value, -limit, limit);
+}
+
 void Game_Actor::SetBaseMaxHp(int maxhp) {
 	int new_hp_mod = GetData().hp_mod + (maxhp - GetBaseMaxHp());
-	GetData().hp_mod = new_hp_mod;
+	GetData().hp_mod = ClampMaxHpMod(new_hp_mod, this);
 
 	SetHp(GetData().current_hp);
 }
 
 void Game_Actor::SetBaseMaxSp(int maxsp) {
 	int new_sp_mod = GetData().sp_mod + (maxsp - GetBaseMaxSp());
-	GetData().sp_mod = new_sp_mod;
+	GetData().sp_mod = ClampStatMod(new_sp_mod, this);
 
 	SetSp(GetData().current_sp);
 }
 
 void Game_Actor::SetHp(int hp) {
-	GetData().current_hp = min(max(hp, 0), GetMaxHp());
+	GetData().current_hp = Utils::Clamp(hp, 0, GetMaxHp());
 }
 
 void Game_Actor::SetSp(int sp) {
-	GetData().current_sp = min(max(sp, 0), GetMaxSp());
+	GetData().current_sp = Utils::Clamp(sp, 0, GetMaxSp());
 }
 
 void Game_Actor::SetBaseAtk(int atk) {
 	int new_attack_mod = GetData().attack_mod + (atk - GetBaseAtk());
-	GetData().attack_mod = new_attack_mod;
+	GetData().attack_mod = ClampStatMod(new_attack_mod, this);
 }
 
 void Game_Actor::SetBaseDef(int def) {
 	int new_defense_mod = GetData().defense_mod + (def - GetBaseDef());
-	GetData().defense_mod = new_defense_mod;
+	GetData().defense_mod = ClampStatMod(new_defense_mod, this);
 }
 
 void Game_Actor::SetBaseSpi(int spi) {
 	int new_spirit_mod = GetData().spirit_mod + (spi - GetBaseSpi());
-	GetData().spirit_mod = new_spirit_mod;
+	GetData().spirit_mod = ClampStatMod(new_spirit_mod, this);
 }
 
 void Game_Actor::SetBaseAgi(int agi) {
 	int new_agility_mod = GetData().agility_mod + (agi - GetBaseAgi());
-	GetData().agility_mod = new_agility_mod;
+	GetData().agility_mod = ClampStatMod(new_agility_mod, this);
 }
 
 Game_Actor::RowType Game_Actor::GetBattleRow() const {
