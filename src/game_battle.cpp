@@ -51,7 +51,6 @@ namespace Game_Battle {
 }
 
 namespace {
-	int turn;
 	std::vector<bool> page_executed;
 	int terrain_id;
 	int battle_mode;
@@ -68,7 +67,7 @@ void Game_Battle::Init() {
 	animation.reset();
 
 	Game_Temp::battle_running = true;
-	turn = 0;
+	Main_Data::game_data.inventory.turns = 0;
 	terminate = false;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
@@ -249,7 +248,7 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 		}
 	}
 
-	++turn;
+	++Main_Data::game_data.inventory.turns;
 }
 
 void Game_Battle::UpdateGauges() {
@@ -280,7 +279,7 @@ void Game_Battle::ChangeBackground(const std::string& name) {
 }
 
 int Game_Battle::GetTurn() {
-	return turn;
+	return Main_Data::game_data.inventory.turns;
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {

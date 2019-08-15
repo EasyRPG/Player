@@ -259,8 +259,9 @@ public:
 	 * Sets sprite name. Usually the name of the graphic file.
 	 *
 	 * @param sprite_name new sprite name
+	 * @param index the index of the new sprite.
 	 */
-	void SetSpriteName(std::string sprite_name);
+	void SetSpriteGraphic(std::string sprite_name, int index);
 
 	/**
 	 * Gets sprite index of character.
@@ -268,13 +269,6 @@ public:
 	 * @return sprite index
 	 */
 	int GetSpriteIndex() const;
-
-	/**
-	 * Sets sprite index of character.
-	 *
-	 * @param index new sprite index
-	 */
-	void SetSpriteIndex(int index);
 
 	/**
 	 * Gets animation frame of character.
@@ -802,8 +796,6 @@ public:
 	 */
 	int GetBushDepth() const;
 
-	void SetGraphic(const std::string& name, int index);
-
 	enum CharsID {
 		CharPlayer		= 10001,
 		CharBoat		= 10002,
@@ -981,16 +973,13 @@ inline const std::string& Game_Character::GetSpriteName() const {
 	return data()->sprite_name;
 }
 
-inline void Game_Character::SetSpriteName(std::string sprite_name) {
+inline void Game_Character::SetSpriteGraphic(std::string sprite_name, int index) {
 	data()->sprite_name = std::move(sprite_name);
+	data()->sprite_id = index;
 }
 
 inline int Game_Character::GetSpriteIndex() const {
 	return data()->sprite_id;
-}
-
-inline void Game_Character::SetSpriteIndex(int index) {
-	data()->sprite_id = index;
 }
 
 inline int Game_Character::GetAnimFrame() const {

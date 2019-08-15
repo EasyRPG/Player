@@ -450,15 +450,13 @@ void Game_Player::Refresh() {
 	Game_Actor* actor;
 
 	if (Main_Data::game_party->GetActors().empty()) {
-		SetSpriteName("");
-		SetSpriteIndex(0);
+		SetSpriteGraphic("", 0);
 		return;
 	}
 
 	actor = Main_Data::game_party->GetActors()[0];
 
-	SetSpriteName(actor->GetSpriteName());
-	SetSpriteIndex(actor->GetSpriteIndex());
+	SetSpriteGraphic(actor->GetSpriteName(), actor->GetSpriteIndex());
 
 	if (data()->aboard)
 		GetVehicle()->SyncWithPlayer();

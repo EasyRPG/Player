@@ -90,14 +90,12 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetPaused(false);
 
 	if (page == nullptr) {
-		SetSpriteName("");
-		SetSpriteIndex(0);
+		SetSpriteGraphic("", 0);
 		SetDirection(RPG::EventPage::Direction_down);
 		return;
 	}
 
-	SetSpriteName(page->character_name);
-	SetSpriteIndex(page->character_index);
+	SetSpriteGraphic(page->character_name, page->character_index);
 
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);

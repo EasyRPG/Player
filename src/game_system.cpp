@@ -34,8 +34,6 @@
 namespace {
 	FileRequestBinding music_request_id;
 	std::map<std::string, FileRequestBinding> se_request_ids;
-	/** When true (BgmFade called) always forces a BGM_Play even when the same music is used */
-	bool force_bgm_play = false;
 
 	/**
 	 * Determines if the requested file is supposed to Stop BGM/SE play.
@@ -103,7 +101,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	// (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		// Same music: Only adjust volume and speed
-		if (!force_bgm_play && previous_music.name == bgm.name) {
+		if (!data.music_stopping && previous_music.name == bgm.name) {
 			if (previous_music.volume != data.current_music.volume) {
 				if (!bgm_pending) { // Delay if not ready
 					Audio().BGM_Volume(data.current_music.volume);
@@ -125,7 +123,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 		BgmStop();
 	}
 
-	force_bgm_play = false;
+	data.music_stopping = false;
 }
 
 void Game_System::BgmStop() {
@@ -136,7 +134,7 @@ void Game_System::BgmStop() {
 
 void Game_System::BgmFade(int duration) {
 	Audio().BGM_Fade(duration);
-	force_bgm_play = true;
+	data.music_stopping = true;
 }
 
 void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {

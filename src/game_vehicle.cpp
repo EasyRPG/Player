@@ -47,22 +47,19 @@ void Game_Vehicle::LoadSystemSettings() {
 		case None:
 			break;
 		case Boat:
-			SetSpriteName(Data::system.boat_name);
-			SetSpriteIndex(Data::system.boat_index);
+			SetSpriteGraphic(Data::system.boat_name, Data::system.boat_index);
 			SetMapId(Data::treemap.start.boat_map_id);
 			SetX(Data::treemap.start.boat_x);
 			SetY(Data::treemap.start.boat_y);
 			break;
 		case Ship:
-			SetSpriteName(Data::system.ship_name);
-			SetSpriteIndex(Data::system.ship_index);
+			SetSpriteGraphic(Data::system.ship_name, Data::system.ship_index);
 			SetMapId(Data::treemap.start.ship_map_id);
 			SetX(Data::treemap.start.ship_x);
 			SetY(Data::treemap.start.ship_y);
 			break;
 		case Airship:
-			SetSpriteName(Data::system.airship_name);
-			SetSpriteIndex(Data::system.airship_index);
+			SetSpriteGraphic(Data::system.airship_name, Data::system.airship_index);
 			SetMapId(Data::treemap.start.airship_map_id);
 			SetX(Data::treemap.start.airship_x);
 			SetY(Data::treemap.start.airship_y);
@@ -266,4 +263,39 @@ void Game_Vehicle::Update() {
 
 int Game_Vehicle::GetVehicleType() const {
 	return data()->vehicle;
+}
+
+const std::string& Game_Vehicle::GetOrigSpriteName() const {
+	if (!data()->orig_sprite_name.empty()) {
+		return data()->orig_sprite_name;
+	}
+	switch (GetVehicleType()) {
+		case Boat:
+			return Data::system.boat_name;
+		case Ship:
+			return Data::system.ship_name;
+		case Airship:
+			return Data::system.airship_name;
+		default:
+			break;
+	}
+	static const std::string _sentinel = {};
+	return _sentinel;
+}
+
+int Game_Vehicle::GetOrigSpriteIndex() const {
+	if (!data()->orig_sprite_name.empty()) {
+		return data()->orig_sprite_id;
+	}
+	switch (GetVehicleType()) {
+		case Boat:
+			return Data::system.boat_index;
+		case Ship:
+			return Data::system.ship_index;
+		case Airship:
+			return Data::system.airship_index;
+		default:
+			break;
+	}
+	return 0;
 }
