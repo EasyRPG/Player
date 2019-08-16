@@ -148,7 +148,6 @@ protected:
 
 	void RemoveActionsForNonExistantBattlers();
 	void RemoveCurrentAction();
-	virtual void onCommandEnd() override;
 
 	void CallDebug();
 

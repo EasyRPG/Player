@@ -722,8 +722,6 @@ bool Game_Interpreter::CommandEnd() { // code 10
 		}
 	}
 
-	Scene::instance->onCommandEnd();
-
 	return true;
 }
 

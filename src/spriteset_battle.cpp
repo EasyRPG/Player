@@ -73,8 +73,9 @@ void Spriteset_Battle::Update() {
 	Tone new_tone = Main_Data::game_screen->GetTone();
 
 	// Handle background change
-	if (background_name != Game_Battle::background_name) {
-		background_name = Game_Battle::background_name;
+	const auto& current_bg = Game_Battle::GetBackground();
+	if (background_name != current_bg) {
+		background_name = current_bg;
 		if (!background_name.empty()) {
 			background.reset(new Background(Game_Temp::battle_background));
 		} else {

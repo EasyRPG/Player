@@ -278,6 +278,19 @@ void Game_Battle::ChangeBackground(const std::string& name) {
 	background_name = name;
 }
 
+const std::string& Game_Battle::GetBackground() {
+	return background_name;
+}
+
+int Game_Battle::GetEscapeFailureCount() {
+	return escape_fail_count;
+}
+
+void Game_Battle::IncEscapeFailureCount() {
+	++escape_fail_count;
+}
+
+
 int Game_Battle::GetTurn() {
 	return Main_Data::game_data.inventory.turns;
 }

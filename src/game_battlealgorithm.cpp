@@ -1902,7 +1902,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		float to_hit = std::max(0.0f, 1.5f - ((float)enemy_agi / ally_agi));
 
 		// Every failed escape is worth 10% higher escape chance
-		to_hit += Game_Battle::escape_fail_count * 0.1f;
+		to_hit += Game_Battle::GetEscapeFailureCount() * 0.1f;
 
 		to_hit *= 100;
 		this->success = Utils::PercentChance((int)to_hit);
@@ -1913,7 +1913,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 
 void Game_BattleAlgorithm::Escape::Apply() {
 	if (!this->success) {
-		Game_Battle::escape_fail_count += 1;
+		Game_Battle::IncEscapeFailureCount();
 	}
 
 	if (source->GetType() == Game_Battler::Type_Enemy) {

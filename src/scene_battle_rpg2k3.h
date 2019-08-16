@@ -78,6 +78,7 @@ public:
 protected:
 	void OnSystem2Ready(FileRequestResult* result);
 	void CreateUi() override;
+	void InitBattleTest() override;
 
 	void CreateBattleTargetWindow();
 	void CreateBattleCommandWindow();

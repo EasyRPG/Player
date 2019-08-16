@@ -101,6 +101,12 @@ namespace Game_Battle {
 
 	void ChangeBackground(const std::string& name);
 
+	const std::string& GetBackground();
+
+	int GetEscapeFailureCount();
+
+	void IncEscapeFailureCount();
+
 	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
 
@@ -170,9 +176,6 @@ namespace Game_Battle {
 	 * @param refresh need refresh state.
 	 */
 	void SetNeedRefresh(bool refresh);
-
-	extern int escape_fail_count;
-	extern std::string background_name;
 
 	struct BattleTest {
 		bool enabled = false;
