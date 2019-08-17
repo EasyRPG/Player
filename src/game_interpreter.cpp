@@ -386,10 +386,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				result = (this->*continuation)(list[index]);
 			}
 
-			if (result)
-				continue;
-			else
+			if (!result) {
 				break;
+			}
 		}
 
 		if (Game_Map::GetNeedRefresh()) {
