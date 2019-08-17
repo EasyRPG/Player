@@ -3088,6 +3088,11 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 		break;
 	}
 
+	// Jump past the Cmd::Loop to the first command.
+	if (index < (int)frame->commands.size()) {
+		++index;
+	}
+
 	return true;
 }
 
