@@ -816,37 +816,39 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	Game_Message::texts.push_back(com.string);
 	line_count++;
 
-	for (; index + 1 < list.size(); index++) {
-		// If next event command is the following parts of the message
-		if (list[index+1].code == Cmd::ShowMessage_2) {
-			// Add second (another) line
-			line_count++;
-			Game_Message::texts.push_back(list[index+1].string);
-		} else {
-			// If next event command is show choices
-			if (list[index+1].code == Cmd::ShowChoice) {
-				std::vector<std::string> s_choices = GetChoices();
-				// If choices fit on screen
-				if (s_choices.size() <= (4 - line_count)) {
-					index++;
-					Game_Message::choice_start = line_count;
-					Game_Message::choice_cancel_type = list[index].parameters[0];
-					SetupChoices(s_choices, com.indent);
-				}
-			} else if (list[index+1].code == Cmd::InputNumber) {
-				// If next event command is input number
-				// If input number fits on screen
-				if (line_count < 4) {
-					index++;
-					Game_Message::num_input_start = line_count;
-					Game_Message::num_input_digits_max = list[index].parameters[0];
-					Game_Message::num_input_variable_id = list[index].parameters[1];
-				}
-			}
+	++index;
 
-			break;
+	// Check for continued lines via ShowMessage_2
+	while (index < list.size() && list[index].code == Cmd::ShowMessage_2) {
+		// Add second (another) line
+		line_count++;
+		Game_Message::texts.push_back(list[index].string);
+		++index;
+	}
+
+	// Handle Choices or number
+	if (index < list.size()) {
+		// If next event command is show choices
+		if (list[index].code == Cmd::ShowChoice) {
+			std::vector<std::string> s_choices = GetChoices();
+			// If choices fit on screen
+			if (s_choices.size() <= (4 - line_count)) {
+				Game_Message::choice_start = line_count;
+				Game_Message::choice_cancel_type = list[index].parameters[0];
+				SetupChoices(s_choices, com.indent);
+				++index;
+			}
+		} else if (list[index].code == Cmd::InputNumber) {
+			// If next event command is input number
+			// If input number fits on screen
+			if (line_count < 4) {
+				Game_Message::num_input_start = line_count;
+				Game_Message::num_input_digits_max = list[index].parameters[0];
+				Game_Message::num_input_variable_id = list[index].parameters[1];
+				++index;
+			}
 		}
-	} // End for
+	}
 
 	return true;
 }
