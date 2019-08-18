@@ -78,32 +78,37 @@ void Game_Interpreter::Clear() {
 
 // Is interpreter running.
 bool Game_Interpreter::IsRunning() const {
-	auto* frame = GetFrame();
-	return frame && !frame->commands.empty();
+	return !_state.stack.empty();
 }
 
 // Setup.
-void Game_Interpreter::Setup(
+void Game_Interpreter::Push(
 	const std::vector<RPG::EventCommand>& _list,
 	int event_id,
 	bool started_by_decision_key
 ) {
-	Clear();
+	if (_list.empty()) {
+		return;
+	}
 
-	_state.stack = { RPG::SaveEventExecFrame{} };
+	if ((int)_state.stack.size() > call_stack_limit) {
+		Output::Error("Call Event limit (%d) has been exceeded", call_stack_limit);
+	}
 
-	auto* frame = GetFrame();
-	frame->ID = 1;
-	frame->commands = _list;
-	frame->current_command = 0;
-	frame->triggered_by_decision_key = started_by_decision_key;
-	frame->event_id = event_id;
+	RPG::SaveEventExecFrame frame;
+	frame.ID = _state.stack.size() + 1;
+	frame.commands = _list;
+	frame.current_command = 0;
+	frame.triggered_by_decision_key = started_by_decision_key;
+	frame.event_id = event_id;
 
-	if (main_flag) {
+	if (_state.stack.empty() && main_flag) {
 		Game_Message::SetFaceName("");
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
+
+	_state.stack.push_back(std::move(frame));
 }
 
 
@@ -406,12 +411,12 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 }
 
 // Setup Starting Event
-void Game_Interpreter::Setup(Game_Event* ev) {
-	Setup(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
+void Game_Interpreter::Push(Game_Event* ev) {
+	Push(ev->GetList(), ev->GetId(), ev->WasStartedByDecisionKey());
 }
 
-void Game_Interpreter::Setup(Game_CommonEvent* ev, int caller_id) {
-	Setup(ev->GetList(), caller_id, false);
+void Game_Interpreter::Push(Game_CommonEvent* ev) {
+	Push(ev->GetList(), 0, false);
 }
 
 void Game_Interpreter::CheckGameOver() {
@@ -707,11 +712,7 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	//	Game_Message::FullClear();
 	//}
 
-	frame->commands.clear();
 	int event_id = frame->event_id;
-	if (_state.stack.size() > 1) {
-        _state.stack.pop_back();
-	}
 
 	if (is_original_event && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
@@ -721,6 +722,8 @@ bool Game_Interpreter::CommandEnd() { // code 10
 			evnt->OnFinishForegroundEvent();
 		}
 	}
+
+	_state.stack.pop_back();
 
 	return true;
 }
@@ -3053,13 +3056,6 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 	int evt_id;
 	int event_page;
 
-	if ((int)_state.stack.size() > call_stack_limit) {
-		Output::Error("Call Event limit (%d) has been exceeded", call_stack_limit);
-	}
-
-	RPG::SaveEventExecFrame new_frame;
-	new_frame.ID = _state.stack.size() + 1;
-
 	switch (com.parameters[0]) {
 	case 0: { // Common Event
 		evt_id = com.parameters[1];
@@ -3069,13 +3065,8 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 			return true;
 		}
 
-		new_frame.commands = common_event->GetList();
-		new_frame.current_command = 0;
-		new_frame.event_id = 0;
+		Push(common_event);
 
-		if (!new_frame.commands.empty()) {
-			_state.stack.push_back(new_frame);
-		}
 		return true;
 	}
 	case 1: // Map Event
@@ -3102,13 +3093,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 		return false;
 	}
 
-	new_frame.commands = page->event_commands;
-	new_frame.current_command = 0;
-	new_frame.event_id = event->GetId();
-
-	if (!new_frame.commands.empty()) {
-		_state.stack.push_back(new_frame);
-	}
+	Push(page->event_commands, event->GetId(), false);
 
 	return true;
 }

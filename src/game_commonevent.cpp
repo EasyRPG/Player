@@ -40,7 +40,8 @@ void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
 void Game_CommonEvent::Update() {
 	if (interpreter && IsWaitingBackgroundExecution()) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(this, 0);
+			interpreter->Clear();
+			interpreter->Push(this);
 		}
 		interpreter->Update();
 	}

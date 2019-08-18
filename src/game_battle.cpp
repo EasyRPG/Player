@@ -385,7 +385,8 @@ bool Game_Battle::UpdateEvents() {
 
 	for (const auto& page : troop->pages) {
 		if (page_can_run[page.ID - 1]) {
-			interpreter->Setup(page.event_commands, 0);
+			interpreter->Clear();
+			interpreter->Push(page.event_commands, 0);
 			page_can_run[page.ID - 1] = false;
 			page_executed[page.ID - 1] = true;
 			return false;
