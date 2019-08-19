@@ -47,9 +47,9 @@
 
 
 // Helper: Get the CRC32 of a given file as a hex string
-std::string crc32file(std::string fileName) {
-	if (!fileName.empty()) {
-		std::ifstream in(fileName.c_str(), std::ios::binary);
+std::string crc32file(std::string file_name) {
+	if (!file_name.empty()) {
+		std::ifstream in(file_name.c_str(), std::ios::binary);
 		if (in.is_open()) {
 			std::string buffer((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
 			unsigned long crc = ::crc32(0, reinterpret_cast<const unsigned char*>(buffer.c_str()), buffer.length());
@@ -94,55 +94,55 @@ std::string Meta::GetParentGame() const {
 	return "";
 }
 
-std::vector<std::string> Meta::GetImportChildPaths(const FileFinder::DirectoryTree& parentTree) const {
+std::vector<std::string> Meta::GetImportChildPaths(const FileFinder::DirectoryTree& parent_tree) const {
 	std::vector<std::string> res;
 	if (!Empty()) {
-		for (const auto& paths : parentTree.directories) {
+		for (const auto& paths : parent_tree.directories) {
 			res.push_back(paths.second);
 		}
 	}
 	return res;
 }
 
-std::vector<Meta::FileItem> Meta::SearchImportPaths(const FileFinder::DirectoryTree& parentTree, const std::string& child_path) const {
+std::vector<Meta::FileItem> Meta::SearchImportPaths(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path) const {
 	if (!Empty()) {
 		int pivotMapId = GetPivotMap();
 		auto parent = GetParentGame();
-		return BuildImportCandidateList(parentTree, child_path, parent, pivotMapId);
+		return BuildImportCandidateList(parent_tree, child_path, parent, pivotMapId);
 	}
 
 	return std::vector<Meta::FileItem>();
 }
 
 
-std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::DirectoryTree& parentTree, const std::string& child_path, const std::string& parentGameName, int pivotMapId) const {
+std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::DirectoryTree& parent_tree, const std::string& child_path, const std::string& parent_game_name, int pivot_map_id) const {
 	// Scan each folder, looking for an ini file
 	// For now, this only works with "standard" folder layouts, since we need Game files + Save files
 	std::vector<Meta::FileItem> res;
 
 	// Try to read the game name. Note that we assume the games all have the same encoding (and use Player::encoding)
-	auto childPath = FileFinder::MakePath(parentTree.directory_path, child_path);
-	auto childTree = FileFinder::CreateDirectoryTree(childPath, FileFinder::FILES);
-	bool isMatch = false;
-	if (childTree != nullptr) { 
+	auto child_full_path = FileFinder::MakePath(parent_tree.directory_path, child_path);
+	auto child_tree = FileFinder::CreateDirectoryTree(child_full_path, FileFinder::FILES);
+	bool is_match = false;
+	if (child_tree != nullptr) { 
 		// Try to match the parent game name
-		std::string lmtPath = FileFinder::FindDefault(*childTree, TREEMAP_NAME);
+		std::string lmtPath = FileFinder::FindDefault(*child_tree, TREEMAP_NAME);
 		std::string crcLMT = crc32file(lmtPath);
 		std::string crcLDB = "*";
-		if (parentGameName.find(crcLMT)==0) {
-			if (parentGameName == crcLMT + "/" + crcLDB) {
-				isMatch = true;
+		if (parent_game_name.find(crcLMT)==0) {
+			if (parent_game_name == crcLMT + "/" + crcLDB) {
+				is_match = true;
 			} else {
-				std::string ldbPath = FileFinder::FindDefault(*childTree, DATABASE_NAME);
+				std::string ldbPath = FileFinder::FindDefault(*child_tree, DATABASE_NAME);
 				crcLDB = crc32file(ldbPath);
-				if (parentGameName == crcLMT + "/" + crcLDB) {
-					isMatch = true;
+				if (parent_game_name == crcLMT + "/" + crcLDB) {
+					is_match = true;
 				}
 			}
 		}
 	}
 
-	if (isMatch) {
+	if (is_match) {
 		// Scan over every possible save file and see if any match.
 		for (int saveId = 0; saveId < 15; saveId++) {
 			std::stringstream ss;
@@ -150,15 +150,15 @@ std::vector<Meta::FileItem> Meta::BuildImportCandidateList(const FileFinder::Dir
 
 			// Check for an existing, non-corrupt file with the right mapID
 			// Note that corruptness is checked later (in window_savefile.cpp)
-			std::string file = FileFinder::FindDefault(*childTree, ss.str());
+			std::string file = FileFinder::FindDefault(*child_tree, ss.str());
 			if (!file.empty()) {
 				std::unique_ptr<RPG::Save> savegame = LSD_Reader::Load(file, Player::encoding);
 				if (savegame != nullptr) {
-					if (savegame->party_location.map_id == pivotMapId || pivotMapId==0) {
+					if (savegame->party_location.map_id == pivot_map_id || pivot_map_id==0) {
 						FileItem item;
-						item.fullPath = file;
-						item.shortPath = FileFinder::MakeCanonical(child_path, 1);
-						item.fileId = saveId + 1;
+						item.full_path = file;
+						item.short_path = FileFinder::MakeCanonical(child_path, 1);
+						item.file_id = saveId + 1;
 						res.push_back(item);
 					}
 				}
@@ -182,15 +182,15 @@ std::string Meta::GetExVocabImportSaveTitleText() const {
 	return GetExVocab(MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY, MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE);
 }
 
-std::string Meta::GetExVocab(const std::string& term, const std::string& defValue) const {
+std::string Meta::GetExVocab(const std::string& term, const std::string& def_value) const {
 	if (!Empty()) {
-		return ini->GetString(canon_ini_lookup, term, defValue);
+		return ini->GetString(canon_ini_lookup, term, def_value);
 	}
 
-	return defValue;
+	return def_value;
 }
 
-bool Meta::IdentifyCanonName() {
+void Meta::IdentifyCanonName() {
 	std::string lmtPath = FileFinder::FindDefault(TREEMAP_NAME);
 
 	// Calculate the lookup based on the LMT/LDB hashes, preferring to use LMT only if possible.
@@ -208,16 +208,8 @@ bool Meta::IdentifyCanonName() {
 			}
 		}
 	}
-
-	return !canon_ini_lookup.empty();
 }
 
 bool Meta::Empty() const {
 	return ini == nullptr || ini->ParseError() == -1;
 }
-
-
-
-
-
-

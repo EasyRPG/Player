@@ -32,9 +32,6 @@
 class Scene_Import : public Scene_File {
 
 public:
-	/**
-	 * Constructor.
-	 */
 	Scene_Import();
 
 	void Start() override;
@@ -50,19 +47,19 @@ private:
 	void UpdateScanAndProgress();
 	void FinishScan();
 
-	// Visually track scanning
+	/** Visually track scanning of other game folders */
 	std::unique_ptr<Window_ImportProgress> progress_window;
 
-	// Collection of all folders in ../
-	std::shared_ptr<FileFinder::DirectoryTree> parentTree;
+	/** Collection of all folders in ../ */
+	std::shared_ptr<FileFinder::DirectoryTree> parent_tree;
 
-	// Tracking status: vector of child folders to check and current index in that list
+	/** Tracking status: vector of child folders to check and current index in that list */
 	std::vector<std::string> children;
-	size_t curr_child_id;
+	size_t curr_child_id = 0;
 
-	bool firstFrameSkipped;
+	bool first_frame_skipped = false;
 
-	// Final file list; used for the Import windows
+	/** Final file list; used for the Import windows */
 	std::vector<Meta::FileItem> files;
 };
 

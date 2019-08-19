@@ -115,13 +115,13 @@ private:
 	std::unique_ptr<Sprite> title;
 
 	/** Offsets for each selection, in case "Import" is enabled. */
-	int new_game_index;
-	int continue_index;
-	int exit_index;
-	int import_index;
+	int new_game_index =  0;
+	int continue_index =  1;
+	int exit_index     =  2;
+	int import_index   = -1;
 
 	/** Contains the state of continue button. */
-	bool continue_enabled;
+	bool continue_enabled = false;
 
 	bool restart_title_cache = true;
 

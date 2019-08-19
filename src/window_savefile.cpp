@@ -27,8 +27,7 @@
 #include "player.h"
 
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	index(0), overrideIndex(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
+	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetBorderX(4);
 	SetContents(Bitmap::Create(width - 8, height - 16));
@@ -49,11 +48,11 @@ void Window_SaveFile::UpdateCursorRect() {
 
 std::string Window_SaveFile::GetSaveFileName() const {
 	std::ostringstream out;
-	if (!overrideName.empty()) {
-		if (overrideName.size() > 14 && !party.empty()) {
-			out << overrideName.substr(0, 11) << "...";
+	if (!override_name.empty()) {
+		if (override_name.size() > 14 && !party.empty()) {
+			out << override_name.substr(0, 11) << "...";
 		} else {
-			out << overrideName;
+			out << override_name;
 		}
 	} else {
 		out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
@@ -66,8 +65,8 @@ void Window_SaveFile::SetIndex(int id) {
 }
 
 void Window_SaveFile::SetDisplayOverride(const std::string& name, int index) {
-	overrideName = name;
-	overrideIndex = index;
+	override_name = name;
+	override_index = index;
 }
 
 void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& actors,
@@ -107,8 +106,8 @@ void Window_SaveFile::Refresh() {
 
 
 	std::stringstream out;
-	if (overrideIndex > 0) {
-		out << Data::terms.file << std::setw(2) << std::setfill(' ') << overrideIndex;
+	if (override_index > 0) {
+		out << Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
 		contents->TextDraw(4, 16+2, fc, out.str());
 	} else {
 		contents->TextDraw(4, 16 + 2, fc, hero_name);

@@ -91,15 +91,15 @@ protected:
 	void UpdateCursorRect();
 	std::string GetSaveFileName() const;
 
-	int index;
-	std::string overrideName;
-	int overrideIndex;
+	int index = 0;
+	std::string override_name;
+	int override_index = 0;
 	std::vector<std::pair<int, std::string> > party;
 	std::string hero_name;
-	int hero_hp;
-	int hero_level;
-	bool corrupted;
-	bool has_save;
+	int hero_hp = 0;
+	int hero_level = 0;
+	bool corrupted = false;
+	bool has_save = false;
 };
 
 #endif

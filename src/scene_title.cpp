@@ -40,7 +40,7 @@
 #include "window_command.h"
 #include "baseui.h"
 
-Scene_Title::Scene_Title() : new_game_index(0), continue_index(1), exit_index(2), import_index(-1) {
+Scene_Title::Scene_Title() {
 	type = Scene::Title;
 }
 

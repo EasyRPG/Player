@@ -32,9 +32,7 @@
 #include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
-	message(message), latest_time(0), latest_slot(0) {
-	top_index = 0;
-	index = 0;
+	message(message) {
 }
 
 std::unique_ptr<Sprite> Scene_File::MakeBorderSprite(int y) {

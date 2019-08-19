@@ -32,18 +32,17 @@
 
 
 Scene_Import::Scene_Import() :
-	Scene_File(Player::meta->GetExVocabImportSaveHelpText()),
-	curr_child_id(0), firstFrameSkipped(false) {
+	Scene_File(Player::meta->GetExVocabImportSaveHelpText()) {
 	Scene::type = Scene::Load;  // For all intents and purposes, treat Import as an extension of Load
 }
 
 void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	// File access is already determined
 	if (id < files.size()) {
-		win.SetDisplayOverride(files[id].shortPath, files[id].fileId);
+		win.SetDisplayOverride(files[id].short_path, files[id].file_id);
 
 		std::unique_ptr<RPG::Save> savegame =
-			LSD_Reader::Load(files[id].fullPath, Player::encoding);
+			LSD_Reader::Load(files[id].full_path, Player::encoding);
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);
@@ -103,8 +102,8 @@ void Scene_Import::UpdateScanAndProgress() {
 	}
 
 	// Leads to better fading.
-	if (!firstFrameSkipped) {
-		firstFrameSkipped = true;
+	if (!first_frame_skipped) {
+		first_frame_skipped = true;
 		return;
 	}
 
@@ -112,16 +111,16 @@ void Scene_Import::UpdateScanAndProgress() {
 	if (children.empty()) {
 		if (Main_Data::GetSavePath() == Main_Data::GetProjectPath()) {
 			auto parentPath = FileFinder::MakePath(Main_Data::GetSavePath(), "..");
-			parentTree = FileFinder::CreateDirectoryTree(parentPath, FileFinder::DIRECTORIES);
-			if (parentTree != nullptr) {
-				children = Player::meta->GetImportChildPaths(*parentTree);
+			parent_tree = FileFinder::CreateDirectoryTree(parentPath, FileFinder::DIRECTORIES);
+			if (parent_tree != nullptr) {
+				children = Player::meta->GetImportChildPaths(*parent_tree);
 			}
 		}
 		if (children.empty()) {
 			FinishScan();
 		}
 	} else if (curr_child_id < children.size()) {
-		auto candidates = Player::meta->SearchImportPaths(*parentTree, children[curr_child_id]);
+		auto candidates = Player::meta->SearchImportPaths(*parent_tree, children[curr_child_id]);
 		files.insert(files.end(), candidates.begin(), candidates.end());
 
 		progress_window->SetProgress((curr_child_id*100)/children.size(), children[curr_child_id]);
@@ -142,7 +141,7 @@ void Scene_Import::FinishScan() {
 }
 
 void Scene_Import::Action(int index) {
-	Player::LoadSavegame(files[index].fullPath);
+	Player::LoadSavegame(files[index].full_path);
 
 	auto title_scene = Scene::Find(Scene::Title);
 	if (title_scene) {

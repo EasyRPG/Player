@@ -31,11 +31,17 @@ class Window_ImportProgress : public Window_Base {
 public:
 	/**
 	 * Constructor.
+	 * @param ix x position of the window
+	 * @param iy y position of the window
+	 * @param iwidth width of the window
+	 * @param iheight height of the window
 	 */
 	Window_ImportProgress(int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Update to display scanning progress and the directory currently being scanned
+	 * @param pct percent of the scan that is complete
+	 * @param path current directory being scanned
 	 */
 	void SetProgress(int pct, const std::string& path);
 	
@@ -43,9 +49,10 @@ private:
 	void Refresh();
 
 	/** Current progress as a percentage */
-	int percent;
+	int percent = 0;
+
 	/** Current file/path being scanned */
-	std::string currPath;
+	std::string curr_path;
 };
 
 #endif

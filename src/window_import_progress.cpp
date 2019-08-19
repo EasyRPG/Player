@@ -22,8 +22,7 @@
 #include "font.h"
 
 Window_ImportProgress::Window_ImportProgress(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	percent(0) {
+	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	Refresh();
@@ -31,7 +30,7 @@ Window_ImportProgress::Window_ImportProgress(int ix, int iy, int iwidth, int ihe
 
 void Window_ImportProgress::SetProgress(int pct, const std::string& path) {
 	percent = pct;
-	currPath = path;
+	curr_path = path;
 	Refresh();
 }
 
@@ -48,5 +47,5 @@ void Window_ImportProgress::Refresh() {
 	inner.width = (inner.width*percent) / 100;
 	contents->FillRect(inner, Color(0xFF, 0x00, 0x00, 0xFF));
 
-	contents->TextDraw(0, 2 + 32, Font::ColorDefault, std::string("Folder: ") + currPath, Text::AlignLeft);
+	contents->TextDraw(0, 2 + 32, Font::ColorDefault, std::string("Folder: ") + curr_path, Text::AlignLeft);
 }
