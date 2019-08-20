@@ -481,6 +481,7 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 }
 
 void Cache::Clear() {
+	cache_effects.clear();
 	cache.clear();
 	cache_size = 0;
 
