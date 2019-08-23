@@ -846,8 +846,8 @@ int Game_Character::GetBushDepth() const {
 
 void Game_Character::Flash(int r, int g, int b, int power, int frames) {
 	data()->flash_red = r;
-	data()->flash_blue = g;
-	data()->flash_green = b;
+	data()->flash_green = g;
+	data()->flash_blue = b;
 	data()->flash_current_level = power;
 	data()->flash_time_left = frames;
 }
