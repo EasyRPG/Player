@@ -44,6 +44,7 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
+#include "window_message.h"
 
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
@@ -73,6 +74,7 @@ namespace {
 	std::vector<Game_Character*> pending;
 
 	std::unique_ptr<BattleAnimation> animation;
+	std::unique_ptr<Window_Message> message_window;
 
 	bool pan_wait;
 
@@ -138,6 +140,11 @@ void Game_Map::Quit() {
 
 	common_events.clear();
 	interpreter.reset();
+}
+
+/** To be called when we start the map scene */
+void Game_Map::OnSceneMapStart() {
+	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 }
 
 void Game_Map::Setup(int _id, TeleportTarget::Type tt) {
@@ -948,6 +955,7 @@ void Game_Map::Update(bool is_preupdate) {
 		}
 	}
 
+	message_window->Update();
 	Main_Data::game_party->UpdateTimers();
 	Main_Data::game_screen->Update();
 

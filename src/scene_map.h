@@ -21,7 +21,6 @@
 // Headers
 #include "scene.h"
 #include "spriteset_map.h"
-#include "window_message.h"
 #include "window_varlist.h"
 
 /**
@@ -63,8 +62,6 @@ private:
 	// Handles pending teleport and scene changes.
 	void UpdateStage3();
 	void UpdateSceneCalling();
-
-	std::unique_ptr<Window_Message> message_window;
 
 	int debug_menuoverwrite_counter = 0;
 	bool from_save;

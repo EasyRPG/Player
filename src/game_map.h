@@ -57,6 +57,9 @@ namespace Game_Map {
 	 */
 	void Quit();
 
+	/** To be called when we start the map scene */
+	void OnSceneMapStart();
+
 	/**
 	 * Disposes Game_Map.
 	 *

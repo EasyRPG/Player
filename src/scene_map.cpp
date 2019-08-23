@@ -52,7 +52,7 @@ Scene_Map::~Scene_Map() {
 void Scene_Map::Start() {
 	Scene_Debug::ResetPrevIndices();
 	spriteset.reset(new Spriteset_Map());
-	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
+	Game_Map::OnSceneMapStart();
 
 	teleport_from_other_scene = true;
 
@@ -175,7 +175,6 @@ void Scene_Map::PreUpdate() {
 void Scene_Map::Update() {
 	Game_Map::Update();
 	spriteset->Update();
-	message_window->Update();
 
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
 	// may require us to wait for them to download before we can start the transitions.
