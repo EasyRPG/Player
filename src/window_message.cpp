@@ -355,6 +355,10 @@ void Window_Message::Update() {
 }
 
 void Window_Message::UpdateMessage() {
+	if (IsOpeningOrClosing()) {
+		return;
+	}
+
 	// Message Box Show Message rendering loop
 
 	bool instant_speed = false;
