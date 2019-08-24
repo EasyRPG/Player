@@ -79,6 +79,10 @@ public:
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
 
+	bool IsOpening() const;
+	bool IsClosing() const;
+	bool IsOpeningOrClosing() const;
+
 	DrawableType GetType() const override;
 
 protected:
@@ -125,5 +129,17 @@ private:
 	double animation_count;
 	double animation_increment;
 };
+
+inline bool Window::IsOpening() const {
+	return animation_frames > 0 && !closing;
+}
+
+inline bool Window::IsClosing() const {
+	return animation_frames > 0 && closing;
+}
+
+inline bool Window::IsOpeningOrClosing() const {
+	return animation_frames > 0;
+}
 
 #endif
