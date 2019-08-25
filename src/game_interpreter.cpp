@@ -76,7 +76,6 @@ Game_Interpreter::~Game_Interpreter() {
 void Game_Interpreter::Clear() {
 	waiting_battle_anim = false;
 	continuation = NULL;			// function to execute to resume command
-	wait_messages = false;			// wait if message window is visible
 	_state = {};
 	_keyinput = {};
 }
@@ -317,9 +316,12 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if ((Game_Message::visible || Game_Message::message_waiting) && wait_messages)
+			if (_state.show_message && (Game_Message::visible || Game_Message::message_waiting)) {
 				break;
+			}
 		}
+
+		_state.show_message = false;
 
 		if (Game_Temp::transition_processing) {
 			break;
@@ -806,11 +808,10 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	if (!main_flag && Game_Message::visible)
 		return false;
 
-	wait_messages = true;
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
+	_state.show_message = true;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -862,8 +863,9 @@ bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //c
 }
 
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	if (Game_Message::message_waiting && Game_Message::owner_id != GetOriginalEventId())
+	if (Game_Message::message_waiting && !_state.show_message) {
 		return false;
+	}
 
 	Game_Message::SetFaceName(com.string);
 	Game_Message::SetFaceIndex(com.parameters[0]);
@@ -910,8 +912,8 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
-	wait_messages = true;
+	_state.show_message = true;
+
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
@@ -938,8 +940,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
-	wait_messages = true;
+	_state.show_message = true;
 
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];

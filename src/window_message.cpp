@@ -368,7 +368,6 @@ void Window_Message::Update() {
 	if (!visible) {
 		// The closing animation has finished
 		Game_Message::visible = false;
-		Game_Message::owner_id = 0;
 	}
 }
 
