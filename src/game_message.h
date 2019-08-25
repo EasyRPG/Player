@@ -27,19 +27,47 @@ namespace Game_Message {
 
 	static const int MAX_LINE = 4;
 
+	class PendingMessage {
+		public:
+			int PushLine(std::string msg);
+			int PushChoice(std::string msg, bool enabled = true);
+			int PushNumInput(int variable_id, int num_digits);
+			void PushPageEnd();
+
+			void SetWordWrapped(bool value);
+			void SetChoiceCancelType(int value);
+
+			const std::vector<std::string>& GetLines() const { return texts; }
+
+			int NumLines() const { return texts.size(); }
+			bool IsWordWrapped() const { return word_wrapped; }
+
+			bool HasChoices() const { return choice_start >= 0; }
+			int GetChoiceStartLine() const { return choice_start; }
+			int GetNumChoices() const { return HasChoices() ? NumLines() - choice_start : 0; }
+			int GetChoiceCancelType() const { return choice_cancel_type; }
+			bool IsChoiceEnabled(int idx) const { return choice_enabled[idx]; }
+
+			bool HasNumberInput() const { return num_input_digits > 0; }
+			int GetNumberInputDigits() const { return num_input_digits; }
+			int GetNumberInputVariable() const { return num_input_variable; }
+			int GetNumberInputStartLine() const { return NumLines(); }
+		private:
+			std::vector<std::string> texts;
+			int choice_start = -1;
+			int choice_cancel_type = 5;
+			int num_input_variable = 0;
+			int num_input_digits = 0;
+			std::bitset<8> choice_enabled = {};
+			bool word_wrapped = false;
+	};
+
 	void Init();
 
 	/**
-	 * Used by Window_Message to reset some flags.
+	 * Reset the face graphic.
 	 */
-	void SemiClear();
-	/**
-	 * Used by the Game_Interpreter to completly reset all flags.
-	 */
-	void FullClear();
-
-	/** Contains the different lines of text. */
-	extern std::vector<std::string> texts;
+	void ClearFace();
 
 	/**
 	 * Returns name of file that contains the face.
@@ -164,6 +192,12 @@ namespace Game_Message {
 	 */
 	int GetRealPosition();
 
+	void SetPendingMessage(PendingMessage&& pm);
+
+	const PendingMessage& GetPendingMessage();
+
+	void ResetPendingMessage();
+
 	/**
 	 * Breaks the line into lines, each of which is equal
 	 * or less than a specified limit in pixels in the
@@ -184,43 +218,6 @@ namespace Game_Message {
 	 */
 	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
 
-	/**
-	 * Whether the texts are word-wrapped
-	 */
-	extern bool is_word_wrapped;
-
-	/**
-	 * Number of lines before the start
-	 * of selection options.
-	 * +-----------------------------------+
-	 * |	Hi, hero, What's your name?    |
-	 * |- Alex                             |
-	 * |- Brian                            |
-	 * |- Carol                            |
-	 * +-----------------------------------+
-	 * In this case, choice_start would be 1.
-	 * Same with num_input_start.
-	 */
-	extern int choice_start;
-	extern int num_input_start;
-
-	/** Number of choices */
-	extern int choice_max;
-
-	/**
-	 * Disabled choices:
-	 * choice_disabled is true if choice is disabled (zero-based).
-	 */
-	extern std::bitset<8> choice_disabled;
-
-	/** Option to choose if cancel. */
-	extern int choice_cancel_type;
-
-	extern int num_input_variable_id;
-	extern int num_input_digits_max;
-
-	/** Don't wait for a key to be pressed. */
-	extern bool dont_halt;
 	/** If a message is currently being processed. */
 	extern bool message_waiting;
 	extern bool visible;

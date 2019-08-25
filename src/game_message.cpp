@@ -24,19 +24,7 @@
 #include "player.h"
 
 namespace Game_Message {
-	std::vector<std::string> texts;
-	bool is_word_wrapped;
-
-	int choice_start;
-	int num_input_start;
-
-	int choice_max;
-	std::bitset<8> choice_disabled;
-
-	int choice_cancel_type;
-
-	int num_input_variable_id;
-	int num_input_digits_max;
+	PendingMessage pending_message;
 
 	bool message_waiting;
 	bool visible;
@@ -47,23 +35,11 @@ namespace Game_Message {
 RPG::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
-	FullClear();
+	ClearFace();
+	pending_message = {};
 }
 
-void Game_Message::SemiClear() {
-	texts.clear();
-	choice_disabled.reset();
-	choice_start = 99;
-	choice_max = 0;
-	choice_cancel_type = 0;
-	num_input_start = -1;
-	num_input_variable_id = 0;
-	num_input_digits_max = 0;
-	is_word_wrapped = false;
-}
-
-void Game_Message::FullClear() {
-	SemiClear();
+void Game_Message::ClearFace() {
 	SetFaceName("");
 	SetFaceIndex(0);
 }
@@ -212,3 +188,62 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 
 	return line_count;
 }
+
+int Game_Message::PendingMessage::PushLine(std::string msg) {
+	assert(!HasChoices());
+	assert(!HasNumberInput());
+	texts.push_back(std::move(msg));
+	return texts.size();
+}
+
+int Game_Message::PendingMessage::PushChoice(std::string msg, bool enabled) {
+	assert(!HasNumberInput());
+	if (!HasChoices()) {
+		choice_start = NumLines();
+	}
+	choice_enabled[GetNumChoices()] = enabled;
+	texts.push_back(std::move(msg));
+	return texts.size();
+}
+
+int Game_Message::PendingMessage::PushNumInput(int variable_id, int num_digits) {
+	assert(!HasChoices());
+	assert(!HasNumberInput());
+	num_input_variable = variable_id;
+	num_input_digits = num_digits;
+	return NumLines();
+}
+
+void Game_Message::PendingMessage::PushPageEnd() {
+	assert(!HasChoices());
+	assert(!HasNumberInput());
+	if (texts.empty()) {
+		texts.push_back("");
+	}
+	texts.back().push_back('\f');
+}
+
+void Game_Message::PendingMessage::SetWordWrapped(bool value) {
+	assert(texts.empty());
+	word_wrapped = true;
+}
+
+void Game_Message::PendingMessage::SetChoiceCancelType(int value) {
+	choice_cancel_type = value;
+}
+
+void Game_Message::SetPendingMessage(PendingMessage&& pm) {
+	pending_message = std::move(pm);
+	message_waiting = true;
+	choice_result = 4;
+}
+
+const Game_Message::PendingMessage& Game_Message::GetPendingMessage() {
+	return pending_message;
+}
+
+void Game_Message::ResetPendingMessage() {
+	pending_message = {};
+	message_waiting = false;
+}
+
