@@ -104,7 +104,7 @@ void Game_Interpreter::Push(
 	frame.event_id = event_id;
 
 	if (_state.stack.empty() && main_flag) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
@@ -734,7 +734,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	const bool is_base_frame = _state.stack.size() == 1;
 
 	if (main_flag && is_base_frame) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 	}
 
 	int event_id = frame->event_id;
