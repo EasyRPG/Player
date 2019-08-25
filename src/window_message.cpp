@@ -293,7 +293,7 @@ void Window_Message::TerminateMessage() {
 	Game_Message::message_waiting = false;
 	if (number_input_window->GetVisible()) {
 		number_input_window->SetActive(false);
-		number_input_window->SetCloseAnimation(message_animation_frames);
+		number_input_window->SetVisible(false);
 	}
 
 	if (gold_window->GetVisible()) {
