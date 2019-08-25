@@ -107,7 +107,7 @@ void Game_Interpreter::Push(
 	frame.event_id = event_id;
 
 	if (_state.stack.empty() && main_flag) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
@@ -728,13 +728,8 @@ bool Game_Interpreter::CommandEnd() { // code 10
 	const bool is_original_event = _state.stack.size() == 1;
 
 	if (main_flag && is_original_event) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 	}
-
-	// FIXME: Hangs in some cases when Autostart events start
-	//if (main_flag) {
-	//	Game_Message::FullClear();
-	//}
 
 	int event_id = frame->event_id;
 
