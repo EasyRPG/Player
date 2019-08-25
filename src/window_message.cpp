@@ -312,6 +312,49 @@ void Window_Message::ResetWindow() {
 }
 
 void Window_Message::Update() {
+	bool update_message_processing = false;
+	if (wait_count == 0) {
+		if (pause) {
+			WaitForInput();
+		} else if (active) {
+			InputChoice();
+		} else if (number_input_window->GetVisible()) {
+			InputNumber();
+		} else if (!text.empty()) {
+			//Handled after base class updates.
+			if (text_index != text.end()) {
+				update_message_processing = true;
+			}
+			if (text_index == text.end() && wait_count <= 0) {
+				FinishMessageProcessing();
+			}
+		} else if (IsNextMessagePossible()) {
+			// Output a new page
+			if (Game_Temp::inn_calling) {
+				ShowGoldWindow();
+			}
+
+			StartMessageProcessing();
+			//printf("Text: %s\n", text.c_str());
+			if (!visible) {
+				// The MessageBox is not open yet but text output is needed
+				// Open and Close Animations are skipped in battle
+				SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			} else if (closing) {
+				// Cancel closing animation
+				SetOpenAnimation(0);
+			}
+			Game_Message::visible = true;
+		}
+
+		if (!Game_Message::message_waiting && Game_Message::visible) {
+			if (visible && !closing) {
+				// Start the closing animation
+				SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			}
+		}
+	}
+
 	Window_Selectable::Update();
 	number_input_window->Update();
 	gold_window->Update();
@@ -321,40 +364,13 @@ void Window_Message::Update() {
 		return;
 	}
 
-	if (pause) {
-		WaitForInput();
-	} else if (active) {
-		InputChoice();
-	} else if (number_input_window->GetVisible()) {
-		InputNumber();
-	} else if (!text.empty()) {
-		// Output the remaining text for the current page
+	if (update_message_processing) {
 		UpdateMessage();
-	} else if (IsNextMessagePossible()) {
-		// Output a new page
-		if (Game_Temp::inn_calling) {
-			ShowGoldWindow();
-		}
+	}
 
-		StartMessageProcessing();
-		//printf("Text: %s\n", text.c_str());
-		if (!visible) {
-			// The MessageBox is not open yet but text output is needed
-			// Open and Close Animations are skipped in battle
-			SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
-		} else if (closing) {
-			// Cancel closing animation
-			SetOpenAnimation(0);
-		}
-		Game_Message::visible = true;
-	} else if (!Game_Message::message_waiting && Game_Message::visible) {
-		if (visible && !closing) {
-			// Start the closing animation
-			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
-		} else if (!visible) {
-			// The closing animation has finished
-			Game_Message::visible = false;
-		}
+	if (!visible) {
+		// The closing animation has finished
+		Game_Message::visible = false;
 	}
 }
 
@@ -378,7 +394,6 @@ void Window_Message::UpdateMessage() {
 			if (!instant_speed) {
 				SetWaitForPage();
 			}
-			FinishMessageProcessing();
 			break;
 		}
 
