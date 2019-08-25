@@ -377,24 +377,22 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (main_flag && !Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
-	Game_Message::message_waiting = true;
 
-	Game_Message::texts.clear();
-
+	auto pm = PendingMessage();
 	std::ostringstream out;
 
 	switch (inn_type) {
 		case 0:
 			if (Player::IsRPG2kE()) {
 				out << Game_Temp::inn_price;
-				Game_Message::texts.push_back(
+				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_a_greeting_1,
 						{'V', 'U'},
 						{out.str(), Data::terms.gold}
 					)
 				);
-				Game_Message::texts.push_back(
+				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_a_greeting_3,
 						{'V', 'U'},
@@ -406,21 +404,21 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << Data::terms.inn_a_greeting_1
 					<< " " << Game_Temp::inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_a_greeting_2;
-				Game_Message::texts.push_back(out.str());
-				Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
+				pm.PushLine(out.str());
+				pm.PushLine(Data::terms.inn_a_greeting_3);
 			}
 			break;
 		case 1:
 			if (Player::IsRPG2kE()) {
 				out << Game_Temp::inn_price;
-				Game_Message::texts.push_back(
+				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_b_greeting_1,
 						{'V', 'U'},
 						{out.str(), Data::terms.gold}
 					)
 				);
-				Game_Message::texts.push_back(
+				pm.PushLine(
 					Utils::ReplacePlaceholders(
 						Data::terms.inn_b_greeting_3,
 						{'V', 'U'},
@@ -432,37 +430,34 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 				out << Data::terms.inn_b_greeting_1
 					<< " " << Game_Temp::inn_price << Data::terms.gold
 					<< " " << Data::terms.inn_b_greeting_2;
-				Game_Message::texts.push_back(out.str());
-				Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
+				pm.PushLine(out.str());
+				pm.PushLine(Data::terms.inn_b_greeting_3);
 			}
 			break;
 		default:
 			return false;
 	}
 
-	Game_Message::choice_start = Game_Message::texts.size();
+	bool can_afford = (Main_Data::game_party->GetGold() >= Game_Temp::inn_price);
+	pm.SetChoiceResetColors(true);
 
 	switch (inn_type) {
 		case 0:
-			Game_Message::texts.push_back(Data::terms.inn_a_accept);
-			Game_Message::texts.push_back(Data::terms.inn_a_cancel);
+			pm.PushChoice(Data::terms.inn_a_accept, can_afford);
+			pm.PushChoice(Data::terms.inn_a_cancel);
 			break;
 		case 1:
-			Game_Message::texts.push_back(Data::terms.inn_b_accept);
-			Game_Message::texts.push_back(Data::terms.inn_b_cancel);
+			pm.PushChoice(Data::terms.inn_b_accept, can_afford);
+			pm.PushChoice(Data::terms.inn_b_cancel);
 			break;
 		default:
 			return false;
 	}
 
-	Game_Message::choice_max = 2;
-	Game_Message::choice_disabled.reset();
-	Game_Message::choice_reset_color = true;
-	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
-		Game_Message::choice_disabled.set(0);
-
 	Game_Temp::inn_calling = true;
-	Game_Message::choice_result = 4;
+
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
 

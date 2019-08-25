@@ -22,6 +22,7 @@
 #include <bitset>
 #include <string>
 #include <functional>
+#include "pending_message.h"
 
 class Window_Message;
 
@@ -31,21 +32,15 @@ namespace Game_Message {
 
 	void Init();
 
-	/**
-	 * Used by Window_Message to reset some flags.
-	 */
-	void SemiClear();
-	/**
-	 * Used by the Game_Interpreter to completly reset all flags.
-	 */
-	void FullClear();
-
 	/** Set the window used to display the text */
 	void SetWindow(Window_Message* window);
 
 	Window_Message* GetWindow();
 
 	void Update();
+
+	/** Reset the face graphic. */
+	void ClearFace();
 
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;
@@ -173,6 +168,12 @@ namespace Game_Message {
 	 */
 	int GetRealPosition();
 
+	void SetPendingMessage(PendingMessage&& pm);
+
+	const PendingMessage& GetPendingMessage();
+
+	void ResetPendingMessage();
+
 	/**
 	 * Breaks the line into lines, each of which is equal
 	 * or less than a specified limit in pixels in the
@@ -192,44 +193,6 @@ namespace Game_Message {
 	 * @param callback a function to be called for each word-wrapped line
 	 */
 	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
-
-	/**
-	 * Whether the texts are word-wrapped
-	 */
-	extern bool is_word_wrapped;
-
-	/**
-	 * Number of lines before the start
-	 * of selection options.
-	 * +-----------------------------------+
-	 * |	Hi, hero, What's your name?    |
-	 * |- Alex                             |
-	 * |- Brian                            |
-	 * |- Carol                            |
-	 * +-----------------------------------+
-	 * In this case, choice_start would be 1.
-	 * Same with num_input_start.
-	 */
-	extern int choice_start;
-	extern int num_input_start;
-
-	/** Number of choices */
-	extern int choice_max;
-
-	/**
-	 * Disabled choices:
-	 * choice_disabled is true if choice is disabled (zero-based).
-	 */
-	extern std::bitset<8> choice_disabled;
-
-	/** Option to choose if cancel. */
-	extern int choice_cancel_type;
-
-	extern int num_input_variable_id;
-	extern int num_input_digits_max;
-
-	/** Reset the text color for each choice */
-	extern bool choice_reset_color;
 
 	/** If we're waiting for a message to finish processing. This flag is set to true from when the
 	 * message box is requested up until it's finished writing text and ready to close.

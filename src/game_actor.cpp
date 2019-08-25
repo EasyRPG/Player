@@ -812,9 +812,12 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	SetLevel(new_level);
 	new_level = GetLevel(); // Level adjusted to max
 
+	auto pm = PendingMessage();
+
 	if (new_level > old_level) {
 		if (level_up_message) {
-			Game_Message::texts.push_back(GetLevelUpMessage(new_level));
+			//FIXME: If message box already active??
+			pm.PushLine(GetLevelUpMessage(new_level));
 			level_up = true;
 		}
 
@@ -824,15 +827,14 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 			if (learn.level > old_level && learn.level <= new_level) {
 				LearnSkill(learn.skill_id);
 				if (level_up_message) {
-					Game_Message::texts.push_back(GetLearningMessage(learn));
+					pm.PushLine(GetLearningMessage(learn));
 					level_up = true;
 				}
 			}
 		}
 
 		if (level_up) {
-			Game_Message::texts.back().append("\f");
-			Game_Message::message_waiting = true;
+			pm.PushPageEnd();
 		}
 
 		// Experience adjustment:
@@ -844,6 +846,10 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		if (GetExp() >= GetNextExp()) {
 			SetExp(GetBaseExp());
 		}
+	}
+
+	if (pm.NumLines()) {
+		Game_Message::SetPendingMessage(std::move(pm));
 	}
 }
 

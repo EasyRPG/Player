@@ -33,6 +33,7 @@
 
 class Game_Event;
 class Game_CommonEvent;
+class PendingMessage;
 
 namespace RPG {
 	class EventPage;
@@ -69,7 +70,7 @@ public:
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
-	void SetupChoices(const std::vector<std::string>& choices, int indent);
+	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
 	virtual bool ExecuteCommand();
 

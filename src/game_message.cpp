@@ -25,24 +25,11 @@
 #include "player.h"
 
 namespace Game_Message {
-	std::vector<std::string> texts;
-	bool is_word_wrapped;
-
-	int choice_start;
-	int num_input_start;
-
-	int choice_max;
-	std::bitset<8> choice_disabled;
-
-	int choice_cancel_type;
-
-	int num_input_variable_id;
-	int num_input_digits_max;
+	PendingMessage pending_message;
 
 	bool message_waiting;
 	bool closing;
 	bool visible;
-	bool choice_reset_color = false;
 
 	int choice_result;
 }
@@ -52,23 +39,11 @@ static Window_Message* window = nullptr;
 RPG::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
-	FullClear();
+	ClearFace();
+	pending_message = {};
 }
 
-void Game_Message::SemiClear() {
-	texts.clear();
-	choice_disabled.reset();
-	choice_start = 99;
-	choice_max = 0;
-	choice_cancel_type = 0;
-	num_input_start = -1;
-	num_input_variable_id = 0;
-	num_input_digits_max = 0;
-	is_word_wrapped = false;
-}
-
-void Game_Message::FullClear() {
-	SemiClear();
+void Game_Message::ClearFace() {
 	SetFaceName("");
 	SetFaceIndex(0);
 }
@@ -268,3 +243,19 @@ void Game_Message::Update() {
 		closing = false;
 	}
 }
+
+void Game_Message::SetPendingMessage(PendingMessage&& pm) {
+	pending_message = std::move(pm);
+	message_waiting = true;
+	choice_result = 4;
+}
+
+const PendingMessage& Game_Message::GetPendingMessage() {
+	return pending_message;
+}
+
+void Game_Message::ResetPendingMessage() {
+	pending_message = {};
+	message_waiting = false;
+}
+
