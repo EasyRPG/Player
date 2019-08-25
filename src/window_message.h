@@ -159,41 +159,42 @@ public:
 
 protected:
 	/** X-position of next char. */
-	int contents_x;
+	int contents_x = 0;
 	/** Y-position of next char. */
-	int contents_y;
+	int contents_y = 0;
 	/** Current number of lines on this page. */
-	int line_count;
+	int line_count = 0;
 	/** Index of the next char in text that will be output. */
 	std::u32string::iterator text_index, end;
 	/** text message that will be displayed. */
 	std::u32string text;
 	/** Used by Message kill command \^. */
-	bool kill_message;
+	bool kill_message = false;
 	/** Text color. */
-	int text_color;
+	int text_color = 0;
 	/** Current speed modifier. */
-	int speed_modifier;
-	/** Counts the frames since the last char rendering. */
-	int speed_frame_counter;
+	int speed = 1;
 	/** If true inserts a new page after pause ended */
-	bool new_page_after_pause;
+	bool new_page_after_pause = false;
 
 	/** Character used before message commands. */
-	uint32_t escape_char;
-
-	/**
-	 * Table contains how many frames drawing one single char takes.
-	 * 0 means: 2 chars per frame.
-	 */
-	static const int speed_table[21];
+	uint32_t escape_char = 0;
 
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
 
+	/** How many printable characters we have rendered to the current line */
+	int num_chars_printed_this_line = 0;
+
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;
+
+	void DrawGlyph(const std::string& glyph, bool instant_speed);
+
+	void SetWaitForCharacter(int width);
+	void SetWaitForPage();
+	void SetWait(int frames);
 };
 
 #endif
