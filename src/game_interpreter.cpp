@@ -72,7 +72,6 @@ Game_Interpreter::~Game_Interpreter() {
 // Clear.
 void Game_Interpreter::Clear() {
 	continuation = NULL;			// function to execute to resume command
-	wait_messages = false;			// wait if message window is visible
 	_state = {};
 	_keyinput = {};
 	_async_op = {};
@@ -326,9 +325,12 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if ((Game_Message::IsMessageActive()) && wait_messages)
+			if ((Game_Message::IsMessageActive()) && _state.show_message) {
 				break;
+			}
 		}
+
+		_state.show_message = false;
 
 		if (_state.wait_time > 0) {
 			_state.wait_time--;
@@ -811,11 +813,10 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 		return false;
 	}
 
-	wait_messages = true;
 	unsigned int line_count = 0;
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
+	_state.show_message = true;
 
 	// Set first line
 	Game_Message::texts.push_back(com.string);
@@ -922,8 +923,8 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
-	wait_messages = true;
+	_state.show_message = true;
+
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
@@ -950,8 +951,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 	}
 
 	Game_Message::message_waiting = true;
-	Game_Message::owner_id = GetOriginalEventId();
-	wait_messages = true;
+	_state.show_message = true;
 
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];

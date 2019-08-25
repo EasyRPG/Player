@@ -27,8 +27,6 @@ namespace Game_Message {
 	std::vector<std::string> texts;
 	bool is_word_wrapped;
 
-	unsigned int owner_id;
-
 	int choice_start;
 	int num_input_start;
 

@@ -41,9 +41,6 @@ namespace Game_Message {
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;
 
-	/** ID of the event that activated this message */
-	extern unsigned int owner_id;
-
 	/**
 	 * Returns name of file that contains the face.
 	 *
