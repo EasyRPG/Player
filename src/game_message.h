@@ -59,6 +59,8 @@ namespace Game_Message {
 			int GetNumberInputVariable() const { return num_input_variable; }
 			int GetNumberInputStartLine() const { return NumLines(); }
 		private:
+			int PushLineImpl(std::string msg);
+		private:
 			ChoiceContinuation choice_continuation;
 			std::vector<std::string> texts;
 			int choice_start = -1;
