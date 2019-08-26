@@ -203,9 +203,6 @@ namespace Game_Message {
 	/** Set to true while the message box is visible on the screen */
 	extern bool visible;
 
-	/** Selected option (4 => cancel). */
-	extern int choice_result;
-
 	/**
 	 * Return if it's legal to show a new message box.
 	 *

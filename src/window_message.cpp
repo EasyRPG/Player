@@ -739,11 +739,14 @@ void Window_Message::WaitForInput() {
 void Window_Message::InputChoice() {
 	const auto& pm = Game_Message::GetPendingMessage();
 
+	bool do_terminate = false;
+	int choice_result = -1;
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (pm.GetChoiceCancelType() > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-			Game_Message::choice_result = pm.GetChoiceCancelType() - 1; // Cancel
-			TerminateMessage();
+			choice_result = pm.GetChoiceCancelType() - 1; // Cancel
+			do_terminate = true;
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (!pm.IsChoiceEnabled(index)) {
@@ -752,7 +755,17 @@ void Window_Message::InputChoice() {
 		}
 
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Game_Message::choice_result = index;
+		choice_result = index;
+		do_terminate = true;
+	}
+
+	if (do_terminate) {
+		if (choice_result >= 0) {
+			auto& continuation = pm.GetChoiceContinuation();
+			if (continuation) {
+				continuation(choice_result);
+			}
+		}
 		TerminateMessage();
 	}
 }

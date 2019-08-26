@@ -887,22 +887,12 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int
 		pm.PushChoice(choices[i]);
 	}
 
-	SetContinuation(&Game_Interpreter::ContinuationChoices);
+	pm.SetChoiceContinuation([this, indent](int choice_result) {
+		SetSubcommandIndex(indent, choice_result);
+	});
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(indent);
-}
-
-bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
-	SetSubcommandIndex(com.indent, Game_Message::choice_result);
-
-	continuation = nullptr;
-
-	return true;
 }
 
 bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
@@ -3400,6 +3390,5 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 // Dummy Continuations
 
 bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
-bool Game_Interpreter::ContinuationShowInnStart(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 

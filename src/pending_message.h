@@ -20,9 +20,12 @@
 #include <string>
 #include <vector>
 #include <bitset>
+#include <functional>
 
 class PendingMessage {
 	public:
+		using ChoiceContinuation = std::function<void(int)>;
+
 		int PushLine(std::string msg);
 		int PushChoice(std::string msg, bool enabled = true);
 		int PushNumInput(int variable_id, int num_digits);
@@ -32,6 +35,7 @@ class PendingMessage {
 		void SetChoiceCancelType(int value);
 		void SetChoiceResetColors(bool value);
 		void SetShowGoldWindow(bool value) { show_gold_window = value; }
+		void SetChoiceContinuation(ChoiceContinuation f) { choice_continuation = std::move(f); }
 
 		const std::vector<std::string>& GetLines() const { return texts; }
 
@@ -45,12 +49,14 @@ class PendingMessage {
 		int GetChoiceCancelType() const { return choice_cancel_type; }
 		bool IsChoiceEnabled(int idx) const { return choice_enabled[idx]; }
 		bool GetChoiceResetColor() const { return choice_reset_color; }
+		const ChoiceContinuation& GetChoiceContinuation() const { return choice_continuation; }
 
 		bool HasNumberInput() const { return num_input_digits > 0; }
 		int GetNumberInputDigits() const { return num_input_digits; }
 		int GetNumberInputVariable() const { return num_input_variable; }
 		int GetNumberInputStartLine() const { return NumLines(); }
 	private:
+		ChoiceContinuation choice_continuation;
 		std::vector<std::string> texts;
 		int choice_start = -1;
 		int choice_cancel_type = 5;

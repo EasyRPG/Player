@@ -30,8 +30,6 @@ namespace Game_Message {
 	bool message_waiting;
 	bool closing;
 	bool visible;
-
-	int choice_result;
 }
 
 static Window_Message* window = nullptr;
@@ -247,7 +245,6 @@ void Game_Message::Update() {
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	pending_message = std::move(pm);
 	message_waiting = true;
-	choice_result = 4;
 }
 
 const PendingMessage& Game_Message::GetPendingMessage() {
@@ -258,4 +255,5 @@ void Game_Message::ResetPendingMessage() {
 	pending_message = {};
 	message_waiting = false;
 }
+
 

@@ -368,8 +368,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
-		Game_Message::choice_result = 0;
-		return ContinuationShowInnStart(com);
+		ContinuationShowInnStart(com.indent, 0);
+		return true;
 	}
 
 	// Emulates RPG_RT behavior (Bug?) Inn's called by parallel events
@@ -456,39 +456,34 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	pm.SetShowGoldWindow(true);
 
-	Game_Message::SetPendingMessage(std::move(pm));
-	_state.show_message = true;
-
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+	int indent = com.indent;
+	pm.SetChoiceContinuation([this,indent](int choice_result) {
+			ContinuationShowInnStart(indent, choice_result);
+			});
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
+
 	return true;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com) {
+void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
-		return false;
-	}
-	continuation = NULL;
+	bool inn_stay = (choice_result == 0);
 
-	bool inn_stay = Game_Message::choice_result == 0;
-
-	SetSubcommandIndex(com.indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
+	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	if (inn_stay) {
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
 		_async_op = AsyncOp::MakeCallInn();
-		return true;
 	}
-
-	return true;
 }
 
 bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730
