@@ -33,7 +33,6 @@ public:
 	 */
 	static void Init();
 
-	static bool inn_calling;
 	static bool to_title;
 
 	static bool transition_processing;

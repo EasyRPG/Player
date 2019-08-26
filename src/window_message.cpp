@@ -140,6 +140,10 @@ void Window_Message::StartMessageProcessing() {
 
 	const auto& pm = Game_Message::GetPendingMessage();
 
+	if (pm.ShowGoldWindow()) {
+		ShowGoldWindow();
+	}
+
 	const auto& lines = pm.GetLines();
 
 	if (pm.IsWordWrapped()) {
@@ -336,11 +340,6 @@ void Window_Message::Update() {
 				FinishMessageProcessing();
 			}
 		} else if (IsNextMessagePossible()) {
-			// Output a new page
-			if (Game_Temp::inn_calling) {
-				ShowGoldWindow();
-			}
-
 			StartMessageProcessing();
 			//printf("Text: %s\n", text.c_str());
 			if (!visible) {

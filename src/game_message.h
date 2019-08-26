@@ -39,11 +39,13 @@ namespace Game_Message {
 			void SetWordWrapped(bool value);
 			void SetChoiceCancelType(int value);
 			void SetChoiceContinuation(ChoiceContinuation f);
+			void SetShowGoldWindow(bool value) { show_gold_window = true; }
 
 			const std::vector<std::string>& GetLines() const { return texts; }
 
 			int NumLines() const { return texts.size(); }
 			bool IsWordWrapped() const { return word_wrapped; }
+			bool ShowGoldWindow() const { return show_gold_window; }
 
 			bool HasChoices() const { return choice_start >= 0; }
 			int GetChoiceStartLine() const { return choice_start; }
@@ -65,6 +67,7 @@ namespace Game_Message {
 			int num_input_digits = 0;
 			std::bitset<8> choice_enabled = {};
 			bool word_wrapped = false;
+			bool show_gold_window = false;
 	};
 
 	void Init();

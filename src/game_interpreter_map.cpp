@@ -429,7 +429,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			return false;
 	}
 
-	Game_Temp::inn_calling = true;
+	pm.SetShowGoldWindow(true);
 
 	int indent = com.indent;
 	pm.SetChoiceContinuation([this,indent](int choice_result) {
@@ -453,8 +453,6 @@ void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_resul
 	bool inn_stay = (choice_result == 0);
 
 	SetSubcommandIndex(indent, inn_stay ? 0 : 1);
-
-	Game_Temp::inn_calling = false;
 
 	if (inn_stay) {
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
