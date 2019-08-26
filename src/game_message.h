@@ -204,6 +204,69 @@ namespace Game_Message {
 	bool IsMessageVisible();
 	/** @return true if IsMessagePending() || IsMessageVisible() */
 	bool IsMessageActive();
+
+	// EasyRPG extension allowing more recursive variables \v[\v[...]]
+	static constexpr int easyrpg_default_max_recursion = 8;
+	// RPG_RT only allows 1 level of recursion.
+	static constexpr int rpg_rt_default_max_recursion = 1;
+	// Which one we'll use by default.
+	static constexpr int default_max_recursion = easyrpg_default_max_recursion;
+
+	/** Struct returned by parameter parsing methods */
+	struct ParseParamResult {
+		/** iterator to the next character after parsed content */
+		const char* next = nullptr;
+		/** value that was parsed */
+		int value = 0;
+	};
+
+	/** Parse a \v[] variable string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	/** Parse a \c[] color string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	/** Parse a \s[] speed string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseSpeed(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
+
+	/** Parse a \n[] actor name string
+	 *
+	 * @param iter start of utf8 string
+	 * @param end end of utf8 string
+	 * @param escape_char the escape character to use
+	 * @param skip_prefix if true, assume prefix was already parsed and iter starts at the first left bracket.
+	 * @param max_recursion How many times to allow recursive variable lookups.
+	 *
+	 * @return \refer ParseParamResult
+	 */
+	ParseParamResult ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix = false, int max_recursion = default_max_recursion);
 }
 
 
