@@ -24,6 +24,8 @@
 #include "font.h"
 #include "player.h"
 
+#include <cctype>
+
 namespace Game_Message {
 	PendingMessage pending_message;
 

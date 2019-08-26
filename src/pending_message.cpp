@@ -1,11 +1,24 @@
 #include "pending_message.h"
 #include <cassert>
+#include <cctype>
+#include <algorithm>
+
+static void RemoveControlChars(std::string& s) {
+	// RPG_RT ignores any control characters within messages.
+	auto iter = std::remove_if(s.begin(), s.end(), [](const char c) { return std::iscntrl(c); });
+	s.erase(iter, s.end());
+}
+
+int PendingMessage::PushLineImpl(std::string msg) {
+	RemoveControlChars(msg);
+	texts.push_back(std::move(msg));
+	return texts.size();
+}
 
 int PendingMessage::PushLine(std::string msg) {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
-	texts.push_back(std::move(msg));
-	return texts.size();
+	return PushLineImpl(std::move(msg));
 }
 
 int PendingMessage::PushChoice(std::string msg, bool enabled) {
@@ -14,8 +27,7 @@ int PendingMessage::PushChoice(std::string msg, bool enabled) {
 		choice_start = NumLines();
 	}
 	choice_enabled[GetNumChoices()] = enabled;
-	texts.push_back(std::move(msg));
-	return texts.size();
+	return PushLineImpl(std::move(msg));
 }
 
 int PendingMessage::PushNumInput(int variable_id, int num_digits) {
