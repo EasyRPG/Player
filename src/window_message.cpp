@@ -64,7 +64,6 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	// Above other windows
 	SetZ(Priority_Window + 100);
 
-	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
@@ -100,7 +99,7 @@ void Window_Message::ApplyTextInsertingCommands() {
 			case 'n':
 			case 'v':
 			{
-				if (*text_index != escape_char) {
+				if (*text_index != Player::escape_char) {
 					continue;
 				}
 				++text_index;
@@ -405,7 +404,7 @@ void Window_Message::UpdateMessage() {
 				// instant_speed stops at the end of the line, unless
 				// there's a /> at the beginning of the next line
 				if (std::distance(text_index, end) > 2 &&
-					*(text_index + 1) == escape_char &&
+					*(text_index + 1) == Player::escape_char &&
 					*(text_index + 2) == '>') {
 					text_index += 2;
 				} else {
@@ -424,7 +423,7 @@ void Window_Message::UpdateMessage() {
 				new_page_after_pause = true;
 			}
 			break;
-		} else if (*text_index == escape_char && std::distance(text_index, end) > 1) {
+		} else if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -485,7 +484,7 @@ void Window_Message::UpdateMessage() {
 				--text_index;
 				break;
 			default:
-				if (*text_index == escape_char) {
+				if (*text_index == Player::escape_char) {
 					// Show Escape Symbol
 					contents->TextDraw(contents_x, contents_y, text_color, Player::escape_symbol);
 					contents_x += Font::Default()->GetSize(Player::escape_symbol).width;

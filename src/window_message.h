@@ -179,9 +179,6 @@ protected:
 	/** If true inserts a new page after pause ended */
 	bool new_page_after_pause;
 
-	/** Character used before message commands. */
-	uint32_t escape_char;
-
 	/**
 	 * Table contains how many frames drawing one single char takes.
 	 * 0 means: 2 chars per frame.
