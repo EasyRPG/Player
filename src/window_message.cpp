@@ -83,30 +83,21 @@ void Window_Message::StartMessageProcessing() {
 		ShowGoldWindow();
 	}
 
-	const auto& lines = pm.GetLines();
+	const auto& pm_text = pm.GetText();
 
 	if (pm.IsWordWrapped()) {
-		std::u32string wrapped_text;
-		for (const auto& line : lines) {
-			/* TODO: don't take commands like \> \< into account when word-wrapping */
-			if (pm.IsWordWrapped()) {
-				Game_Message::WordWrap(
-						line,
-						width - 24,
-						[&wrapped_text](const std::string& wrapped_line) {
-							wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
-						}
+		std::string wrapped_text;
+		/* TODO: don't take commands like \> \< into account when word-wrapping */
+		Game_Message::WordWrap(
+				pm_text,
+				width - 24,
+				[&wrapped_text](const std::string& wrapped_line) {
+				wrapped_text.append(wrapped_line).append(1, '\n');
+				}
 				);
-				text = wrapped_text;
-			}
-		}
-	}
-	else {
-		text.clear();
-		for (const auto& line : lines) {
-			text.append(Utils::DecodeUTF32(line));
-			text.push_back(U'\n');
-		}
+		text = Utils::DecodeUTF32(wrapped_text);
+	} else {
+		text = Utils::DecodeUTF32(pm_text);
 	}
 	item_max = min(4, pm.GetNumChoices());
 

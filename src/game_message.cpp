@@ -368,10 +368,14 @@ void Game_Message::ApplyTextInsertingCommands(std::string& output, const std::st
 }
 
 int Game_Message::PendingMessage::PushLineImpl(std::string msg) {
+	// Current limitation.
+	assert(!IsWordWrapped() || NumLines() == 0);
+
 	RemoveControlChars(msg);
-	texts.push_back(u8"");
-	ApplyTextInsertingCommands(texts.back(), msg, Player::escape_char);
-	return texts.size();
+	ApplyTextInsertingCommands(text, msg, Player::escape_char);
+	text.push_back('\n');
+	++num_lines;
+	return num_lines;
 }
 
 int Game_Message::PendingMessage::PushLine(std::string msg) {
@@ -400,14 +404,11 @@ int Game_Message::PendingMessage::PushNumInput(int variable_id, int num_digits) 
 void Game_Message::PendingMessage::PushPageEnd() {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
-	if (texts.empty()) {
-		texts.push_back(u8"");
-	}
-	texts.back().push_back('\f');
+	text.push_back('\f');
 }
 
 void Game_Message::PendingMessage::SetWordWrapped(bool value) {
-	assert(texts.empty());
+	assert(text.empty());
 	word_wrapped = true;
 }
 

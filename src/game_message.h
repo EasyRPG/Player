@@ -41,9 +41,9 @@ namespace Game_Message {
 			void SetChoiceContinuation(ChoiceContinuation f);
 			void SetShowGoldWindow(bool value) { show_gold_window = true; }
 
-			const std::vector<std::string>& GetLines() const { return texts; }
+			const std::string& GetText() const { return text; }
 
-			int NumLines() const { return texts.size(); }
+			int NumLines() const { return num_lines; }
 			bool IsWordWrapped() const { return word_wrapped; }
 			bool ShowGoldWindow() const { return show_gold_window; }
 
@@ -62,7 +62,8 @@ namespace Game_Message {
 			int PushLineImpl(std::string msg);
 		private:
 			ChoiceContinuation choice_continuation;
-			std::vector<std::string> texts;
+			std::string text;
+			int num_lines = 0;
 			int choice_start = -1;
 			int choice_cancel_type = 5;
 			int num_input_variable = 0;
