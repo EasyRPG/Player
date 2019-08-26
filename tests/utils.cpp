@@ -2,13 +2,12 @@
 #include <cstdlib>
 #include "utils.h"
 
-static void LowerCase() {
-	assert(Utils::LowerCase("EasyRPG") == "easyrpg");
-	assert(Utils::LowerCase("player") == "player");
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
+
+
+TEST_CASE("Lower") {
+	REQUIRE_EQ(Utils::LowerCase("EasyRPG"), "easyrpg");
+	REQUIRE_EQ(Utils::LowerCase("player"), "player");
 }
 
-extern "C" int main(int, char**) {
-	LowerCase();
-
-	return EXIT_SUCCESS;
-}

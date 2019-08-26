@@ -267,6 +267,79 @@ std::string Utils::EncodeUTF(const std::u32string& str) {
 	return result;
 }
 
+Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
+	while (iter != end) {
+		uint8_t c1 = *iter;
+		++iter;
+		if (c1 < 0x80) {
+			return { static_cast<uint32_t>(c1), iter };
+		}
+		if (c1 < 0xC2) {
+			continue;
+		}
+		if (iter == end) {
+			break;
+		}
+		uint8_t c2 = *iter;
+		++iter;
+		if (c1 < 0xE0) {
+			if ((c2 & 0xC0) != 0x80)
+				continue;
+			auto ch = (static_cast<uint32_t>(((c1 & 0x1F) << 6) | (c2 & 0x3F)));
+			return { ch, iter };
+		}
+		if (iter == end) {
+			break;
+		}
+		uint8_t c3 = *iter;
+		++iter;
+		if (c1 < 0xF0) {
+			if (c1 == 0xE0) {
+				if ((c2 & 0xE0) != 0xA0)
+					continue;
+			} else if (c1 == 0xED) {
+				if ((c2 & 0xE0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80)
+				continue;
+			auto ch = (static_cast<uint32_t>(((c1 & 0x0F) << 12)
+						| ((c2 & 0x3F) << 6)
+						|  (c3 & 0x3F)));
+			return { ch, iter };
+		}
+		if (iter == end) {
+			break;
+		}
+		uint8_t c4 = *iter;
+		++iter;
+		if (c1 < 0xF5) {
+			if (c1 == 0xF0) {
+				if (!(0x90 <= c2 && c2 <= 0xBF))
+					continue;
+			} else if (c1 == 0xF4) {
+				if ((c2 & 0xF0) != 0x80)
+					continue;
+			} else {
+				if ((c2 & 0xC0) != 0x80)
+					continue;
+			}
+			if ((c3 & 0xC0) != 0x80 || (c4 & 0xC0) != 0x80)
+				continue;
+		auto ch = static_cast<uint32_t>(((c1 & 0x07) << 18)
+				| ((c2 & 0x3F) << 12)
+				| ((c3 & 0x3F) << 6)
+				|  (c4 & 0x3F));
+		return { ch, iter };
+		}
+	}
+	return { 0, iter };
+}
+
+
 #if !defined(__amigaos4__) && !defined(__AROS__)
 template<size_t WideSize>
 static std::wstring ToWideStringImpl(const std::string&);
