@@ -58,7 +58,6 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	// Above other windows
 	SetZ(Priority_Window + 100);
 
-	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
@@ -94,7 +93,7 @@ void Window_Message::ApplyTextInsertingCommands() {
 			case 'n':
 			case 'v':
 			{
-				if (*text_index != escape_char) {
+				if (*text_index != Player::escape_char) {
 					continue;
 				}
 				++text_index;
@@ -460,7 +459,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (*text_index == escape_char && std::distance(text_index, end) > 1) {
+		if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -533,7 +532,7 @@ void Window_Message::UpdateMessage() {
 				--text_index;
 				break;
 			default:
-				if (*text_index == escape_char) {
+				if (*text_index == Player::escape_char) {
 					DrawGlyph(Player::escape_symbol, instant_speed);
 				}
 				break;

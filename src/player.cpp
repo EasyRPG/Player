@@ -95,6 +95,7 @@ namespace Player {
 	bool touch_flag;
 	std::string encoding;
 	std::string escape_symbol;
+	uint32_t escape_char;
 	int engine;
 	std::string game_title;
 	int frames;
@@ -639,6 +640,7 @@ static void OnSystemFileReady(FileRequestResult* result) {
 void Player::CreateGameObjects() {
 	GetEncoding();
 	escape_symbol = ReaderUtil::Recode("\\", encoding);
+	escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 	if (escape_symbol.empty()) {
 		Output::Error("Invalid encoding: %s.", encoding.c_str());
 	}
@@ -1010,6 +1012,7 @@ std::string Player::GetEncoding() {
 			// When yes is a good encoding. Otherwise try the next ones.
 
 			escape_symbol = ReaderUtil::Recode("\\", enc);
+			escape_char = Utils::DecodeUTF32(Player::escape_symbol).front();
 			if (escape_symbol.empty()) {
 				// Bad encoding
 				Output::Debug("Bad encoding: %s. Trying next.", enc.c_str());
@@ -1036,6 +1039,7 @@ std::string Player::GetEncoding() {
 		}
 
 		escape_symbol = "";
+		escape_char = 0;
 
 		if (!encoding.empty()) {
 			Output::Debug("Detected encoding: %s", encoding.c_str());

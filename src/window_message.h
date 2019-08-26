@@ -177,9 +177,6 @@ protected:
 	/** If true inserts a new page after pause ended */
 	bool new_page_after_pause = false;
 
-	/** Character used before message commands. */
-	uint32_t escape_char = 0;
-
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
 

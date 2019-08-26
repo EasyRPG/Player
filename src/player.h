@@ -277,8 +277,11 @@ namespace Player {
 	/** Encoding used */
 	extern std::string encoding;
 
-	/** Backslash recoded */
+	/** Backslash recoded to utf8 string */
 	extern std::string escape_symbol;
+
+	/** Backslash recoded to character */
+	extern uint32_t escape_char;
 
 	/** Currently interpreted engine. */
 	extern int engine;
