@@ -260,8 +260,7 @@ void Game_Player::UpdateSelfMovement() {
 
 	if (!is_boarding
 			&& !Game_Map::GetInterpreter().IsRunning()
-			&& !Game_Message::message_waiting
-			&& !Game_Message::visible
+			&& !Game_Message::IsMessageActive()
 			&& !IsMoveRouteOverwritten()
 			&& !IsPaused() // RPG_RT compatible logic, but impossible to set pause on player
 			&& !did_call_encounter
@@ -320,8 +319,7 @@ void Game_Player::UpdateSelfMovement() {
 
 	// ESC-Menu calling
 	if (Game_System::GetAllowMenu()
-			&& !Game_Message::message_waiting
-			&& !Game_Message::visible
+			&& !Game_Message::IsMessageActive()
 			&& !Game_Map::GetInterpreter().IsRunning())
 	{
 		if (Input::IsTriggered(Input::CANCEL)) {

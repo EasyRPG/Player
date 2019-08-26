@@ -264,7 +264,17 @@ namespace Game_Message {
 	 * @return true if we can show a message box.
 	 */
 	bool CanShowMessage(bool foreground);
+
+	/**
+	 * True if a message is currently pending or still visible
+	 * @return true if message_waiting || visible
+	 */
+	bool IsMessageActive();
 }
 
+
+inline bool Game_Message::IsMessageActive() {
+	return message_waiting || visible;
+}
 
 #endif

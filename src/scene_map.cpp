@@ -225,13 +225,13 @@ void Scene_Map::UpdateSceneCalling() {
 		Scene::PopUntil(Scene::Title);
 	}
 
-	if (Game_Message::visible)
-		return;
-
 	auto call = GetRequestedScene();
 	SetRequestedScene(Null);
 
-	if (call == Null && Player::debug_flag) {
+	if (call == Null
+			&& Player::debug_flag
+			&& !Game_Message::IsMessageActive())
+	{
 		// ESC-Menu calling can be force called when TestPlay mode is on and cancel is pressed 5 times while holding SHIFT
 		if (Input::IsPressed(Input::SHIFT)) {
 			if (Input::IsTriggered(Input::CANCEL)) {
