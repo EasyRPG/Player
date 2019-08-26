@@ -33,6 +33,7 @@ namespace Game_Message {
 	PendingMessage pending_message;
 
 	bool message_waiting;
+	bool closing;
 	bool visible;
 }
 
@@ -433,5 +434,22 @@ void Game_Message::ResetPendingMessage() {
 	pending_message = {};
 	message_waiting = false;
 }
+
+bool Game_Message::CanShowMessage(bool foreground) {
+	// If there's a text already, return immediately
+	if (Game_Message::message_waiting)
+		return false;
+
+	// Forground interpreters: If the message box already started animating we wait for it to finish.
+	if (foreground && Game_Message::visible && Game_Message::closing)
+		return false;
+
+	// Parallel interpreters must wait until the message window is closed
+	if (!foreground && Game_Message::visible)
+		return false;
+
+	return true;
+}
+
 
 

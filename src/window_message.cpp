@@ -282,6 +282,7 @@ void Window_Message::Update() {
 			if (visible && !closing) {
 				// Start the closing animation
 				SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+				Game_Message::closing = true;
 			}
 		}
 	}
@@ -301,6 +302,7 @@ void Window_Message::Update() {
 
 	if (!visible) {
 		// The closing animation has finished
+		Game_Message::closing = false;
 		Game_Message::visible = false;
 	}
 }

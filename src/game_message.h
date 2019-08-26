@@ -248,9 +248,22 @@ namespace Game_Message {
 
 	void ApplyTextInsertingCommands(std::string& output, const std::string& input, uint32_t escape_char);
 
-	/** If a message is currently being processed. */
+	/** If we're waiting for a message to finish processing. This flag is set to true from when the
+	 * message box is requested up until it's finished writing text and ready to close.
+	 */
 	extern bool message_waiting;
+	/** Set to true when after the message box has started animating closed */
+	extern bool closing;
+	/** Set to true while the message box is visible on the screen */
 	extern bool visible;
+
+	/**
+	 * Return if it's legal to show a new message box.
+	 *
+	 * @param foreground true if this is in the foreground context, otherwise parallel context.
+	 * @return true if we can show a message box.
+	 */
+	bool CanShowMessage(bool foreground);
 }
 
 
