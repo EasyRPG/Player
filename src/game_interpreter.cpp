@@ -807,13 +807,9 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	// If there's a text already, return immediately
-	if (Game_Message::message_waiting)
+	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
-
-	// Parallel interpreters must wait until the message window is closed
-	if (!main_flag && Game_Message::visible)
-		return false;
+	}
 
 	wait_messages = true;
 	unsigned int line_count = 0;
@@ -863,6 +859,10 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
+	if (!Game_Message::CanShowMessage(main_flag)) {
+		return false;
+	}
+
 	Game_Message::SetTransparent(com.parameters[0] != 0);
 	Game_Message::SetPosition(com.parameters[1]);
 	Game_Message::SetPositionFixed(com.parameters[2] == 0);
@@ -871,8 +871,9 @@ bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //c
 }
 
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	if (Game_Message::message_waiting && Game_Message::owner_id != GetOriginalEventId())
+	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
+	}
 
 	Game_Message::SetFaceName(com.string);
 	Game_Message::SetFaceIndex(com.parameters[0]);
@@ -915,7 +916,8 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
-	if (!Game_Message::texts.empty()) {
+
+	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
 
@@ -943,7 +945,7 @@ bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& com) { //co
 
 
 bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
-	if (Game_Message::message_waiting) {
+	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
 

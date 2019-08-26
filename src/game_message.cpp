@@ -41,6 +41,7 @@ namespace Game_Message {
 	int num_input_digits_max;
 
 	bool message_waiting;
+	bool closing;
 	bool visible;
 	bool choice_reset_color = false;
 
@@ -215,3 +216,20 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 
 	return line_count;
 }
+
+bool Game_Message::CanShowMessage(bool foreground) {
+	// If there's a text already, return immediately
+	if (Game_Message::message_waiting)
+		return false;
+
+	// Forground interpreters: If the message box already started animating we wait for it to finish.
+	if (foreground && Game_Message::visible && Game_Message::closing)
+		return false;
+
+	// Parallel interpreters must wait until the message window is closed
+	if (!foreground && Game_Message::visible)
+		return false;
+
+	return true;
+}
+
