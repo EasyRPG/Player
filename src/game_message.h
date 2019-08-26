@@ -29,6 +29,8 @@ namespace Game_Message {
 
 	class PendingMessage {
 		public:
+			using ChoiceContinuation = std::function<void(int)>;
+
 			int PushLine(std::string msg);
 			int PushChoice(std::string msg, bool enabled = true);
 			int PushNumInput(int variable_id, int num_digits);
@@ -36,6 +38,7 @@ namespace Game_Message {
 
 			void SetWordWrapped(bool value);
 			void SetChoiceCancelType(int value);
+			void SetChoiceContinuation(ChoiceContinuation f);
 
 			const std::vector<std::string>& GetLines() const { return texts; }
 
@@ -47,12 +50,14 @@ namespace Game_Message {
 			int GetNumChoices() const { return HasChoices() ? NumLines() - choice_start : 0; }
 			int GetChoiceCancelType() const { return choice_cancel_type; }
 			bool IsChoiceEnabled(int idx) const { return choice_enabled[idx]; }
+			const ChoiceContinuation& GetChoiceContinuation() const { return choice_continuation; }
 
 			bool HasNumberInput() const { return num_input_digits > 0; }
 			int GetNumberInputDigits() const { return num_input_digits; }
 			int GetNumberInputVariable() const { return num_input_variable; }
 			int GetNumberInputStartLine() const { return NumLines(); }
 		private:
+			ChoiceContinuation choice_continuation;
 			std::vector<std::string> texts;
 			int choice_start = -1;
 			int choice_cancel_type = 5;
@@ -221,9 +226,6 @@ namespace Game_Message {
 	/** If a message is currently being processed. */
 	extern bool message_waiting;
 	extern bool visible;
-
-	/** Selected option (4 => cancel). */
-	extern int choice_result;
 }
 
 #endif

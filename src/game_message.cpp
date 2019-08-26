@@ -28,8 +28,6 @@ namespace Game_Message {
 
 	bool message_waiting;
 	bool visible;
-
-	int choice_result;
 }
 
 RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -235,15 +233,19 @@ void Game_Message::PendingMessage::SetChoiceCancelType(int value) {
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	pending_message = std::move(pm);
 	message_waiting = true;
-	choice_result = 4;
 }
 
 const Game_Message::PendingMessage& Game_Message::GetPendingMessage() {
 	return pending_message;
 }
 
+void Game_Message::PendingMessage::SetChoiceContinuation(ChoiceContinuation f) {
+	choice_continuation = std::move(f);
+}
+
 void Game_Message::ResetPendingMessage() {
 	pending_message = {};
 	message_waiting = false;
 }
+
 

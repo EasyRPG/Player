@@ -83,7 +83,7 @@ private:
 	bool CommandToggleAtbMode(RPG::EventCommand const& com);
 
 	bool ContinuationOpenShop(RPG::EventCommand const& com) override;
-	bool ContinuationShowInnStart(RPG::EventCommand const& com) override;
+	void ContinuationShowInnStart(int indent, int choice_result);
 	bool ContinuationShowInnContinue(RPG::EventCommand const& com);
 	bool ContinuationShowInnFinish(RPG::EventCommand const& com) override;
 	bool ContinuationEnemyEncounter(RPG::EventCommand const& com) override;

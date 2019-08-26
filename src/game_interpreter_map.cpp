@@ -348,8 +348,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
-		Game_Message::choice_result = 0;
-		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+		ContinuationShowInnStart(com.indent, 0);
 		return false;
 	}
 
@@ -432,30 +431,28 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	Game_Temp::inn_calling = true;
 
-	Game_Message::SetPendingMessage(std::move(pm));
-	_state.show_message = true;
-
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+	int indent = com.indent;
+	pm.SetChoiceContinuation([this,indent](int choice_result) {
+			ContinuationShowInnStart(indent, choice_result);
+			});
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
+
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com) {
+void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
-		return false;
-	}
-	continuation = NULL;
+	bool inn_stay = (choice_result == 0);
 
-	bool inn_stay = Game_Message::choice_result == 0;
-
-	SetSubcommandIndex(com.indent, inn_stay ? 0 : 1);
+	SetSubcommandIndex(indent, inn_stay ? 0 : 1);
 
 	Game_Temp::inn_calling = false;
 
@@ -470,11 +467,10 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com
 		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
 		Game_System::BgmFade(800);
 		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
-		return false;
+		return;
 	}
 
 	++index;
-	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& /* com */) {
