@@ -1780,7 +1780,7 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // 
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
