@@ -94,6 +94,7 @@ void Game_Player::PerformTeleport() {
 	// Even when target is the same map
 	Refresh();
 
+	Game_Message::ResetPendingMessage();
 	ResetAnimation();
 	if (Game_Map::GetMapId() != teleport_target.GetMapId()) {
 		Game_Map::Setup(teleport_target.GetMapId(), teleport_target.GetType());

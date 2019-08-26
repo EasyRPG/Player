@@ -147,6 +147,10 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	assert(frame);
 	auto& index = frame->current_command;
 
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
@@ -568,6 +572,7 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
+
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
