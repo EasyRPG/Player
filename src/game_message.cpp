@@ -22,6 +22,10 @@
 #include "main_data.h"
 #include "font.h"
 #include "player.h"
+#include "game_variables.h"
+#include "data.h"
+#include "reader_util.h"
+#include "output.h"
 
 #include <cctype>
 
@@ -194,6 +198,176 @@ static void RemoveControlChars(std::string& s) {
 	auto iter = std::remove_if(s.begin(), s.end(), [](const char c) { return std::iscntrl(c); });
 	s.erase(iter, s.end());
 }
+
+static Game_Message::ParseParamResult ParseParamImpl(
+		const char upper,
+		const char lower,
+		const char* iter,
+		const char* end,
+		uint32_t escape_char,
+		bool skip_prefix,
+		int max_recursion)
+{
+	if (!skip_prefix) {
+		const auto begin = iter;
+		if (iter == end) {
+			return { 0, begin };
+		}
+		auto ret = Utils::UTF8Next(iter, end);
+		// Invalid commands
+		if (ret.ch != escape_char) {
+			return { 0, begin };
+		}
+		iter = ret.iter;
+		if (iter == end || (*iter != upper && *iter != lower)) {
+			return { 0, begin };
+		}
+		++iter;
+	}
+
+	// If no bracket, RPG_RT will return 0.
+	if (iter == end || *iter != '[') {
+		return { 0, iter };
+	}
+
+	int value = 0;
+	++iter;
+	bool stop_parsing = false;
+	bool did_variable_subst = 0;
+
+	while (iter != end && *iter != ']') {
+		if (stop_parsing) {
+			++iter;
+			continue;
+		}
+
+		// Fast inline isdigit()
+		if (*iter >= '0' && *iter <= '9') {
+			value *= 10;
+			value += (*iter - '0');
+			++iter;
+			continue;
+		}
+
+		if (max_recursion > 0) {
+			auto ret = Utils::UTF8Next(iter, end);
+			auto ch = ret.ch;
+			iter = ret.iter;
+
+			// Recursive variable case.
+			if (ch == escape_char) {
+				if (iter != end && (*iter == 'V' || *iter == 'v')) {
+					++iter;
+					did_variable_subst = true;
+
+					auto ret = ParseParamImpl('V', 'v', iter, end, escape_char, true, max_recursion - 1);
+					iter = ret.iter;
+					int var_val = Game_Variables.Get(ret.value);
+
+					// RPG_RT concatenates the variable value.
+					int m = 10;
+					if (value != 0) {
+						while (m < var_val) {
+							m *= 10;
+						}
+					}
+					value = value * m + var_val;
+					continue;
+				}
+			}
+		}
+
+		// If we hit a non-digit, RPG_RT will stop parsing until the next closing bracket.
+		stop_parsing = true;
+	}
+
+	if (iter != end) {
+		++iter;
+	}
+
+	// RPG_RT will replace varible substitutions that result in 0
+	// with 1 to avoid invalid actor crash.
+	if (upper == 'N' && value == 0 && did_variable_subst) {
+		value = 1;
+	}
+
+	return { value, iter };
+}
+
+Game_Message::ParseParamResult Game_Message::ParseVariable(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('V', 'v', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('C', 'c', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseSpeed(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('S', 's', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+Game_Message::ParseParamResult Game_Message::ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
+	return ParseParamImpl('N', 'n', iter, end, escape_char, skip_prefix, max_recursion);
+}
+
+void Game_Message::ApplyTextInsertingCommands(std::string& output, const std::string& input, uint32_t escape_char) {
+	if (input.empty()) {
+		return;
+	}
+
+	auto iter = input.data();
+	const auto end = input.data() + input.size();
+
+	auto start_copy = iter;
+	while (iter != end) {
+		auto ret = Utils::UTF8Next(iter, end);
+		if (ret.ch != escape_char) {
+			iter = ret.iter;
+			continue;
+		}
+
+		// utf8 parsing failed
+		if (ret.ch == 0) {
+			break;
+		}
+
+		output.append(start_copy, iter);
+		start_copy = iter;
+
+		iter = ret.iter;
+		if (iter == end) {
+			break;
+		}
+
+		const auto ch = *iter;
+		++iter;
+		if (ch == 'N' || ch == 'n' || ch == 'V' || ch == 'v') {
+			auto parse_ret = ParseActor(iter, end, escape_char, true);
+			iter = parse_ret.iter;
+			int value = parse_ret.value;
+
+			if (ch == 'N' || ch == 'n') {
+				const auto* actor = ReaderUtil::GetElement(Data::actors, value);
+				if (!actor) {
+					Output::Error("Invalid Actor Id %d in message text", value);
+				} else{
+					output.append(actor->name);
+				}
+			}
+
+			if (ch == 'V' || ch == 'v') {
+				int variable_value = Game_Variables.Get(value);
+				output.append(std::to_string(variable_value));
+			}
+
+			start_copy = iter;
+		}
+	}
+
+	output.append(start_copy, end);
+}
+
+
 
 int Game_Message::PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
