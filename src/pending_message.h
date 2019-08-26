@@ -31,11 +31,13 @@ class PendingMessage {
 		void SetWordWrapped(bool value);
 		void SetChoiceCancelType(int value);
 		void SetChoiceResetColors(bool value);
+		void SetShowGoldWindow(bool value) { show_gold_window = value; }
 
 		const std::vector<std::string>& GetLines() const { return texts; }
 
 		int NumLines() const { return texts.size(); }
 		bool IsWordWrapped() const { return word_wrapped; }
+		bool ShowGoldWindow() const { return show_gold_window; }
 
 		bool HasChoices() const { return choice_start >= 0; }
 		int GetChoiceStartLine() const { return choice_start; }
@@ -57,6 +59,7 @@ class PendingMessage {
 		std::bitset<8> choice_enabled = {};
 		bool word_wrapped = false;
 		bool choice_reset_color = false;
+		bool show_gold_window = false;
 };
 
 

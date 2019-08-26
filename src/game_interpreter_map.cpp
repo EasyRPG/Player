@@ -454,7 +454,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			return false;
 	}
 
-	Game_Temp::inn_calling = true;
+	pm.SetShowGoldWindow(true);
 
 	Game_Message::SetPendingMessage(std::move(pm));
 	_state.show_message = true;
@@ -480,8 +480,6 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com
 	bool inn_stay = Game_Message::choice_result == 0;
 
 	SetSubcommandIndex(com.indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
-
-	Game_Temp::inn_calling = false;
 
 	if (inn_stay) {
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
