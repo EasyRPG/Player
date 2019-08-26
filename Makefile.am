@@ -436,8 +436,8 @@ endif
 @DX_RULES@
 
 # FIXME make filefinder work without external scripting
-check_PROGRAMS = directorytree output rtp utils wordwrap
-TESTS = directorytree output rtp utils wordwrap
+check_PROGRAMS = directorytree output rtp utils wordwrap utf
+TESTS = directorytree output rtp utils wordwrap utf
 directorytree_SOURCES = tests/directorytree.cpp
 directorytree_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 directorytree_LDADD = $(easyrpg_player_LDADD)
@@ -456,6 +456,9 @@ utils_LDADD = $(easyrpg_player_LDADD)
 wordwrap_SOURCES = tests/wordwrap.cpp tests/doctest.h
 wordwrap_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
 wordwrap_LDADD = $(easyrpg_player_LDADD)
+utf_SOURCES = tests/utf.cpp tests/doctest.h
+utf_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
+utf_LDADD = $(easyrpg_player_LDADD)
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests
