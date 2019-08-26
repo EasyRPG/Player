@@ -367,11 +367,10 @@ void Game_Message::ApplyTextInsertingCommands(std::string& output, const std::st
 	output.append(start_copy, end);
 }
 
-
-
 int Game_Message::PendingMessage::PushLineImpl(std::string msg) {
 	RemoveControlChars(msg);
-	texts.push_back(std::move(msg));
+	texts.push_back(u8"");
+	ApplyTextInsertingCommands(texts.back(), msg, Player::escape_char);
 	return texts.size();
 }
 
@@ -402,7 +401,7 @@ void Game_Message::PendingMessage::PushPageEnd() {
 	assert(!HasChoices());
 	assert(!HasNumberInput());
 	if (texts.empty()) {
-		texts.push_back("");
+		texts.push_back(u8"");
 	}
 	texts.back().push_back('\f');
 }

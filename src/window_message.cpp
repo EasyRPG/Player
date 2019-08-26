@@ -74,66 +74,6 @@ Window_Message::~Window_Message() {
 	Game_Message::visible = false;
 }
 
-void Window_Message::ApplyTextInsertingCommands() {
-	text_index = text.end();
-	end = text.end();
-
-	// Contains already substitued \N actors to prevent endless recursion
-	std::vector<int> replaced_actors;
-	int actor_replacement_start = std::distance(text.begin(), end);
-
-	if (!text.empty()) {
-		// Move on first valid char
-		--text_index;
-
-		// Apply commands that insert text
-		while (std::distance(text_index, text.begin()) <= -1) {
-			char ch = tolower(*text_index--);
-			switch (ch) {
-			case 'n':
-			case 'v':
-			{
-				if (*text_index != Player::escape_char) {
-					continue;
-				}
-				++text_index;
-
-				auto start_code = text_index - 1;
-				bool success;
-				int parsed_num;
-				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, parsed_num));
-				if (start_code < text.begin() + actor_replacement_start) {
-					replaced_actors.clear();
-				}
-
-				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
-					text_index = start_code;
-					continue;
-				}
-
-				if (ch == 'n') {
-					replaced_actors.push_back(parsed_num);
-					actor_replacement_start = std::min<int>(std::distance(text.begin(), start_code), actor_replacement_start);
-				}
-
-				text.replace(start_code, text_index + 1, command_result);
-				// Start from the beginning, the inserted text might add new commands
-				text_index = text.end();
-				end = text.end();
-				actor_replacement_start = std::min<int> (std::distance(text.begin(), end), actor_replacement_start);
-
-				// Move on first valid char
-				--text_index;
-
-				break;
-			}
-			default:
-				break;
-			}
-		}
-	}
-}
-
 void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 
@@ -147,15 +87,11 @@ void Window_Message::StartMessageProcessing() {
 
 	if (pm.IsWordWrapped()) {
 		std::u32string wrapped_text;
-		for (const std::string& line : lines) {
+		for (const auto& line : lines) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
 			if (pm.IsWordWrapped()) {
-				// since ApplyTextInsertingCommands works for the text variable,
-				// we store line into text and use wrapped_text for the real 'text'
-				text = Utils::DecodeUTF32(line);
-				ApplyTextInsertingCommands();
 				Game_Message::WordWrap(
-						Utils::EncodeUTF(text),
+						line,
 						width - 24,
 						[&wrapped_text](const std::string& wrapped_line) {
 							wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
@@ -167,14 +103,15 @@ void Window_Message::StartMessageProcessing() {
 	}
 	else {
 		text.clear();
-		for (const std::string& line : lines) {
-			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
+		for (const auto& line : lines) {
+			text.append(Utils::DecodeUTF32(line));
+			text.push_back(U'\n');
 		}
 	}
 	item_max = min(4, pm.GetNumChoices());
 
-	ApplyTextInsertingCommands();
 	text_index = text.begin();
+	end = text.end();
 
 	InsertNewPage();
 }
@@ -463,15 +400,20 @@ void Window_Message::UpdateMessage() {
 			// Special message codes
 			++text_index;
 
+			auto ch = *text_index;
+
 			int parameter;
 			bool is_valid;
-			switch (tolower(*text_index)) {
+
+			switch (ch) {
 			case 'c':
+			case 'C':
 				// Color
 				parameter = ParseParameter(is_valid);
 				text_color = parameter > 19 ? 0 : parameter;
 				break;
 			case 's':
+			case 'S':
 				// Speed modifier
 				parameter = ParseParameter(is_valid);
 				speed = Utils::Clamp(parameter, 1, 20);
@@ -532,11 +474,12 @@ void Window_Message::UpdateMessage() {
 				--text_index;
 				break;
 			default:
-				if (*text_index == Player::escape_char) {
+				if (ch == Player::escape_char) {
 					DrawGlyph(Player::escape_symbol, instant_speed);
 				}
 				break;
 			}
+
 			++text_index;
 			continue;
 		}
@@ -553,23 +496,6 @@ void Window_Message::UpdateMessage() {
 		DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))), instant_speed);
 		++text_index;
 	}
-}
-
-void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
-#ifdef EP_DEBUG_MESSAGE
-	Output::Debug("Msg Draw Glyph %s %d", glyph.c_str(), instant_speed);
-#endif
-	contents->TextDraw(contents_x, contents_y, text_color, glyph);
-	int glyph_width = Font::Default()->GetSize(glyph).width;
-	contents_x += glyph_width;
-	if (!instant_speed && glyph_width > 0) {
-		// RPG_RT compatible for half-width (6) and full-width (12)
-		// generalizes the algo for even bigger glyphs
-		// FIXME: Verify RPG_RT on full width
-		int width = (glyph_width - 1) / 6 + 1;
-		SetWaitForCharacter(width);
-	}
-	num_chars_printed_this_line += width;
 }
 
 int Window_Message::ParseParameter(bool& is_valid) {
@@ -638,45 +564,21 @@ int Window_Message::ParseParameter(bool& is_valid) {
 	return num;
 }
 
-std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
-	bool is_valid;
-	uint32_t cmd_char = *text_index;
-	success = true;
-	parameter = -1;
-
-	switch (tolower(cmd_char)) {
-	case 'n':
-		// Output Hero name
-		parameter = ParseParameter(is_valid);
-		if (is_valid) {
-			Game_Actor* actor = NULL;
-			if (parameter == 0) {
-				// Party hero
-				if (Main_Data::game_party->GetBattlerCount() > 0) {
-					actor = Main_Data::game_party->GetActors()[0];
-				}
-			} else {
-				actor = Game_Actors::GetActor(parameter);
-			}
-			if (actor != NULL) {
-				return actor->GetName();
-			}
-		}
-		break;
-	case 'v':
-		// Show Variable value
-		parameter = ParseParameter(is_valid);
-		if (is_valid) {
-			return std::to_string(Game_Variables.Get(parameter));
-		} else {
-			// Invalid Var is always 0
-			return "0";
-		}
-	default:;
-		// When this happens text_index was not on a \ during calling
+void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
+#ifdef EP_DEBUG_MESSAGE
+	Output::Debug("Msg Draw Glyph %s %d", glyph.c_str(), instant_speed);
+#endif
+	contents->TextDraw(contents_x, contents_y, text_color, glyph);
+	int glyph_width = Font::Default()->GetSize(glyph).width;
+	contents_x += glyph_width;
+	if (!instant_speed && glyph_width > 0) {
+		// RPG_RT compatible for half-width (6) and full-width (12)
+		// generalizes the algo for even bigger glyphs
+		// FIXME: Verify RPG_RT on full width
+		int width = (glyph_width - 1) / 6 + 1;
+		SetWaitForCharacter(width);
 	}
-	success = false;
-	return "";
+	num_chars_printed_this_line += width;
 }
 
 void Window_Message::UpdateCursorRect() {

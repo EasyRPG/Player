@@ -115,28 +115,6 @@ public:
 	int ParseParameter(bool& is_valid);
 
 	/**
-	 * Parses a message command code (\ followed by a char).
-	 * This should only be used for codes that accept
-	 * parameters!
-	 * The text_index must be on the char following \ when
-	 * calling.
-	 *
-	 * @param[out] success If parsing was successful.
-	 * @param[out] value The extracted value if parsing was successful
-	 * @return the final text output of the code.
-	 */
-	std::string ParseCommandCode(bool& success, int& value);
-
-	/**
-	 * Updates the text variable, replacing the commands
-	 * \N[x] and \V[x] in it.
-	 *
-	 * Doesn't return anything. The result is stored into
-	 * the text variable.
-	 */
-	void ApplyTextInsertingCommands();
-
-	/**
 	 * Stub. For choice.
 	 */
 	void UpdateCursorRect() override;
