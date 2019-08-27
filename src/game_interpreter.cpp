@@ -316,7 +316,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if (_state.show_message && (Game_Message::visible || Game_Message::message_waiting)) {
+			if (_state.show_message && Game_Message::IsMessageActive()) {
 				break;
 			}
 		}
@@ -843,6 +843,10 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
+	if (!Game_Message::CanShowMessage(main_flag)) {
+		return false;
+	}
+
 	Game_Message::SetTransparent(com.parameters[0] != 0);
 	Game_Message::SetPosition(com.parameters[1]);
 	Game_Message::SetPositionFixed(com.parameters[2] == 0);
@@ -851,7 +855,7 @@ bool Game_Interpreter::CommandMessageOptions(RPG::EventCommand const& com) { //c
 }
 
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	if (Game_Message::message_waiting && !_state.show_message) {
+	if (!Game_Message::CanShowMessage(main_flag)) {
 		return false;
 	}
 
@@ -1694,7 +1698,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 		return true;
 	}
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2013,8 +2017,9 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
-	if (Game_Temp::transition_processing || Game_Message::visible)
+	if (Game_Temp::transition_processing || Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
@@ -2092,8 +2097,9 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
-	if (Game_Temp::transition_processing || Game_Message::visible)
+	if (Game_Temp::transition_processing || Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
@@ -2628,9 +2634,9 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 
-	// FIXME: Is this valid?
-	if (wait && Game_Message::visible)
+	if (wait && Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	_keyinput = {};
 	_keyinput.wait = wait;
@@ -3153,6 +3159,10 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	Game_Temp::to_title = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
@@ -3315,6 +3325,10 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	if (Scene::Find(Scene::GameBrowser)) {
 		Scene::PopUntil(Scene::GameBrowser);
 	} else {

@@ -132,8 +132,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
 		case Cmd::OpenVideoOptions:
-			Output::Warning("OpenVideoOptions: Command not supported");
-			return true;
+			return CommandOpenVideoOptions(com);
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -349,10 +348,6 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	Game_Temp::inn_price = com.parameters[1];
 	// Not used, but left here for documentation purposes
 	// bool has_inn_handlers = com.parameters[2] != 0;
-
-	if (!Game_Message::CanShowMessage(main_flag)) {
-		return false;
-	}
 
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
@@ -690,6 +685,10 @@ bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* co
 }
 
 bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // code 11560
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	const std::string& filename = com.string;
 	int pos_x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int pos_y = ValueOrVariable(com.parameters[0], com.parameters[2]);
@@ -747,6 +746,15 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
 	Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandOpenVideoOptions(RPG::EventCommand const& com) {
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
+	Output::Warning("OpenVideoOptions: Command not supported");
 	return true;
 }
 
