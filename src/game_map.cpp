@@ -371,9 +371,9 @@ void Game_Map::PlayBgm() {
 		return;
 	}
 
-	int current_index = GetMapIndex(location.map_id);
-	last_map_id = current_index;
+	last_map_id = location.map_id;
 
+	int current_index = GetMapIndex(location.map_id);
 	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
 		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
