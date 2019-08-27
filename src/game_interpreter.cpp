@@ -326,7 +326,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Game_Message::message_waiting)
 				break;
 		} else {
-			if ((Game_Message::visible || Game_Message::message_waiting) && wait_messages)
+			if ((Game_Message::IsMessageActive()) && wait_messages)
 				break;
 		}
 
@@ -1726,7 +1726,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) { // code 11410
 		return true;
 	}
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -2033,8 +2033,9 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // code 11010
-	if (Game_Message::visible)
+	if (Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	int tt = Transition::TransitionNone;
 
@@ -2114,8 +2115,9 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code 11020
-	if (Game_Message::visible)
+	if (Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	int tt = Transition::TransitionNone;
 
@@ -2651,9 +2653,9 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 
-	// FIXME: Is this valid?
-	if (wait && Game_Message::visible)
+	if (wait && Game_Message::IsMessageActive()) {
 		return false;
+	}
 
 	_keyinput = {};
 	_keyinput.wait = wait;
@@ -3176,6 +3178,10 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	_async_op = AsyncOp::MakeToTitle();
 	return true;
 }
@@ -3332,6 +3338,10 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	_async_op = AsyncOp::MakeExitGame();
 	return true;
 }

@@ -81,6 +81,7 @@ private:
 	bool CommandOpenMainMenu(RPG::EventCommand const& com);
 	bool CommandOpenLoadMenu(RPG::EventCommand const& com);
 	bool CommandToggleAtbMode(RPG::EventCommand const& com);
+	bool CommandOpenVideoOptions(RPG::EventCommand const& com);
 
 	bool ContinuationOpenShop(RPG::EventCommand const& com) override;
 	bool ContinuationShowInnStart(RPG::EventCommand const& com) override;
