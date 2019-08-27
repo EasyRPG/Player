@@ -78,7 +78,10 @@ void Game_Interpreter::Clear() {
 
 // Is interpreter running.
 bool Game_Interpreter::IsRunning() const {
-	return !_state.stack.empty();
+	//Older versions of EasyRPG loaded the interpreter with empty command lists.
+	//This allows us to load old saved games.
+	auto* frame = GetFrame();
+	return frame && !frame->commands.empty();
 }
 
 // Setup.
