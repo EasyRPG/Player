@@ -159,6 +159,11 @@ protected:
 	static int ValueOrVariable(int mode, int val);
 
 	/**
+	 * When current frame finishes executing we pop the stack
+	 */
+	bool OnFinishStackFrame();
+
+	/**
 	 * Triggers a game over when all party members are dead.
 	 */
 	void CheckGameOver();
@@ -240,7 +245,6 @@ protected:
 	bool CommandChangeBattleCommands(RPG::EventCommand const& com);
 	bool CommandExitGame(RPG::EventCommand const& com);
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
-	bool CommandEnd();
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
 	virtual bool ContinuationChoices(RPG::EventCommand const& com);
