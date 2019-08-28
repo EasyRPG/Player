@@ -41,6 +41,18 @@
 #include "screen.h"
 #include "scene_load.h"
 
+static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
+	switch (tt) {
+		case TeleportTarget::eForegroundTeleport:
+			return true;
+		case TeleportTarget::eParallelTeleport:
+		case TeleportTarget::eSkillTeleport:
+		case TeleportTarget::eVehicleHackTeleport:
+			break;
+	}
+	return false;
+}
+
 Scene_Map::Scene_Map(bool from_save) :
 	from_save(from_save) {
 	type = Scene::Map;
@@ -74,7 +86,12 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	}
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport(true, true);
+		TeleportParams tp;
+		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		tp.erase_screen = false;
+		tp.use_default_transition_in = true;
+		tp.defer_recursive_teleports = false;
+		StartPendingTeleport(tp);
 		return;
 	}
 	// Call any requested scenes when transition is done.
@@ -93,7 +110,12 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	// Player cast Escape / Teleport from menu
 	if (Main_Data::game_player->IsPendingTeleport()
 			&& Main_Data::game_player->GetTeleportTarget().GetType() == TeleportTarget::eSkillTeleport) {
-		FinishPendingTeleport(true, true);
+		TeleportParams tp;
+		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		tp.erase_screen = false;
+		tp.use_default_transition_in = true;
+		tp.defer_recursive_teleports = true;
+		FinishPendingTeleport(tp);
 		return;
 	}
 
@@ -171,6 +193,11 @@ void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
 	spriteset->Update();
 }
 
+void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
+	Game_Map::UpdateForegroundEvents(actx);
+	spriteset->Update();
+}
+
 void Scene_Map::Update() {
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
@@ -195,7 +222,13 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 
 void Scene_Map::UpdateStage2() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport(false, false);
+		TeleportParams tp;
+		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		tp.erase_screen = true;
+		tp.use_default_transition_in = false;
+		tp.defer_recursive_teleports = false;
+
+		StartPendingTeleport(tp);
 		return;
 	}
 	UpdateSceneCalling();
@@ -262,50 +295,65 @@ void Scene_Map::UpdateSceneCalling() {
 	}
 }
 
-void Scene_Map::StartPendingTeleport(bool use_default_transition, bool no_erase) {
+void Scene_Map::StartPendingTeleport(TeleportParams tp) {
 	const auto& tt = Main_Data::game_player->GetTeleportTarget();
 
 	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && !no_erase) {
+	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && tp.erase_screen) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
-	AsyncNext([this,use_default_transition]() { FinishPendingTeleport(use_default_transition, false); });
+	AsyncNext([=]() { FinishPendingTeleport(tp); });
 }
 
-void Scene_Map::FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports) {
+void Scene_Map::FinishPendingTeleport(TeleportParams tp) {
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
-	FinishPendingTeleport2(MapUpdateAsyncContext(), use_default_transition, defer_recursive_teleports);
+	FinishPendingTeleport2(MapUpdateAsyncContext(), tp);
 }
 
-void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports) {
+void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParams tp) {
 	PreUpdate(actx);
 
 	if (actx.IsActive()) {
-		OnAsyncSuspend([=] { FinishPendingTeleport2(actx,use_default_transition,defer_recursive_teleports); }, true);
+		OnAsyncSuspend([=] { FinishPendingTeleport2(actx, tp); }, true);
 		return;
 	}
 
-	if (!defer_recursive_teleports) {
+	if (!tp.defer_recursive_teleports) {
 		// RPG_RT behavior - Escape and Teleport skills silently ignore any teleport commands
 		// executed by events during pre-update frame and defer them until first frame.
 		if (Main_Data::game_player->IsPendingTeleport()) {
-			StartPendingTeleport(use_default_transition, true);
+			tp.erase_screen = false;
+			StartPendingTeleport(tp);
 			return;
 		}
 	}
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (use_default_transition && Graphics::IsTransitionErased()) {
+	if (tp.use_default_transition_in && Graphics::IsTransitionErased()) {
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
-	} else if (!use_default_transition && !screen_erased_by_event) {
+	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+	}
+
+	// Call any requested scenes when transition is done.
+	AsyncNext([=]() { FinishPendingTeleport3(actx, tp); });
+}
+
+void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParams tp) {
+	if (tp.run_foreground_events) {
+		PreUpdateForegroundEvents(actx);
+
+		if (actx.IsActive()) {
+			OnAsyncSuspend([=] { FinishPendingTeleport3(actx, tp); }, true);
+			return;
+		}
 	}
 
 	// Call any requested scenes when transition is done.

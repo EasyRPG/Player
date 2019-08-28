@@ -65,7 +65,7 @@ public:
 	 * @param direction New direction after teleport. If -1, the direction isn't changed.
 	 * @param tt teleport type
 	 */
-	void ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt = TeleportTarget::eNormalTeleport);
+	void ReserveTeleport(int map_id, int x, int y, int direction, TeleportTarget::Type tt);
 	void ReserveTeleport(const RPG::SaveTarget& target);
 	void PerformTeleport();
 
