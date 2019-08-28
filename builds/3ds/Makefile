@@ -69,7 +69,7 @@ CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DNDEBUG \
 			-DHAVE_XMP -DHAVE_WILDMIDI -DHAVE_OPUS \
 			-DHAVE_LIBSPEEXDSP -DWANT_FASTWAV
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -flto -Wl,-Map,$(notdir $*.map)

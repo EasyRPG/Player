@@ -28,7 +28,7 @@ CC      = $(PREFIX)-gcc
 CXX     = $(PREFIX)-g++
 
 CFLAGS  = -Wl,-q -g -O3
-CXXFLAGS = $(CFLAGS) -fno-exceptions -std=gnu++11 -fno-rtti
+CXXFLAGS = $(CFLAGS) -fno-exceptions -std=gnu++14 -fno-rtti
 ASFLAGS = $(CFLAGS)
 CPPFLAGS = -DPSP2 -DHAVE_FREETYPE -DHAVE_HARFBUZZ -DSUPPORT_AUDIO \
 		-DHAVE_MPG123 -DHAVE_LIBSNDFILE -DHAVE_OGGVORBIS \

@@ -17,6 +17,6 @@ LOCAL_STATIC_LIBRARIES := png
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra
 
-LOCAL_CXXFLAGS := $(LOCAL_C_FLAGS) -std=c++11 -fno-rtti
+LOCAL_CXXFLAGS := $(LOCAL_C_FLAGS) -std=c++14 -fno-rtti
 
 include $(BUILD_SHARED_LIBRARY)
