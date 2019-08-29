@@ -55,11 +55,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 
 	this->event.ID = data()->ID;
 
-	if (!data()->parallel_event_execstate.stack.empty()) {
-		interpreter.reset(new Game_Interpreter_Map());
-		interpreter->SetState(data()->parallel_event_execstate);
-	}
-
 	Refresh(true);
 }
 
@@ -128,8 +123,14 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 
-	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		interpreter.reset(new Game_Interpreter_Map());
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		if (!page->event_commands.empty()) {
+			if (!interpreter) {
+				interpreter.reset(new Game_Interpreter_Map());
+			}
+			interpreter->Clear();
+			interpreter->Push(this);
+		}
 	}
 }
 
@@ -142,10 +143,16 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 
 	original_move_frequency = page->move_frequency;
 
-	// Trigger parallel events when the interpreter wasn't already running
-	// (because it was the middle of a parallel event while saving)
-	if (!interpreter && GetTrigger() == RPG::EventPage::Trigger_parallel) {
-		interpreter.reset(new Game_Interpreter_Map());
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		auto& state = data()->parallel_event_execstate;
+		// RPG_RT Savegames have empty stacks for parallel events.
+		// We are LSD compatible but don't load these into interpreter.
+		if (!state.stack.empty() && !state.stack.front().commands.empty()) {
+			if (!interpreter) {
+				interpreter.reset(new Game_Interpreter_Map());
+			}
+			interpreter->SetState(state);
+		}
 	}
 }
 
@@ -501,12 +508,10 @@ bool Game_Event::Update() {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel && interpreter) {
 		assert(interpreter != nullptr);
-		if (!interpreter->IsRunning()) {
-			interpreter->Clear();
-			interpreter->Push(this);
-		}
+		assert(interpreter->IsRunning());
+
 		interpreter->Update();
 
 		// Suspend due to async op ...
@@ -555,9 +560,20 @@ const RPG::EventPage *Game_Event::GetActivePage() const {
 }
 
 const RPG::SaveMapEvent& Game_Event::GetSaveData() {
-	if (interpreter) {
-		data()->parallel_event_execstate = interpreter->GetState();
+	RPG::SaveEventExecState state;
+	if (page && page->trigger == RPG::EventPage::Trigger_parallel) {
+		if (interpreter) {
+			state = interpreter->GetState();
+		}
+
+		if (state.stack.empty()) {
+			// RPG_RT always stores an empty stack frame for parallel events.
+			RPG::SaveEventExecFrame frame;
+			frame.event_id = GetId();
+			state.stack.push_back(std::move(frame));
+		}
 	}
+	data()->parallel_event_execstate = std::move(state);
 	data()->ID = event.ID;
 
 	return *data();
