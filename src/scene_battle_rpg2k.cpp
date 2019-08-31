@@ -300,12 +300,15 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
-		// If no battle action is running, we need to check for battle events which could have
-		// triggered win/loss.
-		if (!battle_action_pending && CheckResultConditions()) {
-			return;
+		if (!battle_action_pending) {
+			// If no battle action is running, we need to check for battle events which could have
+			// triggered win/loss.
+			if (CheckResultConditions()) {
+				return;
+			}
+			// Don't remove actions until the current action is done.
+			RemoveActionsForNonExistantBattlers();
 		}
-		RemoveActionsForNonExistantBattlers();
 		if (!battle_actions.empty()) {
 			auto* battler = battle_actions.front();
 			if (!battle_action_pending) {
