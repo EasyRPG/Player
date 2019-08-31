@@ -234,8 +234,6 @@ protected:
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
 
-	void OnChangeSystemGraphicReady(FileRequestResult* result);
-
 	FileRequestBinding request_id;
 	enum class Keys {
 		eDown,

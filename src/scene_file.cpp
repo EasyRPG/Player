@@ -39,7 +39,7 @@ Scene_File::Scene_File(std::string message) :
 }
 
 static std::unique_ptr<Sprite> makeBorderSprite(int y) {
-	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::System()->GetBackgroundColor());
+	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::SystemOrBlack()->GetBackgroundColor());
 	auto sprite = std::unique_ptr<Sprite>(new Sprite());
 	sprite->SetVisible(true);
 	sprite->SetZ(Priority_Window + 1);

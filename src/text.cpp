@@ -51,7 +51,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string
 	text_surface = Bitmap::Create(dst_rect.width, dst_rect.height, true);
 	text_surface->Clear();
 
-	BitmapRef system = Cache::System();
+	BitmapRef system = Cache::SystemOrBlack();
 
 	// Where to draw the next glyph (x pos)
 	int next_glyph_pos = 0;

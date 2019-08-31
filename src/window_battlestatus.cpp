@@ -73,16 +73,7 @@ void Window_BattleStatus::Refresh() {
 		}
 
 		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
-			FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-			request->SetGraphicFile(true);
-			if (!request->IsReady()) {
-				request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
-				request->Start();
-				break;
-			}
-			else {
-				DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
-			}
+			DrawActorFace(*static_cast<const Game_Actor*>(actor), 80 * i, 24);
 		}
 		else {
 			int y = 2 + i * 16;
@@ -118,16 +109,8 @@ void Window_BattleStatus::RefreshGauge() {
 			}
 
 			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
-				FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-				request->SetGraphicFile(true);
-				if (!request->IsReady()) {
-					request_id = request->Bind(&Window_BattleStatus::OnSystem2Ready, this);
-					request->Start();
-					break;
-				}
-				else {
-					BitmapRef system2 = Cache::System2(Data::system.system2_name);
-
+				BitmapRef system2 = Cache::System2();
+				if (system2) {
 					// Clear number drawing area
 					contents->ClearRect(Rect(40 + 80 * i, 24, 8 * 4, 16));
 					contents->ClearRect(Rect(40 + 80 * i, 24 + 12 + 4, 8 * 4, 16));
@@ -165,7 +148,8 @@ void Window_BattleStatus::RefreshGauge() {
 }
 
 void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_value, int which) {
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
+	BitmapRef system2 = Cache::System2();
+	assert(system2);
 
 	int gauge_x;
 	if (cur_value == max_value) {
@@ -185,7 +169,8 @@ void Window_BattleStatus::DrawGaugeSystem2(int x, int y, int cur_value, int max_
 }
 
 void Window_BattleStatus::DrawNumberSystem2(int x, int y, int value) {
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
+	BitmapRef system2 = Cache::System2();
+	assert(system2);
 
 	bool handle_zero = false;
 
@@ -307,6 +292,3 @@ bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
 	}
 }
 
-void Window_BattleStatus::OnSystem2Ready(FileRequestResult*) {
-	Refresh();
-}

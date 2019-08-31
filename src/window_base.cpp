@@ -27,12 +27,7 @@
 #include "player.h"
 
 Window_Base::Window_Base(int x, int y, int width, int height) {
-	windowskin_name = Game_System::GetSystemName();
-	if (!windowskin_name.empty()) {
-		SetWindowskin(Cache::System(windowskin_name));
-	} else {
-		SetWindowskin(Bitmap::Create(160, 80, false));
-	}
+	SetWindowskin(Cache::SystemOrBlack());
 
 	SetX(x);
 	SetY(y);
@@ -59,10 +54,7 @@ bool Window_Base::IsMovementActive() {
 
 void Window_Base::Update() {
 	Window::Update();
-	if (Game_System::GetSystemName() != windowskin_name) {
-		windowskin_name = Game_System::GetSystemName();
-		SetWindowskin(Cache::System(windowskin_name));
-	}
+	SetWindowskin(Cache::SystemOrBlack());
 	SetStretch(Game_System::GetMessageStretch() == RPG::System::Stretch_stretch);
 	UpdateMovement();
 }
@@ -314,15 +306,10 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) const {
 }
 
 void Window_Base::DrawGauge(const Game_Battler& actor, int cx, int cy) const {
-	FileRequestAsync* request = AsyncHandler::RequestFile("System2", Data::system.system2_name);
-	request->SetGraphicFile(true);
-	if (!request->IsReady()) {
-		// Gauge refreshed each frame, so we can wait via polling
-		request->Start();
+	BitmapRef system2 = Cache::System2();
+	if (!system2) {
 		return;
 	}
-
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 	bool full = actor.IsGaugeFull();
 	int gauge_w = actor.GetGauge() / 4;

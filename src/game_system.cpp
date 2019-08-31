@@ -30,9 +30,11 @@
 #include "player.h"
 #include "reader_util.h"
 #include "scene_save.h"
+#include "scene_map.h"
 
 namespace {
 	FileRequestBinding music_request_id;
+	FileRequestBinding system_request_id;
 	std::map<std::string, FileRequestBinding> se_request_ids;
 
 	/**
@@ -195,14 +197,56 @@ void Game_System::SePlay(const RPG::Animation &animation) {
 	}
 }
 
-std::string Game_System::GetSystemName() {
-	return data.graphics_name;
+const std::string& Game_System::GetSystemName() {
+	return !data.graphics_name.empty() ?
+		data.graphics_name : Data::system.system_name;
 }
 
-void Game_System::SetSystemName(std::string const& new_system_name) {
+static void OnChangeSystemGraphicReady(FileRequestResult* result) {
+	Cache::SetSystemName(result->file);
+	DisplayUi->SetBackcolor(Cache::SystemOrBlack()->GetBackgroundColor());
+
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
+
+	if (!scene)
+		return;
+
+	scene->spriteset->SystemGraphicUpdated();
+}
+
+void Game_System::ReloadSystemGraphic() {
+	FileRequestAsync* request = AsyncHandler::RequestFile("System", Game_System::GetSystemName());
+	system_request_id = request->Bind(&OnChangeSystemGraphicReady);
+	request->SetImportantFile(true);
+	request->SetGraphicFile(true);
+	request->Start();
+}
+
+void Game_System::SetSystemGraphic(const std::string& new_system_name,
+		RPG::System::Stretch message_stretch,
+		RPG::System::Font font) {
+
+	bool changed = (GetSystemName() != new_system_name);
+
 	data.graphics_name = new_system_name;
-	Cache::SetSystemName(new_system_name);
-	DisplayUi->SetBackcolor(Cache::System()->GetBackgroundColor());
+	data.message_stretch = message_stretch;
+	data.font_id = font;
+
+	if (changed) {
+		ReloadSystemGraphic();
+	}
+}
+
+void Game_System::ResetSystemGraphic() {
+	data.graphics_name = "";
+	data.message_stretch = (RPG::System::Stretch)0;
+	data.font_id = (RPG::System::Font)0;
+
+	ReloadSystemGraphic();
+}
+
+const std::string& Game_System::GetSystem2Name() {
+	return Data::system.system2_name;
 }
 
 RPG::Music& Game_System::GetSystemBGM(int which) {
@@ -290,19 +334,15 @@ bool Game_System::GetAllowMenu() {
 }
 
 RPG::System::Stretch Game_System::GetMessageStretch() {
-	return (RPG::System::Stretch)data.message_stretch;
+	return static_cast<RPG::System::Stretch>(!data.graphics_name.empty()
+		? data.message_stretch
+		: Data::system.message_stretch);
 }
 
-void Game_System::SetMessageStretch(RPG::System::Stretch stretch) {
-	data.message_stretch = stretch;
-}
-
-int Game_System::GetFontId() {
-	return data.font_id;
-}
-
-void Game_System::SetFontId(int id) {
-	data.font_id = id;
+RPG::System::Font Game_System::GetFontId() {
+	return static_cast<RPG::System::Font>(!data.graphics_name.empty()
+		? data.font_id
+		: Data::system.font_id);
 }
 
 int Game_System::GetTransition(int which) {

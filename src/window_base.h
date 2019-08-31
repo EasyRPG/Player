@@ -82,8 +82,6 @@ public:
 protected:
 	void OnFaceReady(FileRequestResult* result, int face_index, int cx, int cy, bool flip);
 
-	std::string windowskin_name;
-
 	std::vector<FileRequestBinding> face_request_ids;
 
 	int current_frame = 0;

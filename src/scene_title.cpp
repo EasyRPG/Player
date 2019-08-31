@@ -42,6 +42,8 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
+	Game_System::ResetSystemGraphic();
+
 	// Skip background image and music if not used
 	if (CheckEnableTitleGraphicAndMusic()) {
 		CreateTitleGraphic();
@@ -52,6 +54,8 @@ void Scene_Title::Start() {
 }
 
 void Scene_Title::Continue(SceneType prev_scene) {
+	Game_System::ResetSystemGraphic();
+
 	if (restart_title_cache) {
 		// Clear the cache when the game returns to the title screen
 		// e.g. by pressing F12, except the Title Load menu

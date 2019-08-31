@@ -42,10 +42,11 @@ Sprite_AirshipShadow::Sprite_AirshipShadow(CloneType type) {
 void Sprite_AirshipShadow::RecreateShadow() {
 	GetBitmap()->Clear();
 
-	std::string system_name = Game_System::GetSystemName();
-	if (system_name.empty()) return;
-
-	BitmapRef system = Cache::System(system_name);
+	// RPG_RT never displays shadows if there is no system graphic.
+	BitmapRef system = Cache::System();
+	if (!system) {
+		return;
+	}
 
 	// Offset of the shadow in the System graphic as per
 	// https://wiki.easyrpg.org/development/technical-details/system-graphics
