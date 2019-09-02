@@ -52,12 +52,6 @@
 #include "utils.h"
 #include "transition.h"
 
-namespace {
-	// Used to ensure that the interpreter that runs after a Erase/ShowScreen
-	// is the invoker of the transition
-	static Game_Interpreter* transition_owner = nullptr;
-}
-
 bool Game_Interpreter::to_title = false;
 bool Game_Interpreter::exit_game = false;
 
@@ -293,12 +287,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		if (Game_Temp::transition_processing) {
 			break;
-		}
-
-		if (transition_owner && transition_owner != this) {
-			break;
-		} else {
-			transition_owner = nullptr;
 		}
 
 		if (_state.wait_time > 0) {
@@ -1983,7 +1971,6 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
-	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
@@ -2062,7 +2049,6 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
-	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
