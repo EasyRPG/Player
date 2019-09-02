@@ -32,6 +32,10 @@
 #include "spriteset_battle.h"
 #include <cassert>
 
+enum BranchBattleSubcommand {
+	eOptionBranchBattleElse = 1
+};
+
 Game_Interpreter_Battle::Game_Interpreter_Battle()
 	: Game_Interpreter(true) {}
 
@@ -395,7 +399,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 
 	int sub_idx = subcommand_sentinel;
 	if (!result) {
-		sub_idx = 1;
+		sub_idx = eOptionBranchBattleElse;
 		SkipToNextConditional({Cmd::ElseBranch_B, Cmd::EndBranch_B}, com.indent);
 	}
 
@@ -404,7 +408,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 }
 
 bool Game_Interpreter_Battle::CommandElseBranchBattle(RPG::EventCommand const& com) { //code 23310
-	return CommandOptionGeneric(com, 1, {Cmd::EndBranch_B});
+	return CommandOptionGeneric(com, eOptionBranchBattleElse, {Cmd::EndBranch_B});
 }
 
 bool Game_Interpreter_Battle::CommandEndBranchBattle(RPG::EventCommand const& com) { //code 23311

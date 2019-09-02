@@ -55,6 +55,9 @@
 bool Game_Interpreter::to_title = false;
 bool Game_Interpreter::exit_game = false;
 
+enum BranchSubcommand {
+	eOptionBranchElse = 1
+};
 
 constexpr int Game_Interpreter::loop_limit;
 constexpr int Game_Interpreter::call_stack_limit;
@@ -2994,7 +2997,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 
 	int sub_idx = subcommand_sentinel;
 	if (!result) {
-		sub_idx = 1;
+		sub_idx = eOptionBranchElse;
 		SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
 	}
 
@@ -3004,7 +3007,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 
 
 bool Game_Interpreter::CommandElseBranch(RPG::EventCommand const& com) { //code 22010
-	return CommandOptionGeneric(com, 1, {Cmd::EndBranch});
+	return CommandOptionGeneric(com, eOptionBranchElse, {Cmd::EndBranch});
 }
 
 bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& com) { //code 22011

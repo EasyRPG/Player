@@ -48,6 +48,22 @@
 #include "game_interpreter_map.h"
 #include "reader_lcf.h"
 
+enum EnemyEncounterSubcommand {
+	eOptionEnemyEncounterVictory = 0,
+	eOptionEnemyEncounterEscape = 1,
+	eOptionEnemyEncounterDefeat = 2,
+};
+
+enum ShopSubcommand {
+	eOptionShopTransaction = 0,
+	eOptionShopNoTransaction = 1,
+};
+
+enum InnSubcommand {
+	eOptionInnStay = 0,
+	eOptionInnNoStay = 1,
+};
+
 void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
 	Clear();
 	_state = save;
@@ -228,11 +244,11 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 	int sub_idx = subcommand_sentinel;
 
 	if (Game_Temp::battle_result == Game_Temp::BattleVictory) {
-		sub_idx = 0;
+		sub_idx = eOptionEnemyEncounterVictory;
 	}
 
 	if (Game_Temp::battle_result == Game_Temp::BattleEscape) {
-		sub_idx = 1;
+		sub_idx = eOptionEnemyEncounterEscape;
 		//FIXME: subidx set before this anyway??
 		if (Game_Temp::battle_escape_mode == 1) {
 			return CommandEndEventProcessing(com);
@@ -240,7 +256,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 	}
 
 	if (Game_Temp::battle_result == Game_Temp::BattleDefeat) {
-		sub_idx = 2;
+		sub_idx = eOptionEnemyEncounterDefeat;
 		//FIXME: subidx set before this anyway??
 		if (Game_Temp::battle_defeat_mode == 0) {
 			return CommandGameOver(com);
@@ -253,15 +269,15 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandVictoryHandler(RPG::EventCommand const& com) { // code 20710
-	return CommandOptionGeneric(com, 0, {Cmd::EscapeHandler, Cmd::DefeatHandler, Cmd::EndBattle});
+	return CommandOptionGeneric(com, eOptionEnemyEncounterVictory, {Cmd::EscapeHandler, Cmd::DefeatHandler, Cmd::EndBattle});
 }
 
 bool Game_Interpreter_Map::CommandEscapeHandler(RPG::EventCommand const& com) { // code 20711
-	return CommandOptionGeneric(com, 1, {Cmd::DefeatHandler, Cmd::EndBattle});
+	return CommandOptionGeneric(com, eOptionEnemyEncounterEscape, {Cmd::DefeatHandler, Cmd::EndBattle});
 }
 
 bool Game_Interpreter_Map::CommandDefeatHandler(RPG::EventCommand const& com) { // code 20712
-	return CommandOptionGeneric(com, 2, {Cmd::EndBattle});
+	return CommandOptionGeneric(com, eOptionEnemyEncounterDefeat, {Cmd::EndBattle});
 }
 
 bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& com) { // code 20713
@@ -321,7 +337,7 @@ bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
 
 	continuation = nullptr;
 
-	int sub_idx = Game_Temp::shop_transaction ? 0 : 1;
+	int sub_idx = Game_Temp::shop_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
 
 	SetSubcommandIndex(com.indent, sub_idx);
 
@@ -329,11 +345,11 @@ bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
-	return CommandOptionGeneric(com, 0, {Cmd::NoTransaction, Cmd::EndShop});
+	return CommandOptionGeneric(com, eOptionShopTransaction, {Cmd::NoTransaction, Cmd::EndShop});
 }
 
 bool Game_Interpreter_Map::CommandNoTransaction(RPG::EventCommand const& com) { // code 20721
-	return CommandOptionGeneric(com, 1, {Cmd::EndShop});
+	return CommandOptionGeneric(com, eOptionShopNoTransaction, {Cmd::EndShop});
 }
 
 bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& com) { // code 20722
@@ -461,7 +477,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com
 
 	bool inn_stay = Game_Message::choice_result == 0;
 
-	SetSubcommandIndex(com.indent, inn_stay ? 0 : 1);
+	SetSubcommandIndex(com.indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	Game_Temp::inn_calling = false;
 
@@ -527,11 +543,11 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& co
 }
 
 bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730
-	return CommandOptionGeneric(com, 0, {Cmd::NoStay, Cmd::EndInn});
+	return CommandOptionGeneric(com, eOptionInnStay, {Cmd::NoStay, Cmd::EndInn});
 }
 
 bool Game_Interpreter_Map::CommandNoStay(RPG::EventCommand const& com) { // code 20731
-	return CommandOptionGeneric(com, 1, {Cmd::EndInn});
+	return CommandOptionGeneric(com, eOptionInnNoStay, {Cmd::EndInn});
 }
 
 bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& com) { // code 20732
