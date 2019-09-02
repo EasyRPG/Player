@@ -921,14 +921,18 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 		UpdateProcessedFlags(is_preupdate);
 	}
 
-	if (!UpdateCommonEvents(actx)) {
-		// Suspend due to common event async op ...
-		return;
+	if (!actx.IsActive() || actx.IsParallelCommonEvent()) {
+		if (!UpdateCommonEvents(actx)) {
+			// Suspend due to common event async op ...
+			return;
+		}
 	}
 
-	if (!UpdateMapEvents(actx)) {
-		// Suspend due to map event async op ...
-		return;
+	if (!actx.IsActive() || actx.IsParallelMapEvent()) {
+		if (!UpdateMapEvents(actx)) {
+			// Suspend due to map event async op ...
+			return;
+		}
 	}
 
 	if (is_preupdate) {
@@ -950,12 +954,16 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 		Main_Data::game_screen->Update();
 	}
 
-	if (!UpdateForegroundEvents(actx)) {
-		// Suspend due to foreground event async op ...
-		return;
+	if (!actx.IsActive() || actx.IsForegroundEvent()) {
+		if (!UpdateForegroundEvents(actx)) {
+			// Suspend due to foreground event async op ...
+			return;
+		}
 	}
 
 	Parallax::Update();
+
+	actx = {};
 }
 
 void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
@@ -974,11 +982,11 @@ void Game_Map::UpdateProcessedFlags(bool is_preupdate) {
 
 
 bool Game_Map::UpdateCommonEvents(MapUpdateAsyncContext& actx) {
-	int resume_ce = actx.GetCommonEvent();
+	int resume_ce = actx.GetParallelCommonEvent();
 
 	for (Game_CommonEvent& ev : common_events) {
 		if (resume_ce != 0) {
-			// If resuming, skip all unit the event to resume from ..
+			// If resuming, skip all until the event to resume from ..
 			if (ev.GetIndex() != resume_ce) {
 				continue;
 			} else {
@@ -998,11 +1006,11 @@ bool Game_Map::UpdateCommonEvents(MapUpdateAsyncContext& actx) {
 }
 
 bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
-	int resume_ev = actx.GetMapEvent();
+	int resume_ev = actx.GetParallelMapEvent();
 
 	for (Game_Event& ev : events) {
 		if (resume_ev != 0) {
-			// If resuming, skip all unit the event to resume from ..
+			// If resuming, skip all until the event to resume from ..
 			if (ev.GetId() != resume_ev) {
 				continue;
 			} else {

@@ -45,9 +45,12 @@ class MapUpdateAsyncContext {
 		static MapUpdateAsyncContext FromMapEvent(int ce);
 		static MapUpdateAsyncContext FromForegroundEvent();
 
-		int GetCommonEvent() const;
-		int GetMapEvent() const;
+		int GetParallelCommonEvent() const;
+		int GetParallelMapEvent() const;
+
 		bool IsForegroundEvent() const;
+		bool IsParallelCommonEvent() const;
+		bool IsParallelMapEvent() const;
 		bool IsActive() const;
 	private:
 		int common_event = 0;
@@ -722,11 +725,11 @@ inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent() {
 	return actx;
 }
 
-inline int MapUpdateAsyncContext::GetCommonEvent() const {
+inline int MapUpdateAsyncContext::GetParallelCommonEvent() const {
 	return common_event;
 }
 
-inline int MapUpdateAsyncContext::GetMapEvent() const {
+inline int MapUpdateAsyncContext::GetParallelMapEvent() const {
 	return map_event;
 }
 
@@ -734,8 +737,17 @@ inline bool MapUpdateAsyncContext::IsForegroundEvent() const {
 	return foreground_event;
 }
 
+inline bool MapUpdateAsyncContext::IsParallelCommonEvent() const {
+	return common_event > 0;
+}
+
+inline bool MapUpdateAsyncContext::IsParallelMapEvent() const {
+	return map_event > 0;
+}
+
+
 inline bool MapUpdateAsyncContext::IsActive() const {
-	return GetCommonEvent() || GetMapEvent() || IsForegroundEvent();
+	return IsParallelCommonEvent() || IsParallelMapEvent() || IsForegroundEvent();
 }
 
 #endif
