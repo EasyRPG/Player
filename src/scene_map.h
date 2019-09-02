@@ -23,6 +23,7 @@
 #include "spriteset_map.h"
 #include "window_message.h"
 #include "window_varlist.h"
+#include "game_map.h"
 
 /**
  * Scene Map class.
@@ -55,21 +56,35 @@ public:
 	std::unique_ptr<Spriteset_Map> spriteset;
 
 private:
-	void StartPendingTeleport();
-	void FinishPendingTeleport();
-	void PreUpdate();
-	// Handles event requested transitions.
-	void UpdateStage2();
+	enum TeleportTransitionRule {
+		eTransitionNormal,
+		eTransitionFade,
+		eTransitionForceFade,
+		eTransitionNone
+	};
+
+	void Start2(MapUpdateAsyncContext actx);
+
+	void StartPendingTeleport(bool use_default_transition, bool no_erase);
+	void FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports);
+	void FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports);
+
+	void PreUpdate(MapUpdateAsyncContext& actx);
+
+	// Calls map update
+	void UpdateStage1(MapUpdateAsyncContext actx);
 	// Handles pending teleport and scene changes.
-	void UpdateStage3();
+	void UpdateStage2();
+
 	void UpdateSceneCalling();
+
+	template <typename F> void AsyncNext(F&& f);
+	template <typename F> void OnAsyncSuspend(F&& f, bool is_preupdate);
 
 	std::unique_ptr<Window_Message> message_window;
 
 	int debug_menuoverwrite_counter = 0;
 	bool from_save;
-	// Teleport from new game or Teleport / Escape skill from menu.
-	bool teleport_from_other_scene = false;
 	bool screen_erased_by_event = false;
 };
 

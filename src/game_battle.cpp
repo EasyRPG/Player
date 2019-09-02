@@ -125,7 +125,13 @@ void Game_Battle::Quit() {
 
 void Game_Battle::Update() {
 	interpreter->Update();
+	if (interpreter->IsAsyncPending()) {
+		terminate = true;
+		return;
+	}
+
 	Main_Data::game_screen->Update();
+
 	spriteset->Update();
 	if (animation) {
 		animation->Update();

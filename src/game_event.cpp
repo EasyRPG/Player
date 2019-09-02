@@ -491,9 +491,9 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 	MoveTypeTowardsOrAwayPlayer(false);
 }
 
-void Game_Event::Update() {
+bool Game_Event::Update() {
 	if (!data()->active || page == NULL) {
-		return;
+		return true;
 	}
 
 	// RPG_RT runs the parallel interpreter everytime Update is called.
@@ -509,15 +509,20 @@ void Game_Event::Update() {
 		}
 		interpreter->Update();
 
+		// Suspend due to async op ...
+		if (interpreter->IsAsyncPending()) {
+			return false;
+		}
+
 		// RPG_RT only exits if active is false here, but not if there is
 		// no active page...
 		if (!data()->active) {
-			return;
+			return true;
 		}
 	}
 
 	if (IsProcessed()) {
-		return;
+		return true;
 	}
 	SetProcessed(true);
 
@@ -535,6 +540,7 @@ void Game_Event::Update() {
 	if (IsStopping()) {
 		CheckEventCollision();
 	}
+	return true;
 }
 
 const RPG::EventPage* Game_Event::GetPage(int page) const {

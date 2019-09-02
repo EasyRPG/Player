@@ -54,8 +54,6 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
-	teleport_from_other_scene = true;
-
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
@@ -64,16 +62,19 @@ void Scene_Map::Start() {
 
 	Player::FrameReset();
 
-	PreUpdate();
-	// FIXME: Handle transitions requested on the first frame of a new game by PreUpdate!!
-	if (Game_Temp::transition_processing) {
-		Game_Temp::transition_processing = false;
-		Game_Temp::transition_erase = false;
-		Game_Temp::transition_type = Transition::TransitionNone;
+	Start2(MapUpdateAsyncContext());
+}
+
+void Scene_Map::Start2(MapUpdateAsyncContext actx) {
+	PreUpdate(actx);
+
+	if (actx.IsActive()) {
+		OnAsyncSuspend([this,actx]() { Start2(actx); }, true);
+		return;
 	}
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+		StartPendingTeleport(true, true);
 		return;
 	}
 	// Call any requested scenes when transition is done.
@@ -81,7 +82,6 @@ void Scene_Map::Start() {
 }
 
 void Scene_Map::Continue(SceneType prev_scene) {
-	teleport_from_other_scene = true;
 	if (prev_scene == Scene::Battle) {
 		// Came from battle
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
@@ -91,8 +91,9 @@ void Scene_Map::Continue(SceneType prev_scene) {
 	Game_Map::PlayBgm();
 
 	// Player cast Escape / Teleport from menu
-	if (Main_Data::game_player->IsPendingTeleport()) {
-		FinishPendingTeleport();
+	if (Main_Data::game_player->IsPendingTeleport()
+			&& Main_Data::game_player->GetTeleportTarget().GetType() == TeleportTarget::eSkillTeleport) {
+		FinishPendingTeleport(true, true);
 		return;
 	}
 
@@ -118,8 +119,6 @@ static bool IsMenuScene(Scene::SceneType scene) {
 }
 
 void Scene_Map::TransitionIn(SceneType prev_scene) {
-	teleport_from_other_scene = false;
-
 	// Teleport already setup a transition.
 	if (Graphics::IsTransitionPending()) {
 		return;
@@ -167,65 +166,42 @@ void Scene_Map::DrawBackground() {
 	}
 }
 
-void Scene_Map::PreUpdate() {
-	Game_Map::Update(true);
+void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
+	Game_Map::Update(actx, true);
 	spriteset->Update();
 }
 
 void Scene_Map::Update() {
-	Game_Map::Update();
+	MapUpdateAsyncContext actx;
+	UpdateStage1(actx);
+}
+
+void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
+	Game_Map::Update(actx);
 	spriteset->Update();
+
+	// Waiting for async operation from map update.
+	if (actx.IsActive()) {
+		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); }, false);
+		return;
+	}
+
 	message_window->Update();
 
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
 	// may require us to wait for them to download before we can start the transitions.
-	if (IsAsyncPending()) {
-		async_continuation = [this]() { UpdateStage2(); };
-		return;
-	}
-
-	UpdateStage2();
+	AsyncNext([this]() { UpdateStage2(); });
 }
 
 void Scene_Map::UpdateStage2() {
-	if (!Game_Temp::transition_processing) {
-		UpdateStage3();
-		return;
-	}
-
-	Game_Temp::transition_processing = false;
-
-	// Do the transition and then finish the update routine.
-	// FIXME: This behavior is incomplete as the update loop has to be
-	// resumed at exactly the right time. In particular if a parallel
-	// event requests a transition, we have to continue running the interpreter
-	// and all stages of the update loop afterwards.
-	// This will be fixed later.
-
-	Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-	screen_erased_by_event = Game_Temp::transition_erase;
-	// Unless its an instant transition, we must wait for it to finish before we can proceed.
-	if (IsAsyncPending()) {
-		async_continuation = [this]() { UpdateStage3(); };
-		return;
-	}
-	UpdateStage3();
-}
-
-void Scene_Map::UpdateStage3() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+		StartPendingTeleport(false, false);
 		return;
 	}
 	UpdateSceneCalling();
 }
 
 void Scene_Map::UpdateSceneCalling() {
-	if (Game_Temp::to_title) {
-		Game_Temp::to_title = false;
-		Scene::PopUntil(Scene::Title);
-	}
-
 	if (Game_Message::visible)
 		return;
 
@@ -286,70 +262,54 @@ void Scene_Map::UpdateSceneCalling() {
 	}
 }
 
-void Scene_Map::StartPendingTeleport() {
+void Scene_Map::StartPendingTeleport(bool use_default_transition, bool no_erase) {
 	const auto& tt = Main_Data::game_player->GetTeleportTarget();
 
 	FileRequestAsync* request = Game_Map::RequestMap(tt.GetMapId());
 	request->SetImportantFile(true);
 	request->Start();
 
-	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport) {
+	if (!Graphics::IsTransitionErased() && tt.GetType() != TeleportTarget::eVehicleHackTeleport && !no_erase) {
 		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), this, 32, true);
 	}
 
-	if (IsAsyncPending()) {
-		async_continuation = [&]() { FinishPendingTeleport(); };
-		return;
-	}
-
-	FinishPendingTeleport();
+	AsyncNext([this,use_default_transition]() { FinishPendingTeleport(use_default_transition, false); });
 }
 
-void Scene_Map::FinishPendingTeleport() {
+void Scene_Map::FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports) {
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
+	FinishPendingTeleport2(MapUpdateAsyncContext(), use_default_transition, defer_recursive_teleports);
+}
 
-	PreUpdate();
-	// FIXME: Handle transitions requested on the preupdate frame after a teleport!
-	if (Game_Temp::transition_processing) {
-		// Show screen command allows screen to be visible from normal transitions, even
-		// though currently we don't emulate the actual transition caused by it.
-		if (!Game_Temp::transition_erase) {
-			screen_erased_by_event = false;
-		}
-		Game_Temp::transition_processing = false;
-		Game_Temp::transition_erase = false;
-		Game_Temp::transition_type = Transition::TransitionNone;
-	}
+void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports) {
+	PreUpdate(actx);
 
-	if (Main_Data::game_player->IsPendingTeleport()) {
-		StartPendingTeleport();
+	if (actx.IsActive()) {
+		OnAsyncSuspend([=] { FinishPendingTeleport2(actx,use_default_transition,defer_recursive_teleports); }, true);
 		return;
 	}
 
-	// Event forced the screen to erased, so we're done here.
-	if (screen_erased_by_event) {
-		UpdateSceneCalling();
-		return;
+	if (!defer_recursive_teleports) {
+		// RPG_RT behavior - Escape and Teleport skills silently ignore any teleport commands
+		// executed by events during pre-update frame and defer them until first frame.
+		if (Main_Data::game_player->IsPendingTeleport()) {
+			StartPendingTeleport(use_default_transition, true);
+			return;
+		}
 	}
 
-	if (Graphics::IsTransitionErased()) {
-		if (teleport_from_other_scene) {
-			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
-		} else {
-			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
-		}
+	// This logic was tested against RPG_RT and works this way ...
+	if (use_default_transition && Graphics::IsTransitionErased()) {
+		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+	} else if (!use_default_transition && !screen_erased_by_event) {
+		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
 	}
 
 	// Call any requested scenes when transition is done.
-	if (IsAsyncPending()) {
-		async_continuation = [&]() { UpdateSceneCalling(); };
-		return;
-	} else {
-		UpdateSceneCalling();
-	}
+	AsyncNext([this]() { UpdateSceneCalling(); });
 }
 
 // Scene calling stuff.
@@ -401,3 +361,34 @@ void Scene_Map::CallDebug() {
 void Scene_Map::CallGameover() {
 	Scene::Push(std::make_shared<Scene_Gameover>());
 }
+
+template <typename F>
+void Scene_Map::AsyncNext(F&& f) {
+	if (IsAsyncPending()) {
+		async_continuation = std::forward<F>(f);
+	} else {
+		f();
+	}
+}
+
+template <typename F>
+void Scene_Map::OnAsyncSuspend(F&& f, bool is_preupdate) {
+	if (CheckInterpreterExit()) {
+		return;
+	}
+
+	if (Game_Temp::transition_processing) {
+		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
+		if (!Game_Temp::transition_erase || !is_preupdate) {
+			// RPG_RT behavior: EraseScreen commands performed during pre-update don't stick.
+			screen_erased_by_event = Game_Temp::transition_erase;
+		}
+
+		Game_Temp::transition_processing = false;
+		Game_Temp::transition_erase = false;
+		Game_Temp::transition_type = Transition::TransitionNone;;
+	}
+
+	AsyncNext(std::forward<F>(f));
+}
+

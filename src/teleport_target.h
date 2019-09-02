@@ -29,6 +29,8 @@ class TeleportTarget {
 		enum Type {
 			/** A normal teleport action */
 			eNormalTeleport,
+			/** An escape or teleport skill */
+			eSkillTeleport,
 			/** A hacky teleport from a SetVehicleLocation() (RPG_RT bug) */
 			eVehicleHackTeleport,
 		};

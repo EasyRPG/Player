@@ -52,11 +52,8 @@
 #include "utils.h"
 #include "transition.h"
 
-namespace {
-	// Used to ensure that the interpreter that runs after a Erase/ShowScreen
-	// is the invoker of the transition
-	static Game_Interpreter* transition_owner = nullptr;
-}
+bool Game_Interpreter::to_title = false;
+bool Game_Interpreter::exit_game = false;
 
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
@@ -292,12 +289,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			break;
 		}
 
-		if (transition_owner && transition_owner != this) {
-			break;
-		} else {
-			transition_owner = nullptr;
-		}
-
 		if (_state.wait_time > 0) {
 			_state.wait_time--;
 			break;
@@ -331,10 +322,6 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 						(_keyinput.wait_frames * 10) / Graphics::GetDefaultFps());
 			}
 			_keyinput.wait = false;
-		}
-
-		if (Game_Temp::to_title) {
-			break;
 		}
 
 		auto* frame = GetFrame();
@@ -1984,7 +1971,6 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
-	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
@@ -2063,7 +2049,6 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
-	transition_owner = this;
 
 	switch (com.parameters[0]) {
 	case -1:
@@ -3083,8 +3068,7 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 }
 
 bool Game_Interpreter::CommandReturnToTitleScreen(RPG::EventCommand const& /* com */) { // code 12510
-	Game_Temp::to_title = true;
-	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	to_title = true;
 	return false;
 }
 
@@ -3240,12 +3224,8 @@ bool Game_Interpreter::CommandChangeBattleCommands(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter::CommandExitGame(RPG::EventCommand const& /* com */) {
-	if (Scene::Find(Scene::GameBrowser)) {
-		Scene::PopUntil(Scene::GameBrowser);
-	} else {
-		Player::exit_flag = true;
-	}
-	return true;
+	exit_game = true;
+	return false;
 }
 
 bool Game_Interpreter::CommandToggleFullscreen(RPG::EventCommand const& /* com */) {
@@ -3272,3 +3252,7 @@ bool Game_Interpreter::ContinuationShowInnStart(RPG::EventCommand const& /* com 
 bool Game_Interpreter::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
+
+bool Game_Interpreter::IsAsyncPending() {
+	return Game_Temp::transition_processing || to_title || exit_game;
+}

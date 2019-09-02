@@ -56,6 +56,7 @@ public:
 	bool IsRunning() const;
 	int GetLoopCount() const;
 	bool ReachedLoopLimit() const;
+
 	void Update(bool reset_loop_count=true);
 
 	void Push(
@@ -88,9 +89,27 @@ public:
 	/** @return the event_id of the event at the base of the call stack */
 	int GetOriginalEventId() const;
 
+	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
+	static bool IsAsyncPending();
+
+	/** @return true if any interpreter requested to return to title screen */
+	static bool GetReturnToTitle();
+
+	/** Resets the return to title flag */
+	static void ResetReturnToTitle();
+
+	/** @return true if any interpreter requested to return to title screen */
+	static bool GetExitGame();
+
+	/** Resets the return to title flag */
+	static void ResetExitGame();
+
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
+
+	static bool to_title;
+	static bool exit_game;
 
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
@@ -282,6 +301,22 @@ inline int Game_Interpreter::GetOriginalEventId() const {
 
 inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
+}
+
+inline bool Game_Interpreter::GetReturnToTitle() {
+	return to_title;
+}
+
+inline void Game_Interpreter::ResetReturnToTitle() {
+	to_title = false;
+}
+
+inline bool Game_Interpreter::GetExitGame() {
+	return exit_game;
+}
+
+inline void Game_Interpreter::ResetExitGame() {
+	exit_game = false;
 }
 
 #endif
