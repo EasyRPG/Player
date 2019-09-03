@@ -35,10 +35,6 @@ public:
 
 	static bool inn_calling;
 
-	static bool transition_processing;
-	static Transition::TransitionType transition_type;
-	static bool transition_erase;
-
 	static bool shop_buys;
 	static bool shop_sells;
 	static int shop_type;		// message set A, B, or C

@@ -25,6 +25,7 @@
 #include "rpg_event.h"
 #include "rpg_savemapevent.h"
 #include "game_interpreter_map.h"
+#include "async_op.h"
 
 /**
  * Game_Event class.
@@ -111,9 +112,9 @@ public:
 	/** 
 	 * Update this for the current frame
 	 *
-	 * @return false if we must suspend due to an async operation.
+	 * @return async operation if we should suspend, otherwise returns AsyncOp::eNone
 	 */
-	bool Update();
+	AsyncOp Update();
 
 	bool AreConditionsMet(const RPG::EventPage& page);
 

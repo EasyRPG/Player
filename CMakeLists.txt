@@ -13,6 +13,7 @@ add_library(${PROJECT_NAME}
 	src/3ds_ui.h
 	src/async_handler.cpp
 	src/async_handler.h
+	src/async_op.h
 	src/audio_3ds.cpp
 	src/audio_3ds.h
 	src/audio_al.cpp

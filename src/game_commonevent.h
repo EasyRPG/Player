@@ -24,6 +24,7 @@
 #include "game_interpreter_map.h"
 #include "rpg_commonevent.h"
 #include "rpg_saveeventexecstate.h"
+#include "async_op.h"
 
 /**
  * Game_CommonEvent class.
@@ -47,9 +48,9 @@ public:
 	/**
 	 * Updates common event parallel interpreter.
 	 *
-	 * @return false if we must suspend due to an async operation.
+	 * @return async operation if we should suspend, otherwise returns AsyncOp::eNone
 	 */
-	bool Update();
+	AsyncOp Update();
 
 	/**
 	 * Gets common event index.
@@ -101,18 +102,11 @@ public:
 	/** @return true if waiting for background execution */
 	bool IsWaitingBackgroundExecution() const;
 
-	/** @return true if parallel event waiting for async op */
-	bool IsAsyncPending() const;
-
 private:
 	int common_event_id;
 
 	/** Interpreter for parallel common events. */
 	std::unique_ptr<Game_Interpreter_Map> interpreter;
 };
-
-inline bool Game_CommonEvent::IsAsyncPending() const {
-	return interpreter && interpreter->IsAsyncPending();
-}
 
 #endif

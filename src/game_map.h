@@ -29,6 +29,7 @@
 #include "rpg_encounter.h"
 #include "rpg_map.h"
 #include "rpg_mapinfo.h"
+#include "async_op.h"
 
 class FileRequestAsync;
 
@@ -41,9 +42,11 @@ class MapUpdateAsyncContext {
 	public:
 		MapUpdateAsyncContext() = default;
 
-		static MapUpdateAsyncContext FromCommonEvent(int ce);
-		static MapUpdateAsyncContext FromMapEvent(int ce);
-		static MapUpdateAsyncContext FromForegroundEvent();
+		static MapUpdateAsyncContext FromCommonEvent(int ce, AsyncOp aop);
+		static MapUpdateAsyncContext FromMapEvent(int ce, AsyncOp aop);
+		static MapUpdateAsyncContext FromForegroundEvent(AsyncOp aop);
+
+		AsyncOp GetAsyncOp() const;
 
 		int GetParallelCommonEvent() const;
 		int GetParallelMapEvent() const;
@@ -55,6 +58,7 @@ class MapUpdateAsyncContext {
 	private:
 		int common_event = 0;
 		int map_event = 0;
+		AsyncOp async_op = {};
 		bool foreground_event = 0;
 };
 
@@ -710,21 +714,34 @@ namespace Game_Map {
 }
 
 
-inline MapUpdateAsyncContext MapUpdateAsyncContext::FromCommonEvent(int ce) {
+inline AsyncOp MapUpdateAsyncContext::GetAsyncOp() const {
+	return async_op;
+}
+
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromCommonEvent(int ce, AsyncOp aop) {
 	MapUpdateAsyncContext actx;
-	actx.common_event = ce;
+	if (aop.IsActive()) {
+		actx.async_op = aop;
+		actx.common_event = ce;
+	}
 	return actx;
 }
 
-inline MapUpdateAsyncContext MapUpdateAsyncContext::FromMapEvent(int ev) {
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromMapEvent(int ev, AsyncOp aop) {
 	MapUpdateAsyncContext actx;
-	actx.map_event = ev;
+	if (aop.IsActive()) {
+		actx.async_op = aop;
+		actx.map_event = ev;
+	}
 	return actx;
 }
 
-inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent() {
+inline MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent(AsyncOp aop) {
 	MapUpdateAsyncContext actx;
-	actx.foreground_event = true;
+	if (aop.IsActive()) {
+		actx.async_op = aop;
+		actx.foreground_event = true;
+	}
 	return actx;
 }
 
@@ -750,7 +767,7 @@ inline bool MapUpdateAsyncContext::IsParallelMapEvent() const {
 
 
 inline bool MapUpdateAsyncContext::IsActive() const {
-	return IsParallelCommonEvent() || IsParallelMapEvent() || IsForegroundEvent();
+	return GetAsyncOp().IsActive();
 }
 
 #endif
