@@ -34,6 +34,7 @@ class AsyncOp {
 			eNone,
 			eShowScreen,
 			eEraseScreen,
+			eCallInn,
 			eToTitle,
 			eExitGame
 		};
@@ -45,6 +46,9 @@ class AsyncOp {
 
 		/** @return an EraseScreen async operation */
 		static AsyncOp MakeEraseScreen(int transition_type);
+
+		/** @return an CallInn async operation */
+		static AsyncOp MakeCallInn();
 
 		/** @return a ToTitle async operation */
 		static AsyncOp MakeToTitle();
@@ -97,6 +101,10 @@ inline AsyncOp AsyncOp::MakeShowScreen(int transition_type) {
 
 inline AsyncOp AsyncOp::MakeEraseScreen(int transition_type) {
 	return AsyncOp(eEraseScreen, transition_type);
+}
+
+inline AsyncOp AsyncOp::MakeCallInn() {
+	return AsyncOp(eCallInn);
 }
 
 inline AsyncOp AsyncOp::MakeToTitle() {

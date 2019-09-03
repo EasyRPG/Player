@@ -197,6 +197,10 @@ void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 }
 
 void Scene_Map::Update() {
+	if (activate_inn) {
+		UpdateInn();
+		return;
+	}
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
 }
@@ -438,6 +442,55 @@ void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
 		screen_erased_by_event = false;
 	}
 
+	if (aop.GetType() == AsyncOp::eCallInn) {
+		activate_inn = true;
+		music_before_inn = Game_System::GetCurrentBGM();
+		inn_continuation = std::forward<F>(f);
+
+		Game_System::BgmFade(800);
+
+		// FIXME: Is 36 correct here?
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
+
+		AsyncNext([=]() { StartInn(); });
+		return;
+	}
+
 	AsyncNext(std::forward<F>(f));
 }
 
+void Scene_Map::StartInn() {
+	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
+	if (Game_System::IsStopMusicFilename(bgm_inn.name)) {
+		FinishInn();
+		return;
+	}
+
+	Game_System::BgmPlay(bgm_inn);
+}
+
+void Scene_Map::FinishInn() {
+	// RPG_RT will always transition in, regardless of whether an EraseScreen command
+	// was issued previously.
+	screen_erased_by_event = false;
+
+	// FIXME: Is 36 correct here?
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
+	Game_System::BgmPlay(music_before_inn);
+
+	// Full heal
+	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+	for (Game_Actor* actor : actors) {
+		actor->FullHeal();
+	}
+
+	activate_inn = false;
+	AsyncNext(std::move(inn_continuation));
+}
+
+void Scene_Map::UpdateInn() {
+	if (!Audio().BGM_IsPlaying() || Audio().BGM_PlayedOnce()) {
+		Game_System::BgmStop();
+		FinishInn();
+	}
+}
