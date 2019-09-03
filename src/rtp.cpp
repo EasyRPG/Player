@@ -32,7 +32,8 @@ namespace RTP {
 		"RPG Advocate English Translation",
 		"Vlad Russian Translation",
 		"RPG Universe Spanish/Portuguese Translation",
-		"Korean Translation"
+		"Korean Translation",
+		"Official Traditional Chinese"
 	};
 }
 
@@ -79,7 +80,8 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 		{RTP::Type::RPG2003_RpgAdvocateEnglish, Names[6], 2003, 0, 675, tree},
 		{RTP::Type::RPG2003_VladRussian, Names[7], 2003, 0, 350, tree},
 		{RTP::Type::RPG2003_RpgUniverseSpanishPortuguese, Names[8], 2003, 0, 600, tree},
-		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, tree}
+		{RTP::Type::RPG2003_Korean, Names[9], 2003, 0, 675, tree},
+		{RTP::Type::RPG2003_OfficialTraditionalChinese, Names[10], 2003, 0, 676, tree}
 	}};
 
 	static const char* SOUND_TYPES[] = { ".wav", ".mp3", nullptr };
