@@ -396,9 +396,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_a_greeting_1
-					<< " " << Game_Temp::inn_price
-					<< " " << Data::terms.gold
-					<< Data::terms.inn_a_greeting_2;
+					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << Data::terms.inn_a_greeting_2;
 				Game_Message::texts.push_back(out.str());
 				Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
 			}
@@ -423,9 +422,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_b_greeting_1
-					<< " " << Game_Temp::inn_price
-					<< " " << Data::terms.gold
-					<< Data::terms.inn_b_greeting_2;
+					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << Data::terms.inn_b_greeting_2;
 				Game_Message::texts.push_back(out.str());
 				Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
 			}
