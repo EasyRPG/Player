@@ -952,7 +952,7 @@ static void OnMapFileReady(FileRequestResult*) {
 		}
 	}
 
-	Game_Map::Setup(map_id);
+	Game_Map::Setup(map_id, TeleportTarget::eParallelTeleport);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
 	Game_Map::PlayBgm();

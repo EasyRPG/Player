@@ -91,7 +91,7 @@ namespace Game_Map {
 	 * @param map_id map ID.
 	 * @param tt the type of teleport used to setup the map
 	 */
-	void Setup(int map_id, TeleportTarget::Type tt = TeleportTarget::eNormalTeleport);
+	void Setup(int map_id, TeleportTarget::Type tt);
 
 	/**
 	 * Setups a map from a savegame.

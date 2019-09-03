@@ -65,11 +65,19 @@ private:
 
 	void Start2(MapUpdateAsyncContext actx);
 
-	void StartPendingTeleport(bool use_default_transition, bool no_erase);
-	void FinishPendingTeleport(bool use_default_transition, bool defer_recursive_teleports);
-	void FinishPendingTeleport2(MapUpdateAsyncContext actx, bool use_default_transition, bool defer_recursive_teleports);
+	struct TeleportParams {
+		bool run_foreground_events = false;
+		bool erase_screen = false;
+		bool use_default_transition_in = false;
+		bool defer_recursive_teleports = false;
+	};
+	void StartPendingTeleport(TeleportParams tp);
+	void FinishPendingTeleport(TeleportParams tp);
+	void FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParams tp);
+	void FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParams tp);
 
 	void PreUpdate(MapUpdateAsyncContext& actx);
+	void PreUpdateForegroundEvents(MapUpdateAsyncContext& actx);
 
 	// Calls map update
 	void UpdateStage1(MapUpdateAsyncContext actx);

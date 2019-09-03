@@ -151,7 +151,9 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	int x = Game_Variables.Get(var_x);
 	int y = Game_Variables.Get(var_y);
 
-	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1);
+	auto tt = main_flag ? TeleportTarget::eForegroundTeleport : TeleportTarget::eParallelTeleport;
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, -1, tt);
 
 	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 	if (!main_flag)
@@ -548,7 +550,9 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	// RPG2k3 feature
 	int direction = com.parameters.size() > 3 ? com.parameters[3] - 1 : -1;
 
-	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction);
+	auto tt = main_flag ? TeleportTarget::eForegroundTeleport : TeleportTarget::eParallelTeleport;
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y, direction, tt);
 
 	// Parallel events should keep on running in 2k and 2k3, unlike in later versions
 	if (!main_flag)

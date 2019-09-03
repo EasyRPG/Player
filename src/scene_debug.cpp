@@ -431,7 +431,7 @@ void Scene_Debug::Update() {
 				int pending_map_y = numberinput_window->GetNumber();
 				Scene::PopUntil(Scene::Map);
 				if (Scene::instance) {
-					Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1);
+					Main_Data::game_player->ReserveTeleport(pending_map_id, pending_map_x, pending_map_y, -1, TeleportTarget::eSkillTeleport);
 
 					// FIXME: Fixes emscripten, but this should be done in Continue/Resume in scene_map
 					FileRequestAsync* request = Game_Map::RequestMap(pending_map_id);

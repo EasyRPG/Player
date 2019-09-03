@@ -27,8 +27,10 @@ class TeleportTarget {
 	public:
 		/** The type of teleport */
 		enum Type {
-			/** A normal teleport action */
-			eNormalTeleport,
+			/** A teleport command from a parallel event */
+			eParallelTeleport,
+			/** A teleport command from a foreground event*/
+			eForegroundTeleport,
 			/** An escape or teleport skill */
 			eSkillTeleport,
 			/** A hacky teleport from a SetVehicleLocation() (RPG_RT bug) */
@@ -70,7 +72,7 @@ class TeleportTarget {
 		int x = 0;
 		int y = 0;
 		int16_t d = -1;
-		uint8_t tt = eNormalTeleport;
+		uint8_t tt = eParallelTeleport;
 		bool active = false;
 };
 
