@@ -72,7 +72,7 @@ Meta::Meta(const std::string& meta_file) {
 		if (version == "1") {
 			IdentifyCanonName();
 		} else {
-			Output::Warning("Metadata error in %s, format property %s:%s is missing or invalid: '%s'", MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, version.c_str());
+			Output::Warning("Metadata error in %s, format property %s:%s is missing or invalid: '%s'", meta_file.c_str(), MTINI_EASY_RPG_SECTION, MTINI_FILE_FORMAT_VERSION, version.c_str());
 		}
 	}
 
