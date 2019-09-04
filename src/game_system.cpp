@@ -37,32 +37,6 @@ namespace {
 	FileRequestBinding system_request_id;
 	std::map<std::string, FileRequestBinding> se_request_ids;
 
-	/**
-	 * Determines if the requested file is supposed to Stop BGM/SE play.
-	 * For empty string and (OFF) this is always the case.
-	 * Many RPG Maker translation overtranslated the (OFF) reserved string,
-	 * e.g. (Brak) and (Kein Sound).
-	 * A file is detected as "Stop BGM/SE" when the file is missing in the
-	 * filesystem and the name is wrapped in (), otherwise it is a regular
-	 * file.
-	 *
-	 * @param name File to find
-	 * @param find_func Find function to use (FindSound or FindMusic)
-	 * @param found_name Name of the found file to play
-	 * @return true when the file is supposed to Stop playback.
-	 *         false otherwise and file to play is returned as found_name
-	 */
-	bool isStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name) {
-		found_name = "";
-
-		if (name.empty() || name == "(OFF)") {
-			return true;
-		}
-
-		found_name = find_func(name);
-
-		return found_name.empty() && (Utils::StartsWith(name, "(") && Utils::EndsWith(name, ")"));
-	}
 }
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -71,6 +45,27 @@ bool bgm_pending = false;
 
 void Game_System::Init() {
 	data.Setup();
+}
+
+bool Game_System::IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name) {
+	found_name = "";
+
+	if (name.empty() || name == "(OFF)") {
+		return true;
+	}
+
+	found_name = find_func(name);
+
+	return found_name.empty() && (Utils::StartsWith(name, "(") && Utils::EndsWith(name, ")"));
+}
+
+
+bool Game_System::IsStopMusicFilename(const std::string& name, std::string& found_name) {
+	return IsStopFilename(name, FileFinder::FindMusic, found_name);
+}
+
+bool Game_System::IsStopSoundFilename(const std::string& name, std::string& found_name) {
+	return IsStopFilename(name, FileFinder::FindSound, found_name);
 }
 
 int Game_System::GetSaveCount() {
@@ -190,7 +185,7 @@ void Game_System::SePlay(const RPG::Sound& se, bool stop_sounds) {
 void Game_System::SePlay(const RPG::Animation &animation) {
 	std::string path;
 	for (const auto& anim : animation.timings) {
-		if (!isStopFilename(anim.se.name, FileFinder::FindSound, path)) {
+		if (!IsStopSoundFilename(anim.se.name, path)) {
 			SePlay(anim.se);
 			return;
 		}
@@ -439,7 +434,7 @@ void Game_System::OnBgmReady(FileRequestResult* result) {
 	bgm_pending = false;
 
 	std::string path;
-	if (isStopFilename(result->file, FileFinder::FindMusic, path)) {
+	if (IsStopMusicFilename(result->file, path)) {
 		Audio().BGM_Stop();
 		return;
 	} else if (path.empty()) {
@@ -489,7 +484,7 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 	}
 
 	std::string path;
-	if (isStopFilename(result->file, FileFinder::FindSound, path)) {
+	if (IsStopSoundFilename(result->file, path)) {
 		if (stop_sounds) {
 			Audio().SE_Stop();
 		}

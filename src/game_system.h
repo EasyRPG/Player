@@ -269,6 +269,28 @@ namespace Game_System {
 	void OnBgmReady(FileRequestResult* result);
 	void OnSeReady(FileRequestResult* result, int volume, int tempo, bool stop_sounds);
 	void ReloadSystemGraphic();
+
+	/**
+	 * Determines if the requested file is supposed to Stop BGM/SE play.
+	 * For empty string and (OFF) this is always the case.
+	 * Many RPG Maker translation overtranslated the (OFF) reserved string,
+	 * e.g. (Brak) and (Kein Sound).
+	 * A file is detected as "Stop BGM/SE" when the file is missing in the
+	 * filesystem and the name is wrapped in (), otherwise it is a regular
+	 * file.
+	 *
+	 * @param name File to find
+	 * @param find_func Find function to use (FindSound or FindMusic)
+	 * @param found_name Name of the found file to play
+	 * @return true when the file is supposed to Stop playback.
+	 *         false otherwise and file to play is returned as found_name
+	 */
+	bool IsStopFilename(const std::string& name, std::string (*find_func) (const std::string&), std::string& found_name);
+
+	bool IsStopMusicFilename(const std::string& name, std::string& found_name);
+	bool IsStopMusicFilename(const std::string& name);
+	bool IsStopSoundFilename(const std::string& name, std::string& found_name);
+	bool IsStopSoundFilename(const std::string& name);
 }
 
 inline bool Game_System::HasSystemGraphic() {
@@ -277,6 +299,15 @@ inline bool Game_System::HasSystemGraphic() {
 
 inline bool Game_System::HasSystem2Graphic() {
 	return !GetSystem2Name().empty();
+}
+
+inline bool Game_System::IsStopMusicFilename(const std::string& name) {
+	std::string s;
+	return IsStopMusicFilename(name, s);
+}
+inline bool Game_System::IsStopSoundFilename(const std::string& name) {
+	std::string s;
+	return IsStopSoundFilename(name, s);
 }
 
 #endif
