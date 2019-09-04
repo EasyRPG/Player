@@ -97,6 +97,7 @@ namespace Player {
 	std::string escape_symbol;
 	int engine;
 	std::string game_title;
+	std::shared_ptr<Meta> meta;
 	int frames;
 	std::string replay_input_path;
 	std::string record_input_path;
@@ -649,6 +650,11 @@ void Player::CreateGameObjects() {
 	}
 
 	LoadDatabase();
+
+	// Load the meta information file.
+	// Note: This should eventually be split across multiple folders as described in Issue #1210
+	std::string meta_file = FileFinder::FindDefault(META_NAME);
+	meta.reset(new Meta(meta_file));
 
 	bool no_rtp_warning_flag = false;
 	std::string ini_file = FileFinder::FindDefault(INI_NAME);
