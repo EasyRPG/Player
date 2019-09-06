@@ -29,7 +29,7 @@
 namespace RTP {
 	// adjust these numbers when a new RTP is added
 	constexpr int num_2k_rtps = 4;
-	constexpr int num_2k3_rtps = 6;
+	constexpr int num_2k3_rtps = 7;
 
 	extern const char* const rtp_table_2k[][num_2k_rtps + 1];
 	extern const char* const rtp_table_2k3[][num_2k3_rtps + 1];
@@ -48,7 +48,8 @@ namespace RTP {
 		RPG2003_RpgAdvocateEnglish,
 		RPG2003_VladRussian,
 		RPG2003_RpgUniverseSpanishPortuguese,
-		RPG2003_Korean
+		RPG2003_Korean,
+		RPG2003_OfficialTraditionalChinese
 	};
 
 	extern const char* Names[];

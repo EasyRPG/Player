@@ -1,676 +1,677 @@
-Asset Type,JP,EN,Advocate,Russian,Maker Universe,Korean
-Backdrop,お墓,graveyard,graveyard,Grave,grave,바닥
-,お寺,temple1,shrine,Temple,temple,절
-,ダンジョン１,dungeon1,dungeon1,Cave,donjohn1,던젼１
-,ダンジョン２,dungeon2,dungeon2,LavaCave,donjohnQ,던젼２
-,ダンジョン３,dungeon3,dungeon3,IceCave,donjohnR,던젼３
-,ダンジョン４,dungeon4,dungeon4,Stalagmites,donjohnS,던젼４
-,ダンジョン５,dungeon5,dungeon5,Labyrinth,donjohnT,던젼５
-,ダンジョン６,dungeon6,dungeon6,TrainingHall,donjohnU,던젼６
-,宇宙,universe,space,Space,space,우주
-,山道,mountain road,mountain,Mountain,mountainpath,산길
-,岩場,rocky road,rockbed,Rocks,rocks,바위
-,廃墟,ruins1,wasteland,Ruins,wasteland,폐허
-,旧市街,old town,ghost-town,City,oldurban,구시가지
-,森１,forest1,forest1,Forest1,forestP,숲１
-,森２,forest2,forest2,Forest2,forestQ,숲２
-,橋,bridge,bridge,Bridge,bridge,다리
-,毒沼,swamp,swamp,Swamp,poisonswamp,독연못
-,洋館,mansion,building,InsideCastle,westernstylebuilding,양관(서양식집)
-,海,sea,ocean,Sea,sea,바다
-,玉座,castle,castle,BallSeat,ballseat,옥좌
-,異空間,space,strange,SpaceLight,strangespacial,이공간
-,砂浜,beach,beach,Beach,sandybeach,사구
-,砂漠,desert,desert,Desert,desert,사막
-,神殿,temple2,ruins1,Sanctuary,sanctuary,신전
-,空,sky,sky,Clouds,empty,하늘
-,船上,ship,shipdeck,Ship,onboat,선상
-,草原,grassland,plains,Grass,grassyplain,초원
-,荒地,wasteland,barren,RoughForging,roughforging,황야
-,街中,town,town,CityHouse,city,길가운데
-,路上,road,road,Road,road,도로 위
-,遺跡,ruins2,ruins2,InsidePyramid,ruins,유적
-,銭湯,bathhouse,bath,BathHouse,bathhouse,공중 목욕탕
-,闘技場,arena,arena,CompetitionPlace,competitionplace,투기장
-,雪原,snow field,snowfield,Snow,snowfield,설원
-Battle,2003その他1,2003 other1,misc1,2003-Other1,2003addition1,2003기타1
-,2003その他2,2003 other2,misc2,2003-Other2,2003addition2,2003기타2
-,2003バリア,2003 barrier,barrier1,2003-Barrier,2003barrier,2003베리어
-,2003ブレス,2003 breath,breath1,2003-Poison,2003breath,2003브레스
-,2003光柱,2003 light pillar,lightray,2003-Lines,2003luminouspillar,2003주위의 빛
-,2003冷気,2003 cold,ice1,2003-Cold,2003coldair,2003냉기
-,2003剣,2003 sword,sword1,2003-Sword,2003sword,2003검
-,2003吸収,2003 absorb,absorb1,2003-Absorption,2003absorption,2003흡수
-,2003回復,2003 recovery,healing1,2003-Sun,2003recovery,2003회복
-,2003大地,2003 earth,earth1,2003-Earth,2003ground,2003대지
-,2003弓,2003 bow,bow1,2003-Arrow,2003bow,2003화살
-,2003打撃,2003 blow,strike,2003-Hit,2003shock,2003타격
-,2003斧,2003 axe,axe1,2003-Axe,2003ax,2003도끼
-,2003暗黒,2003 dark,dark1,2003-Dark,2003dark,2003암흑
-,2003槍,2003 spear,spear1,2003-Spear,2003spear,2003창
-,2003水,2003 water,water1,2003-Water,2003water,2003물
-,2003治療,2003 cure,cure1,2003-Sphere,2003remedy,2003치료
-,2003炎,2003 fire,fire1,2003-Fire,2003flame,2003화염
-,2003爆発,2003 explosion,explode1,2003-Explosion,2003explosive,2003폭발
-,2003爪,2003 claw,claw1,2003-Claws,2003nail,2003손톱
-,2003神聖,2003 holy,holy1,2003-Holy,2003holy,2003신성
-,2003蘇生,2003 revive,revive1,2003-Angel,2003revival,2003소생
-,2003雷,2003 thunder,bolt1,2003-Zip,2003thunder,2003전격
-,2003鞭,2003 whip,whip1,2003-Whip,2003rod,2003채찍
-,2003風,2003 wind,wind1,2003-Wind,2003wind,2003바람
-,2003麻痺,2003 Paralysis,paralyze1,2003-Paralysis,2003paralysis,2003마비
-,その他,other,misc3,,addition,기타
-,バリア,barrier,barrier2,,barrier,배리어
-,ブレス,breath,breath2,,breath,호흡
-,上昇,buff,increase,,rise,상승
-,下降,debuff,decrease,,drop,하강
-,冷気,ice,ice2,,coldair,냉기
-,剣1,sword1,sword2,,sword1,검1
-,剣2,sword2,sword3,,sword2,검2
-,吸収,bite,absorb2,,absorption,흡수
-,回復,recovery,healing2,,recovery,회복
-,大地,earth,earth2,,ground,대지
-,打撃,blow,attack,,shock,타격
-,斧,axe,axe2,,ax,도끼
-,暗黒,dark,dark2,,dark,암흑
-,槍,spear,spear2,,spear,창
-,水,water,water2,,water,물
-,治療,treatment,cure2,,remedy,치료
-,炎1,fire1,fire2,,flame1,화염1
-,炎2,fire2,fire3,,flame2,화염2
-,爆発,explosion,explode2,,explosive,폭발
-,爪,claw,claw2,,nail,손톱
-,矢,arrow,bow2,,bow,화살
-,神聖,holy,holy2,,holy,신성
-,蘇生,ressurection,revive2,,revivial,소생
-,雷,thunder,bolt2,,thunder,전격
-,鞭,whip,whip2,,rod,채찍
-,風,wind,wind2,,wind,바람
-,麻痺,paralysis,paralyze2,,paralysis,마비
-BattleCharSet,エルフ女a,female elf a,elf-f-1,TuanaA,elfwomana,엘프女 a
-,エルフ女b,female elf b,elf-f-2,TuanaB,elfwomanb,엘프女 b
-,エルフ男a,male elf a,elf-m-1,TemmadA,elfmana,엘프男 a
-,エルフ男b,male elf b,elf-m-2,TemmadB,elfmanb,엘프男 b
-,中華女a,chinese woman a,chinese-f-1,ChuzaA,chinesewomana,중화女a
-,中華女b,chinese woman b,chinese-f-2,ChuzaB,chinesewomanb,중화女b
-,中華男a,chinese man a,chinese-m-1,ChingA,chinesemana,중화男a
-,中華男b,chinese man b,chinese-m-2,ChingB,chinesemanb,중화男b
-,侍a,samurai a,samurai1,GarreA,samuraia,사무라이a
-,侍b,samurai b,samurai2,GarreB,samuraib,사무라이b
-,僧侶女a,female monk a,priestess1,KloriA,monkwomana,승려女a
-,僧侶女b,female monk b,priestess2,KloriB,monkwomanb,승려女b
-,僧侶男a,male monk a,priest1,SiossA,monkmana,승려男a
-,僧侶男b,male monk b,priest2,SiossB,monkmanb,승려男b
-,勇者女a,female hero a,hero-f-1,NoddaA,herowomana,용자女a
-,勇者女b,female hero b,hero-f-2,NoddaB,herowomanb,용자女b
-,勇者男a,male hero a,hero-m-1,JemmonA,heromana,용자男a
-,勇者男b,male hero b,hero-m-2,JemmonB,heromanb,용자男b
-,女性１a,woman1 a,woman1-1,CletoA,womanéPa,여성１a
-,女性１b,woman1 b,woman1-2,CletoB,womanéPb,여성１b
-,女性２a,woman2 a,woman2-1,JikuaA,womanéQa,여성２a
-,女性２b,woman2 b,woman2-2,JikuaB,womanéQb,여성２b
-,女性３a,woman3 a,woman3-1,IrregiaA,womanéRa,여성３a
-,女性３b,woman3 b,woman3-2,IrregiaB,womanéRb,여성３b
-,女性４a,woman4 a,woman4-1,NysmaA,womanéSa,여성４a
-,女性４b,woman4 b,woman4-2,NysmaB,womanéSb,여성４b
-,女性５a,woman5 a,woman5-1,BeruaA,womanéTa,여성５a
-,女性５b,woman5 b,woman5-2,BeruaB,womanéTb,여성５b
-,忍者女a,female ninja a,ninja-f-1,GinnyA,ninjawomana,닌자女a
-,忍者女b,female ninja b,ninja-f-2,GinnyB,ninjawomanb,닌자女b
-,忍者男a,male ninja a,ninja-m-1,XeodA,ninjamana,닌자男a
-,忍者男b,male ninja b,ninja-m-2,XeodB,ninjamanb,닌자男b
-,戦士女a,female warrior a,soldier-f-1,EljeaA,soldierwomana,전사女a
-,戦士女b,female warrior b,soldier-f-2,EljeaB,soldierwomanb,전사女b
-,戦士男a,male warrior a,soldier-m-1,RagleA,soldiermana,전사男a
-,戦士男b,male warrior b,solider-m-2,RagleB,soldiermanb,전사男b
-,格闘家女a,female fighter a,monk-f-1,PhesaA,grapplehousewomana,격투가女a
-,格闘家女b,female fighter b,monk-f-2,PhesaB,grapplehousewomanb,격투가女b
-,格闘家男a,male fighter a,monk-m-1,RasnenA,grapplehousemana,격투가男a
-,格闘家男b,male fighter b,monk-m-2,RasnenB,grapplehousemanb,격투가男b
-,海賊女a,female pirate a,pirate-f-1,RennaA,piratewomana,해적女a
-,海賊女b,female pirate b,pirate-f-2,RennaB,piratewomanb,해적女b
-,海賊男a,male pirate a,pirate-m-1,GoxanA,piratemana,해적男a
-,海賊男b,male pirate b,pirate-m-2,GoxanB,pirateb,해적男b
-,男性１a,man1 a,man1-1,JidadA,manéPa,남성１a
-,男性１b,man1 b,man1-2,JidadB,manéPb,남성１b
-,男性２a,man2 a,man2-1,MjittA,manéQa,남성２a
-,男性２b,man2 b,man2-2,MjittB,manéQb,남성２b
-,男性３a,man3 a,man3-1,ChuazA,manéRa,남성３a
-,男性３b,man3 b,man3-2,ChuazB,manéRb,남성３b
-,男性４a,man4 a,man4-1,ShellA,manéSa,남성４a
-,男性４b,man4 b,man4-2,ShellB,manéSb,남성４b
-,男性５a,man5 a,man5-1,FrossA,manéTa,남성５a
-,男性５b,man5 b,man5-2,FrossB,manéTb,남성５b
-,盗賊女a,female bandit a,thief-f-1,OtipaA,thiefwomana,도적女a
-,盗賊女b,female bandit b,thief-f-2,OtipaB,thiefwomanb,도적女b
-,盗賊男a,male bandit a,thief-m-1,UnnonA,thiefmana,도적男a
-,盗賊男b,male bandit b,thief-m-2,UnnonB,thiefmanb,도적男b
-,鎧武者a,armored warror a,armor1,JoegoA,armourwarriora,갑옷무사a
-,鎧武者b,armored warror b,armor2,JoegoB,armourwarriorb,갑옷무사b
-,魔術師女a,female mage a,mage-f-1,LjitiA,magicteacherwomana,마술사女a
-,魔術師女b,female mage b,mage-f-2,LjitiB,magicteacherwomanb,마술사女b
-,魔術師男a,male mage a,mage-m-1,RivraA,magicteachermana,마술사男a
-,魔術師男b,male mage b,mage-m-2,RivraB,magicteachermanb,마술사男b
-BattleWeapon,武器,weapon,weapons,Standart,weapon,무기
-CharSet,オブジェクト1,object1,object1,Objects1,object1,오브젝트1
-,オブジェクト2,object2,object2,Objects2,object2,오브젝트2
-,モンスター1,monster1,monster1,Monsters1,monster1,몬스터1
-,モンスター2,monster2,monster2,Monsters2,monster2,몬스터2
-,一般1,people1,char1,People1,general1,일반1
-,一般2,people2,char2,People2,general2,일반2
-,一般3,people3,char3,People3,general3,일반3
-,一般4,people4,char4,People4,general4,일반4
-,一般5,people5,char5,People5,general5,일반5
-,主人公1,actor1,hero1,Chara1,protagonist1,주인공1
-,主人公2,actor2,hero2,Chara2,protagonist2,주인공2
-,主人公3,actor3,hero3,Chara3,protagonist3,주인공3
-,主人公4,actor4,hero4,Chara4,protagonist4,주인공4
-,乗り物,vehicles,vehicle,Vehicles,vehicle,탈것
-,動物,animal,animal,Animals,animal,동물
-ChipSet,ダンジョン,dungeon,dungeon,Internal1,donjohn,던젼
-,内装,interior,building,Internal2,interior,내부
-,基本,world,main,World,basic,기본
-,外観,exterior,town,Village,appearance,외견
-,船,ship,ship,Ship,boat,배
-FaceSet,モンスター,monster,monster,Monsters,monster,몬스터
-,一般1,people1,faces1,People,general1,일반1
-,一般2,people2,faces2,PeopleAnimal,general2,일반2
-,主人公1,actor1,hero1,Face1,Protagonist1,주인공1
-,主人公2,actor2,hero2,Face2,Protagonist2,주인공2
-GameOver,ゲームオーバー,game over,gameover,GameOver,gameover,게임오버
-Monster,アーリマン,ahriman,ariman,MaliciousFlower,Ahriman,아리맨
-,アスラ,asura,asura,WeaponMaster,MultiArmDemon,아수라
-,アナコンダ,anaconda,anaconda,Snake,anaconda,아나콘다
-,アリゲーター,alligator,alligator,Crocodile,alligator,엘리게이터
-,アンデッドナイト,undead knight,u-knight,DeadPirate,PimpSkeleton,언데드 나이트
-,イフリート,ifreet,efreet,Efrit,Ifrit,이프리트
-,インプ,imp,imp,Features,LittleDemon,임프
-,ヴァンパイア,vampire,vampire,Vampire,vampire,뱀파이어
-,ウロボロス,ouroboros,oroboros,Levitan,dragon,우로보로스
-,エルフ,elf,elf,Archer,elf,엘프
-,オーガ,ogre,ogre,PrimitiveMan,auger,오거
-,オーク,orc,orc,PigSoldier,ork,오크
-,オーディン,odin,odin,DangerousSoldier,odin,오딘
-,オクトパス,octopus,octopus,Octopus,octopus,옥토퍼스
-,ガーゴイル,gargoyle,gargoyle,Gargoyle,gargoyle,가고일
-,カーバンクル,carbuncle,carbuncle,RubyFox,carbunkle,카방클
-,カーミラ,carmilla,cojurer,MurdererWoman,carmira,카미라
-,カッパ,kappa,kappa,Morloc,raincoat,카트바
-,カトブレパス,catoblepas,catoblepas,CurveBull,DemonHorseThing,카토부레바트
-,ガルーダ,garuda,garuda,FlyingWarrior,garuda,가루다
-,キメラ,chimera,chimera,Chimera,chimera,키메라
-,グール,ghoul,ghoul,Zombie,ghoul,구울
-,クラーケン,kraken,kraken,SeaBowl,SeaMonster,크라켄
-,クラブ,crab,cancer,Crab,crab,크랩
-,グリフォン,griffon,griffon,Griphon,griffin,그리폰
-,グレル,grell,grell,Robot,jellyfish,구렐
-,クロウラー,crawler,crawler,Worm,crowera,쿠로우라
-,ゲイザー,gazer,deathgaze,Eye,EyeStalk,게이져
-,ケツアルクアトル,quetzalcoatl,quezal,FlyingWorm,BirdSnake,케이시아르크 아토르
-,ケットシー,cait sith,caitsith,Eremite,ketsea,캐트시
-,ケルベロス,cerberus,cerberus,Cerberus,cerebus,켈베로스
-,ケンタウロス,centaur,centaur,Centaur,centaur,켄타우르스
-,ゴーゴン,gorgon,gorgon,InfernalBull,bull,고곤
-,ゴースト,ghost,ghost,WitchPhantom,ghost,고스트
-,ゴーレム,golem,golem,Golem,golem,골렘
-,コカトリス,cockatorice,cockatrice,Rooster,cockatrice,코카트리스
-,ゴブリン,goblin,goblin,LittleDemon,imp,고블린
-,コボルト,kobold,kobold,Wolf,kobold,코볼트
-,サイクロプス,cyclops,cyclops,Cyclops,giant,사이클롭스
-,サタナエル,satan,satan,DarkAngel,darkangel,사타나엘
-,サハギン,sahagin,sahagin,Triton,merman,사하킨
-,サラマンダー,salamander,salamander,BurningLizard,salamander,사라멘더
-,シャーク,shark,shark,Shark,shark,샤크
-,ジャイアント,giant,giant,Cannibal,giant-2,자이언트
-,ジャック・オー・ランタン,jack-o-lantern,jack,Pumpkin,JackOLantern,잭-오-랜턴
-,シャドウ,shadow,shadow,LostShadow,shadow,셰도우
-,シルフ,sylph,sylph,Fairy,fairy,실프
-,スキュラ,scylla,scylla,Medusa,gorgon,스쿨라
-,スケルトン,skeleton,skeleton,Skeleton,skeleton,스켈톤
-,スコーピオン,scorpion,scorpion,Cancer,scorpion,스콜피온
-,スネーク,snake,snake,DangerousSnake,snake,스테이크
-,スピリッツ,spirit,spirit,LaughingSpirit,spirit,스피릿츠
-,スフィンクス,sphinx,sphinx,Sphynx,sphinx,스핑크스
-,スペクター,spectre,specter,MagicSkull,lostsoul,스펙터
-,スライム,slime,slime,Slime,slime,슬라임
-,セイレーン,siren,siren,FlyingMermaid,MerAngel,세이렌
-,セラフィム,seraphim,seraph,Sephiroth,Angel,세라핌
-,センチピード,centipede,centipede,Multileg,catterpillar,센티피드
-,ソーサラー,sorcerer,sorcerer,Magician,wizard,소서러
-,ゾンビ,zombie,zombie,PoisonZombie,zombie,좀비
-,ダークエルフ,dark elf,darkelf,Fencer,darkelf,다크 엘프
-,ダークナイト,dark knight,darkknight,Knight,darkknight,다크 나이트
-,タイタン,titan,titan,Titan,titan,타이탄
-,タランチュラ,tarantula,spider,Spider,spider,타란튤라
-,ティアマット,tiamat,tiamat,Many-domedDragon,tiamat,데어 매트
-,デーモン,demon,demon,HornGoat,daemon,데몬
-,トード,toad,toad,Toad,frog,토드
-,ドラゴン,dragon,dragon,BlueDragon,dragon-2,드래곤
-,ドラゴンナイト,dragon knight,dragonknight,DragonWarrior,dragonknight,드래곤 나이트
-,トレント,treant,treant,Dendrid,tree,트렌트
-,トロール,troll,troll,Orc,troll,트롤
-,ネクロマンサー,necromancer,necromancer,Necromant,necromancer,네크로맨서
-,ネペンテス,nepenthes,nepenthe,MultirootFlower,killerplant,네벤테스
-,バーサーカー,berserker,berserker,Barbarian,barbarian,버저커
-,ハーピー,harpy,harpy,Harpy,harpy,하피
-,バジリスク,basilisk,basilisk,Horned,earwig,바실리크스
-,バット,bat,bat,Bat,bat,배트
-,バハムート,bahamut,bahamut,Dragon,lizarddemon,바하무트
-,パラサイト,parasite,parasite,All-knowing,parasite,페러사이트
-,ビッグフット,big foot,bigfoot,Yeti,yeti,빅풋
-,ヒュドラ,hydra,hydra,Many-domedUglyCreature,hydra,히드라
-,フェニックス,phoenix,phoenix,Phoenix,phoenix,피닉스
-,フェンリル,fenrir,fenrir,RealWolf,wolf,펜릴
-,ベヒーモス,behemoth,behemoth,InfernalDog,behemoth,배히모스
-,ホーネット,hornet,hornet,Bee,bea,호넷
-,マンティコア,manticore,manticore,CrossedBeast,monster,만티코어
-,マンティス,mantis,mantis,Insect,preyingmantis,만티스
-,マンモス,mammoth,mammoth,Mamont,mammoth,맘모스
-,ミイラ男,mummy,mummy,Mummy,mummy,미이라 男
-,ミドガルズオルム,midgardsormr,midgard-serp,CreepingCreature,monster-2,미드갈즈 오르무
-,ミノタウロス,minotaur,minotaur,Minotaur,minotaur,미노타우르스
-,ミミック,mimic,mimic,OgreChest,mimic,미믹
-,メデューサ,medusa,medusa,HyperMedusa,medusa,메두사
-,ユニコーン,unicorn,unicorn,Unicorn,unicorn,유니콘
-,ラクシュミ,lakshmi,rakashimi,Prophet,mystic,라쿠슈미
-,ラミア,lamia,lamia,Mermaid,gorgon-2,라미아
-,リヴァイアサン,leviathan,leviathan,LevitanWithAHorn,leviathan,리바이어던
-,リザード,lizard,lizard,MonitorLizard,lizard,리자드
-,リザードマン,lizardman,lizardman,LizardSoldier,lizardman,리자드맨
-,リッチ,lich,lich,PowerfulNecromant,lich,리치
-,リリス,lilith,lillith,MultihandsWarrior,lilith,리리스
-,レイス,wraith,wraith,Phantom,spectre,레이스
-,レモラ,remora,remora,SharpFish,flyingfish,레모라
-,ワーウルフ,werewolf,werewolf,Werwolf,werewolf,워울프
-,ワーム,worm,worm,ToothWorm,worm,웜
-,ワイト,wight,wight,SeizedSoldier,yto,와이트
-,ワイバーン,wyvern,wyvern,BrownDragon,yburning,와이번
-,九尾の狐,kyuubi,ninetail,MagicFox,foxofninetails,구미호
-,朱雀,suzaku,redsparrow,VainBird,redsparrow,주작
-,玄武,genbu,blackturtle,TurtleSnake,monster-3,현무
-,白虎,byakko,whitetiger,PolarTiger,whitetiger,백호
-,馬,horse,nightmare,DarkHorse,horse,말
-,鬼,oni,oni,Ogre,ogre,도깨비(鬼)
-,麒麟,kirin,ki-rin,FairyTaleHorse,giraffe,기린
-,龍,ryuu,bluedragon,LongDragon,bluedragon,청룡
-Music,2003いやしの泉,2003healing spring,spring,2003Happiness,2003spring,2003회복의 샘
-,2003カジノ三昧,2003casino indulgence,casino,2003Research,2003casino,2003카지노
-,2003コロシアム,2003colosseum,arena,2003Piracy,2003colloseum,2003콜로세움
-,2003サイバーシティ,2003cyber city,bustling-city,2003JoyfulNews,2003rhinobarcity,2003사이버 시티
-,2003スノータウン,2003snow town,snowtown,2003Lullaby,2003snowtown,2003스노우 타운
-,2003パニック,2003panic,panic,2003Warning,2003panic,2003패닉
-,2003マキシマム・バトル,2003maximum battle,fierce-battle,2003Pursuit,2003maximumsbattle,2003맥시멈·전투
-,2003一獲千金の夢,2003dream of striking it rich,jackpot,2003SilentPleasure,2003dream-catchlotsofmoney,2003일획천금의 꿈
-,2003冒険者たち,2003adventurers,adventure,2003Farewell,2003venturepeople,2003여행자 서고
-,2003勇者の凱旋,2003hero's return,triumph,2003BigPalace,2003triumphalreturn,2003용사의 개선
-,2003古城,2003ancient city,ancient-castle,2003Glory,2003oldcastle,2003고성
-,2003地下迷宮,2003subterranean maze,labyrinth,2003Fast,2003undergroundlabyrinth,2003지하미궁
-,2003夢幻の森,2003dream forest,forest,2003WorldSound,2003forestoffantasy,2003몽환의 숲
-,2003夢見心地,2003dreaminess,moonlight,2003Serenity,2003mooniness,2003꿈을 꾸는 기분
-,2003大混戦,2003free for all,armyclash,2003Gangster,2003largeconfoundcombat,2003대혼전
-,2003大空への翼,2003wings to the sky,airborne,2003Fanfares,2003wingtoskies,2003대공의 날개
-,2003大聖堂,2003cathedral,hallowed-halls,2003Grief,2003largesaintlyhall,2003대성당
-,2003妖精の森,2003fairy forest,fairies,2003WorkingMusic,2003fairyforest,2003요정의 숲
-,2003孤独な旅立ち,2003lonesome journey,lonewolf,2003Memoirs,2003lonelyjourney,2003고독한 여행
-,2003小さな兵隊のマーチ,2003little army's march,march,2003Parade,2003marchofsmallsoldiers,2003작은 군대의 행진곡
-,2003山あいの村,2003village in the valley,mtn-village,2003EastStyle,2003villageofravines,2003산골짜기 마을
-,2003帝国～エンパイア,2003empire,empire,2003AndAgainPleasure,2003enpire,2003제국
-,2003幼少の記憶,2003young memories,memories,2003FairyTale,2003memoryofinfancy,2003유소의 기억
-,2003忍び寄る闇,2003creeping darkness,foreboding,2003Threat,2003approachingdarkness,2003살며시 다가옴
-,2003悠久の時の流れに,2003in the eternal flow of time,eternal,2003Calm,2003theeternalflow,2003유구의 흐름
-,2003悲しみ,2003sorrow,sadness,2003Calm2,2003sorrow,2003슬퍼하고
-,2003戦いの幕開け,2003beginning of a war,intro,2003DangerousFog,2003fightopening,2003싸움의 개막
-,2003教会,2003church,church1,2003Church,2003church,2003교회
-,2003日だまりの村,2003sunnyvillage,village4,2003Farmer,2003villageball,2003양지의 마을
-,2003暗黒の祭壇,2003darkaltar,evil-temple,2003GlobalFrustration,2003altarofdarkness,2003암흑의 제단
-,2003未開の集落,2003village of savages,strangetown,2003WitchSong,2003unexploredvillage,2003미개한 취락
-,2003極東の地,2003far eastern land,far-east,2003Flight,2003fareasternarea,2003극동의 땅
-,2003機械要塞,2003machine fortress,mecha-base,2003SadEnd,2003machinefortress,2003기계 요새
-,2003氷のラビリンス,2003ice labyrinth,icecave,2003Drops,2003icelabyrinth,2003얼음의 래비런스
-,2003決戦の地,2003final battleground,showdown,2003Battlefield,2003areaofdecisivebattles,2003결전의 땅
-,2003無人の館,2003deserted mansion,haunted,2003SilentCrying,2003unmannedmansion,2003무인 저택
-,2003王宮のパーティー,2003palace party,royal-ball,2003Dance,2003courtparty,2003왕궁의 파티
-,2003異次元回廊,2003otherworldly corridor,dimension,2003FastBattle,2003strangedimensionalcorridor,2003차원의 길
-,2003祝福ワルツ,2003waltz of blessings,waltz,2003Waltz,2003blessingwaltz,2003축복 왈츠
-,2003穏やかな風,2003steady breeze,interlude,2003Summer,2003calmwind,2003온화한 바람
-,2003緊迫,2003tension,tension,2003TerribleDream,2003tension,2003긴박
-,2003繰り返される戦い,2003repeated wars,endless-fight,2003FastBattle2,2003thefightwhichisrepeated,2003반복된 싸움
-,2003街の賑わい,2003city bustle,town-square,2003Pleasure,2003towncrowd,2003거리의 북적임
-,2003街の酒場,2003tavern,bar,2003Travel,2003townbar,2003거리의 술집
-,2003記憶の彼方に,2003deep memory,memories2,2003Morning,2003onthefarsideofmemories,2003기억의 저쪽에
-,2003遺跡探索,2003exploring ruins,ruins,2003InfiniteIdea,2003ruinssearch,2003유적 탐색
-,2003邪神との戦い,2003battle with an evil god,godslayer,2003Chaos,2003wickedgodfight,2003사신과의 싸움
-,2003静寂,2003silence,calm,2003Underwater,2003calmness,2003정적
-,j2003ホルン,j2003horn,horns,2003Win,J2003horn,J2003호른
-,jアイテム,jitem,item,,Jitem,J아이템
-,jギャグ1,jjoke 1,mischief1,,Jgag1,J개그1
-,jギャグ2,jjoke 2,mischief2,,Jgag2,J개그2
-,jファンファーレ1,jfanfare 1,fanfare1,,Jfanfare1,J팡파르1
-,jファンファーレ2,jfanfare 2,fanfare2,,Jfanfare2,J팡파르2
-,jファンファーレ3,jfanfare 3,fanfare3,,Jfanfare3,J팡파르3
-,jファンファーレ4,jfanfare 4,fanfare4,,Jfanfare4,J팡파르4
-,jファンファーレ5,jfanfare 5,fanfare5,,Jfanfare5,J팡파르5
-,jファンファーレ6,jfanfare 6,fanfare6,,Jfanfare6,J팡파르6
-,j宿1,jinn 1,inn1,,Jinn1,J숙소1
-,j宿2,jinn 2,inn2,,Jinn2,J숙소2
-,j戦闘終了1,jend of battle 1,victory1,,Jaggressiveend1,J전투종료1
-,j戦闘終了2,jend of battle 2,victory2,,Jaggressiveend2,J전투종료2
-,j戦闘終了3,jend of battle 3,victory3,,Jaggressiveend3,J전투종료3
-,j戦闘終了4,jend of battle 4,victory4,,Jaggressiveend4,J전투종료4
-,j疑惑,jdoubt,surprise,,Jdoubt,J의혹
-,j謎,jmystery,riddle,,Jpuzzle,J수수께기
-,se2003アラーム,se2003alarm,se-alarm,SE2003Ding,SE2003alarm,SE2003알람
-,se2003ジャングル,se2003jungle,se-jungle,SE2003Jungle,SE2003jungle,SE2003정글
-,se2003雑踏,se2003bustle,se-crowd,SE2003People,SE2003bustle,SE2003혼잡
-,se2003風,se2003wind,se-gale,SE2003Winter,SE2003wind,SE2003바람
-,se2003鳥,se2003bird,se-bird,SE2003Birds,SE2003bird,SE2003새
-,se地震,seearthquake,se-quake,SEEarthquake,SEearthquake,SE지진
-,se大雨,sedownpour,se-torrent,SERain2,SEheavyrain,SE호우
-,se時計,seclock,se-clock,SEClock,SEclock,SE시계
-,se海,sesea,se-ocean,SESea,SEsea,SE바다
-,se雨,serain,se-rain,SERain,SErainy,SE비
-,エンディング1,ending 1,ending1,,,끝1
-,エンディング2,ending 2,ending2,,,끝2
-,エンディング3,ending 3,ending3,,,끝3
-,オープニング1,opening 1,opening1,,,오프닝1
-,オープニング2,opening 2,opening2,,,오프닝2
-,オープニング3,opening 3,opening3,,,오프닝3
-,ゲームオーバー1,game over 1,gameover1,,,게임오버1
-,ゲームオーバー2,game over 2,gameover2,,,게임오버2
-,ゲームオーバー3,game over 3,gameover3,,,게임오버3
-,ゴーストタウン1,ghost town 1,ghost-town1,,,고스트 타운1
-,ゴーストタウン2,ghost town 2,ghost-town2,,,고스트 타운2
-,ダンジョン1,dungeon 1,dungeon1,,,지하감옥1
-,ダンジョン2,dungeon 2,dungeon2,,,지하감옥2
-,ダンジョン3,dungeon 3,dungeon3,,,지하감옥3
-,ダンジョン4,dungeon 4,dungeon4,,,지하감옥4
-,ダンジョン5,dungeon 5,dungeon5,,,지하감옥5
-,ピンチ,in a pinch,tightspot,,,핀치
-,フィールド1,field 1,field1,,,필드1
-,フィールド2,field 2,field2,,,필드2
-,フィールド3,field 3,field3,,,필드3
-,フィールド4,field 4,field4,,,필드4
-,ボス1,boss 1,boss1,,,보스1
-,ボス2,boss 2,boss2,,,보스2
-,ボス3,boss 3,boss3,,,보스3
-,ボス4,boss 4,boss4,,,보스4
-,乗り物1,vehicle 1,vehicle1,,,차량1
-,乗り物2,vehicle 2,vehicle2,,,차량2
-,乗り物3,vehicle 3,vehicle3,,,차량3
-,別れ1,parting 1,parting1,,,이별1
-,別れ2,parting 2,parting2,,,이별2
-,勇者1,hero 1,hero1,,,용사1
-,勇者2,hero 2,hero2,,,용사2
-,動物,animal,animal,,,동물
-,勝利,victory,success,,,승리
-,城1,castle 1,castle1,,,성1
-,城2,castle 2,castle2,,,성2
-,城3,castle 3,castle3,,,성3
-,塔1,tower 1,tower1,,,탑1
-,塔2,tower 2,tower2,,,탑2
-,塔3,tower 3,tower3,,,탑3
-,妖精1,fairy 1,fairy1,,,요정1
-,妖精2,fairy 2,fairy2,,,요정2
-,安らぎ1,repose 1,solace1,,,편안해짐1
-,安らぎ2,repose 2,solace2,,,편안해짐2
-,安らぎ3,repose 3,solace3,,,편안해짐3
-,店1,shop 1,shop1,,,점1
-,店2,shop 2,shop2,,,점2
-,店3,shop 3,shop3,,,점3
-,怒り,wrath,malice,,,화내다
-,悲しみ,sorrow,sad,,,슬퍼하다
-,戦闘1,battle 1,battle1,,,전투1
-,戦闘2,battle 2,battle2,,,전투2
-,戦闘3,battle 3,battle3,,,전투3
-,探索,exploration,explore,,,탐색
-,敗北,defeat,defeat,,,패배
-,教会,church,church2,,,교회
-,明るい市場,lively market,bazaar,,,밝은 시장
-,村1,village 1,village1,,,촌1
-,村2,village 2,village2,,,촌2
-,村3,village 3,village3,,,촌3
-,泥棒,thief,thief,,,도둑
-,活気,liveliness,strength,,,활기
-,町1,town 1,town1,,,밭두둑1
-,町2,town 2,town2,,,밭두둑2
-,町3,town 3,town3,,,밭두둑3
-,神秘1,mystery 1,mystery1,,,신비1
-,神秘2,mystery 2,mystery2,,,신비2
-,神秘3,mystery 3,mystery3,,,신비3
-,秘宝,secret treasure,treasure,,,바보
-,船1,ship 1,boat1,,,배1
-,船2,ship 2,boat2,,,배2
-,船3,ship 3,boat3,,,배3
-,試練,trial,ordeal,,,시련
-,闇市,black market,eviltown,,,암시장
-,魔王,demon lord,demonic,,,마왕
-Panorama,夕焼け1,sunset1,dusk1,Dawn1,eveningglow1,석양1
-,夕焼け2,sunset2,dusk2,Dawn2,eveningglow2,석양2
-,夜明け1,dawn1,dawn1,Evening1,dawn1,새벽1
-,夜明け2,dawn2,dawn2,Evening2,dawn2,새벽2
-,夜空1,night sky1,night1,Night1,nightempty1,밤하늘1
-,夜空2,night sky2,night2,Night2,nightempty2,밤하늘2
-,宇宙,cosmos1,space,Galaxy,space,우주
-,惑星1,planet1,planet1,Planet1,planetary1,혹성1
-,惑星2,planet2,planet2,Planet2,Planetary2,혹성2
-,惑星3,planet3,planet3,Planet3,Planetary3,혹성3
-,異空間,dimension rift,strange,Weird,strangespacial,이공간
-,空1,sky1,sky1,Morning1,empty1,하늘1
-,空2,sky2,sky2,Morning2,empty2,하늘2
-Sound,アイテム1,item1,item1,,Item1,아이템1
-,アイテム2,item2,item2,,Item2,아이템2
-,あたり1,chime1,jingle1,,Around1,즈음하고1
-,あたり2,chime2,jingle2,,Around2,즈음하고2
-,アップ,buff,increase,,Upgrade,업
-,イヌ,dog,dog,,Dog,강아지
-,ウシ,cow,cow,,Cow,소
-,ウマ,horse,horse,,Horse,발판
-,おたけび,roar,roar,,Roar,우렁찬 외침
-,カーソル1,cursor1,cursor1,,Cursor1,커서1
-,カーソル2,cursor2,cursor2,,Cursor2,커서2
-,ガシャン,glassshatter,shatter,,Glass,가샨
-,キャンセル1,cancel1,cancel1,,Cancel1,취소1
-,キャンセル2,cancel2,cancel2,,Cancel2,취소2
-,しびれ1,paralyze1,paralyze1,,Paralyze1,마비1
-,しびれ2,paralyze2,paralyze2,,Paralyze2,마비2
-,しびれ3,paralyze3,paralyze3,,Paralyze3,마비3
-,ジャンプ1,jump1,jump1,,Jump1,점프1
-,ジャンプ2,jump2,jump2,,Jump2,점프2
-,ショット1,shot1,shot1,,Laser1,쇼트1
-,ショット2,shot2,shot2,,Laser2,쇼트2
-,ショット3,shot3,shot3,,Laser3,쇼트3
-,スイッチ1,switch1,switch1,,Switch1,스위치1
-,スイッチ2,switch2,switch2,,Switch2,스위치2
-,ダウン,debuff,decrease,,Downgrade,다운
-,ダメージ1,damage1,damage1,,Damege1,데미지1
-,ダメージ2,damage2,damage2,,Damege2,데미지2
-,テレポート1,teleport1,teleport1,,Teleport1,텔레포트1
-,テレポート2,teleport2,teleport2,,Teleport2,텔레포트2
-,トラ,tiger,tiger,,Tiger,트럭
-,にらみ,glare,gaze,,Glare,노려봄
-,にわとり,chicken,chicken,,Chicken,닭
-,ネコ,cat,cat,,Cat,고양이
-,ノック,knock,knock,,Knock,노크
-,はずれ1,buzzer1,failure1,,End1,잘라내기1
-,はずれ2,buzzer2,failure2,,End2,잘라내기2
-,バリア,barrier,barrier,,Barrier,배리어
-,ひつじ,sheep,sheep,,Sheep,양
-,ブザー1,buzzer3,buzzer1,,Buzzer1,버저1
-,ブザー2,buzzer4,buzzer2,,Buzzer2,버저2
-,フラッシュ1,flash1,flash1,,Flashlight1,플래시1
-,フラッシュ2,flash2,flash2,,Flashlight2,플래시2
-,フラッシュ3,flash3,flash3,,Flashlight3,플래시3
-,ブレス,breath,breath,,Breath,호흡
-,モンスター1,monster1,monster1,,Monster1,몬스터1
-,モンスター2,monster2,monster2,,Monster2,몬스터2
-,ライオン,lion,lion,,Lion,사자
-,冷気1,ice1,ice01,,Ice1,냉기1
-,冷気2,ice2,ice04,,Ice2,냉기2
-,冷気3,ice3,ice05,,Ice3,냉기3
-,冷気4,ice4,ice06,,Ice4,냉기4
-,冷気5,ice5,ice07,,Ice5,냉기5
-,冷気6,ice6,ice08,,Ice6,냉기6
-,冷気7,ice7,ice09,,Ice7,냉기7
-,冷気8,ice8,ice10,,Ice8,냉기8
-,冷気9,ice9,ice11,,Ice9,냉기9
-,冷気10,ice10,ice02,,Ice10,냉기10
-,冷気11,ice11,ice03,,Ice11,냉기11
-,剣1,sword1,sword1,,Sword1,검1
-,剣2,sword2,sword2,,Sword2,검2
-,剣3,sword3,sword3,,Sword3,검3
-,吸収1,absorb1,absorb1,,Absorption1,흡수1
-,吸収2,absorb2,absorb2,,Absorption2,흡수2
-,噛む,bite,bloodsuck,,Bite,물다
-,回復1,recovery1,heal1,,Recovery1,회복1
-,回復2,recovery2,heal2,,Recovery2,회복2
-,回復3,recovery3,heal3,,Recovery3,회복3
-,回復4,recovery4,heal4,,Recovery4,회복4
-,回復5,recovery5,heal5,,Recovery5,회복5
-,回復6,recovery6,heal6,,Recovery6,회복6
-,回復7,recovery7,heal7,,Recovery7,회복7
-,回復8,recovery8,heal8,,Recovery8,회복8
-,回避1,evade1,evade1,,Evasion1,회피1
-,回避2,evade2,evade2,,Evasion2,회피2
-,地震1,earthquake1,quake1,,Earthquake1,지진1
-,地震2,earthquake2,quake2,,Earthquake2,지진2
-,壁1,barrier1,bump1,,Wall1,벽1
-,壁2,barrier2,bump2,,Wall2,벽2
-,大地1,earth1,earth01,,Earth1,대지1
-,大地2,earth2,earth02,,Earth2,대지2
-,大地3,earth3,earth03,,Earth3,대지3
-,大地4,earth4,earth04,,Earth4,대지4
-,大地5,earth5,earth05,,Earth5,대지5
-,大地6,earth6,earth06,,Earth6,대지6
-,大地7,earth7,earth07,,Earth7,대지7
-,大地8,earth8,earth08,,Earth8,대지8
-,大地9,earth9,earth09,,Earth9,대지9
-,大地10,earth10,earth10,,Earth10,대지10
-,巻き付き,ensnare,ensnare,,Vortex,달라붙기
-,弓1,bow1,bow1,,Bow1,활1
-,弓2,bow2,bow2,,Bow2,활2
-,戦闘1,combat1,battle1,,Battle1,전투1
-,戦闘2,combat2,battle2,,Battle2,전투2
-,打撃1,blow1,punch1,,Blow1,타격1
-,打撃2,blow2,punch2,,Blow2,타격2
-,打撃3,blow3,punch3,,Blow3,타격3
-,打撃4,blow4,punch4,,Blow4,타격4
-,打撃5,blow5,punch5,,Blow5,타격5
-,打撃6,blow6,punch6,,Blow6,타격6
-,打撃7,blow7,punch7,,Blow7,타격7
-,攻撃1,attack1,attack1,,Attack1,공격1
-,攻撃2,attack2,attack2,,Attack2,공격2
-,斬る1,slash1,strike01,,Cut1,벤다1
-,斬る10,slash10,strike10,,Cut10,벤다10
-,斬る11,slash11,strike11,,Cut11,벤다11
-,斬る2,slash2,strike02,,Cut2,벤다2
-,斬る3,slash3,strike03,,Cut3,벤다3
-,斬る4,slash4,strike04,,Cut4,벤다4
-,斬る5,slash5,strike05,,Cut5,벤다5
-,斬る6,slash6,strike06,,Cut6,벤다6
-,斬る7,slash7,strike07,,Cut7,벤다7
-,斬る8,slash8,strike08,,Cut8,벤다8
-,斬る9,slash9,strike09,,Cut9,벤다9
-,時計,clock,clock,,Clock,시계
-,暗闇,blind,night,,Darkness,안보임
-,暗黒1,darkness1,dark1,,Darkness1,암흑1
-,暗黒2,darkness2,dark2,,Darkness2,암흑2
-,暗黒3,darkness3,dark3,,Darkness3,암흑3
-,暗黒4,darkness4,dark4,,Darkness4,암흑4
-,暗黒5,darkness5,dark5,,Darkness5,암흑5
-,暗黒6,darkness6,dark6,Dark6,Darkness6,암흑6
-,歌,song,song,,Song,노래
-,毒,poison,poison,,Poison,독
-,水1,water1,water1,,Water1,물1
-,水2,water2,water2,,Water2,물2
-,水3,water3,water3,,Water3,물3
-,水4,water4,water4,,Water4,물4
-,水5,water5,water5,,Water5,물5
-,水6,water6,water6,,Water6,물6
-,決定1,decision1,choice1,,Decision1,결정1
-,決定2,decision2,choice2,,Decision2,결정2
-,沈黙,silence,silence,,Silence,침묵
-,海1,sea1,sea1,,Sea1,바다1
-,海2,sea2,sea2,,Sea2,바다2
-,消滅1,collapse1,vanish1,,Disappearance1,소멸1
-,消滅2,collapse2,vanish2,,Disappearance2,소멸2
-,混乱,confusion,confuse,,Caos,혼란
-,炎1,fire1,fire1,,Flame1,화염1
-,炎2,fire2,fire2,,Flame2,화염2
-,炎3,fire3,fire3,,Flame3,화염3
-,炎4,fire4,fire4,,Flame4,화염4
-,炎5,fire5,fire5,,Flame5,화염5
-,炎6,fire6,fire6,,Flame6,화염6
-,炎7,fire7,fire7,,Flame7,화염7
-,炎8,fire8,fire8,,Flame8,화염8
-,爆発1,explosion1,explode1,,Explosion1,폭발1
-,爆発2,explosion2,explode2,,Explosion2,폭발2
-,爆発3,explosion3,explode3,,Explosion3,폭발3
-,爆発4,explosion4,explode4,,Explosion4,폭발4
-,爆発5,explosion5,explode5,,Explosion5,폭발5
-,爆発6,explosion6,explode6,,Explosion6,폭발6
-,爆発7,explosion7,explode7,,Explosion7,폭발7
-,睡眠,sleep,sleep,,Sleep,수면
-,砂けむり,sandstorm,sandstorm,,SandMind,모래 연기
-,神聖1,holy1,holy1,,Holy1,신성1
-,神聖2,holy2,holy2,,Holy2,신성2
-,神聖3,holy3,holy3,,Holy3,신성3
-,神聖4,holy4,holy4,,Holy4,신성4
-,神聖5,holy5,holy5,,Holy5,신성5
-,神聖6,holy6,holy6,,Holy6,신성6
-,神聖7,holy7,holy7,,Holy7,신성7
-,神聖8,holy8,holy8,,Holy8,신성8
-,神聖9,holy9,holy9,,Holy9,신성9
-,移動,move,footstep,,Run,이동
-,花粉,pollen,pollen,,Pollen,꽃가루
-,落ちる1,fall1,fall1,,Fall1,떨어진다1
-,落ちる2,fall2,fall2,,Fall2,떨어진다2
-,蘇生1,raise1,revive1,,Revival1,소생1
-,蘇生2,raise2,revive2,,Revival2,소생2
-,蘇生3,raise3,revive3,,Revival3,소생3
-,逃走,escape,flee,,Escape,도주
-,鍵,key,key,,Key,자물쇠
-,鐘,bell,gong,,Bell,종
-,閉める1,close1,close1,,Close1,닫는다1
-,閉める2,close2,close2,,Close2,닫는다2
-,開ける1,open1,open1,,Open1,열다1
-,開ける2,open2,open2,,Open2,열다2
-,雨1,rain1,rain1,,Rain1,비1
-,雨2,rain2,rain2,,Rain2,비2
-,雷1,thunder1,bolt01,,Thunder1,전격1
-,雷2,thunder2,bolt02,,Thunder2,전격2
-,雷3,thunder3,bolt03,,Thunder3,전격3
-,雷4,thunder4,bolt04,,Thunder4,전격4
-,雷5,thunder5,bolt05,,Thunder5,전격5
-,雷6,thunder6,bolt06,,Thunder6,전격6
-,雷7,thunder7,bolt07,,Thunder7,전격7
-,雷8,thunder8,bolt08,,Thunder8,전격8
-,雷9,thunder9,bolt09,,Thunder9,전격9
-,雷10,thunder10,bolt10,,Thunder10,전격10
-,霧1,fog1,fog1,,Fog1,안개1
-,霧2,fog2,fog2,,Fog2,안개2
-,音波1,wave1,wave1,,Sound wave1,음파1
-,音波2,wave2,wave2,,Sound wave2,음파2
-,風1,wind1,wind01,,Wind1,바람1
-,風2,wind2,wind02,,Wind2,바람2
-,風3,wind3,wind03,,Wind3,바람3
-,風4,wind4,wind04,,Wind4,바람4
-,風5,wind5,wind05,,Wind5,바람5
-,風6,wind6,wind06,,Wind6,바람6
-,風7,wind7,wind07,,Wind7,바람7
-,風8,wind8,wind08,,Wind8,바람8
-,風9,wind9,wind09,,Wind9,바람9
-,風10,wind10,wind10,,Wind10,바람10
-,風11,wind11,wind11,,Wind11,바람11
-,魔法1,magic1,magic1,,Magic1,마법1
-,魔法2,magic2,magic2,,Magic2,마법2
-System,システム,system,system1,System,system,시스템
-,システムa,systema,system2,SystemA,SystemA,시스템a
-,システムb,systemb,system3,SystemB,SystemB,시스템b
-,システムc,systemc,system4,SystemC,SystemC,시스템c
-System2,システム２a,system2a,system2a,System2A,systeméQA,시스템２a
-,システム２b,system2b,system2b,System2B,systeméQB,시스템２b
-,システム２c,system2c,system2c,System2C,systeméQC,시스템２c
-Title,タイトル1,title1,title1,Title1,title1,타이틀1
-,タイトル2,title2,title2,Title2,title2,타이틀2
-,タイトル3,title3,title3,Title3,title3,타이틀3
-,タイトル4,title4,title4,Title4,title4,타이틀4
+Asset Type,JP,EN,Advocate,Russian,Maker Universe,Korean,Traditional Chinese
+Backdrop,お墓,graveyard,graveyard,Grave,grave,바닥,墳場
+,お寺,temple1,shrine,Temple,temple,절,寺廟
+,ダンジョン１,dungeon1,dungeon1,Cave,donjohn1,던젼１,迷宮1
+,ダンジョン２,dungeon2,dungeon2,LavaCave,donjohnQ,던젼２,迷宮2
+,ダンジョン３,dungeon3,dungeon3,IceCave,donjohnR,던젼３,迷宮3
+,ダンジョン４,dungeon4,dungeon4,Stalagmites,donjohnS,던젼４,迷宮4
+,ダンジョン５,dungeon5,dungeon5,Labyrinth,donjohnT,던젼５,迷宮5
+,ダンジョン６,dungeon6,dungeon6,TrainingHall,donjohnU,던젼６,迷宮6
+,宇宙,universe,space,Space,space,우주,宇宙
+,山道,mountain road,mountain,Mountain,mountainpath,산길,山路
+,岩場,rocky road,rockbed,Rocks,rocks,바위,岩壁
+,廃墟,ruins1,wasteland,Ruins,wasteland,폐허,廢墟
+,旧市街,old town,ghost-town,City,oldurban,구시가지,老街
+,森１,forest1,forest1,Forest1,forestP,숲１,森林1
+,森２,forest2,forest2,Forest2,forestQ,숲２,森林2
+,橋,bridge,bridge,Bridge,bridge,다리,橋
+,毒沼,swamp,swamp,Swamp,poisonswamp,독연못,毒沼
+,洋館,mansion,building,InsideCastle,westernstylebuilding,양관(서양식집),洋館
+,海,sea,ocean,Sea,sea,바다,海
+,玉座,castle,castle,BallSeat,ballseat,옥좌,王位
+,異空間,space,strange,SpaceLight,strangespacial,이공간,異次元空間
+,砂浜,beach,beach,Beach,sandybeach,사구,淺灘
+,砂漠,desert,desert,Desert,desert,사막,沙漠
+,神殿,temple2,ruins1,Sanctuary,sanctuary,신전,神殿
+,空,sky,sky,Clouds,empty,하늘,天空
+,船上,ship,shipdeck,Ship,onboat,선상,船上
+,草原,grassland,plains,Grass,grassyplain,초원,草原
+,荒地,wasteland,barren,RoughForging,roughforging,황야,荒地
+,街中,town,town,CityHouse,city,길가운데,街道
+,路上,road,road,Road,road,도로 위,道路
+,遺跡,ruins2,ruins2,InsidePyramid,ruins,유적,遺跡
+,銭湯,bathhouse,bath,BathHouse,bathhouse,공중 목욕탕,澡堂
+,闘技場,arena,arena,CompetitionPlace,competitionplace,투기장,競技場
+,雪原,snow field,snowfield,Snow,snowfield,설원,雪原
+Battle,2003その他1,2003 other1,misc1,2003-Other1,2003addition1,2003기타1,2003其他1
+,2003その他2,2003 other2,misc2,2003-Other2,2003addition2,2003기타2,2003其他2
+,2003バリア,2003 barrier,barrier1,2003-Barrier,2003barrier,2003베리어,2003護罩
+,2003ブレス,2003 breath,breath1,2003-Poison,2003breath,2003브레스,2003氣息
+,2003光柱,2003 light pillar,lightray,2003-Lines,2003luminouspillar,2003주위의 빛,2003光柱
+,2003冷気,2003 cold,ice1,2003-Cold,2003coldair,2003냉기,2003冰
+,2003剣,2003 sword,sword1,2003-Sword,2003sword,2003검,2003劍
+,2003吸収,2003 absorb,absorb1,2003-Absorption,2003absorption,2003흡수,2003吸收
+,2003回復,2003 recovery,healing1,2003-Sun,2003recovery,2003회복,2003回復
+,2003大地,2003 earth,earth1,2003-Earth,2003ground,2003대지,2003大地
+,2003弓,2003 bow,bow1,2003-Arrow,2003bow,2003화살,2003弓
+,2003打撃,2003 blow,strike,2003-Hit,2003shock,2003타격,2003打擊
+,2003斧,2003 axe,axe1,2003-Axe,2003ax,2003도끼,2003斧
+,2003暗黒,2003 dark,dark1,2003-Dark,2003dark,2003암흑,2003暗黑
+,2003槍,2003 spear,spear1,2003-Spear,2003spear,2003창,2003槍
+,2003水,2003 water,water1,2003-Water,2003water,2003물,2003水
+,2003治療,2003 cure,cure1,2003-Sphere,2003remedy,2003치료,2003治療
+,2003炎,2003 fire,fire1,2003-Fire,2003flame,2003화염,2003炎
+,2003爆発,2003 explosion,explode1,2003-Explosion,2003explosive,2003폭발,2003爆發
+,2003爪,2003 claw,claw1,2003-Claws,2003nail,2003손톱,2003爪
+,2003神聖,2003 holy,holy1,2003-Holy,2003holy,2003신성,2003神聖
+,2003蘇生,2003 revive,revive1,2003-Angel,2003revival,2003소생,2003復活
+,2003雷,2003 thunder,bolt1,2003-Zip,2003thunder,2003전격,2003雷
+,2003鞭,2003 whip,whip1,2003-Whip,2003rod,2003채찍,2003鞭
+,2003風,2003 wind,wind1,2003-Wind,2003wind,2003바람,2003風
+,2003麻痺,2003 Paralysis,paralyze1,2003-Paralysis,2003paralysis,2003마비,2003麻痺
+,その他,other,misc3,,addition,기타,其他
+,バリア,barrier,barrier2,,barrier,배리어,護罩
+,ブレス,breath,breath2,,breath,호흡,氣息
+,上昇,buff,increase,,rise,상승,上昇
+,下降,debuff,decrease,,drop,하강,下降
+,冷気,ice,ice2,,coldair,냉기,冰
+,剣1,sword1,sword2,,sword1,검1,劍1
+,剣2,sword2,sword3,,sword2,검2,劍2
+,吸収,bite,absorb2,,absorption,흡수,吸收
+,回復,recovery,healing2,,recovery,회복,回復
+,大地,earth,earth2,,ground,대지,大地
+,打撃,blow,attack,,shock,타격,打擊
+,斧,axe,axe2,,ax,도끼,斧
+,暗黒,dark,dark2,,dark,암흑,暗黑
+,槍,spear,spear2,,spear,창,槍
+,水,water,water2,,water,물,水
+,治療,treatment,cure2,,remedy,치료,治療
+,炎1,fire1,fire2,,flame1,화염1,炎1
+,炎2,fire2,fire3,,flame2,화염2,炎2
+,爆発,explosion,explode2,,explosive,폭발,爆發
+,爪,claw,claw2,,nail,손톱,爪
+,矢,arrow,bow2,,bow,화살,箭
+,神聖,holy,holy2,,holy,신성,神聖
+,蘇生,ressurection,revive2,,revivial,소생,復活
+,雷,thunder,bolt2,,thunder,전격,雷
+,鞭,whip,whip2,,rod,채찍,鞭
+,風,wind,wind2,,wind,바람,風
+,麻痺,paralysis,paralyze2,,paralysis,마비,麻痺
+BattleCharSet,エルフ女a,female elf a,elf-f-1,TuanaA,elfwomana,엘프女 a,妖精女a
+,エルフ女b,female elf b,elf-f-2,TuanaB,elfwomanb,엘프女 b,妖精女b
+,エルフ男a,male elf a,elf-m-1,TemmadA,elfmana,엘프男 a,妖精男a
+,エルフ男b,male elf b,elf-m-2,TemmadB,elfmanb,엘프男 b,妖精男b
+,中華女a,chinese woman a,chinese-f-1,ChuzaA,chinesewomana,중화女a,中華女a
+,中華女b,chinese woman b,chinese-f-2,ChuzaB,chinesewomanb,중화女b,中華女b
+,中華男a,chinese man a,chinese-m-1,ChingA,chinesemana,중화男a,中華男a
+,中華男b,chinese man b,chinese-m-2,ChingB,chinesemanb,중화男b,中華男b
+,侍a,samurai a,samurai1,GarreA,samuraia,사무라이a,武士a
+,侍b,samurai b,samurai2,GarreB,samuraib,사무라이b,武士b
+,僧侶女a,female monk a,priestess1,KloriA,monkwomana,승려女a,僧侶女a
+,僧侶女b,female monk b,priestess2,KloriB,monkwomanb,승려女b,僧侶女b
+,僧侶男a,male monk a,priest1,SiossA,monkmana,승려男a,僧侶男a
+,僧侶男b,male monk b,priest2,SiossB,monkmanb,승려男b,僧侶男b
+,勇者女a,female hero a,hero-f-1,NoddaA,herowomana,용자女a,勇者女a
+,勇者女b,female hero b,hero-f-2,NoddaB,herowomanb,용자女b,勇者女b
+,勇者男a,male hero a,hero-m-1,JemmonA,heromana,용자男a,勇者男a
+,勇者男b,male hero b,hero-m-2,JemmonB,heromanb,용자男b,勇者男b
+,女性１a,woman1 a,woman1-1,CletoA,womanéPa,여성１a,女性1a
+,女性１b,woman1 b,woman1-2,CletoB,womanéPb,여성１b,女性1b
+,女性２a,woman2 a,woman2-1,JikuaA,womanéQa,여성２a,女性2a
+,女性２b,woman2 b,woman2-2,JikuaB,womanéQb,여성２b,女性2b
+,女性３a,woman3 a,woman3-1,IrregiaA,womanéRa,여성３a,女性3a
+,女性３b,woman3 b,woman3-2,IrregiaB,womanéRb,여성３b,女性3b
+,女性４a,woman4 a,woman4-1,NysmaA,womanéSa,여성４a,女性4a
+,女性４b,woman4 b,woman4-2,NysmaB,womanéSb,여성４b,女性4b
+,女性５a,woman5 a,woman5-1,BeruaA,womanéTa,여성５a,女性5a
+,女性５b,woman5 b,woman5-2,BeruaB,womanéTb,여성５b,女性5b
+,忍者女a,female ninja a,ninja-f-1,GinnyA,ninjawomana,닌자女a,忍者女a
+,忍者女b,female ninja b,ninja-f-2,GinnyB,ninjawomanb,닌자女b,忍者女b
+,忍者男a,male ninja a,ninja-m-1,XeodA,ninjamana,닌자男a,忍者男a
+,忍者男b,male ninja b,ninja-m-2,XeodB,ninjamanb,닌자男b,忍者男b
+,戦士女a,female warrior a,soldier-f-1,EljeaA,soldierwomana,전사女a,戰士女a
+,戦士女b,female warrior b,soldier-f-2,EljeaB,soldierwomanb,전사女b,戰士女b
+,戦士男a,male warrior a,soldier-m-1,RagleA,soldiermana,전사男a,戰士男a
+,戦士男b,male warrior b,solider-m-2,RagleB,soldiermanb,전사男b,戰士男b
+,格闘家女a,female fighter a,monk-f-1,PhesaA,grapplehousewomana,격투가女a,格鬥家女a
+,格闘家女b,female fighter b,monk-f-2,PhesaB,grapplehousewomanb,격투가女b,格鬥家女b
+,格闘家男a,male fighter a,monk-m-1,RasnenA,grapplehousemana,격투가男a,格鬥家男a
+,格闘家男b,male fighter b,monk-m-2,RasnenB,grapplehousemanb,격투가男b,格鬥家男b
+,海賊女a,female pirate a,pirate-f-1,RennaA,piratewomana,해적女a,海賊女a
+,海賊女b,female pirate b,pirate-f-2,RennaB,piratewomanb,해적女b,海賊女b
+,海賊男a,male pirate a,pirate-m-1,GoxanA,piratemana,해적男a,海賊男a
+,海賊男b,male pirate b,pirate-m-2,GoxanB,pirateb,해적男b,海賊男b
+,男性１a,man1 a,man1-1,JidadA,manéPa,남성１a,男性1a
+,男性１b,man1 b,man1-2,JidadB,manéPb,남성１b,男性1b
+,男性２a,man2 a,man2-1,MjittA,manéQa,남성２a,男性2a
+,男性２b,man2 b,man2-2,MjittB,manéQb,남성２b,男性2b
+,男性３a,man3 a,man3-1,ChuazA,manéRa,남성３a,男性3a
+,男性３b,man3 b,man3-2,ChuazB,manéRb,남성３b,男性3b
+,男性４a,man4 a,man4-1,ShellA,manéSa,남성４a,男性4a
+,男性４b,man4 b,man4-2,ShellB,manéSb,남성４b,男性4b
+,男性５a,man5 a,man5-1,FrossA,manéTa,남성５a,男性5a
+,男性５b,man5 b,man5-2,FrossB,manéTb,남성５b,男性5b
+,盗賊女a,female bandit a,thief-f-1,OtipaA,thiefwomana,도적女a,盜賊女a
+,盗賊女b,female bandit b,thief-f-2,OtipaB,thiefwomanb,도적女b,盜賊女b
+,盗賊男a,male bandit a,thief-m-1,UnnonA,thiefmana,도적男a,盜賊男a
+,盗賊男b,male bandit b,thief-m-2,UnnonB,thiefmanb,도적男b,盜賊男b
+,鎧武者a,armored warror a,armor1,JoegoA,armourwarriora,갑옷무사a,鎧甲武者a
+,鎧武者b,armored warror b,armor2,JoegoB,armourwarriorb,갑옷무사b,鎧甲武者b
+,魔術師女a,female mage a,mage-f-1,LjitiA,magicteacherwomana,마술사女a,魔術師女a
+,魔術師女b,female mage b,mage-f-2,LjitiB,magicteacherwomanb,마술사女b,魔術師女b
+,魔術師男a,male mage a,mage-m-1,RivraA,magicteachermana,마술사男a,魔術師男a
+,魔術師男b,male mage b,mage-m-2,RivraB,magicteachermanb,마술사男b,魔術師男b
+BattleWeapon,武器,weapon,weapons,Standart,weapon,무기,武器
+CharSet,オブジェクト1,object1,object1,Objects1,object1,오브젝트1,物件1
+,オブジェクト2,object2,object2,Objects2,object2,오브젝트2,物件2
+,モンスター1,monster1,monster1,Monsters1,monster1,몬스터1,怪物1
+,モンスター2,monster2,monster2,Monsters2,monster2,몬스터2,怪物2
+,一般1,people1,char1,People1,general1,일반1,一般1
+,一般2,people2,char2,People2,general2,일반2,一般2
+,一般3,people3,char3,People3,general3,일반3,一般3
+,一般4,people4,char4,People4,general4,일반4,一般4
+,一般5,people5,char5,People5,general5,일반5,一般5
+,主人公1,actor1,hero1,Chara1,protagonist1,주인공1,主角1
+,主人公2,actor2,hero2,Chara2,protagonist2,주인공2,主角2
+,主人公3,actor3,hero3,Chara3,protagonist3,주인공3,主角3
+,主人公4,actor4,hero4,Chara4,protagonist4,주인공4,主角4
+,乗り物,vehicles,vehicle,Vehicles,vehicle,탈것,交通工具
+,動物,animal,animal,Animals,animal,동물,動物
+ChipSet,ダンジョン,dungeon,dungeon,Internal1,donjohn,던젼,迷宮
+,内装,interior,building,Internal2,interior,내부,內部
+,基本,world,main,World,basic,기본,基本
+,外観,exterior,town,Village,appearance,외견,外部
+,船,ship,ship,Ship,boat,배,船
+FaceSet,モンスター,monster,monster,Monsters,monster,몬스터,怪物
+,一般1,people1,faces1,People,general1,일반1,一般1
+,一般2,people2,faces2,PeopleAnimal,general2,일반2,一般2
+,主人公1,actor1,hero1,Face1,Protagonist1,주인공1,主角1
+,主人公2,actor2,hero2,Face2,Protagonist2,주인공2,主角2
+GameOver,ゲームオーバー,game over,gameover,GameOver,gameover,게임오버,遊戲結束
+,,,,,,,遊戲結束2
+Monster,アーリマン,ahriman,ariman,MaliciousFlower,Ahriman,아리맨,阿利曼
+,アスラ,asura,asura,WeaponMaster,MultiArmDemon,아수라,阿蘇拉
+,アナコンダ,anaconda,anaconda,Snake,anaconda,아나콘다,巨蟒
+,アリゲーター,alligator,alligator,Crocodile,alligator,엘리게이터,短吻鱷
+,アンデッドナイト,undead knight,u-knight,DeadPirate,PimpSkeleton,언데드 나이트,不死騎士
+,イフリート,ifreet,efreet,Efrit,Ifrit,이프리트,伊弗利特
+,インプ,imp,imp,Features,LittleDemon,임프,小魔鬼
+,ヴァンパイア,vampire,vampire,Vampire,vampire,뱀파이어,吸血鬼
+,ウロボロス,ouroboros,oroboros,Levitan,dragon,우로보로스,吞尾蛇
+,エルフ,elf,elf,Archer,elf,엘프,妖精
+,オーガ,ogre,ogre,PrimitiveMan,auger,오거,食人魔
+,オーク,orc,orc,PigSoldier,ork,오크,獸人戰士
+,オーディン,odin,odin,DangerousSoldier,odin,오딘,奧丁
+,オクトパス,octopus,octopus,Octopus,octopus,옥토퍼스,八爪章魚
+,ガーゴイル,gargoyle,gargoyle,Gargoyle,gargoyle,가고일,石像獸
+,カーバンクル,carbuncle,carbuncle,RubyFox,carbunkle,카방클,紅寶石
+,カーミラ,carmilla,cojurer,MurdererWoman,carmira,카미라,卡美拉
+,カッパ,kappa,kappa,Morloc,raincoat,카트바,河童
+,カトブレパス,catoblepas,catoblepas,CurveBull,DemonHorseThing,카토부레바트,卡托布里帕斯
+,ガルーダ,garuda,garuda,FlyingWarrior,garuda,가루다,揭路荼
+,キメラ,chimera,chimera,Chimera,chimera,키메라,吐火獸
+,グール,ghoul,ghoul,Zombie,ghoul,구울,食屍鬼
+,クラーケン,kraken,kraken,SeaBowl,SeaMonster,크라켄,克拉坎
+,クラブ,crab,cancer,Crab,crab,크랩,巨蟹
+,グリフォン,griffon,griffon,Griphon,griffin,그리폰,葛里芬
+,グレル,grell,grell,Robot,jellyfish,구렐,毛面蟲
+,クロウラー,crawler,crawler,Worm,crowera,쿠로우라,爬蟲
+,ゲイザー,gazer,deathgaze,Eye,EyeStalk,게이져,看守者
+,ケツアルクアトル,quetzalcoatl,quezal,FlyingWorm,BirdSnake,케이시아르크 아토르,羽蛇神
+,ケットシー,cait sith,caitsith,Eremite,ketsea,캐트시,貓靈
+,ケルベロス,cerberus,cerberus,Cerberus,cerebus,켈베로스,地獄犬
+,ケンタウロス,centaur,centaur,Centaur,centaur,켄타우르스,半人馬
+,ゴーゴン,gorgon,gorgon,InfernalBull,bull,고곤,戈耳戈
+,ゴースト,ghost,ghost,WitchPhantom,ghost,고스트,鬼魂
+,ゴーレム,golem,golem,Golem,golem,골렘,高崙
+,コカトリス,cockatorice,cockatrice,Rooster,cockatrice,코카트리스,雞蛇獸
+,ゴブリン,goblin,goblin,LittleDemon,imp,고블린,小妖精
+,コボルト,kobold,kobold,Wolf,kobold,코볼트,地精
+,サイクロプス,cyclops,cyclops,Cyclops,giant,사이클롭스,獨眼巨人
+,サタナエル,satan,satan,DarkAngel,darkangel,사타나엘,撒旦尼爾
+,サハギン,sahagin,sahagin,Triton,merman,사하킨,半魚人撒哈奇
+,サラマンダー,salamander,salamander,BurningLizard,salamander,사라멘더,火蜥蜴
+,シャーク,shark,shark,Shark,shark,샤크,鯊魚
+,ジャイアント,giant,giant,Cannibal,giant-2,자이언트,巨人
+,ジャック・オー・ランタン,jack-o-lantern,jack,Pumpkin,JackOLantern,잭-오-랜턴,燈籠怪
+,シャドウ,shadow,shadow,LostShadow,shadow,셰도우,幻影
+,シルフ,sylph,sylph,Fairy,fairy,실프,風之精靈－絲芙
+,スキュラ,scylla,scylla,Medusa,gorgon,스쿨라,斯庫拉
+,スケルトン,skeleton,skeleton,Skeleton,skeleton,스켈톤,骷髏
+,スコーピオン,scorpion,scorpion,Cancer,scorpion,스콜피온,天蠍
+,スネーク,snake,snake,DangerousSnake,snake,스테이크,蛇
+,スピリッツ,spirit,spirit,LaughingSpirit,spirit,스피릿츠,靈魂
+,スフィンクス,sphinx,sphinx,Sphynx,sphinx,스핑크스,斯芬克司
+,スペクター,spectre,specter,MagicSkull,lostsoul,스펙터,幽靈
+,スライム,slime,slime,Slime,slime,슬라임,史萊姆
+,セイレーン,siren,siren,FlyingMermaid,MerAngel,세이렌,賽倫女妖
+,セラフィム,seraphim,seraph,Sephiroth,Angel,세라핌,撒拉弗
+,センチピード,centipede,centipede,Multileg,catterpillar,센티피드,百腳蜈蚣
+,ソーサラー,sorcerer,sorcerer,Magician,wizard,소서러,巫師
+,ゾンビ,zombie,zombie,PoisonZombie,zombie,좀비,殭屍
+,ダークエルフ,dark elf,darkelf,Fencer,darkelf,다크 엘프,黑暗妖精
+,ダークナイト,dark knight,darkknight,Knight,darkknight,다크 나이트,暗黑騎士
+,タイタン,titan,titan,Titan,titan,타이탄,泰坦巨人
+,タランチュラ,tarantula,spider,Spider,spider,타란튤라,狼蛛
+,ティアマット,tiamat,tiamat,Many-domedDragon,tiamat,데어 매트,塔亞瑪特邪龍
+,デーモン,demon,demon,HornGoat,daemon,데몬,惡魔
+,トード,toad,toad,Toad,frog,토드,蟾蜍
+,ドラゴン,dragon,dragon,BlueDragon,dragon-2,드래곤,龍
+,ドラゴンナイト,dragon knight,dragonknight,DragonWarrior,dragonknight,드래곤 나이트,龍騎士
+,トレント,treant,treant,Dendrid,tree,트렌트,樹精
+,トロール,troll,troll,Orc,troll,트롤,山怪
+,ネクロマンサー,necromancer,necromancer,Necromant,necromancer,네크로맨서,死靈法師
+,ネペンテス,nepenthes,nepenthe,MultirootFlower,killerplant,네벤테스,豬籠草怪
+,バーサーカー,berserker,berserker,Barbarian,barbarian,버저커,狂暴戰士
+,ハーピー,harpy,harpy,Harpy,harpy,하피,鳥人哈比
+,バジリスク,basilisk,basilisk,Horned,earwig,바실리크스,蛇怪
+,バット,bat,bat,Bat,bat,배트,蝙蝠
+,バハムート,bahamut,bahamut,Dragon,lizarddemon,바하무트,巴哈姆特
+,パラサイト,parasite,parasite,All-knowing,parasite,페러사이트,寄生蟲
+,ビッグフット,big foot,bigfoot,Yeti,yeti,빅풋,大腳怪
+,ヒュドラ,hydra,hydra,Many-domedUglyCreature,hydra,히드라,九頭蛇
+,フェニックス,phoenix,phoenix,Phoenix,phoenix,피닉스,鳳凰鳥
+,フェンリル,fenrir,fenrir,RealWolf,wolf,펜릴,大天狼
+,ベヒーモス,behemoth,behemoth,InfernalDog,behemoth,배히모스,巨獸
+,ホーネット,hornet,hornet,Bee,bea,호넷,大黃蜂
+,マンティコア,manticore,manticore,CrossedBeast,monster,만티코어,蒙特寇爾
+,マンティス,mantis,mantis,Insect,preyingmantis,만티스,螳螂怪
+,マンモス,mammoth,mammoth,Mamont,mammoth,맘모스,長毛象
+,ミイラ男,mummy,mummy,Mummy,mummy,미이라 男,木乃伊
+,ミドガルズオルム,midgardsormr,midgard-serp,CreepingCreature,monster-2,미드갈즈 오르무,米嘉巨蟒
+,ミノタウロス,minotaur,minotaur,Minotaur,minotaur,미노타우르스,邁諾陶
+,ミミック,mimic,mimic,OgreChest,mimic,미믹,變形怪
+,メデューサ,medusa,medusa,HyperMedusa,medusa,메두사,梅杜莎
+,ユニコーン,unicorn,unicorn,Unicorn,unicorn,유니콘,獨角獸
+,ラクシュミ,lakshmi,rakashimi,Prophet,mystic,라쿠슈미,吉祥天
+,ラミア,lamia,lamia,Mermaid,gorgon-2,라미아,拉米亞
+,リヴァイアサン,leviathan,leviathan,LevitanWithAHorn,leviathan,리바이어던,大海獸
+,リザード,lizard,lizard,MonitorLizard,lizard,리자드,蜥蜴
+,リザードマン,lizardman,lizardman,LizardSoldier,lizardman,리자드맨,蜥蜴人
+,リッチ,lich,lich,PowerfulNecromant,lich,리치,妖巫
+,リリス,lilith,lillith,MultihandsWarrior,lilith,리리스,莉莉斯
+,レイス,wraith,wraith,Phantom,spectre,레이스,死靈
+,レモラ,remora,remora,SharpFish,flyingfish,레모라,怪魚雷莫拉
+,ワーウルフ,werewolf,werewolf,Werwolf,werewolf,워울프,狼人
+,ワーム,worm,worm,ToothWorm,worm,웜,蟲
+,ワイト,wight,wight,SeizedSoldier,yto,와이트,屍妖
+,ワイバーン,wyvern,wyvern,BrownDragon,yburning,와이번,飛龍
+,九尾の狐,kyuubi,ninetail,MagicFox,foxofninetails,구미호,九尾狐狸
+,朱雀,suzaku,redsparrow,VainBird,redsparrow,주작,朱雀
+,玄武,genbu,blackturtle,TurtleSnake,monster-3,현무,玄武
+,白虎,byakko,whitetiger,PolarTiger,whitetiger,백호,白虎
+,馬,horse,nightmare,DarkHorse,horse,말,馬
+,鬼,oni,oni,Ogre,ogre,도깨비(鬼),惡鬼
+,麒麟,kirin,ki-rin,FairyTaleHorse,giraffe,기린,麒麟
+,龍,ryuu,bluedragon,LongDragon,bluedragon,청룡,青龍
+Music,2003いやしの泉,2003healing spring,spring,2003Happiness,2003spring,2003회복의 샘,2003治癒之泉
+,2003カジノ三昧,2003casino indulgence,casino,2003Research,2003casino,2003카지노,2003賭場
+,2003コロシアム,2003colosseum,arena,2003Piracy,2003colloseum,2003콜로세움,2003競技場
+,2003サイバーシティ,2003cyber city,bustling-city,2003JoyfulNews,2003rhinobarcity,2003사이버 시티,2003異次元城市
+,2003スノータウン,2003snow town,snowtown,2003Lullaby,2003snowtown,2003스노우 타운,2003下雪的城鎮
+,2003パニック,2003panic,panic,2003Warning,2003panic,2003패닉,2003恐慌
+,2003マキシマム・バトル,2003maximum battle,fierce-battle,2003Pursuit,2003maximumsbattle,2003맥시멈·전투,2003極限戰鬥
+,2003一獲千金の夢,2003dream of striking it rich,jackpot,2003SilentPleasure,2003dream-catchlotsofmoney,2003일획천금의 꿈,2003一獲千金之夢
+,2003冒険者たち,2003adventurers,adventure,2003Farewell,2003venturepeople,2003여행자 서고,2003冒險者們
+,2003勇者の凱旋,2003hero's return,triumph,2003BigPalace,2003triumphalreturn,2003용사의 개선,2003勇者的凱旋
+,2003古城,2003ancient city,ancient-castle,2003Glory,2003oldcastle,2003고성,2003古城
+,2003地下迷宮,2003subterranean maze,labyrinth,2003Fast,2003undergroundlabyrinth,2003지하미궁,2003地下迷宮
+,2003夢幻の森,2003dream forest,forest,2003WorldSound,2003forestoffantasy,2003몽환의 숲,2003夢幻之森
+,2003夢見心地,2003dreaminess,moonlight,2003Serenity,2003mooniness,2003꿈을 꾸는 기분,2003夢幻心境
+,2003大混戦,2003free for all,armyclash,2003Gangster,2003largeconfoundcombat,2003대혼전,2003大混戰
+,2003大空への翼,2003wings to the sky,airborne,2003Fanfares,2003wingtoskies,2003대공의 날개,2003空中的羽翼
+,2003大聖堂,2003cathedral,hallowed-halls,2003Grief,2003largesaintlyhall,2003대성당,2003大聖堂
+,2003妖精の森,2003fairy forest,fairies,2003WorkingMusic,2003fairyforest,2003요정의 숲,2003妖精之森
+,2003孤独な旅立ち,2003lonesome journey,lonewolf,2003Memoirs,2003lonelyjourney,2003고독한 여행,2003孤獨的旅行
+,2003小さな兵隊のマーチ,2003little army's march,march,2003Parade,2003marchofsmallsoldiers,2003작은 군대의 행진곡,2003小軍隊進行曲
+,2003山あいの村,2003village in the valley,mtn-village,2003EastStyle,2003villageofravines,2003산골짜기 마을,2003山中部落
+,2003帝国～エンパイア,2003empire,empire,2003AndAgainPleasure,2003enpire,2003제국,2003帝國
+,2003幼少の記憶,2003young memories,memories,2003FairyTale,2003memoryofinfancy,2003유소의 기억,2003年少記憶
+,2003忍び寄る闇,2003creeping darkness,foreboding,2003Threat,2003approachingdarkness,2003살며시 다가옴,2003悄然黑夜
+,2003悠久の時の流れに,2003in the eternal flow of time,eternal,2003Calm,2003theeternalflow,2003유구의 흐름,2003悠久時光的流轉
+,2003悲しみ,2003sorrow,sadness,2003Calm2,2003sorrow,2003슬퍼하고,2003悲傷
+,2003戦いの幕開け,2003beginning of a war,intro,2003DangerousFog,2003fightopening,2003싸움의 개막,2003戰爭的序幕
+,2003教会,2003church,church1,2003Church,2003church,2003교회,2003教會
+,2003日だまりの村,2003sunnyvillage,village4,2003Farmer,2003villageball,2003양지의 마을,2003日光村落
+,2003暗黒の祭壇,2003darkaltar,evil-temple,2003GlobalFrustration,2003altarofdarkness,2003암흑의 제단,2003暗黑祭壇
+,2003未開の集落,2003village of savages,strangetown,2003WitchSong,2003unexploredvillage,2003미개한 취락,2003未開化部落
+,2003極東の地,2003far eastern land,far-east,2003Flight,2003fareasternarea,2003극동의 땅,2003極東之地
+,2003機械要塞,2003machine fortress,mecha-base,2003SadEnd,2003machinefortress,2003기계 요새,2003機械要塞
+,2003氷のラビリンス,2003ice labyrinth,icecave,2003Drops,2003icelabyrinth,2003얼음의 래비런스,2003冰之迷宮
+,2003決戦の地,2003final battleground,showdown,2003Battlefield,2003areaofdecisivebattles,2003결전의 땅,2003決戰之地
+,2003無人の館,2003deserted mansion,haunted,2003SilentCrying,2003unmannedmansion,2003무인 저택,2003無人別館
+,2003王宮のパーティー,2003palace party,royal-ball,2003Dance,2003courtparty,2003왕궁의 파티,2003皇宮盛會
+,2003異次元回廊,2003otherworldly corridor,dimension,2003FastBattle,2003strangedimensionalcorridor,2003차원의 길,2003異次元迴廊
+,2003祝福ワルツ,2003waltz of blessings,waltz,2003Waltz,2003blessingwaltz,2003축복 왈츠,2003祝福的華爾滋
+,2003穏やかな風,2003steady breeze,interlude,2003Summer,2003calmwind,2003온화한 바람,2003徐徐微風
+,2003緊迫,2003tension,tension,2003TerribleDream,2003tension,2003긴박,2003緊迫
+,2003繰り返される戦い,2003repeated wars,endless-fight,2003FastBattle2,2003thefightwhichisrepeated,2003반복된 싸움,2003反覆的戰鬥
+,2003街の賑わい,2003city bustle,town-square,2003Pleasure,2003towncrowd,2003거리의 북적임,2003熱鬧街道
+,2003街の酒場,2003tavern,bar,2003Travel,2003townbar,2003거리의 술집,2003街上的酒館
+,2003記憶の彼方に,2003deep memory,memories2,2003Morning,2003onthefarsideofmemories,2003기억의 저쪽에,2003記憶中的彼方
+,2003遺跡探索,2003exploring ruins,ruins,2003InfiniteIdea,2003ruinssearch,2003유적 탐색,2003遺跡探索
+,2003邪神との戦い,2003battle with an evil god,godslayer,2003Chaos,2003wickedgodfight,2003사신과의 싸움,2003與邪神一戰
+,2003静寂,2003silence,calm,2003Underwater,2003calmness,2003정적,2003靜寂
+,j2003ホルン,j2003horn,horns,2003Win,J2003horn,J2003호른,j2003號角
+,jアイテム,jitem,item,,Jitem,J아이템,j物品
+,jギャグ1,jjoke 1,mischief1,,Jgag1,J개그1,j鬧劇1
+,jギャグ2,jjoke 2,mischief2,,Jgag2,J개그2,j鬧劇2
+,jファンファーレ1,jfanfare 1,fanfare1,,Jfanfare1,J팡파르1,j吹奏樂1
+,jファンファーレ2,jfanfare 2,fanfare2,,Jfanfare2,J팡파르2,j吹奏樂2
+,jファンファーレ3,jfanfare 3,fanfare3,,Jfanfare3,J팡파르3,j吹奏樂3
+,jファンファーレ4,jfanfare 4,fanfare4,,Jfanfare4,J팡파르4,j吹奏樂4
+,jファンファーレ5,jfanfare 5,fanfare5,,Jfanfare5,J팡파르5,j吹奏樂5
+,jファンファーレ6,jfanfare 6,fanfare6,,Jfanfare6,J팡파르6,j吹奏樂6
+,j宿1,jinn 1,inn1,,Jinn1,J숙소1,j住宿1
+,j宿2,jinn 2,inn2,,Jinn2,J숙소2,j住宿2
+,j戦闘終了1,jend of battle 1,victory1,,Jaggressiveend1,J전투종료1,j戰鬥結束1
+,j戦闘終了2,jend of battle 2,victory2,,Jaggressiveend2,J전투종료2,j戰鬥結束2
+,j戦闘終了3,jend of battle 3,victory3,,Jaggressiveend3,J전투종료3,j戰鬥結束3
+,j戦闘終了4,jend of battle 4,victory4,,Jaggressiveend4,J전투종료4,j戰鬥結束4
+,j疑惑,jdoubt,surprise,,Jdoubt,J의혹,j疑惑
+,j謎,jmystery,riddle,,Jpuzzle,J수수께기,j謎
+,se2003アラーム,se2003alarm,se-alarm,SE2003Ding,SE2003alarm,SE2003알람,se2003警報
+,se2003ジャングル,se2003jungle,se-jungle,SE2003Jungle,SE2003jungle,SE2003정글,se2003叢林
+,se2003雑踏,se2003bustle,se-crowd,SE2003People,SE2003bustle,SE2003혼잡,se2003雜沓
+,se2003風,se2003wind,se-gale,SE2003Winter,SE2003wind,SE2003바람,se2003風
+,se2003鳥,se2003bird,se-bird,SE2003Birds,SE2003bird,SE2003새,se2003鳥
+,se地震,seearthquake,se-quake,SEEarthquake,SEearthquake,SE지진,se地震
+,se大雨,sedownpour,se-torrent,SERain2,SEheavyrain,SE호우,se大雨
+,se時計,seclock,se-clock,SEClock,SEclock,SE시계,se鐘
+,se海,sesea,se-ocean,SESea,SEsea,SE바다,se海
+,se雨,serain,se-rain,SERain,SErainy,SE비,se雨
+,エンディング1,ending 1,ending1,,,끝1,結束1
+,エンディング2,ending 2,ending2,,,끝2,結束2
+,エンディング3,ending 3,ending3,,,끝3,結束3
+,オープニング1,opening 1,opening1,,,오프닝1,開始1
+,オープニング2,opening 2,opening2,,,오프닝2,開始2
+,オープニング3,opening 3,opening3,,,오프닝3,開始3
+,ゲームオーバー1,game over 1,gameover1,,,게임오버1,遊戲結束1
+,ゲームオーバー2,game over 2,gameover2,,,게임오버2,遊戲結束2
+,ゲームオーバー3,game over 3,gameover3,,,게임오버3,遊戲結束3
+,ゴーストタウン1,ghost town 1,ghost-town1,,,고스트 타운1,鬼城1
+,ゴーストタウン2,ghost town 2,ghost-town2,,,고스트 타운2,鬼城2
+,ダンジョン1,dungeon 1,dungeon1,,,지하감옥1,迷宮1
+,ダンジョン2,dungeon 2,dungeon2,,,지하감옥2,迷宮2
+,ダンジョン3,dungeon 3,dungeon3,,,지하감옥3,迷宮3
+,ダンジョン4,dungeon 4,dungeon4,,,지하감옥4,迷宮4
+,ダンジョン5,dungeon 5,dungeon5,,,지하감옥5,迷宮5
+,ピンチ,in a pinch,tightspot,,,핀치,危機
+,フィールド1,field 1,field1,,,필드1,原野1
+,フィールド2,field 2,field2,,,필드2,原野2
+,フィールド3,field 3,field3,,,필드3,原野3
+,フィールド4,field 4,field4,,,필드4,原野4
+,ボス1,boss 1,boss1,,,보스1,boss1
+,ボス2,boss 2,boss2,,,보스2,boss2
+,ボス3,boss 3,boss3,,,보스3,boss3
+,ボス4,boss 4,boss4,,,보스4,boss4
+,乗り物1,vehicle 1,vehicle1,,,차량1,交通工具1
+,乗り物2,vehicle 2,vehicle2,,,차량2,交通工具2
+,乗り物3,vehicle 3,vehicle3,,,차량3,交通工具3
+,別れ1,parting 1,parting1,,,이별1,別離1
+,別れ2,parting 2,parting2,,,이별2,別離2
+,勇者1,hero 1,hero1,,,용사1,勇者1
+,勇者2,hero 2,hero2,,,용사2,勇者2
+,動物,animal,animal,,,동물,動物
+,勝利,victory,success,,,승리,勝利
+,城1,castle 1,castle1,,,성1,城1
+,城2,castle 2,castle2,,,성2,城2
+,城3,castle 3,castle3,,,성3,城3
+,塔1,tower 1,tower1,,,탑1,塔1
+,塔2,tower 2,tower2,,,탑2,塔2
+,塔3,tower 3,tower3,,,탑3,塔3
+,妖精1,fairy 1,fairy1,,,요정1,妖精1
+,妖精2,fairy 2,fairy2,,,요정2,妖精2
+,安らぎ1,repose 1,solace1,,,편안해짐1,安樂1
+,安らぎ2,repose 2,solace2,,,편안해짐2,安樂2
+,安らぎ3,repose 3,solace3,,,편안해짐3,安樂3
+,店1,shop 1,shop1,,,점1,店1
+,店2,shop 2,shop2,,,점2,店2
+,店3,shop 3,shop3,,,점3,店3
+,怒り,wrath,malice,,,화내다,怒
+,悲しみ,sorrow,sad,,,슬퍼하다,悲傷
+,戦闘1,battle 1,battle1,,,전투1,戰鬥1
+,戦闘2,battle 2,battle2,,,전투2,戰鬥2
+,戦闘3,battle 3,battle3,,,전투3,戰鬥3
+,探索,exploration,explore,,,탐색,探索
+,敗北,defeat,defeat,,,패배,敗北
+,教会,church,church2,,,교회,教會
+,明るい市場,lively market,bazaar,,,밝은 시장,明亮的市集
+,村1,village 1,village1,,,촌1,村1
+,村2,village 2,village2,,,촌2,村2
+,村3,village 3,village3,,,촌3,村3
+,泥棒,thief,thief,,,도둑,泥棒
+,活気,liveliness,strength,,,활기,朝氣
+,町1,town 1,town1,,,밭두둑1,街1
+,町2,town 2,town2,,,밭두둑2,街2
+,町3,town 3,town3,,,밭두둑3,街3
+,神秘1,mystery 1,mystery1,,,신비1,神秘1
+,神秘2,mystery 2,mystery2,,,신비2,神秘2
+,神秘3,mystery 3,mystery3,,,신비3,神秘3
+,秘宝,secret treasure,treasure,,,바보,神秘寶藏
+,船1,ship 1,boat1,,,배1,船1
+,船2,ship 2,boat2,,,배2,船2
+,船3,ship 3,boat3,,,배3,船3
+,試練,trial,ordeal,,,시련,試煉
+,闇市,black market,eviltown,,,암시장,黑市
+,魔王,demon lord,demonic,,,마왕,魔王
+Panorama,夕焼け1,sunset1,dusk1,Dawn1,eveningglow1,석양1,夕陽1
+,夕焼け2,sunset2,dusk2,Dawn2,eveningglow2,석양2,夕陽2
+,夜明け1,dawn1,dawn1,Evening1,dawn1,새벽1,黎明1
+,夜明け2,dawn2,dawn2,Evening2,dawn2,새벽2,黎明2
+,夜空1,night sky1,night1,Night1,nightempty1,밤하늘1,夜空1
+,夜空2,night sky2,night2,Night2,nightempty2,밤하늘2,夜空2
+,宇宙,cosmos1,space,Galaxy,space,우주,宇宙
+,惑星1,planet1,planet1,Planet1,planetary1,혹성1,惑星1
+,惑星2,planet2,planet2,Planet2,Planetary2,혹성2,惑星2
+,惑星3,planet3,planet3,Planet3,Planetary3,혹성3,惑星3
+,異空間,dimension rift,strange,Weird,strangespacial,이공간,異次元空間
+,空1,sky1,sky1,Morning1,empty1,하늘1,天空1
+,空2,sky2,sky2,Morning2,empty2,하늘2,天空2
+Sound,アイテム1,item1,item1,,Item1,아이템1,物品1
+,アイテム2,item2,item2,,Item2,아이템2,物品2
+,あたり1,chime1,jingle1,,Around1,즈음하고1,碰撞1
+,あたり2,chime2,jingle2,,Around2,즈음하고2,碰撞2
+,アップ,buff,increase,,Upgrade,업,上昇
+,イヌ,dog,dog,,Dog,강아지,狗
+,ウシ,cow,cow,,Cow,소,牛
+,ウマ,horse,horse,,Horse,발판,馬
+,おたけび,roar,roar,,Roar,우렁찬 외침,吶喊
+,カーソル1,cursor1,cursor1,,Cursor1,커서1,游標1
+,カーソル2,cursor2,cursor2,,Cursor2,커서2,游標2
+,ガシャン,glassshatter,shatter,,Glass,가샨,裂開
+,キャンセル1,cancel1,cancel1,,Cancel1,취소1,取消1
+,キャンセル2,cancel2,cancel2,,Cancel2,취소2,取消2
+,しびれ1,paralyze1,paralyze1,,Paralyze1,마비1,麻痺1
+,しびれ2,paralyze2,paralyze2,,Paralyze2,마비2,麻痺2
+,しびれ3,paralyze3,paralyze3,,Paralyze3,마비3,麻痺3
+,ジャンプ1,jump1,jump1,,Jump1,점프1,跳躍1
+,ジャンプ2,jump2,jump2,,Jump2,점프2,跳躍2
+,ショット1,shot1,shot1,,Laser1,쇼트1,發射1
+,ショット2,shot2,shot2,,Laser2,쇼트2,發射2
+,ショット3,shot3,shot3,,Laser3,쇼트3,發射3
+,スイッチ1,switch1,switch1,,Switch1,스위치1,開關1
+,スイッチ2,switch2,switch2,,Switch2,스위치2,開關2
+,ダウン,debuff,decrease,,Downgrade,다운,下降
+,ダメージ1,damage1,damage1,,Damege1,데미지1,傷害1
+,ダメージ2,damage2,damage2,,Damege2,데미지2,傷害2
+,テレポート1,teleport1,teleport1,,Teleport1,텔레포트1,傳送1
+,テレポート2,teleport2,teleport2,,Teleport2,텔레포트2,傳送2
+,トラ,tiger,tiger,,Tiger,트럭,虎
+,にらみ,glare,gaze,,Glare,노려봄,凝視
+,にわとり,chicken,chicken,,Chicken,닭,雞
+,ネコ,cat,cat,,Cat,고양이,貓
+,ノック,knock,knock,,Knock,노크,敲
+,はずれ1,buzzer1,failure1,,End1,잘라내기1,磨擦1
+,はずれ2,buzzer2,failure2,,End2,잘라내기2,磨擦2
+,バリア,barrier,barrier,,Barrier,배리어,護罩
+,ひつじ,sheep,sheep,,Sheep,양,羊
+,ブザー1,buzzer3,buzzer1,,Buzzer1,버저1,汽笛1
+,ブザー2,buzzer4,buzzer2,,Buzzer2,버저2,汽笛2
+,フラッシュ1,flash1,flash1,,Flashlight1,플래시1,閃爍1
+,フラッシュ2,flash2,flash2,,Flashlight2,플래시2,閃爍2
+,フラッシュ3,flash3,flash3,,Flashlight3,플래시3,閃爍3
+,ブレス,breath,breath,,Breath,호흡,氣息
+,モンスター1,monster1,monster1,,Monster1,몬스터1,怪物1
+,モンスター2,monster2,monster2,,Monster2,몬스터2,怪物2
+,ライオン,lion,lion,,Lion,사자,獅
+,冷気1,ice1,ice01,,Ice1,냉기1,冰1
+,冷気2,ice2,ice04,,Ice2,냉기2,冰2
+,冷気3,ice3,ice05,,Ice3,냉기3,冰3
+,冷気4,ice4,ice06,,Ice4,냉기4,冰4
+,冷気5,ice5,ice07,,Ice5,냉기5,冰5
+,冷気6,ice6,ice08,,Ice6,냉기6,冰6
+,冷気7,ice7,ice09,,Ice7,냉기7,冰7
+,冷気8,ice8,ice10,,Ice8,냉기8,冰8
+,冷気9,ice9,ice11,,Ice9,냉기9,冰9
+,冷気10,ice10,ice02,,Ice10,냉기10,冰10
+,冷気11,ice11,ice03,,Ice11,냉기11,冰11
+,剣1,sword1,sword1,,Sword1,검1,劍1
+,剣2,sword2,sword2,,Sword2,검2,劍2
+,剣3,sword3,sword3,,Sword3,검3,劍3
+,吸収1,absorb1,absorb1,,Absorption1,흡수1,吸收1
+,吸収2,absorb2,absorb2,,Absorption2,흡수2,吸收2
+,噛む,bite,bloodsuck,,Bite,물다,咬
+,回復1,recovery1,heal1,,Recovery1,회복1,回復1
+,回復2,recovery2,heal2,,Recovery2,회복2,回復2
+,回復3,recovery3,heal3,,Recovery3,회복3,回復3
+,回復4,recovery4,heal4,,Recovery4,회복4,回復4
+,回復5,recovery5,heal5,,Recovery5,회복5,回復5
+,回復6,recovery6,heal6,,Recovery6,회복6,回復6
+,回復7,recovery7,heal7,,Recovery7,회복7,回復7
+,回復8,recovery8,heal8,,Recovery8,회복8,回復8
+,回避1,evade1,evade1,,Evasion1,회피1,迴避1
+,回避2,evade2,evade2,,Evasion2,회피2,迴避2
+,地震1,earthquake1,quake1,,Earthquake1,지진1,地震1
+,地震2,earthquake2,quake2,,Earthquake2,지진2,地震2
+,壁1,barrier1,bump1,,Wall1,벽1,壁1
+,壁2,barrier2,bump2,,Wall2,벽2,壁2
+,大地1,earth1,earth01,,Earth1,대지1,大地1
+,大地2,earth2,earth02,,Earth2,대지2,大地2
+,大地3,earth3,earth03,,Earth3,대지3,大地3
+,大地4,earth4,earth04,,Earth4,대지4,大地4
+,大地5,earth5,earth05,,Earth5,대지5,大地5
+,大地6,earth6,earth06,,Earth6,대지6,大地6
+,大地7,earth7,earth07,,Earth7,대지7,大地7
+,大地8,earth8,earth08,,Earth8,대지8,大地8
+,大地9,earth9,earth09,,Earth9,대지9,大地9
+,大地10,earth10,earth10,,Earth10,대지10,大地10
+,巻き付き,ensnare,ensnare,,Vortex,달라붙기,捲襲
+,弓1,bow1,bow1,,Bow1,활1,弓1
+,弓2,bow2,bow2,,Bow2,활2,弓2
+,戦闘1,combat1,battle1,,Battle1,전투1,戰鬥1
+,戦闘2,combat2,battle2,,Battle2,전투2,戰鬥2
+,打撃1,blow1,punch1,,Blow1,타격1,打擊1
+,打撃2,blow2,punch2,,Blow2,타격2,打擊2
+,打撃3,blow3,punch3,,Blow3,타격3,打擊3
+,打撃4,blow4,punch4,,Blow4,타격4,打擊4
+,打撃5,blow5,punch5,,Blow5,타격5,打擊5
+,打撃6,blow6,punch6,,Blow6,타격6,打擊6
+,打撃7,blow7,punch7,,Blow7,타격7,打擊7
+,攻撃1,attack1,attack1,,Attack1,공격1,攻擊1
+,攻撃2,attack2,attack2,,Attack2,공격2,攻擊2
+,斬る1,slash1,strike01,,Cut1,벤다1,斬1
+,斬る10,slash10,strike10,,Cut10,벤다10,斬10
+,斬る11,slash11,strike11,,Cut11,벤다11,斬11
+,斬る2,slash2,strike02,,Cut2,벤다2,斬2
+,斬る3,slash3,strike03,,Cut3,벤다3,斬3
+,斬る4,slash4,strike04,,Cut4,벤다4,斬4
+,斬る5,slash5,strike05,,Cut5,벤다5,斬5
+,斬る6,slash6,strike06,,Cut6,벤다6,斬6
+,斬る7,slash7,strike07,,Cut7,벤다7,斬7
+,斬る8,slash8,strike08,,Cut8,벤다8,斬8
+,斬る9,slash9,strike09,,Cut9,벤다9,斬9
+,時計,clock,clock,,Clock,시계,時鐘
+,暗闇,blind,night,,Darkness,안보임,黑暗
+,暗黒1,darkness1,dark1,,Darkness1,암흑1,暗黑1
+,暗黒2,darkness2,dark2,,Darkness2,암흑2,暗黑2
+,暗黒3,darkness3,dark3,,Darkness3,암흑3,暗黑3
+,暗黒4,darkness4,dark4,,Darkness4,암흑4,暗黑4
+,暗黒5,darkness5,dark5,,Darkness5,암흑5,暗黑5
+,暗黒6,darkness6,dark6,Dark6,Darkness6,암흑6,暗黑6
+,歌,song,song,,Song,노래,歌
+,毒,poison,poison,,Poison,독,毒
+,水1,water1,water1,,Water1,물1,水1
+,水2,water2,water2,,Water2,물2,水2
+,水3,water3,water3,,Water3,물3,水3
+,水4,water4,water4,,Water4,물4,水4
+,水5,water5,water5,,Water5,물5,水5
+,水6,water6,water6,,Water6,물6,水6
+,決定1,decision1,choice1,,Decision1,결정1,決定1
+,決定2,decision2,choice2,,Decision2,결정2,決定2
+,沈黙,silence,silence,,Silence,침묵,沉默
+,海1,sea1,sea1,,Sea1,바다1,海1
+,海2,sea2,sea2,,Sea2,바다2,海2
+,消滅1,collapse1,vanish1,,Disappearance1,소멸1,消滅1
+,消滅2,collapse2,vanish2,,Disappearance2,소멸2,消滅2
+,混乱,confusion,confuse,,Caos,혼란,混亂
+,炎1,fire1,fire1,,Flame1,화염1,炎1
+,炎2,fire2,fire2,,Flame2,화염2,炎2
+,炎3,fire3,fire3,,Flame3,화염3,炎3
+,炎4,fire4,fire4,,Flame4,화염4,炎4
+,炎5,fire5,fire5,,Flame5,화염5,炎5
+,炎6,fire6,fire6,,Flame6,화염6,炎6
+,炎7,fire7,fire7,,Flame7,화염7,炎7
+,炎8,fire8,fire8,,Flame8,화염8,炎8
+,爆発1,explosion1,explode1,,Explosion1,폭발1,爆發1
+,爆発2,explosion2,explode2,,Explosion2,폭발2,爆發2
+,爆発3,explosion3,explode3,,Explosion3,폭발3,爆發3
+,爆発4,explosion4,explode4,,Explosion4,폭발4,爆發4
+,爆発5,explosion5,explode5,,Explosion5,폭발5,爆發5
+,爆発6,explosion6,explode6,,Explosion6,폭발6,爆發6
+,爆発7,explosion7,explode7,,Explosion7,폭발7,爆發7
+,睡眠,sleep,sleep,,Sleep,수면,睡眠
+,砂けむり,sandstorm,sandstorm,,SandMind,모래 연기,沙塵暴
+,神聖1,holy1,holy1,,Holy1,신성1,神聖1
+,神聖2,holy2,holy2,,Holy2,신성2,神聖2
+,神聖3,holy3,holy3,,Holy3,신성3,神聖3
+,神聖4,holy4,holy4,,Holy4,신성4,神聖4
+,神聖5,holy5,holy5,,Holy5,신성5,神聖5
+,神聖6,holy6,holy6,,Holy6,신성6,神聖6
+,神聖7,holy7,holy7,,Holy7,신성7,神聖7
+,神聖8,holy8,holy8,,Holy8,신성8,神聖8
+,神聖9,holy9,holy9,,Holy9,신성9,神聖9
+,移動,move,footstep,,Run,이동,移動
+,花粉,pollen,pollen,,Pollen,꽃가루,花粉
+,落ちる1,fall1,fall1,,Fall1,떨어진다1,落下1
+,落ちる2,fall2,fall2,,Fall2,떨어진다2,落下2
+,蘇生1,raise1,revive1,,Revival1,소생1,復活1
+,蘇生2,raise2,revive2,,Revival2,소생2,復活2
+,蘇生3,raise3,revive3,,Revival3,소생3,復活3
+,逃走,escape,flee,,Escape,도주,逃走
+,鍵,key,key,,Key,자물쇠,鑰匙
+,鐘,bell,gong,,Bell,종,鐘
+,閉める1,close1,close1,,Close1,닫는다1,關閉1
+,閉める2,close2,close2,,Close2,닫는다2,關閉2
+,開ける1,open1,open1,,Open1,열다1,開啟1
+,開ける2,open2,open2,,Open2,열다2,開啟2
+,雨1,rain1,rain1,,Rain1,비1,雨1
+,雨2,rain2,rain2,,Rain2,비2,雨2
+,雷1,thunder1,bolt01,,Thunder1,전격1,雷1
+,雷2,thunder2,bolt02,,Thunder2,전격2,雷2
+,雷3,thunder3,bolt03,,Thunder3,전격3,雷3
+,雷4,thunder4,bolt04,,Thunder4,전격4,雷4
+,雷5,thunder5,bolt05,,Thunder5,전격5,雷5
+,雷6,thunder6,bolt06,,Thunder6,전격6,雷6
+,雷7,thunder7,bolt07,,Thunder7,전격7,雷7
+,雷8,thunder8,bolt08,,Thunder8,전격8,雷8
+,雷9,thunder9,bolt09,,Thunder9,전격9,雷9
+,雷10,thunder10,bolt10,,Thunder10,전격10,雷10
+,霧1,fog1,fog1,,Fog1,안개1,霧1
+,霧2,fog2,fog2,,Fog2,안개2,霧2
+,音波1,wave1,wave1,,Sound wave1,음파1,音波1
+,音波2,wave2,wave2,,Sound wave2,음파2,音波2
+,風1,wind1,wind01,,Wind1,바람1,風1
+,風2,wind2,wind02,,Wind2,바람2,風2
+,風3,wind3,wind03,,Wind3,바람3,風3
+,風4,wind4,wind04,,Wind4,바람4,風4
+,風5,wind5,wind05,,Wind5,바람5,風5
+,風6,wind6,wind06,,Wind6,바람6,風6
+,風7,wind7,wind07,,Wind7,바람7,風7
+,風8,wind8,wind08,,Wind8,바람8,風8
+,風9,wind9,wind09,,Wind9,바람9,風9
+,風10,wind10,wind10,,Wind10,바람10,風10
+,風11,wind11,wind11,,Wind11,바람11,風11
+,魔法1,magic1,magic1,,Magic1,마법1,魔法1
+,魔法2,magic2,magic2,,Magic2,마법2,魔法2
+System,システム,system,system1,System,system,시스템,系統
+,システムa,systema,system2,SystemA,SystemA,시스템a,系統a
+,システムb,systemb,system3,SystemB,SystemB,시스템b,系統b
+,システムc,systemc,system4,SystemC,SystemC,시스템c,系統c
+System2,システム２a,system2a,system2a,System2A,systeméQA,시스템２a,系統2a
+,システム２b,system2b,system2b,System2B,systeméQB,시스템２b,系統2b
+,システム２c,system2c,system2c,System2C,systeméQC,시스템２c,系統2c
+Title,タイトル1,title1,title1,Title1,title1,타이틀1,標題1
+,タイトル2,title2,title2,Title2,title2,타이틀2,標題2
+,タイトル3,title3,title3,Title3,title3,타이틀3,標題3
+,タイトル4,title4,title4,Title4,title4,타이틀4,標題4
