@@ -1033,7 +1033,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	auto& interp = GetInterpreter();
 
 	// If we resume from async op, we don't clear the loop index.
-	const bool resume_fg = !actx.IsForegroundEvent();
+	const bool resume_fg = actx.IsForegroundEvent();
 
 	// Run any event loaded from last frame.
 	interp.Update(!resume_fg);
