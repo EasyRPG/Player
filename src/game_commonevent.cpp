@@ -22,27 +22,36 @@
 #include "game_interpreter_map.h"
 #include "main_data.h"
 #include "reader_util.h"
+#include <cassert>
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id) :
-	common_event_id(common_event_id) {
+	common_event_id(common_event_id)
+{
+	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
 
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+	if (ce->trigger == RPG::EventPage::Trigger_parallel
+			&& !ce->event_commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
+		interpreter->Push(this);
 	}
+
+
 }
 
 void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
-	if (interpreter && !data.stack.empty()) {
+	// RPG_RT Savegames have empty stacks for parallel events.
+	// We are LSD compatible but don't load these into interpreter.
+	if (!data.stack.empty() && !data.stack.front().commands.empty()) {
+		if (!interpreter) {
+			interpreter.reset(new Game_Interpreter_Map());
+		}
 		interpreter->SetState(data);
 	}
 }
 
 bool Game_CommonEvent::Update() {
 	if (interpreter && IsWaitingBackgroundExecution()) {
-		if (!interpreter->IsRunning()) {
-			interpreter->Clear();
-			interpreter->Push(this);
-		}
+		assert(interpreter->IsRunning());
 		interpreter->Update();
 
 		// Suspend due to async op ...
@@ -85,20 +94,22 @@ RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
 	if (interpreter) {
 		state = interpreter->GetState();
 	}
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel && state.stack.empty()) {
+		// RPG_RT always stores an empty stack frame for parallel events.
+		state.stack.push_back({});
+	}
 	return state;
 }
 
-bool Game_CommonEvent::IsWaitingExecution(RPG::EventPage::Trigger trigger) const {
+bool Game_CommonEvent::IsWaitingForegroundExecution() const {
 	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
-	return ce->trigger == trigger &&
+	return ce->trigger == RPG::EventPage::Trigger_auto_start &&
 		(!ce->switch_flag || Game_Switches.Get(ce->switch_id))
 		&& !ce->event_commands.empty();
 }
 
-bool Game_CommonEvent::IsWaitingForegroundExecution() const {
-	return IsWaitingExecution(RPG::EventPage::Trigger_auto_start);
-}
-
 bool Game_CommonEvent::IsWaitingBackgroundExecution() const {
-	return IsWaitingExecution(RPG::EventPage::Trigger_parallel);
+	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
+	return ce->trigger == RPG::EventPage::Trigger_parallel &&
+		(!ce->switch_flag || Game_Switches.Get(ce->switch_id));
 }

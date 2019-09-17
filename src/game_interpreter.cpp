@@ -264,6 +264,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		loop_count = 0;
 	}
 
+	if (!IsRunning()) {
+		return;
+	}
+
 	for (; loop_count < loop_limit; ++loop_count) {
 		// If something is calling a menu, we're allowed to execute only 1 command per interpreter. So we pass through if loop_count == 0, and stop at 1 or greater.
 		// RPG_RT compatible behavior.
@@ -326,7 +330,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		auto* frame = GetFrame();
 		if (frame == nullptr) {
-			return;
+			break;
 		}
 
 		if (continuation) {
@@ -353,9 +357,16 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// Previous operations could have modified the stack.
 		// So we need to fetch the frame again.
 		frame = GetFrame();
-
-		if (!frame || frame->commands.empty()) {
+		if (frame == nullptr) {
 			break;
+		}
+
+		// Pop any completed stack frames
+		if (frame->current_command >= (int)frame->commands.size()) {
+			if (!OnFinishStackFrame()) {
+				break;
+			}
+			continue;
 		}
 
 		// Save the frame index before we call events.
@@ -682,26 +693,20 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 }
 
-bool Game_Interpreter::CommandEnd() { // code 10
+bool Game_Interpreter::OnFinishStackFrame() {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& list = frame->commands;
 
-	// Is this the first event and not a called one?
-	const bool is_original_event = _state.stack.size() == 1;
+	const bool is_base_frame = _state.stack.size() == 1;
 
-	if (main_flag && is_original_event) {
+	if (main_flag && is_base_frame) {
 		Game_Message::SetFaceName("");
 	}
 
-	// FIXME: Hangs in some cases when Autostart events start
-	//if (main_flag) {
-	//	Game_Message::FullClear();
-	//}
-
 	int event_id = frame->event_id;
 
-	if (is_original_event && event_id > 0) {
+	if (is_base_frame && event_id > 0) {
 		Game_Event* evnt = Game_Map::GetEvent(event_id);
 		if (!evnt) {
 			Output::Error("Call stack finished with invalid event id %d. This can be caused by a vehicle teleport?", event_id);
@@ -710,9 +715,17 @@ bool Game_Interpreter::CommandEnd() { // code 10
 		}
 	}
 
-	_state.stack.pop_back();
+	if (!main_flag && is_base_frame) {
+		// Parallel events will never clear the base stack frame. Instead we just
+		// reset the index back to 0 and wait for a frame.
+		// This not only optimizes away copying event code, it's also RPG_RT compatible.
+		frame->current_command = 0;
+	} else {
+		// If a called frame, or base frame of foreground interpreter, pop the stack.
+		_state.stack.pop_back();
+	}
 
-	return true;
+	return !is_base_frame;
 }
 
 std::vector<std::string> Game_Interpreter::GetChoices() {

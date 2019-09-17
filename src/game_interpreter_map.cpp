@@ -70,9 +70,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	if (index >= list.size()) {
-		return CommandEnd();
-	}
+	assert(index < (int)list.size());
 
 	RPG::EventCommand const& com = list[index];
 
