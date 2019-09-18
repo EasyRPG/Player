@@ -68,7 +68,7 @@ public:
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
-	void SetupChoices(const std::vector<std::string>& choices);
+	void SetupChoices(const std::vector<std::string>& choices, int indent);
 
 	virtual bool ExecuteCommand();
 
@@ -107,6 +107,7 @@ public:
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
+	static constexpr int subcommand_sentinel = 255;
 
 	static bool to_title;
 	static bool exit_game;
@@ -141,7 +142,17 @@ protected:
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id) const;
 
-	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1, bool otherwise_end = false);
+	/**
+	 * Skips to the next option in a chain of conditional commands.
+	 * Works by skipping until we hit the end or the next command
+	 * with com.indent <= indent.
+	 * The <= protects against broken game code which terminates without
+	 * a proper conditional.
+	 *
+	 * @param codes which codes to check.
+	 * @param indent the indentation level to check
+	 */
+	void SkipToNextConditional(std::initializer_list<int> codes, int indent);
 	void SetContinuation(ContinuationFunction func);
 
 	/**
@@ -168,10 +179,14 @@ protected:
 	 */
 	void CheckGameOver();
 
+	bool CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next);
+
 	bool CommandShowMessage(RPG::EventCommand const& com);
 	bool CommandMessageOptions(RPG::EventCommand const& com);
 	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
 	bool CommandShowChoices(RPG::EventCommand const& com);
+	bool CommandShowChoiceOption(RPG::EventCommand const& com);
+	bool CommandShowChoiceEnd(RPG::EventCommand const& com);
 	bool CommandInputNumber(RPG::EventCommand const& com);
 	bool CommandControlSwitches(RPG::EventCommand const& com);
 	bool CommandControlVariables(RPG::EventCommand const& com);
@@ -235,6 +250,8 @@ protected:
 	bool CommandChangeSaveAccess(RPG::EventCommand const& com);
 	bool CommandChangeMainMenuAccess(RPG::EventCommand const& com);
 	bool CommandConditionalBranch(RPG::EventCommand const& com);
+	bool CommandElseBranch(RPG::EventCommand const& com);
+	bool CommandEndBranch(RPG::EventCommand const& com);
 	bool CommandJumpToLabel(RPG::EventCommand const& com);
 	bool CommandBreakLoop(RPG::EventCommand const& com);
 	bool CommandEndLoop(RPG::EventCommand const& com);
@@ -256,6 +273,10 @@ protected:
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
 	const std::string DecodeString(std::vector<int32_t>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int32_t>::const_iterator& it);
+
+	void SetSubcommandIndex(int indent, int idx);
+	uint8_t& ReserveSubcommandIndex(int indent);
+	int GetSubcommandIndex(int indent) const;
 
 	FileRequestBinding request_id;
 	enum class Keys {

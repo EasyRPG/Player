@@ -55,6 +55,14 @@
 bool Game_Interpreter::to_title = false;
 bool Game_Interpreter::exit_game = false;
 
+enum BranchSubcommand {
+	eOptionBranchElse = 1
+};
+
+constexpr int Game_Interpreter::loop_limit;
+constexpr int Game_Interpreter::call_stack_limit;
+constexpr int Game_Interpreter::subcommand_sentinel;
+
 Game_Interpreter::Game_Interpreter(bool _main_flag) {
 	main_flag = _main_flag;
 
@@ -257,6 +265,34 @@ int Game_Interpreter::GetThisEventId() const {
 	return event_id;
 }
 
+uint8_t& Game_Interpreter::ReserveSubcommandIndex(int indent) {
+	auto* frame = GetFrame();
+	assert(frame);
+
+	auto& path = frame->subcommand_path;
+	if (indent >= (int)path.size()) {
+		// This fixes an RPG_RT bug where RPG_RT would resize
+		// the array with uninitialized values.
+		path.resize(indent + 1, subcommand_sentinel);
+	}
+	return path[indent];
+}
+
+void Game_Interpreter::SetSubcommandIndex(int indent, int idx) {
+	ReserveSubcommandIndex(indent) = idx;
+}
+
+int Game_Interpreter::GetSubcommandIndex(int indent) const {
+	auto* frame = GetFrame();
+	if (frame == nullptr) {
+		return subcommand_sentinel;
+	}
+	auto& path = frame->subcommand_path;
+	if ((int)path.size() <= indent) {
+		return subcommand_sentinel;
+	}
+	return path[indent];
+}
 
 // Update
 void Game_Interpreter::Update(bool reset_loop_count) {
@@ -344,10 +380,9 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				result = (this->*continuation)(list[index]);
 			}
 
-			if (result)
-				continue;
-			else
+			if (!result) {
 				break;
+			}
 		}
 
 		if (Game_Map::GetNeedRefresh()) {
@@ -372,6 +407,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// Save the frame index before we call events.
 		int current_frame_idx = _state.stack.size() - 1;
 
+		const int index_before_exec = frame->current_command;
 		if (!ExecuteCommand()) {
 			break;
 		}
@@ -386,14 +422,15 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			continue;
 		}
 
-		// FIXME?
-		// After calling SkipTo this index++ will skip execution of e.g. END.
-		// This causes a different timing because loop_count reaches 10000
-		// faster then Player does.
-		// No idea if any game depends on this special case.
 		// Note: In the case we executed a CallEvent command, be sure to
 		// increment the old frame and not the new one we just pushed.
-		_state.stack[current_frame_idx].current_command++;
+		frame = &_state.stack[current_frame_idx];
+
+		// Only do auto increment if the command didn't manually 
+		// change the index.
+		if (index_before_exec == frame->current_command) {
+			frame->current_command++;
+		}
 	} // for
 
 	if (loop_count > loop_limit - 1) {
@@ -426,37 +463,25 @@ void Game_Interpreter::CheckGameOver() {
 	}
 }
 
-// Skip to command.
-bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent, bool otherwise_end) {
+void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, int indent) {
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	if (code2 < 0)
-		code2 = code;
-	if (min_indent < 0)
-		min_indent = list[index].indent;
-	if (max_indent < 0)
-		max_indent = list[index].indent;
-
-	int idx;
-	for (idx = index; (size_t) idx < list.size(); idx++) {
-		if (list[idx].indent < min_indent)
-			return false;
-		if (list[idx].indent > max_indent)
-			continue;
-		if (list[idx].code != code &&
-			list[idx].code != code2)
-			continue;
-		index = idx;
-		return true;
+	if (index >= (int)list.size()) {
+		return;
 	}
 
-	if (otherwise_end)
-		index = idx;
-
-	return true;
+	for (++index; index < (int)list.size(); ++index) {
+		const auto& com = list[index];
+		if (com.indent > indent) {
+			continue;
+		}
+		if (std::find(codes.begin(), codes.end(), com.code) != codes.end()) {
+			break;
+		}
+	}
 }
 
 int Game_Interpreter::DecodeInt(std::vector<int32_t>::const_iterator& it) {
@@ -528,9 +553,9 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::ShowChoice:
 			return CommandShowChoices(com);
 		case Cmd::ShowChoiceOption:
-			return SkipTo(Cmd::ShowChoiceEnd);
+			return CommandShowChoiceOption(com);
 		case Cmd::ShowChoiceEnd:
-			return true;
+			return CommandShowChoiceEnd(com);
 		case Cmd::InputNumber:
 			return CommandInputNumber(com);
 		case Cmd::ControlSwitches:
@@ -681,9 +706,9 @@ bool Game_Interpreter::ExecuteCommand() {
 		case Cmd::ChangeBattleCommands:
 			return CommandChangeBattleCommands(com);
 		case Cmd::ElseBranch:
-			return SkipTo(Cmd::EndBranch);
+			return CommandElseBranch(com);
 		case Cmd::EndBranch:
-			return true;
+			return CommandEndBranch(com);
 		case Cmd::ExitGame:
 			return CommandExitGame(com);
 		case Cmd::ToggleFullscreen:
@@ -759,6 +784,17 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 	return s_choices;
 }
 
+bool Game_Interpreter::CommandOptionGeneric(RPG::EventCommand const& com, int option_sub_idx, std::initializer_list<int> next) {
+	const auto sub_idx = GetSubcommandIndex(com.indent);
+	if (sub_idx == option_sub_idx) {
+		// Executes this option, so clear the subidx to skip all other options.
+		SetSubcommandIndex(com.indent, subcommand_sentinel);
+	} else {
+		SkipToNextConditional(next, com.indent);
+	}
+	return true;
+}
+
 bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // code 10110
 	auto* frame = GetFrame();
 	assert(frame);
@@ -783,37 +819,39 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	Game_Message::texts.push_back(com.string);
 	line_count++;
 
-	for (; index + 1 < list.size(); index++) {
-		// If next event command is the following parts of the message
-		if (list[index+1].code == Cmd::ShowMessage_2) {
-			// Add second (another) line
-			line_count++;
-			Game_Message::texts.push_back(list[index+1].string);
-		} else {
-			// If next event command is show choices
-			if (list[index+1].code == Cmd::ShowChoice) {
-				std::vector<std::string> s_choices = GetChoices();
-				// If choices fit on screen
-				if (s_choices.size() <= (4 - line_count)) {
-					index++;
-					Game_Message::choice_start = line_count;
-					Game_Message::choice_cancel_type = list[index].parameters[0];
-					SetupChoices(s_choices);
-				}
-			} else if (list[index+1].code == Cmd::InputNumber) {
-				// If next event command is input number
-				// If input number fits on screen
-				if (line_count < 4) {
-					index++;
-					Game_Message::num_input_start = line_count;
-					Game_Message::num_input_digits_max = list[index].parameters[0];
-					Game_Message::num_input_variable_id = list[index].parameters[1];
-				}
-			}
+	++index;
 
-			break;
+	// Check for continued lines via ShowMessage_2
+	while (index < list.size() && list[index].code == Cmd::ShowMessage_2) {
+		// Add second (another) line
+		line_count++;
+		Game_Message::texts.push_back(list[index].string);
+		++index;
+	}
+
+	// Handle Choices or number
+	if (index < list.size()) {
+		// If next event command is show choices
+		if (list[index].code == Cmd::ShowChoice) {
+			std::vector<std::string> s_choices = GetChoices();
+			// If choices fit on screen
+			if (s_choices.size() <= (4 - line_count)) {
+				Game_Message::choice_start = line_count;
+				Game_Message::choice_cancel_type = list[index].parameters[0];
+				SetupChoices(s_choices, com.indent);
+				++index;
+			}
+		} else if (list[index].code == Cmd::InputNumber) {
+			// If next event command is input number
+			// If input number fits on screen
+			if (line_count < 4) {
+				Game_Message::num_input_start = line_count;
+				Game_Message::num_input_digits_max = list[index].parameters[0];
+				Game_Message::num_input_variable_id = list[index].parameters[1];
+				++index;
+			}
 		}
-	} // End for
+	}
 
 	return true;
 }
@@ -837,7 +875,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { 
 	return true;
 }
 
-void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
+void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent) {
 	Game_Message::choice_start = Game_Message::texts.size();
 	Game_Message::choice_max = choices.size();
 	Game_Message::choice_disabled.reset();
@@ -849,36 +887,27 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	}
 
 	SetContinuation(&Game_Interpreter::ContinuationChoices);
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(indent);
 }
 
 bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
-	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	continuation = NULL;
-	int indent = com.indent;
-	for (;;) {
-		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
-			return false;
-		auto& cmd = list[index];
-		if (cmd.code == Cmd::ShowChoiceEnd) {
-			return false;
-		}
-		int which = cmd.parameters[0];
-		index++;
-		if (which > Game_Message::choice_result)
-			return false;
-		if (which < Game_Message::choice_result)
-			continue;
-		break;
-	}
+	SetSubcommandIndex(com.indent, Game_Message::choice_result);
+
+	continuation = nullptr;
 
 	return true;
 }
 
 bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -889,10 +918,22 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
 	Game_Message::choice_cancel_type = com.parameters[0];
-	SetupChoices(choices);
+	SetupChoices(choices, com.indent);
 
+	++index;
+	return false;
+}
+
+
+bool Game_Interpreter::CommandShowChoiceOption(RPG::EventCommand const& com) { //code 20140
+	const auto opt_sub_idx = com.parameters[0];
+	return CommandOptionGeneric(com, opt_sub_idx, {Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd});
+}
+
+bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& com) { //code 20141
 	return true;
 }
+
 
 bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // code 10150
 	if (Game_Message::message_waiting) {
@@ -2843,9 +2884,10 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 
 		if (!actor) {
 			Output::Warning("ConditionalBranch: Invalid actor ID %d", actor_id);
-			// Use Else branch
-			++loop_count;
-			return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+			// Use Else Branch
+			SetSubcommandIndex(com.indent, 1);
+			SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
+			return true;
 		}
 
 		switch (com.parameters[2]) {
@@ -2952,11 +2994,24 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		Output::Warning("ConditionalBranch: Branch %d unsupported", com.parameters[0]);
 	}
 
-	if (result)
-		return true;
 
-	++loop_count;
-	return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
+	int sub_idx = subcommand_sentinel;
+	if (!result) {
+		sub_idx = eOptionBranchElse;
+		SkipToNextConditional({Cmd::ElseBranch, Cmd::EndBranch}, com.indent);
+	}
+
+	SetSubcommandIndex(com.indent, sub_idx);
+	return true;
+}
+
+
+bool Game_Interpreter::CommandElseBranch(RPG::EventCommand const& com) { //code 22010
+	return CommandOptionGeneric(com, eOptionBranchElse, {Cmd::EndBranch});
+}
+
+bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& com) { //code 22011
+	return true;
 }
 
 bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // code 12120
@@ -2980,7 +3035,24 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& com) { // code 12220
-	return SkipTo(Cmd::EndLoop, Cmd::EndLoop, 0, com.indent - 1, true);
+	auto* frame = GetFrame();
+	assert(frame);
+	const auto& list = frame->commands;
+	auto& index = frame->current_command;
+
+	// BreakLoop will jump to the end of the event if there is no loop.
+
+	//FIXME: This emulates an RPG_RT bug where break loop ignores scopes and
+	//unconditionally jumps to the next EndLoop command.
+	auto pcode = list[index].code;
+	for (++index; index < (int)list.size(); ++index) {
+		if (pcode == Cmd::EndLoop) {
+			break;
+		}
+		pcode = list[index].code;
+	}
+
+	return true;
 }
 
 bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22210
@@ -3000,6 +3072,11 @@ bool Game_Interpreter::CommandEndLoop(RPG::EventCommand const& com) { // code 22
 			continue;
 		index = idx;
 		break;
+	}
+
+	// Jump past the Cmd::Loop to the first command.
+	if (index < (int)frame->commands.size()) {
+		++index;
 	}
 
 	return true;

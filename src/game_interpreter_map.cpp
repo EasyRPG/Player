@@ -48,6 +48,22 @@
 #include "game_interpreter_map.h"
 #include "reader_lcf.h"
 
+enum EnemyEncounterSubcommand {
+	eOptionEnemyEncounterVictory = 0,
+	eOptionEnemyEncounterEscape = 1,
+	eOptionEnemyEncounterDefeat = 2,
+};
+
+enum ShopSubcommand {
+	eOptionShopTransaction = 0,
+	eOptionShopNoTransaction = 1,
+};
+
+enum InnSubcommand {
+	eOptionInnStay = 0,
+	eOptionInnNoStay = 1,
+};
+
 void Game_Interpreter_Map::SetState(const RPG::SaveEventExecState& save) {
 	Clear();
 	_state = save;
@@ -80,25 +96,29 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::EnemyEncounter:
 			return CommandEnemyEncounter(com);
 		case Cmd::VictoryHandler:
+			return CommandVictoryHandler(com);
 		case Cmd::EscapeHandler:
+			return CommandEscapeHandler(com);
 		case Cmd::DefeatHandler:
-			return SkipTo(Cmd::EndBattle);
+			return CommandDefeatHandler(com);
 		case Cmd::EndBattle:
-			return true;
+			return CommandEndBattle(com);
 		case Cmd::OpenShop:
 			return CommandOpenShop(com);
 		case Cmd::Transaction:
+			return CommandTransaction(com);
 		case Cmd::NoTransaction:
-			return SkipTo(Cmd::EndShop);
+			return CommandNoTransaction(com);
 		case Cmd::EndShop:
-			return true;
+			return CommandEndShop(com);
 		case Cmd::ShowInn:
 			return CommandShowInn(com);
 		case Cmd::Stay:
+			return CommandStay(com);
 		case Cmd::NoStay:
-			return SkipTo(Cmd::EndInn);
+			return CommandNoStay(com);
 		case Cmd::EndInn:
-			return true;
+			return CommandEndInn(com);
 		case Cmd::EnterHeroName:
 			return CommandEnterHeroName(com);
 		case Cmd::Teleport:
@@ -162,6 +182,10 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) { // code 10710
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -202,6 +226,11 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Scene::instance->SetRequestedScene(Scene::Battle);
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationEnemyEncounter));
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(com.indent);
+
+	++index;
 	return false;
 }
 
@@ -212,57 +241,54 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& c
 
 	continuation = NULL;
 
-	switch (Game_Temp::battle_result) {
-	case Game_Temp::BattleVictory:
-		if ((Game_Temp::battle_defeat_mode == 0 && Game_Temp::battle_escape_mode != 2) || !SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
-			index++;
-			return false;
-		}
-		index++;
-		return true;
-	case Game_Temp::BattleEscape:
-		switch (Game_Temp::battle_escape_mode) {
-		case 0:	// disallowed - shouldn't happen
-			return true;
-		case 1:
-			return CommandEndEventProcessing(com);
-		case 2:
-			if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle)) {
-				index++;
-				return false;
-			}
-			index++;
-			return true;
-		default:
-			return false;
-		}
-	case Game_Temp::BattleDefeat:
-		switch (Game_Temp::battle_defeat_mode) {
-		case 0:
-			return CommandGameOver(com);
-		case 1:
-			if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle)) {
-				index++;
-				return false;
-			}
-			index++;
-			return true;
-		default:
-			return false;
-		}
-	case Game_Temp::BattleAbort:
-		if (!SkipTo(Cmd::EndBattle)) {
-			index++;
-			return false;
-		}
-		index++;
-		return true;
-	default:
-		return false;
+	int sub_idx = subcommand_sentinel;
+
+	if (Game_Temp::battle_result == Game_Temp::BattleVictory) {
+		sub_idx = eOptionEnemyEncounterVictory;
 	}
+
+	if (Game_Temp::battle_result == Game_Temp::BattleEscape) {
+		sub_idx = eOptionEnemyEncounterEscape;
+		//FIXME: subidx set before this anyway??
+		if (Game_Temp::battle_escape_mode == 1) {
+			return CommandEndEventProcessing(com);
+		}
+	}
+
+	if (Game_Temp::battle_result == Game_Temp::BattleDefeat) {
+		sub_idx = eOptionEnemyEncounterDefeat;
+		//FIXME: subidx set before this anyway??
+		if (Game_Temp::battle_defeat_mode == 0) {
+			return CommandGameOver(com);
+		}
+	}
+
+	SetSubcommandIndex(com.indent, sub_idx);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandVictoryHandler(RPG::EventCommand const& com) { // code 20710
+	return CommandOptionGeneric(com, eOptionEnemyEncounterVictory, {Cmd::EscapeHandler, Cmd::DefeatHandler, Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandEscapeHandler(RPG::EventCommand const& com) { // code 20711
+	return CommandOptionGeneric(com, eOptionEnemyEncounterEscape, {Cmd::DefeatHandler, Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandDefeatHandler(RPG::EventCommand const& com) { // code 20712
+	return CommandOptionGeneric(com, eOptionEnemyEncounterDefeat, {Cmd::EndBattle});
+}
+
+bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& com) { // code 20713
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // code 10720
+	auto* frame = GetFrame();
+	assert(frame);
+	auto& index = frame->current_command;
+
 	if (Game_Message::visible) {
 		return false;
 	}
@@ -285,7 +311,8 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	}
 
 	Game_Temp::shop_type = com.parameters[1];
-	Game_Temp::shop_handlers = com.parameters[2] != 0;
+	// Not used, but left here for documentation purposes
+	//bool has_shop_handlers = com.parameters[2] != 0;
 
 	Game_Temp::shop_goods.clear();
 	std::vector<int32_t>::const_iterator it;
@@ -295,35 +322,45 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	Game_Temp::shop_transaction = false;
 	Scene::instance->SetRequestedScene(Scene::Shop);
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationOpenShop));
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(com.indent);
+
+	++index;
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
 
 	continuation = nullptr;
-	if (!Game_Temp::shop_handlers) {
-		index++;
-		return true;
-	}
 
-	if (!SkipTo(Game_Temp::shop_transaction
-				? Cmd::Transaction
-				: Cmd::NoTransaction,
-				Cmd::EndShop)) {
-		return false;
-	}
+	int sub_idx = Game_Temp::shop_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
 
-	index++;
+	SetSubcommandIndex(com.indent, sub_idx);
+
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandTransaction(RPG::EventCommand const& com) { // code 20720
+	return CommandOptionGeneric(com, eOptionShopTransaction, {Cmd::NoTransaction, Cmd::EndShop});
+}
+
+bool Game_Interpreter_Map::CommandNoTransaction(RPG::EventCommand const& com) { // code 20721
+	return CommandOptionGeneric(com, eOptionShopNoTransaction, {Cmd::EndShop});
+}
+
+bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& com) { // code 20722
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // code 10730
 	int inn_type = com.parameters[0];
 	Game_Temp::inn_price = com.parameters[1];
-	Game_Temp::inn_handlers = com.parameters[2] != 0;
+	// Not used, but left here for documentation purposes
+	// bool has_inn_handlers = com.parameters[2] != 0;
 
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
@@ -421,10 +458,14 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	Game_Message::choice_result = 4;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
+
+	// save game compatibility with RPG_RT
+	ReserveSubcommandIndex(com.indent);
+
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
@@ -435,6 +476,8 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 	continuation = NULL;
 
 	bool inn_stay = Game_Message::choice_result == 0;
+
+	SetSubcommandIndex(com.indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	Game_Temp::inn_calling = false;
 
@@ -452,9 +495,7 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& /* 
 		return false;
 	}
 
-	if (Game_Temp::inn_handlers)
-		SkipTo(Cmd::NoStay, Cmd::EndInn);
-	index++;
+	++index;
 	return true;
 }
 
@@ -474,7 +515,7 @@ bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& 
 	return false;
 }
 
-bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /* com */) {
+bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& com) {
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
@@ -494,13 +535,23 @@ bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& /*
 		Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 
-		if (Game_Temp::inn_handlers)
-			SkipTo(Cmd::Stay, Cmd::EndInn);
-		index++;
+		++index;
 		return false;
 	}
 
 	return false;
+}
+
+bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730
+	return CommandOptionGeneric(com, eOptionInnStay, {Cmd::NoStay, Cmd::EndInn});
+}
+
+bool Game_Interpreter_Map::CommandNoStay(RPG::EventCommand const& com) { // code 20731
+	return CommandOptionGeneric(com, eOptionInnNoStay, {Cmd::EndInn});
+}
+
+bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& com) { // code 20732
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { // code 10740

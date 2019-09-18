@@ -56,8 +56,18 @@ public:
 private:
 	bool CommandRecallToLocation(RPG::EventCommand const& com);
 	bool CommandEnemyEncounter(RPG::EventCommand const& com);
+	bool CommandVictoryHandler(RPG::EventCommand const& com);
+	bool CommandEscapeHandler(RPG::EventCommand const& com);
+	bool CommandDefeatHandler(RPG::EventCommand const& com);
+	bool CommandEndBattle(RPG::EventCommand const& com);
 	bool CommandOpenShop(RPG::EventCommand const& com);
+	bool CommandTransaction(RPG::EventCommand const& com);
+	bool CommandNoTransaction(RPG::EventCommand const& com);
+	bool CommandEndShop(RPG::EventCommand const& com);
 	bool CommandShowInn(RPG::EventCommand const& com);
+	bool CommandStay(RPG::EventCommand const& com);
+	bool CommandNoStay(RPG::EventCommand const& com);
+	bool CommandEndInn(RPG::EventCommand const& com);
 	bool CommandEnterHeroName(RPG::EventCommand const& com);
 	bool CommandTeleport(RPG::EventCommand const& com);
 	bool CommandEnterExitVehicle(RPG::EventCommand const& com);
