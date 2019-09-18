@@ -40,6 +40,7 @@ int Game_Temp::battle_escape_mode;
 int Game_Temp::battle_defeat_mode;
 bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_result;
+bool Game_Temp::battle_random_encounter;
 
 void Game_Temp::Init() {
 	inn_calling = false;
@@ -63,4 +64,5 @@ void Game_Temp::Init() {
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
 	battle_result = BattleAbort;
+	battle_random_encounter = false;
 }

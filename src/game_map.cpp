@@ -87,6 +87,27 @@ namespace {
 	bool reset_panorama_y_on_next_init = true;
 }
 
+void Game_Map::OnContinueFromBattle() {
+	Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+
+	// 2k3 Death Handlers
+	if (Game_Temp::battle_result == Game_Temp::BattleDefeat
+			&& Game_Temp::battle_random_encounter
+			&& Game_Battle::HasDeathHandler())
+	{
+		auto* ce = ReaderUtil::GetElement(common_events, Game_Battle::GetDeathHandlerCommonEvent());
+		if (ce) {
+			auto& interp = GetInterpreter();
+			interp.Push(ce);
+		}
+
+		auto tt = Game_Battle::GetDeathHandlerTeleport();
+		if (tt.IsActive()) {
+			Main_Data::game_player->ReserveTeleport(tt.GetMapId(), tt.GetX(), tt.GetY(), tt.GetDirection(), tt.GetType());
+		}
+	}
+}
+
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
@@ -1278,6 +1299,7 @@ bool Game_Map::PrepareEncounter() {
 	}
 
 	SetupBattle();
+	Game_Temp::battle_random_encounter = true;
 
 	return true;
 }

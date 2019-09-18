@@ -190,6 +190,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		return false;
 	}
 
+	Game_Temp::battle_random_encounter = false;
 	Game_Temp::battle_troop_id = ValueOrVariable(com.parameters[0],
 		com.parameters[1]);
 	Game_Character *player = Main_Data::game_player.get();

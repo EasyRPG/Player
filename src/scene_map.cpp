@@ -100,21 +100,19 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 
 void Scene_Map::Continue(SceneType prev_scene) {
 	if (prev_scene == Scene::Battle) {
-		// Came from battle
-		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
-		return;
+		Game_Map::OnContinueFromBattle();
+	} else {
+		Game_Map::PlayBgm();
 	}
 
-	Game_Map::PlayBgm();
-
 	// Player cast Escape / Teleport from menu
-	if (Main_Data::game_player->IsPendingTeleport()
-			&& Main_Data::game_player->GetTeleportTarget().GetType() == TeleportTarget::eSkillTeleport) {
+	if (Main_Data::game_player->IsPendingTeleport()) {
+		auto tt = Main_Data::game_player->GetTeleportTarget().GetType();
 		TeleportParams tp;
-		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		tp.run_foreground_events = GetRunForegroundEvents(tt);
 		tp.erase_screen = false;
 		tp.use_default_transition_in = true;
-		tp.defer_recursive_teleports = true;
+		tp.defer_recursive_teleports = (tt == TeleportTarget::eSkillTeleport);
 		FinishPendingTeleport(tp);
 		return;
 	}

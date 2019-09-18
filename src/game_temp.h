@@ -58,6 +58,7 @@ public:
 	static int battle_defeat_mode;
 	static bool battle_first_strike;
 	static int battle_result;
+	static bool battle_random_encounter;
 
 	enum BattleResult {
 		BattleVictory,
