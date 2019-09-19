@@ -48,6 +48,7 @@ public:
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void Update();
+	void UpdateGraphics();
 
 	/**
 	 * Returns the current screen tone.

@@ -184,7 +184,6 @@ void Game_Picture::Show(const ShowParams& params) {
 	sheet_bitmap.reset();
 
 	RequestPictureSprite();
-	UpdateSprite();
 }
 
 void Game_Picture::Move(const MoveParams& params) {
@@ -264,8 +263,6 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 		sprite.reset(new Sprite());
 	}
 	sprite->SetBitmap(whole_bitmap);
-
-	UpdateSprite();
 }
 
 bool Game_Picture::HasSpritesheet() const {
@@ -369,12 +366,6 @@ void Game_Picture::Update() {
 			}
 		}
 	}
-
-	if (data.name.empty()) {
-		return;
-	}
-
-	UpdateSprite();
 }
 
 void Game_Picture::SetNonEffectParams(const Params& params) {

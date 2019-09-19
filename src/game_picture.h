@@ -76,6 +76,7 @@ public:
 	void Erase(bool force_erase);
 
 	void Update();
+	void UpdateSprite();
 
 private:
 	int id;
@@ -85,7 +86,6 @@ private:
 	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
 
-	void UpdateSprite();
 	void SetNonEffectParams(const Params& params);
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();

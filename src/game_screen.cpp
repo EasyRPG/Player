@@ -427,3 +427,8 @@ bool Game_Screen::IsBattleAnimationWaiting() {
 }
 
 
+void Game_Screen::UpdateGraphics() {
+	for (auto& picture: pictures) {
+		picture.UpdateSprite();
+	}
+}

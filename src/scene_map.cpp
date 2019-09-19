@@ -33,6 +33,7 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "game_temp.h"
+#include "game_screen.h"
 #include "rpg_system.h"
 #include "player.h"
 #include "transition.h"
@@ -120,7 +121,12 @@ void Scene_Map::Continue(SceneType prev_scene) {
 		return;
 	}
 
+	UpdateGraphics();
+}
+
+void Scene_Map::UpdateGraphics() {
 	spriteset->Update();
+	Main_Data::game_screen->UpdateGraphics();
 }
 
 static bool IsMenuScene(Scene::SceneType scene) {
@@ -191,12 +197,12 @@ void Scene_Map::DrawBackground() {
 
 void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
 	Game_Map::Update(actx, *message_window, true);
-	spriteset->Update();
+	UpdateGraphics();
 }
 
 void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	Game_Map::UpdateForegroundEvents(actx, *message_window);
-	spriteset->Update();
+	UpdateGraphics();
 }
 
 void Scene_Map::Update() {
@@ -210,7 +216,7 @@ void Scene_Map::Update() {
 
 void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 	Game_Map::Update(actx, *message_window);
-	spriteset->Update();
+	UpdateGraphics();
 
 	// Waiting for async operation from map update.
 	if (actx.IsActive()) {
