@@ -260,7 +260,9 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 
 	whole_bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
-	sprite.reset(new Sprite());
+	if (!sprite) {
+		sprite.reset(new Sprite());
+	}
 	sprite->SetBitmap(whole_bitmap);
 
 	UpdateSprite();
