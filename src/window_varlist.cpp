@@ -78,6 +78,7 @@ void Window_VarList::DrawItemValue(int index){
 		case eTroop:
 		case eMap:
 		case eHeal:
+		case eCommonEvent:
 			{
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, "", Text::AlignRight);
@@ -132,6 +133,10 @@ void Window_VarList::UpdateList(int first_value){
 					auto* actor = Main_Data::game_party->GetActors()[first_value + i-2];
 					ss << actor->GetName() << " " << actor->GetHp() << " / " << actor->GetMaxHp();
 				}
+				break;
+			case eCommonEvent:
+				ss << ReaderUtil::GetElement(Data::commonevents, first_value+i)->name;
+				break;
 			default:
 				break;
 		}
@@ -175,6 +180,8 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
 		case eHeal:
 			return range_index > 0 && range_index <= Main_Data::game_party->GetActors().size() + 1;
+		case eCommonEvent:
+			return range_index > 0 && range_index <= Data::commonevents.size();
 		default:
 			break;
 	}
