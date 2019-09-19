@@ -204,7 +204,13 @@ void FileRequestAsync::Start() {
 		request_path += "default/";
 	}
 
-	auto it = file_mapping.find(Utils::LowerCase(path));
+	std::string real_path = Utils::LowerCase(path);
+	if (directory != ".") {
+		// Don't alter the path when the file is in the main directory
+		real_path = FileFinder::MakeCanonical(real_path, 1);
+	}
+
+	auto it = file_mapping.find(real_path);
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
