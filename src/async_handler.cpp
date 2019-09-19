@@ -34,6 +34,10 @@
 #include "utils.h"
 #include "graphics.h"
 
+// When this option is enabled async requests are randomly delayed.
+// This allows testing some aspects of async file fetching locally.
+//#define EP_DEBUG_SIMULATE_ASYNC
+
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
 	std::map<std::string, std::string> file_mapping;
@@ -110,8 +114,10 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& file_name) {
 bool AsyncHandler::IsFilePending(bool important, bool graphic) {
 	for (auto& ap: async_requests) {
 		FileRequestAsync& request = ap.second;
-		// remove comment for fake download testing
-		//request.UpdateProgress();
+
+#ifdef EP_DEBUG_SIMULATE_ASYNC
+		request.UpdateProgress();
+#endif
 
 		if (!request.IsReady()
 				&& (!important || request.IsImportantFile())
@@ -223,8 +229,10 @@ void FileRequestAsync::Start() {
 #  ifdef EM_GAME_URL
 #    warning EM_GAME_URL set and not an Emscripten build!
 #  endif
-	// add comment for fake download testing
+
+#  ifndef EP_DEBUG_SIMULATE_ASYNC
 	DownloadDone(true);
+#  endif
 #endif
 }
 
