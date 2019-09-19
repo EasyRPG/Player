@@ -21,6 +21,7 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #  include <regex>
+#  include "picojson.h"
 #endif
 
 #include "async_handler.h"
@@ -29,7 +30,6 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
-#include "picojson.h"
 #include <fstream>
 #include "utils.h"
 #include "graphics.h"
@@ -72,6 +72,7 @@ namespace {
 }
 
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
+#ifdef EMSCRIPTEN
 	std::shared_ptr<std::fstream> f = FileFinder::openUTF8(file, std::ios_base::in | std::ios_base::binary);
 	picojson::value v;
 	picojson::parse(v, *f);
@@ -79,6 +80,10 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 	for (const auto& value : v.get<picojson::object>()) {
 		file_mapping[value.first] = value.second.to_str();
 	}
+#else
+	// no-op
+	(void)file;
+#endif
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
