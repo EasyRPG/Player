@@ -273,10 +273,7 @@ FileRequestBinding FileRequestAsync::Bind(std::function<void(FileRequestResult*)
 }
 
 void FileRequestAsync::CallListeners(bool success) {
-	FileRequestResult result;
-	result.directory = directory;
-	result.file = file;
-	result.success = success;
+	FileRequestResult result { directory, file, success };
 
 	for (auto& listener : listeners) {
 		if (!listener.first.expired()) {
