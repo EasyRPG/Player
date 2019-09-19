@@ -322,6 +322,8 @@ void Player::Update(bool update_scene) {
 		}
 	}
 
+	start_time = next_frame;
+
 #ifdef EMSCRIPTEN
 	Graphics::Draw();
 #else
@@ -338,8 +340,6 @@ void Player::Update(bool update_scene) {
 #endif
 	}
 #endif
-
-	start_time = next_frame;
 }
 
 void Player::IncFrame() {
