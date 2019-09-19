@@ -79,7 +79,6 @@ void Spriteset_Map::Update() {
 		panorama_name = name;
 		if (name.empty()) {
 			panorama->SetBitmap(BitmapRef());
-			tilemap->SetFastBlitDown(true);
 		} else {
 			FileRequestAsync *request = AsyncHandler::RequestFile("Panorama", panorama_name);
 			request->SetGraphicFile(true);
@@ -160,38 +159,30 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 
 bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_list) {
 	// Speed optimisation:
-	// Only draw a black background when the screen is out of bounds because of a shake effect
-	// or because of custom maps that are smaller than the screen
-	if (Main_Data::game_data.screen.shake_position != 0 ||
-			Game_Map::GetWidth() < 20 || Game_Map::GetHeight() < 15) {
-			return true;
-	}
-
-	if (!Player::IsRPG2k3E()) {
-		return false;
-	}
-
+	// When there is nothing below the tilemap it can be drawn opaque (faster)
 	tilemap->SetFastBlitDown(false);
 
 	if (!panorama_name.empty()) {
+		// Map has a panorama -> No opaque tilemap blit possible
+		// but the panorama is drawn opaque -> clearing the screen is not needed
 		return false;
 	}
 
-	// Require background when there is anything between panorama and tilemap,
-	// otherwise simply draw the tilemap opaque
 	for (const Drawable* d : drawable_list) {
 		if (d->GetZ() > Priority_Background) {
 			if (d->GetZ() < Priority_TilesetBelow) {
+				// There is a picture below the tilemap -> No opaque tilemap blit possible
 				return true;
 			} else {
 				tilemap->SetFastBlitDown(true);
-				return false;
+				return true;
 			}
 		}
 	}
 
 	// shouldn't happen
-	return false;
+	assert(false);
+	return true;
 }
 
 void Spriteset_Map::CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone) {
@@ -240,14 +231,10 @@ void Spriteset_Map::OnTilemapSpriteReady(FileRequestResult*) {
 	tilemap->SetPassableUp(Game_Map::GetPassagesUp());
 	tilemap->SetAnimationType(Game_Map::GetAnimationType());
 	tilemap->SetAnimationSpeed(Game_Map::GetAnimationSpeed());
-
-	tilemap->SetFastBlitDown(!panorama->GetBitmap());
 }
 
 void Spriteset_Map::OnPanoramaSpriteReady(FileRequestResult* result) {
 	BitmapRef panorama_bmp = Cache::Panorama(result->file);
 	panorama->SetBitmap(panorama_bmp);
 	Game_Map::Parallax::Initialize(panorama_bmp->GetWidth(), panorama_bmp->GetHeight());
-
-	tilemap->SetFastBlitDown(false);
 }
