@@ -140,18 +140,15 @@ namespace {
 		if (combined_path != canon) {
 			// Very few games (e.g. Yume2kki) use path traversal (..) in the filenames to point
 			// to files outside of the actual directory.
-			// Fix the path and search the file again with the correct root directory set.
-			if (dir != ".") {
-				// Prevent "path adjusted" debug log when searching for ExFont
-				Output::Debug("Path adjusted: %s -> %s", combined_path.c_str(), canon.c_str());
+			// Fix the path and continue searching.
+			size_t pos = canon.find_first_of("/");
+			if (pos == std::string::npos) {
+				corrected_dir = ".";
+				corrected_name = canon;
+			} else {
+				corrected_dir = canon.substr(0, pos);
+				corrected_name = canon.substr(pos + 1);
 			}
-			for (char const** c = exts; *c != NULL; ++c) {
-				std::string res = FileFinder::FindDefault(tree, canon + *c);
-				if (!res.empty()) {
-					return res;
-				}
-			}
-			return "";
 		}
 
 #ifdef _WIN32
