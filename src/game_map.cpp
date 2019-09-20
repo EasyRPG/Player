@@ -43,6 +43,7 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
+#include "window_message.h"
 
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
@@ -943,7 +944,7 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
+void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool is_preupdate) {
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 
 	if (!actx.IsActive()) {
@@ -980,6 +981,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 			}
 		}
 
+		message.Update();
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
 	}

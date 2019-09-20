@@ -187,7 +187,7 @@ void Scene_Map::DrawBackground() {
 }
 
 void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
-	Game_Map::Update(actx, true);
+	Game_Map::Update(actx, *message_window, true);
 	spriteset->Update();
 }
 
@@ -206,7 +206,7 @@ void Scene_Map::Update() {
 }
 
 void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
-	Game_Map::Update(actx);
+	Game_Map::Update(actx, *message_window);
 	spriteset->Update();
 
 	// Waiting for async operation from map update.
@@ -214,8 +214,6 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); }, actx.GetAsyncOp(), false);
 		return;
 	}
-
-	message_window->Update();
 
 	// On platforms with async loading (emscripten) graphical assets loaded this frame
 	// may require us to wait for them to download before we can start the transitions.

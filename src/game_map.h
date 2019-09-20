@@ -32,6 +32,7 @@
 #include "async_op.h"
 
 class FileRequestAsync;
+class Window_Message;
 
 // These are in sixteenths of a pixel.
 constexpr int SCREEN_TILE_SIZE = 256;
@@ -254,9 +255,10 @@ namespace Game_Map {
 	 * @param actx asynchronous operations context. In out param.
 	 *        If IsActive() when passed in, will resume to that point.
 	 *        If IsActive() after return in, will suspend from that point.
+	 * @param the scene message window
 	 * @param is_preupdate Update only common events and map events
 	 */
-	void Update(MapUpdateAsyncContext& actx, bool is_preupdate = false);
+	void Update(MapUpdateAsyncContext& actx, Window_Message& message, bool is_preupdate = false);
 
 	/**
 	 * Gets current map_info.
