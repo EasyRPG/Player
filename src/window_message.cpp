@@ -254,7 +254,7 @@ void Window_Message::InsertNewPage() {
 		// If there is an input window on the first line
 		StartNumberInputProcessing();
 	}
-	num_chars_printed_this_line = 0;
+	line_char_counter = 0;
 }
 
 void Window_Message::InsertNewLine() {
@@ -280,14 +280,14 @@ void Window_Message::InsertNewLine() {
 
 		contents_x += 12;
 	}
-	num_chars_printed_this_line = 0;
+	line_char_counter = 0;
 }
 
 void Window_Message::TerminateMessage() {
 	active = false;
 	pause = false;
 	kill_message = false;
-	num_chars_printed_this_line = 0;
+	line_char_counter = 0;
 	index = -1;
 
 	Game_Message::message_waiting = false;
@@ -424,7 +424,7 @@ void Window_Message::UpdateMessage() {
 
 		if (*text_index == '\n') {
 			if (text_index + 1 != end) {
-				if (!instant_speed && num_chars_printed_this_line == 0) {
+				if (!instant_speed && line_char_counter == 0) {
 					// RPG_RT will always wait 1 frame for each empty line.
 					SetWait(1);
 				}
@@ -477,7 +477,7 @@ void Window_Message::UpdateMessage() {
 				if (!instant_speed) {
 					SetWaitForCharacter(1);
 				}
-				++num_chars_printed_this_line;
+				IncrementLineCharCounter(1);
 				break;
 			case '$':
 				// Show Gold Window
@@ -564,7 +564,20 @@ void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
 		// FIXME: Verify RPG_RT on full width
 		SetWaitForCharacter(width);
 	}
-	num_chars_printed_this_line += width;
+	IncrementLineCharCounter(width);
+}
+
+void Window_Message::IncrementLineCharCounter(int width) {
+	// For speed 1, RPG_RT prints 2 half width chars every frame. This 
+	// resets anytime we print a full width character or another
+	// character with a different speed. 
+	// To emulate this, we increment by 2 and clear the low bit anytime
+	// we're not a speed 1 half width char.
+	if (width == 1 && speed <= 1) {
+		line_char_counter++;
+	} else {
+		line_char_counter = (line_char_counter & ~1) + 2;
+	}
 }
 
 int Window_Message::ParseParameter(bool& is_valid) {
@@ -748,7 +761,7 @@ void Window_Message::SetWaitForCharacter(int width) {
 			if (width & 1) {
 				// For odd widths, speed 1 adds a 1 frame delay for every odd character printed.
 				// This logic assumes num chars is incremented after the wait.
-				frames += !(num_chars_printed_this_line & 1);
+				frames += !(line_char_counter & 1);
 			}
 		}
 	}

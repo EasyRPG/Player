@@ -180,14 +180,16 @@ protected:
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
 
-	/** How many printable characters we have rendered to the current line */
-	int num_chars_printed_this_line = 0;
+	/** Incremented by 1 each time we print a half width character with speed 1,
+	 * or by 2 for any other character */
+	int line_char_counter = 0;
 
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;
 
 	void DrawGlyph(const std::string& glyph, bool instant_speed);
+	void IncrementLineCharCounter(int width);
 
 	void SetWaitForCharacter(int width);
 	void SetWaitForPage();
