@@ -348,9 +348,14 @@ void Window_Message::Update() {
 		}
 
 		if (!Game_Message::message_waiting && Game_Message::visible) {
-			if (visible && !closing) {
-				// Start the closing animation
-				SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			if (visible) {
+				if (!closing) {
+					// Start the closing animation
+					SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+				} else {
+					// Closing animation has started, prevent new messages from starting.
+					Game_Message::closing = true;
+				}
 			}
 		}
 	}
@@ -371,6 +376,7 @@ void Window_Message::Update() {
 	if (!visible) {
 		// The closing animation has finished
 		Game_Message::visible = false;
+		Game_Message::closing = false;
 	}
 }
 
