@@ -180,7 +180,7 @@ void Window_Message::FinishMessageProcessing() {
 	} else if (kill_message) {
 		TerminateMessage();
 	} else {
-		pause = true;
+		SetPause(true);
 	}
 
 	text.clear();
@@ -285,7 +285,7 @@ void Window_Message::InsertNewLine() {
 
 void Window_Message::TerminateMessage() {
 	active = false;
-	pause = false;
+	SetPause(false);
 	kill_message = false;
 	line_char_counter = 0;
 	index = -1;
@@ -314,7 +314,7 @@ void Window_Message::ResetWindow() {
 void Window_Message::Update() {
 	bool update_message_processing = false;
 	if (wait_count == 0) {
-		if (pause) {
+		if (GetPause()) {
 			WaitForInput();
 		} else if (active) {
 			InputChoice();
@@ -403,7 +403,7 @@ void Window_Message::UpdateMessage() {
 
 		if (line_count == 4) {
 			// FIXME: Unify pause logic
-			pause = true;
+			SetPause(true);
 			new_page_after_pause = true;
 			if (!instant_speed) {
 				//FIXME: Does this wait happen when pause is enabled?
@@ -412,7 +412,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (pause) {
+		if (GetPause()) {
 			break;
 		}
 
@@ -447,7 +447,7 @@ void Window_Message::UpdateMessage() {
 				++text_index;
 			}
 			if (text_index != end) {
-				pause = true;
+				SetPause(true);
 				new_page_after_pause = true;
 			}
 			//FIXME: Delays formfeed?
@@ -488,7 +488,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '!':
 				// Text pause
-				pause = true;
+				SetPause(true);
 				break;
 			case '^':
 				// Force message close
@@ -711,7 +711,7 @@ void Window_Message::WaitForInput() {
 	if (Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 		active = false;
-		pause = false;
+		SetPause(false);
 
 		if (text.empty()) {
 			TerminateMessage();

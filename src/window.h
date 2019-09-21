@@ -93,7 +93,6 @@ protected:
 	Rect cursor_rect;
 	bool active;
 	bool visible;
-	bool pause;
 	bool closing;
 	bool up_arrow;
 	bool down_arrow;
@@ -122,10 +121,11 @@ private:
 	bool background_needs_refresh;
 	bool frame_needs_refresh;
 	bool cursor_needs_refresh;
+	bool pause = false;
 
-	int cursor_frame;
-	int pause_frame;
-	int animation_frames;
+	int cursor_frame = 0;
+	int pause_frame = 0;
+	int animation_frames = 0;
 	double animation_count;
 	double animation_increment;
 };
