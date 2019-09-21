@@ -372,6 +372,11 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 		return ContinuationShowInnStart(com);
 	}
 
+	// Emulates RPG_RT behavior (Bug?) Inn's called by parallel events
+	// overwrite the current message.
+	if (main_flag && !Game_Message::CanShowMessage(main_flag)) {
+		return false;
+	}
 	Game_Message::message_waiting = true;
 
 	Game_Message::texts.clear();
