@@ -98,6 +98,8 @@ public:
 
 	void Update() override;
 
+	void UpdatePostEvents();
+
 	/**
 	 * Continues outputting more text. Also handles the
 	 * CommandCode parsing.

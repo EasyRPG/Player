@@ -192,7 +192,7 @@ void Scene_Map::PreUpdate(MapUpdateAsyncContext& actx) {
 }
 
 void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
-	Game_Map::UpdateForegroundEvents(actx);
+	Game_Map::UpdateForegroundEvents(actx, *message_window);
 	spriteset->Update();
 }
 

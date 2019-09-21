@@ -44,6 +44,7 @@
 #include "input.h"
 #include "utils.h"
 #include "window_message.h"
+#include "scope_guard.h"
 
 namespace {
 	constexpr int default_pan_x = 9 * SCREEN_TILE_SIZE;
@@ -987,7 +988,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {
-		if (!UpdateForegroundEvents(actx)) {
+		if (!UpdateForegroundEvents(actx, message)) {
 			// Suspend due to foreground event async op ...
 			return;
 		}
@@ -1067,11 +1068,13 @@ bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
 	return true;
 }
 
-bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
+bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx, Window_Message& message) {
 	auto& interp = GetInterpreter();
 
 	// If we resume from async op, we don't clear the loop index.
 	const bool resume_fg = actx.IsForegroundEvent();
+
+	auto sg = makeScopeGuard([&]() { message.UpdatePostEvents(); });
 
 	// Run any event loaded from last frame.
 	interp.Update(!resume_fg);

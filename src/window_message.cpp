@@ -380,6 +380,14 @@ void Window_Message::Update() {
 	}
 }
 
+void Window_Message::UpdatePostEvents() {
+	// Foreground events can spawn a new message. When this happens
+	// we immediately cancel the closing animation.
+	if (closing && !Game_Message::texts.empty()) {
+		SetOpenAnimation(0);
+	}
+}
+
 void Window_Message::UpdateMessage() {
 	if (IsOpeningOrClosing()) {
 		return;
