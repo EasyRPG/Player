@@ -123,6 +123,10 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 
+	if (interpreter) {
+		interpreter->Clear();
+	}
+
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {
 			if (!interpreter) {
@@ -142,6 +146,10 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 	}
 
 	original_move_frequency = page->move_frequency;
+
+	if (interpreter) {
+		interpreter->Clear();
+	}
 
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		auto& state = data()->parallel_event_execstate;
@@ -509,9 +517,6 @@ AsyncOp Game_Event::Update() {
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel && interpreter) {
-		assert(interpreter != nullptr);
-		assert(interpreter->IsRunning());
-
 		interpreter->Update();
 
 		// Suspend due to async op ...
