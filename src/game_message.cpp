@@ -247,6 +247,9 @@ void Game_Message::Update() {
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
 	pending_message = std::move(pm);
 	message_waiting = true;
+	if (window) {
+		window->StartMessageProcessing();
+	}
 }
 
 const PendingMessage& Game_Message::GetPendingMessage() {

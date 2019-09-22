@@ -142,11 +142,10 @@ void Window_Message::StartMessageProcessing() {
 
 	const auto& pm = Game_Message::GetPendingMessage();
 
-	if (pm.ShowGoldWindow()) {
-		ShowGoldWindow();
-	}
-
 	const auto& lines = pm.GetLines();
+	if (!(pm.NumLines() > 0 || pm.HasNumberInput())) {
+		return;
+	}
 
 	if (pm.IsWordWrapped()) {
 		std::u32string wrapped_text;
@@ -319,17 +318,18 @@ void Window_Message::TerminateMessage() {
 	Game_Message::ResetPendingMessage();
 }
 
-bool Window_Message::IsNextMessagePossible() {
-	auto& pm = Game_Message::GetPendingMessage();
-	return pm.NumLines() > 0 || pm.HasNumberInput();
-}
-
 void Window_Message::ResetWindow() {
 
 }
 
 void Window_Message::Update() {
 	bool update_message_processing = false;
+
+	const auto& pm = Game_Message::GetPendingMessage();
+	if (pm.ShowGoldWindow()) {
+		ShowGoldWindow();
+	}
+
 	if (wait_count == 0) {
 		if (GetPause()) {
 			WaitForInput();
@@ -338,23 +338,21 @@ void Window_Message::Update() {
 		} else if (number_input_window->GetVisible()) {
 			InputNumber();
 		} else if (!text.empty()) {
-			//Handled after base class updates.
-			if (text_index != text.end()) {
-				update_message_processing = true;
-			}
-			if (text_index == text.end() && wait_count <= 0) {
-				FinishMessageProcessing();
-			}
-		} else if (IsNextMessagePossible()) {
-			StartMessageProcessing();
-			//printf("Text: %s\n", text.c_str());
 			if (!visible) {
 				// The MessageBox is not open yet but text output is needed
 				// Open and Close Animations are skipped in battle
 				SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
 			} else if (closing) {
-				// Cancel closing animation
+				// If a message was requested while closing, cancel it and display the message immediately.
 				SetOpenAnimation(0);
+			} else {
+				//Handled after base class updates.
+				if (text_index != text.end()) {
+					update_message_processing = true;
+				}
+				if (text_index == text.end() && wait_count <= 0) {
+					FinishMessageProcessing();
+				}
 			}
 		}
 
@@ -375,14 +373,6 @@ void Window_Message::Update() {
 
 	if (update_message_processing) {
 		UpdateMessage();
-	}
-}
-
-void Window_Message::UpdatePostEvents() {
-	// Foreground events can spawn a new message. When this happens
-	// we immediately cancel the closing animation.
-	if (closing && Game_Message::GetPendingMessage().NumLines()) {
-		SetOpenAnimation(0);
 	}
 }
 

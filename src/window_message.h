@@ -85,20 +85,11 @@ public:
 	void TerminateMessage();
 
 	/**
-	 * Checks if the next message page can be displayed.
-	 *
-	 * @return If the text output can start.
-	 */
-	bool IsNextMessagePossible();
-
-	/**
 	 * Stub.
 	 */
 	void ResetWindow();
 
 	void Update() override;
-
-	void UpdatePostEvents();
 
 	/**
 	 * Continues outputting more text. Also handles the
