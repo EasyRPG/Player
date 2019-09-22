@@ -366,8 +366,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (Game_Temp::inn_price == 0) {
 		// Skip prompt.
 		Game_Message::choice_result = 0;
-		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnStart));
-		return false;
+		return ContinuationShowInnStart(com);
 	}
 
 	Game_Message::message_waiting = true;
@@ -397,9 +396,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_a_greeting_1
-					<< " " << Game_Temp::inn_price
-					<< " " << Data::terms.gold
-					<< Data::terms.inn_a_greeting_2;
+					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << Data::terms.inn_a_greeting_2;
 				Game_Message::texts.push_back(out.str());
 				Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
 			}
@@ -424,9 +422,8 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			}
 			else {
 				out << Data::terms.inn_b_greeting_1
-					<< " " << Game_Temp::inn_price
-					<< " " << Data::terms.gold
-					<< Data::terms.inn_b_greeting_2;
+					<< " " << Game_Temp::inn_price << Data::terms.gold
+					<< " " << Data::terms.inn_b_greeting_2;
 				Game_Message::texts.push_back(out.str());
 				Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
 			}
@@ -463,7 +460,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(com.indent);
 
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com) {
@@ -485,62 +482,11 @@ bool Game_Interpreter_Map::ContinuationShowInnStart(RPG::EventCommand const& com
 	if (inn_stay) {
 		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
-		// Full heal
-		std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
-		for (Game_Actor* actor : actors) {
-			actor->FullHeal();
-		}
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
-		Game_System::BgmFade(800);
-		SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnContinue));
-		return false;
+		_async_op = AsyncOp::MakeCallInn();
+		return true;
 	}
 
-	++index;
 	return true;
-}
-
-bool Game_Interpreter_Map::ContinuationShowInnContinue(RPG::EventCommand const& /* com */) {
-	if (Graphics::IsTransitionPending())
-		return false;
-
-	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
-	// FIXME: Abusing before_battle_music (Which is unused when calling an Inn)
-	// Is there also before_inn_music in the savegame?
-	Main_Data::game_data.system.before_battle_music = Game_System::GetCurrentBGM();
-
-	Game_System::BgmPlay(bgm_inn);
-
-	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInnFinish));
-
-	return false;
-}
-
-bool Game_Interpreter_Map::ContinuationShowInnFinish(RPG::EventCommand const& com) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
-	if (Graphics::IsTransitionPending())
-		return false;
-
-	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
-	if (bgm_inn.name.empty() ||
-		bgm_inn.name == "(OFF)" ||
-		bgm_inn.name == "(Brak)" ||
-		!Audio().BGM_IsPlaying() ||
-		Audio().BGM_PlayedOnce()) {
-
-		Game_System::BgmStop();
-		continuation = NULL;
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
-		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
-
-		++index;
-		return false;
-	}
-
-	return false;
 }
 
 bool Game_Interpreter_Map::CommandStay(RPG::EventCommand const& com) { // code 20730

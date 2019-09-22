@@ -81,7 +81,7 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 	PreUpdate(actx);
 
 	if (actx.IsActive()) {
-		OnAsyncSuspend([this,actx]() { Start2(actx); }, true);
+		OnAsyncSuspend([this,actx]() { Start2(actx); }, actx.GetAsyncOp(), true);
 		return;
 	}
 
@@ -197,6 +197,10 @@ void Scene_Map::PreUpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 }
 
 void Scene_Map::Update() {
+	if (activate_inn) {
+		UpdateInn();
+		return;
+	}
 	MapUpdateAsyncContext actx;
 	UpdateStage1(actx);
 }
@@ -207,7 +211,7 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 
 	// Waiting for async operation from map update.
 	if (actx.IsActive()) {
-		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); }, false);
+		OnAsyncSuspend([this,actx]() { UpdateStage1(actx); }, actx.GetAsyncOp(), false);
 		return;
 	}
 
@@ -319,7 +323,7 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	PreUpdate(actx);
 
 	if (actx.IsActive()) {
-		OnAsyncSuspend([=] { FinishPendingTeleport2(actx, tp); }, true);
+		OnAsyncSuspend([=] { FinishPendingTeleport2(actx, tp); }, actx.GetAsyncOp(), true);
 		return;
 	}
 
@@ -349,7 +353,7 @@ void Scene_Map::FinishPendingTeleport3(MapUpdateAsyncContext actx, TeleportParam
 		PreUpdateForegroundEvents(actx);
 
 		if (actx.IsActive()) {
-			OnAsyncSuspend([=] { FinishPendingTeleport3(actx, tp); }, true);
+			OnAsyncSuspend([=] { FinishPendingTeleport3(actx, tp); }, actx.GetAsyncOp(), true);
 			return;
 		}
 	}
@@ -418,23 +422,75 @@ void Scene_Map::AsyncNext(F&& f) {
 }
 
 template <typename F>
-void Scene_Map::OnAsyncSuspend(F&& f, bool is_preupdate) {
-	if (CheckInterpreterExit()) {
+void Scene_Map::OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate) {
+	if (CheckSceneExit(aop)) {
 		return;
 	}
 
-	if (Game_Temp::transition_processing) {
-		Graphics::GetTransition().Init(Game_Temp::transition_type, this, 32, Game_Temp::transition_erase);
-		if (!Game_Temp::transition_erase || !is_preupdate) {
+	if (aop.GetType() == AsyncOp::eEraseScreen) {
+		auto tt = static_cast<Transition::TransitionType>(aop.GetTransitionType());
+		Graphics::GetTransition().Init(tt, this, 32, true);
+		if (!is_preupdate) {
 			// RPG_RT behavior: EraseScreen commands performed during pre-update don't stick.
-			screen_erased_by_event = Game_Temp::transition_erase;
+			screen_erased_by_event = true;
 		}
+	}
 
-		Game_Temp::transition_processing = false;
-		Game_Temp::transition_erase = false;
-		Game_Temp::transition_type = Transition::TransitionNone;;
+	if (aop.GetType() == AsyncOp::eShowScreen) {
+		auto tt = static_cast<Transition::TransitionType>(aop.GetTransitionType());
+		Graphics::GetTransition().Init(tt, this, 32, false);
+		screen_erased_by_event = false;
+	}
+
+	if (aop.GetType() == AsyncOp::eCallInn) {
+		activate_inn = true;
+		music_before_inn = Game_System::GetCurrentBGM();
+		inn_continuation = std::forward<F>(f);
+
+		Game_System::BgmFade(800);
+
+		// FIXME: Is 36 correct here?
+		Graphics::GetTransition().Init(Transition::TransitionFadeOut, Scene::instance.get(), 36, true);
+
+		AsyncNext([=]() { StartInn(); });
+		return;
 	}
 
 	AsyncNext(std::forward<F>(f));
 }
 
+void Scene_Map::StartInn() {
+	const RPG::Music& bgm_inn = Game_System::GetSystemBGM(Game_System::BGM_Inn);
+	if (Game_System::IsStopMusicFilename(bgm_inn.name)) {
+		FinishInn();
+		return;
+	}
+
+	Game_System::BgmPlay(bgm_inn);
+}
+
+void Scene_Map::FinishInn() {
+	// RPG_RT will always transition in, regardless of whether an EraseScreen command
+	// was issued previously.
+	screen_erased_by_event = false;
+
+	// FIXME: Is 36 correct here?
+	Graphics::GetTransition().Init(Transition::TransitionFadeIn, Scene::instance.get(), 36, false);
+	Game_System::BgmPlay(music_before_inn);
+
+	// Full heal
+	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+	for (Game_Actor* actor : actors) {
+		actor->FullHeal();
+	}
+
+	activate_inn = false;
+	AsyncNext(std::move(inn_continuation));
+}
+
+void Scene_Map::UpdateInn() {
+	if (!Audio().BGM_IsPlaying() || Audio().BGM_PlayedOnce()) {
+		Game_System::BgmStop();
+		FinishInn();
+	}
+}

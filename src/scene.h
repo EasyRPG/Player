@@ -21,6 +21,7 @@
 // Headers
 #include "graphics.h"
 #include "system.h"
+#include "async_op.h"
 #include <vector>
 
 /**
@@ -212,9 +213,11 @@ public:
 	void SetRequestedScene(SceneType scene);
 
 	/**
-	 * Check if the interpreter wants to end the game
+	 * Check if the async operation wants to end the scene.
+	 *
+	 * @param aop The pending async operation
 	 */
-	static bool CheckInterpreterExit();
+	static bool CheckSceneExit(AsyncOp aop);
 
 protected:
 	using AsyncContinuation = std::function<void(void)>;

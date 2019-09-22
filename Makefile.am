@@ -11,6 +11,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/3ds_ui.h \
 	src/async_handler.cpp \
 	src/async_handler.h \
+	src/async_op.h \
 	src/audio.cpp \
 	src/audio.h \
 	src/audio_3ds.cpp \

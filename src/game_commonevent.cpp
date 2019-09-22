@@ -49,18 +49,18 @@ void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
 	}
 }
 
-bool Game_CommonEvent::Update() {
+AsyncOp Game_CommonEvent::Update() {
 	if (interpreter && IsWaitingBackgroundExecution()) {
 		assert(interpreter->IsRunning());
 		interpreter->Update();
 
 		// Suspend due to async op ...
 		if (interpreter->IsAsyncPending()) {
-			return false;
+			return interpreter->GetAsyncOp();
 		}
 	}
 
-	return true;
+	return {};
 }
 
 int Game_CommonEvent::GetIndex() const {

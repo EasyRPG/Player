@@ -29,6 +29,7 @@
 #include "command_codes.h"
 #include "rpg_saveeventexecstate.h"
 #include "flag_set.h"
+#include "async_op.h"
 
 class Game_Event;
 class Game_CommonEvent;
@@ -90,27 +91,15 @@ public:
 	int GetOriginalEventId() const;
 
 	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
-	static bool IsAsyncPending();
+	bool IsAsyncPending();
 
-	/** @return true if any interpreter requested to return to title screen */
-	static bool GetReturnToTitle();
-
-	/** Resets the return to title flag */
-	static void ResetReturnToTitle();
-
-	/** @return true if any interpreter requested to return to title screen */
-	static bool GetExitGame();
-
-	/** Resets the return to title flag */
-	static void ResetExitGame();
+	/** Return true if the interpreter is waiting for an async operation and needs to be resumed */
+	AsyncOp GetAsyncOp() const;
 
 protected:
 	static constexpr int loop_limit = 10000;
 	static constexpr int call_stack_limit = 1000;
 	static constexpr int subcommand_sentinel = 255;
-
-	static bool to_title;
-	static bool exit_game;
 
 	const RPG::SaveEventExecFrame* GetFrame() const;
 	RPG::SaveEventExecFrame* GetFrame();
@@ -267,7 +256,6 @@ protected:
 	virtual bool ContinuationChoices(RPG::EventCommand const& com);
 	virtual bool ContinuationOpenShop(RPG::EventCommand const& com);
 	virtual bool ContinuationShowInnStart(RPG::EventCommand const& com);
-	virtual bool ContinuationShowInnFinish(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);
@@ -306,6 +294,7 @@ protected:
 
 	RPG::SaveEventExecState _state;
 	KeyInputState _keyinput;
+	AsyncOp _async_op = {};
 };
 
 inline const RPG::SaveEventExecFrame* Game_Interpreter::GetFrame() const {
@@ -328,20 +317,12 @@ inline int Game_Interpreter::GetLoopCount() const {
 	return loop_count;
 }
 
-inline bool Game_Interpreter::GetReturnToTitle() {
-	return to_title;
+inline bool Game_Interpreter::IsAsyncPending() {
+	return GetAsyncOp().IsActive();
 }
 
-inline void Game_Interpreter::ResetReturnToTitle() {
-	to_title = false;
-}
-
-inline bool Game_Interpreter::GetExitGame() {
-	return exit_game;
-}
-
-inline void Game_Interpreter::ResetExitGame() {
-	exit_game = false;
+inline AsyncOp Game_Interpreter::GetAsyncOp() const {
+	return _async_op;
 }
 
 #endif

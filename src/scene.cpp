@@ -264,9 +264,8 @@ Graphics::State &Scene::GetGraphicsState() {
 	return state;
 }
 
-bool Scene::CheckInterpreterExit() {
-	if (Game_Interpreter::GetExitGame()) {
-		Game_Interpreter::ResetExitGame();
+bool Scene::CheckSceneExit(AsyncOp aop) {
+	if (aop.GetType() == AsyncOp::eExitGame) {
 		if (Scene::Find(Scene::GameBrowser)) {
 			Scene::PopUntil(Scene::GameBrowser);
 		} else {
@@ -275,8 +274,7 @@ bool Scene::CheckInterpreterExit() {
 		return true;
 	}
 
-	if (Game_Interpreter::GetReturnToTitle()) {
-		Game_Interpreter::ResetReturnToTitle();
+	if (aop.GetType() == AsyncOp::eToTitle) {
 		Scene::PopUntil(Scene::Title);
 		return true;
 	}

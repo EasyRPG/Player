@@ -1015,9 +1015,10 @@ bool Game_Map::UpdateCommonEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 
-		if (!ev.Update()) {
+		auto aop = ev.Update();
+		if (aop.IsActive()) {
 			// Suspend due to this event ..
-			actx = MapUpdateAsyncContext::FromCommonEvent(ev.GetIndex());
+			actx = MapUpdateAsyncContext::FromCommonEvent(ev.GetIndex(), aop);
 			return false;
 		}
 	}
@@ -1039,9 +1040,10 @@ bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
 			}
 		}
 
-		if (!ev.Update()) {
+		auto aop = ev.Update();
+		if (aop.IsActive()) {
 			// Suspend due to this event ..
-			actx = MapUpdateAsyncContext::FromMapEvent(ev.GetId());
+			actx = MapUpdateAsyncContext::FromMapEvent(ev.GetId(), aop);
 			return false;
 		}
 	}
@@ -1060,7 +1062,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	interp.Update(!resume_fg);
 	if (interp.IsAsyncPending()) {
 		// Suspend due to this event ..
-		actx = MapUpdateAsyncContext::FromForegroundEvent();
+		actx = MapUpdateAsyncContext::FromForegroundEvent(interp.GetAsyncOp());
 		return false;
 	}
 
@@ -1109,7 +1111,7 @@ bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 		interp.Update(false);
 		if (interp.IsAsyncPending()) {
 			// Suspend due to this event ..
-			actx = MapUpdateAsyncContext::FromForegroundEvent();
+			actx = MapUpdateAsyncContext::FromForegroundEvent(interp.GetAsyncOp());
 			return false;
 		}
 	}

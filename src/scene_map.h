@@ -86,14 +86,22 @@ private:
 
 	void UpdateSceneCalling();
 
+	void StartInn();
+	void UpdateInn();
+	void FinishInn();
+
 	template <typename F> void AsyncNext(F&& f);
-	template <typename F> void OnAsyncSuspend(F&& f, bool is_preupdate);
+	template <typename F> void OnAsyncSuspend(F&& f, AsyncOp aop, bool is_preupdate);
 
 	std::unique_ptr<Window_Message> message_window;
 
 	int debug_menuoverwrite_counter = 0;
 	bool from_save;
 	bool screen_erased_by_event = false;
+
+	RPG::Music music_before_inn = {};
+	AsyncContinuation inn_continuation = {};
+	bool activate_inn = false;
 };
 
 #endif
