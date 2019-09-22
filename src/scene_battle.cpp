@@ -163,7 +163,7 @@ void Scene_Battle::Update() {
 	item_window->Update();
 	skill_window->Update();
 	target_window->Update();
-	message_window->Update();
+	Game_Message::Update();
 
 	// Query Timer before and after update.
 	// If it reached zero during update was a running battle timer.

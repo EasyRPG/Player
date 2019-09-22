@@ -20,6 +20,7 @@
 #include "game_player.h"
 #include "game_temp.h"
 #include "main_data.h"
+#include "window_message.h"
 #include "font.h"
 #include "player.h"
 
@@ -74,6 +75,9 @@ void Game_Message::FullClear() {
 
 void Game_Message::SetWindow(Window_Message* w) {
 	window = w;
+	visible = false;
+	closing = false;
+	// FIXME: message_waiting?
 }
 
 Window_Message* Game_Message::GetWindow() {
@@ -241,3 +245,26 @@ bool Game_Message::CanShowMessage(bool foreground) {
 	return true;
 }
 
+void Game_Message::Update() {
+	if (!window) {
+		message_waiting = false;
+		visible = false;
+		closing = false;
+		return;
+	}
+
+	// This flag goes into effect 1 frame after the closing
+	// animation starts.
+	if (window->IsClosing()) {
+		closing = true;
+	}
+
+	window->Update();
+
+	if (window->GetVisible()) {
+		visible = true;
+	} else {
+		visible = false;
+		closing = false;
+	}
+}

@@ -45,6 +45,8 @@ namespace Game_Message {
 
 	Window_Message* GetWindow();
 
+	void Update();
+
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;
 

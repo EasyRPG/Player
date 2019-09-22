@@ -32,6 +32,7 @@
 #include "game_temp.h"
 #include "game_player.h"
 #include "game_party.h"
+#include "game_message.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -994,7 +995,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool
 			}
 		}
 
-		message.Update();
+		Game_Message::Update();
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
 	}
