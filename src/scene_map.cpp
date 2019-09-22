@@ -70,6 +70,8 @@ void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 
+	Game_Message::SetWindow(message_window.get());
+
 	// Called here instead of Scene Load, otherwise wrong graphic stack
 	// is used.
 	if (from_save) {
@@ -107,6 +109,8 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 }
 
 void Scene_Map::Continue(SceneType prev_scene) {
+	Game_Message::SetWindow(message_window.get());
+
 	if (prev_scene == Scene::Battle) {
 		Game_Map::OnContinueFromBattle();
 	} else {

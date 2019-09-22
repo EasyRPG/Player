@@ -23,6 +23,8 @@
 #include <string>
 #include <functional>
 
+class Window_Message;
+
 namespace Game_Message {
 
 	static const int MAX_LINE = 4;
@@ -37,6 +39,11 @@ namespace Game_Message {
 	 * Used by the Game_Interpreter to completly reset all flags.
 	 */
 	void FullClear();
+
+	/** Set the window used to display the text */
+	void SetWindow(Window_Message* window);
+
+	Window_Message* GetWindow();
 
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;

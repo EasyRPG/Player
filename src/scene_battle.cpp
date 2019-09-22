@@ -101,6 +101,8 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::Continue(SceneType prev_scene) {
+	Game_Message::SetWindow(message_window.get());
+
 	// Debug scene / other scene could have changed party status.
 	status_window->Refresh();
 }
@@ -150,6 +152,7 @@ void Scene_Battle::CreateUi() {
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
 
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+	Game_Message::SetWindow(message_window.get());
 }
 
 void Scene_Battle::Update() {

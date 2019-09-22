@@ -67,11 +67,15 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	gold_window->SetVisible(false);
 
 	Game_Message::Init();
+	Game_Message::SetWindow(this);
 }
 
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	Game_Message::visible = false;
+	if (Game_Message::GetWindow() == this) {
+		Game_Message::SetWindow(nullptr);
+	}
 }
 
 void Window_Message::ApplyTextInsertingCommands() {

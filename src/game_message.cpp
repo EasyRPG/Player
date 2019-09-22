@@ -46,6 +46,8 @@ namespace Game_Message {
 	int choice_result;
 }
 
+static Window_Message* window = nullptr;
+
 RPG::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
@@ -68,6 +70,14 @@ void Game_Message::FullClear() {
 	SemiClear();
 	SetFaceName("");
 	SetFaceIndex(0);
+}
+
+void Game_Message::SetWindow(Window_Message* w) {
+	window = w;
+}
+
+Window_Message* Game_Message::GetWindow() {
+	return window;
 }
 
 std::string Game_Message::GetFaceName() {
