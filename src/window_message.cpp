@@ -53,6 +53,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 		Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
 		SetBackOpacity(128);
 	}
+	gold_window->SetBackOpacity(GetBackOpacity());
 
 	visible = false;
 	// Above other windows
@@ -238,8 +239,10 @@ void Window_Message::InsertNewPage() {
 
 	if (Game_Message::IsTransparent()) {
 		SetOpacity(0);
+		gold_window->SetBackOpacity(0);
 	} else {
 		SetOpacity(255);
+		gold_window->SetBackOpacity(GetBackOpacity());
 	}
 
 	if (!Game_Message::GetFaceName().empty()) {
