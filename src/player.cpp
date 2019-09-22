@@ -350,15 +350,17 @@ void Player::IncFrame() {
 
 void Player::FrameReset() {
 	// When update started
-	start_time = (double)DisplayUi->GetTicks();
+	FrameReset(DisplayUi->GetTicks());
+}
 
+void Player::FrameReset(uint32_t start_ticks) {
 	// available ms per frame, game logic expects 60 fps
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 
 	// When next frame is expected
-	next_frame = start_time + framerate_interval;
+	next_frame = start_ticks + framerate_interval;
 
-	Graphics::FrameReset();
+	Graphics::FrameReset(start_ticks);
 }
 
 int Player::GetFrames() {
