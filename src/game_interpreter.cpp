@@ -322,7 +322,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Main_Data::game_player->InVehicle() && Main_Data::game_player->GetVehicle()->IsAscendingOrDescending())
 				break;
 
-			if (Game_Message::message_waiting)
+			if (Game_Message::IsMessagePending())
 				break;
 		} else {
 			if ((Game_Message::IsMessageActive()) && _state.show_message) {

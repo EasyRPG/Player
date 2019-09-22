@@ -91,7 +91,7 @@ void Sprite_Timer::Update() {
 	if (Game_Temp::battle_running) {
 		SetY(SCREEN_TARGET_HEIGHT / 3 * 2 - 20);
 	}
-	else if (Game_Message::visible && Game_Message::GetRealPosition() == 0) {
+	else if (Game_Message::IsMessageVisible() && Game_Message::GetRealPosition() == 0) {
 		SetY(SCREEN_TARGET_HEIGHT - 20);
 	}
 	else {

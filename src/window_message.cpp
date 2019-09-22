@@ -359,7 +359,7 @@ void Window_Message::Update() {
 			}
 		}
 
-		if (!Game_Message::message_waiting && visible && !closing) {
+		if (!Game_Message::IsMessagePending() && visible && !closing) {
 			// Start the closing animation
 			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
 		}

@@ -28,10 +28,8 @@
 
 namespace Game_Message {
 	PendingMessage pending_message;
-
-	bool message_waiting;
-	bool closing;
-	bool visible;
+	bool message_waiting = false;
+	bool closing = false;
 }
 
 static Window_Message* window = nullptr;
@@ -50,9 +48,8 @@ void Game_Message::ClearFace() {
 
 void Game_Message::SetWindow(Window_Message* w) {
 	window = w;
-	visible = false;
 	closing = false;
-	// FIXME: message_waiting?
+	message_waiting = false;
 }
 
 Window_Message* Game_Message::GetWindow() {
@@ -206,15 +203,15 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 
 bool Game_Message::CanShowMessage(bool foreground) {
 	// If there's a text already, return immediately
-	if (Game_Message::message_waiting)
+	if (IsMessagePending())
 		return false;
 
 	// Forground interpreters: If the message box already started animating we wait for it to finish.
-	if (foreground && Game_Message::visible && Game_Message::closing)
+	if (foreground && IsMessageVisible() && closing)
 		return false;
 
 	// Parallel interpreters must wait until the message window is closed
-	if (!foreground && Game_Message::visible)
+	if (!foreground && IsMessageVisible())
 		return false;
 
 	return true;
@@ -223,7 +220,6 @@ bool Game_Message::CanShowMessage(bool foreground) {
 void Game_Message::Update() {
 	if (!window) {
 		message_waiting = false;
-		visible = false;
 		closing = false;
 		return;
 	}
@@ -236,10 +232,7 @@ void Game_Message::Update() {
 
 	window->Update();
 
-	if (window->GetVisible()) {
-		visible = true;
-	} else {
-		visible = false;
+	if (!IsMessageVisible()) {
 		closing = false;
 	}
 }
@@ -259,6 +252,18 @@ const PendingMessage& Game_Message::GetPendingMessage() {
 void Game_Message::ResetPendingMessage() {
 	pending_message = {};
 	message_waiting = false;
+}
+
+bool Game_Message::IsMessagePending() {
+	return message_waiting;
+}
+
+bool Game_Message::IsMessageVisible() {
+	return window ? window->GetVisible() : false;
+}
+
+bool Game_Message::IsMessageActive() {
+	return IsMessagePending() || IsMessageVisible();
 }
 
 

@@ -182,7 +182,7 @@ void Scene_Battle::Update() {
 		Scene::Push(std::make_shared<Scene_Gameover>());
 	}
 
-	if (!Game_Message::visible && events_finished) {
+	if (!Game_Message::IsMessageVisible() && events_finished) {
 		ProcessActions();
 		ProcessInput();
 	}

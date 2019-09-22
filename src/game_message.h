@@ -194,15 +194,6 @@ namespace Game_Message {
 	 */
 	int WordWrap(const std::string& line, int limit, const std::function<void(const std::string &line)> callback);
 
-	/** If we're waiting for a message to finish processing. This flag is set to true from when the
-	 * message box is requested up until it's finished writing text and ready to close.
-	 */
-	extern bool message_waiting;
-	/** Set to true when after the message box has started animating closed */
-	extern bool closing;
-	/** Set to true while the message box is visible on the screen */
-	extern bool visible;
-
 	/**
 	 * Return if it's legal to show a new message box.
 	 *
@@ -211,15 +202,13 @@ namespace Game_Message {
 	 */
 	bool CanShowMessage(bool foreground);
 
-	/**
-	 * True if a message is currently pending or still visible
-	 * @return true if message_waiting || visible
-	 */
+	/** @return true if there is message text pending */
+	bool IsMessagePending();
+	/** @return true if the message window is visible */
+	bool IsMessageVisible();
+	/** @return true if IsMessagePending() || IsMessageVisible() */
 	bool IsMessageActive();
 }
 
-inline bool Game_Message::IsMessageActive() {
-	return message_waiting || visible;
-}
 
 #endif
