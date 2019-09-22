@@ -185,9 +185,10 @@ namespace FileFinder {
 	 * This function is case sensitve on some platform.
 	 *
 	 * @param file file to check.
+	 * @param follow_symlinks if true, follow symlinks and report about the target.
 	 * @return true if file is directory, otherwise false.
 	 */
-	bool IsDirectory(const std::string& file);
+	bool IsDirectory(const std::string& file, bool follow_symlinks);
 
 	/**
 	 * Checks whether passed file exists.

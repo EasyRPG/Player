@@ -302,7 +302,7 @@ const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::GetDirectoryTree() 
 const std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateSaveDirectoryTree() {
 	std::string save_path = Main_Data::GetSavePath();
 
-	if (!(Exists(save_path) && IsDirectory(save_path))) { return std::shared_ptr<DirectoryTree>(); }
+	if (!(Exists(save_path) && IsDirectory(save_path, true))) { return std::shared_ptr<DirectoryTree>(); }
 
 	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = save_path;
@@ -324,7 +324,7 @@ void FileFinder::SetDirectoryTree(std::shared_ptr<DirectoryTree> directory_tree)
 }
 
 std::shared_ptr<FileFinder::DirectoryTree> FileFinder::CreateDirectoryTree(const std::string& p, Mode mode) {
-	if(! (Exists(p) && IsDirectory(p))) { return std::shared_ptr<DirectoryTree>(); }
+	if(! (Exists(p) && IsDirectory(p, true))) { return std::shared_ptr<DirectoryTree>(); }
 	std::shared_ptr<DirectoryTree> tree = std::make_shared<DirectoryTree>();
 	tree->directory_path = p;
 
@@ -795,32 +795,34 @@ bool FileFinder::Exists(const std::string& filename) {
 #endif
 }
 
-bool FileFinder::IsDirectory(const std::string& dir) {
-#if (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
-	struct stat sb;
-	if (::stat(dir.c_str(), &sb) == 0)
-		return S_ISDIR(sb.st_mode);
-	return false;
-#else
+bool FileFinder::IsDirectory(const std::string& dir, bool follow_symlinks) {
+#if !(defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
 	if (!Exists(dir)) {
 		return false;
 	}
+#endif
 
-#  ifdef _WIN32
+#ifdef _WIN32
 	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
 	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
 	      == FILE_ATTRIBUTE_DIRECTORY;
-#  else
+#else
 	struct stat sb;
-	::lstat(dir.c_str(), &sb);
-	return S_ISDIR(sb.st_mode);
+#  if (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
+	auto fn = ::stat;
+#  else
+	auto fn = follow_symlinks ? ::stat : ::lstat;
 #  endif
+	if (fn(dir.c_str(), &sb) == 0) {
+		return S_ISDIR(sb.st_mode);
+	}
+	return false;
 #endif
 }
 
 FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m, const std::string& parent) {
 	assert(FileFinder::Exists(path));
-	assert(FileFinder::IsDirectory(path));
+	assert(FileFinder::IsDirectory(path, true));
 
 	Directory result;
 
@@ -882,7 +884,7 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		}
 
 		if (!has_fast_dir_stat) {
-			is_directory = IsDirectory(MakePath(path, name));
+			is_directory = IsDirectory(MakePath(path, name), true);
 		}
 
 		if (name == "." || name == "..") {

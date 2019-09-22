@@ -14,7 +14,8 @@ namespace {
 	}
 
 	void CheckIsDirectory() {
-		assert(FileFinder::IsDirectory("."));
+		assert(FileFinder::IsDirectory(".", false));
+		assert(FileFinder::IsDirectory(".", true));
 	}
 
 	void CheckEnglishFilename() {
