@@ -449,6 +449,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	Game_Message::choice_max = 2;
 	Game_Message::choice_disabled.reset();
+	Game_Message::choice_reset_color = true;
 	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
