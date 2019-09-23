@@ -42,6 +42,7 @@ namespace Game_Message {
 
 	bool message_waiting;
 	bool visible;
+	bool choice_reset_color = false;
 
 	int choice_result;
 }

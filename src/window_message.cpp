@@ -275,9 +275,13 @@ void Window_Message::InsertNewLine() {
 
 	if (line_count >= Game_Message::choice_start && Game_Message::choice_max > 0) {
 		unsigned choice_index = line_count - Game_Message::choice_start;
-		// Check for disabled choices
-		if (Game_Message::choice_disabled.test(choice_index)) {
-			text_color = Font::ColorDisabled;
+		if (Game_Message::choice_reset_color) {
+			// Check for disabled choices
+			if (Game_Message::choice_disabled.test(choice_index)) {
+				text_color = Font::ColorDisabled;
+			} else {
+				text_color = Font::ColorDefault;
+			}
 		}
 
 		contents_x += 12;

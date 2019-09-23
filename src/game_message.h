@@ -224,6 +224,10 @@ namespace Game_Message {
 
 	/** Don't wait for a key to be pressed. */
 	extern bool dont_halt;
+
+	/** Reset the text color for each choice */
+	extern bool choice_reset_color;
+
 	/** If a message is currently being processed. */
 	extern bool message_waiting;
 	extern bool visible;

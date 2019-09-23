@@ -884,6 +884,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { 
 
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent) {
 	Game_Message::choice_start = Game_Message::texts.size();
+	Game_Message::choice_reset_color = false;
 	Game_Message::choice_max = choices.size();
 	Game_Message::choice_disabled.reset();
 
