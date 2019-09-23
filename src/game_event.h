@@ -112,9 +112,10 @@ public:
 	/** 
 	 * Update this for the current frame
 	 *
+	 * @param resume_async If we're resuming from an async operation.
 	 * @return async operation if we should suspend, otherwise returns AsyncOp::eNone
 	 */
-	AsyncOp Update();
+	AsyncOp Update(bool resume_async);
 
 	bool AreConditionsMet(const RPG::EventPage& page);
 

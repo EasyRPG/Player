@@ -48,9 +48,10 @@ public:
 	/**
 	 * Updates common event parallel interpreter.
 	 *
+	 * @param resume_async If we're resuming from an async operation.
 	 * @return async operation if we should suspend, otherwise returns AsyncOp::eNone
 	 */
-	AsyncOp Update();
+	AsyncOp Update(bool resume_async);
 
 	/**
 	 * Gets common event index.
@@ -99,8 +100,11 @@ public:
 	/** @return true if waiting for foreground execution */
 	bool IsWaitingForegroundExecution() const;
 
-	/** @return true if waiting for background execution */
-	bool IsWaitingBackgroundExecution() const;
+	/**
+	 * @param force_run force the event to execute even if conditions not met.
+	 * @return true if waiting for background execution
+	 */
+	bool IsWaitingBackgroundExecution(bool force_run) const;
 
 private:
 	int common_event_id;

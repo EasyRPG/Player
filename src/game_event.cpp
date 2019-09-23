@@ -506,7 +506,7 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 	MoveTypeTowardsOrAwayPlayer(false);
 }
 
-AsyncOp Game_Event::Update() {
+AsyncOp Game_Event::Update(bool resume_async) {
 	if (!data()->active || page == NULL) {
 		return {};
 	}
@@ -517,7 +517,7 @@ AsyncOp Game_Event::Update() {
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel && interpreter) {
-		interpreter->Update();
+		interpreter->Update(!resume_async);
 
 		// Suspend due to async op ...
 		if (interpreter->IsAsyncPending()) {
