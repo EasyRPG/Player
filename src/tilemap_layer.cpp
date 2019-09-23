@@ -164,16 +164,18 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	sublayers.push_back(std::make_shared<TilemapSubLayer>(this, Priority_TilesetBelow + layer));
 }
 
-void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col) {
+void TilemapLayer::DrawTile(Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit) {
 	Bitmap::TileOpacity op = screen.GetTileOpacity(row, col);
 
-	if (!fast_blit && op == Bitmap::Transparent)
+	if (op == Bitmap::Transparent)
 		return;
+
 	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
-	if (fast_blit || op == Bitmap::Opaque) {
+	bool use_fast_blit = fast_blit && allow_fast_blit;
+	if (op == Bitmap::Opaque || use_fast_blit) {
 		dst->BlitFast(x, y, screen, rect, 255);
 	} else {
 		dst->Blit(x, y, screen, rect, 255);
@@ -232,6 +234,7 @@ void TilemapLayer::Draw(int z_order) {
 			if (z_order == tile.z) {
 				if (layer == 0) {
 					// If lower layer
+					bool allow_fast_blit = (tile.z == Priority_TilesetBelow);
 
 					if (tile.ID >= BLOCK_E && tile.ID < BLOCK_E + BLOCK_E_TILES) {
 						int id = substitutions[tile.ID - BLOCK_E];
@@ -257,7 +260,7 @@ void TilemapLayer::Draw(int z_order) {
 							chipset_tone_tiles.insert(id);
 						}
 
-						DrawTile(*chipset_effect, map_draw_x, map_draw_y, row, col);
+						DrawTile(*chipset_effect, map_draw_x, map_draw_y, row, col, allow_fast_blit);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
@@ -273,7 +276,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 
 						// Draw the tile
-						DrawTile(*chipset_effect, map_draw_x, map_draw_y, row, col);
+						DrawTile(*chipset_effect, map_draw_x, map_draw_y, row, col, allow_fast_blit);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
@@ -287,7 +290,7 @@ void TilemapLayer::Draw(int z_order) {
 							autotiles_ab_screen_tone_tiles.insert(tile.ID + (animation_step_ab << 12));
 						}
 
-						DrawTile(*autotiles_ab_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x);
+						DrawTile(*autotiles_ab_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x, allow_fast_blit);
 					} else {
 						// If blocks D1-D12
 
@@ -301,7 +304,7 @@ void TilemapLayer::Draw(int z_order) {
 							autotiles_d_screen_tone_tiles.insert(tile.ID);
 						}
 
-						DrawTile(*autotiles_d_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x);
+						DrawTile(*autotiles_d_screen_effect, map_draw_x, map_draw_y, pos.y, pos.x, allow_fast_blit);
 					}
 				} else {
 					// If upper layer

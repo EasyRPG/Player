@@ -55,7 +55,7 @@ class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
 
-	void DrawTile(Bitmap& screen, int x, int y, int row, int col);
+	void DrawTile(Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit = true);
 	void Draw(int z_order);
 
 	void Update();
