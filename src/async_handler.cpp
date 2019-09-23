@@ -21,6 +21,7 @@
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
 #  include <regex>
+#  include "picojson.h"
 #endif
 
 #include "async_handler.h"
@@ -29,10 +30,13 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
-#include "picojson.h"
 #include <fstream>
 #include "utils.h"
 #include "graphics.h"
+
+// When this option is enabled async requests are randomly delayed.
+// This allows testing some aspects of async file fetching locally.
+//#define EP_DEBUG_SIMULATE_ASYNC
 
 namespace {
 	std::map<std::string, FileRequestAsync> async_requests;
@@ -72,6 +76,7 @@ namespace {
 }
 
 void AsyncHandler::CreateRequestMapping(const std::string& file) {
+#ifdef EMSCRIPTEN
 	std::shared_ptr<std::fstream> f = FileFinder::openUTF8(file, std::ios_base::in | std::ios_base::binary);
 	picojson::value v;
 	picojson::parse(v, *f);
@@ -79,6 +84,10 @@ void AsyncHandler::CreateRequestMapping(const std::string& file) {
 	for (const auto& value : v.get<picojson::object>()) {
 		file_mapping[value.first] = value.second.to_str();
 	}
+#else
+	// no-op
+	(void)file;
+#endif
 }
 
 FileRequestAsync* AsyncHandler::RequestFile(const std::string& folder_name, const std::string& file_name) {
@@ -105,8 +114,10 @@ FileRequestAsync* AsyncHandler::RequestFile(const std::string& file_name) {
 bool AsyncHandler::IsFilePending(bool important, bool graphic) {
 	for (auto& ap: async_requests) {
 		FileRequestAsync& request = ap.second;
-		// remove comment for fake download testing
-		//request.UpdateProgress();
+
+#ifdef EP_DEBUG_SIMULATE_ASYNC
+		request.UpdateProgress();
+#endif
 
 		if (!request.IsReady()
 				&& (!important || request.IsImportantFile())
@@ -193,7 +204,13 @@ void FileRequestAsync::Start() {
 		request_path += "default/";
 	}
 
-	auto it = file_mapping.find(Utils::LowerCase(path));
+	std::string real_path = Utils::LowerCase(path);
+	if (directory != ".") {
+		// Don't alter the path when the file is in the main directory
+		real_path = FileFinder::MakeCanonical(real_path, 1);
+	}
+
+	auto it = file_mapping.find(real_path);
 	if (it != file_mapping.end()) {
 		request_path += it->second;
 	} else {
@@ -218,8 +235,10 @@ void FileRequestAsync::Start() {
 #  ifdef EM_GAME_URL
 #    warning EM_GAME_URL set and not an Emscripten build!
 #  endif
-	// add comment for fake download testing
+
+#  ifndef EP_DEBUG_SIMULATE_ASYNC
 	DownloadDone(true);
+#  endif
 #endif
 }
 
