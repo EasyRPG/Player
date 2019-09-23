@@ -57,9 +57,11 @@ namespace Graphics {
 
 	/**
 	 * Resets the fps count.
-	 * Don't call this function directly, use Player::FrameReset.
+	 * Don't call this. Use Player::FrameReset instead.
+	 *
+	 * @param start_ticks time in ticks
 	 */
-	void FrameReset();
+	void FrameReset(uint32_t start_ticks);
 
 	/**
 	 * Gets a bitmap with the actual contents of the screen.

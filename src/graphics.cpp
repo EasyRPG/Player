@@ -88,10 +88,12 @@ void Graphics::Update() {
 		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
 			Draw();
+			Player::FrameReset(current_time);
+		} else {
+			next_fps_time = current_time + 1000;
+			fps_overlay->ResetCounter();
 		}
 
-		next_fps_time = current_time + 1000;
-		fps_overlay->ResetCounter();
 		UpdateTitle();
 	}
 
@@ -183,8 +185,8 @@ bool Graphics::IsTransitionErased() {
 	return (transition ? transition->IsErased() : false);
 }
 
-void Graphics::FrameReset() {
-	next_fps_time = (uint32_t)DisplayUi->GetTicks() + 1000;
+void Graphics::FrameReset(uint32_t start_ticks) {
+	next_fps_time = start_ticks + 1000;
 	fps_overlay->ResetCounter();
 }
 

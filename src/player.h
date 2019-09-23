@@ -87,6 +87,16 @@ namespace Player {
 	void FrameReset();
 
 	/**
+	 * Resets the fps count (both updates and frames per second).
+	 * Should be called after an expensive operation.
+	 * Instead of using DisplayUi->GetTicks uses the start_ticks arg which
+	 * saves a system call.
+	 *
+	 * @param start_ticks time in ticks when this function was called
+	 */
+	void FrameReset(uint32_t start_ticks);
+
+	/**
 	 * Increment the frame counters.
 	 */
 	void IncFrame();
