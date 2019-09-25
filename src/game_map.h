@@ -529,6 +529,14 @@ namespace Game_Map {
 
 	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
 
+	/**
+	 * @param x x position on the map
+	 * @param y y position on the map
+	 * @param require_active If true, ignore events which are not active.
+	 * @return the event with the highest id at (x,y)
+	 */
+	Game_Event* GetEventAt(int x, int y, bool require_active);
+
 	bool LoopHorizontal();
 	bool LoopVertical();
 
