@@ -26,10 +26,6 @@
 
 #include <cctype>
 
-namespace Game_Message {
-	bool closing = false;
-}
-
 static Window_Message* window = nullptr;
 
 RPG::SaveSystem& data = Main_Data::game_data.system;
@@ -45,7 +41,6 @@ void Game_Message::ClearFace() {
 
 void Game_Message::SetWindow(Window_Message* w) {
 	window = w;
-	closing = false;
 }
 
 Window_Message* Game_Message::GetWindow() {
@@ -203,7 +198,7 @@ bool Game_Message::CanShowMessage(bool foreground) {
 		return false;
 
 	// Forground interpreters: If the message box already started animating we wait for it to finish.
-	if (foreground && IsMessageVisible() && closing)
+	if (foreground && IsMessageVisible() && !window->GetAllowNextMessage())
 		return false;
 
 	// Parallel interpreters must wait until the message window is closed
@@ -214,21 +209,8 @@ bool Game_Message::CanShowMessage(bool foreground) {
 }
 
 void Game_Message::Update() {
-	if (!window) {
-		closing = false;
-		return;
-	}
-
-	// This flag goes into effect 1 frame after the closing
-	// animation starts.
-	if (window->IsClosing()) {
-		closing = true;
-	}
-
-	window->Update();
-
-	if (!IsMessageVisible()) {
-		closing = false;
+	if (window) {
+		window->Update();
 	}
 }
 

@@ -154,6 +154,9 @@ public:
 	/** @return the stored PendingMessage */
 	const PendingMessage& GetPendingMessage() const;
 
+	/** @return true if we can push a new message this frame */
+	bool GetAllowNextMessage() const;
+
 protected:
 	/** X-position of next char. */
 	int contents_x = 0;
@@ -173,6 +176,8 @@ protected:
 	int speed = 1;
 	/** If true inserts a new page after pause ended */
 	bool new_page_after_pause = false;
+	/** If true, we allow a new message to be pushed this frame */
+	bool allow_next_message = false;
 
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
@@ -197,6 +202,10 @@ protected:
 
 inline const PendingMessage& Window_Message::GetPendingMessage() const {
 	return pending_message;
+}
+
+inline bool Window_Message::GetAllowNextMessage() const {
+	return allow_next_message;
 }
 
 #endif

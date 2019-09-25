@@ -141,6 +141,7 @@ void Window_Message::ApplyTextInsertingCommands() {
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	contents->Clear();
 	pending_message = std::move(pm);
+	allow_next_message = false;
 
 	const auto& lines = pending_message.GetLines();
 	if (!(pending_message.NumLines() > 0 || pending_message.HasNumberInput())) {
@@ -320,6 +321,7 @@ void Window_Message::ResetWindow() {
 
 void Window_Message::Update() {
 	bool update_message_processing = false;
+	allow_next_message = false;
 
 	if (pending_message.ShowGoldWindow()) {
 		ShowGoldWindow();
@@ -354,6 +356,8 @@ void Window_Message::Update() {
 		if (!Game_Message::IsMessagePending() && visible && !closing) {
 			// Start the closing animation
 			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			// This frame a foreground event may push a new message and interupt the close animation.
+			allow_next_message = true;
 		}
 	}
 
