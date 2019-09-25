@@ -128,8 +128,8 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 			if (!interpreter) {
 				interpreter.reset(new Game_Interpreter_Map());
 			}
-			interpreter->Clear();
-			interpreter->Push(this);
+			// RPG_RT will wait until the next call to Update() to push the interpreter code.
+			// This forces the interpreter to yield when it changes it's own page.
 		}
 	}
 }
@@ -513,6 +513,9 @@ AsyncOp Game_Event::Update(bool resume_async) {
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
 	if ((resume_async || GetTrigger() == RPG::EventPage::Trigger_parallel) && interpreter) {
+		if (!interpreter->IsRunning() && page && !page->event_commands.empty()) {
+			interpreter->Push(this);
+		}
 		interpreter->Update(!resume_async);
 
 		// Suspend due to async op ...
