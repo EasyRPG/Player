@@ -170,8 +170,6 @@ namespace Game_Message {
 
 	void SetPendingMessage(PendingMessage&& pm);
 
-	const PendingMessage& GetPendingMessage();
-
 	void ResetPendingMessage();
 
 	/**

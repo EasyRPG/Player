@@ -27,7 +27,6 @@
 #include <cctype>
 
 namespace Game_Message {
-	PendingMessage pending_message;
 	bool message_waiting = false;
 	bool closing = false;
 }
@@ -38,7 +37,6 @@ RPG::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
 	ClearFace();
-	pending_message = {};
 }
 
 void Game_Message::ClearFace() {
@@ -238,19 +236,13 @@ void Game_Message::Update() {
 }
 
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
-	pending_message = std::move(pm);
 	message_waiting = true;
 	if (window) {
-		window->StartMessageProcessing();
+		window->StartMessageProcessing(std::move(pm));
 	}
 }
 
-const PendingMessage& Game_Message::GetPendingMessage() {
-	return pending_message;
-}
-
 void Game_Message::ResetPendingMessage() {
-	pending_message = {};
 	message_waiting = false;
 }
 

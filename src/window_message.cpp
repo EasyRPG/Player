@@ -138,21 +138,20 @@ void Window_Message::ApplyTextInsertingCommands() {
 	}
 }
 
-void Window_Message::StartMessageProcessing() {
+void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	contents->Clear();
+	pending_message = std::move(pm);
 
-	const auto& pm = Game_Message::GetPendingMessage();
-
-	const auto& lines = pm.GetLines();
-	if (!(pm.NumLines() > 0 || pm.HasNumberInput())) {
+	const auto& lines = pending_message.GetLines();
+	if (!(pending_message.NumLines() > 0 || pending_message.HasNumberInput())) {
 		return;
 	}
 
-	if (pm.IsWordWrapped()) {
+	if (pending_message.IsWordWrapped()) {
 		std::u32string wrapped_text;
 		for (const std::string& line : lines) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
-			if (pm.IsWordWrapped()) {
+			if (pending_message.IsWordWrapped()) {
 				// since ApplyTextInsertingCommands works for the text variable,
 				// we store line into text and use wrapped_text for the real 'text'
 				text = Utils::DecodeUTF32(line);
@@ -174,7 +173,7 @@ void Window_Message::StartMessageProcessing() {
 			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
 		}
 	}
-	item_max = min(4, pm.GetNumChoices());
+	item_max = min(4, pending_message.GetNumChoices());
 
 	ApplyTextInsertingCommands();
 	text_index = text.begin();
@@ -183,11 +182,9 @@ void Window_Message::StartMessageProcessing() {
 }
 
 void Window_Message::FinishMessageProcessing() {
-	auto& pm = Game_Message::GetPendingMessage();
-
-	if (pm.GetNumChoices() > 0) {
+	if (pending_message.GetNumChoices() > 0) {
 		StartChoiceProcessing();
-	} else if (pm.HasNumberInput()) {
+	} else if (pending_message.HasNumberInput()) {
 		StartNumberInputProcessing();
 	} else if (kill_message) {
 		TerminateMessage();
@@ -206,9 +203,7 @@ void Window_Message::StartChoiceProcessing() {
 }
 
 void Window_Message::StartNumberInputProcessing() {
-	auto& pm = Game_Message::GetPendingMessage();
-
-	number_input_window->SetMaxDigits(pm.GetNumberInputDigits());
+	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
 	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
@@ -257,9 +252,7 @@ void Window_Message::InsertNewPage() {
 		contents_x = 0;
 	}
 
-	auto& pm = Game_Message::GetPendingMessage();
-
-	if (pm.GetChoiceStartLine() == 0 && pm.HasChoices()) {
+	if (pending_message.GetChoiceStartLine() == 0 && pending_message.HasChoices()) {
 		contents_x += 12;
 	}
 
@@ -268,7 +261,7 @@ void Window_Message::InsertNewPage() {
 	text_color = Font::ColorDefault;
 	speed = 1;
 
-	if (pm.GetNumberInputStartLine() == 0 && pm.HasNumberInput()) {
+	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
 		StartNumberInputProcessing();
 	}
@@ -285,13 +278,11 @@ void Window_Message::InsertNewLine() {
 	contents_y += 16;
 	++line_count;
 
-	auto& pm = Game_Message::GetPendingMessage();
-
-	if (pm.HasChoices() && line_count >= pm.GetChoiceStartLine()) {
-		unsigned choice_index = line_count - pm.GetChoiceStartLine();
-		if (pm.GetChoiceResetColor()) {
+	if (pending_message.HasChoices() && line_count >= pending_message.GetChoiceStartLine()) {
+		unsigned choice_index = line_count - pending_message.GetChoiceStartLine();
+		if (pending_message.GetChoiceResetColor()) {
 			// Check for disabled choices
-			if (!pm.IsChoiceEnabled(choice_index)) {
+			if (!pending_message.IsChoiceEnabled(choice_index)) {
 				text_color = Font::ColorDisabled;
 			} else {
 				text_color = Font::ColorDefault;
@@ -318,6 +309,7 @@ void Window_Message::TerminateMessage() {
 	if (gold_window->GetVisible()) {
 		gold_window->SetCloseAnimation(message_animation_frames);
 	}
+	pending_message = {};
 	Game_Message::ResetPendingMessage();
 }
 
@@ -328,8 +320,7 @@ void Window_Message::ResetWindow() {
 void Window_Message::Update() {
 	bool update_message_processing = false;
 
-	const auto& pm = Game_Message::GetPendingMessage();
-	if (pm.ShowGoldWindow()) {
+	if (pending_message.ShowGoldWindow()) {
 		ShowGoldWindow();
 	}
 
@@ -693,11 +684,9 @@ std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
 }
 
 void Window_Message::UpdateCursorRect() {
-	auto& pm = Game_Message::GetPendingMessage();
-
 	if (index >= 0) {
 		int x_pos = 2;
-		int y_pos = (pm.GetChoiceStartLine() + index) * 16;
+		int y_pos = (pending_message.GetChoiceStartLine() + index) * 16;
 		int width = contents->GetWidth();
 
 		if (!Game_Message::GetFaceName().empty()) {
@@ -716,7 +705,7 @@ void Window_Message::UpdateCursorRect() {
 void Window_Message::WaitForInput() {
 	active = true; // Enables the Pause arrow
 	if (Input::IsTriggered(Input::DECISION) ||
-		Input::IsTriggered(Input::CANCEL)) {
+			Input::IsTriggered(Input::CANCEL)) {
 		active = false;
 		SetPause(false);
 
@@ -730,19 +719,17 @@ void Window_Message::WaitForInput() {
 }
 
 void Window_Message::InputChoice() {
-	const auto& pm = Game_Message::GetPendingMessage();
-
 	bool do_terminate = false;
 	int choice_result = -1;
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		if (pm.GetChoiceCancelType() > 0) {
+		if (pending_message.GetChoiceCancelType() > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-			choice_result = pm.GetChoiceCancelType() - 1; // Cancel
+			choice_result = pending_message.GetChoiceCancelType() - 1; // Cancel
 			do_terminate = true;
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		if (!pm.IsChoiceEnabled(index)) {
+		if (!pending_message.IsChoiceEnabled(index)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			return;
 		}
@@ -754,7 +741,7 @@ void Window_Message::InputChoice() {
 
 	if (do_terminate) {
 		if (choice_result >= 0) {
-			auto& continuation = pm.GetChoiceContinuation();
+			auto& continuation = pending_message.GetChoiceContinuation();
 			if (continuation) {
 				continuation(choice_result);
 			}
@@ -765,9 +752,8 @@ void Window_Message::InputChoice() {
 
 void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		const auto& pm = Game_Message::GetPendingMessage();
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Main_Data::game_variables->Set(pm.GetNumberInputVariable(), number_input_window->GetNumber());
+		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		TerminateMessage();
 		number_input_window->SetNumber(0);

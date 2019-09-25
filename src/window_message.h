@@ -23,6 +23,7 @@
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
+#include "pending_message.h"
 
 /**
  * Window Message Class.
@@ -45,7 +46,7 @@ public:
 	 * Starts message processing by reading all
 	 * non-displayed from Game_Message.
 	 */
-	void StartMessageProcessing();
+	void StartMessageProcessing(PendingMessage pm);
 
 	/**
 	 * Ends the message processing.
@@ -180,6 +181,8 @@ protected:
 	/** Used by the number input event. */
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;
+
+	PendingMessage pending_message;
 
 	void DrawGlyph(const std::string& glyph, bool instant_speed);
 	void IncrementLineCharCounter(int width);
