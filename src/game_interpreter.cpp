@@ -2020,9 +2020,8 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
-	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, x, y);
-	Game_Variables.Set(var_id, events.size() > 0 ? events.back()->GetId() : 0);
+	auto* ev = Game_Map::GetEventAt(x, y, false);
+	Game_Variables.Set(var_id, ev ? ev->GetId() : 0);
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }

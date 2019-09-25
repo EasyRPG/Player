@@ -885,6 +885,17 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	}
 }
 
+Game_Event* Game_Map::GetEventAt(int x, int y, bool require_active) {
+	auto& events = GetEvents();
+	for (auto iter = events.rbegin(); iter != events.rend(); ++iter) {
+		auto& ev = *iter;
+		if (ev.IsInPosition(x, y) && (!require_active || ev.IsActive())) {
+			return &ev;
+		}
+	}
+	return nullptr;
+}
+
 bool Game_Map::LoopHorizontal() {
 	return map->scroll_type == RPG::Map::ScrollType_horizontal || map->scroll_type == RPG::Map::ScrollType_both;
 }
