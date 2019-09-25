@@ -100,7 +100,7 @@ public:
 	 * @param animation_id the animation ID
 	 * @param target_id the ID of the targeted character
 	 * @param global whether to "show on the entire map"
-	 * @param which frame to start on.
+	 * @param start_frame which frame to start on.
 	 *
 	 * @return the number of frames the animation will run.
 	 */
@@ -127,7 +127,7 @@ public:
 	 * @param strength the strength of the shake
 	 * @param speed of the shake
 	 * @param time_left how much time is left in frames
-	 * @param current shake displacement
+	 * @param position current shake displacement
 	 *
 	 * @return next shake displacement
 	 */

@@ -281,7 +281,6 @@ void Game_BattleAlgorithm::AlgorithmBase::PlaySoundAnimation(bool on_source, int
 	}
 
 	if (on_source) {
-		std::vector<Game_Battler*> anim_targets = { GetSource() };
 		Game_Battle::ShowBattleAnimation(GetAnimation()->ID, { GetSource() }, true, cutoff);
 		return;
 	}
