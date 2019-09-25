@@ -123,10 +123,6 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 
-	if (interpreter) {
-		interpreter->Clear();
-	}
-
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {
 			if (!interpreter) {
@@ -507,7 +503,7 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 }
 
 AsyncOp Game_Event::Update(bool resume_async) {
-	if (!data()->active || page == NULL) {
+	if (!data()->active || (!resume_async && page == NULL)) {
 		return {};
 	}
 
@@ -516,7 +512,7 @@ AsyncOp Game_Event::Update(bool resume_async) {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel && interpreter) {
+	if ((resume_async || GetTrigger() == RPG::EventPage::Trigger_parallel) && interpreter) {
 		interpreter->Update(!resume_async);
 
 		// Suspend due to async op ...
