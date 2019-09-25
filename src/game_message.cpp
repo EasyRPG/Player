@@ -27,7 +27,6 @@
 #include <cctype>
 
 namespace Game_Message {
-	bool message_waiting = false;
 	bool closing = false;
 }
 
@@ -47,7 +46,6 @@ void Game_Message::ClearFace() {
 void Game_Message::SetWindow(Window_Message* w) {
 	window = w;
 	closing = false;
-	message_waiting = false;
 }
 
 Window_Message* Game_Message::GetWindow() {
@@ -217,7 +215,6 @@ bool Game_Message::CanShowMessage(bool foreground) {
 
 void Game_Message::Update() {
 	if (!window) {
-		message_waiting = false;
 		closing = false;
 		return;
 	}
@@ -236,18 +233,13 @@ void Game_Message::Update() {
 }
 
 void Game_Message::SetPendingMessage(PendingMessage&& pm) {
-	message_waiting = true;
 	if (window) {
 		window->StartMessageProcessing(std::move(pm));
 	}
 }
 
-void Game_Message::ResetPendingMessage() {
-	message_waiting = false;
-}
-
 bool Game_Message::IsMessagePending() {
-	return message_waiting;
+	return window ? window->GetPendingMessage().IsActive() : false;
 }
 
 bool Game_Message::IsMessageVisible() {

@@ -39,6 +39,7 @@ class PendingMessage {
 
 		const std::vector<std::string>& GetLines() const { return texts; }
 
+		bool IsActive() const { return NumLines() || HasNumberInput(); }
 		int NumLines() const { return texts.size(); }
 		bool IsWordWrapped() const { return word_wrapped; }
 		bool ShowGoldWindow() const { return show_gold_window; }

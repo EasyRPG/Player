@@ -170,8 +170,6 @@ namespace Game_Message {
 
 	void SetPendingMessage(PendingMessage&& pm);
 
-	void ResetPendingMessage();
-
 	/**
 	 * Breaks the line into lines, each of which is equal
 	 * or less than a specified limit in pixels in the

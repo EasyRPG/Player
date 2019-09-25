@@ -151,6 +151,9 @@ public:
 	 */
 	void InputNumber();
 
+	/** @return the stored PendingMessage */
+	const PendingMessage& GetPendingMessage() const;
+
 protected:
 	/** X-position of next char. */
 	int contents_x = 0;
@@ -191,5 +194,9 @@ protected:
 	void SetWaitForPage();
 	void SetWait(int frames);
 };
+
+inline const PendingMessage& Window_Message::GetPendingMessage() const {
+	return pending_message;
+}
 
 #endif

@@ -309,8 +309,9 @@ void Window_Message::TerminateMessage() {
 	if (gold_window->GetVisible()) {
 		gold_window->SetCloseAnimation(message_animation_frames);
 	}
+
+	// This clears the active flag.
 	pending_message = {};
-	Game_Message::ResetPendingMessage();
 }
 
 void Window_Message::ResetWindow() {
