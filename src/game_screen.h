@@ -22,6 +22,7 @@
 #include "system.h"
 #include "game_picture.h"
 #include "game_character.h"
+#include "battle_animation.h"
 
 class Game_Battler;
 class Screen;
@@ -30,8 +31,7 @@ class Game_Screen {
 
 public:
 	Game_Screen();
-
-	void CreatePicturesFromSave();
+	void SetupFromSave();
 
 	Game_Picture* GetPicture(int id);
 
@@ -94,8 +94,48 @@ public:
 		Weather_Sandstorm
 	};
 
+	/**
+	 * Plays the given animation against a character.
+	 *
+	 * @param animation_id the animation ID
+	 * @param target_id the ID of the targeted character
+	 * @param global whether to "show on the entire map"
+	 * @param start_frame which frame to start on.
+	 *
+	 * @return the number of frames the animation will run.
+	 */
+	int ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame = 0);
+
+	/**
+	 * Update the currently running battle animation by 1 frame.
+	 */
+	void UpdateBattleAnimation();
+
+	/**
+	 * Cancel the currently running battle animation.
+	 */
+	void CancelBattleAnimation();
+
+	/**
+	 * Whether or not a battle animation is currently playing.
+	 */
+	bool IsBattleAnimationWaiting();
+
+	/**
+	 * Animates the screen shake algorithm given the parameters
+	 *
+	 * @param strength the strength of the shake
+	 * @param speed of the shake
+	 * @param time_left how much time is left in frames
+	 * @param position current shake displacement
+	 *
+	 * @return next shake displacement
+	 */
+	static int AnimateShake(int strength, int speed, int time_left, int position);
+
 private:
 	std::vector<std::unique_ptr<Game_Picture>> pictures;
+	std::unique_ptr<BattleAnimation> animation;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
@@ -113,6 +153,7 @@ protected:
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
+	void CreatePicturesFromSave();
 };
 
 #endif

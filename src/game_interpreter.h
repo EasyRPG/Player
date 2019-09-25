@@ -112,8 +112,6 @@ protected:
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 
-	bool waiting_battle_anim;
-
 	/**
 	 * Gets strings for choice selection.
 	 * This is just a helper (private) method

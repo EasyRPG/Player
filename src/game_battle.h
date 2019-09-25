@@ -65,22 +65,14 @@ namespace Game_Battle {
 	Spriteset_Battle& GetSpriteset();
 
 	/**
-	 * Plays a battle animation against the given target.
-	 *
-	 * @param animation_id the animation ID
-	 * @param target pointer to the battler to play against
-	 * @param flash whether or not the screen should flash during the animation
-	 */
-	void ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash = true, bool only_sound = false, int cutoff = -1);
-
-	/**
 	 * Plays a battle animation against several targets simultaneously.
 	 *
 	 * @param animation_id the animation ID
 	 * @param targets a vector of pointer to the battlers to play against
-	 * @param flash whether or not the screen should flash during the animation
+	 *
+	 * @return the number of frames of the animation.
 	 */
-	void ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash = true, bool only_sound = false, int cutoff = -1);
+	int ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound = false, int cutoff = -1);
 
 	/**
 	 * Whether or not a battle animation is currently playing.

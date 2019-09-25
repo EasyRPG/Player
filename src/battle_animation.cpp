@@ -31,9 +31,14 @@
 #include "player.h"
 #include "game_temp.h"
 
-BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff_frame) :
-	animation(anim), frame(0), frame_update(false), should_only_sound(only_sound), cutoff(cutoff_frame)
+BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
+	animation(anim), frame(0), only_sound(only_sound)
 {
+	num_frames = GetRealFrames() * 2;
+	if (cutoff >= 0 && cutoff < num_frames) {
+		num_frames = cutoff;
+	}
+
 	SetZ(Priority_BattleAnimation);
 
 	const std::string& name = animation.animation_name;
@@ -59,11 +64,17 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Update() {
-	if (frame_update) {
-		frame++;
-		if (cutoff == -1 || frame <= cutoff)
-			RunTimedSfx();
+	if (!IsDone() && (frame & 1) == 0) {
+		// Lookup any timed SFX (SE/flash/shake) data for this frame
+		for (auto& timing: animation.timings) {
+			if (timing.frame == GetRealFrame() + 1) {
+				ProcessAnimationTiming(timing);
+			}
+		}
 	}
+
+	UpdateScreenFlash();
+	UpdateTargetFlash();
 
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
@@ -74,23 +85,7 @@ void BattleAnimation::Update() {
 
 	Sprite::Update();
 
-	frame_update = !frame_update;
-}
-
-void BattleAnimation::SetFrame(int _frame) {
-	frame = _frame;
-}
-
-int BattleAnimation::GetFrame() const {
-	return frame;
-}
-
-int BattleAnimation::GetFrames() const {
-	return animation.frames.size();
-}
-
-bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
+	frame++;
 }
 
 void BattleAnimation::OnBattleSpriteReady(FileRequestResult* result) {
@@ -113,7 +108,7 @@ void BattleAnimation::DrawAt(int x, int y) {
 		return;
 	}
 
-	const RPG::AnimationFrame& anim_frame = animation.frames[frame];
+	const RPG::AnimationFrame& anim_frame = animation.frames[GetRealFrame()];
 
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
@@ -150,43 +145,27 @@ void BattleAnimation::DrawAt(int x, int y) {
 	}
 }
 
-bool BattleAnimation::ShouldOnlySound() const {
-	return should_only_sound;
-}
+void BattleAnimation::ProcessAnimationFlash(const RPG::AnimationTiming& timing) {
+	if (IsOnlySound()) {
+		return;
+	}
 
-// FIXME: looks okay, but needs to be measured
-static int flash_length = 12;
-
-void BattleAnimation::RunTimedSfx() {
-	// Lookup any timed SFX (SE/flash/shake) data for this frame
-	std::vector<RPG::AnimationTiming>::const_iterator it = animation.timings.begin();
-	for (; it != animation.timings.end(); ++it) {
-		if (it->frame == GetFrame()) {
-			ProcessAnimationTiming(*it);
-		}
+	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
+		target_flash_timing = &timing - animation.timings.data();
+	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen) {
+		screen_flash_timing = &timing - animation.timings.data();
 	}
 }
 
 void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing) {
 	// Play the SE.
 	Game_System::SePlay(timing.se);
-	if (ShouldOnlySound())
+	if (IsOnlySound()) {
 		return;
+	}
 
 	// Flash.
-	if (timing.flash_scope == RPG::AnimationTiming::FlashScope_target) {
-		SetFlash(timing.flash_red,
-			timing.flash_green,
-			timing.flash_blue,
-			timing.flash_power);
-	} else if (timing.flash_scope == RPG::AnimationTiming::FlashScope_screen && ShouldScreenFlash()) {
-		Main_Data::game_screen->FlashOnce(
-			timing.flash_red,
-			timing.flash_green,
-			timing.flash_blue,
-			timing.flash_power,
-			flash_length);
-	}
+	ProcessAnimationFlash(timing);
 
 	// Shake (only happens in battle).
 	if (Game_Temp::battle_running) {
@@ -194,16 +173,54 @@ void BattleAnimation::ProcessAnimationTiming(const RPG::AnimationTiming& timing)
 		case RPG::AnimationTiming::ScreenShake_nothing:
 			break;
 		case RPG::AnimationTiming::ScreenShake_target:
-			// TODO: shake the targets
+			// FIXME: Estimate, see below for screen shake.
+			ShakeTargets(3, 5, 32);
 			break;
 		case RPG::AnimationTiming::ScreenShake_screen:
 			Game_Screen* screen = Main_Data::game_screen.get();
-			// FIXME: 8,7,3 are made up
-			screen->ShakeOnce(8, 7, 3);
+			// FIXME: This is not proven accurate. Screen captures show that
+			// the shake effect lasts for 16 animation frames (32 real frames).
+			// The maximum offset observed was 6 or 7, which makes these numbers
+			// seem reasonable.
+			screen->ShakeOnce(3, 5, 32);
 			break;
 		}
 	}
+}
 
+static int CalculateFlashPower(int frames, int power) {
+	// This algorithm was determined numerically by measuring the flash
+	// power for each frame of battle animation flashs.
+	int f = 7 - ((frames + 1) / 2);
+	return std::min(f * power / 6, 31);
+}
+
+void BattleAnimation::UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p) {
+	r = 0; g = 0; b = 0; p = 0;
+
+	if (timing_idx >= 0) {
+		auto& timing = animation.timings[timing_idx];
+		int start_frame = (timing.frame - 1) * 2;
+		int delta_frames = GetFrame() - start_frame;
+		if (delta_frames <= 10) {
+			r = timing.flash_red;
+			g = timing.flash_green;
+			b = timing.flash_blue;
+			p = CalculateFlashPower(delta_frames, timing.flash_power);
+		}
+	}
+}
+
+void BattleAnimation::UpdateScreenFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(screen_flash_timing, r, g, b, p);
+	Main_Data::game_screen->FlashOnce(r, g, b, p, 0);
+}
+
+void BattleAnimation::UpdateTargetFlash() {
+	int r, g, b, p;
+	UpdateFlashGeneric(target_flash_timing, r, g, b, p);
+	FlashTargets(r, g, b, p);
 }
 
 // For handling the vertical position.
@@ -222,50 +239,72 @@ static int CalculateOffset(int pos, int target_height) {
 
 /////////
 
-BattleAnimationChara::BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara) :
-	BattleAnimation(anim), character(chara)
+BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global) :
+	BattleAnimation(anim), target(target), global(global)
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationChara::~BattleAnimationChara() {
+BattleAnimationMap::~BattleAnimationMap() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationChara::Draw() {
-	if (ShouldOnlySound())
+void BattleAnimationMap::Draw() {
+	if (IsOnlySound()) {
 		return;
+	}
+
+	if (global) {
+		DrawGlobal();
+	} else {
+		DrawSingle();
+	}
+}
+
+void BattleAnimationMap::DrawGlobal() {
+	// The animations are played at the vertices of a regular grid,
+	// 20 tiles wide by 10 tiles high, independant of the map.
+	// NOTE: not accurate, but see #574
+	const int x_stride = 20 * TILE_SIZE;
+	const int y_stride = 10 * TILE_SIZE;
+	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
+	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
+	for (int y = 0; y != 3; ++y) {
+		for (int x = 0; x != 3; ++x) {
+			DrawAt(x_stride*x - x_offset, y_stride*y - y_offset);
+		}
+	}
+}
+
+void BattleAnimationMap::DrawSingle() {
 	//If animation is targeted on the screen
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 2);
 		return;
 	}
 	const int character_height = 24;
-	int vertical_center = character.GetScreenY() - character_height/2;
+	int vertical_center = target.GetScreenY() - character_height/2;
 	int offset = CalculateOffset(animation.position, character_height);
-	DrawAt(character.GetScreenX(), vertical_center + offset);
-}
-void BattleAnimationChara::SetFlash(int r, int g, int b, int p) {
-	character.Flash(r, g, b, p, flash_length);
+	DrawAt(target.GetScreenX(), vertical_center + offset);
 }
 
-bool BattleAnimationChara::ShouldScreenFlash() const { return true; }
+void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
+	target.Flash(r, g, b, p, 0);
+}
+
+void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
+}
 
 /////////
 
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash, bool only_sound, int cutoff_frame) :
-	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::vector<Game_Battler*>(1, &batt)), should_flash(flash)
+BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
+	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattlers::BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash, bool only_sound, int cutoff_frame) :
-	BattleAnimation(anim, only_sound, cutoff_frame), battlers(batts), should_flash(flash)
-{
-	Graphics::RegisterDrawable(this);
-}
-BattleAnimationBattlers::~BattleAnimationBattlers() {
+BattleAnimationBattle::~BattleAnimationBattle() {
 	Graphics::RemoveDrawable(this);
 }
-void BattleAnimationBattlers::Draw() {
-	if (ShouldOnlySound())
+void BattleAnimationBattle::Draw() {
+	if (IsOnlySound())
 		return;
 	if (animation.scope == RPG::Animation::Scope_screen) {
 		DrawAt(SCREEN_TARGET_WIDTH / 2, SCREEN_TARGET_HEIGHT / 3);
@@ -283,44 +322,33 @@ void BattleAnimationBattlers::Draw() {
 		DrawAt(battler.GetBattleX(), battler.GetBattleY() + offset);
 	}
 }
-void BattleAnimationBattlers::SetFlash(int r, int g, int b, int p) {
+void BattleAnimationBattle::FlashTargets(int r, int g, int b, int p) {
 	auto color = MakeFlashColor(r, g, b, p);
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-	     it != battlers.end(); ++it) {
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+	for (auto& battler: battlers) {
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(battler);
 		if (sprite)
-			sprite->Flash(color, flash_length);
+			sprite->Flash(color, 0);
 	}
 }
-bool BattleAnimationBattlers::ShouldScreenFlash() const { return should_flash; }
 
-/////////
+void BattleAnimationBattle::ShakeTargets(int str, int spd, int time) {
+	for (auto& battler: battlers) {
+		battler->ShakeOnce(str, spd, time);
+	}
+}
 
-BattleAnimationGlobal::BattleAnimationGlobal(const RPG::Animation& anim) :
-	BattleAnimation(anim)
-{
-	Graphics::RegisterDrawable(this);
-}
-BattleAnimationGlobal::~BattleAnimationGlobal() {
-	Graphics::RemoveDrawable(this);
-}
-void BattleAnimationGlobal::Draw() {
-	if (ShouldOnlySound())
-		return;
-	// The animations are played at the vertices of a regular grid,
-	// 20 tiles wide by 10 tiles high, independant of the map.
-	// NOTE: not accurate, but see #574
-	const int x_stride = 20 * TILE_SIZE;
-	const int y_stride = 10 * TILE_SIZE;
-	int x_offset = (Game_Map::GetDisplayX()/TILE_SIZE) % x_stride;
-	int y_offset = (Game_Map::GetDisplayY()/TILE_SIZE) % y_stride;
-	for (int y = 0; y != 3; ++y) {
-		for (int x = 0; x != 3; ++x) {
-			DrawAt(x_stride*x - x_offset, y_stride*y - y_offset);
+void BattleAnimation::SetFrame(int frame) {
+	// Reset pending flash.
+	int real_frame = frame / 2;
+	screen_flash_timing = -1;
+	target_flash_timing = -1;
+	for (auto& timing: animation.timings) {
+		if (timing.frame > real_frame + 1) {
+			break;
 		}
+		ProcessAnimationFlash(timing);
 	}
+
+	this->frame = frame;
 }
-void BattleAnimationGlobal::SetFlash(int r, int g, int b, int p) {
-	// nop
-}
-bool BattleAnimationGlobal::ShouldScreenFlash() const { return true; }
+

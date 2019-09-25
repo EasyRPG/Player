@@ -24,7 +24,6 @@
 
 #include "async_handler.h"
 #include "system.h"
-#include "battle_animation.h"
 #include "game_battle.h"
 #include "game_battler.h"
 #include "game_map.h"
@@ -72,7 +71,6 @@ namespace {
 	std::vector<std::shared_ptr<Game_Vehicle> > vehicles;
 	std::vector<Game_Character*> pending;
 
-	std::unique_ptr<BattleAnimation> animation;
 
 	bool pan_wait;
 
@@ -151,7 +149,6 @@ void Game_Map::Dispose(bool clear_screen) {
 	}
 
 	map.reset();
-	animation.reset();
 }
 
 void Game_Map::Quit() {
@@ -270,7 +267,6 @@ void Game_Map::SetupFromSave() {
 	SetChipset(map_info.chipset_id);
 
 	SetEncounterSteps(location.encounter_steps);
-
 
 	// We want to support loading rm2k3e panning chunks
 	// but also not break other saves which don't have them.
@@ -943,13 +939,6 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 	if (!actx.IsActive()) {
 		//If not resuming from async op ...
-		if (animation) {
-			animation->Update();
-			if (animation->IsDone()) {
-				animation.reset();
-			}
-		}
-
 		UpdateProcessedFlags(is_preupdate);
 	}
 
@@ -1331,33 +1320,6 @@ void Game_Map::SetupBattle() {
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
 	}
-}
-
-void Game_Map::ShowBattleAnimation(int animation_id, int target_id, bool global) {
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
-	if (!anim) {
-		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
-		return;
-	}
-
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-	Main_Data::game_data.screen.battleanim_target = target_id;
-	Main_Data::game_data.screen.battleanim_global = global;
-
-	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
-
-	if (chara) {
-		chara->SetFlashTimeLeft(0); // Any flash always ends
-		if (global) {
-			animation.reset(new BattleAnimationGlobal(*anim));
-		} else {
-			animation.reset(new BattleAnimationChara(*anim, *chara));
-		}
-	}
-}
-
-bool Game_Map::IsBattleAnimationWaiting() {
-	return (bool)animation;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {

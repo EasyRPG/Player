@@ -34,70 +34,112 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff_frame = -1);
-
 	DrawableType GetType() const override;
 
+	/** Update the animation to the next animation **/
 	void Update();
+
+	/** @return the current timing frame (2x the number of frames in the underlying animation **/
 	int GetFrame() const;
+
+	/** @return the animation frame that is currently being displayed **/
+	int GetRealFrame() const;
+
+	/** @return the number of frames the animation will play for **/
 	int GetFrames() const;
-	void SetFrame(int);
+
+	/** @return the number of frames in the underlying animation **/
+	int GetRealFrames() const;
+
+	/**
+	 * Set the current running frame
+	 *
+	 * @param frame the frame to set.
+	 **/
+	void SetFrame(int frame);
+
+	/** @return true if the animation has finished **/
 	bool IsDone() const;
-	bool ShouldOnlySound() const;
+
+	/** @return true if the animation only plays audio and doesn't display **/
+	bool IsOnlySound() const;
 
 protected:
-	virtual void SetFlash(int r, int g, int b, int p) = 0;
-	virtual bool ShouldScreenFlash() const = 0;
+	BattleAnimation(const RPG::Animation& anim, bool only_sound = false, int cutoff = -1);
+
+	virtual void FlashTargets(int r, int g, int b, int p) = 0;
+	virtual void ShakeTargets(int str, int spd, int time) = 0;
 	void DrawAt(int x, int y);
-	void RunTimedSfx();
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
+	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
 	void OnBattle2SpriteReady(FileRequestResult* result);
+	void UpdateScreenFlash();
+	void UpdateTargetFlash();
+	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
-	bool should_only_sound;
+	bool only_sound;
 	const RPG::Animation& animation;
 	int frame;
-	bool frame_update;
-	int cutoff;
+	int num_frames;
+	int screen_flash_timing = -1;
+	int target_flash_timing = -1;
 
 	FileRequestBinding request_id;
 };
 
-// For playing animations against a character on the map.
-class BattleAnimationChara : public BattleAnimation {
+// For playing animations on the map.
+class BattleAnimationMap : public BattleAnimation {
 public:
-	BattleAnimationChara(const RPG::Animation& anim, Game_Character& chara);
-	~BattleAnimationChara() override;
+	BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global);
+	~BattleAnimationMap() override;
 	void Draw() override;
 protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
-	Game_Character& character;
+	void FlashTargets(int r, int g, int b, int p) override;
+	void ShakeTargets(int str, int spd, int time) override;
+	void DrawSingle();
+	void DrawGlobal();
+
+	Game_Character& target;
+	bool global = false;
 };
 
 // For playing animations against a (group of) battlers in battle.
-class BattleAnimationBattlers : public BattleAnimation {
+class BattleAnimationBattle : public BattleAnimation {
 public:
-	BattleAnimationBattlers(const RPG::Animation& anim, Game_Battler& batt, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
-	BattleAnimationBattlers(const RPG::Animation& anim, const std::vector<Game_Battler*>& batts, bool flash = true, bool only_sound = false, int cutoff_frame = -1);
-	~BattleAnimationBattlers() override;
+	BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
+	~BattleAnimationBattle() override;
 	void Draw() override;
 protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
+	void FlashTargets(int r, int g, int b, int p) override;
+	void ShakeTargets(int str, int spd, int time) override;
 	std::vector<Game_Battler*> battlers;
-	bool should_flash;
 };
 
-// For playing "Show on the entire map" animations.
-class BattleAnimationGlobal : public BattleAnimation {
-public:
-	BattleAnimationGlobal(const RPG::Animation& anim);
-	~BattleAnimationGlobal() override;
-	void Draw() override;
-protected:
-	virtual void SetFlash(int r, int g, int b, int p) override;
-	bool ShouldScreenFlash() const override;
-};
+inline int BattleAnimation::GetFrame() const {
+	return frame;
+}
+
+inline int BattleAnimation::GetRealFrame() const {
+	return GetFrame() / 2;
+}
+
+inline int BattleAnimation::GetFrames() const {
+	return num_frames;
+}
+
+inline int BattleAnimation::GetRealFrames() const {
+	return animation.frames.size();
+}
+
+inline bool BattleAnimation::IsDone() const {
+	return GetFrame() >= GetFrames();
+}
+
+inline bool BattleAnimation::IsOnlySound() const {
+	return only_sound;
+}
+
+
 
 #endif

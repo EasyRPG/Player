@@ -604,14 +604,9 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 }
 
 bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& com) { // code 11210
-	if (waiting_battle_anim) {
-		waiting_battle_anim = Game_Map::IsBattleAnimationWaiting();
-		return !waiting_battle_anim;
-	}
-
 	int animation_id = com.parameters[0];
 	int evt_id = com.parameters[1];
-	waiting_battle_anim = com.parameters[2] > 0;
+	bool waiting_battle_anim = com.parameters[2] > 0;
 	bool global = com.parameters[3] > 0;
 
 	Game_Character* chara = GetCharacter(evt_id);
@@ -621,9 +616,13 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation(RPG::EventCommand const& c
 	if (evt_id == Game_Character::CharThisEvent)
 		evt_id = GetThisEventId();
 
-	Game_Map::ShowBattleAnimation(animation_id, evt_id, global);
+	int frames = Main_Data::game_screen->ShowBattleAnimation(animation_id, evt_id, global);
 
-	return !waiting_battle_anim;
+	if (waiting_battle_anim) {
+		_state.wait_time = frames;
+	}
+
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { // code 11320

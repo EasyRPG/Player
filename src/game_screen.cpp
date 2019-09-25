@@ -27,6 +27,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "utils.h"
+#include "reader_util.h"
 #include <cmath>
 
 static constexpr int kShakeContinuousTimeStart = 65535;
@@ -35,6 +36,17 @@ Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
 	Reset();
+}
+
+void Game_Screen::SetupFromSave() {
+	CreatePicturesFromSave();
+
+	if (Main_Data::game_data.screen.battleanim_active) {
+		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
+				Main_Data::game_data.screen.battleanim_target,
+				Main_Data::game_data.screen.battleanim_global,
+				Main_Data::game_data.screen.battleanim_frame);
+	}
 }
 
 void Game_Screen::CreatePicturesFromSave() {
@@ -83,6 +95,8 @@ void Game_Screen::Reset() {
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	animation.reset();
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
@@ -232,6 +246,14 @@ void Game_Screen::UpdateSnowRain(int speed) {
 	}
 }
 
+int Game_Screen::AnimateShake(int strength, int speed, int time_left, int position) {
+	int amplitude = 1 + 2 * strength;
+	int newpos = amplitude * sin((time_left * 4 * (speed + 2)) % 256 * M_PI / 128);
+	int cutoff = (speed * amplitude / 8) + 1;
+
+	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
+}
+
 void Game_Screen::Update() {
 	if (data.tint_time_left > 0) {
 		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
@@ -262,11 +284,7 @@ void Game_Screen::Update() {
 			if (data.shake_time_left < 0 && data.shake_continuous) {
 				data.shake_time_left = kShakeContinuousTimeStart;
 			}
-			int amplitude = 1 + 2 * data.shake_strength;
-			int newpos = amplitude * sin((data.shake_time_left * 4 * (data.shake_speed + 2)) % 256 * M_PI / 128);
-			int cutoff = (data.shake_speed * amplitude / 8) + 1;
-
-			data.shake_position = Utils::Clamp<int>(newpos, data.shake_position - cutoff, data.shake_position + cutoff);
+			data.shake_position = AnimateShake(data.shake_strength, data.shake_speed, data.shake_time_left, data.shake_position);
 		} else {
 			data.shake_position = 0;
 			data.shake_time_left = 0;
@@ -299,6 +317,8 @@ void Game_Screen::Update() {
 		case Weather_Sandstorm:
 			break;
 	}
+
+	UpdateBattleAnimation();
 }
 
 Tone Game_Screen::GetTone() {
@@ -323,3 +343,52 @@ int Game_Screen::GetWeatherStrength() {
 const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
 	return snowflakes;
 }
+
+int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
+	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
+	if (!anim) {
+		Output::Warning("ShowBattleAnimation: Invalid battle animation ID %d", animation_id);
+		return 0;
+	}
+
+	Main_Data::game_data.screen.battleanim_id = animation_id;
+	Main_Data::game_data.screen.battleanim_target = target_id;
+	Main_Data::game_data.screen.battleanim_global = global;
+	Main_Data::game_data.screen.battleanim_active = true;
+	Main_Data::game_data.screen.battleanim_frame = start_frame;
+
+	Game_Character* chara = Game_Character::GetCharacter(target_id, target_id);
+
+	if (chara) {
+		animation.reset(new BattleAnimationMap(*anim, *chara, global));
+	}
+
+	if (start_frame) {
+		animation->SetFrame(start_frame);
+	}
+
+	return animation->GetFrames();
+}
+
+void Game_Screen::UpdateBattleAnimation() {
+	if (animation) {
+		animation->Update();
+		Main_Data::game_data.screen.battleanim_frame = animation->GetFrame();
+		if (animation->IsDone()) {
+			CancelBattleAnimation();
+		}
+	}
+}
+
+void Game_Screen::CancelBattleAnimation() {
+	Main_Data::game_data.screen.battleanim_frame = animation ?
+		animation->GetFrames() : 0;
+	Main_Data::game_data.screen.battleanim_active = false;
+	animation.reset();
+}
+
+bool Game_Screen::IsBattleAnimationWaiting() {
+	return (bool)animation;
+}
+
+

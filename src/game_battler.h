@@ -654,6 +654,15 @@ public:
 	 */
 	int GetHitChanceModifierFromStates() const;
 
+	/**
+	 * Animate a shake for the sprite
+	 *
+	 * @param strength strength of the shake
+	 * @param speed speed of the shake
+	 * @param frames how many frames to shake
+	 */
+	void ShakeOnce(int strength, int speed, int frames);
+
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
@@ -675,6 +684,11 @@ protected:
 	std::vector<int> attribute_shift;
 
 	int battle_order = 0;
+
+	int shake_position = 0;
+	int shake_time_left = 0;
+	int shake_strength = 0;
+	int shake_speed = 0;
 };
 
 #endif

@@ -244,6 +244,7 @@ void Game_Enemy::UpdateBattle() {
 			flying_offset = frames[cycle / levitation_frame_cycle];
 		}
 	}
+	Game_Battler::UpdateBattle();
 }
 
 bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {

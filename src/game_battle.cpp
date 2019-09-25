@@ -195,28 +195,16 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
 
-void Game_Battle::ShowBattleAnimation(int animation_id, Game_Battler* target, bool flash, bool only_sound, int cutoff) {
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-
-	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
-	if (!anim) {
-		Output::Warning("ShowBattleAnimation Single: Invalid animation ID %d", animation_id);
-		return;
-	}
-
-	animation.reset(new BattleAnimationBattlers(*anim, *target, flash, only_sound, cutoff));
-}
-
-void Game_Battle::ShowBattleAnimation(int animation_id, const std::vector<Game_Battler*>& targets, bool flash, bool only_sound, int cutoff) {
-	Main_Data::game_data.screen.battleanim_id = animation_id;
-
+int Game_Battle::ShowBattleAnimation(int animation_id, std::vector<Game_Battler*> targets, bool only_sound, int cutoff) {
 	const RPG::Animation* anim = ReaderUtil::GetElement(Data::animations, animation_id);
 	if (!anim) {
 		Output::Warning("ShowBattleAnimation Many: Invalid animation ID %d", animation_id);
-		return;
+		return 0;
 	}
 
-	animation.reset(new BattleAnimationBattlers(*anim, targets, flash, only_sound, cutoff));
+	animation.reset(new BattleAnimationBattle(*anim, std::move(targets), only_sound, cutoff));
+	auto frames = animation->GetFrames();
+	return cutoff >= 0 ? std::min(frames, cutoff) : frames;
 }
 
 bool Game_Battle::IsBattleAnimationWaiting() {
