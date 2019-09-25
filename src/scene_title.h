@@ -24,6 +24,7 @@
 #include "window_command.h"
 #include "async_handler.h"
 
+
 /**
  * Scene Title class.
  */
@@ -88,6 +89,12 @@ public:
 	void CommandContinue();
 
 	/**
+	 * Option Import.
+	 * Shows the Import screen, for use with multi-game save files.
+	 */
+	void CommandImport();
+
+	/**
 	 * Option Shutdown.
 	 * Does a player shutdown.
 	 */
@@ -107,8 +114,14 @@ private:
 	/** Background graphic. */
 	std::unique_ptr<Sprite> title;
 
+	/** Offsets for each selection, in case "Import" is enabled. */
+	int new_game_index =  0;
+	int continue_index =  1;
+	int exit_index     =  2;
+	int import_index   = -1;
+
 	/** Contains the state of continue button. */
-	bool continue_enabled;
+	bool continue_enabled = false;
 
 	bool restart_title_cache = true;
 

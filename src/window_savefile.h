@@ -45,6 +45,16 @@ public:
 	void SetIndex(int id);
 
 	/**
+	 * Sets a name (usually a path) to show instead of the File ID, and
+	 *  push file ID display to Line 2.
+	 * Useful for save file importing, where multiple "Save01.lsd" files may exist.
+	 *
+	 * @param name The name to show instead of the file ID
+	 * @param index The file index override, shown on line 2
+	 */
+	void SetDisplayOverride(const std::string& name, int index);
+
+	/**
 	 * Party data displayed in the savegame slot.
 	 *
 	 * @param actors face_id and face_name of all party members.
@@ -79,14 +89,17 @@ public:
 
 protected:
 	void UpdateCursorRect();
+	std::string GetSaveFileName() const;
 
-	int index;
+	int index = 0;
+	std::string override_name;
+	int override_index = 0;
 	std::vector<std::pair<int, std::string> > party;
 	std::string hero_name;
-	int hero_hp;
-	int hero_level;
-	bool corrupted;
-	bool has_save;
+	int hero_hp = 0;
+	int hero_level = 0;
+	bool corrupted = false;
+	bool has_save = false;
 };
 
 #endif

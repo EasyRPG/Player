@@ -20,10 +20,12 @@
 
 // Headers
 #include <vector>
-#include "scene.h"
 #include "filefinder.h"
+#include "rpg_save.h"
+#include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"
+
 
 /**
  * Base class used by the save and load scenes.
@@ -48,11 +50,17 @@ public:
 	bool IsWindowMoving() const;
 
 protected:
+	virtual void CreateHelpWindow();
+	virtual void PopulateSaveWindow(Window_SaveFile& win, int id);
+	virtual void PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& savegame);
+	virtual void UpdateLatestTimestamp(Window_SaveFile& win, int id, RPG::Save& savegame);
+	static std::unique_ptr<Sprite> MakeBorderSprite(int y);
+
 	void Refresh();
 	void MoveFileWindows(int dy, int dt);
 
-	int index;
-	int top_index;
+	int index = 0;
+	int top_index = 0;
 	std::unique_ptr<Window_Help> help_window;
 	std::vector<std::shared_ptr<Window_SaveFile> > file_windows;
 	std::unique_ptr<Sprite> border_top;
@@ -61,8 +69,8 @@ protected:
 
 	std::shared_ptr<FileFinder::DirectoryTree> tree;
 
-	double latest_time;
-	int latest_slot;
+	double latest_time = 0;
+	int latest_slot = 0;
 };
 
 #endif

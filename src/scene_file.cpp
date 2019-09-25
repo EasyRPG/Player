@@ -27,19 +27,16 @@
 #include "input.h"
 #include "lsd_reader.h"
 #include "player.h"
-#include "rpg_save.h"
 #include "scene_file.h"
 #include "bitmap.h"
 #include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
-	message(message), latest_time(0), latest_slot(0) {
-	top_index = 0;
-	index = 0;
+	message(message) {
 }
 
-static std::unique_ptr<Sprite> makeBorderSprite(int y) {
-	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::SystemOrBlack()->GetBackgroundColor());
+std::unique_ptr<Sprite> Scene_File::MakeBorderSprite(int y) {
+	auto bitmap = Bitmap::Create(SCREEN_TARGET_WIDTH, 8, Cache::System()->GetBackgroundColor());
 	auto sprite = std::unique_ptr<Sprite>(new Sprite());
 	sprite->SetVisible(true);
 	sprite->SetZ(Priority_Window + 1);
@@ -49,13 +46,76 @@ static std::unique_ptr<Sprite> makeBorderSprite(int y) {
 	return sprite;
 }
 
-void Scene_File::Start() {
-	// Create the windows
+void Scene_File::CreateHelpWindow() {
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);
 	help_window->SetZ(Priority_Window + 1);
+}
 
-	border_top = makeBorderSprite(32);
+void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& savegame) {
+	std::vector<std::pair<int, std::string> > party;
+
+	// When a face_name is empty the party list ends
+	int party_size =
+		savegame.title.face1_name.empty() ? 0 :
+		savegame.title.face2_name.empty() ? 1 :
+		savegame.title.face3_name.empty() ? 2 :
+		savegame.title.face4_name.empty() ? 3 : 4;
+
+	party.resize(party_size);
+
+	if (party_size > 3) {
+		party[3].first = savegame.title.face4_id;
+		party[3].second = savegame.title.face4_name;
+	}
+	if (party_size > 2) {
+		party[2].first = savegame.title.face3_id;
+		party[2].second = savegame.title.face3_name;
+	}
+	if (party_size > 1) {
+		party[1].first = savegame.title.face2_id;
+		party[1].second = savegame.title.face2_name;
+	}
+	if (party_size > 0) {
+		party[0].first = savegame.title.face1_id;
+		party[0].second = savegame.title.face1_name;
+	}
+
+	win.SetParty(party, savegame.title.hero_name, savegame.title.hero_hp, savegame.title.hero_level);
+	win.SetHasSave(true);
+}
+
+void Scene_File::UpdateLatestTimestamp(Window_SaveFile& win, int id, RPG::Save& savegame) {
+	if (savegame.title.timestamp > latest_time) {
+		latest_time = savegame.title.timestamp;
+		latest_slot = id;
+	}
+}
+
+void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
+	// Try to access file
+	std::stringstream ss;
+	ss << "Save" << (id <= 8 ? "0" : "") << (id + 1) << ".lsd";
+
+	std::string file = FileFinder::FindDefault(*tree, ss.str());
+
+	if (!file.empty()) {
+		// File found
+		std::unique_ptr<RPG::Save> savegame =
+			LSD_Reader::Load(file, Player::encoding);
+
+		if (savegame.get()) {
+			PopulatePartyFaces(win, id, *savegame);
+			UpdateLatestTimestamp(win, id, *savegame);
+		} else {
+			win.SetCorrupted(true);
+		}
+	}
+}
+
+void Scene_File::Start() {
+	CreateHelpWindow();
+	border_top = Scene_File::MakeBorderSprite(32);
 
 	// Refresh File Finder Save Folder
 	tree = FileFinder::CreateSaveDirectoryTree();
@@ -65,66 +125,13 @@ void Scene_File::Start() {
 			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
 		w->SetZ(Priority_Window);
-
-		// Try to access file
-		std::stringstream ss;
-		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-
-		std::string file = FileFinder::FindDefault(*tree, ss.str());
-
-		if (!file.empty()) {
-			// File found
-			std::unique_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(file, Player::encoding);
-
-			if (savegame.get())	{
-				std::vector<std::pair<int, std::string> > party;
-
-				// When a face_name is empty the party list ends
-				int party_size =
-					savegame->title.face1_name.empty() ? 0 :
-					savegame->title.face2_name.empty() ? 1 :
-					savegame->title.face3_name.empty() ? 2 :
-					savegame->title.face4_name.empty() ? 3 : 4;
-
-				party.resize(party_size);
-
-				if (party_size > 3) {
-					party[3].first = savegame->title.face4_id;
-					party[3].second = savegame->title.face4_name;
-				}
-				if (party_size > 2) {
-					party[2].first = savegame->title.face3_id;
-					party[2].second = savegame->title.face3_name;
-				}
-				if (party_size > 1) {
-					party[1].first = savegame->title.face2_id;
-					party[1].second = savegame->title.face2_name;
-				}
-				if (party_size > 0) {
-					party[0].first = savegame->title.face1_id;
-					party[0].second = savegame->title.face1_name;
-				}
-
-				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
-					savegame->title.hero_level);
-				w->SetHasSave(true);
-
-				if (savegame->title.timestamp > latest_time) {
-					latest_time = savegame->title.timestamp;
-					latest_slot = i;
-				}
-			} else {
-				w->SetCorrupted(true);
-			}
-		}
-
+		PopulateSaveWindow(*w, i);
 		w->Refresh();
 
 		file_windows.push_back(w);
 	}
 
-	border_bottom = makeBorderSprite(232);
+	border_bottom = Scene_File::MakeBorderSprite(232);
 
 	index = latest_slot;
 	top_index = std::max(0, index - 2);

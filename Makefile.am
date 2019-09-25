@@ -168,6 +168,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/memory_management.h \
 	src/message_overlay.cpp \
 	src/message_overlay.h \
+	src/meta.cpp \
+	src/meta.h \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \
@@ -189,6 +191,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/rtp_table.cpp \
 	src/scene.cpp \
 	src/scene.h \
+	src/scene_import.cpp \
+	src/scene_import.h \
 	src/scene_actortarget.cpp \
 	src/scene_actortarget.h \
 	src/scene_battle.cpp \
@@ -320,6 +324,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/window_gold.h \
 	src/window_help.cpp \
 	src/window_help.h \
+	src/window_import_progress.cpp \
+	src/window_import_progress.h \
 	src/window_item.cpp \
 	src/window_item.h \
 	src/window_keyboard.cpp \

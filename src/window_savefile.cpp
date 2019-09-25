@@ -27,8 +27,7 @@
 #include "player.h"
 
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	index(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
+	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetBorderX(4);
 	SetContents(Bitmap::Create(width - 8, height - 16));
@@ -41,16 +40,33 @@ void Window_SaveFile::UpdateCursorRect() {
 	Rect rect = Rect();
 
 	if (GetActive()) {
-		std::ostringstream out;
-		out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
-		rect = Rect(0, 0, Font::Default()->GetSize(out.str()).width + 6, 16);
+		rect = Rect(0, 0, Font::Default()->GetSize(GetSaveFileName()).width + 6, 16);
 	}
 
 	SetCursorRect(rect);
 }
 
+std::string Window_SaveFile::GetSaveFileName() const {
+	std::ostringstream out;
+	if (!override_name.empty()) {
+		if (override_name.size() > 14 && !party.empty()) {
+			out << override_name.substr(0, 11) << "...";
+		} else {
+			out << override_name;
+		}
+	} else {
+		out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
+	}
+	return out.str();
+}
+
 void Window_SaveFile::SetIndex(int id) {
 	index = id;
+}
+
+void Window_SaveFile::SetDisplayOverride(const std::string& name, int index) {
+	override_name = name;
+	override_index = index;
 }
 
 void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& actors,
@@ -76,9 +92,9 @@ void Window_SaveFile::SetHasSave(bool valid) {
 void Window_SaveFile::Refresh() {
 	contents->Clear();
 
-	std::ostringstream out;
-	out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4, 2, has_save ? Font::ColorDefault : Font::ColorDisabled, out.str());
+	Font::SystemColor fc = has_save ? Font::ColorDefault : Font::ColorDisabled;
+
+	contents->TextDraw(4, 2, fc, GetSaveFileName());
 
 	if (corrupted) {
 		contents->TextDraw(4, 16 + 2, Font::ColorKnockout, "Savegame corrupted");
@@ -89,7 +105,14 @@ void Window_SaveFile::Refresh() {
 		return;
 
 
-	contents->TextDraw(4, 16 + 2, Font::ColorDefault, hero_name);
+	std::stringstream out;
+	if (override_index > 0) {
+		out << Data::terms.file << std::setw(2) << std::setfill(' ') << override_index;
+		contents->TextDraw(4, 16+2, fc, out.str());
+	} else {
+		contents->TextDraw(4, 16 + 2, fc, hero_name);
+	}
+
 	auto lvl_short = Data::terms.lvl_short;
 	if (lvl_short.size() != 2) {
 		lvl_short.resize(2, ' ');
@@ -100,7 +123,7 @@ void Window_SaveFile::Refresh() {
 	int lx = Font::Default()->GetSize(lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << hero_level;
-	contents->TextDraw(4 + lx, 32 + 2, Font::ColorDefault, out.str());
+	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
 
 	auto hp_short = Data::terms.hp_short;
 	if (hp_short.size() != 2) {
@@ -112,10 +135,10 @@ void Window_SaveFile::Refresh() {
 	int hx = Font::Default()->GetSize(hp_short).width;
 	out.str("");
 	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << hero_hp;
-	contents->TextDraw(46 + hx, 32 + 2, Font::ColorDefault, out.str());
+	contents->TextDraw(46 + hx, 32 + 2, fc, out.str());
 
 	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
-		DrawFace(party[i].second, party[i].first, 92 + i * 56, 0);
+		DrawFace(party[i].second, party[i].first, 92 + i * 56, 0, false);
 	}
 }
 
