@@ -72,7 +72,7 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
 			-I$(TOOLCHAIN_DIR)/include/libxmp-lite \
 			-I$(TOOLCHAIN_DIR)/include/freetype2
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++14
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

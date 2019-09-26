@@ -111,8 +111,8 @@ AS_IF([test "x$BASHCOMPLETION_DIR" = "x"],[
 AC_SUBST([BASHCOMPLETION_DIR])
 AM_CONDITIONAL([HAVE_BASHCOMPLETION], [test "x$with_bash_completion_dir" != "xno"])
 
-# C++11 is mandatory
-AX_CXX_COMPILE_STDCXX(11, noext)
+# C++14 is mandatory
+AX_CXX_COMPILE_STDCXX(14, noext)
 
 # Checks for header files.
 AC_CHECK_HEADERS([cstdint cstdlib string iostream unistd.h wchar.h])

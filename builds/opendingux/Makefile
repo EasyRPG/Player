@@ -13,7 +13,7 @@ ifeq ($(BUILD_TARGET), dingoo)
 	TOOLCHAINDIR ?= /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
 	BINDIR = $(TOOLCHAINDIR)/usr/bin
-	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
+	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++14
 	LDFLAGS = -Wl,--gc-sections
 	PNG_LIBS = -lpng12
 	PIXMAN_CFLAGS := -I$(SYSROOT)/usr/include/pixman-1
@@ -35,7 +35,7 @@ ifeq ($(BUILD_TARGET), gcwzero)
 	TOOLCHAINDIR ?= /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	BINDIR = $(TOOLCHAINDIR)/usr/bin
-	CFLAGS = -Ofast -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 -std=gnu++11 -DLCF_SUPPORT_ICU 
+	CFLAGS = -Ofast -fomit-frame-pointer -fdata-sections -ffunction-sections -mips32r2 -std=gnu++14 -DLCF_SUPPORT_ICU
 	CFLAGS += -DGCW_ZERO -DWANT_FMMIDI=2 -DHAVE_MPG123 -DHAVE_LIBSNDFILE -DWANT_FASTWAV
 	LDFLAGS = -Wl,--no-as-needed,--gc-sections -flto
 	PKG_CONFIG := $(BINDIR)/pkg-config

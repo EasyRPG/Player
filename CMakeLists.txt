@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.7)
 
 project(EasyRPG_Player VERSION 0.6.1 LANGUAGES CXX)
 
-# C++11 is required
-set(CMAKE_CXX_STANDARD 11)
+# C++14 is required
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
