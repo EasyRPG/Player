@@ -25,6 +25,7 @@
 #endif
 
 #include "async_handler.h"
+#include "cache.h"
 #include "filefinder.h"
 #include "memory_management.h"
 #include "output.h"
@@ -156,6 +157,12 @@ void FileRequestAsync::SetGraphicFile(bool graphic) {
 }
 
 void FileRequestAsync::Start() {
+	if (file == CACHE_DEFAULT_BITMAP) {
+		// Embedded asset -> Fire immediately
+		DownloadDone(true);
+		return;
+	}
+
 	if (state == State_Pending) {
 		return;
 	}
