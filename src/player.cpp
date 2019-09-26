@@ -168,10 +168,6 @@ void Player::Init(int argc, char *argv[]) {
 	// Create initial directory structure in our private area
 	// Retrieve save directory from persistent storage
 	EM_ASM(({
-
-		FS.mkdir("easyrpg");
-		FS.chdir("easyrpg");
-
 		var dirs = ['Backdrop', 'Battle', 'Battle2', 'BattleCharSet', 'BattleWeapon', 'CharSet', 'ChipSet', 'FaceSet', 'Frame', 'GameOver', 'Monster', 'Movie', 'Music', 'Panorama', 'Picture', 'Sound', 'System', 'System2', 'Title', 'Save'];
 		dirs.forEach(function(dir) { FS.mkdir(dir) });
 
