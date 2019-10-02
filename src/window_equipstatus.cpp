@@ -22,6 +22,7 @@
 #include "window_equipstatus.h"
 #include "bitmap.h"
 #include "font.h"
+#include "player.h"
 
 Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -120,8 +121,13 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	contents->TextDraw(cx, cy, Font::ColorDefault, std::to_string(value), Text::AlignRight);
 
 	if (draw_params) {
-		// Draw arrow (+3 for center between the two numbers)
-		contents->TextDraw(cx + 3, cy, 1, ">");
+		if (Player::IsCP932()) {
+			// Draw fullwidth arrow
+			contents->TextDraw(cx, cy, 1, "→");
+		} else {
+			// Draw arrow (+3 for center between the two numbers)
+			contents->TextDraw(cx + 3, cy, 1, ">");
+		}
 
 		// Draw New Value
 		cx += 6 * 2 + 6 * 3;
