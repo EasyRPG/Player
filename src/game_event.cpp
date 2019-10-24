@@ -123,17 +123,13 @@ void Game_Event::Setup(const RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	data()->overlap_forbidden = page->overlap_forbidden;
 
-	if (interpreter) {
-		interpreter->Clear();
-	}
-
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (!page->event_commands.empty()) {
 			if (!interpreter) {
 				interpreter.reset(new Game_Interpreter_Map());
 			}
-			interpreter->Clear();
-			interpreter->Push(this);
+			// RPG_RT will wait until the next call to Update() to push the interpreter code.
+			// This forces the interpreter to yield when it changes it's own page.
 		}
 	}
 }
@@ -506,8 +502,8 @@ void Game_Event::MoveTypeAwayFromPlayer() {
 	MoveTypeTowardsOrAwayPlayer(false);
 }
 
-AsyncOp Game_Event::Update() {
-	if (!data()->active || page == NULL) {
+AsyncOp Game_Event::Update(bool resume_async) {
+	if (!data()->active || (!resume_async && page == NULL)) {
 		return {};
 	}
 
@@ -516,8 +512,11 @@ AsyncOp Game_Event::Update() {
 	// the interpreter will run multiple times per frame.
 	// This results in event waits to finish quicker during collisions as
 	// the wait will tick by 1 each time the interpreter is invoked.
-	if (GetTrigger() == RPG::EventPage::Trigger_parallel && interpreter) {
-		interpreter->Update();
+	if ((resume_async || GetTrigger() == RPG::EventPage::Trigger_parallel) && interpreter) {
+		if (!interpreter->IsRunning() && page && !page->event_commands.empty()) {
+			interpreter->Push(this);
+		}
+		interpreter->Update(!resume_async);
 
 		// Suspend due to async op ...
 		if (interpreter->IsAsyncPending()) {

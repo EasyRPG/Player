@@ -49,10 +49,10 @@ void Game_CommonEvent::SetSaveData(const RPG::SaveEventExecState& data) {
 	}
 }
 
-AsyncOp Game_CommonEvent::Update() {
-	if (interpreter && IsWaitingBackgroundExecution()) {
+AsyncOp Game_CommonEvent::Update(bool resume_async) {
+	if (interpreter && IsWaitingBackgroundExecution(resume_async)) {
 		assert(interpreter->IsRunning());
-		interpreter->Update();
+		interpreter->Update(!resume_async);
 
 		// Suspend due to async op ...
 		if (interpreter->IsAsyncPending()) {
@@ -108,8 +108,8 @@ bool Game_CommonEvent::IsWaitingForegroundExecution() const {
 		&& !ce->event_commands.empty();
 }
 
-bool Game_CommonEvent::IsWaitingBackgroundExecution() const {
+bool Game_CommonEvent::IsWaitingBackgroundExecution(bool force_run) const {
 	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
 	return ce->trigger == RPG::EventPage::Trigger_parallel &&
-		(!ce->switch_flag || Game_Switches.Get(ce->switch_id));
+		(force_run || !ce->switch_flag || Game_Switches.Get(ce->switch_id));
 }

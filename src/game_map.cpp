@@ -532,6 +532,15 @@ static bool WouldCollide(const Game_Character& self, const Game_Character& other
 }
 
 template <typename T>
+static void MakeWayUpdate(T& other) {
+	other.Update();
+}
+
+static void MakeWayUpdate(Game_Event& other) {
+	other.Update(false);
+}
+
+template <typename T>
 static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& other, bool self_conflict) {
 	if (&self == &other) {
 		return false;
@@ -542,7 +551,7 @@ static bool MakeWayCollideEvent(int x, int y, const Game_Character& self, T& oth
 	}
 
 	// Force the other event to update, allowing them to possibly move out of the way.
-	other.Update();
+	MakeWayUpdate(other);
 
 	if (!other.IsInPosition(x, y)) {
 		return false;
@@ -1006,16 +1015,18 @@ bool Game_Map::UpdateCommonEvents(MapUpdateAsyncContext& actx) {
 	int resume_ce = actx.GetParallelCommonEvent();
 
 	for (Game_CommonEvent& ev : common_events) {
+		bool resume_async = false;
 		if (resume_ce != 0) {
 			// If resuming, skip all until the event to resume from ..
 			if (ev.GetIndex() != resume_ce) {
 				continue;
 			} else {
 				resume_ce = 0;
+				resume_async = true;
 			}
 		}
 
-		auto aop = ev.Update();
+		auto aop = ev.Update(resume_async);
 		if (aop.IsActive()) {
 			// Suspend due to this event ..
 			actx = MapUpdateAsyncContext::FromCommonEvent(ev.GetIndex(), aop);
@@ -1031,16 +1042,18 @@ bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
 	int resume_ev = actx.GetParallelMapEvent();
 
 	for (Game_Event& ev : events) {
+		bool resume_async = false;
 		if (resume_ev != 0) {
 			// If resuming, skip all until the event to resume from ..
 			if (ev.GetId() != resume_ev) {
 				continue;
 			} else {
 				resume_ev = 0;
+				resume_async = true;
 			}
 		}
 
-		auto aop = ev.Update();
+		auto aop = ev.Update(resume_async);
 		if (aop.IsActive()) {
 			// Suspend due to this event ..
 			actx = MapUpdateAsyncContext::FromMapEvent(ev.GetId(), aop);
