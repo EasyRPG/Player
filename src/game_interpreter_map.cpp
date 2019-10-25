@@ -146,8 +146,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::ToggleAtbMode:
 			return CommandToggleAtbMode(com);
 		case Cmd::OpenVideoOptions:
-			Output::Warning("OpenVideoOptions: Command not supported");
-			return true;
+			return CommandOpenVideoOptions(com);
 		default:
 			return Game_Interpreter::ExecuteCommand();
 	}
@@ -157,6 +156,10 @@ bool Game_Interpreter_Map::ExecuteCommand() {
  * Commands
  */
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
@@ -186,7 +189,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -290,7 +293,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -369,6 +372,11 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 		return ContinuationShowInnStart(com);
 	}
 
+	// Emulates RPG_RT behavior (Bug?) Inn's called by parallel events
+	// overwrite the current message.
+	if (main_flag && !Game_Message::CanShowMessage(main_flag)) {
+		return false;
+	}
 	Game_Message::message_waiting = true;
 
 	Game_Message::texts.clear();
@@ -507,7 +515,7 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -533,13 +541,14 @@ bool Game_Interpreter_Map::CommandEnterHeroName(RPG::EventCommand const& com) { 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 																		   // TODO: if in battle return true
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	auto* frame = GetFrame();
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
-		return false;
-	}
 	int map_id = com.parameters[0];
 	int x = com.parameters[1];
 	int y = com.parameters[2];
@@ -658,6 +667,10 @@ bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* co
 }
 
 bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // code 11560
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	const std::string& filename = com.string;
 	int pos_x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int pos_y = ValueOrVariable(com.parameters[0], com.parameters[2]);
@@ -676,7 +689,7 @@ bool Game_Interpreter_Map::CommandOpenSaveMenu(RPG::EventCommand const& /* com *
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -690,7 +703,7 @@ bool Game_Interpreter_Map::CommandOpenMainMenu(RPG::EventCommand const& /* com *
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -704,7 +717,7 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 	assert(frame);
 	auto& index = frame->current_command;
 
-	if (Game_Message::visible) {
+	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
 
@@ -715,6 +728,15 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
 	Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandOpenVideoOptions(RPG::EventCommand const& com) {
+	if (Game_Message::IsMessageActive()) {
+		return false;
+	}
+
+	Output::Warning("OpenVideoOptions: Command not supported");
 	return true;
 }
 

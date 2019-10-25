@@ -41,9 +41,6 @@ namespace Game_Message {
 	/** Contains the different lines of text. */
 	extern std::vector<std::string> texts;
 
-	/** ID of the event that activated this message */
-	extern unsigned int owner_id;
-
 	/**
 	 * Returns name of file that contains the face.
 	 *
@@ -222,18 +219,41 @@ namespace Game_Message {
 	extern int num_input_variable_id;
 	extern int num_input_digits_max;
 
-	/** Don't wait for a key to be pressed. */
-	extern bool dont_halt;
-
 	/** Reset the text color for each choice */
 	extern bool choice_reset_color;
 
-	/** If a message is currently being processed. */
+	/** If we're waiting for a message to finish processing. This flag is set to true from when the
+	 * message box is requested up until it's finished writing text and ready to close.
+	 */
 	extern bool message_waiting;
+	/**
+	 * Set to true when after the message box has started animating closed
+	 * FIXME: Implement this flag in Game_Message logic.
+	 **/
+	extern bool closing;
+	/** Set to true while the message box is visible on the screen */
 	extern bool visible;
 
 	/** Selected option (4 => cancel). */
 	extern int choice_result;
+
+	/**
+	 * Return if it's legal to show a new message box.
+	 *
+	 * @param foreground true if this is in the foreground context, otherwise parallel context.
+	 * @return true if we can show a message box.
+	 */
+	bool CanShowMessage(bool foreground);
+
+	/**
+	 * True if a message is currently pending or still visible
+	 * @return true if message_waiting || visible
+	 */
+	bool IsMessageActive();
+}
+
+inline bool Game_Message::IsMessageActive() {
+	return message_waiting || visible;
 }
 
 #endif

@@ -92,6 +92,20 @@ namespace Utils {
 	 */
 	std::string EncodeUTF(const std::u32string& str);
 
+	struct UtfNextResult {
+		uint32_t ch;
+		const char* iter;
+	};
+
+	/**
+	 * Decodes the next UTF-8 character and returns it and the iterator to the next
+	 *
+	 * @param iter begginning of the range to convert from
+	 * @param end end of the range to convert from
+	 * @return the converted string.
+	 */
+	UtfNextResult UTF8Next(const char* iter, const char* end);
+
 #if !defined(__amigaos4__) && !defined(__AROS__)
 	/**
 	 * Converts UTF-8 string to std::wstring.
