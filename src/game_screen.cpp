@@ -186,7 +186,7 @@ void Game_Screen::ShakeBegin(int power, int speed) {
 void Game_Screen::ShakeEnd() {
 	data.shake_position = 0;
 	data.shake_time_left = 0;
-	data.shake_continuous = false;
+	// RPG_RT does not turn off the continuous shake flag when shake is disabled.
 }
 
 void Game_Screen::SetWeatherEffect(int type, int strength) {
@@ -278,12 +278,16 @@ void Game_Screen::Update() {
 		}
 	}
 
-	if (data.shake_continuous || data.shake_time_left > 0) {
+	if (data.shake_time_left > 0) {
 		--data.shake_time_left;
-		if (data.shake_continuous || data.shake_time_left > 0) {
-			if (data.shake_time_left < 0 && data.shake_continuous) {
-				data.shake_time_left = kShakeContinuousTimeStart;
-			}
+
+		// This fixes a bug in RPG_RT where continuous shake would actually stop after
+		// 18m12s of gameplay.
+		if (data.shake_time_left <= 0 && data.shake_continuous) {
+			data.shake_time_left = kShakeContinuousTimeStart;
+		}
+
+		if (data.shake_time_left > 0) {
 			data.shake_position = AnimateShake(data.shake_strength, data.shake_speed, data.shake_time_left, data.shake_position);
 		} else {
 			data.shake_position = 0;
