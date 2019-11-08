@@ -226,10 +226,7 @@ namespace Game_Message {
 	 * message box is requested up until it's finished writing text and ready to close.
 	 */
 	extern bool message_waiting;
-	/**
-	 * Set to true when after the message box has started animating closed
-	 * FIXME: Implement this flag in Game_Message logic.
-	 **/
+	/** Set to true when after the message box has started animating closed */
 	extern bool closing;
 	/** Set to true while the message box is visible on the screen */
 	extern bool visible;

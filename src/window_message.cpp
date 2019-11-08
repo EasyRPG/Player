@@ -35,9 +35,6 @@
 #include "bitmap.h"
 #include "font.h"
 
-const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
-											7, 7, 8, 8, 9, 9, 10, 10, 11};
-
 constexpr int message_animation_frames = 8;
 
 // C4428 is nonsense
@@ -47,9 +44,6 @@ constexpr int message_animation_frames = 8;
 
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	contents_x(0), contents_y(0), line_count(0),
-	kill_message(false), speed_modifier(0),
-	speed_frame_counter(0), new_page_after_pause(false),
 	number_input_window(new Window_NumberInput(0, 0)),
 	gold_window(new Window_Gold(232, 0, 88, 32))
 {
@@ -186,7 +180,7 @@ void Window_Message::FinishMessageProcessing() {
 	} else if (kill_message) {
 		TerminateMessage();
 	} else {
-		pause = true;
+		SetPause(true);
 	}
 
 	text.clear();
@@ -254,12 +248,13 @@ void Window_Message::InsertNewPage() {
 	contents_y = 2;
 	line_count = 0;
 	text_color = Font::ColorDefault;
-	speed_modifier = 0;
+	speed = 1;
 
 	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
 		// If there is an input window on the first line
 		StartNumberInputProcessing();
 	}
+	line_char_counter = 0;
 }
 
 void Window_Message::InsertNewLine() {
@@ -285,18 +280,20 @@ void Window_Message::InsertNewLine() {
 
 		contents_x += 12;
 	}
+	line_char_counter = 0;
 }
 
 void Window_Message::TerminateMessage() {
 	active = false;
-	pause = false;
+	SetPause(false);
 	kill_message = false;
+	line_char_counter = 0;
 	index = -1;
 
 	Game_Message::message_waiting = false;
 	if (number_input_window->GetVisible()) {
 		number_input_window->SetActive(false);
-		number_input_window->SetCloseAnimation(message_animation_frames);
+		number_input_window->SetVisible(false);
 	}
 
 	if (gold_window->GetVisible()) {
@@ -315,115 +312,163 @@ void Window_Message::ResetWindow() {
 }
 
 void Window_Message::Update() {
+	bool update_message_processing = false;
+	if (wait_count == 0) {
+		if (GetPause()) {
+			WaitForInput();
+		} else if (active) {
+			InputChoice();
+		} else if (number_input_window->GetVisible()) {
+			InputNumber();
+		} else if (!text.empty()) {
+			//Handled after base class updates.
+			if (text_index != text.end()) {
+				update_message_processing = true;
+			}
+			if (text_index == text.end() && wait_count <= 0) {
+				FinishMessageProcessing();
+			}
+		} else if (IsNextMessagePossible()) {
+			// Output a new page
+			if (Game_Temp::inn_calling) {
+				ShowGoldWindow();
+			}
+
+			StartMessageProcessing();
+			//printf("Text: %s\n", text.c_str());
+			if (!visible) {
+				// The MessageBox is not open yet but text output is needed
+				// Open and Close Animations are skipped in battle
+				SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			} else if (closing) {
+				// Cancel closing animation
+				SetOpenAnimation(0);
+			}
+			Game_Message::visible = true;
+		}
+
+		if (!Game_Message::message_waiting && Game_Message::visible) {
+			if (visible) {
+				if (!closing) {
+					// Start the closing animation
+					SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+				} else {
+					// Closing animation has started, prevent new messages from starting.
+					Game_Message::closing = true;
+				}
+			}
+		}
+	}
+
 	Window_Selectable::Update();
 	number_input_window->Update();
 	gold_window->Update();
-
-	if (pause) {
-		WaitForInput();
-	} else if (active) {
-		InputChoice();
-	} else if (number_input_window->GetVisible()) {
-		InputNumber();
-	} else if (!text.empty()) {
-		// Output the remaining text for the current page
-		UpdateMessage();
-	} else if (IsNextMessagePossible()) {
-		// Output a new page
-		if (Game_Temp::inn_calling) {
-			ShowGoldWindow();
-		}
-
-		StartMessageProcessing();
-		//printf("Text: %s\n", text.c_str());
-		if (!visible) {
-			// The MessageBox is not open yet but text output is needed
-			// Open and Close Animations are skipped in battle
-			SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
-		} else if (closing) {
-			// Cancel closing animation
-			SetOpenAnimation(0);
-		}
-		Game_Message::visible = true;
-	} else if (!Game_Message::message_waiting && Game_Message::visible) {
-		if (visible && !closing) {
-			// Start the closing animation
-			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
-		} else if (!visible) {
-			// The closing animation has finished
-			Game_Message::visible = false;
-		}
-	}
-}
-
-void Window_Message::UpdateMessage() {
-	// Message Box Show Message rendering loop
-
-	bool instant_speed = false;
-
-	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
-		wait_count = 0;
-		instant_speed = true;
-	}
 
 	if (wait_count > 0) {
 		--wait_count;
 		return;
 	}
 
-	int loop_count = 0;
-	int loop_max = speed_table[speed_modifier] == 0 ? 2 : 1;
+	if (update_message_processing) {
+		UpdateMessage();
+	}
 
-	while (instant_speed || loop_count < loop_max) {
-		if (!instant_speed) {
-			// It's assumed that speed_modifier is between 0 and 20
-			++speed_frame_counter;
+	if (!visible) {
+		// The closing animation has finished
+		Game_Message::visible = false;
+		Game_Message::closing = false;
+	}
+}
 
-			if (speed_table[speed_modifier] != 0 &&
-				speed_table[speed_modifier] != speed_frame_counter) {
-				break;
-			}
+void Window_Message::UpdatePostEvents() {
+	// Foreground events can spawn a new message. When this happens
+	// we immediately cancel the closing animation.
+	if (closing && !Game_Message::texts.empty()) {
+		SetOpenAnimation(0);
+	}
+}
 
-			speed_frame_counter = 0;
+void Window_Message::UpdateMessage() {
+	if (IsOpeningOrClosing()) {
+		return;
+	}
+
+	// Message Box Show Message rendering loop
+	bool instant_speed = false;
+	bool instant_speed_forced = false;
+
+	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
+		instant_speed = true;
+		instant_speed_forced = true;
+	}
+
+	while (true) {
+		if (wait_count > 0) {
+			--wait_count;
+			break;
 		}
 
-		++loop_count;
 		if (text_index == end) {
-			FinishMessageProcessing();
+			if (!instant_speed) {
+				SetWaitForPage();
+			}
 			break;
-		} else if (line_count == 4) {
-			pause = true;
+		}
+
+		if (line_count == 4) {
+			// FIXME: Unify pause logic
+			SetPause(true);
 			new_page_after_pause = true;
+			if (!instant_speed) {
+				//FIXME: Does this wait happen when pause is enabled?
+				SetWaitForPage();
+			}
 			break;
-		} else if (pause) {
+		}
+
+		if (GetPause()) {
 			break;
+		}
+
+		if (*text_index == '\r') {
+			// Not handled
+			++text_index;
+			continue;
 		}
 
 		if (*text_index == '\n') {
-			if (instant_speed) {
-				// instant_speed stops at the end of the line, unless
-				// there's a /> at the beginning of the next line
-				if (std::distance(text_index, end) > 2 &&
-					*(text_index + 1) == Player::escape_char &&
-					*(text_index + 2) == '>') {
-					text_index += 2;
-				} else {
+			if (text_index + 1 != end) {
+				if (!instant_speed && line_char_counter == 0) {
+					// RPG_RT will always wait 1 frame for each empty line.
+					SetWait(1);
+				}
+				if (instant_speed && !instant_speed_forced) {
+					// instant_speed stops at the end of the line
+					// unless it was triggered by the shift key.
 					instant_speed = false;
 				}
 			}
 			InsertNewLine();
-		} else if (*text_index == '\f') {
+			++text_index;
+			continue;
+		}
+
+		if (*text_index == '\f') {
+			// Used by our code to inject form feeds.
 			instant_speed = false;
 			++text_index;
 			if (*text_index == '\n') {
 				++text_index;
 			}
 			if (text_index != end) {
-				pause = true;
+				SetPause(true);
 				new_page_after_pause = true;
 			}
+			//FIXME: Delays formfeed?
 			break;
-		} else if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
+		}
+
+		if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -438,19 +483,26 @@ void Window_Message::UpdateMessage() {
 			case 's':
 				// Speed modifier
 				parameter = ParseParameter(is_valid);
-				speed_modifier = max(0, min(parameter, 20));
+				speed = Utils::Clamp(parameter, 1, 20);
 				break;
 			case '_':
 				// Insert half size space
 				contents_x += Font::Default()->GetSize(" ").width / 2;
+				if (!instant_speed) {
+					SetWaitForCharacter(1);
+				}
+				IncrementLineCharCounter(1);
 				break;
 			case '$':
 				// Show Gold Window
 				ShowGoldWindow();
+				if (!instant_speed) {
+					SetWait(speed);
+				}
 				break;
 			case '!':
 				// Text pause
-				pause = true;
+				SetPause(true);
 				break;
 			case '^':
 				// Force message close
@@ -463,21 +515,26 @@ void Window_Message::UpdateMessage() {
 				instant_speed = true;
 				break;
 			case '<':
-				// Instant speed stop
+				// Instant speed stop - also cancels shift key and forces a delay.
 				instant_speed = false;
+				instant_speed_forced = false;
+				SetWait(speed);
 				break;
 			case '.':
 				// 1/4 second sleep
-				if (instant_speed) break;
-				wait_count = 60 / 4;
-				++text_index;
-				return;
+				if (!instant_speed) {
+					// Despite documentation saying 1/4 second, RPG_RT waits for 20 frames.
+					SetWait(20);
+				}
+				break;
 			case '|':
 				// Second sleep
-				if (instant_speed) break;
-				wait_count = 60;
-				++text_index;
-				return;
+				if (!instant_speed) {
+					// Despite documentation saying 1 second, RPG_RT waits for 61 frames.
+					SetWait(61);
+				}
+				break;
+			case '\r':
 			case '\n':
 			case '\f':
 				// \ followed by linebreak, don't skip them
@@ -485,32 +542,55 @@ void Window_Message::UpdateMessage() {
 				break;
 			default:
 				if (*text_index == Player::escape_char) {
-					// Show Escape Symbol
-					contents->TextDraw(contents_x, contents_y, text_color, Player::escape_symbol);
-					contents_x += Font::Default()->GetSize(Player::escape_symbol).width;
+					DrawGlyph(Player::escape_symbol, instant_speed);
 				}
+				break;
 			}
-		} else if (*text_index == '$'
+			++text_index;
+			continue;
+		}
+
+		if (*text_index == '$'
 				   && std::distance(text_index, end) > 1
 				   && std::isalpha(*std::next(text_index))) {
 			// ExFont
-			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))));
-			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			contents_x += 12;
-			++loop_count;
-			++text_index;
-		} else {
-			std::string const glyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))));
-
-			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			int glyph_width = Font::Default()->GetSize(glyph).width;
-			// Show full-width characters twice as slow as half-width characters
-			if (glyph_width >= 12)
-				loop_count++;
-			contents_x += glyph_width;
+			DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))), instant_speed);
+			text_index += 2;
+			continue;
 		}
 
+		DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index))), instant_speed);
 		++text_index;
+	}
+}
+
+void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
+#ifdef EP_DEBUG_MESSAGE
+	Output::Debug("Msg Draw Glyph %s %d", glyph.c_str(), instant_speed);
+#endif
+	contents->TextDraw(contents_x, contents_y, text_color, glyph);
+	int glyph_width = Font::Default()->GetSize(glyph).width;
+	contents_x += glyph_width;
+	int width = (glyph_width - 1) / 6 + 1;
+	if (!instant_speed && glyph_width > 0) {
+		// RPG_RT compatible for half-width (6) and full-width (12)
+		// generalizes the algo for even bigger glyphs
+		// FIXME: Verify RPG_RT on full width
+		SetWaitForCharacter(width);
+	}
+	IncrementLineCharCounter(width);
+}
+
+void Window_Message::IncrementLineCharCounter(int width) {
+	// For speed 1, RPG_RT prints 2 half width chars every frame. This 
+	// resets anytime we print a full width character or another
+	// character with a different speed. 
+	// To emulate this, we increment by 2 and clear the low bit anytime
+	// we're not a speed 1 half width char.
+	if (width == 1 && speed <= 1) {
+		line_char_counter++;
+	} else {
+		line_char_counter = (line_char_counter & ~1) + 2;
 	}
 }
 
@@ -645,7 +725,7 @@ void Window_Message::WaitForInput() {
 	if (Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 		active = false;
-		pause = false;
+		SetPause(false);
 
 		if (text.empty()) {
 			TerminateMessage();
@@ -683,4 +763,33 @@ void Window_Message::InputNumber() {
 		TerminateMessage();
 		number_input_window->SetNumber(0);
 	}
+}
+
+void Window_Message::SetWaitForCharacter(int width) {
+	int frames = 0;
+	if (width > 0) {
+		if (speed > 1) {
+			frames = speed * width / 2 + 1;
+		} else {
+			frames = width / 2;
+			if (width & 1) {
+				// For odd widths, speed 1 adds a 1 frame delay for every odd character printed.
+				// This logic assumes num chars is incremented after the wait.
+				frames += !(line_char_counter & 1);
+			}
+		}
+	}
+	SetWait(frames);
+}
+
+void Window_Message::SetWaitForPage() {
+	SetWait(speed);
+}
+
+void Window_Message::SetWait(int frames) {
+	assert(speed >= 1 && speed <= 20);
+#ifdef EP_DEBUG_MESSAGE
+	Output::Debug("Msg Wait %d", frames);
+#endif
+	wait_count = frames;
 }

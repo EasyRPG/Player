@@ -25,12 +25,13 @@
 #include "window.h"
 #include "bitmap.h"
 
+constexpr int pause_animation_frames = 20;
+
 Window::Window():
 	type(TypeWindow),
 	stretch(true),
 	active(true),
 	visible(true),
-	pause(false),
 	closing(false),
 	up_arrow(false),
 	down_arrow(false),
@@ -46,9 +47,6 @@ Window::Window():
 	opacity(255),
 	back_opacity(255),
 	contents_opacity(255),
-	cursor_frame(0),
-	pause_frame(0),
-	animation_frames(0),
 	animation_count(0.0),
 	animation_increment(0.0) {
 
@@ -171,7 +169,7 @@ void Window::Draw() {
 		}
 	}
 
-	if (pause && pause_frame > 16 && animation_frames <= 0) {
+	if ((pause && pause_frame < pause_animation_frames && animation_frames <= 0) || down_arrow) {
 		Rect src_rect(40, 16, 16, 8);
 		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
@@ -179,11 +177,6 @@ void Window::Draw() {
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
 		dst->Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
-	}
-
-	if (down_arrow) {
-		Rect src_rect(40, 16, 16, 8);
-		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 }
 
@@ -326,8 +319,7 @@ void Window::Update() {
 		cursor_frame += 1;
 		if (cursor_frame > 20) cursor_frame = 0;
 		if (pause) {
-			pause_frame += 1;
-			if (pause_frame == 40) pause_frame = 0;
+			pause_frame = (pause_frame + 1) % (pause_animation_frames * 2);
 		}
 	}
 
@@ -397,6 +389,7 @@ bool Window::GetPause() const {
 }
 void Window::SetPause(bool npause) {
 	pause = npause;
+	pause_frame = 0;
 }
 
 bool Window::GetUpArrow() const {
