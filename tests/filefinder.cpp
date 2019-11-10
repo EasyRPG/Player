@@ -2,41 +2,32 @@
 #include <cstdlib>
 #include "filefinder.h"
 #include "player.h"
-#include "reader_util.h"
 #include "main_data.h"
+#include "doctest.h"
 
-namespace {
-	void CheckIsRPG2kProject() {
-		std::shared_ptr<FileFinder::DirectoryTree> const
-			tree = FileFinder::CreateDirectoryTree(".");
-		assert(FileFinder::IsRPG2kProject(*tree));
-		FileFinder::SetDirectoryTree(tree);
-	}
+TEST_SUITE_BEGIN("FileFinder");
 
-	void CheckIsDirectory() {
-		assert(FileFinder::IsDirectory(".", false));
-		assert(FileFinder::IsDirectory(".", true));
-	}
-
-	void CheckEnglishFilename() {
-		assert(!FileFinder::FindImage("CharSet", "Chara1").empty());
-	}
-}
-
-int main(int, char**) {
+TEST_CASE("IsDirectory") {
 	Main_Data::Init();
-	
-	CheckIsDirectory();
-	CheckIsRPG2kProject();
 
-	Player::GetEncoding();
-	Player::escape_symbol = ReaderUtil::Recode("\\", Player::encoding);
-	Player::engine = Player::EngineRpg2k;
-	FileFinder::InitRtpPaths();
-
-	CheckEnglishFilename();
-
-	FileFinder::Quit();
-
-	return EXIT_SUCCESS;
+	CHECK(FileFinder::IsDirectory(".", false));
+	CHECK(FileFinder::IsDirectory(".", true));
 }
+
+TEST_CASE("IsRPG2kProject") {
+	Main_Data::Init();
+
+	std::shared_ptr<FileFinder::DirectoryTree> const tree = FileFinder::CreateDirectoryTree(".");
+	CHECK(FileFinder::IsRPG2kProject(*tree));
+	FileFinder::SetDirectoryTree(tree);
+}
+
+TEST_CASE("Project contains English filename") {
+	Main_Data::Init();
+	Player::escape_symbol = "\\";
+	Player::engine = Player::EngineRpg2k;
+
+	CHECK(!FileFinder::FindImage("CharSet", "Chara1").empty());
+}
+
+TEST_SUITE_END();

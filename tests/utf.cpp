@@ -1,11 +1,10 @@
 #include <cassert>
 #include <cstdlib>
 #include "utils.h"
-
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
 // Correct Tests
+TEST_SUITE_BEGIN("UTF");
 
 struct TestSet {
 	std::string u8;
@@ -85,3 +84,5 @@ TEST_CASE("next") {
 		}
 	}
 }
+
+TEST_SUITE_END();

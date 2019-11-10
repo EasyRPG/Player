@@ -1,9 +1,9 @@
 #include "bitmapfont.h"
 #include <algorithm>
 #include <iterator>
-
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+
+TEST_SUITE_BEGIN("BitmapFont");
 
 template <typename T>
 bool IsSorted(const T& glyphs) {
@@ -29,3 +29,5 @@ TEST_CASE("SortedRMG2000") {
 TEST_CASE("SortedTTYP0") {
 	REQUIRE(IsSorted(BITMAPFONT_TTYP0));
 }
+
+TEST_SUITE_END();
