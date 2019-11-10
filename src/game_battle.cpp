@@ -65,6 +65,7 @@ namespace {
 void Game_Battle::Init() {
 	interpreter.reset(new Game_Interpreter_Battle());
 	spriteset.reset(new Spriteset_Battle());
+	spriteset->Update();
 	animation.reset();
 
 	Game_Temp::battle_running = true;
