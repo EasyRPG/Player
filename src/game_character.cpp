@@ -113,7 +113,7 @@ int Game_Character::GetScreenZ(bool apply_shift) const {
 	}
 
 	// For events on the screen, this should be inside a 0-40 range
-	z += GetScreenY(apply_shift) >> 3;
+	z += GetScreenY(apply_shift, false) >> 3;
 
 	return z;
 }
