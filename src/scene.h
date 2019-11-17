@@ -56,6 +56,9 @@ public:
 		SceneMax
 	};
 
+	static constexpr int kStartGameDelayFrames = 60;
+	static constexpr int kReturnTitleDelayFrames = 20;
+
 	/**
 	 * Constructor.
 	 */
@@ -221,6 +224,26 @@ public:
 	 */
 	static bool CheckSceneExit(AsyncOp aop);
 
+	/**
+	 * Set number of frames to wait before start/continue the scene
+	 * 
+	 * @frames number of frames to wait
+	 */
+	void SetDelayFrames(int frames);
+
+	/** @return true if there are >0 number of frames to wait before scene start/continue */
+	bool HasDelayFrames() const;
+
+	/** Decrement delay frames by 1 if we're waiting */
+	void UpdateDelayFrames();
+
+	/** 
+	 * Pops the stack until the title screen and sets proper delay.
+	 *
+	 * @return false if there is no title scene in the stack, or we're already on the title scene
+	 */
+	static bool ReturnToTitleScene();
+
 protected:
 	using AsyncContinuation = std::function<void(void)>;
 	AsyncContinuation async_continuation;
@@ -249,6 +272,7 @@ private:
 	static void UpdatePrevScene();
 
 	Scene::SceneType request_scene = Null;
+	int delay_frames = 0;
 };
 
 inline bool Scene::IsInitialized() const {
@@ -267,5 +291,18 @@ inline void Scene::SetRequestedScene(SceneType scene) {
 	request_scene = scene;
 }
 
+inline void Scene::SetDelayFrames(int frames) {
+	delay_frames = frames;
+}
+
+inline bool Scene::HasDelayFrames() const {
+	return delay_frames > 0;
+}
+
+inline void Scene::UpdateDelayFrames() {
+	if (HasDelayFrames()) {
+		--delay_frames;
+	}
+}
 
 #endif

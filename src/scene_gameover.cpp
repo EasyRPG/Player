@@ -41,7 +41,7 @@ void Scene_Gameover::Start() {
 
 void Scene_Gameover::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Scene::PopUntil(Scene::Title);
+		Scene::ReturnToTitleScene();
 	}
 }
 

@@ -34,6 +34,8 @@
 #endif
 
 
+constexpr int Scene::kStartGameDelayFrames;
+constexpr int Scene::kReturnTitleDelayFrames;
 std::shared_ptr<Scene> Scene::instance;
 std::vector<std::shared_ptr<Scene> > Scene::old_instances;
 std::vector<std::shared_ptr<Scene> > Scene::instances;
@@ -183,7 +185,8 @@ void Scene::OnFinishAsync() {
 }
 
 bool Scene::IsAsyncPending() {
-	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending();
+	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending()
+		|| (instance != nullptr && instance->HasDelayFrames());
 }
 
 void Scene::Update() {
@@ -276,7 +279,7 @@ bool Scene::CheckSceneExit(AsyncOp aop) {
 	}
 
 	if (aop.GetType() == AsyncOp::eToTitle) {
-		Scene::PopUntil(Scene::Title);
+		Scene::ReturnToTitleScene();
 		return true;
 	}
 
@@ -306,4 +309,19 @@ inline void Scene::DebugValidate(const char* caller) {
 	if (instances[0]->type != Null) {
 		Output::Error("Scene.instances[0] is of type=%s in the Scene instances stack!", scene_names[instances[0]->type]);
 	}
+}
+
+bool Scene::ReturnToTitleScene() {
+	if (Scene::instance && Scene::instance->type == Scene::Title) {
+		return false;
+	}
+
+	auto title_scene = Scene::Find(Scene::Title);
+	if (!title_scene) {
+		return false;
+	}
+
+	title_scene->SetDelayFrames(Scene::kReturnTitleDelayFrames);
+	Scene::PopUntil(Scene::Title);
+	return true;
 }
