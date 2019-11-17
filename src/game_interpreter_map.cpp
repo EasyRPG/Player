@@ -606,7 +606,8 @@ bool Game_Interpreter_Map::CommandPanScreen(RPG::EventCommand const& com) { // c
 	}
 
 	if (waiting_pan_screen) {
-		_state.wait_time = distance * (2 << (6 - speed));
+		// RPG_RT uses the max wait for all pending pan commands, not just the current one.
+		_state.wait_time = Game_Map::GetPanWait();
 	}
 
 	return true;

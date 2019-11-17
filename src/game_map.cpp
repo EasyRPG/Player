@@ -1598,6 +1598,15 @@ void Game_Map::ResetPan(int speed) {
 	location.pan_speed = 2 << speed;
 }
 
+int Game_Map::GetPanWait() {
+	const auto distance = std::max(
+			std::abs(location.pan_current_x - location.pan_finish_x),
+			std::abs(location.pan_current_y - location.pan_finish_y));
+	const auto speed = location.pan_speed;
+	assert(speed > 0);
+	return distance / speed + (distance % speed != 0);
+}
+
 void Game_Map::UpdatePan() {
 	if (!IsPanActive())
 		return;

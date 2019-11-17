@@ -617,6 +617,9 @@ namespace Game_Map {
 	void ResetPan(int speed);
 	void UpdatePan();
 
+	/** @return how many frames it'll take to finish the current pan */
+	int GetPanWait();
+
 	/**
 	 * Gets whether there are any starting non-parallel event or common event.
 	 * Used as a workaround for the Game Player.
