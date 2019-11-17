@@ -196,6 +196,10 @@ void Input::ResetKeys() {
 	DisplayUi->GetKeyStates().reset();
 }
 
+void Input::ResetTriggerKeys() {
+	triggered.reset();
+}
+
 bool Input::IsPressed(InputButton button) {
 	WaitInput(true);
 	return press_time[button] > 0;
