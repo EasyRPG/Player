@@ -74,8 +74,6 @@ namespace {
 	std::vector<Game_Character*> pending;
 
 
-	bool pan_wait;
-
 	int last_map_id;
 
 	RPG::Chipset* chipset;
@@ -132,7 +130,6 @@ void Game_Map::Init() {
 	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.ship_location));
 	vehicles.push_back(std::make_shared<Game_Vehicle>(&Main_Data::game_data.airship_location));
 
-	pan_wait = false;
 	location.pan_state = RPG::SavePartyLocation::PanState_follow;
 	location.pan_speed = default_pan_speed;
 	location.pan_finish_x = default_pan_x;
@@ -338,8 +335,6 @@ void Game_Map::SetupCommon(int _id, bool is_load_savegame) {
 
 	if (Main_Data::game_player->IsMoveRouteOverwritten())
 		pending.push_back(Main_Data::game_player.get());
-
-	pan_wait = false;
 
 	auto map_save_count = map->save_count;
 	if (Player::IsRPG2k3() && map->save_count_2k3e > 0) {
@@ -1577,7 +1572,7 @@ void Game_Map::UnlockPan() {
 	location.pan_state = RPG::SavePartyLocation::PanState_follow;
 }
 
-void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
+void Game_Map::StartPan(int direction, int distance, int speed) {
 	distance *= SCREEN_TILE_SIZE;
 
 	if (direction == PanUp) {
@@ -1595,14 +1590,12 @@ void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	}
 
 	location.pan_speed = 2 << speed;
-	pan_wait = wait;
 }
 
-void Game_Map::ResetPan(int speed, bool wait) {
+void Game_Map::ResetPan(int speed) {
 	location.pan_finish_x = default_pan_x;
 	location.pan_finish_y = default_pan_y;
 	location.pan_speed = 2 << speed;
-	pan_wait = wait;
 }
 
 void Game_Map::UpdatePan() {
@@ -1624,10 +1617,8 @@ void Game_Map::UpdatePan() {
 	Game_Map::AddScreenX(screen_x, dx);
 	Game_Map::AddScreenY(screen_y, dy);
 
-	// If we hit the edge of the map before pan finishes, the
-	// pan converts from waiting to non-waiting.
+	// If we hit the edge of the map before pan finishes.
 	if (dx == 0 && dy == 0) {
-		pan_wait = false;
 		return;
 	}
 
@@ -1640,10 +1631,6 @@ void Game_Map::UpdatePan() {
 
 bool Game_Map::IsPanActive() {
 	return location.pan_current_x != location.pan_finish_x || location.pan_current_y != location.pan_finish_y;
-}
-
-bool Game_Map::IsPanWaiting() {
-	return IsPanActive() && pan_wait;
 }
 
 bool Game_Map::IsPanLocked() {

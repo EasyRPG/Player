@@ -613,8 +613,8 @@ namespace Game_Map {
 
 	void LockPan();
 	void UnlockPan();
-	void StartPan(int direction, int distance, int speed, bool wait);
-	void ResetPan(int speed, bool wait);
+	void StartPan(int direction, int distance, int speed);
+	void ResetPan(int speed);
 	void UpdatePan();
 
 	/**
@@ -631,7 +631,6 @@ namespace Game_Map {
 	void RemoveAllPendingMoves();
 
 	bool IsPanActive();
-	bool IsPanWaiting();
 	bool IsPanLocked();
 	int GetPanX();
 	int GetPanY();
