@@ -281,7 +281,7 @@ void BattleAnimationMap::DrawSingle() {
 		return;
 	}
 	const int character_height = 24;
-	int vertical_center = target.GetScreenY() - character_height/2;
+	int vertical_center = target.GetScreenY(false, false) - character_height / 2;
 	int offset = CalculateOffset(animation.position, character_height);
 	DrawAt(target.GetScreenX(), vertical_center + offset);
 }
