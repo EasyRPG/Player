@@ -473,7 +473,9 @@ void Game_Character::MoveRandom(MoveOption option) {
 
 void Game_Character::Turn(int dir) {
 	SetDirection(dir);
-	SetSpriteDirection(dir);
+	if (!IsJumping()) {
+		SetSpriteDirection(dir);
+	}
 	move_failed = false;
 	SetStopCount(0);
 	SetMaxStopCountForTurn();
