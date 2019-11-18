@@ -51,7 +51,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	_data_copy(this->data()),
 	event(event)
 {
-	// Savegames have 0 for the mapid for compatibility with RPG_RT.
+	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
 
 	this->event.ID = data()->ID;

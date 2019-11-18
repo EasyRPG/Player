@@ -112,9 +112,11 @@ void Scene_Save::Action(int index) {
 
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;
-	// RPG_RT always stores SaveMapEvent with map_id == 0.
-	for (auto& sme: data_copy.map_info.events) {
-		sme.map_id = 0;
+	// 2k RPG_RT always stores SaveMapEvent with map_id == 0.
+	if (Player::IsRPG2k()) {
+		for (auto& sme: data_copy.map_info.events) {
+			sme.map_id = 0;
+		}
 	}
 	LSD_Reader::Save(filename, data_copy, Player::encoding);
 
