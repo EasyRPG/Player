@@ -65,8 +65,6 @@ Spriteset_Battle::Spriteset_Battle() {
 	timer2.reset(new Sprite_Timer(1));
 
 	screen.reset(new Screen());
-
-	Update();
 }
 
 void Spriteset_Battle::Update() {
