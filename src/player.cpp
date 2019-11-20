@@ -288,8 +288,7 @@ void Player::Update(bool update_scene) {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		if (Scene::Find(Scene::Title) && Scene::instance->type != Scene::Title) {
-			Scene::PopUntil(Scene::Title);
+		if (Scene::ReturnToTitleScene()) {
 			// Fade out music and stop sound effects before returning
 			Game_System::BgmFade(800);
 			Audio().SE_Stop();
@@ -306,7 +305,12 @@ void Player::Update(bool update_scene) {
 	int speed_modifier = GetSpeedModifier();
 
 	for (int i = 0; i < speed_modifier; ++i) {
+		auto was_transition_pending = Graphics::IsTransitionPending();
 		Graphics::Update();
+		// If we aren't waiting on a transition, but we are waiting for scene delay.
+		if (!was_transition_pending) {
+			Scene::instance->UpdateDelayFrames();
+		}
 		if (update_scene) {
 			Scene::instance->Update();
 			// Async file loading or transition. Don't increment the frame

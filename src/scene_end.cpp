@@ -48,7 +48,7 @@ void Scene_End::Update() {
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
 			Game_System::BgmFade(800);
-			Scene::PopUntil(Scene::Title);
+			Scene::ReturnToTitleScene();
 			break;
 		case 1: // No
 			Scene::Pop();
