@@ -30,6 +30,7 @@
 #include "main_data.h"
 #include "player.h"
 #include "utils.h"
+#include "output.h"
 #include <cmath>
 #include <cassert>
 
@@ -50,7 +51,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	_data_copy(this->data()),
 	event(event)
 {
-	// Savegames have 0 for the mapid for compatibility with RPG_RT.
+	// 2k Savegames have 0 for the mapid for compatibility with RPG_RT.
 	SetMapId(map_id);
 
 	this->event.ID = data()->ID;
@@ -151,10 +152,17 @@ void Game_Event::SetupFromSave(const RPG::EventPage* new_page) {
 		auto& state = data()->parallel_event_execstate;
 		// RPG_RT Savegames have empty stacks for parallel events.
 		// We are LSD compatible but don't load these into interpreter.
-		if (!state.stack.empty() && !state.stack.front().commands.empty()) {
+		bool has_state = (!state.stack.empty() && !state.stack.front().commands.empty());
+		// If the page changed before save but the event never updated,
+		// there will be not stack but we still need to create an interpreter
+		// for the event page commands.
+		if (has_state || !page->event_commands.empty()) {
 			if (!interpreter) {
 				interpreter.reset(new Game_Interpreter_Map());
 			}
+		}
+
+		if (has_state) {
 			interpreter->SetState(state);
 		}
 	}
@@ -570,8 +578,8 @@ const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 			state = interpreter->GetState();
 		}
 
-		if (state.stack.empty()) {
-			// RPG_RT always stores an empty stack frame for parallel events.
+		if (state.stack.empty() && page->event_commands.empty()) {
+			// RPG_RT always stores an empty stack frame for empty parallel events.
 			RPG::SaveEventExecFrame frame;
 			frame.event_id = GetId();
 			state.stack.push_back(std::move(frame));

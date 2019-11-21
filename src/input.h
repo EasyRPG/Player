@@ -58,6 +58,11 @@ namespace Input {
 	void ResetKeys();
 
 	/**
+	 * Resets only triggered states.
+	 */
+	void ResetTriggerKeys();
+
+	/**
 	 * Gets if a button is being pressed.
 	 *
 	 * @param button button ID.

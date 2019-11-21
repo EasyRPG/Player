@@ -2694,12 +2694,12 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 		_keyinput.keys[Keys::eUp] = param_size > 13 ? com.parameters[13] != 0 : false;
 	}
 
-	// Wait until key pressed, but skip the first frame so that
-	// it ignores keys that were pressed before this command started.
-	// FIXME: Is this behavior correct?
 	if (_keyinput.wait) {
-		++index;
-		return false;
+		// RPG_RT will reset all trigger key states when a waiting key input proc command is executed,
+		// which means we always wait at least 1 frame to continue. Keys which are held down are not reset.
+		// This also prevents player actions for this frame such as summoning the menu or triggering events.
+		Input::ResetTriggerKeys();
+		return true;
 	}
 
 	int key = _keyinput.CheckInput();
