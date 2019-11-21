@@ -649,9 +649,10 @@ public:
 	 * Gets sprite y coordinate transformed to screen coordinate in pixels.
 	 *
 	 * @param apply_shift When true the coordinate is shifted by the map height (for looping maps)
+	 * @param apply_jump Apply jump height modifier if character is jumping
 	 * @return screen y coordinate in pixels.
 	 */
-	virtual int GetScreenY(bool apply_shift = false) const;
+	virtual int GetScreenY(bool apply_shift = false, bool apply_jump = true) const;
 
 	/**
 	 * Gets screen z coordinate in pixels.

@@ -67,7 +67,7 @@ public:
 	bool IsAboard() const;
 	void SyncWithPlayer();
 	void AnimateAscentDescent();
-	int GetScreenY(bool apply_shift = false) const override;
+	int GetScreenY(bool apply_shift = false, bool apply_jump = true) const override;
 	bool CanLand() const;
 	void UpdateAnimationShip();
 	void UpdateAnimationAirship();
