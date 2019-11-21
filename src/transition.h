@@ -36,8 +36,8 @@ public:
 		TransitionFadeIn,
 		TransitionFadeOut,
 		TransitionRandomBlocks,
-		TransitionRandomBlocksUp,
 		TransitionRandomBlocksDown,
+		TransitionRandomBlocksUp,
 		TransitionBlindOpen,
 		TransitionBlindClose,
 		TransitionVerticalStripesIn,
@@ -77,7 +77,7 @@ public:
 
 	int GetZ() const override;
 	DrawableType GetType() const override;
-	
+
 	/**
 	 * Defines a screen transition.
 	 *

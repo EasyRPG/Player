@@ -434,7 +434,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 		// increment the old frame and not the new one we just pushed.
 		frame = &_state.stack[current_frame_idx];
 
-		// Only do auto increment if the command didn't manually 
+		// Only do auto increment if the command didn't manually
 		// change the index.
 		if (index_before_exec == frame->current_command) {
 			frame->current_command++;
@@ -2051,10 +2051,10 @@ bool Game_Interpreter::CommandEraseScreen(RPG::EventCommand const& com) { // cod
 		tt = Transition::TransitionRandomBlocks;
 		break;
 	case 2:
-		tt = Transition::TransitionRandomBlocksUp;
+		tt = Transition::TransitionRandomBlocksDown;
 		break;
 	case 3:
-		tt = Transition::TransitionRandomBlocksDown;
+		tt = Transition::TransitionRandomBlocksUp;
 		break;
 	case 4:
 		tt = Transition::TransitionBlindClose;
@@ -2133,10 +2133,10 @@ bool Game_Interpreter::CommandShowScreen(RPG::EventCommand const& com) { // code
 		tt = Transition::TransitionRandomBlocks;
 		break;
 	case 2:
-		tt = Transition::TransitionRandomBlocksUp;
+		tt = Transition::TransitionRandomBlocksDown;
 		break;
 	case 3:
-		tt = Transition::TransitionRandomBlocksDown;
+		tt = Transition::TransitionRandomBlocksUp;
 		break;
 	case 4:
 		tt = Transition::TransitionBlindOpen;

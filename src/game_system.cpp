@@ -369,8 +369,8 @@ int Game_System::GetTransition(int which) {
 		{
 			Transition::TransitionFadeOut,
 			Transition::TransitionRandomBlocks,
-			Transition::TransitionRandomBlocksUp,
 			Transition::TransitionRandomBlocksDown,
+			Transition::TransitionRandomBlocksUp,
 			Transition::TransitionBlindClose,
 			Transition::TransitionVerticalStripesOut,
 			Transition::TransitionHorizontalStripesOut,
@@ -392,8 +392,8 @@ int Game_System::GetTransition(int which) {
 		{
 			Transition::TransitionFadeIn,
 			Transition::TransitionRandomBlocks,
-			Transition::TransitionRandomBlocksUp,
 			Transition::TransitionRandomBlocksDown,
+			Transition::TransitionRandomBlocksUp,
 			Transition::TransitionBlindOpen,
 			Transition::TransitionVerticalStripesIn,
 			Transition::TransitionHorizontalStripesIn,
