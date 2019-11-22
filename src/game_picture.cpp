@@ -141,6 +141,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
 	SetNonEffectParams(params);
+
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == RPG::SavePicture::Effect_none) {
 		// params.effect_power seems to contain garbage here
@@ -150,6 +151,8 @@ void Game_Picture::Show(const ShowParams& params) {
 	}
 
 	SyncCurrentToFinish();
+	data.start_x = data.current_x;
+	data.start_y = data.current_y;
 	data.current_rotation = 0.0;
 	data.current_waver = 0;
 	data.time_left = 0;
@@ -282,12 +285,14 @@ void Game_Picture::Update() {
 
 			data.finish_x = data.finish_x + mx;
 			data.current_x = data.current_x + mx;
+			data.start_x = data.start_x + mx;
 		}
 		if (old_map_y != Game_Map::GetDisplayY()) {
 			double my = (old_map_y - Game_Map::GetDisplayY()) / (double)TILE_SIZE;
 
 			data.finish_y = data.finish_y + my;
 			data.current_y = data.current_y + my;
+			data.start_y = data.start_y + my;
 		}
 
 		old_map_x = Game_Map::GetDisplayX();
