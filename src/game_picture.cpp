@@ -19,6 +19,7 @@
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
+#include "output.h"
 #include "game_map.h"
 #include "game_picture.h"
 #include "player.h"
@@ -334,21 +335,26 @@ void Game_Picture::Update() {
 	}
 
 	// Update rotation
-	if (data.current_rotation >= 256.0) {
-		data.current_rotation = data.current_rotation - 256.0;
-	}
-	bool is_rotating_but_stopping =
-		data.effect_mode == RPG::SavePicture::Effect_none && (
-			data.current_rotation != 0.0 ||
-			data.current_effect_power * data.time_left >= 256.0
-		);
-	bool is_rotating =
-		data.effect_mode == RPG::SavePicture::Effect_rotation ||
-		is_rotating_but_stopping;
-	if (is_rotating) {
+	// When a move picture disables rotation effect, we continue rotating
+	// until one full revolution is done. There is a bug in RPG_RT where this
+	// only happens when the current rotation and power is positive. We emulate this for now.
+	if (data.effect_mode == RPG::SavePicture::Effect_rotation ||
+			(data.effect_mode == RPG::SavePicture::Effect_none
+			 && data.current_rotation > 0
+			 && data.current_effect_power > 0)
+			)
+	{
+
+		// RPG_RT always scales the rotation down to [0, 256] when this case is triggered.
+		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
+			data.current_rotation = std::remainder(data.current_rotation, 256.0);
+		}
+
 		data.current_rotation = data.current_rotation + data.current_effect_power;
-		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
-			data.current_rotation = 0.0;
+
+		// Rotation finally ends after full revolution.
+		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
+			data.current_rotation = 0;
 		}
 	}
 
