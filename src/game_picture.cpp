@@ -104,9 +104,9 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
 	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
 
-	sprite->SetAngle(data.effect_mode != 2 ? data.current_rotation * 360 / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
-	sprite->SetWaverDepth(data.effect_mode == 2 ? data.current_effect * 2 : 0);
+	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * 360 / 256 : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver : 0.0);
+	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 	sprite->SetOpacity(
 		(int)(255 * (100 - data.current_top_trans) / 100),
 		(int)(255 * (100 - data.current_bot_trans) / 100));
@@ -141,11 +141,11 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.fixed_to_map = params.fixed_to_map;
 	SetNonEffectParams(params);
 	data.effect_mode = params.effect_mode;
-	if (data.effect_mode == 0) {
+	if (data.effect_mode == RPG::SavePicture::Effect_none) {
 		// params.effect_power seems to contain garbage here
-		data.finish_effect = 0.0;
+		data.finish_effect_power = 0.0;
 	} else {
-		data.finish_effect = params.effect_power;
+		data.finish_effect_power = params.effect_power;
 	}
 
 	SyncCurrentToFinish();
@@ -186,37 +186,37 @@ void Game_Picture::Move(const MoveParams& params) {
 	// Note that data.effect_mode doesn't necessarily reflect the
 	// last effect set. Possible states are:
 	//
-	// * effect_mode == 0 && finish_effect == 0
+	// * effect_mode == RPG::SavePicture::Effect_none && finish_effect_power == 0
 	//   Picture has not had an effect set since Show.
-	// * effect_mode == 0 && finish_effect != 0
+	// * effect_mode == RPG::SavePicture::Effect_none && finish_effect_power != 0
 	//   Picture was set to no effect; previously, it was rotating.
-	// * effect_mode == 2 && finish_effect == 0
+	// * effect_mode == RPG::SavePicture::Effect_wave && finish_effect_power == 0
 	//   Picture was set to no effect; previously, it was wavering.
-	// * effect_mode == 1
+	// * effect_mode == RPG::SavePicture::Effect_rotation
 	//   Picture was set to rotate.
-	// * effect_mode == 2 && finish_effect != 0
+	// * effect_mode == RPG::SavePicture::Effect_wave && finish_effect_power != 0
 	//   Picture was set to waver.
 
 	bool started_with_no_effect =
-		data.effect_mode == 0 && data.finish_effect == 0.0;
+		data.effect_mode == RPG::SavePicture::Effect_none && data.finish_effect_power == 0.0;
 	if (Player::IsRPG2k() && started_with_no_effect) {
 		// Possibly a bug(?) in RM2k: if Show Picture command has no
 		// effect, a Move Picture command cannot add one
 		return;
 	}
 
-	if (data.effect_mode == 0 && params.effect_mode == 0) {
+	if (data.effect_mode == RPG::SavePicture::Effect_none && params.effect_mode == RPG::SavePicture::Effect_none) {
 		// Nothing to do
 	} else if (data.effect_mode == params.effect_mode) {
-		data.finish_effect = params.effect_power;
-	} else if (data.effect_mode == 1 && params.effect_mode == 0) {
-		data.effect_mode = 0;
-	} else if (data.effect_mode == 2 && params.effect_mode == 0) {
-		data.finish_effect = 0;
+		data.finish_effect_power = params.effect_power;
+	} else if (data.effect_mode == RPG::SavePicture::Effect_rotation && params.effect_mode == RPG::SavePicture::Effect_none) {
+		data.effect_mode = RPG::SavePicture::Effect_none;
+	} else if (data.effect_mode == RPG::SavePicture::Effect_wave && params.effect_mode == RPG::SavePicture::Effect_none) {
+		data.finish_effect_power = 0;
 	} else {
 		data.effect_mode = params.effect_mode;
-		data.current_effect = params.effect_power;
-		data.finish_effect = params.effect_power;
+		data.current_effect_power = params.effect_power;
+		data.finish_effect_power = params.effect_power;
 	}
 }
 
@@ -310,8 +310,8 @@ void Game_Picture::Update() {
 		data.current_magnify = interpolate(data.current_magnify, data.finish_magnify);
 		data.current_top_trans = interpolate(data.current_top_trans, data.finish_top_trans);
 		data.current_bot_trans = interpolate(data.current_bot_trans, data.finish_bot_trans);
-		if (data.effect_mode != 0) {
-			data.current_effect = interpolate(data.current_effect, data.finish_effect);
+		if (data.effect_mode != RPG::SavePicture::Effect_none) {
+			data.current_effect_power = interpolate(data.current_effect_power, data.finish_effect_power);
 		}
 
 		data.time_left = data.time_left - 1;
@@ -322,22 +322,22 @@ void Game_Picture::Update() {
 		data.current_rotation = data.current_rotation - 256.0;
 	}
 	bool is_rotating_but_stopping =
-		data.effect_mode == 0 && (
+		data.effect_mode == RPG::SavePicture::Effect_none && (
 			data.current_rotation != 0.0 ||
-			data.current_effect * data.time_left >= 256.0
+			data.current_effect_power * data.time_left >= 256.0
 		);
 	bool is_rotating =
-		data.effect_mode == 1 ||
+		data.effect_mode == RPG::SavePicture::Effect_rotation ||
 		is_rotating_but_stopping;
 	if (is_rotating) {
-		data.current_rotation = data.current_rotation + data.current_effect;
+		data.current_rotation = data.current_rotation + data.current_effect_power;
 		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
 			data.current_rotation = 0.0;
 		}
 	}
 
 	// Update waver phase
-	if (data.effect_mode == 2) {
+	if (data.effect_mode == RPG::SavePicture::Effect_wave) {
 		data.current_waver = data.current_waver + 10;
 	}
 
@@ -390,7 +390,7 @@ void Game_Picture::SyncCurrentToFinish() {
 	data.current_magnify = data.finish_magnify;
 	data.current_top_trans = data.finish_top_trans;
 	data.current_bot_trans = data.finish_bot_trans;
-	data.current_effect = data.finish_effect;
+	data.current_effect_power = data.finish_effect_power;
 }
 
 RPG::SavePicture& Game_Picture::GetData() const {
