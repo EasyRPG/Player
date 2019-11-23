@@ -49,18 +49,18 @@ public:
 	};
 	struct ShowParams : Params {
 		std::string name;
-		bool use_transparent_color = false;
-		bool fixed_to_map = false;
 		// RPG Maker 2k3 1.12
 		int spritesheet_cols = 1;
 		int spritesheet_rows = 1;
-		bool spritesheet_loop = false;
 		int spritesheet_frame = 0;
 		int spritesheet_speed = 0;
 		int map_layer = 7;
 		int battle_layer = 0;
 		// erase_on_map_change | affected_by_flash | affected_by_shake
 		int flags = 1 | 32 | 64;
+		bool spritesheet_play_once = false;
+		bool use_transparent_color = false;
+		bool fixed_to_map = false;
 	};
 
 	struct MoveParams : Params {

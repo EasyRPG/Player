@@ -2436,7 +2436,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
 		}
 
-		params.spritesheet_loop = !com.parameters[26];
+		params.spritesheet_play_once = com.parameters[26];
 		params.map_layer = com.parameters[27];
 		params.battle_layer = com.parameters[28];
 		params.flags = com.parameters[29];

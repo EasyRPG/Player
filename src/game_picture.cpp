@@ -170,7 +170,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.frames = 0;
 	data.spritesheet_rows = params.spritesheet_rows;
 	data.spritesheet_cols = params.spritesheet_cols;
-	data.spritesheet_play_once = !params.spritesheet_loop;
+	data.spritesheet_play_once = params.spritesheet_play_once;
 	data.spritesheet_frame = params.spritesheet_frame;
 	data.spritesheet_speed = params.spritesheet_speed;
 	data.map_layer = params.map_layer;
