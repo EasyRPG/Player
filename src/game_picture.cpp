@@ -105,8 +105,9 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
 
 	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * 360 / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * 360 / 256 : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
+
 	sprite->SetOpacity(
 		(int)(255 * (100 - data.current_top_trans) / 100),
 		(int)(255 * (100 - data.current_bot_trans) / 100));
@@ -338,7 +339,7 @@ void Game_Picture::Update() {
 
 	// Update waver phase
 	if (data.effect_mode == RPG::SavePicture::Effect_wave) {
-		data.current_waver = data.current_waver + 10;
+		data.current_waver = data.current_waver + 8;
 	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
