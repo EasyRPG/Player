@@ -137,7 +137,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	RPG::SavePicture& data = GetData();
 
 	data.name = params.name;
-	data.transparency = params.transparency;
+	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
 	SetNonEffectParams(params);
 	data.effect_mode = params.effect_mode;
@@ -248,7 +248,7 @@ void Game_Picture::RequestPictureSprite() {
 void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	RPG::SavePicture& data = GetData();
 
-	whole_bitmap = Cache::Picture(data.name, data.transparency);
+	whole_bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	sprite.reset(new Sprite());
 	sprite->SetBitmap(whole_bitmap);

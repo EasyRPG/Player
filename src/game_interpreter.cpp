@@ -2391,7 +2391,7 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	params.position_y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	params.fixed_to_map = com.parameters[4] > 0;
 	params.magnify = com.parameters[5];
-	params.transparency = com.parameters[7] > 0;
+	params.use_transparent_color = com.parameters[7] > 0;
 	params.top_trans = com.parameters[6];
 	params.red = com.parameters[8];
 	params.green = com.parameters[9];
