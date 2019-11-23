@@ -108,11 +108,20 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * 360 / 256 : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 
+	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.
+	const bool use_bottom_trans = (Player::IsRPG2k3() && !Player::IsRPG2k3E());
+	const auto top_trans = data.current_top_trans;
+	const auto bottom_trans = use_bottom_trans ? data.current_bot_trans : top_trans;
+
 	sprite->SetOpacity(
-		(int)(255 * (100 - data.current_top_trans) / 100),
-		(int)(255 * (100 - data.current_bot_trans) / 100));
-	if (data.current_bot_trans != data.current_top_trans)
+		(int)(255 * (100 - top_trans) / 100),
+		(int)(255 * (100 - bottom_trans) / 100));
+
+	if (bottom_trans != top_trans) {
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
+	} else {
+		sprite->SetBushDepth(0);
+	}
 
 	auto tone = Tone((int) (data.current_red * 128 / 100),
 			(int) (data.current_green * 128 / 100),

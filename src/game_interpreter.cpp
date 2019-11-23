@@ -2407,40 +2407,39 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 
 	size_t param_size = com.parameters.size();
 
-	if (Player::IsRPG2k() || Player::IsRPG2k3E()) {
-		if (param_size > 16) {
-			// Handling of RPG2k3 1.12 chunks
-			pic_id = ValueOrVariable(com.parameters[17], pic_id);
-			if (com.parameters[19] != 0) {
-				int var = 0;
-				if (Game_Variables.IsValid(com.parameters[19])) {
-					var = Game_Variables.Get(com.parameters[19]);
-				}
-				params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
-			}
-			params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
-			params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
-			params.spritesheet_cols = com.parameters[22];
-			params.spritesheet_rows = com.parameters[23];
+	if (param_size > 14) {
+		// RPG2k3 sets this chunk. Versions < 1.12 let you specify separate top and bottom
+		// transparency. >= 1.12 Editor only let you set one transparency field but it affects
+		// both chunks here.
+		params.bottom_trans = com.parameters[14];
+	}
 
-			// Animate and index selection are exclusive
-			if (com.parameters[24] == 2) {
-				params.spritesheet_speed = com.parameters[25];
-			} else {
-				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
+	if (param_size > 16) {
+		// Handling of RPG2k3 1.12 chunks
+		pic_id = ValueOrVariable(com.parameters[17], pic_id);
+		if (com.parameters[19] != 0) {
+			int var = 0;
+			if (Game_Variables.IsValid(com.parameters[19])) {
+				var = Game_Variables.Get(com.parameters[19]);
 			}
+			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
+		}
+		params.magnify = ValueOrVariable(com.parameters[20], params.magnify);
+		params.top_trans = ValueOrVariable(com.parameters[21], params.top_trans);
+		params.spritesheet_cols = com.parameters[22];
+		params.spritesheet_rows = com.parameters[23];
 
-			params.spritesheet_loop = !com.parameters[26];
-			params.map_layer = com.parameters[27];
-			params.battle_layer = com.parameters[28];
-			params.flags = com.parameters[29];
+		// Animate and index selection are exclusive
+		if (com.parameters[24] == 2) {
+			params.spritesheet_speed = com.parameters[25];
+		} else {
+			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
 		}
 
-		// RPG2k and RPG2k3 1.10 do not support this option
-		params.bottom_trans = params.top_trans;
-	} else {
-		// Corner case when 2k maps are used in 2k3 (pre-1.10) and don't contain this chunk
-		params.bottom_trans = param_size > 14 ? com.parameters[14] : params.top_trans;
+		params.spritesheet_loop = !com.parameters[26];
+		params.map_layer = com.parameters[27];
+		params.battle_layer = com.parameters[28];
+		params.flags = com.parameters[29];
 	}
 
 	PicPointerPatch::AdjustShowParams(pic_id, params);
