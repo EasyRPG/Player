@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _USE_MATH_DEFINES
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
@@ -104,8 +105,8 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
 	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
 
-	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * 360 / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * 360 / 256 : 0.0);
+	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 
 	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.

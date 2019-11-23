@@ -63,8 +63,16 @@ public:
 	void SetZoomX(double zoom_x);
 	double GetZoomY() const;
 	void SetZoomY(double zoom_y);
+
+	/** @return rotation angle in radians */
 	double GetAngle() const;
+	/**
+	 * Set rotation angle.
+	 *
+	 * @param angle the angle in radians
+	 */
 	void SetAngle(double angle);
+
 	bool GetFlipX() const;
 	void SetFlipX(bool flipx);
 	bool GetFlipY() const;
@@ -79,9 +87,23 @@ public:
 	void SetBlendColor(Color color);
 	Tone GetTone() const;
 	void SetTone(Tone tone);
+
+	/** @return wave depth in pixels */
 	int GetWaverDepth() const;
+
+	/** Set wave effect depth
+	 *
+	 * @param depth in pixels
+	 */
 	void SetWaverDepth(int depth);
+
+	/** @return waver phase in radians */
 	double GetWaverPhase() const;
+	/**
+	 * Set wave effect phase.
+	 *
+	 * @param angle the phase in radians
+	 */
 	void SetWaverPhase(double phase);
 
 	DrawableType GetType() const override;
