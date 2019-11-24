@@ -133,6 +133,20 @@ public:
 	 */
 	static int AnimateShake(int strength, int speed, int time_left, int position);
 
+	/**
+	 * Get the X panning offset for full screen effects
+	 *
+	 * @return pan_x offset
+	 */
+	int GetPanX();
+
+	/**
+	 * Get the Y panning offset for full screen effects
+	 *
+	 * @return pan_y offset
+	 */
+	int GetPanY();
+
 private:
 	std::vector<std::unique_ptr<Game_Picture>> pictures;
 	std::unique_ptr<BattleAnimation> animation;

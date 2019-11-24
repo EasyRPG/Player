@@ -209,6 +209,14 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_res_y = res_y;
 }
 
+int Game_Screen::GetPanX() {
+	return data.pan_x;
+}
+
+int Game_Screen::GetPanY() {
+	return data.pan_y;
+}
+
 static double interpolate(double d, double x0, double x1)
 {
 	return (x0 * (d - 1) + x1) / d;
