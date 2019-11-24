@@ -67,13 +67,13 @@ void Game_Picture::UpdateSprite() {
 
 		last_spritesheet_frame = data.spritesheet_frame;
 
-		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame - 1) % data.spritesheet_cols);
-		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame - 1) / data.spritesheet_cols % data.spritesheet_rows);
+		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame) % data.spritesheet_cols);
+		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 		Rect r(sx, sy, sheet_bitmap->GetWidth(), sheet_bitmap->GetHeight());
 
 		sheet_bitmap->Clear();
 
-		if (last_spritesheet_frame > 0 && last_spritesheet_frame <= data.spritesheet_cols * data.spritesheet_rows) {
+		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < data.spritesheet_cols * data.spritesheet_rows) {
 			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
 		}
 
@@ -180,7 +180,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_tint = (params.flags & 16) == 16;
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
-	last_spritesheet_frame = 0;
+	last_spritesheet_frame = -1;
 	sheet_bitmap.reset();
 
 	RequestPictureSprite();
@@ -352,24 +352,23 @@ void Game_Picture::Update() {
 		data.current_waver = data.current_waver + 8;
 	}
 
-	// RPG Maker 2k3 1.12: Spritesheets
-	if (HasSpritesheet()) {
+	// RPG Maker 2k3 1.12: Animated spritesheets
+	if (Player::IsRPG2k3E()) {
+		data.frames = data.frames + 1;
+
 		if (data.spritesheet_speed > 0) {
-			if (data.frames % data.spritesheet_speed == 0) {
+			if (data.frames > data.spritesheet_speed) {
+				data.frames = 1;
 				data.spritesheet_frame = data.spritesheet_frame + 1;
 
-				if (data.spritesheet_frame > data.spritesheet_rows * data.spritesheet_cols) {
-					if (data.spritesheet_play_once) {
+				if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
+					data.spritesheet_frame = 0;
+					if (data.spritesheet_play_once && !data.name.empty()) {
 						Erase(true);
-						return;
 					}
-
-					data.spritesheet_frame = 1;
 				}
 			}
 		}
-
-		data.frames = data.frames + 1;
 	}
 
 	UpdateSprite();
