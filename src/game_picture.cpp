@@ -30,9 +30,7 @@
 constexpr int z_mask = (1 << 16);
 
 Game_Picture::Game_Picture(int ID) :
-	id(ID),
-	old_map_x(Game_Map::GetDisplayX()),
-	old_map_y(Game_Map::GetDisplayY())
+	id(ID)
 {
 	RequestPictureSprite();
 }
@@ -187,9 +185,6 @@ void Game_Picture::Show(const ShowParams& params) {
 
 	RequestPictureSprite();
 	UpdateSprite();
-
-	old_map_x = Game_Map::GetDisplayX();
-	old_map_y = Game_Map::GetDisplayY();
 }
 
 void Game_Picture::Move(const MoveParams& params) {
@@ -291,23 +286,17 @@ void Game_Picture::Update() {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
 
-		if (old_map_x != Game_Map::GetDisplayX()) {
-			double mx = (old_map_x - Game_Map::GetDisplayX()) / (double)TILE_SIZE;
+		double dx = Game_Map::GetScrolledRight() / TILE_SIZE;
 
-			data.finish_x = data.finish_x + mx;
-			data.current_x = data.current_x + mx;
-			data.start_x = data.start_x + mx;
-		}
-		if (old_map_y != Game_Map::GetDisplayY()) {
-			double my = (old_map_y - Game_Map::GetDisplayY()) / (double)TILE_SIZE;
+		data.finish_x = data.finish_x - dx;
+		data.current_x = data.current_x - dx;
+		data.start_x = data.start_x - dx;
 
-			data.finish_y = data.finish_y + my;
-			data.current_y = data.current_y + my;
-			data.start_y = data.start_y + my;
-		}
+		double dy = Game_Map::GetScrolledDown() / TILE_SIZE;
 
-		old_map_x = Game_Map::GetDisplayX();
-		old_map_y = Game_Map::GetDisplayY();
+		data.finish_y = data.finish_y - dy;
+		data.current_y = data.current_y - dy;
+		data.start_y = data.start_y - dy;
 	}
 
 	if (data.time_left == 0) {

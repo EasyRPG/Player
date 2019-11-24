@@ -80,8 +80,6 @@ private:
 	BitmapRef sheet_bitmap;
 	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
-	int old_map_x;
-	int old_map_y;
 
 	void UpdateSprite();
 	void SetNonEffectParams(const Params& params);

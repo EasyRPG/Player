@@ -161,6 +161,12 @@ namespace Game_Map {
 	/** Same as AddScreenX, but for the Y-direction. */
 	void AddScreenY(int& screen_y, int& inc);
 
+	/** @return how many sixteenths we scrolled right during this frame */
+	int GetScrolledRight();
+
+	/** @return how many sixteenths we scrolled down during this frame */
+	int GetScrolledDown();
+
 	/**
 	 * Gets if a tile coordinate is valid.
 	 *

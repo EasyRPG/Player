@@ -83,6 +83,10 @@ namespace {
 	//FIXME: Find a better way to do this.
 	bool reset_panorama_x_on_next_init = true;
 	bool reset_panorama_y_on_next_init = true;
+
+	// How much we scrolled during this frame.
+	int scrolled_right = 0;
+	int scrolled_down = 0;
 }
 
 void Game_Map::OnContinueFromBattle() {
@@ -424,6 +428,7 @@ void Game_Map::ScrollRight(int distance) {
 	int x = map_info.position_x;
 	AddScreenX(x, distance);
 	map_info.position_x = x;
+	scrolled_right += distance;
 	if (distance == 0) {
 		return;
 	}
@@ -439,6 +444,7 @@ void Game_Map::ScrollDown(int distance) {
 	int y = map_info.position_y;
 	AddScreenY(y, distance);
 	map_info.position_y = y;
+	scrolled_down += distance;
 	if (distance == 0) {
 		return;
 	}
@@ -475,6 +481,14 @@ void Game_Map::AddScreenY(int& screen_y, int& inc) {
 	} else {
 		ClampingAdd(0, map_height - SCREEN_HEIGHT, screen_y, inc);
 	}
+}
+
+int Game_Map::GetScrolledRight() {
+	return scrolled_right;
+}
+
+int Game_Map::GetScrolledDown() {
+	return scrolled_down;
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -941,6 +955,9 @@ int Game_Map::CheckEvent(int x, int y) {
 }
 
 void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool is_preupdate) {
+	scrolled_right = 0;
+	scrolled_down = 0;
+
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 
 	if (!actx.IsActive()) {
