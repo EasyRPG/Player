@@ -49,8 +49,8 @@ public:
 	};
 	struct ShowParams : Params {
 		std::string name;
-		bool transparency;
-		bool fixed_to_map;
+		bool use_transparent_color = false;
+		bool fixed_to_map = false;
 		// RPG Maker 2k3 1.12
 		int spritesheet_cols = 1;
 		int spritesheet_rows = 1;
