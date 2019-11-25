@@ -69,26 +69,23 @@ void Game_Screen::SetupFromSave() {
 }
 
 void Game_Screen::CreatePicturesFromSave() {
-	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
+	const auto& save_pics = Main_Data::game_data.pictures;
 
-	pictures.resize(save_pics.size());
+	pictures.reserve(save_pics.size());
 
-	for (int id = 1; id <= (int)save_pics.size(); ++id) {
-		if (!save_pics[id - 1].name.empty()) {
-			pictures[id - 1].reset(new Game_Picture(id));
-		}
+	while (pictures.size() > save_pics.size()) {
+		pictures.erase(pictures.begin() + save_pics.size(), pictures.end());
+		return;
+	}
+
+	while (pictures.size() < save_pics.size()) {
+		pictures.emplace_back(pictures.size() + 1);
 	}
 }
 
 void Game_Screen::Reset() {
-	if (Main_Data::game_data.pictures.size() < pictures.size()) {
-		pictures.resize(Main_Data::game_data.pictures.size());
-	}
-
-	for (auto& p : pictures) {
-		if (p) {
-			p->Erase(false);
-		}
+	for (auto& pic : pictures) {
+		pic.Erase(false);
 	}
 
 	data.flash_red = 0;
@@ -132,7 +129,10 @@ void Game_Screen::PreallocatePictureData(int id) {
 		Main_Data::game_data.pictures[i].ID = i + 1;
 	}
 
-	pictures.resize(id);
+	pictures.reserve(id);
+	while (pictures.size() < id) {
+		pictures.emplace_back(pictures.size() + 1);
+	}
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
@@ -142,10 +142,7 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 
 	PreallocatePictureData(id);
 
-	std::unique_ptr<Game_Picture>& p = pictures[id - 1];
-	if (!p)
-		p.reset(new Game_Picture(id));
-	return p.get();
+	return &pictures[id - 1];
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -331,10 +328,8 @@ void Game_Screen::Update() {
 		}
 	}
 
-	for (const auto& picture : pictures) {
-		if (picture) {
-			picture->Update();
-		}
+	for (auto& picture : pictures) {
+		picture.Update();
 	}
 
 	if (!movie_filename.empty()) {

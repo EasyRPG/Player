@@ -148,7 +148,7 @@ public:
 	int GetPanY();
 
 private:
-	std::vector<std::unique_ptr<Game_Picture>> pictures;
+	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
 
 	RPG::SaveScreen& data;

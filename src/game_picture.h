@@ -32,6 +32,10 @@ class Sprite;
 class Game_Picture {
 public:
 	explicit Game_Picture(int ID);
+
+	Game_Picture(Game_Picture&&) noexcept = default;
+	Game_Picture& operator=(Game_Picture&&) noexcept = default;
+
 	~Game_Picture();
 
 	struct Params {
