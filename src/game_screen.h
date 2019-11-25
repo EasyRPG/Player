@@ -168,6 +168,7 @@ protected:
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
 	void CreatePicturesFromSave();
+	void PreallocatePictureData(int id);
 };
 
 #endif

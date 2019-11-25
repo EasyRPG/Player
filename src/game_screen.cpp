@@ -19,6 +19,7 @@
 #define _USE_MATH_DEFINES
 #include "bitmap.h"
 #include "data.h"
+#include "player.h"
 #include "game_battle.h"
 #include "game_battler.h"
 #include "game_screen.h"
@@ -32,10 +33,28 @@
 
 static constexpr int kShakeContinuousTimeStart = 65535;
 
+static int GetDefaultNumberOfPictures() {
+	if (Player::IsEnglish()) {
+		return 1000;
+	}
+	if (Player::IsMajorUpdatedVersion()) {
+		return 50;
+	}
+	if (Player::IsRPG2k3()) {
+		// FIXME: Needs confirmation with 2k3 RPG_RT <= 1.0.4
+		return 40;
+	}
+	return 20;
+}
+
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
 	Reset();
+
+	// Pre-allocate pictures depending on detected game version.
+	// This makes our savegames match RPG_RT.
+	PreallocatePictureData(GetDefaultNumberOfPictures());
 }
 
 void Game_Screen::SetupFromSave() {
@@ -99,21 +118,30 @@ void Game_Screen::Reset() {
 	animation.reset();
 }
 
+void Game_Screen::PreallocatePictureData(int id) {
+	if (id <= (int)pictures.size()) {
+		return;
+	}
+
+	const auto old_size = Main_Data::game_data.pictures.size();
+
+	// Some games use more pictures then RPG_RT officially supported
+	Main_Data::game_data.pictures.resize(id);
+
+	for (auto i = old_size; i < Main_Data::game_data.pictures.size(); ++i) {
+		Main_Data::game_data.pictures[i].ID = i + 1;
+	}
+
+	pictures.resize(id);
+}
+
 Game_Picture* Game_Screen::GetPicture(int id) {
 	if (id <= 0) {
 		return NULL;
 	}
 
-	if (id > (int)pictures.size()) {
-		// Some games use more pictures then RPG_RT officially supported
-		Main_Data::game_data.pictures.resize(id);
+	PreallocatePictureData(id);
 
-		for (size_t i = 0; i < Main_Data::game_data.pictures.size(); ++i) {
-			Main_Data::game_data.pictures[i].ID = i + 1;
-		}
-
-		pictures.resize(id);
-	}
 	std::unique_ptr<Game_Picture>& p = pictures[id - 1];
 	if (!p)
 		p.reset(new Game_Picture(id));
