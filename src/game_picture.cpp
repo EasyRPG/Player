@@ -279,9 +279,6 @@ bool Game_Picture::HasSpritesheet() const {
 void Game_Picture::Update() {
 	RPG::SavePicture& data = GetData();
 
-	if (data.name.empty())
-		return;
-
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
@@ -369,6 +366,10 @@ void Game_Picture::Update() {
 				}
 			}
 		}
+	}
+
+	if (data.name.empty()) {
+		return;
 	}
 
 	UpdateSprite();
