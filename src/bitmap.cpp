@@ -16,6 +16,7 @@
  */
 
 // Headers
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
@@ -733,14 +734,15 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 
 	int height = static_cast<int>(std::floor(src_rect.height * zoom_y));
 	int width  = static_cast<int>(std::floor(src_rect.width * zoom_x));
-	for (int i = 0; i < height; i++) {
+	const auto yclip = y < 0 ? -y : 0;
+	const auto yend = std::min(height, this->height() - y);
+	for (int i = yclip; i < yend; i++) {
 		int dy = y + i;
-		if (dy < 0)
-			continue;
-		if (dy >= this->height())
-			break;
-		int sy = static_cast<int>(std::floor((i+0.5) / zoom_y));
-		int offset = (int) (2 * zoom_x * depth * sin((phase + (src_rect.y + sy) * 11.2) * 3.14159 / 180));
+		// RPG_RT starts the effect from the top of the screen even if the image is clipped. The result
+		// is that moving images which cross the top of the screen can appear to go too fast or too slow
+		// in RPT_RT. The (i - yclip) is RPG_RT compatible behavior. Just (i) would be more correct.
+		const double sy = (i - yclip) * (2 * M_PI) / (32.0 * zoom_y);
+		const int offset = 2 * zoom_x * depth * std::sin(phase + sy);
 
 		pixman_image_composite32(src.GetOperator(mask),
 								 src.bitmap, mask, bitmap,
