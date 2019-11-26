@@ -2383,6 +2383,11 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		return true;
 	}
 
+	// Older versions of RPG_RT block pictures when message active.
+	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	int pic_id = com.parameters[0];
 
 	Game_Picture::ShowParams params = {};
@@ -2457,6 +2462,11 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 		return true;
 	}
 
+	// Older versions of RPG_RT block pictures when message active.
+	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+		return false;
+	}
+
 	int pic_id = com.parameters[0];
 
 	Game_Picture::MoveParams params;
@@ -2515,6 +2525,11 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 	if (Game_Temp::battle_running) {
 		Output::Warning("ErasePicture: Not supported in battle");
 		return true;
+	}
+
+	// Older versions of RPG_RT block pictures when message active.
+	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
+		return false;
 	}
 
 	int pic_id = com.parameters[0];
