@@ -31,6 +31,8 @@ class Game_Screen {
 
 public:
 	Game_Screen();
+
+	void SetupNewGame();
 	void SetupFromSave();
 
 	Game_Picture* GetPicture(int id);

@@ -51,6 +51,10 @@ Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
 	Reset();
+}
+
+void Game_Screen::SetupNewGame() {
+	Reset();
 
 	// Pre-allocate pictures depending on detected game version.
 	// This makes our savegames match RPG_RT.
@@ -71,12 +75,8 @@ void Game_Screen::SetupFromSave() {
 void Game_Screen::CreatePicturesFromSave() {
 	const auto& save_pics = Main_Data::game_data.pictures;
 
+	pictures.clear();
 	pictures.reserve(save_pics.size());
-
-	while (pictures.size() > save_pics.size()) {
-		pictures.erase(pictures.begin() + save_pics.size(), pictures.end());
-		return;
-	}
 
 	while (pictures.size() < save_pics.size()) {
 		pictures.emplace_back(pictures.size() + 1);

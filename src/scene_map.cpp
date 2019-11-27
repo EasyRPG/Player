@@ -74,6 +74,8 @@ void Scene_Map::Start() {
 	// is used.
 	if (from_save) {
 		Main_Data::game_screen->SetupFromSave();
+	} else {
+		Main_Data::game_screen->SetupNewGame();
 	}
 
 	Player::FrameReset();

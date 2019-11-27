@@ -35,16 +35,6 @@ Game_Picture::Game_Picture(int ID) :
 	RequestPictureSprite();
 }
 
-Game_Picture::~Game_Picture() {
-	if (id <= 0 || id -1 >= static_cast<int>(Main_Data::game_data.pictures.size())) {
-		// Prevent crash on game load when old pictures are destroyed
-		// but the new pictures array is smaller then the old one
-		return;
-	}
-
-	GetData().name.clear();
-}
-
 void Game_Picture::UpdateSprite() {
 	RPG::SavePicture& data = GetData();
 
