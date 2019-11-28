@@ -78,66 +78,6 @@ Window_Message::~Window_Message() {
 	}
 }
 
-void Window_Message::ApplyTextInsertingCommands() {
-	text_index = text.end();
-	end = text.end();
-
-	// Contains already substitued \N actors to prevent endless recursion
-	std::vector<int> replaced_actors;
-	int actor_replacement_start = std::distance(text.begin(), end);
-
-	if (!text.empty()) {
-		// Move on first valid char
-		--text_index;
-
-		// Apply commands that insert text
-		while (std::distance(text_index, text.begin()) <= -1) {
-			char ch = tolower(*text_index--);
-			switch (ch) {
-			case 'n':
-			case 'v':
-			{
-				if (*text_index != Player::escape_char) {
-					continue;
-				}
-				++text_index;
-
-				auto start_code = text_index - 1;
-				bool success;
-				int parsed_num;
-				std::u32string command_result = Utils::DecodeUTF32(ParseCommandCode(success, parsed_num));
-				if (start_code < text.begin() + actor_replacement_start) {
-					replaced_actors.clear();
-				}
-
-				if (!success || std::find(replaced_actors.begin(), replaced_actors.end(), parsed_num) != replaced_actors.end()) {
-					text_index = start_code;
-					continue;
-				}
-
-				if (ch == 'n') {
-					replaced_actors.push_back(parsed_num);
-					actor_replacement_start = std::min<int>(std::distance(text.begin(), start_code), actor_replacement_start);
-				}
-
-				text.replace(start_code, text_index + 1, command_result);
-				// Start from the beginning, the inserted text might add new commands
-				text_index = text.end();
-				end = text.end();
-				actor_replacement_start = std::min<int> (std::distance(text.begin(), end), actor_replacement_start);
-
-				// Move on first valid char
-				--text_index;
-
-				break;
-			}
-			default:
-				break;
-			}
-		}
-	}
-}
-
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	contents->Clear();
 	pending_message = std::move(pm);
@@ -153,12 +93,8 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 		for (const std::string& line : lines) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
 			if (pending_message.IsWordWrapped()) {
-				// since ApplyTextInsertingCommands works for the text variable,
-				// we store line into text and use wrapped_text for the real 'text'
-				text = Utils::DecodeUTF32(line);
-				ApplyTextInsertingCommands();
 				Game_Message::WordWrap(
-						Utils::EncodeUTF(text),
+						line,
 						width - 24,
 						[&wrapped_text](const std::string& wrapped_line) {
 							wrapped_text.append(Utils::DecodeUTF32(wrapped_line)).append(1, U'\n');
@@ -176,8 +112,8 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	}
 	item_max = min(4, pending_message.GetNumChoices());
 
-	ApplyTextInsertingCommands();
 	text_index = text.begin();
+	end = text.end();
 
 	// If we're displaying a new message, reset the closing animation.
 	if (closing) {

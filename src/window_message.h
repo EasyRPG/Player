@@ -122,15 +122,6 @@ public:
 	std::string ParseCommandCode(bool& success, int& value);
 
 	/**
-	 * Updates the text variable, replacing the commands
-	 * \N[x] and \V[x] in it.
-	 *
-	 * Doesn't return anything. The result is stored into
-	 * the text variable.
-	 */
-	void ApplyTextInsertingCommands();
-
-	/**
 	 * Stub. For choice.
 	 */
 	void UpdateCursorRect() override;
