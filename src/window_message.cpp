@@ -179,6 +179,11 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	ApplyTextInsertingCommands();
 	text_index = text.begin();
 
+	// If we're displaying a new message, reset the closing animation.
+	if (closing) {
+		SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+	}
+
 	InsertNewPage();
 }
 
