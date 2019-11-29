@@ -367,6 +367,10 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	// bool has_inn_handlers = com.parameters[2] != 0;
 
 	if (Game_Temp::inn_price == 0) {
+		if (Game_Message::IsMessageActive()) {
+			return false;
+		}
+
 		// Skip prompt.
 		ContinuationShowInnStart(com.indent, 0);
 		return true;
