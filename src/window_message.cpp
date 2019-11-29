@@ -113,7 +113,6 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	item_max = min(4, pending_message.GetNumChoices());
 
 	text_index = text.begin();
-	end = text.end();
 
 	// If we're displaying a new message, reset the closing animation.
 	if (closing) {
@@ -136,7 +135,6 @@ void Window_Message::FinishMessageProcessing() {
 
 	text.clear();
 	text_index = text.begin();
-	end = text.end();
 }
 
 void Window_Message::StartChoiceProcessing() {
@@ -336,7 +334,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (text_index == end) {
+		if (text_index == text.end()) {
 			if (!instant_speed) {
 				SetWaitForPage();
 			}
@@ -365,7 +363,7 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (*text_index == '\n') {
-			if (text_index + 1 != end) {
+			if (text_index + 1 != text.end()) {
 				if (!instant_speed && line_char_counter == 0) {
 					// RPG_RT will always wait 1 frame for each empty line.
 					SetWait(1);
@@ -388,7 +386,7 @@ void Window_Message::UpdateMessage() {
 			if (*text_index == '\n') {
 				++text_index;
 			}
-			if (text_index != end) {
+			if (text_index != text.end()) {
 				SetPause(true);
 				new_page_after_pause = true;
 			}
@@ -396,7 +394,7 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (*text_index == Player::escape_char && std::distance(text_index, end) > 1) {
+		if (*text_index == Player::escape_char && std::distance(text_index, text.end()) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -479,7 +477,7 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (*text_index == '$'
-				   && std::distance(text_index, end) > 1
+				   && std::distance(text_index, text.end()) > 1
 				   && std::isalpha(*std::next(text_index))) {
 			// ExFont
 			DrawGlyph(Utils::EncodeUTF(std::u32string(text_index, std::next(text_index, 2))), instant_speed);
@@ -524,7 +522,7 @@ void Window_Message::IncrementLineCharCounter(int width) {
 int Window_Message::ParseParameter(bool& is_valid) {
 	++text_index;
 
-	if (text_index == end ||
+	if (text_index == text.end() ||
 		*text_index != '[') {
 		--text_index;
 		is_valid = false;
@@ -536,7 +534,7 @@ int Window_Message::ParseParameter(bool& is_valid) {
 	bool null_at_start = false;
 	std::stringstream ss;
 	for (;;) {
-		if (text_index == end) {
+		if (text_index == text.end()) {
 			break;
 		} else if (*text_index == '\n') {
 			--text_index;
@@ -558,7 +556,7 @@ int Window_Message::ParseParameter(bool& is_valid) {
 		} else {
 			// End of number
 			// Search for ] or line break
-			while (text_index != end) {
+			while (text_index != text.end()) {
 					if (*text_index == '\n') {
 						--text_index;
 						break;
@@ -656,7 +654,7 @@ void Window_Message::WaitForInput() {
 
 		if (text.empty()) {
 			TerminateMessage();
-		} else if (text_index != end && new_page_after_pause) {
+		} else if (text_index != text.end() && new_page_after_pause) {
 			new_page_after_pause = false;
 			InsertNewPage();
 		}

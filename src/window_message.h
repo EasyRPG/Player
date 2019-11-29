@@ -156,7 +156,7 @@ protected:
 	/** Current number of lines on this page. */
 	int line_count = 0;
 	/** Index of the next char in text that will be output. */
-	std::u32string::iterator text_index, end;
+	std::u32string::iterator text_index;
 	/** text message that will be displayed. */
 	std::u32string text;
 	/** Used by Message kill command \^. */
