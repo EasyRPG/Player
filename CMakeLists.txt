@@ -757,6 +757,22 @@ if(PLAYER_ENABLE_TESTS)
 	endforeach()
 endif()
 
+# Benchmarks
+option(PLAYER_ENABLE_BENCHMARKS "Build benchmarks" OFF)
+
+if(PLAYER_ENABLE_BENCHMARKS)
+	find_package(benchmark REQUIRED)
+	file(GLOB BENCH_FILES ${CMAKE_CURRENT_SOURCE_DIR}/bench/*.cpp)
+	foreach(i ${BENCH_FILES})
+		get_filename_component(name "${i}" NAME_WE)
+		add_executable(bench_${name} ${i})
+		target_link_libraries(bench_${name} ${PROJECT_NAME})
+		target_link_libraries(bench_${name} benchmark)
+	endforeach()
+endif()
+
+
+
 # Print summary
 message(STATUS "")
 message(STATUS "Target system: ${PLAYER_TARGET_PLATFORM}")
