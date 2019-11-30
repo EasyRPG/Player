@@ -462,6 +462,7 @@ test_runner_SOURCES = \
 	tests/drawable_list.cpp \
 	tests/drawable_mgr.cpp \
 	tests/filefinder.cpp \
+	tests/font.cpp \
 	tests/output.cpp \
 	tests/parse.cpp \
 	tests/platform.cpp \

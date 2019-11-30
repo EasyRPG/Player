@@ -188,28 +188,12 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	return ImagePNG::WritePNG(os, width, height, &data.front());
 }
 
-int Bitmap::GetWidth() const {
-	return width();
-}
-
-int Bitmap::GetHeight() const {
-	return height();
-}
-
-Rect Bitmap::GetRect() const {
-	return Rect(0, 0, width(), height());
-}
-
 size_t Bitmap::GetSize() const {
 	if (!bitmap) {
 		return 0;
 	}
 
 	return pitch() * height();
-}
-
-bool Bitmap::GetTransparent() const {
-	return format.alpha_type != PF::NoAlpha;
 }
 
 ImageOpacity Bitmap::ComputeImageOpacity() const {

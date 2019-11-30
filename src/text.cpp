@@ -90,7 +90,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string
 			// Skip the next character
 			++c;
 		} else {
-			next_glyph_pos += font->GetSize(std::u32string(1, *c)).width;
+			next_glyph_pos += font->GetSize(*c).width;
 		}
 	}
 
@@ -112,16 +112,15 @@ void Text::Draw(Bitmap& dest, int x, int y, Color color, FontRef font, std::stri
 	int next_glyph_pos = 0;
 
 	for (char32_t c : Utils::DecodeUTF32(text)) {
-		std::u32string const glyph = std::u32string(1, c);
 		if (c == U'\n') {
-			y += font->GetSize(glyph).height;
+			y += font->GetSize(c).height;
 			next_glyph_pos = 0;
 			continue;
 		}
 		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
 
 		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, c);
-		
-		next_glyph_pos += font->GetSize(glyph).width;
+
+		next_glyph_pos += font->GetSize(c).width;
 	}
 }
