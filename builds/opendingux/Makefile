@@ -59,7 +59,7 @@ endif
 endif
 
 # Compiler headers
-INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
+INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated compat
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source

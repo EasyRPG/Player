@@ -16,6 +16,7 @@
  */
 
 #define _USE_MATH_DEFINES
+#include <cmath>
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
