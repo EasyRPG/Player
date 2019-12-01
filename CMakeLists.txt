@@ -53,6 +53,7 @@ add_library(${PROJECT_NAME}
 	src/cache.h
 	src/color.cpp
 	src/color.h
+	src/compiler.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h
 	src/decoder_mpg123.cpp
