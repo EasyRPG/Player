@@ -15,9 +15,11 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _USE_MATH_DEFINES
 #include "bitmap.h"
 #include "options.h"
 #include "cache.h"
+#include "output.h"
 #include "game_map.h"
 #include "game_picture.h"
 #include "player.h"
@@ -28,21 +30,9 @@
 constexpr int z_mask = (1 << 16);
 
 Game_Picture::Game_Picture(int ID) :
-	id(ID),
-	old_map_x(Game_Map::GetDisplayX()),
-	old_map_y(Game_Map::GetDisplayY())
+	id(ID)
 {
 	RequestPictureSprite();
-}
-
-Game_Picture::~Game_Picture() {
-	if (id <= 0 || id -1 >= static_cast<int>(Main_Data::game_data.pictures.size())) {
-		// Prevent crash on game load when old pictures are destroyed
-		// but the new pictures array is smaller then the old one
-		return;
-	}
-
-	GetData().name.clear();
 }
 
 void Game_Picture::UpdateSprite() {
@@ -67,13 +57,13 @@ void Game_Picture::UpdateSprite() {
 
 		last_spritesheet_frame = data.spritesheet_frame;
 
-		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame - 1) % data.spritesheet_cols);
-		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame - 1) / data.spritesheet_cols % data.spritesheet_rows);
+		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame) % data.spritesheet_cols);
+		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 		Rect r(sx, sy, sheet_bitmap->GetWidth(), sheet_bitmap->GetHeight());
 
 		sheet_bitmap->Clear();
 
-		if (last_spritesheet_frame > 0 && last_spritesheet_frame <= data.spritesheet_cols * data.spritesheet_rows) {
+		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < data.spritesheet_cols * data.spritesheet_rows) {
 			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
 		}
 
@@ -104,15 +94,24 @@ void Game_Picture::UpdateSprite() {
 	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
 	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
 
-	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * 360 / 256 : 0.0);
-	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * 360 / 256 : 0.0);
+	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_effect_power * 2 : 0);
 
+	// Only older versions of RPG_RT apply the effects of current_bot_trans chunk.
+	const bool use_bottom_trans = (Player::IsRPG2k3() && !Player::IsRPG2k3E());
+	const auto top_trans = data.current_top_trans;
+	const auto bottom_trans = use_bottom_trans ? data.current_bot_trans : top_trans;
+
 	sprite->SetOpacity(
-		(int)(255 * (100 - data.current_top_trans) / 100),
-		(int)(255 * (100 - data.current_bot_trans) / 100));
-	if (data.current_bot_trans != data.current_top_trans)
+		(int)(255 * (100 - top_trans) / 100),
+		(int)(255 * (100 - bottom_trans) / 100));
+
+	if (bottom_trans != top_trans) {
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
+	} else {
+		sprite->SetBushDepth(0);
+	}
 
 	auto tone = Tone((int) (data.current_red * 128 / 100),
 			(int) (data.current_green * 128 / 100),
@@ -141,6 +140,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
 	SetNonEffectParams(params);
+
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == RPG::SavePicture::Effect_none) {
 		// params.effect_power seems to contain garbage here
@@ -150,6 +150,8 @@ void Game_Picture::Show(const ShowParams& params) {
 	}
 
 	SyncCurrentToFinish();
+	data.start_x = data.current_x;
+	data.start_y = data.current_y;
 	data.current_rotation = 0.0;
 	data.current_waver = 0;
 	data.time_left = 0;
@@ -158,7 +160,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.frames = 0;
 	data.spritesheet_rows = params.spritesheet_rows;
 	data.spritesheet_cols = params.spritesheet_cols;
-	data.spritesheet_play_once = !params.spritesheet_loop;
+	data.spritesheet_play_once = params.spritesheet_play_once;
 	data.spritesheet_frame = params.spritesheet_frame;
 	data.spritesheet_speed = params.spritesheet_speed;
 	data.map_layer = params.map_layer;
@@ -168,14 +170,10 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_tint = (params.flags & 16) == 16;
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
-	last_spritesheet_frame = 0;
+	last_spritesheet_frame = -1;
 	sheet_bitmap.reset();
 
 	RequestPictureSprite();
-	UpdateSprite();
-
-	old_map_x = Game_Map::GetDisplayX();
-	old_map_y = Game_Map::GetDisplayY();
 }
 
 void Game_Picture::Move(const MoveParams& params) {
@@ -251,10 +249,10 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 
 	whole_bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
-	sprite.reset(new Sprite());
+	if (!sprite) {
+		sprite.reset(new Sprite());
+	}
 	sprite->SetBitmap(whole_bitmap);
-
-	UpdateSprite();
 }
 
 bool Game_Picture::HasSpritesheet() const {
@@ -270,28 +268,21 @@ bool Game_Picture::HasSpritesheet() const {
 void Game_Picture::Update() {
 	RPG::SavePicture& data = GetData();
 
-	if (data.name.empty())
-		return;
-
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
 
-		if (old_map_x != Game_Map::GetDisplayX()) {
-			double mx = (old_map_x - Game_Map::GetDisplayX()) / (double)TILE_SIZE;
+		double dx = Game_Map::GetScrolledRight() / TILE_SIZE;
 
-			data.finish_x = data.finish_x + mx;
-			data.current_x = data.current_x + mx;
-		}
-		if (old_map_y != Game_Map::GetDisplayY()) {
-			double my = (old_map_y - Game_Map::GetDisplayY()) / (double)TILE_SIZE;
+		data.finish_x = data.finish_x - dx;
+		data.current_x = data.current_x - dx;
+		data.start_x = data.start_x - dx;
 
-			data.finish_y = data.finish_y + my;
-			data.current_y = data.current_y + my;
-		}
+		double dy = Game_Map::GetScrolledDown() / TILE_SIZE;
 
-		old_map_x = Game_Map::GetDisplayX();
-		old_map_y = Game_Map::GetDisplayY();
+		data.finish_y = data.finish_y - dy;
+		data.current_y = data.current_y - dy;
+		data.start_y = data.start_y - dy;
 	}
 
 	if (data.time_left == 0) {
@@ -319,21 +310,26 @@ void Game_Picture::Update() {
 	}
 
 	// Update rotation
-	if (data.current_rotation >= 256.0) {
-		data.current_rotation = data.current_rotation - 256.0;
-	}
-	bool is_rotating_but_stopping =
-		data.effect_mode == RPG::SavePicture::Effect_none && (
-			data.current_rotation != 0.0 ||
-			data.current_effect_power * data.time_left >= 256.0
-		);
-	bool is_rotating =
-		data.effect_mode == RPG::SavePicture::Effect_rotation ||
-		is_rotating_but_stopping;
-	if (is_rotating) {
+	// When a move picture disables rotation effect, we continue rotating
+	// until one full revolution is done. There is a bug in RPG_RT where this
+	// only happens when the current rotation and power is positive. We emulate this for now.
+	if (data.effect_mode == RPG::SavePicture::Effect_rotation ||
+			(data.effect_mode == RPG::SavePicture::Effect_none
+			 && data.current_rotation > 0
+			 && data.current_effect_power > 0)
+			)
+	{
+
+		// RPG_RT always scales the rotation down to [0, 256] when this case is triggered.
+		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
+			data.current_rotation = std::remainder(data.current_rotation, 256.0);
+		}
+
 		data.current_rotation = data.current_rotation + data.current_effect_power;
-		if (is_rotating_but_stopping && data.current_rotation >= 256.0) {
-			data.current_rotation = 0.0;
+
+		// Rotation finally ends after full revolution.
+		if (data.effect_mode == RPG::SavePicture::Effect_none && data.current_rotation >= 256) {
+			data.current_rotation = 0;
 		}
 	}
 
@@ -342,27 +338,24 @@ void Game_Picture::Update() {
 		data.current_waver = data.current_waver + 8;
 	}
 
-	// RPG Maker 2k3 1.12: Spritesheets
-	if (HasSpritesheet()) {
+	// RPG Maker 2k3 1.12: Animated spritesheets
+	if (Player::IsRPG2k3E()) {
+		data.frames = data.frames + 1;
+
 		if (data.spritesheet_speed > 0) {
-			if (data.frames % data.spritesheet_speed == 0) {
+			if (data.frames > data.spritesheet_speed) {
+				data.frames = 1;
 				data.spritesheet_frame = data.spritesheet_frame + 1;
 
-				if (data.spritesheet_frame > data.spritesheet_rows * data.spritesheet_cols) {
-					if (data.spritesheet_play_once) {
+				if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
+					data.spritesheet_frame = 0;
+					if (data.spritesheet_play_once && !data.name.empty()) {
 						Erase(true);
-						return;
 					}
-
-					data.spritesheet_frame = 1;
 				}
 			}
 		}
-
-		data.frames = data.frames + 1;
 	}
-
-	UpdateSprite();
 }
 
 void Game_Picture::SetNonEffectParams(const Params& params) {

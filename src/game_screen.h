@@ -31,6 +31,8 @@ class Game_Screen {
 
 public:
 	Game_Screen();
+
+	void SetupNewGame();
 	void SetupFromSave();
 
 	Game_Picture* GetPicture(int id);
@@ -48,6 +50,7 @@ public:
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void Update();
+	void UpdateGraphics();
 
 	/**
 	 * Returns the current screen tone.
@@ -148,7 +151,7 @@ public:
 	int GetPanY();
 
 private:
-	std::vector<std::unique_ptr<Game_Picture>> pictures;
+	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
 
 	RPG::SaveScreen& data;
@@ -168,6 +171,7 @@ protected:
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
 	void CreatePicturesFromSave();
+	void PreallocatePictureData(int id);
 };
 
 #endif
