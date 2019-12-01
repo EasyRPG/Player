@@ -386,42 +386,41 @@ Rect Bitmap::TransformRectangle(const Transform& xform, const Rect& rect) {
 	return Rect(bounds.x1, bounds.y1, bounds.x2 - bounds.x1, bounds.y2 - bounds.y1);
 }
 
+static constexpr std::array<std::pair<int,pixman_format_code_t>, 27> formats_map = {{
+		{ DynamicFormat(32,8,24,8,16,8,8,8,0,PF::Alpha).code_alpha(), PIXMAN_r8g8b8a8 },
+		{ DynamicFormat(32,8,24,8,16,8,8,8,0,PF::NoAlpha).code_alpha(), PIXMAN_r8g8b8x8 },
+
+		{ DynamicFormat(32,8,16,8,8,8,0,8,24,PF::Alpha).code_alpha(), PIXMAN_a8r8g8b8 },
+		{ DynamicFormat(32,8,16,8,8,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x8r8g8b8 },
+		{ DynamicFormat(32,8,0,8,8,8,16,8,24,PF::Alpha).code_alpha(), PIXMAN_a8b8g8r8 },
+		{ DynamicFormat(32,8,0,8,8,8,16,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x8b8g8r8 },
+		{ DynamicFormat(32,8,8,8,16,8,24,8,0,PF::Alpha).code_alpha(), PIXMAN_b8g8r8a8 },
+		{ DynamicFormat(32,8,8,8,16,8,24,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b8g8r8x8 },
+
+		{ DynamicFormat(32,6,12,6,6,6,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x14r6g6b6 },
+		{ DynamicFormat(32,10,20,10,10,10,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x2r10g10b10 },
+		{ DynamicFormat(32,10,20,10,10,10,0,2,30,PF::Alpha).code_alpha(), PIXMAN_a2r10g10b10 },
+		{ DynamicFormat(32,10,0,10,10,10,20,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x2b10g10r10 },
+		{ DynamicFormat(32,10,0,10,10,10,20,2,30,PF::Alpha).code_alpha(), PIXMAN_a2b10g10r10 },
+
+		{ DynamicFormat(24,8,16,8,8,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_r8g8b8 },
+		{ DynamicFormat(24,8,0,8,8,8,16,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b8g8r8 },
+
+		{ DynamicFormat(16,5,11,6,5,5,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_r5g6b5 },
+		{ DynamicFormat(16,5,0,6,5,5,11,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b5g6r5 },
+		{ DynamicFormat(16,5,10,5,5,5,0,1,15,PF::Alpha).code_alpha(), PIXMAN_a1r5g5b5 },
+		{ DynamicFormat(16,5,10,5,5,5,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x1r5g5b5 },
+		{ DynamicFormat(16,5,0,5,5,5,10,1,15,PF::Alpha).code_alpha(), PIXMAN_a1b5g5r5 },
+		{ DynamicFormat(16,5,0,5,5,5,10,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x1b5g5r5 },
+		{ DynamicFormat(16,4,8,4,4,4,0,4,12,PF::Alpha).code_alpha(), PIXMAN_a4r4g4b4 },
+		{ DynamicFormat(16,4,8,4,4,4,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x4r4g4b4 },
+		{ DynamicFormat(16,4,0,4,4,4,8,4,12,PF::Alpha).code_alpha(), PIXMAN_a4b4g4r4 },
+		{ DynamicFormat(16,4,0,4,4,4,8,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x4b4g4r4 },
+		{ DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha).code_alpha(), PIXMAN_g8 },
+		{ DynamicFormat(8,8,0,8,0,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_g8 }
+}};
 
 pixman_format_code_t Bitmap::find_format(const DynamicFormat& format) {
-	static std::array<std::pair<int,pixman_format_code_t>, 27> formats_map = {{
-			{ DynamicFormat(32,8,24,8,16,8,8,8,0,PF::Alpha).code_alpha(), PIXMAN_r8g8b8a8 },
-			{ DynamicFormat(32,8,24,8,16,8,8,8,0,PF::NoAlpha).code_alpha(), PIXMAN_r8g8b8x8 },
-
-			{ DynamicFormat(32,8,16,8,8,8,0,8,24,PF::Alpha).code_alpha(), PIXMAN_a8r8g8b8 },
-			{ DynamicFormat(32,8,16,8,8,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x8r8g8b8 },
-			{ DynamicFormat(32,8,0,8,8,8,16,8,24,PF::Alpha).code_alpha(), PIXMAN_a8b8g8r8 },
-			{ DynamicFormat(32,8,0,8,8,8,16,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x8b8g8r8 },
-			{ DynamicFormat(32,8,8,8,16,8,24,8,0,PF::Alpha).code_alpha(), PIXMAN_b8g8r8a8 },
-			{ DynamicFormat(32,8,8,8,16,8,24,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b8g8r8x8 },
-
-			{ DynamicFormat(32,6,12,6,6,6,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x14r6g6b6 },
-			{ DynamicFormat(32,10,20,10,10,10,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x2r10g10b10 },
-			{ DynamicFormat(32,10,20,10,10,10,0,2,30,PF::Alpha).code_alpha(), PIXMAN_a2r10g10b10 },
-			{ DynamicFormat(32,10,0,10,10,10,20,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x2b10g10r10 },
-			{ DynamicFormat(32,10,0,10,10,10,20,2,30,PF::Alpha).code_alpha(), PIXMAN_a2b10g10r10 },
-
-			{ DynamicFormat(24,8,16,8,8,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_r8g8b8 },
-			{ DynamicFormat(24,8,0,8,8,8,16,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b8g8r8 },
-
-			{ DynamicFormat(16,5,11,6,5,5,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_r5g6b5 },
-			{ DynamicFormat(16,5,0,6,5,5,11,0,0,PF::NoAlpha).code_alpha(), PIXMAN_b5g6r5 },
-			{ DynamicFormat(16,5,10,5,5,5,0,1,15,PF::Alpha).code_alpha(), PIXMAN_a1r5g5b5 },
-			{ DynamicFormat(16,5,10,5,5,5,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x1r5g5b5 },
-			{ DynamicFormat(16,5,0,5,5,5,10,1,15,PF::Alpha).code_alpha(), PIXMAN_a1b5g5r5 },
-			{ DynamicFormat(16,5,0,5,5,5,10,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x1b5g5r5 },
-			{ DynamicFormat(16,4,8,4,4,4,0,4,12,PF::Alpha).code_alpha(), PIXMAN_a4r4g4b4 },
-			{ DynamicFormat(16,4,8,4,4,4,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x4r4g4b4 },
-			{ DynamicFormat(16,4,0,4,4,4,8,4,12,PF::Alpha).code_alpha(), PIXMAN_a4b4g4r4 },
-			{ DynamicFormat(16,4,0,4,4,4,8,0,0,PF::NoAlpha).code_alpha(), PIXMAN_x4b4g4r4 },
-			{ DynamicFormat(8,8,0,8,0,8,0,8,0,PF::Alpha).code_alpha(), PIXMAN_g8 },
-			{ DynamicFormat(8,8,0,8,0,8,0,0,0,PF::NoAlpha).code_alpha(), PIXMAN_g8 }
-	}};
-
 	auto dcode = format.code_alpha();
 	auto iter = std::find_if(formats_map.begin(), formats_map.end(), [dcode](const auto& p) { return p.first == dcode; });
 	if (iter == formats_map.end()) {
