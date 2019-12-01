@@ -1,0 +1,16 @@
+#ifndef PLAYER_GCW0_COMPAT_CMATH
+#define PLAYER_GCW0_COMPAT_CMATH
+#include_next <cmath>
+
+namespace std {
+	inline double remainder(float x, float y) {
+		return ::remainderf(x, y);
+	}
+	inline double remainder(double x, double y) {
+		return ::remainder(x, y);
+	}
+	// FIXME: No ::remainderl() on this platform
+	long double remainder(long double x, long double y) = delete;
+}
+
+#endif
