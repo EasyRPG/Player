@@ -90,10 +90,12 @@ void Scene_Map::Start2(MapUpdateAsyncContext actx) {
 
 	if (Main_Data::game_player->IsPendingTeleport()) {
 		TeleportParams tp;
-		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		auto tt = Main_Data::game_player->GetTeleportTarget().GetType();
+		tp.run_foreground_events = GetRunForegroundEvents(tt);
 		tp.erase_screen = false;
 		tp.use_default_transition_in = true;
 		tp.defer_recursive_teleports = false;
+		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 		StartPendingTeleport(tp);
 		return;
 	}
@@ -225,11 +227,13 @@ void Scene_Map::UpdateStage1(MapUpdateAsyncContext actx) {
 
 void Scene_Map::UpdateStage2() {
 	if (Main_Data::game_player->IsPendingTeleport()) {
+		const auto tt = Main_Data::game_player->GetTeleportTarget().GetType();
 		TeleportParams tp;
-		tp.run_foreground_events = GetRunForegroundEvents(Main_Data::game_player->GetTeleportTarget().GetType());
+		tp.run_foreground_events = GetRunForegroundEvents(tt);
 		tp.erase_screen = true;
 		tp.use_default_transition_in = false;
 		tp.defer_recursive_teleports = false;
+		tp.no_transition_in = (tt == TeleportTarget::eVehicleHackTeleport);
 
 		StartPendingTeleport(tp);
 		return;
@@ -340,10 +344,12 @@ void Scene_Map::FinishPendingTeleport2(MapUpdateAsyncContext actx, TeleportParam
 	}
 
 	// This logic was tested against RPG_RT and works this way ...
-	if (tp.use_default_transition_in && Graphics::IsTransitionErased()) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
-	} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
-		Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+	if (!tp.no_transition_in) {
+		if (tp.use_default_transition_in && Graphics::IsTransitionErased()) {
+			Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 32, false);
+		} else if (!tp.use_default_transition_in && !screen_erased_by_event) {
+			Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), this, 32, false);
+		}
 	}
 
 	// Call any requested scenes when transition is done.
