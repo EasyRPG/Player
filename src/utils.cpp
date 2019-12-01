@@ -377,11 +377,12 @@ Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escap
 	ret.ch = utf8_ret.ch;
 
 	if (escape != 0 && ret.ch == escape && ret.next != end) {
-		auto eret = UTF8Next(iter, end);
+		auto eret = UTF8Next(ret.next, end);
 		ret.next = eret.next;
 		ret.ch = eret.ch;
 		ret.is_escape = true;
 	}
+	ret.is_exfont = false;
 
 	return ret;
 }

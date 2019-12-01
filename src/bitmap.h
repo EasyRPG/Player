@@ -539,8 +539,6 @@ protected:
 	TileOpacity tile_opacity;
 	Color bg_color, sh_color;
 
-	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
-
 	/** Bitmap data. */
 	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;

@@ -468,6 +468,7 @@ test_runner_SOURCES = \
 	tests/platform.cpp \
 	tests/rtp.cpp \
 	tests/switches.cpp \
+	tests/text.cpp \
 	tests/utils.cpp \
 	tests/utf.cpp \
 	tests/variables.cpp \

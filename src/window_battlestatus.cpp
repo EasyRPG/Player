@@ -26,6 +26,7 @@
 #include "game_system.h"
 #include "game_battle.h"
 #include "player.h"
+#include "font.h"
 #include "window_battlestatus.h"
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
