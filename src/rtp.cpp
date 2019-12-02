@@ -189,8 +189,8 @@ static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, in
 std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::string& src_name, RTP::Type src_rtp,
 		RTP::Type target_rtp, bool* is_rtp_asset) {
 	// ensure both 2k or 2k3
-	assert((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps ||
-		(int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps);
+	assert(((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps) ||
+		((int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps));
 
 	if (src_rtp == target_rtp) {
 		// Design limitation: When game_rtp == installed rtp can't tell if it is a rtp asset, this needs a table scan
