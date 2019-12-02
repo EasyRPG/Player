@@ -60,7 +60,7 @@ void Game_Party::SetupBattleTestMembers() {
 		Game_Actor* actor = Game_Actors::GetActor(btdata.actor_id);
 
 		// Filter garbage btdata inserted by the editor
-		std::array<int, 5> ids = { btdata.weapon_id, btdata.shield_id, btdata.armor_id, btdata.helmet_id, btdata.accessory_id };
+		std::array<int, 5> ids = {{ btdata.weapon_id, btdata.shield_id, btdata.armor_id, btdata.helmet_id, btdata.accessory_id }};
 		std::replace_if(ids.begin(), ids.end(), [] (const int& item_id) {
 			return ReaderUtil::GetElement(Data::items, item_id) == nullptr;
 		}, 0);
