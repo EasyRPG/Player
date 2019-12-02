@@ -52,7 +52,7 @@ void Scene_File::CreateHelpWindow() {
 	help_window->SetZ(Priority_Window + 1);
 }
 
-void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& savegame) {
+void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int /* id */, RPG::Save& savegame) {
 	std::vector<std::pair<int, std::string> > party;
 
 	// When a face_name is empty the party list ends
@@ -85,7 +85,7 @@ void Scene_File::PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& sav
 	win.SetHasSave(true);
 }
 
-void Scene_File::UpdateLatestTimestamp(Window_SaveFile& win, int id, RPG::Save& savegame) {
+void Scene_File::UpdateLatestTimestamp(int id, RPG::Save& savegame) {
 	if (savegame.title.timestamp > latest_time) {
 		latest_time = savegame.title.timestamp;
 		latest_slot = id;
@@ -106,7 +106,7 @@ void Scene_File::PopulateSaveWindow(Window_SaveFile& win, int id) {
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);
-			UpdateLatestTimestamp(win, id, *savegame);
+			UpdateLatestTimestamp(id, *savegame);
 		} else {
 			win.SetCorrupted(true);
 		}
@@ -170,9 +170,9 @@ void Scene_File::Update() {
 		}
 	}
 
-	unsigned int old_top_index = top_index;
-	unsigned int old_index = index;
-	unsigned int max_index = file_windows.size() - 1;
+	int old_top_index = top_index;
+	int old_index = index;
+	int max_index = static_cast<int>(file_windows.size()) - 1;
 
 	if (Input::IsRepeated(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)) {
 		if (Input::IsTriggered(Input::DOWN) || Input::IsTriggered(Input::SCROLL_DOWN)

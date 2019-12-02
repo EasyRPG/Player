@@ -46,7 +46,7 @@ void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);
-			UpdateLatestTimestamp(win, id, *savegame);
+			UpdateLatestTimestamp(id, *savegame);
 		} else {
 			win.SetCorrupted(true);
 		}

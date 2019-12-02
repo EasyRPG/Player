@@ -53,7 +53,7 @@ protected:
 	virtual void CreateHelpWindow();
 	virtual void PopulateSaveWindow(Window_SaveFile& win, int id);
 	virtual void PopulatePartyFaces(Window_SaveFile& win, int id, RPG::Save& savegame);
-	virtual void UpdateLatestTimestamp(Window_SaveFile& win, int id, RPG::Save& savegame);
+	virtual void UpdateLatestTimestamp(int id, RPG::Save& savegame);
 	static std::unique_ptr<Sprite> MakeBorderSprite(int y);
 
 	void Refresh();
