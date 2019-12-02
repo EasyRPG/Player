@@ -74,6 +74,8 @@ struct StateEffect {
 
 class AlgorithmBase {
 public:
+	virtual ~AlgorithmBase() {}
+
 	/**
 	 * Returns the source of the battle action.
 	 *

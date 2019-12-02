@@ -44,6 +44,8 @@ public:
 	 */
 	Game_Battler();
 
+	virtual ~Game_Battler() {}
+
 	virtual int MaxHpValue() const = 0;
 
 	virtual int MaxStatBattleValue() const = 0;
