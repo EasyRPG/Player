@@ -571,7 +571,6 @@ int Game_Party::GetAverageLevel() {
 
 int Game_Party::GetFatigue() {
 	std::vector<Game_Actor*> actors = GetActors();
-	std::vector<Game_Actor*>::iterator it;
 
 	if (actors.empty()) {
 		return 0;

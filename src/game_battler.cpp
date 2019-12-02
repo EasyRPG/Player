@@ -137,8 +137,6 @@ float Game_Battler::GetAttributeMultiplier(const std::vector<bool>& attributes_s
 	int physical = min_mod;
 	int magical = min_mod;
 
-	float multiplier = 0;
-	int attributes_applied = 0;
 	for (unsigned int i = 0; i < attributes_set.size(); i++) {
 		if (attributes_set[i]) {
 			auto* attr = ReaderUtil::GetElement(Data::attributes, i + 1);

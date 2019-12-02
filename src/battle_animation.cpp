@@ -284,7 +284,7 @@ void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
 	target.Flash(r, g, b, p, 0);
 }
 
-void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
+void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time */) {
 }
 
 /////////

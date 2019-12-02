@@ -824,7 +824,7 @@ public:
 protected:
 	explicit Game_Character(Type type, RPG::SaveMapEventBase* d);
 	virtual void UpdateSelfMovement() {}
-	virtual void OnMoveFailed(int x, int y) {}
+	virtual void OnMoveFailed(int /*x*/, int /*y*/) {}
 	void UpdateJump();
 	void SetMaxStopCountForStep();
 	void SetMaxStopCountForTurn();
