@@ -19,6 +19,7 @@
 #define EP_RECT_H
 
 #include <tuple>
+#include <ostream>
 
 /**
  * Rect.
@@ -149,6 +150,11 @@ inline bool operator<(const Rect &l, const Rect& r) {
 	return
 		std::tie(l.x, l.y, l.width, l.height) <
 		std::tie(r.x, r.y, r.width, r.height);
+}
+
+inline std::ostream& operator<<(std::ostream& os, Rect r) {
+	os << "Rect{" << r.x << "," << r.y << "," << r.width << "," << r.height << "}";
+	return os;
 }
 
 #endif
