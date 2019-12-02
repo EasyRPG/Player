@@ -128,11 +128,6 @@ public:
 		r(rmask), g(gmask), b(bmask), a(amask),
 		alpha_type(alpha_type) {}
 
-	constexpr DynamicFormat(const DynamicFormat& ref) :
-		bits(ref.bits), bytes((bits + 7) / 8),
-		r(ref.r), g(ref.g), b(ref.b), a(ref.a),
-		alpha_type(ref.alpha_type) {}
-
 	constexpr void Set(int _bits,
 			 int rb, int rs,
 			 int gb, int gs,
