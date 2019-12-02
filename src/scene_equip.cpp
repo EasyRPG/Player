@@ -87,7 +87,6 @@ void Scene_Equip::UpdateStatusWindow() {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
 		const RPG::Item* current_item = item_window->GetItem();
-		int current_item_id = current_item ? current_item->ID : 0;
 
 		const auto eidx = equip_window->GetIndex();
 
