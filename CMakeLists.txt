@@ -44,9 +44,10 @@ add_library(${PROJECT_NAME}
 	src/battle_animation.h
 	src/bitmap.cpp
 	src/bitmapfont.h
-	src/bitmapfont_rmg2000.cpp
-	src/bitmapfont_ttyp0.cpp
-	src/bitmapfont_wqy.cpp
+	src/bitmapfont_glyph.h
+	src/bitmapfont_rmg2000.h
+	src/bitmapfont_ttyp0.h
+	src/bitmapfont_wqy.h
 	src/bitmap.h
 	src/bitmap_hslrgb.h
 	src/cache.cpp
@@ -236,8 +237,8 @@ add_library(${PROJECT_NAME}
 	src/scene_title.h
 	src/screen.cpp
 	src/screen.h
-	src/shinonome_gothic.cpp
-	src/shinonome_mincho.cpp
+	src/shinonome_gothic.h
+	src/shinonome_mincho.h
 	src/sprite_airshipshadow.cpp
 	src/sprite_airshipshadow.h
 	src/sprite_battler.cpp
