@@ -55,7 +55,6 @@ namespace {
 	cache_effect_type cache_effects;
 
 	std::string system_name;
-	BitmapRef default_system;
 
 	std::string system2_name;
 
@@ -513,15 +512,17 @@ BitmapRef Cache::System() {
 	}
 }
 
+BitmapRef Cache::SysBlack() {
+	static auto system_black = Bitmap::Create(160, 80, false);
+	return system_black;
+}
+
 BitmapRef Cache::SystemOrBlack() {
 	auto system = Cache::System();
 	if (system) {
 		return system;
 	}
-	if (!default_system) {
-		default_system = Bitmap::Create(160, 80, false);
-	}
-	return default_system;
+	return SysBlack();
 }
 
 BitmapRef Cache::System2() {

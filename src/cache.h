@@ -61,6 +61,9 @@ namespace Cache {
 	/** @return the configured system bitmap, or nullptr if there is no system */
 	BitmapRef System();
 
+	/** @return a black system graphic bitmap */
+	BitmapRef SysBlack();
+
 	/** @return the configured system bitmap, or a default black bitmap if there is no system */
 	BitmapRef SystemOrBlack();
 
