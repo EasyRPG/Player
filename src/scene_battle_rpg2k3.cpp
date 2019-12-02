@@ -1190,6 +1190,8 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 				case RPG::State::Restriction_attack_enemy:
 					random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
 					break;
+				default:
+					break;
 				}
 			}
 
