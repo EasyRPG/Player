@@ -52,7 +52,7 @@ void Scene_Menu::Start() {
 	menustatus_window->SetActive(false);
 }
 
-void Scene_Menu::Continue(SceneType prev_scene) {
+void Scene_Menu::Continue(SceneType /* prev_scene */) {
 	menustatus_window->Refresh();
 }
 

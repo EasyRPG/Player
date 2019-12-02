@@ -144,13 +144,13 @@ void Scene::MainFunction() {
 void Scene::Start() {
 }
 
-void Scene::Continue(SceneType prev_scene) {
+void Scene::Continue(SceneType /* prev_scene */) {
 }
 
-void Scene::Resume(SceneType prev_scene) {
+void Scene::Resume(SceneType /* prev_scene */) {
 }
 
-void Scene::Suspend(SceneType next_scene) {
+void Scene::Suspend(SceneType /* next_scene */) {
 }
 
 void Scene::TransitionIn(SceneType) {
