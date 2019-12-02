@@ -164,7 +164,6 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	assert(frame);
 	auto& index = frame->current_command;
 
-	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
@@ -239,10 +238,6 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	continuation = NULL;
 
 	int sub_idx = subcommand_sentinel;
@@ -284,7 +279,7 @@ bool Game_Interpreter_Map::CommandDefeatHandler(RPG::EventCommand const& com) { 
 	return CommandOptionGeneric(com, eOptionEnemyEncounterDefeat, {Cmd::EndBattle});
 }
 
-bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& com) { // code 20713
+bool Game_Interpreter_Map::CommandEndBattle(RPG::EventCommand const& /* com */) { // code 20713
 	return true;
 }
 
@@ -335,10 +330,6 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& com) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	continuation = nullptr;
 
 	int sub_idx = Game_Temp::shop_transaction ? eOptionShopTransaction : eOptionShopNoTransaction;
@@ -356,7 +347,7 @@ bool Game_Interpreter_Map::CommandNoTransaction(RPG::EventCommand const& com) { 
 	return CommandOptionGeneric(com, eOptionShopNoTransaction, {Cmd::EndShop});
 }
 
-bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& com) { // code 20722
+bool Game_Interpreter_Map::CommandEndShop(RPG::EventCommand const& /* com */) { // code 20722
 	return true;
 }
 
@@ -475,10 +466,6 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 }
 
 void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_result) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	bool inn_stay = (choice_result == 0);
 
 	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
@@ -498,7 +485,7 @@ bool Game_Interpreter_Map::CommandNoStay(RPG::EventCommand const& com) { // code
 	return CommandOptionGeneric(com, eOptionInnNoStay, {Cmd::EndInn});
 }
 
-bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& com) { // code 20732
+bool Game_Interpreter_Map::CommandEndInn(RPG::EventCommand const& /* com */) { // code 20732
 	return true;
 }
 
@@ -724,7 +711,7 @@ bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com 
 	return true;
 }
 
-bool Game_Interpreter_Map::CommandOpenVideoOptions(RPG::EventCommand const& com) {
+bool Game_Interpreter_Map::CommandOpenVideoOptions(RPG::EventCommand const& /* com */) {
 	if (Game_Message::IsMessageActive()) {
 		return false;
 	}
