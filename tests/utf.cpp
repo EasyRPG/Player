@@ -79,7 +79,7 @@ TEST_CASE("next") {
 		while (iter < e) {
 			auto ret = Utils::UTF8Next(iter, e);
 			REQUIRE_EQ(ret.ch, ts.u32[i]);
-			iter = ret.iter;
+			iter = ret.next;
 			++i;
 		}
 	}

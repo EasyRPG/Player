@@ -272,7 +272,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 		uint8_t c1 = *iter;
 		++iter;
 		if (c1 < 0x80) {
-			return { static_cast<uint32_t>(c1), iter };
+			return { iter, static_cast<uint32_t>(c1) };
 		}
 		if (c1 < 0xC2) {
 			continue;
@@ -286,7 +286,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 			if ((c2 & 0xC0) != 0x80)
 				continue;
 			auto ch = (static_cast<uint32_t>(((c1 & 0x1F) << 6) | (c2 & 0x3F)));
-			return { ch, iter };
+			return { iter, ch };
 		}
 		if (iter == end) {
 			break;
@@ -309,7 +309,7 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 			auto ch = (static_cast<uint32_t>(((c1 & 0x0F) << 12)
 						| ((c2 & 0x3F) << 6)
 						|  (c3 & 0x3F)));
-			return { ch, iter };
+			return { iter, ch };
 		}
 		if (iter == end) {
 			break;
@@ -333,10 +333,10 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 				| ((c2 & 0x3F) << 12)
 				| ((c3 & 0x3F) << 6)
 				|  (c4 & 0x3F));
-		return { ch, iter };
+		return { iter, ch };
 		}
 	}
-	return { 0, iter };
+	return { iter, 0 };
 }
 
 

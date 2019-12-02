@@ -362,10 +362,10 @@ void Window_Message::UpdateMessage() {
 		const auto start_index = text_index;
 
 		auto res = Utils::UTF8Next(text_index, end);
-		text_index = res.iter;
+		text_index = res.next;
 		auto ch = res.ch;
 
-		if (ch == 0) {
+		if (!res) {
 			continue;
 		}
 
@@ -408,7 +408,7 @@ void Window_Message::UpdateMessage() {
 
 			auto res = Utils::UTF8Next(text_index, end);
 			ch = res.ch;
-			text_index = res.iter;
+			text_index = res.next;
 
 			switch (ch) {
 			case 'c':
@@ -499,7 +499,7 @@ void Window_Message::UpdateMessage() {
 			ch = res.ch;
 
 			if (ch < 128 && std::isalpha(static_cast<char>(ch))) {
-				text_index = res.iter;
+				text_index = res.next;
 
 				// ExFont
 				DrawGlyph(std::string(start_index, text_index), instant_speed);

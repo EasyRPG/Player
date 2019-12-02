@@ -255,7 +255,7 @@ static Game_Message::ParseParamResult ParseParamImpl(
 		if (ret.ch != escape_char) {
 			return { begin, 0 };
 		}
-		iter = ret.iter;
+		iter = ret.next;
 		if (iter == end || (*iter != upper && *iter != lower)) {
 			return { begin, 0 };
 		}
@@ -290,7 +290,7 @@ static Game_Message::ParseParamResult ParseParamImpl(
 		if (max_recursion > 0) {
 			auto ret = Utils::UTF8Next(iter, end);
 			auto ch = ret.ch;
-			iter = ret.iter;
+			iter = ret.next;
 
 			// Recursive variable case.
 			if (ch == escape_char) {

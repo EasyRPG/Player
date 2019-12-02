@@ -93,8 +93,9 @@ namespace Utils {
 	std::string EncodeUTF(const std::u32string& str);
 
 	struct UtfNextResult {
-		uint32_t ch;
-		const char* iter;
+		const char* next = nullptr;
+		uint32_t ch = 0;
+		explicit operator bool() const { return ch != 0; }
 	};
 
 	/**
