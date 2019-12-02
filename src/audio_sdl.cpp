@@ -70,8 +70,8 @@ SdlAudio::SdlAudio() :
 		return;
 	}
 
-	SDL_AudioSpec want = {0};
-	SDL_AudioSpec have = {0};
+	SDL_AudioSpec want = {};
+	SDL_AudioSpec have = {};
 	want.freq = 44100;
 	want.format = AUDIO_S16;
 	want.channels = 2;
