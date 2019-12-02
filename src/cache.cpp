@@ -22,6 +22,7 @@
 
 #include <map>
 #include <tuple>
+#include <chrono>
 
 #include "async_handler.h"
 #include "cache.h"
@@ -33,12 +34,15 @@
 #include "player.h"
 #include "data.h"
 
+using namespace std::chrono_literals;
+
 namespace {
 	using key_type = std::tuple<std::string,std::string,bool>;
+	using clock = std::chrono::steady_clock;
 
 	struct CacheItem {
 		BitmapRef bitmap;
-		uint32_t last_access;
+		clock::time_point last_access;
 	};
 
 	using tile_pair = std::pair<std::string, int>;
@@ -62,7 +66,7 @@ namespace {
 	size_t cache_size = 0;
 
 	void FreeBitmapMemory() {
-		int32_t cur_ticks = DisplayUi->GetTicks();
+		auto cur_ticks = clock::now();
 
 		for (auto& i : cache) {
 			if (i.second.bitmap.use_count() != 1) {
@@ -70,14 +74,14 @@ namespace {
 				continue;
 			}
 
-			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3000) {
+			if (cache_size <= cache_limit && cur_ticks - i.second.last_access < 3s) {
 				// Below memory limit and last access < 3s
 				continue;
 			}
 
 #ifdef CACHE_DEBUG
-			Output::Debug("Freeing memory of %s/%s %d %d",
-						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str(), i.second.last_access, cur_ticks);
+			Output::Debug("Freeing memory of %s/%s",
+						  std::get<0>(i.first).c_str(), std::get<1>(i.first).c_str());
 #endif
 
 			cache_size -= i.second.bitmap->GetSize();
@@ -97,7 +101,7 @@ namespace {
 #endif
 		}
 
-		return (cache[key] = {bmp, DisplayUi->GetTicks()}).bitmap;
+		return (cache[key] = {bmp, clock::now()}).bitmap;
 	}
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
@@ -124,7 +128,7 @@ namespace {
 
 			return AddToCache(key, bmp);
 		} else {
-			it->second.last_access = DisplayUi->GetTicks();
+			it->second.last_access = clock::now();
 			return it->second.bitmap;
 		}
 	}
@@ -243,7 +247,7 @@ namespace {
 
 			return AddToCache(key, bitmap);
 		} else {
-			it->second.last_access = DisplayUi->GetTicks();
+			it->second.last_access = clock::now();
 			return it->second.bitmap;
 		}
 	}
@@ -394,7 +398,7 @@ BitmapRef Cache::Exfont() {
 
 		return AddToCache(hash, exfont_img);
 	} else {
-		it->second.last_access = DisplayUi->GetTicks();
+		it->second.last_access = clock::now();
 		return it->second.bitmap;
 	}
 }
