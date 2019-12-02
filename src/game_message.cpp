@@ -174,7 +174,7 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 			}
 
 			next = found + 1;
-		} while(next < line.size());
+		} while(next < static_cast<int>(line.size()));
 
 		if (start == (next - 1)) {
 			start = next;
@@ -187,7 +187,7 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 		line_count++;
 
 		start = next;
-	} while (start < line.size());
+	} while (start < static_cast<int>(line.size()));
 
 	return line_count;
 }

@@ -111,19 +111,19 @@ int GetStateRate(int state_id, int rate);
 } //namespace State
 
 inline bool State::Has(int state_id, const StateVec& states) {
-	return states.size() >= state_id && states[state_id - 1] > 0;
+	return static_cast<int>(states.size()) >= state_id && states[state_id - 1] > 0;
 }
 
 
 inline void PermanentStates::Add(int state_id) {
-	if (states.size() < state_id) {
+	if (static_cast<int>(states.size()) < state_id) {
 		states.resize(state_id);
 	}
 	states[state_id - 1] = true;
 }
 
 inline void PermanentStates::Remove(int state_id) {
-	if (states.size() >= state_id) {
+	if (static_cast<int>(states.size()) >= state_id) {
 		states[state_id - 1] = 0;
 	}
 }
@@ -133,7 +133,7 @@ inline void PermanentStates::Clear() {
 }
 
 inline bool PermanentStates::Has(int state_id) const {
-	return states.size() >= state_id && states[state_id - 1];
+	return static_cast<int>(states.size()) >= state_id && states[state_id - 1];
 }
 
 #endif

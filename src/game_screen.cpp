@@ -133,7 +133,7 @@ void Game_Screen::PreallocatePictureData(int id) {
 	}
 
 	pictures.reserve(id);
-	while (pictures.size() < id) {
+	while (static_cast<int>(pictures.size()) < id) {
 		pictures.emplace_back(pictures.size() + 1);
 	}
 }

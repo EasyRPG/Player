@@ -185,7 +185,7 @@ void Scene_Debug::Update() {
 				EnterFromListOption(eItemSelect, prev.item);
 				break;
 			case eItemSelect:
-				if (GetIndex() <= Data::items.size()) {
+				if (GetIndex() <= static_cast<int>(Data::items.size())) {
 					EnterFromListOptionToValue(eItemValue, Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
 				}
 				break;
@@ -667,7 +667,7 @@ void Scene_Debug::DoItem() {
 }
 
 void Scene_Debug::DoBattle() {
-	if (GetIndex() <= Data::troops.size()) {
+	if (GetIndex() <= static_cast<int>(Data::troops.size())) {
 		Scene::PopUntil(Scene::Map);
 		if (Scene::instance) {
 			prev.main_range_index = 6;
@@ -714,7 +714,7 @@ void Scene_Debug::DoFullHeal() {
 		}
 	} else {
 		int idx = id - 2;
-		if (idx < (int)actors.size()) {
+		if (idx < static_cast<int>(actors.size())) {
 			actors[idx]->FullHeal();
 		}
 	}
@@ -723,7 +723,7 @@ void Scene_Debug::DoFullHeal() {
 }
 
 void Scene_Debug::DoCallEvent() {
-	if (GetIndex() > Data::commonevents.size()) {
+	if (GetIndex() > static_cast<int>(Data::commonevents.size())) {
 		return;
 	}
 

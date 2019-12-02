@@ -189,7 +189,7 @@ bool Game_Battle::CheckLose() {
 		}
 	}
 
-	return character_number == actors.size();
+	return character_number == static_cast<int>(actors.size());
 }
 
 Spriteset_Battle& Game_Battle::GetSpriteset() {
