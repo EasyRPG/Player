@@ -18,6 +18,7 @@
 // Headers
 #include "utils.h"
 #include "output.h"
+#include "compiler.h"
 #include <cassert>
 #include <cstdint>
 #include <cinttypes>
@@ -339,6 +340,51 @@ Utils::UtfNextResult Utils::UTF8Next(const char* iter, const char* const end) {
 	return { iter, 0 };
 }
 
+Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
+	ExFontRet ret;
+	if (end - iter >= 2 && *iter == '$') {
+		auto next_ch = *(iter + 1);
+		// Don't use std::isalpha, because it's indirects based on locale.
+		bool is_lower = (next_ch >= 'a' && next_ch <= 'z');
+		bool is_upper = (next_ch >= 'A' && next_ch <= 'Z');
+		if (is_lower || is_upper) {
+			ret.next = iter + 2;
+			ret.value = is_lower ? (next_ch - 'a' + 26) : (next_ch - 'A');
+			ret.is_valid = true;
+		}
+	}
+	return ret;
+}
+
+Utils::TextRet Utils::TextNext(const char* iter, const char* end, char32_t escape) {
+	TextRet ret;
+
+	if (EP_UNLIKELY(iter == end)) {
+		ret.next = iter;
+		return ret;
+	}
+
+	auto ex_ret = ExFontNext(iter, end);
+	if (ex_ret) {
+		ret.next = ex_ret.next;
+		ret.ch = ex_ret.value;
+		ret.is_exfont = true;
+		return ret;
+	}
+
+	auto utf8_ret = UTF8Next(iter, end);
+	ret.next = utf8_ret.next;
+	ret.ch = utf8_ret.ch;
+
+	if (escape != 0 && ret.ch == escape && ret.next != end) {
+		auto eret = UTF8Next(iter, end);
+		ret.next = eret.next;
+		ret.ch = eret.ch;
+		ret.is_escape = true;
+	}
+
+	return ret;
+}
 
 #if !defined(__amigaos4__) && !defined(__AROS__)
 template<size_t WideSize>

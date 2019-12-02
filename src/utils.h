@@ -125,6 +125,48 @@ namespace Utils {
 	std::string FromWideString(const std::wstring& str);
 #endif
 
+	struct ExFontRet {
+		const char* next = nullptr;
+		char value = '\0';
+		bool is_valid = false;
+
+		explicit operator bool() const { return is_valid; }
+	};
+
+	/**
+	 * Determine if the next character is an exfont character (example: $A)
+	 *
+	 * @param iter pointer to next character
+	 * @param end pointer to end of string.
+	 * @return if this is an exfont char, returns a pointer to the next character after.
+	 *         Otherwise, returns iter.
+	 */
+	ExFontRet ExFontNext(const char* iter, const char* end);
+
+	struct TextRet {
+		/* Pointer to next character */
+		const char* next = nullptr;
+		/* Next UTF8 character or exfont ascii character parsed. If no character was parsed, is 0. */
+		uint32_t ch = '\0';
+		/* true if this is an exfont character. */
+		bool is_exfont = false;
+		/* true if this is an escaped character. */
+		bool is_escape = false;
+		/* @return true if a valid character was parsed */
+		explicit operator bool() const { return ch != 0 || is_exfont; }
+	};
+
+	/**
+	 * Parses the next character out of the given text range.
+	 * Assumes UTF8 and supports exfont.
+	 *
+	 * @param iter pointer to beginning of UTF8 string.
+	 * @param end pointer to end of UTF8 string.
+	 * @param escape the escape character for escape sequences. Ignored if set to 0.
+	 * @return TextRet object, @refer TextRet.
+	 */
+	TextRet TextNext(const char* iter, const char* end, char32_t escape);
+
 	/**
 	 * Calculates the modulo of number i ensuring the result is non-negative
 	 * for all values of i when m > 0.
