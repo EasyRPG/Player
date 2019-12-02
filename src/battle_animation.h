@@ -76,14 +76,14 @@ protected:
 	void UpdateTargetFlash();
 	void UpdateFlashGeneric(int timing_idx, int& r, int& g, int& b, int& p);
 
-	bool only_sound;
 	const RPG::Animation& animation;
-	int frame;
-	int num_frames;
+	int frame = 0;
+	int num_frames = 0;
 	int screen_flash_timing = -1;
 	int target_flash_timing = -1;
 
 	FileRequestBinding request_id;
+	bool only_sound = false;
 };
 
 // For playing animations on the map.

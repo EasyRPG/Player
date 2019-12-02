@@ -34,7 +34,7 @@
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
 	Sprite(TypeDefault),
-	animation(anim), frame(0), only_sound(only_sound)
+	animation(anim), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
 	if (cutoff >= 0 && cutoff < num_frames) {
