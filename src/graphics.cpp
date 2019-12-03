@@ -183,10 +183,6 @@ void Graphics::UpdateSceneCallback() {
 	}
 }
 
-int Graphics::GetDefaultFps() {
-	return DEFAULT_FPS;
-}
-
 MessageOverlay& Graphics::GetMessageOverlay() {
 	return *message_overlay;
 }
