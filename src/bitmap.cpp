@@ -997,7 +997,7 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 	pixman_color_t tcolor = PixmanColor(color);
 	pixman_image_t* timage = pixman_image_create_solid_fill(&tcolor);
 
-	pixman_image_composite32(src.GetOperator(),
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 timage, src.bitmap, bitmap,
 							 0, 0,
 							 src_rect.x, src_rect.y,
