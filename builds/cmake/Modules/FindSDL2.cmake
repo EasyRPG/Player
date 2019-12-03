@@ -239,7 +239,7 @@ if(SDL2_FOUND)
 
 		if(WIN32)
 			set_property(TARGET SDL2::SDL2 APPEND_STRING PROPERTY
-				INTERFACE_LINK_LIBRARIES "winmm;imm32;version")
+				INTERFACE_LINK_LIBRARIES "winmm;imm32;version;setupapi")
 		elseif(APPLE)
 			find_library(COREVIDEO CoreVideo)
 			find_library(COCOA_LIBRARY Cocoa)
