@@ -423,8 +423,8 @@ set(PLAYER_BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git" CACHE STRING
 if(PLAYER_BUILD_LIBLCF)
 	# liblcf is built as part of this cmake file
 	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
-	find_package(Git REQUIRED)
 	if(NOT EXISTS ${LIBLCF_PATH})
+		find_package(Git REQUIRED)
 		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
 			"${PLAYER_BUILD_LIBLCF_GIT}"
 			"${LIBLCF_PATH}")
