@@ -1135,34 +1135,6 @@ startup directory does not contain a valid game (and the game browser loads)
 Alex, EV0001 and the EasyRPG authors wish you a lot of fun!)" << std::endl;
 }
 
-bool Player::IsRPG2k() {
-	return (engine & EngineRpg2k) == EngineRpg2k;
-}
-
-bool Player::IsRPG2k3Legacy() {
-	return (engine == EngineRpg2k3 || engine == (EngineRpg2k3 | EngineMajorUpdated));
-}
-
-bool Player::IsRPG2k3() {
-	return (engine & EngineRpg2k3) == EngineRpg2k3;
-}
-
-bool Player::IsMajorUpdatedVersion() {
-	return (engine & EngineMajorUpdated) == EngineMajorUpdated;
-}
-
-bool Player::IsRPG2k3E() {
-	return (IsRPG2k3() && IsEnglish());
-}
-
-bool Player::IsRPG2kE() {
-	return (IsRPG2k() && IsEnglish());
-}
-
-bool Player::IsEnglish() {
-	return (engine & EngineEnglish) == EngineEnglish;
-}
-
 bool Player::IsCP932() {
 	return (encoding == "ibm-943_P15A-2003" || encoding == "932");
 }
