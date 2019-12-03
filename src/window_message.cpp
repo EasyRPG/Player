@@ -567,7 +567,6 @@ void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
 	if (!instant_speed && glyph_width > 0) {
 		// RPG_RT compatible for half-width (6) and full-width (12)
 		// generalizes the algo for even bigger glyphs
-		// FIXME: Verify RPG_RT on full width
 		SetWaitForCharacter(width);
 	}
 	IncrementLineCharCounter(width);
