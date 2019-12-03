@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <tuple>
+#include <ostream>
 
 /**
  * Color class.
@@ -92,6 +93,15 @@ inline bool operator<(const Color &l, const Color& r) {
 	return
 		std::tie(l.red, l.green, l.blue, l.alpha) <
 		std::tie(r.red, r.green, r.blue, r.alpha);
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Color& c) {
+	os << "Color{"
+		<< static_cast<int>(c.red) << ", "
+		<< static_cast<int>(c.green) << ", "
+		<< static_cast<int>(c.blue) << ", "
+		<< static_cast<int>(c.alpha) << "}";
+	return os;
 }
 
 #endif
