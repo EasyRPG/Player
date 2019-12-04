@@ -1,3 +1,6 @@
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
 #ifndef EP_BITMAPFONT_WQY_H
 #define EP_BITMAPFONT_WQY_H
 
