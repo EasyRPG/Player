@@ -41,7 +41,6 @@ static int GetDefaultNumberOfPictures() {
 		return 50;
 	}
 	if (Player::IsRPG2k3()) {
-		// FIXME: Needs confirmation with 2k3 RPG_RT <= 1.0.4
 		return 40;
 	}
 	return 20;

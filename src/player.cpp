@@ -727,7 +727,7 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
-	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
+	Output::Debug("Engine configured as: 2k=%d 2k3=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
