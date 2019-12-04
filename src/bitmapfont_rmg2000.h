@@ -1,3 +1,6 @@
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
 #ifndef EP_BITMAPFONT_RMG2000_H
 #define EP_BITMAPFONT_RMG2000_H
 

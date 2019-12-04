@@ -106,6 +106,9 @@ end
 
 def write_all(f, sym, data)
   f.write <<EOS
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
 #ifndef EP_#{sym}_H
 #define EP_#{sym}_H
 

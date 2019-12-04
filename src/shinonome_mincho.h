@@ -1,3 +1,6 @@
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
 #ifndef EP_SHINONOME_MINCHO_H
 #define EP_SHINONOME_MINCHO_H
 
