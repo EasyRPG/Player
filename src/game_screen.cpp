@@ -37,13 +37,16 @@ static int GetDefaultNumberOfPictures() {
 	if (Player::IsEnglish()) {
 		return 1000;
 	}
-	if (Player::IsMajorUpdatedVersion()) {
+	else if (Player::IsMajorUpdatedVersion()) {
 		return 50;
 	}
-	if (Player::IsRPG2k3()) {
+	else if (Player::IsRPG2k3Legacy()) {
 		return 40;
 	}
-	return 20;
+	else if (Player::IsRPG2kLegacy()) {
+		return 20;
+	}
+	return 0;
 }
 
 Game_Screen::Game_Screen() :
