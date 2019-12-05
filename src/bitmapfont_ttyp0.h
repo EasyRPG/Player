@@ -1,6 +1,13 @@
-#include "bitmapfont.h"
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_BITMAPFONT_TTYP0_H
+#define EP_BITMAPFONT_TTYP0_H
 
-BitmapFontGlyph const BITMAPFONT_TTYP0[3074] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,3074> BITMAPFONT_TTYP0 = {{
   { 0, false, { 0, 22, 16, 2, 18, 18, 16, 2, 26, 0, 0, 0 } },
   { 32, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   { 33, false, { 0, 8, 8, 8, 8, 8, 0, 8, 8, 0, 0, 0 } },
@@ -3075,4 +3082,6 @@ BitmapFontGlyph const BITMAPFONT_TTYP0[3074] = {
   { 64334, false, { 0, 14, 0, 15, 18, 22, 16, 16, 14, 0, 0, 0 } },
   { 64335, false, { 0, 2, 2, 10, 18, 12, 8, 16, 16, 0, 0, 0 } },
   { 65533, false, { 0, 28, 54, 54, 48, 24, 8, 0, 8, 28, 8, 0 } },
-};
+}};
+
+#endif

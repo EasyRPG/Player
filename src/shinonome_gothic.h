@@ -1,6 +1,13 @@
-#include "bitmapfont.h"
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_SHINONOME_GOTHIC_H
+#define EP_SHINONOME_GOTHIC_H
 
-BitmapFontGlyph const SHINONOME_GOTHIC[11071] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,11071> SHINONOME_GOTHIC = {{
   { 0, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   { 1, false, { 0, 4, 4, 14, 14, 31, 31, 14, 14, 4, 4, 0 } },
   { 2, false, { 42, 21, 42, 21, 42, 21, 42, 21, 42, 21, 42, 21 } },
@@ -11072,4 +11079,6 @@ BitmapFontGlyph const SHINONOME_GOTHIC[11071] = {
   { 65507, true, { 4095, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   { 65509, true, { 0, 910, 260, 136, 508, 80, 508, 32, 32, 32, 112, 0 } },
   { 65510, true, { 1092, 1092, 1092, 4094, 680, 680, 272, 272, 272, 0, 0, 0 } },
-};
+}};
+
+#endif

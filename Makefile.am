@@ -45,9 +45,10 @@ libeasyrpg_player_a_SOURCES = \
 	src/bitmap.cpp \
 	src/bitmap.h \
 	src/bitmapfont.h \
-	src/bitmapfont_wqy.cpp \
-	src/bitmapfont_ttyp0.cpp \
-	src/bitmapfont_rmg2000.cpp \
+	src/bitmapfont_glyph.h \
+	src/bitmapfont_rmg2000.h \
+	src/bitmapfont_ttyp0.h \
+	src/bitmapfont_wqy.h \
 	src/bitmap_hslrgb.h \
 	src/cache.cpp \
 	src/cache.h \
@@ -245,8 +246,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/sdl2_ui.h \
 	src/sdl_ui.cpp \
 	src/sdl_ui.h \
-	src/shinonome_gothic.cpp \
-	src/shinonome_mincho.cpp \
+	src/shinonome_gothic.h \
+	src/shinonome_mincho.h \
 	src/sprite.cpp \
 	src/sprite.h \
 	src/sprite_airshipshadow.h \

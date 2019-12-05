@@ -106,9 +106,16 @@ end
 
 def write_all(f, sym, data)
   f.write <<EOS
-#include "bitmapfont.h"
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_#{sym}_H
+#define EP_#{sym}_H
 
-BitmapFontGlyph const #{sym}[#{data.size}] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,#{data.size}> #{sym} = {{
 EOS
 
   code_max = 0
@@ -118,7 +125,11 @@ EOS
     f.write "  { #{g.code}, #{g.is_full}, { #{g.data.join(", ")} } },\n"
     code_max = [g.code, code_max].max
   }
-  f.write "};\n"
+  f.write <<EOS
+}};
+
+#endif
+EOS
 
   code_max
 end
@@ -183,41 +194,19 @@ print "Generating Gothic..."
 gothic_final = gothic.merge(hankaku) \
 	.merge(korean).merge(chinese).merge(latin) \
     .merge(latin_ext_a).merge(extras).merge(extras_fullwidth)
-code_max = write_all(File.new("../../src/shinonome_gothic.cpp", "w"), "SHINONOME_GOTHIC", gothic_final)
+code_max = write_all(File.new("../../src/shinonome_gothic.h", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
-code_max = [write_all(File.new("../../src/shinonome_mincho.cpp", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+code_max = [write_all(File.new("../../src/shinonome_mincho.h", "w"), "SHINONOME_MINCHO", mincho), code_max].max
 print "done\n"
 
 print "Generating RMG2000..."
-code_max = [write_all(File.new("../../src/bitmapfont_rmg2000.cpp", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
+code_max = [write_all(File.new("../../src/bitmapfont_rmg2000.h", "w"), "BITMAPFONT_RMG2000", rmg2000), code_max].max
 print "done\n"
 
 print "Generating ttyp0..."
-code_max = [write_all(File.new("../../src/bitmapfont_ttyp0.cpp", "w"), "BITMAPFONT_TTYP0", ttyp0), code_max].max
+code_max = [write_all(File.new("../../src/bitmapfont_ttyp0.h", "w"), "BITMAPFONT_TTYP0", ttyp0), code_max].max
 print "done\n"
 
-# header
-print "Generating Header..."
-File.new('../../src/bitmapfont.h', 'w').write <<EOS
-#ifndef _INC_BITMAPFONT_H_
-#define _INC_BITMAPFONT_H_
-
-#include <stdint.h>
-
-struct BitmapFontGlyph {
-	uint#{code_max < 0x10000 ? 16 : 32}_t code;
-	bool is_full;
-	uint16_t data[#{FONT_SIZE}];
-};
-
-extern BitmapFontGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
-extern BitmapFontGlyph const SHINONOME_MINCHO[#{mincho.size}];
-extern BitmapFontGlyph const BITMAPFONT_WQY[#{wenquanyi_chars}];
-extern BitmapFontGlyph const BITMAPFONT_RMG2000[#{rmg2000.size}];
-extern BitmapFontGlyph const BITMAPFONT_TTYP0[#{ttyp0.size}];
-
-#endif // _INC_BITMAPFONT_H_
-EOS
 print "done\n"

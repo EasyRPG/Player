@@ -1,6 +1,13 @@
-#include "bitmapfont.h"
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_BITMAPFONT_WQY_H
+#define EP_BITMAPFONT_WQY_H
 
-BitmapFontGlyph const BITMAPFONT_WQY[20941] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,20941> BITMAPFONT_WQY = {{
 	{ 32, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 	{ 19968, true, { 0, 0, 0, 0, 512, 2047, 0, 0, 0, 0, 0, 0 } },
 	{ 19969, true, { 0, 2046, 64, 64, 64, 64, 64, 64, 64, 64, 112, 0 } },
@@ -20942,4 +20949,6 @@ BitmapFontGlyph const BITMAPFONT_WQY[20941] = {
 	{ 40905, true, { 8, 2036, 130, 137, 132, 998, 581, 580, 580, 580, 2036, 0 } },
 	{ 40906, true, { 136, 2047, 136, 2, 132, 161, 1962, 164, 163, 162, 2034, 0 } },
 	{ 40907, true, { 130, 2036, 143, 2036, 556, 998, 333, 2036, 548, 548, 996, 0 } },
-};
+}};
+
+#endif

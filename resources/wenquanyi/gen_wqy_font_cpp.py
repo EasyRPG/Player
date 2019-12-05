@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 
 bdf = 'wenquanyi_cjk_basic_9pt.bdf'
-cpp = '../../src/bitmapfont_wqy.cpp'
-##cpp = 'bitmapfont_wqy.cpp'
+cpp = '../../src/bitmapfont_wqy.h'
+##cpp = 'bitmapfont_wqy.h'
 
 # FONTBOUNDINGBOX 12 14 0 -3
 control_point = 14 - 3
@@ -90,9 +90,16 @@ if __name__ == '__main__':
     glyphs.sort(key=getKey)
 
     fw = open(cpp, 'w')
-    fw.write('''#include "bitmapfont.h"
+    fw.write('''/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_BITMAPFONT_WQY_H
+#define EP_BITMAPFONT_WQY_H
 
-BitmapFontGlyph const BITMAPFONT_WQY[%s] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,%s> BITMAPFONT_WQY = {{
 ''' % len(glyphs))
     for x in glyphs:
         #print(x[0])
@@ -101,6 +108,9 @@ BitmapFontGlyph const BITMAPFONT_WQY[%s] = {
         #print(s)
         fw.write(s)
 
-    fw.write('};\n')
+    fw.write('''}};
+
+#endif
+''')
     fw.close()
 

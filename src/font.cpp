@@ -19,6 +19,7 @@
 #include <map>
 #include <type_traits>
 #include <vector>
+#include <iterator>
 
 #include "system.h"
 #include "game_system.h"
@@ -41,16 +42,13 @@
 #include "cache.h"
 #include "player.h"
 
-bool operator<(BitmapFontGlyph const& lhs, uint32_t const code) {
-	return lhs.code < code;
-}
-
 // Static variables.
 namespace {
-	BitmapFontGlyph const* find_glyph(BitmapFontGlyph const* data, size_t size, char32_t code) {
-		BitmapFontGlyph const* ret = std::lower_bound(data, data + size, code);
-		if(ret != (data + size) && ret->code == code) {
-			return ret;
+    template <typename T>
+	BitmapFontGlyph const* find_glyph(const T& glyphset, char32_t code) {
+		auto iter = std::lower_bound(std::begin(glyphset), std::end(glyphset), code);
+		if(iter != std::end(glyphset) && iter->code == code) {
+			return &*iter;
 		} else {
 			return NULL;
 		}
@@ -59,9 +57,7 @@ namespace {
 	// This is the last-resort function for finding a glyph, all the other fonts should fallback on it.
 	// It tries to display a WenQuanYi glyph, and if it’s not found, returns a replacement glyph.
 	BitmapFontGlyph const* find_fallback_glyph(char32_t code) {
-		BitmapFontGlyph const* const wqy =
-			find_glyph(BITMAPFONT_WQY,
-					sizeof(BITMAPFONT_WQY) / sizeof(BitmapFontGlyph), code);
+		auto* wqy = find_glyph(BITMAPFONT_WQY, code);
 		if (wqy != NULL) {
 			return wqy;
 		}
@@ -73,37 +69,27 @@ namespace {
 	}
 
 	BitmapFontGlyph const* find_gothic_glyph(char32_t code) {
-		BitmapFontGlyph const* const gothic =
-			find_glyph(SHINONOME_GOTHIC,
-					   sizeof(SHINONOME_GOTHIC) / sizeof(BitmapFontGlyph), code);
+		auto* gothic = find_glyph(SHINONOME_GOTHIC, code);
 		return gothic != NULL ? gothic : find_fallback_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_mincho_glyph(char32_t code) {
-		BitmapFontGlyph const* const mincho =
-			find_glyph(SHINONOME_MINCHO,
-					   sizeof(SHINONOME_MINCHO) / sizeof(BitmapFontGlyph), code);
+		auto* mincho = find_glyph(SHINONOME_MINCHO, code);
 		return mincho == NULL ? find_gothic_glyph(code) : mincho;
 	}
 
 	BitmapFontGlyph const* find_rmg2000_glyph(char32_t code) {
-		BitmapFontGlyph const* const rmg2000 =
-			find_glyph(BITMAPFONT_RMG2000,
-					   sizeof(BITMAPFONT_RMG2000) / sizeof(BitmapFontGlyph), code);
+		auto* rmg2000 = find_glyph(BITMAPFONT_RMG2000, code);
 		if (rmg2000 != NULL) {
 			return rmg2000;
 		}
 
-		BitmapFontGlyph const* const ttyp0 =
-			find_glyph(BITMAPFONT_TTYP0,
-					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
+		auto* ttyp0 = find_glyph(BITMAPFONT_TTYP0, code);
 		return ttyp0 != NULL ? ttyp0 : find_mincho_glyph(code);
 	}
 
 	BitmapFontGlyph const* find_ttyp0_glyph(char32_t code) {
-		BitmapFontGlyph const* const ttyp0 =
-			find_glyph(BITMAPFONT_TTYP0,
-					   sizeof(BITMAPFONT_TTYP0) / sizeof(BitmapFontGlyph), code);
+		auto* ttyp0 = find_glyph(BITMAPFONT_TTYP0, code);
 		return ttyp0 != NULL ? ttyp0 : find_gothic_glyph(code);
 	}
 

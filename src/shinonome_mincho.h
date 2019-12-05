@@ -1,6 +1,13 @@
-#include "bitmapfont.h"
+/* !!!! GENERATED FILE - DO NOT EDIT !!!!
+ * --------------------------------------
+ */
+#ifndef EP_SHINONOME_MINCHO_H
+#define EP_SHINONOME_MINCHO_H
 
-BitmapFontGlyph const SHINONOME_MINCHO[488] = {
+#include <array>
+#include "bitmapfont_glyph.h"
+
+constexpr const std::array<BitmapFontGlyph,488> SHINONOME_MINCHO = {{
   { 12354, true, { 8, 208, 62, 72, 248, 328, 556, 554, 530, 266, 196, 0 } },
   { 12356, true, { 0, 0, 1, 194, 258, 514, 530, 778, 524, 8, 0, 0 } },
   { 12357, true, { 0, 0, 0, 0, 8, 48, 56, 68, 64, 32, 16, 0 } },
@@ -489,4 +496,6 @@ BitmapFontGlyph const SHINONOME_MINCHO[488] = {
   { 39409, true, { 128, 927, 581, 719, 293, 655, 1093, 3071, 592, 597, 977, 588 } },
   { 39822, true, { 132, 156, 138, 1951, 149, 159, 981, 607, 584, 598, 970, 577 } },
   { 40236, true, { 276, 168, 2046, 530, 253, 132, 2044, 4, 1020, 680, 594, 385 } },
-};
+}};
+
+#endif
