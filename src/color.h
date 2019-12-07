@@ -42,16 +42,6 @@ public:
 	 */
 	constexpr Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
-	/**
-	 * Sets all color properties.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 * @param alpha alpha component.
-	 */
-	void Set(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
-
 	/** Red component. */
 	uint8_t red = 0;
 
@@ -108,13 +98,6 @@ constexpr Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) 
 	green(green),
 	blue(blue),
 	alpha(alpha) {
-}
-
-inline void Color::Set(uint8_t nred, uint8_t ngreen, uint8_t nblue, uint8_t nalpha) {
-	red = nred;
-	green = ngreen;
-	blue = nblue;
-	alpha = nalpha;
 }
 
 #endif
