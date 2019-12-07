@@ -579,12 +579,6 @@ protected:
 		}
 	}
 
-	typedef std::pair<int, pixman_format_code_t> format_pair;
-	static std::map<int, pixman_format_code_t> formats_map;
-	static bool formats_initialized;
-
-	static void initialize_formats();
-	static void add_pair(pixman_format_code_t pcode, const DynamicFormat& format);
 	static pixman_format_code_t find_format(const DynamicFormat& format);
 
 	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
