@@ -28,12 +28,8 @@
 #include "reader_util.h"
 #include "output.h"
 
-Background::Background(const std::string& name) :
-	Drawable(TypeBackground, Priority_Background, false),
-	visible(true), tone_effect(Tone()),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(const std::string& name) : Drawable(TypeBackground, Priority_Background, false)
+{
 	Graphics::RegisterDrawable(this);
 
 	if (!name.empty()) {
@@ -44,12 +40,8 @@ Background::Background(const std::string& name) :
 	}
 }
 
-Background::Background(int terrain_id) :
-	Drawable(TypeBackground, Priority_Background, false),
-	visible(true), tone_effect(Tone()),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(int terrain_id) : Drawable(TypeBackground, Priority_Background, false)
+{
 	Graphics::RegisterDrawable(this);
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
@@ -103,15 +95,6 @@ void Background::OnForegroundFrameGraphicReady(FileRequestResult* result) {
 	fg_bitmap = Cache::Frame(result->file);
 }
 
-Tone Background::GetTone() const {
-	return tone_effect;
-}
-
-void Background::SetTone(Tone tone) {
-	if (tone_effect != tone) {
-		tone_effect = tone;
-	}
-}
 void Background::Update(int& rate, int& value) {
 	int step =
 		(rate > 0) ? 2 << rate :

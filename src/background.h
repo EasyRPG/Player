@@ -42,22 +42,30 @@ private:
 	void OnBackgroundGraphicReady(FileRequestResult* result);
 	void OnForegroundFrameGraphicReady(FileRequestResult* result);
 
-	bool visible;
+	bool visible = true;
 
 	Tone tone_effect;
 	Tone current_tone;
 	BitmapRef bg_bitmap;
-	int bg_hscroll;
-	int bg_vscroll;
-	int bg_x;
-	int bg_y;
+	int bg_hscroll = 0;
+	int bg_vscroll = 0;
+	int bg_x = 0;
+	int bg_y = 0;
 	BitmapRef fg_bitmap;
-	int fg_hscroll;
-	int fg_vscroll;
-	int fg_x;
-	int fg_y;
+	int fg_hscroll = 0;
+	int fg_vscroll = 0;
+	int fg_x = 0;
+	int fg_y = 0;
 
 	FileRequestBinding request_id;
 };
+
+inline Tone Background::GetTone() const {
+	return tone_effect;
+}
+
+inline void Background::SetTone(Tone tone) {
+	tone_effect = tone;
+}
 
 #endif
