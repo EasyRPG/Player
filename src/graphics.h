@@ -104,6 +104,11 @@ namespace Graphics {
 	MessageOverlay& GetMessageOverlay();
 
 	Transition& GetTransition();
+
+	/**
+	 * Sort the list of drawables in Z order
+	 */
+	void SortDrawableList(DrawableList& list);
 }
 
 #endif
