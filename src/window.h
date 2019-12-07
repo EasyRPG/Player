@@ -83,24 +83,24 @@ public:
 protected:
 	unsigned long ID;
 	BitmapRef windowskin, contents;
-	bool stretch;
+	bool stretch = true;
 	Rect cursor_rect;
-	bool active;
-	bool visible;
-	bool closing;
-	bool up_arrow;
-	bool down_arrow;
-	int x;
-	int y;
-	int width;
-	int height;
-	int ox;
-	int oy;
-	int border_x;
-	int border_y;
-	int opacity;
-	int back_opacity;
-	int contents_opacity;
+	bool active = true;
+	bool visible = true;
+	bool closing = false;
+	bool up_arrow = false;
+	bool down_arrow = false;
+	int x = 0;
+	int y = 0;
+	int width = 0;
+	int height = 0;
+	int ox = 0;
+	int oy = 0;
+	int border_x = 8;
+	int border_y = 8;
+	int opacity = 255;
+	int back_opacity = 255;
+	int contents_opacity = 255;
 
 private:
 	BitmapRef
@@ -119,8 +119,8 @@ private:
 	int cursor_frame = 0;
 	int pause_frame = 0;
 	int animation_frames = 0;
-	double animation_count;
-	double animation_increment;
+	double animation_count = 0.0;
+	double animation_increment = 0.0;
 };
 
 inline bool Window::IsOpening() const {
@@ -133,6 +133,147 @@ inline bool Window::IsClosing() const {
 
 inline bool Window::IsOpeningOrClosing() const {
 	return animation_frames > 0;
+}
+
+inline BitmapRef const& Window::GetWindowskin() const {
+	return windowskin;
+}
+
+inline BitmapRef Window::GetContents() const {
+	return contents;
+}
+
+inline void Window::SetContents(BitmapRef const& ncontents) {
+	contents = ncontents;
+}
+
+inline bool Window::GetStretch() const {
+	return stretch;
+}
+
+inline Rect const& Window::GetCursorRect() const {
+	return cursor_rect;
+}
+
+inline bool Window::GetActive() const {
+	return active;
+}
+
+inline void Window::SetActive(bool nactive) {
+	active = nactive;
+}
+
+inline bool Window::GetVisible() const {
+	return visible;
+}
+
+inline void Window::SetVisible(bool nvisible) {
+	visible = nvisible;
+}
+
+inline bool Window::GetPause() const {
+	return pause;
+}
+
+inline void Window::SetPause(bool npause) {
+	pause = npause;
+	pause_frame = 0;
+}
+
+inline bool Window::GetUpArrow() const {
+	return up_arrow;
+}
+
+inline void Window::SetUpArrow(bool nup_arrow) {
+	up_arrow = nup_arrow;
+}
+
+inline bool Window::GetDownArrow() const {
+	return down_arrow;
+}
+
+inline void Window::SetDownArrow(bool ndown_arrow) {
+	down_arrow = ndown_arrow;
+}
+
+inline int Window::GetX() const {
+	return x;
+}
+
+inline void Window::SetX(int nx) {
+	x = nx;
+}
+
+inline int Window::GetY() const {
+	return y;
+}
+
+inline void Window::SetY(int ny) {
+	y = ny;
+}
+
+inline int Window::GetWidth() const {
+	return width;
+}
+
+inline int Window::GetHeight() const {
+	return height;
+}
+
+inline int Window::GetOx() const {
+	return ox;
+}
+
+inline void Window::SetOx(int nox) {
+	ox = nox;
+}
+
+inline int Window::GetOy() const {
+	return oy;
+}
+
+inline void Window::SetOy(int noy) {
+	oy = noy;
+}
+
+inline int Window::GetBorderX() const {
+	return border_x;
+}
+
+inline void Window::SetBorderX(int x) {
+	border_x = x;
+}
+
+inline int Window::GetBorderY() const {
+	return border_y;
+}
+
+inline void Window::SetBorderY(int y) {
+	border_y = y;
+}
+
+inline int Window::GetOpacity() const {
+	return opacity;
+}
+
+inline void Window::SetOpacity(int nopacity) {
+	opacity = nopacity;
+}
+
+inline int Window::GetBackOpacity() const {
+	return back_opacity;
+}
+
+inline void Window::SetBackOpacity(int nback_opacity) {
+	back_opacity = nback_opacity;
+}
+
+inline int Window::GetContentsOpacity() const {
+	return contents_opacity;
+}
+
+inline void Window::SetContentsOpacity(int ncontents_opacity) {
+	contents_opacity = ncontents_opacity;
 }
 
 #endif
