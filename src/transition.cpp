@@ -29,14 +29,8 @@
 #include "scene.h"
 #include "drawable.h"
 
-Transition::Transition() :
-	Drawable(TypeTransition, Priority_Transition, true)
+Transition::Transition() : Drawable(TypeTransition, Priority_Transition, true)
 {
-	flash_iterations = 0;
-	flash_duration = 0;
-	current_frame = -1;
-	total_frames = -2;
-	black_screen = nullptr;
 }
 
 void Transition::AppendBefore(Color color, int duration, int iterations) {
@@ -360,10 +354,3 @@ void Transition::Update() {
 	}
 }
 
-bool Transition::IsActive() {
-	return current_frame <= total_frames;
-}
-
-bool Transition::IsErased() {
-	return screen_erased && !IsActive();
-}

@@ -104,13 +104,13 @@ private:
 
 	TransitionType transition_type;
 	Scene *scene;
-	int current_frame;
-	int total_frames;
+	int current_frame = -1;
+	int total_frames = -2;
 	bool screen_erased = false;
 
 	Color flash_color;
-	int flash_duration;
-	int flash_iterations;
+	int flash_duration = 0;
+	int flash_iterations = 0;
 
 	std::vector<int> zoom_position;
 	std::vector<uint32_t> random_blocks;
@@ -118,5 +118,13 @@ private:
 
 	void SetAttributesTransitions();
 };
+
+inline bool Transition::IsActive() {
+	return current_frame <= total_frames;
+}
+
+inline bool Transition::IsErased() {
+	return screen_erased && !IsActive();
+}
 
 #endif
