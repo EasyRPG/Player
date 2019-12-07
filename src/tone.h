@@ -19,6 +19,7 @@
 #define EP_TONE_H
 
 #include <tuple>
+#include <ostream>
 
 /**
  * Tone class.
@@ -85,6 +86,11 @@ inline bool operator<(const Tone &l, const Tone& r) {
 	return
 		std::tie(l.red, l.green, l.blue, l.gray) <
 		std::tie(r.red, r.green, r.blue, r.gray);
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Tone& t) {
+	os << "Tone{" << t.red << ", " << t.green << ", " << t.blue << ", " << t.gray << "}";
+	return os;
 }
 
 #endif
