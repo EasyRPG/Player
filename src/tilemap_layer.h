@@ -38,7 +38,7 @@ public:
 	void Draw() override;
 
 private:
-	TilemapLayer* tilemap;
+	TilemapLayer* tilemap = nullptr;
 };
 
 /**
@@ -55,9 +55,9 @@ public:
 
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
-	std::vector<short> GetMapData() const;
+	const std::vector<short>& GetMapData() const;
 	void SetMapData(const std::vector<short>& nmap_data);
-	std::vector<unsigned char> GetPassable() const;
+	const std::vector<unsigned char>& GetPassable() const;
 	void SetPassable(const std::vector<unsigned char>& npassable);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
@@ -94,17 +94,17 @@ private:
 	std::vector<uint8_t> passable;
 	// FIXME Should be span<uint8_t>
 	const std::vector<uint8_t>& substitutions;
-	bool visible;
-	int ox;
-	int oy;
-	int width;
-	int height;
-	char animation_frame;
-	char animation_step_ab;
-	char animation_step_c;
-	int animation_speed;
-	int animation_type;
-	int layer;
+	bool visible = true;
+	int ox = 0;
+	int oy = 0;
+	int width = 0;
+	int height = 0;
+	char animation_frame = 0;
+	char animation_step_ab = 0;
+	char animation_step_c = 0;
+	int animation_speed = 0;
+	int animation_type = 0;
+	int layer = 0;
 	bool fast_blit = false;
 
 	void CreateTileCache(const std::vector<short>& nmap_data);
@@ -150,5 +150,78 @@ private:
 
 	Tone tone;
 };
+
+inline BitmapRef const& TilemapLayer::GetChipset() const {
+	return chipset;
+}
+
+inline const std::vector<short>& TilemapLayer::GetMapData() const {
+	return map_data;
+}
+
+inline const std::vector<unsigned char>& TilemapLayer::GetPassable() const {
+	return passable;
+}
+
+inline bool TilemapLayer::GetVisible() const {
+	return visible;
+}
+
+inline void TilemapLayer::SetVisible(bool nvisible) {
+	visible = nvisible;
+}
+
+inline int TilemapLayer::GetOx() const {
+	return ox;
+}
+
+inline void TilemapLayer::SetOx(int nox) {
+	ox = nox;
+}
+
+inline int TilemapLayer::GetOy() const {
+	return oy;
+}
+
+inline void TilemapLayer::SetOy(int noy) {
+	oy = noy;
+}
+
+inline int TilemapLayer::GetWidth() const {
+	return width;
+}
+
+inline void TilemapLayer::SetWidth(int nwidth) {
+	width = nwidth;
+}
+
+inline int TilemapLayer::GetHeight() const {
+	return height;
+}
+
+inline void TilemapLayer::SetHeight(int nheight) {
+	height = nheight;
+}
+
+inline int TilemapLayer::GetAnimationSpeed() const {
+	return animation_speed;
+}
+
+inline void TilemapLayer::SetAnimationSpeed(int speed) {
+	animation_speed = speed;
+}
+
+inline int TilemapLayer::GetAnimationType() const {
+	return animation_type;
+}
+
+inline void TilemapLayer::SetAnimationType(int type) {
+	animation_type = type;
+}
+
+inline void TilemapLayer::SetFastBlit(bool fast) {
+	fast_blit = fast;
+}
+
 
 #endif

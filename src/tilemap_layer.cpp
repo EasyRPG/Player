@@ -30,7 +30,7 @@
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
 // [tile-id][row][col]
-static const int8_t BlockA_Subtiles_IDS[47][2][2] = {
+static constexpr int8_t BlockA_Subtiles_IDS[47][2][2] = {
 #define N -1
 	{{N, N}, {N, N}},
 	{{3, N}, {N, N}},
@@ -83,7 +83,7 @@ static const int8_t BlockA_Subtiles_IDS[47][2][2] = {
 };
 
 // [tile-id][row][col][x/y]
-static const uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
+static constexpr uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
 //     T-L     T-R       B-L     B-R
     {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
     {{{2, 0}, {1, 2}}, {{1, 2}, {1, 2}}},
@@ -141,16 +141,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	substitutions(ilayer >= 1
 			? Main_Data::game_data.map_info.upper_tiles
 			: Main_Data::game_data.map_info.lower_tiles),
-	visible(true),
-	ox(0),
-	oy(0),
-	width(0),
-	height(0),
-	animation_frame(0),
-	animation_step_ab(0),
-	animation_step_c(0),
-	animation_speed(24),
-	animation_type(0),
 	layer(ilayer) {
 
 	memset(autotiles_ab, 0, sizeof(autotiles_ab));
@@ -616,10 +606,6 @@ void TilemapLayer::Update() {
 	}
 }
 
-BitmapRef const& TilemapLayer::GetChipset() const {
-	return chipset;
-}
-
 void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	chipset = nchipset;
 	chipset_effect = Bitmap::Create(chipset->width(), chipset->height());
@@ -635,10 +621,6 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 		autotiles_ab_screen_tone_tiles.clear();
 		autotiles_d_screen_tone_tiles.clear();
 	}
-}
-
-std::vector<short> TilemapLayer::GetMapData() const {
-	return map_data;
 }
 
 void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
@@ -681,10 +663,6 @@ void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
 	map_data = nmap_data;
 }
 
-std::vector<unsigned char> TilemapLayer::GetPassable() const {
-	return passable;
-}
-
 void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 	passable = npassable;
 
@@ -692,69 +670,9 @@ void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 	CreateTileCache(map_data);
 }
 
-bool TilemapLayer::GetVisible() const {
-	return visible;
-}
-
-void TilemapLayer::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
-
-int TilemapLayer::GetOx() const {
-	return ox;
-}
-
-void TilemapLayer::SetOx(int nox) {
-	ox = nox;
-}
-
-int TilemapLayer::GetOy() const {
-	return oy;
-}
-
-void TilemapLayer::SetOy(int noy) {
-	oy = noy;
-}
-
-int TilemapLayer::GetWidth() const {
-	return width;
-}
-
-void TilemapLayer::SetWidth(int nwidth) {
-	width = nwidth;
-}
-
-int TilemapLayer::GetHeight() const {
-	return height;
-}
-
-void TilemapLayer::SetHeight(int nheight) {
-	height = nheight;
-}
-
-int TilemapLayer::GetAnimationSpeed() const {
-	return animation_speed;
-}
-
-void TilemapLayer::SetAnimationSpeed(int speed) {
-	animation_speed = speed;
-}
-
-int TilemapLayer::GetAnimationType() const {
-	return animation_type;
-}
-
-void TilemapLayer::SetAnimationType(int type) {
-	animation_type = type;
-}
-
 void TilemapLayer::OnSubstitute() {
 	// Recalculate z values of all tiles
 	CreateTileCache(map_data);
-}
-
-void TilemapLayer::SetFastBlit(bool fast) {
-	fast_blit = fast;
 }
 
 TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
