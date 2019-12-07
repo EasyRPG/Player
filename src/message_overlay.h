@@ -42,7 +42,6 @@ public:
 class MessageOverlay : public Drawable {
 public:
 	MessageOverlay();
-	~MessageOverlay() override;
 
 	void Draw() override;
 

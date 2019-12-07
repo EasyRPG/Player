@@ -103,10 +103,6 @@ void Background::OnForegroundFrameGraphicReady(FileRequestResult* result) {
 	fg_bitmap = Cache::Frame(result->file);
 }
 
-Background::~Background() {
-	Graphics::RemoveDrawable(this);
-}
-
 Tone Background::GetTone() const {
 	return tone_effect;
 }

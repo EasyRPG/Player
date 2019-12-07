@@ -29,7 +29,6 @@
 class Window : public Drawable {
 public:
 	Window();
-	~Window() override;
 
 	void Draw() override;
 

@@ -22,6 +22,7 @@
 #include <string>
 #include "drawable.h"
 #include "system.h"
+#include "async_handler.h"
 
 /**
  * Renders the frame overlay.
@@ -29,7 +30,6 @@
 class Frame : public Drawable {
 public:
 	Frame();
-	~Frame() override;
 
 	void Draw() override;
 	void Update();

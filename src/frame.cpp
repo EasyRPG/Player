@@ -38,10 +38,6 @@ Frame::Frame() :
 	Graphics::RegisterDrawable(this);
 }
 
-Frame::~Frame() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Frame::Update() {
 	// no-op
 }

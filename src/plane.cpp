@@ -32,10 +32,6 @@ Plane::Plane() :
 	Graphics::RegisterDrawable(this);
 }
 
-Plane::~Plane() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Plane::Draw() {
 	if (!visible || !bitmap) return;
 

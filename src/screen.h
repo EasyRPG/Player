@@ -35,7 +35,6 @@
 class Screen : public Drawable {
 public:
 	Screen();
-	~Screen() override;
 
 	void Draw() override;
 	void Update();

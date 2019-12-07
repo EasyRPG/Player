@@ -29,7 +29,6 @@ class Background : public Drawable {
 public:
 	Background(const std::string& name);
 	Background(int terrain_id);
-	~Background() override;
 
 	void Draw() override;
 	void Update();

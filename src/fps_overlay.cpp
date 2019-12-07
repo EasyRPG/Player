@@ -30,10 +30,6 @@ FpsOverlay::FpsOverlay() :
 	Graphics::RegisterDrawable(this);
 }
 
-FpsOverlay::~FpsOverlay() {
-	Graphics::RemoveDrawable(this);
-}
-
 void FpsOverlay::Update() {
 	int mod = Player::GetSpeedModifier();
 

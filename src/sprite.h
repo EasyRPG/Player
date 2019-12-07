@@ -31,7 +31,6 @@
 class Sprite : public Drawable {
 public:
 	Sprite();
-	~Sprite() override;
 
 	void Draw() override;
 

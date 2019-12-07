@@ -32,10 +32,6 @@ Weather::Weather() :
 	Graphics::RegisterDrawable(this);
 }
 
-Weather::~Weather() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Weather::Update() {
 }
 

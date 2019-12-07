@@ -30,7 +30,6 @@
 class Weather : public Drawable {
 public:
 	Weather();
-	~Weather() override;
 
 	void Draw() override;
 	void Update();

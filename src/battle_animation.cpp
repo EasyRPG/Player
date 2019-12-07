@@ -241,9 +241,7 @@ BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Characte
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationMap::~BattleAnimationMap() {
-	Graphics::RemoveDrawable(this);
-}
+
 void BattleAnimationMap::Draw() {
 	if (IsOnlySound()) {
 		return;
@@ -296,9 +294,7 @@ BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::ve
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattle::~BattleAnimationBattle() {
-	Graphics::RemoveDrawable(this);
-}
+
 void BattleAnimationBattle::Draw() {
 	if (IsOnlySound())
 		return;

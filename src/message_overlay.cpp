@@ -35,10 +35,6 @@ MessageOverlay::MessageOverlay() :
 	// Graphics::RegisterDrawable is in the Update function
 }
 
-MessageOverlay::~MessageOverlay() {
-	Graphics::RemoveDrawable(this);
-}
-
 void MessageOverlay::Draw() {
 	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible

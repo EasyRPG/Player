@@ -30,7 +30,6 @@
 class Plane : public Drawable {
 public:
 	Plane();
-	~Plane() override;
 
 	void Draw() override;
 

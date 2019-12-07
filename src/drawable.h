@@ -67,7 +67,7 @@ public:
 	Drawable(const Drawable&) = delete;
 	Drawable& operator=(const Drawable&) = delete;
 
-	virtual ~Drawable() {};
+	virtual ~Drawable();
 
 	virtual void Draw() = 0;
 

@@ -31,7 +31,6 @@
 class FpsOverlay : public Drawable {
 public:
 	FpsOverlay();
-	~FpsOverlay() override;
 
 	void Draw() override;
 

@@ -63,11 +63,6 @@ Sprite::Sprite(const DrawableType type) :
 	Graphics::RegisterDrawable(this);
 }
 
-// Destructor
-Sprite::~Sprite() {
-	Graphics::RemoveDrawable(this);
-}
-
 // Draw
 void Sprite::Draw() {
 	if (!visible) return;

@@ -73,7 +73,6 @@ public:
 	};
 
 	Transition();
-	~Transition() override;
 
 	/**
 	 * Defines a screen transition.

@@ -31,10 +31,6 @@ Screen::Screen() :
 	Graphics::RegisterDrawable(this);
 }
 
-Screen::~Screen() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Screen::Update() {
 }
 

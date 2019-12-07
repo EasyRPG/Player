@@ -34,7 +34,6 @@ class TilemapLayer;
 class TilemapSubLayer : public Drawable {
 public:
 	TilemapSubLayer(TilemapLayer* tilemap, int z);
-	~TilemapSubLayer() override;
 
 	void Draw() override;
 

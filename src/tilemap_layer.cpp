@@ -764,10 +764,6 @@ TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
 	Graphics::RegisterDrawable(this);
 }
 
-TilemapSubLayer::~TilemapSubLayer() {
-	Graphics::RemoveDrawable(this);
-}
-
 void TilemapSubLayer::Draw() {
 	if (!tilemap->GetChipset()) {
 		return;

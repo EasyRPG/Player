@@ -26,6 +26,10 @@ Drawable::Drawable(DrawableType type, int z, bool is_global)
 {
 }
 
+Drawable::~Drawable() {
+	Graphics::RemoveDrawable(this);
+}
+
 void Drawable::SetZ(int nz) {
 	if (_z != nz) Graphics::UpdateZCallback();
 	_z = nz;

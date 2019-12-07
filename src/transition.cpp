@@ -39,10 +39,6 @@ Transition::Transition() :
 	black_screen = nullptr;
 }
 
-Transition::~Transition() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Transition::AppendBefore(Color color, int duration, int iterations) {
 	if (!IsActive()) {
 		current_frame = 0;

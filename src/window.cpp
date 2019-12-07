@@ -60,10 +60,6 @@ Window::Window():
 	cursor2 = BitmapRef();
 }
 
-Window::~Window() {
-	Graphics::RemoveDrawable(this);
-}
-
 void Window::SetOpenAnimation(int frames) {
 	closing = false;
 	visible = true;
