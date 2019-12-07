@@ -38,30 +38,6 @@ void Tilemap::SetChipset(BitmapRef const& chipset) {
 	layer_up.SetChipset(chipset);
 }
 
-std::vector<short> Tilemap::GetMapDataDown() const {
-	return layer_down.GetMapData();
-}
-void Tilemap::SetMapDataDown(std::vector<short> down) {
-	layer_down.SetMapData(down);
-}
-std::vector<short> Tilemap::GetMapDataUp() const {
-	return layer_up.GetMapData();
-}
-void Tilemap::SetMapDataUp(std::vector<short> up) {
-	layer_up.SetMapData(up);
-}
-std::vector<unsigned char> Tilemap::GetPassableDown() const {
-	return layer_down.GetPassable();
-}
-void Tilemap::SetPassableDown(std::vector<unsigned char> down) {
-	layer_down.SetPassable(down);
-}
-std::vector<unsigned char> Tilemap::GetPassableUp() const {
-	return layer_up.GetPassable();
-}
-void Tilemap::SetPassableUp(std::vector<unsigned char> up) {
-	layer_up.SetPassable(up);
-}
 bool Tilemap::GetVisible() const {
 	return layer_down.GetVisible();
 }

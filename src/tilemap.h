@@ -35,14 +35,19 @@ public:
 
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
-	std::vector<short> GetMapDataDown() const;
+
+	const std::vector<short>& GetMapDataDown() const;
 	void SetMapDataDown(std::vector<short> down);
-	std::vector<short> GetMapDataUp() const;
+
+	const std::vector<short>& GetMapDataUp() const;
 	void SetMapDataUp(std::vector<short> up);
-	std::vector<unsigned char> GetPassableUp() const;
+
+	const std::vector<unsigned char>& GetPassableUp() const;
 	void SetPassableUp(std::vector<unsigned char> up);
-	std::vector<unsigned char> GetPassableDown() const;
+
+	const std::vector<unsigned char>& GetPassableDown() const;
 	void SetPassableDown(std::vector<unsigned char> down);
+
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
@@ -65,5 +70,37 @@ public:
 private:
 	TilemapLayer layer_down, layer_up;
 };
+
+inline const std::vector<short>& Tilemap::GetMapDataDown() const {
+	return layer_down.GetMapData();
+}
+
+inline void Tilemap::SetMapDataDown(std::vector<short> down) {
+	layer_down.SetMapData(std::move(down));
+}
+
+inline const std::vector<short>& Tilemap::GetMapDataUp() const {
+	return layer_up.GetMapData();
+}
+
+inline void Tilemap::SetMapDataUp(std::vector<short> up) {
+	layer_up.SetMapData(std::move(up));
+}
+
+inline const std::vector<unsigned char>& Tilemap::GetPassableDown() const {
+	return layer_down.GetPassable();
+}
+
+inline void Tilemap::SetPassableDown(std::vector<unsigned char> down) {
+	layer_down.SetPassable(std::move(down));
+}
+
+inline const std::vector<unsigned char>& Tilemap::GetPassableUp() const {
+	return layer_up.GetPassable();
+}
+
+inline void Tilemap::SetPassableUp(std::vector<unsigned char> up) {
+	layer_up.SetPassable(std::move(up));
+}
 
 #endif

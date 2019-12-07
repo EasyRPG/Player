@@ -623,7 +623,7 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	}
 }
 
-void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
+void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	// Create the tiles data cache
 	CreateTileCache(nmap_data);
 	memset(autotiles_ab, 0, sizeof(autotiles_ab));
@@ -660,11 +660,11 @@ void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
 		autotiles_d_screen_tone_tiles.clear();
 	}
 
-	map_data = nmap_data;
+	map_data = std::move(nmap_data);
 }
 
-void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
-	passable = npassable;
+void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
+	passable = std::move(npassable);
 
 	// Recalculate z values of all tiles
 	CreateTileCache(map_data);

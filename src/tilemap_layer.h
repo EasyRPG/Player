@@ -56,9 +56,9 @@ public:
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
 	const std::vector<short>& GetMapData() const;
-	void SetMapData(const std::vector<short>& nmap_data);
+	void SetMapData(std::vector<short> nmap_data);
 	const std::vector<unsigned char>& GetPassable() const;
-	void SetPassable(const std::vector<unsigned char>& npassable);
+	void SetPassable(std::vector<unsigned char> npassable);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
