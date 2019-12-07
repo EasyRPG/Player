@@ -601,17 +601,17 @@ void FileFinder::InitRtpPaths(bool no_rtp, bool no_rtp_warnings) {
 		read_rtp_registry("ASCII", product, "RuntimePackagePath");
 		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
 	}
-	else if (Player::IsRPG2k3Legacy()) {
+	else if (Player::IsRPG2k3E()) {
+		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
+		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
+		read_rtp_registry("Enterbrain", product, "RUNTIMEPACKAGEPATH");
+	}
+	else if (Player::IsRPG2k3()) {
 		// Original 2003 RTP installer registry key is upper case
 		// and Wine registry is case insensitive but new 2k3v1.10 installer is not
 		// Prefer Enterbrain RTP over Kadokawa for old RPG2k3 (search order)
 		read_rtp_registry("Enterbrain", product, "RUNTIMEPACKAGEPATH");
 		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
-	}
-	else if (Player::IsRPG2k3E()) {
-		// Prefer Kadokawa RTP over Enterbrain for new RPG2k3
-		read_rtp_registry("KADOKAWA", product, "RuntimePackagePath");
-		read_rtp_registry("Enterbrain", product, "RUNTIMEPACKAGEPATH");
 	}
 
 	// Our RTP is for all engines

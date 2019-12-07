@@ -81,7 +81,7 @@ private:
 	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
 
-	void SetNonEffectParams(const Params& params);
+	void SetNonEffectParams(const Params& params, bool set_positions);
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);

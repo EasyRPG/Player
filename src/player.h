@@ -148,36 +148,38 @@ namespace Player {
 	 */
 	std::string GetEncoding();
 
-	/**
-	 * @return Whether engine is RPG2k
-	 */
+	/** @return If engine is any version of RPG2k */
 	bool IsRPG2k();
 
-	/**
-	 * @return If engine is RPG2k3 v1.09a or older
-	 */
-	bool IsRPG2k3Legacy();
-
-	/**
-	 * @return If engine is RPG2k3
-	 */
+	/** @return If engine is any version of RPG2k3 */
 	bool IsRPG2k3();
 
-	/**
-	 * @return If engine is RPG2k v1.50 or newer, or RPG2k3 v1.05 or newer
-	 */
-	bool IsMajorUpdatedVersion();
+	/** @return If engine is RPG2k <= 1.10 */
+	bool IsRPG2kLegacy();
 
-	/**
-	 * @return If engine is the official English RM2k3 release (v1.10) or newer.
-	 */
-	bool IsRPG2k3E();
+	/** @return If engine is RPG2k3 <= v1.04 */
+	bool IsRPG2k3Legacy();
+
+	/** @return If engine is RPG2k >= 1.50 */
+	bool IsRPG2kUpdated();
+
+	/** @return If engine is RPG2k3 >= 1.05 */
+	bool IsRPG2k3Updated();
 
 	/**
 	 * @return If engine is the official English RM2k release v.1.61 or newer.
 	 * False if engine is RM2k3, Japanese, unofficial or v.1.60.
 	 */
 	bool IsRPG2kE();
+
+	/** @return If engine is the official English RM2k3 release (v1.10) or newer. */
+	bool IsRPG2k3E();
+
+	/** @return If engine is RPG2kLegacy() or RPG2k3Legacy() */
+	bool IsLegacy();
+
+	/** @return If engine is RPG2kUpdated() or RPG2k3Updated() */
+	bool IsMajorUpdatedVersion();
 
 	/**
 	 * @return If engine is the official English release (and not RM2k v.1.60,
@@ -326,6 +328,50 @@ namespace Player {
 	/** Is executed from a .3dsx (otherwise .cia) */
 	extern bool is_3dsx;
 #endif
+}
+
+inline bool Player::IsRPG2k() {
+	return (engine & EngineRpg2k) == EngineRpg2k;
+}
+
+inline bool Player::IsRPG2k3() {
+	return (engine & EngineRpg2k3) == EngineRpg2k3;
+}
+
+inline bool Player::IsRPG2kLegacy() {
+	return engine == EngineRpg2k;
+}
+
+inline bool Player::IsRPG2k3Legacy() {
+	return engine == EngineRpg2k3;
+}
+
+inline bool Player::IsLegacy() {
+	return IsRPG2kLegacy() || IsRPG2k3Legacy();
+}
+
+inline bool Player::IsMajorUpdatedVersion() {
+	return (engine & EngineMajorUpdated) == EngineMajorUpdated;
+}
+
+inline bool Player::IsEnglish() {
+	return (engine & EngineEnglish) == EngineEnglish;
+}
+
+inline bool Player::IsRPG2kUpdated() {
+	return (IsRPG2k() && IsMajorUpdatedVersion());
+}
+
+inline bool Player::IsRPG2k3Updated() {
+	return (IsRPG2k3() && IsMajorUpdatedVersion());
+}
+
+inline bool Player::IsRPG2kE() {
+	return (IsRPG2k() && IsEnglish());
+}
+
+inline bool Player::IsRPG2k3E() {
+	return (IsRPG2k3() && IsEnglish());
 }
 
 #endif

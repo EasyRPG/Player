@@ -727,7 +727,7 @@ void Player::CreateGameObjects() {
 			}
 		}
 	}
-	Output::Debug("Engine configured as: 2k=%d 2k3=%d 2k3Legacy=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsRPG2k3Legacy(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
+	Output::Debug("Engine configured as: 2k=%d 2k3=%d MajorUpdated=%d Eng=%d", Player::IsRPG2k(), Player::IsRPG2k3(), Player::IsMajorUpdatedVersion(), Player::IsEnglish());
 
 	FileFinder::InitRtpPaths(no_rtp_flag, no_rtp_warning_flag);
 
@@ -1133,34 +1133,6 @@ Game related parameters (e.g. new-game and load-game-id) don't work correctly wh
 startup directory does not contain a valid game (and the game browser loads)
 
 Alex, EV0001 and the EasyRPG authors wish you a lot of fun!)" << std::endl;
-}
-
-bool Player::IsRPG2k() {
-	return (engine & EngineRpg2k) == EngineRpg2k;
-}
-
-bool Player::IsRPG2k3Legacy() {
-	return (engine == EngineRpg2k3 || engine == (EngineRpg2k3 | EngineMajorUpdated));
-}
-
-bool Player::IsRPG2k3() {
-	return (engine & EngineRpg2k3) == EngineRpg2k3;
-}
-
-bool Player::IsMajorUpdatedVersion() {
-	return (engine & EngineMajorUpdated) == EngineMajorUpdated;
-}
-
-bool Player::IsRPG2k3E() {
-	return (IsRPG2k3() && IsEnglish());
-}
-
-bool Player::IsRPG2kE() {
-	return (IsRPG2k() && IsEnglish());
-}
-
-bool Player::IsEnglish() {
-	return (engine & EngineEnglish) == EngineEnglish;
 }
 
 bool Player::IsCP932() {

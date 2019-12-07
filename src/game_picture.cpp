@@ -140,7 +140,7 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.name = params.name;
 	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
-	SetNonEffectParams(params);
+	SetNonEffectParams(params, true);
 
 	data.effect_mode = params.effect_mode;
 	if (data.effect_mode == RPG::SavePicture::Effect_none) {
@@ -180,7 +180,9 @@ void Game_Picture::Show(const ShowParams& params) {
 void Game_Picture::Move(const MoveParams& params) {
 	RPG::SavePicture& data = GetData();
 
-	SetNonEffectParams(params);
+	const bool ignore_position = Player::IsLegacy() && data.fixed_to_map;
+
+	SetNonEffectParams(params, !ignore_position);
 	data.time_left = params.duration * DEFAULT_FPS / 10;
 
 	// Note that data.effect_mode doesn't necessarily reflect the
@@ -359,11 +361,13 @@ void Game_Picture::Update() {
 	}
 }
 
-void Game_Picture::SetNonEffectParams(const Params& params) {
+void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) {
 	RPG::SavePicture& data = GetData();
 
-	data.finish_x = params.position_x;
-	data.finish_y = params.position_y;
+	if (set_positions) {
+		data.finish_x = params.position_x;
+		data.finish_y = params.position_y;
+	}
 	data.finish_magnify = params.magnify;
 	data.finish_top_trans = params.top_trans;
 	data.finish_bot_trans = params.bottom_trans;
