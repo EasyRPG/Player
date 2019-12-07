@@ -23,12 +23,8 @@
 #include "main_data.h"
 #include "game_map.h"
 
-Plane::Plane() :
-	Drawable(TypePlane, 0, false),
-	visible(true),
-	ox(0),
-	oy(0) {
-
+Plane::Plane() : Drawable(TypePlane, 0, false)
+{
 	Graphics::RegisterDrawable(this);
 }
 
@@ -89,44 +85,5 @@ void Plane::Draw() {
 	}
 
 	dst->TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
-}
-
-BitmapRef const& Plane::GetBitmap() const {
-	return bitmap;
-}
-void Plane::SetBitmap(BitmapRef const& nbitmap) {
-	bitmap = nbitmap;
-
-	needs_refresh = true;
-}
-
-bool Plane::GetVisible() const {
-	return visible;
-}
-void Plane::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
-int Plane::GetOx() const {
-	return ox;
-}
-void Plane::SetOx(int nox) {
-	ox = nox;
-}
-int Plane::GetOy() const {
-	return oy;
-}
-void Plane::SetOy(int noy) {
-	oy = noy;
-}
-
-Tone Plane::GetTone() const {
-	return tone_effect;
-}
-
-void Plane::SetTone(Tone tone) {
-	if (tone_effect != tone) {
-		tone_effect = tone;
-		needs_refresh = true;
-	}
 }
 

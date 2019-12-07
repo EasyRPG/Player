@@ -50,11 +50,55 @@ private:
 
 	Tone tone_effect;
 
-	bool visible;
-	int ox;
-	int oy;
-
+	int ox = 0;
+	int oy = 0;
+	bool visible = true;
 	bool needs_refresh = false;
 };
+
+inline BitmapRef const& Plane::GetBitmap() const {
+	return bitmap;
+}
+
+inline void Plane::SetBitmap(BitmapRef const& nbitmap) {
+	bitmap = nbitmap;
+
+	needs_refresh = true;
+}
+
+inline bool Plane::GetVisible() const {
+	return visible;
+}
+
+inline void Plane::SetVisible(bool nvisible) {
+	visible = nvisible;
+}
+
+inline int Plane::GetOx() const {
+	return ox;
+}
+
+inline void Plane::SetOx(int nox) {
+	ox = nox;
+}
+
+inline int Plane::GetOy() const {
+	return oy;
+}
+
+inline void Plane::SetOy(int noy) {
+	oy = noy;
+}
+
+inline Tone Plane::GetTone() const {
+	return tone_effect;
+}
+
+inline void Plane::SetTone(Tone tone) {
+	if (tone_effect != tone) {
+		tone_effect = tone;
+		needs_refresh = true;
+	}
+}
 
 #endif
