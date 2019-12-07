@@ -110,33 +110,33 @@ private:
 	BitmapRef bitmap;
 
 	Rect src_rect;
-	bool visible;
-	int x;
-	int y;
-	int ox;
-	int oy;
+	bool visible = true;
+	int x = 0;
+	int y = 0;
+	int ox = 0;
+	int oy = 0;
 
 	Color flash_color;
-	int flash_duration;
-	int flash_frame;
+	int flash_duration = 0;
+	int flash_frame = 0;
 
-	bool needs_refresh;
-	bool bitmap_changed;
+	bool needs_refresh = true;
+	bool bitmap_changed = true;
 
 	Rect src_rect_effect;
-	int opacity_top_effect;
-	int opacity_bottom_effect;
-	int bush_effect;
+	int opacity_top_effect = 255;
+	int opacity_bottom_effect = 128;
+	int bush_effect = 0;
 	Tone tone_effect;
-	bool flipx_effect;
-	bool flipy_effect;
-	double zoom_x_effect;
-	double zoom_y_effect;
-	double angle_effect;
+	bool flipx_effect = false;
+	bool flipy_effect = false;
+	double zoom_x_effect = 1.0;
+	double zoom_y_effect = 1.0;
+	double angle_effect = 0.0;
 	int blend_type_effect;
 	Color blend_color_effect;
-	int waver_effect_depth;
-	double waver_effect_phase;
+	int waver_effect_depth = 0;
+	double waver_effect_phase = 0.0;
 	Color flash_effect;
 
 	BitmapRef bitmap_effects;
@@ -145,8 +145,8 @@ private:
 
 	Tone current_tone;
 	Color current_flash;
-	bool current_flip_x;
-	bool current_flip_y;
+	bool current_flip_x = false;
+	bool current_flip_y = false;
 
 	void BlitScreen();
 	void BlitScreenIntern(Bitmap const& draw_bitmap,
@@ -154,5 +154,133 @@ private:
 	BitmapRef Refresh(Rect& rect);
 	void SetFlashEffect(const Color &color);
 };
+
+inline int Sprite::GetWidth() const {
+	return src_rect.width;
+}
+
+inline int Sprite::GetHeight() const {
+	return src_rect.height;
+}
+
+inline BitmapRef const& Sprite::GetBitmap() const {
+	return bitmap;
+}
+
+inline Rect const& Sprite::GetSrcRect() const {
+	return src_rect;
+}
+
+inline void Sprite::SetSrcRect(Rect const& nsrc_rect) {
+	src_rect = nsrc_rect;
+}
+
+inline bool Sprite::GetVisible() const {
+	return visible;
+}
+
+inline void Sprite::SetVisible(bool nvisible) {
+	visible = nvisible;
+}
+
+inline int Sprite::GetX() const {
+	return x;
+}
+
+inline void Sprite::SetX(int nx) {
+	x = nx;
+}
+
+inline int Sprite::GetY() const {
+	return y;
+}
+
+inline void Sprite::SetY(int ny) {
+	y = ny;
+}
+
+inline int Sprite::GetOx() const {
+	return ox;
+}
+
+inline void Sprite::SetOx(int nox) {
+	ox = nox;
+}
+
+inline int Sprite::GetOy() const {
+	return oy;
+}
+
+inline void Sprite::SetOy(int noy) {
+	oy = noy;
+}
+
+inline double Sprite::GetZoomX() const {
+	return zoom_x_effect;
+}
+
+inline double Sprite::GetZoomY() const {
+	return zoom_y_effect;
+}
+
+inline void Sprite::SetZoomX(double zoom_x) {
+	zoom_x_effect = zoom_x;
+}
+
+inline void Sprite::SetZoomY(double zoom_y) {
+	zoom_y_effect = zoom_y;
+}
+
+inline double Sprite::GetAngle() const {
+	return angle_effect;
+}
+
+inline void Sprite::SetAngle(double angle) {
+	angle_effect = angle;
+}
+
+inline bool Sprite::GetFlipX() const {
+	return flipx_effect;
+}
+
+inline bool Sprite::GetFlipY() const {
+	return flipy_effect;
+}
+
+inline int Sprite::GetBushDepth() const {
+	return bush_effect;
+}
+
+inline int Sprite::GetOpacity(int which) const {
+	return which > 0 ? opacity_bottom_effect : opacity_top_effect;
+}
+
+inline int Sprite::GetBlendType() const {
+	return blend_type_effect;
+}
+
+inline void Sprite::SetBlendType(int blend_type) {
+	blend_type_effect = blend_type;
+}
+
+inline Color Sprite::GetBlendColor() const {
+	return blend_color_effect;
+}
+
+inline void Sprite::SetBlendColor(Color blend_color) {
+	blend_color_effect = blend_color;
+}
+
+inline Tone Sprite::GetTone() const {
+	return tone_effect;
+}
+
+inline int Sprite::GetWaverDepth() const {
+	return waver_effect_depth;
+}
+
+inline double Sprite::GetWaverPhase() const {
+	return waver_effect_phase;
+}
 
 #endif
