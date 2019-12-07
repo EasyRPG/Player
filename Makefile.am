@@ -450,7 +450,7 @@ test_runner_SOURCES = \
     tests/utf.cpp \
     tests/wordwrap.cpp
 test_runner_CXXFLAGS = \
-    $(libeasyrpg_player_a_CXXFLAGS)
+    $(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
 test_runner_LDADD = \
     $(easyrpg_player_LDADD)
 

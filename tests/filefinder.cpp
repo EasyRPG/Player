@@ -12,22 +12,27 @@ TEST_CASE("IsDirectory") {
 
 	CHECK(FileFinder::IsDirectory(".", false));
 	CHECK(FileFinder::IsDirectory(".", true));
+	CHECK(FileFinder::IsDirectory(EP_TEST_PATH "/game", true));
+	CHECK(FileFinder::IsDirectory(EP_TEST_PATH "/notagame", true));
+	CHECK(!FileFinder::IsDirectory(EP_TEST_PATH "/game/RPG_RT.ldb", true));
 }
 
 TEST_CASE("IsRPG2kProject") {
 	Main_Data::Init();
 
-	std::shared_ptr<FileFinder::DirectoryTree> const tree = FileFinder::CreateDirectoryTree(".");
+	std::shared_ptr<FileFinder::DirectoryTree> const tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/game");
 	CHECK(FileFinder::IsRPG2kProject(*tree));
+
+	Player::escape_symbol = "\\";
 	FileFinder::SetDirectoryTree(tree);
+	CHECK(!FileFinder::FindImage("CharSet", "Chara1").empty());
 }
 
-TEST_CASE("Project contains English filename") {
+TEST_CASE("IsNotRPG2kProject") {
 	Main_Data::Init();
-	Player::escape_symbol = "\\";
-	Player::engine = Player::EngineRpg2k;
 
-	CHECK(!FileFinder::FindImage("CharSet", "Chara1").empty());
+	std::shared_ptr<FileFinder::DirectoryTree> const tree = FileFinder::CreateDirectoryTree(EP_TEST_PATH "/notagame");
+	CHECK(!FileFinder::IsRPG2kProject(*tree));
 }
 
 TEST_SUITE_END();
