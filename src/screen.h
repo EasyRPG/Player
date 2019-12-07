@@ -37,15 +37,9 @@ public:
 	Screen();
 
 	void Draw() override;
-	void Update();
-
-	Tone GetTone() const;
-	void SetTone(Tone tone);
 
 private:
 	BitmapRef flash;
-
-	Tone tone_effect;
 };
 
 #endif

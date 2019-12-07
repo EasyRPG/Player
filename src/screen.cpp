@@ -25,13 +25,9 @@
 #include "main_data.h"
 #include "screen.h"
 
-Screen::Screen() :
-	Drawable(TypeScreen, Priority_Screen, false)
+Screen::Screen() : Drawable(TypeScreen, Priority_Screen, false)
 {
 	Graphics::RegisterDrawable(this);
-}
-
-void Screen::Update() {
 }
 
 void Screen::Draw() {
