@@ -52,7 +52,6 @@ add_library(${PROJECT_NAME}
 	src/bitmap_hslrgb.h
 	src/cache.cpp
 	src/cache.h
-	src/color.cpp
 	src/color.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h

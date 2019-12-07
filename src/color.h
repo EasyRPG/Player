@@ -28,10 +28,9 @@
 class Color {
 public:
 	/**
-	 * Constructor. All components are set to 0, but alpha
-	 * that is set to 255.
+	 * Constructor. All components are set to 0.
 	 */
-	Color();
+	constexpr Color() = default;
 
 	/**
 	 * Constructor.
@@ -41,7 +40,7 @@ public:
 	 * @param blue blue component.
 	 * @param alpha alpha component.
 	 */
-	Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+	constexpr Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
 	/**
 	 * Sets all color properties.
@@ -54,16 +53,16 @@ public:
 	void Set(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 
 	/** Red component. */
-	uint8_t red;
+	uint8_t red = 0;
 
 	/** Green component. */
-	uint8_t green;
+	uint8_t green = 0;
 
 	/** Blue component. */
-	uint8_t blue;
+	uint8_t blue = 0;
 
 	/** Alpha component. */
-	uint8_t alpha;
+	uint8_t alpha = 0;
 };
 
 /**
@@ -102,6 +101,20 @@ inline std::ostream& operator<<(std::ostream& os, const Color& c) {
 		<< static_cast<int>(c.blue) << ", "
 		<< static_cast<int>(c.alpha) << "}";
 	return os;
+}
+
+constexpr Color::Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) :
+	red(red),
+	green(green),
+	blue(blue),
+	alpha(alpha) {
+}
+
+inline void Color::Set(uint8_t nred, uint8_t ngreen, uint8_t nblue, uint8_t nalpha) {
+	red = nred;
+	green = ngreen;
+	blue = nblue;
+	alpha = nalpha;
 }
 
 #endif

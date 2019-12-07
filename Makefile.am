@@ -52,7 +52,6 @@ libeasyrpg_player_a_SOURCES = \
 	src/bitmap_hslrgb.h \
 	src/cache.cpp \
 	src/cache.h \
-	src/color.cpp \
 	src/color.h \
 	src/decoder_fmmidi.cpp \
 	src/decoder_fmmidi.h \
