@@ -70,7 +70,7 @@ void Weather::Draw() {
 	}
 }
 
-static const uint8_t snow_image[] =
+static constexpr uint8_t snow_image[] =
 {
     0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
     0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
@@ -91,7 +91,7 @@ static const uint8_t snow_image[] =
     0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
 };
 
-static const uint8_t rain_image[] = {
+static constexpr uint8_t rain_image[] = {
 	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
 	0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00,
 	0x00, 0x10, 0x01, 0x03, 0x00, 0x00, 0x00, 0x11, 0x44, 0xac, 0x3e,
@@ -105,7 +105,7 @@ static const uint8_t rain_image[] = {
 	0x00, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
 };
 
-static const int snowflake_visible = 150;
+static constexpr int snowflake_visible = 150;
 
 void Weather::DrawRain() {
 	if (!rain_bitmap) {
@@ -138,7 +138,7 @@ void Weather::DrawSnow() {
 		}
 	}
 
-	static const int wobble[2][18] = {
+	static constexpr int wobble[2][18] = {
 		{-1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
 	};
@@ -160,27 +160,25 @@ void Weather::DrawSnow() {
 }
 
 void Weather::DrawFog() {
-	static const int opacities[3] = {128, 160, 192};
+	static constexpr int opacities[3] = {128, 160, 192};
 	int opacity = opacities[Main_Data::game_screen->GetWeatherStrength()];
 
 	weather_surface->Fill(Color(128, 128, 128, opacity));
+
+	// TODO: Apply scrolling Fog textures like RPG_RT
 
 	dirty = true;
 }
 
 void Weather::DrawSandstorm() {
-	static const int opacities[3] = {128, 160, 192};
+	static constexpr int opacities[3] = {128, 160, 192};
 	int opacity = opacities[Main_Data::game_screen->GetWeatherStrength()];
 
 	weather_surface->Fill(Color(192, 160, 128, opacity));
 
-	// TODO
+	// TODO: Apply scrolled Sand textures and sand particles like RPG_RT
 
 	dirty = true;
-}
-
-Tone Weather::GetTone() const {
-	return tone_effect;
 }
 
 void Weather::SetTone(Tone tone) {

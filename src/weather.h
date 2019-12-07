@@ -52,4 +52,8 @@ private:
 	bool dirty = false;
 };
 
+inline Tone Weather::GetTone() const {
+	return tone_effect;
+}
+
 #endif
