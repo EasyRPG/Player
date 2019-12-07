@@ -265,7 +265,6 @@ add_library(${PROJECT_NAME}
 	src/tilemap.h
 	src/tilemap_layer.cpp
 	src/tilemap_layer.h
-	src/tone.cpp
 	src/tone.h
 	src/transform.h
 	src/transition.cpp
