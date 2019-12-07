@@ -53,8 +53,6 @@ public:
 	void SetX(int x);
 	int GetY() const;
 	void SetY(int y);
-	int GetZ() const override;
-	void SetZ(int z);
 	int GetOx() const;
 	void SetOx(int ox);
 	int GetOy() const;
@@ -106,18 +104,16 @@ public:
 	 */
 	void SetWaverPhase(double phase);
 
-	DrawableType GetType() const override;
+protected:
+	Sprite(DrawableType type);
 
 private:
-	DrawableType type;
-
 	BitmapRef bitmap;
 
 	Rect src_rect;
 	bool visible;
 	int x;
 	int y;
-	int z;
 	int ox;
 	int oy;
 

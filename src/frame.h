@@ -34,14 +34,7 @@ public:
 	void Draw() override;
 	void Update();
 
-	int GetZ() const override;
-	DrawableType GetType() const override;
-
 private:
-
-	static const int z = Priority_Frame;
-	static const DrawableType type = TypeFrame;
-
 	void OnFrameGraphicReady(FileRequestResult* result);
 
 	BitmapRef frame_bitmap;

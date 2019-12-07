@@ -25,18 +25,13 @@
 #include "font.h"
 
 FpsOverlay::FpsOverlay() :
-	type(TypeOverlay),
-	z(Priority_Overlay + 100) {
-
+	Drawable(TypeOverlay, Priority_Overlay + 100, true)
+{
 	Graphics::RegisterDrawable(this);
 }
 
 FpsOverlay::~FpsOverlay() {
 	Graphics::RemoveDrawable(this);
-}
-
-bool FpsOverlay::IsGlobal() const {
-	return true;
 }
 
 void FpsOverlay::Update() {
@@ -99,14 +94,6 @@ void FpsOverlay::Draw() {
 		int dwidth = DisplayUi->GetDisplaySurface()->GetWidth();
 		DisplayUi->GetDisplaySurface()->Blit(dwidth - speedup_rect.width - 1, 2, *speedup_bitmap, speedup_rect, 255);
 	}
-}
-
-int FpsOverlay::GetZ() const {
-	return z;
-}
-
-DrawableType FpsOverlay::GetType() const {
-	return type;
 }
 
 int FpsOverlay::GetFps() const {

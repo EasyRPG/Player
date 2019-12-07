@@ -27,21 +27,13 @@
 #include "weather.h"
 
 Weather::Weather() :
-	dirty(false) {
-
+	Drawable(TypeWeather, Priority_Weather, false)
+{
 	Graphics::RegisterDrawable(this);
 }
 
 Weather::~Weather() {
 	Graphics::RemoveDrawable(this);
-}
-
-int Weather::GetZ() const {
-	return z;
-}
-
-DrawableType Weather::GetType() const {
-	return type;
 }
 
 void Weather::Update() {

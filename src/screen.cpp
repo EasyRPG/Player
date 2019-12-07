@@ -25,20 +25,14 @@
 #include "main_data.h"
 #include "screen.h"
 
-Screen::Screen() {
+Screen::Screen() :
+	Drawable(TypeScreen, Priority_Screen, false)
+{
 	Graphics::RegisterDrawable(this);
 }
 
 Screen::~Screen() {
 	Graphics::RemoveDrawable(this);
-}
-
-int Screen::GetZ() const {
-	return z;
-}
-
-DrawableType Screen::GetType() const {
-	return type;
 }
 
 void Screen::Update() {

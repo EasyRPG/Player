@@ -32,6 +32,7 @@
 #include "game_temp.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
+	Sprite(TypeDefault),
 	animation(anim), frame(0), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
@@ -57,10 +58,6 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, in
 		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
-}
-
-DrawableType BattleAnimation::GetType() const {
-	return TypeDefault;
 }
 
 void BattleAnimation::Update() {

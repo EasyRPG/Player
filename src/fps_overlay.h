@@ -35,12 +35,6 @@ public:
 
 	void Draw() override;
 
-	int GetZ() const override;
-
-	DrawableType GetType() const override;
-
-	bool IsGlobal() const override;
-
 	void Update();
 
 	/**
@@ -80,12 +74,8 @@ public:
 	std::string GetFpsString() const;
 
 private:
-	DrawableType type;
-
 	BitmapRef fps_bitmap;
 	BitmapRef speedup_bitmap;
-
-	int z;
 
 	bool fps_dirty = false;
 	bool speedup_dirty = false;

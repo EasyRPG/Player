@@ -9,10 +9,8 @@ constexpr int num_sprites = 5000;
 
 class TestSprite : public Drawable {
 	public:
+		TestSprite() : Drawable(TypeDefault, 0, true) {}
 		void Draw() override {}
-		int GetZ() const override { return 0; }
-		DrawableType GetType() const override { return TypeDefault; }
-		bool IsGlobal() const override { return true; }
 };
 
 static void BM_DrawSort(benchmark::State& state) {

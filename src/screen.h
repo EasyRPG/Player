@@ -40,16 +40,10 @@ public:
 	void Draw() override;
 	void Update();
 
-	int GetZ() const override;
-	DrawableType GetType() const override;
-
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
 private:
-	static const int z = Priority_Screen;
-	static const DrawableType type = TypeScreen;
-
 	BitmapRef flash;
 
 	Tone tone_effect;

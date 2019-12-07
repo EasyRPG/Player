@@ -60,8 +60,6 @@ public:
 	void SetWidth(int nwidth);
 	int GetHeight() const;
 	void SetHeight(int nheight);
-	int GetZ() const override;
-	void SetZ(int nz);
 	int GetOx() const;
 	void SetOx(int nox);
 	int GetOy() const;
@@ -83,10 +81,7 @@ public:
 	bool IsClosing() const;
 	bool IsOpeningOrClosing() const;
 
-	DrawableType GetType() const override;
-
 protected:
-	DrawableType type;
 	unsigned long ID;
 	BitmapRef windowskin, contents;
 	bool stretch;
@@ -100,7 +95,6 @@ protected:
 	int y;
 	int width;
 	int height;
-	int z;
 	int ox;
 	int oy;
 	int border_x;

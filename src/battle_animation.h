@@ -34,8 +34,6 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	DrawableType GetType() const override;
-
 	/** Update the animation to the next animation **/
 	void Update();
 

@@ -38,14 +38,8 @@ public:
 
 	void Draw() override;
 
-	int GetZ() const override;
-
-	DrawableType GetType() const override;
-
 private:
-	DrawableType type;
 	TilemapLayer* tilemap;
-	int z;
 };
 
 /**

@@ -38,8 +38,6 @@ public:
 	void SetBitmap(BitmapRef const& bitmap);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
-	int GetZ() const override;
-	void SetZ(int z);
 	int GetOx() const;
 	void SetOx(int ox);
 	int GetOy() const;
@@ -47,18 +45,13 @@ public:
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
-	DrawableType GetType() const override;
-
 private:
-	DrawableType type;
-
 	BitmapRef bitmap;
 	BitmapRef tone_bitmap;
 
 	Tone tone_effect;
 
 	bool visible;
-	int z;
 	int ox;
 	int oy;
 

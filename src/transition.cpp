@@ -29,7 +29,9 @@
 #include "scene.h"
 #include "drawable.h"
 
-Transition::Transition() {
+Transition::Transition() :
+	Drawable(TypeTransition, Priority_Transition, true)
+{
 	flash_iterations = 0;
 	flash_duration = 0;
 	current_frame = -1;
@@ -39,14 +41,6 @@ Transition::Transition() {
 
 Transition::~Transition() {
 	Graphics::RemoveDrawable(this);
-}
-
-int Transition::GetZ() const {
-	return z;
-}
-
-DrawableType Transition::GetType() const {
-	return type;
 }
 
 void Transition::AppendBefore(Color color, int duration, int iterations) {
@@ -67,7 +61,7 @@ void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bo
 	}
 
 	if (erase && type == TransitionNone) {
-		old_frozen_screen = Graphics::SnapToBitmap(z);
+		old_frozen_screen = Graphics::SnapToBitmap(GetZ());
 		screen1 = old_frozen_screen;
 		return;
 	}
@@ -75,7 +69,7 @@ void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bo
 		return;
 	}
 
-	frozen_screen = Graphics::SnapToBitmap(z);
+	frozen_screen = Graphics::SnapToBitmap(GetZ());
 	screen1 = erase ? frozen_screen : old_frozen_screen? old_frozen_screen : black_screen;
 	screen2 = erase ? black_screen : frozen_screen;
 
@@ -368,10 +362,6 @@ void Transition::Update() {
 		frozen_screen.reset();
 		frozen_screen = nullptr;
 	}
-}
-
-bool Transition::IsGlobal() const {
-	return true;
 }
 
 bool Transition::IsActive() {

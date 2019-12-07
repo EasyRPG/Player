@@ -24,8 +24,7 @@
 #include "game_message.h"
 
 MessageOverlay::MessageOverlay() :
-	type(TypeOverlay),
-	z(Priority_Overlay),
+	Drawable(TypeOverlay, Priority_Overlay, true),
 	ox(0),
 	oy(0),
 	text_height(12),
@@ -38,10 +37,6 @@ MessageOverlay::MessageOverlay() :
 
 MessageOverlay::~MessageOverlay() {
 	Graphics::RemoveDrawable(this);
-}
-
-bool MessageOverlay::IsGlobal() const {
-	return true;
 }
 
 void MessageOverlay::Draw() {
@@ -78,14 +73,6 @@ void MessageOverlay::Draw() {
 	}
 
 	dirty = false;
-}
-
-int MessageOverlay::GetZ() const {
-	return z;
-}
-
-DrawableType MessageOverlay::GetType() const {
-	return type;
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {

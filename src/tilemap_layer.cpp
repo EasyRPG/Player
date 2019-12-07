@@ -758,9 +758,8 @@ void TilemapLayer::SetFastBlit(bool fast) {
 }
 
 TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
-	type(TypeTilemap),
-	tilemap(tilemap),
-	z(z)
+	Drawable(TypeTilemap, z, false),
+	tilemap(tilemap)
 {
 	Graphics::RegisterDrawable(this);
 }
@@ -775,14 +774,6 @@ void TilemapSubLayer::Draw() {
 	}
 
 	tilemap->Draw(GetZ());
-}
-
-int TilemapSubLayer::GetZ() const {
-	return z;
-}
-
-DrawableType TilemapSubLayer::GetType() const {
-	return type;
 }
 
 void TilemapLayer::SetTone(Tone tone) {
