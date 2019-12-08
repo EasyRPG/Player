@@ -32,7 +32,7 @@ class FpsOverlay : public Drawable {
 public:
 	FpsOverlay();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	void Update();
 

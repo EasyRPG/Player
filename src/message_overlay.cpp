@@ -28,13 +28,13 @@ MessageOverlay::MessageOverlay() : Drawable(TypeOverlay, Priority_Overlay, true)
 	// Graphics::RegisterDrawable is in the Update function
 }
 
-void MessageOverlay::Draw() {
+void MessageOverlay::Draw(Bitmap& dst) {
 	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible
 		return;
 	}
 
-	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
+	dst.Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 
 	if (!dirty) return;
 

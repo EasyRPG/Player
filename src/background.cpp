@@ -19,7 +19,6 @@
 #include <string>
 #include "data.h"
 #include "rpg_terrain.h"
-#include "baseui.h"
 #include "graphics.h"
 #include "cache.h"
 #include "background.h"
@@ -114,23 +113,22 @@ int Background::Scale(int x) {
 	return x > 0 ? x / 64 : -(-x / 64);
 }
 
-void Background::Draw() {
+void Background::Draw(Bitmap& dst) {
 	if (!visible)
 		return;
 
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	Rect dst_rect = dst->GetRect();
+	Rect dst_rect = dst.GetRect();
 
 	int shake_pos = Main_Data::game_data.screen.shake_position;
 	dst_rect.x += shake_pos;
 
 	if (bg_bitmap)
-		dst->TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);
+		dst.TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);
 
 	if (fg_bitmap)
-		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
+		dst.TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
 
 	if (tone_effect != Tone()) {
-		dst->ToneBlit(0, 0, *dst, dst->GetRect(), tone_effect, Opacity::opaque);
+		dst.ToneBlit(0, 0, dst, dst.GetRect(), tone_effect, Opacity::opaque);
 	}
 }

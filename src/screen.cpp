@@ -17,7 +17,6 @@
 
 // Headers
 #include <string>
-#include "baseui.h"
 #include "bitmap.h"
 #include "color.h"
 #include "game_screen.h"
@@ -30,9 +29,7 @@ Screen::Screen() : Drawable(TypeScreen, Priority_Screen, false)
 	Graphics::RegisterDrawable(this);
 }
 
-void Screen::Draw() {
-	BitmapRef disp = DisplayUi->GetDisplaySurface();
-
+void Screen::Draw(Bitmap& dst) {
 	auto flash_color = Main_Data::game_screen->GetFlashColor();
 	if (flash_color.alpha > 0) {
 		if (!flash) {
@@ -40,6 +37,6 @@ void Screen::Draw() {
 		} else {
 			flash->Fill(flash_color);
 		}
-		disp->Blit(0, 0, *flash, flash->GetRect(), 255);
+		dst.Blit(0, 0, *flash, flash->GetRect(), 255);
 	}
 }

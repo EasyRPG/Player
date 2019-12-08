@@ -30,7 +30,7 @@ class Window : public Drawable {
 public:
 	Window();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	void Update();
 	BitmapRef const& GetWindowskin() const;

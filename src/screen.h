@@ -36,7 +36,7 @@ class Screen : public Drawable {
 public:
 	Screen();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 private:
 	BitmapRef flash;

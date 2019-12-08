@@ -32,7 +32,7 @@ class Sprite : public Drawable {
 public:
 	Sprite();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	virtual void Flash(int duration);
 	virtual void Flash(Color color, int duration);
@@ -148,8 +148,8 @@ private:
 	bool current_flip_x = false;
 	bool current_flip_y = false;
 
-	void BlitScreen();
-	void BlitScreenIntern(Bitmap const& draw_bitmap,
+	void BlitScreen(Bitmap& dst);
+	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
 							Rect const& src_rect, int opacity_split) const;
 	BitmapRef Refresh(Rect& rect);
 	void SetFlashEffect(const Color &color);

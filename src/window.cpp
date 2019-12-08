@@ -57,12 +57,10 @@ void Window::SetCloseAnimation(int frames) {
 	}
 }
 
-void Window::Draw() {
+void Window::Draw(Bitmap& dst) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
-	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
-
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
+	if (x < -width || x > dst.GetWidth() || y < -height || y > dst.GetHeight()) return;
 
 	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
@@ -73,9 +71,9 @@ void Window::Draw() {
 
 				Rect src_rect(0, height / 2 - ianimation_count, width, ianimation_count * 2);
 
-				dst->Blit(x, y + src_rect.y, *background, src_rect, back_opacity * opacity / 255);
+				dst.Blit(x, y + src_rect.y, *background, src_rect, back_opacity * opacity / 255);
 			} else {
-				dst->Blit(x, y, *background, background->GetRect(), back_opacity * opacity / 255);
+				dst.Blit(x, y, *background, background->GetRect(), back_opacity * opacity / 255);
 			}
 		}
 
@@ -88,20 +86,20 @@ void Window::Draw() {
 				if (ianimation_count > 8) {
 					Rect src_rect(0, height / 2 - ianimation_count, 8, ianimation_count * 2 - 16);
 
-					dst->Blit(x, y + 8 + src_rect.y, *frame_left, src_rect, opacity);
-					dst->Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
+					dst.Blit(x, y + 8 + src_rect.y, *frame_left, src_rect, opacity);
+					dst.Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
 
-					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
-					dst->Blit(x, y + height / 2 + ianimation_count - 8, *frame_down, frame_down->GetRect(), opacity);
+					dst.Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
+					dst.Blit(x, y + height / 2 + ianimation_count - 8, *frame_down, frame_down->GetRect(), opacity);
 				} else {
-					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
-					dst->Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
+					dst.Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
+					dst.Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
 				}
 			} else {
-				dst->Blit(x, y, *frame_up, frame_up->GetRect(), opacity);
-				dst->Blit(x, y + height - 8, *frame_down, frame_down->GetRect(), opacity);
-				dst->Blit(x, y + 8, *frame_left, frame_left->GetRect(), opacity);
-				dst->Blit(x + width - 8, y + 8, *frame_right, frame_right->GetRect(), opacity);
+				dst.Blit(x, y, *frame_up, frame_up->GetRect(), opacity);
+				dst.Blit(x, y + height - 8, *frame_down, frame_down->GetRect(), opacity);
+				dst.Blit(x, y + 8, *frame_left, frame_left->GetRect(), opacity);
+				dst.Blit(x + width - 8, y + 8, *frame_right, frame_right->GetRect(), opacity);
 			}
 		}
 
@@ -116,9 +114,9 @@ void Window::Draw() {
 			);
 
 			if (cursor_frame <= 10)
-				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor1, src_rect, 255);
+				dst.Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor1, src_rect, 255);
 			else
-				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor2, src_rect, 255);
+				dst.Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor2, src_rect, 255);
 		}
 	}
 
@@ -130,7 +128,7 @@ void Window::Draw() {
 						  min(width - 2 * border_x, width - 2 * border_x + ox),
 						  min(height - 2 * border_y, height - 2 * border_y + oy));
 
-			dst->Blit(max(x + border_x, x + border_x - ox),
+			dst.Blit(max(x + border_x, x + border_x - ox),
 					  max(y + border_y, y + border_y - oy),
 					  *contents, src_rect, contents_opacity);
 		}
@@ -138,12 +136,12 @@ void Window::Draw() {
 
 	if ((pause && pause_frame < pause_animation_frames && animation_frames <= 0) || down_arrow) {
 		Rect src_rect(40, 16, 16, 8);
-		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
+		dst.Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
-		dst->Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
+		dst.Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
 	}
 }
 

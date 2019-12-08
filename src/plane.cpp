@@ -28,7 +28,7 @@ Plane::Plane() : Drawable(TypePlane, 0, false)
 	Graphics::RegisterDrawable(this);
 }
 
-void Plane::Draw() {
+void Plane::Draw(Bitmap& dst) {
 	if (!visible || !bitmap) return;
 
 	if (needs_refresh) {
@@ -45,8 +45,7 @@ void Plane::Draw() {
 
 	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;
 
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	Rect dst_rect = dst->GetRect();
+	Rect dst_rect = dst.GetRect();
 	int src_x = -ox;
 	int src_y = -oy;
 
@@ -84,6 +83,6 @@ void Plane::Draw() {
 		src_x += shake_pos + bg_x;
 	}
 
-	dst->TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
+	dst.TiledBlit(src_x, src_y, source->GetRect(), *source, dst_rect, 255);
 }
 

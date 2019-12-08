@@ -31,7 +31,7 @@ class Plane : public Drawable {
 public:
 	Plane();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);

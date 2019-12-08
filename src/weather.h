@@ -31,7 +31,7 @@ class Weather : public Drawable {
 public:
 	Weather();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 	void Update();
 
 	Tone GetTone() const;

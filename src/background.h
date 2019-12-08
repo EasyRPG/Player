@@ -30,7 +30,7 @@ public:
 	Background(const std::string& name);
 	Background(int terrain_id);
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 	void Update();
 	Tone GetTone() const;
 	void SetTone(Tone tone);

@@ -33,14 +33,14 @@ Sprite::Sprite(const DrawableType type) : Drawable(type, 0, false)
 }
 
 // Draw
-void Sprite::Draw() {
+void Sprite::Draw(Bitmap& dst) {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
-	BlitScreen();
+	BlitScreen(dst);
 }
 
-void Sprite::BlitScreen() {
+void Sprite::BlitScreen(Bitmap& dst) {
 	if (!bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -58,18 +58,17 @@ void Sprite::BlitScreen() {
 			rect.y %= bitmap_effects->GetHeight();
 		}
 
-		BlitScreenIntern(*draw_bitmap, rect, bush_effect);
+		BlitScreenIntern(dst, *draw_bitmap, rect, bush_effect);
 	}
 }
 
-void Sprite::BlitScreenIntern(Bitmap const& draw_bitmap,
+void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
 								Rect const& src_rect, int opacity_split) const {
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	double zoom_x = zoom_x_effect;
 	double zoom_y = zoom_y_effect;
 
-	dst->EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
+	dst.EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
 					 Opacity(opacity_top_effect, opacity_bottom_effect, opacity_split),
 					 zoom_x, zoom_y, angle_effect,
 					 waver_effect_depth, waver_effect_phase);

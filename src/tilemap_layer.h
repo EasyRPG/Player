@@ -35,7 +35,7 @@ class TilemapSubLayer : public Drawable {
 public:
 	TilemapSubLayer(TilemapLayer* tilemap, int z);
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 private:
 	TilemapLayer* tilemap = nullptr;
@@ -48,8 +48,8 @@ class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
 
-	void DrawTile(Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit = true);
-	void Draw(int z_order);
+	void DrawTile(Bitmap& dst, Bitmap& screen, int x, int y, int row, int col, bool allow_fast_blit = true);
+	void Draw(Bitmap& dst, int z_order);
 
 	void Update();
 

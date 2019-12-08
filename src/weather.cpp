@@ -18,7 +18,6 @@
 // Headers
 #include <string>
 #include <vector>
-#include "baseui.h"
 #include "bitmap.h"
 #include "color.h"
 #include "game_screen.h"
@@ -35,7 +34,7 @@ Weather::Weather() :
 void Weather::Update() {
 }
 
-void Weather::Draw() {
+void Weather::Draw(Bitmap& dst) {
 	if (Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
 		if (!weather_surface) {
 			weather_surface = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
@@ -65,8 +64,7 @@ void Weather::Draw() {
 	}
 
 	if (dirty && weather_surface) {
-		BitmapRef dst = DisplayUi->GetDisplaySurface();
-		dst->Blit(0, 0, *weather_surface, weather_surface->GetRect(), 255);
+		dst.Blit(0, 0, *weather_surface, weather_surface->GetRect(), 255);
 	}
 }
 

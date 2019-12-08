@@ -67,7 +67,7 @@ protected:
 
 	virtual void FlashTargets(int r, int g, int b, int p) = 0;
 	virtual void ShakeTargets(int str, int spd, int time) = 0;
-	void DrawAt(int x, int y);
+	void DrawAt(Bitmap& dst, int x, int y);
 	void ProcessAnimationTiming(const RPG::AnimationTiming& timing);
 	void ProcessAnimationFlash(const RPG::AnimationTiming& timing);
 	void OnBattleSpriteReady(FileRequestResult* result);
@@ -90,12 +90,12 @@ protected:
 class BattleAnimationMap : public BattleAnimation {
 public:
 	BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global);
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
 	void ShakeTargets(int str, int spd, int time) override;
-	void DrawSingle();
-	void DrawGlobal();
+	void DrawSingle(Bitmap& dst);
+	void DrawGlobal(Bitmap& dst);
 
 	Game_Character& target;
 	bool global = false;
@@ -105,7 +105,7 @@ protected:
 class BattleAnimationBattle : public BattleAnimation {
 public:
 	BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
 	void ShakeTargets(int str, int spd, int time) override;

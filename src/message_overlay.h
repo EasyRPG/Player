@@ -43,7 +43,7 @@ class MessageOverlay : public Drawable {
 public:
 	MessageOverlay();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	void Update();
 

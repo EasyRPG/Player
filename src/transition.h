@@ -86,7 +86,7 @@ public:
 
 	void AppendBefore(Color color, int duration, int iterations);
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 	void Update();
 
 	bool IsActive();

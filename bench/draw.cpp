@@ -10,7 +10,7 @@ constexpr int num_sprites = 5000;
 class TestSprite : public Drawable {
 	public:
 		TestSprite() : Drawable(TypeDefault, 0, true) {}
-		void Draw() override {}
+		void Draw(Bitmap&) override {}
 };
 
 static void BM_DrawSort(benchmark::State& state) {
