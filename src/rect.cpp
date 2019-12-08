@@ -18,27 +18,6 @@
 // Headers
 #include "rect.h"
 
-Rect::Rect() :
-	x(0),
-	y(0),
-	width(0),
-	height(0) {
-}
-
-Rect::Rect(int x, int y, int width, int height) :
-	x(x),
-	y(y),
-	width(width),
-	height(height) {
-}
-
-void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
-	x = new_x;
-	y = new_y;
-	width = new_width;
-	height = new_height;
-}
-
 void Rect::Adjust(int max_width, int max_height) {
 	if (x < 0) {
 		width += x;
@@ -146,19 +125,5 @@ bool Rect::AdjustRectangles(Rect& src, Rect& dst, const Rect& ref) {
 	dst.height = src.height;
 
 	return src.width > 0 && src.height > 0;
-}
-
-void Rect::Double() {
-	x *= 2;
-	y *= 2;
-	width *= 2;
-	height *= 2;
-}
-
-void Rect::Halve() {
-	x /= 2;
-	y /= 2;
-	width /= 2;
-	height /= 2;
 }
 
