@@ -42,16 +42,6 @@ public:
 	constexpr Rect(int x, int y, int width, int height);
 
 	/**
-	 * Sets all rect values simultaneously.
-	 *
-	 * @param x new x.
-	 * @param y new y.
-	 * @param width new width.
-	 * @param height new height.
-	 */
-	void Set(int x, int y, int width, int height);
-
-	/**
 	 * Adjusts rect bounds, trimming it so it is contained
 	 * inside the given size.
 	 *
@@ -159,13 +149,6 @@ inline std::ostream& operator<<(std::ostream& os, Rect r) {
 
 constexpr Rect::Rect(int x, int y, int width, int height)
 	: x(x), y(y), width(width), height(height) { }
-
-inline void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
-	x = new_x;
-	y = new_y;
-	width = new_width;
-	height = new_height;
-}
 
 inline void Rect::Double() {
 	x *= 2;

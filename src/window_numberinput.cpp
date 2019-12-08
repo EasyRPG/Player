@@ -110,7 +110,7 @@ void Window_NumberInput::SetShowOperator(bool show) {
 }
 
 void Window_NumberInput::UpdateCursorRect() {
-	cursor_rect.Set(index * (cursor_width - 2) + (show_operator ? -2 : 8), 0, cursor_width, 16);
+	cursor_rect = { index * (cursor_width - 2) + (show_operator ? -2 : 8), 0, cursor_width, 16 };
 }
 
 void Window_NumberInput::Update() {

@@ -206,13 +206,13 @@ void Window::RefreshFrame() {
 	Rect src_rect, dst_rect;
 
 	// Border Up
-	src_rect.Set(32 + 8, 0, 16, 8);
-	dst_rect.Set(8, 0, max(width - 16, 1), 8);
+	src_rect = { 32 + 8, 0, 16, 8 };
+	dst_rect = { 8, 0, max(width - 16, 1), 8 };
 	up_bitmap->TiledBlit(8, 0, src_rect, *windowskin, dst_rect, 255);
 
 	// Border Down
-	src_rect.Set(32 + 8, 32 - 8, 16, 8);
-	dst_rect.Set(8, 0, max(width - 16, 1), 8);
+	src_rect = { 32 + 8, 32 - 8, 16, 8 };
+	dst_rect = { 8, 0, max(width - 16, 1), 8 };
 	down_bitmap->TiledBlit(8, 0, src_rect, *windowskin, dst_rect, 255);
 
 	// Upper left corner
@@ -238,13 +238,13 @@ void Window::RefreshFrame() {
 		right_bitmap->Clear();
 
 		// Border Left
-		src_rect.Set(32, 8, 8, 16);
-		dst_rect.Set(0, 0, 8, height - 16);
+		src_rect = { 32, 8, 8, 16 };
+		dst_rect = { 0, 0, 8, height - 16 };
 		left_bitmap->TiledBlit(0, 8, src_rect, *windowskin, dst_rect, 255);
 
 		// Border Right
-		src_rect.Set(64 - 8, 8, 8, 16);
-		dst_rect.Set(0, 0, 8, height - 16);
+		src_rect = { 64 - 8, 8, 8, 16 };
+		dst_rect = { 0, 0, 8, height - 16 };
 		right_bitmap->TiledBlit(0, 8, src_rect, *windowskin, dst_rect, 255);
 
 		frame_left = left_bitmap;
@@ -270,22 +270,22 @@ void Window::RefreshCursor() {
 	Rect dst_rect;
 
 	// Border Up
-	dst_rect.Set(8, 0, cw - 16, 8);
+	dst_rect = { 8, 0, cw - 16, 8 };
 	cursor1_bitmap->TiledBlit(8, 0, Rect(64 + 8, 0, 16, 8), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(8, 0, Rect(96 + 8, 0, 16, 8), *windowskin, dst_rect, 255);
 
 	// Border Down
-	dst_rect.Set(8, ch - 8, cw - 16, 8);
+	dst_rect = { 8, ch - 8, cw - 16, 8 };
 	cursor1_bitmap->TiledBlit(8, 0, Rect(64 + 8, 32 - 8, 16, 8), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(8, 0, Rect(96 + 8, 32 - 8, 16, 8), *windowskin, dst_rect, 255);
 
 	// Border Left
-	dst_rect.Set(0, 8, 8, ch - 16);
+	dst_rect = { 0, 8, 8, ch - 16 };
 	cursor1_bitmap->TiledBlit(0, 8, Rect(64, 8, 8, 16), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(0, 8, Rect(96, 8, 8, 16), *windowskin, dst_rect, 255);
 
 	// Border Right
-	dst_rect.Set(cw - 8, 8, 8, ch - 16);
+	dst_rect = { cw - 8, 8, 8, ch - 16 };
 	cursor1_bitmap->TiledBlit(0, 8, Rect(96 - 8, 8, 8, 16), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(0, 8, Rect(128 - 8, 8, 8, 16), *windowskin, dst_rect, 255);
 
@@ -306,7 +306,7 @@ void Window::RefreshCursor() {
 	cursor2_bitmap->Blit(cw - 8, ch - 8, *windowskin, Rect(128 - 8, 32 - 8, 8, 8), 255);
 
 	// Background
-	dst_rect.Set(8, 8, cw - 16, ch - 16);
+	dst_rect = { 8, 8, cw - 16, ch - 16 };
 	cursor1_bitmap->TiledBlit(8, 8, Rect(64 + 8, 8, 16, 16), *windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(8, 8, Rect(96 + 8, 8, 16, 16), *windowskin, dst_rect, 255);
 
