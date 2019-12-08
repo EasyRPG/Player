@@ -19,8 +19,13 @@
 #define EP_DRAWABLE_H
 
 #include <cstdint>
+#include <memory>
 
 class Bitmap;
+class Drawable;
+
+template <typename T>
+static constexpr bool IsDrawable = std::is_base_of<Drawable,T>::value;
 
 // What kind of drawable is the current one?
 enum DrawableType {

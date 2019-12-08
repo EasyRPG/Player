@@ -39,7 +39,8 @@ namespace Graphics {
 	uint32_t next_fps_time;
 
 	std::shared_ptr<Scene> current_scene;
-	std::shared_ptr<State> global_state;
+	// For tests to be able to run
+	std::shared_ptr<State> global_state = std::make_shared<State>();
 
 	std::unique_ptr<Transition> transition;
 	std::unique_ptr<MessageOverlay> message_overlay;
@@ -53,7 +54,7 @@ unsigned SecondToFrame(float const second) {
 void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
 	current_scene = Scene::instance;
-	global_state.reset(new State());
+	global_state = std::make_shared<State>();
 
 	// Is a drawable, must be init after state
 	transition.reset(new Transition());
@@ -64,7 +65,7 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
-	global_state->drawable_list.clear();
+	global_state->drawable_list.Clear();
 
 	transition.reset();
 	fps_overlay.reset();
@@ -142,33 +143,18 @@ void Graphics::Draw(Bitmap& dst) {
 void Graphics::LocalDraw(Bitmap& dst, int priority) {
 	State& state = current_scene->GetGraphicsState();
 
-	DrawableList& drawable_list = state.drawable_list;
-
-	if (state.zlist_dirty) {
-		SortDrawableList(drawable_list);
-		state.zlist_dirty = false;
-	}
+	auto& drawable_list = state.drawable_list;
 
 	if (!drawable_list.empty())
 		current_scene->DrawBackground();
 
-	for (Drawable* drawable : drawable_list) {
-		if (drawable->GetZ() <= priority) {
-			drawable->Draw(dst);
-		}
-	}
+	drawable_list.Draw(dst, priority);
 }
 
 void Graphics::GlobalDraw(Bitmap& dst, int priority) {
-	DrawableList& drawable_list = global_state->drawable_list;
+	auto& drawable_list = global_state->drawable_list;
 
-	if (global_state->zlist_dirty) {
-		SortDrawableList(drawable_list);
-		global_state->zlist_dirty = false;
-	}
-	for (Drawable* drawable : drawable_list)
-		if (drawable->GetZ() <= priority)
-			drawable->Draw(dst);
+	drawable_list.Draw(dst, priority);
 }
 
 
@@ -193,38 +179,33 @@ void Graphics::FrameReset(uint32_t start_ticks) {
 
 void Graphics::RegisterDrawable(Drawable* drawable) {
 	if (drawable->IsGlobal()) {
-		global_state->drawable_list.push_back(drawable);
+		global_state->drawable_list.Append(drawable);
 	} else {
-		current_scene->GetGraphicsState().drawable_list.push_back(drawable);
+		current_scene->GetGraphicsState().drawable_list.Append(drawable);
 	}
-	UpdateZCallback();
 }
 
 void Graphics::RemoveDrawable(Drawable* drawable) {
-	DrawableList::iterator it;
 	if (drawable->IsGlobal()) {
-		it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
-		if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
+		global_state->drawable_list.Take(drawable);
 	} else {
-		State& state = current_scene->GetGraphicsState();
-		it = std::find(state.drawable_list.begin(), state.drawable_list.end(), drawable);
-		if (it != state.drawable_list.end()) { state.drawable_list.erase(it); }
+		current_scene->GetGraphicsState().drawable_list.Take(drawable);
 	}
 }
 
-void Graphics::UpdateZCallback() {
-	current_scene->GetGraphicsState().zlist_dirty = true;
-	global_state->zlist_dirty = true;
-}
-
-void Graphics::SortDrawableList(DrawableList& list) {
-	// stable sort to work around a flickering event sprite issue when
-	// the map is scrolling (have same Z value)
-	std::stable_sort(list.begin(), list.end(), [](auto* l, auto* r) { return l->GetZ() < r->GetZ(); });
+void Graphics::UpdateZCallback(Drawable* drawable) {
+	if (drawable->IsGlobal()) {
+		global_state->drawable_list.SetDirty();
+	} else {
+		current_scene->GetGraphicsState().drawable_list.SetDirty();
+	}
 }
 
 void Graphics::UpdateSceneCallback() {
 	current_scene = Scene::instance;
+	if (current_scene) {
+		current_scene->GetGraphicsState().drawable_list.SetDirty();
+	}
 }
 
 int Graphics::GetDefaultFps() {

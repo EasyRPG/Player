@@ -31,7 +31,7 @@ Drawable::~Drawable() {
 }
 
 void Drawable::SetZ(int nz) {
-	if (_z != nz) Graphics::UpdateZCallback();
+	if (_z != nz) Graphics::UpdateZCallback(this);
 	_z = nz;
 }
 

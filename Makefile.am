@@ -75,6 +75,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/docmain.h \
 	src/drawable.cpp \
 	src/drawable.h \
+	src/drawable_list.cpp \
+	src/drawable_list.h \
 	src/exe_reader.cpp \
 	src/exe_reader.h \
 	src/exfont.h \

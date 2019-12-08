@@ -27,6 +27,7 @@
 #include "game_vehicle.h"
 #include "bitmap.h"
 #include "player.h"
+#include "drawable_list.h"
 
 // Constructor
 Spriteset_Map::Spriteset_Map() {
@@ -157,7 +158,7 @@ void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
 	}
 }
 
-bool Spriteset_Map::RequireBackground(const Graphics::DrawableList& drawable_list) {
+bool Spriteset_Map::RequireBackground(const DrawableList& drawable_list) {
 	// Speed optimisation:
 	// When there is nothing below the tilemap it can be drawn opaque (faster)
 	tilemap->SetFastBlitDown(false);
