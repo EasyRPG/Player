@@ -65,6 +65,17 @@ public:
 	  */
 	void SetCharacter(Game_Character* character);
 
+	/**
+	 * Returns a Rect describing the boundaries for a single character
+	 *
+	 * @param name name of charset
+	 * @param index index of character
+	 * @param bitmap_rect The dimensions of the charset bitmap
+	 *
+	 * @return Rect describing image sub region containing character frames.
+	 */
+	static Rect GetCharacterRect(const std::string& name, int index, Rect bitmap_rect);
+
 private:
 	Game_Character* character;
 

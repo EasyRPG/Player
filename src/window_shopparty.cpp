@@ -23,6 +23,7 @@
 #include "window_shopparty.h"
 #include "output.h"
 #include "reader_util.h"
+#include "sprite_character.h"
 
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -162,8 +163,9 @@ void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int
 	const std::string& sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();
 	BitmapRef bm = Cache::Charset(sprite_name);
-	int width = bm->GetWidth() / 4 / 3;
-	int height = bm->GetHeight() / 2 / 4;
+	auto rect = Sprite_Character::GetCharacterRect(sprite_name, sprite_id, bm->GetRect());
+	int width = rect.width / 3;
+	int height = rect.height / 4;
 	for (int j = 0; j < 3; j++) {
 		int sx = ((sprite_id % 4) * 3 + j) * width;
 		int sy = ((sprite_id / 4) * 4 + 2) * height;
