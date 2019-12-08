@@ -20,13 +20,13 @@
 #include "bitmap.h"
 #include "color.h"
 #include "game_screen.h"
-#include "graphics.h"
 #include "main_data.h"
 #include "screen.h"
+#include "drawable_mgr.h"
 
 Screen::Screen() : Drawable(TypeScreen, Priority_Screen, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void Screen::Draw(Bitmap& dst) {

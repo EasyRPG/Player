@@ -28,6 +28,7 @@
 #include "transition.h"
 #include "scene.h"
 #include "drawable.h"
+#include "drawable_mgr.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -39,8 +40,6 @@ namespace Graphics {
 	uint32_t next_fps_time;
 
 	std::shared_ptr<Scene> current_scene;
-	// For tests to be able to run
-	std::shared_ptr<State> global_state = std::make_shared<State>();
 
 	std::unique_ptr<Transition> transition;
 	std::unique_ptr<MessageOverlay> message_overlay;
@@ -54,7 +53,6 @@ unsigned SecondToFrame(float const second) {
 void Graphics::Init() {
 	Scene::Push(std::make_shared<Scene>());
 	current_scene = Scene::instance;
-	global_state = std::make_shared<State>();
 
 	// Is a drawable, must be init after state
 	transition.reset(new Transition());
@@ -65,7 +63,7 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
-	global_state->drawable_list.Clear();
+	DrawableMgr::GetGlobalList().Clear();
 
 	transition.reset();
 	fps_overlay.reset();
@@ -141,9 +139,7 @@ void Graphics::Draw(Bitmap& dst) {
 }
 
 void Graphics::LocalDraw(Bitmap& dst, int priority) {
-	State& state = current_scene->GetGraphicsState();
-
-	auto& drawable_list = state.drawable_list;
+	auto& drawable_list = DrawableMgr::GetLocalList();
 
 	if (!drawable_list.empty())
 		current_scene->DrawBackground();
@@ -152,7 +148,7 @@ void Graphics::LocalDraw(Bitmap& dst, int priority) {
 }
 
 void Graphics::GlobalDraw(Bitmap& dst, int priority) {
-	auto& drawable_list = global_state->drawable_list;
+	auto& drawable_list = DrawableMgr::GetGlobalList();
 
 	drawable_list.Draw(dst, priority);
 }
@@ -164,6 +160,7 @@ BitmapRef Graphics::SnapToBitmap(int priority) {
 	GlobalDraw(*disp, priority);
 	return DisplayUi->CaptureScreen();
 }
+
 bool Graphics::IsTransitionPending() {
 	return (transition ? transition->IsActive() : false);
 }
@@ -177,34 +174,12 @@ void Graphics::FrameReset(uint32_t start_ticks) {
 	fps_overlay->ResetCounter();
 }
 
-void Graphics::RegisterDrawable(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		global_state->drawable_list.Append(drawable);
-	} else {
-		current_scene->GetGraphicsState().drawable_list.Append(drawable);
-	}
-}
-
-void Graphics::RemoveDrawable(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		global_state->drawable_list.Take(drawable);
-	} else {
-		current_scene->GetGraphicsState().drawable_list.Take(drawable);
-	}
-}
-
-void Graphics::UpdateZCallback(Drawable* drawable) {
-	if (drawable->IsGlobal()) {
-		global_state->drawable_list.SetDirty();
-	} else {
-		current_scene->GetGraphicsState().drawable_list.SetDirty();
-	}
-}
-
 void Graphics::UpdateSceneCallback() {
 	current_scene = Scene::instance;
 	if (current_scene) {
-		current_scene->GetGraphicsState().drawable_list.SetDirty();
+		DrawableMgr::SetLocalList(&current_scene->GetDrawableList());
+	} else {
+		DrawableMgr::SetLocalList(nullptr);
 	}
 }
 

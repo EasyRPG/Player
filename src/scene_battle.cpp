@@ -24,6 +24,7 @@
 #include "output.h"
 #include "player.h"
 #include "transition.h"
+#include "graphics.h"
 #include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"

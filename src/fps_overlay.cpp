@@ -23,11 +23,12 @@
 #include "bitmap.h"
 #include "input.h"
 #include "font.h"
+#include "drawable_mgr.h"
 
 FpsOverlay::FpsOverlay() :
 	Drawable(TypeOverlay, Priority_Overlay + 100, true)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void FpsOverlay::Update() {

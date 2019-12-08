@@ -17,11 +17,18 @@
 
 // Headers
 #include "drawable_list.h"
+#include "drawable_mgr.h"
 #include <algorithm>
 #include <cassert>
 
 static bool DrawCmp(Drawable* l, Drawable* r) {
 	return l->GetZ() < r->GetZ();
+}
+
+DrawableList::~DrawableList() {
+	if (DrawableMgr::GetLocalListPtr() == this) {
+		DrawableMgr::SetLocalList(nullptr);
+	}
 }
 
 void DrawableList::Clear() {

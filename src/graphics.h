@@ -33,11 +33,6 @@ class Scene;
  * Handles screen drawing.
  */
 namespace Graphics {
-	struct State {
-		State() {}
-		DrawableList drawable_list;
-	};
-
 	/**
 	 * Initializes Graphics.
 	 */
@@ -78,11 +73,6 @@ namespace Graphics {
 	bool IsTransitionErased();
 
 	void Draw(Bitmap& dst);
-
-	void RegisterDrawable(Drawable* drawable);
-	void RemoveDrawable(Drawable* drawable);
-
-	void UpdateZCallback(Drawable* drawable);
 
 	void UpdateSceneCallback();
 

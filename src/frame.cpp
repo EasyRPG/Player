@@ -20,9 +20,9 @@
 #include <vector>
 #include "cache.h"
 #include "bitmap.h"
-#include "graphics.h"
 #include "main_data.h"
 #include "frame.h"
+#include "drawable_mgr.h"
 
 Frame::Frame() :
 	Drawable(TypeFrame, Priority_Frame, false)
@@ -34,7 +34,7 @@ Frame::Frame() :
 		request->Start();
 	}
 
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void Frame::Update() {

@@ -23,6 +23,7 @@
 #include "input.h"
 #include "main_data.h"
 #include "transition.h"
+#include "graphics.h"
 
 Scene_Gameover::Scene_Gameover() {
 	type = Scene::Gameover;

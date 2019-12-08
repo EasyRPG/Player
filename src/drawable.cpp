@@ -17,7 +17,7 @@
 
 #include "drawable.h"
 #include "rpg_savepicture.h"
-#include "graphics.h"
+#include "drawable_mgr.h"
 
 Drawable::Drawable(DrawableType type, int z, bool is_global)
 	: _z(z),
@@ -27,11 +27,11 @@ Drawable::Drawable(DrawableType type, int z, bool is_global)
 }
 
 Drawable::~Drawable() {
-	Graphics::RemoveDrawable(this);
+	DrawableMgr::Remove(this);
 }
 
 void Drawable::SetZ(int nz) {
-	if (_z != nz) Graphics::UpdateZCallback(this);
+	if (_z != nz) DrawableMgr::OnUpdateZ(this);
 	_z = nz;
 }
 

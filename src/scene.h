@@ -19,10 +19,11 @@
 #define EP_SCENE_H
 
 // Headers
-#include "graphics.h"
 #include "system.h"
 #include "async_op.h"
+#include "drawable_list.h"
 #include <vector>
+#include <functional>
 
 /**
  * Scene virtual class.
@@ -199,7 +200,7 @@ public:
 	/** Called by the graphic system to request drawing of a background, usually a system color background */
 	virtual void DrawBackground();
 
-	Graphics::State& GetGraphicsState();
+	DrawableList& GetDrawableList();
 
 	/** @return true if the Scene has been initialized */
 	bool IsInitialized() const;
@@ -254,6 +255,7 @@ private:
 
 	static int push_pop_operation;
 
+	DrawableList drawable_list;
 	/**
 	 * true if Start() was called. For handling the special case that two
 	 * or more scenes are pushed. In that case only the last calls start, the
@@ -262,11 +264,6 @@ private:
 	bool initialized = false;
 
 	bool was_async_from_main_loop = false;
-
-	/**
-	 * Graphic stack of the scene
-	 */
-	Graphics::State state;
 
 	static void DebugValidate(const char* caller);
 	static void UpdatePrevScene();
@@ -303,6 +300,10 @@ inline void Scene::UpdateDelayFrames() {
 	if (HasDelayFrames()) {
 		--delay_frames;
 	}
+}
+
+inline DrawableList& Scene::GetDrawableList() {
+	return drawable_list;
 }
 
 #endif

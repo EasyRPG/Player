@@ -32,6 +32,7 @@ class DrawableList {
 		DrawableList() = default;
 		DrawableList(const DrawableList&) = delete;
 		DrawableList& operator=(const DrawableList&) = delete;
+		~DrawableList();
 
 		/** Iterator type */
 		using iterator = std::vector<Drawable*>::const_iterator;

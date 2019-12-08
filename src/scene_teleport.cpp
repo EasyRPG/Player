@@ -22,6 +22,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "transition.h"
+#include "graphics.h"
 
 Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
 		: actor(&actor), skill(&skill) {

@@ -19,13 +19,13 @@
 #include <cstring>
 #include <cmath>
 #include "tilemap_layer.h"
-#include "graphics.h"
 #include "output.h"
 #include "player.h"
 #include "map_data.h"
 #include "bitmap.h"
 #include "game_map.h"
 #include "main_data.h"
+#include "drawable_mgr.h"
 
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
@@ -677,7 +677,7 @@ TilemapSubLayer::TilemapSubLayer(TilemapLayer* tilemap, int z) :
 	Drawable(TypeTilemap, z, false),
 	tilemap(tilemap)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void TilemapSubLayer::Draw(Bitmap& dst) {
