@@ -194,6 +194,9 @@ libeasyrpg_player_a_SOURCES = \
 	src/platform.h \
 	src/player.cpp \
 	src/player.h \
+	src/pool_allocator.h \
+	src/pool_allocator_base.h \
+	src/pool_allocator_base.cpp \
 	src/psp2_ui.cpp \
 	src/psp2_ui.h \
 	src/game_quit.cpp \
