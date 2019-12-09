@@ -69,8 +69,6 @@ enum Priority {
  */
 class Drawable {
 public:
-	Drawable(DrawableType type, int z, bool is_global);
-
 	Drawable(const Drawable&) = delete;
 	Drawable& operator=(const Drawable&) = delete;
 
@@ -99,6 +97,10 @@ public:
 	 * @return Priority or 0 when not found
 	 */
 	static int GetPriorityForBattleLayer(int which);
+
+protected:
+	Drawable(DrawableType type, int z, bool is_global);
+
 private:
 	int _z = 0;
 	uint16_t _type = TypeDefault;

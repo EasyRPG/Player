@@ -24,12 +24,33 @@
 #include "memory_management.h"
 #include "rect.h"
 #include "tone.h"
+#include "pool_allocator.h"
+
+class Sprite;
+
+class SpriteAllocator : public PoolAllocator<Sprite> {
+	public:
+		static SpriteAllocator& instance() {
+			static SpriteAllocator alloc(1024);
+			return alloc;
+		}
+	private:
+		using PoolAllocator<Sprite>::PoolAllocator;
+};
 
 /**
  * Sprite class.
  */
 class Sprite : public Drawable {
 public:
+	static void* operator new(size_t sz) {
+		return SpriteAllocator::instance().AllocUninitialized();
+	}
+
+	static void operator delete(void* ptr) {
+		SpriteAllocator::instance().FreeUninitialized(static_cast<Sprite*>(ptr));
+	}
+
 	Sprite();
 
 	void Draw(Bitmap& dst) override;
