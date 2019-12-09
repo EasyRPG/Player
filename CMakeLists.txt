@@ -16,6 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(${PROJECT_NAME}
 	src/3ds_ui.cpp
 	src/3ds_ui.h
+	src/align.h
 	src/async_handler.cpp
 	src/async_handler.h
 	src/async_op.h
