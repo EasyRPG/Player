@@ -110,7 +110,6 @@ private:
 	BitmapRef bitmap;
 
 	Rect src_rect;
-	bool visible = true;
 	int x = 0;
 	int y = 0;
 	int ox = 0;
@@ -120,16 +119,12 @@ private:
 	int flash_duration = 0;
 	int flash_frame = 0;
 
-	bool needs_refresh = true;
-	bool bitmap_changed = true;
 
 	Rect src_rect_effect;
 	int opacity_top_effect = 255;
 	int opacity_bottom_effect = 128;
 	int bush_effect = 0;
 	Tone tone_effect;
-	bool flipx_effect = false;
-	bool flipy_effect = false;
 	double zoom_x_effect = 1.0;
 	double zoom_y_effect = 1.0;
 	double angle_effect = 0.0;
@@ -145,8 +140,13 @@ private:
 
 	Tone current_tone;
 	Color current_flash;
+	bool flipx_effect = false;
+	bool flipy_effect = false;
 	bool current_flip_x = false;
 	bool current_flip_y = false;
+	bool needs_refresh = true;
+	bool bitmap_changed = true;
+	bool visible = true;
 
 	void BlitScreen(Bitmap& dst);
 	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
