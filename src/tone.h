@@ -65,9 +65,9 @@ public:
 };
 
 inline Tone Blend(const Tone& l, const Tone& r) {
-	return Tone((l.red + r.red) / 2,
-			(l.green + r.green) / 2,
-			(l.blue + r.blue) / 2,
+	return Tone((l.red * r.red) / 128,
+			(l.green * r.green) / 128,
+			(l.blue * r.blue) / 128,
 			(l.gray * r.gray) / 128);
 }
 
