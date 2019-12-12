@@ -227,8 +227,8 @@ private:
  * success: true if requested was successful, otherwise false.
  */
 struct FileRequestResult {
-	std::string directory;
-	std::string file;
+	const std::string& directory;
+	const std::string& file;
 	bool success;
 };
 

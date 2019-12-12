@@ -39,12 +39,12 @@
 //#define EP_DEBUG_SIMULATE_ASYNC
 
 namespace {
-	std::map<std::string, FileRequestAsync> async_requests;
-	std::map<std::string, std::string> file_mapping;
+	std::unordered_map<std::string, FileRequestAsync> async_requests;
+	std::unordered_map<std::string, std::string> file_mapping;
 	int next_id = 0;
 
 	FileRequestAsync* GetRequest(const std::string& path) {
-		std::map<std::string, FileRequestAsync>::iterator it = async_requests.find(path);
+		auto it = async_requests.find(path);
 
 		if (it != async_requests.end()) {
 			return &(it->second);
@@ -273,10 +273,7 @@ FileRequestBinding FileRequestAsync::Bind(std::function<void(FileRequestResult*)
 }
 
 void FileRequestAsync::CallListeners(bool success) {
-	FileRequestResult result;
-	result.directory = directory;
-	result.file = file;
-	result.success = success;
+	FileRequestResult result { directory, file, success };
 
 	for (auto& listener : listeners) {
 		if (!listener.first.expired()) {
