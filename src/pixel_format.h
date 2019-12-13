@@ -37,12 +37,12 @@ namespace PF {
 
 /** Component struct */
 struct Component {
-	uint8_t bits;
-	uint8_t shift;
-	uint8_t byte;
-	uint32_t mask;
+	uint8_t bits = 0;
+	uint8_t shift = 0;
+	uint8_t byte = 0;
+	uint32_t mask = 0;
 
-	static inline int count_bits(uint32_t mask) {
+	static constexpr int count_bits(uint32_t mask) {
 		int count = 0;
 		if ((mask & 0xFFFF0000) != 0)
 			count += 16, mask >>= 16;
@@ -59,7 +59,7 @@ struct Component {
 		return count;
 	}
 
-	inline void convert_mask() {
+	constexpr void convert_mask() {
 		int bit_count = count_bits(mask);
 		uint32_t mask_ex = (~0U >> (32 - bit_count));
 		uint32_t mask_lo = mask_ex - mask;
@@ -68,31 +68,31 @@ struct Component {
 		byte = shift / 8;
 	}
 
-	inline bool operator==(const Component& c) {
+	constexpr bool operator==(const Component& c) {
 		return mask == c.mask;
 	}
 
-	inline bool operator!=(const Component& c) {
+	constexpr bool operator!=(const Component& c) {
 		return mask != c.mask;
 	}
 
-	inline uint8_t unpack(uint32_t pix) const {
+	constexpr uint8_t unpack(uint32_t pix) const {
 		return (uint8_t)(((pix >> shift) & ((1 << bits) - 1)) << (8 - bits));
 	}
 
-	inline uint32_t pack(const uint8_t& x) const {
+	constexpr uint32_t pack(const uint8_t& x) const {
 		return (((uint32_t)x >> (8 - bits)) << shift);
 	}
 
-	Component() {}
+	constexpr Component() {}
 
-	Component(unsigned int bits, unsigned int shift) :
+	constexpr Component(unsigned int bits, unsigned int shift) :
 		bits((uint8_t)bits),
 		shift((uint8_t)shift),
 		byte((uint8_t)(shift / 8)),
 		mask(((1 << bits)-1) << shift) {}
 
-	Component(uint32_t mask) :
+	constexpr Component(uint32_t mask) :
 		mask(mask) { convert_mask(); }
 };
 
@@ -101,14 +101,14 @@ struct Component {
  */
 class DynamicFormat {
 public:
-	int bits;
-	int bytes;
+	int bits = 0;
+	int bytes = 0;
 	Component r, g, b, a;
-	PF::AlphaType alpha_type;
+	PF::AlphaType alpha_type = PF::NoAlpha;
 
-	DynamicFormat() {}
+	constexpr DynamicFormat() {}
 
-	DynamicFormat(int bits,
+	constexpr DynamicFormat(int bits,
 				  int rb, int rs,
 				  int gb, int gs,
 				  int bb, int bs,
@@ -118,7 +118,7 @@ public:
 		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as),
 		alpha_type(alpha_type) {}
 
-	DynamicFormat(int bits,
+	constexpr DynamicFormat(int bits,
 				  uint32_t rmask,
 				  uint32_t gmask,
 				  uint32_t bmask,
@@ -128,12 +128,12 @@ public:
 		r(rmask), g(gmask), b(bmask), a(amask),
 		alpha_type(alpha_type) {}
 
-	DynamicFormat(const DynamicFormat& ref) :
+	constexpr DynamicFormat(const DynamicFormat& ref) :
 		bits(ref.bits), bytes((bits + 7) / 8),
 		r(ref.r), g(ref.g), b(ref.b), a(ref.a),
 		alpha_type(ref.alpha_type) {}
 
-	void Set(int _bits,
+	constexpr void Set(int _bits,
 			 int rb, int rs,
 			 int gb, int gs,
 			 int bb, int bs,
@@ -148,7 +148,7 @@ public:
 		alpha_type = _alpha_type;
 	}
 
-	void Set(int _bits,
+	constexpr void Set(int _bits,
 			 uint32_t rmask,
 			 uint32_t gmask,
 			 uint32_t bmask,
@@ -163,7 +163,7 @@ public:
 		alpha_type = _alpha_type;
 	}
 
-	inline int code(bool shifts) const {
+	constexpr int code(bool shifts) const {
 		int x = (int) alpha_type | ((bits - 1) << 2);
 		if (!shifts)
 			return x;
@@ -173,7 +173,7 @@ public:
 			(b.shift << 17);
 	}
 
-	inline int code_alpha() const {
+	constexpr int code_alpha() const {
 		int x = (int) (alpha_type == PF::Alpha ? PF::Alpha : PF::NoAlpha) | ((bits - 1) << 2);
 		return x |
 			(r.shift <<  7) |
@@ -182,22 +182,22 @@ public:
 			(alpha_type == PF::Alpha ? (a.shift << 22) : 0);
 	}
 
-	inline void uint32_to_rgba(uint32_t pix, uint8_t& _r, uint8_t& _g, uint8_t& _b, uint8_t& _a) const {
+	constexpr void uint32_to_rgba(uint32_t pix, uint8_t& _r, uint8_t& _g, uint8_t& _b, uint8_t& _a) const {
 		_r = r.unpack(pix);
 		_g = g.unpack(pix);
 		_b = b.unpack(pix);
 		_a = a.unpack(pix);
 	}
 
-	inline uint32_t rgba_to_uint32_t(const uint8_t& _r, const uint8_t& _g, const uint8_t& _b, const uint8_t& _a) const {
+	constexpr uint32_t rgba_to_uint32_t(const uint8_t& _r, const uint8_t& _g, const uint8_t& _b, const uint8_t& _a) const {
 		return r.pack(_r) | g.pack(_g) | b.pack(_b) | a.pack(_a);
 	}
 
-	inline bool operator==(const DynamicFormat& f) {
+	constexpr bool operator==(const DynamicFormat& f) {
 		return r ==  f.r && g == f.g && b == f.b && a == f.a && alpha_type == f.alpha_type;
 	}
 
-	inline bool operator!=(const DynamicFormat& f) {
+	constexpr bool operator!=(const DynamicFormat& f) {
 		return r !=  f.r || g != f.g || b != f.b || a != f.a || alpha_type != f.alpha_type;
 	}
 };
