@@ -20,6 +20,7 @@
 
 // Headers
 #include "data.h"
+#include "compiler.h"
 #include <string>
 
 /**
@@ -27,98 +28,69 @@
  */
 class Game_Variables_Class {
 public:
+	using Var_t = int32_t;
+	using Variables_t = std::vector<Var_t>;
+
 	Game_Variables_Class();
 
-	int Get(int variable_id) const;
+	Var_t Get(int variable_id) const;
 
-	int Set(int variable_id, int value);
-	int Add(int variable_id, int value);
-	int Sub(int variable_id, int value);
-	int Mult(int variable_id, int value);
-	int Div(int variable_id, int value);
-	int Mod(int variable_id, int value);
+	Var_t Set(int variable_id, Var_t value);
+	Var_t Add(int variable_id, Var_t value);
+	Var_t Sub(int variable_id, Var_t value);
+	Var_t Mult(int variable_id, Var_t value);
+	Var_t Div(int variable_id, Var_t value);
+	Var_t Mod(int variable_id, Var_t value);
 
-	void SetRange(int first_id, int last_id, int value);
-	void AddRange(int first_id, int last_id, int value);
-	void SubRange(int first_id, int last_id, int value);
-	void MultRange(int first_id, int last_id, int value);
-	void DivRange(int first_id, int last_id, int value);
-	void ModRange(int first_id, int last_id, int value);
+	void SetRange(int first_id, int last_id, Var_t value);
+	void AddRange(int first_id, int last_id, Var_t value);
+	void SubRange(int first_id, int last_id, Var_t value);
+	void MultRange(int first_id, int last_id, Var_t value);
+	void DivRange(int first_id, int last_id, Var_t value);
+	void ModRange(int first_id, int last_id, Var_t value);
 
 	std::string GetName(int _id) const;
 
-	bool IsValid(int variable_id) const;
-
 	int GetSize() const;
+
+	bool IsValid(int variable_id) const;
 
 	void Reset();
 private:
+	bool ShouldWarn(int first_id, int last_id) const;
+	void WarnGet(int variable_id) const;
+	template <typename F>
+		int SetOp(int variable_id, Var_t value, F&& op, const char* warn);
+	template <typename F>
+		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
+private:
+	Variables_t& _variables;
 	mutable int _warnings = 0;
 };
 
 // Global variable
 extern Game_Variables_Class Game_Variables;
 
-inline int Game_Variables_Class::Add(int variable_id, int value) {
-	return Set(variable_id, Get(variable_id) + value);
+inline int Game_Variables_Class::GetSize() const {
+	return static_cast<int>(Data::variables.size());
 }
 
-inline int Game_Variables_Class::Sub(int variable_id, int value) {
-	return Set(variable_id, Get(variable_id) - value);
+inline bool Game_Variables_Class::IsValid(int variable_id) const {
+	return variable_id > 0 && variable_id <= GetSize();
 }
 
-inline int Game_Variables_Class::Mult(int variable_id, int value) {
-	return Set(variable_id, Get(variable_id) * value);
+inline bool Game_Variables_Class::ShouldWarn(int first_id, int last_id) const {
+	return (first_id <= 0 || last_id > Data::variables.size()) && _warnings > 0;
 }
 
-inline int Game_Variables_Class::Div(int variable_id, int value) {
-	if (value != 0) {
-		return Set(variable_id, Get(variable_id) / value);
+inline Game_Variables_Class::Var_t Game_Variables_Class::Get(int variable_id) const {
+	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
+		WarnGet(variable_id);
 	}
-	return Get(variable_id);
-}
-
-inline int Game_Variables_Class::Mod(int variable_id, int value) {
-	if (value != 0) {
-		return Set(variable_id, Get(variable_id) % value);
+	if (variable_id <= 0 || variable_id > _variables.size()) {
+		return 0;
 	}
-	return Set(variable_id, 0);
-}
-
-inline void Game_Variables_Class::SetRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Set(i, value);
-	}
-}
-
-inline void Game_Variables_Class::AddRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Add(i, value);
-	}
-}
-
-inline void Game_Variables_Class::SubRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Sub(i, value);
-	}
-}
-
-inline void Game_Variables_Class::MultRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Mult(i, value);
-	}
-}
-
-inline void Game_Variables_Class::DivRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Div(i, value);
-	}
-}
-
-inline void Game_Variables_Class::ModRange(int first_id, int last_id, int value) {
-	for (int i = first_id; i <= last_id; ++i) {
-		Mod(i, value);
-	}
+	return _variables[variable_id - 1];
 }
 
 #endif
