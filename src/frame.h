@@ -22,6 +22,7 @@
 #include <string>
 #include "drawable.h"
 #include "system.h"
+#include "async_handler.h"
 
 /**
  * Renders the frame overlay.
