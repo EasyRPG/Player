@@ -31,9 +31,11 @@ public:
 
 	bool Get(int switch_id) const;
 
-	void Set(int switch_id, bool value);
+	int Set(int switch_id, bool value);
+	void SetRange(int first_id, int last_id, bool value);
 
-	void Flip(int switch_id);
+	int Flip(int switch_id);
+	void FlipRange(int first_id, int last_id);
 
 	std::string GetName(int switch_id) const;
 
@@ -50,5 +52,18 @@ private:
 
 // Global variable
 extern Game_Switches_Class Game_Switches;
+
+inline void Game_Switches_Class::SetRange(int first_id, int last_id, bool value) {
+	for (int id = first_id; id <= last_id; ++id) {
+		Set(id, value);
+	}
+}
+
+inline void Game_Switches_Class::FlipRange(int first_id, int last_id) {
+	for (int id = first_id; id <= last_id; ++id) {
+		Flip(id);
+	}
+}
+
 
 #endif

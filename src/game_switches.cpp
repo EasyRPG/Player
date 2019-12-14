@@ -41,23 +41,24 @@ bool Game_Switches_Class::Get(int switch_id) const {
 	return sv[switch_id - 1];
 }
 
-void Game_Switches_Class::Set(int switch_id, bool value) {
+int Game_Switches_Class::Set(int switch_id, bool value) {
 	if ((switch_id <= 0 || switch_id > Data::switches.size()) && _warnings < kMaxWarnings) {
 		Output::Debug("Invalid write sw[%d] = %d!", switch_id, value);
 		++_warnings;
 	}
 	auto& sv = switches();
 	if (switch_id <= 0) {
-		return;
+		return false;
 	}
 	if (switch_id > sv.size()) {
 		sv.resize(switch_id);
 	}
 	sv[switch_id - 1] = value;
+	return value;
 }
 
-void Game_Switches_Class::Flip(int switch_id) {
-	Set(switch_id, !Get(switch_id));
+int Game_Switches_Class::Flip(int switch_id) {
+	return Set(switch_id, !Get(switch_id));
 }
 
 std::string Game_Switches_Class::GetName(int _id) const {

@@ -969,12 +969,10 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		int start = com.parameters[0] == 2 ? Game_Variables.Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
-		for (int i = start; i <= end; ++i) {
-			if (com.parameters[3] != 2) {
-				Game_Switches.Set(i, com.parameters[3] == 0);
-			} else {
-				Game_Switches.Flip(i);
-			}
+		if (com.parameters[3] != 2) {
+			Game_Switches.SetRange(start, end, com.parameters[3] == 0);
+		} else {
+			Game_Switches.FlipRange(start, end);
 		}
 
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
