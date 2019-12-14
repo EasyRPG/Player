@@ -1221,38 +1221,25 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		int start = com.parameters[0] == 2 ? Game_Variables.Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
-		for (i = start; i <= end; ++i) {
-			switch (com.parameters[3]) {
-				case 0:
-					// Assignement
-					Game_Variables.Set(i, value);
-					break;
-				case 1:
-					// Addition
-					Game_Variables.Set(i, Game_Variables.Get(i) + value);
-					break;
-				case 2:
-					// Subtraction
-					Game_Variables.Set(i, Game_Variables.Get(i) - value);
-					break;
-				case 3:
-					// Multiplication
-					Game_Variables.Set(i, Game_Variables.Get(i) * value);
-					break;
-				case 4:
-					// Division
-					if (value != 0) {
-						Game_Variables.Set(i, Game_Variables.Get(i) / value);
-					}
-					break;
-				case 5:
-					// Module
-					if (value != 0) {
-						Game_Variables.Set(i, Game_Variables.Get(i) % value);
-					} else {
-						Game_Variables.Set(i, 0);
-					}
-			}
+		switch (com.parameters[3]) {
+			case 0:
+				Game_Variables.SetRange(start, end, value);
+				break;
+			case 1:
+				Game_Variables.AddRange(start, end, value);
+				break;
+			case 2:
+				Game_Variables.SubRange(start, end, value);
+				break;
+			case 3:
+				Game_Variables.MultRange(start, end, value);
+				break;
+			case 4:
+				Game_Variables.DivRange(start, end, value);
+				break;
+			case 5:
+				Game_Variables.ModRange(start, end, value);
+				break;
 		}
 
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);

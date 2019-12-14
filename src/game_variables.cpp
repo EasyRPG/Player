@@ -42,14 +42,14 @@ int Game_Variables_Class::Get(int variable_id) const {
 	return vv[variable_id - 1];
 }
 
-void Game_Variables_Class::Set(int variable_id, int value) {
+int Game_Variables_Class::Set(int variable_id, int value) {
 	if ((variable_id <= 0 || variable_id > Data::variables.size()) && _warnings < kMaxWarnings) {
 		Output::Debug("Invalid write var[%d] = %d!", variable_id, value);
 		++_warnings;
 	}
 	auto& vv = variables();
 	if (variable_id <= 0) {
-		return;
+		return 0;
 	}
 	if (variable_id > vv.size()) {
 		vv.resize(variable_id);
@@ -57,6 +57,7 @@ void Game_Variables_Class::Set(int variable_id, int value) {
 	const int maxval = Player::IsRPG2k3() ? 9999999 : 999999;
 	const int minval = Player::IsRPG2k3() ? -9999999 : -999999;
 	vv[variable_id - 1] = std::max(std::min(value, maxval), minval);
+	return vv[variable_id - 1];
 }
 
 std::string Game_Variables_Class::GetName(int _id) const {
