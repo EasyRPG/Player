@@ -21,20 +21,24 @@
 // Headers
 #include <vector>
 #include <string>
+#include "data.h"
+#include "compiler.h"
 
 /**
  * Game_Switches class
  */
 class Game_Switches_Class {
 public:
+	using Switches_t = std::vector<bool>;
+
 	Game_Switches_Class();
 
 	bool Get(int switch_id) const;
 
-	int Set(int switch_id, bool value);
+	bool Set(int switch_id, bool value);
 	void SetRange(int first_id, int last_id, bool value);
 
-	int Flip(int switch_id);
+	bool Flip(int switch_id);
 	void FlipRange(int first_id, int last_id);
 
 	std::string GetName(int switch_id) const;
@@ -46,6 +50,11 @@ public:
 	void Reset();
 
 private:
+	bool ShouldWarn(int first_id, int last_id) const;
+	void WarnGet(int variable_id) const;
+
+private:
+	Switches_t& _switches;
 	mutable int _warnings = 0;
 };
 
@@ -53,16 +62,26 @@ private:
 // Global variable
 extern Game_Switches_Class Game_Switches;
 
-inline void Game_Switches_Class::SetRange(int first_id, int last_id, bool value) {
-	for (int id = first_id; id <= last_id; ++id) {
-		Set(id, value);
-	}
+inline int Game_Switches_Class::GetSize() const {
+	return static_cast<int>(Data::switches.size());
 }
 
-inline void Game_Switches_Class::FlipRange(int first_id, int last_id) {
-	for (int id = first_id; id <= last_id; ++id) {
-		Flip(id);
+inline bool Game_Switches_Class::IsValid(int variable_id) const {
+	return variable_id > 0 && variable_id <= GetSize();
+}
+
+inline bool Game_Switches_Class::ShouldWarn(int first_id, int last_id) const {
+	return (first_id <= 0 || last_id > Data::switches.size()) && (_warnings > 0);
+}
+
+inline bool Game_Switches_Class::Get(int switch_id) const {
+	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
+		WarnGet(switch_id);
 	}
+	if (switch_id <= 0 || switch_id > _switches.size()) {
+		return false;
+	}
+	return _switches[switch_id - 1];
 }
 
 
