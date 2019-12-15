@@ -968,11 +968,20 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 
 		int start = com.parameters[0] == 2 ? Game_Variables.Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
+		int val = com.parameters[3];
 
-		if (com.parameters[3] != 2) {
-			Game_Switches.SetRange(start, end, com.parameters[3] == 0);
+		if (start == end) {
+			if (val < 2) {
+				Game_Switches.Set(start, val == 0);
+			} else {
+				Game_Switches.Flip(start);
+			}
 		} else {
-			Game_Switches.FlipRange(start, end);
+			if (val < 2) {
+				Game_Switches.SetRange(start, end, val == 0);
+			} else {
+				Game_Switches.FlipRange(start, end);
+			}
 		}
 
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
@@ -1221,25 +1230,48 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		int start = com.parameters[0] == 2 ? Game_Variables.Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
-		switch (com.parameters[3]) {
-			case 0:
-				Game_Variables.SetRange(start, end, value);
-				break;
-			case 1:
-				Game_Variables.AddRange(start, end, value);
-				break;
-			case 2:
-				Game_Variables.SubRange(start, end, value);
-				break;
-			case 3:
-				Game_Variables.MultRange(start, end, value);
-				break;
-			case 4:
-				Game_Variables.DivRange(start, end, value);
-				break;
-			case 5:
-				Game_Variables.ModRange(start, end, value);
-				break;
+		if (start == end) {
+			switch (com.parameters[3]) {
+				case 0:
+					Game_Variables.Set(start, value);
+					break;
+				case 1:
+					Game_Variables.Add(start, value);
+					break;
+				case 2:
+					Game_Variables.Sub(start, value);
+					break;
+				case 3:
+					Game_Variables.Mult(start, value);
+					break;
+				case 4:
+					Game_Variables.Div(start, value);
+					break;
+				case 5:
+					Game_Variables.Mod(start, value);
+					break;
+			}
+		} else {
+			switch (com.parameters[3]) {
+				case 0:
+					Game_Variables.SetRange(start, end, value);
+					break;
+				case 1:
+					Game_Variables.AddRange(start, end, value);
+					break;
+				case 2:
+					Game_Variables.SubRange(start, end, value);
+					break;
+				case 3:
+					Game_Variables.MultRange(start, end, value);
+					break;
+				case 4:
+					Game_Variables.DivRange(start, end, value);
+					break;
+				case 5:
+					Game_Variables.ModRange(start, end, value);
+					break;
+			}
 		}
 
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
