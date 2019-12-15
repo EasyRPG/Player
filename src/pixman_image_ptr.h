@@ -27,10 +27,10 @@ class PixmanImagePtr {
 		constexpr PixmanImagePtr() = default;
 
 		/** Construct with nullptr */
-		constexpr PixmanImagePtr(std::nullptr_t);
+		constexpr PixmanImagePtr(std::nullptr_t) noexcept;
 
 		/** Take ownership of img */
-		explicit constexpr PixmanImagePtr(pixman_image_t* img);
+		explicit constexpr PixmanImagePtr(pixman_image_t* img) noexcept;
 
 		/** Increment ref count and share img with other */
 		PixmanImagePtr(const PixmanImagePtr&);
@@ -39,32 +39,32 @@ class PixmanImagePtr {
 		PixmanImagePtr& operator=(const PixmanImagePtr&);
 
 		/** Take img from other */
-		PixmanImagePtr(PixmanImagePtr&&);
+		PixmanImagePtr(PixmanImagePtr&&) noexcept;
 
 		/** Take img from other */
-		PixmanImagePtr& operator=(PixmanImagePtr&&);
+		PixmanImagePtr& operator=(PixmanImagePtr&&) noexcept;
 
 		/** Unreference and possibly destroy image */
 		~PixmanImagePtr();
 
 		/** @return pointer to image */
-		pixman_image_t* get() const;
+		pixman_image_t* get() const noexcept;
 
 		/** @return reference to image */
-		pixman_image_t& operator*() const;
+		pixman_image_t& operator*() const noexcept;
 
 		/** @return pointer to image */
-		pixman_image_t* operator->() const;
+		pixman_image_t* operator->() const noexcept;
 
 		/** @return true if image is not nullptr */
-		explicit operator bool() const;
+		explicit operator bool() const noexcept;
 
 		/** 
 		 * Release current image (if any) and take ownership of img
 		 *
 		 * @param img new image to take ownership of
 		 */
-		void reset(pixman_image_t* img = nullptr);
+		void reset(pixman_image_t* img = nullptr) noexcept;
 	private:
 		pixman_image_t* _img = nullptr;
 };
@@ -84,9 +84,9 @@ template <> struct hash<PixmanImagePtr> {
 };
 }
 
-inline constexpr PixmanImagePtr::PixmanImagePtr(std::nullptr_t) {}
+inline constexpr PixmanImagePtr::PixmanImagePtr(std::nullptr_t) noexcept {}
 
-inline constexpr PixmanImagePtr::PixmanImagePtr(pixman_image_t* img)
+inline constexpr PixmanImagePtr::PixmanImagePtr(pixman_image_t* img) noexcept
 	: _img(img) {}
 
 inline PixmanImagePtr::PixmanImagePtr(const PixmanImagePtr& o)
@@ -100,13 +100,13 @@ inline PixmanImagePtr& PixmanImagePtr::operator=(const PixmanImagePtr& o) {
 	}
 	return *this;
 }
-inline PixmanImagePtr::PixmanImagePtr(PixmanImagePtr&& o)
+inline PixmanImagePtr::PixmanImagePtr(PixmanImagePtr&& o) noexcept
 	:_img(o._img)
 {
 	o._img = nullptr;
 }
 
-inline PixmanImagePtr& PixmanImagePtr::operator=(PixmanImagePtr&& o) {
+inline PixmanImagePtr& PixmanImagePtr::operator=(PixmanImagePtr&& o) noexcept {
 	if (this != &o) {
 		reset();
 		_img = o._img;
@@ -119,23 +119,23 @@ inline PixmanImagePtr::~PixmanImagePtr() {
 	reset();
 }
 
-inline pixman_image_t* PixmanImagePtr::get() const {
+inline pixman_image_t* PixmanImagePtr::get() const noexcept {
 	return _img;
 }
 
-inline pixman_image_t& PixmanImagePtr::operator*() const {
+inline pixman_image_t& PixmanImagePtr::operator*() const noexcept {
 	return *_img;
 }
 
-inline pixman_image_t* PixmanImagePtr::operator->() const {
+inline pixman_image_t* PixmanImagePtr::operator->() const noexcept {
 	return _img;
 }
 
-inline PixmanImagePtr::operator bool() const {
+inline PixmanImagePtr::operator bool() const noexcept {
 	return get() != nullptr;
 }
 
-inline void PixmanImagePtr::reset(pixman_image_t* img) {
+inline void PixmanImagePtr::reset(pixman_image_t* img) noexcept {
 	if (_img) {
 		::pixman_image_unref(_img);
 	}
