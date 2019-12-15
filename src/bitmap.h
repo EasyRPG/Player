@@ -31,6 +31,7 @@
 #include "pixel_format.h"
 #include "tone.h"
 #include "text.h"
+#include "pixman_image_ptr.h"
 
 struct Transform;
 
@@ -140,11 +141,6 @@ public:
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
-
-	/**
-	 * Destructor.
-	 */
-	~Bitmap();
 
 	/**
 	 * Gets the bitmap width.
@@ -557,13 +553,13 @@ protected:
 #endif
 
 	/** Bitmap data. */
-	pixman_image_t *bitmap = nullptr;
+	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
-	static pixman_image_t* GetSubimage(Bitmap const& src, const Rect& src_rect);
+	static PixmanImagePtr GetSubimage(Bitmap const& src, const Rect& src_rect);
 	static inline void MultiplyAlpha(uint8_t &r, uint8_t &g, uint8_t &b, const uint8_t &a) {
 		r = (uint8_t)((int)r * a / 0xFF);
 		g = (uint8_t)((int)g * a / 0xFF);
