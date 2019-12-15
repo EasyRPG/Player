@@ -59,6 +59,69 @@ AudioInterface& Sdl2Ui::GetAudio() {
 }
 #endif
 
+static uint32_t GetDefaultFormat() {
+	return SDL_PIXELFORMAT_RGBA32;
+}
+
+/**
+ * Return preference for the given sdl format.
+ * Higher numbers are better, -1 means unsupported.
+ * We prefer formats which have fast paths in pixman.
+ */
+static int GetFormatRank(uint32_t fmt) {
+	switch (fmt) {
+		case SDL_PIXELFORMAT_RGBA32:
+			return 2;
+		case SDL_PIXELFORMAT_BGRA32:
+			return 2;
+		case SDL_PIXELFORMAT_ARGB32:
+			return 1;
+		case SDL_PIXELFORMAT_ABGR32:
+			return 0;
+		default:
+			return -1;
+	}
+}
+
+static DynamicFormat GetDynamicFormat(uint32_t fmt) {
+	switch (fmt) {
+		case SDL_PIXELFORMAT_RGBA32:
+			return format_R8G8B8A8_n().format();
+		case SDL_PIXELFORMAT_BGRA32:
+			return format_B8G8R8A8_n().format();
+		case SDL_PIXELFORMAT_ARGB32:
+			return format_A8R8G8B8_n().format();
+		case SDL_PIXELFORMAT_ABGR32:
+			return format_A8B8G8R8_n().format();
+		default:
+			return DynamicFormat();
+	}
+}
+
+static uint32_t SelectFormat(const SDL_RendererInfo& rinfo, bool print_all) {
+	uint32_t current_fmt = SDL_PIXELFORMAT_UNKNOWN;
+	int current_rank = -1;
+
+	for (int i = 0; i < static_cast<int>(rinfo.num_texture_formats); ++i) {
+		const auto fmt = rinfo.texture_formats[i];
+		int rank = GetFormatRank(fmt);
+		if (rank >= 0) {
+			if (rank > current_rank) {
+				current_fmt = fmt;
+				current_rank = rank;
+			}
+			Output::Debug("SDL2: Detected format (%d) %s : rank=(%d)",
+					i, SDL_GetPixelFormatName(fmt), rank);
+		} else {
+			if (print_all) {
+				Output::Debug("SDL2: Detected format (%d) %s : Not Supported",
+						i, SDL_GetPixelFormatName(fmt));
+			}
+		}
+	}
+	return current_fmt;
+}
+
 static int FilterUntilFocus(const SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
@@ -236,8 +299,10 @@ bool Sdl2Ui::RefreshDisplayMode() {
 			display_width, display_height,
 			SDL_WINDOW_RESIZABLE | flags);
 
-		if (!sdl_window)
+		if (!sdl_window) {
+			Output::Debug("SDL_CreateWindow failed : %s", SDL_GetError());
 			return false;
+		}
 
 		SetAppIcon();
 
@@ -249,8 +314,36 @@ bool Sdl2Ui::RefreshDisplayMode() {
 		#endif
 
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, rendered_flag);
-		if (!sdl_renderer)
+		if (!sdl_renderer) {
+			Output::Debug("SDL_CreateRenderer failed : %s", SDL_GetError());
 			return false;
+		}
+
+		uint32_t texture_format = SDL_PIXELFORMAT_UNKNOWN;
+
+		SDL_RendererInfo rinfo = {};
+		if (SDL_GetRendererInfo(sdl_renderer, &rinfo) == 0) {
+			Output::Debug("SDL2: RendererInfo hw=%d sw=%d vsync=%d",
+					!!(rinfo.flags & SDL_RENDERER_ACCELERATED),
+					!!(rinfo.flags & SDL_RENDERER_SOFTWARE),
+					!!(rinfo.flags & SDL_RENDERER_PRESENTVSYNC)
+					);
+
+			texture_format = SelectFormat(rinfo, false);
+		} else {
+			Output::Debug("SDL_GetRendererInfo failed : %s", SDL_GetError());
+		}
+
+
+		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
+			texture_format = GetDefaultFormat();
+			Output::Debug("SDL2: None of the (%d) detected formats were supported! Falling back to %s. This will likely cause performance degredation.",
+					rinfo.num_texture_formats, SDL_GetPixelFormatName(texture_format));
+			// Run again to print all the formats on this system.
+			SelectFormat(rinfo, true);
+		}
+
+		Output::Debug("SDL2: Selected Pixel Format %s", SDL_GetPixelFormatName(texture_format));
 
 		// Flush display
 		SDL_RenderClear(sdl_renderer);
@@ -258,18 +351,16 @@ bool Sdl2Ui::RefreshDisplayMode() {
 
 		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
-		uint32_t const texture_format =
-			SDL_BYTEORDER == SDL_LIL_ENDIAN
-			? SDL_PIXELFORMAT_ABGR8888
-			: SDL_PIXELFORMAT_RGBA8888;
 
 		sdl_texture = SDL_CreateTexture(sdl_renderer,
 			texture_format,
 			SDL_TEXTUREACCESS_STREAMING,
 			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
-		if (!sdl_texture)
+		if (!sdl_texture) {
+			Output::Debug("SDL_CreateTexture failed : %s", SDL_GetError());
 			return false;
+		}
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
 #ifndef EMSCRIPTEN
@@ -292,24 +383,15 @@ bool Sdl2Ui::RefreshDisplayMode() {
 	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
 	SetAppIcon();
 
-	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	const DynamicFormat format(
-		32,
-		0x000000FF,
-		0x0000FF00,
-		0x00FF0000,
-		0xFF000000,
-		PF::NoAlpha);
-	#else
-	const DynamicFormat format(
-		32,
-		0xFF000000,
-		0x00FF0000,
-		0x0000FF00,
-		0x000000FF,
-		PF::NoAlpha);
-	#endif
+	uint32_t sdl_pixel_fmt = GetDefaultFormat();
+	int a, w, h;
 
+	if (SDL_QueryTexture(sdl_texture, &sdl_pixel_fmt, &a, &w, &h) != 0) {
+		Output::Debug("SDL_QueryTexture failed : %s", SDL_GetError());
+		return false;
+	}
+
+	auto format = GetDynamicFormat(sdl_pixel_fmt);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
 	if (!main_surface) {
@@ -400,6 +482,7 @@ void Sdl2Ui::ProcessEvents() {
 }
 
 void Sdl2Ui::UpdateDisplay() {
+	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
 	SDL_UpdateTexture(sdl_texture, NULL, main_surface->pixels(), main_surface->pitch());
 	SDL_RenderClear(sdl_renderer);
 	SDL_RenderCopy(sdl_renderer, sdl_texture, NULL, NULL);
