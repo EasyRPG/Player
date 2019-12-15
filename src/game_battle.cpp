@@ -322,7 +322,7 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	if (condition.flags.switch_b && !Main_Data::game_switches->Get(condition.switch_b_id))
 		return false;
 
-	if (condition.flags.variable && !(Game_Variables.Get(condition.variable_id) >= condition.variable_value))
+	if (condition.flags.variable && !(Main_Data::game_variables->Get(condition.variable_id) >= condition.variable_value))
 		return false;
 
 	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))

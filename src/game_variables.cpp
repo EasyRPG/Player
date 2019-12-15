@@ -17,16 +17,18 @@
 
 // Headers
 #include "game_variables.h"
-#include "main_data.h"
 #include "output.h"
-#include "player.h"
 #include "reader_util.h"
 #include "utils.h"
 
-constexpr int kMaxWarnings = 10;
+constexpr int Game_Variables::max_warnings;
+constexpr Game_Variables::Var_t Game_Variables::min_2k;
+constexpr Game_Variables::Var_t Game_Variables::max_2k;
+constexpr Game_Variables::Var_t Game_Variables::min_2k3;
+constexpr Game_Variables::Var_t Game_Variables::max_2k3;
 
 namespace {
-using Var_t = Game_Variables_Class::Var_t;
+using Var_t = Game_Variables::Var_t;
 
 constexpr Var_t VarSet(Var_t o, Var_t n) {
 	return n;
@@ -53,19 +55,13 @@ constexpr Var_t VarMod(Var_t n, Var_t d) {
 };
 }
 
-Game_Variables_Class::Game_Variables_Class()
-	: _variables(Main_Data::game_data.system.variables),
-	  _warnings(kMaxWarnings)
-{
-}
-
-void Game_Variables_Class::WarnGet(int variable_id) const {
+void Game_Variables::WarnGet(int variable_id) const {
 	Output::Debug("Invalid read var[%d]!", variable_id);
 	--_warnings;
 }
 
 template <typename F>
-Game_Variables_Class::Var_t Game_Variables_Class::SetOp(int variable_id, Var_t value, F&& op, const char* warn) {
+Game_Variables::Var_t Game_Variables::SetOp(int variable_id, Var_t value, F&& op, const char* warn) {
 	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
 		Output::Debug(warn, variable_id, value);
 		--_warnings;
@@ -78,14 +74,12 @@ Game_Variables_Class::Var_t Game_Variables_Class::SetOp(int variable_id, Var_t v
 	}
 	auto& v = _variables[variable_id - 1];
 	value = op(v, value);
-	const auto maxval = Player::IsRPG2k3() ? 9999999 : 999999;
-	const auto minval = Player::IsRPG2k3() ? -9999999 : -999999;
-	v = Utils::Clamp(value, minval, maxval);
+	v = Utils::Clamp(value, _min, _max);
 	return v;
 }
 
 template <typename F>
-void Game_Variables_Class::SetOpRange(const int first_id, const int last_id, const Var_t value, F&& op, const char* warn) {
+void Game_Variables::SetOpRange(const int first_id, const int last_id, const Var_t value, F&& op, const char* warn) {
 	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
 		Output::Debug(warn, first_id, last_id, value);
 		--_warnings;
@@ -94,63 +88,61 @@ void Game_Variables_Class::SetOpRange(const int first_id, const int last_id, con
 	if (EP_UNLIKELY(last_id > vv.size())) {
 		vv.resize(last_id, 0);
 	}
-	const auto maxval = Player::IsRPG2k3() ? 9999999 : 999999;
-	const auto minval = Player::IsRPG2k3() ? -9999999 : -999999;
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
 		auto& v = vv[i];
-		v = Utils::Clamp(op(v, value), minval, maxval);
+		v = Utils::Clamp(op(v, value), _min, _max);
 	}
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Set(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Set(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarSet, "Invalid write var[%d] = %d!");
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Add(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Add(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarAdd, "Invalid write var[%d] += %d!");
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Sub(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Sub(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarSub, "Invalid write var[%d] -= %d!");
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Mult(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Mult(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarMult, "Invalid write var[%d] *= %d!");
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Div(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Div(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarDiv, "Invalid write var[%d] /= %d!");
 }
 
-Game_Variables_Class::Var_t Game_Variables_Class::Mod(int variable_id, Var_t value) {
+Game_Variables::Var_t Game_Variables::Mod(int variable_id, Var_t value) {
 	return SetOp(variable_id, value, VarMod, "Invalid write var[%d] %= %d!");
 }
 
-void Game_Variables_Class::SetRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::SetRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarSet, "Invalid write var[%d,%d] = %d!");
 }
 
-void Game_Variables_Class::AddRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::AddRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarAdd, "Invalid write var[%d,%d] += %d!");
 }
 
-void Game_Variables_Class::SubRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::SubRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarSub, "Invalid write var[%d,%d] -= %d!");
 }
 
-void Game_Variables_Class::MultRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::MultRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarMult, "Invalid write var[%d,%d] *= %d!");
 }
 
-void Game_Variables_Class::DivRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::DivRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarDiv, "Invalid write var[%d,%d] /= %d!");
 }
 
-void Game_Variables_Class::ModRange(int first_id, int last_id, Var_t value) {
+void Game_Variables::ModRange(int first_id, int last_id, Var_t value) {
 	SetOpRange(first_id, last_id, value, VarMod, "Invalid write var[%d,%d] %= %d!");
 }
 
-std::string Game_Variables_Class::GetName(int _id) const {
+std::string Game_Variables::GetName(int _id) const {
 	const RPG::Variable* var = ReaderUtil::GetElement(Data::variables, _id);
 
 	if (!var) {
@@ -161,7 +153,3 @@ std::string Game_Variables_Class::GetName(int _id) const {
 	}
 }
 
-void Game_Variables_Class::Reset() {
-	_variables.clear();
-	_warnings = kMaxWarnings;
-}

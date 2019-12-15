@@ -777,6 +777,10 @@ void Player::ResetGameObjects() {
 
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 
+	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::min_2k;
+	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
+
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
@@ -786,7 +790,6 @@ void Player::ResetGameObjects() {
 	Game_Message::Init();
 	Game_System::Init();
 	Game_Temp::Init();
-	Game_Variables.Reset();
 
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
 	Main_Data::game_party = std::make_unique<Game_Party>();
@@ -949,6 +952,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	map->SetImportantFile(true);
 
 	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
+	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
 
 	Game_System::ReloadSystemGraphic();
 

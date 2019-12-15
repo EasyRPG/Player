@@ -26,12 +26,21 @@
 /**
  * Game_Variables class.
  */
-class Game_Variables_Class {
+class Game_Variables {
 public:
 	using Var_t = int32_t;
 	using Variables_t = std::vector<Var_t>;
 
-	Game_Variables_Class();
+	static constexpr int max_warnings = 10;
+	static constexpr Var_t min_2k = -999999;
+	static constexpr Var_t max_2k = 999999;
+	static constexpr Var_t min_2k3 = -9999999;
+	static constexpr Var_t max_2k3 = 9999999;
+
+	Game_Variables(Var_t minval, Var_t maxval);
+
+	void SetData(Variables_t);
+	const Variables_t& GetData() const;
 
 	Var_t Get(int variable_id) const;
 
@@ -55,7 +64,7 @@ public:
 
 	bool IsValid(int variable_id) const;
 
-	void Reset();
+	void SetWarning(int w);
 private:
 	bool ShouldWarn(int first_id, int last_id) const;
 	void WarnGet(int variable_id) const;
@@ -64,26 +73,37 @@ private:
 	template <typename F>
 		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
 private:
-	Variables_t& _variables;
-	mutable int _warnings = 0;
+	Variables_t _variables;
+	Var_t _min = 0;
+	Var_t _max = 0;
+	mutable int _warnings = max_warnings;
 };
 
-// Global variable
-extern Game_Variables_Class Game_Variables;
+inline Game_Variables::Game_Variables(Var_t minval, Var_t maxval)
+	: _min(minval), _max(maxval)
+{ }
 
-inline int Game_Variables_Class::GetSize() const {
+inline void Game_Variables::SetData(Variables_t v) {
+	_variables = std::move(v);
+}
+
+inline const Game_Variables::Variables_t& Game_Variables::GetData() const {
+	return _variables;
+}
+
+inline int Game_Variables::GetSize() const {
 	return static_cast<int>(Data::variables.size());
 }
 
-inline bool Game_Variables_Class::IsValid(int variable_id) const {
+inline bool Game_Variables::IsValid(int variable_id) const {
 	return variable_id > 0 && variable_id <= GetSize();
 }
 
-inline bool Game_Variables_Class::ShouldWarn(int first_id, int last_id) const {
+inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
 	return (first_id <= 0 || last_id > Data::variables.size()) && _warnings > 0;
 }
 
-inline Game_Variables_Class::Var_t Game_Variables_Class::Get(int variable_id) const {
+inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
 	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
 		WarnGet(variable_id);
 	}
@@ -91,6 +111,10 @@ inline Game_Variables_Class::Var_t Game_Variables_Class::Get(int variable_id) co
 		return 0;
 	}
 	return _variables[variable_id - 1];
+}
+
+inline void Game_Variables::SetWarning(int w) {
+	_warnings = w;
 }
 
 #endif
