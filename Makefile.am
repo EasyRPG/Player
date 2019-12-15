@@ -182,6 +182,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/pending_message.cpp \
 	src/picojson.h \
 	src/pixel_format.h \
+	src/pixman_image_ptr.h \
 	src/plane.cpp \
 	src/plane.h \
 	src/player.cpp \
