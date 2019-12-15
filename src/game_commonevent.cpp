@@ -104,12 +104,12 @@ RPG::SaveEventExecState Game_CommonEvent::GetSaveData() {
 bool Game_CommonEvent::IsWaitingForegroundExecution() const {
 	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
 	return ce->trigger == RPG::EventPage::Trigger_auto_start &&
-		(!ce->switch_flag || Game_Switches.Get(ce->switch_id))
+		(!ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id))
 		&& !ce->event_commands.empty();
 }
 
 bool Game_CommonEvent::IsWaitingBackgroundExecution(bool force_run) const {
 	auto* ce = ReaderUtil::GetElement(Data::commonevents, common_event_id);
 	return ce->trigger == RPG::EventPage::Trigger_parallel &&
-		(force_run || !ce->switch_flag || Game_Switches.Get(ce->switch_id));
+		(force_run || !ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id));
 }

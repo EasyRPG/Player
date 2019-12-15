@@ -315,7 +315,7 @@ bool Game_Interpreter_Battle::CommandConditionalBranchBattle(RPG::EventCommand c
 	switch (com.parameters[0]) {
 		case 0:
 			// Switch
-			result = Game_Switches.Get(com.parameters[1]) == (com.parameters[2] == 0);
+			result = Main_Data::game_switches->Get(com.parameters[1]) == (com.parameters[2] == 0);
 			break;
 		case 1:
 			// Variable

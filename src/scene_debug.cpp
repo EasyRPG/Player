@@ -401,7 +401,7 @@ int Scene_Debug::GetLastPage() {
 	size_t num_elements = 0;
 	switch (mode) {
 		case eSwitch:
-			num_elements = Game_Switches.GetSize();
+			num_elements = Main_Data::game_switches->GetSize();
 			break;
 		case eVariable:
 			num_elements = Game_Variables.GetSize();
@@ -631,8 +631,8 @@ void Scene_Debug::ReturnToMain(int from_idx) {
 
 
 void Scene_Debug::DoSwitch() {
-	if (Game_Switches.IsValid(GetIndex())) {
-		Game_Switches.Flip(GetIndex());
+	if (Main_Data::game_switches->IsValid(GetIndex())) {
+		Main_Data::game_switches->Flip(GetIndex());
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 
 		var_window->Refresh();

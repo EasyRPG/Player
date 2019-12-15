@@ -31,9 +31,11 @@ class Game_Player;
 class Game_Screen;
 class Game_Party;
 class Game_EnemyParty;
+class Game_Switches;
 
 namespace Main_Data {
 	// Dynamic Game Data
+	extern std::unique_ptr<Game_Switches> game_switches;
 	extern std::unique_ptr<Game_Screen> game_screen;
 	extern std::unique_ptr<Game_Player> game_player;
 	extern std::unique_ptr<Game_Party> game_party;

@@ -205,12 +205,12 @@ void Game_Event::Refresh(bool from_save) {
 
 bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	// First switch (A)
-	if (page.condition.flags.switch_a && !Game_Switches.Get(page.condition.switch_a_id)) {
+	if (page.condition.flags.switch_a && !Main_Data::game_switches->Get(page.condition.switch_a_id)) {
 		return false;
 	}
 
 	// Second switch (B)
-	if (page.condition.flags.switch_b && !Game_Switches.Get(page.condition.switch_b_id)) {
+	if (page.condition.flags.switch_b && !Main_Data::game_switches->Get(page.condition.switch_b_id)) {
 		return false;
 	}
 

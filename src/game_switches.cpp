@@ -17,23 +17,17 @@
 
 // Headers
 #include "game_switches.h"
-#include "main_data.h"
 #include "output.h"
 #include "reader_util.h"
 
-constexpr int kMaxWarnings = 10;
+constexpr int Game_Switches::kMaxWarnings;
 
-Game_Switches_Class::Game_Switches_Class()
-	: _switches(Main_Data::game_data.system.switches),
-	_warnings(kMaxWarnings)
-{}
-
-void Game_Switches_Class::WarnGet(int variable_id) const {
+void Game_Switches::WarnGet(int variable_id) const {
 	Output::Debug("Invalid read sw[%d]!", variable_id);
 	--_warnings;
 }
 
-bool Game_Switches_Class::Set(int switch_id, bool value) {
+bool Game_Switches::Set(int switch_id, bool value) {
 	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
 		Output::Debug("Invalid write sw[%d] = %d!", switch_id, value);
 		--_warnings;
@@ -49,7 +43,7 @@ bool Game_Switches_Class::Set(int switch_id, bool value) {
 	return value;
 }
 
-void Game_Switches_Class::SetRange(int first_id, int last_id, bool value) {
+void Game_Switches::SetRange(int first_id, int last_id, bool value) {
 	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
 		Output::Debug("Invalid write sw[%d,%d] = %d!", first_id, last_id, value);
 		--_warnings;
@@ -63,7 +57,7 @@ void Game_Switches_Class::SetRange(int first_id, int last_id, bool value) {
 	}
 }
 
-bool Game_Switches_Class::Flip(int switch_id) {
+bool Game_Switches::Flip(int switch_id) {
 	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
 		Output::Debug("Invalid flip sw[%d]!", switch_id);
 		--_warnings;
@@ -79,7 +73,7 @@ bool Game_Switches_Class::Flip(int switch_id) {
 	return ss[switch_id - 1];
 }
 
-void Game_Switches_Class::FlipRange(int first_id, int last_id) {
+void Game_Switches::FlipRange(int first_id, int last_id) {
 	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
 		Output::Debug("Invalid flip sw[%d,%d]!", first_id, last_id);
 		--_warnings;
@@ -93,7 +87,7 @@ void Game_Switches_Class::FlipRange(int first_id, int last_id) {
 	}
 }
 
-std::string Game_Switches_Class::GetName(int _id) const {
+std::string Game_Switches::GetName(int _id) const {
 	const RPG::Switch* sw = ReaderUtil::GetElement(Data::switches, _id);
 
 	if (!sw) {
@@ -104,7 +98,3 @@ std::string Game_Switches_Class::GetName(int _id) const {
 	}
 }
 
-void Game_Switches_Class::Reset() {
-	_switches.clear();
-	_warnings = kMaxWarnings;
-}

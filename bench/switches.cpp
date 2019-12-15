@@ -4,16 +4,16 @@
 
 constexpr int max_sws = 1024; // Keep this a power of 2 so no expensive modulus instructions
 
-static void prime(int size = max_sws) {
+static Game_Switches make(int size = max_sws) {
 	Data::switches.resize(size);
-	Game_Switches.Reset();
-	Game_Switches.Set(size, false);
+	Game_Switches switches;
+	switches.Set(size, false);
+	return switches;
 }
 
 template <typename F>
 static void BM_SwitchOp(benchmark::State& state, F&& op) {
-	prime();
-	auto& s = Game_Switches;
+	auto s = make();
 	int i = 0;
 	for (auto _: state) {
 		op(s, i + 1, i);
@@ -44,8 +44,7 @@ BENCHMARK(BM_SwitchFlip);
 
 template <typename F>
 static void BM_SwitchRangeOp(benchmark::State& state, F&& op) {
-	prime();
-	auto& s = Game_Switches;
+	auto s = make();
 	int i = 0;
 	for (auto _: state) {
 		op(s, i + 1, i);

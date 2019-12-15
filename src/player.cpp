@@ -774,21 +774,23 @@ void Player::ResetGameObjects() {
 	Main_Data::Cleanup();
 
 	Main_Data::game_data.Setup();
+
+	Main_Data::game_switches = std::make_unique<Game_Switches>();
+
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
-	Main_Data::game_screen.reset(new Game_Screen());
+	Main_Data::game_screen = std::make_unique<Game_Screen>();
 
 	Game_Actors::Init();
 	Game_Map::Init();
 	Game_Message::Init();
-	Game_Switches.Reset();
 	Game_System::Init();
 	Game_Temp::Init();
 	Game_Variables.Reset();
 
-	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-	Main_Data::game_party.reset(new Game_Party());
-	Main_Data::game_player.reset(new Game_Player());
+	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
+	Main_Data::game_party = std::make_unique<Game_Party>();
+	Main_Data::game_player = std::make_unique<Game_Player>();
 
 	FrameReset();
 }
@@ -945,6 +947,8 @@ void Player::LoadSavegame(const std::string& save_name) {
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
+
+	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
 
 	Game_System::ReloadSystemGraphic();
 

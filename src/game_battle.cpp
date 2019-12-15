@@ -316,10 +316,10 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 		return false;
 	}
 
-	if (condition.flags.switch_a && !Game_Switches.Get(condition.switch_a_id))
+	if (condition.flags.switch_a && !Main_Data::game_switches->Get(condition.switch_a_id))
 		return false;
 
-	if (condition.flags.switch_b && !Game_Switches.Get(condition.switch_b_id))
+	if (condition.flags.switch_b && !Main_Data::game_switches->Get(condition.switch_b_id))
 		return false;
 
 	if (condition.flags.variable && !(Game_Variables.Get(condition.variable_id) >= condition.variable_value))

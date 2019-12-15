@@ -972,15 +972,15 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 
 		if (start == end) {
 			if (val < 2) {
-				Game_Switches.Set(start, val == 0);
+				Main_Data::game_switches->Set(start, val == 0);
 			} else {
-				Game_Switches.Flip(start);
+				Main_Data::game_switches->Flip(start);
 			}
 		} else {
 			if (val < 2) {
-				Game_Switches.SetRange(start, end, val == 0);
+				Main_Data::game_switches->SetRange(start, end, val == 0);
 			} else {
-				Game_Switches.FlipRange(start, end);
+				Main_Data::game_switches->FlipRange(start, end);
 			}
 		}
 
@@ -2857,7 +2857,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 	switch (com.parameters[0]) {
 	case 0:
 		// Switch
-		result = Game_Switches.Get(com.parameters[1]) == (com.parameters[2] == 0);
+		result = Main_Data::game_switches->Get(com.parameters[1]) == (com.parameters[2] == 0);
 		break;
 	case 1:
 		// Variable
