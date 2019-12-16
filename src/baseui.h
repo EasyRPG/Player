@@ -223,13 +223,12 @@ protected:
 	 * Display mode data struct.
 	 */
 	struct DisplayMode {
-		DisplayMode() : effective(false), zoom(0), width(0), height(0), bpp(0), flags(0) {}
-		bool effective;
-		int zoom;
-		int width;
-		int height;
-		uint8_t bpp;
-		uint32_t flags;
+		bool effective = false;
+		int zoom = 0;
+		int width = 0;
+		int height = 0;
+		uint8_t bpp = 0;
+		uint32_t flags = 0;
 	};
 
 	/** Current display mode. */
