@@ -39,10 +39,9 @@ Game_Picture::Game_Picture(int ID) :
 void Game_Picture::UpdateSprite() {
 	RPG::SavePicture& data = GetData();
 
-	if (!sprite)
+	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
-	if (data.name.empty())
-		return;
+	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
 	if (HasSpritesheet() && (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap)) {
@@ -64,7 +63,7 @@ void Game_Picture::UpdateSprite() {
 
 		sheet_bitmap->Clear();
 
-		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < data.spritesheet_cols * data.spritesheet_rows) {
+		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < NumSpriteSheetFrames()) {
 			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
 		}
 
@@ -173,6 +172,19 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 	last_spritesheet_frame = -1;
 	sheet_bitmap.reset();
+
+	const auto num_frames = NumSpriteSheetFrames();
+
+	// If an invalid frame is specified and no animation, skip loading picture data.
+	if (num_frames > 0
+			&& data.spritesheet_speed == 0
+			&& (data.spritesheet_frame < 0 || data.spritesheet_frame >= num_frames))
+	{
+		if (sprite) {
+			sprite->SetBitmap(nullptr);
+		}
+		return;
+	}
 
 	RequestPictureSprite();
 }
@@ -395,4 +407,9 @@ void Game_Picture::SyncCurrentToFinish() {
 RPG::SavePicture& Game_Picture::GetData() const {
 	// Save: Picture array is guaranteed to be of correct size
 	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
+}
+
+inline int Game_Picture::NumSpriteSheetFrames() const {
+	auto& data = GetData();
+	return data.spritesheet_cols * data.spritesheet_rows;
 }

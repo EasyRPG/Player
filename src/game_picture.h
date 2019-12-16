@@ -86,6 +86,7 @@ private:
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
 	bool HasSpritesheet() const;
+	int NumSpriteSheetFrames() const;
 	/**
 	 * Compared to other classes picture doesn't hold a direct reference.
 	 * Resizing the picture vector when the ID is larger then the vector can
