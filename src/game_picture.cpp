@@ -46,31 +46,16 @@ void Game_Picture::UpdateSprite() {
 	// RPG Maker 2k3 1.12: Spritesheets
 	if (Player::IsRPG2k3E()
 			&& NumSpriteSheetFrames() > 1
-			&& (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap))
+			&& (data.spritesheet_frame != last_spritesheet_frame))
 	{
-		// Usage of an additional bitmap instead of Subrect is necessary because the Subrect
-		// approach will fail while the bitmap is rotated because the outer parts will be
-		// visible for degrees != 90 * n
-		if (!sheet_bitmap) {
-			int frame_width = whole_bitmap->GetWidth() / data.spritesheet_cols;
-			int frame_height = whole_bitmap->GetHeight() / data.spritesheet_rows;
-
-			sheet_bitmap = Bitmap::Create(frame_width, frame_height);
-		}
-
 		last_spritesheet_frame = data.spritesheet_frame;
 
-		int sx = sheet_bitmap->GetWidth() * ((last_spritesheet_frame) % data.spritesheet_cols);
-		int sy = sheet_bitmap->GetHeight() * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
-		Rect r(sx, sy, sheet_bitmap->GetWidth(), sheet_bitmap->GetHeight());
+		const int sw = bitmap->GetWidth() / data.spritesheet_cols;
+		const int sh = bitmap->GetHeight() / data.spritesheet_rows;
+		const int sx = sw * ((last_spritesheet_frame) % data.spritesheet_cols);
+		const int sy = sh * ((last_spritesheet_frame) / data.spritesheet_cols % data.spritesheet_rows);
 
-		sheet_bitmap->Clear();
-
-		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < NumSpriteSheetFrames()) {
-			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::Opaque());
-		}
-
-		sprite->SetBitmap(sheet_bitmap);
+		sprite->SetSrcRect(Rect{ sx, sy, sw, sh });
 	}
 
 	int x = data.current_x;
@@ -94,8 +79,10 @@ void Game_Picture::UpdateSprite() {
 	}
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
-	sprite->SetOx(sprite->GetBitmap()->GetWidth() / 2);
-	sprite->SetOy(sprite->GetBitmap()->GetHeight() / 2);
+
+	auto sr = sprite->GetSrcRect();
+	sprite->SetOx(sr.width / 2);
+	sprite->SetOy(sr.height / 2);
 
 	sprite->SetAngle(data.effect_mode != RPG::SavePicture::Effect_wave ? data.current_rotation * (2 * M_PI) / 256 : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == RPG::SavePicture::Effect_wave ? data.current_waver * (2 * M_PI) / 256 : 0.0);
@@ -174,7 +161,6 @@ void Game_Picture::Show(const ShowParams& params) {
 	data.flags.affected_by_flash = (params.flags & 32) == 32;
 	data.flags.affected_by_shake = (params.flags & 64) == 64;
 	last_spritesheet_frame = -1;
-	sheet_bitmap.reset();
 
 	const auto num_frames = NumSpriteSheetFrames();
 
@@ -248,8 +234,7 @@ void Game_Picture::Erase(bool force_erase) {
 
 	data.name.clear();
 	sprite.reset();
-	whole_bitmap.reset();
-	sheet_bitmap.reset();
+	bitmap.reset();
 }
 
 void Game_Picture::RequestPictureSprite() {
@@ -265,12 +250,12 @@ void Game_Picture::RequestPictureSprite() {
 void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	RPG::SavePicture& data = GetData();
 
-	whole_bitmap = Cache::Picture(data.name, data.use_transparent_color);
+	bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
 		sprite.reset(new Sprite());
 	}
-	sprite->SetBitmap(whole_bitmap);
+	sprite->SetBitmap(bitmap);
 }
 
 void Game_Picture::Update() {

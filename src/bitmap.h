@@ -336,18 +336,6 @@ public:
 	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity);
 
 	/**
-	 * Blits source bitmap scaled, rotated and translated.
-	 *
-	 * @param dst_rect destination rect.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rect.
-	 * @param inv transformation matrix from destination coordinates
-	 *            to source coordinates.
-	 * @param opacity opacity for blending with bitmap.
-	 */
-	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Transform& inv, Opacity const& opacity);
-
-	/**
 	 * Blits source bitmap with waver effect.
 	 *
 	 * @param x x position.
@@ -361,6 +349,37 @@ public:
 	 * @param opacity opacity.
 	 */
 	void WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity);
+
+	/**
+	 * Blits source bitmap with transformation and opacity scaling.
+	 *
+	 * @param fwd forward (src->dst) transformation matrix.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param opacity opacity.
+	 */
+	void RotateZoomOpacityBlit(int x, int y, int ox, int oy,
+			Bitmap const& src, Rect const& src_rect,
+			double angle, double zoom_x, double zoom_y, Opacity const& opacity);
+
+	/**
+	 * Blits source bitmap with zoom and opacity scaling.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param ox source origin x.
+	 * @param oy source origin y.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param zoom_x x scale factor.
+	 * @param zoom_y y scale factor.
+	 * @param opacity opacity.
+	 */
+	void ZoomOpacityBlit(int x, int y, int ox, int oy,
+						 Bitmap const& src, Rect const& src_rect,
+						 double zoom_x, double zoom_y,
+						 Opacity const& opacity);
+
 
 	/**
 	 * Fills entire bitmap with color.
@@ -551,36 +570,6 @@ protected:
 
 	pixman_op_t GetOperator(pixman_image_t* mask = nullptr) const;
 	bool read_only = false;
-
-private:
-	/**
-	 * Blits source bitmap with transformation and opacity scaling.
-	 *
-	 * @param fwd forward (src->dst) transformation matrix.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param opacity opacity.
-	 */
-	void RotateZoomOpacityBlit(const Transform &fwd, Bitmap const& src, Rect const& src_rect,
-							   Opacity const& opacity);
-
-	/**
-	 * Blits source bitmap with zoom and opacity scaling.
-	 *
-	 * @param x x position.
-	 * @param y y position.
-	 * @param ox source origin x.
-	 * @param oy source origin y.
-	 * @param src source bitmap.
-	 * @param src_rect source bitmap rectangle.
-	 * @param zoom_x x scale factor.
-	 * @param zoom_y y scale factor.
-	 * @param opacity opacity.
-	 */
-	void ZoomOpacityBlit(int x, int y, int ox, int oy,
-						 Bitmap const& src, Rect const& src_rect,
-						 double zoom_x, double zoom_y,
-						 Opacity const& opacity);
 };
 
 #endif

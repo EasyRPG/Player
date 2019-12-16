@@ -76,8 +76,7 @@ public:
 private:
 	int id;
 	std::unique_ptr<Sprite> sprite;
-	BitmapRef whole_bitmap;
-	BitmapRef sheet_bitmap;
+	BitmapRef bitmap;
 	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
 
