@@ -36,7 +36,6 @@ Sprite_Character::Sprite_Character(Game_Character* character, CloneType type) :
 
 void Sprite_Character::Update() {
 	Sprite::Update();
-	Rect r;
 	if (tile_id != character->GetTileId() ||
 		character_name != character->GetSpriteName() ||
 		character_index != character->GetSpriteIndex()
