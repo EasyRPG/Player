@@ -170,6 +170,7 @@ add_library(${PROJECT_NAME}
 	src/message_overlay.h
 	src/meta.cpp
 	src/meta.h
+	src/opacity.h
 	src/options.h
 	src/output.cpp
 	src/output.h

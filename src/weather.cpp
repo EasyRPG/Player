@@ -121,7 +121,7 @@ void Weather::DrawRain(Bitmap& dst) {
 	if (!rain_bitmap) {
 		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
 		if (tone_effect != Tone()) {
-			rain_bitmap->ToneBlit(0, 0, *rain_bitmap, rain_bitmap->GetRect(), tone_effect, Opacity::opaque, true);
+			rain_bitmap->ToneBlit(0, 0, *rain_bitmap, rain_bitmap->GetRect(), tone_effect, Opacity::Opaque(), true);
 		}
 	}
 
@@ -141,7 +141,7 @@ void Weather::DrawSnow(Bitmap& dst) {
 	if (!snow_bitmap) {
 		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
 		if (tone_effect != Tone()) {
-			snow_bitmap->ToneBlit(0, 0, *snow_bitmap, snow_bitmap->GetRect(), tone_effect, Opacity::opaque, true);
+			snow_bitmap->ToneBlit(0, 0, *snow_bitmap, snow_bitmap->GetRect(), tone_effect, Opacity::Opaque(), true);
 		}
 	}
 
@@ -223,7 +223,7 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone
 			tone_overlay = Bitmap::Create(overlay, sr);
 		}
 		if (tone_dirty) {
-			tone_overlay->ToneBlit(0, 0, overlay, sr, tone_effect, Opacity::opaque, false);
+			tone_overlay->ToneBlit(0, 0, overlay, sr, tone_effect, Opacity::Opaque(), false);
 		}
 		src = tone_overlay.get();
 	}

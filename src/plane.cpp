@@ -40,7 +40,7 @@ void Plane::Draw(Bitmap& dst) {
 			tone_bitmap = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight());
 		}
 		tone_bitmap->Clear();
-		tone_bitmap->ToneBlit(0, 0, *bitmap, bitmap->GetRect(), tone_effect, Opacity::opaque);
+		tone_bitmap->ToneBlit(0, 0, *bitmap, bitmap->GetRect(), tone_effect, Opacity::Opaque());
 	}
 
 	BitmapRef source = tone_effect == Tone() ? bitmap : tone_bitmap;

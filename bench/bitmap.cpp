@@ -6,6 +6,13 @@
 #include <pixel_format.h>
 #include <transform.h>
 
+constexpr auto opacity_opaque = Opacity::Opaque();
+constexpr auto opacity_0 = Opacity(0);
+constexpr auto opacity_50 = Opacity(128);
+constexpr auto opacity_75_25 = Opacity(192, 64, 1);
+
+auto opacity = opacity_opaque;
+
 struct BitmapAccess : public Bitmap {
 	static pixman_format_code_t find_format(const DynamicFormat& format) {
 		return Bitmap::find_format(format);
@@ -48,7 +55,7 @@ static void BM_Blit(benchmark::State& state) {
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->Blit(0, 0, *src, rect, Opacity::opaque);
+		dest->Blit(0, 0, *src, rect, opacity);
 	}
 }
 
@@ -60,7 +67,7 @@ static void BM_BlitFast(benchmark::State& state) {
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->BlitFast(0, 0, *src, rect, Opacity::opaque);
+		dest->BlitFast(0, 0, *src, rect, opacity);
 	}
 }
 
@@ -72,7 +79,7 @@ static void BM_TiledBlit(benchmark::State& state) {
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->TiledBlit(rect, *src, rect, Opacity::opaque);
+		dest->TiledBlit(rect, *src, rect, opacity);
 	}
 }
 
@@ -84,7 +91,7 @@ static void BM_TiledBlitOffset(benchmark::State& state) {
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->TiledBlit(0, 0, rect, *src, rect, Opacity::opaque);
+		dest->TiledBlit(0, 0, rect, *src, rect, opacity);
 	}
 }
 
@@ -96,7 +103,7 @@ static void BM_StretchBlit(benchmark::State& state) {
 	auto src = Bitmap::Create(20, 20);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->StretchBlit(*src, rect, Opacity::opaque);
+		dest->StretchBlit(*src, rect, opacity);
 	}
 }
 
@@ -109,7 +116,7 @@ static void BM_StretchBlitRect(benchmark::State& state) {
 	auto src = Bitmap::Create(20, 20);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->StretchBlit(dst_rect, *src, rect, Opacity::opaque);
+		dest->StretchBlit(dst_rect, *src, rect, opacity);
 	}
 }
 
@@ -121,7 +128,7 @@ static void BM_FlipBlit(benchmark::State& state) {
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->FlipBlit(0, 0, *src, rect, true, true, Opacity::opaque);
+		dest->FlipBlit(0, 0, *src, rect, true, true, opacity);
 	}
 }
 
@@ -135,7 +142,7 @@ static void BM_TransformBlit(benchmark::State& state) {
 	auto rect = src->GetRect();
 	auto xform = Transform::Rotation(2 * M_PI);
 	for (auto _: state) {
-		dest->TransformBlit(dst_rect, *src, rect, xform, Opacity::opaque);
+		dest->TransformBlit(dst_rect, *src, rect, xform, opacity);
 	}
 }
 
@@ -151,7 +158,7 @@ static void BM_WaverBlit(benchmark::State& state) {
 	int depth = 2;
 	double phase = M_PI;
 	for (auto _: state) {
-		dest->WaverBlit(0, 0, zoom_x, zoom_y, *src, rect, depth, phase, Opacity::opaque);
+		dest->WaverBlit(0, 0, zoom_x, zoom_y, *src, rect, depth, phase, opacity);
 	}
 }
 
@@ -221,7 +228,7 @@ static void BM_ToneBlit(benchmark::State& state) {
 	auto rect = src->GetRect();
 	auto tone = Tone();
 	for (auto _: state) {
-		dest->ToneBlit(0, 0, *src, rect, tone, Opacity::opaque, false);
+		dest->ToneBlit(0, 0, *src, rect, tone, opacity, false);
 	}
 }
 
@@ -234,7 +241,7 @@ static void BM_BlendBlit(benchmark::State& state) {
 	auto rect = src->GetRect();
 	auto color = Color(255, 255, 255, 255);
 	for (auto _: state) {
-		dest->BlendBlit(0, 0, *src, rect, color, Opacity::opaque);
+		dest->BlendBlit(0, 0, *src, rect, color, opacity);
 	}
 }
 
@@ -317,7 +324,7 @@ static void BM_EffectsBlit(benchmark::State& state) {
 	for (auto _: state) {
 		dest->EffectsBlit(0, 0, 0, 0,
 				*src, rect,
-				Opacity::opaque,
+				opacity,
 				zoom_x, zoom_y,
 				angle,
 				waver_depth,

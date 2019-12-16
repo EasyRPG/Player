@@ -470,16 +470,16 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 
 		if (tone != Tone()) {
 			bitmap_effects = create();
-			bitmap_effects->ToneBlit(0, 0, *src_bitmap, rect, tone, Opacity::opaque);
+			bitmap_effects->ToneBlit(0, 0, *src_bitmap, rect, tone, Opacity::Opaque());
 		}
 
 		if (blend != Color()) {
 			if (bitmap_effects) {
 				// Tone blit was applied
-				bitmap_effects->BlendBlit(0, 0, *bitmap_effects, bitmap_effects->GetRect(), blend, Opacity::opaque);
+				bitmap_effects->BlendBlit(0, 0, *bitmap_effects, bitmap_effects->GetRect(), blend, Opacity::Opaque());
 			} else {
 				bitmap_effects = create();
-				bitmap_effects->BlendBlit(0, 0, *src_bitmap, rect, blend, Opacity::opaque);
+				bitmap_effects->BlendBlit(0, 0, *src_bitmap, rect, blend, Opacity::Opaque());
 			}
 		}
 
@@ -489,7 +489,7 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 				bitmap_effects->Flip(bitmap_effects->GetRect(), flip_x, flip_y);
 			} else {
 				bitmap_effects = create();
-				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::opaque);
+				bitmap_effects->FlipBlit(rect.x, rect.y, *src_bitmap, rect, flip_x, flip_y, Opacity::Opaque());
 			}
 		}
 

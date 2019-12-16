@@ -40,8 +40,6 @@
 #include "util_macro.h"
 #include "bitmap_hslrgb.h"
 
-const Opacity Opacity::opaque;
-
 BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 	BitmapRef surface = Bitmap::Create(width, height, true);
 	surface->Fill(color);
@@ -173,7 +171,7 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 
 	Init(src_rect.width, src_rect.height, (void *) NULL);
 
-	Blit(0, 0, source, src_rect, Opacity::opaque);
+	Blit(0, 0, source, src_rect, Opacity::Opaque());
 }
 
 bool Bitmap::WritePNG(std::ostream& os) const {
@@ -221,7 +219,7 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	std::vector<uint32_t> pixels;
 	pixels.resize(rect.width * rect.height);
 	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), rect.width, rect.height, rect.width*4, format);
-	bmp.Blit(0, 0, *this, rect, Opacity::opaque);
+	bmp.Blit(0, 0, *this, rect, Opacity::Opaque());
 
 	for (std::vector<uint32_t>::const_iterator p = pixels.begin(); p != pixels.end(); ++p) {
 		if ((*p & 0xFF) != 0)
@@ -304,7 +302,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 	std::vector<uint32_t> pixels;
 	pixels.resize(src_rect.width * src_rect.height);
 	Bitmap bmp(reinterpret_cast<void*>(&pixels.front()), src_rect.width, src_rect.height, src_rect.width * 4, format);
-	bmp.Blit(0, 0, src, src_rect, Opacity::opaque);
+	bmp.Blit(0, 0, src, src_rect, Opacity::Opaque());
 
 	for (std::vector<uint32_t>::iterator p = pixels.begin(); p != pixels.end(); ++p) {
 		uint32_t pixel = *p;
@@ -317,7 +315,7 @@ void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect
 		*p = ((uint32_t) r << 24) | ((uint32_t) g << 16) | ((uint32_t) b << 8) | (uint32_t) a;
 	}
 
-	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::opaque);
+	Blit(dst_rect.x, dst_rect.y, bmp, bmp.GetRect(), Opacity::Opaque());
 }
 
 void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
@@ -519,7 +517,7 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 
 	Bitmap src(pixels, width, height, 0, img_format);
 	Clear();
-	Blit(0, 0, src, src.GetRect(), Opacity::opaque);
+	Blit(0, 0, src, src.GetRect(), Opacity::Opaque());
 	free(pixels);
 }
 
@@ -994,7 +992,7 @@ void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 
 	BitmapRef resampled(new Bitmap(dst_rect.width, dst_rect.height, GetTransparent()));
 
-	resampled->FlipBlit(0, 0, *this, dst_rect, horizontal, vertical, Opacity::opaque);
+	resampled->FlipBlit(0, 0, *this, dst_rect, horizontal, vertical, Opacity::Opaque());
 
 	pixman_image_composite32(GetOperator(),
 							 resampled->bitmap.get(), nullptr, bitmap.get(),

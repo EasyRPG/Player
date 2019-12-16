@@ -32,46 +32,9 @@
 #include "tone.h"
 #include "text.h"
 #include "pixman_image_ptr.h"
+#include "opacity.h"
 
 struct Transform;
-
-/**
- * Opacity class.
- */
-class Opacity {
-public:
-	int top;
-	int bottom;
-	int split;
-
-	static const Opacity opaque;
-
-	Opacity() :
-		top(255), bottom(255), split(0) {}
-
-	Opacity(int opacity) :
-		top(opacity), bottom(opacity), split(0) {}
-
-	Opacity(int top_opacity, int bottom_opacity, int opacity_split) :
-		top(top_opacity), bottom(bottom_opacity), split(opacity_split) {}
-
-	int Value() const {
-		assert(!IsSplit());
-		return top;
-	}
-
-	bool IsSplit() const {
-		return split > 0 && top != bottom;
-	}
-
-	bool IsTransparent() const {
-		return IsSplit() ? top <= 0 && bottom <= 0 : top <= 0;
-	}
-
-	bool IsOpaque() const {
-		return IsSplit() ? top >= 255 && bottom >= 255 : top >= 255;
-	}
-};
 
 /**
  * Base Bitmap class.
