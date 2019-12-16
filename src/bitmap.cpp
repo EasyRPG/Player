@@ -698,6 +698,8 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 
 	int height = static_cast<int>(std::floor(src_rect.height * zoom_y));
 	int width  = static_cast<int>(std::floor(src_rect.width * zoom_x));
+	const auto xoff = src_rect.x * zoom_x;
+	const auto yoff = src_rect.y * zoom_y;
 	const auto yclip = y < 0 ? -y : 0;
 	const auto yend = std::min(height, this->height() - y);
 	for (int i = yclip; i < yend; i++) {
@@ -710,8 +712,8 @@ void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const&
 
 		pixman_image_composite32(src.GetOperator(mask.get()),
 								 src.bitmap.get(), mask.get(), bitmap.get(),
-								 src_rect.x, i,
-								 src_rect.x, i,
+								 xoff, yoff + i,
+								 0, i,
 								 x + offset, dy,
 								 width, 1);
 	}
