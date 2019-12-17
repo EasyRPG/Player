@@ -436,23 +436,25 @@ endif
 # doxygen
 @DX_RULES@
 
-# FIXME make filefinder work without external scripting
 check_PROGRAMS = test_runner
 test_runner_SOURCES = \
-    tests/doctest.h \
-    tests/test_main.cpp \
-    tests/bitmapfont.cpp \
-    tests/directorytree.cpp \
-    tests/filefinder.cpp \
-    tests/output.cpp \
-    tests/rtp.cpp \
-    tests/utils.cpp \
-    tests/utf.cpp \
-    tests/wordwrap.cpp
+	tests/doctest.h \
+	tests/test_main.cpp \
+	tests/bitmapfont.cpp \
+	tests/directorytree.cpp \
+	tests/filefinder.cpp \
+	tests/output.cpp \
+	tests/rtp.cpp \
+	tests/utils.cpp \
+	tests/utf.cpp \
+	tests/wordwrap.cpp
 test_runner_CXXFLAGS = \
-    $(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
+	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
 test_runner_LDADD = \
-    $(easyrpg_player_LDADD)
+	$(easyrpg_player_LDADD)
+
+check-local:
+	$(AM_V_at)./test_runner
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests
