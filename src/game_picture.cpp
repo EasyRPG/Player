@@ -44,7 +44,10 @@ void Game_Picture::UpdateSprite() {
 	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
-	if (HasSpritesheet() && (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap)) {
+	if (Player::IsRPG2k3E()
+			&& NumSpriteSheetFrames() > 1
+			&& (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap))
+	{
 		// Usage of an additional bitmap instead of Subrect is necessary because the Subrect
 		// approach will fail while the bitmap is rotated because the outer parts will be
 		// visible for degrees != 90 * n
@@ -268,16 +271,6 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 		sprite.reset(new Sprite());
 	}
 	sprite->SetBitmap(whole_bitmap);
-}
-
-bool Game_Picture::HasSpritesheet() const {
-	RPG::SavePicture& data = GetData();
-
-	if (data.spritesheet_rows < 1 || data.spritesheet_cols < 1) {
-		return false;
-	}
-
-	return data.spritesheet_rows > 1 || data.spritesheet_cols > 1;
 }
 
 void Game_Picture::Update() {
