@@ -967,41 +967,51 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 		return;
 	}
 
-	if (!horizontal && !vertical) {
-		Blit(x, y, src, src_rect, opacity);
-		return;
+	bool has_xform = (horizontal || vertical);
+	const auto img_w = src.GetWidth();
+	const auto img_h = src.GetHeight();
+
+	auto rect = src_rect;
+	if (has_xform) {
+		Transform xform = Transform::Scale(horizontal ? -1 : 1, vertical ? -1 : 1);
+		xform *= Transform::Translation(horizontal ? -img_w : 0, vertical ? -img_h : 0);
+
+		pixman_image_set_transform(src.bitmap.get(), &xform.matrix);
+		const auto src_x = horizontal ? img_w - src_rect.x - src_rect.width : src_rect.x;
+		const auto src_y = vertical ? img_h - src_rect.y - src_rect.height : src_rect.y;
+
+		rect = Rect{ src_x, src_y, src_rect.width, src_rect.height };
 	}
 
-	Transform xform = Transform::Scale(horizontal ? -1 : 1, vertical ? -1 : 1);
-	xform *= Transform::Translation(horizontal ? -src.GetWidth() : 0, vertical ? -src.GetHeight() : 0);
+	Blit(x, y, src, rect, opacity);
 
-	pixman_image_set_transform(src.bitmap.get(), &xform.matrix);
-
-	pixman_image_composite32(src.GetOperator(),
-							 src.bitmap.get(), nullptr, bitmap.get(),
-							 horizontal ? src.GetWidth() - src_rect.x - src_rect.width : src_rect.x,
-							 vertical ? src.GetHeight() - src_rect.y - src_rect.height : src_rect.y,
-							 0, 0,
-							 x, y,
-							 src_rect.width, src_rect.height);
-
-	pixman_image_set_transform(src.bitmap.get(), nullptr);
+	if (!has_xform) {
+		pixman_image_set_transform(src.bitmap.get(), nullptr);
+	}
 }
 
-void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
-	if (!horizontal && !vertical)
+void Bitmap::Flip(bool horizontal, bool vertical) {
+	if (!horizontal && !vertical) {
 		return;
+	}
+	const auto w = GetWidth();
+	const auto h = GetHeight();
+	const auto p = pitch();
 
-	BitmapRef resampled(new Bitmap(dst_rect.width, dst_rect.height, GetTransparent()));
+	auto temp = PixmanImagePtr{ pixman_image_create_bits(pixman_format, w, h, nullptr, p) };
 
-	resampled->FlipBlit(0, 0, *this, dst_rect, horizontal, vertical, Opacity::Opaque());
+	std::memcpy(pixman_image_get_data(temp.get()),
+			pixman_image_get_data(bitmap.get()),
+			p * h);
 
-	pixman_image_composite32(GetOperator(),
-							 resampled->bitmap.get(), nullptr, bitmap.get(),
-							 0, 0,
-							 0, 0,
-							 dst_rect.x, dst_rect.y,
-							 dst_rect.width, dst_rect.height);
+	Transform xform = Transform::Scale(horizontal ? -1 : 1, vertical ? -1 : 1);
+	xform *= Transform::Translation(horizontal ? -w : 0, vertical ? -h : 0);
+
+	pixman_image_set_transform(temp.get(), &xform.matrix);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 temp.get(), nullptr, bitmap.get(),
+							 0, 0, 0, 0, 0, 0, w, h);
 }
 
 void Bitmap::MaskedBlit(Rect const& dst_rect, Bitmap const& mask, int mx, int my, Color const& color) {

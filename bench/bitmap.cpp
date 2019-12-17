@@ -266,9 +266,8 @@ BENCHMARK(BM_BlendBlit);
 static void BM_Flip(benchmark::State& state) {
 	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
-	auto rect = dest->GetRect();
 	for (auto _: state) {
-		dest->Flip(rect, true, true);
+		dest->Flip(true, true);
 	}
 }
 
