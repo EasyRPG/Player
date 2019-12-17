@@ -578,8 +578,9 @@ namespace {
 } // anonymous namespace
 
 void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	auto mask = CreateMask(opacity, src_rect);
 
@@ -593,8 +594,9 @@ void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, Opacity
 }
 
 void Bitmap::BlitFast(int x, int y, Bitmap const & src, Rect const & src_rect, Opacity const & opacity) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 		src.bitmap.get(),
@@ -616,8 +618,9 @@ void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_
 }
 
 void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	if (ox >= src_rect.width)	ox %= src_rect.width;
 	if (oy >= src_rect.height)	oy %= src_rect.height;
@@ -647,8 +650,9 @@ void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, Opacity const
 }
 
 void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, Opacity const& opacity) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	double zoom_x = (double)src_rect.width  / dst_rect.width;
 	double zoom_y = (double)src_rect.height / dst_rect.height;
@@ -670,8 +674,9 @@ void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& sr
 }
 
 void Bitmap::WaverBlit(int x, int y, double zoom_x, double zoom_y, Bitmap const& src, Rect const& src_rect, int depth, double phase, Opacity const& opacity) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	Transform xform = Transform::Scale(1.0 / zoom_x, 1.0 / zoom_y);
 
@@ -814,6 +819,10 @@ static inline void color_tone(uint32_t &src_pixel, Tone tone, int rs, int gs, in
 }
 
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone, Opacity const& opacity, bool check_alpha) {
+	if (opacity.IsTransparent()) {
+		return;
+	}
+
 	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
 			Blit(x, y, src, src_rect, opacity);
@@ -924,6 +933,10 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 }
 
 void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color, Opacity const& opacity) {
+	if (opacity.IsTransparent()) {
+		return;
+	}
+
 	if (color.alpha == 0) {
 		if (&src != this)
 			Blit(x, y, src, src_rect, opacity);
@@ -950,6 +963,10 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, co
 }
 
 void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical, Opacity const& opacity) {
+	if (opacity.IsTransparent()) {
+		return;
+	}
+
 	if (!horizontal && !vertical) {
 		Blit(x, y, src, src_rect, opacity);
 		return;
@@ -1033,8 +1050,9 @@ void Bitmap::EffectsBlit(int x, int y, int ox, int oy,
 						 Opacity const& opacity,
 						 double zoom_x, double zoom_y, double angle,
 						 int waver_depth, double waver_phase) {
-	if (opacity.IsTransparent())
+	if (opacity.IsTransparent()) {
 		return;
+	}
 
 	bool rotate = angle != 0.0;
 	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
@@ -1059,6 +1077,10 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 		Bitmap const& src, Rect const& src_rect,
 		double angle, double zoom_x, double zoom_y, Opacity const& opacity)
 {
+	if (opacity.IsTransparent()) {
+		return;
+	}
+
 	auto* src_img = src.bitmap.get();
 
 	Transform fwd = Transform::Translation(x, y);
@@ -1098,7 +1120,12 @@ void Bitmap::RotateZoomOpacityBlit(int x, int y, int ox, int oy,
 void Bitmap::ZoomOpacityBlit(int x, int y, int ox, int oy,
 							 Bitmap const& src, Rect const& src_rect,
 							 double zoom_x, double zoom_y,
-							 Opacity const& opacity) {
+							 Opacity const& opacity)
+{
+	if (opacity.IsTransparent()) {
+		return;
+	}
+
 	Rect dst_rect(
 		x - static_cast<int>(std::floor(ox * zoom_x)),
 		y - static_cast<int>(std::floor(oy * zoom_y)),

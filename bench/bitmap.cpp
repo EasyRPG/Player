@@ -6,12 +6,12 @@
 #include <pixel_format.h>
 #include <transform.h>
 
-constexpr auto opacity_opaque = Opacity::Opaque();
+constexpr auto opacity_100 = Opacity::Opaque();
 constexpr auto opacity_0 = Opacity(0);
 constexpr auto opacity_50 = Opacity(128);
 constexpr auto opacity_75_25 = Opacity(192, 64, 1);
 
-constexpr auto opacity = opacity_opaque;
+constexpr auto opacity = opacity_100;
 
 const auto fmt_rgba = format_R8G8B8A8_a().format();
 const auto fmt_bgra = format_B8G8R8A8_a().format();
@@ -242,7 +242,7 @@ static void BM_ToneBlit(benchmark::State& state) {
 	auto dest = Bitmap::Create(320, 240);
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
-	auto tone = Tone();
+	auto tone = Tone(255,255,255,128);
 	for (auto _: state) {
 		dest->ToneBlit(0, 0, *src, rect, tone, opacity, false);
 	}
