@@ -631,15 +631,11 @@ void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, 
 
 	pixman_image_set_repeat(src_bm.get(), PIXMAN_REPEAT_NORMAL);
 
-	Transform xform = Transform::Translation(ox, oy);
-
-	pixman_image_set_transform(src_bm.get(), &xform.matrix);
-
-	auto mask = CreateMask(opacity, src_rect, &xform);
+	auto mask = CreateMask(opacity, src_rect);
 
 	pixman_image_composite32(src.GetOperator(mask.get()),
 							 src_bm.get(), mask.get(), bitmap.get(),
-							 0, 0,
+							 ox, oy,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);
