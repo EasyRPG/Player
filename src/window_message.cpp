@@ -714,9 +714,9 @@ void Window_Message::UpdateCursorRect() {
 			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;
 		}
 
-		cursor_rect.Set(x_pos, y_pos, width, 16);
+		cursor_rect = { x_pos, y_pos, width, 16 };
 	} else {
-		cursor_rect.Set(0, 0, 0, 0);
+		cursor_rect = { 0, 0, 0, 0 };
 	}
 }
 

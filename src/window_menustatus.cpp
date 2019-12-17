@@ -63,9 +63,9 @@ void Window_MenuStatus::Refresh() {
 void Window_MenuStatus::UpdateCursorRect()
 {
 	if (index < 0) {
-		cursor_rect.Set(0, 0, 0, 0);
+		cursor_rect = { 0, 0, 0, 0 };
 	} else {
-		cursor_rect.Set(48 + 4, index * (48 + 10), 168, 48);
+		cursor_rect = { 48 + 4, index * (48 + 10), 168, 48 };
 	}
 }
 

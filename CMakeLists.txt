@@ -52,7 +52,6 @@ add_library(${PROJECT_NAME}
 	src/bitmap_hslrgb.h
 	src/cache.cpp
 	src/cache.h
-	src/color.cpp
 	src/color.h
 	src/decoder_libsndfile.cpp
 	src/decoder_libsndfile.h
@@ -265,7 +264,6 @@ add_library(${PROJECT_NAME}
 	src/tilemap.h
 	src/tilemap_layer.cpp
 	src/tilemap_layer.h
-	src/tone.cpp
 	src/tone.h
 	src/transform.h
 	src/transition.cpp

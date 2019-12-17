@@ -270,12 +270,13 @@ namespace Utils {
 	/**
 	 * @return value clamped between min and max
 	 */
-	template <typename T> T Clamp(T value, const T& minv, const T& maxv);
+	template <typename T>
+		constexpr T Clamp(T value, const T& minv, const T& maxv);
 
 } // namespace Utils
 
 template <typename T>
-inline T Utils::Clamp(T value, const T& minv, const T& maxv) {
+constexpr T Utils::Clamp(T value, const T& minv, const T& maxv) {
 	return (value < minv) ? (minv) : ((value > maxv) ? maxv : value);
 }
 

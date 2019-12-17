@@ -97,10 +97,10 @@ public:
 	void Update() override;
 
 protected:
-	unsigned int number;
+	int number;
 	int digits_max;
-	unsigned int cursor_width;
-	unsigned int index;
+	int cursor_width;
+	int index;
 	bool show_operator;
 	bool plus;
 
