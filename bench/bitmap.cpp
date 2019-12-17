@@ -82,7 +82,7 @@ BENCHMARK(BM_BlitFast);
 static void BM_TiledBlit(benchmark::State& state) {
 	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
-	auto src = Bitmap::Create(320, 240);
+	auto src = Bitmap::Create(16, 16);
 	auto rect = src->GetRect();
 	for (auto _: state) {
 		dest->TiledBlit(rect, *src, rect, opacity);
@@ -94,10 +94,10 @@ BENCHMARK(BM_TiledBlit);
 static void BM_TiledBlitOffset(benchmark::State& state) {
 	Bitmap::SetFormat(format);
 	auto dest = Bitmap::Create(320, 240);
-	auto src = Bitmap::Create(320, 240);
+	auto src = Bitmap::Create(64, 64);
 	auto rect = src->GetRect();
 	for (auto _: state) {
-		dest->TiledBlit(0, 0, rect, *src, rect, opacity);
+		dest->TiledBlit(32, 32, Rect{32,32,16,16}, *src, rect, opacity);
 	}
 }
 
