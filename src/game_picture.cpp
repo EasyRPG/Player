@@ -39,13 +39,15 @@ Game_Picture::Game_Picture(int ID) :
 void Game_Picture::UpdateSprite() {
 	RPG::SavePicture& data = GetData();
 
-	if (!sprite)
+	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
-	if (data.name.empty())
-		return;
+	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
-	if (HasSpritesheet() && (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap)) {
+	if (Player::IsRPG2k3E()
+			&& NumSpriteSheetFrames() > 1
+			&& (data.spritesheet_frame != last_spritesheet_frame || !sheet_bitmap))
+	{
 		// Usage of an additional bitmap instead of Subrect is necessary because the Subrect
 		// approach will fail while the bitmap is rotated because the outer parts will be
 		// visible for degrees != 90 * n
@@ -64,7 +66,7 @@ void Game_Picture::UpdateSprite() {
 
 		sheet_bitmap->Clear();
 
-		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < data.spritesheet_cols * data.spritesheet_rows) {
+		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < NumSpriteSheetFrames()) {
 			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
 		}
 
@@ -174,6 +176,19 @@ void Game_Picture::Show(const ShowParams& params) {
 	last_spritesheet_frame = -1;
 	sheet_bitmap.reset();
 
+	const auto num_frames = NumSpriteSheetFrames();
+
+	// If an invalid frame is specified and no animation, skip loading picture data.
+	if (num_frames > 0
+			&& data.spritesheet_speed == 0
+			&& (data.spritesheet_frame < 0 || data.spritesheet_frame >= num_frames))
+	{
+		if (sprite) {
+			sprite->SetBitmap(nullptr);
+		}
+		return;
+	}
+
 	RequestPictureSprite();
 }
 
@@ -256,16 +271,6 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 		sprite.reset(new Sprite());
 	}
 	sprite->SetBitmap(whole_bitmap);
-}
-
-bool Game_Picture::HasSpritesheet() const {
-	RPG::SavePicture& data = GetData();
-
-	if (data.spritesheet_rows < 1 || data.spritesheet_cols < 1) {
-		return false;
-	}
-
-	return data.spritesheet_rows > 1 || data.spritesheet_cols > 1;
 }
 
 void Game_Picture::Update() {
@@ -395,4 +400,9 @@ void Game_Picture::SyncCurrentToFinish() {
 RPG::SavePicture& Game_Picture::GetData() const {
 	// Save: Picture array is guaranteed to be of correct size
 	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
+}
+
+inline int Game_Picture::NumSpriteSheetFrames() const {
+	auto& data = GetData();
+	return data.spritesheet_cols * data.spritesheet_rows;
 }

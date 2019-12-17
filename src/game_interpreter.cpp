@@ -2433,7 +2433,8 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		if (com.parameters[24] == 2) {
 			params.spritesheet_speed = com.parameters[25];
 		} else {
-			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]);
+			// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
+			params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
 		}
 
 		params.spritesheet_play_once = com.parameters[26];
