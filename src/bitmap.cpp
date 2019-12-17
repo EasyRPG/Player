@@ -716,27 +716,23 @@ static pixman_color_t PixmanColor(const Color &color) {
 
 void Bitmap::Fill(const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
-	Rect src_rect(0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height()));
 
-	auto timage = PixmanImagePtr{pixman_image_create_solid_fill(&pcolor)};
+	pixman_box32_t box = { 0, 0, width(), height() };
 
-	pixman_image_composite32(PIXMAN_OP_SRC,
-		timage.get(), (pixman_image_t*)NULL, bitmap.get(),
-		src_rect.x, src_rect.y,
-		0, 0,
-		0, 0,
-		src_rect.width, src_rect.height);
+	pixman_image_fill_boxes(PIXMAN_OP_SRC, bitmap.get(), &pcolor, 1, &box);
 }
 
 void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
-	pixman_rectangle16_t rect = {
-	static_cast<int16_t>(dst_rect.x),
-	static_cast<int16_t>(dst_rect.y),
-	static_cast<uint16_t>(dst_rect.width),
-	static_cast<uint16_t>(dst_rect.height)};
 
-	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap.get(), &pcolor, 1, &rect);
+	auto timage = PixmanImagePtr{pixman_image_create_solid_fill(&pcolor)};
+
+	pixman_image_composite32(PIXMAN_OP_OVER,
+			timage.get(), nullptr, bitmap.get(),
+			0, 0,
+			0, 0,
+			dst_rect.x, dst_rect.y,
+			dst_rect.width, dst_rect.height);
 }
 
 void Bitmap::Clear() {
@@ -749,15 +745,15 @@ void Bitmap::Clear() {
 }
 
 void Bitmap::ClearRect(Rect const& dst_rect) {
-	pixman_color_t pcolor = {0, 0, 0, 0};
-	pixman_rectangle16_t rect = {
-		static_cast<int16_t>(dst_rect.x),
-		static_cast<int16_t>(dst_rect.y),
-		static_cast<uint16_t>(dst_rect.width),
-		static_cast<uint16_t>(dst_rect.height)
+	pixman_color_t pcolor = {};
+	pixman_box32_t box = {
+		dst_rect.x,
+		dst_rect.y,
+		dst_rect.x + dst_rect.width,
+		dst_rect.y + dst_rect.height
 	};
 
-	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap.get(), &pcolor, 1, &rect);
+	pixman_image_fill_boxes(PIXMAN_OP_CLEAR, bitmap.get(), &pcolor, 1, &box);
 }
 
 // Hard light lookup table mapping source color to destination color
