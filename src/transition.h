@@ -73,10 +73,6 @@ public:
 	};
 
 	Transition();
-	~Transition() override;
-
-	int GetZ() const override;
-	DrawableType GetType() const override;
 
 	/**
 	 * Defines a screen transition.
@@ -92,15 +88,11 @@ public:
 
 	void Draw() override;
 	void Update();
-	bool IsGlobal() const override;
 
 	bool IsActive();
 	bool IsErased();
 
 private:
-
-	static const int z = Priority_Transition;
-	static const DrawableType type = TypeTransition;
 	const uint32_t size_random_blocks = 4;
 
 	BitmapRef black_screen;

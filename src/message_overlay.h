@@ -42,15 +42,8 @@ public:
 class MessageOverlay : public Drawable {
 public:
 	MessageOverlay();
-	~MessageOverlay() override;
 
 	void Draw() override;
-
-	int GetZ() const override;
-
-	DrawableType GetType() const override;
-
-	bool IsGlobal() const override;
 
 	void Update();
 
@@ -61,12 +54,9 @@ public:
 private:
 	bool IsAnyMessageVisible() const;
 
-	DrawableType type;
-
 	BitmapRef bitmap;
 	BitmapRef black;
 
-	int z;
 	int ox;
 	int oy;
 

@@ -41,8 +41,6 @@ namespace Graphics {
 	std::shared_ptr<Scene> current_scene;
 	std::shared_ptr<State> global_state;
 
-	bool SortDrawableList(const Drawable* first, const Drawable* second);
-
 	std::unique_ptr<Transition> transition;
 	std::unique_ptr<MessageOverlay> message_overlay;
 	std::unique_ptr<FpsOverlay> fps_overlay;
@@ -143,9 +141,7 @@ void Graphics::LocalDraw(int priority) {
 	DrawableList& drawable_list = state.drawable_list;
 
 	if (state.zlist_dirty) {
-		// stable sort to work around a flickering event sprite issue when
-		// the map is scrolling (have same Z value)
-		std::stable_sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
+		SortDrawableList(drawable_list);
 		state.zlist_dirty = false;
 	}
 
@@ -163,7 +159,7 @@ void Graphics::GlobalDraw(int priority) {
 	DrawableList& drawable_list = global_state->drawable_list;
 
 	if (global_state->zlist_dirty) {
-		std::stable_sort(drawable_list.begin(), drawable_list.end(), SortDrawableList);
+		SortDrawableList(drawable_list);
 		global_state->zlist_dirty = false;
 	}
 	for (Drawable* drawable : drawable_list)
@@ -216,8 +212,10 @@ void Graphics::UpdateZCallback() {
 	global_state->zlist_dirty = true;
 }
 
-inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* second) {
-	return first->GetZ() < second->GetZ();
+void Graphics::SortDrawableList(DrawableList& list) {
+	// stable sort to work around a flickering event sprite issue when
+	// the map is scrolling (have same Z value)
+	std::stable_sort(list.begin(), list.end(), [](auto* l, auto* r) { return l->GetZ() < r->GetZ(); });
 }
 
 void Graphics::UpdateSceneCallback() {

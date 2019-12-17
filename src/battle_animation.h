@@ -34,8 +34,6 @@ struct FileRequestResult;
 
 class BattleAnimation : public Sprite {
 public:
-	DrawableType GetType() const override;
-
 	/** Update the animation to the next animation **/
 	void Update();
 
@@ -92,7 +90,6 @@ protected:
 class BattleAnimationMap : public BattleAnimation {
 public:
 	BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global);
-	~BattleAnimationMap() override;
 	void Draw() override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;
@@ -108,7 +105,6 @@ protected:
 class BattleAnimationBattle : public BattleAnimation {
 public:
 	BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound = false, int cutoff_frame = -1);
-	~BattleAnimationBattle() override;
 	void Draw() override;
 protected:
 	void FlashTargets(int r, int g, int b, int p) override;

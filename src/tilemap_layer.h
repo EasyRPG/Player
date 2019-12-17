@@ -34,18 +34,11 @@ class TilemapLayer;
 class TilemapSubLayer : public Drawable {
 public:
 	TilemapSubLayer(TilemapLayer* tilemap, int z);
-	~TilemapSubLayer() override;
 
 	void Draw() override;
 
-	int GetZ() const override;
-
-	DrawableType GetType() const override;
-
 private:
-	DrawableType type;
 	TilemapLayer* tilemap;
-	int z;
 };
 
 /**

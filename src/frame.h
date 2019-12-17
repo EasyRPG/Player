@@ -22,6 +22,7 @@
 #include <string>
 #include "drawable.h"
 #include "system.h"
+#include "async_handler.h"
 
 /**
  * Renders the frame overlay.
@@ -29,19 +30,11 @@
 class Frame : public Drawable {
 public:
 	Frame();
-	~Frame() override;
 
 	void Draw() override;
 	void Update();
 
-	int GetZ() const override;
-	DrawableType GetType() const override;
-
 private:
-
-	static const int z = Priority_Frame;
-	static const DrawableType type = TypeFrame;
-
 	void OnFrameGraphicReady(FileRequestResult* result);
 
 	BitmapRef frame_bitmap;

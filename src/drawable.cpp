@@ -17,6 +17,23 @@
 
 #include "drawable.h"
 #include "rpg_savepicture.h"
+#include "graphics.h"
+
+Drawable::Drawable(DrawableType type, int z, bool is_global)
+	: _z(z),
+	_type(static_cast<decltype(_type)>(type)),
+	_is_global(is_global)
+{
+}
+
+Drawable::~Drawable() {
+	Graphics::RemoveDrawable(this);
+}
+
+void Drawable::SetZ(int nz) {
+	if (_z != nz) Graphics::UpdateZCallback();
+	_z = nz;
+}
 
 int Drawable::GetPriorityForMapLayer(int which) {
 	switch (which) {

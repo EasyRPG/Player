@@ -25,12 +25,13 @@
 #include "cache.h"
 
 // Constructor
-Sprite::Sprite() :
-	type(TypeSprite),
+Sprite::Sprite() : Sprite(TypeSprite) {}
+
+Sprite::Sprite(const DrawableType type) :
+	Drawable(type, 0, false),
 	visible(true),
 	x(0),
 	y(0),
-	z(0),
 	ox(0),
 	oy(0),
 	flash_duration(0),
@@ -60,11 +61,6 @@ Sprite::Sprite() :
 	current_flip_y(false) {
 
 	Graphics::RegisterDrawable(this);
-}
-
-// Destructor
-Sprite::~Sprite() {
-	Graphics::RemoveDrawable(this);
 }
 
 // Draw
@@ -249,14 +245,6 @@ void Sprite::SetY(int ny) {
 	y = ny;
 }
 
-int Sprite::GetZ() const {
-	return z;
-}
-void Sprite::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZCallback();
-	z = nz;
-}
-
 int Sprite::GetOx() const {
 	return ox;
 }
@@ -392,6 +380,3 @@ void Sprite::SetWaverPhase(double phase) {
 	}
 }
 
-DrawableType Sprite::GetType() const {
-	return type;
-}

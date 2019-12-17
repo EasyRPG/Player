@@ -25,7 +25,9 @@
 #include "main_data.h"
 #include "frame.h"
 
-Frame::Frame() {
+Frame::Frame() :
+	Drawable(TypeFrame, Priority_Frame, false)
+{
 	if (!Data::system.frame_name.empty() && Data::system.show_frame) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Frame", Data::system.frame_name);
 		request->SetGraphicFile(true);
@@ -34,18 +36,6 @@ Frame::Frame() {
 	}
 
 	Graphics::RegisterDrawable(this);
-}
-
-Frame::~Frame() {
-	Graphics::RemoveDrawable(this);
-}
-
-int Frame::GetZ() const {
-	return z;
-}
-
-DrawableType Frame::GetType() const {
-	return type;
 }
 
 void Frame::Update() {

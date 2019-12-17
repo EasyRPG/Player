@@ -29,20 +29,13 @@ class Background : public Drawable {
 public:
 	Background(const std::string& name);
 	Background(int terrain_id);
-	~Background() override;
 
 	void Draw() override;
 	void Update();
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
-	int GetZ() const override;
-	DrawableType GetType() const override;
-
 private:
-	static const int z = Priority_Background;
-	static const DrawableType type = TypeBackground;
-
 	static void Update(int& rate, int& value);
 	static int Scale(int x);
 

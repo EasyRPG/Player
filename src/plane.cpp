@@ -24,17 +24,12 @@
 #include "game_map.h"
 
 Plane::Plane() :
-	type(TypePlane),
+	Drawable(TypePlane, 0, false),
 	visible(true),
-	z(0),
 	ox(0),
 	oy(0) {
 
 	Graphics::RegisterDrawable(this);
-}
-
-Plane::~Plane() {
-	Graphics::RemoveDrawable(this);
 }
 
 void Plane::Draw() {
@@ -111,13 +106,6 @@ bool Plane::GetVisible() const {
 void Plane::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
-int Plane::GetZ() const {
-	return z;
-}
-void Plane::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZCallback();
-	z = nz;
-}
 int Plane::GetOx() const {
 	return ox;
 }
@@ -142,6 +130,3 @@ void Plane::SetTone(Tone tone) {
 	}
 }
 
-DrawableType Plane::GetType() const {
-	return type;
-}

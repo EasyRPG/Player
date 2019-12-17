@@ -32,6 +32,7 @@
 #include "game_temp.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
+	Sprite(TypeDefault),
 	animation(anim), frame(0), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
@@ -57,10 +58,6 @@ BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, in
 		request_id = request->Bind(&BattleAnimation::OnBattleSpriteReady, this);
 		request->Start();
 	}
-}
-
-DrawableType BattleAnimation::GetType() const {
-	return TypeDefault;
 }
 
 void BattleAnimation::Update() {
@@ -244,9 +241,7 @@ BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Characte
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationMap::~BattleAnimationMap() {
-	Graphics::RemoveDrawable(this);
-}
+
 void BattleAnimationMap::Draw() {
 	if (IsOnlySound()) {
 		return;
@@ -299,9 +294,7 @@ BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::ve
 {
 	Graphics::RegisterDrawable(this);
 }
-BattleAnimationBattle::~BattleAnimationBattle() {
-	Graphics::RemoveDrawable(this);
-}
+
 void BattleAnimationBattle::Draw() {
 	if (IsOnlySound())
 		return;

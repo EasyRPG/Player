@@ -18,6 +18,8 @@
 #ifndef EP_DRAWABLE_H
 #define EP_DRAWABLE_H
 
+#include <cstdint>
+
 // What kind of drawable is the current one?
 enum DrawableType {
 	TypeWindow,
@@ -60,15 +62,22 @@ enum Priority {
  */
 class Drawable {
 public:
-	virtual ~Drawable() {};
+	Drawable(DrawableType type, int z, bool is_global);
+
+	Drawable(const Drawable&) = delete;
+	Drawable& operator=(const Drawable&) = delete;
+
+	virtual ~Drawable();
 
 	virtual void Draw() = 0;
 
-	virtual int GetZ() const = 0;
+	int GetZ() const;
 
-	virtual DrawableType GetType() const = 0;
+	void SetZ(int z);
 
-	virtual bool IsGlobal() const { return false; }
+	DrawableType GetType() const;
+
+	bool IsGlobal() const;
 
 	/**
 	 * Converts a RPG Maker map layer value into a EasyRPG priority value.
@@ -83,6 +92,23 @@ public:
 	 * @return Priority or 0 when not found
 	 */
 	static int GetPriorityForBattleLayer(int which);
+private:
+	int _z = 0;
+	uint16_t _type = TypeDefault;
+	bool _is_global = false;
 };
+
+inline int Drawable::GetZ() const {
+	return _z;
+}
+
+inline DrawableType Drawable::GetType() const {
+	return static_cast<DrawableType>(_type);
+}
+
+inline bool Drawable::IsGlobal() const {
+	return _is_global;
+}
+
 
 #endif

@@ -28,7 +28,7 @@
 constexpr int pause_animation_frames = 20;
 
 Window::Window():
-	type(TypeWindow),
+	Drawable(TypeWindow, Priority_Window, false),
 	stretch(true),
 	active(true),
 	visible(true),
@@ -39,7 +39,6 @@ Window::Window():
 	y(0),
 	width(0),
 	height(0),
-	z(Priority_Window),
 	ox(0),
 	oy(0),
 	border_x(8),
@@ -59,10 +58,6 @@ Window::Window():
 	frame_right = BitmapRef();
 	cursor1 = BitmapRef();
 	cursor2 = BitmapRef();
-}
-
-Window::~Window() {
-	Graphics::RemoveDrawable(this);
 }
 
 void Window::SetOpenAnimation(int frames) {
@@ -442,14 +437,6 @@ void Window::SetHeight(int nheight) {
 	height = nheight;
 }
 
-int Window::GetZ() const {
-	return z;
-}
-void Window::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZCallback();
-	z = nz;
-}
-
 int Window::GetOx() const {
 	return ox;
 }
@@ -495,10 +482,8 @@ void Window::SetBackOpacity(int nback_opacity) {
 int Window::GetContentsOpacity() const {
 	return contents_opacity;
 }
+
 void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
 }
 
-DrawableType Window::GetType() const {
-	return type;
-}
