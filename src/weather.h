@@ -42,9 +42,12 @@ private:
 	void DrawSnow(Bitmap& dst);
 	void DrawFog(Bitmap& dst);
 	void DrawSandstorm(Bitmap& dst);
+	void DrawFogOverlay(Bitmap& dst, const Bitmap& src);
 
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
+	BitmapRef fog_bitmap;
+	BitmapRef sand_bitmap;
 
 	Tone tone_effect;
 };

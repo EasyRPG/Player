@@ -170,6 +170,7 @@ protected:
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
+	void UpdateFog(int dx, int dy);
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
