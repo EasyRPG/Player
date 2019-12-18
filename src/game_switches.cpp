@@ -17,50 +17,77 @@
 
 // Headers
 #include "game_switches.h"
-#include "main_data.h"
 #include "output.h"
 #include "reader_util.h"
 
-constexpr int kMaxWarnings = 10;
+constexpr int Game_Switches::kMaxWarnings;
 
-Game_Switches_Class::Game_Switches_Class() {}
-
-static std::vector<bool>& switches() {
-	return Main_Data::game_data.system.switches;
+void Game_Switches::WarnGet(int variable_id) const {
+	Output::Debug("Invalid read sw[%d]!", variable_id);
+	--_warnings;
 }
 
-bool Game_Switches_Class::Get(int switch_id) const {
-	if ((switch_id <= 0 || switch_id > Data::switches.size()) && _warnings < kMaxWarnings) {
-		Output::Debug("Invalid read sw[%d]!", switch_id);
-		++_warnings;
+bool Game_Switches::Set(int switch_id, bool value) {
+	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
+		Output::Debug("Invalid write sw[%d] = %d!", switch_id, value);
+		--_warnings;
 	}
-	auto& sv = switches();
-	if (switch_id <= 0 || switch_id > sv.size()) {
+	if (switch_id <= 0) {
 		return false;
 	}
-	return sv[switch_id - 1];
+	auto& ss = _switches;
+	if (switch_id > ss.size()) {
+		ss.resize(switch_id);
+	}
+	ss[switch_id - 1] = value;
+	return value;
 }
 
-void Game_Switches_Class::Set(int switch_id, bool value) {
-	if ((switch_id <= 0 || switch_id > Data::switches.size()) && _warnings < kMaxWarnings) {
-		Output::Debug("Invalid write sw[%d] = %d!", switch_id, value);
-		++_warnings;
+void Game_Switches::SetRange(int first_id, int last_id, bool value) {
+	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
+		Output::Debug("Invalid write sw[%d,%d] = %d!", first_id, last_id, value);
+		--_warnings;
 	}
-	auto& sv = switches();
+	auto& ss = _switches;
+	if (last_id > ss.size()) {
+		ss.resize(last_id, false);
+	}
+	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
+		ss[i] = value;
+	}
+}
+
+bool Game_Switches::Flip(int switch_id) {
+	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
+		Output::Debug("Invalid flip sw[%d]!", switch_id);
+		--_warnings;
+	}
 	if (switch_id <= 0) {
-		return;
+		return false;
 	}
-	if (switch_id > sv.size()) {
-		sv.resize(switch_id);
+	auto& ss = _switches;
+	if (switch_id > ss.size()) {
+		ss.resize(switch_id);
 	}
-	sv[switch_id - 1] = value;
+	ss[switch_id - 1].flip();
+	return ss[switch_id - 1];
 }
 
-void Game_Switches_Class::Flip(int switch_id) {
-	Set(switch_id, !Get(switch_id));
+void Game_Switches::FlipRange(int first_id, int last_id) {
+	if (EP_UNLIKELY(ShouldWarn(first_id, last_id))) {
+		Output::Debug("Invalid flip sw[%d,%d]!", first_id, last_id);
+		--_warnings;
+	}
+	auto& ss = _switches;
+	if (last_id > ss.size()) {
+		ss.resize(last_id);
+	}
+	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
+		ss[i].flip();
+	}
 }
 
-std::string Game_Switches_Class::GetName(int _id) const {
+std::string Game_Switches::GetName(int _id) const {
 	const RPG::Switch* sw = ReaderUtil::GetElement(Data::switches, _id);
 
 	if (!sw) {
@@ -71,15 +98,3 @@ std::string Game_Switches_Class::GetName(int _id) const {
 	}
 }
 
-bool Game_Switches_Class::IsValid(int switch_id) const {
-	return switch_id > 0 && switch_id <= (int)Data::switches.size();
-}
-
-int Game_Switches_Class::GetSize() const {
-	return Data::switches.size();
-}
-
-void Game_Switches_Class::Reset() {
-	switches().clear();
-	_warnings = 0;
-}

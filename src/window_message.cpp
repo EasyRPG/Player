@@ -689,7 +689,7 @@ std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
 		// Show Variable value
 		parameter = ParseParameter(is_valid);
 		if (is_valid) {
-			return std::to_string(Game_Variables.Get(parameter));
+			return std::to_string(Main_Data::game_variables->Get(parameter));
 		} else {
 			// Invalid Var is always 0
 			return "0";
@@ -758,7 +758,7 @@ void Window_Message::InputChoice() {
 void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Game_Variables.Set(Game_Message::num_input_variable_id, number_input_window->GetNumber());
+		Main_Data::game_variables->Set(Game_Message::num_input_variable_id, number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		TerminateMessage();
 		number_input_window->SetNumber(0);

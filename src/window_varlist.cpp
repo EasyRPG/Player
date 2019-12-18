@@ -53,7 +53,7 @@ void Window_VarList::DrawItemValue(int index){
 	switch (mode) {
 		case eSwitch:
 			{
-				auto value = Game_Switches.Get(first_var + index);
+				auto value = Main_Data::game_switches->Get(first_var + index);
 				auto font = (!value) ? Font::ColorCritical : Font::ColorDefault;
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, value ? "[ON]" : "[OFF]", Text::AlignRight);
@@ -61,7 +61,7 @@ void Window_VarList::DrawItemValue(int index){
 			break;
 		case eVariable:
 			{
-				auto value = Game_Variables.Get(first_var + index);
+				auto value = Main_Data::game_variables->Get(first_var + index);
 				auto font = (value < 0) ? Font::ColorCritical : Font::ColorDefault;
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
@@ -106,10 +106,10 @@ void Window_VarList::UpdateList(int first_value){
 		ss << std::setfill('0') << std::setw(4) << (first_value + i) << ": ";
 		switch (mode) {
 			case eSwitch:
-				ss << Game_Switches.GetName(first_value + i);
+				ss << Main_Data::game_switches->GetName(first_value + i);
 				break;
 			case eVariable:
-				ss << Game_Variables.GetName(first_value + i);
+				ss << Main_Data::game_variables->GetName(first_value + i);
 				break;
 			case eItem:
 				ss << ReaderUtil::GetElement(Data::items, first_value+i)->name;
@@ -169,9 +169,9 @@ int Window_VarList::GetIndex() {
 bool Window_VarList::DataIsValid(int range_index) {
 	switch (mode) {
 		case eSwitch:
-			return Game_Switches.IsValid(range_index);
+			return Main_Data::game_switches->IsValid(range_index);
 		case eVariable:
-			return Game_Variables.IsValid(range_index);
+			return Main_Data::game_variables->IsValid(range_index);
 		case eItem:
 			return range_index > 0 && range_index <= Data::items.size();
 		case eTroop:

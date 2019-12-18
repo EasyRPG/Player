@@ -27,6 +27,8 @@
 #include "game_actor.h"
 #include "game_map.h"
 #include "game_party.h"
+#include "game_switches.h"
+#include "game_variables.h"
 #include "lsd_reader.h"
 #include "output.h"
 #include "player.h"
@@ -109,6 +111,9 @@ void Scene_Save::Action(int index) {
 			actor.super_guard = 0;
 		}
 	}
+
+	data_copy.system.switches = Main_Data::game_switches->GetData();
+	data_copy.system.variables = Main_Data::game_variables->GetData();
 
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;

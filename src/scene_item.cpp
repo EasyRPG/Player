@@ -66,7 +66,7 @@ void Scene_Item::Update() {
 			if (item.type == RPG::Item::Type_switch) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 				Main_Data::game_party->ConsumeItemUse(item_id);
-				Game_Switches.Set(item.switch_id, true);
+				Main_Data::game_switches->Set(item.switch_id, true);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else if (item.type == RPG::Item::Type_special && item.skill_id > 0) {
@@ -89,7 +89,7 @@ void Scene_Item::Update() {
 				} else if (skill->type == RPG::Skill::Type_switch) {
 					Main_Data::game_party->ConsumeItemUse(item_id);
 					Game_System::SePlay(skill->sound_effect);
-					Game_Switches.Set(skill->switch_id, true);
+					Main_Data::game_switches->Set(skill->switch_id, true);
 					Scene::PopUntil(Scene::Map);
 					Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 				} else {
