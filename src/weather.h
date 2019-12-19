@@ -42,14 +42,19 @@ private:
 	void DrawSnow(Bitmap& dst);
 	void DrawFog(Bitmap& dst);
 	void DrawSandstorm(Bitmap& dst);
-	void DrawFogOverlay(Bitmap& dst, const Bitmap& src);
+	void CreateFogOverlay();
+	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay);
 
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 	BitmapRef fog_bitmap;
 	BitmapRef sand_bitmap;
 
+	BitmapRef fog_tone_bitmap;
+	BitmapRef sand_tone_bitmap;
+
 	Tone tone_effect;
+	bool tone_dirty = false;
 };
 
 inline Tone Weather::GetTone() const {
