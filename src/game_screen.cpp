@@ -369,7 +369,7 @@ int Game_Screen::AnimateShake(int strength, int speed, int time_left, int positi
 	return Utils::Clamp<int>(newpos, position - cutoff, position + cutoff);
 }
 
-void Game_Screen::Update() {
+void Game_Screen::UpdateScreenEffects() {
 	constexpr auto pan_limit_x = GetPanLimitX();
 	constexpr auto pan_limit_y = GetPanLimitY();
 
@@ -415,15 +415,15 @@ void Game_Screen::Update() {
 			data.shake_time_left = 0;
 		}
 	}
+}
 
-	for (auto& picture : pictures) {
-		picture.Update();
-	}
-
+void Game_Screen::UpdateMovie() {
 	if (!movie_filename.empty()) {
 		/* update movie */
 	}
+}
 
+void Game_Screen::UpdateWeather() {
 	switch (data.weather) {
 		case Weather_None:
 			break;
@@ -439,7 +439,13 @@ void Game_Screen::Update() {
 			UpdateSand();
 			break;
 	}
+}
 
+void Game_Screen::Update() {
+	UpdateScreenEffects();
+	Game_Picture::Update(pictures);
+	UpdateMovie();
+	UpdateWeather();
 	UpdateBattleAnimation();
 }
 
@@ -487,8 +493,6 @@ void Game_Screen::CancelBattleAnimation() {
 }
 
 void Game_Screen::UpdateGraphics() {
-	for (auto& picture: pictures) {
-		picture.UpdateSprite();
-	}
+	Game_Picture::UpdateSprite(pictures);
 	weather->SetTone(GetTone());
 }

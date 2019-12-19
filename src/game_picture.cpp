@@ -29,6 +29,14 @@
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
+Game_Picture::Game_Picture(RPG::SavePicture sp)
+	: data(std::move(sp))
+{
+	needs_update = !UpdateWouldBeNop();
+	RequestPictureSprite();
+}
+
+
 void Game_Picture::UpdateSprite() {
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
@@ -114,7 +122,15 @@ void Game_Picture::UpdateSprite() {
 	}
 }
 
+void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.UpdateSprite();
+	}
+}
+
 void Game_Picture::Show(const ShowParams& params) {
+	needs_update = true;
+
 	data.name = params.name;
 	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
@@ -241,7 +257,27 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 	sprite->SetBitmap(bitmap);
 }
 
+bool Game_Picture::UpdateWouldBeNop() const {
+	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
+	// Write unit tests to ensure it's correct.
+	// Then add it to ErasePicture()
+	RPG::SavePicture empty;
+	empty.ID = data.ID;
+	empty.frames = data.frames;
+
+	return data == empty;
+}
+
+
 void Game_Picture::Update() {
+	if (Player::IsRPG2k3E()) {
+		++data.frames;
+	}
+
+	if (!needs_update) {
+		return;
+	}
+
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
@@ -313,22 +349,25 @@ void Game_Picture::Update() {
 	}
 
 	// RPG Maker 2k3 1.12: Animated spritesheets
-	if (Player::IsRPG2k3E()) {
-		data.frames = data.frames + 1;
+	if (Player::IsRPG2k3E()
+			&& data.spritesheet_speed > 0
+			&& data.frames > data.spritesheet_speed)
+	{
+		data.frames = 1;
+		data.spritesheet_frame = data.spritesheet_frame + 1;
 
-		if (data.spritesheet_speed > 0) {
-			if (data.frames > data.spritesheet_speed) {
-				data.frames = 1;
-				data.spritesheet_frame = data.spritesheet_frame + 1;
-
-				if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
-					data.spritesheet_frame = 0;
-					if (data.spritesheet_play_once && !data.name.empty()) {
-						Erase(true);
-					}
-				}
+		if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
+			data.spritesheet_frame = 0;
+			if (data.spritesheet_play_once && !data.name.empty()) {
+				Erase(true);
 			}
 		}
+	}
+}
+
+void Game_Picture::Update(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.Update();
 	}
 }
 

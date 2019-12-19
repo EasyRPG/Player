@@ -188,6 +188,10 @@ protected:
 	void UpdateRain();
 	void UpdateSnow();
 	void UpdateSand();
+	void UpdateScreenEffects();
+	void UpdateMovie();
+	void UpdateWeather();
+	void UpdateFog(int dx, int dy);
 	void OnWeatherChanged();
 	void InitRainSnow(int lifetime);
 	void InitSand();

@@ -73,6 +73,11 @@ public:
 	void Move(const MoveParams& params);
 	void Erase(bool force_erase);
 
+	// FIXME: Use C++20 span
+	static void Update(std::vector<Game_Picture>& pictures);
+	// FIXME: Use C++20 span
+	static void UpdateSprite(std::vector<Game_Picture>& pictures);
+
 	void Update();
 	void UpdateSprite();
 
@@ -80,24 +85,23 @@ private:
 	RPG::SavePicture data;
 	std::unique_ptr<Sprite> sprite;
 	BitmapRef bitmap;
-	int last_spritesheet_frame = 0;
 	FileRequestBinding request_id;
+	int last_spritesheet_frame = 0;
+	bool needs_update = false;
 
 	void SetNonEffectParams(const Params& params, bool set_positions);
 	void SyncCurrentToFinish();
 	void RequestPictureSprite();
 	void OnPictureSpriteReady(FileRequestResult*);
 	int NumSpriteSheetFrames() const;
+
+	bool UpdateWouldBeNop() const;
+
 };
 
 inline Game_Picture::Game_Picture(int id) {
 	data.ID = id;
-}
-
-inline Game_Picture::Game_Picture(RPG::SavePicture sp)
-	: data(std::move(sp))
-{
-	RequestPictureSprite();
+	needs_update = false;
 }
 
 inline const RPG::SavePicture& Game_Picture::GetSaveData() const {
