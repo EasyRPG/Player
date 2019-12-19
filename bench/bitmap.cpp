@@ -257,7 +257,6 @@ static void BM_MaskedBlit(benchmark::State& state) {
 	auto dst_rect = dest->GetRect();
 	auto src = Bitmap::Create(320, 240);
 	auto mask = Bitmap::Create(320, 240);
-	auto color = Color(255, 255, 255, 255);
 	for (auto _: state) {
 		dest->MaskedBlit(dst_rect, *mask, 0, 0, *src, 0, 0);
 	}
@@ -306,7 +305,6 @@ BENCHMARK(BM_TransformRectangle);
 static void BM_EffectsBlit(benchmark::State& state) {
 	Bitmap::SetFormat(format_R8G8B8A8_a().format());
 	auto dest = Bitmap::Create(320, 240);
-	auto dst_rect = dest->GetRect();
 	auto src = Bitmap::Create(320, 240);
 	auto rect = src->GetRect();
 	auto zoom_x = 2.0;

@@ -22,7 +22,7 @@ static void BM_VariableOp(benchmark::State& state, F&& op) {
 
 static void BM_VariableGet(benchmark::State& state) {
 	volatile int x = 0;
-	BM_VariableOp(state, [&x](auto& v, auto id, auto val) { x = v.Get(id); });
+	BM_VariableOp(state, [&x](auto& v, auto id, auto) { x = v.Get(id); });
 }
 
 BENCHMARK(BM_VariableGet);
@@ -70,37 +70,37 @@ static void BM_VariableMod(benchmark::State& state) {
 BENCHMARK(BM_VariableMod);
 
 static void BM_VariableSetRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.SetRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.SetRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableSetRange);
 
 static void BM_VariableAddRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.AddRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.AddRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableAddRange);
 
 static void BM_VariableSubRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.SubRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.SubRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableSubRange);
 
 static void BM_VariableMultRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.MultRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.MultRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableMultRange);
 
 static void BM_VariableDivRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.DivRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.DivRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableDivRange);
 
 static void BM_VariableModRange(benchmark::State& state) {
-	BM_VariableOp(state, [](auto& v, auto id, auto val) { v.ModRange(1, max_vars, val); });
+	BM_VariableOp(state, [](auto& v, auto, auto val) { v.ModRange(1, max_vars, val); });
 }
 
 BENCHMARK(BM_VariableModRange);
