@@ -2490,8 +2490,15 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 	params.top_trans = std::max(0, std::min(params.top_trans, 100));
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 
-	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture->Show(params);
+	if (pic_id <= 0) {
+		Output::Error("ShowPicture: Requested invalid picture id (%d)", pic_id);
+	}
+
+	// RPG_RT will crash if you ask for a picture id greater than the limit that
+	// version of the engine allows. We allow an arbitrary number of pictures in Player.
+
+	auto& picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture.Show(params);
 
 	return true;
 }
@@ -2552,8 +2559,12 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 	params.bottom_trans = std::max(0, std::min(params.bottom_trans, 100));
 	params.duration = std::max(0, std::min(params.duration, 10000));
 
-	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture->Move(params);
+	if (pic_id <= 0) {
+		Output::Error("MovePicture: Requested invalid picture id (%d)", pic_id);
+	}
+
+	Game_Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture.Move(params);
 
 	if (wait)
 		SetupWait(params.duration);
@@ -2587,14 +2598,22 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 		}
 
 		for (int i = pic_id; i <= max; ++i) {
-			Game_Picture *picture = Main_Data::game_screen->GetPicture(i);
-			picture->Erase(true);
+			if (i <= 0) {
+				Output::Error("ErasePicture: Requested invalid picture id (%d)", i);
+			}
+
+			auto& picture = Main_Data::game_screen->GetPicture(i);
+			picture.Erase(true);
 		}
 	} else {
 		PicPointerPatch::AdjustId(pic_id);
 
-		Game_Picture *picture = Main_Data::game_screen->GetPicture(pic_id);
-		picture->Erase(true);
+		if (pic_id <= 0) {
+			Output::Error("ErasePicture: Requested invalid picture id (%d)", pic_id);
+		}
+
+		auto& picture = Main_Data::game_screen->GetPicture(pic_id);
+		picture.Erase(true);
 	}
 
 	return true;

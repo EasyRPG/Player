@@ -131,25 +131,11 @@ void Game_Screen::Reset() {
 	animation.reset();
 }
 
-void Game_Screen::PreallocatePictureData(int id) {
-	if (EP_LIKELY(id <= (int)pictures.size())) {
-		return;
-	}
-
+void Game_Screen::DoPreallocatePictureData(int id) {
 	pictures.reserve(id);
 	while (static_cast<int>(pictures.size()) < id) {
 		pictures.emplace_back(pictures.size() + 1);
 	}
-}
-
-Game_Picture* Game_Screen::GetPicture(int id) {
-	if (EP_UNLIKELY(id <= 0)) {
-		return NULL;
-	}
-
-	PreallocatePictureData(id);
-
-	return &pictures[id - 1];
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {

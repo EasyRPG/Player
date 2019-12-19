@@ -19,8 +19,10 @@
 #define EP_GAME_SCREEN_H
 
 #include <vector>
+#include <cassert>
 #include "system.h"
 #include "options.h"
+#include "compiler.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
@@ -40,7 +42,7 @@ public:
 
 	std::vector<RPG::SavePicture> GetPictureSaveData() const;
 
-	Game_Picture* GetPicture(int id);
+	Game_Picture& GetPicture(int id);
 
 	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
@@ -190,6 +192,7 @@ protected:
 	void InitRainSnow(int lifetime);
 	void InitSand();
 	void PreallocatePictureData(int id);
+	void DoPreallocatePictureData(int id);
 };
 
 inline int Game_Screen::GetPanX() const {
@@ -245,6 +248,21 @@ inline const std::vector<Game_Screen::Particle>& Game_Screen::GetParticles() {
 
 inline bool Game_Screen::IsBattleAnimationWaiting() {
 	return (bool)animation;
+}
+
+inline Game_Picture& Game_Screen::GetPicture(int id) {
+	assert(id >= 0);
+
+	PreallocatePictureData(id);
+
+	return pictures[id - 1];
+}
+
+inline void Game_Screen::PreallocatePictureData(int id) {
+	if (EP_UNLIKELY(id > (int)pictures.size())) {
+		DoPreallocatePictureData(id);
+		return;
+	}
 }
 
 #endif
