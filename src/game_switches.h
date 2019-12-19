@@ -80,14 +80,14 @@ inline bool Game_Switches::IsValid(int variable_id) const {
 }
 
 inline bool Game_Switches::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > Data::switches.size()) && (_warnings > 0);
+	return (first_id <= 0 || last_id > static_cast<int>(Data::switches.size())) && (_warnings > 0);
 }
 
 inline bool Game_Switches::Get(int switch_id) const {
 	if (EP_UNLIKELY(ShouldWarn(switch_id, switch_id))) {
 		WarnGet(switch_id);
 	}
-	if (switch_id <= 0 || switch_id > _switches.size()) {
+	if (switch_id <= 0 || switch_id > static_cast<int>(_switches.size())) {
 		return false;
 	}
 	return _switches[switch_id - 1];

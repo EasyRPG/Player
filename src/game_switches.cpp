@@ -36,7 +36,7 @@ bool Game_Switches::Set(int switch_id, bool value) {
 		return false;
 	}
 	auto& ss = _switches;
-	if (switch_id > ss.size()) {
+	if (switch_id > static_cast<int>(ss.size())) {
 		ss.resize(switch_id);
 	}
 	ss[switch_id - 1] = value;
@@ -49,7 +49,7 @@ void Game_Switches::SetRange(int first_id, int last_id, bool value) {
 		--_warnings;
 	}
 	auto& ss = _switches;
-	if (last_id > ss.size()) {
+	if (last_id > static_cast<int>(ss.size())) {
 		ss.resize(last_id, false);
 	}
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
@@ -66,7 +66,7 @@ bool Game_Switches::Flip(int switch_id) {
 		return false;
 	}
 	auto& ss = _switches;
-	if (switch_id > ss.size()) {
+	if (switch_id > static_cast<int>(ss.size())) {
 		ss.resize(switch_id);
 	}
 	ss[switch_id - 1].flip();
@@ -79,7 +79,7 @@ void Game_Switches::FlipRange(int first_id, int last_id) {
 		--_warnings;
 	}
 	auto& ss = _switches;
-	if (last_id > ss.size()) {
+	if (last_id > static_cast<int>(ss.size())) {
 		ss.resize(last_id);
 	}
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {

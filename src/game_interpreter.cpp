@@ -978,7 +978,6 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
 	int value = 0;
-	int i = 0;
 	Game_Actor* actor;
 	Game_Character* character;
 
