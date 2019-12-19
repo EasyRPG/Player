@@ -71,10 +71,16 @@ void Game_Screen::SetupNewGame() {
 	PreallocatePictureData(GetDefaultNumberOfPictures());
 }
 
-void Game_Screen::SetupFromSave() {
-	CreatePicturesFromSave();
+void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
+	pictures.clear();
+	pictures.reserve(save_pics.size());
+
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
+
+	for (auto& sp: save_pics) {
+		pictures.emplace_back(std::move(sp));
+	}
 
 	if (Main_Data::game_data.screen.battleanim_active) {
 		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
@@ -84,15 +90,13 @@ void Game_Screen::SetupFromSave() {
 	}
 }
 
-void Game_Screen::CreatePicturesFromSave() {
-	const auto& save_pics = Main_Data::game_data.pictures;
-
-	pictures.clear();
-	pictures.reserve(save_pics.size());
-
-	while (pictures.size() < save_pics.size()) {
-		pictures.emplace_back(pictures.size() + 1);
+std::vector<RPG::SavePicture> Game_Screen::GetPictureSaveData() const {
+	std::vector<RPG::SavePicture> save_pics;
+	save_pics.reserve(pictures.size());
+	for (auto& pic: pictures) {
+		save_pics.push_back(pic.GetSaveData());
 	}
+	return save_pics;
 }
 
 void Game_Screen::Reset() {
@@ -128,17 +132,8 @@ void Game_Screen::Reset() {
 }
 
 void Game_Screen::PreallocatePictureData(int id) {
-	if (id <= (int)pictures.size()) {
+	if (EP_LIKELY(id <= (int)pictures.size())) {
 		return;
-	}
-
-	const auto old_size = Main_Data::game_data.pictures.size();
-
-	// Some games use more pictures then RPG_RT officially supported
-	Main_Data::game_data.pictures.resize(id);
-
-	for (auto i = old_size; i < Main_Data::game_data.pictures.size(); ++i) {
-		Main_Data::game_data.pictures[i].ID = i + 1;
 	}
 
 	pictures.reserve(id);
@@ -148,7 +143,7 @@ void Game_Screen::PreallocatePictureData(int id) {
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
-	if (id <= 0) {
+	if (EP_UNLIKELY(id <= 0)) {
 		return NULL;
 	}
 

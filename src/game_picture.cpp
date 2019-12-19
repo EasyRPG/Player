@@ -25,20 +25,11 @@
 #include "game_picture.h"
 #include "player.h"
 #include "main_data.h"
-#include "reader_util.h"
 
 // Applied to ensure that all pictures are above "normal" objects on this layer
 constexpr int z_mask = (1 << 16);
 
-Game_Picture::Game_Picture(int ID) :
-	id(ID)
-{
-	RequestPictureSprite();
-}
-
 void Game_Picture::UpdateSprite() {
-	RPG::SavePicture& data = GetData();
-
 	if (!sprite || !sprite->GetBitmap() || data.name.empty()) {
 		return;
 	}
@@ -124,8 +115,6 @@ void Game_Picture::UpdateSprite() {
 }
 
 void Game_Picture::Show(const ShowParams& params) {
-	RPG::SavePicture& data = GetData();
-
 	data.name = params.name;
 	data.use_transparent_color = params.use_transparent_color;
 	data.fixed_to_map = params.fixed_to_map;
@@ -179,8 +168,6 @@ void Game_Picture::Show(const ShowParams& params) {
 }
 
 void Game_Picture::Move(const MoveParams& params) {
-	RPG::SavePicture& data = GetData();
-
 	const bool ignore_position = Player::IsLegacy() && data.fixed_to_map;
 
 	SetNonEffectParams(params, !ignore_position);
@@ -224,8 +211,6 @@ void Game_Picture::Move(const MoveParams& params) {
 }
 
 void Game_Picture::Erase(bool force_erase) {
-	RPG::SavePicture& data = GetData();
-
 	if (!(force_erase || data.flags.erase_on_map_change)) {
 		return;
 	}
@@ -238,7 +223,7 @@ void Game_Picture::Erase(bool force_erase) {
 }
 
 void Game_Picture::RequestPictureSprite() {
-	const std::string& name = GetData().name;
+	const std::string& name = data.name;
 	if (name.empty()) return;
 
 	FileRequestAsync* request = AsyncHandler::RequestFile("Picture", name);
@@ -248,8 +233,6 @@ void Game_Picture::RequestPictureSprite() {
 }
 
 void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
-	RPG::SavePicture& data = GetData();
-
 	bitmap = Cache::Picture(data.name, data.use_transparent_color);
 
 	if (!sprite) {
@@ -259,8 +242,6 @@ void Game_Picture::OnPictureSpriteReady(FileRequestResult*) {
 }
 
 void Game_Picture::Update() {
-	RPG::SavePicture& data = GetData();
-
 	if (data.fixed_to_map) {
 		// Instead of modifying the Ox/Oy offset the real position is altered
 		// based on map scroll because of savegame compatibility with RPG_RT
@@ -352,8 +333,6 @@ void Game_Picture::Update() {
 }
 
 void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) {
-	RPG::SavePicture& data = GetData();
-
 	if (set_positions) {
 		data.finish_x = params.position_x;
 		data.finish_y = params.position_y;
@@ -368,8 +347,6 @@ void Game_Picture::SetNonEffectParams(const Params& params, bool set_positions) 
 }
 
 void Game_Picture::SyncCurrentToFinish() {
-	RPG::SavePicture& data = GetData();
-
 	data.current_x = data.finish_x;
 	data.current_y = data.finish_y;
 	data.current_red = data.finish_red;
@@ -382,12 +359,6 @@ void Game_Picture::SyncCurrentToFinish() {
 	data.current_effect_power = data.finish_effect_power;
 }
 
-RPG::SavePicture& Game_Picture::GetData() const {
-	// Save: Picture array is guaranteed to be of correct size
-	return *ReaderUtil::GetElement(Main_Data::game_data.pictures, id);
-}
-
 inline int Game_Picture::NumSpriteSheetFrames() const {
-	auto& data = GetData();
 	return data.spritesheet_cols * data.spritesheet_rows;
 }

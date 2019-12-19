@@ -36,7 +36,9 @@ public:
 	~Game_Screen();
 
 	void SetupNewGame();
-	void SetupFromSave();
+	void SetupFromSave(std::vector<RPG::SavePicture> pictures);
+
+	std::vector<RPG::SavePicture> GetPictureSaveData() const;
 
 	Game_Picture* GetPicture(int id);
 
@@ -187,7 +189,6 @@ protected:
 	void OnWeatherChanged();
 	void InitRainSnow(int lifetime);
 	void InitSand();
-	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
 
