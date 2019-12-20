@@ -31,8 +31,8 @@
 
 namespace Graphics {
 	void UpdateTitle();
-	void LocalDraw(int priority = Priority::Priority_Maximum);
-	void GlobalDraw(int priority = Priority::Priority_Maximum);
+	void LocalDraw(Bitmap& dst, int priority = Priority::Priority_Maximum);
+	void GlobalDraw(Bitmap& dst, int priority = Priority::Priority_Maximum);
 
 	int framerate;
 
@@ -79,13 +79,15 @@ void Graphics::Update() {
 		next_fps_time = DisplayUi->GetTicks() + 1000;
 	}
 
+	BitmapRef disp = DisplayUi->GetDisplaySurface();
+
 	uint32_t current_time = DisplayUi->GetTicks();
 	if (current_time >= next_fps_time) {
 		next_fps_time += 1000;
 
 		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
-			Draw();
+			Draw(*disp);
 			Player::FrameReset(current_time);
 		} else {
 			next_fps_time = current_time + 1000;
@@ -121,21 +123,23 @@ void Graphics::UpdateTitle() {
 	DisplayUi->SetTitle(title.str());
 }
 
-void Graphics::Draw() {
+void Graphics::Draw(Bitmap& dst) {
 	fps_overlay->AddFrame();
+
+	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
 	if (transition->IsErased()) {
 		DisplayUi->CleanDisplay();
-		GlobalDraw();
+		GlobalDraw(dst);
 		DisplayUi->UpdateDisplay();
 		return;
 	}
-	LocalDraw();
-	GlobalDraw();
+	LocalDraw(dst);
+	GlobalDraw(dst);
 	DisplayUi->UpdateDisplay();
 }
 
-void Graphics::LocalDraw(int priority) {
+void Graphics::LocalDraw(Bitmap& dst, int priority) {
 	State& state = current_scene->GetGraphicsState();
 
 	DrawableList& drawable_list = state.drawable_list;
@@ -150,12 +154,12 @@ void Graphics::LocalDraw(int priority) {
 
 	for (Drawable* drawable : drawable_list) {
 		if (drawable->GetZ() <= priority) {
-			drawable->Draw();
+			drawable->Draw(dst);
 		}
 	}
 }
 
-void Graphics::GlobalDraw(int priority) {
+void Graphics::GlobalDraw(Bitmap& dst, int priority) {
 	DrawableList& drawable_list = global_state->drawable_list;
 
 	if (global_state->zlist_dirty) {
@@ -164,15 +168,16 @@ void Graphics::GlobalDraw(int priority) {
 	}
 	for (Drawable* drawable : drawable_list)
 		if (drawable->GetZ() <= priority)
-			drawable->Draw();
+			drawable->Draw(dst);
 }
+
 
 BitmapRef Graphics::SnapToBitmap(int priority) {
-	LocalDraw(priority);
-	GlobalDraw(priority);
+	BitmapRef disp = DisplayUi->GetDisplaySurface();
+	LocalDraw(*disp, priority);
+	GlobalDraw(*disp, priority);
 	return DisplayUi->CaptureScreen();
 }
-
 bool Graphics::IsTransitionPending() {
 	return (transition ? transition->IsActive() : false);
 }

@@ -31,7 +31,7 @@ class Frame : public Drawable {
 public:
 	Frame();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 	void Update();
 
 private:

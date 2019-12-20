@@ -42,16 +42,6 @@ public:
 	 */
 	constexpr Tone(int red, int green, int blue, int gray);
 
-	/**
-	 * Set all color properties.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 * @param gray gray component.
-	 */
-	void Set(int red, int green, int blue, int gray);
-
 	/** Red component. */
 	int red = 128;
 
@@ -99,13 +89,6 @@ constexpr Tone::Tone(int red, int green, int blue, int gray) :
 	green(std::min(255, std::max(0, green))),
 	blue(std::min(255, std::max(0, blue))),
 	gray(std::min(255, std::max(0, gray))) {
-}
-
-inline void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
-	red = std::min(255, std::max(0, nred));
-	green = std::min(255, std::max(0, ngreen));
-	blue = std::min(255, std::max(0, nblue));
-	gray = std::min(255, std::max(0, ngray));
 }
 
 #endif

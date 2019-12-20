@@ -27,37 +27,9 @@
 
 constexpr int pause_animation_frames = 20;
 
-Window::Window():
-	Drawable(TypeWindow, Priority_Window, false),
-	stretch(true),
-	active(true),
-	visible(true),
-	closing(false),
-	up_arrow(false),
-	down_arrow(false),
-	x(0),
-	y(0),
-	width(0),
-	height(0),
-	ox(0),
-	oy(0),
-	border_x(8),
-	border_y(8),
-	opacity(255),
-	back_opacity(255),
-	contents_opacity(255),
-	animation_count(0.0),
-	animation_increment(0.0) {
-
+Window::Window(): Drawable(TypeWindow, Priority_Window, false)
+{
 	Graphics::RegisterDrawable(this);
-
-	background = BitmapRef();
-	frame_down = BitmapRef();
-	frame_up = BitmapRef();
-	frame_left = BitmapRef();
-	frame_right = BitmapRef();
-	cursor1 = BitmapRef();
-	cursor2 = BitmapRef();
 }
 
 void Window::SetOpenAnimation(int frames) {
@@ -85,12 +57,10 @@ void Window::SetCloseAnimation(int frames) {
 	}
 }
 
-void Window::Draw() {
+void Window::Draw(Bitmap& dst) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
-	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
-
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
+	if (x < -width || x > dst.GetWidth() || y < -height || y > dst.GetHeight()) return;
 
 	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
@@ -101,9 +71,9 @@ void Window::Draw() {
 
 				Rect src_rect(0, height / 2 - ianimation_count, width, ianimation_count * 2);
 
-				dst->Blit(x, y + src_rect.y, *background, src_rect, back_opacity * opacity / 255);
+				dst.Blit(x, y + src_rect.y, *background, src_rect, back_opacity * opacity / 255);
 			} else {
-				dst->Blit(x, y, *background, background->GetRect(), back_opacity * opacity / 255);
+				dst.Blit(x, y, *background, background->GetRect(), back_opacity * opacity / 255);
 			}
 		}
 
@@ -116,20 +86,20 @@ void Window::Draw() {
 				if (ianimation_count > 8) {
 					Rect src_rect(0, height / 2 - ianimation_count, 8, ianimation_count * 2 - 16);
 
-					dst->Blit(x, y + 8 + src_rect.y, *frame_left, src_rect, opacity);
-					dst->Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
+					dst.Blit(x, y + 8 + src_rect.y, *frame_left, src_rect, opacity);
+					dst.Blit(x + width - 8, y + 8 + src_rect.y, *frame_right, src_rect, opacity);
 
-					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
-					dst->Blit(x, y + height / 2 + ianimation_count - 8, *frame_down, frame_down->GetRect(), opacity);
+					dst.Blit(x, y + height / 2 - ianimation_count, *frame_up, frame_up->GetRect(), opacity);
+					dst.Blit(x, y + height / 2 + ianimation_count - 8, *frame_down, frame_down->GetRect(), opacity);
 				} else {
-					dst->Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
-					dst->Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
+					dst.Blit(x, y + height / 2 - ianimation_count, *frame_up, Rect(0, 0, width, ianimation_count), opacity);
+					dst.Blit(x, y + height / 2 , *frame_down, Rect(0, 8 - ianimation_count, width, ianimation_count), opacity);
 				}
 			} else {
-				dst->Blit(x, y, *frame_up, frame_up->GetRect(), opacity);
-				dst->Blit(x, y + height - 8, *frame_down, frame_down->GetRect(), opacity);
-				dst->Blit(x, y + 8, *frame_left, frame_left->GetRect(), opacity);
-				dst->Blit(x + width - 8, y + 8, *frame_right, frame_right->GetRect(), opacity);
+				dst.Blit(x, y, *frame_up, frame_up->GetRect(), opacity);
+				dst.Blit(x, y + height - 8, *frame_down, frame_down->GetRect(), opacity);
+				dst.Blit(x, y + 8, *frame_left, frame_left->GetRect(), opacity);
+				dst.Blit(x + width - 8, y + 8, *frame_right, frame_right->GetRect(), opacity);
 			}
 		}
 
@@ -144,9 +114,9 @@ void Window::Draw() {
 			);
 
 			if (cursor_frame <= 10)
-				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor1, src_rect, 255);
+				dst.Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor1, src_rect, 255);
 			else
-				dst->Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor2, src_rect, 255);
+				dst.Blit(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, *cursor2, src_rect, 255);
 		}
 	}
 
@@ -158,7 +128,7 @@ void Window::Draw() {
 						  min(width - 2 * border_x, width - 2 * border_x + ox),
 						  min(height - 2 * border_y, height - 2 * border_y + oy));
 
-			dst->Blit(max(x + border_x, x + border_x - ox),
+			dst.Blit(max(x + border_x, x + border_x - ox),
 					  max(y + border_y, y + border_y - oy),
 					  *contents, src_rect, contents_opacity);
 		}
@@ -166,12 +136,12 @@ void Window::Draw() {
 
 	if ((pause && pause_frame < pause_animation_frames && animation_frames <= 0) || down_arrow) {
 		Rect src_rect(40, 16, 16, 8);
-		dst->Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
+		dst.Blit(x + width / 2 - 8, y + height - 8, *windowskin, src_rect, 255);
 	}
 
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
-		dst->Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
+		dst.Blit(x + width / 2 - 8, y, *windowskin, src_rect, 255);
 	}
 }
 
@@ -329,9 +299,6 @@ void Window::Update() {
 	}
 }
 
-BitmapRef const& Window::GetWindowskin() const {
-	return windowskin;
-}
 void Window::SetWindowskin(BitmapRef const& nwindowskin) {
 	if (windowskin == nwindowskin) {
 		return;
@@ -342,82 +309,16 @@ void Window::SetWindowskin(BitmapRef const& nwindowskin) {
 	windowskin = nwindowskin;
 }
 
-BitmapRef Window::GetContents() const {
-	return contents;
-}
-void Window::SetContents(BitmapRef const& ncontents) {
-	contents = ncontents;
-}
-
-bool Window::GetStretch() const {
-	return stretch;
-}
 void Window::SetStretch(bool nstretch) {
 	if (stretch != nstretch) background_needs_refresh = true;
 	stretch = nstretch;
 }
 
-Rect const& Window::GetCursorRect() const {
-	return cursor_rect;
-}
 void Window::SetCursorRect(Rect const& ncursor_rect) {
 	if (cursor_rect.width != ncursor_rect.width || cursor_rect.height != ncursor_rect.height) cursor_needs_refresh = true;
 	cursor_rect = ncursor_rect;
 }
 
-bool Window::GetActive() const {
-	return active;
-}
-void Window::SetActive(bool nactive) {
-	active = nactive;
-}
-
-bool Window::GetVisible() const {
-	return visible;
-}
-void Window::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
-
-bool Window::GetPause() const {
-	return pause;
-}
-void Window::SetPause(bool npause) {
-	pause = npause;
-	pause_frame = 0;
-}
-
-bool Window::GetUpArrow() const {
-	return up_arrow;
-}
-void Window::SetUpArrow(bool nup_arrow) {
-	up_arrow = nup_arrow;
-}
-
-bool Window::GetDownArrow() const {
-	return down_arrow;
-}
-void Window::SetDownArrow(bool ndown_arrow) {
-	down_arrow = ndown_arrow;
-}
-
-int Window::GetX() const {
-	return x;
-}
-void Window::SetX(int nx) {
-	x = nx;
-}
-
-int Window::GetY() const {
-	return y;
-}
-void Window::SetY(int ny) {
-	y = ny;
-}
-
-int Window::GetWidth() const {
-	return width;
-}
 void Window::SetWidth(int nwidth) {
 	if (width != nwidth) {
 		background_needs_refresh = true;
@@ -426,9 +327,6 @@ void Window::SetWidth(int nwidth) {
 	width = nwidth;
 }
 
-int Window::GetHeight() const {
-	return height;
-}
 void Window::SetHeight(int nheight) {
 	if (height != nheight) {
 		background_needs_refresh = true;
@@ -437,53 +335,4 @@ void Window::SetHeight(int nheight) {
 	height = nheight;
 }
 
-int Window::GetOx() const {
-	return ox;
-}
-void Window::SetOx(int nox) {
-	ox = nox;
-}
-
-int Window::GetOy() const {
-	return oy;
-}
-void Window::SetOy(int noy) {
-	oy = noy;
-}
-
-int Window::GetBorderX() const {
-	return border_x;
-}
-void Window::SetBorderX(int x) {
-	border_x = x;
-}
-
-int Window::GetBorderY() const {
-	return border_y;
-}
-void Window::SetBorderY(int y) {
-	border_y = y;
-}
-
-int Window::GetOpacity() const {
-	return opacity;
-}
-void Window::SetOpacity(int nopacity) {
-	opacity = nopacity;
-}
-
-int Window::GetBackOpacity() const {
-	return back_opacity;
-}
-void Window::SetBackOpacity(int nback_opacity) {
-	back_opacity = nback_opacity;
-}
-
-int Window::GetContentsOpacity() const {
-	return contents_opacity;
-}
-
-void Window::SetContentsOpacity(int ncontents_opacity) {
-	contents_opacity = ncontents_opacity;
-}
 

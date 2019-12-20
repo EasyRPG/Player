@@ -42,7 +42,7 @@ public:
 
 protected:
 	void CreateSprite();
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 
 	int which;
 

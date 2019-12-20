@@ -79,7 +79,7 @@ namespace Graphics {
 	 */
 	bool IsTransitionErased();
 
-	void Draw();
+	void Draw(Bitmap& dst);
 
 	void RegisterDrawable(Drawable* drawable);
 	void RemoveDrawable(Drawable* drawable);

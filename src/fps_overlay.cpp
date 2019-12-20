@@ -39,7 +39,8 @@ void FpsOverlay::Update() {
 	}
 }
 
-void FpsOverlay::Draw() {
+void FpsOverlay::Draw(Bitmap& dst) {
+	// FIXME: Break this dependency on DisplayUi
 	bool fps_draw = (
 #ifndef EMSCRIPTEN
 		DisplayUi->IsFullscreen() &&
@@ -64,7 +65,7 @@ void FpsOverlay::Draw() {
 			fps_dirty = false;
 		}
 
-		DisplayUi->GetDisplaySurface()->Blit(1, 2, *fps_bitmap, fps_rect, 255);
+		dst.Blit(1, 2, *fps_bitmap, fps_rect, 255);
 	}
 
 	// Always drawn when speedup is on independent of FPS
@@ -88,7 +89,7 @@ void FpsOverlay::Draw() {
 		}
 
 		int dwidth = DisplayUi->GetDisplaySurface()->GetWidth();
-		DisplayUi->GetDisplaySurface()->Blit(dwidth - speedup_rect.width - 1, 2, *speedup_bitmap, speedup_rect, 255);
+		dst.Blit(dwidth - speedup_rect.width - 1, 2, *speedup_bitmap, speedup_rect, 255);
 	}
 }
 

@@ -36,16 +36,10 @@ class Screen : public Drawable {
 public:
 	Screen();
 
-	void Draw() override;
-	void Update();
-
-	Tone GetTone() const;
-	void SetTone(Tone tone);
+	void Draw(Bitmap& dst) override;
 
 private:
 	BitmapRef flash;
-
-	Tone tone_effect;
 };
 
 #endif

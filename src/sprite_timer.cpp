@@ -38,7 +38,7 @@ Sprite_Timer::Sprite_Timer(int which) :
 Sprite_Timer::~Sprite_Timer() {
 }
 
-void Sprite_Timer::Draw() {
+void Sprite_Timer::Draw(Bitmap& dst) {
 	if (!GetVisible()) {
 		return;
 	}
@@ -60,7 +60,7 @@ void Sprite_Timer::Draw() {
 		GetBitmap()->Blit(i * 8, 0, *system, digits[i], Opacity());
 	}
 
-	Sprite::Draw();
+	Sprite::Draw(dst);
 }
 
 void Sprite_Timer::Update() {

@@ -18,7 +18,6 @@
 // Headers
 #include <string>
 #include <vector>
-#include "baseui.h"
 #include "cache.h"
 #include "bitmap.h"
 #include "graphics.h"
@@ -42,10 +41,9 @@ void Frame::Update() {
 	// no-op
 }
 
-void Frame::Draw() {
+void Frame::Draw(Bitmap& dst) {
 	if (frame_bitmap) {
-		BitmapRef dst = DisplayUi->GetDisplaySurface();
-		dst->Blit(0, 0, *frame_bitmap, frame_bitmap->GetRect(), 255);
+		dst.Blit(0, 0, *frame_bitmap, frame_bitmap->GetRect(), 255);
 	}
 }
 

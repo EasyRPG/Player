@@ -330,12 +330,14 @@ void Player::Update(bool update_scene) {
 
 	start_time = next_frame;
 
+	BitmapRef disp = DisplayUi->GetDisplaySurface();
+
 #ifdef EMSCRIPTEN
-	Graphics::Draw();
+	Graphics::Draw(*disp);
 #else
 	cur_time = (double)DisplayUi->GetTicks();
 	if (cur_time < next_frame) {
-		Graphics::Draw();
+		Graphics::Draw(*disp);
 		cur_time = (double)DisplayUi->GetTicks();
 		// Don't use sleep when the port uses an external timing source
 #if !defined(USE_LIBRETRO)

@@ -20,6 +20,8 @@
 
 #include <cstdint>
 
+class Bitmap;
+
 // What kind of drawable is the current one?
 enum DrawableType {
 	TypeWindow,
@@ -69,7 +71,7 @@ public:
 
 	virtual ~Drawable();
 
-	virtual void Draw() = 0;
+	virtual void Draw(Bitmap& dst) = 0;
 
 	int GetZ() const;
 

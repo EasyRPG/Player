@@ -31,7 +31,7 @@ class Weather : public Drawable {
 public:
 	Weather();
 
-	void Draw() override;
+	void Draw(Bitmap& dst) override;
 	void Update();
 
 	Tone GetTone() const;
@@ -51,5 +51,9 @@ private:
 
 	bool dirty = false;
 };
+
+inline Tone Weather::GetTone() const {
+	return tone_effect;
+}
 
 #endif

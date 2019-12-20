@@ -23,25 +23,18 @@
 #include "bitmap.h"
 #include "game_message.h"
 
-MessageOverlay::MessageOverlay() :
-	Drawable(TypeOverlay, Priority_Overlay, true),
-	ox(0),
-	oy(0),
-	text_height(12),
-	message_max(10),
-	dirty(false),
-	counter(0),
-	show_all(false) {
+MessageOverlay::MessageOverlay() : Drawable(TypeOverlay, Priority_Overlay, true)
+{
 	// Graphics::RegisterDrawable is in the Update function
 }
 
-void MessageOverlay::Draw() {
+void MessageOverlay::Draw(Bitmap& dst) {
 	if (!IsAnyMessageVisible() && !show_all) {
 		// Don't render overlay when no message visible
 		return;
 	}
 
-	DisplayUi->GetDisplaySurface()->Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
+	dst.Blit(ox, oy, *bitmap, bitmap->GetRect(), 255);
 
 	if (!dirty) return;
 
@@ -141,6 +134,7 @@ bool MessageOverlay::IsAnyMessageVisible() const {
 }
 
 MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :
-	text(text), color(color), hidden(false), repeat_count(0) {
+	text(text), color(color)
+{
 	// no-op
 }

@@ -19,7 +19,6 @@
 #include <string>
 #include "data.h"
 #include "rpg_terrain.h"
-#include "baseui.h"
 #include "graphics.h"
 #include "cache.h"
 #include "background.h"
@@ -28,12 +27,8 @@
 #include "reader_util.h"
 #include "output.h"
 
-Background::Background(const std::string& name) :
-	Drawable(TypeBackground, Priority_Background, false),
-	visible(true), tone_effect(Tone()),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(const std::string& name) : Drawable(TypeBackground, Priority_Background, false)
+{
 	Graphics::RegisterDrawable(this);
 
 	if (!name.empty()) {
@@ -44,12 +39,8 @@ Background::Background(const std::string& name) :
 	}
 }
 
-Background::Background(int terrain_id) :
-	Drawable(TypeBackground, Priority_Background, false),
-	visible(true), tone_effect(Tone()),
-	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
-	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
-
+Background::Background(int terrain_id) : Drawable(TypeBackground, Priority_Background, false)
+{
 	Graphics::RegisterDrawable(this);
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
@@ -103,15 +94,6 @@ void Background::OnForegroundFrameGraphicReady(FileRequestResult* result) {
 	fg_bitmap = Cache::Frame(result->file);
 }
 
-Tone Background::GetTone() const {
-	return tone_effect;
-}
-
-void Background::SetTone(Tone tone) {
-	if (tone_effect != tone) {
-		tone_effect = tone;
-	}
-}
 void Background::Update(int& rate, int& value) {
 	int step =
 		(rate > 0) ? 2 << rate :
@@ -131,23 +113,22 @@ int Background::Scale(int x) {
 	return x > 0 ? x / 64 : -(-x / 64);
 }
 
-void Background::Draw() {
+void Background::Draw(Bitmap& dst) {
 	if (!visible)
 		return;
 
-	BitmapRef dst = DisplayUi->GetDisplaySurface();
-	Rect dst_rect = dst->GetRect();
+	Rect dst_rect = dst.GetRect();
 
 	int shake_pos = Main_Data::game_data.screen.shake_position;
 	dst_rect.x += shake_pos;
 
 	if (bg_bitmap)
-		dst->TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);
+		dst.TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);
 
 	if (fg_bitmap)
-		dst->TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
+		dst.TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
 
 	if (tone_effect != Tone()) {
-		dst->ToneBlit(0, 0, *dst, dst->GetRect(), tone_effect, Opacity::opaque);
+		dst.ToneBlit(0, 0, dst, dst.GetRect(), tone_effect, Opacity::opaque);
 	}
 }
