@@ -37,7 +37,35 @@
 using namespace std::chrono_literals;
 
 namespace {
-	using key_type = std::tuple<std::string,std::string,bool>;
+	std::string MakeHashKey(const std::string& folder_name, const std::string& filename, bool transparent) {
+		return folder_name + ":" + filename + ":" + (transparent ? "T" : " ");
+	}
+
+	std::string MakeTileHashKey(const std::string& chipset_name, int id) {
+		std::string key;
+		key.reserve(chipset_name.size() + sizeof(int) + 2);
+		key.append(reinterpret_cast<char*>(&id), sizeof(id));
+		key.append(1, ':');
+		key.append(chipset_name);
+
+		return key;
+	}
+
+	int IdFromTileHash(const std::string& key) {
+		int id = 0;
+		if (key.size() > sizeof(id)) {
+			std::memcpy(&id, key.data(), sizeof(id));
+		}
+		return id;
+	}
+
+	const char* NameFromTileHash(const std::string& key) {
+		int offset = sizeof(int) + 1;
+		if (key.size() < offset) {
+			return "";
+		}
+		return key.data() + offset;
+	}
 	using clock = std::chrono::steady_clock;
 
 	struct CacheItem {
@@ -45,18 +73,15 @@ namespace {
 		clock::time_point last_access;
 	};
 
-	using tile_pair = std::pair<std::string, int>;
+	using key_type = std::string;
+	std::unordered_map<key_type, CacheItem> cache;
 
-	using cache_type = std::map<key_type, CacheItem>;
-	cache_type cache;
-
-	using cache_tiles_type = std::map<tile_pair, std::weak_ptr<Bitmap>>;
-	cache_tiles_type cache_tiles;
+	using tile_key_type = std::string;
+	std::unordered_map<tile_key_type, std::weak_ptr<Bitmap>> cache_tiles;
 
 	// rect, flip_x, flip_y, tone, blend
 	using effect_key_type = std::tuple<BitmapRef, Rect, bool, bool, Tone, Color>;
-	using cache_effect_type = std::map<effect_key_type, std::weak_ptr<Bitmap>>;
-	cache_effect_type cache_effects;
+	std::map<effect_key_type, std::weak_ptr<Bitmap>> cache_effects;
 
 	std::string system_name;
 
@@ -93,7 +118,7 @@ namespace {
 #endif
 	}
 
-	BitmapRef AddToCache(const key_type& key, BitmapRef bmp) {
+	BitmapRef AddToCache(const std::string& key, BitmapRef bmp) {
 		if (bmp) {
 			cache_size += bmp->GetSize();
 #ifdef CACHE_DEBUG
@@ -106,9 +131,9 @@ namespace {
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
 						 bool transparent, const uint32_t flags) {
-		const key_type key(folder_name, filename, transparent);
+		const auto key = MakeHashKey(folder_name, filename, transparent);
 
-		const cache_type::iterator it = cache.find(key);
+		auto it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
 			const std::string path = FileFinder::FindImage(folder_name, filename);
@@ -236,9 +261,9 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		const key_type key(folder_name, filename, false);
+		const auto key = MakeHashKey(folder_name, filename, false);
 
-		const cache_type::iterator it = cache.find(key);
+		auto it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
 			FreeBitmapMemory();
@@ -380,9 +405,9 @@ BitmapRef Cache::System(const std::string& file) {
 }
 
 BitmapRef Cache::Exfont() {
-	const key_type hash("ExFont", "ExFont", false);
+	const auto key = MakeHashKey("ExFont", "ExFont", false);
 
-	cache_type::iterator const it = cache.find(hash);
+	auto it = cache.find(key);
 
 	if (it == cache.end() || !it->second.bitmap) {
 		// Allow overwriting of built-in exfont with a custom ExFont image file
@@ -396,7 +421,7 @@ BitmapRef Cache::Exfont() {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}
 
-		return AddToCache(hash, exfont_img);
+		return AddToCache(key, exfont_img);
 	} else {
 		it->second.last_access = clock::now();
 		return it->second.bitmap;
@@ -404,8 +429,8 @@ BitmapRef Cache::Exfont() {
 }
 
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
-	tile_pair const key(filename, tile_id);
-	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
+	const auto key = MakeTileHashKey(filename, tile_id);
+	auto it = cache_tiles.find(key);
 
 	if (it == cache_tiles.end() || it->second.expired()) {
 		BitmapRef chipset = Cache::Chipset(filename);
@@ -491,10 +516,13 @@ void Cache::Clear() {
 	cache.clear();
 	cache_size = 0;
 
-	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
-		if (i->second.expired()) { continue; }
+	for (auto& kv : cache_tiles) {
+		auto& key = kv.first;
+		if (kv.second.expired()) {
+			continue;
+		}
 		Output::Debug("possible leak in cached tilemap %s/%d",
-					  i->first.first.c_str(), i->first.second);
+				NameFromTileHash(key), IdFromTileHash(key));
 	}
 
 	cache_tiles.clear();
