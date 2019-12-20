@@ -23,6 +23,7 @@
 #include <map>
 #include <tuple>
 #include <chrono>
+#include <cassert>
 
 #include "async_handler.h"
 #include "cache.h"
@@ -274,13 +275,13 @@ namespace {
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
+#ifndef NDEBUG
 		// Test if the file was requested asynchronously before.
 		// If not the file can't be expected to exist -> bug.
-		FileRequestAsync* request = AsyncHandler::RequestFile(s.directory, f);
-		if (!request->IsReady()) {
-			Output::Debug("BUG: File Not Requested: %s/%s", s.directory, f.c_str());
-			return BitmapRef();
-		}
+		// This test is expensive and turned off in release builds.
+		auto* req = AsyncHandler::RequestFile(s.directory, f);
+		assert(req != nullptr && req->IsReady());
+#endif
 
 		BitmapRef ret = LoadBitmap(s.directory, f, transparent, Bitmap::Flag_ReadOnly | (
 										 T == Material::Chipset? Bitmap::Flag_Chipset:
