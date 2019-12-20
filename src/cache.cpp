@@ -182,52 +182,39 @@ namespace {
 
 	}; // struct Material
 
+	using DummyRenderer = BitmapRef(*)(void);
+
 	template<Material::Type T> BitmapRef DrawCheckerboard();
 
 	BitmapRef DummySystem() {
 		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::Flag_System | Bitmap::Flag_ReadOnly);
 	}
 
-	std::function<BitmapRef()> backdrop_dummy_func = DrawCheckerboard<Material::Backdrop>;
-	std::function<BitmapRef()> battle_dummy_func = DrawCheckerboard<Material::Battle>;
-	std::function<BitmapRef()> charset_dummy_func = DrawCheckerboard<Material::Charset>;
-	std::function<BitmapRef()> chipset_dummy_func = DrawCheckerboard<Material::Chipset>;
-	std::function<BitmapRef()> faceset_dummy_func = DrawCheckerboard<Material::Faceset>;
-	std::function<BitmapRef()> gameover_dummy_func = DrawCheckerboard<Material::Gameover>;
-	std::function<BitmapRef()> monster_dummy_func = DrawCheckerboard<Material::Monster>;
-	std::function<BitmapRef()> panorama_dummy_func = DrawCheckerboard<Material::Panorama>;
-	std::function<BitmapRef()> picture_dummy_func = DrawCheckerboard<Material::Picture>;
-	std::function<BitmapRef()> title_dummy_func = DrawCheckerboard<Material::Title>;
-	std::function<BitmapRef()> system2_dummy_func = DrawCheckerboard<Material::System2>;
-	std::function<BitmapRef()> battle2_dummy_func = DrawCheckerboard<Material::Battle2>;
-	std::function<BitmapRef()> battlecharset_dummy_func = DrawCheckerboard<Material::Battlecharset>;
-	std::function<BitmapRef()> battleweapon_dummy_func = DrawCheckerboard<Material::Battleweapon>;
-	std::function<BitmapRef()> frame_dummy_func = DrawCheckerboard<Material::Frame>;
-
 	struct Spec {
 		char const* directory;
 		bool transparent;
 		int min_width , max_width;
 		int min_height, max_height;
-		std::function<BitmapRef()> dummy_renderer;
+		DummyRenderer dummy_renderer;
 		bool oob_check;
-	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 240, backdrop_dummy_func, true },
-		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func, true },
-		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func, true },
-		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func, true },
-		{ "FaceSet", true, 192, 192, 192, 192, faceset_dummy_func, true},
-		{ "GameOver", false, 320, 320, 240, 240, gameover_dummy_func, true },
-		{ "Monster", true, 16, 320, 16, 160, monster_dummy_func, false },
-		{ "Panorama", false, 80, 640, 80, 480, panorama_dummy_func, false },
-		{ "Picture", true, 1, 640, 1, 480, picture_dummy_func, false },
-		{ "System", true, 160, 160, 80, 80, &DummySystem, true },
-		{ "Title", false, 320, 320, 240, 240, title_dummy_func, true },
-		{ "System2", true, 80, 80, 96, 96, system2_dummy_func, true },
-		{ "Battle2", true, 640, 640, 640, 640, battle2_dummy_func, true },
-		{ "BattleCharSet", true, 144, 144, 384, 384, battlecharset_dummy_func, true},
-		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func, true },
-		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func, true },
+	};
+	constexpr Spec spec[] = {
+		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true },
+		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true },
+		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true },
+		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true },
+		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true},
+		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true },
+		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false },
+		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false },
+		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false },
+		{ "System", true, 160, 160, 80, 80, DummySystem, true },
+		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true },
+		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true },
+		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true },
+		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true},
+		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true },
+		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true },
 	};
 
 	template<Material::Type T>
