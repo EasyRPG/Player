@@ -435,30 +435,25 @@ endif
 # doxygen
 @DX_RULES@
 
-# FIXME make filefinder work without external scripting
-check_PROGRAMS = directorytree output rtp utils wordwrap utf
-TESTS = directorytree output rtp utils wordwrap utf
-directorytree_SOURCES = tests/directorytree.cpp
-directorytree_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-directorytree_LDADD = $(easyrpg_player_LDADD)
-#filefinder_SOURCES = tests/filefinder.cpp
-#filefinder_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-#filefinder_LDADD = $(easyrpg_player_LDADD)
-output_SOURCES = tests/output.cpp
-output_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-output_LDADD = $(easyrpg_player_LDADD)
-rtp_SOURCES = tests/rtp.cpp tests/doctest.h
-rtp_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-rtp_LDADD = $(easyrpg_player_LDADD)
-utils_SOURCES = tests/utils.cpp
-utils_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-utils_LDADD = $(easyrpg_player_LDADD)
-wordwrap_SOURCES = tests/wordwrap.cpp tests/doctest.h
-wordwrap_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-wordwrap_LDADD = $(easyrpg_player_LDADD)
-utf_SOURCES = tests/utf.cpp tests/doctest.h
-utf_CXXFLAGS = $(libeasyrpg_player_a_CXXFLAGS)
-utf_LDADD = $(easyrpg_player_LDADD)
+check_PROGRAMS = test_runner
+test_runner_SOURCES = \
+	tests/doctest.h \
+	tests/test_main.cpp \
+	tests/bitmapfont.cpp \
+	tests/directorytree.cpp \
+	tests/filefinder.cpp \
+	tests/output.cpp \
+	tests/rtp.cpp \
+	tests/utils.cpp \
+	tests/utf.cpp \
+	tests/wordwrap.cpp
+test_runner_CXXFLAGS = \
+	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
+test_runner_LDADD = \
+	$(easyrpg_player_LDADD)
+
+check-local:
+	$(AM_V_at)./test_runner
 
 # Some tests will create this file
 # make distcheck will fail if it is not cleaned after running these tests

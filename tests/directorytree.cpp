@@ -1,14 +1,13 @@
-#include <cstdlib>
 #include "filefinder.h"
-#include "player.h"
 #include "main_data.h"
+#include "doctest.h"
 
-int main(int argc, char** argv) {
-	Player::ParseCommandLine(argc, argv);
+TEST_SUITE_BEGIN("DirectoryTree");
+
+TEST_CASE("CreateDirectoryTree") {
 	Main_Data::Init();
-
 	FileFinder::CreateDirectoryTree(Main_Data::GetProjectPath());
 	FileFinder::Quit();
-
-	return EXIT_SUCCESS;
 }
+
+TEST_SUITE_END();

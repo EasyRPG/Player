@@ -1,9 +1,10 @@
+#include <cstring>
 #include "filefinder.h"
 #include "player.h"
 #include "rtp.h"
-
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+
+TEST_SUITE_BEGIN("RTP");
 
 static std::shared_ptr<FileFinder::DirectoryTree> make_tree() {
 	Player::escape_symbol = "\\";
@@ -61,7 +62,7 @@ TEST_CASE("RTP 2000: Detection") {
 
 	REQUIRE(hits[0].type == RTP::Type::RPG2000_OfficialJapanese);
 	REQUIRE(hits[0].hits == 4);
-	REQUIRE(hits[0].tree == tree);
+	REQUIRE(hits[0].tree.get() == tree.get());
 
 	REQUIRE(hits[1].type == RTP::Type::RPG2000_OfficialEnglish);
 	REQUIRE(hits[1].hits == 1);
@@ -138,3 +139,5 @@ TEST_CASE("RTP 2000: Lookup RTP to RTP (Same RTP)") {
 	REQUIRE(name == "NotFound");
 	REQUIRE(!is_rtp_asset);
 }
+
+TEST_SUITE_END();
