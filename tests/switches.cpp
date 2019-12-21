@@ -1,11 +1,11 @@
 #include "game_switches.h"
-
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+
+TEST_SUITE_BEGIN("Switches");
 
 constexpr int max_switches = 5;
 
-Game_Switches make() {
+static Game_Switches make() {
 	Data::switches.resize(max_switches);
 	Game_Switches s;
 	s.SetWarning(0);
@@ -138,3 +138,5 @@ TEST_CASE("IsValid") {
 
 	REQUIRE_FALSE(s.IsValid(max_switches + 1));
 }
+
+TEST_SUITE_END();
