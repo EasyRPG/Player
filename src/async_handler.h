@@ -108,17 +108,11 @@ public:
 
 	/**
 	 * Don't use this API directly. Use AsyncHandler::RequestFile.
-	 */
-	FileRequestAsync();
-
-	/**
-	 * Don't use this API directly. Use AsyncHandler::RequestFile.
 	 *
-	 * @param folder_name folder where the file is stored.
-	 * @param file_name Name of the requested file requested.
+	 * @param path path to the file
 	 * @return The async request.
 	 */
-	FileRequestAsync(const std::string& folder_name, const std::string& file_name);
+	FileRequestAsync(std::string path, std::string directory, std::string file);
 
 	/**
 	 * Checks if a request finished.
@@ -215,7 +209,7 @@ private:
 	std::string directory;
 	std::string file;
 	std::string path;
-	int state;
+	int state = State_DoneFailure;
 	bool important = false;
 	bool graphic = false;
 };
@@ -237,5 +231,26 @@ FileRequestBinding FileRequestAsync::Bind(void (T::*func)(FileRequestResult*, Ar
 	std::function<void(FileRequestResult*)> f = std::bind(std::mem_fn(func), that, std::placeholders::_1, args...);
 	return Bind(f);
 }
+
+inline bool FileRequestAsync::IsReady() const {
+	return state == State_DoneSuccess || state == State_DoneFailure;
+}
+
+inline bool FileRequestAsync::IsImportantFile() const {
+	return important;
+}
+
+inline void FileRequestAsync::SetImportantFile(bool important) {
+	this->important = important;
+}
+
+inline bool FileRequestAsync::IsGraphicFile() const {
+	return graphic;
+}
+
+inline const std::string& FileRequestAsync::GetPath() const {
+	return path;
+}
+
 
 #endif
