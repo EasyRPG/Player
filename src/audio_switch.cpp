@@ -84,7 +84,7 @@ NxAudio::NxAudio() :
 	
 	mutexInit(&audio_mutex);
 
-	threadCreate(&audio_thread, switch_audio_thread, NULL, 0x10000, 0x2B, -2);
+	threadCreate(&audio_thread, switch_audio_thread, NULL, NULL, 0x10000, 0x2B, -2);
 	
 	SetFormat(samplerate, AudioDecoder::Format::S16, 2);
 
