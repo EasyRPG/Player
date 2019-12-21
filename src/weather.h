@@ -38,18 +38,15 @@ public:
 	void SetTone(Tone tone);
 
 private:
-	void DrawRain();
-	void DrawSnow();
-	void DrawFog();
-	void DrawSandstorm();
+	void DrawRain(Bitmap& dst);
+	void DrawSnow(Bitmap& dst);
+	void DrawFog(Bitmap& dst);
+	void DrawSandstorm(Bitmap& dst);
 
-	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 
 	Tone tone_effect;
-
-	bool dirty = false;
 };
 
 inline Tone Weather::GetTone() const {
