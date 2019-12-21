@@ -62,7 +62,7 @@ namespace {
 
 	const char* NameFromTileHash(const std::string& key) {
 		int offset = sizeof(int) + 1;
-		if (key.size() < offset) {
+		if (static_cast<int>(key.size()) < offset) {
 			return "";
 		}
 		return key.data() + offset;
