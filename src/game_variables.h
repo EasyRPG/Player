@@ -69,7 +69,7 @@ private:
 	bool ShouldWarn(int first_id, int last_id) const;
 	void WarnGet(int variable_id) const;
 	template <typename F>
-		int SetOp(int variable_id, Var_t value, F&& op, const char* warn);
+		Var_t SetOp(int variable_id, Var_t value, F&& op, const char* warn);
 	template <typename F>
 		void SetOpRange(int first_id, int last_id, Var_t value, F&& op, const char* warn);
 private:
