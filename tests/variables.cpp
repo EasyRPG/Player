@@ -1,13 +1,13 @@
 #include "game_variables.h"
-
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+
+TEST_SUITE_BEGIN("Variables");
 
 constexpr int max_vars = 5;
 constexpr int minval = Game_Variables::min_2k3;
 constexpr int maxval = Game_Variables::max_2k3;
 
-Game_Variables make() {
+static Game_Variables make() {
 	Data::variables.resize(max_vars);
 	Game_Variables v(minval, maxval);
 	v.SetWarning(0);
@@ -176,3 +176,4 @@ TEST_CASE("Mod") {
 	REQUIRE_EQ(s.Get(2), 0);
 }
 
+TEST_SUITE_END();

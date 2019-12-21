@@ -744,11 +744,10 @@ if(PLAYER_ENABLE_TESTS)
 	endif()
 
 	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
-	add_executable(test_runner EXCLUDE_FROM_ALL ${TEST_FILES})
+	add_executable(test_runner ${TEST_FILES})
 	target_compile_definitions(test_runner PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\")
 	target_link_libraries(test_runner ${PROJECT_NAME})
-	add_custom_target(check COMMAND ${PROJECT_BINARY_DIR}/test_runner)
-	add_dependencies(check test_runner)
+	add_test(player_test test_runner)
 endif()
 
 # Benchmarks
