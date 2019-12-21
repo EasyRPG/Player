@@ -23,6 +23,7 @@
 #include <map>
 #include <tuple>
 #include <chrono>
+#include <cassert>
 
 #include "async_handler.h"
 #include "cache.h"
@@ -37,7 +38,35 @@
 using namespace std::chrono_literals;
 
 namespace {
-	using key_type = std::tuple<std::string,std::string,bool>;
+	std::string MakeHashKey(const std::string& folder_name, const std::string& filename, bool transparent) {
+		return folder_name + ":" + filename + ":" + (transparent ? "T" : " ");
+	}
+
+	std::string MakeTileHashKey(const std::string& chipset_name, int id) {
+		std::string key;
+		key.reserve(chipset_name.size() + sizeof(int) + 2);
+		key.append(reinterpret_cast<char*>(&id), sizeof(id));
+		key.append(1, ':');
+		key.append(chipset_name);
+
+		return key;
+	}
+
+	int IdFromTileHash(const std::string& key) {
+		int id = 0;
+		if (key.size() > sizeof(id)) {
+			std::memcpy(&id, key.data(), sizeof(id));
+		}
+		return id;
+	}
+
+	const char* NameFromTileHash(const std::string& key) {
+		int offset = sizeof(int) + 1;
+		if (key.size() < offset) {
+			return "";
+		}
+		return key.data() + offset;
+	}
 	using clock = std::chrono::steady_clock;
 
 	struct CacheItem {
@@ -45,18 +74,15 @@ namespace {
 		clock::time_point last_access;
 	};
 
-	using tile_pair = std::pair<std::string, int>;
+	using key_type = std::string;
+	std::unordered_map<key_type, CacheItem> cache;
 
-	using cache_type = std::map<key_type, CacheItem>;
-	cache_type cache;
-
-	using cache_tiles_type = std::map<tile_pair, std::weak_ptr<Bitmap>>;
-	cache_tiles_type cache_tiles;
+	using tile_key_type = std::string;
+	std::unordered_map<tile_key_type, std::weak_ptr<Bitmap>> cache_tiles;
 
 	// rect, flip_x, flip_y, tone, blend
 	using effect_key_type = std::tuple<BitmapRef, Rect, bool, bool, Tone, Color>;
-	using cache_effect_type = std::map<effect_key_type, std::weak_ptr<Bitmap>>;
-	cache_effect_type cache_effects;
+	std::map<effect_key_type, std::weak_ptr<Bitmap>> cache_effects;
 
 	std::string system_name;
 
@@ -93,7 +119,7 @@ namespace {
 #endif
 	}
 
-	BitmapRef AddToCache(const key_type& key, BitmapRef bmp) {
+	BitmapRef AddToCache(const std::string& key, BitmapRef bmp) {
 		if (bmp) {
 			cache_size += bmp->GetSize();
 #ifdef CACHE_DEBUG
@@ -106,9 +132,9 @@ namespace {
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
 						 bool transparent, const uint32_t flags) {
-		const key_type key(folder_name, filename, transparent);
+		const auto key = MakeHashKey(folder_name, filename, transparent);
 
-		const cache_type::iterator it = cache.find(key);
+		auto it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
 			const std::string path = FileFinder::FindImage(folder_name, filename);
@@ -157,52 +183,39 @@ namespace {
 
 	}; // struct Material
 
+	using DummyRenderer = BitmapRef(*)(void);
+
 	template<Material::Type T> BitmapRef DrawCheckerboard();
 
 	BitmapRef DummySystem() {
 		return Bitmap::Create(system_h, sizeof(system_h), true, Bitmap::Flag_System | Bitmap::Flag_ReadOnly);
 	}
 
-	std::function<BitmapRef()> backdrop_dummy_func = DrawCheckerboard<Material::Backdrop>;
-	std::function<BitmapRef()> battle_dummy_func = DrawCheckerboard<Material::Battle>;
-	std::function<BitmapRef()> charset_dummy_func = DrawCheckerboard<Material::Charset>;
-	std::function<BitmapRef()> chipset_dummy_func = DrawCheckerboard<Material::Chipset>;
-	std::function<BitmapRef()> faceset_dummy_func = DrawCheckerboard<Material::Faceset>;
-	std::function<BitmapRef()> gameover_dummy_func = DrawCheckerboard<Material::Gameover>;
-	std::function<BitmapRef()> monster_dummy_func = DrawCheckerboard<Material::Monster>;
-	std::function<BitmapRef()> panorama_dummy_func = DrawCheckerboard<Material::Panorama>;
-	std::function<BitmapRef()> picture_dummy_func = DrawCheckerboard<Material::Picture>;
-	std::function<BitmapRef()> title_dummy_func = DrawCheckerboard<Material::Title>;
-	std::function<BitmapRef()> system2_dummy_func = DrawCheckerboard<Material::System2>;
-	std::function<BitmapRef()> battle2_dummy_func = DrawCheckerboard<Material::Battle2>;
-	std::function<BitmapRef()> battlecharset_dummy_func = DrawCheckerboard<Material::Battlecharset>;
-	std::function<BitmapRef()> battleweapon_dummy_func = DrawCheckerboard<Material::Battleweapon>;
-	std::function<BitmapRef()> frame_dummy_func = DrawCheckerboard<Material::Frame>;
-
 	struct Spec {
 		char const* directory;
 		bool transparent;
 		int min_width , max_width;
 		int min_height, max_height;
-		std::function<BitmapRef()> dummy_renderer;
+		DummyRenderer dummy_renderer;
 		bool oob_check;
-	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 240, backdrop_dummy_func, true },
-		{ "Battle", true, 480, 480, 96, 480, battle_dummy_func, true },
-		{ "CharSet", true, 288, 288, 256, 256, charset_dummy_func, true },
-		{ "ChipSet", true, 480, 480, 256, 256, chipset_dummy_func, true },
-		{ "FaceSet", true, 192, 192, 192, 192, faceset_dummy_func, true},
-		{ "GameOver", false, 320, 320, 240, 240, gameover_dummy_func, true },
-		{ "Monster", true, 16, 320, 16, 160, monster_dummy_func, false },
-		{ "Panorama", false, 80, 640, 80, 480, panorama_dummy_func, false },
-		{ "Picture", true, 1, 640, 1, 480, picture_dummy_func, false },
-		{ "System", true, 160, 160, 80, 80, &DummySystem, true },
-		{ "Title", false, 320, 320, 240, 240, title_dummy_func, true },
-		{ "System2", true, 80, 80, 96, 96, system2_dummy_func, true },
-		{ "Battle2", true, 640, 640, 640, 640, battle2_dummy_func, true },
-		{ "BattleCharSet", true, 144, 144, 384, 384, battlecharset_dummy_func, true},
-		{ "BattleWeapon", true, 192, 192, 512, 512, battleweapon_dummy_func, true },
-		{ "Frame", true, 320, 320, 240, 240, frame_dummy_func, true },
+	};
+	constexpr Spec spec[] = {
+		{ "Backdrop", false, 320, 320, 160, 240, DrawCheckerboard<Material::Backdrop>, true },
+		{ "Battle", true, 480, 480, 96, 480, DrawCheckerboard<Material::Battle>, true },
+		{ "CharSet", true, 288, 288, 256, 256, DrawCheckerboard<Material::Charset>, true },
+		{ "ChipSet", true, 480, 480, 256, 256, DrawCheckerboard<Material::Chipset>, true },
+		{ "FaceSet", true, 192, 192, 192, 192, DrawCheckerboard<Material::Faceset>, true},
+		{ "GameOver", false, 320, 320, 240, 240, DrawCheckerboard<Material::Gameover>, true },
+		{ "Monster", true, 16, 320, 16, 160, DrawCheckerboard<Material::Monster>, false },
+		{ "Panorama", false, 80, 640, 80, 480, DrawCheckerboard<Material::Panorama>, false },
+		{ "Picture", true, 1, 640, 1, 480, DrawCheckerboard<Material::Picture>, false },
+		{ "System", true, 160, 160, 80, 80, DummySystem, true },
+		{ "Title", false, 320, 320, 240, 240, DrawCheckerboard<Material::Title>, true },
+		{ "System2", true, 80, 80, 96, 96, DrawCheckerboard<Material::System2>, true },
+		{ "Battle2", true, 640, 640, 640, 640, DrawCheckerboard<Material::Battle2>, true },
+		{ "BattleCharSet", true, 144, 144, 384, 384, DrawCheckerboard<Material::Battlecharset>, true},
+		{ "BattleWeapon", true, 192, 192, 512, 512, DrawCheckerboard<Material::Battleweapon>, true },
+		{ "Frame", true, 320, 320, 240, 240, DrawCheckerboard<Material::Frame>, true },
 	};
 
 	template<Material::Type T>
@@ -236,9 +249,9 @@ namespace {
 
 		const Spec& s = spec[T];
 
-		const key_type key(folder_name, filename, false);
+		const auto key = MakeHashKey(folder_name, filename, false);
 
-		const cache_type::iterator it = cache.find(key);
+		auto it = cache.find(key);
 
 		if (it == cache.end() || !it->second.bitmap) {
 			FreeBitmapMemory();
@@ -262,13 +275,13 @@ namespace {
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
+#ifndef NDEBUG
 		// Test if the file was requested asynchronously before.
 		// If not the file can't be expected to exist -> bug.
-		FileRequestAsync* request = AsyncHandler::RequestFile(s.directory, f);
-		if (!request->IsReady()) {
-			Output::Debug("BUG: File Not Requested: %s/%s", s.directory, f.c_str());
-			return BitmapRef();
-		}
+		// This test is expensive and turned off in release builds.
+		auto* req = AsyncHandler::RequestFile(s.directory, f);
+		assert(req != nullptr && req->IsReady());
+#endif
 
 		BitmapRef ret = LoadBitmap(s.directory, f, transparent, Bitmap::Flag_ReadOnly | (
 										 T == Material::Chipset? Bitmap::Flag_Chipset:
@@ -380,9 +393,9 @@ BitmapRef Cache::System(const std::string& file) {
 }
 
 BitmapRef Cache::Exfont() {
-	const key_type hash("ExFont", "ExFont", false);
+	const auto key = MakeHashKey("ExFont", "ExFont", false);
 
-	cache_type::iterator const it = cache.find(hash);
+	auto it = cache.find(key);
 
 	if (it == cache.end() || !it->second.bitmap) {
 		// Allow overwriting of built-in exfont with a custom ExFont image file
@@ -396,7 +409,7 @@ BitmapRef Cache::Exfont() {
 			exfont_img = Bitmap::Create(exfont_h, sizeof(exfont_h), true);
 		}
 
-		return AddToCache(hash, exfont_img);
+		return AddToCache(key, exfont_img);
 	} else {
 		it->second.last_access = clock::now();
 		return it->second.bitmap;
@@ -404,8 +417,8 @@ BitmapRef Cache::Exfont() {
 }
 
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
-	tile_pair const key(filename, tile_id);
-	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
+	const auto key = MakeTileHashKey(filename, tile_id);
+	auto it = cache_tiles.find(key);
 
 	if (it == cache_tiles.end() || it->second.expired()) {
 		BitmapRef chipset = Cache::Chipset(filename);
@@ -491,10 +504,13 @@ void Cache::Clear() {
 	cache.clear();
 	cache_size = 0;
 
-	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
-		if (i->second.expired()) { continue; }
+	for (auto& kv : cache_tiles) {
+		auto& key = kv.first;
+		if (kv.second.expired()) {
+			continue;
+		}
 		Output::Debug("possible leak in cached tilemap %s/%d",
-					  i->first.first.c_str(), i->first.second);
+				NameFromTileHash(key), IdFromTileHash(key));
 	}
 
 	cache_tiles.clear();
