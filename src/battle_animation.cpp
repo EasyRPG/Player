@@ -240,7 +240,6 @@ static int CalculateOffset(int pos, int target_height) {
 BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global) :
 	BattleAnimation(anim), target(target), global(global)
 {
-	DrawableMgr::Register(this);
 }
 
 void BattleAnimationMap::Draw(Bitmap& dst) {
@@ -293,7 +292,6 @@ void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
 BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
 	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
-	DrawableMgr::Register(this);
 }
 
 void BattleAnimationBattle::Draw(Bitmap& dst) {
