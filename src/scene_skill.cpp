@@ -26,6 +26,7 @@
 #include "scene_actortarget.h"
 #include "scene_teleport.h"
 #include "transition.h"
+#include "graphics.h"
 
 Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 	actor_index(actor_index), skill_index(skill_index) {

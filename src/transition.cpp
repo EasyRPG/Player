@@ -28,6 +28,7 @@
 #include "scene.h"
 #include "baseui.h"
 #include "drawable.h"
+#include "drawable_mgr.h"
 
 Transition::Transition() : Drawable(TypeTransition, Priority_Transition, true)
 {
@@ -48,7 +49,7 @@ void Transition::Init(TransitionType type, Scene *linked_scene, int duration, bo
 	// FIXME: Break this dependency on DisplayUI
 	if (!black_screen && DisplayUi) {
 		black_screen = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0, 0, 0, 255));
-		Graphics::RegisterDrawable(this);
+		DrawableMgr::Register(this);
 	}
 
 	if (erase && type == TransitionNone) {

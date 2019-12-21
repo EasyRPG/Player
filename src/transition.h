@@ -24,6 +24,7 @@
 #include "drawable.h"
 #include "system.h"
 #include "scene.h"
+#include "color.h"
 
 
 /**

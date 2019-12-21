@@ -21,7 +21,6 @@
 #include "game_battle.h"
 #include "game_system.h"
 #include "game_map.h"
-#include "graphics.h"
 #include "main_data.h"
 #include "filefinder.h"
 #include "cache.h"
@@ -31,6 +30,7 @@
 #include "player.h"
 #include "game_temp.h"
 #include "options.h"
+#include "drawable_mgr.h"
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
 	Sprite(TypeDefault),
@@ -240,7 +240,6 @@ static int CalculateOffset(int pos, int target_height) {
 BattleAnimationMap::BattleAnimationMap(const RPG::Animation& anim, Game_Character& target, bool global) :
 	BattleAnimation(anim), target(target), global(global)
 {
-	Graphics::RegisterDrawable(this);
 }
 
 void BattleAnimationMap::Draw(Bitmap& dst) {
@@ -293,7 +292,6 @@ void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
 BattleAnimationBattle::BattleAnimationBattle(const RPG::Animation& anim, std::vector<Game_Battler*> battlers, bool only_sound, int cutoff_frame) :
 	BattleAnimation(anim, only_sound, cutoff_frame), battlers(std::move(battlers))
 {
-	Graphics::RegisterDrawable(this);
 }
 
 void BattleAnimationBattle::Draw(Bitmap& dst) {

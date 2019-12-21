@@ -21,14 +21,14 @@
 #include "bitmap.h"
 #include "color.h"
 #include "game_screen.h"
-#include "graphics.h"
 #include "main_data.h"
 #include "weather.h"
+#include "drawable_mgr.h"
 
 Weather::Weather() :
 	Drawable(TypeWeather, Priority_Weather, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void Weather::Update() {

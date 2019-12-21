@@ -23,13 +23,14 @@
 #include "util_macro.h"
 #include "bitmap.h"
 #include "cache.h"
+#include "drawable_mgr.h"
 
 // Constructor
 Sprite::Sprite() : Sprite(TypeSprite) {}
 
 Sprite::Sprite(const DrawableType type) : Drawable(type, 0, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 // Draw

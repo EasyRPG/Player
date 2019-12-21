@@ -19,17 +19,17 @@
 #include <string>
 #include "data.h"
 #include "rpg_terrain.h"
-#include "graphics.h"
 #include "cache.h"
 #include "background.h"
 #include "bitmap.h"
 #include "main_data.h"
 #include "reader_util.h"
 #include "output.h"
+#include "drawable_mgr.h"
 
 Background::Background(const std::string& name) : Drawable(TypeBackground, Priority_Background, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 
 	if (!name.empty()) {
 		FileRequestAsync* request = AsyncHandler::RequestFile("Backdrop", name);
@@ -41,7 +41,7 @@ Background::Background(const std::string& name) : Drawable(TypeBackground, Prior
 
 Background::Background(int terrain_id) : Drawable(TypeBackground, Priority_Background, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 
 	const RPG::Terrain* terrain = ReaderUtil::GetElement(Data::terrains, terrain_id);
 

@@ -264,10 +264,6 @@ void Scene::DrawBackground() {
 	DisplayUi->AddBackground();
 }
 
-Graphics::State &Scene::GetGraphicsState() {
-	return state;
-}
-
 bool Scene::CheckSceneExit(AsyncOp aop) {
 	if (aop.GetType() == AsyncOp::eExitGame) {
 		if (Scene::Find(Scene::GameBrowser)) {

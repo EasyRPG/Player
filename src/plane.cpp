@@ -17,15 +17,15 @@
 
 // Headers
 #include "plane.h"
-#include "graphics.h"
 #include "player.h"
 #include "bitmap.h"
 #include "main_data.h"
 #include "game_map.h"
+#include "drawable_mgr.h"
 
 Plane::Plane() : Drawable(TypePlane, 0, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void Plane::Draw(Bitmap& dst) {

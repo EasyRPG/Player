@@ -19,9 +19,9 @@
 
 #include "message_overlay.h"
 #include "player.h"
-#include "graphics.h"
 #include "bitmap.h"
 #include "game_message.h"
+#include "drawable_mgr.h"
 
 MessageOverlay::MessageOverlay() : Drawable(TypeOverlay, Priority_Overlay, true)
 {
@@ -106,7 +106,7 @@ void MessageOverlay::Update() {
 		// Initialisation is delayed because the display is not ready on startup
 		black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color(0, 0, 0, 255));
 		bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
-		Graphics::RegisterDrawable(this);
+		DrawableMgr::Register(this);
 	}
 
 	if (IsAnyMessageVisible()) {

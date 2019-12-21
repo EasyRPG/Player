@@ -18,18 +18,18 @@
 // Headers
 #include <cmath>
 #include "system.h"
-#include "graphics.h"
 #include "player.h"
 #include "rect.h"
 #include "util_macro.h"
 #include "window.h"
 #include "bitmap.h"
+#include "drawable_mgr.h"
 
 constexpr int pause_animation_frames = 20;
 
 Window::Window(): Drawable(TypeWindow, Priority_Window, false)
 {
-	Graphics::RegisterDrawable(this);
+	DrawableMgr::Register(this);
 }
 
 void Window::SetOpenAnimation(int frames) {

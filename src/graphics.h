@@ -22,6 +22,7 @@
 #include <vector>
 #include "bitmap.h"
 #include "drawable.h"
+#include "drawable_list.h"
 
 class Transition;
 class MessageOverlay;
@@ -32,14 +33,6 @@ class Scene;
  * Handles screen drawing.
  */
 namespace Graphics {
-	using DrawableList = std::vector<Drawable*>;
-
-	struct State {
-		State() {}
-		DrawableList drawable_list;
-		bool zlist_dirty = false;
-	};
-
 	/**
 	 * Initializes Graphics.
 	 */
@@ -81,11 +74,6 @@ namespace Graphics {
 
 	void Draw(Bitmap& dst);
 
-	void RegisterDrawable(Drawable* drawable);
-	void RemoveDrawable(Drawable* drawable);
-
-	void UpdateZCallback();
-
 	void UpdateSceneCallback();
 
 	/**
@@ -104,11 +92,6 @@ namespace Graphics {
 	MessageOverlay& GetMessageOverlay();
 
 	Transition& GetTransition();
-
-	/**
-	 * Sort the list of drawables in Z order
-	 */
-	void SortDrawableList(DrawableList& list);
 }
 
 #endif

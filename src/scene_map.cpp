@@ -41,6 +41,7 @@
 #include "input.h"
 #include "screen.h"
 #include "scene_load.h"
+#include "graphics.h"
 
 static bool GetRunForegroundEvents(TeleportTarget::Type tt) {
 	switch (tt) {
@@ -198,7 +199,7 @@ void Scene_Map::TransitionOut(SceneType next_scene) {
 }
 
 void Scene_Map::DrawBackground() {
-	if (spriteset->RequireBackground(GetGraphicsState().drawable_list)) {
+	if (spriteset->RequireBackground(GetDrawableList())) {
 		DisplayUi->CleanDisplay();
 	}
 }

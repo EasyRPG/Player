@@ -39,6 +39,7 @@
 #include "scene_map.h"
 #include "window_command.h"
 #include "baseui.h"
+#include "graphics.h"
 
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
