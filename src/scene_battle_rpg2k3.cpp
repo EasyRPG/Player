@@ -1078,19 +1078,24 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		std::vector<int> drops;
 		Main_Data::game_enemyparty->GenerateDrops(drops);
 
-		Game_Message::texts.push_back(Data::terms.victory + Player::escape_symbol + "|");
+		auto pm = PendingMessage();
+
+		pm.PushLine(Data::terms.victory + Player::escape_symbol + "|");
+		pm.PushPageEnd();
 
 		std::string space = Player::IsRPG2k3E() ? " " : "";
 
 		std::stringstream ss;
 		if (exp > 0) {
 			ss << exp << space << Data::terms.exp_received;
-			Game_Message::texts.push_back(ss.str());
+			pm.PushLine(ss.str());
+			pm.PushPageEnd();
 		}
 		if (money > 0) {
 			ss.str("");
 			ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
-			Game_Message::texts.push_back(ss.str());
+			pm.PushLine(ss.str());
+			pm.PushPageEnd();
 		}
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
 			const RPG::Item* item = ReaderUtil::GetElement(Data::items, *it);
@@ -1102,11 +1107,12 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 			ss.str("");
 			ss << item_name << space << Data::terms.item_recieved;
-			Game_Message::texts.push_back(ss.str());
+			pm.PushLine(ss.str());
+			pm.PushPageEnd();
 		}
 
 		message_window->SetHeight(32);
-		Game_Message::message_waiting = true;
+		Game_Message::SetPendingMessage(std::move(pm));
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_Victory));
 
@@ -1118,14 +1124,6 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 			it != ally_battlers.end(); ++it) {
 				Game_Actor* actor = static_cast<Game_Actor*>(*it);
 				actor->ChangeExp(actor->GetExp() + exp, true);
-		}
-
-		for (std::string& str : Game_Message::texts) {
-			// FIXME: We really need a more sane API for injecting breaks after each line
-
-			if (!str.empty() && str[str.size() - 1] != '\f') {
-				str += '\f';
-			}
 		}
 
 		Main_Data::game_party->GainGold(money);
@@ -1148,11 +1146,12 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 		Game_Message::SetPositionFixed(true);
 		Game_Message::SetPosition(0);
 		Game_Message::SetTransparent(false);
-		Game_Message::message_waiting = true;
 
-		Game_Message::texts.push_back(Data::terms.defeat);
+		auto pm = PendingMessage();
+		pm.PushLine(Data::terms.defeat);
 
 		Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
+		Game_Message::SetPendingMessage(std::move(pm));
 
 		return true;
 	}

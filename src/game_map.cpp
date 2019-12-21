@@ -32,6 +32,7 @@
 #include "game_temp.h"
 #include "game_player.h"
 #include "game_party.h"
+#include "game_message.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -43,7 +44,6 @@
 #include "player.h"
 #include "input.h"
 #include "utils.h"
-#include "window_message.h"
 #include "scope_guard.h"
 
 namespace {
@@ -954,7 +954,7 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool is_preupdate) {
+void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	scrolled_right = 0;
 	scrolled_down = 0;
 
@@ -994,13 +994,13 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, Window_Message& message, bool
 			}
 		}
 
-		message.Update();
+		Game_Message::Update();
 		Main_Data::game_party->UpdateTimers();
 		Main_Data::game_screen->Update();
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {
-		if (!UpdateForegroundEvents(actx, message)) {
+		if (!UpdateForegroundEvents(actx)) {
 			// Suspend due to foreground event async op ...
 			return;
 		}
@@ -1080,13 +1080,11 @@ bool Game_Map::UpdateMapEvents(MapUpdateAsyncContext& actx) {
 	return true;
 }
 
-bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx, Window_Message& message) {
+bool Game_Map::UpdateForegroundEvents(MapUpdateAsyncContext& actx) {
 	auto& interp = GetInterpreter();
 
 	// If we resume from async op, we don't clear the loop index.
 	const bool resume_fg = actx.IsForegroundEvent();
-
-	auto sg = makeScopeGuard([&]() { message.UpdatePostEvents(); });
 
 	// Run any event loaded from last frame.
 	interp.Update(!resume_fg);

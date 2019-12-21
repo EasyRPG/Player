@@ -33,8 +33,6 @@ public:
 	 */
 	static void Init();
 
-	static bool inn_calling;
-
 	static bool shop_buys;
 	static bool shop_sells;
 	static int shop_type;		// message set A, B, or C

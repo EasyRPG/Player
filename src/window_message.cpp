@@ -53,6 +53,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 		Data::battlecommands.transparency == RPG::BattleCommands::Transparency_transparent) {
 		SetBackOpacity(128);
 	}
+	gold_window->SetBackOpacity(GetBackOpacity());
 
 	visible = false;
 	// Above other windows
@@ -67,11 +68,14 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	gold_window->SetVisible(false);
 
 	Game_Message::Init();
+	Game_Message::SetWindow(this);
 }
 
 Window_Message::~Window_Message() {
 	TerminateMessage();
-	Game_Message::visible = false;
+	if (Game_Message::GetWindow() == this) {
+		Game_Message::SetWindow(nullptr);
+	}
 }
 
 void Window_Message::ApplyTextInsertingCommands() {
@@ -134,14 +138,21 @@ void Window_Message::ApplyTextInsertingCommands() {
 	}
 }
 
-void Window_Message::StartMessageProcessing() {
+void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	contents->Clear();
+	pending_message = std::move(pm);
+	allow_next_message = false;
 
-	if (Game_Message::is_word_wrapped) {
+	const auto& lines = pending_message.GetLines();
+	if (!(pending_message.NumLines() > 0 || pending_message.HasNumberInput())) {
+		return;
+	}
+
+	if (pending_message.IsWordWrapped()) {
 		std::u32string wrapped_text;
-		for (const std::string& line : Game_Message::texts) {
+		for (const std::string& line : lines) {
 			/* TODO: don't take commands like \> \< into account when word-wrapping */
-			if (Game_Message::is_word_wrapped) {
+			if (pending_message.IsWordWrapped()) {
 				// since ApplyTextInsertingCommands works for the text variable,
 				// we store line into text and use wrapped_text for the real 'text'
 				text = Utils::DecodeUTF32(line);
@@ -159,23 +170,27 @@ void Window_Message::StartMessageProcessing() {
 	}
 	else {
 		text.clear();
-		for (const std::string& line : Game_Message::texts) {
+		for (const std::string& line : lines) {
 			text.append(Utils::DecodeUTF32(line)).append(1, U'\n');
 		}
 	}
-	Game_Message::texts.clear();
-	item_max = min(4, Game_Message::choice_max);
+	item_max = min(4, pending_message.GetNumChoices());
 
 	ApplyTextInsertingCommands();
 	text_index = text.begin();
+
+	// If we're displaying a new message, reset the closing animation.
+	if (closing) {
+		SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+	}
 
 	InsertNewPage();
 }
 
 void Window_Message::FinishMessageProcessing() {
-	if (Game_Message::choice_max > 0) {
+	if (pending_message.GetNumChoices() > 0) {
 		StartChoiceProcessing();
-	} else if (Game_Message::num_input_variable_id > 0) {
+	} else if (pending_message.HasNumberInput()) {
 		StartNumberInputProcessing();
 	} else if (kill_message) {
 		TerminateMessage();
@@ -194,7 +209,7 @@ void Window_Message::StartChoiceProcessing() {
 }
 
 void Window_Message::StartNumberInputProcessing() {
-	number_input_window->SetMaxDigits(Game_Message::num_input_digits_max);
+	number_input_window->SetMaxDigits(pending_message.GetNumberInputDigits());
 	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
@@ -225,8 +240,10 @@ void Window_Message::InsertNewPage() {
 
 	if (Game_Message::IsTransparent()) {
 		SetOpacity(0);
+		gold_window->SetBackOpacity(0);
 	} else {
 		SetOpacity(255);
+		gold_window->SetBackOpacity(GetBackOpacity());
 	}
 
 	if (!Game_Message::GetFaceName().empty()) {
@@ -241,7 +258,7 @@ void Window_Message::InsertNewPage() {
 		contents_x = 0;
 	}
 
-	if (Game_Message::choice_start == 0 && Game_Message::choice_max > 0) {
+	if (pending_message.GetChoiceStartLine() == 0 && pending_message.HasChoices()) {
 		contents_x += 12;
 	}
 
@@ -250,7 +267,7 @@ void Window_Message::InsertNewPage() {
 	text_color = Font::ColorDefault;
 	speed = 1;
 
-	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
+	if (pending_message.GetNumberInputStartLine() == 0 && pending_message.HasNumberInput()) {
 		// If there is an input window on the first line
 		StartNumberInputProcessing();
 	}
@@ -267,11 +284,11 @@ void Window_Message::InsertNewLine() {
 	contents_y += 16;
 	++line_count;
 
-	if (line_count >= Game_Message::choice_start && Game_Message::choice_max > 0) {
-		unsigned choice_index = line_count - Game_Message::choice_start;
-		if (Game_Message::choice_reset_color) {
+	if (pending_message.HasChoices() && line_count >= pending_message.GetChoiceStartLine()) {
+		unsigned choice_index = line_count - pending_message.GetChoiceStartLine();
+		if (pending_message.GetChoiceResetColor()) {
 			// Check for disabled choices
-			if (Game_Message::choice_disabled.test(choice_index)) {
+			if (!pending_message.IsChoiceEnabled(choice_index)) {
 				text_color = Font::ColorDisabled;
 			} else {
 				text_color = Font::ColorDefault;
@@ -290,7 +307,6 @@ void Window_Message::TerminateMessage() {
 	line_char_counter = 0;
 	index = -1;
 
-	Game_Message::message_waiting = false;
 	if (number_input_window->GetVisible()) {
 		number_input_window->SetActive(false);
 		number_input_window->SetVisible(false);
@@ -299,12 +315,9 @@ void Window_Message::TerminateMessage() {
 	if (gold_window->GetVisible()) {
 		gold_window->SetCloseAnimation(message_animation_frames);
 	}
-	// The other flag resetting is done in Game_Interpreter::CommandEnd
-	Game_Message::SemiClear();
-}
 
-bool Window_Message::IsNextMessagePossible() {
-	return Game_Message::num_input_variable_id > 0 || !Game_Message::texts.empty();
+	// This clears the active flag.
+	pending_message = {};
 }
 
 void Window_Message::ResetWindow() {
@@ -313,6 +326,12 @@ void Window_Message::ResetWindow() {
 
 void Window_Message::Update() {
 	bool update_message_processing = false;
+	allow_next_message = false;
+
+	if (pending_message.ShowGoldWindow()) {
+		ShowGoldWindow();
+	}
+
 	if (wait_count == 0) {
 		if (GetPause()) {
 			WaitForInput();
@@ -321,42 +340,29 @@ void Window_Message::Update() {
 		} else if (number_input_window->GetVisible()) {
 			InputNumber();
 		} else if (!text.empty()) {
-			//Handled after base class updates.
-			if (text_index != text.end()) {
-				update_message_processing = true;
-			}
-			if (text_index == text.end() && wait_count <= 0) {
-				FinishMessageProcessing();
-			}
-		} else if (IsNextMessagePossible()) {
-			// Output a new page
-			if (Game_Temp::inn_calling) {
-				ShowGoldWindow();
-			}
-
-			StartMessageProcessing();
-			//printf("Text: %s\n", text.c_str());
 			if (!visible) {
 				// The MessageBox is not open yet but text output is needed
 				// Open and Close Animations are skipped in battle
 				SetOpenAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
 			} else if (closing) {
-				// Cancel closing animation
+				// If a message was requested while closing, cancel it and display the message immediately.
 				SetOpenAnimation(0);
-			}
-			Game_Message::visible = true;
-		}
-
-		if (!Game_Message::message_waiting && Game_Message::visible) {
-			if (visible) {
-				if (!closing) {
-					// Start the closing animation
-					SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
-				} else {
-					// Closing animation has started, prevent new messages from starting.
-					Game_Message::closing = true;
+			} else {
+				//Handled after base class updates.
+				if (text_index != text.end()) {
+					update_message_processing = true;
+				}
+				if (text_index == text.end() && wait_count <= 0) {
+					FinishMessageProcessing();
 				}
 			}
+		}
+
+		if (!Game_Message::IsMessagePending() && visible && !closing) {
+			// Start the closing animation
+			SetCloseAnimation(Game_Temp::battle_running ? 0 : message_animation_frames);
+			// This frame a foreground event may push a new message and interupt the close animation.
+			allow_next_message = true;
 		}
 	}
 
@@ -371,20 +377,6 @@ void Window_Message::Update() {
 
 	if (update_message_processing) {
 		UpdateMessage();
-	}
-
-	if (!visible) {
-		// The closing animation has finished
-		Game_Message::visible = false;
-		Game_Message::closing = false;
-	}
-}
-
-void Window_Message::UpdatePostEvents() {
-	// Foreground events can spawn a new message. When this happens
-	// we immediately cancel the closing animation.
-	if (closing && !Game_Message::texts.empty()) {
-		SetOpenAnimation(0);
 	}
 }
 
@@ -575,7 +567,6 @@ void Window_Message::DrawGlyph(const std::string& glyph, bool instant_speed) {
 	if (!instant_speed && glyph_width > 0) {
 		// RPG_RT compatible for half-width (6) and full-width (12)
 		// generalizes the algo for even bigger glyphs
-		// FIXME: Verify RPG_RT on full width
 		SetWaitForCharacter(width);
 	}
 	IncrementLineCharCounter(width);
@@ -704,7 +695,7 @@ std::string Window_Message::ParseCommandCode(bool& success, int& parameter) {
 void Window_Message::UpdateCursorRect() {
 	if (index >= 0) {
 		int x_pos = 2;
-		int y_pos = (Game_Message::choice_start + index) * 16;
+		int y_pos = (pending_message.GetChoiceStartLine() + index) * 16;
 		int width = contents->GetWidth();
 
 		if (!Game_Message::GetFaceName().empty()) {
@@ -723,7 +714,7 @@ void Window_Message::UpdateCursorRect() {
 void Window_Message::WaitForInput() {
 	active = true; // Enables the Pause arrow
 	if (Input::IsTriggered(Input::DECISION) ||
-		Input::IsTriggered(Input::CANCEL)) {
+			Input::IsTriggered(Input::CANCEL)) {
 		active = false;
 		SetPause(false);
 
@@ -737,20 +728,33 @@ void Window_Message::WaitForInput() {
 }
 
 void Window_Message::InputChoice() {
+	bool do_terminate = false;
+	int choice_result = -1;
+
 	if (Input::IsTriggered(Input::CANCEL)) {
-		if (Game_Message::choice_cancel_type > 0) {
+		if (pending_message.GetChoiceCancelType() > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
-			Game_Message::choice_result = Game_Message::choice_cancel_type - 1; // Cancel
-			TerminateMessage();
+			choice_result = pending_message.GetChoiceCancelType() - 1; // Cancel
+			do_terminate = true;
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		if (Game_Message::choice_disabled.test(index)) {
+		if (!pending_message.IsChoiceEnabled(index)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			return;
 		}
 
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Game_Message::choice_result = index;
+		choice_result = index;
+		do_terminate = true;
+	}
+
+	if (do_terminate) {
+		if (choice_result >= 0) {
+			auto& continuation = pending_message.GetChoiceContinuation();
+			if (continuation) {
+				continuation(choice_result);
+			}
+		}
 		TerminateMessage();
 	}
 }
@@ -758,7 +762,7 @@ void Window_Message::InputChoice() {
 void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-		Main_Data::game_variables->Set(Game_Message::num_input_variable_id, number_input_window->GetNumber());
+		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		TerminateMessage();
 		number_input_window->SetNumber(0);

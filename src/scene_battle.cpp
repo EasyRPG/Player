@@ -101,6 +101,8 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::Continue(SceneType prev_scene) {
+	Game_Message::SetWindow(message_window.get());
+
 	// Debug scene / other scene could have changed party status.
 	status_window->Refresh();
 }
@@ -150,6 +152,7 @@ void Scene_Battle::CreateUi() {
 	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - option_command_mov, 80));
 
 	message_window.reset(new Window_Message(0, (SCREEN_TARGET_HEIGHT - 80), SCREEN_TARGET_WIDTH, 80));
+	Game_Message::SetWindow(message_window.get());
 }
 
 void Scene_Battle::Update() {
@@ -160,7 +163,7 @@ void Scene_Battle::Update() {
 	item_window->Update();
 	skill_window->Update();
 	target_window->Update();
-	message_window->Update();
+	Game_Message::Update();
 
 	// Query Timer before and after update.
 	// If it reached zero during update was a running battle timer.
@@ -179,7 +182,7 @@ void Scene_Battle::Update() {
 		Scene::Push(std::make_shared<Scene_Gameover>());
 	}
 
-	if (!Game_Message::visible && events_finished) {
+	if (!Game_Message::IsMessageVisible() && events_finished) {
 		ProcessActions();
 		ProcessInput();
 	}

@@ -33,6 +33,7 @@
 
 class Game_Event;
 class Game_CommonEvent;
+class PendingMessage;
 
 namespace RPG {
 	class EventPage;
@@ -69,7 +70,7 @@ public:
 	void Push(Game_CommonEvent* ev);
 
 	void InputButton();
-	void SetupChoices(const std::vector<std::string>& choices, int indent);
+	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
 	virtual bool ExecuteCommand();
 
@@ -250,9 +251,7 @@ protected:
 	bool CommandToggleFullscreen(RPG::EventCommand const& com);
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
-	virtual bool ContinuationChoices(RPG::EventCommand const& com);
 	virtual bool ContinuationOpenShop(RPG::EventCommand const& com);
-	virtual bool ContinuationShowInnStart(RPG::EventCommand const& com);
 	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int DecodeInt(std::vector<int32_t>::const_iterator& it);

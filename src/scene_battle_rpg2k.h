@@ -26,6 +26,10 @@
 #include "window_battlemessage.h"
 #include "game_battlealgorithm.h"
 
+namespace Game_Message {
+class PendingMessage;
+};
+
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -131,7 +135,7 @@ protected:
 	 *
 	 * @param money Number of gold to display.
 	 */
-	void PushGoldReceivedMessage(int money);
+	void PushGoldReceivedMessage(PendingMessage& pm, int money);
 
 	/**
 	 * Adds a message about the experience received into
@@ -139,7 +143,7 @@ protected:
 	 *
 	 * @param exp Number of experience to display.
 	 */
-	void PushExperienceGainedMessage(int exp);
+	void PushExperienceGainedMessage(PendingMessage& pm, int exp);
 
 	/**
 	 * Adds messages about the items obtained after the battle
@@ -147,7 +151,7 @@ protected:
 	 *
 	 * @param drops Vector of item IDs
 	 */
-	void PushItemRecievedMessages(std::vector<int> drops);
+	void PushItemRecievedMessages(PendingMessage& pm, std::vector<int> drops);
 
 	void OptionSelected();
 	void CommandSelected();

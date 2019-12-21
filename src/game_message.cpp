@@ -20,54 +20,31 @@
 #include "game_player.h"
 #include "game_temp.h"
 #include "main_data.h"
+#include "window_message.h"
 #include "font.h"
 #include "player.h"
 
-namespace Game_Message {
-	std::vector<std::string> texts;
-	bool is_word_wrapped;
+#include <cctype>
 
-	int choice_start;
-	int num_input_start;
-
-	int choice_max;
-	std::bitset<8> choice_disabled;
-
-	int choice_cancel_type;
-
-	int num_input_variable_id;
-	int num_input_digits_max;
-
-	bool message_waiting;
-	bool closing;
-	bool visible;
-	bool choice_reset_color = false;
-
-	int choice_result;
-}
+static Window_Message* window = nullptr;
 
 RPG::SaveSystem& data = Main_Data::game_data.system;
 
 void Game_Message::Init() {
-	FullClear();
+	ClearFace();
 }
 
-void Game_Message::SemiClear() {
-	texts.clear();
-	choice_disabled.reset();
-	choice_start = 99;
-	choice_max = 0;
-	choice_cancel_type = 0;
-	num_input_start = -1;
-	num_input_variable_id = 0;
-	num_input_digits_max = 0;
-	is_word_wrapped = false;
-}
-
-void Game_Message::FullClear() {
-	SemiClear();
+void Game_Message::ClearFace() {
 	SetFaceName("");
 	SetFaceIndex(0);
+}
+
+void Game_Message::SetWindow(Window_Message* w) {
+	window = w;
+}
+
+Window_Message* Game_Message::GetWindow() {
+	return window;
 }
 
 std::string Game_Message::GetFaceName() {
@@ -217,17 +194,42 @@ int Game_Message::WordWrap(const std::string& line, const int limit, const std::
 
 bool Game_Message::CanShowMessage(bool foreground) {
 	// If there's a text already, return immediately
-	if (Game_Message::message_waiting)
+	if (IsMessagePending())
 		return false;
 
 	// Forground interpreters: If the message box already started animating we wait for it to finish.
-	if (foreground && Game_Message::visible && Game_Message::closing)
+	if (foreground && IsMessageVisible() && !window->GetAllowNextMessage())
 		return false;
 
 	// Parallel interpreters must wait until the message window is closed
-	if (!foreground && Game_Message::visible)
+	if (!foreground && IsMessageVisible())
 		return false;
 
 	return true;
 }
+
+void Game_Message::Update() {
+	if (window) {
+		window->Update();
+	}
+}
+
+void Game_Message::SetPendingMessage(PendingMessage&& pm) {
+	if (window) {
+		window->StartMessageProcessing(std::move(pm));
+	}
+}
+
+bool Game_Message::IsMessagePending() {
+	return window ? window->GetPendingMessage().IsActive() : false;
+}
+
+bool Game_Message::IsMessageVisible() {
+	return window ? window->GetVisible() : false;
+}
+
+bool Game_Message::IsMessageActive() {
+	return IsMessagePending() || IsMessageVisible();
+}
+
 

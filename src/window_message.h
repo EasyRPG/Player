@@ -23,6 +23,7 @@
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
+#include "pending_message.h"
 
 /**
  * Window Message Class.
@@ -45,7 +46,7 @@ public:
 	 * Starts message processing by reading all
 	 * non-displayed from Game_Message.
 	 */
-	void StartMessageProcessing();
+	void StartMessageProcessing(PendingMessage pm);
 
 	/**
 	 * Ends the message processing.
@@ -85,20 +86,11 @@ public:
 	void TerminateMessage();
 
 	/**
-	 * Checks if the next message page can be displayed.
-	 *
-	 * @return If the text output can start.
-	 */
-	bool IsNextMessagePossible();
-
-	/**
 	 * Stub.
 	 */
 	void ResetWindow();
 
 	void Update() override;
-
-	void UpdatePostEvents();
 
 	/**
 	 * Continues outputting more text. Also handles the
@@ -159,6 +151,12 @@ public:
 	 */
 	void InputNumber();
 
+	/** @return the stored PendingMessage */
+	const PendingMessage& GetPendingMessage() const;
+
+	/** @return true if we can push a new message this frame */
+	bool GetAllowNextMessage() const;
+
 protected:
 	/** X-position of next char. */
 	int contents_x = 0;
@@ -178,6 +176,8 @@ protected:
 	int speed = 1;
 	/** If true inserts a new page after pause ended */
 	bool new_page_after_pause = false;
+	/** If true, we allow a new message to be pushed this frame */
+	bool allow_next_message = false;
 
 	/** Frames to wait when a message wait command was used */
 	int wait_count = 0;
@@ -190,6 +190,8 @@ protected:
 	std::unique_ptr<Window_NumberInput> number_input_window;
 	std::unique_ptr<Window_Gold> gold_window;
 
+	PendingMessage pending_message;
+
 	void DrawGlyph(const std::string& glyph, bool instant_speed);
 	void IncrementLineCharCounter(int width);
 
@@ -197,5 +199,13 @@ protected:
 	void SetWaitForPage();
 	void SetWait(int frames);
 };
+
+inline const PendingMessage& Window_Message::GetPendingMessage() const {
+	return pending_message;
+}
+
+inline bool Window_Message::GetAllowNextMessage() const {
+	return allow_next_message;
+}
 
 #endif

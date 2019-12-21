@@ -19,7 +19,6 @@
 #include "game_temp.h"
 #include "transition.h"
 
-bool Game_Temp::inn_calling;
 bool Game_Temp::shop_buys;
 bool Game_Temp::shop_sells;
 int Game_Temp::shop_type;
@@ -40,7 +39,6 @@ int Game_Temp::battle_result;
 bool Game_Temp::battle_random_encounter;
 
 void Game_Temp::Init() {
-	inn_calling = false;
 	shop_buys = true;
 	shop_sells = true;
 	shop_type = 0;

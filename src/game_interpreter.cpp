@@ -104,7 +104,7 @@ void Game_Interpreter::Push(
 	frame.event_id = event_id;
 
 	if (_state.stack.empty() && main_flag) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 		Main_Data::game_player->SetMenuCalling(false);
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
@@ -322,7 +322,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (Main_Data::game_player->InVehicle() && Main_Data::game_player->GetVehicle()->IsAscendingOrDescending())
 				break;
 
-			if (Game_Message::message_waiting)
+			if (Game_Message::IsMessagePending())
 				break;
 		} else {
 			if ((Game_Message::IsMessageActive()) && _state.show_message) {
@@ -734,7 +734,7 @@ bool Game_Interpreter::OnFinishStackFrame() {
 	const bool is_base_frame = _state.stack.size() == 1;
 
 	if (main_flag && is_base_frame) {
-		Game_Message::SetFaceName("");
+		Game_Message::ClearFace();
 	}
 
 	int event_id = frame->event_id;
@@ -813,22 +813,17 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 		return false;
 	}
 
-	unsigned int line_count = 0;
-
-	Game_Message::message_waiting = true;
-	_state.show_message = true;
+	auto pm = PendingMessage();
 
 	// Set first line
-	Game_Message::texts.push_back(com.string);
-	line_count++;
+	pm.PushLine(com.string);
 
 	++index;
 
 	// Check for continued lines via ShowMessage_2
 	while (index < list.size() && list[index].code == Cmd::ShowMessage_2) {
 		// Add second (another) line
-		line_count++;
-		Game_Message::texts.push_back(list[index].string);
+		pm.PushLine(list[index].string);
 		++index;
 	}
 
@@ -838,23 +833,25 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 		if (list[index].code == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices();
 			// If choices fit on screen
-			if (s_choices.size() <= (4 - line_count)) {
-				Game_Message::choice_start = line_count;
-				Game_Message::choice_cancel_type = list[index].parameters[0];
-				SetupChoices(s_choices, com.indent);
+			if (s_choices.size() <= (4 - pm.NumLines())) {
+				pm.SetChoiceCancelType(list[index].parameters[0]);
+				SetupChoices(s_choices, com.indent, pm);
 				++index;
 			}
 		} else if (list[index].code == Cmd::InputNumber) {
 			// If next event command is input number
 			// If input number fits on screen
-			if (line_count < 4) {
-				Game_Message::num_input_start = line_count;
-				Game_Message::num_input_digits_max = list[index].parameters[0];
-				Game_Message::num_input_variable_id = list[index].parameters[1];
+			if (pm.NumLines() < 4) {
+				int digits = list[index].parameters[0];
+				int variable_id = list[index].parameters[1];
+				pm.PushNumInput(variable_id, digits);
 				++index;
 			}
 		}
 	}
+
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
 
 	return true;
 }
@@ -883,34 +880,19 @@ bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { 
 	return true;
 }
 
-void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent) {
-	Game_Message::choice_start = Game_Message::texts.size();
-	Game_Message::choice_reset_color = false;
-	Game_Message::choice_max = choices.size();
-	Game_Message::choice_disabled.reset();
-
+void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm) {
 	// Set choices to message text
-	unsigned int i;
-	for (i = 0; i < 4 && i < choices.size(); i++) {
-		Game_Message::texts.push_back(choices[i]);
+	pm.SetChoiceResetColors(false);
+	for (int i = 0; i < 4 && i < choices.size(); i++) {
+		pm.PushChoice(choices[i]);
 	}
 
-	SetContinuation(&Game_Interpreter::ContinuationChoices);
+	pm.SetChoiceContinuation([this, indent](int choice_result) {
+		SetSubcommandIndex(indent, choice_result);
+	});
 
 	// save game compatibility with RPG_RT
 	ReserveSubcommandIndex(indent);
-}
-
-bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
-	SetSubcommandIndex(com.indent, Game_Message::choice_result);
-
-	continuation = nullptr;
-
-	return true;
 }
 
 bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // code 10140
@@ -922,13 +904,15 @@ bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // cod
 		return false;
 	}
 
-	Game_Message::message_waiting = true;
-	_state.show_message = true;
+	auto pm = PendingMessage();
 
 	// Choices setup
 	std::vector<std::string> choices = GetChoices();
-	Game_Message::choice_cancel_type = com.parameters[0];
-	SetupChoices(choices, com.indent);
+	pm.SetChoiceCancelType(com.parameters[0]);
+	SetupChoices(choices, com.indent, pm);
+
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
 
 	++index;
 	return false;
@@ -950,12 +934,15 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) { // cod
 		return false;
 	}
 
-	Game_Message::message_waiting = true;
-	_state.show_message = true;
+	auto pm = PendingMessage();
 
-	Game_Message::num_input_start = 0;
-	Game_Message::num_input_variable_id = com.parameters[1];
-	Game_Message::num_input_digits_max = com.parameters[0];
+	int variable_id = com.parameters[1];
+	int digits = com.parameters[0];
+
+	pm.PushNumInput(variable_id, digits);
+
+	Game_Message::SetPendingMessage(std::move(pm));
+	_state.show_message = true;
 
 	// Continue
 	return true;
@@ -3231,6 +3218,8 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		return true;
 	}
 
+	auto pm = PendingMessage();
+
 	for (const auto& actor : GetActors(com.parameters[0], com.parameters[1])) {
 		int actor_id = actor->GetId();
 
@@ -3311,7 +3300,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 				ss << particle << Data::terms.level << " ";
 				ss << level << space << Data::terms.level_up;
 			}
-			Game_Message::texts.push_back(ss.str());
+			pm.PushLine(ss.str());
 			level_up = true;
 		}
 
@@ -3328,7 +3317,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 						std::stringstream ss;
 						ss << Data::skills[learn.skill_id - 1].name;
 						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						Game_Message::texts.push_back(ss.str());
+						pm.PushLine(ss.str());
 						level_up = true;
 					}
 				}
@@ -3342,7 +3331,7 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 						std::stringstream ss;
 						ss << Data::skills[learn.skill_id - 1].name;
 						ss << (Player::IsRPG2k3E() ? " " : "") << Data::terms.skill_learned;
-						Game_Message::texts.push_back(ss.str());
+						pm.PushLine(ss.str());
 						level_up = true;
 					}
 				}
@@ -3350,9 +3339,12 @@ bool Game_Interpreter::CommandChangeClass(RPG::EventCommand const& com) { // cod
 		}
 
 		if (level_up) {
-			Game_Message::texts.back().append("\f");
-			Game_Message::message_waiting = true;
+			pm.PushPageEnd();
 		}
+	}
+
+	if (pm.NumLines() > 0) {
+		Game_Message::SetPendingMessage(std::move(pm));
 	}
 
 	return true;
@@ -3398,6 +3390,5 @@ bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 // Dummy Continuations
 
 bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
-bool Game_Interpreter::ContinuationShowInnStart(RPG::EventCommand const& /* com */) { return true; }
 bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }
 
