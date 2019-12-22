@@ -183,7 +183,7 @@ void Scene_Battle::Update() {
 	// Screen Effects
 	Game_Message::Update();
 	Main_Data::game_party->UpdateTimers();
-	Main_Data::game_screen->Update();
+	Main_Data::game_screen->Update(true);
 	Game_Battle::UpdateAnimation();
 
 	// Query Timer before and after update.

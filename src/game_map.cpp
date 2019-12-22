@@ -988,7 +988,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 
 		Game_Message::Update();
 		Main_Data::game_party->UpdateTimers();
-		Main_Data::game_screen->Update();
+		Main_Data::game_screen->Update(false);
 	}
 
 	if (!actx.IsActive() || actx.IsForegroundEvent()) {

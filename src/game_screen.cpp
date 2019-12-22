@@ -416,9 +416,11 @@ void Game_Screen::UpdateWeather() {
 	}
 }
 
-void Game_Screen::Update() {
+void Game_Screen::Update(bool is_battle) {
 	UpdateScreenEffects();
-	Game_Picture::Update(pictures);
+	if (!is_battle) {
+		Game_Picture::Update(pictures);
+	}
 	UpdateMovie();
 	UpdateWeather();
 	UpdateBattleAnimation();
