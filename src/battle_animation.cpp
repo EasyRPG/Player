@@ -257,8 +257,8 @@ void BattleAnimationMap::Draw(Bitmap& dst) {
 void BattleAnimationMap::DrawGlobal(Bitmap& dst) {
 	auto rect = Main_Data::game_screen->GetScreenEffectsRect();
 
-	for (int y = 0; y != 3; ++y) {
-		for (int x = 0; x != 3; ++x) {
+	for (int y = -1; y < 2; ++y) {
+		for (int x = -1; x < 2; ++x) {
 			DrawAt(dst, rect.width * x + rect.x, rect.height * y + rect.y);
 		}
 	}
