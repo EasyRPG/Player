@@ -117,15 +117,26 @@ static constexpr int fog_opacity[2][4] = {
 
 static constexpr int snowflake_visible = 150;
 
+const Bitmap* Weather::ApplyToneEffect(const Bitmap& bitmap, BitmapRef& tone_bitmap, Rect rect) {
+	if (tone_effect == Tone()) {
+		return &bitmap;
+	}
+
+	if (!tone_bitmap) {
+		tone_bitmap = Bitmap::Create(bitmap, rect);
+	}
+	if (tone_dirty) {
+		tone_bitmap->ToneBlit(0, 0, bitmap, rect, tone_effect, Opacity::opaque, true);
+	}
+	return tone_bitmap.get();
+}
+
 void Weather::DrawRain(Bitmap& dst) {
 	if (!rain_bitmap) {
 		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
-		if (tone_effect != Tone()) {
-			rain_bitmap->ToneBlit(0, 0, *rain_bitmap, rain_bitmap->GetRect(), tone_effect, Opacity::opaque, true);
-		}
 	}
-
-	Rect rect = rain_bitmap->GetRect();
+	const auto rect = rain_bitmap->GetRect();
+	auto* bitmap = ApplyToneEffect(*rain_bitmap, rain_tone_bitmap, rect);
 
 	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
 
@@ -133,24 +144,22 @@ void Weather::DrawRain(Bitmap& dst) {
 		if (sf.life > snowflake_visible) {
 			continue;
 		}
-		dst.Blit(sf.x - sf.y/2, sf.y, *rain_bitmap, rect, 96);
+		dst.Blit(sf.x - sf.y/2, sf.y, *bitmap, rect, 96);
 	}
 }
 
 void Weather::DrawSnow(Bitmap& dst) {
 	if (!snow_bitmap) {
 		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
-		if (tone_effect != Tone()) {
-			snow_bitmap->ToneBlit(0, 0, *snow_bitmap, snow_bitmap->GetRect(), tone_effect, Opacity::opaque, true);
-		}
 	}
+	const auto rect = snow_bitmap->GetRect();
+	auto* bitmap = ApplyToneEffect(*snow_bitmap, snow_tone_bitmap, rect);
 
 	static constexpr int wobble[2][18] = {
 		{-1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
 	};
 
-	Rect rect = snow_bitmap->GetRect();
 
 	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
 
@@ -160,7 +169,7 @@ void Weather::DrawSnow(Bitmap& dst) {
 		int i = (y / 2) % 18;
 		x += wobble[0][i];
 		y += wobble[1][i];
-		dst.Blit(x, y, *snow_bitmap, rect, sf.life);
+		dst.Blit(x, y, *bitmap, rect, sf.life);
 	}
 }
 
@@ -213,20 +222,10 @@ void Weather::CreateFogOverlay() {
 }
 
 void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay) {
-	auto* src = &overlay;
-
 	const auto dr = dst.GetRect();
-	const auto sr = src->GetRect();
+	const auto sr = overlay.GetRect();
 
-	if (tone_effect != Tone()) {
-		if (!tone_overlay) {
-			tone_overlay = Bitmap::Create(overlay, sr);
-		}
-		if (tone_dirty) {
-			tone_overlay->ToneBlit(0, 0, overlay, sr, tone_effect, Opacity::opaque, false);
-		}
-		src = tone_overlay.get();
-	}
+	auto* src = ApplyToneEffect(overlay, tone_overlay, sr);
 
 	auto str = Utils::Clamp(Main_Data::game_screen->GetWeatherStrength(), 0, num_opacities - 1);
 	int back_opacity = fog_opacity[0][str];
@@ -247,9 +246,6 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone
 void Weather::SetTone(Tone tone) {
 	if (tone != tone_effect) {
 		tone_effect = tone;
-		rain_bitmap.reset();
-		snow_bitmap.reset();
-
 		tone_dirty = true;
 	}
 }

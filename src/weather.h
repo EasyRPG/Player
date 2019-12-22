@@ -23,6 +23,7 @@
 #include "drawable.h"
 #include "system.h"
 #include "tone.h"
+#include "rect.h"
 
 /**
  * Renders the weather effects.
@@ -44,12 +45,15 @@ private:
 	void DrawSandstorm(Bitmap& dst);
 	void CreateFogOverlay();
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay);
+	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, BitmapRef& tone_bitmap, Rect rect);
 
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 	BitmapRef fog_bitmap;
 	BitmapRef sand_bitmap;
 
+	BitmapRef snow_tone_bitmap;
+	BitmapRef rain_tone_bitmap;
 	BitmapRef fog_tone_bitmap;
 	BitmapRef sand_tone_bitmap;
 
