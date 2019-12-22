@@ -38,6 +38,8 @@ public:
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
+	void OnWeatherChanged();
+
 private:
 	void DrawRain(Bitmap& dst);
 	void DrawSnow(Bitmap& dst);
@@ -58,7 +60,7 @@ private:
 	BitmapRef sand_tone_bitmap;
 
 	Tone tone_effect;
-	bool tone_dirty = false;
+	bool tone_dirty = true;
 };
 
 inline Tone Weather::GetTone() const {

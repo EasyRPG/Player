@@ -26,11 +26,13 @@
 
 class Game_Battler;
 class Screen;
+class Weather;
 
 class Game_Screen {
 
 public:
 	Game_Screen();
+	~Game_Screen();
 
 	void SetupNewGame();
 	void SetupFromSave();
@@ -89,7 +91,7 @@ public:
 
 	const std::vector<Snowflake>& GetSnowflakes();
 
-	enum Weather {
+	enum WeatherType {
 		Weather_None,
 		Weather_Rain,
 		Weather_Snow,
@@ -153,6 +155,7 @@ public:
 private:
 	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
+	std::unique_ptr<Weather> weather;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved

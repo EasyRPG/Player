@@ -55,7 +55,6 @@ Spriteset_Map::Spriteset_Map() {
 	timer2.reset(new Sprite_Timer(1));
 
 	screen.reset(new Screen());
-	weather.reset(new Weather());
 	frame.reset(new Frame());
 
 	Update();
@@ -109,8 +108,6 @@ void Spriteset_Map::Update() {
 
 	timer1->Update();
 	timer2->Update();
-
-	weather->SetTone(new_tone);
 }
 
 // Finds the sprite for a specific character
