@@ -780,7 +780,7 @@ void Player::ResetGameObjects() {
 	Main_Data::game_switches = std::make_unique<Game_Switches>();
 
 	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::min_2k;
+	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
 	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
 
 	// Prevent a crash when Game_Map wants to reset the screen content
