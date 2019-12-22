@@ -159,13 +159,9 @@ void Game_Picture::OnBattleStart(Scene* map_scene, Scene& battle_scene) {
 	}
 }
 
-void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures) {
-	auto battle_scene = Scene::Find(Scene::Battle);
-	assert(battle_scene);
-	auto map_scene = Scene::Find(Scene::Map);
-
+void Game_Picture::OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene) {
 	for (auto& pic: pictures) {
-		pic.OnBattleStart(map_scene.get(), *battle_scene);
+		pic.OnBattleStart(map_scene, battle_scene);
 	}
 }
 
@@ -181,11 +177,9 @@ void Game_Picture::OnBattleEnd(Scene* map_scene) {
 	}
 }
 
-void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures) {
-	auto map_scene = Scene::Find(Scene::Map);
-
+void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene) {
 	for (auto& pic: pictures) {
-		pic.OnBattleEnd(map_scene.get());
+		pic.OnBattleEnd(map_scene);
 	}
 }
 

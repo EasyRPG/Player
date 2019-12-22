@@ -90,9 +90,9 @@ public:
 	// FIXME: Use C++20 span
 	static void OnMapChange(std::vector<Game_Picture>& pictures);
 	// FIXME: Use C++20 span
-	static void OnBattleStart(std::vector<Game_Picture>& pictures);
+	static void OnBattleStart(std::vector<Game_Picture>& pictures, Scene* map_scene, Scene& battle_scene);
 	// FIXME: Use C++20 span
-	static void OnBattleEnd(std::vector<Game_Picture>& pictures);
+	static void OnBattleEnd(std::vector<Game_Picture>& pictures, Scene* map_scene);
 
 private:
 	RPG::SavePicture data;

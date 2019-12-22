@@ -73,6 +73,8 @@ void Game_Screen::SetupNewGame() {
 }
 
 void Game_Screen::SetupFromSave(std::vector<RPG::SavePicture> save_pics) {
+	weather = std::make_unique<Weather>();
+
 	pictures.clear();
 	pictures.reserve(save_pics.size());
 
@@ -131,11 +133,26 @@ void Game_Screen::OnMapChange() {
 }
 
 void Game_Screen::OnBattleStart() {
-	Game_Picture::OnBattleStart(pictures);
+	auto battle_scene = Scene::Find(Scene::Battle);
+	assert(battle_scene);
+	auto map_scene = Scene::Find(Scene::Map);
+
+	if (map_scene) {
+		// FIXME: O(n) for every sprite. Can we batch this faster?
+		map_scene->GetDrawableList().Take(weather.get());
+	}
+	battle_scene->GetDrawableList().Append(weather.get());
+
+	Game_Picture::OnBattleStart(pictures, map_scene.get(), *battle_scene);
 }
 
 void Game_Screen::OnBattleEnd() {
-	Game_Picture::OnBattleEnd(pictures);
+	auto map_scene = Scene::Find(Scene::Map);
+	if (map_scene) {
+		map_scene->GetDrawableList().Append(weather.get());
+	}
+
+	Game_Picture::OnBattleEnd(pictures, map_scene.get());
 }
 
 void Game_Screen::DoPreallocatePictureData(int id) {
