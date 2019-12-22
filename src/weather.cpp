@@ -30,6 +30,9 @@ Weather::Weather() :
 	Drawable(TypeWeather, Priority_Weather, false)
 {
 	DrawableMgr::Register(this);
+
+	auto rect = Main_Data::game_screen->GetScreenEffectsRect();
+	weather_surface = Bitmap::Create(rect.width, rect.height, true);
 }
 
 void Weather::Update() {
@@ -116,24 +119,9 @@ void Weather::DrawRain(Bitmap& dst) {
 	if (!rain_bitmap) {
 		CreateRainParticle();
 	}
-	const auto rect = rain_bitmap->GetRect();
-	auto* bitmap = ApplyToneEffect(*rain_bitmap, rain_tone_bitmap, rect);
-
-	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
-	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
-	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
-
-	for (auto& sf: snowflakes) {
-		if (sf.life > snowflake_visible) {
-			continue;
-		}
-		auto x = sf.x - sf.y / 4;
-		auto y = sf.y;
-		x -= shake_x;
-		y -= shake_y;
-		dst.Blit(x, y, *bitmap, rect, 96);
-	}
+	DrawParticles(dst, *rain_bitmap, rain_tone_bitmap);
 }
+
 
 void Weather::CreateSnowParticle() {
 	const int w = 2;
@@ -153,28 +141,28 @@ void Weather::DrawSnow(Bitmap& dst) {
 	if (!snow_bitmap) {
 		CreateSnowParticle();
 	}
-	const auto rect = snow_bitmap->GetRect();
-	auto* bitmap = ApplyToneEffect(*snow_bitmap, snow_tone_bitmap, rect);
+	DrawParticles(dst, *snow_bitmap, snow_tone_bitmap);
+}
 
-	static constexpr int wobble[2][18] = {
-		{-1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
-	};
+void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, BitmapRef& tone_particle) {
+	const auto rect = particle.GetRect();
+	auto* bitmap = ApplyToneEffect(particle, tone_particle, rect);
 
-	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
+	const auto& particles = Main_Data::game_screen->GetParticles();
+
+	auto surface_rect = weather_surface->GetRect();
+	weather_surface->Clear();
+
+	for (auto& p: particles) {
+		auto x = Utils::PositiveModulo(p.x, surface_rect.width);
+		auto y = Utils::PositiveModulo(p.y, surface_rect.height);
+		weather_surface->Blit(x, y, *bitmap, rect, p.life);
+	}
+
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
 	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
-
-	for (const auto& sf : snowflakes) {
-		int x = sf.x - sf.y / 4;
-		int y = sf.y;
-		int i = (y / 2) % 18;
-		x += wobble[0][i];
-		y += wobble[1][i];
-		x -= shake_x;
-		x -= shake_y;
-		dst.Blit(x, y, *bitmap, rect, sf.life);
-	}
+	auto pan_rect = Main_Data::game_screen->GetScreenEffectsRect();
+	dst.TiledBlit(-pan_rect.x + shake_x, -pan_rect.y + shake_y, surface_rect, *weather_surface, dst.GetRect(), Opacity::opaque);
 }
 
 void Weather::DrawFog(Bitmap& dst) {

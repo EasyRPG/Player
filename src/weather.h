@@ -48,6 +48,7 @@ private:
 	void CreateRainParticle();
 	void CreateSnowParticle();
 	void CreateFogOverlay();
+	void DrawParticles(Bitmap& dst, const Bitmap& particle, BitmapRef& tone_particle);
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay);
 	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, BitmapRef& tone_bitmap, Rect rect);
 
@@ -60,6 +61,8 @@ private:
 	BitmapRef rain_tone_bitmap;
 	BitmapRef fog_tone_bitmap;
 	BitmapRef sand_tone_bitmap;
+
+	BitmapRef weather_surface;
 
 	Tone tone_effect;
 	bool tone_dirty = true;
