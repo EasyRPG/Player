@@ -119,8 +119,8 @@ void Background::Draw(Bitmap& dst) {
 
 	Rect dst_rect = dst.GetRect();
 
-	int shake_pos = Main_Data::game_data.screen.shake_position;
-	dst_rect.x += shake_pos;
+	dst_rect.x += Main_Data::game_screen->GetShakeOffsetX();
+	dst_rect.y += Main_Data::game_screen->GetShakeOffsetY();
 
 	if (bg_bitmap)
 		dst.TiledBlit(-Scale(bg_x), -Scale(bg_y), bg_bitmap->GetRect(), *bg_bitmap, dst_rect, 255);

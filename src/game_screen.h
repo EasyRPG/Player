@@ -152,6 +152,12 @@ public:
 	 */
 	int GetPanY();
 
+	/** @return Return screen shake X offset */
+	int GetShakeOffsetX() const;
+
+	/** @return Return screen shake Y offset */
+	int GetShakeOffsetY() const;
+
 private:
 	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;
@@ -177,5 +183,13 @@ protected:
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
+
+inline int Game_Screen::GetShakeOffsetX() const {
+	return data.shake_position;
+}
+
+inline int Game_Screen::GetShakeOffsetY() const {
+	return data.shake_position_y;
+}
 
 #endif
