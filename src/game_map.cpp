@@ -1381,8 +1381,7 @@ int Game_Map::GetPositionX() {
 }
 
 int Game_Map::GetDisplayX() {
-	int shake_in_pixels = Main_Data::game_data.screen.shake_position;
-	return map_info.position_x + shake_in_pixels * 16;
+	return map_info.position_x + Main_Data::game_screen->GetShakeOffsetX() * 16;
 }
 
 void Game_Map::SetPositionX(int x) {
@@ -1401,7 +1400,7 @@ int Game_Map::GetPositionY() {
 }
 
 int Game_Map::GetDisplayY() {
-	return map_info.position_y;
+	return map_info.position_y + Main_Data::game_screen->GetShakeOffsetY() * 16;
 }
 
 void Game_Map::SetPositionY(int y) {

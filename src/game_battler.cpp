@@ -672,12 +672,13 @@ int Game_Battler::GetAgi() const {
 }
 
 int Game_Battler::GetDisplayX() const {
-	int shake_pos = Main_Data::game_data.screen.shake_position + shake_position;
+	int shake_pos = Main_Data::game_screen->GetShakeOffsetX() + shake_position;
 	return GetBattleX() + shake_pos;
 }
 
 int Game_Battler::GetDisplayY() const {
-	return GetBattleY() + GetFlyingOffset();
+	int shake_pos = Main_Data::game_screen->GetShakeOffsetY();
+	return GetBattleY() + GetFlyingOffset() + shake_pos;
 }
 
 int Game_Battler::GetHue() const {
