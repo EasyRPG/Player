@@ -249,3 +249,7 @@ void Weather::SetTone(Tone tone) {
 		tone_dirty = true;
 	}
 }
+
+void Weather::OnWeatherChanged() {
+	tone_dirty = true;
+}

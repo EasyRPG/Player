@@ -30,6 +30,8 @@
 #include "utils.h"
 #include "options.h"
 #include "reader_util.h"
+#include "scene.h"
+#include "weather.h"
 #include <cmath>
 
 static constexpr int kShakeContinuousTimeStart = 65535;
@@ -56,8 +58,11 @@ Game_Screen::Game_Screen() :
 	Reset();
 }
 
+Game_Screen::~Game_Screen() {}
+
 void Game_Screen::SetupNewGame() {
 	Reset();
+	weather = std::make_unique<Weather>();
 
 	// Pre-allocate pictures depending on detected game version.
 	// This makes our savegames match RPG_RT.
@@ -66,6 +71,7 @@ void Game_Screen::SetupNewGame() {
 
 void Game_Screen::SetupFromSave() {
 	CreatePicturesFromSave();
+	weather = std::make_unique<Weather>();
 
 	if (Main_Data::game_data.screen.battleanim_active) {
 		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
@@ -225,6 +231,10 @@ void Game_Screen::SetWeatherEffect(int type, int strength) {
 		StopWeather();
 		data.weather = type;
 		data.weather_strength = strength;
+	}
+
+	if (data.weather != type) {
+		weather->OnWeatherChanged();
 	}
 }
 
@@ -429,9 +439,9 @@ bool Game_Screen::IsBattleAnimationWaiting() {
 	return (bool)animation;
 }
 
-
 void Game_Screen::UpdateGraphics() {
 	for (auto& picture: pictures) {
 		picture.UpdateSprite();
 	}
+	weather->SetTone(GetTone());
 }

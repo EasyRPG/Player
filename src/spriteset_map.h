@@ -28,7 +28,6 @@
 #include "sprite_timer.h"
 #include "system.h"
 #include "tilemap.h"
-#include "weather.h"
 
 class Sprite_Character;
 class Game_Character;
@@ -81,7 +80,6 @@ protected:
 	std::unique_ptr<Sprite_Timer> timer1;
 	std::unique_ptr<Sprite_Timer> timer2;
 	std::unique_ptr<Screen> screen;
-	std::unique_ptr<Weather> weather;
 	std::unique_ptr<Frame> frame;
 
 	void CreateSprite(Game_Character* character, bool create_x_clone, bool create_y_clone);
