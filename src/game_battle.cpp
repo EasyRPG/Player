@@ -368,12 +368,20 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 }
 
 bool Game_Battle::UpdateEvents() {
-	if (Game_Battle::CheckWin() || Game_Battle::CheckLose()) {
+	const auto battle_end = Game_Battle::CheckWin() || Game_Battle::CheckLose();
+
+	// 2k3 battle interupts events immediately when battle end conditions occur.
+	if (Player::IsRPG2k3() && battle_end) {
 		return true;
 	}
 
 	if (interpreter->IsRunning()) {
 		return false;
+	}
+
+	// 2k battle end conditions wait for interpreter to finish.
+	if (Player::IsRPG2k() && battle_end) {
+		return true;
 	}
 
 	// Check if another page can run now or if a page that could run can no longer run.
