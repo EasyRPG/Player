@@ -432,10 +432,6 @@ void Game_Map::ScrollRight(int distance) {
 	if (distance == 0) {
 		return;
 	}
-	// Unused, except compatibility with RPG_RT
-	auto& pan_x = Main_Data::game_data.screen.pan_x;
-	const auto pan_limit_x = 20 * SCREEN_TILE_SIZE;
-	pan_x = (pan_x - distance + pan_limit_x) % pan_limit_x;
 
 	Game_Map::Parallax::ScrollRight(distance);
 }
@@ -448,10 +444,6 @@ void Game_Map::ScrollDown(int distance) {
 	if (distance == 0) {
 		return;
 	}
-	// Unused, except compatibility with RPG_RT
-	auto& pan_y = Main_Data::game_data.screen.pan_y;
-	const auto pan_limit_y = 10 * SCREEN_TILE_SIZE;
-	pan_y = (pan_y - distance + pan_limit_y) % pan_limit_y;
 
 	Game_Map::Parallax::ScrollDown(distance);
 }
@@ -957,6 +949,9 @@ int Game_Map::CheckEvent(int x, int y) {
 void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 	scrolled_right = 0;
 	scrolled_down = 0;
+
+	// Reset the scrolled amount when we exit this function.
+	auto sg = makeScopeGuard([&]() { scrolled_down = scrolled_right = 0; });
 
 	if (GetNeedRefresh() != Refresh_None) Refresh();
 
