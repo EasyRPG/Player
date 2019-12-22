@@ -139,12 +139,18 @@ void Weather::DrawRain(Bitmap& dst) {
 	auto* bitmap = ApplyToneEffect(*rain_bitmap, rain_tone_bitmap, rect);
 
 	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
+	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
+	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
 
 	for (auto& sf: snowflakes) {
 		if (sf.life > snowflake_visible) {
 			continue;
 		}
-		dst.Blit(sf.x - sf.y/2, sf.y, *bitmap, rect, 96);
+		auto x = sf.x - sf.y/2;
+		auto y = sf.y;
+		x -= shake_x;
+		y -= shake_y;
+		dst.Blit(x, y, *bitmap, rect, 96);
 	}
 }
 
@@ -160,8 +166,9 @@ void Weather::DrawSnow(Bitmap& dst) {
 		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
 	};
 
-
 	const auto& snowflakes = Main_Data::game_screen->GetSnowflakes();
+	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
+	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
 
 	for (const auto& sf : snowflakes) {
 		int x = sf.x - sf.y / 4;
@@ -169,6 +176,8 @@ void Weather::DrawSnow(Bitmap& dst) {
 		int i = (y / 2) % 18;
 		x += wobble[0][i];
 		y += wobble[1][i];
+		x -= shake_x;
+		x -= shake_y;
 		dst.Blit(x, y, *bitmap, rect, sf.life);
 	}
 }
@@ -231,12 +240,14 @@ void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone
 	int back_opacity = fog_opacity[0][str];
 	int front_opacity = fog_opacity[1][str];
 
+	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
+	const auto shake_y = Main_Data::game_screen->GetShakeOffsetY();
 
 	// FIXME: Confirm exact speed in x direction
 	// FIXME: Confirm algorithm for changes in y. Appears to be very slow and random.
 	int frames = Player::GetFrames();
-	const int x = (frames * 32 / 256) % fog_overlay_tile_width;
-	const int y = (frames * 1 / 256) % fog_overlay_tile_width;
+	const int x = (frames * 32 / 256) % fog_overlay_tile_width + shake_x;
+	const int y = (frames * 1 / 256) % fog_overlay_tile_width - shake_y;
 
 	// FIXME: Confirm whether back layer moves right or is still?
 	dst.TiledBlit(-x + 8, -y, sr, *src, dr, back_opacity);
