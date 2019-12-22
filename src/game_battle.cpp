@@ -123,6 +123,7 @@ void Game_Battle::Quit() {
 	page_can_run.clear();
 
 	Main_Data::game_party->ResetBattle();
+	Main_Data::game_screen->OnBattleEnd();
 }
 
 void Game_Battle::RunEvents() {

@@ -80,9 +80,12 @@ public:
 	static void UpdateSprite(std::vector<Game_Picture>& pictures);
 
 	void OnMapChange();
+	void OnBattleEnd();
 
 	// FIXME: Use C++20 span
 	static void OnMapChange(std::vector<Game_Picture>& pictures);
+	// FIXME: Use C++20 span
+	static void OnBattleEnd(std::vector<Game_Picture>& pictures);
 
 private:
 	RPG::SavePicture data;

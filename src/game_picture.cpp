@@ -135,6 +135,18 @@ void Game_Picture::OnMapChange(std::vector<Game_Picture>& pictures) {
 	}
 }
 
+void Game_Picture::OnBattleEnd() {
+	if (data.flags.erase_on_battle_end) {
+		Erase();
+	}
+}
+
+void Game_Picture::OnBattleEnd(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.OnBattleEnd();
+	}
+}
+
 void Game_Picture::Show(const ShowParams& params) {
 	needs_update = true;
 

@@ -159,6 +159,9 @@ public:
 	/** To be called when the map changes */
 	void OnMapChange();
 
+	/** To be called when a battle ends */
+	void OnBattleEnd();
+
 private:
 	std::vector<Game_Picture> pictures;
 	std::unique_ptr<BattleAnimation> animation;

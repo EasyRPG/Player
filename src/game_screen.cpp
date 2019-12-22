@@ -130,6 +130,10 @@ void Game_Screen::OnMapChange() {
 	animation.reset();
 }
 
+void Game_Screen::OnBattleEnd() {
+	Game_Picture::OnBattleEnd(pictures);
+}
+
 void Game_Screen::DoPreallocatePictureData(int id) {
 	pictures.reserve(id);
 	while (static_cast<int>(pictures.size()) < id) {
