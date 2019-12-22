@@ -28,6 +28,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "utils.h"
+#include "options.h"
 #include "reader_util.h"
 #include <cmath>
 
