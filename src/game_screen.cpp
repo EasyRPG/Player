@@ -130,6 +130,10 @@ void Game_Screen::OnMapChange() {
 	animation.reset();
 }
 
+void Game_Screen::OnBattleStart() {
+	Game_Picture::OnBattleStart(pictures);
+}
+
 void Game_Screen::OnBattleEnd() {
 	Game_Picture::OnBattleEnd(pictures);
 }
@@ -418,9 +422,7 @@ void Game_Screen::UpdateWeather() {
 
 void Game_Screen::Update(bool is_battle) {
 	UpdateScreenEffects();
-	if (!is_battle) {
-		Game_Picture::Update(pictures);
-	}
+	Game_Picture::Update(pictures, is_battle);
 	UpdateMovie();
 	UpdateWeather();
 	UpdateBattleAnimation();

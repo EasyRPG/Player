@@ -159,6 +159,9 @@ public:
 	/** To be called when the map changes */
 	void OnMapChange();
 
+	/** To be called when a battle starts */
+	void OnBattleStart();
+
 	/** To be called when a battle ends */
 	void OnBattleEnd();
 

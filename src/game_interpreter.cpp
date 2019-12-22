@@ -2418,11 +2418,6 @@ namespace PicPointerPatch {
 }
 
 bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
-	if (Game_Temp::battle_running) {
-		Output::Warning("ShowPicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2504,11 +2499,6 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
-	if (Game_Temp::battle_running) {
-		Output::Warning("MovePicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
@@ -2573,11 +2563,6 @@ bool Game_Interpreter::CommandMovePicture(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
-	if (Game_Temp::battle_running) {
-		Output::Warning("ErasePicture: Not supported in battle");
-		return true;
-	}
-
 	// Older versions of RPG_RT block pictures when message active.
 	if (!Player::IsEnglish() && Game_Message::IsMessageActive()) {
 		return false;
