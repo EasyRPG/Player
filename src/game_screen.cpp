@@ -25,6 +25,7 @@
 #include "game_screen.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "game_map.h"
 #include "main_data.h"
 #include "output.h"
 #include "utils.h"
@@ -247,14 +248,6 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_res_y = res_y;
 }
 
-int Game_Screen::GetPanX() {
-	return data.pan_x;
-}
-
-int Game_Screen::GetPanY() {
-	return data.pan_y;
-}
-
 static double interpolate(double d, double x0, double x1)
 {
 	return (x0 * (d - 1) + x1) / d;
@@ -301,6 +294,12 @@ int Game_Screen::AnimateShake(int strength, int speed, int time_left, int positi
 }
 
 void Game_Screen::Update() {
+	constexpr auto pan_limit_x = GetPanLimitX();
+	constexpr auto pan_limit_y = GetPanLimitY();
+
+	data.pan_x = (data.pan_x - Game_Map::GetScrolledRight() + pan_limit_x) % pan_limit_x;
+	data.pan_y = (data.pan_y - Game_Map::GetScrolledDown() + pan_limit_y) % pan_limit_y;
+
 	if (data.tint_time_left > 0) {
 		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
 		data.tint_current_green = interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);

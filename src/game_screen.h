@@ -20,6 +20,7 @@
 
 #include <vector>
 #include "system.h"
+#include "options.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
@@ -138,19 +139,20 @@ public:
 	 */
 	static int AnimateShake(int strength, int speed, int time_left, int position);
 
-	/**
-	 * Get the X panning offset for full screen effects
-	 *
-	 * @return pan_x offset
-	 */
-	int GetPanX();
+	/** @return current pan_x offset for screen effects in 1/16 pixels */
+	int GetPanX() const;
 
-	/**
-	 * Get the Y panning offset for full screen effects
-	 *
-	 * @return pan_y offset
-	 */
-	int GetPanY();
+	/** @return current pan_y offset for screen effects in 1/16 pixels */
+	int GetPanY() const;
+
+	/** @return maximum pan_x offset for screen effects in 1/16 pixels */
+	static constexpr int GetPanLimitX();
+
+	/** @return maximum pan_y offset for screen effects in 1/16 pixels */
+	static constexpr int GetPanLimitY();
+
+	/** @return a Rect describing position and size of screen effects in pixels */
+	Rect GetScreenEffectsRect() const;
 
 	/** @return Return screen shake X offset */
 	int GetShakeOffsetX() const;
@@ -183,6 +185,26 @@ protected:
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
+
+inline int Game_Screen::GetPanX() const {
+	return data.pan_x;
+}
+
+inline int Game_Screen::GetPanY() const {
+	return data.pan_y;
+}
+
+inline constexpr int Game_Screen::GetPanLimitX() {
+	return SCREEN_TARGET_WIDTH * 16;
+}
+
+inline constexpr int Game_Screen::GetPanLimitY() {
+	return SCREEN_TARGET_HEIGHT * 16 * 2 / 3;
+}
+
+inline Rect Game_Screen::GetScreenEffectsRect() const {
+	return Rect{ GetPanX() / 16, GetPanY() / 16, GetPanLimitX() / 16, GetPanLimitY() / 16 };
+}
 
 inline int Game_Screen::GetShakeOffsetX() const {
 	return data.shake_position;
