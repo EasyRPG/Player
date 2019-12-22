@@ -71,13 +71,18 @@ public:
 
 	void Show(const ShowParams& params);
 	void Move(const MoveParams& params);
-	void Erase(bool force_erase);
+	void Erase();
+
+	void Update();
+	void UpdateSprite();
 
 	static void Update(std::vector<Game_Picture>& pictures);
 	static void UpdateSprite(std::vector<Game_Picture>& pictures);
 
-	void Update();
-	void UpdateSprite();
+	void OnMapChange();
+
+	// FIXME: Use C++20 span
+	static void OnMapChange(std::vector<Game_Picture>& pictures);
 
 private:
 	RPG::SavePicture data;

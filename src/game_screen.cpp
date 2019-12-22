@@ -53,16 +53,17 @@ static int GetDefaultNumberOfPictures() {
 	return 0;
 }
 
-Game_Screen::Game_Screen() :
-	data(Main_Data::game_data.screen)
+Game_Screen::Game_Screen()
+	: data(Main_Data::game_data.screen)
 {
-	Reset();
 }
 
-Game_Screen::~Game_Screen() {}
+Game_Screen::~Game_Screen() {
+	data = {};
+}
 
 void Game_Screen::SetupNewGame() {
-	Reset();
+	data = {};
 	weather = std::make_unique<Weather>();
 	OnWeatherChanged();
 
@@ -99,10 +100,8 @@ std::vector<RPG::SavePicture> Game_Screen::GetPictureSaveData() const {
 	return save_pics;
 }
 
-void Game_Screen::Reset() {
-	for (auto& pic : pictures) {
-		pic.Erase(false);
-	}
+void Game_Screen::OnMapChange() {
+	Game_Picture::OnMapChange(pictures);
 
 	data.flash_red = 0;
 	data.flash_green = 0;

@@ -123,6 +123,18 @@ void Game_Picture::UpdateSprite(std::vector<Game_Picture>& pictures) {
 	}
 }
 
+void Game_Picture::OnMapChange() {
+	if (data.flags.erase_on_map_change) {
+		Erase();
+	}
+}
+
+void Game_Picture::OnMapChange(std::vector<Game_Picture>& pictures) {
+	for (auto& pic: pictures) {
+		pic.OnMapChange();
+	}
+}
+
 void Game_Picture::Show(const ShowParams& params) {
 	needs_update = true;
 
@@ -221,13 +233,8 @@ void Game_Picture::Move(const MoveParams& params) {
 	}
 }
 
-void Game_Picture::Erase(bool force_erase) {
-	if (!(force_erase || data.flags.erase_on_map_change)) {
-		return;
-	}
-
-	request_id = FileRequestBinding();
-
+void Game_Picture::Erase() {
+	request_id = {};
 	data.name.clear();
 	sprite.reset();
 	bitmap.reset();
@@ -354,7 +361,7 @@ void Game_Picture::Update() {
 		if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
 			data.spritesheet_frame = 0;
 			if (data.spritesheet_play_once && !data.name.empty()) {
-				Erase(true);
+				Erase();
 			}
 		}
 	}

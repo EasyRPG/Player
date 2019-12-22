@@ -27,6 +27,7 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include "flash.h"
+#include "rpg_savescreen.h"
 
 class Game_Battler;
 class Screen;
@@ -41,11 +42,11 @@ public:
 	void SetupNewGame();
 	void SetupFromSave(std::vector<RPG::SavePicture> pictures);
 
+	const RPG::SaveScreen& GetScreenSaveData() const;
 	std::vector<RPG::SavePicture> GetPictureSaveData() const;
 
 	Game_Picture& GetPicture(int id);
 
-	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int frames);
 	void FlashBegin(int r, int g, int b, int s, int frames);
@@ -154,6 +155,9 @@ public:
 
 	/** @return Return screen shake Y offset */
 	int GetShakeOffsetY() const;
+
+	/** To be called when the map changes */
+	void OnMapChange();
 
 private:
 	std::vector<Game_Picture> pictures;

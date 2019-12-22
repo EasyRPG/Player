@@ -2603,7 +2603,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 			}
 
 			auto& picture = Main_Data::game_screen->GetPicture(i);
-			picture.Erase(true);
+			picture.Erase();
 		}
 	} else {
 		PicPointerPatch::AdjustId(pic_id);
@@ -2613,7 +2613,7 @@ bool Game_Interpreter::CommandErasePicture(RPG::EventCommand const& com) { // co
 		}
 
 		auto& picture = Main_Data::game_screen->GetPicture(pic_id);
-		picture.Erase(true);
+		picture.Erase();
 	}
 
 	return true;
