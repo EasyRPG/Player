@@ -84,13 +84,13 @@ public:
 	 */
 	int GetWeatherStrength();
 
-	struct Snowflake {
-		uint16_t x;
-		uint8_t y;
-		uint8_t life;
+	struct Particle {
+		int16_t x = 0;
+		int16_t y = 0;
+		int16_t life = 0;
 	};
 
-	const std::vector<Snowflake>& GetSnowflakes();
+	const std::vector<Particle>& GetParticles();
 
 	enum WeatherType {
 		Weather_None,
@@ -176,12 +176,14 @@ private:
 	int movie_res_y;
 
 protected:
-	std::vector<Snowflake> snowflakes;
+	std::vector<Particle> particles;
 
 	void StopWeather();
-	void InitSnowRain();
-	void UpdateSnowRain(int speed);
+	void UpdateRain();
+	void UpdateSnow();
 	void UpdateFog(int dx, int dy);
+	void OnWeatherChanged();
+	void InitRainSnow(int lifetime);
 	void CreatePicturesFromSave();
 	void PreallocatePictureData(int id);
 };
@@ -212,6 +214,33 @@ inline int Game_Screen::GetShakeOffsetX() const {
 
 inline int Game_Screen::GetShakeOffsetY() const {
 	return data.shake_position_y;
+}
+
+inline Tone Game_Screen::GetTone() {
+	return Tone((int) ((data.tint_current_red) * 128 / 100),
+		(int) ((data.tint_current_green) * 128 / 100),
+		(int) ((data.tint_current_blue) * 128 / 100),
+		(int) ((data.tint_current_sat) * 128 / 100));
+}
+
+inline Color Game_Screen::GetFlashColor() const {
+	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
+}
+
+inline int Game_Screen::GetWeatherType() {
+	return data.weather;
+}
+
+inline int Game_Screen::GetWeatherStrength() {
+	return data.weather_strength;
+}
+
+inline const std::vector<Game_Screen::Particle>& Game_Screen::GetParticles() {
+	return particles;
+}
+
+inline bool Game_Screen::IsBattleAnimationWaiting() {
+	return (bool)animation;
 }
 
 #endif

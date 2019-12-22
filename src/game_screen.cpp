@@ -64,6 +64,7 @@ Game_Screen::~Game_Screen() {}
 void Game_Screen::SetupNewGame() {
 	Reset();
 	weather = std::make_unique<Weather>();
+	OnWeatherChanged();
 
 	// Pre-allocate pictures depending on detected game version.
 	// This makes our savegames match RPG_RT.
@@ -73,6 +74,7 @@ void Game_Screen::SetupNewGame() {
 void Game_Screen::SetupFromSave() {
 	CreatePicturesFromSave();
 	weather = std::make_unique<Weather>();
+	OnWeatherChanged();
 
 	if (Main_Data::game_data.screen.battleanim_active) {
 		ShowBattleAnimation(Main_Data::game_data.screen.battleanim_id,
@@ -229,13 +231,9 @@ void Game_Screen::SetWeatherEffect(int type, int strength) {
 	// This causes issues in the rendering (weather rendered too fast)
 	if (data.weather != type ||
 		data.weather_strength != strength) {
-		StopWeather();
 		data.weather = type;
 		data.weather_strength = strength;
-	}
-
-	if (data.weather != type) {
-		weather->OnWeatherChanged();
+		OnWeatherChanged();
 	}
 }
 
@@ -255,33 +253,69 @@ static double interpolate(double d, double x0, double x1)
 
 void Game_Screen::StopWeather() {
 	data.weather = Weather_None;
-	snowflakes.clear();
+	OnWeatherChanged();
 }
 
-void Game_Screen::InitSnowRain() {
-	if (!snowflakes.empty())
-		return;
+void Game_Screen::OnWeatherChanged() {
+	particles.clear();
 
-	static const int num_snowflakes[3] = {50, 100, 150};
+	switch (data.weather) {
+		case Weather_Rain:
+			InitRainSnow(80);
+			break;
+		case Weather_Snow:
+			InitRainSnow(255);
+			break;
+		default:
+			break;
+	}
 
-	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
-		Snowflake f;
-		f.x = (short) Utils::GetRandomNumber(0, 440);
-		f.y = (uint8_t) Utils::GetRandomNumber(0, 255);
-		f.life = (uint8_t) Utils::GetRandomNumber(0, 255);
-		snowflakes.push_back(f);
+	if (weather) {
+		weather->OnWeatherChanged();
 	}
 }
 
-void Game_Screen::UpdateSnowRain(int speed) {
-	std::vector<Snowflake>::iterator it;
+void Game_Screen::InitRainSnow(int lifetime) {
+	const auto num_particles = std::min(1 << (data.weather_strength + 4), 128);
+	auto rect = GetScreenEffectsRect();
 
-	for (it = snowflakes.begin(); it != snowflakes.end(); ++it) {
-		Snowflake& f = *it;
-		f.y += (uint8_t)speed;
-		f.life -= 5;
-		if (f.life < 10)
-			f.life = 255;
+	particles.resize(num_particles);
+	for (auto& p: particles) {
+		p.x = Utils::GetRandomNumber(0, rect.width);
+		p.y = Utils::GetRandomNumber(0, rect.height);
+		p.life = Utils::GetRandomNumber(0, lifetime);
+	}
+}
+
+void Game_Screen::UpdateRain() {
+	auto rect = GetScreenEffectsRect();
+
+	for (auto& p: particles) {
+		if (p.life > 0) {
+			p.y += 4;
+			p.x -= 1;
+			p.life -= 8;
+		} else {
+			p.x = Utils::GetRandomNumber(0, rect.width);
+			p.y = Utils::GetRandomNumber(0, rect.height);
+			p.life = 80;
+		}
+	}
+}
+
+void Game_Screen::UpdateSnow() {
+	auto rect = GetScreenEffectsRect();
+
+	for (auto& p: particles) {
+		if (p.life > 0) {
+			p.y += Utils::GetRandomNumber(2, 3);
+			p.x -= Utils::GetRandomNumber(0, 1);
+			p.life -= 8;
+		} else {
+			p.x = Utils::GetRandomNumber(0, rect.width);
+			p.y = Utils::GetRandomNumber(0, rect.height);
+			p.life = 255;
+		}
 	}
 }
 
@@ -352,12 +386,10 @@ void Game_Screen::Update() {
 		case Weather_None:
 			break;
 		case Weather_Rain:
-			InitSnowRain();
-			UpdateSnowRain(4);
+			UpdateRain();
 			break;
 		case Weather_Snow:
-			InitSnowRain();
-			UpdateSnowRain(2);
+			UpdateSnow();
 			break;
 		case Weather_Fog:
 			break;
@@ -366,29 +398,6 @@ void Game_Screen::Update() {
 	}
 
 	UpdateBattleAnimation();
-}
-
-Tone Game_Screen::GetTone() {
-	return Tone((int) ((data.tint_current_red) * 128 / 100),
-		(int) ((data.tint_current_green) * 128 / 100),
-		(int) ((data.tint_current_blue) * 128 / 100),
-		(int) ((data.tint_current_sat) * 128 / 100));
-}
-
-Color Game_Screen::GetFlashColor() const {
-	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
-}
-
-int Game_Screen::GetWeatherType() {
-	return data.weather;
-}
-
-int Game_Screen::GetWeatherStrength() {
-	return data.weather_strength;
-}
-
-const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
-	return snowflakes;
 }
 
 int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {
@@ -432,10 +441,6 @@ void Game_Screen::CancelBattleAnimation() {
 		animation->GetFrames() : 0;
 	Main_Data::game_data.screen.battleanim_active = false;
 	animation.reset();
-}
-
-bool Game_Screen::IsBattleAnimationWaiting() {
-	return (bool)animation;
 }
 
 void Game_Screen::UpdateGraphics() {
