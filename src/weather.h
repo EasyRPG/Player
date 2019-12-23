@@ -45,6 +45,8 @@ private:
 	void DrawSnow(Bitmap& dst);
 	void DrawFog(Bitmap& dst);
 	void DrawSandstorm(Bitmap& dst);
+	void CreateRainParticle();
+	void CreateSnowParticle();
 	void CreateFogOverlay();
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay);
 	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, BitmapRef& tone_bitmap, Rect rect);
