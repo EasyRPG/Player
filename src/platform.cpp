@@ -50,6 +50,7 @@ bool Platform::File::IsDirectory(bool follow_symlinks) const {
 
 Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 #if defined(_WIN32)
+	(void)follow_symlinks;
 	int attribs = ::GetFileAttributesW(filename_w.c_str());
 
 	if (attribs == INVALID_FILE_ATTRIBUTES) {
@@ -61,6 +62,7 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 	}
 	return FileType::Other;
 #elif defined(PSP2)
+	(void)follow_symlinks;
 	struct SceIoStat sb = {};
 	if (::sceIoGetstat(filename.c_str(), &sb) == 0) {
 		return SCE_S_ISREG(sb.st_mode) != 0 ? FileType::File :
@@ -71,6 +73,7 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 #else
 	struct stat sb = {};
 #  if (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
+	(void)follow_symlinks;
 	auto fn = ::stat;
 #  else
 	auto fn = follow_symlinks ? ::stat : ::lstat;
