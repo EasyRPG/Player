@@ -27,13 +27,6 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef PSP2
-#  include <psp2/types.h>
-#  define EasyRPG_Offset SceOff
-#else
-#  define EasyRPG_Offset off_t
-#endif
-
 /**
  * FileFinder contains helper methods for finding case
  * insensitive files paths.
@@ -295,12 +288,13 @@ namespace FileFinder {
 	 */
 	bool HasSavegame();
 
-	/** Get the size of a file
+	/**
+	 * Get the size of a file
 	 *
 	 * @param file the path to a file
 	 * @return the filesize, or -1 on error
 	 */
-	EasyRPG_Offset GetFileSize(const std::string& file);
+	int64_t GetFileSize(const std::string& file);
 
 	/**
 	 * Known file sizes
