@@ -179,6 +179,8 @@ add_library(${PROJECT_NAME}
 	src/pixel_format.h
 	src/plane.cpp
 	src/plane.h
+	src/platform.cpp
+	src/platform.h
 	src/player.cpp
 	src/player.h
 	src/psp2_ui.cpp
