@@ -449,11 +449,16 @@ test_runner_SOURCES = \
 	tests/test_main.cpp \
 	tests/bitmapfont.cpp \
 	tests/directorytree.cpp \
+	tests/drawable_list.cpp \
+	tests/drawable_mgr.cpp \
 	tests/filefinder.cpp \
 	tests/output.cpp \
+	tests/platform.cpp \
 	tests/rtp.cpp \
+	tests/switches.cpp \
 	tests/utils.cpp \
 	tests/utf.cpp \
+	tests/variables.cpp \
 	tests/wordwrap.cpp
 test_runner_CXXFLAGS = \
 	$(libeasyrpg_player_a_CXXFLAGS) -DEP_TEST_PATH=\"$(srcdir)/tests\"
