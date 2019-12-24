@@ -47,15 +47,18 @@ private:
 	void DrawSandstorm(Bitmap& dst);
 	void CreateRainParticle();
 	void CreateSnowParticle();
+	void CreateSandParticle();
 	void CreateFogOverlay();
 	void DrawParticles(Bitmap& dst, const Bitmap& particle, Rect rect);
 	void DrawFogOverlay(Bitmap& dst, const Bitmap& overlay);
+	void DrawSandParticles(Bitmap& dst, const Bitmap& particle);
 	const Bitmap* ApplyToneEffect(const Bitmap& bitmap, Rect rect);
 
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 	BitmapRef fog_bitmap;
 	BitmapRef sand_bitmap;
+	BitmapRef sand_particle_bitmap;
 
 	BitmapRef tone_bitmap;
 

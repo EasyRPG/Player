@@ -61,6 +61,16 @@ static constexpr auto rain_bitmap_rect = Rect{ 0, 0, 6, 24 };
 static constexpr auto snow_bitmap_rect = Rect{ 0, 0, 2, 2 };
 static constexpr auto overlay_bitmap_rect = Rect{ 0, 0, TILE_SIZE, TILE_SIZE };
 
+static constexpr int num_sand_colors = 4;
+static constexpr int num_sand_strength = 3;
+static constexpr auto sand_particle_rect = Rect{ 0, 0, 1, 2 };
+
+static constexpr auto sand_particle_bitmap_rect = Rect{
+	0, 0,
+	sand_particle_rect.width,
+	sand_particle_rect.height * num_sand_colors * num_sand_strength
+};
+
 static constexpr Rect MakeMaxBitmapRect(std::initializer_list<Rect> list) {
 	int max_w = 0;
 	int max_h = 0;
@@ -71,7 +81,7 @@ static constexpr Rect MakeMaxBitmapRect(std::initializer_list<Rect> list) {
 	return Rect{ 0, 0, max_w, max_h };
 }
 
-static constexpr auto tone_bitmap_rect = MakeMaxBitmapRect({ rain_bitmap_rect, snow_bitmap_rect, overlay_bitmap_rect });
+static constexpr auto tone_bitmap_rect = MakeMaxBitmapRect({ rain_bitmap_rect, snow_bitmap_rect, overlay_bitmap_rect, sand_particle_bitmap_rect });
 
 static constexpr int num_overlay_colors = 3;
 
@@ -195,11 +205,65 @@ void Weather::DrawSandstorm(Bitmap& dst) {
 	if (!sand_bitmap) {
 		CreateFogOverlay();
 	}
+	if (!sand_particle_bitmap) {
+		CreateSandParticle();
+	}
 
 	DrawFogOverlay(dst, *sand_bitmap);
+	DrawSandParticles(dst, *sand_particle_bitmap);
+}
 
-	// FIXME: Figure out sand particules
-	// 4 colors: white, red, orange, yellow, 1 pixel wide, 2 pixels tall.
+void Weather::CreateSandParticle() {
+	constexpr int w = sand_particle_bitmap_rect.width;
+	constexpr int h = sand_particle_bitmap_rect.height;
+
+	sand_particle_bitmap = Bitmap::Create(w, h, true);
+
+	// FIXME: Close but probably not accurate
+	const std::array<uint32_t,num_sand_colors * num_sand_strength> pixels = {{
+		// Strength 0
+		Bitmap::pixel_format.rgba_to_uint32_t(212,212,196,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(208,48,40,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(208,208,40,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(208,152,40,255),
+		// Strength 1
+		Bitmap::pixel_format.rgba_to_uint32_t(236,236,215,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(222,54,45,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(218,218,45,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(222,164,44,255),
+		// Strength 2
+		Bitmap::pixel_format.rgba_to_uint32_t(236,236,215,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(240,64,52,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(236,236,60,255),
+		Bitmap::pixel_format.rgba_to_uint32_t(236,180,60,255),
+	}};
+
+	auto* img = reinterpret_cast<uint32_t*>(sand_particle_bitmap->pixels());
+
+	for (int i = 0; i < w * h; ++i) {
+		img[i] = pixels[i / 2];
+	}
+}
+
+void Weather::DrawSandParticles(Bitmap& dst, const Bitmap& particle_bitmap) {
+	const auto& particles = Main_Data::game_screen->GetParticles();
+	const auto strength = Utils::Clamp(Main_Data::game_screen->GetWeatherStrength(), 0, num_sand_strength - 1);
+	const auto offset = strength * sand_particle_rect.height * num_sand_colors;
+
+	auto* bitmap = ApplyToneEffect(particle_bitmap, particle_bitmap.GetRect());
+
+	for (int i = 0; i < static_cast<int>(particles.size()); ++i) {
+		auto& p = particles[i];
+		auto rect = Rect{
+			0,
+			(i % num_sand_colors) * sand_particle_rect.height + offset,
+			sand_particle_rect.width,
+			sand_particle_rect.height
+		};
+		auto x = p.x / 16;
+		auto y = p.y / 16;
+		dst.Blit(x, y, *bitmap, rect, p.life);
+	}
 }
 
 void Weather::CreateFogOverlay() {
