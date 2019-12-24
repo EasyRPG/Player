@@ -64,9 +64,9 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 #elif defined(PSP2)
 	(void)follow_symlinks;
 	struct SceIoStat sb = {};
-	if (::sceIoGetstat(filename.c_str(), &sb) == 0) {
+	if (::sceIoGetstat(filename.c_str(), &sb) >= 0) {
 		return SCE_S_ISREG(sb.st_mode) != 0 ? FileType::File :
-			SCE_S_ISREG(sb.st_mode) != 0 ? FileType::Directory:
+			SCE_S_ISDIR(sb.st_mode) != 0 ? FileType::Directory:
 			FileType::Other;
 	}
 	return FileType::Unknown;
@@ -101,7 +101,7 @@ int64_t Platform::File::GetSize() const {
 #elif defined(PSP2)
 	struct SceIoStat sb = {};
 	int result = ::sceIoGetstat(filename.c_str(), &sb);
-	return (result == 0) ? (int64_t)sb.st_size : (int64_t)-1;
+	return (result >= 0) ? (int64_t)sb.st_size : (int64_t)-1;
 #else
 	struct stat sb = {};
 	int result = ::stat(filename.c_str(), &sb);
@@ -113,7 +113,7 @@ Platform::Directory::Directory(const std::string& name) {
 #if defined(_WIN32)
 	dir_handle = ::_wopendir(Utils::ToWideString(name).c_str());
 #elif defined(PSP2)
-	int dir_handle = ::sceIoDopen(name.c_str());
+	dir_handle = ::sceIoDopen(name.c_str());
 #else
 	dir_handle = ::opendir(name.c_str());
 #endif
