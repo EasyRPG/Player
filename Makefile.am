@@ -190,6 +190,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/player.h \
 	src/psp2_ui.cpp \
 	src/psp2_ui.h \
+	src/game_quit.cpp \
+	src/game_quit.h \
 	src/rect.cpp \
 	src/rect.h \
 	src/registry.cpp \

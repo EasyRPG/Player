@@ -15,43 +15,26 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_WINDOW_HELP_H
-#define EP_WINDOW_HELP_H
+#ifndef EP_GAME_QUIT_H
+#define EP_GAME_QUIT_H
 
-// Headers
-#include "window_base.h"
-#include "text.h"
+#include "window_help.h"
 
-/**
- * Window_Help class.
- * Shows skill and item explanations.
- */
-class Window_Help : public Window_Base {
-
+class Game_Quit {
 public:
-	/**
-	 * Constructor.
-	 */
-	Window_Help(int ix, int iy, int iwidth, int iheight, bool is_global = false);
+	Game_Quit();
+	void Update();
 
-	/**
-	 * Sets the text that will be shown.
-	 *
-	 * @param text text to show.
-	 * @param align text alignment.
-	 */
-	void SetText(std::string text, Text::Alignment align = Text::AlignLeft);
-
-	/**
-	 * Clears the window
-	 */
-	void Clear();
-
+	bool ShouldQuit() const;
 private:
-	/** Text to draw. */
-	std::string text;
-	/** Alignment of text. */
-	Text::Alignment align;
+	void Reset();
+
+	Window_Help window;
+	int time_left = 0;
 };
+
+inline bool Game_Quit::ShouldQuit() const {
+	return time_left == 0;
+}
 
 #endif

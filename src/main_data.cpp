@@ -26,6 +26,7 @@
 #include "game_map.h"
 #include "game_variables.h"
 #include "game_switches.h"
+#include "game_quit.h"
 #include "font.h"
 #include "player.h"
 
@@ -58,6 +59,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_Player> game_player;
 	std::unique_ptr<Game_Party> game_party;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
+	std::unique_ptr<Game_Quit> game_quit;
 
 	RPG::Save game_data;
 }
@@ -160,6 +162,7 @@ void Main_Data::Cleanup() {
 	game_player.reset();
 	game_party.reset();
 	game_enemyparty.reset();
+	game_quit.reset();
 
 	game_data = RPG::Save();
 }

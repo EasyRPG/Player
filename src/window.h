@@ -28,7 +28,7 @@
  */
 class Window : public Drawable {
 public:
-	Window();
+	Window(bool is_global = false);
 
 	void Draw(Bitmap& dst) override;
 
