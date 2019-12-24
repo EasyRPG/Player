@@ -54,13 +54,13 @@ TEST_CASE("ReadDirectory") {
 		// FIXME: This test will only work on platforms that populate the type
 		// field correctly but this is the case for all platforms where unit
 		// tests can execute
-		if (dir.GetName() == "folder") {
+		if (dir.GetEntryName() == "folder") {
 			++matches;
-			CHECK(dir.GetType() == Platform::FileType::Directory);
-		} else if (dir.GetName() == "empty" ||
-				dir.GetName() == "1kb") {
+			CHECK(dir.GetEntryType() == Platform::FileType::Directory);
+		} else if (dir.GetEntryName() == "empty" ||
+				dir.GetEntryName() == "1kb") {
 			++matches;
-			CHECK(dir.GetType() == Platform::FileType::File);
+			CHECK(dir.GetEntryType() == Platform::FileType::File);
 		}
 		++iterations;
 	}

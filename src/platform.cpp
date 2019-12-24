@@ -125,19 +125,27 @@ Platform::Directory::~Directory() {
 
 bool Platform::Directory::Read() {
 #if defined(PSP2)
-	return ::sceIoDread(dir_handle, &entry) > 0;
+	assert(dir_handle >= 0);
+
+	valid_entry = ::sceIoDread(dir_handle, &entry) > 0;
 #else
+	assert(dir_handle);
+
 #	ifdef _WIN32
 	entry = ::_wreaddir(dir_handle);
 #	else
 	entry = ::readdir(dir_handle);
 #	endif
 
-	return entry != nullptr;
+	valid_entry = entry != nullptr;
 #endif
+
+	return valid_entry;
 }
 
-std::string Platform::Directory::GetName() {
+std::string Platform::Directory::GetEntryName() const {
+	assert(valid_entry);
+
 #if defined(PSP2)
 	return entry.d_name;
 #elif defined(_WIN32)
@@ -147,7 +155,9 @@ std::string Platform::Directory::GetName() {
 #endif
 }
 
-Platform::FileType Platform::Directory::GetType() {
+Platform::FileType Platform::Directory::GetEntryType() const {
+	assert(valid_entry);
+
 #if defined(PSP2)
 	return SCE_S_ISREG(entry.d_stat.st_mode) ? FileType::File :
 			SCE_S_ISDIR(entry.d_stat.st_mode) ? FileType::Directory : FileType::Other;
@@ -163,13 +173,24 @@ Platform::FileType Platform::Directory::GetType() {
 }
 
 void Platform::Directory::Close() {
-	if (dir_handle) {
+#if defined(PSP2)
+	bool valid_dir_handle = dir_handle >= 0;
+#else
+	bool valid_dir_handle = dir_handle != nullptr;
+#endif
+
+	if (valid_dir_handle) {
 #if defined(_WIN32)
 		::_wclosedir(dir_handle);
+		dir_handle = nullptr;
 #elif defined(PSP2)
 		::sceIoDclose(dir_handle);
+		dir_handle = -1;
 #else
 		::closedir(dir_handle);
+		dir_handle = nullptr;
 #endif
 	}
+
+	valid_entry = false;
 }

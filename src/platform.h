@@ -104,7 +104,7 @@ namespace Platform {
 		explicit Directory() = delete;
 
 		/**
-		 * Opens a directory.
+		 * Opens a directory for reading.
 		 *
 		 * @param name Directory to open
 		 */
@@ -113,17 +113,17 @@ namespace Platform {
 
 		/**
 		 * Reads one directory entry.
-		 * Use GetName/GetType afterwards to retrieve information.
+		 * Use GetEntryName/GetEntryType afterwards to retrieve information.
 		 *
 		 * @return true on success, false on failure or when end is reached.
 		 */
 		bool Read();
 
 		/** @return Name of the last read entry */
-		std::string GetName();
+		std::string GetEntryName() const;
 
 		/** @return Type of the last read entry */
-		FileType GetType();
+		FileType GetEntryType() const;
 
 		/** Closes the directory */
 		void Close();
@@ -136,12 +136,13 @@ namespace Platform {
 		_WDIR* dir_handle = nullptr;
 		struct _wdirent* entry = nullptr;
 #elif defined(PSP2)
-		int dir_handle = 0;
+		int dir_handle = -1;
 		struct SceIoDirent entry;
 #else
 		DIR* dir_handle = nullptr;
 		struct dirent* entry = nullptr;
 #endif
+		bool valid_entry = false;
 	};
 
 	inline Directory::operator bool() const noexcept {

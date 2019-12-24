@@ -773,8 +773,8 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 	}
 
 	while (dir.Read()) {
-		const std::string name = dir.GetName();
-		Platform::FileType type = dir.GetType();
+		const std::string name = dir.GetEntryName();
+		Platform::FileType type = dir.GetEntryType();
 
 		static bool has_fast_dir_stat = true;
 		bool is_directory = false;
