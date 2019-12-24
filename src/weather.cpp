@@ -171,7 +171,7 @@ void Weather::DrawFog(Bitmap& dst) {
 		CreateFogOverlay();
 	}
 
-	DrawFogOverlay(dst, *fog_bitmap, fog_tone_bitmap);
+	DrawFogOverlay(dst, *fog_bitmap);
 }
 
 void Weather::DrawSandstorm(Bitmap& dst) {
@@ -179,7 +179,7 @@ void Weather::DrawSandstorm(Bitmap& dst) {
 		CreateFogOverlay();
 	}
 
-	DrawFogOverlay(dst, *sand_bitmap, sand_tone_bitmap);
+	DrawFogOverlay(dst, *sand_bitmap);
 
 	// FIXME: Figure out sand particules
 	// 4 colors: white, red, orange, yellow, 1 pixel wide, 2 pixels tall.
@@ -214,11 +214,11 @@ void Weather::CreateFogOverlay() {
 	}
 }
 
-void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay, BitmapRef& tone_overlay) {
+void Weather::DrawFogOverlay(Bitmap& dst, const Bitmap& overlay) {
 	const auto dr = dst.GetRect();
 	const auto sr = overlay.GetRect();
 
-	auto* src = ApplyToneEffect(overlay, tone_overlay, sr);
+	auto* src = ApplyToneEffect(overlay, fog_tone_bitmap, sr);
 
 	auto str = Utils::Clamp(Main_Data::game_screen->GetWeatherStrength(), 0, num_opacities - 1);
 	int back_opacity = fog_opacity[0][str];
