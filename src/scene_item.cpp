@@ -66,7 +66,7 @@ void Scene_Item::Update() {
 
 			if (item.type == RPG::Item::Type_switch) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-				Main_Data::game_party->ConsumeItemUse(item_id);
+				Game_Data::GetParty().ConsumeItemUse(item_id);
 				Main_Data::game_switches->Set(item.switch_id, true);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
@@ -81,14 +81,14 @@ void Scene_Item::Update() {
 					Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 					Scene::Push(std::make_shared<Scene_Teleport>(item, *skill));
 				} else if (skill->type == RPG::Skill::Type_escape) {
-					Main_Data::game_party->ConsumeItemUse(item_id);
+					Game_Data::GetParty().ConsumeItemUse(item_id);
 					Game_System::SePlay(skill->sound_effect);
 
 					Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
 
 					Scene::PopUntil(Scene::Map);
 				} else if (skill->type == RPG::Skill::Type_switch) {
-					Main_Data::game_party->ConsumeItemUse(item_id);
+					Game_Data::GetParty().ConsumeItemUse(item_id);
 					Game_System::SePlay(skill->sound_effect);
 					Main_Data::game_switches->Set(skill->switch_id, true);
 					Scene::PopUntil(Scene::Map);

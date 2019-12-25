@@ -38,8 +38,8 @@ void Window_ShopStatus::Refresh() {
 	int equipped = 0;
 
 	if (item_id != 0) {
-		number = Main_Data::game_party->GetItemCount(item_id);
-		equipped = Main_Data::game_party->GetEquippedItemCount(item_id);
+		number = Game_Data::GetParty().GetItemCount(item_id);
+		equipped = Game_Data::GetParty().GetEquippedItemCount(item_id);
 	}
 
 	contents->TextDraw(0, 2, 1, Data::terms.possessed_items);

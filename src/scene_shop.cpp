@@ -250,7 +250,7 @@ void Scene_Shop::UpdateBuySelection() {
 			if (item->price == 0) {
 				max = 99;
 			} else {
-				max = Main_Data::game_party->GetGold() / item->price;
+				max = Game_Data::GetParty().GetGold() / item->price;
 			}
 			number_window->SetData(item_id, max, item->price);
 
@@ -278,7 +278,7 @@ void Scene_Shop::UpdateSellSelection() {
 
 		if (item && item->price > 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			number_window->SetData(item->ID, Main_Data::game_party->GetItemCount(item->ID), item->price / 2);
+			number_window->SetData(item->ID, Game_Data::GetParty().GetItemCount(item->ID), item->price / 2);
 			SetMode(SellHowMany);
 		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
@@ -300,16 +300,16 @@ void Scene_Shop::UpdateNumberInput() {
 		switch (shop_window->GetChoice()) {
 		case Buy:
 			item_id = buy_window->GetItemId();
-			Main_Data::game_party->LoseGold(number_window->GetTotal());
-			Main_Data::game_party->AddItem(item_id, number_window->GetNumber());
+			Game_Data::GetParty().LoseGold(number_window->GetTotal());
+			Game_Data::GetParty().AddItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			buy_window->Refresh();
 			status_window->Refresh();
 			SetMode(Bought); break;
 		case Sell:
 			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
-			Main_Data::game_party->GainGold(number_window->GetTotal());
-			Main_Data::game_party->RemoveItem(item_id, number_window->GetNumber());
+			Game_Data::GetParty().GainGold(number_window->GetTotal());
+			Game_Data::GetParty().RemoveItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			sell_window->Refresh();
 			status_window->Refresh();

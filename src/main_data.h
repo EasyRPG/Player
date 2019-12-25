@@ -22,6 +22,7 @@
 #include "data.h"
 #include "rpg_save.h"
 #include "game_screen.h"
+#include "game_data.h"
 #include <string>
 
 /**
@@ -29,7 +30,6 @@
  */
 class Game_Player;
 class Game_Screen;
-class Game_Party;
 class Game_EnemyParty;
 class Game_Switches;
 class Game_Variables;
@@ -41,7 +41,6 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_Variables> game_variables;
 	extern std::unique_ptr<Game_Screen> game_screen;
 	extern std::unique_ptr<Game_Player> game_player;
-	extern std::unique_ptr<Game_Party> game_party;
 	extern std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	extern std::unique_ptr<Game_Quit> game_quit;
 	extern RPG::Save game_data;

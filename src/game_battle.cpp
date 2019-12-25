@@ -69,7 +69,7 @@ void Game_Battle::Init() {
 	animation.reset();
 
 	Game_Temp::battle_running = true;
-	Main_Data::game_party->ResetTurns();
+	Game_Data::GetParty().ResetTurns();
 	terminate = false;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
@@ -86,9 +86,9 @@ void Game_Battle::Init() {
 		return false;
 	});
 
-	Main_Data::game_party->ResetBattle();
+	Game_Data::GetParty().ResetBattle();
 
-	for (auto* actor: Main_Data::game_party->GetActors()) {
+	for (auto* actor: Game_Data::GetParty().GetActors()) {
 		actor->ResetEquipmentStates(true);
 	}
 }
@@ -103,7 +103,7 @@ void Game_Battle::Quit() {
 	SetTerrainId(0);
 
 	std::vector<Game_Battler*> allies;
-	Main_Data::game_party->GetBattlers(allies);
+	Game_Data::GetParty().GetBattlers(allies);
 
 	// Remove conditions which end after battle
 	for (std::vector<Game_Battler*>::iterator it = allies.begin(); it != allies.end(); it++) {
@@ -111,18 +111,18 @@ void Game_Battle::Quit() {
 		(*it)->SetBattleAlgorithm(BattleAlgorithmRef());
 	}
 
-	Main_Data::game_party->IncBattleCount();
+	Game_Data::GetParty().IncBattleCount();
 	switch (Game_Temp::battle_result) {
-		case Game_Temp::BattleVictory: Main_Data::game_party->IncWinCount(); break;
-		case Game_Temp::BattleEscape: Main_Data::game_party->IncRunCount(); break;
-		case Game_Temp::BattleDefeat: Main_Data::game_party->IncDefeatCount(); break;
+		case Game_Temp::BattleVictory: Game_Data::GetParty().IncWinCount(); break;
+		case Game_Temp::BattleEscape: Game_Data::GetParty().IncRunCount(); break;
+		case Game_Temp::BattleDefeat: Game_Data::GetParty().IncDefeatCount(); break;
 		case Game_Temp::BattleAbort: break;
 	}
 
 	page_executed.clear();
 	page_can_run.clear();
 
-	Main_Data::game_party->ResetBattle();
+	Game_Data::GetParty().ResetBattle();
 }
 
 void Game_Battle::Update() {
@@ -143,7 +143,7 @@ void Game_Battle::Update() {
 	}
 
 	std::vector<Game_Battler*> battlers;
-	(*Main_Data::game_party).GetBattlers(battlers);
+	(Game_Data::GetParty()).GetBattlers(battlers);
 	(*Main_Data::game_enemyparty).GetBattlers(battlers);
 	for (Game_Battler* b : battlers) {
 		b->UpdateBattle();
@@ -170,7 +170,7 @@ bool Game_Battle::CheckWin() {
 }
 
 bool Game_Battle::CheckLose() {
-	if (!Main_Data::game_party->IsAnyActive())
+	if (!Game_Data::GetParty().IsAnyActive())
 		return true;
 
 	// If there are active characters, but all of them are in a state with Restriction "Do Nothing" and 0% recovery probability, it's game over
@@ -178,7 +178,7 @@ bool Game_Battle::CheckLose() {
 	int character_number = 0;
 	std::vector<Game_Battler*> actors;
 
-	Main_Data::game_party->GetActiveBattlers(actors);
+	Game_Data::GetParty().GetActiveBattlers(actors);
 	for (auto actor : actors) {
 		for (auto id_state : actor->GetInflictedStates()) {
 			RPG::State *state = ReaderUtil::GetElement(Data::states, id_state);
@@ -244,13 +244,13 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 		}
 	}
 
-	Main_Data::game_party->IncTurns();
+	Game_Data::GetParty().IncTurns();
 }
 
 void Game_Battle::UpdateGauges() {
 	std::vector<Game_Battler*> battlers;
 	Main_Data::game_enemyparty->GetActiveBattlers(battlers);
-	Main_Data::game_party->GetActiveBattlers(battlers);
+	Game_Data::GetParty().GetActiveBattlers(battlers);
 
 	int max_agi = 1;
 
@@ -288,7 +288,7 @@ void Game_Battle::IncEscapeFailureCount() {
 
 
 int Game_Battle::GetTurn() {
-	return Main_Data::game_party->GetTurns();
+	return Game_Data::GetParty().GetTurns();
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
@@ -337,7 +337,7 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 		return false;
 
 	if (condition.flags.fatigue) {
-		int fatigue = Main_Data::game_party->GetFatigue();
+		int fatigue = Game_Data::GetParty().GetFatigue();
 		if (fatigue < condition.fatigue_min || fatigue > condition.fatigue_max)
 			return false;
 	}

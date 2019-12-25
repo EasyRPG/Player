@@ -990,7 +990,7 @@ void Game_Map::Update(MapUpdateAsyncContext& actx, bool is_preupdate) {
 		}
 
 		Game_Message::Update();
-		Main_Data::game_party->UpdateTimers();
+		Game_Data::GetParty().UpdateTimers();
 		Main_Data::game_screen->Update();
 	}
 

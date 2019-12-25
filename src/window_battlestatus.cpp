@@ -57,7 +57,7 @@ void Window_BattleStatus::Refresh() {
 		item_max = Main_Data::game_enemyparty->GetBattlerCount();
 	}
 	else {
-		item_max = Main_Data::game_party->GetBattlerCount();
+		item_max = Game_Data::GetParty().GetBattlerCount();
 	}
 
 	item_max = std::min(item_max, 4);
@@ -69,7 +69,7 @@ void Window_BattleStatus::Refresh() {
 			actor = &(*Main_Data::game_enemyparty)[i];
 		}
 		else {
-			actor = &(*Main_Data::game_party)[i];
+			actor = &(Game_Data::GetParty())[i];
 		}
 
 		if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
@@ -105,7 +105,7 @@ void Window_BattleStatus::RefreshGauge() {
 				actor = &(*Main_Data::game_enemyparty)[i];
 			}
 			else {
-				actor = &(*Main_Data::game_party)[i];
+				actor = &(Game_Data::GetParty())[i];
 			}
 
 			if (!enemy && Data::battlecommands.battle_type == RPG::BattleCommands::BattleType_gauge) {
@@ -202,7 +202,7 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 	index = -1;
 	for (int i = 0; i < item_max; i++) {
 		int new_index = (old_index + i) % item_max;
-		if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
+		if ((Game_Data::GetParty())[new_index].IsGaugeFull()) {
 			index = new_index;
 			return index;
 		}
@@ -227,7 +227,7 @@ void Window_BattleStatus::Update() {
 	if (enemy) {
 		item_max = Main_Data::game_enemyparty->GetBattlerCount();
 	} else {
-		item_max = Main_Data::game_party->GetBattlerCount();
+		item_max = Game_Data::GetParty().GetBattlerCount();
 	}
 
 	if (item_max != old_item_max) {
@@ -241,7 +241,7 @@ void Window_BattleStatus::Update() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			for (int i = 1; i < item_max; i++) {
 				int new_index = (index + i) % item_max;
-				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
+				if (IsChoiceValid((Game_Data::GetParty())[new_index])) {
 					index = new_index;
 					break;
 				}
@@ -251,7 +251,7 @@ void Window_BattleStatus::Update() {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
 			for (int i = item_max - 1; i > 0; i--) {
 				int new_index = (index + i) % item_max;
-				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
+				if (IsChoiceValid((Game_Data::GetParty())[new_index])) {
 					index = new_index;
 					break;
 				}

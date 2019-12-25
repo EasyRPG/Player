@@ -86,7 +86,7 @@ void Spriteset_Battle::Update() {
 	for (auto sprite : sprites) {
 		Game_Battler* battler = sprite->GetBattler();
 		if (battler->GetType() == Game_Battler::Type_Ally) {
-			sprite->SetVisible(Main_Data::game_party->IsActorInParty(battler->GetId()));
+			sprite->SetVisible(Game_Data::GetParty().IsActorInParty(battler->GetId()));
 		}
 
 		sprite->Update();

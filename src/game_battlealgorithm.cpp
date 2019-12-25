@@ -1358,7 +1358,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 void Game_BattleAlgorithm::Skill::Apply() {
 	if (IsFirstAttack()) {
 		if (item) {
-			Main_Data::game_party->ConsumeItemUse(item->ID);
+			Game_Data::GetParty().ConsumeItemUse(item->ID);
 		}
 		else {
 			source->ChangeSp(-source->CalculateSkillCost(skill.ID));
@@ -1512,7 +1512,7 @@ bool Game_BattleAlgorithm::Skill::IsReflected() const {
 
 bool Game_BattleAlgorithm::Skill::ActionIsPossible() const {
 	if (item) {
-		int count = Main_Data::game_party->GetItemCount(item->ID);
+		int count = Game_Data::GetParty().GetItemCount(item->ID);
 		if (count == 0) {
 			auto* src = GetSource();
 			if (src && src->GetType() == Game_Battler::Type_Ally) {
@@ -1626,7 +1626,7 @@ void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
 
 	if (first_attack) {
-		Main_Data::game_party->ConsumeItemUse(item.ID);
+		Game_Data::GetParty().ConsumeItemUse(item.ID);
 	}
 }
 
@@ -1665,7 +1665,7 @@ const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
 }
 
 bool Game_BattleAlgorithm::Item::ActionIsPossible() const {
-	return Main_Data::game_party->GetItemCount(item.ID) > 0;
+	return Game_Data::GetParty().GetItemCount(item.ID) > 0;
 }
 
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
@@ -1891,7 +1891,7 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 	this->success = true;
 
 	if (source->GetType() == Game_Battler::Type_Ally && !always_succeed) {
-		int ally_agi = Main_Data::game_party->GetAverageAgility();
+		int ally_agi = Game_Data::GetParty().GetAverageAgility();
 		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
 
 		// flee chance is 0% when ally has less than 70% of enemy agi

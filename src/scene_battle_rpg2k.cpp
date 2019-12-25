@@ -284,7 +284,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	case State_SelectOption:
 		// No Auto battle/Escape when all actors are sleeping or similar
-		if (!Main_Data::game_party->IsAnyControllable()) {
+		if (!Game_Data::GetParty().IsAnyControllable()) {
 			SelectNextActor();
 		}
 		break;
@@ -337,7 +337,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			}
 
 			// Go right into next turn if no actors controllable.
-			if (!Main_Data::game_party->IsAnyControllable()) {
+			if (!Game_Data::GetParty().IsAnyControllable()) {
 				SelectNextActor();
 			} else {
 				SetState(State_SelectOption);
@@ -1181,7 +1181,7 @@ void Scene_Battle_Rpg2k::Escape() {
 	if (battle_action_substate == eBegin) {
 		battle_message_window->Clear();
 
-		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0], first_strike);
+		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(Game_Data::GetParty())[0], first_strike);
 
 		auto next_ss = escape_alg.Execute()
 			? eSuccess
@@ -1222,7 +1222,7 @@ void Scene_Battle_Rpg2k::Escape() {
 }
 
 void Scene_Battle_Rpg2k::SelectNextActor() {
-	std::vector<Game_Actor*> allies = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> allies = Game_Data::GetParty().GetActors();
 
 	if ((size_t)actor_index == allies.size()) {
 		// All actor actions decided, player turn ends
@@ -1251,7 +1251,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 
 	switch (active_actor->GetSignificantRestriction()) {
 		case RPG::State::Restriction_attack_ally:
-			random_target = Main_Data::game_party->GetRandomActiveBattler();
+			random_target = Game_Data::GetParty().GetRandomActiveBattler();
 			break;
 		case RPG::State::Restriction_attack_enemy:
 			random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();
@@ -1287,7 +1287,7 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 }
 
 void Scene_Battle_Rpg2k::SelectPreviousActor() {
-	std::vector<Game_Actor*> allies = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> allies = Game_Data::GetParty().GetActors();
 
 	if (allies[0] == active_actor) {
 		SetState(State_SelectOption);
@@ -1554,7 +1554,7 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
-		Main_Data::game_party->GetActiveBattlers(ally_battlers);
+		Game_Data::GetParty().GetActiveBattlers(ally_battlers);
 
 		pm.PushPageEnd();
 
@@ -1562,9 +1562,9 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 			Game_Actor* actor = static_cast<Game_Actor*>(ally);
 			actor->ChangeExp(actor->GetExp() + exp, &pm);
 		}
-		Main_Data::game_party->GainGold(money);
+		Game_Data::GetParty().GainGold(money);
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			Main_Data::game_party->AddItem(*it, 1);
+			Game_Data::GetParty().AddItem(*it, 1);
 		}
 
 		Game_Message::SetPendingMessage(std::move(pm));

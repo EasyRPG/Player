@@ -799,7 +799,6 @@ void Player::ResetGameObjects() {
 	Game_Temp::Init();
 
 	Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();
-	Main_Data::game_party = std::make_unique<Game_Party>();
 	Main_Data::game_player = std::make_unique<Game_Player>();
 	Main_Data::game_quit = std::make_unique<Game_Quit>();
 
@@ -924,8 +923,8 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_data.system.Fixup();
 
 	Game_Actors::Fixup();
+
 	Game_Data::SetupLoadGame(Main_Data::game_data);
-	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
 
 	int map_id = save->party_location.map_id;
 
@@ -949,10 +948,10 @@ static void OnMapFileReady(FileRequestResult*) {
 	int y_pos = Player::party_y_position == -1 ?
 		Data::treemap.start.party_y : Player::party_y_position;
 	if (Player::party_members.size() > 0) {
-		Main_Data::game_party->Clear();
+		Game_Data::GetParty().Clear();
 		std::vector<int>::iterator member;
 		for (member = Player::party_members.begin(); member != Player::party_members.end(); ++member) {
-			Main_Data::game_party->AddActor(*member);
+			Game_Data::GetParty().AddActor(*member);
 		}
 	}
 
@@ -970,7 +969,6 @@ void Player::SetupNewGame() {
 	}
 
 	Game_Data::SetupNewGame();
-	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
 }
 

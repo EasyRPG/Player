@@ -186,7 +186,7 @@ void Scene_Debug::Update() {
 				break;
 			case eItemSelect:
 				if (GetIndex() <= static_cast<int>(Data::items.size())) {
-					EnterFromListOptionToValue(eItemValue, Main_Data::game_party->GetItemCount(GetIndex()), 2, false);
+					EnterFromListOptionToValue(eItemValue, Game_Data::GetParty().GetItemCount(GetIndex()), 2, false);
 				}
 				break;
 			case eItemValue:
@@ -526,7 +526,7 @@ void Scene_Debug::EnterGold() {
 	range_window->SetActive(false);
 	range_index = 0;
 	range_window->SetIndex(range_index);
-	numberinput_window->SetNumber(Main_Data::game_party->GetGold());
+	numberinput_window->SetNumber(Game_Data::GetParty().GetGold());
 	numberinput_window->SetShowOperator(false);
 	numberinput_window->SetVisible(true);
 	numberinput_window->SetActive(true);
@@ -649,15 +649,15 @@ void Scene_Debug::DoVariable() {
 }
 
 void Scene_Debug::DoGold() {
-	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetGold();
-	Main_Data::game_party->GainGold(delta);
+	auto delta = numberinput_window->GetNumber() - Game_Data::GetParty().GetGold();
+	Game_Data::GetParty().GainGold(delta);
 
 	ReturnToMain(4);
 }
 
 void Scene_Debug::DoItem() {
-	auto delta = numberinput_window->GetNumber() - Main_Data::game_party->GetItemCount(GetIndex());
-	Main_Data::game_party->AddItem(GetIndex(), delta);
+	auto delta = numberinput_window->GetNumber() - Game_Data::GetParty().GetItemCount(GetIndex());
+	Game_Data::GetParty().AddItem(GetIndex(), delta);
 
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 
@@ -707,7 +707,7 @@ void Scene_Debug::DoMap() {
 void Scene_Debug::DoFullHeal() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_UseItem));
 	int id = GetIndex();
-	auto actors = Main_Data::game_party->GetActors();
+	auto actors = Game_Data::GetParty().GetActors();
 	if (id <= 1) {
 		for (auto& actor: actors) {
 			actor->FullHeal();

@@ -500,7 +500,7 @@ void Scene_Map::FinishInn() {
 	Game_System::BgmPlay(music_before_inn);
 
 	// Full heal
-	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> actors = Game_Data::GetParty().GetActors();
 	for (Game_Actor* actor : actors) {
 		actor->FullHeal();
 	}

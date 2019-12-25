@@ -70,7 +70,7 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 
 	if (result) {
 		// Check if the party has the item at least once
-		if (Main_Data::game_party->GetItemCount(item_id) == 0) {
+		if (Game_Data::GetParty().GetItemCount(item_id) == 0) {
 			return false;
 		} else {
 			return Game_Actors::GetActor(actor_id)->IsEquippable(item_id);

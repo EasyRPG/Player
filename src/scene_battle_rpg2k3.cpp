@@ -193,7 +193,7 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 
 		if (ally_index >= 0 && Data::battlecommands.battle_type != RPG::BattleCommands::BattleType_traditional) {
 			ally_cursor->SetVisible(true);
-			Main_Data::game_party->GetBattlers(actors);
+			Game_Data::GetParty().GetBattlers(actors);
 			const Game_Battler* actor = actors[ally_index];
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(actor);
 			ally_cursor->SetX(actor->GetBattleX());
@@ -299,8 +299,8 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 	Game_Actor* actor;
 
-	if (!active_actor && Main_Data::game_party->GetBattlerCount() > 0) {
-		actor = &(*Main_Data::game_party)[0];
+	if (!active_actor && Game_Data::GetParty().GetBattlerCount() > 0) {
+		actor = &(Game_Data::GetParty())[0];
 	}
 	else {
 		actor = active_actor;
@@ -539,7 +539,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 }
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
-	if (Main_Data::game_party->GetBattlerCount() == 0) {
+	if (Game_Data::GetParty().GetBattlerCount() == 0) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		Scene::Pop();
 	}
@@ -650,7 +650,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			// The internal state turn counter increments for all every turn
 			std::vector<Game_Battler*> battler;
-			Main_Data::game_party->GetActiveBattlers(battler);
+			Game_Data::GetParty().GetActiveBattlers(battler);
 			Main_Data::game_enemyparty->GetActiveBattlers(battler);
 
 			for (auto& b : battler) {
@@ -708,7 +708,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		{
 			std::vector<Game_Battler*> battlers;
-			Main_Data::game_party->GetActiveBattlers(battlers);
+			Game_Data::GetParty().GetActiveBattlers(battlers);
 			Main_Data::game_enemyparty->GetActiveBattlers(battlers);
 
 			if (combo_repeat == 1) {
@@ -1065,7 +1065,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		SetState(State_Victory);
 
 		std::vector<Game_Battler*> battlers;
-		Main_Data::game_party->GetActiveBattlers(battlers);
+		Game_Data::GetParty().GetActiveBattlers(battlers);
 		for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end(); ++it) {
 			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
 			if (sprite) {
@@ -1118,7 +1118,7 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 
 		// Update attributes
 		std::vector<Game_Battler*> ally_battlers;
-		Main_Data::game_party->GetActiveBattlers(ally_battlers);
+		Game_Data::GetParty().GetActiveBattlers(ally_battlers);
 
 		pm.PushPageEnd();
 
@@ -1128,9 +1128,9 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 				actor->ChangeExp(actor->GetExp() + exp, &pm);
 		}
 
-		Main_Data::game_party->GainGold(money);
+		Game_Data::GetParty().GainGold(money);
 		for (std::vector<int>::iterator it = drops.begin(); it != drops.end(); ++it) {
-			Main_Data::game_party->AddItem(*it, 1);
+			Game_Data::GetParty().AddItem(*it, 1);
 		}
 
 		return true;
@@ -1171,7 +1171,7 @@ bool Scene_Battle_Rpg2k3::CheckResultConditions() {
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {
 	std::vector<Game_Battler*> battler;
-	Main_Data::game_party->GetBattlers(battler);
+	Game_Data::GetParty().GetBattlers(battler);
 
 	int i = 0;
 	for (std::vector<Game_Battler*>::iterator it = battler.begin();
@@ -1187,7 +1187,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 			if (active_actor->CanAct()) {
 				switch (active_actor->GetSignificantRestriction()) {
 				case RPG::State::Restriction_attack_ally:
-					random_target = Main_Data::game_party->GetRandomActiveBattler();
+					random_target = Game_Data::GetParty().GetRandomActiveBattler();
 					break;
 				case RPG::State::Restriction_attack_enemy:
 					random_target = Main_Data::game_enemyparty->GetRandomActiveBattler();

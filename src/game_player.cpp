@@ -296,11 +296,11 @@ void Game_Player::UpdateSelfMovement() {
 					break;
 			}
 			if (tried_move && !move_failed) {
-				Main_Data::game_party->IncSteps();
+				Game_Data::GetParty().IncSteps();
 				if (Game_Map::UpdateEncounterSteps()) {
 					SetEncounterCalling(true);
 				}
-				if (Main_Data::game_party->ApplyStateDamage()) {
+				if (Game_Data::GetParty().ApplyStateDamage()) {
 					Main_Data::game_screen->FlashMapStepDamage();
 				}
 			}
@@ -444,7 +444,7 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 
 void Game_Player::Refresh() {
 
-	auto* actor = Main_Data::game_party->GetActor(0);
+	auto* actor = Game_Data::GetParty().GetActor(0);
 	if (actor == nullptr) {
 		SetSpriteGraphic("", 0);
 		SetTransparency(0);
@@ -576,7 +576,7 @@ void Game_Player::BeginMove() {
 				Game_System::SePlay(terrain->footstep);
 			}
 			if (terrain->damage > 0) {
-				for (auto hero : Main_Data::game_party->GetActors()) {
+				for (auto hero : Game_Data::GetParty().GetActors()) {
 					if (!hero->PreventsTerrainDamage()) {
 						red_flash = true;
 						hero->ChangeHp(-std::max<int>(0, std::min<int>(terrain->damage, hero->GetHp() - 1)));

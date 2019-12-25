@@ -26,7 +26,6 @@
 #include "filefinder.h"
 #include "game_actor.h"
 #include "game_map.h"
-#include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
@@ -62,26 +61,26 @@ void Scene_Save::Action(int index) {
 	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;
 
-	int size = (int)Main_Data::game_party->GetActors().size();
+	int size = (int)Game_Data::GetParty().GetActors().size();
 	Game_Actor* actor;
 
 	if (size > 3) {
-		actor = Main_Data::game_party->GetActors()[3];
+		actor = Game_Data::GetParty().GetActors()[3];
 		title.face4_id = actor->GetFaceIndex();
 		title.face4_name = actor->GetFaceName();
 	}
 	if (size > 2) {
-		actor = Main_Data::game_party->GetActors()[2];
+		actor = Game_Data::GetParty().GetActors()[2];
 		title.face3_id = actor->GetFaceIndex();
 		title.face3_name = actor->GetFaceName();
 	}
 	if (size > 1) {
-		actor = Main_Data::game_party->GetActors()[1];
+		actor = Game_Data::GetParty().GetActors()[1];
 		title.face2_id = actor->GetFaceIndex();
 		title.face2_name = actor->GetFaceName();
 	}
 	if (size > 0) {
-		actor = Main_Data::game_party->GetActors()[0];
+		actor = Game_Data::GetParty().GetActors()[0];
 		title.face1_id = actor->GetFaceIndex();
 		title.face1_name = actor->GetFaceName();
 		title.hero_hp = actor->GetHp();
@@ -116,7 +115,7 @@ void Scene_Save::Action(int index) {
 
 	data_copy.system.switches = Main_Data::game_switches->GetData();
 	data_copy.system.variables = Main_Data::game_variables->GetData();
-	data_copy.inventory = Main_Data::game_party->GetSaveData();
+	Game_Data::WriteSaveGame(data_copy);
 
 	// RPG_RT saves always have the scene set to this.
 	data_copy.system.scene = RPG::SaveSystem::Scene_file;

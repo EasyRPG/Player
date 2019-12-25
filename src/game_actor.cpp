@@ -279,10 +279,10 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	int prev_item = SetEquipment(equip_type, item_id);
 
 	if (prev_item != 0) {
-		Main_Data::game_party->AddItem(prev_item, 1);
+		Game_Data::GetParty().AddItem(prev_item, 1);
 	}
 	if (item_id != 0) {
-		Main_Data::game_party->RemoveItem(item_id, 1);
+		Game_Data::GetParty().RemoveItem(item_id, 1);
 	}
 
 	// In case you have a two_handed weapon equipped, the other weapon is removed.
@@ -875,8 +875,8 @@ int Game_Actor::GetBattleX() const {
 
 	if (GetActor().battle_x == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
-		int party_size = Main_Data::game_party->GetBattlerCount();
+		int party_pos = Game_Data::GetParty().GetActorPositionInParty(actor_id);
+		int party_size = Game_Data::GetParty().GetBattlerCount();
 
 		float left = GetBattleRow() == RowType::RowType_back ? 25.0 : 50.0;
 		float right = left;
@@ -958,8 +958,8 @@ int Game_Actor::GetBattleY() const {
 
 	if (GetActor().battle_y == 0 ||
 		Data::battlecommands.placement == RPG::BattleCommands::Placement_automatic) {
-		int party_pos = Main_Data::game_party->GetActorPositionInParty(actor_id);
-		int party_size = Main_Data::game_party->GetBattlerCount();
+		int party_pos = Game_Data::GetParty().GetActorPositionInParty(actor_id);
+		int party_size = Game_Data::GetParty().GetBattlerCount();
 
 		float top = 0.0f;
 		float bottom = 0.0f;

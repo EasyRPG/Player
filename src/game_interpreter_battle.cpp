@@ -140,7 +140,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
 	int actor_id = com.parameters[0];
 
-	if (!Main_Data::game_party->IsActorInParty(actor_id)) {
+	if (!Game_Data::GetParty().IsActorInParty(actor_id)) {
 		return true;
 	}
 
@@ -267,7 +267,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		std::vector<Game_Battler*> v;
 
 		if (allies) {
-			Main_Data::game_party->GetActiveBattlers(v);
+			Game_Data::GetParty().GetActiveBattlers(v);
 		} else {
 			Main_Data::game_enemyparty->GetActiveBattlers(v);
 		}
@@ -280,8 +280,8 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 		if (allies) {
 			// Allies counted from 1
 			target -= 1;
-			if (target >= 0 && target < Main_Data::game_party->GetBattlerCount()) {
-				battler_target = &(*Main_Data::game_party)[target];
+			if (target >= 0 && target < Game_Data::GetParty().GetBattlerCount()) {
+				battler_target = &(Game_Data::GetParty())[target];
 			}
 		}
 		else {

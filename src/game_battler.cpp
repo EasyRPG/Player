@@ -685,7 +685,7 @@ int Game_Battler::GetHue() const {
 
 Game_Party_Base& Game_Battler::GetParty() const {
 	if (GetType() == Type_Ally) {
-		return *Main_Data::game_party;
+		return Game_Data::GetParty();
 	} else {
 		return *Main_Data::game_enemyparty;
 	}

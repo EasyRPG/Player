@@ -33,5 +33,5 @@ Window_Gold::Window_Gold(int ix, int iy, int iwidth, int iheight) :
 
 void Window_Gold::Refresh() {
 	contents->Clear();
-	DrawCurrencyValue(Main_Data::game_party->GetGold(), contents->GetWidth(), 2);
+	DrawCurrencyValue(Game_Data::GetParty().GetGold(), contents->GetWidth(), 2);
 }

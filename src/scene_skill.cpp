@@ -40,8 +40,8 @@ void Scene_Skill::Start() {
 	skill_window.reset(new Window_Skill(0, 64, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT - 64));
 
 	// Assign actors and help to windows
-	skill_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
-	skillstatus_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
+	skill_window->SetActor(Game_Data::GetParty().GetActors()[actor_index]->GetId());
+	skillstatus_window->SetActor(Game_Data::GetParty().GetActors()[actor_index]->GetId());
 	skill_window->SetIndex(skill_index);
 	skill_window->SetHelpWindow(help_window.get());
 }
@@ -58,12 +58,12 @@ void Scene_Skill::Update() {
 		const RPG::Skill* skill = skill_window->GetSkill();
 		int skill_id = skill ? skill->ID : 0;
 
-		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
+		Game_Actor* actor = Game_Data::GetParty().GetActors()[actor_index];
 
 		if (skill && skill_window->CheckEnable(skill_id)) {
 			if (skill->type == RPG::Skill::Type_switch) {
 				Game_System::SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
+				Game_Data::GetParty().UseSkill(skill_id, actor, actor);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 			} else if (skill->type == RPG::Skill::Type_normal || skill->type >= RPG::Skill::Type_subskill) {
@@ -75,7 +75,7 @@ void Scene_Skill::Update() {
 				Scene::Push(std::make_shared<Scene_Teleport>(*actor, *skill));
 			} else if (skill->type == RPG::Skill::Type_escape) {
 				Game_System::SePlay(skill->sound_effect);
-				Main_Data::game_party->UseSkill(skill_id, actor, actor);
+				Game_Data::GetParty().UseSkill(skill_id, actor, actor);
 				Main_Data::game_player->ReserveTeleport(*Game_Targets::GetEscapeTarget());
 
 				Scene::PopUntil(Scene::Map);

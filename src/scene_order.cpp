@@ -33,7 +33,7 @@ Scene_Order::Scene_Order() :
 }
 
 void Scene_Order::Start() {
-	actors.resize(Main_Data::game_party->GetActors().size());
+	actors.resize(Game_Data::GetParty().GetActors().size());
 
 	CreateCommandWindow();
 }
@@ -57,7 +57,7 @@ void Scene_Order::UpdateOrder() {
 			Scene::Pop();
 		} else {
 			--actor_counter;
-			window_left->SetItemText(actors[actor_counter] - 1, Main_Data::game_party->GetActors()[actors[actor_counter] - 1]->GetName());
+			window_left->SetItemText(actors[actor_counter] - 1, Game_Data::GetParty().GetActors()[actors[actor_counter] - 1]->GetName());
 			window_right->SetItemText(actor_counter, "");
 			actors[actor_counter] = 0;
 		}
@@ -67,14 +67,14 @@ void Scene_Order::UpdateOrder() {
 		} else {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			window_left->SetItemText(window_left->GetIndex(), "");
-			window_right->SetItemText(actor_counter, Main_Data::game_party->GetActors()[window_left->GetIndex()]->GetName());
+			window_right->SetItemText(actor_counter, Game_Data::GetParty().GetActors()[window_left->GetIndex()]->GetName());
 
 			actors[actor_counter] = window_left->GetIndex() + 1;
 
 			++actor_counter;
 
 			// Display Confirm/Redo window
-			if (actor_counter == (int)Main_Data::game_party->GetActors().size()) {
+			if (actor_counter == (int)Game_Data::GetParty().GetActors().size()) {
 				window_left->SetIndex(-1);
 				window_left->SetActive(false);
 				window_confirm->SetIndex(0);
@@ -103,7 +103,7 @@ void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_right;
 	std::vector<std::string> options_confirm;
 
-	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> actors = Game_Data::GetParty().GetActors();
 	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
 		it != actors.end(); ++it) {
 		options_left.push_back((*it)->GetName());
@@ -135,9 +135,9 @@ void Scene_Order::Redo() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 
 	actors.clear();
-	actors.resize(Main_Data::game_party->GetActors().size());
+	actors.resize(Game_Data::GetParty().GetActors().size());
 
-	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> actors = Game_Data::GetParty().GetActors();
 	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
 		it != actors.end(); ++it) {
 		int index = it - actors.begin();
@@ -160,16 +160,16 @@ void Scene_Order::Redo() {
 void Scene_Order::Confirm() {
 	Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 
-	std::vector<Game_Actor*> party_actors = Main_Data::game_party->GetActors();
+	std::vector<Game_Actor*> party_actors = Game_Data::GetParty().GetActors();
 
 	std::vector<int>::const_iterator it;
 
 	for (it = actors.begin(); it != actors.end(); ++it) {
-		Main_Data::game_party->RemoveActor(party_actors[*it - 1]->GetId());
+		Game_Data::GetParty().RemoveActor(party_actors[*it - 1]->GetId());
 	}
 
 	for (it = actors.begin(); it != actors.end(); ++it) {
-		Main_Data::game_party->AddActor(party_actors[*it - 1]->GetId());
+		Game_Data::GetParty().AddActor(party_actors[*it - 1]->GetId());
 	}
 
 	// TODO: Where is the best place to overwrite the character map graphic?

@@ -38,5 +38,5 @@ void Game_Data::SetupLoadGame(RPG::Save save) {
 }
 
 void Game_Data::WriteSaveGame(RPG::Save& save) {
-	save.inventory = GetGameParty().GetSaveData();
+	save.inventory = GetParty().GetSaveData();
 }

@@ -433,7 +433,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 			return false;
 	}
 
-	bool can_afford = (Main_Data::game_party->GetGold() >= Game_Temp::inn_price);
+	bool can_afford = (Game_Data::GetParty().GetGold() >= Game_Temp::inn_price);
 	pm.SetChoiceResetColors(true);
 
 	switch (inn_type) {
@@ -471,7 +471,7 @@ void Game_Interpreter_Map::ContinuationShowInnStart(int indent, int choice_resul
 	SetSubcommandIndex(indent, inn_stay ? eOptionInnStay : eOptionInnNoStay);
 
 	if (inn_stay) {
-		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
+		Game_Data::GetParty().GainGold(-Game_Temp::inn_price);
 
 		_async_op = AsyncOp::MakeCallInn();
 	}

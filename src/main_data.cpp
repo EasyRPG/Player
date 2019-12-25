@@ -19,7 +19,6 @@
 #include <cstdlib>
 #include "main_data.h"
 #include "game_actors.h"
-#include "game_party.h"
 #include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
@@ -57,7 +56,6 @@ namespace Main_Data {
 	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
 	std::unique_ptr<Game_Player> game_player;
-	std::unique_ptr<Game_Party> game_party;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
 	std::unique_ptr<Game_Quit> game_quit;
 
@@ -160,7 +158,6 @@ void Main_Data::Cleanup() {
 	game_switches.reset();
 	game_screen.reset();
 	game_player.reset();
-	game_party.reset();
 	game_enemyparty.reset();
 	game_quit.reset();
 

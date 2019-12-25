@@ -56,14 +56,14 @@ bool Window_Item::CheckEnable(int item_id) {
 			&& (!Game_Temp::battle_running || !item->occasion_field1)) {
 		return true;
 	}
-	return Main_Data::game_party->IsItemUsable(item_id, actor);
+	return Game_Data::GetParty().IsItemUsable(item_id, actor);
 }
 
 void Window_Item::Refresh() {
 	std::vector<int> party_items;
 
 	data.clear();
-	Main_Data::game_party->GetItems(party_items);
+	Game_Data::GetParty().GetItems(party_items);
 
 	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
@@ -110,7 +110,7 @@ void Window_Item::DrawItem(int index) {
 	int item_id = data[index];
 
 	if (item_id > 0) {
-		int number = Main_Data::game_party->GetItemCount(item_id);
+		int number = Game_Data::GetParty().GetItemCount(item_id);
 
 		// Items are guaranteed to be valid
 		const RPG::Item* item = ReaderUtil::GetElement(Data::items, item_id);

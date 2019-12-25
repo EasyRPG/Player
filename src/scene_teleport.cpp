@@ -46,9 +46,9 @@ void Scene_Teleport::Update() {
 
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (item) {
-			Main_Data::game_party->ConsumeItemUse(item->ID);
+			Game_Data::GetParty().ConsumeItemUse(item->ID);
 		} else {
-			Main_Data::game_party->UseSkill(skill->ID, actor, actor);
+			Game_Data::GetParty().UseSkill(skill->ID, actor, actor);
 		}
 
 		Game_System::SePlay(skill->sound_effect);

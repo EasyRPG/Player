@@ -52,7 +52,7 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 	GetBitmap()->Clear();
 	for (int i = 0; i < 5; ++i) {
 		if (i == 2) { // :
-			int frames =  Main_Data::game_party->GetTimerFrames(which);
+			int frames =  Game_Data::GetParty().GetTimerFrames(which);
 			if (frames % DEFAULT_FPS < DEFAULT_FPS / 2) {
 				continue;
 			}
@@ -64,7 +64,7 @@ void Sprite_Timer::Draw(Bitmap& dst) {
 }
 
 void Sprite_Timer::Update() {
-	const bool visible = Main_Data::game_party->GetTimerVisible(which, Game_Temp::battle_running);
+	const bool visible = Game_Data::GetParty().GetTimerVisible(which, Game_Temp::battle_running);
 
 	SetVisible(visible);
 
@@ -72,7 +72,7 @@ void Sprite_Timer::Update() {
 		return;
 	}
 
-	const int all_secs = Main_Data::game_party->GetTimerSeconds(which);
+	const int all_secs = Game_Data::GetParty().GetTimerSeconds(which);
 
 	int mins = all_secs / 60;
 	int secs = all_secs % 60;

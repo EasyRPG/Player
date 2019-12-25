@@ -33,11 +33,11 @@ Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) 
 void Window_ActorTarget::Refresh() {
 	contents->Clear();
 
-	item_max = Main_Data::game_party->GetActors().size();
+	item_max = Game_Data::GetParty().GetActors().size();
 
 	int y = 0;
 	for (int i = 0; i < item_max; ++i) {
-		const Game_Actor& actor = *(Main_Data::game_party->GetActors()[i]);
+		const Game_Actor& actor = *(Game_Data::GetParty().GetActors()[i]);
 
 		DrawActorFace(actor, 0, i * 48 + y);
 		DrawActorName(actor, 48 + 8, i * 48 + 2 + y);
@@ -70,5 +70,5 @@ Game_Actor* Window_ActorTarget::GetActor() {
 		return NULL;
 	}
 
-	return &(*Main_Data::game_party)[ind];
+	return &(Game_Data::GetParty())[ind];
 }

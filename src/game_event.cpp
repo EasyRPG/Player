@@ -251,28 +251,28 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Item in possession?
-	if (page.condition.flags.item && !(Main_Data::game_party->GetItemCount(page.condition.item_id)
-		+ Main_Data::game_party->GetEquippedItemCount(page.condition.item_id))) {
+	if (page.condition.flags.item && !(Game_Data::GetParty().GetItemCount(page.condition.item_id)
+		+ Game_Data::GetParty().GetEquippedItemCount(page.condition.item_id))) {
 			return false;
 	}
 
 	// Actor in party?
 	if (page.condition.flags.actor) {
-		if (!Main_Data::game_party->IsActorInParty(page.condition.actor_id)) {
+		if (!Game_Data::GetParty().IsActorInParty(page.condition.actor_id)) {
 			return false;
 		}
 	}
 
 	// Timer
 	if (page.condition.flags.timer) {
-		int secs = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
+		int secs = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer1);
 		if (secs > page.condition.timer_sec)
 			return false;
 	}
 
 	// Timer2
 	if (page.condition.flags.timer2) {
-		int secs = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+		int secs = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer2);
 		if (secs > page.condition.timer2_sec)
 			return false;
 	}

@@ -463,9 +463,9 @@ void Game_Interpreter::Push(Game_CommonEvent* ev) {
 }
 
 bool Game_Interpreter::CheckGameOver() {
-	if (!Game_Temp::battle_running && !Main_Data::game_party->IsAnyActive()) {
+	if (!Game_Temp::battle_running && !Game_Data::GetParty().IsAnyActive()) {
 		// Empty party is allowed
-		if (Main_Data::game_party->GetBattlerCount() > 0) {
+		if (Game_Data::GetParty().GetBattlerCount() > 0) {
 			Scene::instance->SetRequestedScene(Scene::Gameover);
 			return true;
 		}
@@ -1008,11 +1008,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Main_Data::game_party->GetItemCount(com.parameters[5]);
+					value = Game_Data::GetParty().GetItemCount(com.parameters[5]);
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Main_Data::game_party->GetEquippedItemCount(com.parameters[5]);
+					value = Game_Data::GetParty().GetEquippedItemCount(com.parameters[5]);
 					break;
 			}
 			break;
@@ -1128,14 +1128,14 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[5]) {
 				case 0:
 					// Gold
-					value = Main_Data::game_party->GetGold();
+					value = Game_Data::GetParty().GetGold();
 					break;
 				case 1:
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
+					value = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
-					value = Main_Data::game_party->GetActors().size();
+					value = Game_Data::GetParty().GetActors().size();
 					break;
 				case 3:
 					// Number of saves
@@ -1143,26 +1143,26 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					break;
 				case 4:
 					// Number of battles
-					value = Main_Data::game_party->GetBattleCount();
+					value = Game_Data::GetParty().GetBattleCount();
 					break;
 				case 5:
 					// Number of wins
-					value = Main_Data::game_party->GetWinCount();
+					value = Game_Data::GetParty().GetWinCount();
 					break;
 				case 6:
 					// Number of defeats
-					value = Main_Data::game_party->GetDefeatCount();
+					value = Game_Data::GetParty().GetDefeatCount();
 					break;
 				case 7:
 					// Number of escapes (aka run away)
-					value = Main_Data::game_party->GetRunCount();
+					value = Game_Data::GetParty().GetRunCount();
 					break;
 				case 8:
 					// MIDI play position
 					value = Audio().BGM_GetTicks();
 					break;
 				case 9:
-					value = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+					value = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer2);
 					break;
 			}
 			break;
@@ -1291,7 +1291,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		actors = Main_Data::game_party->GetActors();
+		actors = Game_Data::GetParty().GetActors();
 		break;
 	case 1:
 		// Hero
@@ -1346,15 +1346,15 @@ bool Game_Interpreter::CommandTimerOperation(RPG::EventCommand const& com) { // 
 	case 0:
 		seconds = ValueOrVariable(com.parameters[1],
 			com.parameters[2]);
-		Main_Data::game_party->SetTimer(timer_id, seconds);
+		Game_Data::GetParty().SetTimer(timer_id, seconds);
 		break;
 	case 1:
 		visible = com.parameters[3] != 0;
 		battle = com.parameters[4] != 0;
-		Main_Data::game_party->StartTimer(timer_id, visible, battle);
+		Game_Data::GetParty().StartTimer(timer_id, visible, battle);
 		break;
 	case 2:
-		Main_Data::game_party->StopTimer(timer_id);
+		Game_Data::GetParty().StopTimer(timer_id);
 		break;
 	default:
 		return false;
@@ -1370,7 +1370,7 @@ bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code
 		com.parameters[2]
 	);
 
-	Main_Data::game_party->GainGold(value);
+	Game_Data::GetParty().GainGold(value);
 
 	// Continue
 	return true;
@@ -1400,10 +1400,10 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 
 	if (com.parameters[1] == 0) {
 		// Item by const number
-		Main_Data::game_party->AddItem(com.parameters[2], value);
+		Game_Data::GetParty().AddItem(com.parameters[2], value);
 	} else {
 		// Item by variable
-		Main_Data::game_party->AddItem(
+		Game_Data::GetParty().AddItem(
 			Main_Data::game_variables->Get(com.parameters[2]),
 			value
 		);
@@ -1432,11 +1432,11 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 	if (com.parameters[0] == 0) {
 		// Add members
-		Main_Data::game_party->AddActor(id);
+		Game_Data::GetParty().AddActor(id);
 
 	} else {
 		// Remove members
-		Main_Data::game_party->RemoveActor(id);
+		Game_Data::GetParty().RemoveActor(id);
 	}
 
 	CheckGameOver();
@@ -1614,8 +1614,8 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 				continue;
 			}
 
-			if (Main_Data::game_party->GetItemCount(item_id) == 0 && !actor->IsEquipped(item_id)) {
-				Main_Data::game_party->AddItem(item_id, 1);
+			if (Game_Data::GetParty().GetItemCount(item_id) == 0 && !actor->IsEquipped(item_id)) {
+				Game_Data::GetParty().AddItem(item_id, 1);
 			}
 
 			if (actor->HasTwoWeapons() && slot == RPG::Item::Type_weapon && item_id != 0) {
@@ -2906,7 +2906,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		}
 		break;
 	case 2:
-		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer1);
+		value1 = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer1);
 		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:
@@ -2921,22 +2921,22 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		// Gold
 		if (com.parameters[2] == 0) {
 			// Greater than or equal
-			result = (Main_Data::game_party->GetGold() >= com.parameters[1]);
+			result = (Game_Data::GetParty().GetGold() >= com.parameters[1]);
 		} else {
 			// Less than or equal
-			result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
+			result = (Game_Data::GetParty().GetGold() <= com.parameters[1]);
 		}
 		break;
 	case 4:
 		// Item
 		if (com.parameters[2] == 0) {
 			// Having
-			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) > 0;
+			result = Game_Data::GetParty().GetItemCount(com.parameters[1])
+				+ Game_Data::GetParty().GetEquippedItemCount(com.parameters[1]) > 0;
 		} else {
 			// Not having
-			result = Main_Data::game_party->GetItemCount(com.parameters[1])
-				+ Main_Data::game_party->GetEquippedItemCount(com.parameters[1]) == 0;
+			result = Game_Data::GetParty().GetItemCount(com.parameters[1])
+				+ Game_Data::GetParty().GetEquippedItemCount(com.parameters[1]) == 0;
 		}
 		break;
 	case 5:
@@ -2955,7 +2955,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		switch (com.parameters[2]) {
 		case 0:
 			// Is actor in party
-			result = Main_Data::game_party->IsActorInParty(actor_id);
+			result = Game_Data::GetParty().IsActorInParty(actor_id);
 			break;
 		case 1:
 			// Name
@@ -3020,7 +3020,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 		result = Audio().BGM_PlayedOnce();
 		break;
 	case 10:
-		value1 = Main_Data::game_party->GetTimerSeconds(Main_Data::game_party->Timer2);
+		value1 = Game_Data::GetParty().GetTimerSeconds(Game_Data::GetParty().Timer2);
 		value2 = com.parameters[1];
 		switch (com.parameters[2]) {
 		case 0:

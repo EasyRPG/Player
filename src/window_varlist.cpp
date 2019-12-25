@@ -69,7 +69,7 @@ void Window_VarList::DrawItemValue(int index){
 			break;
 		case eItem:
 			{
-				auto value = Main_Data::game_party->GetItemCount(first_var + index);
+				auto value = Game_Data::GetParty().GetItemCount(first_var + index);
 				auto font = (value == 0) ? Font::ColorCritical : Font::ColorDefault;
 				DrawItem(index, Font::ColorDefault);
 				contents->TextDraw(GetWidth() - 16, 16 * index + 2, font, std::to_string(value), Text::AlignRight);
@@ -130,7 +130,7 @@ void Window_VarList::UpdateList(int first_value){
 				if (first_value + i == 1) {
 					ss << "Party";
 				} else {
-					auto* actor = Main_Data::game_party->GetActors()[first_value + i-2];
+					auto* actor = Game_Data::GetParty().GetActors()[first_value + i-2];
 					ss << actor->GetName() << " " << actor->GetHp() << " / " << actor->GetMaxHp();
 				}
 				break;
@@ -179,7 +179,7 @@ bool Window_VarList::DataIsValid(int range_index) {
 		case eMap:
 			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
 		case eHeal:
-			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size()) + 1;
+			return range_index > 0 && range_index <= static_cast<int>(Game_Data::GetParty().GetActors().size()) + 1;
 		case eCommonEvent:
 			return range_index > 0 && range_index <= static_cast<int>(Data::commonevents.size());
 		default:

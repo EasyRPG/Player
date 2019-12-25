@@ -111,11 +111,11 @@ void Scene_ActorTarget::Update() {
 
 void Scene_ActorTarget::UpdateItem() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		if (Main_Data::game_party->GetItemCount(id) <= 0) {
+		if (Game_Data::GetParty().GetItemCount(id) <= 0) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			return;
 		}
-		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
+		if (Game_Data::GetParty().UseItem(id, target_window->GetActor())) {
 			auto* item = ReaderUtil::GetElement(Data::items, id);
 			assert(item);
 
@@ -151,13 +151,13 @@ void Scene_ActorTarget::UpdateItem() {
 
 void Scene_ActorTarget::UpdateSkill() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_Actor* actor = &(*Main_Data::game_party)[actor_index];
+		Game_Actor* actor = &(Game_Data::GetParty())[actor_index];
 
 		if (actor->GetSp() < actor->CalculateSkillCost(id)) {
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			return;
 		}
-		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
+		if (Game_Data::GetParty().UseSkill(id, actor, target_window->GetActor())) {
 			RPG::Skill* skill = ReaderUtil::GetElement(Data::skills, id);
 			RPG::Animation* animation = ReaderUtil::GetElement(Data::animations, skill->animation_id);
 			if (animation) {

@@ -34,7 +34,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	cycle = 0;
 	item_id = 0;
 
-	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
+	const std::vector<Game_Actor*>& actors = Game_Data::GetParty().GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		const std::string& sprite_name = actors[i]->GetSpriteName();
 		FileRequestAsync* request = AsyncHandler::RequestFile("CharSet", sprite_name);
@@ -95,7 +95,7 @@ void Window_ShopParty::Refresh() {
 	if (item_id < 0 || item_id > static_cast<int>(Data::items.size()))
 		return;
 
-	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
+	const auto& actors = Game_Data::GetParty().GetActors();
 	for (int i = 0; i < static_cast<int>(actors.size()) && i < 4; i++) {
 		Game_Actor *actor = actors[i];
 		int phase = (cycle / anim_rate) % 4;
@@ -159,7 +159,7 @@ void Window_ShopParty::Update() {
 }
 
 void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int party_index) {
-	Game_Actor *actor = Main_Data::game_party->GetActors()[party_index];
+	Game_Actor *actor = Game_Data::GetParty().GetActors()[party_index];
 	const std::string& sprite_name = actor->GetSpriteName();
 	int sprite_id = actor->GetSpriteIndex();
 	BitmapRef bm = Cache::Charset(sprite_name);

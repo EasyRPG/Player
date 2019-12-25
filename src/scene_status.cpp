@@ -29,7 +29,7 @@ Scene_Status::Scene_Status(int actor_index) :
 }
 
 void Scene_Status::Start() {
-	int actor = Main_Data::game_party->GetActors()[actor_index]->GetId();
+	int actor = Game_Data::GetParty().GetActors()[actor_index]->GetId();
 
 	actorinfo_window.reset(new Window_ActorInfo(0, 0, 124, 208, actor));
 	actorstatus_window.reset(new Window_ActorStatus(124, 0, 196, 64, actor));
@@ -51,13 +51,13 @@ void Scene_Status::Update() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cancel));
 		Scene::Pop();
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+	} else if (Game_Data::GetParty().GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
-		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
+		actor_index = (actor_index + 1) % Game_Data::GetParty().GetActors().size();
 		Scene::Push(std::make_shared<Scene_Status>(actor_index), true);
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+	} else if (Game_Data::GetParty().GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
-		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
+		actor_index = (actor_index + Game_Data::GetParty().GetActors().size() - 1) % Game_Data::GetParty().GetActors().size();
 		Scene::Push(std::make_shared<Scene_Status>(actor_index), true);
 	}
 }

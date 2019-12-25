@@ -34,12 +34,12 @@ Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 void Window_MenuStatus::Refresh() {
 	contents->Clear();
 
-	item_max = Main_Data::game_party->GetActors().size();
+	item_max = Game_Data::GetParty().GetActors().size();
 
 	int y = 0;
 	for (int i = 0; i < item_max; ++i) {
 		// The party always contains valid battlers
-		const Game_Actor& actor = *(Main_Data::game_party->GetActors()[i]);
+		const Game_Actor& actor = *(Game_Data::GetParty().GetActors()[i]);
 
 		int face_x = 0;
 		if (Player::IsRPG2k3()) {
@@ -69,5 +69,5 @@ void Window_MenuStatus::UpdateCursorRect()
 }
 
 Game_Actor* Window_MenuStatus::GetActor() const {
-	return &(*Main_Data::game_party)[GetIndex()];
+	return &(Game_Data::GetParty())[GetIndex()];
 }

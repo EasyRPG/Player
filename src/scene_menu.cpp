@@ -146,12 +146,12 @@ void Scene_Menu::CreateCommandWindow() {
 		case Debug:
 			break;
 		case Order:
-			if (Main_Data::game_party->GetActors().size() <= 1) {
+			if (Game_Data::GetParty().GetActors().size() <= 1) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 			break;
 		default:
-			if (Main_Data::game_party->GetActors().empty()) {
+			if (Game_Data::GetParty().GetActors().empty()) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 			break;
@@ -168,7 +168,7 @@ void Scene_Menu::UpdateCommand() {
 
 		switch (command_options[menu_index]) {
 		case Item:
-			if (Main_Data::game_party->GetActors().empty()) {
+			if (Game_Data::GetParty().GetActors().empty()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -179,7 +179,7 @@ void Scene_Menu::UpdateCommand() {
 		case Equipment:
 		case Status:
 		case Row:
-			if (Main_Data::game_party->GetActors().empty()) {
+			if (Game_Data::GetParty().GetActors().empty()) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -197,7 +197,7 @@ void Scene_Menu::UpdateCommand() {
 			}
 			break;
 		case Order:
-			if (Main_Data::game_party->GetActors().size() <= 1) {
+			if (Game_Data::GetParty().GetActors().size() <= 1) {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Buzzer));
 			} else {
 				Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
@@ -250,7 +250,7 @@ void Scene_Menu::UpdateActorSelection() {
 		{
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 			// Don't allow entire party in the back row.
-			const auto& actors = Main_Data::game_party->GetActors();
+			const auto& actors = Game_Data::GetParty().GetActors();
 			int num_in_back = 0;
 			for (auto* actor: actors) {
 				if (actor->GetBattleRow() == Game_Actor::RowType::RowType_back) {

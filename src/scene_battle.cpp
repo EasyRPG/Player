@@ -168,11 +168,11 @@ void Scene_Battle::Update() {
 
 	// Query Timer before and after update.
 	// If it reached zero during update was a running battle timer.
-	int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
-	int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
-	Main_Data::game_party->UpdateTimers();
-	if ((Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
-		(Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
+	int timer1 = Game_Data::GetParty().GetTimerSeconds(Game_Party::Timer1);
+	int timer2 = Game_Data::GetParty().GetTimerSeconds(Game_Party::Timer2);
+	Game_Data::GetParty().UpdateTimers();
+	if ((Game_Data::GetParty().GetTimerSeconds(Game_Party::Timer1) == 0 && timer1 > 0) ||
+		(Game_Data::GetParty().GetTimerSeconds(Game_Party::Timer2) == 0 && timer2 > 0)) {
 		Scene::Pop();
 	}
 
@@ -218,7 +218,7 @@ bool Scene_Battle::IsWindowMoving() {
 void Scene_Battle::InitBattleTest()
 {
 	Game_Temp::battle_troop_id = Game_Battle::battle_test.troop_id;
-	Main_Data::game_party->SetupBattleTestMembers();
+	Game_Data::GetParty().SetupBattleTestMembers();
 
 	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
 	Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
@@ -280,7 +280,7 @@ void Scene_Battle::EnemySelected() {
 }
 
 void Scene_Battle::AllySelected() {
-	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
+	Game_Actor& target = (Game_Data::GetParty())[status_window->GetIndex()];
 
 	if (previous_state == State_SelectSkill) {
 		active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill_window->GetSkill()));
@@ -362,7 +362,7 @@ void Scene_Battle::ItemSelected() {
 		}
 		case RPG::Item::Type_medicine:
 			if (item->entire_party) {
-				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
+				active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Item>(active_actor, &Game_Data::GetParty(), *item_window->GetItem()));
 				ActionSelectedCallback(active_actor);
 			} else {
 				SetState(State_SelectAllyTarget);
@@ -424,7 +424,7 @@ void Scene_Battle::AssignSkill(const RPG::Skill* skill, const RPG::Item* item) {
 			break;
 		case RPG::Skill::Scope_party:
 			active_actor->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(
-					active_actor, Main_Data::game_party.get(), *skill, item));
+					active_actor, &Game_Data::GetParty(), *skill, item));
 			ActionSelectedCallback(active_actor);
 			break;
 	}
@@ -456,7 +456,7 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_ally) {
 		Game_Battler *target = battler->GetType() == Game_Battler::Type_Enemy ?
 			Main_Data::game_enemyparty->GetRandomActiveBattler() :
-			Main_Data::game_party->GetRandomActiveBattler();
+			Game_Data::GetParty().GetRandomActiveBattler();
 
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
 		battler->SetCharged(false);
@@ -466,7 +466,7 @@ void Scene_Battle::PrepareBattleAction(Game_Battler* battler) {
 	if (battler->GetSignificantRestriction() == RPG::State::Restriction_attack_enemy) {
 		Game_Battler *target = battler->GetType() == Game_Battler::Type_Ally ?
 			Main_Data::game_enemyparty->GetRandomActiveBattler() :
-			Main_Data::game_party->GetRandomActiveBattler();
+			Game_Data::GetParty().GetRandomActiveBattler();
 
 		battler->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(battler, target));
 		battler->SetCharged(false);
@@ -516,10 +516,10 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 
 	switch (action->basic) {
 		case RPG::EnemyAction::Basic_attack:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Game_Data::GetParty().GetRandomActiveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomActiveBattler()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Normal>(enemy, Game_Data::GetParty().GetRandomActiveBattler()));
 			enemy->GetBattleAlgorithm()->SetRepeat(2);
 			break;
 		case RPG::EnemyAction::Basic_defense:
@@ -532,7 +532,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Charge>(enemy));
 			break;
 		case RPG::EnemyAction::Basic_autodestruction:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::SelfDestruct>(enemy, Main_Data::game_party.get()));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::SelfDestruct>(enemy, &Game_Data::GetParty()));
 			break;
 		case RPG::EnemyAction::Basic_escape:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Escape>(enemy));
@@ -582,13 +582,13 @@ void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAct
 
 	switch (skill->scope) {
 		case RPG::Skill::Scope_enemy:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party->GetRandomActiveBattler(), *skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Game_Data::GetParty().GetRandomActiveBattler(), *skill));
 			break;
 		case RPG::Skill::Scope_ally:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty->GetRandomActiveBattler(), *skill));
 			break;
 		case RPG::Skill::Scope_enemies:
-			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill));
+			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, &Game_Data::GetParty(), *skill));
 			break;
 		case RPG::Skill::Scope_self:
 			enemy->SetBattleAlgorithm(std::make_shared<Game_BattleAlgorithm::Skill>(enemy, enemy, *skill));

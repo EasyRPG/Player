@@ -32,7 +32,7 @@ class Game_Variables;
 struct Game_Data {
 	public:
 		/** @return reference to Game_Party object */
-		static Game_Party& GetGameParty();
+		static Game_Party& GetParty();
 
 		/** Construct data for a new game */
 		static void SetupNewGame();
@@ -60,7 +60,7 @@ struct Game_Data {
 		static Data data;
 };
 
-inline Game_Party& Game_Data::GetGameParty() {
+inline Game_Party& Game_Data::GetParty() {
 	assert(data.game_party);
 	return *data.game_party;
 }

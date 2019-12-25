@@ -283,12 +283,12 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 		}
 	case RPG::EnemyAction::ConditionType_party_lvl:
 		{
-			int party_lvl = Main_Data::game_party->GetAverageLevel();
+			int party_lvl = Game_Data::GetParty().GetAverageLevel();
 			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
 		}
 	case RPG::EnemyAction::ConditionType_party_fatigue:
 		{
-			int party_exh = Main_Data::game_party->GetFatigue();
+			int party_exh = Game_Data::GetParty().GetFatigue();
 			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
 		}
 	default:

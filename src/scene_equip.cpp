@@ -159,16 +159,16 @@ void Scene_Equip::UpdateEquipSelection() {
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+	} else if (Game_Data::GetParty().GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
-		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
-		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
-	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+		int actor_index = Game_Data::GetParty().GetActorPositionInParty(actor.GetId());
+		actor_index = (actor_index + 1) % Game_Data::GetParty().GetActors().size();
+		Scene::Push(std::make_shared<Scene_Equip>((Game_Data::GetParty())[actor_index], equip_window->GetIndex()), true);
+	} else if (Game_Data::GetParty().GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Cursor));
-		int actor_index = Main_Data::game_party->GetActorPositionInParty(actor.GetId());
-		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
-		Scene::Push(std::make_shared<Scene_Equip>((*Main_Data::game_party)[actor_index], equip_window->GetIndex()), true);
+		int actor_index = Game_Data::GetParty().GetActorPositionInParty(actor.GetId());
+		actor_index = (actor_index + Game_Data::GetParty().GetActors().size() - 1) % Game_Data::GetParty().GetActors().size();
+		Scene::Push(std::make_shared<Scene_Equip>((Game_Data::GetParty())[actor_index], equip_window->GetIndex()), true);
 	}
 }
 
