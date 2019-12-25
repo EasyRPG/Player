@@ -22,7 +22,6 @@
 #include "game_system.h"
 #include "input.h"
 #include "transition.h"
-#include "graphics.h"
 
 Scene_Teleport::Scene_Teleport(Game_Actor& actor, const RPG::Skill& skill)
 		: actor(&actor), skill(&skill) {
@@ -67,7 +66,7 @@ void Scene_Teleport::Update() {
 
 void Scene_Teleport::TransitionOut(SceneType next_scene) {
 	if (next_scene == Map) {
-		Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 32, true);
+		Transition::instance().Init(Transition::TransitionFadeOut, this, 32, true);
 	} else {
 		Scene::TransitionOut(next_scene);
 	}

@@ -73,7 +73,7 @@ public:
 		TransitionNone
 	};
 
-	Transition();
+	static Transition& instance();
 
 	/**
 	 * Defines a screen transition.
@@ -94,6 +94,8 @@ public:
 	bool IsErased();
 
 private:
+	Transition();
+
 	const uint32_t size_random_blocks = 4;
 
 	BitmapRef black_screen;
@@ -119,6 +121,11 @@ private:
 
 	void SetAttributesTransitions();
 };
+
+inline Transition& Transition::instance() {
+	static Transition transition;
+	return transition;
+}
 
 inline bool Transition::IsActive() {
 	return current_frame <= total_frames;

@@ -154,11 +154,11 @@ void Scene::Suspend(SceneType /* next_scene */) {
 }
 
 void Scene::TransitionIn(SceneType) {
-	Graphics::GetTransition().Init(Transition::TransitionFadeIn, this, 6);
+	Transition::instance().Init(Transition::TransitionFadeIn, this, 6);
 }
 
 void Scene::TransitionOut(SceneType) {
-	Graphics::GetTransition().Init(Transition::TransitionFadeOut, this, 6, true);
+	Transition::instance().Init(Transition::TransitionFadeOut, this, 6, true);
 }
 
 void Scene::SetAsyncFromMainLoop() {
@@ -185,7 +185,7 @@ void Scene::OnFinishAsync() {
 }
 
 bool Scene::IsAsyncPending() {
-	return Graphics::IsTransitionPending() || AsyncHandler::IsImportantFilePending()
+	return Transition::instance().IsActive() || AsyncHandler::IsImportantFilePending()
 		|| (instance != nullptr && instance->HasDelayFrames());
 }
 

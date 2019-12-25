@@ -206,7 +206,7 @@ void Player::Run() {
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
 #ifndef USE_LIBRETRO
-	while (Graphics::IsTransitionPending() || Scene::instance->type != Scene::Null) {
+	while (Transition::instance().IsActive() || Scene::instance->type != Scene::Null) {
 #  if defined(_3DS)
 		if (!aptMainLoop())
 			Exit();
@@ -224,7 +224,7 @@ void Player::MainLoop() {
 
 	Scene::old_instances.clear();
 
-	if (!Graphics::IsTransitionPending() && Scene::instance->type == Scene::Null) {
+	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
 		Exit();
 	}
 }
@@ -303,7 +303,7 @@ void Player::Update(bool update_scene) {
 	int speed_modifier = GetSpeedModifier();
 
 	for (int i = 0; i < speed_modifier; ++i) {
-		auto was_transition_pending = Graphics::IsTransitionPending();
+		auto was_transition_pending = Transition::instance().IsActive();
 		Graphics::Update();
 		// If we aren't waiting on a transition, but we are waiting for scene delay.
 		if (!was_transition_pending) {

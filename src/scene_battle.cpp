@@ -24,7 +24,6 @@
 #include "output.h"
 #include "player.h"
 #include "transition.h"
-#include "graphics.h"
 #include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"
@@ -118,7 +117,7 @@ void Scene_Battle::TransitionIn(SceneType prev_scene) {
 		Scene::TransitionIn(prev_scene);
 		return;
 	}
-	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
+	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), this, 32);
 }
 
 void Scene_Battle::TransitionOut(SceneType next_scene) {
@@ -128,7 +127,7 @@ void Scene_Battle::TransitionOut(SceneType next_scene) {
 		Scene::TransitionOut(next_scene);
 		return;
 	}
-	Graphics::GetTransition().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
+	Transition::instance().Init((Transition::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), this, 32, true);
 }
 
 void Scene_Battle::DrawBackground() {

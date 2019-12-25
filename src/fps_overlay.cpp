@@ -19,7 +19,6 @@
 
 #include "fps_overlay.h"
 #include "player.h"
-#include "graphics.h"
 #include "bitmap.h"
 #include "input.h"
 #include "font.h"

@@ -20,7 +20,6 @@
 #include "game_actors.h"
 #include "game_party.h"
 #include "game_system.h"
-#include "graphics.h"
 #include "input.h"
 #include "player.h"
 #include "reader_util.h"
