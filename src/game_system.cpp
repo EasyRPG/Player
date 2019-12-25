@@ -508,3 +508,19 @@ void Game_System::SetAtbMode(AtbMode m) {
 void Game_System::ToggleAtbMode() {
 	data.atb_mode = !data.atb_mode;
 }
+
+const RPG::Music& Game_System::GetBeforeBattleMusic() {
+	return data.before_battle_music;
+}
+
+void Game_System::SetBeforeBattleMusic(RPG::Music music) {
+	data.before_battle_music = std::move(music);
+}
+
+const RPG::Music& Game_System::GetBeforeVehicleMusic() {
+	return data.before_vehicle_music;
+}
+
+void Game_System::SetBeforeVehicleMusic(RPG::Music music) {
+	data.before_vehicle_music = std::move(music);
+}

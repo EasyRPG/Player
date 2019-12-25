@@ -303,6 +303,26 @@ namespace Game_System {
 
 	/** Flip the atb mode to the opposite */
 	void ToggleAtbMode();
+
+	/** @return Music playing before battle started */
+	const RPG::Music& GetBeforeBattleMusic();
+
+	/**
+	 * Set before battle music
+	 * 
+	 * @param music music to set
+	 */
+	void SetBeforeBattleMusic(RPG::Music music);
+
+	/** @return Music playing before boarded vehicle */
+	const RPG::Music& GetBeforeVehicleMusic();
+
+	/**
+	 * Set before vehicle music
+	 * 
+	 * @param name name of music to set
+	 */
+	void SetBeforeVehicleMusic(RPG::Music music);
 }
 
 inline bool Game_System::HasSystemGraphic() {
