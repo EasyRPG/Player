@@ -323,6 +323,16 @@ namespace Game_System {
 	 * @param name name of music to set
 	 */
 	void SetBeforeVehicleMusic(RPG::Music music);
+
+	/** @return save slot used for last save game */
+	int GetSaveSlot();
+
+	/**
+	 * Set the save slot used when saving the game
+	 *
+	 * @param slot the slot number
+	 */
+	void SetSaveSlot(int slot);
 }
 
 inline bool Game_System::HasSystemGraphic() {

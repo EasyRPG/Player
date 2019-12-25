@@ -524,3 +524,11 @@ const RPG::Music& Game_System::GetBeforeVehicleMusic() {
 void Game_System::SetBeforeVehicleMusic(RPG::Music music) {
 	data.before_vehicle_music = std::move(music);
 }
+
+int Game_System::GetSaveSlot() {
+	return data.save_slot;
+}
+
+void Game_System::SetSaveSlot(int slot) {
+	data.save_slot = slot;
+}

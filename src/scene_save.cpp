@@ -30,6 +30,7 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_party.h"
+#include "game_system.h"
 #include "lsd_reader.h"
 #include "output.h"
 #include "player.h"
@@ -90,7 +91,7 @@ void Scene_Save::Action(int index) {
 
 	Main_Data::game_data.title = title;
 
-	Main_Data::game_data.system.save_slot = index + 1;
+	Game_System::SetSaveSlot(index + 1);
 
 	Game_Map::PrepareSave();
 
