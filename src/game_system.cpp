@@ -532,3 +532,15 @@ int Game_System::GetSaveSlot() {
 void Game_System::SetSaveSlot(int slot) {
 	data.save_slot = slot;
 }
+
+int Game_System::GetFrameCounter() {
+	return data.frame_count;
+}
+
+void Game_System::ResetFrameCounter() {
+	data.frame_count = 0;
+}
+
+void Game_System::IncFrameCounter() {
+	++data.frame_count;
+}

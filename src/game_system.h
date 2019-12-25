@@ -333,6 +333,15 @@ namespace Game_System {
 	 * @param slot the slot number
 	 */
 	void SetSaveSlot(int slot);
+
+	/** @return RPG_RT compatible frame counter */
+	int GetFrameCounter();
+
+	/** Reset the RPG_RT compatible frame counter to 0 */
+	void ResetFrameCounter();
+
+	/** Increment the RPG_RT compatible frame counter */
+	void IncFrameCounter();
 }
 
 inline bool Game_System::HasSystemGraphic() {

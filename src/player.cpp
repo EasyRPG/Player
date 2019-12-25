@@ -352,8 +352,7 @@ void Player::Update(bool update_scene) {
 
 void Player::IncFrame() {
 	++frames;
-	// RPG_RT compatible frame counter.
-	++Main_Data::game_data.system.frame_count;
+	Game_System::IncFrameCounter();
 }
 
 void Player::FrameReset() {
@@ -950,8 +949,7 @@ static void OnMapFileReady(FileRequestResult*) {
 }
 
 void Player::SetupNewGame() {
-	// RPG_RT compatible frame counter.
-	Main_Data::game_data.system.frame_count = 0;
+	Game_System::ResetFrameCounter();
 
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
