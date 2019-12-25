@@ -496,3 +496,15 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 
 	Audio().SE_Play(path, volume, tempo);
 }
+
+Game_System::AtbMode Game_System::GetAtbMode() {
+	return static_cast<Game_System::AtbMode>(data.atb_mode);
+}
+
+void Game_System::SetAtbMode(AtbMode m) {
+	data.atb_mode = m;
+}
+
+void Game_System::ToggleAtbMode() {
+	data.atb_mode = !data.atb_mode;
+}

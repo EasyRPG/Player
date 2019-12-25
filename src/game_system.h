@@ -24,6 +24,7 @@
 #include "rpg_music.h"
 #include "rpg_sound.h"
 #include "rpg_system.h"
+#include "rpg_savesystem.h"
 
 struct FileRequestResult;
 
@@ -69,6 +70,8 @@ namespace Game_System {
 		Transition_EndBattleShow,
 		Transition_Count
 	};
+
+	using AtbMode = RPG::SaveSystem::AtbMode;
 
 	class Target {
 	public:
@@ -291,6 +294,15 @@ namespace Game_System {
 	bool IsStopMusicFilename(const std::string& name);
 	bool IsStopSoundFilename(const std::string& name, std::string& found_name);
 	bool IsStopSoundFilename(const std::string& name);
+
+	/** @return current atb mode */
+	AtbMode GetAtbMode();
+
+	/** Set the atb mode */
+	void SetAtbMode(AtbMode m);
+
+	/** Flip the atb mode to the opposite */
+	void ToggleAtbMode();
 }
 
 inline bool Game_System::HasSystemGraphic() {

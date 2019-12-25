@@ -119,7 +119,7 @@ void Scene_Menu::CreateCommandWindow() {
 			options.push_back(Data::terms.order);
 			break;
 		case Wait:
-			options.push_back(Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
+			options.push_back(Game_System::GetAtbMode() == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
 		case Debug:
 			options.push_back("Debug");
@@ -206,9 +206,9 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Wait:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
-			Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
+			Game_System::ToggleAtbMode();
 			command_window->SetItemText(menu_index,
-				Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
+				Game_System::GetAtbMode() == RPG::SaveSystem::AtbMode_atb_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
 		case Debug:
 			Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));

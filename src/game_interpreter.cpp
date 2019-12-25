@@ -3015,7 +3015,7 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 			break;
 		case 2:
 			// Is ATB wait on?
-			result = Main_Data::game_data.system.atb_mode == RPG::SaveSystem::AtbMode_atb_wait;
+			result = Game_System::GetAtbMode() == RPG::SaveSystem::AtbMode_atb_wait;
 			break;
 		case 3:
 			// Is Fullscreen active?

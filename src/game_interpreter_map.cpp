@@ -707,7 +707,7 @@ bool Game_Interpreter_Map::CommandOpenLoadMenu(RPG::EventCommand const& /* com *
 }
 
 bool Game_Interpreter_Map::CommandToggleAtbMode(RPG::EventCommand const& /* com */) {
-	Main_Data::game_data.system.atb_mode = !Main_Data::game_data.system.atb_mode;
+	Game_System::ToggleAtbMode();
 	return true;
 }
 
