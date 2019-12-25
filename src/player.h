@@ -137,6 +137,11 @@ namespace Player {
 	void LoadSavegame(const std::string& save_file);
 
 	/**
+	 * Starts a new game
+	 */
+	void SetupNewGame();
+
+	/**
 	 * Moves the player to the start map.
 	 */
 	void SetupPlayerSpawn();
