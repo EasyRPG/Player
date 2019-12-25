@@ -156,7 +156,8 @@ void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, BitmapRef& tone
 	for (auto& p: particles) {
 		auto x = Utils::PositiveModulo(p.x, surface_rect.width);
 		auto y = Utils::PositiveModulo(p.y, surface_rect.height);
-		weather_surface->Blit(x, y, *bitmap, rect, p.life);
+
+		weather_surface->EdgeMirrorBlit(x, y, *bitmap, rect, true, true, p.life);
 	}
 
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();
