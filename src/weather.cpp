@@ -157,27 +157,7 @@ void Weather::DrawParticles(Bitmap& dst, const Bitmap& particle, BitmapRef& tone
 		auto x = Utils::PositiveModulo(p.x, surface_rect.width);
 		auto y = Utils::PositiveModulo(p.y, surface_rect.height);
 
-		auto draw = [&](int x, int y) {
-			weather_surface->Blit(x, y, *bitmap, rect, p.life);
-		};
-
-		draw(x, y);
-
-		// Handle edge clones
-		const bool cross_x = (x + rect.width > surface_rect.width);
-		const bool cross_y = (y + rect.height > surface_rect.height);
-
-		if (cross_x) {
-			draw(x - surface_rect.width, y);
-		}
-
-		if (cross_y) {
-			draw(x, y - surface_rect.height);
-		}
-
-		if (cross_x && cross_y) {
-			draw(x - surface_rect.width, y - surface_rect.height);
-		}
+		weather_surface->EdgeMirrorBlit(x, y, *bitmap, rect, true, true, p.life);
 	}
 
 	const auto shake_x = Main_Data::game_screen->GetShakeOffsetX();

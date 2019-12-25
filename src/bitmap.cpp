@@ -1108,3 +1108,40 @@ pixman_op_t Bitmap::GetOperator(pixman_image_t* mask) const {
 
 	return PIXMAN_OP_OVER;
 }
+
+void Bitmap::EdgeMirrorBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool mirror_x, bool mirror_y, Opacity const& opacity) {
+	if (opacity.IsTransparent())
+		return;
+
+	auto mask = CreateMask(opacity, src_rect);
+
+	const auto dst_rect = GetRect();
+
+	auto draw = [&](int x, int y) {
+		pixman_image_composite32(src.GetOperator(mask.get()),
+				src.bitmap.get(),
+				mask.get(), bitmap.get(),
+				src_rect.x, src_rect.y,
+				0, 0,
+				x, y,
+				src_rect.width, src_rect.height);
+	};
+
+	draw(x, y);
+
+	const bool clone_x = (mirror_x && x + src_rect.width > dst_rect.height);
+	const bool clone_y = (mirror_y && y + src_rect.height > dst_rect.height);
+
+	if (clone_x) {
+		draw(x - dst_rect.width, y);
+	}
+
+	if (clone_y) {
+		draw(x, y - dst_rect.height);
+	}
+
+	if (clone_x && clone_y) {
+		draw(x - dst_rect.width, y - dst_rect.height);
+	}
+}
+

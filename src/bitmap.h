@@ -328,6 +328,19 @@ public:
 	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, Opacity const& opacity);
 
 	/**
+	 * Blits source bitmap to this one, making clones across the edges if src crossed a boundary of this.
+	 *
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rect.
+	 * @param mirror_x Blit a clone in x direction
+	 * @param mirror_Y BLit a clone in y direction
+	 * @param opacity opacity for blending with bitmap.
+	 */
+	void EdgeMirrorBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool mirror_x, bool mirror_y, Opacity const& opacity);
+
+	/**
 	 * Blits source bitmap stretched to this one.
 	 *
 	 * @param src source bitmap.
