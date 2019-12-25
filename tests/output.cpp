@@ -11,6 +11,8 @@ TEST_CASE("Message Output") {
 	Output::Debug("Test %s", "debg");
 	Output::Warning("Test %s", "test");
 	Output::Post("Test %s", "post");
+	Main_Data::Cleanup();
+	Graphics::Quit();
 }
 
 TEST_SUITE_END();
