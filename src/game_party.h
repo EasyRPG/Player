@@ -365,6 +365,20 @@ public:
 	 */
 	Game_Actor* GetHighestLeveledActorWhoCanUse(const RPG::Item*) const;
 
+	/**
+	 * If a battle is running, returns the current battle turn for the party.
+	 * Otherwise, returns the number of turns of the last battle
+	 *
+	 * @return number of turns
+	 */
+	int GetTurns() const;
+
+	/** Increment turn counter */
+	void IncTurns();
+
+	/** Reset turn counter to 0 */
+	void ResetTurns();
+
 private:
 	std::pair<int,bool> GetItemIndex(int item_id) const;
 
@@ -424,6 +438,18 @@ inline int Game_Party::GetSteps() const {
 
 inline void Game_Party::IncSteps() {
 	++data().steps;
+}
+
+inline int Game_Party::GetTurns() const {
+	return data().turns;
+}
+
+inline void Game_Party::IncTurns() {
+	++data().turns;
+}
+
+inline void Game_Party::ResetTurns() {
+	data().turns = 0;
 }
 
 
