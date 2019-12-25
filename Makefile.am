@@ -104,6 +104,8 @@ libeasyrpg_player_a_SOURCES = \
 	src/game_character.h \
 	src/game_commonevent.cpp \
 	src/game_commonevent.h \
+	src/game_data.cpp \
+	src/game_data.h \
 	src/game_enemy.cpp \
 	src/game_enemy.h \
 	src/game_enemyparty.cpp \

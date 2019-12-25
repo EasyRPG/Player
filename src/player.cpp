@@ -55,6 +55,7 @@
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_variables.h"
+#include "game_data.h"
 #include "graphics.h"
 #include "inireader.h"
 #include "input.h"
@@ -776,6 +777,7 @@ void Player::ResetGameObjects() {
 	Game_System::ResetSystemGraphic();
 
 	// The init order is important
+	Game_Data::Reset();
 	Main_Data::Cleanup();
 
 	Main_Data::game_data.Setup();
@@ -922,6 +924,7 @@ void Player::LoadSavegame(const std::string& save_name) {
 	Main_Data::game_data.system.Fixup();
 
 	Game_Actors::Fixup();
+	Game_Data::SetupLoadGame(Main_Data::game_data);
 	Main_Data::game_party->SetupFromSave(std::move(Main_Data::game_data.inventory));
 
 	int map_id = save->party_location.map_id;
@@ -966,6 +969,7 @@ void Player::SetupNewGame() {
 		static_cast<Scene_Title*>(title.get())->OnGameStart();
 	}
 
+	Game_Data::SetupNewGame();
 	Main_Data::game_party->SetupNewGame();
 	SetupPlayerSpawn();
 }
