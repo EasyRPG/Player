@@ -23,10 +23,7 @@
 #include "game_player.h"
 #include "game_screen.h"
 #include "game_map.h"
-#include "game_variables.h"
-#include "game_switches.h"
 #include "game_quit.h"
-#include "font.h"
 #include "player.h"
 
 #ifndef _WIN32
@@ -52,8 +49,6 @@ std::string save_path;
 
 namespace Main_Data {
 	// Dynamic Game Data
-	std::unique_ptr<Game_Switches> game_switches;
-	std::unique_ptr<Game_Variables> game_variables;
 	std::unique_ptr<Game_Screen> game_screen;
 	std::unique_ptr<Game_Player> game_player;
 	std::unique_ptr<Game_EnemyParty> game_enemyparty;
@@ -155,7 +150,6 @@ void Main_Data::Cleanup() {
 	Game_Map::Quit();
 	Game_Actors::Dispose();
 
-	game_switches.reset();
 	game_screen.reset();
 	game_player.reset();
 	game_enemyparty.reset();

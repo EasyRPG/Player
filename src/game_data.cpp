@@ -16,7 +16,10 @@
  */
 
 #include "game_data.h"
+#include "game_switches.h"
+#include "game_variables.h"
 #include "game_party.h"
+#include "player.h"
 
 Game_Data::Data Game_Data::data = {};
 
@@ -27,16 +30,25 @@ void Game_Data::Reset() {
 void Game_Data::SetupNewGame() {
 	Reset();
 
+	data.game_switches = std::make_unique<Game_Switches>();
+
+	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
+	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
+	data.game_variables = std::make_unique<Game_Variables>(min_var, max_var);
+
 	data.game_party = std::make_unique<Game_Party>();
 }
 
 void Game_Data::SetupLoadGame(RPG::Save save) {
-	Reset();
+	SetupNewGame();
 
-	data.game_party = std::make_unique<Game_Party>();
+	data.game_switches->SetData(std::move(save.system.switches));
+	data.game_variables->SetData(std::move(save.system.variables));
 	data.game_party->SetupFromSave(std::move(save.inventory));
 }
 
 void Game_Data::WriteSaveGame(RPG::Save& save) {
 	save.inventory = GetParty().GetSaveData();
+	save.system.switches = GetSwitches().GetData();
+	save.system.variables = GetVariables().GetData();
 }

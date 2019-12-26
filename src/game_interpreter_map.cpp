@@ -167,9 +167,9 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
-	int map_id = Main_Data::game_variables->Get(var_map_id);
-	int x = Main_Data::game_variables->Get(var_x);
-	int y = Main_Data::game_variables->Get(var_y);
+	int map_id = Game_Data::GetVariables().Get(var_map_id);
+	int x = Game_Data::GetVariables().Get(var_x);
+	int y = Game_Data::GetVariables().Get(var_y);
 
 	auto tt = main_flag ? TeleportTarget::eForegroundTeleport : TeleportTarget::eParallelTeleport;
 

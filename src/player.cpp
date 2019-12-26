@@ -51,10 +51,8 @@
 #include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_player.h"
-#include "game_switches.h"
 #include "game_system.h"
 #include "game_temp.h"
-#include "game_variables.h"
 #include "game_data.h"
 #include "graphics.h"
 #include "inireader.h"
@@ -782,12 +780,6 @@ void Player::ResetGameObjects() {
 
 	Main_Data::game_data.Setup();
 
-	Main_Data::game_switches = std::make_unique<Game_Switches>();
-
-	auto min_var = Player::IsRPG2k3() ? Game_Variables::min_2k3 : Game_Variables::min_2k;
-	auto max_var = Player::IsRPG2k3() ? Game_Variables::max_2k3 : Game_Variables::max_2k;
-	Main_Data::game_variables = std::make_unique<Game_Variables>(min_var, max_var);
-
 	// Prevent a crash when Game_Map wants to reset the screen content
 	// because Setup() modified pictures array
 	Main_Data::game_screen = std::make_unique<Game_Screen>();
@@ -931,9 +923,6 @@ void Player::LoadSavegame(const std::string& save_name) {
 	FileRequestAsync* map = Game_Map::RequestMap(map_id);
 	save_request_id = map->Bind(&OnMapSaveFileReady);
 	map->SetImportantFile(true);
-
-	Main_Data::game_switches->SetData(std::move(Main_Data::game_data.system.switches));
-	Main_Data::game_variables->SetData(std::move(Main_Data::game_data.system.variables));
 
 	Game_System::ReloadSystemGraphic();
 

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "player.h"
 #include "main_data.h"
+#include "game_data.h"
 #include <cassert>
 #include <cctype>
 #include <algorithm>
@@ -121,7 +122,7 @@ std::string PendingMessage::ApplyTextInsertingCommands(std::string input, uint32
 			iter = parse_ret.next;
 			int value = parse_ret.value;
 
-			int variable_value = Main_Data::game_variables->Get(value);
+			int variable_value = Game_Data::GetVariables().Get(value);
 			output.append(std::to_string(variable_value));
 
 			start_copy = iter;

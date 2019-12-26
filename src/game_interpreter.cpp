@@ -353,7 +353,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 
 		if (_keyinput.wait) {
 			const int key = _keyinput.CheckInput();
-			Main_Data::game_variables->Set(_keyinput.variable, key);
+			Game_Data::GetVariables().Set(_keyinput.variable, key);
 			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 			if (key == 0) {
 				++_keyinput.wait_frames;
@@ -361,7 +361,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			}
 			if (_keyinput.timed) {
 				// 10 per second
-				Main_Data::game_variables->Set(_keyinput.time_variable,
+				Game_Data::GetVariables().Set(_keyinput.time_variable,
 						(_keyinput.wait_frames * 10) / Graphics::GetDefaultFps());
 			}
 			_keyinput.wait = false;
@@ -954,21 +954,21 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		// Param0: 0: Single, 1: Range, 2: Indirect
 		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-		int start = com.parameters[0] == 2 ? Main_Data::game_variables->Get(com.parameters[1]) : com.parameters[1];
+		int start = com.parameters[0] == 2 ? Game_Data::GetVariables().Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 		int val = com.parameters[3];
 
 		if (start == end) {
 			if (val < 2) {
-				Main_Data::game_switches->Set(start, val == 0);
+				Game_Data::GetSwitches().Set(start, val == 0);
 			} else {
-				Main_Data::game_switches->Flip(start);
+				Game_Data::GetSwitches().Flip(start);
 			}
 		} else {
 			if (val < 2) {
-				Main_Data::game_switches->SetRange(start, end, val == 0);
+				Game_Data::GetSwitches().SetRange(start, end, val == 0);
 			} else {
-				Main_Data::game_switches->FlipRange(start, end);
+				Game_Data::GetSwitches().FlipRange(start, end);
 			}
 		}
 
@@ -990,11 +990,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			break;
 		case 1:
 			// Var A ops B
-			value = Main_Data::game_variables->Get(com.parameters[5]);
+			value = Game_Data::GetVariables().Get(com.parameters[5]);
 			break;
 		case 2:
 			// Number of var A ops B
-			value = Main_Data::game_variables->Get(Main_Data::game_variables->Get(com.parameters[5]));
+			value = Game_Data::GetVariables().Get(Game_Data::GetVariables().Get(com.parameters[5]));
 			break;
 		case 3:
 			// Random between range
@@ -1214,49 +1214,49 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 		// Param0: 0: Single, 1: Range, 2: Indirect
 		// For Range set end to param 2, otherwise to start, this way the loop runs exactly once
 
-		int start = com.parameters[0] == 2 ? Main_Data::game_variables->Get(com.parameters[1]) : com.parameters[1];
+		int start = com.parameters[0] == 2 ? Game_Data::GetVariables().Get(com.parameters[1]) : com.parameters[1];
 		int end = com.parameters[0] == 1 ? com.parameters[2] : start;
 
 		if (start == end) {
 			switch (com.parameters[3]) {
 				case 0:
-					Main_Data::game_variables->Set(start, value);
+					Game_Data::GetVariables().Set(start, value);
 					break;
 				case 1:
-					Main_Data::game_variables->Add(start, value);
+					Game_Data::GetVariables().Add(start, value);
 					break;
 				case 2:
-					Main_Data::game_variables->Sub(start, value);
+					Game_Data::GetVariables().Sub(start, value);
 					break;
 				case 3:
-					Main_Data::game_variables->Mult(start, value);
+					Game_Data::GetVariables().Mult(start, value);
 					break;
 				case 4:
-					Main_Data::game_variables->Div(start, value);
+					Game_Data::GetVariables().Div(start, value);
 					break;
 				case 5:
-					Main_Data::game_variables->Mod(start, value);
+					Game_Data::GetVariables().Mod(start, value);
 					break;
 			}
 		} else {
 			switch (com.parameters[3]) {
 				case 0:
-					Main_Data::game_variables->SetRange(start, end, value);
+					Game_Data::GetVariables().SetRange(start, end, value);
 					break;
 				case 1:
-					Main_Data::game_variables->AddRange(start, end, value);
+					Game_Data::GetVariables().AddRange(start, end, value);
 					break;
 				case 2:
-					Main_Data::game_variables->SubRange(start, end, value);
+					Game_Data::GetVariables().SubRange(start, end, value);
 					break;
 				case 3:
-					Main_Data::game_variables->MultRange(start, end, value);
+					Game_Data::GetVariables().MultRange(start, end, value);
 					break;
 				case 4:
-					Main_Data::game_variables->DivRange(start, end, value);
+					Game_Data::GetVariables().DivRange(start, end, value);
 					break;
 				case 5:
-					Main_Data::game_variables->ModRange(start, end, value);
+					Game_Data::GetVariables().ModRange(start, end, value);
 					break;
 			}
 		}
@@ -1273,7 +1273,7 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 	if (operand_type == 0) {
 		value = operand;
 	} else {
-		value = Main_Data::game_variables->Get(operand);
+		value = Game_Data::GetVariables().Get(operand);
 	}
 
 	// Reverse sign of value if operation is substract
@@ -1306,9 +1306,9 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 		break;
 	case 2:
 		// Var hero
-		actor = Game_Actors::GetActor(Main_Data::game_variables->Get(id));
+		actor = Game_Actors::GetActor(Game_Data::GetVariables().Get(id));
 		if (!actor) {
-			Output::Warning("Invalid actor ID %d", Main_Data::game_variables->Get(id));
+			Output::Warning("Invalid actor ID %d", Game_Data::GetVariables().Get(id));
 			return actors;
 		}
 
@@ -1404,7 +1404,7 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 	} else {
 		// Item by variable
 		Game_Data::GetParty().AddItem(
-			Main_Data::game_variables->Get(com.parameters[2]),
+			Game_Data::GetVariables().Get(com.parameters[2]),
 			value
 		);
 	}
@@ -1420,7 +1420,7 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 	if (com.parameters[1] == 0) {
 		id = com.parameters[2];
 	} else {
-		id = Main_Data::game_variables->Get(com.parameters[2]);
+		id = Game_Data::GetVariables().Get(com.parameters[2]);
 	}
 
 	actor = Game_Actors::GetActor(id);
@@ -1508,7 +1508,7 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 		case 0:
 			return val;
 		case 1:
-			return Main_Data::game_variables->Get(val);
+			return Game_Data::GetVariables().Get(val);
 		default:
 			return -1;
 	}
@@ -1736,7 +1736,7 @@ bool Game_Interpreter::CommandSimulatedAttack(RPG::EventCommand const& com) { //
 		actor->ChangeHp(-result);
 
 		if (com.parameters[6] != 0) {
-			Main_Data::game_variables->Set(com.parameters[7], result);
+			Game_Data::GetVariables().Set(com.parameters[7], result);
 			Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 		}
 	}
@@ -1931,9 +1931,9 @@ bool Game_Interpreter::CommandMemorizeLocation(RPG::EventCommand const& com) { /
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
-	Main_Data::game_variables->Set(var_map_id, Game_Map::GetMapId());
-	Main_Data::game_variables->Set(var_x, player->GetX());
-	Main_Data::game_variables->Set(var_y, player->GetY());
+	Game_Data::GetVariables().Set(var_map_id, Game_Map::GetMapId());
+	Game_Data::GetVariables().Set(var_x, player->GetX());
+	Game_Data::GetVariables().Set(var_y, player->GetY());
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
@@ -2048,7 +2048,7 @@ bool Game_Interpreter::CommandStoreTerrainID(RPG::EventCommand const& com) { // 
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
-	Main_Data::game_variables->Set(var_id, Game_Map::GetTerrainTag(x, y));
+	Game_Data::GetVariables().Set(var_id, Game_Map::GetTerrainTag(x, y));
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
@@ -2058,7 +2058,7 @@ bool Game_Interpreter::CommandStoreEventID(RPG::EventCommand const& com) { // co
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
 	auto* ev = Game_Map::GetEventAt(x, y, false);
-	Main_Data::game_variables->Set(var_id, ev ? ev->GetId() : 0);
+	Game_Data::GetVariables().Set(var_id, ev ? ev->GetId() : 0);
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	return true;
 }
@@ -2322,9 +2322,9 @@ namespace PicPointerPatch {
 		if (pic_id > 10000) {
 			int new_id;
 			if (pic_id > 50000) {
-				new_id = Main_Data::game_variables->Get(pic_id - 50000);
+				new_id = Game_Data::GetVariables().Get(pic_id - 50000);
 			} else {
-				new_id = Main_Data::game_variables->Get(pic_id - 10000);
+				new_id = Game_Data::GetVariables().Get(pic_id - 10000);
 			}
 
 			if (new_id > 0) {
@@ -2336,19 +2336,19 @@ namespace PicPointerPatch {
 
 	static void AdjustParams(Game_Picture::Params& params) {
 		if (params.magnify > 10000) {
-			int new_magnify = Main_Data::game_variables->Get(params.magnify - 10000);
+			int new_magnify = Game_Data::GetVariables().Get(params.magnify - 10000);
 			Output::Debug("PicPointer: Zoom %d replaced with %d", params.magnify, new_magnify);
 			params.magnify = new_magnify;
 		}
 
 		if (params.top_trans > 10000) {
-			int new_top_trans = Main_Data::game_variables->Get(params.top_trans - 10000);
+			int new_top_trans = Game_Data::GetVariables().Get(params.top_trans - 10000);
 			Output::Debug("PicPointer: Top transparency %d replaced with %d", params.top_trans, new_top_trans);
 			params.top_trans = new_top_trans;
 		}
 
 		if (params.bottom_trans > 10000) {
-			int new_bottom_trans = Main_Data::game_variables->Get(params.bottom_trans - 10000);
+			int new_bottom_trans = Game_Data::GetVariables().Get(params.bottom_trans - 10000);
 			Output::Debug("PicPointer: Bottom transparency %d replaced with %d", params.bottom_trans, new_bottom_trans);
 			params.bottom_trans = new_bottom_trans;
 		}
@@ -2384,7 +2384,7 @@ namespace PicPointerPatch {
 		// Adjust name
 		if (pic_id >= 50000) {
 			// Name substitution is pic_id + 1
-			int pic_num = Main_Data::game_variables->Get(pic_id - 50000 + 1);
+			int pic_num = Game_Data::GetVariables().Get(pic_id - 50000 + 1);
 
 			if (pic_num >= 0) {
 				params.name = ReplaceName(params.name, pic_num, 4);
@@ -2400,7 +2400,7 @@ namespace PicPointerPatch {
 		AdjustParams(params);
 
 		if (params.duration > 10000) {
-			int new_duration = Main_Data::game_variables->Get(params.duration - 10000);
+			int new_duration = Game_Data::GetVariables().Get(params.duration - 10000);
 			Output::Debug("PicPointer: Move duration %d replaced with %d", params.duration, new_duration);
 			params.duration = new_duration;
 		}
@@ -2450,8 +2450,8 @@ bool Game_Interpreter::CommandShowPicture(RPG::EventCommand const& com) { // cod
 		pic_id = ValueOrVariable(com.parameters[17], pic_id);
 		if (com.parameters[19] != 0) {
 			int var = 0;
-			if (Main_Data::game_variables->IsValid(com.parameters[19])) {
-				var = Main_Data::game_variables->Get(com.parameters[19]);
+			if (Game_Data::GetVariables().IsValid(com.parameters[19])) {
+				var = Game_Data::GetVariables().Get(com.parameters[19]);
 			}
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
@@ -2691,7 +2691,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 
 	if (wait) {
 		// While waiting the variable is reset to 0 each frame.
-		Main_Data::game_variables->Set(var_id, 0);
+		Game_Data::GetVariables().Set(var_id, 0);
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 	}
 
@@ -2745,7 +2745,7 @@ bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // co
 	}
 
 	int key = _keyinput.CheckInput();
-	Main_Data::game_variables->Set(_keyinput.variable, key);
+	Game_Data::GetVariables().Set(_keyinput.variable, key);
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_Map);
 
 	return true;
@@ -2868,15 +2868,15 @@ bool Game_Interpreter::CommandConditionalBranch(RPG::EventCommand const& com) { 
 	switch (com.parameters[0]) {
 	case 0:
 		// Switch
-		result = Main_Data::game_switches->Get(com.parameters[1]) == (com.parameters[2] == 0);
+		result = Game_Data::GetSwitches().Get(com.parameters[1]) == (com.parameters[2] == 0);
 		break;
 	case 1:
 		// Variable
-		value1 = Main_Data::game_variables->Get(com.parameters[1]);
+		value1 = Game_Data::GetVariables().Get(com.parameters[1]);
 		if (com.parameters[2] == 0) {
 			value2 = com.parameters[3];
 		} else {
-			value2 = Main_Data::game_variables->Get(com.parameters[3]);
+			value2 = Game_Data::GetVariables().Get(com.parameters[3]);
 		}
 		switch (com.parameters[4]) {
 		case 0:
@@ -3195,8 +3195,8 @@ bool Game_Interpreter::CommandCallEvent(RPG::EventCommand const& com) { // code 
 		event_page = com.parameters[2];
 		break;
 	case 2: // Indirect
-		evt_id = Main_Data::game_variables->Get(com.parameters[1]);
-		event_page = Main_Data::game_variables->Get(com.parameters[2]);
+		evt_id = Game_Data::GetVariables().Get(com.parameters[1]);
+		event_page = Game_Data::GetVariables().Get(com.parameters[2]);
 		break;
 	default:
 		return false;

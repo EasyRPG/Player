@@ -258,7 +258,7 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	case RPG::EnemyAction::ConditionType_always:
 		return true;
 	case RPG::EnemyAction::ConditionType_switch:
-		return Main_Data::game_switches->Get(action.switch_id);
+		return Game_Data::GetSwitches().Get(action.switch_id);
 	case RPG::EnemyAction::ConditionType_turn:
 		{
 			int turns = Game_Battle::GetTurn();

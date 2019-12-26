@@ -299,7 +299,7 @@ static Game_Message::ParseParamResult ParseParamImpl(
 
 					auto ret = ParseParamImpl('V', 'v', iter, end, escape_char, true, max_recursion - 1);
 					iter = ret.next;
-					int var_val = Main_Data::game_variables->Get(ret.value);
+					int var_val = Game_Data::GetVariables().Get(ret.value);
 
 					got_valid_number = true;
 

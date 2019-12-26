@@ -171,8 +171,8 @@ void Scene_Debug::Update() {
 				EnterFromListOption(eVariableSelect, prev.var);
 				break;
 			case eVariableSelect:
-				if (Main_Data::game_variables->IsValid(GetIndex())) {
-					EnterFromListOptionToValue(eVariableValue, Main_Data::game_variables->Get(GetIndex()), 7, true);
+				if (Game_Data::GetVariables().IsValid(GetIndex())) {
+					EnterFromListOptionToValue(eVariableValue, Game_Data::GetVariables().Get(GetIndex()), 7, true);
 				}
 				break;
 			case eVariableValue:
@@ -401,10 +401,10 @@ int Scene_Debug::GetLastPage() {
 	size_t num_elements = 0;
 	switch (mode) {
 		case eSwitch:
-			num_elements = Main_Data::game_switches->GetSize();
+			num_elements = Game_Data::GetSwitches().GetSize();
 			break;
 		case eVariable:
-			num_elements = Main_Data::game_variables->GetSize();
+			num_elements = Game_Data::GetVariables().GetSize();
 			break;
 		case eItem:
 			num_elements = Data::items.size();
@@ -631,8 +631,8 @@ void Scene_Debug::ReturnToMain(int from_idx) {
 
 
 void Scene_Debug::DoSwitch() {
-	if (Main_Data::game_switches->IsValid(GetIndex())) {
-		Main_Data::game_switches->Flip(GetIndex());
+	if (Game_Data::GetSwitches().IsValid(GetIndex())) {
+		Game_Data::GetSwitches().Flip(GetIndex());
 		Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 
 		var_window->Refresh();
@@ -640,7 +640,7 @@ void Scene_Debug::DoSwitch() {
 }
 
 void Scene_Debug::DoVariable() {
-	Main_Data::game_variables->Set(GetIndex(), numberinput_window->GetNumber());
+	Game_Data::GetVariables().Set(GetIndex(), numberinput_window->GetNumber());
 	Game_Map::SetNeedRefresh(Game_Map::Refresh_All);
 
 	var_window->Refresh();

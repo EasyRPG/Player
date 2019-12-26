@@ -28,13 +28,8 @@
  */
 class Game_Party : public Game_Party_Base {
 public:
-	/**
-	 * Initializes Game_Party.
-	 */
-	Game_Party();
-
 	/** Initialize for new game */
-	void SetupNewGame();
+	Game_Party();
 
 	/** Initialize from save game */
 	void SetupFromSave(RPG::SaveInventory save);

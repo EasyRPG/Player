@@ -624,7 +624,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 		return;
 
 	if (GetAffectedSwitch() != -1) {
-		Main_Data::game_switches->Set(GetAffectedSwitch(), true);
+		Game_Data::GetSwitches().Set(GetAffectedSwitch(), true);
 	}
 
 	auto* target = GetTarget();
@@ -718,11 +718,11 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 void Game_BattleAlgorithm::AlgorithmBase::ApplyActionSwitches() {
 	for (int s : switch_on) {
-		Main_Data::game_switches->Set(s, true);
+		Game_Data::GetSwitches().Set(s, true);
 	}
 
 	for (int s : switch_off) {
-		Main_Data::game_switches->Set(s, false);
+		Game_Data::GetSwitches().Set(s, false);
 	}
 }
 

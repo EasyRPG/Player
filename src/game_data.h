@@ -31,6 +31,12 @@ class Game_Variables;
 
 struct Game_Data {
 	public:
+		/** @return reference to Game_Switches object */
+		static Game_Switches& GetSwitches();
+
+		/** @return reference to Game_Variables object */
+		static Game_Variables& GetVariables();
+
 		/** @return reference to Game_Party object */
 		static Game_Party& GetParty();
 
@@ -55,10 +61,22 @@ struct Game_Data {
 		static void Reset();
 	private:
 		struct Data {
+			std::unique_ptr<Game_Switches> game_switches;
+			std::unique_ptr<Game_Variables> game_variables;
 			std::unique_ptr<Game_Party> game_party;
 		};
 		static Data data;
 };
+
+inline Game_Switches& Game_Data::GetSwitches() {
+	assert(data.game_switches);
+	return *data.game_switches;
+}
+
+inline Game_Variables& Game_Data::GetVariables() {
+	assert(data.game_variables);
+	return *data.game_variables;
+}
 
 inline Game_Party& Game_Data::GetParty() {
 	assert(data.game_party);
