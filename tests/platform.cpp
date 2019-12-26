@@ -9,7 +9,7 @@ namespace {
 	const std::string onekb = EP_TEST_PATH "/platform/1kb";
 	const std::string empty = EP_TEST_PATH "/platform/empty";
 	const std::string folder = EP_TEST_PATH "/platform/folder";
-	const std::string bad = EP_TEST_PATH "/platform/!!!inexistant!!!";
+	const std::string bad = EP_TEST_PATH "/platform/!!!nonexistant!!!";
 }
 
 TEST_CASE("Exists") {

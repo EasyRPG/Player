@@ -59,6 +59,9 @@ namespace Platform {
 	class File {
 	public:
 		explicit File() = delete;
+		File& operator=(const File&) = delete;
+		File(const File&) = delete;
+
 		/**
 		 * Accesses a file.
 		 *
@@ -92,9 +95,10 @@ namespace Platform {
 		int64_t GetSize() const;
 
 	private:
-		const std::string filename;
 #ifdef _WIN32
-		std::wstring filename_w;
+		const std::wstring filename;
+#else
+		const std::string filename;
 #endif
 	};
 
@@ -102,6 +106,8 @@ namespace Platform {
 	class Directory {
 	public:
 		explicit Directory() = delete;
+		Directory& operator=(const Directory&) = delete;
+		Directory(const Directory&) = delete;
 
 		/**
 		 * Opens a directory for reading.
@@ -137,7 +143,7 @@ namespace Platform {
 		struct _wdirent* entry = nullptr;
 #elif defined(PSP2)
 		int dir_handle = -1;
-		struct SceIoDirent entry;
+		struct SceIoDirent entry = {};
 #else
 		DIR* dir_handle = nullptr;
 		struct dirent* entry = nullptr;

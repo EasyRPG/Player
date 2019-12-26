@@ -834,8 +834,6 @@ int64_t FileFinder::GetFileSize(const std::string& file) {
 }
 
 bool FileFinder::IsMajorUpdatedTree() {
-	int64_t size;
-
 	// Find an MP3 music file only when official Harmony.dll exists
 	// in the gamedir or the file doesn't exist because
 	// the detection doesn't return reliable results for games created with
@@ -843,7 +841,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	bool find_mp3 = true;
 	std::string harmony = FindDefault("Harmony.dll");
 	if (!harmony.empty()) {
-		size = GetFileSize(harmony);
+		auto size = GetFileSize(harmony);
 		if (size != -1 && size != KnownFileSize::OFFICIAL_HARMONY_DLL) {
 			Output::Debug("Non-official Harmony.dll found, skipping MP3 test");
 			find_mp3 = false;
@@ -867,7 +865,7 @@ bool FileFinder::IsMajorUpdatedTree() {
 	// Compare the size of RPG_RT.exe with threshold
 	std::string rpg_rt = FindDefault("RPG_RT.exe");
 	if (!rpg_rt.empty()) {
-		size = GetFileSize(rpg_rt);
+		auto size = GetFileSize(rpg_rt);
 		if (size != -1) {
 			return size > (Player::IsRPG2k() ? RpgrtMajorUpdateThreshold::RPG2K : RpgrtMajorUpdateThreshold::RPG2K3);
 		}

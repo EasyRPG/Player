@@ -19,16 +19,21 @@
 #include "platform.h"
 #include "utils.h"
 #include <cassert>
+#include <utility>
 
-Platform::File::File(std::string name) : filename(std::move(name)) {
+Platform::File::File(std::string name) :
 #ifdef _WIN32
-	filename_w = Utils::ToWideString(filename);
+		filename(Utils::ToWideString(name))
+#else
+		filename(std::move(name))
 #endif
+{
+	// no-op
 }
 
 bool Platform::File::Exists() const {
 #ifdef _WIN32
-	return ::GetFileAttributesW(filename_w.c_str()) != (DWORD)-1;
+	return ::GetFileAttributesW(filename.c_str()) != (DWORD)-1;
 #elif (defined(GEKKO) || defined(_3DS) || defined(__SWITCH__))
 	struct stat sb;
 	return ::stat(filename.c_str(), &sb) == 0;
@@ -51,7 +56,7 @@ bool Platform::File::IsDirectory(bool follow_symlinks) const {
 Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 #if defined(_WIN32)
 	(void)follow_symlinks;
-	int attribs = ::GetFileAttributesW(filename_w.c_str());
+	int attribs = ::GetFileAttributesW(filename.c_str());
 
 	if (attribs == INVALID_FILE_ATTRIBUTES) {
 		return FileType::Unknown;
@@ -65,8 +70,8 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 	(void)follow_symlinks;
 	struct SceIoStat sb = {};
 	if (::sceIoGetstat(filename.c_str(), &sb) >= 0) {
-		return SCE_S_ISREG(sb.st_mode) != 0 ? FileType::File :
-			SCE_S_ISDIR(sb.st_mode) != 0 ? FileType::Directory:
+		return SCE_S_ISREG(sb.st_mode) ? FileType::File :
+			SCE_S_ISDIR(sb.st_mode) ? FileType::Directory :
 			FileType::Other;
 	}
 	return FileType::Unknown;
@@ -79,8 +84,8 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 	auto fn = follow_symlinks ? ::stat : ::lstat;
 #  endif
 	if (fn(filename.c_str(), &sb) == 0) {
-		return S_ISREG(sb.st_mode) != 0 ? FileType::File :
-			S_ISDIR(sb.st_mode) != 0 ? FileType::Directory:
+		return S_ISREG(sb.st_mode) ? FileType::File :
+			S_ISDIR(sb.st_mode) ? FileType::Directory :
 			FileType::Other;
 	}
 	return FileType::Unknown;
@@ -90,7 +95,7 @@ Platform::FileType Platform::File::GetType(bool follow_symlinks) const {
 int64_t Platform::File::GetSize() const {
 #if defined(_WIN32)
 	WIN32_FILE_ATTRIBUTE_DATA data;
-	BOOL res = ::GetFileAttributesExW(filename_w.c_str(),
+	BOOL res = ::GetFileAttributesExW(filename.c_str(),
 			GetFileExInfoStandard,
 			&data);
 	if (!res) {
@@ -173,13 +178,7 @@ Platform::FileType Platform::Directory::GetEntryType() const {
 }
 
 void Platform::Directory::Close() {
-#if defined(PSP2)
-	bool valid_dir_handle = dir_handle >= 0;
-#else
-	bool valid_dir_handle = dir_handle != nullptr;
-#endif
-
-	if (valid_dir_handle) {
+	if (*this) {
 #if defined(_WIN32)
 		::_wclosedir(dir_handle);
 		dir_handle = nullptr;
