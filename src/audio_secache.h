@@ -26,6 +26,7 @@
 #include <map>
 
 #include "audio_decoder.h"
+#include "game_clock.h"
 
 /**
  * AudioSeData is the decoded sample of AudioSeCache.
@@ -34,10 +35,10 @@
 class AudioSeData {
 public:
 	std::vector<uint8_t> buffer;
+	Game_Clock::time_point last_access;
 	int frequency;
 	AudioDecoder::Format format;
 	int channels;
-	int last_access;
 };
 
 typedef std::shared_ptr<AudioSeData> AudioSeRef;
