@@ -41,7 +41,7 @@
 #include "scene_gameover.h"
 #include "scene_map.h"
 #include "scene.h"
-#include "graphics.h"
+#include "game_clock.h"
 #include "input.h"
 #include "main_data.h"
 #include "output.h"
@@ -363,7 +363,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (_keyinput.timed) {
 				// 10 per second
 				Main_Data::game_variables->Set(_keyinput.time_variable,
-						(_keyinput.wait_frames * 10) / Graphics::GetDefaultFps());
+						(_keyinput.wait_frames * 10) / Game_Clock::GetSimulationFps());
 			}
 			_keyinput.wait = false;
 		}

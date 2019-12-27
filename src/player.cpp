@@ -261,8 +261,7 @@ void Player::Resume() {
 
 void Player::Update(bool update_scene) {
 	// available ms per frame, game logic expects 60 fps
-	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
-	next_frame = start_time + framerate_interval;
+	next_frame = start_time + std::chrono::duration_cast<std::chrono::milliseconds>(Game_Clock::GetSimulationTimeStep()).count();
 
 	double cur_time = (double)Game_Clock::GetTicks();
 
@@ -378,11 +377,8 @@ void Player::FrameReset() {
 }
 
 void Player::FrameReset(uint32_t start_ticks) {
-	// available ms per frame, game logic expects 60 fps
-	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
-
 	// When next frame is expected
-	next_frame = start_ticks + framerate_interval;
+	next_frame = start_ticks + std::chrono::duration_cast<std::chrono::milliseconds>(Game_Clock::GetSimulationTimeStep()).count();
 
 	Graphics::FrameReset(start_ticks);
 }

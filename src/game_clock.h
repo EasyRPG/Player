@@ -18,6 +18,7 @@
 #ifndef EP_GAME_CLOCK_H
 #define EP_GAME_CLOCK_H
 
+#include "options.h"
 #include <chrono>
 #include <type_traits>
 
@@ -41,6 +42,15 @@ public:
 	/** Get current time */
 	static time_point now();
 
+	/** Get the target frames per second for the game simulation */
+	static constexpr int GetSimulationFps();
+
+	/** Get the amount of time each logical frame should take */
+	static constexpr duration GetSimulationTimeStep();
+
+	/** Get the timestep for a given frames per second value */
+	static constexpr duration TimeStepFromFps(int fps);
+
 	// FIXME: Remove this and use now() everywhere.
 	static uint32_t GetTicks();
 	// FIXME: Remove this and use now() everywhere.
@@ -48,7 +58,6 @@ public:
 private:
 	static time_point init_ticks;
 };
-
 
 inline Game_Clock::time_point Game_Clock::now() {
 	return clock::now();
@@ -58,6 +67,20 @@ inline uint32_t Game_Clock::GetTicks() {
 	auto d = now() - init_ticks;
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(d);
 	return ms.count();
+}
+
+constexpr int Game_Clock::GetSimulationFps() {
+	return DEFAULT_FPS;
+}
+
+/** Get the amount of time each logical frame should take */
+constexpr Game_Clock::duration Game_Clock::GetSimulationTimeStep() {
+	return TimeStepFromFps(GetSimulationFps());
+}
+
+constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
+	auto ns = std::chrono::nanoseconds(std::chrono::seconds(1)) / fps;
+	return std::chrono::duration_cast<Game_Clock::duration>(ns);
 }
 
 #endif

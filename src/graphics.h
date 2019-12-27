@@ -66,13 +66,6 @@ namespace Graphics {
 	void UpdateSceneCallback();
 
 	/**
-	 * Gets target frame rate.
-	 *
-	 * @return target frame rate
-	 */
-	constexpr int GetDefaultFps() { return DEFAULT_FPS; }
-
-	/**
 	 * Returns a handle to the message overlay.
 	 * Only used by Output to put messages.
 	 *

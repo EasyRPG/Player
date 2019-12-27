@@ -18,7 +18,7 @@
 #if defined(USE_LIBRETRO) && defined(SUPPORT_AUDIO)
 #include "audio_libretro.h"
 #include "output.h"
-#include "graphics.h"
+#include "game_clock.h"
 
 #include <vector>
 #include <cstdlib>
@@ -64,7 +64,7 @@ LibretroAudio::LibretroAudio() :
 
 	SetFormat(AUDIO_SAMPLERATE, AudioDecoder::Format::S16, 2);
 
-	samples_per_frame = AUDIO_SAMPLERATE / Graphics::GetDefaultFps();
+	samples_per_frame = AUDIO_SAMPLERATE / Game_Clock::GetSimulationFps();
 }
 
 LibretroAudio::~LibretroAudio() {
