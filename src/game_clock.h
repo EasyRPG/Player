@@ -42,6 +42,9 @@ public:
 	/** Get current time */
 	static time_point now();
 
+	/** Sleep for the specified duration */
+	static void SleepFor(std::chrono::nanoseconds ns);
+
 	/** Get the target frames per second for the game simulation */
 	static constexpr int GetSimulationFps();
 

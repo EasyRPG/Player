@@ -23,6 +23,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <thread>
 
 #ifdef _WIN32
 #  include "util_win.h"
@@ -358,8 +359,7 @@ void Player::Update(bool update_scene) {
 		if (cur_time < next_frame) {
 			iframe_scope.End();
 			did_sleep_this_frame = true;
-			auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(next_frame - cur_time);
-			DisplayUi->Sleep(dt.count());
+			Game_Clock::SleepFor(next_frame - cur_time);
 			iframe_scope.Begin();
 		}
 #endif

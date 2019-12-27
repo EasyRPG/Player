@@ -73,8 +73,6 @@ public:
 
 	bool IsFullscreen() override;
 
-	void Sleep(uint32_t time_milli) override;
-
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio() override;
 #endif

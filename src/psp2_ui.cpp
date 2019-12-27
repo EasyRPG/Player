@@ -195,11 +195,6 @@ Psp2Ui::~Psp2Ui() {
 	vita2d_fini();
 }
 
-void Psp2Ui::Sleep(uint32_t time) {
-	uint64_t usecs = time*1000;
-	sceKernelDelayThread(usecs);
-}
-
 void Psp2Ui::BeginDisplayModeChange() {
 	// no-op
 }

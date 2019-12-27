@@ -206,10 +206,6 @@ bool LibretroUi::IsFullscreen() {
 	return false;
 }
 
-void LibretroUi::Sleep(uint32_t) {
-	// Sleep is not needed libretro will ensure 60 fps
-}
-
 retro_video_refresh_t LibretroUi::UpdateWindow = nullptr;
 void LibretroUi::SetRetroVideoCallback(retro_video_refresh_t cb) {
 	UpdateWindow = cb;

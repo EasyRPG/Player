@@ -64,8 +64,6 @@ public:
 
 	bool IsFullscreen();
 
-	void Sleep(uint32_t time_milli);
-
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
 #endif

@@ -66,7 +66,6 @@ public:
 
 	bool IsFullscreen();
 
-	void Sleep(uint32_t time_milli);
 #ifdef SUPPORT_AUDIO
 	AudioInterface& GetAudio();
 	std::unique_ptr<AudioInterface> audio_;
