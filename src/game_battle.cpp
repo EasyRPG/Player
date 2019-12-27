@@ -69,7 +69,7 @@ void Game_Battle::Init() {
 	animation.reset();
 
 	Game_Temp::battle_running = true;
-	Main_Data::game_data.inventory.turns = 0;
+	Main_Data::game_party->ResetTurns();
 	terminate = false;
 	escape_fail_count = 0;
 	target_enemy_index = 0;
@@ -244,7 +244,7 @@ void Game_Battle::NextTurn(Game_Battler* battler) {
 		}
 	}
 
-	++Main_Data::game_data.inventory.turns;
+	Main_Data::game_party->IncTurns();
 }
 
 void Game_Battle::UpdateGauges() {
@@ -288,7 +288,7 @@ void Game_Battle::IncEscapeFailureCount() {
 
 
 int Game_Battle::GetTurn() {
-	return Main_Data::game_data.inventory.turns;
+	return Main_Data::game_party->GetTurns();
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {

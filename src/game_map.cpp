@@ -90,7 +90,7 @@ namespace {
 }
 
 void Game_Map::OnContinueFromBattle() {
-	Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+	Game_System::BgmPlay(Game_System::GetBeforeBattleMusic());
 
 	// 2k3 Death Handlers
 	if (Game_Temp::battle_result == Game_Temp::BattleDefeat
@@ -404,7 +404,7 @@ void Game_Map::PlayBgm() {
 		if (!Main_Data::game_player->IsAboard()) {
 			Game_System::BgmPlay(music);
 		} else {
-			Main_Data::game_data.system.before_vehicle_music = music;
+			Game_System::SetBeforeVehicleMusic(music);
 		}
 	}
 }

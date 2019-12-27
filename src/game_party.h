@@ -22,7 +22,6 @@
 #include <vector>
 #include "game_party_base.h"
 #include "game_actor.h"
-#include "main_data.h"
 
 /**
  * Game_Party class.
@@ -33,6 +32,15 @@ public:
 	 * Initializes Game_Party.
 	 */
 	Game_Party();
+
+	/** Initialize for new game */
+	void SetupNewGame();
+
+	/** Initialize from save game */
+	void SetupFromSave(RPG::SaveInventory save);
+
+	/** @return save game data */
+	const RPG::SaveInventory& GetSaveData() const;
 
 	Game_Actor& operator[] (const int index) override;
 
@@ -365,65 +373,86 @@ public:
 	 */
 	Game_Actor* GetHighestLeveledActorWhoCanUse(const RPG::Item*) const;
 
+	/**
+	 * If a battle is running, returns the current battle turn for the party.
+	 * Otherwise, returns the number of turns of the last battle
+	 *
+	 * @return number of turns
+	 */
+	int GetTurns() const;
+
+	/** Increment turn counter */
+	void IncTurns();
+
+	/** Reset turn counter to 0 */
+	void ResetTurns();
+
 private:
 	std::pair<int,bool> GetItemIndex(int item_id) const;
 
-	const RPG::SaveInventory& data() const;
-	RPG::SaveInventory& data();
+	RPG::SaveInventory data;
 };
 
 // ------ INLINES --------
 
-inline const RPG::SaveInventory& Game_Party::data() const {
-	return Main_Data::game_data.inventory;
-}
-
-inline RPG::SaveInventory& Game_Party::data() {
-	return Main_Data::game_data.inventory;
+inline const RPG::SaveInventory& Game_Party::GetSaveData() const {
+	return data;
 }
 
 inline int Game_Party::GetBattleCount() const {
-	return data().battles;
+	return data.battles;
 }
 
 inline void Game_Party::IncBattleCount() {
-	++data().battles;
+	++data.battles;
 }
 
 inline int Game_Party::GetWinCount() const {
-	return data().victories;
+	return data.victories;
 }
 
 inline void Game_Party::IncWinCount() {
-	++data().victories;
+	++data.victories;
 }
 
 inline int Game_Party::GetDefeatCount() const {
-	return data().defeats;
+	return data.defeats;
 }
 
 inline void Game_Party::IncDefeatCount() {
-	++data().defeats;
+	++data.defeats;
 }
 
 inline int Game_Party::GetRunCount() const {
-	return data().escapes;
+	return data.escapes;
 }
 
 inline void Game_Party::IncRunCount() {
-	++data().escapes;
+	++data.escapes;
 }
 
 inline int Game_Party::GetGold() const {
-	return data().gold;
+	return data.gold;
 }
 
 inline int Game_Party::GetSteps() const {
-	return data().steps;
+	return data.steps;
 }
 
 inline void Game_Party::IncSteps() {
-	++data().steps;
+	++data.steps;
+}
+
+inline int Game_Party::GetTurns() const {
+	return data.turns;
+}
+
+inline void Game_Party::IncTurns() {
+	++data.turns;
+}
+
+inline void Game_Party::ResetTurns() {
+	data.turns = 0;
 }
 
 

@@ -524,7 +524,7 @@ bool Game_Player::GetOnVehicle() {
 		vehicle->SetY(GetY());
 	}
 
-	Main_Data::game_data.system.before_vehicle_music = Game_System::GetCurrentBGM();
+	Game_System::SetBeforeVehicleMusic(Game_System::GetCurrentBGM());
 	GetVehicle()->GetOn();
 	return true;
 }
@@ -599,7 +599,7 @@ void Game_Player::Unboard() {
 	data()->aboard = false;
 	SetMoveSpeed(data()->preboard_move_speed);
 
-	Game_System::BgmPlay(Main_Data::game_data.system.before_vehicle_music);
+	Game_System::BgmPlay(Game_System::GetBeforeVehicleMusic());
 }
 
 bool Game_Player::IsAboard() const {

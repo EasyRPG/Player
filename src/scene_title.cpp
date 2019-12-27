@@ -104,7 +104,7 @@ void Scene_Title::Update() {
 	}
 
 	if (!Data::system.show_title || Player::new_game_flag) {
-		Player::SetupPlayerSpawn();
+		Player::SetupNewGame();
 		Scene::Push(std::make_shared<Scene_Map>());
 		if (Player::debug_flag && Player::hide_title_flag) {
 			Scene::Push(std::make_shared<Scene_Load>());
@@ -214,9 +214,7 @@ void Scene_Title::CommandNewGame() {
 		Output::Debug("Starting new game");
 		Game_System::SePlay(Game_System::GetSystemSE(Game_System::SFX_Decision));
 		Game_System::BgmStop();
-		Player::SetupPlayerSpawn();
-		// RPG_RT compatible frame counter.
-		Main_Data::game_data.system.frame_count = 0;
+		Player::SetupNewGame();
 		Scene::Push(std::make_shared<Scene_Map>());
 	}
 }

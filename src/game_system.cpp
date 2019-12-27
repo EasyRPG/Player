@@ -496,3 +496,51 @@ void Game_System::OnSeReady(FileRequestResult* result, int volume, int tempo, bo
 
 	Audio().SE_Play(path, volume, tempo);
 }
+
+Game_System::AtbMode Game_System::GetAtbMode() {
+	return static_cast<Game_System::AtbMode>(data.atb_mode);
+}
+
+void Game_System::SetAtbMode(AtbMode m) {
+	data.atb_mode = m;
+}
+
+void Game_System::ToggleAtbMode() {
+	data.atb_mode = !data.atb_mode;
+}
+
+const RPG::Music& Game_System::GetBeforeBattleMusic() {
+	return data.before_battle_music;
+}
+
+void Game_System::SetBeforeBattleMusic(RPG::Music music) {
+	data.before_battle_music = std::move(music);
+}
+
+const RPG::Music& Game_System::GetBeforeVehicleMusic() {
+	return data.before_vehicle_music;
+}
+
+void Game_System::SetBeforeVehicleMusic(RPG::Music music) {
+	data.before_vehicle_music = std::move(music);
+}
+
+int Game_System::GetSaveSlot() {
+	return data.save_slot;
+}
+
+void Game_System::SetSaveSlot(int slot) {
+	data.save_slot = slot;
+}
+
+int Game_System::GetFrameCounter() {
+	return data.frame_count;
+}
+
+void Game_System::ResetFrameCounter() {
+	data.frame_count = 0;
+}
+
+void Game_System::IncFrameCounter() {
+	++data.frame_count;
+}
