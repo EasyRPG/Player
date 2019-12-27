@@ -31,46 +31,10 @@
 #include "pixel_format.h"
 #include "tone.h"
 #include "text.h"
+#include "pixman_image_ptr.h"
+#include "opacity.h"
 
 struct Transform;
-
-/**
- * Opacity class.
- */
-class Opacity {
-public:
-	int top;
-	int bottom;
-	int split;
-
-	static const Opacity opaque;
-
-	Opacity() :
-		top(255), bottom(255), split(0) {}
-
-	Opacity(int opacity) :
-		top(opacity), bottom(opacity), split(0) {}
-
-	Opacity(int top_opacity, int bottom_opacity, int opacity_split) :
-		top(top_opacity), bottom(bottom_opacity), split(opacity_split) {}
-
-	int Value() const {
-		assert(!IsSplit());
-		return top;
-	}
-
-	bool IsSplit() const {
-		return split > 0 && top != bottom;
-	}
-
-	bool IsTransparent() const {
-		return IsSplit() ? top <= 0 && bottom <= 0 : top <= 0;
-	}
-
-	bool IsOpaque() const {
-		return IsSplit() ? top >= 255 && bottom >= 255 : top >= 255;
-	}
-};
 
 /**
  * Base Bitmap class.
@@ -140,11 +104,6 @@ public:
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
-
-	/**
-	 * Destructor.
-	 */
-	~Bitmap();
 
 	/**
 	 * Gets the bitmap width.
@@ -552,18 +511,14 @@ protected:
 
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, FontRef font, std::string const& text, Text::Alignment align);
 
-#ifdef USE_SDL
-	friend class SdlUi;
-#endif
-
 	/** Bitmap data. */
-	pixman_image_t *bitmap = nullptr;
+	PixmanImagePtr bitmap;
 	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
-	static pixman_image_t* GetSubimage(Bitmap const& src, const Rect& src_rect);
+	static PixmanImagePtr GetSubimage(Bitmap const& src, const Rect& src_rect);
 	static inline void MultiplyAlpha(uint8_t &r, uint8_t &g, uint8_t &b, const uint8_t &a) {
 		r = (uint8_t)((int)r * a / 0xFF);
 		g = (uint8_t)((int)g * a / 0xFF);

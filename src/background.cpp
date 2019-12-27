@@ -129,6 +129,6 @@ void Background::Draw(Bitmap& dst) {
 		dst.TiledBlit(-Scale(fg_x), -Scale(fg_y), fg_bitmap->GetRect(), *fg_bitmap, dst_rect, 255);
 
 	if (tone_effect != Tone()) {
-		dst.ToneBlit(0, 0, dst, dst.GetRect(), tone_effect, Opacity::opaque);
+		dst.ToneBlit(0, 0, dst, dst.GetRect(), tone_effect, Opacity::Opaque());
 	}
 }

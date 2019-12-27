@@ -244,7 +244,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						// Create tone changed tile
 						if (chipset_tone_tiles.find(id) == chipset_tone_tiles.end()) {
 							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::opaque);
+							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
 							chipset_tone_tiles.insert(id);
 						}
 
@@ -259,7 +259,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						// Create tone changed tile
 						if (chipset_tone_tiles.find(tile.ID + (animation_step_c << 12)) == chipset_tone_tiles.end()) {
 							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::opaque);
+							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
 							chipset_tone_tiles.insert(tile.ID + (animation_step_c << 12));
 						}
 
@@ -274,7 +274,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						// Create tone changed tile
 						if (autotiles_ab_screen_tone_tiles.find(tile.ID + (animation_step_ab << 12)) == autotiles_ab_screen_tone_tiles.end()) {
 							Rect r(pos.x * TILE_SIZE, pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							autotiles_ab_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_ab_screen, r, tone, Opacity::opaque);
+							autotiles_ab_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_ab_screen, r, tone, Opacity::Opaque());
 							autotiles_ab_screen_tone_tiles.insert(tile.ID + (animation_step_ab << 12));
 						}
 
@@ -288,7 +288,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						// Create tone changed tile
 						if (autotiles_d_screen_tone_tiles.find(tile.ID) == autotiles_d_screen_tone_tiles.end()) {
 							Rect r(pos.x * TILE_SIZE, pos.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							autotiles_d_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_d_screen, r, tone, Opacity::opaque);
+							autotiles_d_screen_effect->ToneBlit(pos.x * TILE_SIZE, pos.y * TILE_SIZE, *autotiles_d_screen, r, tone, Opacity::Opaque());
 							autotiles_d_screen_tone_tiles.insert(tile.ID);
 						}
 
@@ -316,7 +316,7 @@ void TilemapLayer::Draw(Bitmap& dst, int z_order) {
 						// Create tone changed tile
 						if (chipset_tone_tiles.find(id) == chipset_tone_tiles.end()) {
 							Rect r(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::opaque);
+							chipset_effect->ToneBlit(col * TILE_SIZE, row * TILE_SIZE, *chipset, r, tone, Opacity::Opaque());
 							chipset_tone_tiles.insert(id);
 						}
 

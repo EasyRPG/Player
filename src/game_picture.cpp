@@ -67,7 +67,7 @@ void Game_Picture::UpdateSprite() {
 		sheet_bitmap->Clear();
 
 		if (last_spritesheet_frame >= 0 && last_spritesheet_frame < NumSpriteSheetFrames()) {
-			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::opaque);
+			sheet_bitmap->Blit(0, 0, *whole_bitmap, r, Opacity::Opaque());
 		}
 
 		sprite->SetBitmap(sheet_bitmap);

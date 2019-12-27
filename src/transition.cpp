@@ -172,10 +172,10 @@ void Transition::Draw(Bitmap& dst) {
 			random_block_transition->Blit(random_blocks[i] % (w / size_random_blocks) * size_random_blocks,
 				random_blocks[i] / (w / size_random_blocks) * size_random_blocks, *screen2,
 				Rect(random_blocks[i] % (w / size_random_blocks) * size_random_blocks, random_blocks[i] / (w / size_random_blocks) * size_random_blocks,
-					size_random_blocks, size_random_blocks), Opacity::opaque);
+					size_random_blocks, size_random_blocks), Opacity::Opaque());
 		}
-		dst.Blit(0, 0, *screen1, screen1->GetRect(), Opacity::opaque);
-		dst.Blit(0, 0, *random_block_transition, random_block_transition->GetRect(), Opacity::opaque);
+		dst.Blit(0, 0, *screen1, screen1->GetRect(), Opacity::Opaque());
+		dst.Blit(0, 0, *random_block_transition, random_block_transition->GetRect(), Opacity::Opaque());
 		current_blocks_print = blocks_to_print;
 		break;
 	case TransitionBlindOpen:

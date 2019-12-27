@@ -175,7 +175,7 @@ void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int
 			bm2->Clear();
 			bm2->Blit(0, 0, *bm, src, 255);
 			if (k == 0)
-				bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(128, 128, 128, 0), Opacity::opaque);
+				bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(128, 128, 128, 0), Opacity::Opaque());
 			bitmaps[party_index][j][k] = bm2;
 		}
 	}

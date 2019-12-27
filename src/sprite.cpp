@@ -59,18 +59,17 @@ void Sprite::BlitScreen(Bitmap& dst) {
 			rect.y %= bitmap_effects->GetHeight();
 		}
 
-		BlitScreenIntern(dst, *draw_bitmap, rect, bush_effect);
+		BlitScreenIntern(dst, *draw_bitmap, rect);
 	}
 }
 
-void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
-								Rect const& src_rect, int opacity_split) const {
-
+void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap, Rect const& src_rect) const
+{
 	double zoom_x = zoom_x_effect;
 	double zoom_y = zoom_y_effect;
 
 	dst.EffectsBlit(x, y, ox, oy, draw_bitmap, src_rect,
-					 Opacity(opacity_top_effect, opacity_bottom_effect, opacity_split),
+					 Opacity(opacity_top_effect, opacity_bottom_effect, bush_effect),
 					 zoom_x, zoom_y, angle_effect,
 					 waver_effect_depth, waver_effect_phase);
 }

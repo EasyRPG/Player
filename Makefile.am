@@ -175,6 +175,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/message_overlay.h \
 	src/meta.cpp \
 	src/meta.h \
+	src/opacity.h \
 	src/options.h \
 	src/output.cpp \
 	src/output.h \
@@ -182,6 +183,7 @@ libeasyrpg_player_a_SOURCES = \
 	src/pending_message.cpp \
 	src/picojson.h \
 	src/pixel_format.h \
+	src/pixman_image_ptr.h \
 	src/plane.cpp \
 	src/plane.h \
 	src/player.cpp \

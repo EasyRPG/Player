@@ -150,7 +150,7 @@ private:
 
 	void BlitScreen(Bitmap& dst);
 	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
-							Rect const& src_rect, int opacity_split) const;
+							Rect const& src_rect) const;
 	BitmapRef Refresh(Rect& rect);
 	void SetFlashEffect(const Color &color);
 };
