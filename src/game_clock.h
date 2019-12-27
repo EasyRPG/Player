@@ -50,23 +50,10 @@ public:
 
 	/** Get the timestep for a given frames per second value */
 	static constexpr duration TimeStepFromFps(int fps);
-
-	// FIXME: Remove this and use now() everywhere.
-	static uint32_t GetTicks();
-	// FIXME: Remove this and use now() everywhere.
-	static void InitTicks();
-private:
-	static time_point init_ticks;
 };
 
 inline Game_Clock::time_point Game_Clock::now() {
 	return clock::now();
-}
-
-inline uint32_t Game_Clock::GetTicks() {
-	auto d = now() - init_ticks;
-	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(d);
-	return ms.count();
 }
 
 constexpr int Game_Clock::GetSimulationFps() {

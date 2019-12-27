@@ -18,8 +18,4 @@
 #include "game_clock.h"
 
 constexpr bool Game_Clock::is_steady;
-Game_Clock::time_point Game_Clock::init_ticks;
 
-void Game_Clock::InitTicks() {
-	init_ticks = now();
-}
