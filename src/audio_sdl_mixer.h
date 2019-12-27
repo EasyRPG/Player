@@ -24,6 +24,7 @@
 #include "audio.h"
 #include "audio_decoder.h"
 #include "audio_secache.h"
+#include "game_clock.h"
 
 #include <map>
 
@@ -64,7 +65,7 @@ private:
 
 	std::shared_ptr<Mix_Music> bgm;
 	int bgm_volume;
-	unsigned bgm_starttick = 0;
+	Game_Clock::time_point bgm_starttick;
 	bool bgm_stop = true;
 	std::shared_ptr<Mix_Chunk> bgs;
 	bool bgs_playing = false;
