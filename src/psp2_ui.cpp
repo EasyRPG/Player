@@ -200,9 +200,6 @@ void Psp2Ui::Sleep(uint32_t time) {
 	sceKernelDelayThread(usecs);
 }
 
-uint32_t Psp2Ui::GetTicks() const {
-	return (sceKernelGetProcessTimeWide() / 1000 - starttick);
-}
 void Psp2Ui::BeginDisplayModeChange() {
 	// no-op
 }

@@ -30,6 +30,7 @@
 #include "drawable.h"
 #include "drawable_mgr.h"
 #include "baseui.h"
+#include "game_clock.h"
 
 namespace Graphics {
 	void UpdateTitle();
@@ -72,12 +73,12 @@ void Graphics::Quit() {
 void Graphics::Update() {
 	//FPS:
 	if (next_fps_time == 0) {
-		next_fps_time = DisplayUi->GetTicks() + 1000;
+		next_fps_time = Game_Clock::GetTicks() + 1000;
 	}
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	uint32_t current_time = DisplayUi->GetTicks();
+	uint32_t current_time = Game_Clock::GetTicks();
 	if (current_time >= next_fps_time) {
 		next_fps_time += 1000;
 

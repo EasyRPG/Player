@@ -264,7 +264,7 @@ void Player::Update(bool update_scene) {
 	static const double framerate_interval = 1000.0 / Graphics::GetDefaultFps();
 	next_frame = start_time + framerate_interval;
 
-	double cur_time = (double)DisplayUi->GetTicks();
+	double cur_time = (double)Game_Clock::GetTicks();
 
 #if !defined(USE_LIBRETRO)
 	// libretro: The frontend handles this, cores should not do rate
@@ -350,10 +350,10 @@ void Player::Update(bool update_scene) {
 
 	BitmapRef disp = DisplayUi->GetDisplaySurface();
 
-	cur_time = (double)DisplayUi->GetTicks();
+	cur_time = (double)Game_Clock::GetTicks();
 	if (cur_time < next_frame) {
 		Graphics::Draw(*disp);
-		cur_time = (double)DisplayUi->GetTicks();
+		cur_time = (double)Game_Clock::GetTicks();
 		// Don't use sleep when the port uses an external timing source
 #if !defined(USE_LIBRETRO)
 		// Still time after graphic update? Yield until it's time for next one.
@@ -374,7 +374,7 @@ void Player::IncFrame() {
 
 void Player::FrameReset() {
 	// When update started
-	FrameReset(DisplayUi->GetTicks());
+	FrameReset(Game_Clock::GetTicks());
 }
 
 void Player::FrameReset(uint32_t start_ticks) {

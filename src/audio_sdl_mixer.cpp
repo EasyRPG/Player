@@ -27,6 +27,7 @@
 #include "baseui.h"
 #include "filefinder.h"
 #include "output.h"
+#include "game_clock.h"
 
 #ifdef EMSCRIPTEN
 #  include <emscripten.h>
@@ -42,12 +43,14 @@
 
 namespace {
 	void bgm_played_once() {
+		// FIXME: Can we break this reference to DisplayUi?
 		if (DisplayUi)
 			static_cast<SdlMixerAudio&>(Audio()).BGM_OnPlayedOnce();
 	}
 
 #if SDL_MAJOR_VERSION>1
 	void bgs_played_once(int channel) {
+		// FIXME: Can we break this reference to DisplayUi?
 		if (DisplayUi && channel == BGS_CHANNEL_NUM)
 			bgm_played_once();
 	}
@@ -316,7 +319,7 @@ void SdlMixerAudio::BGM_Play(std::string const& file, int volume, int pitch, int
 		return;
 	}
 
-	bgm_starttick = SDL_GetTicks();
+	bgm_starttick = Game_Clock::GetTicks();
 
 #if SDL_MAJOR_VERSION>1
 	Mix_MusicType mtype = Mix_GetMusicType(bgm.get());
@@ -363,7 +366,7 @@ void SdlMixerAudio::SetupAudioDecoder(FILE* handle, const std::string& file, int
 #endif
 
 	audio_decoder->SetLooping(true);
-	bgm_starttick = SDL_GetTicks();
+	bgm_starttick = Game_Clock::GetTicks();
 
 	int audio_rate;
 	Uint16 sdl_format;
@@ -415,7 +418,7 @@ void SdlMixerAudio::BGM_Pause() {
 
 void SdlMixerAudio::BGM_Resume() {
 	if (audio_decoder) {
-		bgm_starttick = SDL_GetTicks();
+		bgm_starttick = Game_Clock::GetTicks();
 		audio_decoder->Resume();
 		return;
 	}
@@ -467,7 +470,7 @@ unsigned SdlMixerAudio::BGM_GetTicks() const {
 	}
 
 	// Should work for everything except MIDI
-	return SDL_GetTicks() + 1 - bgm_starttick;
+	return Game_Clock::GetTicks() + 1 - bgm_starttick;
 }
 
 void SdlMixerAudio::BGM_Volume(int volume) {
@@ -498,7 +501,7 @@ void SdlMixerAudio::BGM_Pitch(int pitch) {
 
 void SdlMixerAudio::BGM_Fade(int fade) {
 	if (audio_decoder) {
-		bgm_starttick = DisplayUi->GetTicks();
+		bgm_starttick = Game_Clock::GetTicks();
 		audio_decoder->SetFade(audio_decoder->GetVolume(), 0, fade);
 		return;
 	}
@@ -632,7 +635,7 @@ void SdlMixerAudio::SE_Stop() {
 
 void SdlMixerAudio::Update() {
 	if (audio_decoder && bgm_starttick > 0) {
-		int t = DisplayUi->GetTicks();
+		int t = Game_Clock::GetTicks();
 		audio_decoder->Update(t - bgm_starttick);
 		bgm_starttick = t;
 	}

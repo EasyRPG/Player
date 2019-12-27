@@ -64,7 +64,6 @@ public:
 
 	bool IsFullscreen();
 
-	uint32_t GetTicks() const;
 	void Sleep(uint32_t time_milli);
 
 #ifdef SUPPORT_AUDIO

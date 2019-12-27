@@ -149,10 +149,6 @@ SdlUi::~SdlUi() {
 	SDL_Quit();
 }
 
-uint32_t SdlUi::GetTicks() const {
-	return SDL_GetTicks();
-}
-
 void SdlUi::Sleep(uint32_t time) {
 	SDL_Delay(time);
 }

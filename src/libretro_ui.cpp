@@ -206,10 +206,6 @@ bool LibretroUi::IsFullscreen() {
 	return false;
 }
 
-uint32_t LibretroUi::GetTicks() const {
-	return (uint32_t)(time_in_microseconds/1000);
-}
-
 void LibretroUi::Sleep(uint32_t) {
 	// Sleep is not needed libretro will ensure 60 fps
 }

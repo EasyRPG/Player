@@ -22,7 +22,7 @@
 #include <set>
 #include "audio_resampler.h"
 #include "audio_secache.h"
-#include "baseui.h"
+#include "game_clock.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -35,7 +35,7 @@ namespace {
 	int cache_size = 0;
 
 	void FreeCacheMemory() {
-		int32_t cur_ticks = DisplayUi->GetTicks();
+		int32_t cur_ticks = Game_Clock::GetTicks();
 
 		for (auto it = cache.begin(); it != cache.end(); ) {
 			if (it->second.use_count() > 1) {
@@ -227,7 +227,7 @@ AudioSeRef AudioSeCache::Decode() {
 
 	if (IsCached()) {
 		se = cache.find(filename)->second;
-		se->last_access = DisplayUi->GetTicks();
+		se->last_access = Game_Clock::GetTicks();
 
 		if (GetPitch() == 100) {
 			// Nothing extra to do
@@ -293,7 +293,7 @@ AudioSeRef AudioSeCache::Decode() {
 		// This codepath is only taken the first time upon cache miss
 		cache.insert(std::make_pair(filename, se));
 
-		se->last_access = DisplayUi->GetTicks();
+		se->last_access = Game_Clock::GetTicks();
 
 		cache_size += se->buffer.size();
 

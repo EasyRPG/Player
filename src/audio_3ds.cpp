@@ -21,7 +21,7 @@
 
 #include "audio_3ds.h"
 #include "filefinder.h"
-#include "baseui.h"
+#include "game_clock.h"
 #include "output.h"
 #include "audio_secache.h"
 
@@ -110,7 +110,7 @@ void CtrAudio::BGM_Resume()  {
 	if (!dsp_inited)
 		return;
 
-	bgm_starttick = DisplayUi->GetTicks();
+	bgm_starttick = Game_Clock::GetTicks();
 	ndspChnSetPaused(bgm_channel, false);
 }
 
@@ -147,7 +147,7 @@ unsigned CtrAudio::BGM_GetTicks() const {
 
 void CtrAudio::BGM_Fade(int fade) {
 	if (bgm_decoder) {
-		bgm_starttick = DisplayUi->GetTicks();
+		bgm_starttick = Game_Clock::GetTicks();
 		bgm_decoder->SetFade(bgm_decoder->GetVolume(),0,fade);
 	}
 }
@@ -233,7 +233,7 @@ void CtrAudio::SE_Stop() {
 
 void CtrAudio::Update() {
 	if (bgm_decoder) {
-		int t = DisplayUi->GetTicks();
+		int t = Game_Clock::GetTicks();
 		bgm_decoder->Update(t - bgm_starttick);
 		bgm_starttick = t;
 	}
