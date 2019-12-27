@@ -22,6 +22,19 @@
 #include <cinttypes>
 
 constexpr bool Game_Clock::is_steady;
+Game_Clock::Data Game_Clock::data;
+
+Game_Clock::duration Game_Clock::OnNextFrame(time_point now, int speed) {
+	auto dt = now - data.frame_time;
+	data.frame_time = now;
+	data.frame_accumulator += dt * speed;
+	return dt;
+}
+
+void Game_Clock::ResetFrame(time_point now) {
+	data = {};
+	data.frame_time = now;
+}
 
 void Game_Clock::logClockInfo() {
 	const char* period_name = "custom";

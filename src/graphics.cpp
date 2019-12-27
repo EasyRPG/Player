@@ -83,7 +83,6 @@ void Graphics::Update() {
 
 		if (fps_overlay->GetFps() == 0) {
 			Output::Debug("Framerate is 0 FPS!");
-			Draw(*disp);
 			Player::FrameReset(now);
 		} else {
 			next_fps_time = now + 1s;

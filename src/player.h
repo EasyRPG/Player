@@ -75,6 +75,11 @@ namespace Player {
 	void Update(bool update_scene = true);
 
 	/**
+	 * Process input events
+	 */
+	void UpdateInput();
+
+	/**
 	 * Renders EasyRPG Player state to the screen
 	 */
 	void Draw();
@@ -241,6 +246,9 @@ namespace Player {
 
 	/** Output program usage information on stdout */
 	void PrintUsage();
+
+	/** Set the desired rendering frames per second */
+	void SetTargetFps(int fps);
 
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;

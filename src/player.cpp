@@ -121,12 +121,14 @@ namespace Player {
 #ifdef _3DS
 	bool is_3dsx;
 #endif
+#if defined(USE_LIBRETRO)
+	Game_Clock::duration frame_limit = {};
+#else
+	Game_Clock::duration frame_limit = Game_Clock::GetSimulationTimeStep();
+#endif
 }
 
 namespace {
-	Game_Clock::time_point start_time;
-	Game_Clock::time_point next_frame;
-
 	// Overwritten by --encoding
 	std::string forced_encoding;
 
@@ -214,7 +216,7 @@ void Player::Run() {
 	// Reset frames before starting
 	FrameReset(Game_Clock::now());
 
-	start_time = Game_Clock::now();
+	Game_Clock::ResetFrame(Game_Clock::now());
 
 	// Main loop
 	// libretro invokes the MainLoop through a retro_run-callback
@@ -235,34 +237,38 @@ void Player::Run() {
 void Player::MainLoop() {
 	Instrumentation::FrameScope iframe;
 
-	next_frame = start_time + Game_Clock::GetSimulationTimeStep();
+	const auto frame_time = Game_Clock::now();
+	Game_Clock::OnNextFrame(frame_time, GetSpeedModifier());
 
-	auto speed_modifier = GetSpeedModifier();
-	for (int i = 0; i < speed_modifier; ++i) {
+	Player::UpdateInput();
+
+	int num_updates = 0;
+	while (Game_Clock::NextSimulationTimeStep()) {
 		Scene::old_instances.clear();
 		Scene::instance->MainFunction();
+		++num_updates;
 	}
 
 	Player::Draw();
 
 	Scene::old_instances.clear();
 
-	start_time = next_frame;
-
 	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
 		Exit();
 		return;
 	}
 
-	// Don't use sleep when the port uses an external timing source
-#if !defined(USE_LIBRETRO)
-	auto cur_time = Game_Clock::now();
-	// Still time after graphic update? Yield until it's time for next one.
-	if (cur_time < next_frame) {
-		iframe.End();
-		Game_Clock::SleepFor(next_frame - cur_time);
+	if (frame_limit == Game_Clock::duration()) {
+		return;
 	}
-#endif
+
+	// Still time after graphic update? Yield until it's time for next one.
+	auto now = Game_Clock::now();
+	auto next = frame_time + frame_limit;
+	if (Game_Clock::now() < next) {
+		iframe.End();
+		Game_Clock::SleepFor(next - now);
+	}
 }
 
 void Player::Pause() {
@@ -275,7 +281,7 @@ void Player::Resume() {
 	FrameReset(Game_Clock::now());
 }
 
-void Player::Update(bool update_scene) {
+void Player::UpdateInput() {
 	// Input Logic:
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		fps_flag = !fps_flag;
@@ -299,7 +305,9 @@ void Player::Update(bool update_scene) {
 
 	// Update Logic:
 	DisplayUi->ProcessEvents();
+}
 
+void Player::Update(bool update_scene) {
 	std::shared_ptr<Scene> old_instance = Scene::instance;
 
 	if (exit_flag) {
@@ -345,12 +353,8 @@ void Player::Update(bool update_scene) {
 
 void Player::Draw() {
 	Graphics::Update();
-
-	auto cur_time = Game_Clock::now();
-	if (cur_time < next_frame) {
-		Graphics::Draw(*DisplayUi->GetDisplaySurface());
-		DisplayUi->UpdateDisplay();
-	}
+	Graphics::Draw(*DisplayUi->GetDisplaySurface());
+	DisplayUi->UpdateDisplay();
 }
 
 void Player::IncFrame() {
@@ -359,9 +363,7 @@ void Player::IncFrame() {
 }
 
 void Player::FrameReset(Game_Clock::time_point now) {
-	// When next frame is expected
-	next_frame = now + Game_Clock::GetSimulationTimeStep();
-
+	Game_Clock::ResetFrame(now);
 	Graphics::FrameReset(now);
 }
 
@@ -471,6 +473,14 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "hidetitle" || *it == "--hide-title") {
 			hide_title_flag = true;
+		}
+		else if (*it == "--fps-limit") {
+			++it;
+			if (it == args.end()) {
+				return;
+			}
+			auto fps =  atoi((*it).c_str());
+			SetTargetFps(fps);
 		}
 		else if (*it == "battletest") {
 			++it;
@@ -1110,6 +1120,9 @@ Options:
       --fullscreen         Start in fullscreen mode.
       --show-fps           Enable frames per second counter.
       --fps-render-window  Render the frames per second counter in windowed mode.
+      --fps-limit          Set a custom frames per second limit. The default is 60 FPS.
+                           Set to 0 to run with unlimited frames per second.
+                           This option is not supported on all platforms.
       --enable-mouse       Use mouse click for decision and scroll wheel for lists
       --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the
@@ -1191,4 +1204,15 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+void Player::SetTargetFps(int fps) {
+#if defined(USE_LIBRETRO)
+	return;
+#endif
+	if (fps == 0) {
+		frame_limit = {};
+	} else {
+		frame_limit = Game_Clock::TimeStepFromFps(fps);
+	}
 }

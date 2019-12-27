@@ -53,6 +53,11 @@ for some additional binary patches.
 *--fps-render-window*::
   Render the frames per second counter in both full screen and windowed mode.
 
+*--fps-limit*::
+  Set a custom frames per second limit. If unspecified, the default is 60 fps.
+  Set to 0 to disable the frame limiter. This option may not be supported on
+  all platforms.
+
 *--enable-mouse*::
   Use mouse click for decision and scroll wheel for lists.
 

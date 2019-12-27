@@ -57,6 +57,40 @@ public:
 
 	/** Log information about the Game_Clock */
 	static void logClockInfo();
+
+	/** Get the time of the current frame */
+	static time_point GetFrameTime();
+
+	/**
+	 * Call on each frame. Updates the current frame time to now
+	 *
+	 * @param now the current time
+	 * @param speed which speed to run the simulation. Default is 1.
+	 *
+	 * @return The amount of time elapsed since the previous frame.
+	 */
+	static Game_Clock::duration OnNextFrame(time_point now, int speed);
+
+	/**
+	 * Call before running the next time step. Tells us whether we should simulate one more
+	 * step and decrements the accumulator if so.
+	 *
+	 * @return Whether we should run an update
+	 */
+	static bool NextSimulationTimeStep();
+
+	/**
+	 * Reset the frame accumulator and time
+	 *
+	 * @param now the current time
+	 */
+	static void ResetFrame(time_point now);
+private:
+	struct Data {
+		time_point frame_time;
+		duration frame_accumulator;
+	};
+	static Data data;
 };
 
 inline Game_Clock::time_point Game_Clock::now() {
@@ -83,6 +117,19 @@ inline void Game_Clock::SleepFor(std::chrono::duration<R,P> dt) {
 
 constexpr const char* Game_Clock::Name() {
 	return clock::Name();
+}
+
+inline Game_Clock::time_point Game_Clock::GetFrameTime() {
+	return data.frame_time;
+}
+
+inline bool Game_Clock::NextSimulationTimeStep() {
+	constexpr auto dt = GetSimulationTimeStep();
+	if (data.frame_accumulator < dt) {
+		return false;
+	}
+	data.frame_accumulator -= dt;
+	return true;
 }
 
 #endif
