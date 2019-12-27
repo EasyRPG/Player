@@ -34,6 +34,7 @@
 #include "output.h"
 #include "player.h"
 #include "data.h"
+#include "game_clock.h"
 
 using namespace std::chrono_literals;
 
@@ -67,11 +68,10 @@ namespace {
 		}
 		return key.data() + offset;
 	}
-	using clock = std::chrono::steady_clock;
 
 	struct CacheItem {
 		BitmapRef bitmap;
-		clock::time_point last_access;
+		Game_Clock::time_point last_access;
 	};
 
 	using key_type = std::string;
@@ -92,7 +92,7 @@ namespace {
 	size_t cache_size = 0;
 
 	void FreeBitmapMemory() {
-		auto cur_ticks = clock::now();
+		auto cur_ticks = Game_Clock::now();
 
 		for (auto& i : cache) {
 			if (i.second.bitmap.use_count() != 1) {
@@ -127,7 +127,7 @@ namespace {
 #endif
 		}
 
-		return (cache[key] = {bmp, clock::now()}).bitmap;
+		return (cache[key] = {bmp, Game_Clock::now()}).bitmap;
 	}
 
 	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
@@ -154,7 +154,7 @@ namespace {
 
 			return AddToCache(key, bmp);
 		} else {
-			it->second.last_access = clock::now();
+			it->second.last_access = Game_Clock::now();
 			return it->second.bitmap;
 		}
 	}
@@ -260,7 +260,7 @@ namespace {
 
 			return AddToCache(key, bitmap);
 		} else {
-			it->second.last_access = clock::now();
+			it->second.last_access = Game_Clock::now();
 			return it->second.bitmap;
 		}
 	}
@@ -411,7 +411,7 @@ BitmapRef Cache::Exfont() {
 
 		return AddToCache(key, exfont_img);
 	} else {
-		it->second.last_access = clock::now();
+		it->second.last_access = Game_Clock::now();
 		return it->second.bitmap;
 	}
 }
