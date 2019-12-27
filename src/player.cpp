@@ -72,6 +72,8 @@
 #include "version.h"
 #include "game_quit.h"
 #include "scene_title.h"
+#include "instrumentation.h"
+#include "scope_guard.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -195,6 +197,7 @@ void Player::Init(int argc, char *argv[]) {
 }
 
 void Player::Run() {
+	Instrumentation::Init("EasyRPG-Player");
 	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
 	Graphics::UpdateSceneCallback();
 
