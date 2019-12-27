@@ -75,6 +75,11 @@ namespace Player {
 	void Update(bool update_scene = true);
 
 	/**
+	 * Renders EasyRPG Player state to the screen
+	 */
+	void Draw();
+
+	/**
 	 * Returns executed game frames since player start.
 	 * Should be 60 fps when game ran fast enough.
 	 *

@@ -101,7 +101,6 @@ void Graphics::Update() {
 	fps_overlay->Update();
 	fps_overlay->AddUpdate();
 	message_overlay->Update();
-	Transition::instance().Update();
 }
 
 void Graphics::UpdateTitle() {
