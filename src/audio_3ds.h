@@ -26,6 +26,7 @@
 #include <memory>
 
 #include "audio_decoder.h"
+#include "game_clock.h"
 
 class CtrAudio : public AudioInterface {
 public:
@@ -59,7 +60,7 @@ private:
 	mutable LightLock audio_mutex;
 
 	ndspWaveBuf se_buf[23];
-	unsigned bgm_starttick = 0;
+	Game_Clock::time_point bgm_starttick;
 	uint32_t* bgm_audio_buffer;
 }; // class CtrAudio
 

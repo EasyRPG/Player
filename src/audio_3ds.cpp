@@ -110,7 +110,7 @@ void CtrAudio::BGM_Resume()  {
 	if (!dsp_inited)
 		return;
 
-	bgm_starttick = Game_Clock::GetTicks();
+	bgm_starttick = Game_Clock::now();
 	ndspChnSetPaused(bgm_channel, false);
 }
 
@@ -147,7 +147,7 @@ unsigned CtrAudio::BGM_GetTicks() const {
 
 void CtrAudio::BGM_Fade(int fade) {
 	if (bgm_decoder) {
-		bgm_starttick = Game_Clock::GetTicks();
+		bgm_starttick = Game_Clock::now();
 		bgm_decoder->SetFade(bgm_decoder->GetVolume(),0,fade);
 	}
 }
@@ -233,8 +233,9 @@ void CtrAudio::SE_Stop() {
 
 void CtrAudio::Update() {
 	if (bgm_decoder) {
-		int t = Game_Clock::GetTicks();
-		bgm_decoder->Update(t - bgm_starttick);
+		auto t = Game_Clock::now();
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t - bgm_starttick);
+		bgm_decoder->Update(ms.count());
 		bgm_starttick = t;
 	}
 }
