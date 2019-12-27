@@ -26,7 +26,9 @@
 #include "font.h"
 #include "player.h"
 
-Window_Base::Window_Base(int x, int y, int width, int height) {
+Window_Base::Window_Base(int x, int y, int width, int height, bool is_global)
+	: Window(is_global)
+{
 	SetWindowskin(Cache::SystemOrBlack());
 
 	SetX(x);

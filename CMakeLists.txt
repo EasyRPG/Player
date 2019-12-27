@@ -126,6 +126,8 @@ add_library(${PROJECT_NAME}
 	src/game_picture.h
 	src/game_player.cpp
 	src/game_player.h
+	src/game_quit.cpp
+	src/game_quit.h
 	src/game_screen.cpp
 	src/game_screen.h
 	src/game_switches.cpp
