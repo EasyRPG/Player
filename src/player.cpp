@@ -76,6 +76,7 @@
 #include "instrumentation.h"
 #include "scope_guard.h"
 #include "baseui.h"
+#include "game_clock.h"
 
 #ifndef EMSCRIPTEN
 // This is not used on Emscripten.
@@ -206,7 +207,8 @@ bool did_sleep_this_frame = false;
 
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
-	Scene::Push(std::shared_ptr<Scene>(static_cast<Scene*>(new Scene_Logo())));
+	Scene::Push(std::make_shared<Scene_Logo>());
+	Game_Clock::InitTicks();
 	Graphics::UpdateSceneCallback();
 
 	reset_flag = false;
