@@ -599,7 +599,7 @@ int Game_Actor::GetStateProbability(int state_id) const {
 				&& !(Player::IsRPG2k3() && item->reverse_state_effect)
 				&& (item->type == RPG::Item::Type_shield || item->type == RPG::Item::Type_armor
 			|| item->type == RPG::Item::Type_helmet || item->type == RPG::Item::Type_accessory)
-			&& state_id  <= item->state_set.size() && item->state_set[state_id - 1]) {
+			&& state_id  <= static_cast<int>(item->state_set.size()) && item->state_set[state_id - 1]) {
 			mul = std::min<int>(mul, 100 - item->state_chance);
 		}
 	}
@@ -630,7 +630,7 @@ int Game_Actor::GetAttributeModifier(int attribute_id) const {
 		RPG::Item *object = ReaderUtil::GetElement(Data::items, id_object);
 		if (object != nullptr && (object->type == RPG::Item::Type_shield || object->type == RPG::Item::Type_armor
 			|| object->type == RPG::Item::Type_helmet || object->type == RPG::Item::Type_accessory)
-			&& object->attribute_set.size() >= attribute_id && object->attribute_set[attribute_id - 1]) {
+			&& static_cast<int>(object->attribute_set.size()) >= attribute_id && object->attribute_set[attribute_id - 1]) {
 			rate++;
 			break;
 		}

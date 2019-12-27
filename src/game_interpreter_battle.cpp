@@ -408,7 +408,7 @@ bool Game_Interpreter_Battle::CommandElseBranchBattle(RPG::EventCommand const& c
 	return CommandOptionGeneric(com, eOptionBranchBattleElse, {Cmd::EndBranch_B});
 }
 
-bool Game_Interpreter_Battle::CommandEndBranchBattle(RPG::EventCommand const& com) { //code 23311
+bool Game_Interpreter_Battle::CommandEndBranchBattle(RPG::EventCommand const& /* com */) { //code 23311
 	return true;
 }
 

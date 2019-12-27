@@ -81,7 +81,7 @@ namespace Graphics {
 	 *
 	 * @return target frame rate
 	 */
-	int GetDefaultFps();
+	constexpr int GetDefaultFps() { return DEFAULT_FPS; }
 
 	/**
 	 * Returns a handle to the message overlay.

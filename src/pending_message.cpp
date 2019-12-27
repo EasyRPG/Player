@@ -49,7 +49,7 @@ void PendingMessage::PushPageEnd() {
 
 void PendingMessage::SetWordWrapped(bool value) {
 	assert(texts.empty());
-	word_wrapped = true;
+	word_wrapped = value;
 }
 
 void PendingMessage::SetChoiceCancelType(int value) {

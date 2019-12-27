@@ -118,7 +118,7 @@ void Window_VarList::UpdateList(int first_value){
 				ss << ReaderUtil::GetElement(Data::troops, first_value+i)->name;
 				break;
 			case eMap:
-				if (map_idx < (int)Data::treemap.maps.size()) {
+				if (map_idx < static_cast<int>(Data::treemap.maps.size())) {
 					auto& map = Data::treemap.maps[map_idx];
 					if (map.ID == first_value + i) {
 						ss << map.name;
@@ -173,15 +173,15 @@ bool Window_VarList::DataIsValid(int range_index) {
 		case eVariable:
 			return Main_Data::game_variables->IsValid(range_index);
 		case eItem:
-			return range_index > 0 && range_index <= Data::items.size();
+			return range_index > 0 && range_index <= static_cast<int>(Data::items.size());
 		case eTroop:
-			return range_index > 0 && range_index <= Data::troops.size();
+			return range_index > 0 && range_index <= static_cast<int>(Data::troops.size());
 		case eMap:
 			return range_index > 0 && range_index <= (Data::treemap.maps.size() > 0 ? Data::treemap.maps.back().ID : 0);
 		case eHeal:
-			return range_index > 0 && range_index <= Main_Data::game_party->GetActors().size() + 1;
+			return range_index > 0 && range_index <= static_cast<int>(Main_Data::game_party->GetActors().size()) + 1;
 		case eCommonEvent:
-			return range_index > 0 && range_index <= Data::commonevents.size();
+			return range_index > 0 && range_index <= static_cast<int>(Data::commonevents.size());
 		default:
 			break;
 	}

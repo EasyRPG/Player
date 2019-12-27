@@ -137,7 +137,7 @@ std::vector<RTP::RtpHitInfo> RTP::Detect(std::shared_ptr<FileFinder::DirectoryTr
 
 template <typename T>
 static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
-		const std::string& src_category, const std::string& src_name, int num_rtps, int offset) {
+		const std::string& src_name, int num_rtps, int offset) {
 	std::vector<RTP::Type> type_hits;
 
 	for (int i = range.first; i < range.second; ++i) {
@@ -155,16 +155,16 @@ static std::vector<RTP::Type> lookup_any_to_rtp_helper(T rtp_table, const std::p
 std::vector<RTP::Type> RTP::LookupAnyToRtp(const std::string& src_category, const std::string &src_name, int version) {
 	if (version == 2000) {
 		auto tbl_idx = get_table_idx(rtp_table_2k_categories, rtp_table_2k_categories_idx, src_category);
-		return lookup_any_to_rtp_helper(rtp_table_2k, tbl_idx, src_category, src_name, num_2k_rtps, 0);
+		return lookup_any_to_rtp_helper(rtp_table_2k, tbl_idx, src_name, num_2k_rtps, 0);
 	} else {
 		auto tbl_idx = get_table_idx(rtp_table_2k3_categories, rtp_table_2k3_categories_idx, src_category);
-		return lookup_any_to_rtp_helper(rtp_table_2k3, tbl_idx, src_category, src_name, num_2k3_rtps, num_2k_rtps);
+		return lookup_any_to_rtp_helper(rtp_table_2k3, tbl_idx, src_name, num_2k3_rtps, num_2k_rtps);
 	}
 }
 
 template <typename T>
 static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, int>& range,
-		const std::string& src_category, const std::string& src_name, int src_index, int dst_index, bool* is_rtp_asset) {
+		const std::string& src_name, int src_index, int dst_index, bool* is_rtp_asset) {
 
 	for (int i = range.first; i < range.second; ++i) {
 		const char* name = rtp_table[i][src_index + 1];
@@ -189,8 +189,8 @@ static std::string lookup_rtp_to_rtp_helper(T rtp_table, const std::pair<int, in
 std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::string& src_name, RTP::Type src_rtp,
 		RTP::Type target_rtp, bool* is_rtp_asset) {
 	// ensure both 2k or 2k3
-	assert((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps ||
-		(int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps);
+	assert(((int)src_rtp < num_2k_rtps && (int)target_rtp < num_2k_rtps) ||
+		((int)src_rtp >= num_2k_rtps && (int)target_rtp >= num_2k_rtps));
 
 	if (src_rtp == target_rtp) {
 		// Design limitation: When game_rtp == installed rtp can't tell if it is a rtp asset, this needs a table scan
@@ -202,9 +202,9 @@ std::string RTP::LookupRtpToRtp(const std::string& src_category, const std::stri
 
 	if ((int)src_rtp < num_2k_rtps) {
 		auto tbl_idx = get_table_idx(rtp_table_2k_categories, rtp_table_2k_categories_idx, src_category);
-		return lookup_rtp_to_rtp_helper(rtp_table_2k, tbl_idx, src_category, src_name, (int)src_rtp, (int)target_rtp, is_rtp_asset);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k, tbl_idx, src_name, (int)src_rtp, (int)target_rtp, is_rtp_asset);
 	} else {
 		auto tbl_idx = get_table_idx(rtp_table_2k3_categories, rtp_table_2k3_categories_idx, src_category);
-		return lookup_rtp_to_rtp_helper(rtp_table_2k3, tbl_idx, src_category, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps, is_rtp_asset);
+		return lookup_rtp_to_rtp_helper(rtp_table_2k3, tbl_idx, src_name, (int)src_rtp - num_2k_rtps, (int)target_rtp - num_2k_rtps, is_rtp_asset);
 	}
 }

@@ -101,7 +101,7 @@ void Scene_Battle::Start() {
 	SetState(State_Start);
 }
 
-void Scene_Battle::Continue(SceneType prev_scene) {
+void Scene_Battle::Continue(SceneType /* prev_scene */) {
 	Game_Message::SetWindow(message_window.get());
 
 	// Debug scene / other scene could have changed party status.

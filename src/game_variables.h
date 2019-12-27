@@ -100,14 +100,14 @@ inline bool Game_Variables::IsValid(int variable_id) const {
 }
 
 inline bool Game_Variables::ShouldWarn(int first_id, int last_id) const {
-	return (first_id <= 0 || last_id > Data::variables.size()) && _warnings > 0;
+	return (first_id <= 0 || last_id > static_cast<int>(Data::variables.size())) && _warnings > 0;
 }
 
 inline Game_Variables::Var_t Game_Variables::Get(int variable_id) const {
 	if (EP_UNLIKELY(ShouldWarn(variable_id, variable_id))) {
 		WarnGet(variable_id);
 	}
-	if (variable_id <= 0 || variable_id > _variables.size()) {
+	if (variable_id <= 0 || variable_id > static_cast<int>(_variables.size())) {
 		return 0;
 	}
 	return _variables[variable_id - 1];

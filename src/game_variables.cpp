@@ -31,6 +31,7 @@ namespace {
 using Var_t = Game_Variables::Var_t;
 
 constexpr Var_t VarSet(Var_t o, Var_t n) {
+	(void)o;
 	return n;
 }
 
@@ -69,7 +70,7 @@ Game_Variables::Var_t Game_Variables::SetOp(int variable_id, Var_t value, F&& op
 	if (variable_id <= 0) {
 		return 0;
 	}
-	if (EP_UNLIKELY(variable_id > _variables.size())) {
+	if (EP_UNLIKELY(variable_id > static_cast<int>(_variables.size()))) {
 		_variables.resize(variable_id, 0);
 	}
 	auto& v = _variables[variable_id - 1];
@@ -85,7 +86,7 @@ void Game_Variables::SetOpRange(const int first_id, const int last_id, const Var
 		--_warnings;
 	}
 	auto& vv = _variables;
-	if (EP_UNLIKELY(last_id > vv.size())) {
+	if (EP_UNLIKELY(last_id > static_cast<int>(vv.size()))) {
 		vv.resize(last_id, 0);
 	}
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {

@@ -34,7 +34,7 @@
 
 BattleAnimation::BattleAnimation(const RPG::Animation& anim, bool only_sound, int cutoff) :
 	Sprite(TypeDefault),
-	animation(anim), frame(0), only_sound(only_sound)
+	animation(anim), only_sound(only_sound)
 {
 	num_frames = GetRealFrames() * 2;
 	if (cutoff >= 0 && cutoff < num_frames) {
@@ -284,7 +284,7 @@ void BattleAnimationMap::FlashTargets(int r, int g, int b, int p) {
 	target.Flash(r, g, b, p, 0);
 }
 
-void BattleAnimationMap::ShakeTargets(int str, int spd, int time) {
+void BattleAnimationMap::ShakeTargets(int /* str */, int /* spd */, int /* time */) {
 }
 
 /////////

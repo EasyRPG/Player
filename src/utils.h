@@ -286,7 +286,7 @@ inline bool Utils::PercentChance(long rate) {
 
 template <typename F>
 inline void Utils::ForEachLine(const std::string& line, F&& f) {
-	int next = 0;
+	size_t next = 0;
 	do {
 		auto idx = line.find('\n', next);
 		if (idx == std::string::npos) {

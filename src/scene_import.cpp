@@ -38,7 +38,7 @@ Scene_Import::Scene_Import() :
 
 void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 	// File access is already determined
-	if (id < files.size()) {
+	if (id < static_cast<int>(files.size())) {
 		win.SetDisplayOverride(files[id].short_path, files[id].file_id);
 
 		std::unique_ptr<RPG::Save> savegame =
@@ -46,7 +46,7 @@ void Scene_Import::PopulateSaveWindow(Window_SaveFile& win, int id) {
 
 		if (savegame.get()) {
 			PopulatePartyFaces(win, id, *savegame);
-			UpdateLatestTimestamp(win, id, *savegame);
+			UpdateLatestTimestamp(id, *savegame);
 		} else {
 			win.SetCorrupted(true);
 		}
@@ -152,5 +152,5 @@ void Scene_Import::Action(int index) {
 }
 
 bool Scene_Import::IsSlotValid(int index) {
-	return index < files.size();
+	return index < static_cast<int>(files.size());
 }

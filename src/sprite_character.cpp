@@ -65,7 +65,6 @@ void Sprite_Character::Update() {
 	}
 
 	if (character->GetFlashLevel() > 0) {
-		Color col = character->GetFlashColor();
 		Flash(character->GetFlashColor(), 0);
 	} else {
 		Flash(Color(), 0);

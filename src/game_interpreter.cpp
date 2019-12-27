@@ -377,7 +377,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			auto& index = frame->current_command;
 
 			bool result;
-			if (index >= list.size()) {
+			if (index >= static_cast<int>(list.size())) {
 				result = (this->*continuation)(RPG::EventCommand());
 			} else {
 				result = (this->*continuation)(list[index]);
@@ -477,11 +477,11 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<int> codes, i
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	if (index >= (int)list.size()) {
+	if (index >= static_cast<int>(list.size())) {
 		return;
 	}
 
-	for (++index; index < (int)list.size(); ++index) {
+	for (++index; index < static_cast<int>(list.size()); ++index) {
 		const auto& com = list[index];
 		if (com.indent > indent) {
 			continue;
@@ -729,7 +729,6 @@ bool Game_Interpreter::ExecuteCommand() {
 bool Game_Interpreter::OnFinishStackFrame() {
 	auto* frame = GetFrame();
 	assert(frame);
-	auto& list = frame->commands;
 
 	const bool is_base_frame = _state.stack.size() == 1;
 
@@ -770,7 +769,7 @@ std::vector<std::string> Game_Interpreter::GetChoices() {
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
 	std::vector<std::string> s_choices;
-	for (unsigned index_temp = index + 1; index_temp < list.size(); ++index_temp) {
+	for (int index_temp = index + 1; index_temp < static_cast<int>(list.size()); ++index_temp) {
 		if (list[index_temp].indent != current_indent) {
 			continue;
 		}
@@ -821,19 +820,19 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // cod
 	++index;
 
 	// Check for continued lines via ShowMessage_2
-	while (index < list.size() && list[index].code == Cmd::ShowMessage_2) {
+	while (index < static_cast<int>(list.size()) && list[index].code == Cmd::ShowMessage_2) {
 		// Add second (another) line
 		pm.PushLine(list[index].string);
 		++index;
 	}
 
 	// Handle Choices or number
-	if (index < list.size()) {
+	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
 		if (list[index].code == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices();
 			// If choices fit on screen
-			if (s_choices.size() <= (4 - pm.NumLines())) {
+			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
 				pm.SetChoiceCancelType(list[index].parameters[0]);
 				SetupChoices(s_choices, com.indent, pm);
 				++index;
@@ -883,7 +882,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { 
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm) {
 	// Set choices to message text
 	pm.SetChoiceResetColors(false);
-	for (int i = 0; i < 4 && i < choices.size(); i++) {
+	for (int i = 0; i < 4 && i < static_cast<int>(choices.size()); i++) {
 		pm.PushChoice(choices[i]);
 	}
 
@@ -924,7 +923,7 @@ bool Game_Interpreter::CommandShowChoiceOption(RPG::EventCommand const& com) { /
 	return CommandOptionGeneric(com, opt_sub_idx, {Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd});
 }
 
-bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& com) { //code 20141
+bool Game_Interpreter::CommandShowChoiceEnd(RPG::EventCommand const& /* com */) { //code 20141
 	return true;
 }
 
@@ -979,7 +978,6 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // code 10220
 	int value = 0;
-	int i = 0;
 	Game_Actor* actor;
 	Game_Character* character;
 
@@ -1775,7 +1773,7 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 	const auto& list = frame->commands;
 	auto& index = frame->current_command;
 
-	index = list.size();
+	index = static_cast<int>(list.size());
 	return true;
 }
 
@@ -2659,10 +2657,6 @@ int Game_Interpreter::KeyInputState::CheckInput() const {
 }
 
 bool Game_Interpreter::CommandKeyInputProc(RPG::EventCommand const& com) { // code 11610
-	auto* frame = GetFrame();
-	assert(frame);
-	auto& index = frame->current_command;
-
 	int var_id = com.parameters[0];
 	bool wait = com.parameters[1] != 0;
 
@@ -3049,7 +3043,7 @@ bool Game_Interpreter::CommandElseBranch(RPG::EventCommand const& com) { //code 
 	return CommandOptionGeneric(com, eOptionBranchElse, {Cmd::EndBranch});
 }
 
-bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& com) { //code 22011
+bool Game_Interpreter::CommandEndBranch(RPG::EventCommand const& /* com */) { //code 22011
 	return true;
 }
 
@@ -3073,7 +3067,7 @@ bool Game_Interpreter::CommandJumpToLabel(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& com) { // code 12220
+bool Game_Interpreter::CommandBreakLoop(RPG::EventCommand const& /* com */) { // code 12220
 	auto* frame = GetFrame();
 	assert(frame);
 	const auto& list = frame->commands;

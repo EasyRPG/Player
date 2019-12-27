@@ -23,7 +23,7 @@ static void BM_SwitchOp(benchmark::State& state, F&& op) {
 
 static void BM_SwitchGet(benchmark::State& state) {
 	volatile int x = 0;
-	BM_SwitchOp(state, [&x](auto& s, auto id, bool val) { s.Get(id); });
+	BM_SwitchOp(state, [&x](auto& s, auto id, bool) { s.Get(id); });
 }
 
 BENCHMARK(BM_SwitchGet);
@@ -37,7 +37,7 @@ BENCHMARK(BM_SwitchSet);
 
 static void BM_SwitchFlip(benchmark::State& state) {
 	volatile int x = 0;
-	BM_SwitchOp(state, [&x](auto& s, auto id, bool val) { x = s.Flip(id); });
+	BM_SwitchOp(state, [&x](auto& s, auto id, bool) { x = s.Flip(id); });
 }
 
 BENCHMARK(BM_SwitchFlip);
@@ -53,13 +53,13 @@ static void BM_SwitchRangeOp(benchmark::State& state, F&& op) {
 }
 
 static void BM_SwitchSetRange(benchmark::State& state) {
-	BM_SwitchOp(state, [](auto& s, auto id, bool val) { s.SetRange(1, max_sws, val); });
+	BM_SwitchOp(state, [](auto& s, auto, bool val) { s.SetRange(1, max_sws, val); });
 }
 
 BENCHMARK(BM_SwitchSetRange);
 
 static void BM_SwitchFlipRange(benchmark::State& state) {
-	BM_SwitchOp(state, [](auto& s, auto id, bool val) { s.FlipRange(1, max_sws); });
+	BM_SwitchOp(state, [](auto& s, auto, bool) { s.FlipRange(1, max_sws); });
 }
 
 BENCHMARK(BM_SwitchFlipRange);

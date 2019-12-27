@@ -1333,7 +1333,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		// Attribute resistance / weakness + an attribute selected + can be modified
 		if (skill.affect_attr_defence) {
-			for (int i = 0; i < skill.attribute_effects.size(); i++) {
+			for (int i = 0; i < static_cast<int>(skill.attribute_effects.size()); i++) {
 				if (skill.attribute_effects[i] && GetTarget()->CanShiftAttributeRate(i + 1, IsPositive() ? 1 : -1)) {
 					if (!Utils::PercentChance(skill.hit))
 						continue;

@@ -145,7 +145,7 @@ void Game_Character::UpdateMovement() {
 	// These actions happen after movement has finished but before stop count timer.
 	if (IsStopping() && IsMoveRouteActive() && IsMoveRouteOverwritten()) {
 		const auto& move_route = GetMoveRoute();
-		if (!move_route.move_commands.empty() && GetMoveRouteIndex() >= move_route.move_commands.size()) {
+		if (!move_route.move_commands.empty() && GetMoveRouteIndex() >= static_cast<int>(move_route.move_commands.size())) {
 			if (move_route.repeat) {
 				SetMoveRouteRepeated(true);
 				SetMoveRouteIndex(0);
@@ -161,7 +161,6 @@ void Game_Character::UpdateMovement() {
 }
 
 void Game_Character::UpdateAnimation(bool was_moving) {
-	const auto anim_type = GetAnimationType();
 	if (IsAnimPaused()) {
 		ResetAnimation();
 		return;
@@ -273,7 +272,7 @@ void Game_Character::UpdateMoveRoute(int32_t& current_index, const RPG::MoveRout
 		}
 
 		// Repeating move route will end after doing one full cycle in a single frame.
-		if (num_cmds_processed >= current_route.move_commands.size()) {
+		if (num_cmds_processed >= static_cast<int>(current_route.move_commands.size())) {
 			break;
 		}
 
