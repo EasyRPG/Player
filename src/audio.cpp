@@ -40,7 +40,7 @@ void EmptyAudio::BGM_Stop() {
 	playing = false;
 }
 
-unsigned EmptyAudio::BGM_GetTicks() const {
+int EmptyAudio::BGM_GetTicks() const {
 	if (!playing) {
 		return 0;
 	}

@@ -107,7 +107,7 @@ bool GenericAudio::BGM_IsPlaying() const {
 	return false;
 }
 
-unsigned GenericAudio::BGM_GetTicks() const {
+int GenericAudio::BGM_GetTicks() const {
 	unsigned ticks = 0;
 	LockMutex();
 	for (unsigned i = 0; i < nr_of_bgm_channels; i++) {

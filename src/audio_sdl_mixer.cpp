@@ -462,7 +462,7 @@ bool SdlMixerAudio::BGM_IsPlaying() const {
 	return audio_decoder || !bgm_stop || !bgs_stop;
 }
 
-unsigned SdlMixerAudio::BGM_GetTicks() const {
+int SdlMixerAudio::BGM_GetTicks() const {
 	if (!BGM_IsPlaying()) {
 		return 0;
 	}

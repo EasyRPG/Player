@@ -42,7 +42,7 @@ public:
 	void BGM_Stop() override;
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override;
-	unsigned BGM_GetTicks() const override;
+	int BGM_GetTicks() const override;
 	void BGM_Fade(int) override;
 	void BGM_Volume(int) override;
 	void BGM_Pitch(int) override;

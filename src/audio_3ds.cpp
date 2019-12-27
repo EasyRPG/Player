@@ -137,7 +137,7 @@ bool CtrAudio::BGM_IsPlaying() const {
 	return res;
 }
 
-unsigned CtrAudio::BGM_GetTicks() const {
+int CtrAudio::BGM_GetTicks() const {
 	if (bgm_decoder) {
 		return bgm_decoder->GetTicks();
 	}

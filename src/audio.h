@@ -63,7 +63,7 @@ struct AudioInterface {
 	 * Returns the current MIDI tick of the background music.
 	 * Only useful when the BGM is a MIDI track.
 	 */
-	virtual unsigned BGM_GetTicks() const = 0;
+	virtual int BGM_GetTicks() const = 0;
 
 	/**
 	 * Does a fade out of the background music.
@@ -119,7 +119,7 @@ public:
 	void BGM_Stop() override;
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override { return false; }
-	unsigned BGM_GetTicks() const override;
+	int BGM_GetTicks() const override;
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};

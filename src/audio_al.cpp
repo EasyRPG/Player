@@ -539,7 +539,7 @@ bool ALAudio::BGM_IsPlaying() const {
 	return (state == AL_PLAYING);
 }
 
-unsigned ALAudio::BGM_GetTicks() const {
+int ALAudio::BGM_GetTicks() const {
 	SET_CONTEXT(ctx_);
 	return bgm_src_->midi_ticks();
 }
