@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include "color.h"
+#include "flash.h"
 #include "rpg_moveroute.h"
 #include "rpg_eventpage.h"
 #include "rpg_savemapeventbase.h"
@@ -1000,7 +1001,7 @@ inline void Game_Character::SetAnimPaused(bool value) {
 }
 
 inline Color Game_Character::GetFlashColor() const {
-	return MakeFlashColor(data()->flash_red, data()->flash_green, data()->flash_blue, data()->flash_current_level);
+	return Flash::MakeColor(data()->flash_red, data()->flash_green, data()->flash_blue, data()->flash_current_level);
 }
 
 inline double Game_Character::GetFlashLevel() const {

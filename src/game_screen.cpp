@@ -17,6 +17,7 @@
 
 // Headers
 #define _USE_MATH_DEFINES
+#include <cmath>
 #include "bitmap.h"
 #include "data.h"
 #include "player.h"
@@ -33,7 +34,7 @@
 #include "reader_util.h"
 #include "scene.h"
 #include "weather.h"
-#include <cmath>
+#include "flash.h"
 
 static constexpr int kShakeContinuousTimeStart = 65535;
 
@@ -384,20 +385,11 @@ void Game_Screen::UpdateScreenEffects() {
 		data.tint_time_left = data.tint_time_left - 1;
 	}
 
-	if (data.flash_current_level > 0 || data.flash_continuous) {
-		if (data.flash_time_left > 0) {
-			data.flash_current_level = data.flash_current_level - (data.flash_current_level / data.flash_time_left);
-			--data.flash_time_left;
-		}
-		if (data.flash_time_left <= 0) {
-			data.flash_time_left = 0;
-			data.flash_current_level = 0;
-			if (data.flash_continuous) {
-				data.flash_time_left = flash_period;
-				data.flash_current_level = flash_sat;
-			}
-		}
-	}
+	Flash::Update(data.flash_current_level,
+			data.flash_time_left,
+			data.flash_continuous,
+			flash_period,
+			flash_sat);
 
 	if (data.shake_time_left > 0) {
 		--data.shake_time_left;

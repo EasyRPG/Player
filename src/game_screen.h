@@ -26,6 +26,7 @@
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
+#include "flash.h"
 
 class Game_Battler;
 class Screen;
@@ -235,7 +236,7 @@ inline Tone Game_Screen::GetTone() {
 }
 
 inline Color Game_Screen::GetFlashColor() const {
-	return MakeFlashColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
+	return Flash::MakeColor(data.flash_red, data.flash_green, data.flash_blue, data.flash_current_level);
 }
 
 inline int Game_Screen::GetWeatherType() {
