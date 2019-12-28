@@ -85,6 +85,7 @@ namespace Player {
 	bool hide_title_flag;
 	bool window_flag;
 	bool fps_flag;
+	bool fps_render_window = false;
 	bool new_game_flag;
 	int load_game_id;
 	int party_x_position;
@@ -442,6 +443,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "--show-fps") {
 			fps_flag = true;
+		}
+		else if (*it == "--fps-render-window") {
+			fps_render_window = true;
 		}
 		else if (*it == "--enable-mouse") {
 			mouse_flag = true;
@@ -1075,6 +1079,7 @@ Options:
                             rpg2k3e    - RPG Maker 2003 (English release) engine
       --fullscreen         Start in fullscreen mode.
       --show-fps           Enable frames per second counter.
+      --fps-render-window  Render the frames per second counter in windowed mode.
       --enable-mouse       Use mouse click for decision and scroll wheel for lists
       --enable-touch       Use one/two finger tap for decision/cancel
       --hide-title         Hide the title background image and center the

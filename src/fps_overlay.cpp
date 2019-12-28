@@ -44,7 +44,7 @@ void FpsOverlay::Draw(Bitmap& dst) {
 	// FIXME: Break this dependency on DisplayUi
 	bool fps_draw = (
 #ifndef EMSCRIPTEN
-		DisplayUi->IsFullscreen() &&
+		(Player::fps_render_window || DisplayUi->IsFullscreen()) &&
 #endif
 		Player::fps_flag);
 

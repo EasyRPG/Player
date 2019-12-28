@@ -50,6 +50,9 @@ for some additional binary patches.
 *--show-fps*::
   Enable frames per second counter.
 
+*--fps-render-window*::
+  Render the frames per second counter in both full screen and windowed mode.
+
 *--enable-mouse*::
   Use mouse click for decision and scroll wheel for lists.
 
