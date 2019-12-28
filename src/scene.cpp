@@ -26,6 +26,7 @@
 #include "audio.h"
 #include "transition.h"
 #include "game_interpreter.h"
+#include "game_system.h"
 
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
@@ -261,7 +262,7 @@ std::shared_ptr<Scene> Scene::Find(SceneType type) {
 }
 
 void Scene::DrawBackground() {
-	DisplayUi->AddBackground();
+	DisplayUi->GetDisplaySurface()->Fill(Game_System::GetBackgroundColor());
 }
 
 bool Scene::CheckSceneExit(AsyncOp aop) {

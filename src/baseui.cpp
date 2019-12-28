@@ -62,7 +62,6 @@ BaseUi::BaseUi()
 	, mouse_x(0)
 	, mouse_y(0)
 	, cursor_visible(false)
-	, back_color(0, 0, 0, 255)
 {
 	keys.reset();
 }
@@ -103,17 +102,7 @@ int BaseUi::GetMousePosY() const {
 	return mouse_y;
 }
 
-Color const& BaseUi::GetBackcolor() const {
-	return back_color;
-}
-void BaseUi::SetBackcolor(const Color &color) {
-	back_color = color;
-}
-
 void BaseUi::CleanDisplay() {
 	main_surface->Clear();
 }
 
-void BaseUi::AddBackground() {
-	main_surface->Fill(back_color);
-}
